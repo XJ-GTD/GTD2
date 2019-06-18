@@ -160,7 +160,8 @@ export class DataConfig {
 
 
   /*----===== 网络状态值 =====----- */
-  public static IS_NETWORK_CONNECT: boolean = true;
+  // 2019/6/18 删除网络状态变量，通过网络服务接口调用查询
+  //public static IS_NETWORK_CONNECT: boolean = true;
 
   /**
    * 0正常进入1首次进入2无数据3更新后进入

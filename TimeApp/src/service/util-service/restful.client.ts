@@ -6,6 +6,7 @@ import {UtilService} from "./util.service";
 import {SqliteExec} from "./sqlite.exec";
 import {LogTbl} from "../sqlite/tbl/log.tbl";
 import {DataConfig} from "../config/data.config";
+import {NetworkService} from "../cordova/network.service";
 
 /**
  * 基础resful请求
@@ -13,7 +14,12 @@ import {DataConfig} from "../config/data.config";
 @Injectable()
 export class RestfulClient {
 
-  constructor(private http: HTTP,private httpClient:HttpClient,private restConfig:RestFulConfig,private util:UtilService,private sqlitExc:SqliteExec){
+  constructor(private http: HTTP,
+    private httpClient:HttpClient,
+    private networkService: NetworkService,
+    private restConfig:RestFulConfig,
+    private util:UtilService,
+    private sqlitExc:SqliteExec){
       this.init()
   }
 
@@ -29,7 +35,7 @@ export class RestfulClient {
     return new Promise((resolve, reject) => {
 
       // 没有网络的时候，直接返回
-      if (!DataConfig.IS_NETWORK_CONNECT) {
+      if (!this.networkService.isConnected()) {
         resolve();
         return;
       }
@@ -85,7 +91,7 @@ export class RestfulClient {
   get(url:UrlEntity):Promise<any> {
     return new Promise((resolve, reject) => {
       // 没有网络的时候，直接返回
-      if (!DataConfig.IS_NETWORK_CONNECT) {
+      if (!this.networkService.isConnected()) {
         resolve();
         return;
       }
@@ -138,7 +144,7 @@ export class RestfulClient {
   put(url:UrlEntity, body:any):Promise<any> {
     return new Promise((resolve, reject) => {
       // 没有网络的时候，直接返回
-      if (!DataConfig.IS_NETWORK_CONNECT) {
+      if (!this.networkService.isConnected()) {
         resolve();
         return;
       }
@@ -202,7 +208,7 @@ export class RestfulClient {
     log.t = 1;
     return new Promise((resolve, reject) => {
       // 没有网络的时候，直接返回
-      if (!DataConfig.IS_NETWORK_CONNECT) {
+      if (!this.networkService.isConnected()) {
         resolve();
         return;
       }
@@ -257,7 +263,7 @@ export class RestfulClient {
     log.t = 1;
     return new Promise((resolve, reject) => {
       // 没有网络的时候，直接返回
-      if (!DataConfig.IS_NETWORK_CONNECT) {
+      if (!this.networkService.isConnected()) {
         resolve();
         return;
       }

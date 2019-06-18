@@ -118,7 +118,7 @@ export class AtPage {
     this.client.version = UserConfig.getClientVersion();
 
     this.network.type = this.networkService.getNetworkTypeName();
-    this.network.connected = DataConfig.IS_NETWORK_CONNECT;
+    this.network.connected = this.networkService.isConnected();
 
     if (RestFulConfig.INIT_DATA_URL.indexOf('tag=mwxing') > 0) this.server.datacenter += '开发';
     if (RestFulConfig.INIT_DATA_URL.indexOf('debug=true') > 0) this.server.datacenter += '内部';

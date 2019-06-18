@@ -45,21 +45,19 @@ export class NetworkService {
     return this.NetworkType.get(this.network.type? this.network.type : "");
   }
 
+  public isConnected(): boolean {
+    return (this.getNetworkTypeName() == "none"? false : true);
+  }
+
   /**
    * 网络状态监控
    */
   public monitorNetwork() {
 
-    // 初始化的时候，网络状态设置
-    if (this.network.type === 'none') {
-      DataConfig.IS_NETWORK_CONNECT = false;
-    }
-
     // watch network for a disconnection
     let disconnectSubscription = this.network.onDisconnect().subscribe(() => {
       console.log('network was disconnected :-(');
       console.log('没有连接网络');
-      DataConfig.IS_NETWORK_CONNECT = false;
 
       this.emitService.emit("on.network.disconnected");
       this.util.toastStart("当前无网络，请检查网络连接",1500);
@@ -70,7 +68,6 @@ export class NetworkService {
     let connectSubscription = this.network.onConnect().subscribe(() => {
       console.log('network connected!');
       console.log('网络成功连接');
-      DataConfig.IS_NETWORK_CONNECT = true;
 
       this.emitService.emit("on.network.connected");
       //this.util.toastStart("网络成功连接",1500);
