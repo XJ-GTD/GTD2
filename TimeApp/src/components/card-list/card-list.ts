@@ -22,7 +22,7 @@ import { Component, Output, EventEmitter } from "@angular/core";
           </ng-container>
         </ion-row>
         <ion-row justify-content-center>
-          <small *ngIf="hasLoaded && ((!todaylist || todaylist.length <= 0) || (scdlist && scdlist.length > 0) || (!weatherlist || weatherlist.length <= 0))">日程</small>
+          <small *ngIf="hasLoaded && (((!todaylist || todaylist.length <= 0) && (!weatherlist || weatherlist.length <= 0)) || (scdlist && scdlist.length > 0))">日程</small>
           <ng-container *ngFor="let scd of scdlist">
           <ion-card *ngIf="scd.gs != '3' && scd.gs != '4'" (click)="gotoDetail(scd)">
             <div class="card-title">{{scd.sn}}</div>
