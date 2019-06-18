@@ -12,7 +12,7 @@
     "ionic:serve": "ionic-app-scripts serve"
   },
   "config": {
-    "ionic_copy": "./src/config/copy.config.js"
+    "ionic_copy": "./config/copy.config.js"
   },
   "dependencies": {
     "@angular/animations": "5.0.0",
