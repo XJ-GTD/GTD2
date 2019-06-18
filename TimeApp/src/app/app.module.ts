@@ -85,6 +85,7 @@ import {DaPageModule} from "../pages/da/da.module";
 import {DrPageModule} from "../pages/dr/dr.module";
 import {CardListComponentModule} from "../components/card-list/card-list.module";
 import { WeatherIconsModule } from 'ngx-icons';
+import { JPush } from '@jiguang-ionic/jpush';
 
 @NgModule({
   declarations: [
@@ -156,6 +157,7 @@ import { WeatherIconsModule } from 'ngx-icons';
     LocalNotifications,
     SQLite,
     Calendar,
+    JPush,
     SQLitePorter,
     BackgroundMode,
     AndroidPermissions,

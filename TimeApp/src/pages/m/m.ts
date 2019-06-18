@@ -3,6 +3,7 @@ import {IonicPage, ModalController, Platform } from 'ionic-angular';
 import {DataConfig} from "../../service/config/data.config";
 import {UserConfig} from "../../service/config/user.config";
 import {UtilService} from "../../service/util-service/util.service";
+import { JPush } from '@jiguang-ionic/jpush';
 
 /**
  * Generated class for the 菜单 page.
@@ -83,6 +84,7 @@ export class MPage {
 
   constructor(public modalController: ModalController,
               public plt: Platform,
+              public jpush: JPush,
               private util:UtilService) {
   }
 

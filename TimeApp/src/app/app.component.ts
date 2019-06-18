@@ -10,6 +10,7 @@ import {LsPushType} from "../components/menuType/LsPushType";
 import {StatusBar} from "@ionic-native/status-bar";
 import {FeedbackService} from "../service/cordova/feedback.service";
 import {NetworkService} from "../service/cordova/network.service";
+import { JPush } from '@jiguang-ionic/jpush';
 
 @Component({
   template: `
@@ -25,7 +26,9 @@ export class MyApp {
               private networkService: NetworkService,
               private restfulClient: RestfulClient,
               private util: UtilService,
-              private screenOrientation: ScreenOrientation,private feekback: FeedbackService) {
+              private screenOrientation: ScreenOrientation,
+              private feekback: FeedbackService,
+              private jpush: JPush) {
     //特殊菜单设置
     MenuController.registerType('scalePush', MenuScalePushType);
     MenuController.registerType('lsPush', LsPushType);
@@ -54,6 +57,8 @@ export class MyApp {
         this.screenOrientation.lock(this.screenOrientation.ORIENTATIONS.PORTRAIT);
         this.feekback.initAudio();
 
+        this.jpush.init();
+        this.jpush.setDebugMode(true);
       }
       this.restfulClient.init();
 
