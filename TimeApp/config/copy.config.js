@@ -1,6 +1,6 @@
 module.exports = {
   copyFonts: {
-    src: ['{{ROOT}}/node_modules/weather-icons/fonts/*'],
+    src: ['{{ROOT}}/node_modules/weather-icons/font/*'],
     dest: '{{WWW}}/assets/font'
   },
   copyFonts: {
