@@ -60,18 +60,20 @@ export class MyApp {
         this.jpush.init();
         this.jpush.setDebugMode(true);
 
-        let isPushStopped = await this.jpush.isPushStopped();
-        if (isPushStopped == 0) {
-          console.log("JPush service stopped.");
+        this.jpush.isPushStopped().then((isPushStopped) => {
+          if (isPushStopped == 0) {
+            console.log("JPush service stopped.");
 
-          this.jpush.resumePush();
-          console.log("JPush service starting resume.");
+            this.jpush.resumePush();
+            console.log("JPush service starting resume.");
 
-          let regId = await this.jpush.getRegistrationID();
-          console.log("JPushPlugin:registrationID is " + regId);
-        } else {
-          console.log("JPush service is running.");
-        }
+            this.jpush.getRegistrationID().then((regId) => {
+              console.log("JPushPlugin:registrationID is " + regId);
+            });
+          } else {
+            console.log("JPush service is running.");
+          }
+        });
       }
       this.restfulClient.init();
 
