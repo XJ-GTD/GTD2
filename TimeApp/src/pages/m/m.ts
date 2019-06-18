@@ -4,6 +4,7 @@ import {DataConfig} from "../../service/config/data.config";
 import {UserConfig} from "../../service/config/user.config";
 import {UtilService} from "../../service/util-service/util.service";
 import { JPush } from '@jiguang-ionic/jpush';
+import {PsService} from "../ps/ps.service";
 
 /**
  * Generated class for the 菜单 page.
@@ -85,13 +86,30 @@ export class MPage {
   constructor(public modalController: ModalController,
               public plt: Platform,
               public jpush: JPush,
+              private psService: PsService,
               private util:UtilService) {
+    //真机的时候获取JPush注册ID，并保存到服务器注册用户信息
+    if (this.util.isMobile()) {
+      this.jpush.getRegistrationID().then((regId) => {
+        console.log("JPushPlugin:registrationID is " + regId);
 
+        this.psService.saveUser(UserConfig.user.id, {
+          device: {
+            uuid: this.util.deviceId(),
+            type: this.util.deviceType(),
+            jpush: {
+              id: regId
+            }
+          }
+        });
+      });
+    }
   }
 
   ionViewDidLoad() {
     this.isdebug = DataConfig.isdebug;
     this.maxEdgeStart = this.plt.width() / 2;
+
     console.log('ionViewDidLoad MPage');
   }
 

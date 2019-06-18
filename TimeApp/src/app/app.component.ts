@@ -66,10 +66,6 @@ export class MyApp {
 
             this.jpush.resumePush();
             console.log("JPush service starting resume.");
-
-            this.jpush.getRegistrationID().then((regId) => {
-              console.log("JPushPlugin:registrationID is " + regId);
-            });
           } else {
             console.log("JPush service is running.");
           }
