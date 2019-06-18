@@ -164,7 +164,7 @@ export class FormatWeatherPipe implements PipeTransform {
 
     if (args.length == 1) {
       if (args[0] == "centigrade") {
-        if (!value.contains("℃")) {
+        if (!value.indexOf("℃") > 0) {
           return value + "℃";
         }
       }
