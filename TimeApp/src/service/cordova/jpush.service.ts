@@ -2,6 +2,7 @@ import {Injectable} from "@angular/core";
 import { JPush, AliasOptions, TagOptions } from '@jiguang-ionic/jpush';
 import {EmitService} from "../util-service/emit.service";
 import {UtilService} from "../util-service/util.service";
+import {DataConfig} from "../config/data.config";
 
 /**
  * JPush 极光推送服务
@@ -22,7 +23,7 @@ export class JPushService {
 
   init() {
     this.jpush.init();
-    this.jpush.setDebugMode(true);
+    this.jpush.setDebugMode(DataConfig.isdebug);
   }
 
   checkStatus(userId: string = "", force: boolean = false) {

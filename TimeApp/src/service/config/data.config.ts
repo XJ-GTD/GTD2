@@ -37,7 +37,7 @@ import {DaPage} from "../../pages/da/da";
 import {DrPage} from "../../pages/dr/dr";
 
 export class DataConfig {
-  public static isdebug: boolean  = false;
+  public static isdebug: boolean  = true;
   //2019/04/29 增加日志表操作
   //public static version:number = 1;
   //2019/05/09 增加语音回答表
