@@ -45,6 +45,7 @@ export class JPushService {
         if (!this.registerid) {
           this.jpush.getRegistrationID()
           .then((result) => {
+            console.log("JPush get registration id " + result);
             if (result) {
               this.registerid = result;
               this.emitService.emit("on.jpush.registerid.loaded");
@@ -54,28 +55,37 @@ export class JPushService {
           if (this.registerid) this.emitService.emit("on.jpush.registerid.loaded");
         }
 
-        if (!this.alias || force) {
-          this.jpush.getAlias({sequence: this.sequence++})
-          .then((result) => {
-            if (result) {
-              this.alias = result;
-            } else if (userId) {
-              //初始化别名
-              this.setAlias(this.util.getUuid());
-            }
-          }).catch(this.errorHandler);
-        }
+        //等待20秒调用
+          if (!this.alias || force) {
+            setTimeout(() => {
+            this.jpush.getAlias({sequence: this.sequence++})
+            .then((result) => {
+              console.log("JPush get alias " + result);
+              if (result) {
+                this.alias = result;
+              } else if (userId) {
+                //初始化别名
+                this.setAlias(this.util.getUuid());
+              }
+            }).catch(this.errorHandler);
+          }
 
-        if (!this.tags || this.tags.length < 0 || force) {
-          this.jpush.getAllTags({sequence: this.sequence++})
-          .then((result) => {
-            if (result && result.length > 0) {
-              this.tags = result;
-            } else if (userId) {
-              this.addTags(["mwxing"]);
+          //等待20秒调用
+          setTimeout(() => {
+            if (!this.tags || this.tags.length < 0 || force) {
+              this.jpush.getAllTags({sequence: this.sequence++})
+              .then((result) => {
+                console.log("JPush get tags " + result);
+                if (result && result.length > 0) {
+                  this.tags = result;
+                } else if (userId) {
+                  this.addTags(["mwxing"]);
+                }
+              }).catch(this.errorHandler);
             }
-          }).catch(this.errorHandler);
-        }
+          }, 20 * 1000);
+        }, 20 * 1000);
+
       }
     });
   }
@@ -83,7 +93,7 @@ export class JPushService {
   errorHandler(err: any) {
     var sequence: number = err.sequence;
     var code = err.code;
-    console.log("Error!" + "\nSequence: " + sequence + "\nCode: " + code);
+    console.log("JPush Error!" + "\nSequence: " + sequence + "\nCode: " + code);
   }
 
   setAlias(alias: string) {
