@@ -29,7 +29,7 @@ export class JPushService {
 
   checkStatus(userId: string = "", force: boolean = false) {
     this.jpush.isPushStopped().then((isPushStopped) => {
-      if (isPushStopped == 0) {
+      if (isPushStopped != 0) {
         console.log("JPush service stopped.");
 
         this.jpush.resumePush();
