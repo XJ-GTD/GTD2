@@ -4,6 +4,7 @@ import {DispatchService} from "./dispatch.service";
 import {Injectable, NgModule} from "@angular/core";
 import {UserConfig} from "../service/config/user.config";
 import * as async from "async/dist/async.js"
+import * as moment from "moment";
 import {RestFulConfig} from "../service/config/restful.config";
 import {EmitService} from "../service/util-service/emit.service";
 
@@ -28,6 +29,7 @@ export class WebsocketService {
   private connections: number = 0;
   workqueue:any;
   message:number;
+  private disconnecttime: number = 0;
 
   constructor(private dispatchService: DispatchService, private emitService: EmitService, private config: RestFulConfig) {
 
@@ -114,17 +116,29 @@ export class WebsocketService {
             //解决RabbitMQ同一个Queue队列在前一个断开的连接没有检测到断开信号时仍然保持着连接，
             //导致推送的消息被前一个连接接收，无法分配到最新的连接，导致客户端接收不到消息
             //解决方案，在新的连接创建之后，等待服务器心跳时间之后，发送通知WebSocket连接成功消息
+            let waittime = 0;
+
+            if (this.disconnecttime) {
+              let passedtime = (moment().unix() - this.disconnecttime) * 1000;
+
+              if (passedtime < this.client.heartbeat.outgoing) {
+                waittime = this.client.heartbeat.outgoing - passedtime;
+              }
+            }
+
             setTimeout(() => {
               this.emitService.emit("on.websocket.connected");
-            }, this.client.heartbeat.outgoing);
+            }, waittime);
 
           }, error => {
             this.connections--;
             this.failedtimes++;
+            this.disconnecttime = moment().unix();
             this.close();
           }, event => {
             console.log('Stomp websocket closed with code ' + event.code + ', reason ' + event.reason);
             this.connections--;
+            this.disconnecttime = moment().unix();
             this.close();
           }, '/');
 
