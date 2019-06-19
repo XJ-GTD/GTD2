@@ -116,7 +116,7 @@ export class WebsocketService {
             //解决方案，在新的连接创建之后，等待服务器心跳时间之后，发送通知WebSocket连接成功消息
             setTimeout(() => {
               this.emitService.emit("on.websocket.connected");
-            }, this.client.heartbeat.outgoing * 2);
+            }, this.client.heartbeat.outgoing);
 
           }, error => {
             this.connections--;
