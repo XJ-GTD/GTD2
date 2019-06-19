@@ -51,6 +51,8 @@ export class DataConfig {
   //2019/06/17 增加JT表特殊数据保存字段
   public static version:number = 6;
 
+  public static RABBITMQ_STATUS: string = "";
+
   /*----===== WS上下文环境使用 =====----- */
   public static clearWsContext(){
     this.wsContext.splice(0,this.wsContext.length);

@@ -93,11 +93,13 @@ export class HPage {
     // websocket连接成功消息回调
     this.emitService.register("on.websocket.connected", () => {
       this.aiready = true;
+      DataConfig.RABBITMQ_STATUS = "connected";
     });
 
     // websocket断开连接消息回调
     this.emitService.register("on.websocket.closed", () => {
       this.aiready = false;
+      DataConfig.RABBITMQ_STATUS = "";
     });
 
     this.emitService.registerNewMessageClick((data) => {
