@@ -105,7 +105,7 @@ export class MPage {
         });
       });
 
-      this.jpush.checkStatus();
+      this.jpush.checkStatus(UserConfig.user.id, false);
     }
   }
 

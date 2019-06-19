@@ -1,6 +1,7 @@
 import {Injectable} from "@angular/core";
 import { JPush, AliasOptions, TagOptions } from '@jiguang-ionic/jpush';
 import {EmitService} from "../util-service/emit.service";
+import {UtilService} from "../util-service/util.service";
 
 /**
  * JPush 极光推送服务
@@ -15,6 +16,7 @@ export class JPushService {
   tags: Array<string> = new Array<string>();
 
   constructor(private jpush: JPush,
+              private util: UtilService,
               private emitService: EmitService) {
   }
 
@@ -25,7 +27,7 @@ export class JPushService {
     this.checkStatus();
   }
 
-  checkStatus(force: boolean = false) {
+  checkStatus(userId: string = "", force: boolean = false) {
     this.jpush.isPushStopped().then((isPushStopped) => {
       if (isPushStopped == 0) {
         console.log("JPush service stopped.");
@@ -55,14 +57,23 @@ export class JPushService {
         if (!this.alias || force) {
           this.jpush.getAlias({sequence: this.sequence++})
           .then((result) => {
-            if (result) this.alias = result;
+            if (result) {
+              this.alias = result;
+            } else if (userId) {
+              //初始化别名
+              this.setAlias(this.util.getUuid());
+            }
           });
         }
 
         if (!this.tags || this.tags.length < 0 || force) {
           this.jpush.getAllTags({sequence: this.sequence++})
           .then((result) => {
-            if (result) this.tags = result;
+            if (result && result.length > 0) {
+              this.tags = result;
+            } else if (userId) {
+              this.addTags(["mwxing"]);
+            }
           });
         }
       }
@@ -79,7 +90,7 @@ export class JPushService {
   addTags(tags: Array<string>) {
     this.jpush.addTags({sequence: this.sequence++, tags: tags}).then((result) => {
       var sequence: number = result.sequence;
-      if (results.tags) {
+      if (result.tags && result.tags.length > 0) {
         this.tags = tags;
       }
     });
