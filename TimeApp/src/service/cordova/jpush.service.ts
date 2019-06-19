@@ -27,7 +27,7 @@ export class JPushService {
     this.checkStatus();
   }
 
-  checkStatus(userId: string = "", force: boolean = false) {
+  async checkStatus(userId: string = "", force: boolean = false) {
     this.jpush.isPushStopped().then((isPushStopped) => {
       if (isPushStopped != 0) {
         console.log("JPush service stopped.");
@@ -66,7 +66,7 @@ export class JPushService {
     console.log("JPush Error!" + "\nSequence: " + sequence + "\nCode: " + code);
   }
 
-  async getRegistrationID() {
+  getRegistrationID() {
     this.jpush.getRegistrationID()
     .then((result) => {
       console.log("JPush get registration id " + result);
