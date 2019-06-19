@@ -104,6 +104,8 @@ export class MPage {
           }
         });
       });
+
+      this.jpush.checkStatus();
     }
   }
 

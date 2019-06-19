@@ -25,7 +25,7 @@ export class JPushService {
     this.checkStatus();
   }
 
-  checkStatus() {
+  checkStatus(force: boolean = false) {
     this.jpush.isPushStopped().then((isPushStopped) => {
       if (isPushStopped == 0) {
         console.log("JPush service stopped.");
@@ -40,22 +40,32 @@ export class JPushService {
       } else {
         console.log("JPush service is running.");
 
-        this.jpush.getAlias({sequence: this.sequence++})
-        .then((result) => {
-          this.alias = result;
-        });
+        if (!this.registerid) {
+          this.jpush.getRegistrationID()
+          .then((result) => {
+            this.registerid = result;
 
-        this.jpush.getAllTags({sequence: this.sequence++})
-        .then((result) => {
-          this.tags = result;
-        });
-
-        this.jpush.getRegistrationID()
-        .then((result) => {
-          this.registerid = result;
-
+            if (this.registerid) {
+              this.emitService.emit("on.jpush.registerid.loaded");
+            }
+          });
+        } else {
           this.emitService.emit("on.jpush.registerid.loaded");
-        });
+        }
+
+        if (!this.alias || force) {
+          this.jpush.getAlias({sequence: this.sequence++})
+          .then((result) => {
+            this.alias = result;
+          });
+        }
+
+        if (!this.tags || this.tags.length < 0 || force) {
+          this.jpush.getAllTags({sequence: this.sequence++})
+          .then((result) => {
+            this.tags = result;
+          });
+        }
       }
     });
   }
