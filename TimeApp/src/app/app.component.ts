@@ -10,7 +10,7 @@ import {LsPushType} from "../components/menuType/LsPushType";
 import {StatusBar} from "@ionic-native/status-bar";
 import {FeedbackService} from "../service/cordova/feedback.service";
 import {NetworkService} from "../service/cordova/network.service";
-import { JPush } from '@jiguang-ionic/jpush';
+import {JPushService} from "../service/cordova/jpush.service";
 
 @Component({
   template: `
@@ -28,7 +28,7 @@ export class MyApp {
               private util: UtilService,
               private screenOrientation: ScreenOrientation,
               private feekback: FeedbackService,
-              private jpush: JPush) {
+              private jpush: JPushService) {
     //特殊菜单设置
     MenuController.registerType('scalePush', MenuScalePushType);
     MenuController.registerType('lsPush', LsPushType);
@@ -58,18 +58,6 @@ export class MyApp {
         this.feekback.initAudio();
 
         this.jpush.init();
-        this.jpush.setDebugMode(true);
-
-        this.jpush.isPushStopped().then((isPushStopped) => {
-          if (isPushStopped == 0) {
-            console.log("JPush service stopped.");
-
-            this.jpush.resumePush();
-            console.log("JPush service starting resume.");
-          } else {
-            console.log("JPush service is running.");
-          }
-        });
       }
       this.restfulClient.init();
 

@@ -3,7 +3,7 @@ import {IonicPage, ModalController, Platform } from 'ionic-angular';
 import {DataConfig} from "../../service/config/data.config";
 import {UserConfig} from "../../service/config/user.config";
 import {UtilService} from "../../service/util-service/util.service";
-import { JPush } from '@jiguang-ionic/jpush';
+import { JPushService } from "../../service/cordova/jpush.service";
 import {PsService} from "../ps/ps.service";
 
 /**
@@ -85,7 +85,7 @@ export class MPage {
 
   constructor(public modalController: ModalController,
               public plt: Platform,
-              public jpush: JPush,
+              public jpush: JPushService,
               private psService: PsService,
               private util:UtilService) {
     //真机的时候获取JPush注册ID，并保存到服务器注册用户信息

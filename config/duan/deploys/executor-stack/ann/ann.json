@@ -22,6 +22,9 @@
   },
   "jpush": {
     "appkey": "e8b1f201b4e0cc102f665238",
-    "secret": "f5009c225a4e18e32c2d1fe7"
+    "secret": "f5009c225a4e18e32c2d1fe7",
+    "maxretry": 5,
+    "timeout": 10000,
+    "sslversion": "TLSv1.1"
   }
 }
