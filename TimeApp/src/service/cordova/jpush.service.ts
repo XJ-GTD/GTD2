@@ -88,7 +88,7 @@ export class JPushService {
   getAlias(userId: string): Promise<any> {
     return new Promise(async (resolve, reject) => {
       this.jpush.getAlias({sequence: this.sequence++})
-      .then((result) => {
+      .then(async (result) => {
         console.log("JPush get alias " + result);
 
         if (result) {
@@ -150,10 +150,10 @@ export class JPushService {
         }
 
         resolve();
+      }).catch((err) => {
+        this.errorHandler(err);
+        reject(err);
       });
-    }).catch((err) => {
-      this.errorHandler(err);
-      reject(err);
     });
   }
 }
