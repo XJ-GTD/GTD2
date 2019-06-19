@@ -43,44 +43,45 @@ export class JPushService {
         if (!this.registerid) {
           this.jpush.getRegistrationID()
           .then((result) => {
-            this.registerid = result;
-
-            if (this.registerid) {
+            if (result) {
+              this.registerid = result;
               this.emitService.emit("on.jpush.registerid.loaded");
             }
           });
         } else {
-          this.emitService.emit("on.jpush.registerid.loaded");
+          if (this.registerid) this.emitService.emit("on.jpush.registerid.loaded");
         }
 
         if (!this.alias || force) {
           this.jpush.getAlias({sequence: this.sequence++})
           .then((result) => {
-            this.alias = result;
+            if (result) this.alias = result;
           });
         }
 
         if (!this.tags || this.tags.length < 0 || force) {
           this.jpush.getAllTags({sequence: this.sequence++})
           .then((result) => {
-            this.tags = result;
+            if (result) this.tags = result;
           });
         }
       }
     });
   }
 
-  getRegistrationID() {
-    return this.jpush.getRegistrationID();
-  }
-
   setAlias(alias: string) {
-    this.jpush.getAlias({sequence: this.sequence++}).then((result) => {
+    this.jpush.setAlias({sequence: this.sequence++, alias: alias}).then((result) => {
       var sequence: number = result.sequence;
+      this.alias = result.alias;
     });
   }
 
-  addTags(regId: string, tags: Array<string>) {
-
+  addTags(tags: Array<string>) {
+    this.jpush.addTags({sequence: this.sequence++, tags: tags}).then((result) => {
+      var sequence: number = result.sequence;
+      if (results.tags) {
+        this.tags = tags;
+      }
+    });
   }
 }
