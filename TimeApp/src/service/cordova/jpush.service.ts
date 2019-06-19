@@ -66,22 +66,20 @@ export class JPushService {
     console.log("JPush Error!" + "\nSequence: " + sequence + "\nCode: " + code);
   }
 
-  getRegistrationID(): Promise<any> {
-    return new Promise(async (resolve, reject) => {
-      this.jpush.getRegistrationID()
-      .then((result) => {
-        console.log("JPush get registration id " + result);
+  async getRegistrationID() {
+    this.jpush.getRegistrationID()
+    .then((result) => {
+      console.log("JPush get registration id " + result);
 
-        if (result) {
-          this.registerid = result;
-          this.emitService.emit("on.jpush.registerid.loaded");
-        }
+      if (result) {
+        this.registerid = result;
+        this.emitService.emit("on.jpush.registerid.loaded");
+      }
 
-        resolve();
-      }).catch((err) => {
-        this.errorHandler(err);
-        reject(err);
-      });
+      return;
+    }).catch((err) => {
+      this.errorHandler(err);
+      return;
     });
   }
 
