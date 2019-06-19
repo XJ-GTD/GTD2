@@ -43,48 +43,18 @@ export class JPushService {
         console.log("JPush service is running.");
 
         if (!this.registerid) {
-          this.jpush.getRegistrationID()
-          .then((result) => {
-            console.log("JPush get registration id " + result);
-            if (result) {
-              this.registerid = result;
-              this.emitService.emit("on.jpush.registerid.loaded");
-            }
-          });
+          await this.getRegistrationID();
         } else {
           if (this.registerid) this.emitService.emit("on.jpush.registerid.loaded");
         }
 
-        //等待20秒调用
-          if (!this.alias || force) {
-            setTimeout(() => {
-            this.jpush.getAlias({sequence: this.sequence++})
-            .then((result) => {
-              console.log("JPush get alias " + result);
-              if (result) {
-                this.alias = result;
-              } else if (userId) {
-                //初始化别名
-                this.setAlias(this.util.getUuid());
-              }
-            }).catch(this.errorHandler);
-          }
+        if (!this.alias || force) {
+          await this.getAlias();
+        }
 
-          //等待20秒调用
-          setTimeout(() => {
-            if (!this.tags || this.tags.length < 0 || force) {
-              this.jpush.getAllTags({sequence: this.sequence++})
-              .then((result) => {
-                console.log("JPush get tags " + result);
-                if (result && result.length > 0) {
-                  this.tags = result;
-                } else if (userId) {
-                  this.addTags(["mwxing"]);
-                }
-              }).catch(this.errorHandler);
-            }
-          }, 20 * 1000);
-        }, 20 * 1000);
+        if (!this.tags || this.tags.length < 0 || force) {
+          await this.getAllTags();
+        }
 
       }
     });
@@ -96,19 +66,94 @@ export class JPushService {
     console.log("JPush Error!" + "\nSequence: " + sequence + "\nCode: " + code);
   }
 
-  setAlias(alias: string) {
-    this.jpush.setAlias({sequence: this.sequence++, alias: alias}).then((result) => {
-      var sequence: number = result.sequence;
-      this.alias = result.alias;
+  getRegistrationID(): Promise<any> {
+    return new Promise(async (resolve, reject) => {
+      this.jpush.getRegistrationID()
+      .then((result) => {
+        console.log("JPush get registration id " + result);
+
+        if (result) {
+          this.registerid = result;
+          this.emitService.emit("on.jpush.registerid.loaded");
+        }
+
+        resolve();
+      }).catch((err) => {
+        errorHandler(err);
+        reject(err);
+      });
     });
   }
 
-  addTags(tags: Array<string>) {
-    this.jpush.addTags({sequence: this.sequence++, tags: tags}).then((result) => {
-      var sequence: number = result.sequence;
-      if (result.tags && result.tags.length > 0) {
-        this.tags = tags;
-      }
+  getAlias(): Promise<any> {
+    return new Promise(async (resolve, reject) => {
+      this.jpush.getAlias({sequence: this.sequence++})
+      .then((result) => {
+        console.log("JPush get alias " + result);
+
+        if (result) {
+          this.alias = result;
+        } else if (userId) {
+          //初始化别名
+          await this.setAlias(this.util.getUuid());
+        }
+
+        resolve();
+      }).catch((err) => {
+        errorHandler(err);
+        reject(err);
+      });
+    });
+  }
+
+  getAllTags(): Promise<any> {
+    return new Promise(async (resolve, reject) => {
+      this.jpush.getAllTags({sequence: this.sequence++})
+      .then((result) => {
+        console.log("JPush get tags " + result);
+
+        if (result && result.length > 0) {
+          this.tags = result;
+        } else if (userId) {
+          this.addTags(["mwxing"]);
+        }
+
+        resolve();
+      }).catch((err) => {
+        errorHandler(err);
+        reject(err);
+      });
+    });
+  }
+
+  setAlias(alias: string): Promise<any> {
+    return new Promise(async (resolve, reject) => {
+      this.jpush.setAlias({sequence: this.sequence++, alias: alias}).then((result) => {
+        var sequence: number = result.sequence;
+        this.alias = result.alias;
+
+        resolve();
+      }).catch((err) => {
+        errorHandler(err);
+        reject(err);
+      });
+    });
+  }
+
+  addTags(tags: Array<string>): Promise<any> {
+    return new Promise(async (resolve, reject) => {
+      this.jpush.addTags({sequence: this.sequence++, tags: tags}).then((result) => {
+        var sequence: number = result.sequence;
+
+        if (result.tags && result.tags.length > 0) {
+          this.tags = tags;
+        }
+
+        resolve();
+      });
+    }).catch((err) => {
+      errorHandler(err);
+      reject(err);
     });
   }
 }
