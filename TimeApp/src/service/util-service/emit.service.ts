@@ -63,7 +63,7 @@ export class EmitService {
       return;
     }
 
-    for (let ee: EventEmitter<any> of el) {
+    for (let ee of el) {
       if (!ee.isStopped) {
         ee.emit($data);
       }
@@ -79,7 +79,7 @@ export class EmitService {
       return;
     }
 
-    for (let ee: EventEmitter<any> of el) {
+    for (let ee of el) {
       ee.unsubscribe();
     }
 
