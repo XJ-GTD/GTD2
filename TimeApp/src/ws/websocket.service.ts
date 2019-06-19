@@ -111,7 +111,12 @@ export class WebsocketService {
               }
             });
 
-            this.emitService.emit("on.websocket.connected");
+            //解决RabbitMQ同一个Queue队列在前一个断开的连接没有检测到断开信号时仍然保持着连接，
+            //导致推送的消息被前一个连接接收，无法分配到最新的连接，导致客户端接收不到消息
+            //解决方案，在新的连接创建之后，等待服务器心跳时间之后，发送通知WebSocket连接成功消息
+            setTimeout(() => {
+              this.emitService.emit("on.websocket.connected");
+            }, this.client.heartbeat.incoming);
 
           }, error => {
             this.connections--;

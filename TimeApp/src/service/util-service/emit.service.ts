@@ -31,54 +31,57 @@ export class EmitService {
   private listenerEm:EventEmitter<boolean> = new EventEmitter<boolean>();
 
   //冥王星内建事件订阅/触发管理
-  private static buildinEvents: Map<string, EventEmitter<any>> = new Map<string, EventEmitter<any>>();
+  //同一个事件可以被多个调用注册
+  private static buildinEvents: Map<string, Array<EventEmitter<any>>> = new Map<string, Array<EventEmitter<any>>>();
 
   //冥王星内建事件订阅
   register(handler: string, callback) {
-    let ee: EventEmitter<any> = EmitService.buildinEvents.get(handler);
+    let el: Array<EventEmitter<any>> = EmitService.buildinEvents.get(handler);
 
     //事件不存在，创建并加入管理
-    if (!ee) {
-      ee = new EventEmitter<any>();
-      EmitService.buildinEvents.set(handler, ee);
+    if (!el) {
+      el = new Array<EventEmitter<any>>();
     }
 
-    //事件已经关闭，重新创建并加入管理
-    if (ee.closed) {
-      ee = new EventEmitter<any>();
-      EmitService.buildinEvents.set(handler, ee);
-    }
+    let ee: EventEmitter<any> = new EventEmitter<any>();
 
     //订阅事件回调
     ee.subscribe(($data: any) => {
       callback($data);
     });
+
+    el.push(ee);
+    EmitService.buildinEvents.set(handler, el);
   }
 
   //冥王星内建事件触发
   emit(handler: string, $data: any = {}) {
-    let ee: EventEmitter<any> = EmitService.buildinEvents.get(handler);
+    let el: Array<EventEmitter<any>> = EmitService.buildinEvents.get(handler);
 
     //事件不存在直接返回
-    if (!ee) {
+    if (!el || el.length < 1) {
       return;
     }
 
-    if (!ee.isStopped) {
-      ee.emit($data);
+    for (let ee: EventEmitter<any> of el) {
+      if (!ee.isStopped) {
+        ee.emit($data);
+      }
     }
   }
 
-  //冥王星内建时间注销
+  //冥王星内建事件注销
   destroy(handler: string) {
-    let ee: EventEmitter<any> = EmitService.buildinEvents.get(handler);
+    let el: Array<EventEmitter<any>> = EmitService.buildinEvents.get(handler);
 
     //事件不存在直接返回
-    if (!ee) {
+    if (!el || el.length < 1) {
       return;
     }
 
-    ee.unsubscribe();
+    for (let ee: EventEmitter<any> of el) {
+      ee.unsubscribe();
+    }
 
     //从管理中移除当前事件
     EmitService.buildinEvents.delete(handler);
