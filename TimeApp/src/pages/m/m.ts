@@ -105,7 +105,7 @@ export class MPage {
         });
       });
 
-      this.jpush.checkStatus(UserConfig.user.id, false);
+      this.jpush.checkStatus(UserConfig.user.id, false);  //触发注册ID已加载事件
     }
   }
 

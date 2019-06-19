@@ -63,7 +63,7 @@ export class JPushService {
               //初始化别名
               this.setAlias(this.util.getUuid());
             }
-          });
+          }).catch(this.errorHandler);
         }
 
         if (!this.tags || this.tags.length < 0 || force) {
@@ -74,10 +74,16 @@ export class JPushService {
             } else if (userId) {
               this.addTags(["mwxing"]);
             }
-          });
+          }).catch(this.errorHandler);
         }
       }
     });
+  }
+
+  errorHandler(err: any) {
+    var sequence: number = err.sequence;
+    var code = err.code;
+    console.log("Error!" + "\nSequence: " + sequence + "\nCode: " + code);
   }
 
   setAlias(alias: string) {
