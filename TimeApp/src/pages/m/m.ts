@@ -3,6 +3,7 @@ import {IonicPage, ModalController, Platform } from 'ionic-angular';
 import {DataConfig} from "../../service/config/data.config";
 import {UserConfig} from "../../service/config/user.config";
 import {UtilService} from "../../service/util-service/util.service";
+import {EmitService} from "../../service/util-service/emit.service";
 import { JPushService } from "../../service/cordova/jpush.service";
 import {PsService} from "../ps/ps.service";
 
@@ -87,19 +88,18 @@ export class MPage {
               public plt: Platform,
               public jpush: JPushService,
               private psService: PsService,
-              private util:UtilService) {
+              private util: UtilService,
+              private emitService: EmitService) {
     //真机的时候获取JPush注册ID，并保存到服务器注册用户信息
     if (this.util.isMobile()) {
-      this.jpush.getRegistrationID().then((regId) => {
-        console.log("JPushPlugin:registrationID is " + regId);
-
+      this.emitService.register("on.jpush.registerid.loaded", () => {
         this.psService.saveUser(UserConfig.user.id, {
           device: {
             uuid: this.util.deviceId(),
             type: this.util.deviceType(),
             platforms: this.plt.platforms(),
             jpush: {
-              id: regId
+              id: this.jpush.registerid
             }
           }
         });

@@ -1,5 +1,6 @@
 import {Injectable} from "@angular/core";
 import { JPush, AliasOptions, TagOptions } from '@jiguang-ionic/jpush';
+import {EmitService} from "../util-service/emit.service";
 
 /**
  * JPush 极光推送服务
@@ -10,9 +11,11 @@ import { JPush, AliasOptions, TagOptions } from '@jiguang-ionic/jpush';
 export class JPushService {
   sequence: number = 0;
   alias: string = "";
+  registerid: string = "";
   tags: Array<string> = new Array<string>();
 
-  constructor(private jpush: JPush) {
+  constructor(private jpush: JPush,
+              private emitService: EmitService) {
   }
 
   init() {
@@ -45,6 +48,13 @@ export class JPushService {
         this.jpush.getAllTags({sequence: this.sequence++})
         .then((result) => {
           this.tags = result;
+        });
+
+        this.jpush.getRegistrationID()
+        .then((result) => {
+          this.registerid = result;
+
+          this.emitService.emit("on.jpush.registerid.loaded");
         });
       }
     });
