@@ -89,10 +89,11 @@ export class JPushService {
     return new Promise(async (resolve, reject) => {
       this.jpush.getAlias({sequence: this.sequence++})
       .then(async (result) => {
-        console.log("JPush get alias " + result);
 
         if (result) {
-          this.alias = result;
+          console.log("JPush get alias " + result.alias);
+
+          this.alias = result.alias;
         } else if (userId) {
           //初始化别名
           await this.setAlias(this.util.getUuid());
@@ -110,10 +111,10 @@ export class JPushService {
     return new Promise(async (resolve, reject) => {
       this.jpush.getAllTags({sequence: this.sequence++})
       .then((result) => {
-        console.log("JPush get tags " + result);
 
-        if (result && result.length > 0) {
-          this.tags = result;
+        if (result && result.tags && result.tags.length > 0) {
+          console.log("JPush get tags " + result.tags);
+          this.tags = result.tags;
         } else if (userId) {
           this.addTags(["mwxing"]);
         }
