@@ -23,8 +23,6 @@ export class JPushService {
   init() {
     this.jpush.init();
     this.jpush.setDebugMode(true);
-
-    this.checkStatus();
   }
 
   checkStatus(userId: string = "", force: boolean = false) {
