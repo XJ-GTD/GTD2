@@ -34,20 +34,26 @@ export class JPushService {
       } else {
         console.log("JPush service is running.");
 
-        this.alias = await this.jpush.getAlias({sequence: this.sequence++});
-        this.tags = await this.jpush.getAllTags({sequence: this.sequence++});
+        this.jpush.getAlias({sequence: this.sequence++})
+        .then((result) => {
+          this.alias = reuslt;
+        });
+
+        this.jpush.getAllTags({sequence: this.sequence++})
+        .then((result) => {
+          this.tags = result;
+        });
       }
     });
   }
 
   getRegistrationID() {
-    return await this.jpush.getRegistrationID();
+    return this.jpush.getRegistrationID();
   }
 
   setAlias(alias: string) {
     this.jpush.getAlias({sequence: this.sequence++}).then((result) => {
       var sequence: number = result.sequence;
-
     });
   }
 
