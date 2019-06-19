@@ -9,6 +9,8 @@ import { JPush, AliasOptions, TagOptions } from '@jiguang-ionic/jpush';
 @Injectable()
 export class JPushService {
   sequence: number = 0;
+  alias: string = "";
+  tags: Array<string> = new Array<string>();
 
   constructor(private jpush: JPush) {
   }
@@ -17,20 +19,29 @@ export class JPushService {
     this.jpush.init();
     this.jpush.setDebugMode(true);
 
+    this.checkStatus();
+  }
+
+  checkStatus() {
     this.jpush.isPushStopped().then((isPushStopped) => {
       if (isPushStopped == 0) {
         console.log("JPush service stopped.");
 
         this.jpush.resumePush();
         console.log("JPush service starting resume.");
+
+        this.checkStatus();
       } else {
         console.log("JPush service is running.");
+
+        this.alias = await this.jpush.getAlias({sequence: this.sequence++});
+        this.tags = await this.jpush.getAllTags({sequence: this.sequence++});
       }
     });
   }
 
-  getRegistrationID(): Promise<any> {
-    return this.jpush.getRegistrationID();
+  getRegistrationID() {
+    return await this.jpush.getRegistrationID();
   }
 
   setAlias(alias: string) {
