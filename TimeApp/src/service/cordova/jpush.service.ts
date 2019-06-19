@@ -27,8 +27,8 @@ export class JPushService {
     this.checkStatus();
   }
 
-  async checkStatus(userId: string = "", force: boolean = false) {
-    this.jpush.isPushStopped().then((isPushStopped) => {
+  checkStatus(userId: string = "", force: boolean = false) {
+    this.jpush.isPushStopped().then(async (isPushStopped) => {
       if (isPushStopped != 0) {
         console.log("JPush service stopped.");
 
@@ -67,19 +67,21 @@ export class JPushService {
   }
 
   getRegistrationID() {
-    this.jpush.getRegistrationID()
-    .then((result) => {
-      console.log("JPush get registration id " + result);
+    return new Promise(async (resolve, reject) => {
+      this.jpush.getRegistrationID()
+      .then((result) => {
+        console.log("JPush get registration id " + result);
 
-      if (result) {
-        this.registerid = result;
-        this.emitService.emit("on.jpush.registerid.loaded");
-      }
+        if (result) {
+          this.registerid = result;
+          this.emitService.emit("on.jpush.registerid.loaded");
+        }
 
-      return;
-    }).catch((err) => {
-      this.errorHandler(err);
-      return;
+        resolve();
+      }).catch((err) => {
+        this.errorHandler(err);
+        reject(err);
+      });
     });
   }
 
