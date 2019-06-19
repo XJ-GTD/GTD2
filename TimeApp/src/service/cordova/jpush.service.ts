@@ -49,11 +49,11 @@ export class JPushService {
         }
 
         if (!this.alias || force) {
-          await this.getAlias();
+          await this.getAlias(userId);
         }
 
         if (!this.tags || this.tags.length < 0 || force) {
-          await this.getAllTags();
+          await this.getAllTags(userId);
         }
 
       }
@@ -85,7 +85,7 @@ export class JPushService {
     });
   }
 
-  getAlias(): Promise<any> {
+  getAlias(userId: string): Promise<any> {
     return new Promise(async (resolve, reject) => {
       this.jpush.getAlias({sequence: this.sequence++})
       .then((result) => {
@@ -106,7 +106,7 @@ export class JPushService {
     });
   }
 
-  getAllTags(): Promise<any> {
+  getAllTags(userId: string): Promise<any> {
     return new Promise(async (resolve, reject) => {
       this.jpush.getAllTags({sequence: this.sequence++})
       .then((result) => {
