@@ -19,5 +19,9 @@
     "requestedChannelMax": 5,
     "networkRecoveryInterval": 500,
     "automaticRecoveryEnabled": true
+  },
+  "jpush": {
+    "appkey": "e8b1f201b4e0cc102f665238",
+    "secret": "f5009c225a4e18e32c2d1fe7"
   }
 }

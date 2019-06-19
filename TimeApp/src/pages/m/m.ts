@@ -97,6 +97,7 @@ export class MPage {
           device: {
             uuid: this.util.deviceId(),
             type: this.util.deviceType(),
+            platforms: this.plt.platforms(),
             jpush: {
               id: regId
             }
