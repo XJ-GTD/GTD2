@@ -38,7 +38,7 @@ export class JPushService {
         //5秒后重新确认状态
         setTimeout(() => {
           this.checkStatus();
-        }, 5000);
+        }, 60000);
       } else {
         console.log("JPush service is running.");
 
