@@ -79,7 +79,7 @@ export class JPushService {
 
         resolve();
       }).catch((err) => {
-        errorHandler(err);
+        this.errorHandler(err);
         reject(err);
       });
     });
@@ -100,7 +100,7 @@ export class JPushService {
 
         resolve();
       }).catch((err) => {
-        errorHandler(err);
+        this.errorHandler(err);
         reject(err);
       });
     });
@@ -120,7 +120,7 @@ export class JPushService {
 
         resolve();
       }).catch((err) => {
-        errorHandler(err);
+        this.errorHandler(err);
         reject(err);
       });
     });
@@ -134,7 +134,7 @@ export class JPushService {
 
         resolve();
       }).catch((err) => {
-        errorHandler(err);
+        this.errorHandler(err);
         reject(err);
       });
     });
@@ -152,7 +152,7 @@ export class JPushService {
         resolve();
       });
     }).catch((err) => {
-      errorHandler(err);
+      this.errorHandler(err);
       reject(err);
     });
   }
