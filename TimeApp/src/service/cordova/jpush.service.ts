@@ -88,7 +88,7 @@ export class JPushService {
       this.jpush.getAlias({sequence: this.sequence++})
       .then(async (result) => {
 
-        if (result) {
+        if (result && result.alias) {
           console.log("JPush get alias " + result.alias);
 
           this.alias = result.alias;
