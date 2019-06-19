@@ -36,7 +36,7 @@ export class JPushService {
 
         this.jpush.getAlias({sequence: this.sequence++})
         .then((result) => {
-          this.alias = reuslt;
+          this.alias = result;
         });
 
         this.jpush.getAllTags({sequence: this.sequence++})
