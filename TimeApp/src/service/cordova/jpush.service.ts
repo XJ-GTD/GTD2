@@ -156,4 +156,12 @@ export class JPushService {
       });
     });
   }
+
+  onMessageReceive(callback) {
+    this.jpush.receiveNotificationInAndroidCallback = callback;
+  }
+
+  onMessageOpen(callback) {
+    this.jpush.openNotificationInAndroidCallback = callback;
+  }
 }
