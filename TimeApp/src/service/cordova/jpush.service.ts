@@ -22,24 +22,27 @@ export class JPushService {
               private util: UtilService,
               private device: Device,
               private emitService: EmitService) {
-    document.addEventListener("jpush.receiveNotification", (event) => {
-      let alertContent = "";
-      if (this.device.platform == "Android") {
-        alertContent = this.wins.plugins.jPushPlugin.receiveNotification.alert;
-      } else {
-        alertContent = this.wins.plugins.jPushPlugin.receiveNotification.aps.alert;
-      }
-      console.log("open Notification:" + alertContent)
-    }, false);
+    if (this.util.isMobile()) {
+      document.addEventListener("jpush.receiveNotification", (event) => {
+        let alertContent = "";
+        if (this.device.platform == "Android") {
+          alertContent = this.wins.plugins.jPushPlugin.receiveNotification.alert;
+        } else {
+          alertContent = this.wins.plugins.jPushPlugin.receiveNotification.aps.alert;
+        }
+        console.log("JPush Open Notification:" + alertContent)
+      }, false);
 
-    document.addEventListener("jpush.receiveMessage", (event) => {
-      let message = "";
-      if (this.device.platform == "Android") {
-        message = this.wins.plugins.jPushPlugin.receiveMessage.message;
-      } else {
-        message = this.wins.plugins.jPushPlugin.receiveMessage.content;
-      }
-    }, false);
+      document.addEventListener("jpush.receiveMessage", (event) => {
+        let message = "";
+        if (this.device.platform == "Android") {
+          message = this.wins.plugins.jPushPlugin.receiveMessage.message;
+        } else {
+          message = this.wins.plugins.jPushPlugin.receiveMessage.content;
+        }
+        console.log("JPush Receive Message:" + message)
+      }, false);
+    }
   }
 
   init() {
