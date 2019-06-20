@@ -21,22 +21,22 @@ export class JPushService {
               private util: UtilService,
               private device: Device,
               private emitService: EmitService) {
-    document.addEventListener("jpush.receiveNotification", function (event) {
+    document.addEventListener("jpush.receiveNotification", (event) => {
       let alertContent = "";
       if (this.device.platform == "Android") {
-        alertContent = event.alert
+        alertContent = window.plugins.jPushPlugin.receiveNotification.alert;
       } else {
-        alertContent = event.aps.alert
+        alertContent = window.plugins.jPushPlugin.receiveNotification.aps.alert;
       }
       console.log("open Notification:" + alertContent)
     }, false);
 
-    document.addEventListener("jpush.receiveMessage", function (event) {
+    document.addEventListener("jpush.receiveMessage", (event) => {
       let message = "";
       if (this.device.platform == "Android") {
-        message = event.message;
+        message = window.plugins.jPushPlugin.receiveMessage.message;
       } else {
-        message = event.content;
+        message = window.plugins.jPushPlugin.receiveMessage.content;
       }
     }, false);
   }
