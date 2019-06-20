@@ -12,6 +12,7 @@ import {Device} from "@ionic-native/device";
  */
 @Injectable()
 export class JPushService {
+  wins: any = window;
   sequence: number = 0;
   alias: string = "";
   registerid: string = "";
@@ -24,9 +25,9 @@ export class JPushService {
     document.addEventListener("jpush.receiveNotification", (event) => {
       let alertContent = "";
       if (this.device.platform == "Android") {
-        alertContent = window.plugins.jPushPlugin.receiveNotification.alert;
+        alertContent = this.wins.plugins.jPushPlugin.receiveNotification.alert;
       } else {
-        alertContent = window.plugins.jPushPlugin.receiveNotification.aps.alert;
+        alertContent = this.wins.plugins.jPushPlugin.receiveNotification.aps.alert;
       }
       console.log("open Notification:" + alertContent)
     }, false);
@@ -34,9 +35,9 @@ export class JPushService {
     document.addEventListener("jpush.receiveMessage", (event) => {
       let message = "";
       if (this.device.platform == "Android") {
-        message = window.plugins.jPushPlugin.receiveMessage.message;
+        message = this.wins.plugins.jPushPlugin.receiveMessage.message;
       } else {
-        message = window.plugins.jPushPlugin.receiveMessage.content;
+        message = this.wins.plugins.jPushPlugin.receiveMessage.content;
       }
     }, false);
   }
