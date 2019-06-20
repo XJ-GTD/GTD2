@@ -3,6 +3,7 @@ import { JPush, AliasOptions, TagOptions } from '@jiguang-ionic/jpush';
 import {EmitService} from "../util-service/emit.service";
 import {UtilService} from "../util-service/util.service";
 import {DataConfig} from "../config/data.config";
+import {Device} from "@ionic-native/device";
 
 /**
  * JPush 极光推送服务
@@ -18,7 +19,26 @@ export class JPushService {
 
   constructor(private jpush: JPush,
               private util: UtilService,
+              private device: Device,
               private emitService: EmitService) {
+    document.addEventListener("jpush.receiveNotification", function (event) {
+      let alertContent = "";
+      if (this.device.platform == "Android") {
+        alertContent = event.alert
+      } else {
+        alertContent = event.aps.alert
+      }
+      console.log("open Notification:" + alertContent)
+    }, false);
+
+    document.addEventListener("jpush.receiveMessage", function (event) {
+      let message = "";
+      if (this.device.platform == "Android") {
+        message = event.message;
+      } else {
+        message = event.content;
+      }
+    }, false);
   }
 
   init() {
@@ -158,10 +178,10 @@ export class JPushService {
   }
 
   onMessageReceive(callback) {
-    this.jpush.receiveNotificationInAndroidCallback = callback;
+    //this.jpush.receiveNotificationInAndroidCallback = callback;
   }
 
   onMessageOpen(callback) {
-    this.jpush.openNotificationInAndroidCallback = callback;
+    //this.jpush.openNotificationInAndroidCallback = callback;
   }
 }
