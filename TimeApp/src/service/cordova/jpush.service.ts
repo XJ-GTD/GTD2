@@ -27,6 +27,10 @@ export class JPushService {
 
       let _this = this;
       if (this.device.platform == "Android") {
+        document.addEventListener("jpush.openNotification", (event) => {
+          console.log("JPush Open Notification with event listener.")
+          this.notificationOpened(this, event);
+        }, false);
         this.wins.plugins.jPushPlugin.receiveMessageInAndroidCallback = (event) => {
           _this.messageReceived(_this, event);
         };
