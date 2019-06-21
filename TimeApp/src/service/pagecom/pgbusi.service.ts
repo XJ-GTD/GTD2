@@ -457,7 +457,7 @@ export class PgBusiService {
       ctbl.sr = srId;
       ctbl = await this.sqlExce.getOne<CTbl>(ctbl);
       //提醒角标消减
-      if (ctbl.du != "") {
+      if (ctbl && ctbl.du != "") {
         let n: number = parseInt(ctbl.du);
         for (let j = 0, len = n; j < len; j++) {
           this.notificationsService.badgeDecrease();
