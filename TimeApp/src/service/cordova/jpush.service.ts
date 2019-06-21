@@ -30,12 +30,14 @@ export class JPushService {
         this.wins.plugins.jPushPlugin.openNotificationInAndroidCallback = this.messageOpened;
       } else {
         this.wins.plugins.jPushPlugin.receiveMessageIniOSCallback = this.messageReceived;
+        this.wins.plugins.jPushPlugin.receiveNotificationIniOSCallback = this.notificationReceived;
+        this.wins.plugins.jPushPlugin.openNotificationIniOSCallback = this.messageOpened;
       }
     }
   }
 
   notificationReceived(event) {
-    console.log("JPush received message: " + JSON.stringify(event));
+    console.log("JPush received notification: " + JSON.stringify(event));
   }
 
   messageReceived(event) {
