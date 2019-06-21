@@ -60,6 +60,7 @@ export class JPushService {
           console.log("MWxing initialized, trigger " + extras['eventhandler']);
           this.emitService.emit(extras['eventhandler'], extras);
         });
+        console.log("MWxing initialized registered.")
       }
     }
   }
