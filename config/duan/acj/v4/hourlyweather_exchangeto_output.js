@@ -207,7 +207,7 @@ function clean(datasource)
 
   standardnext.announceTo = to;
   standardnext.announceType = 'agenda_from_share';
-  standardnext.announceContent = {mwxing:output,sms:{},push:push};
+  standardnext.announceContent = {mwxing:output,sms:{},push:{}};
 
   print(standardnext);
 
