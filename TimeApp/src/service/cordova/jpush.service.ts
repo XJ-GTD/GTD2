@@ -22,6 +22,9 @@ export class JPushService {
               private util: UtilService,
               private device: Device,
               private emitService: EmitService) {
+  }
+
+  ngOnInit() {
     if (this.util.isMobile()) {
       console.log("JPush service created@" + this.device.platform + ".");
 
