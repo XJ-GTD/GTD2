@@ -25,11 +25,20 @@ export class JPushService {
     if (this.util.isMobile()) {
       console.log("JPush service created@" + this.device.platform + ".");
 
-      let _this = this;
       if (this.device.platform == "Android") {
+        document.addEventListener("jpush.receiveNotification", (event) => {
+          console.log("JPush Received Notification with event listener.")
+          this.notificationReceived(event);
+        }, false);
+
         document.addEventListener("jpush.openNotification", (event) => {
           console.log("JPush Open Notification with event listener.")
           this.notificationOpened(event);
+        }, false);
+
+        document.addEventListener("jpush.receiveMessage", (event) => {
+          console.log("JPush Received Message with event listener.")
+          this.messageReceived(event);
         }, false);
         //this.wins.plugins.jPushPlugin.receiveMessageInAndroidCallback = (event) => {
         //  _this.messageReceived(_this, event);
