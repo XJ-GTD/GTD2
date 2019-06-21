@@ -25,6 +25,7 @@ export class JPushService {
     if (this.util.isMobile()) {
       document.addEventListener("jpush.receiveNotification", (event) => {
         let alertContent = "";
+        console.log("JPush Open Notification Platform is " + this.device.platform);
         if (this.device.platform == "Android") {
           alertContent = this.wins.plugins.jPushPlugin.receiveNotification.alert;
         } else {
@@ -35,6 +36,7 @@ export class JPushService {
 
       document.addEventListener("jpush.receiveMessage", (event) => {
         let message = "";
+        console.log("JPush Receive Message Platform is " + this.device.platform);
         if (this.device.platform == "Android") {
           message = this.wins.plugins.jPushPlugin.receiveMessage.message;
         } else {
