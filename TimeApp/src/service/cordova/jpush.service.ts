@@ -12,7 +12,6 @@ import {Device} from "@ionic-native/device";
  */
 @Injectable()
 export class JPushService {
-  _this: JPushService = this;
   wins: any = window;
   sequence: number = 0;
   alias: string = "";
@@ -26,25 +25,38 @@ export class JPushService {
     if (this.util.isMobile()) {
       console.log("JPush service created@" + this.device.platform + ".");
 
+      let _this = this;
       if (this.device.platform == "Android") {
-        this.wins.plugins.jPushPlugin.receiveMessageInAndroidCallback = this.messageReceived;
-        this.wins.plugins.jPushPlugin.receiveNotificationInAndroidCallback = this.notificationReceived;
-        this.wins.plugins.jPushPlugin.openNotificationInAndroidCallback = this.notificationOpened;
+        this.wins.plugins.jPushPlugin.receiveMessageInAndroidCallback = (event) => {
+          _this.messageReceived(_this, event);
+        };
+        this.wins.plugins.jPushPlugin.receiveNotificationInAndroidCallback = (event) => {
+          _this.notificationReceived(_this, event);
+        };
+        this.wins.plugins.jPushPlugin.openNotificationInAndroidCallback = (event) => {
+          _this.notificationOpened(_this, event);
+        };
       } else {
-        this.wins.plugins.jPushPlugin.receiveMessageIniOSCallback = this.messageReceived;
-        this.wins.plugins.jPushPlugin.receiveNotificationIniOSCallback = this.notificationReceived;
-        this.wins.plugins.jPushPlugin.openNotificationIniOSCallback = this.notificationOpened;
+        this.wins.plugins.jPushPlugin.receiveMessageIniOSCallback = (event) => {
+          _this.messageReceived(_this, event);
+        };
+        this.wins.plugins.jPushPlugin.receiveNotificationIniOSCallback = (event) => {
+          _this.notificationReceived(_this, event);
+        };
+        this.wins.plugins.jPushPlugin.openNotificationIniOSCallback = (event) => {
+          _this.notificationOpened(_this, event);
+        };
       }
     }
   }
 
   //Native Call Function
-  notificationReceived(event) {
+  notificationReceived(_this, event) {
     console.log("JPush received notification: " + JSON.stringify(event));
   }
 
   //Native Call Function
-  notificationOpened(event) {
+  notificationOpened(_this, event) {
     console.log("JPush opened notification: " + JSON.stringify(event));
 
     if (event.extras['cn.jpush.android.EXTRA']) {
@@ -69,7 +81,7 @@ export class JPushService {
   }
 
   //Native Call Function
-  messageReceived(event) {
+  messageReceived(_this, event) {
     console.log("JPush received message: " + JSON.stringify(event));
   }
 
