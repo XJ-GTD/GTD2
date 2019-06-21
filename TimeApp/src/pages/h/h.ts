@@ -150,6 +150,8 @@ export class HPage {
         this.gotodetail(scd);
       }
     });
+
+    this.emitService.emit("on.homepage.init");
   }
 
   onPress(pressDay) {

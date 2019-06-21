@@ -49,6 +49,11 @@ export class JPushService {
 
       if (extras['event'] && extras['eventId']) {
         this.emitService.emit(extras['eventId'], extras['eventData']);
+
+        //冥王星关闭状态，点击消息启动时，在接收事件初始化之后调用
+        this.emitService.register("on.homepage.init", () => {
+          this.emitService.emit(extras['eventId'], extras['eventData']);
+        });
       }
     }
   }
