@@ -124,6 +124,7 @@ export class HPage {
 
     //每日简报消息回调
     this.emitService.register('on.dailyreport.message.click', (data) => {
+      console.log("Daily report message clicked.")
       let timestamp: number = data.eventdata? data.eventdata['timestamp'] : (moment().unix() * 1000);
 
       if (!timestamp) {
@@ -152,6 +153,7 @@ export class HPage {
     });
 
     this.emitService.emit("on.homepage.init");
+    console.log("MWxing initialized.")
   }
 
   onPress(pressDay) {

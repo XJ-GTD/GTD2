@@ -47,12 +47,18 @@ export class JPushService {
     if (event.extras['cn.jpush.android.EXTRA']) {
       let extras = event.extras['cn.jpush.android.EXTRA'];
 
-      if (extras['event'] && extras['eventId']) {
-        this.emitService.emit(extras['eventId'], extras['eventData']);
+      if (extras && extras['eventdata']) {
+        extras['eventdata'] = JSON.parse(extras['eventdata']);
+      }
+
+      if (extras['event'] && extras['eventhandler']) {
+        this.emitService.emit(extras['eventhandler'], extras);
 
         //冥王星关闭状态，点击消息启动时，在接收事件初始化之后调用
         this.emitService.register("on.homepage.init", () => {
-          this.emitService.emit(extras['eventId'], extras['eventData']);
+          //冥王星初始化已完成
+          console.log("MWxing initialized, trigger " + extras['eventhandler']);
+          this.emitService.emit(extras['eventhandler'], extras);
         });
       }
     }
