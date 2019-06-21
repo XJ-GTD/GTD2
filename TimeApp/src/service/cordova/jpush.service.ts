@@ -23,6 +23,7 @@ export class JPushService {
               private device: Device,
               private emitService: EmitService) {
     if (this.util.isMobile()) {
+      console.log("JPush service created@" + this.device.platform + ".")
       if (this.device.platform == "Android") {
         this.wins.plugins.jPushPlugin.receiveMessageInAndroidCallback = this.messageReceived;
         this.wins.plugins.jPushPlugin.receiveNotificationInAndroidCallback = this.notificationReceived;
