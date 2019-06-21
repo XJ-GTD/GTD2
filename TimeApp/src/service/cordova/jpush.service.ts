@@ -23,28 +23,21 @@ export class JPushService {
               private device: Device,
               private emitService: EmitService) {
     if (this.util.isMobile()) {
-      document.addEventListener("jpush.receiveNotification", (event) => {
-        let alertContent = "";
-        console.log("JPush Open Notification Platform is " + this.device.platform);
-        if (this.device.platform == "Android") {
-          alertContent = this.wins.plugins.jPushPlugin.receiveNotification.alert;
-        } else {
-          alertContent = this.wins.plugins.jPushPlugin.receiveNotification.aps.alert;
-        }
-        console.log("JPush Open Notification:" + alertContent)
-      }, false);
-
-      document.addEventListener("jpush.receiveMessage", (event) => {
-        let message = "";
-        console.log("JPush Receive Message Platform is " + this.device.platform);
-        if (this.device.platform == "Android") {
-          message = this.wins.plugins.jPushPlugin.receiveMessage.message;
-        } else {
-          message = this.wins.plugins.jPushPlugin.receiveMessage.content;
-        }
-        console.log("JPush Receive Message:" + message)
-      }, false);
+      if (this.device.platform == "Android") {
+        this.wins.plugins.jPushPlugin.receiveMessageInAndroidCallback = this.messageReceived;
+        this.wins.plugins.jPushPlugin.receiveNotificationInAndroidCallback = this.messageOpened;
+      } else {
+        this.wins.plugins.jPushPlugin.receiveMessageIniOSCallback = this.messageReceived;
+      }
     }
+  }
+
+  messageReceived(event) {
+    console.log("JPush received message: " + JSON.stringify(event));
+  }
+
+  messageOpened(event) {
+    console.log("JPush opened message: " + JSON.stringify(event));
   }
 
   init() {
