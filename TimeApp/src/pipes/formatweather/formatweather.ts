@@ -18,12 +18,12 @@ export class FormatWeatherPipe implements PipeTransform {
   constructor() {
     //白天
     this.WEATHER_FONT_MAP_DAY.set("晴", "day-sunny");            //晴
-    this.WEATHER_FONT_MAP_DAY.set("", "day-cloudy");             //阴天
+    this.WEATHER_FONT_MAP_DAY.set("阴", "day-cloudy");             //阴天
     this.WEATHER_FONT_MAP_DAY.set("", "day-cloudy-gusts");       //多云阵风
     this.WEATHER_FONT_MAP_DAY.set("", "day-cloudy-windy");       //阴天刮风
-    this.WEATHER_FONT_MAP_DAY.set("", "day-fog");                //雾
-    this.WEATHER_FONT_MAP_DAY.set("", "day-hail");               //冰雹
-    this.WEATHER_FONT_MAP_DAY.set("", "day-haze");               //霾
+    this.WEATHER_FONT_MAP_DAY.set("雾", "day-fog");                //雾
+    this.WEATHER_FONT_MAP_DAY.set("冰雹", "day-hail");               //冰雹
+    this.WEATHER_FONT_MAP_DAY.set("霾", "day-haze");               //霾
     this.WEATHER_FONT_MAP_DAY.set("", "day-lightning");          //雷击
     this.WEATHER_FONT_MAP_DAY.set("", "day-rain");               //雨
     this.WEATHER_FONT_MAP_DAY.set("", "day-rain-mix");           //雨水混合
@@ -63,11 +63,11 @@ export class FormatWeatherPipe implements PipeTransform {
     this.WEATHER_FONT_MAP_NIGHT.set("", "night-alt-sprinkle");      //洒
     this.WEATHER_FONT_MAP_NIGHT.set("", "night-alt-storm-showers"); //风暴雨
     this.WEATHER_FONT_MAP_NIGHT.set("", "night-alt-thunderstorm");  //雷暴
-    this.WEATHER_FONT_MAP_NIGHT.set("", "night-cloudy");            //阴天
+    this.WEATHER_FONT_MAP_NIGHT.set("阴", "night-cloudy");            //阴天
     this.WEATHER_FONT_MAP_NIGHT.set("", "night-cloudy-gusts");      //多云，阵风
     this.WEATHER_FONT_MAP_NIGHT.set("", "night-cloudy-windy");      //阴天，刮风
-    this.WEATHER_FONT_MAP_NIGHT.set("", "night-fog");               //雾
-    this.WEATHER_FONT_MAP_NIGHT.set("", "night-hail");              //冰雹
+    this.WEATHER_FONT_MAP_NIGHT.set("雾", "night-fog");               //雾
+    this.WEATHER_FONT_MAP_NIGHT.set("冰雹", "night-hail");              //冰雹
     this.WEATHER_FONT_MAP_NIGHT.set("", "night-lightning");         //闪电
     this.WEATHER_FONT_MAP_NIGHT.set("", "night-partly-cloudy");     //部分浑浊
     this.WEATHER_FONT_MAP_NIGHT.set("", "night-rain");              //雨
