@@ -34,6 +34,10 @@ export class EmitService {
   //同一个事件可以被多个调用注册
   private static buildinEvents: Map<string, Array<EventEmitter<any>>> = new Map<string, Array<EventEmitter<any>>>();
 
+  constructor() {
+    console.log("EmitService initialized.")
+  }
+
   //冥王星内建事件订阅
   register(handler: string, callback) {
     let el: Array<EventEmitter<any>> = EmitService.buildinEvents.get(handler);
