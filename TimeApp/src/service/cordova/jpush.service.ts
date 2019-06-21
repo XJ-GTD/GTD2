@@ -25,11 +25,16 @@ export class JPushService {
     if (this.util.isMobile()) {
       if (this.device.platform == "Android") {
         this.wins.plugins.jPushPlugin.receiveMessageInAndroidCallback = this.messageReceived;
-        this.wins.plugins.jPushPlugin.receiveNotificationInAndroidCallback = this.messageOpened;
+        this.wins.plugins.jPushPlugin.receiveNotificationInAndroidCallback = this.notificationReceived;
+        this.wins.plugins.jPushPlugin.openNotificationInAndroidCallback = this.messageOpened;
       } else {
         this.wins.plugins.jPushPlugin.receiveMessageIniOSCallback = this.messageReceived;
       }
     }
+  }
+
+  notificationReceived(event) {
+    console.log("JPush received message: " + JSON.stringify(event));
   }
 
   messageReceived(event) {
