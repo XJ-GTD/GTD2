@@ -44,7 +44,7 @@ import {UserConfig} from "../../service/config/user.config";
           <p class="tipDay" *ngIf="hdata.things > 0"><a class="cls" (click)="gotodaily()">
             <ion-icon name="done-all"></ion-icon>
             {{hdata.things}} 个活动,{{hdata.newmessge}}条新消息</a></p>
-          <p class="tipDay"><a class="cls" (click)="newcd()">
+          <p class="tipDay"><a class="cls2" (click)="newcd()">
             <ion-icon name="add"></ion-icon>
             添加新事件</a></p>
         </ng-template>
