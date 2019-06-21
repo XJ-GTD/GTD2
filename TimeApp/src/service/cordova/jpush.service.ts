@@ -1,4 +1,4 @@
-import {Injectable} from "@angular/core";
+import {Injectable, OnInit} from "@angular/core";
 import { JPush, AliasOptions, TagOptions } from '@jiguang-ionic/jpush';
 import {EmitService} from "../util-service/emit.service";
 import {UtilService} from "../util-service/util.service";
@@ -11,7 +11,7 @@ import {Device} from "@ionic-native/device";
  * create by xilj on 2019/06/19.
  */
 @Injectable()
-export class JPushService {
+export class JPushService implements OnInit {
   wins: any = window;
   sequence: number = 0;
   alias: string = "";
