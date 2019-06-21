@@ -33,11 +33,13 @@ function clean(datasource)
 
   to.push(userId);
 
+  var today = new Date();
+
   // 返回消息头部
   output.header = {
   	version: 'V1.1',
     sender: 'xunfei',
-    datetime: formatDateTime(new Date()),
+    datetime: formatDateTime(today),
     describe: ['PN']
   };
 
@@ -52,11 +54,21 @@ function clean(datasource)
     }
   };
 
+  var push = {
+    title: '每日简报',
+    content: (today.getMonth()+1) + '月' + today.getDate() + '日 ' + ['星期日', '星期一', '星期二', '星期三', '星期四', '星期五', '星期六'][today.getDay()],
+    extras: {
+      event: "MWXING_DAILYSUMMARY_EVENT",
+      eventId: "on.dailyreport.message.click",
+      eventData: JSON.stringify(output.content['0']['parameters'])
+    }
+  };
+
   var standardnext = {};
 
   standardnext.announceTo = to;
   standardnext.announceType = 'agenda_from_share';
-  standardnext.announceContent = {mwxing:output,sms:{}};
+  standardnext.announceContent = {mwxing:output,sms:{},push:push};
 
   print(standardnext);
 
