@@ -68,7 +68,7 @@ function clean(datasource)
 
   standardnext.announceTo = to;
   standardnext.announceType = 'agenda_from_share';
-  standardnext.announceContent = {mwxing:output,sms:{},push:push};
+  standardnext.announceContent = {mwxing:{},sms:{},push:push};//每日简报通过极光推送
 
   print(standardnext);
 
