@@ -29,7 +29,7 @@ export class UtilService {
               private loadingCtrl: LoadingController,
               private popoverCtrl: PopoverController,
               private alertCtrl: AlertController) {
-
+    console.log("EmitService initialized.")
     this.chineseLunar = new ChineseLunar();
     this.aday = "99:99";
   }
