@@ -27,11 +27,11 @@ export class JPushService {
       if (this.device.platform == "Android") {
         this.wins.plugins.jPushPlugin.receiveMessageInAndroidCallback = this.messageReceived;
         this.wins.plugins.jPushPlugin.receiveNotificationInAndroidCallback = this.notificationReceived;
-        this.wins.plugins.jPushPlugin.openNotificationInAndroidCallback = this.messageOpened;
+        this.wins.plugins.jPushPlugin.openNotificationInAndroidCallback = this.notificationOpened;
       } else {
         this.wins.plugins.jPushPlugin.receiveMessageIniOSCallback = this.messageReceived;
         this.wins.plugins.jPushPlugin.receiveNotificationIniOSCallback = this.notificationReceived;
-        this.wins.plugins.jPushPlugin.openNotificationIniOSCallback = this.messageOpened;
+        this.wins.plugins.jPushPlugin.openNotificationIniOSCallback = this.notificationOpened;
       }
     }
   }
@@ -40,12 +40,12 @@ export class JPushService {
     console.log("JPush received notification: " + JSON.stringify(event));
   }
 
-  messageReceived(event) {
-    console.log("JPush received message: " + JSON.stringify(event));
+  notificationOpened(event) {
+    console.log("JPush opened notification: " + JSON.stringify(event));
   }
 
-  messageOpened(event) {
-    console.log("JPush opened message: " + JSON.stringify(event));
+  messageReceived(event) {
+    console.log("JPush received message: " + JSON.stringify(event));
   }
 
   init() {
