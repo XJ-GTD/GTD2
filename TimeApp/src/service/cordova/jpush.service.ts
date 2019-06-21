@@ -29,38 +29,38 @@ export class JPushService {
       if (this.device.platform == "Android") {
         document.addEventListener("jpush.openNotification", (event) => {
           console.log("JPush Open Notification with event listener.")
-          this.notificationOpened(this, event);
+          this.notificationOpened(event);
         }, false);
-        this.wins.plugins.jPushPlugin.receiveMessageInAndroidCallback = (event) => {
-          _this.messageReceived(_this, event);
-        };
-        this.wins.plugins.jPushPlugin.receiveNotificationInAndroidCallback = (event) => {
-          _this.notificationReceived(_this, event);
-        };
-        this.wins.plugins.jPushPlugin.openNotificationInAndroidCallback = (event) => {
-          _this.notificationOpened(_this, event);
-        };
+        //this.wins.plugins.jPushPlugin.receiveMessageInAndroidCallback = (event) => {
+        //  _this.messageReceived(_this, event);
+        //};
+        //this.wins.plugins.jPushPlugin.receiveNotificationInAndroidCallback = (event) => {
+        //  _this.notificationReceived(_this, event);
+        //};
+        //this.wins.plugins.jPushPlugin.openNotificationInAndroidCallback = (event) => {
+        //  _this.notificationOpened(_this, event);
+        //};
       } else {
-        this.wins.plugins.jPushPlugin.receiveMessageIniOSCallback = (event) => {
-          _this.messageReceived(_this, event);
-        };
-        this.wins.plugins.jPushPlugin.receiveNotificationIniOSCallback = (event) => {
-          _this.notificationReceived(_this, event);
-        };
-        this.wins.plugins.jPushPlugin.openNotificationIniOSCallback = (event) => {
-          _this.notificationOpened(_this, event);
-        };
+        //this.wins.plugins.jPushPlugin.receiveMessageIniOSCallback = (event) => {
+        //  _this.messageReceived(_this, event);
+        //};
+        //this.wins.plugins.jPushPlugin.receiveNotificationIniOSCallback = (event) => {
+        //  _this.notificationReceived(_this, event);
+        //};
+        //this.wins.plugins.jPushPlugin.openNotificationIniOSCallback = (event) => {
+        //  _this.notificationOpened(_this, event);
+        //};
       }
     }
   }
 
   //Native Call Function
-  notificationReceived(_this, event) {
+  notificationReceived(event) {
     console.log("JPush received notification: " + JSON.stringify(event));
   }
 
   //Native Call Function
-  notificationOpened(_this, event) {
+  notificationOpened(event) {
     console.log("JPush opened notification: " + JSON.stringify(event));
 
     if (event.extras['cn.jpush.android.EXTRA']) {
@@ -71,13 +71,13 @@ export class JPushService {
       }
 
       if (extras['event'] && extras['eventhandler']) {
-        _this.emitService.emit(extras['eventhandler'], extras);
+        this.emitService.emit(extras['eventhandler'], extras);
 
         //冥王星关闭状态，点击消息启动时，在接收事件初始化之后调用
-        _this.emitService.register("on.homepage.init", () => {
+        this.emitService.register("on.homepage.init", () => {
           //冥王星初始化已完成
           console.log("MWxing initialized, trigger " + extras['eventhandler']);
-          _this.emitService.emit(extras['eventhandler'], extras);
+          this.emitService.emit(extras['eventhandler'], extras);
         });
         console.log("MWxing initialized registered.")
       }
@@ -85,7 +85,7 @@ export class JPushService {
   }
 
   //Native Call Function
-  messageReceived(_this, event) {
+  messageReceived(event) {
     console.log("JPush received message: " + JSON.stringify(event));
   }
 
