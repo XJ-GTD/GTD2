@@ -156,6 +156,7 @@ export class JPushService {
   setAlias(alias: string): Promise<any> {
     return new Promise(async (resolve, reject) => {
       this.jpush.setAlias({sequence: this.sequence++, alias: alias}).then((result) => {
+        console.log("JPush add alias responsed with " + JSON.stringify(result));
         var sequence: number = result.sequence;
         this.alias = result.alias;
 
@@ -170,6 +171,7 @@ export class JPushService {
   addTags(tags: Array<string>): Promise<any> {
     return new Promise(async (resolve, reject) => {
       this.jpush.addTags({sequence: this.sequence++, tags: tags}).then((result) => {
+        console.log("JPush add tags responsed with " + JSON.stringify(result));
         var sequence: number = result.sequence;
 
         if (result.tags && result.tags.length > 0) {
