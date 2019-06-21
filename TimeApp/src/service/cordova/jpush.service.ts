@@ -23,7 +23,8 @@ export class JPushService {
               private device: Device,
               private emitService: EmitService) {
     if (this.util.isMobile()) {
-      console.log("JPush service created@" + this.device.platform + ".")
+      console.log("JPush service created@" + this.device.platform + ".");
+
       if (this.device.platform == "Android") {
         this.wins.plugins.jPushPlugin.receiveMessageInAndroidCallback = this.messageReceived;
         this.wins.plugins.jPushPlugin.receiveNotificationInAndroidCallback = this.notificationReceived;
@@ -42,6 +43,14 @@ export class JPushService {
 
   notificationOpened(event) {
     console.log("JPush opened notification: " + JSON.stringify(event));
+
+    if (event.extras['cn.jpush.android.EXTRA']) {
+      let extras = event.extras['cn.jpush.android.EXTRA'];
+
+      if (extras['event'] && extras['eventId']) {
+        this.emitService.emit(extras['eventId'], extras['eventData']);
+      }
+    }
   }
 
   messageReceived(event) {
