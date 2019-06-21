@@ -26,5 +26,9 @@
     "maxretry": 5,
     "timeout": 10000,
     "sslversion": "TLSv1.1"
+  },
+  "mipush": {
+    "appkey": "5761800292512",
+    "secret": "OX5QyByW/cVhxEUA6jhQQA=="
   }
 }

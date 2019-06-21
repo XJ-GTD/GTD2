@@ -180,6 +180,8 @@ function clean(datasource)
     }
   };
 
+  var push = {};
+
   if (weather['sevendays'] && weather['sevendays']['data'] && weather['sevendays']['data'].length > 0) {
     //去除中国天气网接口获取数据
     output.content['0']['parameters']['datas'].shift();
@@ -193,6 +195,11 @@ function clean(datasource)
         weather['weatherinfo']['cityid'],
         weather['sevendays']['update_time'],
         onedayweather));
+
+      if (oneday == 0) {
+        push['title'] = output.content['0']['parameters']['datas'][0]['title'];
+        push['content'] = output.content['0']['parameters']['datas'][0]['desc'];
+      }
     }
   }
 
@@ -200,7 +207,7 @@ function clean(datasource)
 
   standardnext.announceTo = to;
   standardnext.announceType = 'agenda_from_share';
-  standardnext.announceContent = {mwxing:output,sms:{}};
+  standardnext.announceContent = {mwxing:output,sms:{},push:push};
 
   print(standardnext);
 
