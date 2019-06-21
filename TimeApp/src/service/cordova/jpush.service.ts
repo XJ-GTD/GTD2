@@ -12,6 +12,7 @@ import {Device} from "@ionic-native/device";
  */
 @Injectable()
 export class JPushService {
+  _this: JPushService = this;
   wins: any = window;
   sequence: number = 0;
   alias: string = "";
@@ -37,10 +38,12 @@ export class JPushService {
     }
   }
 
+  //Native Call Function
   notificationReceived(event) {
     console.log("JPush received notification: " + JSON.stringify(event));
   }
 
+  //Native Call Function
   notificationOpened(event) {
     console.log("JPush opened notification: " + JSON.stringify(event));
 
@@ -52,19 +55,20 @@ export class JPushService {
       }
 
       if (extras['event'] && extras['eventhandler']) {
-        this.emitService.emit(extras['eventhandler'], extras);
+        _this.emitService.emit(extras['eventhandler'], extras);
 
         //冥王星关闭状态，点击消息启动时，在接收事件初始化之后调用
-        this.emitService.register("on.homepage.init", () => {
+        _this.emitService.register("on.homepage.init", () => {
           //冥王星初始化已完成
           console.log("MWxing initialized, trigger " + extras['eventhandler']);
-          this.emitService.emit(extras['eventhandler'], extras);
+          _this.emitService.emit(extras['eventhandler'], extras);
         });
         console.log("MWxing initialized registered.")
       }
     }
   }
 
+  //Native Call Function
   messageReceived(event) {
     console.log("JPush received message: " + JSON.stringify(event));
   }
