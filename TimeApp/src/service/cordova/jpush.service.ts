@@ -100,26 +100,6 @@ export class JPushService {
   //Native Call Function
   messageReceived(event) {
     console.log("JPush received message: " + JSON.stringify(event));
-
-    if (event.extras['cn.jpush.android.EXTRA']) {
-      let extras = event.extras['cn.jpush.android.EXTRA'];
-
-      if (extras && extras['eventdata']) {
-        extras['eventdata'] = JSON.parse(extras['eventdata']);
-      }
-
-      if (extras['event'] && extras['eventhandler']) {
-        this.emitService.emit(extras['eventhandler'], extras);
-
-        //冥王星关闭状态，点击消息启动时，在接收事件初始化之后调用
-        this.emitService.register("on.websocket.workqueue.init", () => {
-          //冥王星初始化已完成
-          console.log("MWxing websocket initialized, trigger " + extras['eventhandler']);
-          this.emitService.emit(extras['eventhandler'], extras);
-        });
-        console.log("MWxing websocket initialized registered.")
-      }
-    }
   }
 
   init() {
