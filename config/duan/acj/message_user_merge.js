@@ -1,4 +1,4 @@
-function shouldclean(datasource) 
+function shouldclean(datasource)
 {
   var result = {};
   // filter source code here start
@@ -7,12 +7,12 @@ function shouldclean(datasource)
   if (input !== undefined && input['acj_formatchange_end'] && input['exc_userinfo_end']) {
     return true;
   }
-  
+
   // filter source code here end
   return false;
 }
 
-function clean(datasource) 
+function clean(datasource)
 {
   var result = {};
   print('Start Nashorn Javascript processing...');
@@ -26,12 +26,23 @@ function clean(datasource)
 
   if (userinfo && userinfo['type'] === 'JsonObject' && userinfo['response'] && userinfo['response']['data'] && userinfo['response']['data']['name']) {
     message['announceContent']['sms']['template']['name'] = userinfo['response']['data']['name'];
+    if (message['announceContent']
+        && message['announceContent']['push']
+        && message['announceContent']['push']['title']) {
+       message['announceContent']['push']['title'] = message['announceContent']['push']['title'].replace(/##from##/g, userinfo['response']['data']['name']);
+     }
+
+     if (message['announceContent']
+         && message['announceContent']['push']
+         && message['announceContent']['push']['content']) {
+        message['announceContent']['push']['content'] = message['announceContent']['push']['content'].replace(/##from##/g, userinfo['response']['data']['name']);
+      }
   } else {
     message['announceContent']['sms']['template']['name'] = '冥王星用户';
   }
-  
+
   print(JSON.stringify(message));
-  
+
   // filter source code here end
   return JSON.stringify(message);
 }

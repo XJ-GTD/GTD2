@@ -34,6 +34,10 @@ function clean(datasource)
     return date.getFullYear() + '/' + (date.getMonth()+1) + '/' + date.getDate() + ' ' + date.getHours() + ':' + date.getMinutes() + ':' + date.getSeconds();
   }
 
+  var formatDateTimeShow = function(date) {
+    return (date.getMonth()+1) + '月' + date.getDate() + '日 ' + date.getHours() + ':' + date.getMinutes();
+  }
+
   var names = [];
 
   if (input['to'] && input['to'].length > 0) {
@@ -84,8 +88,8 @@ function clean(datasource)
   }};
 
   var push = {
-    title: '',
-    content: '',
+    title: '##from##共享了' + agenda['at'],
+    content: formatDateTimeShow(new Date()),
     extras: {
       event: "MWXING_SHAREAGENDA_EVENT",
       eventhandler: "on.agendashare.message.click",
