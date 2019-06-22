@@ -100,6 +100,7 @@ function clean(datasource)
       event: "MWXING_SHAREAGENDA_EVENT",
       dependson: "on.agendashare.saved",
       eventhandler: "on.agendashare.message.click",
+      eventdatafrom: "local",
       eventdata: JSON.stringify(output)
     };
   }

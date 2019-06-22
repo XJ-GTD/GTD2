@@ -61,6 +61,7 @@ function clean(datasource)
       event: "MWXING_DAILYSUMMARY_EVENT",
       dependson: "on.homepage.init",
       eventhandler: "on.dailyreport.message.click",
+      eventdatafrom: "server",
       eventdata: JSON.stringify(output.content['0']['parameters'])
     }
   };

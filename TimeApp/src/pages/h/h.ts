@@ -102,6 +102,7 @@ export class HPage {
       DataConfig.RABBITMQ_STATUS = "";
     });
 
+    //本地通知跳转共享日程页面
     this.emitService.registerNewMessageClick((data) => {
 
       let p: ScdPageParamter = new ScdPageParamter();
@@ -112,6 +113,14 @@ export class HPage {
 
     this.emitService.registerRef(data => {
       this.calendar.createMonth(this.calendar.monthOpt.original.time);
+    });
+
+    //极光推送跳转共享日程页面
+    this.emitService.register('on.agendashare.message.click', (data) => {
+      let p: ScdPageParamter = new ScdPageParamter();
+      p.si = data.si;
+      p.d = moment(data.sd);
+      this.modalCtr.create(TddiPage, p).present();
     });
 
     //冥王星远程服务地址刷新完成

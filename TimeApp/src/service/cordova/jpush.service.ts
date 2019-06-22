@@ -74,13 +74,19 @@ export class JPushService {
         this.emitService.emit(extras['eventhandler'], extras);
 
         let dependson = extras['dependson'];
+        let eventdatafrom = extras['eventdatafrom'];
 
         if (dependson) {
           //冥王星关闭状态，点击消息启动时，在接收事件初始化之后调用
-          this.emitService.register(dependson, () => {
+          this.emitService.register(dependson, (data) => {
             //冥王星初始化已完成
             console.log("MWxing " + dependson + ", trigger " + extras['eventhandler']);
-            this.emitService.emit(extras['eventhandler'], extras);
+
+            if (eventdatafrom && eventdatafrom == 'local') {
+              this.emitService.emit(extras['eventhandler'], data);
+            } else {
+              this.emitService.emit(extras['eventhandler'], extras);
+            }
           });
           console.log("MWxing " + dependson + " registered.")
         }
