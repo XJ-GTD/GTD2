@@ -50,7 +50,9 @@ export class ReceiveProcess implements MQProcess {
       scd = await this.busiService.pullAgd(scudPara.id);
 
       if (scd != null){
-        this.notificationsService.newSms(scd);
+        this.emitService.emit("on.agendashare.saved", scd);
+        //消息提醒统一使用极光推送
+        //this.notificationsService.newSms(scd);
       }
 
     }
