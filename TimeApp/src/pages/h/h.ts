@@ -120,6 +120,7 @@ export class HPage {
       let p: ScdPageParamter = new ScdPageParamter();
       p.si = data.si;
       p.d = moment(data.sd);
+      p.gs = data.sr;
       this.modalCtr.create(TddiPage, p).present();
     });
 

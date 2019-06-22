@@ -209,8 +209,8 @@ export class TddiPage {
     //适应极光推送消息直接打开共享日程画面，增加根据所属ID取得日程
     if (paramter.si && paramter.d) {
       this.scd = await this.busiServ.getRcBySiAndSd(paramter.si,paramter.d.format("YYYY/MM/DD"));
-    } else if (paramter.sr) {
-      this.scd = await this.busiServ.getRcBySr(paramter.sr);
+    } else if (paramter.gs) {
+      this.scd = await this.busiServ.getRcBySr(paramter.gs);
     }
 
     Object.assign(this.sp , this.scd.baseData);
