@@ -190,7 +190,6 @@ export class TddiPage {
     od: 0
   };
 
-
   @ViewChild("grid")
   grid: ElementRef;
 
@@ -201,15 +200,19 @@ export class TddiPage {
   IsShowCover: boolean = false;
   jhs: Array<JhTbl>;
 
-
   async ionViewWillEnter() {
 
     this.scd.fs.bhiu = DataConfig.HUIBASE64;
     //受邀人修改的场合初始化
     let paramter: ScdPageParamter = this.navParams.data;
 
+    //适应极光推送消息直接打开共享日程画面，增加根据所属ID取得日程
+    if (paramter.si && paramter.d) {
+      this.scd = await this.busiServ.getRcBySiAndSd(paramter.si,paramter.d.format("YYYY/MM/DD"));
+    } else if (paramter.sr) {
+      this.scd = await this.busiServ.getRcBySr(paramter.sr);
+    }
 
-    this.scd = await this.busiServ.getRcBySiAndSd(paramter.si,paramter.d.format("YYYY/MM/DD"));
     Object.assign(this.sp , this.scd.baseData);
 
     this.clickwake(this.sp.tx + '');

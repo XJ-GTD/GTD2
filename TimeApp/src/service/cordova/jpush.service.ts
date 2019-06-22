@@ -71,10 +71,29 @@ export class JPushService {
       }
 
       if (extras['event'] && extras['eventhandler']) {
-        this.emitService.emit(extras['eventhandler'], extras);
 
+        let eventname = event.extras['event'];
         let dependson = extras['dependson'];
         let eventdatafrom = extras['eventdatafrom'];
+        let eventdata = extras['eventdata'];
+
+        if (eventdatafrom && eventdatafrom == 'local') {
+
+          //共享日程消息点击处理
+          if (eventname == "MWXING_SHAREAGENDA_EVENT") {
+            let local = {};
+
+            if (eventdata && eventdata['id']) {
+              local['sr'] = eventdata['id'];
+
+              this.emitService.emit(extras['eventhandler'], local);
+            }
+          } else {
+            this.emitService.emit(extras['eventhandler']);
+          }
+        } else {
+          this.emitService.emit(extras['eventhandler'], extras);
+        }
 
         if (dependson) {
           //冥王星关闭状态，点击消息启动时，在接收事件初始化之后调用
@@ -83,7 +102,18 @@ export class JPushService {
             console.log("MWxing " + dependson + ", trigger " + extras['eventhandler']);
 
             if (eventdatafrom && eventdatafrom == 'local') {
-              this.emitService.emit(extras['eventhandler'], data);
+              //共享日程消息点击处理
+              if (eventname == "MWXING_SHAREAGENDA_EVENT") {
+                //如果不存在所属ID则不处理
+                if (eventdata && eventdata['id'] && data && data['sr']) {
+                  //当前保存的共享日程和当前消息指向日程相同
+                  if (data['sr'] == eventdata['id']) {
+                    this.emitService.emit(extras['eventhandler'], data);
+                  }
+                }
+              } else {
+                this.emitService.emit(extras['eventhandler'], data);
+              }
             } else {
               this.emitService.emit(extras['eventhandler'], extras);
             }

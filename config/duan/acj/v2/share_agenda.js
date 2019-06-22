@@ -101,7 +101,7 @@ function clean(datasource)
       dependson: "on.agendashare.saved",
       eventhandler: "on.agendashare.message.click",
       eventdatafrom: "local",
-      eventdata: JSON.stringify(output)
+      eventdata: JSON.stringify(output['content']['0']['parameters'])
     };
   }
 

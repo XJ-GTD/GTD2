@@ -267,7 +267,6 @@ export class TdlPage {
     }
   }
 
-
   gotoEl(id) {
     setTimeout(() => {
       try {
