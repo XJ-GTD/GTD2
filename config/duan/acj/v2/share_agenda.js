@@ -47,6 +47,11 @@ function clean(datasource)
     }
   }
 
+  var adt = new Date();
+
+  if (agenda['adt']) {
+    adt = new Date(agenda['adt'].split(' ').join('T'));
+  }
 
   // 返回消息头部
   output.header = {
@@ -89,7 +94,7 @@ function clean(datasource)
 
   var push = {
     title: '##from##共享了' + agenda['at'],
-    content: formatDateTimeShow(new Date()),
+    content: formatDateTimeShow(adt),
     extras: {
       event: "MWXING_SHAREAGENDA_EVENT",
       eventhandler: "on.agendashare.message.click",
