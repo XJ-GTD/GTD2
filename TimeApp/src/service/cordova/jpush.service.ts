@@ -76,6 +76,7 @@ export class JPushService {
         let dependson = extras['dependson'];
         let eventdatafrom = extras['eventdatafrom'];
         let eventdata = extras['eventdata'];
+        let emitted: number = 0;
 
         if (eventdatafrom && eventdatafrom == 'local') {
 
@@ -86,16 +87,20 @@ export class JPushService {
             if (eventdata && eventdata['id']) {
               local['sr'] = eventdata['id'];
 
-              this.emitService.emit(extras['eventhandler'], local);
+              console.log("MWxing direct, trigger " + extras['eventhandler'] + " with local data.");
+              emitted = this.emitService.emit(extras['eventhandler'], local);
             }
           } else {
-            this.emitService.emit(extras['eventhandler']);
+            console.log("MWxing direct, trigger " + extras['eventhandler'] + " without payload.");
+            emitted = this.emitService.emit(extras['eventhandler']);
           }
         } else {
-          this.emitService.emit(extras['eventhandler'], extras);
+          console.log("MWxing direct, trigger " + extras['eventhandler'] + " with server data.");
+          emitted = this.emitService.emit(extras['eventhandler'], extras);
         }
 
-        if (dependson) {
+        // 避免重复触发
+        if (!emitted && dependson) {
           //冥王星关闭状态，点击消息启动时，在接收事件初始化之后调用
           this.emitService.register(dependson, (data) => {
             //冥王星初始化已完成

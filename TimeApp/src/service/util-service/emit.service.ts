@@ -59,19 +59,23 @@ export class EmitService {
   }
 
   //冥王星内建事件触发
-  emit(handler: string, $data: any = {}) {
+  emit(handler: string, $data: any = {}): number {
+    let emitted: number = 0;
     let el: Array<EventEmitter<any>> = EmitService.buildinEvents.get(handler);
 
     //事件不存在直接返回
     if (!el || el.length < 1) {
-      return;
+      return emitted;
     }
 
     for (let ee of el) {
       if (!ee.isStopped) {
         ee.emit($data);
+        emitted++;
       }
     }
+
+    return emitted;
   }
 
   //冥王星内建事件注销
