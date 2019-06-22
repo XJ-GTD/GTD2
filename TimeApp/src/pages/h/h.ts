@@ -117,6 +117,8 @@ export class HPage {
 
     //极光推送跳转共享日程页面
     this.emitService.register('on.agendashare.message.click', (data) => {
+      console.log("Share agenda message to show " + JSON.stringify(data));
+      
       let p: ScdPageParamter = new ScdPageParamter();
       p.si = data.si;
       p.d = moment(data.sd);

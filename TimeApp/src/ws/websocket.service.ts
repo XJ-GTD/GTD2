@@ -44,20 +44,6 @@ export class WebsocketService {
     });
     this.messages = 0;
 
-    this.emitService.register("on.agendashare.message.click", (event) => {
-      console.log("Agenda share message clicked.");
-
-      this.workqueue.push({message:JSON.stringify(event.eventdata), index:this.messages++}, (err) => {
-        if (err) {
-          console.log("work queue process error happenned. ", err, '\r\n', err.stack);
-          this.workqueue.kill();
-          this.messages = 0;
-        } else {
-          if (this.messages >9999) this.messages = 0;
-        }
-      });
-    });
-
     this.emitService.emit("on.websocket.workqueue.init");
   }
 
