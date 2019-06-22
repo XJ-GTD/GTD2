@@ -26,6 +26,7 @@ $secondColor:rgba(57,74,81,1);
 $fontMasterColor:rgba(255,255,255,1);
 $fontSecondColor:rgba(255,255,255,.5);
 $fontThirdColor:rgba(255,255,255,.2);
+$fontFourthColor:rgba(255,255,255,.8);
 
 
 
@@ -58,7 +59,7 @@ $inputiocleft:calc(25% - 30px);
 $thirdColor:rgba(57,74,81,.8);
 //提示文字颜色
 $h-tip:$fontSecondColor;
-$h-tip2:$fontThirdColor;
+$h-tip2:$fontFourthColor;
 
 //列表页背景
 //header不背景色
