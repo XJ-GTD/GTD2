@@ -31,11 +31,15 @@ function clean(datasource)
   var output = {};
 
   var formatDateTime = function(date) {
-    return date.getFullYear() + '/' + (date.getMonth()+1) + '/' + date.getDate() + ' ' + date.getHours() + ':' + date.getMinutes() + ':' + date.getSeconds();
+      return date.getFullYear() + '/' + (date.getMonth()+1) + '/' + date.getDate() + ' ' + date.getHours() + ':' + date.getMinutes() + ':' + date.getSeconds();
   }
 
   var formatDateTimeShow = function(date) {
-    return (date.getMonth()+1) + '月' + date.getDate() + '日 ' + date.getHours() + ':' + date.getMinutes();
+    if (date.indexOf('99:99') < 0) {
+      return (date.substring(5,7)) + '月' + (date.substring(8,10)) + '日 ' + date.substring(11,16);
+    } else {
+      return (date.substring(5,7)) + '月' + (date.substring(8,10)) + '日';
+    }
   }
 
   var names = [];
@@ -45,12 +49,6 @@ function clean(datasource)
       var contacts = input['to'][id];
       to.push(contacts['mpn']);
     }
-  }
-
-  var adt = new Date();
-
-  if (agenda['adt']) {
-    adt = new Date(agenda['adt'].split(' ').join('T'));
   }
 
   // 返回消息头部
@@ -72,12 +70,16 @@ function clean(datasource)
     }
   };
 
+  var push = {};
+
   if (notifyType === 'add') {
     output.content['0']['option'] = 'SH.C';
+    push['title'] = '##from##共享了' + agenda['at'];
   }
 
   if (notifyType === 'update') {
     output.content['0']['option'] = 'SH.U';
+    push['title'] = '##from##更新了' + agenda['at'];
   }
 
   if (notifyType === 'delete') {
@@ -92,21 +94,21 @@ function clean(datasource)
     url: 'http://u3v.cn/4sUKl3'
   }};
 
-  var push = {
-    title: '##from##共享了' + agenda['at'],
-    content: formatDateTimeShow(adt),
-    extras: {
+  if (push['title']) {
+    push['content'] = formatDateTimeShow(agenda['adt']);
+    push['extras'] = {
       event: "MWXING_SHAREAGENDA_EVENT",
+      dependson: "on.agendashare.saved",
       eventhandler: "on.agendashare.message.click",
       eventdata: JSON.stringify(output)
-    }
-  };
+    };
+  }
 
   var standardnext = {};
 
   standardnext.announceTo = to;
   standardnext.announceType = 'agenda_from_share';
-  standardnext.announceContent = {mwxing:{},sms:sms,push:push};
+  standardnext.announceContent = {mwxing:output,sms:sms,push:push};
 
   print(standardnext);
 

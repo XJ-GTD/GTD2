@@ -82,13 +82,17 @@ export class JPushService {
       if (extras['event'] && extras['eventhandler']) {
         this.emitService.emit(extras['eventhandler'], extras);
 
-        //冥王星关闭状态，点击消息启动时，在接收事件初始化之后调用
-        this.emitService.register("on.homepage.init", () => {
-          //冥王星初始化已完成
-          console.log("MWxing initialized, trigger " + extras['eventhandler']);
-          this.emitService.emit(extras['eventhandler'], extras);
-        });
-        console.log("MWxing initialized registered.")
+        let dependson = extras['dependson'];
+
+        if (dependson) {
+          //冥王星关闭状态，点击消息启动时，在接收事件初始化之后调用
+          this.emitService.register(dependson, () => {
+            //冥王星初始化已完成
+            console.log("MWxing " + dependson + ", trigger " + extras['eventhandler']);
+            this.emitService.emit(extras['eventhandler'], extras);
+          });
+          console.log("MWxing " + dependson + " registered.")
+        }
       }
     }
   }
