@@ -201,7 +201,7 @@ export class TddiPage {
   IsShowCover: boolean = false;
   jhs: Array<JhTbl>;
 
-  getScdData(si: string, d: moment.Moment, gs: string): ScdData {
+  async getScdData(si: string, d: moment.Moment, gs: string): ScdData {
     let scd: ScdData = null;
 
     if (si && d) {
@@ -221,7 +221,7 @@ export class TddiPage {
 
     //适应极光推送消息直接打开共享日程画面，增加根据所属ID取得日程
     while (!this.scd) {
-      this.scd = getScdData(paramter.si, paramter.d, paramter.gs);
+      this.scd = this.getScdData(paramter.si, paramter.d, paramter.gs);
     }
 
     Object.assign(this.sp , this.scd.baseData);
