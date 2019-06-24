@@ -36,8 +36,10 @@ export class DispatchService {
     let serverratio = currenttime - model.context.client.time;
 
     // 增加判断服务端响应效率和客户端处理效率分析
-    model.context.client['serverratio'] = serverratio;
-    model.context.client.time = currenttime;
+    if (model && model.context && model.context.client && model.context.client.time) {
+      model.context.client['serverratio'] = serverratio;
+      model.context.client.time = currenttime;
+    }
 
     if (model.context && model.context.server)
       DataConfig.wsServerContext = model.context.server;
