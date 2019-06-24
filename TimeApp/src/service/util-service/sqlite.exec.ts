@@ -249,7 +249,7 @@ export class SqliteExec {
 
   //插入日志
    noteLog(log:LogTbl){
-    if (DataConfig.isdebug){
+    if (DataConfig.isdebug && DataConfig.islog){
       this.execSqllog(log.inT(),true);
     }
   }
