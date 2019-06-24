@@ -140,7 +140,7 @@ import {FeedbackService} from "../../service/cordova/feedback.service";
           <div class="selected">
             <ion-chip *ngFor="let fs of scd.fss" (click)="goTofsDetail(fs)">
               <ion-avatar>
-                <img [src]="fs.bhiu"/>
+                <img [src]="fs.bhiu? fs.bhiu : defaultbhiu"/>
               </ion-avatar>
               <ion-label>{{fs.ran}}</ion-label>
             </ion-chip>
@@ -179,6 +179,7 @@ import {FeedbackService} from "../../service/cordova/feedback.service";
 export class TddjPage {
 
   focuscomm:boolean = false;
+  defaultbhiu: string = DataConfig.HUIBASE64;
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
               private util: UtilService,
