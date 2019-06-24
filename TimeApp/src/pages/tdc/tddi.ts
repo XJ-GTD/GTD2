@@ -216,6 +216,7 @@ export class TddiPage {
   }
 
   async ionViewWillEnter() {
+    this.util.loadingStart();
 
     this.scd.fs.bhiu = DataConfig.HUIBASE64;
     //受邀人修改的场合初始化
@@ -268,6 +269,7 @@ export class TddiPage {
         this.reptshow = "关";
     }
 
+    this.util.loadingEnd();
   }
 
   ionViewWillLeave() {
