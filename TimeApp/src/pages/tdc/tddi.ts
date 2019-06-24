@@ -11,6 +11,7 @@ import {PlService} from "../pl/pl.service";
 import {JhTbl} from "../../service/sqlite/tbl/jh.tbl";
 import {FeedbackService} from "../../service/cordova/feedback.service";
 import {NotificationsService} from "../../service/cordova/notifications.service";
+import * as moment from 'moment';
 
 /**
  * Generated class for the 日程详情（受邀） page.
@@ -200,6 +201,18 @@ export class TddiPage {
   IsShowCover: boolean = false;
   jhs: Array<JhTbl>;
 
+  getScdData(si: string, d: moment.Moment, gs: string): ScdData {
+    let scd: ScdData = null;
+
+    if (si && d) {
+      scd = await this.busiServ.getRcBySiAndSd(paramter.si,paramter.d.format("YYYY/MM/DD"));
+    } else if (gs) {
+      scd = await this.busiServ.getRcBySr(paramter.gs);
+    }
+
+    return scd;
+  }
+
   async ionViewWillEnter() {
 
     this.scd.fs.bhiu = DataConfig.HUIBASE64;
@@ -207,10 +220,8 @@ export class TddiPage {
     let paramter: ScdPageParamter = this.navParams.data;
 
     //适应极光推送消息直接打开共享日程画面，增加根据所属ID取得日程
-    if (paramter.si && paramter.d) {
-      this.scd = await this.busiServ.getRcBySiAndSd(paramter.si,paramter.d.format("YYYY/MM/DD"));
-    } else if (paramter.gs) {
-      this.scd = await this.busiServ.getRcBySr(paramter.gs);
+    while (!this.scd) {
+      this.scd = getScdData(paramter.si, paramter.d, paramter.gs);
     }
 
     Object.assign(this.sp , this.scd.baseData);
