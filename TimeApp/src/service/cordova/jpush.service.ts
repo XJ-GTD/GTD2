@@ -110,12 +110,14 @@ export class JPushService {
               //共享日程消息点击处理
               if (eventname == "MWXING_SHAREAGENDA_EVENT") {
                 //如果不存在所属ID则不处理
-                if (eventdata && eventdata['id'] && data && data['sr']) {
+                if (eventdata && eventdata['id']) {
+                  let local = {};
+
                   //当前保存的共享日程和当前消息指向日程相同
-                  if (data['sr'] == eventdata['id']) {
-                    this.emitService.emit(extras['eventhandler'], data);
-                    ee.unsubscribe();
-                  }
+                  local['sr'] = eventdata['id'];
+
+                  this.emitService.emit(extras['eventhandler'], local);
+                  ee.unsubscribe();
                 }
               } else {
                 this.emitService.emit(extras['eventhandler'], data);
