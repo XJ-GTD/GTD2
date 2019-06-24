@@ -223,9 +223,12 @@ export class TddiPage {
     let paramter: ScdPageParamter = this.navParams.data;
 
     //适应极光推送消息直接打开共享日程画面，增加根据所属ID取得日程
-    while (!this.scd || !this.scd.si) {
-      this.scd = await this.getScdData(paramter.si, paramter.d, paramter.gs);
+    let loadscd: ScdData = null;
+    while (!loadscd || !loadscd.si) {
+      loadscd = await this.getScdData(paramter.si, paramter.d, paramter.gs);
     }
+
+    this.scd = loadscd;
 
     Object.assign(this.sp , this.scd.baseData);
 
