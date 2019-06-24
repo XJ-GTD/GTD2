@@ -394,7 +394,6 @@ export class TdcPage {
       //提醒内容设置
 
       //提醒内容设置
-
       this.scd.ui = UserConfig.account.id;
 
       //消息设为已读
@@ -421,7 +420,6 @@ export class TdcPage {
       let rcin :RcInParam = new RcInParam();
       Object.assign(rcin,this.scd);
       let data = await this.busiServ.saveOrUpdate(rcin);
-
 
       this.util.loadingEnd();
       this.feekback.audioSave();

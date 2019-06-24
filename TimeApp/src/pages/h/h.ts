@@ -43,7 +43,7 @@ import {UserConfig} from "../../service/config/user.config";
           </p>
           <p class="tipDay" *ngIf="hdata.things > 0"><a class="cls" (click)="gotodaily()">
             <ion-icon name="done-all"></ion-icon>
-            {{hdata.things}} 个活动,{{hdata.newmessge}}条新消息</a></p>
+            {{hdata.things}} 个活动, {{hdata.newmessge}} 条新消息</a></p>
           <p class="tipDay"><a class="cls2" (click)="newcd()">
             <ion-icon name="add"></ion-icon>
             添加新事件</a></p>
@@ -118,7 +118,7 @@ export class HPage {
     //极光推送跳转共享日程页面
     this.emitService.register('on.agendashare.message.click', (data) => {
       console.log("Share agenda message to show " + JSON.stringify(data));
-      
+
       let p: ScdPageParamter = new ScdPageParamter();
       p.si = data.si;
       p.d = moment(data.sd);

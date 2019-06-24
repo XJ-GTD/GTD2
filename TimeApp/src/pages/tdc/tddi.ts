@@ -39,7 +39,7 @@ import {NotificationsService} from "../../service/cordova/notifications.service"
             <ion-avatar (click)="goTofsDetail(scd.fs)">
               <img class="img-set" [src]="scd.fs.bhiu">
             </ion-avatar>
-            <ion-label>{{scd.fs.ran}}</ion-label>
+            <ion-label class="ml4">{{scd.fs.ran}}</ion-label>
           </ion-chip>
         </ion-row>
         <ion-row>
