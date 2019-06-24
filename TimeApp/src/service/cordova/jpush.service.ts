@@ -102,7 +102,7 @@ export class JPushService {
         // 避免重复触发
         if (!emitted && dependson) {
           //冥王星关闭状态，点击消息启动时，在接收事件初始化之后调用
-          this.emitService.register(dependson, (data) => {
+          let ee = this.emitService.register(dependson, (data) => {
             //冥王星初始化已完成
             console.log("MWxing " + dependson + ", trigger " + extras['eventhandler']);
 
@@ -114,13 +114,16 @@ export class JPushService {
                   //当前保存的共享日程和当前消息指向日程相同
                   if (data['sr'] == eventdata['id']) {
                     this.emitService.emit(extras['eventhandler'], data);
+                    ee.unsubscribe();
                   }
                 }
               } else {
                 this.emitService.emit(extras['eventhandler'], data);
+                ee.unsubscribe();
               }
             } else {
               this.emitService.emit(extras['eventhandler'], extras);
+              ee.unsubscribe();
             }
           });
           console.log("MWxing " + dependson + " registered.")

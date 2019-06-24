@@ -98,7 +98,7 @@ function clean(datasource)
     push['content'] = formatDateTimeShow(agenda['adt']);
     push['extras'] = {
       event: "MWXING_SHAREAGENDA_EVENT",
-      dependson: "on.agendashare.saved",
+      dependson: "on.homepage.init",
       eventhandler: "on.agendashare.message.click",
       eventdatafrom: "local",
       eventdata: JSON.stringify(output['content']['0']['parameters'])
