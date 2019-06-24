@@ -40,6 +40,7 @@ export class SpeechProcess extends BaseProcess implements MQProcess {
       let user = UserConfig.user;
 
       //处理所需要参数
+      let serverratio = content.thisContext.context.client.serverratio;
       let ti = moment().valueOf() - content.thisContext.context.client.time;
       let spData: SpeechPara = content.parameters;
       let prvOpt:string =  "";
@@ -165,7 +166,7 @@ export class SpeechProcess extends BaseProcess implements MQProcess {
       //通知页面显示播报文本
       let emspeech:SpeechEmData = new SpeechEmData();
       if (DataConfig.isdebug)
-        emspeech.an = speakText + " #" + ti + "#";
+        emspeech.an = speakText + " #" + serverratio + ", " + ti + "#";
       else
         emspeech.an = speakText;
       emspeech.org = content.thisContext.original;

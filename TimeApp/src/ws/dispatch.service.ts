@@ -32,6 +32,13 @@ export class DispatchService {
     let model: WsModel = JSON.parse(message);
 
     // console.log(moment().unix() - model.context.client.time);
+    let currenttime = moment().unix();
+    let serverratio = currenttime - model.context.client.time;
+
+    // 增加判断服务端响应效率和客户端处理效率分析
+    model.context.client['serverratio'] = serverratio;
+    model.context.client.time = currenttime;
+
     if (model.context && model.context.server)
       DataConfig.wsServerContext = model.context.server;
 
