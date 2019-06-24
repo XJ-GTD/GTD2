@@ -201,7 +201,7 @@ export class TddiPage {
   IsShowCover: boolean = false;
   jhs: Array<JhTbl>;
 
-  async getScdData(si: string, d: moment.Moment, gs: string): ScdData {
+  async getScdData(si: string, d: moment.Moment, gs: string) {
     let scd: ScdData = null;
 
     if (si && d) {
