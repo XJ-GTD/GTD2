@@ -123,10 +123,10 @@ function clean(datasource)
       dependson: "on.homepage.init",
       eventhandler: "on.agenda.shareevents.message.click",
       eventdatafrom: "local",
-      eventdata: {
+      eventdata: JSON.stringify({
         si: agenda['ai'],
         sd: agenda['adt'].substring(0, 10)
-      }
+      })
     }
   };
 
