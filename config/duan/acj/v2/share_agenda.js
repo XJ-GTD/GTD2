@@ -74,12 +74,12 @@ function clean(datasource)
 
   if (notifyType === 'add') {
     output.content['0']['option'] = 'SH.C';
-    push['title'] = '##from##共享了' + agenda['at'];
+    push['title'] = '[##from##] ' + agenda['at'];
   }
 
   if (notifyType === 'update') {
     output.content['0']['option'] = 'SH.U';
-    push['title'] = '##from##更新了' + agenda['at'];
+    push['title'] = '[##from##] ' + agenda['at'];
   }
 
   if (notifyType === 'delete') {
