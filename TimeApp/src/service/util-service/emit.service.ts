@@ -66,7 +66,7 @@ export class EmitService {
     let el: Array<EventEmitter<any>> = EmitService.buildinEvents.get(handler);
 
     //事件不存在直接返回
-    if ((!el || el.length < 1) && (!elOnce || elOnce.length < 1) {
+    if (!el || el.length < 1) {
       return emitted;
     }
 
