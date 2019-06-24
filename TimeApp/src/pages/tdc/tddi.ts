@@ -201,16 +201,18 @@ export class TddiPage {
   IsShowCover: boolean = false;
   jhs: Array<JhTbl>;
 
-  async getScdData(si: string, d: moment.Moment, gs: string) {
-    let scd: ScdData = null;
+  getScdData(si: string, d: moment.Moment, gs: string): Promise<ScdData> {
+    return new Promise(async (resolve, reject) => {
+      let scd: ScdData = null;
 
-    if (si && d) {
-      scd = await this.busiServ.getRcBySiAndSd(si,d.format("YYYY/MM/DD"));
-    } else if (gs) {
-      scd = await this.busiServ.getRcBySr(gs);
-    }
+      if (si && d) {
+        scd = await this.busiServ.getRcBySiAndSd(si,d.format("YYYY/MM/DD"));
+      } else if (gs) {
+        scd = await this.busiServ.getRcBySr(gs);
+      }
 
-    return scd;
+      resolve(scd);
+    });
   }
 
   async ionViewWillEnter() {
@@ -221,7 +223,7 @@ export class TddiPage {
 
     //适应极光推送消息直接打开共享日程画面，增加根据所属ID取得日程
     while (!this.scd) {
-      this.scd = this.getScdData(paramter.si, paramter.d, paramter.gs);
+      this.scd = await this.getScdData(paramter.si, paramter.d, paramter.gs);
     }
 
     Object.assign(this.sp , this.scd.baseData);
