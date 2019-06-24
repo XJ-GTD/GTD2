@@ -205,9 +205,9 @@ export class TddiPage {
     let scd: ScdData = null;
 
     if (si && d) {
-      scd = await this.busiServ.getRcBySiAndSd(paramter.si,paramter.d.format("YYYY/MM/DD"));
+      scd = await this.busiServ.getRcBySiAndSd(si,d.format("YYYY/MM/DD"));
     } else if (gs) {
-      scd = await this.busiServ.getRcBySr(paramter.gs);
+      scd = await this.busiServ.getRcBySr(gs);
     }
 
     return scd;
