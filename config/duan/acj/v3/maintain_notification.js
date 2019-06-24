@@ -51,18 +51,24 @@ function clean(datasource)
     option: 'PN.FB',
     parameters: {
       timestamp: event['trigger_time'],
-      title: "讯飞异常@" + event['trigger_time_fmt'],
-      text: event['output']['code'] + ":" + event['output']['message'],
+      title: "讯飞发生异常@" + event['trigger_time_fmt'],
+      text: event['output']['code'] + ": " + event['output']['message'],
       reason: eventType,
       scd: {}
     }
   };
 
+  var push = {
+    title: "讯飞发生异常@" + event['trigger_time_fmt'],
+    content: event['output']['code'] + ": " + event['output']['message']
+  };
+
+
   var standardnext = {};
 
   standardnext.announceTo = to;
   standardnext.announceType = 'agenda_from_share';
-  standardnext.announceContent = {mwxing:output,sms:{}};
+  standardnext.announceContent = {mwxing:{},sms:{},push:push};
 
   print(standardnext);
 

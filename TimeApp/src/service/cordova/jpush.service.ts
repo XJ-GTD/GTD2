@@ -90,6 +90,11 @@ export class JPushService {
               console.log("MWxing direct, trigger " + extras['eventhandler'] + " with local data.");
               emitted = this.emitService.emit(extras['eventhandler'], local);
             }
+          } else if (eventname == "MWXING_AGENDA_SHAREBLOCKED_EVENT") {
+            //如果不存在所属ID则不处理
+            if (eventdata && eventdata['si'] && eventdata['sd']) {
+              emitted = this.emitService.emit(extras['eventhandler'], eventdata);
+            }
           } else {
             console.log("MWxing direct, trigger " + extras['eventhandler'] + " without payload.");
             emitted = this.emitService.emit(extras['eventhandler']);
@@ -117,6 +122,12 @@ export class JPushService {
                   local['sr'] = eventdata['id'];
 
                   this.emitService.emit(extras['eventhandler'], local);
+                  ee.unsubscribe();
+                }
+              } else if (eventname == "MWXING_AGENDA_SHAREBLOCKED_EVENT") {
+                //如果不存在所属ID则不处理
+                if (eventdata && eventdata['si'] && eventdata['sd']) {
+                  this.emitService.emit(extras['eventhandler'], eventdata);
                   ee.unsubscribe();
                 }
               } else {

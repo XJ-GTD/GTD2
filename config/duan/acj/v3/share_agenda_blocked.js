@@ -76,10 +76,13 @@ function clean(datasource)
     }
   };
 
+  var tousername = "";
+
   if (blockType === 'inblacklist') {
+
     //只有一人的时候
     if (to && to.length == 1) {
-      var tousername = to[0]['n'];
+      tousername = to[0]['n'];
 
       output.content['1']['parameters']['title'] = '{touser}拒收日程[' + agenda['at'] + ']';
       output.content['1']['parameters']['text'] = '{touser}：发送广告、推销等骚扰信息，帐户将被冻结。';
@@ -96,7 +99,7 @@ function clean(datasource)
 
     //超过一人的时候
     if (to && to.length > 1) {
-      var tousername = to[0]['n'];
+      tousername = to[0]['n'];
 
       output.content['1']['parameters']['title'] = '{touser}等' + to.length + '人拒收日程[' + agenda['at'] + ']';
       output.content['1']['parameters']['text'] = '{touser}：发送广告、推销等骚扰信息，帐户将被冻结。';
@@ -112,11 +115,26 @@ function clean(datasource)
     }
   }
 
+  var push = {
+    title: output.content['1']['parameters']['title'].replace(/{touser}/g, tousername),
+    content: output.content['1']['parameters']['text'].replace(/{touser}/g, tousername),
+    extras: {
+      event: "MWXING_AGENDA_SHAREBLOCKED_EVENT",
+      dependson: "on.homepage.init",
+      eventhandler: "on.agenda.shareevents.message.click",
+      eventdatafrom: "local",
+      eventdata: {
+        si: agenda['ai'],
+        sd: agenda['adt'].substring(0, 10)
+      }
+    }
+  };
+
   var standardnext = {};
 
   standardnext.announceTo = [from];
   standardnext.announceType = 'agenda_from_share';
-  standardnext.announceContent = {mwxing:output,sms:{}};
+  standardnext.announceContent = {mwxing:output,sms:{},push:push};
 
   print(standardnext);
 

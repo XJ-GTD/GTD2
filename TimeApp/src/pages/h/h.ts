@@ -10,6 +10,7 @@ import {AiComponent} from "../../components/ai/answer/ai";
 import {EmitService} from "../../service/util-service/emit.service";
 import {TdcPage} from "../tdc/tdc";
 import {TddiPage} from "../tdc/tddi";
+import {TddjPage} from "../tdc/tddj";
 import {HData, ScdPageParamter} from "../../data.mapping";
 import {FeedbackService} from "../../service/cordova/feedback.service";
 import {DataConfig} from "../../service/config/data.config";
@@ -124,6 +125,15 @@ export class HPage {
       p.d = moment(data.sd);
       p.gs = data.sr;
       this.modalCtr.create(TddiPage, p).present();
+    });
+
+    this.emitService.register('on.agenda.shareevents.message.click', (data) => {
+      console.log("Agenda share events message to show " + JSON.stringify(data));
+
+      let p: ScdPageParamter = new ScdPageParamter();
+      p.si = data.si;
+      p.d = moment(data.sd);
+      this.modalCtr.create(TddjPage, p).present();
     });
 
     //冥王星远程服务地址刷新完成

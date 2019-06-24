@@ -98,7 +98,7 @@ export class NotificationProcess extends BaseProcess implements MQProcess {
 
       let data: any = {eventhandler: 'on.feedback.message.click', eventdata: feedback};
 
-      this.notificationsService.newMessage(title, text, data);
+      //this.notificationsService.newMessage(title, text, data);
     }
 
     return contextRetMap
