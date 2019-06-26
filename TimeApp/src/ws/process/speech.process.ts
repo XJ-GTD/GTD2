@@ -43,17 +43,13 @@ export class SpeechProcess extends BaseProcess implements MQProcess {
       let serverratio = content.thisContext.context.client.serverratio;
       let ratios = content.thisContext.context.client.ratios.reduce((accumulator, currentValue) => {
 
-        if (typeof accumulator != "object")
-          console.log("ratios reduce " + accumulator);
-        else
-          console.log("ratios reduce " + JSON.stringify(accumulator));
-
         if (accumulator && typeof accumulator != "object") {
           return accumulator + ", " + currentValue['operation'] + ": " + currentValue['ratio'];
         } else {
-          return currentValue['operation'] + ": " + currentValue['ratio'];
+          return accumulator['operation'] + ": " + accumulator['ratio'] + ", " + currentValue['operation'] + ": " + currentValue['ratio'];
         }
       });
+
       let ti = moment().valueOf() - content.thisContext.context.client.time;
       let spData: SpeechPara = content.parameters;
       let prvOpt:string =  "";
