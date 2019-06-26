@@ -43,9 +43,9 @@ export class SpeechProcess extends BaseProcess implements MQProcess {
       let serverratio = content.thisContext.context.client.serverratio;
       let ratios = content.thisContext.context.client.ratios.reduce((accumulator, currentValue) => {
         if (accumulator) {
-          return currentValue['operation'] + ": " + currentValue['ratio']
+          return accumulator + ", " + currentValue['operation'] + ": " + currentValue['ratio']
         } else {
-          return ", " + currentValue['operation'] + ": " + currentValue['ratio']
+          return currentValue['operation'] + ": " + currentValue['ratio']
         }
       });
       let ti = moment().valueOf() - content.thisContext.context.client.time;
