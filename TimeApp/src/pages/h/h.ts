@@ -9,6 +9,7 @@ import * as moment from "moment";
 import {AiComponent} from "../../components/ai/answer/ai";
 import {EmitService} from "../../service/util-service/emit.service";
 import {TdcPage} from "../tdc/tdc";
+import {TdmPage} from "../tdm/tdm";
 import {TddiPage} from "../tdc/tddi";
 import {TddjPage} from "../tdc/tddj";
 import {HData, ScdPageParamter} from "../../data.mapping";
@@ -184,6 +185,13 @@ export class HPage {
       this.newcd();
     })
 
+  }
+
+  newcdWithTimePage() {
+    let p: ScdPageParamter = new ScdPageParamter();
+    p.d = moment(this.hdata.selectDay.time);
+    this.feedback.audioPress();
+    this.modalCtr.create(TdmPage, p).present();
   }
 
   newcd() {

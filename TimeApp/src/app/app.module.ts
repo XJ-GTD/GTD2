@@ -56,6 +56,7 @@ import {JPushService} from "../service/cordova/jpush.service";
 import {Badge} from "@ionic-native/badge";
 import {RemindService} from "../service/util-service/remind.service";
 import {TdcPageModule} from "../pages/tdc/tdc.module";
+import {TdmPageModule} from "../pages/tdm/tdm.module";
 import {FsPageModule} from "../pages/fs/fs.module";
 import {AlPageModule} from "../pages/al/al.module";
 import {BlPageModule} from "../pages/bl/bl.module";
@@ -107,6 +108,7 @@ import { JPush } from '@jiguang-ionic/jpush';
     WeatherIconsModule,
     PipesModule,
     TdcPageModule,
+    TdmPageModule,
     FsPageModule,
     AlPageModule,
     BlPageModule,

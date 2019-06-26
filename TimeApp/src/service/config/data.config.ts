@@ -8,6 +8,7 @@ import {Fs4cPage} from "../../pages/fs/fs4c";
 import {HPage} from "../../pages/h/h";
 import {TdlPage} from "../../pages/tdl/tdl";
 import {TdcPage} from "../../pages/tdc/tdc";
+import {TdmPage} from "../../pages/tdm/tdm";
 import {TddiPage} from "../../pages/tdc/tddi";
 import {TddjPage} from "../../pages/tdc/tddj";
 import {LpPage} from "../../pages/lp/lp";
@@ -203,6 +204,7 @@ export class DataConfig {
 
     _H_PAGE: HPage,        // 首页 - 首页
     _TDL_PAGE: TdlPage,        // 日程 - 日程列表
+    _TDM_PAGE: TdmPage,        // 日程 - TimePage风格日程详情新建
     _TDC_PAGE: TdcPage,        // 日程 - 日程详情新建
     _TDDI_PAGE: TddiPage,      // 日程 - 日程详情（受邀）
     _TDDJ_PAGE: TddjPage,      // 日程 - 日程详情(发布人)
