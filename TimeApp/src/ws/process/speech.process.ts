@@ -42,8 +42,7 @@ export class SpeechProcess extends BaseProcess implements MQProcess {
       //处理所需要参数
       let serverratio = content.thisContext.context.client.serverratio;
       let ratios = content.thisContext.context.client.ratios.reduce((accumulator, currentValue) => {
-        console.log("ratios reduce " + JSON.stringify(accumulator));
-        if (accumulator && !accumulator['operation']) {
+        if (accumulator && typeof accumulator == "string") {
           return accumulator + ", " + currentValue['operation'] + ": " + currentValue['ratio']
         } else {
           return currentValue['operation'] + ": " + currentValue['ratio']
