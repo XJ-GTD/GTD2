@@ -63,8 +63,17 @@ export class JPushService {
   notificationOpened(event) {
     console.log("JPush opened notification: " + JSON.stringify(event));
 
-    if (event.extras['cn.jpush.android.EXTRA']) {
-      let extras = event.extras['cn.jpush.android.EXTRA'];
+    if (event) {
+      let extras = {};
+
+      if (this.device.platform == "Android") {
+        extras = event.extras['cn.jpush.android.EXTRA'];
+      } else {
+        if (event.extras)
+          extras = event.extras;
+        else
+          extras = event;
+      }
 
       if (extras && extras['eventdata']) {
         extras['eventdata'] = JSON.parse(extras['eventdata']);
