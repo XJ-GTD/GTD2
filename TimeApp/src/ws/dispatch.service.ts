@@ -65,9 +65,12 @@ export class DispatchService {
         console.log('\r\n', e, '\r\n', e.stack);
         break;
       } finally {
-        let steptime = moment().valueOf();
-        model.context.client.ratios.push({operation: opt, ratio: (steptime - starttime)});
-        starttime = steptime;
+        //存在客户端上下文的情况下
+        if (model && model.context && model.context.client && model.context.client.ratios) {
+          let steptime = moment().valueOf();
+          model.context.client.ratios.push({operation: opt, ratio: (steptime - starttime)});
+          starttime = steptime;
+        }
       }
     }
 
