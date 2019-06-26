@@ -8,7 +8,7 @@ import { Component, Input } from '@angular/core';
  */
 @Component({
   selector: 'radio-select',
-  templateUrl: `<div class="grid">
+  template: `<div class="grid">
     <div class="row" align-items-center justify-content-between>
       <label *ngIf="label">{{label}}</label>
       <button ion-button *ngFor="let option of options;" clear (click)="change($event, option.value)">{{option.caption}}</button>
