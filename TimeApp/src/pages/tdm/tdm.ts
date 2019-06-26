@@ -1,6 +1,7 @@
 import {Component, ElementRef, QueryList, Renderer2, ViewChild, ViewChildren} from '@angular/core';
 import { IonicPage, NavController, NavParams, Scroll } from 'ionic-angular';
 import { ScrollSelectComponent } from '../../components/scroll-select/scroll-select';
+import { RadioSelectComponent } from '../../components/radio-select/radio-select';
 
 @Component({
   selector: 'page-tdm',
