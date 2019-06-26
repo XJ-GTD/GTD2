@@ -88,10 +88,12 @@ import {DrPageModule} from "../pages/dr/dr.module";
 import {CardListComponentModule} from "../components/card-list/card-list.module";
 import { WeatherIconsModule } from 'ngx-icons';
 import { JPush } from '@jiguang-ionic/jpush';
+import {Autosize} from "../../directives/ng-autosize/autosize.directive";
 
 @NgModule({
   declarations: [
     MyApp,
+    Autosize
   ],
   imports: [
     BrowserModule,
