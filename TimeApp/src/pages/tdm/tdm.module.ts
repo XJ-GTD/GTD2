@@ -3,6 +3,7 @@ import { TdmPage } from './tdm';
 import {IonicModule} from "ionic-angular";
 import {PipesModule} from "../../pipes/pipes.module";
 import {ScrollSelectComponentModule} from "../../components/scroll-select/scroll-select.module";
+import {RadioSelectComponentModule} from "../../components/radio-select/radio-select.module";
 
 @NgModule({
   declarations: [
@@ -11,7 +12,8 @@ import {ScrollSelectComponentModule} from "../../components/scroll-select/scroll
   imports: [
       IonicModule,
       PipesModule,
-      ScrollSelectComponentModule
+      ScrollSelectComponentModule,
+      RadioSelectComponentModule
   ],
   providers: [
   ],
