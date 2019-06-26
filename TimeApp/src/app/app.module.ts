@@ -86,6 +86,7 @@ import {AtPageModule} from "../pages/at/at.module";
 import {DaPageModule} from "../pages/da/da.module";
 import {DrPageModule} from "../pages/dr/dr.module";
 import {CardListComponentModule} from "../components/card-list/card-list.module";
+import {ScrollSelectComponentModule} from "../components/scroll-select/scroll-select.module";
 import { WeatherIconsModule } from 'ngx-icons';
 import { JPush } from '@jiguang-ionic/jpush';
 import {Autosize} from "../directives/ng-autosize/autosize.directive";
@@ -138,7 +139,8 @@ import {Autosize} from "../directives/ng-autosize/autosize.directive";
     DaPageModule,
     DrPageModule,
     ConfirmboxComponentModule,
-    CardListComponentModule
+    CardListComponentModule,
+    ScrollSelectComponentModule
   ],
   bootstrap: [IonicApp],
   entryComponents: [

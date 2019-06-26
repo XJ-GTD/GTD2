@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { TdmPage } from './tdm';
 import {IonicModule} from "ionic-angular";
 import {PipesModule} from "../../pipes/pipes.module";
+import {ScrollSelectComponentModule} from "../components/scroll-select/scroll-select.module";
 
 @NgModule({
   declarations: [
@@ -9,7 +10,8 @@ import {PipesModule} from "../../pipes/pipes.module";
   ],
   imports: [
       IonicModule,
-      PipesModule
+      PipesModule,
+      ScrollSelectComponentModule
   ],
   providers: [
   ],

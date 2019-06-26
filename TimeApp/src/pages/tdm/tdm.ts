@@ -1,5 +1,6 @@
 import {Component, ElementRef, QueryList, Renderer2, ViewChild, ViewChildren} from '@angular/core';
 import { IonicPage, NavController, NavParams, Scroll } from 'ionic-angular';
+import { ScrollSelectComponent } from '../../components/scroll-select/scroll-select';
 
 @Component({
   selector: 'page-tdm',
