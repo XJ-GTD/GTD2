@@ -49,19 +49,25 @@ export class DispatchService {
     //循环处理消息
     //保存上下文操作的各种结果
     let contextRetMap: Map<string,any> = new Map<string, any>();
+    let starttime = model.context.client.time;
+
     //按序获取describe对应的操作
     for (let i = 0, len = model.header.describe.length; i < len; i++) {
       let opt = model.header.describe[i];
       let wsContent: WsContent = model.content[i];
       //保存上下文
       wsContent.thisContext = model;
-      console.log("******************dispatch  process:"+opt);
+      console.log("******************dispatch  process: "+opt);
       // 当处理异常时，跳出循环
       try {
         contextRetMap = await this.factory.getProcess(opt).gowhen(wsContent, contextRetMap);
       } catch (e) {
         console.log('\r\n', e, '\r\n', e.stack);
         break;
+      } finally {
+        let steptime = moment().valueOf();
+        model.context.client.ratios.push({operation: opt, ratio: (steptime - starttime)});
+        starttime = steptime;
       }
     }
 

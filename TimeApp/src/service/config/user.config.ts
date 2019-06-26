@@ -237,6 +237,27 @@ export class UserConfig {
     return fs;
   }
 
+  GetMultiBTbls(ids: Array<string>): Array<FsData> {
+    console.log('GetMultiBTbls with ids ' + ids.join(","));
+
+    let matches: string = ids.join(",");
+
+    let fss : Array<FsData> = new Array<FsData>();
+    fss =  UserConfig.friends.filter(value => {
+      return ((matches.indexOf(value.pwi) >= 0) || (matches.indexOf(value.ui) >= 0));
+    });
+
+    if  (fss && fss.length > 0) {
+      for (let fs of fss) {
+        if (fs.bhiu == ""){
+          fs.bhiu = DataConfig.HUIBASE64;
+        }
+      }
+    }
+
+    return fss;
+  }
+
   GetOneBhiu(id: string): string {
     let bhiu :string = "";
     let fs : FsData = new FsData();
