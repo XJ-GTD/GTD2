@@ -182,7 +182,7 @@ export class HPage {
   onPress(pressDay) {
     this.hService.centerShow(pressDay).then(d => {
       this.hdata = d;
-      this.newcd();
+      this.newcdWithTimePage();
     })
 
   }
