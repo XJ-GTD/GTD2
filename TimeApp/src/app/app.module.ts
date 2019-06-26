@@ -88,6 +88,7 @@ import {DrPageModule} from "../pages/dr/dr.module";
 import {CardListComponentModule} from "../components/card-list/card-list.module";
 import {ScrollSelectComponentModule} from "../components/scroll-select/scroll-select.module";
 import {RadioSelectComponentModule} from "../components/radio-select/radio-select.module";
+import {ScrollRangePickerComponentModule} from "../components/scroll-range-picker/scroll-range-picker.module";
 import { WeatherIconsModule } from 'ngx-icons';
 import { JPush } from '@jiguang-ionic/jpush';
 import {Autosize} from "../directives/ng-autosize/autosize.directive";
@@ -142,7 +143,8 @@ import {Autosize} from "../directives/ng-autosize/autosize.directive";
     ConfirmboxComponentModule,
     CardListComponentModule,
     ScrollSelectComponentModule,
-    RadioSelectComponentModule
+    RadioSelectComponentModule,
+    ScrollRangePickerComponentModule
   ],
   bootstrap: [IonicApp],
   entryComponents: [

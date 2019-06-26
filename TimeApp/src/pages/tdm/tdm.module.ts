@@ -4,6 +4,7 @@ import {IonicModule} from "ionic-angular";
 import {PipesModule} from "../../pipes/pipes.module";
 import {ScrollSelectComponentModule} from "../../components/scroll-select/scroll-select.module";
 import {RadioSelectComponentModule} from "../../components/radio-select/radio-select.module";
+import {ScrollRangePickerComponentModule} from "../../components/scroll-range-picker/scroll-range-picker.module";
 
 @NgModule({
   declarations: [
@@ -13,7 +14,8 @@ import {RadioSelectComponentModule} from "../../components/radio-select/radio-se
       IonicModule,
       PipesModule,
       ScrollSelectComponentModule,
-      RadioSelectComponentModule
+      RadioSelectComponentModule,
+      ScrollRangePickerComponentModule
   ],
   providers: [
   ],
