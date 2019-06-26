@@ -33,8 +33,8 @@ export class DispatchService {
 
     // console.log(moment().unix() - model.context.client.time);
     // 增加判断服务端响应效率和客户端处理效率分析
+    let currenttime = moment().valueOf();
     if (model && model.context && model.context.client && model.context.client.time) {
-      let currenttime = moment().valueOf();
       let serverratio = currenttime - model.context.client.time;
 
       model.context.client['serverratio'] = serverratio;
@@ -49,7 +49,7 @@ export class DispatchService {
     //循环处理消息
     //保存上下文操作的各种结果
     let contextRetMap: Map<string,any> = new Map<string, any>();
-    let starttime = model.context.client.time;
+    let starttime = currenttime;
 
     //按序获取describe对应的操作
     for (let i = 0, len = model.header.describe.length; i < len; i++) {
