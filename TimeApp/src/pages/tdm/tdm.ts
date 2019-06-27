@@ -68,7 +68,7 @@ export class TdmPage {
     console.log('ionViewDidLoad NewAgendaPage');
     if (this.navParams) {
       let paramter: ScdPageParamter = this.navParams.data;
-      this.day = this.util.showDay(paramter.d);
+      this.day = this.util.showDate(paramter.d);
       this.date = paramter.d.format("MMMM D");
     }
 
