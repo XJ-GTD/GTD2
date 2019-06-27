@@ -13,6 +13,8 @@ import {UtilService} from "../../service/util-service/util.service";
     <ion-grid>
       <ion-row justify-content-center>
         <h1>{{day}}</h1>
+      </ion-row>
+      <ion-row justify-content-center>
         <p class="small">{{date}}</p>
       </ion-row>
       <ion-row justify-content-center>
