@@ -23,7 +23,8 @@ export class BackComponent{
   h: number;
 
   ngOnInit(): void {
-    this.loadScene(20);
+    //暂时屏蔽背景移动的点
+   // this.loadScene(20);
   }
 
   loadScene(num:number) {

@@ -137,4 +137,15 @@ pointcomponent {
       transform: rotate(1turn);
     }
   }
+
+
+  .jsai{
+    position: absolute;
+    bottom: 100px;
+    display: block;
+    color: $adornColor;
+    font-size: 18px;
+    font-weight: bold;
+    margin: 25px;
+  }
 }

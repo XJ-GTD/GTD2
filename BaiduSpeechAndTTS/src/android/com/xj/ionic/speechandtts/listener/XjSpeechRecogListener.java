@@ -5,6 +5,9 @@ import com.baidu.aip.asrwakeup3.core.recog.listener.StatusRecogListener;
 import com.baidu.aip.asrwakeup3.core.util.MyLogger;
 import com.baidu.speech.asr.SpeechConstant;
 import org.apache.cordova.CallbackContext;
+import org.apache.cordova.PluginResult;
+import org.json.JSONObject;
+import org.json.JSONException;
 
 /**
  * Created by fujiayi on 2017/6/16.
@@ -28,69 +31,95 @@ public class XjSpeechRecogListener extends StatusRecogListener {
     public void onAsrReady() {
         super.onAsrReady();
         speechEndTime = 0;
-        sendStatusMessage(SpeechConstant.CALLBACK_EVENT_WAKEUP_READY, "引擎就绪，可以开始说话。");
+        //sendStatusMessage(SpeechConstant.CALLBACK_EVENT_WAKEUP_READY, "引擎就绪，可以开始说话。");
     }
 
     @Override
     public void onAsrBegin() {
         super.onAsrBegin();
-        sendStatusMessage(SpeechConstant.CALLBACK_EVENT_ASR_BEGIN, "检测到用户说话");
+        //sendStatusMessage(SpeechConstant.CALLBACK_EVENT_ASR_BEGIN, "检测到用户说话");
     }
 
     @Override
     public void onAsrEnd() {
         super.onAsrEnd();
         speechEndTime = System.currentTimeMillis();
-        sendMessage("【asr.end事件】检测到用户说话结束");
+        //sendMessage("【asr.end事件】检测到用户说话结束");
     }
 
     @Override
     public void onAsrPartialResult(String[] results, RecogResult recogResult) {
-        sendStatusMessage(SpeechConstant.CALLBACK_EVENT_ASR_PARTIAL,
-                "临时识别结果，结果是“" + results[0] + "”；原始json：" + recogResult.getOrigalJson());
         super.onAsrPartialResult(results, recogResult);
+        try{
+            JSONObject obj = new JSONObject();
+            obj.put("text", results[0]);
+            obj.put("finish",false);
+            obj.put("error",false);
+            sendStatusMessage(obj);
+
+        }catch(JSONException ex){
+
+        }
     }
 
     @Override
-    public void onAsrFinalResult(String[] results, RecogResult recogResult) {
+    public void onAsrFinalResult(String[] results, RecogResult recogResult){
         super.onAsrFinalResult(results, recogResult);
-        String message =  results[0];
-        sendStatusMessage(SpeechConstant.CALLBACK_EVENT_ASR_PARTIAL, message);
-        if (speechEndTime > 0) {
-            long currentTime = System.currentTimeMillis();
-            long diffTime = currentTime - speechEndTime;
-            message += "；说话结束到识别结束耗时【" + diffTime + "ms】" + currentTime;
+        try{
+            JSONObject obj = new JSONObject();
+            obj.put("text", results[0]);
+            obj.put("finish",true);
+            obj.put("error",false);
+            sendStatusMessage(obj);
+
+        }catch(JSONException ex){
 
         }
+//        if (speechEndTime > 0) {
+//            long currentTime = System.currentTimeMillis();
+//            long diffTime = currentTime - speechEndTime;
+//            message += "；说话结束到识别结束耗时【" + diffTime + "ms】" + currentTime;
+//
+//        }
         speechEndTime = 0;
 
     }
 
     @Override
     public void onAsrFinishError(int errorCode, int subErrorCode, String descMessage,
-                                 RecogResult recogResult) {
+                                 RecogResult recogResult){
         super.onAsrFinishError(errorCode, subErrorCode, descMessage, recogResult);
-        String message = "【asr.finish事件】识别错误, 错误码：" + errorCode + " ," + subErrorCode + " ; " + descMessage;
-        sendStatusMessage(SpeechConstant.CALLBACK_EVENT_ASR_PARTIAL, message);
-        if (speechEndTime > 0) {
-            long diffTime = System.currentTimeMillis() - speechEndTime;
-            message += "。说话结束到识别结束耗时【" + diffTime + "ms】";
+        String message = "识别错误, 错误码：" + errorCode + " ," + subErrorCode + " ; " + descMessage;
+
+        try{
+            JSONObject obj = new JSONObject();
+            obj.put("text", message);
+            obj.put("finish",false);
+            obj.put("error",true);
+            sendStatusMessage(obj);
+
+        }catch(JSONException ex){
+
         }
+//        if (speechEndTime > 0) {
+//            long diffTime = System.currentTimeMillis() - speechEndTime;
+//            message += "。说话结束到识别结束耗时【" + diffTime + "ms】";
+//        }
         speechEndTime = 0;
     }
 
     @Override
     public void onAsrOnlineNluResult(String nluResult) {
         super.onAsrOnlineNluResult(nluResult);
-        if (!nluResult.isEmpty()) {
-            sendStatusMessage(SpeechConstant.CALLBACK_EVENT_ASR_PARTIAL, "原始语义识别结果json：" + nluResult);
-        }
+//        if (!nluResult.isEmpty()) {
+//            sendStatusMessage(SpeechConstant.CALLBACK_EVENT_ASR_PARTIAL, "原始语义识别结果json：" + nluResult);
+//        }
     }
 
     @Override
     public void onAsrFinish(RecogResult recogResult) {
         super.onAsrFinish(recogResult);
-        sendStatusMessage(SpeechConstant.CALLBACK_EVENT_ASR_FINISH, "识别一段话结束。如果是长语音的情况会继续识别下段话。");
+//        sendStatusMessage(SpeechConstant.CALLBACK_EVENT_ASR_FINISH, "识别一段话结束。如果是长语音的情况会继续识别下段话。");
 
     }
 
@@ -100,7 +129,7 @@ public class XjSpeechRecogListener extends StatusRecogListener {
     @Override
     public void onAsrLongFinish() {
         super.onAsrLongFinish();
-        sendStatusMessage(SpeechConstant.CALLBACK_EVENT_ASR_LONG_SPEECH, "长语音识别结束。");
+//        sendStatusMessage(SpeechConstant.CALLBACK_EVENT_ASR_LONG_SPEECH, "长语音识别结束。");
     }
 
 
@@ -109,7 +138,7 @@ public class XjSpeechRecogListener extends StatusRecogListener {
      */
     @Override
     public void onOfflineLoaded() {
-        sendStatusMessage(SpeechConstant.CALLBACK_EVENT_ASR_LOADED, "离线资源加载成功。没有此回调可能离线语法功能不能使用。");
+//        sendStatusMessage(SpeechConstant.CALLBACK_EVENT_ASR_LOADED, "离线资源加载成功。没有此回调可能离线语法功能不能使用。");
     }
 
     /**
@@ -117,18 +146,33 @@ public class XjSpeechRecogListener extends StatusRecogListener {
      */
     @Override
     public void onOfflineUnLoaded() {
-        sendStatusMessage(SpeechConstant.CALLBACK_EVENT_ASR_UNLOADED, "离线资源卸载成功。");
+//        sendStatusMessage(SpeechConstant.CALLBACK_EVENT_ASR_UNLOADED, "离线资源卸载成功。");
     }
 
     @Override
     public void onAsrExit() {
         super.onAsrExit();
-        sendStatusMessage(SpeechConstant.CALLBACK_EVENT_ASR_EXIT, "识别引擎结束并空闲中");
+//        sendStatusMessage(SpeechConstant.CALLBACK_EVENT_ASR_EXIT, "识别引擎结束并空闲中");
     }
 
     private void sendStatusMessage(String eventName, String message) {
         //message = "[" + eventName + "]" + message;
         sendMessage(message, status);
+    }
+
+    private void sendStatusMessage(JSONObject message) {
+
+        if (needTime && status != STATUS_FINISHED) {
+//            message += "  ;time=" + System.currentTimeMillis();
+            PluginResult pluginResult = new PluginResult(PluginResult.Status.OK,message);
+            pluginResult.setKeepCallback(true);
+            this.callbackContext.sendPluginResult(pluginResult);
+        }else if( status == STATUS_FINISHED || status == STATUS_LONG_SPEECH_FINISHED) {
+            this.callbackContext.success(message);
+        }
+
+
+//        MyLogger.info(message);
     }
 
     private void sendMessage(String message) {
@@ -144,10 +188,14 @@ public class XjSpeechRecogListener extends StatusRecogListener {
 
 
         if (needTime && what != STATUS_FINISHED) {
-            message += "  ;time=" + System.currentTimeMillis();
+//            message += "  ;time=" + System.currentTimeMillis();
+            PluginResult pluginResult = new PluginResult(PluginResult.Status.OK,message);
+            pluginResult.setKeepCallback(true);
+            this.callbackContext.sendPluginResult(pluginResult);
         }else if( what == STATUS_FINISHED || what == STATUS_LONG_SPEECH_FINISHED) {
             this.callbackContext.success(message);
         }
+
 
         MyLogger.info(message);
     }

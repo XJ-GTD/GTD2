@@ -30,6 +30,26 @@ export class EmitService {
   //语音播放或结束事件
   private listenerEm:EventEmitter<boolean> = new EventEmitter<boolean>();
 
+  //新日程增加修改删除信息消息刷新
+  private immediatelyEm: EventEmitter<string> = new EventEmitter<string>();
+
+
+  registerImmediately(callback) {
+    if (this.immediatelyEm.closed) {
+      this.immediatelyEm = new EventEmitter<string>();
+    }
+    this.immediatelyEm.subscribe(($data: string) => {
+      callback($data);
+    });
+  };
+
+  emitImmediately($data: string) {
+    if (!this.immediatelyEm.isStopped) {
+      this.immediatelyEm.emit($data);
+    }
+  }
+
+
   //冥王星内建事件订阅/触发管理
   //同一个事件可以被多个调用注册
   private static buildinEvents: Map<string, Array<EventEmitter<any>>> = new Map<string, Array<EventEmitter<any>>>();

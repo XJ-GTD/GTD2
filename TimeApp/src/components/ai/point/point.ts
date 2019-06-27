@@ -15,6 +15,7 @@ import {EmitService} from "../../../service/util-service/emit.service";
 @Component({
   selector: 'PointComponent',
   template: `
+    <div class="jsai">{{immediately}}</div>
     <div class="aitool" #aitool>
       <b class=" speaking  danger" #light>
         <div class="spinner" (click)="listenStart()">
@@ -45,11 +46,13 @@ export class PointComponent {
   height: number;
   rotation = 0;
   dots:Array<Dot>;
-  DOTS_AMOUNT = 1000;
+  DOTS_AMOUNT = 800;
 
   speed: number = 0.0004;
 
   statusListener:boolean = false;
+
+  immediately:string = "你好啊你好啊你好你好";
 
   constructor(private utilService: UtilService,
               private assistantService: AssistantService,
@@ -60,12 +63,16 @@ export class PointComponent {
     this.emitService.registerListener((b)=>{
       this.statusListener = b;
       if (b){
-        this.speed = 0.004;
+        this.speed = 0.002;
         this._renderer.removeClass(this.light.nativeElement, "danger");
       }else{
         this._renderer.addClass(this.light.nativeElement, "danger");
         this.speed = 0.0004;
       }
+    });
+
+    this.emitService.registerImmediately((immediately)=>{
+       this.immediately = immediately;
     });
     // this.emitService.registerSpeak((b)=>{
     //   if (b){

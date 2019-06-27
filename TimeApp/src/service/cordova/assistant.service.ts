@@ -226,6 +226,9 @@ export class AssistantService {
     cordova.plugins.XjBaiduSpeech.stopListen();
     this.startWakeUp();
     this.emitService.emitListener(false);
+    setTimeout( () => {
+      this.emitService.emitImmediately("");
+    }, 2000);
   }
 
 
@@ -242,7 +245,10 @@ export class AssistantService {
     this.stopWakeUp();
     this.emitService.emitListener(true);
     await cordova.plugins.XjBaiduSpeech.startListen(async result => {
-
+      this.emitService.emitImmediately(result.text);
+      if (!result.finish) {
+        return ;
+      }
       this.stopListenAudio();
       // 读取录音进行base64转码
       let base64File: string = await this.file.readAsDataURL(this.mp3Path, this.mp3Name);
@@ -253,7 +259,7 @@ export class AssistantService {
       audioPro.c.client.option = DataConfig.wsWsOpt;
       audioPro.c.client.processor = DataConfig.wsWsProcessor;
       audioPro.c.server = DataConfig.wsServerContext;
-      await this.aibutlerRestful.postaudio(audioPro)
+      await this.aibutlerRestful.postaudio(audioPro);
       return result;
     }, async error => {
       this.stopListenAudio();
