@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { TdmPage } from './tdm';
+import { TdmePage } from './tdme';
 import {IonicModule} from "ionic-angular";
 import {PipesModule} from "../../pipes/pipes.module";
 import {ScrollSelectComponentModule} from "../../components/scroll-select/scroll-select.module";
@@ -8,7 +9,8 @@ import {ScrollRangePickerComponentModule} from "../../components/scroll-range-pi
 
 @NgModule({
   declarations: [
-    TdmPage
+    TdmPage,
+    TdmePage
   ],
   imports: [
       IonicModule,
@@ -20,10 +22,12 @@ import {ScrollRangePickerComponentModule} from "../../components/scroll-range-pi
   providers: [
   ],
   entryComponents:[
-    TdmPage
+    TdmPage,
+    TdmePage
   ],
   exports:[
-    TdmPage
+    TdmPage,
+    TdmePage
   ]
 })
 export class TdmPageModule {}
