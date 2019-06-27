@@ -69,12 +69,17 @@ export class TdmPage {
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad TdmPage');
+    let currentday: moment.Moment = null;
+
     if (this.navParams) {
       let paramter: ScdPageParamter = this.navParams.data;
-      this.day = this.util.showDate(paramter.d);
-      this.date = paramter.d.format("MMMM D");
+      currentday = paramter.d;
+    } else {
+      currentday = moment();
     }
 
+    this.day = this.util.showDate(currentday);
+    this.date = currentday.format("MMMM D");
   }
 
   timechanged(changed) {
