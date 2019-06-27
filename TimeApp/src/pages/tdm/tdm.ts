@@ -5,6 +5,7 @@ import { RadioSelectComponent } from '../../components/radio-select/radio-select
 import {ScrollRangePickerComponent} from "../../components/scroll-range-picker/scroll-range-picker";
 import {RcInParam, ScdData, ScdPageParamter} from "../../data.mapping";
 import {UtilService} from "../../service/util-service/util.service";
+import * as moment from "moment";
 
 @Component({
   selector: 'page-tdm',
