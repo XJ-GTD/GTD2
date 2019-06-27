@@ -45,6 +45,7 @@
 ##ionic cordova plugin add cordova-plugin-contacts
 ##ionic cordova plugin add cordova-plugin-network-information
 ##ionic cordova plugin add cordova-plugin-screen-orientation
+##ionic cordova plugin add jpush-phonegap-plugin --variable APP_KEY=e8b1f201b4e0cc102f665238 --variable CHANNEL=cn.sh.com.xj.timeApp
 
 
 
