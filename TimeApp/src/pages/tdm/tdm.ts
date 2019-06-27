@@ -12,7 +12,8 @@ import {UtilService} from "../../service/util-service/util.service";
   <ion-content class="content-set">
     <ion-grid>
       <ion-row justify-content-center>
-        <h1>{{day}}<br/><small>{{date}}</small></h1>
+        <h1>{{day}}</h1>
+        <p class="small">{{date}}</p>
       </ion-row>
       <ion-row justify-content-center>
         <div>
@@ -65,7 +66,7 @@ export class TdmPage {
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad NewAgendaPage');
+    console.log('ionViewDidLoad TdmPage');
     if (this.navParams) {
       let paramter: ScdPageParamter = this.navParams.data;
       this.day = this.util.showDate(paramter.d);
