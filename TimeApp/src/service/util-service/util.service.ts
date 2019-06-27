@@ -799,4 +799,19 @@ export class UtilService {
     const pairs = str.toUpperCase().split(' ').map(this.letterPairs);
     return this.flattenDeep(pairs);
   }
+
+  public showDate(day: moment.Moment) {
+    let nowDate = moment(moment(new Date()).format("YYYY/MM/DD"));
+    let days = day.diff(nowDate, 'days');
+
+    if (days == 1) {
+      return '明天';
+    } else if (days == 0) {
+      return '今天';
+    } else if (days == -1) {
+      return '昨天';
+    } else {
+      return day.format("M月D日");
+    }
+  }
 }

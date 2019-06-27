@@ -3,6 +3,8 @@ import { IonicPage, NavController, NavParams, Scroll } from 'ionic-angular';
 import { ScrollSelectComponent } from '../../components/scroll-select/scroll-select';
 import { RadioSelectComponent } from '../../components/radio-select/radio-select';
 import {ScrollRangePickerComponent} from "../../components/scroll-range-picker/scroll-range-picker";
+import {RcInParam, ScdData, ScdPageParamter} from "../../data.mapping";
+import {UtilService} from "../../service/util-service/util.service";
 
 @Component({
   selector: 'page-tdm',
@@ -10,10 +12,7 @@ import {ScrollRangePickerComponent} from "../../components/scroll-range-picker/s
   <ion-content class="content-set">
     <ion-grid>
       <ion-row justify-content-center>
-        <h1>今天</h1>
-      </ion-row>
-      <ion-row justify-content-center>
-        <p>二月 23</p>
+        <h1>{{day}}<br/><small>{{date}}</small></h1>
       </ion-row>
       <ion-row justify-content-center>
         <div>
@@ -37,6 +36,8 @@ import {ScrollRangePickerComponent} from "../../components/scroll-range-picker/s
   `
 })
 export class TdmPage {
+  day: string = "";
+  date: string = "";
   repeats: any = [{value: 0, caption: '关闭'}, {value: 1, caption: '每天'}, {value: 2, caption: '每周'}, {value: 3, caption: '每月'}, {value: 4, caption: '每年'}];
   labels: any = [{value:0,caption:'工作'}, {value:1,caption:'个人'}];
   months: any = [{value:'01',caption:'一月'}, {value:'02',caption:'二月'}, {value:'03',caption:'三月'}, {value:'04',caption:'四月'}, {value:'05',caption:'五月'}, {value:'06',caption:'六月'}, {value:'07',caption:'七月'}, {value:'08',caption:'八月'}, {value:'09',caption:'九月'}, {value:'10',caption:'十月'}, {value:'11',caption:'十一月'}, {value:'12',caption:'十二月'}];
@@ -55,7 +56,9 @@ export class TdmPage {
     {value:'Travel',caption:`<img class="image-option" src="../assets/imgs/Travel.png">`}
   ];
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
+  constructor(public navCtrl: NavController,
+              public navParams: NavParams,
+              private util: UtilService) {
     for (let year = 2009; year <= 2029; year++) {
       this.years.push({value:year.toString(),caption:year.toString()});
     }
@@ -63,6 +66,12 @@ export class TdmPage {
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad NewAgendaPage');
+    if (this.navParams) {
+      let paramter: ScdPageParamter = this.navParams.data;
+      this.day = this.util.showDay(paramter.d);
+      this.date = paramter.d.format("MMMM D");
+    }
+
   }
 
   timechanged(changed) {
