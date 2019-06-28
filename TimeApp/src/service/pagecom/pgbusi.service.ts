@@ -464,7 +464,10 @@ export class PgBusiService {
           this.notificationsService.badgeDecrease();
         }
       }
-      await this.delRcBySi(ctbl.si);
+
+      if (ctbl && ctbl.si) {
+        await this.delRcBySi(ctbl.si);
+      }
 
       this.emitService.emitRef(srId);
 
