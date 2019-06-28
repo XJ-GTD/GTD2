@@ -86,6 +86,8 @@ export class ScrollRangePickerComponent {
     let viewLines = this.viewHours * this.hourLines;
     this.blockGap = 2484 / (viewLines);
 
+    let pixels = document.body.clientWidth;
+
     // 画范围外时间线 (包括范围之前和范围之后)
     for (let hour = 0; hour < this.viewHours; hour++) {
       for (let block = 1; block <= this.hourLines; block++) {
