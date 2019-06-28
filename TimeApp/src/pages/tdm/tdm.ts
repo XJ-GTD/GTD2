@@ -14,12 +14,10 @@ import * as moment from "moment";
   <ion-content class="content-set">
     <ion-grid>
       <ion-row justify-content-center>
-        <div>
-          <h1>{{day}}</h1>
-        </div>
-        <div>
-          <p class="small">{{date}}</p>
-        </div>
+        <h1 class="mb-none">{{day}}</h1>
+      </ion-row>
+      <ion-row justify-content-center>
+        <p class="small mt-none">{{date}}</p>
       </ion-row>
       <ion-row justify-content-center>
         <div>

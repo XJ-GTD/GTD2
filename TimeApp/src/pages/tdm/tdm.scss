@@ -49,6 +49,14 @@ page-tdm {
     height: calc(100vmin * (180 / 1242))
   }
 
+  .mb-none {
+    margin-bottom: 0px;
+  }
+
+  .mt-none {
+    margin-top: 0px;
+  }
+
   i.color-dot {
     width: 1.5vmin;
     height: 1.5vmin;
