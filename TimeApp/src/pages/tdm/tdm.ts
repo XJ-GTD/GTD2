@@ -37,8 +37,10 @@ import * as moment from "moment";
         <ion-input type="text" value="" placeholder="喜马拉雅儿子的生日聚会" text-center></ion-input>
       </ion-row>
       <ion-row justify-content-center align-items-center>
-        <div class="color-dot" [ngStyle]="{'background-color': defaultplan.jc }">{{defaultplan.jn}}</div>
-
+        <div class="row-center">
+        <span class="color-dot" [ngStyle]="{'background-color': defaultplan.jc }"></span>
+        {{defaultplan.jn}}
+        </div>
       </ion-row>
     </ion-grid>
   </ion-content>
