@@ -1,13 +1,13 @@
 scroll-range-picker {
   width: 100vmin;
-  
+
   .scroll-box {
     flex: 1;
     width: 100%;
     height: calc(100vmin * (180 / 1242) + 32px);
     position: relative;
   }
-  
+
   .scroll-box-content {
     overflow-x: auto;
     overflow-y: hidden;
@@ -21,8 +21,9 @@ scroll-range-picker {
     padding: 16px;
     will-change: scroll-position;
     contain: size style layout;
+    z-index: 99999;
   }
-  
+
   .scroll-box-pointer {
     left: 0;
     right: 0;
@@ -32,17 +33,17 @@ scroll-range-picker {
     width: 100%;
     position: absolute;
   }
-  
+
   .scroll-box-pointer .scroll-box-zoom-wrapper {
     margin: 0;
   }
-  
+
   .scroll-box-pointer .scroll-box-zoom-wrapper,
   .scroll-box-pointer .svg-scroller {
     width: 100vmin;
     height: 100%;
   }
-  
+
   .scroll-box-zoom-wrapper {
     display: -webkit-box;
     display: -webkit-flex;
