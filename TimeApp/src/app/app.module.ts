@@ -95,8 +95,7 @@ import { DirectivesModule } from "../directives/directives.module";
 
 @NgModule({
   declarations: [
-    MyApp,
-    Autosize
+    MyApp
   ],
   imports: [
     BrowserModule,
