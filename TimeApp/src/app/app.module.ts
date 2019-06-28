@@ -91,7 +91,7 @@ import {RadioSelectComponentModule} from "../components/radio-select/radio-selec
 import {ScrollRangePickerComponentModule} from "../components/scroll-range-picker/scroll-range-picker.module";
 import { WeatherIconsModule } from 'ngx-icons';
 import { JPush } from '@jiguang-ionic/jpush';
-import {Autosize} from "../directives/ng-autosize/autosize.directive";
+import { DirectivesModule } from "../directives/directives.module";
 
 @NgModule({
   declarations: [
@@ -106,6 +106,7 @@ import {Autosize} from "../directives/ng-autosize/autosize.directive";
       mode: 'ios'
     }),
     IonicStorageModule.forRoot(),
+    DirectivesModule,
     HttpClientModule,
     BrowserAnimationsModule,
     RouterModule,

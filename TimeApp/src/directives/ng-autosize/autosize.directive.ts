@@ -4,7 +4,7 @@ import { Input, AfterViewInit, ElementRef, HostListener, Directive } from '@angu
   selector: 'ion-textarea[autosize]'
 })
 
-export class Autosize implements AfterViewInit {
+export class AutosizeDirective implements AfterViewInit {
 
   private el: HTMLElement;
   private _minHeight: string;
