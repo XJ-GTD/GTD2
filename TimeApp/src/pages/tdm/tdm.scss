@@ -48,4 +48,12 @@ page-tdm {
     width: 600vmin;
     height: calc(100vmin * (180 / 1242))
   }
+
+  .color-dot {
+    margin: 4px auto;
+    width: 1.5vmin;
+    height: 1.5vmin;
+    background-color: #fff;
+    border-radius: 50%;
+  }
 }
