@@ -73,7 +73,7 @@ export class AutosizeDirective implements AfterViewInit {
     if (target) {
       target.style.overflow-y = 'visible';
       target.style.height = 'auto';
-      target.style.height = this.el.scrollHeight + 'px';
+      target.style.height = target.scrollHeight + 'px';
     }
   }
 
