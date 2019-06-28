@@ -60,7 +60,7 @@ export class ScrollRangePickerComponent {
   pushedtitles: any = {'6': false, '12': false, '20': false};
   startX: number;
   endX: number;
-  blockGap: number;
+  blockGap: number = 3;
   hourLines: number;
   @Output("changed")
   changedPropEvent = new EventEmitter();
@@ -84,9 +84,10 @@ export class ScrollRangePickerComponent {
 
     this.hourLines = 60 / this.viewMinTime;
     let viewLines = this.viewHours * this.hourLines;
-    this.blockGap = 2484 / (viewLines);
+    //this.blockGap = 2484 / (viewLines);
 
     let pixels = document.body.clientWidth;
+    let canView = pixels / 5 * this.viewMinTime;
 
     // 画范围外时间线 (包括范围之前和范围之后)
     for (let hour = 0; hour < this.viewHours; hour++) {
