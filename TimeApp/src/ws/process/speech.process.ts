@@ -41,14 +41,24 @@ export class SpeechProcess extends BaseProcess implements MQProcess {
 
       //处理所需要参数
       let serverratio = content.thisContext.context.client.serverratio;
-      // let ratios = content.thisContext.context.client.ratios.reduce((accumulator, currentValue) => {
-      //
-      //   if (accumulator && typeof accumulator != "object") {
-      //     return accumulator + ", " + currentValue['operation'] + ": " + currentValue['ratio'];
-      //   } else {
-      //     return accumulator['operation'] + ": " + accumulator['ratio'] + ", " + currentValue['operation'] + ": " + currentValue['ratio'];
-      //   }
-      // });
+
+      let ratios = "";
+
+      if (content.thisContext.context.client.ratios && content.thisContext.context.client.ratios.length > 1) {
+        ratios = content.thisContext.context.client.ratios.reduce((accumulator, currentValue) => {
+
+          if (accumulator && typeof accumulator != "object") {
+            return accumulator + ", " + currentValue['operation'] + ": " + currentValue['ratio'];
+          } else {
+            return accumulator['operation'] + ": " + accumulator['ratio'] + ", " + currentValue['operation'] + ": " + currentValue['ratio'];
+          }
+        });
+      }
+
+      if (content.thisContext.context.client.ratios && content.thisContext.context.client.ratios.length == 1) {
+        let currentratio = content.thisContext.context.client.ratios[0];
+        ratios = currentratio['operation'] + ": " + currentratio['ratio'];
+      }
 
       let ti = moment().valueOf() - content.thisContext.context.client.time;
       let spData: SpeechPara = content.parameters;
@@ -174,11 +184,14 @@ export class SpeechProcess extends BaseProcess implements MQProcess {
 
       //通知页面显示播报文本
       let emspeech:SpeechEmData = new SpeechEmData();
-      if (DataConfig.isdebug)
-       // emspeech.an = speakText + " #" + serverratio + ", " + ti + "(" + ratios + ")" + "#";
+      if (DataConfig.isdebug) {
+        if (ratios)
+          emspeech.an = speakText + " #" + serverratio + ", " + ti + "(" + ratios + ")" + "#";
+        else
+          emspeech.an = speakText + " #" + serverratio + ", " + ti + "#";
+      } else {
         emspeech.an = speakText;
-      else
-        emspeech.an = speakText;
+      }
       emspeech.org = content.thisContext.original;
       this.emitService.emitSpeech(emspeech);
 
