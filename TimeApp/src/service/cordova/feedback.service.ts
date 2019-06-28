@@ -115,4 +115,12 @@ export class FeedbackService {
     }
     return;
   }
+
+  public vibrate() {
+
+    if (UserConfig.getSetting(DataConfig.SYS_Z)) {
+      this.vibration.vibrate(400);
+    }
+    return;
+  }
 }

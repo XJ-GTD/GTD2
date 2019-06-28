@@ -10,6 +10,7 @@ import {UtilService} from "../util-service/util.service";
 import {SsService} from "../../pages/ss/ss.service";
 import {UserConfig} from "../config/user.config";
 import {EmitService} from "../util-service/emit.service";
+import {FeedbackService} from "./feedback.service";
 
 declare var cordova: any;
 
@@ -30,7 +31,8 @@ export class AssistantService {
               private aibutlerRestful: AibutlerRestful,
               private sqliteExec: SqliteExec,
               private utilService: UtilService,
-              private emitService: EmitService) {
+              private emitService: EmitService,
+              private feedbackService:FeedbackService) {
 
     this.mp3Path = this.file.cacheDirectory;
     this.mp3Name = "iat.pcm";
@@ -223,6 +225,8 @@ export class AssistantService {
   public stopListenAudio() {
     this.listening = false;
     if (!this.utilService.isMobile()) return;
+
+    this.feedbackService.vibrate();
     cordova.plugins.XjBaiduSpeech.stopListen();
     this.startWakeUp();
     this.emitService.emitListener(false);
@@ -244,6 +248,7 @@ export class AssistantService {
     this.stopSpeak(false);
     this.stopWakeUp();
     this.emitService.emitListener(true);
+    this.feedbackService.vibrate();
     await cordova.plugins.XjBaiduSpeech.startListen(async result => {
       this.emitService.emitImmediately(result.text);
       if (!result.finish) {
