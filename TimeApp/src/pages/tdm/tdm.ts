@@ -37,6 +37,7 @@ import * as moment from "moment";
       </ion-row>
       <ion-row justify-content-center>
         <div class="color-dot" [ngStyle]="{'background-color': defaultplan.jc }"></div>
+        {{defaultplan.jn}}
       </ion-row>
     </ion-grid>
   </ion-content>
@@ -46,6 +47,7 @@ export class TdmPage {
   day: string = "";
   date: string = "";
   defaultplan: any = {
+    jn: "家庭",
     jc: `#881562`
   };
 
