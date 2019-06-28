@@ -52,7 +52,7 @@ export class PointComponent {
 
   statusListener:boolean = false;
 
-  immediately:string = "你好啊你好啊你好你好";
+  immediately:string = "";
 
   constructor(private utilService: UtilService,
               private assistantService: AssistantService,

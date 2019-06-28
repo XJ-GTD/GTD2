@@ -50,16 +50,16 @@ public class MyTts {
 
     private Context context;
 
-    protected String offlineVoice = OfflineResource.VOICE_DUYY;
+    protected String offlineVoice = OfflineResource.VOICE_FEMALE;
 
 
 
     private static final String TAG = "MyTts";
 
     public MyTts(Context context, MessageListener messageListener,String appId,String appKey,String secretKey){
-         this.appId = appId;
-        this.appKey = appKey;
-        this.secretKey = secretKey;
+//         this.appId = appId;
+//        this.appKey = appKey;
+//        this.secretKey = secretKey;
 
         initTTs(context,messageListener);
     }
@@ -80,7 +80,7 @@ public class MyTts {
 
 
         // 1. 获取实例
-       // mSpeechSynthesizer =  new NonBlockSyntherizer(context, initConfig, null);
+        // mSpeechSynthesizer =  new NonBlockSyntherizer(context, initConfig, null);
         mSpeechSynthesizer =  new MySyntherizer(context, initConfig, null);
 
 
@@ -136,15 +136,15 @@ public class MyTts {
         Map<String, String> params = new HashMap<String, String>();
         // 以下参数均为选填
         // 设置在线发声音人： 0 普通女声（默认） 1 普通男声 2 特别男声 3 情感男声<度逍遥> 4 情感儿童声<度丫丫>
-        params.put(SpeechSynthesizer.PARAM_SPEAKER, "4");
+        params.put(SpeechSynthesizer.PARAM_SPEAKER, "0");
         // 设置合成的音量，0-9 ，默认 5
-        params.put(SpeechSynthesizer.PARAM_VOLUME, "9");
+        params.put(SpeechSynthesizer.PARAM_VOLUME, "4");
         // 设置合成的语速，0-9 ，默认 5
-        params.put(SpeechSynthesizer.PARAM_SPEED, "5");
+        params.put(SpeechSynthesizer.PARAM_SPEED, "6");
         // 设置合成的语调，0-9 ，默认 5
         params.put(SpeechSynthesizer.PARAM_PITCH, "5");
 
-        params.put(SpeechSynthesizer.PARAM_MIX_MODE, SpeechSynthesizer.MIX_MODE_DEFAULT);
+        params.put(SpeechSynthesizer.PARAM_MIX_MODE, SpeechSynthesizer.MIX_MODE_HIGH_SPEED_SYNTHESIZE);
         // 该参数设置为TtsMode.MIX生效。即纯在线模式不生效。
         // MIX_MODE_DEFAULT 默认 ，wifi状态下使用在线，非wifi离线。在线状态下，请求超时6s自动转离线
         // MIX_MODE_HIGH_SPEED_SYNTHESIZE_WIFI wifi状态下使用在线，非wifi离线。在线状态下， 请求超时1.2s自动转离线

@@ -27,6 +27,7 @@ import cn.sh.com.xj.timeApp.R;
  */
 public class XjBaiduSpeech extends CordovaPlugin{
 
+    //打开关闭音效
     private boolean isTs = true;
 
     private String samplePath;
@@ -50,11 +51,12 @@ public class XjBaiduSpeech extends CordovaPlugin{
 
         params.put(SpeechConstant.ACCEPT_AUDIO_VOLUME, false);
         params.put(SpeechConstant.NLU, "enable");
-        params.put(SpeechConstant.PID, 15372);
+        params.put(SpeechConstant.PID, 15373);
         params.put(SpeechConstant.VAD, SpeechConstant.VAD_DNN);
         params.put(SpeechConstant.ASR_OFFLINE_ENGINE_GRAMMER_FILE_PATH, "assets://baidu_speech_grammar.bsg");
         params.put(SpeechConstant.OUT_FILE, samplePath+ "/iat.pcm");
         params.put(SpeechConstant.ACCEPT_AUDIO_DATA, "true");
+        //params.put(SpeechConstant.VAD_ENDPOINT_TIMEOUT, 1200); // 长语音
 
         if (isTs){
             params.put(SpeechConstant.SOUND_START, R.raw.bdspeech_recognition_start);
@@ -62,8 +64,8 @@ public class XjBaiduSpeech extends CordovaPlugin{
             params.put(SpeechConstant.SOUND_SUCCESS, R.raw.bdspeech_recognition_success);
             params.put(SpeechConstant.SOUND_ERROR, R.raw.bdspeech_recognition_error);
             params.put(SpeechConstant.SOUND_CANCEL, R.raw.bdspeech_recognition_cancel);
-
         }
+
         //params.put(SpeechConstant.OUT_FILE, "res://msc/iat.wav");
         // SpeechConstant.SOUND_START,
         //params.put(SpeechConstant.VAD_ENDPOINOUTT_TIMEOUT, 0); // 长语音
