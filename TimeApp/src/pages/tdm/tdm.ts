@@ -14,7 +14,7 @@ import * as moment from "moment";
   <ion-content class="content-set">
     <ion-grid>
       <ion-row justify-content-center>
-        <h1 class="mb-none">{{day}}</h1>
+        <h1 class="mb-none mt-seven">{{day}}</h1>
       </ion-row>
       <ion-row justify-content-center>
         <p class="small mt-none">{{date}}</p>
