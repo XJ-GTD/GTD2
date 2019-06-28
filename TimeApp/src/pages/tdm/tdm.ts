@@ -7,6 +7,7 @@ import {RcInParam, ScdData, ScdPageParamter} from "../../data.mapping";
 import {UtilService} from "../../service/util-service/util.service";
 import * as moment from "moment";
 
+@IonicPage()
 @Component({
   selector: 'page-tdm',
   template: `
