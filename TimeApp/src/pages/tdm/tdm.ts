@@ -29,7 +29,6 @@ import * as moment from "moment";
           <button ion-button clear class="text-btn">{{rangeEnd}}</button>
         </div>
       </ion-row>
-      <p padding></p>
       <ion-row class="full-width" justify-content-center>
         <scroll-range-picker max="24" min="5" value="18:00" (changed)="timechanged($event)"></scroll-range-picker>
       </ion-row>
