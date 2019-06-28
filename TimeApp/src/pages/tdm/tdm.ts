@@ -34,7 +34,7 @@ import * as moment from "moment";
         <scroll-range-picker max="24" min="5" value="18:00" (changed)="timechanged($event)"></scroll-range-picker>
       </ion-row>
       <ion-row justify-content-center>
-        <ion-textarea type="text" placeholder="喜马拉雅儿子的生日聚会" autosize maxHeight="100" text-center></ion-textarea>
+        <ion-textarea type="text" class="w80" placeholder="喜马拉雅儿子的生日聚会" autosize maxHeight="200" text-center></ion-textarea>
       </ion-row>
       <ion-row justify-content-center align-items-center>
         <div class="row-center">
