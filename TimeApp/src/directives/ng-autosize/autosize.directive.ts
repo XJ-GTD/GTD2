@@ -71,7 +71,7 @@ export class AutosizeDirective implements AfterViewInit {
     let target = this.element.nativeElement.querySelector("textarea");
 
     if (target) {
-      target.style.overflow-y = 'visible';
+      target.style['overflow-y'] = 'visible';
       target.style.height = 'auto';
       target.style.height = target.scrollHeight + 'px';
     }
