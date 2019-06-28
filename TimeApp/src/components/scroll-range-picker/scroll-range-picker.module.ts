@@ -1,7 +1,6 @@
 import {ModuleWithProviders, NgModule, CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
 import { IonicPageModule } from 'ionic-angular';
 import { ScrollRangePickerComponent } from './scroll-range-picker';
-import { WeatherIconsModule } from 'ngx-icons';
 import {PipesModule} from "../../pipes/pipes.module";
 
 @NgModule({
