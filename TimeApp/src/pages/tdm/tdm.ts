@@ -38,7 +38,7 @@ import * as moment from "moment";
       </ion-row>
       <ion-row justify-content-center align-items-center>
         <div class="row-center">
-        <span class="color-dot" [ngStyle]="{'background-color': defaultplan.jc }"></span>
+        <i class="color-dot" [ngStyle]="{'background-color': defaultplan.jc }"></i>
         {{defaultplan.jn}}
         </div>
       </ion-row>
