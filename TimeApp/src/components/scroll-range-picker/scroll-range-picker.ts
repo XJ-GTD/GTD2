@@ -88,6 +88,7 @@ export class ScrollRangePickerComponent {
 
     let pixels = document.body.clientWidth;
     let canView = pixels / 5 * this.viewMinTime;
+    this.viewBoxPointer = '0 0 ' + canView + ' 180';
 
     // 画范围外时间线 (包括范围之前和范围之后)
     for (let hour = 0; hour < this.viewHours; hour++) {
