@@ -106,10 +106,6 @@ export class ScrollRangePickerComponent {
       }
     }
 
-    for (let split = 0; split < this.viewMinutes; split += this.viewMinTime) {
-
-    }
-
     // 画设置时间段内时间线
     for (let hour = 0; hour < this.viewHours; hour++) {
       for (let block = 1; block <= this.hourLines; block++) {
