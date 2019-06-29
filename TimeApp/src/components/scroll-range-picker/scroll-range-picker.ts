@@ -87,13 +87,16 @@ export class ScrollRangePickerComponent {
     //每屏操作时间范围以6小时为单位,6小时/12小时/18小时/24小时
     this.viewHours = Math.floor(Math.floor((Math.floor(pixels / this.splitpixel) * 5) / 60) / 6) * 6;
 
-
     this.hourLines = 60 / this.viewMinTime;
     let viewLines = this.viewHours * this.hourLines;
     this.blockGap = 2484 / (viewLines);
 
+    for (let timeLineX = this.blockGap; timeLineX < 2484 * 3; timeLineX += this.blockGap) {
+      this.timeLines.push(timeLineX);
+    }
+
     // 画范围外时间线 (包括范围之前和范围之后)
-    for (let hour = 0; hour < this.viewHours; hour++) {
+    /*for (let hour = 0; hour < this.viewHours; hour++) {
       for (let block = 1; block <= this.hourLines; block++) {
         let timeLineX = this.blockGap * ((hour * this.hourLines) + block);
 
@@ -118,7 +121,7 @@ export class ScrollRangePickerComponent {
 
         this.timeLines.push(timeLineX);
       }
-    }
+    }*/
 
     let clientWidth = this._scrollBox.nativeElement.clientWidth;
     let scrollWidth = this._scrollBox.nativeElement.scrollWidth;
