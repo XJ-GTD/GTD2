@@ -85,7 +85,7 @@ export class ScrollRangePickerComponent {
     //计算当前屏幕可以正常显示的时间长度
     let pixels = document.body.clientWidth;
     //每屏操作时间范围以6小时为单位,6小时/12小时/18小时/24小时
-    this.viewHours = Math.floor(Math.floor((Math.floor(pixels / this.splitpixel) * 5) / 60) / 6);
+    this.viewHours = Math.floor(Math.floor((Math.floor(pixels / this.splitpixel) * 5) / 60) / 6) * 6;
 
 
     this.hourLines = 60 / this.viewMinTime;
