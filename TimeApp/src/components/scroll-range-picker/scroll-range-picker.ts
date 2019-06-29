@@ -85,8 +85,8 @@ export class ScrollRangePickerComponent {
 
     //计算当前屏幕可以正常显示的时间长度
     let pixels = document.body.clientWidth;
-    let hours = Math.floor(pixels / this.splitpixel);
-    let minutes = pixels % this.splitpixel;
+    let hours = Math.floor((Math.floor(pixels / this.splitpixel) * 5) / 60);
+    let minutes = (Math.floor(pixels / this.splitpixel) * 5) % 60;
 
     console.log("screen selection range: " + hours + ":" + minutes);
 
