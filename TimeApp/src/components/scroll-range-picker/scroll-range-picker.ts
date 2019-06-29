@@ -67,6 +67,7 @@ export class ScrollRangePickerComponent {
   lastScrollLeft: number = 0;
   value: string = '12:00';
   guid: string = '';
+  splitpixel: number = 2;
 
   constructor(public events: Events) {
     this.guid = this.createGuid();
@@ -82,14 +83,16 @@ export class ScrollRangePickerComponent {
       that.events.publish('_scrollBox' + this.guid + ':change', event.target.scrollLeft, Date.now());
     }, {passive: true}, false);
 
+    //计算当前屏幕可以正常显示的时间长度
+    let pixels = document.body.clientWidth;
+    let hours = Math.floor(pixels / this.splitpixel);
+    let minutes = pixels % this.splitpixel;
+
+    console.log("screen selection range: " + hours + ":" + minutes);
+
     this.hourLines = 60 / this.viewMinTime;
     let viewLines = this.viewHours * this.hourLines;
-    //this.blockGap = 2484 / (viewLines);
-
-    let pixels = document.body.clientWidth;
-    let canView = pixels / 5 * this.viewMinTime;
-    let screenMinutes = pixels / this.blockGap;
-    this.blockGap = 2484 / pixels;
+    this.blockGap = 2484 / (viewLines);
 
     // 画范围外时间线 (包括范围之前和范围之后)
     for (let hour = 0; hour < this.viewHours; hour++) {
