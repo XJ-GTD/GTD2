@@ -49,7 +49,6 @@ export class ScrollRangePickerComponent {
   viewBoxPointer: string = '0 0 2484 180';
   @Input('type')
   viewType: string = 'day-range-picker';  // day-range-picker
-  @Input('max')
   viewHours: number = 24; // 12小时
   @Input('min')
   viewMinTime: number = 5; // 5分钟
@@ -85,10 +84,9 @@ export class ScrollRangePickerComponent {
 
     //计算当前屏幕可以正常显示的时间长度
     let pixels = document.body.clientWidth;
-    let hours = Math.floor((Math.floor(pixels / this.splitpixel) * 5) / 60);
-    let minutes = (Math.floor(pixels / this.splitpixel) * 5) % 60;
+    //每屏操作时间范围以6小时为单位,6小时/12小时/18小时/24小时
+    this.viewHours = Math.floor(Math.floor((Math.floor(pixels / this.splitpixel) * 5) / 60) / 6);
 
-    console.log("screen selection range: " + hours + ":" + minutes);
 
     this.hourLines = 60 / this.viewMinTime;
     let viewLines = this.viewHours * this.hourLines;
@@ -106,6 +104,10 @@ export class ScrollRangePickerComponent {
         this.timeLines.push(timeLineX);
         this.timeLines.push(timeLineX + 2484 + this.viewHiddenWidth);
       }
+    }
+
+    for (let split = 0; split < this.viewMinutes; split += this.viewMinTime) {
+
     }
 
     // 画设置时间段内时间线
