@@ -1,5 +1,6 @@
 import { Component, ViewChild, Input, Output, EventEmitter,ElementRef } from '@angular/core';
 import {  Events } from 'ionic-angular';
+import * as moment from "moment";
 
 /**
  * Generated class for the ScrollRangePickerComponent component.
@@ -91,8 +92,21 @@ export class ScrollRangePickerComponent {
     let viewLines = this.viewHours * this.hourLines;
     this.blockGap = 2484 / (viewLines);
 
-    for (let timeLineX = this.blockGap; timeLineX < 2484 * 6; timeLineX += this.blockGap) {
-      this.timeLines.push(timeLineX);
+    let middle = 2484 * 3;
+    let middleTime = moment("12:00");
+    this.timeLines.push(middle);
+
+    for (let timeLineX = this.blockGap; timeLineX < 2484 * 3; timeLineX += this.blockGap) {
+      let left = middle - timeLineX;
+      let right = middle + timeLineX;
+
+      if (left > 0) {
+        this.timeLines.push(left);
+      }
+
+      if (right > middle * 2) {
+        this.timeLines.push(right);
+      }
     }
 
     // 画范围外时间线 (包括范围之前和范围之后)
