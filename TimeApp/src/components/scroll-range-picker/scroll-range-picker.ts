@@ -18,8 +18,8 @@ import {  Events } from 'ionic-angular';
                   <style>.time-line{stroke:#fff;}.time-block-title{fill:#fff;}</style>
               </defs>
               <title>timerange-picker</title>
-              <line *ngFor="let x of timeLines; let i = index;" class="time-line" stroke-linecap="undefined" stroke-linejoin="undefined" [attr.id]="'svg_u' + i" y2="59" [attr.x2]="x" y1="0" [attr.x1]="x" stroke-width="1.5" fill="none"/>
-              <line *ngFor="let x of timeLines; let i = index;" class="time-line" stroke-linecap="undefined" stroke-linejoin="undefined" [attr.id]="'svg_d' + i" y2="179" [attr.x2]="x" y1="120" [attr.x1]="x" stroke-width="1.5" fill="none"/>
+              <line *ngFor="let x of timeLines; let i = index;" class="time-line" stroke-linecap="undefined" stroke-linejoin="undefined" [attr.id]="'svg_u' + i" y2="119" [attr.x2]="x" y1="0" [attr.x1]="x" stroke-width="1.5" fill="none"/>
+              <line *ngFor="let x of timeLines; let i = index;" class="time-line" stroke-linecap="undefined" stroke-linejoin="undefined" [attr.id]="'svg_d' + i" y2="359" [attr.x2]="x" y1="240" [attr.x1]="x" stroke-width="1.5" fill="none"/>
               <text *ngFor="let title of blockTitles;" class="time-block-title" stroke="#000" xml:space="preserve" text-anchor="start" font-family="Helvetica, Arial, sans-serif" font-size="24" id="svg_4" y="98" [attr.x]="title.x" fill-opacity="null" stroke-opacity="null" stroke-width="0">{{title.title}}</text>
           </svg>
         </div>
@@ -33,8 +33,8 @@ import {  Events } from 'ionic-angular';
                   <style>.time-line{stroke:#fff;}.time-block-title{fill:#fff;}</style>
               </defs>
               <title>timerange-picker-pointer</title>
-              <line *ngIf="startX" class="time-line" stroke-linecap="undefined" stroke-linejoin="undefined" id="svg_start" y2="179" [attr.x2]="startX" y1="0" [attr.x1]="startX" stroke-width="1.5" fill="none"/>
-              <line *ngIf="endX" class="time-line" stroke-linecap="undefined" stroke-linejoin="undefined" id="svg_end" y2="179" [attr.x2]="endX" y1="0" [attr.x1]="endX" stroke-width="1.5" fill="none"/>
+              <line *ngIf="startX" class="time-line" stroke-linecap="undefined" stroke-linejoin="undefined" id="svg_start" y2="359" [attr.x2]="startX" y1="0" [attr.x1]="startX" stroke-width="1.5" fill="none"/>
+              <line *ngIf="endX" class="time-line" stroke-linecap="undefined" stroke-linejoin="undefined" id="svg_end" y2="359" [attr.x2]="endX" y1="0" [attr.x1]="endX" stroke-width="1.5" fill="none"/>
           </svg>
         </div>
       </div>
@@ -44,9 +44,9 @@ import {  Events } from 'ionic-angular';
 export class ScrollRangePickerComponent {
 
   @ViewChild('scrollBox', { read: ElementRef }) _scrollBox: ElementRef;
-  viewBox: string = '0 0 ' + 2484 * 3 + ' 180';
+  viewBox: string = '0 0 ' + 2484 * 3 + ' 360';
   viewHiddenWidth: number = 2484 * 24 / 24;
-  viewBoxPointer: string = '0 0 2484 180';
+  viewBoxPointer: string = '0 0 2484 360';
   @Input('type')
   viewType: string = 'day-range-picker';  // day-range-picker
   viewHours: number = 24; // 12小时
