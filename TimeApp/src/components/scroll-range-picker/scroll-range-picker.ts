@@ -20,7 +20,7 @@ import {  Events } from 'ionic-angular';
               <title>timerange-picker</title>
               <line *ngFor="let x of timeLines; let i = index;" class="time-line" stroke-linecap="undefined" stroke-linejoin="undefined" [attr.id]="'svg_u' + i" y2="119" [attr.x2]="x" y1="0" [attr.x1]="x" stroke-width="1.5" fill="none"/>
               <line *ngFor="let x of timeLines; let i = index;" class="time-line" stroke-linecap="undefined" stroke-linejoin="undefined" [attr.id]="'svg_d' + i" y2="359" [attr.x2]="x" y1="240" [attr.x1]="x" stroke-width="1.5" fill="none"/>
-              <text *ngFor="let title of blockTitles;" class="time-block-title" stroke="#000" xml:space="preserve" text-anchor="start" font-family="Helvetica, Arial, sans-serif" font-size="24" id="svg_4" y="98" [attr.x]="title.x" fill-opacity="null" stroke-opacity="null" stroke-width="0">{{title.title}}</text>
+              <text *ngFor="let title of blockTitles;" class="time-block-title" stroke="#000" xml:space="preserve" text-anchor="start" font-family="Helvetica, Arial, sans-serif" font-size="24" id="svg_4" y="188" [attr.x]="title.x" fill-opacity="null" stroke-opacity="null" stroke-width="0">{{title.title}}</text>
           </svg>
         </div>
       </div>
