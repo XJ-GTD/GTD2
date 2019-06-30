@@ -101,7 +101,7 @@ export class ScrollRangePickerComponent {
       let right = middle + timeLineX;
 
       if (left > 0) {
-        this.timeLines.push(left);
+        this.timeLines.unshift(left);
       }
 
       if (right > middle * 2) {
