@@ -160,17 +160,17 @@ export class ScrollRangePickerComponent {
     let timeGapMinutes = Math.floor(timeGap / this.blockGap) * this.viewMinTime;
 
     if (timeGapMinutes == 0) {
-      return this.baseTime.format("hh:mm");
+      return this.baseTime.format("HH:mm");
     } else if (timeGapMinutes > 0) {
       let curTime = moment.unix(this.baseTime.unix());
       curTime.add(timeGapMinutes, "minutes");
 
-      return curTime.format("hh:mm");
+      return curTime.format("HH:mm");
     } else {
       let curTime = moment.unix(this.baseTime.unix());
       curTime.subtract(Math.abs(timeGapMinutes), "minutes");
 
-      return curTime.format("hh:mm");
+      return curTime.format("HH:mm");
     }
   }
 
