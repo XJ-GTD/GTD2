@@ -156,7 +156,7 @@ export class ScrollRangePickerComponent {
   }
 
   getTimeString(scrollLeft, clientWidth, scrollWidth) {
-    let timeGap = (scrollWidth / 2) - (scrollLeft + (clientWidth / 2));
+    let timeGap = (scrollLeft + (clientWidth / 2)) - (scrollWidth / 2);
     let timeGapMinutes = Math.floor(timeGap / this.blockGap) * this.viewMinTime;
 
     if (timeGapMinutes == 0) {
