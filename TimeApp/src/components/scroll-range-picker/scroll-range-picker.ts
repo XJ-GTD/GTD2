@@ -68,7 +68,7 @@ export class ScrollRangePickerComponent {
   value: string = '12:00';
   guid: string = '';
   splitpixel: number = 2;
-  baseTime: moment.Moment = moment("12:00");
+  baseTime: moment.Moment = moment("2019/6/30 12:00");
 
   constructor(public events: Events) {
     this.guid = this.createGuid();
