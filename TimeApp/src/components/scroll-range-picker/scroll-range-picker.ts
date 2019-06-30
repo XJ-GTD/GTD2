@@ -44,7 +44,7 @@ import {  Events } from 'ionic-angular';
 export class ScrollRangePickerComponent {
 
   @ViewChild('scrollBox', { read: ElementRef }) _scrollBox: ElementRef;
-  viewBox: string = '0 0 ' + 2484 * 3 + ' 360';
+  viewBox: string = '0 0 ' + 2484 * 6 + ' 360';
   viewHiddenWidth: number = 2484 * 24 / 24;
   viewBoxPointer: string = '0 0 2484 360';
   @Input('type')
@@ -91,7 +91,7 @@ export class ScrollRangePickerComponent {
     let viewLines = this.viewHours * this.hourLines;
     this.blockGap = 2484 / (viewLines);
 
-    for (let timeLineX = this.blockGap; timeLineX < 2484 * 3; timeLineX += this.blockGap) {
+    for (let timeLineX = this.blockGap; timeLineX < 2484 * 6; timeLineX += this.blockGap) {
       this.timeLines.push(timeLineX);
     }
 
