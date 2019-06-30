@@ -161,9 +161,14 @@ export class ScrollRangePickerComponent {
 
     if (timeGapMinutes == 0) {
       return this.baseTime.format("hh:mm");
-    } else {
+    } else if (timeGapMinutes > 0) {
       let curTime = moment.unix(this.baseTime.unix());
       curTime.add(timeGapMinutes, "minutes");
+
+      return curTime.format("hh:mm");
+    } else {
+      let curTime = moment.unix(this.baseTime.unix());
+      curTime.subtract(Math.abs(timeGapMinutes), "minutes");
 
       return curTime.format("hh:mm");
     }
