@@ -104,7 +104,7 @@ export class ScrollRangePickerComponent {
         this.timeLines.unshift(left);
       }
 
-      if (right > middle * 2) {
+      if (right < middle * 2) {
         this.timeLines.push(right);
       }
     }
