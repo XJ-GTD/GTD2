@@ -125,7 +125,7 @@ export class ScrollRangePickerComponent {
 
     let clientWidth = this._scrollBox.nativeElement.clientWidth;
     let scrollWidth = this._scrollBox.nativeElement.scrollWidth;
-    this.startX = this.getTimeX('6:00', 2484);
+    this.startX = this.getTimeX(this.viewHours / 2 + ":00", 2484);
     let scrollLeft = this.getScrollLeft(this.value, clientWidth, scrollWidth);
     this._scrollBox.nativeElement.scrollLeft = scrollLeft;
   }
