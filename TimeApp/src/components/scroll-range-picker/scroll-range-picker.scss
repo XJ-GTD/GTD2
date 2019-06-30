@@ -32,6 +32,7 @@ scroll-range-picker {
     padding: 16px 0;
     width: 100%;
     position: absolute;
+    pointer-events: none;
   }
 
   .scroll-box-pointer .scroll-box-zoom-wrapper {
