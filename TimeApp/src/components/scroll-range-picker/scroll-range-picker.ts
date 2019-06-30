@@ -68,6 +68,7 @@ export class ScrollRangePickerComponent {
   value: string = '12:00';
   guid: string = '';
   splitpixel: number = 2;
+  baseTime: moment.Moment = moment("12:00");
 
   constructor(public events: Events) {
     this.guid = this.createGuid();
@@ -93,7 +94,6 @@ export class ScrollRangePickerComponent {
     this.blockGap = 2484 / (viewLines);
 
     let middle = 2484 * 3;
-    let middleTime = moment("12:00");
     this.timeLines.push(middle);
 
     for (let timeLineX = this.blockGap; timeLineX < 2484 * 3; timeLineX += this.blockGap) {
@@ -156,12 +156,17 @@ export class ScrollRangePickerComponent {
   }
 
   getTimeString(scrollLeft, clientWidth, scrollWidth) {
-    let timeGap = (scrollLeft + (clientWidth / 2)) / scrollWidth * 2484;
+    let timeGap = (scrollWidth / 2) - (scrollLeft + (clientWidth / 2));
+    let timeGapMinutes = Math.floor(timeGap / this.blockGap) * this.viewMinTime;
 
-    let hour = Math.floor(timeGap / (this.blockGap * this.hourLines));
-    let minute = Math.floor((timeGap - (hour * (this.blockGap * this.hourLines))) / this.blockGap) * this.viewMinTime;
+    if (timeGapMinutes == 0) {
+      return this.baseTime.format("hh:mm");
+    } else {
+      let curTime = moment.unix(this.baseTime.unix());
+      curTime.add(timeGapMinutes, "minutes");
 
-    return this.formatNumber(hour, '00') + ":" + this.formatNumber(minute, '00');
+      return curTime.format("hh:mm");
+    }
   }
 
   getTimeX(time, width) {
