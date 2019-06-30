@@ -21,7 +21,6 @@ scroll-range-picker {
     padding: 16px;
     will-change: scroll-position;
     contain: size style layout;
-    z-index: 99999;
   }
 
   .scroll-box-pointer {
