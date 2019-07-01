@@ -5,7 +5,7 @@ import { RadioSelectComponent } from '../../components/radio-select/radio-select
 import { ScrollRangePickerComponent } from "../../components/scroll-range-picker/scroll-range-picker";
 import { SpeechBubbleComponent } from "../../components/speech-bubble/speech-bubble";
 import { FsData, RcInParam, ScdData, ScdPageParamter, SpecScdData } from "../../data.mapping";
-import {DataConfig} from "../../service/config/data.config";
+import { DataConfig } from "../../service/config/data.config";
 
 @Component({
   selector: 'page-tdme',
