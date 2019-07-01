@@ -5,6 +5,7 @@ import { RadioSelectComponent } from '../../components/radio-select/radio-select
 import { ScrollRangePickerComponent } from "../../components/scroll-range-picker/scroll-range-picker";
 import { SpeechBubbleComponent } from "../../components/speech-bubble/speech-bubble";
 import { FsData, RcInParam, ScdData, ScdPageParamter, SpecScdData } from "../../data.mapping";
+import {DataConfig} from "../../service/config/data.config";
 
 @Component({
   selector: 'page-tdme',
@@ -51,10 +52,10 @@ import { FsData, RcInParam, ScdData, ScdPageParamter, SpecScdData } from "../../
       <p class="x-small mt-none">说"发给小明" 或 点击以添加</p>
       </ion-row>
       <ion-row justify-content-center>
-        <h5 class="mb-none">提醒</h5>
+        <h5 class="mb-none" (click)="goTx()">提醒</h5>
       </ion-row>
       <ion-row justify-content-center>
-      <p class="x-small mt-none">说"提前15分钟提醒我" 或 点击以添加</p>
+      <p class="x-small mt-none" (click)="goTx()">说"提前15分钟提醒我" 或 点击以添加</p>
       </ion-row>
       <ion-row justify-content-center>
         <h5 class="mb-none">重复</h5>
@@ -119,7 +120,9 @@ export class TdmePage {
     {value:'Travel',caption:`<img class="image-option" src="../assets/imgs/Travel.png">`}
   ];
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
+  constructor(public navCtrl: NavController,
+              public navParams: NavParams,
+              public modalCtrl: ModalController) {
     if (this.navParams && this.navParams.data) {
       this.agenda = this.navParams.data;
     }
@@ -147,6 +150,10 @@ export class TdmePage {
 
   goBack() {
     this.navCtrl.pop();
+  }
+
+  goTx() {
+    this.modalCtrl.create(DataConfig.PAGE._TX_PAGE, {}).present();
   }
 
   record() {}
