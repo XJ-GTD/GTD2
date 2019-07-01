@@ -24,9 +24,7 @@ import * as moment from "moment";
           <button ion-button clear class="text-btn">设置全天</button>
         </div>
         <div align-items-center>
-          <button ion-button clear class="text-btn" id="rangestart">3:00下午</button>
-          →
-          <button ion-button clear class="text-btn">{{rangeEnd}}</button>
+          <button ion-button clear class="text-btn" id="rangestart">{{rangeEnd}}</button>
         </div>
       </ion-row>
       <ion-row class="full-width" justify-content-center>
@@ -78,7 +76,7 @@ export class TdmPage {
     if (changed !== undefined) {
       let src = changed.src;
       let dest = changed.dest;
-      this.rangeEnd = moment.unix(dest).format("h:m A");
+      this.rangeEnd = moment.unix(dest).format("h:mm A");
     }
   }
 }
