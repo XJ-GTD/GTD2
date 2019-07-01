@@ -42,25 +42,25 @@ import { FsData, RcInParam, ScdData, ScdPageParamter, SpecScdData } from "../../
         <h5 class="mb-none">参与人</h5>
       </ion-row>
       <ion-row justify-content-center>
-      <p class="x-small mt-none">点击以添加</p>
+      <p class="x-small mt-none">说"发给小明"添加</p>
       </ion-row>
       <ion-row justify-content-center>
         <h5 class="mb-none">提醒</h5>
       </ion-row>
       <ion-row justify-content-center>
-      <p class="x-small mt-none">点击以添加</p>
+      <p class="x-small mt-none">说"提前15分钟提醒我"添加</p>
       </ion-row>
       <ion-row justify-content-center>
         <h5 class="mb-none">重复</h5>
       </ion-row>
       <ion-row justify-content-center>
-        <p class="x-small mt-none">点击以添加</p>
+        <p class="x-small mt-none">说"每周重复"添加</p>
       </ion-row>
       <ion-row justify-content-center>
         <h5 class="mb-none">备注</h5>
       </ion-row>
       <ion-row justify-content-center>
-      <p class="x-small mt-none">点击以添加</p>
+      <p class="x-small mt-none">说以上格式内容以外的内容添加</p>
       </ion-row>
       <ion-row justify-content-center>
         <speech-bubble seconds="12"></speech-bubble>
