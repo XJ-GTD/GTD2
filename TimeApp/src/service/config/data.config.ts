@@ -205,6 +205,7 @@ export class DataConfig {
     _H_PAGE: HPage,        // 首页 - 首页
     _TDL_PAGE: TdlPage,        // 日程 - 日程列表
     _TDM_PAGE: TdmPage,        // 日程 - TimePage风格日程详情新建
+    _TDME_PAGE: TdmePage,      // 日程 - TimePage风格日程详情修改
     _TDC_PAGE: TdcPage,        // 日程 - 日程详情新建
     _TDDI_PAGE: TddiPage,      // 日程 - 日程详情（受邀）
     _TDDJ_PAGE: TddjPage,      // 日程 - 日程详情(发布人)

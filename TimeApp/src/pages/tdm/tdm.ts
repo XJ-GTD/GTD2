@@ -7,6 +7,7 @@ import {RcInParam, ScdData, ScdPageParamter} from "../../data.mapping";
 import {UtilService} from "../../service/util-service/util.service";
 import * as moment from "moment";
 import {Keyboard} from "@ionic-native/keyboard";
+import {DataConfig} from "../../service/config/data.config";
 
 @IonicPage()
 @Component({
@@ -108,7 +109,12 @@ export class TdmPage {
   save(): Promise<ScdData> {
     return new Promise<ScdData>(async (resolve, reject) => {
       this.navCtrl.pop();
-      this.modalCtrl.create(DataConfig.PAGE._FS4C_PAGE, {addType: 'rc', tpara: this.scd.si}).present();
+
+      let data: ScdData = new ScdData();
+      data.sn = "喜马拉雅儿子的生日聚会";
+      data.st = "12:00";
+      data.sd = moment().format("YYYY/MM/DD");
+      this.modalCtrl.create(DataConfig.PAGE._TDME_PAGE, data).present();
     });
   }
 
