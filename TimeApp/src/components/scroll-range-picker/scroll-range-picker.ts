@@ -198,8 +198,6 @@ export class ScrollRangePickerComponent {
       //指定时间等于初始化基准时间
       return 2484 * 3;
     }
-
-    return (Math.floor((hour * this.hourLines + minute / this.viewMinTime)) * this.blockGap) / 2484 * width;
   }
 
   getScrollLeft(time, clientWidth, scrollWidth) {
