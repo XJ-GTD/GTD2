@@ -42,6 +42,21 @@ import {Keyboard} from "@ionic-native/keyboard";
       </ion-row>
     </ion-grid>
   </ion-content>
+  <ion-footer class="foot-set">
+    <ion-toolbar>
+      <ion-buttons full>
+        <button ion-button block icon-only (click)="cancel()" start>
+          <ion-icon name="close"></ion-icon>
+        </button>
+
+        <button ion-button block (click)="goShare()">发送</button>
+
+        <button ion-button block icon-only (click)="save()" end>
+          <ion-icon name="checkmark"></ion-icon>
+        </button>
+      </ion-buttons>
+    </ion-toolbar>
+  </ion-footer>
   `
 })
 export class TdmPage {
@@ -83,5 +98,18 @@ export class TdmPage {
       this.rangeStartT = moment.unix(dest).format("h:mm");
       this.rangeStartTAMPM = moment.unix(dest).format("A");
     }
+  }
+
+  cancel() {
+    this.navCtrl.pop();
+  }
+
+  save(): Promise<ScdData> {
+
+    return new Promise<ScdData>(async (resolve, reject) => {
+    });
+  }
+
+  async goShare() {
   }
 }
