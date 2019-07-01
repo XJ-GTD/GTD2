@@ -1,9 +1,11 @@
 speech-bubble {
   .outground {
+    background-color: #222;
     width: 120px;
     height: 40px;
     -moz-border-radius: 10px;
     -webkit-border-radius: 10px;
     border-radius: 10px;
+    padding: 2px 4px;
   }
 }

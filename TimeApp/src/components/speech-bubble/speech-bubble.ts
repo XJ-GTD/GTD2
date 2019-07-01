@@ -9,7 +9,7 @@ import { Events } from 'ionic-angular';
  */
 @Component({
   selector: 'speech-bubble',
-  template: `<div class="outground">
+  template: `<div class="outground" align-items-center>
     <ion-icon name="radio"></ion-icon> 4"
   </div>`
 })
