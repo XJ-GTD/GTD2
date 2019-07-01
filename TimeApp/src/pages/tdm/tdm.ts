@@ -78,7 +78,7 @@ export class TdmPage {
     if (changed !== undefined) {
       let src = changed.src;
       let dest = changed.dest;
-      this.rangeEnd = dest;
+      this.rangeEnd = moment.unix(dest).format("h:m A");
     }
   }
 }

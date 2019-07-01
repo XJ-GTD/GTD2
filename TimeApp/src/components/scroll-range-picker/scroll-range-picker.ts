@@ -181,7 +181,7 @@ export class ScrollRangePickerComponent {
 
       let time = this.getTimeString(dest, clientWidth, scrollWidth);
       this.changedPropEvent.emit({src: this.value, dest: time});
-      this.value = time;
+      this.value = moment.unix(time).format("HH:mm");
     }
   }
 
@@ -190,17 +190,17 @@ export class ScrollRangePickerComponent {
     let timeGapMinutes = Math.floor(timeGap / (this.blockGap * (clientWidth / 2484))) * this.viewMinTime;
 
     if (timeGapMinutes == 0) {
-      return this.baseTime.format("HH:mm");
+      return this.baseTime.unix();
     } else if (timeGapMinutes > 0) {
       let curTime = moment.unix(this.baseTime.unix());
       curTime.add(timeGapMinutes, "minutes");
 
-      return curTime.format("HH:mm");
+      return curTime.unix();
     } else {
       let curTime = moment.unix(this.baseTime.unix());
       curTime.subtract(Math.abs(timeGapMinutes), "minutes");
 
-      return curTime.format("HH:mm");
+      return curTime.unix();
     }
   }
 
