@@ -19,4 +19,21 @@ speech-bubble {
       margin-top: -1px;
     }
   }
+
+  .outtitle {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-flex-wrap: wrap;
+    -ms-flex-wrap: wrap;
+    flex-wrap: wrap;
+    -webkit-box-pack: center;
+    -webkit-justify-content: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+
+    font-size: 0.6rem;
+    color: rgba(255, 255, 255, 0.6);
+  }
 }

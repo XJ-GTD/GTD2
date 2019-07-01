@@ -54,6 +54,37 @@ export class FormatedatePipe implements PipeTransform {
 
         return ret;
       }
+      if (args[0] == "CYYYY年MM月DD日 A h:mm") {
+        let currentDay = moment(value);
+        let today = moment();
+        let yestoday = moment().subtract(1, "days");
+        let tomorrow = moment().add(1, "days");
+
+        //today
+        if (today.format("YYYY/MM/DD") == currentDay.format("YYYY/MM/DD")) {
+          return currentDay.format("A h:mm");
+        }
+
+        //yestoday
+        if (yestoday.format("YYYY/MM/DD") == currentDay.format("YYYY/MM/DD")) {
+          return "昨天 " + currentDay.format("A h:mm");
+        }
+
+        //tomorrow
+        if (tomorrow.format("YYYY/MM/DD") == currentDay.format("YYYY/MM/DD")) {
+          return "明天 " + currentDay.format("A h:mm");
+        }
+
+        //sameyear
+        if (today.format("YYYY") == currentDay.format("YYYY")) {
+          return currentDay.format("M月D日 A h:mm");
+        }
+
+        //otheryear
+        if (today.format("YYYY") != currentDay.format("YYYY")) {
+          return currentDay.format("YYYY年M月D日 A h:mm");
+        }
+      }
       if (args[0] == "YYYY"){
         return moment(value).format("YYYY");
       }
@@ -74,6 +105,9 @@ export class FormatedatePipe implements PipeTransform {
       }
       if (args[0] == "h:mm A") {
         return moment(value).format("h:mm A")
+      }
+      if (args[0] == "A h:mm") {
+        return moment(value).format("A h:mm")
       }
       if (args[0] == "dddd MMMM D") {
         return moment(value).format("dddd MMMM D")

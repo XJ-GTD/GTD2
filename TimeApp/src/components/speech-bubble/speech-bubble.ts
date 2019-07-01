@@ -11,7 +11,7 @@ import * as moment from "moment";
 @Component({
   selector: 'speech-bubble',
   template: `
-  <div class="outtitle">{{recordat| formatedate:"HH:mm"}}</div>
+  <div class="outtitle">{{recordat| formatedate:"CYYYY年MM月DD日 A h:mm"}}</div>
   <div class="outground" align-items-center *ngIf="backgroundColor" [ngStyle]="{'background-color': backgroundColor }">
     <ion-icon name="radio"></ion-icon> <span>{{seconds}}"</span>
   </div>
