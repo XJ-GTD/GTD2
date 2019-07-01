@@ -39,6 +39,12 @@ import { FsData, RcInParam, ScdData, ScdPageParamter, SpecScdData } from "../../
         </div>
       </ion-row>
       <ion-row justify-content-center>
+        <h5 class="mb-none">地址</h5>
+      </ion-row>
+      <ion-row justify-content-center>
+      <p class="x-small mt-none">说"地址是上海市东方明珠塔"添加</p>
+      </ion-row>
+      <ion-row justify-content-center>
         <h5 class="mb-none">参与人</h5>
       </ion-row>
       <ion-row justify-content-center>
