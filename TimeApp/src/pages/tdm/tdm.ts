@@ -21,10 +21,10 @@ import * as moment from "moment";
       </ion-row>
       <ion-row justify-content-center>
         <div>
-          <button ion-button clear class="text-btn">设置全天</button>
+          <button ion-button clear class="text-btn" small>设置全天</button>
         </div>
         <div align-items-center>
-          <button ion-button clear class="text-btn" id="rangestart">{{rangeEnd}}</button>
+          <button ion-button clear class="text-btn" id="rangestart" small>{{rangeEnd}}</button>
         </div>
       </ion-row>
       <ion-row class="full-width" justify-content-center>
