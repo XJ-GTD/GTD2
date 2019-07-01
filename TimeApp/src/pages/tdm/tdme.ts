@@ -18,7 +18,7 @@ import {FsData, RcInParam, ScdData, ScdPageParamter, SpecScdData} from "../../da
       <ion-title>{{agenda.sn}}</ion-title>
       <ion-buttons right>
         <button ion-button icon-only (click)="remove()">
-          <img class="imgdel-set" src="../../assets/imgs/del.png">
+          <img class="img-header-right" src="./assets/imgs/del.png">
         </button>
       </ion-buttons>
     </ion-toolbar>
