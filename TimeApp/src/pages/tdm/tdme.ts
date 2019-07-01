@@ -27,6 +27,9 @@ import {FsData, RcInParam, ScdData, ScdPageParamter, SpecScdData} from "../../da
   <ion-content class="content-set">
     <ion-grid>
       <ion-row justify-content-center>
+        <h3>{{(agenda.sd + " " + agenda.st)| formatedate:"h:mm A"}}</h3>
+      </ion-row>
+      <ion-row justify-content-center>
         <scroll-select [options]="labels" [value]="0"></scroll-select>
       </ion-row>
       <ion-row justify-content-center>
