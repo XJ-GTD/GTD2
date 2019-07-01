@@ -62,6 +62,9 @@ import { FsData, RcInParam, ScdData, ScdPageParamter, SpecScdData } from "../../
       <ion-row justify-content-center>
       <p class="x-small mt-none">点击以添加</p>
       </ion-row>
+      <ion-row justify-content-center>
+        <speech-bubble></speech-bubble>
+      </ion-row>
     </ion-grid>
   </ion-content>
 
