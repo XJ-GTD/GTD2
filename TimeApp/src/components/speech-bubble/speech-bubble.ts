@@ -9,14 +9,21 @@ import { Events } from 'ionic-angular';
  */
 @Component({
   selector: 'speech-bubble',
-  template: `<div class="outground" align-items-center [ngStyle]="{'background-color': backgroundColor }">
-    <ion-icon name="radio"></ion-icon> <span>4"</span>
-  </div>`
+  template: `
+  <div class="outground" align-items-center *ngIf="backgroundColor" [ngStyle]="{'background-color': backgroundColor }">
+    <ion-icon name="radio"></ion-icon> <span>{{seconds}}"</span>
+  </div>
+  <div class="outground" align-items-center *ngIf="!backgroundColor">
+    <ion-icon name="radio"></ion-icon> <span>{{seconds}}"</span>
+  </div>
+  `
 })
 export class SpeechBubbleComponent {
 
   @Input("bgcolor")
-  backgroundColor: string = `transparent`;
+  backgroundColor: string = "";
+  @Input("seconds")
+  seconds: number = 1;
 
   constructor(public events: Events) {
     console.log('Hello SpeechBubbleComponent Component');

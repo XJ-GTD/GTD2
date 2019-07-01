@@ -153,4 +153,8 @@ page-tdm, page-tdme {
       color: $fontMasterColor;
     }
   }
+
+  speech-bubble .outground {
+    background-color: $aiBackColor;
+  }
 }
