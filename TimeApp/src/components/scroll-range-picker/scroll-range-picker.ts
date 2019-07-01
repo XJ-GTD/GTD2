@@ -193,7 +193,7 @@ export class ScrollRangePickerComponent {
       return 2484 * 3 + Math.floor(offset / 60) * this.blockGap;
     } else if (offset < 0) {
       //指定时间小于初始化基准时间
-      return 2484 * 3 - Math.floor(offset / 60) * this.blockGap;
+      return 2484 * 3 + Math.floor(offset / 60) * this.blockGap;
     } else {
       //指定时间等于初始化基准时间
       return 2484 * 3;
