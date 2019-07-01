@@ -105,8 +105,8 @@ export class ScrollRangePickerComponent {
 
     let middle = 2484 * 3;
     this.timeHourLines.push(middle);
-    let timeup = moment().unix(this.baseTime.unix());
-    let timedown = moment().unix(this.baseTime.unix());
+    let timeup = moment.unix(this.baseTime.unix());
+    let timedown = moment.unix(this.baseTime.unix());
 
     for (let timeLineX = this.blockGap; timeLineX < 2484 * 3; timeLineX += this.blockGap) {
       let left = middle - timeLineX;
