@@ -25,72 +25,32 @@ import {FsData, RcInParam, ScdData, ScdPageParamter, SpecScdData} from "../../da
   </ion-header>
 
   <ion-content class="content-set">
-  <ion-grid>
-  <!--<ion-row justify-content-center>
-  <ul class="sphere-inner">
-  <li class="a"><div class="container">
-  <div class="wave"></div>
-  </div></li>
-  <li class="b"><div class="container">
-  <div class="wave1"></div>
-  </div></li>
-  <li class="c"><div class="container">
-  <div class="wave2"></div>
-  </div></li>
-  <li class="d"><div class="container">
-  <div class="wave3"></div>
-  </div></li>
-  </ul>
-  </ion-row>-->
-  <ion-row justify-content-center>
-  <h1>今天</h1>
-  </ion-row>
-  <ion-row justify-content-center>
-  <p>二月 23</p>
-  </ion-row>
-  <ion-row justify-content-center>
-  <div>
-  <button ion-button clear class="text-btn">设置全天</button>
-  </div>
-  <div>
-  <button ion-button clear class="text-btn" id="rangestart">3:00下午</button>
-  →
-  <button ion-button clear class="text-btn">{{rangeEnd}}</button>
-  </div>
-  </ion-row>
-  <ion-row justify-content-center>
-    <ion-input type="text" value="" placeholder="喜马拉雅儿子的生日聚会" text-center></ion-input>
-  </ion-row>
-  <!--<ion-row justify-content-center>
-  <div class="container">
-  <div class="wave"></div>
-  </div>
-  </ion-row>-->
-  <ion-row justify-content-center>
-  <scroll-select [options]="labels" [value]="0"></scroll-select>
-  </ion-row>
-  <ion-row justify-content-center>
-  <scroll-select [options]="months" [value]="'10'"></scroll-select>
-  </ion-row>
-  <ion-row justify-content-center>
-  <radio-select [options]="repeats" [label]="'重复'"></radio-select>
-  </ion-row>
-  <p padding></p>
-  <ion-row justify-content-center>
-  <scroll-select [options]="months" [value]="'03'" [type]="'scroll-without-button'" [items]="5"></scroll-select>
-  </ion-row>
-  <p padding></p>
-  <ion-row justify-content-center>
-  <scroll-select [options]="years" [value]="'2019'" [type]="'scroll-without-button'" [items]="7"></scroll-select>
-  </ion-row>
-  <p padding></p>
-  <ion-row class="full-width" justify-content-center>
-  <scroll-range-picker max="24" min="5" value="18:00" (changed)="timechanged($event)"></scroll-range-picker>
-  </ion-row>
-  <ion-row justify-content-center>
-  <scroll-select class="image-scroll-select" [options]="motions" [value]="'Party'"></scroll-select>
-  </ion-row>
-  </ion-grid>
+    <ion-grid>
+      <ion-row justify-content-center>
+        <scroll-select [options]="labels" [value]="0"></scroll-select>
+      </ion-row>
+      <ion-row justify-content-center>
+        <scroll-select [options]="months" [value]="'10'"></scroll-select>
+      </ion-row>
+      <ion-row justify-content-center>
+        <radio-select [options]="repeats" [label]="'重复'"></radio-select>
+      </ion-row>
+      <p padding></p>
+      <ion-row justify-content-center>
+        <scroll-select [options]="months" [value]="'03'" [type]="'scroll-without-button'" [items]="5"></scroll-select>
+      </ion-row>
+      <p padding></p>
+      <ion-row justify-content-center>
+        <scroll-select [options]="years" [value]="'2019'" [type]="'scroll-without-button'" [items]="7"></scroll-select>
+      </ion-row>
+      <p padding></p>
+      <ion-row class="full-width" justify-content-center>
+        <scroll-range-picker max="24" min="5" value="18:00" (changed)="timechanged($event)"></scroll-range-picker>
+      </ion-row>
+      <ion-row justify-content-center>
+        <scroll-select class="image-scroll-select" [options]="motions" [value]="'Party'"></scroll-select>
+      </ion-row>
+    </ion-grid>
   </ion-content>
   `
 })
