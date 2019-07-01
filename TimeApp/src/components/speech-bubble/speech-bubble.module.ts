@@ -10,7 +10,6 @@ import { SpeechBubbleComponent } from './speech-bubble';
     SpeechBubbleComponent,
   ],
   imports: [
-    PipesModule,
     IonicPageModule.forChild(SpeechBubbleComponent)
   ],
   providers: [],
