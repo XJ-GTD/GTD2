@@ -39,25 +39,25 @@ import { FsData, RcInParam, ScdData, ScdPageParamter, SpecScdData } from "../../
         </div>
       </ion-row>
       <ion-row justify-content-center>
-        <h3 class="mb-none">参与人</h3>
+        <h5 class="mb-none">参与人</h5>
       </ion-row>
       <ion-row justify-content-center>
       <p class="x-small mt-none">点击以添加</p>
       </ion-row>
       <ion-row justify-content-center>
-        <h3 class="mb-none">提醒</h3>
+        <h5 class="mb-none">提醒</h5>
       </ion-row>
       <ion-row justify-content-center>
       <p class="x-small mt-none">点击以添加</p>
       </ion-row>
       <ion-row justify-content-center>
-        <h3 class="mb-none">重复</h3>
+        <h5 class="mb-none">重复</h5>
       </ion-row>
       <ion-row justify-content-center>
         <p class="x-small mt-none">点击以添加</p>
       </ion-row>
       <ion-row justify-content-center>
-        <h3 class="mb-none">备注</h3>
+        <h5 class="mb-none">备注</h5>
       </ion-row>
       <ion-row justify-content-center>
       <p class="x-small mt-none">点击以添加</p>
