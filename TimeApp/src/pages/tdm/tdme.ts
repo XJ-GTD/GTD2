@@ -64,7 +64,7 @@ import {FsData, RcInParam, ScdData, ScdPageParamter, SpecScdData} from "../../da
     </ion-grid>
   </ion-content>
 
-  <ion-footer class="foot-set" *ngIf="isMobile && hasContents">
+  <ion-footer class="foot-set" *ngIf="isMobile">
     <ion-toolbar>
     <button ion-button *ngIf="isMobile && !speaking" icon-only full (click)="record()">
       <ion-icon name="mic" color="white"></ion-icon>
