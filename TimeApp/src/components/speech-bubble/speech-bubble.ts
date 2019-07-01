@@ -15,7 +15,7 @@ import { Events } from 'ionic-angular';
 export class SpeechBubbleComponent {
 
   constructor(public events: Events) {
-    console.log('Hello ScrollSelectComponent Component');
+    console.log('Hello SpeechBubbleComponent Component');
 
   }
 
