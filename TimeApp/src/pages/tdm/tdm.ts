@@ -6,6 +6,7 @@ import {ScrollRangePickerComponent} from "../../components/scroll-range-picker/s
 import {RcInParam, ScdData, ScdPageParamter} from "../../data.mapping";
 import {UtilService} from "../../service/util-service/util.service";
 import * as moment from "moment";
+import {Keyboard} from "@ionic-native/keyboard";
 
 @IonicPage()
 @Component({
@@ -56,6 +57,7 @@ export class TdmPage {
 
   constructor(public navCtrl: NavController,
               public navParams: NavParams,
+              private keyboard: Keyboard,
               private util: UtilService) {
   }
 
