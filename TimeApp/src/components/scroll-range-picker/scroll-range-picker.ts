@@ -68,13 +68,17 @@ export class ScrollRangePickerComponent {
   value: string = '12:00';
   guid: string = '';
   splitpixel: number = 2;
-  baseTime: moment.Moment = moment("2019/6/30 12:00");
+  baseTime: moment.Moment = moment();
+  now: moment.Moment = moment();
 
   constructor(public events: Events) {
     this.guid = this.createGuid();
     this.events.subscribe('_scrollBox' + this.guid + ':change', (dest) => {
       this.valueChanged(this.lastScrollLeft, dest);
     });
+    this.baseTime.hours(12);
+    this.baseTime.minutes(0);
+    this.baseTime.seconds(0);
   }
 
   ngOnInit() {
@@ -178,13 +182,31 @@ export class ScrollRangePickerComponent {
     let hour = parseInt(time.slice(0, 2));
     let minute = parseInt(time.slice(3, 5));
 
+    this.now.hours(hour);
+    this.now.minutes(minute);
+    this.now.seconds(0);
+
+    let offset = this.now.unix() - this.baseTime.unix();
+
+    if (offset > 0) {
+      //指定时间大于初始化基准时间
+      return 2484 * 3 + Math.floor(offset / 60) * this.blockGap;
+    } else if (offset < 0) {
+      //指定时间小于初始化基准时间
+      return 2484 * 3 - Math.floor(offset / 60) * this.blockGap;
+    } else {
+      //指定时间等于初始化基准时间
+      return 2484 * 3;
+    }
+
     return (Math.floor((hour * this.hourLines + minute / this.viewMinTime)) * this.blockGap) / 2484 * width;
   }
 
   getScrollLeft(time, clientWidth, scrollWidth) {
     let timeX = this.getTimeX(time, scrollWidth);
 
-    let leftX = timeX - (clientWidth / 2);
+    //单位换算 标准宽度2484，实际宽度clientWidth
+    let leftX = timeX * (clientWidth / 2484) - (clientWidth / 2);
 
     return leftX >= 0 ? leftX : 0;
   }
