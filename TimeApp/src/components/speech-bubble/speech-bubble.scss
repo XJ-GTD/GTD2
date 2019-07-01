@@ -2,10 +2,19 @@ speech-bubble {
   .outground {
     background-color: #222;
     width: 120px;
-    height: 40px;
-    -moz-border-radius: 10px;
-    -webkit-border-radius: 10px;
-    border-radius: 10px;
-    padding: auto 4px;
+    height: 32px;
+    -moz-border-radius: 6px;
+    -webkit-border-radius: 6px;
+    border-radius: 6px;
+    padding: 8px;
+
+    ion-icon {
+      font-size: 1.8em;
+      line-height: 0.9;
+    }
+
+    span {
+      padding-left: 4px;
+    }
   }
 }
