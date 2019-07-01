@@ -66,7 +66,7 @@ import { FsData, RcInParam, ScdData, ScdPageParamter, SpecScdData } from "../../
         <h5 class="mb-none">备注</h5>
       </ion-row>
       <ion-row justify-content-center>
-      <p class="x-small mt-none">说以上格式内容以外的内容添加</p>
+      <p class="x-small mt-none">说"备注当天要带上生日礼物"添加</p>
       </ion-row>
       <ion-row justify-content-center>
         <speech-bubble seconds="12"></speech-bubble>
