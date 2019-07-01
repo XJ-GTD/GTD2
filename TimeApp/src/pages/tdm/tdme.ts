@@ -1,5 +1,5 @@
 import { Component, ElementRef, QueryList, Renderer2, ViewChild, ViewChildren } from '@angular/core';
-import { IonicPage, NavController, NavParams, Scroll } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, ModalController, Scroll } from 'ionic-angular';
 import { ScrollSelectComponent } from '../../components/scroll-select/scroll-select';
 import { RadioSelectComponent } from '../../components/radio-select/radio-select';
 import { ScrollRangePickerComponent } from "../../components/scroll-range-picker/scroll-range-picker";
