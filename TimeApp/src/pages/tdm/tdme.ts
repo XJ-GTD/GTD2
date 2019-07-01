@@ -63,6 +63,12 @@ import { FsData, RcInParam, ScdData, ScdPageParamter, SpecScdData } from "../../
         <p class="x-small mt-none">说"每周重复"或点击以添加</p>
       </ion-row>
       <ion-row justify-content-center>
+        <h5 class="mb-none">倒计时</h5>
+      </ion-row>
+      <ion-row justify-content-center>
+      <p class="x-small mt-none">说"设置倒计时"或点击以添加</p>
+      </ion-row>
+      <ion-row justify-content-center>
         <h5 class="mb-none">备注</h5>
       </ion-row>
       <ion-row justify-content-center>
