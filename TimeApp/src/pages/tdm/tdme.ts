@@ -32,6 +32,11 @@ import {FsData, RcInParam, ScdData, ScdPageParamter, SpecScdData} from "../../da
       <ion-row justify-content-center>
         <p class="small mt-none">{{(agenda.sd + " " + agenda.st)| formatedate:"dddd MMMM D"}}</p>
       </ion-row>
+      <ion-row justify-content-center align-items-center>
+        <div class="row-center">
+        <i class="color-dot" [ngStyle]="{'background-color': defaultplan.jc }"></i>
+        </div>
+      </ion-row>
       <ion-row justify-content-center>
         <scroll-select [options]="labels" [value]="0"></scroll-select>
       </ion-row>
@@ -47,7 +52,11 @@ import {FsData, RcInParam, ScdData, ScdPageParamter, SpecScdData} from "../../da
 })
 export class TdmePage {
   agenda: ScdData = new ScdData();
-
+  defaultplan: any = {
+    jn: "家庭",
+    jc: `#881562`
+  };
+  
   repeats: any = [{value: 0, caption: '关闭'}, {value: 1, caption: '每天'}, {value: 2, caption: '每周'}, {value: 3, caption: '每月'}, {value: 4, caption: '每年'}];
   labels: any = [{value:0,caption:'工作'}, {value:1,caption:'个人'}];
   months: any = [{value:'01',caption:'一月'}, {value:'02',caption:'二月'}, {value:'03',caption:'三月'}, {value:'04',caption:'四月'}, {value:'05',caption:'五月'}, {value:'06',caption:'六月'}, {value:'07',caption:'七月'}, {value:'08',caption:'八月'}, {value:'09',caption:'九月'}, {value:'10',caption:'十月'}, {value:'11',caption:'十一月'}, {value:'12',caption:'十二月'}];
