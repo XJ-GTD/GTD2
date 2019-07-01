@@ -9,7 +9,6 @@ import { ScrollSelectComponentModule } from "../../components/scroll-select/scro
   ],
   imports: [
       IonicModule,
-      DirectivesModule,
       ScrollSelectComponentModule
   ],
   providers: [
