@@ -24,7 +24,7 @@ import * as moment from "moment";
           <button ion-button clear class="text-btn" small>设置全天</button>
         </div>
         <div align-items-center>
-          <button ion-button clear class="text-btn" id="rangestart" small>{{rangeEnd}}</button>
+          <button ion-button clear class="text-btn" id="rangestart" small>{{rangeStartT}} <small>{{rangeStartTAMPM}}</small></button>
         </div>
       </ion-row>
       <ion-row class="full-width" justify-content-center>
@@ -51,6 +51,8 @@ export class TdmPage {
     jc: `#881562`
   };
   rangeEnd: string = '4:30下午';
+  rangeStartT: string = '4:30';
+  rangeStartTAMPM: string = '下午';
 
   constructor(public navCtrl: NavController,
               public navParams: NavParams,
@@ -76,7 +78,8 @@ export class TdmPage {
     if (changed !== undefined) {
       let src = changed.src;
       let dest = changed.dest;
-      this.rangeEnd = moment.unix(dest).format("h:mm A");
+      this.rangeStartT = moment.unix(dest).format("h:mm");
+      this.rangeStartTAMPM = moment.unix(dest).format("A");
     }
   }
 }
