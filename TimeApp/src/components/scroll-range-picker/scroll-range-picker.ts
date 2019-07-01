@@ -19,8 +19,12 @@ import * as moment from "moment";
                   <style>.time-line{stroke:#fff;}.time-block-title{fill:#fff;}</style>
               </defs>
               <title>timerange-picker</title>
-              <line *ngFor="let x of timeLines; let i = index;" class="time-line" stroke-linecap="undefined" stroke-linejoin="undefined" [attr.id]="'svg_u' + i" y2="119" [attr.x2]="x" y1="0" [attr.x1]="x" stroke-width="1.5" fill="none"/>
-              <line *ngFor="let x of timeLines; let i = index;" class="time-line" stroke-linecap="undefined" stroke-linejoin="undefined" [attr.id]="'svg_d' + i" y2="359" [attr.x2]="x" y1="240" [attr.x1]="x" stroke-width="1.5" fill="none"/>
+              <line *ngFor="let x of timeLines; let i = index;" class="time-line" stroke-linecap="undefined" stroke-linejoin="undefined" [attr.id]="'svg_u' + i" y2="99" [attr.x2]="x" y1="0" [attr.x1]="x" stroke-width="1.5" fill="none"/>
+              <line *ngFor="let x of timeLines; let i = index;" class="time-line" stroke-linecap="undefined" stroke-linejoin="undefined" [attr.id]="'svg_d' + i" y2="359" [attr.x2]="x" y1="220" [attr.x1]="x" stroke-width="1.5" fill="none"/>
+              <line *ngFor="let x of timeHalfHourLines; let i = index;" class="time-line" stroke-linecap="undefined" stroke-linejoin="undefined" [attr.id]="'svg_u' + i" y2="109" [attr.x2]="x" y1="0" [attr.x1]="x" stroke-width="1.5" fill="none"/>
+              <line *ngFor="let x of timeHalfHourLines; let i = index;" class="time-line" stroke-linecap="undefined" stroke-linejoin="undefined" [attr.id]="'svg_d' + i" y2="359" [attr.x2]="x" y1="210" [attr.x1]="x" stroke-width="1.5" fill="none"/>
+              <line *ngFor="let x of timeHourLines; let i = index;" class="time-line" stroke-linecap="undefined" stroke-linejoin="undefined" [attr.id]="'svg_u' + i" y2="119" [attr.x2]="x" y1="0" [attr.x1]="x" stroke-width="1.5" fill="none"/>
+              <line *ngFor="let x of timeHourLines; let i = index;" class="time-line" stroke-linecap="undefined" stroke-linejoin="undefined" [attr.id]="'svg_d' + i" y2="359" [attr.x2]="x" y1="240" [attr.x1]="x" stroke-width="1.5" fill="none"/>
               <text *ngFor="let title of blockTitles;" class="time-block-title" stroke="#000" xml:space="preserve" text-anchor="start" font-family="Helvetica, Arial, sans-serif" font-size="24" id="svg_4" y="188" [attr.x]="title.x" fill-opacity="null" stroke-opacity="null" stroke-width="0">{{title.title}}</text>
           </svg>
         </div>
@@ -54,6 +58,8 @@ export class ScrollRangePickerComponent {
   @Input('min')
   viewMinTime: number = 5; // 5分钟
   timeLines: any = [];
+  timeHalfHourLines: any = [];
+  timeHourLines: any = [];
   @Input()
   titles: any = {'3': '凌晨', '9': '上午', '12': '中午', '16': '下午', '21': '晚上', '23': '深夜'};
   blockTitles: any = [];
@@ -98,18 +104,38 @@ export class ScrollRangePickerComponent {
     this.blockGap = 2484 / (viewLines);
 
     let middle = 2484 * 3;
-    this.timeLines.push(middle);
+    this.timeHourLines.push(middle);
+    let timeup = moment().unix(this.baseTime.unix());
+    let timedown = moment().unix(this.baseTime.unix());
 
     for (let timeLineX = this.blockGap; timeLineX < 2484 * 3; timeLineX += this.blockGap) {
       let left = middle - timeLineX;
       let right = middle + timeLineX;
 
       if (left > 0) {
-        this.timeLines.unshift(left);
+        timedown.subtract(this.viewMinTime, "minutes");
+
+        let minutes = timedown.minutes();
+        if (minutes == 0) {
+          this.timeHourLines.unshift(left);
+        } else if (minutes == 30) {
+          this.timeHalfHourLines.unshift(left);
+        } else {
+          this.timeLines.unshift(left);
+        }
       }
 
       if (right < middle * 2) {
-        this.timeLines.push(right);
+        timeup.add(this.viewMinTime, "minutes");
+
+        let minutes = timeup.minutes();
+        if (minutes == 0) {
+          this.timeHourLines.push(right);
+        } else if (minutes == 30) {
+          this.timeHalfHourLines.push(right);
+        } else {
+          this.timeLines.push(right);
+        }
       }
     }
 
