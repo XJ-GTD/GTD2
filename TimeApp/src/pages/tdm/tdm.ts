@@ -23,7 +23,7 @@ import * as moment from "moment";
         <div>
           <button ion-button clear class="text-btn">设置全天</button>
         </div>
-        <div>
+        <div align-items-center>
           <button ion-button clear class="text-btn" id="rangestart">3:00下午</button>
           →
           <button ion-button clear class="text-btn">{{rangeEnd}}</button>
