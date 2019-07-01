@@ -45,7 +45,7 @@ import { FsData, RcInParam, ScdData, ScdPageParamter, SpecScdData } from "../../
       <p class="x-small mt-none">说"地址是上海市东方明珠塔" 或 点击以添加</p>
       </ion-row>
       <ion-row justify-content-center>
-        <h5 class="mb-none">参与人</h5>
+        <h5 class="mb-none">人员</h5>
       </ion-row>
       <ion-row justify-content-center>
       <p class="x-small mt-none">说"发给小明" 或 点击以添加</p>
