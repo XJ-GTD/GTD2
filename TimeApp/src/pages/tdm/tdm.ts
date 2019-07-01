@@ -1,5 +1,5 @@
 import {Component, ElementRef, QueryList, Renderer2, ViewChild, ViewChildren} from '@angular/core';
-import { IonicPage, NavController, NavParams, Scroll } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, ModalController, Scroll } from 'ionic-angular';
 import { ScrollSelectComponent } from '../../components/scroll-select/scroll-select';
 import { RadioSelectComponent } from '../../components/radio-select/radio-select';
 import {ScrollRangePickerComponent} from "../../components/scroll-range-picker/scroll-range-picker";
@@ -72,6 +72,7 @@ export class TdmPage {
 
   constructor(public navCtrl: NavController,
               public navParams: NavParams,
+              public modalCtrl: ModalController,
               private keyboard: Keyboard,
               private util: UtilService) {
   }
@@ -105,8 +106,9 @@ export class TdmPage {
   }
 
   save(): Promise<ScdData> {
-
     return new Promise<ScdData>(async (resolve, reject) => {
+      this.navCtrl.pop();
+      this.modalCtrl.create(DataConfig.PAGE._FS4C_PAGE, {addType: 'rc', tpara: this.scd.si}).present();
     });
   }
 

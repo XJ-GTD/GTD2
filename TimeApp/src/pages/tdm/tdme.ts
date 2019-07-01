@@ -7,6 +7,22 @@ import {ScrollRangePickerComponent} from "../../components/scroll-range-picker/s
 @Component({
   selector: 'page-tdme',
   template: `
+  <ion-header no-border>
+    <ion-toolbar>
+      <ion-buttons left>
+        <button ion-button icon-only (click)="goBack()" color="danger">
+          <img class="img-header-left" src="./assets/imgs/back-white.png">
+        </button>
+      </ion-buttons>
+      <ion-title>{{agenda.sn}}</ion-title>
+      <ion-buttons right>
+        <button ion-button icon-only (click)="remove()">
+          <img class="imgdel-set" src="../../assets/imgs/del.png">
+        </button>
+      </ion-buttons>
+    </ion-toolbar>
+  </ion-header>
+
   <ion-content class="content-set">
   <ion-grid>
   <!--<ion-row justify-content-center>
@@ -78,6 +94,8 @@ import {ScrollRangePickerComponent} from "../../components/scroll-range-picker/s
   `
 })
 export class TdmePage {
+  agenda: ScdData = new ScdData();
+
   repeats: any = [{value: 0, caption: '关闭'}, {value: 1, caption: '每天'}, {value: 2, caption: '每周'}, {value: 3, caption: '每月'}, {value: 4, caption: '每年'}];
   labels: any = [{value:0,caption:'工作'}, {value:1,caption:'个人'}];
   months: any = [{value:'01',caption:'一月'}, {value:'02',caption:'二月'}, {value:'03',caption:'三月'}, {value:'04',caption:'四月'}, {value:'05',caption:'五月'}, {value:'06',caption:'六月'}, {value:'07',caption:'七月'}, {value:'08',caption:'八月'}, {value:'09',caption:'九月'}, {value:'10',caption:'十月'}, {value:'11',caption:'十一月'}, {value:'12',caption:'十二月'}];
@@ -97,6 +115,10 @@ export class TdmePage {
   ];
 
   constructor(public navCtrl: NavController, public navParams: NavParams) {
+    if (this.navParams && this.navParams.data) {
+      this.agenda = this.navParams.data;
+    }
+
     for (let year = 2009; year <= 2029; year++) {
       this.years.push({value:year.toString(),caption:year.toString()});
     }
@@ -112,5 +134,13 @@ export class TdmePage {
       let dest = changed.dest;
       this.rangeEnd = dest;
     }
+  }
+
+  remove() {
+
+  }
+
+  goBack() {
+    this.navCtrl.pop();
   }
 }
