@@ -1,6 +1,7 @@
 import { ModuleWithProviders, NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { IonicPageModule } from 'ionic-angular';
 import { SpeechBubbleComponent } from './speech-bubble';
+import {PipesModule} from "../../pipes/pipes.module";
 
 @NgModule({
   declarations: [
@@ -10,6 +11,7 @@ import { SpeechBubbleComponent } from './speech-bubble';
     SpeechBubbleComponent,
   ],
   imports: [
+    PipesModule,
     IonicPageModule.forChild(SpeechBubbleComponent)
   ],
   providers: [],
