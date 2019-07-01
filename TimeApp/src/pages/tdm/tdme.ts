@@ -1,9 +1,10 @@
-import {Component, ElementRef, QueryList, Renderer2, ViewChild, ViewChildren} from '@angular/core';
+import { Component, ElementRef, QueryList, Renderer2, ViewChild, ViewChildren } from '@angular/core';
 import { IonicPage, NavController, NavParams, Scroll } from 'ionic-angular';
 import { ScrollSelectComponent } from '../../components/scroll-select/scroll-select';
 import { RadioSelectComponent } from '../../components/radio-select/radio-select';
-import {ScrollRangePickerComponent} from "../../components/scroll-range-picker/scroll-range-picker";
-import {FsData, RcInParam, ScdData, ScdPageParamter, SpecScdData} from "../../data.mapping";
+import { ScrollRangePickerComponent } from "../../components/scroll-range-picker/scroll-range-picker";
+import { SpeechBubbleComponent } from "../../components/speech-bubble/speech-bubble";
+import { FsData, RcInParam, ScdData, ScdPageParamter, SpecScdData } from "../../data.mapping";
 
 @Component({
   selector: 'page-tdme',
@@ -30,7 +31,7 @@ import {FsData, RcInParam, ScdData, ScdPageParamter, SpecScdData} from "../../da
         <h5 class="mb-none">{{(agenda.sd + " " + agenda.st)| formatedate:"h:mm A"}}</h5>
       </ion-row>
       <ion-row justify-content-center>
-        <p class="small mt-none mb-none">{{(agenda.sd + " " + agenda.st)| formatedate:"dddd MMMM D"}}</p>
+        <p class="x-small mt-none mb-none">{{(agenda.sd + " " + agenda.st)| formatedate:"dddd MMMM D"}}</p>
       </ion-row>
       <ion-row justify-content-center align-items-center>
         <div class="row-center">
