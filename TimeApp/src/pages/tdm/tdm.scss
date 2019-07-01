@@ -82,6 +82,18 @@ page-tdm {
     margin: auto;
   }
 
+  ion-header ion-toolbar .toolbar-background,.toolbar-background-md,.toolbar-background-ios {
+    background-color: $lsback1;
+  }
+
+  ion-header{
+    padding: 4px 20px;
+  }
+
+  ion-header ion-title {
+    line-height: 1.5rem;
+  }
+
   .footer-ios {
     .toolbar-background-ios {
       background-color:$aiBackColor;
