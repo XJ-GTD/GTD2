@@ -42,31 +42,31 @@ import { FsData, RcInParam, ScdData, ScdPageParamter, SpecScdData } from "../../
         <h5 class="mb-none">地址</h5>
       </ion-row>
       <ion-row justify-content-center>
-      <p class="x-small mt-none">说"地址是上海市东方明珠塔"添加</p>
+      <p class="x-small mt-none">说"地址是上海市东方明珠塔"或点击以添加</p>
       </ion-row>
       <ion-row justify-content-center>
         <h5 class="mb-none">参与人</h5>
       </ion-row>
       <ion-row justify-content-center>
-      <p class="x-small mt-none">说"发给小明"添加</p>
+      <p class="x-small mt-none">说"发给小明"或点击以添加</p>
       </ion-row>
       <ion-row justify-content-center>
         <h5 class="mb-none">提醒</h5>
       </ion-row>
       <ion-row justify-content-center>
-      <p class="x-small mt-none">说"提前15分钟提醒我"添加</p>
+      <p class="x-small mt-none">说"提前15分钟提醒我"或点击以添加</p>
       </ion-row>
       <ion-row justify-content-center>
         <h5 class="mb-none">重复</h5>
       </ion-row>
       <ion-row justify-content-center>
-        <p class="x-small mt-none">说"每周重复"添加</p>
+        <p class="x-small mt-none">说"每周重复"或点击以添加</p>
       </ion-row>
       <ion-row justify-content-center>
         <h5 class="mb-none">备注</h5>
       </ion-row>
       <ion-row justify-content-center>
-      <p class="x-small mt-none">说"备注当天要带上生日礼物"添加</p>
+      <p class="x-small mt-none">说"备注当天要带上生日礼物"或点击以添加</p>
       </ion-row>
       <ion-row justify-content-center>
         <speech-bubble seconds="12"></speech-bubble>
