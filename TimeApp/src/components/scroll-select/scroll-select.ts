@@ -20,6 +20,7 @@ import { DomSanitizer } from '@angular/platform-browser';
       <div class="scroll-box" [ngClass]="{'scroll-with-button': type == 'scroll-with-button', 'scroll-without-button': type == 'scroll-without-button'}">
         <div class="scroll-box-content" id="scroll-box-content" #scrollBox>
           <div class="scroll-box-zoom-wrapper">
+            <ng-content></ng-content>
             <div class="option align-items-center before" [ngClass]="{'option-3': items == 3,'option-5': items == 5,'option-7': items == 7}" *ngFor="let before of befores;"></div>
             <div class="option align-items-center" [ngClass]="{'option-3': items == 3,'option-5': items == 5,'option-7': items == 7}" *ngFor="let option of options;" [attr.value]="option.value">{{option.caption}}</div>
             <div class="option align-items-center after" [ngClass]="{'option-3': items == 3,'option-5': items == 5,'option-7': items == 7}" *ngFor="let after of afters;"></div>
