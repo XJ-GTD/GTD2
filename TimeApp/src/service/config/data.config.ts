@@ -9,6 +9,7 @@ import {HPage} from "../../pages/h/h";
 import {TdlPage} from "../../pages/tdl/tdl";
 import {TdcPage} from "../../pages/tdc/tdc";
 import {TdmPage} from "../../pages/tdm/tdm";
+import {TdmePage} from "../../pages/tdm/tdme";
 import {TddiPage} from "../../pages/tdc/tddi";
 import {TddjPage} from "../../pages/tdc/tddj";
 import {LpPage} from "../../pages/lp/lp";
