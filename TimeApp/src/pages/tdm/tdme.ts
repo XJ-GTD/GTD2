@@ -38,16 +38,30 @@ import {FsData, RcInParam, ScdData, ScdPageParamter, SpecScdData} from "../../da
         </div>
       </ion-row>
       <ion-row justify-content-center>
-        <scroll-select [options]="labels" [value]="0"></scroll-select>
+        <h3 class="mb-none">参与人</h3>
       </ion-row>
       <ion-row justify-content-center>
-        <scroll-select [options]="months" [value]="'10'"></scroll-select>
+        <h3 class="mb-none">提醒</h3>
       </ion-row>
       <ion-row justify-content-center>
-        <radio-select [options]="repeats" [label]="'重复'"></radio-select>
+        <h3 class="mb-none">重复</h3>
+      </ion-row>
+      <ion-row justify-content-center>
+        <h3 class="mb-none">备注</h3>
       </ion-row>
     </ion-grid>
   </ion-content>
+
+  <ion-footer class="foot-set" *ngIf="isMobile && hasContents">
+    <ion-toolbar>
+    <button ion-button *ngIf="isMobile && !speaking" icon-only full (click)="record()">
+      <ion-icon name="mic" color="white"></ion-icon>
+    </button>
+    <button ion-button *ngIf="isMobile && speaking" icon-only full (click)="pause()">
+      <ion-icon name="pause" color="white"></ion-icon>
+    </button>
+    </ion-toolbar>
+  </ion-footer>
   `
 })
 export class TdmePage {
@@ -56,6 +70,8 @@ export class TdmePage {
     jn: "家庭",
     jc: `#881562`
   };
+  isMobile: boolean = true;
+  speaking: boolean = false;
 
   repeats: any = [{value: 0, caption: '关闭'}, {value: 1, caption: '每天'}, {value: 2, caption: '每周'}, {value: 3, caption: '每月'}, {value: 4, caption: '每年'}];
   labels: any = [{value:0,caption:'工作'}, {value:1,caption:'个人'}];
@@ -104,4 +120,8 @@ export class TdmePage {
   goBack() {
     this.navCtrl.pop();
   }
+
+  record() {}
+
+  pause() {}
 }
