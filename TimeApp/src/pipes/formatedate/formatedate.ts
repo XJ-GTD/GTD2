@@ -75,6 +75,9 @@ export class FormatedatePipe implements PipeTransform {
       if (args[0] == "h:mm A") {
         return moment(value).format("h:mm A")
       }
+      if (args[0] == "dddd MMMM D") {
+        return moment(value).format("dddd MMMM D")
+      }
     }
     return value;
   }

@@ -30,6 +30,9 @@ import {FsData, RcInParam, ScdData, ScdPageParamter, SpecScdData} from "../../da
         <h3>{{(agenda.sd + " " + agenda.st)| formatedate:"h:mm A"}}</h3>
       </ion-row>
       <ion-row justify-content-center>
+        <p class="small mt-none">{{(agenda.sd + " " + agenda.st)| formatedate:"dddd MMMM D"}}</p>
+      </ion-row>
+      <ion-row justify-content-center>
         <scroll-select [options]="labels" [value]="0"></scroll-select>
       </ion-row>
       <ion-row justify-content-center>
@@ -37,21 +40,6 @@ import {FsData, RcInParam, ScdData, ScdPageParamter, SpecScdData} from "../../da
       </ion-row>
       <ion-row justify-content-center>
         <radio-select [options]="repeats" [label]="'重复'"></radio-select>
-      </ion-row>
-      <p padding></p>
-      <ion-row justify-content-center>
-        <scroll-select [options]="months" [value]="'03'" [type]="'scroll-without-button'" [items]="5"></scroll-select>
-      </ion-row>
-      <p padding></p>
-      <ion-row justify-content-center>
-        <scroll-select [options]="years" [value]="'2019'" [type]="'scroll-without-button'" [items]="7"></scroll-select>
-      </ion-row>
-      <p padding></p>
-      <ion-row class="full-width" justify-content-center>
-        <scroll-range-picker max="24" min="5" value="18:00" (changed)="timechanged($event)"></scroll-range-picker>
-      </ion-row>
-      <ion-row justify-content-center>
-        <scroll-select class="image-scroll-select" [options]="motions" [value]="'Party'"></scroll-select>
       </ion-row>
     </ion-grid>
   </ion-content>
