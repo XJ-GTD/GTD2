@@ -89,6 +89,7 @@ import {CardListComponentModule} from "../components/card-list/card-list.module"
 import {ScrollSelectComponentModule} from "../components/scroll-select/scroll-select.module";
 import {RadioSelectComponentModule} from "../components/radio-select/radio-select.module";
 import {ScrollRangePickerComponentModule} from "../components/scroll-range-picker/scroll-range-picker.module";
+import {SpeechBubbleComponentModule} from "../components/speech-bubble/speech-bubble.module";
 import { WeatherIconsModule } from 'ngx-icons';
 import { JPush } from '@jiguang-ionic/jpush';
 import { DirectivesModule } from "../directives/directives.module";
@@ -144,7 +145,8 @@ import { DirectivesModule } from "../directives/directives.module";
     CardListComponentModule,
     ScrollSelectComponentModule,
     RadioSelectComponentModule,
-    ScrollRangePickerComponentModule
+    ScrollRangePickerComponentModule,
+    SpeechBubbleComponentModule
   ],
   bootstrap: [IonicApp],
   entryComponents: [
