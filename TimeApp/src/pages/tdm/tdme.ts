@@ -3,6 +3,7 @@ import { IonicPage, NavController, NavParams, Scroll } from 'ionic-angular';
 import { ScrollSelectComponent } from '../../components/scroll-select/scroll-select';
 import { RadioSelectComponent } from '../../components/radio-select/radio-select';
 import {ScrollRangePickerComponent} from "../../components/scroll-range-picker/scroll-range-picker";
+import {FsData, RcInParam, ScdData, ScdPageParamter, SpecScdData} from "../../data.mapping";
 
 @Component({
   selector: 'page-tdme',
