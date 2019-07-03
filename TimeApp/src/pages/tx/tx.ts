@@ -12,7 +12,7 @@ import { IonicPage, NavController, NavParams, ModalController, Scroll } from 'io
   </ion-header>
 
   <ion-content>
-    <scroll-select type="scroll-with-button" *ngFor="let remind of reminds" [value]="remind.value" (changed)="onRemindChanged($value)">
+    <scroll-select type="scroll-with-button" *ngFor="let remind of reminds" [value]="remind.value" (changed)="onRemindChanged($event)">
       <scroll-select-option value="">滑动以添加</scroll-select-option>
       <scroll-select-option value="5m">5 分钟前</scroll-select-option>
       <scroll-select-option value="10m">10 分钟前</scroll-select-option>
