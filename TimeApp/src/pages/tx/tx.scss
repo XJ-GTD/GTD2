@@ -32,4 +32,40 @@ page-tx {
     background-color: $masterColor;
   }
 
+  .footer-ios {
+    .toolbar-background-ios {
+      background-color:$lsback1;
+      border-style: none;
+    }
+
+    .button-full-ios {
+      background-color:$lsback1;
+    }
+
+    button[block] {
+      width: 30vmin;
+    }
+
+    .bar-button-ios {
+      color: $adornColor;
+      font-size: 15px;
+    }
+
+    .toolbar-content-ios {
+      text-align: center;
+    }
+
+    ion-buttons[padding-left] {
+      padding-left: 50px;
+    }
+
+    ion-buttons[padding-right] {
+      padding-right: 50px;
+    }
+    [icon-only] ion-icon{
+      background-color:$lsback1;
+      color: $fontMasterColor;
+    }
+  }
+
 }
