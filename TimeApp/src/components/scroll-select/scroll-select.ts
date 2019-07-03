@@ -1,6 +1,5 @@
 import { Component, Input, Output, EventEmitter, ViewChild, ElementRef, ContentChildren, QueryList } from '@angular/core';
 import { Events } from 'ionic-angular';
-import { DomSanitizer } from '@angular/platform-browser';
 import { ScrollSelectOptionComponent } from './scroll-select-option';
 
 /**
@@ -44,7 +43,7 @@ export class ScrollSelectComponent {
   @ContentChildren(ScrollSelectOptionComponent)
   options: QueryList<ScrollSelectOptionComponent>;
   @Input()
-  value: any;
+  value: any = "";
   @Input()
   items: number = 1;  //一个屏幕显示几个选项
   befores: Array<any> = [];
@@ -62,7 +61,7 @@ export class ScrollSelectComponent {
   t2: number;
   autoscroll: boolean = false;
 
-  constructor(public events: Events, public sanitizer: DomSanitizer) {
+  constructor(public events: Events) {
     console.log('Hello ScrollSelectComponent Component');
     this.guid = this.createGuid();
     this.slideWidth = document.body.clientWidth;
@@ -160,10 +159,6 @@ export class ScrollSelectComponent {
         this.changedPropEvent.emit(this.value);
       },500);
     }
-  }
-
-  assembleHTML(strHTML: any) {
-    return this.sanitizer.bypassSecurityTrustHtml(strHTML);
   }
 
   createGuid() {
