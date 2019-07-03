@@ -76,7 +76,6 @@ export class ScrollSelectComponent {
   ngAfterContentInit() {
     const that = this;
     const ele = this._scrollBox.nativeElement;
-    this.items = this.options.length;
     console.log(this.value + ',' + this.items);
 
     if (this.items > 1) {
