@@ -17,4 +17,6 @@ import { DomSanitizer } from '@angular/platform-browser';
   `
 })
 export class ScrollSelectOptionComponent {
+  @Input("value")
+  value: any;
 }
