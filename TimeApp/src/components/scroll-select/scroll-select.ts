@@ -95,8 +95,8 @@ export class ScrollSelectComponent {
     }, {passive: true}, false);
 
     let i = 0;
-    for (let option in this.options) {
-      if (this.options[option].value === this.value) {
+    for (let option in this.options.toArray()) {
+      if (this.options.toArray()[option].value === this.value) {
         this.index = i;
         break;
       }
