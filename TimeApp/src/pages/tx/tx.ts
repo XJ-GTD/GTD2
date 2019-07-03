@@ -62,8 +62,11 @@ export class TxPage {
       });
 
       let results: Array<any> = this.reminds.filter((element, index) => {
-        return forRemoved.indexOf(index) >= 0;
+        return forRemoved.indexOf(index) < 0;
       });
+
+      if (!results)
+        results = new Array<any>();
 
       results.push({value: ""});
 
