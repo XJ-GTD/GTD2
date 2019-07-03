@@ -1,6 +1,7 @@
-import { Component, Input, Output, EventEmitter, ViewChild ,ElementRef} from '@angular/core';
+import { Component, Input, Output, EventEmitter, ViewChild, ElementRef, ContentChildren, QueryList } from '@angular/core';
 import { Events } from 'ionic-angular';
 import { DomSanitizer } from '@angular/platform-browser';
+import { ScrollSelectOptionComponent } from './scroll-select-option';
 
 /**
  * Generated class for the ScrollSelectComponent component.
@@ -43,11 +44,10 @@ export class ScrollSelectComponent {
   @ViewChild('scrollBox', { read: ElementRef }) _scrollBox: ElementRef;
   @Input()
   type: string = 'scroll-with-button';  // 'scroll-with-button', 'scroll-without-button'
-  @Input()
-  options: Array<any> = [];
+  @ContentChildren(ScrollSelectOptionComponent)
+  options: QueryList<ScrollSelectOptionComponent>;
   @Input()
   value: any;
-  @Input()
   items: number = 1;
   befores: Array<any> = [];
   afters: Array<any> = [];
@@ -71,6 +71,7 @@ export class ScrollSelectComponent {
     this.events.subscribe('_scrollBox' + this.guid + ':change', (target) => {
       this.optionChanged(target);
     });
+    this.items = this.options.length;
   }
 
   ngOnInit() {
