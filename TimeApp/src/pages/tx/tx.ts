@@ -49,7 +49,7 @@ export class TxPage {
         return value.value == "";
       });
 
-      if (hasEmpty) {
+      if (!hasEmpty) {
         this.reminds.push({value: ""});
       }
     } else {
