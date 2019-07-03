@@ -11,6 +11,22 @@ page-tx {
     line-height: 1.5rem;
   }
 
+  .img-header-left, .img-header-right {
+    width: 4vmin;
+    height: 4vmin;
+  }
+
+  .toolbar-title{
+    color: white;
+    letter-spacing: 0.5vmin;
+    font-size: 1.5rem;
+  }
+
+  .button-header-right{
+    font-size: 1.5rem;
+    color: $adornColor;
+  }
+
   ion-content.content {
     color: #fff;
     background-color: $masterColor;
