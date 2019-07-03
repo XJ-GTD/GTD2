@@ -45,7 +45,8 @@ export class ScrollSelectComponent {
   options: QueryList<ScrollSelectOptionComponent>;
   @Input()
   value: any;
-  items: number = 1;
+  @Input()
+  items: number = 1;  //一个屏幕显示几个选项
   befores: Array<any> = [];
   afters: Array<any> = [];
   @Output("changed")
