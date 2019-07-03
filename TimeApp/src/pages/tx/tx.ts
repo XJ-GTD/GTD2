@@ -45,13 +45,9 @@ export class TxPage {
     console.log(value);
 
     if (value) {
-      let hasEmpty: boolean = false;
-      for (let remind: ScrollSelectComponent of this.remindComponents.toArray()) {
-        if (remind.value == "") {
-          hasEmpty = true;
-          break;
-        }
-      }
+      let hasEmpty = this.remindComponents.some((value, index, array) => {
+        return value.value == "";
+      });
 
       if (hasEmpty) {
         this.reminds.push({value: ""});
