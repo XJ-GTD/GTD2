@@ -28,6 +28,14 @@ import { ScrollSelectComponent } from "../../components/scroll-select/scroll-sel
       <scroll-select-option value="2d">2 天前</scroll-select-option>
     </scroll-select>
   </ion-content>
+
+  <ion-footer class="foot-set">
+    <ion-toolbar>
+    <button ion-button full (click)="close()">
+      关闭
+    </button>
+    </ion-toolbar>
+  </ion-footer>
   `
 })
 export class TxPage {
@@ -37,8 +45,12 @@ export class TxPage {
 
   reminds: Array<any> = new Array<any>();
 
-  constructor() {
+  constructor(public navCtrl: NavController) {
     this.reminds.push({value: ""});
+  }
+
+  close() {
+    this.navCtrl.pop();
   }
 
   onRemindChanged(value) {
