@@ -120,7 +120,7 @@ export class ScrollSelectComponent {
 
   prev() {
     this.index = (this.index - 1) > 0 ? (this.index - 1) : 0;
-    this.value = this.options[this.index].value;
+    this.value = this.options.toArray()[this.index].value;
 
     this.lastScrollLeft = this.index * (this.slideWidth / this.items);
     this._scrollBox.nativeElement.scrollLeft = this.index * (this.slideWidth / this.items);
@@ -128,7 +128,7 @@ export class ScrollSelectComponent {
 
   next() {
     this.index = (this.index + 1) >= this.options.length ? this.index : (this.index + 1);
-    this.value = this.options[this.index].value;
+    this.value = this.options.toArray()[this.index].value;
 
     this.lastScrollLeft = this.index * (this.slideWidth / this.items);
     this._scrollBox.nativeElement.scrollLeft = this.index * (this.slideWidth / this.items);
@@ -151,7 +151,7 @@ export class ScrollSelectComponent {
       }
 
       this.index = index;
-      this.value = this.options[index].value;
+      this.value = this.options.toArray()[index].value;
 
       this.lastScrollLeft = index * (this.slideWidth / this.items);
       this.autoscroll = true;
