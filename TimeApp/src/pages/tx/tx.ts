@@ -46,7 +46,7 @@ export class TxPage {
 
     if (value) {
       let hasEmpty: boolean = false;
-      for (let remind: ScrollSelectComponent of this.remindComponents) {
+      for (let remind: ScrollSelectComponent of this.remindComponents.toArray()) {
         if (remind.value == "") {
           hasEmpty = true;
           break;
