@@ -71,12 +71,12 @@ export class ScrollSelectComponent {
     this.events.subscribe('_scrollBox' + this.guid + ':change', (target) => {
       this.optionChanged(target);
     });
-    this.items = this.options.length;
   }
 
   ngOnInit() {
     const that = this;
     const ele = this._scrollBox.nativeElement;
+    this.items = this.options.length;
     console.log(this.value + ',' + this.items);
 
     if (this.items > 1) {
