@@ -1,5 +1,6 @@
 import { Component, ElementRef, QueryList, Renderer2, ViewChild, ViewChildren } from '@angular/core';
 import { IonicPage, NavController, NavParams, ModalController, Scroll } from 'ionic-angular';
+import { ScrollSelectComponent } from "../../components/scroll-select/scroll-select";
 
 @IonicPage()
 @Component({
@@ -30,6 +31,10 @@ import { IonicPage, NavController, NavParams, ModalController, Scroll } from 'io
   `
 })
 export class TxPage {
+
+  @ViewChildren(ScrollSelectComponent)
+  remindComponents: QueryList<ScrollSelectComponent>;
+
   reminds: Array<any> = new Array<any>();
 
   constructor() {
@@ -40,7 +45,19 @@ export class TxPage {
     console.log(value);
 
     if (value) {
-      this.reminds.push({value: ""});
+      let hasEmpty: boolean = false;
+      for (let remind: ScrollSelectComponent of this.remindComponents) {
+        if (remind.value == "") {
+          hasEmpty = true;
+          break;
+        }
+      }
+
+      if (hasEmpty) {
+        this.reminds.push({value: ""});
+      }
+    } else {
+
     }
   }
 }
