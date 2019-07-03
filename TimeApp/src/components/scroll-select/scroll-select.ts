@@ -135,11 +135,11 @@ export class ScrollSelectComponent {
   }
 
   isFirst() {
-    return (this.value === undefined || this.value == this.options[0].value);
+    return (this.value === undefined || this.value == this.options.toArray()[0].value);
   }
 
   isLast() {
-    return (this.options === undefined || this.options.length === 0 || this.value === undefined || this.value == this.options[this.options.length - 1].value);
+    return (this.options === undefined || this.options.length === 0 || this.value === undefined || this.value == this.options.toArray()[this.options.length - 1].value);
   }
 
   optionChanged(target) {
