@@ -33,11 +33,14 @@ export class TxPage {
   reminds: Array<any> = new Array<any>();
 
   constructor() {
-    this.reminds.push({value: "15m"});
     this.reminds.push({value: ""});
   }
 
   onRemindChanged(value) {
     console.log(value);
+
+    if (value) {
+      this.reminds.push({value: ""});
+    }
   }
 }
