@@ -53,7 +53,19 @@ export class TxPage {
         this.reminds.push({value: ""});
       }
     } else {
+      let forRemoved: Array<number> = new Array<number>();
 
+      this.remindComponents.forEach((item, index) => {
+        if (item.value == "") forRemoved.push(index);
+      });
+
+      let results: Array<any> = this.reminds.filter((element, index) => {
+        return forRemoved.find((item) => { return item == index; });
+      });
+
+      results.push({value: ""});
+
+      this.reminds = results;
     }
   }
 }
