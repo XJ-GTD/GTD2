@@ -1,6 +1,8 @@
 scroll-select, scroll-select-option {
   width: 100vmin;
   position: relative;
+  float: left;
+  display: inline-flex;
 
   .img-btn {
     background-color: transparent;
