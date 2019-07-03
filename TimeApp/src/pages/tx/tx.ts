@@ -45,6 +45,7 @@ export class TxPage {
     console.log(value);
 
     if (value) {
+      //选择或修改提醒
       let hasEmpty = this.remindComponents.some((value, index, array) => {
         return value.value == "";
       });
@@ -53,6 +54,7 @@ export class TxPage {
         this.reminds.push({value: ""});
       }
     } else {
+      //取消提醒
       let forRemoved: Array<number> = new Array<number>();
 
       this.remindComponents.forEach((item, index) => {
