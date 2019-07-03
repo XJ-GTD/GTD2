@@ -158,7 +158,6 @@ export class ScrollSelectComponent {
       this._scrollBox.nativeElement.scrollLeft = index * (this.slideWidth / this.items);
       setTimeout(()=> {
         this.changedPropEvent.emit(this.value);
-
       },500);
     }
   }
