@@ -1,5 +1,6 @@
 import { Component, ElementRef, QueryList, Renderer2, ViewChild, ViewChildren } from '@angular/core';
 import { IonicPage, NavController, NavParams, ModalController, Scroll } from 'ionic-angular';
+import {Keyboard} from "@ionic-native/keyboard";
 
 @IonicPage()
 @Component({
@@ -12,7 +13,7 @@ import { IonicPage, NavController, NavParams, ModalController, Scroll } from 'io
   </ion-header>
 
   <ion-content>
-    <ion-textarea type="text" placeholder="备注" [(ngModel)]="bz" class="memo-set" autosize maxHeight="400"></ion-textarea>
+    <ion-textarea type="text" placeholder="备注" [(ngModel)]="bz" class="memo-set" autosize maxHeight="400" #bzRef></ion-textarea>
   </ion-content>
 
   <ion-footer class="foot-set">
@@ -25,11 +26,22 @@ import { IonicPage, NavController, NavParams, ModalController, Scroll } from 'io
   `
 })
 export class BzPage {
+  @ViewChild("bzRef")
+  bzRef: ElementRef;
 
   bz: string = "";  //备注
 
-  constructor(public navCtrl: NavController) {
+  constructor(public navCtrl: NavController,
+              private keyboard: Keyboard) {
 
+  }
+
+  ionViewDidEnter() {
+    let el = this.bzRef.nativeElement.querySelector('textarea');
+    setTimeout(() => {
+      el.focus();
+      this.keyboard.show();   //for android
+    }, 150);
   }
 
   close() {
