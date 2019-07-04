@@ -35,6 +35,10 @@ page-dz {
   baidu-map {
     width: 100vmin;
     height: calc(100vmax - 8vmin);
+
+    .anchorBL {
+      display: none;
+    }
   }
 
   .footer-ios {
