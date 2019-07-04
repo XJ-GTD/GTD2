@@ -1,6 +1,6 @@
 import { Component, ElementRef, QueryList, Renderer2, ViewChild, ViewChildren } from '@angular/core';
 import { IonicPage, NavController, NavParams, ModalController, Scroll } from 'ionic-angular';
-import { MapOptions, NavigationControlOptions, NavigationControlType } from 'angular2-baidu-map';
+import { ControlAnchor, MapOptions, NavigationControlOptions, NavigationControlType } from 'angular2-baidu-map';
 
 @IonicPage()
 @Component({
@@ -29,7 +29,7 @@ export class DzPage {
       centerAndZoom: {
         lat: 39.920116,
         lng: 116.403703,
-        zoom: 8
+        zoom: 12
       },
       enableKeyboard: true
     };
