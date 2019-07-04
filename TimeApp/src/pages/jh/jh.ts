@@ -1,5 +1,7 @@
 import { Component, ElementRef, QueryList, Renderer2, ViewChild, ViewChildren } from '@angular/core';
 import { IonicPage, NavController, NavParams, ModalController, Scroll } from 'ionic-angular';
+import {UtilService} from "../../service/util-service/util.service";
+import {PlService} from "../pl/pl.service";
 
 @IonicPage()
 @Component({
@@ -13,13 +15,9 @@ import { IonicPage, NavController, NavParams, ModalController, Scroll } from 'io
 
   <ion-content>
     <ion-list radio-group>
-      <ion-item>
-        <ion-label>Go</ion-label>
-        <ion-radio checked="true" value="go"></ion-radio>
-      </ion-item>
-      <ion-item>
-        <ion-label>Rust</ion-label>
-        <ion-radio value="rust"></ion-radio>
+      <ion-item *ngFor="let option of jhoptions">
+        <ion-label>{{option.jn}}</ion-label>
+        <ion-radio [checked]="option.ji == selected" [value]="option.ji"></ion-radio>
       </ion-item>
     </ion-list>
   </ion-content>
@@ -35,9 +33,31 @@ import { IonicPage, NavController, NavParams, ModalController, Scroll } from 'io
 })
 export class JhPage {
 
-  constructor(public navCtrl: NavController) {
+  jhoptions: Array<any> = new Array<any>();
+  selected: string = "";
+
+  constructor(public navCtrl: NavController
+              private plService: PlService,
+              private util: UtilService) {
 
   }
+
+  ionViewDidEnter(){
+    this.getAllJh();
+  }
+
+  getAllJh(){
+    this.util.loadingStart();
+    this.plService.getPlan().then(data=>{
+      this.jhoptions = data.zdyJh;
+
+      this.util.loadingEnd();
+    }).catch(error=>{
+      this.util.toastStart('获取计划失败',1500);
+      this.util.loadingEnd();
+    });
+  }
+
 
   close() {
     this.navCtrl.pop();
