@@ -7,7 +7,7 @@ import { IonicModule } from "ionic-angular";
     BzPage
   ],
   imports: [
-      IonicModule
+    IonicModule
   ],
   providers: [
   ],
