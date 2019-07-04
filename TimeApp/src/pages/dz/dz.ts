@@ -71,7 +71,7 @@ export class DzPage {
       	}
       this.markers = [];
       if (typeof(searchResults) == "undefined" || typeof(searchResults.Lq) == "undefined") {		// 检验搜索结果
-        alert("百度API没有搜索到该地址");
+        console.log("百度API没有搜索到该地址");
         return;
       }
       let searchResult = [];
