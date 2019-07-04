@@ -33,11 +33,14 @@ page-dz {
   }
 
   ion-searchbar {
-    background-color: transparent;
     position: absolute;
     left: 0px;
     top: 0px;
     z-index: 999;
+
+    .searchbar-ios {
+      background-color: transparent;
+    }
   }
 
   baidu-map {
