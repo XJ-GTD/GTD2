@@ -6,23 +6,14 @@ import { MapOptions } from 'angular2-baidu-map';
 @Component({
   selector: 'page-dz',
   template: `
-  <ion-header no-border>
-    <ion-toolbar>
-      <ion-title>地址</ion-title>
-    </ion-toolbar>
-  </ion-header>
-
   <ion-content>
     <baidu-map [options]="options"></baidu-map>
+    <ion-fab>
+      <button ion-fab>
+        <ion-icon name="logo-facebook"></ion-icon>
+      </button>
+    </ion-fab>
   </ion-content>
-
-  <ion-footer class="foot-set">
-    <ion-toolbar>
-    <button ion-button full (click)="close()">
-      关闭
-    </button>
-    </ion-toolbar>
-  </ion-footer>
   `
 })
 export class DzPage {
