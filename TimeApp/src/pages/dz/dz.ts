@@ -10,7 +10,7 @@ import { MapOptions } from 'angular2-baidu-map';
     <baidu-map [options]="options"></baidu-map>
     <ion-fab bottom center>
       <button ion-fab (click)="close()">
-        <ion-icon name="checkmark"></ion-icon>
+        <ion-icon name="checkmark" large></ion-icon>
       </button>
     </ion-fab>
   </ion-content>
