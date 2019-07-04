@@ -9,8 +9,8 @@ import { MapOptions } from 'angular2-baidu-map';
   <ion-content>
     <baidu-map [options]="options"></baidu-map>
     <ion-fab>
-      <button ion-fab>
-        <ion-icon name="logo-facebook"></ion-icon>
+      <button ion-fab (click)="close()">
+        <ion-icon name="checkmark-circle"></ion-icon>
       </button>
     </ion-fab>
   </ion-content>
