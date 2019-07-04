@@ -118,6 +118,13 @@ page-tdm, page-tdme {
     color: $adornColor;
   }
 
+  baidu-map {
+    display: block;
+    width: 33vmin;
+    height: 33vmin;
+    border-radius: 50%;
+  }
+
   .footer-ios {
     .toolbar-background-ios {
       background-color:$aiBackColor;

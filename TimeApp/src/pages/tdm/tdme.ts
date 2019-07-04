@@ -41,7 +41,7 @@ import { MapOptions } from 'angular2-baidu-map';
         </div>
       </ion-row>
       <ion-row justify-content-center>
-        <baidu-map [options]="options" style="display: block; width: 100px; height: 100px;"></baidu-map>
+        <baidu-map [options]="options"></baidu-map>
       </ion-row>
       <ion-row justify-content-center>
         <h5 class="mb-none">地址</h5>
