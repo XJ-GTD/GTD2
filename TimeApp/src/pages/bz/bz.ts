@@ -27,7 +27,7 @@ import {Keyboard} from "@ionic-native/keyboard";
 })
 export class BzPage {
   @ViewChild("bzRef")
-  bzRef: ElementRef;
+  _bzRef: ElementRef;
 
   bz: string = "";  //备注
 
@@ -38,7 +38,7 @@ export class BzPage {
 
   ionViewDidLoad() {
     setTimeout(() => {
-      let el = this.bzRef._native.nativeElement.querySelector('textarea');
+      let el = this._bzRef.nativeElement.querySelector('textarea');
       el.focus();
       this.keyboard.show();   //for android
     }, 150);
