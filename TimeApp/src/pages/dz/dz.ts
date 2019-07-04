@@ -60,7 +60,7 @@ export class DzPage {
     let city: string = "上海";
   	//创建一个搜索类实例
   	this.local = new BMap.LocalSearch(e, {
-    		renderOptions: {map: e, autoViewport: true, selectFirstResult: false},
+    		renderOptions: {map: city, autoViewport: true, selectFirstResult: false},
     		pageCapacity: 10
   	});
   	// 设置查询完成时的回调函数
@@ -70,7 +70,7 @@ export class DzPage {
        	 	e.removeOverlay(this.markers[i]);
       	}
       this.markers = [];
-      if (typeof(searchResults) == "undefined") {		// 检验搜索结果
+      if (typeof(searchResults) == "undefined" || typeof(searchResults.Lq) == "undefined") {		// 检验搜索结果
         alert("百度API没有搜索到该地址");
         return;
       }
