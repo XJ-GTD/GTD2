@@ -7,7 +7,7 @@ import { ControlAnchor, MapOptions, NavigationControlOptions, NavigationControlT
   selector: 'page-dz',
   template: `
   <ion-content>
-    <ion-searchbar (ionInput)="getItems($event)"></ion-searchbar>
+    <ion-searchbar (ionInput)="getItems($event)" placeholder="上海市东方明珠塔" animated="true"></ion-searchbar>
     <baidu-map [options]="options">
       <control type="navigation" [options]="navOptions"></control>
     </baidu-map>
