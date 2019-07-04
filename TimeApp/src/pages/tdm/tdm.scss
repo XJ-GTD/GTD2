@@ -123,6 +123,10 @@ page-tdm, page-tdme {
     width: 33vmin;
     height: 33vmin;
     border-radius: 50%;
+
+    div.baidu-map-instance {
+      border-radius: 50%;
+    }
   }
 
   .footer-ios {
