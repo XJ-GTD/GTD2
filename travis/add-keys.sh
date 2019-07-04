@@ -1,6 +1,6 @@
 #!/bin/bash
 
-if (( $TRAVIS_OS_NAME == 'osx' )); then
+if [ $TRAVIS_OS_NAME = 'osx' ]; then
   security create-keychain -p travis ios-build.keychain
   # Make the keychain the default so identities are found
   security default-keychain -s ios-build.keychain

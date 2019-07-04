@@ -1,6 +1,6 @@
 #!/bin/bash
 
-if (( $TRAVIS_OS_NAME == 'osx' )); then
+if [ $TRAVIS_OS_NAME = 'osx' ]; then
     # Build on macOS
     cordova platform remove ios
     cordova platform add ios
@@ -14,7 +14,7 @@ fi
 
 cp -rf $TRAVIS_BUILD_DIR/TimeAppPatch/platforms/* $TRAVIS_BUILD_DIR/TimeApp/platforms
 
-if (( $TRAVIS_OS_NAME == 'osx' )); then
+if [ $TRAVIS_OS_NAME = 'osx' ]; then
   #ionic cordova build ios --buildConfig $TRAVIS_BUILD_DIR/travis/profiles/cordova/build.json
   ionic cordova build ios
   cat $TRAVIS_BUILD_DIR/TimeApp/platforms/ios/$IOS_APP_NAME/Images.xcassets/AppIcon.appiconset/Contents.json
