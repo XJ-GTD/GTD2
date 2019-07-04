@@ -35,7 +35,7 @@ import { DataConfig } from "../../service/config/data.config";
         <p class="x-small mt-none mb-none">{{(agenda.sd + " " + agenda.st)| formatedate:"dddd MMMM D"}}</p>
       </ion-row>
       <ion-row justify-content-center align-items-center>
-        <div class="row-center">
+        <div class="row-center" (click)="goJh()">
         <i class="color-dot" [ngStyle]="{'background-color': defaultplan.jc }"></i>
         </div>
       </ion-row>
@@ -158,6 +158,10 @@ export class TdmePage {
 
   goBz() {
     this.modalCtrl.create(DataConfig.PAGE._BZ_PAGE, {}).present();
+  }
+
+  goJh() {
+    this.modalCtrl.create(DataConfig.PAGE._JH_PAGE, {}).present();
   }
 
   record() {}
