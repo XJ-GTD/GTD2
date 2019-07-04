@@ -36,7 +36,7 @@ import {DataConfig} from "../../service/config/data.config";
         <ion-textarea type="text" class="w80" placeholder="喜马拉雅儿子的生日聚会" autosize maxHeight="200" text-center></ion-textarea>
       </ion-row>
       <ion-row justify-content-center align-items-center>
-        <div class="row-center">
+        <div class="row-center" (click)="goJh()">
         <i class="color-dot" [ngStyle]="{'background-color': defaultplan.jc }"></i>
         {{defaultplan.jn}}
         </div>
@@ -119,5 +119,9 @@ export class TdmPage {
   }
 
   async goShare() {
+  }
+
+  goJh() {
+    this.modalCtrl.create(DataConfig.PAGE._JH_PAGE, {}).present();
   }
 }
