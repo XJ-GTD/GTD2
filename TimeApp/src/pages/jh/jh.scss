@@ -62,14 +62,19 @@ page-jh {
     color: #fff;
   }
 
+  .item-radio.item-ios ion-label {
+    font-size: 1.4rem;
+  }
+
   i.color-dot {
     width: 1.5vmin;
     height: 1.5vmin;
     background-color: #fff;
     border-radius: 50%;
     display: inline-block;
+    margin-bottom: 0.1rem;
   }
-  
+
   .radio-ios .radio-checked .radio-inner {
     border-color: #fff;
   }
