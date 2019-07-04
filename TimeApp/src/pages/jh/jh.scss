@@ -32,6 +32,16 @@ page-jh {
     background-color: $masterColor;
   }
 
+  ion-item.item-ios {
+    background-color: $masterColor;
+    color: #fff;
+    border: 0px;
+
+    .item-inner {
+      border: 0px;
+    }
+  }
+
   .footer-ios {
     .toolbar-background-ios {
       background-color:$lsback1;
