@@ -23,7 +23,7 @@ import { BaiduMapModule } from 'angular2-baidu-map';
       RadioSelectComponentModule,
       ScrollRangePickerComponentModule,
       SpeechBubbleComponentModule,
-      BaiduMapModule
+      BaiduMapModule.forRoot({ ak: 'zD6zCIA9w7ItoXwxQ8IRPD4rk5E9GEew' })
   ],
   providers: [
   ],
