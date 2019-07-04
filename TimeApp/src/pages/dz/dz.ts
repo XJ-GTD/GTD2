@@ -59,7 +59,7 @@ export class DzPage {
   search(e: any) { // 对应baidu-map中loaded事件即地图加载时运行的方法 官方介绍e可以是map实例
     let city: string = "上海";
   	//创建一个搜索类实例
-  	this.local = new BMap.LocalSearch(e, {
+  	this.local = new BMap.LocalSearch(city, {
     		renderOptions: {map: city, autoViewport: true, selectFirstResult: false},
     		pageCapacity: 10
   	});
