@@ -38,7 +38,7 @@ export class DzPage {
 
     //百度地图导航条选项
     this.navOptions = {
-  		anchor: ControlAnchor.BMAP_ANCHOR_TOP_RIGHT,
+  		anchor: ControlAnchor.BMAP_ANCHOR_BOTTOM_RIGHT,
   		type: NavigationControlType.BMAP_NAVIGATION_CONTROL_PAN
 	  };
   }

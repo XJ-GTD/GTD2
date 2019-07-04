@@ -32,6 +32,14 @@ page-dz {
     background-color: $masterColor;
   }
 
+  ion-searchbar {
+    background-color: transparent;
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    z-index: 999;
+  }
+
   baidu-map {
     width: 100vmin;
     height: 100vmax;
