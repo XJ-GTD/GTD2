@@ -1,6 +1,7 @@
 import { Component, ElementRef, QueryList, Renderer2, ViewChild, ViewChildren } from '@angular/core';
 import { IonicPage, NavController, NavParams, ModalController, Scroll } from 'ionic-angular';
 import { ControlAnchor, MapOptions, NavigationControlOptions, NavigationControlType } from 'angular2-baidu-map';
+declare var BMap: any;
 
 @IonicPage()
 @Component({
@@ -22,7 +23,6 @@ import { ControlAnchor, MapOptions, NavigationControlOptions, NavigationControlT
 export class DzPage {
   options: MapOptions;  //百度地图选项
   navOptions: NavigationControlOptions; //百度导航条选项
-  declare var BMap: any;
   markers: Array<any> = new Array<any>();
   local: any;
 
