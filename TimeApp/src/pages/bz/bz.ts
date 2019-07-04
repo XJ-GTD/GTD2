@@ -12,7 +12,7 @@ import { IonicPage, NavController, NavParams, ModalController, Scroll } from 'io
   </ion-header>
 
   <ion-content>
-    <ion-textarea type="text" placeholder="备注" [(ngModel)]="scd.bz" class="memo-set" autosize maxHeight="400"></ion-textarea>
+    <ion-textarea type="text" placeholder="备注" [(ngModel)]="bz" class="memo-set" autosize maxHeight="400"></ion-textarea>
   </ion-content>
 
   <ion-footer class="foot-set">
@@ -25,6 +25,8 @@ import { IonicPage, NavController, NavParams, ModalController, Scroll } from 'io
   `
 })
 export class BzPage {
+
+  bz: string = "";  //备注
 
   constructor(public navCtrl: NavController) {
 
