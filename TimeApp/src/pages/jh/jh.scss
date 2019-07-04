@@ -58,6 +58,14 @@ page-jh {
     border: 0px;
   }
 
+  .item-radio-checked.item-ios ion-label {
+    color: $adornColor;
+  }
+
+  .radio-ios .radio-checked .radio-inner {
+    border-color: $adornColor;
+  }
+
   .footer-ios {
     .toolbar-background-ios {
       background-color:$lsback1;
