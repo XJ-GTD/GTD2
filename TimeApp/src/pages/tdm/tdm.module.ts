@@ -8,6 +8,7 @@ import {RadioSelectComponentModule} from "../../components/radio-select/radio-se
 import {ScrollRangePickerComponentModule} from "../../components/scroll-range-picker/scroll-range-picker.module";
 import {SpeechBubbleComponentModule} from "../../components/speech-bubble/speech-bubble.module";
 import { DirectivesModule } from "../../directives/directives.module";
+import { BaiduMapModule } from 'angular2-baidu-map';
 
 @NgModule({
   declarations: [
@@ -21,7 +22,8 @@ import { DirectivesModule } from "../../directives/directives.module";
       ScrollSelectComponentModule,
       RadioSelectComponentModule,
       ScrollRangePickerComponentModule,
-      SpeechBubbleComponentModule
+      SpeechBubbleComponentModule,
+      BaiduMapModule
   ],
   providers: [
   ],
