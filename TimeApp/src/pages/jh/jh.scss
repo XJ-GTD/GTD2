@@ -42,6 +42,22 @@ page-jh {
     }
   }
 
+  .list-ios .item-block .item-inner {
+    border: 0px;
+  }
+
+  .item-ios.item-block .item-inner {
+    border: 0px;
+  }
+
+  .list-ios > .item-block:first-child, .list-ios > .item-wrapper:first-child .item-block {
+    border: 0px;
+  }
+
+  .list-ios > .item-block:last-child, .list-ios > .item-wrapper:last-child .item-block {
+    border: 0px;
+  }
+
   .footer-ios {
     .toolbar-background-ios {
       background-color:$lsback1;
