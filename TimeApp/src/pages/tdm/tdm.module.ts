@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { NgModule, NO_ERRORS_SCHEMA } from '@angular/core';
 import { TdmPage } from './tdm';
 import { TdmePage } from './tdme';
 import {IonicModule} from "ionic-angular";
