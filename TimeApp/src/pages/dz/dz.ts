@@ -52,7 +52,7 @@ export class DzPage {
 
   getItems(ev) {
     console.log(ev);
-    this.search(ev.target.value;);
+    this.search(ev.target.value);
   }
 
   search(e: any) { // 对应baidu-map中loaded事件即地图加载时运行的方法 官方介绍e可以是map实例
