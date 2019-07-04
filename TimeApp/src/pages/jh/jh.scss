@@ -62,6 +62,14 @@ page-jh {
     color: #fff;
   }
 
+  i.color-dot {
+    width: 1.5vmin;
+    height: 1.5vmin;
+    background-color: #fff;
+    border-radius: 50%;
+    display: inline-block;
+  }
+  
   .radio-ios .radio-checked .radio-inner {
     border-color: #fff;
   }
