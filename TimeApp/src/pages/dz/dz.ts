@@ -45,6 +45,23 @@ export class DzPage {
   		anchor: ControlAnchor.BMAP_ANCHOR_BOTTOM_RIGHT,
   		type: NavigationControlType.BMAP_NAVIGATION_CONTROL_PAN
 	  };
+
+    this.markers.push({
+      options: {
+          icon: {
+            imageUrl: 'http://api.map.baidu.com/img/markers.png',
+            size: {
+              height: 23,
+              width: 25
+            }
+          },
+          title: '天安门'
+        },
+        point: {
+          lat: 39.920116,
+          lng: 116.403703
+        }
+    });
   }
 
   close() {
