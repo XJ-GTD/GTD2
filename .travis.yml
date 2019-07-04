@@ -1,6 +1,7 @@
 branches:
   only:
   - develop
+  - cassiscornuta
 matrix:
   include:
   - os: linux
