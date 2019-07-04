@@ -88,6 +88,7 @@ import {DrPageModule} from "../pages/dr/dr.module";
 import {TxPageModule} from "../pages/tx/tx.module";
 import {BzPageModule} from "../pages/bz/bz.module";
 import {JhPageModule} from "../pages/jh/jh.module";
+import {DzPageModule} from "../pages/dz/dz.module";
 import {CardListComponentModule} from "../components/card-list/card-list.module";
 import {ScrollSelectComponentModule} from "../components/scroll-select/scroll-select.module";
 import {RadioSelectComponentModule} from "../components/radio-select/radio-select.module";
@@ -148,6 +149,7 @@ import { BaiduMapModule } from 'angular2-baidu-map';
     TxPageModule,
     BzPageModule,
     JhPageModule,
+    DzPageModule,
     ConfirmboxComponentModule,
     CardListComponentModule,
     ScrollSelectComponentModule,

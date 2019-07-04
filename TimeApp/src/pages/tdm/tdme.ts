@@ -41,13 +41,13 @@ import { MapOptions } from 'angular2-baidu-map';
         </div>
       </ion-row>
       <ion-row justify-content-center>
-        <baidu-map [options]="options"></baidu-map>
+        <baidu-map [options]="options" (click)="goDz()"></baidu-map>
       </ion-row>
       <ion-row justify-content-center>
-        <h5 class="mb-none">地址</h5>
+        <h5 class="mb-none" (click)="goDz()">地址</h5>
       </ion-row>
       <ion-row justify-content-center>
-      <p class="x-small mt-none">说"地址是上海市东方明珠塔" 或 点击以添加</p>
+      <p class="x-small mt-none" (click)="goDz()">说"地址是上海市东方明珠塔" 或 点击以添加</p>
       </ion-row>
       <ion-row justify-content-center>
         <h5 class="mb-none">人员</h5>
@@ -177,6 +177,10 @@ export class TdmePage {
 
   goJh() {
     this.modalCtrl.create(DataConfig.PAGE._JH_PAGE, {}).present();
+  }
+
+  goDz() {
+    this.modalCtrl.create(DataConfig.PAGE._DZ_PAGE, {}).present();
   }
 
   record() {}
