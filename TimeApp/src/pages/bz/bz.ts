@@ -36,7 +36,7 @@ export class BzPage {
 
   }
 
-  ionViewDidEnter() {
+  ionViewDidLoad() {
     setTimeout(() => {
       let el = this.bzRef._native.nativeElement.querySelector('textarea');
       el.focus();
