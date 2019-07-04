@@ -70,12 +70,12 @@ export class DzPage {
        	 	e.removeOverlay(this.markers[i]);
       	}
       this.markers = [];
-      if (typeof(searchResults) == "undefined" || typeof(searchResults.Lq) == "undefined") {		// 检验搜索结果
+      if (typeof(searchResults) == "undefined" || typeof(searchResults.Qq) == "undefined") {		// 检验搜索结果
         console.log("百度API没有搜索到该地址");
         return;
       }
       let searchResult = [];
-      searchResult = searchResults.Lq;		// 查询结果存在searchResults.Lq中
+      searchResult = searchResults.Qq;		// 查询结果存在searchResults.Lq中
       let size = searchResult.length;
       let temp;
       let myIcon = new BMap.Icon("http://api.map.baidu.com/img/markers.png", new BMap.Size(23, 25), { // 设置地图标记的icon
