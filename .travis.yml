@@ -73,7 +73,7 @@ script:
   - npm run build
   - sh $TRAVIS_BUILD_DIR/travis/build.sh
 after_script:
-  - sh $TRAVIS_BUILD_DIR/travis/fir.sh
+  - bash $TRAVIS_BUILD_DIR/travis/fir.sh
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then sh $TRAVIS_BUILD_DIR/travis/remove-keys.sh ; fi
 env:
   global:
