@@ -56,7 +56,6 @@ export class DzPage {
   }
 
   search(e: any) { // 对应baidu-map中loaded事件即地图加载时运行的方法 官方介绍e可以是map实例
-  	let _this = this;
   	//创建一个搜索类实例
   	this.local = new BMap.LocalSearch(e, {
     		renderOptions: {map: e, autoViewport: true, selectFirstResult: false},
@@ -83,19 +82,19 @@ export class DzPage {
       });
       let contents = [];
       for (let i = 0; i < size; i++) {
-        _this.markers[i] = new BMap.Marker(new BMap.Point(searchResult[i].point.lng, searchResult[i].point.lat), {icon: myIcon});//在地图上添加标识
+        this.markers[i] = new BMap.Marker(new BMap.Point(searchResult[i].point.lng, searchResult[i].point.lat), {icon: myIcon});//在地图上添加标识
         //点击标识后显示的内容
         contents[i] = "你要查找的地方:【" + searchResult[i].title + "】地址：" + searchResult[i].address;// 经纬度在searchResult[i].point.lng, searchResult[i].point.lat中
-        _this.markers[i].title = contents[i];
+        this.markers[i].title = contents[i];
         //添加点击事件监听
-        _this.markers[i].addEventListener("click", () => {
+        this.markers[i].addEventListener("click", () => {
           	var infoWindow = new BMap.InfoWindow("<p style='font-size:14px;'>" + contents[i] + "</p>");
-          	_this.markers[i].openInfoWindow(infoWindow);
+          	this.markers[i].openInfoWindow(infoWindow);
         });// 在点击标识的时候显示标识点信息
-        e.addOverlay(_this.markers[i]);// 添加标识
+        e.addOverlay(this.markers[i]);// 添加标识
         if (i == 0) { // 默认显示查询结果第一条
           var infoWindow = new BMap.InfoWindow("<p style='font-size:14px;'>" + contents[0] + "</p>");
-          _this.markers[0].openInfoWindow(infoWindow);
+          this.markers[0].openInfoWindow(infoWindow);
         }
       }
     });
