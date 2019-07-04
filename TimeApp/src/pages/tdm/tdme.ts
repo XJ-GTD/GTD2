@@ -141,7 +141,7 @@ export class TdmePage {
       centerAndZoom: {
         lat: 39.920116,
         lng: 116.403703,
-        zoom: 4
+        zoom: 8
       },
       enableKeyboard: true
     }
