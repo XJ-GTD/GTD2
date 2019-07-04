@@ -1,6 +1,6 @@
 #!/bin/bash
 
-if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
+if (( "$TRAVIS_OS_NAME" == "osx" )); then
   gem install xcpretty
   brew install yarn
   brew install git-lfs
@@ -17,4 +17,3 @@ else
   echo -e "d56f5187479451eabf01fb78af6dfcb131a6481e" >> $ANDROID_HOME/licenses/android-sdk-license
   echo -e "84831b9409646a918e30573bab4c9c91346d8abd" >> $ANDROID_HOME/licenses/android-sdk-preview-license
 fi
-
