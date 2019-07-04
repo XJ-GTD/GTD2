@@ -5,6 +5,7 @@ import {TddjPage} from "./tddj";
 import {IonicModule} from "ionic-angular";
 import {PipesModule} from "../../pipes/pipes.module";
 import {TddsPage} from "./tdds";
+import { DirectivesModule } from "../../directives/directives.module";
 
 @NgModule({
   declarations: [
@@ -14,8 +15,9 @@ import {TddsPage} from "./tdds";
     TddsPage
   ],
   imports: [
-      IonicModule,
-      PipesModule
+    IonicModule,
+    PipesModule,
+    DirectivesModule
   ],
   providers: [
   ],
