@@ -7,6 +7,7 @@ import { ControlAnchor, MapOptions, NavigationControlOptions, NavigationControlT
   selector: 'page-dz',
   template: `
   <ion-content>
+    <ion-searchbar (ionInput)="getItems($event)"></ion-searchbar>
     <baidu-map [options]="options">
       <control type="navigation" [options]="navOptions"></control>
     </baidu-map>
@@ -31,6 +32,7 @@ export class DzPage {
         lng: 116.403703,
         zoom: 12
       },
+      enableScrollWheelZoom: true,
       enableKeyboard: true
     };
 
@@ -45,4 +47,7 @@ export class DzPage {
     this.navCtrl.pop();
   }
 
+  getItems(value) {
+    console.log(value);
+  }
 }
