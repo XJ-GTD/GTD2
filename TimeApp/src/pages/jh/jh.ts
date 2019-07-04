@@ -12,7 +12,16 @@ import { IonicPage, NavController, NavParams, ModalController, Scroll } from 'io
   </ion-header>
 
   <ion-content>
-    
+    <ion-list radio-group>
+      <ion-item>
+        <ion-label>Go</ion-label>
+        <ion-radio checked="true" value="go"></ion-radio>
+      </ion-item>
+      <ion-item>
+        <ion-label>Rust</ion-label>
+        <ion-radio value="rust"></ion-radio>
+      </ion-item>
+    </ion-list>
   </ion-content>
 
   <ion-footer class="foot-set">
