@@ -70,10 +70,10 @@ import { DataConfig } from "../../service/config/data.config";
       <p class="x-small mt-none">说"设置倒计时" 或 点击以添加</p>
       </ion-row>
       <ion-row justify-content-center>
-        <h5 class="mb-none">备注</h5>
+        <h5 class="mb-none" (click)="goBz()">备注</h5>
       </ion-row>
       <ion-row justify-content-center>
-      <p class="x-small mt-none">说"备注当天要带上生日礼物" 或 点击以添加</p>
+      <p class="x-small mt-none" (click)="goBz()">说"备注当天要带上生日礼物" 或 点击以添加</p>
       </ion-row>
       <ion-row justify-content-center>
         <speech-bubble seconds="12"></speech-bubble>
@@ -154,6 +154,10 @@ export class TdmePage {
 
   goTx() {
     this.modalCtrl.create(DataConfig.PAGE._TX_PAGE, {}).present();
+  }
+
+  goBz() {
+    this.modalCtrl.create(DataConfig.PAGE._BZ_PAGE, {}).present();
   }
 
   record() {}
