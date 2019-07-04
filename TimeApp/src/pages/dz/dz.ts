@@ -11,6 +11,7 @@ declare var BMap: any;
     <ion-searchbar (ionInput)="getItems($event)" placeholder="上海市东方明珠塔" animated="true"></ion-searchbar>
     <baidu-map [options]="options">
       <control type="navigation" [options]="navOptions"></control>
+      <marker *ngFor="let marker of markers" [point]="marker.point" [options]="marker.options"></marker>
     </baidu-map>
     <ion-fab bottom center>
       <button ion-fab (click)="close()">
