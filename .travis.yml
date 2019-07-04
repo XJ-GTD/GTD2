@@ -39,12 +39,6 @@ before_cache:
   - rm -f  $HOME/.gradle/caches/transforms-1/transforms-1.lock
   - rm -rf $HOME/.gradle/caches/3.5/fileHashes/
   - rm -rf $HOME/.gradle/caches/*/plugin-resolution/
-cache:
-  directories:
-  - "$HOME/.gradle/caches/"
-  - "$HOME/.gradle/wrapper/"
-  - "$HOME/Library/Caches/Yarn/v1/"
-  - "$HOME/.cache/yarn/v1/"
 before_install:
   - export LANG=zh_CN.UTF-8
   - export GRADLE_HOME=/usr/local/gradle
