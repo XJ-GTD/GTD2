@@ -36,7 +36,7 @@ export class JhPage {
   jhoptions: Array<any> = new Array<any>();
   selected: string = "";
 
-  constructor(public navCtrl: NavController
+  constructor(public navCtrl: NavController,
               private plService: PlService,
               private util: UtilService) {
 
