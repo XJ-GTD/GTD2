@@ -38,7 +38,7 @@ export class BzPage {
 
   ionViewDidEnter() {
     setTimeout(() => {
-      let el = this.bzRef.nativeElement.querySelector('textarea');
+      let el = this.bzRef._native.nativeElement.querySelector('textarea');
       el.focus();
       this.keyboard.show();   //for android
     }, 150);
