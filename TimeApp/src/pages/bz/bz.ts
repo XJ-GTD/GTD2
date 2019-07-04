@@ -41,7 +41,7 @@ export class BzPage {
       let el = this._bzRef.nativeElement.querySelector('textarea');
       el.focus();
       this.keyboard.show();   //for android
-    }, 150);
+    }, 500);
   }
 
   close() {
