@@ -6,6 +6,7 @@ import { ScrollRangePickerComponent } from "../../components/scroll-range-picker
 import { SpeechBubbleComponent } from "../../components/speech-bubble/speech-bubble";
 import { FsData, RcInParam, ScdData, ScdPageParamter, SpecScdData } from "../../data.mapping";
 import { DataConfig } from "../../service/config/data.config";
+import { MapOptions } from 'angular2-baidu-map';
 
 @Component({
   selector: 'page-tdme',
@@ -38,6 +39,9 @@ import { DataConfig } from "../../service/config/data.config";
         <div class="row-center" (click)="goJh()">
         <i class="color-dot" [ngStyle]="{'background-color': defaultplan.jc }"></i>
         </div>
+      </ion-row>
+      <ion-row justify-content-center>
+        <baidu-map [options]="options" style="display: block; width: 100px; height: 100px;"></baidu-map>
       </ion-row>
       <ion-row justify-content-center>
         <h5 class="mb-none">地址</h5>
@@ -101,6 +105,7 @@ export class TdmePage {
   };
   isMobile: boolean = true;
   speaking: boolean = false;
+  options: MapOptions;  //百度地图选项
 
   repeats: any = [{value: 0, caption: '关闭'}, {value: 1, caption: '每天'}, {value: 2, caption: '每周'}, {value: 3, caption: '每月'}, {value: 4, caption: '每年'}];
   labels: any = [{value:0,caption:'工作'}, {value:1,caption:'个人'}];
@@ -129,6 +134,16 @@ export class TdmePage {
 
     for (let year = 2009; year <= 2029; year++) {
       this.years.push({value:year.toString(),caption:year.toString()});
+    }
+
+    //百度地图设置
+    this.options = {
+      centerAndZoom: {
+        lat: 39.920116,
+        lng: 116.403703,
+        zoom: 16
+      },
+      enableKeyboard: true
     }
   }
 

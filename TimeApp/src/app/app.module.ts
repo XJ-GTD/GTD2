@@ -96,6 +96,7 @@ import {SpeechBubbleComponentModule} from "../components/speech-bubble/speech-bu
 import { WeatherIconsModule } from 'ngx-icons';
 import { JPush } from '@jiguang-ionic/jpush';
 import { DirectivesModule } from "../directives/directives.module";
+import { BaiduMapModule } from 'angular2-baidu-map';
 
 @NgModule({
   declarations: [
@@ -152,7 +153,8 @@ import { DirectivesModule } from "../directives/directives.module";
     ScrollSelectComponentModule,
     RadioSelectComponentModule,
     ScrollRangePickerComponentModule,
-    SpeechBubbleComponentModule
+    SpeechBubbleComponentModule,
+    BaiduMapModule.forRoot({ ak: 'zD6zCIA9w7ItoXwxQ8IRPD4rk5E9GEew' })
   ],
   bootstrap: [IonicApp],
   entryComponents: [

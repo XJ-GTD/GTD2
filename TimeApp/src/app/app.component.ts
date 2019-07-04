@@ -32,6 +32,7 @@ export class MyApp {
     //特殊菜单设置
     MenuController.registerType('scalePush', MenuScalePushType);
     MenuController.registerType('lsPush', LsPushType);
+
     // let status bar overlay webview
     // statusBar.overlaysWebView(true);
 
