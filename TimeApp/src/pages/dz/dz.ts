@@ -9,7 +9,7 @@ declare var BMap: any;
   template: `
   <ion-content>
     <ion-searchbar (ionInput)="getItems($event)" placeholder="上海市东方明珠塔" animated="true"></ion-searchbar>
-    <baidu-map [options]="options">
+    <baidu-map [options]="options" (loaded)="search($event)">
       <control type="navigation" [options]="navOptions"></control>
       <marker *ngFor="let marker of markers" [point]="marker.point" [options]="marker.options"></marker>
     </baidu-map>
@@ -53,7 +53,7 @@ export class DzPage {
 
   getItems(ev) {
     console.log(ev);
-    this.search(ev.target.value);
+    this.options['currentCity'] = '上海市';
   }
 
   search(e: any) { // 对应baidu-map中loaded事件即地图加载时运行的方法 官方介绍e可以是map实例
