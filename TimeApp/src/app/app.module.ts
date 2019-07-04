@@ -86,6 +86,7 @@ import {AtPageModule} from "../pages/at/at.module";
 import {DaPageModule} from "../pages/da/da.module";
 import {DrPageModule} from "../pages/dr/dr.module";
 import {TxPageModule} from "../pages/tx/tx.module";
+import {BzPageModule} from "../pages/bz/bz.module";
 import {CardListComponentModule} from "../components/card-list/card-list.module";
 import {ScrollSelectComponentModule} from "../components/scroll-select/scroll-select.module";
 import {RadioSelectComponentModule} from "../components/radio-select/radio-select.module";
@@ -143,6 +144,7 @@ import { DirectivesModule } from "../directives/directives.module";
     DaPageModule,
     DrPageModule,
     TxPageModule,
+    BzPageModule,
     ConfirmboxComponentModule,
     CardListComponentModule,
     ScrollSelectComponentModule,
