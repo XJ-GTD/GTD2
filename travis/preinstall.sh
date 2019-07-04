@@ -1,6 +1,6 @@
 #!/bin/bash
 
-if (( $TRAVIS_OS_NAME == "osx" )); then
+if (( $TRAVIS_OS_NAME == 'osx' )); then
   gem install xcpretty
   brew install yarn
   brew install git-lfs
