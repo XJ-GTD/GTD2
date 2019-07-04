@@ -26,7 +26,7 @@ import {Keyboard} from "@ionic-native/keyboard";
   `
 })
 export class BzPage {
-  @ViewChild("bzRef")
+  @ViewChild("bzRef", {read: ElementRef})
   _bzRef: ElementRef;
 
   bz: string = "";  //备注
