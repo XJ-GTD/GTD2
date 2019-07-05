@@ -130,7 +130,7 @@ export class TdmPage {
 
   save(): Promise<ScdData> {
     return new Promise<ScdData>(async (resolve, reject) => {
-      if (!checkInput()) {
+      if (!this.checkInput()) {
         return;
       }
 
