@@ -120,7 +120,7 @@ export class PlService {
     let jh:JhTbl = new JhTbl();
     jh.ji = ji;
 
-    jh = await this.sqlExec.getOne(jh);
+    jh = await this.sqlExec.getOne<JhTbl>(jh);
 
     if (prop == 'all') {
       return jh;
