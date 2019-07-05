@@ -26,6 +26,7 @@ import { ScrollSelectComponent } from "../../components/scroll-select/scroll-sel
       <scroll-select-option value="12h">12 小时前</scroll-select-option>
       <scroll-select-option value="1d">1 天前</scroll-select-option>
       <scroll-select-option value="2d">2 天前</scroll-select-option>
+      <scroll-select-option value="0">当事件开始</scroll-select-option>
     </scroll-select>
   </ion-content>
 
