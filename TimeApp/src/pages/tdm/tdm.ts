@@ -113,6 +113,7 @@ export class TdmPage {
       let dest = changed.dest;
       this.rangeStartT = moment.unix(dest).format("h:mm");
       this.rangeStartTAMPM = moment.unix(dest).format("A");
+      this.currenttime = moment.unix(dest).format("HH:mm");
     }
   }
 
