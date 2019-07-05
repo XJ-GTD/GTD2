@@ -33,7 +33,7 @@ import {DataConfig} from "../../service/config/data.config";
         <scroll-range-picker max="24" min="5" value="18:00" (changed)="timechanged($event)"></scroll-range-picker>
       </ion-row>
       <ion-row justify-content-center>
-        <ion-textarea type="text" class="w80" placeholder="喜马拉雅儿子的生日聚会" autosize maxHeight="200" text-center #titleRef></ion-textarea>
+        <ion-textarea type="text" class="w80" placeholder="喜马拉雅儿子的生日聚会" [(ngModel)]="title" autosize maxHeight="200" text-center #titleRef></ion-textarea>
       </ion-row>
       <ion-row justify-content-center align-items-center (click)="goJh()">
         <div class="row-center">
@@ -64,6 +64,7 @@ export class TdmPage {
 
   @ViewChild("titleRef", {read: ElementRef})
   _titleRef: ElementRef;
+  title: string = "";
 
   day: string = "";
   date: string = "";
@@ -74,6 +75,8 @@ export class TdmPage {
   rangeEnd: string = '4:30下午';
   rangeStartT: string = '4:30';
   rangeStartTAMPM: string = '下午';
+  currentday: moment.Moment = null;
+  currenttime: string = "12:00";
 
   constructor(public navCtrl: NavController,
               public navParams: NavParams,
@@ -84,17 +87,16 @@ export class TdmPage {
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad TdmPage');
-    let currentday: moment.Moment = null;
 
     if (this.navParams) {
       let paramter: ScdPageParamter = this.navParams.data;
-      currentday = paramter.d;
+      this.currentday = paramter.d;
     } else {
-      currentday = moment();
+      this.currentday = moment();
     }
 
-    this.day = this.util.showDate(currentday);
-    this.date = currentday.format("MMMM D");
+    this.day = this.util.showDate(this.currentday);
+    this.date = this.currentday.format("MMMM D");
   }
 
   ionViewDidEnter() {
@@ -118,14 +120,26 @@ export class TdmPage {
     this.navCtrl.pop();
   }
 
+  checkInput(): boolean {
+    if (this.title && this.currentday && this.currenttime) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
   save(): Promise<ScdData> {
     return new Promise<ScdData>(async (resolve, reject) => {
+      if (!checkInput()) {
+        return;
+      }
+
       this.navCtrl.pop();
 
       let data: ScdData = new ScdData();
-      data.sn = "喜马拉雅儿子的生日聚会";
-      data.st = "12:00";
-      data.sd = moment().format("YYYY/MM/DD");
+      data.sn = this.title;
+      data.st = this.currenttime;
+      data.sd = this.currentday.format("YYYY/MM/DD");
       this.modalCtrl.create(DataConfig.PAGE._TDME_PAGE, data).present();
     });
   }
