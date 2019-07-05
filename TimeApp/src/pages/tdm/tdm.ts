@@ -99,13 +99,14 @@ export class TdmPage {
       this.currentday = moment();
     }
 
+    this.getDefaultJh();
+
     this.day = this.util.showDate(this.currentday);
     this.date = this.currentday.format("MMMM D");
+
   }
 
   ionViewDidEnter() {
-    this.getDefaultJh();
-
     setTimeout(() => {
       let el = this._titleRef.nativeElement.querySelector('textarea');
       el.focus();
