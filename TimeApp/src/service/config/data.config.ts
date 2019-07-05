@@ -164,6 +164,8 @@ export class DataConfig {
   //每日简报
   public static SYS_DR: string = "DR";
   public static SYS_DRP1: string = "DRP1";
+  //日历
+  public static SYS_DJH: string = "DJH";
   /*========== 系统设置区分 =========*/
 
 

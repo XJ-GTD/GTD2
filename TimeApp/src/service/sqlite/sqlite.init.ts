@@ -183,7 +183,38 @@ export class SqliteInit {
         altercols.push(`alter table gtd_jt add column fj varchar(50);`);
 
         await this.sqlexec.batExecSql(altercols);
+
+        // 日历 - 缺省日历
+        let defaultJhParamTbl: YTbl = new YTbl();
+        defaultJhParamTbl.yi = this.util.getUuid();
+        defaultJhParamTbl.yt = "DJH";
+        defaultJhParamTbl.yk = "DJH";
+        defaultJhParamTbl.ytn = "缺省日历";
+        defaultJhParamTbl.yn = "日程创建 缺省日历 个人";
+        defaultJhParamTbl.yv = "personalcalendar";
+        await this.sqlexec.save(defaultJhParamTbl);
       }
+
+      // 增加默认的计划 个人和工作
+      let defaultjhs: Array<string> = new Array<string>();
+
+      let jh: JhTbl = new JhTbl();
+      jh.ji = 'personalcalendar';
+      jh.jn = '个人';
+      jh.jg = '个人';
+      jh.jc = '#735e46';
+      jh.jt = '2';
+      defaultjhs.push(jh.inT());
+
+      jh = new JhTbl();
+      jh.ji = 'workcalendar';
+      jh.jn = '工作';
+      jh.jg = '工作';
+      jh.jc = '#876a29';
+      jh.jt = '2';
+      defaultjhs.push(jh.inT());
+
+      await this.sqlexec.batExecSql(defaultjhs);
     }
   }
 

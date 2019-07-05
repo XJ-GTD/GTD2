@@ -116,6 +116,19 @@ export class PlService {
     return pld;
   }
 
+  async getJh(ji: string, prop: string = 'all') {
+    let jh:JhTbl = new JhTbl();
+    jh.ji = ji;
+
+    jh = await this.sqlExec.getOne(jh);
+
+    if (prop == 'all') {
+      return jh;
+    } else {
+      return jh.get(prop);
+    }
+  }
+
   //获取计划
   getPlanCus():Promise<Array<JhTbl>>{
     return new Promise<Array<JhTbl>>(async (resolve, reject) => {

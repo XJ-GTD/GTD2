@@ -37,6 +37,7 @@ export class JhPage {
   selected: string = "";
 
   constructor(public navCtrl: NavController,
+              public navParams: NavParams,
               private plService: PlService,
               private util: UtilService) {
 
@@ -60,6 +61,9 @@ export class JhPage {
 
 
   close() {
+    let callback = this.navParams.get('callback');
+    let data: Object = this.jhoptions[0];
+    callback(data);
     this.navCtrl.pop();
   }
 

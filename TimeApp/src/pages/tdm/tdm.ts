@@ -8,6 +8,7 @@ import {UtilService} from "../../service/util-service/util.service";
 import * as moment from "moment";
 import {Keyboard} from "@ionic-native/keyboard";
 import {DataConfig} from "../../service/config/data.config";
+import {PlService} from "../pl/pl.service";
 
 @IonicPage()
 @Component({
@@ -81,6 +82,7 @@ export class TdmPage {
   constructor(public navCtrl: NavController,
               public navParams: NavParams,
               public modalCtrl: ModalController,
+              private plService: PlService,
               private keyboard: Keyboard,
               private util: UtilService) {
   }
@@ -100,11 +102,14 @@ export class TdmPage {
   }
 
   ionViewDidEnter() {
+    this.getDefaultJh();
+
     setTimeout(() => {
       let el = this._titleRef.nativeElement.querySelector('textarea');
       el.focus();
       this.keyboard.show();   //for android
     }, 500);
+
   }
 
   timechanged(changed) {
@@ -115,6 +120,18 @@ export class TdmPage {
       this.rangeStartTAMPM = moment.unix(dest).format("A");
       this.currenttime = moment.unix(dest).format("HH:mm");
     }
+  }
+
+  getDefaultJh() {
+    this.util.loadingStart();
+    this.plService.getPlan().then(data=>{
+      this.jhoptions = data.zdyJh;
+
+      this.util.loadingEnd();
+    }).catch(error=>{
+      this.util.toastStart('获取计划失败',1500);
+      this.util.loadingEnd();
+    });
   }
 
   cancel() {
