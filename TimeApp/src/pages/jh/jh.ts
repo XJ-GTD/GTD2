@@ -14,7 +14,7 @@ import {PlService} from "../pl/pl.service";
   </ion-header>
 
   <ion-content>
-    <ion-list radio-group>
+    <ion-list radio-group [(ngModel)]="selected" [ionChange]="jhChanged()">
       <ion-item *ngFor="let option of jhoptions">
         <ion-label><i class="color-dot" [ngStyle]="{'background-color': option.jc }"></i> {{option.jn}}</ion-label>
         <ion-radio [checked]="option.ji == selected" [value]="option.ji"></ion-radio>
@@ -35,6 +35,7 @@ export class JhPage {
 
   jhoptions: Array<any> = new Array<any>();
   selected: string = "";
+  selectedJh: any = "";
 
   constructor(public navCtrl: NavController,
               public navParams: NavParams,
@@ -42,6 +43,7 @@ export class JhPage {
               private plService: PlService,
               private util: UtilService) {
     if (this.navParams && this.navParams.data) {
+      this.selectedJh = this.navParams.data;
       this.selected = this.navParams.data.ji;
     }
   }
@@ -62,9 +64,17 @@ export class JhPage {
     });
   }
 
+  jhChanged() {
+    for (let option of this.jhoptions) {
+      if (option.ji == this.selected) {
+        this.selectedJh = option;
+        break;
+      }
+    }
+  }
 
   close() {
-    let data: Object = {jh: this.jhoptions[0]};
+    let data: Object = {jh: this.selectedJh};
     this.viewCtrl.dismiss(data);
   }
 
