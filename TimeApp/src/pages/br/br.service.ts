@@ -248,12 +248,13 @@ export class BrService {
 
     //插入本地计划（插入前删除）
     let jh = new JhTbl();
-    let jhsql = "delete from gtd_j_h where jt <> '1' and jt<>'0' ";//本地系统计划不删除
+    let jhsql = "delete from gtd_j_h where jt <> '1' and jt<>'0' and ji<>'personalcalendar' and ji<>'workcalendar'";//本地系统计划不删除,默认个人/工作日历不删除
     await this.sqlexec.execSql(jhsql);
 
     for (let j = 0, len = outRecoverPro.jh.length; j < len; j++) {
       let jhi = new JhTbl();
       Object.assign(jhi,outRecoverPro.jh[j]) ;
+      if (jhi.ji == 'personalcalendar' || jhi.ji == 'workcalendar') continue;
       sqls.push(jhi.inT());
     }
     await this.sqlexec.batExecSql(sqls);
