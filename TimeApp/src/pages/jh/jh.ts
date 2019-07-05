@@ -1,5 +1,5 @@
 import { Component, ElementRef, QueryList, Renderer2, ViewChild, ViewChildren } from '@angular/core';
-import { IonicPage, NavController, NavParams, ModalController, Scroll } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, ViewController, ModalController, Scroll } from 'ionic-angular';
 import {UtilService} from "../../service/util-service/util.service";
 import {PlService} from "../pl/pl.service";
 
@@ -38,6 +38,7 @@ export class JhPage {
 
   constructor(public navCtrl: NavController,
               public navParams: NavParams,
+              public viewCtrl: ViewController,
               private plService: PlService,
               private util: UtilService) {
 
@@ -61,10 +62,8 @@ export class JhPage {
 
 
   close() {
-    let callback = this.navParams.get('callback');
-    let data: Object = this.jhoptions[0];
-    callback(data);
-    this.navCtrl.pop();
+    let data: Object = {jh: this.jhoptions[0]};
+    this.viewCtrl.dismiss(data);
   }
 
 }

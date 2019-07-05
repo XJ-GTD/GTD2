@@ -161,10 +161,10 @@ export class SsPage {
   gotodjhsetting() {
     let modal = this.modalController.create(DataConfig.PAGE._JH_PAGE);
     modal.onDidDismiss((data)=>{
-      this.sdjhn = data.jn;
-      this.sdjh = data.ji;
+      this.sdjhn = data.jh.jn;
+      this.sdjh = data.jh.ji;
 
-      this.djh.value = data.ji;
+      this.djh.value = data.jh.ji;
 
       let set:PageY = new PageY();
       set.yi = this.djh.yi;//偏好主键ID
@@ -172,7 +172,7 @@ export class SsPage {
       set.yt = this.djh.typeB; //偏好设置类型
       set.yn = this.djh.name;//偏好设置名称
       set.yk = this.djh.type ;//偏好设置key
-      set.yv = data.ji;//偏好设置value
+      set.yv = data.jh.ji;//偏好设置value
 
       this.ssService.save(set);
     });
