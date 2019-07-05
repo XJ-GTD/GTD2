@@ -179,7 +179,7 @@ export class SsPage {
     modal.present();
   }
 
-  private getData() {
+  async private getData() {
     this.h = UserConfig.settins.get(DataConfig.SYS_H);
     this.t = UserConfig.settins.get(DataConfig.SYS_T);
     this.b = UserConfig.settins.get(DataConfig.SYS_B);
@@ -195,7 +195,7 @@ export class SsPage {
     this.bdr = (this.dr.value == "1") ? true : false;
     this.sdrp1 = (this.drp1 && this.drp1.value) ? this.drp1.value : "08:30";
     this.sdjh = this.djh.value;
-    this.sdjhn = this.plService.getJh(this.sdjh, 'jn');
+    this.sdjhn = await this.plService.getJh(this.sdjh, 'jn');
 
     this.localfriends = UserConfig.friends? UserConfig.friends.length : 0;
   }

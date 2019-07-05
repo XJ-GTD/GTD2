@@ -116,7 +116,7 @@ export class PlService {
     return pld;
   }
 
-  async getJh(ji: string, prop: string = 'all'): any {
+  async getJh(ji: string, prop: string = 'all') {
     let jh:JhTbl = new JhTbl();
     jh.ji = ji;
 
