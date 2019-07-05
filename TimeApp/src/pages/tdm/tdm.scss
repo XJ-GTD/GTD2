@@ -100,6 +100,9 @@ page-tdm, page-tdme {
 
   ion-header ion-title {
     line-height: 1.5rem;
+    white-space: normal;
+    word-break: break-all;
+    overflow: auto;
   }
 
   .img-header-left, .img-header-right {
