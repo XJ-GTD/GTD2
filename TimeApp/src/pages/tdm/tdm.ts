@@ -125,7 +125,7 @@ export class TdmPage {
   }
 
   async getDefaultJh() {
-    this.defaultplan = await ssService.getDefaultJh();
+    this.defaultplan = await this.ssService.getDefaultJh();
   }
 
   cancel() {
