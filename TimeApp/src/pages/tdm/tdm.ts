@@ -9,6 +9,7 @@ import * as moment from "moment";
 import {Keyboard} from "@ionic-native/keyboard";
 import {DataConfig} from "../../service/config/data.config";
 import {PlService} from "../pl/pl.service";
+import {SsService} from "../ss/ss.service";
 
 @IonicPage()
 @Component({
@@ -83,6 +84,7 @@ export class TdmPage {
               public navParams: NavParams,
               public modalCtrl: ModalController,
               private plService: PlService,
+              private ssService: SsService,
               private keyboard: Keyboard,
               private util: UtilService) {
   }
@@ -122,16 +124,8 @@ export class TdmPage {
     }
   }
 
-  getDefaultJh() {
-    this.util.loadingStart();
-    this.plService.getPlan().then(data=>{
-      let jhoptions = data.zdyJh;
-
-      this.util.loadingEnd();
-    }).catch(error=>{
-      this.util.toastStart('获取计划失败',1500);
-      this.util.loadingEnd();
-    });
+  async getDefaultJh() {
+    this.defaultplan = await ssService.getDefaultJh();
   }
 
   cancel() {
