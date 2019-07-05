@@ -2,6 +2,7 @@ page-tdm, page-tdme {
   ion-content.content {
     color: #fff;
     background-color: $masterColor;
+    pointer-events: none;
   }
 
   button.text-btn {
