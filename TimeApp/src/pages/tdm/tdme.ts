@@ -129,14 +129,6 @@ export class TdmePage {
     console.log('ionViewDidLoad TdmePage');
   }
 
-  timechanged(changed) {
-    if (changed !== undefined) {
-      let src = changed.src;
-      let dest = changed.dest;
-      this.rangeEnd = dest;
-    }
-  }
-
   remove() {
 
   }
