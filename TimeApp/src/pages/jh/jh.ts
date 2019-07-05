@@ -41,7 +41,9 @@ export class JhPage {
               public viewCtrl: ViewController,
               private plService: PlService,
               private util: UtilService) {
-
+    if (this.navParams && this.navParams.data) {
+      this.selected = this.navParams.data.ji;
+    }
   }
 
   ionViewDidEnter(){

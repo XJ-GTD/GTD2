@@ -109,6 +109,7 @@ export class SsPage {
   sdrp1:string;     //每日简报 提醒时间
   sdjhn:string;     //日历 缺省日历名称
   sdjh:string;      //日历 缺省日历
+  sdjho:any;        //日历 缺省日历对象
 
   lfsloading: boolean = false;  //导入本地联系人处理状态
   localfriends: number = 0;     //本地联系人导入数
@@ -159,8 +160,9 @@ export class SsPage {
   }
 
   gotodjhsetting() {
-    let modal = this.modalController.create(DataConfig.PAGE._JH_PAGE);
+    let modal = this.modalController.create(DataConfig.PAGE._JH_PAGE, this.sdjho);
     modal.onDidDismiss((data)=>{
+      this.sdjho = data.jh;
       this.sdjhn = data.jh.jn;
       this.sdjh = data.jh.ji;
 
@@ -195,7 +197,8 @@ export class SsPage {
     this.bdr = (this.dr.value == "1") ? true : false;
     this.sdrp1 = (this.drp1 && this.drp1.value) ? this.drp1.value : "08:30";
     this.sdjh = this.djh.value;
-    this.sdjhn = await this.plService.getJh(this.sdjh, 'jn');
+    this.sdjho = await this.plService.getJh(this.sdjh);
+    this.sdjhn = this.sdjho.jn;
 
     this.localfriends = UserConfig.friends? UserConfig.friends.length : 0;
   }
