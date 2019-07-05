@@ -160,6 +160,10 @@ export class TdmPage {
   }
 
   goJh() {
-    this.modalCtrl.create(DataConfig.PAGE._JH_PAGE, {}).present();
+    let modal = this.modalCtrl.create(DataConfig.PAGE._JH_PAGE, this.defaultplan);
+    modal.onDidDismiss((data)=>{
+      this.defaultplan = data.jh;
+    });
+    modal.present();
   }
 }
