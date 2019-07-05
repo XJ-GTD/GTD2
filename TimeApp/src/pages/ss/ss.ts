@@ -179,7 +179,7 @@ export class SsPage {
     modal.present();
   }
 
-  async private getData() {
+  private async getData() {
     this.h = UserConfig.settins.get(DataConfig.SYS_H);
     this.t = UserConfig.settins.get(DataConfig.SYS_T);
     this.b = UserConfig.settins.get(DataConfig.SYS_B);
