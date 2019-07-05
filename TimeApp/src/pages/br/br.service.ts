@@ -259,7 +259,6 @@ export class BrService {
     await this.sqlexec.batExecSql(sqls);
     sqls.length = 0;
 
-
     //插入用户偏好（插入前删除）
     // 备份客户端版本参数和设备ID
     let verYTbl = new YTbl();
@@ -285,6 +284,12 @@ export class BrService {
     drp1YTbl.yk = "DRP1";
     drp1YTbl = await this.sqlexec.getExtOne<YTbl>(drp1YTbl.slT());
 
+    let hasDJH = false;
+    let djhYTbl = new YTbl();
+    djhYTbl.yt = "DJH";
+    djhYTbl.yk = "DJH";
+    djhYTbl = await this.sqlexec.getExtOne<YTbl>(djhYTbl.slT());
+
     let y = new YTbl();
     await this.sqlexec.delete(y);
 
@@ -295,6 +300,7 @@ export class BrService {
       if (yi.yt == "FI" || yi.yk == "FI" || yi.yk == "DI") continue;
       if (yi.yk == "DR") hasDR = true;
       if (yi.yk == "DRP1") hasDRP1 = true;
+      if (yi.yk == "DJH") hasDJH = true;
 
       sqls.push(yi.inT());
     }
@@ -322,6 +328,12 @@ export class BrService {
       let bkDRP1Y: YTbl = new YTbl();
       Object.assign(bkDRP1Y, drp1YTbl);
       sqls.push(bkDRP1Y.inT());
+    }
+
+    if (!hasDJH) {
+      let bkDJHY: YTbl = new YTbl();
+      Object.assign(bkDJHY, djhYTbl);
+      sqls.push(bkDJHY.inT());
     }
 
     await this.sqlexec.batExecSql(sqls);
