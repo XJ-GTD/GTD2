@@ -125,7 +125,7 @@ export class TdmPage {
   getDefaultJh() {
     this.util.loadingStart();
     this.plService.getPlan().then(data=>{
-      this.jhoptions = data.zdyJh;
+      let jhoptions = data.zdyJh;
 
       this.util.loadingEnd();
     }).catch(error=>{
