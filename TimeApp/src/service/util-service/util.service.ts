@@ -811,7 +811,7 @@ export class UtilService {
     } else if (days == -1) {
       return '昨天';
     } else {
-      return day.format("M月D日");
+      return day.format("dddd");
     }
   }
 }
