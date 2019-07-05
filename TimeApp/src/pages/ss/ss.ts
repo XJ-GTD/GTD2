@@ -161,8 +161,8 @@ export class SsPage {
   gotodjhsetting() {
     let modal = this.modalController.create(DataConfig.PAGE._JH_PAGE);
     modal.onDidDismiss((data)=>{
-      this.bdjhn = data.jn;
-      this.bdjh = data.ji;
+      this.sdjhn = data.jn;
+      this.sdjh = data.ji;
 
       this.djh.value = data.ji;
 

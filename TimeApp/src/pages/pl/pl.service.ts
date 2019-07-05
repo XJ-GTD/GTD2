@@ -125,7 +125,7 @@ export class PlService {
     if (prop == 'all') {
       return jh;
     } else {
-      return jh.get(prop);
+      return jh[prop];
     }
   }
 
