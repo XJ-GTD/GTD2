@@ -35,8 +35,8 @@ import { MapOptions } from 'angular2-baidu-map';
       <ion-row justify-content-center>
         <p class="x-small mt-none mb-none">{{(agenda.sd + " " + agenda.st)| formatedate:"dddd MMMM D"}}</p>
       </ion-row>
-      <ion-row justify-content-center align-items-center>
-        <div class="row-center" (click)="goJh()">
+      <ion-row justify-content-center align-items-center (click)="goJh()">
+        <div class="row-center">
         <i class="color-dot" [ngStyle]="{'background-color': defaultplan.jc }"></i>
         </div>
       </ion-row>
