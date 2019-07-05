@@ -56,6 +56,10 @@ page-dz {
     background-color: $masterColor;
   }
 
+  .fab-ios:focus {
+    background-color: $secondColor;
+  }
+
   .fab ion-icon {
     font-size: 4.4rem;
   }
