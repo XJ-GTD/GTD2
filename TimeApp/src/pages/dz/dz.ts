@@ -49,7 +49,7 @@ export class DzPage {
     this.markers.push({
       options: {
           icon: {
-            imageUrl: 'http://api.map.baidu.com/img/markers.png',
+            imageUrl: 'assets/imgs/map/baidu_map_markers_2x.png',
             size: {
               height: 23,
               width: 25
@@ -74,7 +74,7 @@ export class DzPage {
   }
 
   maploaded(e: any) {
-    
+
   }
 
   search(e: any) { // 对应baidu-map中loaded事件即地图加载时运行的方法 官方介绍e可以是map实例
