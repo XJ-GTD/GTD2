@@ -33,7 +33,7 @@ import {DataConfig} from "../../service/config/data.config";
         <scroll-range-picker max="24" min="5" value="18:00" (changed)="timechanged($event)"></scroll-range-picker>
       </ion-row>
       <ion-row justify-content-center>
-        <ion-textarea type="text" class="w80" placeholder="喜马拉雅儿子的生日聚会" autosize maxHeight="200" text-center></ion-textarea>
+        <ion-textarea type="text" class="w80" placeholder="喜马拉雅儿子的生日聚会" autosize maxHeight="200" text-center #titleRef></ion-textarea>
       </ion-row>
       <ion-row justify-content-center align-items-center (click)="goJh()">
         <div class="row-center">
@@ -61,6 +61,10 @@ import {DataConfig} from "../../service/config/data.config";
   `
 })
 export class TdmPage {
+
+  @ViewChild("titleRef", {read: ElementRef})
+  _titleRef: ElementRef;
+
   day: string = "";
   date: string = "";
   defaultplan: any = {
@@ -91,6 +95,14 @@ export class TdmPage {
 
     this.day = this.util.showDate(currentday);
     this.date = currentday.format("MMMM D");
+  }
+
+  ionViewDidEnter() {
+    setTimeout(() => {
+      let el = this._titleRef.nativeElement.querySelector('textarea');
+      el.focus();
+      this.keyboard.show();   //for android
+    }, 500);
   }
 
   timechanged(changed) {
