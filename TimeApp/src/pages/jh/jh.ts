@@ -14,7 +14,7 @@ import {PlService} from "../pl/pl.service";
   </ion-header>
 
   <ion-content>
-    <ion-list radio-group [(ngModel)]="selected" [ionChange]="jhChanged()">
+    <ion-list radio-group [(ngModel)]="selected" (ionChange)="jhChanged()">
       <ion-item *ngFor="let option of jhoptions">
         <ion-label><i class="color-dot" [ngStyle]="{'background-color': option.jc }"></i> {{option.jn}}</ion-label>
         <ion-radio [checked]="option.ji == selected" [value]="option.ji"></ion-radio>
