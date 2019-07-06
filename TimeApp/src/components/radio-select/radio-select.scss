@@ -15,6 +15,10 @@ radio-select {
     border-radius: 0px;
   }
 
+  button[checked="true"] {
+    background-color: #fff;
+  }
+
   button:first-child, .button-ios:first-child, .button-clear-ios:first-child {
     border: 1.5px solid #fff;
     border-right: 0px;
