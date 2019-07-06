@@ -4,5 +4,34 @@ radio-select {
   button {
     background-color: transparent;
     color: #fff;
+    border: 1.5px solid #fff;
+    border-right: 0px;
+    margin-right: 0px;
+    margin-left: 0px;
+    border-radius: 0px;
+  }
+
+  button:first {
+    border: 1.5px solid #fff;
+    border-right: 0px;
+    /* border-radius: 50%; */
+    border-top-left-radius: 10vmin;
+    border-bottom-left-radius: 10vmin;
+    border-top-right-radius: 0px;
+    border-bottom-right-radius: 0px;
+    margin-right: 0px;
+    margin-left: 0px;
+    color: #fff;
+  }
+
+  button:last {
+    border: 1.5px solid #fff;
+    border-top-left-radius: 0px;
+    border-bottom-left-radius: 0px;
+    border-top-right-radius: 10vmin;
+    border-bottom-right-radius: 10vmin;
+    margin-right: 0px;
+    margin-left: 0px;
+    color: #fff;
   }
 }
