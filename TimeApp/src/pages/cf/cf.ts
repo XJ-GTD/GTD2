@@ -49,7 +49,7 @@ import { RadioSelectComponent } from "../../components/radio-select/radio-select
               <ion-item>
                 <ion-radio item-start value="aftertimes"></ion-radio>
                 <ion-label>一定次数后</ion-label>
-                <radio-select *ngIf="cfEndType == 'aftertimes'" [options]="itemRanges"></radio-select>
+                <radio-select *ngIf="cfEndType == 'never'" [options]="itemRanges"></radio-select>
               </ion-item>
               <ion-item>
                 <ion-radio item-start value="tosomeday"></ion-radio>
