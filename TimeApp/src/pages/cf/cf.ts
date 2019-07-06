@@ -41,7 +41,7 @@ import { RadioSelectComponent } from "../../components/radio-select/radio-select
             <p>结束</p>
           </ion-row>
           <ion-row justify-content-start>
-            <ion-list class="endwith" radio-group no-lines [(ngModel)]="cfEndType" (ionChange)="onEndTypeChanged($event)">
+            <ion-list class="endwith" radio-group no-lines [(ngModel)]="cfEndType">
               <ion-item>
                 <ion-radio item-start value="never"></ion-radio>
                 <ion-label>永远不</ion-label>
