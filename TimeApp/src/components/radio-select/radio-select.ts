@@ -62,6 +62,8 @@ export class RadioSelectComponent {
   options: any = [];
   @Input()
   value: any = "";
+  @Output("onChanged")
+  changedPropEvent = new EventEmitter();
 
   constructor() {
     console.log('Hello RadioSelectComponent Component');
@@ -69,5 +71,6 @@ export class RadioSelectComponent {
 
   change(e, val) {
     this.value = val;
+    this.changedPropEvent.emit(this.value);
   }
 }

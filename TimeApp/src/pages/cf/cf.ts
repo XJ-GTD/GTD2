@@ -13,9 +13,9 @@ import { RadioSelectComponent } from "../../components/radio-select/radio-select
         <p class="title">重复关闭。</p>
       </ion-row>
       <ion-row justify-content-center>
-        <radio-select [options]="items" center="true"></radio-select>
+        <radio-select [options]="items" center="true" (onChanged)="onTypeChanged($event)"></radio-select>
       </ion-row>
-      <ion-row justify-content-center>
+      <ion-row justify-content-center *ngIf="cfType">
         <ion-grid class="ph15">
           <ion-row justify-content-start>
             <p>重复周期</p>
@@ -25,7 +25,7 @@ import { RadioSelectComponent } from "../../components/radio-select/radio-select
           </ion-row>
         </ion-grid>
       </ion-row>
-      <ion-row justify-content-center>
+      <ion-row justify-content-center *ngIf="cfType">
         <ion-grid class="ph15">
           <ion-row justify-content-start>
             <p>重复开启</p>
@@ -35,7 +35,7 @@ import { RadioSelectComponent } from "../../components/radio-select/radio-select
           </ion-row>
         </ion-grid>
       </ion-row>
-      <ion-row justify-content-center>
+      <ion-row justify-content-center *ngIf="cfType">
         <ion-grid class="ph15">
           <ion-row justify-content-start>
             <p>结束</p>
@@ -75,6 +75,8 @@ export class CfPage {
   itemRanges: Array<any> = new Array<any>();
   itemRangeOptions: Array<any> = new Array<any>();
 
+  cfType: string = "";
+
   constructor(public navCtrl: NavController,
               private keyboard: Keyboard) {
     this.items.push({value: "", caption: "关"});
@@ -103,4 +105,7 @@ export class CfPage {
     this.navCtrl.pop();
   }
 
+  onTypeChanged(value) {
+    this.cfType = value;
+  }
 }
