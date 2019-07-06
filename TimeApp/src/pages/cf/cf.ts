@@ -10,7 +10,7 @@ import { RadioSelectComponent } from "../../components/radio-select/radio-select
   <ion-content>
     <ion-grid class="h100">
       <ion-row justify-content-center>
-        <p class="title">重复关闭。</p>
+        <p class="title">{{title}}</p>
       </ion-row>
       <ion-row justify-content-center>
         <radio-select [options]="items" center="true" (onChanged)="onTypeChanged($event)"></radio-select>
@@ -41,9 +41,9 @@ import { RadioSelectComponent } from "../../components/radio-select/radio-select
             <p>结束</p>
           </ion-row>
           <ion-row justify-content-start>
-            <ion-list class="endwith" radio-group no-lines>
+            <ion-list class="endwith" radio-group no-lines [(ngModel)]="cfEndType">
               <ion-item>
-                <ion-radio item-start checked="true" value="never"></ion-radio>
+                <ion-radio item-start value="never"></ion-radio>
                 <ion-label>永远不</ion-label>
               </ion-item>
               <ion-item>
@@ -75,7 +75,9 @@ export class CfPage {
   itemRanges: Array<any> = new Array<any>();
   itemRangeOptions: Array<any> = new Array<any>();
 
+  title: string = "重复关闭。";
   cfType: string = "";
+  cfEndType: string = "never";
 
   constructor(public navCtrl: NavController,
               private keyboard: Keyboard) {
