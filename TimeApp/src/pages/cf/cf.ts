@@ -43,7 +43,7 @@ import { RadioSelectComponent } from "../../components/radio-select/radio-select
           <ion-row justify-content-start>
             <ion-list radio-group no-lines>
               <ion-item>
-                <ion-radio checked="true" value="go"></ion-radio>
+                <ion-radio item-start checked="true" value="go"></ion-radio>
                 <ion-label>永远不</ion-label>
               </ion-item>
               <ion-item>
