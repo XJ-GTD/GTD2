@@ -41,6 +41,10 @@ page-cf {
     }
   }
 
+  ion-grid.h100 {
+    height: 100%;
+  }
+
   .footer-ios {
     .toolbar-background-ios {
       background-color:$lsback1;
