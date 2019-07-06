@@ -13,7 +13,7 @@ import { Component, Input } from '@angular/core';
       <label *ngIf="label">{{label}}</label>
       <button ion-button *ngFor="let option of options;" clear (click)="change($event, option.value)">{{option.caption}}</button>
     </div>
-    <div class="row" *ngIf="!isFull" align-items-center>
+    <div class="row" *ngIf="!isFull" align-items-center justify-content-center>
       <label *ngIf="label">{{label}}</label>
       <button ion-button *ngFor="let option of options;" clear (click)="change($event, option.value)">{{option.caption}}</button>
     </div>
