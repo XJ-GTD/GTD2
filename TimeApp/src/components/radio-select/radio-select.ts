@@ -11,11 +11,11 @@ import { Component, Input } from '@angular/core';
   template: `<div class="grid">
     <div class="row" *ngIf="isFull" [align-items-center]="isCenter" justify-content-between>
       <label *ngIf="label">{{label}}</label>
-      <button ion-button *ngFor="let option of options;" clear (click)="change($event, option.value)">{{option.caption}}</button>
+      <button ion-button *ngFor="let option of options;" clear (click)="change($event, option.value)" small>{{option.caption}}</button>
     </div>
     <div class="row" *ngIf="!isFull" [align-items-center]="isCenter" justify-content-center>
       <label *ngIf="label">{{label}}</label>
-      <button ion-button *ngFor="let option of options;" clear (click)="change($event, option.value)">{{option.caption}}</button>
+      <button ion-button *ngFor="let option of options;" clear (click)="change($event, option.value)" small>{{option.caption}}</button>
     </div>
   </div>`
 })
