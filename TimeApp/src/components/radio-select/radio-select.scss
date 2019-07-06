@@ -1,6 +1,10 @@
 radio-select {
   width: 100vmin;
 
+  label {
+    margin-right: 12px;
+  }
+
   button, .button-ios, .button-clear-ios {
     background-color: transparent;
     color: #fff;
