@@ -15,7 +15,45 @@ import { RadioSelectComponent } from "../../components/radio-select/radio-select
       <ion-row justify-content-center>
         <radio-select [options]="items" center="true" (onChanged)="onTypeChanged($event)"></radio-select>
       </ion-row>
-      <ion-row justify-content-center *ngIf="cfType">
+      <!-- 每日 -->
+      <ion-row justify-content-center *ngIf="cfType == 'day'">
+        <ion-grid class="ph15">
+          <ion-row justify-content-start>
+            <p>重复周期</p>
+          </ion-row>
+          <ion-row justify-content-start>
+            <radio-select label="1天" [options]="itemRanges"></radio-select>
+          </ion-row>
+        </ion-grid>
+      </ion-row>
+      <ion-row justify-content-center *ngIf="cfType == 'day'">
+        <ion-grid class="ph15">
+          <ion-row justify-content-start>
+            <p>结束</p>
+          </ion-row>
+          <ion-row justify-content-start>
+            <ion-list class="endwith" radio-group no-lines [(ngModel)]="cfEndType">
+              <ion-item>
+                <ion-radio item-start value="never"></ion-radio>
+                <ion-label>永远不</ion-label>
+              </ion-item>
+              <ion-item>
+                <ion-radio item-start value="aftertimes"></ion-radio>
+                <ion-label class="inline">
+                  <div class="inlabel">一定次数后</div>
+                  <radio-select *ngIf="cfEndType == 'aftertimes'" [options]="itemRanges"></radio-select>
+                </ion-label>
+              </ion-item>
+              <ion-item>
+                <ion-radio item-start value="tosomeday"></ion-radio>
+                <ion-label>直到某一天</ion-label>
+              </ion-item>
+            </ion-list>
+          </ion-row>
+        </ion-grid>
+      </ion-row>
+      <!-- 每周 -->
+      <ion-row justify-content-center *ngIf="cfType == 'week'">
         <ion-grid class="ph15">
           <ion-row justify-content-start>
             <p>重复周期</p>
@@ -25,7 +63,7 @@ import { RadioSelectComponent } from "../../components/radio-select/radio-select
           </ion-row>
         </ion-grid>
       </ion-row>
-      <ion-row justify-content-center *ngIf="cfType">
+      <ion-row justify-content-center *ngIf="cfType == 'week'">
         <ion-grid class="ph15">
           <ion-row justify-content-start>
             <p>重复开启</p>
@@ -35,7 +73,7 @@ import { RadioSelectComponent } from "../../components/radio-select/radio-select
           </ion-row>
         </ion-grid>
       </ion-row>
-      <ion-row justify-content-center *ngIf="cfType">
+      <ion-row justify-content-center *ngIf="cfType == 'week'">
         <ion-grid class="ph15">
           <ion-row justify-content-start>
             <p>结束</p>
