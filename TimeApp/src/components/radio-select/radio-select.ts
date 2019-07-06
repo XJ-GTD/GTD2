@@ -12,7 +12,7 @@ import { Component, Input } from '@angular/core';
     <div class="row" *ngIf="isFull && isCenter" align-items-center justify-content-between>
       <label *ngIf="label">{{label}}</label>
       <div>
-        <button ion-button *ngFor="let option of options;" [checked]="option.value = value" clear (click)="change($event, option.value)" small>
+        <button ion-button *ngFor="let option of options;" checked="option.value = value" clear (click)="change($event, option.value)" small>
         <ng-container *ngIf="option.icon">
           <ion-icon [name]="option.icon"></ion-icon>
         </ng-container>
@@ -25,7 +25,7 @@ import { Component, Input } from '@angular/core';
     <div class="row" *ngIf="!isFull && isCenter" align-items-center justify-content-center>
       <label *ngIf="label">{{label}}</label>
       <div>
-        <button ion-button *ngFor="let option of options;" [checked]="option.value = value" clear (click)="change($event, option.value)" small>
+        <button ion-button *ngFor="let option of options;" checked="option.value = value" clear (click)="change($event, option.value)" small>
         <ng-container *ngIf="option.icon">
           <ion-icon [name]="option.icon"></ion-icon>
         </ng-container>
@@ -38,7 +38,7 @@ import { Component, Input } from '@angular/core';
     <div class="row" *ngIf="!isFull && !isCenter" align-items-center justify-content-start>
       <label *ngIf="label">{{label}}</label>
       <div>
-        <button ion-button *ngFor="let option of options;" [checked]="option.value = value" clear (click)="change($event, option.value)" small>
+        <button ion-button *ngFor="let option of options;" checked="option.value = value" clear (click)="change($event, option.value)" small>
         <ng-container *ngIf="option.icon">
           <ion-icon [name]="option.icon"></ion-icon>
         </ng-container>
