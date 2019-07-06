@@ -48,9 +48,9 @@ import { RadioSelectComponent } from "../../components/radio-select/radio-select
               </ion-item>
               <ion-item>
                 <ion-radio item-start value="aftertimes"></ion-radio>
-                <ion-label>
-                一定次数后
-                <radio-select [options]="itemRanges"></radio-select>
+                <ion-label class="inline">
+                  <div class="inlabel">一定次数后</div>
+                  <radio-select *ngIf="cfEndType == 'aftertimes'" [options]="itemRanges"></radio-select>
                 </ion-label>
               </ion-item>
               <ion-item>

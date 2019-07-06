@@ -87,6 +87,15 @@ page-cf {
     }
   }
 
+  ion-label.inline {
+    display: inline-flex;
+  }
+
+  ion-label div.inlabel {
+    display: flex;
+    align-items: center;
+  }
+
   .footer-ios {
     .toolbar-background-ios {
       background-color:$lsback1;
