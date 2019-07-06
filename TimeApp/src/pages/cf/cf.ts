@@ -13,7 +13,7 @@ import { RadioSelectComponent } from "../../components/radio-select/radio-select
         <p>重复关闭。</p>
       </ion-row>
       <ion-row justify-content-center>
-        <radio-select [options]="items"></radio-select>
+        <radio-select [options]="items" center="true"></radio-select>
       </ion-row>
       <ion-row justify-content-center>
         <ion-grid class="mh15">
