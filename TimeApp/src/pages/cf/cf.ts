@@ -16,7 +16,7 @@ import { RadioSelectComponent } from "../../components/radio-select/radio-select
         <radio-select [options]="items" center="true"></radio-select>
       </ion-row>
       <ion-row justify-content-center>
-        <ion-grid class="mh15">
+        <ion-grid class="ph15">
           <ion-row justify-content-start>
             <p>重复周期</p>
           </ion-row>
