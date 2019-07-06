@@ -1,7 +1,7 @@
 radio-select {
   width: 100vmin;
 
-  button {
+  button, .button-ios, .button-clear-ios {
     background-color: transparent;
     color: #fff;
     border: 1.5px solid #fff;
@@ -11,7 +11,7 @@ radio-select {
     border-radius: 0px;
   }
 
-  button:first {
+  button:first, .button-ios:first, .button-clear-ios:first {
     border: 1.5px solid #fff;
     border-right: 0px;
     border-top-left-radius: 10vmin;
@@ -23,7 +23,7 @@ radio-select {
     color: #fff;
   }
 
-  button:last {
+  button:last, .button-ios:last, .button-clear-ios:last {
     border: 1.5px solid #fff;
     border-top-left-radius: 0px;
     border-bottom-left-radius: 0px;
