@@ -41,6 +41,10 @@ page-cf {
     }
   }
 
+  ion-grid {
+    justify-content: center;
+  }
+
   ion-grid.h100 {
     height: 100%;
   }
@@ -48,6 +52,10 @@ page-cf {
   ion-grid.ph15 {
     padding-left: 10vmin;
     padding-right: 10vmin;
+  }
+
+  p.title {
+    font-size: 1.7rem;
   }
 
   .endwith {

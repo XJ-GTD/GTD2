@@ -8,9 +8,9 @@ import { RadioSelectComponent } from "../../components/radio-select/radio-select
   selector: 'page-cf',
   template: `
   <ion-content>
-    <ion-grid class="h100" align-items-center>
+    <ion-grid class="h100">
       <ion-row justify-content-center>
-        <p>重复关闭。</p>
+        <p class="title">重复关闭。</p>
       </ion-row>
       <ion-row justify-content-center>
         <radio-select [options]="items" center="true"></radio-select>
