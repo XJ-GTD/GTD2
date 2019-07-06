@@ -27,15 +27,15 @@ import { RadioSelectComponent } from "../../components/radio-select/radio-select
   `
 })
 export class CfPage {
-  items: Array<string> = new Array<string>();
+  items: Array<any> = new Array<any>();
 
   constructor(public navCtrl: NavController,
               private keyboard: Keyboard) {
-    this.items.push("关");
-    this.items.push("每日");
-    this.items.push("每周");
-    this.items.push("每月");
-    this.items.push("每年");
+    this.items.push({value: "", caption: "关"});
+    this.items.push({value: "day", caption: "每日"});
+    this.items.push({value: "week", caption: "每周"});
+    this.items.push({value: "month", caption: "每月"});
+    this.items.push({value: "year", caption: "每年"});
   }
 
   ionViewDidEnter() {
