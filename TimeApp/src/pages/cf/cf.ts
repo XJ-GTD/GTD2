@@ -83,8 +83,8 @@ export class CfPage {
     this.items.push({value: "month", caption: "每月"});
     this.items.push({value: "year", caption: "每年"});
 
-    this.itemRanges.push({value: "substract", caption: "－"});
-    this.itemRanges.push({value: "add", caption: "＋"});
+    this.itemRanges.push({value: "substract", icon: "remove"});
+    this.itemRanges.push({value: "add", icon: "add"});
 
     this.itemRangeOptions.push({value: "sunday", caption: "日"});
     this.itemRangeOptions.push({value: "monday", caption: "一"});
