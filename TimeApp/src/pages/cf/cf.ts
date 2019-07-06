@@ -7,14 +7,15 @@ import { RadioSelectComponent } from "../../components/radio-select/radio-select
 @Component({
   selector: 'page-cf',
   template: `
-  <ion-header no-border>
-    <ion-toolbar>
-      <ion-title>重复关闭。</ion-title>
-    </ion-toolbar>
-  </ion-header>
-
   <ion-content>
-    <radio-select [options]="items"></radio-select>
+    <ion-grid>
+      <ion-row justify-content-center>
+        <p>重复关闭。</p>
+      </ion-row>
+      <ion-row justify-content-center>
+        <radio-select [options]="items"></radio-select>
+      </ion-row>
+    </ion-grid>
   </ion-content>
 
   <ion-footer class="foot-set">
