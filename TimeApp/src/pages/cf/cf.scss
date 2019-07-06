@@ -54,6 +54,7 @@ page-cf {
     .item-ios {
       background-color: transparent;
       padding-left: 0px;
+      color: #fff;
     }
 
     .item-radio-checked.item-ios ion-label {
@@ -61,7 +62,7 @@ page-cf {
     }
 
     .radio-ios .radio-checked .radio-inner {
-      color: #fff;
+      border-color: #fff;
     }
   }
 
