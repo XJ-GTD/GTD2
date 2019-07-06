@@ -11,7 +11,7 @@ radio-select {
     border-radius: 0px;
   }
 
-  button:first, .button-ios:first, .button-clear-ios:first {
+  button:first-child, .button-ios:first-child, .button-clear-ios:first-child {
     border: 1.5px solid #fff;
     border-right: 0px;
     border-top-left-radius: 10vmin;
@@ -23,7 +23,7 @@ radio-select {
     color: #fff;
   }
 
-  button:last, .button-ios:last, .button-clear-ios:last {
+  button:last-child, .button-ios:last-child, .button-clear-ios:last-child {
     border: 1.5px solid #fff;
     border-top-left-radius: 0px;
     border-bottom-left-radius: 0px;
