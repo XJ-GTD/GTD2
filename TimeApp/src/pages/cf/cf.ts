@@ -35,6 +35,27 @@ import { RadioSelectComponent } from "../../components/radio-select/radio-select
           </ion-row>
         </ion-grid>
       </ion-row>
+      <ion-row justify-content-center>
+        <ion-grid class="ph15">
+          <ion-row justify-content-start>
+            <p>结束</p>
+          </ion-row>
+          <ion-row justify-content-start>
+            <ion-list no-lines>
+              <ion-item>
+                <ion-icon name="done-all" item-start></ion-icon>
+                  永远不
+              </ion-item>
+              <ion-item>
+                  一定次数后
+              </ion-item>
+              <ion-item>
+                  直到某一天
+              </ion-item>
+            </ion-list>
+          </ion-row>
+        </ion-grid>
+      </ion-row>
     </ion-grid>
   </ion-content>
 
