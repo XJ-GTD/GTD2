@@ -51,6 +51,10 @@ page-cf {
   }
 
   .endwith {
+    .item-block {
+      min-height: 2.4rem;
+    }
+
     .item-ios {
       background-color: transparent;
       padding-left: 0px;
