@@ -61,7 +61,7 @@ export class RadioSelectComponent {
   @Input()
   options: any = [];
   @Input()
-  value: any;
+  value: any = "";
 
   constructor() {
     console.log('Hello RadioSelectComponent Component');
