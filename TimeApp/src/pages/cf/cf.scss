@@ -45,6 +45,11 @@ page-cf {
     height: 100%;
   }
 
+  ion-grid.mh15 {
+    margin-left: 15vmin;
+    margin-right: 15vmin;
+  }
+
   .footer-ios {
     .toolbar-background-ios {
       background-color:$lsback1;

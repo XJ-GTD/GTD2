@@ -15,6 +15,26 @@ import { RadioSelectComponent } from "../../components/radio-select/radio-select
       <ion-row justify-content-center>
         <radio-select [options]="items"></radio-select>
       </ion-row>
+      <ion-row justify-content-center>
+        <ion-grid class="mh15">
+          <ion-row justify-content-start>
+            <p>重复周期</p>
+          </ion-row>
+          <ion-row justify-content-start>
+            <radio-select label="1周" [options]="itemRanges"></radio-select>
+          </ion-row>
+        </ion-grid>
+      </ion-row>
+      <ion-row justify-content-center>
+        <ion-grid class="mh15">
+          <ion-row justify-content-start>
+            <p>重复开启</p>
+          </ion-row>
+          <ion-row justify-content-start>
+            <radio-select [options]="itemRangeOptions"></radio-select>
+          </ion-row>
+        </ion-grid>
+      </ion-row>
     </ion-grid>
   </ion-content>
 
@@ -29,6 +49,8 @@ import { RadioSelectComponent } from "../../components/radio-select/radio-select
 })
 export class CfPage {
   items: Array<any> = new Array<any>();
+  itemRanges: Array<any> = new Array<any>();
+  itemRangeOptions: Array<any> = new Array<any>();
 
   constructor(public navCtrl: NavController,
               private keyboard: Keyboard) {
@@ -37,6 +59,17 @@ export class CfPage {
     this.items.push({value: "week", caption: "每周"});
     this.items.push({value: "month", caption: "每月"});
     this.items.push({value: "year", caption: "每年"});
+
+    this.itemRanges.push({value: "substract", caption: "-"});
+    this.itemRanges.push({value: "add", caption: "+"});
+
+    this.itemRangeOptions.push({value: "sunday", caption: "日"});
+    this.itemRangeOptions.push({value: "monday", caption: "一"});
+    this.itemRangeOptions.push({value: "tuesday", caption: "二"});
+    this.itemRangeOptions.push({value: "wednesday", caption: "三"});
+    this.itemRangeOptions.push({value: "thursday", caption: "四"});
+    this.itemRangeOptions.push({value: "friday", caption: "五"});
+    this.itemRangeOptions.push({value: "saturday", caption: "六"});
   }
 
   ionViewDidEnter() {
