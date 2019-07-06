@@ -15,8 +15,19 @@ radio-select {
     border-radius: 0px;
   }
 
-  button.checked {
+  button.checked, .button-ios.checked, .button-clear-ios.checked {
     background-color: #fff;
+    color: $masterColor;
+  }
+
+  button.checked:first-child, .button-ios.checked:first-child, .button-clear-ios.checked:first-child {
+    background-color: #fff;
+    color: $masterColor;
+  }
+
+  button.checked:last-child, .button-ios.checked:last-child, .button-clear-ios.checked:last-child {
+    background-color: #fff;
+    color: $masterColor;
   }
 
   button:first-child, .button-ios:first-child, .button-clear-ios:first-child {
