@@ -59,6 +59,14 @@ page-cf {
       background-color: transparent;
       padding-left: 0px;
       color: #fff;
+
+      .radio-ios[item-left], .item-ios .radio-ios[item-start] {
+        margin: 0px 11px 0px 3px;
+      }
+
+      .label-ios {
+        margin: 0px 8px 0px 0;
+      }
     }
 
     .item-radio-checked.item-ios ion-label {
