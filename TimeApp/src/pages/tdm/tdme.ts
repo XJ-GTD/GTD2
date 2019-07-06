@@ -62,10 +62,10 @@ import { MapOptions } from 'angular2-baidu-map';
       <p class="x-small mt-none" (click)="goTx()">说"提前15分钟提醒我" 或 点击以添加</p>
       </ion-row>
       <ion-row justify-content-center>
-        <h5 class="mb-none">重复</h5>
+        <h5 class="mb-none" (click)="goCf()">重复</h5>
       </ion-row>
       <ion-row justify-content-center>
-        <p class="x-small mt-none">说"每周重复" 或 点击以添加</p>
+        <p class="x-small mt-none" (click)="goCf()">说"每周重复" 或 点击以添加</p>
       </ion-row>
       <ion-row justify-content-center>
         <h5 class="mb-none">倒计时</h5>
@@ -139,6 +139,10 @@ export class TdmePage {
 
   goTx() {
     this.modalCtrl.create(DataConfig.PAGE._TX_PAGE, {}).present();
+  }
+
+  goCf() {
+    this.modalCtrl.create(DataConfig.PAGE._CF_PAGE, {}).present();
   }
 
   goBz() {
