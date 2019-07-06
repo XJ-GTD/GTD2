@@ -48,8 +48,10 @@ import { RadioSelectComponent } from "../../components/radio-select/radio-select
               </ion-item>
               <ion-item>
                 <ion-radio item-start value="aftertimes"></ion-radio>
-                <ion-label>一定次数后</ion-label>
+                <ion-label>
+                一定次数后
                 <radio-select [options]="itemRanges"></radio-select>
+                </ion-label>
               </ion-item>
               <ion-item>
                 <ion-radio item-start value="tosomeday"></ion-radio>
