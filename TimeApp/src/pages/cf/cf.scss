@@ -50,6 +50,21 @@ page-cf {
     padding-right: 15vmin;
   }
 
+  .endwith {
+    .item-ios {
+      background-color: transparent;
+      padding-left: 0px;
+    }
+
+    .item-radio-checked.item-ios ion-label {
+      color: #fff;
+    }
+
+    .radio-ios .radio-checked .radio-inner {
+      color: #fff;
+    }
+  }
+
   .footer-ios {
     .toolbar-background-ios {
       background-color:$lsback1;

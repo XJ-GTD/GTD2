@@ -41,17 +41,17 @@ import { RadioSelectComponent } from "../../components/radio-select/radio-select
             <p>结束</p>
           </ion-row>
           <ion-row justify-content-start>
-            <ion-list radio-group no-lines>
+            <ion-list class="endwith" radio-group no-lines>
               <ion-item>
-                <ion-radio item-start checked="true" value="go"></ion-radio>
+                <ion-radio item-start checked="true" value="never"></ion-radio>
                 <ion-label>永远不</ion-label>
               </ion-item>
               <ion-item>
-                <ion-radio checked="true" value="go"></ion-radio>
+                <ion-radio item-start value="aftertimes"></ion-radio>
                 <ion-label>一定次数后</ion-label>
               </ion-item>
               <ion-item>
-                <ion-radio checked="true" value="go"></ion-radio>
+                <ion-radio item-start value="tosomeday"></ion-radio>
                 <ion-label>直到某一天</ion-label>
               </ion-item>
             </ion-list>
