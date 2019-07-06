@@ -1,6 +1,7 @@
 import { Component, ElementRef, QueryList, Renderer2, ViewChild, ViewChildren } from '@angular/core';
 import { IonicPage, NavController, NavParams, ModalController, Scroll } from 'ionic-angular';
 import {Keyboard} from "@ionic-native/keyboard";
+import { RadioSelectComponent } from "../../components/radio-select/radio-select";
 
 @IonicPage()
 @Component({
@@ -13,11 +14,7 @@ import {Keyboard} from "@ionic-native/keyboard";
   </ion-header>
 
   <ion-content>
-    <ion-list no-lines>
-      <button ion-item *ngFor="let item of items">
-        {{ item }}
-      </button>
-    </ion-list>
+    <radio-select [options]="items"></radio-select>
   </ion-content>
 
   <ion-footer class="foot-set">

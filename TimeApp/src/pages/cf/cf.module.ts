@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { CfPage } from './cf';
 import { IonicModule } from "ionic-angular";
 import { DirectivesModule } from "../../directives/directives.module";
+import { RadioSelectComponentModule } from "../../components/radio-select/radio-select.module";
 
 @NgModule({
   declarations: [
@@ -9,7 +10,8 @@ import { DirectivesModule } from "../../directives/directives.module";
   ],
   imports: [
     IonicModule,
-    DirectivesModule
+    DirectivesModule,
+    RadioSelectComponentModule
   ],
   providers: [
   ],
