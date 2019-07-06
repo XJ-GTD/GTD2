@@ -9,7 +9,11 @@ import { Component, Input } from '@angular/core';
 @Component({
   selector: 'radio-select',
   template: `<div class="grid">
-    <div class="row" align-items-center justify-content-between>
+    <div class="row" *ngIf="isFull" align-items-center justify-content-between>
+      <label *ngIf="label">{{label}}</label>
+      <button ion-button *ngFor="let option of options;" clear (click)="change($event, option.value)">{{option.caption}}</button>
+    </div>
+    <div class="row" *ngIf="!isFull" align-items-center justify-content-between>
       <label *ngIf="label">{{label}}</label>
       <button ion-button *ngFor="let option of options;" clear (click)="change($event, option.value)">{{option.caption}}</button>
     </div>
@@ -19,6 +23,8 @@ export class RadioSelectComponent {
 
   @Input()
   label: string;
+  @Input("full")
+  isFull: boolean = false;
   @Input()
   options: any = [];
   @Input()
