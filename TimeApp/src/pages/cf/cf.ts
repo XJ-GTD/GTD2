@@ -240,7 +240,7 @@ export class CfPage {
     this.items.push({value: "month", caption: "每月"});
     this.items.push({value: "year", caption: "每年"});
 
-    this.itemRanges.push({value: "substract", icon: "remove"});
+    this.itemRanges.push({value: "subtract", icon: "remove"});
     this.itemRanges.push({value: "add", icon: "add"});
 
     this.itemRangeOptions.push({value: "sunday", caption: "日"});
