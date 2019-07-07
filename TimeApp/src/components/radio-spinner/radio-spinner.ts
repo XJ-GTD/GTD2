@@ -121,7 +121,7 @@ export class RadioSpinnerComponent implements ControlValueAccessor {
 
     this._value += num;
     this._value = (this._value < this._minValue)? this._minValue : this._value;
-    this.changedPropEvent.emit(this._value);
     this.onModelChange(this._value);
+    this.changedPropEvent.emit(this._value);
   }
 }

@@ -104,7 +104,7 @@ export class RadioSelectComponent implements ControlValueAccessor {
 
   change(e, val) {
     this._value = val;
-    this.changedPropEvent.emit(this._value);
     this.onModelChange(val);
+    this.changedPropEvent.emit(this._value);
   }
 }
