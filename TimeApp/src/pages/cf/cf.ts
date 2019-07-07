@@ -259,8 +259,8 @@ export class CfPage {
     this.navCtrl.pop();
   }
 
-  private getFreqTitle(default: string, option: any) {
-    let freqtitle = default;
+  private getFreqTitle(title: string, option: any) {
+    let freqtitle = title;
 
     if (option.frequency) {
       freqtitle = option.frequency + freqtitle;
