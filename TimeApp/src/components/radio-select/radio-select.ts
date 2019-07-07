@@ -70,6 +70,17 @@ export class RadioSelectComponent implements ControlValueAccessor {
     console.log('Hello RadioSelectComponent Component');
   }
 
+  set value(v: any){
+    if(v) {
+      this.value = v;
+      this.propagateChange(this.value);
+    }
+  }
+
+  get value(){
+      return this.value;
+  }
+
   writeValue(val: any): void {
     if (val) {
       this.value = val;
