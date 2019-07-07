@@ -40,7 +40,8 @@ import { RadioSelectComponent } from "../../components/radio-select/radio-select
               <ion-item>
                 <ion-radio item-start value="aftertimes"></ion-radio>
                 <ion-label class="inline">
-                  <div class="inlabel">一定次数后</div>
+                  <div *ngIf="cfDayOptions.endType != 'aftertimes'" class="inlabel">一定次数后</div>
+                  <div *ngIf="cfDayOptions.endType == 'aftertimes'" class="inlabel">1次后</div>
                   <radio-select *ngIf="cfDayOptions.endType == 'aftertimes'" [options]="itemRanges" [(ngModel)]="cfDayOptions.freqOption"></radio-select>
                 </ion-label>
               </ion-item>
@@ -87,7 +88,8 @@ import { RadioSelectComponent } from "../../components/radio-select/radio-select
               <ion-item>
                 <ion-radio item-start value="aftertimes"></ion-radio>
                 <ion-label class="inline">
-                  <div class="inlabel">一定次数后</div>
+                  <div *ngIf="cfWeekOptions.endType != 'aftertimes'" class="inlabel">一定次数后</div>
+                  <div *ngIf="cfWeekOptions.endType == 'aftertimes'" class="inlabel">1次后</div>
                   <radio-select *ngIf="cfWeekOptions.endType == 'aftertimes'" [options]="itemRanges"></radio-select>
                 </ion-label>
               </ion-item>
@@ -134,7 +136,8 @@ import { RadioSelectComponent } from "../../components/radio-select/radio-select
               <ion-item>
                 <ion-radio item-start value="aftertimes"></ion-radio>
                 <ion-label class="inline">
-                  <div class="inlabel">一定次数后</div>
+                  <div *ngIf="cfMonthOptions.endType != 'aftertimes'" class="inlabel">一定次数后</div>
+                  <div *ngIf="cfMonthOptions.endType == 'aftertimes'" class="inlabel">1次后</div>
                   <radio-select *ngIf="cfMonthOptions.endType == 'aftertimes'" [options]="itemRanges"></radio-select>
                 </ion-label>
               </ion-item>
@@ -171,7 +174,8 @@ import { RadioSelectComponent } from "../../components/radio-select/radio-select
               <ion-item>
                 <ion-radio item-start value="aftertimes"></ion-radio>
                 <ion-label class="inline">
-                  <div class="inlabel">一定次数后</div>
+                  <div *ngIf="cfYearOptions.endType != 'aftertimes'" class="inlabel">一定次数后</div>
+                  <div *ngIf="cfYearOptions.endType == 'aftertimes'" class="inlabel">1次后</div>
                   <radio-select *ngIf="cfYearOptions.endType == 'aftertimes'" [options]="itemRanges"></radio-select>
                 </ion-label>
               </ion-item>
