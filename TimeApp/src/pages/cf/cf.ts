@@ -202,21 +202,25 @@ export class CfPage {
 
   title: string = "重复关闭。";
   cfType: string = "";
+  //每日选择参数
   cfDayOptions: any = {
     frequency: string = "";
     freqOption: string = "";
     endType: string = "never";
   };
+  //每周选择参数
   cfWeekOptions: any = {
     frequency: string = "";
     freqOption: string = "";
     endType: string = "never";
   };
+  //每月选择参数
   cfMonthOptions: any = {
     frequency: string = "";
     freqOption: string = "";
     endType: string = "never";
   };
+  //每年选择参数
   cfYearOptions: any = {
     frequency: string = "";
     freqOption: string = "";
