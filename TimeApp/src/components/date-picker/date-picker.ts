@@ -1,5 +1,5 @@
 import { Component, Input, Output, QueryList, forwardRef, ElementRef, ViewChildren, EventEmitter } from '@angular/core';
-import { ViewController, PickerColumnCmp, PickerColumnOption, PickerOptions } from 'ionic-angular';
+import { PickerColumnCmp, PickerColumnOption, PickerOptions } from 'ionic-angular';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms'
 
 /**
@@ -23,7 +23,7 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms'
     multi: true
   }]
 })
-export class DatePickerComponent implements ViewController, ControlValueAccessor {
+export class DatePickerComponent implements ControlValueAccessor {
   @ViewChildren(PickerColumnCmp) _cols: QueryList<PickerColumnCmp>;
   d: PickerOptions;
   @Output("onChanged")
