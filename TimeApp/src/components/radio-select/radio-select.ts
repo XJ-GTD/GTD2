@@ -72,7 +72,6 @@ export class RadioSelectComponent implements ControlValueAccessor {
   changedPropEvent = new EventEmitter();
 
   constructor() {
-    console.log('Hello RadioSelectComponent Component');
   }
 
   set value(v: any){
