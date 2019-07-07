@@ -184,11 +184,7 @@ import * as moment from "moment";
             </ion-list>
           </ion-row>
           <ion-row justify-content-start *ngIf="cfYearOptions.endType == 'tosomeday'">
-            <ion-datetime displayFormat="YYYY年MM月DD日"
-                          pickerFormat="YYYY年 MM月 DD日" color="light"
-                          [(ngModel)]="cfYearOptions.toSomeDay" dayNames="星期日,星期一,星期二,星期三,星期四,星期五,星期六"
-                          min="1999-01-01" max="2039-12-31" cancelText="取消" doneText="确认"
-            ></ion-datetime>
+            <date-picker></date-picker>
           </ion-row>
         </ion-grid>
       </ion-row>
