@@ -305,13 +305,13 @@ export class CfPage {
         this.title = "重复周期 " + this.getFreqTitle("日", this.cfDayOptions) + ", " + this.getEndTitle(this.cfDayOptions);
         break;
       case "week":
-        this.title = "重复周期 " + this.getFreqTitle("周", this.cfDayOptions) + ", " + this.getEndTitle(this.cfWeekOptions);
+        this.title = "重复周期 " + this.getFreqTitle("周", this.cfWeekOptions) + ", " + this.getEndTitle(this.cfWeekOptions);
         break;
       case "month":
-        this.title = "重复周期 " + this.getFreqTitle("月", this.cfDayOptions) + ", " + this.getEndTitle(this.cfMonthOptions);
+        this.title = "重复周期 " + this.getFreqTitle("月", this.cfMonthOptions) + ", " + this.getEndTitle(this.cfMonthOptions);
         break;
       case "year":
-        this.title = "重复周期 " + this.getFreqTitle("年", this.cfDayOptions) + ", " + this.getEndTitle(this.cfYearOptions);
+        this.title = "重复周期 " + this.getFreqTitle("年", this.cfYearOptions) + ", " + this.getEndTitle(this.cfYearOptions);
         break;
       default:
         this.title = "重复关闭。";
