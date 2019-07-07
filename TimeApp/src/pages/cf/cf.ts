@@ -32,7 +32,7 @@ import { RadioSelectComponent } from "../../components/radio-select/radio-select
             <p>结束</p>
           </ion-row>
           <ion-row justify-content-start>
-            <ion-list class="endwith" radio-group no-lines [(ngModel)]="cfDayOptions.endType">
+            <ion-list class="endwith" radio-group no-lines [(ngModel)]="cfDayOptions.endType" (ionChange)="onEndTypeChanged($event)">
               <ion-item>
                 <ion-radio item-start value="never"></ion-radio>
                 <ion-label>永远不</ion-label>
@@ -80,7 +80,7 @@ import { RadioSelectComponent } from "../../components/radio-select/radio-select
             <p>结束</p>
           </ion-row>
           <ion-row justify-content-start>
-            <ion-list class="endwith" radio-group no-lines [(ngModel)]="cfWeekOptions.endType">
+            <ion-list class="endwith" radio-group no-lines [(ngModel)]="cfWeekOptions.endType" (ionChange)="onEndTypeChanged($event)">
               <ion-item>
                 <ion-radio item-start value="never"></ion-radio>
                 <ion-label>永远不</ion-label>
@@ -128,7 +128,7 @@ import { RadioSelectComponent } from "../../components/radio-select/radio-select
             <p>结束</p>
           </ion-row>
           <ion-row justify-content-start>
-            <ion-list class="endwith" radio-group no-lines [(ngModel)]="cfMonthOptions.endType">
+            <ion-list class="endwith" radio-group no-lines [(ngModel)]="cfMonthOptions.endType" (ionChange)="onEndTypeChanged($event)">
               <ion-item>
                 <ion-radio item-start value="never"></ion-radio>
                 <ion-label>永远不</ion-label>
@@ -166,7 +166,7 @@ import { RadioSelectComponent } from "../../components/radio-select/radio-select
             <p>结束</p>
           </ion-row>
           <ion-row justify-content-start>
-            <ion-list class="endwith" radio-group no-lines [(ngModel)]="cfYearOptions.endType">
+            <ion-list class="endwith" radio-group no-lines [(ngModel)]="cfYearOptions.endType" (ionChange)="onEndTypeChanged($event)">
               <ion-item>
                 <ion-radio item-start value="never"></ion-radio>
                 <ion-label>永远不</ion-label>
@@ -304,21 +304,6 @@ export class CfPage {
   }
 
   onEndTypeChanged(value) {
-    switch (this.cfType) {
-      case "day":
-        this.cfDayOptions.endType = value;
-        break;
-      case "week":
-        this.cfWeekOptions.endType = value;
-        break;
-      case "month":
-        this.cfMonthOptions.endType = value;
-        break;
-      case "year":
-        this.cfYearOptions.endType = value;
-        break;
-      default:
-        break;
-    }
+    this.resetTitle(this.cfType);
   }
 }
