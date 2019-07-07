@@ -23,7 +23,7 @@ import { RadioSpinnerComponent } from "../../components/radio-spinner/radio-spin
             <p>重复周期</p>
           </ion-row>
           <ion-row justify-content-start>
-            <radio-spinner label="1天" [options]="itemRanges"></radio-spinner>
+            <radio-spinner label="天" [options]="itemRanges" [(ngModel)]="cfDayOptions.frequency"></radio-spinner>
           </ion-row>
         </ion-grid>
       </ion-row>
@@ -61,7 +61,7 @@ import { RadioSpinnerComponent } from "../../components/radio-spinner/radio-spin
             <p>重复周期</p>
           </ion-row>
           <ion-row justify-content-start>
-            <radio-spinner label="1周" [options]="itemRanges" [(ngModel)]="cfWeekOptions.frequency"></radio-spinner>
+            <radio-spinner label="周" [options]="itemRanges" [(ngModel)]="cfWeekOptions.frequency"></radio-spinner>
           </ion-row>
         </ion-grid>
       </ion-row>
@@ -109,7 +109,7 @@ import { RadioSpinnerComponent } from "../../components/radio-spinner/radio-spin
             <p>重复周期</p>
           </ion-row>
           <ion-row justify-content-start>
-            <radio-spinner label="1月" [options]="itemRanges" [(ngModel)]="cfMonthOptions.frequency"></radio-spinner>
+            <radio-spinner label="月" [options]="itemRanges" [(ngModel)]="cfMonthOptions.frequency"></radio-spinner>
           </ion-row>
         </ion-grid>
       </ion-row>
@@ -157,7 +157,7 @@ import { RadioSpinnerComponent } from "../../components/radio-spinner/radio-spin
             <p>重复周期</p>
           </ion-row>
           <ion-row justify-content-start>
-            <radio-spinner label="1年" [options]="itemRanges" [(ngModel)]="cfYearOptions.frequency"></radio-spinner>
+            <radio-spinner label="年" [options]="itemRanges" [(ngModel)]="cfYearOptions.frequency"></radio-spinner>
           </ion-row>
         </ion-grid>
       </ion-row>
