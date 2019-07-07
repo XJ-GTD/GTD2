@@ -260,6 +260,21 @@ export class CfPage {
   }
 
   onEndTypeChanged(value) {
-    this.cfEndType = value;
+    switch (this.cfType) {
+      case "day":
+        this.cfDayOptions.endType = value;
+        break;
+      case "week":
+        this.cfWeekOptions.endType = value;
+        break;
+      case "month":
+        this.cfMonthOptions.endType = value;
+        break;
+      case "year":
+        this.cfYearOptions.endType = value;
+        break;
+      default:
+        break;
+    }
   }
 }
