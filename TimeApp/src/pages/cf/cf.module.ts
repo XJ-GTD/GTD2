@@ -3,6 +3,7 @@ import { CfPage } from './cf';
 import { IonicModule } from "ionic-angular";
 import { DirectivesModule } from "../../directives/directives.module";
 import { RadioSelectComponentModule } from "../../components/radio-select/radio-select.module";
+import { RadioSpinnerComponentModule } from "../../components/radio-spinner/radio-spinner.module";
 
 @NgModule({
   declarations: [
@@ -11,7 +12,8 @@ import { RadioSelectComponentModule } from "../../components/radio-select/radio-
   imports: [
     IonicModule,
     DirectivesModule,
-    RadioSelectComponentModule
+    RadioSelectComponentModule,
+    RadioSpinnerComponentModule
   ],
   providers: [
   ],

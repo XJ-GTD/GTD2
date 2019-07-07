@@ -2,6 +2,7 @@ import { Component, ElementRef, QueryList, Renderer2, ViewChild, ViewChildren } 
 import { IonicPage, NavController, NavParams, ModalController, Scroll } from 'ionic-angular';
 import {Keyboard} from "@ionic-native/keyboard";
 import { RadioSelectComponent } from "../../components/radio-select/radio-select";
+import { RadioSpinnerComponent } from "../../components/radio-spinner/radio-spinner";
 
 @IonicPage()
 @Component({
@@ -22,7 +23,7 @@ import { RadioSelectComponent } from "../../components/radio-select/radio-select
             <p>重复周期</p>
           </ion-row>
           <ion-row justify-content-start>
-            <radio-select label="1天" [options]="itemRanges"></radio-select>
+            <radio-spinner label="1天" [options]="itemRanges"></radio-spinner>
           </ion-row>
         </ion-grid>
       </ion-row>
