@@ -279,7 +279,7 @@ export class CfPage {
     let freqtitle = title;
 
     if (option.frequency) {
-      freqtitle = option.frequency + freqtitle;
+      freqtitle = (option.frequency == 1? "" : option.frequency) + freqtitle;
 
       if (option.freqOption) {
         let caption = this.optionCaptions[option.freqOption];
@@ -298,7 +298,7 @@ export class CfPage {
         endtitle = "永不";
         break;
       case "aftertimes":
-        endtitle = (option.afterTimes == 1? "" : option.afterTimes) + "次";
+        endtitle = option.afterTimes + "次";
         break;
       case "tosomeday":
         endtitle = "直到 2020年2月28日";
