@@ -84,6 +84,10 @@ export class RadioSelectComponent implements ControlValueAccessor {
     this.propagateChange = fn;
   }
 
+  registerOnTouched(fn: any): void {
+    console.log('registerOnChange', fn);
+  }
+
   change(e, val) {
     this.value = val;
     this.changedPropEvent.emit(this.value);
