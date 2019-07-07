@@ -206,19 +206,19 @@ export class CfPage {
   cfDayOptions: any = {
     frequency: "",
     freqOption: "",
-    endType: string = "never"
+    endType: "never"
   };
   //每周选择参数
   cfWeekOptions: any = {
     frequency: "",
     freqOption: "",
-    endType: string = "never"
+    endType: "never"
   };
   //每月选择参数
   cfMonthOptions: any = {
     frequency: "",
     freqOption: "",
-    endType: string = "never"
+    endType: "never"
   };
   //每年选择参数
   cfYearOptions: any = {
