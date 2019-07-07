@@ -70,11 +70,8 @@ export class RadioSpinnerComponent implements ControlValueAccessor {
   subtractOption: string = "subtract";
   @Input()
   options: any = [];
-  @Input("showInitial")
-  isShowInitial: boolean = false;
   @Input("value")
   _value: number = 1;
-  _valueshow: string = "";
   @Input("min")
   _minValue: number = 1;
   @Output("onChanged")
@@ -86,14 +83,6 @@ export class RadioSpinnerComponent implements ControlValueAccessor {
   set value(v: any){
     if(v) {
       this._value = v;
-      if (this.isShowInitial)
-        this._valueshow = this._value;
-      else {
-        if (this._value == this._minValue)
-          this._valueshow = "";
-        else
-          this._valueshow = this._value;
-      }
       this.onModelChange(this._value);
     }
   }
@@ -105,14 +94,6 @@ export class RadioSpinnerComponent implements ControlValueAccessor {
   writeValue(val: any): void {
     if (val) {
       this._value = val;
-      if (this.isShowInitial)
-        this._valueshow = this._value;
-      else {
-        if (this._value == this._minValue)
-          this._valueshow = "";
-        else
-          this._valueshow = this._value;
-      }
     }
   }
 
@@ -140,14 +121,6 @@ export class RadioSpinnerComponent implements ControlValueAccessor {
 
     this._value += num;
     this._value = (this._value < this._minValue)? this._minValue : this._value;
-    if (this.isShowInitial)
-      this._valueshow = this._value;
-    else {
-      if (this._value == this._minValue)
-        this._valueshow = "";
-      else
-        this._valueshow = this._value;
-    }
     this.onModelChange(this._value);
     this.changedPropEvent.emit(this._value);
   }
