@@ -260,7 +260,7 @@ export class CfPage {
   }
 
   onTypeChanged(value) {
-    this.resetTitle();
+    this.resetTitle(value);
   }
 
   private getEndTitle(option: any) {
@@ -283,8 +283,8 @@ export class CfPage {
     return endtitle;
   }
 
-  resetTitle() {
-    switch (this.cfType) {
+  resetTitle(cfType: string) {
+    switch (cfType) {
       case "day":
         this.title = "重复周期 日, " + this.getEndTitle(this.cfDayOptions);
         break;
