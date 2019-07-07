@@ -49,7 +49,12 @@ import { ControlValueAccessor } from '@angular/forms'
         </button>
       </div>
     </div>
-  </div>`
+  </div>`,
+  providers: [{
+    provide: NG_VALUE_ACCESSOR,
+    useExisting: forwardRef(() => RadioSelectComponent),
+    multi: true
+  }]
 })
 export class RadioSelectComponent implements ControlValueAccessor {
 
@@ -73,7 +78,7 @@ export class RadioSelectComponent implements ControlValueAccessor {
   set value(v: any){
     if(v) {
       this._value = v;
-      this.propagateChange(this._value);
+      this.onModelChange(this._value);
     }
   }
 
@@ -87,21 +92,20 @@ export class RadioSelectComponent implements ControlValueAccessor {
     }
   }
 
-  propagateChange(val) {
-
-  }
+  public onModelChange: Function = () => {};
+  public onModelTouched: Function = () => {};
 
   registerOnChange(fn: any): void {
-    this.propagateChange = fn;
+    this.onModelChange = fn;
   }
 
   registerOnTouched(fn: any): void {
-    console.log('registerOnChange', fn);
+    this.onModelTouched = fn;
   }
 
   change(e, val) {
     this._value = val;
     this.changedPropEvent.emit(this._value);
-    this.propagateChange(val);
+    this.onModelChange(val);
   }
 }
