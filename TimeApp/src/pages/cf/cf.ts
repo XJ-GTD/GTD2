@@ -13,7 +13,7 @@ import { RadioSelectComponent } from "../../components/radio-select/radio-select
         <p class="title">{{title}}</p>
       </ion-row>
       <ion-row justify-content-center>
-        <radio-select name="cftype" [options]="items" center="true" [(ngModel)]="cfType" (onChanged)="onTypeChanged($event)"></radio-select>
+        <radio-select name="cftype" [options]="items" center="true" [(ngModel)]="cfType" (onChanged)="onTypeChanged($event)" ngDefaultControl></radio-select>
       </ion-row>
       <!-- 每日 -->
       <ion-row justify-content-center *ngIf="cfType == 'day'">
@@ -22,7 +22,7 @@ import { RadioSelectComponent } from "../../components/radio-select/radio-select
             <p>重复周期</p>
           </ion-row>
           <ion-row justify-content-start>
-            <radio-select label="1天" [options]="itemRanges"></radio-select>
+            <radio-select name="dayPins" label="1天" [options]="itemRanges" ngDefaultControl></radio-select>
           </ion-row>
         </ion-grid>
       </ion-row>
@@ -41,7 +41,7 @@ import { RadioSelectComponent } from "../../components/radio-select/radio-select
                 <ion-radio item-start value="aftertimes"></ion-radio>
                 <ion-label class="inline">
                   <div class="inlabel">一定次数后</div>
-                  <radio-select *ngIf="cfDayOptions.endType == 'aftertimes'" [options]="itemRanges"></radio-select>
+                  <radio-select name="dayEndPins" *ngIf="cfDayOptions.endType == 'aftertimes'" [options]="itemRanges" ngDefaultControl></radio-select>
                 </ion-label>
               </ion-item>
               <ion-item>
