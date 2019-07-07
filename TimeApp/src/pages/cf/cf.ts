@@ -71,7 +71,7 @@ import * as moment from "moment";
             <p>重复开启</p>
           </ion-row>
           <ion-row justify-content-start>
-            <radio-select [options]="itemRangeOptions" [(ngModel)]="cfWeekOptions.freqOption"></radio-select>
+            <radio-select [options]="itemRangeOptions" [(ngModel)]="cfWeekOptions.freqOption" (onChanged)="onFreqOptionChanged($event)"></radio-select>
           </ion-row>
         </ion-grid>
       </ion-row>
@@ -118,7 +118,7 @@ import * as moment from "moment";
             <p>重复开启</p>
           </ion-row>
           <ion-row justify-content-start>
-            <radio-select [options]="itemRangeOptions" [(ngModel)]="cfMonthOptions.freqOption"></radio-select>
+            <radio-select [options]="itemRangeOptions" [(ngModel)]="cfMonthOptions.freqOption" (onChanged)="onFreqOptionChanged($event)"></radio-select>
           </ion-row>
         </ion-grid>
       </ion-row>
