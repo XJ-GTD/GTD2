@@ -182,7 +182,7 @@ import * as moment from "moment";
                 <ion-label>
                 直到某一天
                 <div *ngIf="cfYearOptions.endType == 'tosomeday'">
-                <ion-datetime displayFormat="YYYY年MM月DD日 DDDD"
+                <ion-datetime displayFormat="YYYY年MM月DD日"
                               pickerFormat="YYYY MM DD" color="light"
                               [(ngModel)]="cfYearOptions.toSomeDay" dayNames="星期日,星期一,星期二,星期三,星期四,星期五,星期六"
                               min="1999-01-01" max="2039-12-31" cancelText="取消" doneText="确认"
@@ -310,7 +310,7 @@ export class CfPage {
         endtitle = option.afterTimes + "次";
         break;
       case "tosomeday":
-        endtitle = "直到 2020年2月28日";
+        endtitle = "直到 " + toSomeDay;
         break;
       default:
         break;
