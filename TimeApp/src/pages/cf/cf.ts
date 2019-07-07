@@ -279,6 +279,8 @@ export class CfPage {
       default:
         break;
     }
+
+    return endtitle;
   }
 
   resetTitle() {
