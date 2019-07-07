@@ -310,7 +310,7 @@ export class CfPage {
         endtitle = option.afterTimes + "次";
         break;
       case "tosomeday":
-        endtitle = "直到 " + toSomeDay;
+        endtitle = "直到 " + option.toSomeDay;
         break;
       default:
         break;
