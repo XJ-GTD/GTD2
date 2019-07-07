@@ -13,7 +13,7 @@ import { RadioSelectComponent } from "../../components/radio-select/radio-select
         <p class="title">{{title}}</p>
       </ion-row>
       <ion-row justify-content-center>
-        <radio-select [options]="items" center="true" (onChanged)="onTypeChanged($event)"></radio-select>
+        <radio-select [options]="items" center="true" [(ngModel)]="cfType" (onChanged)="onTypeChanged($event)"></radio-select>
       </ion-row>
       <!-- 每日 -->
       <ion-row justify-content-center *ngIf="cfType == 'day'">
@@ -256,7 +256,7 @@ export class CfPage {
   }
 
   onTypeChanged(value) {
-    this.cfType = value;
+    //this.cfType = value;
   }
 
   onEndTypeChanged(value) {

@@ -1,4 +1,5 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { ControlValueAccessor } from '@angular/forms'
 
 /**
  * Generated class for the RadioSelectComponent component.
@@ -50,7 +51,7 @@ import { Component, Input, Output, EventEmitter } from '@angular/core';
     </div>
   </div>`
 })
-export class RadioSelectComponent {
+export class RadioSelectComponent implements ControlValueAccessor {
 
   @Input()
   label: string;
@@ -69,8 +70,23 @@ export class RadioSelectComponent {
     console.log('Hello RadioSelectComponent Component');
   }
 
+  writeValue(val: any): void {
+    if (val) {
+      this.value = val;
+    }
+  }
+
+  propagateChange(val) {
+
+  }
+
+  registerOnChange(fn: any): void {
+    this.propagateChange = fn;
+  }
+
   change(e, val) {
     this.value = val;
     this.changedPropEvent.emit(this.value);
+    this.propagateChange(val);
   }
 }
