@@ -1,5 +1,4 @@
-import {ModuleWithProviders, NgModule, forwardRef, CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
-import { NG_VALUE_ACCESSOR } from '@angular/forms'
+import {ModuleWithProviders, NgModule, CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
 import { IonicPageModule } from 'ionic-angular';
 import { RadioSelectComponent } from './radio-select';
 import {PipesModule} from "../../pipes/pipes.module";
@@ -16,11 +15,7 @@ import {PipesModule} from "../../pipes/pipes.module";
     IonicPageModule.forChild(RadioSelectComponent)
   ],
   providers: [
-    {
-      provide: NG_VALUE_ACCESSOR,
-      useExisting: forwardRef(() => RadioSelectComponent),
-      multi: true
-    }
+
   ],
   exports: [
     RadioSelectComponent,
