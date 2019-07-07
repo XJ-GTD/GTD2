@@ -42,8 +42,7 @@ import { RadioSpinnerComponent } from "../../components/radio-spinner/radio-spin
                 <ion-radio item-start value="aftertimes"></ion-radio>
                 <ion-label class="inline">
                   <div *ngIf="cfDayOptions.endType != 'aftertimes'" class="inlabel">一定次数后</div>
-                  <div *ngIf="cfDayOptions.endType == 'aftertimes'" class="inlabel">1次后</div>
-                  <radio-spinner *ngIf="cfDayOptions.endType == 'aftertimes'" [options]="itemRanges" [(ngModel)]="cfDayOptions.freqOption"></radio-spinner>
+                  <radio-spinner label="次后" *ngIf="cfDayOptions.endType == 'aftertimes'" [options]="itemRanges" [(ngModel)]="cfDayOptions.freqOption"></radio-spinner>
                 </ion-label>
               </ion-item>
               <ion-item>
@@ -90,8 +89,7 @@ import { RadioSpinnerComponent } from "../../components/radio-spinner/radio-spin
                 <ion-radio item-start value="aftertimes"></ion-radio>
                 <ion-label class="inline">
                   <div *ngIf="cfWeekOptions.endType != 'aftertimes'" class="inlabel">一定次数后</div>
-                  <div *ngIf="cfWeekOptions.endType == 'aftertimes'" class="inlabel">1次后</div>
-                  <radio-spinner *ngIf="cfWeekOptions.endType == 'aftertimes'" [options]="itemRanges"></radio-spinner>
+                  <radio-spinner label="次后" *ngIf="cfWeekOptions.endType == 'aftertimes'" [options]="itemRanges"></radio-spinner>
                 </ion-label>
               </ion-item>
               <ion-item>
@@ -138,8 +136,7 @@ import { RadioSpinnerComponent } from "../../components/radio-spinner/radio-spin
                 <ion-radio item-start value="aftertimes"></ion-radio>
                 <ion-label class="inline">
                   <div *ngIf="cfMonthOptions.endType != 'aftertimes'" class="inlabel">一定次数后</div>
-                  <div *ngIf="cfMonthOptions.endType == 'aftertimes'" class="inlabel">1次后</div>
-                  <radio-spinner *ngIf="cfMonthOptions.endType == 'aftertimes'" [options]="itemRanges"></radio-spinner>
+                  <radio-spinner label="次后" *ngIf="cfMonthOptions.endType == 'aftertimes'" [options]="itemRanges"></radio-spinner>
                 </ion-label>
               </ion-item>
               <ion-item>
@@ -176,8 +173,7 @@ import { RadioSpinnerComponent } from "../../components/radio-spinner/radio-spin
                 <ion-radio item-start value="aftertimes"></ion-radio>
                 <ion-label class="inline">
                   <div *ngIf="cfYearOptions.endType != 'aftertimes'" class="inlabel">一定次数后</div>
-                  <div *ngIf="cfYearOptions.endType == 'aftertimes'" class="inlabel">1次后</div>
-                  <radio-spinner *ngIf="cfYearOptions.endType == 'aftertimes'" [options]="itemRanges"></radio-spinner>
+                  <radio-spinner label="次后" *ngIf="cfYearOptions.endType == 'aftertimes'" [options]="itemRanges"></radio-spinner>
                 </ion-label>
               </ion-item>
               <ion-item>
