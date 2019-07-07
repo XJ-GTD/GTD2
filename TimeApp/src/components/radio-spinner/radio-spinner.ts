@@ -11,7 +11,7 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms'
   selector: 'radio-spinner',
   template: `<div class="grid">
     <div class="row" *ngIf="isFull && isCenter" align-items-center justify-content-between>
-      <label *ngIf="label">{{_valueshow + label}}</label>
+      <label *ngIf="label">{{_value + label}}</label>
       <div>
         <button ion-button *ngFor="let option of options;" [ngClass]="{'checked': option.value == _value}" clear (click)="change($event, option.value)" small>
         <ng-container *ngIf="option.icon">
@@ -24,7 +24,7 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms'
       </div>
     </div>
     <div class="row" *ngIf="!isFull && isCenter" align-items-center justify-content-center>
-      <label *ngIf="label">{{_valueshow + label}}</label>
+      <label *ngIf="label">{{_value + label}}</label>
       <div>
         <button ion-button *ngFor="let option of options;" [ngClass]="{'checked': option.value == _value}" clear (click)="change($event, option.value)" small>
         <ng-container *ngIf="option.icon">
@@ -37,7 +37,7 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms'
       </div>
     </div>
     <div class="row" *ngIf="!isFull && !isCenter" align-items-center justify-content-start>
-      <label *ngIf="label">{{_valueshow + label}}</label>
+      <label *ngIf="label">{{_value + label}}</label>
       <div>
         <button ion-button *ngFor="let option of options;" [ngClass]="{'checked': option.value == _value}" clear (click)="change($event, option.value)" small>
         <ng-container *ngIf="option.icon">
