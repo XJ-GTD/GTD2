@@ -13,7 +13,7 @@ import { RadioSelectComponent } from "../../components/radio-select/radio-select
         <p class="title">{{title}}</p>
       </ion-row>
       <ion-row justify-content-center>
-        <radio-select name="cftype" [options]="items" center="true" [(ngModel)]="cfType" (onChanged)="onTypeChanged($event)"></radio-select>
+        <radio-select [options]="items" center="true" [(ngModel)]="cfType" (onChanged)="onTypeChanged($event)"></radio-select>
       </ion-row>
       <!-- 每日 -->
       <ion-row justify-content-center *ngIf="cfType == 'day'">
@@ -22,7 +22,7 @@ import { RadioSelectComponent } from "../../components/radio-select/radio-select
             <p>重复周期</p>
           </ion-row>
           <ion-row justify-content-start>
-            <radio-select name="dayPins" label="1天" [options]="itemRanges"></radio-select>
+            <radio-select label="1天" [options]="itemRanges"></radio-select>
           </ion-row>
         </ion-grid>
       </ion-row>
@@ -41,7 +41,7 @@ import { RadioSelectComponent } from "../../components/radio-select/radio-select
                 <ion-radio item-start value="aftertimes"></ion-radio>
                 <ion-label class="inline">
                   <div class="inlabel">一定次数后</div>
-                  <radio-select *ngIf="cfDayOptions.endType == 'aftertimes'" [options]="itemRanges"></radio-select>
+                  <radio-select *ngIf="cfDayOptions.endType == 'aftertimes'" [options]="itemRanges" [(ngModel)]="cfDayOptions.freqOption"></radio-select>
                 </ion-label>
               </ion-item>
               <ion-item>
@@ -59,7 +59,7 @@ import { RadioSelectComponent } from "../../components/radio-select/radio-select
             <p>重复周期</p>
           </ion-row>
           <ion-row justify-content-start>
-            <radio-select label="1周" [options]="itemRanges"></radio-select>
+            <radio-select label="1周" [options]="itemRanges" [(ngModel)]="cfWeekOptions.frequency"></radio-select>
           </ion-row>
         </ion-grid>
       </ion-row>
@@ -69,7 +69,7 @@ import { RadioSelectComponent } from "../../components/radio-select/radio-select
             <p>重复开启</p>
           </ion-row>
           <ion-row justify-content-start>
-            <radio-select [options]="itemRangeOptions"></radio-select>
+            <radio-select [options]="itemRangeOptions" [(ngModel)]="cfWeekOptions.freqOption"></radio-select>
           </ion-row>
         </ion-grid>
       </ion-row>
@@ -106,7 +106,7 @@ import { RadioSelectComponent } from "../../components/radio-select/radio-select
             <p>重复周期</p>
           </ion-row>
           <ion-row justify-content-start>
-            <radio-select label="1月" [options]="itemRanges"></radio-select>
+            <radio-select label="1月" [options]="itemRanges" [(ngModel)]="cfMonthOptions.frequency"></radio-select>
           </ion-row>
         </ion-grid>
       </ion-row>
@@ -116,7 +116,7 @@ import { RadioSelectComponent } from "../../components/radio-select/radio-select
             <p>重复开启</p>
           </ion-row>
           <ion-row justify-content-start>
-            <radio-select [options]="itemRangeOptions"></radio-select>
+            <radio-select [options]="itemRangeOptions" [(ngModel)]="cfMonthOptions.freqOption"></radio-select>
           </ion-row>
         </ion-grid>
       </ion-row>
@@ -153,7 +153,7 @@ import { RadioSelectComponent } from "../../components/radio-select/radio-select
             <p>重复周期</p>
           </ion-row>
           <ion-row justify-content-start>
-            <radio-select label="1年" [options]="itemRanges"></radio-select>
+            <radio-select label="1年" [options]="itemRanges" [(ngModel)]="cfYearOptions.frequency"></radio-select>
           </ion-row>
         </ion-grid>
       </ion-row>
