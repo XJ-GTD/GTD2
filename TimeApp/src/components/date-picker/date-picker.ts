@@ -1,4 +1,4 @@
-import { Component, Input, Output, QueryList, forwardRef, ViewChildren, EventEmitter } from '@angular/core';
+import { Component, Input, Output, QueryList, forwardRef, ElementRef, ViewChildren, EventEmitter } from '@angular/core';
 import { PickerColumnCmp, PickerColumnOption, PickerOptions } from 'ionic-angular';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms'
 
@@ -26,8 +26,10 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms'
 export class DatePickerComponent implements ControlValueAccessor {
   @ViewChildren(PickerColumnCmp) _cols: QueryList<PickerColumnCmp>;
   d: PickerOptions;
+  @Output("onChanged")
+  onChanged = new EventEmitter();
 
-  constructor(private _viewCtrl: ViewController,
+  constructor(private _elementRef: ElementRef,
               params: NavParams,
               renderer: Renderer) {
     this.d = params.data;
@@ -97,7 +99,6 @@ export class DatePickerComponent implements ControlValueAccessor {
 
   _colChange() {
     // one of the columns has changed its selected index
-    var picker = <Picker>this._viewCtrl;
-    picker.ionChange.emit(this.getSelected());
+    this.onChanged.emit(this.getSelected());
   }
 }
