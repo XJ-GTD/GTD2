@@ -43,7 +43,7 @@ import { RadioSpinnerComponent } from "../../components/radio-spinner/radio-spin
                 <ion-label class="inline">
                   <div *ngIf="cfDayOptions.endType != 'aftertimes'" class="inlabel">一定次数后</div>
                   <div *ngIf="cfDayOptions.endType == 'aftertimes'" class="inlabel">1次后</div>
-                  <radio-select *ngIf="cfDayOptions.endType == 'aftertimes'" [options]="itemRanges" [(ngModel)]="cfDayOptions.freqOption"></radio-select>
+                  <radio-spinner *ngIf="cfDayOptions.endType == 'aftertimes'" [options]="itemRanges" [(ngModel)]="cfDayOptions.freqOption"></radio-spinner>
                 </ion-label>
               </ion-item>
               <ion-item>
@@ -61,7 +61,7 @@ import { RadioSpinnerComponent } from "../../components/radio-spinner/radio-spin
             <p>重复周期</p>
           </ion-row>
           <ion-row justify-content-start>
-            <radio-select label="1周" [options]="itemRanges" [(ngModel)]="cfWeekOptions.frequency"></radio-select>
+            <radio-spinner label="1周" [options]="itemRanges" [(ngModel)]="cfWeekOptions.frequency"></radio-spinner>
           </ion-row>
         </ion-grid>
       </ion-row>
@@ -91,7 +91,7 @@ import { RadioSpinnerComponent } from "../../components/radio-spinner/radio-spin
                 <ion-label class="inline">
                   <div *ngIf="cfWeekOptions.endType != 'aftertimes'" class="inlabel">一定次数后</div>
                   <div *ngIf="cfWeekOptions.endType == 'aftertimes'" class="inlabel">1次后</div>
-                  <radio-select *ngIf="cfWeekOptions.endType == 'aftertimes'" [options]="itemRanges"></radio-select>
+                  <radio-spinner *ngIf="cfWeekOptions.endType == 'aftertimes'" [options]="itemRanges"></radio-spinner>
                 </ion-label>
               </ion-item>
               <ion-item>
@@ -109,7 +109,7 @@ import { RadioSpinnerComponent } from "../../components/radio-spinner/radio-spin
             <p>重复周期</p>
           </ion-row>
           <ion-row justify-content-start>
-            <radio-select label="1月" [options]="itemRanges" [(ngModel)]="cfMonthOptions.frequency"></radio-select>
+            <radio-spinner label="1月" [options]="itemRanges" [(ngModel)]="cfMonthOptions.frequency"></radio-spinner>
           </ion-row>
         </ion-grid>
       </ion-row>
@@ -139,7 +139,7 @@ import { RadioSpinnerComponent } from "../../components/radio-spinner/radio-spin
                 <ion-label class="inline">
                   <div *ngIf="cfMonthOptions.endType != 'aftertimes'" class="inlabel">一定次数后</div>
                   <div *ngIf="cfMonthOptions.endType == 'aftertimes'" class="inlabel">1次后</div>
-                  <radio-select *ngIf="cfMonthOptions.endType == 'aftertimes'" [options]="itemRanges"></radio-select>
+                  <radio-spinner *ngIf="cfMonthOptions.endType == 'aftertimes'" [options]="itemRanges"></radio-spinner>
                 </ion-label>
               </ion-item>
               <ion-item>
@@ -157,7 +157,7 @@ import { RadioSpinnerComponent } from "../../components/radio-spinner/radio-spin
             <p>重复周期</p>
           </ion-row>
           <ion-row justify-content-start>
-            <radio-select label="1年" [options]="itemRanges" [(ngModel)]="cfYearOptions.frequency"></radio-select>
+            <radio-spinner label="1年" [options]="itemRanges" [(ngModel)]="cfYearOptions.frequency"></radio-spinner>
           </ion-row>
         </ion-grid>
       </ion-row>
@@ -177,7 +177,7 @@ import { RadioSpinnerComponent } from "../../components/radio-spinner/radio-spin
                 <ion-label class="inline">
                   <div *ngIf="cfYearOptions.endType != 'aftertimes'" class="inlabel">一定次数后</div>
                   <div *ngIf="cfYearOptions.endType == 'aftertimes'" class="inlabel">1次后</div>
-                  <radio-select *ngIf="cfYearOptions.endType == 'aftertimes'" [options]="itemRanges"></radio-select>
+                  <radio-spinner *ngIf="cfYearOptions.endType == 'aftertimes'" [options]="itemRanges"></radio-spinner>
                 </ion-label>
               </ion-item>
               <ion-item>
