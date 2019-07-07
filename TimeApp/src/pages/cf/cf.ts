@@ -179,18 +179,16 @@ import * as moment from "moment";
               </ion-item>
               <ion-item>
                 <ion-radio item-start value="tosomeday"></ion-radio>
-                <ion-label>
-                直到某一天
-                <div *ngIf="cfYearOptions.endType == 'tosomeday'">
-                <ion-datetime displayFormat="YYYY年MM月DD日"
-                              pickerFormat="YYYY MM DD" color="light"
-                              [(ngModel)]="cfYearOptions.toSomeDay" dayNames="星期日,星期一,星期二,星期三,星期四,星期五,星期六"
-                              min="1999-01-01" max="2039-12-31" cancelText="取消" doneText="确认"
-                ></ion-datetime>
-                </div>
-                </ion-label>
+                <ion-label>直到某一天</ion-label>
               </ion-item>
             </ion-list>
+          </ion-row>
+          <ion-row justify-content-start *ngIf="cfYearOptions.endType == 'tosomeday'">
+            <ion-datetime displayFormat="YYYY年MM月DD日"
+                          pickerFormat="YYYY年 MM月 DD日" color="light"
+                          [(ngModel)]="cfYearOptions.toSomeDay" dayNames="星期日,星期一,星期二,星期三,星期四,星期五,星期六"
+                          min="1999-01-01" max="2039-12-31" cancelText="取消" doneText="确认"
+            ></ion-datetime>
           </ion-row>
         </ion-grid>
       </ion-row>
