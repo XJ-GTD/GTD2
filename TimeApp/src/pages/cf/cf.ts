@@ -260,7 +260,45 @@ export class CfPage {
   }
 
   onTypeChanged(value) {
-    //this.cfType = value;
+    this.resetTitle();
+  }
+
+  private getEndTitle(option: any) {
+    let endtitle = "永不";
+
+    switch (option.endType) {
+      case "never":
+        endtitle = "永不";
+        break;
+      case "aftertimes":
+        endtitle = "3次";
+        break;
+      case "tosomeday":
+        endtitle = "直到 2020年2月28日";
+        break;
+      default:
+        break;
+    }
+  }
+
+  resetTitle() {
+    switch (this.cfType) {
+      case "day":
+        this.title = "重复周期 日, " + this.getEndTitle(this.cfDayOptions);
+        break;
+      case "week":
+        this.title = "重复周期 周, " + this.getEndTitle(this.cfWeekOptions);
+        break;
+      case "month":
+        this.title = "重复周期 月, " + this.getEndTitle(this.cfMonthOptions);
+        break;
+      case "year":
+        this.title = "重复周期 年, " + this.getEndTitle(this.cfYearOptions);
+        break;
+      default:
+        this.title = "重复关闭。";
+        break;
+    }
   }
 
   onEndTypeChanged(value) {
