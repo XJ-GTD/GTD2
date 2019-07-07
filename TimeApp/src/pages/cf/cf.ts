@@ -237,6 +237,16 @@ export class CfPage {
     toSomeDay: moment().format("YYYY年M月D日")
   };
 
+  optionCaptions: any = {
+    sunday: "星期日",
+    monday: "星期一",
+    tuesday: "星期二",
+    wednesday: "星期三",
+    thursday: "星期四",
+    friday: "星期五",
+    saturday: "星期六",
+  };
+
   constructor(public navCtrl: NavController,
               private keyboard: Keyboard) {
     this.items.push({value: "", caption: "关"});
@@ -272,7 +282,8 @@ export class CfPage {
       freqtitle = option.frequency + freqtitle;
 
       if (option.freqOption) {
-        freqtitle += " " + option.freqOption;
+        let caption = this.optionCaptions[option.freqOption];
+        freqtitle += " " + (caption? caption : "");
       }
     }
 
