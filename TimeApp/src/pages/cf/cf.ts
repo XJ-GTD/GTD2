@@ -259,8 +259,18 @@ export class CfPage {
     this.navCtrl.pop();
   }
 
-  onTypeChanged(value) {
-    this.resetTitle(value);
+  private getFreqTitle(default: string, option: any) {
+    let freqtitle = default;
+
+    if (option.frequency) {
+      freqtitle = option.frequency + freqtitle;
+
+      if (option.freqOption) {
+        freqtitle += " " + option.freqOption;
+      }
+    }
+
+    return freqtitle;
   }
 
   private getEndTitle(option: any) {
@@ -286,21 +296,33 @@ export class CfPage {
   resetTitle(cfType: string) {
     switch (cfType) {
       case "day":
-        this.title = "重复周期 日, " + this.getEndTitle(this.cfDayOptions);
+        this.title = "重复周期 " + this.getFreqTitle("日", this.cfDayOptions) + ", " + this.getEndTitle(this.cfDayOptions);
         break;
       case "week":
-        this.title = "重复周期 周, " + this.getEndTitle(this.cfWeekOptions);
+        this.title = "重复周期 " + this.getFreqTitle("周", this.cfDayOptions) + ", " + this.getEndTitle(this.cfWeekOptions);
         break;
       case "month":
-        this.title = "重复周期 月, " + this.getEndTitle(this.cfMonthOptions);
+        this.title = "重复周期 " + this.getFreqTitle("月", this.cfDayOptions) + ", " + this.getEndTitle(this.cfMonthOptions);
         break;
       case "year":
-        this.title = "重复周期 年, " + this.getEndTitle(this.cfYearOptions);
+        this.title = "重复周期 " + this.getFreqTitle("年", this.cfDayOptions) + ", " + this.getEndTitle(this.cfYearOptions);
         break;
       default:
         this.title = "重复关闭。";
         break;
     }
+  }
+
+  onTypeChanged(value) {
+    this.resetTitle(value);
+  }
+
+  onFreqNumberChanged() {
+    this.resetTitle(this.cfType);
+  }
+
+  onFreqOptionChanged() {
+    this.resetTitle(this.cfType);
   }
 
   onEndTypeChanged(value) {
