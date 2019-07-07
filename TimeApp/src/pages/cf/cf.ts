@@ -3,6 +3,7 @@ import { IonicPage, NavController, NavParams, ModalController, Scroll } from 'io
 import {Keyboard} from "@ionic-native/keyboard";
 import { RadioSelectComponent } from "../../components/radio-select/radio-select";
 import { RadioSpinnerComponent } from "../../components/radio-spinner/radio-spinner";
+import * as moment from "moment";
 
 @IonicPage()
 @Component({
@@ -23,7 +24,7 @@ import { RadioSpinnerComponent } from "../../components/radio-spinner/radio-spin
             <p>重复周期</p>
           </ion-row>
           <ion-row justify-content-start>
-            <radio-spinner label="天" [options]="itemRanges" [(ngModel)]="cfDayOptions.frequency"></radio-spinner>
+            <radio-spinner label="天" [options]="itemRanges" [(ngModel)]="cfDayOptions.frequency" (onChanged)="onFreqChanged($event)"></radio-spinner>
           </ion-row>
         </ion-grid>
       </ion-row>
@@ -42,7 +43,7 @@ import { RadioSpinnerComponent } from "../../components/radio-spinner/radio-spin
                 <ion-radio item-start value="aftertimes"></ion-radio>
                 <ion-label class="inline">
                   <div *ngIf="cfDayOptions.endType != 'aftertimes'" class="inlabel">一定次数后</div>
-                  <radio-spinner label="次后" *ngIf="cfDayOptions.endType == 'aftertimes'" [options]="itemRanges" [(ngModel)]="cfDayOptions.freqOption"></radio-spinner>
+                  <radio-spinner label="次后" *ngIf="cfDayOptions.endType == 'aftertimes'" [options]="itemRanges" [(ngModel)]="cfDayOptions.afterTimes" (onChanged)="onEndAfterTimesChanged($event)"></radio-spinner>
                 </ion-label>
               </ion-item>
               <ion-item>
@@ -60,7 +61,7 @@ import { RadioSpinnerComponent } from "../../components/radio-spinner/radio-spin
             <p>重复周期</p>
           </ion-row>
           <ion-row justify-content-start>
-            <radio-spinner label="周" [options]="itemRanges" [(ngModel)]="cfWeekOptions.frequency"></radio-spinner>
+            <radio-spinner label="周" [options]="itemRanges" [(ngModel)]="cfWeekOptions.frequency" (onChanged)="onFreqChanged($event)"></radio-spinner>
           </ion-row>
         </ion-grid>
       </ion-row>
@@ -89,7 +90,7 @@ import { RadioSpinnerComponent } from "../../components/radio-spinner/radio-spin
                 <ion-radio item-start value="aftertimes"></ion-radio>
                 <ion-label class="inline">
                   <div *ngIf="cfWeekOptions.endType != 'aftertimes'" class="inlabel">一定次数后</div>
-                  <radio-spinner label="次后" *ngIf="cfWeekOptions.endType == 'aftertimes'" [options]="itemRanges"></radio-spinner>
+                  <radio-spinner label="次后" *ngIf="cfWeekOptions.endType == 'aftertimes'" [options]="itemRanges" [(ngModel)]="cfWeekOptions.afterTimes" (onChanged)="onEndAfterTimesChanged($event)"></radio-spinner>
                 </ion-label>
               </ion-item>
               <ion-item>
@@ -107,7 +108,7 @@ import { RadioSpinnerComponent } from "../../components/radio-spinner/radio-spin
             <p>重复周期</p>
           </ion-row>
           <ion-row justify-content-start>
-            <radio-spinner label="月" [options]="itemRanges" [(ngModel)]="cfMonthOptions.frequency"></radio-spinner>
+            <radio-spinner label="月" [options]="itemRanges" [(ngModel)]="cfMonthOptions.frequency" (onChanged)="onFreqChanged($event)"></radio-spinner>
           </ion-row>
         </ion-grid>
       </ion-row>
@@ -136,7 +137,7 @@ import { RadioSpinnerComponent } from "../../components/radio-spinner/radio-spin
                 <ion-radio item-start value="aftertimes"></ion-radio>
                 <ion-label class="inline">
                   <div *ngIf="cfMonthOptions.endType != 'aftertimes'" class="inlabel">一定次数后</div>
-                  <radio-spinner label="次后" *ngIf="cfMonthOptions.endType == 'aftertimes'" [options]="itemRanges"></radio-spinner>
+                  <radio-spinner label="次后" *ngIf="cfMonthOptions.endType == 'aftertimes'" [options]="itemRanges" [(ngModel)]="cfMonthOptions.afterTimes" (onChanged)="onEndAfterTimesChanged($event)"></radio-spinner>
                 </ion-label>
               </ion-item>
               <ion-item>
@@ -154,7 +155,7 @@ import { RadioSpinnerComponent } from "../../components/radio-spinner/radio-spin
             <p>重复周期</p>
           </ion-row>
           <ion-row justify-content-start>
-            <radio-spinner label="年" [options]="itemRanges" [(ngModel)]="cfYearOptions.frequency"></radio-spinner>
+            <radio-spinner label="年" [options]="itemRanges" [(ngModel)]="cfYearOptions.frequency" (onChanged)="onFreqChanged($event)"></radio-spinner>
           </ion-row>
         </ion-grid>
       </ion-row>
@@ -173,7 +174,7 @@ import { RadioSpinnerComponent } from "../../components/radio-spinner/radio-spin
                 <ion-radio item-start value="aftertimes"></ion-radio>
                 <ion-label class="inline">
                   <div *ngIf="cfYearOptions.endType != 'aftertimes'" class="inlabel">一定次数后</div>
-                  <radio-spinner label="次后" *ngIf="cfYearOptions.endType == 'aftertimes'" [options]="itemRanges"></radio-spinner>
+                  <radio-spinner label="次后" *ngIf="cfYearOptions.endType == 'aftertimes'" [options]="itemRanges" [(ngModel)]="cfYearOptions.afterTimes" (onChanged)="onEndAfterTimesChanged($event)"></radio-spinner>
                 </ion-label>
               </ion-item>
               <ion-item>
@@ -207,25 +208,33 @@ export class CfPage {
   cfDayOptions: any = {
     frequency: "",
     freqOption: "",
-    endType: "never"
+    endType: "never",
+    afterTimes: 1,
+    toSomeDay: moment().format("YYYY年M月D日")
   };
   //每周选择参数
   cfWeekOptions: any = {
     frequency: "",
     freqOption: "",
-    endType: "never"
+    endType: "never",
+    afterTimes: 1,
+    toSomeDay: moment().format("YYYY年M月D日")
   };
   //每月选择参数
   cfMonthOptions: any = {
     frequency: "",
     freqOption: "",
-    endType: "never"
+    endType: "never",
+    afterTimes: 1,
+    toSomeDay: moment().format("YYYY年M月D日")
   };
   //每年选择参数
   cfYearOptions: any = {
     frequency: "",
     freqOption: "",
-    endType: "never"
+    endType: "never",
+    afterTimes: 1,
+    toSomeDay: moment().format("YYYY年M月D日")
   };
 
   constructor(public navCtrl: NavController,
@@ -314,7 +323,7 @@ export class CfPage {
     this.resetTitle(value);
   }
 
-  onFreqNumberChanged() {
+  onFreqChanged() {
     this.resetTitle(this.cfType);
   }
 
@@ -323,6 +332,10 @@ export class CfPage {
   }
 
   onEndTypeChanged(value) {
+    this.resetTitle(this.cfType);
+  }
+
+  onEndAfterTimesChanged(value) {
     this.resetTitle(this.cfType);
   }
 }
