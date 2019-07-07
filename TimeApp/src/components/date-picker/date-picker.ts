@@ -101,4 +101,34 @@ export class DatePickerComponent implements ViewController, ControlValueAccessor
     // one of the columns has changed its selected index
     this.onChanged.emit(this.getSelected());
   }
+
+  set value(v: any){
+    // if(v) {
+      // this._value = v;
+      // this.onModelChange(this._value);
+    // }
+  }
+
+  get value(){
+      // return this._value;
+      return "";
+  }
+
+  writeValue(val: any): void {
+    // if (val) {
+      // this._value = val;
+    // }
+  }
+
+  public onModelChange: Function = () => {};
+  public onModelTouched: Function = () => {};
+
+  registerOnChange(fn: any): void {
+    this.onModelChange = fn;
+  }
+
+  registerOnTouched(fn: any): void {
+    this.onModelTouched = fn;
+  }
+
 }
