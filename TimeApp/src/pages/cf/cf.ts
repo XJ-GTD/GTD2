@@ -287,7 +287,7 @@ export class CfPage {
         endtitle = "永不";
         break;
       case "aftertimes":
-        endtitle = "3次";
+        endtitle = option.afterTimes + "次";
         break;
       case "tosomeday":
         endtitle = "直到 2020年2月28日";
