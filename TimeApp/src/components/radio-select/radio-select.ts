@@ -13,7 +13,7 @@ import { ControlValueAccessor } from '@angular/forms'
     <div class="row" *ngIf="isFull && isCenter" align-items-center justify-content-between>
       <label *ngIf="label">{{label}}</label>
       <div>
-        <button ion-button *ngFor="let option of options;" [ngClass]="{'checked': option.value == value}" clear (click)="change($event, option.value)" small>
+        <button ion-button *ngFor="let option of options;" [ngClass]="{'checked': option.value == _value}" clear (click)="change($event, option.value)" small>
         <ng-container *ngIf="option.icon">
           <ion-icon [name]="option.icon"></ion-icon>
         </ng-container>
@@ -26,7 +26,7 @@ import { ControlValueAccessor } from '@angular/forms'
     <div class="row" *ngIf="!isFull && isCenter" align-items-center justify-content-center>
       <label *ngIf="label">{{label}}</label>
       <div>
-        <button ion-button *ngFor="let option of options;" [ngClass]="{'checked': option.value == value}" clear (click)="change($event, option.value)" small>
+        <button ion-button *ngFor="let option of options;" [ngClass]="{'checked': option.value == _value}" clear (click)="change($event, option.value)" small>
         <ng-container *ngIf="option.icon">
           <ion-icon [name]="option.icon"></ion-icon>
         </ng-container>
@@ -39,7 +39,7 @@ import { ControlValueAccessor } from '@angular/forms'
     <div class="row" *ngIf="!isFull && !isCenter" align-items-center justify-content-start>
       <label *ngIf="label">{{label}}</label>
       <div>
-        <button ion-button *ngFor="let option of options;" [ngClass]="{'checked': option.value == value}" clear (click)="change($event, option.value)" small>
+        <button ion-button *ngFor="let option of options;" [ngClass]="{'checked': option.value == _value}" clear (click)="change($event, option.value)" small>
         <ng-container *ngIf="option.icon">
           <ion-icon [name]="option.icon"></ion-icon>
         </ng-container>
@@ -61,8 +61,8 @@ export class RadioSelectComponent implements ControlValueAccessor {
   isCenter: boolean = false;
   @Input()
   options: any = [];
-  @Input()
-  value: any = "";
+  @Input("value")
+  _value: any = "";
   @Output("onChanged")
   changedPropEvent = new EventEmitter();
 
@@ -72,18 +72,18 @@ export class RadioSelectComponent implements ControlValueAccessor {
 
   set value(v: any){
     if(v) {
-      this.value = v;
-      this.propagateChange(this.value);
+      this._value = v;
+      this.propagateChange(this._value);
     }
   }
 
   get value(){
-      return this.value;
+      return this._value;
   }
 
   writeValue(val: any): void {
     if (val) {
-      this.value = val;
+      this._value = val;
     }
   }
 
@@ -100,8 +100,8 @@ export class RadioSelectComponent implements ControlValueAccessor {
   }
 
   change(e, val) {
-    this.value = val;
-    this.changedPropEvent.emit(this.value);
+    this._value = val;
+    this.changedPropEvent.emit(this._value);
     this.propagateChange(val);
   }
 }
