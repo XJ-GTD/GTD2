@@ -46,7 +46,7 @@ export class MyApp {
       if (event && event.instance && event.instance.statusBarColor) {
         this.statusBar.backgroundColorByHexString(event.instance.statusBarColor);
       } else {
-        this.statusBar.backgroundColorByHexString(#000);
+        this.statusBar.backgroundColorByHexString("#000");
       }
     });
 
