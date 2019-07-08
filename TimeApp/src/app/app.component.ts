@@ -57,10 +57,11 @@ export class MyApp {
           let result: number = e1 / 16;
 
           let first: string = this.getHexStr((result | 0));
-          let second: string = ((result): string => {
-            let index = result.indexOf('.')
-            return index == -1? this.getHexStr(0) : this.getHexStr((16 * parseFloat(result.slice(index))))
-          }(result.toString()));
+          let fn = (result): string => {
+            let index = result.indexOf('.');
+            return index == -1? this.getHexStr(0) : this.getHexStr((16 * parseFloat(result.slice(index))));
+          };
+          let second: string = fn(result.toString());
 
           return first+second;
         });
@@ -121,7 +122,7 @@ export class MyApp {
     }, 1);
   }
 
-  getHexStr(n: number): string {
-    return this.hex[n]
+  getHexStr(n: number) {
+    return this.hex[n];
   }
 }
