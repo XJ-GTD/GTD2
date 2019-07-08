@@ -41,34 +41,36 @@ export class MyApp {
 
 // set status bar to white
 //     statusBar.backgroundColorByHexString('#000000');
-    this.statusBar.overlaysWebView(true);
+    this.statusBar.overlaysWebView(false);
     this.app.viewDidEnter.subscribe((event) => {
       if (event && event.instance && event.instance.contentRef) {
         let el = event.instance.contentRef._elementRef.nativeElement;
         let bgcolor = el.style.backgroundColor;
 
-        let arrcolor: string[] = bgcolor.slice(
-            bgcolor.indexOf('(') + 1,
-            bgcolor.indexOf(')')
-        ).split(',');
+        if (bgcolor) {
+          let arrcolor: string[] = bgcolor.slice(
+              bgcolor.indexOf('(') + 1,
+              bgcolor.indexOf(')')
+          ).split(',');
 
-        arrcolor = arrcolor.map((e): string => {
-          let e1: number = Number(e);
-          let result: number = e1 / 16;
+          arrcolor = arrcolor.map((e): string => {
+            let e1: number = Number(e);
+            let result: number = e1 / 16;
 
-          let first: string = this.getHexStr((result | 0));
-          let fn = (result): string => {
-            let index = result.indexOf('.');
-            return index == -1? this.getHexStr(0) : this.getHexStr((16 * parseFloat(result.slice(index))));
-          };
-          let second: string = fn(result.toString());
+            let first: string = this.getHexStr((result | 0));
+            let fn = (result): string => {
+              let index = result.indexOf('.');
+              return index == -1? this.getHexStr(0) : this.getHexStr((16 * parseFloat(result.slice(index))));
+            };
+            let second: string = fn(result.toString());
 
-          return first+second;
-        });
+            return first+second;
+          });
 
-        let hexColor = "#" + arrcolor.join("");
+          let hexColor = "#" + arrcolor.join("");
 
-        this.statusBar.backgroundColorByHexString(hexColor);
+          this.statusBar.backgroundColorByHexString(hexColor);
+        }
       }
     });
 
