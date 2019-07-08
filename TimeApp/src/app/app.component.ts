@@ -45,19 +45,29 @@ export class MyApp {
     this.statusBar.overlaysWebView(false);
     //模态框进入时改变状态栏颜色
     this.app.viewDidEnter.subscribe((event) => {
-      if (event && event.instance && event.instance.statusBarColor) {
-        this.statusBar.backgroundColorByHexString(event.instance.statusBarColor);
-        this.statusbarcolors.push(event.instance.statusBarColor);
-      } else {
-        this.statusBar.backgroundColorByHexString("#000");
-        this.statusbarcolors.push("#000");
+      if (event && event.instance) {
+        let objectType = typeof event.instance;
+        console.log("********DidEnter********" + objectType + "********DidEnter********");
+
+        if (event.instance.statusBarColor) {
+          this.statusBar.backgroundColorByHexString(event.instance.statusBarColor);
+          this.statusbarcolors.push(event.instance.statusBarColor);
+        } else {
+          this.statusBar.backgroundColorByHexString("#000");
+          this.statusbarcolors.push("#000");
+        }
       }
     });
     //模态框退出时还原状态栏颜色
     this.app.viewWillLeave.subscribe((event) => {
-      if (this.statusbarcolors.length > 0) {
-        let bgcolor = this.statusbarcolors.pop();
-        this.statusBar.backgroundColorByHexString(bgcolor);
+      if (event && event.instance) {
+        let objectType = typeof event.instance;
+        console.log("********WillLeave********" + objectType + "********WillLeave********");
+
+        if (this.statusbarcolors.length > 0) {
+          let bgcolor = this.statusbarcolors.pop();
+          this.statusBar.backgroundColorByHexString(bgcolor);
+        }
       }
     });
 
