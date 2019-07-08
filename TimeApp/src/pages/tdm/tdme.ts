@@ -98,6 +98,8 @@ import { MapOptions } from 'angular2-baidu-map';
   `
 })
 export class TdmePage {
+  statusBarColor: string = "#3c4d55";
+
   agenda: ScdData = new ScdData();
   defaultplan: any = {
     jn: "家庭",

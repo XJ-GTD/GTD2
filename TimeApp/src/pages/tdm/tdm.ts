@@ -63,6 +63,7 @@ import {SsService} from "../ss/ss.service";
   `
 })
 export class TdmPage {
+  statusBarColor: string = "#3c4d55";
 
   @ViewChild("titleRef", {read: ElementRef})
   _titleRef: ElementRef;
