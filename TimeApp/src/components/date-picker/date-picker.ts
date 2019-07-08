@@ -214,6 +214,115 @@ export class DatePickerComponent implements ControlValueAccessor {
     });
   }
 
+  /**
+   * @hidden
+   */
+  getValueOrDefault(): DateTimeData {
+    if (this.hasValue()) {
+      return this._value;
+    }
+
+    const initialDateString = this.getDefaultValueDateString();
+    const _default = {};
+    updateDate(_default, initialDateString);
+    return _default;
+  }
+
+  /**
+   * Get the default value as a date string
+   * @hidden
+   */
+  getDefaultValueDateString() {
+    if (this.initialValue) {
+      return this.initialValue;
+    }
+
+    const nowString = (new Date).toISOString();
+    if (this.max) {
+      const now = parseDate(nowString);
+      const max = parseDate(this.max);
+
+      let v;
+      for (let i in max) {
+        v = (<any>max)[i];
+        if (v === null) {
+          (<any>max)[i] = (<any>now)[i];
+        }
+      }
+
+      const diff = compareDates(now, max);
+      // If max is before current time, return max
+      if (diff > 0) {
+        return this.max;
+      }
+    }
+    return nowString;
+  }
+
+  /**
+   * @hidden
+   */
+  hasValue(): boolean {
+    const val = this._value;
+    return isPresent(val)
+      && isObject(val)
+      && Object.keys(val).length > 0;
+  }
+
+  /**
+   * @hidden
+   */
+  calcMinMax(now?: Date) {
+    const todaysYear = (now || new Date()).getFullYear();
+    if (isPresent(this.yearValues)) {
+      var years = convertToArrayOfNumbers(this.yearValues, 'year');
+      if (isBlank(this.min)) {
+        this.min = Math.min.apply(Math, years);
+      }
+      if (isBlank(this.max)) {
+        this.max = Math.max.apply(Math, years);
+      }
+    } else {
+      if (isBlank(this.min)) {
+        this.min = (todaysYear - 100).toString();
+      }
+      if (isBlank(this.max)) {
+        this.max = todaysYear.toString();
+      }
+    }
+    const min = this._min = parseDate(this.min);
+    const max = this._max = parseDate(this.max);
+
+    min.year = min.year || todaysYear;
+    max.year = max.year || todaysYear;
+
+    min.month = min.month || 1;
+    max.month = max.month || 12;
+    min.day = min.day || 1;
+    max.day = max.day || 31;
+    min.hour = min.hour || 0;
+    max.hour = max.hour || 23;
+    min.minute = min.minute || 0;
+    max.minute = max.minute || 59;
+    min.second = min.second || 0;
+    max.second = max.second || 59;
+
+    // Ensure min/max constraits
+    if (min.year > max.year) {
+      console.error('min.year > max.year');
+      min.year = max.year - 100;
+    }
+    if (min.year === max.year) {
+      if (min.month > max.month) {
+        console.error('min.month > max.month');
+        min.month = 1;
+      } else if (min.month === max.month && min.day > max.day) {
+        console.error('min.day > max.day');
+        min.day = 1;
+      }
+    }
+  }
+
   ionViewDidLoad() {
     this.refresh();
   }
