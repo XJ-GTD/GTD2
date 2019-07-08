@@ -188,6 +188,10 @@ export class DatePickerComponent implements ControlValueAccessor {
     }
   }
 
+  ionViewWillEnter() {
+    this.generate();
+  }
+
   ionViewWillLoad() {
     // normalize the data
     let data = this.d;
