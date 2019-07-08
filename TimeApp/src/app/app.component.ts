@@ -41,8 +41,13 @@ export class MyApp {
 // set status bar to white
 //     statusBar.backgroundColorByHexString('#000000');
     this.statusBar.overlaysWebView(true);
-    this.app.viewDidEnter.subscribe((instance) => {
-      this.statusBar.backgroundColorByHexString('#488aff');
+    this.app.viewDidEnter.subscribe((event) => {
+      if (event && event.instance && event.instance.contentRef) {
+        let el = event.instance.contentRef.nativeElement;
+        let bgcolor = el.style.backgroundColor;
+
+        this.statusBar.backgroundColorByHexString(bgcolor);
+      }
     });
 
     this.platform.ready().then(() => {
