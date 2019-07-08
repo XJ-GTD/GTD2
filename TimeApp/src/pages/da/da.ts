@@ -19,7 +19,6 @@ import {CardListComponent} from "../../components/card-list/card-list";
  * See https://ionicframework.com/docs/components/#navigation for more info on
  * Ionic pages and navigation.
  */
-
 @IonicPage()
 @Component({
   selector: 'page-da',
@@ -41,7 +40,7 @@ import {CardListComponent} from "../../components/card-list/card-list";
     </ion-header>
 
     <ion-content padding>
-      <ion-refresher pullMin="120" pullMax="240" (ionRefresh)='doRefresh($event)'>
+      <ion-refresher pullMin="120" pullMax="360" (ionRefresh)='doRefresh($event)'>
         <ion-refresher-content pullingIcon="arrow-round-down" pullingText="添加" refreshingSpinner="arrow-round-up" refreshingText=""></ion-refresher-content>
       </ion-refresher>
       <ion-slides [initialSlide]="INIT_SLIDE_DAY" (ionSlideDidChange)="slideChanged()" (ionSlideNextEnd)="slideNextEnd()" (ionSlidePrevEnd)="slidePrevEnd()">
