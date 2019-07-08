@@ -252,6 +252,10 @@ export class DataConfig {
     _CF_PAGE: CfPage,       // 设置重复
   }
   /* ============ 页面名字配置 ===============*/
+  public static isPage(object: any) {
+    return object instanceof PAGE._H_PAGE
+    || object instanceof PAGE._TDM_PAGE;
+  }
 
   /*----===== 语音区分 =====----- */
   public static SPEECH: string = "SPEECH";    //系统表语音key
