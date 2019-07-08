@@ -44,8 +44,9 @@ export class MyApp {
 
       //允许进入后台模式
       if (this.util.hasCordova()) {
+        this.statusBar.overlaysWebView(true);
         this.statusBar.backgroundColorByHexString('#488aff');
-        
+
         //全局网络监控
         this.networkService.monitorNetwork();
 
