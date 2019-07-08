@@ -68,6 +68,7 @@ body {
 
   .content-ios {
     background-color: transparent;
+    margin-top: 23px;
   }
   .ios .menu-inner{
     background-color: transparent;
@@ -76,6 +77,7 @@ body {
 
   .ios .ion-page.show-page ~ .nav-decor {
     background: transparent;
+    margin-top: 23px;
   }
 
   //防止input框获取焦点抖动
