@@ -1,5 +1,5 @@
 import {Component, ViewChild} from '@angular/core';
-import {Platform, Nav, MenuController, IonicApp} from 'ionic-angular';
+import {Platform, Nav, MenuController, IonicApp, App} from 'ionic-angular';
 import {MenuScalePushType} from "../components/menuType/customType";
 import {BackgroundMode} from '@ionic-native/background-mode';
 import {DataConfig} from "../service/config/data.config";
@@ -20,7 +20,8 @@ import {JPushService} from "../service/cordova/jpush.service";
 export class MyApp {
   @ViewChild(Nav) nav: Nav;
 
-  constructor(private platform: Platform,
+  constructor(public app: App,
+              private platform: Platform,
               private appCtrl: IonicApp,
               private backgroundMode: BackgroundMode,
               private networkService: NetworkService,
@@ -39,14 +40,16 @@ export class MyApp {
 
 // set status bar to white
 //     statusBar.backgroundColorByHexString('#000000');
+    this.app.viewWillEnter.subscribe((instance) => {
+      this.statusBar.overlaysWebView(true);
+      this.statusBar.backgroundColorByHexString('#488aff');
+    });
+
     this.platform.ready().then(() => {
       //this.util.loadingEnd();
 
       //允许进入后台模式
       if (this.util.hasCordova()) {
-        this.statusBar.overlaysWebView(true);
-        this.statusBar.backgroundColorByHexString('#488aff');
-
         //全局网络监控
         this.networkService.monitorNetwork();
 
