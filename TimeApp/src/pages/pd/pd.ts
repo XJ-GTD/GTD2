@@ -164,7 +164,7 @@ export class PdPage {
     this.pdService.delete(jh).then(data=>{
       this.navCtrl.pop();
     }).catch(res=>{
-      this.util.popoverStart('删除计划失败');
+      this.util.popoverStart('删除日历失败');
     })
   }
 }
