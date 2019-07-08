@@ -140,7 +140,9 @@ export class PdPage {
           text: '删除',
           handler: () => {
             if(jh.jt == "1"){
-              this.util.popoverStart('系统计划请在计划一栏页面长按删除');
+              this.util.popoverStart('系统计划请在日历一栏页面长按删除');
+            } else if (jh.ji == "personalcalendar" || jh.ji == "workcalendar") {
+              this.util.popoverStart('默认日历不能删除');
             }else{
               this.util.alterStart("2",()=>{this.delete(jh)});
             }
