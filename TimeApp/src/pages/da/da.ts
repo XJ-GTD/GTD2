@@ -121,7 +121,8 @@ export class DaPage {
   doRefresh(refresher){
     setTimeout(()=>{
       refresher.complete(); //停止下拉刷新
-    },2000);
+      this.goNew();
+    },150);
   }
 
   getData(target: any, day: number) {
