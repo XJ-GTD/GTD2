@@ -31,7 +31,7 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms'
   template: `<div class="picker-wrapper">
     <div class="picker-columns">
       <div class="picker-above-highlight"></div>
-      <div *ngFor="let c of d.columns" [col]="c" class="picker-col" (ionChange)="_colChange($event)"></div>
+      <div *ngFor="let c of columns" [col]="c" class="picker-col" (ionChange)="_colChange($event)"></div>
       <div class="picker-below-highlight"></div>
     </div>
   </div>`,
@@ -73,6 +73,7 @@ export class DatePickerComponent implements ControlValueAccessor {
     }
 
     this.generate();
+    this.refresh();
   }
 
   /**
