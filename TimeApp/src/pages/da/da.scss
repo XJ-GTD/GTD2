@@ -197,4 +197,8 @@ page-da {
     overflow-x: auto;
     overflow-y: auto;
   }
+
+  .has-refresher > .scroll-content {
+    border-top: 1px solid $lsback1;
+  }
 }
