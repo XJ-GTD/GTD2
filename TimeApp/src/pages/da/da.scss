@@ -201,4 +201,9 @@ page-da {
   .has-refresher > .scroll-content {
     border-top: 1px solid $lsback1;
   }
+
+  .refresher-pulling-icon, .refresher-refreshing-icon,
+  .refresher-pulling-text, .refresher-refreshing-text {
+    color: #fff;
+  }
 }
