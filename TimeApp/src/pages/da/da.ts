@@ -41,7 +41,7 @@ import {CardListComponent} from "../../components/card-list/card-list";
     </ion-header>
 
     <ion-content padding>
-      <ion-refresher (ionRefresh)='doRefresh($event)'>
+      <ion-refresher pullMin="120" pullMax="240" (ionRefresh)='doRefresh($event)'>
         <ion-refresher-content pullingIcon="arrow-round-down" pullingText="添加" refreshingSpinner="arrow-round-up" refreshingText=""></ion-refresher-content>
       </ion-refresher>
       <ion-slides [initialSlide]="INIT_SLIDE_DAY" (ionSlideDidChange)="slideChanged()" (ionSlideNextEnd)="slideNextEnd()" (ionSlidePrevEnd)="slidePrevEnd()">
