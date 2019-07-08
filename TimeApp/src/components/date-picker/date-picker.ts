@@ -50,6 +50,7 @@ export class DatePickerComponent implements ControlValueAccessor {
   mode: string;
   @Output("onChanged")
   onChanged = new EventEmitter();
+  columns: Array<PickerColumn> = new Array<PickerColumn>();
 
   constructor(private _elementRef: ElementRef,
               params: NavParams,
@@ -68,7 +69,6 @@ export class DatePickerComponent implements ControlValueAccessor {
    * @hidden
    */
   generate() {
-    const picker = this._picker;
     // if a picker format wasn't provided, then fallback
     // to use the display format
     let template = this.pickerFormat || DEFAULT_FORMAT;
@@ -126,16 +126,15 @@ export class DatePickerComponent implements ControlValueAccessor {
         }
 
         // add our newly created column to the picker
-        picker.addColumn(column);
+        this.columns.add(column);
       });
 
 
       // Normalize min/max
       const min = <any>this._min;
       const max = <any>this._max;
-      const columns = this._picker.getColumns();
       ['month', 'day', 'hour', 'minute']
-        .filter(name => !columns.find(column => column.name === name))
+        .filter(name => !this.columns.find(column => column.name === name))
         .forEach(name => {
           min[name] = 0;
           max[name] = 0;
