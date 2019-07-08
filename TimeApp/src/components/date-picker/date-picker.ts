@@ -73,7 +73,6 @@ export class DatePickerComponent implements ControlValueAccessor {
     }
 
     this.generate();
-    this.refresh();
   }
 
   /**
