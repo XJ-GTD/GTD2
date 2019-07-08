@@ -251,10 +251,52 @@ export class DataConfig {
     _DZ_PAGE: DzPage,       // 设置地址
     _CF_PAGE: CfPage,       // 设置重复
   }
+  static PAGES = [
+    HPage,        // 首页 - 首页
+    TdlPage,        // 日程 - 日程列表
+    TdmPage,        // 日程 - TimePage风格日程详情新建
+    TdmePage,      // 日程 - TimePage风格日程详情修改
+    TdcPage,        // 日程 - 日程详情新建
+    TddiPage,      // 日程 - 日程详情（受邀）
+    TddjPage,      // 日程 - 日程详情(发布人)
+    TddsPage,      // 日程 - 日程详情（系统）
+    LpPage,       // 登陆注册 - 登陆（密码）
+    LsPage,       // 登陆注册 - 登录（验证码）
+    PfPage,       // 登陆注册 - 忘记密码
+    RPage,         // 登陆注册 - 注册
+    PPage,        // 登陆注册 - 条款
+    MPage,         // 辅助功能 - 菜单
+    PlPage,       // 辅助功能 - 计划
+    PcPage,       // 辅助功能 - 计划新建
+    PdPage,       // 辅助功能 - 计划展
+    SsPage,       // 辅助功能 - 系统设置
+    HlPage,       // 辅助功能 - 帮助及反馈
+    GlPage,       // 辅助功能 - 群组列表
+    GcPage,       // 辅助功能 - 群组编辑
+    GaPage,       // 辅助功能 - 群组添加
+    Fs4cPage,       // 辅助功能 - 选择参与人日程
+    Fs4gPage,       // 辅助功能 - 选择参与人群组
+    FdPage,       // 辅助功能 - 参与人详情
+    PsPage,       // 辅助功能 - 个人设置
+    BlPage,       // 辅助功能 - 黑名单
+    BrPage,       // 辅助功能 - 备份
+    AlPage,       //启动页
+    LogPage,       // 辅助功能 - 备份
+    AtPage,       // 关于
+    DaPage,       // 日程 - 每日日程
+    DoPage,       // 任务 - 待处理/已处理任务一览
+    DrPage,       // 每日简报设置 - 智能提醒
+    TxPage,       // 设置提醒
+    BzPage,       // 设置备注
+    JhPage,       // 设置计划/日历
+    DzPage,       // 设置地址
+    CfPage,       // 设置重复
+  ];
   /* ============ 页面名字配置 ===============*/
   public static isPage(object: any) {
-    return object instanceof DataConfig.PAGE._H_PAGE
-    || object instanceof DataConfig.PAGE._TDM_PAGE;
+    return DataConfig.PAGES.reduce((init, val) => {
+      return init || object instanceof val;
+    }, false);
   }
 
   /*----===== 语音区分 =====----- */
