@@ -1,4 +1,4 @@
-import { Component, Input, Output, QueryList, forwardRef, ElementRef, ViewChildren, EventEmitter } from '@angular/core';
+import { Component, Input, Output, Renderer, QueryList, forwardRef, ElementRef, ViewChildren, EventEmitter } from '@angular/core';
 import { assert, isNumber, isPresent, isString } from '../../util/util';
 import { NavParams, PickerColumnCmp, PickerColumnOption, PickerOptions } from 'ionic-angular';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms'
