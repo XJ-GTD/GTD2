@@ -44,11 +44,11 @@ export class MyApp {
     this.statusBar.overlaysWebView(true);
     this.app.viewDidEnter.subscribe((event) => {
       if (event && event.instance && event.instance.contentRef) {
-        let el = event.instance.contentRef.nativeElement;
+        let el = event.instance.contentRef._elementRef.nativeElement;
         let bgcolor = el.style.backgroundColor;
 
         let arrcolor: string[] = bgcolor.slice(
-            bgcolor.indexOf('(')+1,
+            bgcolor.indexOf('(') + 1,
             bgcolor.indexOf(')')
         ).split(',');
 
