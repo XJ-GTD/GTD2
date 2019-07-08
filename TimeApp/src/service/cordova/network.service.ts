@@ -60,6 +60,7 @@ export class NetworkService {
       console.log('没有连接网络');
 
       this.emitService.emit("on.network.disconnected");
+      this.util.toastEnd(); //后台期间重复提示去除
       this.util.toastStart("当前无网络，请检查网络连接",1500);
 
     });
