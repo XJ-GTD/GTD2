@@ -31,7 +31,7 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms'
   template: `<div class="picker-wrapper">
     <div class="picker-columns">
       <div class="picker-above-highlight"></div>
-      <div *ngFor="let c of columns" [col]="c" class="picker-col" (ionChange)="_colChange($event)"></div>
+      <div *ngFor="let c of option.columns" [col]="c" class="picker-col" (ionChange)="_colChange($event)"></div>
       <div class="picker-below-highlight"></div>
     </div>
   </div>`,
@@ -54,20 +54,16 @@ export class DatePickerComponent implements ControlValueAccessor {
   @Input() initialValue: string;
   @Input() yearValues: any;
   @ViewChildren(PickerColumnCmp) _cols: QueryList<PickerColumnCmp>;
-  d: PickerOptions;
   mode: string;
   @Output("onChanged")
   onChanged = new EventEmitter();
-  columns: Array<PickerColumn> = new Array<PickerColumn>();
+  option: PickerOptions;
 
   constructor(private _elementRef: ElementRef,
               params: NavParams,
               renderer: Renderer) {
-    this.d = params.data;
-    //this.mode = this.d.mode;
-
-    if (this.d.cssClass) {
-      this.d.cssClass.split(' ').forEach(cssClass => {
+    if (this.option.cssClass) {
+      this.option.cssClass.split(' ').forEach(cssClass => {
         renderer.setElementClass(_elementRef.nativeElement, cssClass, true);
       });
     }
@@ -136,7 +132,7 @@ export class DatePickerComponent implements ControlValueAccessor {
         }
 
         // add our newly created column to the picker
-        this.columns.push(column);
+        this.option.columns.push(column);
       });
 
 
@@ -144,7 +140,7 @@ export class DatePickerComponent implements ControlValueAccessor {
       const min = <any>this._min;
       const max = <any>this._max;
       ['month', 'day', 'hour', 'minute']
-        .filter(name => !this.columns.find(column => column.name === name))
+        .filter(name => !this.option.columns.find(column => column.name === name))
         .forEach(name => {
           min[name] = 0;
           max[name] = 0;
@@ -159,7 +155,7 @@ export class DatePickerComponent implements ControlValueAccessor {
    * @hidden
    */
   divyColumns() {
-    const pickerColumns = this.columns;
+    const pickerColumns = this.option.columns;
     let columnsWidth: number[] = [];
     let col: PickerColumn;
     let width: number;
@@ -196,7 +192,7 @@ export class DatePickerComponent implements ControlValueAccessor {
 
   ionViewWillLoad() {
     // normalize the data
-    let data = this.d;
+    let data = this.option;
 
     // clean up dat data
     data.columns = data.columns.map(column => {
@@ -347,7 +343,7 @@ export class DatePickerComponent implements ControlValueAccessor {
 
   getSelected(): any {
     let selected: {[k: string]: any} = {};
-    this.d.columns.forEach((col, index) => {
+    this.option.columns.forEach((col, index) => {
       let selectedColumn = col.options[col.selectedIndex];
       selected[col.name] = {
         text: selectedColumn ? selectedColumn.text : null,
