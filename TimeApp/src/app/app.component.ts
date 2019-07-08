@@ -27,6 +27,7 @@ export class MyApp {
               private restfulClient: RestfulClient,
               private util: UtilService,
               private screenOrientation: ScreenOrientation,
+              private statusBar: StatusBar,
               private feekback: FeedbackService,
               private jpush: JPushService) {
     //特殊菜单设置
@@ -43,7 +44,8 @@ export class MyApp {
 
       //允许进入后台模式
       if (this.util.hasCordova()) {
-
+        this.statusBar.backgroundColorByHexString('#488aff');
+        
         //全局网络监控
         this.networkService.monitorNetwork();
 
