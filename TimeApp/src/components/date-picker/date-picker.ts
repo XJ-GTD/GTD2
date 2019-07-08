@@ -1,5 +1,6 @@
 import { Component, Input, Output, QueryList, forwardRef, ElementRef, ViewChildren, EventEmitter } from '@angular/core';
-import { NavParams, PickerColumnCmp, PickerColumnOption, PickerOptions, assert, isNumber, isPresent, isString } from 'ionic-angular';
+import { assert, isNumber, isPresent, isString } from '@angular/common';
+import { NavParams, PickerColumnCmp, PickerColumnOption, PickerOptions } from 'ionic-angular';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms'
 
 /**
@@ -26,6 +27,7 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms'
 export class DatePickerComponent implements ControlValueAccessor {
   @ViewChildren(PickerColumnCmp) _cols: QueryList<PickerColumnCmp>;
   d: PickerOptions;
+  mode: string;
   @Output("onChanged")
   onChanged = new EventEmitter();
 
@@ -33,6 +35,7 @@ export class DatePickerComponent implements ControlValueAccessor {
               params: NavParams,
               renderer: Renderer) {
     this.d = params.data;
+    this.mode = this.d.mode;
 
     if (this.d.cssClass) {
       this.d.cssClass.split(' ').forEach(cssClass => {
