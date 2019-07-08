@@ -25,7 +25,7 @@ import {FeedbackService} from "../../service/cordova/feedback.service";
 @Component({
   selector: 'page-tdc',
   template: `
-    <ion-content class="content-set" #content>
+    <ion-content class="content-set">
       <ion-grid #grid>
         <ion-row class="header-set"></ion-row>
         <ion-row>
@@ -163,9 +163,6 @@ import {FeedbackService} from "../../service/cordova/feedback.service";
 
 })
 export class TdcPage {
-  @ViewChild("content")
-  contentRef: ElementRef;
-
   focuscomm:boolean = false;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private util: UtilService,
