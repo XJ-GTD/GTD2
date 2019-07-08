@@ -35,7 +35,7 @@ export class DatePickerComponent implements ControlValueAccessor {
               params: NavParams,
               renderer: Renderer) {
     this.d = params.data;
-    this.mode = this.d.mode;
+    //this.mode = this.d.mode;
 
     if (this.d.cssClass) {
       this.d.cssClass.split(' ').forEach(cssClass => {
@@ -53,7 +53,6 @@ export class DatePickerComponent implements ControlValueAccessor {
       if (!isPresent(column.options)) {
         column.options = [];
       }
-      column.mode = this.mode;
       column.selectedIndex = column.selectedIndex || 0;
       column.options = column.options.map(inputOpt => {
         let opt: PickerColumnOption = {
