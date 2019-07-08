@@ -30,7 +30,7 @@ import * as moment from "moment";
       </ion-toolbar>
     </ion-header>
 
-    <ion-content padding>
+    <ion-content padding #content>
           <ion-list no-lines>
             <ion-list-header>
               <ion-label>新消息</ion-label>
@@ -92,6 +92,8 @@ import * as moment from "moment";
   `,
 })
 export class SsPage {
+  @ViewChild("content")
+  contentRef: ElementRef;
 
   h:Setting;        //唤醒
   t:Setting;        //新消息提醒
