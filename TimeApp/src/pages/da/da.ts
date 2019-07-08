@@ -41,12 +41,19 @@ import {CardListComponent} from "../../components/card-list/card-list";
     </ion-header>
 
     <ion-content padding>
-    <ion-slides [initialSlide]="INIT_SLIDE_DAY" (ionSlideDidChange)="slideChanged()" (ionSlideNextEnd)="slideNextEnd()" (ionSlidePrevEnd)="slidePrevEnd()">
-      <ion-slide *ngFor="let day of days" class="scroll-y">
-        <card-list #cardlist (onStartLoad)="getData($event, day)" (onCardClick)="gotoDetail($event)" (onCreateNew)="goNew()" #cardlist></card-list>
-      </ion-slide>
-    </ion-slides>
+      <ion-scroll>
+        <ion-refresher (ionRefresh)='doRefresh($event)'>
+          <ion-refresher-content pullingIcon="arrow-dropdown" pullingText="下拉添加" refreshingSpinner="circles" refreshingText="添加">   
+          </ion-refresher-content>
+        </ion-refresher>
+        <ion-slides [initialSlide]="INIT_SLIDE_DAY" (ionSlideDidChange)="slideChanged()" (ionSlideNextEnd)="slideNextEnd()" (ionSlidePrevEnd)="slidePrevEnd()">
+          <ion-slide *ngFor="let day of days" class="scroll-y">
+            <card-list #cardlist (onStartLoad)="getData($event, day)" (onCardClick)="gotoDetail($event)" (onCreateNew)="goNew()" #cardlist></card-list>
+          </ion-slide>
+        </ion-slides>
+      </ion-scroll>
     </ion-content>
+
     <ion-footer class="foot-set" *ngIf="isMobile && hasContents">
       <ion-toolbar>
       <button ion-button *ngIf="isMobile && !speaking" icon-only full (click)="play()">
@@ -112,6 +119,12 @@ export class DaPage {
   }
 
   ionViewDidLoad() {
+  }
+
+  doRefresh(refresher){
+    setTimeout(()=>{
+      refresher.complete(); //停止下拉刷新
+    },2000);
   }
 
   getData(target: any, day: number) {
