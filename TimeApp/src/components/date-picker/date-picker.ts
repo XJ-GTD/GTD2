@@ -1,5 +1,5 @@
 import { Component, Input, Output, Renderer, QueryList, forwardRef, ElementRef, ViewChildren, EventEmitter } from '@angular/core';
-import { assert, clamp, isArray, isBlank, isObject, isPresent, isString } from '../../util/util';
+import { assert, clamp, isArray, isNumber, isBlank, isObject, isPresent, isString } from '../../util/util';
 import {
   DateTimeData,
   LocaleData,
@@ -45,8 +45,9 @@ export class DatePickerComponent implements ControlValueAccessor {
 
   _min: DateTimeData;
   _max: DateTimeData;
+  _value: DateTimeData;
   _locale: LocaleData = {};
-  
+
   @Input() min: string;
   @Input() max: string;
   @Input() pickerFormat: string;
