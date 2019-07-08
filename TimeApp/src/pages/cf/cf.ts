@@ -185,7 +185,7 @@ import * as moment from "moment";
             </ion-list>
           </ion-row>
           <ion-row justify-content-start *ngIf="cfYearOptions.endType == 'tosomeday'">
-            <date-picker></date-picker>
+            <date-picker min="2019/7/9" max="2020/12/31"></date-picker>
           </ion-row>
         </ion-grid>
       </ion-row>
