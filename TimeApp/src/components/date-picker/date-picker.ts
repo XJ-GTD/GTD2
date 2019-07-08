@@ -57,7 +57,7 @@ export class DatePickerComponent implements ControlValueAccessor {
   mode: string;
   @Output("onChanged")
   onChanged = new EventEmitter();
-  option: PickerOptions = new PickerOptions();
+  option: PickerOptions = {};
 
   constructor(private _elementRef: ElementRef,
               params: NavParams,
