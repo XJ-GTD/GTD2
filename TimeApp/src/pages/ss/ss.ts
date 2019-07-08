@@ -84,7 +84,7 @@ import * as moment from "moment";
             </ion-list-header>
 
             <button ion-item class="plan-list-item" detail-push (click)="gotodjhsetting()">
-              <ion-label>缺省日历</ion-label>
+              <ion-label>默认日历</ion-label>
               <ion-note item-end>{{sdjhn}}</ion-note>
             </button>
           </ion-list>
