@@ -20,6 +20,7 @@ import {JPushService} from "../service/cordova/jpush.service";
 export class MyApp {
   @ViewChild(Nav) nav: Nav;
   hex: string[] = ['0','1','2','3','4','5','6','7','8','9','A','B','C','D','E','F'];
+  statusbarcolors: Array<string> = new Array<string>();
 
   constructor(public app: App,
               private platform: Platform,
@@ -42,11 +43,21 @@ export class MyApp {
 // set status bar to white
 //     statusBar.backgroundColorByHexString('#000000');
     this.statusBar.overlaysWebView(false);
+    //模态框进入时改变状态栏颜色
     this.app.viewDidEnter.subscribe((event) => {
       if (event && event.instance && event.instance.statusBarColor) {
         this.statusBar.backgroundColorByHexString(event.instance.statusBarColor);
+        this.statusbarcolors.push(event.instance.statusBarColor);
       } else {
         this.statusBar.backgroundColorByHexString("#000");
+        this.statusbarcolors.push("#000");
+      }
+    });
+    //模态框退出时还原状态栏颜色
+    this.app.viewWillLeave.subscribe((event) => {
+      if (this.statusbarcolors.length > 0) {
+        let bgcolor = this.statusbarcolors.pop();
+        this.statusBar.backgroundColorByHexString(bgcolor);
       }
     });
 
