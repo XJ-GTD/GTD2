@@ -1,5 +1,5 @@
 import { Component, Input, Output, Renderer, QueryList, forwardRef, ElementRef, ViewChildren, EventEmitter } from '@angular/core';
-import { assert, isNumber, isPresent, isArray, isString } from '../../util/util';
+import { assert, clamp, isArray, isBlank, isObject, isPresent, isString } from '../../util/util';
 import {
   DateTimeData,
   LocaleData,

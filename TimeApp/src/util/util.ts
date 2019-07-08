@@ -1,3 +1,15 @@
+/**
+ * @hidden
+ * Given a min and max, restrict the given number
+ * to the range.
+ * @param min the minimum
+ * @param n the value
+ * @param max the maximum
+ */
+export function clamp(min: number, n: number, max: number) {
+  return Math.max(min, Math.min(n, max));
+}
+
 /** @hidden */
 export function isBoolean(val: any): val is boolean { return typeof val === 'boolean'; }
 /** @hidden */
