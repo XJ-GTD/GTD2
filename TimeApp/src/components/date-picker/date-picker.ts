@@ -62,6 +62,7 @@ export class DatePickerComponent implements ControlValueAccessor {
   constructor(private _elementRef: ElementRef,
               params: NavParams,
               renderer: Renderer) {
+    this.option.columns = new Array<PickerColumn>();
     if (this.option.cssClass) {
       this.option.cssClass.split(' ').forEach(cssClass => {
         renderer.setElementClass(_elementRef.nativeElement, cssClass, true);
