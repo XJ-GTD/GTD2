@@ -145,6 +145,7 @@ import * as moment from 'moment';
 
 })
 export class TddiPage {
+  statusBarColor: string = "#3c4d55";
 
   focuscomm:boolean = false;
 

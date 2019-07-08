@@ -163,6 +163,8 @@ import {FeedbackService} from "../../service/cordova/feedback.service";
 
 })
 export class TdcPage {
+  statusBarColor: string = "#3c4d55";
+
   focuscomm:boolean = false;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private util: UtilService,

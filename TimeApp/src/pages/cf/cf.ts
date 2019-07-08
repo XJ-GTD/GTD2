@@ -202,6 +202,8 @@ import * as moment from "moment";
   `
 })
 export class CfPage {
+  statusBarColor: string = "#3c4d55";
+
   items: Array<any> = new Array<any>();
   itemRanges: Array<any> = new Array<any>();
   itemRangeOptions: Array<any> = new Array<any>();

@@ -177,6 +177,7 @@ import {FeedbackService} from "../../service/cordova/feedback.service";
   `
 })
 export class TddjPage {
+  statusBarColor: string = "#3c4d55";
 
   focuscomm:boolean = false;
   defaultbhiu: string = DataConfig.HUIBASE64;

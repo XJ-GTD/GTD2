@@ -63,6 +63,7 @@ import {CardListComponent} from "../../components/card-list/card-list";
     `
 })
 export class DaPage {
+  statusBarColor: string = "#3c4d55";
 
   currentday: CalendarDay;
   currentdayofweek: string = moment().format('dddd');

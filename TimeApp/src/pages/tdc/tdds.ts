@@ -56,6 +56,7 @@ import {PgBusiService} from "../../service/pagecom/pgbusi.service";
 
 })
 export class TddsPage {
+  statusBarColor: string = "#3c4d55";
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
               private util: UtilService,private  busiServ: PgBusiService,

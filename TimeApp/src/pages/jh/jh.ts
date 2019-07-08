@@ -32,6 +32,7 @@ import {PlService} from "../pl/pl.service";
   `
 })
 export class JhPage {
+  statusBarColor: string = "#3c4d55";
 
   jhoptions: Array<any> = new Array<any>();
   selected: string = "";

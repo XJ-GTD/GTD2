@@ -40,6 +40,7 @@ import { ScrollSelectComponent } from "../../components/scroll-select/scroll-sel
   `
 })
 export class TxPage {
+  statusBarColor: string = "#3c4d55";
 
   @ViewChildren(ScrollSelectComponent)
   remindComponents: QueryList<ScrollSelectComponent>;

@@ -27,7 +27,7 @@ import {UtilService} from "../../service/util-service/util.service";
 
     <ion-content padding>
       <ion-grid>
-        
+
         <ion-row>
           <div #resRef >
             <ion-img src="./assets/imgs/br-xz.png" class="img"></ion-img>
@@ -40,8 +40,8 @@ import {UtilService} from "../../service/util-service/util.service";
         <ion-row [ngStyle]="{'visibility': isRecover ? 'visible':'hidden' }">
           <div>上次备份时间：<small>{{bts  * 1000 | date:"yyyy年MM月dd日 HH:mm:ss"}}</small></div>
         </ion-row>
-        
-       
+
+
       </ion-grid>
     </ion-content>
     <ion-footer>

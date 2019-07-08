@@ -26,6 +26,8 @@ import {Keyboard} from "@ionic-native/keyboard";
   `
 })
 export class BzPage {
+  statusBarColor: string = "#3c4d55";
+
   @ViewChild("bzRef", {read: ElementRef})
   _bzRef: ElementRef;
 
