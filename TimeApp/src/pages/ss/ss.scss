@@ -1,11 +1,14 @@
 page-ss {
   background-color: $baseBackColor;
+
   .spinanimation{
     animation: spin 1s linear infinite;
   }
+
   .img-content-refresh{
     width: 25px;
   }
+
   .list-header, .list-header-md, .list-header-ios {
     border: 0;
     color: $masterColor;
