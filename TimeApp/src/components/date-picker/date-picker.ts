@@ -126,7 +126,7 @@ export class DatePickerComponent implements ControlValueAccessor {
         }
 
         // add our newly created column to the picker
-        this.columns.add(column);
+        this.columns.push(column);
       });
 
 
@@ -141,6 +141,42 @@ export class DatePickerComponent implements ControlValueAccessor {
         });
 
       this.divyColumns();
+    }
+  }
+
+
+  /**
+   * @hidden
+   */
+  divyColumns() {
+    const pickerColumns = this.columns;
+    let columnsWidth: number[] = [];
+    let col: PickerColumn;
+    let width: number;
+    for (var i = 0; i < pickerColumns.length; i++) {
+      col = pickerColumns[i];
+      columnsWidth.push(0);
+
+      for (var j = 0; j < col.options.length; j++) {
+        width = col.options[j].text.length;
+        if (width > columnsWidth[i]) {
+          columnsWidth[i] = width;
+        }
+      }
+    }
+
+    if (columnsWidth.length === 2) {
+      width = Math.max(columnsWidth[0], columnsWidth[1]);
+      pickerColumns[0].align = 'right';
+      pickerColumns[1].align = 'left';
+      pickerColumns[0].optionsWidth = pickerColumns[1].optionsWidth = `${width * 17}px`;
+
+    } else if (columnsWidth.length === 3) {
+      width = Math.max(columnsWidth[0], columnsWidth[2]);
+      pickerColumns[0].align = 'right';
+      pickerColumns[1].columnWidth = `${columnsWidth[1] * 17}px`;
+      pickerColumns[0].optionsWidth = pickerColumns[2].optionsWidth = `${width * 17}px`;
+      pickerColumns[2].align = 'left';
     }
   }
 
