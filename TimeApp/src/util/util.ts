@@ -18,3 +18,19 @@ export function isBlank(val: any): val is null { return val === undefined || val
 export function isObject(val: any): val is Object { return typeof val === 'object'; }
 /** @hidden */
 export function isArray(val: any): val is any[] { return Array.isArray(val); }
+
+/** @hidden */
+const ASSERT_ENABLED = true;
+
+/** @hidden */
+function _assert(actual: any, reason: string) {
+  if (!actual && ASSERT_ENABLED === true) {
+    let message = 'MWXING ASSERT: ' + reason;
+    console.error(message);
+    debugger; // tslint:disable-line
+    throw new Error(message);
+  }
+}
+
+/** @hidden */
+export { _assert as assert};
