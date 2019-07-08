@@ -45,10 +45,7 @@ export class MyApp {
     this.statusBar.overlaysWebView(false);
     //模态框进入时改变状态栏颜色
     this.app.viewDidEnter.subscribe((event) => {
-      if (event && event.instance) {
-        let objectType = DataConfig.isPage(event.instance);
-        console.log("********DidEnter********" + objectType + "********DidEnter********");
-
+      if (event && event.instance && DataConfig.isPage(event.instance)) {
         if (event.instance.statusBarColor) {
           this.statusBar.backgroundColorByHexString(event.instance.statusBarColor);
           this.statusbarcolors.push(event.instance.statusBarColor);
@@ -60,10 +57,7 @@ export class MyApp {
     });
     //模态框退出时还原状态栏颜色
     this.app.viewWillLeave.subscribe((event) => {
-      if (event && event.instance) {
-        let objectType = DataConfig.isPage(event.instance);
-        console.log("********WillLeave********" + objectType + "********WillLeave********");
-
+      if (event && event.instance && DataConfig.isPage(event.instance)) {
         if (this.statusbarcolors.length > 0) {
           let bgcolor = this.statusbarcolors.pop();
           this.statusBar.backgroundColorByHexString(bgcolor);
