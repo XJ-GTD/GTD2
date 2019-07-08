@@ -42,7 +42,7 @@ import {CardListComponent} from "../../components/card-list/card-list";
 
     <ion-content padding>
       <ion-refresher (ionRefresh)='doRefresh($event)'>
-        <ion-refresher-content pullingIcon="arrow-round-down" pullingText="" refreshingSpinner="arrow-round-up" refreshingText="添加"></ion-refresher-content>
+        <ion-refresher-content pullingIcon="arrow-round-down" pullingText="添加" refreshingSpinner="arrow-round-up" refreshingText=""></ion-refresher-content>
       </ion-refresher>
       <ion-slides [initialSlide]="INIT_SLIDE_DAY" (ionSlideDidChange)="slideChanged()" (ionSlideNextEnd)="slideNextEnd()" (ionSlidePrevEnd)="slidePrevEnd()">
         <ion-slide *ngFor="let day of days" class="scroll-y">
