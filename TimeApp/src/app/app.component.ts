@@ -40,8 +40,8 @@ export class MyApp {
 
 // set status bar to white
 //     statusBar.backgroundColorByHexString('#000000');
-    this.app.viewWillEnter.subscribe((instance) => {
-      this.statusBar.overlaysWebView(true);
+    this.statusBar.overlaysWebView(true);
+    this.app.viewDidEnter.subscribe((instance) => {
       this.statusBar.backgroundColorByHexString('#488aff');
     });
 
