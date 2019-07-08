@@ -253,8 +253,8 @@ export class DataConfig {
   }
   /* ============ 页面名字配置 ===============*/
   public static isPage(object: any) {
-    return object instanceof PAGE._H_PAGE
-    || object instanceof PAGE._TDM_PAGE;
+    return object instanceof DataConfig.PAGE._H_PAGE
+    || object instanceof DataConfig.PAGE._TDM_PAGE;
   }
 
   /*----===== 语音区分 =====----- */
