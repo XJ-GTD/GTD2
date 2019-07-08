@@ -19,6 +19,7 @@ import {JPushService} from "../service/cordova/jpush.service";
 })
 export class MyApp {
   @ViewChild(Nav) nav: Nav;
+  hex: string[] = ['0','1','2','3','4','5','6','7','8','9','A','B','C','D','E','F'];
 
   constructor(public app: App,
               private platform: Platform,
@@ -46,7 +47,27 @@ export class MyApp {
         let el = event.instance.contentRef.nativeElement;
         let bgcolor = el.style.backgroundColor;
 
-        this.statusBar.backgroundColorByHexString(bgcolor);
+        let arrcolor: string[] = bgcolor.slice(
+            bgcolor.indexOf('(')+1,
+            bgcolor.indexOf(')')
+        ).split(',');
+
+        arrcolor = arrcolor.map((e): string => {
+          let e1: number = Number(e);
+          let result: number = e1 / 16;
+
+          let first: string = this.getHexStr((result | 0));
+          let second: string = ((result): string => {
+            let index = result.indexOf('.')
+            return index == -1? this.getHexStr(0) : this.getHexStr((16 * parseFloat(result.slice(index))))
+          }(result.toString()));
+
+          return first+second;
+        });
+
+        let hexColor = "#" + arrcolor.join("");
+
+        this.statusBar.backgroundColorByHexString(hexColor);
       }
     });
 
@@ -98,5 +119,9 @@ export class MyApp {
 
 
     }, 1);
+  }
+
+  getHexStr(n: number): string {
+    return this.hex[n]
   }
 }
