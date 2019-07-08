@@ -3,6 +3,7 @@ import { IonicPage, NavController, NavParams, ModalController, Scroll } from 'io
 import {Keyboard} from "@ionic-native/keyboard";
 import { RadioSelectComponent } from "../../components/radio-select/radio-select";
 import { RadioSpinnerComponent } from "../../components/radio-spinner/radio-spinner";
+import { DatePickerComponent } from "../../components/date-picker/date-picker";
 import * as moment from "moment";
 
 @IonicPage()
