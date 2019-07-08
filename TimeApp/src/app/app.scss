@@ -65,26 +65,22 @@ body {
   //-moz-background-size:100% 100%;
   background: $baseBackColor;
 
-
   .content-ios {
     background-color: transparent;
-    margin-top: 23px;
   }
+
   .ios .menu-inner{
     background-color: transparent;
   }
 
-
   .ios .ion-page.show-page ~ .nav-decor {
     background: transparent;
-    margin-top: 23px;
   }
 
   //防止input框获取焦点抖动
   .input-cover {
     position: static;
   }
-
 
   .no-border {
     border: none !important;
