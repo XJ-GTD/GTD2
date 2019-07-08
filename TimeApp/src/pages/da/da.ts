@@ -120,7 +120,7 @@ export class DaPage {
   doRefresh(refresher){
     setTimeout(()=>{
       refresher.complete(); //停止下拉刷新
-      this.goNew();
+      this.goNewTdm();
     },150);
   }
 
@@ -307,6 +307,24 @@ export class DaPage {
     this.feedback.audioPress();
 
     let modal = this.modalCtr.create(DataConfig.PAGE._TDC_PAGE, p);
+    modal.onDidDismiss((data)=>{
+      this.cardlist.refresh();
+
+      if (this.cardlist.scdlist.length > 0 || this.cardlist.todaylist.length > 0 || this.cardlist.weatherlist.length > 0) {
+        this.hasContents = true;
+      } else {
+        this.hasContents = false;
+      }
+    });
+    modal.present();
+  }
+
+  goNewTdm() {
+    let p: ScdPageParamter = new ScdPageParamter();
+    p.d = this.day;
+    this.feedback.audioPress();
+
+    let modal = this.modalCtr.create(DataConfig.PAGE._TDM_PAGE, p);
     modal.onDidDismiss((data)=>{
       this.cardlist.refresh();
 
