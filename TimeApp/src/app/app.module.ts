@@ -84,6 +84,7 @@ import {ConfirmboxComponentModule} from "../components/confirmbox/confirmbox.mod
 import {LogPageModule} from "../pages/log/log.module";
 import {AtPageModule} from "../pages/at/at.module";
 import {DaPageModule} from "../pages/da/da.module";
+import {DoPageModule} from "../pages/do/do.module";
 import {DrPageModule} from "../pages/dr/dr.module";
 import {TxPageModule} from "../pages/tx/tx.module";
 import {BzPageModule} from "../pages/bz/bz.module";
@@ -146,6 +147,7 @@ import { BaiduMapModule } from 'angular2-baidu-map';
     LogPageModule,
     AtPageModule,
     DaPageModule,
+    DoPageModule,
     DrPageModule,
     TxPageModule,
     BzPageModule,
