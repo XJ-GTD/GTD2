@@ -51,6 +51,8 @@ export class DatePickerComponent implements ControlValueAccessor {
   @Input() min: string;
   @Input() max: string;
   @Input() pickerFormat: string;
+  @Input() initialValue: string;
+  @Input() yearValues: any;
   @ViewChildren(PickerColumnCmp) _cols: QueryList<PickerColumnCmp>;
   d: PickerOptions;
   mode: string;
