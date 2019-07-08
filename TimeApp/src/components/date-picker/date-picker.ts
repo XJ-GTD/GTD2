@@ -271,4 +271,58 @@ export class DatePickerComponent implements ControlValueAccessor {
 
 }
 
+/**
+ * @hidden
+ * Use to convert a string of comma separated numbers or
+ * an array of numbers, and clean up any user input
+ */
+function convertToArrayOfNumbers(input: any, type: string): number[] {
+  if (isString(input)) {
+    // convert the string to an array of strings
+    // auto remove any whitespace and [] characters
+    input = input.replace(/\[|\]|\s/g, '').split(',');
+  }
+
+  let values: number[];
+  if (isArray(input)) {
+    // ensure each value is an actual number in the returned array
+    values = input
+      .map((num: any) => parseInt(num, 10))
+      .filter(isFinite);
+  }
+
+  if (!values || !values.length) {
+    console.warn(`Invalid "${type}Values". Must be an array of numbers, or a comma separated string of numbers.`);
+  }
+
+  return values;
+}
+
+/**
+ * @hidden
+ * Use to convert a string of comma separated strings or
+ * an array of strings, and clean up any user input
+ */
+function convertToArrayOfStrings(input: any, type: string): string[] {
+  if (isPresent(input)) {
+    if (isString(input)) {
+      // convert the string to an array of strings
+      // auto remove any [] characters
+      input = input.replace(/\[|\]/g, '').split(',');
+    }
+
+    var values: string[];
+    if (isArray(input)) {
+      // trim up each string value
+      values = input.map((val: string) => val.trim());
+    }
+
+    if (!values || !values.length) {
+      console.warn(`Invalid "${type}Names". Must be an array of strings, or a comma separated string.`);
+    }
+
+    return values;
+  }
+}
+
 const DEFAULT_FORMAT = 'YYYY MMM D';
