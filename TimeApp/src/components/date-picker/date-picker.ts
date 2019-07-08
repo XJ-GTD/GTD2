@@ -42,6 +42,11 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms'
   }]
 })
 export class DatePickerComponent implements ControlValueAccessor {
+
+  _min: DateTimeData;
+  _max: DateTimeData;
+  _locale: LocaleData = {};
+  
   @Input() min: string;
   @Input() max: string;
   @Input() pickerFormat: string;
