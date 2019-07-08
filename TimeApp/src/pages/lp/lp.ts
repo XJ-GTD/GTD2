@@ -44,6 +44,7 @@ import {PageLoginData} from "../../data.mapping";
   </ion-content>`
 })
 export class LpPage {
+  statusBarColor: string = "#fff";
 
   login:PageLoginData = new PageLoginData();
   opa:any = "0.4";

@@ -22,6 +22,8 @@ declare var BMap: any;
   `
 })
 export class DzPage {
+  statusBarColor: string = "#fff";
+
   options: MapOptions;  //百度地图选项
   navOptions: NavigationControlOptions; //百度导航条选项
   markers: Array<any> = new Array<any>();

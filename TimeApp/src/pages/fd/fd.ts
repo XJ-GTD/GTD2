@@ -36,7 +36,7 @@ import {FsData} from "../../data.mapping";
         </ion-label>
       </ion-row>
       <ion-row>
-        <span >{{fd.rn}}</span>  <span >{{fd.rc}}</span> 
+        <span >{{fd.rn}}</span>  <span >{{fd.rc}}</span>
       </ion-row>
     </ion-grid>
   </ion-content>
@@ -46,10 +46,12 @@ import {FsData} from "../../data.mapping";
         {{buttonText}}
       </button>
     </ion-buttons>
-    
+
   </ion-footer>`,
 })
 export class FdPage {
+  statusBarColor: string = "#3c4d55";
+
   fd:FsData = new FsData();
   pwi:string;
   buttonText:string = '';

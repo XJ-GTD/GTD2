@@ -38,7 +38,7 @@ import {PageLoginData} from "../../data.mapping";
         </div>
       </ion-row>
     </ion-grid>
-    
+
     <div class="login-div" (click)="toLp()">改为用密码登录</div>
     <div class="login-div" (click)="toR()">没有账号，立即注册</div>
 
@@ -47,6 +47,7 @@ import {PageLoginData} from "../../data.mapping";
   `
 })
 export class LsPage {
+  statusBarColor: string = "#fff";
 
   login:PageLoginData = new PageLoginData();
   timeText:any = "获取验证码";
@@ -135,7 +136,7 @@ export class LsPage {
             this.util.toastStart("网络异常",1500);
           }
         });
-        
+
       }
     }
   }

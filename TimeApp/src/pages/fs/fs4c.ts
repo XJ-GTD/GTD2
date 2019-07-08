@@ -72,6 +72,8 @@ import {FeedbackService} from "../../service/cordova/feedback.service";
   `,
 })
 export class Fs4cPage {
+  statusBarColor: string = "#3c4d55";
+
   tel: any;//手机号
   pageFsl: Array<FsPageData> = new Array<FsPageData>();
   pageGl: Array<PageGroupData> = new Array<PageGroupData>();
