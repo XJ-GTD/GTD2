@@ -1,5 +1,6 @@
 import { Component, Input, Output, Renderer, QueryList, forwardRef, ElementRef, ViewChildren, EventEmitter } from '@angular/core';
 import { assert, isNumber, isPresent, isString } from '../../util/util';
+import { parseTemplate, dateValueRange } from '../../util/datetime-util';
 import { NavParams, PickerColumnCmp, PickerColumnOption, PickerOptions } from 'ionic-angular';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms'
 
@@ -25,6 +26,9 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms'
   }]
 })
 export class DatePickerComponent implements ControlValueAccessor {
+  @Input() min: string;
+  @Input() max: string;
+  @Input() pickerFormat: string;
   @ViewChildren(PickerColumnCmp) _cols: QueryList<PickerColumnCmp>;
   d: PickerOptions;
   mode: string;
@@ -41,6 +45,87 @@ export class DatePickerComponent implements ControlValueAccessor {
       this.d.cssClass.split(' ').forEach(cssClass => {
         renderer.setElementClass(_elementRef.nativeElement, cssClass, true);
       });
+    }
+  }
+
+  /**
+   * @hidden
+   */
+  generate() {
+    const picker = this._picker;
+    // if a picker format wasn't provided, then fallback
+    // to use the display format
+    let template = this.pickerFormat || DEFAULT_FORMAT;
+
+    if (isPresent(template)) {
+      // make sure we've got up to date sizing information
+      this.calcMinMax();
+
+      // does not support selecting by day name
+      // automaticallly remove any day name formats
+      template = template.replace('DDDD', '{~}').replace('DDD', '{~}');
+      if (template.indexOf('D') === -1) {
+        // there is not a day in the template
+        // replace the day name with a numeric one if it exists
+        template = template.replace('{~}', 'D');
+      }
+      // make sure no day name replacer is left in the string
+      template = template.replace(/{~}/g, '');
+
+      // parse apart the given template into an array of "formats"
+      parseTemplate(template).forEach(format => {
+        // loop through each format in the template
+        // create a new picker column to build up with data
+        let key = convertFormatToKey(format);
+        let values: any[];
+
+        // first see if they have exact values to use for this input
+        if (isPresent((<any>this)[key + 'Values'])) {
+          // user provide exact values for this date part
+          values = convertToArrayOfNumbers((<any>this)[key + 'Values'], key);
+
+        } else {
+          // use the default date part values
+          values = dateValueRange(format, this._min, this._max);
+        }
+
+        const column: PickerColumn = {
+          name: key,
+          selectedIndex: 0,
+          options: values.map(val => {
+            return {
+              value: val,
+              text: renderTextFormat(format, val, null, this._locale),
+            };
+          })
+        };
+
+        // cool, we've loaded up the columns with options
+        // preselect the option for this column
+        const optValue = getValueFromFormat(this.getValueOrDefault(), format);
+        const selectedIndex = column.options.findIndex(opt => opt.value === optValue);
+        if (selectedIndex >= 0) {
+          // set the select index for this column's options
+          column.selectedIndex = selectedIndex;
+        }
+
+        // add our newly created column to the picker
+        picker.addColumn(column);
+      });
+
+
+      // Normalize min/max
+      const min = <any>this._min;
+      const max = <any>this._max;
+      const columns = this._picker.getColumns();
+      ['month', 'day', 'hour', 'minute']
+        .filter(name => !columns.find(column => column.name === name))
+        .forEach(name => {
+          min[name] = 0;
+          max[name] = 0;
+        });
+
+      this.divyColumns();
     }
   }
 
@@ -133,4 +218,5 @@ export class DatePickerComponent implements ControlValueAccessor {
     this.onModelTouched = fn;
   }
 
+  const DEFAULT_FORMAT = 'YYYY MMM D';
 }
