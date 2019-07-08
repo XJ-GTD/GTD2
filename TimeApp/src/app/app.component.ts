@@ -46,7 +46,7 @@ export class MyApp {
     //模态框进入时改变状态栏颜色
     this.app.viewDidEnter.subscribe((event) => {
       if (event && event.instance) {
-        let objectType = typeof event.instance;
+        let objectType = DataConfig.isPage(event.instance);
         console.log("********DidEnter********" + objectType + "********DidEnter********");
 
         if (event.instance.statusBarColor) {
@@ -61,7 +61,7 @@ export class MyApp {
     //模态框退出时还原状态栏颜色
     this.app.viewWillLeave.subscribe((event) => {
       if (event && event.instance) {
-        let objectType = typeof event.instance;
+        let objectType = DataConfig.isPage(event.instance);
         console.log("********WillLeave********" + objectType + "********WillLeave********");
 
         if (this.statusbarcolors.length > 0) {
