@@ -119,7 +119,7 @@ export class DoPage {
     // 初始化的时候获取不到当前索引，使用默认索引号
     currentIndex = currentIndex? currentIndex : this.INIT_SLIDE_DAY;
 
-    this.daService.currentShow(day).then(d => {
+    this.doService.currentShow(day).then(d => {
       // 清空原有数据
       target.todaylist.length = 0;
       target.scdlist.length = 0;
@@ -282,13 +282,13 @@ export class DoPage {
     });
 
     if (this.cardlist.scdlist && this.cardlist.scdlist.length > 0)
-      this.daService.speakDailySummary(this.day, this.cardlist.scdlist);
+      this.doService.speakDailySummary(this.day, this.cardlist.scdlist);
     else
-      this.daService.speakDailySummary(this.day, this.cardlist.todaylist);
+      this.doService.speakDailySummary(this.day, this.cardlist.todaylist);
   }
 
   pause() {
-    this.daService.stopSpeak();
+    this.doService.stopSpeak();
   }
 
   goNew() {
