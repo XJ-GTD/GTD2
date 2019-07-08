@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { IonicPageModule } from 'ionic-angular';
 import { DoPage } from "./do";
-import { DaService } from "./do.service";
+import { DoService } from "./do.service";
 import {CardListComponentModule} from "../../components/card-list/card-list.module";
 
 @NgModule({
@@ -13,7 +13,7 @@ import {CardListComponentModule} from "../../components/card-list/card-list.modu
     CardListComponentModule
   ],
   providers: [
-    DaService
+    DoService
   ],
 })
 export class DoPageModule {}

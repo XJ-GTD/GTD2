@@ -77,7 +77,7 @@ export class DoPage {
               public navParams: NavParams,
               private modalCtr: ModalController,
               private emitService: EmitService,
-              private daService: DaService,
+              private doService: DoService,
               private util: UtilService,
               private feedback: FeedbackService,
               private sqlite:SqliteExec) {
