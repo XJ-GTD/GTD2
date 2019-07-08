@@ -1,7 +1,7 @@
 import { Component, Input, Output, Renderer, QueryList, forwardRef, ElementRef, ViewChildren, EventEmitter } from '@angular/core';
 import { assert, isNumber, isPresent, isString } from '../../util/util';
-import { parseTemplate, dateValueRange } from '../../util/datetime-util';
-import { NavParams, PickerColumnCmp, PickerColumnOption, PickerOptions } from 'ionic-angular';
+import { parseTemplate, dateValueRange, getValueFromFormat, renderTextFormat } from '../../util/datetime-util';
+import { NavParams, PickerColumnCmp, PickerColumn, PickerColumnOption, PickerOptions } from 'ionic-angular';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms'
 
 /**
@@ -218,5 +218,6 @@ export class DatePickerComponent implements ControlValueAccessor {
     this.onModelTouched = fn;
   }
 
-  const DEFAULT_FORMAT = 'YYYY MMM D';
 }
+
+const DEFAULT_FORMAT = 'YYYY MMM D';
