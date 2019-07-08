@@ -71,6 +71,8 @@ export class DatePickerComponent implements ControlValueAccessor {
         renderer.setElementClass(_elementRef.nativeElement, cssClass, true);
       });
     }
+
+    this.generate();
   }
 
   /**
