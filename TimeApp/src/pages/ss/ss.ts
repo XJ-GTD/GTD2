@@ -79,6 +79,11 @@ import * as moment from "moment";
               <ion-note item-end>{{bdr? sdrp1 : '关闭'}}</ion-note>
             </button>
 
+            <button ion-item class="plan-list-item" detail-push (click)="gotodsfsetting()">
+              <ion-label>项目跟进</ion-label>
+              <ion-note item-end>{{sdsfn}}</ion-note>
+            </button>
+
             <ion-list-header>
               <ion-label>日历</ion-label>
             </ion-list-header>
@@ -106,6 +111,7 @@ export class SsPage {
   bz:boolean;       //振动 页面显示和修改
   bdr:boolean;      //每日简报 页面显示和修改
   sdrp1:string;     //每日简报 提醒时间
+  sdsfn:string;     //项目提醒 智能提醒
   sdjhn:string;     //日历 缺省日历名称
   sdjh:string;      //日历 缺省日历
   sdjho:any;        //日历 缺省日历对象
@@ -178,6 +184,10 @@ export class SsPage {
       this.ssService.save(set);
     });
     modal.present();
+  }
+
+  gotodsfsetting() {
+
   }
 
   private async getData() {
