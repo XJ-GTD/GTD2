@@ -5,7 +5,7 @@ function shouldclean(datasource)
   // filter source code here start
   var input = JSON.parse(datasource);
 
-  if (input !== undefined && input['userId'] && input['event'] && input['clientip'] && (input['webhook'] == 'fir.im') && !input['location'] && !input['deviceId'] && !input['xunfeiyun']) {
+  if (input !== undefined && input['userId'] && input['event'] && (input['webhook'] == 'fir.im') && !input['location'] && !input['deviceId'] && !input['xunfeiyun']) {
     return true;
   }
 
