@@ -50,7 +50,7 @@ import * as moment from "moment";
   `,
 })
 export class FoPage {
-  sdsfn: string = "";
+  sdsfn: string = "关闭";
 
   constructor(public modalController: ModalController,
               public navCtrl: NavController,
