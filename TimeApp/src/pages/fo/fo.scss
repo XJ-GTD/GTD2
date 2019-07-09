@@ -1,0 +1,90 @@
+page-fo {
+  background-color: $baseBackColor;
+
+  .spinanimation{
+    animation: spin 1s linear infinite;
+  }
+
+  .img-content-refresh{
+    width: 25px;
+  }
+
+  .list-header, .list-header-md, .list-header-ios {
+    border: 0;
+    color: $masterColor;
+  }
+
+  ion-header ion-toolbar .toolbar-background,.toolbar-background-md,.toolbar-background-ios {
+    background-color: $baseBackColor;
+  }
+
+  ion-header{
+    padding: 4px 20px;
+  }
+
+  .img-header-left{
+    width: 4vmin;
+    height: 4vmin;
+  }
+
+  .toolbar-title{
+    color: white;
+    letter-spacing: 0.5vmin;
+    font-size: 1.5rem;
+  }
+
+  ion-input{
+    font-size: 1.5rem;
+  }
+
+  ion-content.content {
+    background-color: $baseBackColor;
+    color: #fff;
+  }
+
+  ion-content .plan-list-item {
+    background-color: $baseBackColor;
+    color: #fff;
+    padding-left: 8px;
+    font-size: 1.5rem;
+    min-height: 9vmin;
+  }
+
+  .plan-list-item ion-note {
+    padding-right: 25px;
+  }
+
+  .plan-list-item ion-spinner {
+    padding-right: 25px;
+  }
+
+  .list-ios .item-block .item-inner {
+    padding-right: 0;
+  }
+
+  .item-ios .toggle-ios{
+    padding: 6px 0 5px 16px;
+  }
+
+  .toggle-ios.toggle-checked .toggle-icon {
+    background-color: rgb(60,144,155);
+    width: 43px;
+    height: 24px;
+  }
+
+  .toggle-ios .toggle-icon {
+    width: 43px;
+    height: 24px;
+  }
+
+  .toggle-ios.toggle-checked .toggle-inner,
+  .toggle-ios .toggle-inner{
+    height: 20px;
+    width: 20px;
+  }
+
+  .scroll-content{
+    overflow-x: hidden;
+    overflow-y: hidden;
+  }
+}

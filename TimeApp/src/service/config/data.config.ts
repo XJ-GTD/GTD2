@@ -43,6 +43,7 @@ import {BzPage} from "../../pages/bz/bz";
 import {JhPage} from "../../pages/jh/jh";
 import {DzPage} from "../../pages/dz/dz";
 import {CfPage} from "../../pages/cf/cf";
+import {FoPage} from "../../pages/fo/fo";
 
 export class DataConfig {
   public static isdebug: boolean  = true;
@@ -250,6 +251,7 @@ export class DataConfig {
     _JH_PAGE: JhPage,       // 设置计划/日历
     _DZ_PAGE: DzPage,       // 设置地址
     _CF_PAGE: CfPage,       // 设置重复
+    _FO_PAGE: FoPage,       // 设置项目跟进可选项
   }
   static PAGES = [
     HPage,        // 首页 - 首页
@@ -291,6 +293,7 @@ export class DataConfig {
     JhPage,       // 设置计划/日历
     DzPage,       // 设置地址
     CfPage,       // 设置重复
+    FoPage,       // 设置项目跟进可选项
   ];
   /* ============ 页面名字配置 ===============*/
   public static isPage(object: any) {
