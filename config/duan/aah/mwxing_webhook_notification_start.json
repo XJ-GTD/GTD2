@@ -9,10 +9,10 @@
     ],
     "follows": [
         {
-            "name": "github事件转换",
+            "name": "fir.im事件转换",
             "trigger": "acj",
             "parameters": [
-                "ruleid;MWXING_GITHUB_EVENTS_GITHUB001_V1_4",
+                "ruleid;MWXING_FIRIM_EVENTS_WEBHOOK001_V1_4",
                 "datasource;$.parent.parameters"
             ],
             "outputs": [
