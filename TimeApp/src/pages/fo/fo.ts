@@ -32,16 +32,19 @@ import * as moment from "moment";
     <ion-content padding>
           <ion-list no-lines>
             <button ion-item class="plan-list-item" detail-push (click)="gotogithubsetting()">
+              <ion-icon ios="logo-github" md="logo-github" item-start></ion-icon>
               <ion-label>github</ion-label>
               <ion-note item-end>{{sdsfn}}</ion-note>
             </button>
 
             <button ion-item class="plan-list-item" detail-push (click)="gototraviscisetting()">
+              <ion-icon ios="logo-freebsd-devil" md="logo-freebsd-devil" item-start></ion-icon>
               <ion-label>travis-ci</ion-label>
               <ion-note item-end>{{sdsfn}}</ion-note>
             </button>
 
             <button ion-item class="plan-list-item" detail-push (click)="gotofirimsetting()">
+              <ion-icon ios="ios-bonfire" md="md-bonfire" item-start></ion-icon>
               <ion-label>fir.im</ion-label>
               <ion-note item-end>{{sdsfn}}</ion-note>
             </button>
