@@ -55,12 +55,18 @@ export class MyApp {
         }
       }
     });
+
     //模态框退出时还原状态栏颜色
     this.app.viewWillLeave.subscribe((event) => {
       if (event && event.instance && DataConfig.isPage(event.instance)) {
+        //清除当前画面颜色
+        this.statusbarcolors.pop();
+        //取得上个画面的颜色
         if (this.statusbarcolors.length > 0) {
-          let bgcolor = this.statusbarcolors.pop();
+          let bgcolor = this.statusbarcolors[this.statusbarcolors.length - 1];
           this.statusBar.backgroundColorByHexString(bgcolor);
+        } else {
+          this.statusBar.backgroundColorByHexString("#000");
         }
       }
     });
