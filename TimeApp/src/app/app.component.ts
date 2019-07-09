@@ -57,7 +57,7 @@ export class MyApp {
     });
 
     //模态框退出时还原状态栏颜色
-    this.app.viewWillLeave.subscribe((event) => {
+    this.app.viewWillUnload.subscribe((event) => {
       if (event && event.instance && DataConfig.isPage(event.instance)) {
         //清除当前画面颜色
         this.statusbarcolors.pop();
