@@ -127,7 +127,9 @@ export class SyncRestful {
 
       let taskRunAt = {
         eventId: "WEBHOOK_GITHUB",
-        filters: []
+        filters: [
+          "webhook": "github"
+        ]
       };
 
       if (!active) {
@@ -176,7 +178,9 @@ export class SyncRestful {
 
       let taskRunAt = {
         eventId: "WEBHOOK_TRAVIS-CI",
-        filters: []
+        filters: [
+          "webhook": "travis-ci"
+        ]
       };
 
       if (!active) {
@@ -225,7 +229,9 @@ export class SyncRestful {
 
       let taskRunAt = {
         eventId: "WEBHOOK_FIR.IM",
-        filters: []
+        filters: [
+          "webhook": "fir.im"
+        ]
       };
 
       if (!active) {
