@@ -111,6 +111,153 @@ export class SyncRestful {
     });
   }
 
+  //智能提醒 项目跟进 - GitHub
+  putFollowGitHub(userId: string, timestamp: number, active: boolean): Promise<string> {
+    return new Promise((resolve, reject) => {
+      //每日简报任务注册
+      let task = new TriggerTask();
+
+      task.saName = "任务调度触发器";
+      task.saPrefix = "cdc";
+      task.taskId = `pluto_${userId}_follow_webhook_github_notification`;
+      task.taskType = "WEBHOOK";
+      task.taskName = "github webhook";
+
+      let choosetime = moment(timestamp);
+
+      let taskRunAt = {
+        eventId: "WEBHOOK_GITHUB",
+        filters: []
+      };
+
+      if (!active) {
+        taskRunAt.filters.push({
+          name: "active", value: "false"
+        });
+      }
+
+      task.taskRunAt = JSON.stringify(taskRunAt);
+      let triggerurl: UrlEntity = this.config.getRestFulUrl("WHK");
+
+      let taskRunWith = {
+        url: triggerurl.url, // "https://pluto.guobaa.com/cdc/mwxing_webhook_notification_start/json/trigger"
+        payload: {
+          userId: userId,
+          webhook: 'github'
+        }
+      };
+
+      task.taskRunWith = JSON.stringify(taskRunWith);
+
+      let url: UrlEntity = this.config.getRestFulUrl("EDTTS");
+      this.request.post(url, task).then(data => {
+        //处理返回结果
+        resolve(data.data);
+      }).catch(error => {
+        //处理返回错误
+        reject(error);
+      })
+    });
+  }
+
+  //智能提醒 项目跟进 - Travis CI
+  putFollowTravisCI(userId: string, timestamp: number, active: boolean): Promise<string> {
+    return new Promise((resolve, reject) => {
+      //每日简报任务注册
+      let task = new TriggerTask();
+
+      task.saName = "任务调度触发器";
+      task.saPrefix = "cdc";
+      task.taskId = `pluto_${userId}_follow_webhook_travisci_notification`;
+      task.taskType = "WEBHOOK";
+      task.taskName = "travis-ci webhook";
+
+      let choosetime = moment(timestamp);
+
+      let taskRunAt = {
+        eventId: "WEBHOOK_TRAVIS-CI",
+        filters: []
+      };
+
+      if (!active) {
+        taskRunAt.filters.push({
+          name: "active", value: "false"
+        });
+      }
+
+      task.taskRunAt = JSON.stringify(taskRunAt);
+      let triggerurl: UrlEntity = this.config.getRestFulUrl("WHK");
+
+      let taskRunWith = {
+        url: triggerurl.url, // "https://pluto.guobaa.com/cdc/mwxing_webhook_notification_start/json/trigger"
+        payload: {
+          userId: userId,
+          webhook: 'travis-ci'
+        }
+      };
+
+      task.taskRunWith = JSON.stringify(taskRunWith);
+
+      let url: UrlEntity = this.config.getRestFulUrl("EDTTS");
+      this.request.post(url, task).then(data => {
+        //处理返回结果
+        resolve(data.data);
+      }).catch(error => {
+        //处理返回错误
+        reject(error);
+      })
+    });
+  }
+
+  //智能提醒 项目跟进 - fir.im
+  putFollowFirIM(userId: string, timestamp: number, active: boolean): Promise<string> {
+    return new Promise((resolve, reject) => {
+      //每日简报任务注册
+      let task = new TriggerTask();
+
+      task.saName = "任务调度触发器";
+      task.saPrefix = "cdc";
+      task.taskId = `pluto_${userId}_follow_webhook_fir.im_notification`;
+      task.taskType = "WEBHOOK";
+      task.taskName = "fir.im webhook";
+
+      let choosetime = moment(timestamp);
+
+      let taskRunAt = {
+        eventId: "WEBHOOK_FIR.IM",
+        filters: []
+      };
+
+      if (!active) {
+        taskRunAt.filters.push({
+          name: "active", value: "false"
+        });
+      }
+
+      task.taskRunAt = JSON.stringify(taskRunAt);
+      let triggerurl: UrlEntity = this.config.getRestFulUrl("WHK");
+
+      let taskRunWith = {
+        url: triggerurl.url, // "https://pluto.guobaa.com/cdc/mwxing_webhook_notification_start/json/trigger"
+        payload: {
+          userId: userId,
+          webhook: 'fir.im'
+        }
+      };
+
+      task.taskRunWith = JSON.stringify(taskRunWith);
+
+      let url: UrlEntity = this.config.getRestFulUrl("EDTTS");
+      this.request.post(url, task).then(data => {
+        //处理返回结果
+        resolve(data.data);
+      }).catch(error => {
+        //处理返回错误
+        reject(error);
+      })
+    });
+  }
+
   //初始化数据 ID
   initData(): Promise<SybcData> {
     return new Promise((resolve, reject) => {

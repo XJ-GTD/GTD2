@@ -25,6 +25,21 @@ export class SsService {
     this.syncRestful.putHourlyWeather(userId);
   }
 
+  //设置 Fir.IM WebHook事件
+  putFollowFirIM(userId: string, timestamp: number, active: boolean) {
+    this.syncRestful.putFollowFirIM(userId, timestamp, active);
+  }
+
+  //设置 Travis CI WebHook事件
+  putFollowTravisCI(userId: string, timestamp: number, active: boolean) {
+    this.syncRestful.putFollowTravisCI(userId, timestamp, active);
+  }
+
+  //设置 GitHub WebHook事件
+  putFollowGitHub(userId: string, timestamp: number, active: boolean) {
+    this.syncRestful.putFollowGitHub(userId, timestamp, active);
+  }
+
   //保存设置
   save(py: PageY):Promise<any>{
     return new Promise(async (resolve, reject) => {

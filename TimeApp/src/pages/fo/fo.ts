@@ -2,7 +2,7 @@ import {Component, ElementRef, Renderer2, ViewChild} from '@angular/core';
 import {IonicPage, NavController, ModalController} from 'ionic-angular';
 import {DataConfig} from "../../service/config/data.config";
 import {Setting, UserConfig} from "../../service/config/user.config";
-import {FoService} from "./fo.service";
+import {SsService} from "../ss/ss.service";
 import {PageY} from "../../data.mapping";
 import * as moment from "moment";
 
@@ -34,30 +34,36 @@ import * as moment from "moment";
             <button ion-item class="plan-list-item" detail-push (click)="gotogithubsetting()">
               <ion-icon ios="logo-github" md="logo-github" item-start></ion-icon>
               <ion-label>GitHub</ion-label>
-              <ion-note item-end>{{sdsfn}}</ion-note>
+              <ion-note item-end>{{sgithub}}</ion-note>
             </button>
 
             <button ion-item class="plan-list-item" detail-push (click)="gototraviscisetting()">
               <ion-icon ios="logo-freebsd-devil" md="logo-freebsd-devil" item-start></ion-icon>
               <ion-label>Travis CI</ion-label>
-              <ion-note item-end>{{sdsfn}}</ion-note>
+              <ion-note item-end>{{stravisci}}</ion-note>
             </button>
 
             <button ion-item class="plan-list-item" detail-push (click)="gotofirimsetting()">
               <ion-icon ios="ios-bonfire" md="md-bonfire" item-start></ion-icon>
               <ion-label>集成 | fir.im</ion-label>
-              <ion-note item-end>{{sdsfn}}</ion-note>
+              <ion-note item-end>{{sfirim}}</ion-note>
             </button>
           </ion-list>
     </ion-content>
   `,
 })
 export class FoPage {
-  sdsfn: string = "关闭";
+  sfirim: string = "关闭";
+  sgithub: string = "关闭";
+  stravisci: string = "关闭";
+
+  firim: boolean = false;
+  github: boolean = false;
+  travisci: boolean = false;
 
   constructor(public modalController: ModalController,
               public navCtrl: NavController,
-              private foService: FoService,
+              private ssService: SsService,
               private _renderer: Renderer2) {
   }
 
@@ -69,11 +75,37 @@ export class FoPage {
     this.navCtrl.pop();
   }
 
-  gotofirimsetting() {}
+  gotofirimsetting() {
+    this.firim = !this.firim;
+    this.sfirim = this.firim? "打开" : "关闭";
 
-  gototraviscisetting() {}
+    this.ssService.putFollowFirIM(
+      UserConfig.account.id,
+      moment().valueOf(),
+      this.firim
+    );
+  }
+
+  gototraviscisetting() {
+    this.travisci = !this.travisci;
+    this.stravisci = this.travisci? "打开" : "关闭";
+
+    this.ssService.putFollowTravisCI(
+      UserConfig.account.id,
+      moment().valueOf(),
+      this.travisci
+    );
+  }
 
   gotogithubsetting() {
+    this.github = !this.github;
+    this.sgithub = this.github? "打开" : "关闭";
+
+    this.ssService.putFollowGitHub(
+      UserConfig.account.id,
+      moment().valueOf(),
+      this.github
+    );
   }
 
 }
