@@ -111,7 +111,7 @@ export class SsPage {
   bz:boolean;       //振动 页面显示和修改
   bdr:boolean;      //每日简报 页面显示和修改
   sdrp1:string;     //每日简报 提醒时间
-  spfon:string;     //项目跟进 智能提醒
+  spfon:string = "关闭";     //项目跟进 智能提醒
   sdjhn:string;     //日历 缺省日历名称
   sdjh:string;      //日历 缺省日历
   sdjho:any;        //日历 缺省日历对象
