@@ -32,6 +32,31 @@
                     ]
                 }
             ]
+        },
+        {
+            "name": "github事件转换",
+            "trigger": "acj",
+            "parameters": [
+                "ruleid;MWXING_GITHUB_EVENTS_WEBHOOK002_V1_4",
+                "datasource;$.parent.parameters"
+            ],
+            "outputs": [
+                "cleaned"
+            ],
+            "next": [
+                {
+                    "name": "冥王星通知服务",
+                    "trigger": "ann",
+                    "parameters": [
+                        "announceTo;$.parent.outputs.cleaned.announceTo",
+                        "announceType;$.parent.outputs.cleaned.announceType",
+                        "announceContent;$.parent.outputs.cleaned.announceContent"
+                    ],
+                    "outputs": [
+                        "result"
+                    ]
+                }
+            ]
         }
     ]
 }
