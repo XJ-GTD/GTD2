@@ -28,8 +28,8 @@ function clean(datasource)
   to.push(userId);
 
   var push = {
-    title: event['output']['payload']['platform'] + ' ' + event['output']['payload']['msg'] + ' 已更新',
-    content: event['output']['payload']['link'],
+    title: event['output']['payload']['name'] + ' (' + event['output']['payload']['version'] + ' build ' + event['output']['payload']['build'] + ')',
+    content: '发布日志: ' + event['output']['payload']['changelog'],
     extras: {
       event: "MWXING_NOTIFICATION_EVENT",
       dependson: "on.homepage.init",
