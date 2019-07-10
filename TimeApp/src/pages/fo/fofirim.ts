@@ -32,7 +32,7 @@ import * as moment from "moment";
       <ion-row>
         <ion-grid>
           <ion-row align-items-center justify-content-center>
-            集成 | fir.im webhook 设置
+            接收 集成 | fir.im 消息推送
           </ion-row>
           <ion-row align-items-center justify-content-center>
             <p></p>
