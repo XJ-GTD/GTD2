@@ -123,8 +123,10 @@ export class HPage {
     this.emitService.register('on.urlopen.message.click', (data) => {
       console.log("Open extend url message to show " + JSON.stringify(data));
 
-      const browser = this.iab.create(data.url, "_system");
-      browser.show();
+      if (data && data.eventdata && data.eventdata.url) {
+        const browser = this.iab.create(data.url, "_system");
+        browser.show();
+      }
     });
 
     //极光推送跳转共享日程页面
