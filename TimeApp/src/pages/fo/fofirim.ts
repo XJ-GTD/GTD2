@@ -32,7 +32,7 @@ import * as moment from "moment";
       <ion-row>
         <ion-grid>
           <ion-row align-items-center justify-content-center>
-            集成 | Fir.IM webhook 设置
+            集成 | fir.im webhook 设置
           </ion-row>
           <ion-row align-items-center justify-content-center>
             <p></p>
@@ -41,7 +41,7 @@ import * as moment from "moment";
             <p></p>
           </ion-row>
           <ion-row align-items-center justify-content-center>
-            <h1 class="h1-lightgray">fir.im > 我的应用 > YourApp</h1>
+            <h1 class="h3-lightgray">fir.im > 我的应用 > YourApp</h1>
           </ion-row>
           <ion-row align-items-center justify-content-center class="golden-margin">
             <small>通知</small>
