@@ -34,7 +34,7 @@ import * as moment from "moment";
         <ion-row>
           <ion-grid>
             <ion-row align-items-center justify-content-center>
-              获得项目代码发布、集成状态和版本发布通知
+              获得项目代码提交、集成状态和版本发布通知
             </ion-row>
             <ion-row align-items-center justify-content-center>
               <p></p>
@@ -102,11 +102,15 @@ export class FoPage {
     this.firim = !this.firim;
     this.sfirim = this.firim? "打开" : "关闭";
 
-    this.ssService.putFollowFirIM(
-      UserConfig.account.id,
-      moment().valueOf(),
-      this.firim
-    );
+    let modal = this.modalController.create(DataConfig.PAGE._FOFIRIM_PAGE);
+    modal.onDidDismiss((data)=>{
+      this.ssService.putFollowFirIM(
+        UserConfig.account.id,
+        moment().valueOf(),
+        this.firim
+      );
+    });
+    modal.present();
   }
 
   gototraviscisetting() {
@@ -124,11 +128,15 @@ export class FoPage {
     this.github = !this.github;
     this.sgithub = this.github? "打开" : "关闭";
 
-    this.ssService.putFollowGitHub(
-      UserConfig.account.id,
-      moment().valueOf(),
-      this.github
-    );
+    let modal = this.modalController.create(DataConfig.PAGE._FOGITHUB_PAGE);
+    modal.onDidDismiss((data)=>{
+      this.ssService.putFollowGitHub(
+        UserConfig.account.id,
+        moment().valueOf(),
+        this.github
+      );
+    });
+    modal.present();
   }
 
 }
