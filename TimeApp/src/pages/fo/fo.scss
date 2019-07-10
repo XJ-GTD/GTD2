@@ -79,6 +79,33 @@ page-fo, page-fofirim, page-fogithub {
     width: 50vmin;
   }
 
+  .rorate-proreller {
+    -webkit-animation: aniplane .8s linear infinite;
+  }
+
+  .fir-propeller {
+    width: 10vmin;
+    transform: rotateY(-28deg);
+  }
+
+  @-webkit-keyframes aniplane {
+		0% {
+      -webkit-transform:rotate(0deg);
+    }
+		25% {
+      -webkit-transform:rotate(90deg);
+    }
+		50% {
+      -webkit-transform:rotate(180deg);
+    }
+		75% {
+      -webkit-transform:rotate(270deg);
+    }
+		100% {
+      -webkit-transform:rotate(360deg);
+    }
+	}
+
   button[ion-button] {
     border: 1.5px solid #fff;
   }

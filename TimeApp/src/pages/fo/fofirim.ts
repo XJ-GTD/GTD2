@@ -40,6 +40,9 @@ import * as moment from "moment";
           <ion-row align-items-center justify-content-center class="full-width fir-color">
             <img src="assets/imgs/fir.im/firim-logo.png" class="fir-logo">
             <img src="assets/imgs/fir.im/plane.svg" class="fir-plane">
+            <div class="rorate-proreller">
+              <img src="assets/imgs/fir.im/propeller.svg" class="fir-propeller">
+            </div>
           </ion-row>
           <ion-row align-items-center justify-content-center>
             <p></p>
