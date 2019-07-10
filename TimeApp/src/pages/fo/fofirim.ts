@@ -44,7 +44,7 @@ import * as moment from "moment";
               <img src="assets/imgs/fir.im/propeller.svg" class="fir-propeller">
             </div>
             <div class="firim-help">
-            <button ion-button color="light" class="border" clear round small>设置帮助</button>
+            <button ion-button color="dark" class="border" clear round small>设置帮助</button>
             </div>
           </ion-row>
           <ion-row align-items-center justify-content-center class="golden-margin">
