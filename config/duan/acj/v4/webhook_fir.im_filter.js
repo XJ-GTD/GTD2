@@ -31,11 +31,11 @@ function clean(datasource)
     title: event['output']['payload']['platform'] + ' ' + event['output']['payload']['msg'] + ' 已更新',
     content: event['output']['payload']['link'],
     extras: {
-      event: "MWXING_DAILYSUMMARY_EVENT",
+      event: "MWXING_NOTIFICATION_EVENT",
       dependson: "on.homepage.init",
-      eventhandler: "on.dailyreport.message.click",
+      eventhandler: "on.urlopen.message.click",
       eventdatafrom: "server",
-      eventdata: JSON.stringify({})
+      eventdata: JSON.stringify({url: event['output']['payload']['link']})
     }
   };
 
