@@ -17,6 +17,11 @@ import {FoService} from "./fo.service";
   providers: [
     FoService,
   ],
+  entryComponents:[
+    FoPage,
+    FoGitHubPage,
+    FoFirIMPage
+  ],
   exports:[
     FoPage,
     FoGitHubPage,
