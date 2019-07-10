@@ -69,7 +69,9 @@
         <variable name="APP_KEY" value="e8b1f201b4e0cc102f665238" />
         <variable name="CHANNEL" value="cn.sh.com.xj.timeApp" />
     </plugin>
+    <allow-navigation href="http://10.0.0.51:8100" sessionid="ebacb8b8" />
     <engine name="ios" spec="^4.4.0" />
     <engine name="browser" spec="^5.0.4" />
     <engine name="android" spec="~7.1.4" />
+    <plugin name="cordova-plugin-inappbrowser" spec="3.0.0" />
 </widget>
