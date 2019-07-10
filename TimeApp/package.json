@@ -128,6 +128,7 @@
       "cordova-plugin-local-notification": {},
       "cordova-plugin-ionic-webview": {},
       "cordova-plugin-splashscreen": {},
+      "cordova-plugin-inappbrowser": {},
       "ionic-plugin-keyboard": {},
       "cordova-plugin-device": {},
       "cordova-plugin-console": {},
@@ -144,8 +145,7 @@
       "jpush-phonegap-plugin": {
         "APP_KEY": "e8b1f201b4e0cc102f665238",
         "CHANNEL": "cn.sh.com.xj.timeApp"
-      },
-      "cordova-plugin-inappbrowser": {}
+      }
     },
     "platforms": [
       "ios",
