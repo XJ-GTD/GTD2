@@ -28,7 +28,7 @@ function clean(datasource)
   to.push(userId);
 
   var push = {
-    title: event['output']['payload']['name'] + ' ' + event['output']['payload']['version'] + ' (build: ' + event['output']['payload']['build'] + ')',
+    title: event['output']['payload']['name'] + '' + event['output']['payload']['version'] + ' (build:' + event['output']['payload']['build'] + ')',
     content: event['output']['payload']['changelog'],
     extras: {
       event: "MWXING_NOTIFICATION_EVENT",
