@@ -37,13 +37,9 @@ import * as moment from "moment";
           <ion-row align-items-center justify-content-center>
             <p></p>
           </ion-row>
-          <ion-row align-items-center justify-content-center>
-            <ion-avatar item-start>
-              <img src="assets/imgs/fir.im/firim-logo.png">
-            </ion-avatar>
-          </ion-row>
           <ion-row align-items-center justify-content-center class="full-width fir-color">
-            <img src="assets/imgs/fir.im/plane.svg">
+            <img src="assets/imgs/fir.im/firim-logo.png" class="fir-logo">
+            <img src="assets/imgs/fir.im/plane.svg" class="fir-plane">
           </ion-row>
           <ion-row align-items-center justify-content-center class="golden-margin">
             <small>通知</small>
