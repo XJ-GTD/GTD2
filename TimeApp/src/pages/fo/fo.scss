@@ -79,6 +79,10 @@ page-fo, page-fofirim, page-fogithub {
     width: 50vmin;
   }
 
+  button[ion-button] {
+    border: 1.5px solid #fff;
+  }
+
   .plan-list-item ion-note {
     padding-right: 25px;
   }
