@@ -58,9 +58,12 @@ page-fo {
     padding-right: 25px;
   }
 
+  ion-list.list-ios {
+    width: 100%;
+  }
+
   .list-ios .item-block .item-inner {
     padding-right: 0;
-    width: 100%;
   }
 
   .item-ios .toggle-ios{

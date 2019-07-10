@@ -34,7 +34,7 @@ import * as moment from "moment";
         <ion-row>
           <ion-grid>
             <ion-row align-items-center justify-content-center>
-              获得项目代码发布、集成状态和安装版本通知
+              获得项目代码发布、集成状态和发布版本通知
             </ion-row>
             <ion-row align-items-center justify-content-center>
               <p></p>
