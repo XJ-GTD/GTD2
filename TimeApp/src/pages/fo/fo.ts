@@ -42,28 +42,28 @@ import * as moment from "moment";
             <ion-row align-items-center justify-content-center>
               <p></p>
             </ion-row>
-            <ion-row>
-              <ion-list no-lines>
-                <button ion-item class="plan-list-item" detail-push (click)="gotogithubsetting()">
-                  <ion-icon ios="logo-github" md="logo-github" item-start></ion-icon>
-                  <ion-label>GitHub</ion-label>
-                  <ion-note item-end>{{sgithub}}</ion-note>
-                </button>
-
-                <button ion-item class="plan-list-item" detail-push (click)="gototraviscisetting()">
-                  <ion-icon ios="logo-freebsd-devil" md="logo-freebsd-devil" item-start></ion-icon>
-                  <ion-label>Travis CI</ion-label>
-                  <ion-note item-end>{{stravisci}}</ion-note>
-                </button>
-
-                <button ion-item class="plan-list-item" detail-push (click)="gotofirimsetting()">
-                  <ion-icon ios="ios-bonfire" md="md-bonfire" item-start></ion-icon>
-                  <ion-label>集成 | fir.im</ion-label>
-                  <ion-note item-end>{{sfirim}}</ion-note>
-                </button>
-              </ion-list>
-            </ion-row>
           </ion-grid>
+        </ion-row>
+        <ion-row>
+          <ion-list no-lines>
+            <button ion-item class="plan-list-item" detail-push (click)="gotogithubsetting()">
+              <ion-icon ios="logo-github" md="logo-github" item-start></ion-icon>
+              <ion-label>GitHub</ion-label>
+              <ion-note item-end>{{sgithub}}</ion-note>
+            </button>
+
+            <button ion-item class="plan-list-item" detail-push (click)="gototraviscisetting()">
+              <ion-icon ios="logo-freebsd-devil" md="logo-freebsd-devil" item-start></ion-icon>
+              <ion-label>Travis CI</ion-label>
+              <ion-note item-end>{{stravisci}}</ion-note>
+            </button>
+
+            <button ion-item class="plan-list-item" detail-push (click)="gotofirimsetting()">
+              <ion-icon ios="ios-bonfire" md="md-bonfire" item-start></ion-icon>
+              <ion-label>集成 | fir.im</ion-label>
+              <ion-note item-end>{{sfirim}}</ion-note>
+            </button>
+          </ion-list>
         </ion-row>
       </ion-grid>
     </ion-content>
