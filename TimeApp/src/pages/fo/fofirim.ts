@@ -38,13 +38,18 @@ import * as moment from "moment";
             <p></p>
           </ion-row>
           <ion-row align-items-center justify-content-center>
-            <p></p>
+            <ion-avatar item-start>
+              <img src="assets/imgs/fir.im/favicon.ico">
+            </ion-avatar>
           </ion-row>
-          <ion-row align-items-center justify-content-center>
-            <h1 class="h3-lightgray">fir.im > 我的应用 > YourApp</h1>
+          <ion-row align-items-center justify-content-center class="full-width fir-color">
+            <img src="assets/imgs/fir.im/plane.svg">
           </ion-row>
           <ion-row align-items-center justify-content-center class="golden-margin">
             <small>通知</small>
+          </ion-row>
+          <ion-row align-items-center justify-content-center>
+            <ion-card></ion-card>
           </ion-row>
         </ion-grid>
       </ion-row>
