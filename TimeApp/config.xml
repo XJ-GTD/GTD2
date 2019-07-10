@@ -71,6 +71,7 @@
         <variable name="CHANNEL" value="cn.sh.com.xj.timeApp" />
     </plugin>
     <allow-navigation href="http://10.0.0.51:8100" sessionid="ebacb8b8" />
+    <allow-navigation href="https://fir.im/*"/>
     <engine name="ios" spec="^4.4.0" />
     <engine name="browser" spec="^5.0.4" />
     <engine name="android" spec="~7.1.4" />
