@@ -43,12 +43,12 @@ import * as moment from "moment";
             <div class="rorate-proreller">
               <img src="assets/imgs/fir.im/propeller.svg" class="fir-propeller">
             </div>
-          </ion-row>
-          <ion-row align-items-center justify-content-center>
-            <p></p>
+            <div class="firim-help">
+            <button ion-button color="light" class="border" clear round small>设置帮助</button>
+            </div>
           </ion-row>
           <ion-row align-items-center justify-content-center class="golden-margin">
-            <small>fir.im设置帮助</small>
+            <p></p>
           </ion-row>
           <ion-row align-items-center justify-content-center>
             <button ion-button color="light" class="border" clear round>复制 webhook 地址</button>
