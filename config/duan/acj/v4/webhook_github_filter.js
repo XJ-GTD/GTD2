@@ -63,7 +63,7 @@ function clean(datasource)
 
   if (repository && action && actionevent) {
     if (actioncheckrun) {
-      title = actioncheckrun['output']['title'];
+      title = actioncheckrun['check_suite']['app']['name'] + " - " + actioncheckrun['output']['title'];
       content = repository['full_name'] + ": " + actioncheckrun['check_suite']['head_branch'];
       url = actionevent['details_url'];
     } else {
