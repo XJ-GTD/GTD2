@@ -16,6 +16,7 @@ import {HData, ScdPageParamter} from "../../data.mapping";
 import {FeedbackService} from "../../service/cordova/feedback.service";
 import {DataConfig} from "../../service/config/data.config";
 import {UserConfig} from "../../service/config/user.config";
+import { InAppBrowser } from '@ionic-native/in-app-browser';
 
 /**
  * Generated class for the 首页 page.
@@ -79,6 +80,7 @@ export class HPage {
 
 
   constructor(private hService: HService,
+              private iab: InAppBrowser,
               private navController: NavController,
               private renderer2: Renderer2,
               private modalCtr: ModalController,
@@ -115,6 +117,14 @@ export class HPage {
 
     this.emitService.registerRef(data => {
       this.calendar.createMonth(this.calendar.monthOpt.original.time);
+    });
+
+    //极光推送跳转打开外部网页
+    this.emitService.register('on.urlopen.message.click', (data) => {
+      console.log("Open extend url message to show " + JSON.stringify(data));
+
+      const browser = this.iab.create(data.url, "_system");
+      browser.show();
     });
 
     //极光推送跳转共享日程页面
