@@ -51,7 +51,7 @@ page-fo, page-fofirim, page-fogithub {
   }
 
   .golden-margin {
-    margin-bottom: 35vmax;
+    margin-bottom: calc(calc(100vmax - 100vmin) / 1.5);
   }
 
   .h1-danger {
