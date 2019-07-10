@@ -41,7 +41,7 @@ import * as moment from "moment";
             <p></p>
           </ion-row>
           <ion-row align-items-center justify-content-center>
-            <h1 class="h1-danger">5 / 32</h1>
+            <h1 class="h1-lightgray">fir.im > 我的应用 > YourApp</h1>
           </ion-row>
           <ion-row align-items-center justify-content-center class="golden-margin">
             <small>通知</small>
