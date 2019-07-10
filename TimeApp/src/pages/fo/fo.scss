@@ -112,6 +112,10 @@ page-fo, page-fofirim, page-fogithub {
   .firim-help {
     position: absolute;
     margin-top: 18vmin;
+
+    button[ion-button].border {
+      border: 1.5px solid #111;
+    }
   }
 
   button[ion-button].border {
