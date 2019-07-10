@@ -10,17 +10,17 @@ if [ $TRAVIS_OS_NAME = 'osx' ]; then
     #fir publish $TRAVIS_BUILD_DIR/build/debug/$IOS_APP_NAME.ipa -T $FIR_TOKEN
     cp $TRAVIS_BUILD_DIR/build/debug/$IOS_APP_NAME.ipa $TRAVIS_BUILD_DIR/build/debug/app-$TRAVIS_BRANCH.ipa
     if [ $TRAVIS_BRANCH = 'cassiscornuta' ]; then
-      fir publish $TRAVIS_BUILD_DIR/build/debug/app-$TRAVIS_BRANCH.ipa -T $FIR_TOKEN_CASSISCORNUTA -c '#${TRAVIS_JOB_ID}: ${TRAVIS_COMMIT_MESSAGE}'
+      fir publish $TRAVIS_BUILD_DIR/build/debug/app-$TRAVIS_BRANCH.ipa -T $FIR_TOKEN_CASSISCORNUTA -c "#${TRAVIS_JOB_ID}: ${TRAVIS_COMMIT_MESSAGE}"
     else
-      fir publish $TRAVIS_BUILD_DIR/build/debug/app-$TRAVIS_BRANCH.ipa -T $FIR_TOKEN -c '#${TRAVIS_JOB_ID}: ${TRAVIS_COMMIT_MESSAGE}'
+      fir publish $TRAVIS_BUILD_DIR/build/debug/app-$TRAVIS_BRANCH.ipa -T $FIR_TOKEN -c "#${TRAVIS_JOB_ID}: ${TRAVIS_COMMIT_MESSAGE}"
     fi
 else
     # fir on Linux
     #fir p $TRAVIS_BUILD_DIR/TimeApp/platforms/android/app/build/outputs/apk/debug/app-debug.apk -T $FIR_TOKEN
     cp $TRAVIS_BUILD_DIR/TimeApp/platforms/android/app/build/outputs/apk/debug/app-debug.apk $TRAVIS_BUILD_DIR/TimeApp/platforms/android/app/build/outputs/apk/debug/app-$TRAVIS_BRANCH.apk
     if [ $TRAVIS_BRANCH = 'cassiscornuta' ]; then
-      fir p $TRAVIS_BUILD_DIR/TimeApp/platforms/android/app/build/outputs/apk/debug/app-$TRAVIS_BRANCH.apk -T $FIR_TOKEN_CASSISCORNUTA -c '#${TRAVIS_JOB_ID}: ${TRAVIS_COMMIT_MESSAGE}'
+      fir p $TRAVIS_BUILD_DIR/TimeApp/platforms/android/app/build/outputs/apk/debug/app-$TRAVIS_BRANCH.apk -T $FIR_TOKEN_CASSISCORNUTA -c "#${TRAVIS_JOB_ID}: ${TRAVIS_COMMIT_MESSAGE}"
     else
-      fir p $TRAVIS_BUILD_DIR/TimeApp/platforms/android/app/build/outputs/apk/debug/app-$TRAVIS_BRANCH.apk -T $FIR_TOKEN -c '#${TRAVIS_JOB_ID}: ${TRAVIS_COMMIT_MESSAGE}'
+      fir p $TRAVIS_BUILD_DIR/TimeApp/platforms/android/app/build/outputs/apk/debug/app-$TRAVIS_BRANCH.apk -T $FIR_TOKEN -c "#${TRAVIS_JOB_ID}: ${TRAVIS_COMMIT_MESSAGE}"
     fi
 fi
