@@ -23,7 +23,7 @@ import * as moment from "moment";
           <img class="img-header-left" src="./assets/imgs/back.png">
         </button>
       </ion-buttons>
-      <ion-title>Fir.IM Webhook</ion-title>
+      <ion-title>github</ion-title>
     </ion-toolbar>
   </ion-header>
 
@@ -32,7 +32,7 @@ import * as moment from "moment";
       <ion-row>
         <ion-grid>
           <ion-row align-items-center justify-content-center>
-            设置 GitHub Webhook
+            GitHub webhook 设置
           </ion-row>
           <ion-row align-items-center justify-content-center>
             <p></p>
@@ -57,5 +57,9 @@ export class FoGitHubPage {
               public navCtrl: NavController,
               private ssService: SsService,
               private _renderer: Renderer2) {
+  }
+
+  goBack() {
+    this.navCtrl.pop();
   }
 }
