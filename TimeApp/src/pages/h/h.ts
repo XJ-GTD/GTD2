@@ -124,7 +124,8 @@ export class HPage {
       console.log("Open extend url message to show " + JSON.stringify(data));
 
       if (data && data.eventdata && data.eventdata.url) {
-        const browser = this.iab.create(data.url, "_system");
+        console.log("Open href " + data.eventdata.url);
+        let browser = this.iab.create(data.url, "_system");
         browser.show();
       }
     });
