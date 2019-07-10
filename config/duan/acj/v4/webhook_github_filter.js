@@ -31,13 +31,22 @@ function clean(datasource)
 
   //Travics-CI events
   var action = event['output']['payload']['action'];
-  var actionevent = event['output']['payload']['check_run']
-    || event['output']['payload']['check_suite']
-    || event['output']['payload']['create']
-    || event['output']['payload']['delete']
-    || event['output']['payload']['member']
-    || event['output']['payload']['pull_request']
-    || event['output']['payload']['push'];
+  var actioncheckrun = event['output']['payload']['check_run'];
+  var actionchecksuite = event['output']['payload']['check_suite'];
+  var actioncreate = event['output']['payload']['create'];
+  var actiondelete = event['output']['payload']['delete'];
+  var actionmember = event['output']['payload']['member'];
+  var actionpullrequest = event['output']['payload']['pull_request'];
+  var actionpush = event['output']['payload']['push'];
+  var actionrepository = event['output']['payload']['repository'];
+  var actionevent = actioncheckrun
+      || actionchecksuite
+      || actioncreate
+      || actiondelete
+      || actionmember
+      || actionpullrequest
+      || actionpush
+      || actionrepository;
 
   var to = new Array();
   to.push(userId);
@@ -53,22 +62,30 @@ function clean(datasource)
   }
 
   if (repository && action && actionevent) {
-    title = "Travis-CI - " + repository['full_name'] + "[" + actionevent['head_branch'] + "]";
-    content = actionevent['app']['description'];
-    url = actionevent['app']['external_url'];
+    if (actioncheckrun) {
+      title = actioncheckrun['output']['title'];
+      content = repository['full_name'] + ": " + actioncheckrun['check_suite']['head_branch'];
+      url = actionevent['details_url'];
+    } else {
+      //skip
+    }
   }
 
-  var push = {
-    title: title,
-    content: content,
-    extras: {
-      event: "MWXING_NOTIFICATION_EVENT",
-      dependson: "on.homepage.init",
-      eventhandler: "on.urlopen.message.click",
-      eventdatafrom: "server",
-      eventdata: JSON.stringify({url: url})
-    }
-  };
+  var push = {};
+
+  if (title && content && url) {
+    push = {
+      title: title,
+      content: content,
+      extras: {
+        event: "MWXING_NOTIFICATION_EVENT",
+        dependson: "on.homepage.init",
+        eventhandler: "on.urlopen.message.click",
+        eventdatafrom: "server",
+        eventdata: JSON.stringify({url: url})
+      }
+    };
+  }
 
   var standardnext = {};
 
