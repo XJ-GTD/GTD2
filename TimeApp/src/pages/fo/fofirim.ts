@@ -41,11 +41,14 @@ import * as moment from "moment";
             <img src="assets/imgs/fir.im/firim-logo.png" class="fir-logo">
             <img src="assets/imgs/fir.im/plane.svg" class="fir-plane">
           </ion-row>
+          <ion-row align-items-center justify-content-center>
+            <p></p>
+          </ion-row>
           <ion-row align-items-center justify-content-center class="golden-margin">
             <small>通知</small>
           </ion-row>
           <ion-row align-items-center justify-content-center>
-            <ion-card></ion-card>
+            <button ion-button color="light" clear round>复制 webhook 地址</button>
           </ion-row>
         </ion-grid>
       </ion-row>
