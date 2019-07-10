@@ -39,7 +39,7 @@ import * as moment from "moment";
           </ion-row>
           <ion-row align-items-center justify-content-center>
             <ion-avatar item-start>
-              <img src="assets/imgs/fir.im/favicon.ico">
+              <img src="assets/imgs/fir.im/firim-logo.png">
             </ion-avatar>
           </ion-row>
           <ion-row align-items-center justify-content-center class="full-width fir-color">
