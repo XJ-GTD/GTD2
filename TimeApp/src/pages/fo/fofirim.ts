@@ -45,7 +45,7 @@ import * as moment from "moment";
             <p></p>
           </ion-row>
           <ion-row align-items-center justify-content-center class="golden-margin">
-            <small>通知</small>
+            <small>fir.im设置帮助</small>
           </ion-row>
           <ion-row align-items-center justify-content-center>
             <button ion-button color="light" clear round>复制 webhook 地址</button>
