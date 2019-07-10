@@ -80,7 +80,8 @@ page-fo, page-fofirim, page-fogithub {
   }
 
   .rorate-proreller {
-    -webkit-animation: aniplane .8s linear infinite;
+    position: absolute;
+    -webkit-animation: aniplane .15s linear infinite;
   }
 
   .fir-propeller {
@@ -106,7 +107,7 @@ page-fo, page-fofirim, page-fogithub {
     }
 	}
 
-  button[ion-button] {
+  button[ion-button].border {
     border: 1.5px solid #fff;
   }
 

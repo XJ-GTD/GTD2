@@ -51,7 +51,7 @@ import * as moment from "moment";
             <small>fir.im设置帮助</small>
           </ion-row>
           <ion-row align-items-center justify-content-center>
-            <button ion-button color="light" clear round>复制 webhook 地址</button>
+            <button ion-button color="light" class="border" clear round>复制 webhook 地址</button>
           </ion-row>
         </ion-grid>
       </ion-row>
