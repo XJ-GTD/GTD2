@@ -53,6 +53,10 @@ import * as moment from "moment";
           <ion-row align-items-center justify-content-center>
             <button ion-button color="light" class="border" clear round>复制 webhook 地址</button>
           </ion-row>
+          <p class="p5"></p>
+          <ion-row align-items-center justify-content-center>
+            <button ion-button full outline small class="no-border" color="danger" (click)="save(dr, !bdr)">{{bdr? '关闭' : '打开'}}</button>
+          </ion-row>
         </ion-grid>
       </ion-row>
     </ion-grid>
