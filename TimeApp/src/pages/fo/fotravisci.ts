@@ -5,6 +5,7 @@ import {Setting, UserConfig} from "../../service/config/user.config";
 import {SsService} from "../ss/ss.service";
 import {PageY} from "../../data.mapping";
 import * as moment from "moment";
+import { InAppBrowser } from '@ionic-native/in-app-browser';
 
 /**
  * Generated class for the 项目跟进 GitHub page.
@@ -61,6 +62,7 @@ import * as moment from "moment";
 export class FoTravisCIPage {
   constructor(public modalController: ModalController,
               public navCtrl: NavController,
+              private iab: InAppBrowser,
               private ssService: SsService,
               private _renderer: Renderer2) {
   }
