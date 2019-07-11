@@ -60,6 +60,10 @@ import { InAppBrowser } from '@ionic-native/in-app-browser';
   `
 })
 export class FoTravisCIPage {
+
+  github: boolean = false;
+  sgithub: string = "关闭";
+
   constructor(public modalController: ModalController,
               public navCtrl: NavController,
               private iab: InAppBrowser,
@@ -70,6 +74,21 @@ export class FoTravisCIPage {
   help() {
     let browser = this.iab.create("https://docs.travis-ci.com/user/tutorial/", "_system");
     browser.show();
+  }
+
+  gotogithubsetting() {
+    this.github = !this.github;
+    this.sgithub = this.github? "打开" : "关闭";
+
+    let modal = this.modalController.create(DataConfig.PAGE._FOGITHUB_PAGE);
+    modal.onDidDismiss((data)=>{
+      this.ssService.putFollowGitHub(
+        UserConfig.account.id,
+        moment().valueOf(),
+        this.github
+      );
+    });
+    modal.present();
   }
 
   goBack() {
