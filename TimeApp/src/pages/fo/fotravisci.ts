@@ -48,7 +48,7 @@ import { InAppBrowser } from '@ionic-native/in-app-browser';
             <p></p>
           </ion-row>
           <ion-row align-items-center justify-content-center>
-            <button ion-button color="light" class="border" clear round>接收GitHub消息推送</button>
+            <button ion-button color="light" class="border" clear round (click)="gotogithubsetting()">接收GitHub消息推送</button>
           </ion-row>
           <ion-row align-items-center justify-content-center>
             <button ion-button full outline small class="no-border" color="danger" (click)="save(dr, !bdr)">{{bdr? '关闭' : '打开'}}</button>
