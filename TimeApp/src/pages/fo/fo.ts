@@ -65,7 +65,7 @@ import * as moment from "moment";
             </button>
 
             <button ion-item class="plan-list-item" detail-push (click)="gotofirimsetting()">
-              <ion-icon ios="ios-bonfire" md="md-bonfire" item-start></ion-icon>
+              <img src="assets/imgs/travisci/travisci-worker-logo.svg" item-start>
               <ion-label>集成 | fir.im</ion-label>
               <ion-note item-end>{{sfirim}}</ion-note>
             </button>
