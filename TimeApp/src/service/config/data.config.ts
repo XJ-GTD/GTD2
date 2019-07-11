@@ -46,6 +46,7 @@ import {CfPage} from "../../pages/cf/cf";
 import {FoPage} from "../../pages/fo/fo";
 import {FoGitHubPage} from "../../pages/fo/fogithub";
 import {FoFirIMPage} from "../../pages/fo/fofirim";
+import {FoTravisCIPage} from "../../pages/fo/fotravisci";
 
 export class DataConfig {
   public static isdebug: boolean  = true;
@@ -256,6 +257,7 @@ export class DataConfig {
     _FO_PAGE: FoPage,       // 设置项目跟进可选项
     _FOGITHUB_PAGE: FoGitHubPage,       // 设置项目跟进GitHub可选项
     _FOFIRIM_PAGE: FoFirIMPage,       // 设置项目跟进Fir.IM可选项
+    _FOTRAVISCI_PAGE: FoTravisCIPage,       // 设置项目跟进Travis-CI可选项
   }
   static PAGES = [
     HPage,        // 首页 - 首页
