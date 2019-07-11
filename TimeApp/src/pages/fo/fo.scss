@@ -51,7 +51,7 @@ page-fo, page-fofirim, page-fogithub, page-fotravisci {
   }
 
   .golden-height {
-    height: calc(calc(100vmax - 100vmin) / 1.5);
+    height: calc(2em + calc(calc(100vmax - 100vmin) / 1.5));
   }
 
   .golden-margin {
@@ -151,7 +151,7 @@ page-fo, page-fofirim, page-fogithub, page-fotravisci {
 
   .github-help {
     position: absolute;
-    margin-top: 17vmin;
+    margin-top: 18vmin;
 
     button[ion-button].border {
       border: 1.5px solid #111;
@@ -160,7 +160,7 @@ page-fo, page-fofirim, page-fogithub, page-fotravisci {
 
   .travisci-help {
     position: absolute;
-    margin-top: 16vmin;
+    margin-top: 18vmin;
 
     button[ion-button].border {
       border: 1.5px solid #fff;

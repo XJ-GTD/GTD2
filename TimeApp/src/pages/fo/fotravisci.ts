@@ -44,6 +44,7 @@ import * as moment from "moment";
             </div>
           </ion-row>
           <ion-row align-items-center justify-content-center class="golden-margin">
+            <p></p>
           </ion-row>
           <ion-row align-items-center justify-content-center>
             <button ion-button color="light" class="border" clear round>开通GitHub消息推送</button>
