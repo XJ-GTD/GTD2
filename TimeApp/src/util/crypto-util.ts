@@ -1,14 +1,10 @@
 import { pbkdf2 } from "crypto";
 
 /** @hidden */
-export function getSecret(userid: string, saltlength: number = 16) {
-  return new Promise<any>(async (resolve, reject) => {
+export async function getSecret(userid: string, saltlength: number = 16) {
     var salt = randomBytes(16);
 
-    pbkdf2(userid, salt, 16, 32, 'sha1', (err, deliverykey) => {
-      return deliverykey;
-    });
-  });
+    return await pbkdf2(userid, salt, 16, 32, 'sha1');
 }
 
 /** @hidden */
