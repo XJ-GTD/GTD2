@@ -6,6 +6,8 @@ import {SsService} from "../ss/ss.service";
 import { getSecret } from "../../util/crypto-util";
 import {PageY} from "../../data.mapping";
 import * as moment from "moment";
+import {Clipboard} from '@ionic-native/clipboard';
+import { InAppBrowser } from '@ionic-native/in-app-browser';
 
 /**
  * Generated class for the 项目跟进 GitHub page.
@@ -41,7 +43,7 @@ import * as moment from "moment";
           <ion-row align-items-center justify-content-center class="full-width github-color">
             <ion-icon ios="logo-github" md="logo-github" class="github-logo"></ion-icon>
             <div class="github-help">
-            <button ion-button color="dark" class="border" clear round small>设置帮助</button>
+            <button ion-button color="dark" class="border" clear round small (click)="help()">设置帮助</button>
             </div>
           </ion-row>
           <ion-row align-items-center justify-content-center class="golden-height">
@@ -73,7 +75,7 @@ import * as moment from "moment";
           </ion-card>
           </ion-row>
           <ion-row align-items-center justify-content-center>
-            <button ion-button color="light" class="border" clear round>复制 webhook 地址</button>
+            <button ion-button color="light" class="border" clear round (click)="copyWebhook()">复制 webhook 地址</button>
           </ion-row>
           <ion-row align-items-center justify-content-center>
             <button ion-button full outline small class="no-border" color="danger" (click)="save(dr, !bdr)">{{bdr? '关闭' : '打开'}}</button>
@@ -88,11 +90,18 @@ export class FoGitHubPage {
 
   secret: string = "****************";
   hideOrshow: boolean = true;
+  webhook: string = "";
 
   constructor(public modalController: ModalController,
               public navCtrl: NavController,
+              private clipboard: Clipboard,
               private ssService: SsService,
               private _renderer: Renderer2) {
+  }
+
+  help() {
+    let browser = this.iab.create("https://developer.github.com/webhooks/creating/", "_system");
+    browser.show();
   }
 
   resetSecret() {
@@ -101,7 +110,13 @@ export class FoGitHubPage {
   }
 
   copySecret() {
+    this.clipboard.copy(this.secret);
+    this.util.popoverStart("安全令牌已复制到剪贴板");
+  }
 
+  copyWebhook() {
+    this.clipboard.copy(this.webhook);
+    this.util.popoverStart("webhook地址已复制到剪贴板");
   }
 
   showOrhideSecret() {
