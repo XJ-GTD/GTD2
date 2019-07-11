@@ -43,11 +43,14 @@ import * as moment from "moment";
             <button ion-button color="dark" class="border" clear round small>设置帮助</button>
             </div>
           </ion-row>
-          <ion-row align-items-center justify-content-center class="golden-margin">
+          <ion-row align-items-center justify-content-center class="golden-margin-s">
             <p></p>
           </ion-row>
           <ion-row align-items-center justify-content-center>
             <button ion-button color="light" class="border" clear round>生成安全令牌</button>
+          </ion-row>
+          <ion-row align-items-center justify-content-center>
+            <button ion-button color="light" class="border" clear round>复制 webhook 地址</button>
           </ion-row>
           <ion-row align-items-center justify-content-center>
             <button ion-button full outline small class="no-border" color="danger" (click)="save(dr, !bdr)">{{bdr? '关闭' : '打开'}}</button>
