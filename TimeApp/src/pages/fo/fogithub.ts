@@ -48,7 +48,7 @@ import * as moment from "moment";
           <ion-card>
             <ion-card-header text-center>安全令牌</ion-card-header>
             <ion-card-content>
-              <p text-center>{{secret| formatstring: ['mask', hideOrshow]}}</p>
+              <p text-center>{{secret| formatstring: 'mask': hideOrshow}}</p>
             </ion-card-content>
             <ion-row>
               <ion-col text-center>
