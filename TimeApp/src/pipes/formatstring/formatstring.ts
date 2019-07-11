@@ -20,7 +20,7 @@ export class FormatstringPipe implements PipeTransform {
 
     if (args.length == 2 ) {
       if (args[0] == "mask" && args[1] == true) {
-        return value.replace(/*/g, '*');
+        return value.replace(/.*/g, '*');
       }
     }
 
