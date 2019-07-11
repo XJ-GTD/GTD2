@@ -40,7 +40,7 @@ import * as moment from "moment";
           <ion-row align-items-center justify-content-center class="full-width travisci-color">
             <img src="assets/imgs/travisci/travisci-logo.svg" class="travisci-logo">
             <div class="travisci-help">
-            <button ion-button color="dark" class="border" clear round small>设置帮助</button>
+            <button ion-button color="dark" class="border" clear round small (click)="help()">设置帮助</button>
             </div>
           </ion-row>
           <ion-row align-items-center justify-content-center class="golden-margin">
@@ -63,6 +63,11 @@ export class FoTravisCIPage {
               public navCtrl: NavController,
               private ssService: SsService,
               private _renderer: Renderer2) {
+  }
+
+  help() {
+    let browser = this.iab.create("https://developer.github.com/webhooks/creating/", "_system");
+    browser.show();
   }
 
   goBack() {

@@ -91,7 +91,7 @@ export class FoGitHubPage {
 
   secret: string = "****************";
   hideOrshow: boolean = true;
-  webhook: string = "";
+  webhook: string = "http://pluto.guobaa.com/aag/webhooks/github/v3";
 
   constructor(public modalController: ModalController,
               public navCtrl: NavController,

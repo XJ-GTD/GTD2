@@ -2,9 +2,12 @@ import {Component, ElementRef, Renderer2, ViewChild} from '@angular/core';
 import {IonicPage, NavController, ModalController} from 'ionic-angular';
 import {DataConfig} from "../../service/config/data.config";
 import {Setting, UserConfig} from "../../service/config/user.config";
+import {UtilService} from "../../service/util-service/util.service";
 import {SsService} from "../ss/ss.service";
 import {PageY} from "../../data.mapping";
 import * as moment from "moment";
+import {Clipboard} from '@ionic-native/clipboard';
+import { InAppBrowser } from '@ionic-native/in-app-browser';
 
 /**
  * Generated class for the 项目跟进 集成 | Fir.IM page.
@@ -44,14 +47,14 @@ import * as moment from "moment";
               <img src="assets/imgs/fir.im/propeller.svg" class="fir-propeller">
             </div>
             <div class="firim-help">
-            <button ion-button color="dark" class="border" clear round small>设置帮助</button>
+            <button ion-button color="dark" class="border" clear round small (click)="help()">设置帮助</button>
             </div>
           </ion-row>
           <ion-row align-items-center justify-content-center class="golden-margin">
             <p></p>
           </ion-row>
           <ion-row align-items-center justify-content-center>
-            <button ion-button color="light" class="border" clear round>复制 webhook 地址</button>
+            <button ion-button color="light" class="border" clear round (click)="copyWebhook()">复制 webhook 地址</button>
           </ion-row>
           <ion-row align-items-center justify-content-center>
             <button ion-button full outline small class="no-border" color="danger" (click)="save(dr, !bdr)">{{bdr? '关闭' : '打开'}}</button>
@@ -63,10 +66,25 @@ import * as moment from "moment";
   `
 })
 export class FoFirIMPage {
+  webhook: string = "http://pluto.guobaa.com/aag/webhooks/fir.im/v3";
+
   constructor(public modalController: ModalController,
               public navCtrl: NavController,
+              private clipboard: Clipboard,
+              private iab: InAppBrowser,
+              private util: UtilService,
               private ssService: SsService,
               private _renderer: Renderer2) {
+  }
+
+  help() {
+    let browser = this.iab.create("https://fir.im/support/articles/webhook/custom", "_system");
+    browser.show();
+  }
+
+  copyWebhook() {
+    this.clipboard.copy(this.webhook);
+    this.util.popoverStart("webhook地址已复制到剪贴板");
   }
 
   goBack() {
