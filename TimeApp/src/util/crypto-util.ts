@@ -3,7 +3,7 @@ import { pbkdf2 } from "crypto";
 /** @hidden */
 export function getSecret(userid: string, saltlength: number = 16) {
   var salt = randomBytes(16);
-  return pbkdf2(userid, salt, 16, 32, 'sha1');
+  return pbkdf2(userid, salt, 16, 32, 'sha1', () => {});
 }
 
 /** @hidden */
