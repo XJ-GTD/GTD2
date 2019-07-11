@@ -117,11 +117,15 @@ export class FoPage {
     this.travisci = !this.travisci;
     this.stravisci = this.travisci? "打开" : "关闭";
 
-    this.ssService.putFollowTravisCI(
-      UserConfig.account.id,
-      moment().valueOf(),
-      this.travisci
-    );
+    let modal = this.modalController.create(DataConfig.PAGE._FOTRAVISCI_PAGE);
+    modal.onDidDismiss((data)=>{
+      this.ssService.putFollowTravisCI(
+        UserConfig.account.id,
+        moment().valueOf(),
+        this.travisci
+      );
+    });
+    modal.present();
   }
 
   gotogithubsetting() {
