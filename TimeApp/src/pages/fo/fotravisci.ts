@@ -108,7 +108,7 @@ export class FoTravisCIPage {
 
     await this.ssService.save(set);
 
-    if (set.yk == DataConfig.SYS_DR) {
+    if (set.yk == DataConfig.SYS_FOTRACI) {
       // 改变画面显示
       this.bdr = value;
       // 返回前页
