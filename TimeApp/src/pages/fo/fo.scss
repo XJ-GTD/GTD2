@@ -48,6 +48,10 @@ page-fo, page-fofirim, page-fogithub, page-fotravisci {
     padding-left: 8px;
     font-size: 1.5rem;
     min-height: 9vmin;
+
+    ion-icon, img {
+      width: 2rem;
+    }
   }
 
   .golden-height {
