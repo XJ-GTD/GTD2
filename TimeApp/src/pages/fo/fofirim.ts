@@ -68,6 +68,9 @@ import { InAppBrowser } from '@ionic-native/in-app-browser';
 export class FoFirIMPage {
   webhook: string = "http://pluto.guobaa.com/aag/webhooks/fir.im/v3";
 
+  sfirim: string = "关闭";
+  firim: boolean = false;
+
   constructor(public modalController: ModalController,
               public navCtrl: NavController,
               private clipboard: Clipboard,
