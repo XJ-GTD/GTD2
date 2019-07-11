@@ -59,13 +59,13 @@ import * as moment from "moment";
             </button>
 
             <button ion-item class="plan-list-item" detail-push (click)="gototraviscisetting()">
-              <ion-icon ios="logo-freebsd-devil" md="logo-freebsd-devil" item-start></ion-icon>
+              <img src="assets/imgs/travisci/travisci-worker-logo.svg" item-start>
               <ion-label>Travis CI</ion-label>
               <ion-note item-end>{{stravisci}}</ion-note>
             </button>
 
             <button ion-item class="plan-list-item" detail-push (click)="gotofirimsetting()">
-              <img src="assets/imgs/travisci/travisci-worker-logo.svg" item-start>
+              <img src="assets/imgs/fir.im/favicon.ico" item-start>
               <ion-label>集成 | fir.im</ion-label>
               <ion-note item-end>{{sfirim}}</ion-note>
             </button>
