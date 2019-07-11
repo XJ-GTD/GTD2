@@ -68,7 +68,7 @@ export class FoTravisCIPage {
   }
 
   help() {
-    let browser = this.iab.create("https://developer.github.com/webhooks/creating/", "_system");
+    let browser = this.iab.create("https://docs.travis-ci.com/user/tutorial/", "_system");
     browser.show();
   }
 
