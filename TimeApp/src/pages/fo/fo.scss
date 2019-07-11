@@ -50,8 +50,8 @@ page-fo, page-fofirim, page-fogithub {
     min-height: 9vmin;
   }
 
-  .golden-margin-s {
-    margin-bottom: calc(calc(100vmax - 100vmin) / 2);
+  .golden-height {
+    height: calc(calc(100vmax - 100vmin) / 1.5);
   }
 
   .golden-margin {
