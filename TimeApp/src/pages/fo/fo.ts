@@ -34,7 +34,7 @@ import * as moment from "moment";
         <ion-row>
           <ion-grid>
             <ion-row align-items-center justify-content-center>
-              获得项目代码提交、集成状态和版本发布通知
+              获得项目代码提交、持续集成和版本发布通知
             </ion-row>
             <ion-row align-items-center justify-content-center>
               <p></p>
@@ -65,7 +65,7 @@ import * as moment from "moment";
             </button>
 
             <button ion-item class="plan-list-item" detail-push (click)="gotofirimsetting()">
-              <img src="assets/imgs/fir.im/favicon.ico" item-start>
+              <ion-icon ios="logo-dropbox" md="logo-dropbox" item-start></ion-icon>
               <ion-label>集成 | fir.im</ion-label>
               <ion-note item-end>{{sfirim}}</ion-note>
             </button>
