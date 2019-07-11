@@ -148,6 +148,15 @@ page-fo, page-fofirim, page-fogithub, page-fotravisci {
     }
 	}
 
+  .github-help {
+    position: absolute;
+    margin-top: 17vmin;
+
+    button[ion-button].border {
+      border: 1.5px solid #111;
+    }
+  }
+
   .travisci-help {
     position: absolute;
     margin-top: 16vmin;

@@ -39,7 +39,7 @@ import * as moment from "moment";
           </ion-row>
           <ion-row align-items-center justify-content-center class="full-width github-color">
             <ion-icon ios="logo-github" md="logo-github" class="github-logo"></ion-icon>
-            <div class="firim-help">
+            <div class="github-help">
             <button ion-button color="dark" class="border" clear round small>设置帮助</button>
             </div>
           </ion-row>
