@@ -58,6 +58,24 @@ page-fo, page-fofirim, page-fogithub {
     margin-bottom: calc(calc(100vmax - 100vmin) / 1.5);
   }
 
+  ion-card.card-ios {
+    background-color: transparent;
+
+    ion-card-header {
+      color: #fff;
+    }
+
+    ion-card-content {
+      p {
+        color: #fff;
+      }
+    }
+
+    button.ion-button {
+      color: #fff;
+    }
+  }
+
   .h1-danger {
     color: #f53d3d;
   }
