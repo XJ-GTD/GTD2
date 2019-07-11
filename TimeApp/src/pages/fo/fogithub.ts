@@ -3,6 +3,7 @@ import {IonicPage, NavController, ModalController} from 'ionic-angular';
 import {DataConfig} from "../../service/config/data.config";
 import {Setting, UserConfig} from "../../service/config/user.config";
 import {SsService} from "../ss/ss.service";
+import {UtilService} from "../../service/util-service/util.service";
 import { getSecret } from "../../util/crypto-util";
 import {PageY} from "../../data.mapping";
 import * as moment from "moment";
@@ -95,6 +96,8 @@ export class FoGitHubPage {
   constructor(public modalController: ModalController,
               public navCtrl: NavController,
               private clipboard: Clipboard,
+              private iab: InAppBrowser,
+              private util: UtilService,
               private ssService: SsService,
               private _renderer: Renderer2) {
   }
