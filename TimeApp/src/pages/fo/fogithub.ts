@@ -23,7 +23,7 @@ import * as moment from "moment";
           <img class="img-header-left" src="./assets/imgs/back.png">
         </button>
       </ion-buttons>
-      <ion-title>github</ion-title>
+      <ion-title>GitHub</ion-title>
     </ion-toolbar>
   </ion-header>
 
