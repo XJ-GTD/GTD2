@@ -10,5 +10,5 @@ export function getSecret(userid: string, saltlength: number = 16) {
 export function randomBytes(n: number) {
   for (var bytes = []; n > 0; n--)
     bytes.push(Math.floor(Math.random() * 256));
-  return bytes;
+  return bytes.join('');
 }
