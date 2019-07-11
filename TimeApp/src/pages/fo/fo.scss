@@ -148,6 +148,15 @@ page-fo, page-fofirim, page-fogithub, page-fotravisci {
     }
 	}
 
+  .travisci-help {
+    position: absolute;
+    margin-top: 16vmin;
+
+    button[ion-button].border {
+      border: 1.5px solid #fff;
+    }
+  }
+
   .firim-help {
     position: absolute;
     margin-top: 18vmin;
