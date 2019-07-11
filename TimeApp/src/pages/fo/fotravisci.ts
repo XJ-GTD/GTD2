@@ -37,7 +37,7 @@ import * as moment from "moment";
           <ion-row align-items-center justify-content-center>
             <p></p>
           </ion-row>
-          <ion-row align-items-center justify-content-center class="full-width github-color">
+          <ion-row align-items-center justify-content-center class="full-width travisci-color-color">
             <img src="assets/imgs/travisci/travisci-logo.svg" class="travisci-logo">
             <div class="firim-help">
             <button ion-button color="dark" class="border" clear round small>设置帮助</button>
