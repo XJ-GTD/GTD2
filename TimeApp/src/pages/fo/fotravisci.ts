@@ -61,6 +61,9 @@ import { InAppBrowser } from '@ionic-native/in-app-browser';
 })
 export class FoTravisCIPage {
 
+  stravisci: string = "关闭";
+  travisci: boolean = false;
+
   github: boolean = false;
   sgithub: string = "关闭";
 
@@ -89,6 +92,29 @@ export class FoTravisCIPage {
       );
     });
     modal.present();
+  }
+
+  async save(setting, value) {
+    let set:PageY = new PageY();
+    set.yi = setting.yi;//偏好主键ID
+    set.ytn = setting.bname; //偏好设置类型名称
+    set.yt = setting.typeB; //偏好设置类型
+    set.yn = setting.name;//偏好设置名称
+    set.yk = setting.type ;//偏好设置key
+    if (typeof value === "boolean")
+      set.yv = (value) ? "1":"0";//偏好设置value
+    else
+      set.yv = value;//偏好设置value
+
+    await this.ssService.save(set);
+
+    if (set.yk == DataConfig.SYS_DR) {
+      // 改变画面显示
+      this.bdr = value;
+      // 返回前页
+      this.navCtrl.pop();
+    }
+
   }
 
   goBack() {
