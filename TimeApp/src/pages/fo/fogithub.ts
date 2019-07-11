@@ -65,7 +65,7 @@ import * as moment from "moment";
               </ion-col>
               <ion-col text-center>
                 <button ion-button icon-start clear small (click)="showOrhideSecret()">
-                  <ion-icon [name]="{{hideOrshow? 'eye' : 'eye-off'}}"></ion-icon>
+                  <ion-icon [name]="hideOrshow? 'eye' : 'eye-off'"></ion-icon>
                   <div>{{hideOrshow? '显示' : '隐藏'}}</div>
                 </button>
               </ion-col>
@@ -101,7 +101,7 @@ export class FoGitHubPage {
   }
 
   copySecret() {
-    
+
   }
 
   showOrhideSecret() {
