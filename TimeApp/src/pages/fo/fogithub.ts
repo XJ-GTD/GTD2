@@ -32,13 +32,16 @@ import * as moment from "moment";
       <ion-row>
         <ion-grid>
           <ion-row align-items-center justify-content-center>
-            GitHub webhook 设置
+            接收 GitHub 事件消息推送
           </ion-row>
           <ion-row align-items-center justify-content-center>
             <p></p>
           </ion-row>
-          <ion-row align-items-center justify-content-center>
-            <p></p>
+          <ion-row align-items-center justify-content-center class="full-width fir-color">
+            <ion-icon name="github-logo"></ion-icon>
+            <div class="firim-help">
+            <button ion-button color="dark" class="border" clear round small>设置帮助</button>
+            </div>
           </ion-row>
           <ion-row align-items-center justify-content-center>
             <h1 class="h1-danger">5 / 32</h1>
