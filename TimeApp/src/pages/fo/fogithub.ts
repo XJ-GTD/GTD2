@@ -38,16 +38,19 @@ import * as moment from "moment";
             <p></p>
           </ion-row>
           <ion-row align-items-center justify-content-center class="full-width github-color">
-            <ion-icon ios="logo-github" md="logo-github"></ion-icon>
+            <ion-icon ios="logo-github" md="logo-github" class="github-logo"></ion-icon>
             <div class="firim-help">
             <button ion-button color="dark" class="border" clear round small>设置帮助</button>
             </div>
           </ion-row>
-          <ion-row align-items-center justify-content-center>
-            <h1 class="h1-danger">5 / 32</h1>
-          </ion-row>
           <ion-row align-items-center justify-content-center class="golden-margin">
-            <small>通知</small>
+            <p></p>
+          </ion-row>
+          <ion-row align-items-center justify-content-center>
+            <button ion-button color="light" class="border" clear round>生成安全令牌</button>
+          </ion-row>
+          <ion-row align-items-center justify-content-center>
+            <button ion-button full outline small class="no-border" color="danger" (click)="save(dr, !bdr)">{{bdr? '关闭' : '打开'}}</button>
           </ion-row>
         </ion-grid>
       </ion-row>
