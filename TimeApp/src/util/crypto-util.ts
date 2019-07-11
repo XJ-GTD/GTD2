@@ -1,10 +1,10 @@
 import { pbkdf2Sync } from "crypto";
 
 /** @hidden */
-export function getSecret(userid: string, saltlength: number = 16) {
-    var salt = randomBytes(16);
+export function getSecret(userid: string, saltlength: number = 8) {
+    var salt = randomBytes(saltlength);
 
-    return pbkdf2Sync(userid, salt, 16, 32, 'sha1').toString('hex');
+    return pbkdf2Sync(userid, salt, 8, 8, 'sha1').toString('hex');
 }
 
 /** @hidden */
