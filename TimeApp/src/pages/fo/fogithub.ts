@@ -48,7 +48,7 @@ import * as moment from "moment";
           <ion-card>
             <ion-card-header text-center>安全令牌</ion-card-header>
             <ion-card-content>
-              <p text-center>{{secret}}</p>
+              <p text-center>{{secret| formatstring: 'mask', hideOrshow}}</p>
             </ion-card-content>
             <ion-row>
               <ion-col text-center>
@@ -64,7 +64,7 @@ import * as moment from "moment";
                 </button>
               </ion-col>
               <ion-col text-center>
-                <button ion-button icon-start clear small>
+                <button ion-button icon-start clear small (click)="showOrhideSecret()">
                   <ion-icon name="eye"></ion-icon>
                   <div>显示</div>
                 </button>
@@ -87,6 +87,7 @@ import * as moment from "moment";
 export class FoGitHubPage {
 
   secret: string = "****************";
+  hideOrshow: boolean = true;
 
   constructor(public modalController: ModalController,
               public navCtrl: NavController,
@@ -96,6 +97,10 @@ export class FoGitHubPage {
 
   resetSecret() {
     this.secret = getSecret(UserConfig.user.id);
+  }
+
+  showOrhideSecret() {
+
   }
 
   goBack() {

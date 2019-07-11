@@ -5,6 +5,7 @@ import {FoGitHubPage} from "./fogithub";
 import {FoFirIMPage} from "./fofirim";
 import {FoTravisCIPage} from "./fotravisci";
 import {FoService} from "./fo.service";
+import {PipesModule} from "../../pipes/pipes.module";
 
 @NgModule({
   declarations: [
@@ -14,6 +15,7 @@ import {FoService} from "./fo.service";
     FoTravisCIPage
   ],
   imports: [
+    PipesModule,
     IonicPageModule.forChild(FoPage),
   ],
   providers: [
