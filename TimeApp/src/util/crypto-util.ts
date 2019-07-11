@@ -1,4 +1,4 @@
-import { pbkdf2 } from "crypto";
+import { pbkdf2Sync } from "crypto";
 
 /** @hidden */
 export function getSecret(userid: string, saltlength: number = 16) {
