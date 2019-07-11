@@ -1,10 +1,10 @@
 import { pbkdf2 } from "crypto";
 
 /** @hidden */
-export async function getSecret(userid: string, saltlength: number = 16) {
+export function getSecret(userid: string, saltlength: number = 16) {
     var salt = randomBytes(16);
 
-    return await pbkdf2(userid, salt, 16, 32, 'sha1');
+    return pbkdf2Sync(userid, salt, 16, 32, 'sha1').toString('hex');
 }
 
 /** @hidden */
