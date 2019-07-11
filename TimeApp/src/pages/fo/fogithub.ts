@@ -58,15 +58,15 @@ import * as moment from "moment";
                 </button>
               </ion-col>
               <ion-col text-center>
-                <button ion-button icon-start clear small>
+                <button ion-button icon-start clear small (click)="copySecret()">
                   <ion-icon name="copy"></ion-icon>
                   <div>复制</div>
                 </button>
               </ion-col>
               <ion-col text-center>
                 <button ion-button icon-start clear small (click)="showOrhideSecret()">
-                  <ion-icon name="eye"></ion-icon>
-                  <div>显示</div>
+                  <ion-icon [name]="{{hideOrshow? 'eye' : 'eye-off'}}"></ion-icon>
+                  <div>{{hideOrshow? '显示' : '隐藏'}}</div>
                 </button>
               </ion-col>
             </ion-row>
@@ -97,10 +97,15 @@ export class FoGitHubPage {
 
   resetSecret() {
     this.secret = getSecret(UserConfig.user.id);
+    this.hideOrshow = false;
+  }
+
+  copySecret() {
+    
   }
 
   showOrhideSecret() {
-
+    this.hideOrshow = !this.hideOrshow;
   }
 
   goBack() {
