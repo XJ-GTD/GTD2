@@ -44,7 +44,33 @@ import * as moment from "moment";
             </div>
           </ion-row>
           <ion-row align-items-center justify-content-center class="golden-height">
-          <button ion-button color="light" class="border" clear round>生成安全令牌</button>
+          <ion-card>
+            <ion-card-header>安全令牌</ion-card-header>
+            <ion-card-content>
+              <p>**************************</p>
+            </ion-card-content>
+            <ion-row>
+              <ion-col>
+                <button ion-button icon-start clear small>
+                  <ion-icon name="eye"></ion-icon>
+                  <div>显示</div>
+                </button>
+              </ion-col>
+              <ion-col>
+                <button ion-button icon-start clear small>
+                  <ion-icon name="copy"></ion-icon>
+                  <div>复制</div>
+                </button>
+              </ion-col>
+              <ion-col>
+                <button ion-button icon-start clear small>
+                  <ion-icon name="refresh-circle"></ion-icon>
+                  <div>重置</div>
+                </button>
+              </ion-col>
+            </ion-row>
+            <button ion-button color="light" class="border" clear round small>重置</button>
+          </ion-card>
           </ion-row>
           <ion-row align-items-center justify-content-center>
             <button ion-button color="light" class="border" clear round>复制 webhook 地址</button>
