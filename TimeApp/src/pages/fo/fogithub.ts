@@ -3,6 +3,7 @@ import {IonicPage, NavController, ModalController} from 'ionic-angular';
 import {DataConfig} from "../../service/config/data.config";
 import {Setting, UserConfig} from "../../service/config/user.config";
 import {SsService} from "../ss/ss.service";
+import { getSecret } from "../../util/crypto-util";
 import {PageY} from "../../data.mapping";
 import * as moment from "moment";
 
@@ -47,11 +48,11 @@ import * as moment from "moment";
           <ion-card>
             <ion-card-header text-center>安全令牌</ion-card-header>
             <ion-card-content>
-              <p text-center>**************************</p>
+              <p text-center>{{secret}}</p>
             </ion-card-content>
             <ion-row>
               <ion-col text-center>
-                <button ion-button icon-start clear small>
+                <button ion-button icon-start clear small (click)="resetSecret()">
                   <ion-icon name="refresh-circle"></ion-icon>
                   <div>重置</div>
                 </button>
@@ -84,10 +85,17 @@ import * as moment from "moment";
   `
 })
 export class FoGitHubPage {
+
+  secret: string = "****************";
+
   constructor(public modalController: ModalController,
               public navCtrl: NavController,
               private ssService: SsService,
               private _renderer: Renderer2) {
+  }
+
+  resetSecret() {
+    this.secret = getSecret(UserConfig.user.id);
   }
 
   goBack() {
