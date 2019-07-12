@@ -1,5 +1,5 @@
 import {Component, ElementRef, Renderer2, ViewChild} from '@angular/core';
-import {IonicPage, NavController, ModalController} from 'ionic-angular';
+import {IonicPage, NavController, ViewController, ModalController} from 'ionic-angular';
 import {DataConfig} from "../../service/config/data.config";
 import {Setting, UserConfig} from "../../service/config/user.config";
 import {SsService} from "../ss/ss.service";
@@ -100,6 +100,7 @@ export class FoGitHubPage {
 
   constructor(public modalController: ModalController,
               public navCtrl: NavController,
+              public viewCtrl: ViewController,
               private clipboard: Clipboard,
               private iab: InAppBrowser,
               private util: UtilService,

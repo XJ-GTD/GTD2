@@ -1,5 +1,5 @@
 import {Component, ElementRef, Renderer2, ViewChild} from '@angular/core';
-import {IonicPage, NavController, ModalController} from 'ionic-angular';
+import {IonicPage, NavController, ViewController, ModalController} from 'ionic-angular';
 import {DataConfig} from "../../service/config/data.config";
 import {Setting, UserConfig} from "../../service/config/user.config";
 import {UtilService} from "../../service/util-service/util.service";
@@ -75,6 +75,7 @@ export class FoFirIMPage {
 
   constructor(public modalController: ModalController,
               public navCtrl: NavController,
+              public viewCtrl: ViewController,
               private clipboard: Clipboard,
               private iab: InAppBrowser,
               private util: UtilService,
