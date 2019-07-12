@@ -81,7 +81,10 @@ import * as moment from "moment";
 
             <button ion-item class="plan-list-item" detail-push (click)="gotopjfollowsetting()">
               <ion-label>项目跟进</ion-label>
-              <ion-note item-end>{{spfon}}</ion-note>
+              <ion-note item-end *ngIf="spfon">{{spfon}}</ion-note>
+              <ion-icon item-end *ngIf="!spfon && github" ios="logo-github" md="logo-github"></ion-icon>
+              <img item-end *ngIf="!spfon && travisci" src="assets/imgs/travisci/travisci-worker-logo.svg">
+              <ion-icon item-end *ngIf="!spfon && firim" ios="logo-dropbox" md="logo-dropbox"></ion-icon>
             </button>
 
             <ion-list-header>
@@ -104,14 +107,20 @@ export class SsPage {
   dr:Setting;       //每日简报 智能提醒
   drp1:Setting;     //每日简报 提醒时间
   djh:Setting;      //日历 缺省日历
+  sfirim: Setting;
+  sgithub: Setting;
+  stravisci: Setting;
 
   bh:boolean;       //唤醒 页面显示和修改
   bt:boolean;       //新消息提醒 页面显示和修改
   bb:boolean;       //语音播报 页面显示和修改
   bz:boolean;       //振动 页面显示和修改
   bdr:boolean;      //每日简报 页面显示和修改
+  github:boolean;   //项目跟进 GitHub
+  travisci:boolean;   //项目跟进 Travis CI
+  firim:boolean;   //项目跟进 Fir.IM
   sdrp1:string;     //每日简报 提醒时间
-  spfon:string = "关闭";     //项目跟进 智能提醒
+  spfon:string = "打开";     //项目跟进 智能提醒
   sdjhn:string;     //日历 缺省日历名称
   sdjh:string;      //日历 缺省日历
   sdjho:any;        //日历 缺省日历对象
@@ -189,6 +198,26 @@ export class SsPage {
   gotopjfollowsetting() {
     let modal = this.modalController.create(DataConfig.PAGE._FO_PAGE);
     modal.onDidDismiss((data)=>{
+      if (data) {
+        if (data.github) {
+          this.sgithub = data.github;
+          this.github = data.github.value == "1"? true : false;
+        }
+        if (data.travisci) {
+          this.stravisci = data.travisci;
+          this.travisci = data.travisci.value == "1"? true : false;
+        }
+        if (data.firim) {
+          this.sfirim = data.firim;
+          this.firim = data.firim.value == "1"? true : false;
+        }
+
+        if (this.github || this.firim || this.travisci) {
+          this.spfon = "";
+        } else {
+          this.spfon = "打开";
+        }
+      }
     });
     modal.present();
   }

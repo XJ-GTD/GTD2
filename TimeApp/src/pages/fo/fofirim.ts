@@ -130,9 +130,9 @@ export class FoFirIMPage {
       // 改变画面显示
       this.firim = value;
       // 返回前页
-        let data: Object = {setting: setting};
+      let data: Object = {setting: setting};
 
-        this.viewCtrl.dismiss(data);
+      this.viewCtrl.dismiss(data);
     }
 
   }

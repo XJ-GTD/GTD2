@@ -1,5 +1,5 @@
 import {Component, ElementRef, Renderer2, ViewChild} from '@angular/core';
-import {IonicPage, NavController, ModalController} from 'ionic-angular';
+import {IonicPage, NavController, ViewController, ModalController} from 'ionic-angular';
 import {DataConfig} from "../../service/config/data.config";
 import {Setting, UserConfig} from "../../service/config/user.config";
 import {SsService} from "../ss/ss.service";
@@ -86,6 +86,7 @@ export class FoPage {
 
   constructor(public modalController: ModalController,
               public navCtrl: NavController,
+              public viewCtrl: ViewController,
               private ssService: SsService,
               private _renderer: Renderer2) {
     let memFirIMDef = UserConfig.settins.get(DataConfig.SYS_FOFIR);
@@ -111,7 +112,13 @@ export class FoPage {
   }
 
   goBack() {
-    this.navCtrl.pop();
+    let data: Object = {
+      github: this.sgithub,
+      travisci: this.stravisci,
+      firim: this.sfirim
+    };
+
+    this.viewCtrl.dismiss(data);
   }
 
   gotofirimsetting() {
