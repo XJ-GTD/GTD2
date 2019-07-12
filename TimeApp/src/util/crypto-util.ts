@@ -1,4 +1,4 @@
-import { pbkdf2Sync } from "crypto";
+import { pbkdf2Sync, createHash } from "crypto";
 
 /** @hidden */
 export function getSecret(userid: string, saltlength: number = 8) {
@@ -8,7 +8,7 @@ export function getSecret(userid: string, saltlength: number = 8) {
 }
 
 export function getSha1SafeforBrowser(userid: string) {
-  var hash = crypto.createHash('sha1');
+  var hash = createHash('sha1');
   return hash.update(userid).digest("base64");
 }
 
