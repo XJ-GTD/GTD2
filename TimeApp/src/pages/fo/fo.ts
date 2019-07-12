@@ -55,19 +55,19 @@ import * as moment from "moment";
             <button ion-item class="plan-list-item" detail-push (click)="gotogithubsetting()">
               <ion-icon ios="logo-github" md="logo-github" item-start></ion-icon>
               <ion-label>GitHub</ion-label>
-              <ion-note item-end>{{github? "打开" : "关闭"}}</ion-note>
+              <ion-note item-end>{{github? "关闭" : "打开"}}</ion-note>
             </button>
 
             <button ion-item class="plan-list-item" detail-push (click)="gototraviscisetting()">
               <img src="assets/imgs/travisci/travisci-worker-logo.svg" item-start>
               <ion-label>Travis CI</ion-label>
-              <ion-note item-end>{{travisci? "打开" : "关闭"}}</ion-note>
+              <ion-note item-end>{{travisci? "关闭" : "打开"}}</ion-note>
             </button>
 
             <button ion-item class="plan-list-item" detail-push (click)="gotofirimsetting()">
               <ion-icon ios="logo-dropbox" md="logo-dropbox" item-start></ion-icon>
               <ion-label>集成 | fir.im</ion-label>
-              <ion-note item-end>{{firim? "打开" : "关闭"}}</ion-note>
+              <ion-note item-end>{{firim? "关闭" : "打开"}}</ion-note>
             </button>
           </ion-list>
         </ion-row>
