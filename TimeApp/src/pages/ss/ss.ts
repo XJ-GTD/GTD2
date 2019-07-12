@@ -81,8 +81,8 @@ import * as moment from "moment";
 
             <button ion-item class="plan-list-item" detail-push (click)="gotopjfollowsetting()">
               <ion-label>项目跟进</ion-label>
-              <ion-note item-end *ngIf="spfon != ''">{{spfon}}</ion-note>
-              <ion-note *ngIf="spfon == ''" class="inline-icons">
+              <ion-note item-end *ngIf="spfon">打开</ion-note>
+              <ion-note *ngIf="!spfon" class="inline-icons">
                 <ion-icon item-end *ngIf="!spfon && github" ios="logo-github" md="logo-github"></ion-icon>
                 <img item-end *ngIf="!spfon && travisci" src="assets/imgs/travisci/travisci-worker-logo.svg">
                 <ion-icon item-end *ngIf="!spfon && firim" ios="logo-dropbox" md="logo-dropbox"></ion-icon>
@@ -122,7 +122,7 @@ export class SsPage {
   travisci:boolean;   //项目跟进 Travis CI
   firim:boolean;   //项目跟进 Fir.IM
   sdrp1:string;     //每日简报 提醒时间
-  spfon:string = "打开";     //项目跟进 智能提醒
+  spfon:boolean = false;     //项目跟进 智能提醒
   sdjhn:string;     //日历 缺省日历名称
   sdjh:string;      //日历 缺省日历
   sdjho:any;        //日历 缺省日历对象
@@ -153,9 +153,9 @@ export class SsPage {
     }
 
     if (this.github || this.firim || this.travisci) {
-      this.spfon = "";
+      this.spfon = false;
     } else {
-      this.spfon = "打开";
+      this.spfon = true;
     }
   }
 
@@ -237,9 +237,9 @@ export class SsPage {
         }
 
         if (this.github || this.firim || this.travisci) {
-          this.spfon = "";
+          this.spfon = false;
         } else {
-          this.spfon = "打开";
+          this.spfon = true;
         }
       }
     });
