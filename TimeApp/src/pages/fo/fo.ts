@@ -88,6 +88,22 @@ export class FoPage {
               public navCtrl: NavController,
               private ssService: SsService,
               private _renderer: Renderer2) {
+    let memFirIMDef = UserConfig.settins.get(DataConfig.SYS_FOFIR);
+    let memGithubDef = UserConfig.settins.get(DataConfig.SYS_FOGH);
+    let memTravisCIDef = UserConfig.settins.get(DataConfig.SYS_FOTRACI);
+
+    if (memFirIMDef) {
+      this.sfirim = memFirIMDef;
+      this.firim = memFirIMDef.value == "1"? true : false;
+    }
+    if (memGithubDef) {
+      this.sgithub = memGithubDef;
+      this.github = memGithubDef.value == "1"? true : false;
+    }
+    if (memTravisCIDef) {
+      this.stravisci = memTravisCIDef;
+      this.travisci = memTravisCIDef.value == "1"? true : false;
+    }
   }
 
   ionViewDidLoad() {
@@ -103,6 +119,7 @@ export class FoPage {
     modal.onDidDismiss((data)=>{
       if (data && data.setting) {
         this.firim = data.setting.value == "1"? true : false;
+        this.sfirim = data.setting;
       }
 
       this.ssService.putFollowFirIM(
@@ -119,6 +136,7 @@ export class FoPage {
     modal.onDidDismiss((data)=>{
       if (data && data.setting) {
         this.travisci = data.setting.value == "1"? true : false;
+        this.stravisci = data.setting;
       }
 
       this.ssService.putFollowTravisCI(
@@ -135,6 +153,7 @@ export class FoPage {
     modal.onDidDismiss((data)=>{
       if (data && data.setting) {
         this.github = data.setting.value == "1"? true : false;
+        this.sgithub = data.setting;
       }
 
       this.ssService.putFollowGitHub(
