@@ -40,6 +40,13 @@ page-ss {
   ion-content.content {
     background-color: $baseBackColor;
     color: #fff;
+
+    button.plan-list-item1 {
+      img {
+        margin-left: 0;
+        width: 2rem;
+      }
+    }
   }
 
   ion-content .plan-list-item {
