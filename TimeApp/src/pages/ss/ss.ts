@@ -82,10 +82,10 @@ import * as moment from "moment";
             <button ion-item class="plan-list-item" detail-push (click)="gotopjfollowsetting()">
               <ion-label>项目跟进</ion-label>
               <ion-note item-end *ngIf="!spfon">打开</ion-note>
-              <ion-note *ngIf="spfon" class="inline-icons">
-                <ion-icon item-end *ngIf="spfon && github" ios="logo-github" md="logo-github"></ion-icon>
-                <img item-end *ngIf="spfon && travisci" src="assets/imgs/travisci/travisci-worker-logo.svg">
-                <ion-icon item-end *ngIf="spfon && firim" ios="logo-dropbox" md="logo-dropbox"></ion-icon>
+              <ion-note item-end *ngIf="spfon" class="inline-icons">
+                <ion-icon *ngIf="spfon && github" ios="logo-github" md="logo-github"></ion-icon>
+                <img *ngIf="spfon && travisci" src="assets/imgs/travisci/travisci-worker-logo.svg">
+                <ion-icon *ngIf="spfon && firim" ios="logo-dropbox" md="logo-dropbox"></ion-icon>
               </ion-note>
             </button>
 
