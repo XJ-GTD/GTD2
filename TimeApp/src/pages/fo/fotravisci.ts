@@ -88,7 +88,7 @@ export class FoTravisCIPage {
 
       this.defaulttravisci = def;
     } else {
-      this.travisci = memDef.value? true : false;
+      this.travisci = memDef.value == "1"? true : false;
       this.defaulttravisci = memDef;
     }
   }

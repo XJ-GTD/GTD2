@@ -119,7 +119,7 @@ export class FoGitHubPage {
 
       this.defaultgithub = def;
     } else {
-      this.github = memDef.value? true : false;
+      this.github = memDef.value == "1"? true : false;
       this.defaultgithub = memDef;
     }
   }

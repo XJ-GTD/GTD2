@@ -94,7 +94,7 @@ export class FoFirIMPage {
 
       this.defaultfirim = def;
     } else {
-      this.firim = memDef.value? true : false;
+      this.firim = memDef.value == "1"? true : false;
       this.defaultfirim = memDef;
     }
   }
