@@ -12,7 +12,7 @@ import { InAppBrowser } from '@ionic-native/in-app-browser';
 import { getSha1SafeforBrowser } from '../../util/crypto-util';
 
 /**
- * Generated class for the 项目跟进 GitHub page.
+ * Generated class for the 项目跟进 GitHub page.测试
  *
  * See https://ionicframework.com/docs/components/#navigation for more info on
  * Ionic pages and navigation.
