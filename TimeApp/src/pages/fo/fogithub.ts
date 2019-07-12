@@ -49,7 +49,7 @@ import { getSha1SafeforBrowser } from '../../util/crypto-util';
             </div>
           </ion-row>
           <ion-row align-items-center justify-content-center class="golden-height">
-          <ion-card>
+          <ion-card *ngIf="github">
             <ion-card-header text-center>安全令牌</ion-card-header>
             <ion-card-content>
               <p text-center>{{secret| formatstring: 'mask': hideOrshow}}</p>
