@@ -215,6 +215,7 @@ export class FoGitHubPage {
       } else {
         this.ssService.putFollowGitHub(
           UserConfig.account.id,
+          this.secret,
           moment().valueOf(),
           this.github
         );

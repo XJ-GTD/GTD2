@@ -113,7 +113,7 @@ export class SyncRestful {
   }
 
   //智能提醒 项目跟进 - GitHub
-  putFollowGitHub(userId: string, timestamp: number, active: boolean): Promise<string> {
+  putFollowGitHub(userId: string, secret: string, timestamp: number, active: boolean): Promise<string> {
     return new Promise((resolve, reject) => {
       //每日简报任务注册
       let task = new TriggerTask();
@@ -131,7 +131,8 @@ export class SyncRestful {
         eventId: "WEBHOOK_GITHUB",
         filters: [
           {name: "webhook", value: "github"},
-          {name: "observer", value: observer}
+          {name: "observer", value: observer},
+          {name: "secret", value: secret}
         ]
       };
 

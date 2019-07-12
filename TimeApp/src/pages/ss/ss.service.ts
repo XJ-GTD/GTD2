@@ -38,8 +38,8 @@ export class SsService {
   }
 
   //设置 GitHub WebHook事件
-  putFollowGitHub(userId: string, timestamp: number, active: boolean) {
-    this.syncRestful.putFollowGitHub(userId, timestamp, active);
+  putFollowGitHub(userId: string, secret: string, timestamp: number, active: boolean) {
+    this.syncRestful.putFollowGitHub(userId, secret, timestamp, active);
   }
 
   //保存设置

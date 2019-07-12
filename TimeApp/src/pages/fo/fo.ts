@@ -78,6 +78,7 @@ import * as moment from "moment";
 export class FoPage {
   sfirim: Setting;
   sgithub: Setting;
+  sgithubsecret: Setting;
   stravisci: Setting;
 
   firim: boolean = false;
@@ -91,6 +92,7 @@ export class FoPage {
               private _renderer: Renderer2) {
     let memFirIMDef = UserConfig.settins.get(DataConfig.SYS_FOFIR);
     let memGithubDef = UserConfig.settins.get(DataConfig.SYS_FOGH);
+    let memGithubSecretDef = UserConfig.settins.get(DataConfig.SYS_FOGHSECRET);
     let memTravisCIDef = UserConfig.settins.get(DataConfig.SYS_FOTRACI);
 
     if (memFirIMDef) {
@@ -100,6 +102,9 @@ export class FoPage {
     if (memGithubDef) {
       this.sgithub = memGithubDef;
       this.github = memGithubDef.value == "1"? true : false;
+    }
+    if (memGithubSecretDef) {
+      this.sgithubsecret = memGithubSecretDef;
     }
     if (memTravisCIDef) {
       this.stravisci = memTravisCIDef;
@@ -163,8 +168,15 @@ export class FoPage {
         this.sgithub = data.setting;
       }
 
+      let secret = "";
+      if (data && data.secret) {
+        this.sgithubsecret = data.secret;
+        secret = this.sgithubsecret.value;
+      }
+
       this.ssService.putFollowGitHub(
         UserConfig.account.id,
+        secret,
         moment().valueOf(),
         this.github
       );
