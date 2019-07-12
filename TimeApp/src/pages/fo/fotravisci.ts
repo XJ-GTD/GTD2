@@ -80,11 +80,11 @@ export class FoTravisCIPage {
     if (!memDef) {
       let def: Setting = new Setting();
 
-      def.yt = DataConfig.SYS_FOTRACI;
-      def.ytn = "项目跟进 Travis-CI 关闭";
-      def.yn = "项目跟进";
-      def.yk = DataConfig.SYS_FOTRACI;
-      def.yv = "";
+      def.typeB = DataConfig.SYS_FOTRACI;
+      def.bname = "项目跟进 Travis-CI 关闭";
+      def.name = "项目跟进";
+      def.type = DataConfig.SYS_FOTRACI;
+      def.value = "";
 
       this.defaulttravisci = def;
     } else {
