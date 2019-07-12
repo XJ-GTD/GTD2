@@ -108,7 +108,7 @@ export class FoGitHubPage {
               private util: UtilService,
               private ssService: SsService,
               private _renderer: Renderer2) {
-    this.observer = getSha1SafeforBrowser(UserConfig.user.id);
+    this.observer = getSha1SafeforBrowser(UserConfig.account.id);
     let memDef = UserConfig.settins.get(DataConfig.SYS_FOGH);
 
     //初始化参数
