@@ -130,12 +130,14 @@ export class FoGitHubPage {
 
       this.defaultgithubsecret = def;
     } else {
-      if (this.defaultgithubsecret.value) {
-        this.secret = this.defaultgithubsecret.value;
+      if (memSecretDef.value) {
+        this.secret = memSecretDef.value;
       } else {
         this.secret = getSecret(UserConfig.account.id);
-        this.defaultgithubsecret.value = this.secret;
+        memSecretDef.value = this.secret;
       }
+
+      this.defaultgithubsecret = memSecretDef;
     }
 
     if (!memDef) {
