@@ -51,10 +51,10 @@ export class SsService {
       Object.assign(y,py);
 
       if (y.yi) {
+        this.sqlExce.update(y);
+      } else {
         y.yi = this.util.getUuid();
         this.sqlExce.save(y);
-      } else {
-        this.sqlExce.update(y);
       }
 
       //刷新本地用户偏好设置
