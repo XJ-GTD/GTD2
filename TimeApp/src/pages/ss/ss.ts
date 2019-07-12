@@ -118,9 +118,9 @@ export class SsPage {
   bb:boolean;       //语音播报 页面显示和修改
   bz:boolean;       //振动 页面显示和修改
   bdr:boolean;      //每日简报 页面显示和修改
-  github:boolean;   //项目跟进 GitHub
-  travisci:boolean;   //项目跟进 Travis CI
-  firim:boolean;   //项目跟进 Fir.IM
+  github:boolean = false;   //项目跟进 GitHub
+  travisci:boolean = false;   //项目跟进 Travis CI
+  firim:boolean = false;   //项目跟进 Fir.IM
   sdrp1:string;     //每日简报 提醒时间
   spfon:boolean = false;     //项目跟进 智能提醒
   sdjhn:string;     //日历 缺省日历名称
