@@ -107,6 +107,7 @@ export class FoTravisCIPage {
     modal.onDidDismiss((data)=>{
       this.ssService.putFollowGitHub(
         UserConfig.account.id,
+        "",
         moment().valueOf(),
         this.github
       );
