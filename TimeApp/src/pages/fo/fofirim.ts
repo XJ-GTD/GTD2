@@ -81,7 +81,7 @@ export class FoFirIMPage {
   }
 
   help() {
-    let browser = this.iab.create("https://fir.im/support/articles/webhook/custom", "_system");
+    const browser = this.iab.create("https://fir.im/support/articles/webhook/custom", "_system");
     browser.show();
   }
 

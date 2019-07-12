@@ -103,7 +103,7 @@ export class FoGitHubPage {
   }
 
   help() {
-    let browser = this.iab.create("https://developer.github.com/webhooks/creating/", "_system");
+    const browser = this.iab.create("https://developer.github.com/webhooks/creating/", "_system");
     browser.show();
   }
 
