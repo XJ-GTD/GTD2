@@ -68,7 +68,7 @@ import { getSha1SafeforBrowser } from '../../util/crypto-util';
 })
 export class FoFirIMPage {
   webhook: string = "http://pluto.guobaa.com/aag/webhooks/fir.im/v3/";
-  observer = getSha1SafeforBrowser(UserConfig.user.id);
+  observer = "";
 
   sfirim: string = "关闭";
   firim: boolean = false;
@@ -83,6 +83,7 @@ export class FoFirIMPage {
               private util: UtilService,
               private ssService: SsService,
               private _renderer: Renderer2) {
+    this.observer = getSha1SafeforBrowser(UserConfig.user.id);
     let memDef = UserConfig.settins.get(DataConfig.SYS_FOFIR);
 
     //初始化参数

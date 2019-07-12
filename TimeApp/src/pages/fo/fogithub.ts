@@ -93,7 +93,7 @@ export class FoGitHubPage {
   secret: string = "****************";
   hideOrshow: boolean = true;
   webhook: string = "http://pluto.guobaa.com/aag/webhooks/github/v3/";
-  observer = getSha1SafeforBrowser(UserConfig.user.id);
+  observer = "";
 
   github: boolean = false;
   sgithub: string = "关闭";
@@ -108,6 +108,7 @@ export class FoGitHubPage {
               private util: UtilService,
               private ssService: SsService,
               private _renderer: Renderer2) {
+    this.observer = getSha1SafeforBrowser(UserConfig.user.id);
     let memDef = UserConfig.settins.get(DataConfig.SYS_FOGH);
 
     //初始化参数

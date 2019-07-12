@@ -27,17 +27,32 @@ function clean(datasource)
   var to = new Array();
   to.push(userId);
 
-  var push = {
-    title: event['output']['payload']['name'] + '' + event['output']['payload']['version'] + ' (build:' + event['output']['payload']['build'] + ')',
-    content: event['output']['payload']['changelog'],
-    extras: {
-      event: "MWXING_NOTIFICATION_EVENT",
-      dependson: "on.homepage.init",
-      eventhandler: "on.urlopen.message.click",
-      eventdatafrom: "server",
-      eventdata: JSON.stringify({url: event['output']['payload']['link']})
-    }
-  };
+  var push = {};
+  if (event['output']['payload']['changelog']) {
+    push = {
+      title: event['output']['payload']['name'] + '' + event['output']['payload']['version'] + ' (build:' + event['output']['payload']['build'] + ')',
+      content: event['output']['payload']['changelog'],
+      extras: {
+        event: "MWXING_NOTIFICATION_EVENT",
+        dependson: "on.homepage.init",
+        eventhandler: "on.urlopen.message.click",
+        eventdatafrom: "server",
+        eventdata: JSON.stringify({url: event['output']['payload']['link']})
+      }
+    };
+  } else {
+    push = {
+      title: event['output']['payload']['name'],
+      content: event['output']['payload']['msg'],
+      extras: {
+        event: "MWXING_NOTIFICATION_EVENT",
+        dependson: "on.homepage.init",
+        eventhandler: "on.urlopen.message.click",
+        eventdatafrom: "server",
+        eventdata: JSON.stringify({url: event['output']['payload']['link']})
+      }
+    };
+  }
 
   var standardnext = {};
 
