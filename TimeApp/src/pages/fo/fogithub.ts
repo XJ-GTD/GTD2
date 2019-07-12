@@ -76,10 +76,13 @@ import { getSha1SafeforBrowser } from '../../util/crypto-util';
             </ion-row>
           </ion-card>
           </ion-row>
-          <ion-row align-items-center justify-content-center>
+          <ion-row align-items-center justify-content-center *ngIf="github">
             <button ion-button color="light" class="border" clear round (click)="copyWebhook()">复制 webhook 地址</button>
           </ion-row>
-          <ion-row align-items-center justify-content-center>
+          <ion-row align-items-center justify-content-center *ngIf="!github">
+            <button ion-button color="light" class="border" clear round (click)="save(defaultgithub, true, false)">打开</button>
+          </ion-row>
+          <ion-row align-items-center justify-content-center *ngIf="github">
             <button ion-button full outline small class="no-border" color="danger" (click)="save(defaultgithub, !github)">{{github? '关闭' : '打开'}}</button>
           </ion-row>
         </ion-grid>

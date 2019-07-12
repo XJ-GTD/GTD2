@@ -54,10 +54,13 @@ import { getSha1SafeforBrowser } from '../../util/crypto-util';
           <ion-row align-items-center justify-content-center class="golden-margin">
             <p></p>
           </ion-row>
-          <ion-row align-items-center justify-content-center>
+          <ion-row align-items-center justify-content-center *ngIf="firim">
             <button ion-button color="light" class="border" clear round (click)="copyWebhook()">复制 webhook 地址</button>
           </ion-row>
-          <ion-row align-items-center justify-content-center>
+          <ion-row align-items-center justify-content-center *ngIf="!firim">
+            <button ion-button color="light" class="border" clear round (click)="save(defaultfirim, true, false)">打开</button>
+          </ion-row>
+          <ion-row align-items-center justify-content-center *ngIf="firim">
             <button ion-button full outline small class="no-border" color="danger" (click)="save(defaultfirim, !firim)">{{firim? '关闭' : '打开'}}</button>
           </ion-row>
         </ion-grid>
@@ -113,7 +116,7 @@ export class FoFirIMPage {
     this.util.popoverStart("webhook地址已复制到剪贴板");
   }
 
-  async save(setting, value) {
+  async save(setting, value, close: boolean = true) {
     let set:PageY = new PageY();
     set.yi = setting.yi;//偏好主键ID
     set.ytn = setting.bname; //偏好设置类型名称
@@ -132,10 +135,12 @@ export class FoFirIMPage {
     if (set.yk == DataConfig.SYS_FOFIR) {
       // 改变画面显示
       this.firim = value;
-      // 返回前页
-      let data: Object = {setting: setting};
 
-      this.viewCtrl.dismiss(data);
+      if (close) {
+        // 返回前页
+        let data: Object = {setting: setting};
+        this.viewCtrl.dismiss(data);
+      }
     }
 
   }
