@@ -8,7 +8,7 @@ import * as moment from "moment";
 import { InAppBrowser } from '@ionic-native/in-app-browser';
 
 /**
- * Generated class for the 项目跟进 GitHub page.
+ * Generated class for the 项目跟进 Travis CI page.
  *
  * See https://ionicframework.com/docs/components/#navigation for more info on
  * Ionic pages and navigation.
@@ -88,6 +88,7 @@ export class FoTravisCIPage {
 
       this.defaulttravisci = def;
     } else {
+      this.travisci = memDef.value? true : false;
       this.defaulttravisci = memDef;
     }
   }
