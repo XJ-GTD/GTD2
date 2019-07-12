@@ -80,7 +80,7 @@ import { getSha1SafeforBrowser } from '../../util/crypto-util';
             <button ion-button color="light" class="border" clear round (click)="copyWebhook()">复制 webhook 地址</button>
           </ion-row>
           <ion-row align-items-center justify-content-center *ngIf="!github">
-            <button ion-button color="light" class="border" clear round (click)="save(defaultgithub, true, false)">打开</button>
+            <button ion-button color="light" class="border" clear round (click)="openWebhook()">打开</button>
           </ion-row>
           <ion-row align-items-center justify-content-center *ngIf="github">
             <button ion-button full outline small class="no-border" color="danger" (click)="save(defaultgithub, !github)">{{github? '关闭' : '打开'}}</button>
@@ -165,6 +165,11 @@ export class FoGitHubPage {
 
     this.save(this.defaultgithubsecret, this.secret, false);
     this.save(this.defaultgithub, this.github, false);
+  }
+
+  openWebhook() {
+    this.save(this.defaultgithubsecret, this.secret, false);
+    this.save(this.defaultgithub, true, false);
   }
 
   copySecret() {
