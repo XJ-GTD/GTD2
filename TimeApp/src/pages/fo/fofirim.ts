@@ -57,7 +57,7 @@ import { InAppBrowser } from '@ionic-native/in-app-browser';
             <button ion-button color="light" class="border" clear round (click)="copyWebhook()">复制 webhook 地址</button>
           </ion-row>
           <ion-row align-items-center justify-content-center>
-            <button ion-button full outline small class="no-border" color="danger" (click)="save(dr, !bdr)">{{bdr? '关闭' : '打开'}}</button>
+            <button ion-button full outline small class="no-border" color="danger" (click)="save(defaultfirim, !firim)">{{firim? '关闭' : '打开'}}</button>
           </ion-row>
         </ion-grid>
       </ion-row>
@@ -71,6 +71,8 @@ export class FoFirIMPage {
   sfirim: string = "关闭";
   firim: boolean = false;
 
+  defaultfirim: Setting;
+
   constructor(public modalController: ModalController,
               public navCtrl: NavController,
               private clipboard: Clipboard,
@@ -78,6 +80,7 @@ export class FoFirIMPage {
               private util: UtilService,
               private ssService: SsService,
               private _renderer: Renderer2) {
+    this.defaultfirim = UserConfig.settins.get(DataConfig.SYS_FOFIR);
   }
 
   help() {

@@ -51,7 +51,7 @@ import { InAppBrowser } from '@ionic-native/in-app-browser';
             <button ion-button color="light" class="border" clear round (click)="gotogithubsetting()">接收GitHub消息推送</button>
           </ion-row>
           <ion-row align-items-center justify-content-center>
-            <button ion-button full outline small class="no-border" color="danger" (click)="save(dr, !bdr)">{{bdr? '关闭' : '打开'}}</button>
+            <button ion-button full outline small class="no-border" color="danger" (click)="save(defaulttravisci, !travisci)">{{travisci? '关闭' : '打开'}}</button>
           </ion-row>
         </ion-grid>
       </ion-row>
@@ -64,6 +64,8 @@ export class FoTravisCIPage {
   stravisci: string = "关闭";
   travisci: boolean = false;
 
+  defaulttravisci: Setting;
+
   github: boolean = false;
   sgithub: string = "关闭";
 
@@ -72,6 +74,7 @@ export class FoTravisCIPage {
               private iab: InAppBrowser,
               private ssService: SsService,
               private _renderer: Renderer2) {
+    this.defaulttravisci = UserConfig.settins.get(DataConfig.SYS_FOTRACI);
   }
 
   help() {
