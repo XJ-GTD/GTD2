@@ -80,7 +80,23 @@ export class FoFirIMPage {
               private util: UtilService,
               private ssService: SsService,
               private _renderer: Renderer2) {
-    this.defaultfirim = UserConfig.settins.get(DataConfig.SYS_FOFIR);
+    let memDef = UserConfig.settins.get(DataConfig.SYS_FOFIR);
+
+    //初始化参数
+    if (!memDef) {
+      let def: Setting = new Setting();
+
+      def.typeB = DataConfig.SYS_FOFIR;
+      def.bname = "项目跟进 fir.im 关闭";
+      def.name = "项目跟进";
+      def.type = DataConfig.SYS_FOFIR;
+      def.value = "";
+
+      this.defaultfirim = def;
+    } else {
+      this.firim = memDef.value? true : false;
+      this.defaultfirim = memDef;
+    }
   }
 
   help() {

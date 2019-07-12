@@ -105,7 +105,23 @@ export class FoGitHubPage {
               private util: UtilService,
               private ssService: SsService,
               private _renderer: Renderer2) {
-    this.defaultgithub = UserConfig.settins.get(DataConfig.SYS_FOGH);
+    let memDef = UserConfig.settins.get(DataConfig.SYS_FOGH);
+
+    //初始化参数
+    if (!memDef) {
+      let def: Setting = new Setting();
+
+      def.typeB = DataConfig.SYS_FOGH;
+      def.bname = "项目跟进 github 关闭";
+      def.name = "项目跟进";
+      def.type = DataConfig.SYS_FOGH;
+      def.value = "";
+
+      this.defaultgithub = def;
+    } else {
+      this.github = memDef.value? true : false;
+      this.defaultgithub = memDef;
+    }
   }
 
   help() {
