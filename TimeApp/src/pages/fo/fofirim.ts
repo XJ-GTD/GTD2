@@ -121,18 +121,24 @@ export class FoFirIMPage {
     else
       set.yv = value;//偏好设置value
 
+    setting.value = set.yv;
+
     await this.ssService.save(set);
 
     if (set.yk == DataConfig.SYS_FOFIR) {
       // 改变画面显示
       this.firim = value;
       // 返回前页
-      this.navCtrl.pop();
+        let data: Object = {setting: setting};
+
+        this.viewCtrl.dismiss(data);
     }
 
   }
 
   goBack() {
-    this.navCtrl.pop();
+    let data: Object = {setting: this.defaultfirim};
+
+    this.viewCtrl.dismiss(data);
   }
 }

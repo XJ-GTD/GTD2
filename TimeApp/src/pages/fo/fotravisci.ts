@@ -1,5 +1,5 @@
 import {Component, ElementRef, Renderer2, ViewChild} from '@angular/core';
-import {IonicPage, NavController, ModalController} from 'ionic-angular';
+import {IonicPage, NavController, ViewController, ModalController} from 'ionic-angular';
 import {DataConfig} from "../../service/config/data.config";
 import {Setting, UserConfig} from "../../service/config/user.config";
 import {SsService} from "../ss/ss.service";
@@ -71,6 +71,7 @@ export class FoTravisCIPage {
 
   constructor(public modalController: ModalController,
               public navCtrl: NavController,
+              public viewCtrl: ViewController,
               private iab: InAppBrowser,
               private ssService: SsService,
               private _renderer: Renderer2) {
@@ -125,17 +126,23 @@ export class FoTravisCIPage {
     else
       set.yv = value;//偏好设置value
 
+    setting.value = set.yv;
+
     await this.ssService.save(set);
 
     if (set.yk == DataConfig.SYS_FOTRACI) {
       // 改变画面显示
       this.travisci = value;
       // 返回前页
-      this.navCtrl.pop();
+      let data: Object = {setting: setting};
+
+      this.viewCtrl.dismiss(data);
     }
   }
 
   goBack() {
-    this.navCtrl.pop();
+    let data: Object = {setting: this.defaulttravisci};
+
+    this.viewCtrl.dismiss(data);
   }
 }
