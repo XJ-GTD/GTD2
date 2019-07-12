@@ -44,7 +44,15 @@ page-ss {
     button.plan-list-item {
       ion-note.inline-icons {
         display: inline-flex;
-        
+
+        ion-icon {
+          margin-right: 8px;
+        }
+
+        ion-icon:last-child {
+          margin-right: 0;
+        }
+
         img {
           width: 1.6rem;
           margin-left: 0;
