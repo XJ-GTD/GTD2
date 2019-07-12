@@ -43,6 +43,8 @@ page-ss {
 
     button.plan-list-item {
       ion-note.inline-icons {
+        display: inline-flex;
+        
         img {
           width: 1.6rem;
           margin-left: 0;
