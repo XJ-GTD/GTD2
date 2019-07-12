@@ -85,7 +85,7 @@ export class FoTravisCIPage {
       def.bname = "项目跟进 Travis-CI 关闭";
       def.name = "项目跟进";
       def.type = DataConfig.SYS_FOTRACI;
-      def.value = "";
+      def.value = "0";
 
       this.defaulttravisci = def;
     } else {
