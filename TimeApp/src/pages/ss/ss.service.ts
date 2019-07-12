@@ -7,6 +7,7 @@ import {ContactsService} from "../../service/cordova/contacts.service";
 import {PageY} from "../../data.mapping";
 import {SyncRestful} from "../../service/restful/syncsev";
 import {PlService} from "../pl/pl.service";
+import {UtilService} from "../../service/util-service/util.service";
 
 @Injectable()
 export class SsService {
@@ -14,6 +15,7 @@ export class SsService {
   constructor(
     private sqlExce: SqliteExec,
     private syncRestful:SyncRestful,
+    private util:UtilService,
     private userConfig:UserConfig,
     private plService: PlService,
     private contactsService: ContactsService) {
