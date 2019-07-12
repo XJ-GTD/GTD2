@@ -93,7 +93,7 @@ import { getSha1SafeforBrowser } from '../../util/crypto-util';
 })
 export class FoGitHubPage {
 
-  secret: string = "****************";
+  secret: string = "";
   hideOrshow: boolean = true;
   webhook: string = "http://pluto.guobaa.com/aag/webhooks/github/v3/";
   observer = "";
@@ -102,6 +102,7 @@ export class FoGitHubPage {
   sgithub: string = "关闭";
 
   defaultgithub: Setting;
+  defaultgithubsecret: Setting;
 
   constructor(public modalController: ModalController,
               public navCtrl: NavController,
@@ -113,8 +114,30 @@ export class FoGitHubPage {
               private _renderer: Renderer2) {
     this.observer = getSha1SafeforBrowser(UserConfig.account.id);
     let memDef = UserConfig.settins.get(DataConfig.SYS_FOGH);
+    let memSecretDef = UserConfig.settins.get(DataConfig.SYS_FOGHSECRET);
 
     //初始化参数
+    if (!memSecretDef) {
+      this.secret = this.getSecret(UserConfig.account.id);
+
+      let def: Setting = new Setting();
+
+      def.typeB = DataConfig.SYS_FOGHSECRET;
+      def.bname = "项目跟进 github 安全令牌";
+      def.name = "项目跟进";
+      def.type = DataConfig.SYS_FOGHSECRET;
+      def.value = this.secret;
+
+      this.defaultgithubsecret = def;
+    } else {
+      if (this.defaultgithubsecret.value) {
+        this.secret = this.defaultgithubsecret.value;
+      } else {
+        this.secret = this.getSecret(UserConfig.account.id);
+        this.defaultgithubsecret.value = this.secret;
+      }
+    }
+
     if (!memDef) {
       let def: Setting = new Setting();
 
@@ -137,8 +160,11 @@ export class FoGitHubPage {
   }
 
   resetSecret() {
-    this.secret = getSecret(UserConfig.user.id);
+    this.secret = getSecret(UserConfig.account.id);
     this.hideOrshow = false;
+
+    this.save(this.defaultgithubsecret, this.secret, false);
+    this.save(this.defaultgithub, this.github, false);
   }
 
   copySecret() {
