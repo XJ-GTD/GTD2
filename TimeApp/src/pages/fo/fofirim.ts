@@ -8,6 +8,7 @@ import {PageY} from "../../data.mapping";
 import * as moment from "moment";
 import {Clipboard} from '@ionic-native/clipboard';
 import { InAppBrowser } from '@ionic-native/in-app-browser';
+import { getSha1SafeforBrowser } from '../../util/crypto-util';
 
 /**
  * Generated class for the 项目跟进 集成 | Fir.IM page.
@@ -66,7 +67,8 @@ import { InAppBrowser } from '@ionic-native/in-app-browser';
   `
 })
 export class FoFirIMPage {
-  webhook: string = "http://pluto.guobaa.com/aag/webhooks/fir.im/v3";
+  webhook: string = "http://pluto.guobaa.com/aag/webhooks/fir.im/v3/";
+  observer = getSha1SafeforBrowser(UserConfig.user.id);
 
   sfirim: string = "关闭";
   firim: boolean = false;
@@ -106,7 +108,7 @@ export class FoFirIMPage {
   }
 
   copyWebhook() {
-    this.clipboard.copy(this.webhook);
+    this.clipboard.copy(this.webhook + this.observer);
     this.util.popoverStart("webhook地址已复制到剪贴板");
   }
 

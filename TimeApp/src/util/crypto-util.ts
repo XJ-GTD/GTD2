@@ -2,9 +2,14 @@ import { pbkdf2Sync } from "crypto";
 
 /** @hidden */
 export function getSecret(userid: string, saltlength: number = 8) {
-    var salt = randomBytes(saltlength);
+  var salt = randomBytes(saltlength);
 
-    return pbkdf2Sync(userid, salt, 8, 8, 'sha1').toString('hex');
+  return pbkdf2Sync(userid, salt, 8, 8, 'sha1').toString('hex');
+}
+
+export function getSha1SafeforBrowser(userid: string) {
+  var hash = crypto.createHash('sha1');
+  return hash.update(userid).digest("base64");
 }
 
 /** @hidden */

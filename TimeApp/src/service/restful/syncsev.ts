@@ -3,6 +3,7 @@ import {RestfulClient} from "../util-service/restful.client";
 import {RestFulHeader, UrlEntity, RestFulConfig} from "../config/restful.config";
 import {UtilService} from "../util-service/util.service";
 import * as moment from "moment";
+import { getSha1SafeforBrowser } from '../../util/crypto-util';
 
 /**
  * 系统
@@ -116,6 +117,7 @@ export class SyncRestful {
     return new Promise((resolve, reject) => {
       //每日简报任务注册
       let task = new TriggerTask();
+      let observer = getSha1SafeforBrowser(userId);
 
       task.saName = "任务调度触发器";
       task.saPrefix = "cdc";
@@ -128,7 +130,8 @@ export class SyncRestful {
       let taskRunAt = {
         eventId: "WEBHOOK_GITHUB",
         filters: [
-          {name: "webhook", value: "github"}
+          {name: "webhook", value: "github"},
+          {name: "observer", value: observer}
         ]
       };
 
@@ -145,7 +148,8 @@ export class SyncRestful {
         url: triggerurl.url, // "https://pluto.guobaa.com/cdc/mwxing_webhook_notification_start/json/trigger"
         payload: {
           userId: userId,
-          webhook: 'github'
+          webhook: 'github',
+          observer: observer
         }
       };
 
@@ -167,6 +171,7 @@ export class SyncRestful {
     return new Promise((resolve, reject) => {
       //每日简报任务注册
       let task = new TriggerTask();
+      let observer = getSha1SafeforBrowser(userId);
 
       task.saName = "任务调度触发器";
       task.saPrefix = "cdc";
@@ -179,7 +184,8 @@ export class SyncRestful {
       let taskRunAt = {
         eventId: "WEBHOOK_TRAVIS-CI",
         filters: [
-          {name: "webhook", value: "travis-ci"}
+          {name: "webhook", value: "travis-ci"},
+          {name: "observer", value: observer}
         ]
       };
 
@@ -196,7 +202,8 @@ export class SyncRestful {
         url: triggerurl.url, // "https://pluto.guobaa.com/cdc/mwxing_webhook_notification_start/json/trigger"
         payload: {
           userId: userId,
-          webhook: 'travis-ci'
+          webhook: 'travis-ci',
+          observer: observer
         }
       };
 
@@ -218,6 +225,7 @@ export class SyncRestful {
     return new Promise((resolve, reject) => {
       //每日简报任务注册
       let task = new TriggerTask();
+      let observer = getSha1SafeforBrowser(userId);
 
       task.saName = "任务调度触发器";
       task.saPrefix = "cdc";
@@ -230,7 +238,8 @@ export class SyncRestful {
       let taskRunAt = {
         eventId: "WEBHOOK_FIR.IM",
         filters: [
-          {name: "webhook", value: "fir.im"}
+          {name: "webhook", value: "fir.im"},
+          {name: "observer", value: observer}
         ]
       };
 
@@ -247,7 +256,8 @@ export class SyncRestful {
         url: triggerurl.url, // "https://pluto.guobaa.com/cdc/mwxing_webhook_notification_start/json/trigger"
         payload: {
           userId: userId,
-          webhook: 'fir.im'
+          webhook: 'fir.im',
+          observer: observer
         }
       };
 
