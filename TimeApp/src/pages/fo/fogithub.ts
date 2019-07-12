@@ -161,6 +161,7 @@ export class FoGitHubPage {
     browser.show();
   }
 
+  //需要增加确认框确认修改
   resetSecret() {
     this.secret = getSecret(UserConfig.account.id);
     this.hideOrshow = false;
