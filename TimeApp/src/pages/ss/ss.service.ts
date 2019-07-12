@@ -47,7 +47,13 @@ export class SsService {
       //保存设置到本地用户偏好表
       let y = new YTbl();
       Object.assign(y,py);
-      this.sqlExce.update(y);
+
+      if (y.yi) {
+        y.yi = this.util.getUuid();
+        this.sqlExce.save(y);
+      } else {
+        this.sqlExce.update(y);
+      }
 
       //刷新本地用户偏好设置
       this.userConfig.RefreshYTbl();

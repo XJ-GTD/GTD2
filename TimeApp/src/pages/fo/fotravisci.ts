@@ -74,7 +74,22 @@ export class FoTravisCIPage {
               private iab: InAppBrowser,
               private ssService: SsService,
               private _renderer: Renderer2) {
-    this.defaulttravisci = UserConfig.settins.get(DataConfig.SYS_FOTRACI);
+    let memDef = UserConfig.settins.get(DataConfig.SYS_FOTRACI);
+
+    //初始化参数
+    if (!memDef) {
+      let def: Setting = new Setting();
+
+      def.yt = DataConfig.SYS_FOTRACI;
+      def.ytn = "项目跟进 Travis-CI 关闭";
+      def.yn = "项目跟进";
+      def.yk = DataConfig.SYS_FOTRACI;
+      def.yv = "";
+
+      this.defaulttravisci = def;
+    } else {
+      this.defaulttravisci = memDef;
+    }
   }
 
   help() {
@@ -117,7 +132,6 @@ export class FoTravisCIPage {
       // 返回前页
       this.navCtrl.pop();
     }
-
   }
 
   goBack() {
