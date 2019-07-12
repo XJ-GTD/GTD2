@@ -133,6 +133,28 @@ export class SsPage {
               public ssService: SsService,
               private plService: PlService,
               private _renderer: Renderer2) {
+    let memFirIMDef = UserConfig.settins.get(DataConfig.SYS_FOFIR);
+    let memGithubDef = UserConfig.settins.get(DataConfig.SYS_FOGH);
+    let memTravisCIDef = UserConfig.settins.get(DataConfig.SYS_FOTRACI);
+
+    if (memFirIMDef) {
+      this.sfirim = memFirIMDef;
+      this.firim = memFirIMDef.value == "1"? true : false;
+    }
+    if (memGithubDef) {
+      this.sgithub = memGithubDef;
+      this.github = memGithubDef.value == "1"? true : false;
+    }
+    if (memTravisCIDef) {
+      this.stravisci = memTravisCIDef;
+      this.travisci = memTravisCIDef.value == "1"? true : false;
+    }
+
+    if (this.github || this.firim || this.travisci) {
+      this.spfon = "";
+    } else {
+      this.spfon = "打开";
+    }
   }
 
   ionViewDidLoad() {
