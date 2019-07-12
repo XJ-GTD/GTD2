@@ -148,7 +148,7 @@ export class FoGitHubPage {
 
     if (set.yk == DataConfig.SYS_FOGH) {
       // 改变画面显示
-      this.bdr = value;
+      this.github = value;
       // 返回前页
       this.navCtrl.pop();
     }

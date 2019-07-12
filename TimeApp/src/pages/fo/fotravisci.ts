@@ -113,7 +113,7 @@ export class FoTravisCIPage {
 
     if (set.yk == DataConfig.SYS_FOTRACI) {
       // 改变画面显示
-      this.bdr = value;
+      this.travisci = value;
       // 返回前页
       this.navCtrl.pop();
     }

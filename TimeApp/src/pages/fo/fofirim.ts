@@ -109,7 +109,7 @@ export class FoFirIMPage {
 
     if (set.yk == DataConfig.SYS_FOFIR) {
       // 改变画面显示
-      this.bdr = value;
+      this.firim = value;
       // 返回前页
       this.navCtrl.pop();
     }
