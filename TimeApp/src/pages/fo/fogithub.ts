@@ -118,7 +118,7 @@ export class FoGitHubPage {
 
     //初始化参数
     if (!memSecretDef) {
-      this.secret = this.getSecret(UserConfig.account.id);
+      this.secret = getSecret(UserConfig.account.id);
 
       let def: Setting = new Setting();
 
@@ -133,7 +133,7 @@ export class FoGitHubPage {
       if (this.defaultgithubsecret.value) {
         this.secret = this.defaultgithubsecret.value;
       } else {
-        this.secret = this.getSecret(UserConfig.account.id);
+        this.secret = getSecret(UserConfig.account.id);
         this.defaultgithubsecret.value = this.secret;
       }
     }
