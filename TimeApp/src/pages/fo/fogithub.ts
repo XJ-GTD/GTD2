@@ -155,7 +155,7 @@ export class FoGitHubPage {
     this.hideOrshow = !this.hideOrshow;
   }
 
-  async save(setting, value) {
+  async save(setting, value, close: boolean = true) {
     let set:PageY = new PageY();
     set.yi = setting.yi;//偏好主键ID
     set.ytn = setting.bname; //偏好设置类型名称
@@ -174,10 +174,18 @@ export class FoGitHubPage {
     if (set.yk == DataConfig.SYS_FOGH) {
       // 改变画面显示
       this.github = value;
-      // 返回前页
-        let data: Object = {setting: setting};
 
+      if (close) {
+        // 返回前页
+        let data: Object = {setting: setting};
         this.viewCtrl.dismiss(data);
+      } else {
+        this.ssService.putFollowGitHub(
+          UserConfig.account.id,
+          moment().valueOf(),
+          this.github
+        );
+      }
     }
   }
 

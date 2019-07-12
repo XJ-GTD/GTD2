@@ -140,6 +140,12 @@ export class FoFirIMPage {
         // 返回前页
         let data: Object = {setting: setting};
         this.viewCtrl.dismiss(data);
+      } else {
+        this.ssService.putFollowFirIM(
+          UserConfig.account.id,
+          moment().valueOf(),
+          this.firim
+        );
       }
     }
 
