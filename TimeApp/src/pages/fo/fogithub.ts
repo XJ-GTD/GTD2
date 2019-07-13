@@ -85,7 +85,7 @@ import { ScrollSelectComponent } from "../../components/scroll-select/scroll-sel
                     <img src="http://firicon.fir.im/690cc493f7aa664d50c8a6493b964bc151181128?attname=blob&tmp=1563027675.485636">
                   </ion-thumbnail>
                   <ion-card-content>
-                    <ion-card-header text-center>冥王星</ion-card-header>
+                    <p text-center>冥王星</p>
                     <p text-center>Platform: Android</p>
                   </ion-card-content>
                 </ion-card>

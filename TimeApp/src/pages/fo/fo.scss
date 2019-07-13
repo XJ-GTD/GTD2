@@ -52,6 +52,11 @@ page-fo, page-fofirim, page-fogithub, page-fotravisci {
     ion-icon, img {
       width: 2rem;
     }
+
+    ion-thumbnail {
+      width: 20vmin;
+      margin: 0 auto;
+    }
   }
 
   .golden-height {
@@ -63,10 +68,18 @@ page-fo, page-fofirim, page-fogithub, page-fotravisci {
       & > div.grid {
         padding: 0;
 
+        & > div.row > div.scroll-box {
+          height: calc(calc(2em + calc(calc(100vmax - 100vmin) / 1.5)) - 10px);
+        }
+
         & > div.row > div.scroll-box > div.scroll-box-content {
           overflow-x: visible;
-          overflow-y: visible;
+          overflow-y: scroll;
         }
+      }
+
+      .scroll-box-zoom-wrapper {
+        display: inline-flex;
       }
 
       scroll-select-option > div.option {
