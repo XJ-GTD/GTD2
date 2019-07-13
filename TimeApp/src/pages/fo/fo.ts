@@ -133,13 +133,13 @@ export class FoPage {
       if (data && data.setting) {
         this.firim = data.setting.value == "1"? true : false;
         this.sfirim = data.setting;
-      }
 
-      this.ssService.putFollowFirIM(
-        UserConfig.account.id,
-        moment().valueOf(),
-        this.firim
-      );
+        this.ssService.putFollowFirIM(
+          UserConfig.account.id,
+          moment().valueOf(),
+          this.firim
+        );
+      }
     });
     modal.present();
   }
@@ -150,13 +150,13 @@ export class FoPage {
       if (data && data.setting) {
         this.travisci = data.setting.value == "1"? true : false;
         this.stravisci = data.setting;
-      }
 
-      this.ssService.putFollowTravisCI(
-        UserConfig.account.id,
-        moment().valueOf(),
-        this.travisci
-      );
+        this.ssService.putFollowTravisCI(
+          UserConfig.account.id,
+          moment().valueOf(),
+          this.travisci
+        );
+      }
     });
     modal.present();
   }
@@ -175,12 +175,14 @@ export class FoPage {
         secret = this.sgithubsecret.value;
       }
 
-      this.ssService.putFollowGitHub(
-        UserConfig.account.id,
-        secret,
-        moment().valueOf(),
-        this.github
-      );
+      if (data && data.setting && data.secret) {
+        this.ssService.putFollowGitHub(
+          UserConfig.account.id,
+          secret,
+          moment().valueOf(),
+          this.github
+        );
+      }
     });
     modal.present();
   }
