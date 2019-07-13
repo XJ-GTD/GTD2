@@ -54,7 +54,7 @@ import { ScrollSelectComponent } from "../../components/scroll-select/scroll-sel
             <button ion-button color="dark" class="border" clear round small (click)="help()">设置帮助</button>
             </div>
           </ion-row>
-          <ion-row align-items-center justify-content-center class="golden-margin">
+          <ion-row align-items-center justify-content-center class="golden-height">
             <scroll-select type="scroll-with-button">
               <scroll-select-option>
               <p></p>
