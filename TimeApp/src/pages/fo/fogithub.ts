@@ -12,7 +12,7 @@ import { InAppBrowser } from '@ionic-native/in-app-browser';
 import { getSha1SafeforBrowser } from '../../util/crypto-util';
 
 /**
- * Generated class for the 项目跟进 GitHub page.测试
+ * Generated class for the 项目跟进 GitHub page.
  *
  * See https://ionicframework.com/docs/components/#navigation for more info on
  * Ionic pages and navigation.
@@ -177,12 +177,12 @@ export class FoGitHubPage {
 
   copySecret() {
     this.clipboard.copy(this.secret);
-    this.util.popoverStart("安全令牌已复制到剪贴板");
+    this.util.toastStart("已复制到剪贴板", 1500);
   }
 
   copyWebhook() {
     this.clipboard.copy(this.webhook + this.observer);
-    this.util.popoverStart("webhook地址已复制到剪贴板");
+    this.util.toastStart("已复制到剪贴板", 1500);
   }
 
   showOrhideSecret() {
