@@ -51,7 +51,7 @@ import { ScrollSelectComponent } from "../../components/scroll-select/scroll-sel
           </ion-row>
           <ion-row align-items-center justify-content-center class="golden-height">
             <scroll-select type="scroll-with-button" *ngIf="github">
-              <scroll-select-option *ngIf="github">
+              <scroll-select-option value="">
                 <ion-card>
                   <ion-card-header text-center>安全令牌</ion-card-header>
                   <ion-card-content>
@@ -79,7 +79,7 @@ import { ScrollSelectComponent } from "../../components/scroll-select/scroll-sel
                   </ion-row>
                 </ion-card>
               </scroll-select-option>
-              <scroll-select-option>
+              <scroll-select-option value="1">
                 <ion-card>
                   <ion-thumbnail>
                     <img src="http://firicon.fir.im/690cc493f7aa664d50c8a6493b964bc151181128?attname=blob&tmp=1563027675.485636">
