@@ -50,9 +50,9 @@ import { ScrollSelectComponent } from "../../components/scroll-select/scroll-sel
             </div>
           </ion-row>
           <ion-row align-items-center justify-content-center class="golden-height">
-            <scroll-select type="scroll-with-button">
-              <scroll-select-option>
-                <ion-card *ngIf="github">
+            <scroll-select type="scroll-with-button" *ngIf="github">
+              <scroll-select-option *ngIf="github">
+                <ion-card>
                   <ion-card-header text-center>安全令牌</ion-card-header>
                   <ion-card-content>
                     <p text-center>{{secret| formatstring: 'mask': hideOrshow}}</p>
@@ -77,6 +77,17 @@ import { ScrollSelectComponent } from "../../components/scroll-select/scroll-sel
                       </button>
                     </ion-col>
                   </ion-row>
+                </ion-card>
+              </scroll-select-option>
+              <scroll-select-option>
+                <ion-card>
+                  <ion-thumbnail>
+                    <img src="http://firicon.fir.im/690cc493f7aa664d50c8a6493b964bc151181128?attname=blob&tmp=1563027675.485636">
+                  </ion-thumbnail>
+                  <ion-card-content>
+                    <ion-card-header text-center>冥王星</ion-card-header>
+                    <p text-center>Platform: Android</p>
+                  </ion-card-content>
                 </ion-card>
               </scroll-select-option>
             </scroll-select>
