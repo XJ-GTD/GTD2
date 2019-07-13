@@ -68,7 +68,8 @@ export class FoTravisCIPage {
   defaulttravisci: Setting;
 
   github: boolean = false;
-  defaultgithub: Setting;
+  sgithub: Setting;
+  sgithubsecret: Setting;
 
   constructor(public modalController: ModalController,
               public navCtrl: NavController,
@@ -83,7 +84,7 @@ export class FoTravisCIPage {
     if (!memGithubDef) {
       this.github = false;
     } else {
-      this.defaultgithub = memGithubDef;
+      this.sgithub = memGithubDef;
       this.github = memGithubDef.value == "1"? true : false;
     }
 
@@ -110,13 +111,23 @@ export class FoTravisCIPage {
 
   gotogithubsetting() {
     this.github = !this.github;
-    this.sgithub = this.github? "打开" : "关闭";
 
     let modal = this.modalController.create(DataConfig.PAGE._FOGITHUB_PAGE);
     modal.onDidDismiss((data)=>{
+      if (data && data.setting) {
+        this.github = data.setting.value == "1"? true : false;
+        this.sgithub = data.setting;
+      }
+
+      let secret = "";
+      if (data && data.secret) {
+        this.sgithubsecret = data.secret;
+        secret = this.sgithubsecret.value;
+      }
+
       this.ssService.putFollowGitHub(
         UserConfig.account.id,
-        "",
+        secret,
         moment().valueOf(),
         this.github
       );
