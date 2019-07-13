@@ -57,13 +57,14 @@ import * as moment from "moment";
               <ion-label>GitHub</ion-label>
               <ion-note item-end>{{github? "关闭" : "打开"}}</ion-note>
             </button>
-
+<!-- 删除Travis CI配置项，因为持续集成消息是通过GitHub接收的 -->
+<!--
             <button ion-item class="plan-list-item" detail-push (click)="gototraviscisetting()">
               <img src="assets/imgs/travisci/travisci-worker-logo.svg" item-start>
               <ion-label>Travis CI</ion-label>
               <ion-note item-end>{{(github && travisci)? "关闭" : "打开"}}</ion-note>
             </button>
-
+-->
             <button ion-item class="plan-list-item" detail-push (click)="gotofirimsetting()">
               <ion-icon ios="logo-dropbox" md="logo-dropbox" item-start></ion-icon>
               <ion-label>集成 | fir.im</ion-label>
