@@ -10,6 +10,7 @@ import * as moment from "moment";
 import {Clipboard} from '@ionic-native/clipboard';
 import { InAppBrowser } from '@ionic-native/in-app-browser';
 import { getSha1SafeforBrowser } from '../../util/crypto-util';
+import { ScrollSelectComponent } from "../../components/scroll-select/scroll-select";
 
 /**
  * Generated class for the 项目跟进 GitHub page.

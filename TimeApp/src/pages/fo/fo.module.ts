@@ -6,6 +6,7 @@ import {FoFirIMPage} from "./fofirim";
 import {FoTravisCIPage} from "./fotravisci";
 import {FoService} from "./fo.service";
 import {PipesModule} from "../../pipes/pipes.module";
+import { ScrollSelectComponent } from "../../components/scroll-select/scroll-select";
 
 @NgModule({
   declarations: [
@@ -16,6 +17,7 @@ import {PipesModule} from "../../pipes/pipes.module";
   ],
   imports: [
     PipesModule,
+    ScrollSelectComponent,
     IonicPageModule.forChild(FoPage),
   ],
   providers: [
