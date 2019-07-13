@@ -13,6 +13,7 @@ import { getSha1SafeforBrowser } from '../../util/crypto-util';
 /**
  * Generated class for the 项目跟进 集成 | Fir.IM page.
  * 需要增加成功激活状态
+ * 需要增加消息共享给其他人员或者团队
  *
  * See https://ionicframework.com/docs/components/#navigation for more info on
  * Ionic pages and navigation.

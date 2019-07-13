@@ -61,7 +61,7 @@ import * as moment from "moment";
             <button ion-item class="plan-list-item" detail-push (click)="gototraviscisetting()">
               <img src="assets/imgs/travisci/travisci-worker-logo.svg" item-start>
               <ion-label>Travis CI</ion-label>
-              <ion-note item-end>{{travisci? "关闭" : "打开"}}</ion-note>
+              <ion-note item-end>{{(github && travisci)? "关闭" : "打开"}}</ion-note>
             </button>
 
             <button ion-item class="plan-list-item" detail-push (click)="gotofirimsetting()">
