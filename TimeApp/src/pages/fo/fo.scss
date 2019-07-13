@@ -40,6 +40,15 @@ page-fo, page-fofirim, page-fogithub, page-fotravisci {
   ion-content.content {
     background-color: $baseBackColor;
     color: #fff;
+
+    ion-thumbnail {
+      width: 20vmin;
+      margin: 0 auto;
+
+      img {
+        border-radius: 8px;
+      }
+    }
   }
 
   ion-content .plan-list-item {
@@ -51,11 +60,6 @@ page-fo, page-fofirim, page-fogithub, page-fotravisci {
 
     ion-icon, img {
       width: 2rem;
-    }
-
-    ion-thumbnail {
-      width: 20vmin;
-      margin: 0 auto;
     }
   }
 
