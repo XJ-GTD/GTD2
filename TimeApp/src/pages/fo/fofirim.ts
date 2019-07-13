@@ -113,7 +113,7 @@ export class FoFirIMPage {
 
   copyWebhook() {
     this.clipboard.copy(this.webhook + this.observer);
-    this.util.popoverStart("webhook地址已复制到剪贴板");
+    this.util.toastStart("已复制到剪贴板", 1500);
   }
 
   async save(setting, value, close: boolean = true) {
