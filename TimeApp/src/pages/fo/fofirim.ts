@@ -153,6 +153,10 @@ export class FoFirIMPage {
 
   }
 
+  more() {
+
+  }
+
   goBack() {
     let data: Object = {setting: this.defaultfirim};
 

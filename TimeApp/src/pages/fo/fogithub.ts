@@ -99,7 +99,6 @@ export class FoGitHubPage {
   observer = "";
 
   github: boolean = false;
-  sgithub: string = "关闭";
 
   defaultgithub: Setting;
   defaultgithubsecret: Setting;
