@@ -84,7 +84,10 @@ import * as moment from "moment";
               <ion-note item-end *ngIf="!spfon">打开</ion-note>
               <ion-note item-end *ngIf="spfon" class="inline-icons">
                 <ion-icon *ngIf="spfon && github" ios="logo-github" md="logo-github"></ion-icon>
+<!-- Travis CI设置选项隐藏 -->
+<!--
                 <img *ngIf="spfon && travisci" src="assets/imgs/travisci/travisci-worker-logo.svg">
+-->
                 <ion-icon *ngIf="spfon && firim" ios="logo-dropbox" md="logo-dropbox"></ion-icon>
               </ion-note>
             </button>
