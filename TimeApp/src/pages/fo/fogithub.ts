@@ -49,32 +49,36 @@ import { getSha1SafeforBrowser } from '../../util/crypto-util';
             </div>
           </ion-row>
           <ion-row align-items-center justify-content-center class="golden-height">
-          <ion-card *ngIf="github">
-            <ion-card-header text-center>安全令牌</ion-card-header>
-            <ion-card-content>
-              <p text-center>{{secret| formatstring: 'mask': hideOrshow}}</p>
-            </ion-card-content>
-            <ion-row>
-              <ion-col text-center>
-                <button ion-button icon-start clear small (click)="resetSecret()">
-                  <ion-icon name="refresh-circle"></ion-icon>
-                  <div>重置</div>
-                </button>
-              </ion-col>
-              <ion-col text-center>
-                <button ion-button icon-start clear small (click)="copySecret()">
-                  <ion-icon name="copy"></ion-icon>
-                  <div>复制</div>
-                </button>
-              </ion-col>
-              <ion-col text-center>
-                <button ion-button icon-start clear small (click)="showOrhideSecret()">
-                  <ion-icon [name]="hideOrshow? 'eye' : 'eye-off'"></ion-icon>
-                  <div>{{hideOrshow? '显示' : '隐藏'}}</div>
-                </button>
-              </ion-col>
-            </ion-row>
-          </ion-card>
+            <scroll-select>
+              <scroll-select-option>
+                <ion-card *ngIf="github">
+                  <ion-card-header text-center>安全令牌</ion-card-header>
+                  <ion-card-content>
+                    <p text-center>{{secret| formatstring: 'mask': hideOrshow}}</p>
+                  </ion-card-content>
+                  <ion-row>
+                    <ion-col text-center>
+                      <button ion-button icon-start clear small (click)="resetSecret()">
+                        <ion-icon name="refresh-circle"></ion-icon>
+                        <div>重置</div>
+                      </button>
+                    </ion-col>
+                    <ion-col text-center>
+                      <button ion-button icon-start clear small (click)="copySecret()">
+                        <ion-icon name="copy"></ion-icon>
+                        <div>复制</div>
+                      </button>
+                    </ion-col>
+                    <ion-col text-center>
+                      <button ion-button icon-start clear small (click)="showOrhideSecret()">
+                        <ion-icon [name]="hideOrshow? 'eye' : 'eye-off'"></ion-icon>
+                        <div>{{hideOrshow? '显示' : '隐藏'}}</div>
+                      </button>
+                    </ion-col>
+                  </ion-row>
+                </ion-card>
+              </scroll-select-option>
+            </scroll-select>
           </ion-row>
           <ion-row align-items-center justify-content-center *ngIf="github">
             <button ion-button color="light" class="border" clear round (click)="copyWebhook()">复制 webhook 地址</button>
