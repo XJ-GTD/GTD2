@@ -56,6 +56,23 @@ page-fo, page-fofirim, page-fogithub, page-fotravisci {
 
   .golden-height {
     height: calc(2em + calc(calc(100vmax - 100vmin) / 1.5));
+
+    scroll-select {
+      margin: 0 -26px;
+
+      & > div.grid {
+        padding: 0;
+
+        & > div.row > div.scroll-box > div.scroll-box-content {
+          overflow-x: visible;
+          overflow-y: visible;
+        }
+      }
+
+      scroll-select-option > div.option {
+        padding: 0 5px;
+      }
+    }
   }
 
   .golden-margin {
