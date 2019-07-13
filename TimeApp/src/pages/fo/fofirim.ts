@@ -56,8 +56,16 @@ import { ScrollSelectComponent } from "../../components/scroll-select/scroll-sel
           </ion-row>
           <ion-row align-items-center justify-content-center class="golden-height">
             <scroll-select type="scroll-with-button">
-              <scroll-select-option>
-              <p></p>
+              <scroll-select-option value="1">
+                <ion-card>
+                  <ion-thumbnail>
+                    <img src="http://firicon.fir.im/690cc493f7aa664d50c8a6493b964bc151181128?attname=blob&tmp=1563027675.485636">
+                  </ion-thumbnail>
+                  <ion-card-content>
+                    <p text-center>冥王星</p>
+                    <p text-center>Platform: Android</p>
+                  </ion-card-content>
+                </ion-card>
               </scroll-select-option>
             </scroll-select>
           </ion-row>
