@@ -54,7 +54,11 @@ import { getSha1SafeforBrowser } from '../../util/crypto-util';
             </div>
           </ion-row>
           <ion-row align-items-center justify-content-center class="golden-margin">
-            <p></p>
+            <scroll-select type="scroll-without-button">
+              <scroll-select-option>
+              <p></p>
+              </scroll-select-option>
+            </scroll-select>
           </ion-row>
           <ion-row align-items-center justify-content-center *ngIf="firim">
             <button ion-button color="light" class="border" clear round (click)="copyWebhook()">复制 webhook 地址</button>
