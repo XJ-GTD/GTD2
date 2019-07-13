@@ -47,8 +47,11 @@ import { InAppBrowser } from '@ionic-native/in-app-browser';
           <ion-row align-items-center justify-content-center class="golden-margin">
             <p></p>
           </ion-row>
-          <ion-row align-items-center justify-content-center>
+          <ion-row align-items-center justify-content-center *ngIf="!github">
             <button ion-button color="light" class="border" clear round (click)="gotogithubsetting()">接收GitHub消息推送</button>
+          </ion-row>
+          <ion-row align-items-center justify-content-center *ngIf="github && !travisci">
+            <button ion-button color="light" class="border" clear round (click)="save(defaulttravisci, !travisci)">打开</button>
           </ion-row>
           <ion-row align-items-center justify-content-center>
             <button ion-button full outline small class="no-border" color="danger" (click)="save(defaulttravisci, !travisci)">{{travisci? '关闭' : '打开'}}</button>
@@ -61,13 +64,11 @@ import { InAppBrowser } from '@ionic-native/in-app-browser';
 })
 export class FoTravisCIPage {
 
-  stravisci: string = "关闭";
   travisci: boolean = false;
-
   defaulttravisci: Setting;
 
   github: boolean = false;
-  sgithub: string = "关闭";
+  defaultgithub: Setting;
 
   constructor(public modalController: ModalController,
               public navCtrl: NavController,
@@ -76,8 +77,16 @@ export class FoTravisCIPage {
               private ssService: SsService,
               private _renderer: Renderer2) {
     let memDef = UserConfig.settins.get(DataConfig.SYS_FOTRACI);
+    let memGithubDef = UserConfig.settins.get(DataConfig.SYS_FOGH);
 
     //初始化参数
+    if (!memGithubDef) {
+      this.github = false;
+    } else {
+      this.defaultgithub = memGithubDef;
+      this.github = memGithubDef.value == "1"? true : false;
+    }
+
     if (!memDef) {
       let def: Setting = new Setting();
 
