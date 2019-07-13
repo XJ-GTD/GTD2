@@ -50,7 +50,7 @@ import { ScrollSelectComponent } from "../../components/scroll-select/scroll-sel
             </div>
           </ion-row>
           <ion-row align-items-center justify-content-center class="golden-height">
-            <scroll-select type="scroll-without-button">
+            <scroll-select type="scroll-with-button">
               <scroll-select-option>
                 <ion-card *ngIf="github">
                   <ion-card-header text-center>安全令牌</ion-card-header>

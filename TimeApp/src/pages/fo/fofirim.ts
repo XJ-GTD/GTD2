@@ -55,7 +55,7 @@ import { ScrollSelectComponent } from "../../components/scroll-select/scroll-sel
             </div>
           </ion-row>
           <ion-row align-items-center justify-content-center class="golden-margin">
-            <scroll-select type="scroll-without-button">
+            <scroll-select type="scroll-with-button">
               <scroll-select-option>
               <p></p>
               </scroll-select-option>
