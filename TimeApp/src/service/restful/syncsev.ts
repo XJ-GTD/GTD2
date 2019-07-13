@@ -150,7 +150,8 @@ export class SyncRestful {
         payload: {
           userId: userId,
           webhook: 'github',
-          observer: observer
+          observer: observer,
+          secret: secret
         }
       };
 
