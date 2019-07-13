@@ -225,7 +225,10 @@ export class FoGitHubPage {
   }
 
   goBack() {
-    let data: Object = {setting: this.defaultgithub};
+    let data: Object = {
+      setting: this.defaultgithub,
+      secret: this.secret
+    };
 
     this.viewCtrl.dismiss(data);
   }
