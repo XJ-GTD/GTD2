@@ -53,7 +53,7 @@ import { InAppBrowser } from '@ionic-native/in-app-browser';
           <ion-row align-items-center justify-content-center *ngIf="github && !travisci">
             <button ion-button color="light" class="border" clear round (click)="save(defaulttravisci, !travisci)">打开</button>
           </ion-row>
-          <ion-row align-items-center justify-content-center>
+          <ion-row align-items-center justify-content-center *ngIf="github && travisci">
             <button ion-button full outline small class="no-border" color="danger" (click)="save(defaulttravisci, !travisci)">{{travisci? '关闭' : '打开'}}</button>
           </ion-row>
         </ion-grid>
