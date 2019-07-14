@@ -89,6 +89,12 @@ page-fo, page-fofirim, page-fogithub, page-fotravisci {
       scroll-select-option > div.option {
         padding: 0 5px;
       }
+
+      scroll-select-option {
+        ion-card.card-ios {
+          padding: 0 8px;
+        }
+      }
     }
   }
 
