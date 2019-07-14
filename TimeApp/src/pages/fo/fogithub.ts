@@ -81,11 +81,14 @@ import { ScrollSelectComponent } from "../../components/scroll-select/scroll-sel
               </scroll-select-option>
               <scroll-select-option value="1">
                 <ion-card>
-                  <ion-thumbnail>
-                    <img src="https://avatars1.githubusercontent.com/u/38720340?v=4">
-                  </ion-thumbnail>
+                  <ion-card-header text-center><ion-icon name="git-network"></ion-icon> GTD2</ion-card-header>
                   <ion-card-content>
-                    <p text-center>XJ-GTD/GTD2</p>
+                    <p text-center>
+                      <ion-thumbnail>
+                        <img src="https://avatars1.githubusercontent.com/u/38720340?v=4">
+                      </ion-thumbnail>
+                      XJ-GTD
+                    </p>
                     <p text-center>过去, 现在和未来管理局 ( 记录过去，提醒现在和预约未来 )</p>
                   </ion-card-content>
                 </ion-card>

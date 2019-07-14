@@ -94,6 +94,15 @@ page-fo, page-fofirim, page-fogithub, page-fotravisci {
         ion-card.card-ios {
           padding: 0 8px;
         }
+
+        p > ion-thumbnail {
+          width: calc(1.6rem);
+          margin: 0 auto;
+
+          img {
+            border-radius: 8px;
+          }
+        }
       }
     }
   }
