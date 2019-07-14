@@ -67,6 +67,7 @@ export enum MK {
 export enum SY {
   S = "SY.S",  //系统设置
   B = "SY.B",  //拒收朋友消息
+  FO = "SY.FO" //项目跟进 实例设置
 }
 
 //闹铃设置

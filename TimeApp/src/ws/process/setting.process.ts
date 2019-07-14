@@ -56,6 +56,23 @@ export class SettingProcess extends BaseProcess implements MQProcess {
       this.ssService.save(set);
     }
 
+    //项目跟进 实例设置
+    if (content.option == SY.FO) {
+      //处理所需要参数
+      let setPara: SettingPara = content.parameters;
+      let set: PageY = new PageY();
+      let setting: Setting = UserConfig.settins.get(setPara.k) || new Setting();
+
+      set.yi = setting.yi;//偏好主键ID
+      set.ytn = setting.bname || setPara.tn; //偏好设置类型名称
+      set.yt = setting.typeB || setPara.t; //偏好设置类型
+      set.yn = setting.name || setPara.kn;//偏好设置名称
+      set.yk = setting.type || setPara.k;//偏好设置key
+      set.yv = setPara.v;//偏好设置value
+
+      this.ssService.save(set);
+    }
+
     //用户黑名单
     if (content.option == SY.B) {
       //上下文内获取人员信息

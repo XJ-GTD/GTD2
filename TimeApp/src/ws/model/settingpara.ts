@@ -11,6 +11,13 @@ export class SettingPara {
   //设置VALUE
   v:boolean;
 
+  //设置TYPE(Group for KEY)
+  t:string;
+  //设置TYPE NAME
+  tn:string;
+  //设置KEY NAME
+  kn:string;
+
   //联系从processRS中获取
   // fs:[{
   //   id:string,
