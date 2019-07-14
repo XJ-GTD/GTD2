@@ -56,38 +56,48 @@ import { InAppBrowser } from '@ionic-native/in-app-browser';
             </ion-avatar>
             <h3><ion-icon name="git-network"></ion-icon> XJ-GTD/GTD2</h3>
             <p>过去, 现在和未来管理局 ( 记录过去，提醒现在和预约未来 )</p>
+            <button ion-button clear item-end>
+              关闭
+            </button>
           </ion-item>
 
           <ion-list-header>集成 | fir.im</ion-list-header>
-          <ion-item>
-            <h3>
-              <ion-thumbnail>
-                <img src="http://firicon.fir.im/690cc493f7aa664d50c8a6493b964bc151181128?attname=blob&tmp=1563027675.485636">
-              </ion-thumbnail>
-               　　冥王星
-            </h3>
-            <p>Platform: Android</p>
-            <div class="avatars">
-              <div>
-                <ion-avatar>
-                  <img [src]="defaultavatar">
-                </ion-avatar>
+          <ion-item-sliding>
+            <ion-item>
+              <h3>
+                <ion-thumbnail>
+                  <img src="http://firicon.fir.im/690cc493f7aa664d50c8a6493b964bc151181128?attname=blob&tmp=1563027675.485636">
+                </ion-thumbnail>
+                 　　冥王星
+              </h3>
+              <p>Platform: Android</p>
+              <div class="avatars">
+                <div>
+                  <ion-avatar>
+                    <img [src]="defaultavatar">
+                  </ion-avatar>
+                </div>
+                <div>
+                  <ion-avatar>
+                    <img [src]="defaultavatar">
+                  </ion-avatar>
+                </div>
+                <div>
+                  <ion-avatar>
+                    <img [src]="defaultavatar">
+                  </ion-avatar>
+                </div>
               </div>
-              <div>
-                <ion-avatar>
-                  <img [src]="defaultavatar">
-                </ion-avatar>
-              </div>
-              <div>
-                <ion-avatar>
-                  <img [src]="defaultavatar">
-                </ion-avatar>
-              </div>
-            </div>
-            <button ion-button clear item-end>
-              <ion-icon ios="ios-add-circle-outline" md="ios-add-circle-outline"></ion-icon>
-            </button>
-          </ion-item>
+              <button ion-button clear item-end>
+                <ion-icon ios="ios-add-circle-outline" md="ios-add-circle-outline"></ion-icon>
+              </button>
+            </ion-item>
+            <ion-item-options side="right">
+              <button ion-button (click)="unread(item)">
+                <ion-icon name="barcode"></ion-icon>
+              </button>
+            </ion-item-options>
+          </ion-item-sliding>
           <ion-item>
             <ion-avatar item-start>
               <img [src]="defaultavatar">
