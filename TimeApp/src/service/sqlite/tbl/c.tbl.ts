@@ -216,7 +216,7 @@ export class CTbl implements  ITbl{
     }
   }
 
-  inT():string {
+  preT():string {
     let sq ='insert into gtd_c ' +
       '( si ,sn ,ui ,sd ,st ,ed ,et ,rt ,ji,sr,bz,tx,wtt,pni,du,gs) values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,'+  moment().unix() + ', ?, ?, ?);';
 
