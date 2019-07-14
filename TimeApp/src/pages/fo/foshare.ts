@@ -50,6 +50,14 @@ import { InAppBrowser } from '@ionic-native/in-app-browser';
               <ion-icon ios="ios-add-circle-outline" md="ios-add-circle-outline"></ion-icon>
             </button>
           </ion-item>
+          <ion-item>
+            <ion-avatar item-start>
+              <img [src]="defaultavatar">
+            </ion-avatar>
+            <h3><ion-icon name="git-network"></ion-icon> XJ-GTD/GTD2</h3>
+            <p>过去, 现在和未来管理局 ( 记录过去，提醒现在和预约未来 )</p>
+          </ion-item>
+
           <ion-list-header>集成 | fir.im</ion-list-header>
           <ion-item>
             <h3>
@@ -63,6 +71,18 @@ import { InAppBrowser } from '@ionic-native/in-app-browser';
               <ion-icon ios="ios-add-circle-outline" md="ios-add-circle-outline"></ion-icon>
             </button>
           </ion-item>
+          <ion-item>
+            <ion-avatar item-start>
+              <img [src]="defaultavatar">
+            </ion-avatar>
+            <h3>
+              <ion-thumbnail>
+                <img src="http://firicon.fir.im/690cc493f7aa664d50c8a6493b964bc151181128?attname=blob&tmp=1563027675.485636">
+              </ion-thumbnail>
+               　 冥王星
+            </h3>
+            <p>Platform: Android</p>
+          </ion-item>
         </ion-list>
       </ion-row>
     </ion-grid>
@@ -70,6 +90,7 @@ import { InAppBrowser } from '@ionic-native/in-app-browser';
   `
 })
 export class FoSharePage {
+  defaultavatar: string;
 
   travisci: boolean = false;
   defaulttravisci: Setting;
@@ -84,6 +105,7 @@ export class FoSharePage {
               private iab: InAppBrowser,
               private ssService: SsService,
               private _renderer: Renderer2) {
+    this.defaultavatar = DataConfig.HUIBASE64;
     let memDef = UserConfig.settins.get(DataConfig.SYS_FOTRACI);
     let memGithubDef = UserConfig.settins.get(DataConfig.SYS_FOGH);
 
