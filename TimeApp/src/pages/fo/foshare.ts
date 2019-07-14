@@ -46,6 +46,9 @@ import { InAppBrowser } from '@ionic-native/in-app-browser';
           <ion-item>
             <h2><ion-icon name="git-network"></ion-icon> XJ-GTD/GTD2</h2>
             <p>过去, 现在和未来管理局 ( 记录过去，提醒现在和预约未来 )</p>
+            <button ion-button clear item-end>
+              <ion-icon name="add-circle"></ion-icon>
+            </button>
           </ion-item>
           <ion-list-header>集成 | fir.im</ion-list-header>
           <ion-item>
@@ -56,6 +59,9 @@ import { InAppBrowser } from '@ionic-native/in-app-browser';
               冥王星
             </h2>
             <p>Platform: Android</p>
+            <button ion-button clear item-end>
+              <ion-icon name="add-circle"></ion-icon>
+            </button>
           </ion-item>
         </ion-list>
       </ion-row>
