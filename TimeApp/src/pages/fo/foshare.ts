@@ -67,7 +67,7 @@ import { InAppBrowser } from '@ionic-native/in-app-browser';
                　　冥王星
             </h3>
             <p>Platform: Android</p>
-            <div item-content>
+            <div>
               <div>
                 <ion-avatar item-start>
                   <img [src]="defaultavatar">
