@@ -21,6 +21,11 @@ function clean(datasource)
   // filter source code here start
   var input = JSON.parse(datasource);
 
+  var output = {};
+  var formatDateTime = function(date) {
+    return date.getFullYear() + '/' + (date.getMonth()+1) + '/' + date.getDate() + ' ' + date.getHours() + ':' + date.getMinutes() + ':' + date.getSeconds();
+  }
+
   var userId = input['userId'];
   var event = input['event'];
 
@@ -54,11 +59,37 @@ function clean(datasource)
     };
   }
 
+  //收到应用发布消息的时候，通知客户端保存应用实例
+  if (event['output']['payload']['changelog']) {
+    // 返回消息头部
+    output.header = {
+    	version: 'V1.1',
+      sender: 'xunfei',
+      datetime: formatDateTime(new Date()),
+      describe: ['SY']
+    };
+
+    output.content = {};
+
+    // 保存项目跟进实例数据指示
+    output.content['0'] = {
+      processor: 'SY',
+      option: 'SY.FO',
+      parameters: {
+        t: 'FOFIR_INS',
+        tn: 'fir.im应用',
+        k: event['output']['payload']['link'],
+        kn: event['output']['payload']['name'],
+        vs: JSON.stringify(event['output']['payload'])
+      }
+    };
+  }
+
   var standardnext = {};
 
   standardnext.announceTo = to;
   standardnext.announceType = 'agenda_from_share';
-  standardnext.announceContent = {mwxing:{},sms:{},push:push};
+  standardnext.announceContent = {mwxing:output,sms:{},push:push};
 
   print(standardnext);
 
