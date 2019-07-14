@@ -38,24 +38,24 @@ import { InAppBrowser } from '@ionic-native/in-app-browser';
           <ion-row align-items-center justify-content-center>
             <p></p>
           </ion-row>
-          <ion-row>
-            <ion-list no-lines>
-              <ion-list-header>GitHub</ion-list-header>
-              <ion-item>
-                <h2><ion-icon name="git-network"></ion-icon> XJ-GTD/GTD2</h2>
-                <p>过去, 现在和未来管理局 ( 记录过去，提醒现在和预约未来 )</p>
-              </ion-item>
-              <ion-list-header>集成 | fir.im</ion-list-header>
-              <ion-item>
-                <ion-thumbnail item-start>
-                  <img src="http://firicon.fir.im/690cc493f7aa664d50c8a6493b964bc151181128?attname=blob&tmp=1563027675.485636">
-                </ion-thumbnail>
-                <h2>冥王星</h2>
-                <p>Platform: Android</p>
-              </ion-item>
-            </ion-list>
-          </ion-row>
         </ion-grid>
+      </ion-row>
+      <ion-row>
+        <ion-list no-lines>
+          <ion-list-header>GitHub</ion-list-header>
+          <ion-item>
+            <h2><ion-icon name="git-network"></ion-icon> XJ-GTD/GTD2</h2>
+            <p>过去, 现在和未来管理局 ( 记录过去，提醒现在和预约未来 )</p>
+          </ion-item>
+          <ion-list-header>集成 | fir.im</ion-list-header>
+          <ion-item>
+            <ion-thumbnail item-start>
+              <img src="http://firicon.fir.im/690cc493f7aa664d50c8a6493b964bc151181128?attname=blob&tmp=1563027675.485636">
+            </ion-thumbnail>
+            <h2>冥王星</h2>
+            <p>Platform: Android</p>
+          </ion-item>
+        </ion-list>
       </ion-row>
     </ion-grid>
   </ion-content>

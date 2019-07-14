@@ -258,6 +258,13 @@ page-fo, page-fofirim, page-fogithub, page-fotravisci, page-foshare {
     .item-ios {
       background-color: transparent;
       color: #fff;
+
+      h2 {
+        ion-icon.icon-ios {
+          line-height: 1.4;
+          font-size: 1.7rem;
+        }
+      }
     }
   }
 
