@@ -33,7 +33,7 @@ import { InAppBrowser } from '@ionic-native/in-app-browser';
       <ion-row>
         <ion-grid>
           <ion-row align-items-center justify-content-center>
-            推送通知给团队
+            给团队推送通知
           </ion-row>
           <ion-row align-items-center justify-content-center>
             <p></p>
