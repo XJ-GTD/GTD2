@@ -90,6 +90,19 @@ export class SqliteExec {
   }
 
   /**
+   * 预编译保存
+   * @param et 对应实体类
+   * @returns {Promise<any>}
+   */
+  prepare(itbl: ITbl): Promise<any> {
+    let arr = new Array<any>();
+    for (let field in itbl) {
+      arr.push(itbl[field]);
+    }
+    return this.execSql(itbl.inT())
+  }
+
+  /**
    * 更新
    */
   update(itbl: ITbl): Promise<any> {
