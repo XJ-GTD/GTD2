@@ -96,11 +96,12 @@ page-fo, page-fofirim, page-fogithub, page-fotravisci {
         }
 
         p > ion-thumbnail {
+          display: inline-block;
           width: calc(1.6rem);
           margin: 0 auto;
 
           img {
-            border-radius: 8px;
+            border-radius: 2px;
           }
         }
       }
