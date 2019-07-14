@@ -148,36 +148,10 @@ export class FoSharePage {
               private ssService: SsService,
               private _renderer: Renderer2) {
     this.defaultavatar = DataConfig.HUIBASE64;
-    let memDef = UserConfig.settins.get(DataConfig.SYS_FOTRACI);
-    let memGithubDef = UserConfig.settins.get(DataConfig.SYS_FOGH);
+    let firInstances = UserConfig.getSettings(DataConfig.SYS_FOFIR_INS);
+    let githubInstances = UserConfig.getSettings(DataConfig.SYS_FOGH_INS);
 
     //初始化参数
-    if (!memGithubDef) {
-      this.github = false;
-    } else {
-      this.sgithub = memGithubDef;
-      this.github = memGithubDef.value == "1"? true : false;
-    }
-
-    if (!memDef) {
-      let def: Setting = new Setting();
-
-      def.typeB = DataConfig.SYS_FOTRACI;
-      def.bname = "项目跟进 Travis-CI 关闭";
-      def.name = "项目跟进";
-      def.type = DataConfig.SYS_FOTRACI;
-      def.value = "0";
-
-      this.defaulttravisci = def;
-    } else {
-      this.travisci = memDef.value == "1"? true : false;
-      this.defaulttravisci = memDef;
-    }
-  }
-
-  help() {
-    const browser = this.iab.create("https://docs.travis-ci.com/user/tutorial/", "_system");
-    browser.show();
   }
 
   shareto() {

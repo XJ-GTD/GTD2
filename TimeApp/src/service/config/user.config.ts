@@ -78,6 +78,12 @@ export class UserConfig {
     return UserConfig.settins.get(key)? (UserConfig.settins.get(key).value == "1") : false;
   }
 
+  static getSettings(type: string) {
+    return UserConfig.settins.filter((element, index, array) => {
+      return (element.type == type);
+    });
+  }
+
   // 2019/05/10
   // 席理加
   // 设置客户端设备ID,版本更新时不同机型会产生不同的设备ID,需要缓存保证一致
