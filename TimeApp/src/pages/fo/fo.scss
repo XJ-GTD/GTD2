@@ -278,6 +278,25 @@ page-fo, page-fofirim, page-fogithub, page-fotravisci, page-foshare {
         }
       }
 
+      h3 {
+        ion-icon.icon-ios {
+          line-height: 1.4;
+          font-size: 1.4rem;
+        }
+
+        ion-thumbnail {
+          width: 1.4rem;
+          height: 1.4rem;
+          position: absolute;
+
+          & > img {
+            width: 1.4rem;
+            height: 1.4rem;
+            border-radius: 2px;
+          }
+        }
+      }
+
       button.button-clear-ios {
         color: #f53d3d;
       }
