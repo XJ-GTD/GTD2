@@ -116,6 +116,13 @@ export class FoSharePage {
     browser.show();
   }
 
+  shareto() {
+    let modal = this.modalController.create(DataConfig.PAGE._FS4FO_PAGE,{});
+    modal.onDidDismiss((data)=>{
+    });
+    modal.present();
+  }
+
   gotogithubsetting() {
     this.github = !this.github;
 

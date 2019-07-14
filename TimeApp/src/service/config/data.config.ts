@@ -27,6 +27,7 @@ import {GlPage} from "../../pages/gl/gl";
 import {GcPage} from "../../pages/gc/gc";
 import {GaPage} from "../../pages/ga/ga";
 import {Fs4gPage} from "../../pages/fs/fs4g";
+import {Fs4foPage} from "../../pages/fs/fs4fo";
 import {FdPage} from "../../pages/fd/fd";
 import {BlPage} from "../../pages/bl/bl";
 import {PsPage} from "../../pages/ps/ps";
@@ -245,6 +246,7 @@ export class DataConfig {
     _GA_PAGE: GaPage,       // 辅助功能 - 群组添加
     _FS4C_PAGE: Fs4cPage,       // 辅助功能 - 选择参与人日程
     _FS4G_PAGE: Fs4gPage,       // 辅助功能 - 选择参与人群组
+    _FS4FO_PAGE: Fs4foPage,       // 设置项目跟进通知人选择
     _FD_PAGE: FdPage,       // 辅助功能 - 参与人详情
     _PS_PAGE: PsPage,       // 辅助功能 - 个人设置
     _BL_PAGE: BlPage,       // 辅助功能 - 黑名单
@@ -291,6 +293,7 @@ export class DataConfig {
     GaPage,       // 辅助功能 - 群组添加
     Fs4cPage,       // 辅助功能 - 选择参与人日程
     Fs4gPage,       // 辅助功能 - 选择参与人群组
+    Fs4foPage,      // 辅助功能 - 选择参与人项目跟进通知
     FdPage,       // 辅助功能 - 参与人详情
     PsPage,       // 辅助功能 - 个人设置
     BlPage,       // 辅助功能 - 黑名单
