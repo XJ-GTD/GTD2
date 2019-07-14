@@ -67,6 +67,23 @@ import { InAppBrowser } from '@ionic-native/in-app-browser';
                　　冥王星
             </h3>
             <p>Platform: Android</p>
+            <div item-content>
+              <div>
+                <ion-avatar item-start>
+                  <img [src]="defaultavatar">
+                </ion-avatar>
+              </div>
+              <div>
+                <ion-avatar item-start>
+                  <img [src]="defaultavatar">
+                </ion-avatar>
+              </div>
+              <div>
+                <ion-avatar item-start>
+                  <img [src]="defaultavatar">
+                </ion-avatar>
+              </div>
+            </div>
             <button ion-button clear item-end>
               <ion-icon ios="ios-add-circle-outline" md="ios-add-circle-outline"></ion-icon>
             </button>
@@ -82,6 +99,9 @@ import { InAppBrowser } from '@ionic-native/in-app-browser';
                　　冥王星
             </h3>
             <p>Platform: Android</p>
+            <button ion-button clear item-end>
+              关闭
+            </button>
           </ion-item>
         </ion-list>
       </ion-row>
