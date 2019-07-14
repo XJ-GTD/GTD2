@@ -259,10 +259,6 @@ page-fo, page-fofirim, page-fogithub, page-fotravisci, page-foshare {
       background-color: transparent;
       color: #fff;
 
-      ion-list-header.list-header-ios {
-        color: #3c4d55;
-      }
-
       h2 {
         ion-icon.icon-ios {
           line-height: 1.4;
@@ -281,6 +277,14 @@ page-fo, page-fofirim, page-fogithub, page-fotravisci, page-foshare {
           }
         }
       }
+
+      button.button-clear-ios {
+        color: #f53d3d;
+      }
+    }
+
+    ion-list-header.item-ios, ion-list-header.list-header-ios {
+      color: #3c4d55;
     }
   }
 
