@@ -64,7 +64,7 @@ import { InAppBrowser } from '@ionic-native/in-app-browser';
               <ion-thumbnail>
                 <img src="http://firicon.fir.im/690cc493f7aa664d50c8a6493b964bc151181128?attname=blob&tmp=1563027675.485636">
               </ion-thumbnail>
-               　 冥王星
+               　　冥王星
             </h3>
             <p>Platform: Android</p>
             <button ion-button clear item-end>
@@ -79,7 +79,7 @@ import { InAppBrowser } from '@ionic-native/in-app-browser';
               <ion-thumbnail>
                 <img src="http://firicon.fir.im/690cc493f7aa664d50c8a6493b964bc151181128?attname=blob&tmp=1563027675.485636">
               </ion-thumbnail>
-               　 冥王星
+               　　冥王星
             </h3>
             <p>Platform: Android</p>
           </ion-item>

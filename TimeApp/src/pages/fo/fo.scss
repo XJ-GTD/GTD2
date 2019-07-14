@@ -285,13 +285,15 @@ page-fo, page-fofirim, page-fogithub, page-fotravisci, page-foshare {
         }
 
         ion-thumbnail {
-          width: 1.4rem;
-          height: 1.4rem;
+          width: 1.7rem;
+          height: 1.7rem;
+          min-width: 1.7rem;
+          min-height: 1.7rem;
           position: absolute;
 
           & > img {
-            width: 1.4rem;
-            height: 1.4rem;
+            width: 1.7rem;
+            height: 1.7rem;
             border-radius: 2px;
           }
         }
