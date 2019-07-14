@@ -330,6 +330,10 @@ page-fo, page-fofirim, page-fogithub, page-fotravisci, page-foshare {
     }
   }
 
+  .list-ios > .item-block:last-child, .list-ios > .item-wrapper:last-child .item-block {
+      border-bottom: 0;
+  }
+
   .list-ios .item-block .item-inner {
     padding-right: 0;
   }
