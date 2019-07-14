@@ -254,6 +254,10 @@ page-fo, page-fofirim, page-fogithub, page-fotravisci, page-foshare {
 
   ion-list.list-ios {
     width: 100%;
+
+    .item-ios {
+      background-color: transparent;
+    }
   }
 
   .list-ios .item-block .item-inner {
