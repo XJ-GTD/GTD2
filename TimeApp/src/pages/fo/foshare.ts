@@ -96,11 +96,11 @@ import { InAppBrowser } from '@ionic-native/in-app-browser';
                   </ion-avatar>
                 </div>
               </div>
-              <button ion-button clear item-end>
-                <ion-icon ios="ios-add-circle-outline" md="ios-add-circle-outline"></ion-icon>
-              </button>
             </ion-item>
             <ion-item-options side="right">
+              <button ion-button clear>
+                <ion-icon ios="ios-add-circle-outline" md="ios-add-circle-outline"></ion-icon>
+              </button>
               <button ion-button (click)="unread(item)">
                 <ion-icon name="barcode"></ion-icon>
               </button>
