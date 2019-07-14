@@ -21,5 +21,5 @@ export interface ITbl {
 
   rpT():string ;
 
-  preT():strng ;
+  preT():string ;
 }
