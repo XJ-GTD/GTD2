@@ -21,6 +21,11 @@ function clean(datasource)
   // filter source code here start
   var input = JSON.parse(datasource);
 
+  var output = {};
+  var formatDateTime = function(date) {
+    return date.getFullYear() + '/' + (date.getMonth()+1) + '/' + date.getDate() + ' ' + date.getHours() + ':' + date.getMinutes() + ':' + date.getSeconds();
+  }
+
   var userId = input['userId'];
   var event = input['event'];
   var repository = event['output']['payload']['repository'];
@@ -87,11 +92,36 @@ function clean(datasource)
     };
   }
 
+  if (repository && headcommit && compare) {
+    // 返回消息头部
+    output.header = {
+      version: 'V1.1',
+      sender: 'xunfei',
+      datetime: formatDateTime(new Date()),
+      describe: ['SY']
+    };
+
+    output.content = {};
+
+    // 保存项目跟进实例数据指示
+    output.content['0'] = {
+      processor: 'SY',
+      option: 'SY.FO',
+      parameters: {
+        t: 'FOGH_INS',
+        tn: 'GitHub Repository',
+        k: repository['full_name'],
+        kn: repository['full_name'],
+        vs: JSON.stringify(repository)
+      }
+    };
+  }
+
   var standardnext = {};
 
   standardnext.announceTo = to;
   standardnext.announceType = 'agenda_from_share';
-  standardnext.announceContent = {mwxing:{},sms:{},push:push};
+  standardnext.announceContent = {mwxing:output,sms:{},push:push};
 
   print(standardnext);
 
