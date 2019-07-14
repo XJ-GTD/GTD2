@@ -11,6 +11,8 @@ export class SettingPara {
   //设置VALUE
   v:boolean;
 
+  //设置VALUE:string
+  vs:string;
   //设置TYPE(Group for KEY)
   t:string;
   //设置TYPE NAME
