@@ -54,7 +54,7 @@ export class SsService {
         this.sqlExce.update(y);
       } else {
         y.yi = this.util.getUuid();
-        this.sqlExce.save(y);
+        this.sqlExce.prepareSave(y);
       }
 
       //刷新本地用户偏好设置
