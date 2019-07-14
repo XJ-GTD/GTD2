@@ -151,7 +151,7 @@ export class FoSharePage {
     let firInstances = UserConfig.getSettings(DataConfig.SYS_FOFIR_INS);
     let githubInstances = UserConfig.getSettings(DataConfig.SYS_FOGH_INS);
 
-    //初始化参数
+    //初始化参数格式设计
   }
 
   shareto() {
