@@ -121,5 +121,9 @@ export class UTbl  implements ITbl{
     return sq;
   }
 
+  preT():string {
+    let sq ='insert into gtd_u ' +
+      '( ui ,ai ,un ,hiu ,biy ,rn ,ic ,us ,uct,wtt) values(?, ?, ?, ?, ?, ?, ?, ?, ?, '+  moment().unix() +');';
+    return sq;
+  }
 }
-

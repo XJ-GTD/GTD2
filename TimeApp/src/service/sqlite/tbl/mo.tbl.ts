@@ -133,4 +133,11 @@ export class MoTbl  implements ITbl {
 
     return sq;
   }
+
+  preT():string {
+    let sq ='insert into gtd_mo ' +
+      '( moi ,si , ji ,mon ,sd ,st ,ed ,et ,px ,bz ,wtt) values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ' +  moment().unix() +');';
+
+    return sq;
+  }
 }

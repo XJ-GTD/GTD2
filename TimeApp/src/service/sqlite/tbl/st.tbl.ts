@@ -73,6 +73,11 @@ export class StTbl implements ITbl {
 
     return sq;
   }
+
+  preT(): string {
+    let sq = 'insert into gtd_st ' +
+      '( d,c,n ,bz ,wtt) values(?, ?, ?, ?, ' + moment().unix() + ');';
+
+    return sq;
+  }
 }
-
-

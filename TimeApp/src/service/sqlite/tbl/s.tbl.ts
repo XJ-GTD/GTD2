@@ -103,5 +103,11 @@ export class STbl implements ITbl   {
 
     return sq;
   }
-}
 
+  preT():string {
+    let sq ='insert into gtd_s ' +
+      '( si ,st ,stn ,sn ,yk ,yv) values(?, ?, ?, ?, ?, ?);';
+
+    return sq;
+  }
+}

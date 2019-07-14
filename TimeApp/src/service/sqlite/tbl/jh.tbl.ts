@@ -102,4 +102,11 @@ export class JhTbl  implements ITbl{
     return sq;
   }
 
+  preT():string{
+    let sq ='insert into gtd_j_h ' +
+      '(  ji ,jn ,jg,jc,jt,jtd,wtt) values(?, ?, ?, ?, ?, ?,'+  moment().unix() +');';
+
+    return sq;
+  }
+
 }

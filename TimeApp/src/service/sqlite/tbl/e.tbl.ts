@@ -103,4 +103,11 @@ export class ETbl implements ITbl {
     return sq;
   }
 
+  preT(): string {
+    let sq = 'insert into gtd_e ' +
+      '(  wi ,si ,st ,wd ,wt,wtt) values(?, ?, ?, ?, ?,' + moment().unix() + ');';
+
+    return sq;
+  }
+
 }

@@ -86,4 +86,10 @@ export class MkTbl implements ITbl{
     return sq;
   }
 
+  preT():string {
+    let sq =`insert into gtd_mk ( mki ,si ,mkl ,mkt ,wtt ) values(?, ?, ?, ?, ${moment().unix()});`;
+
+    return sq;
+  }
+
 }

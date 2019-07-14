@@ -88,5 +88,11 @@ export class GTbl implements ITbl {
     return sq;
   }
 
-}
+  preT():string{
+    let sq ='insert into gtd_g ' +
+      '( gi ,gn ,gm,gnpy,wtt) values(?, ?, ?, ?,'+  moment().unix() +');';
 
+    return sq;
+  }
+
+}

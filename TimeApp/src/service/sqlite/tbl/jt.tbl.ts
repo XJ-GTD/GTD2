@@ -163,4 +163,12 @@ export class JtTbl  implements ITbl {
 
     return sq;
   }
+
+  preT():string {
+    let sq ='insert into gtd_jt ' +
+      '( jti ,si , ji ,spn ,sd ,st ,ed ,et ,px ,bz ,fjt ,fjn ,fj ,wtt) values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,' +  moment().unix() +');';
+
+    return sq;
+  }
+
 }

@@ -142,7 +142,11 @@ export class BTbl implements ITbl{
     return sq;
   }
 
+  preT():string {
+    let sq ='insert into gtd_b ' +
+      '(  pwi ,ran ,ranpy  ,hiu ,rn ,rnpy ,rc   ,rel ,ui,wtt) values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ' +  moment().unix() + ');';
+
+    return sq;
+  }
+
 }
-
-
-

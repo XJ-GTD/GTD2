@@ -79,4 +79,11 @@ export class BxTbl implements ITbl{
     return sq;
   }
 
+  preT():string {
+    let sq ='insert into gtd_b_x ' +
+      '(  bi ,bmi) values(?, ?);';
+
+    return sq;
+  }
+
 }

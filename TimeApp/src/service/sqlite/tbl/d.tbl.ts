@@ -92,5 +92,12 @@ export class DTbl implements ITbl {
     return sq;
   }
 
-}
 
+  preT(): string {
+    let sq = 'insert into gtd_d ' +
+      '( pi ,si ,ai ,wtt) values(?, ?, ?, ' + moment().unix() + ');';
+
+    return sq;
+  }
+
+}

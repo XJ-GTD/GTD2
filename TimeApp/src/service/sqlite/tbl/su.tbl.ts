@@ -91,6 +91,15 @@ export class SuTbl implements ITbl   {
     return sq;
   }
 
+
+  inT():string {
+    let sq ='insert into gtd_su ' +
+      '(  sui ,subt ,subtsn ,sust ,sustsn ,suc ,sut ,sus ,sum) values("'+ this.sui+'","'+ this.subt+'",' +
+      '"'+this.subtsn+ '","'+this.sust+ '","'+this.sustsn+ '","'+this.suc+ '",' +
+      '"'+this.sut+ '","'+this.sus+ '","'+this.sum+ '");';
+
+    return sq;
+  }
   inT():string {
     let sq ='insert into gtd_su ' +
       '(  sui ,subt ,subtsn ,sust ,sustsn ,suc ,sut ,sus ,sum) values("'+ this.sui+'","'+ this.subt+'",' +
@@ -108,5 +117,11 @@ export class SuTbl implements ITbl   {
 
     return sq;
   }
-}
 
+  preT():string {
+    let sq ='insert into gtd_su ' +
+      '(  sui ,subt ,subtsn ,sust ,sustsn ,suc ,sut ,sus ,sum) values(?, ?, ?, ?, ?, ?, ?, ?, ?);';
+
+    return sq;
+  }
+}

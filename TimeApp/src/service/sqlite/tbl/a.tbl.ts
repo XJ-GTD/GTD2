@@ -108,5 +108,11 @@ export class ATbl implements ITbl {
     return sq;
   }
 
-}
+  preT():string {
+    let sq ='insert into gtd_a ' +
+      '(ai,an,am,ae,at,aq,wtt) values(?, ?, ?, ?, ?, ?,'+  moment().unix() +');';
 
+    return sq;
+  }
+
+}

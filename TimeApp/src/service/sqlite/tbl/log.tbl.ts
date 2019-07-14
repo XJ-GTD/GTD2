@@ -90,6 +90,12 @@ export class LogTbl implements ITbl {
     return sq;
   }
 
+  preT():string {
+    let sq =`insert into gtd_log (id,su,ss,st,t,er,wtt) values(?, ?, ?, ?, ?, ?, ${moment().valueOf()});`
+
+    return sq;
+  }
+
   private sqliteEscape(keyword: string) {
     if (keyword) return keyword.replace(/"/g, '""').replace(/'/g, "''"); else return keyword;
   }

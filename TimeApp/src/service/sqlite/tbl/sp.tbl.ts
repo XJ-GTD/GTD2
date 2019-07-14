@@ -155,6 +155,11 @@ export class SpTbl  implements ITbl {
 
     return sq;
   }
+
+  preT():string {
+    let sq ='insert into gtd_sp ' +
+      '( spi ,si ,spn ,sd ,st ,ed ,et ,ji ,bz ,sta,tx,wtt,itx) values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,'+  moment().unix() +', ?);';
+
+    return sq;
+  }
 }
-
-

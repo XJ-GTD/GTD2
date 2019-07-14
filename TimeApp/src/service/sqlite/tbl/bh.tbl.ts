@@ -83,7 +83,10 @@ export class BhTbl implements ITbl{
     return sq;
   }
 
+  preT():string {
+    let sq =`insert into gtd_bh (bhi ,pwi ,hiu,  wtt) values( ?, ?, ?, ${moment().unix()});`;
+
+    return sq;
+  }
+
 }
-
-
-
