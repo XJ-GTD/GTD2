@@ -255,6 +255,10 @@ page-fo, page-fofirim, page-fogithub, page-fotravisci, page-foshare {
   ion-list.list-ios {
     width: 100%;
 
+    ion-item-sliding {
+      background-color: transparent;
+    }
+
     .item-ios {
       background-color: transparent;
       color: #fff;
