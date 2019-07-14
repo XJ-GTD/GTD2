@@ -21,5 +21,5 @@ export interface ITbl {
 
   rpT():string ;
 
-  preT():string ;
+  preT():string ;//使用预编译接口，解决数据中存在引号等影响sql处理的字符
 }
