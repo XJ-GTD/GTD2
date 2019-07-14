@@ -299,6 +299,23 @@ page-fo, page-fofirim, page-fogithub, page-fotravisci, page-foshare {
         }
       }
 
+      div.avatars {
+        display: inline-flex;
+
+        ion-avatar {
+          height: 1.4rem;
+          width: 1.4rem;
+          min-height: 1.4rem;
+          min-width: 1.4rem;
+          margin-right: 4px;
+
+          img {
+            height: 1.4rem;
+            width: 1.4rem;
+          }
+        }
+      }
+
       button.button-clear-ios {
         color: #f53d3d;
       }
