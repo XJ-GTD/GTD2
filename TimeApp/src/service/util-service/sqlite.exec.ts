@@ -82,6 +82,10 @@ export class SqliteExec {
    * @returns {Promise<any>}
    */
   save(itbl: ITbl): Promise<any> {
+    let arr = new Array<any>();
+    for (let field in itbl) {
+      arr.push(itbl[field]);
+    }
     return this.execSql(itbl.inT())
   }
 
