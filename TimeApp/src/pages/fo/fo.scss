@@ -269,9 +269,15 @@ page-fo, page-fofirim, page-fogithub, page-fotravisci, page-foshare {
           font-size: 1.7rem;
         }
 
-        ion-thumbnail > img {
+        ion-thumbnail {
           width: 1.7rem;
           height: 1.7rem;
+          position: absolute;
+
+          & > img {
+            width: 1.7rem;
+            height: 1.7rem;
+          }
         }
       }
     }
