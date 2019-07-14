@@ -5,12 +5,14 @@ import {FdService} from "../fd/fd.service";
 import {GlService} from "../gl/gl.service";
 import {Fs4cPage} from "./fs4c";
 import {Fs4gPage} from "./fs4g";
+import {Fs4foPage} from "./fs4fo";
 import {IonicModule} from "ionic-angular";
 
 @NgModule({
   declarations: [
     Fs4cPage,
-    Fs4gPage
+    Fs4gPage,
+    Fs4foPage
   ],
   imports: [
     IonicModule],
@@ -20,7 +22,8 @@ import {IonicModule} from "ionic-angular";
 
   entryComponents:[
     Fs4cPage,
-    Fs4gPage
+    Fs4gPage,
+    Fs4foPage
   ]
 })
 export class FsPageModule {
