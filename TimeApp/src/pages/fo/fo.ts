@@ -26,6 +26,11 @@ import * as moment from "moment";
           </button>
         </ion-buttons>
         <ion-title>项目跟进</ion-title>
+        <ion-buttons right>
+          <button ion-button color="danger" (click)="more()">
+            <img class="img-header-right" src="./assets/imgs/more.png">
+          </button>
+        </ion-buttons>
       </ion-toolbar>
     </ion-header>
 
@@ -125,6 +130,13 @@ export class FoPage {
     };
 
     this.viewCtrl.dismiss(data);
+  }
+
+  more() {
+    let modal = this.modalController.create(DataConfig.PAGE._FOSHARE_PAGE);
+    modal.onDidDismiss((data)=>{
+    });
+    modal.present();
   }
 
   gotofirimsetting() {

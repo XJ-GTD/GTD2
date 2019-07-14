@@ -44,6 +44,7 @@ import {JhPage} from "../../pages/jh/jh";
 import {DzPage} from "../../pages/dz/dz";
 import {CfPage} from "../../pages/cf/cf";
 import {FoPage} from "../../pages/fo/fo";
+import {FoSharePage} from "../../pages/fo/foshare";
 import {FoGitHubPage} from "../../pages/fo/fogithub";
 import {FoFirIMPage} from "../../pages/fo/fofirim";
 import {FoTravisCIPage} from "../../pages/fo/fotravisci";
@@ -260,6 +261,7 @@ export class DataConfig {
     _DZ_PAGE: DzPage,       // 设置地址
     _CF_PAGE: CfPage,       // 设置重复
     _FO_PAGE: FoPage,       // 设置项目跟进可选项
+    _FOSHARE_PAGE: FoSharePage,       // 设置项目跟进通知可选项
     _FOGITHUB_PAGE: FoGitHubPage,       // 设置项目跟进GitHub可选项
     _FOFIRIM_PAGE: FoFirIMPage,       // 设置项目跟进Fir.IM可选项
     _FOTRAVISCI_PAGE: FoTravisCIPage,       // 设置项目跟进Travis-CI可选项
@@ -305,6 +307,7 @@ export class DataConfig {
     DzPage,       // 设置地址
     CfPage,       // 设置重复
     FoPage,       // 设置项目跟进可选项
+    FoSharePage,       // 设置项目跟进通知可选项
     FoGitHubPage,       // 设置项目跟进GitHub可选项
     FoFirIMPage,       // 设置项目跟进Fir.IM可选项
   ];
