@@ -264,6 +264,11 @@ page-fo, page-fofirim, page-fogithub, page-fotravisci, page-foshare {
           line-height: 1.4;
           font-size: 1.7rem;
         }
+
+        ion-thumbnail > img {
+          width: 1.7rem;
+          height: 1.7rem;
+        }
       }
     }
   }
