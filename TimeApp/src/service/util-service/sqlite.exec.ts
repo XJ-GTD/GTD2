@@ -22,7 +22,7 @@ export class SqliteExec {
   /**
    * 执行语句
    */
-  private execSqllog(sql: string,nolog:boolean): Promise<any> {
+  private execSqllog(sql: string,nolog:boolean, params: Array<any> = []): Promise<any> {
     return new Promise((resolve, reject) => {
 
       let log:LogTbl = new LogTbl();
@@ -31,7 +31,7 @@ export class SqliteExec {
       log.ss = new Date().valueOf();
       log.t = 0;
       this.sqlliteConfig.database.transaction( (tx)=> {
-        tx.executeSql(sql, [], (tx, res) => {
+        tx.executeSql(sql, params, (tx, res) => {
           if (!nolog){
             log.ss = new Date().valueOf() - log.ss;
             log.st = true;
@@ -54,8 +54,8 @@ export class SqliteExec {
   /**
    * 执行语句
    */
-  execSql(sql: string): Promise<any> {
-    return this.execSqllog(sql,false);
+  execSql(sql: string, params: Array<any> = []): Promise<any> {
+    return this.execSqllog(sql,false,params);
   }
 
   /**
@@ -94,12 +94,18 @@ export class SqliteExec {
    * @param et 对应实体类
    * @returns {Promise<any>}
    */
-  prepare(itbl: ITbl): Promise<any> {
-    let arr = new Array<any>();
+  prepareSave(itbl: ITbl): Promise<any> {
+    let params = new Array<any>();
+
     for (let field in itbl) {
-      arr.push(itbl[field]);
+      let val = itbl[field];
+
+      if (typeof val !== 'function') {
+        params.push(val);
+      }
     }
-    return this.execSql(itbl.inT())
+
+    return this.execSql(itbl.preT(), params);
   }
 
   /**

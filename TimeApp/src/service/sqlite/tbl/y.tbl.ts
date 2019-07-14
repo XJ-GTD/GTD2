@@ -103,5 +103,10 @@ export class YTbl implements ITbl {
     return sq;
   }
 
-}
+  preT(): string {
+    let sq = 'insert into gtd_y ' +
+      '(  yi ,yt ,ytn ,yn ,yk ,yv) values(?, ?, ?, ?, ?, ?);';
 
+    return sq;
+  }
+}
