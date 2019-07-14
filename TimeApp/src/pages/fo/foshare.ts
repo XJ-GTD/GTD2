@@ -42,10 +42,7 @@ import { InAppBrowser } from '@ionic-native/in-app-browser';
             <ion-list no-lines>
               <ion-list-header>GitHub</ion-list-header>
               <ion-item>
-                <ion-thumbnail item-start>
-                  <ion-icon name="git-network"></ion-icon>
-                </ion-thumbnail>
-                <h2>XJ-GTD/GTD2</h2>
+                <h2><ion-icon name="git-network"></ion-icon> XJ-GTD/GTD2</h2>
                 <p>过去, 现在和未来管理局 ( 记录过去，提醒现在和预约未来 )</p>
               </ion-item>
               <ion-list-header>集成 | fir.im</ion-list-header>
