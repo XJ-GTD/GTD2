@@ -79,8 +79,9 @@ export class UserConfig {
   }
 
   static getSettings(type: string) {
-    return UserConfig.settins.filter((element, index, array) => {
-      return (element.type == type);
+    let a = Array.from(UserConfig.settins.values());
+    return a.filter((element, index, array) => {
+      return (element.typeB == type);
     });
   }
 
