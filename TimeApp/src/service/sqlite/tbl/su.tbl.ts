@@ -100,14 +100,6 @@ export class SuTbl implements ITbl   {
 
     return sq;
   }
-  inT():string {
-    let sq ='insert into gtd_su ' +
-      '(  sui ,subt ,subtsn ,sust ,sustsn ,suc ,sut ,sus ,sum) values("'+ this.sui+'","'+ this.subt+'",' +
-      '"'+this.subtsn+ '","'+this.sust+ '","'+this.sustsn+ '","'+this.suc+ '",' +
-      '"'+this.sut+ '","'+this.sus+ '","'+this.sum+ '");';
-
-    return sq;
-  }
 
   rpT():string {
     let sq ='replace into gtd_su ' +
