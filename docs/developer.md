@@ -1,15 +1,20 @@
 # 开发者参考文档
 
 ## 人工智能业务开发
+![开发流程](images/dev-workflow.png)
 
 ## 样例（Examples）
-![开发流程](images/dev-workflow.png)
+![业务流处理流程](images/dev-processflow.png)
 
 ### 讯飞技能开发
 技能开发文档参考[讯飞技能开发文档][2]
 
+![场景交互设计](images/dev-interaction-scene.png)
+
 ### 业务处理流 [aah][5]
 [config/duan/aah/mwxing_inteligence_service_remote_start_v2.json][4]
+
+![业务流处理设计](images/dev-processflow-design.png)
 
 ### 逻辑处理
 
