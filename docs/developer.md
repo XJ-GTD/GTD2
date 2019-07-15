@@ -7,13 +7,25 @@
 ### 讯飞技能开发
 技能开发文档参考[讯飞技能开发文档][2]
 
-### 业务处理流
+### 业务处理流 [aah][5]
 [config/duan/aah/mwxing_inteligence_service_remote_start_v2.json][4]
 
 ### 逻辑处理
 
 #### 自定义处理 [acj][1]
 [config/duan/acj/v2][3]
+
+#### 通知 [ann][7]
+短信、极光推送和冥王星消息推送
+
+#### 短链接 [sho][8]
+互联网网络服务访问地址（URL）转换成短网址
+
+#### 天气 [wti][9]
+根据城市代码获取天气预报信息
+
+### 事件分发 [aag][6]
+定时事件（每小时整点, 每5分钟整点等事件）、GitHub Webhooks事件（push等）、fir.im Webhooks事件等
 
 ## 常用问题
 1. 讯飞的结构咋用的，有说明文档不？
@@ -23,3 +35,8 @@
 [2]: https://doc.iflyos.cn/studio/ "讯飞技能开发文档"
 [3]: https://github.com/XJ-GTD/GTD2/tree/cassiscornuta/config/duan/acj/v2 "自定义逻辑处理样例"
 [4]: https://github.com/XJ-GTD/GTD2/blob/cassiscornuta/config/duan/aah/mwxing_inteligence_service_remote_start_v2.json "通用语音业务处理流样例"
+[5]: https://github.com/xiaoji-duan/duan-jobflows "aah"
+[6]: https://github.com/xiaoji-duan/duan-eventdispacher "aag"
+[7]: https://github.com/xiaoji-duan/duan-executor-announce "ann"
+[8]: https://github.com/xiaoji-duan/duan-executor-shorturl "sho"
+[9]: https://github.com/xiaoji-duan/duan-executor-weather "wti"
