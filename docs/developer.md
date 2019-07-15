@@ -17,8 +17,7 @@
 
 ## 常用问题
 1. 讯飞的结构咋用的，有说明文档不？
-
-参考[讯飞技能开发](#讯飞技能开发)
+   参考[讯飞技能开发](#讯飞技能开发)
 
 [1]: https://github.com/xiaoji-duan/duan-executor-dataprocessor "acj"
 [2]: https://doc.iflyos.cn/studio/ "讯飞技能开发文档"
