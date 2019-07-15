@@ -257,6 +257,10 @@ page-fo, page-fofirim, page-fogithub, page-fotravisci, page-foshare {
 
     ion-item-sliding {
       background-color: $baseBackColor;
+
+      ion-item.item-ios {
+        background-color: $baseBackColor;
+      }
     }
 
     .item-ios {
