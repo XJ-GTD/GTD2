@@ -3,6 +3,7 @@
 ## 人工智能业务开发
 
 ## 样例（Examples）
+![开发流程](docs/images/dev-workflow.png)
 
 ### 讯飞技能开发
 技能开发文档参考[讯飞技能开发文档][2]
