@@ -24,6 +24,18 @@
 #### 天气 [wti][9]
 根据城市代码获取天气预报信息
 
+#### ip定位城市 [ips][10]
+根据客户端ip地址取得该ip所属城市
+
+#### 中文分词 [nlp][11]
+根据中文分词算法对输入中文句子进行短语、词性等分析
+
+#### 中文拼音 [pin][13]
+将输入中文转换成拼音
+
+#### HTTP/HTTPS访问 [exc][12]
+访问输入本地/互联网网络服务访问地址（URL），并返回服务返回结果，支持失败重试
+
 ### 事件分发 [aag][6]
 定时事件（每小时整点, 每5分钟整点等事件）、GitHub Webhooks事件（push等）、fir.im Webhooks事件等
 
@@ -40,3 +52,7 @@
 [7]: https://github.com/xiaoji-duan/duan-executor-announce "ann"
 [8]: https://github.com/xiaoji-duan/duan-executor-shorturl "sho"
 [9]: https://github.com/xiaoji-duan/duan-executor-weather "wti"
+[10]: https://github.com/xiaoji-duan/duan-executor-ip2location "ips"
+[11]: https://github.com/xiaoji-duan/duan-executor-nlp "nlp"
+[12]: https://github.com/xiaoji-duan/duan-executor-http "exc"
+[13]: https://github.com/xiaoji-duan/duan-executor-pinyin "pin"
