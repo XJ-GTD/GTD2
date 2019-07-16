@@ -49,8 +49,9 @@ import { InAppBrowser } from '@ionic-native/in-app-browser';
               <p>{{sgithub.description}}</p>
             </ion-item>
             <ion-item-options side="right">
-              <button ion-button clear>
+              <button ion-button clear (click)="shareto()">
                 <ion-icon ios="ios-add-circle-outline" md="ios-add-circle-outline"></ion-icon>
+                添加
               </button>
             </ion-item-options>
           </ion-item-sliding>
