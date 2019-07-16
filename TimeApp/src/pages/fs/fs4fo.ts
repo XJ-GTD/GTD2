@@ -133,6 +133,8 @@ export class Fs4foPage {
       let fs: FsPageData = new FsPageData();
       Object.assign(fs, value);
 
+      if (fs.rel != '1') continue;
+
       if (selected.indexOf(fs.ui) > -1) {
         fs.checked = true;
         this.selFsl.push(fs);
