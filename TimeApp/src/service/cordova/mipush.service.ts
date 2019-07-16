@@ -9,24 +9,25 @@ export class MIPushService {
   constructor(private util: UtilService,
               private device: Device,
               private emitService: EmitService) {
-    if (this.util.isMobile()) {
-      console.log("MIPush service created@" + this.device.platform + ".");
+      if (this.util.isMobile()) {
+        console.log("MIPush service created@" + this.device.platform + ".");
 
-      if (this.device.platform == "Android") {
-        document.addEventListener("mipush.receiveRegisterResult", (event) => {
-          console.log("MIPush Received Notification with event listener.")
-          this.notificationReceived(event);
-        }, false);
+        if (this.device.platform == "Android") {
+          document.addEventListener("mipush.receiveRegisterResult", (event) => {
+            console.log("MIPush Received Notification with event listener.")
+            this.notificationReceived(event);
+          }, false);
 
-        document.addEventListener("mipush.notificationMessageArrived", (event) => {
-          console.log("MIPush Received Notification with event listener.")
-          this.notificationReceived(event);
-        }, false);
+          document.addEventListener("mipush.notificationMessageArrived", (event) => {
+            console.log("MIPush Received Notification with event listener.")
+            this.notificationReceived(event);
+          }, false);
 
-        document.addEventListener("mipush.notificationMessageClicked", (event) => {
-          console.log("MIPush Received Notification with event listener.")
-          this.notificationReceived(event);
-        }, false);
+          document.addEventListener("mipush.notificationMessageClicked", (event) => {
+            console.log("MIPush Received Notification with event listener.")
+            this.notificationReceived(event);
+          }, false);
+      }
     }
   }
 
