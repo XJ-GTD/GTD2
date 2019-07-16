@@ -154,7 +154,7 @@ export class FoSharePage {
     let firs: Array<any> = new Array<any>();
 
     for (let f in firInstances) {
-      let value = eval(f.value);
+      let value = eval(firInstances[f].value);
 
       firs.push(value);
     }
