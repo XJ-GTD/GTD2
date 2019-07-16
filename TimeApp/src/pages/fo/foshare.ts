@@ -3,7 +3,7 @@ import {IonicPage, NavController, ViewController, ModalController} from 'ionic-a
 import {DataConfig} from "../../service/config/data.config";
 import {Setting, UserConfig} from "../../service/config/user.config";
 import {SsService} from "../ss/ss.service";
-import {PageY} from "../../data.mapping";
+import {FsData, PageY} from "../../data.mapping";
 import * as moment from "moment";
 import { InAppBrowser } from '@ionic-native/in-app-browser';
 
@@ -146,6 +146,8 @@ export class FoSharePage {
   sgithubs: Array<any>;
   sfirsin: Array<any>;
   sgithubsin: Array<any>;
+
+  smembers: Map<string, Array<FsData>>;
 
   constructor(public modalController: ModalController,
               public navCtrl: NavController,
