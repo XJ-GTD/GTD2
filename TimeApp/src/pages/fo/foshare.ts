@@ -33,7 +33,7 @@ import { InAppBrowser } from '@ionic-native/in-app-browser';
       <ion-row>
         <ion-grid>
           <ion-row align-items-center justify-content-center>
-            给团队推送通知
+            团队共享通知推送
           </ion-row>
           <ion-row align-items-center justify-content-center>
             <p></p>
@@ -150,6 +150,14 @@ export class FoSharePage {
     this.defaultavatar = DataConfig.HUIBASE64;
     let firInstances = UserConfig.getSettings(DataConfig.SYS_FOFIR_INS);
     let githubInstances = UserConfig.getSettings(DataConfig.SYS_FOGH_INS);
+
+    let firs: Array<any> = new Array<any>();
+
+    for (let f in firInstances) {
+      let value = eval(f.value);
+
+      firs.push(value);
+    }
 
     //初始化参数格式设计
   }
