@@ -43,7 +43,7 @@ import { InAppBrowser } from '@ionic-native/in-app-browser';
       <ion-row>
         <ion-list no-lines>
           <ion-list-header>GitHub</ion-list-header>
-          <ion-item-sliding *ngFor="let sgithub in sgithubs">
+          <ion-item-sliding *ngFor="let sgithub of sgithubs">
             <ion-item>
               <h3><ion-icon name="git-network"></ion-icon> XJ-GTD/GTD2</h3>
               <p>过去, 现在和未来管理局 ( 记录过去，提醒现在和预约未来 )</p>
@@ -70,7 +70,7 @@ import { InAppBrowser } from '@ionic-native/in-app-browser';
           </ion-item-sliding>
 
           <ion-list-header>集成 | fir.im</ion-list-header>
-          <ion-item-sliding *ngFor="let sfir in sfirs">
+          <ion-item-sliding *ngFor="let sfir of sfirs">
             <ion-item>
               <h3>
                 <ion-thumbnail>
