@@ -141,8 +141,8 @@ export class FoSharePage {
   sgithub: Setting;
   sgithubsecret: Setting;
 
-  let sfirs: Array<any>;
-  let sgithubs: Array<any>;
+  sfirs: Array<any>;
+  sgithubs: Array<any>;
 
   constructor(public modalController: ModalController,
               public navCtrl: NavController,
