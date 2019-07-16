@@ -178,8 +178,10 @@ export class DataConfig {
   public static SYS_FOGH: string = "FOGH";
   public static SYS_FOGHSECRET: string = "FOGHSECRET";
   public static SYS_FOGH_INS: string = "FOGH_INS";
+  public static SYS_FOGHIN_INS: string = "FOGHIN_INS";
   public static SYS_FOFIR: string = "FOFIR";
   public static SYS_FOFIR_INS: string = "FOFIR_INS";
+  public static SYS_FOFIRIN_INS: string = "FOFIRIN_INS";
   public static SYS_FOTRACI: string = "FOTRACI";
   /*========== 系统设置区分 =========*/
 

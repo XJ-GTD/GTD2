@@ -54,13 +54,13 @@ import { InAppBrowser } from '@ionic-native/in-app-browser';
               </button>
             </ion-item-options>
           </ion-item-sliding>
-          <ion-item-sliding>
+          <ion-item-sliding *ngFor="let sgithubin of sgithubsin">
             <ion-item>
               <ion-avatar item-start>
-                <img [src]="defaultavatar">
+                <img [src]="sgithubin.from.avatar">
               </ion-avatar>
-              <h3><ion-icon name="git-network"></ion-icon> XJ-GTD/GTD2</h3>
-              <p>过去, 现在和未来管理局 ( 记录过去，提醒现在和预约未来 )</p>
+              <h3><ion-icon name="git-network"></ion-icon> {{sgithubin.full_name}}</h3>
+              <p>{{sgithubin.description}}</p>
             </ion-item>
             <ion-item-options side="right">
               <button ion-button clear>
@@ -106,18 +106,18 @@ import { InAppBrowser } from '@ionic-native/in-app-browser';
               </button>
             </ion-item-options>
           </ion-item-sliding>
-          <ion-item-sliding>
+          <ion-item-sliding *ngFor="let sfirin of sfirsin">
             <ion-item>
               <ion-avatar item-start>
-                <img [src]="defaultavatar">
+                <img [src]="sfirin.from.avatar">
               </ion-avatar>
               <h3>
                 <ion-thumbnail>
-                  <img src="http://firicon.fir.im/690cc493f7aa664d50c8a6493b964bc151181128?attname=blob&tmp=1563027675.485636">
+                  <img [src]="sfirin.icon">
                 </ion-thumbnail>
-                 　　冥王星
+                 　　{{sfirin.name}}
               </h3>
-              <p>Platform: Android</p>
+              <p>Platform: {{sfirin.platform}}</p>
             </ion-item>
             <ion-item-options side="right">
               <button ion-button clear>
@@ -143,6 +143,8 @@ export class FoSharePage {
 
   sfirs: Array<any>;
   sgithubs: Array<any>;
+  sfirsin: Array<any>;
+  sgithubsin: Array<any>;
 
   constructor(public modalController: ModalController,
               public navCtrl: NavController,
@@ -153,6 +155,8 @@ export class FoSharePage {
     this.defaultavatar = DataConfig.HUIBASE64;
     let firInstances = UserConfig.getSettings(DataConfig.SYS_FOFIR_INS);
     let githubInstances = UserConfig.getSettings(DataConfig.SYS_FOGH_INS);
+    let firinInstances = UserConfig.getSettings(DataConfig.SYS_FOFIRIN_INS);
+    let githubinInstances = UserConfig.getSettings(DataConfig.SYS_FOGHIN_INS);
 
     let firs: Array<any> = new Array<any>();
     let githubs: Array<any> = new Array<any>();
@@ -169,8 +173,26 @@ export class FoSharePage {
       githubs.push(value);
     }
 
+    let firsin: Array<any> = new Array<any>();
+    let githubsin: Array<any> = new Array<any>();
+
+    for (let f in firinInstances) {
+      let value = JSON.parse(firInstances[f].value);
+
+      firsin.push(value);
+    }
+
+    for (let g in githubinInstances) {
+      let value = JSON.parse(githubInstances[g].value);
+
+      githubsin.push(value);
+    }
+
     this.sgithubs = githubs;
     this.sfirs = firs;
+    this.sgithubsin = githubs;
+    this.sfirsin = firs;
+
     //初始化参数格式设计
   }
 
