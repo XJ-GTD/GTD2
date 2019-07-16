@@ -97,18 +97,13 @@ export class Fs4foPage {
   }
 
   save() {
-    let list = this.selFsl;
-    if (list.length > 0) {
-      let dc: PageDcData = this.navParams.get('tpara');
-      dc.fsl = list;
-      this.gsService.save(dc).then(data => {
-          this.goBack();
-          //TODO 错误提示
-      });
-    } else {
-      this.util.popoverStart("请先选择朋友");
+    let selected: Array<string> = new Array<string>();
+
+    for (let p of this.selFsl) {
+      selected.push(p.ui);
     }
 
+    this.viewCtrl.dismiss({selected: selected});
   }
 
   addsel(fs: any) {
@@ -158,6 +153,7 @@ export class Fs4foPage {
       if (t) t.checked = true;
     }
   }
+
   goTofsDetail(fs:FsData){
     let modal = this.modalCtrl.create(DataConfig.PAGE._FD_PAGE,{fsData:fs});
     modal.present();
