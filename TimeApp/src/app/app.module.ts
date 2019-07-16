@@ -53,6 +53,7 @@ import {NetworkService} from "../service/cordova/network.service";
 import {LocalcalendarService} from "../service/cordova/localcalendar.service";
 import {NotificationsService} from "../service/cordova/notifications.service";
 import {JPushService} from "../service/cordova/jpush.service";
+import {MIPushService} from "../service/cordova/mipush.service";
 import {Badge} from "@ionic-native/badge";
 import {RemindService} from "../service/util-service/remind.service";
 import {TdcPageModule} from "../pages/tdc/tdc.module";
@@ -216,6 +217,7 @@ import { BaiduMapModule } from 'angular2-baidu-map';
     LocalcalendarService,
     NotificationsService,
     JPushService,
+    MIPushService,
     RemindService,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     {provide: HAMMER_GESTURE_CONFIG, useClass: HammerDIRECTIONALLConfig}
