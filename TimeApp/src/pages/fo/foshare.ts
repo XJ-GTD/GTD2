@@ -45,8 +45,8 @@ import { InAppBrowser } from '@ionic-native/in-app-browser';
           <ion-list-header>GitHub</ion-list-header>
           <ion-item-sliding *ngFor="let sgithub of sgithubs">
             <ion-item>
-              <h3><ion-icon name="git-network"></ion-icon> XJ-GTD/GTD2</h3>
-              <p>过去, 现在和未来管理局 ( 记录过去，提醒现在和预约未来 )</p>
+              <h3><ion-icon name="git-network"></ion-icon> {{sgithub.full_name}}</h3>
+              <p>{{sgithub.description}}</p>
             </ion-item>
             <ion-item-options side="right">
               <button ion-button clear>
