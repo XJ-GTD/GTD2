@@ -190,8 +190,8 @@ export class FoSharePage {
 
     this.sgithubs = githubs;
     this.sfirs = firs;
-    this.sgithubsin = githubs;
-    this.sfirsin = firs;
+    this.sgithubsin = githubsin;
+    this.sfirsin = firsin;
 
     //初始化参数格式设计
   }
