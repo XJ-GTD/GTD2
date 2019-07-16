@@ -1,0 +1,18 @@
+{
+  "name": "cordova-plugin-alarmclock",
+  "version": "0.0.1",
+  "description": "Cordova Alarm Clock Plugin",
+  "main": "alarmclock.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "Cordova",
+    "Cordova",
+    "Plugin",
+    "Alarm",
+    "Clock"
+  ],
+  "author": "leon_xi@163.com",
+  "license": "MIT"
+}
