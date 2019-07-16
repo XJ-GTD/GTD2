@@ -78,7 +78,13 @@ export class Fs4foPage {
   }
 
   ionViewDidEnter() {
-    this.getContacts();
+    let selected: Array<string> = new Array<string>();
+
+    if (this.navParams.get('selected')) {
+      selected = this.navParams.get('selected');
+    }
+
+    this.getContacts(selected);
   }
 
 
@@ -120,13 +126,19 @@ export class Fs4foPage {
     this.navCtrl.pop();
   }
 
-  getContacts() {
+  getContacts(selected: Array<string>) {
     this.pageFsl.splice(0, this.pageFsl.length);
     let fsl = this.fsService.getfriend(this.tel);
     fsl.forEach((value) => {
       let fs: FsPageData = new FsPageData();
       Object.assign(fs, value);
-      fs.checked = false;
+
+      if (selected.indexOf(fs.ui) > -1) {
+        fs.checked = true;
+        this.selFsl.push(fs);
+      } else {
+        fs.checked = false;
+      }
       this.pageFsl.push(fs);
     });
     this.checkedSet();

@@ -198,7 +198,7 @@ export class FoSharePage {
   }
 
   shareto() {
-    let modal = this.modalController.create(DataConfig.PAGE._FS4FO_PAGE,{});
+    let modal = this.modalController.create(DataConfig.PAGE._FS4FO_PAGE,{selected: ['13585820972']});
     modal.onDidDismiss((data)=>{
     });
     modal.present();
