@@ -43,7 +43,7 @@ import { InAppBrowser } from '@ionic-native/in-app-browser';
       <ion-row>
         <ion-list no-lines>
           <ion-list-header>GitHub</ion-list-header>
-          <ion-item-sliding>
+          <ion-item-sliding *ngFor="let sgithub in sgithubs">
             <ion-item>
               <h3><ion-icon name="git-network"></ion-icon> XJ-GTD/GTD2</h3>
               <p>过去, 现在和未来管理局 ( 记录过去，提醒现在和预约未来 )</p>
@@ -70,15 +70,15 @@ import { InAppBrowser } from '@ionic-native/in-app-browser';
           </ion-item-sliding>
 
           <ion-list-header>集成 | fir.im</ion-list-header>
-          <ion-item-sliding>
+          <ion-item-sliding *ngFor="let sfir in sfirs">
             <ion-item>
               <h3>
                 <ion-thumbnail>
-                  <img src="http://firicon.fir.im/690cc493f7aa664d50c8a6493b964bc151181128?attname=blob&tmp=1563027675.485636">
+                  <img [src]="sfir.icon">
                 </ion-thumbnail>
-                 　　冥王星
+                 　　{{sfir.name}}
               </h3>
-              <p>Platform: Android</p>
+              <p>Platform: {{sfir.platform}}</p>
               <div class="avatars">
                 <div>
                   <ion-avatar>
@@ -141,6 +141,9 @@ export class FoSharePage {
   sgithub: Setting;
   sgithubsecret: Setting;
 
+  let sfirs: Array<any>;
+  let sgithubs: Array<any>;
+
   constructor(public modalController: ModalController,
               public navCtrl: NavController,
               public viewCtrl: ViewController,
@@ -152,6 +155,7 @@ export class FoSharePage {
     let githubInstances = UserConfig.getSettings(DataConfig.SYS_FOGH_INS);
 
     let firs: Array<any> = new Array<any>();
+    let githubs: Array<any> = new Array<any>();
 
     for (let f in firInstances) {
       let value = JSON.parse(firInstances[f].value);
@@ -159,6 +163,14 @@ export class FoSharePage {
       firs.push(value);
     }
 
+    for (let g in githubInstances) {
+      let value = JSON.parse(githubInstances[g].value);
+
+      githubs.push(value);
+    }
+
+    this.sgithubs = githubs;
+    this.sfirs = firs;
     //初始化参数格式设计
   }
 
