@@ -146,8 +146,7 @@
       "jpush-phonegap-plugin": {
         "APP_KEY": "e8b1f201b4e0cc102f665238",
         "CHANNEL": "cn.sh.com.xj.timeApp"
-      },
-      "org.jk.cordova.wakeupplugin": {}
+      }
     },
     "platforms": [
       "ios",
