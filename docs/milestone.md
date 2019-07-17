@@ -125,23 +125,23 @@
 
 1. 图片记录
 
-![改进需求讨论记录 9-1](images/milestone2_1.jpg)
+![改进需求讨论记录 9-1](images/milestone2/milestone2_1.jpg)
 
-![改进需求讨论记录 9-2](images/milestone2_2.jpg)
+![改进需求讨论记录 9-2](images/milestone2/milestone2_2.jpg)
 
-![改进需求讨论记录 9-3](images/milestone2_3.jpg)
+![改进需求讨论记录 9-3](images/milestone2/milestone2_3.jpg)
 
-![改进需求讨论记录 9-4](images/milestone2_4.jpg)
+![改进需求讨论记录 9-4](images/milestone2/milestone2_4.jpg)
 
-![改进需求讨论记录 9-5](images/milestone2_5.jpg)
+![改进需求讨论记录 9-5](images/milestone2/milestone2_5.jpg)
 
-![改进需求讨论记录 9-6](images/milestone2_6.jpg)
+![改进需求讨论记录 9-6](images/milestone2/milestone2_6.jpg)
 
-![改进需求讨论记录 9-7](images/milestone2_7.jpg)
+![改进需求讨论记录 9-7](images/milestone2/milestone2_7.jpg)
 
-![改进需求讨论记录 9-8](images/milestone2_8.jpg)
+![改进需求讨论记录 9-8](images/milestone2/milestone2_8.jpg)
 
-![改进需求讨论记录 9-9](images/milestone2_9.jpg)
+![改进需求讨论记录 9-9](images/milestone2/milestone2_9.jpg)
 
 2. 补充说明
 
