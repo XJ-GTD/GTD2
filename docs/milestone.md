@@ -10,7 +10,7 @@
 以下是本次改进对日历、任务和备忘的定义
 
 |     | 日历<sup>[1](#note-calendar-object)</sup> | 日程<sup>[2](#note-task-object)</sup> | 任务<sup>[2](#note-task-object)</sup> | 小任务<sup>[2](#note-task-object)</sup> | 备忘事<sup>[3](#note-memo-object)</sup> | 备忘信息<sup>[3](#note-memo-object)</sup> |
-| --- | ---- | --- | --- | --- | --- | --- |
+| --- | --:-- | --:-- | --:-- | --:-- | --:-- | --:-- |
 | 提醒 | 是 | 是 | 是 | 是 | 无 | 无 |
 | 事后提醒 | 否 | 否 | 是 | 否 | 无 | 无 |
 | 要求确认 | 否 | 是 | 是 | 否 | 是 | 无 |
