@@ -9,7 +9,7 @@
 
 以下是本次改进对日历、任务和备忘的定义
 
-|     | 日历<sup>[1](#note-calendar-object)</sup> | 日程<sup>[2](#note-task-object)</sup> | 任务<sup>[2](#note-task-object)</sup> | 小任务<sup>[2](#note-task-object)</sup> | 备忘事 | 备忘信息 |
+|     | 日历<sup>[1](#note-calendar-object)</sup> | 日程<sup>[2](#note-task-object)</sup> | 任务<sup>[2](#note-task-object)</sup> | 小任务<sup>[2](#note-task-object)</sup> | 备忘事<sup>[3](#note-memo-object)</sup> | 备忘信息<sup>[3](#note-memo-object)</sup> |
 | --- | ---- | --- | --- | --- | --- | --- |
 | 提醒 | 是 | 是 | 是 | 是 | 无 | 无 |
 | 事后提醒 | 否 | 否 | 是 | 否 | 无 | 无 |
@@ -21,6 +21,7 @@
 
 <a name="note-calendar-object">1. 日历</a>: 具备日期、名称的对象为日历对象，例如：农历节气中的"2019年7月23日 大暑"是日历对象，日历由多个对象组成，并赋予名称
 <a name="note-task-object">2. 任务</a>: 任务分为日程、任务和小任务
+<a name="note-memo-object">3. 备忘</a>: 备忘分为事和信息，例如：通过语音记录的借钱/还钱记录到备忘事中，不同日期的多次记录保存到同一条备忘中
 
 类似借钱这样的事情记录在备忘里面，记录在同一条记录里面，而不要显示在日程里面
 
