@@ -141,8 +141,6 @@
 
 ![改进需求讨论记录 9-8](images/milestone2/milestone2_8.jpg)
 
-![改进需求讨论记录 9-9](images/milestone2/milestone2_9.jpg)
-
 2. 补充说明
 
 类似借钱这样的事情记录在备忘里面，记录在同一条记录里面，而不要显示在日程里面
