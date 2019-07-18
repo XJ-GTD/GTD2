@@ -91,7 +91,7 @@ export class MyApp {
         this.feekback.initAudio();
 
         this.jpush.init();
-        window.plugins.MiPushPlugin.init();
+        //window.plugins.MiPushPlugin.init();
       }
       this.restfulClient.init();
 
