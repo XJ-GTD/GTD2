@@ -278,7 +278,7 @@
 
 ||迭代时间|完成内容|状态|
 |:---:|:---:|:---|:---:|
-|1|2019年7月22日<br/>\~<br/>2019年8月4日|1、提高通知及时性<sup>[Task1](#task-anchor-1)</sup> <br/>2、语音响应速度与稳定性<sup>[Task2](#task-anchor-2)</sup>|未开始|
+|1|2019年7月22日<br/>\~<br/>2019年8月4日|1、提高通知及时性<sup>[Task1](#task-anchor-1)</sup> <br/>2、语音响应速度与稳定性<sup>[Task2](#task-anchor-2)</sup> <br/>3、支持语音场景一<sup>[Task3](#task-anchor-3)</sup> <br/>4、支持语音场景二<sup>[Task4](#task-anchor-4)</sup> <br/>5、支持语音场景三<sup>[Task5](#task-anchor-5)</sup> <br/>6、支持语音场景四<sup>[Task6](#task-anchor-6)</sup> <br/>7、支持语音场景五<sup>[Task7](#task-anchor-7)</sup> <br/>8、支持语音场景六<sup>[Task8](#task-anchor-8)</sup> <br/>9、支持语音场景七<sup>[Task9](#task-anchor-9)</sup> <br/>10、支持语音场景八<sup>[Task10](#task-anchor-10)</sup> <br/>11、支持语音场景九<sup>[Task11](#task-anchor-11)</sup> <br/>|未开始|
 
 ## 问题
 <a name="note-question-1">1. 备忘事不能被邀请，怎么会有确认？</a>
