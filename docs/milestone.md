@@ -162,7 +162,7 @@
 
     以下是邀请的处理逻辑
 
-    1. 邀请
+    1. <a name="task-anchor-14">邀请</a>
 
     通过添加联系人共享日程
 
@@ -173,7 +173,7 @@
     |3||打开消息, 显示日程页面, 并弹出"邀请确认", 选择"接受"|加载缓存日程, 显示日程, <br/>弹出"邀请确认"确认框;<br/>接受: 用户B本地+服务器端保存<br/>服务器端设置原日程对应受邀人"用户B"状态"接受"<br/>发送通知和透传消息给用户A|
     |4|收到 __*用户B*__ __*7月28日 托福考试 考点宁波*__ 接受邀请 通知||收到透传消息更新对应日程受邀人"用户B"状态"接受"|
 
-    2. 页面邀请
+    2. <a name="task-anchor-15">页面邀请</a>
 
     通过分享邀请页面, 受邀人主动获取并加入共享日程
 
@@ -285,7 +285,7 @@
 ||迭代时间|完成内容|状态|
 |:---:|:---:|:---|:---:|
 |1|2019年7月22日<br/>\~<br/>2019年8月4日|1、提高通知及时性<sup>[Task1](#task-anchor-1)</sup> <br/>2、语音响应速度与稳定性<sup>[Task2](#task-anchor-2)</sup> <br/>3、支持语音场景一<sup>[Task3](#task-anchor-3)</sup> <br/>4、支持语音场景二<sup>[Task4](#task-anchor-4)</sup> <br/>5、支持语音场景三<sup>[Task5](#task-anchor-5)</sup> <br/>6、支持语音场景四<sup>[Task6](#task-anchor-6)</sup> <br/>7、支持语音场景五<sup>[Task7](#task-anchor-7)</sup> <br/>8、支持语音场景六<sup>[Task8](#task-anchor-8)</sup> <br/>9、支持语音场景七<sup>[Task9](#task-anchor-9)</sup> <br/>10、支持语音场景八<sup>[Task10](#task-anchor-10)</sup> <br/>11、支持语音场景九<sup>[Task11](#task-anchor-11)</sup> <br/>|未开始|
-|2|2019年8月5日<br/>\~<br/>2019年8月18日|12、便捷操作<sup>[Task12](#task-anchor-12)</sup> <br/>13、分享<sup>[Task13](#task-anchor-13)</sup> <br/>|未开始|
+|2|2019年8月5日<br/>\~<br/>2019年8月18日|12、便捷操作<sup>[Task12](#task-anchor-12)</sup> <br/>13、分享<sup>[Task13](#task-anchor-13)</sup> <br/>14、邀请<sup>[Task14](#task-anchor-14)</sup> <br/>15、页面邀请<sup>[Task15](#task-anchor-15)</sup> <br/>|未开始|
 |3|2019年8月19日<br/>\~<br/>2019年9月1日||未开始|
 |4|2019年9月2日<br/>\~<br/>2019年9月15日||未开始|
 
