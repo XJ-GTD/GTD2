@@ -248,7 +248,7 @@
 
     相比复杂的各种功能菜单和功能按钮, 小小的手机屏幕无法一应装下, 通过语音/文字指令快捷打开, 将作为非主要操作功能的快捷入口。
 
-    以下是冥王星已经支持或未来支持的语音指令和语音内容
+    <a name="task-anchor-19">以下是冥王星已经支持或未来支持的语音指令和语音内容</a>
 
     ||指令/内容|功能|格式|支持版本|兼容性|
     |-|:---:|:---|:---|:---:|:---|
@@ -311,7 +311,7 @@
 |:---:|:---:|:---|:---:|
 |1|2019年7月22日<br/>\~<br/>2019年8月4日|1、提高通知及时性<sup>[Task1](#task-anchor-1)</sup> <br/>2、语音响应速度与稳定性<sup>[Task2](#task-anchor-2)</sup> <br/>3、支持语音场景一<sup>[Task3](#task-anchor-3)</sup> <br/>4、支持语音场景二<sup>[Task4](#task-anchor-4)</sup> <br/>5、支持语音场景三<sup>[Task5](#task-anchor-5)</sup> <br/>6、支持语音场景四<sup>[Task6](#task-anchor-6)</sup> <br/>7、支持语音场景五<sup>[Task7](#task-anchor-7)</sup> <br/>8、支持语音场景六<sup>[Task8](#task-anchor-8)</sup> <br/>9、支持语音场景七<sup>[Task9](#task-anchor-9)</sup> <br/>10、支持语音场景八<sup>[Task10](#task-anchor-10)</sup> <br/>11、支持语音场景九<sup>[Task11](#task-anchor-11)</sup> <br/>|未开始|
 |2|2019年8月5日<br/>\~<br/>2019年8月18日|12、便捷操作<sup>[Task12](#task-anchor-12)</sup> <br/>13、分享<sup>[Task13](#task-anchor-13)</sup> <br/>14、邀请<sup>[Task14](#task-anchor-14)</sup> <br/>15、页面邀请<sup>[Task15](#task-anchor-15)</sup> <br/>16、日历页面改造<sup>[Task16](#task-anchor-16)</sup> <br/>17、新增任务页面<sup>[Task17](#task-anchor-17)</sup> <br/>18、新增备忘页面<sup>[Task18](#task-anchor-18)</sup> <br/>|未开始|
-|3|2019年8月19日<br/>\~<br/>2019年9月1日||未开始|
+|3|2019年8月19日<br/>\~<br/>2019年9月1日|19、补充语音指令和内容<sup>[Task19](#task-anchor-19)</sup> <br/>|未开始|
 |4|2019年9月2日<br/>\~<br/>2019年9月15日||未开始|
 
 ## 问题
