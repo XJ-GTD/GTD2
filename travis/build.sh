@@ -13,6 +13,7 @@ else
 fi
 
 cp -rf $TRAVIS_BUILD_DIR/TimeAppPatch/platforms/* $TRAVIS_BUILD_DIR/TimeApp/platforms
+ls -la $TRAVIS_BUILD_DIR/TimeApp/platforms/android/app/
 cp -f $TRAVIS_BUILD_DIR/config/gradle.properties $TRAVIS_BUILD_DIR/TimeApp/platforms/android/app/gradle.properties
 
 if [ $TRAVIS_OS_NAME = 'osx' ]; then
