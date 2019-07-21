@@ -28,5 +28,5 @@ if [ $TRAVIS_OS_NAME = 'osx' ]; then
   ls $TRAVIS_BUILD_DIR/build/debug
   xcodebuild -exportArchive -archivePath $TRAVIS_BUILD_DIR/build/debug/$IOS_APP_NAME.xcarchive -exportPath $TRAVIS_BUILD_DIR/build/debug -exportOptionsPlist $TRAVIS_BUILD_DIR/travis/profiles/ios/exportOptions.plist
 else
-  ionic cordova build android --buildConfig $TRAVIS_BUILD_DIR/travis/profiles/cordova/build.json -- --gradleArg=-Pandroid.enableD8.desugaring=false
+  ionic cordova build android --buildConfig $TRAVIS_BUILD_DIR/travis/profiles/cordova/build.json -- --gradleArg=-PcdvCompileSdkVersion=28 --gradleArg=-Pandroid.enableD8.desugaring=false
 fi
