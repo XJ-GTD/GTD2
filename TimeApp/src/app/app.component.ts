@@ -94,6 +94,7 @@ export class MyApp {
 
         this.jpush.init();
         //window.plugins.MiPushPlugin.init();
+        console.log("Start RabbitMQ plugin initing...");
         this.wins.cordova.plugins.RabbitMQPlugin.init();
       }
       this.restfulClient.init();
