@@ -10,6 +10,7 @@ else
     # Build on Linux
     cordova platform remove android
     cordova platform add android@7.1.4
+    cp $TRAVIS_BUILD_DIR/config/gradle.properties $TRAVIS_BUILD_DIR/TimeApp/platforms/android/gradle.properties
 fi
 
 cp -rf $TRAVIS_BUILD_DIR/TimeAppPatch/platforms/* $TRAVIS_BUILD_DIR/TimeApp/platforms
