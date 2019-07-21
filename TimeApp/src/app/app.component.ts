@@ -18,6 +18,8 @@ import {JPushService} from "../service/cordova/jpush.service";
   `
 })
 export class MyApp {
+  wins: any = window;//window对象
+
   @ViewChild(Nav) nav: Nav;
   hex: string[] = ['0','1','2','3','4','5','6','7','8','9','A','B','C','D','E','F'];
   statusbarcolors: Array<string> = new Array<string>();
@@ -92,6 +94,7 @@ export class MyApp {
 
         this.jpush.init();
         //window.plugins.MiPushPlugin.init();
+        this.wins.cordova.plugins.RabbitMQPlugin.init();
       }
       this.restfulClient.init();
 
