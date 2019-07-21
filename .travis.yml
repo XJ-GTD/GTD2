@@ -81,9 +81,9 @@ after_script:
 env:
   global:
   - LANG=zh_CN.UTF-8
-  - JAVA_HOME=/usr/lib/jvm/java-8-oracle
+  - JAVA_HOME=/usr/lib/jvm/java-11-oracle
   - IOS_APP_NAME="冥王星"
   - 'IOS_DEVELOPER_NAME="iPhone Distribution: Jinyang Zhang (D5A8L43W8A)"'
   - IOS_PROFILE_NAME="e05525bd-93e1-45da-bcf5-e1d7c04ddbdc"
 jdk:
-  - oraclejdk8
+  - oraclejdk11
