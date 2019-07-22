@@ -19,5 +19,23 @@
     "requestedChannelMax": 5,
     "networkRecoveryInterval": 500,
     "automaticRecoveryEnabled": true
+  },
+  "rabbitmq": {
+    "user": "gtd_mq",
+    "password": "gtd_mq",
+    "host": "pluto.guobaa.com",
+    "port": 5672,
+    "virtualHost": "/",
+    "connectionTimeout": 6000,
+    "connectionRetries": 5,
+    "requestedHeartbeat": 60,
+    "handshakeTimeout": 6000,
+    "requestedChannelMax": 5,
+    "networkRecoveryInterval": 500,
+    "automaticRecoveryEnabled": true
+  },
+  "mipush": {
+    "packagename": "cn.sh.com.xj.timeApp",
+    "appkey": ""
   }
 }
