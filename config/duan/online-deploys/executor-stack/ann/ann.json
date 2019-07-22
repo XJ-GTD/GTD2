@@ -20,7 +20,7 @@
     "networkRecoveryInterval": 500,
     "automaticRecoveryEnabled": true
   },
-  "rabbitmq": {
+  "aliyun.rabbitmq": {
     "user": "gtd_mq",
     "password": "gtd_mq",
     "host": "pluto.guobaa.com",
