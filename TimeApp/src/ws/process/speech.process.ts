@@ -256,4 +256,20 @@ export class SpeechProcess extends BaseProcess implements MQProcess {
 
     })
   }
+
+  isfulltime(agendas) {
+    if (agendas && agendas.length > 1) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  isparttime(agendas) {
+    if (agendas && agendas.length == 1) {
+      return true;
+    } else {
+      return false;
+    }
+  }
 }

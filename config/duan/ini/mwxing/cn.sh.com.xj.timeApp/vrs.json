@@ -112,5 +112,10 @@
 {"version": "v2", "type": "MULTI", "needAnswer": "false", "tips":"", "name":"UNKNOWN", "value":"这可能超出了我目前的能力范围。", "desc":"异常回答"},
 {"version": "v2", "type": "NONE", "needAnswer": "false", "tips":"", "name":"UNKNOWN", "value":"对不起,我没听懂。", "desc":"异常回答"},
 {"version": "v2", "type": "NONE", "needAnswer": "false", "tips":"", "name":"UNKNOWN", "value":"我不是很明白,您能讲得更清楚一些吗?", "desc":"异常回答"},
-{"version": "v2", "type": "NONE", "needAnswer": "false", "tips":"", "name":"UNKNOWN", "value":"目前还无法处理您的要求,请换个方式告诉我", "desc":"异常回答"}
+{"version": "v2", "type": "NONE", "needAnswer": "false", "tips":"", "name":"UNKNOWN", "value":"目前还无法处理您的要求,请换个方式告诉我", "desc":"异常回答"},
+{"version": "v2", "type": "ONE", "needAnswer": "false", "tips":"", "name":"FFF", "value":"主人, 你{questiontime}安排满了, {emptytime}有空。", "desc":"正常回答"},
+{"version": "v2", "type": "MULTI", "needAnswer": "false", "tips":"", "name":"FFF", "value":"主人, 你{questiontime}安排满了, {emptytime}有空。", "desc":"正常回答"},
+{"version": "v2", "type": "ONE", "needAnswer": "false", "tips":"", "name":"FFP", "value":"主人, 你{questiontime}只有{fulltime}有事, 其它时间有空。", "desc":"正常回答"},
+{"version": "v2", "type": "MULTI", "needAnswer": "false", "tips":"", "name":"FFP", "value":"主人, 你{questiontime}只有{fulltime}有事, 其它时间有空。", "desc":"正常回答"},
+{"version": "v2", "type": "NONE", "needAnswer": "true", "tips":"", "name":"FFE", "value":"主人, 你{questiontime}全天有空, 需要帮你安排什么事情吗？", "desc":"正常回答"}
 ]
