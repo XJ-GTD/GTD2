@@ -29,8 +29,8 @@ import { InAppBrowser } from '@ionic-native/in-app-browser';
 @Component({
   selector: 'page-h',
   template: `
-    <ion-content [swipe]="swipeEvent($event)">
-      <div class="haContent">
+    <ion-content>
+      <div class="haContent" [swipe]="swipeEvent($event)">
         <div #calendarDiv class="haCalendar">
           <ion-calendar #calendar
                         [options]="options"
