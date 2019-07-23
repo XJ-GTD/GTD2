@@ -29,7 +29,7 @@ import { InAppBrowser } from '@ionic-native/in-app-browser';
 @Component({
   selector: 'page-h',
   template: `
-    <ion-content>
+    <ion-content [swipe]="swipeEvent($event)">
       <div class="haContent">
         <div #calendarDiv class="haCalendar">
           <ion-calendar #calendar
@@ -206,6 +206,10 @@ export class HPage {
     p.d = moment(this.hdata.selectDay.time);
     this.feedback.audioPress();
     this.modalCtr.create(TdmPage, p).present();
+  }
+
+  swipeEvent(event) {
+    console.log(event);
   }
 
   newcd() {
