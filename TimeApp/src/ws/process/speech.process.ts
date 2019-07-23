@@ -257,7 +257,9 @@ export class SpeechProcess extends BaseProcess implements MQProcess {
     })
   }
 
-  isfulltime(agendas) {
+}
+
+export function isfulltime(agendas: any): boolean {
     if (agendas && agendas.length > 1) {
       return true;
     } else {
@@ -265,11 +267,10 @@ export class SpeechProcess extends BaseProcess implements MQProcess {
     }
   }
 
-  isparttime(agendas) {
+export function isparttime(agendas: any): boolean {
     if (agendas && agendas.length == 1) {
       return true;
     } else {
       return false;
     }
   }
-}
