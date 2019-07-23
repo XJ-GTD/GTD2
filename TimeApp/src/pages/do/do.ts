@@ -25,11 +25,6 @@ import {CardListComponent} from "../../components/card-list/card-list";
   template: `
     <ion-header no-border>
       <ion-toolbar>
-        <ion-buttons left>
-          <button ion-button icon-only (click)="goBack()" color="danger">
-            <img class="img-header-left" src="./assets/imgs/back-white.png">
-          </button>
-        </ion-buttons>
         <ion-title>{{currentdayofweek}}<br/><small>{{currentdayshow}}</small></ion-title>
         <ion-buttons right>
           <button ion-button icon-only (click)="goNew()" color="danger">
