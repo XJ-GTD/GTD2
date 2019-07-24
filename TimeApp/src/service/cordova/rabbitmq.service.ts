@@ -34,6 +34,7 @@ export class RabbitMQService {
 
   //Native Call Function
   messageReceived(event) {
+    this.emitService.emit('rabbitmq.message.received', event);
     console.log("RabbitMQ received message: " + JSON.stringify(event['header']));
     console.log("RabbitMQ received message: " + JSON.stringify(event['content']));
   }

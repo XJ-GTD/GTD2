@@ -86,7 +86,24 @@ export class WebsocketService {
       if (this.timer) clearTimeout(this.timer);
 
       // 延迟重连动作,防止重连死循环
-      this.timer = setTimeout(()=>{
+      this.emitService.register('rabbitmq.message.received', (data) => {
+        try {
+          this.workqueue.push({message:data,index:this.messages++},(err)=>{
+            if (err) {
+              console.log("work queue process error happenned. ", err, '\r\n', err.stack);
+              this.workqueue.kill();
+              this.messages = 0;
+            } else {
+              if (this.messages >9999) this.messages = 0;
+            }
+          });
+        } catch (e) {
+          // message异常时捕获并不让程序崩溃
+          console.log("work queue push error : ", e, '\r\n', e.stack);
+        }
+      });
+      // 使用cordova.rabbitmq替代
+      /*this.timer = setTimeout(()=>{
         this.settingWs().then(data => {
           // 连接消息服务器
           this.client.connect(this.login, this.password, frame => {
@@ -145,7 +162,7 @@ export class WebsocketService {
           }, '/');
 
         });
-      }, delay);
+      }, delay);*/
     })
 
   }
