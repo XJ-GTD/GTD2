@@ -11,6 +11,8 @@ import {Device} from "@ionic-native/device";
  */
 @Injectable()
 export class RabbitMQService {
+  wins: any = window;//window对象
+
   constructor(private util: UtilService,
               private device: Device,
               private emitService: EmitService) {
@@ -22,12 +24,20 @@ export class RabbitMQService {
           console.log("RabbitMQ Received Message with event listener.")
           this.messageReceived(event);
         }, false);
+      } else {
+        console.log("RabbitMQ running outside android.");
       }
+    } else {
+      console.log("RabbitMQ service not created.");
     }
   }
 
   //Native Call Function
   messageReceived(event) {
     console.log("RabbitMQ received message: " + JSON.stringify(event));
+  }
+
+  init() {
+    this.wins.cordova.plugins.RabbitMQPlugin.init();
   }
 }
