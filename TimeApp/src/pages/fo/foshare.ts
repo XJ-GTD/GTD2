@@ -43,6 +43,7 @@ import { InAppBrowser } from '@ionic-native/in-app-browser';
       <ion-row>
         <ion-list no-lines>
           <ion-list-header>GitHub</ion-list-header>
+          <!-- 自己的项目跟进通知 -->
           <ion-item-sliding *ngFor="let sgithub of sgithubs">
             <ion-item>
               <h3><ion-icon name="git-network"></ion-icon> {{sgithub.full_name}}</h3>
@@ -53,8 +54,13 @@ import { InAppBrowser } from '@ionic-native/in-app-browser';
                 <ion-icon ios="ios-add-circle-outline" md="ios-add-circle-outline"></ion-icon>
                 添加
               </button>
+              <button ion-button clear (click)="configure()">
+                <ion-icon ios="ios-construct" md="ios-construct"></ion-icon>
+                选项
+              </button>
             </ion-item-options>
           </ion-item-sliding>
+          <!-- 共享给自己的项目跟进通知 -->
           <ion-item-sliding *ngFor="let sgithubin of sgithubsin">
             <ion-item>
               <ion-avatar item-start>
@@ -64,13 +70,15 @@ import { InAppBrowser } from '@ionic-native/in-app-browser';
               <p>{{sgithubin.description}}</p>
             </ion-item>
             <ion-item-options side="right">
-              <button ion-button clear>
-                关闭
+              <button ion-button clear (click)="configure()">
+                <ion-icon ios="ios-construct" md="ios-construct"></ion-icon>
+                选项
               </button>
             </ion-item-options>
           </ion-item-sliding>
 
           <ion-list-header>集成 | fir.im</ion-list-header>
+          <!-- 自己的项目跟进通知 -->
           <ion-item-sliding *ngFor="let sfir of sfirs">
             <ion-item>
               <h3>
@@ -99,14 +107,17 @@ import { InAppBrowser } from '@ionic-native/in-app-browser';
               </div>
             </ion-item>
             <ion-item-options side="right">
-              <button ion-button clear>
+              <button ion-button clear (click)="shareto()">
                 <ion-icon ios="ios-add-circle-outline" md="ios-add-circle-outline"></ion-icon>
+                添加
               </button>
-              <button ion-button (click)="unread(item)">
-                <ion-icon name="barcode"></ion-icon>
+              <button ion-button clear (click)="configure()">
+                <ion-icon ios="ios-construct" md="ios-construct"></ion-icon>
+                选项
               </button>
             </ion-item-options>
           </ion-item-sliding>
+          <!-- 共享给自己的项目跟进通知 -->
           <ion-item-sliding *ngFor="let sfirin of sfirsin">
             <ion-item>
               <ion-avatar item-start>
@@ -121,8 +132,9 @@ import { InAppBrowser } from '@ionic-native/in-app-browser';
               <p>Platform: {{sfirin.platform}}</p>
             </ion-item>
             <ion-item-options side="right">
-              <button ion-button clear>
-                关闭
+              <button ion-button clear (click)="configure()">
+                <ion-icon ios="ios-construct" md="ios-construct"></ion-icon>
+                选项
               </button>
             </ion-item-options>
           </ion-item-sliding>
