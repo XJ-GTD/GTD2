@@ -1,5 +1,42 @@
 # 项目跟进
 
+## 跟进
+通过第三方网络服务提供的Web钩子(Webhooks), 获取在第三方服务中管理的内容变动通知。
+
+### GITHUB
+```生效设置
+{
+  "type": "FOGH",
+  "key": "FOGH",
+  "value": "0:关闭, 1:打开"
+}
+```
+
+```令牌设置
+{
+  "type": "FOGHSECRET",
+  "key": "FOGHSECRET",
+  "value": "secret"
+}
+```
+
+```实例数据
+{
+  "type": "FOGH_INS",
+  "key": "GitHub Repository Name",
+  "value": "{实例数据}"
+}
+```
+
+### 集成 | FIR.IM
+```生效设置
+{
+  "type": "FOFIR",
+  "key": "FOFIR",
+  "value": "0:关闭, 1:打开"
+}
+```
+
 ## 团队共享
 共享已设置的GitHub或者FIR.IM通知, 让团队所有成员都可以接收此通知
 
