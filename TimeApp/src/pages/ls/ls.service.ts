@@ -3,6 +3,7 @@ import {PersonRestful} from "../../service/restful/personsev";
 import {SmsRestful} from "../../service/restful/smssev";
 import {SqliteExec} from "../../service/util-service/sqlite.exec";
 import {UtilService} from "../../service/util-service/util.service";
+import {DataConfig} from "../../service/config/data.config";
 import {UserConfig} from "../../service/config/user.config";
 import {AuthRestful, LoginData} from "../../service/restful/authsev";
 import {UTbl} from "../../service/sqlite/tbl/u.tbl";
