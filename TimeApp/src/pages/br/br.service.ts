@@ -309,7 +309,7 @@ export class BrService {
     let foghinsYTbl = new Array<YTbl>();
     let sfoghinsYTbl = new YTbl();
     sfoghinsYTbl.yt = "FOGH_INS";
-    foghinsYTbl = await this.sqlexec.getList<YTbl>(sfoghinsYTbl.slT());
+    foghinsYTbl = await this.sqlexec.getExtList<YTbl>(sfoghinsYTbl.slT());
 
     //FIR.IM参数
     let hasFOFIR = false;
@@ -322,7 +322,7 @@ export class BrService {
     let fofirinsYTbl = new Array<YTbl>();
     let sfofirinsYTbl = new YTbl();
     sfofirinsYTbl.yt = "FOFIR_INS";
-    fofirinsYTbl = await this.sqlexec.getList<YTbl>(sfofirinsYTbl.slT());
+    fofirinsYTbl = await this.sqlexec.getExtList<YTbl>(sfofirinsYTbl.slT());
 
     let y = new YTbl();
     await this.sqlexec.delete(y);
