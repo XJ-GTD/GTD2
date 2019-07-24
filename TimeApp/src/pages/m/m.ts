@@ -109,6 +109,7 @@ export class MPage {
 
       this.jpush.checkStatus(UserConfig.user.id, false);  //触发注册ID已加载事件
 
+      // 获取到用户信息之后, 启动后台RabbitMQ AMQP协议接收数据
       if (UserConfig.user && UserConfig.account) {
         console.log("Start RabbitMQ plugin initing...");
         this.rabbitmq.init(UserConfig.user.id, UserConfig.account.device, UserConfig.account.mq);
