@@ -291,6 +291,37 @@ export class BrService {
     djhYTbl.yk = "DJH";
     djhYTbl = await this.sqlexec.getExtOne<YTbl>(djhYTbl.slT());
 
+    // 增加项目跟进参数恢复前备份
+    // GitHUB参数
+    let hasFOGHSECRET = false;
+    let foghsecYTbl = new YTbl();
+    foghsecYTbl.yt = "FOGHSECRET";
+    foghsecYTbl.yk = "FOGHSECRET";
+    foghsecYTbl = await this.sqlexec.getExtOne<YTbl>(foghsecYTbl.slT());
+
+    let hasFOGH = false;
+    let foghYTbl = new YTbl();
+    foghYTbl.yt = "FOGH";
+    foghYTbl.yk = "FOGH";
+    foghYTbl = await this.sqlexec.getExtOne<YTbl>(foghYTbl.slT());
+
+    let hasFOGHINS = false;
+    let foghinsYTbl = new Array<YTbl>();
+    foghinsYTbl.yt = "FOGH_INS";
+    foghinsYTbl = await this.sqlexec.getList<YTbl>(foghinsYTbl.slT());
+
+    //FIR.IM参数
+    let hasFOFIR = false;
+    let fofirYTbl = new YTbl();
+    fofirYTbl.yt = "FOFIR";
+    fofirYTbl.yk = "FOFIR";
+    fofirYTbl = await this.sqlexec.getExtOne<YTbl>(fofirYTbl.slT());
+
+    let hasFOFIRINS = false;
+    let fofirinsYTbl = new Array<YTbl>();
+    fofirinsYTbl.yt = "FOFIR_INS";
+    fofirinsYTbl = await this.sqlexec.getList<YTbl>(fofirinsYTbl.slT());
+
     let y = new YTbl();
     await this.sqlexec.delete(y);
 
@@ -302,6 +333,11 @@ export class BrService {
       if (yi.yk == "DR") hasDR = true;
       if (yi.yk == "DRP1") hasDRP1 = true;
       if (yi.yk == "DJH") hasDJH = true;
+      if (yi.yk == "FOGHSECRET") hasFOGHSECRET = true;
+      if (yi.yk == "FOGH") hasFOGH = true;
+      if (yi.yt == "FOGH_INS") hasFOGHINS = true;
+      if (yi.yk == "FOFIR") hasFOFIR = true;
+      if (yi.yt == "FOFIR_INS") hasFOFIRINS = true;
 
       sqls.push(yi.inT());
     }
@@ -335,6 +371,42 @@ export class BrService {
       let bkDJHY: YTbl = new YTbl();
       Object.assign(bkDJHY, djhYTbl);
       sqls.push(bkDJHY.inT());
+    }
+
+    //GitHUB参数
+    if (!hasFOGHSECRET) {
+      let bkFOGHSECRET: YTbl = new YTbl();
+      Object.assign(bkFOGHSECRET, foghsecYTbl);
+      sqls.push(bkFOGHSECRET.inT());
+    }
+
+    if (!hasFOGH) {
+      let bkFOGH: YTbl = new YTbl();
+      Object.assign(bkFOGH, foghYTbl);
+      sqls.push(bkFOGH.inT());
+    }
+
+    if (!hasFOGHINS) {
+      for (let foghin of foghinsYTbl) {
+        let bkFOGHINS: YTbl = new YTbl();
+        Object.assign(bkFOGHINS, foghin);
+        sqls.push(bkFOGHINS.inT());
+      }
+    }
+
+    //FIR.IM参数
+    if (!hasFOFIR) {
+      let bkFOFIR: YTbl = new YTbl();
+      Object.assign(bkFOFIR, fofirYTbl);
+      sqls.push(bkFOFIR.inT());
+    }
+
+    if (!hasFOFIRINS) {
+      for (let fofirin of fofirinsYTbl) {
+        let bkFOFIRINS: YTbl = new YTbl();
+        Object.assign(bkFOFIRINS, fofirin);
+        sqls.push(bkFOFIRINS.inT());
+      }
     }
 
     await this.sqlexec.batExecSql(sqls);
