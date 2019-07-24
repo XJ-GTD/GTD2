@@ -6,6 +6,7 @@ import {UserConfig} from "../../service/config/user.config";
 import {PersonRestful} from "../../service/restful/personsev";
 import {UTbl} from "../../service/sqlite/tbl/u.tbl";
 import {ATbl} from "../../service/sqlite/tbl/a.tbl";
+import {YTbl} from "../../service/sqlite/tbl/y.tbl";
 import {WebsocketService} from "../../ws/websocket.service";
 import {UtilService} from "../../service/util-service/util.service";
 import {AlService} from "../al/al.service";
