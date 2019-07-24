@@ -392,7 +392,7 @@ export class BrService {
       for (let foghin of foghinsYTbl) {
         let bkFOGHINS: YTbl = new YTbl();
         Object.assign(bkFOGHINS, foghin);
-        sqls.push(bkFOGHINS.inT());
+        this.sqlexec.prepareSave(bkFOGHINS);
       }
     }
 
@@ -407,7 +407,7 @@ export class BrService {
       for (let fofirin of fofirinsYTbl) {
         let bkFOFIRINS: YTbl = new YTbl();
         Object.assign(bkFOFIRINS, fofirin);
-        sqls.push(bkFOFIRINS.inT());
+        this.sqlexec.prepareSave(bkFOFIRINS);
       }
     }
 
