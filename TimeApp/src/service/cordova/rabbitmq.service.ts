@@ -49,7 +49,11 @@ export class RabbitMQService {
     cache = null; // 清空变量，便于垃圾回收机制回收
   }
 
-  init() {
-    this.wins.cordova.plugins.RabbitMQPlugin.init();
+  init(uid: string, deviceid: string, queuename: string) {
+    if (uid && deviceid && queuename) {
+      this.wins.cordova.plugins.RabbitMQPlugin.init(uid, deviceid, queuename);
+    } else {
+      console.log("Not enough parameters for RabbitMQ initializing.");
+    }
   }
 }
