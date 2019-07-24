@@ -105,6 +105,7 @@ export class WebsocketService {
           }
         });
         this.emitService.emit("on.websocket.connected");
+        resolve();
       } else {
         // 真机使用cordova.rabbitmq替代
         this.timer = setTimeout(()=>{
