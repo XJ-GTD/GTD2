@@ -104,6 +104,7 @@ export class WebsocketService {
             console.log("work queue push error : ", e, '\r\n', e.stack);
           }
         });
+        this.emitService.emit("on.websocket.connected");
       } else {
         // 真机使用cordova.rabbitmq替代
         this.timer = setTimeout(()=>{
