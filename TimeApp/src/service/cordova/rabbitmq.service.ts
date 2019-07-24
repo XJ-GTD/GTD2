@@ -41,7 +41,7 @@ export class RabbitMQService {
 
   init(uid: string, deviceid: string, queuename: string) {
     if (uid && deviceid && queuename) {
-      this.wins.cordova.plugins.RabbitMQPlugin.init(uid, deviceid, queuename);
+      this.wins.cordova.plugins.RabbitMQPlugin.init(uid, deviceid, queuename, "pluto.guobaa.com", "5672", "gtd_mq", "gtd_mq");
     } else {
       console.log("Not enough parameters for RabbitMQ initializing.");
     }
