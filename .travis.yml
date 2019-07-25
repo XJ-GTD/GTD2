@@ -34,6 +34,10 @@ matrix:
   - os: osx
     language: objective-c
     osx_image: xcode10.2
+    addons:
+      homebrew:
+        packages:
+        - dos2unix
   allow_failures:
     - os: osx
 #before_cache:
