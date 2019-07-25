@@ -214,7 +214,11 @@ export class FoSharePage {
       let exist = firs.get(sf.type);
 
       if (exist) {
-        exist.share = JSON.parse(sf.value).share || [];
+        exist.share = {
+          id: sf.yi,
+          share: JSON.parse(sf.value).share || []
+        };
+
         firs.set(sf.type, exist);
       }
     }
@@ -239,7 +243,11 @@ export class FoSharePage {
       let exist = githubs.get(sg.type);
 
       if (exist) {
-        exist.share = JSON.parse(sg.value).share || [];
+        exist.share = {
+          id: sg.yi,
+          share: JSON.parse(sg.value).share || []
+        };
+
         githubs.set(sg.type, exist);
       }
     }
@@ -300,6 +308,10 @@ export class FoSharePage {
 
         // 保存共享设置
         let sharedef: Setting = new Setting();
+
+        if (preshare && preshare.id) {
+          sharedef.yi = preshare.id;
+        }
 
         sharedef.typeB = instance.ins.type + "_SHARE";
         sharedef.bname = instance.ins.typename;
