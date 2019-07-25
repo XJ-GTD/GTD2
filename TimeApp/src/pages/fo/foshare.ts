@@ -46,8 +46,8 @@ import { InAppBrowser } from '@ionic-native/in-app-browser';
           <!-- 自己的项目跟进通知 -->
           <ion-item-sliding *ngFor="let sgithub of sgithubs">
             <ion-item>
-              <h3><ion-icon name="git-network"></ion-icon> {{sgithub.full_name}}</h3>
-              <p>{{sgithub.description}}</p>
+              <h3><ion-icon name="git-network"></ion-icon> {{sgithub.ins.value.full_name}}</h3>
+              <p>{{sgithub.ins.value.description}}</p>
             </ion-item>
             <ion-item-options side="right">
               <button ion-button clear (click)="shareto(sgithub)">
@@ -64,10 +64,10 @@ import { InAppBrowser } from '@ionic-native/in-app-browser';
           <ion-item-sliding *ngFor="let sgithubin of sgithubsin">
             <ion-item>
               <ion-avatar item-start>
-                <img [src]="sgithubin.from.avatar">
+                <img [src]="sgithubin.ins.value.from.avatar">
               </ion-avatar>
-              <h3><ion-icon name="git-network"></ion-icon> {{sgithubin.full_name}}</h3>
-              <p>{{sgithubin.description}}</p>
+              <h3><ion-icon name="git-network"></ion-icon> {{sgithubin.ins.value.full_name}}</h3>
+              <p>{{sgithubin.ins.value.description}}</p>
             </ion-item>
             <ion-item-options side="right">
               <button ion-button clear (click)="configure(sgithubin)">
@@ -83,11 +83,11 @@ import { InAppBrowser } from '@ionic-native/in-app-browser';
             <ion-item>
               <h3>
                 <ion-thumbnail>
-                  <img [src]="sfir.icon">
+                  <img [src]="sfir.ins.value.icon">
                 </ion-thumbnail>
-                 　　{{sfir.name}}
+                 　　{{sfir.ins.value.name}}
               </h3>
-              <p>Platform: {{sfir.platform}}</p>
+              <p>Platform: {{sfir.ins.value.platform}}</p>
               <div class="avatars">
                 <div>
                   <ion-avatar>
@@ -121,15 +121,15 @@ import { InAppBrowser } from '@ionic-native/in-app-browser';
           <ion-item-sliding *ngFor="let sfirin of sfirsin">
             <ion-item>
               <ion-avatar item-start>
-                <img [src]="sfirin.from.avatar">
+                <img [src]="sfirin.ins.value.from.avatar">
               </ion-avatar>
               <h3>
                 <ion-thumbnail>
-                  <img [src]="sfirin.icon">
+                  <img [src]="sfirin.ins.value.icon">
                 </ion-thumbnail>
-                 　　{{sfirin.name}}
+                 　　{{sfirin.ins.value.name}}
               </h3>
-              <p>Platform: {{sfirin.platform}}</p>
+              <p>Platform: {{sfirin.ins.value.platform}}</p>
             </ion-item>
             <ion-item-options side="right">
               <button ion-button clear (click)="configure(sfirin)">
@@ -168,39 +168,88 @@ export class FoSharePage {
               private ssService: SsService,
               private _renderer: Renderer2) {
     this.defaultavatar = DataConfig.HUIBASE64;
+
+    //FIR.IM实例
     let firInstances = UserConfig.getSettings(DataConfig.SYS_FOFIR_INS);
+    //FIR.IM实例共享
+    let firShareInstances = UserConfig.getSettings(DataConfig.SYS_FOFIR_INS_SHARE);
+    //GITHUB实例
     let githubInstances = UserConfig.getSettings(DataConfig.SYS_FOGH_INS);
+    //GITHUB实例共享
+    let githubShareInstances = UserConfig.getSettings(DataConfig.SYS_FOGH_INS_SHARE);
+    //被共享FIR.IM实例
     let firinInstances = UserConfig.getSettings(DataConfig.SYS_FOFIRIN_INS);
+    //被共享GITHUB实例
     let githubinInstances = UserConfig.getSettings(DataConfig.SYS_FOGHIN_INS);
 
     let firs: Array<any> = new Array<any>();
     let githubs: Array<any> = new Array<any>();
 
     for (let f in firInstances) {
-      let value = JSON.parse(firInstances[f].value);
+      let obj = firInstances[f];
 
-      firs.push(value);
+      firs.push({
+        ins: {
+          id: obj.yi,
+          type: obj.typeB,
+          typename: obj.bname,
+          key: obj.type,
+          keyname: obj.name,
+          value: JSON.parse(obj.value)
+        },
+        share: {}
+      });
     }
 
     for (let g in githubInstances) {
-      let value = JSON.parse(githubInstances[g].value);
+      let obj = githubInstances[g];
 
-      githubs.push(value);
+      githubs.push({
+        ins: {
+          id: obj.yi,
+          type: obj.typeB,
+          typename: obj.bname,
+          key: obj.type,
+          keyname: obj.name,
+          value: JSON.parse(obj.value)
+        },
+        share: {}
+      });
     }
 
     let firsin: Array<any> = new Array<any>();
     let githubsin: Array<any> = new Array<any>();
 
     for (let f in firinInstances) {
-      let value = JSON.parse(firInstances[f].value);
+      let obj = firInstances[f];
 
-      firsin.push(value);
+      firsin.push({
+        ins: {
+          id: obj.yi,
+          type: obj.typeB,
+          typename: obj.bname,
+          key: obj.type,
+          keyname: obj.name,
+          value: JSON.parse(obj.value)
+        },
+        from: {}
+      });
     }
 
     for (let g in githubinInstances) {
-      let value = JSON.parse(githubInstances[g].value);
+      let obj = githubInstances[g];
 
-      githubsin.push(value);
+      githubsin.push({
+        ins: {
+          id: obj.yi,
+          type: obj.typeB,
+          typename: obj.bname,
+          key: obj.type,
+          keyname: obj.name,
+          value: JSON.parse(obj.value)
+        },
+        share: {}
+      });
     }
 
     this.sgithubs = githubs;
