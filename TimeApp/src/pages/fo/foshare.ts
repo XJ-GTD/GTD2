@@ -50,11 +50,11 @@ import { InAppBrowser } from '@ionic-native/in-app-browser';
               <p>{{sgithub.description}}</p>
             </ion-item>
             <ion-item-options side="right">
-              <button ion-button clear (click)="shareto()">
+              <button ion-button clear (click)="shareto(sgithub)">
                 <ion-icon ios="ios-add-circle-outline" md="ios-add-circle-outline"></ion-icon>
                 添加
               </button>
-              <button ion-button clear (click)="configure()">
+              <button ion-button clear (click)="configure(sgithub)">
                 <ion-icon ios="ios-construct" md="ios-construct"></ion-icon>
                 选项
               </button>
@@ -70,7 +70,7 @@ import { InAppBrowser } from '@ionic-native/in-app-browser';
               <p>{{sgithubin.description}}</p>
             </ion-item>
             <ion-item-options side="right">
-              <button ion-button clear (click)="configure()">
+              <button ion-button clear (click)="configure(sgithubin)">
                 <ion-icon ios="ios-construct" md="ios-construct"></ion-icon>
                 选项
               </button>
@@ -107,11 +107,11 @@ import { InAppBrowser } from '@ionic-native/in-app-browser';
               </div>
             </ion-item>
             <ion-item-options side="right">
-              <button ion-button clear (click)="shareto()">
+              <button ion-button clear (click)="shareto(sfir)">
                 <ion-icon ios="ios-add-circle-outline" md="ios-add-circle-outline"></ion-icon>
                 添加
               </button>
-              <button ion-button clear (click)="configure()">
+              <button ion-button clear (click)="configure(sfir)">
                 <ion-icon ios="ios-construct" md="ios-construct"></ion-icon>
                 选项
               </button>
@@ -132,7 +132,7 @@ import { InAppBrowser } from '@ionic-native/in-app-browser';
               <p>Platform: {{sfirin.platform}}</p>
             </ion-item>
             <ion-item-options side="right">
-              <button ion-button clear (click)="configure()">
+              <button ion-button clear (click)="configure(sfirin)">
                 <ion-icon ios="ios-construct" md="ios-construct"></ion-icon>
                 选项
               </button>
@@ -211,7 +211,7 @@ export class FoSharePage {
     //初始化参数格式设计
   }
 
-  shareto() {
+  shareto(instance) {
     let modal = this.modalController.create(DataConfig.PAGE._FS4FO_PAGE, {selected: ['13585820972']});
     modal.onDidDismiss((data)=>{
       if (data && data.selected) {
@@ -221,8 +221,14 @@ export class FoSharePage {
     modal.present();
   }
 
-  configure() {
-
+  configure(instance) {
+    let modal = this.modalController.create(DataConfig.PAGE._FOCONFIGURE_PAGE, {selected: ['13585820972']});
+    modal.onDidDismiss((data)=>{
+      if (data && data.selected) {
+        console.log("dddd");
+      }
+    });
+    modal.present();
   }
 
   gotogithubsetting() {
