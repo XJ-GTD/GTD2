@@ -35,8 +35,7 @@ export class RabbitMQService {
   //Native Call Function
   messageReceived(event) {
     console.log("RabbitMQ received message: " + JSON.stringify(event));
-    let payload = JSON.parse(event['body']);
-    this.emitService.emit('rabbitmq.message.received', payload);
+    this.emitService.emit('rabbitmq.message.received', event);
   }
 
   init(uid: string, deviceid: string, queuename: string) {

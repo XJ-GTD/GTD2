@@ -88,9 +88,9 @@ export class WebsocketService {
 
       // 延迟重连动作,防止重连死循环
       if (this.util.isMobile()) {
-        this.emitService.register('rabbitmq.message.received', (data) => {
+        this.emitService.register('rabbitmq.message.received', (event) => {
           try {
-            this.workqueue.push({message:data,index:this.messages++},(err)=>{
+            this.workqueue.push({message:event.body,index:this.messages++},(err)=>{
               if (err) {
                 console.log("work queue process error happenned. ", err, '\r\n', err.stack);
                 this.workqueue.kill();
