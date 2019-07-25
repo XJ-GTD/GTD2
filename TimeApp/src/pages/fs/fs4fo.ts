@@ -100,7 +100,7 @@ export class Fs4foPage {
     let selected: Array<string> = new Array<string>();
 
     for (let p of this.selFsl) {
-      selected.push(p.ui);
+      selected.push(p.rc);
     }
 
     this.viewCtrl.dismiss({selected: selected});
