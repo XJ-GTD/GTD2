@@ -190,13 +190,14 @@ export class FoSharePage {
     //被共享GITHUB实例
     let githubinInstances = UserConfig.getSettings(DataConfig.SYS_FOGHIN_INS);
 
-    let firs: Array<any> = new Array<any>();
-    let githubs: Array<any> = new Array<any>();
+    //加载实例
+    let firs: Map<string, any> = new Map<string, any>();
+    let githubs: Map<string, any> = new Map<string, any>();
 
     for (let f in firInstances) {
       let obj = firInstances[f];
 
-      firs.push({
+      firs.set(obj.type, {
         ins: {
           id: obj.yi,
           type: obj.typeB,
@@ -207,12 +208,21 @@ export class FoSharePage {
         },
         share: {}
       });
+    }
+
+    for (let sf of firShareInstances) {
+      let exist = firs.get(sf.type);
+
+      if (exist) {
+        exist.share = JSON.parse(sf.value).share || [];
+        firs.set(sf.type, exist);
+      }
     }
 
     for (let g in githubInstances) {
       let obj = githubInstances[g];
 
-      githubs.push({
+      githubs.set(obj.type, {
         ins: {
           id: obj.yi,
           type: obj.typeB,
@@ -225,13 +235,23 @@ export class FoSharePage {
       });
     }
 
-    let firsin: Array<any> = new Array<any>();
-    let githubsin: Array<any> = new Array<any>();
+    for (let sg of githubShareInstances) {
+      let exist = githubs.get(sg.type);
+
+      if (exist) {
+        exist.share = JSON.parse(sg.value).share || [];
+        githubs.set(sg.type, exist);
+      }
+    }
+
+    //加载被共享实例
+    let firsin: Map<string, any> = new Map<string, any>();
+    let githubsin: Map<string, any> = new Map<string, any>();
 
     for (let f in firinInstances) {
       let obj = firInstances[f];
 
-      firsin.push({
+      firsin.set(obj.type, {
         ins: {
           id: obj.yi,
           type: obj.typeB,
@@ -247,7 +267,7 @@ export class FoSharePage {
     for (let g in githubinInstances) {
       let obj = githubInstances[g];
 
-      githubsin.push({
+      githubsin.set(obj.type, {
         ins: {
           id: obj.yi,
           type: obj.typeB,
@@ -260,10 +280,10 @@ export class FoSharePage {
       });
     }
 
-    this.sgithubs = githubs;
-    this.sfirs = firs;
-    this.sgithubsin = githubsin;
-    this.sfirsin = firsin;
+    this.sgithubs = Array.from(githubs.values());
+    this.sfirs = Array.from(firs.values());
+    this.sgithubsin = Array.from(githubsin.values());
+    this.sfirsin = Array.from(firsin.values());
 
     //初始化参数格式设计
   }
