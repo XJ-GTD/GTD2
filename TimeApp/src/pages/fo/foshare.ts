@@ -297,8 +297,8 @@ export class FoSharePage {
   }
 
   shareto(instance) {
-    let preshare = instance.share;
-    let modal = this.modalController.create(DataConfig.PAGE._FS4FO_PAGE, {selected: ['13585820972']});
+    let preshare = instance.share || {};
+    let modal = this.modalController.create(DataConfig.PAGE._FS4FO_PAGE, {selected: preshare.share || []});
     modal.onDidDismiss((data)=>{
       if (data && data.selected) {
         // 存在已共享设置
