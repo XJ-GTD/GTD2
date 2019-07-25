@@ -161,6 +161,8 @@ export class FoSharePage {
 
   smembers: Map<string, Array<FsData>>;
 
+  secret: string = "";
+
   constructor(public modalController: ModalController,
               public navCtrl: NavController,
               public viewCtrl: ViewController,
@@ -168,6 +170,12 @@ export class FoSharePage {
               private ssService: SsService,
               private _renderer: Renderer2) {
     this.defaultavatar = DataConfig.HUIBASE64;
+
+    //取得GITHUB安全令牌
+    let memSecretDef = UserConfig.settins.get(DataConfig.SYS_FOGHSECRET);
+    if (memSecretDef && memSecretDef.value) {
+      this.secret = memSecretDef.value;
+    }
 
     //FIR.IM实例
     let firInstances = UserConfig.getSettings(DataConfig.SYS_FOFIR_INS);
@@ -261,10 +269,26 @@ export class FoSharePage {
   }
 
   shareto(instance) {
+    let preshare = instance.share;
     let modal = this.modalController.create(DataConfig.PAGE._FS4FO_PAGE, {selected: ['13585820972']});
     modal.onDidDismiss((data)=>{
       if (data && data.selected) {
-        console.log("dddd");
+        // 存在已共享设置
+        if (preshare && preshare.share) {
+          // 比较移除共享用户, 设置禁用
+        }
+
+        // 保存共享设置
+        let sharedef: Setting = new Setting();
+
+        sharedef.yi = instance.id;
+        sharedef.typeB = instance.type + "_SHARE";
+        sharedef.bname = instance.typename;
+        sharedef.name = instance.keyname;
+        sharedef.type = instance.key;
+        sharedef.value = "";
+
+        this.save(sharedef, JSON.stringify({share: data.selected}));
       }
     });
     modal.present();
@@ -280,7 +304,7 @@ export class FoSharePage {
     modal.present();
   }
 
-  async save(setting, value) {
+  async save(setting, value, active: boolean = true) {
     let set:PageY = new PageY();
     set.yi = setting.yi;//偏好主键ID
     set.ytn = setting.bname; //偏好设置类型名称
@@ -296,13 +320,29 @@ export class FoSharePage {
 
     await this.ssService.save(set);
 
-    if (set.yk == DataConfig.SYS_FOTRACI) {
-      // 改变画面显示
-      this.travisci = value;
-      // 返回前页
-      let data: Object = {setting: setting};
+    if (set.yt == DataConfig.SYS_FOGH_INS_SHARE) {
+      let share = JSON.parse(value);
 
-      this.viewCtrl.dismiss(data);
+      for (let shareto of share.share) {
+        await this.ssService.putFollowGitHubShare(
+          shareto,
+          UserConfig.account.id,
+          this.secret,
+          moment().valueOf(),
+          active
+        );
+      }
+    } else if (set.yt == DataConfig.SYS_FOFIR_INS_SHARE) {
+      let share = JSON.parse(value);
+
+      for (let shareto of share.share) {
+        await this.ssService.putFollowFirIMShare(
+          shareto,
+          UserConfig.account.id,
+          moment().valueOf(),
+          active
+        );
+      }
     }
   }
 
