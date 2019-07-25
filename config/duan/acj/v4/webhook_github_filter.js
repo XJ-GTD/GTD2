@@ -28,6 +28,7 @@ function clean(datasource)
 
   var userId = input['userId'];
   var event = input['event'];
+  var sharefrom = event['output']['payload']['from'];
   var repository = event['output']['payload']['repository'];
 
   var commits = event['output']['payload']['commits'];
@@ -92,7 +93,8 @@ function clean(datasource)
     };
   }
 
-  if (repository && headcommit && compare) {
+  //收到自己设置的应用消息
+  if (repository && headcommit && compare && !sharefrom) {
     // 返回消息头部
     output.header = {
       version: 'V1.1',
@@ -109,6 +111,32 @@ function clean(datasource)
       option: 'SY.FO',
       parameters: {
         t: 'FOGH_INS',
+        tn: 'GitHub Repository',
+        k: repository['full_name'],
+        kn: repository['full_name'],
+        vs: JSON.stringify(repository)
+      }
+    };
+  }
+
+  //收到他人共享给自己的应用消息
+  if (repository && headcommit && compare && sharefrom) {
+    // 返回消息头部
+    output.header = {
+      version: 'V1.1',
+      sender: 'xunfei',
+      datetime: formatDateTime(new Date()),
+      describe: ['SY']
+    };
+
+    output.content = {};
+
+    // 保存项目跟进实例数据指示
+    output.content['0'] = {
+      processor: 'SY',
+      option: 'SY.FO',
+      parameters: {
+        t: 'FOGHIN_INS',
         tn: 'GitHub Repository',
         k: repository['full_name'],
         kn: repository['full_name'],
