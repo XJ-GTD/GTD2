@@ -129,7 +129,7 @@ export class Fs4foPage {
       Object.assign(fs, value);
 
       if (fs.rel == '1') {
-        if (selected.indexOf(fs.ui) > -1) {
+        if (selected.indexOf(fs.rc) > -1) {
           fs.checked = true;
           this.selFsl.push(fs);
         } else {
