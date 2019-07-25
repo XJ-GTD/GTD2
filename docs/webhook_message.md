@@ -37,6 +37,14 @@
 }
 ```
 
+```实例数据
+{
+  "type": "FOFIR_INS",
+  "key": "https://fir.im/下载链接",
+  "value": "{实例数据}"
+}
+```
+
 ## 团队共享
 共享已设置的GitHub或者FIR.IM通知, 让团队所有成员都可以接收此通知
 
@@ -106,3 +114,23 @@ WEBHOOK_FORWARD
   }
 }
 ```
+
+3. 共享人本地存储共享信息
+
+    1. GITHUB
+    ```实例共享数据
+    {
+      "type": "FOGH_INS_SHARE",
+      "key": "GitHub Repository Name",
+      "value": "{share:[{成员1},{成员n}]}"
+    }
+    ```
+
+    2. 集成 | FIR.IM
+    ```实例共享数据
+    {
+      "type": "FOFIR_INS_SHARE",
+      "key": "https://fir.im/下载链接",
+      "value": "{share:[{成员1},{成员n}]}"
+    }
+    ```

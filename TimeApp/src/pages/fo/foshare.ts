@@ -221,6 +221,10 @@ export class FoSharePage {
     modal.present();
   }
 
+  configure() {
+
+  }
+
   gotogithubsetting() {
     this.github = !this.github;
 
