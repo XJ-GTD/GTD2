@@ -281,7 +281,6 @@ export class FoSharePage {
         // 保存共享设置
         let sharedef: Setting = new Setting();
 
-        sharedef.yi = instance.ins.id;
         sharedef.typeB = instance.ins.type + "_SHARE";
         sharedef.bname = instance.ins.typename;
         sharedef.name = instance.ins.keyname;
