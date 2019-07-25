@@ -128,7 +128,7 @@ export class Fs4foPage {
       let fs: FsPageData = new FsPageData();
       Object.assign(fs, value);
 
-      if (fs.rel == '1') {
+      if (fs.rel == '1' && fs.rc != UserConfig.account.id) {
         if (selected.indexOf(fs.rc) > -1) {
           fs.checked = true;
           this.selFsl.push(fs);
