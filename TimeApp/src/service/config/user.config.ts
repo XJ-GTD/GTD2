@@ -53,6 +53,7 @@ export class UserConfig {
 
   //系统设置
   static settins: Map<string, Setting> = new Map<string, Setting>();
+  static allsettins: Map<string, Setting> = new Map<string, Setting>();
 
   //参与人
   static friends: Array<FsData> = new Array<FsData>();
@@ -79,7 +80,7 @@ export class UserConfig {
   }
 
   static getSettings(type: string) {
-    let a = Array.from(UserConfig.settins.values());
+    let a = Array.from(UserConfig.allsettins.values());
     return a.filter((element, index, array) => {
       return (element.typeB == type);
     });
@@ -121,6 +122,7 @@ export class UserConfig {
       setting.type = y.yk;
       setting.value = y.yv;
       UserConfig.settins.set(setting.type, setting);
+      UserConfig.allsettins.set(setting.yi, setting);
     }
     return;
   }
