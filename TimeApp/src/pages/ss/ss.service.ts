@@ -33,8 +33,8 @@ export class SsService {
   }
 
   //设置 Fir.IM WebHook事件
-  putFollowFirIMShare(shareTo: string, userId: string, timestamp: number, active: boolean) {
-    this.syncRestful.putFollowFirIMShare(shareTo, userId, timestamp, active);
+  putFollowFirIMShare(shareTo: string, identify: string, userId: string, timestamp: number, active: boolean) {
+    this.syncRestful.putFollowFirIMShare(shareTo, identify, userId, timestamp, active);
   }
 
   //设置 Travis CI WebHook事件
@@ -48,8 +48,8 @@ export class SsService {
   }
 
   //设置 GitHub WebHook事件
-  putFollowGitHubShare(shareTo: string, userId: string, secret: string, timestamp: number, active: boolean) {
-    this.syncRestful.putFollowGitHubShare(shareTo, userId, secret, timestamp, active);
+  putFollowGitHubShare(shareTo: string, identify: string, userId: string, secret: string, timestamp: number, active: boolean) {
+    this.syncRestful.putFollowGitHubShare(shareTo, identify, userId, secret, timestamp, active);
   }
 
   //保存设置
