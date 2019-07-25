@@ -5,6 +5,7 @@ import {FoGitHubPage} from "./fogithub";
 import {FoFirIMPage} from "./fofirim";
 import {FoTravisCIPage} from "./fotravisci";
 import {FoSharePage} from "./foshare";
+import {FoConfigurePage} from "./foconfigure";
 import {FoService} from "./fo.service";
 import {PipesModule} from "../../pipes/pipes.module";
 import { ScrollSelectComponentModule } from "../../components/scroll-select/scroll-select.module";
@@ -15,7 +16,8 @@ import { ScrollSelectComponentModule } from "../../components/scroll-select/scro
     FoSharePage,
     FoGitHubPage,
     FoFirIMPage,
-    FoTravisCIPage
+    FoTravisCIPage,
+    FoConfigurePage
   ],
   imports: [
     PipesModule,
@@ -30,14 +32,16 @@ import { ScrollSelectComponentModule } from "../../components/scroll-select/scro
     FoSharePage,
     FoGitHubPage,
     FoFirIMPage,
-    FoTravisCIPage
+    FoTravisCIPage,
+    FoConfigurePage
   ],
   exports:[
     FoPage,
     FoSharePage,
     FoGitHubPage,
     FoFirIMPage,
-    FoTravisCIPage
+    FoTravisCIPage,
+    FoConfigurePage
   ]
 })
 export class FoPageModule {}

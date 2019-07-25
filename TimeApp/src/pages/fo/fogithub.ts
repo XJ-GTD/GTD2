@@ -3,6 +3,7 @@ import {IonicPage, NavController, ViewController, ModalController} from 'ionic-a
 import {DataConfig} from "../../service/config/data.config";
 import {Setting, UserConfig} from "../../service/config/user.config";
 import {SsService} from "../ss/ss.service";
+import {PsService} from "../ps/ps.service";
 import {UtilService} from "../../service/util-service/util.service";
 import { getSecret } from "../../util/crypto-util";
 import {PageY} from "../../data.mapping";
@@ -123,6 +124,7 @@ export class FoGitHubPage {
               private iab: InAppBrowser,
               private util: UtilService,
               private ssService: SsService,
+              private psService: PsService,
               private _renderer: Renderer2) {
     this.observer = getSha1SafeforBrowser(UserConfig.account.id);
     let memDef = UserConfig.settins.get(DataConfig.SYS_FOGH);
@@ -178,11 +180,13 @@ export class FoGitHubPage {
     this.secret = getSecret(UserConfig.account.id);
     this.hideOrshow = false;
 
+    this.psService.saveUser(UserConfig.user.id, {secrets: {github: this.secret}});
     this.save(this.defaultgithubsecret, this.secret, false);
     this.save(this.defaultgithub, this.github, false);
   }
 
   openWebhook() {
+    this.psService.saveUser(UserConfig.user.id, {secrets: {github: this.secret}});
     this.save(this.defaultgithubsecret, this.secret, false);
     this.save(this.defaultgithub, true, false);
   }

@@ -13,6 +13,8 @@ else
 fi
 
 cp -rf $TRAVIS_BUILD_DIR/TimeAppPatch/platforms/* $TRAVIS_BUILD_DIR/TimeApp/platforms
+cp -f $TRAVIS_BUILD_DIR/config/gradle.properties $TRAVIS_BUILD_DIR/TimeApp/platforms/android/app/gradle.properties
+ls -la $TRAVIS_BUILD_DIR/TimeApp/platforms/android/app/
 
 if [ $TRAVIS_OS_NAME = 'osx' ]; then
   #ionic cordova build ios --buildConfig $TRAVIS_BUILD_DIR/travis/profiles/cordova/build.json
@@ -27,4 +29,6 @@ if [ $TRAVIS_OS_NAME = 'osx' ]; then
   xcodebuild -exportArchive -archivePath $TRAVIS_BUILD_DIR/build/debug/$IOS_APP_NAME.xcarchive -exportPath $TRAVIS_BUILD_DIR/build/debug -exportOptionsPlist $TRAVIS_BUILD_DIR/travis/profiles/ios/exportOptions.plist
 else
   ionic cordova build android --buildConfig $TRAVIS_BUILD_DIR/travis/profiles/cordova/build.json
+  ls $TRAVIS_BUILD_DIR/TimeApp/platforms/android/app/src/main/
+  cat $TRAVIS_BUILD_DIR/TimeApp/platforms/android/app/src/main/AndroidManifest.xml
 fi

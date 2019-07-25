@@ -3,10 +3,12 @@ import {PersonRestful} from "../../service/restful/personsev";
 import {SmsRestful} from "../../service/restful/smssev";
 import {SqliteExec} from "../../service/util-service/sqlite.exec";
 import {UtilService} from "../../service/util-service/util.service";
+import {DataConfig} from "../../service/config/data.config";
 import {UserConfig} from "../../service/config/user.config";
 import {AuthRestful, LoginData} from "../../service/restful/authsev";
 import {UTbl} from "../../service/sqlite/tbl/u.tbl";
 import {ATbl} from "../../service/sqlite/tbl/a.tbl";
+import {YTbl} from "../../service/sqlite/tbl/y.tbl";
 import {WebsocketService} from "../../ws/websocket.service";
 import {AlService} from "../al/al.service";
 import {PageLoginData} from "../../data.mapping";
@@ -60,6 +62,7 @@ export class LsService {
     return new Promise((resolve ,reject) => {
       let aTbl:ATbl = new ATbl();
       let uTbl:UTbl = new UTbl();
+      let yTbl:YTbl = new YTbl();
 
       //获得token，放入头部header登录
       this.personRestful.getToken(data.data.code).then(data=>{
@@ -82,6 +85,15 @@ export class LsService {
           uTbl.ic = data.ic == undefined || data.ic == "" ? "" : data.ic;  //身份证
           uTbl.uct = data.contact== undefined || data.contact == "" ? "" : data.contact;//  联系方式
 
+          if (data && data.secrets && data.secrets.github) {
+            yTbl.yi = this.util.getUuid();
+            yTbl.yt = DataConfig.SYS_FOGHSECRET;
+            yTbl.ytn = "项目跟进 github 安全令牌";
+            yTbl.yn = "项目跟进";
+            yTbl.yk = DataConfig.SYS_FOGHSECRET;
+            yTbl.yv = data.secrets.github;
+          }
+
           return this.personRestful.getself(data.unionid);
         }else{
           throw  "-1";
@@ -93,6 +105,12 @@ export class LsService {
           return this.sqlExec.delete(new ATbl());
         }else{
           throw  "-1";
+        }
+      }).then(data=>{
+        if (yTbl.yi) {
+          return this.sqlExec.save(yTbl);
+        } else {
+          return {};
         }
       }).then(data=>{
         return this.sqlExec.save(aTbl);

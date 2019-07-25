@@ -4,6 +4,7 @@ import {AlService} from "./al.service";
 import {DataConfig} from "../../service/config/data.config";
 import {NotificationsService} from "../../service/cordova/notifications.service";
 import {AlData} from "../../data.mapping";
+import {RabbitMQService} from "../../service/cordova/rabbitmq.service";
 
 /**
  * Generated class for the AlPage page.
@@ -28,7 +29,8 @@ export class AlPage {
   alData: AlData = new AlData();
 
   constructor(private alService: AlService,
-              private nav: Nav) {
+              private nav: Nav,
+              private rabbitmq: RabbitMQService) {
     this.alData.text = "正在初始化";
 
   }

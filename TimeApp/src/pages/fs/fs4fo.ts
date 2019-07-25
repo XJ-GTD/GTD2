@@ -5,6 +5,7 @@ import {GcService} from "../gc/gc.service";
 import {UtilService} from "../../service/util-service/util.service";
 import {FsData, FsPageData, PageDcData} from "../../data.mapping";
 import {DataConfig} from "../../service/config/data.config";
+import {UserConfig} from "../../service/config/user.config";
 
 /**
  * Generated class for the 项目跟进 通知人员选择 page.
@@ -100,7 +101,7 @@ export class Fs4foPage {
     let selected: Array<string> = new Array<string>();
 
     for (let p of this.selFsl) {
-      selected.push(p.ui);
+      selected.push(p.rc);
     }
 
     this.viewCtrl.dismiss({selected: selected});
@@ -128,8 +129,8 @@ export class Fs4foPage {
       let fs: FsPageData = new FsPageData();
       Object.assign(fs, value);
 
-      if (fs.rel == '1') {
-        if (selected.indexOf(fs.ui) > -1) {
+      if (fs.rel == '1' && fs.rc != UserConfig.account.id) {
+        if (selected.indexOf(fs.rc) > -1) {
           fs.checked = true;
           this.selFsl.push(fs);
         } else {

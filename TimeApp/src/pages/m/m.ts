@@ -6,6 +6,7 @@ import {UtilService} from "../../service/util-service/util.service";
 import {EmitService} from "../../service/util-service/emit.service";
 import { JPushService } from "../../service/cordova/jpush.service";
 import {PsService} from "../ps/ps.service";
+import {RabbitMQService} from "../../service/cordova/rabbitmq.service";
 
 /**
  * Generated class for the 菜单 page.
@@ -89,7 +90,8 @@ export class MPage {
               public jpush: JPushService,
               private psService: PsService,
               private util: UtilService,
-              private emitService: EmitService) {
+              private emitService: EmitService,
+              private rabbitmq: RabbitMQService) {
     //真机的时候获取JPush注册ID，并保存到服务器注册用户信息
     if (this.util.isMobile()) {
       this.emitService.register("on.jpush.registerid.loaded", () => {
@@ -106,6 +108,12 @@ export class MPage {
       });
 
       this.jpush.checkStatus(UserConfig.user.id, false);  //触发注册ID已加载事件
+
+      // 获取到用户信息之后, 启动后台RabbitMQ AMQP协议接收数据
+      if (UserConfig.user && UserConfig.account) {
+        console.log("Start RabbitMQ plugin initing...");
+        this.rabbitmq.init(UserConfig.user.id, UserConfig.account.device, UserConfig.account.mq);
+      }
     }
   }
 

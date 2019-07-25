@@ -49,6 +49,7 @@ import {FoSharePage} from "../../pages/fo/foshare";
 import {FoGitHubPage} from "../../pages/fo/fogithub";
 import {FoFirIMPage} from "../../pages/fo/fofirim";
 import {FoTravisCIPage} from "../../pages/fo/fotravisci";
+import {FoConfigurePage} from "../../pages/fo/foconfigure";
 
 export class DataConfig {
   public static isdebug: boolean  = true;
@@ -178,10 +179,12 @@ export class DataConfig {
   public static SYS_FOGH: string = "FOGH";
   public static SYS_FOGHSECRET: string = "FOGHSECRET";
   public static SYS_FOGH_INS: string = "FOGH_INS";
+  public static SYS_FOGH_INS_SHARE: string = "FOGH_INS_SHARE";
   public static SYS_FOGHIN_INS: string = "FOGHIN_INS";
-  public static SYS_FOFIR: string = "FOFIR";
-  public static SYS_FOFIR_INS: string = "FOFIR_INS";
-  public static SYS_FOFIRIN_INS: string = "FOFIRIN_INS";
+  public static SYS_FOFIR: string = "FOFIR";                      //跟进开关
+  public static SYS_FOFIR_INS: string = "FOFIR_INS";              //实例
+  public static SYS_FOFIR_INS_SHARE: string = "FOFIR_INS_SHARE";  //实例共享成员
+  public static SYS_FOFIRIN_INS: string = "FOFIRIN_INS";          //被共享实例
   public static SYS_FOTRACI: string = "FOTRACI";
   /*========== 系统设置区分 =========*/
 
@@ -271,6 +274,7 @@ export class DataConfig {
     _FOGITHUB_PAGE: FoGitHubPage,       // 设置项目跟进GitHub可选项
     _FOFIRIM_PAGE: FoFirIMPage,       // 设置项目跟进Fir.IM可选项
     _FOTRAVISCI_PAGE: FoTravisCIPage,       // 设置项目跟进Travis-CI可选项
+    _FOCONFIGURE_PAGE: FoConfigurePage,     // 设置项目跟进实例可选项
   }
   static PAGES = [
     HPage,        // 首页 - 首页
@@ -317,6 +321,7 @@ export class DataConfig {
     FoSharePage,       // 设置项目跟进通知可选项
     FoGitHubPage,       // 设置项目跟进GitHub可选项
     FoFirIMPage,       // 设置项目跟进Fir.IM可选项
+    FoConfigurePage,   // 设置项目跟进实例可选项
   ];
   /* ============ 页面名字配置 ===============*/
   public static isPage(object: any) {

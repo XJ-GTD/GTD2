@@ -7,6 +7,7 @@ import * as async from "async/dist/async.js"
 import * as moment from "moment";
 import {RestFulConfig} from "../service/config/restful.config";
 import {EmitService} from "../service/util-service/emit.service";
+import {UtilService} from "../service/util-service/util.service";
 
 /**
  * WebSocket连接Rabbitmq服务器
@@ -31,7 +32,7 @@ export class WebsocketService {
   message:number;
   private disconnecttime: number = 0;
 
-  constructor(private dispatchService: DispatchService, private emitService: EmitService, private config: RestFulConfig) {
+  constructor(private dispatchService: DispatchService, private util: UtilService, private emitService: EmitService, private config: RestFulConfig) {
 
     this.workqueue = async.queue( ({message,index},callback) =>{
       console.log("******************ws  queue:");
@@ -86,66 +87,92 @@ export class WebsocketService {
       if (this.timer) clearTimeout(this.timer);
 
       // 延迟重连动作,防止重连死循环
-      this.timer = setTimeout(()=>{
-        this.settingWs().then(data => {
-          // 连接消息服务器
-          this.client.connect(this.login, this.password, frame => {
-
-            // 连接成功,取消所有重连请求
-            if (this.timer) clearTimeout(this.timer);
-            this.connections++;
-            this.failedtimes = 0;
-            resolve();
-            this.subscription = this.client.subscribe("/queue/" + this.queue, (message: Message) => {
-              //message.ack(message.headers);
-              console.log('Received a message from ' + this.queue);
-              try {
-                this.workqueue.push({message:message.body,index:this.messages++},(err)=>{
-                  if (err) {
-                    console.log("work queue process error happenned. ", err, '\r\n', err.stack);
-                    this.workqueue.kill();
-                    this.messages = 0;
-                  } else {
-                    if (this.messages >9999) this.messages = 0;
-                  }
-                });
-              } catch (e) {
-                // message异常时捕获并不让程序崩溃
-                console.log("work queue push error : ", e, '\r\n', e.stack);
+      if (this.util.isMobile()) {
+        this.emitService.register('rabbitmq.message.received', (event) => {
+          try {
+            this.workqueue.push({message:event.body,index:this.messages++},(err)=>{
+              if (err) {
+                console.log("work queue process error happenned. ", err, '\r\n', err.stack);
+                this.workqueue.kill();
+                this.messages = 0;
+              } else {
+                if (this.messages >9999) this.messages = 0;
               }
             });
-
-            //解决RabbitMQ同一个Queue队列在前一个断开的连接没有检测到断开信号时仍然保持着连接，
-            //导致推送的消息被前一个连接接收，无法分配到最新的连接，导致客户端接收不到消息
-            //解决方案，在新的连接创建之后，等待服务器心跳时间之后，发送通知WebSocket连接成功消息
-            let waittime = 0;
-
-            if (this.disconnecttime) {
-              let passedtime = (moment().unix() - this.disconnecttime) * 1000;
-
-              if (passedtime < this.client.heartbeat.outgoing) {
-                waittime = this.client.heartbeat.outgoing - passedtime;
-              }
-            }
-
-            setTimeout(() => {
-              this.emitService.emit("on.websocket.connected");
-            }, waittime);
-
-          }, error => {
-            this.connections--;
-            this.failedtimes++;
-            this.disconnecttime = moment().unix();
-            this.close();
-          }, event => {
-            console.log('Stomp websocket closed with code ' + event.code + ', reason ' + event.reason);
-            this.connections--;
-            this.disconnecttime = moment().unix();
-            this.close();
-          }, '/');
-
+          } catch (e) {
+            // message异常时捕获并不让程序崩溃
+            console.log("work queue push error : ", e, '\r\n', e.stack);
+          }
         });
-      }, delay);
+
+        setTimeout(() => {
+          this.emitService.emit("on.websocket.connected");
+        }, 5000);
+
+        resolve();
+      } else {
+        // 真机使用cordova.rabbitmq替代
+        this.timer = setTimeout(()=>{
+          this.settingWs().then(data => {
+            // 连接消息服务器
+            this.client.connect(this.login, this.password, frame => {
+
+              // 连接成功,取消所有重连请求
+              if (this.timer) clearTimeout(this.timer);
+              this.connections++;
+              this.failedtimes = 0;
+              resolve();
+              this.subscription = this.client.subscribe("/queue/" + this.queue, (message: Message) => {
+                //message.ack(message.headers);
+                console.log('Received a message from ' + this.queue);
+                try {
+                  this.workqueue.push({message:message.body,index:this.messages++},(err)=>{
+                    if (err) {
+                      console.log("work queue process error happenned. ", err, '\r\n', err.stack);
+                      this.workqueue.kill();
+                      this.messages = 0;
+                    } else {
+                      if (this.messages >9999) this.messages = 0;
+                    }
+                  });
+                } catch (e) {
+                  // message异常时捕获并不让程序崩溃
+                  console.log("work queue push error : ", e, '\r\n', e.stack);
+                }
+              });
+
+              //解决RabbitMQ同一个Queue队列在前一个断开的连接没有检测到断开信号时仍然保持着连接，
+              //导致推送的消息被前一个连接接收，无法分配到最新的连接，导致客户端接收不到消息
+              //解决方案，在新的连接创建之后，等待服务器心跳时间之后，发送通知WebSocket连接成功消息
+              let waittime = 0;
+
+              if (this.disconnecttime) {
+                let passedtime = (moment().unix() - this.disconnecttime) * 1000;
+
+                if (passedtime < this.client.heartbeat.outgoing) {
+                  waittime = this.client.heartbeat.outgoing - passedtime;
+                }
+              }
+
+              setTimeout(() => {
+                this.emitService.emit("on.websocket.connected");
+              }, waittime);
+
+            }, error => {
+              this.connections--;
+              this.failedtimes++;
+              this.disconnecttime = moment().unix();
+              this.close();
+            }, event => {
+              console.log('Stomp websocket closed with code ' + event.code + ', reason ' + event.reason);
+              this.connections--;
+              this.disconnecttime = moment().unix();
+              this.close();
+            }, '/');
+
+          });
+        }, delay);
+      }
     })
 
   }

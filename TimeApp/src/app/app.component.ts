@@ -11,6 +11,7 @@ import {StatusBar} from "@ionic-native/status-bar";
 import {FeedbackService} from "../service/cordova/feedback.service";
 import {NetworkService} from "../service/cordova/network.service";
 import {JPushService} from "../service/cordova/jpush.service";
+import {RabbitMQService} from "../service/cordova/rabbitmq.service";
 
 @Component({
   template: `
@@ -18,6 +19,7 @@ import {JPushService} from "../service/cordova/jpush.service";
   `
 })
 export class MyApp {
+
   @ViewChild(Nav) nav: Nav;
   hex: string[] = ['0','1','2','3','4','5','6','7','8','9','A','B','C','D','E','F'];
   statusbarcolors: Array<string> = new Array<string>();
@@ -32,7 +34,8 @@ export class MyApp {
               private screenOrientation: ScreenOrientation,
               private statusBar: StatusBar,
               private feekback: FeedbackService,
-              private jpush: JPushService) {
+              private jpush: JPushService,
+              private rabbitmq: RabbitMQService) {
     //特殊菜单设置
     MenuController.registerType('scalePush', MenuScalePushType);
     MenuController.registerType('lsPush', LsPushType);

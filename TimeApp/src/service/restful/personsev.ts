@@ -236,4 +236,5 @@ export class PersonOutData{
   access_time:string = "";
   expires_in:string = "";
   cmq:string = "";
+  secrets: any;
 }
