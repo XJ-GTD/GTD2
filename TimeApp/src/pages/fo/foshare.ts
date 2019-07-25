@@ -370,6 +370,7 @@ export class FoSharePage {
 
         await this.ssService.putFollowGitHubShare(
           shareto,
+          setting.type,
           UserConfig.account.id,
           this.secret,
           moment().valueOf(),
@@ -384,6 +385,7 @@ export class FoSharePage {
 
         await this.ssService.putFollowFirIMShare(
           shareto,
+          setting.type,
           UserConfig.account.id,
           moment().valueOf(),
           active
