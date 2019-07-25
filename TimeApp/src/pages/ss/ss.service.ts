@@ -32,6 +32,11 @@ export class SsService {
     this.syncRestful.putFollowFirIM(userId, timestamp, active);
   }
 
+  //设置 Fir.IM WebHook事件
+  putFollowFirIMShare(shareTo: string, userId: string, timestamp: number, active: boolean) {
+    this.syncRestful.putFollowFirIMShare(shareTo, userId, timestamp, active);
+  }
+
   //设置 Travis CI WebHook事件
   putFollowTravisCI(userId: string, timestamp: number, active: boolean) {
     this.syncRestful.putFollowTravisCI(userId, timestamp, active);
@@ -40,6 +45,11 @@ export class SsService {
   //设置 GitHub WebHook事件
   putFollowGitHub(userId: string, secret: string, timestamp: number, active: boolean) {
     this.syncRestful.putFollowGitHub(userId, secret, timestamp, active);
+  }
+
+  //设置 GitHub WebHook事件
+  putFollowGitHubShare(shareTo: string, userId: string, secret: string, timestamp: number, active: boolean) {
+    this.syncRestful.putFollowGitHubShare(shareTo, userId, secret, timestamp, active);
   }
 
   //保存设置

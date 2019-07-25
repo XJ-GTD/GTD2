@@ -168,6 +168,63 @@ export class SyncRestful {
     });
   }
 
+  //智能提醒 项目跟进共享 - GitHub
+  putFollowGitHubShare(shareTo: string, userId: string, secret: string, timestamp: number, active: boolean): Promise<string> {
+    return new Promise((resolve, reject) => {
+      //每日简报任务注册
+      let task = new TriggerTask();
+      let observer = getSha1SafeforBrowser(userId);
+
+      task.saName = "任务调度触发器";
+      task.saPrefix = "cdc";
+      task.taskId = `pluto_${userId}_shareto_${shareTo}_follow_webhook_github_notification`;
+      task.taskType = "WEBHOOK_FORWARD";
+      task.taskName = "github webhook";
+
+      let choosetime = moment(timestamp);
+
+      let taskRunAt = {
+        eventId: "WEBHOOK_GITHUB",
+        filters: [
+          {name: "webhook", value: "github"},
+          {name: "observer", value: observer},
+          {name: "secret", value: secret}
+        ]
+      };
+
+      if (!active) {
+        taskRunAt.filters.push({
+          name: "active", value: "false"
+        });
+      }
+
+      task.taskRunAt = JSON.stringify(taskRunAt);
+      let triggerurl: UrlEntity = this.config.getRestFulUrl("WHK");
+
+      let taskRunWith = {
+        url: triggerurl.url, // "https://pluto.guobaa.com/cdc/mwxing_webhook_notification_start/json/trigger"
+        payload: {
+          from: userId,
+          userId: shareTo,
+          webhook: 'github',
+          observer: observer,
+          secret: secret
+        }
+      };
+
+      task.taskRunWith = JSON.stringify(taskRunWith);
+
+      let url: UrlEntity = this.config.getRestFulUrl("EDTTS");
+      this.request.post(url, task).then(data => {
+        //处理返回结果
+        resolve(data.data);
+      }).catch(error => {
+        //处理返回错误
+        reject(error);
+      })
+    });
+  }
+
   //智能提醒 项目跟进 - Travis CI
   putFollowTravisCI(userId: string, timestamp: number, active: boolean): Promise<string> {
     return new Promise((resolve, reject) => {
@@ -258,6 +315,61 @@ export class SyncRestful {
         url: triggerurl.url, // "https://pluto.guobaa.com/cdc/mwxing_webhook_notification_start/json/trigger"
         payload: {
           userId: userId,
+          webhook: 'fir.im',
+          observer: observer
+        }
+      };
+
+      task.taskRunWith = JSON.stringify(taskRunWith);
+
+      let url: UrlEntity = this.config.getRestFulUrl("EDTTS");
+      this.request.post(url, task).then(data => {
+        //处理返回结果
+        resolve(data.data);
+      }).catch(error => {
+        //处理返回错误
+        reject(error);
+      })
+    });
+  }
+
+  //智能提醒 项目跟进 - fir.im
+  putFollowFirIMShare(shareTo: string, userId: string, timestamp: number, active: boolean): Promise<string> {
+    return new Promise((resolve, reject) => {
+      //每日简报任务注册
+      let task = new TriggerTask();
+      let observer = getSha1SafeforBrowser(userId);
+
+      task.saName = "任务调度触发器";
+      task.saPrefix = "cdc";
+      task.taskId = `pluto_${userId}_shareto_${shareTo}_follow_webhook_fir.im_notification`;
+      task.taskType = "WEBHOOK_FORWARD";
+      task.taskName = "fir.im webhook";
+
+      let choosetime = moment(timestamp);
+
+      let taskRunAt = {
+        eventId: "WEBHOOK_FIR.IM",
+        filters: [
+          {name: "webhook", value: "fir.im"},
+          {name: "observer", value: observer}
+        ]
+      };
+
+      if (!active) {
+        taskRunAt.filters.push({
+          name: "active", value: "false"
+        });
+      }
+
+      task.taskRunAt = JSON.stringify(taskRunAt);
+      let triggerurl: UrlEntity = this.config.getRestFulUrl("WHK");
+
+      let taskRunWith = {
+        url: triggerurl.url, // "https://pluto.guobaa.com/cdc/mwxing_webhook_notification_start/json/trigger"
+        payload: {
+          from: userId,
+          userId: shareTo,
           webhook: 'fir.im',
           observer: observer
         }

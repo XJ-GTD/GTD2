@@ -231,32 +231,6 @@ export class FoSharePage {
     modal.present();
   }
 
-  gotogithubsetting() {
-    this.github = !this.github;
-
-    let modal = this.modalController.create(DataConfig.PAGE._FOGITHUB_PAGE);
-    modal.onDidDismiss((data)=>{
-      if (data && data.setting) {
-        this.github = data.setting.value == "1"? true : false;
-        this.sgithub = data.setting;
-      }
-
-      let secret = "";
-      if (data && data.secret) {
-        this.sgithubsecret = data.secret;
-        secret = this.sgithubsecret.value;
-      }
-
-      this.ssService.putFollowGitHub(
-        UserConfig.account.id,
-        secret,
-        moment().valueOf(),
-        this.github
-      );
-    });
-    modal.present();
-  }
-
   async save(setting, value) {
     let set:PageY = new PageY();
     set.yi = setting.yi;//偏好主键ID
