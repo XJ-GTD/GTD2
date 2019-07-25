@@ -324,6 +324,8 @@ export class FoSharePage {
       let share = JSON.parse(value);
 
       for (let shareto of share.share) {
+        if (shareto == UserConfig.account.id) continue;
+
         await this.ssService.putFollowGitHubShare(
           shareto,
           UserConfig.account.id,
@@ -336,6 +338,8 @@ export class FoSharePage {
       let share = JSON.parse(value);
 
       for (let shareto of share.share) {
+        if (shareto == UserConfig.account.id) continue;
+
         await this.ssService.putFollowFirIMShare(
           shareto,
           UserConfig.account.id,
