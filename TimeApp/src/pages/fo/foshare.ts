@@ -301,11 +301,6 @@ export class FoSharePage {
     let modal = this.modalController.create(DataConfig.PAGE._FS4FO_PAGE, {selected: preshare.share || []});
     modal.onDidDismiss((data)=>{
       if (data && data.selected) {
-        // 存在已共享设置
-        if (preshare && preshare.share) {
-          // 比较移除共享用户, 设置禁用
-        }
-
         // 保存共享设置
         let sharedef: Setting = new Setting();
 
@@ -318,6 +313,20 @@ export class FoSharePage {
         sharedef.name = instance.ins.keyname;
         sharedef.type = instance.ins.key;
         sharedef.value = "";
+
+        // 存在已共享设置
+        if (preshare && preshare.share) {
+          // 比较移除共享用户, 设置禁用
+          let moved = [];
+
+          for (let pre of preshare.share) {
+            if (data.selected.indexOf(pre) < 0) {
+              moved.push(pre);
+            }
+          }
+
+          this.save(sharedef, JSON.stringify({share: moved}), false);
+        }
 
         this.save(sharedef, JSON.stringify({share: data.selected}));
       }
@@ -349,7 +358,9 @@ export class FoSharePage {
 
     setting.value = set.yv;
 
-    await this.ssService.save(set);
+    if (active) {
+      await this.ssService.save(set);
+    }
 
     if (set.yt == DataConfig.SYS_FOGH_INS_SHARE) {
       let share = JSON.parse(value);
