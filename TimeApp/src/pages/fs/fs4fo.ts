@@ -5,6 +5,7 @@ import {GcService} from "../gc/gc.service";
 import {UtilService} from "../../service/util-service/util.service";
 import {FsData, FsPageData, PageDcData} from "../../data.mapping";
 import {DataConfig} from "../../service/config/data.config";
+import {UserConfig} from "../../service/config/user.config";
 
 /**
  * Generated class for the 项目跟进 通知人员选择 page.
