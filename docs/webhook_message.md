@@ -4,9 +4,12 @@
 
 ## 支持
 
-    1. 支持从GitHub的Webhooks中接收消息, 并在手机上显示通知
+    1. 通过手机接收Github中问题、代码、集成等变动事件通知
 
-    需要在GitHub的Settings > webhooks中添加, 使用json格式
+        需要在GitHub的Settings > webhooks中添加, 使用json格式
+
+    2. 通过手机接收fir.im中发布应用的变动通知
+    3. 让团队的成员手机也能接收到Github/fir.im上的事件通知
 
 ## 跟进
 通过第三方网络服务提供的Web钩子(Webhooks), 获取在第三方服务中管理的内容变动通知。
