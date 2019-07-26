@@ -29,6 +29,7 @@ export class WebsocketService {
   private timer: any;
   private connections: number = 0;
   workqueue:any;
+  speechqueue:any;
   message:number;
   private disconnecttime: number = 0;
 
@@ -46,9 +47,23 @@ export class WebsocketService {
     this.messages = 0;
 
     this.emitService.emit("on.websocket.workqueue.init");
+    
+    this.speechqueue = async.queue( ({message,index},callback) =>{
+      console.log("******************speech  queue:");
+      this.dispatchService.dispatch(message).then(data=>{
+        callback();
+      }).catch(data=>{
+        console.log(data);
+        callback();
+      })
+    });
+    this.speeches = 0;
+    
+    this.emitService.emit("on.websocket.speechqueue.init");
   }
 
   messages:number = 0;
+  speeches:number = 0;
 
 
 
@@ -90,15 +105,33 @@ export class WebsocketService {
       if (this.util.isMobile()) {
         this.emitService.register('rabbitmq.message.received', (event) => {
           try {
-            this.workqueue.push({message:event.body,index:this.messages++},(err)=>{
-              if (err) {
-                console.log("work queue process error happenned. ", err, '\r\n', err.stack);
-                this.workqueue.kill();
-                this.messages = 0;
+            if (event && event.body) {
+              let preload = JSON.parse(event.body);
+              let header = preload.header || {};
+              let sender = header.sender || "":
+              
+              if (sender == "xunfei/aiui") {
+                this.speechqueue.push({message:event.body,index:this.speeches++},(err)=>{
+                  if (err) {
+                    console.log("speech queue process error happenned. ", err, '\r\n', err.stack);
+                    this.workqueue.kill();
+                    this.speeches = 0;
+                  } else {
+                    if (this.speeches >9999) this.speeches = 0;
+                  }
+                });
               } else {
-                if (this.messages >9999) this.messages = 0;
+                this.workqueue.push({message:event.body,index:this.messages++},(err)=>{
+                  if (err) {
+                    console.log("work queue process error happenned. ", err, '\r\n', err.stack);
+                    this.workqueue.kill();
+                    this.messages = 0;
+                  } else {
+                    if (this.messages >9999) this.messages = 0;
+                  }
+                });
               }
-            });
+            }
           } catch (e) {
             // message异常时捕获并不让程序崩溃
             console.log("work queue push error : ", e, '\r\n', e.stack);
@@ -126,15 +159,32 @@ export class WebsocketService {
                 //message.ack(message.headers);
                 console.log('Received a message from ' + this.queue);
                 try {
-                  this.workqueue.push({message:message.body,index:this.messages++},(err)=>{
-                    if (err) {
-                      console.log("work queue process error happenned. ", err, '\r\n', err.stack);
-                      this.workqueue.kill();
-                      this.messages = 0;
+                  if (message && message.body) {
+                    let preload = JSON.parse(message.body);
+                    let header = preload.header || {};
+                    let sender = header.sender || "":
+
+                    if (sender == "xunfei/aiui") {
+                      this.speechqueue.push({message:message.body,index:this.speeches++},(err)=>{
+                        if (err) {
+                          console.log("speech queue process error happenned. ", err, '\r\n', err.stack);
+                          this.speechqueue.kill();
+                          this.speeches = 0;
+                        } else {
+                          if (this.speeches >9999) this.speeches = 0;
+                        }
+                      });
                     } else {
-                      if (this.messages >9999) this.messages = 0;
+                      this.workqueue.push({message:message.body,index:this.messages++},(err)=>{
+                        if (err) {
+                          console.log("work queue process error happenned. ", err, '\r\n', err.stack);
+                          this.workqueue.kill();
+                          this.messages = 0;
+                        } else {
+                          if (this.messages >9999) this.messages = 0;
+                        }
+                      });
                     }
-                  });
                 } catch (e) {
                   // message异常时捕获并不让程序崩溃
                   console.log("work queue push error : ", e, '\r\n', e.stack);
