@@ -72,7 +72,7 @@ import { InAppBrowser } from '@ionic-native/in-app-browser';
           <ion-item-sliding *ngFor="let sgithubin of sgithubsin">
             <ion-item>
               <ion-avatar item-start>
-                <img [src]="defaultavatar">
+                <img [src]="(sgithubin.from && sgithubin.from.froms && sgithubin.from.froms[0])? sgithubin.from.froms[0].bhiu : defaultavatar">
               </ion-avatar>
               <h3><ion-icon name="git-network"></ion-icon> {{sgithubin.ins.value.full_name}}</h3>
               <p>{{sgithubin.ins.value.description}}</p>
@@ -119,7 +119,7 @@ import { InAppBrowser } from '@ionic-native/in-app-browser';
           <ion-item-sliding *ngFor="let sfirin of sfirsin">
             <ion-item>
               <ion-avatar item-start>
-                <img [src]="defaultavatar">
+                <img [src]="(sfirin.from && sfirin.from.froms && sfirin.from.froms[0])? sfirin.from.froms[0].bhiu : defaultavatar">
               </ion-avatar>
               <h3>
                 <ion-thumbnail>
@@ -287,6 +287,20 @@ export class FoSharePage {
       });
     }
 
+    for (let ff of firinFromInstances) {
+      let exist = firsin.get(ff.type);
+
+      if (exist) {
+        exist.from = {
+          id: ff.yi,
+          froms: UserConfig.getAvatars(JSON.parse(ff.value).share) || [],
+          from: JSON.parse(ff.value).from || []
+        };
+
+        firsin.set(ff.type, exist);
+      }
+    }
+
     for (let g in githubinInstances) {
       let obj = githubinInstances[g];
 
@@ -299,8 +313,22 @@ export class FoSharePage {
           keyname: obj.name,
           value: JSON.parse(obj.value)
         },
-        share: {}
+        from: {}
       });
+    }
+
+    for (let gf of githubinFromInstances) {
+      let exist = githubsin.get(gf.type);
+
+      if (exist) {
+        exist.from = {
+          id: gf.yi,
+          froms: UserConfig.getAvatars(JSON.parse(gf.value).share) || [],
+          from: JSON.parse(gf.value).from || []
+        };
+
+        githubsin.set(gf.type, exist);
+      }
     }
 
     this.sgithubs = Array.from(githubs.values());
