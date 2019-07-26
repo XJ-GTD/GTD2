@@ -35,7 +35,7 @@ export class YTbl implements ITbl {
       sq = sq + ', yk="' + this.yk + '"';
     }
     if (this.yv != null && this.yv!="") {
-      sq = sq + ', yv="' + this.yv + '"';
+      sq = sq + ', yv="' + convertQuotes(this.yv) + '"';
     }
     if (sq != null && sq != ""){
       sq = sq.substr(1);
@@ -109,4 +109,8 @@ export class YTbl implements ITbl {
 
     return sq;
   }
+}
+
+export function convertQuotes(src: string): string {
+  return src.replace(/"/g, "\\\"");
 }
