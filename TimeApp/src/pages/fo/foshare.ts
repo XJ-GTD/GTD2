@@ -2,6 +2,7 @@ import {Component, ElementRef, Renderer2, ViewChild} from '@angular/core';
 import {IonicPage, NavController, ViewController, ModalController} from 'ionic-angular';
 import {DataConfig} from "../../service/config/data.config";
 import {Setting, UserConfig} from "../../service/config/user.config";
+import {EmitService} from "../../service/util-service/emit.service";
 import {SsService} from "../ss/ss.service";
 import {FsData, PageY} from "../../data.mapping";
 import * as moment from "moment";
@@ -168,9 +169,20 @@ export class FoSharePage {
               public viewCtrl: ViewController,
               private iab: InAppBrowser,
               private ssService: SsService,
+              private emitService: EmitService,
               private _renderer: Renderer2) {
     this.defaultavatar = DataConfig.HUIBASE64;
 
+    this.emitService.register("mwxing.config.user.ytbl.refreshed", () => {
+      this.refreshInstances();
+    });
+    
+    //初始化实例
+    this.refreshInstances();
+  }
+  
+  refreshInstances() {
+    
     //取得GITHUB安全令牌
     let memSecretDef = UserConfig.settins.get(DataConfig.SYS_FOGHSECRET);
     if (memSecretDef && memSecretDef.value) {
@@ -293,7 +305,6 @@ export class FoSharePage {
     this.sgithubsin = Array.from(githubsin.values());
     this.sfirsin = Array.from(firsin.values());
 
-    //初始化参数格式设计
   }
 
   shareto(instance) {
