@@ -49,8 +49,8 @@ import { InAppBrowser } from '@ionic-native/in-app-browser';
             <ion-item>
               <h3><ion-icon name="git-network"></ion-icon> {{sgithub.ins.value.full_name}}</h3>
               <p>{{sgithub.ins.value.description}}</p>
-              <div class="avatars" *ngIf="sgithub.share && sgithub.share.share && sgithub.share.share.length > 0">
-                <div *ngFor="let share of sgithub.share.share">
+              <div class="avatars" *ngIf="sgithub.share && sgithub.share.shares && sgithub.share.shares.length > 0">
+                <div *ngFor="let share of sgithub.share.shares">
                   <ion-avatar>
                     <img [src]="share.bhiu">
                   </ion-avatar>
@@ -96,8 +96,8 @@ import { InAppBrowser } from '@ionic-native/in-app-browser';
                  　　{{sfir.ins.value.name}}
               </h3>
               <p>Platform: {{sfir.ins.value.platform}}</p>
-              <div class="avatars" *ngIf="sfir.share && sfir.share.share && sfir.share.share.length > 0">
-                <div *ngFor="let share of sfir.share.share">
+              <div class="avatars" *ngIf="sfir.share && sfir.share.shares && sfir.share.shares.length > 0">
+                <div *ngFor="let share of sfir.share.shares">
                   <ion-avatar>
                     <img [src]="share.bhiu">
                   </ion-avatar>
@@ -229,7 +229,8 @@ export class FoSharePage {
       if (exist) {
         exist.share = {
           id: sf.yi,
-          share: UserConfig.getAvatars(JSON.parse(sf.value).share) || []
+          shares: UserConfig.getAvatars(JSON.parse(sf.value).share) || [],
+          share: JSON.parse(sf.value).share || []
         };
 
         firs.set(sf.type, exist);
@@ -258,7 +259,8 @@ export class FoSharePage {
       if (exist) {
         exist.share = {
           id: sg.yi,
-          share: UserConfig.getAvatars(JSON.parse(sg.value).share) || []
+          shares: UserConfig.getAvatars(JSON.parse(sg.value).share) || [],
+          share: JSON.parse(sg.value).share || []
         };
 
         githubs.set(sg.type, exist);
