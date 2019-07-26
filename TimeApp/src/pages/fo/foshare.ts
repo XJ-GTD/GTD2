@@ -49,6 +49,13 @@ import { InAppBrowser } from '@ionic-native/in-app-browser';
             <ion-item>
               <h3><ion-icon name="git-network"></ion-icon> {{sgithub.ins.value.full_name}}</h3>
               <p>{{sgithub.ins.value.description}}</p>
+              <div class="avatars" *ngIf="sgithub.share && sgithub.share.length > 0">
+                <div *ngFor="let share of sgithub.share">
+                  <ion-avatar>
+                    <img [src]="defaultavatar">
+                  </ion-avatar>
+                </div>
+              </div>
             </ion-item>
             <ion-item-options side="right">
               <button ion-button clear (click)="shareto(sgithub)">
@@ -90,17 +97,7 @@ import { InAppBrowser } from '@ionic-native/in-app-browser';
               </h3>
               <p>Platform: {{sfir.ins.value.platform}}</p>
               <div class="avatars" *ngIf="sfir.share && sfir.share.length > 0">
-                <div>
-                  <ion-avatar>
-                    <img [src]="defaultavatar">
-                  </ion-avatar>
-                </div>
-                <div>
-                  <ion-avatar>
-                    <img [src]="defaultavatar">
-                  </ion-avatar>
-                </div>
-                <div>
+                <div *ngFor="let share of sfir.share">
                   <ion-avatar>
                     <img [src]="defaultavatar">
                   </ion-avatar>
