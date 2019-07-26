@@ -58,11 +58,11 @@ import { InAppBrowser } from '@ionic-native/in-app-browser';
               </div>
             </ion-item>
             <ion-item-options side="right">
-              <button ion-button clear (click)="shareto(sgithub)">
+              <button ion-button clear (click)="shareto(sgithub)" color="danger">
                 <ion-icon ios="ios-add-circle-outline" md="ios-add-circle-outline"></ion-icon>
                 添加
               </button>
-              <button ion-button clear (click)="configure(sgithub)">
+              <button ion-button clear (click)="configure(sgithub)" color="danger">
                 <ion-icon ios="ios-construct" md="ios-construct"></ion-icon>
                 选项
               </button>
@@ -78,7 +78,7 @@ import { InAppBrowser } from '@ionic-native/in-app-browser';
               <p>{{sgithubin.ins.value.description}}</p>
             </ion-item>
             <ion-item-options side="right">
-              <button ion-button clear (click)="configure(sgithubin)">
+              <button ion-button clear (click)="configure(sgithubin)" color="danger">
                 <ion-icon ios="ios-construct" md="ios-construct"></ion-icon>
                 选项
               </button>
@@ -105,11 +105,11 @@ import { InAppBrowser } from '@ionic-native/in-app-browser';
               </div>
             </ion-item>
             <ion-item-options side="right">
-              <button ion-button clear (click)="shareto(sfir)">
+              <button ion-button clear (click)="shareto(sfir)" color="danger">
                 <ion-icon ios="ios-add-circle-outline" md="ios-add-circle-outline"></ion-icon>
                 添加
               </button>
-              <button ion-button clear (click)="configure(sfir)">
+              <button ion-button clear (click)="configure(sfir)" color="danger">
                 <ion-icon ios="ios-construct" md="ios-construct"></ion-icon>
                 选项
               </button>
@@ -130,7 +130,7 @@ import { InAppBrowser } from '@ionic-native/in-app-browser';
               <p>Platform: {{sfirin.ins.value.platform}}</p>
             </ion-item>
             <ion-item-options side="right">
-              <button ion-button clear (click)="configure(sfirin)">
+              <button ion-button clear (click)="configure(sfirin)" color="danger">
                 <ion-icon ios="ios-construct" md="ios-construct"></ion-icon>
                 选项
               </button>
