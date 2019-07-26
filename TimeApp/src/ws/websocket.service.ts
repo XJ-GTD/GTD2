@@ -185,6 +185,7 @@ export class WebsocketService {
                         }
                       });
                     }
+                  }
                 } catch (e) {
                   // message异常时捕获并不让程序崩溃
                   console.log("work queue push error : ", e, '\r\n', e.stack);
