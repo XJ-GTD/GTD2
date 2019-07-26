@@ -80,7 +80,7 @@ export class UserConfig {
     return UserConfig.settins.get(key)? (UserConfig.settins.get(key).value == "1") : false;
   }
 
-  static getSetting(type:string, key: string): Setting {
+  static getSettingWithType(type:string, key: string): Setting {
     let keys = UserConfig.getSettings(type);
 
     if (keys && keys.length > 0) {
