@@ -196,6 +196,40 @@ export class UserConfig {
 
   }
 
+  static getAvatar(phoneno: string): string {
+    let targets = UserConfig.friends.filter((element, index, array) => {
+      return (element.rc == phoneno || element.ui == phoneno);
+    });
+
+    if (targets && targets.length > 0) {
+      return targets[0].bhiu;
+    }
+
+    return DataConfig.HUIBASE64;
+  }
+
+  static getAvatars(phonenos: Array<string>): Array<any> {
+    if (!phonenos || phonenos.length <= 0) {
+      return [];
+    }
+
+    let targets = UserConfig.friends.filter((element, index, array) => {
+      return (phonenos.indexOf(element.rc) > -1 || phonenos.indexOf(element.ui) > -1);
+    });
+
+    if (targets && targets.length > 0) {
+      let avatars: Array<any> = new Array<any>();
+
+      for (let target of targets) {
+        avatars.push({rc: target.rc, bhiu: target.bhiu});
+      }
+
+      return avatars;
+    }
+
+    return [];
+  }
+
   //参与人
   private async RefreshBTbl() {
     //获取本地参与人

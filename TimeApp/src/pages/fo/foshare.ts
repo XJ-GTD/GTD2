@@ -52,7 +52,7 @@ import { InAppBrowser } from '@ionic-native/in-app-browser';
               <div class="avatars" *ngIf="sgithub.share && sgithub.share.length > 0">
                 <div *ngFor="let share of sgithub.share">
                   <ion-avatar>
-                    <img [src]="defaultavatar">
+                    <img [src]="share.bhiu">
                   </ion-avatar>
                 </div>
               </div>
@@ -99,7 +99,7 @@ import { InAppBrowser } from '@ionic-native/in-app-browser';
               <div class="avatars" *ngIf="sfir.share && sfir.share.length > 0">
                 <div *ngFor="let share of sfir.share">
                   <ion-avatar>
-                    <img [src]="defaultavatar">
+                    <img [src]="share.bhiu">
                   </ion-avatar>
                 </div>
               </div>
@@ -225,7 +225,7 @@ export class FoSharePage {
       if (exist) {
         exist.share = {
           id: sf.yi,
-          share: JSON.parse(sf.value).share || []
+          share: UserConfig.getAvatars(JSON.parse(sf.value).share) || []
         };
 
         firs.set(sf.type, exist);
@@ -254,7 +254,7 @@ export class FoSharePage {
       if (exist) {
         exist.share = {
           id: sg.yi,
-          share: JSON.parse(sg.value).share || []
+          share: UserConfig.getAvatars(JSON.parse(sg.value).share) || []
         };
 
         githubs.set(sg.type, exist);
