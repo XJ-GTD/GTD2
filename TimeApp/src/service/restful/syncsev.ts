@@ -169,7 +169,7 @@ export class SyncRestful {
   }
 
   //智能提醒 项目跟进共享 - GitHub
-  putFollowGitHubShare(shareTo: string, userId: string, secret: string, timestamp: number, active: boolean): Promise<string> {
+  putFollowGitHubShare(shareTo: string, identify: string, userId: string, secret: string, timestamp: number, active: boolean): Promise<string> {
     return new Promise((resolve, reject) => {
       //每日简报任务注册
       let task = new TriggerTask();
@@ -188,7 +188,8 @@ export class SyncRestful {
         filters: [
           {name: "webhook", value: "github"},
           {name: "observer", value: observer},
-          {name: "secret", value: secret}
+          {name: "secret", value: secret},
+          {name: "repository", value: identify}
         ]
       };
 
@@ -334,7 +335,7 @@ export class SyncRestful {
   }
 
   //智能提醒 项目跟进 - fir.im
-  putFollowFirIMShare(shareTo: string, userId: string, timestamp: number, active: boolean): Promise<string> {
+  putFollowFirIMShare(shareTo: string, identify: string, userId: string, timestamp: number, active: boolean): Promise<string> {
     return new Promise((resolve, reject) => {
       //每日简报任务注册
       let task = new TriggerTask();
@@ -352,7 +353,8 @@ export class SyncRestful {
         eventId: "WEBHOOK_FIR.IM",
         filters: [
           {name: "webhook", value: "fir.im"},
-          {name: "observer", value: observer}
+          {name: "observer", value: observer},
+          {name: "link", value: identify}
         ]
       };
 

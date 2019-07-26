@@ -1,4 +1,3 @@
-
 import {WsContent} from "../model/content.model";
 import {MQProcess} from "../interface.process";
 import {Injectable} from "@angular/core";

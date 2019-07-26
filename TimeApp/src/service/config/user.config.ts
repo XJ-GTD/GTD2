@@ -4,6 +4,7 @@ import {SqliteExec} from "../util-service/sqlite.exec";
 import {ATbl} from "../sqlite/tbl/a.tbl";
 import {UTbl} from "../sqlite/tbl/u.tbl";
 import {UtilService} from "../util-service/util.service";
+import {EmitService} from "../util-service/emit.service";
 import {DataConfig} from "./data.config";
 import {FsData, PageDcData} from "../../data.mapping";
 
@@ -64,7 +65,7 @@ export class UserConfig {
   //群组
   static groups: Array<PageDcData> = new Array<PageDcData>();
 
-  constructor(private sqlliteExec: SqliteExec, private util: UtilService) {
+  constructor(private sqlliteExec: SqliteExec, private util: UtilService, private emitService: EmitService) {
   }
 
   async init() {
@@ -124,6 +125,8 @@ export class UserConfig {
       UserConfig.settins.set(setting.type, setting);
       UserConfig.allsettins.set(setting.yi, setting);
     }
+    //增加内部事件通知
+    this.emitService.emit("mwxing.config.user.ytbl.refreshed");
     return;
   }
 
@@ -142,7 +145,8 @@ export class UserConfig {
       UserConfig.user.sex = rows[0].us;
       UserConfig.user.contact = rows[0].uct;
     }
-    ;
+    //增加内部事件通知
+    this.emitService.emit("mwxing.config.user.utbl.refreshed");
     return;
   }
 
@@ -164,6 +168,8 @@ export class UserConfig {
       UserConfig.account.token = "";
       UserConfig.account.mq = "";
     }
+    //增加内部事件通知
+    this.emitService.emit("mwxing.config.user.atbl.refreshed");
     return;
   }
 
@@ -189,6 +195,8 @@ export class UserConfig {
       }
       UserConfig.friends.push(fs);
     }
+    //增加内部事件通知
+    this.emitService.emit("mwxing.config.user.btbl.refreshed");
     return;
   }
 
@@ -219,6 +227,8 @@ export class UserConfig {
         UserConfig.groups.push(dc);
       }
     }
+    //增加内部事件通知
+    this.emitService.emit("mwxing.config.user.gtbl.refreshed");
     return;
   }
 

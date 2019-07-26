@@ -26,6 +26,7 @@ matrix:
         - yarn
         - jq
         - gradle
+        - dos2unix
     licenses:
       - android-sdk-preview-license-.+
       - android-sdk-license-.+
@@ -33,6 +34,10 @@ matrix:
   - os: osx
     language: objective-c
     osx_image: xcode10.2
+    addons:
+      homebrew:
+        packages:
+        - dos2unix
   allow_failures:
     - os: osx
 #before_cache:
@@ -51,6 +56,7 @@ before_install:
   - export GRADLE_HOME=/usr/local/gradle
   - export PATH=$GRADLE_HOME/bin:$PATH
   - nvm install 8
+  - dos2unix -k $TRAVIS_BUILD_DIR/travis/preinstall.sh
   - sh $TRAVIS_BUILD_DIR/travis/preinstall.sh
   - gem install byebug
   - gem install fir-cli
@@ -69,14 +75,17 @@ before_script:
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then cp $HOME/build/leonxi/largefiles/cordova/plugins/baidutts/ios/libBaiduTTSSDK.a ./plugins/cordova-plugin-BaiduSpeechAndTTS/src/ios/BDSClientLib/libBaiduTTSSDK.a ; fi
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then cp $HOME/build/leonxi/largefiles/cordova/plugins/baidutts/ios/libBaiduASRSDK.a ./plugins/cordova-plugin-BaiduSpeechAndTTS/src/ios/BDSClientLib/libBaiduASRSDK.a ; fi
   - cp -rf ../TimeAppPatch/plugins/* ./plugins
+  - dos2unix -k $TRAVIS_BUILD_DIR/travis/add-keys.sh
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then sh $TRAVIS_BUILD_DIR/travis/add-keys.sh ; fi
 script:
   - ionic cordova plugin ls
   - yarn install
   - npm run clean
   - npm run build
+  - dos2unix -k $TRAVIS_BUILD_DIR/travis/build.sh
   - sh $TRAVIS_BUILD_DIR/travis/build.sh
 after_script:
+  - dos2unix -k sh $TRAVIS_BUILD_DIR/travis/fir.sh $TRAVIS_BUILD_DIR/travis/remove-keys.sh
   - sh $TRAVIS_BUILD_DIR/travis/fir.sh
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then sh $TRAVIS_BUILD_DIR/travis/remove-keys.sh ; fi
 env:
