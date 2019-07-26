@@ -120,7 +120,7 @@ function clean(datasource)
         tn: 'fir.im应用',
         k: event['output']['payload']['link'],
         kn: event['output']['payload']['name'],
-        vs: JSON.stringify({from: [sharefrom]}})
+        vs: JSON.stringify({from: [sharefrom]})
       }
     };
   }
