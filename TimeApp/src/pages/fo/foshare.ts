@@ -65,7 +65,7 @@ import { InAppBrowser } from '@ionic-native/in-app-browser';
           <ion-item-sliding *ngFor="let sgithubin of sgithubsin">
             <ion-item>
               <ion-avatar item-start>
-                <img [src]="sgithubin.ins.value.from.avatar">
+                <img [src]="defaultavatar">
               </ion-avatar>
               <h3><ion-icon name="git-network"></ion-icon> {{sgithubin.ins.value.full_name}}</h3>
               <p>{{sgithubin.ins.value.description}}</p>
@@ -122,7 +122,7 @@ import { InAppBrowser } from '@ionic-native/in-app-browser';
           <ion-item-sliding *ngFor="let sfirin of sfirsin">
             <ion-item>
               <ion-avatar item-start>
-                <img [src]="sfirin.ins.value.from.avatar">
+                <img [src]="defaultavatar">
               </ion-avatar>
               <h3>
                 <ion-thumbnail>
@@ -176,13 +176,13 @@ export class FoSharePage {
     this.emitService.register("mwxing.config.user.ytbl.refreshed", () => {
       this.refreshInstances();
     });
-    
+
     //初始化实例
     this.refreshInstances();
   }
-  
+
   refreshInstances() {
-    
+
     //取得GITHUB安全令牌
     let memSecretDef = UserConfig.settins.get(DataConfig.SYS_FOGHSECRET);
     if (memSecretDef && memSecretDef.value) {
