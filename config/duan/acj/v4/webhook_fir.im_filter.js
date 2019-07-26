@@ -28,7 +28,7 @@ function clean(datasource)
 
   var userId = input['userId'];
   var event = input['event'];
-  var sharefrom = event['output']['payload']['from'];
+  var sharefrom = input['from'];
 
   var to = new Array();
   to.push(userId);

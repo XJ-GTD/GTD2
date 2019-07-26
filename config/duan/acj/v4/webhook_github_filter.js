@@ -28,7 +28,7 @@ function clean(datasource)
 
   var userId = input['userId'];
   var event = input['event'];
-  var sharefrom = event['output']['payload']['from'];
+  var sharefrom = input['from'];
   var repository = event['output']['payload']['repository'];
 
   var commits = event['output']['payload']['commits'];
