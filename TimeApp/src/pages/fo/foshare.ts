@@ -266,7 +266,7 @@ export class FoSharePage {
     let githubsin: Map<string, any> = new Map<string, any>();
 
     for (let f in firinInstances) {
-      let obj = firInstances[f];
+      let obj = firinInstances[f];
 
       firsin.set(obj.type, {
         ins: {
@@ -282,7 +282,7 @@ export class FoSharePage {
     }
 
     for (let g in githubinInstances) {
-      let obj = githubInstances[g];
+      let obj = githubinInstances[g];
 
       githubsin.set(obj.type, {
         ins: {
