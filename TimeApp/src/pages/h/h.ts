@@ -30,9 +30,6 @@ import { InAppBrowser } from '@ionic-native/in-app-browser';
   selector: 'page-h',
   template: `
     <ion-content>
-      <ion-refresher pullMin="120" pullMax="360" (ionRefresh)='doRefresh($event)'>
-        <ion-refresher-content pullingIcon="arrow-round-down" pullingText="任务" refreshingSpinner="arrow-round-up" refreshingText=""></ion-refresher-content>
-      </ion-refresher>
       <div class="haContent">
         <div #calendarDiv class="haCalendar">
           <ion-calendar #calendar
@@ -209,14 +206,6 @@ export class HPage {
     p.d = moment(this.hdata.selectDay.time);
     this.feedback.audioPress();
     this.modalCtr.create(TdmPage, p).present();
-  }
-
-
-  doRefresh(refresher){
-    setTimeout(()=>{
-      refresher.complete(); //停止下拉刷新
-      this.navController.push(DataConfig.PAGE._DO_PAGE);
-    },150);
   }
 
   newcd() {
