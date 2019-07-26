@@ -47,7 +47,7 @@ export class WebsocketService {
     this.messages = 0;
 
     this.emitService.emit("on.websocket.workqueue.init");
-    
+
     this.speechqueue = async.queue( ({message,index},callback) =>{
       console.log("******************speech  queue:");
       this.dispatchService.dispatch(message).then(data=>{
@@ -58,7 +58,7 @@ export class WebsocketService {
       })
     });
     this.speeches = 0;
-    
+
     this.emitService.emit("on.websocket.speechqueue.init");
   }
 
@@ -108,8 +108,8 @@ export class WebsocketService {
             if (event && event.body) {
               let preload = JSON.parse(event.body);
               let header = preload.header || {};
-              let sender = header.sender || "":
-              
+              let sender = header.sender || "";
+
               if (sender == "xunfei/aiui") {
                 this.speechqueue.push({message:event.body,index:this.speeches++},(err)=>{
                   if (err) {
@@ -162,7 +162,7 @@ export class WebsocketService {
                   if (message && message.body) {
                     let preload = JSON.parse(message.body);
                     let header = preload.header || {};
-                    let sender = header.sender || "":
+                    let sender = header.sender || "";
 
                     if (sender == "xunfei/aiui") {
                       this.speechqueue.push({message:message.body,index:this.speeches++},(err)=>{
