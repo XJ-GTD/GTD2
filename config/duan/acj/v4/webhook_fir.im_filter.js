@@ -93,7 +93,7 @@ function clean(datasource)
     	version: 'V1.1',
       sender: 'xunfei',
       datetime: formatDateTime(new Date()),
-      describe: ['SY']
+      describe: ['SY', 'SY']
     };
 
     output.content = {};
@@ -108,6 +108,19 @@ function clean(datasource)
         k: event['output']['payload']['link'],
         kn: event['output']['payload']['name'],
         vs: JSON.stringify(event['output']['payload'])
+      }
+    };
+
+    // 保存项目跟进实例数据指示
+    output.content['1'] = {
+      processor: 'SY',
+      option: 'SY.FO',
+      parameters: {
+        t: 'FOFIRIN_INS_FROM',
+        tn: 'fir.im应用',
+        k: event['output']['payload']['link'],
+        kn: event['output']['payload']['name'],
+        vs: JSON.stringify({from: [sharefrom]}})
       }
     };
   }

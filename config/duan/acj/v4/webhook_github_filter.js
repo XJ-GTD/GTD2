@@ -126,7 +126,7 @@ function clean(datasource)
       version: 'V1.1',
       sender: 'xunfei',
       datetime: formatDateTime(new Date()),
-      describe: ['SY']
+      describe: ['SY', 'SY']
     };
 
     output.content = {};
@@ -141,6 +141,19 @@ function clean(datasource)
         k: repository['full_name'],
         kn: repository['full_name'],
         vs: JSON.stringify(repository)
+      }
+    };
+
+    // 保存项目跟进实例数据指示
+    output.content['1'] = {
+      processor: 'SY',
+      option: 'SY.FO',
+      parameters: {
+        t: 'FOGHIN_INS_FROM',
+        tn: 'GitHub Repository',
+        k: repository['full_name'],
+        kn: repository['full_name'],
+        vs: JSON.stringify({from: [sharefrom]})
       }
     };
   }
