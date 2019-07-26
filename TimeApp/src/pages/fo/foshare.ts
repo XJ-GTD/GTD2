@@ -89,7 +89,7 @@ import { InAppBrowser } from '@ionic-native/in-app-browser';
                  　　{{sfir.ins.value.name}}
               </h3>
               <p>Platform: {{sfir.ins.value.platform}}</p>
-              <div class="avatars">
+              <div class="avatars" *ngIf="sfir.share && sfir.share.length > 0">
                 <div>
                   <ion-avatar>
                     <img [src]="defaultavatar">
