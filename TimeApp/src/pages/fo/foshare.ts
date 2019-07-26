@@ -293,7 +293,7 @@ export class FoSharePage {
       if (exist) {
         exist.from = {
           id: ff.yi,
-          froms: UserConfig.getAvatars(JSON.parse(ff.value).share) || [],
+          froms: UserConfig.getAvatars(JSON.parse(ff.value).from) || [],
           from: JSON.parse(ff.value).from || []
         };
 
@@ -323,7 +323,7 @@ export class FoSharePage {
       if (exist) {
         exist.from = {
           id: gf.yi,
-          froms: UserConfig.getAvatars(JSON.parse(gf.value).share) || [],
+          froms: UserConfig.getAvatars(JSON.parse(gf.value).from) || [],
           from: JSON.parse(gf.value).from || []
         };
 
