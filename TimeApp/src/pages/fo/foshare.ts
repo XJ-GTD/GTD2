@@ -196,8 +196,12 @@ export class FoSharePage {
     let githubShareInstances = UserConfig.getSettings(DataConfig.SYS_FOGH_INS_SHARE);
     //被共享FIR.IM实例
     let firinInstances = UserConfig.getSettings(DataConfig.SYS_FOFIRIN_INS);
+    //被共享FIR.IM实例共享人
+    let firinFromInstances = UserConfig.getSettings(DataConfig.SYS_FOFIRIN_INS_FROM);
     //被共享GITHUB实例
     let githubinInstances = UserConfig.getSettings(DataConfig.SYS_FOGHIN_INS);
+    //被共享GITHUB实例共享人
+    let githubinFromInstances = UserConfig.getSettings(DataConfig.SYS_FOGHIN_INS_FROM);
 
     //加载实例
     let firs: Map<string, any> = new Map<string, any>();

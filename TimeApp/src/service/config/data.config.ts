@@ -181,10 +181,12 @@ export class DataConfig {
   public static SYS_FOGH_INS: string = "FOGH_INS";
   public static SYS_FOGH_INS_SHARE: string = "FOGH_INS_SHARE";
   public static SYS_FOGHIN_INS: string = "FOGHIN_INS";
+  public static SYS_FOGHIN_INS_FROM: string = "FOGHIN_INS_FROM";
   public static SYS_FOFIR: string = "FOFIR";                      //跟进开关
   public static SYS_FOFIR_INS: string = "FOFIR_INS";              //实例
   public static SYS_FOFIR_INS_SHARE: string = "FOFIR_INS_SHARE";  //实例共享成员
   public static SYS_FOFIRIN_INS: string = "FOFIRIN_INS";          //被共享实例
+  public static SYS_FOFIRIN_INS_FROM: string = "FOFIRIN_INS_FROM";          //被共享实例发送人
   public static SYS_FOTRACI: string = "FOTRACI";
   /*========== 系统设置区分 =========*/
 
