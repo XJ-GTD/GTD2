@@ -6,6 +6,8 @@
 
     1. 支持从GitHub的Webhooks中接收消息, 并在手机上显示通知
 
+    需要在GitHub的Settings > webhooks中添加, 使用json格式
+
 ## 跟进
 通过第三方网络服务提供的Web钩子(Webhooks), 获取在第三方服务中管理的内容变动通知。
 

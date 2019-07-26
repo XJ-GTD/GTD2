@@ -3,6 +3,7 @@
     "name": "冥王星第三方WebHook事件处理流",
     "trigger": "mwxing_webhook_notification_start",
     "parameters": [
+      "from",
       "userId",
       "webhook",
       "event"
