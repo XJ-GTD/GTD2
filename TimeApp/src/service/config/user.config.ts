@@ -80,6 +80,22 @@ export class UserConfig {
     return UserConfig.settins.get(key)? (UserConfig.settins.get(key).value == "1") : false;
   }
 
+  static getSetting(type:string, key: string): Setting {
+    let keys = UserConfig.getSettings(type);
+
+    if (keys && keys.length > 0) {
+      let matches = keys.filter((element, index, array) => {
+        return (element.type == key);
+      });
+
+      if (matches && matches.length > 0) {
+        return matches[0];
+      }
+    }
+
+    return null;
+  }
+
   static getSettings(type: string) {
     let a = Array.from(UserConfig.allsettins.values());
     return a.filter((element, index, array) => {
