@@ -112,5 +112,5 @@ export class YTbl implements ITbl {
 }
 
 export function convertQuotes(src: string): string {
-  return src.replace(/"/g, "\\\"");
+  return src.replace(/"/g, "\"\"");
 }
