@@ -89,7 +89,7 @@ export class YTbl implements ITbl {
 
     let sq = 'insert into gtd_y ' +
       '(  yi ,yt ,ytn ,yn ,yk ,yv) values("' + this.yi + '","' + this.yt + '","' + this.ytn + '"' +
-      ',"' + this.yn + '","' + this.yk + '","' + this.yv + '");';
+      ',"' + this.yn + '","' + this.yk + '","' + convertQuotes(this.yv) + '");';
 
     return sq;
   }
@@ -98,7 +98,7 @@ export class YTbl implements ITbl {
 
     let sq = 'replace into gtd_y ' +
       '(  yi ,yt ,ytn ,yn ,yk ,yv) values("' + this.yi + '","' + this.yt + '","' + this.ytn + '"' +
-      ',"' + this.yn + '","' + this.yk + '","' + this.yv + '");';
+      ',"' + this.yn + '","' + this.yk + '","' + convertQuotes(this.yv) + '");';
 
     return sq;
   }
