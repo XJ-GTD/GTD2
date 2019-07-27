@@ -37,6 +37,9 @@ import { InAppBrowser } from '@ionic-native/in-app-browser';
           <ion-row align-items-center justify-content-center>
             <p></p>
           </ion-row>
+          <ion-row align-items-center justify-content-center>
+            <small>共享给</small>
+          </ion-row>
         </ion-grid>
       </ion-row>
     </ion-grid>
