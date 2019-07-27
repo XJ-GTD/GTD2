@@ -53,7 +53,7 @@ export class SettingProcess extends BaseProcess implements MQProcess {
       set.yk = setting.type;//偏好设置key
       set.yv = setPara.v ? "1" : "0";//偏好设置value
 
-      this.ssService.save(set);
+      await this.ssService.save(set);
     }
 
     //项目跟进 实例设置
@@ -70,7 +70,7 @@ export class SettingProcess extends BaseProcess implements MQProcess {
       set.yk = setting.type || setPara.k;//偏好设置key
       set.yv = setPara.vs;//偏好设置value
 
-      this.ssService.save(set);
+      await this.ssService.save(set);
     }
 
     //用户黑名单
