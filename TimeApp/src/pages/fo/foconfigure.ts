@@ -32,6 +32,9 @@ import { InAppBrowser } from '@ionic-native/in-app-browser';
             冥王星
           </ion-row>
           <ion-row align-items-center justify-content-center>
+            https://fir.im/d2z3
+          </ion-row>
+          <ion-row align-items-center justify-content-center>
             <p></p>
           </ion-row>
         </ion-grid>
