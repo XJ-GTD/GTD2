@@ -172,7 +172,7 @@ export class FoGitHubPage {
 
   help() {
     const browser = this.iab.create("https://developer.github.com/webhooks/creating/", "_system");
-    browser.show();
+    //browser.show();
   }
 
   //需要增加确认框确认修改

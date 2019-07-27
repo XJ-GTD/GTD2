@@ -123,7 +123,7 @@ export class FoFirIMPage {
 
   help() {
     const browser = this.iab.create("https://fir.im/support/articles/webhook/custom", "_system");
-    browser.show();
+    //browser.show();
   }
 
   copyWebhook() {

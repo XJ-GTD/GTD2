@@ -126,7 +126,7 @@ export class HPage {
       if (data && data.eventdata && data.eventdata.url) {
         console.log("Open href " + data.eventdata.url);
         let browser = this.iab.create(data.eventdata.url, "_system");
-        browser.show();
+        //browser.show();
       }
     });
 

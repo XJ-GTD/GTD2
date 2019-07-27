@@ -106,7 +106,7 @@ export class FoTravisCIPage {
 
   help() {
     const browser = this.iab.create("https://docs.travis-ci.com/user/tutorial/", "_system");
-    browser.show();
+    //browser.show();
   }
 
   gotogithubsetting() {
