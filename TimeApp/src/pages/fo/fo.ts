@@ -2,6 +2,7 @@ import {Component, ElementRef, Renderer2, ViewChild} from '@angular/core';
 import {IonicPage, NavController, ViewController, ModalController} from 'ionic-angular';
 import {DataConfig} from "../../service/config/data.config";
 import {Setting, UserConfig} from "../../service/config/user.config";
+import {EmitService} from "../../service/util-service/emit.service";
 import {SsService} from "../ss/ss.service";
 import {PageY} from "../../data.mapping";
 import * as moment from "moment";
@@ -97,6 +98,7 @@ export class FoPage {
   constructor(public modalController: ModalController,
               public navCtrl: NavController,
               public viewCtrl: ViewController,
+              private emitService: EmitService,
               private ssService: SsService,
               private _renderer: Renderer2) {
     let memFirIMDef = UserConfig.settins.get(DataConfig.SYS_FOFIR);
