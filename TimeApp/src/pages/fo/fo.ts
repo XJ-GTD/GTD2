@@ -48,7 +48,7 @@ import * as moment from "moment";
               <p></p>
             </ion-row>
             <ion-row align-items-center justify-content-center>
-              <h1 class="h1-danger">5 / 32</h1>
+              <h1 class="h1-danger">{{selfinscounts? selfinscounts : "-"}} / {{besharedinscounts? besharedinscounts : "-"}}</h1>
             </ion-row>
             <ion-row align-items-center justify-content-center class="golden-margin">
               <small>通知</small>
@@ -91,6 +91,9 @@ export class FoPage {
   github: boolean = false;
   travisci: boolean = false;
 
+  selfinscounts: number = 0;
+  besharedinscounts: number = 0;
+
   constructor(public modalController: ModalController,
               public navCtrl: NavController,
               public viewCtrl: ViewController,
@@ -116,6 +119,44 @@ export class FoPage {
       this.stravisci = memTravisCIDef;
       this.travisci = memTravisCIDef.value == "1"? true : false;
     }
+
+    //初始化实例数量
+    this.emitService.register("mwxing.config.user.ytbl.refreshed", () => {
+      this.refreshInstances();
+    });
+
+    this.refreshInstances();
+  }
+
+  refreshInstances() {
+    //FIR.IM实例
+    let firInstances = UserConfig.getSettings(DataConfig.SYS_FOFIR_INS);
+    //GITHUB实例
+    let githubInstances = UserConfig.getSettings(DataConfig.SYS_FOGH_INS);
+    //被共享FIR.IM实例
+    let firinInstances = UserConfig.getSettings(DataConfig.SYS_FOFIRIN_INS);
+    //被共享GITHUB实例
+    let githubinInstances = UserConfig.getSettings(DataConfig.SYS_FOGHIN_INS);
+
+    let selfinstances = 0;
+    if (firInstances && firInstances.length > 0) {
+      selfinstances += firInstances.length;
+    }
+    if (githubInstances && githubInstances.length > 0) {
+      selfinstances += githubInstances.length;
+    }
+
+    let besharedinstances = 0;
+    if (firinInstances && firinInstances.length > 0) {
+      besharedinstances += firinInstances.length;
+    }
+    if (githubinInstances && githubinInstances.length > 0) {
+      besharedinstances += githubinInstances.length;
+    }
+
+    //设置画面显示
+    this.selfinscounts = selfinstances;
+    this.besharedinscounts = besharedinstances;
   }
 
   ionViewDidLoad() {
