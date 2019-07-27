@@ -49,7 +49,7 @@ import * as moment from "moment";
               <p></p>
             </ion-row>
             <ion-row align-items-center justify-content-center>
-              <h1 class="h1-danger">{{selfinscounts? selfinscounts : "-"}} / {{besharedinscounts? besharedinscounts : "-"}}</h1>
+              <h1 class="h1-danger">{{besharedinscounts? besharedinscounts : "-"}} / {{selfinscounts? selfinscounts : "-"}}</h1>
             </ion-row>
             <ion-row align-items-center justify-content-center class="golden-margin">
               <small>通知</small>
