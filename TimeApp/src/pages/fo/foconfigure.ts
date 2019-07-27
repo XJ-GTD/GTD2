@@ -4,7 +4,7 @@ import {SsService} from "../ss/ss.service";
 import { InAppBrowser } from '@ionic-native/in-app-browser';
 
 /**
- * Generated class for the 项目跟进 通知共享 page.
+ * Generated class for the 项目跟进 通知对象可选项 page.
  *
  * See https://ionicframework.com/docs/components/#navigation for more info on
  * Ionic pages and navigation.
@@ -25,6 +25,18 @@ import { InAppBrowser } from '@ionic-native/in-app-browser';
   </ion-header>
 
   <ion-content padding>
+    <ion-grid>
+      <ion-row>
+        <ion-grid>
+          <ion-row align-items-center justify-content-center>
+            冥王星
+          </ion-row>
+          <ion-row align-items-center justify-content-center>
+            <p></p>
+          </ion-row>
+        </ion-grid>
+      </ion-row>
+    </ion-grid>
   </ion-content>
   `
 })
