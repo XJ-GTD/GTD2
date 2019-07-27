@@ -311,6 +311,24 @@ export class BrService {
     sfoghinsYTbl.yt = "FOGH_INS";
     foghinsYTbl = await this.sqlexec.getExtList<YTbl>(sfoghinsYTbl.slT());
 
+    let hasFOGHINSSHARE = false;
+    let foghinsshareYTbl = new Array<YTbl>();
+    let sfoghinsshareYTbl = new YTbl();
+    sfoghinsshareYTbl.yt = "FOGH_INS_SHARE";
+    foghinsshareYTbl = await this.sqlexec.getExtList<YTbl>(sfoghinsshareYTbl.slT());
+
+    let hasFOGHININS = false;
+    let foghininsYTbl = new Array<YTbl>();
+    let sfoghininsYTbl = new YTbl();
+    sfoghininsYTbl.yt = "FOGHIN_INS";
+    foghininsYTbl = await this.sqlexec.getExtList<YTbl>(sfoghininsYTbl.slT());
+
+    let hasFOGHININSFROM = false;
+    let foghininsfromYTbl = new Array<YTbl>();
+    let sfoghininsfromYTbl = new YTbl();
+    sfoghininsfromYTbl.yt = "FOGHIN_INS_FROM";
+    foghininsfromYTbl = await this.sqlexec.getExtList<YTbl>(sfoghininsfromYTbl.slT());
+
     //FIR.IM参数
     let hasFOFIR = false;
     let fofirYTbl = new YTbl();
@@ -323,6 +341,24 @@ export class BrService {
     let sfofirinsYTbl = new YTbl();
     sfofirinsYTbl.yt = "FOFIR_INS";
     fofirinsYTbl = await this.sqlexec.getExtList<YTbl>(sfofirinsYTbl.slT());
+
+    let hasFOFIRINSSHARE = false;
+    let fofirinsshareYTbl = new Array<YTbl>();
+    let sfofirinsshareYTbl = new YTbl();
+    sfofirinsshareYTbl.yt = "FOFIR_INS_SHARE";
+    fofirinsshareYTbl = await this.sqlexec.getExtList<YTbl>(sfofirinsshareYTbl.slT());
+
+    let hasFOFIRININS = false;
+    let fofirininsYTbl = new Array<YTbl>();
+    let sfofirininsYTbl = new YTbl();
+    sfofirininsYTbl.yt = "FOFIRIN_INS";
+    fofirininsYTbl = await this.sqlexec.getExtList<YTbl>(sfofirininsYTbl.slT());
+
+    let hasFOFIRININSFROM = false;
+    let fofirininsfromYTbl = new Array<YTbl>();
+    let sfofirininsfromYTbl = new YTbl();
+    sfofirininsfromYTbl.yt = "FOFIRIN_INS_FROM";
+    fofirininsfromYTbl = await this.sqlexec.getExtList<YTbl>(sfofirininsfromYTbl.slT());
 
     let y = new YTbl();
     await this.sqlexec.delete(y);
@@ -338,8 +374,14 @@ export class BrService {
       if (yi.yk == "FOGHSECRET") hasFOGHSECRET = true;
       if (yi.yk == "FOGH") hasFOGH = true;
       if (yi.yt == "FOGH_INS") hasFOGHINS = true;
+      if (yi.yt == "FOGH_INS_SHARE") hasFOGHINSSHARE = true;
+      if (yi.yt == "FOGHIN_INS") hasFOGHININS = true;
+      if (yi.yt == "FOGHIN_INS_FROM") hasFOGHININSFROM = true;
       if (yi.yk == "FOFIR") hasFOFIR = true;
       if (yi.yt == "FOFIR_INS") hasFOFIRINS = true;
+      if (yi.yt == "FOFIR_INS_SHARE") hasFOFIRINS = true;
+      if (yi.yt == "FOFIRIN_INS") hasFOFIRININS = true;
+      if (yi.yt == "FOFIRIN_INS_FROM") hasFOFIRININSFROM = true;
 
       sqls.push(yi.inT());
     }
@@ -396,6 +438,30 @@ export class BrService {
       }
     }
 
+    if (!hasFOGHINSSHARE) {
+      for (let foghinshare of foghinsshareYTbl) {
+        let bkFOGHINSSHARE: YTbl = new YTbl();
+        Object.assign(bkFOGHINSSHARE, foghinshare);
+        this.sqlexec.prepareSave(bkFOGHINSSHARE);
+      }
+    }
+
+    if (!hasFOGHININS) {
+      for (let foghinin of foghininsYTbl) {
+        let bkFOGHININS: YTbl = new YTbl();
+        Object.assign(bkFOGHININS, foghinin);
+        this.sqlexec.prepareSave(bkFOGHININS);
+      }
+    }
+
+    if (!hasFOGHININSFROM) {
+      for (let foghininfrom of foghininsfromYTbl) {
+        let bkFOGHININSFROM: YTbl = new YTbl();
+        Object.assign(bkFOGHININSFROM, foghininfrom);
+        this.sqlexec.prepareSave(bkFOGHININSFROM);
+      }
+    }
+
     //FIR.IM参数
     if (!hasFOFIR) {
       let bkFOFIR: YTbl = new YTbl();
@@ -408,6 +474,30 @@ export class BrService {
         let bkFOFIRINS: YTbl = new YTbl();
         Object.assign(bkFOFIRINS, fofirin);
         this.sqlexec.prepareSave(bkFOFIRINS);
+      }
+    }
+
+    if (!hasFOFIRINSSHARE) {
+      for (let fofirinshare of fofirinsshareYTbl) {
+        let bkFOFIRINSSHARE: YTbl = new YTbl();
+        Object.assign(bkFOFIRINSSHARE, fofirinshare);
+        this.sqlexec.prepareSave(bkFOFIRINSSHARE);
+      }
+    }
+
+    if (!hasFOFIRININS) {
+      for (let fofirinin of fofirininsYTbl) {
+        let bkFOFIRININS: YTbl = new YTbl();
+        Object.assign(bkFOFIRININS, fofirinin);
+        this.sqlexec.prepareSave(bkFOFIRININS);
+      }
+    }
+
+    if (!hasFOFIRININSFROM) {
+      for (let fofirininfrom of fofirininsfromYTbl) {
+        let bkFOFIRININSFROM: YTbl = new YTbl();
+        Object.assign(bkFOFIRININSFROM, fofirininfrom);
+        this.sqlexec.prepareSave(bkFOFIRININSFROM);
       }
     }
 
