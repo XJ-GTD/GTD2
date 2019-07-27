@@ -1,4 +1,4 @@
-import {ITbl} from "./itbl";
+import {convertQuotes, ITbl} from "./itbl";
 
 /**
  * create by on 2019/3/5
@@ -109,8 +109,4 @@ export class YTbl implements ITbl {
 
     return sq;
   }
-}
-
-export function convertQuotes(src: string): string {
-  return src.replace(/"/g, "\"\"");
 }

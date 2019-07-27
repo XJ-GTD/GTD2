@@ -23,3 +23,7 @@ export interface ITbl {
 
   preT():string ;//使用预编译接口，解决数据中存在引号等影响sql处理的字符
 }
+
+export function convertQuotes(src: string): string {
+  return src.replace(/"/g, "\"\"");
+}
