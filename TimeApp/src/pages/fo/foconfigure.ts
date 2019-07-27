@@ -12,7 +12,21 @@ import { InAppBrowser } from '@ionic-native/in-app-browser';
 @Component({
   selector: 'page-foconfigure',
   template:
-  ``
+  `
+  <ion-header no-border>
+    <ion-toolbar>
+      <ion-buttons left>
+        <button ion-button icon-only (click)="goBack()" color="danger">
+          <img class="img-header-left" src="./assets/imgs/back.png">
+        </button>
+      </ion-buttons>
+      <ion-title>选项</ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+  <ion-content padding>
+  </ion-content>
+  `
 })
 export class FoConfigurePage {
   constructor(public modalController: ModalController,
@@ -21,5 +35,9 @@ export class FoConfigurePage {
               private iab: InAppBrowser,
               private ssService: SsService,
               private _renderer: Renderer2) {
+  }
+
+  goBack() {
+    this.navCtrl.pop();
   }
 }
