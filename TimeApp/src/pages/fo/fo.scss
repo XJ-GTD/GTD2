@@ -257,6 +257,7 @@ page-fo, page-fofirim, page-fogithub, page-fotravisci, page-foshare, page-foconf
 
     ion-item-sliding {
       background-color: $baseBackColor;
+      touch-action: none;
 
       ion-item.item-ios {
         background-color: $baseBackColor;
