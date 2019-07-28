@@ -40,7 +40,7 @@ import * as moment from "moment";
         <ion-row>
           <ion-grid>
             <ion-row align-items-center justify-content-center>
-              获得项目代码提交、持续集成和版本发布通知
+              获得GitHub, fir.im服务的webhooks事件通知
             </ion-row>
             <ion-row align-items-center justify-content-center>
               <p></p>
