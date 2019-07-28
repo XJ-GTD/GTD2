@@ -68,7 +68,7 @@ export class SsService {
       }
 
       //刷新本地用户偏好设置
-      this.userConfig.RefreshYTbl();
+      await this.userConfig.RefreshYTbl();
 
       resolve();
     });
