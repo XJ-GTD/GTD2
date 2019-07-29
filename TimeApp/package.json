@@ -35,6 +35,7 @@
     "@ionic-native/device": "^4.18.0",
     "@ionic-native/file": "^4.18.0",
     "@ionic-native/file-transfer": "^4.18.0",
+    "@ionic-native/geolocation": "^4.20.0",
     "@ionic-native/http": "^4.18.0",
     "@ionic-native/in-app-browser": "^4.20.0",
     "@ionic-native/keyboard": "^4.18.0",
