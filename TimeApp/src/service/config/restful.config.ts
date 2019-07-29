@@ -52,7 +52,6 @@ export class RestFulConfig {
         });
       }).catch((error) => {
         console.log('Error getting location', error);
-      }).finally(() => {
         resolve({
           latitude: this.latitude,
           longitude: this.longitude
