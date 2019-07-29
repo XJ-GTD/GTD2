@@ -71,18 +71,12 @@ export class FoConfigurePage {
   }
 
   getItem(source: any): any {
-    let dest = {};
-    dest.name = source.ins.keyname;
-    dest.description = source.ins.key;
-    if (source.froms) {
-      dest.from = source.froms;
-    }
-
-    if (source.shares) {
-      dest.shareto = source.shares;
-    }
-
-    return dest;
+    return {
+      name: source.ins.keyname,
+      description: source.ins.key,
+      from: source.froms || [],
+      shareto: source.shares || []
+    };
   }
 
   goBack() {
