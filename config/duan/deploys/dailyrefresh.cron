@@ -1,0 +1,4 @@
+0 0 4 * * ? /bin/bash /root/dailyrefresh.sh amq
+0 5 4 * * ? /bin/bash /root/dailyrefresh.sh exe
+0 10 4 * * ? /bin/bash /root/dailyrefresh.sh mwx
+
