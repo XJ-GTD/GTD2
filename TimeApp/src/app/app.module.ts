@@ -17,6 +17,7 @@ import {HttpClientModule} from "@angular/common/http";
 import {Network} from "@ionic-native/network";
 import {Contacts} from "@ionic-native/contacts";
 import {Vibration} from "@ionic-native/vibration";
+import {Geolocation} from '@ionic-native/geolocation';
 import {NativeAudio} from "@ionic-native/native-audio";
 import {Clipboard} from '@ionic-native/clipboard';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
@@ -179,6 +180,7 @@ import { BaiduMapModule } from 'angular2-baidu-map';
     File,
     Device,
     Vibration,
+    Geolocation,
     NativeAudio,
     Keyboard,
     Clipboard,
