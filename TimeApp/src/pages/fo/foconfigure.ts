@@ -38,6 +38,12 @@ import {DataConfig} from "../../service/config/data.config";
           <ion-row align-items-center justify-content-center>
             <p></p>
           </ion-row>
+          <ion-row align-items-center justify-content-center *ngIf="item.button">
+            <button ion-button color="light" class="border" clear round (click)="openUrl(item.button.url)">{{item.button.name}}</button>
+          </ion-row>
+          <ion-row align-items-center justify-content-center *ngIf="item.button">
+            <p></p>
+          </ion-row>
           <ion-row align-items-center justify-content-center *ngIf="item.from && item.from.length > 0">
             <small>来自于</small>
           </ion-row>
@@ -110,9 +116,17 @@ export class FoConfigurePage {
         name: source.ins.keyname,
         description: source.ins.key,
         from: (source.from? source.from.froms : []) || [],
-        shareto: (source.share? source.share.shares : []) || []
+        shareto: (source.share? source.share.shares : []) || [],
+        button: {
+          name: "下载",
+          url: source.ins.key
+        }
       };
     }
+  }
+
+  openUrl(url: string) {
+    const browser = this.iab.create(url, "_system");
   }
 
   goBack() {
