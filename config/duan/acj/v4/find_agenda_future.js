@@ -78,6 +78,7 @@ function clean(datasource)
   var ampmE = '';
 
   var questiontime = '';
+  var timeflag='';
 
   var semantics = data['intent']['semantic'];
 
@@ -104,6 +105,28 @@ function clean(datasource)
           // TNI  20:00 ~ 21:59 2小时
           // TLNI 22:00 ~ 23:59 2小时
           var datetime = normValue['datetime'];
+          const nowtime = new Date();
+          //当存在年月日的情况下
+         	if(datetime.indexOf('-')>0 )
+         	{
+         	   const dd=datetime.split('T');
+         	   const  mydate= dd[0].split('-');
+         	   const mydays = mydate[2];
+         	   //查询时间大于当前时间
+         	   if(mydays >nowtime.getDate())
+         	   {
+         	     	timeflag='3';
+         	   }
+         	   else if(mydays === nowtime.getDate())
+         	   {
+         	   		timeflag='2';
+         	   }
+         	   else
+         	   {
+         	   	 timeflag='1';
+         	   }
+         	}
+          
           var suggestDatetime = normValue['suggestDatetime'];
 
           print('datetime: ' + datetime + ' => suggestDatetime: ' + suggestDatetime);
@@ -350,6 +373,348 @@ function clean(datasource)
     }
   }
 
+//当是昨天的情况下
+if(timeflag==='1')
+{
+	 // 返回消息头部
+  output.header = {
+  	version: 'V1.1',
+    sender: 'xunfei',
+    datetime: formatDateTime(new Date()),
+    describe: ['F','SS','S']
+  };
+
+  output.original = text;
+
+  output.content = {};
+
+  // 查询联系人指示
+  output.content['0'] = {
+    processor: 'F',
+    option: 'F.C',
+    parameters: {
+      scd: {},
+      fs: contacts
+    }
+  };
+
+  if (date && date !== '') {
+    if (findYearS) {
+      output['content']['0']['parameters']['scd']['ds'] = date.substring(0, 4) + '/01/01';
+    }
+
+    if (findYearE) {
+      output['content']['0']['parameters']['scd']['de'] = date.substring(0, 4) + '/12/31';
+    }
+
+    if (findMonthS) {
+      output['content']['0']['parameters']['scd']['ds'] = date.substring(0, 7) + '/01';
+    }
+
+    if (findMonthE) {
+      output['content']['0']['parameters']['scd']['de'] = date.substring(0, 7) + '/31';
+    }
+
+    // 以上情况不匹配的时候
+    if (!output['content']['0']['parameters']['scd']['ds']) {
+      output['content']['0']['parameters']['scd']['ds'] = date;
+    }
+
+    if (!output['content']['0']['parameters']['scd']['de']) {
+      output['content']['0']['parameters']['scd']['de'] = date;
+    }
+  }
+
+  if (sdate && sdate !== '') {
+    if (findYearS) {
+      output['content']['0']['parameters']['scd']['ds'] = date.substring(0, 4) + '/01/01';
+    }
+
+    if (findMonthS) {
+      output['content']['0']['parameters']['scd']['ds'] = date.substring(0, 7) + '/01';
+    }
+
+    if (!output['content']['0']['parameters']['scd']['ds']) {
+      output['content']['0']['parameters']['scd']['ds'] = sdate;
+    }
+  }
+
+  if (edate && edate !== '') {
+    if (findYearE) {
+      output['content']['0']['parameters']['scd']['de'] = date.substring(0, 4) + '/12/31';
+    }
+
+    if (findMonthE) {
+      output['content']['0']['parameters']['scd']['de'] = date.substring(0, 7) + '/31';
+    }
+
+    // 以上情况不匹配的时候
+    if (!output['content']['0']['parameters']['scd']['de']) {
+      output['content']['0']['parameters']['scd']['de'] = edate;
+    }
+  }
+
+  // TEAM 01:00 ~ 05:59 5小时
+  // TAM  06:00 ~ 11:59 6小时
+  // TMID 12:00 ~ 12:59 1小时
+  // TPM  13:00 ~ 19:59 7小时
+  // TNI  20:00 ~ 21:59 2小时
+  // TLNI 22:00 ~ 23:59 2小时
+  if (time && time !== '') {
+    if (findAMPMS) {
+      output['content']['0']['parameters']['scd']['ts'] = (ampmS == 'EAM'? '01:00' : (ampmS == 'AM'? '06:00' : (ampmS == 'MID'? '12:00' : (ampmS == 'PM'? '13:00' : (ampmS == 'NI'? '20:00' : (ampmS == 'LNI'? '22:00' : '00:00'))))));
+    }
+
+    if (findAMPME) {
+      output['content']['0']['parameters']['scd']['te'] = (ampmE == 'EAM'? '05:59' : (ampmE == 'AM'? '11:59' : (ampmE == 'MID'? '12:59' : (ampmE == 'PM'? '19:59' : (ampmE == 'NI'? '21:59' : (ampmE == 'LNI'? '23:59' : '23:59'))))));
+    }
+
+    // 以上情况不匹配的时候
+    if (!output['content']['0']['parameters']['scd']['ts']) {
+      output['content']['0']['parameters']['scd']['ts'] = time;
+    }
+
+    if (!output['content']['0']['parameters']['scd']['te']) {
+      output['content']['0']['parameters']['scd']['te'] = time;
+    }
+  }
+
+  if (stime && stime !== '') {
+    if (findAMPMS) {
+      output['content']['0']['parameters']['scd']['ts'] = (ampmS == 'EAM'? '01:00' : (ampmS == 'AM'? '06:00' : (ampmS == 'MID'? '12:00' : (ampmS == 'PM'? '13:00' : (ampmS == 'NI'? '20:00' : (ampmS == 'LNI'? '22:00' : '00:00'))))));
+    }
+
+    if (!output['content']['0']['parameters']['scd']['ts']) {
+      output['content']['0']['parameters']['scd']['ts'] = stime;
+    }
+  }
+
+  if (etime && etime !== '') {
+    if (findAMPME) {
+      output['content']['0']['parameters']['scd']['te'] = (ampmE == 'EAM'? '05:59' : (ampmE == 'AM'? '11:59' : (ampmE == 'MID'? '12:59' : (ampmE == 'PM'? '19:59' : (ampmE == 'NI'? '21:59' : (ampmE == 'LNI'? '23:59' : '23:59'))))));
+    }
+
+    if (!output['content']['0']['parameters']['scd']['te']) {
+      output['content']['0']['parameters']['scd']['te'] = etime;
+    }
+  }
+
+  if (title && title !== '') {
+    output['content']['0']['parameters']['scd']['ti'] = title;
+  }
+
+  output.context = {};
+
+  if (clientcontext && clientcontext !== undefined) {
+  	output.context['client'] = clientcontext;
+  }
+
+  // 保存上下文指示
+  output.content['1'] = {
+    processor: 'SS',
+    option: 'SS.F',
+    parameters: {}
+  };
+
+  output.content['2'] = {
+    processor: 'S',
+    option: 'S.P',
+    parameters: {
+      t: 'FFN'
+    }
+  };
+ 
+}
+//当是今天的情况下
+if(timeflag==='2')
+{
+	 // 返回消息头部
+  output.header = {
+  	version: 'V1.1',
+    sender: 'xunfei',
+    datetime: formatDateTime(new Date()),
+    describe: ['F','SS','S','S','S']
+  };
+
+  output.original = text;
+
+  output.content = {};
+
+  // 查询联系人指示
+  output.content['0'] = {
+    processor: 'F',
+    option: 'F.C',
+    parameters: {
+      scd: {},
+      fs: contacts
+    }
+  };
+
+  if (date && date !== '') {
+    if (findYearS) {
+      output['content']['0']['parameters']['scd']['ds'] = date.substring(0, 4) + '/01/01';
+    }
+
+    if (findYearE) {
+      output['content']['0']['parameters']['scd']['de'] = date.substring(0, 4) + '/12/31';
+    }
+
+    if (findMonthS) {
+      output['content']['0']['parameters']['scd']['ds'] = date.substring(0, 7) + '/01';
+    }
+
+    if (findMonthE) {
+      output['content']['0']['parameters']['scd']['de'] = date.substring(0, 7) + '/31';
+    }
+
+    // 以上情况不匹配的时候
+    if (!output['content']['0']['parameters']['scd']['ds']) {
+      output['content']['0']['parameters']['scd']['ds'] = date;
+    }
+
+    if (!output['content']['0']['parameters']['scd']['de']) {
+      output['content']['0']['parameters']['scd']['de'] = date;
+    }
+  }
+
+  if (sdate && sdate !== '') {
+    if (findYearS) {
+      output['content']['0']['parameters']['scd']['ds'] = date.substring(0, 4) + '/01/01';
+    }
+
+    if (findMonthS) {
+      output['content']['0']['parameters']['scd']['ds'] = date.substring(0, 7) + '/01';
+    }
+
+    if (!output['content']['0']['parameters']['scd']['ds']) {
+      output['content']['0']['parameters']['scd']['ds'] = sdate;
+    }
+  }
+
+  if (edate && edate !== '') {
+    if (findYearE) {
+      output['content']['0']['parameters']['scd']['de'] = date.substring(0, 4) + '/12/31';
+    }
+
+    if (findMonthE) {
+      output['content']['0']['parameters']['scd']['de'] = date.substring(0, 7) + '/31';
+    }
+
+    // 以上情况不匹配的时候
+    if (!output['content']['0']['parameters']['scd']['de']) {
+      output['content']['0']['parameters']['scd']['de'] = edate;
+    }
+  }
+
+  // TEAM 01:00 ~ 05:59 5小时
+  // TAM  06:00 ~ 11:59 6小时
+  // TMID 12:00 ~ 12:59 1小时
+  // TPM  13:00 ~ 19:59 7小时
+  // TNI  20:00 ~ 21:59 2小时
+  // TLNI 22:00 ~ 23:59 2小时
+  if (time && time !== '') {
+    if (findAMPMS) {
+      output['content']['0']['parameters']['scd']['ts'] = (ampmS == 'EAM'? '01:00' : (ampmS == 'AM'? '06:00' : (ampmS == 'MID'? '12:00' : (ampmS == 'PM'? '13:00' : (ampmS == 'NI'? '20:00' : (ampmS == 'LNI'? '22:00' : '00:00'))))));
+    }
+
+    if (findAMPME) {
+      output['content']['0']['parameters']['scd']['te'] = (ampmE == 'EAM'? '05:59' : (ampmE == 'AM'? '11:59' : (ampmE == 'MID'? '12:59' : (ampmE == 'PM'? '19:59' : (ampmE == 'NI'? '21:59' : (ampmE == 'LNI'? '23:59' : '23:59'))))));
+    }
+
+    // 以上情况不匹配的时候
+    if (!output['content']['0']['parameters']['scd']['ts']) {
+      output['content']['0']['parameters']['scd']['ts'] = time;
+    }
+
+    if (!output['content']['0']['parameters']['scd']['te']) {
+      output['content']['0']['parameters']['scd']['te'] = time;
+    }
+  }
+
+  if (stime && stime !== '') {
+    if (findAMPMS) {
+      output['content']['0']['parameters']['scd']['ts'] = (ampmS == 'EAM'? '01:00' : (ampmS == 'AM'? '06:00' : (ampmS == 'MID'? '12:00' : (ampmS == 'PM'? '13:00' : (ampmS == 'NI'? '20:00' : (ampmS == 'LNI'? '22:00' : '00:00'))))));
+    }
+
+    if (!output['content']['0']['parameters']['scd']['ts']) {
+      output['content']['0']['parameters']['scd']['ts'] = stime;
+    }
+  }
+
+  if (etime && etime !== '') {
+    if (findAMPME) {
+      output['content']['0']['parameters']['scd']['te'] = (ampmE == 'EAM'? '05:59' : (ampmE == 'AM'? '11:59' : (ampmE == 'MID'? '12:59' : (ampmE == 'PM'? '19:59' : (ampmE == 'NI'? '21:59' : (ampmE == 'LNI'? '23:59' : '23:59'))))));
+    }
+
+    if (!output['content']['0']['parameters']['scd']['te']) {
+      output['content']['0']['parameters']['scd']['te'] = etime;
+    }
+  }
+
+  if (title && title !== '') {
+    output['content']['0']['parameters']['scd']['ti'] = title;
+  }
+
+  output.context = {};
+
+  if (clientcontext && clientcontext !== undefined) {
+  	output.context['client'] = clientcontext;
+  }
+
+  // 保存上下文指示
+  output.content['1'] = {
+    processor: 'SS',
+    option: 'SS.F',
+    parameters: {}
+  };
+
+  output.content['2'] = {
+    when: 'function(agendas, showagendas, contacts, branchtype, branchcode) { if (isfulltime(agendas)) { return true; } else { return false; }}',
+    processor: 'S',
+    option: 'S.P',
+    parameters: {
+      t: 'FFF2'
+    },
+    input: {
+      textvariables: [
+        {name: 'questiontime', value: questiontime},
+        {name: 'emptytime', expression: 'agendas[0].st + "到" + agendas[1].et', default: '全天'}
+      ]
+    }
+  };
+
+  output.content['3'] = {
+    when: 'function(agendas, showagendas, contacts, branchtype, branchcode) { if (isparttime(agendas)) { return true; } else { return false; }}',
+    processor: 'S',
+    option: 'S.P',
+    parameters: {
+      t: 'FFP2'
+    },
+    input: {
+      textvariables: [
+        {name: 'questiontime', value: questiontime},
+        {name: 'fulltime', expression: 'agendas[0].st', default: '全天'}
+      ]
+    }
+  };
+
+  output.content['4'] = {
+    when: 'function(agendas, showagendas, contacts, branchtype, branchcode) { if (!agendas || (agendas && agendas.length == 0)) { return true; } else { return false; }}',
+    processor: 'S',
+    option: 'S.P',
+    parameters: {
+      t: 'FFE2'
+    },
+    input: {
+      textvariables: [
+        {name: 'questiontime', value: questiontime}
+      ]
+    }
+  };
+}
+//当是明天的情况下
+if(timeflag==='3')
+{
   // 返回消息头部
   output.header = {
   	version: 'V1.1',
@@ -533,6 +898,9 @@ function clean(datasource)
       ]
     }
   };
+}
+
+
 
   var standardnext = {};
 
