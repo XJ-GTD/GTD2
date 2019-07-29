@@ -5,19 +5,19 @@ import {Injectable} from "@angular/core";
 import {UserConfig} from "./user.config";
 import {UtilService} from "../util-service/util.service";
 import {EmitService} from "../util-service/emit.service";
-import { Geoposition, Geolocation } from '@ionic-native/geolocation';
 
 @Injectable()
 export class RestFulConfig {
 
-  private latitude: number = 0;
-  private longitude: number = 0;
+  public static geo: any = {
+    latitude: 0,
+    longitude: 0
+  };
 
   private urlLs: Map<string, UrlEntity>;
 
   constructor(private sqlitexec: SqliteExec,
               private emitService:EmitService,
-              private geolocation: Geolocation,
               private util:UtilService) {
     //this.init();
   }

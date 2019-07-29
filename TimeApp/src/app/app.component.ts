@@ -12,6 +12,8 @@ import {FeedbackService} from "../service/cordova/feedback.service";
 import {NetworkService} from "../service/cordova/network.service";
 import {JPushService} from "../service/cordova/jpush.service";
 import {RabbitMQService} from "../service/cordova/rabbitmq.service";
+import { Geoposition, Geolocation } from '@ionic-native/geolocation';
+import {RestFulConfig} from "../service/config/restful.config";
 
 @Component({
   template: `
@@ -29,6 +31,7 @@ export class MyApp {
               private appCtrl: IonicApp,
               private backgroundMode: BackgroundMode,
               private networkService: NetworkService,
+              private geolocation: Geolocation,
               private restfulClient: RestfulClient,
               private util: UtilService,
               private screenOrientation: ScreenOrientation,
@@ -95,6 +98,17 @@ export class MyApp {
 
         this.jpush.init();
         //window.plugins.MiPushPlugin.init();
+        // 初始化GPS
+        let watch = this.geolocation.watchPosition();
+        watch.subscribe((data) => {
+         // data can be a set of coordinates, or an error (if an error occurred).
+          if (data && data.coords) {
+            RestFulConfig.geo.latitude = data.coords.latitude;
+            RestFulConfig.geo.longitude = data.coords.longitude;
+          } else {
+            console.log('Error getting location', data);
+          }
+        });
       }
       this.restfulClient.init();
 
