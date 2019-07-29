@@ -30,7 +30,7 @@ import {DataConfig} from "../../service/config/data.config";
       <ion-row>
         <ion-grid>
           <ion-row align-items-center justify-content-center>
-            <h3>{{item.name}}</h3>
+            <h3 class="h3-center">{{item.name}}</h3>
           </ion-row>
           <ion-row align-items-center justify-content-center>
             {{item.description}}

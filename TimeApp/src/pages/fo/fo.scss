@@ -348,6 +348,9 @@ page-fo, page-fofirim, page-fogithub, page-fotravisci, page-foshare, page-foconf
   }
 
   ion-row {
+    h3.h3-center {
+      text-align: center;
+    }
 
     div.avatars {
       display: inline-flex;
