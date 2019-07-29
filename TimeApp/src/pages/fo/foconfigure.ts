@@ -38,8 +38,29 @@ import {DataConfig} from "../../service/config/data.config";
           <ion-row align-items-center justify-content-center>
             <p></p>
           </ion-row>
-          <ion-row align-items-center justify-content-center>
+          <ion-row align-items-center justify-content-center *ngIf="item.from && item.from.length > 0">
+            <small>来自于</small>
+          </ion-row>
+          <ion-row align-items-center justify-content-center *ngIf="item.from && item.from.length > 0">
+            <div class="avatars">
+              <div *ngFor="let from of item.from">
+                <ion-avatar>
+                  <img [src]="from.bhiu">
+                </ion-avatar>
+              </div>
+            </div>
+          </ion-row>
+          <ion-row align-items-center justify-content-center *ngIf="item.shareto && item.shareto.length > 0">
             <small>共享给</small>
+          </ion-row>
+          <ion-row align-items-center justify-content-center *ngIf="item.shareto && item.shareto.length > 0">
+            <div class="avatars">
+              <div *ngFor="let share of item.shareto">
+                <ion-avatar>
+                  <img [src]="share.bhiu">
+                </ion-avatar>
+              </div>
+            </div>
           </ion-row>
         </ion-grid>
       </ion-row>
