@@ -29,10 +29,10 @@ import { InAppBrowser } from '@ionic-native/in-app-browser';
       <ion-row>
         <ion-grid>
           <ion-row align-items-center justify-content-center>
-            冥王星
+            {{item.name}}
           </ion-row>
           <ion-row align-items-center justify-content-center>
-            https://fir.im/d2z3
+            {{item.description}}
           </ion-row>
           <ion-row align-items-center justify-content-center>
             <p></p>
@@ -49,6 +49,12 @@ import { InAppBrowser } from '@ionic-native/in-app-browser';
 export class FoConfigurePage {
 
   private target: any;
+  private item: any = {
+    name: "",
+    description: "",
+    from: [],
+    shareto: []
+  };
 
   constructor(public modalController: ModalController,
               public navCtrl: NavController,
@@ -59,7 +65,24 @@ export class FoConfigurePage {
               private _renderer: Renderer2) {
     if (this.navParams.get('target')) {
       this.target = this.navParams.get('target');
+
+      this.item = getItem(this.target);
     }
+  }
+
+  getItem(source: any): any {
+    let dest = {};
+    dest.name = source.ins.keyname;
+    dest.description = source.ins.key;
+    if (source.froms) {
+      dest.from = source.froms;
+    }
+
+    if (source.shares) {
+      dest.shareto = source.shares;
+    }
+
+    return dest;
   }
 
   goBack() {
