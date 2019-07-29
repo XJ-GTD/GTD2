@@ -285,7 +285,7 @@ export function isfulltime(agendas: any): boolean {
   	{
   		let st= scd.st;
   		let st1 = st.split(":");
-  		if(!mytime.includes(st1[0]))
+  		if(mytime.indexOf(st1[0])==-1)
   		{
   			mytime.push(st1[0]);
   		}
@@ -313,7 +313,7 @@ export function isparttime(agendas: any): boolean {
   	{
   		let st= scd.st;
   		let st1 = st.split(":");
-  		if(!mytime.includes(st1[0]))
+  		if(mytime.indexOf(st1[0])==-1)
   		{
   			mytime.push(st1[0]);
   		}
