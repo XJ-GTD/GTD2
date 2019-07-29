@@ -5,7 +5,7 @@ import {Injectable} from "@angular/core";
 import {UserConfig} from "./user.config";
 import {UtilService} from "../util-service/util.service";
 import {EmitService} from "../util-service/emit.service";
-import { Geoposition, Geolocation } from '@ionic-native/geolocation';
+import { Position, Geolocation } from '@ionic-native/geolocation';
 
 @Injectable()
 export class RestFulConfig {
@@ -35,7 +35,7 @@ export class RestFulConfig {
     // //登录码
     header.lt = UserConfig.account.token;
     // GPS
-    Geoposition geo = await this.geolocation.getCurrentPosition();
+    Position geo = await this.geolocation.getCurrentPosition();
 
     if (geo) {
       this.latitude = geo.coords.latitude;
@@ -48,26 +48,6 @@ export class RestFulConfig {
     });
 
     return header;
-  }
-
-  location(): Promise<any> {
-    return new Promise<any>(async (resolve, reject) => {
-      this.geolocation.getCurrentPosition().then((resp) => {
-        this.latitude = resp.coords.latitude;
-        this.longitude = resp.coords.longitude;
-
-        resolve({
-          latitude: this.latitude,
-          longitude: this.longitude
-        });
-      }).catch((error) => {
-        console.log('Error getting location', error);
-        resolve({
-          latitude: this.latitude,
-          longitude: this.longitude
-        });
-      });
-    });
   }
 
   //初始化全局 restful Url 信息
