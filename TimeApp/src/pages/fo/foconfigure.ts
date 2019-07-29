@@ -72,8 +72,8 @@ export class FoConfigurePage {
   }
 
   getItem(source: any): any {
-    if (source.type == DataConfig.SYS_FOGH_INS
-    || source.type == DataConfig.SYS_FOGHIN_INS) {
+    if (source.ins.type == DataConfig.SYS_FOGH_INS
+    || source.ins.type == DataConfig.SYS_FOGHIN_INS) {
       return {
         name: source.ins.keyname,
         description: source.ins.value.description || "",
@@ -81,8 +81,8 @@ export class FoConfigurePage {
         shareto: source.shares || []
       };
     }
-    if (source.type == DataConfig.SYS_FOFIR_INS
-    || source.type == DataConfig.SYS_FOFIRIN_INS) {
+    if (source.ins.type == DataConfig.SYS_FOFIR_INS
+    || source.ins.type == DataConfig.SYS_FOFIRIN_INS) {
       return {
         name: source.ins.keyname,
         description: source.ins.key,
