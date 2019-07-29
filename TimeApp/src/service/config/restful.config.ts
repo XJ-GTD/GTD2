@@ -35,17 +35,24 @@ export class RestFulConfig {
     // //登录码
     header.lt = UserConfig.account.token;
     // GPS
-    let geo: Geoposition = await this.geolocation.getCurrentPosition();
+    try {
+      let geo: Geoposition = await this.geolocation.getCurrentPosition();
 
-    if (geo) {
-      this.latitude = geo.coords.latitude;
-      this.longitude = geo.coords.longitude;
+      if (geo) {
+        this.latitude = geo.coords.latitude;
+        this.longitude = geo.coords.longitude;
+      }
+
+      header.gps = JSON.stringify({
+        latitude: this.latitude,
+        longitude: this.longitude
+      });
+    } catch (err) {
+      header.gps = JSON.stringify({
+        latitude: this.latitude,
+        longitude: this.longitude
+      });
     }
-
-    header.gps = JSON.stringify({
-      latitude: this.latitude,
-      longitude: this.longitude
-    });
 
     return header;
   }
