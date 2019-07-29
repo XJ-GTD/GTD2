@@ -36,17 +36,19 @@ export class RestFulConfig {
     header.lt = UserConfig.account.token;
     // GPS
     try {
-      let geo: Geoposition = await this.geolocation.getCurrentPosition();
+      if (this.util.isMobile()) {
+        let geo: Geoposition = await this.geolocation.getCurrentPosition();
 
-      if (geo) {
-        this.latitude = geo.coords.latitude;
-        this.longitude = geo.coords.longitude;
+        if (geo) {
+          this.latitude = geo.coords.latitude;
+          this.longitude = geo.coords.longitude;
+        }
+
+        header.gps = JSON.stringify({
+          latitude: this.latitude,
+          longitude: this.longitude
+        });
       }
-
-      header.gps = JSON.stringify({
-        latitude: this.latitude,
-        longitude: this.longitude
-      });
     } catch (err) {
       header.gps = JSON.stringify({
         latitude: this.latitude,
