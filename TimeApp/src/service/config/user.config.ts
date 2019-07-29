@@ -221,7 +221,7 @@ export class UserConfig {
       let avatars: Array<any> = new Array<any>();
 
       for (let target of targets) {
-        avatars.push({rc: target.rc, bhiu: target.bhiu});
+        avatars.push({rc: target.rc, name: target.ran || target.rn, bhiu: target.bhiu});
       }
 
       return avatars;

@@ -47,6 +47,7 @@ import {DataConfig} from "../../service/config/data.config";
                 <ion-avatar>
                   <img [src]="from.bhiu">
                 </ion-avatar>
+                {{from.name}}
               </div>
             </div>
           </ion-row>
