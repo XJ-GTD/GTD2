@@ -10,8 +10,8 @@ import { Geolocation } from '@ionic-native/geolocation';
 @Injectable()
 export class RestFulConfig {
 
-  private latitude: number;
-  private longitude: number;
+  private latitude: number = 0;
+  private longitude: number = 0;
 
   private urlLs: Map<string, UrlEntity>;
 
