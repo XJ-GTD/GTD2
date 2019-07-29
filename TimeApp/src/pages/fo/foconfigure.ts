@@ -60,6 +60,7 @@ import {DataConfig} from "../../service/config/data.config";
                 <ion-avatar>
                   <img [src]="share.bhiu">
                 </ion-avatar>
+                {{share.name}}
               </div>
             </div>
           </ion-row>
