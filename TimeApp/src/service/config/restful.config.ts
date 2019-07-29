@@ -5,7 +5,7 @@ import {Injectable} from "@angular/core";
 import {UserConfig} from "./user.config";
 import {UtilService} from "../util-service/util.service";
 import {EmitService} from "../util-service/emit.service";
-import { Geolocation } from '@ionic-native/geolocation';
+import { Geoposition, Geolocation } from '@ionic-native/geolocation';
 
 @Injectable()
 export class RestFulConfig {
@@ -35,7 +35,17 @@ export class RestFulConfig {
     // //登录码
     header.lt = UserConfig.account.token;
     // GPS
-    header.gps = JSON.stringify(await location());
+    Geoposition geo = await this.geolocation.getCurrentPosition();
+
+    if (geo) {
+      this.latitude = geo.coords.latitude;
+      this.longitude = geo.coords.longitude;
+    }
+
+    header.gps = JSON.stringify({
+      latitude: this.latitude,
+      longitude: this.longitude
+    });
 
     return header;
   }
