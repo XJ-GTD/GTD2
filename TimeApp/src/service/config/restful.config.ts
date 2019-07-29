@@ -23,7 +23,7 @@ export class RestFulConfig {
   }
 
 
-  createHeader() {
+  async createHeader() {
     let header = new RestFulHeader();
     // // apro = await this.sqlitexec.getOne(apro);
     // //帐户ID
@@ -223,6 +223,10 @@ export class RestFulHeader {
   pv: string = "v3";//产品版本
   di: string = "";//设备ID
   dt: string = "";//设别类型
+  gps: string = JSON.stringify({
+    latitude: 0,
+    longitude: 0
+  });//GPS定位
 }
 
 
