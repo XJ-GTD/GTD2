@@ -98,8 +98,8 @@ export class FoConfigurePage {
       return {
         name: source.ins.keyname,
         description: source.ins.value.description || "",
-        from: source.froms || [],
-        shareto: source.shares || []
+        from: (source.from? source.from.froms : []) || [],
+        shareto: (source.share? source.share.shares : []) || []
       };
     }
     if (source.ins.type == DataConfig.SYS_FOFIR_INS
@@ -107,8 +107,8 @@ export class FoConfigurePage {
       return {
         name: source.ins.keyname,
         description: source.ins.key,
-        from: source.froms || [],
-        shareto: source.shares || []
+        from: (source.from? source.from.froms : []) || [],
+        shareto: (source.share? source.share.shares : []) || []
       };
     }
   }
