@@ -280,8 +280,26 @@ export function isFutureparttime(agendas: any): boolean {
 
 export function isfulltime(agendas: any): boolean {
   if (agendas && agendas.length > 1) {
-    return true;
-  } else {
+  	let mytime =[];
+  	for(let scd of agendas)
+  	{
+  		let st= scd.st;
+  		let st1 = st.split(":");
+  		if(!mytime.includes(st1[0]))
+  		{
+  			mytime.push(st1[0]);
+  		}
+  	}
+  	if(mytime.length==24)
+  	{
+  		return true;
+  	}
+    else
+    {
+    	return false;
+    }
+  } else
+  {
     return false;
   }
 }
@@ -290,6 +308,23 @@ export function isparttime(agendas: any): boolean {
   if (agendas && agendas.length == 1) {
     return true;
   } else {
-    return false;
+    let mytime =[];
+  	for(let scd of agendas)
+  	{
+  		let st= scd.st;
+  		let st1 = st.split(":");
+  		if(!mytime.includes(st1[0]))
+  		{
+  			mytime.push(st1[0]);
+  		}
+  	}
+  	if(mytime.length==24)
+  	{
+  		return true;
+  	}
+    else
+    {
+    	return false;
+    }
   }
 }
