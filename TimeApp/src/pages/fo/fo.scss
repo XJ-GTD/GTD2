@@ -352,16 +352,21 @@ page-fo, page-fofirim, page-fogithub, page-fotravisci, page-foshare, page-foconf
     div.avatars {
       display: inline-flex;
 
-      ion-avatar {
-        height: 14vmin;
-        width: 14vmin;
-        min-height: 14vmin;
-        min-width: 14vmin;
-        margin-right: 4px;
+      div {
+        padding-top: 4px;
+        text-align: center;
 
-        img {
+        ion-avatar {
           height: 14vmin;
           width: 14vmin;
+          min-height: 14vmin;
+          min-width: 14vmin;
+          margin-right: 4px;
+
+          img {
+            height: 14vmin;
+            width: 14vmin;
+          }
         }
       }
     }
