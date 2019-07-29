@@ -3,8 +3,6 @@ import {RestfulClient} from "../util-service/restful.client";
 import {RestFulConfig, UrlEntity} from "../config/restful.config";
 import {ContextModel, WsModel} from "../../ws/model/ws.model";
 
-
-
 /**
  * 语音
  */
