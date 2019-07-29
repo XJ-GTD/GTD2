@@ -35,7 +35,8 @@ export class RestFulConfig {
     // //登录码
     header.lt = UserConfig.account.token;
     // GPS
-    header.geo = JSON.stringify(RestFulConfig.geo);
+    header.latitude = RestFulConfig.geo.latitude;
+    header.longitude = RestFulConfig.geo.longitude;
 
     return header;
   }
@@ -202,10 +203,8 @@ export class RestFulHeader {
   pv: string = "v3";//产品版本
   di: string = "";//设备ID
   dt: string = "";//设别类型
-  geo: string = JSON.stringify({
-    latitude: 0,
-    longitude: 0
-  });//GPS定位
+  latitude: string = "0";//GPS定位
+  longitude: string = "0";//GPS定位
 }
 
 
