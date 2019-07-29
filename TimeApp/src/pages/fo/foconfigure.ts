@@ -66,7 +66,7 @@ export class FoConfigurePage {
     if (this.navParams.get('target')) {
       this.target = this.navParams.get('target');
 
-      this.item = getItem(this.target);
+      this.item = this.getItem(this.target);
     }
   }
 
