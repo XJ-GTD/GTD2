@@ -347,6 +347,26 @@ page-fo, page-fofirim, page-fogithub, page-fotravisci, page-foshare, page-foconf
     padding: 6px 0 5px 16px;
   }
 
+  ion-row {
+
+    div.avatars {
+      display: inline-flex;
+
+      ion-avatar {
+        height: 14vmin;
+        width: 14vmin;
+        min-height: 14vmin;
+        min-width: 14vmin;
+        margin-right: 4px;
+
+        img {
+          height: 14vmin;
+          width: 14vmin;
+        }
+      }
+    }
+  }
+
   .toggle-ios.toggle-checked .toggle-icon {
     background-color: rgb(60,144,155);
     width: 43px;
