@@ -35,10 +35,7 @@ export class RestFulConfig {
     // //登录码
     header.lt = UserConfig.account.token;
     // GPS
-    header.gps = JSON.stringify({
-      latitude: this.latitude,
-      longitude: this.longitude
-    });
+    header.gps = JSON.stringify(RestFulConfig.geo);
 
     return header;
   }
