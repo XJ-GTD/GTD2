@@ -2,6 +2,7 @@ import {Component, ElementRef, Renderer2, ViewChild} from '@angular/core';
 import {IonicPage, NavController, NavParams, ViewController, ModalController} from 'ionic-angular';
 import {SsService} from "../ss/ss.service";
 import { InAppBrowser } from '@ionic-native/in-app-browser';
+import {DataConfig} from "../../service/config/data.config";
 
 /**
  * Generated class for the 项目跟进 通知对象可选项 page.
@@ -71,12 +72,24 @@ export class FoConfigurePage {
   }
 
   getItem(source: any): any {
-    return {
-      name: source.ins.keyname,
-      description: source.ins.key,
-      from: source.froms || [],
-      shareto: source.shares || []
-    };
+    if (source.type == DataConfig.SYS_FOGH_INS
+    || source.type == DataConfig.SYS_FOGHIN_INS) {
+      return {
+        name: source.ins.keyname,
+        description: source.ins.value.description || "",
+        from: source.froms || [],
+        shareto: source.shares || []
+      };
+    }
+    if (source.type == DataConfig.SYS_FOFIR_INS
+    || source.type == DataConfig.SYS_FOFIRIN_INS) {
+      return {
+        name: source.ins.keyname,
+        description: source.ins.key,
+        from: source.froms || [],
+        shareto: source.shares || []
+      };
+    }
   }
 
   goBack() {
