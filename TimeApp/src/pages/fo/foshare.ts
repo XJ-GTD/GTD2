@@ -377,7 +377,7 @@ export class FoSharePage {
   }
 
   configure(instance) {
-    let modal = this.modalController.create(DataConfig.PAGE._FOCONFIGURE_PAGE, {selected: ['13585820972']});
+    let modal = this.modalController.create(DataConfig.PAGE._FOCONFIGURE_PAGE, {target: instance});
     modal.onDidDismiss((data)=>{
       if (data && data.selected) {
         console.log("dddd");

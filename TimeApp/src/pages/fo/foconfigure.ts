@@ -47,12 +47,18 @@ import { InAppBrowser } from '@ionic-native/in-app-browser';
   `
 })
 export class FoConfigurePage {
+
+  private target: any;
+
   constructor(public modalController: ModalController,
               public navCtrl: NavController,
               public viewCtrl: ViewController,
               private iab: InAppBrowser,
               private ssService: SsService,
               private _renderer: Renderer2) {
+    if (this.navParams.get('target')) {
+      this.target = this.navParams.get('target');
+    }
   }
 
   goBack() {
