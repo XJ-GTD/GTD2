@@ -1,5 +1,5 @@
 import {Component, ElementRef, Renderer2, ViewChild} from '@angular/core';
-import {IonicPage, NavController, ViewController, ModalController} from 'ionic-angular';
+import {IonicPage, NavController, NavParams, ViewController, ModalController} from 'ionic-angular';
 import {SsService} from "../ss/ss.service";
 import { InAppBrowser } from '@ionic-native/in-app-browser';
 
@@ -52,6 +52,7 @@ export class FoConfigurePage {
 
   constructor(public modalController: ModalController,
               public navCtrl: NavController,
+              public navParams: NavParams,
               public viewCtrl: ViewController,
               private iab: InAppBrowser,
               private ssService: SsService,
