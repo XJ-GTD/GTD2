@@ -5,25 +5,25 @@ import {Injectable} from "@angular/core";
 import {UserConfig} from "./user.config";
 import {UtilService} from "../util-service/util.service";
 import {EmitService} from "../util-service/emit.service";
-import { Geoposition, Geolocation } from '@ionic-native/geolocation';
 
 @Injectable()
 export class RestFulConfig {
 
-  private latitude: number = 0;
-  private longitude: number = 0;
+  public static geo: any = {
+    latitude: 0,
+    longitude: 0
+  };
 
   private urlLs: Map<string, UrlEntity>;
 
   constructor(private sqlitexec: SqliteExec,
               private emitService:EmitService,
-              private geolocation: Geolocation,
               private util:UtilService) {
     //this.init();
   }
 
 
-  async createHeader() {
+  createHeader() {
     let header = new RestFulHeader();
     // // apro = await this.sqlitexec.getOne(apro);
     // //帐户ID
@@ -35,26 +35,8 @@ export class RestFulConfig {
     // //登录码
     header.lt = UserConfig.account.token;
     // GPS
-    try {
-      if (this.util.isMobile()) {
-        let geo: Geoposition = await this.geolocation.getCurrentPosition();
-
-        if (geo) {
-          this.latitude = geo.coords.latitude;
-          this.longitude = geo.coords.longitude;
-        }
-
-        header.gps = JSON.stringify({
-          latitude: this.latitude,
-          longitude: this.longitude
-        });
-      }
-    } catch (err) {
-      header.gps = JSON.stringify({
-        latitude: this.latitude,
-        longitude: this.longitude
-      });
-    }
+    header.latitude = RestFulConfig.geo.latitude.toString();
+    header.longitude = RestFulConfig.geo.longitude.toString();
 
     return header;
   }
@@ -221,10 +203,8 @@ export class RestFulHeader {
   pv: string = "v3";//产品版本
   di: string = "";//设备ID
   dt: string = "";//设别类型
-  gps: string = JSON.stringify({
-    latitude: 0,
-    longitude: 0
-  });//GPS定位
+  latitude: string = "0";//GPS定位
+  longitude: string = "0";//GPS定位
 }
 
 

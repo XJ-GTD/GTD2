@@ -105,13 +105,13 @@ function clean(datasource)
           // TNI  20:00 ~ 21:59 2小时
           // TLNI 22:00 ~ 23:59 2小时
           var datetime = normValue['datetime'];
-          const nowtime = new Date();
+          var nowtime = new Date();
           //当存在年月日的情况下
          	if(datetime.indexOf('-')>0)
          	{
-         	   const dd=datetime.split('T');
-         	   const  mydate= dd[0].split('-');
-         	   const mydays = mydate[2];
+         	   var dd=datetime.split('T');
+         	   var  mydate= dd[0].split('-');
+         	   var mydays = mydate[2];
          	   //查询时间大于当前时间
          	   if(mydays >nowtime.getDate())
          	   {
@@ -126,7 +126,7 @@ function clean(datasource)
          	   	 timeflag='1';
          	   }
          	}
-          
+
           var suggestDatetime = normValue['suggestDatetime'];
 
           print('datetime: ' + datetime + ' => suggestDatetime: ' + suggestDatetime);
@@ -523,7 +523,7 @@ if(timeflag==='1')
       t: 'FFN'
     }
   };
- 
+
 }
 //当是今天的情况下
 if(timeflag==='2')
