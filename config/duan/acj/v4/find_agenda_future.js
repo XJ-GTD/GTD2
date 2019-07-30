@@ -521,7 +521,13 @@ if(timeflag==='1')
     option: 'S.P',
     parameters: {
       t: 'FFN'
+    },
+    input: {
+      textvariables: [
+        {name: 'questiontime', value: questiontime}
+      ]
     }
+    
   };
 
 }
