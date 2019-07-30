@@ -110,14 +110,14 @@ function clean(datasource)
          	if(datetime.indexOf('-')>0)
          	{
          	   var dd=datetime.split('T');
-         	   var  mydate= dd[0].split('-');
+         	   var mydate= dd[0].split('-');
          	   var mydays = mydate[2];
          	   //查询时间大于当前时间
          	   if(mydays >nowtime.getDate())
          	   {
          	     	timeflag='3';
          	   }
-         	   else if(mydays === nowtime.getDate())
+         	   else if(mydays == nowtime.getDate())
          	   {
          	   		timeflag='2';
          	   }
