@@ -35,6 +35,8 @@ public class XjBaiduTts extends CordovaPlugin {
 
     protected String secretKey = "9oHZPMLgc0BM9a4m3DhpHUhGSqYvsrAF";
 
+    private static MyTts tts;
+
 
     @Override
     protected void pluginInitialize() {
@@ -52,6 +54,11 @@ public class XjBaiduTts extends CordovaPlugin {
             if (SECRET_KEY != null) this.secretKey = SECRET_KEY;
             if (API_KEY != null) this.appKey = API_KEY;
             if (APP_ID != null) this.appId = APP_ID;
+
+            if (tts == null){
+                tts = new MyTts(cordova.getActivity(),null,appId,appKey,secretKey);
+
+            }
         } catch (PackageManager.NameNotFoundException e) {
             e.printStackTrace();
         }
@@ -61,8 +68,8 @@ public class XjBaiduTts extends CordovaPlugin {
     @Override
     public boolean execute(String action, JSONArray args, CallbackContext callbackContext) throws JSONException {
 
-
-        MyTts tts = new MyTts(cordova.getActivity(), new XjTtsListener(callbackContext),appId,appKey,secretKey);
+        tts.setListener(new XjTtsListener(callbackContext));
+//        MyTts tts = new MyTts(cordova.getActivity(),appId,appKey,secretKey);
 
         if (action.equals("speak")) {
             tts.speak(args.getString(0));

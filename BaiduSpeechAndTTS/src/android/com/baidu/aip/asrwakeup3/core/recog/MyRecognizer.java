@@ -1,6 +1,8 @@
 package com.baidu.aip.asrwakeup3.core.recog;
 
 import android.content.Context;
+import cn.sh.com.xj.timeApp.R;
+import com.baidu.aip.asrwakeup3.core.util.FileUtil;
 import com.baidu.aip.asrwakeup3.core.util.MyLogger;
 import com.baidu.speech.EventListener;
 import com.baidu.speech.EventManager;
@@ -11,6 +13,7 @@ import com.baidu.aip.asrwakeup3.core.recog.listener.IRecogListener;
 import com.baidu.aip.asrwakeup3.core.recog.listener.RecogEventAdapter;
 import android.os.Environment;
 
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
@@ -35,31 +38,50 @@ public class MyRecognizer {
 
     private static final String TAG = "MyRecognizer";
 
+    //打开关闭音效
+    private boolean isTs = true;
+
+    private String samplePath;
+
+    private Context context;
+
     /**
      * 初始化
      *
-     * @param context
-     * @param recogListener 将EventListener结果做解析的DEMO回调。使用RecogEventAdapter 适配EventListener
      */
-    public MyRecognizer(Context context, IRecogListener recogListener) {
-        this(context, new RecogEventAdapter(recogListener));
-    }
-
-    /**
-     * 初始化 提供 EventManagerFactory需要的Context和EventListener
-     *
-     * @param context
-     * @param eventListener 识别状态和结果回调
-     */
-    public MyRecognizer(Context context, EventListener eventListener) {
-
+    public MyRecognizer(Context context) {
         isInited = true;
-        this.eventListener = eventListener;
-        // SDK集成步骤 1.1  初始化asr的EventManager示例，多次得到的类，只能选一个使用
-        asr = EventManagerFactory.create(context, "asr");
-        // SDK集成步骤 1.2 设置回调event， 识别引擎会回调这个类告知重要状态和识别结果
-        asr.registerListener(eventListener);
+        this.context = context;
+        asr = EventManagerFactory.create(context, "asr",false);
+        initSamplePath();
     }
+
+
+//    /**
+//     * 初始化
+//     *
+//     * @param context
+//     * @param recogListener 将EventListener结果做解析的DEMO回调。使用RecogEventAdapter 适配EventListener
+//     */
+//    public MyRecognizer(Context context, IRecogListener recogListener) {
+//        this(context, new RecogEventAdapter(recogListener));
+//    }
+//
+//    /**
+//     * 初始化 提供 EventManagerFactory需要的Context和EventListener
+//     *
+//     * @param context
+//     * @param eventListener 识别状态和结果回调
+//     */
+//    public MyRecognizer(Context context, EventListener eventListener) {
+//
+//        isInited = true;
+//        this.eventListener = eventListener;
+//        // SDK集成步骤 1.1  初始化asr的EventManager示例，多次得到的类，只能选一个使用
+//        asr = EventManagerFactory.create(context, "asr");
+//        // SDK集成步骤 1.2 设置回调event， 识别引擎会回调这个类告知重要状态和识别结果
+//        asr.registerListener(eventListener);
+//    }
 
     /**
      * 离线命令词，在线不需要调用
@@ -75,11 +97,48 @@ public class MyRecognizer {
         // 没有ASR_KWS_LOAD_ENGINE这个回调表试失败，如缺少第一次联网时下载的正式授权文件。
     }
 
+
+    /**
+     * @param
+     */
+    public void start() {
+        // SDK集成步骤 2.1 拼接识别参数
+
+        Map<String, Object> params = new LinkedHashMap<String, Object>();
+
+
+        params.put(SpeechConstant.ACCEPT_AUDIO_VOLUME, false);
+        params.put(SpeechConstant.NLU, "enable");
+        params.put(SpeechConstant.PID, 15373);
+        params.put(SpeechConstant.VAD, SpeechConstant.VAD_DNN);
+        params.put(SpeechConstant.ASR_OFFLINE_ENGINE_GRAMMER_FILE_PATH, "assets://baidu_speech_grammar.bsg");
+        params.put(SpeechConstant.OUT_FILE, samplePath + "/iat.pcm");
+        params.put(SpeechConstant.ACCEPT_AUDIO_DATA, "true");
+        //params.put(SpeechConstant.VAD_ENDPOINT_TIMEOUT, 1200); // 长语音
+
+        if (isTs) {
+            //params.put(SpeechConstant.SOUND_START, R.raw.bdspeech_recognition_start);
+            //params.put(SpeechConstant.SOUND_END, R.raw.bdspeech_speech_end);
+            params.put(SpeechConstant.SOUND_SUCCESS, R.raw.bdspeech_recognition_success);
+            params.put(SpeechConstant.SOUND_ERROR, R.raw.bdspeech_recognition_error);
+            params.put(SpeechConstant.SOUND_CANCEL, R.raw.bdspeech_recognition_cancel);
+        }
+
+        //params.put(SpeechConstant.OUT_FILE, "res://msc/iat.wav");
+        // SpeechConstant.SOUND_START,
+        //params.put(SpeechConstant.VAD_ENDPOINOUTT_TIMEOUT, 0); // 长语音
+        // params.put(SpeechConstant.IN_FILE, "res:///com/baidu/android/voicedemo/16k_test.pcm");
+        // params.put(SpeechConstant.PROP ,20000);
+        // params.put(SpeechConstant.PID, 1537); // 中文输入法模型，有逗号
+        String json = new JSONObject(params).toString();
+        MyLogger.info(TAG + ".Debug", "识别参数（反馈请带上此行日志）" + json);
+        asr.send(SpeechConstant.ASR_START, json, null, 0, 0);
+    }
+
     /**
      * @param params
      */
     public void start(Map<String, Object> params) {
-        // SDK集成步骤 2.1 拼接识别参数
         String json = new JSONObject(params).toString();
         MyLogger.info(TAG + ".Debug", "识别参数（反馈请带上此行日志）" + json);
         asr.send(SpeechConstant.ASR_START, json, null, 0, 0);
@@ -133,5 +192,13 @@ public class MyRecognizer {
         }
         this.eventListener = new RecogEventAdapter(recogListener);
         asr.registerListener(eventListener);
+    }
+
+    private void initSamplePath() {
+        String sampleDir = "";
+        samplePath = this.context.getCacheDir().getPath() + "/" + sampleDir;
+        if (!FileUtil.makeDir(samplePath)) {
+            throw new RuntimeException("创建临时目录失败 :" + samplePath);
+        }
     }
 }

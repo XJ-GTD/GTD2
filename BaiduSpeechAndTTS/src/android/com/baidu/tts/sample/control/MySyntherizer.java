@@ -9,6 +9,7 @@ import android.util.Pair;
 import com.baidu.tts.auth.AuthInfo;
 import com.baidu.tts.client.SpeechSynthesizeBag;
 import com.baidu.tts.client.SpeechSynthesizer;
+import com.baidu.tts.client.SpeechSynthesizerListener;
 import com.baidu.tts.client.TtsMode;
 import com.baidu.tts.sample.MainHandlerConstant;
 
@@ -44,6 +45,11 @@ public class MySyntherizer implements MainHandlerConstant {
 //            throw new RuntimeException("MySynthesizer 类里面 SpeechSynthesizer还未释放，请勿新建一个新类");
 //        }
         this.context = context;
+    }
+
+    public void setListener(SpeechSynthesizerListener listener){
+
+        mSpeechSynthesizer.setSpeechSynthesizerListener(listener);
     }
 
     /**
