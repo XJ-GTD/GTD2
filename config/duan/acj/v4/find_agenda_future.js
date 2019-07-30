@@ -107,7 +107,7 @@ function clean(datasource)
           var datetime = normValue['datetime'];
           const nowtime = new Date();
           //当存在年月日的情况下
-         	if(datetime.indexOf('-')>0 )
+         	if(datetime.indexOf('-')>0)
          	{
          	   const dd=datetime.split('T');
          	   const  mydate= dd[0].split('-');
