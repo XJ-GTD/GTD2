@@ -119,7 +119,74 @@ function clean(datasource)
          	   }
          	   else if(mydays == nowtime.getDate())
          	   {
-         	   		timeflag='2';
+         	   	   var regapo = /^T(EAM|AM|MID|PM|NI|LNI)$/;
+            		 var rapo = datetime.match(regapo);
+            		 var mytime = nowtime.getHours();
+            		 //AM 上午 PM 下午 晚上NI
+            		 if(rapo)
+            		 {
+            		 		//当包含上下午的时候
+            		 
+            		 		if(dd[1]=='AM')
+            		 		{
+            		 			 if(mytime>12)
+            		 			 {
+            		 			 		timeflag='1';
+            		 			 }
+            		 			 else
+            		 			 {
+            		 			 	 timeflag='2';
+            		 			 }
+            		 		}
+            		 		if(dd[1]=='PM')
+            		 		{
+            		 			 if(mytime>12)
+            		 			 {
+            		 			 		timeflag='2';
+            		 			 }
+            		 			 else
+            		 			 {
+            		 			 	 timeflag='1';
+            		 			 }
+            		 		}
+            		 		if(dd[1]=='NI')
+            		 		{
+            		 			 if(mytime>20)
+            		 			 {
+            		 			 		timeflag='2';
+            		 			 }
+            		 			 else
+            		 			 {
+            		 			 	 timeflag='1';
+            		 			 }
+            		 		}
+            		 }
+            		 else
+            		 {
+            		 	  //获取返回的时间
+            		 	  var searchtime  =dd[1].split(":"); 
+            		 	  var hoursindex=searchtime[0].indexOf(0);
+            		 	  var hoursInt=0;
+            		 		if(hoursindex==0)
+            		 		{
+            		 			var hours = searchtime[0].replace("0","");
+            		 		  hoursInt= parseInt(hours);
+            		 		}
+            		 		else
+            		 		{
+            		 			 hoursInt= parseInt(searchtime[0]);
+            		 		}
+            		 		
+            		 		if(hoursInt>mytime)
+            		 		{
+            		 			timeflag='2';
+            		 		}
+            		 		else
+            		 		{
+            		 			timeflag='1';
+            		 		}
+            		 }
+         	   		
          	   }
          	   else
          	   {
