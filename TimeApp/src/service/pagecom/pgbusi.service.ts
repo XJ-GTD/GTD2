@@ -62,11 +62,11 @@ export class PgBusiService {
       return new Promise<ScdData>(async (resolve, reject) => {
         if (scd.si != null && scd.si !="") {
           //设置sp表值
-          let sp :SpecScdData =new SpecScdData();
-          Object.assign(sp,rc.specScdUpd);
-          scd.specScds.set(sp.sd,sp);
-          scd.showSpSd = sp.sd;
-          scd = await this.updateDetail(scd);
+          //let sp :SpecScdData =new SpecScdData();
+          //Object.assign(sp,rc.specScdUpd);
+          //scd.specScds.set(sp.sd,sp);
+          //scd.showSpSd = sp.sd;
+          //scd = await this.updateDetail(scd);
         } else {
           //设置结束时间
           if (!scd.ed) {
@@ -80,9 +80,9 @@ export class PgBusiService {
           scd = await this.save(scd);
         }
         //如果存在参与人则发送共享消息
-        if(rc.fss != null && rc.fss.length>0){
-          await this.fsService.sharefriend(scd.si, rc.fss);
-        }
+        //if(rc.fss != null && rc.fss.length>0){
+        //  await this.fsService.sharefriend(scd.si, rc.fss);
+        //}
         resolve(scd)
       })
     }
