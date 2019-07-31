@@ -5,7 +5,7 @@ import { Component, Input, Output, ElementRef, ViewChild, EventEmitter } from "@
   template: `
   <ion-grid>
     <!-- 文字输入 -->
-    <ion-row>
+    <ion-row *ngIf="textMode">
       <button ion-button clear small icon-only>
         <ion-icon ios="md-volume-up" md="md-volume-up"></ion-icon>
       </button>
@@ -15,11 +15,11 @@ import { Component, Input, Output, ElementRef, ViewChild, EventEmitter } from "@
       </button>
     </ion-row>
     <!-- 语音输入 -->
-    <ion-row>
+    <ion-row *ngIf="!textMode">
       <button ion-button clear small icon-only>
         <ion-icon ios="md-keypad" md="md-keypad"></ion-icon>
       </button>
-      <button ion-button clear small>
+      <button ion-button class="press-button" clear small>
       按住 说话
       </button>
       <button ion-button clear small>
@@ -36,6 +36,8 @@ export class MessageSendComponent {
 
   @Input("mobile")
   isMobile: boolean = false;
+
+  textMode: boolean = true;
 
   text: string = "";
 
