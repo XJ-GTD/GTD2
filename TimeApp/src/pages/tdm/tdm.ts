@@ -52,6 +52,9 @@ import {PgBusiService} from "../../service/pagecom/pgbusi.service";
         <button ion-button block icon-only (click)="cancel()" start>
           <ion-icon name="close"></ion-icon>
         </button>
+
+        <button ion-button block></button>
+
         <button ion-button block icon-only (click)="save()" end>
           <ion-icon name="checkmark"></ion-icon>
         </button>
