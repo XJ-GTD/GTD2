@@ -10,6 +10,7 @@ import {Keyboard} from "@ionic-native/keyboard";
 import {DataConfig} from "../../service/config/data.config";
 import {PlService} from "../pl/pl.service";
 import {SsService} from "../ss/ss.service";
+import {PgBusiService} from "../../service/pagecom/pgbusi.service";
 
 @IonicPage()
 @Component({
@@ -84,6 +85,7 @@ export class TdmPage {
   constructor(public navCtrl: NavController,
               public navParams: NavParams,
               public modalCtrl: ModalController,
+              private busiServ: PgBusiService,
               private plService: PlService,
               private ssService: SsService,
               private keyboard: Keyboard,
@@ -148,12 +150,16 @@ export class TdmPage {
         return;
       }
 
-      this.navCtrl.pop();
-
       let data: ScdData = new ScdData();
       data.sn = this.title;
       data.st = this.currenttime;
       data.sd = this.currentday.format("YYYY/MM/DD");
+
+      // 保存
+      data = await this.busiServ.saveOrUpdateScd(data);
+
+      this.navCtrl.pop();
+
       this.modalCtrl.create(DataConfig.PAGE._TDME_PAGE, data).present();
     });
   }
