@@ -1,4 +1,4 @@
-import { Component, Input, Output, ElementRef, EventEmitter } from "@angular/core";
+import { Component, Input, Output, ElementRef, ViewChild, EventEmitter } from "@angular/core";
 
 @Component({
   selector: 'message-send',
@@ -31,7 +31,7 @@ export class MessageSendComponent {
   @Input("mobile")
   isMobile: boolean = false;
 
-  text: string = "":
+  text: string = "";
 
   constructor() {
   }
