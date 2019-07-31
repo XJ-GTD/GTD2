@@ -167,6 +167,6 @@ export class TdmePage {
   }
 
   stop() {
-    this.isRecording = false;
+    this.isRecording = true;
   }
 }
