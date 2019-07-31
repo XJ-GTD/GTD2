@@ -155,6 +155,7 @@ export class TdmPage {
       data.st = this.currenttime;
       data.sd = this.currentday.format("YYYY/MM/DD");
       data.gs = "0";  //本人创建
+      data.ji = this.defaultplan.ji;  //设置计划
 
       Object.assign(data.p, this.defaultplan);
 
