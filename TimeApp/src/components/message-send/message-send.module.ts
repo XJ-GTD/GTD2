@@ -12,8 +12,7 @@ import {PipesModule} from "../../pipes/pipes.module";
   ],
   imports: [
     PipesModule,
-    IonicPageModule.forChild(MessageSendComponent),
-    WeatherIconsModule
+    IonicPageModule.forChild(MessageSendComponent)
   ],
   providers: [],
   exports: [
