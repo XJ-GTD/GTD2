@@ -156,6 +156,7 @@ export class TdmPage {
       data.sd = this.currentday.format("YYYY/MM/DD");
       data.gs = "0";  //本人创建
       data.ji = this.defaultplan.ji;  //设置计划
+      data.du = "1";  //设置为已读
 
       Object.assign(data.p, this.defaultplan);
 
