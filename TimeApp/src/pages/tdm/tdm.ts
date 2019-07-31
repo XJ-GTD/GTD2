@@ -154,6 +154,7 @@ export class TdmPage {
       data.sn = this.title;
       data.st = this.currenttime;
       data.sd = this.currentday.format("YYYY/MM/DD");
+      data.gs = "0";  //本人创建
 
       // 保存
       data = await this.busiServ.saveOrUpdateScd(data);
