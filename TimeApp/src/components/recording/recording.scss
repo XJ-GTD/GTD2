@@ -1,4 +1,8 @@
 recording {
+  position: absolute;
+  left: calc(100vmin / 2);
+  top: calc(100vmax / 2);
+
   ion-grid {
     display: none;
   }
