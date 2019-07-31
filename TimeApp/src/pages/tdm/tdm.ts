@@ -156,8 +156,12 @@ export class TdmPage {
       data.sd = this.currentday.format("YYYY/MM/DD");
       data.gs = "0";  //本人创建
 
+      Object.assign(data.p, this.defaultplan);
+
       // 保存
-      data = await this.busiServ.saveOrUpdateScd(data);
+      let rcin :RcInParam = new RcInParam();
+      Object.assign(rcin, data);
+      data = await this.busiServ.saveOrUpdate(rcin);
 
       this.navCtrl.pop();
 
