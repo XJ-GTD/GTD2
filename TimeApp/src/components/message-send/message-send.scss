@@ -24,6 +24,8 @@ message-send {
   }
 
   button.button-ios.press-button, button[block].button-ios.press-button {
+    margin-left: 12px;
+    margin-right: 12px;
     width: calc(100% - 6.6rem);
     background-color: #7396a7;
     color: #fff;
