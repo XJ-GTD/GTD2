@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter } from "@angular/core";
+import { Component, Input, Output, ElementRef, EventEmitter } from "@angular/core";
 
 @Component({
   selector: 'message-send',
@@ -9,6 +9,7 @@ import { Component, Input, Output, EventEmitter } from "@angular/core";
       <button ion-button clear small>
         <ion-icon ios="md-volume-up" md="md-volume-up"></ion-icon>
       </button>
+      <ion-textarea type="text" placeholder="备注" [(ngModel)]="text" class="text-message" autosize maxHeight="400" #textMessage></ion-textarea>
     </ion-row>
     <!-- 语音输入 -->
     <ion-row>
@@ -24,8 +25,13 @@ import { Component, Input, Output, EventEmitter } from "@angular/core";
 })
 export class MessageSendComponent {
 
+  @ViewChild("textMessage", {read: ElementRef})
+  _textMessage: ElementRef;
+
   @Input("mobile")
   isMobile: boolean = false;
+
+  text: string = "":
 
   constructor() {
   }
