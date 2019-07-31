@@ -19,7 +19,7 @@ import { Component, Input, Output, ElementRef, ViewChild, EventEmitter } from "@
       <button ion-button (click)="changeMode()" clear small icon-only>
         <ion-icon ios="md-keypad" md="md-keypad"></ion-icon>
       </button>
-      <button ion-button (tap)="start()" (press)="end()" class="press-button" block clear small>
+      <button ion-button (touchstart)="start()" (touchend)="end()" class="press-button" block clear small>
       按住 说话
       </button>
       <button ion-button clear small>
