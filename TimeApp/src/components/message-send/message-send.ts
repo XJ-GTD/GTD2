@@ -63,9 +63,11 @@ export class MessageSendComponent {
 
   start() {
     console.log("press start.");
+    this.onStartRecord.emit({target: this});
   }
 
   end() {
     console.log("press end.");
+    this.onEndRecord.emit({target: this});
   }
 }
