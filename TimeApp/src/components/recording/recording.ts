@@ -3,8 +3,7 @@ import { Component, Input, Output, ElementRef, ViewChild, EventEmitter } from "@
 @IonicPage()
 @Component({
   selector: 'recording',
-  template: `
-  <ion-grid [ngClass]="{'active': active}">
+  template: `<ion-grid [ngClass]="{'active': active}">
     <ion-row>
       <ion-icon ios="ios-microphone" md="ios-microphone"></ion-icon>
       <svg width="50" height="56" xmlns="http://www.w3.org/2000/svg">
