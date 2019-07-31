@@ -3,12 +3,21 @@ message-send {
     padding: 0 12px;
 
     .text-input-ios {
-      font-size: 14px;
+      color: #fff;
+      background-color: #7396a7;
+      margin: .4rem 8px .4rem 0;
+      font-size: 1.3rem;
+      line-height: 2.3rem;
       letter-spacing: 1px;
     }
+  }
+
+  button[icon-only] ion-icon {
+    background-color: transparent;
   }
 
   .press-button {
     width: calc(100% - 6.6rem);
   }
+
 }

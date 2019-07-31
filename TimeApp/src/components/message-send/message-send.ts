@@ -6,7 +6,7 @@ import { Component, Input, Output, ElementRef, ViewChild, EventEmitter } from "@
   <ion-grid>
     <!-- 文字输入 -->
     <ion-row *ngIf="textMode">
-      <button ion-button clear small icon-only>
+      <button ion-button (click)="changeMode()" clear small icon-only>
         <ion-icon ios="md-volume-up" md="md-volume-up"></ion-icon>
       </button>
       <ion-textarea rows="1" type="text" [(ngModel)]="text" class="text-message" autosize maxHeight="400" #textMessage></ion-textarea>
@@ -16,7 +16,7 @@ import { Component, Input, Output, ElementRef, ViewChild, EventEmitter } from "@
     </ion-row>
     <!-- 语音输入 -->
     <ion-row *ngIf="!textMode">
-      <button ion-button clear small icon-only>
+      <button ion-button (click)="changeMode()" clear small icon-only>
         <ion-icon ios="md-keypad" md="md-keypad"></ion-icon>
       </button>
       <button ion-button class="press-button" clear small>
@@ -44,4 +44,7 @@ export class MessageSendComponent {
   constructor() {
   }
 
+  changeMode() {
+    this.textMode = !this.textMode;
+  }
 }
