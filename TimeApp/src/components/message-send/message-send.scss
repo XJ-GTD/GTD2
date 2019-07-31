@@ -12,12 +12,18 @@ message-send {
     }
   }
 
+  button.button-ios {
+    color: #fff;
+  }
+
   button.button-ios[icon-only] ion-icon {
     background-color: transparent;
   }
 
   .press-button {
     width: calc(100% - 6.6rem);
+    background-color: #7396a7;
+    color: #fff;
   }
 
 }
