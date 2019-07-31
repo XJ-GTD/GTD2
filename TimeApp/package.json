@@ -68,7 +68,6 @@
     "cordova-js": "^4.2.2",
     "cordova-plugin-BaiduSpeechAndTTS": "../BaiduSpeechAndTTS",
     "cordova-plugin-advanced-http": "~2.0.2",
-    "cordova-plugin-alarmclock": "git+https://github.com/xiaoji-duan/cordova-plugin-alarmclock.git",
     "cordova-plugin-android-permissions": "~1.0.0",
     "cordova-plugin-background-mode": "~0.7.2",
     "cordova-plugin-badge": "^0.8.8",
@@ -151,7 +150,6 @@
         "APP_KEY": "e8b1f201b4e0cc102f665238",
         "CHANNEL": "cn.sh.com.xj.timeApp"
       },
-      "com.xj.cordova.alarmclock": {},
       "cordova-plugin-mipush": {
         "MI_PUSH_APP_KEY": "5761800292512",
         "MI_PUSH_APP_ID": "OX5QyByW/cVhxEUA6jhQQA==",

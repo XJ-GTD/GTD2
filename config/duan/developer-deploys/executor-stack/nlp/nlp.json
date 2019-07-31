@@ -1,0 +1,5 @@
+{
+  "debug": false,
+  "mongo.host": "mongodb",
+  "user.defined.dictionary": "/usr/verticles/userdefined.json"
+}

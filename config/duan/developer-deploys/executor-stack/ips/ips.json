@@ -1,0 +1,10 @@
+{
+  "debug": true,
+  "mongo.host": "mongodb",
+  "mongo.port": 27017,
+  "mongo.keepalive": true,
+  "stomp.server.host": "sa-amq",
+  "stomp.server.port": 5672,
+  "amq.app.id": "ips",
+  "ips.serveurl": "http://opendata.baidu.com/api.php?query=##ip##&co=&resource_id=6006&t=1412300361645&ie=utf8&oe=gbk&cb=op_aladdin_callback&format=json&tn=baidu&cb=jQuery1102026811896078288555_1412299994977&_=1412299994981"
+}

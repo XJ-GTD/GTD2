@@ -1,0 +1,27 @@
+{
+  "debug": true,
+  "mongo.host": "mongodb",
+  "mongo.port": 27017,
+  "mongo.keepalive": true,
+  "apps.default.appid": "pluto.guobaa.com",
+  "apps.default.secret": "secret@pluto.guobaa.com",
+  "apps.default.site": "pluto.guobaa.com",
+  "sms.service.port": 8080,
+  "sms.service.host": "sa-sms",
+  "sms.service.starter.singlesend": "/sms/send",
+  "sms.expiretime": 60,
+  "rabbitmq": {
+    "user": "gtd_mq",
+    "password": "gtd_mq",
+    "host": "rabbit1",
+    "port": 5672,
+    "virtualHost": "/",
+    "connectionTimeout": 6000,
+    "connectionRetries": 5,
+    "requestedHeartbeat": 60,
+    "handshakeTimeout": 6000,
+    "requestedChannelMax": 5,
+    "networkRecoveryInterval": 500,
+    "automaticRecoveryEnabled": true
+  }
+}

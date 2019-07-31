@@ -1,0 +1,3 @@
+0 4 * * * /bin/bash /root/dailyrefresh.sh amq
+3 4 * * * /bin/bash /root/dailyrefresh.sh exe
+5 4 * * * /bin/bash /root/dailyrefresh.sh mwx

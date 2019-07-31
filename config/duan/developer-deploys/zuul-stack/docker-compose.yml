@@ -1,0 +1,140 @@
+version: "3.3"
+services:
+  nginx:
+    image: 192.168.0.158:5000/xiaoji-nginx
+    hostname: nginx
+    configs:
+      - source: mwxing_config
+        target: /etc/nginx/conf.d/mwxing.conf
+    ports:
+      - 80:80
+      - 61613:61613
+      - 5672:5672
+    networks:
+      - mwxing-network-overlay
+    deploy:
+      replicas: 1
+      placement:
+        constraints: [node.labels.func == vmcos117]
+
+  rmq-nginx:
+    image: 192.168.0.158:5000/xiaoji-rmq-nginx
+    hostname: rmq-nginx
+    ports:
+      - 15672:80
+    networks:
+      - mwxing-network-overlay
+    deploy:
+      replicas: 1
+      placement:
+        constraints: [node.labels.func == vmcos110]
+
+  amq-nginx:
+    image: 192.168.0.158:5000/xiaoji-amq-nginx
+    hostname: amq-nginx
+    ports:
+      - 8161:80
+    networks:
+      - mwxing-network-overlay
+    deploy:
+      replicas: 1
+      placement:
+        constraints: [node.labels.func == vmcos110]
+
+  zuulserver:
+    image: 192.168.0.158:5000/xiaoji-zuulserver
+    hostname: zuulserver
+    configs:
+      - source: zuul_config
+        target: /usr/local/tomcat/webapps/ROOT/WEB-INF/classes/application.properties
+
+    networks:
+      - mwxing-network-overlay
+    deploy:
+      replicas: 1
+      endpoint_mode: dnsrr
+
+  sa-aac:
+    image: 192.168.0.158:5000/xiaoji-sa-aac
+    hostname: sa-aac
+    configs:
+      - source: aac_config
+        target: /usr/local/tomcat/webapps/ROOT/WEB-INF/classes/application.properties
+
+    networks:
+      - mwxing-network-overlay
+    deploy:
+      replicas: 1
+      endpoint_mode: dnsrr
+
+  sa-aba:
+    image: 192.168.0.158:5000/xiaoji-sa-aba
+    hostname: sa-aba
+    configs:
+      - source: aba_config
+        target: /usr/local/tomcat/webapps/aba/WEB-INF/classes/application.properties
+
+    networks:
+      - mwxing-network-overlay
+    deploy:
+      replicas: 1
+      endpoint_mode: dnsrr
+
+  sa-abc:
+    image: 192.168.0.158:5000/xiaoji-sa-abc
+    hostname: sa-abc
+    configs:
+      - source: abc_config
+        target: /usr/local/tomcat/webapps/abc/WEB-INF/classes/application.properties
+
+    networks:
+      - mwxing-network-overlay
+    deploy:
+      replicas: 1
+      endpoint_mode: dnsrr
+
+  sa-abd:
+    image: 192.168.0.158:5000/xiaoji-sa-abd
+    hostname: sa-abd
+    configs:
+      - source: abd_config
+        target: /usr/local/tomcat/webapps/abd/WEB-INF/classes/application.properties
+
+    networks:
+      - mwxing-network-overlay
+    deploy:
+      replicas: 1
+      endpoint_mode: dnsrr
+
+  sa-aad:
+    image: 192.168.0.158:5000/xiaoji-sa-aad
+    hostname: sa-aad
+    configs:
+      - source: aad_config
+        target: /usr/verticles/aad.json
+
+    networks:
+      - mwxing-network-overlay
+    deploy:
+      replicas: 1
+      endpoint_mode: dnsrr
+
+configs:
+  mwxing_config:
+    file: ./nginx/mwxing.conf
+  zuul_config:
+    file: ./zuulserver/application.properties
+  aac_config:
+    file: ./aac/application.properties
+  aba_config:
+    file: ./aba/application.properties
+  abc_config:
+    file: ./abc/application.properties
+  abd_config:
+    file: ./abd/application.properties
+  aad_config:
+    file: ./aad/aad.json
+
+networks:
+  mwxing-network-overlay:
+    external: true

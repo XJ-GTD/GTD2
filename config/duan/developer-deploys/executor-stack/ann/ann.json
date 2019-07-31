@@ -1,0 +1,50 @@
+{
+  "debug": true,
+  "mongo.host": "mongodb",
+  "mongo.port": 27017,
+  "mongo.keepalive": true,
+  "stomp.server.host": "sa-amq",
+  "stomp.server.port": 5672,
+  "amq.app.id": "ann",
+  "rabbitmq": {
+    "user": "gtd_mq",
+    "password": "gtd_mq",
+    "host": "rabbit1",
+    "port": 5672,
+    "virtualHost": "/",
+    "connectionTimeout": 6000,
+    "connectionRetries": 5,
+    "requestedHeartbeat": 60,
+    "handshakeTimeout": 6000,
+    "requestedChannelMax": 5,
+    "networkRecoveryInterval": 500,
+    "automaticRecoveryEnabled": true
+  },
+  "jpush": {
+    "appkey": "e8b1f201b4e0cc102f665238",
+    "secret": "f5009c225a4e18e32c2d1fe7",
+    "maxretry": 5,
+    "timeout": 10000,
+    "sslversion": "TLSv1.1",
+    "iosproduction": true
+  },
+  "mipush": {
+    "packagename": "cn.sh.com.xj.timeApp",
+    "appkey": "5761800292512",
+    "secret": "OX5QyByW/cVhxEUA6jhQQA=="
+  },
+  "aliyun.rabbitmq": {
+    "user": "gtd_mq",
+    "password": "gtd_mq",
+    "host": "pluto.guobaa.com",
+    "port": 5672,
+    "virtualHost": "/",
+    "connectionTimeout": 6000,
+    "connectionRetries": 5,
+    "requestedHeartbeat": 60,
+    "handshakeTimeout": 6000,
+    "requestedChannelMax": 5,
+    "networkRecoveryInterval": 500,
+    "automaticRecoveryEnabled": true
+  }
+}
