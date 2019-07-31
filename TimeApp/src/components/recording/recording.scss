@@ -1,5 +1,10 @@
 recording {
   position: absolute;
+  background-color: #111;
+  opacity: 0.5;
+  width: calc(25vmin / 2);
+  height: calc(25vmin / 2);
+
   left: calc(calc(100vmin / 2) - calc(25vmin / 2));
   top: calc(calc(100vmax / 2) - calc(25vmin / 2));
 
