@@ -7,6 +7,8 @@ import { SpeechBubbleComponent } from "../../components/speech-bubble/speech-bub
 import { FsData, RcInParam, ScdData, ScdPageParamter, SpecScdData } from "../../data.mapping";
 import { DataConfig } from "../../service/config/data.config";
 import { MapOptions } from 'angular2-baidu-map';
+import {JhTbl} from "../../service/sqlite/tbl/jh.tbl";
+import {MessageSendComponent} from "../../components/message-send/message-send";
 
 @Component({
   selector: 'page-tdme',
@@ -85,15 +87,8 @@ import { MapOptions } from 'angular2-baidu-map';
     </ion-grid>
   </ion-content>
 
-  <ion-footer class="foot-set" *ngIf="isMobile">
-    <ion-toolbar>
-    <button ion-button *ngIf="isMobile && !speaking" icon-only full (click)="record()">
-      <ion-icon name="mic" color="white"></ion-icon>
-    </button>
-    <button ion-button *ngIf="isMobile && speaking" icon-only full (click)="pause()">
-      <ion-icon name="pause" color="white"></ion-icon>
-    </button>
-    </ion-toolbar>
+  <ion-footer class="foot-set">
+    <message-send [mobile]="isMobile"></message-send>
   </ion-footer>
   `
 })
@@ -114,6 +109,11 @@ export class TdmePage {
               public modalCtrl: ModalController) {
     if (this.navParams && this.navParams.data) {
       this.agenda = this.navParams.data;
+
+      // 初始化计划
+      let plan: JhTbl = new JhTbl();
+      Object.assign(plan, this.agenda.p);
+      this.defaultplan = plan;
     }
 
     //百度地图设置
