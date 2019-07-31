@@ -87,11 +87,11 @@ import {RecordingComponent} from "../../components/recording/recording";
       </ion-row>
     </ion-grid>
     <!-- 录音状态提示 -->
-    <recording></recording>
+    <recording [active]="isRecording"></recording>
   </ion-content>
 
   <ion-footer class="foot-set">
-    <message-send [mobile]="isMobile"></message-send>
+    <message-send [mobile]="isMobile" (startRecord)="record()" (endRecord)="stop()"></message-send>
   </ion-footer>
   `
 })
@@ -104,7 +104,7 @@ export class TdmePage {
     jc: `#881562`
   };
   isMobile: boolean = true;
-  speaking: boolean = false;
+  isRecording: boolean = false;
   options: MapOptions;  //百度地图选项
 
   constructor(public navCtrl: NavController,
@@ -162,7 +162,11 @@ export class TdmePage {
     this.modalCtrl.create(DataConfig.PAGE._DZ_PAGE, {}).present();
   }
 
-  record() {}
+  record() {
+    this.isRecording = true;
+  }
 
-  pause() {}
+  stop() {
+    this.isRecording = false;
+  }
 }
