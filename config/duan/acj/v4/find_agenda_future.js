@@ -111,86 +111,111 @@ function clean(datasource)
          	{
          	   var dd=datetime.split('T');
          	   var mydate= dd[0].split('-');
+         	   var myMonth= mydate[1];
          	   var mydays = mydate[2];
-         	   //查询时间大于当前时间
-         	   if(mydays >nowtime.getDate())
+         	   if(myMonth.indexOf(0)==0)
          	   {
-         	     	timeflag='3';
+         	   		myMonth=myMonth.replace("0","");
          	   }
-         	   else if(mydays == nowtime.getDate())
+         	    if(mydays.indexOf(0)==0)
          	   {
-         	   	   var regapo = /^T(EAM|AM|MID|PM|NI|LNI)$/;
-            		 var rapo = datetime.match(regapo);
-            		 var mytime = nowtime.getHours();
-            		 //AM 上午 PM 下午 晚上NI
-            		 if(rapo)
-            		 {
-            		 		//当包含上下午的时候
-            		 
-            		 		if(dd[1]=='AM')
-            		 		{
-            		 			 if(mytime>12)
-            		 			 {
-            		 			 		timeflag='1';
-            		 			 }
-            		 			 else
-            		 			 {
-            		 			 	 timeflag='2';
-            		 			 }
-            		 		}
-            		 		if(dd[1]=='PM')
-            		 		{
-            		 			 if(mytime>12)
-            		 			 {
-            		 			 		timeflag='2';
-            		 			 }
-            		 			 else
-            		 			 {
-            		 			 	 timeflag='1';
-            		 			 }
-            		 		}
-            		 		if(dd[1]=='NI')
-            		 		{
-            		 			 if(mytime>20)
-            		 			 {
-            		 			 		timeflag='2';
-            		 			 }
-            		 			 else
-            		 			 {
-            		 			 	 timeflag='1';
-            		 			 }
-            		 		}
-            		 }
-            		 else
-            		 {
-            		 	  //获取返回的时间
-            		 	  var searchtime  =dd[1].split(":"); 
-            		 	  var hoursindex=searchtime[0].indexOf(0);
-            		 	  var hoursInt=0;
-            		 		if(hoursindex==0)
-            		 		{
-            		 			var hours = searchtime[0].replace("0","");
-            		 		  hoursInt= parseInt(hours);
-            		 		}
-            		 		else
-            		 		{
-            		 			 hoursInt= parseInt(searchtime[0]);
-            		 		}
-            		 		
-            		 		if(hoursInt>mytime)
-            		 		{
-            		 			timeflag='2';
-            		 		}
-            		 		else
-            		 		{
-            		 			timeflag='1';
-            		 		}
-            		 }
-         	   		
+         	   		mydays=mydays.replace("0","");
+         	   }
+         	   //当前月份
+         	   if(myMonth==(nowtime.getMonth()+1))
+         	   {
+         	   	  //查询时间大于当前时间
+	         	   if(mydays >nowtime.getDate())
+	         	   {
+	         	     	timeflag='3';
+	         	   }
+	         	   else if(mydays == nowtime.getDate())
+	         	   {
+	         	   	   var regapo = /^T(EAM|AM|MID|PM|NI|LNI)$/;
+	         	   	   var reg = /^(\d+)-(\d{1,2})-(\d{1,2})T(\d{1,2}):(\d{1,2}):(\d{1,2})$/;
+	            		 var rapo = datetime.match(regapo);
+	            		 var mytime = nowtime.getHours();
+	            		 //AM 上午 PM 下午 晚上NI
+	            		 if(rapo)
+	            		 {
+	            		 		//当包含上下午的时候
+	            		 		if(dd[1]=='AM')
+	            		 		{
+	            		 			 if(mytime>12)
+	            		 			 {
+	            		 			 		timeflag='1';
+	            		 			 }
+	            		 			 else
+	            		 			 {
+	            		 			 	 timeflag='2';
+	            		 			 }
+	            		 		}
+	            		 		if(dd[1]=='PM')
+	            		 		{
+	            		 			 if(mytime>12)
+	            		 			 {
+	            		 			 		timeflag='2';
+	            		 			 }
+	            		 			 else
+	            		 			 {
+	            		 			 	 timeflag='1';
+	            		 			 }
+	            		 		}
+	            		 		if(dd[1]=='NI')
+	            		 		{
+	            		 			 if(mytime>20)
+	            		 			 {
+	            		 			 		timeflag='2';
+	            		 			 }
+	            		 			 else
+	            		 			 {
+	            		 			 	 timeflag='1';
+	            		 			 }
+	            		 		}
+	            		 }
+	            		 else if(datetime.match(reg))
+	            		 {
+	            		 	  //获取返回的时间
+	            		 	  var searchtime  =dd[1].split(":"); 
+	            		 	  var hoursindex=searchtime[0].indexOf(0);
+	            		 	  var hoursInt=0;
+	            		 		if(hoursindex==0)
+	            		 		{
+	            		 			var hours = searchtime[0].replace("0","");
+	            		 		  hoursInt= parseInt(hours);
+	            		 		}
+	            		 		else
+	            		 		{
+	            		 			 hoursInt= parseInt(searchtime[0]);
+	            		 		}
+	            		 		
+	            		 		if(hoursInt>mytime)
+	            		 		{
+	            		 			timeflag='2';
+	            		 		}
+	            		 		else
+	            		 		{
+	            		 			timeflag='1';
+	            		 		}
+	            		 }
+	            		 else
+	            		 {
+	            		  	timeflag='2';
+	            		 }
+	         	   		
+	         	   }
+	         	   else
+	         	   {
+	         	   	 timeflag='1';
+	         	   }
+         	   }
+         	   else if(myMonth<(nowtime.getMonth()+1))
+         	   {
+         	   		 timeflag='1';
          	   }
          	   else
          	   {
-         	   	 timeflag='1';
+         	   		timeflag='3';
          	   }
          	}
 
