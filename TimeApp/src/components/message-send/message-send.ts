@@ -10,7 +10,7 @@ import { Component, Input, Output, ElementRef, ViewChild, EventEmitter } from "@
         <ion-icon ios="md-volume-up" md="md-volume-up"></ion-icon>
       </button>
       <ion-textarea rows="1" type="text" [(ngModel)]="text" class="text-message" autosize maxHeight="400" #textMessage></ion-textarea>
-      <button ion-button color="secondary" small>
+      <button ion-button (click)="send()" color="secondary" small>
       发送
       </button>
     </ion-row>
@@ -19,7 +19,7 @@ import { Component, Input, Output, ElementRef, ViewChild, EventEmitter } from "@
       <button ion-button (click)="changeMode()" clear small icon-only>
         <ion-icon ios="md-keypad" md="md-keypad"></ion-icon>
       </button>
-      <button ion-button class="press-button" block clear small>
+      <button ion-button (tap)="start()" (press)="end()" class="press-button" block clear small>
       按住 说话
       </button>
       <button ion-button clear small>
@@ -37,6 +37,15 @@ export class MessageSendComponent {
   @Input("mobile")
   isMobile: boolean = false;
 
+  @Output("send")
+  private onSend: EventEmitter<any> = new EventEmitter<any>();
+
+  @Output("startRecord")
+  private onStartRecord: EventEmitter<any> = new EventEmitter<any>();
+
+  @Output("endRecord")
+  private onEndRecord: EventEmitter<any> = new EventEmitter<any>();
+
   textMode: boolean = true;
 
   text: string = "";
@@ -46,5 +55,17 @@ export class MessageSendComponent {
 
   changeMode() {
     this.textMode = !this.textMode;
+  }
+
+  send() {
+    this.onSend.emit({target: this, value: this.text});
+  }
+
+  start() {
+    console.log("press start.");
+  }
+
+  end() {
+    console.log("press end.");
   }
 }
