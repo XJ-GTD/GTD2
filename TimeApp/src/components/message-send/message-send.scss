@@ -20,7 +20,7 @@ message-send {
     background-color: transparent;
   }
 
-  .press-button {
+  button.press-button, button[block].press-button {
     width: calc(100% - 6.6rem);
     background-color: #7396a7;
     color: #fff;
