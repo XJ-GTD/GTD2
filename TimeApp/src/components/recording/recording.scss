@@ -6,7 +6,7 @@ recording {
   height: 25vmin;
 
   left: calc(calc(100vmin / 2) - calc(25vmin / 2));
-  top: calc(calc(100vmax / 2) - calc(25vmin / 2));
+  top: calc(calc(100vmax / 2) - 25vmin);
 
   ion-grid.grid {
     display: none;
