@@ -10,6 +10,7 @@ import {SpeechBubbleComponentModule} from "../../components/speech-bubble/speech
 import { DirectivesModule } from "../../directives/directives.module";
 import { BaiduMapModule } from 'angular2-baidu-map';
 import {MessageSendComponentModule} from "../../components/message-send/message-send.module";
+import {RecordingComponentModule} from "../../components/recording/recording.module";
 
 @NgModule({
   declarations: [
@@ -25,6 +26,7 @@ import {MessageSendComponentModule} from "../../components/message-send/message-
       ScrollRangePickerComponentModule,
       SpeechBubbleComponentModule,
       MessageSendComponentModule,
+      RecordingComponentModule,
       BaiduMapModule.forRoot({ ak: 'zD6zCIA9w7ItoXwxQ8IRPD4rk5E9GEew' })
   ],
   providers: [

@@ -9,6 +9,7 @@ import { DataConfig } from "../../service/config/data.config";
 import { MapOptions } from 'angular2-baidu-map';
 import {JhTbl} from "../../service/sqlite/tbl/jh.tbl";
 import {MessageSendComponent} from "../../components/message-send/message-send";
+import {RecordingComponent} from "../../components/recording/recording";
 
 @Component({
   selector: 'page-tdme',
@@ -85,6 +86,8 @@ import {MessageSendComponent} from "../../components/message-send/message-send";
         <speech-bubble seconds="12"></speech-bubble>
       </ion-row>
     </ion-grid>
+    <!-- 录音状态提示 -->
+    <recording></recording>
   </ion-content>
 
   <ion-footer class="foot-set">
