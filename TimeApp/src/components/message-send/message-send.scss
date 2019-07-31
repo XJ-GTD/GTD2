@@ -1,6 +1,6 @@
 message-send {
   .text-message {
-    padding: 0 8px;
+    padding: 0 1rem;
 
     .text-input-ios {
       color: #fff;
@@ -24,9 +24,9 @@ message-send {
   }
 
   button.button-ios.press-button, button[block].button-ios.press-button {
-    margin-left: 8px;
-    margin-right: 8px;
-    width: calc(100% - 6.6rem);
+    margin-left: 1rem;
+    margin-right: 1rem;
+    width: calc(100% - 8.6rem);
     background-color: #7396a7;
     color: #fff;
   }
