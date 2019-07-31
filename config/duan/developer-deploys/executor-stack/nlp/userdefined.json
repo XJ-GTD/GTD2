@@ -1,0 +1,7 @@
+[
+  {"key": "dic", "keyword": "晨会", "nature": "meeting", "natureword": "会议"},
+  {"key": "dic", "keyword": "会议", "nature": "meeting"},
+  {"key": "dic", "keyword": "研讨会", "nature": "meeting"},
+  {"key": "dic", "keyword": "项目会", "nature": "meeting"},
+  {"key": "dic", "keyword": "开会", "nature": "meeting", "freq": 2000}
+]

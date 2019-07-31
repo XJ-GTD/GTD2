@@ -1,0 +1,22 @@
+version: "3.3"
+services:
+  sa-amq:
+    image: 192.168.0.158:5000/xiaoji-sa-amq
+    hostname: sa-amq
+    configs:
+      - source: amq_config
+        target: /opt/activemq/conf/activemq.xml
+
+    networks:
+      - mwxing-network-overlay
+    deploy:
+      replicas: 1
+      endpoint_mode: dnsrr
+
+configs:
+  amq_config:
+    file: ./activemq.xml
+
+networks:
+  mwxing-network-overlay:
+    external: true

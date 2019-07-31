@@ -55,6 +55,38 @@ export class PgBusiService {
     });
   }
 
+    /**
+     * 日程保存或日程更新  xilj
+     */
+    saveOrUpdateScd(scd : ScdData):Promise<ScdData>{
+      return new Promise<ScdData>(async (resolve, reject) => {
+        if (scd.si != null && scd.si !="") {
+          //设置sp表值
+          //let sp :SpecScdData =new SpecScdData();
+          //Object.assign(sp,rc.specScdUpd);
+          //scd.specScds.set(sp.sd,sp);
+          //scd.showSpSd = sp.sd;
+          //scd = await this.updateDetail(scd);
+        } else {
+          //设置结束时间
+          if (!scd.ed) {
+            scd.ed = scd.sd;
+          }
+          if (!scd.et) {
+            scd.et = scd.st
+          }
+          //设置日程归属人
+          scd.ui = UserConfig.account.id;
+          scd = await this.save(scd);
+        }
+        //如果存在参与人则发送共享消息
+        //if(rc.fss != null && rc.fss.length>0){
+        //  await this.fsService.sharefriend(scd.si, rc.fss);
+        //}
+        resolve(scd)
+      })
+    }
+
   /**
    * 日程保存或日程更新  dch
    */
