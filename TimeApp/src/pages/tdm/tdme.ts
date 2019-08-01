@@ -10,6 +10,7 @@ import { MapOptions } from 'angular2-baidu-map';
 import {JhTbl} from "../../service/sqlite/tbl/jh.tbl";
 import {MessageSendComponent} from "../../components/message-send/message-send";
 import {RecordingComponent} from "../../components/recording/recording";
+import {RestFulConfig} from "../../service/config/restful.config";
 
 @Component({
   selector: 'page-tdme',
@@ -107,7 +108,7 @@ export class TdmePage {
   isMobile: boolean = true;
   isRecording: boolean = false;
   options: MapOptions;  //百度地图选项
-  display: boolean = false;
+  display: boolean = true;
 
   constructor(public navCtrl: NavController,
               public navParams: NavParams,
@@ -124,8 +125,8 @@ export class TdmePage {
     //百度地图设置
     this.options = {
       centerAndZoom: {
-        lat: 39.920116,
-        lng: 116.403703,
+        lat: RestFulConfig.geo.latitude, //39.920116,
+        lng: RestFulConfig.geo.longitude, //116.403703,
         zoom: 8
       },
       enableKeyboard: true
@@ -169,6 +170,6 @@ export class TdmePage {
   }
 
   stop() {
-    this.isRecording = true;
+    this.isRecording = false;
   }
 }
