@@ -34,6 +34,7 @@ export class BzPage {
   bz: string = "";  //备注
 
   constructor(public navCtrl: NavController,
+              public viewCtrl: ViewController,
               public navParams: NavParams,
               private keyboard: Keyboard) {
     if (this.navParams && this.navParams.data) {
@@ -54,7 +55,8 @@ export class BzPage {
   }
 
   close() {
-    this.navCtrl.pop();
+    let data: Object = {bz: this.bz};
+    this.viewCtrl.dismiss(data);
   }
 
 }

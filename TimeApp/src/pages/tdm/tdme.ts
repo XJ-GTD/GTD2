@@ -211,6 +211,12 @@ export class TdmePage {
   goBz(value) {
     let modal = this.modalCtrl.create(DataConfig.PAGE._BZ_PAGE, {value: value});
     modal.onDidDismiss((data)=>{
+      this.agenda.bz = data.bz;
+
+      // 保存
+      let rcin: RcInParam = new RcInParam();
+      Object.assign(rcin, this.agenda);
+      await this.busiServ.saveOrUpdate(rcin);
     });
     modal.present();
   }
@@ -218,6 +224,14 @@ export class TdmePage {
   goJh(value) {
     let modal = this.modalCtrl.create(DataConfig.PAGE._JH_PAGE, {ji: value});
     modal.onDidDismiss((data)=>{
+      this.agenda.ji = data.jh.ji;
+      this.defaultplan = data.jh;
+
+      // 保存
+      let rcin: RcInParam = new RcInParam();
+      Object.assign(rcin, this.agenda);
+      await this.busiServ.saveOrUpdate(rcin);
+
     });
     modal.present();
   }
