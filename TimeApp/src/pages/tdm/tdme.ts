@@ -14,6 +14,7 @@ import {RestFulConfig} from "../../service/config/restful.config";
 import {PgBusiService} from "../../service/pagecom/pgbusi.service";
 import {UtilService} from "../../service/util-service/util.service";
 import {FeedbackService} from "../../service/cordova/feedback.service";
+import * as moment from "moment";
 
 @Component({
   selector: 'page-tdme',
