@@ -43,46 +43,46 @@ import {RecordingComponent} from "../../components/recording/recording";
         <i class="color-dot" [ngStyle]="{'background-color': defaultplan.jc }"></i>
         </div>
       </ion-row>
-      <ion-row justify-content-center>
+      <ion-row justify-content-center *ngIf="display">
         <baidu-map [options]="options" (click)="goDz()"></baidu-map>
       </ion-row>
-      <ion-row justify-content-center>
+      <ion-row justify-content-center *ngIf="display">
         <h5 class="mb-none" (click)="goDz()">地址</h5>
       </ion-row>
-      <ion-row justify-content-center>
+      <ion-row justify-content-center *ngIf="display">
       <p class="x-small mt-none" (click)="goDz()">说"地址是上海市东方明珠塔" 或 点击以添加</p>
       </ion-row>
-      <ion-row justify-content-center>
+      <ion-row justify-content-center *ngIf="display">
         <h5 class="mb-none">人员</h5>
       </ion-row>
-      <ion-row justify-content-center>
+      <ion-row justify-content-center *ngIf="display">
       <p class="x-small mt-none">说"发给小明" 或 点击以添加</p>
       </ion-row>
-      <ion-row justify-content-center>
+      <ion-row justify-content-center *ngIf="display">
         <h5 class="mb-none" (click)="goTx()">提醒</h5>
       </ion-row>
-      <ion-row justify-content-center>
+      <ion-row justify-content-center *ngIf="display">
       <p class="x-small mt-none" (click)="goTx()">说"提前15分钟提醒我" 或 点击以添加</p>
       </ion-row>
-      <ion-row justify-content-center>
+      <ion-row justify-content-center *ngIf="display">
         <h5 class="mb-none" (click)="goCf()">重复</h5>
       </ion-row>
-      <ion-row justify-content-center>
+      <ion-row justify-content-center *ngIf="display">
         <p class="x-small mt-none" (click)="goCf()">说"每周重复" 或 点击以添加</p>
       </ion-row>
-      <ion-row justify-content-center>
+      <ion-row justify-content-center *ngIf="display">
         <h5 class="mb-none">倒计时</h5>
       </ion-row>
-      <ion-row justify-content-center>
+      <ion-row justify-content-center *ngIf="display">
       <p class="x-small mt-none">说"设置倒计时" 或 点击以添加</p>
       </ion-row>
-      <ion-row justify-content-center>
+      <ion-row justify-content-center *ngIf="display">
         <h5 class="mb-none" (click)="goBz()">备注</h5>
       </ion-row>
-      <ion-row justify-content-center>
+      <ion-row justify-content-center *ngIf="display">
       <p class="x-small mt-none" (click)="goBz()">说"备注当天要带上生日礼物" 或 点击以添加</p>
       </ion-row>
-      <ion-row justify-content-center>
+      <ion-row justify-content-center *ngIf="display">
         <speech-bubble seconds="12"></speech-bubble>
       </ion-row>
     </ion-grid>
@@ -107,6 +107,7 @@ export class TdmePage {
   isMobile: boolean = true;
   isRecording: boolean = false;
   options: MapOptions;  //百度地图选项
+  display: boolean = false;
 
   constructor(public navCtrl: NavController,
               public navParams: NavParams,
