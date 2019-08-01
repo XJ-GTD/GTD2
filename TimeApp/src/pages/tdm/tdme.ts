@@ -65,7 +65,7 @@ import {RestFulConfig} from "../../service/config/restful.config";
       </ion-row>
 
       <ion-row justify-content-center *ngIf="agenda.fss && agenda.fss.length > 0">
-        <p class="x-small mb-none">人员</p>
+        <p class="x-small x-title mb-none">人员</p>
       </ion-row>
       <ion-row justify-content-center *ngIf="agenda.fss && agenda.fss.length > 0">
         <div class="avatars mt-none">
@@ -73,7 +73,7 @@ import {RestFulConfig} from "../../service/config/restful.config";
             <ion-avatar>
               <img [src]="share.bhiu">
             </ion-avatar>
-            {{share.name}}
+            {{share.ran || share.rn}}
           </div>
         </div>
       </ion-row>
@@ -87,7 +87,7 @@ import {RestFulConfig} from "../../service/config/restful.config";
       </ion-row>
 
       <ion-row justify-content-center *ngIf="agenda.tx">
-        <p class="x-small mb-none" (click)="goTx()">提醒</p>
+        <p class="x-small x-title mb-none" (click)="goTx()">提醒</p>
       </ion-row>
       <ion-row justify-content-center *ngIf="agenda.tx">
         <p class="mt-none" (click)="goTx()">{{agenda.tx | formatremind}}</p>
@@ -102,7 +102,7 @@ import {RestFulConfig} from "../../service/config/restful.config";
       </ion-row>
 
       <ion-row justify-content-center *ngIf="agenda.rt">
-        <p class="x-small mb-none" (click)="goCf()">重复</p>
+        <p class="x-small x-title mb-none" (click)="goCf()">重复</p>
       </ion-row>
       <ion-row justify-content-center *ngIf="agenda.rt">
         <p class="mt-none" (click)="goCf()">{{agenda.rt | formatrepeat}}</p>
@@ -117,7 +117,7 @@ import {RestFulConfig} from "../../service/config/restful.config";
       </ion-row>
 
       <ion-row justify-content-center *ngIf="agenda.bz">
-        <p class="x-small mb-none" (click)="goBz()">备注</p>
+        <p class="x-small x-title mb-none" (click)="goBz()">备注</p>
       </ion-row>
       <ion-row justify-content-center *ngIf="agenda.bz">
         <p class="mt-none memo" (click)="goBz()">{{agenda.bz}}</p>
