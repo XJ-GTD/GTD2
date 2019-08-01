@@ -22,8 +22,8 @@ import { Component, Input, Output, ElementRef, ViewChild, EventEmitter } from "@
        </g>
       </svg>
     </ion-row>
-    <ion-row>手指上划, 取消发送</ion-row>
-    <ion-row>松开手指, 取消发送</ion-row>
+    <ion-row justify-content-center>手指上划, 取消发送</ion-row>
+    <ion-row justify-content-center>松开手指, 取消发送</ion-row>
   </ion-grid>`
 })
 export class RecordingComponent {
