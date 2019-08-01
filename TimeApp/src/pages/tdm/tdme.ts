@@ -72,6 +72,13 @@ import {RestFulConfig} from "../../service/config/restful.config";
       <p class="x-small mt-none" (click)="goTx()">说"提前15分钟提醒我" 或 点击以添加</p>
       </ion-row>
 
+      <ion-row justify-content-center *ngIf="agenda.tx">
+        <p class="x-small (click)="goTx()">提醒</p>
+      </ion-row>
+      <ion-row justify-content-center *ngIf="agenda.tx">
+      <p class="mt-none" (click)="goTx()">{{agenda.tx | formatremind}}</p>
+      </ion-row>
+
       <!-- 重复 -->
       <ion-row justify-content-center *ngIf="!agenda.rt">
         <h5 class="mb-none" (click)="goCf()">重复</h5>
@@ -79,11 +86,12 @@ import {RestFulConfig} from "../../service/config/restful.config";
       <ion-row justify-content-center *ngIf="!agenda.rt">
         <p class="x-small mt-none" (click)="goCf()">说"每周重复" 或 点击以添加</p>
       </ion-row>
+
       <ion-row justify-content-center *ngIf="agenda.rt">
         <p class="x-small mb-none" (click)="goCf()">重复</p>
       </ion-row>
       <ion-row justify-content-center *ngIf="agenda.rt">
-        <p class="x-small mt-none" (click)="goCf()">{{agenda.rt | formatrepeat}}</p>
+        <p class="mt-none" (click)="goCf()">{{agenda.rt | formatrepeat}}</p>
       </ion-row>
 
       <!-- 备注 -->
@@ -98,7 +106,7 @@ import {RestFulConfig} from "../../service/config/restful.config";
         <p class="x-small mb-none" (click)="goBz()">备注</p>
       </ion-row>
       <ion-row justify-content-center *ngIf="agenda.bz">
-        <p class="x-small mt-none" (click)="goBz()">{{agenda.bz}}</p>
+        <p class="mt-none" (click)="goBz()">{{agenda.bz}}</p>
       </ion-row>
 
       <!-- 语音记录 -->
