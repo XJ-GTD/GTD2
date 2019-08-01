@@ -1,5 +1,5 @@
 import { Component, ElementRef, QueryList, Renderer2, ViewChild, ViewChildren } from '@angular/core';
-import { IonicPage, NavController, NavParams, ModalController, Scroll } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, ActionSheetController, ModalController, Scroll } from 'ionic-angular';
 import { ScrollSelectComponent } from '../../components/scroll-select/scroll-select';
 import { RadioSelectComponent } from '../../components/radio-select/radio-select';
 import { ScrollRangePickerComponent } from "../../components/scroll-range-picker/scroll-range-picker";
@@ -12,6 +12,8 @@ import {MessageSendComponent} from "../../components/message-send/message-send";
 import {RecordingComponent} from "../../components/recording/recording";
 import {RestFulConfig} from "../../service/config/restful.config";
 import {PgBusiService} from "../../service/pagecom/pgbusi.service";
+import {UtilService} from "../../service/util-service/util.service";
+import {FeedbackService} from "../../service/cordova/feedback.service";
 
 @Component({
   selector: 'page-tdme',
@@ -159,11 +161,15 @@ export class TdmePage {
   isRecording: boolean = false;
   options: MapOptions;  //百度地图选项
   display: boolean = false;
+  removeOptionButtons;
 
   constructor(public navCtrl: NavController,
               public navParams: NavParams,
               public modalCtrl: ModalController,
-              private busiServ: PgBusiService) {
+              public actionSheetCtrl: ActionSheetController,
+              private util: UtilService,
+              private busiServ: PgBusiService,
+              private feekback: FeedbackService) {
     if (this.navParams && this.navParams.data) {
       this.agenda = this.navParams.data;
 
@@ -189,7 +195,67 @@ export class TdmePage {
   }
 
   remove() {
+    let d = moment(agenda.sd + " " + agenda.st).format("YYYY/MM/DD");
 
+    if (this.agenda.rt != "0" && this.agenda.sd != d) {
+      //重复日程删除
+      this.removeOptionButtons = this.actionSheetCtrl.create({
+        buttons: [
+          {
+            text: '删除今后所有日程',
+            role: 'destructive',
+            cssClass: 'btn-del',
+            handler: () => {
+              this.util.alterStart("2", () => {
+                this.util.loadingStart();
+                this.busiServ.delRcBySiAndSd(this.agenda.si, d).then(data => {
+                  this.feekback.audioDelete();
+                  this.util.loadingEnd();
+                  this.goBack();
+                }).catch(err => {
+                  this.util.loadingEnd();
+                });
+              });
+            }
+          }, {
+            text: '删除所有日程',
+            cssClass: 'btn-delall',
+            handler: () => {
+              this.util.alterStart("2", () => {
+                this.util.loadingStart();
+                this.busiServ.delRcBySi(this.agenda.si).then(data => {
+                  this.feekback.audioDelete();
+                  this.util.loadingEnd();
+                  this.goBack();
+                }).catch(err => {
+                  this.util.loadingEnd();
+                });
+              });
+            }
+          }, {
+            text: '取消',
+            role: 'cancel',
+            cssClass: 'btn-cancel',
+            handler: () => {
+
+            }
+          }
+        ]
+      });
+      this.removeOptionButtons.present();
+    } else {
+      //非重复日程删除
+      this.util.alterStart("2", () => {
+        this.util.loadingStart();
+        this.busiServ.delRcBySi(this.agenda.si).then(data => {
+          this.feekback.audioDelete();
+          this.util.loadingEnd();
+          this.goBack();
+        }).catch(err => {
+          this.util.loadingEnd();
+        });
+      });
+    }
   }
 
   goBack() {
