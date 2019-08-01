@@ -22,8 +22,8 @@ import { Component, Input, Output, ElementRef, ViewChild, EventEmitter } from "@
        </g>
       </svg>
     </ion-row>
-    <ion-row justify-content-center>手指上划, 取消发送</ion-row>
-    <ion-row justify-content-center>松开手指, 取消发送</ion-row>
+    <ion-row justify-content-center *ngIf="!canceling">手指上划, 取消发送</ion-row>
+    <ion-row justify-content-center *ngIf="canceling">松开手指, 取消发送</ion-row>
   </ion-grid>`
 })
 export class RecordingComponent {
@@ -33,6 +33,9 @@ export class RecordingComponent {
 
   @Input("active")
   active: boolean = false;
+
+  @Input("canceling")
+  canceling: boolean = false;
 
   constructor() {
   }
