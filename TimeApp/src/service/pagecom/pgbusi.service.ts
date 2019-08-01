@@ -340,9 +340,20 @@ export class PgBusiService {
 
         if (res && res.length > 0) {
           for (let scd of res) {
+            // 填充计划信息
             if (scd.ji) {
               let pl: PlData = await this.getPlanById(scd.ji);
               scd.p = pl;
+            }
+            // 填充参与人信息
+            if(scd.gs == '0'){
+              //共享人信息
+              scd.fss = await this.getFsDataBySi(scd.si);
+            }
+            // 填充发起人信息
+            if(scd.gs == '1'){
+              //发起人信息
+              scd.fs = await this.getFsDataByUi(scd.ui);
             }
           }
         }
