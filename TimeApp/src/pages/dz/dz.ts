@@ -30,7 +30,7 @@ export class DzPage {
   local: any;
   dz: string = "";
 
-  constructor(public navCtrl: NavController
+  constructor(public navCtrl: NavController,
               public navParams: NavParams) {
     if (this.navParams && this.navParams.data) {
       let value = this.navParams.data.value;

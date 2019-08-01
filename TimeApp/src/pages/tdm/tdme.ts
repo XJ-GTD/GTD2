@@ -198,35 +198,35 @@ export class TdmePage {
     let modal = this.modalCtrl.create(DataConfig.PAGE._TX_PAGE, {value: value});
     modal.onDidDismiss((data)=>{
     });
-    model.present();
+    modal.present();
   }
 
   goCf(value) {
     let modal = this.modalCtrl.create(DataConfig.PAGE._CF_PAGE, {value: value});
     modal.onDidDismiss((data)=>{
     });
-    model.present();
+    modal.present();
   }
 
   goBz(value) {
     let modal = this.modalCtrl.create(DataConfig.PAGE._BZ_PAGE, {value: value});
     modal.onDidDismiss((data)=>{
     });
-    model.present();
+    modal.present();
   }
 
   goJh(value) {
     let modal = this.modalCtrl.create(DataConfig.PAGE._JH_PAGE, {ji: value});
     modal.onDidDismiss((data)=>{
     });
-    model.present();
+    modal.present();
   }
 
   goDz(value) {
     let modal = this.modalCtrl.create(DataConfig.PAGE._DZ_PAGE, {value: value});
     modal.onDidDismiss((data)=>{
     });
-    model.present();
+    modal.present();
   }
 
   record() {
