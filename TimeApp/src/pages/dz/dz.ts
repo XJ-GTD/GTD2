@@ -28,8 +28,17 @@ export class DzPage {
   navOptions: NavigationControlOptions; //百度导航条选项
   markers: Array<any> = new Array<any>();
   local: any;
+  dz: string = "";
 
-  constructor(public navCtrl: NavController) {
+  constructor(public navCtrl: NavController
+              public navParams: NavParams) {
+    if (this.navParams && this.navParams.data) {
+      let value = this.navParams.data.value;
+
+      if (value) {
+        this.dz = value;
+      }
+    }
 
     //百度地图设置
     this.options = {

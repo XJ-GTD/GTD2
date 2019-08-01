@@ -34,8 +34,15 @@ export class BzPage {
   bz: string = "";  //备注
 
   constructor(public navCtrl: NavController,
+              public navParams: NavParams,
               private keyboard: Keyboard) {
+    if (this.navParams && this.navParams.data) {
+      let value = this.navParams.data.value;
 
+      if (value) {
+        this.bz = value;
+      }
+    }
   }
 
   ionViewDidEnter() {

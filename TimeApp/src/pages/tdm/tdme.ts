@@ -39,7 +39,7 @@ import {RestFulConfig} from "../../service/config/restful.config";
       <ion-row justify-content-center>
         <p class="x-small mt-none mb-none">{{(agenda.sd + " " + agenda.st)| formatedate:"dddd MMMM D"}}</p>
       </ion-row>
-      <ion-row justify-content-center align-items-center (click)="goJh()">
+      <ion-row justify-content-center align-items-center (click)="goJh(agenda.ji)">
         <div class="row-center">
         <i class="color-dot" [ngStyle]="{'background-color': defaultplan.jc }"></i>
         </div>
@@ -87,10 +87,10 @@ import {RestFulConfig} from "../../service/config/restful.config";
       </ion-row>
 
       <ion-row justify-content-center *ngIf="agenda.tx">
-        <p class="x-small x-title mb-none" (click)="goTx()">提醒</p>
+        <p class="x-small x-title mb-none" (click)="goTx(agenda.tx)">提醒</p>
       </ion-row>
       <ion-row justify-content-center *ngIf="agenda.tx">
-        <p class="mt-none" (click)="goTx()">{{agenda.tx | formatremind}}</p>
+        <p class="mt-none" (click)="goTx(agenda.tx)">{{agenda.tx | formatremind}}</p>
       </ion-row>
 
       <!-- 重复 -->
@@ -102,10 +102,10 @@ import {RestFulConfig} from "../../service/config/restful.config";
       </ion-row>
 
       <ion-row justify-content-center *ngIf="agenda.rt">
-        <p class="x-small x-title mb-none" (click)="goCf()">重复</p>
+        <p class="x-small x-title mb-none" (click)="goCf(agenda.rt)">重复</p>
       </ion-row>
       <ion-row justify-content-center *ngIf="agenda.rt">
-        <p class="mt-none" (click)="goCf()">{{agenda.rt | formatrepeat}}</p>
+        <p class="mt-none" (click)="goCf(agenda.rt)">{{agenda.rt | formatrepeat}}</p>
       </ion-row>
 
       <!-- 备注 -->
@@ -117,10 +117,10 @@ import {RestFulConfig} from "../../service/config/restful.config";
       </ion-row>
 
       <ion-row justify-content-center *ngIf="agenda.bz">
-        <p class="x-small x-title mb-none" (click)="goBz()">备注</p>
+        <p class="x-small x-title mb-none" (click)="goBz(agenda.bz)">备注</p>
       </ion-row>
       <ion-row justify-content-center *ngIf="agenda.bz">
-        <p class="mt-none memo" (click)="goBz()">{{agenda.bz}}</p>
+        <p class="mt-none memo" (click)="goBz(agenda.bz)">{{agenda.bz}}</p>
       </ion-row>
 
       <!-- 语音记录 -->
@@ -194,24 +194,39 @@ export class TdmePage {
     this.navCtrl.pop();
   }
 
-  goTx() {
-    this.modalCtrl.create(DataConfig.PAGE._TX_PAGE, {}).present();
+  goTx(value) {
+    let modal = this.modalCtrl.create(DataConfig.PAGE._TX_PAGE, {value: value});
+    modal.onDidDismiss((data)=>{
+    });
+    model.present();
   }
 
-  goCf() {
-    this.modalCtrl.create(DataConfig.PAGE._CF_PAGE, {}).present();
+  goCf(value) {
+    let modal = this.modalCtrl.create(DataConfig.PAGE._CF_PAGE, {value: value});
+    modal.onDidDismiss((data)=>{
+    });
+    model.present();
   }
 
-  goBz() {
-    this.modalCtrl.create(DataConfig.PAGE._BZ_PAGE, {}).present();
+  goBz(value) {
+    let modal = this.modalCtrl.create(DataConfig.PAGE._BZ_PAGE, {value: value});
+    modal.onDidDismiss((data)=>{
+    });
+    model.present();
   }
 
-  goJh() {
-    this.modalCtrl.create(DataConfig.PAGE._JH_PAGE, {}).present();
+  goJh(value) {
+    let modal = this.modalCtrl.create(DataConfig.PAGE._JH_PAGE, {ji: value});
+    modal.onDidDismiss((data)=>{
+    });
+    model.present();
   }
 
-  goDz() {
-    this.modalCtrl.create(DataConfig.PAGE._DZ_PAGE, {}).present();
+  goDz(value) {
+    let modal = this.modalCtrl.create(DataConfig.PAGE._DZ_PAGE, {value: value});
+    modal.onDidDismiss((data)=>{
+    });
+    model.present();
   }
 
   record() {

@@ -254,7 +254,14 @@ export class CfPage {
   };
 
   constructor(public navCtrl: NavController,
-              private keyboard: Keyboard) {
+              private keyboard: Keyboard,
+              public navParams: NavParams) {
+    if (this.navParams && this.navParams.data) {
+      let value = this.navParams.data.value;
+
+      if (value) {
+      }
+    }
     this.items.push({value: "", caption: "关"});
     this.items.push({value: "day", caption: "每日"});
     this.items.push({value: "week", caption: "每周"});

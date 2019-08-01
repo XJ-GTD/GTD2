@@ -47,8 +47,15 @@ export class TxPage {
 
   reminds: Array<any> = new Array<any>();
 
-  constructor(public navCtrl: NavController) {
-    this.reminds.push({value: ""});
+  constructor(public navCtrl: NavController,
+              public navParams: NavParams) {
+    if (this.navParams && this.navParams.data) {
+      let value = this.navParams.data.value;
+
+      if (value) {
+        this.reminds.push({value: ""});
+      }
+    }
   }
 
   close() {
