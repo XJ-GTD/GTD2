@@ -15,7 +15,8 @@ recording {
   }
 
   ion-grid.active {
-    display: block;
+    display: flex;
+    justify-content: center;
   }
 
   ion-icon {
