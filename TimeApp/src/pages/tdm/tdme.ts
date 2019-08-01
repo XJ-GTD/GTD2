@@ -86,9 +86,10 @@ import {RecordingComponent} from "../../components/recording/recording";
         <speech-bubble seconds="12"></speech-bubble>
       </ion-row>
     </ion-grid>
-    <!-- 录音状态提示 -->
-    <recording [active]="isRecording"></recording>
   </ion-content>
+
+  <!-- 录音状态提示 -->
+  <recording [active]="isRecording"></recording>
 
   <ion-footer class="foot-set">
     <message-send [mobile]="isMobile" (startRecord)="record()" (endRecord)="stop()"></message-send>
