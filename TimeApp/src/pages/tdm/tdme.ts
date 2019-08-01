@@ -73,7 +73,7 @@ import {RestFulConfig} from "../../service/config/restful.config";
       </ion-row>
 
       <ion-row justify-content-center *ngIf="agenda.tx">
-        <p class="x-small (click)="goTx()">提醒</p>
+        <p class="x-small mb-none" (click)="goTx()">提醒</p>
       </ion-row>
       <ion-row justify-content-center *ngIf="agenda.tx">
         <p class="mt-none" (click)="goTx()">{{agenda.tx | formatremind}}</p>
