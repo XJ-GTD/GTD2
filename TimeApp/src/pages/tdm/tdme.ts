@@ -106,7 +106,7 @@ import {RestFulConfig} from "../../service/config/restful.config";
         <p class="x-small mb-none" (click)="goBz()">备注</p>
       </ion-row>
       <ion-row justify-content-center *ngIf="agenda.bz">
-        <p class="mt-none" (click)="goBz()">{{agenda.bz}}</p>
+        <p class="mt-none memo" (click)="goBz()">{{agenda.bz}}</p>
       </ion-row>
 
       <!-- 语音记录 -->

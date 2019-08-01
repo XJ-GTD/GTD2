@@ -86,6 +86,11 @@ page-tdm, page-tdme {
     display: inline-block;
   }
 
+  p.memo {
+    white-space: pre-line;
+    text-align: center;
+  }
+
   .row-center {
     margin: auto;
   }
