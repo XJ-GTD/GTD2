@@ -196,7 +196,7 @@ export class TdmePage {
   }
 
   remove() {
-    let d = moment(agenda.sd + " " + agenda.st).format("YYYY/MM/DD");
+    let d = moment(this.agenda.sd + " " + this.agenda.st).format("YYYY/MM/DD");
 
     if (this.agenda.rt != "0" && this.agenda.sd != d) {
       //重复日程删除
