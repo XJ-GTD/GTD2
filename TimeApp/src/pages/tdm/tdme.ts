@@ -83,6 +83,12 @@ import {RestFulConfig} from "../../service/config/restful.config";
       <ion-row justify-content-center *ngIf="display">
       <p class="x-small mt-none" (click)="goBz()">说"备注当天要带上生日礼物" 或 点击以添加</p>
       </ion-row>
+      <ion-row justify-content-center *ngIf="agenda.bz">
+        <p class="x-small mb-none" (click)="goBz()">备注</p>
+      </ion-row>
+      <ion-row justify-content-center *ngIf="agenda.bz">
+        <p class="x-small mt-none" (click)="goBz()">{{agenda.bz}}</p>
+      </ion-row>
       <ion-row justify-content-center *ngIf="display">
         <speech-bubble seconds="12"></speech-bubble>
       </ion-row>
