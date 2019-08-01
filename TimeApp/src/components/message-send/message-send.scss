@@ -9,7 +9,7 @@ message-send {
       padding-left: .5rem;
       padding-right: .5rem;
       font-size: 1.6rem;
-      line-height: 2.8em;
+      line-height: 2.2em;
       letter-spacing: 1px;
       border-radius: 4px;
     }
@@ -17,6 +17,7 @@ message-send {
 
   button.button-ios {
     color: #fff;
+    line-height: 2.2em;
   }
 
   button.button-ios[icon-only] ion-icon {
