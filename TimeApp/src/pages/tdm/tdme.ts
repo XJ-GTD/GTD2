@@ -11,6 +11,7 @@ import {JhTbl} from "../../service/sqlite/tbl/jh.tbl";
 import {MessageSendComponent} from "../../components/message-send/message-send";
 import {RecordingComponent} from "../../components/recording/recording";
 import {RestFulConfig} from "../../service/config/restful.config";
+import {PgBusiService} from "../../service/pagecom/pgbusi.service";
 
 @Component({
   selector: 'page-tdme',
@@ -161,7 +162,8 @@ export class TdmePage {
 
   constructor(public navCtrl: NavController,
               public navParams: NavParams,
-              public modalCtrl: ModalController) {
+              public modalCtrl: ModalController,
+              private busiServ: PgBusiService) {
     if (this.navParams && this.navParams.data) {
       this.agenda = this.navParams.data;
 
@@ -196,21 +198,21 @@ export class TdmePage {
 
   goTx(value) {
     let modal = this.modalCtrl.create(DataConfig.PAGE._TX_PAGE, {value: value});
-    modal.onDidDismiss((data)=>{
+    modal.onDidDismiss(async (data)=>{
     });
     modal.present();
   }
 
   goCf(value) {
     let modal = this.modalCtrl.create(DataConfig.PAGE._CF_PAGE, {value: value});
-    modal.onDidDismiss((data)=>{
+    modal.onDidDismiss(async (data)=>{
     });
     modal.present();
   }
 
   goBz(value) {
     let modal = this.modalCtrl.create(DataConfig.PAGE._BZ_PAGE, {value: value});
-    modal.onDidDismiss((data)=>{
+    modal.onDidDismiss(async (data)=>{
       this.agenda.bz = data.bz;
 
       // 保存
@@ -223,7 +225,7 @@ export class TdmePage {
 
   goJh(value) {
     let modal = this.modalCtrl.create(DataConfig.PAGE._JH_PAGE, {ji: value});
-    modal.onDidDismiss((data)=>{
+    modal.onDidDismiss(async (data)=>{
       this.agenda.ji = data.jh.ji;
       this.defaultplan = data.jh;
 
@@ -238,7 +240,7 @@ export class TdmePage {
 
   goDz(value) {
     let modal = this.modalCtrl.create(DataConfig.PAGE._DZ_PAGE, {value: value});
-    modal.onDidDismiss((data)=>{
+    modal.onDidDismiss(async (data)=>{
     });
     modal.present();
   }
