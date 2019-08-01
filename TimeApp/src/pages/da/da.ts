@@ -180,7 +180,7 @@ export class DaPage {
     this.feedback.audioClick();
     if (scd.gs == "0") {
       //本人画面
-      let modal = this.modalCtr.create(DataConfig.PAGE._TDDJ_PAGE, p);
+      let modal = this.modalCtr.create(DataConfig.PAGE._TDME_PAGE, scd);
 
       modal.onDidDismiss((data)=>{
         target.refresh();
