@@ -83,7 +83,7 @@ import {RestFulConfig} from "../../service/config/restful.config";
         <p class="x-small mb-none" (click)="goCf()">重复</p>
       </ion-row>
       <ion-row justify-content-center *ngIf="agenda.rt">
-        <p class="x-small mt-none" (click)="goCf()">说"每周重复" 或 点击以添加</p>
+        <p class="x-small mt-none" (click)="goCf()">{{agenda.rt | formatrepeat}}</p>
       </ion-row>
 
       <!-- 备注 -->
