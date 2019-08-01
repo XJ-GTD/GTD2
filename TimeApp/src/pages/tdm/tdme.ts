@@ -76,7 +76,7 @@ import {RestFulConfig} from "../../service/config/restful.config";
         <p class="x-small (click)="goTx()">提醒</p>
       </ion-row>
       <ion-row justify-content-center *ngIf="agenda.tx">
-      <p class="mt-none" (click)="goTx()">{{agenda.tx | formatremind}}</p>
+        <p class="mt-none" (click)="goTx()">{{agenda.tx | formatremind}}</p>
       </ion-row>
 
       <!-- 重复 -->
