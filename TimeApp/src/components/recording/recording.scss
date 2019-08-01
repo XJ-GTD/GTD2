@@ -1,15 +1,15 @@
 recording {
   position: absolute;
 
-  left: calc(calc(100vmin / 2) - calc(25vmin / 2));
-  bottom: calc(calc(100vmax / 2) - calc(25vmin / 2));
+  left: calc(calc(100vmin / 2) - calc(34vmin / 2));
+  top: calc(calc(100vmax / 2) - calc(34vmin / 2));
 
   ion-grid.grid {
     display: none;
     background-color: #111;
     opacity: 0.85;
-    width: 25vmin;
-    height: 25vmin;
+    width: 34vmin;
+    height: 34vmin;
     border-radius: 6px;
   }
 
