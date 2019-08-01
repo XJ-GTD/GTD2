@@ -145,6 +145,13 @@ page-tdm, page-tdme {
   div.avatars {
     display: inline-flex;
 
+    &> div {
+      display: inline-grid;
+      justify-items: center;
+      max-width: 4.8rem;
+      font-size: 1.4rem;
+    }
+
     ion-avatar {
       height: 2.4rem;
       width: 2.4rem;

@@ -174,8 +174,8 @@ export class TdmePage {
     //百度地图设置
     this.options = {
       centerAndZoom: {
-        lat: RestFulConfig.geo.latitude, //39.920116,
-        lng: RestFulConfig.geo.longitude, //116.403703,
+        lat: RestFulConfig.geo.latitude || 39.920116,
+        lng: RestFulConfig.geo.longitude || 116.403703,
         zoom: 8
       },
       enableKeyboard: true
