@@ -57,11 +57,25 @@ import {RestFulConfig} from "../../service/config/restful.config";
       </ion-row>
 
       <!-- 人员 -->
-      <ion-row justify-content-center *ngIf="!fss || fss.length <= 0">
+      <ion-row justify-content-center *ngIf="!agenda.fss || agenda.fss.length <= 0">
         <h5 class="mb-none">人员</h5>
       </ion-row>
-      <ion-row justify-content-center *ngIf="!fss || fss.length <= 0">
+      <ion-row justify-content-center *ngIf="!agenda.fss || agenda.fss.length <= 0">
       <p class="x-small mt-none">说"发给小明" 或 点击以添加</p>
+      </ion-row>
+
+      <ion-row justify-content-center *ngIf="agenda.fss && agenda.fss.length > 0">
+        <p class="x-small mb-none">人员</p>
+      </ion-row>
+      <ion-row justify-content-center *ngIf="agenda.fss && agenda.fss.length > 0">
+        <div class="avatars mt-none">
+          <div *ngFor="let share of agenda.fss">
+            <ion-avatar>
+              <img [src]="share.bhiu">
+            </ion-avatar>
+            {{share.name}}
+          </div>
+        </div>
       </ion-row>
 
       <!-- 提醒 -->

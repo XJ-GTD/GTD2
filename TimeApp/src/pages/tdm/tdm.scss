@@ -138,6 +138,23 @@ page-tdm, page-tdme {
     }
   }
 
+  div.avatars {
+    display: inline-flex;
+
+    ion-avatar {
+      height: 2.4rem;
+      width: 2.4rem;
+      min-height: 2.4rem;
+      min-width: 2.4rem;
+      margin-right: 4px;
+
+      img {
+        height: 2.4rem;
+        width: 2.4rem;
+      }
+    }
+  }
+
   .footer-ios {
     .toolbar-background-ios {
       background-color:$aiBackColor;
