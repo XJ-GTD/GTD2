@@ -48,6 +48,12 @@ export class CalendarService extends BaseService {
   }
 
   updatePlanColor() {}
+
+  /**
+   * 删除日历
+   *
+   * @author leon_xi@163.com
+   **/
   removePlan(ji: string, jt: PlanType, withchildren: boolean = true) {
 
     this.assertEmpty(ji);   // id不能为空
