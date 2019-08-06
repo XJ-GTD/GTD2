@@ -55,7 +55,7 @@ export class CalendarService extends BaseService {
    *
    * @author leon_xi@163.com
    **/
-  async savePlanItem(item: PlanItemData) {
+  async savePlanItem(item: PlanItemData): Promise<PlanItemData> {
     if (item.jti) {
       // 更新
       let planitemdb: JhiTbl = new JhiTbl();
@@ -76,7 +76,7 @@ export class CalendarService extends BaseService {
       this.emitService.emit(`mwxing.calendar.${item.ji}.item.created`);
     }
 
-    return plan;
+    return item;
   }
 
   removePlanItem() {}
