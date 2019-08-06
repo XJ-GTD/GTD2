@@ -59,13 +59,13 @@ A(service.business) --> D(memo.service);
 D --> D1(saveMemo);
 D --> D1-1(updateMemoPlan);
 D --> D2(removeMemo);
-D --> D3(sendMemo);
-D --> D4(receivedMemo);
+D --> D3(发送备忘给他人*目前无此功能<br/>sendMemo);
+D --> D4(保存他人共享的备忘*目前无此功能<br/>receivedMemo);
 D --> D5(同步指定备忘到云<br/>syncMemo);
 D --> D6(同步所有本地备忘到云<br/>syncMemos);
-D --> D7(shareMemo);
-D --> D8(backup);
-D --> D9(recovery);
+D --> D7(分享备忘，上传到云获得分享链接<br/>shareMemo);
+D --> D8(备份备忘到云<br/>backup);
+D --> D9(从云上恢复备忘<br/>recovery);
 D --> D99-1[MemoData];
 class D99-1 datamap;
 ```
