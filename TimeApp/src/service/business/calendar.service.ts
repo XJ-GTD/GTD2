@@ -8,7 +8,9 @@ import { EmitService } from "../util-service/emit.service";
 export class CalendarService extends BaseService {
   constructor(private sqlExce: SqliteExec,
               private util: UtilService,
-              private emitService: EmitService) {}
+              private emitService: EmitService) {
+    super();
+  }
 
   /**
    * 创建/更新日历

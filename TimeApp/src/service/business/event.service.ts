@@ -1,11 +1,14 @@
 import { Injectable } from "@angular/core";
+import { BaseService } from "./base.service";
 import { SqliteExec } from "../util-service/sqlite.exec";
 import { UtilService } from "../util-service/util.service";
 
 @Injectable()
-export class EventService {
+export class EventService extends BaseService {
   constructor(private sqlExce: SqliteExec,
-              private util: UtilService) {}
+              private util: UtilService) {
+    super();
+  }
   saveAgenda() {}
   saveTask() {}
   saveMiniTask() {}
