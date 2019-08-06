@@ -4,4 +4,10 @@ export class BaseService {
       throw new Error(msg);
     }
   }
+
+  assertNull(src: any, msg: string = "Assert Null Error.") {
+    if (src == null || src == "undefined") {
+      throw new Error(msg);
+    }
+  }
 }

@@ -48,7 +48,65 @@ export class CalendarService extends BaseService {
   }
 
   updatePlanColor() {}
-  removePlan() {}
+  removePlan(ji: string, jt: PlanType, withchildren: boolean = true) {
+
+    this.assertEmpty(ji);   // id不能为空
+    this.assertNull(jt);    // 计划类型不能为空
+
+    let plandb: JhTbl = new JhTbl();
+    plandb.ji = ji;
+
+    let sqls: Array<any> = new Array<any>();
+
+    sqls.push(plandb.del());
+
+    // 同时删除日历项
+    if (withchildren) {
+      if (jt == PlanType.CalendarPlan || jt == PlanType.ActivityPlan) {
+        let planitemdb: JhiTbl = new JhiTbl();
+        planitemdb.ji = ji;
+
+        sqls.push(planitemdb.del());
+
+        // 删除关联表，通过未关联主表条件删除
+        sqls.push(`delete * from gtd_fj where obt = '${ObjectType.Calendar}' and obi not in (select jti from gtd_jt);`);   // 附件表
+        sqls.push(`delete * from gtd_e where obt = '${ObjectType.Calendar}' and obi not in (select jti from gtd_jt);`);    // 提醒表
+        sqls.push(`delete * from gtd_d where obt = '${ObjectType.Calendar}' and obi not in (select jti from gtd_jt);`);    // 参与人表
+        sqls.push(`delete * from gtd_mk where obt = '${ObjectType.Calendar}' and obi not in (select jti from gtd_jt);`);   // 标签表
+      }
+
+      if (jt == PlanType.PrivatePlan) {
+        let eventdb: EVTbl = new EVTbl();
+        eventdb.ji = ji;
+
+        // 删除事件主表
+        sqls.push(eventdb.del());
+
+        // 删除关联表，通过未关联主表条件删除
+        sqls.push(`delete * from gtd_ea where evi not in (select evi from gtd_ev);`);   // 日程表
+        sqls.push(`delete * from gtd_et where evi not in (select evi from gtd_ev);`);   // 任务表
+
+        sqls.push(`delete * from gtd_fj where obt = '${ObjectType.Event}' and obi not in (select evi from gtd_ev);`);   // 附件表
+        sqls.push(`delete * from gtd_e where obt = '${ObjectType.Event}' and obi not in (select evi from gtd_ev);`);    // 提醒表
+        sqls.push(`delete * from gtd_d where obt = '${ObjectType.Event}' and obi not in (select evi from gtd_ev);`);    // 参与人表
+        sqls.push(`delete * from gtd_mk where obt = '${ObjectType.Event}' and obi not in (select evi from gtd_ev);`);   // 标签表
+
+        let memodb: MoTbl = new MoTbl();
+        memodb.ji = ji;
+
+        // 删除备忘主表
+        sqls.push(memodb.del());
+
+        // 删除关联表，通过未关联主表条件删除
+        sqls.push(`delete * from gtd_fj where obt = '${ObjectType.Memo}' and obi not in (select moi from gtd_mo);`);   // 附件表
+        sqls.push(`delete * from gtd_e where obt = '${ObjectType.Memo}' and obi not in (select moi from gtd_mo);`);    // 提醒表
+        sqls.push(`delete * from gtd_d where obt = '${ObjectType.Memo}' and obi not in (select moi from gtd_mo);`);    // 参与人表
+        sqls.push(`delete * from gtd_mk where obt = '${ObjectType.Memo}' and obi not in (select moi from gtd_mo);`);   // 标签表
+      }
+    }
+
+    await this.sqlExce.sqlBatch(sqls);
+  }
 
   /**
    * 创建/更新日历项
@@ -109,4 +167,16 @@ export class PlanData implements JhTbl {
 
 export class PlanItemData implements JhiTbl {
 
+}
+
+export enum PlanType {
+  CalendarPlan = 0,
+  ActivityPlan = 1,
+  PrivatePlan = 2
+}
+
+export enum ObjectType {
+  Event = 'event',
+  Memo = 'memo',
+  Calendar = 'calendar'
 }
