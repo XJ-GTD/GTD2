@@ -165,8 +165,6 @@ export class CalendarService extends BaseService {
   mergePagedActivities() {}
   backup() {}
   recovery() {}
-  PlanData() {}
-  PlanItemData() {}
 }
 
 export class PlanData implements JhTbl {
