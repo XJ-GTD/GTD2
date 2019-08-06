@@ -168,8 +168,8 @@ export class CalendarService extends BaseService {
   sharePlan() {}
   fetchPagedActivities() {}
   mergePagedActivities() {}
-  backup() {}
-  recovery() {}
+  backup(bts: number) {}
+  recovery(plans: Array<PlanData>): Array<any> {}
 }
 
 export class PlanData implements JhTbl {
