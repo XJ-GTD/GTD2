@@ -1,10 +1,17 @@
 ```mermaid
 graph LR;
 A(service.business) --> B(calendar.service);
-B --> B1(savePlan);
+B --> B1(保存日历<br/>savePlan);
 B --> B2(removePlan);
-B --> B3(savePlanItem);
+B --> B3(保存日历项<br/>savePlanItem);
 B --> B4(removePlanItem);
+B --> B5(fetchAllPlans);
+B --> B6(fetchPrivatePlans);
+B --> B7(fetchPublicPlans);
+B --> B8(fetchPlanItems);
+B --> B9(downloadPublicPlan);
+B --> B10(fetchMonthActivities);
+B --> B11(fetchDayActivities);
 A(service.business) --> C(event.service);
 C --> C1(saveAgenda);
 C --> C2(saveTask);
