@@ -16,9 +16,11 @@ export class CalendarService extends BaseService {
    * @author leon_xi@163.com
    **/
   async savePlan(plan: PlanData): PlanData {
-    assertEmpty(plan);
-    assertEmpty(plan.jn);
-    assertEmpty(plan.jc);
+
+    // 入参严格检查
+    assertEmpty(plan);      // 对象不能为空
+    assertEmpty(plan.jn);   // 名称不能为空
+    assertEmpty(plan.jc);   // 颜色不能为空
 
     if (plan.ji) {
       // 更新
