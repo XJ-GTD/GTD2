@@ -122,6 +122,11 @@ export class CalendarService extends BaseService {
    * @author leon_xi@163.com
    **/
   async savePlanItem(item: PlanItemData): Promise<PlanItemData> {
+
+    this.assertEmpty(item);       // 入参不能为空
+    this.assertEmpty(item.sd);    // 日历项所属日期不能为空
+    this.assertEmpty(item.jtn);   // 日历项名称不能为空
+
     if (item.jti) {
       // 更新
       let planitemdb: JhiTbl = new JhiTbl();
