@@ -1,10 +1,11 @@
 import { Injectable } from "@angular/core";
+import { BaseService } from "./base.service";
 import { SqliteExec } from "../util-service/sqlite.exec";
 import { UtilService } from "../util-service/util.service";
 import { EmitService } from "../util-service/emit.service";
 
 @Injectable()
-export class CalendarService {
+export class CalendarService extends BaseService {
   constructor(private sqlExce: SqliteExec,
               private util: UtilService,
               private emitService: EmitService) {}
@@ -15,6 +16,9 @@ export class CalendarService {
    * @author leon_xi@163.com
    **/
   async savePlan(plan: PlanData): PlanData {
+    assertEmpty(plan);
+    assertEmpty(plan.jn);
+    assertEmpty(plan.jc);
 
     if (plan.ji) {
       // 更新
