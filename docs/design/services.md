@@ -36,6 +36,8 @@ C --> C3(saveMiniTask);
 C --> C1-1(更新日历<br/>updateEventPlan);
 C --> C1-2(更新提醒<br/>updateEventRemind);
 C --> C1-3(更新重复<br/>updateEventRepeat);
+C --> C12(removeEvent);
+C --> C13(finishTask);
 C --> C4(sendEvent);
 C --> C5(receivedEvent);
 C --> C5-1(acceptReceivedEvent);

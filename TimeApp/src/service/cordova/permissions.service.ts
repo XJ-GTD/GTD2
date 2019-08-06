@@ -26,6 +26,7 @@ export class PermissionsService {
     this.androidPermissions.PERMISSION.VIBRATE,
     this.androidPermissions.PERMISSION.BLUETOOTH,
     this.androidPermissions.PERMISSION.READ_CONTACTS,
+    this.androidPermissions.PERMISSION.ACCESS_FINE_LOCATION,
   ];
 
   constructor(
