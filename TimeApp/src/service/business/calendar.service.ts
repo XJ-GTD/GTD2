@@ -17,7 +17,7 @@ export class CalendarService extends BaseService {
    *
    * @author leon_xi@163.com
    **/
-  async savePlan(plan: PlanData): PlanData {
+  async savePlan(plan: PlanData): Promise<PlanData> {
 
     // 入参严格检查
     this.assertEmpty(plan);      // 对象不能为空
