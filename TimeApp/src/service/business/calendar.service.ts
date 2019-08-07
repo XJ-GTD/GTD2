@@ -352,7 +352,11 @@ export class CalendarService extends BaseService {
                           left join gtd_mo gmo on gday.sd = gmo.sd
                       group by gday.sd`;
 
-    let daysSummary: DayActivitySummaryData = new DayActivitySummaryData();
+    let monthSummary: MonthActivitySummaryData = new MonthActivitySummaryData();
+    monthSummary.month = month;
+    monthSummary.days = await this.sqlExce.getExtList<DayActivitySummaryData>(sql);
+
+    return monthSummary;
   }
 
   fetchMonthActivities() {}
