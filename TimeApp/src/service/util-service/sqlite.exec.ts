@@ -6,6 +6,7 @@ import {ITbl} from "../sqlite/tbl/itbl";
 import {LogTbl} from "../sqlite/tbl/log.tbl";
 import * as moment from "moment";
 import {DataConfig} from "../config/data.config";
+import {ITblParam} from "../sqlite/tbl/itblparam";
 
 /**
  * create by on 2019/3/5
@@ -320,5 +321,189 @@ export class SqliteExec {
 
   sqliteEscape(keyword: string) {
     return keyword.replace(/\//g, '//');
+  }
+
+  /**
+   * 创建表Paramer方式
+   * @param {ITblParam} itp
+   * @returns {Promise<any>}
+   */
+  createByParam(itp: ITblParam): Promise<any> {
+    return this.execSql(itp.cTParam());
+  }
+
+  /**
+   * 删除表Paramer方式
+   * @param {ITblParam} itp
+   * @returns {Promise<any>}
+   */
+  dropByParam(itp: ITblParam): Promise<any> {
+    return this.execSql(itp.drTParam());
+  }
+
+  /**
+   * 保存Paramer方式
+   * @param {ITblParam} itp
+   * @returns {Promise<any>}
+   */
+  saveByParam(itp: ITblParam): Promise<any> {
+    let doit = Array<any>();
+    doit = itp.inTParam();
+    let sq = doit[0];
+    let params = doit[1];
+    return this.execSql(sq,params);
+  }
+
+  /**
+   * 更新Paramer方式
+   * @param {ITblParam} itp
+   * @returns {Promise<any>}
+   */
+  updateByParam(itp: ITblParam): Promise<any> {
+    let doit = Array<any>();
+    doit = itp.upTParam();
+    let sq = doit[0];
+    let params = doit[1];
+    return this.execSql(sq,params);
+
+  }
+
+  /**
+   * 删除paramer方式
+   * @param param
+   * @returns {Promise<number>}
+   */
+  delByParam(itp: ITblParam): Promise<number> {
+    let doit = Array<any>();
+    doit = itp.dTParam();
+    let sq = doit[0];
+    let params = doit[1];
+    return this.execSql(sq,params);
+  }
+
+  /**
+   * 查询param方式
+   * @param {ITblParam} itp
+   * @returns {Promise<Array<T>>}
+   */
+  getLstByParam<T>(itp: ITblParam): Promise<Array<T>> {
+    return new Promise((resolve, reject) => {
+      let doit = Array<any>();
+      doit = itp.slTParam();
+      let sq = doit[0];
+      let params = doit[1];
+      this.execSql(sq,params).then(data => {
+        let arr : Array<T> = new Array<T>();
+        if (data.rows && data.rows.length > 0 ){
+          for (let j = 0, len = data.rows.length; j < len; j++) {
+            arr.push(data.rows.item(j));
+          }
+        }
+        resolve(arr);
+      })
+    })
+  }
+
+  /**
+   * sql字符串复杂查询param方式
+   * @param {string} sql
+   * @param {Array<any>} params
+   * @returns {Promise<Array<T>>}
+   */
+  getExtLstByParam<T>(sql: string,params:Array<any>): Promise<Array<T>> {
+    return new Promise((resolve, reject) => {
+      let arr : Array<T> = new Array<T>();
+      console.log("getExtList执行SQL："+sql);
+      this.execSql(sql,params).then(data => {
+        if (data && data.rows && data.rows.length > 0 ){
+          for (let j = 0, len = data.rows.length; j < len; j++) {
+            arr.push(data.rows.item(j));
+          }
+        }
+        resolve(arr);
+      }).catch(e=>{
+        console.error("getExtList执行SQL报错："+JSON.stringify(e));
+        resolve(arr);
+      })
+    })
+  }
+
+  /**
+   * 根据ID查询 param方式
+   * @param {ITblParam} itp
+   * @returns {Promise<T>}
+   */
+  getOneByParam<T>(itp: ITblParam): Promise<T> {
+    return new Promise((resolve, reject) => {
+      let doit = Array<any>();
+      doit = itp.sloTParam();
+      let sq = doit[0];
+      let params = doit[1];
+      return this.execSql(sq,params).then(data=>{
+        if (data.rows && data.rows.length > 0 ){
+          resolve(data.rows.item(0));
+        }else{
+          resolve(null);
+        }
+      });
+    })
+  }
+
+  /**
+   * 查询复杂sql返回单条记录 param方式
+   * @param {string} sql
+   * @param {Array<any>} params
+   * @returns {Promise<T>}
+   */
+  getExtOneByParam<T>(sql: string, params:Array<any>): Promise<T> {
+    return new Promise((resolve, reject) => {
+      return this.execSql(sql,params).then(data=>{
+        if (data.rows && data.rows.length > 0 ){
+          resolve(data.rows.item(0));
+        }else{
+          resolve(null);
+        }
+      });
+    })
+  }
+
+  /**
+   * 表数据替换 param方式
+   * @param {ITblParam} itp
+   * @returns {Promise<any>}
+   */
+  repTByParam(itp: ITblParam): Promise<any> {
+    let doit = Array<any>();
+    doit = itp.rpTParam();
+    let sq = doit[0];
+    let params = doit[1];
+    return this.execSql(sq,params);
+  }
+
+  /**
+   * 批量处理param方式
+   * @param {Array<any>} sqlist
+   * @returns {Promise<any>}
+   */
+  async batExecSqlByParam(sqlist: Array<any>) {
+
+    if (this.util.isMobile()) {
+      console.log("========= 批量出入SQL："+sqlist)
+      return await this.sqlliteConfig.database.sqlBatch(sqlist);
+    } else {
+
+      let count = 0;
+      for (let j = 0, len = sqlist.length; j < len; j++) {
+        count++;
+        if ( typeof sqlist[j]  == 'string' ){
+          await this.execSql(sqlist[j]);
+        }else{
+          await this.execSql(sqlist[j][0],sqlist[j][1]);
+        }
+
+      }
+      return count;
+
+    }
   }
 }
