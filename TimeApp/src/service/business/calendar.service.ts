@@ -3,9 +3,10 @@ import { BaseService, SortType } from "./base.service";
 import { SqliteExec } from "../util-service/sqlite.exec";
 import { UtilService } from "../util-service/util.service";
 import { EmitService } from "../util-service/emit.service";
-import { BipdshaeData, Plan, ShaeRestful } from "../service/restful/shaesev";
+import { BipdshaeData, Plan, ShaeRestful } from "../restful/shaesev";
 import { EventData } from "./event.service";
 import { MemoData } from "./memo.service";
+import * as moment from "moment";
 
 @Injectable()
 export class CalendarService extends BaseService {
@@ -322,8 +323,22 @@ export class CalendarService extends BaseService {
     return;
   }
 
+  fetchMonthActivitiesSummary() {}
   fetchMonthActivities() {}
   mergeMonthActivities() {}
+
+  /**
+   * 获取指定日期下的活动汇总
+   *
+   * @author leon_xi@163.com
+   **/
+  async fetchDayActivitiesSummary(day: string = moment().format('YYYY/MM/DD')): Promise<DayActivitySummaryData> {
+
+    this.assertEmpty(day);
+
+    let sql: string = `select * from `;
+  }
+
   fetchDayActivities() {}
   mergeDayActivities() {}
   findActivities() {}
@@ -344,6 +359,23 @@ export class PlanData implements JhTbl {
 
 export class PlanItemData implements JhiTbl {
 
+}
+
+export class MonthActivitySummaryData {
+  month: string;                        // 所属年月
+  days: Array<DayActivitySummaryData>;  // 每日活动汇总
+}
+
+export class DayActivitySummaryData {
+  day: string;                      // 所属日期
+  calendaritemscount: number = 0;   // 日期日历项数量
+  activityitemscount: number = 0;   // 活动日历项数量
+  eventscount: number = 0;          // 事件数量
+  agendascount: number = 0;         // 日程数量
+  taskscount: number = 0;           // 任务数量
+  memoscount: number = 0;           // 备忘数量
+  repeateventscount: number = 0;    // 重复事件数量
+  bookedtimesummary: number = 0;    // 总预定时长
 }
 
 export enum PlanType {
