@@ -24,8 +24,6 @@ export class EvTbl implements ITblParam {
   md: string;
   iv: string;
   sr: string;
-  wtt: string;
-  utt: string;
   gs: string;
 
 
