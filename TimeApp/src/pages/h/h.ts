@@ -19,6 +19,7 @@ import {UserConfig} from "../../service/config/user.config";
 import { InAppBrowser } from '@ionic-native/in-app-browser';
 import {EvTbl} from "../../service/sqlite/tbl/ev.tbl";
 import {SqliteExec} from "../../service/util-service/sqlite.exec";
+import {CaTbl} from "../../service/sqlite/tbl/ca.tbl";
 
 /**
  * Generated class for the 首页 page.
@@ -212,7 +213,77 @@ export class HPage {
   }
 
   newcd() {
+    if (1==1){
+      console.log("2222222222222");
+      let a = new CaTbl();
 
+
+      a.evi = '122222222222222222222222222'
+      a.sd = '开始日期1'
+      a.st = '开始时间1'
+      a.ed = '结束日期1'
+      a.et = '结束时间1'
+      a.ct = 1
+
+      //this.sqllite.saveByParam(a);
+      this.sqllite.updateByParam(a);
+
+
+
+      /*
+      let condi = new Array<any>();
+      condi.push([a.inTParam()[0],a.inTParam()[1]]);
+
+      let sq =`replace into gtd_ev
+       ( evi ,evn ,ui ,mi ,evd ,rtevi ,ji ,bz ,
+       type ,tx ,txs ,rt ,rts ,fj ,pn ,md ,iv ,
+       sr ,wtt ,utt ,gs)
+       values( '555555555',
+       '事件主题5','创建者','更新者5','事件日期5','重复事件ID5','计划ID5','备注5',
+       '事件类型5','提醒5','提醒显示5','重复5','重复显示5','附件5',5,'修改5','再邀请5','事件关联ID5',
+       ${moment().unix()},${moment().unix()},'事件归属5');`;
+      condi.push(sq);
+
+      let b = new EvTbl();
+
+      b.evi = '4444444444444444444'
+      b.evn = '事件主题4'
+      b.ui = '创建者'
+      b.mi = '更新者4'
+      b.evd = '事件日期4'
+      b.rtevi = '重复事件ID4'
+      b.ji = '计划ID4'
+      b.bz = '备注4'
+      b.type = '事件类型4'
+      b.tx = '提醒4'
+      b.txs = '提醒显示4'
+      b.rt = '重复4'
+      b.rts = '重复显示4'
+      b.fj = '附件4'
+      b.pn = 4
+      b.md = '修改4'
+      b.iv = '再邀请4'
+      b.sr = '事件关联ID4'
+      b.gs = '事件归属4'
+      condi.push([b.inTParam()[0],b.inTParam()[1]]);
+
+      let t = new EvTbl();
+      t.ui = '创建者';
+      let sq2 ="select * from gtd_ev where evi = ? ";
+      let u = new Array<string>();
+      u.push("122222222222222222222222222")
+      this.sqllite.getExtOneByParam<EvTbl>(sq2,u).then(data=>{
+        if (!data){
+          console.log("2222222222222 err:" );
+        }else{
+          console.log("2222222222222 ok:" + JSON.stringify(data));
+        }
+
+      }).catch(e=>{
+        console.log("2222222222222=err")
+      });*/
+      return;
+    }
     let p: ScdPageParamter = new ScdPageParamter();
     p.d = moment(this.hdata.selectDay.time);
 
