@@ -3,6 +3,8 @@ import { BaseService } from "./base.service";
 import { SqliteExec } from "../util-service/sqlite.exec";
 import { UtilService } from "../util-service/util.service";
 import { EmitService } from "../util-service/emit.service";
+import { EventData } from "./event.service";
+import { MemoData } from "./memo.service";
 
 @Injectable()
 export class CalendarService extends BaseService {
@@ -203,7 +205,51 @@ export class CalendarService extends BaseService {
     return await this.fetchAllPlans([PlanType.CalendarPlan, PlanType.ActivityPlan]);
   }
 
-  fetchPlanItems() {}
+  /**
+   * 取得指定日历所有日历项
+   * 结果根据所属日期正序排序
+   *
+   * @author leon_xi@163.com
+   **/
+  async fetchPlanItems(ji: string): Promise<Array<PlanItemData>> {
+
+    this.assertEmpty(ji);   // 入参不能为空
+
+    let sql: string = `select * from gtd_jt where ji = '${ji}' order by sd asc`;
+
+    return await this.sqlExce.getExtList<PlanItemData>(sql);
+  }
+
+  /**
+   * 取得指定日历所有事件
+   * 结果根据事件日期正序排序
+   *
+   * @author leon_xi@163.com
+   **/
+  async fetchPlanEvents(ji: string): Promise<Array<EventData>> {
+
+    this.assertEmpty(ji);   // 入参不能为空
+
+    let sql: string = `select * from gtd_ev where ji = '${ji}' order by evd asc`;
+
+    return await this.sqlExce.getExtList<EventData>(sql);
+  }
+
+  /**
+   * 取得指定日历所有备忘
+   * 结果根据创建时间戳正序/倒序排序
+   *
+   * @author leon_xi@163.com
+   **/
+  async fetchPlanMemos(ji: string, sort: SortType = SortType.ASC): Promise<Array<MemoData>> {
+
+    this.assertEmpty(ji);   // 入参不能为空
+
+    let sql: string = `select * from gtd_ev where ji = '${ji}' order by evd ${sort}`;
+
+    return await this.sqlExce.getExtList<EventData>(sql);
+  }
+
   downloadPublicPlan() {}
   fetchMonthActivities() {}
   mergeMonthActivities() {}
@@ -239,4 +285,9 @@ export enum ObjectType {
   Event = 'event',
   Memo = 'memo',
   Calendar = 'calendar'
+}
+
+export enum SortType {
+  ASC = 'asc',
+  DESC = 'desc'
 }
