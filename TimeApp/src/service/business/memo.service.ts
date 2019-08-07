@@ -2,6 +2,7 @@ import { Injectable } from "@angular/core";
 import { BaseService } from "./base.service";
 import { SqliteExec } from "../util-service/sqlite.exec";
 import { UtilService } from "../util-service/util.service";
+import { MomTbl } from "../sqlite/tbl/mom.tbl";
 
 @Injectable()
 export class MemoService extends BaseService {
@@ -21,6 +22,6 @@ export class MemoService extends BaseService {
   recovery() {}
 }
 
-export class MemoData implements MoTbl {
+export class MemoData implements MomTbl {
 
 }
