@@ -13,7 +13,7 @@ export class JtaTbl implements ITblParam {
   st: string;
   jtt: string;
   jtc: string;
-  px: string;
+  px: Number;
   bz: string;
 
   cTParam():string {
@@ -45,7 +45,7 @@ export class JtaTbl implements ITblParam {
     if(this.st!=null && this.st!=''){      sq=sq+', st= ? ';      params.push(this.st);    }
     if(this.jtt!=null && this.jtt!=''){      sq=sq+', jtt= ? ';      params.push(this.jtt);    }
     if(this.jtc!=null && this.jtc!=''){      sq=sq+', jtc= ? ';      params.push(this.jtc);    }
-    if(this.px!=null && this.px!=''){      sq=sq+', px= ? ';      params.push(this.px);    }
+    if(this.px!=null ){      sq=sq+', px= ? ';      params.push(this.px);    }
     if(this.bz!=null && this.bz!=''){      sq=sq+', bz= ? ';      params.push(this.bz);    }
 
     sq =`update gtd_jta set utt =${moment().unix()}  ${sq} where jti = ? ;`;
@@ -58,7 +58,7 @@ export class JtaTbl implements ITblParam {
   }
 
   dTParam():any {
-    let sq = 'delete from gtd_jti where 1=1 ';
+    let sq = 'delete from gtd_jta where 1=1 ';
     let params = new Array<any>();
     if(this.jti != null && this.jti!=""){
       sq = sq + 'and  jti = ? ';
@@ -73,7 +73,7 @@ export class JtaTbl implements ITblParam {
 
   sloTParam():any {
     let params = new Array<any>();
-    let sq='select * from gtd_jti where moi = ?  ;';
+    let sq='select * from gtd_jta where moi = ?  ;';
     params.push(this.jti);
     let ret = new Array<any>();
     ret.push(sq);
@@ -84,7 +84,7 @@ export class JtaTbl implements ITblParam {
 
   slTParam():any {
     let params = new Array<any>();
-    let sq='select * from  gtd_jti where  1=1 ';
+    let sq='select * from  gtd_jta where  1=1 ';
 
     if(this.ji!=null && this.ji!=''){      sq=sq+' and ji= ? ';      params.push(this.ji);    }
     if(this.jtn!=null && this.jtn!=''){      sq=sq+' and jtn= ? ';      params.push(this.jtn);    }
@@ -92,7 +92,7 @@ export class JtaTbl implements ITblParam {
     if(this.st!=null && this.st!=''){      sq=sq+' and st= ? ';      params.push(this.st);    }
     if(this.jtt!=null && this.jtt!=''){      sq=sq+' and jtt= ? ';      params.push(this.jtt);    }
     if(this.jtc!=null && this.jtc!=''){      sq=sq+' and jtc= ? ';      params.push(this.jtc);    }
-    if(this.px!=null && this.px!=''){      sq=sq+' and px= ? ';      params.push(this.px);    }
+    if(this.px!=null ){      sq=sq+' and px= ? ';      params.push(this.px);    }
     if(this.bz!=null && this.bz!=''){      sq=sq+' and bz= ? ';      params.push(this.bz);    }
 
     sq = sq + ';';
