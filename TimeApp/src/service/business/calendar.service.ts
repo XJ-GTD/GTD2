@@ -38,7 +38,7 @@ export class CalendarService extends BaseService {
       let plandb: JhTbl = new JhTbl();
       Object.assign(plandb, plan);
 
-      await this.sqlExce.update(plandb);
+      await this.sqlExce.updateByParam(plandb);
 
       this.emitService.emit(`mwxing.calendar.${plan.ji}.updated`);
     } else {
@@ -135,7 +135,7 @@ export class CalendarService extends BaseService {
 
     let sqls: Array<any> = this.removePlanSqls(ji, jt, withchildren);
 
-    await this.sqlExce.sqlBatch(sqls);
+    await this.sqlExce.batExecSqlByParam(sqls);
 
     return;
   }
@@ -156,7 +156,7 @@ export class CalendarService extends BaseService {
       let planitemdb: JtaTbl = new JtaTbl();
       Object.assign(planitemdb, item);
 
-      await this.sqlExce.update(planitemdb);
+      await this.sqlExce.updateByParam(planitemdb);
 
       this.emitService.emit(`mwxing.calendar.${item.ji}.item.updated`);
     } else {
@@ -166,7 +166,7 @@ export class CalendarService extends BaseService {
       let planitemdb: JtaTbl = new JtaTbl();
       Object.assign(planitemdb, item);
 
-      await this.sqlExce.insert(planitemdb);
+      await this.sqlExce.saveByParam(planitemdb);
 
       this.emitService.emit(`mwxing.calendar.${item.ji}.item.created`);
     }
@@ -303,7 +303,7 @@ export class CalendarService extends BaseService {
       plandb.jc = plan.pn.pm;
       plandb.jtd = PlanDownloadType.YES;
 
-      sqls.push(plandb.insert());
+      sqls.push(plandb.inTParam());
 
       // 创建日历项
       if (plan.pa && plan.pa.length > 0) {
@@ -315,7 +315,7 @@ export class CalendarService extends BaseService {
           planitemdb.st = pa.st;      //所属时间
           planitemdb.bz = pa.am;      //备注
 
-          sqls.push(planitemdb.insert());
+          sqls.push(planitemdb.inTParam());
         }
       }
     }
