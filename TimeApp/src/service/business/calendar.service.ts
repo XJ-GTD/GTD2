@@ -73,7 +73,7 @@ export class CalendarService extends BaseService {
 
     let sqls: Array<any> = new Array<any>();
 
-    sqls.push(plandb.del());
+    sqls.push(plandb.drTParam());
 
     // 同时删除日历项
     if (withchildren) {
@@ -81,7 +81,7 @@ export class CalendarService extends BaseService {
         let planitemdb: JtaTbl = new JtaTbl();
         planitemdb.ji = ji;
 
-        sqls.push(planitemdb.del());
+        sqls.push(planitemdb.drTParam());
 
         // 删除关联表，通过未关联主表条件删除
         sqls.push(`delete * from gtd_fj where obt = '${ObjectType.Calendar}' and obi not in (select jti from gtd_jt);`);   // 附件表
@@ -95,7 +95,7 @@ export class CalendarService extends BaseService {
         eventdb.ji = ji;
 
         // 删除事件主表
-        sqls.push(eventdb.del());
+        sqls.push(eventdb.drTParam());
 
         // 删除关联表，通过未关联主表条件删除
         sqls.push(`delete * from gtd_ea where evi not in (select evi from gtd_ev);`);   // 日程表
@@ -110,7 +110,7 @@ export class CalendarService extends BaseService {
         memodb.ji = ji;
 
         // 删除备忘主表
-        sqls.push(memodb.del());
+        sqls.push(memodb.drTParam());
 
         // 删除关联表，通过未关联主表条件删除
         sqls.push(`delete * from gtd_fj where obt = '${ObjectType.Memo}' and obi not in (select moi from gtd_mo);`);   // 附件表
