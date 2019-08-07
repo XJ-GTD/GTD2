@@ -267,9 +267,9 @@ export class CalendarService extends BaseService {
 
     this.assertEmpty(ji);   // 入参不能为空
 
-    let sql: string = `select * from gtd_ev where ji = '${ji}' order by evd ${sort}`;
+    let sql: string = `select * from gtd_mom where ji = '${ji}' order by evd ${sort}`;
 
-    return await this.sqlExce.getExtList<EventData>(sql);
+    return await this.sqlExce.getExtList<MemoData>(sql);
   }
 
   /**
@@ -320,7 +320,7 @@ export class CalendarService extends BaseService {
       }
     }
 
-    await this.sqlExce.sqlBatch(sqls);
+    await this.sqlExce.batExecSqlByParam(sqls);
 
     this.emitService.emit(`mwxing.calendar.${ji}.updated`);
 
@@ -356,7 +356,7 @@ export class CalendarService extends BaseService {
                           left join gtd_mo gmo on gday.sd = gmo.sd
                       group by gday.sd`;
 
-    let monthSummary: MonthActivitySummaryData = new MonthActivitySummaryData();
+    let monthSummary: MonthActivitySummaryData = {} as MonthActivitySummaryData;
     monthSummary.month = month;
     monthSummary.days = await this.sqlExce.getExtList<DayActivitySummaryData>(sql);
 
@@ -372,7 +372,7 @@ export class CalendarService extends BaseService {
 
     this.assertEmpty(month);    // 入参不能为空
 
-    let monthActivity: MonthActivityData = new MonthActivityData();
+    let monthActivity: MonthActivityData = {} as MonthActivityData;
 
     let sqlcalitems: string = `select * from gtd_jt where substr(sd, 0, 7) = '${month}' order by sd asc, st asc`;
 
@@ -429,7 +429,7 @@ export class CalendarService extends BaseService {
 
     this.assertEmpty(day);
 
-    let dayActivity: DayActivityData = new DayActivityData();
+    let dayActivity: DayActivityData = {} as DayActivityData;
 
     let sqlcalitems: string = `select * from gtd_jt where sd = '${day}' order by st asc`;
 
@@ -459,15 +459,15 @@ export class CalendarService extends BaseService {
   recovery(plans: Array<PlanData>): Array<any> {}
 }
 
-export class PlanData extends JhTbl {
+export interface PlanData extends JhTbl {
   items: Array<PlanItemData>;
 }
 
-export class PlanItemData extends JtaTbl {
+export interface PlanItemData extends JtaTbl {
 
 }
 
-export class MonthActivityData {
+export interface MonthActivityData {
   month: string;                        // 所属年月
   calendaritems: Array<PlanItemData>;   // 日历项
   events: Array<EventData>;             // 事件
@@ -475,19 +475,19 @@ export class MonthActivityData {
   days: Map<string, DayActivityData>;   // 当月每天的活动
 }
 
-export class DayActivityData {
+export interface DayActivityData {
   day: string;                          // 所属日期
   calendaritems: Array<PlanItemData>;   // 日历项
   events: Array<EventData>;             // 事件
   memos: Array<MemoData>;               // 备忘
 }
 
-export class MonthActivitySummaryData {
+export interface MonthActivitySummaryData {
   month: string;                        // 所属年月
   days: Array<DayActivitySummaryData>;  // 每日活动汇总
 }
 
-export class DayActivitySummaryData {
+export interface DayActivitySummaryData {
   day: string;                  // 所属日期
   calendaritemscount: number;   // 日期日历项数量
   activityitemscount: number;   // 活动日历项数量
@@ -500,19 +500,19 @@ export class DayActivitySummaryData {
 }
 
 export enum PlanType {
-  CalendarPlan = 0,
-  ActivityPlan = 1,
-  PrivatePlan = 2
+  CalendarPlan = '0',
+  ActivityPlan = '1',
+  PrivatePlan = '2'
 }
 
 export enum PlanItemType {
-  Holiday = 0,
-  Activity = 1
+  Holiday = '0',
+  Activity = '1'
 }
 
 export enum PlanDownloadType {
-  NO = 0,
-  YES = 1
+  NO = '0',
+  YES = '1'
 }
 
 export enum ObjectType {
