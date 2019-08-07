@@ -19,6 +19,7 @@ import {UserConfig} from "../../service/config/user.config";
 import { InAppBrowser } from '@ionic-native/in-app-browser';
 import {EvTbl} from "../../service/sqlite/tbl/ev.tbl";
 import {SqliteExec} from "../../service/util-service/sqlite.exec";
+import {CaTbl} from "../../service/sqlite/tbl/ca.tbl";
 
 /**
  * Generated class for the 首页 page.
