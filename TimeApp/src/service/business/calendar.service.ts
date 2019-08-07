@@ -459,11 +459,19 @@ export class CalendarService extends BaseService {
   recovery(plans: Array<PlanData>): Array<any> {}
 }
 
-export interface PlanData extends JhTbl {
-  items: Array<PlanItemData> = new Array<PlanItemData>();
+export interface PlanRef extends JhTbl {
+  items: Array<PlanItemData>;
 }
 
-export interface PlanItemData extends JtaTbl {
+export class PlanData implements PlanRef {
+
+}
+
+export interface PlanItemRef extends JtaTbl {
+
+}
+
+export class PlanItemData implements PlanItemRef {
 
 }
 
