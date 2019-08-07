@@ -48,7 +48,7 @@ export class CalendarService extends BaseService {
       let plandb: JhaTbl = new JhaTbl();
       Object.assign(plandb, plan);
 
-      await this.sqlExce.prepareSave(plandb);
+      await this.sqlExce.saveByParam(plandb);
 
       this.emitService.emit(`mwxing.calendar.plan.created`);
     }
@@ -456,7 +456,11 @@ export class CalendarService extends BaseService {
   fetchPagedActivities() {}
   mergePagedActivities() {}
   backup(bts: number) {}
-  recovery(plans: Array<PlanData>): Array<any> {}
+  recovery(plans: Array<PlanData>): Array<any> {
+    let sqls: Array<any> = new Array<any>();
+
+    return sqls;
+  }
 }
 
 export interface PlanData extends JhaTbl {
@@ -467,7 +471,7 @@ export interface PlanItemData extends JtaTbl {
 
 }
 
-export interface MonthActivityData {
+export class MonthActivityData {
   month: string;                        // 所属年月
   calendaritems: Array<PlanItemData>;   // 日历项
   events: Array<EventData>;             // 事件
@@ -475,19 +479,19 @@ export interface MonthActivityData {
   days: Map<string, DayActivityData>;   // 当月每天的活动
 }
 
-export interface DayActivityData {
+export class DayActivityData {
   day: string;                          // 所属日期
   calendaritems: Array<PlanItemData>;   // 日历项
   events: Array<EventData>;             // 事件
   memos: Array<MemoData>;               // 备忘
 }
 
-export interface MonthActivitySummaryData {
+export class MonthActivitySummaryData {
   month: string;                        // 所属年月
   days: Array<DayActivitySummaryData>;  // 每日活动汇总
 }
 
-export interface DayActivitySummaryData {
+export class DayActivitySummaryData {
   day: string;                  // 所属日期
   calendaritemscount: number;   // 日期日历项数量
   activityitemscount: number;   // 活动日历项数量
