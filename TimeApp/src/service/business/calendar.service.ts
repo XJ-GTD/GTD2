@@ -4,7 +4,7 @@ import { SqliteExec } from "../util-service/sqlite.exec";
 import { UtilService } from "../util-service/util.service";
 import { EmitService } from "../util-service/emit.service";
 import { BipdshaeData, Plan, ShaeRestful } from "../restful/shaesev";
-import { EventData } from "./event.service";
+import { EventData, EventType } from "./event.service";
 import { MemoData } from "./memo.service";
 import * as moment from "moment";
 
@@ -336,7 +336,24 @@ export class CalendarService extends BaseService {
 
     this.assertEmpty(day);
 
-    let sql: string = `select * from `;
+    let sql: string = `select gday.sd day,
+                              sum(CASE gjt.jtt WHEN '${PlanItemType.Holiday}' THEN 1 ELSE 0 END) calendaritemscount,
+                              sum(CASE gjt.jtt WHEN '${PlanItemType.Activity}' THEN 1 ELSE 0 END) activityitemscount,
+                              count(gev.evi) eventscount,
+                              sum(CASE gev.evt WHEN '${EventType.Agenda}' THEN 1 ELSE 0 END) agendascount,
+                              sum(CASE gev.evt WHEN '${EventType.Task}' THEN 1 ELSE 0 END) taskscount,
+                              count(gmo.moi) memoscount,
+                              sum(CASE gev.rtevi WHEN NULL THEN 0 ELSE 1 END) repeateventscount,
+                              0 bookedtimesummary
+                      from (select '${day}' sd) gday
+                          left join gtd_jt gjt on gday.sd = gjt.sd
+                          left join gtd_ev gev on gday.sd = gev.sd
+                          left join gtd_mo gmo on gday.sd = gmo.sd
+                      group by gday.sd`;
+
+    let daySummary: DayActivitySummaryData = new DayActivitySummaryData();
+
+    return daySummary;
   }
 
   fetchDayActivities() {}
@@ -382,6 +399,11 @@ export enum PlanType {
   CalendarPlan = 0,
   ActivityPlan = 1,
   PrivatePlan = 2
+}
+
+export enum PlanItemType {
+  Holiday = 0,
+  Activity = 1
 }
 
 export enum PlanDownloadType {
