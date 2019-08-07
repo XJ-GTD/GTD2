@@ -47,7 +47,7 @@ export class MiniTaskData implements EventData {
 }
 
 export enum EventType {
-  Agenda: 0,
-  Task: 1,
-  MiniTask: 2
+  Agenda = 0,
+  Task = 1,
+  MiniTask = 2
 }
