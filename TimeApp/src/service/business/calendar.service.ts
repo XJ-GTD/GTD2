@@ -150,10 +150,59 @@ export class CalendarService extends BaseService {
     return item;
   }
 
-  removePlanItem() {}
-  fetchAllPlans() {}
-  fetchPrivatePlans() {}
-  fetchPublicPlans() {}
+  /**
+   * 删除日历项
+   *
+   * @author leon_xi@163.com
+   **/
+  async removePlanItem(jti: string) {
+
+    this.assertEmpty(jti);    // 入参不能为空
+
+    let planitemdb: JhiTbl = new JhiTbl();
+    planitemdb.jti = jti;
+
+    await this.sqlExce.delete(planitemdb);
+
+    return;
+  }
+
+  /**
+   * 取得所有日历
+   * 包括 自定义日历/冥王星预定义日历
+   * 结果根据类型正序 创建时间倒序
+   *
+   * @author leon_xi@163.com
+   **/
+  async fetchAllPlans(jts:Array<PlanType> = []): Promise<Array<PlanData>> {
+
+    let sql: string = `select * from gtd_j_h ${(jts && jts.length > 0)? ('jt in (' + jts.join(', ') + ')') : ''} order by jt asc, wtt desc`;
+
+    let plans: Array<PlanData> = await this.sqlExce.getExtList<PlanData>(sql);
+
+    return plans;
+  }
+
+  /**
+   * 取得自定义日历
+   * 结果根据创建时间倒序
+   *
+   * @author leon_xi@163.com
+   **/
+  async fetchPrivatePlans(): Promise<Array<PlanData>> {
+    return await this.fetchAllPlans([PlanType.PrivatePlan]);
+  }
+
+  /**
+   * 取得冥王星预定义日历
+   * 结果根据类型正序 创建时间倒序
+   *
+   * @author leon_xi@163.com
+   **/
+  async asyncfetchPublicPlans(): Promise<Array<PlanData>> {
+    return await this.fetchAllPlans([PlanType.CalendarPlan, PlanType.ActivityPlan]);
+  }
+
   fetchPlanItems() {}
   downloadPublicPlan() {}
   fetchMonthActivities() {}
