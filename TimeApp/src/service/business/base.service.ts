@@ -11,3 +11,8 @@ export class BaseService {
     }
   }
 }
+
+export enum SortType {
+  ASC = 'asc',
+  DESC = 'desc'
+}

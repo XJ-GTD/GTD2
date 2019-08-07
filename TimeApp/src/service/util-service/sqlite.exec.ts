@@ -507,8 +507,3 @@ export class SqliteExec {
     }
   }
 }
-
-export enum SortType {
-  ASC = 'asc',
-  DESC = 'desc'
-}
