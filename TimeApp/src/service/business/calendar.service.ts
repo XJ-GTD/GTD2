@@ -7,6 +7,7 @@ import { BipdshaeData, Plan, ShaeRestful } from "../restful/shaesev";
 import { EventData, EventType } from "./event.service";
 import { MemoData } from "./memo.service";
 import * as moment from "moment";
+import { EvTbl } from "../sqlite/tbl/ev.tbl";
 
 @Injectable()
 export class CalendarService extends BaseService {
@@ -87,7 +88,7 @@ export class CalendarService extends BaseService {
       }
 
       if (jt == PlanType.PrivatePlan) {
-        let eventdb: EVTbl = new EVTbl();
+        let eventdb: EvTbl = new EvTbl();
         eventdb.ji = ji;
 
         // 删除事件主表
@@ -359,7 +360,32 @@ export class CalendarService extends BaseService {
     return monthSummary;
   }
 
-  fetchMonthActivities() {}
+  /**
+   * 获取指定年月下的活动
+   *
+   * @author leon_xi@163.com
+   **/
+  async fetchMonthActivities(month: string = moment().format('YYYY/MM')) {
+
+    this.assertEmpty(month);    // 入参不能为空
+
+    let monthActivity: MonthActivityData = new MonthActivityData();
+
+    let sqlcalitems: string = `select * from gtd_jt where substr(sd, 0, 7) = '${month}' order by sd asc, st asc`;
+
+    monthActivity.calendaritems = await this.sqlExce.getExtList<PlanItemData>(sqlcalitems);
+
+    let sqlevents: string = `select * from gtd_ev where substr(sd, 0, 7) = '${month}' order by sd asc, st asc`;
+
+    monthActivity.events = await this.sqlExce.getExtList<EventData>(sqlevents);
+
+    let sqlmemos: string = `select * from gtd_mo where substr(sd, 0, 7) = '${month}' order by sd asc, st asc`;
+
+    monthActivity.memos = await this.sqlExce.getExtList<MemoData>(sqlmemos);
+
+    return monthActivity;
+  }
+
   mergeMonthActivities() {}
 
   /**
@@ -369,7 +395,7 @@ export class CalendarService extends BaseService {
    **/
   async fetchDayActivitiesSummary(day: string = moment().format('YYYY/MM/DD')): Promise<DayActivitySummaryData> {
 
-    this.assertEmpty(day);
+    this.assertEmpty(day);    // 入参不能为空
 
     let sql: string = `select gday.sd day,
                               sum(CASE gjt.jtt WHEN '${PlanItemType.Holiday}' THEN 1 ELSE 0 END) calendaritemscount,
@@ -386,12 +412,37 @@ export class CalendarService extends BaseService {
                           left join gtd_mo gmo on gday.sd = gmo.sd
                       group by gday.sd`;
 
-    let daySummary: DayActivitySummaryData = new DayActivitySummaryData();
+    let daySummary: DayActivitySummaryData = this.sqlExce.getExtOne<DayActivitySummaryData>(sql);
 
     return daySummary;
   }
 
-  fetchDayActivities() {}
+  /**
+   * 获取指定日期下的活动
+   *
+   * @author leon_xi@163.com
+   **/
+  async fetchDayActivities(day: string = moment().format('YYYY/MM/DD')): Promise<DayActivityData> {
+
+    this.assertEmpty(day);
+
+    let dayActivity: DayActivityData = new DayActivityData();
+
+    let sqlcalitems: string = `select * from gtd_jt where sd = '${day}' order by st asc`;
+
+    dayActivity.calendaritems = await this.sqlExce.getExtList<PlanItemData>(sqlcalitems);
+
+    let sqlevents: string = `select * from gtd_ev where sd = '${day}' order by st asc`;
+
+    dayActivity.events = await this.sqlExce.getExtList<EventData>(sqlevents);
+
+    let sqlmemos: string = `select * from gtd_mo where sd = '${day}' order by st asc`;
+
+    dayActivity.memos = await this.sqlExce.getExtList<MemoData>(sqlmemos);
+
+    return dayActivity;
+  }
+
   mergeDayActivities() {}
   findActivities() {}
   sendPlan() {}
@@ -411,6 +462,21 @@ export class PlanData implements JhTbl {
 
 export class PlanItemData implements JhiTbl {
 
+}
+
+export class MonthActivityData {
+  month: string;                        // 所属年月
+  calendaritems: Array<PlanItemData>;   // 日历项
+  events: Array<EventData>;             // 事件
+  memos: Array<MemoData>;               // 备忘
+  days: Map<string, DayActivityData>;   // 当月每天的活动
+}
+
+export class DayActivityData {
+  day: string;                          // 所属日期
+  calendaritems: Array<PlanItemData>;   // 日历项
+  events: Array<EventData>;             // 事件
+  memos: Array<MemoData>;               // 备忘
 }
 
 export class MonthActivitySummaryData {

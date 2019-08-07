@@ -2,6 +2,9 @@ import { Injectable } from "@angular/core";
 import { BaseService } from "./base.service";
 import { SqliteExec } from "../util-service/sqlite.exec";
 import { UtilService } from "../util-service/util.service";
+import { EvTbl } from "../sqlite/tbl/ev.tbl";
+import { TTbl } from "../sqlite/tbl/t.tbl";
+import { CaTbl } from "../sqlite/tbl/ca.tbl";
 
 @Injectable()
 export class EventService extends BaseService {
@@ -30,15 +33,15 @@ export class EventService extends BaseService {
   recovery() {}
 }
 
-export class EventData implements CTbl {
+export class EventData implements EvTbl {
 
 }
 
-export class AgendaData implements EventData, EATbl {
+export class AgendaData implements EventData, CaTbl {
 
 }
 
-export class TaskData implements EventData, ETTbl {
+export class TaskData implements EventData, TTbl {
 
 }
 
