@@ -22,6 +22,6 @@ export class MemoService extends BaseService {
   recovery() {}
 }
 
-export interface MemoData extends MomTbl {
+export class MemoData extends MomTbl {
 
 }

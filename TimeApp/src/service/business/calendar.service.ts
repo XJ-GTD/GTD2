@@ -459,23 +459,15 @@ export class CalendarService extends BaseService {
   recovery(plans: Array<PlanData>): Array<any> {}
 }
 
-export interface PlanRef extends JhTbl {
+export class PlanData extends JhTbl {
   items: Array<PlanItemData>;
 }
 
-export class PlanData implements PlanRef {
+export class PlanItemData extends JtaTbl {
 
 }
 
-export interface PlanItemRef extends JtaTbl {
-
-}
-
-export class PlanItemData implements PlanItemRef {
-
-}
-
-export interface MonthActivityData {
+export class MonthActivityData {
   month: string;                        // 所属年月
   calendaritems: Array<PlanItemData>;   // 日历项
   events: Array<EventData>;             // 事件
@@ -483,19 +475,19 @@ export interface MonthActivityData {
   days: Map<string, DayActivityData>;   // 当月每天的活动
 }
 
-export interface DayActivityData {
+export class DayActivityData {
   day: string;                          // 所属日期
   calendaritems: Array<PlanItemData>;   // 日历项
   events: Array<EventData>;             // 事件
   memos: Array<MemoData>;               // 备忘
 }
 
-export interface MonthActivitySummaryData {
+export class MonthActivitySummaryData {
   month: string;                        // 所属年月
   days: Array<DayActivitySummaryData>;  // 每日活动汇总
 }
 
-export interface DayActivitySummaryData {
+export class DayActivitySummaryData {
   day: string;                  // 所属日期
   calendaritemscount: number;   // 日期日历项数量
   activityitemscount: number;   // 活动日历项数量
