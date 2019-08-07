@@ -1,6 +1,6 @@
 import { Injectable } from "@angular/core";
 import { BaseService } from "./base.service";
-import { SqliteExec } from "../util-service/sqlite.exec";
+import { SqliteExec, SortType } from "../util-service/sqlite.exec";
 import { UtilService } from "../util-service/util.service";
 import { EmitService } from "../util-service/emit.service";
 import { BipdshaeData, Plan, ShaeRestful } from "../service/restful/shaesev";
@@ -317,6 +317,8 @@ export class CalendarService extends BaseService {
 
     await this.sqlExce.sqlBatch(sqls);
 
+    this.emitService.emit(`mwxing.calendar.${ji}.updated`);
+
     return;
   }
 
@@ -359,9 +361,4 @@ export enum ObjectType {
   Event = 'event',
   Memo = 'memo',
   Calendar = 'calendar'
-}
-
-export enum SortType {
-  ASC = 'asc',
-  DESC = 'desc'
 }
