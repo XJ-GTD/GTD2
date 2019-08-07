@@ -415,7 +415,7 @@ export class CalendarService extends BaseService {
                           left join gtd_mo gmo on gday.sd = gmo.sd
                       group by gday.sd`;
 
-    let daySummary: DayActivitySummaryData = this.sqlExce.getExtOne<DayActivitySummaryData>(sql);
+    let daySummary: DayActivitySummaryData = await this.sqlExce.getExtOne<DayActivitySummaryData>(sql);
 
     return daySummary;
   }
