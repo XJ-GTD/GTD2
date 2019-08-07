@@ -7,7 +7,8 @@ import { BipdshaeData, Plan, ShaeRestful } from "../restful/shaesev";
 import { EventData, EventType } from "./event.service";
 import { MemoData } from "./memo.service";
 import * as moment from "moment";
-import { EvTbl } from "../sqlite/tbl/ev.tbl";
+import { JhTbl } from "../sqlite/tbl/jh.tbl";
+import { JtaTbl } from "../sqlite/tbl/jta.tbl";
 
 @Injectable()
 export class CalendarService extends BaseService {
@@ -329,7 +330,7 @@ export class CalendarService extends BaseService {
    *
    * @author leon_xi@163.com
    **/
-  fetchMonthActivitiesSummary(month: string = moment().format('YYYY/MM')): Promise<MonthActivitySummaryData> {
+  async fetchMonthActivitiesSummary(month: string = moment().format('YYYY/MM')): Promise<MonthActivitySummaryData> {
 
     this.assertEmpty(month);    // 入参不能为空
 
@@ -460,7 +461,7 @@ export class PlanData implements JhTbl {
   items: Array<PlanItemData> = new Array<PlanItemData>();
 }
 
-export class PlanItemData implements JhiTbl {
+export class PlanItemData implements JtaTbl {
 
 }
 
