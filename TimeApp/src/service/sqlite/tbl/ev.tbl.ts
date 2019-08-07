@@ -20,7 +20,7 @@ export class EvTbl implements ITblParam {
   rt: string;
   rts: string;
   fj: string;
-  pn: string;
+  pn: Number;
   md: string;
   iv: string;
   sr: string;
@@ -101,7 +101,7 @@ export class EvTbl implements ITblParam {
       sq=sq+', fj= ? ';
       params.push(this.fj);
     }
-    if(this.pn!=null && this.pn!=''){
+    if(this.pn!=null ){
       sq=sq+', pn= ? ';
       params.push(this.pn);
     }
@@ -208,7 +208,7 @@ export class EvTbl implements ITblParam {
       sq=sq+' and fj= ? ';
       params.push(this.fj);
     }
-    if(this.pn!=null && this.pn!=''){
+    if(this.pn!=null ){
       sq=sq+' and pn= ? ';
       params.push(this.pn);
     }
@@ -251,7 +251,6 @@ export class EvTbl implements ITblParam {
        sr ,wtt ,utt ,gs) 
        values( ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,${moment().unix()},${moment().unix()},?);`;
     params.push(this.evi);
-    params.push(this.evi);
     params.push(this.evn);
     params.push(this.ui);
     params.push(this.mi);
@@ -284,7 +283,6 @@ export class EvTbl implements ITblParam {
        type ,tx ,txs ,rt ,rts ,fj ,pn ,md ,iv ,
        sr ,wtt ,utt ,gs) 
        values( ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,${moment().unix()},${moment().unix()},?);`;
-    params.push(this.evi);
     params.push(this.evi);
     params.push(this.evn);
     params.push(this.ui);

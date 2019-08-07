@@ -474,7 +474,7 @@ export class SqliteExec {
    */
   repTByParam(itp: ITblParam): Promise<any> {
     let doit = Array<any>();
-    doit = itp.sloTParam();
+    doit = itp.rpTParam();
     let sq = doit[0];
     let params = doit[1];
     return this.execSql(sq,params);
