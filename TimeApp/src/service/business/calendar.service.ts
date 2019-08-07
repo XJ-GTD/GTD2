@@ -3,6 +3,7 @@ import { BaseService } from "./base.service";
 import { SqliteExec } from "../util-service/sqlite.exec";
 import { UtilService } from "../util-service/util.service";
 import { EmitService } from "../util-service/emit.service";
+import { BipdshaeData, Plan, ShaeRestful } from "../service/restful/shaesev";
 import { EventData } from "./event.service";
 import { MemoData } from "./memo.service";
 
@@ -10,7 +11,8 @@ import { MemoData } from "./memo.service";
 export class CalendarService extends BaseService {
   constructor(private sqlExce: SqliteExec,
               private util: UtilService,
-              private emitService: EmitService) {
+              private emitService: EmitService,
+              private shareRestful: ShaeRestful) {
     super();
   }
 
@@ -52,11 +54,11 @@ export class CalendarService extends BaseService {
   updatePlanColor() {}
 
   /**
-   * 删除日历
+   * 取得删除日历SQL
    *
    * @author leon_xi@163.com
    **/
-  async removePlan(ji: string, jt: PlanType, withchildren: boolean = true) {
+  removePlanSqls(ji: string, jt: PlanType, withchildren: boolean = true): Array<any> {
 
     this.assertEmpty(ji);   // id不能为空
     this.assertNull(jt);    // 计划类型不能为空
@@ -112,6 +114,21 @@ export class CalendarService extends BaseService {
         sqls.push(`delete * from gtd_mk where obt = '${ObjectType.Memo}' and obi not in (select moi from gtd_mo);`);   // 标签表
       }
     }
+
+    return sqls;
+  }
+
+  /**
+   * 删除日历
+   *
+   * @author leon_xi@163.com
+   **/
+  async removePlan(ji: string, jt: PlanType, withchildren: boolean = true) {
+
+    this.assertEmpty(ji);   // id不能为空
+    this.assertNull(jt);    // 计划类型不能为空
+
+    let sqls: Array<any> = this.removePlanSqls(ji, jt, withchildren);
 
     await this.sqlExce.sqlBatch(sqls);
 
@@ -250,7 +267,59 @@ export class CalendarService extends BaseService {
     return await this.sqlExce.getExtList<EventData>(sql);
   }
 
-  downloadPublicPlan() {}
+  /**
+   * 下载指定日历所有日历项
+   *
+   * @author leon_xi@163.com
+   **/
+  async downloadPublicPlan(ji: string, jt: PlanType) {
+
+    this.assertEmpty(ji);   // 入参不能为空
+
+    //restful获取计划日程
+    let bip = new BipdshaeData();
+    bip.d.pi = ji;
+    let plan: Plan = await this.shareRestful.downsysname(bip);
+
+    let sqls: Array<any> = new Array<any>();
+
+    if (plan && plan.pn) {
+      // 删除既存数据
+      let delexistsqls: Array<any> = this.removePlanSqls(ji, jt);
+
+      sqls.concat(delexistsqls);
+
+      // 创建新数据
+      let plandb: JhTbl = new JhTbl();
+      plandb.ji = ji;
+      plandb.jt = jt;
+      plandb.jn = plan.pn.pt;
+      plandb.jg = plan.pn.pd;
+      plandb.jc = plan.pn.pm;
+      plandb.jtd = PlanDownloadType.YES;
+
+      sqls.push(plandb.insert());
+
+      // 创建日历项
+      if (plan.pa && plan.pa.length > 0) {
+        for (let pa of plan.pa) {
+          let planitemdb: JhiTbl = new JhiTbl();
+          planitemdb.ji = ji;         //计划ID
+          planitemdb.jtn = pa.at;     //日程事件主题  必传
+          planitemdb.sd = moment(pa.adt).format("YYYY/MM/DD");  //所属日期      必传
+          planitemdb.st = pa.st;      //所属时间
+          planitemdb.bz = pa.am;      //备注
+
+          sqls.push(planitemdb.insert());
+        }
+      }
+    }
+
+    await this.sqlExce.sqlBatch(sqls);
+
+    return;
+  }
+
   fetchMonthActivities() {}
   mergeMonthActivities() {}
   fetchDayActivities() {}
@@ -279,6 +348,11 @@ export enum PlanType {
   CalendarPlan = 0,
   ActivityPlan = 1,
   PrivatePlan = 2
+}
+
+export enum PlanDownloadType {
+  NO = 0,
+  YES = 1
 }
 
 export enum ObjectType {
