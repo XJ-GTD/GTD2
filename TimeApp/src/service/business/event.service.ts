@@ -33,19 +33,19 @@ export class EventService extends BaseService {
   recovery() {}
 }
 
-export class EventData implements EvTbl {
+export interface EventData extends EvTbl {
 
 }
 
-export class AgendaData implements EventData, CaTbl {
+export interface AgendaData extends EventData, CaTbl {
 
 }
 
-export class TaskData implements EventData, TTbl {
+export interface TaskData extends EventData, TTbl {
 
 }
 
-export class MiniTaskData implements EventData {
+export interface MiniTaskData extends EventData {
 
 }
 
