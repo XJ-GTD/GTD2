@@ -7,7 +7,7 @@ import { BipdshaeData, Plan, ShaeRestful } from "../restful/shaesev";
 import { EventData, EventType } from "./event.service";
 import { MemoData } from "./memo.service";
 import * as moment from "moment";
-import { JhTbl } from "../sqlite/tbl/jh.tbl";
+import { JhaTbl } from "../sqlite/tbl/jha.tbl";
 import { JtaTbl } from "../sqlite/tbl/jta.tbl";
 import { EvTbl } from "../sqlite/tbl/ev.tbl";
 import { MomTbl } from "../sqlite/tbl/mom.tbl";
@@ -35,7 +35,7 @@ export class CalendarService extends BaseService {
 
     if (plan.ji) {
       // 更新
-      let plandb: JhTbl = new JhTbl();
+      let plandb: JhaTbl = new JhaTbl();
       Object.assign(plandb, plan);
 
       await this.sqlExce.updateByParam(plandb);
@@ -45,7 +45,7 @@ export class CalendarService extends BaseService {
       // 新建
       plan.ji = this.util.getUuid();
 
-      let plandb: JhTbl = new JhTbl();
+      let plandb: JhaTbl = new JhaTbl();
       Object.assign(plandb, plan);
 
       await this.sqlExce.prepareSave(plandb);
@@ -68,7 +68,7 @@ export class CalendarService extends BaseService {
     this.assertEmpty(ji);   // id不能为空
     this.assertNull(jt);    // 计划类型不能为空
 
-    let plandb: JhTbl = new JhTbl();
+    let plandb: JhaTbl = new JhaTbl();
     plandb.ji = ji;
 
     let sqls: Array<any> = new Array<any>();
@@ -295,7 +295,7 @@ export class CalendarService extends BaseService {
       sqls.concat(delexistsqls);
 
       // 创建新数据
-      let plandb: JhTbl = new JhTbl();
+      let plandb: JhaTbl = new JhaTbl();
       plandb.ji = ji;
       plandb.jt = jt;
       plandb.jn = plan.pn.pt;
@@ -459,7 +459,7 @@ export class CalendarService extends BaseService {
   recovery(plans: Array<PlanData>): Array<any> {}
 }
 
-export interface PlanData extends JhTbl {
+export interface PlanData extends JhaTbl {
   items: Array<PlanItemData>;
 }
 
