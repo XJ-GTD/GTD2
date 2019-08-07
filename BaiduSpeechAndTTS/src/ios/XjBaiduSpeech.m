@@ -196,15 +196,43 @@ NSString* SECRET_KEY_1 = @"9oHZPMLgc0BM9a4m3DhpHUhGSqYvsrAF";
         }
         case EVoiceRecognitionClientWorkStatusFlushData: {
             NSLog(@"Did EVoiceRecognitionClientWorkStatusFlushData");
+
+            if (aObj) {
+                if (self.callbackId) {
+
+                    NSDictionary *myDict;
+
+                    myDict = [NSDictionary dictionaryWithObjectsAndKeys:
+                              [self getDescriptionForDic:aObj ], @"text",
+                              @NO, @"finish",
+                              @NO, @"error",nil];
+
+                    // NSString json = [self getDescriptionForDic:aObj];
+                    CDVPluginResult* result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary: myDict];
+                    [result setKeepCallbackAsBool:YES];
+                    //json =[json substringWithRange:NSMakeRange(1,[json length] - 2 )];
+                    //
+                    [self.commandDelegate sendPluginResult:result callbackId:self.callbackId];
+                }
+            }
             break;
         }
         case EVoiceRecognitionClientWorkStatusFinish: {
             if (aObj) {
              if (self.callbackId) {
 
+                 NSDictionary *finishDic;
+                 finishDic = [NSDictionary dictionaryWithObjectsAndKeys:
+                           [self getDescriptionForDic:aObj], @"text",
+                           @YES, @"finish",
+                           @NO, @"error",nil];
+
+
+                 // NSString json = [self getDescriptionForDic:aObj];
+                 CDVPluginResult* result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary: finishDic];
                 // NSString json = [self getDescriptionForDic:aObj];
-                CDVPluginResult* result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:[self getDescriptionForDic:aObj]];
-                [result setKeepCallbackAsBool:YES];
+//                CDVPluginResult* result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:[self getDescriptionForDic:aObj]];
+                [result setKeepCallbackAsBool:NO];
                  //json =[json substringWithRange:NSMakeRange(1,[json length] - 2 )];
 //
                 [self.commandDelegate sendPluginResult:result callbackId:self.callbackId];
