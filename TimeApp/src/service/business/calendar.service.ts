@@ -323,7 +323,38 @@ export class CalendarService extends BaseService {
     return;
   }
 
-  fetchMonthActivitiesSummary() {}
+  /**
+   * 获取指定年月下的活动汇总
+   *
+   * @author leon_xi@163.com
+   **/
+  fetchMonthActivitiesSummary(month: string = moment().format('YYYY/MM')): Promise<MonthActivitySummaryData> {
+
+    this.assertEmpty(month);    // 入参不能为空
+
+    let days: number = moment(month).daysInMonth();
+    let arrDays: Array<string> = new Array<string>(days).map((value, index) => {return ("0" + (index + 1)).slice(-2);});
+
+    let daysql: string = `select '${arrDays.join(`' sd union all select '`)}' sd`;
+
+    let sql: string = `select gday.sd day,
+                              sum(CASE gjt.jtt WHEN '${PlanItemType.Holiday}' THEN 1 ELSE 0 END) calendaritemscount,
+                              sum(CASE gjt.jtt WHEN '${PlanItemType.Activity}' THEN 1 ELSE 0 END) activityitemscount,
+                              count(gev.evi) eventscount,
+                              sum(CASE gev.evt WHEN '${EventType.Agenda}' THEN 1 ELSE 0 END) agendascount,
+                              sum(CASE gev.evt WHEN '${EventType.Task}' THEN 1 ELSE 0 END) taskscount,
+                              count(gmo.moi) memoscount,
+                              sum(CASE gev.rtevi WHEN NULL THEN 0 ELSE 1 END) repeateventscount,
+                              0 bookedtimesummary
+                      from (${daysql}) gday
+                          left join gtd_jt gjt on gday.sd = gjt.sd
+                          left join gtd_ev gev on gday.sd = gev.sd
+                          left join gtd_mo gmo on gday.sd = gmo.sd
+                      group by gday.sd`;
+
+    let daysSummary: DayActivitySummaryData = new DayActivitySummaryData();
+  }
+
   fetchMonthActivities() {}
   mergeMonthActivities() {}
 
