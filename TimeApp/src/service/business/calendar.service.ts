@@ -46,7 +46,7 @@ export class CalendarService extends BaseService {
       let plandb: JhTbl = new JhTbl();
       Object.assign(plandb, plan);
 
-      await this.sqlExce.insert(plandb);
+      await this.sqlExce.prepareSave(plandb);
 
       this.emitService.emit(`mwxing.calendar.plan.created`);
     }
@@ -76,7 +76,7 @@ export class CalendarService extends BaseService {
     // 同时删除日历项
     if (withchildren) {
       if (jt == PlanType.CalendarPlan || jt == PlanType.ActivityPlan) {
-        let planitemdb: JhiTbl = new JhiTbl();
+        let planitemdb: JtaTbl = new JtaTbl();
         planitemdb.ji = ji;
 
         sqls.push(planitemdb.del());
@@ -151,7 +151,7 @@ export class CalendarService extends BaseService {
 
     if (item.jti) {
       // 更新
-      let planitemdb: JhiTbl = new JhiTbl();
+      let planitemdb: JtaTbl = new JtaTbl();
       Object.assign(planitemdb, item);
 
       await this.sqlExce.update(planitemdb);
@@ -161,7 +161,7 @@ export class CalendarService extends BaseService {
       // 新建
       item.jti = this.util.getUuid();
 
-      let planitemdb: JhiTbl = new JhiTbl();
+      let planitemdb: JtaTbl = new JtaTbl();
       Object.assign(planitemdb, item);
 
       await this.sqlExce.insert(planitemdb);
@@ -181,10 +181,10 @@ export class CalendarService extends BaseService {
 
     this.assertEmpty(jti);    // 入参不能为空
 
-    let planitemdb: JhiTbl = new JhiTbl();
+    let planitemdb: JtaTbl = new JtaTbl();
     planitemdb.jti = jti;
 
-    await this.sqlExce.delete(planitemdb);
+    await this.sqlExce.dropByParam(planitemdb);
 
     return;
   }
@@ -306,7 +306,7 @@ export class CalendarService extends BaseService {
       // 创建日历项
       if (plan.pa && plan.pa.length > 0) {
         for (let pa of plan.pa) {
-          let planitemdb: JhiTbl = new JhiTbl();
+          let planitemdb: JtaTbl = new JtaTbl();
           planitemdb.ji = ji;         //计划ID
           planitemdb.jtn = pa.at;     //日程事件主题  必传
           planitemdb.sd = moment(pa.adt).format("YYYY/MM/DD");  //所属日期      必传
@@ -486,15 +486,15 @@ export interface MonthActivitySummaryData {
 }
 
 export interface DayActivitySummaryData {
-  day: string;                      // 所属日期
-  calendaritemscount: number = 0;   // 日期日历项数量
-  activityitemscount: number = 0;   // 活动日历项数量
-  eventscount: number = 0;          // 事件数量
-  agendascount: number = 0;         // 日程数量
-  taskscount: number = 0;           // 任务数量
-  memoscount: number = 0;           // 备忘数量
-  repeateventscount: number = 0;    // 重复事件数量
-  bookedtimesummary: number = 0;    // 总预定时长
+  day: string;                  // 所属日期
+  calendaritemscount: number;   // 日期日历项数量
+  activityitemscount: number;   // 活动日历项数量
+  eventscount: number;          // 事件数量
+  agendascount: number;         // 日程数量
+  taskscount: number;           // 任务数量
+  memoscount: number;           // 备忘数量
+  repeateventscount: number;    // 重复事件数量
+  bookedtimesummary: number;    // 总预定时长
 }
 
 export enum PlanType {
