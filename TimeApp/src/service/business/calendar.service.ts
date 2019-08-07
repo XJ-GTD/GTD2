@@ -9,6 +9,8 @@ import { MemoData } from "./memo.service";
 import * as moment from "moment";
 import { JhTbl } from "../sqlite/tbl/jh.tbl";
 import { JtaTbl } from "../sqlite/tbl/jta.tbl";
+import { EvTbl } from "../sqlite/tbl/ev.tbl";
+import { MomTbl } from "../sqlite/tbl/mom.tbl";
 
 @Injectable()
 export class CalendarService extends BaseService {
@@ -104,7 +106,7 @@ export class CalendarService extends BaseService {
         sqls.push(`delete * from gtd_d where obt = '${ObjectType.Event}' and obi not in (select evi from gtd_ev);`);    // 参与人表
         sqls.push(`delete * from gtd_mk where obt = '${ObjectType.Event}' and obi not in (select evi from gtd_ev);`);   // 标签表
 
-        let memodb: MoTbl = new MoTbl();
+        let memodb: MomTbl = new MomTbl();
         memodb.ji = ji;
 
         // 删除备忘主表
