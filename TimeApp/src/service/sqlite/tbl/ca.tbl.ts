@@ -40,7 +40,7 @@ export class CaTbl implements ITblParam {
     if(this.ct!=null){      sq=sq+', ct= ? ';      params.push(this.ct);    }
 
 
-    sq =`update gtd_ca set wtt = ${moment().unix()}  ${sq} where evi = ? ;`;
+    sq =`update gtd_ca set utt = ${moment().unix()}  ${sq} where evi = ? ;`;
     params.push(this.evi);
 
     let ret = new Array<any>();

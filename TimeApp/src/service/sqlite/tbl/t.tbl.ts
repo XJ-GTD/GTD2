@@ -36,7 +36,7 @@ export class TTbl implements ITblParam {
     if(this.cd!=null && this.cd!=''){      sq=sq+', cd= ? ';      params.push(this.cd);    }
     if(this.fd!=null && this.fd!=''){      sq=sq+', fd= ? ';      params.push(this.fd);    }
 
-    sq =`update gtd_t set wtt = ${moment().unix()}  ${sq} where evi = ? ;`;
+    sq =`update gtd_t set utt = ${moment().unix()}  ${sq} where evi = ? ;`;
     params.push(this.evi);
 
     let ret = new Array<any>();
