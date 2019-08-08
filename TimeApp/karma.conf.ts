@@ -16,6 +16,7 @@ module.exports = (config) => {
     plugins: [
         require('karma-jasmine'),
         require('karma-chrome-launcher'),
+        require('@angular/cli'),
         require('@angular-devkit/build-angular/plugins/karma')
     ],
 

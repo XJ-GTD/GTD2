@@ -56,7 +56,9 @@ export class CalendarService extends BaseService {
     return plan;
   }
 
-  updatePlanColor() {}
+  async updatePlanColor(ji: string, jc: string) {
+    return;
+  }
 
   /**
    * 取得删除日历SQL
