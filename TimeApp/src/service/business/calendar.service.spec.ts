@@ -7,10 +7,12 @@ describe('CalendarService test suite', () => {
   let calendarService: CalendarService;
 
   beforeEach(() => {
-    calendarService = new CalendarService();
+    TestBed.configureTestingModule({
+      providers: [CalendarService]
+    });
   });
 
   it('test a', () => {
-
+    calendarService = TestBed.get(CalendarService);
   });
 });
