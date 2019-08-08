@@ -22,12 +22,13 @@ matrix:
         sources:
         - sourceline: deb https://dl.yarnpkg.com/debian/ stable main
           key_url: https://dl.yarnpkg.com/debian/pubkey.gpg
+        - google-chrome
         packages:
         - yarn
         - jq
         - gradle
         - dos2unix
-      chrome: stable
+        - google-chrome-stable
     licenses:
       - android-sdk-preview-license-.+
       - android-sdk-license-.+
