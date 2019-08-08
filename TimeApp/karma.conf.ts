@@ -10,7 +10,7 @@ module.exports = (config) => {
 
     // frameworks to use
     // available frameworks: https://npmjs.org/browse/keyword/karma-adapter
-    frameworks: ['jasmine', '@angular/cli'],
+    frameworks: ['jasmine', '@angular-devkit/build-angular'],
 
     // 加载插件清单
     plugins: [
