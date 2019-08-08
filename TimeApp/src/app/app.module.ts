@@ -104,6 +104,7 @@ import { WeatherIconsModule } from 'ngx-icons';
 import { JPush } from '@jiguang-ionic/jpush';
 import { DirectivesModule } from "../directives/directives.module";
 import { BaiduMapModule } from 'angular2-baidu-map';
+import {EventService} from "../service/business/event.service";
 
 @NgModule({
   declarations: [
@@ -223,6 +224,7 @@ import { BaiduMapModule } from 'angular2-baidu-map';
     RabbitMQService,
     MIPushService,
     RemindService,
+    EventService,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     {provide: HAMMER_GESTURE_CONFIG, useClass: HammerDIRECTIONALLConfig}
   ]

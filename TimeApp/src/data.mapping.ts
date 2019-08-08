@@ -398,10 +398,10 @@ export class RcInParam{
    * 设置ed、et等其他参数
    */
   setParam(){
-    if(this.ed=''){
+    if(this.ed==''){
       this.ed = this.sd;
     }
-    if(this.et=''){
+    if(this.et==''){
       this.et = this.st;
     }
   }
