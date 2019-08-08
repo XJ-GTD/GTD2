@@ -2,7 +2,7 @@ import { TestBed } from '@angular/core/testing';
 
 import { CalendarService } from "./calendar.service";
 
-describe ('Basic test sample', () => {
+describe('CalendarService test suite', () => {
   let calendarService: CalendarService;
 
   beforeEach(() => {
