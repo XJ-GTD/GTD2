@@ -16,7 +16,7 @@ module.exports = (config) => {
     plugins: [
         require('karma-jasmine'),
         require('karma-chrome-launcher'),
-        require('@angular/cli/plugins/karma')
+        require('@angular-devkit/build-angular/plugins/karma')
     ],
 
     // list of files / patterns to load in the browser
