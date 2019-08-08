@@ -368,7 +368,7 @@ export class CalendarService extends BaseService {
    *
    * @author leon_xi@163.com
    **/
-  async fetchMonthActivities(month: string = moment().format('YYYY/MM')) {
+  async fetchMonthActivities(month: string = moment().format('YYYY/MM')): Promise<MonthActivityData> {
 
     this.assertEmpty(month);    // 入参不能为空
 
