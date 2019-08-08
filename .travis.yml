@@ -27,6 +27,7 @@ matrix:
         - jq
         - gradle
         - dos2unix
+      chrome: stable
     licenses:
       - android-sdk-preview-license-.+
       - android-sdk-license-.+
@@ -38,6 +39,7 @@ matrix:
       homebrew:
         packages:
         - dos2unix
+      chrome: beta
   allow_failures:
     - os: osx
 #before_cache:

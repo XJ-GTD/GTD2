@@ -12,7 +12,7 @@ describe('CalendarService test suite', () => {
     });
   });
 
-  it('test a', () => {
+  it('Case 1 - 1 add a new plan', () => {
     calendarService = TestBed.get(CalendarService);
   });
 });
