@@ -472,6 +472,7 @@ export class CalendarService extends BaseService {
       let evargs: any = [];
       let moargs: any = [];
 
+      // 开始日期
       if (condition.sd) {
         ciwhere += (ciwhere? '' : 'where ');
         ciwhere += `sd >= ? `;
@@ -486,6 +487,7 @@ export class CalendarService extends BaseService {
         moargs.push(condition.sd);
       }
 
+      // 结束日期
       if (condition.ed) {
         ciwhere += (ciwhere? 'and ' : 'where ');
         ciwhere += `sd <= ? `;
@@ -500,6 +502,7 @@ export class CalendarService extends BaseService {
         moargs.push(condition.ed);
       }
 
+      // 内容查询
       if (condition.text) {
         ciwhere += (ciwhere? 'and ' : 'where ');
         ciwhere += `jtn like ? `;
@@ -515,6 +518,7 @@ export class CalendarService extends BaseService {
         moargs.push(condition.text);
       }
 
+      // 标签查询
       if (condition.mark && condition.mark.length > 0) {
         let likes: string = new Array<string>(condition.mark.length).fill('?', 0, condition.mark.length).join(' or mkl like ');
 
