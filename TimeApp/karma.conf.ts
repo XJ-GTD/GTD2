@@ -10,7 +10,7 @@ module.exports = (config) => {
 
     // frameworks to use
     // available frameworks: https://npmjs.org/browse/keyword/karma-adapter
-    frameworks: ['jasmine', '@angular-devkit/build-angular'],
+    frameworks: ['jasmine', '@angular/cli', '@angular-devkit/build-angular'],
 
     // 加载插件清单
     plugins: [
@@ -43,7 +43,7 @@ module.exports = (config) => {
     // preprocess matching files before serving them to the browser
     // available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
     preprocessors: {
-      './src/test.ts': ['@angular-devkit/build-angular']
+      './src/test.ts': ['@angular/cli']
     },
 
 
