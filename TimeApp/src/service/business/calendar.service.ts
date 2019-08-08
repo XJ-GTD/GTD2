@@ -459,6 +459,10 @@ export class CalendarService extends BaseService {
     let sqlevents: string = '';
     let sqlmemos: string = '';
 
+    let ciargs: any = [];
+    let evargs: any = [];
+    let moargs: any = [];
+
     // 查询范围
     if (condition.target && condition.target.length > 0) {
 
@@ -467,10 +471,6 @@ export class CalendarService extends BaseService {
       let ciwhere: string = '';
       let evwhere: string = '';
       let mowhere: string = '';
-
-      let ciargs: any = [];
-      let evargs: any = [];
-      let moargs: any = [];
 
       // 开始日期
       if (condition.sd) {
@@ -545,15 +545,15 @@ export class CalendarService extends BaseService {
 
     // 执行查询
     if (sqlcalitems) {
-      resultActivity.calendaritems = await this.sqlExce.getExtLstByParam<PlanItemData>(sqlcalitems);
+      resultActivity.calendaritems = await this.sqlExce.getExtLstByParam<PlanItemData>(sqlcalitems, ciargs);
     }
 
     if (sqlevents) {
-      resultActivity.events = await this.sqlExce.getExtLstByParam<EventData>(sqlevents);
+      resultActivity.events = await this.sqlExce.getExtLstByParam<EventData>(sqlevents, evargs);
     }
 
     if (sqlmemos) {
-      resultActivity.memos = await this.sqlExce.getExtLstByParam<MemoData>(sqlmemos);
+      resultActivity.memos = await this.sqlExce.getExtLstByParam<MemoData>(sqlmemos, moargs);
     }
 
     return resultActivity;
