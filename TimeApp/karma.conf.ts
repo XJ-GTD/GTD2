@@ -12,6 +12,12 @@ module.exports = (config) => {
     // available frameworks: https://npmjs.org/browse/keyword/karma-adapter
     frameworks: ['jasmine', '@angular/cli'],
 
+    // 加载插件清单
+    plugins: [
+        require('karma-jasmine'),
+        require('karma-chrome-launcher'),
+        require('@angular/cli/plugins/karma')
+    ],
 
     // list of files / patterns to load in the browser
     files: [
