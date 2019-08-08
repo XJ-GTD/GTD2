@@ -237,7 +237,7 @@ export class CalendarService extends BaseService {
 
     this.assertEmpty(ji);   // 入参不能为空
 
-    let sql: string = `select * from gtd_jt where ji = '${ji}' order by sd asc`;
+    let sql: string = `select * from gtd_jta where ji = '${ji}' order by sd asc`;
 
     return await this.sqlExce.getExtList<PlanItemData>(sql);
   }
@@ -351,9 +351,9 @@ export class CalendarService extends BaseService {
                               sum(CASE gev.rtevi WHEN NULL THEN 0 ELSE 1 END) repeateventscount,
                               0 bookedtimesummary
                       from (${daysql}) gday
-                          left join gtd_jt gjt on gday.sd = gjt.sd
+                          left join gtd_jta gjt on gday.sd = gjt.sd
                           left join gtd_ev gev on gday.sd = gev.sd
-                          left join gtd_mo gmo on gday.sd = gmo.sd
+                          left join gtd_mom gmo on gday.sd = gmo.sd
                       group by gday.sd`;
 
     let monthSummary: MonthActivitySummaryData = {} as MonthActivitySummaryData;
@@ -374,7 +374,7 @@ export class CalendarService extends BaseService {
 
     let monthActivity: MonthActivityData = {} as MonthActivityData;
 
-    let sqlcalitems: string = `select * from gtd_jt where substr(sd, 0, 7) = '${month}' order by sd asc, st asc`;
+    let sqlcalitems: string = `select * from gtd_jta where substr(sd, 0, 7) = '${month}' order by sd asc, st asc`;
 
     monthActivity.calendaritems = await this.sqlExce.getExtList<PlanItemData>(sqlcalitems);
 
@@ -382,7 +382,7 @@ export class CalendarService extends BaseService {
 
     monthActivity.events = await this.sqlExce.getExtList<EventData>(sqlevents);
 
-    let sqlmemos: string = `select * from gtd_mo where substr(sd, 0, 7) = '${month}' order by sd asc, st asc`;
+    let sqlmemos: string = `select * from gtd_mom where substr(sd, 0, 7) = '${month}' order by sd asc, st asc`;
 
     monthActivity.memos = await this.sqlExce.getExtList<MemoData>(sqlmemos);
 
@@ -410,9 +410,9 @@ export class CalendarService extends BaseService {
                               sum(CASE gev.rtevi WHEN NULL THEN 0 ELSE 1 END) repeateventscount,
                               0 bookedtimesummary
                       from (select '${day}' sd) gday
-                          left join gtd_jt gjt on gday.sd = gjt.sd
+                          left join gtd_jta gjt on gday.sd = gjt.sd
                           left join gtd_ev gev on gday.sd = gev.sd
-                          left join gtd_mo gmo on gday.sd = gmo.sd
+                          left join gtd_mom gmo on gday.sd = gmo.sd
                       group by gday.sd`;
 
     let daySummary: DayActivitySummaryData = await this.sqlExce.getExtOne<DayActivitySummaryData>(sql);
@@ -431,7 +431,7 @@ export class CalendarService extends BaseService {
 
     let dayActivity: DayActivityData = {} as DayActivityData;
 
-    let sqlcalitems: string = `select * from gtd_jt where sd = '${day}' order by st asc`;
+    let sqlcalitems: string = `select * from gtd_jta where sd = '${day}' order by st asc`;
 
     dayActivity.calendaritems = await this.sqlExce.getExtList<PlanItemData>(sqlcalitems);
 
@@ -439,7 +439,7 @@ export class CalendarService extends BaseService {
 
     dayActivity.events = await this.sqlExce.getExtList<EventData>(sqlevents);
 
-    let sqlmemos: string = `select * from gtd_mo where sd = '${day}' order by st asc`;
+    let sqlmemos: string = `select * from gtd_mom where sd = '${day}' order by st asc`;
 
     dayActivity.memos = await this.sqlExce.getExtList<MemoData>(sqlmemos);
 
@@ -447,10 +447,121 @@ export class CalendarService extends BaseService {
   }
 
   mergeDayActivities() {}
-  findActivities() {}
+
+  async findActivities(condition: FindActivityCondition): Promise<ActivityData> {
+
+    this.assertEmpty(condition);    // 入参不能为空
+
+    let resultActivity: ActivityData = new ActivityData();
+    resultActivity.condition = condition;
+
+    let sqlcalitems: string = '';
+    let sqlevents: string = '';
+    let sqlmemos: string = '';
+
+    // 查询范围
+    if (condition.target && condition.target.length > 0) {
+
+    } else {
+      // 查询全部类型 日历项/事件/备忘
+      let ciwhere: string = '';
+      let evwhere: string = '';
+      let mowhere: string = '';
+
+      let ciargs: any = [];
+      let evargs: any = [];
+      let moargs: any = [];
+
+      if (condition.sd) {
+        ciwhere += (ciwhere? '' : 'where ');
+        ciwhere += `sd >= ? `;
+        ciargs.push(condition.sd);
+
+        evwhere += (evwhere? '' : 'where ');
+        evwhere += `evd >= ? `;
+        evargs.push(condition.sd);
+
+        mowhere += (mowhere? '' : 'where ');
+        mowhere += `sd >= ? `;
+        moargs.push(condition.sd);
+      }
+
+      if (condition.ed) {
+        ciwhere += (ciwhere? 'and ' : 'where ');
+        ciwhere += `sd <= ? `;
+        ciargs.push(condition.ed);
+
+        evwhere += (evwhere? '' : 'where ');
+        evwhere += `evd <= ? `;
+        evargs.push(condition.ed);
+
+        mowhere += (mowhere? '' : 'where ');
+        mowhere += `sd <= ? `;
+        moargs.push(condition.ed);
+      }
+
+      if (condition.text) {
+        ciwhere += (ciwhere? 'and ' : 'where ');
+        ciwhere += `jtn like ? `;
+        ciargs.push(condition.text);
+
+        evwhere += (evwhere? 'and ' : 'where ');
+        evwhere += `(evn like ? or bz like ?) `;
+        evargs.push(condition.text);
+        evargs.push(condition.text);
+
+        mowhere += (mowhere? 'and ' : 'where ');
+        mowhere += `mon like ? `;
+        moargs.push(condition.text);
+      }
+
+      if (condition.mark && condition.mark.length > 0) {
+        let likes: string = new Array<string>(condition.mark.length).fill('?', 0, condition.mark.length).join(' or mkl like ');
+
+        ciwhere += (ciwhere? 'and ' : 'where ');
+        ciwhere += `jti in (select obi from gtd_mk where obt = ? and (mkl like ${likes}) `;
+        ciargs.push(ObjectType.Calendar);
+        ciargs.concat(condition.mark);
+
+        evwhere += (evwhere? 'and ' : 'where ');
+        evwhere += `evi in (select obi from gtd_mk where obt = ? and (mkl like ${likes}) `;
+        evargs.push(ObjectType.Event);
+        evargs.concat(condition.mark);
+
+        mowhere += (mowhere? 'and ' : 'where ');
+        mowhere += `moi in (select obi from gtd_mk where obt = ? and (mkl like ${likes}) `;
+        moargs.push(ObjectType.Memo);
+        moargs.concat(condition.mark);
+      }
+
+      sqlcalitems = `select * from gtd_jta ${ciwhere} order by st asc`;
+      sqlevents = `select * from gtd_ev ${evwhere} order by st asc`;
+      sqlmemos = `select * from gtd_mom ${mowhere} order by st asc`;
+    }
+
+    // 执行查询
+    if (sqlcalitems) {
+      resultActivity.calendaritems = await this.sqlExce.getExtLstByParam<PlanItemData>(sqlcalitems);
+    }
+
+    if (sqlevents) {
+      resultActivity.events = await this.sqlExce.getExtLstByParam<EventData>(sqlevents);
+    }
+
+    if (sqlmemos) {
+      resultActivity.memos = await this.sqlExce.getExtLstByParam<MemoData>(sqlmemos);
+    }
+
+    return resultActivity;
+  }
+
   sendPlan() {}
   receivedPlan() {}
-  syncPrivatePlan() {}
+
+  syncPrivatePlan(plan: PlanData) {
+
+  }
+
   syncPrivatePlans() {}
   sharePlan() {}
   fetchPagedActivities() {}
@@ -461,6 +572,16 @@ export class CalendarService extends BaseService {
 
     return sqls;
   }
+}
+
+export class FindActivityCondition {
+  sd: string;
+  ed: string;
+  st: string;
+  et: string;
+  text: string;
+  mark: Array<string> = new Array<string>();
+  target: Array<ObjectType> = new Array<ObjectType>();
 }
 
 export interface PlanData extends JhaTbl {
@@ -481,6 +602,13 @@ export class MonthActivityData {
 
 export class DayActivityData {
   day: string;                          // 所属日期
+  calendaritems: Array<PlanItemData>;   // 日历项
+  events: Array<EventData>;             // 事件
+  memos: Array<MemoData>;               // 备忘
+}
+
+export class ActivityData {
+  condition: FindActivityCondition;     // 查询条件
   calendaritems: Array<PlanItemData>;   // 日历项
   events: Array<EventData>;             // 事件
   memos: Array<MemoData>;               // 备忘
