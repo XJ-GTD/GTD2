@@ -13,7 +13,7 @@ export class MemoService extends BaseService {
  /**
   * 保存或者更新备忘
   */
- async saveMemo(memo:MemoData):Promise<MemoData> {
+ async saveMemo(memo: MemoData): Promise<MemoData> {
   	this.assertEmpty(memo);      // 对象不能为空
     this.assertEmpty(memo.mon);   // 备忘内容不能为空
     if (memo.moi) {
@@ -35,7 +35,7 @@ export class MemoService extends BaseService {
  /**
   *  更新备忘
   */
-  async updateMemoPlan(memo:MemoData):Promise<MemoData> {
+  async updateMemoPlan(memo: MemoData):Promise<MemoData> {
   	this.assertEmpty(memo);      // 对象不能为空
     this.assertEmpty(memo.moi);   // 主键ID不能为空
     this.assertEmpty(memo.mon);   //备忘内容不能为空
@@ -50,14 +50,13 @@ export class MemoService extends BaseService {
   /**
    * 删除备忘
    */
-  async removeMemo(moi:string): Array<any> {
+ async removeMemo(moi: string){
   	 this.assertEmpty(moi);   // id不能为空
   	 let memodb: MomTbl = new MomTbl();
   	 memodb.moi=moi;
   	 let sqls: Array<any> = new Array<any>();
   	 sqls.push(memodb.drTParam());
   	 await this.sqlExce.batExecSqlByParam(sqls);
-  	 return;
   }
   sendMemo() {}
   receivedMemo() {}
