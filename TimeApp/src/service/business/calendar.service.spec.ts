@@ -1,7 +1,7 @@
 import {} from 'jasmine';
-import { TestBed } from '@angular/core/testing';
+import { TestBed, async } from '@angular/core/testing';
 
-import { CalendarService, PlanData } from "./calendar.service";
+import { CalendarService, PlanData, PlanType } from "./calendar.service";
 
 describe('CalendarService test suite', () => {
   let calendarService: CalendarService;
@@ -23,6 +23,7 @@ describe('CalendarService test suite', () => {
 
     plan.jn = '测试日历';
     plan.jc = '#f1f1f1';
+    plan.jt = PlanType.PrivatePlan;
 
     calendarService.savePlan(plan).then(savedPlan => {
       planforUpdate = savedPlan;  // 保存用于后面的测试用例
