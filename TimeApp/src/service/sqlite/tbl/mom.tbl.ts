@@ -17,14 +17,13 @@ export class MomTbl implements ITblParam {
   cTParam():string {
 
     let sq =`create table if not exists gtd_mom(    
-     fji varchar(50) PRIMARY KEY
-     ,obt varchar(50) 
-     ,obi varchar(50) 
-     ,fjn varchar(50) 
-     ,ext varchar(50) 
+     moi varchar(50) PRIMARY KEY
+     ,ji varchar(50) 
+     ,mon varchar(50) 
+     ,mk varchar(50) 
      ,fj varchar(50) 
      ,wtt integer 
-      ,utt integer 
+     ,utt integer 
      );`;
 
     return sq;
