@@ -10,14 +10,23 @@ module.exports = (config) => {
 
     // frameworks to use
     // available frameworks: https://npmjs.org/browse/keyword/karma-adapter
-    frameworks: ['jasmine'],
+    frameworks: ['jasmine', '@angular/cli'],
 
 
     // list of files / patterns to load in the browser
     files: [
-      'src/**/*.spec.ts'
+      { pattern: './src/test.ts', watched: false }
     ],
 
+    // 指定请求文件MIME类型
+    mime: {
+        'text/x-typescript': ['ts', 'tsx']
+    },
+
+    // 指定angular cli环境
+    angularCli: {
+        environment: 'dev'
+    },
 
     // list of files / patterns to exclude
     exclude: [
@@ -27,6 +36,7 @@ module.exports = (config) => {
     // preprocess matching files before serving them to the browser
     // available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
     preprocessors: {
+      './src/test.ts': ['@angular/cli']
     },
 
 
