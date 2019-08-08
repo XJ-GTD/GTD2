@@ -3,6 +3,12 @@ import { TestBed, async } from '@angular/core/testing';
 
 import { CalendarService, PlanData, PlanType } from "./calendar.service";
 
+/**
+ * 日历Service 持续集成CI 自动测试Case
+ * 确保问题修复的过程中, 保持原有逻辑的稳定
+ *
+ * @author leon_xi@163.com
+ **/
 describe('CalendarService test suite', () => {
   let calendarService: CalendarService;
   let planforUpdate: PlanData;
@@ -21,7 +27,7 @@ describe('CalendarService test suite', () => {
   it('Case 1 - 2 use savePlan to create a new plan', async(() => {
     let plan: PlanData = {} as PlanData;
 
-    plan.jn = '测试日历';
+    plan.jn = '冥王星服务类 自动测试';
     plan.jc = '#f1f1f1';
     plan.jt = PlanType.PrivatePlan;
 
