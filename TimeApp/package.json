@@ -2,7 +2,7 @@
   "name": "TimeManager",
   "version": "0.0.12",
   "author": "xiaoji",
-  "homepage": "http://guobaba.com/",
+  "homepage": "https://pluto.guobaba.com/",
   "private": true,
   "scripts": {
     "clean": "ionic-app-scripts clean",
