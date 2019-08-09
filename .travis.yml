@@ -63,6 +63,7 @@ before_install:
   - sh $TRAVIS_BUILD_DIR/travis/preinstall.sh
   - gem install byebug
   - gem install fir-cli
+  - google-chrome-stable --headless --disable-gpu --remote-debugging-port=9222 http://localhost &
   - cp $TRAVIS_BUILD_DIR/config/build.gradle $TRAVIS_BUILD_DIR/TimeApp/build.gradle
   - cd TimeApp
 before_script:
