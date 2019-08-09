@@ -1,6 +1,5 @@
 import { Component, Input, Output, ElementRef, ViewChild, EventEmitter } from "@angular/core";
 
-@IonicPage()
 @Component({
   selector: 'recording',
   template: `<ion-grid [ngClass]="{'active': active}">
