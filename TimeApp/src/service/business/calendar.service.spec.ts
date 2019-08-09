@@ -1,6 +1,7 @@
 import {} from 'jasmine';
 import { TestBed, async } from '@angular/core/testing';
 
+import { SqliteExec } from "../util-service/sqlite.exec";
 import { CalendarService, PlanData, PlanType } from "./calendar.service";
 
 /**
@@ -15,7 +16,10 @@ describe('CalendarService test suite', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [CalendarService]
+      providers: [
+        SqliteExec,
+        CalendarService
+      ]
     });
     calendarService = TestBed.get(CalendarService);
   });
