@@ -7,6 +7,7 @@ import {SQLite} from '@ionic-native/sqlite';
 import {SQLitePorter} from '@ionic-native/sqlite-porter';
 import {StatusBar} from '@ionic-native/status-bar';
 import {SplashScreen} from '@ionic-native/splash-screen';
+import {Device} from "@ionic-native/device";
 
 import {
   PlatformMock,
@@ -50,6 +51,7 @@ describe('CalendarService test suite', () => {
         HttpClientModule
       ],
       providers: [
+        Device,
         SQLite,
         SQLitePorter,
         SqliteConfig,
