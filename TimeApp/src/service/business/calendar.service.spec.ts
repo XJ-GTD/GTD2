@@ -126,10 +126,11 @@ import { CalendarService, PlanData, PlanType } from "./calendar.service";
  * @author leon_xi@163.com
  **/
 describe('CalendarService test suite', () => {
+  let fixture;
   let calendarService: CalendarService;
   let planforUpdate: PlanData;
 
-  beforeEach(() => {
+  beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [
         MyApp
@@ -197,8 +198,12 @@ describe('CalendarService test suite', () => {
         { provide: Platform, useClass: PlatformMock }
       ]
     });
-    calendarService = TestBed.get(CalendarService);
   });
+
+  beforeEach(() => {
+    fixture = TestBed.createComponent(MyApp);
+    calendarService = TestBed.get(CalendarService);
+  }));
 
   it('Case 1 - 3 use savePlan to update an exist plan\'s color', async(() => {
     if (planforUpdate && planforUpdate.ji) {
