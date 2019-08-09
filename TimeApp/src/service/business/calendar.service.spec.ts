@@ -135,6 +135,7 @@ describe('CalendarService test suite', () => {
         MyApp
       ],
       imports: [
+        BrowserModule,
         IonicModule.forRoot(MyApp),
         HttpClientModule
       ],
