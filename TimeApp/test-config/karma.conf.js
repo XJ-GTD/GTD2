@@ -38,6 +38,14 @@ module.exports = function(config) {
       noInfo: true
     },
 
+    karmaTypescriptConfig: {
+        bundlerOptions: {
+            transforms: [
+                require("karma-typescript-es6-transform")()
+            ]
+        }
+    },
+
     browserConsoleLogOptions: {
       level: 'log',
       format: '%b %T: %m',
