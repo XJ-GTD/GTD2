@@ -54,7 +54,7 @@ import {WebsocketModule} from "../ws/websocket.module";
 import {FeedbackService} from "../cordova/feedback.service";
 import {AlarmService} from "../cordova/alarm.service";
 import {UserConfig} from "../config/user.config";
-import {HammerDIRECTIONALLConfig} from "./my-hammer.config";
+import {HammerDIRECTIONALLConfig} from "../../app/my-hammer.config";
 import {Keyboard} from "@ionic-native/keyboard";
 import {PgBusiService} from "../pagecom/pgbusi.service";
 import {ScreenOrientation} from "@ionic-native/screen-orientation";
