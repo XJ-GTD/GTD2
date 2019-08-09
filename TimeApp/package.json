@@ -121,7 +121,6 @@
   "devDependencies": {
     "@angular/cli": "^1.7.4",
     "@ionic/app-scripts": "3.1.0",
-    "@ionic/cli-plugin-ionic-angular": "1.4.1",
     "@types/hammerjs": "^2.0.36",
     "@types/node": "^8.0.45",
     "angular2-template-loader": "^0.6.2",
