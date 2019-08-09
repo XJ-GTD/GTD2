@@ -21,6 +21,10 @@ module.exports = (config) => {
 
     // list of files / patterns to load in the browser
     files: [
+      '../www/build/polyfills.js',
+      '../www/build/vendor.js',
+      '../www/build/main.js',
+      '../www/build/0.js',
       { pattern: './src/test.ts', watched: false }
     ],
 

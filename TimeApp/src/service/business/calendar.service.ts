@@ -190,6 +190,8 @@ export class CalendarService extends BaseService {
 
     await this.sqlExce.dropByParam(planitemdb);
 
+    // 删除日历项关联表项目
+
     return;
   }
 
@@ -202,9 +204,11 @@ export class CalendarService extends BaseService {
    **/
   async fetchAllPlans(jts:Array<PlanType> = []): Promise<Array<PlanData>> {
 
-    let sql: string = `select * from gtd_j_h ${(jts && jts.length > 0)? ('jt in (' + jts.join(', ') + ')') : ''} order by jt asc, wtt desc`;
+    let sql: string = `select * from gtd_j_h ${(jts && jts.length > 0)? ('where jt in (' + jts.join(', ') + ')') : ''} order by jt asc, wtt desc`;
 
     let plans: Array<PlanData> = await this.sqlExce.getExtList<PlanData>(sql);
+
+    // 获取每个日历的日历项
 
     return plans;
   }
@@ -358,7 +362,7 @@ export class CalendarService extends BaseService {
                           left join gtd_mom gmo on gday.sd = gmo.sd
                       group by gday.sd`;
 
-    let monthSummary: MonthActivitySummaryData = {} as MonthActivitySummaryData;
+    let monthSummary: MonthActivitySummaryData = new MonthActivitySummaryData();
     monthSummary.month = month;
     monthSummary.days = await this.sqlExce.getExtList<DayActivitySummaryData>(sql);
 
