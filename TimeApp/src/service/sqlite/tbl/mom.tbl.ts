@@ -8,20 +8,24 @@ export class MomTbl implements ITblParam {
 
   moi: string;
   ji: string;
+  sd: string;
   mon: string;
   mk: string;
   fj: string;
-
-
+  tb: string;
+  del: string;
 
   cTParam():string {
 
     let sq =`create table if not exists gtd_mom(    
      moi varchar(50) PRIMARY KEY
      ,ji varchar(50) 
+      ,sd varchar(50) 
      ,mon varchar(50) 
      ,mk varchar(50) 
      ,fj varchar(50) 
+     ,tb varchar(4) 
+     ,del varchar(4) 
      ,wtt integer 
      ,utt integer 
      );`;
@@ -34,13 +38,16 @@ export class MomTbl implements ITblParam {
     let params = new Array<any>();
 
     if(this.ji!=null && this.ji!=''){      sq=sq+', ji= ? ';      params.push(this.ji);    }
+    if(this.sd!=null && this.sd!=''){      sq=sq+', sd= ? ';      params.push(this.sd);    }
     if(this.mon!=null && this.mon!=''){      sq=sq+', mon= ? ';      params.push(this.mon);    }
     if(this.mk!=null && this.mk!=''){      sq=sq+', mk= ? ';      params.push(this.mk);    }
     if(this.fj!=null && this.fj!=''){      sq=sq+', fj= ? ';      params.push(this.fj);    }
+    if(this.tb!=null && this.tb!=''){      sq=sq+', tb= ? ';      params.push(this.tb);    }
+    if(this.del!=null && this.del!=''){      sq=sq+', del= ? ';      params.push(this.del);    }
 
 
-
-    sq =`update gtd_mom set utt =${moment().unix()}  ${sq} where moi = ? ;`;
+    sq =`update gtd_mom set sd = ${moment().format('YYYY/MM/DD')},
+     utt =${moment().unix()}  ${sq} where moi = ? ;`;
     params.push(this.moi);
 
     let ret = new Array<any>();
@@ -79,9 +86,12 @@ export class MomTbl implements ITblParam {
     let sq='select * from  gtd_mom where  1=1 ';
 
     if(this.ji!=null && this.ji!=''){      sq=sq+' and ji= ? ';      params.push(this.ji);    }
+    if(this.sd!=null && this.sd!=''){      sq=sq+' and sd= ? ';      params.push(this.sd);    }
     if(this.mon!=null && this.mon!=''){      sq=sq+' and mon= ? ';      params.push(this.mon);    }
     if(this.mk!=null && this.mk!=''){      sq=sq+' and mk= ? ';      params.push(this.mk);    }
     if(this.fj!=null && this.fj!=''){      sq=sq+' and fj= ? ';      params.push(this.fj);    }
+    if(this.tb!=null && this.tb!=''){      sq=sq+' and tb= ? ';      params.push(this.tb);    }
+    if(this.del!=null && this.del!=''){      sq=sq+'and  del= ? ';      params.push(this.del);    }
 
     sq = sq + ';';
 
@@ -100,13 +110,16 @@ export class MomTbl implements ITblParam {
   inTParam():any {
     let params = new Array<any>();
     let sq =`insert into gtd_mom 
-       (  moi ,ji ,mon ,mk ,fj ,wtt ,utt) 
-       values(?,?,?,?,?,${moment().unix()},${moment().unix()});`;
+       (  moi ,ji ,sd,mon ,mk ,fj ,tb,del,wtt ,utt) 
+       values(?,?,${moment().format('YYYY/MM/DD')},?,?,?,?,?,${moment().unix()},${moment().unix()});`;
     params.push(this.moi);
     params.push(this.ji);
     params.push(this.mon);
     params.push(this.mk);
     params.push(this.fj);
+    params.push(this.tb);
+    params.push(this.del);
+
 
     let ret = new Array<any>();
     ret.push(sq);
@@ -117,13 +130,15 @@ export class MomTbl implements ITblParam {
   rpTParam():any {
     let params = new Array<any>();
     let sq =`replace into gtd_mom 
-       (  moi ,ji ,mon ,mk ,fj ,wtt ,utt) 
-       values(?,?,?,?,?,${moment().unix()},${moment().unix()});`;
+       (  moi ,ji ,sd,mon ,mk ,fj ,tb,del, ,wtt ,utt) 
+       values(?,?,${moment().format('YYYY/MM/DD')},?,?,?,?,?,${moment().unix()},${moment().unix()});`;
     params.push(this.moi);
     params.push(this.ji);
     params.push(this.mon);
     params.push(this.mk);
     params.push(this.fj);
+    params.push(this.tb);
+    params.push(this.del);
 
     let ret = new Array<any>();
     ret.push(sq);
