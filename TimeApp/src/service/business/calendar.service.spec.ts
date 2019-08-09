@@ -9,7 +9,7 @@ import {
 
 import {BrowserModule, HAMMER_GESTURE_CONFIG} from '@angular/platform-browser';
 import {NgModule, ErrorHandler} from '@angular/core';
-import {IonicApp, IonicModule, Platform, IonicErrorHandler} from 'ionic-angular';
+import {IonicApp, IonicModule, NavController, Nav, Platform, IonicErrorHandler} from 'ionic-angular';
 import {StatusBar} from '@ionic-native/status-bar';
 import {SplashScreen} from '@ionic-native/splash-screen';
 import {IonicStorageModule} from "@ionic/storage";
@@ -243,6 +243,8 @@ describe('CalendarService test suite', () => {
         RemindService,
         IonicApp,
         CalendarService,
+        NavController,
+        Nav,
         {provide: ErrorHandler, useClass: IonicErrorHandler},
         {provide: HAMMER_GESTURE_CONFIG, useClass: HammerDIRECTIONALLConfig},
         { provide: StatusBar, useClass: StatusBarMock },
