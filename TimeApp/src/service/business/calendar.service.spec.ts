@@ -127,6 +127,7 @@ import { CalendarService, PlanData, PlanType } from "./calendar.service";
  **/
 describe('CalendarService test suite', () => {
   let fixture;
+  let initPage: AlPage;
   let calendarService: CalendarService;
   let planforUpdate: PlanData;
 
@@ -251,6 +252,9 @@ describe('CalendarService test suite', () => {
   }));
 
   beforeEach(() => {
+    fixture = TestBed.createComponent(AlPage);
+    initPage = fixture.componentInstance;
+    initPage.alinit();
     calendarService = TestBed.get(CalendarService);
   });
 
