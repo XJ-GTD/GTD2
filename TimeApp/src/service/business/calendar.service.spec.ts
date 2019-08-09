@@ -1,6 +1,10 @@
 import {} from 'jasmine';
 import { TestBed, async } from '@angular/core/testing';
 
+import {SQLite} from '@ionic-native/sqlite';
+import {SQLitePorter} from '@ionic-native/sqlite-porter';
+import {SqliteConfig} from "../config/sqlite.config";
+
 import { SqliteExec } from "../util-service/sqlite.exec";
 import { CalendarService, PlanData, PlanType } from "./calendar.service";
 
@@ -17,6 +21,9 @@ describe('CalendarService test suite', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [
+        SQLite,
+        SQLitePorter,
+        SqliteConfig,
         SqliteExec,
         CalendarService
       ]
