@@ -10,8 +10,14 @@ import {
 import {SQLite} from '@ionic-native/sqlite';
 import {SQLitePorter} from '@ionic-native/sqlite-porter';
 import {SqliteConfig} from "../config/sqlite.config";
+import {RestfulClient} from "../util-service/restful.client";
+import {RestFulConfig} from "../config/restful.config";
+import {ShaeRestful} from "../restful/shaesev";
 
+import { UtilService } from "../util-service/util.service";
+import { EmitService } from "../util-service/emit.service";
 import { SqliteExec } from "../util-service/sqlite.exec";
+
 import { CalendarService, PlanData, PlanType } from "./calendar.service";
 
 /**
@@ -31,6 +37,11 @@ describe('CalendarService test suite', () => {
         SQLitePorter,
         SqliteConfig,
         SqliteExec,
+        UtilService,
+        EmitService,
+        RestfulClient,
+        RestFulConfig,
+        ShaeRestful,
         CalendarService,
         { provide: StatusBar, useClass: StatusBarMock },
         { provide: SplashScreen, useClass: SplashScreenMock },
