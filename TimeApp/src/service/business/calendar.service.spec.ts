@@ -190,6 +190,7 @@ describe('CalendarService test suite', () => {
         RabbitMQService,
         MIPushService,
         RemindService,
+        IonicApp,
         {provide: ErrorHandler, useClass: IonicErrorHandler},
         {provide: HAMMER_GESTURE_CONFIG, useClass: HammerDIRECTIONALLConfig},
         { provide: StatusBar, useClass: StatusBarMock },
