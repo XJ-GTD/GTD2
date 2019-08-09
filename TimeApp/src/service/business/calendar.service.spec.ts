@@ -240,6 +240,7 @@ describe('CalendarService test suite', () => {
         MIPushService,
         RemindService,
         IonicApp,
+        CalendarService,
         {provide: ErrorHandler, useClass: IonicErrorHandler},
         {provide: HAMMER_GESTURE_CONFIG, useClass: HammerDIRECTIONALLConfig},
         { provide: StatusBar, useClass: StatusBarMock },
