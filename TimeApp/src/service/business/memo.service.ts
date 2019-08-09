@@ -33,17 +33,13 @@ export class MemoService extends BaseService {
 	/**
 	 *  更新备忘计划,只是更新计划ID
 	 */
-	async updateMemoPlan(memo: MemoData): Promise < MemoData > {
-		this.assertEmpty(memo); // 对象不能为空
-		this.assertEmpty(memo.moi); // 主键ID不能为空
-		this.assertEmpty(memo.mon); //备忘内容不能为空
-		if(memo.moi) {
-			//更新内容
-			let memodb: MomTbl = new MomTbl();
-			Object.assign(memodb, memo);
-			await this.sqlExce.updateByParam(memodb);
-		}
-		return memo;
+	async updateMemoPlan(ji: string,moi:string){
+		this.assertEmpty(ji); // 计划ID不能为空
+		this.assertEmpty(moi); // 备案ID不能为空
+		let memodb: MomTbl = new MomTbl();
+		memodb.moi=moi;
+		memodb.ji=ji;
+		await this.sqlExce.updateByParam(memodb);
 	}
 	/**
 	 * 删除备忘
@@ -54,6 +50,12 @@ export class MemoService extends BaseService {
 		memodb.moi = moi;
 		let sqls: Array < any > = new Array < any > ();
 		sqls.push(memodb.drTParam());
+		//删除备忘相关的附件
+		sqls.push(`delete * from gtd_fj where obt = '${ObjectType.Calendar}' and obi ='${moi}';`);
+		//删除备忘相关的标签
+		sqls.push(`delete * from gtd_mk where obt = '${ObjectType.Calendar}' and obi ='${moi}';`);  
+		//删除参与人表
+		sqls.push(`delete * from gtd_d where obt = '${ObjectType.Calendar}' and obi ='${moi}';`); 
 		await this.sqlExce.batExecSqlByParam(sqls);
 	}
 	/**
@@ -88,4 +90,10 @@ export class MemoService extends BaseService {
 
 export interface MemoData extends MomTbl {
 
+}
+
+export enum ObjectType {
+  Event = 'event',
+  Memo = 'memo',
+  Calendar = 'calendar'
 }
