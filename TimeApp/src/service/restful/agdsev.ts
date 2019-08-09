@@ -24,7 +24,7 @@ export class AgdRestful{
 
       }).catch(error => {
         //处理返回错误
-        resolve();
+        reject(-1);
 
       })
     });
