@@ -50,7 +50,7 @@ export class UtilService {
 
   public mask(s: string, start: number, len: number): string {
     if (s && s.length > (start + len)) {
-      return s.substr(0, start) + ("*".repeat(len)) + s.substr(start + len, s.length);
+      return s.substrng(0, start) + ("*".repeat(len)) + s.substrng(start + len, s.length);
     } else {
       return s;
     }
@@ -791,7 +791,7 @@ export class UtilService {
 
   private letterPairs(str:string) {
     const pairs = [];
-    for (let i = 0, max = str.length - 1; i < max; i++) pairs[i] = str.substr(i, i + 2);
+    for (let i = 0, max = str.length - 1; i < max; i++) pairs[i] = str.substring(i, i + 2);
     return pairs;
   }
 
