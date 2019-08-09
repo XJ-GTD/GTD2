@@ -120,6 +120,20 @@ export class CalendarService extends BaseService {
         sqls.push(`delete * from gtd_d where obt = '${ObjectType.Memo}' and obi not in (select moi from gtd_mo);`);    // 参与人表
         sqls.push(`delete * from gtd_mk where obt = '${ObjectType.Memo}' and obi not in (select moi from gtd_mo);`);   // 标签表
       }
+    } else {
+      // 不删除子元素，需要把子元素的计划ID更新为空/默认计划ID
+      if (jt == PlanType.CalendarPlan || jt == PlanType.ActivityPlan) {
+        // 更新日历项表计划ID
+        sqls.push(`update table gtd_jta set ji = '', utt = ${moment().unix()} where ji = '${ji}'`);
+      }
+
+      if (jt == PlanType.PrivatePlan) {
+        // 更新事件主表
+        sqls.push(`update table gtd_ev set ji = '', utt = ${moment().unix()} where ji = '${ji}'`);
+
+        // 更新备忘主表
+        sqls.push(`update table gtd_mom set ji = '', utt = ${moment().unix()} where ji = '${ji}'`);
+      }
     }
 
     return sqls;
