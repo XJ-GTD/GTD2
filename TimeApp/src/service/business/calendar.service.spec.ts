@@ -9,6 +9,9 @@ import {
 
 import {SQLite} from '@ionic-native/sqlite';
 import {SQLitePorter} from '@ionic-native/sqlite-porter';
+import {StatusBar} from '@ionic-native/status-bar';
+import {SplashScreen} from '@ionic-native/splash-screen';
+
 import {SqliteConfig} from "../config/sqlite.config";
 import {RestfulClient} from "../util-service/restful.client";
 import {RestFulConfig} from "../config/restful.config";
@@ -44,8 +47,7 @@ describe('CalendarService test suite', () => {
         ShaeRestful,
         CalendarService,
         { provide: StatusBar, useClass: StatusBarMock },
-        { provide: SplashScreen, useClass: SplashScreenMock },
-        { provide: Platform, useClass: PlatformMock }
+        { provide: SplashScreen, useClass: SplashScreenMock }
       ]
     });
     calendarService = TestBed.get(CalendarService);
