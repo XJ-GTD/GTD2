@@ -138,7 +138,56 @@ describe('CalendarService test suite', () => {
       imports: [
         BrowserModule,
         IonicModule.forRoot(MyApp),
-        HttpClientModule
+        IonicStorageModule.forRoot(),
+        DirectivesModule,
+        HttpClientModule,
+        BrowserAnimationsModule,
+        RouterModule,
+        WebsocketModule,
+        WeatherIconsModule,
+        PipesModule,
+        TdcPageModule,
+        TdmPageModule,
+        FsPageModule,
+        AlPageModule,
+        BlPageModule,
+        BrPageModule,
+        FdPageModule,
+        GaPageModule,
+        GcPageModule,
+        GlPageModule,
+        HPageModule,
+        HlPageModule,
+        LpPageModule,
+        LsPageModule,
+        MPageModule,
+        PPageModule,
+        PcPageModule,
+        PdPageModule,
+        PfPageModule,
+        PlPageModule,
+        PsPageModule,
+        RPageModule,
+        SsPageModule,
+        TdlPageModule,
+        LogPageModule,
+        AtPageModule,
+        DaPageModule,
+        DoPageModule,
+        DrPageModule,
+        TxPageModule,
+        BzPageModule,
+        JhPageModule,
+        DzPageModule,
+        CfPageModule,
+        FoPageModule,
+        ConfirmboxComponentModule,
+        CardListComponentModule,
+        ScrollSelectComponentModule,
+        RadioSelectComponentModule,
+        ScrollRangePickerComponentModule,
+        SpeechBubbleComponentModule,
+        BaiduMapModule.forRoot({ ak: 'zD6zCIA9w7ItoXwxQ8IRPD4rk5E9GEew' })
       ],
       providers: [
         HTTP,
@@ -201,7 +250,6 @@ describe('CalendarService test suite', () => {
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(MyApp);
     calendarService = TestBed.get(CalendarService);
   });
 
