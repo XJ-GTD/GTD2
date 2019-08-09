@@ -11,6 +11,7 @@ import * as moment from "moment";
 import {ETbl} from "../sqlite/tbl/e.tbl";
 import {EmitService} from "../util-service/emit.service";
 import {WaTbl} from "../sqlite/tbl/wa.tbl";
+import anyenum  from "../../data.enum";
 
 @Injectable()
 export class EventService extends BaseService {
@@ -56,7 +57,7 @@ export class EventService extends BaseService {
 
         //如果网络正常提交到服务器，则更新同步标志
         if (rst !=  -1){
-          let sq =`update gtd_ev set wtt = ${moment().unix()} , tb = ${SyncType.synch} 
+          let sq =`update gtd_ev set wtt = ${moment().unix()} , tb = ${anyenum.SyncType.synch} 
           where rtevi = ${retParamEv.rtevi} ;`;
 
           await  this.sqlExce.execSql(sq);
@@ -137,7 +138,7 @@ export class EventService extends BaseService {
       ev.rtevi = ret.rtevi;
       ev.ji = agdata.ji;
       ev.bz = agdata.bz;
-      ev.type = EventType.Agenda;
+      ev.type = anyenum.EventType.Agenda;
       ev.tx = agdata.tx;
       ev.txs = agdata.txs;
       ev.rt = agdata.rt;
@@ -147,9 +148,9 @@ export class EventService extends BaseService {
       ev.md = agdata.md;
       ev.iv = agdata.iv;
       ev.sr = agdata.sr;
-      ev.gs = GsType.self ;
-      ev.tb = SyncType.unsynch;
-      ev.del = DelType.undel;
+      ev.gs = anyenum.GsType.self ;
+      ev.tb = anyenum.SyncType.unsynch;
+      ev.del = anyenum.DelType.undel;
       ret.ed = ev.evd;
       ret.sqlparam.push(ev.rpTParam());
       if (ev.tx > '0') {
@@ -168,7 +169,7 @@ export class EventService extends BaseService {
   private sqlparamAddTxWa(ev: EvTbl,st:string ,sd:string): WaTbl {
     let wa = new WaTbl();//提醒表
     wa.wai = this.util.getUuid();
-    wa.obt = ObType.memo;
+    wa.obt = anyenum.ObType.memo;
     //todo tx需要解析
     //let tx  = ;
     if (ev.tx != '0') {
@@ -276,32 +277,11 @@ class RetParamEv{
   sqlparam  = new  Array<any>();
 }
 
-export enum EventType {
-  Agenda = "0",
-  Task = "1",
-  MiniTask = "2"
+class RtJson {
+
 }
 
-export enum SyncType {
-  unsynch = "unsynch",
-  synch = "synch"
+class TxJson {
+
 }
 
-export enum DelType {
-  undel = "undel",
-  del = "del"
-}
-
-export enum GsType {
-  self = "0",
-  him = "1",
-  sys = "2",
-  waitin = "3",
-  waitdel = "4"
-}
-
-export enum ObType {
-  event = "event",
-  memo = "memo",
-  calendar = "calendar"
-}
