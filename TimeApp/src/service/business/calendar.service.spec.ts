@@ -114,6 +114,7 @@ import { JPush } from '@jiguang-ionic/jpush';
 import { DirectivesModule } from "../../directives/directives.module";
 import { BaiduMapModule } from 'angular2-baidu-map';
 
+import { AlPage } from "../../pages/al/al";
 import { CalendarService, PlanData, PlanType } from "./calendar.service";
 
 /**
