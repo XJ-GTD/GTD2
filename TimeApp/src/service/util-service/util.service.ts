@@ -50,7 +50,7 @@ export class UtilService {
 
   public mask(s: string, start: number, len: number): string {
     if (s && s.length > (start + len)) {
-      return s.substrng(0, start) + ("*".repeat(len)) + s.substrng(start + len, s.length);
+      return s.substring(0, start) + ("*".repeat(len)) + s.substring(start + len, s.length);
     } else {
       return s;
     }
