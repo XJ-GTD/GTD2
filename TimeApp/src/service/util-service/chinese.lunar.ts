@@ -266,7 +266,7 @@ export class ChineseLunar {
       //取对应的农历月与天
       let tmp:any = mapping[i];
        segMonth = Number(tmp.substr(0, 2));
-       segDay = Number(tmp.substr(2, 4));
+       segDay = Number(tmp.substr(2, 6));
 
       solarMonth = isPreYear && segMonth > 12 ? segMonth - 12 : segMonth;
       find = solarMonth < month || (solarMonth == month && segDay <= date) ||
