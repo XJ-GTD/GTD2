@@ -24,6 +24,11 @@ describe('UtilService test suite', () => {
     utilService = TestBed.get(UtilService);
   });
 
+  it(`Case 1 - 2 '0 <= rand(0, 10) <= 10'`, () => {
+    expect(utilService.rand(0, 10)).toBeLessThanOrEqual(10);
+    expect(utilService.rand(0, 10)).toBeGreaterThanOrEqual(0);
+  });
+
   it('Case 1 - 1 rand(0, 10) without Error', () => {
     expect(function() {
       utilService.rand(0, 10);
