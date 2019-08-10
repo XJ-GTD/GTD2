@@ -57,10 +57,10 @@ describe('SqliteExec test suite', () => {
     sqlExce = TestBed.get(SqliteExec);
   });
 
-  it('Case 1 - 1 create() without Error', () => {
+  it('Case 1 - 1 create() without Error', async () => {
     let y: YTbl = new YTbl();
 
-    await expectAsync(sqlExce.create(y)).not.toBeResolved();
+    await expect(sqlExce.create(y)).not.toBeResolved();
   });
 
   afterAll(() => {
