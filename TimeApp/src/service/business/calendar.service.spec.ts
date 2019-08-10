@@ -87,24 +87,28 @@ describe('CalendarService test suite', () => {
     calendarService = TestBed.get(CalendarService);
   });
 
+  // 可以异步执行
   it(`Case 1 - 6 removePlanSqls PlanType.PrivatePlan`, async(() => {
     let result = calendarService.removePlanSqls('ji', PlanType.PrivatePlan);
     expect(result).toBeDefined();
     expect(result.length).toBeGreaterThan(0);
   }));
 
+  // 可以异步执行
   it(`Case 1 - 5 removePlanSqls PlanType.ActivityPlan`, async(() => {
     let result = calendarService.removePlanSqls('ji', PlanType.ActivityPlan);
     expect(result).toBeDefined();
     expect(result.length).toBeGreaterThan(0);
   }));
 
+  // 可以异步执行
   it(`Case 1 - 4 removePlanSqls PlanType.CalendarPlan`, async(() => {
     let result = calendarService.removePlanSqls('ji', PlanType.CalendarPlan);
     expect(result).toBeDefined();
     expect(result.length).toBeGreaterThan(0);
   }));
 
+  // 需要同步执行
   it(`Case 1 - 3 use savePlan to update an exist plan's color`, async () => {
     let savedPlan;
 
@@ -124,6 +128,7 @@ describe('CalendarService test suite', () => {
     }
   });
 
+  // 需要同步执行
   it('Case 1 - 2 use savePlan to create a new plan', () => {
     expect(function() {
       let plan: PlanData = {} as PlanData;
@@ -141,6 +146,7 @@ describe('CalendarService test suite', () => {
     }).not.toThrow();
   });
 
+  // 需要同步执行
   it('Case 1 - 1 service should be created', () => {
     expect(calendarService).toBeTruthy();
   });
