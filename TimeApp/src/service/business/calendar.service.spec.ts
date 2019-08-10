@@ -87,6 +87,24 @@ describe('CalendarService test suite', () => {
     calendarService = TestBed.get(CalendarService);
   });
 
+  it(`Case 1 - 6 removePlanSqls PlanType.PrivatePlan`, () => {
+    let result = calendarService.removePlanSqls('ji', PlanType.PrivatePlan);
+    expect(result).toBeDefined();
+    expect(result.length).toBeGreaterThan(0);
+  });
+
+  it(`Case 1 - 5 removePlanSqls PlanType.ActivityPlan`, () => {
+    let result = calendarService.removePlanSqls('ji', PlanType.ActivityPlan);
+    expect(result).toBeDefined();
+    expect(result.length).toBeGreaterThan(0);
+  });
+
+  it(`Case 1 - 4 removePlanSqls PlanType.CalendarPlan`, () => {
+    let result = calendarService.removePlanSqls('ji', PlanType.CalendarPlan);
+    expect(result).toBeDefined();
+    expect(result.length).toBeGreaterThan(0);
+  });
+
   it(`Case 1 - 3 use savePlan to update an exist plan's color`, async(async () => {
     let savedPlan;
 
