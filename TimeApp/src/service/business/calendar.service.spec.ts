@@ -20,8 +20,10 @@ import {
 import {MyApp} from '../../app/app.component';
 import {SqliteConfig} from "../config/sqlite.config";
 
+import {EmitService} from "../util-service/emit.service";
 import {UtilService} from "../util-service/util.service";
 import { SqliteExec } from "../util-service/sqlite.exec";
+import { ShaeRestful } from "../restful/shaesev";
 
 import { CalendarService, PlanData, PlanType } from "./calendar.service";
 
@@ -55,6 +57,8 @@ describe('CalendarService test suite', () => {
         SqliteConfig,
         SqliteExec,
         UtilService,
+        EmitService,
+        ShaeRestful,
         { provide: StatusBar, useClass: StatusBarMock },
         { provide: SplashScreen, useClass: SplashScreenMock },
         { provide: Platform, useClass: PlatformMock }
