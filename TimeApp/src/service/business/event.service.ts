@@ -263,7 +263,7 @@ export class EventService extends BaseService {
 			txx.eventData = evdb;
 			let tdb: TTbl = new TTbl();
 			tdb.evi = evdb.evi;
-			tdb.cs =0;
+			tdb.cs ="0";
 			tdb.isrt=tx.isrt;
 			await this.sqlExce.saveByParam(tdb);
 			txx.isrt =tx.isrt ;
@@ -303,7 +303,7 @@ export class EventService extends BaseService {
   	this.assertEmpty(evi); // 事件ID不能为空
   	let tdb: TTbl = new TTbl();
 		tdb.evi = evi;
-		tdb.cs=1;
+		tdb.cs="1";
 		tdb.fd=moment().format('YYYY/MM/DD');
 		await this.sqlExce.updateByParam(tdb);
 		//TODO 是否推送事件完成消息
@@ -320,7 +320,7 @@ export class EventService extends BaseService {
   	let tdb: TTbl = new TTbl();
 		tdb.evi = evi;
 		await this.sqlExce.getOne(tdb);
-		if (tdb.isrt==1) {
+		if (tdb.isrt=="1") {
 			//获取当前的事件
 			let evdb: EvTbl = new EvTbl();
 			evdb.evi=evi;
@@ -334,7 +334,7 @@ export class EventService extends BaseService {
 			//创建任务
 			let tdbnew: TTbl = new TTbl();
 			tdbnew.evi = 	evdbnew.evi;
-			tdbnew.cs = 0;
+			tdbnew.cs = "0";
 			tdbnew.isrt = tdb.isrt;
 			await this.sqlExce.saveByParam(tdbnew);
 		}
@@ -412,7 +412,7 @@ class RtJson {
 	 * @author ying<343253410@qq.com>
 	 */
 class TxJson {
-	taskData: TaskData = new TaskData();
+	eventData: EventData = new EventData();
 	isrt: string = "";
 }
 
