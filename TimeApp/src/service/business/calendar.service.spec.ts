@@ -20,6 +20,7 @@ import {
 
 import {MyApp} from '../../app/app.component';
 import {SqliteConfig} from "../config/sqlite.config";
+import {RestFulConfig} from "../config/restful.config";
 
 import {EmitService} from "../util-service/emit.service";
 import {UtilService} from "../util-service/util.service";
@@ -62,6 +63,7 @@ describe('CalendarService test suite', () => {
         EmitService,
         ShaeRestful,
         HTTP,
+        RestFulConfig,
         RestfulClient,
         { provide: StatusBar, useClass: StatusBarMock },
         { provide: SplashScreen, useClass: SplashScreenMock },
