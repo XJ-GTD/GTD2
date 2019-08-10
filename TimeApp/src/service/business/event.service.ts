@@ -231,15 +231,29 @@ export class EventService extends BaseService {
     ret.push(ca.rpTParam());
     return ret;
   }
-
+  
+	/**
+	 * 创建更新任务
+	 * @author ying<343253410@qq.com>
+	 */
   saveTask(){
 
   }
+  
+  /**
+	 * 创建更新小任务
+	 * @author ying<343253410@qq.com>
+	 */
   saveMiniTask() {}
   updateEventPlan() {}
   updateEventRemind() {}
   updateEventRepeat() {}
   removeEvent() {}
+  
+  /**
+	 * 完成任务
+	 * @author ying<343253410@qq.com>
+	 */
   finishTask() {}
   sendEvent() {}
   receivedEvent() {}
@@ -247,10 +261,35 @@ export class EventService extends BaseService {
   rejectReceivedEvent() {}
   syncEvent() {}
   syncEvents() {}
+  
+  /**
+	 * 检索任务
+	 * @author ying<343253410@qq.com>
+	 */
   fetchPagedTasks() {}
+  
+  /**
+	 * 检索完成任务
+	 * @author ying<343253410@qq.com>
+	 */
   fetchPagedCompletedTasks() {}
+  
+  /**
+	 * 检索未完成的任务
+	 * @author ying<343253410@qq.com>
+	 */
   fetchPagedUncompletedTasks() {}
+  
+  /**
+   * 备份,三张表备份
+	 * @author ying<343253410@qq.com>
+   */
   backup() {}
+  
+  /**
+   * 恢复
+	 * @author ying<343253410@qq.com>
+   */
   recovery() {}
 }
 

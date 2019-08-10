@@ -48,6 +48,7 @@ export class MemoService extends BaseService {
 		memodb.moi = moi;
 		memodb.ji = ji;
 		await this.sqlExce.updateByParam(memodb);
+		return ;
 	}
 	
 	/**
@@ -69,6 +70,7 @@ export class MemoService extends BaseService {
 		//删除消息表
 		sqls.push(`delete * from gtd_wa where obt = '${ObjectType.Calendar}' and obi ='${moi}';`);
 		await this.sqlExce.batExecSqlByParam(sqls);
+		return ;
 	}
 	
 	/**
@@ -114,8 +116,9 @@ export class MemoService extends BaseService {
 		//时间戳
 		backupPro.d.bts = bts;
 		let mom = new MomTbl();
-		backupPro.d.mom = await this.sqlExce.getLstByParam < MomTbl > (mom);
+		backupPro.d.mom = await this.sqlExce.getLstByParam <MomTbl> (mom);
 		await this.bacRestful.backup(backupPro);
+		return ;
 	}
 	
 	/**
@@ -154,6 +157,7 @@ export class MemoService extends BaseService {
 			}
 			await this.sqlExce.batExecSql(sqls);
 		}
+		return ;
 	}
 }
 
