@@ -95,7 +95,7 @@ export class MemoService extends BaseService {
 		backupPro.d.bts = moment().unix();
 		let mom = new MomTbl();
 		//TODO 此处是否要新增逻辑判断只有未同步的数据,才会同步到服务器,暂时不做处理,后续变动
-		backupPro.d.memo = await this.sqlExce.getExtLstByParam<MomTbl>(mom);
+		backupPro.d.memo = await this.sqlExce.getLstByParam<MomTbl>(mom);
 		await this.bacRestful.backup(backupPro);
 	}
 	/**
