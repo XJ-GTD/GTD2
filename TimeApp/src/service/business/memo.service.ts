@@ -16,6 +16,7 @@ export class MemoService extends BaseService {
 	}
 	/**
 	 * 保存或者更新备忘
+	 * @author ying
 	 */
 	async saveMemo(memo: MemoData): Promise < MemoData > {
 		this.assertEmpty(memo); // 对象不能为空
@@ -36,6 +37,7 @@ export class MemoService extends BaseService {
 	}
 	/**
 	 *  更新备忘计划,只是更新计划ID
+	 * @author ying
 	 */
 	async updateMemoPlan(ji: string, moi: string) {
 		this.assertEmpty(ji); // 计划ID不能为空
@@ -47,6 +49,7 @@ export class MemoService extends BaseService {
 	}
 	/**
 	 * 删除备忘
+	 * @author ying
 	 */
 	async removeMemo(moi: string) {
 		this.assertEmpty(moi); // id不能为空
@@ -64,26 +67,32 @@ export class MemoService extends BaseService {
 	}
 	/**
 	 * 发送备忘进行共享.
+	 * @author ying
 	 */
 	sendMemo() {}
 	/**
 	 * 接收共享备忘
+	 * @author ying
 	 */
 	receivedMemo() {}
 	/**
 	 * 同步备忘到服务器
+	 * @author ying
 	 */
 	syncMemo() {}
 	/**
 	 * 未同步备忘,同步到服务器
+	 * @author ying
 	 */
 	syncMemos() {}
 	/**
 	 * 服务器发送一个链接,然后客户端进行分享
+	 * @author ying
 	 */
 	shareMemo() {}
 	/**
 	 * 备份备忘到服务器
+	 * @author ying
 	 */
 	async backup() {
 		let backupPro: BackupPro = new BackupPro();
@@ -100,6 +109,7 @@ export class MemoService extends BaseService {
 	}
 	/**
 	 * 恢复备忘,根据服务器同步到客户端
+	 * @author ying
 	 */
 	async recovery(bts: Number) {
 		let recoverPro: RecoverPro = new RecoverPro();
@@ -129,6 +139,6 @@ export interface MemoData extends MomTbl {
 
 export enum ObjectType {
 	Event = 'event',
-		Memo = 'memo',
-		Calendar = 'calendar'
+	Memo = 'memo',
+	Calendar = 'calendar'
 }
