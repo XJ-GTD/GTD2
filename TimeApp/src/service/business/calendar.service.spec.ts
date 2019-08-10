@@ -3,6 +3,7 @@ import { TestBed, async } from '@angular/core/testing';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 
 import {Device} from "@ionic-native/device";
+import {HttpClient} from "@angular/common/http";
 import { HTTP } from "@ionic-native/http";
 import {SQLite} from "@ionic-native/sqlite";
 import {SQLitePorter} from "@ionic-native/sqlite-porter";
@@ -65,6 +66,7 @@ describe('CalendarService test suite', () => {
         EmitService,
         ShaeRestful,
         HTTP,
+        HttpClient,
         RestFulConfig,
         RestfulClient,
         { provide: StatusBar, useClass: StatusBarMock },
