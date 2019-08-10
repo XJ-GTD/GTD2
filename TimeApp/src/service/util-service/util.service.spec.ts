@@ -3,7 +3,8 @@ import { TestBed, async } from '@angular/core/testing';
 
 import {Device} from "@ionic-native/device";
 import {
-  App,
+  IonicModule,
+  Platform,
   AlertController,
   LoadingController,
   PopoverController,
@@ -25,8 +26,10 @@ describe('UtilService test suite', () => {
   let utilService: UtilService;
   beforeEach(async(() => {
     TestBed.configureTestingModule({
+      imports: [
+        IonicModule.forRoot()
+      ],
       providers: [
-        App,
         Device,
         AlertController,
         LoadingController,
@@ -39,6 +42,10 @@ describe('UtilService test suite', () => {
 
   beforeEach(() => {
     utilService = TestBed.get(UtilService);
+  });
+
+  it(`Case 3 - 1 mask 13387322344 => 133****2344`, () => {
+    export(utilService.mask('13387322344', 4, 4)).toBe('133****2344');
   });
 
   it(`Case 1 - 2 '0 <= rand(0, 10) <= 10'`, () => {
