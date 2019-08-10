@@ -2,6 +2,12 @@ import {} from 'jasmine';
 import { TestBed, async } from '@angular/core/testing';
 
 import {Device} from "@ionic-native/device";
+import {
+  AlertController,
+  LoadingController,
+  PopoverController,
+  ToastController
+} from "ionic-angular";
 
 import { UtilService } from "./util.service";
 
@@ -20,6 +26,10 @@ describe('UtilService test suite', () => {
     TestBed.configureTestingModule({
       providers: [
         Device,
+        AlertController,
+        LoadingController,
+        PopoverController,
+        ToastController,
         UtilService
       ]
     });
