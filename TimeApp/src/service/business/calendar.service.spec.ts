@@ -87,18 +87,18 @@ describe('CalendarService test suite', () => {
     calendarService = TestBed.get(CalendarService);
   });
 
-  it('Case 1 - 3 use savePlan to update an exist plan\'s color', async(() => {
+  it(`Case 1 - 3 use savePlan to update an exist plan's color`, async(async () => {
     expect(function() {
       if (planforUpdate && planforUpdate.ji) {
         let plan: PlanData = planforUpdate;
 
         plan.jc = '#1a1a1a';
 
-        calendarService.savePlan(plan).then(savedPlan => {
-          planforUpdate = savedPlan;  // 保存用于后面的测试用例
+        let savedPlan = calendarService.savePlan(plan);
 
-          expect(savedPlan.jc).toBe('#1a1a1a');
-        });
+        planforUpdate = savedPlan;  // 保存用于后面的测试用例
+
+        expect(savedPlan.jc).toBe('#1a1a1b');
       }
     }).not.toThrow();
   }));
