@@ -236,15 +236,60 @@ export class EventService extends BaseService {
 	 * 创建更新任务
 	 * @author ying<343253410@qq.com>
 	 */
-  saveTask(){
-
+  async saveTask(tx: TxJson): Promise <TxJson>{
+		this.assertEmpty(tx); // 对象不能为空
+		this.assertEmpty(tx.eventData); //事件不能为空
+		let txx: TxJson = new TxJson();
+		if (tx.eventData.evi){
+			//更新事件表
+			let evdb: EvTbl = new EvTbl();
+			Object.assign(evdb, tx.eventData);
+			await this.sqlExce.updateByParam(evdb);
+			txx.eventData = evdb;
+			//更新任务表
+			if (tx.isrt !='') {
+					let tdb: TTbl = new TTbl();
+					tdb.evi = evdb.evi;
+					tdb.isrt=tx.isrt;
+					await this.sqlExce.updateByParam(tdb);
+			}
+			txx.isrt =tx.isrt ;
+		} else {
+			//新增事件表
+			tx.eventData.evi = this.util.getUuid();
+			let evdb: EvTbl = new EvTbl();
+			Object.assign(evdb, tx.eventData);
+			await this.sqlExce.saveByParam(evdb);
+			txx.eventData = evdb;
+			let tdb: TTbl = new TTbl();
+			tdb.evi = evdb.evi;
+			tdb.cs =0;
+			tdb.isrt=tx.isrt;
+			await this.sqlExce.saveByParam(tdb);
+			txx.isrt =tx.isrt ;
+		}
+		return txx;
   }
   
   /**
 	 * 创建更新小任务
 	 * @author ying<343253410@qq.com>
 	 */
-  saveMiniTask() {}
+  async saveMiniTask(minitask: MiniTaskData): Promise <MiniTaskData>{
+  	this.assertEmpty(minitask); // 对象不能为空
+  	if (minitask.evi) {
+			let evdb: EvTbl = new EvTbl();
+			Object.assign(evdb, minitask);
+			await this.sqlExce.updateByParam(evdb);
+		} else {
+			minitask.evi = this.util.getUuid();
+			let evdb: EvTbl = new EvTbl();
+			Object.assign(evdb, minitask);
+			await this.sqlExce.saveByParam(evdb);
+		}
+		return minitask;
+  }
+  
   updateEventPlan() {}
   updateEventRemind() {}
   updateEventRepeat() {}
@@ -254,7 +299,48 @@ export class EventService extends BaseService {
 	 * 完成任务
 	 * @author ying<343253410@qq.com>
 	 */
-  finishTask() {}
+  async finishTask(evi: string):  Promise <string>{
+  	this.assertEmpty(evi); // 事件ID不能为空
+  	let tdb: TTbl = new TTbl();
+		tdb.evi = evi;
+		tdb.cs=1;
+		tdb.fd=moment().format('YYYY/MM/DD');
+		await this.sqlExce.updateByParam(tdb);
+		//TODO 是否推送事件完成消息
+		//this.emitService.emit(`mwxing.event.task.finish`);
+		return tdb.isrt;
+  }
+  
+  /**
+   * 当是自动创建的任务的情况下,进行下一步操作
+   * @author ying<343253410@qq.com>
+   */
+  async finishTaskNext(evi: string){
+  	this.assertEmpty(evi); 
+  	let tdb: TTbl = new TTbl();
+		tdb.evi = evi;
+		await this.sqlExce.getOne(tdb);
+		if (tdb.isrt==1) {
+			//获取当前的事件
+			let evdb: EvTbl = new EvTbl();
+			evdb.evi=evi;
+			await this.sqlExce.getOne(evdb);
+			let evdbnew: EvTbl = new EvTbl();
+			Object.assign(evdbnew, evdb);
+			//创建新的任务事件
+			evdbnew.evi = this.util.getUuid();
+			evdbnew.rtevi=evdb.evi;
+			await this.sqlExce.saveByParam(evdbnew);
+			//创建任务
+			let tdbnew: TTbl = new TTbl();
+			tdbnew.evi = 	evdbnew.evi;
+			tdbnew.cs = 0;
+			tdbnew.isrt = tdb.isrt;
+			await this.sqlExce.saveByParam(tdbnew);
+		}
+		return ;
+  }
+  
   sendEvent() {}
   receivedEvent() {}
   acceptReceivedEvent() {}
@@ -302,9 +388,10 @@ export interface AgendaData extends EventData, CaTbl {
 
 }
 
-export interface TaskData extends EventData, TTbl {
+export interface TaskData extends TTbl {
 
 }
+
 
 export interface MiniTaskData extends EventData {
 
@@ -320,7 +407,12 @@ class RtJson {
 
 }
 
+/**
+	 * 检索未完成的任务
+	 * @author ying<343253410@qq.com>
+	 */
 class TxJson {
-
+	taskData: TaskData = new TaskData();
+	isrt: string = "";
 }
 
