@@ -3,6 +3,7 @@ import { TestBed, async } from '@angular/core/testing';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 
 import {Device} from "@ionic-native/device";
+import {Network} from "@ionic-native/network";
 import {HttpClient} from "@angular/common/http";
 import { HTTP } from "@ionic-native/http";
 import {SQLite} from "@ionic-native/sqlite";
@@ -66,6 +67,7 @@ describe('CalendarService test suite', () => {
         UtilService,
         EmitService,
         ShaeRestful,
+        Network,
         HTTP,
         HttpClient,
         RestFulConfig,
