@@ -16,7 +16,7 @@ export class MemoService extends BaseService {
 	}
 	/**
 	 * 保存或者更新备忘
-	 * @author ying
+	 * @author ying<343253410@qq.com>
 	 */
 	async saveMemo(memo: MemoData): Promise < MemoData > {
 		this.assertEmpty(memo); // 对象不能为空
@@ -37,7 +37,7 @@ export class MemoService extends BaseService {
 	}
 	/**
 	 *  更新备忘计划,只是更新计划ID
-	 * @author ying
+	 * @author ying<343253410@qq.com>
 	 */
 	async updateMemoPlan(ji: string, moi: string) {
 		this.assertEmpty(ji); // 计划ID不能为空
@@ -49,7 +49,7 @@ export class MemoService extends BaseService {
 	}
 	/**
 	 * 删除备忘
-	 * @author ying
+	 * @author ying<343253410@qq.com>
 	 */
 	async removeMemo(moi: string) {
 		this.assertEmpty(moi); // id不能为空
@@ -69,32 +69,32 @@ export class MemoService extends BaseService {
 	}
 	/**
 	 * 发送备忘进行共享.
-	 * @author ying
+	 * @author ying<343253410@qq.com>
 	 */
 	sendMemo() {}
 	/**
 	 * 接收共享备忘
-	 * @author ying
+	 * @author ying<343253410@qq.com>
 	 */
 	receivedMemo() {}
 	/**
 	 * 同步备忘到服务器
-	 * @author ying
+	 * @author ying<343253410@qq.com>
 	 */
 	syncMemo() {}
 	/**
 	 * 未同步备忘,同步到服务器
-	 * @author ying
+	 * @author ying<343253410@qq.com>
 	 */
 	syncMemos() {}
 	/**
 	 * 服务器发送一个链接,然后客户端进行分享
-	 * @author ying
+	 * @author ying<343253410@qq.com>
 	 */
 	shareMemo() {}
 	/**
 	 * 备份备忘到服务器
-	 * @author ying
+	 * @author ying<343253410@qq.com>
 	 */
 	async backup(bts: Number) {
 		let backupPro: BackupPro = new BackupPro();
@@ -110,9 +110,9 @@ export class MemoService extends BaseService {
 	}
 	/**
 	 * 恢复备忘,根据服务器同步到客户端
-	 * @author ying
+	 * @author ying<343253410@qq.com>
 	 */
-	async recovery(bts: Number) {
+	async recovery(bts: Number,outRecoverPro: OutRecoverPro) {
 		let recoverPro: RecoverPro = new RecoverPro();
 		//操作账户ID
 		recoverPro.oai = UserConfig.account.id;
@@ -122,18 +122,24 @@ export class MemoService extends BaseService {
 		let rdn = new Array < string > ();
 		rdn.push('mom');
 		recoverPro.d.rdn = rdn;
-		let outRecoverPro: OutRecoverPro = await this.bacRestful.recover(recoverPro);
-		let mom = new MomTbl();
-		let sqls = new Array < string > ();
-		//先删除
-		await this.sqlExce.dropByParam(mom);
-		//恢复数据
-		for(let j = 0, len = outRecoverPro.mom.length; j < len; j++) {
-			let mom = new MomTbl();
-			Object.assign(mom, outRecoverPro.mom[j]);
-			sqls.push(mom.inTParam());
+		if(outRecoverPro =='')
+		{
+			outRecoverPro = await this.bacRestful.recover(recoverPro);
 		}
-		await this.sqlExce.batExecSql(sqls);
+		if(outRecoverPro !='' && outRecoverPro.mom.length>0)
+		{
+			let mom = new MomTbl();
+			let sqls = new Array < string > ();
+			//先删除
+			await this.sqlExce.dropByParam(mom);
+			//恢复数据
+			for(let j = 0, len = outRecoverPro.mom.length; j < len; j++) {
+				let mom = new MomTbl();
+				Object.assign(mom, outRecoverPro.mom[j]);
+				sqls.push(mom.inTParam());
+			}
+			await this.sqlExce.batExecSql(sqls);
+		}
 	}
 }
 
