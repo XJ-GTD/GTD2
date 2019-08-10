@@ -2,6 +2,7 @@ import {} from 'jasmine';
 import { TestBed, async } from '@angular/core/testing';
 
 import {Device} from "@ionic-native/device";
+import { HTTP } from "@ionic-native/http";
 import {SQLite} from "@ionic-native/sqlite";
 import {SQLitePorter} from "@ionic-native/sqlite-porter";
 import {StatusBar} from '@ionic-native/status-bar';
@@ -60,6 +61,7 @@ describe('CalendarService test suite', () => {
         UtilService,
         EmitService,
         ShaeRestful,
+        HTTP,
         RestfulClient,
         { provide: StatusBar, useClass: StatusBarMock },
         { provide: SplashScreen, useClass: SplashScreenMock },
