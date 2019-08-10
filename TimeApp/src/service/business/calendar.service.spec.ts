@@ -1,6 +1,5 @@
 import {} from 'jasmine';
 import { TestBed, async } from '@angular/core/testing';
-import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 
 import {Device} from "@ionic-native/device";
 import {HttpClient} from "@angular/common/http";
@@ -52,8 +51,7 @@ describe('CalendarService test suite', () => {
         MyApp
       ],
       imports: [
-        IonicModule.forRoot(MyApp),
-        HttpClientTestingModule
+        IonicModule.forRoot(MyApp)
       ],
       providers: [
         CalendarService,
