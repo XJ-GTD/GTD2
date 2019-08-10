@@ -1,6 +1,8 @@
 import {} from 'jasmine';
 import { TestBed, async } from '@angular/core/testing';
 
+import {Device} from "@ionic-native/device";
+
 import { UtilService } from "./util.service";
 
 /**
@@ -16,7 +18,10 @@ describe('UtilService test suite', () => {
   let utilService: UtilService;
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      providers: [UtilService]
+      providers: [
+        Device,
+        UtilService
+      ]
     });
   }));
 
