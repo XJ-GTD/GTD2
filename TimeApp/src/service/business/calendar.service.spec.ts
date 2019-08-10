@@ -14,6 +14,7 @@ import {
 } from '../../../test-config/mocks-ionic';
 
 import {MyApp} from '../../app/app.component';
+import {SqliteConfig} from "../config/sqlite.config";
 
 import { CalendarService, PlanData, PlanType } from "./calendar.service";
 
@@ -42,6 +43,7 @@ describe('CalendarService test suite', () => {
       ],
       providers: [
         CalendarService,
+        SqliteConfig,
         { provide: StatusBar, useClass: StatusBarMock },
         { provide: SplashScreen, useClass: SplashScreenMock },
         { provide: Platform, useClass: PlatformMock }
@@ -50,9 +52,9 @@ describe('CalendarService test suite', () => {
   }));
 
   beforeEach(() => {
-    //fixture = TestBed.createComponent(AlPage);
-    //initPage = fixture.componentInstance;
-    //initPage.alinit();
+    config = TestBed.get(SqliteConfig);
+    await config.generateDb();
+
     calendarService = TestBed.get(CalendarService);
   });
 
