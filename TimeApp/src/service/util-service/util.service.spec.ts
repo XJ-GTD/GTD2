@@ -24,7 +24,7 @@ describe('UtilService test suite', () => {
     utilService = TestBed.get(UtilService);
   });
 
-  it('Case 1 - 1 assertEmpty(null)', () => {
+  it('Case 1 - 1 rand(0, 10) without Error', () => {
     expect(function() {
       utilService.rand(0, 10);
     }).not.toThrow();
