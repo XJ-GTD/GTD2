@@ -330,6 +330,7 @@ export class EventService extends BaseService {
 			//创建新的任务事件
 			evdbnew.evi = this.util.getUuid();
 			evdbnew.rtevi=evdb.evi;
+			evdbnew.evd=moment().format('YYYY/MM/DD');
 			await this.sqlExce.saveByParam(evdbnew);
 			//创建任务
 			let tdbnew: TTbl = new TTbl();
@@ -412,7 +413,7 @@ class RtJson {
 	 * @author ying<343253410@qq.com>
 	 */
 class TxJson {
-	eventData: EventData = new EventData();
+	eventData: EventData;
 	isrt: string = "";
 }
 
