@@ -10,6 +10,7 @@ import * as moment from "moment";
 @Injectable()
 export class MemoService extends BaseService {
 	constructor(private sqlExce: SqliteExec,
+		private bacRestful: BacRestful,
 		private util: UtilService) {
 		super();
 	}
@@ -94,7 +95,7 @@ export class MemoService extends BaseService {
 		backupPro.d.bts = moment().unix();
 		let mom = new MomTbl();
 		//TODO 此处是否要新增逻辑判断只有未同步的数据,才会同步到服务器,暂时不做处理,后续变动
-		backupPro.d.memo = await this.sqlexec.getList < MomTbl > (mom);
+		backupPro.d.memo = await this.sqlExce.getList < MomTbl > (mom);
 		await this.bacRestful.backup(backupPro);
 	}
 	/**
@@ -111,14 +112,14 @@ export class MemoService extends BaseService {
 		let mom = new MomTbl();
 		let sqls = new Array < string > ();
 		//先删除
-		await this.sqlexec.delete(mom);
+		await this.sqlExce.delete(mom);
 		//在同步新的数据
 		for(let j = 0, len = outRecoverPro.memo.length; j < len; j++) {
 			let moi = new MomTbl();
 			Object.assign(moi, outRecoverPro.memo[j]);
 			sqls.push(moi.inTParam());
 		}
-		await this.sqlexec.batExecSql(sqls);
+		await this.sqlExce.batExecSql(sqls);
 	}
 }
 
