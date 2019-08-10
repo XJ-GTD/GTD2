@@ -37,7 +37,7 @@ import { CalendarService, PlanData, PlanType } from "./calendar.service";
 import { EventService } from "./event.service";
 
 /**
- * 日历Service 持续集成CI 自动测试Case
+ * 事件Service 持续集成CI 自动测试Case
  * 确保问题修复的过程中, 保持原有逻辑的稳定
  *
  * 使用 karma jasmine 进行 unit test
