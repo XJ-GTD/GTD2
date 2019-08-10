@@ -1,5 +1,8 @@
 import {} from 'jasmine';
 import { TestBed, async } from '@angular/core/testing';
+
+import {SQLite} from "@ionic-native/sqlite";
+import {SQLitePorter} from "@ionic-native/sqlite-porter";
 import {StatusBar} from '@ionic-native/status-bar';
 import {SplashScreen} from '@ionic-native/splash-screen';
 import {
@@ -15,6 +18,9 @@ import {
 
 import {MyApp} from '../../app/app.component';
 import {SqliteConfig} from "../config/sqlite.config";
+
+import {UtilService} from "../util-service/util.service";
+import { SqliteExec } from "./sqlite.exec";
 
 import { CalendarService, PlanData, PlanType } from "./calendar.service";
 
@@ -43,7 +49,11 @@ describe('CalendarService test suite', () => {
       ],
       providers: [
         CalendarService,
+        SQLite,
+        SQLitePorter,
         SqliteConfig,
+        SqliteExec,
+        UtilService,
         { provide: StatusBar, useClass: StatusBarMock },
         { provide: SplashScreen, useClass: SplashScreenMock },
         { provide: Platform, useClass: PlatformMock }
