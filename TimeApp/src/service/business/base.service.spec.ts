@@ -25,18 +25,26 @@ describe('BaseService test suite', () => {
   });
 
   it(`Case 1 - 4 assertEmpty('has string')`, () => {
-    expect(baseService.assertEmpty('has string')).not.toThrow();
+    expect(function() {
+      baseService.assertEmpty('has string');
+    }).not.toThrow();
   });
 
   it(`Case 1 - 3 assertEmpty('')`, () => {
-    expect(baseService.assertEmpty('')).toThrow();
+    expect(function() {
+      baseService.assertEmpty('');
+    }).toThrow();
   });
 
   it('Case 1 - 2 assertEmpty(undefined)', () => {
-    expect(baseService.assertEmpty(undefined)).toThrow();
+    expect(function() {
+      baseService.assertEmpty(undefined);
+    }).toThrow();
   });
 
   it('Case 1 - 1 assertEmpty(null)', () => {
-    expect(baseService.assertEmpty(null)).toThrow();
+    expect(function() {
+      baseService.assertEmpty(null);
+    }).toThrow();
   });
 });
