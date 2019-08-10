@@ -412,7 +412,7 @@ class RtJson {
 	 * @author ying<343253410@qq.com>
 	 */
 class TxJson {
-	taskData: TaskData = new TaskData();
+	eventData: EventData = new EventData();
 	isrt: string = "";
 }
 
