@@ -46,7 +46,7 @@ describe('UtilService test suite', () => {
 
   it(`Case 3 - 1 mask 13387322344 => 133****2344`, () => {
     // 方法调用使用返回结果进行返回值判断
-    let result = utilService.mask('13387322344', 4, 4);
+    let result = utilService.mask('13387322344', 3, 4);
 
     expect(result).toBe('133****2344');
   });
