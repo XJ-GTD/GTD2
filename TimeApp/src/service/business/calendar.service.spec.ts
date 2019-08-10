@@ -34,8 +34,7 @@ import { CalendarService, PlanData, PlanType } from "./calendar.service";
  * @author leon_xi@163.com
  **/
 describe('CalendarService test suite', () => {
-  //let fixture;
-  //let initPage: AlPage;
+  let config: SqliteConfig;
   let calendarService: CalendarService;
   let planforUpdate: PlanData;
 
