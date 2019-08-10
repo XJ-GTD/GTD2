@@ -94,7 +94,7 @@ describe('CalendarService test suite', () => {
 
         plan.jc = '#1a1a1a';
 
-        let savedPlan = calendarService.savePlan(plan);
+        let savedPlan = await calendarService.savePlan(plan);
 
         planforUpdate = savedPlan;  // 保存用于后面的测试用例
 
