@@ -24,7 +24,11 @@ describe('BaseService test suite', () => {
     baseService = TestBed.get(BaseService);
   });
 
-  it('Base test', () => {
+  it('Case 1 - 2 assertEmpty(undefined)', () => {
+    expect(baseService.assertEmpty(undefined)).toThrowAnyError();
+  });
+
+  it('Case 1 - 1 assertEmpty(null)', () => {
     expect(baseService.assertEmpty(null)).toThrowAnyError();
   });
 });
