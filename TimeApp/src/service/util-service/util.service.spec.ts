@@ -28,6 +28,9 @@ describe('UtilService test suite', () => {
   let utilService: UtilService;
   beforeEach(async(() => {
     TestBed.configureTestingModule({
+      declarations: [
+        MyApp
+      ],
       imports: [
         IonicModule.forRoot(MyApp)
       ],

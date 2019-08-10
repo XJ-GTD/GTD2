@@ -35,6 +35,9 @@ describe('SqliteExec test suite', () => {
   let sqlExce: SqliteExec;
   beforeEach(async(() => {
     TestBed.configureTestingModule({
+      declarations: [
+        MyApp
+      ],
       imports: [
         IonicModule.forRoot(MyApp)
       ],
@@ -57,10 +60,11 @@ describe('SqliteExec test suite', () => {
     sqlExce = TestBed.get(SqliteExec);
   });
 
-  it('Case 1 - 1 create() without Error', async () => {
-    let y: YTbl = new YTbl();
-
-    await expect(sqlExce.create(y)).not.toBeResolved();
+  it('Case 1 - 1 create() without Error', () => {
+    expect(async () => {
+      let y: YTbl = new YTbl();
+      await sqlExce.create(y);
+    }).not.toThrow();
   });
 
   afterAll(() => {
