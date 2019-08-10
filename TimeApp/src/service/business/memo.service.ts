@@ -4,7 +4,7 @@ import { SqliteExec } from "../util-service/sqlite.exec";
 import { UtilService } from "../util-service/util.service";
 import { MomTbl } from "../sqlite/tbl/mom.tbl";
 import { BackupPro, BacRestful, OutRecoverPro, RecoverPro } from "../../service/restful/bacsev";
-import {UserConfig} from "../../service/config/user.config";
+import { UserConfig } from "../../service/config/user.config";
 import * as moment from "moment";
 
 @Injectable()
@@ -21,7 +21,7 @@ export class MemoService extends BaseService {
 	async saveMemo(memo: MemoData): Promise < MemoData > {
 		this.assertEmpty(memo); // 对象不能为空
 		this.assertEmpty(memo.mon); // 备忘内容不能为空
-		if(memo.moi) {
+		if (memo.moi) {
 			//更新内容
 			let memodb: MomTbl = new MomTbl();
 			Object.assign(memodb, memo);
@@ -55,7 +55,7 @@ export class MemoService extends BaseService {
 		this.assertEmpty(moi); // id不能为空
 		let memodb: MomTbl = new MomTbl();
 		memodb.moi = moi;
-		let sqls: Array < any > = new Array < any > ();
+		let sqls: Array <any> = new Array <any> ();
 		sqls.push(memodb.drTParam());
 		//删除备忘相关的附件
 		sqls.push(`delete * from gtd_fj where obt = '${ObjectType.Calendar}' and obi ='${moi}';`);
@@ -103,39 +103,43 @@ export class MemoService extends BaseService {
 		//操作手机号码
 		backupPro.ompn = UserConfig.account.phone;
 		//时间戳
-		backupPro.d.bts =bts;
+		backupPro.d.bts = bts;
 		let mom = new MomTbl();
-		backupPro.d.mom = await this.sqlExce.getLstByParam<MomTbl>(mom);
+		backupPro.d.mom = await this.sqlExce.getLstByParam < MomTbl > (mom);
 		await this.bacRestful.backup(backupPro);
 	}
 	/**
 	 * 恢复备忘,根据服务器同步到客户端
 	 * @author ying<343253410@qq.com>
 	 */
-	async recovery(bts: Number,outRecoverPro: OutRecoverPro) {
-		let recoverPro: RecoverPro = new RecoverPro();
-		//操作账户ID
-		recoverPro.oai = UserConfig.account.id;
-		//操作手机号码
-		recoverPro.ompn = UserConfig.account.phone;
-		recoverPro.d.bts = bts;
-		let rdn = new Array < string > ();
-		rdn.push('mom');
-		recoverPro.d.rdn = rdn;
-		if(outRecoverPro =='')
-		{
-			outRecoverPro = await this.bacRestful.recover(recoverPro);
+	async recovery(outRecoverPro: OutRecoverPro, bts: Number = 0) {
+		if (bts == 0) {
+			this.assertNull(outRecoverPro);
 		}
-		if(outRecoverPro !='' && outRecoverPro.mom.length>0)
-		{
+		let outRecoverProNew: OutRecoverPro = new OutRecoverPro();
+		if (bts != 0) {
+			let recoverPro: RecoverPro = new RecoverPro();
+			//操作账户ID
+			recoverPro.oai = UserConfig.account.id;
+			//操作手机号码
+			recoverPro.ompn = UserConfig.account.phone;
+			recoverPro.d.bts = bts;
+			let rdn = new Array <string> ();
+			rdn.push('mom');
+			recoverPro.d.rdn = rdn;
+			outRecoverProNew = await this.bacRestful.recover(recoverPro);
+		} else {
+			outRecoverProNew = outRecoverPro;
+		}
+		if (outRecoverProNew.mom.length > 0) {
 			let mom = new MomTbl();
-			let sqls = new Array < string > ();
+			let sqls = new Array <string> ();
 			//先删除
 			await this.sqlExce.dropByParam(mom);
 			//恢复数据
-			for(let j = 0, len = outRecoverPro.mom.length; j < len; j++) {
+			for(let j = 0, len = outRecoverProNew.mom.length; j < len; j++) {
 				let mom = new MomTbl();
-				Object.assign(mom, outRecoverPro.mom[j]);
+				Object.assign(mom, outRecoverProNew.mom[j]);
 				sqls.push(mom.inTParam());
 			}
 			await this.sqlExce.batExecSql(sqls);
