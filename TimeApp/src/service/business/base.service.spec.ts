@@ -25,10 +25,10 @@ describe('BaseService test suite', () => {
   });
 
   it('Case 1 - 2 assertEmpty(undefined)', () => {
-    expect(baseService.assertEmpty(undefined)).toThrowAnyError();
+    expect(baseService.assertEmpty(undefined)).toThrow();
   });
 
   it('Case 1 - 1 assertEmpty(null)', () => {
-    expect(baseService.assertEmpty(null)).toThrowAnyError();
+    expect(baseService.assertEmpty(null)).toThrow();
   });
 });
