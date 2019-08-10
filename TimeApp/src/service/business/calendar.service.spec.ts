@@ -122,7 +122,7 @@ describe('CalendarService test suite', () => {
       planforUpdate = savedPlan;  // 保存用于后面的测试用例
 
       expect(savedPlan).toBeDefined();
-      expect(savedPlan.jc).toBe('#1a1a1b');
+      expect(savedPlan.jc).toBe('#1a1a1a');
     } else {
       expect(savedPlan).not.toBeDefined();
     }
