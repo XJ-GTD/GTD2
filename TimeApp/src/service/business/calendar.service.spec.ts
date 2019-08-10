@@ -88,19 +88,21 @@ describe('CalendarService test suite', () => {
   });
 
   it(`Case 1 - 3 use savePlan to update an exist plan's color`, async(async () => {
-    expect(function() {
-      if (planforUpdate && planforUpdate.ji) {
-        let plan: PlanData = planforUpdate;
+    let savedPlan;
 
-        plan.jc = '#1a1a1a';
+    if (planforUpdate && planforUpdate.ji) {
+      let plan: PlanData = planforUpdate;
 
-        let savedPlan = await calendarService.savePlan(plan);
+      plan.jc = '#1a1a1a';
 
-        planforUpdate = savedPlan;  // 保存用于后面的测试用例
+      savedPlan = await calendarService.savePlan(plan);
 
-        expect(savedPlan.jc).toBe('#1a1a1b');
-      }
-    }).not.toThrow();
+      planforUpdate = savedPlan;  // 保存用于后面的测试用例
+
+    }
+
+    expect(savedPlan).toBeDefined();
+    expect(savedPlan.jc).toBe('#1a1a1b');
   }));
 
   it('Case 1 - 2 use savePlan to create a new plan', async(() => {
