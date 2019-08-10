@@ -10,6 +10,8 @@ import {
   SplashScreenMock
 } from '../../../test-config/mocks-ionic';
 
+import {MyApp} from '../../app/app.component';
+
 import { CalendarService, PlanData, PlanType } from "./calendar.service";
 
 /**
