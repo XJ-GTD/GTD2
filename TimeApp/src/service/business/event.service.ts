@@ -413,7 +413,7 @@ class RtJson {
 	 * @author ying<343253410@qq.com>
 	 */
 class TxJson {
-	eventData: EventData;
+	eventData: EventData = {} as EventData;
 	isrt: string = "";
 }
 
