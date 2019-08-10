@@ -18,6 +18,8 @@ import {SqliteConfig} from "../config/sqlite.config";
 import {UtilService} from "../util-service/util.service";
 import { SqliteExec } from "./sqlite.exec";
 
+import {MyApp} from '../../app/app.component';
+
 import {YTbl} from "../sqlite/tbl/y.tbl";
 
 /**
@@ -34,7 +36,7 @@ describe('SqliteExec test suite', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [
-        IonicModule.forRoot()
+        IonicModule.forRoot(MyApp)
       ],
       providers: [
         Device,
