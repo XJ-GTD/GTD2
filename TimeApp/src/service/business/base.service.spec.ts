@@ -4,7 +4,7 @@ import { TestBed, async } from '@angular/core/testing';
 import { BaseService } from "./base.service";
 
 /**
- * 日历Service 持续集成CI 自动测试Case
+ * 业务Service父类 持续集成CI 自动测试Case
  * 确保问题修复的过程中, 保持原有逻辑的稳定
  *
  * 使用 karma jasmine 进行 unit test
