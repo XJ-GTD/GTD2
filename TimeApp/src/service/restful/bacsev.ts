@@ -110,7 +110,7 @@ export class BackupProSub {
   //获取用户偏好
   y: Array<YTbl> = new Array<YTbl>();
   //新版备忘表数据
-  memo: Array<MomTbl> = new Array<MomTbl>();
+  mom: Array<MomTbl> = new Array<MomTbl>();
   //分批备份最后一次设为true
   commit: boolean = false;
 
@@ -172,5 +172,5 @@ export class OutRecoverPro {
   //用户偏好
   y: Array<YTbl> = new Array<YTbl>();
    //新版备忘表数据
-  memo: Array<MomTbl> = new Array<MomTbl>();
+  mom: Array<MomTbl> = new Array<MomTbl>();
 }

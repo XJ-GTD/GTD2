@@ -63,6 +63,8 @@ export class MemoService extends BaseService {
 		sqls.push(`delete * from gtd_mk where obt = '${ObjectType.Calendar}' and obi ='${moi}';`);
 		//删除参与人表
 		sqls.push(`delete * from gtd_d where obt = '${ObjectType.Calendar}' and obi ='${moi}';`);
+		//删除消息表
+		sqls.push(`delete * from gtd_wa where obt = '${ObjectType.Calendar}' and obi ='${moi}';`);
 		await this.sqlExce.batExecSqlByParam(sqls);
 	}
 	/**
@@ -94,17 +96,16 @@ export class MemoService extends BaseService {
 	 * 备份备忘到服务器
 	 * @author ying
 	 */
-	async backup() {
+	async backup(bts: Number) {
 		let backupPro: BackupPro = new BackupPro();
 		//操作账户ID
 		backupPro.oai = UserConfig.account.id
 		//操作手机号码
 		backupPro.ompn = UserConfig.account.phone;
 		//时间戳
-		backupPro.d.bts = moment().unix();
+		backupPro.d.bts =bts;
 		let mom = new MomTbl();
-		//TODO 此处是否要新增逻辑判断只有未同步的数据,才会同步到服务器,暂时不做处理,后续变动
-		backupPro.d.memo = await this.sqlExce.getLstByParam<MomTbl>(mom);
+		backupPro.d.mom = await this.sqlExce.getLstByParam<MomTbl>(mom);
 		await this.bacRestful.backup(backupPro);
 	}
 	/**
@@ -118,16 +119,19 @@ export class MemoService extends BaseService {
 		//操作手机号码
 		recoverPro.ompn = UserConfig.account.phone;
 		recoverPro.d.bts = bts;
+		let rdn = new Array < string > ();
+		rdn.push('mom');
+		recoverPro.d.rdn = rdn;
 		let outRecoverPro: OutRecoverPro = await this.bacRestful.recover(recoverPro);
 		let mom = new MomTbl();
 		let sqls = new Array < string > ();
 		//先删除
 		await this.sqlExce.dropByParam(mom);
-		//在同步新的数据
-		for(let j = 0, len = outRecoverPro.memo.length; j < len; j++) {
-			let moi = new MomTbl();
-			Object.assign(moi, outRecoverPro.memo[j]);
-			sqls.push(moi.inTParam());
+		//恢复数据
+		for(let j = 0, len = outRecoverPro.mom.length; j < len; j++) {
+			let mom = new MomTbl();
+			Object.assign(mom, outRecoverPro.mom[j]);
+			sqls.push(mom.inTParam());
 		}
 		await this.sqlExce.batExecSql(sqls);
 	}
