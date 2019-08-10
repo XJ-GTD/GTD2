@@ -2,7 +2,10 @@ import {} from 'jasmine';
 import { TestBed, async } from '@angular/core/testing';
 import {StatusBar} from '@ionic-native/status-bar';
 import {SplashScreen} from '@ionic-native/splash-screen';
-import { Platform } from 'ionic-angular';
+import {
+  IonicModule,
+  Platform
+} from 'ionic-angular';
 
 import {
   PlatformMock,
