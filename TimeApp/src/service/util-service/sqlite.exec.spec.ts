@@ -18,6 +18,8 @@ import {SqliteConfig} from "../config/sqlite.config";
 import {UtilService} from "../util-service/util.service";
 import { SqliteExec } from "./sqlite.exec";
 
+import {YTbl} from "../sqlite/tbl/y.tbl";
+
 /**
  * Sqlite工具类 持续集成CI 自动测试Case
  * 确保问题修复的过程中, 保持原有逻辑的稳定
