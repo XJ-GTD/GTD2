@@ -48,6 +48,12 @@ describe('UtilService test suite', () => {
     export(utilService.mask('13387322344', 4, 4)).toBe('133****2344');
   });
 
+  it('Case 2 - 1 randInt(0, 10) without Error', () => {
+    expect(function() {
+      utilService.randInt(0, 10);
+    }).not.toThrow();
+  });
+
   it(`Case 1 - 2 '0 <= rand(0, 10) <= 10'`, () => {
     expect(utilService.rand(0, 10)).toBeLessThanOrEqual(10);
     expect(utilService.rand(0, 10)).toBeGreaterThanOrEqual(0);
