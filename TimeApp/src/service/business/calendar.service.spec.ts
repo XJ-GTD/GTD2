@@ -23,6 +23,7 @@ import {SqliteConfig} from "../config/sqlite.config";
 import {EmitService} from "../util-service/emit.service";
 import {UtilService} from "../util-service/util.service";
 import { SqliteExec } from "../util-service/sqlite.exec";
+import { RestfulClient } from "../util-service/restful.client";
 import { ShaeRestful } from "../restful/shaesev";
 
 import { CalendarService, PlanData, PlanType } from "./calendar.service";
@@ -59,6 +60,7 @@ describe('CalendarService test suite', () => {
         UtilService,
         EmitService,
         ShaeRestful,
+        RestfulClient,
         { provide: StatusBar, useClass: StatusBarMock },
         { provide: SplashScreen, useClass: SplashScreenMock },
         { provide: Platform, useClass: PlatformMock }
