@@ -53,4 +53,8 @@ describe('BaseService test suite', () => {
       baseService.assertEmpty(null);
     }).toThrow();
   });
+
+  afterAll(() => {
+    TestBed.resetTestingModule();
+  });
 });
