@@ -11,6 +11,8 @@ import {
   ToastController
 } from "ionic-angular";
 
+import {MyApp} from '../../app/app.component';
+
 import { UtilService } from "./util.service";
 
 /**
@@ -27,7 +29,7 @@ describe('UtilService test suite', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [
-        IonicModule.forRoot()
+        IonicModule.forRoot(MyApp)
       ],
       providers: [
         Device,
