@@ -3,6 +3,7 @@ import { TestBed, async } from '@angular/core/testing';
 
 import {Device} from "@ionic-native/device";
 import {
+  IonicModule,
   AlertController,
   LoadingController,
   PopoverController,
@@ -24,6 +25,9 @@ describe('UtilService test suite', () => {
   let utilService: UtilService;
   beforeEach(async(() => {
     TestBed.configureTestingModule({
+      imports: [
+        IonicModule.forRoot()
+      ],
       providers: [
         Device,
         AlertController,
