@@ -2,6 +2,8 @@ import {} from 'jasmine';
 import { TestBed, async } from '@angular/core/testing';
 
 import {Device} from "@ionic-native/device";
+import {SQLite} from "@ionic-native/sqlite";
+
 import {
   IonicModule,
   Platform,
@@ -39,6 +41,7 @@ describe('SqliteExec test suite', () => {
         PopoverController,
         ToastController,
         UtilService,
+        SQLite,
         SQLitePorter,
         SqliteConfig,
         SqliteExec
