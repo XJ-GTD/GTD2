@@ -51,7 +51,7 @@ describe('CalendarService test suite', () => {
     });
   }));
 
-  beforeEach(() => {
+  beforeEach(async () => {
     config = TestBed.get(SqliteConfig);
     await config.generateDb();
 
