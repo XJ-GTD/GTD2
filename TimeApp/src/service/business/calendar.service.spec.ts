@@ -1,6 +1,7 @@
 import {} from 'jasmine';
 import { TestBed, async } from '@angular/core/testing';
 
+import {Device} from "@ionic-native/device";
 import {SQLite} from "@ionic-native/sqlite";
 import {SQLitePorter} from "@ionic-native/sqlite-porter";
 import {StatusBar} from '@ionic-native/status-bar';
@@ -48,6 +49,7 @@ describe('CalendarService test suite', () => {
       ],
       providers: [
         CalendarService,
+        Device,
         SQLite,
         SQLitePorter,
         SqliteConfig,
