@@ -19,7 +19,7 @@ export class MemoService extends BaseService {
 	 * 保存或者更新备忘
 	 * @author ying<343253410@qq.com>
 	 */
-	async saveMemo(memo: MemoData): Promise < MemoData > {
+	async saveMemo(memo: MemoData): Promise <MemoData> {
 		this.assertEmpty(memo); // 对象不能为空
 		this.assertEmpty(memo.mon); // 备忘内容不能为空
 		if (memo.moi) {
