@@ -24,6 +24,14 @@ describe('BaseService test suite', () => {
     baseService = TestBed.get(BaseService);
   });
 
+  it('Case 1 - 4 assertEmpty('has string')', () => {
+    expect(baseService.assertEmpty('has string')).not.toThrow();
+  });
+
+  it('Case 1 - 3 assertEmpty('')', () => {
+    expect(baseService.assertEmpty('')).toThrow();
+  });
+
   it('Case 1 - 2 assertEmpty(undefined)', () => {
     expect(baseService.assertEmpty(undefined)).toThrow();
   });
