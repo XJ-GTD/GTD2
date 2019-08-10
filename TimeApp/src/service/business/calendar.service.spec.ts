@@ -20,7 +20,7 @@ import {MyApp} from '../../app/app.component';
 import {SqliteConfig} from "../config/sqlite.config";
 
 import {UtilService} from "../util-service/util.service";
-import { SqliteExec } from "./sqlite.exec";
+import { SqliteExec } from "../util-service/sqlite.exec";
 
 import { CalendarService, PlanData, PlanType } from "./calendar.service";
 
