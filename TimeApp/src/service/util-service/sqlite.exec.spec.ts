@@ -32,7 +32,9 @@ import {YTbl} from "../sqlite/tbl/y.tbl";
  * @author leon_xi@163.com
  **/
 describe('SqliteExec test suite', () => {
+  let config: SqliteConfig;
   let sqlExce: SqliteExec;
+
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [
@@ -56,7 +58,9 @@ describe('SqliteExec test suite', () => {
     });
   }));
 
-  beforeEach(() => {
+  beforeEach(async () => {
+    config = TestBed.get(SqliteConfig);
+    await config.generateDb();
     sqlExce = TestBed.get(SqliteExec);
   });
 
