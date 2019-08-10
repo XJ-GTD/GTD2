@@ -3,8 +3,8 @@ import { BaseService } from "./base.service";
 import { SqliteExec } from "../util-service/sqlite.exec";
 import { UtilService } from "../util-service/util.service";
 import { MomTbl } from "../sqlite/tbl/mom.tbl";
-import { BackupPro, BacRestful, OutRecoverPro, RecoverPro } from "../../service/restful/bacsev";
-import { UserConfig } from "../../service/config/user.config";
+import { BackupPro, BacRestful, OutRecoverPro, RecoverPro } from "../restful/bacsev";
+import { UserConfig } from "../config/user.config";
 import * as moment from "moment";
 
 @Injectable()
@@ -14,7 +14,7 @@ export class MemoService extends BaseService {
 		private util: UtilService) {
 		super();
 	}
-		
+
 	/**
 	 * 保存或者更新备忘
 	 * @author ying<343253410@qq.com>
@@ -36,7 +36,7 @@ export class MemoService extends BaseService {
 		}
 		return memo;
 	}
-	
+
 	/**
 	 *  更新备忘计划,只是更新计划ID
 	 * @author ying<343253410@qq.com>
@@ -50,7 +50,7 @@ export class MemoService extends BaseService {
 		await this.sqlExce.updateByParam(memodb);
 		return ;
 	}
-	
+
 	/**
 	 * 删除备忘
 	 * @author ying<343253410@qq.com>
@@ -72,37 +72,37 @@ export class MemoService extends BaseService {
 		await this.sqlExce.batExecSqlByParam(sqls);
 		return ;
 	}
-	
+
 	/**
 	 * 发送备忘进行共享.
 	 * @author ying<343253410@qq.com>
 	 */
 	sendMemo() {}
-	
+
 	/**
 	 * 接收共享备忘
 	 * @author ying<343253410@qq.com>
 	 */
 	receivedMemo() {}
-	
+
 	/**
 	 * 同步备忘到服务器
 	 * @author ying<343253410@qq.com>
 	 */
 	syncMemo() {}
-	
+
 	/**
 	 * 未同步备忘,同步到服务器
 	 * @author ying<343253410@qq.com>
 	 */
 	syncMemos() {}
-	
+
 	/**
 	 * 服务器发送一个链接,然后客户端进行分享
 	 * @author ying<343253410@qq.com>
 	 */
 	shareMemo() {}
-	
+
 	/**
 	 * 备份备忘到服务器
 	 * @author ying<343253410@qq.com>
@@ -120,7 +120,7 @@ export class MemoService extends BaseService {
 		await this.bacRestful.backup(backupPro);
 		return ;
 	}
-	
+
 	/**
 	 * 恢复备忘,根据服务器同步到客户端
 	 * @author ying<343253410@qq.com>

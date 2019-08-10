@@ -31,13 +31,13 @@ import { SqliteExec } from "../util-service/sqlite.exec";
 import { RestfulClient } from "../util-service/restful.client";
 import {NetworkService} from "../cordova/network.service";
 import { ShaeRestful } from "../restful/shaesev";
-import { AgdRestful } from "../restful/agdsev";
+import { BacRestful } from "../restful/bacsev";
 
 import { CalendarService, PlanData, PlanType } from "./calendar.service";
-import { EventService } from "./event.service";
+import { MemoService } from "./memo.service";
 
 /**
- * 事件Service 持续集成CI 自动测试Case
+ * 备忘Service 持续集成CI 自动测试Case
  * 确保问题修复的过程中, 保持原有逻辑的稳定
  *
  * 使用 karma jasmine 进行 unit test
@@ -45,9 +45,9 @@ import { EventService } from "./event.service";
  *
  * @author leon_xi@163.com
  **/
-describe('EventService test suite', () => {
+describe('MemoService test suite', () => {
   let config: SqliteConfig;
-  let eventService: EventService;
+  let memoService: MemoService;
   let planforUpdate: PlanData;
 
   beforeEach(async(() => {
@@ -60,7 +60,7 @@ describe('EventService test suite', () => {
         HttpClientTestingModule
       ],
       providers: [
-        EventService,
+        MemoService,
         CalendarService,
         Device,
         SQLite,
@@ -70,7 +70,7 @@ describe('EventService test suite', () => {
         UtilService,
         EmitService,
         ShaeRestful,
-        AgdRestful,
+        BacRestful,
         Network,
         HTTP,
         HttpClient,
@@ -88,11 +88,11 @@ describe('EventService test suite', () => {
     config = TestBed.get(SqliteConfig);
     await config.generateDb();
 
-    eventService = TestBed.get(EventService);
+    memoService = TestBed.get(MemoService);
   });
 
   // 需要同步执行
   it('Case 1 - 1 service should be created', () => {
-    expect(eventService).toBeTruthy();
+    expect(memoService).toBeTruthy();
   });
 });
