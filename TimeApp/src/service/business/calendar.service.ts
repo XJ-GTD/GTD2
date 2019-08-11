@@ -219,7 +219,7 @@ export class CalendarService extends BaseService {
    **/
   async fetchAllPlans(jts:Array<PlanType> = []): Promise<Array<PlanData>> {
 
-    let sql: string = `select * from gtd_j_h ${(jts && jts.length > 0)? ('where jt in (' + jts.join(', ') + ')') : ''} order by jt asc, wtt desc`;
+    let sql: string = `select * from gtd_jha ${(jts && jts.length > 0)? ('where jt in (' + jts.join(', ') + ')') : ''} order by jt asc, wtt desc`;
 
     let plans: Array<PlanData> = await this.sqlExce.getExtList<PlanData>(sql);
 
