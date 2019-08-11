@@ -319,12 +319,12 @@ export class EventService extends BaseService {
   	this.assertEmpty(evi); 
   	let tdb: TTbl = new TTbl();
 		tdb.evi = evi;
-		await this.sqlExce.getOneByParam(tdb);
+		tdb =	await this.sqlExce.getOneByParam(tdb);
 		if (tdb.isrt=="1") {
 			//获取当前的事件
 			let evdb: EvTbl = new EvTbl();
 			evdb.evi=evi;
-			await this.sqlExce.getOneByParam(evdb);
+			evdb = await this.sqlExce.getOneByParam(evdb);
 			let evdbnew: EvTbl = new EvTbl();
 			Object.assign(evdbnew, evdb);
 			//创建新的任务事件
