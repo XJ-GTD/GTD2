@@ -87,6 +87,7 @@ describe('CalendarService test suite', () => {
     calendarService = TestBed.get(CalendarService);
   });
 
+  // 需要同步执行
   it(`Case 1 - 8 fetchPrivatePlans check prev saved private plan`, async () => {
     let plans = await calendarService.fetchPrivatePlans();
 
@@ -94,7 +95,7 @@ describe('CalendarService test suite', () => {
     expect(plans.length).toBeGreaterThan(0);
 
     if (plans && plans.length > 0) {
-      let plan: PlanData = plans.get(0);
+      let plan: PlanData = plans[0];
 
       expect(plan).toBeDefined();
 
@@ -113,7 +114,7 @@ describe('CalendarService test suite', () => {
     expect(plans.length).toBeGreaterThan(0);
 
     if (plans && plans.length > 0) {
-      let plan: PlanData = plans.get(0);
+      let plan: PlanData = plans[0];
 
       expect(plan).toBeDefined();
 
