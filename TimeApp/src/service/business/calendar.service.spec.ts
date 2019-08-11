@@ -118,7 +118,10 @@ describe('CalendarService test suite', () => {
     memo.sd = "2019/08/11";
     memo.mon = "结婚纪念日买了一块定制巧克力给太太, 太太很高兴";
 
-    await memoService.saveMemo(memo);
+    memo = await memoService.saveMemo(memo);
+
+    expect(memo).toBeDefined();
+    expect(memo.moi).toBeDefined();
 
     let monthActivity: MonthActivityData = await calendarService.fetchMonthActivities("2019/08");
 
