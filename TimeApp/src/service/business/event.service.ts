@@ -11,7 +11,7 @@ import * as moment from "moment";
 import {ETbl} from "../sqlite/tbl/e.tbl";
 import {EmitService} from "../util-service/emit.service";
 import {WaTbl} from "../sqlite/tbl/wa.tbl";
-import anyenum  from "../../data.enum";
+import * as anyenum from "../../data.enum";
 
 @Injectable()
 export class EventService extends BaseService {
@@ -57,7 +57,7 @@ export class EventService extends BaseService {
 
         //如果网络正常提交到服务器，则更新同步标志
         if (rst !=  -1){
-          let sq =`update gtd_ev set wtt = ${moment().unix()} , tb = ${anyenum.SyncType.synch} 
+          let sq =`update gtd_ev set wtt = ${moment().unix()} , tb = ${anyenum.SyncType.synch}
           where rtevi = ${retParamEv.rtevi} ;`;
 
           await  this.sqlExce.execSql(sq);
@@ -231,7 +231,7 @@ export class EventService extends BaseService {
     ret.push(ca.rpTParam());
     return ret;
   }
-  
+
 	/**
 	 * 创建更新任务
 	 * @author ying<343253410@qq.com>
@@ -270,7 +270,7 @@ export class EventService extends BaseService {
 		}
 		return txx;
   }
-  
+
   /**
 	 * 创建更新小任务
 	 * @author ying<343253410@qq.com>
@@ -289,12 +289,12 @@ export class EventService extends BaseService {
 		}
 		return minitask;
   }
-  
+
   updateEventPlan() {}
   updateEventRemind() {}
   updateEventRepeat() {}
   removeEvent() {}
-  
+
   /**
 	 * 完成任务
 	 * @author ying<343253410@qq.com>
@@ -310,13 +310,13 @@ export class EventService extends BaseService {
 		//this.emitService.emit(`mwxing.event.task.finish`);
 		return tdb.isrt;
   }
-  
+
   /**
    * 当是自动创建的任务的情况下,进行下一步操作
    * @author ying<343253410@qq.com>
    */
   async finishTaskNext(evi: string){
-  	this.assertEmpty(evi); 
+  	this.assertEmpty(evi);
   	let tdb: TTbl = new TTbl();
 		tdb.evi = evi;
 		tdb =	await this.sqlExce.getOneByParam(tdb);
@@ -341,38 +341,38 @@ export class EventService extends BaseService {
 		}
 		return ;
   }
-  
+
   sendEvent() {}
   receivedEvent() {}
   acceptReceivedEvent() {}
   rejectReceivedEvent() {}
   syncEvent() {}
   syncEvents() {}
-  
+
   /**
 	 * 检索任务
 	 * @author ying<343253410@qq.com>
 	 */
   fetchPagedTasks() {}
-  
+
   /**
 	 * 检索完成任务
 	 * @author ying<343253410@qq.com>
 	 */
   fetchPagedCompletedTasks() {}
-  
+
   /**
 	 * 检索未完成的任务
 	 * @author ying<343253410@qq.com>
 	 */
   fetchPagedUncompletedTasks() {}
-  
+
   /**
    * 备份,三张表备份
 	 * @author ying<343253410@qq.com>
    */
   backup() {}
-  
+
   /**
    * 恢复
 	 * @author ying<343253410@qq.com>
@@ -416,4 +416,3 @@ class TxJson {
 	eventData: EventData = {} as EventData;
 	isrt: string = "";
 }
-
