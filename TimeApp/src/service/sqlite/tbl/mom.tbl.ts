@@ -17,17 +17,17 @@ export class MomTbl implements ITblParam {
 
   cTParam():string {
 
-    let sq =`create table if not exists gtd_mom(    
+    let sq =`create table if not exists gtd_mom(
      moi varchar(50) PRIMARY KEY
-     ,ji varchar(50) 
-      ,sd varchar(50) 
-     ,mon varchar(50) 
-     ,mk varchar(50) 
-     ,fj varchar(50) 
-     ,tb varchar(4) 
-     ,del varchar(4) 
-     ,wtt integer 
-     ,utt integer 
+     ,ji varchar(50)
+      ,sd varchar(50)
+     ,mon varchar(50)
+     ,mk varchar(50)
+     ,fj varchar(50)
+     ,tb varchar(4)
+     ,del varchar(4)
+     ,wtt integer
+     ,utt integer
      );`;
 
     return sq;
@@ -109,17 +109,19 @@ export class MomTbl implements ITblParam {
 
   inTParam():any {
     let params = new Array<any>();
-    let sq =`insert into gtd_mom 
-       (  moi ,ji ,sd,mon ,mk ,fj ,tb,del,wtt ,utt) 
-       values(?,?,${moment().format('YYYY/MM/DD')},?,?,?,?,?,${moment().unix()},${moment().unix()});`;
+    let sq =`insert into gtd_mom
+       (  moi ,ji ,sd,mon ,mk ,fj ,tb,del,wtt ,utt)
+       values(?,?,?,?,?,?,?,?,?,?);`;
     params.push(this.moi);
     params.push(this.ji);
+    params.push(moment().format('YYYY/MM/DD'));
     params.push(this.mon);
     params.push(this.mk);
     params.push(this.fj);
     params.push(this.tb);
     params.push(this.del);
-
+    params.push(moment().unix());
+    params.push(moment().unix());
 
     let ret = new Array<any>();
     ret.push(sq);
@@ -129,8 +131,8 @@ export class MomTbl implements ITblParam {
 
   rpTParam():any {
     let params = new Array<any>();
-    let sq =`replace into gtd_mom 
-       (  moi ,ji ,sd,mon ,mk ,fj ,tb,del, ,wtt ,utt) 
+    let sq =`replace into gtd_mom
+       (  moi ,ji ,sd,mon ,mk ,fj ,tb,del, ,wtt ,utt)
        values(?,?,${moment().format('YYYY/MM/DD')},?,?,?,?,?,${moment().unix()},${moment().unix()});`;
     params.push(this.moi);
     params.push(this.ji);
