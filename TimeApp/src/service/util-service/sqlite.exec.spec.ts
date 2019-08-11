@@ -58,11 +58,14 @@ describe('SqliteExec test suite', () => {
     });
   }));
 
-  beforeEach(async(async () => {
+  beforeAll(async(async () => {
     config = TestBed.get(SqliteConfig);
     await config.generateDb();
-    sqlExce = TestBed.get(SqliteExec);
   }));
+
+  beforeEach(() => {
+    sqlExce = TestBed.get(SqliteExec);
+  });
 
   it('Case 1 - 1 create() without Error', async(() => {
     expect(function() {
