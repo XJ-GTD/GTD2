@@ -14,7 +14,7 @@ import { BaseService } from "./base.service";
  **/
 describe('BaseService test suite', () => {
   let baseService: BaseService;
-  beforeAll(async(() => {
+  beforeEach(async(() => {
     TestBed.configureTestingModule({
       providers: [BaseService]
     });

@@ -50,7 +50,7 @@ describe('MemoService test suite', () => {
   let memoService: MemoService;
   let planforUpdate: PlanData;
 
-  beforeAll(async(() => {
+  beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [
         MyApp
@@ -84,7 +84,7 @@ describe('MemoService test suite', () => {
     });
   }));
 
-  beforeAll(async () => {
+  beforeEach(async () => {
     config = TestBed.get(SqliteConfig);
     await config.generateDb();
   });

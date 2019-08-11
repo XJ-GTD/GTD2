@@ -52,7 +52,7 @@ describe('CalendarService test suite', () => {
   let planforUpdate: PlanData;
 
   // 所有测试case执行前, 只执行一次
-  beforeAll(async(() => {
+  beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [
         MyApp
@@ -87,7 +87,7 @@ describe('CalendarService test suite', () => {
   }));
 
   // 所有测试case执行前, 只执行一次
-  beforeAll(async () => {
+  beforeEach(async () => {
     config = TestBed.get(SqliteConfig);
     init = TestBed.get(SqliteInit);
     await config.generateDb();

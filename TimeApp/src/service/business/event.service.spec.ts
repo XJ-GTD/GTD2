@@ -50,7 +50,7 @@ describe('EventService test suite', () => {
   let eventService: EventService;
   let planforUpdate: PlanData;
 
-  beforeAll(async(() => {
+  beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [
         MyApp
@@ -84,7 +84,7 @@ describe('EventService test suite', () => {
     });
   }));
 
-  beforeAll(async () => {
+  beforeEach(async () => {
     config = TestBed.get(SqliteConfig);
     await config.generateDb();
   });

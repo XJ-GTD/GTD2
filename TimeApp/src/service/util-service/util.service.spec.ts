@@ -26,7 +26,7 @@ import { UtilService } from "./util.service";
  **/
 describe('UtilService test suite', () => {
   let utilService: UtilService;
-  beforeAll(async(() => {
+  beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [
         MyApp
