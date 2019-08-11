@@ -32,7 +32,7 @@ import { RestfulClient } from "../../util-service/restful.client";
 import {NetworkService} from "../../cordova/network.service";
 
 /**
- * 备忘Service 持续集成CI 自动测试Case
+ * 新增数据库表 持续集成CI 自动测试Case
  * 确保问题修复的过程中, 保持原有逻辑的稳定
  *
  * 使用 karma jasmine 进行 unit test
@@ -40,7 +40,7 @@ import {NetworkService} from "../../cordova/network.service";
  *
  * @author leon_xi@163.com
  **/
-describe('MemoService test suite', () => {
+describe('ITblParam tables test suite', () => {
   let config: SqliteConfig;
   let sqlExce: SqliteExec;
 
