@@ -244,7 +244,7 @@ export class CalendarService extends BaseService {
    *
    * @author leon_xi@163.com
    **/
-  async asyncfetchPublicPlans(): Promise<Array<PlanData>> {
+  async fetchPublicPlans(): Promise<Array<PlanData>> {
     return await this.fetchAllPlans([PlanType.CalendarPlan, PlanType.ActivityPlan]);
   }
 
