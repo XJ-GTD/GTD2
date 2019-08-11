@@ -48,7 +48,7 @@ describe('CalendarService test suite', () => {
   let calendarService: CalendarService;
   let planforUpdate: PlanData;
 
-  beforeEach(async(() => {
+  beforeAll(async(() => {
     TestBed.configureTestingModule({
       declarations: [
         MyApp
@@ -80,7 +80,7 @@ describe('CalendarService test suite', () => {
     });
   }));
 
-  beforeEach(async () => {
+  beforeAll(async () => {
     config = TestBed.get(SqliteConfig);
     await config.generateDb();
 
@@ -187,5 +187,9 @@ describe('CalendarService test suite', () => {
   // 需要同步执行
   it('Case 1 - 1 service should be created', () => {
     expect(calendarService).toBeTruthy();
+  });
+
+  afterAll(() => {
+    TestBed.resetTestingModule();
   });
 });
