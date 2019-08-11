@@ -417,7 +417,7 @@ export class CalendarService extends BaseService {
 
     monthActivity.calendaritems = await this.sqlExce.getExtList<PlanItemData>(sqlcalitems);
 
-    let sqlevents: string = `select * from gtd_ev where substr(sd, 1, 7) = '${month}' order by sd asc, st asc`;
+    let sqlevents: string = `select * from gtd_ev where substr(evd, 1, 7) = '${month}' order by evd asc, st asc`;
 
     monthActivity.events = await this.sqlExce.getExtList<EventData>(sqlevents);
 
