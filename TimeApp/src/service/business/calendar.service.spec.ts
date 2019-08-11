@@ -132,7 +132,7 @@ describe('CalendarService test suite', () => {
   });
 
   // 需要同步执行
-  it(`Case 3 - 3 fetchMonthActivities with precreated events`, async () => {
+  xit(`Case 3 - 3 fetchMonthActivities with precreated events`, async () => {
     // 日程
     let agenda: AgendaData = {} as AgendaData;
 
