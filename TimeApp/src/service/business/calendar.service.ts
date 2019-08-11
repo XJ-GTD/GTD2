@@ -470,6 +470,8 @@ export class CalendarService extends BaseService {
 
     let dayActivity: DayActivityData = {} as DayActivityData;
 
+    dayActivity.day = day;
+
     let sqlcalitems: string = `select * from gtd_jta where sd = '${day}' order by st asc`;
 
     dayActivity.calendaritems = await this.sqlExce.getExtList<PlanItemData>(sqlcalitems);
