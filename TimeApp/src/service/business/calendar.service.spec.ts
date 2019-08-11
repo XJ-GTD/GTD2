@@ -198,7 +198,7 @@ describe('CalendarService test suite', () => {
 
       if (plan) {
         expect(plan.ji).toBeDefined();
-        expect(plan.jc).toBe('#1a1a1a');
+        expect(plan.jc).toBe('#f1f1f1');
       }
     }
   });
