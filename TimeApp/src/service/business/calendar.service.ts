@@ -57,7 +57,23 @@ export class CalendarService extends BaseService {
     return plan;
   }
 
+  /**
+   * 更新日历颜色
+   *
+   * @author leon_xi@163.com
+   **/
   async updatePlanColor(ji: string, jc: string) {
+
+    this.assertEmpty(ji);   // 计划ID不能为空
+    this.assertEmpty(jc);   // 颜色不能为空
+
+    let plandb: JhaTbl = new JhaTbl();
+
+    plandb.ji = ji;
+    plandb.jc = jc;
+
+    await this.sqlExce.updateByParam(plandb);
+
     return;
   }
 
