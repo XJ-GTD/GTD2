@@ -99,7 +99,7 @@ describe('CalendarService test suite', () => {
   });
 
   // 需要同步执行
-  it(`Case 1 - 10 fetchPublicPlans check prev saved private plans`, async () => {
+  it(`Case 1 - 12 fetchPublicPlans check prev saved private plans`, async () => {
     // 新建日历
     let plan: PlanData = {} as PlanData;
 
@@ -114,6 +114,85 @@ describe('CalendarService test suite', () => {
 
     expect(plans).toBeDefined();
     expect(plans.length).toBe(0);
+  });
+
+  // 需要同步执行
+  it(`Case 1 - 11 fetchPublicPlans check prev saved public plans and sort`, async () => {
+    // 新建日历
+    // 基本日历
+    let plan: PlanData = {} as PlanData;
+
+    plan.jn = '农历节气 自动测试';
+    plan.jc = '#a1a1a1';
+    plan.jt = PlanType.CalendarPlan;
+
+    await calendarService.savePlan(plan);
+
+    // 活动日历
+    plan = {} as PlanData;
+
+    plan.jn = '2019年动漫展 自动测试';
+    plan.jc = '#ababab';
+    plan.jt = PlanType.ActivityPlan;
+
+    await calendarService.savePlan(plan);
+
+    // 获取保存的日历
+    let plans = await calendarService.fetchPublicPlans();
+
+    expect(plans).toBeDefined();
+    expect(plans.length).toBeGreaterThan(0);
+    expect(plans.length).toBe(2);
+
+    if (plans && plans.length > 0) {
+      let plan: PlanData = plans[0];
+
+      expect(plan).toBeDefined();
+
+      if (plan) {
+        expect(plan.ji).toBeDefined();
+        expect(plan.jc).toBe('#a1a1a1');
+      }
+
+      // 测试排序
+      plan = plans[1];
+
+      expect(plan).toBeDefined();
+
+      if (plan) {
+        expect(plan.ji).toBeDefined();
+        expect(plan.jc).toBe('#ababab');
+      }
+    }
+  });
+
+  // 需要同步执行
+  it(`Case 1 - 10 fetchPublicPlans check prev saved public activity plans`, async () => {
+    // 新建日历
+    let plan: PlanData = {} as PlanData;
+
+    plan.jn = '2019年动漫展 自动测试';
+    plan.jc = '#ababab';
+    plan.jt = PlanType.ActivityPlan;
+
+    await calendarService.savePlan(plan);
+
+    // 获取保存的日历
+    let plans = await calendarService.fetchPublicPlans();
+
+    expect(plans).toBeDefined();
+    expect(plans.length).toBeGreaterThan(0);
+
+    if (plans && plans.length > 0) {
+      let plan: PlanData = plans[0];
+
+      expect(plan).toBeDefined();
+
+      if (plan) {
+        expect(plan.ji).toBeDefined();
+        expect(plan.jc).toBe('#ababab');
+      }
+    }
   });
 
   // 需要同步执行
