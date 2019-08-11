@@ -409,7 +409,7 @@ export class CalendarService extends BaseService {
 
     this.assertEmpty(month);    // 入参不能为空
 
-    let monthActivity: MonthActivityData = {} as MonthActivityData;
+    let monthActivity: MonthActivityData = new MonthActivityData();
 
     monthActivity.month = month;
 
@@ -450,7 +450,7 @@ export class CalendarService extends BaseService {
                               0 bookedtimesummary
                       from (select '${day}' sd) gday
                           left join gtd_jta gjt on gday.sd = gjt.sd
-                          left join gtd_ev gev on gday.sd = gev.sd
+                          left join gtd_ev gev on gday.sd = gev.evd
                           left join gtd_mom gmo on gday.sd = gmo.sd
                       group by gday.sd`;
 
@@ -468,7 +468,7 @@ export class CalendarService extends BaseService {
 
     this.assertEmpty(day);
 
-    let dayActivity: DayActivityData = {} as DayActivityData;
+    let dayActivity: DayActivityData = new DayActivityData();
 
     dayActivity.day = day;
 
