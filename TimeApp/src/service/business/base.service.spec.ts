@@ -14,13 +14,13 @@ import { BaseService } from "./base.service";
  **/
 describe('BaseService test suite', () => {
   let baseService: BaseService;
-  beforeEach(async(() => {
+  beforeAll(async(() => {
     TestBed.configureTestingModule({
       providers: [BaseService]
     });
   }));
 
-  beforeEach(() => {
+  beforeAll(() => {
     baseService = TestBed.get(BaseService);
   });
 

@@ -35,7 +35,7 @@ describe('SqliteExec test suite', () => {
   let config: SqliteConfig;
   let sqlExce: SqliteExec;
 
-  beforeEach(async(() => {
+  beforeAll(async(() => {
     TestBed.configureTestingModule({
       declarations: [
         MyApp
@@ -58,7 +58,7 @@ describe('SqliteExec test suite', () => {
     });
   }));
 
-  beforeEach(async(async () => {
+  beforeAll(async(async () => {
     config = TestBed.get(SqliteConfig);
     await config.generateDb();
     sqlExce = TestBed.get(SqliteExec);

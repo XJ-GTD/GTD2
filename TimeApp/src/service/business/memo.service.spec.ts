@@ -50,7 +50,7 @@ describe('MemoService test suite', () => {
   let memoService: MemoService;
   let planforUpdate: PlanData;
 
-  beforeEach(async(() => {
+  beforeAll(async(() => {
     TestBed.configureTestingModule({
       declarations: [
         MyApp
@@ -84,7 +84,7 @@ describe('MemoService test suite', () => {
     });
   }));
 
-  beforeEach(async () => {
+  beforeAll(async () => {
     config = TestBed.get(SqliteConfig);
     await config.generateDb();
 
@@ -94,5 +94,9 @@ describe('MemoService test suite', () => {
   // 需要同步执行
   it('Case 1 - 1 service should be created', () => {
     expect(memoService).toBeTruthy();
+  });
+
+  afterAll(() => {
+    TestBed.resetTestingModule();
   });
 });

@@ -50,7 +50,7 @@ describe('EventService test suite', () => {
   let eventService: EventService;
   let planforUpdate: PlanData;
 
-  beforeEach(async(() => {
+  beforeAll(async(() => {
     TestBed.configureTestingModule({
       declarations: [
         MyApp
@@ -84,7 +84,7 @@ describe('EventService test suite', () => {
     });
   }));
 
-  beforeEach(async () => {
+  beforeAll(async () => {
     config = TestBed.get(SqliteConfig);
     await config.generateDb();
 
@@ -94,5 +94,9 @@ describe('EventService test suite', () => {
   // 需要同步执行
   it('Case 1 - 1 service should be created', () => {
     expect(eventService).toBeTruthy();
+  });
+
+  afterAll(() => {
+    TestBed.resetTestingModule();
   });
 });
