@@ -34,7 +34,7 @@ import {NetworkService} from "../cordova/network.service";
 import { ShaeRestful } from "../restful/shaesev";
 import {SyncRestful} from "../restful/syncsev";
 
-import { CalendarService, PlanData, PlanType } from "./calendar.service";
+import { CalendarService, PlanData, PlanItemData, PlanType } from "./calendar.service";
 
 /**
  * 日历Service 持续集成CI 自动测试Case
