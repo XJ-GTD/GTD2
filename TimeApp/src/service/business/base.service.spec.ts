@@ -20,7 +20,7 @@ describe('BaseService test suite', () => {
     });
   }));
 
-  beforeAll(() => {
+  beforeEach(() => {
     baseService = TestBed.get(BaseService);
   });
 
