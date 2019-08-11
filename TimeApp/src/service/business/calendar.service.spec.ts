@@ -10,6 +10,7 @@ import {SQLite} from "@ionic-native/sqlite";
 import {SQLitePorter} from "@ionic-native/sqlite-porter";
 import {StatusBar} from '@ionic-native/status-bar';
 import {SplashScreen} from '@ionic-native/splash-screen';
+import * as moment from "moment";
 import {
   IonicModule,
   Platform
@@ -115,7 +116,6 @@ describe('CalendarService test suite', () => {
     // 备忘
     let memo: MemoData = {} as MemoData;
 
-    memo.sd = "2019/08/11";
     memo.mon = "结婚纪念日买了一块定制巧克力给太太, 太太很高兴";
 
     memo = await memoService.saveMemo(memo);
@@ -123,10 +123,10 @@ describe('CalendarService test suite', () => {
     expect(memo).toBeDefined();
     expect(memo.moi).toBeDefined();
 
-    let monthActivity: MonthActivityData = await calendarService.fetchMonthActivities("2019/08");
+    let monthActivity: MonthActivityData = await calendarService.fetchMonthActivities(moment().format("YYYY/MM"));
 
     expect(monthActivity).toBeDefined();
-    expect(monthActivity.month).toBe("2019/08");
+    expect(monthActivity.month).toBe(moment().format("YYYY/MM"));
     expect(monthActivity.memos).toBeDefined();
     expect(monthActivity.memos.length).toBeGreaterThan(0);
   });
