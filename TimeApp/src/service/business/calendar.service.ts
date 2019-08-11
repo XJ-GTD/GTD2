@@ -476,11 +476,11 @@ export class CalendarService extends BaseService {
 
     dayActivity.calendaritems = await this.sqlExce.getExtList<PlanItemData>(sqlcalitems);
 
-    let sqlevents: string = `select * from gtd_ev where sd = '${day}' order by st asc`;
+    let sqlevents: string = `select * from gtd_ev where evd = '${day}'`;
 
     dayActivity.events = await this.sqlExce.getExtList<EventData>(sqlevents);
 
-    let sqlmemos: string = `select * from gtd_mom where sd = '${day}' order by st asc`;
+    let sqlmemos: string = `select * from gtd_mom where sd = '${day}'`;
 
     dayActivity.memos = await this.sqlExce.getExtList<MemoData>(sqlmemos);
 
