@@ -87,8 +87,26 @@ describe('CalendarService test suite', () => {
     calendarService = TestBed.get(CalendarService);
   });
 
+  it(`Case 1 - 8 fetchPrivatePlans check prev saved private plan`, async () => {
+    let plans = await calendarService.fetchPrivatePlans();
+
+    expect(plans).toBeDefined();
+    expect(plans.length).toBeGreaterThan(0);
+
+    if (plans && plans.length > 0) {
+      let plan: PlanData = plans.get(0);
+
+      expect(plan).toBeDefined();
+
+      if (plan) {
+        expect(plan.ji).toBeDefined();
+        expect(plan.jc).toBe('#1a1a1a');
+      }
+    }
+  });
+
   // 需要同步执行
-  it(`Case 1 - 7 fetchAllPlans check saved plan`, async () => {
+  it(`Case 1 - 7 fetchAllPlans check prev saved plan`, async () => {
     let plans = await calendarService.fetchAllPlans();
 
     expect(plans).toBeDefined();
