@@ -45,7 +45,7 @@ describe('UtilService test suite', () => {
     });
   }));
 
-  beforeAll(() => {
+  beforeEach(() => {
     utilService = TestBed.get(UtilService);
   });
 
