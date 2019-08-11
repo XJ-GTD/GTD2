@@ -129,6 +129,16 @@ describe('CalendarService test suite', () => {
 
   // 需要同步执行
   it(`Case 1 - 7 fetchAllPlans check prev saved plan`, async () => {
+    // 新建日历
+    let plan: PlanData = {} as PlanData;
+
+    plan.jn = '冥王星服务类 自动测试';
+    plan.jc = '#f1f1f1';
+    plan.jt = PlanType.PrivatePlan;
+
+    await calendarService.savePlan(plan);
+
+    // 获取保存的日历
     let plans = await calendarService.fetchAllPlans();
 
     expect(plans).toBeDefined();
