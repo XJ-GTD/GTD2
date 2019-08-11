@@ -107,7 +107,7 @@ describe('CalendarService test suite', () => {
 
     await calendarService.savePlanItem(planitem);
 
-    let monthActivity: MonthActivityData = await calendarService.fetchMonthActivities();
+    let monthActivity: MonthActivityData = await calendarService.fetchMonthActivities("2019/08");
 
     expect(monthActivity).toBeDefined();
     expect(monthActivity.month).toBe("2019/08");
