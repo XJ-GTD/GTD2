@@ -34,7 +34,7 @@ import {NetworkService} from "../cordova/network.service";
 import { ShaeRestful } from "../restful/shaesev";
 import {SyncRestful} from "../restful/syncsev";
 
-import { CalendarService, PlanData, PlanItemData, PlanType } from "./calendar.service";
+import { CalendarService, PlanData, PlanItemData, MonthActivityData, PlanType } from "./calendar.service";
 
 /**
  * 日历Service 持续集成CI 自动测试Case
@@ -98,12 +98,29 @@ describe('CalendarService test suite', () => {
     calendarService = TestBed.get(CalendarService);
   });
 
-  it(`Case 3 - 1 fetchMonthActivities`, async () => {
+  it(`Case 3 - 2 fetchMonthActivities with precreated plan items`, async () => {
+    // 日历项
+    let planitem: PlanItemData = {} as PlanItemData;
+
+    planitem.sd = "2019/08/11";
+    planitem.jtn = "结婚纪念日";
+
+    await calendarService.savePlanItem(planitem);
+
+    let monthActivity: MonthActivityData = await calendarService.fetchMonthActivities();
+
+    expect(monthActivity).toBeDefined();
+    expect(monthActivity.month).toBe("2019/08");
+    expect(monthActivity.calendaritems).toBeDefined();
+    expect(monthActivity.calendaritems.length).toBeGreaterThan(0);
+  });
+
+  it(`Case 3 - 1 fetchMonthActivities`, async(() => {
     expect(function() {
       calendarService.fetchMonthActivities();
       calendarService.fetchMonthActivities("2019/08");
     }).not.toThrow();
-  });
+  }));
 
   it(`Case 2 - 3 removePlanItem after created`, async () => {
     // 日历项
