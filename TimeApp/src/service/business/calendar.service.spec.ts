@@ -93,6 +93,17 @@ describe('CalendarService test suite', () => {
 
     expect(plans).toBeDefined();
     expect(plans.length).toBeGreaterThan(0);
+
+    if (plans && plans.length > 0) {
+      let plan: PlanData = plans.get(0);
+
+      expect(plan).toBeDefined();
+
+      if (plan) {
+        expect(plan.ji).toBeDefined();
+        expect(plan.jc).toBe('#1a1a1a');
+      }
+    }
   });
 
   // 可以异步执行
