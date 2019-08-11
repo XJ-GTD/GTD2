@@ -87,6 +87,14 @@ describe('CalendarService test suite', () => {
     calendarService = TestBed.get(CalendarService);
   });
 
+  // 需要同步执行
+  it(`Case 1 - 7 fetchAllPlans check saved plan`, async () => {
+    let plans = await calendarService.fetchAllPlans();
+
+    expect(plans).toBeDefined();
+    expect(plans.length).toBeGreaterThan(0);
+  });
+
   // 可以异步执行
   it(`Case 1 - 6 removePlanSqls PlanType.PrivatePlan`, async(() => {
     let result = calendarService.removePlanSqls('ji', PlanType.PrivatePlan);
