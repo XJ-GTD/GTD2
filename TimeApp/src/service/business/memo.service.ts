@@ -74,6 +74,20 @@ export class MemoService extends BaseService {
 	}
 
 	/**
+	 * 根据备忘ID获取备忘
+	 *
+	 * @author leon_xi@163.com
+	 */
+	async getMemo(moi: string): Promise<MemoData> {
+		this.assertEmpty(moi); // id不能为空
+
+		let memodb: MomTbl = new MomTbl();
+		memodb.moi = moi;
+
+		return await this.sqlExce.getOneByParam<MemoData>(memodb);
+	}
+
+	/**
 	 * 发送备忘进行共享.
 	 * @author ying<343253410@qq.com>
 	 */
