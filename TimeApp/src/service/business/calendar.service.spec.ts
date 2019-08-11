@@ -92,7 +92,9 @@ describe('CalendarService test suite', () => {
     init = TestBed.get(SqliteInit);
     await config.generateDb();
     await init.createTables();
+  });
 
+  beforeEach(() => {
     calendarService = TestBed.get(CalendarService);
   });
 

@@ -58,7 +58,7 @@ describe('SqliteExec test suite', () => {
     });
   }));
 
-  beforeAll(async(async () => {
+  beforeEach(async(async () => {
     config = TestBed.get(SqliteConfig);
     await config.generateDb();
     sqlExce = TestBed.get(SqliteExec);

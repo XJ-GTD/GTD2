@@ -87,7 +87,9 @@ describe('MemoService test suite', () => {
   beforeAll(async () => {
     config = TestBed.get(SqliteConfig);
     await config.generateDb();
+  });
 
+  beforeEach(() => {
     memoService = TestBed.get(MemoService);
   });
 

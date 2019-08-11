@@ -87,7 +87,9 @@ describe('EventService test suite', () => {
   beforeAll(async () => {
     config = TestBed.get(SqliteConfig);
     await config.generateDb();
+  });
 
+  beforeEach(() => {
     eventService = TestBed.get(EventService);
   });
 
