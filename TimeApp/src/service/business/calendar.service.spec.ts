@@ -110,6 +110,7 @@ describe('CalendarService test suite', () => {
     memoService = TestBed.get(MemoService);
   });
 
+  // 需要同步执行
   it(`Case 3 - 4 fetchMonthActivities with precreated memos`, async () => {
     // 日历项
     let memo: MemoData = {} as MemoData;
@@ -127,6 +128,7 @@ describe('CalendarService test suite', () => {
     expect(monthActivity.memos.length).toBeGreaterThan(0);
   });
 
+  // 需要同步执行
   it(`Case 3 - 3 fetchMonthActivities with precreated events`, async () => {
     // 日历项
     let agenda: AgendaData = {} as AgendaData;
@@ -144,6 +146,7 @@ describe('CalendarService test suite', () => {
     expect(monthActivity.events.length).toBeGreaterThan(0);
   });
 
+  // 需要同步执行
   it(`Case 3 - 2 fetchMonthActivities with precreated plan items`, async () => {
     // 日历项
     let planitem: PlanItemData = {} as PlanItemData;
@@ -161,6 +164,7 @@ describe('CalendarService test suite', () => {
     expect(monthActivity.calendaritems.length).toBeGreaterThan(0);
   });
 
+  // 可以异步执行
   it(`Case 3 - 1 fetchMonthActivities`, async(() => {
     expect(function() {
       calendarService.fetchMonthActivities();
@@ -168,6 +172,7 @@ describe('CalendarService test suite', () => {
     }).not.toThrow();
   }));
 
+  // 需要同步执行
   it(`Case 2 - 3 removePlanItem after created`, async () => {
     // 基本日历
     let plan: PlanData = {} as PlanData;
@@ -196,6 +201,7 @@ describe('CalendarService test suite', () => {
     expect(results.length).toBe(0);
   });
 
+  // 需要同步执行
   it(`Case 2 - 2 fetchPlanItems after created`, async () => {
     // 基本日历
     let plan: PlanData = {} as PlanData;
@@ -222,6 +228,7 @@ describe('CalendarService test suite', () => {
     expect(results.length).toBeGreaterThan(0);
   });
 
+  // 需要同步执行
   it(`Case 2 - 1 savePlanItem`, async () => {
     let planitem: PlanItemData = {} as PlanItemData;
 
