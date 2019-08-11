@@ -98,6 +98,25 @@ describe('CalendarService test suite', () => {
     calendarService = TestBed.get(CalendarService);
   });
 
+  // 需要同步执行
+  it(`Case 1 - 10 fetchPublicPlans check prev saved private plans`, async () => {
+    // 新建日历
+    let plan: PlanData = {} as PlanData;
+
+    plan.jn = '冥王星服务类 自动测试';
+    plan.jc = '#f1f1f1';
+    plan.jt = PlanType.PrivatePlan;
+
+    await calendarService.savePlan(plan);
+
+    // 获取保存的日历
+    let plans = await calendarService.fetchPublicPlans();
+
+    expect(plans).toBeDefined();
+    expect(plans.length).toBe(0);
+  });
+
+  // 需要同步执行
   it(`Case 1 - 9 fetchPublicPlans check prev saved public plans`, async () => {
     // 新建日历
     let plan: PlanData = {} as PlanData;
