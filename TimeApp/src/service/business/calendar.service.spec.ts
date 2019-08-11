@@ -34,6 +34,7 @@ import {NetworkService} from "../cordova/network.service";
 import { ShaeRestful } from "../restful/shaesev";
 import {SyncRestful} from "../restful/syncsev";
 import { AgdRestful } from "../restful/agdsev";
+import { BacRestful } from "../restful/bacsev";
 
 import { CalendarService, PlanData, PlanItemData, MonthActivityData, PlanType } from "./calendar.service";
 import { EventService, AgendaData } from "./event.service";
@@ -79,6 +80,7 @@ describe('CalendarService test suite', () => {
         ShaeRestful,
         SyncRestful,
         AgdRestful,
+        BacRestful,
         Network,
         HTTP,
         HttpClient,
