@@ -123,9 +123,19 @@ describe('CalendarService test suite', () => {
   }));
 
   it(`Case 2 - 3 removePlanItem after created`, async () => {
+    // 基本日历
+    let plan: PlanData = {} as PlanData;
+
+    plan.jn = '农历节气 自动测试';
+    plan.jc = '#a1a1a1';
+    plan.jt = PlanType.CalendarPlan;
+
+    plan = await calendarService.savePlan(plan);
+
     // 日历项
     let planitem: PlanItemData = {} as PlanItemData;
 
+    planitem.ji = plan.ji;
     planitem.sd = "2019/08/11";
     planitem.jtn = "结婚纪念日";
 
