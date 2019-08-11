@@ -28,9 +28,11 @@ import {RestFulConfig} from "../config/restful.config";
 import {EmitService} from "../util-service/emit.service";
 import {UtilService} from "../util-service/util.service";
 import { SqliteExec } from "../util-service/sqlite.exec";
+import { SqliteInit } from "../sqlite/sqlite.init";
 import { RestfulClient } from "../util-service/restful.client";
 import {NetworkService} from "../cordova/network.service";
 import { ShaeRestful } from "../restful/shaesev";
+import {SyncRestful} from "../restful/syncsev";
 
 import { CalendarService, PlanData, PlanType } from "./calendar.service";
 
@@ -45,9 +47,11 @@ import { CalendarService, PlanData, PlanType } from "./calendar.service";
  **/
 describe('CalendarService test suite', () => {
   let config: SqliteConfig;
+  let init: SqliteInit;
   let calendarService: CalendarService;
   let planforUpdate: PlanData;
 
+  // 所有测试case执行前, 只执行一次
   beforeAll(async(() => {
     TestBed.configureTestingModule({
       declarations: [
@@ -64,9 +68,11 @@ describe('CalendarService test suite', () => {
         SQLitePorter,
         SqliteConfig,
         SqliteExec,
+        SqliteInit,
         UtilService,
         EmitService,
         ShaeRestful,
+        SyncRestful,
         Network,
         HTTP,
         HttpClient,
@@ -80,9 +86,12 @@ describe('CalendarService test suite', () => {
     });
   }));
 
+  // 所有测试case执行前, 只执行一次
   beforeAll(async () => {
     config = TestBed.get(SqliteConfig);
+    init = TestBed.get(SqliteInit);
     await config.generateDb();
+    await init.createTables();
 
     calendarService = TestBed.get(CalendarService);
   });
@@ -189,6 +198,7 @@ describe('CalendarService test suite', () => {
     expect(calendarService).toBeTruthy();
   });
 
+  // 所有测试case执行结束后
   afterAll(() => {
     TestBed.resetTestingModule();
   });
