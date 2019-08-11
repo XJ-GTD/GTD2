@@ -98,6 +98,13 @@ describe('CalendarService test suite', () => {
     calendarService = TestBed.get(CalendarService);
   });
 
+  it(`Case 3 - 1 fetchMonthActivities`, async () => {
+    expect(function() {
+      calendarService.fetchMonthActivities();
+      calendarService.fetchMonthActivities("2019/08");
+    }).not.toThrow();
+  });
+
   it(`Case 2 - 3 removePlanItem after created`, async () => {
     // 日历项
     let planitem: PlanItemData = {} as PlanItemData;
