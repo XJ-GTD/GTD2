@@ -21,6 +21,7 @@ import {LogTbl} from "./tbl/log.tbl";
 import {SuTbl} from "./tbl/su.tbl";
 import {MkTbl} from "./tbl/mk.tbl";
 import {MoTbl} from "./tbl/mo.tbl";
+import {MomTbl} from "./tbl/mom.tbl";
 
 /**
  * create by on 2019/3/5
@@ -109,6 +110,12 @@ export class SqliteInit {
     let mo: MoTbl = new MoTbl();
     await this.sqlexec.drop(mo);
     await this.sqlexec.create(mo);
+
+    // 增加第三期数据库表
+    let mom: MomTbl = new MomTbl();
+    await this.sqlexec.drop(mom);
+    await this.sqlexec.create(mom);
+
   }
 
   /**
