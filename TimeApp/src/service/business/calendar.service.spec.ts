@@ -35,6 +35,8 @@ import { ShaeRestful } from "../restful/shaesev";
 import {SyncRestful} from "../restful/syncsev";
 
 import { CalendarService, PlanData, PlanItemData, MonthActivityData, PlanType } from "./calendar.service";
+import { EventService, AgendaData } from "./event.service";
+import { MemoService, MemoData } from "./memo.service";
 
 /**
  * 日历Service 持续集成CI 自动测试Case
@@ -49,6 +51,8 @@ describe('CalendarService test suite', () => {
   let config: SqliteConfig;
   let init: SqliteInit;
   let calendarService: CalendarService;
+  let eventService: EventService;
+  let memoService: MemoService;
   let planforUpdate: PlanData;
 
   // 所有测试case执行前, 只执行一次
@@ -79,6 +83,8 @@ describe('CalendarService test suite', () => {
         RestFulConfig,
         RestfulClient,
         NetworkService,
+        EventService,
+        MemoService,
         { provide: StatusBar, useClass: StatusBarMock },
         { provide: SplashScreen, useClass: SplashScreenMock },
         { provide: Platform, useClass: PlatformMock }
@@ -96,6 +102,42 @@ describe('CalendarService test suite', () => {
 
   beforeEach(() => {
     calendarService = TestBed.get(CalendarService);
+    eventService = TestBed.get(EventService);
+    memoService = TestBed.get(MemoService);
+  });
+
+  it(`Case 3 - 4 fetchMonthActivities with precreated memos`, async () => {
+    // 日历项
+    let memo: MemoData = {} as MemoData;
+
+    memo.sd = "2019/08/11";
+    memo.mon = "结婚纪念日买了一块定制巧克力给太太, 太太很高兴";
+
+    await memoService.saveMemo(memo);
+
+    let monthActivity: MonthActivityData = await calendarService.fetchMonthActivities("2019/08");
+
+    expect(monthActivity).toBeDefined();
+    expect(monthActivity.month).toBe("2019/08");
+    expect(monthActivity.memos).toBeDefined();
+    expect(monthActivity.memos.length).toBeGreaterThan(0);
+  });
+
+  it(`Case 3 - 3 fetchMonthActivities with precreated events`, async () => {
+    // 日历项
+    let agenda: AgendaData = {} as AgendaData;
+
+    agenda.evd = "2019/08/11";
+    agenda.evn = "结婚纪念日买礼物给太太";
+
+    await eventService.saveAgenda(agenda);
+
+    let monthActivity: MonthActivityData = await calendarService.fetchMonthActivities("2019/08");
+
+    expect(monthActivity).toBeDefined();
+    expect(monthActivity.month).toBe("2019/08");
+    expect(monthActivity.events).toBeDefined();
+    expect(monthActivity.events.length).toBeGreaterThan(0);
   });
 
   it(`Case 3 - 2 fetchMonthActivities with precreated plan items`, async () => {
