@@ -84,7 +84,16 @@ export class MemoService extends BaseService {
 		let memodb: MomTbl = new MomTbl();
 		memodb.moi = moi;
 
-		return await this.sqlExce.getOneByParam<MemoData>(memodb);
+		let existMemo: MomTbl = await this.sqlExce.getOneByParam<MomTbl>(memodb);
+
+		if (existMemo && existMemo.moi) {
+			let memo: MemoData = {} as MemoData;
+			Object.assign(memo, existMemo);
+
+			return memo;
+		} else {
+			return null;
+		}
 	}
 
 	/**
