@@ -112,7 +112,7 @@ describe('CalendarService test suite', () => {
 
   // 需要同步执行
   it(`Case 3 - 4 fetchMonthActivities with precreated memos`, async () => {
-    // 日历项
+    // 备忘
     let memo: MemoData = {} as MemoData;
 
     memo.sd = "2019/08/11";
@@ -130,7 +130,7 @@ describe('CalendarService test suite', () => {
 
   // 需要同步执行
   it(`Case 3 - 3 fetchMonthActivities with precreated events`, async () => {
-    // 日历项
+    // 日程
     let agenda: AgendaData = {} as AgendaData;
 
     agenda.evd = "2019/08/11";
