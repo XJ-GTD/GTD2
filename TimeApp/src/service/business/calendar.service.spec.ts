@@ -98,6 +98,24 @@ describe('CalendarService test suite', () => {
     calendarService = TestBed.get(CalendarService);
   });
 
+  it(`Case 2 - 3 removePlanItem after created`, async () => {
+    // 日历项
+    let planitem: PlanItemData = {} as PlanItemData;
+
+    planitem.sd = "2019/08/11";
+    planitem.jtn = "结婚纪念日";
+
+    planitem = await calendarService.savePlanItem(planitem);
+
+    await calendarService.removePlanItem(planitem.jti);
+
+    // 根据日历ID检索日历项
+    let results: Array<PlanItemData> = await calendarService.fetchPlanItems(plan.ji);
+
+    expect(results).toBeDefined();
+    expect(results.length).toBe(0);
+  });
+
   it(`Case 2 - 2 fetchPlanItems after created`, async () => {
     // 基本日历
     let plan: PlanData = {} as PlanData;
