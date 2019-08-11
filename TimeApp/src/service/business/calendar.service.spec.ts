@@ -98,6 +98,44 @@ describe('CalendarService test suite', () => {
     calendarService = TestBed.get(CalendarService);
   });
 
+  it(`Case 2 - 2 fetchPlanItems after created`, async () => {
+    // 基本日历
+    let plan: PlanData = {} as PlanData;
+
+    plan.jn = '农历节气 自动测试';
+    plan.jc = '#a1a1a1';
+    plan.jt = PlanType.CalendarPlan;
+
+    plan = await calendarService.savePlan(plan);
+
+    // 日历项
+    let planitem: PlanItemData = {} as PlanItemData;
+
+    planitem.ji = plan.ji;
+    planitem.sd = "2019/08/11";
+    planitem.jtn = "结婚纪念日";
+
+    planitem = await calendarService.savePlanItem(planitem);
+
+    // 根据日历ID检索日历项
+    let results: Array<PlanItemData> = await calendarService.fetchPlanItems(plan.ji);
+
+    expect(results).toBeDefined();
+    expect(results.length).toBeGreaterThan(0);
+  });
+
+  it(`Case 2 - 1 savePlanItem`, async () => {
+    let planitem: PlanItemData = {} as PlanItemData;
+
+    planitem.sd = "2019/08/11";
+    planitem.jtn = "结婚纪念日";
+
+    planitem = await calendarService.savePlanItem(planitem);
+
+    expect(planitem).toBeDefined();
+    expect(planitem.jti).toBeDefined();
+  });
+
   // 需要同步执行
   it(`Case 1 - 12 fetchPublicPlans check prev saved private plans`, async () => {
     // 新建日历
