@@ -92,6 +92,9 @@ export class EventService extends BaseService {
     agdata.bz = !agdata.bz ? "" : agdata.bz ;
     agdata.type = !agdata.type ? anyenum.ObjectType.Calendar : agdata.type ;
 
+    agdata.sd = agdata.sd || agdata.evd || moment().format("YYYY/MM/DD");
+    agdata.ed = agdata.ed || agdata.sd;
+
     let txjson = new TxJson();
     txjson.type = anyenum.TxType.close;
     txjson.defvalue = 0;
