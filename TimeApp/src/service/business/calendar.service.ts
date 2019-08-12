@@ -3,7 +3,7 @@ import { BaseService, SortType } from "./base.service";
 import { SqliteExec } from "../util-service/sqlite.exec";
 import { UtilService } from "../util-service/util.service";
 import { EmitService } from "../util-service/emit.service";
-import { BipdshaeData, Plan, ShaeRestful } from "../restful/shaesev";
+import { BipdshaeData, Plan, PlanPa, ShaeRestful } from "../restful/shaesev";
 import { EventData, TaskData, AgendaData, MiniTaskData } from "./event.service";
 import { EventType, PlanType, PlanItemType. PlanDownloadType, ObjectType } from "../../data.enum";
 import { MemoData } from "./memo.service";
@@ -99,12 +99,12 @@ export class CalendarService extends BaseService {
       return plan;
     }
 
+    let params: Array<any> = new Array<any>();
+    params.push(ji);
+
     // 检索可能的事件/备忘
     if (plan.jt == PlanType.CalendarPlan || plan.jt == PlanType.ActivityPlan) {
       let sql = `select * from gtd_jta where ji = ?`;
-      let params: Array<any> = new Array<any>();
-
-      params.push(ji);
 
       plan.items = await this.sqlExce.getExtLstByParam<PlanItemData>(sql, params);
     }
@@ -130,9 +130,6 @@ export class CalendarService extends BaseService {
                      from gtd_ev ev
                         left join gtd_t et on et.evi = ev.evi
                      where jt = '${EventType.Task}' and ji = ?`;
-      let params: Array<any> = new Array<any>();
-
-      params.push(ji);
 
       let tasks: Array<TaskData> = await this.sqlExce.getExtLstByParam<TaskData>(tasksql, params);
 
@@ -736,7 +733,7 @@ export class CalendarService extends BaseService {
 
     if (src.items && src.items.length > 0) {
       for (let item: any of src.items) {
-        dest.push(this.convertPlanItem2PlanPa(item));
+        dest.pa.push(this.convertPlanItem2PlanPa(item));
       }
     }
 
