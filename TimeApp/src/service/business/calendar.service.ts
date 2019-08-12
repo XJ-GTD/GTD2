@@ -4,7 +4,7 @@ import { SqliteExec } from "../util-service/sqlite.exec";
 import { UtilService } from "../util-service/util.service";
 import { EmitService } from "../util-service/emit.service";
 import { BipdshaeData, Plan, ShaeRestful } from "../restful/shaesev";
-import { EventData } from "./event.service";
+import { EventData, TaskData, AgendaData, MiniTaskData } from "./event.service";
 import { EventType } from "../../data.enum";
 import { MemoData } from "./memo.service";
 import * as moment from "moment";
@@ -722,9 +722,174 @@ export class CalendarService extends BaseService {
   }
 
   private convertPlanData2Plan(src: PlanData): Plan {
+    this.assertEmpty(src);      // 入参不能为空
+
     let dest: Plan = new Plan();
 
+    dest.pn = {
+      ji: src.ji,
+      jn: src.jn,
+      jc: src.jc
+    };
+
+    if (src.items && src.items.length > 0) {
+      for (let item: any of src.items) {
+        dest.push(this.convertPlanItem2PlanPa(item));
+      }
+    }
+
     return dest;
+  }
+
+  private convertPlanItem2PlanPa(src: PlanItemData | TaskData | AgendaData | MiniTaskData | MemoData): PlanPa {
+    let pa: PlanPa = new PlanPa();
+
+    if (typeof src === "PlanItemData") {
+      //关联日程ID
+      pa.rai = "";
+      //日程发送人用户ID
+      pa.fc = src.ui;
+      //日程ID
+      pa.ai = src.jti;
+      //主题
+      pa.at = src.jtn;
+      //时间(YYYY/MM/DD)
+      pa.adt = src.sd;
+      //开始时间
+      pa.st = src.st;
+      //结束日期
+      pa.ed = src.sd;
+      //结束时间
+      pa.et = src.st;
+      //计划
+      pa.ap = src.ji;
+      //重复
+      pa.ar = "";
+      //提醒
+      pa.aa = "";
+      //备注
+      pa.am = src.bz;
+      //优先级
+      pa.px = src.px;
+    }
+
+    if (typeof src === "AgendaData") {
+      //关联日程ID
+      pa.rai = src.rtevi;
+      //日程发送人用户ID
+      pa.fc = src.ui;
+      //日程ID
+      pa.ai = src.evi;
+      //主题
+      pa.at = src.evn;
+      //时间(YYYY/MM/DD)
+      pa.adt = src.sd;
+      //开始时间
+      pa.st = src.st;
+      //结束日期
+      pa.ed = src.ed;
+      //结束时间
+      pa.et = src.et;
+      //计划
+      pa.ap = src.ji;
+      //重复
+      pa.ar = "";
+      //提醒
+      pa.aa = "";
+      //备注
+      pa.am = src.bz;
+      //优先级
+      pa.px = "";
+    }
+
+    if (typeof src === "TaskData") {
+      //关联日程ID
+      pa.rai = "";
+      //日程发送人用户ID
+      pa.fc = src.ui;
+      //日程ID
+      pa.ai = src.evi;
+      //主题
+      pa.at = src.evn;
+      //时间(YYYY/MM/DD)
+      pa.adt = src.evd;
+      //开始时间
+      pa.st = "99:99";
+      //结束日期
+      pa.ed = src.evd;
+      //结束时间
+      pa.et = "99:99";
+      //计划
+      pa.ap = src.ji;
+      //重复
+      pa.ar = "";
+      //提醒
+      pa.aa = "";
+      //备注
+      pa.am = src.bz;
+      //优先级
+      pa.px = "";
+    }
+
+    if (typeof src === "MiniTaskData") {
+      //关联日程ID
+      pa.rai = "";
+      //日程发送人用户ID
+      pa.fc = src.ui;
+      //日程ID
+      pa.ai = src.evi;
+      //主题
+      pa.at = src.evn;
+      //时间(YYYY/MM/DD)
+      pa.adt = src.evd;
+      //开始时间
+      pa.st = "99:99";
+      //结束日期
+      pa.ed = src.evd;
+      //结束时间
+      pa.et = "99:99";
+      //计划
+      pa.ap = src.ji;
+      //重复
+      pa.ar = "";
+      //提醒
+      pa.aa = "";
+      //备注
+      pa.am = src.bz;
+      //优先级
+      pa.px = "";
+    }
+
+    if (typeof src === "MemoData") {
+      //关联日程ID
+      pa.rai = "";
+      //日程发送人用户ID
+      pa.fc = src.ui;
+      //日程ID
+      pa.ai = src.moi;
+      //主题
+      pa.at = src.mon;
+      //时间(YYYY/MM/DD)
+      pa.adt = src.sd;
+      //开始时间
+      pa.st = "99:99";
+      //结束日期
+      pa.ed = src.sd;
+      //结束时间
+      pa.et = "99:99";
+      //计划
+      pa.ap = src.ji;
+      //重复
+      pa.ar = "";
+      //提醒
+      pa.aa = "";
+      //备注
+      pa.am = "";
+      //优先级
+      pa.px = "";
+    }
+
+    return pa;
   }
 
   fetchPagedActivities() {}
