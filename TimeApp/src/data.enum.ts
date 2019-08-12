@@ -92,11 +92,11 @@ export enum InvitePowr {
 //提醒选项
 export enum TxType {
   close = "0",
-  "10m"  = "1",
-  "30m" = "2",
-  "1h"  = "3",
-  "4h" = "4",
-  "1d"  = "5",
+  m10  = "1",
+  m30 = "2",
+  h1  = "3",
+  h4 = "4",
+  d1  = "5",
   customdef = "6"
 }
 
