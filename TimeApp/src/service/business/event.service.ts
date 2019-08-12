@@ -85,7 +85,7 @@ export class EventService extends BaseService {
   private initAgdParam(agdata : AgendaData){
 
     agdata.ui = UserConfig.account.id;
-    agdata.mi = !agdata.mi || agdata.mi =="" ? UserConfig.account.id : agdata.mi;
+    agdata.mi = (!agdata.mi || agdata.mi =="")? UserConfig.account.id : agdata.mi;
     agdata.rtevi = !agdata.rtevi ? "" : agdata.rtevi ;
     agdata.ji = !agdata.ji ?  "" : agdata.ji;
     agdata.bz = !agdata.bz ? "" : agdata.bz ;
