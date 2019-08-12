@@ -807,7 +807,7 @@ export class CalendarService extends BaseService {
       //备注
       pa.am = (<AgendaData>src).bz;
       //优先级
-      pa.px = "";
+      pa.px = 0;
     }
 
     if (src.evi && src.cs) {    // TaskData
@@ -836,7 +836,7 @@ export class CalendarService extends BaseService {
       //备注
       pa.am = (<TaskData>src).bz;
       //优先级
-      pa.px = "";
+      pa.px = 0;
     }
 
     if (src.evi && !src.cs && !src.ed) {    // MiniTaskData
@@ -865,7 +865,7 @@ export class CalendarService extends BaseService {
       //备注
       pa.am = (<MiniTaskData>src).bz;
       //优先级
-      pa.px = "";
+      pa.px = 0;
     }
 
     if (src.moi) {    // MemoData
@@ -894,7 +894,7 @@ export class CalendarService extends BaseService {
       //备注
       pa.am = "";
       //优先级
-      pa.px = "";
+      pa.px = 0;
     }
 
     return pa;
