@@ -754,7 +754,7 @@ export class CalendarService extends BaseService {
       //关联日程ID
       pa.rai = "";
       //日程发送人用户ID
-      pa.fc = src.ui;
+      pa.fc = "";
       //日程ID
       pa.ai = src.jti;
       //主题
