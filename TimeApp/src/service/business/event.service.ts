@@ -13,6 +13,7 @@ import {EmitService} from "../util-service/emit.service";
 import {WaTbl} from "../sqlite/tbl/wa.tbl";
 import * as anyenum from "../../data.enum";
 import {R} from "../../ws/model/ws.enum";
+import {OpenWay} from "../../data.enum";
 
 @Injectable()
 export class EventService extends BaseService {
@@ -102,7 +103,7 @@ export class EventService extends BaseService {
     rtjon.over.value = "";
     rtjon.over.type = anyenum.OverType.fornever;
     rtjon.cyclenum = 0;
-    rtjon.openway = anyenum.WeekType.close;
+    rtjon.openway = anyenum.OpenWay.close;
     agdata.rt = !agdata.rt ? JSON.stringify(rtjon) : agdata.rt ;
 
     agdata.rts = !agdata.rts ? "" : agdata.rts ;
@@ -156,52 +157,100 @@ export class EventService extends BaseService {
    */
   private sqlparamAddEv(agdata : AgendaData): RetParamEv{
     let ret = new RetParamEv();
-    let len :Number= 1;
-    let add: any = 'd';
-    // rt需要解析
+
+    //重复周期数
+    let len :number = 1;
+
+    //重复类型
+    let addtype: any ;
+
+    //重复结束日
+    let repeatEnddt :any;
+
+    //重复开始日
+    let repeatStartdt :any;
+
+    //计算开始日，结束日及设定重复区间、重复单位
     if (agdata.rtjson.cycletype == anyenum.CycleType.d) {
-      add = 'd';
+
       len = agdata.rtjson.cyclenum;
-    } else if (agdata.rtjson.cycletype == anyenum.CycleType.w) {
-      add = 'w';
+      repeatStartdt = this.getRepeatStartDt(agdata.sd,null);
+      //len - 1表示包含repeatStartdt当天或当月或当周或当年
+      repeatEnddt = moment(repeatStartdt).add(len - 1, 'd');
+
+      addtype = 'd';
+    }else if (agdata.rtjson.cycletype == anyenum.CycleType.w) {
+
       len = agdata.rtjson.cyclenum;
+      repeatStartdt = this.getRepeatStartDt(agdata.sd,agdata.rtjson.openway);
+      //len - 1表示包含repeatStartdt当天或当月或当周或当年
+      repeatEnddt = moment(repeatStartdt).add(len - 1, 'w');
+
+      addtype = 'w';
     } else if (agdata.rtjson.cycletype == anyenum.CycleType.m) {
 
-      add = 'M';
+
       len = agdata.rtjson.cyclenum;
+      repeatStartdt = this.getRepeatStartDt(agdata.sd,agdata.rtjson.openway);
+      //len - 1表示包含repeatStartdt当天或当月或当周或当年
+      repeatEnddt = moment(repeatStartdt).add(len - 1, 'M');
+
+      if (agdata.rtjson.openway == anyenum.OpenWay.close){
+        addtype = 'M';
+      }else{
+        addtype = 'w';
+      }
+
     } else if (agdata.rtjson.cycletype == anyenum.CycleType.y) {
+      len = agdata.rtjson.cyclenum;
+      repeatStartdt =  this.getRepeatStartDt(agdata.sd,null);
+      //len - 1表示包含repeatStartdt当天或当月或当周或当年
+      repeatEnddt = moment(repeatStartdt).add(len - 1, 'y');
 
-      add = 'y';
+      addtype = 'y';
     }else {
-      add = 'd';
       len = 1;
+      repeatStartdt = this.getRepeatStartDt(agdata.sd,null);
+      //len - 1表示包含repeatStartdt当天或当月或当周或当年
+      repeatEnddt = moment(repeatStartdt).add(len - 1, 'd');
+      addtype = 'd';
     }
 
-    if (agdata.rtjson.openway){
-
-    }
-
-    let limitvalue = 99999999999999;
+    let limitvalue ;
     if (agdata.rtjson.over.type == anyenum.OverType.times){
       limitvalue = parseInt(agdata.rtjson.over.value);
     }else if(agdata.rtjson.over.type == anyenum.OverType.limitdate){
       limitvalue = moment(agdata.rtjson.over.value).unix();
+    }else{
+      limitvalue = 99999999999999;
     }
 
     let rt  = JSON.stringify(agdata.rtjson);
     let tx  = JSON.stringify(agdata.txjson);
-    let cnt = 0;
-    for (let i = 0; i < len; i++) {
-      cnt = cnt + 1;
+
+    let loopdt = repeatStartdt;
+    let cnt :number= 0;
+
+    //repeatEnddt + 1天表示 repeatEnddt 是有效日期
+    while (moment(loopdt).isBefore(moment(repeatEnddt).add(1,'d'))){
+
       let ev = new EvTbl();
       ev.evi = this.util.getUuid();
-      if (i == 0 ){
+      if ( cnt == 0 ){
         ret.rtevi = ev.evi;
       }
       ev.evn = agdata.evn;
       ev.ui = agdata.ui;
       ev.mi = agdata.mi;
-      ev.evd = moment(agdata.sd).add(i, add).format("YYYY/MM/DD");
+
+      loopdt = moment(repeatStartdt).add(cnt,addtype).format('YYYY/MM/DD');
+      ev.evd = loopdt;
+
+      //满足结束条件，直接跳出循环
+      if (cnt > limitvalue || moment(ev.evd).unix() > limitvalue){
+        break;
+      }
+
       ev.rtevi = ret.rtevi;
       ev.ji = agdata.ji;
       ev.bz = agdata.bz;
@@ -221,14 +270,26 @@ export class EventService extends BaseService {
       ret.ed = ev.evd;
       ret.sqlparam.push(ev.rpTParam());
       if (ev.tx > '0') {
-        ret.sqlparam.push(this.sqlparamAddTxWa(ev,agdata.st,agdata.sd).rpTParam());
+        ret.sqlparam.push(this.sqlparamAddTxWa(ev,agdata.st).rpTParam());
       }
+
+      cnt = cnt + 1;
 
       if (cnt > limitvalue || moment(ev.evd).unix() > limitvalue){
         break;
       }
     }
+
     return ret;
+  }
+
+  private getRepeatStartDt(sd :string, openway :anyenum.OpenWay):string {
+    if (openway == null || openway == anyenum.OpenWay.close){
+      return sd ;
+    }else{
+
+    }
+
   }
 
   /**
@@ -237,7 +298,7 @@ export class EventService extends BaseService {
    * @param {ev: EvTbl,st:string ,sd:string}
    * @returns {ETbl}
    */
-  private sqlparamAddTxWa(ev: EvTbl,st:string ,sd:string): WaTbl {
+  private sqlparamAddTxWa(ev: EvTbl,st:string ): WaTbl {
     let wa = new WaTbl();//提醒表
     wa.wai = this.util.getUuid();
     wa.obt = anyenum.ObType.event;
@@ -257,10 +318,10 @@ export class EventService extends BaseService {
       }
       let date;
       if (!this.util.isAday(st)) {
-        date = moment(sd + " " + st).subtract(time, 'm').format("YYYY/MM/DD HH:mm");
+        date = moment(ev.evd + " " + st).subtract(time, 'm').format("YYYY/MM/DD HH:mm");
 
       } else {
-        date = moment(sd + " " + "08:00").subtract(time, 'm').format("YYYY/MM/DD HH:mm");
+        date = moment(ev.evd + " " + "08:00").subtract(time, 'm').format("YYYY/MM/DD HH:mm");
 
       }
       wa.wd = moment(date).format("YYYY/MM/DD");
@@ -448,8 +509,8 @@ class RetParamEv{
 
 export class RtJson {
   cycletype:anyenum.CycleType;
-  cyclenum:Number;
-  openway:anyenum.WeekType;
+  cyclenum:number;
+  openway:anyenum.OpenWay;
   over:{
     type:anyenum.OverType,
     value:string

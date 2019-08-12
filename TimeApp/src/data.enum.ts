@@ -52,7 +52,7 @@ export enum CycleType {
 }
 
 //重复开启选项
-export enum WeekType {
+export enum OpenWay {
   close = "close",
   Monday  = "Monday",
   Tuesday  = "Tuesday",

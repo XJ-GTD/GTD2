@@ -11,7 +11,7 @@ export class CaTbl implements ITblParam {
   st: string;
   ed: string;
   et: string;
-  ct: Number;
+  ct: number;
 
 
   cTParam():string {
