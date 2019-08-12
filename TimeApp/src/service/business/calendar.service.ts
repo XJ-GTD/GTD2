@@ -5,7 +5,7 @@ import { UtilService } from "../util-service/util.service";
 import { EmitService } from "../util-service/emit.service";
 import { BipdshaeData, Plan, ShaeRestful } from "../restful/shaesev";
 import { EventData, TaskData, AgendaData, MiniTaskData } from "./event.service";
-import { EventType } from "../../data.enum";
+import { EventType, PlanType, PlanItemType. PlanDownloadType, ObjectType } from "../../data.enum";
 import { MemoData } from "./memo.service";
 import * as moment from "moment";
 import { JhaTbl } from "../sqlite/tbl/jha.tbl";
@@ -959,26 +959,4 @@ export class DayActivitySummaryData {
   memoscount: number;           // 备忘数量
   repeateventscount: number;    // 重复事件数量
   bookedtimesummary: number;    // 总预定时长
-}
-
-export enum PlanType {
-  CalendarPlan = '0',
-  ActivityPlan = '1',
-  PrivatePlan = '2'
-}
-
-export enum PlanItemType {
-  Holiday = '0',
-  Activity = '1'
-}
-
-export enum PlanDownloadType {
-  NO = '0',
-  YES = '1'
-}
-
-export enum ObjectType {
-  Event = 'event',
-  Memo = 'memo',
-  Calendar = 'calendar'
 }
