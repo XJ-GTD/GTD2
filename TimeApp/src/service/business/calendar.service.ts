@@ -743,7 +743,7 @@ export class CalendarService extends BaseService {
   private convertPlanItem2PlanPa(src: PlanItemData | TaskData | AgendaData | MiniTaskData | MemoData): PlanPa {
     let pa: PlanPa = new PlanPa();
 
-    if (typeof src === "PlanItemData") {
+    if (src instanceof PlanItemData) {
       //关联日程ID
       pa.rai = "";
       //日程发送人用户ID
@@ -772,7 +772,7 @@ export class CalendarService extends BaseService {
       pa.px = src.px;
     }
 
-    if (typeof src === "AgendaData") {
+    if (src instanceof AgendaData) {
       //关联日程ID
       pa.rai = src.rtevi;
       //日程发送人用户ID
@@ -801,7 +801,7 @@ export class CalendarService extends BaseService {
       pa.px = "";
     }
 
-    if (typeof src === "TaskData") {
+    if (src instanceof TaskData) {
       //关联日程ID
       pa.rai = "";
       //日程发送人用户ID
@@ -830,7 +830,7 @@ export class CalendarService extends BaseService {
       pa.px = "";
     }
 
-    if (typeof src === "MiniTaskData") {
+    if (src instanceof MiniTaskData) {
       //关联日程ID
       pa.rai = "";
       //日程发送人用户ID
@@ -859,7 +859,7 @@ export class CalendarService extends BaseService {
       pa.px = "";
     }
 
-    if (typeof src === "MemoData") {
+    if (src instanceof MemoData) {
       //关联日程ID
       pa.rai = "";
       //日程发送人用户ID
