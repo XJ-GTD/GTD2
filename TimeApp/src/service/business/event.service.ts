@@ -30,6 +30,7 @@ export class EventService extends BaseService {
   async saveAgenda(agdata : AgendaData): Promise<AgendaData> {
     console.log("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
     if (agdata.evi !=null && agdata.evi != "") {
+      console.log("bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb");
       return null;
     }else{
 
