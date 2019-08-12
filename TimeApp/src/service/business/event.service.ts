@@ -89,11 +89,11 @@ export class EventService extends BaseService {
     agdata.rtevi = !agdata.rtevi ? "" : agdata.rtevi ;
     agdata.ji = !agdata.ji ?  "" : agdata.ji;
     agdata.bz = !agdata.bz ? "" : agdata.bz ;
-    agdata.type = !agdata.type ? anyenum.ObType.calendar : agdata.type ;
+    agdata.type = !agdata.type ? anyenum.ObjectType.Calendar : agdata.type ;
 
     let txjson = new TxJson();
     txjson.type = anyenum.TxType.close;
-    txjson.defvalue = "";
+    txjson.defvalue = 0;
     agdata.tx = !agdata.tx ? JSON.stringify(txjson) : agdata.tx ;
 
     agdata.txs = !agdata.txs ? "" : agdata.txs ;
@@ -175,16 +175,14 @@ export class EventService extends BaseService {
 
       len = agdata.rtjson.cyclenum;
       repeatStartdt = this.getRepeatStartDt(agdata.sd,null);
-      //len - 1表示包含repeatStartdt当天或当月或当周或当年
-      repeatEnddt = moment(repeatStartdt).add(len - 1, 'd');
+      repeatEnddt = moment(repeatStartdt).add(len, 'd');
 
       addtype = 'd';
     }else if (agdata.rtjson.cycletype == anyenum.CycleType.w) {
 
       len = agdata.rtjson.cyclenum;
       repeatStartdt = this.getRepeatStartDt(agdata.sd,agdata.rtjson.openway);
-      //len - 1表示包含repeatStartdt当天或当月或当周或当年
-      repeatEnddt = moment(repeatStartdt).add(len - 1, 'w');
+      repeatEnddt = moment(repeatStartdt).add(len , 'w');
 
       addtype = 'w';
     } else if (agdata.rtjson.cycletype == anyenum.CycleType.m) {
@@ -192,8 +190,7 @@ export class EventService extends BaseService {
 
       len = agdata.rtjson.cyclenum;
       repeatStartdt = this.getRepeatStartDt(agdata.sd,agdata.rtjson.openway);
-      //len - 1表示包含repeatStartdt当天或当月或当周或当年
-      repeatEnddt = moment(repeatStartdt).add(len - 1, 'M');
+      repeatEnddt = moment(repeatStartdt).add(len , 'M');
 
       if (agdata.rtjson.openway == anyenum.OpenWay.close){
         addtype = 'M';
@@ -204,15 +201,12 @@ export class EventService extends BaseService {
     } else if (agdata.rtjson.cycletype == anyenum.CycleType.y) {
       len = agdata.rtjson.cyclenum;
       repeatStartdt =  this.getRepeatStartDt(agdata.sd,null);
-      //len - 1表示包含repeatStartdt当天或当月或当周或当年
-      repeatEnddt = moment(repeatStartdt).add(len - 1, 'y');
+      repeatEnddt = moment(repeatStartdt).add(len , 'y');
 
       addtype = 'y';
     }else {
-      len = 1;
       repeatStartdt = this.getRepeatStartDt(agdata.sd,null);
-      //len - 1表示包含repeatStartdt当天或当月或当周或当年
-      repeatEnddt = moment(repeatStartdt).add(len - 1, 'd');
+      repeatEnddt = repeatStartdt;
       addtype = 'd';
     }
 
@@ -228,11 +222,13 @@ export class EventService extends BaseService {
     let rt  = JSON.stringify(agdata.rtjson);
     let tx  = JSON.stringify(agdata.txjson);
 
+    //循环变量初始化
     let loopdt = repeatStartdt;
     let cnt :number= 0;
-
     //repeatEnddt + 1天表示 repeatEnddt 是有效日期
-    while (moment(loopdt).isBefore(moment(repeatEnddt).add(1,'d'))){
+    let loopenddt = moment(repeatEnddt).add(1,'d');
+
+    while (moment(loopdt).isBefore(loopenddt)){
 
       let ev = new EvTbl();
       ev.evi = this.util.getUuid();
@@ -243,8 +239,7 @@ export class EventService extends BaseService {
       ev.ui = agdata.ui;
       ev.mi = agdata.mi;
 
-      loopdt = moment(repeatStartdt).add(cnt,addtype).format('YYYY/MM/DD');
-      ev.evd = loopdt;
+      ev.evd = moment(loopdt).format("YYYY/MM/DD");
 
       //满足结束条件，直接跳出循环
       if (cnt > limitvalue || moment(ev.evd).unix() > limitvalue){
@@ -269,25 +264,51 @@ export class EventService extends BaseService {
       ev.del = anyenum.DelType.undel;
       ret.ed = ev.evd;
       ret.sqlparam.push(ev.rpTParam());
-      if (ev.tx > '0') {
-        ret.sqlparam.push(this.sqlparamAddTxWa(ev,agdata.st).rpTParam());
+      if (agdata.txjson.type != anyenum.TxType.close) {
+        ret.sqlparam.push(this.sqlparamAddTxWa(ev,agdata.st,agdata.txjson).rpTParam());
       }
 
       cnt = cnt + 1;
+      loopdt = moment(repeatStartdt).add(cnt,addtype);
 
-      if (cnt > limitvalue || moment(ev.evd).unix() > limitvalue){
-        break;
-      }
     }
 
     return ret;
   }
 
   private getRepeatStartDt(sd :string, openway :anyenum.OpenWay):string {
+
     if (openway == null || openway == anyenum.OpenWay.close){
       return sd ;
     }else{
 
+      for (let i = 0 ; i < 7; i++){
+        let weekday  = moment(sd).add(i,'d');
+        if (weekday.day() == 0 && openway == anyenum.OpenWay.Sunday){
+          return weekday.format('YYYY/MM/DD');
+        }
+        if (weekday.day() == 1 && openway == anyenum.OpenWay.Monday){
+          return weekday.format('YYYY/MM/DD');
+        }
+        if (weekday.day() == 2 && openway == anyenum.OpenWay.Tuesday){
+          return weekday.format('YYYY/MM/DD');
+        }
+        if (weekday.day() == 3 && openway == anyenum.OpenWay.Wednesday){
+          return weekday.format('YYYY/MM/DD');
+        }
+        if (weekday.day() == 4 && openway == anyenum.OpenWay.Thursday){
+          return weekday.format('YYYY/MM/DD');
+        }
+        if (weekday.day() == 5 && openway == anyenum.OpenWay.Friday){
+          return weekday.format('YYYY/MM/DD');
+        }
+        if (weekday.day() == 6 && openway == anyenum.OpenWay.Saturday){
+          return weekday.format('YYYY/MM/DD');
+        }
+
+      }
+
+      return sd;
     }
 
   }
@@ -295,26 +316,30 @@ export class EventService extends BaseService {
   /**
    *获取提醒表sql
    * @param {EvTbl}
-   * @param {ev: EvTbl,st:string ,sd:string}
+   * @param {ev: EvTbl,st:string ,sd:string,txjson :TxJson }
    * @returns {ETbl}
    */
-  private sqlparamAddTxWa(ev: EvTbl,st:string ): WaTbl {
+  private sqlparamAddTxWa(ev: EvTbl,st:string,txjson :TxJson ): WaTbl {
     let wa = new WaTbl();//提醒表
     wa.wai = this.util.getUuid();
-    wa.obt = anyenum.ObType.event;
+    wa.obt = anyenum.ObjectType.Event;
     //todo tx需要解析
     //let tx  = ;
-    if (ev.tx != '0') {
+    if (txjson.type != anyenum.TxType.close) {
       wa.st = ev.evn;
       let time = 10; //分钟
-      if (ev.tx == "2") {
+      if (txjson.type == anyenum.TxType.m10) {
+        time = 10;
+      }else if (txjson.type == anyenum.TxType.m30) {
         time = 30;
-      } else if (ev.tx == "3") {
+      } else if (txjson.type == anyenum.TxType.h1) {
         time = 60;
-      } else if (ev.tx == "4") {
+      } else if (txjson.type == anyenum.TxType.h4) {
         time = 240;
-      } else if (ev.tx == "5") {
+      } else if (txjson.type == anyenum.TxType.d1) {
         time = 1440;
+      }else {
+        time = txjson.defvalue;
       }
       let date;
       if (!this.util.isAday(st)) {
@@ -410,7 +435,7 @@ export class EventService extends BaseService {
 	 */
   async saveMiniTask(minitask: MiniTaskData): Promise <MiniTaskData>{
   	this.assertEmpty(minitask); // 对象不能为空
-  	this.assertEmpty(minitask.evn); 
+  	this.assertEmpty(minitask.evn);
   	if (minitask.evi) {
 			let evdb: EvTbl = new EvTbl();
 			Object.assign(evdb, minitask);
@@ -554,6 +579,6 @@ export class RtJson {
 
 class TxJson {
   type: anyenum.TxType;
-  defvalue:string = "";
+  defvalue:number;
 }
 
