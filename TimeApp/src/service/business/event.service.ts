@@ -29,10 +29,15 @@ export class EventService extends BaseService {
     console.log("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
     return new Promise<AgendaData>(async (resolve, reject) => {
 
+
+
+
       if (agdata.evi !=null && agdata.evi != ""){
 
       }else{
-        agdata.ui = UserConfig.account.id;
+
+        //设置页面参数初始化
+        this.initAgdParam(agdata);
 
         //事件sqlparam 及提醒sqlparam
         let retParamEv = new RetParamEv();
@@ -57,8 +62,8 @@ export class EventService extends BaseService {
 
         //如果网络正常提交到服务器，则更新同步标志
         if (rst !=  -1){
-          let sq =`update gtd_ev set wtt = ${moment().unix()} , tb = ${anyenum.SyncType.synch}
-          where rtevi = ${retParamEv.rtevi} ;`;
+          let sq =`update gtd_ev set wtt = ${moment().unix()} , tb = '${anyenum.SyncType.synch}'
+          where rtevi = '${retParamEv.rtevi}' ;`;
 
           await  this.sqlExce.execSql(sq);
         }
@@ -70,6 +75,33 @@ export class EventService extends BaseService {
       }
     })
   }
+
+  /**
+   * 初始化页面参数
+   * @param {AgendaData} agdata
+   */
+  private initAgdParam(agdata : AgendaData){
+
+    agdata.ui = UserConfig.account.id;
+    agdata.mi = !agdata.mi || agdata.mi =="" ? UserConfig.account.id : agdata.mi;
+    agdata.rtevi = !agdata.rtevi ? "" : agdata.rtevi ;
+    agdata.ji = !agdata.ji ?  "" : agdata.ji;
+    agdata.bz = !agdata.bz ? "" : agdata.bz ;
+    agdata.type = !agdata.type ? anyenum.ObType.calendar : agdata.type ;
+    agdata.tx = !agdata.tx ? "" : agdata.tx ;
+    agdata.txs = !agdata.txs ? "" : agdata.txs ;
+    agdata.rt = !agdata.rt ? "" : agdata.rt ;
+    agdata.rts = !agdata.rts ? "" : agdata.rts ;
+    agdata.fj = !agdata.fj ? "" : agdata.fj ;
+    agdata.pn = !agdata.pn ? 0 : agdata.pn ;
+    agdata.md = !agdata.md ? anyenum.ModiPower.disable : agdata.md ;
+    agdata.iv = !agdata.iv ? anyenum.InvitePowr.disable : agdata.iv ;
+    agdata.sr = !agdata.sr ? "" : agdata.sr ;
+    agdata.gs = !agdata.gs ? "" : agdata.gs ;
+    agdata.tb = !agdata.tb ? anyenum.SyncType.unsynch : agdata.tb ;
+    agdata.del = !agdata.del ? anyenum.DelType.undel : agdata.del ;
+  }
+
 
   /**
    * 新增接口restful参数设置
