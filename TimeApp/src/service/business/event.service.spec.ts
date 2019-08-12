@@ -33,8 +33,9 @@ import {NetworkService} from "../cordova/network.service";
 import { ShaeRestful } from "../restful/shaesev";
 import { AgdRestful } from "../restful/agdsev";
 
-import { CalendarService, PlanData, PlanType } from "./calendar.service";
+import { CalendarService, PlanData } from "./calendar.service";
 import { EventService } from "./event.service";
+import { PlanType } from "../../data.enum";
 
 /**
  * 事件Service 持续集成CI 自动测试Case

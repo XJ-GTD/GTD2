@@ -33,8 +33,9 @@ import {NetworkService} from "../cordova/network.service";
 import { ShaeRestful } from "../restful/shaesev";
 import { BacRestful } from "../restful/bacsev";
 
-import { CalendarService, PlanData, PlanType } from "./calendar.service";
+import { CalendarService, PlanData } from "./calendar.service";
 import { MemoService } from "./memo.service";
+import { PlanType } from "../../data.enum";
 
 /**
  * 备忘Service 持续集成CI 自动测试Case
