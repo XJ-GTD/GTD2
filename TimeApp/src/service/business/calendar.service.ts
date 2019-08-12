@@ -872,7 +872,7 @@ export class CalendarService extends BaseService {
       //关联日程ID
       pa.rai = "";
       //日程发送人用户ID
-      pa.fc = (<MemoData>src).ui;
+      pa.fc = "";
       //日程ID
       pa.ai = (<MemoData>src).moi;
       //主题
