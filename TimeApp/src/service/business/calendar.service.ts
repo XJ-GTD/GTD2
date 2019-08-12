@@ -78,6 +78,89 @@ export class CalendarService extends BaseService {
   }
 
   /**
+   * 取得计划
+   *
+   * @author leon_xi@163.com
+   **/
+  async getPlan(ji: string, withchildren: boolean = true): Promise<PlanData> {
+
+    this.assertEmpty(ji);   // 计划ID不能为空
+    this.assertNull(jt);    // 计划类型不能为空
+
+    let plan: PlanData = {} as PlanData;
+    let plandb: JhaTbl = new JhaTbl();
+
+    plandb.ji = ji;
+
+    plandb = await this.sqlExce.getOneByParam<JhaTbl>(plandb);
+
+    Object.assign(plan, plandb);
+
+    if (!withchildren) {
+      return plan;
+    }
+
+    // 检索可能的事件/备忘
+    if (plan.jt == PlanType.CalendarPlan || plan.jt == PlanType.ActivityPlan) {
+      let sql = `select * from gtd_jta where ji = ?`;
+      let params: Array<any> = new Array<any>();
+
+      params.push(ji);
+
+      plan.items = await this.sqlExce.getExtLstByParam<PlanItemData>(sql, params);
+    }
+
+    if (plan.jt == PlanType.PrivatePlan) {
+      let agendasql = `select ev.*,
+                              ea.sd sd,
+                              ea.st st,
+                              ea.ed ed,
+                              ea.et et,
+                              ea.ct ct
+                       from gtd_ev ev
+                          left join gtd_ca ea on ea.evi = ev.evi
+                       where jt = '${EventType.Agenda}' and ji = ?`;
+
+      let agendas: Array<AgendaData> = await this.sqlExce.getExtLstByParam<AgendaData>(agendasql, params);
+
+      let tasksql = `select ev.*,
+                            et.cs cs,
+                            et.isrt isrt,
+                            et.cd cd,
+                            et.fd fd
+                     from gtd_ev ev
+                        left join gtd_t et on et.evi = ev.evi
+                     where jt = '${EventType.Task}' and ji = ?`;
+      let params: Array<any> = new Array<any>();
+
+      params.push(ji);
+
+      let tasks: Array<TaskData> = await this.sqlExce.getExtLstByParam<TaskData>(tasksql, params);
+
+      let minitasksql = `select *
+                         from gtd_ev
+                         where jt = '${EventType.MiniTask}' and ji = ?`;
+
+      let minitasks: Array<MiniTaskData> = await this.sqlExce.getExtLstByParam<MiniTaskData>(minitasksql, params);
+
+      let memosql = `select * from gtd_mom where ji = ?`;
+
+      let memos: Array<MemoData> = await this.sqlExce.getExtLstByParam<MemoData>(memosql, params);
+
+      let merged: Array<AgendaData | TaskData | MiniTaskData | MemoData> = new Array<AgendaData | TaskData | MiniTaskData | MemoData>();
+
+      merged = merged.concat(agendas);
+      merged = merged.concat(tasks);
+      merged = merged.concat(minitasks);
+      merged = merged.concat(memos);
+
+      plan.items = merged;
+    }
+
+    return plan;
+  }
+
+  /**
    * 取得删除日历SQL
    *
    * @author leon_xi@163.com
@@ -622,7 +705,28 @@ export class CalendarService extends BaseService {
   }
 
   syncPrivatePlans() {}
-  sharePlan() {}
+
+  async sharePlan(plan: PlanData, refreshChildren: boolean = false): Promise<string> {
+    this.assertEmpty(plan);     // 入参不能为空
+    this.assertEmpty(plan.ji);  // 计划ID不能为空
+
+    if (refreshChildren) {
+      plan = await this.getPlan(plan.ji, true);   // 重新获取计划和计划子项目
+    }
+
+    let shareplan: Plan = convertPlanData2Plan(plan);
+
+    let shared = await this.shareRestful.share(shareplan);
+
+    return shared.psurl;
+  }
+
+  private convertPlanData2Plan(src: PlanData): Plan {
+    let dest: Plan = new Plan();
+
+    return dest;
+  }
+
   fetchPagedActivities() {}
   mergePagedActivities() {}
   backup(bts: number) {}
@@ -644,7 +748,7 @@ export class FindActivityCondition {
 }
 
 export interface PlanData extends JhaTbl {
-  items: Array<PlanItemData>;
+  items: Array<PlanItemData | AgendaData | TaskData | MiniTaskData | MemoData>;
 }
 
 export interface PlanItemData extends JtaTbl {
