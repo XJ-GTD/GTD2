@@ -40,14 +40,17 @@ export class EventService extends BaseService {
 
         //设置页面参数初始化
         this.initAgdParam(agdata);
+        console.log(JSON.stringify(agdata));
 
         //事件sqlparam 及提醒sqlparam
         let retParamEv = new RetParamEv();
         retParamEv = this.sqlparamAddEv(agdata);
+        console.log(JSON.stringify(retParamEv));
 
         //日程表sqlparam
         let agdparam = new Array<any>();
         agdparam = this.sqlparamAddAdg(retParamEv.rtevi,retParamEv.ed,agdata);
+        console.log(JSON.stringify(agdparam));
 
         //批量本地入库
         let sqlparam = new Array<any>();
@@ -61,6 +64,7 @@ export class EventService extends BaseService {
         // 语音创建的时候，如果不同步，会导致服务器还没有保存完日程，保存联系人的请求就来了，导致查不到日程无法触发共享联系人动作
         // 必须增加await，否则，页面创建和语音创建方法必须分开
         let rst = await this.agdRest.save(agdPro);
+        console.log(JSON.stringify(rst));
 
         //如果网络正常提交到服务器，则更新同步标志
         if (rst !=  -1){
@@ -71,6 +75,7 @@ export class EventService extends BaseService {
         }
 
         this.emitService.emitRef(agdata.sd);
+        console.log(agdata);
 
         resolve(agdata);
 
@@ -581,4 +586,3 @@ class TxJson {
   type: anyenum.TxType;
   defvalue:number;
 }
-
