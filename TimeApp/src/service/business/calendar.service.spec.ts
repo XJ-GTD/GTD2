@@ -84,8 +84,6 @@ describe('CalendarService test suite', () => {
         AgdRestful,
         BacRestful,
         Network,
-        HTTP,
-        HttpClient,
         RestFulConfig,
         RestfulClient,
         NetworkService,
