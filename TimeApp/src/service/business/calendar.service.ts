@@ -747,45 +747,39 @@ export class CalendarService extends BaseService {
     return dest;
   }
 
-  private convertPlanItem2PlanPa(source: PlanItemData | TaskData | AgendaData | MiniTaskData | MemoData): PlanPa {
+  private convertPlanItem2PlanPa(src: PlanItemData | TaskData | AgendaData | MiniTaskData | MemoData): PlanPa {
     let pa: PlanPa = new PlanPa();
 
-    if (source instanceof PlanItemData) {
-      let src: PlanItemData = {} as PlanItemData;
-      Object.assign(src, source);
-
+    if (src instanceof PlanItemData) {
       //关联日程ID
       pa.rai = "";
       //日程发送人用户ID
       pa.fc = "";
       //日程ID
-      pa.ai = src.jti;
+      pa.ai = (<PlanItemData>src).jti;
       //主题
-      pa.at = src.jtn;
+      pa.at = (<PlanItemData>src).jtn;
       //时间(YYYY/MM/DD)
-      pa.adt = src.sd;
+      pa.adt = (<PlanItemData>src).sd;
       //开始时间
-      pa.st = src.st;
+      pa.st = (<PlanItemData>src).st;
       //结束日期
-      pa.ed = src.sd;
+      pa.ed = (<PlanItemData>src).sd;
       //结束时间
-      pa.et = src.st;
+      pa.et = (<PlanItemData>src).st;
       //计划
-      pa.ap = src.ji;
+      pa.ap = (<PlanItemData>src).ji;
       //重复
       pa.ar = "";
       //提醒
       pa.aa = "";
       //备注
-      pa.am = src.bz;
+      pa.am = (<PlanItemData>src).bz;
       //优先级
-      pa.px = src.px;
+      pa.px = (<PlanItemData>src).px;
     }
 
-    if (source instanceof AgendaData) {
-      let src: AgendaData = {} as AgendaData;
-      Object.assign(src, source);
-
+    if (src instanceof AgendaData) {
       //关联日程ID
       pa.rai = src.rtevi;
       //日程发送人用户ID
@@ -814,10 +808,7 @@ export class CalendarService extends BaseService {
       pa.px = "";
     }
 
-    if (source instanceof TaskData) {
-      let src: TaskData = {} as TaskData;
-      Object.assign(src, source);
-
+    if (src instanceof TaskData) {
       //关联日程ID
       pa.rai = "";
       //日程发送人用户ID
@@ -846,10 +837,7 @@ export class CalendarService extends BaseService {
       pa.px = "";
     }
 
-    if (source instanceof MiniTaskData) {
-      let src: MiniTaskData = {} as MiniTaskData;
-      Object.assign(src, source);
-
+    if (src instanceof MiniTaskData) {
       //关联日程ID
       pa.rai = "";
       //日程发送人用户ID
@@ -878,10 +866,7 @@ export class CalendarService extends BaseService {
       pa.px = "";
     }
 
-    if (source instanceof MemoData) {
-      let src: MemoData = {} as MemoData;
-      Object.assign(src, source);
-
+    if (src instanceof MemoData) {
       //关联日程ID
       pa.rai = "";
       //日程发送人用户ID
