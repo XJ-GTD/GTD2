@@ -12,6 +12,7 @@ import {ETbl} from "../sqlite/tbl/e.tbl";
 import {EmitService} from "../util-service/emit.service";
 import {WaTbl} from "../sqlite/tbl/wa.tbl";
 import * as anyenum from "../../data.enum";
+import {R} from "../../ws/model/ws.enum";
 
 @Injectable()
 export class EventService extends BaseService {
@@ -88,10 +89,25 @@ export class EventService extends BaseService {
     agdata.ji = !agdata.ji ?  "" : agdata.ji;
     agdata.bz = !agdata.bz ? "" : agdata.bz ;
     agdata.type = !agdata.type ? anyenum.ObType.calendar : agdata.type ;
-    agdata.tx = !agdata.tx ? "" : agdata.tx ;
+
+    let txjson = new TxJson();
+    txjson.type = anyenum.TxType.close;
+    txjson.defvalue = "";
+    agdata.tx = !agdata.tx ? JSON.stringify(txjson) : agdata.tx ;
+
     agdata.txs = !agdata.txs ? "" : agdata.txs ;
-    agdata.rt = !agdata.rt ? "" : agdata.rt ;
+
+    let rtjon = new RtJson();
+    rtjon.cycletype = anyenum.CycleType.close;
+    rtjon.over.value = "";
+    rtjon.over.type = anyenum.OverType.fornever;
+    rtjon.cyclenum = 0;
+    rtjon.openway = anyenum.WeekType.close;
+    agdata.rt = !agdata.rt ? JSON.stringify(rtjon) : agdata.rt ;
+
     agdata.rts = !agdata.rts ? "" : agdata.rts ;
+
+
     agdata.fj = !agdata.fj ? "" : agdata.fj ;
     agdata.pn = !agdata.pn ? 0 : agdata.pn ;
     agdata.md = !agdata.md ? anyenum.ModiPower.disable : agdata.md ;
@@ -291,10 +307,10 @@ export class EventService extends BaseService {
 	 * 创建更新任务
 	 * @author ying<343253410@qq.com>
 	 */
-  async saveTask(tx: TxJson): Promise <TxJson>{
+  async saveTask(tx: TskData): Promise <TskData>{
 		this.assertEmpty(tx); // 对象不能为空
 		this.assertEmpty(tx.eventData); //事件不能为空
-		let txx: TxJson = new TxJson();
+		let txx: TskData = new TskData();
 		if (tx.eventData.evi){
 			//更新事件表
 			let evdb: EvTbl = new EvTbl();
@@ -470,11 +486,16 @@ export class RtJson {
   }
 }
 
+class TxJson {
+  type: anyenum.TxType;
+  defvalue:string = "";
+}
+
 /**
 	 * 检索未完成的任务
 	 * @author ying<343253410@qq.com>
 	 */
-class TxJson {
+class TskData {
 	eventData: EventData = {} as EventData;
 	isrt: string = "";
 }

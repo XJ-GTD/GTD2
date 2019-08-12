@@ -37,7 +37,7 @@ export enum ObType {
 
 //重复结束选项
 export enum OverType {
-  forever = "forever",
+  fornever = "fornever",
   times = "times",
   limitdate = "limitdate"
 }
@@ -45,10 +45,10 @@ export enum OverType {
 //重复类型选项
 export enum CycleType {
   close = "close",
-  d = "d",
-  m = "m",
-  w = "w",
-  y = "y"
+  d = "1",
+  w = "2",
+  m = "3",
+  y = "4"
 }
 
 //重复开启选项
@@ -73,4 +73,15 @@ export enum ModiPower {
 export enum InvitePowr {
   disable = "0",
   enable  = "1",
+}
+
+//提醒选项
+export enum TxType {
+  close = "0",
+  "10m"  = "1",
+  "30m" = "2",
+  "1h"  = "3",
+  "4h" = "4",
+  "1d"  = "5",
+  customdef = "6"
 }
