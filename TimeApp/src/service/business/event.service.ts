@@ -12,6 +12,7 @@ import {ETbl} from "../sqlite/tbl/e.tbl";
 import {EmitService} from "../util-service/emit.service";
 import {WaTbl} from "../sqlite/tbl/wa.tbl";
 import * as anyenum from "../../data.enum";
+import {R} from "../../ws/model/ws.enum";
 
 @Injectable()
 export class EventService extends BaseService {
@@ -29,10 +30,15 @@ export class EventService extends BaseService {
     console.log("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
     return new Promise<AgendaData>(async (resolve, reject) => {
 
+
+
+
       if (agdata.evi !=null && agdata.evi != ""){
 
       }else{
-        agdata.ui = UserConfig.account.id;
+
+        //设置页面参数初始化
+        this.initAgdParam(agdata);
 
         //事件sqlparam 及提醒sqlparam
         let retParamEv = new RetParamEv();
@@ -57,8 +63,8 @@ export class EventService extends BaseService {
 
         //如果网络正常提交到服务器，则更新同步标志
         if (rst !=  -1){
-          let sq =`update gtd_ev set wtt = ${moment().unix()} , tb = ${anyenum.SyncType.synch}
-          where rtevi = ${retParamEv.rtevi} ;`;
+          let sq =`update gtd_ev set wtt = ${moment().unix()} , tb = '${anyenum.SyncType.synch}'
+          where rtevi = '${retParamEv.rtevi}' ;`;
 
           await  this.sqlExce.execSql(sq);
         }
@@ -70,6 +76,48 @@ export class EventService extends BaseService {
       }
     })
   }
+
+  /**
+   * 初始化页面参数
+   * @param {AgendaData} agdata
+   */
+  private initAgdParam(agdata : AgendaData){
+
+    agdata.ui = UserConfig.account.id;
+    agdata.mi = !agdata.mi || agdata.mi =="" ? UserConfig.account.id : agdata.mi;
+    agdata.rtevi = !agdata.rtevi ? "" : agdata.rtevi ;
+    agdata.ji = !agdata.ji ?  "" : agdata.ji;
+    agdata.bz = !agdata.bz ? "" : agdata.bz ;
+    agdata.type = !agdata.type ? anyenum.ObType.calendar : agdata.type ;
+
+    let txjson = new TxJson();
+    txjson.type = anyenum.TxType.close;
+    txjson.defvalue = "";
+    agdata.tx = !agdata.tx ? JSON.stringify(txjson) : agdata.tx ;
+
+    agdata.txs = !agdata.txs ? "" : agdata.txs ;
+
+    let rtjon = new RtJson();
+    rtjon.cycletype = anyenum.CycleType.close;
+    rtjon.over.value = "";
+    rtjon.over.type = anyenum.OverType.fornever;
+    rtjon.cyclenum = 0;
+    rtjon.openway = anyenum.WeekType.close;
+    agdata.rt = !agdata.rt ? JSON.stringify(rtjon) : agdata.rt ;
+
+    agdata.rts = !agdata.rts ? "" : agdata.rts ;
+
+
+    agdata.fj = !agdata.fj ? "" : agdata.fj ;
+    agdata.pn = !agdata.pn ? 0 : agdata.pn ;
+    agdata.md = !agdata.md ? anyenum.ModiPower.disable : agdata.md ;
+    agdata.iv = !agdata.iv ? anyenum.InvitePowr.disable : agdata.iv ;
+    agdata.sr = !agdata.sr ? "" : agdata.sr ;
+    agdata.gs = !agdata.gs ? "" : agdata.gs ;
+    agdata.tb = !agdata.tb ? anyenum.SyncType.unsynch : agdata.tb ;
+    agdata.del = !agdata.del ? anyenum.DelType.undel : agdata.del ;
+  }
+
 
   /**
    * 新增接口restful参数设置
@@ -108,24 +156,43 @@ export class EventService extends BaseService {
    */
   private sqlparamAddEv(agdata : AgendaData): RetParamEv{
     let ret = new RetParamEv();
-    let len = 1;
+    let len :Number= 1;
     let add: any = 'd';
-    //todo rt需要解析
-    //let rt  = ;
-    if (agdata.rt == '1') {
-      len = 365;
-    } else if (agdata.rt == '2') {
-      len = 96;
+    // rt需要解析
+    if (agdata.rtjson.cycletype == anyenum.CycleType.d) {
+      add = 'd';
+      len = agdata.rtjson.cyclenum;
+    } else if (agdata.rtjson.cycletype == anyenum.CycleType.w) {
       add = 'w';
-    } else if (agdata.rt == '3') {
-      len = 24;
+      len = agdata.rtjson.cyclenum;
+    } else if (agdata.rtjson.cycletype == anyenum.CycleType.m) {
+
       add = 'M';
-    } else if (agdata.rt == '4') {
-      len = 20;
+      len = agdata.rtjson.cyclenum;
+    } else if (agdata.rtjson.cycletype == anyenum.CycleType.y) {
+
       add = 'y';
+    }else {
+      add = 'd';
+      len = 1;
     }
 
+    if (agdata.rtjson.openway){
+
+    }
+
+    let limitvalue = 99999999999999;
+    if (agdata.rtjson.over.type == anyenum.OverType.times){
+      limitvalue = parseInt(agdata.rtjson.over.value);
+    }else if(agdata.rtjson.over.type == anyenum.OverType.limitdate){
+      limitvalue = moment(agdata.rtjson.over.value).unix();
+    }
+
+    let rt  = JSON.stringify(agdata.rtjson);
+    let tx  = JSON.stringify(agdata.txjson);
+    let cnt = 0;
     for (let i = 0; i < len; i++) {
+      cnt = cnt + 1;
       let ev = new EvTbl();
       ev.evi = this.util.getUuid();
       if (i == 0 ){
@@ -139,9 +206,9 @@ export class EventService extends BaseService {
       ev.ji = agdata.ji;
       ev.bz = agdata.bz;
       ev.type = anyenum.EventType.Agenda;
-      ev.tx = agdata.tx;
+      ev.tx = tx;
       ev.txs = agdata.txs;
-      ev.rt = agdata.rt;
+      ev.rt = rt;
       ev.rts = agdata.rts;
       ev.fj = agdata.fj;
       ev.pn = agdata.pn;
@@ -156,6 +223,10 @@ export class EventService extends BaseService {
       if (ev.tx > '0') {
         ret.sqlparam.push(this.sqlparamAddTxWa(ev,agdata.st,agdata.sd).rpTParam());
       }
+
+      if (cnt > limitvalue || moment(ev.evd).unix() > limitvalue){
+        break;
+      }
     }
     return ret;
   }
@@ -169,7 +240,7 @@ export class EventService extends BaseService {
   private sqlparamAddTxWa(ev: EvTbl,st:string ,sd:string): WaTbl {
     let wa = new WaTbl();//提醒表
     wa.wai = this.util.getUuid();
-    wa.obt = anyenum.ObType.memo;
+    wa.obt = anyenum.ObType.event;
     //todo tx需要解析
     //let tx  = ;
     if (ev.tx != '0') {
@@ -236,39 +307,40 @@ export class EventService extends BaseService {
 	 * 创建更新任务
 	 * @author ying<343253410@qq.com>
 	 */
-  async saveTask(tx: TxJson): Promise <TxJson>{
+  async saveTask(tx: TaskData): Promise <TaskData> {
 		this.assertEmpty(tx); // 对象不能为空
-		this.assertEmpty(tx.eventData); //事件不能为空
-		let txx: TxJson = new TxJson();
-		if (tx.eventData.evi){
-			//更新事件表
+		this.assertEmpty(tx.evn); // 事件主题不能为空
+		if(tx.evi) {
+			//更新任务事件
 			let evdb: EvTbl = new EvTbl();
-			Object.assign(evdb, tx.eventData);
-			await this.sqlExce.updateByParam(evdb);
-			txx.eventData = evdb;
-			//更新任务表
-			if (tx.isrt !='') {
-					let tdb: TTbl = new TTbl();
-					tdb.evi = evdb.evi;
-					tdb.isrt=tx.isrt;
-					await this.sqlExce.updateByParam(tdb);
-			}
-			txx.isrt =tx.isrt ;
+			tx.mi = UserConfig.account.id; //更新者
+			Object.assign(evdb, tx);
+		  await this.sqlExce.updateByParam(evdb);
+			let ttdb: TTbl = new TTbl();
+			//根据主键ID获取任务详情
+			ttdb.evi = tx.evi;
+			ttdb = await this.sqlExce.getOneByParam<TTbl>(ttdb);
+			Object.assign(ttdb, tx);
+			await this.sqlExce.updateByParam(ttdb);
 		} else {
-			//新增事件表
-			tx.eventData.evi = this.util.getUuid();
+			//创建事件
+			tx.evi = this.util.getUuid();
+			tx.ui= UserConfig.account.id;
+			tx.type=anyenum.EventType.Task;
+			tx.evd=moment().format('YYYY/MM/DD');
+			tx.gs=anyenum.GsType.self;
+			tx.tb=anyenum.SyncType.unsynch;
+			tx.del=anyenum.DelType.undel;
 			let evdb: EvTbl = new EvTbl();
-			Object.assign(evdb, tx.eventData);
+			Object.assign(evdb, tx);
 			await this.sqlExce.saveByParam(evdb);
-			txx.eventData = evdb;
-			let tdb: TTbl = new TTbl();
-			tdb.evi = evdb.evi;
-			tdb.cs ="0";
-			tdb.isrt=tx.isrt;
-			await this.sqlExce.saveByParam(tdb);
-			txx.isrt =tx.isrt ;
+			//创建任务
+			let ttdb: TTbl = new TTbl();
+			ttdb.evi = tx.evi;
+			Object.assign(ttdb, tx);
+			await this.sqlExce.saveByParam(ttdb);
 		}
-		return txx;
+		return tx;
   }
 
   /**
@@ -277,12 +349,19 @@ export class EventService extends BaseService {
 	 */
   async saveMiniTask(minitask: MiniTaskData): Promise <MiniTaskData>{
   	this.assertEmpty(minitask); // 对象不能为空
+  	this.assertEmpty(minitask.evn); 
   	if (minitask.evi) {
 			let evdb: EvTbl = new EvTbl();
 			Object.assign(evdb, minitask);
 			await this.sqlExce.updateByParam(evdb);
 		} else {
 			minitask.evi = this.util.getUuid();
+			minitask.ui= UserConfig.account.id;
+			minitask.type=anyenum.EventType.MiniTask;
+			minitask.evd=moment().format('YYYY/MM/DD');
+			minitask.gs=anyenum.GsType.self;
+			minitask.tb=anyenum.SyncType.unsynch;
+			minitask.del=anyenum.DelType.undel;
 			let evdb: EvTbl = new EvTbl();
 			Object.assign(evdb, minitask);
 			await this.sqlExce.saveByParam(evdb);
@@ -303,7 +382,7 @@ export class EventService extends BaseService {
   	this.assertEmpty(evi); // 事件ID不能为空
   	let tdb: TTbl = new TTbl();
 		tdb.evi = evi;
-		tdb.cs="1";
+		tdb.cs=anyenum.IsSuccess.success;
 		tdb.fd=moment().format('YYYY/MM/DD');
 		await this.sqlExce.updateByParam(tdb);
 		//TODO 是否推送事件完成消息
@@ -317,27 +396,24 @@ export class EventService extends BaseService {
    */
   async finishTaskNext(evi: string){
   	this.assertEmpty(evi);
+  	let evdb: EvTbl = new EvTbl();
+		evdb.evi = evi;
+		evdb = await this.sqlExce.getOneByParam<EvTbl>(evdb);
+		if (evdb.type != anyenum.EventType.Task) {
+			throw new Error("非任务类型,无法自动创建");
+		}
   	let tdb: TTbl = new TTbl();
 		tdb.evi = evi;
 		tdb =	await this.sqlExce.getOneByParam<TTbl>(tdb);
-		if (tdb.isrt=="1") {
-			//获取当前的事件
-			let evdb: EvTbl = new EvTbl();
-			evdb.evi=evi;
-			evdb = await this.sqlExce.getOneByParam<EvTbl>(evdb);
-			let evdbnew: EvTbl = new EvTbl();
-			Object.assign(evdbnew, evdb);
+		if (tdb.isrt == anyenum.IsCreate.isYes) {
 			//创建新的任务事件
-			evdbnew.evi = this.util.getUuid();
-			evdbnew.rtevi=evdb.evi;
-			evdbnew.evd=moment().format('YYYY/MM/DD');
-			await this.sqlExce.saveByParam(evdbnew);
-			//创建任务
-			let tdbnew: TTbl = new TTbl();
-			tdbnew.evi = 	evdbnew.evi;
-			tdbnew.cs = "0";
-			tdbnew.isrt = tdb.isrt;
-			await this.sqlExce.saveByParam(tdbnew);
+			let tx:TaskData = {} as TaskData;
+			evdb.rtevi = evi;
+			evdb.evi = "";
+			Object.assign(tx, evdb);
+			tx.cs = anyenum.IsSuccess.wait;
+			tx.isrt = anyenum.IsCreate.isYes;
+			saveTask(tx);
 		}
 		return ;
   }
@@ -385,11 +461,12 @@ export interface EventData extends EvTbl {
 }
 
 export interface AgendaData extends EventData, CaTbl {
-
+  rtjson :RtJson;
+  txjson :TxJson;
 
 }
 
-export interface TaskData extends TTbl {
+export interface TaskData extends EventData,TTbl {
 
 }
 
@@ -404,15 +481,18 @@ class RetParamEv{
   sqlparam  = new  Array<any>();
 }
 
-class RtJson {
-
+export class RtJson {
+  cycletype:anyenum.CycleType;
+  cyclenum:Number;
+  openway:anyenum.WeekType;
+  over:{
+    type:anyenum.OverType,
+    value:string
+  }
 }
 
-/**
-	 * 检索未完成的任务
-	 * @author ying<343253410@qq.com>
-	 */
 class TxJson {
-	eventData: EventData = {} as EventData;
-	isrt: string = "";
+  type: anyenum.TxType;
+  defvalue:string = "";
 }
+
