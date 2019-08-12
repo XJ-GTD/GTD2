@@ -85,3 +85,17 @@ export enum TxType {
   "1d"  = "5",
   customdef = "6"
 }
+
+//是否完成
+export enum IsSuccess {
+	wait = "0",
+  success = "1"
+  
+}
+
+//完成后是否需要自动创建
+export enum IsCreate {
+	isNo = "0",
+  isYes = "1"
+  
+}

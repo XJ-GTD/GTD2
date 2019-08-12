@@ -307,9 +307,40 @@ export class EventService extends BaseService {
 	 * 创建更新任务
 	 * @author ying<343253410@qq.com>
 	 */
-  async saveTask(tx: TaskData): Promise <TaskData>{
+  async saveTask(tx: TaskData): Promise <TaskData> {
 		this.assertEmpty(tx); // 对象不能为空
-		return ;
+		this.assertEmpty(tx.evn); // 事件主题不能为空
+		if(tx.evi) {
+			//更新任务事件
+			let evdb: EvTbl = new EvTbl();
+			tx.mi = UserConfig.account.id; //更新者
+			Object.assign(evdb, tx);
+		  await this.sqlExce.updateByParam(evdb);
+			let ttdb: TTbl = new TTbl();
+			//根据主键ID获取任务详情
+			ttdb.evi = tx.evi;
+			ttdb = await this.sqlExce.getOneByParam<TTbl>(ttdb);
+			Object.assign(ttdb, tx);
+			await this.sqlExce.updateByParam(ttdb);
+		} else {
+			//创建事件
+			tx.evi = this.util.getUuid();
+			tx.ui= UserConfig.account.id;
+			tx.type=anyenum.EventType.Task;
+			tx.evd=moment().format('YYYY/MM/DD');
+			tx.gs=anyenum.GsType.self;
+			tx.tb=anyenum.SyncType.unsynch;
+			tx.del=anyenum.DelType.undel;
+			let evdb: EvTbl = new EvTbl();
+			Object.assign(evdb, tx);
+			await this.sqlExce.saveByParam(evdb);
+			//创建任务
+			let ttdb: TTbl = new TTbl();
+			ttdb.evi = tx.evi;
+			Object.assign(ttdb, tx);
+			await this.sqlExce.saveByParam(ttdb);
+		}
+		return tx;
   }
 
   /**
@@ -318,12 +349,19 @@ export class EventService extends BaseService {
 	 */
   async saveMiniTask(minitask: MiniTaskData): Promise <MiniTaskData>{
   	this.assertEmpty(minitask); // 对象不能为空
+  	this.assertEmpty(minitask.evn); 
   	if (minitask.evi) {
 			let evdb: EvTbl = new EvTbl();
 			Object.assign(evdb, minitask);
 			await this.sqlExce.updateByParam(evdb);
 		} else {
 			minitask.evi = this.util.getUuid();
+			minitask.ui= UserConfig.account.id;
+			minitask.type=anyenum.EventType.MiniTask;
+			minitask.evd=moment().format('YYYY/MM/DD');
+			minitask.gs=anyenum.GsType.self;
+			minitask.tb=anyenum.SyncType.unsynch;
+			minitask.del=anyenum.DelType.undel;
 			let evdb: EvTbl = new EvTbl();
 			Object.assign(evdb, minitask);
 			await this.sqlExce.saveByParam(evdb);
@@ -344,7 +382,7 @@ export class EventService extends BaseService {
   	this.assertEmpty(evi); // 事件ID不能为空
   	let tdb: TTbl = new TTbl();
 		tdb.evi = evi;
-		tdb.cs="1";
+		tdb.cs=anyenum.IsSuccess.success;
 		tdb.fd=moment().format('YYYY/MM/DD');
 		await this.sqlExce.updateByParam(tdb);
 		//TODO 是否推送事件完成消息
@@ -358,27 +396,24 @@ export class EventService extends BaseService {
    */
   async finishTaskNext(evi: string){
   	this.assertEmpty(evi);
+  	let evdb: EvTbl = new EvTbl();
+		evdb.evi = evi;
+		evdb = await this.sqlExce.getOneByParam<EvTbl>(evdb);
+		if (evdb.type != anyenum.EventType.Task) {
+			throw new Error("非任务类型,无法自动创建");
+		}
   	let tdb: TTbl = new TTbl();
 		tdb.evi = evi;
 		tdb =	await this.sqlExce.getOneByParam<TTbl>(tdb);
-		if (tdb.isrt=="1") {
-			//获取当前的事件
-			let evdb: EvTbl = new EvTbl();
-			evdb.evi=evi;
-			evdb = await this.sqlExce.getOneByParam<EvTbl>(evdb);
-			let evdbnew: EvTbl = new EvTbl();
-			Object.assign(evdbnew, evdb);
+		if (tdb.isrt == anyenum.IsCreate.isYes) {
 			//创建新的任务事件
-			evdbnew.evi = this.util.getUuid();
-			evdbnew.rtevi=evdb.evi;
-			evdbnew.evd=moment().format('YYYY/MM/DD');
-			await this.sqlExce.saveByParam(evdbnew);
-			//创建任务
-			let tdbnew: TTbl = new TTbl();
-			tdbnew.evi = 	evdbnew.evi;
-			tdbnew.cs = "0";
-			tdbnew.isrt = tdb.isrt;
-			await this.sqlExce.saveByParam(tdbnew);
+			let tx:TaskData = {} as TaskData;
+			evdb.rtevi = evi;
+			evdb.evi = "";
+			Object.assign(tx, evdb);
+			tx.cs = anyenum.IsSuccess.wait;
+			tx.isrt = anyenum.IsCreate.isYes;
+			saveTask(tx);
 		}
 		return ;
   }
