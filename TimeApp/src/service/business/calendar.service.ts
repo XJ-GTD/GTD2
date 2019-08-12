@@ -712,7 +712,14 @@ export class CalendarService extends BaseService {
 
     let shareplan: Plan = this.convertPlanData2Plan(plan);
 
-    let shared = await this.shareRestful.share(shareplan);
+    let upplan: ShareData = new ShareData();
+
+    upplan.oai = "";
+    upplan.ompn = "";
+    upplan.c = "";
+    upplan.d.p = shareplan;
+
+    let shared = await this.shareRestful.share(upplan);
 
     if (shared)
       return shared.psurl;
