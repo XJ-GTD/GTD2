@@ -779,7 +779,7 @@ export class CalendarService extends BaseService {
       pa.px = (<PlanItemData>src).px;
     }
 
-    if (src is AgendaData) {
+    if (typeof src == AgendaData) {
       //关联日程ID
       pa.rai = src.rtevi;
       //日程发送人用户ID
@@ -808,7 +808,7 @@ export class CalendarService extends BaseService {
       pa.px = "";
     }
 
-    if (src is TaskData) {
+    if (typeof src == TaskData) {
       //关联日程ID
       pa.rai = "";
       //日程发送人用户ID
@@ -837,7 +837,7 @@ export class CalendarService extends BaseService {
       pa.px = "";
     }
 
-    if (src is MiniTaskData) {
+    if (typeof src == MiniTaskData) {
       //关联日程ID
       pa.rai = "";
       //日程发送人用户ID
@@ -866,7 +866,7 @@ export class CalendarService extends BaseService {
       pa.px = "";
     }
 
-    if (src is MemoData) {
+    if (typeof src == MemoData) {
       //关联日程ID
       pa.rai = "";
       //日程发送人用户ID
