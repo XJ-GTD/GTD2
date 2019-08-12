@@ -3,9 +3,9 @@ import { BaseService, SortType } from "./base.service";
 import { SqliteExec } from "../util-service/sqlite.exec";
 import { UtilService } from "../util-service/util.service";
 import { EmitService } from "../util-service/emit.service";
-import { BipdshaeData, Plan, ShaeRestful } from "../restful/shaesev";
+import { BipdshaeData, Plan, PlanPa, ShareData, ShaeRestful } from "../restful/shaesev";
 import { EventData, TaskData, AgendaData, MiniTaskData } from "./event.service";
-import { EventType, PlanType, PlanItemType. PlanDownloadType, ObjectType } from "../../data.enum";
+import { EventType, PlanType, PlanItemType, PlanDownloadType, ObjectType } from "../../data.enum";
 import { MemoData } from "./memo.service";
 import * as moment from "moment";
 import { JhaTbl } from "../sqlite/tbl/jha.tbl";
@@ -99,12 +99,12 @@ export class CalendarService extends BaseService {
       return plan;
     }
 
+    let params: Array<any> = new Array<any>();
+    params.push(ji);
+
     // 检索可能的事件/备忘
     if (plan.jt == PlanType.CalendarPlan || plan.jt == PlanType.ActivityPlan) {
       let sql = `select * from gtd_jta where ji = ?`;
-      let params: Array<any> = new Array<any>();
-
-      params.push(ji);
 
       plan.items = await this.sqlExce.getExtLstByParam<PlanItemData>(sql, params);
     }
@@ -130,9 +130,6 @@ export class CalendarService extends BaseService {
                      from gtd_ev ev
                         left join gtd_t et on et.evi = ev.evi
                      where jt = '${EventType.Task}' and ji = ?`;
-      let params: Array<any> = new Array<any>();
-
-      params.push(ji);
 
       let tasks: Array<TaskData> = await this.sqlExce.getExtLstByParam<TaskData>(tasksql, params);
 
@@ -713,9 +710,16 @@ export class CalendarService extends BaseService {
       plan = await this.getPlan(plan.ji, true);   // 重新获取计划和计划子项目
     }
 
-    let shareplan: Plan = convertPlanData2Plan(plan);
+    let shareplan: Plan = this.convertPlanData2Plan(plan);
 
-    let shared = await this.shareRestful.share(shareplan);
+    let upplan: ShareData = new ShareData();
+
+    upplan.oai = "";
+    upplan.ompn = "";
+    upplan.c = "";
+    upplan.d.p = shareplan;
+
+    let shared = await this.shareRestful.share(upplan);
 
     if (shared)
       return shared.psurl;
@@ -735,8 +739,8 @@ export class CalendarService extends BaseService {
     };
 
     if (src.items && src.items.length > 0) {
-      for (let item: any of src.items) {
-        dest.push(this.convertPlanItem2PlanPa(item));
+      for (let item of src.items) {
+        dest.pa.push(this.convertPlanItem2PlanPa(item));
       }
     }
 
@@ -746,36 +750,36 @@ export class CalendarService extends BaseService {
   private convertPlanItem2PlanPa(src: PlanItemData | TaskData | AgendaData | MiniTaskData | MemoData): PlanPa {
     let pa: PlanPa = new PlanPa();
 
-    if (typeof src === "PlanItemData") {
+    if (typeof src == PlanItemData) {
       //关联日程ID
       pa.rai = "";
       //日程发送人用户ID
-      pa.fc = src.ui;
+      pa.fc = "";
       //日程ID
-      pa.ai = src.jti;
+      pa.ai = (<PlanItemData>src).jti;
       //主题
-      pa.at = src.jtn;
+      pa.at = (<PlanItemData>src).jtn;
       //时间(YYYY/MM/DD)
-      pa.adt = src.sd;
+      pa.adt = (<PlanItemData>src).sd;
       //开始时间
-      pa.st = src.st;
+      pa.st = (<PlanItemData>src).st;
       //结束日期
-      pa.ed = src.sd;
+      pa.ed = (<PlanItemData>src).sd;
       //结束时间
-      pa.et = src.st;
+      pa.et = (<PlanItemData>src).st;
       //计划
-      pa.ap = src.ji;
+      pa.ap = (<PlanItemData>src).ji;
       //重复
       pa.ar = "";
       //提醒
       pa.aa = "";
       //备注
-      pa.am = src.bz;
+      pa.am = (<PlanItemData>src).bz;
       //优先级
-      pa.px = src.px;
+      pa.px = (<PlanItemData>src).px;
     }
 
-    if (typeof src === "AgendaData") {
+    if (typeof src == AgendaData) {
       //关联日程ID
       pa.rai = src.rtevi;
       //日程发送人用户ID
@@ -804,7 +808,7 @@ export class CalendarService extends BaseService {
       pa.px = "";
     }
 
-    if (typeof src === "TaskData") {
+    if (typeof src == TaskData) {
       //关联日程ID
       pa.rai = "";
       //日程发送人用户ID
@@ -833,7 +837,7 @@ export class CalendarService extends BaseService {
       pa.px = "";
     }
 
-    if (typeof src === "MiniTaskData") {
+    if (typeof src == MiniTaskData) {
       //关联日程ID
       pa.rai = "";
       //日程发送人用户ID
@@ -862,7 +866,7 @@ export class CalendarService extends BaseService {
       pa.px = "";
     }
 
-    if (typeof src === "MemoData") {
+    if (typeof src == MemoData) {
       //关联日程ID
       pa.rai = "";
       //日程发送人用户ID
