@@ -717,7 +717,10 @@ export class CalendarService extends BaseService {
 
     let shared = await this.shareRestful.share(shareplan);
 
-    return shared.psurl;
+    if (shared)
+      return shared.psurl;
+    else
+      return "";
   }
 
   private convertPlanData2Plan(src: PlanData): Plan {
