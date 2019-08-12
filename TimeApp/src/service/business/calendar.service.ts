@@ -747,10 +747,12 @@ export class CalendarService extends BaseService {
     return dest;
   }
 
-  private convertPlanItem2PlanPa(src: PlanItemData | TaskData | AgendaData | MiniTaskData | MemoData): PlanPa {
+  private convertPlanItem2PlanPa(source: PlanItemData | TaskData | AgendaData | MiniTaskData | MemoData): PlanPa {
     let pa: PlanPa = new PlanPa();
 
-    if (typeof src == PlanItemData) {
+    let src: any = source;
+
+    if (src.jti) {  // PlanItemData
       //关联日程ID
       pa.rai = "";
       //日程发送人用户ID
@@ -779,112 +781,112 @@ export class CalendarService extends BaseService {
       pa.px = (<PlanItemData>src).px;
     }
 
-    if (typeof src == AgendaData) {
+    if (src.evi && src.ed) {    // AgendaData
       //关联日程ID
-      pa.rai = src.rtevi;
+      pa.rai = (<AgendaData>src).rtevi;
       //日程发送人用户ID
-      pa.fc = src.ui;
+      pa.fc = (<AgendaData>src).ui;
       //日程ID
-      pa.ai = src.evi;
+      pa.ai = (<AgendaData>src).evi;
       //主题
-      pa.at = src.evn;
+      pa.at = (<AgendaData>src).evn;
       //时间(YYYY/MM/DD)
-      pa.adt = src.sd;
+      pa.adt = (<AgendaData>src).sd;
       //开始时间
-      pa.st = src.st;
+      pa.st = (<AgendaData>src).st;
       //结束日期
-      pa.ed = src.ed;
+      pa.ed = (<AgendaData>src).ed;
       //结束时间
-      pa.et = src.et;
+      pa.et = (<AgendaData>src).et;
       //计划
-      pa.ap = src.ji;
+      pa.ap = (<AgendaData>src).ji;
       //重复
       pa.ar = "";
       //提醒
       pa.aa = "";
       //备注
-      pa.am = src.bz;
+      pa.am = (<AgendaData>src).bz;
       //优先级
-      pa.px = "";
+      pa.px = 0;
     }
 
-    if (typeof src == TaskData) {
+    if (src.evi && src.cs) {    // TaskData
       //关联日程ID
       pa.rai = "";
       //日程发送人用户ID
-      pa.fc = src.ui;
+      pa.fc = (<TaskData>src).ui;
       //日程ID
-      pa.ai = src.evi;
+      pa.ai = (<TaskData>src).evi;
       //主题
-      pa.at = src.evn;
+      pa.at = (<TaskData>src).evn;
       //时间(YYYY/MM/DD)
-      pa.adt = src.evd;
+      pa.adt = (<TaskData>src).evd;
       //开始时间
       pa.st = "99:99";
       //结束日期
-      pa.ed = src.evd;
+      pa.ed = (<TaskData>src).evd;
       //结束时间
       pa.et = "99:99";
       //计划
-      pa.ap = src.ji;
+      pa.ap = (<TaskData>src).ji;
       //重复
       pa.ar = "";
       //提醒
       pa.aa = "";
       //备注
-      pa.am = src.bz;
+      pa.am = (<TaskData>src).bz;
       //优先级
-      pa.px = "";
+      pa.px = 0;
     }
 
-    if (typeof src == MiniTaskData) {
+    if (src.evi && !src.cs && !src.ed) {    // MiniTaskData
       //关联日程ID
       pa.rai = "";
       //日程发送人用户ID
-      pa.fc = src.ui;
+      pa.fc = (<MiniTaskData>src).ui;
       //日程ID
-      pa.ai = src.evi;
+      pa.ai = (<MiniTaskData>src).evi;
       //主题
-      pa.at = src.evn;
+      pa.at = (<MiniTaskData>src).evn;
       //时间(YYYY/MM/DD)
-      pa.adt = src.evd;
+      pa.adt = (<MiniTaskData>src).evd;
       //开始时间
       pa.st = "99:99";
       //结束日期
-      pa.ed = src.evd;
+      pa.ed = (<MiniTaskData>src).evd;
       //结束时间
       pa.et = "99:99";
       //计划
-      pa.ap = src.ji;
+      pa.ap = (<MiniTaskData>src).ji;
       //重复
       pa.ar = "";
       //提醒
       pa.aa = "";
       //备注
-      pa.am = src.bz;
+      pa.am = (<MiniTaskData>src).bz;
       //优先级
-      pa.px = "";
+      pa.px = 0;
     }
 
-    if (typeof src == MemoData) {
+    if (src.moi) {    // MemoData
       //关联日程ID
       pa.rai = "";
       //日程发送人用户ID
-      pa.fc = src.ui;
+      pa.fc = "";
       //日程ID
-      pa.ai = src.moi;
+      pa.ai = (<MemoData>src).moi;
       //主题
-      pa.at = src.mon;
+      pa.at = (<MemoData>src).mon;
       //时间(YYYY/MM/DD)
-      pa.adt = src.sd;
+      pa.adt = (<MemoData>src).sd;
       //开始时间
       pa.st = "99:99";
       //结束日期
-      pa.ed = src.sd;
+      pa.ed = (<MemoData>src).sd;
       //结束时间
       pa.et = "99:99";
       //计划
-      pa.ap = src.ji;
+      pa.ap = (<MemoData>src).ji;
       //重复
       pa.ar = "";
       //提醒
@@ -892,7 +894,7 @@ export class CalendarService extends BaseService {
       //备注
       pa.am = "";
       //优先级
-      pa.px = "";
+      pa.px = 0;
     }
 
     return pa;
