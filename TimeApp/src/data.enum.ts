@@ -6,6 +6,27 @@ export enum EventType {
   MiniTask = "2"
 }
 
+export enum PlanType {
+  CalendarPlan = '0',
+  ActivityPlan = '1',
+  PrivatePlan = '2'
+}
+
+export enum PlanItemType {
+  Holiday = '0',
+  Activity = '1'
+}
+
+export enum PlanDownloadType {
+  NO = '0',
+  YES = '1'
+}
+
+export enum ObjectType {
+  Event = 'event',
+  Memo = 'memo',
+  Calendar = 'calendar'
+}
 
 //是否同步
 export enum SyncType {
@@ -84,4 +105,18 @@ export enum TxType {
   "4h" = "4",
   "1d"  = "5",
   customdef = "6"
+}
+
+//是否完成
+export enum IsSuccess {
+	wait = "0",
+  success = "1"
+
+}
+
+//完成后是否需要自动创建
+export enum IsCreate {
+	isNo = "0",
+  isYes = "1"
+
 }

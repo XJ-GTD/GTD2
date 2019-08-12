@@ -4,8 +4,8 @@ import { SqliteExec } from "../util-service/sqlite.exec";
 import { UtilService } from "../util-service/util.service";
 import { EmitService } from "../util-service/emit.service";
 import { BipdshaeData, Plan, ShaeRestful } from "../restful/shaesev";
-import { EventData } from "./event.service";
-import { EventType } from "../../data.enum";
+import { EventData, TaskData, AgendaData, MiniTaskData } from "./event.service";
+import { EventType, PlanType, PlanItemType. PlanDownloadType, ObjectType } from "../../data.enum";
 import { MemoData } from "./memo.service";
 import * as moment from "moment";
 import { JhaTbl } from "../sqlite/tbl/jha.tbl";
@@ -75,6 +75,88 @@ export class CalendarService extends BaseService {
     await this.sqlExce.updateByParam(plandb);
 
     return;
+  }
+
+  /**
+   * 取得计划
+   *
+   * @author leon_xi@163.com
+   **/
+  async getPlan(ji: string, withchildren: boolean = true): Promise<PlanData> {
+
+    this.assertEmpty(ji);   // 计划ID不能为空
+
+    let plan: PlanData = {} as PlanData;
+    let plandb: JhaTbl = new JhaTbl();
+
+    plandb.ji = ji;
+
+    plandb = await this.sqlExce.getOneByParam<JhaTbl>(plandb);
+
+    Object.assign(plan, plandb);
+
+    if (!withchildren) {
+      return plan;
+    }
+
+    // 检索可能的事件/备忘
+    if (plan.jt == PlanType.CalendarPlan || plan.jt == PlanType.ActivityPlan) {
+      let sql = `select * from gtd_jta where ji = ?`;
+      let params: Array<any> = new Array<any>();
+
+      params.push(ji);
+
+      plan.items = await this.sqlExce.getExtLstByParam<PlanItemData>(sql, params);
+    }
+
+    if (plan.jt == PlanType.PrivatePlan) {
+      let agendasql = `select ev.*,
+                              ea.sd sd,
+                              ea.st st,
+                              ea.ed ed,
+                              ea.et et,
+                              ea.ct ct
+                       from gtd_ev ev
+                          left join gtd_ca ea on ea.evi = ev.evi
+                       where jt = '${EventType.Agenda}' and ji = ?`;
+
+      let agendas: Array<AgendaData> = await this.sqlExce.getExtLstByParam<AgendaData>(agendasql, params);
+
+      let tasksql = `select ev.*,
+                            et.cs cs,
+                            et.isrt isrt,
+                            et.cd cd,
+                            et.fd fd
+                     from gtd_ev ev
+                        left join gtd_t et on et.evi = ev.evi
+                     where jt = '${EventType.Task}' and ji = ?`;
+      let params: Array<any> = new Array<any>();
+
+      params.push(ji);
+
+      let tasks: Array<TaskData> = await this.sqlExce.getExtLstByParam<TaskData>(tasksql, params);
+
+      let minitasksql = `select *
+                         from gtd_ev
+                         where jt = '${EventType.MiniTask}' and ji = ?`;
+
+      let minitasks: Array<MiniTaskData> = await this.sqlExce.getExtLstByParam<MiniTaskData>(minitasksql, params);
+
+      let memosql = `select * from gtd_mom where ji = ?`;
+
+      let memos: Array<MemoData> = await this.sqlExce.getExtLstByParam<MemoData>(memosql, params);
+
+      let merged: Array<AgendaData | TaskData | MiniTaskData | MemoData> = new Array<AgendaData | TaskData | MiniTaskData | MemoData>();
+
+      merged = merged.concat(agendas);
+      merged = merged.concat(tasks);
+      merged = merged.concat(minitasks);
+      merged = merged.concat(memos);
+
+      plan.items = merged;
+    }
+
+    return plan;
   }
 
   /**
@@ -622,7 +704,196 @@ export class CalendarService extends BaseService {
   }
 
   syncPrivatePlans() {}
-  sharePlan() {}
+
+  async sharePlan(plan: PlanData, refreshChildren: boolean = false): Promise<string> {
+    this.assertEmpty(plan);     // 入参不能为空
+    this.assertEmpty(plan.ji);  // 计划ID不能为空
+
+    if (refreshChildren) {
+      plan = await this.getPlan(plan.ji, true);   // 重新获取计划和计划子项目
+    }
+
+    let shareplan: Plan = convertPlanData2Plan(plan);
+
+    let shared = await this.shareRestful.share(shareplan);
+
+    if (shared)
+      return shared.psurl;
+    else
+      return "";
+  }
+
+  private convertPlanData2Plan(src: PlanData): Plan {
+    this.assertEmpty(src);      // 入参不能为空
+
+    let dest: Plan = new Plan();
+
+    dest.pn = {
+      ji: src.ji,
+      jn: src.jn,
+      jc: src.jc
+    };
+
+    if (src.items && src.items.length > 0) {
+      for (let item: any of src.items) {
+        dest.push(this.convertPlanItem2PlanPa(item));
+      }
+    }
+
+    return dest;
+  }
+
+  private convertPlanItem2PlanPa(src: PlanItemData | TaskData | AgendaData | MiniTaskData | MemoData): PlanPa {
+    let pa: PlanPa = new PlanPa();
+
+    if (typeof src === "PlanItemData") {
+      //关联日程ID
+      pa.rai = "";
+      //日程发送人用户ID
+      pa.fc = src.ui;
+      //日程ID
+      pa.ai = src.jti;
+      //主题
+      pa.at = src.jtn;
+      //时间(YYYY/MM/DD)
+      pa.adt = src.sd;
+      //开始时间
+      pa.st = src.st;
+      //结束日期
+      pa.ed = src.sd;
+      //结束时间
+      pa.et = src.st;
+      //计划
+      pa.ap = src.ji;
+      //重复
+      pa.ar = "";
+      //提醒
+      pa.aa = "";
+      //备注
+      pa.am = src.bz;
+      //优先级
+      pa.px = src.px;
+    }
+
+    if (typeof src === "AgendaData") {
+      //关联日程ID
+      pa.rai = src.rtevi;
+      //日程发送人用户ID
+      pa.fc = src.ui;
+      //日程ID
+      pa.ai = src.evi;
+      //主题
+      pa.at = src.evn;
+      //时间(YYYY/MM/DD)
+      pa.adt = src.sd;
+      //开始时间
+      pa.st = src.st;
+      //结束日期
+      pa.ed = src.ed;
+      //结束时间
+      pa.et = src.et;
+      //计划
+      pa.ap = src.ji;
+      //重复
+      pa.ar = "";
+      //提醒
+      pa.aa = "";
+      //备注
+      pa.am = src.bz;
+      //优先级
+      pa.px = "";
+    }
+
+    if (typeof src === "TaskData") {
+      //关联日程ID
+      pa.rai = "";
+      //日程发送人用户ID
+      pa.fc = src.ui;
+      //日程ID
+      pa.ai = src.evi;
+      //主题
+      pa.at = src.evn;
+      //时间(YYYY/MM/DD)
+      pa.adt = src.evd;
+      //开始时间
+      pa.st = "99:99";
+      //结束日期
+      pa.ed = src.evd;
+      //结束时间
+      pa.et = "99:99";
+      //计划
+      pa.ap = src.ji;
+      //重复
+      pa.ar = "";
+      //提醒
+      pa.aa = "";
+      //备注
+      pa.am = src.bz;
+      //优先级
+      pa.px = "";
+    }
+
+    if (typeof src === "MiniTaskData") {
+      //关联日程ID
+      pa.rai = "";
+      //日程发送人用户ID
+      pa.fc = src.ui;
+      //日程ID
+      pa.ai = src.evi;
+      //主题
+      pa.at = src.evn;
+      //时间(YYYY/MM/DD)
+      pa.adt = src.evd;
+      //开始时间
+      pa.st = "99:99";
+      //结束日期
+      pa.ed = src.evd;
+      //结束时间
+      pa.et = "99:99";
+      //计划
+      pa.ap = src.ji;
+      //重复
+      pa.ar = "";
+      //提醒
+      pa.aa = "";
+      //备注
+      pa.am = src.bz;
+      //优先级
+      pa.px = "";
+    }
+
+    if (typeof src === "MemoData") {
+      //关联日程ID
+      pa.rai = "";
+      //日程发送人用户ID
+      pa.fc = src.ui;
+      //日程ID
+      pa.ai = src.moi;
+      //主题
+      pa.at = src.mon;
+      //时间(YYYY/MM/DD)
+      pa.adt = src.sd;
+      //开始时间
+      pa.st = "99:99";
+      //结束日期
+      pa.ed = src.sd;
+      //结束时间
+      pa.et = "99:99";
+      //计划
+      pa.ap = src.ji;
+      //重复
+      pa.ar = "";
+      //提醒
+      pa.aa = "";
+      //备注
+      pa.am = "";
+      //优先级
+      pa.px = "";
+    }
+
+    return pa;
+  }
+
   fetchPagedActivities() {}
   mergePagedActivities() {}
   backup(bts: number) {}
@@ -644,7 +915,7 @@ export class FindActivityCondition {
 }
 
 export interface PlanData extends JhaTbl {
-  items: Array<PlanItemData>;
+  items: Array<PlanItemData | AgendaData | TaskData | MiniTaskData | MemoData>;
 }
 
 export interface PlanItemData extends JtaTbl {
@@ -688,26 +959,4 @@ export class DayActivitySummaryData {
   memoscount: number;           // 备忘数量
   repeateventscount: number;    // 重复事件数量
   bookedtimesummary: number;    // 总预定时长
-}
-
-export enum PlanType {
-  CalendarPlan = '0',
-  ActivityPlan = '1',
-  PrivatePlan = '2'
-}
-
-export enum PlanItemType {
-  Holiday = '0',
-  Activity = '1'
-}
-
-export enum PlanDownloadType {
-  NO = '0',
-  YES = '1'
-}
-
-export enum ObjectType {
-  Event = 'event',
-  Memo = 'memo',
-  Calendar = 'calendar'
 }
