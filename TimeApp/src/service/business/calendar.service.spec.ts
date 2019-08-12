@@ -84,6 +84,8 @@ describe('CalendarService test suite', () => {
         AgdRestful,
         BacRestful,
         Network,
+        HTTP,
+        HttpClient,
         RestFulConfig,
         RestfulClient,
         NetworkService,
@@ -91,7 +93,8 @@ describe('CalendarService test suite', () => {
         MemoService,
         { provide: StatusBar, useClass: StatusBarMock },
         { provide: SplashScreen, useClass: SplashScreenMock },
-        { provide: Platform, useClass: PlatformMock }
+        { provide: Platform, useClass: PlatformMock },
+        { provide: HttpClient, useClass: HttpTestingController }
       ]
     });
   }));
