@@ -85,7 +85,6 @@ export class CalendarService extends BaseService {
   async getPlan(ji: string, withchildren: boolean = true): Promise<PlanData> {
 
     this.assertEmpty(ji);   // 计划ID不能为空
-    this.assertNull(jt);    // 计划类型不能为空
 
     let plan: PlanData = {} as PlanData;
     let plandb: JhaTbl = new JhaTbl();
