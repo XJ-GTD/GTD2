@@ -259,39 +259,10 @@ export class EventService extends BaseService {
 	 * 创建更新任务
 	 * @author ying<343253410@qq.com>
 	 */
-  async saveTask(tx: TxJson): Promise <TxJson>{
+  async saveTask(tx: TaskData): Promise <TaskData>{
 		this.assertEmpty(tx); // 对象不能为空
-		this.assertEmpty(tx.eventData); //事件不能为空
-		let txx: TxJson = new TxJson();
-		if (tx.eventData.evi){
-			//更新事件表
-			let evdb: EvTbl = new EvTbl();
-			Object.assign(evdb, tx.eventData);
-			await this.sqlExce.updateByParam(evdb);
-			txx.eventData = evdb;
-			//更新任务表
-			if (tx.isrt !='') {
-					let tdb: TTbl = new TTbl();
-					tdb.evi = evdb.evi;
-					tdb.isrt=tx.isrt;
-					await this.sqlExce.updateByParam(tdb);
-			}
-			txx.isrt =tx.isrt ;
-		} else {
-			//新增事件表
-			tx.eventData.evi = this.util.getUuid();
-			let evdb: EvTbl = new EvTbl();
-			Object.assign(evdb, tx.eventData);
-			await this.sqlExce.saveByParam(evdb);
-			txx.eventData = evdb;
-			let tdb: TTbl = new TTbl();
-			tdb.evi = evdb.evi;
-			tdb.cs ="0";
-			tdb.isrt=tx.isrt;
-			await this.sqlExce.saveByParam(tdb);
-			txx.isrt =tx.isrt ;
-		}
-		return txx;
+		this.assertEmpty(tx.evn); //事件主题不能为空
+		
   }
 
   /**
@@ -413,7 +384,7 @@ export interface AgendaData extends EventData, CaTbl {
 
 }
 
-export interface TaskData extends TTbl {
+export interface TaskData extends EventData,TTbl {
 
 }
 
@@ -438,11 +409,6 @@ export class RtJson {
   }
 }
 
-/**
-	 * 检索未完成的任务
-	 * @author ying<343253410@qq.com>
-	 */
 class TxJson {
-	eventData: EventData = {} as EventData;
-	isrt: string = "";
+	
 }
