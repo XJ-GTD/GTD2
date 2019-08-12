@@ -49,13 +49,6 @@ export enum GsType {
   waitdel = "4"
 }
 
-//对象类型
-export enum ObType {
-  event = "event",
-  memo = "memo",
-  calendar = "calendar"
-}
-
 //重复结束选项
 export enum OverType {
   fornever = "fornever",
