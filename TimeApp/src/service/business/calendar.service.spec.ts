@@ -37,9 +37,10 @@ import {SyncRestful} from "../restful/syncsev";
 import { AgdRestful } from "../restful/agdsev";
 import { BacRestful } from "../restful/bacsev";
 
-import { CalendarService, PlanData, PlanItemData, MonthActivityData, PlanType } from "./calendar.service";
+import { CalendarService, PlanData, PlanItemData, MonthActivityData } from "./calendar.service";
 import { EventService, AgendaData } from "./event.service";
 import { MemoService, MemoData } from "./memo.service";
+import { PlanType } from "../../data.enum";
 
 /**
  * 日历Service 持续集成CI 自动测试Case
