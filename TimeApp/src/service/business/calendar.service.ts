@@ -739,7 +739,7 @@ export class CalendarService extends BaseService {
     };
 
     if (src.items && src.items.length > 0) {
-      for (let item: any of src.items) {
+      for (let item of src.items) {
         dest.pa.push(this.convertPlanItem2PlanPa(item));
       }
     }
