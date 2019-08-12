@@ -3,7 +3,7 @@ import { BaseService, SortType } from "./base.service";
 import { SqliteExec } from "../util-service/sqlite.exec";
 import { UtilService } from "../util-service/util.service";
 import { EmitService } from "../util-service/emit.service";
-import { BipdshaeData, Plan, PlanPa, ShaeRestful } from "../restful/shaesev";
+import { BipdshaeData, Plan, PlanPa, ShareData, ShaeRestful } from "../restful/shaesev";
 import { EventData, TaskData, AgendaData, MiniTaskData } from "./event.service";
 import { EventType, PlanType, PlanItemType, PlanDownloadType, ObjectType } from "../../data.enum";
 import { MemoData } from "./memo.service";
