@@ -28,3 +28,32 @@ export enum ObType {
   memo = "memo",
   calendar = "calendar"
 }
+
+//重复结束选项
+export enum OverType {
+  forever = "forever",
+  times = "times",
+  limitdate = "limitdate"
+}
+
+//重复类型选项
+export enum CycleType {
+  close = "close",
+  d = "d",
+  m = "m",
+  w = "w",
+  y = "y"
+}
+
+//重复开启选项
+export enum WeekType {
+  close = "close",
+  Monday  = "Monday",
+  Tuesday  = "Tuesday",
+  Wednesday  = "Wednesday",
+  Thursday  = "Thursday",
+  Friday = "Friday",
+  Saturday = "Saturday",
+  Sunday = "Sunday"
+}
+

@@ -11,7 +11,7 @@ import * as moment from "moment";
 import {ETbl} from "../sqlite/tbl/e.tbl";
 import {EmitService} from "../util-service/emit.service";
 import {WaTbl} from "../sqlite/tbl/wa.tbl";
-import anyenum  from "../../data.enum";
+import anyenum, {CycleType, WeekType} from "../../data.enum";
 
 @Injectable()
 export class EventService extends BaseService {
@@ -108,24 +108,43 @@ export class EventService extends BaseService {
    */
   private sqlparamAddEv(agdata : AgendaData): RetParamEv{
     let ret = new RetParamEv();
-    let len = 1;
+    let len :Number= 1;
     let add: any = 'd';
-    //todo rt需要解析
-    //let rt  = ;
-    if (agdata.rt == '1') {
-      len = 365;
-    } else if (agdata.rt == '2') {
-      len = 96;
+    // rt需要解析
+    if (agdata.rtjson.cycletype == anyenum.CycleType.d) {
+      add = 'd';
+      len = agdata.rtjson.cyclenum;
+    } else if (agdata.rtjson.cycletype == anyenum.CycleType.w) {
       add = 'w';
-    } else if (agdata.rt == '3') {
-      len = 24;
+      len = agdata.rtjson.cyclenum;
+    } else if (agdata.rtjson.cycletype == anyenum.CycleType.m) {
+
       add = 'M';
-    } else if (agdata.rt == '4') {
-      len = 20;
+      len = agdata.rtjson.cyclenum;
+    } else if (agdata.rtjson.cycletype == anyenum.CycleType.y) {
+
       add = 'y';
+    }else {
+      add = 'd';
+      len = 1;
     }
 
+    if (agdata.rtjson.openway){
+
+    }
+
+    let limitvalue = 99999999999999;
+    if (agdata.rtjson.over.type == anyenum.OverType.times){
+      limitvalue = parseInt(agdata.rtjson.over.value);
+    }else if(agdata.rtjson.over.type == anyenum.OverType.limitdate){
+      limitvalue = moment(agdata.rtjson.over.value).unix();
+    }
+
+    let rt  = JSON.stringify(agdata.rtjson);
+    let tx  = JSON.stringify(agdata.txjson);
+    let cnt = 0;
     for (let i = 0; i < len; i++) {
+      cnt = cnt + 1;
       let ev = new EvTbl();
       ev.evi = this.util.getUuid();
       if (i == 0 ){
@@ -139,9 +158,9 @@ export class EventService extends BaseService {
       ev.ji = agdata.ji;
       ev.bz = agdata.bz;
       ev.type = anyenum.EventType.Agenda;
-      ev.tx = agdata.tx;
+      ev.tx = tx;
       ev.txs = agdata.txs;
-      ev.rt = agdata.rt;
+      ev.rt = rt;
       ev.rts = agdata.rts;
       ev.fj = agdata.fj;
       ev.pn = agdata.pn;
@@ -156,6 +175,10 @@ export class EventService extends BaseService {
       if (ev.tx > '0') {
         ret.sqlparam.push(this.sqlparamAddTxWa(ev,agdata.st,agdata.sd).rpTParam());
       }
+
+      if (cnt > limitvalue || moment(ev.evd).unix() > limitvalue){
+        break;
+      }
     }
     return ret;
   }
@@ -169,7 +192,7 @@ export class EventService extends BaseService {
   private sqlparamAddTxWa(ev: EvTbl,st:string ,sd:string): WaTbl {
     let wa = new WaTbl();//提醒表
     wa.wai = this.util.getUuid();
-    wa.obt = anyenum.ObType.memo;
+    wa.obt = anyenum.ObType.event;
     //todo tx需要解析
     //let tx  = ;
     if (ev.tx != '0') {
@@ -259,7 +282,8 @@ export interface EventData extends EvTbl {
 }
 
 export interface AgendaData extends EventData, CaTbl {
-
+  rtjson :RtJson;
+  txjson :TxJson;
 
 }
 
@@ -277,11 +301,17 @@ class RetParamEv{
   sqlparam  = new  Array<any>();
 }
 
-class RtJson {
-
+export class RtJson {
+  cycletype:anyenum.CycleType;
+  cyclenum:Number;
+  openway:WeekType;
+  over:{
+    type:anyenum.OverType,
+    value:string
+  }
 }
 
-class TxJson {
-
+export class TxJson {
+  tx :string
 }
 
