@@ -601,7 +601,21 @@ export class CalendarService extends BaseService {
   }
 
   sendPlan() {}
-  receivedPlan() {}
+
+  /**
+   * 接收日历保存到本地
+   *
+   * @author leon_xi@163.com
+   **/
+  async receivedPlan(ji: string): Promise<PlanData> {
+
+    this.assertEmpty(ji);   // 入参不能为空
+
+    // 从服务器下载计划
+
+    // 保存计划
+    return null;
+  }
 
   syncPrivatePlan(plan: PlanData) {
 

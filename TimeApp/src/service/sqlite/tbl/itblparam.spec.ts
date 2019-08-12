@@ -21,7 +21,7 @@ import {
   SplashScreenMock
 } from '../../../../test-config/mocks-ionic';
 
-import {MyApp} from '../../app/app.component';
+import {MyApp} from '../../../app/app.component';
 import {SqliteConfig} from "../../config/sqlite.config";
 import {RestFulConfig} from "../../config/restful.config";
 
