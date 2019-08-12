@@ -11,6 +11,7 @@ import {RestFulConfig, UrlEntity} from "../config/restful.config";
 import {CTbl} from "../sqlite/tbl/c.tbl";
 import {BxTbl} from "../sqlite/tbl/bx.tbl";
 import {YTbl} from "../sqlite/tbl/y.tbl";
+import { MomTbl } from "../sqlite/tbl/mom.tbl";
 
 
 /**
@@ -108,7 +109,8 @@ export class BackupProSub {
   jh: Array<JhTbl> = new Array<JhTbl>();
   //获取用户偏好
   y: Array<YTbl> = new Array<YTbl>();
-
+  //新版备忘表数据
+  mom: Array<MomTbl> = new Array<MomTbl>();
   //分批备份最后一次设为true
   commit: boolean = false;
 
@@ -169,4 +171,6 @@ export class OutRecoverPro {
   jh: Array<JhTbl> = new Array<JhTbl>();
   //用户偏好
   y: Array<YTbl> = new Array<YTbl>();
+   //新版备忘表数据
+  mom: Array<MomTbl> = new Array<MomTbl>();
 }

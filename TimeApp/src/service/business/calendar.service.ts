@@ -4,7 +4,8 @@ import { SqliteExec } from "../util-service/sqlite.exec";
 import { UtilService } from "../util-service/util.service";
 import { EmitService } from "../util-service/emit.service";
 import { BipdshaeData, Plan, ShaeRestful } from "../restful/shaesev";
-import { EventData, EventType } from "./event.service";
+import { EventData } from "./event.service";
+import { EventType } from "../../data.enum";
 import { MemoData } from "./memo.service";
 import * as moment from "moment";
 import { JhaTbl } from "../sqlite/tbl/jha.tbl";
@@ -56,7 +57,23 @@ export class CalendarService extends BaseService {
     return plan;
   }
 
+  /**
+   * 更新日历颜色
+   *
+   * @author leon_xi@163.com
+   **/
   async updatePlanColor(ji: string, jc: string) {
+
+    this.assertEmpty(ji);   // 计划ID不能为空
+    this.assertEmpty(jc);   // 颜色不能为空
+
+    let plandb: JhaTbl = new JhaTbl();
+
+    plandb.ji = ji;
+    plandb.jc = jc;
+
+    await this.sqlExce.updateByParam(plandb);
+
     return;
   }
 
@@ -218,7 +235,7 @@ export class CalendarService extends BaseService {
    **/
   async fetchAllPlans(jts:Array<PlanType> = []): Promise<Array<PlanData>> {
 
-    let sql: string = `select * from gtd_j_h ${(jts && jts.length > 0)? ('where jt in (' + jts.join(', ') + ')') : ''} order by jt asc, wtt desc`;
+    let sql: string = `select * from gtd_jha ${(jts && jts.length > 0)? ('where jt in (' + jts.join(', ') + ')') : ''} order by jt asc, wtt desc`;
 
     let plans: Array<PlanData> = await this.sqlExce.getExtList<PlanData>(sql);
 
@@ -243,7 +260,7 @@ export class CalendarService extends BaseService {
    *
    * @author leon_xi@163.com
    **/
-  async asyncfetchPublicPlans(): Promise<Array<PlanData>> {
+  async fetchPublicPlans(): Promise<Array<PlanData>> {
     return await this.fetchAllPlans([PlanType.CalendarPlan, PlanType.ActivityPlan]);
   }
 
@@ -392,17 +409,19 @@ export class CalendarService extends BaseService {
 
     this.assertEmpty(month);    // 入参不能为空
 
-    let monthActivity: MonthActivityData = {} as MonthActivityData;
+    let monthActivity: MonthActivityData = new MonthActivityData();
 
-    let sqlcalitems: string = `select * from gtd_jta where substr(sd, 0, 7) = '${month}' order by sd asc, st asc`;
+    monthActivity.month = month;
+
+    let sqlcalitems: string = `select * from gtd_jta where substr(sd, 1, 7) = '${month}' order by sd asc, st asc`;
 
     monthActivity.calendaritems = await this.sqlExce.getExtList<PlanItemData>(sqlcalitems);
 
-    let sqlevents: string = `select * from gtd_ev where substr(sd, 0, 7) = '${month}' order by sd asc, st asc`;
+    let sqlevents: string = `select * from gtd_ev where substr(evd, 1, 7) = '${month}' order by evd asc`;
 
     monthActivity.events = await this.sqlExce.getExtList<EventData>(sqlevents);
 
-    let sqlmemos: string = `select * from gtd_mom where substr(sd, 0, 7) = '${month}' order by sd asc, st asc`;
+    let sqlmemos: string = `select * from gtd_mom where substr(sd, 1, 7) = '${month}' order by sd asc`;
 
     monthActivity.memos = await this.sqlExce.getExtList<MemoData>(sqlmemos);
 
@@ -431,7 +450,7 @@ export class CalendarService extends BaseService {
                               0 bookedtimesummary
                       from (select '${day}' sd) gday
                           left join gtd_jta gjt on gday.sd = gjt.sd
-                          left join gtd_ev gev on gday.sd = gev.sd
+                          left join gtd_ev gev on gday.sd = gev.evd
                           left join gtd_mom gmo on gday.sd = gmo.sd
                       group by gday.sd`;
 
@@ -449,17 +468,19 @@ export class CalendarService extends BaseService {
 
     this.assertEmpty(day);
 
-    let dayActivity: DayActivityData = {} as DayActivityData;
+    let dayActivity: DayActivityData = new DayActivityData();
+
+    dayActivity.day = day;
 
     let sqlcalitems: string = `select * from gtd_jta where sd = '${day}' order by st asc`;
 
     dayActivity.calendaritems = await this.sqlExce.getExtList<PlanItemData>(sqlcalitems);
 
-    let sqlevents: string = `select * from gtd_ev where sd = '${day}' order by st asc`;
+    let sqlevents: string = `select * from gtd_ev where evd = '${day}'`;
 
     dayActivity.events = await this.sqlExce.getExtList<EventData>(sqlevents);
 
-    let sqlmemos: string = `select * from gtd_mom where sd = '${day}' order by st asc`;
+    let sqlmemos: string = `select * from gtd_mom where sd = '${day}'`;
 
     dayActivity.memos = await this.sqlExce.getExtList<MemoData>(sqlmemos);
 
@@ -580,7 +601,21 @@ export class CalendarService extends BaseService {
   }
 
   sendPlan() {}
-  receivedPlan() {}
+
+  /**
+   * 接收日历保存到本地
+   *
+   * @author leon_xi@163.com
+   **/
+  async receivedPlan(ji: string): Promise<PlanData> {
+
+    this.assertEmpty(ji);   // 入参不能为空
+
+    // 从服务器下载计划
+
+    // 保存计划
+    return null;
+  }
 
   syncPrivatePlan(plan: PlanData) {
 

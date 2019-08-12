@@ -486,5 +486,3 @@ export class ChineseLunar {
     })
   }
 }
-
-

@@ -21,6 +21,11 @@ import {LogTbl} from "./tbl/log.tbl";
 import {SuTbl} from "./tbl/su.tbl";
 import {MkTbl} from "./tbl/mk.tbl";
 import {MoTbl} from "./tbl/mo.tbl";
+import {JhaTbl} from "./tbl/jha.tbl";
+import {MomTbl} from "./tbl/mom.tbl";
+import {JtaTbl} from "./tbl/jta.tbl";
+import {EvTbl} from "./tbl/ev.tbl";
+import {FjTbl} from "./tbl/fj.tbl";
 
 /**
  * create by on 2019/3/5
@@ -109,6 +114,28 @@ export class SqliteInit {
     let mo: MoTbl = new MoTbl();
     await this.sqlexec.drop(mo);
     await this.sqlexec.create(mo);
+
+    // 增加第三期数据库表
+    let mom: MomTbl = new MomTbl();
+    await this.sqlexec.dropByParam(mom);
+    await this.sqlexec.createByParam(mom);
+
+    let jha: JhaTbl = new JhaTbl();
+    await this.sqlexec.dropByParam(jha);
+    await this.sqlexec.createByParam(jha);
+
+    let jta: JtaTbl = new JtaTbl();
+    await this.sqlexec.dropByParam(jta);
+    await this.sqlexec.createByParam(jta);
+
+    let ev: EvTbl = new EvTbl();
+    await this.sqlexec.dropByParam(ev);
+    await this.sqlexec.createByParam(ev);
+
+    let fj: FjTbl = new FjTbl();
+    await this.sqlexec.dropByParam(fj);
+    await this.sqlexec.createByParam(fj);
+
   }
 
   /**

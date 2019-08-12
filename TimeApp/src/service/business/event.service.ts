@@ -11,7 +11,7 @@ import * as moment from "moment";
 import {ETbl} from "../sqlite/tbl/e.tbl";
 import {EmitService} from "../util-service/emit.service";
 import {WaTbl} from "../sqlite/tbl/wa.tbl";
-import anyenum, {CycleType, WeekType} from "../../data.enum";
+import * as anyenum from "../../data.enum";
 
 @Injectable()
 export class EventService extends BaseService {
@@ -57,7 +57,7 @@ export class EventService extends BaseService {
 
         //如果网络正常提交到服务器，则更新同步标志
         if (rst !=  -1){
-          let sq =`update gtd_ev set wtt = ${moment().unix()} , tb = ${anyenum.SyncType.synch} 
+          let sq =`update gtd_ev set wtt = ${moment().unix()} , tb = ${anyenum.SyncType.synch}
           where rtevi = ${retParamEv.rtevi} ;`;
 
           await  this.sqlExce.execSql(sq);
@@ -255,25 +255,151 @@ export class EventService extends BaseService {
     return ret;
   }
 
-  saveTask(){
-
+	/**
+	 * 创建更新任务
+	 * @author ying<343253410@qq.com>
+	 */
+  async saveTask(tx: TxJson): Promise <TxJson>{
+		this.assertEmpty(tx); // 对象不能为空
+		this.assertEmpty(tx.eventData); //事件不能为空
+		let txx: TxJson = new TxJson();
+		if (tx.eventData.evi){
+			//更新事件表
+			let evdb: EvTbl = new EvTbl();
+			Object.assign(evdb, tx.eventData);
+			await this.sqlExce.updateByParam(evdb);
+			txx.eventData = evdb;
+			//更新任务表
+			if (tx.isrt !='') {
+					let tdb: TTbl = new TTbl();
+					tdb.evi = evdb.evi;
+					tdb.isrt=tx.isrt;
+					await this.sqlExce.updateByParam(tdb);
+			}
+			txx.isrt =tx.isrt ;
+		} else {
+			//新增事件表
+			tx.eventData.evi = this.util.getUuid();
+			let evdb: EvTbl = new EvTbl();
+			Object.assign(evdb, tx.eventData);
+			await this.sqlExce.saveByParam(evdb);
+			txx.eventData = evdb;
+			let tdb: TTbl = new TTbl();
+			tdb.evi = evdb.evi;
+			tdb.cs ="0";
+			tdb.isrt=tx.isrt;
+			await this.sqlExce.saveByParam(tdb);
+			txx.isrt =tx.isrt ;
+		}
+		return txx;
   }
-  saveMiniTask() {}
+
+  /**
+	 * 创建更新小任务
+	 * @author ying<343253410@qq.com>
+	 */
+  async saveMiniTask(minitask: MiniTaskData): Promise <MiniTaskData>{
+  	this.assertEmpty(minitask); // 对象不能为空
+  	if (minitask.evi) {
+			let evdb: EvTbl = new EvTbl();
+			Object.assign(evdb, minitask);
+			await this.sqlExce.updateByParam(evdb);
+		} else {
+			minitask.evi = this.util.getUuid();
+			let evdb: EvTbl = new EvTbl();
+			Object.assign(evdb, minitask);
+			await this.sqlExce.saveByParam(evdb);
+		}
+		return minitask;
+  }
+
   updateEventPlan() {}
   updateEventRemind() {}
   updateEventRepeat() {}
   removeEvent() {}
-  finishTask() {}
+
+  /**
+	 * 完成任务
+	 * @author ying<343253410@qq.com>
+	 */
+  async finishTask(evi: string):  Promise <string>{
+  	this.assertEmpty(evi); // 事件ID不能为空
+  	let tdb: TTbl = new TTbl();
+		tdb.evi = evi;
+		tdb.cs="1";
+		tdb.fd=moment().format('YYYY/MM/DD');
+		await this.sqlExce.updateByParam(tdb);
+		//TODO 是否推送事件完成消息
+		//this.emitService.emit(`mwxing.event.task.finish`);
+		return tdb.isrt;
+  }
+
+  /**
+   * 当是自动创建的任务的情况下,进行下一步操作
+   * @author ying<343253410@qq.com>
+   */
+  async finishTaskNext(evi: string){
+  	this.assertEmpty(evi);
+  	let tdb: TTbl = new TTbl();
+		tdb.evi = evi;
+		tdb =	await this.sqlExce.getOneByParam<TTbl>(tdb);
+		if (tdb.isrt=="1") {
+			//获取当前的事件
+			let evdb: EvTbl = new EvTbl();
+			evdb.evi=evi;
+			evdb = await this.sqlExce.getOneByParam<EvTbl>(evdb);
+			let evdbnew: EvTbl = new EvTbl();
+			Object.assign(evdbnew, evdb);
+			//创建新的任务事件
+			evdbnew.evi = this.util.getUuid();
+			evdbnew.rtevi=evdb.evi;
+			evdbnew.evd=moment().format('YYYY/MM/DD');
+			await this.sqlExce.saveByParam(evdbnew);
+			//创建任务
+			let tdbnew: TTbl = new TTbl();
+			tdbnew.evi = 	evdbnew.evi;
+			tdbnew.cs = "0";
+			tdbnew.isrt = tdb.isrt;
+			await this.sqlExce.saveByParam(tdbnew);
+		}
+		return ;
+  }
+
   sendEvent() {}
   receivedEvent() {}
   acceptReceivedEvent() {}
   rejectReceivedEvent() {}
   syncEvent() {}
   syncEvents() {}
+
+  /**
+	 * 检索任务
+	 * @author ying<343253410@qq.com>
+	 */
   fetchPagedTasks() {}
+
+  /**
+	 * 检索完成任务
+	 * @author ying<343253410@qq.com>
+	 */
   fetchPagedCompletedTasks() {}
+
+  /**
+	 * 检索未完成的任务
+	 * @author ying<343253410@qq.com>
+	 */
   fetchPagedUncompletedTasks() {}
+
+  /**
+   * 备份,三张表备份
+	 * @author ying<343253410@qq.com>
+   */
   backup() {}
+
+  /**
+   * 恢复
+	 * @author ying<343253410@qq.com>
+   */
   recovery() {}
 }
 
@@ -287,9 +413,10 @@ export interface AgendaData extends EventData, CaTbl {
 
 }
 
-export interface TaskData extends EventData, TTbl {
+export interface TaskData extends TTbl {
 
 }
+
 
 export interface MiniTaskData extends EventData {
 
@@ -304,14 +431,18 @@ class RetParamEv{
 export class RtJson {
   cycletype:anyenum.CycleType;
   cyclenum:Number;
-  openway:WeekType;
+  openway:anyenum.WeekType;
   over:{
     type:anyenum.OverType,
     value:string
   }
 }
 
-export class TxJson {
-  tx :string
+/**
+	 * 检索未完成的任务
+	 * @author ying<343253410@qq.com>
+	 */
+class TxJson {
+	eventData: EventData = {} as EventData;
+	isrt: string = "";
 }
-
