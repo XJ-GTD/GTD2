@@ -747,8 +747,10 @@ export class CalendarService extends BaseService {
     return dest;
   }
 
-  private convertPlanItem2PlanPa(src: PlanItemData | TaskData | AgendaData | MiniTaskData | MemoData): PlanPa {
+  private convertPlanItem2PlanPa(source: PlanItemData | TaskData | AgendaData | MiniTaskData | MemoData): PlanPa {
     let pa: PlanPa = new PlanPa();
+
+    let src: any = source;
 
     if (src.jti) {  // PlanItemData
       //关联日程ID
