@@ -750,7 +750,7 @@ export class CalendarService extends BaseService {
   private convertPlanItem2PlanPa(src: PlanItemData | TaskData | AgendaData | MiniTaskData | MemoData): PlanPa {
     let pa: PlanPa = new PlanPa();
 
-    if (src is PlanItemData) {
+    if (typeof src == PlanItemData) {
       //关联日程ID
       pa.rai = "";
       //日程发送人用户ID
