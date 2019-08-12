@@ -172,35 +172,36 @@ export class EventService extends BaseService {
     let repeatStartdt :any;
 
     //计算开始日，结束日及设定重复区间、重复单位
-    if (agdata.rtjson.cycletype == anyenum.CycleType.d) {
+    let rtjson: RtJson = JSON.parse(agdata.rt);
+    if (rtjson.cycletype == anyenum.CycleType.d) {
 
-      len = agdata.rtjson.cyclenum;
+      len = rtjson.cyclenum;
       repeatStartdt = this.getRepeatStartDt(agdata.sd,null);
       repeatEnddt = moment(repeatStartdt).add(len, 'd');
 
       addtype = 'd';
-    }else if (agdata.rtjson.cycletype == anyenum.CycleType.w) {
+    }else if (rtjson.cycletype == anyenum.CycleType.w) {
 
-      len = agdata.rtjson.cyclenum;
+      len = rtjson.cyclenum;
       repeatStartdt = this.getRepeatStartDt(agdata.sd,agdata.rtjson.openway);
       repeatEnddt = moment(repeatStartdt).add(len , 'w');
 
       addtype = 'w';
-    } else if (agdata.rtjson.cycletype == anyenum.CycleType.m) {
+    } else if (rtjson.cycletype == anyenum.CycleType.m) {
 
 
-      len = agdata.rtjson.cyclenum;
-      repeatStartdt = this.getRepeatStartDt(agdata.sd,agdata.rtjson.openway);
+      len = rtjson.cyclenum;
+      repeatStartdt = this.getRepeatStartDt(agdata.sd,rtjson.openway);
       repeatEnddt = moment(repeatStartdt).add(len , 'M');
 
-      if (agdata.rtjson.openway == anyenum.OpenWay.close){
+      if (rtjson.openway == anyenum.OpenWay.close){
         addtype = 'M';
       }else{
         addtype = 'w';
       }
 
-    } else if (agdata.rtjson.cycletype == anyenum.CycleType.y) {
-      len = agdata.rtjson.cyclenum;
+    } else if (rtjson.cycletype == anyenum.CycleType.y) {
+      len = rtjson.cyclenum;
       repeatStartdt =  this.getRepeatStartDt(agdata.sd,null);
       repeatEnddt = moment(repeatStartdt).add(len , 'y');
 
@@ -212,16 +213,15 @@ export class EventService extends BaseService {
     }
 
     let limitvalue ;
-    if (agdata.rtjson.over.type == anyenum.OverType.times){
-      limitvalue = parseInt(agdata.rtjson.over.value);
-    }else if(agdata.rtjson.over.type == anyenum.OverType.limitdate){
-      limitvalue = moment(agdata.rtjson.over.value).unix();
+    if (rtjson.over.type == anyenum.OverType.times){
+      limitvalue = parseInt(rtjson.over.value);
+    }else if(rtjson.over.type == anyenum.OverType.limitdate){
+      limitvalue = moment(rtjson.over.value).unix();
     }else{
       limitvalue = 99999999999999;
     }
 
-    let rt  = JSON.stringify(agdata.rtjson);
-    let tx  = JSON.stringify(agdata.txjson);
+    let txjson  = JSON.parse(agdata.tx);
 
     //循环变量初始化
     let loopdt = repeatStartdt;
@@ -251,9 +251,9 @@ export class EventService extends BaseService {
       ev.ji = agdata.ji;
       ev.bz = agdata.bz;
       ev.type = anyenum.EventType.Agenda;
-      ev.tx = tx;
+      ev.tx = agdata.tx;
       ev.txs = agdata.txs;
-      ev.rt = rt;
+      ev.rt = agdata.rt;
       ev.rts = agdata.rts;
       ev.fj = agdata.fj;
       ev.pn = agdata.pn;
@@ -265,8 +265,8 @@ export class EventService extends BaseService {
       ev.del = anyenum.DelType.undel;
       ret.ed = ev.evd;
       ret.sqlparam.push(ev.rpTParam());
-      if (agdata.txjson.type != anyenum.TxType.close) {
-        ret.sqlparam.push(this.sqlparamAddTxWa(ev,agdata.st,agdata.txjson).rpTParam());
+      if (txjson.type != anyenum.TxType.close) {
+        ret.sqlparam.push(this.sqlparamAddTxWa(ev,agdata.st,txjson).rpTParam());
       }
 
       cnt = cnt + 1;
