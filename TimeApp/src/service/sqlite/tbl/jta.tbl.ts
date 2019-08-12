@@ -13,7 +13,7 @@ export class JtaTbl implements ITblParam {
   st: string;
   jtt: string;
   jtc: string;
-  px: Number;
+  px: number;
   bz: string;
   tb: string;
   del: string;

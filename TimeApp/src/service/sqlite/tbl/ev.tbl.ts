@@ -20,7 +20,7 @@ export class EvTbl implements ITblParam {
   rt: string;
   rts: string;
   fj: string;
-  pn: Number;
+  pn: number;
   md: string;
   iv: string;
   sr: string;
