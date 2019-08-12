@@ -33,6 +33,7 @@ export class EventService extends BaseService {
       console.log("bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb");
       return null;
     }else{
+      console.log("ccccccccccccccccccccccccccccccc");
 
       //设置页面参数初始化
       this.initAgdParam(agdata);
