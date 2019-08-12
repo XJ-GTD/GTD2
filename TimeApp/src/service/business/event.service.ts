@@ -84,6 +84,7 @@ export class EventService extends BaseService {
    */
   private initAgdParam(agdata : AgendaData){
 
+
     agdata.ui = UserConfig.account.id;
     agdata.mi = (!agdata.mi || agdata.mi =="")? UserConfig.account.id : agdata.mi;
     agdata.rtevi = !agdata.rtevi ? "" : agdata.rtevi ;
@@ -561,23 +562,25 @@ export interface MiniTaskData extends EventData {
 
 }
 
-class RetParamEv{
+export class RetParamEv{
   rtevi:string ="";
   ed:string = "";
   sqlparam  = new  Array<any>();
+}
+
+export class RtOver {
+  type:anyenum.OverType;
+  value:string;
 }
 
 export class RtJson {
   cycletype:anyenum.CycleType;
   cyclenum:number;
   openway:anyenum.OpenWay;
-  over:{
-    type:anyenum.OverType,
-    value:string
-  }
+  over: RtOver = new RtOver();
 }
 
-class TxJson {
+export class TxJson {
   type: anyenum.TxType;
   defvalue:number;
 }
