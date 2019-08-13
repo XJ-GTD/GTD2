@@ -103,14 +103,17 @@ describe('CalendarService test suite', () => {
 
     config = TestBed.get(SqliteConfig);
     init = TestBed.get(SqliteInit);
-    await config.generateDb();
-    await init.createTables();
 
     calendarService = TestBed.get(CalendarService);
     eventService = TestBed.get(EventService);
     memoService = TestBed.get(MemoService);
     restConfig = TestBed.get(RestFulConfig);
 
+  });
+
+  beforeEach(async () => {
+    await init.createTables();
+    await config.generateDb();
     await init.initData();
 
     restConfig.init();
