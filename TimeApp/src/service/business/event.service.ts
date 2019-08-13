@@ -13,6 +13,9 @@ import {EmitService} from "../util-service/emit.service";
 import {WaTbl} from "../sqlite/tbl/wa.tbl";
 import * as anyenum from "../../data.enum";
 import { BackupPro, BacRestful, OutRecoverPro, RecoverPro } from "../restful/bacsev";
+import {ScdData, SpecScdData} from "../../data.mapping";
+import {CTbl} from "../sqlite/tbl/c.tbl";
+import {SpTbl} from "../sqlite/tbl/sp.tbl";
 
 @Injectable()
 export class EventService extends BaseService {
@@ -28,8 +31,12 @@ export class EventService extends BaseService {
    */
   async saveAgenda(agdata : AgendaData): Promise<AgendaData> {
     console.log("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
+    this.assertEmpty(agdata.evn);
+    this.assertEmpty(agdata.sd);
+
     if (agdata.evi !=null && agdata.evi != "") {
-      console.log("bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb");
+
+      await this.updateDetail(agdata);
       return null;
     }else{
       console.log("ccccccccccccccccccccccccccccccc");
@@ -79,6 +86,79 @@ export class EventService extends BaseService {
   }
 
   /**
+   *
+   * @param {ScdData} scd
+   * @returns {Promise<void>}
+   */
+  private async updateDetail(agdata: AgendaData) {
+    //特殊表操作
+    /*let oldc: CTbl = new CTbl();
+    oldc.si = scd.si;
+    oldc = await this.sqlExce.getOne<CTbl>(oldc);
+
+    //更新日程
+    let c = new CTbl();
+    Object.assign(c, scd);
+
+
+    if (oldc.sd != scd.sd || oldc.rt != scd.rt) {
+      //日期与重复标识变化了，则删除重复子表所有数据，重新插入新数据
+      let sptbl = new SpTbl();
+      sptbl.si = c.si;
+      //删除提醒
+      let sql = 'delete from gtd_e  where si="' + c.si + '"';
+      await this.sqlExce.execSql(sql);
+      //删除特殊表
+      await this.sqlExce.delete(sptbl);
+      //保存特殊表及相应提醒表
+      let ed = await this.saveSp(c);
+      //结束日期使用sp表最后日期
+      c.ed = ed;
+
+    } else {
+      //更新子表数据
+      //if (oldc.st != c.st || oldc.tx != c.tx) {
+
+      //更新sp日程表title
+      let sq = "update gtd_sp set spn = '" + c.sn + "' where si = '" + c.si + "'";
+      await this.sqlExce.execSql(sq);
+
+      //更新e表title
+      sq = "update gtd_e set st = '" + c.sn + "' where si = '" + c.si + "'";
+      await this.sqlExce.execSql(sq);
+
+      //受邀人pull则不更新sp
+      if (scd.specScd(scd.showSpSd)){
+        let sp:SpTbl = new SpTbl();
+        Object.assign(sp,scd.specScd(scd.showSpSd));
+        await this.sqlExce.update(sp);
+
+
+        //保存提醒表
+        let sq2 = "";
+        if (sp.tx !="0" ){
+          sq2 = this.getTxEtbl(sp).rpT();
+        }else{
+          sq2 = this.getTxEtbl(sp).dT();
+        }
+        await this.sqlExce.execSql(sq2);
+      }
+
+      //}
+
+    }
+    await this.sqlExce.update(c);
+    if(c.rt=="0" || (c.rt != "0" && c.sn != oldc.sn)){
+      //restful用参数
+      let agd = new AgdPro();
+      this.setAdgPro(agd, c);
+      await this.agdRest.save(agd);
+    }
+    this.emitService.emitRef(scd.sd);*/
+
+  }
+
+  /**
    * 初始化页面参数
    * @param {AgendaData} agdata
    */
@@ -95,7 +175,8 @@ export class EventService extends BaseService {
     let txjson = new TxJson();
     txjson.type = anyenum.TxType.close;
 
-    agdata.tx = !agdata.tx ? JSON.stringify(txjson) : agdata.tx ;
+    //agdata.tx = !agdata.tx ? JSON.stringify(txjson) : agdata.tx ;
+    agdata.txjson = (agdata.txjson && agdata.txjson !=null) ? agdata.txjson : txjson;
 
     agdata.txs = !agdata.txs ? "" : agdata.txs ;
 
@@ -105,7 +186,8 @@ export class EventService extends BaseService {
     rtjon.over.type = anyenum.OverType.fornever;
     rtjon.cyclenum = 0;
     rtjon.openway = anyenum.OpenWay.close;
-    agdata.rt = !agdata.rt ? JSON.stringify(rtjon) : agdata.rt ;
+    //agdata.rt = !agdata.rt ? JSON.stringify(rtjon) : agdata.rt ;
+    agdata.rtjson = (agdata.rtjson && agdata.rtjson !=null) ? agdata.rtjson : rtjon;
 
     agdata.rts = !agdata.rts ? "" : agdata.rts ;
 

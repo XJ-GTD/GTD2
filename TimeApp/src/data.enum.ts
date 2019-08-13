@@ -125,3 +125,10 @@ export enum Err {
   netbroken = -901,
 }
 
+//日程修改类型
+export enum ModifyType  {
+  OnlySel = "OnlySel",
+  FromSel = "FromSel"
+
+}
+
