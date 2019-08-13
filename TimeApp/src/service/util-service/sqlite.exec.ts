@@ -491,7 +491,7 @@ export class SqliteExec {
   async batExecSqlByParam(sqlist: Array<any>) {
 
     if (this.util.isMobile()) {
-      console.log("========= 批量出入SQL："+sqlist)
+      console.log("========= 批量出入SQL："+sqlist);
       return await this.sqlliteConfig.database.sqlBatch(sqlist);
     } else {
 
@@ -499,8 +499,10 @@ export class SqliteExec {
       for (let j = 0, len = sqlist.length; j < len; j++) {
         count++;
         if ( typeof sqlist[j]  == 'string' ){
+          console.log("========= 批量出入SQL："+sqlist[j]);
           await this.execSql(sqlist[j]);
         }else{
+          console.log("========= 批量出入SQL："+sqlist[j][0] + " : " + sqlist[j][1]);
           await this.execSql(sqlist[j][0],sqlist[j][1]);
         }
 
