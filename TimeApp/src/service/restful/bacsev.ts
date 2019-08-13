@@ -12,6 +12,9 @@ import {CTbl} from "../sqlite/tbl/c.tbl";
 import {BxTbl} from "../sqlite/tbl/bx.tbl";
 import {YTbl} from "../sqlite/tbl/y.tbl";
 import { MomTbl } from "../sqlite/tbl/mom.tbl";
+import { EvTbl } from "../sqlite/tbl/ev.tbl";
+import { TTbl } from "../sqlite/tbl/t.tbl";
+import { CaTbl } from "../sqlite/tbl/ca.tbl";
 
 
 /**
