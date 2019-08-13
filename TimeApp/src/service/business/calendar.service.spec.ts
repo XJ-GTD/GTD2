@@ -93,8 +93,7 @@ describe('CalendarService test suite', () => {
         MemoService,
         { provide: StatusBar, useClass: StatusBarMock },
         { provide: SplashScreen, useClass: SplashScreenMock },
-        { provide: Platform, useClass: PlatformMock },
-        { provide: HttpClient, useClass: HttpTestingController }
+        { provide: Platform, useClass: PlatformMock }
       ]
     });
   }));
@@ -105,13 +104,20 @@ describe('CalendarService test suite', () => {
     init = TestBed.get(SqliteInit);
     await config.generateDb();
     await init.createTables();
-    await init.initData();
   });
 
   beforeEach(() => {
     calendarService = TestBed.get(CalendarService);
     eventService = TestBed.get(EventService);
     memoService = TestBed.get(MemoService);
+    httpMock = TestBed.get(HttpTestingController);
+
+    init.initData();
+
+    const req = httpMock.expectOne('https://www.guobaa.com/ini/parameters?tag=mwxing');
+    req.flush({});
+
+    httpMock.verify();
   });
 
   // 需要同步执行
