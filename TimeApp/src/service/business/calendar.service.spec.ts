@@ -109,14 +109,13 @@ describe('CalendarService test suite', () => {
     memoService = TestBed.get(MemoService);
     restConfig = TestBed.get(RestFulConfig);
 
-  });
-
-  beforeEach(async () => {
     await config.generateDb();
     await init.createTables();
     await init.initData();
-
     restConfig.init();
+  });
+
+  beforeEach(async () => {
   });
 
   // 需要同步执行
@@ -255,13 +254,13 @@ describe('CalendarService test suite', () => {
   // 需要同步执行
   it(`Case 1 - 12 fetchPublicPlans check prev saved private plans`, async () => {
     // 新建日历
-    let plan: PlanData = {} as PlanData;
-
-    plan.jn = '冥王星服务类 自动测试';
-    plan.jc = '#f1f1f1';
-    plan.jt = PlanType.PrivatePlan;
-
-    await calendarService.savePlan(plan);
+    // let plan: PlanData = {} as PlanData;
+    //
+    // plan.jn = '冥王星服务类 自动测试';
+    // plan.jc = '#f1f1f1';
+    // plan.jt = PlanType.PrivatePlan;
+    //
+    // await calendarService.savePlan(plan);
 
     // 获取保存的日历
     let plans = await calendarService.fetchPublicPlans();
@@ -274,22 +273,22 @@ describe('CalendarService test suite', () => {
   it(`Case 1 - 11 fetchPublicPlans check prev saved public plans and sort`, async () => {
     // 新建日历
     // 基本日历
-    let plan: PlanData = {} as PlanData;
-
-    plan.jn = '农历节气 自动测试';
-    plan.jc = '#a1a1a1';
-    plan.jt = PlanType.CalendarPlan;
-
-    await calendarService.savePlan(plan);
-
-    // 活动日历
-    plan = {} as PlanData;
-
-    plan.jn = '2019年动漫展 自动测试';
-    plan.jc = '#ababab';
-    plan.jt = PlanType.ActivityPlan;
-
-    await calendarService.savePlan(plan);
+    // let plan: PlanData = {} as PlanData;
+    //
+    // plan.jn = '农历节气 自动测试';
+    // plan.jc = '#a1a1a1';
+    // plan.jt = PlanType.CalendarPlan;
+    //
+    // await calendarService.savePlan(plan);
+    //
+    // // 活动日历
+    // plan = {} as PlanData;
+    //
+    // plan.jn = '2019年动漫展 自动测试';
+    // plan.jc = '#ababab';
+    // plan.jt = PlanType.ActivityPlan;
+    //
+    // await calendarService.savePlan(plan);
 
     // 获取保存的日历
     let plans = await calendarService.fetchPublicPlans();
@@ -381,13 +380,13 @@ describe('CalendarService test suite', () => {
   // 需要同步执行
   it(`Case 1 - 8 fetchPrivatePlans check prev saved private plan`, async () => {
     // 新建日历
-    let plan: PlanData = {} as PlanData;
-
-    plan.jn = '冥王星服务类 自动测试';
-    plan.jc = '#f1f1f1';
-    plan.jt = PlanType.PrivatePlan;
-
-    await calendarService.savePlan(plan);
+    // let plan: PlanData = {} as PlanData;
+    //
+    // plan.jn = '冥王星服务类 自动测试';
+    // plan.jc = '#f1f1f1';
+    // plan.jt = PlanType.PrivatePlan;
+    //
+    // await calendarService.savePlan(plan);
 
     // 获取保存的日历
     let plans = await calendarService.fetchPrivatePlans();
@@ -402,7 +401,7 @@ describe('CalendarService test suite', () => {
 
       if (plan) {
         expect(plan.ji).toBeDefined();
-        expect(plan.jc).toBe('#f1f1f1');
+        expect(plan.jc).toBe('#1a1a1a');
       }
     }
   });
@@ -410,13 +409,13 @@ describe('CalendarService test suite', () => {
   // 需要同步执行
   it(`Case 1 - 7 fetchAllPlans check prev saved plan`, async () => {
     // 新建日历
-    let plan: PlanData = {} as PlanData;
-
-    plan.jn = '冥王星服务类 自动测试';
-    plan.jc = '#f1f1f1';
-    plan.jt = PlanType.PrivatePlan;
-
-    await calendarService.savePlan(plan);
+    // let plan: PlanData = {} as PlanData;
+    //
+    // plan.jn = '冥王星服务类 自动测试';
+    // plan.jc = '#f1f1f1';
+    // plan.jt = PlanType.PrivatePlan;
+    //
+    // await calendarService.savePlan(plan);
 
     // 获取保存的日历
     let plans = await calendarService.fetchAllPlans();
@@ -431,7 +430,7 @@ describe('CalendarService test suite', () => {
 
       if (plan) {
         expect(plan.ji).toBeDefined();
-        expect(plan.jc).toBe('#f1f1f1');
+        expect(plan.jc).toBe('#1a1a1a');
       }
     }
   });
