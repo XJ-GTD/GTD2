@@ -525,8 +525,8 @@ export class CalendarService extends BaseService {
                               sum(CASE gjt.jtt WHEN '${PlanItemType.Holiday}' THEN 1 ELSE 0 END) calendaritemscount,
                               sum(CASE gjt.jtt WHEN '${PlanItemType.Activity}' THEN 1 ELSE 0 END) activityitemscount,
                               count(gev.evi) eventscount,
-                              sum(CASE gev.evt WHEN '${EventType.Agenda}' THEN 1 ELSE 0 END) agendascount,
-                              sum(CASE gev.evt WHEN '${EventType.Task}' THEN 1 ELSE 0 END) taskscount,
+                              sum(CASE gev.type WHEN '${EventType.Agenda}' THEN 1 ELSE 0 END) agendascount,
+                              sum(CASE gev.type WHEN '${EventType.Task}' THEN 1 ELSE 0 END) taskscount,
                               count(gmo.moi) memoscount,
                               sum(CASE gev.rtevi WHEN NULL THEN 0 ELSE 1 END) repeateventscount,
                               0 bookedtimesummary
