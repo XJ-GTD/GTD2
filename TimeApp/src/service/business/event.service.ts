@@ -12,8 +12,6 @@ import {ETbl} from "../sqlite/tbl/e.tbl";
 import {EmitService} from "../util-service/emit.service";
 import {WaTbl} from "../sqlite/tbl/wa.tbl";
 import * as anyenum from "../../data.enum";
-import {R} from "../../ws/model/ws.enum";
-import {OpenWay} from "../../data.enum";
 import { BackupPro, BacRestful, OutRecoverPro, RecoverPro } from "../restful/bacsev";
 
 @Injectable()
@@ -65,7 +63,7 @@ export class EventService extends BaseService {
       console.log(JSON.stringify(rst));
 
       //如果网络正常提交到服务器，则更新同步标志
-      if (rst !=  -1){
+      if (rst !=  anyenum.Err.netbroken){
         let sq =`update gtd_ev set wtt = ${moment().unix()} , tb = '${anyenum.SyncType.synch}'
         where rtevi = '${retParamEv.rtevi}' ;`;
 
@@ -93,14 +91,9 @@ export class EventService extends BaseService {
     agdata.bz = !agdata.bz ? "" : agdata.bz ;
     agdata.type = !agdata.type ? anyenum.ObjectType.Calendar : agdata.type ;
 
-    agdata.sd = agdata.sd || agdata.evd || moment().format("YYYY/MM/DD");
-    agdata.st = "08:00";
-    agdata.ed = agdata.ed || agdata.sd;
-    agdata.et = "08:00";
-
     let txjson = new TxJson();
     txjson.type = anyenum.TxType.close;
-    txjson.defvalue = 0;
+
     agdata.tx = !agdata.tx ? JSON.stringify(txjson) : agdata.tx ;
 
     agdata.txs = !agdata.txs ? "" : agdata.txs ;
@@ -124,6 +117,13 @@ export class EventService extends BaseService {
     agdata.gs = !agdata.gs ? "" : agdata.gs ;
     agdata.tb = !agdata.tb ? anyenum.SyncType.unsynch : agdata.tb ;
     agdata.del = !agdata.del ? anyenum.DelType.undel : agdata.del ;
+
+    agdata.sd = agdata.sd || agdata.evd || moment().format("YYYY/MM/DD");
+    agdata.ed = agdata.ed || agdata.sd;
+    agdata.al = !agdata.al ? anyenum.IsWholeday.Whole :agdata.al;
+    agdata.st = "00:00";
+    agdata.et = "23:59";
+    agdata.ct = !agdata.ct ? 0 :agdata.ct;
   }
 
 
@@ -273,7 +273,7 @@ export class EventService extends BaseService {
       ret.ed = ev.evd;
       ret.sqlparam.push(ev.rpTParam());
       if (txjson.type != anyenum.TxType.close) {
-        ret.sqlparam.push(this.sqlparamAddTxWa(ev,agdata.st,txjson).rpTParam());
+        ret.sqlparam.push(this.sqlparamAddTxWa(ev,agdata.st,agdata.al,txjson).rpTParam());
       }
 
       cnt = cnt + 1;
@@ -329,7 +329,7 @@ export class EventService extends BaseService {
    * @param {ev: EvTbl,st:string ,sd:string,txjson :TxJson }
    * @returns {ETbl}
    */
-  private sqlparamAddTxWa(ev: EvTbl,st:string,txjson :TxJson ): WaTbl {
+  private sqlparamAddTxWa(ev: EvTbl,st:string,al: string, txjson :TxJson ): WaTbl {
     let wa = new WaTbl();//提醒表
     wa.wai = this.util.getUuid();
     wa.obt = anyenum.ObjectType.Event;
@@ -337,22 +337,9 @@ export class EventService extends BaseService {
     //let tx  = ;
     if (txjson.type != anyenum.TxType.close) {
       wa.st = ev.evn;
-      let time = 10; //分钟
-      if (txjson.type == anyenum.TxType.m10) {
-        time = 10;
-      }else if (txjson.type == anyenum.TxType.m30) {
-        time = 30;
-      } else if (txjson.type == anyenum.TxType.h1) {
-        time = 60;
-      } else if (txjson.type == anyenum.TxType.h4) {
-        time = 240;
-      } else if (txjson.type == anyenum.TxType.d1) {
-        time = 1440;
-      }else {
-        time = txjson.defvalue;
-      }
+      let time = parseInt(txjson.type);
       let date;
-      if (!this.util.isAday(st)) {
+      if (al == anyenum.IsWholeday.NonWhole) {
         date = moment(ev.evd + " " + st).subtract(time, 'm').format("YYYY/MM/DD HH:mm");
 
       } else {
@@ -379,11 +366,27 @@ export class EventService extends BaseService {
     ca.evi = rtevi;
 
     ca.sd = agdata.sd;
-    ca.st = agdata.st;
-    ca.ct = agdata.ct;
-    ca.et = agdata.et;
-
     ca.ed = ed;
+    ca.ct = agdata.ct;
+    ca.al = agdata.al;
+    if (agdata.al == anyenum.IsWholeday.Whole){
+      ca.st = "00:00";
+      ca.et = "23:59";
+    }else{
+      ca.st = agdata.st;
+      //不是全天，结束时间通过时长计算
+      if (agdata.ct == 0 ){
+        ca.et = ca.st;
+      }else{
+        let tmpdatetime1 = moment(ca.ed + " " + ca.st).add(ca.ct, 'm');
+        //时长相加后，如果超出一天，则使用当天的23:59
+        if (moment(tmpdatetime1).isBefore(moment(ca.ed + " " + "00:00").add(1,'d'))){
+          ca.et = moment(tmpdatetime1).format("HH:mm");
+        }else{
+          ca.et = "23:59";
+        }
+      }
+    }
 
     if(ca.ed==''){
       ca.ed = ca.sd;
@@ -391,8 +394,6 @@ export class EventService extends BaseService {
     if(ca.et==''){
       ca.et = ca.st;
     }
-    //保存本地日程
-    if (!ca.st) ca.st = this.util.adToDb("");
 
     let ret = new Array<any>();
     ret.push(ca.rpTParam());
@@ -694,5 +695,4 @@ export class RtJson {
 
 export class TxJson {
   type: anyenum.TxType;
-  defvalue:number;
 }
