@@ -253,6 +253,26 @@ export class CalendarService extends BaseService {
   }
 
   /**
+   * 根据日历项ID取得日历项
+   *
+   * @author leon_xi@163.com
+   **/
+  async getPlanItem(jti: string): Promise<PlanItemData> {
+    this.assertEmpty(jti);       // 入参不能为空
+
+    let planitemdb: JtaTbl = new JtaTbl();
+    planitemdb.jti = jti;
+
+    planitemdb = await this.sqlExce.getOne<JtaTbl>(planitemdb);
+
+    let planitem: PlanItemData = {} as PlanItemData;
+
+    Object.assign(planitem, planitemdb);
+
+    return planitem;
+  }
+
+  /**
    * 创建/更新日历项
    *
    * @author leon_xi@163.com
