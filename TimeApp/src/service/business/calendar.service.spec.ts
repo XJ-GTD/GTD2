@@ -47,7 +47,7 @@ import {TTbl} from "../sqlite/tbl/t.tbl";
 import {WaTbl} from "../sqlite/tbl/wa.tbl";
 import {FjTbl} from "../sqlite/tbl/fj.tbl";
 
-import { CalendarService, PlanData, PlanItemData, MonthActivityData } from "./calendar.service";
+import { CalendarService, PlanData, PlanItemData, MonthActivityData, MonthActivitySummaryData, DayActivitySummaryData } from "./calendar.service";
 import { EventService, AgendaData } from "./event.service";
 import { MemoService, MemoData } from "./memo.service";
 import { PlanType } from "../../data.enum";
@@ -161,7 +161,7 @@ describe('CalendarService test suite', () => {
 
   });
 
-  it(`Case 4 - 1 fetchMonthActivitiesSummary 取得指定月概要 - 空值(没有任何活动)`, async () => {
+  it(`Case 5 - 1 fetchMonthActivitiesSummary 取得指定月概要 - 空值(没有任何活动)`, async () => {
     let month: string = moment().format("YYYY/MM");
 
     let monthSummary: MonthActivitySummaryData = await calendarService.fetchMonthActivitiesSummary(month);
@@ -170,6 +170,23 @@ describe('CalendarService test suite', () => {
     expect(monthSummary.month).toBe(month);
     expect(monthSummary.days).toBeDefined();
     expect(monthSummary.days.length).toBe(0);
+  });
+
+  it(`Case 4 - 1 fetchDayActivitiesSummary 取得指定日期概要 - 空值(没有任何活动)`, async () => {
+    let day: string = moment().format("YYYY/MM/DD");
+
+    let daySummary: DayActivitySummaryData = await calendarService.fetchDayActivitiesSummary(day);
+
+    expect(daySummary).toBeDefined();
+    expect(daySummary.day).toBe(0);
+    expect(daySummary.calendaritemscount).toBe(day);
+    expect(daySummary.activityitemscount).toBe(0);
+    expect(daySummary.eventscount).toBe(0);
+    expect(daySummary.agendascount).toBe(0);
+    expect(daySummary.taskscount).toBe(0);
+    expect(daySummary.memoscount).toBe(0);
+    expect(daySummary.repeateventscount).toBe(0);
+    expect(daySummary.bookedtimesummary).toBe(0);
   });
 
   // 需要同步执行
