@@ -20,20 +20,20 @@ export class JtaTbl implements ITblParam {
 
   cTParam():string {
 
-    let sq =`create table if not exists gtd_jta(    
+    let sq =`create table if not exists gtd_jta(
       jti varchar(50) PRIMARY KEY
-     ,ji varchar(50) 
-     ,jtn varchar(50) 
-     ,sd varchar(20) 
-     ,st varchar(20) 
-     ,jtt varchar(4) 
-     ,jtc varchar(4) 
-     ,px integer 
-     ,bz varchar(50) 
-     ,wtt integer 
-     ,utt integer 
-     ,tb varchar(4) 
-     ,del varchar(4) 
+     ,ji varchar(50)
+     ,jtn varchar(50)
+     ,sd varchar(20)
+     ,st varchar(20)
+     ,jtt varchar(4)
+     ,jtc varchar(4)
+     ,px integer
+     ,bz varchar(50)
+     ,wtt integer
+     ,utt integer
+     ,tb varchar(4)
+     ,del varchar(4)
 
      );`;
 
@@ -80,7 +80,7 @@ export class JtaTbl implements ITblParam {
 
   sloTParam():any {
     let params = new Array<any>();
-    let sq='select * from gtd_jta where moi = ?  ;';
+    let sq='select * from gtd_jta where jti = ?  ;';
     params.push(this.jti);
     let ret = new Array<any>();
     ret.push(sq);
@@ -120,8 +120,8 @@ export class JtaTbl implements ITblParam {
 
   inTParam():any {
     let params = new Array<any>();
-    let sq =`insert into gtd_jta 
-       (   jti ,ji ,jtn ,sd ,st ,jtt ,jtc ,px ,bz ,wtt ,utt,tb,del) 
+    let sq =`insert into gtd_jta
+       (   jti ,ji ,jtn ,sd ,st ,jtt ,jtc ,px ,bz ,wtt ,utt,tb,del)
        values(?,?,?,?,?,?,?,?,?,${moment().unix()},${moment().unix()},?,?);`;
     params.push(this.jti);
     params.push(this.ji);
@@ -143,8 +143,8 @@ export class JtaTbl implements ITblParam {
 
   rpTParam():any {
     let params = new Array<any>();
-    let sq =`replace into gtd_jta 
-       (   jti ,ji ,jtn ,sd ,st ,jtt ,jtc ,px ,bz ,wtt ,utt,tb,del) 
+    let sq =`replace into gtd_jta
+       (   jti ,ji ,jtn ,sd ,st ,jtt ,jtc ,px ,bz ,wtt ,utt,tb,del)
        values(?,?,?,?,?,?,?,?,?,${moment().unix()},${moment().unix()},?,?);`;
     params.push(this.jti);
     params.push(this.ji);

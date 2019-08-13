@@ -386,7 +386,10 @@ describe('CalendarService test suite', () => {
 
     expect(planitem).toBeDefined();
     expect(planitem.jti).toBeDefined();
-    expect(planitem.jtt).toBe(PlanItemType.Activity);
+
+    let qplanitem: PlanItemData = await calendarService.getPlanItem(planitem.jti);
+
+    expect(qplanitem.jtt).toBe(PlanItemType.Activity);
   });
 
   // 需要同步执行
@@ -401,7 +404,10 @@ describe('CalendarService test suite', () => {
 
     expect(planitem).toBeDefined();
     expect(planitem.jti).toBeDefined();
-    expect(planitem.jtt).toBe(PlanItemType.Holiday);
+
+    let qplanitem: PlanItemData = await calendarService.getPlanItem(planitem.jti);
+
+    expect(qplanitem.jtt).toBe(PlanItemType.Holiday);
   });
 
   // 需要同步执行
