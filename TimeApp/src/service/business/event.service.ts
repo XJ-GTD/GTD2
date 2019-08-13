@@ -35,8 +35,7 @@ export class EventService extends BaseService {
     this.assertEmpty(agdata.sd);
 
     if (agdata.evi !=null && agdata.evi != "") {
-
-      await this.updateDetail(agdata);
+       await this.updateDetail(agdata);
       return null;
     }else{
       console.log("ccccccccccccccccccccccccccccccc");
@@ -92,16 +91,16 @@ export class EventService extends BaseService {
    */
   private async updateDetail(agdata: AgendaData) {
     //特殊表操作
-    /*let oldc: CTbl = new CTbl();
-    oldc.si = scd.si;
-    oldc = await this.sqlExce.getOne<CTbl>(oldc);
+    let oldca: CaTbl = new CaTbl();
+    oldca.evi = agdata.rtevi;
+    oldca = await this.sqlExce.getOneByParam<CaTbl>(oldca);
 
     //更新日程
-    let c = new CTbl();
-    Object.assign(c, scd);
+    let ca = new CaTbl();
 
+    let chged = this.isAgdChanged(agdata.rtjson,agdata.oldrtjson);
 
-    if (oldc.sd != scd.sd || oldc.rt != scd.rt) {
+    /*if (oldca.sd != agdata.sd || chged) {
       //日期与重复标识变化了，则删除重复子表所有数据，重新插入新数据
       let sptbl = new SpTbl();
       sptbl.si = c.si;
@@ -156,6 +155,16 @@ export class EventService extends BaseService {
     }
     this.emitService.emitRef(scd.sd);*/
 
+  }
+
+  /**
+   * 判断重复是否改变
+   * @param {RtJson} newRtjson
+   * @param {RtJson} oldRtjson
+   * @returns {boolean}
+   */
+  private isAgdChanged(newRtjson : RtJson ,oldRtjson : RtJson): boolean{
+    return false;
   }
 
   /**
@@ -758,6 +767,8 @@ export interface EventData extends EvTbl {
 export interface AgendaData extends EventData, CaTbl {
   rtjson :RtJson;
   txjson :TxJson;
+  oldrtjson : RtJson;
+  oldtxjson :TxJson;
 
 }
 
