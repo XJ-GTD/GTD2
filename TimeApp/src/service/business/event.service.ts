@@ -522,12 +522,11 @@ export class EventService extends BaseService {
 	 * 根据年月日检索任务  只检索任务,不检索小任务
 	 * @author ying<343253410@qq.com>
 	 */
-  async fetchPagedTasks(day: string = moment().format('YYYY/MM/DD'),evi: string): Promise<fetchPagedTasksData>{
+  async fetchPagedTasks(day: string = moment().format('YYYY/MM/DD'),evi: string): Promise<TaskData>{
   	this.assertEmpty(day); //验证日期是否为空
   	let sqlparam: string =`select * from gtd_ev  ev left join gtd_t  td on ev.evi = td.evi where 1=1 and ev.type='${anyenum.EventType.Task}' and  ev.evd = '${day}'  ${(evi)? ('and ev.evi>'+evi):''} limit 10`;
-  	let data: fetchPagedTasksData = new fetchPagedTasksData();
-  	data.taskData = await this.sqlExce.getExtList<fetchPagedTasksData>(sqlparam);
-  	data.day =day; 
+  	let data: TaskData = {} as TaskData;
+  	data = await this.sqlExce.getExtList<TaskData>(sqlparam);
   	return data;
   }
 
@@ -535,12 +534,11 @@ export class EventService extends BaseService {
 	 * 检索完成任务
 	 * @author ying<343253410@qq.com>
 	 */
-  async fetchPagedCompletedTasks(day: string = moment().format('YYYY/MM/DD'),evi: string): Promise<fetchPagedTasksData> {
+  async fetchPagedCompletedTasks(day: string = moment().format('YYYY/MM/DD'),evi: string): Promise<TaskData> {
   	this.assertEmpty(day); //验证日期是否为空
   	let sqlparam: string =`select * from gtd_ev  ev left join gtd_t  td on ev.evi = td.evi and td.cs='${anyenum.IsSuccess.success}' where 1=1 and ev.type='${anyenum.EventType.Task}' and  ev.evd = '${day}'  ${(evi)? ('and ev.evi>'+evi):''} limit 10`;
-  	let data: fetchPagedTasksData = new fetchPagedTasksData();
-  	data.taskData = await this.sqlExce.getExtList<fetchPagedTasksData>(sqlparam);
-  	data.day =day; 
+  	let data: TaskData = {} as TaskData;
+  	data = await this.sqlExce.getExtList<TaskData>(sqlparam);
   	return data;
   }
 
@@ -548,12 +546,11 @@ export class EventService extends BaseService {
 	 * 检索未完成的任务
 	 * @author ying<343253410@qq.com>
 	 */
-  async fetchPagedUncompletedTasks(day: string = moment().format('YYYY/MM/DD'),evi: string): Promise<fetchPagedTasksData> {
+  async fetchPagedUncompletedTasks(day: string = moment().format('YYYY/MM/DD'),evi: string): Promise<TaskData> {
   	this.assertEmpty(day); //验证日期是否为空
   	let sqlparam: string =`select * from gtd_ev  ev left join gtd_t  td on ev.evi = td.evi and td.cs='${anyenum.IsSuccess.wait}' where 1=1 and ev.type='${anyenum.EventType.Task}' and  ev.evd = '${day}'  ${(evi)? ('and ev.evi>'+evi):''} limit 10`;
-  	let data: fetchPagedTasksData = new fetchPagedTasksData();
-  	data.taskData = await this.sqlExce.getExtList<fetchPagedTasksData>(sqlparam);
-  	data.day =day; 
+  	let data: TaskData = {} as TaskData;
+  	data = await this.sqlExce.getExtList<TaskData>(sqlparam);
   	return data;
   	
   }
@@ -697,7 +694,3 @@ export class TxJson {
   defvalue:number;
 }
 
-export class fetchPagedTasksData {
-  day: string;               // 所属年月日
-  taskData: Array<TaskData>;  // 任务
-}
