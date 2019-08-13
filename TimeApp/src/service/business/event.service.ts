@@ -14,11 +14,12 @@ import {WaTbl} from "../sqlite/tbl/wa.tbl";
 import * as anyenum from "../../data.enum";
 import {R} from "../../ws/model/ws.enum";
 import {OpenWay} from "../../data.enum";
+import { BackupPro, BacRestful, OutRecoverPro, RecoverPro } from "../restful/bacsev";
 
 @Injectable()
 export class EventService extends BaseService {
   constructor(private sqlExce: SqliteExec, private util: UtilService,
-              private agdRest: AgdRestful,private emitService:EmitService) {
+              private agdRest: AgdRestful,private emitService:EmitService,private bacRestful: BacRestful) {
     super();
   }
 
@@ -417,12 +418,12 @@ export class EventService extends BaseService {
 		} else {
 			//创建事件
 			tx.evi = this.util.getUuid();
-			tx.ui= UserConfig.account.id;
-			tx.type=anyenum.EventType.Task;
-			tx.evd=moment().format('YYYY/MM/DD');
-			tx.gs=anyenum.GsType.self;
-			tx.tb=anyenum.SyncType.unsynch;
-			tx.del=anyenum.DelType.undel;
+			tx.ui = UserConfig.account.id;
+			tx.type = anyenum.EventType.Task;
+			tx.evd = moment().format('YYYY/MM/DD');
+			tx.gs = anyenum.GsType.self;
+			tx.tb = anyenum.SyncType.unsynch;
+			tx.del = anyenum.DelType.undel;
 			let evdb: EvTbl = new EvTbl();
 			Object.assign(evdb, tx);
 			await this.sqlExce.saveByParam(evdb);
@@ -439,7 +440,7 @@ export class EventService extends BaseService {
 	 * 创建更新小任务
 	 * @author ying<343253410@qq.com>
 	 */
-  async saveMiniTask(minitask: MiniTaskData): Promise <MiniTaskData>{
+  async saveMiniTask(minitask: MiniTaskData): Promise <MiniTaskData> {
   	this.assertEmpty(minitask); // 对象不能为空
   	this.assertEmpty(minitask.evn);
   	if (minitask.evi) {
@@ -449,11 +450,11 @@ export class EventService extends BaseService {
 		} else {
 			minitask.evi = this.util.getUuid();
 			minitask.ui= UserConfig.account.id;
-			minitask.type=anyenum.EventType.MiniTask;
-			minitask.evd=moment().format('YYYY/MM/DD');
-			minitask.gs=anyenum.GsType.self;
-			minitask.tb=anyenum.SyncType.unsynch;
-			minitask.del=anyenum.DelType.undel;
+			minitask.type = anyenum.EventType.MiniTask;
+			minitask.evd = moment().format('YYYY/MM/DD');
+			minitask.gs = anyenum.GsType.self;
+			minitask.tb = anyenum.SyncType.unsynch;
+			minitask.del = anyenum.DelType.undel;
 			let evdb: EvTbl = new EvTbl();
 			Object.assign(evdb, minitask);
 			await this.sqlExce.saveByParam(evdb);
@@ -470,12 +471,12 @@ export class EventService extends BaseService {
 	 * 完成任务
 	 * @author ying<343253410@qq.com>
 	 */
-  async finishTask(evi: string):  Promise <string>{
+  async finishTask(evi: string):  Promise <string> {
   	this.assertEmpty(evi); // 事件ID不能为空
   	let tdb: TTbl = new TTbl();
 		tdb.evi = evi;
-		tdb.cs=anyenum.IsSuccess.success;
-		tdb.fd=moment().format('YYYY/MM/DD');
+		tdb.cs = anyenum.IsSuccess.success;
+		tdb.fd = moment().format('YYYY/MM/DD');
 		await this.sqlExce.updateByParam(tdb);
 		//TODO 是否推送事件完成消息
 		//this.emitService.emit(`mwxing.event.task.finish`);
@@ -486,7 +487,7 @@ export class EventService extends BaseService {
    * 当是自动创建的任务的情况下,进行下一步操作
    * @author ying<343253410@qq.com>
    */
-  async finishTaskNext(evi: string){
+  async finishTaskNext(evi: string) {
   	this.assertEmpty(evi);
   	let evdb: EvTbl = new EvTbl();
 		evdb.evi = evi;
@@ -518,34 +519,140 @@ export class EventService extends BaseService {
   syncEvents() {}
 
   /**
-	 * 检索任务
+	 * 根据年月日检索任务  只检索任务,不检索小任务
 	 * @author ying<343253410@qq.com>
 	 */
-  fetchPagedTasks() {}
+  async fetchPagedTasks(day: string = moment().format('YYYY/MM/DD'),evi: string): Promise<fetchPagedTasksData>{
+  	this.assertEmpty(day); //验证日期是否为空
+  	let sqlparam: string =`select * from gtd_ev  ev left join gtd_t  td on ev.evi = td.evi where 1=1 and ev.type='${anyenum.EventType.Task}' and  ev.evd = '${day}'  ${(evi)? ('and ev.evi>'+evi):''} limit 10`;
+  	let data: fetchPagedTasksData = new fetchPagedTasksData();
+  	data.taskData = await this.sqlExce.getExtList<fetchPagedTasksData>(sqlparam);
+  	data.day =day; 
+  	return data;
+  }
 
   /**
 	 * 检索完成任务
 	 * @author ying<343253410@qq.com>
 	 */
-  fetchPagedCompletedTasks() {}
+  async fetchPagedCompletedTasks(day: string = moment().format('YYYY/MM/DD'),evi: string): Promise<fetchPagedTasksData> {
+  	this.assertEmpty(day); //验证日期是否为空
+  	let sqlparam: string =`select * from gtd_ev  ev left join gtd_t  td on ev.evi = td.evi and td.cs='${anyenum.IsSuccess.success}' where 1=1 and ev.type='${anyenum.EventType.Task}' and  ev.evd = '${day}'  ${(evi)? ('and ev.evi>'+evi):''} limit 10`;
+  	let data: fetchPagedTasksData = new fetchPagedTasksData();
+  	data.taskData = await this.sqlExce.getExtList<fetchPagedTasksData>(sqlparam);
+  	data.day =day; 
+  	return data;
+  }
 
   /**
 	 * 检索未完成的任务
 	 * @author ying<343253410@qq.com>
 	 */
-  fetchPagedUncompletedTasks() {}
+  async fetchPagedUncompletedTasks(day: string = moment().format('YYYY/MM/DD'),evi: string): Promise<fetchPagedTasksData> {
+  	this.assertEmpty(day); //验证日期是否为空
+  	let sqlparam: string =`select * from gtd_ev  ev left join gtd_t  td on ev.evi = td.evi and td.cs='${anyenum.IsSuccess.wait}' where 1=1 and ev.type='${anyenum.EventType.Task}' and  ev.evd = '${day}'  ${(evi)? ('and ev.evi>'+evi):''} limit 10`;
+  	let data: fetchPagedTasksData = new fetchPagedTasksData();
+  	data.taskData = await this.sqlExce.getExtList<fetchPagedTasksData>(sqlparam);
+  	data.day =day; 
+  	return data;
+  	
+  }
 
   /**
    * 备份,三张表备份
 	 * @author ying<343253410@qq.com>
    */
-  backup() {}
+  async backup(bts: Number) {
+  	let backupPro: BackupPro = new BackupPro();
+		//操作账户ID
+		backupPro.oai = UserConfig.account.id
+		//操作手机号码
+		backupPro.ompn = UserConfig.account.phone;
+		//时间戳
+		backupPro.d.bts = bts;
+		//备份事件表
+		let ev = new EvTbl();
+  	backupPro.d.ev = await this.sqlExce.getLstByParam <EvTbl> (ev);
+  	//备份日程表
+  	let ca = new CaTbl();
+  	backupPro.d.ca = await this.sqlExce.getLstByParam <CaTbl> (ca);
+  	//备份任务表
+  	let tt = new TTbl();
+  	backupPro.d.tt = await this.sqlExce.getLstByParam <TTbl> (tt);
+		await this.bacRestful.backup(backupPro);
+		return ;
+  	
+  }
 
   /**
    * 恢复
 	 * @author ying<343253410@qq.com>
    */
-  recovery() {}
+  async recovery(outRecoverPro: OutRecoverPro, bts: Number = 0) {
+  	if (bts == 0) {
+			this.assertNull(outRecoverPro);
+		}
+		let outRecoverProNew: OutRecoverPro = new OutRecoverPro();
+		if (bts != 0) {
+			let recoverPro: RecoverPro = new RecoverPro();
+			//操作账户ID
+			recoverPro.oai = UserConfig.account.id;
+			//操作手机号码
+			recoverPro.ompn = UserConfig.account.phone;
+			recoverPro.d.bts = bts;
+			let rdn = new Array <string> ();
+			rdn.push('ev');
+			rdn.push('ca');
+			rdn.push('tt');
+			recoverPro.d.rdn = rdn;
+			outRecoverProNew = await this.bacRestful.recover(recoverPro);
+		} else {
+			outRecoverProNew = outRecoverPro;
+		}
+		//恢复事件表
+		if (outRecoverProNew.ev.length > 0) {
+			let ev = new EvTbl();
+			let sqls = new Array <string> ();
+			//先删除
+			await this.sqlExce.dropByParam(ev);
+			//恢复数据
+			for(let j = 0, len = outRecoverProNew.ev.length; j < len; j++) {
+				let ev = new EvTbl();
+				Object.assign(ev, outRecoverProNew.ev[j]);
+				sqls.push(ev.inTParam());
+			}
+			await this.sqlExce.batExecSql(sqls);
+		}
+		//恢复日程表
+		if (outRecoverProNew.ca.length > 0) {
+			let ca = new CaTbl();
+			let sqls = new Array <string> ();
+			//先删除
+			await this.sqlExce.dropByParam(ca);
+			//恢复数据
+			for(let j = 0, len = outRecoverProNew.ca.length; j < len; j++) {
+				let ca = new CaTbl();
+				Object.assign(ca, outRecoverProNew.ca[j]);
+				sqls.push(ca.inTParam());
+			}
+			await this.sqlExce.batExecSql(sqls);
+		}
+		//恢复任务表
+		if (outRecoverProNew.tt.length > 0) {
+			let tt = new TTbl();
+			let sqls = new Array <string> ();
+			//先删除
+			await this.sqlExce.dropByParam(tt);
+			//恢复数据
+			for(let j = 0, len = outRecoverProNew.tt.length; j < len; j++) {
+				let tt = new TTbl();
+				Object.assign(tt, outRecoverProNew.tt[j]);
+				sqls.push(tt.inTParam());
+			}
+			await this.sqlExce.batExecSql(sqls);
+		}
+		return ;
+  }
 }
 
 export interface EventData extends EvTbl {
@@ -588,4 +695,9 @@ export class RtJson {
 export class TxJson {
   type: anyenum.TxType;
   defvalue:number;
+}
+
+export class fetchPagedTasksData {
+  day: string;               // 所属年月日
+  taskData: Array<TaskData>;  // 任务
 }
