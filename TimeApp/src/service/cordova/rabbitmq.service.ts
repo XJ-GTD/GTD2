@@ -26,6 +26,10 @@ export class RabbitMQService {
         }, false);
       } else {
         console.log("RabbitMQ running outside android.");
+        document.addEventListener("rabbitmq.receivedMessage", (event) => {
+          console.log("RabbitMQ Received Message with event listener.")
+          this.messageReceived(event);
+        }, false);
       }
     } else {
       console.log("RabbitMQ service not created.");
