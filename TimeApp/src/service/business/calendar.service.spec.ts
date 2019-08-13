@@ -38,8 +38,16 @@ import { ShaeRestful } from "../restful/shaesev";
 import {SyncRestful} from "../restful/syncsev";
 import { AgdRestful } from "../restful/agdsev";
 import { BacRestful } from "../restful/bacsev";
+import {JhaTbl} from "../sqlite/tbl/jha.tbl";
+import {MomTbl} from "../sqlite/tbl/mom.tbl";
+import {JtaTbl} from "../sqlite/tbl/jta.tbl";
+import {EvTbl} from "../sqlite/tbl/ev.tbl";
+import {CaTbl} from "../sqlite/tbl/ca.tbl";
+import {TTbl} from "../sqlite/tbl/t.tbl";
+import {WaTbl} from "../sqlite/tbl/wa.tbl";
+import {FjTbl} from "../sqlite/tbl/fj.tbl";
 
-import { CalendarService, PlanData, PlanItemData, MonthActivityData } from "./calendar.service";
+import { CalendarService, PlanData, PlanItemData, MonthActivityData, MonthActivitySummaryData, DayActivitySummaryData } from "./calendar.service";
 import { EventService, AgendaData } from "./event.service";
 import { MemoService, MemoData } from "./memo.service";
 import { PlanType } from "../../data.enum";
@@ -62,9 +70,10 @@ describe('CalendarService test suite', () => {
   let memoService: MemoService;
   let planforUpdate: PlanData;
   let httpMock: HttpTestingController;
+  let sqlExce: SqliteExec;
 
   // 所有测试case执行前, 只执行一次
-  beforeEach(async(() => {
+  beforeAll(async () => {
     TestBed.configureTestingModule({
       declarations: [
         MyApp
@@ -100,26 +109,115 @@ describe('CalendarService test suite', () => {
         { provide: Platform, useClass: PlatformMock }
       ]
     });
-  }));
 
-  // 所有测试case执行前, 只执行一次
-  beforeEach(async () => {
     config = TestBed.get(SqliteConfig);
     init = TestBed.get(SqliteInit);
-    await config.generateDb();
-    await init.createTables();
-  });
 
-  beforeEach(async () => {
     calendarService = TestBed.get(CalendarService);
     eventService = TestBed.get(EventService);
     memoService = TestBed.get(MemoService);
     restConfig = TestBed.get(RestFulConfig);
-    httpMock = TestBed.get(HttpTestingController);
+    sqlExce = TestBed.get(SqliteExec);
 
+    await config.generateDb();
+    await init.createTables();
     await init.initData();
-
     restConfig.init();
+  });
+
+  beforeEach(async () => {
+    // 清空表数据
+    let mom: MomTbl = new MomTbl();
+    await sqlExce.dropByParam(mom);
+    await sqlExce.createByParam(mom);
+
+    let jha: JhaTbl = new JhaTbl();
+    await sqlExce.dropByParam(jha);
+    await sqlExce.createByParam(jha);
+
+    let jta: JtaTbl = new JtaTbl();
+    await sqlExce.dropByParam(jta);
+    await sqlExce.createByParam(jta);
+
+    let ev: EvTbl = new EvTbl();
+    await sqlExce.dropByParam(ev);
+    await sqlExce.createByParam(ev);
+
+    let ca: CaTbl = new CaTbl();
+    await sqlExce.dropByParam(ca);
+    await sqlExce.createByParam(ca);
+
+    let t: TTbl = new TTbl();
+    await sqlExce.dropByParam(t);
+    await sqlExce.createByParam(t);
+
+    let wa: WaTbl = new WaTbl();
+    await sqlExce.dropByParam(wa);
+    await sqlExce.createByParam(wa);
+
+    let fj: FjTbl = new FjTbl();
+    await sqlExce.dropByParam(fj);
+    await sqlExce.createByParam(fj);
+
+  });
+
+  it(`Case 5 - 1 fetchMonthActivitiesSummary 取得指定月概要 - 空值(没有任何活动)`, async () => {
+    let month: string = moment().format("YYYY/MM");
+
+    let monthSummary: MonthActivitySummaryData = await calendarService.fetchMonthActivitiesSummary(month);
+
+    expect(monthSummary).toBeDefined();
+    expect(monthSummary.month).toBe(month);
+    expect(monthSummary.days).toBeDefined();
+    expect(monthSummary.days.length).toBe(0);
+  });
+
+  it(`Case 4 - 3 fetchDayActivitiesSummary 取得指定日期概要 - 存在1个日历项(任意日历项)`, async () => {
+    let day: string = moment().format("YYYY/MM/DD");
+
+    // 日历项
+    let planitem: PlanItemData = {} as PlanItemData;
+
+    planitem.sd = day;
+    planitem.jtn = "结婚纪念日";
+
+    await calendarService.savePlanItem(planitem);
+
+    let daySummary: DayActivitySummaryData = await calendarService.fetchDayActivitiesSummary(day);
+
+    expect(daySummary).toBeDefined();
+    expect(daySummary.day).toBe(day);
+    expect(daySummary.calendaritemscount).toBe(1);
+    expect(daySummary.activityitemscount).toBe(0);
+    expect(daySummary.eventscount).toBe(0);
+    expect(daySummary.agendascount).toBe(0);
+    expect(daySummary.taskscount).toBe(0);
+    expect(daySummary.memoscount).toBe(0);
+    expect(daySummary.repeateventscount).toBe(0);
+    expect(daySummary.bookedtimesummary).toBe(0);
+  });
+
+  it(`Case 4 - 2 fetchDayActivitiesSummary 取得指定日期概要 - 空值(没有任何活动)`, async () => {
+    let day: string = moment().format("YYYY/MM/DD");
+
+    let daySummary: DayActivitySummaryData = await calendarService.fetchDayActivitiesSummary(day);
+
+    expect(daySummary).toBeDefined();
+    expect(daySummary.day).toBe(day);
+    expect(daySummary.calendaritemscount).toBe(0);
+    expect(daySummary.activityitemscount).toBe(0);
+    expect(daySummary.eventscount).toBe(0);
+    expect(daySummary.agendascount).toBe(0);
+    expect(daySummary.taskscount).toBe(0);
+    expect(daySummary.memoscount).toBe(0);
+    expect(daySummary.repeateventscount).toBe(0);
+    expect(daySummary.bookedtimesummary).toBe(0);
+  });
+
+  it(`Case 4 - 1 fetchDayActivitiesSummary 取得指定日期概要 - 没有抛出异常`, async () => {
+    expect(function() {
+      calendarService.fetchDayActivitiesSummary();
+    }).not.toThrow();
   });
 
   // 需要同步执行

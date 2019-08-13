@@ -18,7 +18,9 @@ import {
 import {
   PlatformMock,
   StatusBarMock,
-  SplashScreenMock
+  SplashScreenMock,
+  RestFulConfigMock,
+  RestfulClientMock
 } from '../../../../test-config/mocks-ionic';
 
 import {MyApp} from '../../../app/app.component';
@@ -44,7 +46,7 @@ describe('ITblParam tables test suite', () => {
   let config: SqliteConfig;
   let sqlExce: SqliteExec;
 
-  beforeEach(async(() => {
+  beforeAll(async () => {
     TestBed.configureTestingModule({
       declarations: [
         MyApp
@@ -64,23 +66,18 @@ describe('ITblParam tables test suite', () => {
         Network,
         HTTP,
         HttpClient,
-        RestFulConfig,
-        RestfulClient,
+        { provide: RestFulConfig, useClass: RestFulConfigMock },
+        { provide: RestfulClient, useClass: RestfulClientMock },
         NetworkService,
         { provide: StatusBar, useClass: StatusBarMock },
         { provide: SplashScreen, useClass: SplashScreenMock },
         { provide: Platform, useClass: PlatformMock }
       ]
     });
-  }));
 
-  beforeEach(async () => {
     config = TestBed.get(SqliteConfig);
-    await config.generateDb();
-  });
-
-  beforeEach(() => {
     sqlExce = TestBed.get(SqliteExec);
+    await config.generateDb();
   });
 
   // 需要同步执行

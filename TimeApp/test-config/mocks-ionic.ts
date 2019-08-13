@@ -5,23 +5,23 @@ export class RestfulClientMock {
   init() {}
 
   async post(url: any, body: any): Promise<any> {
-    return {};
+    return {d: {}};
   }
 
   async get(url: any): Promise<any> {
-    return {};
+    return {d: {}};
   }
 
   async put(url: any, body: any): Promise<any> {
-    return {};
+    return {d: {}};
   }
 
   async specPost(url: string, header: any, body: any): Promise<any> {
-    return {};
+    return {d: {}};
   }
 
   async get4Text(url: string, header: any, body: any): Promise<any> {
-    return {};
+    return {d: {}};
   }
 }
 
