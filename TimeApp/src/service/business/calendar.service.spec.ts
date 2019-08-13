@@ -48,9 +48,9 @@ import {WaTbl} from "../sqlite/tbl/wa.tbl";
 import {FjTbl} from "../sqlite/tbl/fj.tbl";
 
 import { CalendarService, PlanData, PlanItemData, MonthActivityData, MonthActivitySummaryData, DayActivitySummaryData } from "./calendar.service";
-import { EventService, AgendaData } from "./event.service";
+import { EventService, AgendaData, RtJson } from "./event.service";
 import { MemoService, MemoData } from "./memo.service";
-import { PlanType, PlanItemType } from "../../data.enum";
+import { PlanType, PlanItemType, CycleType, OverType } from "../../data.enum";
 
 /**
  * 日历Service 持续集成CI 自动测试Case
@@ -183,6 +183,43 @@ describe('CalendarService test suite', () => {
       expect(daySummary.repeateventscount).toBe(0);
       expect(daySummary.bookedtimesummary).toBe(0);
     }
+  });
+
+  it(`Case 4 - 5 fetchDayActivitiesSummary 取得指定日期概要 - 存在1个日程、1个任务(日程重复)`, async () => {
+    let day: string = moment().format("YYYY/MM/DD");
+    // 日程
+    let agenda: AgendaData = {} as AgendaData;
+
+    // 每年重复, 永远
+    let rt: RtJson = new RtJson();
+    rt.cycletype = CycleType.y;
+    rt.over.type = OverType.fornever;
+
+    agenda.sd = day;
+    agenda.evn = "结婚纪念日买礼物给太太";
+    agenda.rt = JSON.stringify(rt);
+
+    await eventService.saveAgenda(agenda);
+
+    // 任务
+    let task: TaskData = {} as TaskData;
+
+    task.evn = "结婚纪念日前给太太买礼物";
+
+    await eventService.saveTask(task);
+
+    let daySummary: DayActivitySummaryData = await calendarService.fetchDayActivitiesSummary(day);
+
+    expect(daySummary).toBeDefined();
+    expect(daySummary.day).toBe(day);
+    expect(daySummary.calendaritemscount).toBe(0);
+    expect(daySummary.activityitemscount).toBe(0);
+    expect(daySummary.eventscount).toBe(2);
+    expect(daySummary.agendascount).toBe(1);
+    expect(daySummary.taskscount).toBe(1);
+    expect(daySummary.memoscount).toBe(0);
+    expect(daySummary.repeateventscount).toBe(0);
+    expect(daySummary.bookedtimesummary).toBe(0);
   });
 
   it(`Case 4 - 4 fetchDayActivitiesSummary 取得指定日期概要 - 存在1个日程、1个任务(不重复)`, async () => {
