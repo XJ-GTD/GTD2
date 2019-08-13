@@ -38,6 +38,14 @@ import { ShaeRestful } from "../restful/shaesev";
 import {SyncRestful} from "../restful/syncsev";
 import { AgdRestful } from "../restful/agdsev";
 import { BacRestful } from "../restful/bacsev";
+import {JhaTbl} from "../sqlite/tbl/jha.tbl";
+import {MomTbl} from "../sqlite/tbl/mom.tbl";
+import {JtaTbl} from "../sqlite/tbl/jta.tbl";
+import {EvTbl} from "../sqlite/tbl/ev.tbl";
+import {CaTbl} from "../sqlite/tbl/ca.tbl";
+import {TTbl} from "../sqlite/tbl/t.tbl";
+import {WaTbl} from "../sqlite/tbl/wa.tbl";
+import {FjTbl} from "../sqlite/tbl/fj.tbl";
 
 import { CalendarService, PlanData, PlanItemData, MonthActivityData } from "./calendar.service";
 import { EventService, AgendaData } from "./event.service";
@@ -62,6 +70,7 @@ describe('CalendarService test suite', () => {
   let memoService: MemoService;
   let planforUpdate: PlanData;
   let httpMock: HttpTestingController;
+  let sqlExce: SqliteExec;
 
   // 所有测试case执行前, 只执行一次
   beforeAll(async () => {
@@ -108,6 +117,7 @@ describe('CalendarService test suite', () => {
     eventService = TestBed.get(EventService);
     memoService = TestBed.get(MemoService);
     restConfig = TestBed.get(RestFulConfig);
+    sqlExce = TestBed.get(SqliteExec);
 
     await config.generateDb();
     await init.createTables();
@@ -116,6 +126,39 @@ describe('CalendarService test suite', () => {
   });
 
   beforeEach(async () => {
+    // 清空表数据
+    let mom: MomTbl = new MomTbl();
+    await sqlExce.dropByParam(mom);
+    await sqlExce.createByParam(mom);
+
+    let jha: JhaTbl = new JhaTbl();
+    await sqlExce.dropByParam(jha);
+    await sqlExce.createByParam(jha);
+
+    let jta: JtaTbl = new JtaTbl();
+    await sqlExce.dropByParam(jta);
+    await sqlExce.createByParam(jta);
+
+    let ev: EvTbl = new EvTbl();
+    await sqlExce.dropByParam(ev);
+    await sqlExce.createByParam(ev);
+
+    let ca: CaTbl = new CaTbl();
+    await sqlExce.dropByParam(ca);
+    await sqlExce.createByParam(ca);
+
+    let t: TTbl = new TTbl();
+    await sqlExce.dropByParam(t);
+    await sqlExce.createByParam(t);
+
+    let wa: WaTbl = new WaTbl();
+    await sqlExce.dropByParam(wa);
+    await sqlExce.createByParam(wa);
+
+    let fj: FjTbl = new FjTbl();
+    await sqlExce.dropByParam(fj);
+    await sqlExce.createByParam(fj);
+
   });
 
   // 需要同步执行
@@ -254,13 +297,13 @@ describe('CalendarService test suite', () => {
   // 需要同步执行
   it(`Case 1 - 12 fetchPublicPlans check prev saved private plans`, async () => {
     // 新建日历
-    // let plan: PlanData = {} as PlanData;
-    //
-    // plan.jn = '冥王星服务类 自动测试';
-    // plan.jc = '#f1f1f1';
-    // plan.jt = PlanType.PrivatePlan;
-    //
-    // await calendarService.savePlan(plan);
+    let plan: PlanData = {} as PlanData;
+
+    plan.jn = '冥王星服务类 自动测试';
+    plan.jc = '#f1f1f1';
+    plan.jt = PlanType.PrivatePlan;
+
+    await calendarService.savePlan(plan);
 
     // 获取保存的日历
     let plans = await calendarService.fetchPublicPlans();
@@ -273,22 +316,22 @@ describe('CalendarService test suite', () => {
   it(`Case 1 - 11 fetchPublicPlans check prev saved public plans and sort`, async () => {
     // 新建日历
     // 基本日历
-    // let plan: PlanData = {} as PlanData;
-    //
-    // plan.jn = '农历节气 自动测试';
-    // plan.jc = '#a1a1a1';
-    // plan.jt = PlanType.CalendarPlan;
-    //
-    // await calendarService.savePlan(plan);
-    //
-    // // 活动日历
-    // plan = {} as PlanData;
-    //
-    // plan.jn = '2019年动漫展 自动测试';
-    // plan.jc = '#ababab';
-    // plan.jt = PlanType.ActivityPlan;
-    //
-    // await calendarService.savePlan(plan);
+    let plan: PlanData = {} as PlanData;
+
+    plan.jn = '农历节气 自动测试';
+    plan.jc = '#a1a1a1';
+    plan.jt = PlanType.CalendarPlan;
+
+    await calendarService.savePlan(plan);
+
+    // 活动日历
+    plan = {} as PlanData;
+
+    plan.jn = '2019年动漫展 自动测试';
+    plan.jc = '#ababab';
+    plan.jt = PlanType.ActivityPlan;
+
+    await calendarService.savePlan(plan);
 
     // 获取保存的日历
     let plans = await calendarService.fetchPublicPlans();
@@ -380,13 +423,13 @@ describe('CalendarService test suite', () => {
   // 需要同步执行
   it(`Case 1 - 8 fetchPrivatePlans check prev saved private plan`, async () => {
     // 新建日历
-    // let plan: PlanData = {} as PlanData;
-    //
-    // plan.jn = '冥王星服务类 自动测试';
-    // plan.jc = '#f1f1f1';
-    // plan.jt = PlanType.PrivatePlan;
-    //
-    // await calendarService.savePlan(plan);
+    let plan: PlanData = {} as PlanData;
+
+    plan.jn = '冥王星服务类 自动测试';
+    plan.jc = '#f1f1f1';
+    plan.jt = PlanType.PrivatePlan;
+
+    await calendarService.savePlan(plan);
 
     // 获取保存的日历
     let plans = await calendarService.fetchPrivatePlans();
@@ -409,13 +452,13 @@ describe('CalendarService test suite', () => {
   // 需要同步执行
   it(`Case 1 - 7 fetchAllPlans check prev saved plan`, async () => {
     // 新建日历
-    // let plan: PlanData = {} as PlanData;
-    //
-    // plan.jn = '冥王星服务类 自动测试';
-    // plan.jc = '#f1f1f1';
-    // plan.jt = PlanType.PrivatePlan;
-    //
-    // await calendarService.savePlan(plan);
+    let plan: PlanData = {} as PlanData;
+
+    plan.jn = '冥王星服务类 自动测试';
+    plan.jc = '#f1f1f1';
+    plan.jt = PlanType.PrivatePlan;
+
+    await calendarService.savePlan(plan);
 
     // 获取保存的日历
     let plans = await calendarService.fetchAllPlans();

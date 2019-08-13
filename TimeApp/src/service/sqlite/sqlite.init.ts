@@ -25,6 +25,9 @@ import {JhaTbl} from "./tbl/jha.tbl";
 import {MomTbl} from "./tbl/mom.tbl";
 import {JtaTbl} from "./tbl/jta.tbl";
 import {EvTbl} from "./tbl/ev.tbl";
+import {CaTbl} from "./tbl/ca.tbl";
+import {TTbl} from "./tbl/t.tbl";
+import {WaTbl} from "./tbl/wa.tbl";
 import {FjTbl} from "./tbl/fj.tbl";
 
 /**
@@ -131,6 +134,18 @@ export class SqliteInit {
     let ev: EvTbl = new EvTbl();
     await this.sqlexec.dropByParam(ev);
     await this.sqlexec.createByParam(ev);
+
+    let ca: CaTbl = new CaTbl();
+    await this.sqlexec.dropByParam(ca);
+    await this.sqlexec.createByParam(ca);
+
+    let t: TTbl = new TTbl();
+    await this.sqlexec.dropByParam(t);
+    await this.sqlexec.createByParam(t);
+
+    let wa: WaTbl = new WaTbl();
+    await this.sqlexec.dropByParam(wa);
+    await this.sqlexec.createByParam(wa);
 
     let fj: FjTbl = new FjTbl();
     await this.sqlexec.dropByParam(fj);
