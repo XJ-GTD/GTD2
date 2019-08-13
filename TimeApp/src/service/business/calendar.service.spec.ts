@@ -190,7 +190,7 @@ describe('CalendarService test suite', () => {
     // 日程
     let agenda: AgendaData = {} as AgendaData;
 
-    // 每年重复, 永远
+    // 每日重复, 永远
     let rt: RtJson = new RtJson();
     rt.cycletype = CycleType.d;
     rt.over.type = OverType.fornever;
@@ -218,7 +218,7 @@ describe('CalendarService test suite', () => {
     expect(daySummary.agendascount).toBe(1);
     expect(daySummary.taskscount).toBe(1);
     expect(daySummary.memoscount).toBe(0);
-    expect(daySummary.repeateventscount).toBe(0);
+    expect(daySummary.repeateventscount).toBe(1);
     expect(daySummary.bookedtimesummary).toBe(0);
   });
 
@@ -255,7 +255,7 @@ describe('CalendarService test suite', () => {
     expect(daySummary.agendascount).toBe(1);
     expect(daySummary.taskscount).toBe(1);
     expect(daySummary.memoscount).toBe(0);
-    expect(daySummary.repeateventscount).toBe(0);
+    expect(daySummary.repeateventscount).toBe(1);
     expect(daySummary.bookedtimesummary).toBe(0);
   });
 
