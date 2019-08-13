@@ -228,7 +228,9 @@ describe('CalendarService test suite', () => {
 
   it(`Case 4 - 1 fetchDayActivitiesSummary 取得指定日期概要 - 没有抛出异常`, async () => {
     expect(function() {
-      calendarService.fetchDayActivitiesSummary();
+      calendarService.fetchDayActivitiesSummary().then((data) => {
+        expect(data).toBeDefined();
+      });
     }).not.toThrow();
   });
 
