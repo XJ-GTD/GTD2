@@ -45,6 +45,8 @@ export class SqliteExec {
             log.st = true;
             this.noteLog(log);
           }
+
+          console.log("sql log ***************:" + err);
           resolve(err);
         });
       });

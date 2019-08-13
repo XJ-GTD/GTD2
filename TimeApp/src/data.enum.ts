@@ -92,12 +92,11 @@ export enum InvitePowr {
 //提醒选项
 export enum TxType {
   close = "0",
-  m10  = "1",
-  m30 = "2",
-  h1  = "3",
-  h4 = "4",
-  d1  = "5",
-  customdef = "6"
+  m10  = "10",
+  m30 = "30",
+  h1  = "60",
+  h4 = "240",
+  d1  = "1440"
 }
 
 //是否完成
@@ -113,3 +112,16 @@ export enum IsCreate {
   isYes = "1"
 
 }
+
+//是否全天
+export enum IsWholeday {
+  Whole = "0",
+  NonWhole = "1"
+
+}
+
+//错误代码
+export enum Err {
+  netbroken = -901,
+}
+

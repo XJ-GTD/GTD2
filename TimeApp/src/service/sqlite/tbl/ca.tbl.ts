@@ -11,6 +11,7 @@ export class CaTbl implements ITblParam {
   st: string;
   ed: string;
   et: string;
+  al: string;
   ct: number;
 
 
@@ -21,6 +22,7 @@ export class CaTbl implements ITblParam {
        ,st varchar(20) 
        ,ed varchar(20) 
        ,et varchar(20) 
+       ,al varchar(4)
        ,ct integer 
        ,wtt integer 
        ,utt integer 
@@ -37,6 +39,7 @@ export class CaTbl implements ITblParam {
     if(this.st!=null && this.st!=''){      sq=sq+', st= ? ';      params.push(this.st);    }
     if(this.ed!=null && this.ed!=''){      sq=sq+', ed= ? ';      params.push(this.ed);    }
     if(this.et!=null && this.et!=''){      sq=sq+', et= ? ';      params.push(this.et);    }
+    if(this.al!=null && this.al!=''){      sq=sq+', al= ? ';      params.push(this.al);    }
     if(this.ct!=null){      sq=sq+', ct= ? ';      params.push(this.ct);    }
 
 
@@ -82,6 +85,7 @@ export class CaTbl implements ITblParam {
     if(this.st!=null && this.st!=''){      sq=sq+' and  st= ? ';      params.push(this.st);    }
     if(this.ed!=null && this.ed!=''){      sq=sq+' and  ed= ? ';      params.push(this.ed);    }
     if(this.et!=null && this.et!=''){      sq=sq+' and  et= ? ';      params.push(this.et);    }
+    if(this.al!=null && this.al!=''){      sq=sq+' and al= ? ';      params.push(this.al);    }
     if(this.ct!=null){      sq=sq+' and ct= ? ';      params.push(this.ct);    }
     sq = sq + ';';
 
@@ -100,13 +104,14 @@ export class CaTbl implements ITblParam {
   inTParam():any {
     let params = new Array<any>();
     let sq =`insert into gtd_ca 
-       (  evi ,sd ,st ,ed ,et ,ct ,wtt ,utt) 
-       values(?,?,?,?,?,?,${moment().unix()},${moment().unix()});`;
+       (  evi ,sd ,st ,ed ,et ,al,ct ,wtt ,utt) 
+       values(?,?,?,?,?,?,?,${moment().unix()},${moment().unix()});`;
     params.push(this.evi);
     params.push(this.sd);
     params.push(this.st);
     params.push(this.ed);
     params.push(this.et);
+    params.push(this.al);
     params.push(this.ct);
 
 
@@ -119,13 +124,14 @@ export class CaTbl implements ITblParam {
   rpTParam():any {
     let params = new Array<any>();
     let sq =`replace into gtd_ca 
-       (  evi ,sd ,st ,ed ,et ,ct ,wtt ,utt) 
-       values(?,?,?,?,?,?,${moment().unix()},${moment().unix()});`;
+       (  evi ,sd ,st ,ed ,et ,al,ct ,wtt ,utt) 
+       values(?,?,?,?,?,?,?,${moment().unix()},${moment().unix()});`;
     params.push(this.evi);
     params.push(this.sd);
     params.push(this.st);
     params.push(this.ed);
     params.push(this.et);
+    params.push(this.al);
     params.push(this.ct);
 
 

@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import {RestfulClient} from "../util-service/restful.client";
 import {RestFulConfig, UrlEntity} from "../config/restful.config";
 import {CTbl} from "../sqlite/tbl/c.tbl";
+import * as anyenum from "../../data.enum";
 
 
 
@@ -24,7 +25,7 @@ export class AgdRestful{
 
       }).catch(error => {
         //处理返回错误
-        reject(-1);
+        resolve(anyenum.Err.netbroken);
 
       })
     });
