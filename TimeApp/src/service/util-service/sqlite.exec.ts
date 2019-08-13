@@ -194,6 +194,7 @@ export class SqliteExec {
    */
   getExtOne<T>(sql: string): Promise<T> {
     return new Promise((resolve, reject) => {
+      console.log("getExtOne执行SQL："+sql);
       return this.execSql(sql).then(data=>{
         if (data.rows && data.rows.length > 0 ){
           resolve(data.rows.item(0));
