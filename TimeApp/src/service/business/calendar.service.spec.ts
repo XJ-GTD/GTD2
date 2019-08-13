@@ -58,6 +58,7 @@ describe('CalendarService test suite', () => {
   let eventService: EventService;
   let memoService: MemoService;
   let planforUpdate: PlanData;
+  let httpMock: HttpTestingController;
 
   // 所有测试case执行前, 只执行一次
   beforeEach(async(() => {
