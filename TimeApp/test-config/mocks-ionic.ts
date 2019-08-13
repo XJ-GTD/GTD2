@@ -1,6 +1,37 @@
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 
+export class RestFulConfigMock {
+  public createHeader() {
+    let header: any = {};
+
+    header.put("Content-Type", "application/json");
+    header.put("lt", "");//登录码
+    header.put("ai", "";//帐户ID
+    header.put("pi", "cn.sh.com.xj.timeApp";//产品ID
+    header.put("pv", "v3";//产品版本
+    header.put("di", "";//设备ID
+    header.put("dt", "";//设别类型
+    header.put("latitude", "0";//GPS定位
+    header.put("longitude", "0";//GPS定位
+
+    return header;
+  }
+
+  public init() {
+  }
+
+  public getRestFulUrl(key: string) {
+    let url: any = {};
+
+    url.put("key", key);
+    url.put("desc", "");
+    url.put("url", "http://test");
+
+    return url;
+  }
+}
+
 export class PlatformMock {
   public ready(): Promise<string> {
     return new Promise((resolve) => {
@@ -79,19 +110,19 @@ export class SplashScreenMock extends SplashScreen {
 }
 
 export class NavMock {
- 
+
   public pop(): any {
     return new Promise(function(resolve: Function): void {
       resolve();
     });
   }
- 
+
   public push(): any {
     return new Promise(function(resolve: Function): void {
       resolve();
     });
   }
- 
+
   public getActive(): any {
     return {
       'instance': {
@@ -99,7 +130,7 @@ export class NavMock {
       },
     };
   }
- 
+
   public setRoot(): any {
     return true;
   }

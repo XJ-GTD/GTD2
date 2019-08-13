@@ -19,7 +19,8 @@ import {
 import {
   PlatformMock,
   StatusBarMock,
-  SplashScreenMock
+  SplashScreenMock,
+  RestFulConfigMock
 } from '../../../test-config/mocks-ionic';
 
 import {MyApp} from '../../app/app.component';
@@ -88,7 +89,7 @@ describe('CalendarService test suite', () => {
         Network,
         HTTP,
         HttpClient,
-        RestFulConfig,
+        { provide: RestFulConfig, useClass: RestFulConfigMock },
         RestfulClient,
         NetworkService,
         EventService,
