@@ -66,12 +66,12 @@ export class RestFulConfigMock {
         url: url.value,
         desc: url.desc
       };
-      this.urls.set(url.name, val);
+      this._urls.set(url.name, val);
     }
   }
 
   public getRestFulUrl(key: string) {
-    return this.urls.get(key);
+    return this._urls.get(key);
   }
 }
 
