@@ -380,11 +380,13 @@ describe('CalendarService test suite', () => {
 
     planitem.sd = "2019/08/11";
     planitem.jtn = "结婚纪念日";
+    planitem.jtt = PlanItemType.Activity;
 
     planitem = await calendarService.savePlanItem(planitem);
 
     expect(planitem).toBeDefined();
     expect(planitem.jti).toBeDefined();
+    expect(planitem.jtt).toBe(PlanItemType.Activity);
   });
 
   // 需要同步执行
