@@ -64,7 +64,7 @@ describe('CalendarService test suite', () => {
   let httpMock: HttpTestingController;
 
   // 所有测试case执行前, 只执行一次
-  beforeAll(async(async () => {
+  beforeAll(async () => {
     TestBed.configureTestingModule({
       declarations: [
         MyApp
@@ -110,12 +110,11 @@ describe('CalendarService test suite', () => {
     eventService = TestBed.get(EventService);
     memoService = TestBed.get(MemoService);
     restConfig = TestBed.get(RestFulConfig);
-    httpMock = TestBed.get(HttpTestingController);
 
     await init.initData();
 
     restConfig.init();
-  }));
+  });
 
   // 需要同步执行
   it(`Case 3 - 4 fetchMonthActivities with precreated memos`, async () => {
