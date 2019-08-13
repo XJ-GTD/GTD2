@@ -172,6 +172,31 @@ describe('CalendarService test suite', () => {
     expect(monthSummary.days.length).toBe(0);
   });
 
+  it(`Case 4 - 2 fetchDayActivitiesSummary 取得指定日期概要 - 存在1个日历项(任意日历项)`, async () => {
+    let day: string = moment().format("YYYY/MM/DD");
+
+    // 日历项
+    let planitem: PlanItemData = {} as PlanItemData;
+
+    planitem.sd = day;
+    planitem.jtn = "结婚纪念日";
+
+    await calendarService.savePlanItem(planitem);
+
+    let daySummary: DayActivitySummaryData = await calendarService.fetchDayActivitiesSummary(day);
+
+    expect(daySummary).toBeDefined();
+    expect(daySummary.day).toBe(day);
+    expect(daySummary.calendaritemscount).toBe(1);
+    expect(daySummary.activityitemscount).toBe(0);
+    expect(daySummary.eventscount).toBe(0);
+    expect(daySummary.agendascount).toBe(0);
+    expect(daySummary.taskscount).toBe(0);
+    expect(daySummary.memoscount).toBe(0);
+    expect(daySummary.repeateventscount).toBe(0);
+    expect(daySummary.bookedtimesummary).toBe(0);
+  });
+
   it(`Case 4 - 1 fetchDayActivitiesSummary 取得指定日期概要 - 空值(没有任何活动)`, async () => {
     let day: string = moment().format("YYYY/MM/DD");
 
