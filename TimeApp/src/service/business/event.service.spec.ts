@@ -32,6 +32,7 @@ import { RestfulClient } from "../util-service/restful.client";
 import {NetworkService} from "../cordova/network.service";
 import { ShaeRestful } from "../restful/shaesev";
 import { AgdRestful } from "../restful/agdsev";
+import { BacRestful } from "../restful/bacsev";
 
 import { CalendarService, PlanData } from "./calendar.service";
 import { EventService } from "./event.service";
@@ -72,6 +73,7 @@ describe('EventService test suite', () => {
         EmitService,
         ShaeRestful,
         AgdRestful,
+        BacRestful,
         Network,
         HTTP,
         HttpClient,
