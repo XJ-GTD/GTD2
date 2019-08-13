@@ -54,6 +54,7 @@ import { PlanType } from "../../data.enum";
 describe('CalendarService test suite', () => {
   let config: SqliteConfig;
   let init: SqliteInit;
+  let restConfig: RestFulConfig;
   let calendarService: CalendarService;
   let eventService: EventService;
   let memoService: MemoService;
@@ -107,13 +108,14 @@ describe('CalendarService test suite', () => {
     await init.createTables();
   });
 
-  beforeEach(() => {
+  beforeEach(async () => {
     calendarService = TestBed.get(CalendarService);
     eventService = TestBed.get(EventService);
     memoService = TestBed.get(MemoService);
+    restConfig = TestBed.get(RestFulConfig);
     httpMock = TestBed.get(HttpTestingController);
 
-    init.initData();
+    await init.initData();
 
     const req = httpMock.expectOne('https://www.guobaa.com/ini/parameters?tag=mwxing');
     req.flush({
@@ -313,6 +315,8 @@ describe('CalendarService test suite', () => {
     });
 
     httpMock.verify();
+
+    restConfig.init();
   });
 
   // 需要同步执行
