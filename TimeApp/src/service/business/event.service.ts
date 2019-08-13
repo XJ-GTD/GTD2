@@ -277,7 +277,9 @@ export class EventService extends BaseService {
       }
 
       cnt = cnt + 1;
-      loopdt = moment(repeatStartdt).add(cnt,addtype);
+      loopdt = moment(repeatStartdt).add(cnt,addtype).format("YYYY/MM/DD");
+
+      console.log("loopdt => " + loopdt);
 
     }
 
