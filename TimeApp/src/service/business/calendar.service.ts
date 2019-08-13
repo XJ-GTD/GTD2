@@ -453,7 +453,7 @@ export class CalendarService extends BaseService {
     this.assertEmpty(month);    // 入参不能为空
 
     let days: number = moment(month).daysInMonth();
-    let arrDays: Array<string> = new Array<string>(days).fill("01");
+    let arrDays: Array<string> = new Array<string>(days).fill("01");  // 必须要先填充, 否则不能map
     arrDays = arrDays.map((value, index) => {
       return (month + "/" + ("0" + (index + 1)).slice(-2));
     });
@@ -528,7 +528,7 @@ export class CalendarService extends BaseService {
                               sum(CASE gev.type WHEN '${EventType.Agenda}' THEN 1 ELSE 0 END) agendascount,
                               sum(CASE gev.type WHEN '${EventType.Task}' THEN 1 ELSE 0 END) taskscount,
                               count(gmo.moi) memoscount,
-                              sum(CASE gev.rtevi WHEN NULL THEN 0 ELSE 1 END) repeateventscount,
+                              sum(CASE gev.rtevi WHEN NULL OR '' THEN 0 ELSE 1 END) repeateventscount,
                               0 bookedtimesummary
                       from (select '${day}' sd) gday
                           left join gtd_jta gjt on gday.sd = gjt.sd
