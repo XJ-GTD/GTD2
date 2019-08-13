@@ -207,13 +207,13 @@ describe('CalendarService test suite', () => {
     await calendarService.savePlanItem(planitem);
 
     // 日历项
-    planitem = {} as PlanItemData;
+    let planitem1: PlanItemData = {} as PlanItemData;
 
-    planitem.sd = day;
-    planitem.jtn = "结婚纪念日";
-    planitem.jtt = PlanItemType.Activity;
+    planitem1.sd = day;
+    planitem1.jtn = "结婚纪念日";
+    planitem1.jtt = PlanItemType.Activity;
 
-    await calendarService.savePlanItem(planitem);
+    await calendarService.savePlanItem(planitem1);
 
     let daySummary: DayActivitySummaryData = await calendarService.fetchDayActivitiesSummary(day);
 
