@@ -112,8 +112,8 @@ describe('CalendarService test suite', () => {
   });
 
   beforeEach(async () => {
-    await init.createTables();
     await config.generateDb();
+    await init.createTables();
     await init.initData();
 
     restConfig.init();
