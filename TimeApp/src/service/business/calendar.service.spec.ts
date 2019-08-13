@@ -200,7 +200,7 @@ describe('CalendarService test suite', () => {
     let planitem: PlanItemData = {} as PlanItemData;
 
     planitem.ji = plan.ji;
-    planitem.sd = "2019/08/11";
+    planitem.sd = day;
     planitem.jtn = "谷雨";
     planitem.jtt = PlanItemType.Holiday;
 
