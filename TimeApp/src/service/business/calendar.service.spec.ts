@@ -161,6 +161,17 @@ describe('CalendarService test suite', () => {
 
   });
 
+  it(`Case 4 - 1 fetchMonthActivitiesSummary 取得指定月概要 - 空值(没有任何活动)`, async () => {
+    let month: string = moment().format("YYYY/MM");
+
+    let monthSummary: MonthActivitySummaryData = await calendarService.fetchMonthActivitiesSummary(month);
+
+    expect(monthSummary).toBeDefined();
+    expect(monthSummary.month).toBe(month);
+    expect(monthSummary.days).toBeDefined();
+    expect(monthSummary.days.length).toBe(0);
+  });
+
   // 需要同步执行
   it(`Case 3 - 4 fetchMonthActivities with precreated memos`, async () => {
     // 备忘
