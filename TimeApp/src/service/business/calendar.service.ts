@@ -263,7 +263,7 @@ export class CalendarService extends BaseService {
     let planitemdb: JtaTbl = new JtaTbl();
     planitemdb.jti = jti;
 
-    planitemdb = await this.sqlExce.getOne<JtaTbl>(planitemdb);
+    planitemdb = await this.sqlExce.getOneByParam<JtaTbl>(planitemdb);
 
     let planitem: PlanItemData = {} as PlanItemData;
 
@@ -282,6 +282,10 @@ export class CalendarService extends BaseService {
     this.assertEmpty(item);       // 入参不能为空
     this.assertEmpty(item.sd);    // 日历项所属日期不能为空
     this.assertEmpty(item.jtn);   // 日历项名称不能为空
+
+    if (!item.jtt) {
+      item.jtt = PlanItemType.Activity;
+    }
 
     if (item.jti) {
       // 更新
