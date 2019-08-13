@@ -35,7 +35,7 @@ describe('SqliteExec test suite', () => {
   let config: SqliteConfig;
   let sqlExce: SqliteExec;
 
-  beforeAll(() => {
+  beforeAll(async () => {
     TestBed.configureTestingModule({
       declarations: [
         MyApp

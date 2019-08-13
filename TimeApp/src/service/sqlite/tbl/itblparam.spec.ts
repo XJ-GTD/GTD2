@@ -46,7 +46,7 @@ describe('ITblParam tables test suite', () => {
   let config: SqliteConfig;
   let sqlExce: SqliteExec;
 
-  beforeAll(() => {
+  beforeAll(async () => {
     TestBed.configureTestingModule({
       declarations: [
         MyApp
