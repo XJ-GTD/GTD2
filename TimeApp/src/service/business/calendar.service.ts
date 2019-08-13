@@ -453,9 +453,9 @@ export class CalendarService extends BaseService {
     this.assertEmpty(month);    // 入参不能为空
 
     let days: number = moment(month).daysInMonth();
-    let arrDays: Array<string> = new Array<string>(days);
+    let arrDays: Array<string> = new Array<string>(days).fill("01");  // 必须要先填充, 否则不能map
     arrDays = arrDays.map((value, index) => {
-      return (month + "/" + ("0" + (index + 1)));
+      return (month + "/" + ("0" + (index + 1)).slice(-2));
     });
     console.log(arrDays.join(","));
     let daysql: string = `select '${arrDays.join(`' sd union all select '`)}' sd`;
@@ -464,14 +464,14 @@ export class CalendarService extends BaseService {
                               sum(CASE gjt.jtt WHEN '${PlanItemType.Holiday}' THEN 1 ELSE 0 END) calendaritemscount,
                               sum(CASE gjt.jtt WHEN '${PlanItemType.Activity}' THEN 1 ELSE 0 END) activityitemscount,
                               count(gev.evi) eventscount,
-                              sum(CASE gev.evt WHEN '${EventType.Agenda}' THEN 1 ELSE 0 END) agendascount,
-                              sum(CASE gev.evt WHEN '${EventType.Task}' THEN 1 ELSE 0 END) taskscount,
+                              sum(CASE gev.type WHEN '${EventType.Agenda}' THEN 1 ELSE 0 END) agendascount,
+                              sum(CASE gev.type WHEN '${EventType.Task}' THEN 1 ELSE 0 END) taskscount,
                               count(gmo.moi) memoscount,
-                              sum(CASE gev.rtevi WHEN NULL THEN 0 ELSE 1 END) repeateventscount,
+                              sum(CASE IFNULL(gev.rtevi, '') WHEN '' THEN 0 ELSE 1 END) repeateventscount,
                               0 bookedtimesummary
                       from (${daysql}) gday
                           left join gtd_jta gjt on gday.sd = gjt.sd
-                          left join gtd_ev gev on gday.sd = gev.sd
+                          left join gtd_ev gev on gday.sd = gev.evd
                           left join gtd_mom gmo on gday.sd = gmo.sd
                       group by gday.sd`;
 
@@ -525,10 +525,10 @@ export class CalendarService extends BaseService {
                               sum(CASE gjt.jtt WHEN '${PlanItemType.Holiday}' THEN 1 ELSE 0 END) calendaritemscount,
                               sum(CASE gjt.jtt WHEN '${PlanItemType.Activity}' THEN 1 ELSE 0 END) activityitemscount,
                               count(gev.evi) eventscount,
-                              sum(CASE gev.evt WHEN '${EventType.Agenda}' THEN 1 ELSE 0 END) agendascount,
-                              sum(CASE gev.evt WHEN '${EventType.Task}' THEN 1 ELSE 0 END) taskscount,
+                              sum(CASE gev.type WHEN '${EventType.Agenda}' THEN 1 ELSE 0 END) agendascount,
+                              sum(CASE gev.type WHEN '${EventType.Task}' THEN 1 ELSE 0 END) taskscount,
                               count(gmo.moi) memoscount,
-                              sum(CASE gev.rtevi WHEN NULL THEN 0 ELSE 1 END) repeateventscount,
+                              sum(CASE IFNULL(gev.rtevi, '') WHEN '' THEN 0 ELSE 1 END) repeateventscount,
                               0 bookedtimesummary
                       from (select '${day}' sd) gday
                           left join gtd_jta gjt on gday.sd = gjt.sd

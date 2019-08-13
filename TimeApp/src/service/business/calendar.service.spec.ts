@@ -50,7 +50,7 @@ import {FjTbl} from "../sqlite/tbl/fj.tbl";
 import { CalendarService, PlanData, PlanItemData, MonthActivityData, MonthActivitySummaryData, DayActivitySummaryData } from "./calendar.service";
 import { EventService, AgendaData } from "./event.service";
 import { MemoService, MemoData } from "./memo.service";
-import { PlanType } from "../../data.enum";
+import { PlanType, PlanItemType } from "../../data.enum";
 
 /**
  * 日历Service 持续集成CI 自动测试Case
@@ -163,23 +163,55 @@ describe('CalendarService test suite', () => {
 
   it(`Case 5 - 1 fetchMonthActivitiesSummary 取得指定月概要 - 空值(没有任何活动)`, async () => {
     let month: string = moment().format("YYYY/MM");
+    let days: number = moment(month).daysInMonth();
 
     let monthSummary: MonthActivitySummaryData = await calendarService.fetchMonthActivitiesSummary(month);
 
     expect(monthSummary).toBeDefined();
     expect(monthSummary.month).toBe(month);
     expect(monthSummary.days).toBeDefined();
-    expect(monthSummary.days.length).toBe(0);
+    expect(monthSummary.days.length).toBe(days);
+
+    for (let daySummary of monthSummary.days) {
+      expect(daySummary.day).toBeDefined();
+      expect(daySummary.calendaritemscount).toBe(0);
+      expect(daySummary.activityitemscount).toBe(0);
+      expect(daySummary.eventscount).toBe(0);
+      expect(daySummary.agendascount).toBe(0);
+      expect(daySummary.taskscount).toBe(0);
+      expect(daySummary.memoscount).toBe(0);
+      expect(daySummary.repeateventscount).toBe(0);
+      expect(daySummary.bookedtimesummary).toBe(0);
+    }
   });
 
   it(`Case 4 - 3 fetchDayActivitiesSummary 取得指定日期概要 - 存在1个日历项(任意日历项)`, async () => {
     let day: string = moment().format("YYYY/MM/DD");
+    // 基本日历
+    let plan: PlanData = {} as PlanData;
+
+    plan.jn = '农历节气 自动测试';
+    plan.jc = '#a1a1a1';
+    plan.jt = PlanType.CalendarPlan;
+
+    plan = await calendarService.savePlan(plan);
+
+    // 基本日历项
+    let planitem: PlanItemData = {} as PlanItemData;
+
+    planitem.ji = plan.ji;
+    planitem.sd = "2019/08/11";
+    planitem.jtn = "谷雨";
+    planitem.jtt = PlanItemType.Holiday;
+
+    await calendarService.savePlanItem(planitem);
 
     // 日历项
-    let planitem: PlanItemData = {} as PlanItemData;
+    planitem = {} as PlanItemData;
 
     planitem.sd = day;
     planitem.jtn = "结婚纪念日";
+    planitem.jtt = PlanItemType.Activity;
 
     await calendarService.savePlanItem(planitem);
 
@@ -188,7 +220,7 @@ describe('CalendarService test suite', () => {
     expect(daySummary).toBeDefined();
     expect(daySummary.day).toBe(day);
     expect(daySummary.calendaritemscount).toBe(1);
-    expect(daySummary.activityitemscount).toBe(0);
+    expect(daySummary.activityitemscount).toBe(1);
     expect(daySummary.eventscount).toBe(0);
     expect(daySummary.agendascount).toBe(0);
     expect(daySummary.taskscount).toBe(0);
@@ -216,7 +248,9 @@ describe('CalendarService test suite', () => {
 
   it(`Case 4 - 1 fetchDayActivitiesSummary 取得指定日期概要 - 没有抛出异常`, async () => {
     expect(function() {
-      calendarService.fetchDayActivitiesSummary();
+      calendarService.fetchDayActivitiesSummary().then((data) => {
+        expect(data).toBeDefined();
+      });
     }).not.toThrow();
   });
 
