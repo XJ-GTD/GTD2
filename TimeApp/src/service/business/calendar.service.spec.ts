@@ -197,7 +197,7 @@ describe('CalendarService test suite', () => {
 
     agenda.sd = day;
     agenda.evn = "每天走路锻炼10000步";
-    agenda.rt = JSON.stringify(rt);
+    agenda.rtjson = rt;
 
     await eventService.saveAgenda(agenda);
 
@@ -234,7 +234,7 @@ describe('CalendarService test suite', () => {
 
     agenda.sd = day;
     agenda.evn = "结婚纪念日买礼物给太太";
-    agenda.rt = JSON.stringify(rt);
+    agenda.rtjson = rt;
 
     await eventService.saveAgenda(agenda);
 
