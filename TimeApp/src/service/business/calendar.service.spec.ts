@@ -375,7 +375,7 @@ describe('CalendarService test suite', () => {
   });
 
   // 需要同步执行
-  it(`Case 2 - 1 savePlanItem`, async () => {
+  it(`Case 12 - 2 savePlanItem 保存日历项 - 活动`, async () => {
     let planitem: PlanItemData = {} as PlanItemData;
 
     planitem.sd = "2019/08/11";
@@ -387,6 +387,21 @@ describe('CalendarService test suite', () => {
     expect(planitem).toBeDefined();
     expect(planitem.jti).toBeDefined();
     expect(planitem.jtt).toBe(PlanItemType.Activity);
+  });
+
+  // 需要同步执行
+  it(`Case 12 - 1 savePlanItem 保存日历项 - 节假日`, async () => {
+    let planitem: PlanItemData = {} as PlanItemData;
+
+    planitem.sd = "2019/08/11";
+    planitem.jtn = "国庆节";
+    planitem.jtt = PlanItemType.Holiday;
+
+    planitem = await calendarService.savePlanItem(planitem);
+
+    expect(planitem).toBeDefined();
+    expect(planitem.jti).toBeDefined();
+    expect(planitem.jtt).toBe(PlanItemType.Holiday);
   });
 
   // 需要同步执行
