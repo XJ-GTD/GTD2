@@ -229,6 +229,7 @@ export class EventService extends BaseService {
 
     let txjson  = JSON.parse(agdata.tx);
 
+    console.log("repeatStartdt => " + repeatStartdt);
     //循环变量初始化
     let loopdt = repeatStartdt;
     let cnt :number= 0;
@@ -552,7 +553,7 @@ export class EventService extends BaseService {
   	let data: TaskData = {} as TaskData;
   	data = await this.sqlExce.getExtList<TaskData>(sqlparam);
   	return data;
-  	
+
   }
 
   /**
@@ -578,7 +579,7 @@ export class EventService extends BaseService {
   	backupPro.d.tt = await this.sqlExce.getLstByParam <TTbl> (tt);
 		await this.bacRestful.backup(backupPro);
 		return ;
-  	
+
   }
 
   /**
@@ -693,4 +694,3 @@ export class TxJson {
   type: anyenum.TxType;
   defvalue:number;
 }
-
