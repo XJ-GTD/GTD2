@@ -279,7 +279,7 @@ describe('CalendarService test suite', () => {
     // 日程
     let agenda: AgendaData = {} as AgendaData;
 
-    agenda.evd = "2019/08/11";
+    agenda.sd = "2019/08/11";
     agenda.evn = "结婚纪念日买礼物给太太";
 
     await eventService.saveAgenda(agenda);
