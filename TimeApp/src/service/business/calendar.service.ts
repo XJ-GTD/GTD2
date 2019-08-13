@@ -454,7 +454,7 @@ export class CalendarService extends BaseService {
 
     let days: number = moment(month).daysInMonth();
     let arrDays: Array<string> = new Array<string>(days).map((value, index) => {return ("0" + (index + 1)).slice(-2);});
-
+    console.log(arrDays.join(","));
     let daysql: string = `select '${arrDays.join(`' sd union all select '`)}' sd`;
 
     let sql: string = `select gday.sd day,
