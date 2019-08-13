@@ -48,13 +48,13 @@ export class RestFulConfigMock {
 
     header.put("Content-Type", "application/json");
     header.put("lt", "");//登录码
-    header.put("ai", "";//帐户ID
-    header.put("pi", "cn.sh.com.xj.timeApp";//产品ID
-    header.put("pv", "v3";//产品版本
-    header.put("di", "";//设备ID
-    header.put("dt", "";//设别类型
-    header.put("latitude", "0";//GPS定位
-    header.put("longitude", "0";//GPS定位
+    header.put("ai", "");//帐户ID
+    header.put("pi", "cn.sh.com.xj.timeApp");//产品ID
+    header.put("pv", "v3");//产品版本
+    header.put("di", "");//设备ID
+    header.put("dt", "");//设别类型
+    header.put("latitude", "0");//GPS定位
+    header.put("longitude", "0");//GPS定位
 
     return header;
   }
