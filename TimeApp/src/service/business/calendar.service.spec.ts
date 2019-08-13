@@ -163,13 +163,25 @@ describe('CalendarService test suite', () => {
 
   it(`Case 5 - 1 fetchMonthActivitiesSummary 取得指定月概要 - 空值(没有任何活动)`, async () => {
     let month: string = moment().format("YYYY/MM");
+    let days: number = moment(month).daysInMonth();
 
     let monthSummary: MonthActivitySummaryData = await calendarService.fetchMonthActivitiesSummary(month);
 
     expect(monthSummary).toBeDefined();
     expect(monthSummary.month).toBe(month);
     expect(monthSummary.days).toBeDefined();
-    expect(monthSummary.days.length).toBe(0);
+    expect(monthSummary.days.length).toBe(days);
+
+    for (let daySummary of monthSummary.days) {
+      expect(daySummary.calendaritemscount).toBe(0);
+      expect(daySummary.activityitemscount).toBe(0);
+      expect(daySummary.eventscount).toBe(0);
+      expect(daySummary.agendascount).toBe(0);
+      expect(daySummary.taskscount).toBe(0);
+      expect(daySummary.memoscount).toBe(0);
+      expect(daySummary.repeateventscount).toBe(0);
+      expect(daySummary.bookedtimesummary).toBe(0);
+    }
   });
 
   it(`Case 4 - 3 fetchDayActivitiesSummary 取得指定日期概要 - 存在1个日历项(任意日历项)`, async () => {
@@ -187,8 +199,8 @@ describe('CalendarService test suite', () => {
 
     expect(daySummary).toBeDefined();
     expect(daySummary.day).toBe(day);
-    expect(daySummary.calendaritemscount).toBe(1);
-    expect(daySummary.activityitemscount).toBe(0);
+    expect(daySummary.calendaritemscount).toBe(0);
+    expect(daySummary.activityitemscount).toBe(1);
     expect(daySummary.eventscount).toBe(0);
     expect(daySummary.agendascount).toBe(0);
     expect(daySummary.taskscount).toBe(0);
