@@ -178,8 +178,8 @@ describe('CalendarService test suite', () => {
     let daySummary: DayActivitySummaryData = await calendarService.fetchDayActivitiesSummary(day);
 
     expect(daySummary).toBeDefined();
-    expect(daySummary.day).toBe(0);
-    expect(daySummary.calendaritemscount).toBe(day);
+    expect(daySummary.day).toBe(day);
+    expect(daySummary.calendaritemscount).toBe(0);
     expect(daySummary.activityitemscount).toBe(0);
     expect(daySummary.eventscount).toBe(0);
     expect(daySummary.agendascount).toBe(0);
