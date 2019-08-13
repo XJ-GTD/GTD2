@@ -111,6 +111,12 @@ export class BackupProSub {
   y: Array<YTbl> = new Array<YTbl>();
   //新版备忘表数据
   mom: Array<MomTbl> = new Array<MomTbl>();
+  //事件表数据
+  ev: Array<EvTbl> = new Array<EvTbl>();
+  //日程表数据
+  ca: Array<CaTbl> = new Array<CaTbl>();
+  //任务表数据
+  tt: Array<TTbl> = new Array<TTbl>();
   //分批备份最后一次设为true
   commit: boolean = false;
 
@@ -145,7 +151,7 @@ export class RecoverProSub {
 
   bts: Number = 0;
   //恢复表的名称
-  rdn: Array<string> = ["c", "sp", "e", "mo", "d", "b", "g", "bx", "jh", "y"];
+  rdn: Array<string> = ["c", "sp", "e", "mo", "d", "b", "g", "bx", "jh", "y","mom","ev","ca","tt"];
 }
 
 //恢复出参
@@ -173,4 +179,10 @@ export class OutRecoverPro {
   y: Array<YTbl> = new Array<YTbl>();
    //新版备忘表数据
   mom: Array<MomTbl> = new Array<MomTbl>();
+  //事件表数据
+  ev: Array<EvTbl> = new Array<EvTbl>();
+  //日程表数据
+  ca: Array<CaTbl> = new Array<CaTbl>();
+  //任务表数据
+  tt: Array<TTbl> = new Array<TTbl>();
 }
