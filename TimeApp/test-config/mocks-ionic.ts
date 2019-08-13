@@ -1,6 +1,30 @@
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 
+export class RestfulClientMock {
+  init() {}
+
+  async post(url: any, body: any): Promise<any> {
+    return {};
+  }
+
+  async get(url: any): Promise<any> {
+    return {};
+  }
+
+  async put(url: any, body: any): Promise<any> {
+    return {};
+  }
+
+  async specPost(url: string, header: any, body: any): Promise<any> {
+    return {};
+  }
+
+  async get4Text(url: string, header: any, body: any): Promise<any> {
+    return {};
+  }
+}
+
 export class RestFulConfigMock {
   private _urls: Map<string, any> = new Map<string, any>();
   private _apil: Array<any> = [
