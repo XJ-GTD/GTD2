@@ -64,7 +64,7 @@ describe('CalendarService test suite', () => {
   let httpMock: HttpTestingController;
 
   // 所有测试case执行前, 只执行一次
-  beforeEach(async(() => {
+  beforeAll(async(async () => {
     TestBed.configureTestingModule({
       declarations: [
         MyApp
@@ -100,17 +100,12 @@ describe('CalendarService test suite', () => {
         { provide: Platform, useClass: PlatformMock }
       ]
     });
-  }));
 
-  // 所有测试case执行前, 只执行一次
-  beforeEach(async () => {
     config = TestBed.get(SqliteConfig);
     init = TestBed.get(SqliteInit);
     await config.generateDb();
     await init.createTables();
-  });
 
-  beforeEach(async () => {
     calendarService = TestBed.get(CalendarService);
     eventService = TestBed.get(EventService);
     memoService = TestBed.get(MemoService);
@@ -120,7 +115,7 @@ describe('CalendarService test suite', () => {
     await init.initData();
 
     restConfig.init();
-  });
+  }));
 
   // 需要同步执行
   it(`Case 3 - 4 fetchMonthActivities with precreated memos`, async () => {
