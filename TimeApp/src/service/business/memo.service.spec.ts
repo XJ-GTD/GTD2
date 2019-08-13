@@ -18,7 +18,9 @@ import {
 import {
   PlatformMock,
   StatusBarMock,
-  SplashScreenMock
+  SplashScreenMock,
+  RestFulConfigMock,
+  RestfulClientMock
 } from '../../../test-config/mocks-ionic';
 
 import {MyApp} from '../../app/app.component';
@@ -51,7 +53,7 @@ describe('MemoService test suite', () => {
   let memoService: MemoService;
   let planforUpdate: PlanData;
 
-  beforeEach(async(() => {
+  beforeAll(() => {
     TestBed.configureTestingModule({
       declarations: [
         MyApp
@@ -75,23 +77,20 @@ describe('MemoService test suite', () => {
         Network,
         HTTP,
         HttpClient,
-        RestFulConfig,
-        RestfulClient,
+        { provide: RestFulConfig, useClass: RestFulConfigMock },
+        { provide: RestfulClient, useClass: RestfulClientMock },
         NetworkService,
         { provide: StatusBar, useClass: StatusBarMock },
         { provide: SplashScreen, useClass: SplashScreenMock },
         { provide: Platform, useClass: PlatformMock }
       ]
     });
-  }));
-
-  beforeEach(async () => {
     config = TestBed.get(SqliteConfig);
-    await config.generateDb();
+    memoService = TestBed.get(MemoService);
   });
 
-  beforeEach(() => {
-    memoService = TestBed.get(MemoService);
+  beforeEach(async () => {
+    await config.generateDb();
   });
 
   // 需要同步执行
