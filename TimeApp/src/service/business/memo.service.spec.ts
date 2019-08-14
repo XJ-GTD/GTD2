@@ -97,8 +97,8 @@ describe('MemoService test suite', () => {
   it('Case 1 - 1 service should be created', () => {
     expect(memoService).toBeTruthy();
   });
-  
-   it('Case 1 - 2 save memo service should be created', () => {
+
+   it('Case 1 - 2 save memo service should be created', async () => {
    	let mom: MemoData = {} as MemoData;
    	mom.mon='本周三写完测试用例';
    	await memoService.saveMemo(mom);
