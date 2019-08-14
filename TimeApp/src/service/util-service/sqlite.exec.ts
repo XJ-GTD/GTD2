@@ -31,6 +31,14 @@ export class SqliteExec {
       log.su = sql;
       log.ss = new Date().valueOf();
       log.t = 0;
+
+      if (params && params.length > 0){
+        for (let j = 0 ,len = params.length; j < len ; j++ ){
+          if ( params[j] == 'undefined' ){
+            params[j] = null;
+          }
+        }
+      }
       this.sqlliteConfig.database.transaction( (tx)=> {
         tx.executeSql(sql, params, (tx, res) => {
           if (!nolog){
