@@ -302,6 +302,8 @@ export class CalendarService extends BaseService {
       let planitemdb: JtaTbl = new JtaTbl();
       Object.assign(planitemdb, item);
 
+      console.log(JSON.stringify(planitemdb));
+
       await this.sqlExce.saveByParam(planitemdb);
 
       this.emitService.emit(`mwxing.calendar.${item.ji}.item.created`);

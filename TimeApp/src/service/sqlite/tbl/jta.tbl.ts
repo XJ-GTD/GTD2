@@ -122,7 +122,7 @@ export class JtaTbl implements ITblParam {
     let params = new Array<any>();
     let sq =`insert into gtd_jta
        (   jti ,ji ,jtn ,sd ,st ,jtt ,jtc ,px ,bz ,wtt ,utt,tb,del)
-       values(?,?,?,?,?,?,?,?,?,${moment().unix()},${moment().unix()},?,?);`;
+       values(?,?,?,?,?,?,?,?,?,?,?,?,?);`;
     params.push(this.jti);
     params.push(this.ji);
     params.push(this.jtn);
@@ -132,6 +132,8 @@ export class JtaTbl implements ITblParam {
     params.push(this.jtc);
     params.push(this.px);
     params.push(this.nll2str(this.bz));
+    params.push(moment().unix());
+    params.push(moment().unix());
     params.push(this.tb);
     params.push(this.del);
 

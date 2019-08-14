@@ -48,9 +48,9 @@ import {WaTbl} from "../sqlite/tbl/wa.tbl";
 import {FjTbl} from "../sqlite/tbl/fj.tbl";
 
 import { CalendarService, PlanData, PlanItemData, MonthActivityData, MonthActivitySummaryData, DayActivitySummaryData } from "./calendar.service";
-import { EventService, AgendaData } from "./event.service";
+import { EventService, AgendaData, TaskData, RtJson } from "./event.service";
 import { MemoService, MemoData } from "./memo.service";
-import { PlanType, PlanItemType } from "../../data.enum";
+import { PlanType, PlanItemType, CycleType, OverType } from "../../data.enum";
 
 /**
  * 日历Service 持续集成CI 自动测试Case
@@ -185,6 +185,111 @@ describe('CalendarService test suite', () => {
     }
   });
 
+  it(`Case 4 - 6 fetchDayActivitiesSummary 取得指定日期概要 - 存在1个日程、1个任务(日程每日重复)`, async () => {
+    let day: string = moment().format("YYYY/MM/DD");
+    // 日程
+    let agenda: AgendaData = {} as AgendaData;
+
+    // 每日重复, 永远
+    let rt: RtJson = new RtJson();
+    rt.cycletype = CycleType.d;
+    rt.over.type = OverType.fornever;
+
+    agenda.sd = day;
+    agenda.evn = "每天走路锻炼10000步";
+    agenda.rtjson = rt;
+
+    await eventService.saveAgenda(agenda);
+
+    // 任务
+    let task: TaskData = {} as TaskData;
+
+    task.evn = "结婚纪念日前给太太买礼物";
+
+    await eventService.saveTask(task);
+
+    let daySummary: DayActivitySummaryData = await calendarService.fetchDayActivitiesSummary(day);
+
+    expect(daySummary).toBeDefined();
+    expect(daySummary.day).toBe(day);
+    expect(daySummary.calendaritemscount).toBe(0);
+    expect(daySummary.activityitemscount).toBe(0);
+    expect(daySummary.eventscount).toBe(2);
+    expect(daySummary.agendascount).toBe(1);
+    expect(daySummary.taskscount).toBe(1);
+    expect(daySummary.memoscount).toBe(0);
+    expect(daySummary.repeateventscount).toBe(1);
+    expect(daySummary.bookedtimesummary).toBe(0);
+  });
+
+  it(`Case 4 - 5 fetchDayActivitiesSummary 取得指定日期概要 - 存在1个日程、1个任务(日程每年重复)`, async () => {
+    let day: string = moment().format("YYYY/MM/DD");
+    // 日程
+    let agenda: AgendaData = {} as AgendaData;
+
+    // 每年重复, 永远
+    let rt: RtJson = new RtJson();
+    rt.cycletype = CycleType.y;
+    rt.over.type = OverType.fornever;
+
+    agenda.sd = day;
+    agenda.evn = "结婚纪念日买礼物给太太";
+    agenda.rtjson = rt;
+
+    await eventService.saveAgenda(agenda);
+
+    // 任务
+    let task: TaskData = {} as TaskData;
+
+    task.evn = "结婚纪念日前给太太买礼物";
+
+    await eventService.saveTask(task);
+
+    let daySummary: DayActivitySummaryData = await calendarService.fetchDayActivitiesSummary(day);
+
+    expect(daySummary).toBeDefined();
+    expect(daySummary.day).toBe(day);
+    expect(daySummary.calendaritemscount).toBe(0);
+    expect(daySummary.activityitemscount).toBe(0);
+    expect(daySummary.eventscount).toBe(2);
+    expect(daySummary.agendascount).toBe(1);
+    expect(daySummary.taskscount).toBe(1);
+    expect(daySummary.memoscount).toBe(0);
+    expect(daySummary.repeateventscount).toBe(1);
+    expect(daySummary.bookedtimesummary).toBe(0);
+  });
+
+  it(`Case 4 - 4 fetchDayActivitiesSummary 取得指定日期概要 - 存在1个日程、1个任务(不重复)`, async () => {
+    let day: string = moment().format("YYYY/MM/DD");
+    // 日程
+    let agenda: AgendaData = {} as AgendaData;
+
+    agenda.sd = day;
+    agenda.evn = "结婚纪念日买礼物给太太";
+
+    await eventService.saveAgenda(agenda);
+
+    // 任务
+    let task: TaskData = {} as TaskData;
+
+    task.evn = "结婚纪念日前给太太买礼物";
+
+    await eventService.saveTask(task);
+
+    let daySummary: DayActivitySummaryData = await calendarService.fetchDayActivitiesSummary(day);
+
+    expect(daySummary).toBeDefined();
+    expect(daySummary.day).toBe(day);
+    expect(daySummary.calendaritemscount).toBe(0);
+    expect(daySummary.activityitemscount).toBe(0);
+    expect(daySummary.eventscount).toBe(2);
+    expect(daySummary.agendascount).toBe(1);
+    expect(daySummary.taskscount).toBe(1);
+    expect(daySummary.memoscount).toBe(0);
+    expect(daySummary.repeateventscount).toBe(0);
+    expect(daySummary.bookedtimesummary).toBe(0);
+  });
+
   it(`Case 4 - 3 fetchDayActivitiesSummary 取得指定日期概要 - 存在1个日历项(任意日历项)`, async () => {
     let day: string = moment().format("YYYY/MM/DD");
     // 基本日历
@@ -200,7 +305,7 @@ describe('CalendarService test suite', () => {
     let planitem: PlanItemData = {} as PlanItemData;
 
     planitem.ji = plan.ji;
-    planitem.sd = "2019/08/11";
+    planitem.sd = day;
     planitem.jtn = "谷雨";
     planitem.jtt = PlanItemType.Holiday;
 

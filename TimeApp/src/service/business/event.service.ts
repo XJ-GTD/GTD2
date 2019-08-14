@@ -287,7 +287,7 @@ export class EventService extends BaseService {
     }else if (rtjson.cycletype == anyenum.CycleType.w) {
 
       len = rtjson.cyclenum;
-      repeatStartdt = this.getRepeatStartDt(agdata.sd,agdata.rtjson.openway);
+      repeatStartdt = this.getRepeatStartDt(agdata.sd,rtjson.openway);
       repeatEnddt = moment(repeatStartdt).add(len - 1 , 'w');
 
       addtype = 'w';
