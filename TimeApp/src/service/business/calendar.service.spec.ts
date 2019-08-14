@@ -192,7 +192,7 @@ describe('CalendarService test suite', () => {
 
     // 每日重复, 永远
     let rt: RtJson = new RtJson();
-    rt.cycletype = CycleType.d;
+    rt.cycletype = CycleType.day;
     rt.over.type = OverType.fornever;
 
     agenda.sd = day;
@@ -229,7 +229,7 @@ describe('CalendarService test suite', () => {
 
     // 每年重复, 永远
     let rt: RtJson = new RtJson();
-    rt.cycletype = CycleType.y;
+    rt.cycletype = CycleType.year;
     rt.over.type = OverType.fornever;
 
     agenda.sd = day;
