@@ -101,9 +101,14 @@ describe('MemoService test suite', () => {
    it('Case 1 - 2 save memo service should be created', async () => {
    	let mom: MemoData = {} as MemoData;
    	mom.mon='本周三写完测试用例';
-   	await memoService.saveMemo(mom);
+   	mom = await memoService.saveMemo(mom);
    	expect(mom).toBeDefined();
-    expect(mom.mon).toBeDefined();
+    expect(mom.moi).toBeDefined();
+    //取出返回值
+    let gmom: MemoData = {} as MemoData;
+    gmom = await memoService.getMemo(mom.moi);
+    expect(gmom).toBeDefined();
+    expect(gmom.mon).toBe(mom.mon);
   });
 
   afterAll(() => {

@@ -218,7 +218,7 @@ describe('CalendarService test suite', () => {
     expect(daySummary.agendascount).toBe(1);
     expect(daySummary.taskscount).toBe(1);
     expect(daySummary.memoscount).toBe(0);
-    expect(daySummary.repeateventscount).toBe(1);
+    expect(daySummary.repeateventscount).toBe(0);
     expect(daySummary.bookedtimesummary).toBe(0);
   });
 
@@ -255,12 +255,12 @@ describe('CalendarService test suite', () => {
     expect(daySummary.agendascount).toBe(1);
     expect(daySummary.taskscount).toBe(1);
     expect(daySummary.memoscount).toBe(0);
-    expect(daySummary.repeateventscount).toBe(1);
+    expect(daySummary.repeateventscount).toBe(0);
     expect(daySummary.bookedtimesummary).toBe(0);
   });
 
   it(`Case 4 - 7 fetchDayActivitiesSummary 取得指定日期概要 - 存在1个日程、1个任务(不重复)和1个备忘`, async () => {
-    let day: string = moment().format("YYYY/MM/DD");
+    let day: string = moment().add(1, 'days').format("YYYY/MM/DD");
     // 日程
     let agenda: AgendaData = {} as AgendaData;
 
@@ -272,6 +272,7 @@ describe('CalendarService test suite', () => {
     // 任务
     let task: TaskData = {} as TaskData;
 
+    task.evd = day;
     task.evn = "结婚纪念日前给太太买礼物";
 
     await eventService.saveTask(task);
@@ -279,6 +280,7 @@ describe('CalendarService test suite', () => {
     // 备忘
     let memo: MemoData = {} as MemoData;
 
+    memo.sd = day;
     memo.mon = "结婚纪念日买了一块定制巧克力给太太, 太太很高兴";
 
     memo = await memoService.saveMemo(memo);
