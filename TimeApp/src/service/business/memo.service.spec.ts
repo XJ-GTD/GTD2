@@ -110,6 +110,61 @@ describe('MemoService test suite', () => {
     expect(gmom).toBeDefined();
     expect(gmom.mon).toBe(mom.mon);
   });
+  
+  it('Case 1 - 3 updateMemoPlan  service should be created', async () => {
+  	//插入获取ID
+   	let mom: MemoData = {} as MemoData;
+   	mom.mon='我老大，叫老席，你动我代码试试';
+   	mom = await memoService.saveMemo(mom);
+   	expect(mom).toBeDefined();
+    expect(mom.moi).toBeDefined();
+    //根据ID测试更新方法
+    let ji: string = "abc123";
+    await memoService.updateMemoPlan(ji,mom.moi);
+    //更新完成后，获取原有数据
+    let gmom: MemoData = {} as MemoData;
+    gmom = await memoService.getMemo(mom.moi);
+    expect(gmom).toBeDefined();
+   	expect(gmom.ji).toBe(ji);
+  });
+  
+  
+  it('Case 1 - 3 removeMemo  service should be created', async () => {
+  	//插入获取ID
+   	let mom: MemoData = {} as MemoData;
+   	mom.mon='我老大，叫老席，你动我代码试试';
+   	mom = await memoService.saveMemo(mom);
+   	expect(mom).toBeDefined();
+    expect(mom.moi).toBeDefined();
+    //根据ID测试更新方法
+    let ji: string = "abc123";
+    await memoService.removeMemo(mom.moi);
+    //更新完成后，获取原有数据
+    let gmom: MemoData = {} as MemoData;
+    gmom = await memoService.getMemo(mom.moi);
+    expect(gmom).toBeDefined();
+    expect(gmom.length).toBeGreaterThan(0);
+  });
+  
+  it('Case 1 - 4 backup  service should be created', async () => {
+  	
+  		let mom: MemoData = {} as MemoData;
+	   	mom.mon='我老大，叫老席，你动我代码试试';
+	   	mom = await memoService.saveMemo(mom);
+	   	expect(mom).toBeDefined();
+	    expect(mom.moi).toBeDefined();
+  	  let bts: Number = moment().unix();
+  	  //先备份
+  		memoService.backup(bts);
+  		//后还原
+  		memoService.recovery(null,bts);
+  		//验证还原后的数据是否和原有数据匹配
+  		let gmom: MemoData = {} as MemoData;
+	    gmom = await memoService.getMemo(mom.moi);
+	    expect(gmom).toBeDefined();
+	    expect(gmom.mon).toBe(mom.mon);
+  });
+  
 
   afterAll(() => {
     TestBed.resetTestingModule();
