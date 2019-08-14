@@ -73,9 +73,10 @@ export class EventService extends BaseService {
   /**
    * 保存日程
    * @param {AgendaData} agdata
+   * @param {ModifyType} modiType
    * @returns {Promise<AgendaData>}
    */
-  async saveAgenda(agdata : AgendaData): Promise<AgendaData> {
+  async saveAgenda(agdata : AgendaData, modiType : anyenum.ModifyType = anyenum.ModifyType.Non): Promise<AgendaData> {
 
     // 入参不能为空
     this.assertEmpty(agdata);
@@ -94,7 +95,7 @@ export class EventService extends BaseService {
     }
 
     if (agdata.evi != null && agdata.evi != "") {
-      //await this.updateDetail(agdata);
+      await this.updateDetail(agdata,modiType);
       return agdata;
     } else {
 
