@@ -390,7 +390,7 @@ describe('CalendarService test suite', () => {
     let nextdaySummary: DayActivitySummaryData = await calendarService.fetchDayActivitiesSummary(nextday);
 
     expect(nextdaySummary).toBeDefined();
-    expect(nextdaySummary.day).toBe(day);
+    expect(nextdaySummary.day).toBe(nextday);
     expect(nextdaySummary.calendaritemscount).toBe(0);
     expect(nextdaySummary.activityitemscount).toBe(0);
     expect(nextdaySummary.eventscount).toBe(1);
@@ -435,7 +435,7 @@ describe('CalendarService test suite', () => {
     let nextdaySummary: DayActivitySummaryData = await calendarService.fetchDayActivitiesSummary(nextday);
 
     expect(nextdaySummary).toBeDefined();
-    expect(nextdaySummary.day).toBe(day);
+    expect(nextdaySummary.day).toBe(nextday);
     expect(nextdaySummary.calendaritemscount).toBe(0);
     expect(nextdaySummary.activityitemscount).toBe(0);
     expect(nextdaySummary.eventscount).toBe(1);
@@ -480,7 +480,7 @@ describe('CalendarService test suite', () => {
     let nextdaySummary: DayActivitySummaryData = await calendarService.fetchDayActivitiesSummary(nextday);
 
     expect(nextdaySummary).toBeDefined();
-    expect(nextdaySummary.day).toBe(day);
+    expect(nextdaySummary.day).toBe(nextday);
     expect(nextdaySummary.calendaritemscount).toBe(0);
     expect(nextdaySummary.activityitemscount).toBe(0);
     expect(nextdaySummary.eventscount).toBe(1);
@@ -525,7 +525,7 @@ describe('CalendarService test suite', () => {
     let nextdaySummary: DayActivitySummaryData = await calendarService.fetchDayActivitiesSummary(nextday);
 
     expect(nextdaySummary).toBeDefined();
-    expect(nextdaySummary.day).toBe(day);
+    expect(nextdaySummary.day).toBe(nextday);
     expect(nextdaySummary.calendaritemscount).toBe(0);
     expect(nextdaySummary.activityitemscount).toBe(0);
     expect(nextdaySummary.eventscount).toBe(1);
