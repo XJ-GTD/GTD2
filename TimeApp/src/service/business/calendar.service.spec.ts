@@ -300,9 +300,9 @@ describe('CalendarService test suite', () => {
     expect(daySummary.day).toBe(day);
     expect(daySummary.calendaritemscount).toBe(0);
     expect(daySummary.activityitemscount).toBe(0);
-    expect(daySummary.eventscount).toBe(2);
+    expect(daySummary.eventscount).toBe(3);
     expect(daySummary.agendascount).toBe(1);
-    expect(daySummary.taskscount).toBe(1);
+    expect(daySummary.taskscount).toBe(2);
     expect(daySummary.memoscount).toBe(1);
     expect(daySummary.repeateventscount).toBe(0);
     expect(daySummary.bookedtimesummary).toBe(0);
