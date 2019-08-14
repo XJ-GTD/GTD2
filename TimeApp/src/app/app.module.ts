@@ -105,6 +105,7 @@ import { JPush } from '@jiguang-ionic/jpush';
 import { DirectivesModule } from "../directives/directives.module";
 import { BaiduMapModule } from 'angular2-baidu-map';
 import {EventService} from "../service/business/event.service";
+import {MemoService} from "../service/business/memo.service";
 
 @NgModule({
   declarations: [
@@ -225,6 +226,7 @@ import {EventService} from "../service/business/event.service";
     MIPushService,
     RemindService,
     EventService,
+    MemoService,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     {provide: HAMMER_GESTURE_CONFIG, useClass: HammerDIRECTIONALLConfig}
   ]

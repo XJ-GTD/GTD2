@@ -207,6 +207,7 @@ export class SqliteExec {
       console.log("getExtOne执行SQL："+sql);
       return this.execSql(sql).then(data=>{
         if (data.rows && data.rows.length > 0 ){
+          console.log(data);
           resolve(data.rows.item(0));
         }else{
           resolve(null);

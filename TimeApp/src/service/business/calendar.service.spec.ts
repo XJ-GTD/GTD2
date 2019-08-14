@@ -47,7 +47,7 @@ import {TTbl} from "../sqlite/tbl/t.tbl";
 import {WaTbl} from "../sqlite/tbl/wa.tbl";
 import {FjTbl} from "../sqlite/tbl/fj.tbl";
 
-import { CalendarService, PlanData, PlanItemData, MonthActivityData, MonthActivitySummaryData, DayActivitySummaryData } from "./calendar.service";
+import { CalendarService, PlanData, PlanItemData, MonthActivityData, MonthActivitySummaryData, DayActivityData, DayActivitySummaryData } from "./calendar.service";
 import { EventService, AgendaData, TaskData, RtJson } from "./event.service";
 import { MemoService, MemoData } from "./memo.service";
 import { PlanType, PlanItemType, CycleType, OverType } from "../../data.enum";
@@ -192,7 +192,7 @@ describe('CalendarService test suite', () => {
 
     // 每日重复, 永远
     let rt: RtJson = new RtJson();
-    rt.cycletype = CycleType.d;
+    rt.cycletype = CycleType.day;
     rt.over.type = OverType.fornever;
 
     agenda.sd = day;
@@ -229,7 +229,7 @@ describe('CalendarService test suite', () => {
 
     // 每年重复, 永远
     let rt: RtJson = new RtJson();
-    rt.cycletype = CycleType.y;
+    rt.cycletype = CycleType.year;
     rt.over.type = OverType.fornever;
 
     agenda.sd = day;
@@ -277,6 +277,13 @@ describe('CalendarService test suite', () => {
 
     await eventService.saveTask(task);
 
+    let task2: TaskData = {} as TaskData;
+
+    task2.evd = day;
+    task2.evn = "结婚纪念日前给太太买礼物2";
+
+    await eventService.saveTask(task2);
+
     // 备忘
     let memo: MemoData = {} as MemoData;
 
@@ -284,8 +291,10 @@ describe('CalendarService test suite', () => {
     memo.mon = "结婚纪念日买了一块定制巧克力给太太, 太太很高兴";
 
     memo = await memoService.saveMemo(memo);
-
+    let dayActivities: DayActivityData = await calendarService.fetchDayActivities(day);
+    console.log(dayActivities);
     let daySummary: DayActivitySummaryData = await calendarService.fetchDayActivitiesSummary(day);
+    console.log(daySummary);
 
     expect(daySummary).toBeDefined();
     expect(daySummary.day).toBe(day);

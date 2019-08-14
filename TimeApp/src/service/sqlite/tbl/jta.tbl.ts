@@ -17,7 +17,9 @@ export class JtaTbl implements ITblParam {
   bz: string;
   tb: string;
   del: string;
-
+  utt: number;
+  wtt: number;
+  
   cTParam():string {
 
     let sq =`create table if not exists gtd_jta(

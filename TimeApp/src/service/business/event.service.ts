@@ -25,6 +25,46 @@ export class EventService extends BaseService {
   }
 
   /**
+   * 页面判断重复设置是否改变
+   * @param {AgendaData} newAgd
+   * @param {AgendaData} oldAgd
+   * @returns {boolean}
+   */
+  isAgdChanged(newAgd : AgendaData ,oldAgd : AgendaData): boolean{
+    if (newAgd.rtjson.cycletype != oldAgd.rtjson.cycletype){
+      return true;
+    }
+    if (newAgd.rtjson.cyclenum != oldAgd.rtjson.cyclenum){
+      return true;
+    }
+    if (newAgd.rtjson.openway != oldAgd.rtjson.openway){
+      return true;
+    }
+    if (newAgd.rtjson.over.type != oldAgd.rtjson.over.type){
+      return true;
+    }
+    if (newAgd.rtjson.over.value != oldAgd.rtjson.over.value){
+      return true;
+    }
+    if (newAgd.evn != oldAgd.evn){
+      return true;
+    }
+    if (newAgd.sd != oldAgd.sd){
+      return true;
+    }
+    if (newAgd.st != oldAgd.st){
+      return true;
+    }
+    if (newAgd.al != oldAgd.al){
+      return true;
+    }
+    if (newAgd.ct != oldAgd.ct){
+      return true;
+    }
+    return false;
+  }
+
+  /**
    * 保存日程
    * @param {AgendaData} agdata
    * @returns {Promise<AgendaData>}
@@ -48,7 +88,7 @@ export class EventService extends BaseService {
     }
 
     if (agdata.evi != null && agdata.evi != "") {
-      await this.updateDetail(agdata);
+      //await this.updateDetail(agdata);
       return agdata;
     } else {
 
@@ -101,18 +141,46 @@ export class EventService extends BaseService {
    * @param {ScdData} scd
    * @returns {Promise<void>}
    */
-  private async updateDetail(agdata: AgendaData) {
-    //特殊表操作
+  private async updateDetail(agdata: AgendaData, modiType : anyenum.ModifyType) {
+
+/*    //取得原日程详情
+    let oldAgdata = {} as AgendaData;
+
+    let oldev : EvTbl = new EvTbl();
+    oldev.evi = agdata.evi;
+    oldev = await this.sqlExce.getOneByParam<EvTbl>(oldev);
+    Object.assign(oldAgdata, oldev);
+
     let oldca: CaTbl = new CaTbl();
     oldca.evi = agdata.rtevi == "" ? agdata.evi : agdata.rtevi;
     oldca = await this.sqlExce.getOneByParam<CaTbl>(oldca);
 
-    //更新日程
-    let ca = new CaTbl();
+    oldAgdata.sd = oldca.sd;
+    oldAgdata.st = oldca.st;
+    oldAgdata.ed = oldca.ed;
+    oldAgdata.et = oldca.et;
+    oldAgdata.al = oldca.al;
+    oldAgdata.ct = oldca.ct;
 
-    let chged = this.isRtChanged(agdata.rtjson,agdata.oldrtjson);
+    oldAgdata.rtjson = JSON.parse(oldAgdata.rt);
+    oldAgdata.txjson = JSON.parse(oldAgdata.tx);
 
-    /*if (oldca.sd != agdata.sd || chged) {
+    let chged :　boolean = this.isAgdChanged(oldAgdata,agdata);*/
+
+  //批量本地更新
+    let sqlparam = new Array<any>();
+
+    /*如果只改当天，则修改当前数据内容
+    如果改变从当前所有，则
+     1.改变原日程结束日 2.删除从当前所有事件及相关提醒 3.新建新事件日程*/
+    if (modiType == anyenum.ModifyType.FromSel ){
+
+    }else if(modiType == anyenum.ModifyType.OnlySel) {
+      let ev = new EvTbl();
+      ev.evi = agdata.evi;
+
+    }
+    /*if (oldca.evn != agdata.evn || oldca.sd != agdata.sd || chged) {
       //日期与重复标识变化了，则删除重复子表所有数据，重新插入新数据
       let sptbl = new SpTbl();
       sptbl.si = c.si;
@@ -165,19 +233,8 @@ export class EventService extends BaseService {
       this.setAdgPro(agd, c);
       await this.agdRest.save(agd);
     }
-    this.emitService.emitRef(scd.sd);
-  */
-  }
+    this.emitService.emitRef(scd.sd);*/
 
-  /**
-   * 判断重复设置是否改变
-   * @param {RtJson} newRtjson
-   * @param {RtJson} oldRtjson
-   * @returns {boolean}
-   */
-  private isRtChanged(newRtjson : RtJson ,oldRtjson : RtJson): boolean{
-    //if (newRtjson.)
-    return false;
   }
 
   /**
@@ -290,21 +347,21 @@ export class EventService extends BaseService {
 
     //计算开始日，结束日及设定重复区间、重复单位
 
-    if (rtjson.cycletype == anyenum.CycleType.d) {
+    if (rtjson.cycletype == anyenum.CycleType.day) {
 
       len = rtjson.cyclenum;
       repeatStartdt = this.getRepeatStartDt(agdata.sd,null);
       repeatEnddt = moment(repeatStartdt).add(len - 1, 'd');
 
       addtype = 'd';
-    }else if (rtjson.cycletype == anyenum.CycleType.w) {
+    }else if (rtjson.cycletype == anyenum.CycleType.week) {
 
       len = rtjson.cyclenum;
       repeatStartdt = this.getRepeatStartDt(agdata.sd,rtjson.openway);
       repeatEnddt = moment(repeatStartdt).add(len - 1 , 'w');
 
       addtype = 'w';
-    } else if (rtjson.cycletype == anyenum.CycleType.m) {
+    } else if (rtjson.cycletype == anyenum.CycleType.month) {
 
 
       len = rtjson.cyclenum;
@@ -317,7 +374,7 @@ export class EventService extends BaseService {
         addtype = 'w';
       }
 
-    } else if (rtjson.cycletype == anyenum.CycleType.y) {
+    } else if (rtjson.cycletype == anyenum.CycleType.year) {
       len = rtjson.cyclenum;
       repeatStartdt =  this.getRepeatStartDt(agdata.sd,null);
       repeatEnddt = moment(repeatStartdt).add(len - 1 , 'y');
@@ -355,8 +412,8 @@ export class EventService extends BaseService {
       ev.evi = this.util.getUuid();
       if ( cnt == 1 ){
         ret.rtevi = ev.evi;
-        //非重复日程及重复日程的第一条的rtevi（父日程evi）字段设为空。遵循父子关系，
-        // 父记录的父节点字段rrtevi设为空，子记录的父节点字段rtevi设为父记录的evi
+        /*非重复日程及重复日程的第一条的rtevi（父日程evi）字段设为空。遵循父子关系，
+        父记录的父节点字段rtevi设为空，子记录的父节点字段rtevi设为父记录的evi*/
         ev.rtevi = "";
       }else{
         ev.rtevi = ret.rtevi;
@@ -783,11 +840,10 @@ export interface EventData extends EvTbl {
 
 }
 
+//画面传入事件service参数体
 export interface AgendaData extends EventData, CaTbl {
   rtjson :RtJson;
   txjson :TxJson;
-  oldrtjson : RtJson;
-  oldtxjson :TxJson;
 
 }
 

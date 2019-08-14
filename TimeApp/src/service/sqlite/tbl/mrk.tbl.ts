@@ -11,6 +11,8 @@ export class MrkTbl implements ITblParam {
   obt: string;
   obi: string;
   mkt: string;
+  utt: number;
+  wtt: number;
 
   cTParam():string {
 

@@ -67,10 +67,10 @@ export enum OverType {
 //重复类型选项
 export enum CycleType {
   close = "close",
-  d = "1",
-  w = "2",
-  m = "3",
-  y = "4"
+  day = "1",
+  week = "2",
+  month = "3",
+  year = "4"
 }
 
 //重复开启选项
@@ -136,7 +136,8 @@ export enum Err {
 //日程修改类型
 export enum ModifyType  {
   OnlySel = "OnlySel",
-  FromSel = "FromSel"
+  FromSel = "FromSel",
+  Non ="Non"
 
 }
 

@@ -15,6 +15,8 @@ export class ParTbl implements ITblParam {
   sdt: string;
   tb: string;
   del: string;
+  utt: number;
+  wtt: number;
 
   cTParam():string {
 
