@@ -547,7 +547,7 @@ export class EventService extends BaseService {
 			tx.evi = this.util.getUuid();
 			tx.ui = UserConfig.account.id;
 			tx.type = anyenum.EventType.Task;
-			tx.evd = moment().format('YYYY/MM/DD');
+			tx.evd = tx.evd || moment().format('YYYY/MM/DD');
 			tx.gs = anyenum.GsType.self;
 			tx.tb = anyenum.SyncType.unsynch;
 			tx.del = anyenum.DelType.undel;
