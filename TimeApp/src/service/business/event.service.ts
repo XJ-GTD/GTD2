@@ -620,6 +620,17 @@ export class EventService extends BaseService {
 		return tx;
   }
 
+	/**
+	 * 根据事件ID获取任务
+	 */
+	async getTask(evi: string): Promise<TaskData> {
+			this.assertEmpty(evi); // id不能为空
+			let sqlparam: string =`select ev.*,td.cs,td.isrt,td.cd,td.fd from gtd_ev  ev left join gtd_t  td on ev.evi = td.evi where ev.evi =${evi} `;
+  		let data: Array<TaskData> = new Array<TaskData>();
+  		data = await this.sqlExce.getExtList<TaskData>(sqlparam);
+  		return data;
+	}
+
   /**
 	 * 创建更新小任务
 	 * @author ying<343253410@qq.com>
@@ -645,6 +656,21 @@ export class EventService extends BaseService {
 		}
 		return minitask;
   }
+
+	async getMiniTask(evi: string): Promise<MiniTaskData> {
+			this.assertEmpty(evi); // id不能为空
+			let evdb: EvTbl = new EvTbl();
+			evdb.evi = evi;
+			evdb = await this.sqlExce.getOneByParam<EvTbl>(evdb);
+  		if (evdb && evdb.evi) {
+				let ev: MiniTaskData = {} as MiniTaskData;
+				Object.assign(ev, evdb);
+				return ev;
+			} else {
+				return null;
+			}
+	}
+
 
   updateEventPlan() {}
   updateEventRemind() {}
@@ -694,6 +720,20 @@ export class EventService extends BaseService {
 		}
 		return ;
   }
+  
+  /**
+   * 根据evi获取复制的任务
+   */
+  async getTaskNext(evi: string): Promise <TaskData> {
+  	this.assertEmpty(evi);
+  	let evdb: EvTbl = new EvTbl();
+		evdb.rtevi = evi;
+		evdb = await this.sqlExce.getOneByParam<EvTbl>(evdb);
+		let tx: TaskData = {} as TaskData;
+		Object.assign(tx, evdb);
+		return tx;
+  }
+  
 
   sendEvent() {}
   receivedEvent() {}
@@ -708,7 +748,7 @@ export class EventService extends BaseService {
 	 */
   async fetchPagedTasks(day: string = moment().format('YYYY/MM/DD'),evi: string): Promise<Array<TaskData>>{
   	this.assertEmpty(day); //验证日期是否为空
-  	let sqlparam: string =`select * from gtd_ev  ev left join gtd_t  td on ev.evi = td.evi where 1=1 and ev.type='${anyenum.EventType.Task}' and  ev.evd = '${day}'  ${(evi)? ('and ev.evi>'+evi):''} limit 10`;
+  	let sqlparam: string =`select ev.*,td.cs,td.isrt,td.cd,td.fd from gtd_ev  ev left join gtd_t  td on ev.evi = td.evi where 1=1 and ev.type='${anyenum.EventType.Task}' and  ev.evd = '${day}'  ${(evi)? ('and ev.evi>'+evi):''} limit 10`;
   	let data: Array<TaskData> = new Array<TaskData>();
   	data = await this.sqlExce.getExtList<TaskData>(sqlparam);
   	return data;
@@ -720,7 +760,7 @@ export class EventService extends BaseService {
 	 */
   async fetchPagedCompletedTasks(day: string = moment().format('YYYY/MM/DD'),evi: string): Promise<Array<TaskData>> {
   	this.assertEmpty(day); //验证日期是否为空
-  	let sqlparam: string =`select * from gtd_ev ev left join gtd_t  td on ev.evi = td.evi and td.cs='${anyenum.IsSuccess.success}' where 1=1 and ev.type='${anyenum.EventType.Task}' and  ev.evd = '${day}'  ${(evi)? ('and ev.evi>'+evi):''} limit 10`;
+  	let sqlparam: string =`select ev.*,td.cs,td.isrt,td.cd,td.fd from gtd_ev ev left join gtd_t  td on ev.evi = td.evi and td.cs='${anyenum.IsSuccess.success}' where 1=1 and ev.type='${anyenum.EventType.Task}' and  ev.evd = '${day}'  ${(evi)? ('and ev.evi>'+evi):''} limit 10`;
   	let data: Array<TaskData> = new Array<TaskData>();
   	data = await this.sqlExce.getExtList<TaskData>(sqlparam);
   	return data;
