@@ -30,9 +30,9 @@ describe('BaseService test suite', () => {
     }).toThrow();
   });
 
-  it(`Case 2 - 2 assertNotEmpty("")`, () => {
+  it(`Case 2 - 2 assertNotEmpty("has string")`, () => {
     expect(function() {
-      let val: string = "";
+      let val: string = "has string";
       baseService.assertNotEmpty(val);
     }).toThrow();
   });
