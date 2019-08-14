@@ -277,6 +277,13 @@ describe('CalendarService test suite', () => {
 
     await eventService.saveTask(task);
 
+    let task2: TaskData = {} as TaskData;
+
+    task2.evd = day;
+    task2.evn = "结婚纪念日前给太太买礼物2";
+
+    await eventService.saveTask(task2);
+
     // 备忘
     let memo: MemoData = {} as MemoData;
 
