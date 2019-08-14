@@ -260,7 +260,7 @@ describe('CalendarService test suite', () => {
   });
 
   it(`Case 4 - 7 fetchDayActivitiesSummary 取得指定日期概要 - 存在1个日程、1个任务(不重复)和1个备忘`, async () => {
-    let day: string = moment().format("YYYY/MM/DD");
+    let day: string = moment().add(1, 'day').format("YYYY/MM/DD");
     // 日程
     let agenda: AgendaData = {} as AgendaData;
 
