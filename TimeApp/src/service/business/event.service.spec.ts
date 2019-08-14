@@ -99,7 +99,7 @@ describe('EventService test suite', () => {
   it('Case 1 - 1 service should be created', () => {
     expect(eventService).toBeTruthy();
   });
-  
+
   it('Case 2 - 1 saveTask 保存任务 - 保存1个任务，查询这个任务，查询任务主题', async() => {
   	// 创建任务
     let tx: TaskData = {} as TaskData;
@@ -109,11 +109,11 @@ describe('EventService test suite', () => {
     expect(tx.evi).toBeDefined();
     //获取插入的数据，校验插入是否一致
     let txx: TaskData = {} as TaskData;
-    txx = eventService.getTask(tx.evi);
+    txx = await eventService.getTask(tx.evi);
     expect(txx).toBeDefined();
     expect(txx.evn).toBe(tx.evn);
   });
-  
+
   it('Case 2 - 2 saveTask 更新任务 - 创建1个任务，更新这个任务，查询任务主题', async() => {
   	// 创建任务
     let tx: TaskData = {} as TaskData;
@@ -127,11 +127,11 @@ describe('EventService test suite', () => {
     await eventService.saveTask(tx);
     //获取插入的数据，校验插入是否一致
     let txx: TaskData = {} as TaskData;
-    txx = eventService.getTask(tx.evi);
+    txx = await eventService.getTask(tx.evi);
     expect(txx).toBeDefined();
     expect(txx.evn).toBe(evn);
   });
-  
+
   it('Case 3 - 1 saveMiniTask 创建小任务 - 创建一个小任务', async() => {
   	// 创建任务
     let tx: MiniTaskData = {} as MiniTaskData;
@@ -141,13 +141,13 @@ describe('EventService test suite', () => {
     expect(tx.evi).toBeDefined();
     //获取插入的数据，校验插入是否一致
     let txx: MiniTaskData = {} as MiniTaskData;
-    txx = eventService.getMiniTask(tx.evi);
+    txx = await eventService.getMiniTask(tx.evi);
     expect(txx).toBeDefined();
     expect(txx.evn).toBe(tx.evn);
   });
-  
+
    it('Case 3 - 2 saveMiniTask 更新小任务 - 创建一个小任务，更新小任务', async() => {
-   	
+
   	let tx: MiniTaskData = {} as MiniTaskData;
     tx.evn ="shopping,今天穿的是花裤衩";
     tx = await eventService.saveMiniTask(tx);
@@ -159,13 +159,13 @@ describe('EventService test suite', () => {
     await eventService.saveMiniTask(tx);
     //获取插入的数据，校验插入是否一致
     let txx: MiniTaskData = {} as MiniTaskData;
-    txx = eventService.getMiniTask(tx.evi);
+    txx = await eventService.getMiniTask(tx.evi);
     expect(txx).toBeDefined();
     expect(txx.evn).toBe(evn);
   });
-  
+
   it('Case 3 - 1 finishTask 完成任务 - 创建一个任务，完成这个任务',async() => {
-  	
+
   	let tx: TaskData = {} as TaskData;
     tx.evn ="shopping,今天穿的是花裤衩";
     tx = await eventService.saveTask(tx);
@@ -175,9 +175,9 @@ describe('EventService test suite', () => {
     expect(isrt).toBeDefined();
     expect(isrt).toBe(IsCreate.isYes);
   })
-  
+
   it('Case 4 - 1 finishTaskNext 自动创建任务 - 创建任务，自动复制这个任务', async() => {
-  	
+
   	let tx: TaskData = {} as TaskData;
     tx.evn ="shopping,今天穿的是花裤衩";
     tx.isrt = IsCreate.isYes;
@@ -187,38 +187,38 @@ describe('EventService test suite', () => {
     await eventService.finishTaskNext(tx.evi);
     //验证是否已获取数据
     let txx: TaskData = {} as TaskData;
-    txx = eventService.getTaskNext(tx.evi);
+    txx = await eventService.getTaskNext(tx.evi);
     expect(txx).toBeDefined();
     expect(txx.evn).toBe(tx.evn);
   })
-  
+
 	it('Case 5 - 1 fetchPagedTasks 查询任务 - 查询全部2019/08/04这一天的任务', async() => {
-		
+
 		let day: string = "2019/08/14";
 		let data: Array<TaskData> = new Array<TaskData>();
 		data = await eventService.fetchPagedTasks(day,"");
 		expect(data).toBeDefined();
 		expect(data.length).toBeGreaterThan(0);
   })
-	
+
 	it('Case 6 - 1 fetchPagedCompletedTasks 查询完成的任务 - 查询2019/08/14这一天完成的任务', async() => {
-		
+
 		let day: string = "2019/08/14";
 		let data: Array<TaskData> = new Array<TaskData>();
 		data = await eventService.fetchPagedCompletedTasks(day,"");
 		expect(data).toBeDefined();
 		expect(data.length).toBeGreaterThan(0);
   })
-	
+
 	it('Case 7 - 1 fetchPagedUncompletedTasks 查询未完成的任务 - 查询2019/08/14这一天未完成的任务', async() => {
-		
+
 		let day: string = "2019/08/14";
 		let data: Array<TaskData> = new Array<TaskData>();
 		data = await eventService.fetchPagedUncompletedTasks(day,"");
 		expect(data).toBeDefined();
 		expect(data.length).toBeGreaterThan(0);
   })
-  
+
 
   afterAll(() => {
     TestBed.resetTestingModule();
