@@ -30,15 +30,27 @@ export class EventService extends BaseService {
    * @returns {Promise<AgendaData>}
    */
   async saveAgenda(agdata : AgendaData): Promise<AgendaData> {
-    console.log("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
-    this.assertEmpty(agdata.evn);
-    this.assertEmpty(agdata.sd);
 
-    if (agdata.evi !=null && agdata.evi != "") {
-       await this.updateDetail(agdata);
-      return null;
-    }else{
-      console.log("ccccccccccccccccccccccccccccccc");
+    // 入参不能为空
+    this.assertEmpty(agdata);
+    this.assertEmpty(agdata.sd);    // 日程开始日期不能为空
+    this.assertEmpty(agdata.evn);   // 日程标题不能为空
+
+    // 新建日程
+    if (!agdata.evi || agdata.evi == "") {
+      if (agdata.rtjson || agdata.rt || agdata.rts) {
+        this.assertEmpty(agdata.rtjson);  // 新建重复日程不能为空
+      }
+
+      if (agdata.txjson || agdata.tx || agdata.txs) {
+        this.assertEmpty(agdata.txjson);  // 新建日程提醒不能为空
+      }
+    }
+
+    if (agdata.evi != null && agdata.evi != "") {
+      await this.updateDetail(agdata);
+      return agdata;
+    } else {
 
       //设置页面参数初始化
       this.initAgdParam(agdata);
