@@ -492,7 +492,7 @@ export class CalendarService extends BaseService {
                               count(gev.evi) eventscount,
                               sum(CASE gev.type WHEN '${EventType.Agenda}' THEN 1 ELSE 0 END) agendascount,
                               sum(CASE gev.type WHEN '${EventType.Task}' THEN 1 ELSE 0 END) taskscount,
-                              count(gmo.moi) memoscount,
+                              sum(CASE gmo.moi WHEN NULL THEN 0 ELSE 1 END) memoscount,
                               sum(CASE IFNULL(gev.rtevi, '') WHEN '' THEN 0 ELSE 1 END) repeateventscount,
                               0 bookedtimesummary
                       from (${daysql}) gday
@@ -553,7 +553,7 @@ export class CalendarService extends BaseService {
                               count(gev.evi) eventscount,
                               sum(CASE gev.type WHEN '${EventType.Agenda}' THEN 1 ELSE 0 END) agendascount,
                               sum(CASE gev.type WHEN '${EventType.Task}' THEN 1 ELSE 0 END) taskscount,
-                              count(gmo.moi) memoscount,
+                              sum(CASE gmo.moi WHEN NULL THEN 0 ELSE 1 END) memoscount,
                               sum(CASE IFNULL(gev.rtevi, '') WHEN '' THEN 0 ELSE 1 END) repeateventscount,
                               0 bookedtimesummary
                       from (select '${day}' sd) gday
