@@ -342,7 +342,12 @@ export class EventService extends BaseService {
       ev.evi = this.util.getUuid();
       if ( cnt == 1 ){
         ret.rtevi = ev.evi;
+        //非重复日程及重复日程的第一条的rtevi（父日程id）字段设为空
+        ev.rtevi = "";
+      }else{
+        ev.rtevi = ret.rtevi;
       }
+
       ev.evn = agdata.evn;
       ev.ui = agdata.ui;
       ev.mi = agdata.mi;
@@ -354,7 +359,7 @@ export class EventService extends BaseService {
         break;
       }
 
-      ev.rtevi = ret.rtevi;
+
       ev.ji = agdata.ji;
       ev.bz = agdata.bz;
       ev.type = anyenum.EventType.Agenda;
