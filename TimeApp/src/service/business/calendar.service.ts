@@ -489,10 +489,10 @@ export class CalendarService extends BaseService {
     let sql: string = `select gday.sd day,
                               sum(CASE gjt.jtt WHEN '${PlanItemType.Holiday}' THEN 1 ELSE 0 END) calendaritemscount,
                               sum(CASE gjt.jtt WHEN '${PlanItemType.Activity}' THEN 1 ELSE 0 END) activityitemscount,
-                              sum(CASE gev.evi WHEN NULL THEN 0 ELSE 1 END) eventscount,
+                              sum(CASE IFNULL(gev.evi, '') WHEN '' THEN 0 ELSE 1 END) eventscount,
                               sum(CASE gev.type WHEN '${EventType.Agenda}' THEN 1 ELSE 0 END) agendascount,
                               sum(CASE gev.type WHEN '${EventType.Task}' THEN 1 ELSE 0 END) taskscount,
-                              sum(CASE gmo.moi WHEN NULL THEN 0 ELSE 1 END) memoscount,
+                              sum(CASE IFNULL(gmo.moi, '') WHEN '' THEN 0 ELSE 1 END) memoscount,
                               sum(CASE IFNULL(gev.rtevi, '') WHEN '' THEN 0 ELSE 1 END) repeateventscount,
                               0 bookedtimesummary
                       from (${daysql}) gday
@@ -550,10 +550,10 @@ export class CalendarService extends BaseService {
     let sql: string = `select gday.sd day,
                               sum(CASE gjt.jtt WHEN '${PlanItemType.Holiday}' THEN 1 ELSE 0 END) calendaritemscount,
                               sum(CASE gjt.jtt WHEN '${PlanItemType.Activity}' THEN 1 ELSE 0 END) activityitemscount,
-                              sum(CASE gev.evi WHEN NULL THEN 0 ELSE 1 END) eventscount,
+                              sum(CASE IFNULL(gev.evi, '') WHEN '' THEN 0 ELSE 1 END) eventscount,
                               sum(CASE gev.type WHEN '${EventType.Agenda}' THEN 1 ELSE 0 END) agendascount,
                               sum(CASE gev.type WHEN '${EventType.Task}' THEN 1 ELSE 0 END) taskscount,
-                              sum(CASE gmo.moi WHEN NULL THEN 0 ELSE 1 END) memoscount,
+                              sum(CASE IFNULL(gmo.moi, '') WHEN '' THEN 0 ELSE 1 END) memoscount,
                               sum(CASE IFNULL(gev.rtevi, '') WHEN '' THEN 0 ELSE 1 END) repeateventscount,
                               0 bookedtimesummary
                       from (select '${day}' sd) gday
