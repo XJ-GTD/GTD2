@@ -159,7 +159,7 @@ describe('MemoService test suite', () => {
     //更新完成后，获取原有数据
     let gmom: MemoData = {} as MemoData;
     gmom = await memoService.getMemo(mom.moi);
-    expect(gmom).not.toBeDefined();
+    expect(gmom).toBeNull();
   });
 
   it('Case 5 - 1   service should be backup', async () => {
