@@ -287,6 +287,7 @@ describe('CalendarService test suite', () => {
     let dayActivities: DayActivityData = await calendarService.fetchDayActivities(day);
     console.log(dayActivities.memos);
     let daySummary: DayActivitySummaryData = await calendarService.fetchDayActivitiesSummary(day);
+    console.log(daySummary);
 
     expect(daySummary).toBeDefined();
     expect(daySummary.day).toBe(day);
