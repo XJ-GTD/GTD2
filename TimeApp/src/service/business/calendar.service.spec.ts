@@ -356,7 +356,187 @@ describe('CalendarService test suite', () => {
     expect(daySummary.bookedtimesummary).toBe(0);
   });
 
-  it(`Case 4 - 4 fetchDayActivitiesSummary 取得指定日期概要 - 存在1个日程(不重复)`, async () => {
+  it(`Case 4 - 4 - 5 fetchDayActivitiesSummary 取得指定日期概要 - 存在1个日程(每年重复)`, async () => {
+    let day: string = moment().format("YYYY/MM/DD");
+    // 日程
+    let agenda: AgendaData = {} as AgendaData;
+
+    // 每年重复, 永远
+    let rt: RtJson = new RtJson();
+    rt.cycletype = CycleType.year;
+    rt.over.type = OverType.fornever;
+
+    agenda.sd = day;
+    agenda.evn = "结婚纪念日买礼物给太太";
+    agenda.rtjson = rt;
+
+    await eventService.saveAgenda(agenda);
+
+    let daySummary: DayActivitySummaryData = await calendarService.fetchDayActivitiesSummary(day);
+
+    expect(daySummary).toBeDefined();
+    expect(daySummary.day).toBe(day);
+    expect(daySummary.calendaritemscount).toBe(0);
+    expect(daySummary.activityitemscount).toBe(0);
+    expect(daySummary.eventscount).toBe(1);
+    expect(daySummary.agendascount).toBe(1);
+    expect(daySummary.taskscount).toBe(0);
+    expect(daySummary.memoscount).toBe(0);
+    expect(daySummary.repeateventscount).toBe(0);
+    expect(daySummary.bookedtimesummary).toBe(0);
+
+    // 确认重复日期
+    let nextday: string = moment().add(1, "years").format("YYYY/MM/DD");
+    let nextdaySummary: DayActivitySummaryData = await calendarService.fetchDayActivitiesSummary(nextday);
+
+    expect(nextdaySummary).toBeDefined();
+    expect(nextdaySummary.day).toBe(day);
+    expect(nextdaySummary.calendaritemscount).toBe(0);
+    expect(nextdaySummary.activityitemscount).toBe(0);
+    expect(nextdaySummary.eventscount).toBe(1);
+    expect(nextdaySummary.agendascount).toBe(1);
+    expect(nextdaySummary.taskscount).toBe(0);
+    expect(nextdaySummary.memoscount).toBe(0);
+    expect(nextdaySummary.repeateventscount).toBe(1);
+    expect(nextdaySummary.bookedtimesummary).toBe(0);
+  });
+
+  it(`Case 4 - 4 - 4 fetchDayActivitiesSummary 取得指定日期概要 - 存在1个日程(每月重复)`, async () => {
+    let day: string = moment().format("YYYY/MM/DD");
+    // 日程
+    let agenda: AgendaData = {} as AgendaData;
+
+    // 每月重复, 永远
+    let rt: RtJson = new RtJson();
+    rt.cycletype = CycleType.month;
+    rt.over.type = OverType.fornever;
+
+    agenda.sd = day;
+    agenda.evn = "结婚纪念日买礼物给太太";
+    agenda.rtjson = rt;
+
+    await eventService.saveAgenda(agenda);
+
+    let daySummary: DayActivitySummaryData = await calendarService.fetchDayActivitiesSummary(day);
+
+    expect(daySummary).toBeDefined();
+    expect(daySummary.day).toBe(day);
+    expect(daySummary.calendaritemscount).toBe(0);
+    expect(daySummary.activityitemscount).toBe(0);
+    expect(daySummary.eventscount).toBe(1);
+    expect(daySummary.agendascount).toBe(1);
+    expect(daySummary.taskscount).toBe(0);
+    expect(daySummary.memoscount).toBe(0);
+    expect(daySummary.repeateventscount).toBe(0);
+    expect(daySummary.bookedtimesummary).toBe(0);
+
+    // 确认重复日期
+    let nextday: string = moment().add(1, "months").format("YYYY/MM/DD");
+    let nextdaySummary: DayActivitySummaryData = await calendarService.fetchDayActivitiesSummary(nextday);
+
+    expect(nextdaySummary).toBeDefined();
+    expect(nextdaySummary.day).toBe(day);
+    expect(nextdaySummary.calendaritemscount).toBe(0);
+    expect(nextdaySummary.activityitemscount).toBe(0);
+    expect(nextdaySummary.eventscount).toBe(1);
+    expect(nextdaySummary.agendascount).toBe(1);
+    expect(nextdaySummary.taskscount).toBe(0);
+    expect(nextdaySummary.memoscount).toBe(0);
+    expect(nextdaySummary.repeateventscount).toBe(1);
+    expect(nextdaySummary.bookedtimesummary).toBe(0);
+  });
+
+  it(`Case 4 - 4 - 3 fetchDayActivitiesSummary 取得指定日期概要 - 存在1个日程(每周重复)`, async () => {
+    let day: string = moment().format("YYYY/MM/DD");
+    // 日程
+    let agenda: AgendaData = {} as AgendaData;
+
+    // 每周重复, 永远
+    let rt: RtJson = new RtJson();
+    rt.cycletype = CycleType.week;
+    rt.over.type = OverType.fornever;
+
+    agenda.sd = day;
+    agenda.evn = "结婚纪念日买礼物给太太";
+    agenda.rtjson = rt;
+
+    await eventService.saveAgenda(agenda);
+
+    let daySummary: DayActivitySummaryData = await calendarService.fetchDayActivitiesSummary(day);
+
+    expect(daySummary).toBeDefined();
+    expect(daySummary.day).toBe(day);
+    expect(daySummary.calendaritemscount).toBe(0);
+    expect(daySummary.activityitemscount).toBe(0);
+    expect(daySummary.eventscount).toBe(1);
+    expect(daySummary.agendascount).toBe(1);
+    expect(daySummary.taskscount).toBe(0);
+    expect(daySummary.memoscount).toBe(0);
+    expect(daySummary.repeateventscount).toBe(0);
+    expect(daySummary.bookedtimesummary).toBe(0);
+
+    // 确认重复日期
+    let nextday: string = moment().add(1, "weeks").format("YYYY/MM/DD");
+    let nextdaySummary: DayActivitySummaryData = await calendarService.fetchDayActivitiesSummary(nextday);
+
+    expect(nextdaySummary).toBeDefined();
+    expect(nextdaySummary.day).toBe(day);
+    expect(nextdaySummary.calendaritemscount).toBe(0);
+    expect(nextdaySummary.activityitemscount).toBe(0);
+    expect(nextdaySummary.eventscount).toBe(1);
+    expect(nextdaySummary.agendascount).toBe(1);
+    expect(nextdaySummary.taskscount).toBe(0);
+    expect(nextdaySummary.memoscount).toBe(0);
+    expect(nextdaySummary.repeateventscount).toBe(1);
+    expect(nextdaySummary.bookedtimesummary).toBe(0);
+  });
+
+  it(`Case 4 - 4 - 2 fetchDayActivitiesSummary 取得指定日期概要 - 存在1个日程(每日重复)`, async () => {
+    let day: string = moment().format("YYYY/MM/DD");
+    // 日程
+    let agenda: AgendaData = {} as AgendaData;
+
+    // 每日重复, 永远
+    let rt: RtJson = new RtJson();
+    rt.cycletype = CycleType.day;
+    rt.over.type = OverType.fornever;
+
+    agenda.sd = day;
+    agenda.evn = "结婚纪念日买礼物给太太";
+    agenda.rtjson = rt;
+
+    await eventService.saveAgenda(agenda);
+
+    let daySummary: DayActivitySummaryData = await calendarService.fetchDayActivitiesSummary(day);
+
+    expect(daySummary).toBeDefined();
+    expect(daySummary.day).toBe(day);
+    expect(daySummary.calendaritemscount).toBe(0);
+    expect(daySummary.activityitemscount).toBe(0);
+    expect(daySummary.eventscount).toBe(1);
+    expect(daySummary.agendascount).toBe(1);
+    expect(daySummary.taskscount).toBe(0);
+    expect(daySummary.memoscount).toBe(0);
+    expect(daySummary.repeateventscount).toBe(0);
+    expect(daySummary.bookedtimesummary).toBe(0);
+
+    // 确认重复日期
+    let nextday: string = moment().add(1, "days").format("YYYY/MM/DD");
+    let nextdaySummary: DayActivitySummaryData = await calendarService.fetchDayActivitiesSummary(nextday);
+
+    expect(nextdaySummary).toBeDefined();
+    expect(nextdaySummary.day).toBe(day);
+    expect(nextdaySummary.calendaritemscount).toBe(0);
+    expect(nextdaySummary.activityitemscount).toBe(0);
+    expect(nextdaySummary.eventscount).toBe(1);
+    expect(nextdaySummary.agendascount).toBe(1);
+    expect(nextdaySummary.taskscount).toBe(0);
+    expect(nextdaySummary.memoscount).toBe(0);
+    expect(nextdaySummary.repeateventscount).toBe(1);
+    expect(nextdaySummary.bookedtimesummary).toBe(0);
+  });
+
+  it(`Case 4 - 4 - 1 fetchDayActivitiesSummary 取得指定日期概要 - 存在1个日程(不重复)`, async () => {
     let day: string = moment().format("YYYY/MM/DD");
     // 日程
     let agenda: AgendaData = {} as AgendaData;
