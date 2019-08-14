@@ -10,6 +10,7 @@ import {SQLite} from "@ionic-native/sqlite";
 import {SQLitePorter} from "@ionic-native/sqlite-porter";
 import {StatusBar} from '@ionic-native/status-bar';
 import {SplashScreen} from '@ionic-native/splash-screen';
+import * as moment from "moment";
 import {
   IonicModule,
   Platform
@@ -98,7 +99,7 @@ describe('MemoService test suite', () => {
     expect(memoService).toBeTruthy();
   });
 
-   it('Case 1 - 2 save memo service should be created', async () => {
+   it('Case 2 - 1  service should be saveMemo', async () => {
    	let mom: MemoData = {} as MemoData;
    	mom.mon='本周三写完测试用例';
    	mom = await memoService.saveMemo(mom);
@@ -110,6 +111,76 @@ describe('MemoService test suite', () => {
     expect(gmom).toBeDefined();
     expect(gmom.mon).toBe(mom.mon);
   });
+
+  it('Case 2 - 2  service should be saveMemo', async () => {
+   	let mom: MemoData = {} as MemoData;
+   	mom.mon='本周三写完测试用例';
+   	mom = await memoService.saveMemo(mom);
+   	expect(mom).toBeDefined();
+    expect(mom.moi).toBeDefined();
+    let mon: string = "老张，你又长膘了";
+    mom.mon=mon;
+    await memoService.saveMemo(mom);
+    //取出返回值
+    let gmom: MemoData = {} as MemoData;
+    gmom = await memoService.getMemo(mom.moi);
+    expect(gmom).toBeDefined();
+    expect(gmom.mon).toBe(mon);
+  });
+
+  it('Case 3 - 1   service should be updateMemoPlan', async () => {
+  	//插入获取ID
+   	let mom: MemoData = {} as MemoData;
+   	mom.mon='我老大，叫老席，你动我代码试试';
+   	mom = await memoService.saveMemo(mom);
+   	expect(mom).toBeDefined();
+    expect(mom.moi).toBeDefined();
+    //根据ID测试更新方法
+    let ji: string = "abc123";
+    await memoService.updateMemoPlan(ji,mom.moi);
+    //更新完成后，获取原有数据
+    let gmom: MemoData = {} as MemoData;
+    gmom = await memoService.getMemo(mom.moi);
+    expect(gmom).toBeDefined();
+   	expect(gmom.ji).toBe(ji);
+  });
+
+
+  it('Case 4 - 1   service should be removeMemo', async () => {
+  	//插入获取ID
+   	let mom: MemoData = {} as MemoData;
+   	mom.mon='我老大，叫老席，你动我代码试试';
+   	mom = await memoService.saveMemo(mom);
+   	expect(mom).toBeDefined();
+    expect(mom.moi).toBeDefined();
+    //根据ID测试更新方法
+    let ji: string = "abc123";
+    await memoService.removeMemo(mom.moi);
+    //更新完成后，获取原有数据
+    let gmom: MemoData = {} as MemoData;
+    gmom = await memoService.getMemo(mom.moi);
+    expect(gmom).toBeNull();
+  });
+
+  it('Case 5 - 1   service should be backup', async () => {
+
+  		let mom: MemoData = {} as MemoData;
+	   	mom.mon='我老大，叫老席，你动我代码试试';
+	   	mom = await memoService.saveMemo(mom);
+	   	expect(mom).toBeDefined();
+	    expect(mom.moi).toBeDefined();
+  	  let bts: Number = moment().unix();
+  	  //先备份
+  		memoService.backup(bts);
+  		//后还原
+  		memoService.recovery(null,bts);
+  		//验证还原后的数据是否和原有数据匹配
+  		let gmom: MemoData = {} as MemoData;
+	    gmom = await memoService.getMemo(mom.moi);
+	    expect(gmom).toBeDefined();
+	    expect(gmom.mon).toBe(mom.mon);
+  });
+
 
   afterAll(() => {
     TestBed.resetTestingModule();

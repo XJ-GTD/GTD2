@@ -486,20 +486,32 @@ export class CalendarService extends BaseService {
     console.log(arrDays.join(","));
     let daysql: string = `select '${arrDays.join(`' sd union all select '`)}' sd`;
 
-    let sql: string = `select gday.sd day,
-                              sum(CASE gjt.jtt WHEN '${PlanItemType.Holiday}' THEN 1 ELSE 0 END) calendaritemscount,
-                              sum(CASE gjt.jtt WHEN '${PlanItemType.Activity}' THEN 1 ELSE 0 END) activityitemscount,
-                              sum(CASE IFNULL(gev.evi, '') WHEN '' THEN 0 ELSE 1 END) eventscount,
-                              sum(CASE gev.type WHEN '${EventType.Agenda}' THEN 1 ELSE 0 END) agendascount,
-                              sum(CASE gev.type WHEN '${EventType.Task}' THEN 1 ELSE 0 END) taskscount,
+    let sql: string = `select gdayev.day day,
+                              max(gdayev.calendaritemscount) calendaritemscount,
+                              max(gdayev.activityitemscount) activityitemscount,
+                              max(gdayev.eventscount) eventscount,
+                              max(gdayev.agendascount) agendascount,
+                              max(gdayev.taskscount) taskscount,
+                              max(gdayev.repeateventscount) repeateventscount,
                               sum(CASE IFNULL(gmo.moi, '') WHEN '' THEN 0 ELSE 1 END) memoscount,
-                              sum(CASE IFNULL(gev.rtevi, '') WHEN '' THEN 0 ELSE 1 END) repeateventscount,
                               0 bookedtimesummary
-                      from (${daysql}) gday
-                          left join gtd_jta gjt on gday.sd = gjt.sd
-                          left join gtd_ev gev on gday.sd = gev.evd
-                          left join gtd_mom gmo on gday.sd = gmo.sd
-                      group by gday.sd`;
+                      from (select gdayjta.day day,
+                                  max(gdayjta.calendaritemscount) calendaritemscount,
+                                  max(gdayjta.activityitemscount) activityitemscount,
+                                  sum(CASE IFNULL(gev.evi, '') WHEN '' THEN 0 ELSE 1 END) eventscount,
+                                  sum(CASE gev.type WHEN '${EventType.Agenda}' THEN 1 ELSE 0 END) agendascount,
+                                  sum(CASE gev.type WHEN '${EventType.Task}' THEN 1 ELSE 0 END) taskscount,
+                                  sum(CASE IFNULL(gev.rtevi, '') WHEN '' THEN 0 ELSE 1 END) repeateventscount
+                            from (select gday.sd day,
+                                    sum(CASE gjt.jtt WHEN '${PlanItemType.Holiday}' THEN 1 ELSE 0 END) calendaritemscount,
+                                    sum(CASE gjt.jtt WHEN '${PlanItemType.Activity}' THEN 1 ELSE 0 END) activityitemscount
+                                  from (${daysql}) gday
+                                      left join gtd_jta gjt on gday.sd = gjt.sd
+                                  group by gday.sd) gdayjta
+                              left join gtd_ev gev on gdayjta.day = gev.evd
+                            group by gdayjta.day) gdayev
+                      left join gtd_mom gmo on gdayev.day = gmo.sd
+                      group by gdayev.day`;
 
     let monthSummary: MonthActivitySummaryData = new MonthActivitySummaryData();
     monthSummary.month = month;
@@ -547,20 +559,32 @@ export class CalendarService extends BaseService {
 
     this.assertEmpty(day);    // 入参不能为空
 
-    let sql: string = `select gday.sd day,
-                              sum(CASE gjt.jtt WHEN '${PlanItemType.Holiday}' THEN 1 ELSE 0 END) calendaritemscount,
-                              sum(CASE gjt.jtt WHEN '${PlanItemType.Activity}' THEN 1 ELSE 0 END) activityitemscount,
-                              sum(CASE IFNULL(gev.evi, '') WHEN '' THEN 0 ELSE 1 END) eventscount,
-                              sum(CASE gev.type WHEN '${EventType.Agenda}' THEN 1 ELSE 0 END) agendascount,
-                              sum(CASE gev.type WHEN '${EventType.Task}' THEN 1 ELSE 0 END) taskscount,
+    let sql: string = `select gdayev.day day,
+                              max(gdayev.calendaritemscount) calendaritemscount,
+                              max(gdayev.activityitemscount) activityitemscount,
+                              max(gdayev.eventscount) eventscount,
+                              max(gdayev.agendascount) agendascount,
+                              max(gdayev.taskscount) taskscount,
+                              max(gdayev.repeateventscount) repeateventscount,
                               sum(CASE IFNULL(gmo.moi, '') WHEN '' THEN 0 ELSE 1 END) memoscount,
-                              sum(CASE IFNULL(gev.rtevi, '') WHEN '' THEN 0 ELSE 1 END) repeateventscount,
                               0 bookedtimesummary
-                      from (select '${day}' sd) gday
-                          left join gtd_jta gjt on gday.sd = gjt.sd
-                          left join gtd_ev gev on gday.sd = gev.evd
-                          left join gtd_mom gmo on gday.sd = gmo.sd
-                      group by gday.sd`;
+                      from (select gdayjta.day day,
+                                  max(gdayjta.calendaritemscount) calendaritemscount,
+                                  max(gdayjta.activityitemscount) activityitemscount,
+                                  sum(CASE IFNULL(gev.evi, '') WHEN '' THEN 0 ELSE 1 END) eventscount,
+                                  sum(CASE gev.type WHEN '${EventType.Agenda}' THEN 1 ELSE 0 END) agendascount,
+                                  sum(CASE gev.type WHEN '${EventType.Task}' THEN 1 ELSE 0 END) taskscount,
+                                  sum(CASE IFNULL(gev.rtevi, '') WHEN '' THEN 0 ELSE 1 END) repeateventscount
+                            from (select gday.sd day,
+                                    sum(CASE gjt.jtt WHEN '${PlanItemType.Holiday}' THEN 1 ELSE 0 END) calendaritemscount,
+                                    sum(CASE gjt.jtt WHEN '${PlanItemType.Activity}' THEN 1 ELSE 0 END) activityitemscount
+                                  from (select '${day}' sd) gday
+                                      left join gtd_jta gjt on gday.sd = gjt.sd
+                                  group by gday.sd) gdayjta
+                              left join gtd_ev gev on gdayjta.day = gev.evd
+                            group by gdayjta.day) gdayev
+                      left join gtd_mom gmo on gdayev.day = gmo.sd
+                      group by gdayev.day`;
 
     let daySummary: DayActivitySummaryData = await this.sqlExce.getExtOne<DayActivitySummaryData>(sql);
 
