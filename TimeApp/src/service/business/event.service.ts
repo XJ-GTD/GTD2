@@ -689,7 +689,7 @@ export class EventService extends BaseService {
 	async getTask(evi: string): Promise<TaskData> {
 			this.assertEmpty(evi); // id不能为空
 			let sqlparam: string =`select ev.*,td.cs,td.isrt,td.cd,td.fd from gtd_ev  ev left join gtd_t  td on ev.evi = td.evi where ev.evi =${evi} `;
-  		let data: Array<TaskData> = new Array<TaskData>();
+  		let data: TaskData  = {} as TaskData;
   		data = await this.sqlExce.getExtList<TaskData>(sqlparam);
   		return data;
 	}
