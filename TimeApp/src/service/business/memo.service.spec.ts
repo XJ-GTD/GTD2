@@ -10,6 +10,7 @@ import {SQLite} from "@ionic-native/sqlite";
 import {SQLitePorter} from "@ionic-native/sqlite-porter";
 import {StatusBar} from '@ionic-native/status-bar';
 import {SplashScreen} from '@ionic-native/splash-screen';
+import * as moment from "moment";
 import {
   IonicModule,
   Platform
@@ -110,7 +111,7 @@ describe('MemoService test suite', () => {
     expect(gmom).toBeDefined();
     expect(gmom.mon).toBe(mom.mon);
   });
-  
+
   it('Case 2 - 2  service should be saveMemo', async () => {
    	let mom: MemoData = {} as MemoData;
    	mom.mon='本周三写完测试用例';
@@ -126,7 +127,7 @@ describe('MemoService test suite', () => {
     expect(gmom).toBeDefined();
     expect(gmom.mon).toBe(mon);
   });
-  
+
   it('Case 3 - 1   service should be updateMemoPlan', async () => {
   	//插入获取ID
    	let mom: MemoData = {} as MemoData;
@@ -143,8 +144,8 @@ describe('MemoService test suite', () => {
     expect(gmom).toBeDefined();
    	expect(gmom.ji).toBe(ji);
   });
-  
-  
+
+
   it('Case 4 - 1   service should be removeMemo', async () => {
   	//插入获取ID
    	let mom: MemoData = {} as MemoData;
@@ -159,11 +160,11 @@ describe('MemoService test suite', () => {
     let gmom: MemoData = {} as MemoData;
     gmom = await memoService.getMemo(mom.moi);
     expect(gmom).toBeDefined();
-    expect(gmom.length).toBeGreaterThan(0);
+    expect(gmom.mon).not.toBeDefined();
   });
-  
+
   it('Case 5 - 1   service should be backup', async () => {
-  	
+
   		let mom: MemoData = {} as MemoData;
 	   	mom.mon='我老大，叫老席，你动我代码试试';
 	   	mom = await memoService.saveMemo(mom);
@@ -180,7 +181,7 @@ describe('MemoService test suite', () => {
 	    expect(gmom).toBeDefined();
 	    expect(gmom.mon).toBe(mom.mon);
   });
-  
+
 
   afterAll(() => {
     TestBed.resetTestingModule();
