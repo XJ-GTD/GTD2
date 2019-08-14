@@ -14,6 +14,8 @@ export class MomTbl implements ITblParam {
   fj: string;
   tb: string;
   del: string;
+  utt: number;
+  wtt: number;
 
   cTParam():string {
 

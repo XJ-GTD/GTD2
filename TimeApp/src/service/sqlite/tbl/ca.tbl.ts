@@ -13,7 +13,8 @@ export class CaTbl implements ITblParam {
   et: string;
   al: string;
   ct: number;
-
+  utt: number;
+  wtt: number;
 
   cTParam():string {
 

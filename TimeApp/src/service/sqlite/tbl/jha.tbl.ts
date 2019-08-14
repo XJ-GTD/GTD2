@@ -14,6 +14,8 @@ export class JhaTbl implements ITblParam {
   jtd: string;
   tb: string;
   del: string;
+  utt: number;
+  wtt: number;
 
   cTParam():string {
 

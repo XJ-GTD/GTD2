@@ -12,6 +12,7 @@ export class WaTbl implements ITblParam {
   st: string;
   wd: string;
   wt: string;
+  wtt: number;
 
   cTParam():string {
 
