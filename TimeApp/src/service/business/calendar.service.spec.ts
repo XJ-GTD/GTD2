@@ -272,6 +272,7 @@ describe('CalendarService test suite', () => {
     // 任务
     let task: TaskData = {} as TaskData;
 
+    task.evd = day;
     task.evn = "结婚纪念日前给太太买礼物";
 
     await eventService.saveTask(task);
@@ -279,6 +280,7 @@ describe('CalendarService test suite', () => {
     // 备忘
     let memo: MemoData = {} as MemoData;
 
+    memo.sd = day;
     memo.mon = "结婚纪念日买了一块定制巧克力给太太, 太太很高兴";
 
     memo = await memoService.saveMemo(memo);
