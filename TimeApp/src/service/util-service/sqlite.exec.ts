@@ -34,8 +34,10 @@ export class SqliteExec {
 
       if (params && params.length > 0){
         for (let j = 0 ,len = params.length; j < len ; j++ ){
-          if ( params[j] == 'undefined' ){
-            params[j] = null;
+          if (params[j] != "") {
+            if (!params[j] || params[j] == 'undefined') {
+              params[j] = null;
+            }
           }
         }
       }
