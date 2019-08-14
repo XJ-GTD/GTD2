@@ -218,7 +218,7 @@ describe('CalendarService test suite', () => {
     expect(daySummary.agendascount).toBe(1);
     expect(daySummary.taskscount).toBe(1);
     expect(daySummary.memoscount).toBe(0);
-    expect(daySummary.repeateventscount).toBe(1);
+    expect(daySummary.repeateventscount).toBe(0);
     expect(daySummary.bookedtimesummary).toBe(0);
   });
 
@@ -255,7 +255,7 @@ describe('CalendarService test suite', () => {
     expect(daySummary.agendascount).toBe(1);
     expect(daySummary.taskscount).toBe(1);
     expect(daySummary.memoscount).toBe(0);
-    expect(daySummary.repeateventscount).toBe(1);
+    expect(daySummary.repeateventscount).toBe(0);
     expect(daySummary.bookedtimesummary).toBe(0);
   });
 
