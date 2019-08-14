@@ -37,7 +37,7 @@ import { AgdRestful } from "../restful/agdsev";
 import { BacRestful } from "../restful/bacsev";
 
 import { CalendarService, PlanData } from "./calendar.service";
-import { EventService } from "./event.service";
+import { EventService,TaskData,MiniTaskData} from "./event.service";
 import { PlanType,IsCreate } from "../../data.enum";
 
 /**
@@ -100,7 +100,7 @@ describe('EventService test suite', () => {
     expect(eventService).toBeTruthy();
   });
   
-  it('Case 2 - 1 service should be saveTask', () => {
+  it('Case 2 - 1 saveTask 保存任务 - 保存1个任务，查询这个任务，查询任务主题', async() => {
   	// 创建任务
     let tx: TaskData = {} as TaskData;
     tx.evn ="shopping,今天穿的是花裤衩";
@@ -114,7 +114,7 @@ describe('EventService test suite', () => {
     expect(txx.evn).toBe(tx.evn);
   });
   
-  it('Case 2 - 2 service should be saveTask', () => {
+  it('Case 2 - 2 saveTask 更新任务 - 创建1个任务，更新这个任务，查询任务主题', async() => {
   	// 创建任务
     let tx: TaskData = {} as TaskData;
     tx.evn ="shopping,今天穿的是花裤衩";
@@ -132,7 +132,7 @@ describe('EventService test suite', () => {
     expect(txx.evn).toBe(evn);
   });
   
-  it('Case 3 - 1 service should be saveMiniTask', () => {
+  it('Case 3 - 1 saveMiniTask 创建小任务 - 创建一个小任务', async() => {
   	// 创建任务
     let tx: MiniTaskData = {} as MiniTaskData;
     tx.evn ="shopping,今天穿的是花裤衩";
@@ -146,7 +146,7 @@ describe('EventService test suite', () => {
     expect(txx.evn).toBe(tx.evn);
   });
   
-   it('Case 3 - 2 service should be saveMiniTask', () => {
+   it('Case 3 - 2 saveMiniTask 更新小任务 - 创建一个小任务，更新小任务', async() => {
    	
   	let tx: MiniTaskData = {} as MiniTaskData;
     tx.evn ="shopping,今天穿的是花裤衩";
@@ -164,7 +164,7 @@ describe('EventService test suite', () => {
     expect(txx.evn).toBe(evn);
   });
   
-  it('Case 3 - 1 service should be finishTask', () => {
+  it('Case 3 - 1 finishTask 完成任务 - 创建一个任务，完成这个任务',async() => {
   	
   	let tx: TaskData = {} as TaskData;
     tx.evn ="shopping,今天穿的是花裤衩";
@@ -176,10 +176,11 @@ describe('EventService test suite', () => {
     expect(isrt).toBe(IsCreate.isYes);
   })
   
-  it('Case 4 - 1 service should be finishTaskNext', () => {
+  it('Case 4 - 1 finishTaskNext 自动创建任务 - 创建任务，自动复制这个任务', async() => {
   	
   	let tx: TaskData = {} as TaskData;
     tx.evn ="shopping,今天穿的是花裤衩";
+    tx.isrt = IsCreate.isYes;
     tx = await eventService.saveTask(tx);
     expect(tx).toBeDefined();
     expect(tx.evi).toBeDefined();
@@ -191,7 +192,7 @@ describe('EventService test suite', () => {
     expect(txx.evn).toBe(tx.evn);
   })
   
-	it('Case 5 - 1 service should be fetchPagedTasks', () => {
+	it('Case 5 - 1 fetchPagedTasks 查询任务 - 查询全部2019/08/04这一天的任务', async() => {
 		
 		let day: string = "2019/08/14";
 		let data: Array<TaskData> = new Array<TaskData>();
@@ -200,7 +201,7 @@ describe('EventService test suite', () => {
 		expect(data.length).toBeGreaterThan(0);
   })
 	
-	it('Case 6 - 1 service should be fetchPagedCompletedTasks', () => {
+	it('Case 6 - 1 fetchPagedCompletedTasks 查询完成的任务 - 查询2019/08/14这一天完成的任务', async() => {
 		
 		let day: string = "2019/08/14";
 		let data: Array<TaskData> = new Array<TaskData>();
@@ -209,7 +210,7 @@ describe('EventService test suite', () => {
 		expect(data.length).toBeGreaterThan(0);
   })
 	
-	it('Case 7 - 1 service should be fetchPagedUncompletedTasks', () => {
+	it('Case 7 - 1 fetchPagedUncompletedTasks 查询未完成的任务 - 查询2019/08/14这一天未完成的任务', async() => {
 		
 		let day: string = "2019/08/14";
 		let data: Array<TaskData> = new Array<TaskData>();
