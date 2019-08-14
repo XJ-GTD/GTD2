@@ -114,7 +114,7 @@ export class MomTbl implements ITblParam {
        values(?,?,?,?,?,?,?,?,?,?);`;
     params.push(this.moi);
     params.push(this.ji);
-    params.push(moment().format('YYYY/MM/DD'));
+    params.push(this.sd || moment().format('YYYY/MM/DD'));
     params.push(this.mon);
     params.push(this.mk);
     params.push(this.fj);
@@ -133,14 +133,17 @@ export class MomTbl implements ITblParam {
     let params = new Array<any>();
     let sq =`replace into gtd_mom
        (  moi ,ji ,sd,mon ,mk ,fj ,tb,del, ,wtt ,utt)
-       values(?,?,${moment().format('YYYY/MM/DD')},?,?,?,?,?,${moment().unix()},${moment().unix()});`;
+       values(?,?,?,?,?,?,?,?,?,?);`;
     params.push(this.moi);
     params.push(this.ji);
+    params.push(this.sd || moment().format('YYYY/MM/DD'));
     params.push(this.mon);
     params.push(this.mk);
     params.push(this.fj);
     params.push(this.tb);
     params.push(this.del);
+    params.push(moment().unix());
+    params.push(moment().unix());
 
     let ret = new Array<any>();
     ret.push(sq);
