@@ -42,17 +42,25 @@ export enum DelType {
 
 //事件归属
 export enum GsType {
+  //自己
   self = "0",
+  //他人
   him = "1",
+  //系统
   sys = "2",
+  //共享待接受缓存
   waitin = "3",
+  //共享待删除
   waitdel = "4"
 }
 
 //重复结束选项
 export enum OverType {
+  //永不
   fornever = "fornever",
+  //截止次数
   times = "times",
+  //截止时间
   limitdate = "limitdate"
 }
 

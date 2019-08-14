@@ -92,13 +92,13 @@ export class EventService extends BaseService {
   private async updateDetail(agdata: AgendaData) {
     //特殊表操作
     let oldca: CaTbl = new CaTbl();
-    oldca.evi = agdata.rtevi;
+    oldca.evi = agdata.rtevi == "" ? agdata.evi : agdata.rtevi;
     oldca = await this.sqlExce.getOneByParam<CaTbl>(oldca);
 
     //更新日程
     let ca = new CaTbl();
 
-    let chged = this.isAgdChanged(agdata.rtjson,agdata.oldrtjson);
+    let chged = this.isRtChanged(agdata.rtjson,agdata.oldrtjson);
 
     /*if (oldca.sd != agdata.sd || chged) {
       //日期与重复标识变化了，则删除重复子表所有数据，重新插入新数据
@@ -153,17 +153,18 @@ export class EventService extends BaseService {
       this.setAdgPro(agd, c);
       await this.agdRest.save(agd);
     }
-    this.emitService.emitRef(scd.sd);*/
-
+    this.emitService.emitRef(scd.sd);
+  */
   }
 
   /**
-   * 判断重复是否改变
+   * 判断重复设置是否改变
    * @param {RtJson} newRtjson
    * @param {RtJson} oldRtjson
    * @returns {boolean}
    */
-  private isAgdChanged(newRtjson : RtJson ,oldRtjson : RtJson): boolean{
+  private isRtChanged(newRtjson : RtJson ,oldRtjson : RtJson): boolean{
+    //if (newRtjson.)
     return false;
   }
 
@@ -342,7 +343,8 @@ export class EventService extends BaseService {
       ev.evi = this.util.getUuid();
       if ( cnt == 1 ){
         ret.rtevi = ev.evi;
-        //非重复日程及重复日程的第一条的rtevi（父日程id）字段设为空
+        //非重复日程及重复日程的第一条的rtevi（父日程evi）字段设为空。遵循父子关系，
+        // 父记录的父节点字段rrtevi设为空，子记录的父节点字段rtevi设为父记录的evi
         ev.rtevi = "";
       }else{
         ev.rtevi = ret.rtevi;
@@ -798,9 +800,14 @@ export class RtOver {
 }
 
 export class RtJson {
+  //重复类型
   cycletype:anyenum.CycleType;
+  //重复次数（n天、n周、n月、n年）
   cyclenum:number;
+  //开启方式：周一，周二....
   openway:anyenum.OpenWay;
+
+  //重复结束设定
   over: RtOver = new RtOver();
 }
 
