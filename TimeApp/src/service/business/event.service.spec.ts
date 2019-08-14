@@ -190,6 +190,34 @@ describe('EventService test suite', () => {
     expect(txx).toBeDefined();
     expect(txx.evn).toBe(tx.evn);
   })
+  
+	it('Case 5 - 1 service should be fetchPagedTasks', () => {
+		
+		let day: string = "2019/08/14";
+		let data: Array<TaskData> = new Array<TaskData>();
+		data = await eventService.fetchPagedTasks(day,"");
+		expect(data).toBeDefined();
+		expect(data.length).toBeGreaterThan(0);
+  })
+	
+	it('Case 6 - 1 service should be fetchPagedCompletedTasks', () => {
+		
+		let day: string = "2019/08/14";
+		let data: Array<TaskData> = new Array<TaskData>();
+		data = await eventService.fetchPagedCompletedTasks(day,"");
+		expect(data).toBeDefined();
+		expect(data.length).toBeGreaterThan(0);
+  })
+	
+	it('Case 7 - 1 service should be fetchPagedUncompletedTasks', () => {
+		
+		let day: string = "2019/08/14";
+		let data: Array<TaskData> = new Array<TaskData>();
+		data = await eventService.fetchPagedUncompletedTasks(day,"");
+		expect(data).toBeDefined();
+		expect(data.length).toBeGreaterThan(0);
+  })
+  
 
   afterAll(() => {
     TestBed.resetTestingModule();
