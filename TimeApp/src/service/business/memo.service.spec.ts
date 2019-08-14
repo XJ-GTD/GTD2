@@ -98,7 +98,7 @@ describe('MemoService test suite', () => {
     expect(memoService).toBeTruthy();
   });
 
-   it('Case 1 - 2 save memo service should be created', async () => {
+   it('Case 2 - 1  service should be saveMemo', async () => {
    	let mom: MemoData = {} as MemoData;
    	mom.mon='本周三写完测试用例';
    	mom = await memoService.saveMemo(mom);
@@ -111,7 +111,23 @@ describe('MemoService test suite', () => {
     expect(gmom.mon).toBe(mom.mon);
   });
   
-  it('Case 1 - 3 updateMemoPlan  service should be created', async () => {
+  it('Case 2 - 2  service should be saveMemo', async () => {
+   	let mom: MemoData = {} as MemoData;
+   	mom.mon='本周三写完测试用例';
+   	mom = await memoService.saveMemo(mom);
+   	expect(mom).toBeDefined();
+    expect(mom.moi).toBeDefined();
+    let mon: string = "老张，你又长膘了";
+    mom.mon=mon;
+    await memoService.saveMemo(mom);
+    //取出返回值
+    let gmom: MemoData = {} as MemoData;
+    gmom = await memoService.getMemo(mom.moi);
+    expect(gmom).toBeDefined();
+    expect(gmom.mon).toBe(mon);
+  });
+  
+  it('Case 3 - 1   service should be updateMemoPlan', async () => {
   	//插入获取ID
    	let mom: MemoData = {} as MemoData;
    	mom.mon='我老大，叫老席，你动我代码试试';
@@ -129,7 +145,7 @@ describe('MemoService test suite', () => {
   });
   
   
-  it('Case 1 - 3 removeMemo  service should be created', async () => {
+  it('Case 4 - 1   service should be removeMemo', async () => {
   	//插入获取ID
    	let mom: MemoData = {} as MemoData;
    	mom.mon='我老大，叫老席，你动我代码试试';
@@ -146,7 +162,7 @@ describe('MemoService test suite', () => {
     expect(gmom.length).toBeGreaterThan(0);
   });
   
-  it('Case 1 - 4 backup  service should be created', async () => {
+  it('Case 5 - 1   service should be backup', async () => {
   	
   		let mom: MemoData = {} as MemoData;
 	   	mom.mon='我老大，叫老席，你动我代码试试';
