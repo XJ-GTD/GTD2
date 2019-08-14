@@ -36,8 +36,8 @@ import { ShaeRestful } from "../restful/shaesev";
 import { BacRestful } from "../restful/bacsev";
 
 import { CalendarService, PlanData } from "./calendar.service";
-import { MemoService } from "./memo.service";
-import { PlanType } from "../../data.enum";
+import { MemoService,MemoData } from "./memo.service";
+import { PlanType,ObjectType } from "../../data.enum";
 
 /**
  * 备忘Service 持续集成CI 自动测试Case
@@ -96,6 +96,14 @@ describe('MemoService test suite', () => {
   // 需要同步执行
   it('Case 1 - 1 service should be created', () => {
     expect(memoService).toBeTruthy();
+  });
+  
+   it('Case 1 - 2 save memo service should be created', () => {
+   	let mom: MemoData = {} as MemoData;
+   	mom.mon='本周三写完测试用例';
+   	await memoService.saveMemo(mom);
+   	expect(mom).toBeDefined();
+    expect(mom.mon).toBeDefined();
   });
 
   afterAll(() => {
