@@ -38,7 +38,7 @@ import { BacRestful } from "../restful/bacsev";
 
 import { CalendarService, PlanData } from "./calendar.service";
 import { EventService } from "./event.service";
-import { PlanType } from "../../data.enum";
+import { PlanType,IsCreate } from "../../data.enum";
 
 /**
  * 事件Service 持续集成CI 自动测试Case
@@ -99,6 +99,125 @@ describe('EventService test suite', () => {
   it('Case 1 - 1 service should be created', () => {
     expect(eventService).toBeTruthy();
   });
+  
+  it('Case 2 - 1 service should be saveTask', () => {
+  	// 创建任务
+    let tx: TaskData = {} as TaskData;
+    tx.evn ="shopping,今天穿的是花裤衩";
+    tx = await eventService.saveTask(tx);
+    expect(tx).toBeDefined();
+    expect(tx.evi).toBeDefined();
+    //获取插入的数据，校验插入是否一致
+    let txx: TaskData = {} as TaskData;
+    txx = eventService.getTask(tx.evi);
+    expect(txx).toBeDefined();
+    expect(txx.evn).toBe(tx.evn);
+  });
+  
+  it('Case 2 - 2 service should be saveTask', () => {
+  	// 创建任务
+    let tx: TaskData = {} as TaskData;
+    tx.evn ="shopping,今天穿的是花裤衩";
+    tx = await eventService.saveTask(tx);
+    expect(tx).toBeDefined();
+    expect(tx.evi).toBeDefined();
+    //根据ID，更新相关内容
+    let evn: string = "老张，记得去买烟"
+    tx.evn = evn;
+    await eventService.saveTask(tx);
+    //获取插入的数据，校验插入是否一致
+    let txx: TaskData = {} as TaskData;
+    txx = eventService.getTask(tx.evi);
+    expect(txx).toBeDefined();
+    expect(txx.evn).toBe(evn);
+  });
+  
+  it('Case 3 - 1 service should be saveMiniTask', () => {
+  	// 创建任务
+    let tx: MiniTaskData = {} as MiniTaskData;
+    tx.evn ="shopping,今天穿的是花裤衩";
+    tx = await eventService.saveMiniTask(tx);
+    expect(tx).toBeDefined();
+    expect(tx.evi).toBeDefined();
+    //获取插入的数据，校验插入是否一致
+    let txx: MiniTaskData = {} as MiniTaskData;
+    txx = eventService.getMiniTask(tx.evi);
+    expect(txx).toBeDefined();
+    expect(txx.evn).toBe(tx.evn);
+  });
+  
+   it('Case 3 - 2 service should be saveMiniTask', () => {
+   	
+  	let tx: MiniTaskData = {} as MiniTaskData;
+    tx.evn ="shopping,今天穿的是花裤衩";
+    tx = await eventService.saveMiniTask(tx);
+    expect(tx).toBeDefined();
+    expect(tx.evi).toBeDefined();
+    //根据ID，更新相关内容
+    let evn: string = "老张，记得去买烟"
+    tx.evn = evn;
+    await eventService.saveMiniTask(tx);
+    //获取插入的数据，校验插入是否一致
+    let txx: MiniTaskData = {} as MiniTaskData;
+    txx = eventService.getMiniTask(tx.evi);
+    expect(txx).toBeDefined();
+    expect(txx.evn).toBe(evn);
+  });
+  
+  it('Case 3 - 1 service should be finishTask', () => {
+  	
+  	let tx: TaskData = {} as TaskData;
+    tx.evn ="shopping,今天穿的是花裤衩";
+    tx = await eventService.saveTask(tx);
+    expect(tx).toBeDefined();
+    expect(tx.evi).toBeDefined();
+    let isrt: string = await eventService.finishTask(tx.evi);
+    expect(isrt).toBeDefined();
+    expect(isrt).toBe(IsCreate.isYes);
+  })
+  
+  it('Case 4 - 1 service should be finishTaskNext', () => {
+  	
+  	let tx: TaskData = {} as TaskData;
+    tx.evn ="shopping,今天穿的是花裤衩";
+    tx = await eventService.saveTask(tx);
+    expect(tx).toBeDefined();
+    expect(tx.evi).toBeDefined();
+    await eventService.finishTaskNext(tx.evi);
+    //验证是否已获取数据
+    let txx: TaskData = {} as TaskData;
+    txx = eventService.getTaskNext(tx.evi);
+    expect(txx).toBeDefined();
+    expect(txx.evn).toBe(tx.evn);
+  })
+  
+	it('Case 5 - 1 service should be fetchPagedTasks', () => {
+		
+		let day: string = "2019/08/14";
+		let data: Array<TaskData> = new Array<TaskData>();
+		data = await eventService.fetchPagedTasks(day,"");
+		expect(data).toBeDefined();
+		expect(data.length).toBeGreaterThan(0);
+  })
+	
+	it('Case 6 - 1 service should be fetchPagedCompletedTasks', () => {
+		
+		let day: string = "2019/08/14";
+		let data: Array<TaskData> = new Array<TaskData>();
+		data = await eventService.fetchPagedCompletedTasks(day,"");
+		expect(data).toBeDefined();
+		expect(data.length).toBeGreaterThan(0);
+  })
+	
+	it('Case 7 - 1 service should be fetchPagedUncompletedTasks', () => {
+		
+		let day: string = "2019/08/14";
+		let data: Array<TaskData> = new Array<TaskData>();
+		data = await eventService.fetchPagedUncompletedTasks(day,"");
+		expect(data).toBeDefined();
+		expect(data.length).toBeGreaterThan(0);
+  })
+  
 
   afterAll(() => {
     TestBed.resetTestingModule();
