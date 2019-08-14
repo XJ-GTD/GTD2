@@ -284,7 +284,8 @@ describe('CalendarService test suite', () => {
     memo.mon = "结婚纪念日买了一块定制巧克力给太太, 太太很高兴";
 
     memo = await memoService.saveMemo(memo);
-
+    let dayActivities: DayActivityData = await calendarService.fetchDayActivities(day);
+    console.log(dayActivities.memos);
     let daySummary: DayActivitySummaryData = await calendarService.fetchDayActivitiesSummary(day);
 
     expect(daySummary).toBeDefined();
