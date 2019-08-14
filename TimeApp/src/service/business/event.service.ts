@@ -690,7 +690,7 @@ export class EventService extends BaseService {
 			this.assertEmpty(evi); // id不能为空
 			let sqlparam: string =`select ev.*,td.cs,td.isrt,td.cd,td.fd from gtd_ev  ev left join gtd_t  td on ev.evi = td.evi where ev.evi =${evi} `;
   		let data: TaskData  = {} as TaskData;
-  		data = await this.sqlExce.getExtList<TaskData>(sqlparam);
+  		data = await this.sqlExce.getExtOneByParam<TaskData>(sqlparam,null);
   		return data;
 	}
 	
@@ -724,10 +724,10 @@ export class EventService extends BaseService {
 			this.assertEmpty(evi); // id不能为空
 			let evdb: EvTbl = new EvTbl();
 			evdb.evi = evi;
-			evdb = await this.sqlExce.getOneByParam<EvTbl>(evdb);
-  		if (evdb && evdb.evi) {
+			let evdbnew = await this.sqlExce.getOneByParam<EvTbl>(evdb);
+  		if (evdbnew && evdbnew.evi) {
 				let ev: MiniTaskData = {} as MiniTaskData;
-				Object.assign(ev, evdb);
+				Object.assign(ev, evdbnew);
 				return ev;
 			} else {
 				return null;
