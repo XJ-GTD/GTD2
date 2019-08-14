@@ -62,7 +62,7 @@ describe('SqliteExec test suite', () => {
     await config.generateDb();
   });
 
-  it('Case 1 - 1 create() without Error', async(() => {
+  it('Case 1 - 1 create() without Error', () => {
     expect(function() {
       let y: YTbl = new YTbl();
 
@@ -70,7 +70,7 @@ describe('SqliteExec test suite', () => {
         expect(data).toBeDefined();
       });
     }).not.toThrow();
-  }));
+  });
 
   afterAll(() => {
     TestBed.resetTestingModule();
