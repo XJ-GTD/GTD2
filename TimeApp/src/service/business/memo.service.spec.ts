@@ -108,7 +108,7 @@ describe('MemoService test suite', () => {
     let gmom: MemoData = {} as MemoData;
     gmom = await memoService.getMemo(mom.moi);
     expect(gmom).toBeDefined();
-    expect(gmom).toBe(mom);
+    expect(gmom.mon).toBe(mom.mon);
   });
 
   afterAll(() => {
