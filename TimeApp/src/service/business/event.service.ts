@@ -1122,7 +1122,7 @@ export class RtOver {
 
 export class RtJson {
   //重复类型
-  cycletype:anyenum.CycleType;
+  cycletype: anyenum.CycleType = anyenum.CycleType.close;
   //重复次数（n天、n周、n月、n年）
   cyclenum: number = 1;//重复周期默认1, 不得小于1
   //开启方式：周一，周二....
