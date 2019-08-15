@@ -809,7 +809,7 @@ describe('CalendarService test suite', () => {
   });
 
   // 需要同步执行
-  it(`Case 3 - 4 fetchMonthActivities with precreated memos`, async () => {
+  it(`Case 3 - 4 fetchMonthActivities 取得当前月份活动 - 1个备忘`, async () => {
     // 备忘
     let memo: MemoData = {} as MemoData;
 
@@ -829,7 +829,7 @@ describe('CalendarService test suite', () => {
   });
 
   // 需要同步执行
-  it(`Case 3 - 3 fetchMonthActivities with precreated events`, async () => {
+  it(`Case 3 - 3 fetchMonthActivities 取得2019/08月份活动 - 1个日程（不重复）`, async () => {
     // 日程
     let agenda: AgendaData = {} as AgendaData;
 
@@ -847,7 +847,7 @@ describe('CalendarService test suite', () => {
   });
 
   // 需要同步执行
-  it(`Case 3 - 2 fetchMonthActivities with precreated plan items`, async () => {
+  it(`Case 3 - 2 fetchMonthActivities 取得2019/08月份活动 - 1个日历项`, async () => {
     // 日历项
     let planitem: PlanItemData = {} as PlanItemData;
 
@@ -865,7 +865,7 @@ describe('CalendarService test suite', () => {
   });
 
   // 可以异步执行
-  it(`Case 3 - 1 fetchMonthActivities`, async(() => {
+  it(`Case 3 - 1 fetchMonthActivities 取得2019/08月份活动 - 无报错`, async(() => {
     expect(function() {
       calendarService.fetchMonthActivities();
       calendarService.fetchMonthActivities("2019/08");
