@@ -185,6 +185,7 @@ describe('EventService test suite', () => {
     expect(tx).toBeDefined();
     expect(tx.evi).toBeDefined();
     await eventService.finishTaskNext(tx.evi);
+    
     //验证是否已获取数据
     let txx: TaskData = {} as TaskData;
     txx = await eventService.getTaskNext(tx.evi);
