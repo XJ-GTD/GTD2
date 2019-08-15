@@ -188,17 +188,18 @@ describe('CalendarService test suite', () => {
   });
 
   it(`Case 5 - 3 - 2 fetchPagedActivities 取得第二页7天的活动（PageDown下拉） - 当天和往前第3天有1个日历项、1个任务、1个备忘`, async () => {
+    let day: string = moment().format("YYYY/MM/DD");
 
     let days: Array<string> = new Array<string>();
 
     days.push(moment().format("YYYY/MM/DD"));
     days.push(moment().subtract(3, "days").format("YYYY/MM/DD"));
 
-    for (let day of days) {
+    for (let subday of days) {
       // 日历项
       let planitem1: PlanItemData = {} as PlanItemData;
 
-      planitem1.sd = day;
+      planitem1.sd = subday;
       planitem1.jtn = "结婚纪念日";
       planitem1.jtt = PlanItemType.Activity;
 
@@ -207,7 +208,7 @@ describe('CalendarService test suite', () => {
       // 任务
       let task: TaskData = {} as TaskData;
 
-      task.evd = day;
+      task.evd = subday;
       task.evn = "结婚纪念日前给太太买礼物";
 
       await eventService.saveTask(task);
@@ -215,7 +216,7 @@ describe('CalendarService test suite', () => {
       // 备忘
       let memo: MemoData = {} as MemoData;
 
-      memo.sd = day;
+      memo.sd = subday;
       memo.mon = "结婚纪念日买了一块定制巧克力给太太, 太太很高兴";
 
       memo = await memoService.saveMemo(memo);
@@ -350,17 +351,18 @@ describe('CalendarService test suite', () => {
   });
 
   it(`Case 5 - 2 - 2 fetchPagedActivities 取得第二页7天的活动（PageUp上拉） - 当天和往后第3天有1个日历项、1个任务、1个备忘`, async () => {
+    let day: string = moment().format("YYYY/MM/DD");
 
     let days: Array<string> = new Array<string>();
 
     days.push(moment().format("YYYY/MM/DD"));
     days.push(moment().add(3, "days").format("YYYY/MM/DD"));
 
-    for (let day of days) {
+    for (let subday of days) {
       // 日历项
       let planitem1: PlanItemData = {} as PlanItemData;
 
-      planitem1.sd = day;
+      planitem1.sd = subday;
       planitem1.jtn = "结婚纪念日";
       planitem1.jtt = PlanItemType.Activity;
 
@@ -369,7 +371,7 @@ describe('CalendarService test suite', () => {
       // 任务
       let task: TaskData = {} as TaskData;
 
-      task.evd = day;
+      task.evd = subday;
       task.evn = "结婚纪念日前给太太买礼物";
 
       await eventService.saveTask(task);
@@ -377,7 +379,7 @@ describe('CalendarService test suite', () => {
       // 备忘
       let memo: MemoData = {} as MemoData;
 
-      memo.sd = day;
+      memo.sd = subday;
       memo.mon = "结婚纪念日买了一块定制巧克力给太太, 太太很高兴";
 
       memo = await memoService.saveMemo(memo);
