@@ -442,6 +442,11 @@ export class EventService extends BaseService {
         repeatTimes = 20;
         repeatEndDay = repeatEndDay || moment(repeatStartDay).add(20, "years").add(1, "days").format("YYYY/MM/DD");
         break;
+      case anyenum.CycleType.close :    // 不重复日程
+        repeatType = "days";
+        repeatTimes = 1;
+        repeatEndDay = moment(repeatStartDay).add(1, "days").format("YYYY/MM/DD");
+        break;
       default:
         this.assertFail();    // 预期外值, 程序异常
     }
