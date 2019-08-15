@@ -422,19 +422,19 @@ export class EventService extends BaseService {
     switch(rtjson.cycletype) {
       case anyenum.CycleType.day :
         repeatType = "days";
-        repeatTimes = repeatTimes || moment(repeatStartDay).add(1, "years").subtract(moment(repeatStartDay)).days();
+        repeatTimes = repeatTimes || moment(repeatStartDay).add(1, "years").diff(repeatStartDay, "days");
         repeatEndDay = repeatEndDay || moment(repeatStartDay).add(repeatTimes, "days").add(1, "days").format("YYYY/MM/DD");
         break;
       case anyenum.CycleType.week :
         repeatType = "weeks";
         options = rtjson.openway || options;
-        repeatTimes = repeatTimes || moment(repeatStartDay).add(2, "years").subtract(moment(repeatStartDay)).weeks();
+        repeatTimes = repeatTimes || moment(repeatStartDay).add(2, "years").diff(repeatStartDay, "weeks");
         repeatEndDay = repeatEndDay || moment(repeatStartDay).add(repeatTimes, "weeks").add(1, "days").format("YYYY/MM/DD");
         break;
       case anyenum.CycleType.month :
         repeatType = "months";
         options = rtjson.openway || options;
-        repeatTimes = repeatTimes || moment(repeatStartDay).add(3, "years").subtract(moment(repeatStartDay)).months();
+        repeatTimes = repeatTimes || moment(repeatStartDay).add(3, "years").diff(repeatStartDay, "months");
         repeatEndDay = repeatEndDay || moment(repeatStartDay).add(repeatTimes, "months").add(1, "days").format("YYYY/MM/DD");
         break;
       case anyenum.CycleType.year :
