@@ -47,7 +47,7 @@ import {TTbl} from "../sqlite/tbl/t.tbl";
 import {WaTbl} from "../sqlite/tbl/wa.tbl";
 import {FjTbl} from "../sqlite/tbl/fj.tbl";
 
-import { CalendarService, PlanData, PlanItemData, MonthActivityData, MonthActivitySummaryData, DayActivityData, DayActivitySummaryData } from "./calendar.service";
+import { CalendarService, PlanData, PlanItemData, MonthActivityData, MonthActivitySummaryData, DayActivityData, DayActivitySummaryData, PagedActivityData } from "./calendar.service";
 import { EventService, AgendaData, TaskData, RtJson } from "./event.service";
 import { MemoService, MemoData } from "./memo.service";
 import { PlanType, PlanItemType, CycleType, OverType } from "../../data.enum";
@@ -163,7 +163,7 @@ describe('CalendarService test suite', () => {
 
   });
 
-  it(`Case 5 - 1 fetchMonthActivitiesSummary 取得指定月概要 - 空值(没有任何活动)`, async () => {
+  it(`Case 6 - 1 fetchMonthActivitiesSummary 取得指定月概要 - 空值(没有任何活动)`, async () => {
     let month: string = moment().format("YYYY/MM");
     let days: number = moment(month).daysInMonth();
 
@@ -185,6 +185,40 @@ describe('CalendarService test suite', () => {
       expect(daySummary.repeateventscount).toBe(0);
       expect(daySummary.bookedtimesummary).toBe(0);
     }
+  });
+
+  it(`Case 5 - 1 fetchPagedActivities 取得第一页7天的活动 - 没有任何活动`, async () => {
+    let pagedActivities: PagedActivityData = await calendarService.fetchPagedActivities();
+
+    let startday: string = moment().subtract(Math.floor(daysPerPage / 2), "days").format("YYYY/MM/DD");
+    let endday: string = moment().add(Math.floor(daysPerPage / 2), "days").format("YYYY/MM/DD");
+
+    expect(pagedActivities.startday).toBe(startday);
+    expect(pagedActivities.endday).toBe(endday);
+    expect(pagedActivities.calendaritems).toBeDefined();
+    expect(pagedActivities.calendaritems.length).toBe(0);
+    expect(pagedActivities.events).toBeDefined();
+    expect(pagedActivities.events.length).toBe(0);
+    expect(pagedActivities.memos).toBeDefined();
+    expect(pagedActivities.memos.length).toBe(0);
+    expect(pagedActivities.days).toBeDefined();
+    expect(pagedActivities.days.get(startday)).toBeDefined();
+    expect(pagedActivities.days.get(startday).day).toBe(startday);
+    expect(pagedActivities.days.get(startday).calendaritems).toBeDefined();
+    expect(pagedActivities.days.get(startday).calendaritems.length).toBe(0);
+    expect(pagedActivities.days.get(startday).events).toBeDefined();
+    expect(pagedActivities.days.get(startday).events.length).toBe(0);
+    expect(pagedActivities.days.get(startday).memos).toBeDefined();
+    expect(pagedActivities.days.get(startday).memos.length).toBe(0);
+    expect(pagedActivities.days.get(endday)).toBeDefined();
+    expect(pagedActivities.days.get(endday).day).toBe(endday);
+    expect(pagedActivities.days.get(endday).calendaritems).toBeDefined();
+    expect(pagedActivities.days.get(endday).calendaritems.length).toBe(0);
+    expect(pagedActivities.days.get(endday).events).toBeDefined();
+    expect(pagedActivities.days.get(endday).events.length).toBe(0);
+    expect(pagedActivities.days.get(endday).memos).toBeDefined();
+    expect(pagedActivities.days.get(endday).memos.length).toBe(0);
+
   });
 
   it(`Case 4 - 9 fetchDayActivitiesSummary 取得指定日期概要 - 存在1个日程、1个任务(日程每日重复)`, async () => {
