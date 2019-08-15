@@ -123,6 +123,8 @@ describe('CalendarService test suite', () => {
     await init.createTables();
     await init.initData();
     restConfig.init();
+
+    jasmine.DEFAULT_TIMEOUT_INTERVAL = 60 * 1000;  // 每个Case超时时间
   });
 
   beforeEach(async () => {
