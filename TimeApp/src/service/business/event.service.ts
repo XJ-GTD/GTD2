@@ -397,7 +397,7 @@ export class EventService extends BaseService {
     // 开启方式（天（无）,周多选（一、二、三、四、五、六、日[0 - 6]）,月多选（1、2、...、31[0 - 30]）,年（无））
     let options: Array<number> = new Array<number>();
     // 结束条件（n次后结束、到某天结束、永远不结束（天（设置1年）、周（设置2年）、月（设置3年）、年（设置20年）））
-    let repeatTimes: number = -1;
+    let repeatTimes: number;
     // 结束日期（指定结束日期时使用指定结束日期，否则使用计算出来的结束日期）
     let repeatEndDay: string = "";
 
