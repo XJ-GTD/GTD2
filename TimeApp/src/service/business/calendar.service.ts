@@ -953,6 +953,11 @@ export class CalendarService extends BaseService {
     return pa;
   }
 
+  /**
+   * 获取翻页活动数据（用于日程一览）
+   *
+   * @author leon_xi@163.com
+   **/
   async fetchPagedActivities(day: string = moment().format("YYYY/MM/DD"), direction: PageDirection = PageDirection.PageInit, daysPerPage: number = 7): Promise<PagedActivityData> {
 
     this.assertEmpty(day);          // 入参不能为空
@@ -966,10 +971,10 @@ export class CalendarService extends BaseService {
 
     switch(direction) {
       case PageDirection.PageInit :
-        startday = moment(day).substract(Math.floor(daysPerPage / 2), "days").format("YYYY/MM/DD");
+        startday = moment(day).subtract(Math.floor(daysPerPage / 2), "days").format("YYYY/MM/DD");
         endday = moment(day).add(Math.floor(daysPerPage / 2), "days").format("YYYY/MM/DD");
       case PageDirection.PageUp :
-        startday = moment(day).substract(daysPerPage, "days").format("YYYY/MM/DD");
+        startday = moment(day).subtract(daysPerPage, "days").format("YYYY/MM/DD");
       case PageDirection.PageDown :
         endday = moment(day).add(daysPerPage, "days").format("YYYY/MM/DD");
       default:
