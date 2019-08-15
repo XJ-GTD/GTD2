@@ -533,17 +533,68 @@ export class CalendarService extends BaseService {
 
     monthActivity.month = month;
 
+    let days: Map<string, DayActivityData> = new Map<string, DayActivityData>();
+
+    let startday: string = moment(month).startOf('month').format("YYYY/MM/DD");
+    let endday: string = moment(month).endOf('month').format("YYYY/MM/DD");
+
+    // 初始化每日记录
+    days.set(startday, new DayActivityData(startday));
+    let stepday: string = startday;
+    while (stepday != endday) {
+      stepday = moment(stepday).add(1, "days").format("YYYY/MM/DD");
+
+      let day: string = stepday;
+      days.set(day, new DayActivityData(day));
+    }
+
     let sqlcalitems: string = `select * from gtd_jta where substr(sd, 1, 7) = '${month}' order by sd asc, st asc`;
 
     monthActivity.calendaritems = await this.sqlExce.getExtList<PlanItemData>(sqlcalitems);
+
+    days = monthActivity.calendaritems.reduce((days, value) => {
+      let day: string = value.sd;
+      let dayActivity: DayActivityData = days.get(day);
+
+      this.assertNull(dayActivity);
+
+      dayActivity.calendaritems.push(value);
+      days.set(day, dayActivity);
+
+      return days;
+    }, days);
 
     let sqlevents: string = `select * from gtd_ev where substr(evd, 1, 7) = '${month}' order by evd asc`;
 
     monthActivity.events = await this.sqlExce.getExtList<EventData>(sqlevents);
 
+    days = monthActivity.events.reduce((days, value) => {
+      let day: string = value.evd;
+      let dayActivity: DayActivityData = days.get(day);
+
+      this.assertNull(dayActivity);
+
+      dayActivity.events.push(value);
+      days.set(day, dayActivity);
+
+      return days;
+    }, days);
+
     let sqlmemos: string = `select * from gtd_mom where substr(sd, 1, 7) = '${month}' order by sd asc`;
 
     monthActivity.memos = await this.sqlExce.getExtList<MemoData>(sqlmemos);
+
+    days = monthActivity.memos.reduce((days, value) => {
+      let day: string = value.sd;
+      let dayActivity: DayActivityData = days.get(day);
+
+      this.assertNull(dayActivity);
+
+      dayActivity.memos.push(value);
+      days.set(day, dayActivity);
+
+      return days;
+    }, days);
 
     return monthActivity;
   }
@@ -956,7 +1007,7 @@ export class CalendarService extends BaseService {
   /**
    * 获取翻页活动数据（用于日程一览）
    *
-   * 默认一页显示1周7天, 可指定天数
+   * 默认一页显示1周7天, 可指定天数（使用奇数7, 9, 11, ...）
    * 支持向上或向下翻页
    * 默认查询当天向前3天以及向后3天共7天数据
    *
