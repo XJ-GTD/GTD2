@@ -566,7 +566,7 @@ export class EventService extends BaseService {
     }else if (rtjson.cycletype == anyenum.CycleType.week) {
 
       len = rtjson.cyclenum;
-      repeatStartdt = this.getRepeatStartDt(agdata.sd,rtjson.openway);
+      repeatStartdt = this.getRepeatStartDt(agdata.sd,anyenum.OpenWay.close);//rtjson.openway
       repeatEnddt = moment(repeatStartdt).add(len - 1 , 'w');
 
       addtype = 'w';
@@ -574,7 +574,7 @@ export class EventService extends BaseService {
 
 
       len = rtjson.cyclenum;
-      repeatStartdt = this.getRepeatStartDt(agdata.sd,rtjson.openway);
+      repeatStartdt = this.getRepeatStartDt(agdata.sd,anyenum.OpenWay.close);//rtjson.openway
       repeatEnddt = moment(repeatStartdt).add(len - 1 , 'M');
 
       if (rtjson.openway.length == 0){  //anyenum.OpenWay.close
