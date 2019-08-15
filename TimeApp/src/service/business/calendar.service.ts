@@ -1028,10 +1028,13 @@ export class CalendarService extends BaseService {
       case PageDirection.PageInit :
         startday = moment(day).subtract(Math.floor(daysPerPage / 2), "days").format("YYYY/MM/DD");
         endday = moment(day).add(Math.floor(daysPerPage / 2), "days").format("YYYY/MM/DD");
+        break;
       case PageDirection.PageUp :
         startday = moment(day).subtract(daysPerPage, "days").format("YYYY/MM/DD");
+        break;
       case PageDirection.PageDown :
         endday = moment(day).add(daysPerPage, "days").format("YYYY/MM/DD");
+        break;
       default:
         this.assertFail();
     }
