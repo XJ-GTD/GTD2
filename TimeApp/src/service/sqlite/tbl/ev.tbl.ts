@@ -294,7 +294,7 @@ export class EvTbl implements ITblParam {
        ( evi ,evn ,ui ,mi ,evd ,rtevi ,ji ,bz ,
        type ,tx ,txs ,rt ,rts ,fj ,pn ,md ,iv ,
        sr ,wtt ,utt ,gs,tb,del)
-       values( ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,${moment().unix()},${moment().unix()},?,?,?);`;
+       values( ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);`;
     params.push(this.evi);
     params.push(this.evn);
     params.push(this.ui);
@@ -313,6 +313,8 @@ export class EvTbl implements ITblParam {
     params.push(this.md);
     params.push(this.iv);
     params.push(this.sr);
+    params.push(moment().unix());
+    params.push(moment().unix());
     params.push(this.gs);
     params.push(this.tb);
     params.push(this.del);
