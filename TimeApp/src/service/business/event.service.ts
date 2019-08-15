@@ -397,6 +397,7 @@ export class EventService extends BaseService {
     // 结束日期（指定结束日期时使用指定结束日期，否则使用计算出来的结束日期）
     let repeatEndDay: string = "";
 
+    // 根据结束类型设置重复次数/结束日期
     switch(rtjson.over.type) {
       case anyenum.OverType.times :
         this.assertEmpty(rtjson.over.value);    // 结束条件不能为空
@@ -413,6 +414,7 @@ export class EventService extends BaseService {
         this.assertFail();    // 预期外值, 程序异常
     }
 
+    // 根据重复类型设置 重复类型/开启方式/重复次数/结束日期
     switch(rtjson.cycletype) {
       case anyenum.CycleType.day :
         repeatType = "days";
