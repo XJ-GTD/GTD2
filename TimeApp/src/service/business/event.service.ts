@@ -1120,7 +1120,7 @@ export class RetParamEv{
 }
 
 export class RtOver {
-  type:anyenum.OverType;
+  type: anyenum.OverType = anyenum.OverType.fornever;
   value:string;
 }
 
