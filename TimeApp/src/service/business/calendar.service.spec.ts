@@ -190,13 +190,14 @@ describe('CalendarService test suite', () => {
   it(`Case 5 - 1 - 1 fetchPagedActivities 取得第一页7天的活动 - 当天有1个日历项、1个任务、1个备忘`, async () => {
     let day: string = moment().format("YYYY/MM/DD");
 
-    // 日程
-    let agenda: AgendaData = {} as AgendaData;
+    // 日历项
+    let planitem1: PlanItemData = {} as PlanItemData;
 
-    agenda.sd = day;
-    agenda.evn = "结婚纪念日买礼物给太太";
+    planitem1.sd = day;
+    planitem1.jtn = "结婚纪念日";
+    planitem1.jtt = PlanItemType.Activity;
 
-    await eventService.saveAgenda(agenda);
+    await calendarService.savePlanItem(planitem1);
 
     // 任务
     let task: TaskData = {} as TaskData;
