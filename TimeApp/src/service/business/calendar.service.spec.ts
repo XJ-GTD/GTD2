@@ -193,7 +193,7 @@ describe('CalendarService test suite', () => {
     let pagedActivities: PagedActivityData = await calendarService.fetchPagedActivities(day, PageDirection.PageDown);
 
     let endday: string = moment(day).subtract(1, "days").format("YYYY/MM/DD");
-    let startday: string = moment(endday).subtract(7, "days").format("YYYY/MM/DD");
+    let startday: string = moment(day).subtract(7, "days").format("YYYY/MM/DD");
 
     expect(pagedActivities.startday).toBe(startday);
     expect(pagedActivities.endday).toBe(endday);
@@ -229,7 +229,7 @@ describe('CalendarService test suite', () => {
     let pagedActivities: PagedActivityData = await calendarService.fetchPagedActivities(day, PageDirection.PageUp);
 
     let startday: string = moment(day).add(1, "days").format("YYYY/MM/DD");
-    let endday: string = moment(startday).add(7, "days").format("YYYY/MM/DD");
+    let endday: string = moment(day).add(7, "days").format("YYYY/MM/DD");
 
     expect(pagedActivities.startday).toBe(startday);
     expect(pagedActivities.endday).toBe(endday);
