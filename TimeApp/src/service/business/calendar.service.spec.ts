@@ -190,8 +190,8 @@ describe('CalendarService test suite', () => {
   it(`Case 5 - 1 fetchPagedActivities 取得第一页7天的活动 - 没有任何活动`, async () => {
     let pagedActivities: PagedActivityData = await calendarService.fetchPagedActivities();
 
-    let startday: string = moment().subtract(Math.floor(daysPerPage / 2), "days").format("YYYY/MM/DD");
-    let endday: string = moment().add(Math.floor(daysPerPage / 2), "days").format("YYYY/MM/DD");
+    let startday: string = moment().subtract(3, "days").format("YYYY/MM/DD");
+    let endday: string = moment().add(3, "days").format("YYYY/MM/DD");
 
     expect(pagedActivities.startday).toBe(startday);
     expect(pagedActivities.endday).toBe(endday);
