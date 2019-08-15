@@ -187,6 +187,76 @@ describe('CalendarService test suite', () => {
     }
   });
 
+  it(`Case 5 - 1 - 1 fetchPagedActivities 取得第一页7天的活动 - 当天有1个日历项、1个任务、1个备忘`, async () => {
+    let day: string = moment().format("YYYY/MM/DD");
+
+    // 日程
+    let agenda: AgendaData = {} as AgendaData;
+
+    agenda.sd = day;
+    agenda.evn = "结婚纪念日买礼物给太太";
+
+    await eventService.saveAgenda(agenda);
+
+    // 任务
+    let task: TaskData = {} as TaskData;
+
+    task.evn = "结婚纪念日前给太太买礼物";
+
+    await eventService.saveTask(task);
+
+    // 备忘
+    let memo: MemoData = {} as MemoData;
+
+    memo.mon = "结婚纪念日买了一块定制巧克力给太太, 太太很高兴";
+
+    memo = await memoService.saveMemo(memo);
+
+    // 获取活动
+    let pagedActivities: PagedActivityData = await calendarService.fetchPagedActivities();
+
+    let startday: string = moment().subtract(3, "days").format("YYYY/MM/DD");
+    let endday: string = moment().add(3, "days").format("YYYY/MM/DD");
+
+    expect(pagedActivities.startday).toBe(startday);
+    expect(pagedActivities.endday).toBe(endday);
+    expect(pagedActivities.calendaritems).toBeDefined();
+    expect(pagedActivities.calendaritems.length).toBe(1);
+    expect(pagedActivities.events).toBeDefined();
+    expect(pagedActivities.events.length).toBe(1);
+    expect(pagedActivities.memos).toBeDefined();
+    expect(pagedActivities.memos.length).toBe(1);
+
+    expect(pagedActivities.days).toBeDefined();
+    expect(pagedActivities.days.get(startday)).toBeDefined();
+    expect(pagedActivities.days.get(startday).day).toBe(startday);
+    expect(pagedActivities.days.get(startday).calendaritems).toBeDefined();
+    expect(pagedActivities.days.get(startday).calendaritems.length).toBe(0);
+    expect(pagedActivities.days.get(startday).events).toBeDefined();
+    expect(pagedActivities.days.get(startday).events.length).toBe(0);
+    expect(pagedActivities.days.get(startday).memos).toBeDefined();
+    expect(pagedActivities.days.get(startday).memos.length).toBe(0);
+
+    expect(pagedActivities.days.get(day)).toBeDefined();
+    expect(pagedActivities.days.get(day).day).toBe(day);
+    expect(pagedActivities.days.get(day).calendaritems).toBeDefined();
+    expect(pagedActivities.days.get(day).calendaritems.length).toBe(1);
+    expect(pagedActivities.days.get(day).events).toBeDefined();
+    expect(pagedActivities.days.get(day).events.length).toBe(1);
+    expect(pagedActivities.days.get(day).memos).toBeDefined();
+    expect(pagedActivities.days.get(day).memos.length).toBe(1);
+
+    expect(pagedActivities.days.get(endday)).toBeDefined();
+    expect(pagedActivities.days.get(endday).day).toBe(endday);
+    expect(pagedActivities.days.get(endday).calendaritems).toBeDefined();
+    expect(pagedActivities.days.get(endday).calendaritems.length).toBe(0);
+    expect(pagedActivities.days.get(endday).events).toBeDefined();
+    expect(pagedActivities.days.get(endday).events.length).toBe(0);
+    expect(pagedActivities.days.get(endday).memos).toBeDefined();
+    expect(pagedActivities.days.get(endday).memos.length).toBe(0);
+
+  });
+
   it(`Case 5 - 1 fetchPagedActivities 取得第一页7天的活动 - 没有任何活动`, async () => {
     let pagedActivities: PagedActivityData = await calendarService.fetchPagedActivities();
 
