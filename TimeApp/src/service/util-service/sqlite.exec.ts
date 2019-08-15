@@ -56,7 +56,7 @@ export class SqliteExec {
             this.noteLog(log);
           }
 
-          console.log("sql log ***************:" + err);
+          console.log("sql log ***************:" + JSON.stringify(err));
           resolve(err);
         });
       });
