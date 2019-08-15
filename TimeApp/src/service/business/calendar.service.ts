@@ -956,6 +956,10 @@ export class CalendarService extends BaseService {
   /**
    * 获取翻页活动数据（用于日程一览）
    *
+   * 默认一页显示1周7天, 可指定天数
+   * 支持向上或向下翻页
+   * 默认查询当天向前3天以及向后3天共7天数据
+   *
    * @author leon_xi@163.com
    **/
   async fetchPagedActivities(day: string = moment().format("YYYY/MM/DD"), direction: PageDirection = PageDirection.PageInit, daysPerPage: number = 7): Promise<PagedActivityData> {
