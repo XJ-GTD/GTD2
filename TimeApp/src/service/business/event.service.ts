@@ -387,10 +387,10 @@ export class EventService extends BaseService {
     // 开始日期
     let repeatStartDay: string = agdata.sd;
     // 重复类型（天/周/月/年）
-    let repeatType: string = "days";
+    let repeatType: moment.unitOfTime.DurationConstructor = "days";
     // 重复周期（n天/n周/n月/n年重复一次）
     let repeatStep: number = rtjson.cyclenum || 1;
-    // 开启方式（天（无）,周多选（一、二、三、四、五、六、日）,月多选（1、2、...、31）,年（无））
+    // 开启方式（天（无）,周多选（一、二、三、四、五、六、日[0 - 6]）,月多选（1、2、...、31[0 - 30]）,年（无））
     let options: Array<number> = new Array<number>();
     // 结束条件（n次后结束、到某天结束、永远不结束（天（设置1年）、周（设置2年）、月（设置3年）、年（设置20年）））
     let repeatTimes: number = -1;
