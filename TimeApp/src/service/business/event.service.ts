@@ -320,7 +320,7 @@ export class EventService extends BaseService {
     rtjon.over.value = "";
     rtjon.over.type = anyenum.OverType.fornever;
     rtjon.cyclenum = 0;
-    rtjon.openway = anyenum.OpenWay.close;
+    rtjon.openway = new Array<number>();
     //agdata.rt = !agdata.rt ? JSON.stringify(rtjon) : agdata.rt ;
     agdata.rtjson = (agdata.rtjson && agdata.rtjson !=null) ? agdata.rtjson : rtjon;
 
@@ -377,6 +377,12 @@ export class EventService extends BaseService {
 
   private sqlparamAddEv2(agdata: AgendaData): RetParamEv {
     let ret = new RetParamEv();
+
+    let rtjson: RtJson = agdata.rtjson;
+    agdata.rt = JSON.stringify(agdata.rtjson);
+
+    let txjson : TxJson  = agdata.txjson;
+    agdata.tx = JSON.stringify(agdata.txjson);
 
     // 开始日期
     let repeatStartDay: string = agdata.sd;
@@ -459,7 +465,7 @@ export class EventService extends BaseService {
 
         } else if (repeatType == "months") {
           let dayOfMonth: number = Number(moment(stepDay).format("D"));
-          let maxDayOfMonth: number = moment(moment(stepDay).format("YYYY/MM")).duration().days();
+          let maxDayOfMonth: number = moment().month(moment(stepDay).month()).endOf('month').days();
 
           for (let option of options) {
 
