@@ -22,6 +22,13 @@ export enum PlanDownloadType {
   YES = '1'
 }
 
+// 翻页控制
+export enum PageDirection {
+  PageUp = 'up',
+  PageInit = 'init',
+  PageDown = 'down'
+}
+
 export enum ObjectType {
   Event = 'event',
   Memo = 'memo',
@@ -140,4 +147,3 @@ export enum ModifyType  {
   Non ="Non"
 
 }
-

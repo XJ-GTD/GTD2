@@ -5,7 +5,7 @@ import { UtilService } from "../util-service/util.service";
 import { EmitService } from "../util-service/emit.service";
 import { BipdshaeData, Plan, PlanPa, ShareData, ShaeRestful } from "../restful/shaesev";
 import { EventData, TaskData, AgendaData, MiniTaskData } from "./event.service";
-import { EventType, PlanType, PlanItemType, PlanDownloadType, ObjectType } from "../../data.enum";
+import { EventType, PlanType, PlanItemType, PlanDownloadType, ObjectType, PageDirection } from "../../data.enum";
 import { MemoData } from "./memo.service";
 import * as moment from "moment";
 import { JhaTbl } from "../sqlite/tbl/jha.tbl";
@@ -953,7 +953,93 @@ export class CalendarService extends BaseService {
     return pa;
   }
 
-  fetchPagedActivities() {}
+  async fetchPagedActivities(day: string = moment().format("YYYY/MM/DD"), direction: PageDirection = PageDirection.PageInit, daysPerPage: number = 7): Promise<PagedActivityData> {
+
+    this.assertEmpty(day);          // 入参不能为空
+    this.assertEmpty(direction);    // 入参不能为空
+    this.assertEmpty(daysPerPage);  // 入参不能为空
+
+    let pagedActivities: PagedActivityData = new PagedActivityData();
+
+    let startday: string = day;
+    let endday: string = day;
+
+    switch(direction) {
+      case PageDirection.PageInit :
+        startday = moment(day).substract(Math.floor(daysPerPage / 2), "days").format("YYYY/MM/DD");
+        endday = moment(day).add(Math.floor(daysPerPage / 2), "days").format("YYYY/MM/DD");
+      case PageDirection.PageUp :
+        startday = moment(day).substract(daysPerPage, "days").format("YYYY/MM/DD");
+      case PageDirection.PageDown :
+        endday = moment(day).add(daysPerPage, "days").format("YYYY/MM/DD");
+      default:
+        this.assertFail();
+    }
+
+    pagedActivities.startday = startday;
+    pagedActivities.endday = endday;
+
+    let days: Map<string, DayActivityData> = new Map<string, DayActivityData>();
+
+    days.set(startday, new DayActivityData(startday));
+    for (let i = 1; i < daysPerPage; i++) {
+      let day: string = moment(startday).add(1, "days").format("YYYY/MM/DD");
+      days.set(day, new DayActivityData(day));
+    }
+
+    let sqlcalitems: string = `select * from gtd_jta where sd >= '${startday}' and sd <= '${endday}' order by st asc`;
+
+    pagedActivities.calendaritems = await this.sqlExce.getExtList<PlanItemData>(sqlcalitems);
+
+    days = pagedActivities.calendaritems.reduce((days, value) => {
+      let day: string = value.sd;
+      let dayActivity: DayActivityData = days.get(day);
+
+      this.assertNull(dayActivity);
+
+      dayActivity.calendaritems.push(value);
+      days.set(day, dayActivity);
+
+      return days;
+    }, days);
+
+    let sqlevents: string = `select * from gtd_ev where evd >= '${startday}' and evd <= '${endday}' `;
+
+    pagedActivities.events = await this.sqlExce.getExtList<EventData>(sqlevents);
+
+    days = pagedActivities.events.reduce((days, value) => {
+      let day: string = value.evd;
+      let dayActivity: DayActivityData = days.get(day);
+
+      this.assertNull(dayActivity);
+
+      dayActivity.events.push(value);
+      days.set(day, dayActivity);
+
+      return days;
+    }, days);
+
+    let sqlmemos: string = `select * from gtd_mom where sd >= '${startday}' and sd <= '${endday}'`;
+
+    pagedActivities.memos = await this.sqlExce.getExtList<MemoData>(sqlmemos);
+
+    days = pagedActivities.memos.reduce((days, value) => {
+      let day: string = value.sd;
+      let dayActivity: DayActivityData = days.get(day);
+
+      this.assertNull(dayActivity);
+
+      dayActivity.memos.push(value);
+      days.set(day, dayActivity);
+
+      return days;
+    }, days);
+
+    pagedActivities.days = days;
+
+    return pagedActivities;
+  }
+
   mergePagedActivities() {}
   backup(bts: number) {}
   recovery(plans: Array<PlanData>): Array<any> {
@@ -981,6 +1067,15 @@ export interface PlanItemData extends JtaTbl {
 
 }
 
+export class PagedActivityData {
+  startday: string;                     // 开始日期
+  endday: string;                       // 结束日期
+  calendaritems: Array<PlanItemData>;   // 日历项
+  events: Array<EventData>;             // 事件
+  memos: Array<MemoData>;               // 备忘
+  days: Map<string, DayActivityData>;   // 指定期间每天的活动
+}
+
 export class MonthActivityData {
   month: string;                        // 所属年月
   calendaritems: Array<PlanItemData>;   // 日历项
@@ -990,10 +1085,14 @@ export class MonthActivityData {
 }
 
 export class DayActivityData {
-  day: string;                          // 所属日期
-  calendaritems: Array<PlanItemData>;   // 日历项
-  events: Array<EventData>;             // 事件
-  memos: Array<MemoData>;               // 备忘
+  day: string;                                                      // 所属日期
+  calendaritems: Array<PlanItemData> = new Array<PlanItemData>();   // 日历项
+  events: Array<EventData> = new Array<EventData>();                // 事件
+  memos: Array<MemoData> = new Array<MemoData>();                   // 备忘
+
+  constructor(day: string = "") {
+    this.day = day;
+  }
 }
 
 export class ActivityData {
