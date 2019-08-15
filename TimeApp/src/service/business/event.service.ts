@@ -87,10 +87,14 @@ export class EventService extends BaseService {
     if (!agdata.evi || agdata.evi == "") {
       if (agdata.rtjson || agdata.rt || agdata.rts) {
         this.assertEmpty(agdata.rtjson);  // 新建重复日程不能为空
+      } else {
+        agdata.rtjson = new RtJson();
       }
 
       if (agdata.txjson || agdata.tx || agdata.txs) {
         this.assertEmpty(agdata.txjson);  // 新建日程提醒不能为空
+      } else {
+        agdata.txjson = new TxJson();
       }
     }
 
