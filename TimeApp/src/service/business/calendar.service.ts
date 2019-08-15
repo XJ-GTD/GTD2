@@ -981,12 +981,14 @@ export class CalendarService extends BaseService {
 
     let days: Map<string, DayActivityData> = new Map<string, DayActivityData>();
 
+    // 初始化每日记录
     days.set(startday, new DayActivityData(startday));
     for (let i = 1; i < daysPerPage; i++) {
       let day: string = moment(startday).add(1, "days").format("YYYY/MM/DD");
       days.set(day, new DayActivityData(day));
     }
 
+    // 检索日历项记录
     let sqlcalitems: string = `select * from gtd_jta where sd >= '${startday}' and sd <= '${endday}' order by st asc`;
 
     pagedActivities.calendaritems = await this.sqlExce.getExtList<PlanItemData>(sqlcalitems);
@@ -1003,6 +1005,7 @@ export class CalendarService extends BaseService {
       return days;
     }, days);
 
+    // 检索事件记录
     let sqlevents: string = `select * from gtd_ev where evd >= '${startday}' and evd <= '${endday}' `;
 
     pagedActivities.events = await this.sqlExce.getExtList<EventData>(sqlevents);
@@ -1019,6 +1022,7 @@ export class CalendarService extends BaseService {
       return days;
     }, days);
 
+    // 检索备忘记录
     let sqlmemos: string = `select * from gtd_mom where sd >= '${startday}' and sd <= '${endday}'`;
 
     pagedActivities.memos = await this.sqlExce.getExtList<MemoData>(sqlmemos);
