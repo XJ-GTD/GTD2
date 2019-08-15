@@ -1,4 +1,10 @@
 export class BaseService {
+  assertNumber(src: any, msg: string = "Assert Number Error.") {
+    if (!isNan(Number(src))) {
+      throw new Error(msg);
+    }
+  }
+
   assertEmpty(src: any, msg: string = "Assert Empty Error.") {
     if (!src) {
       throw new Error(msg);
@@ -21,6 +27,10 @@ export class BaseService {
     if (src != null && src != "undefined") {
       throw new Error(msg);
     }
+  }
+
+  assertFail(msg: string = "Assert Fail Error.") {
+    throw new Error(msg);
   }
 }
 
