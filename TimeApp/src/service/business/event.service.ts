@@ -577,7 +577,7 @@ export class EventService extends BaseService {
       repeatStartdt = this.getRepeatStartDt(agdata.sd,rtjson.openway);
       repeatEnddt = moment(repeatStartdt).add(len - 1 , 'M');
 
-      if (rtjson.openway == anyenum.OpenWay.close){
+      if (rtjson.openway.length == 0){  //anyenum.OpenWay.close
         addtype = 'M';
       }else{
         addtype = 'w';

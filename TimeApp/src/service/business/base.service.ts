@@ -1,6 +1,6 @@
 export class BaseService {
   assertNumber(src: any, msg: string = "Assert Number Error.") {
-    if (!isNan(Number(src))) {
+    if (!isNaN(Number(src))) {
       throw new Error(msg);
     }
   }
