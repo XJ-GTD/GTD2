@@ -1127,7 +1127,7 @@ describe('CalendarService test suite', () => {
   }));
 
   // 需要同步执行
-  it(`Case 2 - 3 removePlanItem after created`, async () => {
+  it(`Case 2 - 3 removePlanItem 删除创建的日历项`, async () => {
     // 基本日历
     let plan: PlanData = {} as PlanData;
 
@@ -1156,7 +1156,7 @@ describe('CalendarService test suite', () => {
   });
 
   // 需要同步执行
-  it(`Case 2 - 2 fetchPlanItems after created`, async () => {
+  it(`Case 2 - 2 fetchPlanItems 取得日历项 - 自定义日历项`, async () => {
     // 基本日历
     let plan: PlanData = {} as PlanData;
 
@@ -1219,7 +1219,7 @@ describe('CalendarService test suite', () => {
   });
 
   // 需要同步执行
-  it(`Case 1 - 12 fetchPublicPlans check prev saved private plans`, async () => {
+  it(`Case 1 - 12 fetchPublicPlans 取得公共日历 - 1个自定义日历`, async () => {
     // 新建日历
     let plan: PlanData = {} as PlanData;
 
@@ -1237,7 +1237,7 @@ describe('CalendarService test suite', () => {
   });
 
   // 需要同步执行
-  it(`Case 1 - 11 fetchPublicPlans check prev saved public plans and sort`, async () => {
+  it(`Case 1 - 11 fetchPublicPlans 取得公共日历 - 1个普通日历、1个活动日历`, async () => {
     // 新建日历
     // 基本日历
     let plan: PlanData = {} as PlanData;
@@ -1287,7 +1287,7 @@ describe('CalendarService test suite', () => {
   });
 
   // 需要同步执行
-  it(`Case 1 - 10 fetchPublicPlans check prev saved public activity plans`, async () => {
+  it(`Case 1 - 10 fetchPublicPlans 取得公共日历 - 1个活动日历`, async () => {
     // 新建日历
     let plan: PlanData = {} as PlanData;
 
@@ -1316,7 +1316,7 @@ describe('CalendarService test suite', () => {
   });
 
   // 需要同步执行
-  it(`Case 1 - 9 fetchPublicPlans check prev saved public plans`, async () => {
+  it(`Case 1 - 9 fetchPublicPlans 取得公共日历 - 1个普通日历`, async () => {
     // 新建日历
     let plan: PlanData = {} as PlanData;
 
@@ -1345,7 +1345,7 @@ describe('CalendarService test suite', () => {
   });
 
   // 需要同步执行
-  it(`Case 1 - 8 fetchPrivatePlans check prev saved private plan`, async () => {
+  it(`Case 1 - 8 fetchPrivatePlans 取得自定义日历 - 1个自定义日历`, async () => {
     // 新建日历
     let plan: PlanData = {} as PlanData;
 
@@ -1374,7 +1374,7 @@ describe('CalendarService test suite', () => {
   });
 
   // 需要同步执行
-  it(`Case 1 - 7 fetchAllPlans check prev saved plan`, async () => {
+  it(`Case 1 - 7 fetchAllPlans 取得所有日历 - 1个自定义日历`, async () => {
     // 新建日历
     let plan: PlanData = {} as PlanData;
 
@@ -1403,28 +1403,28 @@ describe('CalendarService test suite', () => {
   });
 
   // 可以异步执行
-  it(`Case 1 - 6 removePlanSqls PlanType.PrivatePlan`, async(() => {
+  it(`Case 1 - 6 removePlanSqls 取得删除日历Sql - 删除自定义日历`, async(() => {
     let result = calendarService.removePlanSqls('ji', PlanType.PrivatePlan);
     expect(result).toBeDefined();
     expect(result.length).toBeGreaterThan(0);
   }));
 
   // 可以异步执行
-  it(`Case 1 - 5 removePlanSqls PlanType.ActivityPlan`, async(() => {
+  it(`Case 1 - 5 removePlanSqls 取得删除日历Sql - 删除活动日历`, async(() => {
     let result = calendarService.removePlanSqls('ji', PlanType.ActivityPlan);
     expect(result).toBeDefined();
     expect(result.length).toBeGreaterThan(0);
   }));
 
   // 可以异步执行
-  it(`Case 1 - 4 removePlanSqls PlanType.CalendarPlan`, async(() => {
+  it(`Case 1 - 4 removePlanSqls 取得删除日历Sql - 删除普通日历`, async(() => {
     let result = calendarService.removePlanSqls('ji', PlanType.CalendarPlan);
     expect(result).toBeDefined();
     expect(result.length).toBeGreaterThan(0);
   }));
 
   // 需要同步执行
-  it(`Case 1 - 3 use savePlan to update an exist plan's color`, async () => {
+  it(`Case 1 - 3 savePlan 更新日历 - 更新日历颜色`, async () => {
     let savedPlan;
 
     if (planforUpdate && planforUpdate.ji) {
@@ -1444,7 +1444,7 @@ describe('CalendarService test suite', () => {
   });
 
   // 需要同步执行
-  it('Case 1 - 2 use savePlan to create a new plan', () => {
+  it('Case 1 - 2 savePlan 新建日历 - 自定义日历', () => {
     expect(function() {
       let plan: PlanData = {} as PlanData;
 
