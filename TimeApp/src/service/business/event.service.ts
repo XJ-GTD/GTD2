@@ -686,9 +686,13 @@ export class EventService extends BaseService {
 	 */
 	async getTask(evi: string): Promise<TaskData> {
 			this.assertEmpty(evi); // id不能为空
-			let sqlparam: string =`select ev.*,td.cs,td.isrt,td.cd,td.fd from gtd_ev  ev left join gtd_t  td on ev.evi = td.evi where ev.evi =${evi} `;
+//			let sqlparam: string =`select ev.*,td.cs,td.isrt,td.cd,td.fd from gtd_ev  ev left join gtd_t  td on ev.evi = td.evi where ev.evi =${evi} `;
+  		let evdb: EvTbl = new EvTbl();
+  		evdb.evi = evi;
+  		evdb =  await this.sqlExce.getOneByParam<EvTbl>(evdb);
   		let data: TaskData  = {} as TaskData;
-  		data = await this.sqlExce.getExtOneByParam<TaskData>(sqlparam,null);
+//		data = await this.sqlExce.getExtOneByParam<TaskData>(sqlparam,null);
+			Object.assign(data, evdb);
   		return data;
 	}
 
