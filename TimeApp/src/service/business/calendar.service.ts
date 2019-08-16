@@ -1126,7 +1126,7 @@ export class CalendarService extends BaseService {
     this.assertEmpty(pagedActivities);            // 翻页数据不能为空
     this.assertEmpty(pagedActivities.startday);   // 翻页数据开始日期不能为空
     this.assertEmpty(pagedActivities.endday);     // 翻页数据结束日期不能为空
-    this.assertEmpty(activities);                 // 活动数据不能为空
+    this.assertEmpty(activitiedatas);                 // 活动数据不能为空
 
     let activities: Array<any> = activitiedatas;
 
