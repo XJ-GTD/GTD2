@@ -34,7 +34,7 @@ import { RestfulClient } from "../util-service/restful.client";
 import {NetworkService} from "../cordova/network.service";
 import { ShaeRestful } from "../restful/shaesev";
 import { BacRestful } from "../restful/bacsev";
-
+import {MomTbl} from "../sqlite/tbl/mom.tbl";
 import { CalendarService, PlanData } from "./calendar.service";
 import { MemoService,MemoData } from "./memo.service";
 import { PlanType,ObjectType } from "../../data.enum";
