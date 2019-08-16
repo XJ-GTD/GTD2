@@ -1187,10 +1187,14 @@ export class CalendarService extends BaseService {
 
       // 更新/插入/删除活动数据
       let index: number = -1;
-      
+
       switch (activityType) {
         case "PlanItemData" :
           index = calendaritemids.indexOf(activity.jti);
+
+          let item: PlanItemData = {} as PlanItemData;
+          Object.assign(item, activity);
+
           if (index >= 0) {
             // 更新/删除
             if (activity.del == DelType.del) {
@@ -1203,14 +1207,14 @@ export class CalendarService extends BaseService {
             } else {
               // 更新
               if (index == 0) {
-                pagedActivities.calendaritems = pagedActivities.calendaritems.slice(1).unshift(activity);
+                pagedActivities.calendaritems = pagedActivities.calendaritems.slice(1).unshift(item);
               } else {
-                pagedActivities.calendaritems = pagedActivities.calendaritems.slice(0, index).concat(pagedActivities.calendaritems.slice(index + 1).unshift(activity));
+                pagedActivities.calendaritems = pagedActivities.calendaritems.slice(0, index).concat(pagedActivities.calendaritems.slice(index + 1).unshift(item));
               }
             }
           } else {
             // 插入
-            pagedActivities.calendaritems.push(activity);
+            pagedActivities.calendaritems.push(item);
           }
           break;
         case "AgendaData" :
@@ -1243,6 +1247,9 @@ export class CalendarService extends BaseService {
           }
           break;
         case "MemoData" :
+          let memo: MemoData = {} as MemoData;
+          Object.assign(memo, activity);
+
           index = memoids.indexOf(activity.moi);
           if (index >= 0) {
             // 更新/删除
@@ -1256,13 +1263,13 @@ export class CalendarService extends BaseService {
             } else {
               // 更新
               if (index == 0) {
-                pagedActivities.memos = pagedActivities.memos.slice(1).unshift(activity);
+                pagedActivities.memos = pagedActivities.memos.slice(1).unshift(memo);
               } else {
-                pagedActivities.memos = pagedActivities.memos.slice(0, index).concat(pagedActivities.memos.slice(index + 1).unshift(activity));
+                pagedActivities.memos = pagedActivities.memos.slice(0, index).concat(pagedActivities.memos.slice(index + 1).unshift(memo));
               }
             }
           } else {
-            pagedActivities.memos.push(activity);
+            pagedActivities.memos.push(memo);
           }
           break;
         default:
