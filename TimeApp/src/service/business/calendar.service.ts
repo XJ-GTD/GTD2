@@ -1186,9 +1186,11 @@ export class CalendarService extends BaseService {
       }, memoids);
 
       // 更新/插入/删除活动数据
+      let index: number = -1;
+      
       switch (activityType) {
         case "PlanItemData" :
-          let index: number = calendaritemids.indexOf(activity.jti);
+          index = calendaritemids.indexOf(activity.jti);
           if (index >= 0) {
             // 更新/删除
             if (activity.del == DelType.del) {
@@ -1214,7 +1216,7 @@ export class CalendarService extends BaseService {
         case "AgendaData" :
         case "TaskData" :
         case "MiniTaskData" :
-          let index: number = eventids.indexOf(activity.evi);
+          index = eventids.indexOf(activity.evi);
 
           let event: EventData = {} as EventData;
           Object.assign(event, activity);
@@ -1241,7 +1243,7 @@ export class CalendarService extends BaseService {
           }
           break;
         case "MemoData" :
-          let index: number = memoids.indexOf(activity.moi);
+          index = memoids.indexOf(activity.moi);
           if (index >= 0) {
             // 更新/删除
             if (activity.del == DelType.del) {
