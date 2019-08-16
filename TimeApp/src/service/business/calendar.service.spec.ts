@@ -199,7 +199,7 @@ describe('CalendarService test suite', () => {
     agenda.sd = day;
     agenda.evn = "结婚纪念日买礼物给太太";
 
-    agenda = await eventService.saveAgenda(agenda);
+    let savedagenda = await eventService.saveAgenda(agenda);
 
     // 备忘
     let memo: MemoData = {} as MemoData;
@@ -227,7 +227,7 @@ describe('CalendarService test suite', () => {
     task = await eventService.saveTask(task);
 
     // 增加1个日程、1个任务、1个备忘、1个日历项
-    pagedActivities = calendarService.mergePagedActivities(pagedActivities, [agenda, task, memo, planitem1]);
+    pagedActivities = calendarService.mergePagedActivities(pagedActivities, [savedagenda, task, memo, planitem1]);
 
     let startday: string = moment().subtract(3, "days").format("YYYY/MM/DD");
     let endday: string = moment().add(3, "days").format("YYYY/MM/DD");
@@ -461,10 +461,10 @@ describe('CalendarService test suite', () => {
     agenda.sd = day;
     agenda.evn = "结婚纪念日买礼物给太太";
 
-    agenda = await eventService.saveAgenda(agenda);
+    let savedagenda = await eventService.saveAgenda(agenda);
 
     // 增加1个日程
-    pagedActivities = calendarService.mergePagedActivities(pagedActivities, [agenda]);
+    pagedActivities = calendarService.mergePagedActivities(pagedActivities, [savedagenda]);
 
     let startday: string = moment().subtract(3, "days").format("YYYY/MM/DD");
     let endday: string = moment().add(3, "days").format("YYYY/MM/DD");
