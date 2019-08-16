@@ -143,7 +143,7 @@ export class EventService extends BaseService {
       this.emitService.emitRef(agdata.sd);
       console.log(agdata);
 
-      return agdata;
+      return retParamEv.outAgdata;
     }
   }
 
