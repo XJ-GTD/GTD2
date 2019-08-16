@@ -1327,9 +1327,11 @@ export class CalendarService extends BaseService {
    *
    * @author leon_xi@163.com
    **/
-  getActivityType(src: PlanItemData | AgendaData | TaskData | MiniTaskData | MemoData): string {
+  getActivityType(source: PlanItemData | AgendaData | TaskData | MiniTaskData | MemoData): string {
 
-    this.assertEmpty(src);
+    this.assertEmpty(source);
+
+    let src: any = source;
 
     if (src.jti) {  // PlanItemData
       return "PlanItemData";
