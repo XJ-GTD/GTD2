@@ -1197,7 +1197,7 @@ export class CalendarService extends BaseService {
 
           if (index >= 0) {
             // 更新/删除
-            if (activity.del == DelType.del) {
+            if (item.del == DelType.del) {
               // 删除
               if (index == 0) {
                 pagedActivities.calendaritems = pagedActivities.calendaritems.slice(1);
@@ -1227,7 +1227,7 @@ export class CalendarService extends BaseService {
 
           if (index >= 0) {
             // 更新/删除
-            if (activity.del == DelType.del) {
+            if (event.del == DelType.del) {
               // 删除
               if (index == 0) {
                 pagedActivities.events = pagedActivities.events.slice(1);
@@ -1253,7 +1253,7 @@ export class CalendarService extends BaseService {
           index = memoids.indexOf(activity.moi);
           if (index >= 0) {
             // 更新/删除
-            if (activity.del == DelType.del) {
+            if (memo.del == DelType.del) {
               // 删除
               if (index == 0) {
                 pagedActivities.memos = pagedActivities.memos.slice(1);
