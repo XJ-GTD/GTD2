@@ -40,7 +40,6 @@ import {EvTbl} from "../sqlite/tbl/ev.tbl";
 import {CaTbl} from "../sqlite/tbl/ca.tbl";
 import {TTbl} from "../sqlite/tbl/t.tbl";
 import {WaTbl} from "../sqlite/tbl/wa.tbl";
-import {ETbl} from "../sqlite/tbl/e.tbl";
 import { CalendarService, PlanData } from "./calendar.service";
 import { EventService,TaskData,MiniTaskData} from "./event.service";
 import { PlanType,IsCreate } from "../../data.enum";
@@ -125,9 +124,6 @@ describe('EventService test suite', () => {
     await sqlExce.dropByParam(wa);
     await sqlExce.createByParam(wa);
     
-    let et: ETbl = new ETbl();
-    await sqlExce.dropByParam(et);
-    await sqlExce.createByParam(et);
   });
 
   // 需要同步执行
