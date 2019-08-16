@@ -101,30 +101,14 @@ export class EventService extends BaseService {
     if (agdata.evi != null && agdata.evi != "") {
       /*修改*/
       let outAgdatas = await this.updateAgenda(agdata,modiType);
+
       return outAgdatas;
 
     } else {
 
       /*新增*/
-      //设置页面参数初始化
-      this.initAgdParam(agdata);
-      console.log(JSON.stringify(agdata));
-
-      //事件sqlparam 及提醒sqlparam
       let retParamEv = new RetParamEv();
-      retParamEv = this.sqlparamAddEv2(agdata);
-      console.log(JSON.stringify(retParamEv));
-
-
-      //日程表sqlparam
-      let caparam = new Array<any>();
-      caparam = this.sqlparamAddCa(retParamEv.rtevi,agdata.sd,retParamEv.ed,agdata);
-      console.log(JSON.stringify(caparam));
-
-      //批量本地入库
-      let sqlparam = new Array<any>();
-      sqlparam = [...retParamEv.sqlparam, ...caparam];
-      await this.sqlExce.batExecSqlByParam(sqlparam);
+      retParamEv = await this.newAgenda(agdata);
 
       //提交服务器
       let agdPro: AgdPro = new AgdPro();
@@ -148,6 +132,36 @@ export class EventService extends BaseService {
 
       return retParamEv.outAgdatas;
     }
+  }
+
+  /**
+   * 新增日程
+   * @param {AgendaData} agdata
+   * @returns {Promise<Array<AgendaData>>}
+   */
+  private async newAgenda(agdata: AgendaData):Promise<RetParamEv> {
+
+    //设置页面参数初始化
+    this.initAgdParam(agdata);
+    console.log(JSON.stringify(agdata));
+
+    //事件sqlparam 及提醒sqlparam
+    let retParamEv = new RetParamEv();
+    retParamEv = this.sqlparamAddEv2(agdata);
+    console.log(JSON.stringify(retParamEv));
+
+
+    //日程表sqlparam
+    let caparam = new Array<any>();
+    caparam = this.sqlparamAddCa(retParamEv.rtevi,agdata.sd,retParamEv.ed,agdata);
+    console.log(JSON.stringify(caparam));
+
+    //批量本地入库
+    let sqlparam = new Array<any>();
+    sqlparam = [...retParamEv.sqlparam, ...caparam];
+    await this.sqlExce.batExecSqlByParam(sqlparam);
+
+    return retParamEv;
   }
 
   /**
@@ -180,14 +194,10 @@ export class EventService extends BaseService {
 
       //更新原事件日程结束日
       let caevi : string;
-      if (agdata.rfg == anyenum.RepeatFlag.RepeatToNon){
+      if (agdata.rtevi == ""){
         caevi = agdata.evi;
-      }else{
-        if (agdata.rtevi == ""){
-          caevi = agdata.evi;
-        }else {
-          caevi = agdata.rtevi;
-        }
+      }else {
+        caevi = agdata.rtevi;
       }
 
       let ca = new CaTbl();
@@ -195,6 +205,15 @@ export class EventService extends BaseService {
       ca.ed = moment(agdata.evd).subtract(1,'d').format("YYYY/MM/dd");
       sqlparam.push(ca.upTParam());
 
+      //新建新事件日程
+      let newAgdata = {} as AgendaData;
+      Object.assign(newAgdata ,agdata );
+
+      let retParamEv = new RetParamEv();
+      retParamEv = await this.newAgenda(newAgdata);
+
+      sqlparam = [...sqlparam, ...retParamEv.sqlparam];
+      outAgds = retParamEv.outAgdatas;
 
     }else if(modiType == anyenum.ModifyType.OnlySel) {
 
@@ -243,7 +262,7 @@ export class EventService extends BaseService {
       if (agdata.txjson.type != anyenum.TxType.close) {
         sqlparam.push(this.sqlparamAddTxWa(ev, agdata.st, agdata.al, agdata.txjson).rpTParam());
       }
-      //日程表新建
+      //日程表新建或更新
       let caparam = new Array<any>();
       caparam = this.sqlparamAddCa(agdata.evi ,agdata.evd,agdata.evd,agdata);
       console.log(JSON.stringify(caparam));
