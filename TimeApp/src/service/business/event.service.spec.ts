@@ -97,8 +97,9 @@ describe('EventService test suite', () => {
     });
     config = TestBed.get(SqliteConfig);
     init = TestBed.get(SqliteInit);
+    restConfig = TestBed.get(RestFulConfig);
 		sqlExce = TestBed.get(SqliteExec);
-		
+
     eventService = TestBed.get(EventService);
     await config.generateDb();
     await init.createTables();
@@ -111,7 +112,7 @@ describe('EventService test suite', () => {
     let ev: EvTbl = new EvTbl();
     await sqlExce.dropByParam(ev);
     await sqlExce.createByParam(ev);
-    
+
     let ca: CaTbl = new CaTbl();
     await sqlExce.dropByParam(ca);
     await sqlExce.createByParam(ca);
@@ -119,11 +120,11 @@ describe('EventService test suite', () => {
     let t: TTbl = new TTbl();
     await sqlExce.dropByParam(t);
     await sqlExce.createByParam(t);
-    
+
     let wa: WaTbl = new WaTbl();
     await sqlExce.dropByParam(wa);
     await sqlExce.createByParam(wa);
-    
+
   });
 
   // 需要同步执行
