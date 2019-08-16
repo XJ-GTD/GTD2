@@ -1209,7 +1209,8 @@ export class CalendarService extends BaseService {
             } else {
               // 更新
               if (index == 0) {
-                pagedActivities.calendaritems = pagedActivities.calendaritems.slice(1).unshift(item);
+                pagedActivities.calendaritems = pagedActivities.calendaritems.slice(1);
+                pagedActivities.calendaritems.unshift(item);
               } else {
                 let tail = pagedActivities.calendaritems.slice(index + 1);
                 tail.unshift(item);
@@ -1241,7 +1242,8 @@ export class CalendarService extends BaseService {
             } else {
               // 更新
               if (index == 0) {
-                pagedActivities.events = pagedActivities.events.slice(1).unshift(event);
+                pagedActivities.events = pagedActivities.events.slice(1);
+                pagedActivities.events.unshift(event);
               } else {
                 let tail = pagedActivities.events.slice(index + 1);
                 tail.unshift(event);
@@ -1269,7 +1271,8 @@ export class CalendarService extends BaseService {
             } else {
               // 更新
               if (index == 0) {
-                pagedActivities.memos = pagedActivities.memos.slice(1).unshift(memo);
+                pagedActivities.memos = pagedActivities.memos.slice(1);
+                pagedActivities.memos.unshift(memo);
               } else {
                 let tail = pagedActivities.memos.slice(index + 1);
                 tail.unshift(memo);
