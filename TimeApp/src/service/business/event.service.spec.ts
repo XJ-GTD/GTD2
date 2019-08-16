@@ -57,7 +57,7 @@ describe('EventService test suite', () => {
   let eventService: EventService;
   let planforUpdate: PlanData;
 
-  beforeAll(() => {
+  beforeAll(async () => {
     TestBed.configureTestingModule({
       declarations: [
         MyApp
@@ -93,7 +93,7 @@ describe('EventService test suite', () => {
     });
     config = TestBed.get(SqliteConfig);
     init = TestBed.get(SqliteInit);
-    
+
     eventService = TestBed.get(EventService);
     await config.generateDb();
     await init.createTables();
@@ -195,7 +195,7 @@ describe('EventService test suite', () => {
     expect(tx).toBeDefined();
     expect(tx.evi).toBeDefined();
     await eventService.finishTaskNext(tx.evi);
-    
+
     //验证是否已获取数据
     let txx: TaskData = {} as TaskData;
     txx = await eventService.getTaskNext(tx.evi);
