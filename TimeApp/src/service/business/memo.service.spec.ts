@@ -104,7 +104,10 @@ describe('MemoService test suite', () => {
   });
 
   beforeEach(async () => {
-    await config.generateDb();
+    //await config.generateDb();
+    let mom: MomTbl = new MomTbl();
+    await sqlExce.dropByParam(mom);
+    await sqlExce.createByParam(mom);
   });
 
   // 需要同步执行

@@ -102,7 +102,26 @@ describe('EventService test suite', () => {
   });
 
   beforeEach(async () => {
-    await config.generateDb();
+    //await config.generateDb();
+    let ev: EvTbl = new EvTbl();
+    await sqlExce.dropByParam(ev);
+    await sqlExce.createByParam(ev);
+    
+    let ca: CaTbl = new CaTbl();
+    await sqlExce.dropByParam(ca);
+    await sqlExce.createByParam(ca);
+
+    let t: TTbl = new TTbl();
+    await sqlExce.dropByParam(t);
+    await sqlExce.createByParam(t);
+    
+    let wa: WaTbl = new WaTbl();
+    await sqlExce.dropByParam(wa);
+    await sqlExce.createByParam(wa);
+    
+    let et: ETbl = new ETbl();
+    await sqlExce.dropByParam(et);
+    await sqlExce.createByParam(et);
   });
 
   // 需要同步执行
