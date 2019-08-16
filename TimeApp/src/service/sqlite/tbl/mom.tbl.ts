@@ -26,8 +26,8 @@ export class MomTbl implements ITblParam {
      ,mon varchar(50)
      ,mk varchar(50)
      ,fj varchar(50)
-     ,tb varchar(4)
-     ,del varchar(4)
+     ,tb varchar(6)
+     ,del varchar(6)
      ,wtt integer
      ,utt integer
      );`;

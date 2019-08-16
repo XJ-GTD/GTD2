@@ -218,6 +218,17 @@ export class EventService extends BaseService {
       ev.tx = agdata.tx;
       ev.txs = agdata.txs;
 
+      let rtjon = new RtJson();
+      rtjon.cycletype = anyenum.CycleType.close;
+      rtjon.over.value = "";
+      rtjon.over.type = anyenum.OverType.fornever;
+      rtjon.cyclenum = 1;
+      rtjon.openway = new Array<number>();
+      agdata.rt = JSON.stringify(rtjon);
+      agdata.rts = !agdata.rts ? "" : agdata.rts ;
+      ev.rt = agdata.rt;
+      ev.rts = agdata.rts;
+
       sqlparam.push(ev.upTParam());
 
       // 删除相关提醒

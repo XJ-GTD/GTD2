@@ -28,8 +28,8 @@ export class JhaTbl implements ITblParam {
        ,jtd VARCHAR(4) 
        ,wtt integer 
        ,utt integer 
-       ,tb varchar(4) 
-       ,del varchar(4) 
+       ,tb varchar(6) 
+       ,del varchar(6) 
      );`;
 
     return sq;
