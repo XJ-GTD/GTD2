@@ -235,11 +235,11 @@ describe('CalendarService test suite', () => {
     expect(pagedActivities.startday).toBe(startday);
     expect(pagedActivities.endday).toBe(endday);
     expect(pagedActivities.calendaritems).toBeDefined();
-    expect(pagedActivities.calendaritems.length).toBe(0);
+    expect(pagedActivities.calendaritems.length).toBe(1);
     expect(pagedActivities.events).toBeDefined();
-    expect(pagedActivities.events.length).toBe(1);
+    expect(pagedActivities.events.length).toBe(2);
     expect(pagedActivities.memos).toBeDefined();
-    expect(pagedActivities.memos.length).toBe(0);
+    expect(pagedActivities.memos.length).toBe(1);
 
     expect(pagedActivities.days).toBeDefined();
     expect(pagedActivities.days.get(startday)).toBeDefined();
@@ -254,11 +254,11 @@ describe('CalendarService test suite', () => {
     expect(pagedActivities.days.get(day)).toBeDefined();
     expect(pagedActivities.days.get(day).day).toBe(startday);
     expect(pagedActivities.days.get(day).calendaritems).toBeDefined();
-    expect(pagedActivities.days.get(day).calendaritems.length).toBe(0);
+    expect(pagedActivities.days.get(day).calendaritems.length).toBe(1);
     expect(pagedActivities.days.get(day).events).toBeDefined();
-    expect(pagedActivities.days.get(day).events.length).toBe(1);
+    expect(pagedActivities.days.get(day).events.length).toBe(2);
     expect(pagedActivities.days.get(day).memos).toBeDefined();
-    expect(pagedActivities.days.get(day).memos.length).toBe(0);
+    expect(pagedActivities.days.get(day).memos.length).toBe(1);
 
     expect(pagedActivities.days.get(endday)).toBeDefined();
     expect(pagedActivities.days.get(endday).day).toBe(endday);
