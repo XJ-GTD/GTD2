@@ -1073,6 +1073,13 @@ export class CalendarService extends BaseService {
     return dayActivities;
   }
 
+  /**
+   * 查询活动（时间/内容/标签）
+   *
+   * 日历项/事件/备忘
+   *
+   * @author leon_xi@163.com
+   **/
   async findActivities(condition: FindActivityCondition): Promise<ActivityData> {
 
     this.assertEmpty(condition);    // 入参不能为空
