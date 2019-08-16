@@ -80,6 +80,14 @@ export enum CycleType {
   year = "4"
 }
 
+//记录标志
+export enum RepeatFlag {
+  NonRepeat = "0",
+  Repeat = "1",
+  RepeatToNon = "2",
+}
+
+
 //重复开启选项
 export enum OpenWay {
   close = "close",
