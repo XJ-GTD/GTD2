@@ -91,6 +91,7 @@ describe('MemoService test suite', () => {
     });
     config = TestBed.get(SqliteConfig);
     init = TestBed.get(SqliteInit);
+    restConfig = TestBed.get(RestFulConfig);
 		sqlExce = TestBed.get(SqliteExec);
     memoService = TestBed.get(MemoService);
 
