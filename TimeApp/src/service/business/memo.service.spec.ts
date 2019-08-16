@@ -26,6 +26,7 @@ import {
 
 import {MyApp} from '../../app/app.component';
 import {SqliteConfig} from "../config/sqlite.config";
+import {SqliteInit} from "../sqlite/sqlite.init";
 import {RestFulConfig} from "../config/restful.config";
 
 import {EmitService} from "../util-service/emit.service";
@@ -51,10 +52,12 @@ import { PlanType,ObjectType } from "../../data.enum";
  **/
 describe('MemoService test suite', () => {
   let config: SqliteConfig;
+  let init: SqliteInit;
+  let restConfig: RestFulConfig;
   let memoService: MemoService;
   let planforUpdate: PlanData;
 
-  beforeAll(() => {
+  beforeAll(async () => {
     TestBed.configureTestingModule({
       declarations: [
         MyApp
@@ -71,6 +74,7 @@ describe('MemoService test suite', () => {
         SQLitePorter,
         SqliteConfig,
         SqliteExec,
+        SqliteInit,
         UtilService,
         EmitService,
         ShaeRestful,
@@ -87,7 +91,16 @@ describe('MemoService test suite', () => {
       ]
     });
     config = TestBed.get(SqliteConfig);
+    init = TestBed.get(SqliteInit);
+
     memoService = TestBed.get(MemoService);
+
+    await config.generateDb();
+    await init.createTables();
+    await init.initData();
+    restConfig.init();
+
+    jasmine.DEFAULT_TIMEOUT_INTERVAL = 60 * 1000;  // 每个Case超时时间
   });
 
   beforeEach(async () => {

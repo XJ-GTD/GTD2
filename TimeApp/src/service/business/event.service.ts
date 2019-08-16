@@ -109,7 +109,7 @@ export class EventService extends BaseService {
 
       //事件sqlparam 及提醒sqlparam
       let retParamEv = new RetParamEv();
-      retParamEv = this.sqlparamAddEv(agdata);
+      retParamEv = this.sqlparamAddEv2(agdata);
       console.log(JSON.stringify(retParamEv));
 
 

@@ -1120,13 +1120,15 @@ export class CalendarService extends BaseService {
    *
    * @author leon_xi@163.com
    **/
-  mergePagedActivities(pagedActivities: PagedActivityData, activities: Array<PlanItemData | AgendaData | TaskData | MiniTaskData | MemoData>): PagedActivityData {
+  mergePagedActivities(pagedActivities: PagedActivityData, activitiedatas: Array<PlanItemData | AgendaData | TaskData | MiniTaskData | MemoData>): PagedActivityData {
 
     // 入参不能为空
     this.assertEmpty(pagedActivities);            // 翻页数据不能为空
     this.assertEmpty(pagedActivities.startday);   // 翻页数据开始日期不能为空
     this.assertEmpty(pagedActivities.endday);     // 翻页数据结束日期不能为空
-    this.assertEmpty(activities);                 // 活动数据不能为空
+    this.assertEmpty(activitiedatas);                 // 活动数据不能为空
+
+    let activities: Array<any> = activitiedatas;
 
     // 没有合并数据直接返回
     if (activities.length == 0) {
@@ -1207,7 +1209,8 @@ export class CalendarService extends BaseService {
             } else {
               // 更新
               if (index == 0) {
-                pagedActivities.calendaritems = pagedActivities.calendaritems.slice(1).unshift(item);
+                pagedActivities.calendaritems = pagedActivities.calendaritems.slice(1);
+                pagedActivities.calendaritems.unshift(item);
               } else {
                 let tail = pagedActivities.calendaritems.slice(index + 1);
                 tail.unshift(item);
@@ -1239,7 +1242,8 @@ export class CalendarService extends BaseService {
             } else {
               // 更新
               if (index == 0) {
-                pagedActivities.events = pagedActivities.events.slice(1).unshift(event);
+                pagedActivities.events = pagedActivities.events.slice(1);
+                pagedActivities.events.unshift(event);
               } else {
                 let tail = pagedActivities.events.slice(index + 1);
                 tail.unshift(event);
@@ -1267,7 +1271,8 @@ export class CalendarService extends BaseService {
             } else {
               // 更新
               if (index == 0) {
-                pagedActivities.memos = pagedActivities.memos.slice(1).unshift(memo);
+                pagedActivities.memos = pagedActivities.memos.slice(1);
+                pagedActivities.memos.unshift(memo);
               } else {
                 let tail = pagedActivities.memos.slice(index + 1);
                 tail.unshift(memo);

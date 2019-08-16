@@ -25,6 +25,7 @@ import {
 
 import {MyApp} from '../../app/app.component';
 import {SqliteConfig} from "../config/sqlite.config";
+import {SqliteInit} from "../sqlite/sqlite.init";
 import {RestFulConfig} from "../config/restful.config";
 
 import {EmitService} from "../util-service/emit.service";
@@ -51,10 +52,12 @@ import { PlanType,IsCreate } from "../../data.enum";
  **/
 describe('EventService test suite', () => {
   let config: SqliteConfig;
+  let init: SqliteInit;
+  let restConfig: RestFulConfig;
   let eventService: EventService;
   let planforUpdate: PlanData;
 
-  beforeAll(() => {
+  beforeAll(async () => {
     TestBed.configureTestingModule({
       declarations: [
         MyApp
@@ -70,6 +73,7 @@ describe('EventService test suite', () => {
         SQLite,
         SQLitePorter,
         SqliteConfig,
+        SqliteInit,
         SqliteExec,
         UtilService,
         EmitService,
@@ -88,7 +92,13 @@ describe('EventService test suite', () => {
       ]
     });
     config = TestBed.get(SqliteConfig);
+    init = TestBed.get(SqliteInit);
+
     eventService = TestBed.get(EventService);
+    await config.generateDb();
+    await init.createTables();
+    await init.initData();
+    restConfig.init();
   });
 
   beforeEach(async () => {
@@ -185,7 +195,7 @@ describe('EventService test suite', () => {
     expect(tx).toBeDefined();
     expect(tx.evi).toBeDefined();
     await eventService.finishTaskNext(tx.evi);
-    
+
     //验证是否已获取数据
     let txx: TaskData = {} as TaskData;
     txx = await eventService.getTaskNext(tx.evi);
