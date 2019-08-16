@@ -56,6 +56,7 @@ describe('EventService test suite', () => {
   let restConfig: RestFulConfig;
   let eventService: EventService;
   let planforUpdate: PlanData;
+  let sqlExce: SqliteExec;
 
   beforeAll(async () => {
     TestBed.configureTestingModule({
@@ -93,7 +94,8 @@ describe('EventService test suite', () => {
     });
     config = TestBed.get(SqliteConfig);
     init = TestBed.get(SqliteInit);
-
+		sqlExce = TestBed.get(SqliteExec);
+		
     eventService = TestBed.get(EventService);
     await config.generateDb();
     await init.createTables();

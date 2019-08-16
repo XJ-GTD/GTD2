@@ -1,7 +1,6 @@
 import {} from 'jasmine';
 import { TestBed, async } from '@angular/core/testing';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
-
 import {Device} from "@ionic-native/device";
 import {Network} from "@ionic-native/network";
 import {HttpClient} from "@angular/common/http";
@@ -28,10 +27,9 @@ import {MyApp} from '../../app/app.component';
 import {SqliteConfig} from "../config/sqlite.config";
 import {SqliteInit} from "../sqlite/sqlite.init";
 import {RestFulConfig} from "../config/restful.config";
-
+import {SqliteExec} from "../util-service/sqlite.exec";
 import {EmitService} from "../util-service/emit.service";
 import {UtilService} from "../util-service/util.service";
-import { SqliteExec } from "../util-service/sqlite.exec";
 import { RestfulClient } from "../util-service/restful.client";
 import {NetworkService} from "../cordova/network.service";
 import { ShaeRestful } from "../restful/shaesev";
@@ -56,6 +54,7 @@ describe('MemoService test suite', () => {
   let restConfig: RestFulConfig;
   let memoService: MemoService;
   let planforUpdate: PlanData;
+  let sqlExce: SqliteExec;
 
   beforeAll(async () => {
     TestBed.configureTestingModule({
@@ -92,7 +91,7 @@ describe('MemoService test suite', () => {
     });
     config = TestBed.get(SqliteConfig);
     init = TestBed.get(SqliteInit);
-
+		sqlExce = TestBed.get(SqliteExec);
     memoService = TestBed.get(MemoService);
 
     await config.generateDb();
