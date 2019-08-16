@@ -689,10 +689,10 @@ export class EventService extends BaseService {
 //			let sqlparam: string =`select ev.*,td.cs,td.isrt,td.cd,td.fd from gtd_ev  ev left join gtd_t  td on ev.evi = td.evi where ev.evi =${evi} `;
   		let evdb: EvTbl = new EvTbl();
   		evdb.evi = evi;
-  		evdb =  await this.sqlExce.getOneByParam<EvTbl>(evdb);
+  		let evdbNew =  await this.sqlExce.getOneByParam<EvTbl>(evdb);
   		let data: TaskData  = {} as TaskData;
 //		data = await this.sqlExce.getExtOneByParam<TaskData>(sqlparam,null);
-			Object.assign(data, evdb);
+			Object.assign(data, evdbNew);
   		return data;
 	}
 
