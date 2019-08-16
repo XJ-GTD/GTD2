@@ -36,6 +36,7 @@ import {NetworkService} from "../cordova/network.service";
 import { ShaeRestful } from "../restful/shaesev";
 import { AgdRestful } from "../restful/agdsev";
 import { BacRestful } from "../restful/bacsev";
+import {SyncRestful} from "../restful/syncsev";
 import {EvTbl} from "../sqlite/tbl/ev.tbl";
 import {CaTbl} from "../sqlite/tbl/ca.tbl";
 import {TTbl} from "../sqlite/tbl/t.tbl";
@@ -84,6 +85,7 @@ describe('EventService test suite', () => {
         ShaeRestful,
         AgdRestful,
         BacRestful,
+        SyncRestful,
         Network,
         HTTP,
         HttpClient,
