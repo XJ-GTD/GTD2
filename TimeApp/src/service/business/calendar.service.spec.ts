@@ -196,7 +196,7 @@ describe('CalendarService test suite', () => {
     // 任务
     let task: TaskData = {} as TaskData;
 
-    task.evd = subday;
+    task.evd = day;
     task.evn = "结婚纪念日前给太太买礼物";
 
     task = await eventService.saveTask(task);
