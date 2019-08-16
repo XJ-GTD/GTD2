@@ -97,7 +97,7 @@ describe('EventService test suite', () => {
     });
     config = TestBed.get(SqliteConfig);
     init = TestBed.get(SqliteInit);
-    restConfig = TestBed.get(RestFulConfig);
+    restConfig = TestBed.get(RestFulConfig);  // 别删除
 		sqlExce = TestBed.get(SqliteExec);
 
     eventService = TestBed.get(EventService);
