@@ -470,8 +470,10 @@ export class EventService extends BaseService {
             if (duration == 0) {
               days.push(stepDay);     // 当前日期为重复日期
             } else if (duration > 0) {
+              //当周日期
               days.push(moment(stepDay).add(duration, "days").format("YYYY/MM/DD"));
             } else {
+              //下周日期（跨周）
               days.push(moment(stepDay).add(7, "days").subtract(Math.abs(duration), "days").format("YYYY/MM/DD"));
             }
           }
@@ -492,8 +494,10 @@ export class EventService extends BaseService {
             if (duration == 0) {
               days.push(stepDay);     // 当前日期为重复日期
             } else if (duration > 0) {
+              //当月日期
               days.push(moment(stepDay).add(duration, "days").format("YYYY/MM/DD"));
             } else {
+              //下月日程（跨月）
               days.push(moment().month(moment(stepDay).month()).add(1, "months").days(option).format("YYYY/MM/DD"));
             }
           }
