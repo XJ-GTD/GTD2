@@ -76,7 +76,7 @@ export class EventService extends BaseService {
    * @param {ModifyType} modiType
    * @returns {Promise<AgendaData>}
    */
-  async saveAgenda(agdata : AgendaData, modiType : anyenum.ModifyType = anyenum.ModifyType.Non): Promise<AgendaData | Array<AgendaData>> {
+  async saveAgenda(agdata : AgendaData, modiType : anyenum.ModifyType = anyenum.ModifyType.Non): Promise<Array<AgendaData>> {
 
     // 入参不能为空
     this.assertEmpty(agdata);
@@ -118,7 +118,7 @@ export class EventService extends BaseService {
 
       //日程表sqlparam
       let caparam = new Array<any>();
-      caparam = this.sqlparamAddAdg(retParamEv.rtevi,agdata.sd,retParamEv.ed,agdata);
+      caparam = this.sqlparamAddCa(retParamEv.rtevi,agdata.sd,retParamEv.ed,agdata);
       console.log(JSON.stringify(caparam));
 
       //批量本地入库
@@ -170,8 +170,12 @@ export class EventService extends BaseService {
     if (modiType == anyenum.ModifyType.FromSel ){
 
       let sq : string ;
-      //删除原事件中从当前的日程
-      sq = `delete from gtd_ev where evd >= ${agdata.evd} `;
+      //删除原事件中从当前开始所有日程
+      sq = `delete from gtd_ev where evd >= '${agdata.evd}' `;
+      sqlparam.push(sq);
+
+      //删除原事件中从当前日程开始所有提醒
+      sq = `delete from gtd_wa where wai in (select evi from gtd_ev where evd >= '${agdata.evd}') `;
       sqlparam.push(sq);
 
       //更新原事件日程结束日
@@ -186,10 +190,10 @@ export class EventService extends BaseService {
         }
       }
 
-      sq = `update gtd_ca set ed =
-      ${moment(agdata.evd).subtract(1,'d').format("YYYY/MM/dd")}
-      where evi = ${caevi} `;
-      sqlparam.push(sq);
+      let ca = new CaTbl();
+      ca.evi = caevi;
+      ca.ed = moment(agdata.evd).subtract(1,'d').format("YYYY/MM/dd");
+      sqlparam.push(ca.upTParam());
 
 
     }else if(modiType == anyenum.ModifyType.OnlySel) {
@@ -241,7 +245,7 @@ export class EventService extends BaseService {
       }
       //日程表新建
       let caparam = new Array<any>();
-      caparam = this.sqlparamAddAdg(agdata.evi ,agdata.evd,agdata.evd,agdata);
+      caparam = this.sqlparamAddCa(agdata.evi ,agdata.evd,agdata.evd,agdata);
       console.log(JSON.stringify(caparam));
 
       sqlparam = [...sqlparam, ...caparam];
@@ -574,7 +578,7 @@ export class EventService extends BaseService {
    * @param {AgendaData} agdata
    * @returns {Array<any>}
    */
-  private sqlparamAddAdg(rtevi : string,sd : string ,ed :string, agdata : AgendaData): Array<any> {
+  private sqlparamAddCa(rtevi : string,sd : string ,ed :string, agdata : AgendaData): Array<any> {
 
     agdata.sd = sd;
     agdata.ed = ed;
