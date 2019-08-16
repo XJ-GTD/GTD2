@@ -98,6 +98,7 @@ describe('EventService test suite', () => {
     config = TestBed.get(SqliteConfig);
     init = TestBed.get(SqliteInit);
 		sqlExce = TestBed.get(SqliteExec);
+		restConfig = TestBed.get(RestFulConfig);
 		
     eventService = TestBed.get(EventService);
     await config.generateDb();
