@@ -226,8 +226,14 @@ describe('CalendarService test suite', () => {
 
     task = await eventService.saveTask(task);
 
+    let activities: Array<any> = new Array<any>();
+    activities.concat(savedagenda);
+    activities.push(task);
+    activities.push(memo);
+    activities.push(planitem1);
+
     // 增加1个日程、1个任务、1个备忘、1个日历项
-    pagedActivities = calendarService.mergePagedActivities(pagedActivities, [savedagenda, task, memo, planitem1]);
+    pagedActivities = calendarService.mergePagedActivities(pagedActivities, activities);
 
     let startday: string = moment().subtract(3, "days").format("YYYY/MM/DD");
     let endday: string = moment().add(3, "days").format("YYYY/MM/DD");
@@ -464,7 +470,7 @@ describe('CalendarService test suite', () => {
     let savedagenda = await eventService.saveAgenda(agenda);
 
     // 增加1个日程
-    pagedActivities = calendarService.mergePagedActivities(pagedActivities, [savedagenda]);
+    pagedActivities = calendarService.mergePagedActivities(pagedActivities, savedagenda);
 
     let startday: string = moment().subtract(3, "days").format("YYYY/MM/DD");
     let endday: string = moment().add(3, "days").format("YYYY/MM/DD");
