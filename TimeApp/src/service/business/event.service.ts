@@ -99,10 +99,13 @@ export class EventService extends BaseService {
     }
 
     if (agdata.evi != null && agdata.evi != "") {
-      await this.updateDetail(agdata,modiType);
-      return agdata;
+      /*修改*/
+      let outAgdatas = await this.updateAgenda(agdata,modiType);
+      return outAgdatas;
+
     } else {
 
+      /*新增*/
       //设置页面参数初始化
       this.initAgdParam(agdata);
       console.log(JSON.stringify(agdata));
@@ -143,7 +146,7 @@ export class EventService extends BaseService {
       this.emitService.emitRef(agdata.sd);
       console.log(agdata);
 
-      return retParamEv.outAgdata;
+      return retParamEv.outAgdatas;
     }
   }
 
@@ -152,7 +155,10 @@ export class EventService extends BaseService {
    * @param {ScdData} scd
    * @returns {Promise<void>}
    */
-  private async updateDetail(agdata: AgendaData, modiType : anyenum.ModifyType) {
+  private async updateAgenda(agdata: AgendaData, modiType : anyenum.ModifyType):Promise<Array<AgendaData>> {
+
+
+    let outAgds = new Array<AgendaData>();
 
     //批量本地更新
     let sqlparam = new Array<any>();
@@ -219,6 +225,10 @@ export class EventService extends BaseService {
 
       sqlparam.push(ev.upTParam());
 
+      let outAgd  = {} as AgendaData;
+      Object.assign(outAgd,ev);
+      outAgds.push(agdata);
+
       // 删除相关提醒
       let wa = new WaTbl();
       wa.obi = agdata.evi;
@@ -240,24 +250,8 @@ export class EventService extends BaseService {
 
     await this.sqlExce.batExecSqlByParam(sqlparam);
 
-    /*if (oldca.evn != agdata.evn || oldca.sd != agdata.sd || chged) {
-      //日期与重复标识变化了，则删除重复子表所有数据，重新插入新数据
-      let sptbl = new SpTbl();
-      sptbl.si = c.si;
-      //删除提醒
-      let sql = 'delete from gtd_e  where si="' + c.si + '"';
-      await this.sqlExce.execSql(sql);
-      //删除特殊表
-      await this.sqlExce.delete(sptbl);
-      //保存特殊表及相应提醒表
-      let ed = await this.saveSp(c);
-      //结束日期使用sp表最后日期
-      c.ed = ed;
-
-    } else {
-
-
-    }
+    return outAgds;
+    /*
     await this.sqlExce.update(c);
     if(c.rt=="0" || (c.rt != "0" && c.sn != oldc.sn)){
       //restful用参数
@@ -535,15 +529,7 @@ export class EventService extends BaseService {
       stepDay = moment(stepDay).add(repeatStep, repeatType).format("YYYY/MM/DD");
     }
 
-    if (rtjson.cycletype == anyenum.CycleType.close){
-      //非重复情况获取新增的一个对象
-      let tmp = {} as AgendaData;
-      ret.outAgdata = outAgds.length > 0 ? outAgds[0] : tmp;
-    }else{
-      //重复情况获取新增的对象数组
-      ret.outAgdata = outAgds;
-    }
-
+    ret.outAgdatas = outAgds;
     return ret;
   }
 
@@ -949,7 +935,7 @@ export class RetParamEv{
   rtevi:string ="";
   ed:string = "";
   sqlparam  = new  Array<any>();
-  outAgdata : AgendaData | Array<AgendaData>;
+  outAgdatas = new Array<AgendaData>();
 }
 
 export class RtOver {
