@@ -109,7 +109,7 @@ export class EventService extends BaseService {
 
       //事件sqlparam 及提醒sqlparam
       let retParamEv = new RetParamEv();
-      retParamEv = this.sqlparamAddEv2(agdata);
+      retParamEv = this.sqlparamAddEv(agdata);
       console.log(JSON.stringify(retParamEv));
 
 
@@ -323,7 +323,7 @@ export class EventService extends BaseService {
     rtjon.cycletype = anyenum.CycleType.close;
     rtjon.over.value = "";
     rtjon.over.type = anyenum.OverType.fornever;
-    rtjon.cyclenum = 0;
+    rtjon.cyclenum = 1;
     rtjon.openway = new Array<number>();
     //agdata.rt = !agdata.rt ? JSON.stringify(rtjon) : agdata.rt ;
     agdata.rtjson = (agdata.rtjson && agdata.rtjson !=null) ? agdata.rtjson : rtjon;
@@ -471,6 +471,8 @@ export class EventService extends BaseService {
               days.push(stepDay);     // 当前日期为重复日期
             } else if (duration > 0) {
               days.push(moment(stepDay).add(duration, "days").format("YYYY/MM/DD"));
+            } else {
+              days.push(moment(stepDay).add(7, "days").subtract(Math.abs(duration), "days").format("YYYY/MM/DD"));
             }
           }
 
@@ -491,6 +493,8 @@ export class EventService extends BaseService {
               days.push(stepDay);     // 当前日期为重复日期
             } else if (duration > 0) {
               days.push(moment(stepDay).add(duration, "days").format("YYYY/MM/DD"));
+            } else {
+              days.push(moment().month(moment(stepDay).month()).add(1, "months").days(option).format("YYYY/MM/DD"));
             }
           }
 
@@ -503,6 +507,12 @@ export class EventService extends BaseService {
       }
 
       for (let day of days) {
+
+        // 判断是否超过结束日期
+        if (!moment(day).isBefore(repeatEndDay)) {
+          continue;
+        }
+
         let ev = new EvTbl();
 
         Object.assign(ev, agdata);
