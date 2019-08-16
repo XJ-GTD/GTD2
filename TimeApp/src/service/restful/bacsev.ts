@@ -11,6 +11,10 @@ import {RestFulConfig, UrlEntity} from "../config/restful.config";
 import {CTbl} from "../sqlite/tbl/c.tbl";
 import {BxTbl} from "../sqlite/tbl/bx.tbl";
 import {YTbl} from "../sqlite/tbl/y.tbl";
+import { MomTbl } from "../sqlite/tbl/mom.tbl";
+import { EvTbl } from "../sqlite/tbl/ev.tbl";
+import { TTbl } from "../sqlite/tbl/t.tbl";
+import { CaTbl } from "../sqlite/tbl/ca.tbl";
 
 
 /**
@@ -108,7 +112,14 @@ export class BackupProSub {
   jh: Array<JhTbl> = new Array<JhTbl>();
   //获取用户偏好
   y: Array<YTbl> = new Array<YTbl>();
-
+  //新版备忘表数据
+  mom: Array<MomTbl> = new Array<MomTbl>();
+  //事件表数据
+  ev: Array<EvTbl> = new Array<EvTbl>();
+  //日程表数据
+  ca: Array<CaTbl> = new Array<CaTbl>();
+  //任务表数据
+  tt: Array<TTbl> = new Array<TTbl>();
   //分批备份最后一次设为true
   commit: boolean = false;
 
@@ -143,7 +154,7 @@ export class RecoverProSub {
 
   bts: Number = 0;
   //恢复表的名称
-  rdn: Array<string> = ["c", "sp", "e", "mo", "d", "b", "g", "bx", "jh", "y"];
+  rdn: Array<string> = ["c", "sp", "e", "mo", "d", "b", "g", "bx", "jh", "y","mom","ev","ca","tt"];
 }
 
 //恢复出参
@@ -169,4 +180,12 @@ export class OutRecoverPro {
   jh: Array<JhTbl> = new Array<JhTbl>();
   //用户偏好
   y: Array<YTbl> = new Array<YTbl>();
+   //新版备忘表数据
+  mom: Array<MomTbl> = new Array<MomTbl>();
+  //事件表数据
+  ev: Array<EvTbl> = new Array<EvTbl>();
+  //日程表数据
+  ca: Array<CaTbl> = new Array<CaTbl>();
+  //任务表数据
+  tt: Array<TTbl> = new Array<TTbl>();
 }

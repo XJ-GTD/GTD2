@@ -31,6 +31,16 @@ export class SqliteExec {
       log.su = sql;
       log.ss = new Date().valueOf();
       log.t = 0;
+
+      if (params && params.length > 0){
+        for (let j = 0 ,len = params.length; j < len ; j++ ){
+          if (params[j] != "") {
+            if (!params[j] || params[j] == 'undefined') {
+              params[j] = null;
+            }
+          }
+        }
+      }
       this.sqlliteConfig.database.transaction( (tx)=> {
         tx.executeSql(sql, params, (tx, res) => {
           if (!nolog){
@@ -45,6 +55,8 @@ export class SqliteExec {
             log.st = true;
             this.noteLog(log);
           }
+
+          console.log("sql log ***************:" + JSON.stringify(err));
           resolve(err);
         });
       });
@@ -192,8 +204,10 @@ export class SqliteExec {
    */
   getExtOne<T>(sql: string): Promise<T> {
     return new Promise((resolve, reject) => {
+      console.log("getExtOne执行SQL："+sql);
       return this.execSql(sql).then(data=>{
         if (data.rows && data.rows.length > 0 ){
+          console.log(data);
           resolve(data.rows.item(0));
         }else{
           resolve(null);
@@ -488,7 +502,7 @@ export class SqliteExec {
   async batExecSqlByParam(sqlist: Array<any>) {
 
     if (this.util.isMobile()) {
-      console.log("========= 批量出入SQL："+sqlist)
+      console.log("========= 批量出入SQL："+sqlist);
       return await this.sqlliteConfig.database.sqlBatch(sqlist);
     } else {
 
@@ -496,8 +510,10 @@ export class SqliteExec {
       for (let j = 0, len = sqlist.length; j < len; j++) {
         count++;
         if ( typeof sqlist[j]  == 'string' ){
+          console.log("========= 批量出入SQL："+sqlist[j]);
           await this.execSql(sqlist[j]);
         }else{
+          console.log("========= 批量出入SQL："+sqlist[j][0] + " : " + sqlist[j][1]);
           await this.execSql(sqlist[j][0],sqlist[j][1]);
         }
 

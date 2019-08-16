@@ -1,0 +1,156 @@
+import * as moment from "moment";
+import {ITblParam} from "./itblparam";
+
+/**
+ * create by on 2019/3/5
+ */
+export class ParTbl implements ITblParam {
+
+  pari: string;
+  pwi: string;
+  ui: string;
+  obt: string;
+  obi: string;
+  sa: string;
+  sdt: string;
+  tb: string;
+  del: string;
+  utt: number;
+  wtt: number;
+
+  cTParam():string {
+
+    let sq =`create table if not exists gtd_par(    
+       pari varchar(50) PRIMARY KEY
+       ,pwi varchar(50) 
+       ,ui varchar(50) 
+       ,obt varchar(50) 
+       ,obi varchar(50) 
+       ,sa varchar(4) 
+       ,sdt varchar(4) 
+       ,tb varchar(4) 
+       ,del varchar(4) 
+       ,wtt integer 
+       ,utt integer  
+     );`;
+
+    return sq;
+  }
+
+  upTParam():any {
+    let sq='';
+    let params = new Array<any>();
+
+    if(this.pwi!=null && this.pwi!=''){      sq=sq+', pwi= ? ';      params.push(this.pwi);    }
+    if(this.ui!=null && this.ui!=''){      sq=sq+', ui= ? ';      params.push(this.ui);    }
+    if(this.obt!=null && this.obt!=''){      sq=sq+', obt= ? ';      params.push(this.obt);    }
+    if(this.obi!=null && this.obi!=''){      sq=sq+', obi= ? ';      params.push(this.obi);    }
+    if(this.sa!=null && this.sa!=''){      sq=sq+', sa= ? ';      params.push(this.sa);    }
+    if(this.sdt!=null && this.sdt!=''){      sq=sq+', sdt= ? ';      params.push(this.sdt);    }
+    if(this.tb!=null && this.tb!=''){      sq=sq+', tb= ? ';      params.push(this.tb);    }
+    if(this.del!=null && this.del!=''){      sq=sq+', del= ? ';      params.push(this.del);    }
+
+
+    sq =`update gtd_par set utt =${moment().unix()}  ${sq} where pari = ? ;`;
+    params.push(this.pari);
+
+    let ret = new Array<any>();
+    ret.push(sq);
+    ret.push(params);
+    return ret;
+  }
+
+  dTParam():any {
+    let sq = 'delete from gtd_par where 1=1 ';
+    let params = new Array<any>();
+    if(this.pari != null && this.pari!=""){
+      sq = sq + 'and  pari = ? ';
+      params.push(this.pari);
+    }
+    sq = sq + ';';
+    let ret = new Array<any>();
+    ret.push(sq);
+    ret.push(params);
+    return ret;
+  }
+
+  sloTParam():any {
+    let params = new Array<any>();
+    let sq='select * from gtd_par where pari = ?  ;';
+    params.push(this.pari);
+    let ret = new Array<any>();
+    ret.push(sq);
+    ret.push(params);
+
+    return ret;
+  }
+
+  slTParam():any {
+    let params = new Array<any>();
+    let sq='select * from  gtd_par where  1=1 ';
+
+    if(this.pwi!=null && this.pwi!=''){      sq=sq+' and pwi= ? ';      params.push(this.pwi);    }
+    if(this.ui!=null && this.ui!=''){      sq=sq+' and ui= ? ';      params.push(this.ui);    }
+    if(this.obt!=null && this.obt!=''){      sq=sq+' and obt= ? ';      params.push(this.obt);    }
+    if(this.obi!=null && this.obi!=''){      sq=sq+' and obi= ? ';      params.push(this.obi);    }
+    if(this.sa!=null && this.sa!=''){      sq=sq+' and sa= ? ';      params.push(this.sa);    }
+    if(this.sdt!=null && this.sdt!=''){      sq=sq+' and sdt= ? ';      params.push(this.sdt);    }
+    if(this.tb!=null && this.tb!=''){      sq=sq+' and tb= ? ';      params.push(this.tb);    }
+    if(this.del!=null && this.del!=''){      sq=sq+' and del= ? ';      params.push(this.del);    }
+
+    sq = sq + ';';
+
+    let ret = new Array<any>();
+    ret.push(sq);
+    ret.push(params);
+    return ret;
+  }
+
+  drTParam():string {
+
+    let sq ='drop table if exists gtd_par;';
+    return sq;
+  }
+
+  inTParam():any {
+    let params = new Array<any>();
+    let sq =`insert into gtd_par 
+       (   pari ,pwi ,ui ,obt ,obi ,sa ,sdt ,tb ,del ,wtt ,utt) 
+       values(?,?,?,?,?,?,?,?,?,${moment().unix()},${moment().unix()});`;
+    params.push(this.pari);
+    params.push(this.pwi);
+    params.push(this.ui);
+    params.push(this.obt);
+    params.push(this.obi);
+    params.push(this.sa);
+    params.push(this.sdt);
+    params.push(this.tb);
+    params.push(this.del);
+
+    let ret = new Array<any>();
+    ret.push(sq);
+    ret.push(params);
+    return ret;
+  }
+
+  rpTParam():any {
+    let params = new Array<any>();
+    let sq =`replace into gtd_par 
+       (   pari ,pwi ,ui ,obt ,obi ,sa ,sdt ,tb ,del ,wtt ,utt) 
+       values(?,?,?,?,?,?,?,?,?,${moment().unix()},${moment().unix()});`;
+    params.push(this.pari);
+    params.push(this.pwi);
+    params.push(this.ui);
+    params.push(this.obt);
+    params.push(this.obi);
+    params.push(this.sa);
+    params.push(this.sdt);
+    params.push(this.tb);
+    params.push(this.del);
+
+    let ret = new Array<any>();
+    ret.push(sq);
+    ret.push(params);
+    return ret;
+  }
+}

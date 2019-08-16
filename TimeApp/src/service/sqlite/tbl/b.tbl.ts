@@ -15,7 +15,9 @@ export class BTbl implements ITbl{
   rc: string="";
   rel: string="";
   ui: string="";
+  src:string ="";
   wtt: number=0;
+
 
 
   cT():string {
@@ -23,7 +25,7 @@ export class BTbl implements ITbl{
     let sq =' create table if not exists gtd_b( pwi varchar(50) primary key ,ran varchar(50)  ,' +
       'ranpy varchar(20)  ,hiu varchar(200)  ,rn varchar(20)  ,' +
       'rnpy varchar(20)  ,rc varchar(20)    ,rel varchar(4)  ,' +
-      'ui varchar(50),wtt integer );';
+      'ui varchar(50),src varchar(4),wtt integer );';
 
     return sq;
   }
@@ -55,6 +57,9 @@ export class BTbl implements ITbl{
     }
     if(this.ui != null && this.ui!=""){
       sq = sq + ', ui="' + this.ui +'"';
+    }
+    if(this.src != null && this.src!=""){
+      sq = sq + ', src="' + this.src +'"';
     }
     if (sq != null && sq != ""){
       sq = sq.substr(1);
@@ -112,6 +117,9 @@ export class BTbl implements ITbl{
     if(this.ui != null && this.ui!=""){
       sq = sq + ' and ui="' + this.ui +'"';
     }
+    if(this.src != null && this.src!=""){
+      sq = sq + ' and src="' + this.src +'"';
+    }
     sq = sq +';';
     return sq;
   }
@@ -124,10 +132,10 @@ export class BTbl implements ITbl{
 
   inT():string {
     let sq ='insert into gtd_b ' +
-      '(  pwi ,ran ,ranpy  ,hiu ,rn ,rnpy ,rc   ,rel ,ui,wtt) values("'+ this.pwi+'",' +
+      '(  pwi ,ran ,ranpy  ,hiu ,rn ,rnpy ,rc   ,rel ,ui,src,wtt) values("'+ this.pwi+'",' +
       '"'+ this.ran+'","'+this.ranpy+ '"' +
       ',"'+this.hiu+ '","'+this.rn+ '","'+this.rnpy+ '","'+this.rc+ '",' +
-      '"'+this.rel+ '","'+this.ui+ '",'+  moment().unix() + ');';
+      '"'+this.rel+ '","'+this.ui+ '","'+this.src+ '",'+  moment().unix() + ');';
 
     return sq;
   }
@@ -137,14 +145,14 @@ export class BTbl implements ITbl{
       '(  pwi ,ran ,ranpy  ,hiu ,rn ,rnpy ,rc   ,rel ,ui,wtt) values("'+ this.pwi+'",' +
       '"'+ this.ran+'","'+this.ranpy+ '"' +
       ',"'+this.hiu+ '","'+this.rn+ '","'+this.rnpy+ '","'+this.rc+ '",' +
-      '"'+this.rel+ '","'+this.ui+ '",'+  moment().unix() + ');';
+      '"'+this.rel+ '","'+this.ui+ '","'+this.src+ '",'+  moment().unix() + ');';
 
     return sq;
   }
 
   preT():string {
     let sq ='insert into gtd_b ' +
-      '(  pwi ,ran ,ranpy  ,hiu ,rn ,rnpy ,rc   ,rel ,ui,wtt) values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ' +  moment().unix() + ');';
+      '(  pwi ,ran ,ranpy  ,hiu ,rn ,rnpy ,rc   ,rel ,ui,src,wtt) values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?, ' +  moment().unix() + ');';
 
     return sq;
   }

@@ -22,11 +22,13 @@ matrix:
         sources:
         - sourceline: deb https://dl.yarnpkg.com/debian/ stable main
           key_url: https://dl.yarnpkg.com/debian/pubkey.gpg
+        - google-chrome
         packages:
         - yarn
         - jq
         - gradle
         - dos2unix
+        - google-chrome-stable
     licenses:
       - android-sdk-preview-license-.+
       - android-sdk-license-.+
@@ -38,6 +40,7 @@ matrix:
       homebrew:
         packages:
         - dos2unix
+      chrome: beta
   allow_failures:
     - os: osx
 #before_cache:
@@ -83,6 +86,7 @@ script:
   - yarn install
   - npm run clean
   - npm run build
+  - npm run test-ci
   - dos2unix -k $TRAVIS_BUILD_DIR/travis/build.sh
   - sh $TRAVIS_BUILD_DIR/travis/build.sh
 after_script:

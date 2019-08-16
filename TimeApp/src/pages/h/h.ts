@@ -17,6 +17,20 @@ import {FeedbackService} from "../../service/cordova/feedback.service";
 import {DataConfig} from "../../service/config/data.config";
 import {UserConfig} from "../../service/config/user.config";
 import { InAppBrowser } from '@ionic-native/in-app-browser';
+import {EvTbl} from "../../service/sqlite/tbl/ev.tbl";
+import {SqliteExec} from "../../service/util-service/sqlite.exec";
+import {CaTbl} from "../../service/sqlite/tbl/ca.tbl";
+import {AgendaData, EventService, RtJson, TxJson} from "../../service/business/event.service";
+import {TTbl} from "../../service/sqlite/tbl/t.tbl";
+import {FjTbl} from "../../service/sqlite/tbl/fj.tbl";
+import {JtaTbl} from "../../service/sqlite/tbl/jta.tbl";
+import {MomTbl} from "../../service/sqlite/tbl/mom.tbl";
+import {ParTbl} from "../../service/sqlite/tbl/par.tbl";
+import {MrkTbl} from "../../service/sqlite/tbl/mrk.tbl";
+import {JhaTbl} from "../../service/sqlite/tbl/jha.tbl";
+import {WaTbl} from "../../service/sqlite/tbl/wa.tbl";
+import * as anyenum from "../../data.enum";
+import {MemoData, MemoService} from "../../service/business/memo.service";
 
 /**
  * Generated class for the 首页 page.
@@ -86,7 +100,9 @@ export class HPage {
               private modalCtr: ModalController,
               private menuController: MenuController,
               private emitService: EmitService,
-              private feedback: FeedbackService) {
+              private feedback: FeedbackService,
+              private  evtserv :EventService,
+              private sqlexce :SqliteExec,private  momserv :MemoService) {
     this.hdata = new HData();
   }
 
@@ -209,8 +225,81 @@ export class HPage {
   }
 
   newcd() {
+
+    if (1==1){
+ /*     let ev = new EvTbl();
+      this.sqlexce.dropByParam(ev);
+      this.sqlexce.createByParam(ev);*/
+
+/*     let ca =  new CaTbl();
+      this.sqlexce.dropByParam(ca);
+      this.sqlexce.createByParam(ca);*/
+
+/*      let t =  new TTbl();
+      this.sqlexce.dropByParam(t);
+      this.sqlexce.createByParam(t);*/
+
+/*      let fj =  new FjTbl();
+      this.sqlexce.dropByParam(fj);
+      this.sqlexce.createByParam(fj);*/
+
+/*      let mom =  new MomTbl();
+      this.sqlexce.dropByParam(mom);
+      this.sqlexce.createByParam(mom);*/
+
+/*      let jta =  new JtaTbl();
+      this.sqlexce.dropByParam(jta);
+      this.sqlexce.createByParam(jta);*/
+
+/*      let par =  new ParTbl();
+      this.sqlexce.dropByParam(par);
+      this.sqlexce.createByParam(par);*/
+
+/*      let mrk =  new MrkTbl();
+      this.sqlexce.dropByParam(mrk);
+      this.sqlexce.createByParam(mrk);*/
+
+/*      let jha =  new JhaTbl();
+      this.sqlexce.dropByParam(jha);
+      this.sqlexce.createByParam(jha);*/
+
+/*      let wa =  new WaTbl();
+      this.sqlexce.dropByParam(wa);
+      this.sqlexce.createByParam(wa);*/
+
+
+      /*let agdata = {} as   AgendaData;
+      agdata.evn = "测试重复日程添加0827";
+      agdata.sd = "2019/08/27";
+
+      let rtjon = new RtJson();
+      rtjon.cycletype = anyenum.CycleType.w;
+      rtjon.over.value = "2";
+      rtjon.over.type = anyenum.OverType.times;
+      rtjon.cyclenum = 3;
+      rtjon.openway = anyenum.OpenWay.Wednesday;
+
+      agdata.rtjson = rtjon;
+
+      let txjson = new TxJson();
+      txjson.type = anyenum.TxType.m30;
+      agdata.txjson = txjson;
+
+      agdata.al = "1";
+      agdata.st = "11:20";
+      agdata.ct = 20;
+      this.evtserv.saveAgenda(agdata).then(data=>{
+        console.log(JSON.stringify(data));
+      });*/
+
+      let mom = {} as MemoData;
+      mom.mon = "11112222222222222222222";
+      this.momserv.saveMemo(mom);
+      return ;
+    }
     let p: ScdPageParamter = new ScdPageParamter();
     p.d = moment(this.hdata.selectDay.time);
+
     this.feedback.audioPress();
     this.modalCtr.create(TdcPage, p).present();
   }
