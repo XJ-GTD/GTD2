@@ -1120,13 +1120,15 @@ export class CalendarService extends BaseService {
    *
    * @author leon_xi@163.com
    **/
-  mergePagedActivities(pagedActivities: PagedActivityData, activities: Array<PlanItemData | AgendaData | TaskData | MiniTaskData | MemoData>): PagedActivityData {
+  mergePagedActivities(pagedActivities: PagedActivityData, activitiedatas: Array<PlanItemData | AgendaData | TaskData | MiniTaskData | MemoData>): PagedActivityData {
 
     // 入参不能为空
     this.assertEmpty(pagedActivities);            // 翻页数据不能为空
     this.assertEmpty(pagedActivities.startday);   // 翻页数据开始日期不能为空
     this.assertEmpty(pagedActivities.endday);     // 翻页数据结束日期不能为空
     this.assertEmpty(activities);                 // 活动数据不能为空
+
+    let activities: Array<any> = activitiedatas;
 
     // 没有合并数据直接返回
     if (activities.length == 0) {
