@@ -227,7 +227,7 @@ describe('CalendarService test suite', () => {
     task = await eventService.saveTask(task);
 
     let activities: Array<any> = new Array<any>();
-    activities = activities.concat(savedagenda);   // 空数组concat有值数组无效
+    activities = activities.concat(savedagenda);   // 合并后返回新数组，原数组不改变
     activities.push(task);
     activities.push(memo);
     activities.push(planitem1);
