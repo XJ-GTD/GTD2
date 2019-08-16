@@ -227,10 +227,10 @@ describe('CalendarService test suite', () => {
     task = await eventService.saveTask(task);
 
     let activities: Array<any> = new Array<any>();
-    activities.concat(savedagenda);
     activities.push(task);
     activities.push(memo);
     activities.push(planitem1);
+    activities.concat(savedagenda);   // 空数组concat有值数组无效
 
     // 增加1个日程、1个任务、1个备忘、1个日历项
     pagedActivities = calendarService.mergePagedActivities(pagedActivities, activities);
