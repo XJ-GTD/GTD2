@@ -76,7 +76,7 @@ export class EventService extends BaseService {
    * @param {ModifyType} modiType
    * @returns {Promise<AgendaData>}
    */
-  async saveAgenda(agdata : AgendaData, modiType : anyenum.ModifyType = anyenum.ModifyType.Non): Promise<AgendaData> {
+  async saveAgenda(agdata : AgendaData, modiType : anyenum.ModifyType = anyenum.ModifyType.Non): Promise<AgendaData | Array<AgendaData>> {
 
     // 入参不能为空
     this.assertEmpty(agdata);
@@ -170,11 +170,16 @@ export class EventService extends BaseService {
 
       //更新原事件日程结束日
       let caevi : string;
-      if (agdata.rtevi == ""){
+      if (agdata.rfg == anyenum.RepeatFlag.RepeatToNon){
         caevi = agdata.evi;
-      }else {
-        caevi = agdata.rtevi;
+      }else{
+        if (agdata.rtevi == ""){
+          caevi = agdata.evi;
+        }else {
+          caevi = agdata.rtevi;
+        }
       }
+
       sq = `update gtd_ca set ed =
       ${moment(agdata.evd).subtract(1,'d').format("YYYY/MM/dd")}
       where evi = ${caevi} `;
@@ -193,7 +198,11 @@ export class EventService extends BaseService {
       rtjon.openway = new Array<number>();
       agdata.rt = JSON.stringify(rtjon);
       agdata.rts = !agdata.rts ? "" : agdata.rts ;
-      agdata.rfg = anyenum.RepeatFlag.RepeatToNon;
+
+      if (agdata.rfg == anyenum.RepeatFlag.Repeat){
+        agdata.rfg = anyenum.RepeatFlag.RepeatToNon;
+      }
+
       agdata.tx = JSON.stringify(agdata.txjson);
 
       let ev = new EvTbl();
@@ -246,35 +255,7 @@ export class EventService extends BaseService {
       c.ed = ed;
 
     } else {
-      //更新子表数据
-      //if (oldc.st != c.st || oldc.tx != c.tx) {
 
-      //更新sp日程表title
-      let sq = "update gtd_sp set spn = '" + c.sn + "' where si = '" + c.si + "'";
-      await this.sqlExce.execSql(sq);
-
-      //更新e表title
-      sq = "update gtd_e set st = '" + c.sn + "' where si = '" + c.si + "'";
-      await this.sqlExce.execSql(sq);
-
-      //受邀人pull则不更新sp
-      if (scd.specScd(scd.showSpSd)){
-        let sp:SpTbl = new SpTbl();
-        Object.assign(sp,scd.specScd(scd.showSpSd));
-        await this.sqlExce.update(sp);
-
-
-        //保存提醒表
-        let sq2 = "";
-        if (sp.tx !="0" ){
-          sq2 = this.getTxEtbl(sp).rpT();
-        }else{
-          sq2 = this.getTxEtbl(sp).dT();
-        }
-        await this.sqlExce.execSql(sq2);
-      }
-
-      //}
 
     }
     await this.sqlExce.update(c);
@@ -372,14 +353,18 @@ export class EventService extends BaseService {
   }
 
   private sqlparamAddEv2(agdata: AgendaData): RetParamEv {
+
     let ret = new RetParamEv();
+    let outAgds = new Array<AgendaData>();
 
     let rtjson: RtJson = agdata.rtjson;
     agdata.rt = JSON.stringify(agdata.rtjson);
 
     if (rtjson.cycletype == anyenum.CycleType.close){
+
       agdata.rfg = anyenum.RepeatFlag.NonRepeat;
     }else{
+
       agdata.rfg = anyenum.RepeatFlag.Repeat;
     }
 
@@ -525,6 +510,7 @@ export class EventService extends BaseService {
         // 父记录的父节点字段rtevi设为空，子记录的父节点字段rtevi设为父记录的evi
         if (ret.sqlparam.length < 1) {
           ret.rtevi = ev.evi;
+          agdata.evi = ev.evi;
           ev.rtevi = "";
         }else{
           ev.rtevi = ret.rtevi;
@@ -539,9 +525,23 @@ export class EventService extends BaseService {
         if (txjson.type != anyenum.TxType.close) {
           ret.sqlparam.push(this.sqlparamAddTxWa(ev,agdata.st,agdata.al,txjson).rpTParam());
         }
+
+        //新增数据需要返回出去
+        let outAgd = {} as AgendaData;
+        Object.assign(outAgd,ev);
+        outAgds.push(outAgd);
       }
 
       stepDay = moment(stepDay).add(repeatStep, repeatType).format("YYYY/MM/DD");
+    }
+
+    if (rtjson.cycletype == anyenum.CycleType.close){
+      //非重复情况获取新增的一个对象
+      let tmp = {} as AgendaData;
+      ret.outAgdata = outAgds.length > 0 ? outAgds[0] : tmp;
+    }else{
+      //重复情况获取新增的对象数组
+      ret.outAgdata = outAgds;
     }
 
     return ret;
@@ -949,6 +949,7 @@ export class RetParamEv{
   rtevi:string ="";
   ed:string = "";
   sqlparam  = new  Array<any>();
+  outAgdata : AgendaData | Array<AgendaData>;
 }
 
 export class RtOver {
