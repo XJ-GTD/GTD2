@@ -36,7 +36,11 @@ import {NetworkService} from "../cordova/network.service";
 import { ShaeRestful } from "../restful/shaesev";
 import { AgdRestful } from "../restful/agdsev";
 import { BacRestful } from "../restful/bacsev";
-
+import {EvTbl} from "../sqlite/tbl/ev.tbl";
+import {CaTbl} from "../sqlite/tbl/ca.tbl";
+import {TTbl} from "../sqlite/tbl/t.tbl";
+import {WaTbl} from "../sqlite/tbl/wa.tbl";
+import {ETbl} from "../sqlite/tbl/e.tbl";
 import { CalendarService, PlanData } from "./calendar.service";
 import { EventService,TaskData,MiniTaskData} from "./event.service";
 import { PlanType,IsCreate } from "../../data.enum";
