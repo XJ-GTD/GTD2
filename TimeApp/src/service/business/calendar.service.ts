@@ -1209,7 +1209,9 @@ export class CalendarService extends BaseService {
               if (index == 0) {
                 pagedActivities.calendaritems = pagedActivities.calendaritems.slice(1).unshift(item);
               } else {
-                pagedActivities.calendaritems = pagedActivities.calendaritems.slice(0, index).concat(pagedActivities.calendaritems.slice(index + 1).unshift(item));
+                let tail = pagedActivities.calendaritems.slice(index + 1);
+                tail.unshift(item);
+                pagedActivities.calendaritems = pagedActivities.calendaritems.slice(0, index).concat(tail);
               }
             }
           } else {
@@ -1239,7 +1241,9 @@ export class CalendarService extends BaseService {
               if (index == 0) {
                 pagedActivities.events = pagedActivities.events.slice(1).unshift(event);
               } else {
-                pagedActivities.events = pagedActivities.events.slice(0, index).concat(pagedActivities.events.slice(index + 1).unshift(event));
+                let tail = pagedActivities.events.slice(index + 1);
+                tail.unshift(event);
+                pagedActivities.events = pagedActivities.events.slice(0, index).concat(tail);
               }
             }
           } else {
@@ -1265,7 +1269,9 @@ export class CalendarService extends BaseService {
               if (index == 0) {
                 pagedActivities.memos = pagedActivities.memos.slice(1).unshift(memo);
               } else {
-                pagedActivities.memos = pagedActivities.memos.slice(0, index).concat(pagedActivities.memos.slice(index + 1).unshift(memo));
+                let tail = pagedActivities.memos.slice(index + 1);
+                tail.unshift(memo);
+                pagedActivities.memos = pagedActivities.memos.slice(0, index).concat(tail);
               }
             }
           } else {
