@@ -187,7 +187,7 @@ describe('CalendarService test suite', () => {
     }
   });
 
-  it(`Case 6 - 1 - 4 mergePagedActivities 合并翻页活动数据 - 没有活动(增加1个日程、1个任务、1个备忘、1个日历项)`, async () => {
+  it(`Case 6 - 1 - 4 mergePagedActivities 合并翻页活动数据 - 没有活动(增加1个日程（不重复）、1个任务、1个备忘、1个日历项)`, async () => {
 
     let pagedActivities: PagedActivityData = await calendarService.fetchPagedActivities();
 
@@ -449,7 +449,7 @@ describe('CalendarService test suite', () => {
 
   });
 
-  it(`Case 6 - 1 mergePagedActivities 合并翻页活动数据 - 没有活动(增加1个日程)`, async () => {
+  it(`Case 6 - 1 mergePagedActivities 合并翻页活动数据 - 没有活动(增加1个日程（不重复）)`, async () => {
 
     let pagedActivities: PagedActivityData = await calendarService.fetchPagedActivities();
 
