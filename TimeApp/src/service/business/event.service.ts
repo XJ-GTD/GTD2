@@ -690,10 +690,12 @@ export class EventService extends BaseService {
 		let txx: TaskData = {} as TaskData;
 		if(evi !="")
 		{
-			
+			console.info("获取evi--"+evi);
 			let params= Array<any>();
-			let sqlparam: string =`select ev.*,td.cs,td.isrt,td.cd,td.fd from gtd_ev  ev left join gtd_t  td on ev.evi = td.evi where ev.evi =${evi} `;
+			let sqlparam: string =`select ev.*,td.cs,td.isrt,td.cd,td.fd from gtd_ev  ev left join gtd_t  td on ev.evi = td.evi where ev.evi ='${evi}'`;
+			console.info("执行的SQL"+sqlparam);
 			txx = await this.sqlExce.getExtOneByParam<TaskData>(sqlparam,params);
+			console.info("执行的结果"+txx.evi);
 		}
 		return txx;
   }
