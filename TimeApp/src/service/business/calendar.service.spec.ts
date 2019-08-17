@@ -163,6 +163,69 @@ describe('CalendarService test suite', () => {
 
   });
 
+  it(`Case 10 - 1 fetchMonthActivitiesSummary 取得指定月概要 - 1个日历项、1个任务、1个备忘`, async () => {
+    let day: string = moment().format("YYYY/MM/DD");
+
+    // 日历项
+    let planitem1: PlanItemData = {} as PlanItemData;
+
+    planitem1.sd = day;
+    planitem1.jtn = "结婚纪念日";
+    planitem1.jtt = PlanItemType.Activity;
+
+    await calendarService.savePlanItem(planitem1);
+
+    // 任务
+    let task: TaskData = {} as TaskData;
+
+    task.evd = day;
+    task.evn = "结婚纪念日前给太太买礼物";
+
+    await eventService.saveTask(task);
+
+    // 备忘
+    let memo: MemoData = {} as MemoData;
+
+    memo.sd = day;
+    memo.mon = "结婚纪念日买了一块定制巧克力给太太, 太太很高兴";
+
+    await memoService.saveMemo(memo);
+
+    let month: string = moment().format("YYYY/MM");
+    let days: number = moment(month).daysInMonth();
+
+    let monthSummary: MonthActivitySummaryData = await calendarService.fetchMonthActivitiesSummary(month);
+
+    expect(monthSummary).toBeDefined();
+    expect(monthSummary.month).toBe(month);
+    expect(monthSummary.days).toBeDefined();
+    expect(monthSummary.days.length).toBe(days);
+
+    for (let daySummary of monthSummary.days) {
+      if (day == daySummary.day) {
+        expect(daySummary.day).toBeDefined();
+        expect(daySummary.calendaritemscount).toBe(1);
+        expect(daySummary.activityitemscount).toBe(1);
+        expect(daySummary.eventscount).toBe(1);
+        expect(daySummary.agendascount).toBe(0);
+        expect(daySummary.taskscount).toBe(1);
+        expect(daySummary.memoscount).toBe(1);
+        expect(daySummary.repeateventscount).toBe(0);
+        expect(daySummary.bookedtimesummary).toBe(0);
+      } else {
+        expect(daySummary.day).toBeDefined();
+        expect(daySummary.calendaritemscount).toBe(0);
+        expect(daySummary.activityitemscount).toBe(0);
+        expect(daySummary.eventscount).toBe(0);
+        expect(daySummary.agendascount).toBe(0);
+        expect(daySummary.taskscount).toBe(0);
+        expect(daySummary.memoscount).toBe(0);
+        expect(daySummary.repeateventscount).toBe(0);
+        expect(daySummary.bookedtimesummary).toBe(0);
+      }
+    }
+  });
+
   it(`Case 10 - 1 fetchMonthActivitiesSummary 取得指定月概要 - 空值(没有任何活动)`, async () => {
     let month: string = moment().format("YYYY/MM");
     let days: number = moment(month).daysInMonth();
