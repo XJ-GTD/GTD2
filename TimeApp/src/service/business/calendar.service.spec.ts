@@ -163,7 +163,7 @@ describe('CalendarService test suite', () => {
 
   });
 
-  it(`Case 8 - 1 fetchMonthActivitiesSummary 取得指定月概要 - 空值(没有任何活动)`, async () => {
+  it(`Case 9 - 1 fetchMonthActivitiesSummary 取得指定月概要 - 空值(没有任何活动)`, async () => {
     let month: string = moment().format("YYYY/MM");
     let days: number = moment(month).daysInMonth();
 
@@ -187,7 +187,7 @@ describe('CalendarService test suite', () => {
     }
   });
 
-  it(`Case 7 - 1 - 4 mergePagedActivities 合并翻页活动数据 - 没有活动(增加1个日程（不重复）、1个任务、1个备忘、1个日历项)`, async () => {
+  it(`Case 8 - 1 - 4 mergePagedActivities 合并翻页活动数据 - 没有活动(增加1个日程（不重复）、1个任务、1个备忘、1个日历项)`, async () => {
 
     let pagedActivities: PagedActivityData = await calendarService.fetchPagedActivities();
 
@@ -277,7 +277,7 @@ describe('CalendarService test suite', () => {
 
   });
 
-  it(`Case 7 - 1 - 3 mergePagedActivities 合并翻页活动数据 - 没有活动(增加1个任务)`, async () => {
+  it(`Case 8 - 1 - 3 mergePagedActivities 合并翻页活动数据 - 没有活动(增加1个任务)`, async () => {
 
     let pagedActivities: PagedActivityData = await calendarService.fetchPagedActivities();
 
@@ -336,7 +336,7 @@ describe('CalendarService test suite', () => {
 
   });
 
-  it(`Case 7 - 1 - 2 mergePagedActivities 合并翻页活动数据 - 没有活动(增加1个日历项)`, async () => {
+  it(`Case 8 - 1 - 2 mergePagedActivities 合并翻页活动数据 - 没有活动(增加1个日历项)`, async () => {
 
     let pagedActivities: PagedActivityData = await calendarService.fetchPagedActivities();
 
@@ -396,7 +396,7 @@ describe('CalendarService test suite', () => {
 
   });
 
-  it(`Case 7 - 1 - 1 mergePagedActivities 合并翻页活动数据 - 没有活动(增加1个备忘)`, async () => {
+  it(`Case 8 - 1 - 1 mergePagedActivities 合并翻页活动数据 - 没有活动(增加1个备忘)`, async () => {
 
     let pagedActivities: PagedActivityData = await calendarService.fetchPagedActivities();
 
@@ -455,7 +455,7 @@ describe('CalendarService test suite', () => {
 
   });
 
-  it(`Case 7 - 1 mergePagedActivities 合并翻页活动数据 - 没有活动(增加1个日程（不重复）)`, async () => {
+  it(`Case 8 - 1 mergePagedActivities 合并翻页活动数据 - 没有活动(增加1个日程（不重复）)`, async () => {
 
     let pagedActivities: PagedActivityData = await calendarService.fetchPagedActivities();
 
@@ -514,7 +514,7 @@ describe('CalendarService test suite', () => {
 
   });
 
-  it(`Case 6 - 3 - 2 fetchPagedActivities 取得第二页7天的活动（PageDown下拉） - 当天和往前第7天有1个日历项、1个任务、1个备忘`, async () => {
+  it(`Case 7 - 3 - 2 fetchPagedActivities 取得第二页7天的活动（PageDown下拉） - 当天和往前第7天有1个日历项、1个任务、1个备忘`, async () => {
     let day: string = moment().format("YYYY/MM/DD");
 
     let days: Array<string> = new Array<string>();
@@ -582,7 +582,7 @@ describe('CalendarService test suite', () => {
 
   });
 
-  it(`Case 6 - 3 - 1 fetchPagedActivities 取得第二页7天的活动（PageDown下拉） - 当天有1个日历项、1个任务、1个备忘`, async () => {
+  it(`Case 7 - 3 - 1 fetchPagedActivities 取得第二页7天的活动（PageDown下拉） - 当天有1个日历项、1个任务、1个备忘`, async () => {
     let day: string = moment().format("YYYY/MM/DD");
 
     // 日历项
@@ -641,7 +641,7 @@ describe('CalendarService test suite', () => {
 
   });
 
-  it(`Case 6 - 3 fetchPagedActivities 取得第二页7天的活动（PageDown下拉） - 没有任何活动`, async () => {
+  it(`Case 7 - 3 fetchPagedActivities 取得第二页7天的活动（PageDown下拉） - 没有任何活动`, async () => {
     let day: string = moment().format("YYYY/MM/DD");
 
     let pagedActivities: PagedActivityData = await calendarService.fetchPagedActivities(day, PageDirection.PageDown);
@@ -677,7 +677,7 @@ describe('CalendarService test suite', () => {
 
   });
 
-  it(`Case 6 - 2 - 2 fetchPagedActivities 取得第二页7天的活动（PageUp上拉） - 当天和往后第7天有1个日历项、1个任务、1个备忘`, async () => {
+  it(`Case 7 - 2 - 2 fetchPagedActivities 取得第二页7天的活动（PageUp上拉） - 当天和往后第7天有1个日历项、1个任务、1个备忘`, async () => {
     let day: string = moment().format("YYYY/MM/DD");
 
     let days: Array<string> = new Array<string>();
@@ -745,7 +745,7 @@ describe('CalendarService test suite', () => {
 
   });
 
-  it(`Case 6 - 2 - 1 fetchPagedActivities 取得第二页7天的活动（PageUp上拉） - 当天有1个日历项、1个任务、1个备忘`, async () => {
+  it(`Case 7 - 2 - 1 fetchPagedActivities 取得第二页7天的活动（PageUp上拉） - 当天有1个日历项、1个任务、1个备忘`, async () => {
     let day: string = moment().format("YYYY/MM/DD");
 
     // 日历项
@@ -804,7 +804,7 @@ describe('CalendarService test suite', () => {
 
   });
 
-  it(`Case 6 - 2 fetchPagedActivities 取得第二页7天的活动（PageUp上拉） - 没有任何活动`, async () => {
+  it(`Case 7 - 2 fetchPagedActivities 取得第二页7天的活动（PageUp上拉） - 没有任何活动`, async () => {
     let day: string = moment().format("YYYY/MM/DD");
 
     let pagedActivities: PagedActivityData = await calendarService.fetchPagedActivities(day, PageDirection.PageUp);
@@ -840,7 +840,7 @@ describe('CalendarService test suite', () => {
 
   });
 
-  it(`Case 6 - 1 - 1 fetchPagedActivities 取得第一页7天的活动 - 当天有1个日历项、1个任务、1个备忘`, async () => {
+  it(`Case 7 - 1 - 1 fetchPagedActivities 取得第一页7天的活动 - 当天有1个日历项、1个任务、1个备忘`, async () => {
     let day: string = moment().format("YYYY/MM/DD");
 
     // 日历项
@@ -911,7 +911,7 @@ describe('CalendarService test suite', () => {
 
   });
 
-  it(`Case 6 - 1 fetchPagedActivities 取得第一页7天的活动 - 没有任何活动`, async () => {
+  it(`Case 7 - 1 fetchPagedActivities 取得第一页7天的活动 - 没有任何活动`, async () => {
     let pagedActivities: PagedActivityData = await calendarService.fetchPagedActivities();
 
     let startday: string = moment().subtract(3, "days").format("YYYY/MM/DD");
@@ -943,6 +943,20 @@ describe('CalendarService test suite', () => {
     expect(pagedActivities.days.get(endday).memos).toBeDefined();
     expect(pagedActivities.days.get(endday).memos.length).toBe(0);
 
+  });
+
+  it(`Case 6 - 1 fetchDayActivities 取得指定日期的活动 - 没有任何活动`, async () => {
+    let day: string = moment().format("YYYY/MM/DD");
+
+    let dayActivities: DayActivityData = await calendarService.fetchDayActivities();
+
+    expect(dayActivities.day).toBe(day);
+    expect(dayActivities.calendaritems).toBeDefined();
+    expect(dayActivities.calendaritems.length).toBe(0);
+    expect(dayActivities.events).toBeDefined();
+    expect(dayActivities.events.length).toBe(0);
+    expect(dayActivities.memos).toBeDefined();
+    expect(dayActivities.memos.length).toBe(0);
   });
 
   it(`Case 5 - 9 fetchDayActivitiesSummary 取得指定日期概要 - 存在1个日程、1个任务(日程每日重复)`, async () => {
