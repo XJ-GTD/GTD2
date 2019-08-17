@@ -66,24 +66,34 @@ end
 
 ## 数据状态枚举
 
-|   |账户A<br/>设备Da|服务器|账户B<br/>设备Db|
-| ---  | ---  | ---  | ---  |
-|      | [Plan, ID1XX1, ..., 未删除] | [账户A, 设备Da, Plan, ID1XX1, ID1XX1, ..., 未删除] |  |
-| |  | [账户A, 设备Da, Plan, ID1XX2, ID1XX2, ..., 删除] |  |
-| |  | [账户B, 设备Db, Plan, ID11X1, ID11X1, ..., 未删除] | [Plan, ID11X1, ..., 未删除] |
-| | [PlanItem, ID2XX1, ..., 未删除] | [账户A, 设备Da, PlanItem, ID2XX1, ID2XX1, ..., 未删除] |  |
-| |  | [账户A, 设备Da, PlanItem, ID2XX2, ID2XX2, ..., 删除] |  |
-| |  | [账户B, 设备Db, PlanItem, ID21X1, ID21X1, ..., 未删除] | [PlanItem, ID21X1, ..., 未删除] |
-| | [Task, ID3XX1, ..., 未删除] | [账户A, 设备Da, Task, ID3XX1, ID3XX1, ..., 未删除] |  |
-| |  | [账户A, 设备Da, Task, ID3XX2, ID3XX2, ..., 删除] |  |
-| |  | [账户B, 设备Db, Task, ID31X1, ID31X1, ..., 未删除] | [Task, ID31X1, ..., 未删除] |
-| | [Agenda, ID4XX1, ..., 未删除] | [账户A, 设备Da, Agenda, ID4XX1, ID4XX1, ..., 未删除] |  |
-| |  | [账户A, 设备Da, Agenda, ID4XX2, ID4XX2, ..., 删除] |  |
-| |  | [账户B, 设备Db, Agenda, ID41X1, ID41X1, ..., 未删除] | [Agenda, ID41X1, ..., 未删除] |
-| | [MiniTask, ID5XX1, ..., 未删除] | [账户A, 设备Da, MiniTask, ID5XX1, ID5XX1, ..., 未删除] |  |
-| |  | [账户A, 设备Da, MiniTask, ID5XX2, ID5XX2, ..., 删除] |  |
-| |  | [账户B, 设备Db, MiniTask, ID51X1, ID51X1, ..., 未删除] | [MiniTask, ID51X1, ..., 未删除] |
-| | [Memo, ID6XX1, ..., 未删除] | [账户A, 设备Da, Memo, ID6XX1, ID6XX1, ..., 未删除] |  |
-| |  | [账户A, 设备Da, Memo, ID6XX2, ID6XX2, ..., 删除] |  |
-| |  | [账户B, 设备Db, Memo, ID61X1, ID61X1, ..., 未删除] | [Memo, ID61X1, ..., 未删除] |
+|   |账户A<br/>设备Da|账户A<br/>设备Dx|服务器|账户B<br/>设备Db|
+| ---  | ---  | ---  | :--  | ---  |
+| **Plan** | [Plan, **ID1XX1**, ..., 未删除] |  | [账户A, 设备Da, Plan, **ID1XX1**, **ID1XX1**, ..., 未删除] |  |
+| |  |  | [账户A, 设备Da, Plan, ID1XX2, ID1XX2, ..., 删除] |  |
+| |  |  | [账户B, 设备Db, Plan, **ID11X1**, **ID11X1**, ..., 未删除] | [Plan, **ID11X1**, ..., 未删除] |
+| | [Plan, **ID1XX3**, ..., 未删除] |  | [账户A, ***设备Da***, Plan, **ID1XX3**, **ID1XX3**, ..., 未删除] |  |
+| |  | [Plan, **ID1XX3**, ..., 未删除] | [账户A, ***设备Dx***, Plan, **ID1XX3**, **ID1XX3**, ..., 未删除] |  |
+| | [Plan, **ID1XX4**, ..., 未删除] |  | [账户A, 设备Da, Plan, **ID1XX4**, **ID1XX4**, ..., 未删除] |  |
+| |  |  | [账户B, 设备Db, Plan, ID11X2, ID11X2, **ID1XX4**, ..., 未删除] | [Plan, ID11X2, **ID1XX4**, ..., 未删除] |
+| **PlanItem** | [PlanItem, **ID2XX1**, ..., 未删除] |  | [账户A, 设备Da, PlanItem, **ID2XX1**, **ID2XX1**, ..., 未删除] |  |
+| |  |  | [账户A, 设备Da, PlanItem, ID2XX2, ID2XX2, ..., 删除] |  |
+| |  |  | [账户B, 设备Db, PlanItem, **ID21X1**, **ID21X1**, ..., 未删除] | [PlanItem, **ID21X1**, ..., 未删除] |
+| | [PlanItem, **ID2XX3**, ..., 未删除] |  | [账户A, ***设备Da***, PlanItem, **ID2XX3**, **ID2XX3**, ..., 未删除] |  |
+| |  | [PlanItem, **ID2XX3**, ..., 未删除] | [账户A, ***设备Dx***, PlanItem, **ID2XX3**, **ID2XX3**, ..., 未删除] |  |
+| **Task** | [Task, **ID3XX1**, ..., 未删除] |  | [账户A, 设备Da, Task, **ID3XX1**, **ID3XX1**, ..., 未删除] |  |
+| |  |  | [账户A, 设备Da, Task, **ID3XX2**, **ID3XX2**, ..., 删除] |  |
+| |  |  | [账户B, 设备Db, Task, **ID31X1**, **ID31X1**, ..., 未删除] | [Task, **ID31X1**, ..., 未删除] |
+| | [Task, **ID3XX3**, ..., 未删除] |  | [账户A, ***设备Da***, Task, **ID3XX3**, **ID3XX3**, ..., 未删除] |  |
+| |  | [Task, **ID3XX3**, ..., 未删除] | [账户A, ***设备Dx***, Task, **ID3XX3**, **ID3XX3**, ..., 未删除] |  |
+| | [Task, **ID3XX4**, ..., 未删除] |  | [账户A, 设备Da, Task, **ID3XX4**, **ID3XX4**, ..., 未删除] |  |
+| |  |  | [账户B, 设备Db, Task, ID31X2, ID31X2, **ID3XX4**, ..., 未删除] | [Task, ID31X2, **ID3XX4**, ..., 未删除] |
+| **Agenda** | [Agenda, ID4XX1, ..., 未删除] |  | [账户A, 设备Da, Agenda, ID4XX1, ID4XX1, ..., 未删除] |  |
+| |  |  | [账户A, 设备Da, Agenda, ID4XX2, ID4XX2, ..., 删除] |  |
+| |  |  | [账户B, 设备Db, Agenda, ID41X1, ID41X1, ..., 未删除] | [Agenda, ID41X1, ..., 未删除] |
+| **MiniTask** | [MiniTask, ID5XX1, ..., 未删除] |  | [账户A, 设备Da, MiniTask, ID5XX1, ID5XX1, ..., 未删除] |  |
+| |  |  | [账户A, 设备Da, MiniTask, ID5XX2, ID5XX2, ..., 删除] |  |
+| |  |  | [账户B, 设备Db, MiniTask, ID51X1, ID51X1, ..., 未删除] | [MiniTask, ID51X1, ..., 未删除] |
+| **Memo** | [Memo, ID6XX1, ..., 未删除] |  | [账户A, 设备Da, Memo, ID6XX1, ID6XX1, ..., 未删除] |  |
+| |  |  | [账户A, 设备Da, Memo, ID6XX2, ID6XX2, ..., 删除] |  |
+| |  |  | [账户B, 设备Db, Memo, ID61X1, ID61X1, ..., 未删除] | [Memo, ID61X1, ..., 未删除] |
 
