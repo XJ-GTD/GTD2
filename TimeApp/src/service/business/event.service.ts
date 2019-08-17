@@ -680,7 +680,7 @@ export class EventService extends BaseService {
 			//创建任务
 			let ttdb: TTbl = new TTbl();
 			tx.cs = anyenum.IsSuccess.wait;
-			if(tx.isrt)
+			if(tx.isrt==''||tx.isrt == null || tx.isrt == "undefined")
 			{
 				tx.isrt = anyenum.IsCreate.isNo;
 			}
