@@ -648,7 +648,9 @@ export class EventService extends BaseService {
   async saveTask(tx: TaskData): Promise <TaskData> {
 		this.assertEmpty(tx); // 对象不能为空
 		this.assertEmpty(tx.evn); // 事件主题不能为空
+		let evi: string ="";
 		if(tx.evi) {
+			evi = tx.evi;
 			//更新任务事件
 			let evdb: EvTbl = new EvTbl();
 			tx.mi = UserConfig.account.id; //更新者
@@ -665,6 +667,7 @@ export class EventService extends BaseService {
 		} else {
 			//创建事件
 			tx.evi = this.util.getUuid();
+			evi = tx.evi;
 			tx.ui = UserConfig.account.id;
 			tx.type = anyenum.EventType.Task;
 			tx.evd = tx.evd || moment().format('YYYY/MM/DD');
@@ -684,7 +687,15 @@ export class EventService extends BaseService {
 			Object.assign(ttdb, tx);
 			await this.sqlExce.saveByParam(ttdb);
 		}
-		return tx;
+		let txx: TaskData = {} as TaskData;
+		if(evi !="")
+		{
+			
+			let params= Array<any>();
+			let sqlparam: string =`select ev.*,td.cs,td.isrt,td.cd,td.fd from gtd_ev  ev left join gtd_t  td on ev.evi = td.evi where ev.evi =${evi} `;
+			txx = await this.sqlExce.getExtOneByParam<TaskData>(sqlparam,params);
+		}
+		return txx;
   }
 
 	/**
