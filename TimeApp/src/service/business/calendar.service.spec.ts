@@ -1684,7 +1684,7 @@ describe('CalendarService test suite', () => {
     let startday: string = moment(moment().format("YYYY/MM")).startOf('month').format("YYYY/MM/DD");
     let endday: string = moment(moment().format("YYYY/MM")).endOf('month').format("YYYY/MM/DD");
 
-    let betweenMonthEndDays: number = moment(moment().format("YYYY/MM")).endOf('month').diff(day, "days");
+    let betweenMonthEndDays: number = moment(moment().format("YYYY/MM")).endOf('month').diff(day, "days") + 1;
 
     expect(monthActivity.month).toBe(moment().format("YYYY/MM"));
     expect(monthActivity.calendaritems).toBeDefined();
