@@ -797,9 +797,9 @@ export class EventService extends BaseService {
   	this.assertEmpty(evi);
   	let evdb: EvTbl = new EvTbl();
 		evdb.rtevi = evi;
-		evdb = await this.sqlExce.getOneByParam<EvTbl>(evdb);
+		let evdbNew = await this.sqlExce.getOneByParam<EvTbl>(evdb);
 		let tx: TaskData = {} as TaskData;
-		Object.assign(tx, evdb);
+		Object.assign(tx, evdbNew);
 		return tx;
   }
 
