@@ -43,7 +43,7 @@ import {TTbl} from "../sqlite/tbl/t.tbl";
 import {WaTbl} from "../sqlite/tbl/wa.tbl";
 import { CalendarService, PlanData } from "./calendar.service";
 import { EventService,TaskData,MiniTaskData} from "./event.service";
-import { PlanType,IsCreate } from "../../data.enum";
+import { PlanType,IsCreate,IsSuccess} from "../../data.enum";
 
 /**
  * 事件Service 持续集成CI 自动测试Case
