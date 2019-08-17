@@ -252,7 +252,7 @@ describe('EventService test suite', () => {
 
 	it('Case 6 - 1 fetchPagedCompletedTasks 查询完成的任务 - 查询2019/08/14这一天完成的任务', async() => {
 		
-		et tx: TaskData = {} as TaskData;
+		let tx: TaskData = {} as TaskData;
     tx.evn ="shopping,今天穿的是花裤衩";
     tx.cs = IsSuccess.success;
     tx = await eventService.saveTask(tx);
