@@ -148,8 +148,8 @@ export enum Err {
   netbroken = -901,
 }
 
-//日程修改类型
-export enum ModifyType  {
+//日程修改、删除类型
+export enum OperateType  {
   OnlySel = "OnlySel",
   FromSel = "FromSel",
   Non ="Non"
