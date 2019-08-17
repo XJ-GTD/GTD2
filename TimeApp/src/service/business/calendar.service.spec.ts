@@ -205,7 +205,7 @@ describe('CalendarService test suite', () => {
       if (day == daySummary.day) {
         expect(daySummary.day).toBeDefined();
         expect(daySummary.calendaritemscount).toBe(1);
-        expect(daySummary.activityitemscount).toBe(1);
+        expect(daySummary.activityitemscount).toBe(0);
         expect(daySummary.eventscount).toBe(1);
         expect(daySummary.agendascount).toBe(0);
         expect(daySummary.taskscount).toBe(1);
