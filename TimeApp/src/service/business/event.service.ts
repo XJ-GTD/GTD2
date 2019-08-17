@@ -654,12 +654,14 @@ export class EventService extends BaseService {
 			tx.mi = UserConfig.account.id; //更新者
 			Object.assign(evdb, tx);
 		  await this.sqlExce.updateByParam(evdb);
-			let ttdb: TTbl = new TTbl();
+		  let ttdb: TTbl = new TTbl();
 			//根据主键ID获取任务详情
 			ttdb.evi = tx.evi;
-			ttdb = await this.sqlExce.getOneByParam<TTbl>(ttdb);
-			Object.assign(ttdb, tx);
-			await this.sqlExce.updateByParam(ttdb);
+			let ttdbNew = await this.sqlExce.getOneByParam<TTbl>(ttdb);
+			if (ttdbNew && ttdbNew.evi) {
+				Object.assign(ttdbNew, tx);
+				await this.sqlExce.updateByParam(ttdb);
+			}
 		} else {
 			//创建事件
 			tx.evi = this.util.getUuid();
@@ -674,7 +676,11 @@ export class EventService extends BaseService {
 			await this.sqlExce.saveByParam(evdb);
 			//创建任务
 			let ttdb: TTbl = new TTbl();
-			ttdb.evi = tx.evi;
+			tx.cs = anyenum.IsSuccess.wait;
+			if(tx.isrt)
+			{
+				tx.isrt = anyenum.IsCreate.isNo;
+			}
 			Object.assign(ttdb, tx);
 			await this.sqlExce.saveByParam(ttdb);
 		}
