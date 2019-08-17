@@ -205,9 +205,10 @@ describe('EventService test suite', () => {
     tx = await eventService.saveTask(tx);
     expect(tx).toBeDefined();
     expect(tx.evi).toBeDefined();
+    
     let isrt: string = await eventService.finishTask(tx.evi);
     expect(isrt).toBeDefined();
-    expect(isrt).toBe(IsCreate.isYes);
+    expect(isrt).toEqual(IsCreate.isYes);
   })
 
   it('Case 4 - 1 finishTaskNext 自动创建任务 - 创建任务，自动复制这个任务', async() => {
@@ -229,7 +230,20 @@ describe('EventService test suite', () => {
 
 	it('Case 5 - 1 fetchPagedTasks 查询任务 - 查询全部2019/08/04这一天的任务', async() => {
 
-		let day: string = "2019/08/14";
+		//创建任务
+		let tx: TaskData = {} as TaskData;
+    tx.evn ="shopping,今天穿的是花裤衩";
+    tx = await eventService.saveTask(tx);
+    expect(tx).toBeDefined();
+    expect(tx.evi).toBeDefined();
+    
+    let tx2: TaskData = {} as TaskData;
+    tx2.evn ="shopping,今天穿的是花裤衩 2019-08-17";
+    tx2 = await eventService.saveTask(tx2);
+    expect(tx2).toBeDefined();
+    expect(tx2.evi).toBeDefined();
+
+		let day: string = "2019/08/17";
 		let data: Array<TaskData> = new Array<TaskData>();
 		data = await eventService.fetchPagedTasks(day,"");
 		expect(data).toBeDefined();
@@ -237,6 +251,21 @@ describe('EventService test suite', () => {
   })
 
 	it('Case 6 - 1 fetchPagedCompletedTasks 查询完成的任务 - 查询2019/08/14这一天完成的任务', async() => {
+		
+		et tx: TaskData = {} as TaskData;
+    tx.evn ="shopping,今天穿的是花裤衩";
+    tx.cs = IsSuccess.success;
+    tx = await eventService.saveTask(tx);
+    expect(tx).toBeDefined();
+    expect(tx.evi).toBeDefined();
+    
+    let tx2: TaskData = {} as TaskData;
+    tx2.evn ="shopping,今天穿的是花裤衩 2019-08-17";
+    tx2.cs = IsSuccess.success;
+    tx2 = await eventService.saveTask(tx2);
+    expect(tx2).toBeDefined();
+    expect(tx2.evi).toBeDefined();
+
 
 		let day: string = "2019/08/14";
 		let data: Array<TaskData> = new Array<TaskData>();
@@ -247,6 +276,18 @@ describe('EventService test suite', () => {
 
 	it('Case 7 - 1 fetchPagedUncompletedTasks 查询未完成的任务 - 查询2019/08/14这一天未完成的任务', async() => {
 
+		let tx: TaskData = {} as TaskData;
+    tx.evn ="shopping,今天穿的是花裤衩";
+    tx = await eventService.saveTask(tx);
+    expect(tx).toBeDefined();
+    expect(tx.evi).toBeDefined();
+    
+    let tx2: TaskData = {} as TaskData;
+    tx2.evn ="shopping,今天穿的是花裤衩 2019-08-17";
+    tx2 = await eventService.saveTask(tx2);
+    expect(tx2).toBeDefined();
+    expect(tx2.evi).toBeDefined();
+    
 		let day: string = "2019/08/14";
 		let data: Array<TaskData> = new Array<TaskData>();
 		data = await eventService.fetchPagedUncompletedTasks(day,"");
