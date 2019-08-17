@@ -799,7 +799,7 @@ export class EventService extends BaseService {
 			Object.assign(tx, evdb);
 			tx.cs = anyenum.IsSuccess.wait;
 			tx.isrt = anyenum.IsCreate.isYes;
-			this.saveTask(tx);
+			await this.saveTask(tx);
 		}
 		return ;
   }
