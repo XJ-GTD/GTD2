@@ -74,10 +74,12 @@ export class EventService extends BaseService {
    * 保存日程
    * @param {AgendaData} agdata
    * @param {ModifyType} modiType
+   * 修改非重复日程to非重复日程、重复日程中的某一日程to非重复日程使用ModifyType.OnlySel，
+   * 修改重复日程to重复日程、非重复日程to重复日程使用ModifyType.FromSel，
+   * 新建日程使用 ModifyType.Non
    * @returns {Promise<AgendaData>}
    */
   async saveAgenda(agdata : AgendaData, modiType : anyenum.ModifyType = anyenum.ModifyType.Non): Promise<Array<AgendaData>> {
-
     // 入参不能为空
     this.assertEmpty(agdata);
     this.assertEmpty(agdata.sd);    // 日程开始日期不能为空
@@ -165,9 +167,10 @@ export class EventService extends BaseService {
   }
 
   /**
-   *
-   * @param {ScdData} scd
-   * @returns {Promise<void>}
+   * 更新日程
+   * @param {AgendaData} agdata
+   * @param {ModifyType} modiType
+   * @returns {Promise<Array<AgendaData>>}
    */
   private async updateAgenda(agdata: AgendaData, modiType : anyenum.ModifyType):Promise<Array<AgendaData>> {
 
@@ -185,20 +188,25 @@ export class EventService extends BaseService {
 
       let sq : string ;
       //删除原事件中从当前开始所有日程
-      sq = `delete from gtd_ev where evd >= '${agdata.evd}' `;
+
+      //主evi设定
+      let masterEvi : string;
+      if (agdata.rtevi == ""){
+        masterEvi = agdata.evi;
+      }else {
+        masterEvi = agdata.rtevi;
+      }
+
+      sq = `delete from gtd_ev where evd >= '${agdata.evd}' and (evi = '${masterEvi}' or rtevi =  '${masterEvi}') `;
       sqlparam.push(sq);
 
       //删除原事件中从当前日程开始所有提醒
-      sq = `delete from gtd_wa where wai in (select evi from gtd_ev where evd >= '${agdata.evd}') `;
+      sq = `delete from gtd_wa where wai in (select evi from gtd_ev 
+          where evd >= '${agdata.evd}' and (evi = '${masterEvi}' or rtevi =  '${masterEvi}') `;
       sqlparam.push(sq);
 
       //更新原事件日程结束日
-      let caevi : string;
-      if (agdata.rtevi == ""){
-        caevi = agdata.evi;
-      }else {
-        caevi = agdata.rtevi;
-      }
+      let caevi : string = masterEvi;
 
       let ca = new CaTbl();
       ca.evi = caevi;
