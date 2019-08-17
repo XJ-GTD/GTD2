@@ -197,21 +197,30 @@ export class EventService extends BaseService {
         masterEvi = agdata.rtevi;
       }
 
-      sq = `delete from gtd_ev where evd >= '${agdata.evd}' and (evi = '${masterEvi}' or rtevi =  '${masterEvi}') `;
-      sqlparam.push(sq);
+      sq = `delete from gtd_ev where evd >= '${agdata.evd}' and (evi = '${masterEvi}' or rtevi =  '${masterEvi}') ;`;
+      this.sqlExce.execSql(sq);
+
+      //更新原事件日程结束日或事件表无记录了则删除
+      sq = `select * from gtd_ev where evi = '${masterEvi}' or rtevi =  '${masterEvi}' ;`;
+      let evtbls = new Array<EvTbl>();
+      evtbls = await this.sqlExce.getExtList<EvTbl>(sq);
+
+      let caevi : string = masterEvi;
+      let ca = new CaTbl();
+      ca.evi = caevi;
+      if (evtbls.length > 0){
+        ca.ed = moment(agdata.evd).subtract(1,'d').format("YYYY/MM/dd");
+        sqlparam.push(ca.upTParam());
+      }else{
+        sqlparam.push(ca.dTParam());
+      }
 
       //删除原事件中从当前日程开始所有提醒
       sq = `delete from gtd_wa where wai in (select evi from gtd_ev 
-          where evd >= '${agdata.evd}' and (evi = '${masterEvi}' or rtevi =  '${masterEvi}') `;
+          where evd >= '${agdata.evd}' and (evi = '${masterEvi}' or rtevi =  '${masterEvi}') ; `;
       sqlparam.push(sq);
 
-      //更新原事件日程结束日
-      let caevi : string = masterEvi;
 
-      let ca = new CaTbl();
-      ca.evi = caevi;
-      ca.ed = moment(agdata.evd).subtract(1,'d').format("YYYY/MM/dd");
-      sqlparam.push(ca.upTParam());
 
       //新建新事件日程
       let newAgdata = {} as AgendaData;
