@@ -656,21 +656,26 @@ export class EventService extends BaseService {
   async saveTask(tx: TaskData): Promise <TaskData> {
 		this.assertEmpty(tx); // 对象不能为空
 		this.assertEmpty(tx.evn); // 事件主题不能为空
+		let evi: string ="";
 		if(tx.evi) {
+			evi = tx.evi;
 			//更新任务事件
 			let evdb: EvTbl = new EvTbl();
 			tx.mi = UserConfig.account.id; //更新者
 			Object.assign(evdb, tx);
 		  await this.sqlExce.updateByParam(evdb);
-			let ttdb: TTbl = new TTbl();
+		  let ttdb: TTbl = new TTbl();
 			//根据主键ID获取任务详情
 			ttdb.evi = tx.evi;
-			ttdb = await this.sqlExce.getOneByParam<TTbl>(ttdb);
-			Object.assign(ttdb, tx);
-			await this.sqlExce.updateByParam(ttdb);
+			let ttdbNew = await this.sqlExce.getOneByParam<TTbl>(ttdb);
+			if (ttdbNew && ttdbNew.evi) {
+				Object.assign(ttdbNew, tx);
+				await this.sqlExce.updateByParam(ttdb);
+			}
 		} else {
 			//创建事件
 			tx.evi = this.util.getUuid();
+			evi = tx.evi;
 			tx.ui = UserConfig.account.id;
 			tx.type = anyenum.EventType.Task;
 			tx.evd = tx.evd || moment().format('YYYY/MM/DD');
@@ -682,11 +687,25 @@ export class EventService extends BaseService {
 			await this.sqlExce.saveByParam(evdb);
 			//创建任务
 			let ttdb: TTbl = new TTbl();
-			ttdb.evi = tx.evi;
+			tx.cs = anyenum.IsSuccess.wait;
+			if(tx.isrt==''||tx.isrt == null || tx.isrt == "undefined")
+			{
+				tx.isrt = anyenum.IsCreate.isNo;
+			}
 			Object.assign(ttdb, tx);
 			await this.sqlExce.saveByParam(ttdb);
 		}
-		return tx;
+		let txx: TaskData = {} as TaskData;
+		if(evi !="")
+		{
+			console.info("获取evi--"+evi);
+			let params= Array<any>();
+			let sqlparam: string =`select ev.*,td.cs,td.isrt,td.cd,td.fd from gtd_ev  ev left join gtd_t  td on ev.evi = td.evi where ev.evi ='${evi}'`;
+			console.info("执行的SQL"+sqlparam);
+			txx = await this.sqlExce.getExtOneByParam<TaskData>(sqlparam,params);
+			console.info("执行的结果"+txx.evi);
+		}
+		return txx;
   }
 
 	/**
@@ -694,9 +713,13 @@ export class EventService extends BaseService {
 	 */
 	async getTask(evi: string): Promise<TaskData> {
 			this.assertEmpty(evi); // id不能为空
-			let sqlparam: string =`select ev.*,td.cs,td.isrt,td.cd,td.fd from gtd_ev  ev left join gtd_t  td on ev.evi = td.evi where ev.evi =${evi} `;
+//			let sqlparam: string =`select ev.*,td.cs,td.isrt,td.cd,td.fd from gtd_ev  ev left join gtd_t  td on ev.evi = td.evi where ev.evi =${evi} `;
+  		let evdb: EvTbl = new EvTbl();
+  		evdb.evi = evi;
+  		let evdbNew =  await this.sqlExce.getOneByParam<EvTbl>(evdb);
   		let data: TaskData  = {} as TaskData;
-  		data = await this.sqlExce.getExtOneByParam<TaskData>(sqlparam,null);
+//		data = await this.sqlExce.getExtOneByParam<TaskData>(sqlparam,null);
+			Object.assign(data, evdbNew);
   		return data;
 	}
 
@@ -784,7 +807,7 @@ export class EventService extends BaseService {
 			Object.assign(tx, evdb);
 			tx.cs = anyenum.IsSuccess.wait;
 			tx.isrt = anyenum.IsCreate.isYes;
-			this.saveTask(tx);
+			await this.saveTask(tx);
 		}
 		return ;
   }
@@ -795,9 +818,9 @@ export class EventService extends BaseService {
   	this.assertEmpty(evi);
   	let evdb: EvTbl = new EvTbl();
 		evdb.rtevi = evi;
-		evdb = await this.sqlExce.getOneByParam<EvTbl>(evdb);
+		let evdbNew = await this.sqlExce.getOneByParam<EvTbl>(evdb);
 		let tx: TaskData = {} as TaskData;
-		Object.assign(tx, evdb);
+		Object.assign(tx, evdbNew);
 		return tx;
   }
 
