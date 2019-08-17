@@ -267,7 +267,7 @@ describe('EventService test suite', () => {
     expect(tx2.evi).toBeDefined();
 
 
-		let day: string = "2019/08/14";
+		let day: string = "2019/08/17";
 		let data: Array<TaskData> = new Array<TaskData>();
 		data = await eventService.fetchPagedCompletedTasks(day,"");
 		expect(data).toBeDefined();
@@ -288,7 +288,7 @@ describe('EventService test suite', () => {
     expect(tx2).toBeDefined();
     expect(tx2.evi).toBeDefined();
     
-		let day: string = "2019/08/14";
+		let day: string = "2019/08/17";
 		let data: Array<TaskData> = new Array<TaskData>();
 		data = await eventService.fetchPagedUncompletedTasks(day,"");
 		expect(data).toBeDefined();
