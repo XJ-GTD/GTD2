@@ -1408,8 +1408,7 @@ describe('CalendarService test suite', () => {
     let startday: string = moment(moment().format("YYYY/MM")).startOf('month').format("YYYY/MM/DD");
     let endday: string = moment(moment().format("YYYY/MM")).endOf('month').format("YYYY/MM/DD");
 
-    expect(monthActivity.startday).toBe(startday);
-    expect(monthActivity.endday).toBe(endday);
+    expect(monthActivity.month).toBe(moment().format("YYYY/MM"));
     expect(monthActivity.calendaritems).toBeDefined();
     expect(monthActivity.calendaritems.length).toBe(0);
     expect(monthActivity.events).toBeDefined();
@@ -1466,8 +1465,7 @@ describe('CalendarService test suite', () => {
     let startday: string = moment(moment().format("YYYY/MM")).startOf('month').format("YYYY/MM/DD");
     let endday: string = moment(moment().format("YYYY/MM")).endOf('month').format("YYYY/MM/DD");
 
-    expect(monthActivity.startday).toBe(startday);
-    expect(monthActivity.endday).toBe(endday);
+    expect(monthActivity.month).toBe(moment().format("YYYY/MM"));
     expect(monthActivity.calendaritems).toBeDefined();
     expect(monthActivity.calendaritems.length).toBe(0);
     expect(monthActivity.events).toBeDefined();
