@@ -1038,7 +1038,7 @@ describe('CalendarService test suite', () => {
 
     memo = await memoService.saveMemo(memo);
 
-    let dayActivities: DayActivityData = await calendarService.mergeDayActivities(dayActivities, [planitem1, task, memo]);
+    dayActivities = await calendarService.mergeDayActivities(dayActivities, [planitem1, task, memo]);
 
     expect(dayActivities.day).toBe(day);
     expect(dayActivities.calendaritems).toBeDefined();
@@ -1062,7 +1062,7 @@ describe('CalendarService test suite', () => {
 
     task = await eventService.saveTask(task);
 
-    let dayActivities: DayActivityData = await calendarService.mergeDayActivities(dayActivities, [task]);
+    dayActivities = await calendarService.mergeDayActivities(dayActivities, [task]);
 
     expect(dayActivities.day).toBe(day);
     expect(dayActivities.calendaritems).toBeDefined();
