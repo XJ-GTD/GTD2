@@ -171,7 +171,7 @@ describe('CalendarService test suite', () => {
 
     plan = await calendarService.savePlan(plan);
 
-    await calendarService.removePlan(plan.ji);
+    await calendarService.removePlan(plan.ji, plan.jt);
 
     let fetchedPlan = await calendarService.getPlan(plan.ji);
 
