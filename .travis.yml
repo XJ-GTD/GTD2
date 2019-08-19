@@ -27,6 +27,7 @@ matrix:
         - yarn
         - jq
         - gradle
+        - sshpass
         - dos2unix
         - google-chrome-stable
     licenses:
@@ -58,6 +59,7 @@ before_install:
   - export LANG=zh_CN.UTF-8
   - export GRADLE_HOME=/usr/local/gradle
   - export PATH=$GRADLE_HOME/bin:$PATH
+  - export SSHPASS=$ALIYUN_PASS
   - nvm install 8
   - dos2unix -k $TRAVIS_BUILD_DIR/travis/preinstall.sh
   - sh $TRAVIS_BUILD_DIR/travis/preinstall.sh
@@ -86,9 +88,9 @@ script:
   - yarn install
   - npm run clean
   - npm run build
-  - npm run test-ci
   - npm run test-coverage
-  - ls $TRAVIS_BUILD_DIR/TimeApp
+  - dos2unix -k $TRAVIS_BUILD_DIR/travis/upload-coverage.sh
+  - sh $TRAVIS_BUILD_DIR/travis/upload-coverage.sh
   - dos2unix -k $TRAVIS_BUILD_DIR/travis/build.sh
   - sh $TRAVIS_BUILD_DIR/travis/build.sh
 after_script:

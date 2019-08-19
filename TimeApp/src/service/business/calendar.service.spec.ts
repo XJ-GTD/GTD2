@@ -68,7 +68,6 @@ describe('CalendarService test suite', () => {
   let calendarService: CalendarService;
   let eventService: EventService;
   let memoService: MemoService;
-  let planforUpdate: PlanData;
   let httpMock: HttpTestingController;
   let sqlExce: SqliteExec;
 
@@ -2315,16 +2314,20 @@ describe('CalendarService test suite', () => {
 
   // 需要同步执行
   it(`Case 1 - 3 savePlan 更新日历 - 更新日历颜色`, async () => {
-    let savedPlan;
+    let planforUpdate: PlanData = {} as PlanData;
+
+    planforUpdate.jn = '冥王星服务类 自动测试';
+    planforUpdate.jc = '#f1f1f1';
+    planforUpdate.jt = PlanType.PrivatePlan;
+
+    planforUpdate = await calendarService.savePlan(planforUpdate);
 
     if (planforUpdate && planforUpdate.ji) {
       let plan: PlanData = planforUpdate;
 
       plan.jc = '#1a1a1a';
 
-      savedPlan = await calendarService.savePlan(plan);
-
-      planforUpdate = savedPlan;  // 保存用于后面的测试用例
+      let savedPlan = await calendarService.savePlan(plan);
 
       expect(savedPlan).toBeDefined();
       expect(savedPlan.jc).toBe('#1a1a1a');
@@ -2343,7 +2346,6 @@ describe('CalendarService test suite', () => {
       plan.jt = PlanType.PrivatePlan;
 
       calendarService.savePlan(plan).then(savedPlan => {
-        planforUpdate = savedPlan;  // 保存用于后面的测试用例
 
         expect(savedPlan.ji).toBeDefined();
         expect(savedPlan.ji).not.toBe('');

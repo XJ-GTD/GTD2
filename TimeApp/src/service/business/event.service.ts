@@ -223,8 +223,8 @@ export class EventService extends BaseService {
       }
 
       //删除原事件中从当前日程开始所有提醒
-      sq = `delete from gtd_wa where wai in (select evi from gtd_ev 
-          where evd >= '${agdata.evd}' and (evi = '${masterEvi}' or rtevi =  '${masterEvi}') 
+      sq = `delete from gtd_wa where wai in (select evi from gtd_ev
+          where evd >= '${agdata.evd}' and (evi = '${masterEvi}' or rtevi =  '${masterEvi}')
           and obt = '${anyenum.ObjectType.Event}'; `;
       sqlparam.push(sq);
     }else{
@@ -343,18 +343,18 @@ export class EventService extends BaseService {
 
     //设置页面参数初始化
     this.initAgdParam(agdata);
-    console.log(JSON.stringify(agdata));
+    //console.log(JSON.stringify(agdata));
 
     //事件sqlparam 及提醒sqlparam
     let retParamEv = new RetParamEv();
     retParamEv = this.sqlparamAddEv2(agdata);
-    console.log(JSON.stringify(retParamEv));
+    //console.log(JSON.stringify(retParamEv));
 
 
     //日程表sqlparam
     let caparam = new Array<any>();
     caparam = this.sqlparamAddCa(retParamEv.rtevi,agdata.sd,retParamEv.ed,agdata);
-    console.log(JSON.stringify(caparam));
+    //console.log(JSON.stringify(caparam));
 
     //批量本地入库
     let sqlparam = new Array<any>();
@@ -414,7 +414,7 @@ export class EventService extends BaseService {
       }
 
       //删除原事件中从当前日程开始所有提醒
-      sq = `delete from gtd_wa where wai in (select evi from gtd_ev 
+      sq = `delete from gtd_wa where wai in (select evi from gtd_ev
           where evd >= '${agdata.evd}' and (evi = '${masterEvi}' or rtevi =  '${masterEvi}')
            and obt = '${anyenum.ObjectType.Event}' ; `;
       sqlparam.push(sq);
@@ -482,7 +482,7 @@ export class EventService extends BaseService {
       //日程表新建或更新
       let caparam = new Array<any>();
       caparam = this.sqlparamAddCa(agdata.evi ,agdata.evd,agdata.evd,agdata);
-      console.log(JSON.stringify(caparam));
+      //console.log(JSON.stringify(caparam));
 
       sqlparam = [...sqlparam, ...caparam];
 
@@ -799,7 +799,7 @@ export class EventService extends BaseService {
       }
       wa.wd = moment(date).format("YYYY/MM/DD");
       wa.wt = moment(date).format("HH:mm");
-      console.log('-------- 插入提醒表 --------');
+      //console.log('-------- 插入提醒表 --------');
 
     }
 
