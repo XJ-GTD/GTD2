@@ -1,4 +1,4 @@
-# Data Synchronize
+# 数据同步(Data Synchronize)
 
 数据多设备同步, 多账户间共享同步
 
