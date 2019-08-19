@@ -227,7 +227,7 @@ export class HPage {
   newcd() {
 
     if (1==1){
- /*     let ev = new EvTbl();
+/*     let ev = new EvTbl();
       this.sqlexce.dropByParam(ev);
       this.sqlexce.createByParam(ev);*/
 
@@ -268,16 +268,16 @@ export class HPage {
       this.sqlexce.createByParam(wa);*/
 
 
-      /*let agdata = {} as   AgendaData;
-      agdata.evn = "测试重复日程添加0827";
-      agdata.sd = "2019/08/27";
+/*      let agdata = {} as   AgendaData;
+      agdata.evn = "测试重复日程添加0819";
+      agdata.sd = "2019/08/19";
 
       let rtjon = new RtJson();
-      rtjon.cycletype = anyenum.CycleType.w;
-      rtjon.over.value = "2";
-      rtjon.over.type = anyenum.OverType.times;
-      rtjon.cyclenum = 3;
-      rtjon.openway = anyenum.OpenWay.Wednesday;
+      rtjon.cycletype = anyenum.CycleType.day;
+      rtjon.over.value = "2019/08/27";
+      rtjon.over.type = anyenum.OverType.limitdate;
+      rtjon.cyclenum = 1;
+      rtjon.openway = new Array<number>();
 
       agdata.rtjson = rtjon;
 
@@ -292,9 +292,6 @@ export class HPage {
         console.log(JSON.stringify(data));
       });*/
 
-      let mom = {} as MemoData;
-      mom.mon = "11112222222222222222222";
-      this.momserv.saveMemo(mom);
       return ;
     }
     let p: ScdPageParamter = new ScdPageParamter();

@@ -114,7 +114,7 @@ export class EventService extends BaseService {
       //共享人信息
       agdata.parters = await this.getParterByEvi(masterEvi);
     }
-    // 填充发起人信息
+
     if(agdata.gs == '1'){
       //发起人信息
       agdata.originator = await this.getParterByUi(agdata.ui);
