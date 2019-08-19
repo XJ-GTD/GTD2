@@ -148,7 +148,7 @@ export class MemoService extends BaseService {
 	 * 恢复备忘,根据服务器同步到客户端
 	 * @author ying<343253410@qq.com>
 	 */
-	async recovery(outRecoverPro: OutRecoverPro, bts: Number = 0) {
+	async recovery(outRecoverPro: OutRecoverPro, bts: Number = 0,flag: Number =0 ): Promise<Array<any>> {
 		if (bts == 0) {
 			this.assertNull(outRecoverPro);
 		}
@@ -167,9 +167,9 @@ export class MemoService extends BaseService {
 		} else {
 			outRecoverProNew = outRecoverPro;
 		}
+		let sqls = new Array <string> ();
 		if (outRecoverProNew.mom.length > 0) {
 			let mom = new MomTbl();
-			let sqls = new Array <string> ();
 			//先删除
 			await this.sqlExce.dropByParam(mom);
 			//恢复数据
@@ -178,9 +178,12 @@ export class MemoService extends BaseService {
 				Object.assign(mom, outRecoverProNew.mom[j]);
 				sqls.push(mom.inTParam());
 			}
-			await this.sqlExce.batExecSql(sqls);
+			if(flag==0)
+			{
+				await this.sqlExce.batExecSql(sqls);
+			}
 		}
-		return ;
+		return sqls;
 	}
 }
 
