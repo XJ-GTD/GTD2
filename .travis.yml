@@ -87,6 +87,8 @@ script:
   - npm run clean
   - npm run build
   - npm run test-ci
+  - npm run test-coverage
+  - ls $TRAVIS_BUILD_DIR/TimeApp
   - dos2unix -k $TRAVIS_BUILD_DIR/travis/build.sh
   - sh $TRAVIS_BUILD_DIR/travis/build.sh
 after_script:
