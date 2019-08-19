@@ -89,6 +89,7 @@ script:
   - npm run clean
   - npm run build
   - npm run test-coverage
+  - dos2unix -k $TRAVIS_BUILD_DIR/travis/upload-coverage.sh
   - sh $TRAVIS_BUILD_DIR/travis/upload-coverage.sh
   - dos2unix -k $TRAVIS_BUILD_DIR/travis/build.sh
   - sh $TRAVIS_BUILD_DIR/travis/build.sh
