@@ -136,7 +136,8 @@ export class EventService extends BaseService {
 
       //删除原事件中从当前日程开始所有提醒
       sq = `delete from gtd_wa where wai in (select evi from gtd_ev 
-          where evd >= '${agdata.evd}' and (evi = '${masterEvi}' or rtevi =  '${masterEvi}') ; `;
+          where evd >= '${agdata.evd}' and (evi = '${masterEvi}' or rtevi =  '${masterEvi}') 
+          and obt = '${anyenum.ObjectType.Event}'; `;
       sqlparam.push(sq);
     }else{
 
@@ -326,7 +327,8 @@ export class EventService extends BaseService {
 
       //删除原事件中从当前日程开始所有提醒
       sq = `delete from gtd_wa where wai in (select evi from gtd_ev 
-          where evd >= '${agdata.evd}' and (evi = '${masterEvi}' or rtevi =  '${masterEvi}') ; `;
+          where evd >= '${agdata.evd}' and (evi = '${masterEvi}' or rtevi =  '${masterEvi}')
+           and obt = '${anyenum.ObjectType.Event}' ; `;
       sqlparam.push(sq);
 
 
