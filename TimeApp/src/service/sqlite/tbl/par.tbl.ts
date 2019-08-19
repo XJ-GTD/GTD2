@@ -28,8 +28,8 @@ export class ParTbl implements ITblParam {
        ,obi varchar(50) 
        ,sa varchar(4) 
        ,sdt varchar(4) 
-       ,tb varchar(4) 
-       ,del varchar(4) 
+       ,tb varchar(6) 
+       ,del varchar(6) 
        ,wtt integer 
        ,utt integer  
      );`;

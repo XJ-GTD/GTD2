@@ -80,6 +80,14 @@ export enum CycleType {
   year = "4"
 }
 
+//记录标志
+export enum RepeatFlag {
+  NonRepeat = "0",
+  Repeat = "1",
+  RepeatToNon = "2",
+}
+
+
 //重复开启选项
 export enum OpenWay {
   close = "close",
@@ -140,8 +148,8 @@ export enum Err {
   netbroken = -901,
 }
 
-//日程修改类型
-export enum ModifyType  {
+//日程修改、删除类型
+export enum OperateType  {
   OnlySel = "OnlySel",
   FromSel = "FromSel",
   Non ="Non"

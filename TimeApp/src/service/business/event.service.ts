@@ -13,7 +13,6 @@ import {EmitService} from "../util-service/emit.service";
 import {WaTbl} from "../sqlite/tbl/wa.tbl";
 import * as anyenum from "../../data.enum";
 import { BackupPro, BacRestful, OutRecoverPro, RecoverPro } from "../restful/bacsev";
-import {ScdData, SpecScdData} from "../../data.mapping";
 
 @Injectable()
 export class EventService extends BaseService {
@@ -71,13 +70,104 @@ export class EventService extends BaseService {
   }
 
   /**
+   * 删除日程
+   * @param {AgendaData} agdata
+   * @param {OperateType} delType
+   * 删除非重复日程、重复日程中的某一日程使用OperateType.OnlySel
+   * 删除重复日程、非重复日程to重复日程使用OperateType.FromSel
+   * @returns {Promise<Array<AgendaData>>}
+   */
+  async delAgenda(agdata : AgendaData, delType : anyenum.OperateType):Promise<Array<AgendaData>>{
+
+    let outAgds = new Array<AgendaData>();
+
+    //批量本地更新
+    let sqlparam = new Array<any>();
+
+    if (delType == anyenum.OperateType.FromSel){
+      let sq : string ;
+      //删除事件中从当前开始所有日程
+      //主evi设定
+      let masterEvi : string;
+      if (agdata.rtevi == ""){
+        masterEvi = agdata.evi;
+      }else {
+        masterEvi = agdata.rtevi;
+      }
+
+      sq = `delete from gtd_ev where evd >= '${agdata.evd}' and (evi = '${masterEvi}' or rtevi =  '${masterEvi}') ;`;
+      this.sqlExce.execSql(sq);
+
+      //更新原事件日程结束日或事件表无记录了则删除
+      sq = `select * from gtd_ev where evi = '${masterEvi}' or rtevi =  '${masterEvi}' ;`;
+      let evtbls = new Array<EvTbl>();
+      evtbls = await this.sqlExce.getExtList<EvTbl>(sq);
+
+      let caevi : string = masterEvi;
+      let ca = new CaTbl();
+      ca.evi = caevi;
+      if (evtbls.length > 0){
+        ca.ed = moment(agdata.evd).subtract(1,'d').format("YYYY/MM/dd");
+        sqlparam.push(ca.upTParam());
+      }else{
+        sqlparam.push(ca.dTParam());
+      }
+
+      //删除原事件中从当前日程开始所有提醒
+      sq = `delete from gtd_wa where wai in (select evi from gtd_ev 
+          where evd >= '${agdata.evd}' and (evi = '${masterEvi}' or rtevi =  '${masterEvi}') ; `;
+      sqlparam.push(sq);
+    }else{
+
+      let sq : string;
+
+      //删除事件表数据
+      let ev = new EvTbl();
+      ev.evi = agdata.evi;
+      this.sqlExce.delByParam(ev);
+
+      //主evi设定
+      let masterEvi : string;
+      if (agdata.rtevi == ""){
+        masterEvi = agdata.evi;
+      }else {
+        masterEvi = agdata.rtevi;
+      }
+
+      //更新原事件日程结束日或事件表无记录了则删除
+      sq = `select * from gtd_ev where evi = '${masterEvi}' or rtevi =  '${masterEvi}' ;`;
+      let evtbls = new Array<EvTbl>();
+      evtbls = await this.sqlExce.getExtList<EvTbl>(sq);
+
+      let caevi : string = masterEvi;
+      let ca = new CaTbl();
+      ca.evi = caevi;
+      if (evtbls.length == 0){
+        sqlparam.push(ca.dTParam());
+      }
+
+      // 删除相关提醒
+      let wa = new WaTbl();
+      wa.obi = agdata.evi;
+      wa.obt = anyenum.ObjectType.Event;
+      sqlparam.push(wa.dTParam());
+
+    }
+
+    await this.sqlExce.batExecSqlByParam(sqlparam);
+    return outAgds;
+  }
+
+  /**
    * 保存日程
    * @param {AgendaData} agdata
-   * @param {ModifyType} modiType
+   * @param {OperateType} modiType
+   * 修改非重复日程to非重复日程、重复日程中的某一日程to非重复日程使用OperateType.OnlySel，
+   * 修改重复日程to重复日程、非重复日程to重复日程使用OperateType.FromSel，
+   * 新建日程使用 OperateType.Non
    * @returns {Promise<AgendaData>}
    */
-  async saveAgenda(agdata : AgendaData, modiType : anyenum.ModifyType = anyenum.ModifyType.Non): Promise<AgendaData> {
-
+  async saveAgenda(agdata : AgendaData, modiType : anyenum.OperateType = anyenum.OperateType.Non): Promise<Array<AgendaData>> {
     // 入参不能为空
     this.assertEmpty(agdata);
     this.assertEmpty(agdata.sd);    // 日程开始日期不能为空
@@ -99,29 +189,16 @@ export class EventService extends BaseService {
     }
 
     if (agdata.evi != null && agdata.evi != "") {
-      await this.updateDetail(agdata,modiType);
-      return agdata;
+      /*修改*/
+      let outAgdatas = await this.updateAgenda(agdata,modiType);
+
+      return outAgdatas;
+
     } else {
 
-      //设置页面参数初始化
-      this.initAgdParam(agdata);
-      console.log(JSON.stringify(agdata));
-
-      //事件sqlparam 及提醒sqlparam
+      /*新增*/
       let retParamEv = new RetParamEv();
-      retParamEv = this.sqlparamAddEv(agdata);
-      console.log(JSON.stringify(retParamEv));
-
-
-      //日程表sqlparam
-      let caparam = new Array<any>();
-      caparam = this.sqlparamAddAdg(retParamEv.rtevi,agdata.sd,retParamEv.ed,agdata);
-      console.log(JSON.stringify(caparam));
-
-      //批量本地入库
-      let sqlparam = new Array<any>();
-      sqlparam = [...retParamEv.sqlparam, ...caparam];
-      await this.sqlExce.batExecSqlByParam(sqlparam);
+      retParamEv = await this.newAgenda(agdata);
 
       //提交服务器
       let agdPro: AgdPro = new AgdPro();
@@ -143,40 +220,50 @@ export class EventService extends BaseService {
       this.emitService.emitRef(agdata.sd);
       console.log(agdata);
 
-      return agdata;
+      return retParamEv.outAgdatas;
     }
   }
 
   /**
-   *
-   * @param {ScdData} scd
-   * @returns {Promise<void>}
+   * 新增日程
+   * @param {AgendaData} agdata
+   * @returns {Promise<Array<AgendaData>>}
    */
-  private async updateDetail(agdata: AgendaData, modiType : anyenum.ModifyType) {
+  private async newAgenda(agdata: AgendaData):Promise<RetParamEv> {
 
-/*    //取得原日程详情
-    let oldAgdata = {} as AgendaData;
+    //设置页面参数初始化
+    this.initAgdParam(agdata);
+    console.log(JSON.stringify(agdata));
 
-    let oldev : EvTbl = new EvTbl();
-    oldev.evi = agdata.evi;
-    oldev = await this.sqlExce.getOneByParam<EvTbl>(oldev);
-    Object.assign(oldAgdata, oldev);
+    //事件sqlparam 及提醒sqlparam
+    let retParamEv = new RetParamEv();
+    retParamEv = this.sqlparamAddEv2(agdata);
+    console.log(JSON.stringify(retParamEv));
 
-    let oldca: CaTbl = new CaTbl();
-    oldca.evi = agdata.rtevi == "" ? agdata.evi : agdata.rtevi;
-    oldca = await this.sqlExce.getOneByParam<CaTbl>(oldca);
 
-    oldAgdata.sd = oldca.sd;
-    oldAgdata.st = oldca.st;
-    oldAgdata.ed = oldca.ed;
-    oldAgdata.et = oldca.et;
-    oldAgdata.al = oldca.al;
-    oldAgdata.ct = oldca.ct;
+    //日程表sqlparam
+    let caparam = new Array<any>();
+    caparam = this.sqlparamAddCa(retParamEv.rtevi,agdata.sd,retParamEv.ed,agdata);
+    console.log(JSON.stringify(caparam));
 
-    oldAgdata.rtjson = JSON.parse(oldAgdata.rt);
-    oldAgdata.txjson = JSON.parse(oldAgdata.tx);
+    //批量本地入库
+    let sqlparam = new Array<any>();
+    sqlparam = [...retParamEv.sqlparam, ...caparam];
+    await this.sqlExce.batExecSqlByParam(sqlparam);
 
-    let chged :　boolean = this.isAgdChanged(oldAgdata,agdata);*/
+    return retParamEv;
+  }
+
+  /**
+   * 更新日程
+   * @param {AgendaData} agdata
+   * @param {OperateType} modiType
+   * @returns {Promise<Array<AgendaData>>}
+   */
+  private async updateAgenda(agdata: AgendaData, modiType : anyenum.OperateType):Promise<Array<AgendaData>> {
+
+
+    let outAgds = new Array<AgendaData>();
 
     //批量本地更新
     let sqlparam = new Array<any>();
@@ -185,40 +272,90 @@ export class EventService extends BaseService {
     1.修改当前数据内容 2.日程表新增一条对应数据 3重建相关提醒
     如果改变从当前所有，则
     1.改变原日程结束日 2.删除从当前所有事件及相关提醒 3.新建新事件日程*/
-    if (modiType == anyenum.ModifyType.FromSel ){
+    if (modiType == anyenum.OperateType.FromSel ){
 
       let sq : string ;
-      //删除原事件中从当前的日程
-      sq = `delete from gtd_ev where evd >= ${agdata.evd} `;
-      sqlparam.push(sq);
+      //删除原事件中从当前开始所有日程
 
-      //更新原事件日程结束日
-      let caevi : string;
+      //主evi设定
+      let masterEvi : string;
       if (agdata.rtevi == ""){
-        caevi = agdata.evi;
+        masterEvi = agdata.evi;
       }else {
-        caevi = agdata.rtevi;
+        masterEvi = agdata.rtevi;
       }
-      sq = `update gtd_ca set ed =
-      ${moment(agdata.evd).subtract(1,'d').format("YYYY/MM/dd")}
-      where evi = ${caevi} `;
+
+      sq = `delete from gtd_ev where evd >= '${agdata.evd}' and (evi = '${masterEvi}' or rtevi =  '${masterEvi}') ;`;
+      this.sqlExce.execSql(sq);
+
+      //更新原事件日程结束日或事件表无记录了则删除
+      sq = `select * from gtd_ev where evi = '${masterEvi}' or rtevi =  '${masterEvi}' ;`;
+      let evtbls = new Array<EvTbl>();
+      evtbls = await this.sqlExce.getExtList<EvTbl>(sq);
+
+      let caevi : string = masterEvi;
+      let ca = new CaTbl();
+      ca.evi = caevi;
+      if (evtbls.length > 0){
+        ca.ed = moment(agdata.evd).subtract(1,'d').format("YYYY/MM/dd");
+        sqlparam.push(ca.upTParam());
+      }else{
+        sqlparam.push(ca.dTParam());
+      }
+
+      //删除原事件中从当前日程开始所有提醒
+      sq = `delete from gtd_wa where wai in (select evi from gtd_ev 
+          where evd >= '${agdata.evd}' and (evi = '${masterEvi}' or rtevi =  '${masterEvi}') ; `;
       sqlparam.push(sq);
 
 
-    }else if(modiType == anyenum.ModifyType.OnlySel) {
+
+      //新建新事件日程
+      let newAgdata = {} as AgendaData;
+      Object.assign(newAgdata ,agdata );
+
+      let retParamEv = new RetParamEv();
+      retParamEv = await this.newAgenda(newAgdata);
+
+      sqlparam = [...sqlparam, ...retParamEv.sqlparam];
+      outAgds = retParamEv.outAgdatas;
+
+    }else if(modiType == anyenum.OperateType.OnlySel) {
 
       //事件表更新
+
+      let rtjon = new RtJson();
+      rtjon.cycletype = anyenum.CycleType.close;
+      rtjon.over.value = "";
+      rtjon.over.type = anyenum.OverType.fornever;
+      rtjon.cyclenum = 1;
+      rtjon.openway = new Array<number>();
+      agdata.rt = JSON.stringify(rtjon);
+      agdata.rts = !agdata.rts ? "" : agdata.rts ;
+
+      if (agdata.rfg == anyenum.RepeatFlag.Repeat){
+        agdata.rfg = anyenum.RepeatFlag.RepeatToNon;
+      }
+
+      agdata.tx = JSON.stringify(agdata.txjson);
+
       let ev = new EvTbl();
       ev.evi = agdata.evi;
       ev.evn = agdata.evn;
+      ev.evd = agdata.evd;
       ev.ji = agdata.ji;
       ev.bz = agdata.bz;
-
-      agdata.tx = JSON.stringify(agdata.txjson);
       ev.tx = agdata.tx;
       ev.txs = agdata.txs;
+      ev.rt = agdata.rt;
+      ev.rts = agdata.rts;
+      ev.rfg = agdata.rfg;
 
       sqlparam.push(ev.upTParam());
+
+      let outAgd  = {} as AgendaData;
+      Object.assign(outAgd,ev);
+      outAgds.push(agdata);
 
       // 删除相关提醒
       let wa = new WaTbl();
@@ -227,11 +364,12 @@ export class EventService extends BaseService {
       sqlparam.push(wa.dTParam());
 
       //提醒新建
-      sqlparam.push(this.sqlparamAddTxWa(ev,agdata.st,agdata.al,agdata.txjson).rpTParam());
-
-      //日程表新建
+      if (agdata.txjson.type != anyenum.TxType.close) {
+        sqlparam.push(this.sqlparamAddTxWa(ev, agdata.st, agdata.al, agdata.txjson).rpTParam());
+      }
+      //日程表新建或更新
       let caparam = new Array<any>();
-      caparam = this.sqlparamAddAdg(agdata.evi ,agdata.evd,agdata.evd,agdata);
+      caparam = this.sqlparamAddCa(agdata.evi ,agdata.evd,agdata.evd,agdata);
       console.log(JSON.stringify(caparam));
 
       sqlparam = [...sqlparam, ...caparam];
@@ -240,52 +378,8 @@ export class EventService extends BaseService {
 
     await this.sqlExce.batExecSqlByParam(sqlparam);
 
-    /*if (oldca.evn != agdata.evn || oldca.sd != agdata.sd || chged) {
-      //日期与重复标识变化了，则删除重复子表所有数据，重新插入新数据
-      let sptbl = new SpTbl();
-      sptbl.si = c.si;
-      //删除提醒
-      let sql = 'delete from gtd_e  where si="' + c.si + '"';
-      await this.sqlExce.execSql(sql);
-      //删除特殊表
-      await this.sqlExce.delete(sptbl);
-      //保存特殊表及相应提醒表
-      let ed = await this.saveSp(c);
-      //结束日期使用sp表最后日期
-      c.ed = ed;
-
-    } else {
-      //更新子表数据
-      //if (oldc.st != c.st || oldc.tx != c.tx) {
-
-      //更新sp日程表title
-      let sq = "update gtd_sp set spn = '" + c.sn + "' where si = '" + c.si + "'";
-      await this.sqlExce.execSql(sq);
-
-      //更新e表title
-      sq = "update gtd_e set st = '" + c.sn + "' where si = '" + c.si + "'";
-      await this.sqlExce.execSql(sq);
-
-      //受邀人pull则不更新sp
-      if (scd.specScd(scd.showSpSd)){
-        let sp:SpTbl = new SpTbl();
-        Object.assign(sp,scd.specScd(scd.showSpSd));
-        await this.sqlExce.update(sp);
-
-
-        //保存提醒表
-        let sq2 = "";
-        if (sp.tx !="0" ){
-          sq2 = this.getTxEtbl(sp).rpT();
-        }else{
-          sq2 = this.getTxEtbl(sp).dT();
-        }
-        await this.sqlExce.execSql(sq2);
-      }
-
-      //}
-
-    }
+    return outAgds;
+    /*
     await this.sqlExce.update(c);
     if(c.rt=="0" || (c.rt != "0" && c.sn != oldc.sn)){
       //restful用参数
@@ -336,9 +430,10 @@ export class EventService extends BaseService {
     agdata.md = !agdata.md ? anyenum.ModiPower.disable : agdata.md ;
     agdata.iv = !agdata.iv ? anyenum.InvitePowr.disable : agdata.iv ;
     agdata.sr = !agdata.sr ? "" : agdata.sr ;
-    agdata.gs = !agdata.gs ? "" : agdata.gs ;
+    agdata.gs = !agdata.gs ? anyenum.GsType.self : agdata.gs ;
     agdata.tb = !agdata.tb ? anyenum.SyncType.unsynch : agdata.tb ;
     agdata.del = !agdata.del ? anyenum.DelType.undel : agdata.del ;
+    agdata.rfg = !agdata.rfg ? anyenum.RepeatFlag.NonRepeat : agdata.rfg ;
 
     agdata.sd = agdata.sd || agdata.evd || moment().format("YYYY/MM/DD");
     agdata.ed = agdata.ed || agdata.sd;
@@ -380,10 +475,20 @@ export class EventService extends BaseService {
   }
 
   private sqlparamAddEv2(agdata: AgendaData): RetParamEv {
+
     let ret = new RetParamEv();
+    let outAgds = new Array<AgendaData>();
 
     let rtjson: RtJson = agdata.rtjson;
     agdata.rt = JSON.stringify(agdata.rtjson);
+
+    if (rtjson.cycletype == anyenum.CycleType.close){
+
+      agdata.rfg = anyenum.RepeatFlag.NonRepeat;
+    }else{
+
+      agdata.rfg = anyenum.RepeatFlag.Repeat;
+    }
 
     let txjson : TxJson  = agdata.txjson;
     agdata.tx = JSON.stringify(agdata.txjson);
@@ -470,8 +575,10 @@ export class EventService extends BaseService {
             if (duration == 0) {
               days.push(stepDay);     // 当前日期为重复日期
             } else if (duration > 0) {
+              //当周日期
               days.push(moment(stepDay).add(duration, "days").format("YYYY/MM/DD"));
             } else {
+              //下周日期（跨周）
               days.push(moment(stepDay).add(7, "days").subtract(Math.abs(duration), "days").format("YYYY/MM/DD"));
             }
           }
@@ -492,8 +599,10 @@ export class EventService extends BaseService {
             if (duration == 0) {
               days.push(stepDay);     // 当前日期为重复日期
             } else if (duration > 0) {
+              //当月日期
               days.push(moment(stepDay).add(duration, "days").format("YYYY/MM/DD"));
             } else {
+              //下月日程（跨月）
               days.push(moment().month(moment(stepDay).month()).add(1, "months").days(option).format("YYYY/MM/DD"));
             }
           }
@@ -523,7 +632,7 @@ export class EventService extends BaseService {
         // 父记录的父节点字段rtevi设为空，子记录的父节点字段rtevi设为父记录的evi
         if (ret.sqlparam.length < 1) {
           ret.rtevi = ev.evi;
-          ret.ed = day;
+          agdata.evi = ev.evi;
           ev.rtevi = "";
         }else{
           ev.rtevi = ret.rtevi;
@@ -531,7 +640,6 @@ export class EventService extends BaseService {
 
         ev.evd = day;
         ev.type = anyenum.EventType.Agenda;
-        ev.gs = anyenum.GsType.self ;
         ev.tb = anyenum.SyncType.unsynch;
         ev.del = anyenum.DelType.undel;
         ret.ed = ev.evd;
@@ -539,195 +647,18 @@ export class EventService extends BaseService {
         if (txjson.type != anyenum.TxType.close) {
           ret.sqlparam.push(this.sqlparamAddTxWa(ev,agdata.st,agdata.al,txjson).rpTParam());
         }
+
+        //新增数据需要返回出去
+        let outAgd = {} as AgendaData;
+        Object.assign(outAgd,ev);
+        outAgds.push(outAgd);
       }
 
       stepDay = moment(stepDay).add(repeatStep, repeatType).format("YYYY/MM/DD");
     }
 
+    ret.outAgdatas = outAgds;
     return ret;
-  }
-
-  /**
-   * 事件新增sql list
-   * @param {AgendaData} evdata 事件
-   * @returns {RetParamEv}
-   */
-  private sqlparamAddEv(agdata : AgendaData): RetParamEv{
-    let ret = new RetParamEv();
-
-    //重复周期数
-    let len :number = 1;
-
-    //重复类型
-    let addtype: any ;
-
-    //重复结束日
-    let repeatEnddt :any;
-
-    //重复开始日
-    let repeatStartdt :any;
-
-    let rtjson: RtJson = agdata.rtjson;
-    agdata.rt = JSON.stringify(agdata.rtjson);
-
-    let txjson : TxJson  = agdata.txjson;
-    agdata.tx = JSON.stringify(agdata.txjson);
-
-    //计算开始日，结束日及设定重复区间、重复单位
-
-    if (rtjson.cycletype == anyenum.CycleType.day) {
-
-      len = rtjson.cyclenum;
-      repeatStartdt = this.getRepeatStartDt(agdata.sd,null);
-      repeatEnddt = moment(repeatStartdt).add(len - 1, 'd');
-
-      addtype = 'd';
-    }else if (rtjson.cycletype == anyenum.CycleType.week) {
-
-      len = rtjson.cyclenum;
-      repeatStartdt = this.getRepeatStartDt(agdata.sd,anyenum.OpenWay.close);//rtjson.openway
-      repeatEnddt = moment(repeatStartdt).add(len - 1 , 'w');
-
-      addtype = 'w';
-    } else if (rtjson.cycletype == anyenum.CycleType.month) {
-
-
-      len = rtjson.cyclenum;
-      repeatStartdt = this.getRepeatStartDt(agdata.sd,anyenum.OpenWay.close);//rtjson.openway
-      repeatEnddt = moment(repeatStartdt).add(len - 1 , 'M');
-
-      if (rtjson.openway.length == 0){  //anyenum.OpenWay.close
-        addtype = 'M';
-      }else{
-        addtype = 'w';
-      }
-
-    } else if (rtjson.cycletype == anyenum.CycleType.year) {
-      len = rtjson.cyclenum;
-      repeatStartdt =  this.getRepeatStartDt(agdata.sd,null);
-      repeatEnddt = moment(repeatStartdt).add(len - 1 , 'y');
-
-      addtype = 'y';
-    }else {
-      repeatStartdt = this.getRepeatStartDt(agdata.sd,null);
-      repeatEnddt = repeatStartdt;
-      addtype = 'd';
-    }
-
-    let limitvalue ;
-    let limitvalue2 ;
-    if (rtjson.over.type == anyenum.OverType.times){
-      limitvalue = parseInt(rtjson.over.value);
-      limitvalue2 = 99999999999999;
-    }else if(rtjson.over.type == anyenum.OverType.limitdate){
-      limitvalue = 99999999999999;
-      limitvalue2 = moment(rtjson.over.value).unix();
-    }else{
-      limitvalue = 99999999999999;
-      limitvalue2 = 99999999999999;
-    }
-
-    console.log("repeatStartdt => " + repeatStartdt);
-    //循环变量初始化
-    let loopdt = repeatStartdt;
-    let cnt :number= 1;
-    //repeatEnddt + 1天表示 repeatEnddt 是有效日期
-    let loopenddt = moment(repeatEnddt).add(1,'d');
-
-    while (moment(loopdt).isBefore(loopenddt)){
-
-      let ev = new EvTbl();
-      ev.evi = this.util.getUuid();
-      if ( cnt == 1 ){
-        ret.rtevi = ev.evi;
-        /*非重复日程及重复日程的第一条的rtevi（父日程evi）字段设为空。遵循父子关系，
-        父记录的父节点字段rtevi设为空，子记录的父节点字段rtevi设为父记录的evi*/
-        ev.rtevi = "";
-      }else{
-        ev.rtevi = ret.rtevi;
-      }
-
-      ev.evn = agdata.evn;
-      ev.ui = agdata.ui;
-      ev.mi = agdata.mi;
-
-      ev.evd = moment(loopdt).format("YYYY/MM/DD");
-
-      //满足结束条件，直接跳出循环
-      if (cnt > limitvalue || moment(ev.evd).unix() > limitvalue2){
-        break;
-      }
-
-
-      ev.ji = agdata.ji;
-      ev.bz = agdata.bz;
-      ev.type = anyenum.EventType.Agenda;
-      ev.tx = agdata.tx;
-      ev.txs = agdata.txs;
-      ev.rt = agdata.rt;
-      ev.rts = agdata.rts;
-      ev.fj = agdata.fj;
-      ev.pn = agdata.pn;
-      ev.md = agdata.md;
-      ev.iv = agdata.iv;
-      ev.sr = agdata.sr;
-      ev.gs = anyenum.GsType.self ;
-      ev.tb = anyenum.SyncType.unsynch;
-      ev.del = anyenum.DelType.undel;
-      ret.ed = ev.evd;
-      ret.sqlparam.push(ev.rpTParam());
-      if (txjson.type != anyenum.TxType.close) {
-        ret.sqlparam.push(this.sqlparamAddTxWa(ev,agdata.st,agdata.al,txjson).rpTParam());
-      }
-
-      loopdt = moment(repeatStartdt).add(cnt,addtype).format("YYYY/MM/DD");
-      cnt = cnt + 1;
-
-      console.log("loopdt => " + loopdt);
-
-    }
-
-    if (ret.ed =="" ){
-      ret.ed = agdata.sd;
-    }
-    return ret;
-  }
-
-  private getRepeatStartDt(sd :string, openway :anyenum.OpenWay):string {
-
-    if (openway == null || openway == anyenum.OpenWay.close){
-      return sd ;
-    }else{
-
-      for (let i = 0 ; i < 7; i++){
-        let weekday  = moment(sd).add(i,'d');
-        if (weekday.day() == 0 && openway == anyenum.OpenWay.Sunday){
-          return weekday.format('YYYY/MM/DD');
-        }
-        if (weekday.day() == 1 && openway == anyenum.OpenWay.Monday){
-          return weekday.format('YYYY/MM/DD');
-        }
-        if (weekday.day() == 2 && openway == anyenum.OpenWay.Tuesday){
-          return weekday.format('YYYY/MM/DD');
-        }
-        if (weekday.day() == 3 && openway == anyenum.OpenWay.Wednesday){
-          return weekday.format('YYYY/MM/DD');
-        }
-        if (weekday.day() == 4 && openway == anyenum.OpenWay.Thursday){
-          return weekday.format('YYYY/MM/DD');
-        }
-        if (weekday.day() == 5 && openway == anyenum.OpenWay.Friday){
-          return weekday.format('YYYY/MM/DD');
-        }
-        if (weekday.day() == 6 && openway == anyenum.OpenWay.Saturday){
-          return weekday.format('YYYY/MM/DD');
-        }
-
-      }
-
-      return sd;
-    }
-
   }
 
   /**
@@ -771,7 +702,7 @@ export class EventService extends BaseService {
    * @param {AgendaData} agdata
    * @returns {Array<any>}
    */
-  private sqlparamAddAdg(rtevi : string,sd : string ,ed :string, agdata : AgendaData): Array<any> {
+  private sqlparamAddCa(rtevi : string,sd : string ,ed :string, agdata : AgendaData): Array<any> {
 
     agdata.sd = sd;
     agdata.ed = ed;
@@ -822,21 +753,26 @@ export class EventService extends BaseService {
   async saveTask(tx: TaskData): Promise <TaskData> {
 		this.assertEmpty(tx); // 对象不能为空
 		this.assertEmpty(tx.evn); // 事件主题不能为空
+		let evi: string ="";
 		if(tx.evi) {
+			evi = tx.evi;
 			//更新任务事件
 			let evdb: EvTbl = new EvTbl();
 			tx.mi = UserConfig.account.id; //更新者
 			Object.assign(evdb, tx);
 		  await this.sqlExce.updateByParam(evdb);
-			let ttdb: TTbl = new TTbl();
+		  let ttdb: TTbl = new TTbl();
 			//根据主键ID获取任务详情
 			ttdb.evi = tx.evi;
-			ttdb = await this.sqlExce.getOneByParam<TTbl>(ttdb);
-			Object.assign(ttdb, tx);
-			await this.sqlExce.updateByParam(ttdb);
+			let ttdbNew = await this.sqlExce.getOneByParam<TTbl>(ttdb);
+			if (ttdbNew && ttdbNew.evi) {
+				Object.assign(ttdbNew, tx);
+				await this.sqlExce.updateByParam(ttdb);
+			}
 		} else {
 			//创建事件
 			tx.evi = this.util.getUuid();
+			evi = tx.evi;
 			tx.ui = UserConfig.account.id;
 			tx.type = anyenum.EventType.Task;
 			tx.evd = tx.evd || moment().format('YYYY/MM/DD');
@@ -848,11 +784,25 @@ export class EventService extends BaseService {
 			await this.sqlExce.saveByParam(evdb);
 			//创建任务
 			let ttdb: TTbl = new TTbl();
-			ttdb.evi = tx.evi;
+			tx.cs = anyenum.IsSuccess.wait;
+			if(tx.isrt==''||tx.isrt == null || tx.isrt == "undefined")
+			{
+				tx.isrt = anyenum.IsCreate.isNo;
+			}
 			Object.assign(ttdb, tx);
 			await this.sqlExce.saveByParam(ttdb);
 		}
-		return tx;
+		let txx: TaskData = {} as TaskData;
+		if(evi !="")
+		{
+			console.info("获取evi--"+evi);
+			let params= Array<any>();
+			let sqlparam: string =`select ev.*,td.cs,td.isrt,td.cd,td.fd from gtd_ev  ev left join gtd_t  td on ev.evi = td.evi where ev.evi ='${evi}'`;
+			console.info("执行的SQL"+sqlparam);
+			txx = await this.sqlExce.getExtOneByParam<TaskData>(sqlparam,params);
+			console.info("执行的结果"+txx.evi);
+		}
+		return txx;
   }
 
 	/**
@@ -860,9 +810,13 @@ export class EventService extends BaseService {
 	 */
 	async getTask(evi: string): Promise<TaskData> {
 			this.assertEmpty(evi); // id不能为空
-			let sqlparam: string =`select ev.*,td.cs,td.isrt,td.cd,td.fd from gtd_ev  ev left join gtd_t  td on ev.evi = td.evi where ev.evi =${evi} `;
+//			let sqlparam: string =`select ev.*,td.cs,td.isrt,td.cd,td.fd from gtd_ev  ev left join gtd_t  td on ev.evi = td.evi where ev.evi =${evi} `;
+  		let evdb: EvTbl = new EvTbl();
+  		evdb.evi = evi;
+  		let evdbNew =  await this.sqlExce.getOneByParam<EvTbl>(evdb);
   		let data: TaskData  = {} as TaskData;
-  		data = await this.sqlExce.getExtOneByParam<TaskData>(sqlparam,null);
+//		data = await this.sqlExce.getExtOneByParam<TaskData>(sqlparam,null);
+			Object.assign(data, evdbNew);
   		return data;
 	}
 
@@ -950,7 +904,7 @@ export class EventService extends BaseService {
 			Object.assign(tx, evdb);
 			tx.cs = anyenum.IsSuccess.wait;
 			tx.isrt = anyenum.IsCreate.isYes;
-			this.saveTask(tx);
+			await this.saveTask(tx);
 		}
 		return ;
   }
@@ -961,9 +915,9 @@ export class EventService extends BaseService {
   	this.assertEmpty(evi);
   	let evdb: EvTbl = new EvTbl();
 		evdb.rtevi = evi;
-		evdb = await this.sqlExce.getOneByParam<EvTbl>(evdb);
+		let evdbNew = await this.sqlExce.getOneByParam<EvTbl>(evdb);
 		let tx: TaskData = {} as TaskData;
-		Object.assign(tx, evdb);
+		Object.assign(tx, evdbNew);
 		return tx;
   }
 
@@ -1132,6 +1086,7 @@ export class RetParamEv{
   rtevi:string ="";
   ed:string = "";
   sqlparam  = new  Array<any>();
+  outAgdatas = new Array<AgendaData>();
 }
 
 export class RtOver {

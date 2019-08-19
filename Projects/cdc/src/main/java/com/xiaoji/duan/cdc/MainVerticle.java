@@ -125,6 +125,7 @@ public class MainVerticle extends AbstractVerticle {
 		producer.send(new JsonObject()
 				.put("body", new JsonObject()
 						.put("context", parameters)));
+		producer.end();
 
 		future.complete(new JsonObject());
 	}
@@ -156,6 +157,7 @@ public class MainVerticle extends AbstractVerticle {
 		producer.send(new JsonObject()
 				.put("body", new JsonObject()
 						.put("context", query)));
+		producer.end();
 
 		System.out.println("Send context [" + query.encode() + "]");
 		
@@ -201,6 +203,8 @@ public class MainVerticle extends AbstractVerticle {
 		producer.send(new JsonObject()
 				.put("body", new JsonObject()
 						.put("context", message)));
+		producer.end();
+
 	}
 	
 	private void syncjsontrigger(RoutingContext ctx) {
@@ -237,6 +241,7 @@ public class MainVerticle extends AbstractVerticle {
 		producer.send(new JsonObject()
 				.put("body", new JsonObject()
 						.put("context", message)));
+		producer.end();
 
 		System.out.println("Send context [" + query.encode() + "]");
 	}
@@ -285,6 +290,7 @@ public class MainVerticle extends AbstractVerticle {
 		producer.send(new JsonObject()
 				.put("body", new JsonObject()
 						.put("context", message)));
+		producer.end();
 
 	}
 	

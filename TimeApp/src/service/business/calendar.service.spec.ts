@@ -163,7 +163,70 @@ describe('CalendarService test suite', () => {
 
   });
 
-  it(`Case 7 - 1 fetchMonthActivitiesSummary 取得指定月概要 - 空值(没有任何活动)`, async () => {
+  it(`Case 10 - 1 - 1 fetchMonthActivitiesSummary 取得指定月概要 - 1个日历项、1个任务、1个备忘`, async () => {
+    let day: string = moment().format("YYYY/MM/DD");
+
+    // 日历项
+    let planitem1: PlanItemData = {} as PlanItemData;
+
+    planitem1.sd = day;
+    planitem1.jtn = "结婚纪念日";
+    planitem1.jtt = PlanItemType.Activity;
+
+    await calendarService.savePlanItem(planitem1);
+
+    // 任务
+    let task: TaskData = {} as TaskData;
+
+    task.evd = day;
+    task.evn = "结婚纪念日前给太太买礼物";
+
+    await eventService.saveTask(task);
+
+    // 备忘
+    let memo: MemoData = {} as MemoData;
+
+    memo.sd = day;
+    memo.mon = "结婚纪念日买了一块定制巧克力给太太, 太太很高兴";
+
+    await memoService.saveMemo(memo);
+
+    let month: string = moment().format("YYYY/MM");
+    let days: number = moment(month).daysInMonth();
+
+    let monthSummary: MonthActivitySummaryData = await calendarService.fetchMonthActivitiesSummary(month);
+
+    expect(monthSummary).toBeDefined();
+    expect(monthSummary.month).toBe(month);
+    expect(monthSummary.days).toBeDefined();
+    expect(monthSummary.days.length).toBe(days);
+
+    for (let daySummary of monthSummary.days) {
+      if (day == daySummary.day) {
+        expect(daySummary.day).toBeDefined();
+        expect(daySummary.calendaritemscount).toBe(0);
+        expect(daySummary.activityitemscount).toBe(1);
+        expect(daySummary.eventscount).toBe(1);
+        expect(daySummary.agendascount).toBe(0);
+        expect(daySummary.taskscount).toBe(1);
+        expect(daySummary.memoscount).toBe(1);
+        expect(daySummary.repeateventscount).toBe(0);
+        expect(daySummary.bookedtimesummary).toBe(0);
+      } else {
+        expect(daySummary.day).toBeDefined();
+        expect(daySummary.calendaritemscount).toBe(0);
+        expect(daySummary.activityitemscount).toBe(0);
+        expect(daySummary.eventscount).toBe(0);
+        expect(daySummary.agendascount).toBe(0);
+        expect(daySummary.taskscount).toBe(0);
+        expect(daySummary.memoscount).toBe(0);
+        expect(daySummary.repeateventscount).toBe(0);
+        expect(daySummary.bookedtimesummary).toBe(0);
+      }
+    }
+  });
+
+  it(`Case 10 - 1 fetchMonthActivitiesSummary 取得指定月概要 - 空值(没有任何活动)`, async () => {
     let month: string = moment().format("YYYY/MM");
     let days: number = moment(month).daysInMonth();
 
@@ -187,31 +250,334 @@ describe('CalendarService test suite', () => {
     }
   });
 
-  it(`Case 6 - 1 mergePagedActivities 合并翻页活动数据 - 空值(没有任何活动)`, async () => {
-    let month: string = moment().format("YYYY/MM");
-    let days: number = moment(month).daysInMonth();
+  it(`Case 9 - 1 - 4 mergePagedActivities 合并翻页活动数据 - 没有活动(增加1个日程（不重复）、1个任务、1个备忘、1个日历项)`, async () => {
 
-    let monthSummary: MonthActivitySummaryData = await calendarService.fetchMonthActivitiesSummary(month);
+    let pagedActivities: PagedActivityData = await calendarService.fetchPagedActivities();
 
-    expect(monthSummary).toBeDefined();
-    expect(monthSummary.month).toBe(month);
-    expect(monthSummary.days).toBeDefined();
-    expect(monthSummary.days.length).toBe(days);
+    let day: string = moment().format("YYYY/MM/DD");
 
-    for (let daySummary of monthSummary.days) {
-      expect(daySummary.day).toBeDefined();
-      expect(daySummary.calendaritemscount).toBe(0);
-      expect(daySummary.activityitemscount).toBe(0);
-      expect(daySummary.eventscount).toBe(0);
-      expect(daySummary.agendascount).toBe(0);
-      expect(daySummary.taskscount).toBe(0);
-      expect(daySummary.memoscount).toBe(0);
-      expect(daySummary.repeateventscount).toBe(0);
-      expect(daySummary.bookedtimesummary).toBe(0);
-    }
+    // 日程
+    let agenda: AgendaData = {} as AgendaData;
+
+    agenda.sd = day;
+    agenda.evn = "结婚纪念日买礼物给太太";
+
+    let savedagenda = await eventService.saveAgenda(agenda);
+
+    // 备忘
+    let memo: MemoData = {} as MemoData;
+
+    memo.sd = day;
+    memo.mon = "结婚纪念日买了一块定制巧克力给太太, 太太很高兴";
+
+    memo = await memoService.saveMemo(memo);
+
+    // 日历项
+    let planitem1: PlanItemData = {} as PlanItemData;
+
+    planitem1.sd = day;
+    planitem1.jtn = "结婚纪念日";
+    planitem1.jtt = PlanItemType.Activity;
+
+    planitem1 = await calendarService.savePlanItem(planitem1);
+
+    // 任务
+    let task: TaskData = {} as TaskData;
+
+    task.evd = day;
+    task.evn = "结婚纪念日前给太太买礼物";
+
+    task = await eventService.saveTask(task);
+
+    let activities: Array<any> = new Array<any>();
+    activities = activities.concat(savedagenda);   // 合并后返回新数组，原数组不改变
+    activities.push(task);
+    activities.push(memo);
+    activities.push(planitem1);
+
+    // 增加1个日程、1个任务、1个备忘、1个日历项
+    pagedActivities = calendarService.mergePagedActivities(pagedActivities, activities);
+
+    let startday: string = moment().subtract(3, "days").format("YYYY/MM/DD");
+    let endday: string = moment().add(3, "days").format("YYYY/MM/DD");
+
+    expect(pagedActivities.startday).toBe(startday);
+    expect(pagedActivities.endday).toBe(endday);
+    expect(pagedActivities.calendaritems).toBeDefined();
+    expect(pagedActivities.calendaritems.length).toBe(1);
+    expect(pagedActivities.events).toBeDefined();
+    expect(pagedActivities.events.length).toBe(2);
+    expect(pagedActivities.memos).toBeDefined();
+    expect(pagedActivities.memos.length).toBe(1);
+
+    expect(pagedActivities.days).toBeDefined();
+    expect(pagedActivities.days.get(startday)).toBeDefined();
+    expect(pagedActivities.days.get(startday).day).toBe(startday);
+    expect(pagedActivities.days.get(startday).calendaritems).toBeDefined();
+    expect(pagedActivities.days.get(startday).calendaritems.length).toBe(0);
+    expect(pagedActivities.days.get(startday).events).toBeDefined();
+    expect(pagedActivities.days.get(startday).events.length).toBe(0);
+    expect(pagedActivities.days.get(startday).memos).toBeDefined();
+    expect(pagedActivities.days.get(startday).memos.length).toBe(0);
+
+    expect(pagedActivities.days.get(day)).toBeDefined();
+    expect(pagedActivities.days.get(day).day).toBe(day);
+    expect(pagedActivities.days.get(day).calendaritems).toBeDefined();
+    expect(pagedActivities.days.get(day).calendaritems.length).toBe(1);
+    expect(pagedActivities.days.get(day).events).toBeDefined();
+    expect(pagedActivities.days.get(day).events.length).toBe(2);
+    expect(pagedActivities.days.get(day).memos).toBeDefined();
+    expect(pagedActivities.days.get(day).memos.length).toBe(1);
+
+    expect(pagedActivities.days.get(endday)).toBeDefined();
+    expect(pagedActivities.days.get(endday).day).toBe(endday);
+    expect(pagedActivities.days.get(endday).calendaritems).toBeDefined();
+    expect(pagedActivities.days.get(endday).calendaritems.length).toBe(0);
+    expect(pagedActivities.days.get(endday).events).toBeDefined();
+    expect(pagedActivities.days.get(endday).events.length).toBe(0);
+    expect(pagedActivities.days.get(endday).memos).toBeDefined();
+    expect(pagedActivities.days.get(endday).memos.length).toBe(0);
+
   });
 
-  it(`Case 5 - 3 - 2 fetchPagedActivities 取得第二页7天的活动（PageDown下拉） - 当天和往前第7天有1个日历项、1个任务、1个备忘`, async () => {
+  it(`Case 9 - 1 - 3 mergePagedActivities 合并翻页活动数据 - 没有活动(增加1个任务)`, async () => {
+
+    let pagedActivities: PagedActivityData = await calendarService.fetchPagedActivities();
+
+    let day: string = moment().format("YYYY/MM/DD");
+
+    // 任务
+    let task: TaskData = {} as TaskData;
+
+    task.evd = day;
+    task.evn = "结婚纪念日前给太太买礼物";
+
+    task = await eventService.saveTask(task);
+
+    // 增加1个任务
+    pagedActivities = calendarService.mergePagedActivities(pagedActivities, [task]);
+
+    let startday: string = moment().subtract(3, "days").format("YYYY/MM/DD");
+    let endday: string = moment().add(3, "days").format("YYYY/MM/DD");
+
+    expect(pagedActivities.startday).toBe(startday);
+    expect(pagedActivities.endday).toBe(endday);
+    expect(pagedActivities.calendaritems).toBeDefined();
+    expect(pagedActivities.calendaritems.length).toBe(0);
+    expect(pagedActivities.events).toBeDefined();
+    expect(pagedActivities.events.length).toBe(1);
+    expect(pagedActivities.memos).toBeDefined();
+    expect(pagedActivities.memos.length).toBe(0);
+
+    expect(pagedActivities.days).toBeDefined();
+    expect(pagedActivities.days.get(startday)).toBeDefined();
+    expect(pagedActivities.days.get(startday).day).toBe(startday);
+    expect(pagedActivities.days.get(startday).calendaritems).toBeDefined();
+    expect(pagedActivities.days.get(startday).calendaritems.length).toBe(0);
+    expect(pagedActivities.days.get(startday).events).toBeDefined();
+    expect(pagedActivities.days.get(startday).events.length).toBe(0);
+    expect(pagedActivities.days.get(startday).memos).toBeDefined();
+    expect(pagedActivities.days.get(startday).memos.length).toBe(0);
+
+    expect(pagedActivities.days.get(day)).toBeDefined();
+    expect(pagedActivities.days.get(day).day).toBe(day);
+    expect(pagedActivities.days.get(day).calendaritems).toBeDefined();
+    expect(pagedActivities.days.get(day).calendaritems.length).toBe(0);
+    expect(pagedActivities.days.get(day).events).toBeDefined();
+    expect(pagedActivities.days.get(day).events.length).toBe(1);
+    expect(pagedActivities.days.get(day).memos).toBeDefined();
+    expect(pagedActivities.days.get(day).memos.length).toBe(0);
+
+    expect(pagedActivities.days.get(endday)).toBeDefined();
+    expect(pagedActivities.days.get(endday).day).toBe(endday);
+    expect(pagedActivities.days.get(endday).calendaritems).toBeDefined();
+    expect(pagedActivities.days.get(endday).calendaritems.length).toBe(0);
+    expect(pagedActivities.days.get(endday).events).toBeDefined();
+    expect(pagedActivities.days.get(endday).events.length).toBe(0);
+    expect(pagedActivities.days.get(endday).memos).toBeDefined();
+    expect(pagedActivities.days.get(endday).memos.length).toBe(0);
+
+  });
+
+  it(`Case 9 - 1 - 2 mergePagedActivities 合并翻页活动数据 - 没有活动(增加1个日历项)`, async () => {
+
+    let pagedActivities: PagedActivityData = await calendarService.fetchPagedActivities();
+
+    let day: string = moment().format("YYYY/MM/DD");
+
+    // 日历项
+    let planitem1: PlanItemData = {} as PlanItemData;
+
+    planitem1.sd = day;
+    planitem1.jtn = "结婚纪念日";
+    planitem1.jtt = PlanItemType.Activity;
+
+    planitem1 = await calendarService.savePlanItem(planitem1);
+
+    // 增加1个日历项
+    pagedActivities = calendarService.mergePagedActivities(pagedActivities, [planitem1]);
+
+    let startday: string = moment().subtract(3, "days").format("YYYY/MM/DD");
+    let endday: string = moment().add(3, "days").format("YYYY/MM/DD");
+
+    expect(pagedActivities.startday).toBe(startday);
+    expect(pagedActivities.endday).toBe(endday);
+    expect(pagedActivities.calendaritems).toBeDefined();
+    expect(pagedActivities.calendaritems.length).toBe(1);
+    expect(pagedActivities.events).toBeDefined();
+    expect(pagedActivities.events.length).toBe(0);
+    expect(pagedActivities.memos).toBeDefined();
+    expect(pagedActivities.memos.length).toBe(0);
+
+    expect(pagedActivities.days).toBeDefined();
+    expect(pagedActivities.days.get(startday)).toBeDefined();
+    expect(pagedActivities.days.get(startday).day).toBe(startday);
+    expect(pagedActivities.days.get(startday).calendaritems).toBeDefined();
+    expect(pagedActivities.days.get(startday).calendaritems.length).toBe(0);
+    expect(pagedActivities.days.get(startday).events).toBeDefined();
+    expect(pagedActivities.days.get(startday).events.length).toBe(0);
+    expect(pagedActivities.days.get(startday).memos).toBeDefined();
+    expect(pagedActivities.days.get(startday).memos.length).toBe(0);
+
+    expect(pagedActivities.days.get(day)).toBeDefined();
+    expect(pagedActivities.days.get(day).day).toBe(day);
+    expect(pagedActivities.days.get(day).calendaritems).toBeDefined();
+    expect(pagedActivities.days.get(day).calendaritems.length).toBe(1);
+    expect(pagedActivities.days.get(day).events).toBeDefined();
+    expect(pagedActivities.days.get(day).events.length).toBe(0);
+    expect(pagedActivities.days.get(day).memos).toBeDefined();
+    expect(pagedActivities.days.get(day).memos.length).toBe(0);
+
+    expect(pagedActivities.days.get(endday)).toBeDefined();
+    expect(pagedActivities.days.get(endday).day).toBe(endday);
+    expect(pagedActivities.days.get(endday).calendaritems).toBeDefined();
+    expect(pagedActivities.days.get(endday).calendaritems.length).toBe(0);
+    expect(pagedActivities.days.get(endday).events).toBeDefined();
+    expect(pagedActivities.days.get(endday).events.length).toBe(0);
+    expect(pagedActivities.days.get(endday).memos).toBeDefined();
+    expect(pagedActivities.days.get(endday).memos.length).toBe(0);
+
+  });
+
+  it(`Case 9 - 1 - 1 mergePagedActivities 合并翻页活动数据 - 没有活动(增加1个备忘)`, async () => {
+
+    let pagedActivities: PagedActivityData = await calendarService.fetchPagedActivities();
+
+    let day: string = moment().format("YYYY/MM/DD");
+
+    // 备忘
+    let memo: MemoData = {} as MemoData;
+
+    memo.sd = day;
+    memo.mon = "结婚纪念日买了一块定制巧克力给太太, 太太很高兴";
+
+    memo = await memoService.saveMemo(memo);
+
+    // 增加1个备忘
+    pagedActivities = calendarService.mergePagedActivities(pagedActivities, [memo]);
+
+    let startday: string = moment().subtract(3, "days").format("YYYY/MM/DD");
+    let endday: string = moment().add(3, "days").format("YYYY/MM/DD");
+
+    expect(pagedActivities.startday).toBe(startday);
+    expect(pagedActivities.endday).toBe(endday);
+    expect(pagedActivities.calendaritems).toBeDefined();
+    expect(pagedActivities.calendaritems.length).toBe(0);
+    expect(pagedActivities.events).toBeDefined();
+    expect(pagedActivities.events.length).toBe(0);
+    expect(pagedActivities.memos).toBeDefined();
+    expect(pagedActivities.memos.length).toBe(1);
+
+    expect(pagedActivities.days).toBeDefined();
+    expect(pagedActivities.days.get(startday)).toBeDefined();
+    expect(pagedActivities.days.get(startday).day).toBe(startday);
+    expect(pagedActivities.days.get(startday).calendaritems).toBeDefined();
+    expect(pagedActivities.days.get(startday).calendaritems.length).toBe(0);
+    expect(pagedActivities.days.get(startday).events).toBeDefined();
+    expect(pagedActivities.days.get(startday).events.length).toBe(0);
+    expect(pagedActivities.days.get(startday).memos).toBeDefined();
+    expect(pagedActivities.days.get(startday).memos.length).toBe(0);
+
+    expect(pagedActivities.days.get(day)).toBeDefined();
+    expect(pagedActivities.days.get(day).day).toBe(day);
+    expect(pagedActivities.days.get(day).calendaritems).toBeDefined();
+    expect(pagedActivities.days.get(day).calendaritems.length).toBe(0);
+    expect(pagedActivities.days.get(day).events).toBeDefined();
+    expect(pagedActivities.days.get(day).events.length).toBe(0);
+    expect(pagedActivities.days.get(day).memos).toBeDefined();
+    expect(pagedActivities.days.get(day).memos.length).toBe(1);
+
+    expect(pagedActivities.days.get(endday)).toBeDefined();
+    expect(pagedActivities.days.get(endday).day).toBe(endday);
+    expect(pagedActivities.days.get(endday).calendaritems).toBeDefined();
+    expect(pagedActivities.days.get(endday).calendaritems.length).toBe(0);
+    expect(pagedActivities.days.get(endday).events).toBeDefined();
+    expect(pagedActivities.days.get(endday).events.length).toBe(0);
+    expect(pagedActivities.days.get(endday).memos).toBeDefined();
+    expect(pagedActivities.days.get(endday).memos.length).toBe(0);
+
+  });
+
+  it(`Case 9 - 1 mergePagedActivities 合并翻页活动数据 - 没有活动(增加1个日程（不重复）)`, async () => {
+
+    let pagedActivities: PagedActivityData = await calendarService.fetchPagedActivities();
+
+    let day: string = moment().format("YYYY/MM/DD");
+
+    // 日程
+    let agenda: AgendaData = {} as AgendaData;
+
+    agenda.sd = day;
+    agenda.evn = "结婚纪念日买礼物给太太";
+
+    let savedagenda = await eventService.saveAgenda(agenda);
+
+    // 增加1个日程
+    pagedActivities = calendarService.mergePagedActivities(pagedActivities, savedagenda);
+
+    let startday: string = moment().subtract(3, "days").format("YYYY/MM/DD");
+    let endday: string = moment().add(3, "days").format("YYYY/MM/DD");
+
+    expect(pagedActivities.startday).toBe(startday);
+    expect(pagedActivities.endday).toBe(endday);
+    expect(pagedActivities.calendaritems).toBeDefined();
+    expect(pagedActivities.calendaritems.length).toBe(0);
+    expect(pagedActivities.events).toBeDefined();
+    expect(pagedActivities.events.length).toBe(1);
+    expect(pagedActivities.memos).toBeDefined();
+    expect(pagedActivities.memos.length).toBe(0);
+
+    expect(pagedActivities.days).toBeDefined();
+    expect(pagedActivities.days.get(startday)).toBeDefined();
+    expect(pagedActivities.days.get(startday).day).toBe(startday);
+    expect(pagedActivities.days.get(startday).calendaritems).toBeDefined();
+    expect(pagedActivities.days.get(startday).calendaritems.length).toBe(0);
+    expect(pagedActivities.days.get(startday).events).toBeDefined();
+    expect(pagedActivities.days.get(startday).events.length).toBe(0);
+    expect(pagedActivities.days.get(startday).memos).toBeDefined();
+    expect(pagedActivities.days.get(startday).memos.length).toBe(0);
+
+    expect(pagedActivities.days.get(day)).toBeDefined();
+    expect(pagedActivities.days.get(day).day).toBe(day);
+    expect(pagedActivities.days.get(day).calendaritems).toBeDefined();
+    expect(pagedActivities.days.get(day).calendaritems.length).toBe(0);
+    expect(pagedActivities.days.get(day).events).toBeDefined();
+    expect(pagedActivities.days.get(day).events.length).toBe(1);
+    expect(pagedActivities.days.get(day).memos).toBeDefined();
+    expect(pagedActivities.days.get(day).memos.length).toBe(0);
+
+    expect(pagedActivities.days.get(endday)).toBeDefined();
+    expect(pagedActivities.days.get(endday).day).toBe(endday);
+    expect(pagedActivities.days.get(endday).calendaritems).toBeDefined();
+    expect(pagedActivities.days.get(endday).calendaritems.length).toBe(0);
+    expect(pagedActivities.days.get(endday).events).toBeDefined();
+    expect(pagedActivities.days.get(endday).events.length).toBe(0);
+    expect(pagedActivities.days.get(endday).memos).toBeDefined();
+    expect(pagedActivities.days.get(endday).memos.length).toBe(0);
+
+  });
+
+  it(`Case 8 - 3 - 2 fetchPagedActivities 取得第二页7天的活动（PageDown下拉） - 当天和往前第7天有1个日历项、1个任务、1个备忘`, async () => {
     let day: string = moment().format("YYYY/MM/DD");
 
     let days: Array<string> = new Array<string>();
@@ -279,7 +645,7 @@ describe('CalendarService test suite', () => {
 
   });
 
-  it(`Case 5 - 3 - 1 fetchPagedActivities 取得第二页7天的活动（PageDown下拉） - 当天有1个日历项、1个任务、1个备忘`, async () => {
+  it(`Case 8 - 3 - 1 fetchPagedActivities 取得第二页7天的活动（PageDown下拉） - 当天有1个日历项、1个任务、1个备忘`, async () => {
     let day: string = moment().format("YYYY/MM/DD");
 
     // 日历项
@@ -338,7 +704,7 @@ describe('CalendarService test suite', () => {
 
   });
 
-  it(`Case 5 - 3 fetchPagedActivities 取得第二页7天的活动（PageDown下拉） - 没有任何活动`, async () => {
+  it(`Case 8 - 3 fetchPagedActivities 取得第二页7天的活动（PageDown下拉） - 没有任何活动`, async () => {
     let day: string = moment().format("YYYY/MM/DD");
 
     let pagedActivities: PagedActivityData = await calendarService.fetchPagedActivities(day, PageDirection.PageDown);
@@ -374,7 +740,7 @@ describe('CalendarService test suite', () => {
 
   });
 
-  it(`Case 5 - 2 - 2 fetchPagedActivities 取得第二页7天的活动（PageUp上拉） - 当天和往后第7天有1个日历项、1个任务、1个备忘`, async () => {
+  it(`Case 8 - 2 - 2 fetchPagedActivities 取得第二页7天的活动（PageUp上拉） - 当天和往后第7天有1个日历项、1个任务、1个备忘`, async () => {
     let day: string = moment().format("YYYY/MM/DD");
 
     let days: Array<string> = new Array<string>();
@@ -442,7 +808,7 @@ describe('CalendarService test suite', () => {
 
   });
 
-  it(`Case 5 - 2 - 1 fetchPagedActivities 取得第二页7天的活动（PageUp上拉） - 当天有1个日历项、1个任务、1个备忘`, async () => {
+  it(`Case 8 - 2 - 1 fetchPagedActivities 取得第二页7天的活动（PageUp上拉） - 当天有1个日历项、1个任务、1个备忘`, async () => {
     let day: string = moment().format("YYYY/MM/DD");
 
     // 日历项
@@ -501,7 +867,7 @@ describe('CalendarService test suite', () => {
 
   });
 
-  it(`Case 5 - 2 fetchPagedActivities 取得第二页7天的活动（PageUp上拉） - 没有任何活动`, async () => {
+  it(`Case 8 - 2 fetchPagedActivities 取得第二页7天的活动（PageUp上拉） - 没有任何活动`, async () => {
     let day: string = moment().format("YYYY/MM/DD");
 
     let pagedActivities: PagedActivityData = await calendarService.fetchPagedActivities(day, PageDirection.PageUp);
@@ -537,7 +903,7 @@ describe('CalendarService test suite', () => {
 
   });
 
-  it(`Case 5 - 1 - 1 fetchPagedActivities 取得第一页7天的活动 - 当天有1个日历项、1个任务、1个备忘`, async () => {
+  it(`Case 8 - 1 - 1 fetchPagedActivities 取得第一页7天的活动 - 当天有1个日历项、1个任务、1个备忘`, async () => {
     let day: string = moment().format("YYYY/MM/DD");
 
     // 日历项
@@ -608,7 +974,7 @@ describe('CalendarService test suite', () => {
 
   });
 
-  it(`Case 5 - 1 fetchPagedActivities 取得第一页7天的活动 - 没有任何活动`, async () => {
+  it(`Case 8 - 1 fetchPagedActivities 取得第一页7天的活动 - 没有任何活动`, async () => {
     let pagedActivities: PagedActivityData = await calendarService.fetchPagedActivities();
 
     let startday: string = moment().subtract(3, "days").format("YYYY/MM/DD");
@@ -642,7 +1008,125 @@ describe('CalendarService test suite', () => {
 
   });
 
-  it(`Case 4 - 9 fetchDayActivitiesSummary 取得指定日期概要 - 存在1个日程、1个任务(日程每日重复)`, async () => {
+  it(`Case 7 - 1 - 1 mergeDayActivities 合并指定日期的活动 - 没有活动(增加1个日历项、1个任务、1个备忘)`, async () => {
+    let day: string = moment().format("YYYY/MM/DD");
+
+    let dayActivities: DayActivityData = await calendarService.fetchDayActivities();
+
+    // 日历项
+    let planitem1: PlanItemData = {} as PlanItemData;
+
+    planitem1.sd = day;
+    planitem1.jtn = "结婚纪念日";
+    planitem1.jtt = PlanItemType.Activity;
+
+    planitem1 = await calendarService.savePlanItem(planitem1);
+
+    // 任务
+    let task: TaskData = {} as TaskData;
+
+    task.evd = day;
+    task.evn = "结婚纪念日前给太太买礼物";
+
+    task = await eventService.saveTask(task);
+
+    // 备忘
+    let memo: MemoData = {} as MemoData;
+
+    memo.sd = day;
+    memo.mon = "结婚纪念日买了一块定制巧克力给太太, 太太很高兴";
+
+    memo = await memoService.saveMemo(memo);
+
+    dayActivities = await calendarService.mergeDayActivities(dayActivities, [planitem1, task, memo]);
+
+    expect(dayActivities.day).toBe(day);
+    expect(dayActivities.calendaritems).toBeDefined();
+    expect(dayActivities.calendaritems.length).toBe(1);
+    expect(dayActivities.events).toBeDefined();
+    expect(dayActivities.events.length).toBe(1);
+    expect(dayActivities.memos).toBeDefined();
+    expect(dayActivities.memos.length).toBe(1);
+  });
+
+  it(`Case 7 - 1 mergeDayActivities 合并指定日期的活动 - 没有活动(增加1个任务)`, async () => {
+    let day: string = moment().format("YYYY/MM/DD");
+
+    let dayActivities: DayActivityData = await calendarService.fetchDayActivities();
+
+    // 任务
+    let task: TaskData = {} as TaskData;
+
+    task.evd = day;
+    task.evn = "结婚纪念日前给太太买礼物";
+
+    task = await eventService.saveTask(task);
+
+    dayActivities = await calendarService.mergeDayActivities(dayActivities, [task]);
+
+    expect(dayActivities.day).toBe(day);
+    expect(dayActivities.calendaritems).toBeDefined();
+    expect(dayActivities.calendaritems.length).toBe(0);
+    expect(dayActivities.events).toBeDefined();
+    expect(dayActivities.events.length).toBe(1);
+    expect(dayActivities.memos).toBeDefined();
+    expect(dayActivities.memos.length).toBe(0);
+  });
+
+  it(`Case 6 - 1 - 1 fetchDayActivities 取得指定日期的活动 - 当天有1个日历项、1个任务、1个备忘`, async () => {
+    let day: string = moment().format("YYYY/MM/DD");
+
+    // 日历项
+    let planitem1: PlanItemData = {} as PlanItemData;
+
+    planitem1.sd = day;
+    planitem1.jtn = "结婚纪念日";
+    planitem1.jtt = PlanItemType.Activity;
+
+    await calendarService.savePlanItem(planitem1);
+
+    // 任务
+    let task: TaskData = {} as TaskData;
+
+    task.evd = day;
+    task.evn = "结婚纪念日前给太太买礼物";
+
+    await eventService.saveTask(task);
+
+    // 备忘
+    let memo: MemoData = {} as MemoData;
+
+    memo.sd = day;
+    memo.mon = "结婚纪念日买了一块定制巧克力给太太, 太太很高兴";
+
+    await memoService.saveMemo(memo);
+
+    let dayActivities: DayActivityData = await calendarService.fetchDayActivities();
+
+    expect(dayActivities.day).toBe(day);
+    expect(dayActivities.calendaritems).toBeDefined();
+    expect(dayActivities.calendaritems.length).toBe(1);
+    expect(dayActivities.events).toBeDefined();
+    expect(dayActivities.events.length).toBe(1);
+    expect(dayActivities.memos).toBeDefined();
+    expect(dayActivities.memos.length).toBe(1);
+  });
+
+  it(`Case 6 - 1 fetchDayActivities 取得指定日期的活动 - 没有任何活动`, async () => {
+    let day: string = moment().format("YYYY/MM/DD");
+
+    let dayActivities: DayActivityData = await calendarService.fetchDayActivities();
+
+    expect(dayActivities.day).toBe(day);
+    expect(dayActivities.calendaritems).toBeDefined();
+    expect(dayActivities.calendaritems.length).toBe(0);
+    expect(dayActivities.events).toBeDefined();
+    expect(dayActivities.events.length).toBe(0);
+    expect(dayActivities.memos).toBeDefined();
+    expect(dayActivities.memos.length).toBe(0);
+  });
+
+  it(`Case 5 - 9 fetchDayActivitiesSummary 取得指定日期概要 - 存在1个日程、1个任务(日程每日重复)`, async () => {
     let day: string = moment().format("YYYY/MM/DD");
     // 日程
     let agenda: AgendaData = {} as AgendaData;
@@ -679,7 +1163,7 @@ describe('CalendarService test suite', () => {
     expect(daySummary.bookedtimesummary).toBe(0);
   });
 
-  it(`Case 4 - 8 fetchDayActivitiesSummary 取得指定日期概要 - 存在1个日程、1个任务(日程每年重复)`, async () => {
+  it(`Case 5 - 8 fetchDayActivitiesSummary 取得指定日期概要 - 存在1个日程、1个任务(日程每年重复)`, async () => {
     let day: string = moment().format("YYYY/MM/DD");
     // 日程
     let agenda: AgendaData = {} as AgendaData;
@@ -716,7 +1200,7 @@ describe('CalendarService test suite', () => {
     expect(daySummary.bookedtimesummary).toBe(0);
   });
 
-  it(`Case 4 - 7 fetchDayActivitiesSummary 取得指定日期概要 - 存在1个日程、2个任务(不重复)和1个备忘`, async () => {
+  it(`Case 5 - 7 fetchDayActivitiesSummary 取得指定日期概要 - 存在1个日程、2个任务(不重复)和1个备忘`, async () => {
     let day: string = moment().add(1, 'days').format("YYYY/MM/DD");
     // 日程
     let agenda: AgendaData = {} as AgendaData;
@@ -749,9 +1233,8 @@ describe('CalendarService test suite', () => {
 
     memo = await memoService.saveMemo(memo);
     let dayActivities: DayActivityData = await calendarService.fetchDayActivities(day);
-    console.log(dayActivities);
+
     let daySummary: DayActivitySummaryData = await calendarService.fetchDayActivitiesSummary(day);
-    console.log(daySummary);
 
     expect(daySummary).toBeDefined();
     expect(daySummary.day).toBe(day);
@@ -765,7 +1248,7 @@ describe('CalendarService test suite', () => {
     expect(daySummary.bookedtimesummary).toBe(0);
   });
 
-  it(`Case 4 - 6 fetchDayActivitiesSummary 取得指定日期概要 - 1个备忘`, async () => {
+  it(`Case 5 - 6 fetchDayActivitiesSummary 取得指定日期概要 - 1个备忘`, async () => {
     let day: string = moment().format("YYYY/MM/DD");
 
     // 备忘
@@ -789,7 +1272,7 @@ describe('CalendarService test suite', () => {
     expect(daySummary.bookedtimesummary).toBe(0);
   });
 
-  it(`Case 4 - 5 fetchDayActivitiesSummary 取得指定日期概要 - 1个任务(不重复)`, async () => {
+  it(`Case 5 - 5 fetchDayActivitiesSummary 取得指定日期概要 - 1个任务(不重复)`, async () => {
     let day: string = moment().format("YYYY/MM/DD");
 
     // 任务
@@ -813,7 +1296,7 @@ describe('CalendarService test suite', () => {
     expect(daySummary.bookedtimesummary).toBe(0);
   });
 
-  it(`Case 4 - 4 - 5 fetchDayActivitiesSummary 取得指定日期概要 - 存在1个日程(每年重复)`, async () => {
+  it(`Case 5 - 4 - 5 fetchDayActivitiesSummary 取得指定日期概要 - 存在1个日程(每年重复)`, async () => {
     let day: string = moment().format("YYYY/MM/DD");
     // 日程
     let agenda: AgendaData = {} as AgendaData;
@@ -858,7 +1341,7 @@ describe('CalendarService test suite', () => {
     expect(nextdaySummary.bookedtimesummary).toBe(0);
   });
 
-  it(`Case 4 - 4 - 4 fetchDayActivitiesSummary 取得指定日期概要 - 存在1个日程(每月重复)`, async () => {
+  it(`Case 5 - 4 - 4 fetchDayActivitiesSummary 取得指定日期概要 - 存在1个日程(每月重复)`, async () => {
     let day: string = moment().format("YYYY/MM/DD");
     // 日程
     let agenda: AgendaData = {} as AgendaData;
@@ -903,7 +1386,7 @@ describe('CalendarService test suite', () => {
     expect(nextdaySummary.bookedtimesummary).toBe(0);
   });
 
-  it(`Case 4 - 4 - 3 fetchDayActivitiesSummary 取得指定日期概要 - 存在1个日程(每周重复)`, async () => {
+  it(`Case 5 - 4 - 3 fetchDayActivitiesSummary 取得指定日期概要 - 存在1个日程(每周重复)`, async () => {
     let day: string = moment().format("YYYY/MM/DD");
     // 日程
     let agenda: AgendaData = {} as AgendaData;
@@ -948,7 +1431,7 @@ describe('CalendarService test suite', () => {
     expect(nextdaySummary.bookedtimesummary).toBe(0);
   });
 
-  it(`Case 4 - 4 - 2 fetchDayActivitiesSummary 取得指定日期概要 - 存在1个日程(每日重复)`, async () => {
+  it(`Case 5 - 4 - 2 fetchDayActivitiesSummary 取得指定日期概要 - 存在1个日程(每日重复)`, async () => {
     let day: string = moment().format("YYYY/MM/DD");
     // 日程
     let agenda: AgendaData = {} as AgendaData;
@@ -993,7 +1476,7 @@ describe('CalendarService test suite', () => {
     expect(nextdaySummary.bookedtimesummary).toBe(0);
   });
 
-  it(`Case 4 - 4 - 1 fetchDayActivitiesSummary 取得指定日期概要 - 存在1个日程(不重复)`, async () => {
+  it(`Case 5 - 4 - 1 fetchDayActivitiesSummary 取得指定日期概要 - 存在1个日程(不重复)`, async () => {
     let day: string = moment().format("YYYY/MM/DD");
     // 日程
     let agenda: AgendaData = {} as AgendaData;
@@ -1017,7 +1500,7 @@ describe('CalendarService test suite', () => {
     expect(daySummary.bookedtimesummary).toBe(0);
   });
 
-  it(`Case 4 - 3 fetchDayActivitiesSummary 取得指定日期概要 - 存在1个日历项(任意日历项)`, async () => {
+  it(`Case 5 - 3 fetchDayActivitiesSummary 取得指定日期概要 - 存在1个日历项(任意日历项)`, async () => {
     let day: string = moment().format("YYYY/MM/DD");
     // 基本日历
     let plan: PlanData = {} as PlanData;
@@ -1061,7 +1544,7 @@ describe('CalendarService test suite', () => {
     expect(daySummary.bookedtimesummary).toBe(0);
   });
 
-  it(`Case 4 - 2 fetchDayActivitiesSummary 取得指定日期概要 - 空值(没有任何活动)`, async () => {
+  it(`Case 5 - 2 fetchDayActivitiesSummary 取得指定日期概要 - 空值(没有任何活动)`, async () => {
     let day: string = moment().format("YYYY/MM/DD");
 
     let daySummary: DayActivitySummaryData = await calendarService.fetchDayActivitiesSummary(day);
@@ -1078,12 +1561,395 @@ describe('CalendarService test suite', () => {
     expect(daySummary.bookedtimesummary).toBe(0);
   });
 
-  it(`Case 4 - 1 fetchDayActivitiesSummary 取得指定日期概要 - 没有抛出异常`, async () => {
+  it(`Case 5 - 1 fetchDayActivitiesSummary 取得指定日期概要 - 没有抛出异常`, async () => {
     expect(function() {
       calendarService.fetchDayActivitiesSummary().then((data) => {
         expect(data).toBeDefined();
       });
     }).not.toThrow();
+  });
+
+  it(`Case 4 - 1 - 5 mergeMonthActivities 合并月活动数据 - 没有活动(增加1个日历项、1个日程(不重复)、1个任务、1个备忘)`, async () => {
+    let monthActivity: MonthActivityData = await calendarService.fetchMonthActivities();
+
+    let day: string = moment().format("YYYY/MM/DD");
+
+    // 日历项
+    let planitem1: PlanItemData = {} as PlanItemData;
+
+    planitem1.sd = day;
+    planitem1.jtn = "结婚纪念日";
+    planitem1.jtt = PlanItemType.Activity;
+
+    planitem1 = await calendarService.savePlanItem(planitem1);
+
+    // 日程
+    let agenda: AgendaData = {} as AgendaData;
+
+    agenda.sd = day;
+    agenda.evn = "结婚纪念日买礼物给太太";
+
+    let savedagenda = await eventService.saveAgenda(agenda);
+
+    // 备忘
+    let memo: MemoData = {} as MemoData;
+
+    memo.sd = day;
+    memo.mon = "结婚纪念日买了一块定制巧克力给太太, 太太很高兴";
+
+    memo = await memoService.saveMemo(memo);
+
+    // 任务
+    let task: TaskData = {} as TaskData;
+
+    task.evd = day;
+    task.evn = "结婚纪念日前给太太买礼物";
+
+    task = await eventService.saveTask(task);
+
+    let activities: Array<any> = new Array<any>();
+    activities = activities.concat(savedagenda);   // 合并后返回新数组，原数组不改变
+    activities.push(task);
+    activities.push(memo);
+    activities.push(planitem1);
+
+    // 增加1个日历项、1个日程(不重复)、1个任务、1个备忘
+    monthActivity = calendarService.mergeMonthActivities(monthActivity, activities);
+
+    let startday: string = moment(moment().format("YYYY/MM")).startOf('month').format("YYYY/MM/DD");
+    let endday: string = moment(moment().format("YYYY/MM")).endOf('month').format("YYYY/MM/DD");
+
+    expect(monthActivity.month).toBe(moment().format("YYYY/MM"));
+    expect(monthActivity.calendaritems).toBeDefined();
+    expect(monthActivity.calendaritems.length).toBe(1);
+    expect(monthActivity.events).toBeDefined();
+    expect(monthActivity.events.length).toBe(2);
+    expect(monthActivity.memos).toBeDefined();
+    expect(monthActivity.memos.length).toBe(1);
+
+    expect(monthActivity.days).toBeDefined();
+    expect(monthActivity.days.get(startday)).toBeDefined();
+    expect(monthActivity.days.get(startday).day).toBe(startday);
+    expect(monthActivity.days.get(startday).calendaritems).toBeDefined();
+    expect(monthActivity.days.get(startday).calendaritems.length).toBe(0);
+    expect(monthActivity.days.get(startday).events).toBeDefined();
+    expect(monthActivity.days.get(startday).events.length).toBe(0);
+    expect(monthActivity.days.get(startday).memos).toBeDefined();
+    expect(monthActivity.days.get(startday).memos.length).toBe(0);
+
+    expect(monthActivity.days.get(day)).toBeDefined();
+    expect(monthActivity.days.get(day).day).toBe(day);
+    expect(monthActivity.days.get(day).calendaritems).toBeDefined();
+    expect(monthActivity.days.get(day).calendaritems.length).toBe(1);
+    expect(monthActivity.days.get(day).events).toBeDefined();
+    expect(monthActivity.days.get(day).events.length).toBe(2);
+    expect(monthActivity.days.get(day).memos).toBeDefined();
+    expect(monthActivity.days.get(day).memos.length).toBe(1);
+
+    expect(monthActivity.days.get(endday)).toBeDefined();
+    expect(monthActivity.days.get(endday).day).toBe(endday);
+    expect(monthActivity.days.get(endday).calendaritems).toBeDefined();
+    expect(monthActivity.days.get(endday).calendaritems.length).toBe(0);
+    expect(monthActivity.days.get(endday).events).toBeDefined();
+    expect(monthActivity.days.get(endday).events.length).toBe(0);
+    expect(monthActivity.days.get(endday).memos).toBeDefined();
+    expect(monthActivity.days.get(endday).memos.length).toBe(0);
+
+  });
+
+  it(`Case 4 - 1 - 4 mergeMonthActivities 合并月活动数据 - 没有活动(增加1个日程(每日重复))`, async () => {
+    let monthActivity: MonthActivityData = await calendarService.fetchMonthActivities();
+
+    let day: string = moment().format("YYYY/MM/DD");
+
+    // 日程
+    let agenda: AgendaData = {} as AgendaData;
+
+    // 每日重复, 永远
+    let rt: RtJson = new RtJson();
+    rt.cycletype = CycleType.day;
+    rt.over.type = OverType.fornever;
+
+    agenda.sd = day;
+    agenda.st = "08:00";
+    agenda.evn = "早锻炼晨跑3000米";
+    agenda.rtjson = rt;
+
+    let savedagenda = await eventService.saveAgenda(agenda);
+
+    // 增加1个日程(每日重复)
+    monthActivity = calendarService.mergeMonthActivities(monthActivity, savedagenda);
+
+    let startday: string = moment(moment().format("YYYY/MM")).startOf('month').format("YYYY/MM/DD");
+    let endday: string = moment(moment().format("YYYY/MM")).endOf('month').format("YYYY/MM/DD");
+
+    let betweenMonthEndDays: number = moment(moment().format("YYYY/MM")).endOf('month').diff(day, "days") + 1;
+
+    expect(monthActivity.month).toBe(moment().format("YYYY/MM"));
+    expect(monthActivity.calendaritems).toBeDefined();
+    expect(monthActivity.calendaritems.length).toBe(0);
+    expect(monthActivity.events).toBeDefined();
+    expect(monthActivity.events.length).toBe(betweenMonthEndDays);
+    expect(monthActivity.memos).toBeDefined();
+    expect(monthActivity.memos.length).toBe(0);
+
+    expect(monthActivity.days).toBeDefined();
+    expect(monthActivity.days.get(startday)).toBeDefined();
+    expect(monthActivity.days.get(startday).day).toBe(startday);
+    expect(monthActivity.days.get(startday).calendaritems).toBeDefined();
+    expect(monthActivity.days.get(startday).calendaritems.length).toBe(0);
+    expect(monthActivity.days.get(startday).events).toBeDefined();
+    expect(monthActivity.days.get(startday).events.length).toBe(0);
+    expect(monthActivity.days.get(startday).memos).toBeDefined();
+    expect(monthActivity.days.get(startday).memos.length).toBe(0);
+
+    expect(monthActivity.days.get(day)).toBeDefined();
+    expect(monthActivity.days.get(day).day).toBe(day);
+    expect(monthActivity.days.get(day).calendaritems).toBeDefined();
+    expect(monthActivity.days.get(day).calendaritems.length).toBe(0);
+    expect(monthActivity.days.get(day).events).toBeDefined();
+    expect(monthActivity.days.get(day).events.length).toBe(1);
+    expect(monthActivity.days.get(day).memos).toBeDefined();
+    expect(monthActivity.days.get(day).memos.length).toBe(0);
+
+    expect(monthActivity.days.get(endday)).toBeDefined();
+    expect(monthActivity.days.get(endday).day).toBe(endday);
+    expect(monthActivity.days.get(endday).calendaritems).toBeDefined();
+    expect(monthActivity.days.get(endday).calendaritems.length).toBe(0);
+    expect(monthActivity.days.get(endday).events).toBeDefined();
+    expect(monthActivity.days.get(endday).events.length).toBe(1);
+    expect(monthActivity.days.get(endday).memos).toBeDefined();
+    expect(monthActivity.days.get(endday).memos.length).toBe(0);
+
+  });
+
+  it(`Case 4 - 1 - 3 mergeMonthActivities 合并月活动数据 - 没有活动(增加1个日程(不重复))`, async () => {
+    let monthActivity: MonthActivityData = await calendarService.fetchMonthActivities();
+
+    let day: string = moment().format("YYYY/MM/DD");
+
+    // 日程
+    let agenda: AgendaData = {} as AgendaData;
+
+    agenda.sd = day;
+    agenda.evn = "结婚纪念日买礼物给太太";
+
+    let savedagenda = await eventService.saveAgenda(agenda);
+
+    // 增加1个日程(不重复)
+    monthActivity = calendarService.mergeMonthActivities(monthActivity, savedagenda);
+
+    let startday: string = moment(moment().format("YYYY/MM")).startOf('month').format("YYYY/MM/DD");
+    let endday: string = moment(moment().format("YYYY/MM")).endOf('month').format("YYYY/MM/DD");
+
+    expect(monthActivity.month).toBe(moment().format("YYYY/MM"));
+    expect(monthActivity.calendaritems).toBeDefined();
+    expect(monthActivity.calendaritems.length).toBe(0);
+    expect(monthActivity.events).toBeDefined();
+    expect(monthActivity.events.length).toBe(1);
+    expect(monthActivity.memos).toBeDefined();
+    expect(monthActivity.memos.length).toBe(0);
+
+    expect(monthActivity.days).toBeDefined();
+    expect(monthActivity.days.get(startday)).toBeDefined();
+    expect(monthActivity.days.get(startday).day).toBe(startday);
+    expect(monthActivity.days.get(startday).calendaritems).toBeDefined();
+    expect(monthActivity.days.get(startday).calendaritems.length).toBe(0);
+    expect(monthActivity.days.get(startday).events).toBeDefined();
+    expect(monthActivity.days.get(startday).events.length).toBe(0);
+    expect(monthActivity.days.get(startday).memos).toBeDefined();
+    expect(monthActivity.days.get(startday).memos.length).toBe(0);
+
+    expect(monthActivity.days.get(day)).toBeDefined();
+    expect(monthActivity.days.get(day).day).toBe(day);
+    expect(monthActivity.days.get(day).calendaritems).toBeDefined();
+    expect(monthActivity.days.get(day).calendaritems.length).toBe(0);
+    expect(monthActivity.days.get(day).events).toBeDefined();
+    expect(monthActivity.days.get(day).events.length).toBe(1);
+    expect(monthActivity.days.get(day).memos).toBeDefined();
+    expect(monthActivity.days.get(day).memos.length).toBe(0);
+
+    expect(monthActivity.days.get(endday)).toBeDefined();
+    expect(monthActivity.days.get(endday).day).toBe(endday);
+    expect(monthActivity.days.get(endday).calendaritems).toBeDefined();
+    expect(monthActivity.days.get(endday).calendaritems.length).toBe(0);
+    expect(monthActivity.days.get(endday).events).toBeDefined();
+    expect(monthActivity.days.get(endday).events.length).toBe(0);
+    expect(monthActivity.days.get(endday).memos).toBeDefined();
+    expect(monthActivity.days.get(endday).memos.length).toBe(0);
+
+  });
+
+  it(`Case 4 - 1 - 2 mergeMonthActivities 合并月活动数据 - 没有活动(增加1个日历项)`, async () => {
+    let monthActivity: MonthActivityData = await calendarService.fetchMonthActivities();
+
+    let day: string = moment().format("YYYY/MM/DD");
+
+    // 日历项
+    let planitem1: PlanItemData = {} as PlanItemData;
+
+    planitem1.sd = day;
+    planitem1.jtn = "结婚纪念日";
+    planitem1.jtt = PlanItemType.Activity;
+
+    planitem1 = await calendarService.savePlanItem(planitem1);
+
+    // 增加1个日历项
+    monthActivity = calendarService.mergeMonthActivities(monthActivity, [planitem1]);
+
+    let startday: string = moment(moment().format("YYYY/MM")).startOf('month').format("YYYY/MM/DD");
+    let endday: string = moment(moment().format("YYYY/MM")).endOf('month').format("YYYY/MM/DD");
+
+    expect(monthActivity.month).toBe(moment().format("YYYY/MM"));
+    expect(monthActivity.calendaritems).toBeDefined();
+    expect(monthActivity.calendaritems.length).toBe(1);
+    expect(monthActivity.events).toBeDefined();
+    expect(monthActivity.events.length).toBe(0);
+    expect(monthActivity.memos).toBeDefined();
+    expect(monthActivity.memos.length).toBe(0);
+
+    expect(monthActivity.days).toBeDefined();
+    expect(monthActivity.days.get(startday)).toBeDefined();
+    expect(monthActivity.days.get(startday).day).toBe(startday);
+    expect(monthActivity.days.get(startday).calendaritems).toBeDefined();
+    expect(monthActivity.days.get(startday).calendaritems.length).toBe(0);
+    expect(monthActivity.days.get(startday).events).toBeDefined();
+    expect(monthActivity.days.get(startday).events.length).toBe(0);
+    expect(monthActivity.days.get(startday).memos).toBeDefined();
+    expect(monthActivity.days.get(startday).memos.length).toBe(0);
+
+    expect(monthActivity.days.get(day)).toBeDefined();
+    expect(monthActivity.days.get(day).day).toBe(day);
+    expect(monthActivity.days.get(day).calendaritems).toBeDefined();
+    expect(monthActivity.days.get(day).calendaritems.length).toBe(1);
+    expect(monthActivity.days.get(day).events).toBeDefined();
+    expect(monthActivity.days.get(day).events.length).toBe(0);
+    expect(monthActivity.days.get(day).memos).toBeDefined();
+    expect(monthActivity.days.get(day).memos.length).toBe(0);
+
+    expect(monthActivity.days.get(endday)).toBeDefined();
+    expect(monthActivity.days.get(endday).day).toBe(endday);
+    expect(monthActivity.days.get(endday).calendaritems).toBeDefined();
+    expect(monthActivity.days.get(endday).calendaritems.length).toBe(0);
+    expect(monthActivity.days.get(endday).events).toBeDefined();
+    expect(monthActivity.days.get(endday).events.length).toBe(0);
+    expect(monthActivity.days.get(endday).memos).toBeDefined();
+    expect(monthActivity.days.get(endday).memos.length).toBe(0);
+
+  });
+
+  it(`Case 4 - 1 - 1 mergeMonthActivities 合并月活动数据 - 没有活动(增加1个备忘)`, async () => {
+    let monthActivity: MonthActivityData = await calendarService.fetchMonthActivities();
+
+    let day: string = moment().format("YYYY/MM/DD");
+
+    // 备忘
+    let memo: MemoData = {} as MemoData;
+
+    memo.sd = day;
+    memo.mon = "结婚纪念日买了一块定制巧克力给太太, 太太很高兴";
+
+    memo = await memoService.saveMemo(memo);
+
+    // 增加1个备忘
+    monthActivity = calendarService.mergeMonthActivities(monthActivity, [memo]);
+
+    let startday: string = moment(moment().format("YYYY/MM")).startOf('month').format("YYYY/MM/DD");
+    let endday: string = moment(moment().format("YYYY/MM")).endOf('month').format("YYYY/MM/DD");
+
+    expect(monthActivity.month).toBe(moment().format("YYYY/MM"));
+    expect(monthActivity.calendaritems).toBeDefined();
+    expect(monthActivity.calendaritems.length).toBe(0);
+    expect(monthActivity.events).toBeDefined();
+    expect(monthActivity.events.length).toBe(0);
+    expect(monthActivity.memos).toBeDefined();
+    expect(monthActivity.memos.length).toBe(1);
+
+    expect(monthActivity.days).toBeDefined();
+    expect(monthActivity.days.get(startday)).toBeDefined();
+    expect(monthActivity.days.get(startday).day).toBe(startday);
+    expect(monthActivity.days.get(startday).calendaritems).toBeDefined();
+    expect(monthActivity.days.get(startday).calendaritems.length).toBe(0);
+    expect(monthActivity.days.get(startday).events).toBeDefined();
+    expect(monthActivity.days.get(startday).events.length).toBe(0);
+    expect(monthActivity.days.get(startday).memos).toBeDefined();
+    expect(monthActivity.days.get(startday).memos.length).toBe(0);
+
+    expect(monthActivity.days.get(day)).toBeDefined();
+    expect(monthActivity.days.get(day).day).toBe(day);
+    expect(monthActivity.days.get(day).calendaritems).toBeDefined();
+    expect(monthActivity.days.get(day).calendaritems.length).toBe(0);
+    expect(monthActivity.days.get(day).events).toBeDefined();
+    expect(monthActivity.days.get(day).events.length).toBe(0);
+    expect(monthActivity.days.get(day).memos).toBeDefined();
+    expect(monthActivity.days.get(day).memos.length).toBe(1);
+
+    expect(monthActivity.days.get(endday)).toBeDefined();
+    expect(monthActivity.days.get(endday).day).toBe(endday);
+    expect(monthActivity.days.get(endday).calendaritems).toBeDefined();
+    expect(monthActivity.days.get(endday).calendaritems.length).toBe(0);
+    expect(monthActivity.days.get(endday).events).toBeDefined();
+    expect(monthActivity.days.get(endday).events.length).toBe(0);
+    expect(monthActivity.days.get(endday).memos).toBeDefined();
+    expect(monthActivity.days.get(endday).memos.length).toBe(0);
+
+  });
+
+  it(`Case 4 - 1 mergeMonthActivities 合并月活动数据 - 没有活动(增加1个任务)`, async () => {
+    let monthActivity: MonthActivityData = await calendarService.fetchMonthActivities();
+
+    let day: string = moment().format("YYYY/MM/DD");
+
+    // 任务
+    let task: TaskData = {} as TaskData;
+
+    task.evd = day;
+    task.evn = "结婚纪念日前给太太买礼物";
+
+    task = await eventService.saveTask(task);
+
+    // 增加1个任务
+    monthActivity = calendarService.mergeMonthActivities(monthActivity, [task]);
+
+    let startday: string = moment(moment().format("YYYY/MM")).startOf('month').format("YYYY/MM/DD");
+    let endday: string = moment(moment().format("YYYY/MM")).endOf('month').format("YYYY/MM/DD");
+
+    expect(monthActivity.month).toBe(moment().format("YYYY/MM"));
+    expect(monthActivity.calendaritems).toBeDefined();
+    expect(monthActivity.calendaritems.length).toBe(0);
+    expect(monthActivity.events).toBeDefined();
+    expect(monthActivity.events.length).toBe(1);
+    expect(monthActivity.memos).toBeDefined();
+    expect(monthActivity.memos.length).toBe(0);
+
+    expect(monthActivity.days).toBeDefined();
+    expect(monthActivity.days.get(startday)).toBeDefined();
+    expect(monthActivity.days.get(startday).day).toBe(startday);
+    expect(monthActivity.days.get(startday).calendaritems).toBeDefined();
+    expect(monthActivity.days.get(startday).calendaritems.length).toBe(0);
+    expect(monthActivity.days.get(startday).events).toBeDefined();
+    expect(monthActivity.days.get(startday).events.length).toBe(0);
+    expect(monthActivity.days.get(startday).memos).toBeDefined();
+    expect(monthActivity.days.get(startday).memos.length).toBe(0);
+
+    expect(monthActivity.days.get(day)).toBeDefined();
+    expect(monthActivity.days.get(day).day).toBe(day);
+    expect(monthActivity.days.get(day).calendaritems).toBeDefined();
+    expect(monthActivity.days.get(day).calendaritems.length).toBe(0);
+    expect(monthActivity.days.get(day).events).toBeDefined();
+    expect(monthActivity.days.get(day).events.length).toBe(1);
+    expect(monthActivity.days.get(day).memos).toBeDefined();
+    expect(monthActivity.days.get(day).memos.length).toBe(0);
+
+    expect(monthActivity.days.get(endday)).toBeDefined();
+    expect(monthActivity.days.get(endday).day).toBe(endday);
+    expect(monthActivity.days.get(endday).calendaritems).toBeDefined();
+    expect(monthActivity.days.get(endday).calendaritems.length).toBe(0);
+    expect(monthActivity.days.get(endday).events).toBeDefined();
+    expect(monthActivity.days.get(endday).events.length).toBe(0);
+    expect(monthActivity.days.get(endday).memos).toBeDefined();
+    expect(monthActivity.days.get(endday).memos.length).toBe(0);
+
   });
 
   // 需要同步执行

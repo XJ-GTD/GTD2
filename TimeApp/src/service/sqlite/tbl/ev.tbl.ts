@@ -27,6 +27,7 @@ export class EvTbl implements ITblParam {
   gs: string;
   tb: string;
   del: string;
+  rfg : string;
   utt: number;
   wtt: number;
 
@@ -37,7 +38,7 @@ export class EvTbl implements ITblParam {
           rtevi varchar(50)  ,ji varchar(50)  ,bz varchar(50)  ,type varchar(4)  ,
           tx varchar(50)  ,txs varchar(50)  ,rt varchar(50)  ,rts varchar(50)  ,
           fj varchar(50)  ,pn integer  ,md varchar(4)  ,iv varchar(4)  ,sr varchar(50)  ,
-          wtt integer  ,utt integer  ,gs varchar(4)  ,tb varchar(4)  ,del varchar(4)
+          wtt integer  ,utt integer  ,gs varchar(4)  ,tb varchar(6)  ,del varchar(6),rfg varchar(6)
 
         );`;
 
@@ -125,7 +126,7 @@ export class EvTbl implements ITblParam {
 
     if(this.tb!=null && this.tb!=''){      sq=sq+', tb= ? ';      params.push(this.tb);    }
     if(this.del!=null && this.del!=''){      sq=sq+', del= ? ';      params.push(this.del);    }
-
+    if(this.rfg!=null && this.rfg!=''){      sq=sq+', rfg= ? ';      params.push(this.rfg);    }
 
     sq =`update gtd_ev set wtt = ${moment().unix()}  ${sq} where evi = ? ;`;
     params.push(this.evi);
@@ -236,7 +237,7 @@ export class EvTbl implements ITblParam {
 
     if(this.tb!=null && this.tb!=''){      sq=sq+' and  tb= ? ';      params.push(this.tb);    }
     if(this.del!=null && this.del!=''){      sq=sq+' and del= ? ';      params.push(this.del);    }
-
+    if(this.rfg!=null && this.rfg!=''){      sq=sq+' and rfg= ? ';      params.push(this.rfg);    }
     sq = sq + ';';
 
     let ret = new Array<any>();
@@ -256,8 +257,8 @@ export class EvTbl implements ITblParam {
     let sq =`insert into gtd_ev
        ( evi ,evn ,ui ,mi ,evd ,rtevi ,ji ,bz ,
        type ,tx ,txs ,rt ,rts ,fj ,pn ,md ,iv ,
-       sr ,wtt ,utt ,gs,tb,del)
-       values( ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);`;
+       sr ,wtt ,utt ,gs,tb,del,rfg)
+       values( ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);`;
     params.push(this.evi);
     params.push(this.evn);
     params.push(this.ui);
@@ -281,6 +282,7 @@ export class EvTbl implements ITblParam {
     params.push(this.gs);
     params.push(this.tb);
     params.push(this.del);
+    params.push(this.rfg);
 
     let ret = new Array<any>();
     ret.push(sq);
@@ -293,8 +295,8 @@ export class EvTbl implements ITblParam {
     let sq =`replace into gtd_ev
        ( evi ,evn ,ui ,mi ,evd ,rtevi ,ji ,bz ,
        type ,tx ,txs ,rt ,rts ,fj ,pn ,md ,iv ,
-       sr ,wtt ,utt ,gs,tb,del)
-       values( ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);`;
+       sr ,wtt ,utt ,gs,tb,del,rfg)
+       values( ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);`;
     params.push(this.evi);
     params.push(this.evn);
     params.push(this.ui);
@@ -318,6 +320,7 @@ export class EvTbl implements ITblParam {
     params.push(this.gs);
     params.push(this.tb);
     params.push(this.del);
+    params.push(this.rfg);
 
     let ret = new Array<any>();
     ret.push(sq);

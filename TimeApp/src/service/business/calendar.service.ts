@@ -599,7 +599,234 @@ export class CalendarService extends BaseService {
     return monthActivity;
   }
 
-  mergeMonthActivities() {}
+  /**
+   * 合并(更新/插入/删除)月活动数据（用于日历页月度活动一览）
+   *
+   * 避免重复查询数据库, 提高效率
+   * 不属于当月范围内的活动将被忽略
+   *
+   * @author leon_xi@163.com
+   **/
+  mergeMonthActivities(monthActivities: MonthActivityData, activitiedatas: Array<PlanItemData | AgendaData | TaskData | MiniTaskData | MemoData>): MonthActivityData {
+
+    // 入参不能为空
+    this.assertEmpty(monthActivities);            // 月活动数据不能为空
+    this.assertEmpty(monthActivities.month);      // 月活动数据月份不能为空
+    this.assertEmpty(activitiedatas);             // 活动数据不能为空
+
+    let activities: Array<any> = activitiedatas;
+
+    // 没有合并数据直接返回
+    if (activities.length == 0) {
+      return monthActivities;
+    }
+
+    let startday: string = moment(monthActivities.month).startOf('month').format("YYYY/MM/DD");
+    let endday: string = moment(monthActivities.month).endOf('month').format("YYYY/MM/DD");
+
+    // 循环合并更新活动
+    for (let activity of activities) {
+      let day: string = "";
+      let activityType: string = this.getActivityType(activity);
+
+      // 取得活动日期
+      switch (activityType) {
+        case "PlanItemData" :
+          day = activity.sd;
+          break;
+        case "AgendaData" :
+          day = activity.evd;
+          break;
+        case "TaskData" :
+          day = activity.evd;
+          break;
+        case "MiniTaskData" :
+          day = activity.evd;
+          break;
+        case "MemoData" :
+          day = activity.sd;
+          break;
+        default:
+          this.assertFail();  // 不能有上述以外的活动
+      }
+
+      // 不属于当页日期范围内的活动忽略
+      if (startday > day || day > endday) {
+        continue;
+      }
+
+      // 获取既存活动ID, 用于判断更新/插入/删除
+      let calendaritemids: Array<string> = new Array<string>();
+      let eventids: Array<string> = new Array<string>();
+      let memoids: Array<string> = new Array<string>();
+
+      monthActivities.calendaritems.reduce((calendaritemids, value) => {
+        calendaritemids.push(value.jti);
+        return calendaritemids;
+      }, calendaritemids);
+      monthActivities.events.reduce((eventids, value) => {
+        eventids.push(value.evi);
+        return eventids;
+      }, eventids);
+      monthActivities.memos.reduce((memoids, value) => {
+        memoids.push(value.moi);
+        return memoids;
+      }, memoids);
+
+      // 更新/插入/删除活动数据
+      let index: number = -1;
+
+      switch (activityType) {
+        case "PlanItemData" :
+          index = calendaritemids.indexOf(activity.jti);
+
+          let item: PlanItemData = {} as PlanItemData;
+          Object.assign(item, activity);
+
+          if (index >= 0) {
+            // 更新/删除
+            if (item.del == DelType.del) {
+              // 删除
+              if (index == 0) {
+                monthActivities.calendaritems = monthActivities.calendaritems.slice(1);
+              } else {
+                monthActivities.calendaritems = monthActivities.calendaritems.slice(0, index).concat(monthActivities.calendaritems.slice(index + 1));
+              }
+            } else {
+              // 更新
+              if (index == 0) {
+                monthActivities.calendaritems = monthActivities.calendaritems.slice(1);
+                monthActivities.calendaritems.unshift(item);
+              } else {
+                let tail = monthActivities.calendaritems.slice(index + 1);
+                tail.unshift(item);
+                monthActivities.calendaritems = monthActivities.calendaritems.slice(0, index).concat(tail);
+              }
+            }
+          } else {
+            // 插入
+            monthActivities.calendaritems.push(item);
+          }
+          break;
+        case "AgendaData" :
+        case "TaskData" :
+        case "MiniTaskData" :
+          index = eventids.indexOf(activity.evi);
+
+          let event: EventData = {} as EventData;
+          Object.assign(event, activity);
+
+          if (index >= 0) {
+            // 更新/删除
+            if (event.del == DelType.del) {
+              // 删除
+              if (index == 0) {
+                monthActivities.events = monthActivities.events.slice(1);
+              } else {
+                monthActivities.events = monthActivities.events.slice(0, index).concat(monthActivities.events.slice(index + 1));
+              }
+            } else {
+              // 更新
+              if (index == 0) {
+                monthActivities.events = monthActivities.events.slice(1);
+                monthActivities.events.unshift(event);
+              } else {
+                let tail = monthActivities.events.slice(index + 1);
+                tail.unshift(event);
+                monthActivities.events = monthActivities.events.slice(0, index).concat(tail);
+              }
+            }
+          } else {
+            monthActivities.events.push(event);
+          }
+          break;
+        case "MemoData" :
+          let memo: MemoData = {} as MemoData;
+          Object.assign(memo, activity);
+
+          index = memoids.indexOf(activity.moi);
+          if (index >= 0) {
+            // 更新/删除
+            if (memo.del == DelType.del) {
+              // 删除
+              if (index == 0) {
+                monthActivities.memos = monthActivities.memos.slice(1);
+              } else {
+                monthActivities.memos = monthActivities.memos.slice(0, index).concat(monthActivities.memos.slice(index + 1));
+              }
+            } else {
+              // 更新
+              if (index == 0) {
+                monthActivities.memos = monthActivities.memos.slice(1);
+                monthActivities.memos.unshift(memo);
+              } else {
+                let tail = monthActivities.memos.slice(index + 1);
+                tail.unshift(memo);
+                monthActivities.memos = monthActivities.memos.slice(0, index).concat(tail);
+              }
+            }
+          } else {
+            monthActivities.memos.push(memo);
+          }
+          break;
+        default:
+          this.assertFail();  // 不能有上述以外的活动
+      }
+    }
+
+    // 重构每天活动数据
+    let days: Map<string, DayActivityData> = new Map<string, DayActivityData>();
+
+    // 初始化每日记录
+    days.set(startday, new DayActivityData(startday));
+    let stepday: string = startday;
+    while (stepday != endday) {
+      stepday = moment(stepday).add(1, "days").format("YYYY/MM/DD");
+
+      let day: string = stepday;
+      days.set(day, new DayActivityData(day));
+    }
+
+    days = monthActivities.calendaritems.reduce((days, value) => {
+      let day: string = value.sd;
+      let dayActivity: DayActivityData = days.get(day);
+
+      this.assertNull(dayActivity);
+
+      dayActivity.calendaritems.push(value);
+      days.set(day, dayActivity);
+
+      return days;
+    }, days);
+
+    days = monthActivities.events.reduce((days, value) => {
+      let day: string = value.evd;
+      let dayActivity: DayActivityData = days.get(day);
+
+      this.assertNull(dayActivity);
+
+      dayActivity.events.push(value);
+      days.set(day, dayActivity);
+
+      return days;
+    }, days);
+
+    days = monthActivities.memos.reduce((days, value) => {
+      let day: string = value.sd;
+      let dayActivity: DayActivityData = days.get(day);
+
+      this.assertNull(dayActivity);
+
+      dayActivity.memos.push(value);
+      days.set(day, dayActivity);
+
+      return days;
+    }, days);
+
+    monthActivities.days = days;
+
+    return monthActivities;
+  }
 
   /**
    * 获取指定日期下的活动汇总
@@ -670,8 +897,189 @@ export class CalendarService extends BaseService {
     return dayActivity;
   }
 
-  mergeDayActivities() {}
+  /**
+   * 合并(更新/插入/删除)日活动数据（用于每日活动一览）
+   *
+   * 避免重复查询数据库, 提高效率
+   * 不属于当日范围内的活动将被忽略
+   *
+   * @author leon_xi@163.com
+   **/
+  mergeDayActivities(dayActivities: DayActivityData, activitiedatas: Array<PlanItemData | AgendaData | TaskData | MiniTaskData | MemoData>): DayActivityData {
+    // 入参不能为空
+    this.assertEmpty(dayActivities);            // 日活动数据不能为空
+    this.assertEmpty(dayActivities.day);        // 日活动数据日期不能为空
+    this.assertEmpty(activitiedatas);           // 活动数据不能为空
 
+    let activities: Array<any> = activitiedatas;
+
+    // 没有合并数据直接返回
+    if (activities.length == 0) {
+      return dayActivities;
+    }
+
+    let activityday: string = dayActivities.day;
+
+    // 循环合并更新活动
+    for (let activity of activities) {
+      let day: string = "";
+      let activityType: string = this.getActivityType(activity);
+
+      // 取得活动日期
+      switch (activityType) {
+        case "PlanItemData" :
+          day = activity.sd;
+          break;
+        case "AgendaData" :
+          day = activity.evd;
+          break;
+        case "TaskData" :
+          day = activity.evd;
+          break;
+        case "MiniTaskData" :
+          day = activity.evd;
+          break;
+        case "MemoData" :
+          day = activity.sd;
+          break;
+        default:
+          this.assertFail();  // 不能有上述以外的活动
+      }
+
+      // 不属于当页日期范围内的活动忽略
+      if (activityday != day) {
+        continue;
+      }
+
+      // 获取既存活动ID, 用于判断更新/插入/删除
+      let calendaritemids: Array<string> = new Array<string>();
+      let eventids: Array<string> = new Array<string>();
+      let memoids: Array<string> = new Array<string>();
+
+      dayActivities.calendaritems.reduce((calendaritemids, value) => {
+        calendaritemids.push(value.jti);
+        return calendaritemids;
+      }, calendaritemids);
+      dayActivities.events.reduce((eventids, value) => {
+        eventids.push(value.evi);
+        return eventids;
+      }, eventids);
+      dayActivities.memos.reduce((memoids, value) => {
+        memoids.push(value.moi);
+        return memoids;
+      }, memoids);
+
+      // 更新/插入/删除活动数据
+      let index: number = -1;
+
+      switch (activityType) {
+        case "PlanItemData" :
+          index = calendaritemids.indexOf(activity.jti);
+
+          let item: PlanItemData = {} as PlanItemData;
+          Object.assign(item, activity);
+
+          if (index >= 0) {
+            // 更新/删除
+            if (item.del == DelType.del) {
+              // 删除
+              if (index == 0) {
+                dayActivities.calendaritems = dayActivities.calendaritems.slice(1);
+              } else {
+                dayActivities.calendaritems = dayActivities.calendaritems.slice(0, index).concat(dayActivities.calendaritems.slice(index + 1));
+              }
+            } else {
+              // 更新
+              if (index == 0) {
+                dayActivities.calendaritems = dayActivities.calendaritems.slice(1);
+                dayActivities.calendaritems.unshift(item);
+              } else {
+                let tail = dayActivities.calendaritems.slice(index + 1);
+                tail.unshift(item);
+                dayActivities.calendaritems = dayActivities.calendaritems.slice(0, index).concat(tail);
+              }
+            }
+          } else {
+            // 插入
+            dayActivities.calendaritems.push(item);
+          }
+          break;
+        case "AgendaData" :
+        case "TaskData" :
+        case "MiniTaskData" :
+          index = eventids.indexOf(activity.evi);
+
+          let event: EventData = {} as EventData;
+          Object.assign(event, activity);
+
+          if (index >= 0) {
+            // 更新/删除
+            if (event.del == DelType.del) {
+              // 删除
+              if (index == 0) {
+                dayActivities.events = dayActivities.events.slice(1);
+              } else {
+                dayActivities.events = dayActivities.events.slice(0, index).concat(dayActivities.events.slice(index + 1));
+              }
+            } else {
+              // 更新
+              if (index == 0) {
+                dayActivities.events = dayActivities.events.slice(1);
+                dayActivities.events.unshift(event);
+              } else {
+                let tail = dayActivities.events.slice(index + 1);
+                tail.unshift(event);
+                dayActivities.events = dayActivities.events.slice(0, index).concat(tail);
+              }
+            }
+          } else {
+            dayActivities.events.push(event);
+          }
+          break;
+        case "MemoData" :
+          let memo: MemoData = {} as MemoData;
+          Object.assign(memo, activity);
+
+          index = memoids.indexOf(activity.moi);
+          if (index >= 0) {
+            // 更新/删除
+            if (memo.del == DelType.del) {
+              // 删除
+              if (index == 0) {
+                dayActivities.memos = dayActivities.memos.slice(1);
+              } else {
+                dayActivities.memos = dayActivities.memos.slice(0, index).concat(dayActivities.memos.slice(index + 1));
+              }
+            } else {
+              // 更新
+              if (index == 0) {
+                dayActivities.memos = dayActivities.memos.slice(1);
+                dayActivities.memos.unshift(memo);
+              } else {
+                let tail = dayActivities.memos.slice(index + 1);
+                tail.unshift(memo);
+                dayActivities.memos = dayActivities.memos.slice(0, index).concat(tail);
+              }
+            }
+          } else {
+            dayActivities.memos.push(memo);
+          }
+          break;
+        default:
+          this.assertFail();  // 不能有上述以外的活动
+      }
+    }
+
+    return dayActivities;
+  }
+
+  /**
+   * 查询活动（时间/内容/标签）
+   *
+   * 日历项/事件/备忘
+   *
+   * @author leon_xi@163.com
+   **/
   async findActivities(condition: FindActivityCondition): Promise<ActivityData> {
 
     this.assertEmpty(condition);    // 入参不能为空
@@ -1120,13 +1528,15 @@ export class CalendarService extends BaseService {
    *
    * @author leon_xi@163.com
    **/
-  mergePagedActivities(pagedActivities: PagedActivityData, activities: Array<PlanItemData | AgendaData | TaskData | MiniTaskData | MemoData>): PagedActivityData {
+  mergePagedActivities(pagedActivities: PagedActivityData, activitiedatas: Array<PlanItemData | AgendaData | TaskData | MiniTaskData | MemoData>): PagedActivityData {
 
     // 入参不能为空
     this.assertEmpty(pagedActivities);            // 翻页数据不能为空
     this.assertEmpty(pagedActivities.startday);   // 翻页数据开始日期不能为空
     this.assertEmpty(pagedActivities.endday);     // 翻页数据结束日期不能为空
-    this.assertEmpty(activities);                 // 活动数据不能为空
+    this.assertEmpty(activitiedatas);                 // 活动数据不能为空
+
+    let activities: Array<any> = activitiedatas;
 
     // 没有合并数据直接返回
     if (activities.length == 0) {
@@ -1207,9 +1617,12 @@ export class CalendarService extends BaseService {
             } else {
               // 更新
               if (index == 0) {
-                pagedActivities.calendaritems = pagedActivities.calendaritems.slice(1).unshift(item);
+                pagedActivities.calendaritems = pagedActivities.calendaritems.slice(1);
+                pagedActivities.calendaritems.unshift(item);
               } else {
-                pagedActivities.calendaritems = pagedActivities.calendaritems.slice(0, index).concat(pagedActivities.calendaritems.slice(index + 1).unshift(item));
+                let tail = pagedActivities.calendaritems.slice(index + 1);
+                tail.unshift(item);
+                pagedActivities.calendaritems = pagedActivities.calendaritems.slice(0, index).concat(tail);
               }
             }
           } else {
@@ -1237,9 +1650,12 @@ export class CalendarService extends BaseService {
             } else {
               // 更新
               if (index == 0) {
-                pagedActivities.events = pagedActivities.events.slice(1).unshift(event);
+                pagedActivities.events = pagedActivities.events.slice(1);
+                pagedActivities.events.unshift(event);
               } else {
-                pagedActivities.events = pagedActivities.events.slice(0, index).concat(pagedActivities.events.slice(index + 1).unshift(event));
+                let tail = pagedActivities.events.slice(index + 1);
+                tail.unshift(event);
+                pagedActivities.events = pagedActivities.events.slice(0, index).concat(tail);
               }
             }
           } else {
@@ -1263,9 +1679,12 @@ export class CalendarService extends BaseService {
             } else {
               // 更新
               if (index == 0) {
-                pagedActivities.memos = pagedActivities.memos.slice(1).unshift(memo);
+                pagedActivities.memos = pagedActivities.memos.slice(1);
+                pagedActivities.memos.unshift(memo);
               } else {
-                pagedActivities.memos = pagedActivities.memos.slice(0, index).concat(pagedActivities.memos.slice(index + 1).unshift(memo));
+                let tail = pagedActivities.memos.slice(index + 1);
+                tail.unshift(memo);
+                pagedActivities.memos = pagedActivities.memos.slice(0, index).concat(tail);
               }
             }
           } else {

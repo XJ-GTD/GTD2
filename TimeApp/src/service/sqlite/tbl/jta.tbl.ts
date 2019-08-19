@@ -19,7 +19,7 @@ export class JtaTbl implements ITblParam {
   del: string;
   utt: number;
   wtt: number;
-  
+
   cTParam():string {
 
     let sq =`create table if not exists gtd_jta(
@@ -34,8 +34,8 @@ export class JtaTbl implements ITblParam {
      ,bz varchar(50)
      ,wtt integer
      ,utt integer
-     ,tb varchar(4)
-     ,del varchar(4)
+     ,tb varchar(6)
+     ,del varchar(6)
 
      );`;
 
