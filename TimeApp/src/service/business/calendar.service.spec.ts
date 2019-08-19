@@ -162,6 +162,23 @@ describe('CalendarService test suite', () => {
 
   });
 
+  it(`Case 11 - 1 updatePlanColor 更新日历颜色`, async () => {
+    let plan: PlanData = {} as PlanData;
+
+    plan.jn = '冥王星服务类 自动测试';
+    plan.jc = '#f1f1f1';
+    plan.jt = PlanType.PrivatePlan;
+
+    plan = await calendarService.savePlan(plan);
+
+    await calendarService.updatePlanColor(plan.ji, "#1a1a1a");
+
+    let updatedPlan = await calendarService.getPlan(plan.ji, false);
+
+    expect(updatedPlan).toBeDefined();
+    expect(updatedPlan.jc).toBe("#1a1a1a");
+  });
+
   it(`Case 10 - 1 - 1 fetchMonthActivitiesSummary 取得指定月概要 - 1个日历项、1个任务、1个备忘`, async () => {
     let day: string = moment().format("YYYY/MM/DD");
 
