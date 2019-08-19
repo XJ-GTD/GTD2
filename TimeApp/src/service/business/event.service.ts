@@ -13,6 +13,7 @@ import {EmitService} from "../util-service/emit.service";
 import {WaTbl} from "../sqlite/tbl/wa.tbl";
 import * as anyenum from "../../data.enum";
 import { BackupPro, BacRestful, OutRecoverPro, RecoverPro } from "../restful/bacsev";
+import {DTbl} from "../sqlite/tbl/d.tbl";
 
 @Injectable()
 export class EventService extends BaseService {
@@ -111,6 +112,11 @@ export class EventService extends BaseService {
         sqlparam.push(ca.upTParam());
       }else{
         sqlparam.push(ca.dTParam());
+
+        //本地删除日程参与人
+        let dtbl: DTbl = new DTbl();
+        dtbl.si = masterEvi;
+        sqlparam.push(dtbl.dT());
       }
 
       //删除原事件中从当前日程开始所有提醒
@@ -144,6 +150,11 @@ export class EventService extends BaseService {
       ca.evi = caevi;
       if (evtbls.length == 0){
         sqlparam.push(ca.dTParam());
+
+        //本地删除日程参与人
+        let dtbl: DTbl = new DTbl();
+        dtbl.si = masterEvi;
+        sqlparam.push(dtbl.dT());
       }
 
       // 删除相关提醒
@@ -209,13 +220,7 @@ export class EventService extends BaseService {
       let rst = await this.agdRest.save(agdPro);
       console.log(JSON.stringify(rst));
 
-      //如果网络正常提交到服务器，则更新同步标志
-      if (rst !=  anyenum.Err.netbroken){
-        let sq =`update gtd_ev set wtt = ${moment().unix()} , tb = '${anyenum.SyncType.synch}'
-        where rtevi = '${retParamEv.rtevi}' ;`;
-
-        await  this.sqlExce.execSql(sq);
-      }
+      //如果网络正常提交到服务器，则更新同步标志同步通过websocket来通知
 
       this.emitService.emitRef(agdata.sd);
       console.log(agdata);
@@ -515,7 +520,7 @@ export class EventService extends BaseService {
         break;
       case anyenum.OverType.limitdate :
         this.assertEmpty(rtjson.over.value);    // 结束条件不能为空
-        repeatEndDay = rtjson.over.value;
+        repeatEndDay = moment(rtjson.over.value).add(1,'days').format("YYYY/MM/DD");
         break;
       case anyenum.OverType.fornever :
         break;
