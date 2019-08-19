@@ -165,7 +165,7 @@ export class SqliteExec {
   getExtList<T>(sql: string): Promise<Array<T>> {
     return new Promise((resolve, reject) => {
       let arr : Array<T> = new Array<T>();
-      console.log("getExtList执行SQL："+sql);
+      //console.log("getExtList执行SQL："+sql);
       this.execSql(sql).then(data => {
         if (data && data.rows && data.rows.length > 0 ){
           for (let j = 0, len = data.rows.length; j < len; j++) {
@@ -204,10 +204,10 @@ export class SqliteExec {
    */
   getExtOne<T>(sql: string): Promise<T> {
     return new Promise((resolve, reject) => {
-      console.log("getExtOne执行SQL："+sql);
+      //console.log("getExtOne执行SQL："+sql);
       return this.execSql(sql).then(data=>{
         if (data.rows && data.rows.length > 0 ){
-          console.log(data);
+          //console.log(data);
           resolve(data.rows.item(0));
         }else{
           resolve(null);
@@ -427,7 +427,7 @@ export class SqliteExec {
   getExtLstByParam<T>(sql: string,params:Array<any>): Promise<Array<T>> {
     return new Promise((resolve, reject) => {
       let arr : Array<T> = new Array<T>();
-      console.log("getExtList执行SQL："+sql);
+      //console.log("getExtList执行SQL："+sql);
       this.execSql(sql,params).then(data => {
         if (data && data.rows && data.rows.length > 0 ){
           for (let j = 0, len = data.rows.length; j < len; j++) {
@@ -502,7 +502,7 @@ export class SqliteExec {
   async batExecSqlByParam(sqlist: Array<any>) {
 
     if (this.util.isMobile()) {
-      console.log("========= 批量出入SQL："+sqlist);
+      //console.log("========= 批量出入SQL："+sqlist);
       return await this.sqlliteConfig.database.sqlBatch(sqlist);
     } else {
 
