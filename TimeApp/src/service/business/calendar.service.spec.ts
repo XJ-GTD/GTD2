@@ -162,6 +162,22 @@ describe('CalendarService test suite', () => {
 
   });
 
+  it(`Case 14 - 1 removePlan 删除日历 - 不包含子项目(没有子项目)`, async () => {
+    let plan: PlanData = {} as PlanData;
+
+    plan.jn = '冥王星服务类 自动测试';
+    plan.jc = '#f1f1f1';
+    plan.jt = PlanType.PrivatePlan;
+
+    plan = await calendarService.savePlan(plan);
+
+    await calendarService.removePlan(plan.ji);
+
+    let fetchedPlan = await calendarService.getPlan(plan.ji);
+
+    expect(fetchedPlan).not.toBeDefined();
+  });
+
   it(`Case 13 - 2 getPlan 取得日历数据 - 包含子项目(1个日程)`, async () => {
     let plan: PlanData = {} as PlanData;
 
