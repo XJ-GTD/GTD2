@@ -174,7 +174,7 @@ export class SqliteExec {
         }
         resolve(arr);
       }).catch(e=>{
-        console.error("getExtList执行SQL报错："+JSON.stringify(e));
+        console.log("getExtList [" + sql + "] log error :" + JSON.stringify(e));
         resolve(arr);
       })
     })
@@ -238,7 +238,7 @@ export class SqliteExec {
           sql = sql + sqlist[j];
         }
         return this.sqlitePorter.importSqlToDb(this.sqlliteConfig.database, sql).catch(error=>{
-          console.log("error=====================" + error);
+          console.log("batExecSql [" + sql + "] log error :" + JSON.stringify(error));
         })
 
       } else {
@@ -436,7 +436,7 @@ export class SqliteExec {
         }
         resolve(arr);
       }).catch(e=>{
-        console.error("getExtList执行SQL报错："+JSON.stringify(e));
+        console.log("getExtLstByParam [" + sql + "] log error :" + JSON.stringify(e));
         resolve(arr);
       })
     })
