@@ -13,14 +13,18 @@ import {EmitService} from "../util-service/emit.service";
 import {WaTbl} from "../sqlite/tbl/wa.tbl";
 import * as anyenum from "../../data.enum";
 import { BackupPro, BacRestful, OutRecoverPro, RecoverPro } from "../restful/bacsev";
-import {DTbl} from "../sqlite/tbl/d.tbl";
-import {FsData} from "../../data.mapping";
 import {ParTbl} from "../sqlite/tbl/par.tbl";
+import {JhaTbl} from "../sqlite/tbl/jha.tbl";
+import {DTbl} from "../sqlite/tbl/d.tbl";
+import {DataConfig} from "../config/data.config";
+import {FsData} from "../../data.mapping";
+import {BTbl} from "../sqlite/tbl/b.tbl";
 
 @Injectable()
 export class EventService extends BaseService {
   constructor(private sqlExce: SqliteExec, private util: UtilService,
-              private agdRest: AgdRestful,private emitService:EmitService,private bacRestful: BacRestful) {
+              private agdRest: AgdRestful,private emitService:EmitService,
+              private bacRestful: BacRestful,private userConfig: UserConfig) {
     super();
   }
 
@@ -79,9 +83,93 @@ export class EventService extends BaseService {
    */
   async getAgenda(evi : string):Promise<AgendaData>{
 
+    let agdata = {} as AgendaData;
+    //获取事件详情
+    let ev = new EvTbl();
+    ev.evi = evi;
+    ev = await this.sqlExce.getOneByParam<AgendaData>(ev);
+    Object.assign(agdata , ev);
 
-    return null;
+    //主evi设定
+    let masterEvi : string;
+    if (agdata.rtevi == ""){
+      masterEvi = agdata.evi;
+    }else {
+      masterEvi = agdata.rtevi;
+    }
 
+    //取得日程表详情
+    let ca = new CaTbl();
+    ca.evi = masterEvi;
+    ca = await  this.sqlExce.getOneByParam<CaTbl>(ca);
+    Object.assign(agdata , ca);
+
+    //取得计划详情
+    let jha = new JhaTbl();
+    jha.ji = agdata.ji;
+    jha = await this.sqlExce.getOneByParam<JhaTbl>(jha);
+    Object.assign(agdata.jha ,jha);
+
+    if(agdata.gs == '0'){
+      //共享人信息
+      agdata.parters = await this.getParterByEvi(masterEvi);
+    }
+    // 填充发起人信息
+    if(agdata.gs == '1'){
+      //发起人信息
+      agdata.originator = await this.getParterByUi(agdata.ui);
+    }
+    return agdata;
+
+  }
+
+  /**
+   * 根据日程Id获取联系人信息
+   * @returns {Promise<Array<Parter>>}
+   */
+  private async getParterByEvi(evi:string):Promise<Array<Parter>>{
+    let parters: Array<Parter> =new Array<Parter>();
+    //共享人信息
+    let pars: Array<ParTbl> = new Array<ParTbl>();
+    let par = new ParTbl();
+    par.obi = evi;
+    par.obt = anyenum.ObjectType.Event;
+    pars = await this.sqlExce.getLstByParam<ParTbl>(par);
+    for (let j = 0, len = pars.length; j < len; j++) {
+      let parter = {} as Parter;
+      //todo userConfig改造
+      //parter = this.userConfig.GetOneBTbl(pars[j].pwi);
+      if(parter && parter != null){
+        parters.push(parter);
+      }
+    }
+    return parters;
+  }
+
+  /**
+   * 根据用户Id获取联系人信息
+   * @returns {Promise<Parter>}
+   */
+  private async getParterByUi(ui:string):Promise<Parter>{
+    let parter = {} as Parter;
+    //发起人信息
+    let tmp = this.userConfig.GetOneBTbl(ui);
+    if (tmp) {
+      //todo userConfig改造
+      //parter = tmp;
+    }else{
+      //不存在查询数据库
+      let b = new BTbl();
+      b.ui = ui;
+      b = await this.sqlExce.getExtOne<BTbl>(b.slT());
+      if(b != null){
+        Object.assign(parter, b);
+        parter.bhiu = DataConfig.HUIBASE64;
+      }else{
+        console.error("=======PgbusiService 获取发起人失败 =======")
+      }
+    }
+    return parter;
   }
 
   /**
@@ -1078,7 +1166,26 @@ export interface AgendaData extends EventData, CaTbl {
   //提醒设定
   txjson :TxJson;
   //参与人
-  fss : Array<FsData>;
+  parters : Array<Parter>;
+  //计划
+  jha : JhaTbl;
+  //发起人
+  originator: Parter;
+
+}
+
+export interface  Parter extends ParTbl{
+
+  ran: string ; //联系人别称
+  ranpy: string; //联系人别称拼音
+  hiu: string ;  // 联系人头像
+  rn: string ;  // 联系人名称
+  rnpy: string ;  //联系人名称拼音
+  rc: string ;  //联系人联系方式
+  rel: string; //系类型 1是个人，2是群，0未注册用户
+  src : string;//联系人来源
+  bhi: string ; //头像表ID 用于判断是否有头像记录
+  bhiu:string ;//base64图片
 
 }
 
