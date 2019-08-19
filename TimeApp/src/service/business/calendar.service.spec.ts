@@ -162,6 +162,54 @@ describe('CalendarService test suite', () => {
 
   });
 
+  it(`Case 13 - 2 getPlan 取得日历数据 - 包含子项目(1个日程)`, async () => {
+    let plan: PlanData = {} as PlanData;
+
+    plan.jn = '冥王星服务类 自动测试';
+    plan.jc = '#f1f1f1';
+    plan.jt = PlanType.PrivatePlan;
+
+    plan = await calendarService.savePlan(plan);
+
+    let day: string = moment().format("YYYY/MM/DD");
+
+    // 日程
+    let agenda: AgendaData = {} as AgendaData;
+
+    agenda.ji = plan.ji;
+    agenda.sd = day;
+    agenda.evn = "结婚纪念日买礼物给太太";
+
+    await eventService.saveAgenda(agenda);
+
+    let fetchedPlan = await calendarService.getPlan(plan.ji);
+
+    expect(fetchedPlan).toBeDefined();
+    expect(fetchedPlan.jn).toBe("冥王星服务类 自动测试");
+    expect(fetchedPlan.items).toBeDefined();
+    expect(fetchedPlan.items.length).toBe(1);
+    expect(fetchedPlan.items[0].sd).toBe(day);
+    expect(fetchedPlan.items[0].evn).toBe("结婚纪念日买礼物给太太");
+
+  });
+
+  it(`Case 13 - 1 getPlan 取得日历数据 - 不含子项目`, async () => {
+    let plan: PlanData = {} as PlanData;
+
+    plan.jn = '冥王星服务类 自动测试';
+    plan.jc = '#f1f1f1';
+    plan.jt = PlanType.PrivatePlan;
+
+    plan = await calendarService.savePlan(plan);
+
+    let fetchedPlan = await calendarService.getPlan(plan.ji, false);
+
+    expect(fetchedPlan).toBeDefined();
+    expect(fetchedPlan.jn).toBe("冥王星服务类 自动测试");
+    expect(fetchedPlan.jc).toBe("#f1f1f1");
+    expect(fetchedPlan.jt).toBe(PlanType.PrivatePlan);
+  });
+
   it(`Case 11 - 1 updatePlanColor 更新日历颜色`, async () => {
     let plan: PlanData = {} as PlanData;
 
