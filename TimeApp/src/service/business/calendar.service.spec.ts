@@ -204,8 +204,12 @@ describe('CalendarService test suite', () => {
     expect(fetchedPlan.jn).toBe("冥王星服务类 自动测试");
     expect(fetchedPlan.items).toBeDefined();
     expect(fetchedPlan.items.length).toBe(1);
-    expect(fetchedPlan.items[0].sd).toBe(day);
-    expect(fetchedPlan.items[0].evn).toBe("结婚纪念日买礼物给太太");
+
+    let item: AgendaData = {} as AgendaData;
+    Object.assign(item, fetchedPlan.items[0]);
+
+    expect(item.sd).toBe(day);
+    expect(item.evn).toBe("结婚纪念日买礼物给太太");
 
   });
 
@@ -2413,7 +2417,7 @@ describe('CalendarService test suite', () => {
       expect(savedPlan).toBeDefined();
       expect(savedPlan.jc).toBe('#1a1a1a');
     } else {
-      expect(savedPlan).not.toBeDefined();
+      fail("保存失败, 无返回值.");
     }
   });
 
