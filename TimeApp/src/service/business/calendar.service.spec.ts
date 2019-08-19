@@ -204,7 +204,7 @@ describe('CalendarService test suite', () => {
     for (let daySummary of monthSummary.days) {
       if (day == daySummary.day) {
         expect(daySummary.day).toBeDefined();
-        expect(daySummary.calendaritemscount).toBe(1);
+        expect(daySummary.calendaritemscount).toBe(0);
         expect(daySummary.activityitemscount).toBe(1);
         expect(daySummary.eventscount).toBe(1);
         expect(daySummary.agendascount).toBe(0);
@@ -1038,7 +1038,7 @@ describe('CalendarService test suite', () => {
 
     memo = await memoService.saveMemo(memo);
 
-    let dayActivities: DayActivityData = await calendarService.mergeDayActivities(dayActivities, [planitem1, task, memo]);
+    dayActivities = await calendarService.mergeDayActivities(dayActivities, [planitem1, task, memo]);
 
     expect(dayActivities.day).toBe(day);
     expect(dayActivities.calendaritems).toBeDefined();
@@ -1062,7 +1062,7 @@ describe('CalendarService test suite', () => {
 
     task = await eventService.saveTask(task);
 
-    let dayActivities: DayActivityData = await calendarService.mergeDayActivities(dayActivities, [task]);
+    dayActivities = await calendarService.mergeDayActivities(dayActivities, [task]);
 
     expect(dayActivities.day).toBe(day);
     expect(dayActivities.calendaritems).toBeDefined();
@@ -1233,9 +1233,8 @@ describe('CalendarService test suite', () => {
 
     memo = await memoService.saveMemo(memo);
     let dayActivities: DayActivityData = await calendarService.fetchDayActivities(day);
-    console.log(dayActivities);
+
     let daySummary: DayActivitySummaryData = await calendarService.fetchDayActivitiesSummary(day);
-    console.log(daySummary);
 
     expect(daySummary).toBeDefined();
     expect(daySummary.day).toBe(day);
@@ -1684,7 +1683,7 @@ describe('CalendarService test suite', () => {
     let startday: string = moment(moment().format("YYYY/MM")).startOf('month').format("YYYY/MM/DD");
     let endday: string = moment(moment().format("YYYY/MM")).endOf('month').format("YYYY/MM/DD");
 
-    let betweenMonthEndDays: number = moment(moment().format("YYYY/MM")).endOf('month').diff(day, "days");
+    let betweenMonthEndDays: number = moment(moment().format("YYYY/MM")).endOf('month').diff(day, "days") + 1;
 
     expect(monthActivity.month).toBe(moment().format("YYYY/MM"));
     expect(monthActivity.calendaritems).toBeDefined();
