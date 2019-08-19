@@ -14,6 +14,8 @@ import {WaTbl} from "../sqlite/tbl/wa.tbl";
 import * as anyenum from "../../data.enum";
 import { BackupPro, BacRestful, OutRecoverPro, RecoverPro } from "../restful/bacsev";
 import {DTbl} from "../sqlite/tbl/d.tbl";
+import {FsData} from "../../data.mapping";
+import {ParTbl} from "../sqlite/tbl/par.tbl";
 
 @Injectable()
 export class EventService extends BaseService {
@@ -71,6 +73,18 @@ export class EventService extends BaseService {
   }
 
   /**
+   * 取得日程相关所有信息
+   * @param {string} evi
+   * @returns {Promise<Array<AgendaData>>}
+   */
+  async getAgenda(evi : string):Promise<AgendaData>{
+
+
+    return null;
+
+  }
+
+  /**
    * 删除日程
    * @param {AgendaData} agdata
    * @param {OperateType} delType
@@ -114,9 +128,10 @@ export class EventService extends BaseService {
         sqlparam.push(ca.dTParam());
 
         //本地删除日程参与人
-        let dtbl: DTbl = new DTbl();
-        dtbl.si = masterEvi;
-        sqlparam.push(dtbl.dT());
+        let par: ParTbl = new ParTbl();
+        par.obt = anyenum.ObjectType.Event;
+        par.obi = masterEvi;
+        sqlparam.push(par.dTParam());
       }
 
       //删除原事件中从当前日程开始所有提醒
@@ -152,9 +167,10 @@ export class EventService extends BaseService {
         sqlparam.push(ca.dTParam());
 
         //本地删除日程参与人
-        let dtbl: DTbl = new DTbl();
-        dtbl.si = masterEvi;
-        sqlparam.push(dtbl.dT());
+        let par: ParTbl = new ParTbl();
+        par.obt = anyenum.ObjectType.Event;
+        par.obi = masterEvi;
+        sqlparam.push(par.dTParam());
       }
 
       // 删除相关提醒
@@ -328,6 +344,7 @@ export class EventService extends BaseService {
     }else if(modiType == anyenum.OperateType.OnlySel) {
 
       //事件表更新
+      agdata.mi = UserConfig.account.id;
 
       let rtjon = new RtJson();
       rtjon.cycletype = anyenum.CycleType.close;
@@ -1073,8 +1090,13 @@ export interface EventData extends EvTbl {
 
 //画面传入事件service参数体
 export interface AgendaData extends EventData, CaTbl {
+
+  //重复设定
   rtjson :RtJson;
+  //提醒设定
   txjson :TxJson;
+  //参与人
+  fss : Array<FsData>;
 
 }
 
