@@ -88,7 +88,6 @@ script:
   - yarn install
   - npm run clean
   - npm run build
-  - npm run test-ci
   - npm run test-coverage
   - sh $TRAVIS_BUILD_DIR/travis/upload-coverage.sh
   - dos2unix -k $TRAVIS_BUILD_DIR/travis/build.sh
