@@ -9,6 +9,7 @@ export class RestfulClientMock {
   }
 
   async get(url: any): Promise<any> {
+    console.log(JSON.stringify(url));
     return {d: {}};
   }
 
