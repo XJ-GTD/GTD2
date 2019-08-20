@@ -175,13 +175,13 @@ describe('CalendarService test suite', () => {
 
     await eventService.saveTask(task);
 
-    setTimeout(function () {
+    setTimeout(function() {
       expect(calendaractivities[1].days[moment().days()].events.length).toBe(1);
     }, 100);
   });
 
   it(`Case 21 - 1 mergeCalendarActivity 合并日历显示列表活动数据 - 入参为空(报错)`, () => {
-    expect(function () {
+    expect(function() {
       calendarService.mergeCalendarActivity(null);
     }).toThrow();
   });
@@ -264,8 +264,8 @@ describe('CalendarService test suite', () => {
     expect(activities.memos.length).toBe(0);
   });
 
-  it(`Case 17 - 3 - 1 getCalendarActivities 取得日历画面显示活动一览 - 向下拉加载(未初始化报错)`, async () => {
-    expect(function () {
+  it(`Case 17 - 3 - 1 getCalendarActivities 取得日历画面显示活动一览 - 向下拉加载(未初始化报错)`, () => {
+    expect(function() {
       calendarService.getCalendarActivities(PageDirection.PageDown);
     }).toThrow();
   });
@@ -287,8 +287,8 @@ describe('CalendarService test suite', () => {
     expect(calendarholdings[4].month).toBe(moment(month).add(2, "months").format("YYYY/MM"));
   });
 
-  it(`Case 17 - 2 - 1 getCalendarActivities 取得日历画面显示活动一览 - 向上拉加载(未初始化报错)`, async () => {
-    expect(function () {
+  it(`Case 17 - 2 - 1 getCalendarActivities 取得日历画面显示活动一览 - 向上拉加载(未初始化报错)`, () => {
+    expect(function() {
       calendarService.getCalendarActivities(PageDirection.PageUp);
     }).toThrow();
   });
