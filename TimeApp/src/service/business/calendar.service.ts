@@ -54,7 +54,7 @@ export class CalendarService extends BaseService {
           }
 
           // 多条数据同时更新/单条数据更新
-          if (typeof data === 'array') {
+          if (data instanceof Array) {
             for (let single of data) {
               this.mergeCalendarActivity(single);
             }
@@ -76,7 +76,7 @@ export class CalendarService extends BaseService {
           this.assertFail("getCalendarActivities 调用PageDirection.PageDown, 请先调用PageDirection.PageInit。");
         }
         let firstmonth: string = this.calendaractivities[0].month;
-        this.calendaractivities.push(await this.fetchMonthActivities(moment(firstmonth).subtract(1, "months").format("YYYY/MM")));
+        this.calendaractivities.unshift(await this.fetchMonthActivities(moment(firstmonth).subtract(1, "months").format("YYYY/MM")));
         break;
       default:
         this.assertFail();    // 非法参数
