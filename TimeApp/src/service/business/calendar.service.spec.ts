@@ -164,6 +164,36 @@ describe('CalendarService test suite', () => {
 
   });
 
+  it(`Case 20 - 1 fetchPlanMemos 取得指定日历所有备忘 - 无备忘`, async () => {
+    let plan: PlanData = {} as PlanData;
+
+    plan.jn = '冥王星服务类 自动测试';
+    plan.jc = '#f1f1f1';
+    plan.jt = PlanType.PrivatePlan;
+
+    plan = await calendarService.savePlan(plan);
+
+    let memos = calendarService.fetchPlanMemos(plan.ji);
+
+    expect(memos).toBeDefined();
+    expect(memos.length).toBe(0);
+  });
+
+  it(`Case 19 - 1 fetchPlanEvents 取得指定日历所有事件 - 无事件`, async () => {
+    let plan: PlanData = {} as PlanData;
+
+    plan.jn = '冥王星服务类 自动测试';
+    plan.jc = '#f1f1f1';
+    plan.jt = PlanType.PrivatePlan;
+
+    plan = await calendarService.savePlan(plan);
+
+    let events = calendarService.fetchPlanEvents(plan.ji);
+
+    expect(events).toBeDefined();
+    expect(events.length).toBe(0);
+  });
+
   it(`Case 18 - 1 findActivities 活动查询 - 今天有什么安排?(没有活动)`, async () => {
     let condition: FindActivityCondition = new FindActivityCondition();
 
