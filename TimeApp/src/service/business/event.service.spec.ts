@@ -27,6 +27,7 @@ import {MyApp} from '../../app/app.component';
 import {SqliteConfig} from "../config/sqlite.config";
 import {SqliteInit} from "../sqlite/sqlite.init";
 import {RestFulConfig} from "../config/restful.config";
+import {UserConfig} from "../config/user.config";
 
 import {EmitService} from "../util-service/emit.service";
 import {UtilService} from "../util-service/util.service";
@@ -80,6 +81,7 @@ describe('EventService test suite', () => {
         SqliteConfig,
         SqliteInit,
         SqliteExec,
+        UserConfig,
         UtilService,
         EmitService,
         ShaeRestful,
@@ -205,7 +207,7 @@ describe('EventService test suite', () => {
     tx = await eventService.saveTask(tx);
     expect(tx).toBeDefined();
     expect(tx.evi).toBeDefined();
-    
+
     let isrt: string = await eventService.finishTask(tx.evi);
     expect(isrt).toBeDefined();
     expect(isrt).toEqual(IsCreate.isYes);
@@ -236,7 +238,7 @@ describe('EventService test suite', () => {
     tx = await eventService.saveTask(tx);
     expect(tx).toBeDefined();
     expect(tx.evi).toBeDefined();
-    
+
     let tx2: TaskData = {} as TaskData;
     tx2.evn ="shopping,今天穿的是花裤衩 2019-08-17";
     tx2 = await eventService.saveTask(tx2);
@@ -251,14 +253,14 @@ describe('EventService test suite', () => {
   })
 
 	it('Case 6 - 1 fetchPagedCompletedTasks 查询完成的任务 - 查询2019/08/14这一天完成的任务', async() => {
-		
+
 		let tx: TaskData = {} as TaskData;
     tx.evn ="shopping,今天穿的是花裤衩";
     tx.cs = IsSuccess.success;
     tx = await eventService.saveTask(tx);
     expect(tx).toBeDefined();
     expect(tx.evi).toBeDefined();
-    
+
     let tx2: TaskData = {} as TaskData;
     tx2.evn ="shopping,今天穿的是花裤衩 2019-08-17";
     tx2.cs = IsSuccess.success;
@@ -281,13 +283,13 @@ describe('EventService test suite', () => {
     tx = await eventService.saveTask(tx);
     expect(tx).toBeDefined();
     expect(tx.evi).toBeDefined();
-    
+
     let tx2: TaskData = {} as TaskData;
     tx2.evn ="shopping,今天穿的是花裤衩 2019-08-17";
     tx2 = await eventService.saveTask(tx2);
     expect(tx2).toBeDefined();
     expect(tx2.evi).toBeDefined();
-    
+
 		let day: string = "2019/08/17";
 		let data: Array<TaskData> = new Array<TaskData>();
 		data = await eventService.fetchPagedUncompletedTasks(day,"");
