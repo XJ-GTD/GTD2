@@ -970,7 +970,7 @@ export class EventService extends BaseService {
 	 * 完成任务
 	 * @author ying<343253410@qq.com>
 	 */
-  async finishTask(evi: string):  Promise <string> {
+  async finishTask(evi: string) {
   	this.assertEmpty(evi); // 事件ID不能为空
   	let tdb: TTbl = new TTbl();
 		tdb.evi = evi;
@@ -979,17 +979,18 @@ export class EventService extends BaseService {
 		await this.sqlExce.updateByParam(tdb);
 		//TODO 是否推送事件完成消息
 		//this.emitService.emit(`mwxing.event.task.finish`);
-		return tdb.isrt;
+		return ;
   }
 
   /**
    * 当是自动创建的任务的情况下,进行下一步操作
    * @author ying<343253410@qq.com>
    */
-  async finishTaskNext(evi: string) {
+  async finishTaskNext(evi: string) :Promise <TaskData> {
   	this.assertEmpty(evi);
   	let txx: TaskData = {} as TaskData;
   	txx = await this.getTask(evi);
+  	let txx2: TaskData = {} as TaskData;
 		if (txx.isrt == anyenum.IsCreate.isYes) {
 			//创建新的任务事件
 			let tx:TaskData = {} as TaskData;
@@ -1001,9 +1002,9 @@ export class EventService extends BaseService {
 			tx.evd = moment().format('YYYY/MM/DD');
 			tx.cs = anyenum.IsSuccess.wait;
 			tx.isrt = anyenum.IsCreate.isYes;
-			await this.saveTask(tx);
+			txx2 = await this.saveTask(tx);
 		}
-		return ;
+		return txx2;
   }
 	 /**
    * 根据evi获取复制的任务
