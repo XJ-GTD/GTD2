@@ -283,7 +283,7 @@ export class CalendarService extends BaseService {
                               ea.ct ct
                        from gtd_ev ev
                           left join gtd_ca ea on ea.evi = ev.evi
-                       where jt = '${EventType.Agenda}' and ji = ?`;
+                       where ev.type = '${EventType.Agenda}' and ev.ji = ?`;
 
       let agendas: Array<AgendaData> = await this.sqlExce.getExtLstByParam<AgendaData>(agendasql, params);
 
@@ -294,13 +294,13 @@ export class CalendarService extends BaseService {
                             et.fd fd
                      from gtd_ev ev
                         left join gtd_t et on et.evi = ev.evi
-                     where jt = '${EventType.Task}' and ji = ?`;
+                     where ev.type = '${EventType.Task}' and ev.ji = ?`;
 
       let tasks: Array<TaskData> = await this.sqlExce.getExtLstByParam<TaskData>(tasksql, params);
 
       let minitasksql = `select *
                          from gtd_ev
-                         where jt = '${EventType.MiniTask}' and ji = ?`;
+                         where ev.type = '${EventType.MiniTask}' and ev.ji = ?`;
 
       let minitasks: Array<MiniTaskData> = await this.sqlExce.getExtLstByParam<MiniTaskData>(minitasksql, params);
 
