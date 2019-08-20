@@ -27,6 +27,7 @@ import {
 import {MyApp} from '../../app/app.component';
 import {SqliteConfig} from "../config/sqlite.config";
 import {RestFulConfig} from "../config/restful.config";
+import {UserConfig} from "../config/user.config";
 
 import {EmitService} from "../util-service/emit.service";
 import {UtilService} from "../util-service/util.service";
@@ -89,6 +90,7 @@ describe('CalendarService test suite', () => {
         SqliteConfig,
         SqliteExec,
         SqliteInit,
+        UserConfig,
         UtilService,
         EmitService,
         ShaeRestful,
