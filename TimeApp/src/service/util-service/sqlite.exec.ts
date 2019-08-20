@@ -68,7 +68,7 @@ export class SqliteExec {
    * 执行语句
    */
   execSql(sql: string, params: Array<any> = []): Promise<any> {
-    return this.execSqllog(sql,false,params);
+    return this.execSqllog(sql,true,params);
   }
 
   /**
