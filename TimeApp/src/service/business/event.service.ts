@@ -961,6 +961,9 @@ export class EventService extends BaseService {
 			Object.assign(ttdb, tx);
 			await this.sqlExce.saveByParam(ttdb);
 		}
+
+    this.emitService.emit("mwxing.calendar.activities.changed", tx);
+
 		return tx;
   }
 

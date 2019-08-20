@@ -164,6 +164,23 @@ describe('CalendarService test suite', () => {
 
   });
 
+  it(`Case 21 - 1 mergeCalendarActivity 合并日历显示列表活动数据 - 合并1个任务`, async () => {
+    // 初始化
+    let calendaractivities = await calendarService.getCalendarActivities();
+
+    // 任务
+    let task: TaskData = {} as TaskData;
+
+    task.evd = day;
+    task.evn = "结婚纪念日前给太太买礼物";
+
+    await eventService.saveTask(task);
+
+    setTimeout(function () {
+      expect(calendaractivities[1].days[moment().days()].events.length).toBe(1);
+    }, 100);
+  });
+
   it(`Case 21 - 1 mergeCalendarActivity 合并日历显示列表活动数据 - 入参为空(报错)`, () => {
     expect(function () {
       calendarService.mergeCalendarActivity(null);
