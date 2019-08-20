@@ -291,6 +291,29 @@ export class HPage {
       this.evtserv.saveAgenda(agdata).then(data=>{
         console.log(JSON.stringify(data));
       });*/
+/*      let oriagdata = {} as AgendaData;
+      let newagdata = {} as AgendaData;
+      this.evtserv.getAgenda('c2363821ed4a81d1032f0224a0716517').then(data => {
+        oriagdata = data;
+        Object.assign(newagdata, oriagdata);
+        newagdata.evn = '测试重复日程修改0819 onlysel第三条'
+        let txjson = new TxJson();
+        txjson.type = anyenum.TxType.m10;
+        newagdata.txjson = txjson;
+        this.evtserv.saveAgenda(newagdata, oriagdata, anyenum.OperateType.OnlySel);
+      })*/
+      let oriagdata = {} as AgendaData;
+      let newagdata = {} as AgendaData;
+      this.evtserv.getAgenda('bef2380aa1d8055eda67fe8be338f492').then(data =>{
+        oriagdata = data;
+        Object.assign(newagdata,oriagdata);
+        newagdata.evn = '测试重复日程修改0819 onlysel第一条'
+        let txjson = new TxJson();
+        txjson.type = anyenum.TxType.h1;
+        newagdata.txjson = txjson;
+        this.evtserv.saveAgenda(newagdata,oriagdata,anyenum.OperateType.OnlySel);
+        //修改
+      });
 
       return ;
     }

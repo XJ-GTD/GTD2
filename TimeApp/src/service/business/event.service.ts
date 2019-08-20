@@ -85,7 +85,7 @@ export class EventService extends BaseService {
     //获取事件详情
     let ev = new EvTbl();
     ev.evi = evi;
-    ev = await this.sqlExce.getOneByParam<AgendaData>(ev);
+    ev = await this.sqlExce.getOneByParam<EvTbl>(ev);
     Object.assign(agdata , ev);
     agdata.rtjson = JSON.parse(agdata.rt);
     agdata.txjson = JSON.parse(agdata.tx);
@@ -102,7 +102,12 @@ export class EventService extends BaseService {
     let ca = new CaTbl();
     ca.evi = masterEvi;
     ca = await  this.sqlExce.getOneByParam<CaTbl>(ca);
-    Object.assign(agdata , ca);
+    agdata.sd = ca.sd ;
+    agdata.st = ca.st ;
+    agdata.ed = ca.ed ;
+    agdata.et = ca.et ;
+    agdata.al = ca.al ;
+    agdata.ct = ca.ct ;
 
     //取得计划详情
     let jha = new JhaTbl();
@@ -225,7 +230,7 @@ export class EventService extends BaseService {
       //删除原事件中从当前日程开始所有提醒
       sq = `delete from gtd_wa where wai in (select evi from gtd_ev
           where evd >= '${oriAgdata.evd}' and (evi = '${masterEvi}' or rtevi =  '${masterEvi}')
-          and obt = '${anyenum.ObjectType.Event}'; `;
+          and obt = '${anyenum.ObjectType.Event}'and  del ='${anyenum.DelType.del}' ; `;
       sqlparam.push(sq);
     }else{
 
@@ -308,7 +313,7 @@ export class EventService extends BaseService {
 
     if (newAgdata.evi != null && newAgdata.evi != "") {
       /*修改*/
-      this.assertNotNull(oriAgdata);   // 原始日程详情不能为空
+      this.assertNull(oriAgdata);   // 原始日程详情不能为空
 
       let outAgdatas = await this.updateAgenda(newAgdata,oriAgdata,modiType);
 
@@ -421,7 +426,7 @@ export class EventService extends BaseService {
       //删除原事件中从当前日程开始所有提醒 evd使用原日程evd
       sq = `delete from gtd_wa where wai in (select evi from gtd_ev
           where evd >= '${oriAgdata.evd}' and (evi = '${masterEvi}' or rtevi =  '${masterEvi}')
-           and obt = '${anyenum.ObjectType.Event}' ; `;
+           and obt = '${anyenum.ObjectType.Event}' and  del ='${anyenum.DelType.del}' ; `;
       sqlparam.push(sq);
 
 
@@ -450,7 +455,7 @@ export class EventService extends BaseService {
       newAgdata.rt = JSON.stringify(rtjon);
       newAgdata.rts = !newAgdata.rts ? "" : newAgdata.rts ;
 
-      if (newAgdata.rfg == anyenum.RepeatFlag.Repeat){
+      if (oriAgdata.rfg == anyenum.RepeatFlag.Repeat){
         newAgdata.rfg = anyenum.RepeatFlag.RepeatToNon;
       }
 
@@ -468,7 +473,7 @@ export class EventService extends BaseService {
       ev.rts = newAgdata.rts;
       ev.rfg = newAgdata.rfg;
 
-      sqlparam.push(ev.upTParam());
+      await this.sqlExce.updateByParam(ev);
 
       let outAgd  = {} as AgendaData;
       Object.assign(outAgd,ev);
@@ -484,6 +489,33 @@ export class EventService extends BaseService {
       if (newAgdata.txjson.type != anyenum.TxType.close) {
         sqlparam.push(this.sqlparamAddTxWa(ev, newAgdata.st, newAgdata.al, newAgdata.txjson).rpTParam());
       }
+
+      let nwEvs = Array<EvTbl>();
+      let nwEv = new EvTbl();
+      let sq : string ;
+      //如果当前更新对象是父节点，需要重建父记录，值为ev表里的第一条做为父记录
+      if (!oriAgdata.rtevi && oriAgdata.rtevi =="" && oriAgdata.rfg == anyenum.RepeatFlag.Repeat){
+        sq = `select * from gtd_ev where rtevi = '${oriAgdata.evi}' and  rfg = '${anyenum.RepeatFlag.Repeat}'
+         and del <>  '${anyenum.DelType.del}' order by evd ;`;
+
+        nwEvs = await this.sqlExce.getExtList<EvTbl>(sq);
+        if (nwEvs != null && nwEvs.length >0){
+          //更新首条为父记录
+          Object.assign(nwEv, nwEvs[0]);
+          nwEv.rtevi = "";
+          sqlparam.push(nwEv.upTParam());
+
+          //原子记录的父字段改为新的父记录
+          sq = `update gtd_ev set rtevi = '${nwEv.evi}' where rtevi = '${oriAgdata.evi}'; `;
+          sqlparam.push(sq);
+
+          //为新的父记录建立新的对应日程
+          let nwca = new Array<any>();
+          nwca = this.sqlparamAddCa(nwEv.evi ,nwEv.evd,oriAgdata.ed,oriAgdata);
+          sqlparam = [...sqlparam, ...nwca];
+        }
+      }
+
       //日程表新建或更新
       let caparam = new Array<any>();
       caparam = this.sqlparamAddCa(oriAgdata.evi ,newAgdata.evd,newAgdata.evd,newAgdata);//evi使用原evi
