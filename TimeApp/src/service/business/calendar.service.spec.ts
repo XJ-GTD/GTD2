@@ -177,7 +177,7 @@ describe('CalendarService test suite', () => {
 
     let fetchedPlan = await calendarService.getPlan(plan.ji);
 
-    expect(fetchedPlan).not.toBeDefined();
+    expect(fetchedPlan).toBeNull();
   });
 
   it(`Case 13 - 2 getPlan 取得日历数据 - 包含子项目(1个日程)`, async () => {
