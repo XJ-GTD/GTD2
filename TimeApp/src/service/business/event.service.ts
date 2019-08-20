@@ -204,7 +204,7 @@ export class EventService extends BaseService {
       }
 
       sq = `update gtd_ev set del ='${anyenum.DelType.del}'  where evd >= '${oriAgdata.evd}' and (evi = '${masterEvi}' or rtevi =  '${masterEvi}') ;`;
-      this.sqlExce.execSql(sq);
+      await this.sqlExce.execSql(sq);
 
       //更新原事件日程结束日或事件表无记录了则删除
       sq = `select * from gtd_ev where (evi = '${masterEvi}' or rtevi =  '${masterEvi}') and del <>'${anyenum.DelType.del}' ;`;
@@ -240,7 +240,7 @@ export class EventService extends BaseService {
       let ev = new EvTbl();
       ev.evi = oriAgdata.evi;
       ev.del = anyenum.DelType.del;
-      this.sqlExce.updateByParam(ev);
+      await this.sqlExce.updateByParam(ev);
 
       //主evi设定
       let masterEvi : string;
@@ -255,9 +255,14 @@ export class EventService extends BaseService {
       let evtbls = new Array<EvTbl>();
       evtbls = await this.sqlExce.getExtList<EvTbl>(sq);
 
+      let nwEvs = Array<EvTbl>();
+      let nwEv = new EvTbl();
+
       let caevi : string = masterEvi;
       let ca = new CaTbl();
       ca.evi = caevi;
+
+
       if (evtbls.length == 0){
         sqlparam.push(ca.dTParam());
 
@@ -266,6 +271,29 @@ export class EventService extends BaseService {
         par.obt = anyenum.ObjectType.Event;
         par.obi = masterEvi;
         sqlparam.push(par.dTParam());
+      }else{
+        //如果当前删除对象是父节点，则为当前重复日程重建新的父记录，值为ev表里的第一条做为父记录
+        if (!oriAgdata.rtevi && oriAgdata.rtevi =="" && oriAgdata.rfg == anyenum.RepeatFlag.Repeat){
+          sq = `select * from gtd_ev where rtevi = '${oriAgdata.evi}' and  rfg = '${anyenum.RepeatFlag.Repeat}'
+         and del <>  '${anyenum.DelType.del}' order by evd ;`;
+
+          nwEvs = await this.sqlExce.getExtList<EvTbl>(sq);
+          if (nwEvs != null && nwEvs.length >0){
+            //更新首条为父记录
+            Object.assign(nwEv, nwEvs[0]);
+            nwEv.rtevi = "";
+            sqlparam.push(nwEv.upTParam());
+
+            //原子记录的父字段改为新的父记录
+            sq = `update gtd_ev set rtevi = '${nwEv.evi}' where rtevi = '${oriAgdata.evi}'; `;
+            sqlparam.push(sq);
+
+            //为新的父记录建立新的对应日程
+            let nwca = new Array<any>();
+            nwca = this.sqlparamAddCa(nwEv.evi ,nwEv.evd,oriAgdata.ed,oriAgdata);
+            sqlparam = [...sqlparam, ...nwca];
+          }
+        }
       }
 
       // 删除相关提醒
@@ -406,7 +434,7 @@ export class EventService extends BaseService {
       }
       //evd使用原日程evd
       sq = `update  gtd_ev set del ='${anyenum.DelType.del}' where evd >= '${oriAgdata.evd}' and (evi = '${masterEvi}' or rtevi =  '${masterEvi}') ;`;
-      this.sqlExce.execSql(sq);
+      await this.sqlExce.execSql(sq);
 
       //更新原事件日程结束日或事件表无记录了则删除
       sq = `select * from gtd_ev where (evi = '${masterEvi}' or rtevi =  '${masterEvi}') and del <> '${anyenum.DelType.del}' ;`;
@@ -493,7 +521,7 @@ export class EventService extends BaseService {
       let nwEvs = Array<EvTbl>();
       let nwEv = new EvTbl();
       let sq : string ;
-      //如果当前更新对象是父节点，需要重建父记录，值为ev表里的第一条做为父记录
+      //如果当前更新对象是父节点，则为当前重复日程重建新的父记录，值为ev表里的第一条做为父记录
       if (!oriAgdata.rtevi && oriAgdata.rtevi =="" && oriAgdata.rfg == anyenum.RepeatFlag.Repeat){
         sq = `select * from gtd_ev where rtevi = '${oriAgdata.evi}' and  rfg = '${anyenum.RepeatFlag.Repeat}'
          and del <>  '${anyenum.DelType.del}' order by evd ;`;
@@ -929,10 +957,7 @@ export class EventService extends BaseService {
 			//创建任务
 			let ttdb: TTbl = new TTbl();
 			tx.cs = anyenum.IsSuccess.wait;
-			if(tx.isrt)
-			{
-				tx.isrt = anyenum.IsCreate.isNo;
-			}
+			tx.isrt = tx.isrt || anyenum.IsCreate.isNo;
 			Object.assign(ttdb, tx);
 			await this.sqlExce.saveByParam(ttdb);
 		}

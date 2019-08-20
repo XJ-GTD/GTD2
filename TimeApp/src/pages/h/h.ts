@@ -302,7 +302,7 @@ export class HPage {
         newagdata.txjson = txjson;
         this.evtserv.saveAgenda(newagdata, oriagdata, anyenum.OperateType.OnlySel);
       })*/
-      let oriagdata = {} as AgendaData;
+/*      let oriagdata = {} as AgendaData;
       let newagdata = {} as AgendaData;
       this.evtserv.getAgenda('bef2380aa1d8055eda67fe8be338f492').then(data =>{
         oriagdata = data;
@@ -313,8 +313,14 @@ export class HPage {
         newagdata.txjson = txjson;
         this.evtserv.saveAgenda(newagdata,oriagdata,anyenum.OperateType.OnlySel);
         //修改
-      });
+      });*/
+      let oriagdata = {} as AgendaData;
+      this.evtserv.getAgenda('4c63f60065fa4a58a3815e4570e528e7').then(data =>{
+        oriagdata = data;
 
+        this.evtserv.delAgenda(oriagdata,anyenum.OperateType.OnlySel);
+        //修改
+      });
       return ;
     }
     let p: ScdPageParamter = new ScdPageParamter();
