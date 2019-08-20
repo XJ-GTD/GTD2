@@ -168,6 +168,8 @@ describe('CalendarService test suite', () => {
     // 初始化
     let calendaractivities = await calendarService.getCalendarActivities();
 
+    spyOn(calendarService, 'mergeCalendarActivity');
+
     // 任务
     let task: TaskData = {} as TaskData;
 
@@ -175,9 +177,7 @@ describe('CalendarService test suite', () => {
 
     await eventService.saveTask(task);
 
-    setTimeout(function() {
-      expect(calendaractivities[1].days[moment().days()].events.length).toBe(1);
-    }, 100);
+    expect(calendarService.mergeCalendarActivity).toHaveBeenCalled();
   });
 
   it(`Case 21 - 1 mergeCalendarActivity 合并日历显示列表活动数据 - 入参为空(报错)`, () => {
@@ -266,7 +266,6 @@ describe('CalendarService test suite', () => {
 
   it(`Case 17 - 3 - 1 getCalendarActivities 取得日历画面显示活动一览 - 向下拉加载(未初始化报错)`, async () => {
     await expectAsync(calendarService.getCalendarActivities(PageDirection.PageDown)).toBeRejected();
-
   });
 
   it(`Case 17 - 3 getCalendarActivities 取得日历画面显示活动一览 - 向下拉加载`, async () => {
