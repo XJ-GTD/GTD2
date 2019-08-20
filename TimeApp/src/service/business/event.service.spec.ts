@@ -208,10 +208,12 @@ describe('EventService test suite', () => {
     tx = await eventService.saveTask(tx);
     expect(tx).toBeDefined();
     expect(tx.evi).toBeDefined();
-
-    let isrt: string = await eventService.finishTask(tx.evi);
-    expect(isrt).toBeDefined();
-    expect(isrt).toEqual(IsCreate.isYes);
+		await eventService.finishTask(tx.evi);
+		
+		let txx: TaskData = {} as TaskData;
+    txx = await eventService.getTask(tx.evi);
+    expect(txx).toBeDefined();
+    expect(txx.cs).toBe(IsSuccess.success);
   })
 
   it('Case 4 - 1 finishTaskNext 自动创建任务 - 创建任务，自动复制这个任务', async() => {
@@ -222,11 +224,9 @@ describe('EventService test suite', () => {
     tx = await eventService.saveTask(tx);
     expect(tx).toBeDefined();
     expect(tx.evi).toBeDefined();
-    await eventService.finishTaskNext(tx.evi);
-
-    //验证是否已获取数据
+    //进行复制
     let txx: TaskData = {} as TaskData;
-    txx = await eventService.getTaskNext(tx.evi);
+    txx = await eventService.finishTaskNext(tx.evi);
     expect(txx).toBeDefined();
     expect(txx.evn).toBe(tx.evn);
   })
