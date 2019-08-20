@@ -1287,6 +1287,74 @@ describe('CalendarService test suite', () => {
 
   });
 
+  it(`Case 7 - 2 mergeDayActivities 合并指定日期的活动 - 存在活动(增加1个日历项、1个任务、1个备忘)`, async () => {
+    let day: string = moment().format("YYYY/MM/DD");
+
+    // 日历项
+    let planitem1: PlanItemData = {} as PlanItemData;
+
+    planitem1.sd = day;
+    planitem1.jtn = "结婚纪念日";
+    planitem1.jtt = PlanItemType.Activity;
+
+    await calendarService.savePlanItem(planitem1);
+
+    // 任务
+    let task: TaskData = {} as TaskData;
+
+    task.evd = day;
+    task.evn = "结婚纪念日前给太太买礼物";
+
+    await eventService.saveTask(task);
+
+    // 备忘
+    let memo: MemoData = {} as MemoData;
+
+    memo.sd = day;
+    memo.mon = "结婚纪念日买了一块定制巧克力给太太, 太太很高兴";
+
+    await memoService.saveMemo(memo);
+
+    let dayActivities: DayActivityData = await calendarService.fetchDayActivities();
+
+    // 增加新的日历项、任务和备忘
+    // 日历项
+    let newplanitem: PlanItemData = {} as PlanItemData;
+
+    newplanitem.sd = day;
+    newplanitem.jtn = "结婚纪念日2";
+    newplanitem.jtt = PlanItemType.Activity;
+
+    newplanitem = await calendarService.savePlanItem(newplanitem);
+
+    // 任务
+    let newtask: TaskData = {} as TaskData;
+
+    newtask.evd = day;
+    newtask.evn = "结婚纪念日前给太太买礼物2";
+
+    newtask = await eventService.saveTask(newtask);
+
+    // 备忘
+    let newmemo: MemoData = {} as MemoData;
+
+    newmemo.sd = day;
+    newmemo.mon = "结婚纪念日买了一块定制巧克力给太太, 太太很高兴2";
+
+    newmemo = await memoService.saveMemo(newmemo);
+
+    dayActivities = await calendarService.mergeDayActivities(dayActivities, [newplanitem, newtask, newmemo]);
+
+    expect(dayActivities.day).toBe(day);
+    expect(dayActivities.calendaritems).toBeDefined();
+    expect(dayActivities.calendaritems.length).toBe(2);
+    expect(dayActivities.events).toBeDefined();
+    expect(dayActivities.events.length).toBe(2);
+    expect(dayActivities.memos).toBeDefined();
+    expect(dayActivities.memos.length).toBe(2);
+
+  });
+
   it(`Case 7 - 1 - 1 mergeDayActivities 合并指定日期的活动 - 没有活动(增加1个日历项、1个任务、1个备忘)`, async () => {
     let day: string = moment().format("YYYY/MM/DD");
 
