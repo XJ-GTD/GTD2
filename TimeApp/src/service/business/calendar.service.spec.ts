@@ -27,6 +27,7 @@ import {
 import {MyApp} from '../../app/app.component';
 import {SqliteConfig} from "../config/sqlite.config";
 import {RestFulConfig} from "../config/restful.config";
+import {UserConfig} from "../config/user.config";
 
 import {EmitService} from "../util-service/emit.service";
 import {UtilService} from "../util-service/util.service";
@@ -47,7 +48,7 @@ import {TTbl} from "../sqlite/tbl/t.tbl";
 import {WaTbl} from "../sqlite/tbl/wa.tbl";
 import {FjTbl} from "../sqlite/tbl/fj.tbl";
 
-import { CalendarService, PlanData, PlanItemData, MonthActivityData, MonthActivitySummaryData, DayActivityData, DayActivitySummaryData, PagedActivityData } from "./calendar.service";
+import { CalendarService, PlanData, PlanItemData, MonthActivityData, MonthActivitySummaryData, DayActivityData, DayActivitySummaryData, PagedActivityData, FindActivityCondition } from "./calendar.service";
 import { EventService, AgendaData, TaskData, RtJson } from "./event.service";
 import { MemoService, MemoData } from "./memo.service";
 import { PlanType, PlanItemType, CycleType, OverType, PageDirection } from "../../data.enum";
@@ -89,6 +90,7 @@ describe('CalendarService test suite', () => {
         SqliteConfig,
         SqliteExec,
         SqliteInit,
+        UserConfig,
         UtilService,
         EmitService,
         ShaeRestful,
@@ -162,6 +164,130 @@ describe('CalendarService test suite', () => {
 
   });
 
+  it(`Case 18 - 1 findActivities 活动查询 - 今天有什么安排?(没有活动)`, async () => {
+    let condition: FindActivityCondition = new FindActivityCondition();
+
+    condition.sd = moment().format("YYYY/MM/DD");
+    condition.ed = moment().format("YYYY/MM/DD");
+
+    let activities = await calendarService.findActivities(condition);
+
+    expect(activities).toBeDefined();
+    expect(activities.calendaritems.length).toBe(0);
+    expect(activities.events.length).toBe(0);
+    expect(activities.memos.length).toBe(0);
+  });
+
+  it(`Case 17 - 3 getCalendarActivities 取得日历画面显示活动一览 - 向下拉加载`, async () => {
+    let month: string = moment().format("YYYY/MM");
+
+    let calendarholdings = await calendarService.getCalendarActivities(PageDirection.PageDown);
+
+    expect(calendarholdings).toBeDefined();
+    expect(calendarholdings.length).toBe(5);
+    expect(calendarholdings[0].month).toBe(moment(month).subtract(2, "months").format("YYYY/MM"));
+    expect(calendarholdings[1].month).toBe(moment(month).subtract(1, "months").format("YYYY/MM"));
+    expect(calendarholdings[2].month).toBe(month);
+    expect(calendarholdings[3].month).toBe(moment(month).add(1, "months").format("YYYY/MM"));
+    expect(calendarholdings[4].month).toBe(moment(month).add(2, "months").format("YYYY/MM"));
+  });
+
+  it(`Case 17 - 2 getCalendarActivities 取得日历画面显示活动一览 - 向上拉加载`, async () => {
+    let month: string = moment().format("YYYY/MM");
+
+    let calendarholdings = await calendarService.getCalendarActivities(PageDirection.PageUp);
+
+    expect(calendarholdings).toBeDefined();
+    expect(calendarholdings.length).toBe(4);
+    expect(calendarholdings[0].month).toBe(moment(month).subtract(1, "months").format("YYYY/MM"));
+    expect(calendarholdings[1].month).toBe(month);
+    expect(calendarholdings[2].month).toBe(moment(month).add(1, "months").format("YYYY/MM"));
+    expect(calendarholdings[3].month).toBe(moment(month).add(2, "months").format("YYYY/MM"));
+  });
+
+  it(`Case 17 - 1 getCalendarActivities 取得日历画面显示活动一览 - 默认当前月份以及前后各一个月`, async () => {
+    let month: string = moment().format("YYYY/MM");
+
+    let calendarholdings = await calendarService.getCalendarActivities();
+
+    expect(calendarholdings).toBeDefined();
+    expect(calendarholdings.length).toBe(3);
+    expect(calendarholdings[0].month).toBe(moment(month).subtract(1, "months").format("YYYY/MM"));
+    expect(calendarholdings[1].month).toBe(month);
+    expect(calendarholdings[2].month).toBe(moment(month).add(1, "months").format("YYYY/MM"));
+  });
+
+  it(`Case 16 - 1 - 1 sharePlan 分享日历/计划 - 公共日历(没有日历项)`, async () => {
+    await calendarService.downloadPublicPlan("shanghai_animation_exhibition_2019", PlanType.ActivityPlan);
+
+    let plan = await calendarService.getPlan("shanghai_animation_exhibition_2019");
+
+    let shareurl = await calendarService.sharePlan(plan, false);
+
+    expect(shareurl).toBeDefined();
+  });
+
+  it(`Case 16 - 1 sharePlan 分享日历/计划 - 公共日历`, async () => {
+    await calendarService.downloadPublicPlan("shanghai_animation_exhibition_2019", PlanType.ActivityPlan);
+
+    let plan = await calendarService.getPlan("shanghai_animation_exhibition_2019");
+
+    let shareurl = await calendarService.sharePlan(plan, true);
+
+    expect(shareurl).toBeDefined();
+  });
+
+  it(`Case 15 - 2 - 1 downloadPublicPlan 下载日历 - 存在日历项(活动日历项)`, async () => {
+    await calendarService.downloadPublicPlan("shanghai_animation_exhibition_2019", PlanType.ActivityPlan);
+
+    let plan = await calendarService.getPlan("shanghai_animation_exhibition_2019");
+
+    expect(plan).toBeDefined();
+    expect(plan.ji).toBe("shanghai_animation_exhibition_2019");
+    expect(plan.items).toBeDefined();
+    expect(plan.items.length).toBe(28);
+
+    let monthSummary = await calendarService.fetchMonthActivitiesSummary("2019/08");
+
+    expect(monthSummary).toBeDefined();
+    // 08/03 ~ 08/06 ActivityPlan
+    expect(monthSummary.days[1].activityitemscount).toBe(0);
+    expect(monthSummary.days[2].activityitemscount).toBe(1);
+    expect(monthSummary.days[3].activityitemscount).toBe(1);
+    expect(monthSummary.days[4].activityitemscount).toBe(1);
+    expect(monthSummary.days[5].activityitemscount).toBe(1);
+    expect(monthSummary.days[6].activityitemscount).toBe(0);
+  });
+
+  it(`Case 15 - 2 downloadPublicPlan 下载日历 - 存在日历项(普通日历项)`, async () => {
+    await calendarService.downloadPublicPlan("chinese_famous_2019", PlanType.CalendarPlan);
+
+    let plan = await calendarService.getPlan("chinese_famous_2019");
+
+    expect(plan).toBeDefined();
+    expect(plan.ji).toBe("chinese_famous_2019");
+    expect(plan.items).toBeDefined();
+    expect(plan.items.length).toBe(24);
+
+    let monthSummary = await calendarService.fetchMonthActivitiesSummary("2019/08");
+
+    expect(monthSummary).toBeDefined();
+    // 08/08 08/23 CalendarPlan
+    expect(monthSummary.days[6].calendaritemscount).toBe(0);
+    expect(monthSummary.days[7].calendaritemscount).toBe(1);
+    expect(monthSummary.days[8].calendaritemscount).toBe(0);
+    expect(monthSummary.days[21].calendaritemscount).toBe(0);
+    expect(monthSummary.days[22].calendaritemscount).toBe(1);
+    expect(monthSummary.days[23].calendaritemscount).toBe(0);
+
+  });
+
+  it(`Case 15 - 1 downloadPublicPlan 下载日历 - 无报错`, () => {
+    expect(function() {
+      calendarService.downloadPublicPlan("chinese_famous_2019", PlanType.CalendarPlan);
+    }).not.toThrow();
+  });
+
   it(`Case 14 - 1 removePlan 删除日历 - 不包含子项目(没有子项目)`, async () => {
     let plan: PlanData = {} as PlanData;
 
@@ -175,7 +301,7 @@ describe('CalendarService test suite', () => {
 
     let fetchedPlan = await calendarService.getPlan(plan.ji);
 
-    expect(fetchedPlan).not.toBeDefined();
+    expect(fetchedPlan).toBeNull();
   });
 
   it(`Case 13 - 2 getPlan 取得日历数据 - 包含子项目(1个日程)`, async () => {

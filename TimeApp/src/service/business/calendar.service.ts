@@ -5,7 +5,7 @@ import { UtilService } from "../util-service/util.service";
 import { EmitService } from "../util-service/emit.service";
 import { BipdshaeData, Plan, PlanPa, ShareData, ShaeRestful } from "../restful/shaesev";
 import { EventData, TaskData, AgendaData, MiniTaskData } from "./event.service";
-import { EventType, PlanType, PlanItemType, PlanDownloadType, ObjectType, PageDirection, DelType } from "../../data.enum";
+import { EventType, PlanType, PlanItemType, PlanDownloadType, ObjectType, PageDirection, SyncType, DelType } from "../../data.enum";
 import { MemoData } from "./memo.service";
 import * as moment from "moment";
 import { JhaTbl } from "../sqlite/tbl/jha.tbl";
@@ -258,6 +258,11 @@ export class CalendarService extends BaseService {
 
     plandb = await this.sqlExce.getOneByParam<JhaTbl>(plandb);
 
+    // 计划不存在直接返回
+    if (!plandb) {
+      return null;
+    }
+
     Object.assign(plan, plandb);
 
     if (!withchildren) {
@@ -283,7 +288,7 @@ export class CalendarService extends BaseService {
                               ea.ct ct
                        from gtd_ev ev
                           left join gtd_ca ea on ea.evi = ev.evi
-                       where jt = '${EventType.Agenda}' and ji = ?`;
+                       where ev.type = '${EventType.Agenda}' and ev.ji = ?`;
 
       let agendas: Array<AgendaData> = await this.sqlExce.getExtLstByParam<AgendaData>(agendasql, params);
 
@@ -294,13 +299,13 @@ export class CalendarService extends BaseService {
                             et.fd fd
                      from gtd_ev ev
                         left join gtd_t et on et.evi = ev.evi
-                     where jt = '${EventType.Task}' and ji = ?`;
+                     where ev.type = '${EventType.Task}' and ev.ji = ?`;
 
       let tasks: Array<TaskData> = await this.sqlExce.getExtLstByParam<TaskData>(tasksql, params);
 
       let minitasksql = `select *
                          from gtd_ev
-                         where jt = '${EventType.MiniTask}' and ji = ?`;
+                         where ev.type = '${EventType.MiniTask}' and ev.ji = ?`;
 
       let minitasks: Array<MiniTaskData> = await this.sqlExce.getExtLstByParam<MiniTaskData>(minitasksql, params);
 
@@ -467,7 +472,8 @@ export class CalendarService extends BaseService {
       let planitemdb: JtaTbl = new JtaTbl();
       Object.assign(planitemdb, item);
 
-      console.log(JSON.stringify(planitemdb));
+      planitemdb.tb = SyncType.synch;
+      planitemdb.del = DelType.undel;
 
       await this.sqlExce.saveByParam(planitemdb);
 
@@ -609,18 +615,27 @@ export class CalendarService extends BaseService {
       plandb.jg = plan.pn.pd;
       plandb.jc = plan.pn.pm;
       plandb.jtd = PlanDownloadType.YES;
+      plandb.tb = SyncType.synch;
+      plandb.del = DelType.undel;
 
       sqls.push(plandb.inTParam());
+
+      let itemType: PlanItemType = (jt == PlanType.CalendarPlan? PlanItemType.Holiday : PlanItemType.Activity);
 
       // 创建日历项
       if (plan.pa && plan.pa.length > 0) {
         for (let pa of plan.pa) {
           let planitemdb: JtaTbl = new JtaTbl();
+          planitemdb.jti = this.util.getUuid();
           planitemdb.ji = ji;         //计划ID
+          planitemdb.jtt = itemType;  //日历项类型
           planitemdb.jtn = pa.at;     //日程事件主题  必传
           planitemdb.sd = moment(pa.adt).format("YYYY/MM/DD");  //所属日期      必传
           planitemdb.st = pa.st;      //所属时间
           planitemdb.bz = pa.am;      //备注
+          planitemdb.px = plan.pn.px; //排序
+          planitemdb.tb = SyncType.synch;
+          planitemdb.del = DelType.undel;
 
           sqls.push(planitemdb.inTParam());
         }
