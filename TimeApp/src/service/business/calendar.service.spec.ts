@@ -164,6 +164,12 @@ describe('CalendarService test suite', () => {
 
   });
 
+  it(`Case 21 - 1 mergeCalendarActivity 合并日历显示列表活动数据 - 入参为空(报错)`, () => {
+    expect(function () {
+      calendarService.mergeCalendarActivity(null);
+    }).toThrow();
+  });
+
   it(`Case 20 - 1 fetchPlanMemos 取得指定日历所有备忘 - 无备忘`, async () => {
     let plan: PlanData = {} as PlanData;
 

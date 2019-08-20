@@ -95,6 +95,8 @@ export class CalendarService extends BaseService {
    * @author leon_xi@163.com
    **/
   mergeCalendarActivity(activity: any) {
+    this.assertEmpty(activity);   // 入参不能为空
+
     // 判断活动数据类型
     let activityType: string = this.getActivityType(activity);
 
