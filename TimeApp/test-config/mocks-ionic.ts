@@ -5,23 +5,33 @@ export class RestfulClientMock {
   init() {}
 
   async post(url: any, body: any): Promise<any> {
+    console.log(JSON.stringify(url));
     return {d: {}};
   }
 
   async get(url: any): Promise<any> {
     console.log(JSON.stringify(url));
+    switch (url.key) {
+      case "BIPD" :
+        
+        break;
+      default:
+    }
     return {d: {}};
   }
 
   async put(url: any, body: any): Promise<any> {
+    console.log(JSON.stringify(url));
     return {d: {}};
   }
 
   async specPost(url: string, header: any, body: any): Promise<any> {
+    console.log(JSON.stringify(url));
     return {d: {}};
   }
 
   async get4Text(url: string, header: any, body: any): Promise<any> {
+    console.log(JSON.stringify(url));
     return {d: {}};
   }
 }

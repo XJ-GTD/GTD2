@@ -166,7 +166,7 @@ describe('CalendarService test suite', () => {
 
   it(`Case 15 - 1 downloadPublicPlan 下载日历 - 没有日历项(无报错)`, async () => {
     expect(function() {
-      calendarService.downloadPublicPlan("chinese_famous_2019");
+      calendarService.downloadPublicPlan("chinese_famous_2019", PlanType.CalendarPlan);
     }).not.toThrow();
   });
 
