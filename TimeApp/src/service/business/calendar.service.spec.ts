@@ -194,6 +194,40 @@ describe('CalendarService test suite', () => {
     expect(events.length).toBe(0);
   });
 
+  it(`Case 18 - 1 - 2 findActivities 活动查询 - 今天上午有什么会议?(没有会议)`, async () => {
+    let condition: FindActivityCondition = new FindActivityCondition();
+
+    condition.sd = moment().format("YYYY/MM/DD");
+    condition.st = "06:00";
+    condition.ed = moment().format("YYYY/MM/DD");
+    condition.et = "11:00";
+    condition.text = "会议";
+    condition.mark.push("会议");
+
+    let activities = await calendarService.findActivities(condition);
+
+    expect(activities).toBeDefined();
+    expect(activities.calendaritems.length).toBe(0);
+    expect(activities.events.length).toBe(0);
+    expect(activities.memos.length).toBe(0);
+  });
+
+  it(`Case 18 - 1 - 1 findActivities 活动查询 - 今天上午有什么安排?(没有活动)`, async () => {
+    let condition: FindActivityCondition = new FindActivityCondition();
+
+    condition.sd = moment().format("YYYY/MM/DD");
+    condition.st = "06:00";
+    condition.ed = moment().format("YYYY/MM/DD");
+    condition.et = "11:00";
+
+    let activities = await calendarService.findActivities(condition);
+
+    expect(activities).toBeDefined();
+    expect(activities.calendaritems.length).toBe(0);
+    expect(activities.events.length).toBe(0);
+    expect(activities.memos.length).toBe(0);
+  });
+
   it(`Case 18 - 1 findActivities 活动查询 - 今天有什么安排?(没有活动)`, async () => {
     let condition: FindActivityCondition = new FindActivityCondition();
 
