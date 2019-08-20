@@ -41,6 +41,8 @@ export class CalendarService extends BaseService {
 
     switch(direction) {
       case PageDirection.PageInit :
+        this.calendaractivities = new Array<MonthActivityData>();   // 强制重新初始化
+
         this.calendaractivities.push(await this.fetchMonthActivities(moment().subtract(1, "months").format("YYYY/MM")));
         this.calendaractivities.push(await this.fetchMonthActivities(moment().format("YYYY/MM")));
         this.calendaractivities.push(await this.fetchMonthActivities(moment().add(1, "months").format("YYYY/MM")));
