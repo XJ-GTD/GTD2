@@ -38,6 +38,40 @@ export class RestfulClientMock {
             {pi:"chinese_famous_2019",at:"大寒",adt:"2020/01/20 16:59",st:"16:59",ed:"",et:"",rt:"",ap:"chinese_famous_2019",am:"大寒：一年中最冷的时候。"}
             ]
           }};
+        } else if (body && body.d && body.d.pi == "shanghai_animation_exhibition_2019") {
+          return {d: {
+            pn: {pi:"shanghai_animation_exhibition_2019",pt:"2019上海漫展时间表",pd:"2019上海漫展时间表",pm:"#881b2d",pc:"1",px:""},
+            pa: [
+            {pi:"shanghai_animation_exhibition_2019",at:"理想乡动漫展",adt:"2019/02/16",st:"99:99",ed:"",et:"",rt:"",ap:"shanghai_animation_exhibition_2019",am:"门 票 58/138"},
+            {pi:"shanghai_animation_exhibition_2019",at:"理想乡动漫展",adt:"2019/02/17",st:"99:99",ed:"",et:"",rt:"",ap:"shanghai_animation_exhibition_2019",am:"门 票 58/138"},
+            {pi:"shanghai_animation_exhibition_2019",at:"上海C3漫展",adt:"2019/04/05",st:"99:99",ed:"",et:"",rt:"",ap:"shanghai_animation_exhibition_2019",am:"门 票 80/100"},
+            {pi:"shanghai_animation_exhibition_2019",at:"上海C3漫展",adt:"2019/04/06",st:"99:99",ed:"",et:"",rt:"",ap:"shanghai_animation_exhibition_2019",am:"门 票 80/100"},
+            {pi:"shanghai_animation_exhibition_2019",at:"上海C3漫展",adt:"2019/04/07",st:"99:99",ed:"",et:"",rt:"",ap:"shanghai_animation_exhibition_2019",am:"门 票 80/100"},
+            {pi:"shanghai_animation_exhibition_2019",at:"欢乐谷动漫嘉年华",adt:"2019/04/05",st:"99:99",ed:"",et:"",rt:"",ap:"shanghai_animation_exhibition_2019",am:"门 票 60/260"},
+            {pi:"shanghai_animation_exhibition_2019",at:"欢乐谷动漫嘉年华",adt:"2019/04/06",st:"99:99",ed:"",et:"",rt:"",ap:"shanghai_animation_exhibition_2019",am:"门 票 60/260"},
+            {pi:"shanghai_animation_exhibition_2019",at:"欢乐谷动漫嘉年华",adt:"2019/04/07",st:"99:99",ed:"",et:"",rt:"",ap:"shanghai_animation_exhibition_2019",am:"门 票 60/260"},
+            {pi:"shanghai_animation_exhibition_2019",at:"次元喵动漫节",adt:"2019/05/01",st:"99:99",ed:"",et:"",rt:"",ap:"shanghai_animation_exhibition_2019",am:"门 票 55-99"},
+            {pi:"shanghai_animation_exhibition_2019",at:"次元喵动漫节",adt:"2019/05/02",st:"99:99",ed:"",et:"",rt:"",ap:"shanghai_animation_exhibition_2019",am:"门 票 55-99"},
+            {pi:"shanghai_animation_exhibition_2019",at:"WF手办展",adt:"2019/06/08",st:"99:99",ed:"",et:"",rt:"",ap:"shanghai_animation_exhibition_2019",am:"门 票 100-580"},
+            {pi:"shanghai_animation_exhibition_2019",at:"WF手办展",adt:"2019/06/09",st:"99:99",ed:"",et:"",rt:"",ap:"shanghai_animation_exhibition_2019",am:"门 票 100-580"},
+            {pi:"shanghai_animation_exhibition_2019",at:"待定:ACG漫展",adt:"2019/08/11",st:"99:99",ed:"",et:"",rt:"",ap:"shanghai_animation_exhibition_2019",am:"往年参考门 票 50"},
+            {pi:"shanghai_animation_exhibition_2019",at:"待定:CCG漫展",adt:"2019/07/05",st:"99:99",ed:"",et:"",rt:"",ap:"shanghai_animation_exhibition_2019",am:"往年参考门 票 70-110"},
+            {pi:"shanghai_animation_exhibition_2019",at:"待定:CCG漫展",adt:"2019/07/06",st:"99:99",ed:"",et:"",rt:"",ap:"shanghai_animation_exhibition_2019",am:"往年参考门 票 70-110"},
+            {pi:"shanghai_animation_exhibition_2019",at:"待定:CCG漫展",adt:"2019/07/07",st:"99:99",ed:"",et:"",rt:"",ap:"shanghai_animation_exhibition_2019",am:"往年参考门 票 70-110"},
+            {pi:"shanghai_animation_exhibition_2019",at:"待定:CCG漫展",adt:"2019/07/08",st:"99:99",ed:"",et:"",rt:"",ap:"shanghai_animation_exhibition_2019",am:"往年参考门 票 70-110"},
+            {pi:"shanghai_animation_exhibition_2019",at:"待定:CCG漫展",adt:"2019/07/09",st:"99:99",ed:"",et:"",rt:"",ap:"shanghai_animation_exhibition_2019",am:"往年参考门 票 70-110"},
+            {pi:"shanghai_animation_exhibition_2019",at:"待定:ChinaJoy",adt:"2019/08/03",st:"99:99",ed:"",et:"",rt:"",ap:"shanghai_animation_exhibition_2019",am:"往年参考门 票 72-850"},
+            {pi:"shanghai_animation_exhibition_2019",at:"待定:ChinaJoy",adt:"2019/08/04",st:"99:99",ed:"",et:"",rt:"",ap:"shanghai_animation_exhibition_2019",am:"往年参考门 票 72-850"},
+            {pi:"shanghai_animation_exhibition_2019",at:"待定:ChinaJoy",adt:"2019/08/05",st:"99:99",ed:"",et:"",rt:"",ap:"shanghai_animation_exhibition_2019",am:"往年参考门 票 72-850"},
+            {pi:"shanghai_animation_exhibition_2019",at:"待定:ChinaJoy",adt:"2019/08/06",st:"99:99",ed:"",et:"",rt:"",ap:"shanghai_animation_exhibition_2019",am:"往年参考门 票 72-850"},
+            {pi:"shanghai_animation_exhibition_2019",at:"待定:萤火虫动漫嘉年华",adt:"2019/10/02",st:"99:99",ed:"",et:"",rt:"",ap:"shanghai_animation_exhibition_2019",am:"往年参考门 票 70"},
+            {pi:"shanghai_animation_exhibition_2019",at:"待定:萤火虫动漫嘉年华",adt:"2019/10/03",st:"99:99",ed:"",et:"",rt:"",ap:"shanghai_animation_exhibition_2019",am:"往年参考门 票 70"},
+            {pi:"shanghai_animation_exhibition_2019",at:"待定:萤火虫动漫嘉年华",adt:"2019/10/04",st:"99:99",ed:"",et:"",rt:"",ap:"shanghai_animation_exhibition_2019",am:"往年参考门 票 70"},
+            {pi:"shanghai_animation_exhibition_2019",at:"待定:SHCC漫展",adt:"2019/10/26",st:"99:99",ed:"",et:"",rt:"",ap:"shanghai_animation_exhibition_2019",am:"往年参考门 票 138-338"},
+            {pi:"shanghai_animation_exhibition_2019",at:"待定:SHCC漫展",adt:"2019/10/27",st:"99:99",ed:"",et:"",rt:"",ap:"shanghai_animation_exhibition_2019",am:"往年参考门 票 138-338"},
+            {pi:"shanghai_animation_exhibition_2019",at:"待定:SHCC漫展",adt:"2019/10/28",st:"99:99",ed:"",et:"",rt:"",ap:"shanghai_animation_exhibition_2019",am:"往年参考门 票 138-338"}
+            ]
+          }};
         }
         break;
       default:
