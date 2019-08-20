@@ -10,6 +10,7 @@ import {SQLite} from "@ionic-native/sqlite";
 import {SQLitePorter} from "@ionic-native/sqlite-porter";
 import {StatusBar} from '@ionic-native/status-bar';
 import {SplashScreen} from '@ionic-native/splash-screen';
+import * as moment from "moment";
 import {
   IonicModule,
   Platform
@@ -245,7 +246,7 @@ describe('EventService test suite', () => {
     expect(tx2).toBeDefined();
     expect(tx2.evi).toBeDefined();
 
-		let day: string = "2019/08/17";
+		let day: string = moment().format('YYYY/MM/DD');
 		let data: Array<TaskData> = new Array<TaskData>();
 		data = await eventService.fetchPagedTasks(day,"");
 		expect(data).toBeDefined();
@@ -269,7 +270,7 @@ describe('EventService test suite', () => {
     expect(tx2.evi).toBeDefined();
 
 
-		let day: string = "2019/08/17";
+		let day: string = moment().format('YYYY/MM/DD');
 		let data: Array<TaskData> = new Array<TaskData>();
 		data = await eventService.fetchPagedCompletedTasks(day,"");
 		expect(data).toBeDefined();
@@ -290,7 +291,7 @@ describe('EventService test suite', () => {
     expect(tx2).toBeDefined();
     expect(tx2.evi).toBeDefined();
 
-		let day: string = "2019/08/17";
+		let day: string = moment().format('YYYY/MM/DD');
 		let data: Array<TaskData> = new Array<TaskData>();
 		data = await eventService.fetchPagedUncompletedTasks(day,"");
 		expect(data).toBeDefined();
