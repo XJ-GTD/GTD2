@@ -957,10 +957,7 @@ export class EventService extends BaseService {
 			//创建任务
 			let ttdb: TTbl = new TTbl();
 			tx.cs = anyenum.IsSuccess.wait;
-			if(tx.isrt)
-			{
-				tx.isrt = anyenum.IsCreate.isNo;
-			}
+			tx.isrt = tx.isrt || anyenum.IsCreate.isNo;
 			Object.assign(ttdb, tx);
 			await this.sqlExce.saveByParam(ttdb);
 		}
