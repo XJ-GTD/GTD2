@@ -258,6 +258,11 @@ export class CalendarService extends BaseService {
 
     plandb = await this.sqlExce.getOneByParam<JhaTbl>(plandb);
 
+    // 计划不存在直接返回
+    if (!plandb) {
+      return null;
+    }
+
     Object.assign(plan, plandb);
 
     if (!withchildren) {
