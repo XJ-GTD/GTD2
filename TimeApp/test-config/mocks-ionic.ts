@@ -11,7 +11,6 @@ export class RestfulClientMock {
         return {d: {
           psurl: "https://mock.data/shareplan"
         }};
-        break;
       case "BIPD" : // 下载公共日历
         if (body && body.d && body.d.pi == "chinese_famous_2019") {
           return {d: {
