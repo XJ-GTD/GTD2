@@ -164,6 +164,28 @@ describe('CalendarService test suite', () => {
 
   });
 
+  it(`Case 17 - 1 getCalendarActivities 取得日历画面显示活动一览 - 默认当前月份以及前后各一个月`, async () => {
+    let month: string = moment().format("YYYY/MM");
+
+    let calendarholdings = await calendarService.getCalendarActivities();
+
+    expect(calendarholdings).toBeDefined();
+    expect(calendarholdings.length).toBe(3);
+    expect(calendarholdings[0].month).toBe(moment(month).subtract(1, "months").format("YYYY/MM"));
+    expect(calendarholdings[1].month).toBe(month);
+    expect(calendarholdings[2].month).toBe(moment(month).add(1, "months").format("YYYY/MM"));
+  });
+
+  it(`Case 16 - 1 - 1 sharePlan 分享日历/计划 - 公共日历(没有日历项)`, async () => {
+    await calendarService.downloadPublicPlan("shanghai_animation_exhibition_2019", PlanType.ActivityPlan);
+
+    let plan = await calendarService.getPlan("shanghai_animation_exhibition_2019");
+
+    let shareurl = await calendarService.sharePlan(plan, false);
+
+    expect(shareurl).toBeDefined();
+  });
+
   it(`Case 16 - 1 sharePlan 分享日历/计划 - 公共日历`, async () => {
     await calendarService.downloadPublicPlan("shanghai_animation_exhibition_2019", PlanType.ActivityPlan);
 
