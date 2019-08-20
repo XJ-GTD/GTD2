@@ -617,12 +617,15 @@ export class CalendarService extends BaseService {
 
       sqls.push(plandb.inTParam());
 
+      let itemType: PlanItemType = (jt == PlanType.CalendarPlan? PlanItemType.Holiday : PlanItemType.Activity);
+
       // 创建日历项
       if (plan.pa && plan.pa.length > 0) {
         for (let pa of plan.pa) {
           let planitemdb: JtaTbl = new JtaTbl();
           planitemdb.jti = this.util.getUuid();
           planitemdb.ji = ji;         //计划ID
+          planitemdb.jtt = itemType;  //日历项类型
           planitemdb.jtn = pa.at;     //日程事件主题  必传
           planitemdb.sd = moment(pa.adt).format("YYYY/MM/DD");  //所属日期      必传
           planitemdb.st = pa.st;      //所属时间

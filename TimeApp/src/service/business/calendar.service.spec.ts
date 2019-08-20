@@ -172,7 +172,7 @@ describe('CalendarService test suite', () => {
     expect(plan).toBeDefined();
     expect(plan.ji).toBe("shanghai_animation_exhibition_2019");
     expect(plan.items).toBeDefined();
-    expect(plan.items.length).toBe(45);
+    expect(plan.items.length).toBe(28);
 
     let monthSummary = await calendarService.fetchMonthActivitiesSummary("2019/08");
 
