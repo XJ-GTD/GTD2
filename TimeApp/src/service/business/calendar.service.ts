@@ -621,6 +621,7 @@ export class CalendarService extends BaseService {
       if (plan.pa && plan.pa.length > 0) {
         for (let pa of plan.pa) {
           let planitemdb: JtaTbl = new JtaTbl();
+          planitemdb.jti = this.util.getUuid();
           planitemdb.ji = ji;         //计划ID
           planitemdb.jtn = pa.at;     //日程事件主题  必传
           planitemdb.sd = moment(pa.adt).format("YYYY/MM/DD");  //所属日期      必传

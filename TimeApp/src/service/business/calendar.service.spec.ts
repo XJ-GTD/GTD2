@@ -164,7 +164,19 @@ describe('CalendarService test suite', () => {
 
   });
 
-  it(`Case 15 - 2 downloadPublicPlan 下载日历 - 存在日历项`, async () => {
+  it(`Case 15 - 2 - 1 downloadPublicPlan 下载日历 - 存在日历项(活动日历项)`, async () => {
+    await calendarService.downloadPublicPlan("shanghai_animation_exhibition_2019", PlanType.ActivityPlan);
+
+    let plan = await calendarService.getPlan("shanghai_animation_exhibition_2019");
+
+    expect(plan).toBeDefined();
+    expect(plan.ji).toBe("shanghai_animation_exhibition_2019");
+    expect(plan.items).toBeDefined();
+    expect(plan.items.length).toBe(45);
+
+  });
+
+  it(`Case 15 - 2 downloadPublicPlan 下载日历 - 存在日历项(普通日历项)`, async () => {
     await calendarService.downloadPublicPlan("chinese_famous_2019", PlanType.CalendarPlan);
 
     let plan = await calendarService.getPlan("chinese_famous_2019");
