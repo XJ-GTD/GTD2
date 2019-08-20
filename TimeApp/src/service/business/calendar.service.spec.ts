@@ -174,6 +174,16 @@ describe('CalendarService test suite', () => {
     expect(plan.items).toBeDefined();
     expect(plan.items.length).toBe(45);
 
+    let monthSummary = await calendarService.fetchMonthActivitiesSummary("2019/08");
+
+    expect(monthSummary).toBeDefined();
+    // 08/03 ~ 08/06 ActivityPlan
+    expect(monthSummary.days[1].activityitemscount.length).toBe(0);
+    expect(monthSummary.days[2].activityitemscount.length).toBe(1);
+    expect(monthSummary.days[3].activityitemscount.length).toBe(1);
+    expect(monthSummary.days[4].activityitemscount.length).toBe(1);
+    expect(monthSummary.days[5].activityitemscount.length).toBe(1);
+    expect(monthSummary.days[6].activityitemscount.length).toBe(0);
   });
 
   it(`Case 15 - 2 downloadPublicPlan 下载日历 - 存在日历项(普通日历项)`, async () => {
@@ -185,6 +195,17 @@ describe('CalendarService test suite', () => {
     expect(plan.ji).toBe("chinese_famous_2019");
     expect(plan.items).toBeDefined();
     expect(plan.items.length).toBe(24);
+
+    let monthSummary = await calendarService.fetchMonthActivitiesSummary("2019/08");
+
+    expect(monthSummary).toBeDefined();
+    // 08/08 08/23 CalendarPlan
+    expect(monthSummary.days[6].calendaritemscount.length).toBe(0);
+    expect(monthSummary.days[7].calendaritemscount.length).toBe(1);
+    expect(monthSummary.days[8].calendaritemscount.length).toBe(0);
+    expect(monthSummary.days[21].calendaritemscount.length).toBe(0);
+    expect(monthSummary.days[22].calendaritemscount.length).toBe(1);
+    expect(monthSummary.days[23].calendaritemscount.length).toBe(0);
 
   });
 
