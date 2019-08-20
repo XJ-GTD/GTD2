@@ -164,7 +164,17 @@ describe('CalendarService test suite', () => {
 
   });
 
-  it(`Case 15 - 1 downloadPublicPlan 下载日历 - 没有日历项(无报错)`, async () => {
+  it(`Case 15 - 2 downloadPublicPlan 下载日历 - 存在日历项`, () => {
+    await calendarService.downloadPublicPlan("chinese_famous_2019", PlanType.CalendarPlan);
+
+    let plan = await calendarService.getPlan("chinese_famous_2019", PlanType.CalendarPlan);
+
+    expect(plan).toBeDefined();
+    expect(plan.ji).toBe("chinese_famous_2019");
+    
+  });
+
+  it(`Case 15 - 1 downloadPublicPlan 下载日历 - 无报错`, () => {
     expect(function() {
       calendarService.downloadPublicPlan("chinese_famous_2019", PlanType.CalendarPlan);
     }).not.toThrow();
