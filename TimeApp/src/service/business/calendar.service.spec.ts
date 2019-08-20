@@ -171,7 +171,9 @@ describe('CalendarService test suite', () => {
 
     expect(plan).toBeDefined();
     expect(plan.ji).toBe("chinese_famous_2019");
-    
+    expect(plan.items).toBeDefined();
+    expect(plan.items.length).toBe(24);
+
   });
 
   it(`Case 15 - 1 downloadPublicPlan 下载日历 - 无报错`, () => {
