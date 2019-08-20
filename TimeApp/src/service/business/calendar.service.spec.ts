@@ -1317,7 +1317,7 @@ describe('CalendarService test suite', () => {
 
     let dayActivities: DayActivityData = await calendarService.fetchDayActivities();
 
-    // 增加新的日历项、任务和备忘
+    // 更新日历项、任务和备忘
     planitem1.jtn = "结婚";
     planitem1 = await calendarService.savePlanItem(planitem1);
 
@@ -2745,6 +2745,13 @@ describe('CalendarService test suite', () => {
   });
 
   // 可以异步执行
+  it(`Case 1 - 6 - 1 removePlanSqls 取得删除日历Sql - 删除自定义日历(不含子项目)`, async(() => {
+    let result = calendarService.removePlanSqls('ji', PlanType.PrivatePlan, false);
+    expect(result).toBeDefined();
+    expect(result.length).toBeGreaterThan(0);
+  }));
+
+  // 可以异步执行
   it(`Case 1 - 6 removePlanSqls 取得删除日历Sql - 删除自定义日历`, async(() => {
     let result = calendarService.removePlanSqls('ji', PlanType.PrivatePlan);
     expect(result).toBeDefined();
@@ -2752,8 +2759,22 @@ describe('CalendarService test suite', () => {
   }));
 
   // 可以异步执行
+  it(`Case 1 - 5 - 1 removePlanSqls 取得删除日历Sql - 删除活动日历(不含子项目)`, async(() => {
+    let result = calendarService.removePlanSqls('ji', PlanType.ActivityPlan, false);
+    expect(result).toBeDefined();
+    expect(result.length).toBeGreaterThan(0);
+  }));
+
+  // 可以异步执行
   it(`Case 1 - 5 removePlanSqls 取得删除日历Sql - 删除活动日历`, async(() => {
     let result = calendarService.removePlanSqls('ji', PlanType.ActivityPlan);
+    expect(result).toBeDefined();
+    expect(result.length).toBeGreaterThan(0);
+  }));
+
+  // 可以异步执行
+  it(`Case 1 - 4 - 1 removePlanSqls 取得删除日历Sql - 删除普通日历(不含子项目)`, async(() => {
+    let result = calendarService.removePlanSqls('ji', PlanType.CalendarPlan, false);
     expect(result).toBeDefined();
     expect(result.length).toBeGreaterThan(0);
   }));
