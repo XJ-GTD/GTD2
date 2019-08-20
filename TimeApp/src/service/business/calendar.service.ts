@@ -41,9 +41,9 @@ export class CalendarService extends BaseService {
 
     switch(direction) {
       case PageDirection.PageInit :
-        this.calendaractivities.push(await fetchMonthActivities(moment().subtract(1, "months").format("YYYY/MM")));
-        this.calendaractivities.push(await fetchMonthActivities(moment().format("YYYY/MM")));
-        this.calendaractivities.push(await fetchMonthActivities(moment().add(1, "months").format("YYYY/MM")));
+        this.calendaractivities.push(await this.fetchMonthActivities(moment().subtract(1, "months").format("YYYY/MM")));
+        this.calendaractivities.push(await this.fetchMonthActivities(moment().format("YYYY/MM")));
+        this.calendaractivities.push(await this.fetchMonthActivities(moment().add(1, "months").format("YYYY/MM")));
 
         // 活动变化时自动更新日历显示列表数据
         this.emitService.destroy("mwxing.calendar.activities.changed");
@@ -69,14 +69,14 @@ export class CalendarService extends BaseService {
           this.assertFail("getCalendarActivities 调用PageDirection.PageUp之前, 请先调用PageDirection.PageInit。");
         }
         let lastmonth: string = this.calendaractivities[this.calendaractivities.length - 1].month;
-        this.calendaractivities.push(await fetchMonthActivities(moment(lastmonth).add(1, "months").format("YYYY/MM")));
+        this.calendaractivities.push(await this.fetchMonthActivities(moment(lastmonth).add(1, "months").format("YYYY/MM")));
         break;
       case PageDirection.PageDown :
         if (this.calendaractivities.length < 1) {
           this.assertFail("getCalendarActivities 调用PageDirection.PageDown, 请先调用PageDirection.PageInit。");
         }
         let firstmonth: string = this.calendaractivities[0].month;
-        this.calendaractivities.push(await fetchMonthActivities(moment(firstmonth).subtract(1, "months").format("YYYY/MM")));
+        this.calendaractivities.push(await this.fetchMonthActivities(moment(firstmonth).subtract(1, "months").format("YYYY/MM")));
         break;
       default:
         this.assertFail();    // 非法参数
