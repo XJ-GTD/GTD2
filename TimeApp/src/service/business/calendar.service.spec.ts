@@ -251,10 +251,10 @@ describe('CalendarService test suite', () => {
   it(`Case 17 - 3 getCalendarActivities 取得日历画面显示活动一览 - 向下拉加载`, async () => {
     let month: string = moment().format("YYYY/MM");
 
-    await calendarService.getCalendarActivities();
-    await calendarService.getCalendarActivities(PageDirection.PageUp);
+    let calendarholdings = await calendarService.getCalendarActivities();
 
-    let calendarholdings = await calendarService.getCalendarActivities(PageDirection.PageDown);
+    await calendarService.getCalendarActivities(PageDirection.PageUp);
+    await calendarService.getCalendarActivities(PageDirection.PageDown);
 
     expect(calendarholdings).toBeDefined();
     expect(calendarholdings.length).toBe(5);
@@ -268,9 +268,9 @@ describe('CalendarService test suite', () => {
   it(`Case 17 - 2 getCalendarActivities 取得日历画面显示活动一览 - 向上拉加载`, async () => {
     let month: string = moment().format("YYYY/MM");
 
-    await calendarService.getCalendarActivities();
+    let calendarholdings = await calendarService.getCalendarActivities();
 
-    let calendarholdings = await calendarService.getCalendarActivities(PageDirection.PageUp);
+    await calendarService.getCalendarActivities(PageDirection.PageUp);
 
     expect(calendarholdings).toBeDefined();
     expect(calendarholdings.length).toBe(4);
