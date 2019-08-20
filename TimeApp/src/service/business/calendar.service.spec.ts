@@ -173,7 +173,9 @@ describe('CalendarService test suite', () => {
     let activities = await calendarService.findActivities(condition);
 
     expect(activities).toBeDefined();
-    expect(activities.length).toBe(0);
+    expect(activities.calendaritems.length).toBe(0);
+    expect(activities.events.length).toBe(0);
+    expect(activities.memos.length).toBe(0);
   });
 
   it(`Case 17 - 3 getCalendarActivities 取得日历画面显示活动一览 - 向下拉加载`, async () => {
