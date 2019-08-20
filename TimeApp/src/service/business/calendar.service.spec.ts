@@ -164,6 +164,18 @@ describe('CalendarService test suite', () => {
 
   });
 
+  it(`Case 18 - 1 findActivities 活动查询 - 今天有什么安排?(没有活动)`, async () => {
+    let condition: FindActivityCondition = new FindActivityCondition();
+
+    condition.sd = moment().format("YYYY/MM/DD");
+    condition.ed = moment().format("YYYY/MM/DD");
+
+    let activities = await calendarService.findActivities(condition);
+
+    expect(activities).toBeDefined();
+    expect(activities.length).toBe(0);
+  });
+
   it(`Case 17 - 1 getCalendarActivities 取得日历画面显示活动一览 - 默认当前月份以及前后各一个月`, async () => {
     let month: string = moment().format("YYYY/MM");
 
