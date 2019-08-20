@@ -1287,6 +1287,61 @@ describe('CalendarService test suite', () => {
 
   });
 
+  it(`Case 7 - 3 mergeDayActivities 合并指定日期的活动 - 存在活动(更新1个日历项、1个任务、1个备忘)`, async () => {
+    let day: string = moment().format("YYYY/MM/DD");
+
+    // 日历项
+    let planitem1: PlanItemData = {} as PlanItemData;
+
+    planitem1.sd = day;
+    planitem1.jtn = "结婚纪念日";
+    planitem1.jtt = PlanItemType.Activity;
+
+    await calendarService.savePlanItem(planitem1);
+
+    // 任务
+    let task: TaskData = {} as TaskData;
+
+    task.evd = day;
+    task.evn = "结婚纪念日前给太太买礼物";
+
+    await eventService.saveTask(task);
+
+    // 备忘
+    let memo: MemoData = {} as MemoData;
+
+    memo.sd = day;
+    memo.mon = "结婚纪念日买了一块定制巧克力给太太, 太太很高兴";
+
+    await memoService.saveMemo(memo);
+
+    let dayActivities: DayActivityData = await calendarService.fetchDayActivities();
+
+    // 增加新的日历项、任务和备忘
+    planitem1.jtn = "结婚";
+    planitem1 = await calendarService.savePlanItem(planitem1);
+
+    task.evn = "结婚纪念日礼物";
+    task = await eventService.saveTask(task);
+
+    memo.mon = "结婚纪念日买了一块定制巧克力";
+    memo = await memoService.saveMemo(memo);
+
+    dayActivities = await calendarService.mergeDayActivities(dayActivities, [planitem1, task, memo]);
+
+    expect(dayActivities.day).toBe(day);
+    expect(dayActivities.calendaritems).toBeDefined();
+    expect(dayActivities.calendaritems.length).toBe(1);
+    expect(dayActivities.calendaritems[0].jtn).toBe("结婚");
+    expect(dayActivities.events).toBeDefined();
+    expect(dayActivities.events.length).toBe(1);
+    expect(dayActivities.events[0].evn).toBe("结婚纪念日礼物");
+    expect(dayActivities.memos).toBeDefined();
+    expect(dayActivities.memos.length).toBe(1);
+    expect(dayActivities.memos[0].mon).toBe("结婚纪念日买了一块定制巧克力");
+
+  });
+
   it(`Case 7 - 2 mergeDayActivities 合并指定日期的活动 - 存在活动(增加1个日历项、1个任务、1个备忘)`, async () => {
     let day: string = moment().format("YYYY/MM/DD");
 
