@@ -7,7 +7,12 @@ export class RestfulClientMock {
   async post(url: any, body: any): Promise<any> {
     console.log(JSON.stringify(url));
     switch (url.key) {
-      case "BIPD" :
+      case "PU" : // 分享日历
+        return {d: {
+          psurl: "https://mock.data/shareplan"
+        }};
+        break;
+      case "BIPD" : // 下载公共日历
         if (body && body.d && body.d.pi == "chinese_famous_2019") {
           return {d: {
             pn: {pi:"chinese_famous_2019",pt:"农历节气",pd:"2019农历节气",pm:"#143137",pc:"0",px:"2"},

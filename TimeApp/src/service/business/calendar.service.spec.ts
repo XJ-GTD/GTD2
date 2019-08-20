@@ -164,6 +164,16 @@ describe('CalendarService test suite', () => {
 
   });
 
+  it(`Case 16 - 1 sharePlan 分享日历/计划 - 公共日历`, async () => {
+    await calendarService.downloadPublicPlan("shanghai_animation_exhibition_2019", PlanType.ActivityPlan);
+
+    let plan = await calendarService.getPlan("shanghai_animation_exhibition_2019");
+
+    let shareurl = await calendarService.sharePlan(plan, true);
+
+    expect(shareurl).toBeDefined();
+  });
+
   it(`Case 15 - 2 - 1 downloadPublicPlan 下载日历 - 存在日历项(活动日历项)`, async () => {
     await calendarService.downloadPublicPlan("shanghai_animation_exhibition_2019", PlanType.ActivityPlan);
 
