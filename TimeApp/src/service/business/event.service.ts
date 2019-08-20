@@ -198,11 +198,11 @@ export class EventService extends BaseService {
         masterEvi = oriAgdata.rtevi;
       }
 
-      sq = `delete from gtd_ev where evd >= '${oriAgdata.evd}' and (evi = '${masterEvi}' or rtevi =  '${masterEvi}') ;`;
+      sq = `update gtd_ev set del ='${anyenum.DelType.del}'  where evd >= '${oriAgdata.evd}' and (evi = '${masterEvi}' or rtevi =  '${masterEvi}') ;`;
       this.sqlExce.execSql(sq);
 
       //更新原事件日程结束日或事件表无记录了则删除
-      sq = `select * from gtd_ev where evi = '${masterEvi}' or rtevi =  '${masterEvi}' ;`;
+      sq = `select * from gtd_ev where (evi = '${masterEvi}' or rtevi =  '${masterEvi}') and del <>'${anyenum.DelType.del}' ;`;
       let evtbls = new Array<EvTbl>();
       evtbls = await this.sqlExce.getExtList<EvTbl>(sq);
 
@@ -234,7 +234,8 @@ export class EventService extends BaseService {
       //删除事件表数据
       let ev = new EvTbl();
       ev.evi = oriAgdata.evi;
-      this.sqlExce.delByParam(ev);
+      ev.del = anyenum.DelType.del;
+      this.sqlExce.updateByParam(ev);
 
       //主evi设定
       let masterEvi : string;
@@ -245,7 +246,7 @@ export class EventService extends BaseService {
       }
 
       //更新原事件日程结束日或事件表无记录了则删除
-      sq = `select * from gtd_ev where evi = '${masterEvi}' or rtevi =  '${masterEvi}' ;`;
+      sq = `select * from gtd_ev where (evi = '${masterEvi}' or rtevi =  '${masterEvi}') and del <>'${anyenum.DelType.del}' ;`;
       let evtbls = new Array<EvTbl>();
       evtbls = await this.sqlExce.getExtList<EvTbl>(sq);
 
@@ -399,11 +400,11 @@ export class EventService extends BaseService {
         masterEvi = oriAgdata.rtevi;
       }
       //evd使用原日程evd
-      sq = `delete from gtd_ev where evd >= '${oriAgdata.evd}' and (evi = '${masterEvi}' or rtevi =  '${masterEvi}') ;`;
+      sq = `update  gtd_ev set del ='${anyenum.DelType.del}' where evd >= '${oriAgdata.evd}' and (evi = '${masterEvi}' or rtevi =  '${masterEvi}') ;`;
       this.sqlExce.execSql(sq);
 
       //更新原事件日程结束日或事件表无记录了则删除
-      sq = `select * from gtd_ev where evi = '${masterEvi}' or rtevi =  '${masterEvi}' ;`;
+      sq = `select * from gtd_ev where (evi = '${masterEvi}' or rtevi =  '${masterEvi}') and del <> '${anyenum.DelType.del}' ;`;
       let evtbls = new Array<EvTbl>();
       evtbls = await this.sqlExce.getExtList<EvTbl>(sq);
 
