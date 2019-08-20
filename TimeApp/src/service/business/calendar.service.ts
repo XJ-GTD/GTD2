@@ -111,7 +111,7 @@ export class CalendarService extends BaseService {
         currentmonth = moment(item.sd).format("YYYY/MM");
 
         if (firstmonth >= currentmonth && currentmonth <= lastmonth) {
-          let diff = moment(currentmonth).diff(firstmonth).months();
+          let diff = moment(currentmonth).diff(firstmonth, "months");
 
           let currentmonthactivities = this.calendaractivities[diff];
           this.mergeMonthActivities(currentmonthactivities, [item]);
@@ -127,7 +127,7 @@ export class CalendarService extends BaseService {
         currentmonth = moment(agenda.evd).format("YYYY/MM");
 
         if (firstmonth >= currentmonth && currentmonth <= lastmonth) {
-          let diff = moment(currentmonth).diff(firstmonth).months();
+          let diff = moment(currentmonth).diff(firstmonth, "months");
 
           let currentmonthactivities = this.calendaractivities[diff];
           this.mergeMonthActivities(currentmonthactivities, [agenda]);
@@ -143,7 +143,7 @@ export class CalendarService extends BaseService {
         currentmonth = moment(task.evd).format("YYYY/MM");
 
         if (firstmonth >= currentmonth && currentmonth <= lastmonth) {
-          let diff = moment(currentmonth).diff(firstmonth).months();
+          let diff = moment(currentmonth).diff(firstmonth, "months");
 
           let currentmonthactivities = this.calendaractivities[diff];
           this.mergeMonthActivities(currentmonthactivities, [task]);
@@ -159,7 +159,7 @@ export class CalendarService extends BaseService {
         currentmonth = moment(minitask.evd).format("YYYY/MM");
 
         if (firstmonth >= currentmonth && currentmonth <= lastmonth) {
-          let diff = moment(currentmonth).diff(firstmonth).months();
+          let diff = moment(currentmonth).diff(firstmonth, "months");
 
           let currentmonthactivities = this.calendaractivities[diff];
           this.mergeMonthActivities(currentmonthactivities, [minitask]);
@@ -175,7 +175,7 @@ export class CalendarService extends BaseService {
         currentmonth = moment(memo.sd).format("YYYY/MM");
 
         if (firstmonth >= currentmonth && currentmonth <= lastmonth) {
-          let diff = moment(currentmonth).diff(firstmonth).months();
+          let diff = moment(currentmonth).diff(firstmonth, "months");
 
           let currentmonthactivities = this.calendaractivities[diff];
           this.mergeMonthActivities(currentmonthactivities, [memo]);
