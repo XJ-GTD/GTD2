@@ -164,7 +164,7 @@ describe('CalendarService test suite', () => {
 
   });
 
-  it(`Case 21 - 1 mergeCalendarActivity 合并日历显示列表活动数据 - 合并1个任务`, async () => {
+  it(`Case 21 - 2 mergeCalendarActivity 合并日历显示列表活动数据 - 合并1个任务`, async () => {
     // 初始化
     let calendaractivities = await calendarService.getCalendarActivities();
 
@@ -265,8 +265,8 @@ describe('CalendarService test suite', () => {
   });
 
   it(`Case 17 - 3 - 1 getCalendarActivities 取得日历画面显示活动一览 - 向下拉加载(未初始化报错)`, () => {
-    expect(function() {
-      calendarService.getCalendarActivities(PageDirection.PageDown);
+    expect(async () => {
+      await calendarService.getCalendarActivities(PageDirection.PageDown);
     }).toThrow();
   });
 
