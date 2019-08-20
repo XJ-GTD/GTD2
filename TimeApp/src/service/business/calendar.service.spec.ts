@@ -173,7 +173,7 @@ describe('CalendarService test suite', () => {
 
     plan = await calendarService.savePlan(plan);
 
-    let memos = calendarService.fetchPlanMemos(plan.ji);
+    let memos = await calendarService.fetchPlanMemos(plan.ji);
 
     expect(memos).toBeDefined();
     expect(memos.length).toBe(0);
@@ -188,7 +188,7 @@ describe('CalendarService test suite', () => {
 
     plan = await calendarService.savePlan(plan);
 
-    let events = calendarService.fetchPlanEvents(plan.ji);
+    let events = await calendarService.fetchPlanEvents(plan.ji);
 
     expect(events).toBeDefined();
     expect(events.length).toBe(0);
