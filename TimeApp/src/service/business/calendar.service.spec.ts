@@ -164,7 +164,7 @@ describe('CalendarService test suite', () => {
 
   });
 
-  it(`Case 15 - 2 downloadPublicPlan 下载日历 - 存在日历项`, () => {
+  it(`Case 15 - 2 downloadPublicPlan 下载日历 - 存在日历项`, async () => {
     await calendarService.downloadPublicPlan("chinese_famous_2019", PlanType.CalendarPlan);
 
     let plan = await calendarService.getPlan("chinese_famous_2019", PlanType.CalendarPlan);
