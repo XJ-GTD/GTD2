@@ -164,6 +164,70 @@ describe('CalendarService test suite', () => {
 
   });
 
+  it(`Case 20 - 1 fetchPlanMemos 取得指定日历所有备忘 - 无备忘`, async () => {
+    let plan: PlanData = {} as PlanData;
+
+    plan.jn = '冥王星服务类 自动测试';
+    plan.jc = '#f1f1f1';
+    plan.jt = PlanType.PrivatePlan;
+
+    plan = await calendarService.savePlan(plan);
+
+    let memos = await calendarService.fetchPlanMemos(plan.ji);
+
+    expect(memos).toBeDefined();
+    expect(memos.length).toBe(0);
+  });
+
+  it(`Case 19 - 1 fetchPlanEvents 取得指定日历所有事件 - 无事件`, async () => {
+    let plan: PlanData = {} as PlanData;
+
+    plan.jn = '冥王星服务类 自动测试';
+    plan.jc = '#f1f1f1';
+    plan.jt = PlanType.PrivatePlan;
+
+    plan = await calendarService.savePlan(plan);
+
+    let events = await calendarService.fetchPlanEvents(plan.ji);
+
+    expect(events).toBeDefined();
+    expect(events.length).toBe(0);
+  });
+
+  it(`Case 18 - 1 - 2 findActivities 活动查询 - 今天上午有什么会议?(没有会议)`, async () => {
+    let condition: FindActivityCondition = new FindActivityCondition();
+
+    condition.sd = moment().format("YYYY/MM/DD");
+    condition.st = "06:00";
+    condition.ed = moment().format("YYYY/MM/DD");
+    condition.et = "11:00";
+    condition.text = "会议";
+    condition.mark.push("会议");
+
+    let activities = await calendarService.findActivities(condition);
+
+    expect(activities).toBeDefined();
+    expect(activities.calendaritems.length).toBe(0);
+    expect(activities.events.length).toBe(0);
+    expect(activities.memos.length).toBe(0);
+  });
+
+  it(`Case 18 - 1 - 1 findActivities 活动查询 - 今天上午有什么安排?(没有活动)`, async () => {
+    let condition: FindActivityCondition = new FindActivityCondition();
+
+    condition.sd = moment().format("YYYY/MM/DD");
+    condition.st = "06:00";
+    condition.ed = moment().format("YYYY/MM/DD");
+    condition.et = "11:00";
+
+    let activities = await calendarService.findActivities(condition);
+
+    expect(activities).toBeDefined();
+    expect(activities.calendaritems.length).toBe(0);
+    expect(activities.events.length).toBe(0);
+    expect(activities.memos.length).toBe(0);
+  });
+
   it(`Case 18 - 1 findActivities 活动查询 - 今天有什么安排?(没有活动)`, async () => {
     let condition: FindActivityCondition = new FindActivityCondition();
 
