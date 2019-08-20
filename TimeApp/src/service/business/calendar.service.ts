@@ -472,7 +472,8 @@ export class CalendarService extends BaseService {
       let planitemdb: JtaTbl = new JtaTbl();
       Object.assign(planitemdb, item);
 
-      console.log(JSON.stringify(planitemdb));
+      planitemdb.tb = SyncType.synch;
+      planitemdb.del = DelType.undel;
 
       await this.sqlExce.saveByParam(planitemdb);
 
