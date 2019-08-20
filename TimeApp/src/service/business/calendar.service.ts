@@ -54,7 +54,7 @@ export class CalendarService extends BaseService {
           }
 
           // 多条数据同时更新/单条数据更新
-          if (typeof data === "array") {
+          if (typeof data === 'arrya') {
             for (let single of data) {
               this.mergeCalendarActivity(single);
             }
