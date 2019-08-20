@@ -178,12 +178,12 @@ describe('CalendarService test suite', () => {
 
     expect(monthSummary).toBeDefined();
     // 08/03 ~ 08/06 ActivityPlan
-    expect(monthSummary.days[1].activityitemscount.length).toBe(0);
-    expect(monthSummary.days[2].activityitemscount.length).toBe(1);
-    expect(monthSummary.days[3].activityitemscount.length).toBe(1);
-    expect(monthSummary.days[4].activityitemscount.length).toBe(1);
-    expect(monthSummary.days[5].activityitemscount.length).toBe(1);
-    expect(monthSummary.days[6].activityitemscount.length).toBe(0);
+    expect(monthSummary.days[1].activityitemscount).toBe(0);
+    expect(monthSummary.days[2].activityitemscount).toBe(1);
+    expect(monthSummary.days[3].activityitemscount).toBe(1);
+    expect(monthSummary.days[4].activityitemscount).toBe(1);
+    expect(monthSummary.days[5].activityitemscount).toBe(1);
+    expect(monthSummary.days[6].activityitemscount).toBe(0);
   });
 
   it(`Case 15 - 2 downloadPublicPlan 下载日历 - 存在日历项(普通日历项)`, async () => {
@@ -200,12 +200,12 @@ describe('CalendarService test suite', () => {
 
     expect(monthSummary).toBeDefined();
     // 08/08 08/23 CalendarPlan
-    expect(monthSummary.days[6].calendaritemscount.length).toBe(0);
-    expect(monthSummary.days[7].calendaritemscount.length).toBe(1);
-    expect(monthSummary.days[8].calendaritemscount.length).toBe(0);
-    expect(monthSummary.days[21].calendaritemscount.length).toBe(0);
-    expect(monthSummary.days[22].calendaritemscount.length).toBe(1);
-    expect(monthSummary.days[23].calendaritemscount.length).toBe(0);
+    expect(monthSummary.days[6].calendaritemscount).toBe(0);
+    expect(monthSummary.days[7].calendaritemscount).toBe(1);
+    expect(monthSummary.days[8].calendaritemscount).toBe(0);
+    expect(monthSummary.days[21].calendaritemscount).toBe(0);
+    expect(monthSummary.days[22].calendaritemscount).toBe(1);
+    expect(monthSummary.days[23].calendaritemscount).toBe(0);
 
   });
 
