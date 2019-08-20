@@ -264,10 +264,9 @@ describe('CalendarService test suite', () => {
     expect(activities.memos.length).toBe(0);
   });
 
-  it(`Case 17 - 3 - 1 getCalendarActivities 取得日历画面显示活动一览 - 向下拉加载(未初始化报错)`, () => {
-    expect(async () => {
-      await calendarService.getCalendarActivities(PageDirection.PageDown);
-    }).toThrow();
+  it(`Case 17 - 3 - 1 getCalendarActivities 取得日历画面显示活动一览 - 向下拉加载(未初始化报错)`, async () => {
+    await expectAsync(calendarService.getCalendarActivities(PageDirection.PageDown)).toBeRejected();
+
   });
 
   it(`Case 17 - 3 getCalendarActivities 取得日历画面显示活动一览 - 向下拉加载`, async () => {
@@ -287,10 +286,8 @@ describe('CalendarService test suite', () => {
     expect(calendarholdings[4].month).toBe(moment(month).add(2, "months").format("YYYY/MM"));
   });
 
-  it(`Case 17 - 2 - 1 getCalendarActivities 取得日历画面显示活动一览 - 向上拉加载(未初始化报错)`, () => {
-    expect(function() {
-      calendarService.getCalendarActivities(PageDirection.PageUp);
-    }).toThrow();
+  it(`Case 17 - 2 - 1 getCalendarActivities 取得日历画面显示活动一览 - 向上拉加载(未初始化报错)`, async () => {
+    await expectAsync(calendarService.getCalendarActivities(PageDirection.PageUp)).toBeRejected();
   });
 
   it(`Case 17 - 2 getCalendarActivities 取得日历画面显示活动一览 - 向上拉加载`, async () => {
