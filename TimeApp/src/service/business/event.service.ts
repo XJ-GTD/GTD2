@@ -15,9 +15,7 @@ import * as anyenum from "../../data.enum";
 import { BackupPro, BacRestful, OutRecoverPro, RecoverPro } from "../restful/bacsev";
 import {ParTbl} from "../sqlite/tbl/par.tbl";
 import {JhaTbl} from "../sqlite/tbl/jha.tbl";
-import {DTbl} from "../sqlite/tbl/d.tbl";
 import {DataConfig} from "../config/data.config";
-import {FsData} from "../../data.mapping";
 import {BTbl} from "../sqlite/tbl/b.tbl";
 
 @Injectable()
@@ -89,6 +87,8 @@ export class EventService extends BaseService {
     ev.evi = evi;
     ev = await this.sqlExce.getOneByParam<AgendaData>(ev);
     Object.assign(agdata , ev);
+    agdata.rtjson = JSON.parse(agdata.rt);
+    agdata.txjson = JSON.parse(agdata.tx);
 
     //主evi设定
     let masterEvi : string;
@@ -108,7 +108,7 @@ export class EventService extends BaseService {
     let jha = new JhaTbl();
     jha.ji = agdata.ji;
     jha = await this.sqlExce.getOneByParam<JhaTbl>(jha);
-    Object.assign(agdata.jha ,jha);
+    agdata.jha = jha;
 
     if(agdata.gs == '0'){
       //共享人信息
@@ -174,13 +174,13 @@ export class EventService extends BaseService {
 
   /**
    * 删除日程
-   * @param {AgendaData} agdata
+   * @param {AgendaData} oriAgdata
    * @param {OperateType} delType
    * 删除非重复日程、重复日程中的某一日程使用OperateType.OnlySel
    * 删除重复日程、非重复日程to重复日程使用OperateType.FromSel
    * @returns {Promise<Array<AgendaData>>}
    */
-  async delAgenda(agdata : AgendaData, delType : anyenum.OperateType):Promise<Array<AgendaData>>{
+  async delAgenda(oriAgdata : AgendaData, delType : anyenum.OperateType):Promise<Array<AgendaData>>{
 
     let outAgds = new Array<AgendaData>();
 
@@ -192,13 +192,13 @@ export class EventService extends BaseService {
       //删除事件中从当前开始所有日程
       //主evi设定
       let masterEvi : string;
-      if (agdata.rtevi == ""){
-        masterEvi = agdata.evi;
+      if (oriAgdata.rtevi == ""){
+        masterEvi = oriAgdata.evi;
       }else {
-        masterEvi = agdata.rtevi;
+        masterEvi = oriAgdata.rtevi;
       }
 
-      sq = `delete from gtd_ev where evd >= '${agdata.evd}' and (evi = '${masterEvi}' or rtevi =  '${masterEvi}') ;`;
+      sq = `delete from gtd_ev where evd >= '${oriAgdata.evd}' and (evi = '${masterEvi}' or rtevi =  '${masterEvi}') ;`;
       this.sqlExce.execSql(sq);
 
       //更新原事件日程结束日或事件表无记录了则删除
@@ -210,7 +210,7 @@ export class EventService extends BaseService {
       let ca = new CaTbl();
       ca.evi = caevi;
       if (evtbls.length > 0){
-        ca.ed = moment(agdata.evd).subtract(1,'d').format("YYYY/MM/dd");
+        ca.ed = moment(oriAgdata.evd).subtract(1,'d').format("YYYY/MM/dd");
         sqlparam.push(ca.upTParam());
       }else{
         sqlparam.push(ca.dTParam());
@@ -224,7 +224,7 @@ export class EventService extends BaseService {
 
       //删除原事件中从当前日程开始所有提醒
       sq = `delete from gtd_wa where wai in (select evi from gtd_ev
-          where evd >= '${agdata.evd}' and (evi = '${masterEvi}' or rtevi =  '${masterEvi}')
+          where evd >= '${oriAgdata.evd}' and (evi = '${masterEvi}' or rtevi =  '${masterEvi}')
           and obt = '${anyenum.ObjectType.Event}'; `;
       sqlparam.push(sq);
     }else{
@@ -233,15 +233,15 @@ export class EventService extends BaseService {
 
       //删除事件表数据
       let ev = new EvTbl();
-      ev.evi = agdata.evi;
+      ev.evi = oriAgdata.evi;
       this.sqlExce.delByParam(ev);
 
       //主evi设定
       let masterEvi : string;
-      if (agdata.rtevi == ""){
-        masterEvi = agdata.evi;
+      if (oriAgdata.rtevi == ""){
+        masterEvi = oriAgdata.evi;
       }else {
-        masterEvi = agdata.rtevi;
+        masterEvi = oriAgdata.rtevi;
       }
 
       //更新原事件日程结束日或事件表无记录了则删除
@@ -264,7 +264,7 @@ export class EventService extends BaseService {
 
       // 删除相关提醒
       let wa = new WaTbl();
-      wa.obi = agdata.evi;
+      wa.obi = oriAgdata.evi;
       wa.obt = anyenum.ObjectType.Event;
       sqlparam.push(wa.dTParam());
 
@@ -275,38 +275,41 @@ export class EventService extends BaseService {
   }
 
   /**
-   * 保存日程
-   * @param {AgendaData} agdata
+   * 保存或修改日程
+   * @param {AgendaData} newAgdata 新日程详情
+   * @param {AgendaData} oriAgdata 原日程详情 修改场合必须传入
    * @param {OperateType} modiType
    * 修改非重复日程to非重复日程、重复日程中的某一日程to非重复日程使用OperateType.OnlySel，
    * 修改重复日程to重复日程、非重复日程to重复日程使用OperateType.FromSel，
    * 新建日程使用 OperateType.Non
-   * @returns {Promise<AgendaData>}
+   * @returns {Promise<Array<AgendaData>>}
    */
-  async saveAgenda(agdata : AgendaData, modiType : anyenum.OperateType = anyenum.OperateType.Non): Promise<Array<AgendaData>> {
+  async saveAgenda(newAgdata : AgendaData, oriAgdata:AgendaData = null, modiType : anyenum.OperateType = anyenum.OperateType.Non): Promise<Array<AgendaData>> {
     // 入参不能为空
-    this.assertEmpty(agdata);
-    this.assertEmpty(agdata.sd);    // 日程开始日期不能为空
-    this.assertEmpty(agdata.evn);   // 日程标题不能为空
+    this.assertEmpty(newAgdata);
+    this.assertEmpty(newAgdata.sd);    // 日程开始日期不能为空
+    this.assertEmpty(newAgdata.evn);   // 日程标题不能为空
 
     // 新建日程
-    if (!agdata.evi || agdata.evi == "") {
-      if (agdata.rtjson || agdata.rt || agdata.rts) {
-        this.assertEmpty(agdata.rtjson);  // 新建重复日程不能为空
+    if (!newAgdata.evi || newAgdata.evi == "") {
+      if (newAgdata.rtjson || newAgdata.rt || newAgdata.rts) {
+        this.assertEmpty(newAgdata.rtjson);  // 新建重复日程不能为空
       } else {
-        agdata.rtjson = new RtJson();
+        newAgdata.rtjson = new RtJson();
       }
 
-      if (agdata.txjson || agdata.tx || agdata.txs) {
-        this.assertEmpty(agdata.txjson);  // 新建日程提醒不能为空
+      if (newAgdata.txjson || newAgdata.tx || newAgdata.txs) {
+        this.assertEmpty(newAgdata.txjson);  // 新建日程提醒不能为空
       } else {
-        agdata.txjson = new TxJson();
+        newAgdata.txjson = new TxJson();
       }
     }
 
-    if (agdata.evi != null && agdata.evi != "") {
+    if (newAgdata.evi != null && newAgdata.evi != "") {
       /*修改*/
-      let outAgdatas = await this.updateAgenda(agdata,modiType);
+      this.assertNotNull(oriAgdata);   // 原始日程详情不能为空
+
+      let outAgdatas = await this.updateAgenda(newAgdata,oriAgdata,modiType);
 
       return outAgdatas;
 
@@ -314,12 +317,12 @@ export class EventService extends BaseService {
 
       /*新增*/
       let retParamEv = new RetParamEv();
-      retParamEv = await this.newAgenda(agdata);
+      retParamEv = await this.newAgenda(newAgdata);
 
       //提交服务器
       let agdPro: AgdPro = new AgdPro();
       //restFul保存事件日程
-      this.setAgdPro(agdPro, agdata,retParamEv.rtevi);
+      this.setAgdPro(agdPro, newAgdata,retParamEv.rtevi);
       // 语音创建的时候，如果不同步，会导致服务器还没有保存完日程，保存联系人的请求就来了，导致查不到日程无法触发共享联系人动作
       // 必须增加await，否则，页面创建和语音创建方法必须分开
       let rst = await this.agdRest.save(agdPro);
@@ -327,8 +330,8 @@ export class EventService extends BaseService {
 
       //如果网络正常提交到服务器，则更新同步标志同步通过websocket来通知
 
-      this.emitService.emitRef(agdata.sd);
-      console.log(agdata);
+      this.emitService.emitRef(newAgdata.sd);
+      console.log(newAgdata);
 
       return retParamEv.outAgdatas;
     }
@@ -366,11 +369,12 @@ export class EventService extends BaseService {
 
   /**
    * 更新日程
-   * @param {AgendaData} agdata
+   * @param {AgendaData} newAgdata
+   * @param {AgendaData} oriAgdata
    * @param {OperateType} modiType
    * @returns {Promise<Array<AgendaData>>}
    */
-  private async updateAgenda(agdata: AgendaData, modiType : anyenum.OperateType):Promise<Array<AgendaData>> {
+  private async updateAgenda(newAgdata: AgendaData,oriAgdata : AgendaData, modiType : anyenum.OperateType):Promise<Array<AgendaData>> {
 
 
     let outAgds = new Array<AgendaData>();
@@ -389,13 +393,13 @@ export class EventService extends BaseService {
 
       //主evi设定
       let masterEvi : string;
-      if (agdata.rtevi == ""){
-        masterEvi = agdata.evi;
+      if (oriAgdata.rtevi == ""){
+        masterEvi = oriAgdata.evi;
       }else {
-        masterEvi = agdata.rtevi;
+        masterEvi = oriAgdata.rtevi;
       }
-
-      sq = `delete from gtd_ev where evd >= '${agdata.evd}' and (evi = '${masterEvi}' or rtevi =  '${masterEvi}') ;`;
+      //evd使用原日程evd
+      sq = `delete from gtd_ev where evd >= '${oriAgdata.evd}' and (evi = '${masterEvi}' or rtevi =  '${masterEvi}') ;`;
       this.sqlExce.execSql(sq);
 
       //更新原事件日程结束日或事件表无记录了则删除
@@ -407,26 +411,26 @@ export class EventService extends BaseService {
       let ca = new CaTbl();
       ca.evi = caevi;
       if (evtbls.length > 0){
-        ca.ed = moment(agdata.evd).subtract(1,'d').format("YYYY/MM/dd");
+        ca.ed = moment(oriAgdata.evd).subtract(1,'d').format("YYYY/MM/dd");//evd使用原日程evd
         sqlparam.push(ca.upTParam());
       }else{
         sqlparam.push(ca.dTParam());
       }
 
-      //删除原事件中从当前日程开始所有提醒
+      //删除原事件中从当前日程开始所有提醒 evd使用原日程evd
       sq = `delete from gtd_wa where wai in (select evi from gtd_ev
-          where evd >= '${agdata.evd}' and (evi = '${masterEvi}' or rtevi =  '${masterEvi}')
+          where evd >= '${oriAgdata.evd}' and (evi = '${masterEvi}' or rtevi =  '${masterEvi}')
            and obt = '${anyenum.ObjectType.Event}' ; `;
       sqlparam.push(sq);
 
 
 
       //新建新事件日程
-      let newAgdata = {} as AgendaData;
-      Object.assign(newAgdata ,agdata );
+      let nwAgdata = {} as AgendaData;
+      Object.assign(nwAgdata ,newAgdata );
 
       let retParamEv = new RetParamEv();
-      retParamEv = await this.newAgenda(newAgdata);
+      retParamEv = await this.newAgenda(nwAgdata);
 
       sqlparam = [...sqlparam, ...retParamEv.sqlparam];
       outAgds = retParamEv.outAgdatas;
@@ -434,7 +438,7 @@ export class EventService extends BaseService {
     }else if(modiType == anyenum.OperateType.OnlySel) {
 
       //事件表更新
-      agdata.mi = UserConfig.account.id;
+      newAgdata.mi = UserConfig.account.id;
 
       let rtjon = new RtJson();
       rtjon.cycletype = anyenum.CycleType.close;
@@ -442,46 +446,46 @@ export class EventService extends BaseService {
       rtjon.over.type = anyenum.OverType.fornever;
       rtjon.cyclenum = 1;
       rtjon.openway = new Array<number>();
-      agdata.rt = JSON.stringify(rtjon);
-      agdata.rts = !agdata.rts ? "" : agdata.rts ;
+      newAgdata.rt = JSON.stringify(rtjon);
+      newAgdata.rts = !newAgdata.rts ? "" : newAgdata.rts ;
 
-      if (agdata.rfg == anyenum.RepeatFlag.Repeat){
-        agdata.rfg = anyenum.RepeatFlag.RepeatToNon;
+      if (newAgdata.rfg == anyenum.RepeatFlag.Repeat){
+        newAgdata.rfg = anyenum.RepeatFlag.RepeatToNon;
       }
 
-      agdata.tx = JSON.stringify(agdata.txjson);
+      newAgdata.tx = JSON.stringify(newAgdata.txjson);
 
       let ev = new EvTbl();
-      ev.evi = agdata.evi;
-      ev.evn = agdata.evn;
-      ev.evd = agdata.evd;
-      ev.ji = agdata.ji;
-      ev.bz = agdata.bz;
-      ev.tx = agdata.tx;
-      ev.txs = agdata.txs;
-      ev.rt = agdata.rt;
-      ev.rts = agdata.rts;
-      ev.rfg = agdata.rfg;
+      ev.evi = oriAgdata.evi;//evi使用原evi
+      ev.evn = newAgdata.evn;
+      ev.evd = newAgdata.evd;
+      ev.ji = newAgdata.ji;
+      ev.bz = newAgdata.bz;
+      ev.tx = newAgdata.tx;
+      ev.txs = newAgdata.txs;
+      ev.rt = newAgdata.rt;
+      ev.rts = newAgdata.rts;
+      ev.rfg = newAgdata.rfg;
 
       sqlparam.push(ev.upTParam());
 
       let outAgd  = {} as AgendaData;
       Object.assign(outAgd,ev);
-      outAgds.push(agdata);
+      outAgds.push(newAgdata);
 
       // 删除相关提醒
       let wa = new WaTbl();
-      wa.obi = agdata.evi;
+      wa.obi = oriAgdata.evi;//obi使用原evi
       wa.obt = anyenum.ObjectType.Event;
       sqlparam.push(wa.dTParam());
 
       //提醒新建
-      if (agdata.txjson.type != anyenum.TxType.close) {
-        sqlparam.push(this.sqlparamAddTxWa(ev, agdata.st, agdata.al, agdata.txjson).rpTParam());
+      if (newAgdata.txjson.type != anyenum.TxType.close) {
+        sqlparam.push(this.sqlparamAddTxWa(ev, newAgdata.st, newAgdata.al, newAgdata.txjson).rpTParam());
       }
       //日程表新建或更新
       let caparam = new Array<any>();
-      caparam = this.sqlparamAddCa(agdata.evi ,agdata.evd,agdata.evd,agdata);
+      caparam = this.sqlparamAddCa(oriAgdata.evi ,newAgdata.evd,newAgdata.evd,newAgdata);//evi使用原evi
       //console.log(JSON.stringify(caparam));
 
       sqlparam = [...sqlparam, ...caparam];
