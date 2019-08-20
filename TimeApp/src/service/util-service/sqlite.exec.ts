@@ -56,7 +56,7 @@ export class SqliteExec {
             this.noteLog(log);
           }
 
-          console.log("sql [" + sql + "] log error :" + JSON.stringify(err));
+          console.log("sql [" + sql + "] params [" + (params? params.join(",") : "") + "] log error :" + JSON.stringify(err));
           resolve(err);
         });
       });
@@ -174,7 +174,7 @@ export class SqliteExec {
         }
         resolve(arr);
       }).catch(e=>{
-        console.log("getExtList [" + sql + "] log error :" + JSON.stringify(e));
+        console.log("getExtList [" + sql + "] without params log error :" + JSON.stringify(e));
         resolve(arr);
       })
     })
@@ -238,7 +238,7 @@ export class SqliteExec {
           sql = sql + sqlist[j];
         }
         return this.sqlitePorter.importSqlToDb(this.sqlliteConfig.database, sql).catch(error=>{
-          console.log("batExecSql [" + sql + "] log error :" + JSON.stringify(error));
+          console.log("batExecSql [" + sql + "] without params log error :" + JSON.stringify(error));
         })
 
       } else {
@@ -424,7 +424,7 @@ export class SqliteExec {
    * @param {Array<any>} params
    * @returns {Promise<Array<T>>}
    */
-  getExtLstByParam<T>(sql: string,params:Array<any>): Promise<Array<T>> {
+  getExtLstByParam<T>(sql: string, params:Array<any>): Promise<Array<T>> {
     return new Promise((resolve, reject) => {
       let arr : Array<T> = new Array<T>();
       //console.log("getExtList执行SQL："+sql);
@@ -436,7 +436,7 @@ export class SqliteExec {
         }
         resolve(arr);
       }).catch(e=>{
-        console.log("getExtLstByParam [" + sql + "] log error :" + JSON.stringify(e));
+        console.log("getExtLstByParam [" + sql + "] params [" + (params? params.join(",") : "") + "] log error :" + JSON.stringify(e));
         resolve(arr);
       })
     })
