@@ -15,11 +15,176 @@ import { MomTbl } from "../sqlite/tbl/mom.tbl";
 
 @Injectable()
 export class CalendarService extends BaseService {
+
+  private calendaractivities: Array<MonthActivityData> = new Array<MonthActivityData>();
+
   constructor(private sqlExce: SqliteExec,
               private util: UtilService,
               private emitService: EmitService,
               private shareRestful: ShaeRestful) {
     super();
+  }
+
+  /**
+   * 取得日历显示列表
+   *
+   * 所有月份数据保持在calendaractivities中
+   *
+   * 初始化(PageDirection.PageInit)3个月的数据（上一个月、当前月份、下个月）
+   * 向上翻页(PageDirection.PageUp)加载最后一个月的下一个月的数据
+   * 向下翻页(PageDirection.PageDown)加载第一个月的上一个月的数据
+   *
+   * @author leon_xi@163.com
+   **/
+  async getCalendarActivities(direction: PageDirection = PageDirection.PageInit): Promise<Array<MonthActivityData>> {
+    this.assertEmpty(direction);    // 入参不能为空
+
+    switch(direction) {
+      case PageDirection.PageInit :
+        this.calendaractivities.push(await fetchMonthActivities(moment().subtract(1, "months").format("YYYY/MM")));
+        this.calendaractivities.push(await fetchMonthActivities(moment().format("YYYY/MM")));
+        this.calendaractivities.push(await fetchMonthActivities(moment().add(1, "months").format("YYYY/MM")));
+
+        // 活动变化时自动更新日历显示列表数据
+        this.emitService.destroy("mwxing.calendar.activities.changed");
+        this.emitService.register("mwxing.calendar.activities.changed", (data) => {
+          if (!data) {
+            this.assertFail("事件mwxing.calendar.activities.changed无扩展数据");
+            return;
+          }
+
+          // 多条数据同时更新/单条数据更新
+          if (typeof data == "array") {
+            for (let single of data) {
+              this.mergeCalendarActivity(single);
+            }
+          } else {
+            this.mergeCalendarActivity(data);
+          }
+        });
+
+        break;
+      case PageDirection.PageUp :
+        if (this.calendaractivities.length < 1) {
+          this.assertFail("getCalendarActivities 调用PageDirection.PageUp之前, 请先调用PageDirection.PageInit。");
+        }
+        let lastmonth: string = this.calendaractivities[this.calendaractivities.length - 1].month;
+        this.calendaractivities.push(await fetchMonthActivities(moment(lastmonth).add(1, "months").format("YYYY/MM")));
+        break;
+      case PageDirection.PageDown :
+        if (this.calendaractivities.length < 1) {
+          this.assertFail("getCalendarActivities 调用PageDirection.PageDown, 请先调用PageDirection.PageInit。");
+        }
+        let firstmonth: string = this.calendaractivities[0].month;
+        this.calendaractivities.push(await fetchMonthActivities(moment(firstmonth).subtract(1, "months").format("YYYY/MM")));
+        break;
+      default:
+        this.assertFail();    // 非法参数
+    }
+
+    return this.calendaractivities;
+  }
+
+  /**
+   * 合并日历显示列表
+   *
+   * 所有月份数据保持在calendaractivities中
+   *
+   * @author leon_xi@163.com
+   **/
+  mergeCalendarActivity(activity: any) {
+    // 判断活动数据类型
+    let activityType: string = this.getActivityType(activity);
+
+    let firstmonth: string = this.calendaractivities[0].month;
+    let lastmonth: string = this.calendaractivities[this.calendaractivities.length - 1].month;
+    let currentmonth: string = "";
+
+    // 根据活动日期合并入缓存日历显示列表数据
+    switch (activityType) {
+      case "PlanItemData" :
+        // 转换成匹配对象类型
+        let item: PlanItemData = {} as PlanItemData;
+        Object.assign(item, activity);
+
+        // 判断数据是否属于当前缓存日期范围
+        currentmonth = moment(item.sd).format("YYYY/MM");
+
+        if (firstmonth >= currentmonth && currentmonth <= lastmonth) {
+          let diff = moment(currentmonth).diff(firstmonth).months();
+
+          let currentmonthactivities = this.calendaractivities[diff];
+          this.mergeMonthActivities(currentmonthactivities, [item]);
+        }
+
+        break;
+      case "AgendaData" :
+        // 转换成匹配对象类型
+        let agenda: AgendaData = {} as AgendaData;
+        Object.assign(agenda, activity);
+
+        // 判断数据是否属于当前缓存日期范围
+        currentmonth = moment(agenda.evd).format("YYYY/MM");
+
+        if (firstmonth >= currentmonth && currentmonth <= lastmonth) {
+          let diff = moment(currentmonth).diff(firstmonth).months();
+
+          let currentmonthactivities = this.calendaractivities[diff];
+          this.mergeMonthActivities(currentmonthactivities, [agenda]);
+        }
+
+        break;
+      case "TaskData" :
+        // 转换成匹配对象类型
+        let task: TaskData = {} as TaskData;
+        Object.assign(task, activity);
+
+        // 判断数据是否属于当前缓存日期范围
+        currentmonth = moment(task.evd).format("YYYY/MM");
+
+        if (firstmonth >= currentmonth && currentmonth <= lastmonth) {
+          let diff = moment(currentmonth).diff(firstmonth).months();
+
+          let currentmonthactivities = this.calendaractivities[diff];
+          this.mergeMonthActivities(currentmonthactivities, [task]);
+        }
+
+        break;
+      case "MiniTaskData" :
+        // 转换成匹配对象类型
+        let minitask: MiniTaskData = {} as MiniTaskData;
+        Object.assign(minitask, activity);
+
+        // 判断数据是否属于当前缓存日期范围
+        currentmonth = moment(minitask.evd).format("YYYY/MM");
+
+        if (firstmonth >= currentmonth && currentmonth <= lastmonth) {
+          let diff = moment(currentmonth).diff(firstmonth).months();
+
+          let currentmonthactivities = this.calendaractivities[diff];
+          this.mergeMonthActivities(currentmonthactivities, [minitask]);
+        }
+
+        break;
+      case "MemoData" :
+        // 转换成匹配对象类型
+        let memo: MemoData = {} as MemoData;
+        Object.assign(memo, activity);
+
+        // 判断数据是否属于当前缓存日期范围
+        currentmonth = moment(memo.sd).format("YYYY/MM");
+
+        if (firstmonth >= currentmonth && currentmonth <= lastmonth) {
+          let diff = moment(currentmonth).diff(firstmonth).months();
+
+          let currentmonthactivities = this.calendaractivities[diff];
+          this.mergeMonthActivities(currentmonthactivities, [memo]);
+        }
+
+        break;
+      default :
+        this.assertFail();    // 非法数据
+    }
   }
 
   /**
