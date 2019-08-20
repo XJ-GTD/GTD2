@@ -5,7 +5,7 @@ import { UtilService } from "../util-service/util.service";
 import { EmitService } from "../util-service/emit.service";
 import { BipdshaeData, Plan, PlanPa, ShareData, ShaeRestful } from "../restful/shaesev";
 import { EventData, TaskData, AgendaData, MiniTaskData } from "./event.service";
-import { EventType, PlanType, PlanItemType, PlanDownloadType, ObjectType, PageDirection, DelType } from "../../data.enum";
+import { EventType, PlanType, PlanItemType, PlanDownloadType, ObjectType, PageDirection, SyncType, DelType } from "../../data.enum";
 import { MemoData } from "./memo.service";
 import * as moment from "moment";
 import { JhaTbl } from "../sqlite/tbl/jha.tbl";
@@ -614,6 +614,8 @@ export class CalendarService extends BaseService {
       plandb.jg = plan.pn.pd;
       plandb.jc = plan.pn.pm;
       plandb.jtd = PlanDownloadType.YES;
+      plandb.tb = SyncType.synch;
+      plandb.del = DelType.undel;
 
       sqls.push(plandb.inTParam());
 
@@ -630,6 +632,9 @@ export class CalendarService extends BaseService {
           planitemdb.sd = moment(pa.adt).format("YYYY/MM/DD");  //所属日期      必传
           planitemdb.st = pa.st;      //所属时间
           planitemdb.bz = pa.am;      //备注
+          planitemdb.px = plan.pn.px; //排序
+          planitemdb.tb = SyncType.synch;
+          planitemdb.del = DelType.undel;
 
           sqls.push(planitemdb.inTParam());
         }
