@@ -171,7 +171,7 @@ export class MemoService extends BaseService {
 		if (outRecoverProNew.mom.length > 0) {
 			let mom = new MomTbl();
 			//先删除
-			await this.sqlExce.dropByParam(mom);
+			await this.sqlExce.delByParam(mom);
 			//恢复数据
 			for(let j = 0, len = outRecoverProNew.mom.length; j < len; j++) {
 				let mom = new MomTbl();
