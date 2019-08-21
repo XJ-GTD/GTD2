@@ -298,7 +298,25 @@ describe('EventService test suite', () => {
 		expect(data.length).toBeGreaterThan(0);
   })
 
-
+	it('Case 8 - 1 backup 备份、恢复', async() => {
+		
+		let tx: TaskData = {} as TaskData;
+    tx.evn ="shopping,今天穿的是花裤衩";
+    tx = await eventService.saveTask(tx);
+    expect(tx).toBeDefined();
+    expect(tx.evi).toBeDefined();
+    
+    let bts: Number = moment().unix();
+    await eventService.backup(bts);
+    
+    await eventService.recovery(null,bts);
+    
+    let txx: TaskData = {} as TaskData;
+    txx = await eventService.getTask(tx.evi);
+    expect(txx).toBeDefined();
+    expect(txx.evn).toBe(tx.evn);
+	
+	})
   afterAll(() => {
     TestBed.resetTestingModule();
   });
