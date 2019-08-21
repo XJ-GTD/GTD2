@@ -5,7 +5,7 @@ import { UtilService } from "../util-service/util.service";
 import { EmitService } from "../util-service/emit.service";
 import { BipdshaeData, Plan, PlanPa, ShareData, ShaeRestful } from "../restful/shaesev";
 import { EventData, TaskData, AgendaData, MiniTaskData } from "./event.service";
-import { EventType, PlanType, PlanItemType, PlanDownloadType, ObjectType, PageDirection, DelType } from "../../data.enum";
+import { EventType, PlanType, PlanItemType, PlanDownloadType, ObjectType, PageDirection, SyncType, DelType } from "../../data.enum";
 import { MemoData } from "./memo.service";
 import * as moment from "moment";
 import { JhaTbl } from "../sqlite/tbl/jha.tbl";
@@ -15,11 +15,189 @@ import { MomTbl } from "../sqlite/tbl/mom.tbl";
 
 @Injectable()
 export class CalendarService extends BaseService {
+
+  private calendaractivities: Array<MonthActivityData> = new Array<MonthActivityData>();
+
   constructor(private sqlExce: SqliteExec,
               private util: UtilService,
               private emitService: EmitService,
               private shareRestful: ShaeRestful) {
     super();
+  }
+
+  clearCalendarActivities() {
+    this.calendaractivities.length = 0;
+  }
+
+  /**
+   * 取得日历显示列表
+   *
+   * 所有月份数据保持在calendaractivities中
+   *
+   * 初始化(PageDirection.PageInit)3个月的数据（上一个月、当前月份、下个月）
+   * 向上翻页(PageDirection.PageUp)加载最后一个月的下一个月的数据
+   * 向下翻页(PageDirection.PageDown)加载第一个月的上一个月的数据
+   *
+   * @author leon_xi@163.com
+   **/
+  async getCalendarActivities(direction: PageDirection = PageDirection.PageInit): Promise<Array<MonthActivityData>> {
+    this.assertEmpty(direction);    // 入参不能为空
+
+    switch(direction) {
+      case PageDirection.PageInit :
+        this.calendaractivities = new Array<MonthActivityData>();   // 强制重新初始化
+
+        this.calendaractivities.push(await this.fetchMonthActivities(moment().subtract(1, "months").format("YYYY/MM")));
+        this.calendaractivities.push(await this.fetchMonthActivities(moment().format("YYYY/MM")));
+        this.calendaractivities.push(await this.fetchMonthActivities(moment().add(1, "months").format("YYYY/MM")));
+
+        // 活动变化时自动更新日历显示列表数据
+        this.emitService.destroy("mwxing.calendar.activities.changed");
+        this.emitService.register("mwxing.calendar.activities.changed", (data) => {
+          if (!data) {
+            this.assertFail("事件mwxing.calendar.activities.changed无扩展数据");
+            return;
+          }
+
+          // 多条数据同时更新/单条数据更新
+          if (data instanceof Array) {
+            for (let single of data) {
+              this.mergeCalendarActivity(single);
+            }
+          } else {
+            this.mergeCalendarActivity(data);
+          }
+        });
+
+        break;
+      case PageDirection.PageUp :
+        if (this.calendaractivities.length < 1) {
+          this.assertFail("getCalendarActivities 调用PageDirection.PageUp之前, 请先调用PageDirection.PageInit。");
+        }
+        let lastmonth: string = this.calendaractivities[this.calendaractivities.length - 1].month;
+        this.calendaractivities.push(await this.fetchMonthActivities(moment(lastmonth).add(1, "months").format("YYYY/MM")));
+        break;
+      case PageDirection.PageDown :
+        if (this.calendaractivities.length < 1) {
+          this.assertFail("getCalendarActivities 调用PageDirection.PageDown, 请先调用PageDirection.PageInit。");
+        }
+        let firstmonth: string = this.calendaractivities[0].month;
+        this.calendaractivities.unshift(await this.fetchMonthActivities(moment(firstmonth).subtract(1, "months").format("YYYY/MM")));
+        break;
+      default:
+        this.assertFail();    // 非法参数
+    }
+
+    return this.calendaractivities;
+  }
+
+  /**
+   * 合并日历显示列表
+   *
+   * 所有月份数据保持在calendaractivities中
+   *
+   * @author leon_xi@163.com
+   **/
+  mergeCalendarActivity(activity: any) {
+    this.assertEmpty(activity);   // 入参不能为空
+
+    // 如果没有缓存数据，不处理
+    if (this.calendaractivities.length < 1) {
+      return;
+    }
+
+    // 判断活动数据类型
+    let activityType: string = this.getActivityType(activity);
+
+    let firstmonth: string = this.calendaractivities[0].month;
+    let lastmonth: string = this.calendaractivities[this.calendaractivities.length - 1].month;
+    let currentmonth: string = "";
+
+    // 根据活动日期合并入缓存日历显示列表数据
+    switch (activityType) {
+      case "PlanItemData" :
+        // 转换成匹配对象类型
+        let item: PlanItemData = {} as PlanItemData;
+        Object.assign(item, activity);
+
+        // 判断数据是否属于当前缓存日期范围
+        currentmonth = moment(item.sd).format("YYYY/MM");
+
+        if (firstmonth >= currentmonth && currentmonth <= lastmonth) {
+          let diff = moment(currentmonth).diff(firstmonth, "months");
+
+          let currentmonthactivities = this.calendaractivities[diff];
+          this.mergeMonthActivities(currentmonthactivities, [item]);
+        }
+
+        break;
+      case "AgendaData" :
+        // 转换成匹配对象类型
+        let agenda: AgendaData = {} as AgendaData;
+        Object.assign(agenda, activity);
+
+        // 判断数据是否属于当前缓存日期范围
+        currentmonth = moment(agenda.evd).format("YYYY/MM");
+
+        if (firstmonth >= currentmonth && currentmonth <= lastmonth) {
+          let diff = moment(currentmonth).diff(firstmonth, "months");
+
+          let currentmonthactivities = this.calendaractivities[diff];
+          this.mergeMonthActivities(currentmonthactivities, [agenda]);
+        }
+
+        break;
+      case "TaskData" :
+        // 转换成匹配对象类型
+        let task: TaskData = {} as TaskData;
+        Object.assign(task, activity);
+
+        // 判断数据是否属于当前缓存日期范围
+        currentmonth = moment(task.evd).format("YYYY/MM");
+
+        if (firstmonth >= currentmonth && currentmonth <= lastmonth) {
+          let diff = moment(currentmonth).diff(firstmonth, "months");
+
+          let currentmonthactivities = this.calendaractivities[diff];
+          this.mergeMonthActivities(currentmonthactivities, [task]);
+        }
+
+        break;
+      case "MiniTaskData" :
+        // 转换成匹配对象类型
+        let minitask: MiniTaskData = {} as MiniTaskData;
+        Object.assign(minitask, activity);
+
+        // 判断数据是否属于当前缓存日期范围
+        currentmonth = moment(minitask.evd).format("YYYY/MM");
+
+        if (firstmonth >= currentmonth && currentmonth <= lastmonth) {
+          let diff = moment(currentmonth).diff(firstmonth, "months");
+
+          let currentmonthactivities = this.calendaractivities[diff];
+          this.mergeMonthActivities(currentmonthactivities, [minitask]);
+        }
+
+        break;
+      case "MemoData" :
+        // 转换成匹配对象类型
+        let memo: MemoData = {} as MemoData;
+        Object.assign(memo, activity);
+
+        // 判断数据是否属于当前缓存日期范围
+        currentmonth = moment(memo.sd).format("YYYY/MM");
+
+        if (firstmonth >= currentmonth && currentmonth <= lastmonth) {
+          let diff = moment(currentmonth).diff(firstmonth, "months");
+
+          let currentmonthactivities = this.calendaractivities[diff];
+          this.mergeMonthActivities(currentmonthactivities, [memo]);
+        }
+
+        break;
+      default :
+        this.assertFail();    // 非法数据
+    }
   }
 
   /**
@@ -93,6 +271,11 @@ export class CalendarService extends BaseService {
 
     plandb = await this.sqlExce.getOneByParam<JhaTbl>(plandb);
 
+    // 计划不存在直接返回
+    if (!plandb) {
+      return null;
+    }
+
     Object.assign(plan, plandb);
 
     if (!withchildren) {
@@ -118,7 +301,7 @@ export class CalendarService extends BaseService {
                               ea.ct ct
                        from gtd_ev ev
                           left join gtd_ca ea on ea.evi = ev.evi
-                       where jt = '${EventType.Agenda}' and ji = ?`;
+                       where ev.type = '${EventType.Agenda}' and ev.ji = ?`;
 
       let agendas: Array<AgendaData> = await this.sqlExce.getExtLstByParam<AgendaData>(agendasql, params);
 
@@ -129,13 +312,13 @@ export class CalendarService extends BaseService {
                             et.fd fd
                      from gtd_ev ev
                         left join gtd_t et on et.evi = ev.evi
-                     where jt = '${EventType.Task}' and ji = ?`;
+                     where ev.type = '${EventType.Task}' and ev.ji = ?`;
 
       let tasks: Array<TaskData> = await this.sqlExce.getExtLstByParam<TaskData>(tasksql, params);
 
       let minitasksql = `select *
                          from gtd_ev
-                         where jt = '${EventType.MiniTask}' and ji = ?`;
+                         where type = '${EventType.MiniTask}' and ji = ?`;
 
       let minitasks: Array<MiniTaskData> = await this.sqlExce.getExtLstByParam<MiniTaskData>(minitasksql, params);
 
@@ -171,7 +354,7 @@ export class CalendarService extends BaseService {
 
     let sqls: Array<any> = new Array<any>();
 
-    sqls.push(plandb.drTParam());
+    sqls.push(plandb.dTParam());
 
     // 同时删除日历项
     if (withchildren) {
@@ -179,13 +362,13 @@ export class CalendarService extends BaseService {
         let planitemdb: JtaTbl = new JtaTbl();
         planitemdb.ji = ji;
 
-        sqls.push(planitemdb.drTParam());
+        sqls.push(planitemdb.dTParam());
 
         // 删除关联表，通过未关联主表条件删除
-        sqls.push(`delete * from gtd_fj where obt = '${ObjectType.Calendar}' and obi not in (select jti from gtd_jt);`);   // 附件表
-        sqls.push(`delete * from gtd_e where obt = '${ObjectType.Calendar}' and obi not in (select jti from gtd_jt);`);    // 提醒表
-        sqls.push(`delete * from gtd_d where obt = '${ObjectType.Calendar}' and obi not in (select jti from gtd_jt);`);    // 参与人表
-        sqls.push(`delete * from gtd_mk where obt = '${ObjectType.Calendar}' and obi not in (select jti from gtd_jt);`);   // 标签表
+        sqls.push(`delete from gtd_fj where obt = '${ObjectType.Calendar}' and obi not in (select jti from gtd_jt);`);   // 附件表
+        sqls.push(`delete from gtd_wa where obt = '${ObjectType.Calendar}' and obi not in (select jti from gtd_jt);`);    // 提醒表
+        sqls.push(`delete from gtd_par where obt = '${ObjectType.Calendar}' and obi not in (select jti from gtd_jt);`);    // 参与人表
+        sqls.push(`delete from gtd_mrk where obt = '${ObjectType.Calendar}' and obi not in (select jti from gtd_jt);`);   // 标签表
       }
 
       if (jt == PlanType.PrivatePlan) {
@@ -193,28 +376,28 @@ export class CalendarService extends BaseService {
         eventdb.ji = ji;
 
         // 删除事件主表
-        sqls.push(eventdb.drTParam());
+        sqls.push(eventdb.dTParam());
 
         // 删除关联表，通过未关联主表条件删除
-        sqls.push(`delete * from gtd_ea where evi not in (select evi from gtd_ev);`);   // 日程表
-        sqls.push(`delete * from gtd_et where evi not in (select evi from gtd_ev);`);   // 任务表
+        sqls.push(`delete from gtd_ca where evi not in (select evi from gtd_ev);`);   // 日程表
+        sqls.push(`delete from gtd_t where evi not in (select evi from gtd_ev);`);   // 任务表
 
-        sqls.push(`delete * from gtd_fj where obt = '${ObjectType.Event}' and obi not in (select evi from gtd_ev);`);   // 附件表
-        sqls.push(`delete * from gtd_e where obt = '${ObjectType.Event}' and obi not in (select evi from gtd_ev);`);    // 提醒表
-        sqls.push(`delete * from gtd_d where obt = '${ObjectType.Event}' and obi not in (select evi from gtd_ev);`);    // 参与人表
-        sqls.push(`delete * from gtd_mk where obt = '${ObjectType.Event}' and obi not in (select evi from gtd_ev);`);   // 标签表
+        sqls.push(`delete from gtd_fj where obt = '${ObjectType.Event}' and obi not in (select evi from gtd_ev);`);   // 附件表
+        sqls.push(`delete from gtd_wa where obt = '${ObjectType.Event}' and obi not in (select evi from gtd_ev);`);    // 提醒表
+        sqls.push(`delete from gtd_par where obt = '${ObjectType.Event}' and obi not in (select evi from gtd_ev);`);    // 参与人表
+        sqls.push(`delete from gtd_mrk where obt = '${ObjectType.Event}' and obi not in (select evi from gtd_ev);`);   // 标签表
 
         let memodb: MomTbl = new MomTbl();
         memodb.ji = ji;
 
         // 删除备忘主表
-        sqls.push(memodb.drTParam());
+        sqls.push(memodb.dTParam());
 
         // 删除关联表，通过未关联主表条件删除
-        sqls.push(`delete * from gtd_fj where obt = '${ObjectType.Memo}' and obi not in (select moi from gtd_mo);`);   // 附件表
-        sqls.push(`delete * from gtd_e where obt = '${ObjectType.Memo}' and obi not in (select moi from gtd_mo);`);    // 提醒表
-        sqls.push(`delete * from gtd_d where obt = '${ObjectType.Memo}' and obi not in (select moi from gtd_mo);`);    // 参与人表
-        sqls.push(`delete * from gtd_mk where obt = '${ObjectType.Memo}' and obi not in (select moi from gtd_mo);`);   // 标签表
+        sqls.push(`delete from gtd_fj where obt = '${ObjectType.Memo}' and obi not in (select moi from gtd_mo);`);   // 附件表
+        sqls.push(`delete from gtd_wa where obt = '${ObjectType.Memo}' and obi not in (select moi from gtd_mo);`);    // 提醒表
+        sqls.push(`delete from gtd_par where obt = '${ObjectType.Memo}' and obi not in (select moi from gtd_mo);`);    // 参与人表
+        sqls.push(`delete from gtd_mrk where obt = '${ObjectType.Memo}' and obi not in (select moi from gtd_mo);`);   // 标签表
       }
     } else {
       // 不删除子元素，需要把子元素的计划ID更新为空/默认计划ID
@@ -302,7 +485,8 @@ export class CalendarService extends BaseService {
       let planitemdb: JtaTbl = new JtaTbl();
       Object.assign(planitemdb, item);
 
-      console.log(JSON.stringify(planitemdb));
+      planitemdb.tb = SyncType.synch;
+      planitemdb.del = DelType.undel;
 
       await this.sqlExce.saveByParam(planitemdb);
 
@@ -324,7 +508,7 @@ export class CalendarService extends BaseService {
     let planitemdb: JtaTbl = new JtaTbl();
     planitemdb.jti = jti;
 
-    await this.sqlExce.dropByParam(planitemdb);
+    await this.sqlExce.delByParam(planitemdb);
 
     // 删除日历项关联表项目
 
@@ -409,7 +593,7 @@ export class CalendarService extends BaseService {
 
     this.assertEmpty(ji);   // 入参不能为空
 
-    let sql: string = `select * from gtd_mom where ji = '${ji}' order by evd ${sort}`;
+    let sql: string = `select * from gtd_mom where ji = '${ji}' order by sd ${sort}`;
 
     return await this.sqlExce.getExtList<MemoData>(sql);
   }
@@ -434,7 +618,7 @@ export class CalendarService extends BaseService {
       // 删除既存数据
       let delexistsqls: Array<any> = this.removePlanSqls(ji, jt);
 
-      sqls.concat(delexistsqls);
+      sqls = sqls.concat(delexistsqls);
 
       // 创建新数据
       let plandb: JhaTbl = new JhaTbl();
@@ -444,18 +628,27 @@ export class CalendarService extends BaseService {
       plandb.jg = plan.pn.pd;
       plandb.jc = plan.pn.pm;
       plandb.jtd = PlanDownloadType.YES;
+      plandb.tb = SyncType.synch;
+      plandb.del = DelType.undel;
 
       sqls.push(plandb.inTParam());
+
+      let itemType: PlanItemType = (jt == PlanType.CalendarPlan? PlanItemType.Holiday : PlanItemType.Activity);
 
       // 创建日历项
       if (plan.pa && plan.pa.length > 0) {
         for (let pa of plan.pa) {
           let planitemdb: JtaTbl = new JtaTbl();
+          planitemdb.jti = this.util.getUuid();
           planitemdb.ji = ji;         //计划ID
+          planitemdb.jtt = itemType;  //日历项类型
           planitemdb.jtn = pa.at;     //日程事件主题  必传
           planitemdb.sd = moment(pa.adt).format("YYYY/MM/DD");  //所属日期      必传
           planitemdb.st = pa.st;      //所属时间
           planitemdb.bz = pa.am;      //备注
+          planitemdb.px = plan.pn.px; //排序
+          planitemdb.tb = SyncType.synch;
+          planitemdb.del = DelType.undel;
 
           sqls.push(planitemdb.inTParam());
         }
@@ -595,6 +788,8 @@ export class CalendarService extends BaseService {
 
       return days;
     }, days);
+
+    monthActivity.days = days;
 
     return monthActivity;
   }
@@ -1125,11 +1320,11 @@ export class CalendarService extends BaseService {
         ciwhere += `sd <= ? `;
         ciargs.push(condition.ed);
 
-        evwhere += (evwhere? '' : 'where ');
+        evwhere += (evwhere? 'and ' : 'where ');
         evwhere += `evd <= ? `;
         evargs.push(condition.ed);
 
-        mowhere += (mowhere? '' : 'where ');
+        mowhere += (mowhere? 'and ' : 'where ');
         mowhere += `sd <= ? `;
         moargs.push(condition.ed);
       }
@@ -1138,41 +1333,42 @@ export class CalendarService extends BaseService {
       if (condition.text) {
         ciwhere += (ciwhere? 'and ' : 'where ');
         ciwhere += `jtn like ? `;
-        ciargs.push(condition.text);
+        ciargs.push("%" + condition.text + "%");
 
         evwhere += (evwhere? 'and ' : 'where ');
         evwhere += `(evn like ? or bz like ?) `;
-        evargs.push(condition.text);
-        evargs.push(condition.text);
+        evargs.push("%" + condition.text + "%");
+        evargs.push("%" + condition.text + "%");
 
         mowhere += (mowhere? 'and ' : 'where ');
         mowhere += `mon like ? `;
-        moargs.push(condition.text);
+        moargs.push("%" + condition.text + "%");
       }
 
       // 标签查询
       if (condition.mark && condition.mark.length > 0) {
         let likes: string = new Array<string>(condition.mark.length).fill('?', 0, condition.mark.length).join(' or mkl like ');
+        let querymarks: Array<string> = condition.mark.map(value => { return "%" + value + "%";});
 
         ciwhere += (ciwhere? 'and ' : 'where ');
-        ciwhere += `jti in (select obi from gtd_mk where obt = ? and (mkl like ${likes}) `;
+        ciwhere += `jti in (select obi from gtd_mrk where obt = ? and (mkl like ${likes})) `;
         ciargs.push(ObjectType.Calendar);
-        ciargs.concat(condition.mark);
+        ciargs = ciargs.concat(querymarks);
 
         evwhere += (evwhere? 'and ' : 'where ');
-        evwhere += `evi in (select obi from gtd_mk where obt = ? and (mkl like ${likes}) `;
+        evwhere += `evi in (select obi from gtd_mrk where obt = ? and (mkl like ${likes})) `;
         evargs.push(ObjectType.Event);
-        evargs.concat(condition.mark);
+        evargs = evargs.concat(querymarks);
 
         mowhere += (mowhere? 'and ' : 'where ');
-        mowhere += `moi in (select obi from gtd_mk where obt = ? and (mkl like ${likes}) `;
+        mowhere += `moi in (select obi from gtd_mrk where obt = ? and (mkl like ${likes})) `;
         moargs.push(ObjectType.Memo);
-        moargs.concat(condition.mark);
+        moargs = moargs.concat(querymarks);
       }
 
-      sqlcalitems = `select * from gtd_jta ${ciwhere} order by st asc`;
-      sqlevents = `select * from gtd_ev ${evwhere} order by st asc`;
-      sqlmemos = `select * from gtd_mom ${mowhere} order by st asc`;
+      sqlcalitems = `select * from gtd_jta ${ciwhere} order by sd asc`;
+      sqlevents = `select * from gtd_ev ${evwhere} order by evd asc`;
+      sqlmemos = `select * from gtd_mom ${mowhere} order by sd asc`;
     }
 
     // 执行查询

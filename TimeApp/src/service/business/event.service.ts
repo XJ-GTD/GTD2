@@ -13,11 +13,16 @@ import {EmitService} from "../util-service/emit.service";
 import {WaTbl} from "../sqlite/tbl/wa.tbl";
 import * as anyenum from "../../data.enum";
 import { BackupPro, BacRestful, OutRecoverPro, RecoverPro } from "../restful/bacsev";
+import {ParTbl} from "../sqlite/tbl/par.tbl";
+import {JhaTbl} from "../sqlite/tbl/jha.tbl";
+import {DataConfig} from "../config/data.config";
+import {BTbl} from "../sqlite/tbl/b.tbl";
 
 @Injectable()
 export class EventService extends BaseService {
   constructor(private sqlExce: SqliteExec, private util: UtilService,
-              private agdRest: AgdRestful,private emitService:EmitService,private bacRestful: BacRestful) {
+              private agdRest: AgdRestful,private emitService:EmitService,
+              private bacRestful: BacRestful,private userConfig: UserConfig) {
     super();
   }
 
@@ -70,14 +75,122 @@ export class EventService extends BaseService {
   }
 
   /**
-   * 删除日程
-   * @param {AgendaData} agdata
-   * @param {OperateType} delType
-   * 删除非重复日程、重复日程中的某一日程使用OperateType.OnlySel
-   * 删除重复日程、非重复日程to重复日程使用OperateType.FromSel
+   * 取得日程相关所有信息
+   * @param {string} evi
    * @returns {Promise<Array<AgendaData>>}
    */
-  async delAgenda(agdata : AgendaData, delType : anyenum.OperateType):Promise<Array<AgendaData>>{
+  async getAgenda(evi : string):Promise<AgendaData>{
+
+    let agdata = {} as AgendaData;
+    //获取事件详情
+    let ev = new EvTbl();
+    ev.evi = evi;
+    ev = await this.sqlExce.getOneByParam<EvTbl>(ev);
+    Object.assign(agdata , ev);
+    agdata.rtjson = JSON.parse(agdata.rt);
+    agdata.txjson = JSON.parse(agdata.tx);
+
+    //主evi设定
+    let masterEvi : string;
+    if (agdata.rtevi == ""){
+      //非重复数据或重复数据的父记录
+      masterEvi = agdata.evi;
+    }else if (agdata.rfg == anyenum.RepeatFlag.RepeatToNon){
+      //重复中独立数据
+      masterEvi = agdata.evi;
+    }else{
+      //重复数据
+      masterEvi = agdata.rtevi;
+    }
+
+    //取得日程表详情
+    let ca = new CaTbl();
+    ca.evi = masterEvi;
+    ca = await  this.sqlExce.getOneByParam<CaTbl>(ca);
+    agdata.sd = ca.sd ;
+    agdata.st = ca.st ;
+    agdata.ed = ca.ed ;
+    agdata.et = ca.et ;
+    agdata.al = ca.al ;
+    agdata.ct = ca.ct ;
+
+    //取得计划详情
+    let jha = new JhaTbl();
+    jha.ji = agdata.ji;
+    jha = await this.sqlExce.getOneByParam<JhaTbl>(jha);
+    agdata.jha = jha;
+
+    if(agdata.gs == '0'){
+      //共享人信息
+      agdata.parters = await this.getParterByEvi(masterEvi);
+    }
+
+    if(agdata.gs == '1'){
+      //发起人信息
+      agdata.originator = await this.getParterByUi(agdata.ui);
+    }
+    return agdata;
+
+  }
+
+  /**
+   * 根据事件Id获取联系人信息
+   * @returns {Promise<Array<Parter>>}
+   */
+  private async getParterByEvi(evi:string):Promise<Array<Parter>>{
+    let parters: Array<Parter> =new Array<Parter>();
+    //共享人信息
+    let pars: Array<ParTbl> = new Array<ParTbl>();
+    let par = new ParTbl();
+    par.obi = evi;
+    par.obt = anyenum.ObjectType.Event;
+    pars = await this.sqlExce.getLstByParam<ParTbl>(par);
+    for (let j = 0, len = pars.length; j < len; j++) {
+      let parter = {} as Parter;
+      //todo userConfig改造
+      //parter = this.userConfig.GetOneBTbl(pars[j].pwi);
+      if(parter && parter != null){
+        parters.push(parter);
+      }
+    }
+    return parters;
+  }
+
+  /**
+   * 根据用户Id获取联系人信息
+   * @returns {Promise<Parter>}
+   */
+  private async getParterByUi(ui:string):Promise<Parter>{
+    let parter = {} as Parter;
+    //发起人信息
+    let tmp = this.userConfig.GetOneBTbl(ui);
+    if (tmp) {
+      //todo userConfig改造
+      //parter = tmp;
+    }else{
+      //不存在查询数据库
+      let b = new BTbl();
+      b.ui = ui;
+      b = await this.sqlExce.getExtOne<BTbl>(b.slT());
+      if(b != null){
+        Object.assign(parter, b);
+        parter.bhiu = DataConfig.HUIBASE64;
+      }else{
+        console.error("=======PgbusiService 获取发起人失败 =======")
+      }
+    }
+    return parter;
+  }
+
+  /**
+   * 删除事件
+   * @param {AgendaData} oriAgdata
+   * @param {OperateType} delType
+   * 删除非重复事件、重复事件中的独立日使用OperateType.OnlySel
+   * 删除重复事件使用OperateType.FromSel
+   * @returns {Promise<Array<AgendaData>>}
+   */
+  async delAgenda(oriAgdata : AgendaData, delType : anyenum.OperateType):Promise<Array<AgendaData>>{
 
     let outAgds = new Array<AgendaData>();
 
@@ -86,20 +199,20 @@ export class EventService extends BaseService {
 
     if (delType == anyenum.OperateType.FromSel){
       let sq : string ;
-      //删除事件中从当前开始所有日程
+      //删除事件中从当前开始所有事件
       //主evi设定
       let masterEvi : string;
-      if (agdata.rtevi == ""){
-        masterEvi = agdata.evi;
+      if (oriAgdata.rtevi == ""){
+        masterEvi = oriAgdata.evi;
       }else {
-        masterEvi = agdata.rtevi;
+        masterEvi = oriAgdata.rtevi;
       }
 
-      sq = `delete from gtd_ev where evd >= '${agdata.evd}' and (evi = '${masterEvi}' or rtevi =  '${masterEvi}') ;`;
-      this.sqlExce.execSql(sq);
+      sq = `update gtd_ev set del ='${anyenum.DelType.del}'  where evd >= '${oriAgdata.evd}' and (evi = '${masterEvi}' or rtevi =  '${masterEvi}') ;`;
+      await this.sqlExce.execSql(sq);
 
       //更新原事件日程结束日或事件表无记录了则删除
-      sq = `select * from gtd_ev where evi = '${masterEvi}' or rtevi =  '${masterEvi}' ;`;
+      sq = `select * from gtd_ev where (evi = '${masterEvi}' or rtevi =  '${masterEvi}') and del <>'${anyenum.DelType.del}' ;`;
       let evtbls = new Array<EvTbl>();
       evtbls = await this.sqlExce.getExtList<EvTbl>(sq);
 
@@ -107,15 +220,22 @@ export class EventService extends BaseService {
       let ca = new CaTbl();
       ca.evi = caevi;
       if (evtbls.length > 0){
-        ca.ed = moment(agdata.evd).subtract(1,'d').format("YYYY/MM/dd");
+        ca.ed = moment(oriAgdata.evd).subtract(1,'d').format("YYYY/MM/DD");
         sqlparam.push(ca.upTParam());
       }else{
         sqlparam.push(ca.dTParam());
+
+        //本地删除事件参与人
+        let par: ParTbl = new ParTbl();
+        par.obt = anyenum.ObjectType.Event;
+        par.obi = masterEvi;
+        sqlparam.push(par.dTParam());
       }
 
-      //删除原事件中从当前日程开始所有提醒
-      sq = `delete from gtd_wa where wai in (select evi from gtd_ev 
-          where evd >= '${agdata.evd}' and (evi = '${masterEvi}' or rtevi =  '${masterEvi}') ; `;
+      //删除原事件中从当前事件开始所有提醒
+      sq = `delete from gtd_wa where wai in (select evi from gtd_ev
+          where evd >= '${oriAgdata.evd}' and (evi = '${masterEvi}' or rtevi =  '${masterEvi}')
+          and obt = '${anyenum.ObjectType.Event}'and  del ='${anyenum.DelType.del}' ; `;
       sqlparam.push(sq);
     }else{
 
@@ -123,32 +243,80 @@ export class EventService extends BaseService {
 
       //删除事件表数据
       let ev = new EvTbl();
-      ev.evi = agdata.evi;
-      this.sqlExce.delByParam(ev);
+      ev.evi = oriAgdata.evi;
+      ev.del = anyenum.DelType.del;
+      await this.sqlExce.updateByParam(ev);
 
       //主evi设定
       let masterEvi : string;
-      if (agdata.rtevi == ""){
-        masterEvi = agdata.evi;
-      }else {
-        masterEvi = agdata.rtevi;
+      if (oriAgdata.rtevi == ""){
+        //非重复数据或重复数据的父记录
+        masterEvi = oriAgdata.evi;
+      }else if (oriAgdata.rfg == anyenum.RepeatFlag.RepeatToNon){
+        //重复中独立日
+        masterEvi = oriAgdata.evi;
+      }else{
+        //重复数据
+        masterEvi = oriAgdata.rtevi;
       }
 
       //更新原事件日程结束日或事件表无记录了则删除
-      sq = `select * from gtd_ev where evi = '${masterEvi}' or rtevi =  '${masterEvi}' ;`;
+      sq = `select * from gtd_ev where (evi = '${masterEvi}' or rtevi =  '${masterEvi}') and del <>'${anyenum.DelType.del}' ;`;
       let evtbls = new Array<EvTbl>();
       evtbls = await this.sqlExce.getExtList<EvTbl>(sq);
 
-      let caevi : string = masterEvi;
-      let ca = new CaTbl();
-      ca.evi = caevi;
+      let nwEvs = Array<EvTbl>();
+      let nwEv = new EvTbl();
+
       if (evtbls.length == 0){
+        let caevi : string = masterEvi;
+        let ca = new CaTbl();
+        ca.evi = caevi;
         sqlparam.push(ca.dTParam());
+
+        //本地删除事件参与人
+        let par: ParTbl = new ParTbl();
+        par.obt = anyenum.ObjectType.Event;
+        par.obi = masterEvi;
+        sqlparam.push(par.dTParam());
+      }else{
+        //如果当前删除对象是父事件，则为当前重复事件重建新的父事件，值为ev表重复记录里的第一条做为父事件
+        if (!oriAgdata.rtevi && oriAgdata.rtevi =="" && oriAgdata.rfg == anyenum.RepeatFlag.Repeat){
+          sq = `select * from gtd_ev where rtevi = '${oriAgdata.evi}' and  rfg = '${anyenum.RepeatFlag.Repeat}'
+         and del <>  '${anyenum.DelType.del}' order by evd ;`;
+
+          nwEvs = await this.sqlExce.getExtList<EvTbl>(sq);
+          if (nwEvs != null && nwEvs.length >0){
+            //更新首条为父事件
+            Object.assign(nwEv, nwEvs[0]);
+            nwEv.rtevi = "";
+            sqlparam.push(nwEv.upTParam());
+
+            //原子事件的父字段改为新的父事件
+            sq = `update gtd_ev set rtevi = '${nwEv.evi}' where rtevi = '${oriAgdata.evi}'; `;
+            sqlparam.push(sq);
+
+            //原对应日程删除
+            let delca = new CaTbl();
+            delca.evi = oriAgdata.evi;
+            sqlparam.push(delca.dTParam());
+
+            //为新的父事件建立新的对应日程
+            let nwca = new Array<any>();
+            nwca = this.sqlparamAddCa(nwEv.evi ,nwEv.evd,oriAgdata.ed,oriAgdata);
+
+            //复制原参与人到新的父事件
+            let nwpar = new Array<any>();
+            nwpar = this.sqlparamAddPar(nwEv.evi , oriAgdata.parters);
+
+            sqlparam = [...sqlparam, ...nwca, ...nwpar];
+          }
+        }
       }
 
       // 删除相关提醒
       let wa = new WaTbl();
-      wa.obi = agdata.evi;
+      wa.obi = oriAgdata.evi;
       wa.obt = anyenum.ObjectType.Event;
       sqlparam.push(wa.dTParam());
 
@@ -159,38 +327,41 @@ export class EventService extends BaseService {
   }
 
   /**
-   * 保存日程
-   * @param {AgendaData} agdata
+   * 保存或修改事件
+   * @param {AgendaData} newAgdata 新事件详情
+   * @param {AgendaData} oriAgdata 原事件详情 修改场合必须传入
    * @param {OperateType} modiType
-   * 修改非重复日程to非重复日程、重复日程中的某一日程to非重复日程使用OperateType.OnlySel，
-   * 修改重复日程to重复日程、非重复日程to重复日程使用OperateType.FromSel，
-   * 新建日程使用 OperateType.Non
-   * @returns {Promise<AgendaData>}
+   * 修改非重复事件to非重复日程、重复事件中的某一日程to独立日程使用OperateType.OnlySel，
+   * 修改重复事件to重复事件、非重复事件to重复事件使用OperateType.FromSel，
+   * 新建事件使用 OperateType.Non
+   * @returns {Promise<Array<AgendaData>>}
    */
-  async saveAgenda(agdata : AgendaData, modiType : anyenum.OperateType = anyenum.OperateType.Non): Promise<Array<AgendaData>> {
+  async saveAgenda(newAgdata : AgendaData, oriAgdata:AgendaData = null, modiType : anyenum.OperateType = anyenum.OperateType.Non): Promise<Array<AgendaData>> {
     // 入参不能为空
-    this.assertEmpty(agdata);
-    this.assertEmpty(agdata.sd);    // 日程开始日期不能为空
-    this.assertEmpty(agdata.evn);   // 日程标题不能为空
+    this.assertEmpty(newAgdata);
+    this.assertEmpty(newAgdata.sd);    // 事件开始日期不能为空
+    this.assertEmpty(newAgdata.evn);   // 事件标题不能为空
 
-    // 新建日程
-    if (!agdata.evi || agdata.evi == "") {
-      if (agdata.rtjson || agdata.rt || agdata.rts) {
-        this.assertEmpty(agdata.rtjson);  // 新建重复日程不能为空
+    // 新建事件
+    if (!newAgdata.evi || newAgdata.evi == "") {
+      if (newAgdata.rtjson || newAgdata.rt || newAgdata.rts) {
+        this.assertEmpty(newAgdata.rtjson);  // 新建事件重复设置不能为空
       } else {
-        agdata.rtjson = new RtJson();
+        newAgdata.rtjson = new RtJson();
       }
 
-      if (agdata.txjson || agdata.tx || agdata.txs) {
-        this.assertEmpty(agdata.txjson);  // 新建日程提醒不能为空
+      if (newAgdata.txjson || newAgdata.tx || newAgdata.txs) {
+        this.assertEmpty(newAgdata.txjson);  // 新建事件提醒不能为空
       } else {
-        agdata.txjson = new TxJson();
+        newAgdata.txjson = new TxJson();
       }
     }
 
-    if (agdata.evi != null && agdata.evi != "") {
+    if (newAgdata.evi != null && newAgdata.evi != "") {
       /*修改*/
-      let outAgdatas = await this.updateAgenda(agdata,modiType);
+      this.assertNull(oriAgdata);   // 原始事件详情不能为空
+
+      let outAgdatas = await this.updateAgenda(newAgdata,oriAgdata,modiType);
 
       return outAgdatas;
 
@@ -198,34 +369,28 @@ export class EventService extends BaseService {
 
       /*新增*/
       let retParamEv = new RetParamEv();
-      retParamEv = await this.newAgenda(agdata);
+      retParamEv = await this.newAgenda(newAgdata);
 
       //提交服务器
       let agdPro: AgdPro = new AgdPro();
       //restFul保存事件日程
-      this.setAgdPro(agdPro, agdata,retParamEv.rtevi);
+      this.setAgdPro(agdPro, newAgdata,retParamEv.rtevi);
       // 语音创建的时候，如果不同步，会导致服务器还没有保存完日程，保存联系人的请求就来了，导致查不到日程无法触发共享联系人动作
       // 必须增加await，否则，页面创建和语音创建方法必须分开
       let rst = await this.agdRest.save(agdPro);
       console.log(JSON.stringify(rst));
 
-      //如果网络正常提交到服务器，则更新同步标志
-      if (rst !=  anyenum.Err.netbroken){
-        let sq =`update gtd_ev set wtt = ${moment().unix()} , tb = '${anyenum.SyncType.synch}'
-        where rtevi = '${retParamEv.rtevi}' ;`;
+      //如果网络正常提交到服务器，则更新同步标志同步通过websocket来通知
 
-        await  this.sqlExce.execSql(sq);
-      }
-
-      this.emitService.emitRef(agdata.sd);
-      console.log(agdata);
+      this.emitService.emitRef(newAgdata.sd);
+      console.log(newAgdata);
 
       return retParamEv.outAgdatas;
     }
   }
 
   /**
-   * 新增日程
+   * 新增事件
    * @param {AgendaData} agdata
    * @returns {Promise<Array<AgendaData>>}
    */
@@ -233,18 +398,18 @@ export class EventService extends BaseService {
 
     //设置页面参数初始化
     this.initAgdParam(agdata);
-    console.log(JSON.stringify(agdata));
+    //console.log(JSON.stringify(agdata));
 
     //事件sqlparam 及提醒sqlparam
     let retParamEv = new RetParamEv();
     retParamEv = this.sqlparamAddEv2(agdata);
-    console.log(JSON.stringify(retParamEv));
+    //console.log(JSON.stringify(retParamEv));
 
 
     //日程表sqlparam
     let caparam = new Array<any>();
     caparam = this.sqlparamAddCa(retParamEv.rtevi,agdata.sd,retParamEv.ed,agdata);
-    console.log(JSON.stringify(caparam));
+    //console.log(JSON.stringify(caparam));
 
     //批量本地入库
     let sqlparam = new Array<any>();
@@ -255,12 +420,13 @@ export class EventService extends BaseService {
   }
 
   /**
-   * 更新日程
-   * @param {AgendaData} agdata
+   * 更新事件
+   * @param {AgendaData} newAgdata
+   * @param {AgendaData} oriAgdata
    * @param {OperateType} modiType
    * @returns {Promise<Array<AgendaData>>}
    */
-  private async updateAgenda(agdata: AgendaData, modiType : anyenum.OperateType):Promise<Array<AgendaData>> {
+  private async updateAgenda(newAgdata: AgendaData,oriAgdata : AgendaData, modiType : anyenum.OperateType):Promise<Array<AgendaData>> {
 
 
     let outAgds = new Array<AgendaData>();
@@ -275,21 +441,19 @@ export class EventService extends BaseService {
     if (modiType == anyenum.OperateType.FromSel ){
 
       let sq : string ;
-      //删除原事件中从当前开始所有日程
-
-      //主evi设定
-      let masterEvi : string;
-      if (agdata.rtevi == ""){
-        masterEvi = agdata.evi;
+      //删除原事件中从当前开始所有事件
+      let masterEvi : string;//主evi设定
+      if (oriAgdata.rtevi == ""){
+        masterEvi = oriAgdata.evi;
       }else {
-        masterEvi = agdata.rtevi;
+        masterEvi = oriAgdata.rtevi;
       }
-
-      sq = `delete from gtd_ev where evd >= '${agdata.evd}' and (evi = '${masterEvi}' or rtevi =  '${masterEvi}') ;`;
-      this.sqlExce.execSql(sq);
+      //evd使用原事件evd
+      sq = `update  gtd_ev set del ='${anyenum.DelType.del}' where evd >= '${oriAgdata.evd}' and (evi = '${masterEvi}' or rtevi =  '${masterEvi}') ;`;
+      await this.sqlExce.execSql(sq);
 
       //更新原事件日程结束日或事件表无记录了则删除
-      sq = `select * from gtd_ev where evi = '${masterEvi}' or rtevi =  '${masterEvi}' ;`;
+      sq = `select * from gtd_ev where (evi = '${masterEvi}' or rtevi =  '${masterEvi}') and del <> '${anyenum.DelType.del}' ;`;
       let evtbls = new Array<EvTbl>();
       evtbls = await this.sqlExce.getExtList<EvTbl>(sq);
 
@@ -297,32 +461,45 @@ export class EventService extends BaseService {
       let ca = new CaTbl();
       ca.evi = caevi;
       if (evtbls.length > 0){
-        ca.ed = moment(agdata.evd).subtract(1,'d').format("YYYY/MM/dd");
+        ca.ed = moment(oriAgdata.evd).subtract(1,'d').format("YYYY/MM/DD");//evd使用原事件evd
         sqlparam.push(ca.upTParam());
       }else{
         sqlparam.push(ca.dTParam());
+
+        //本地删除事件参与人
+        let par: ParTbl = new ParTbl();
+        par.obt = anyenum.ObjectType.Event;
+        par.obi = masterEvi;
+        sqlparam.push(par.dTParam());
       }
 
-      //删除原事件中从当前日程开始所有提醒
-      sq = `delete from gtd_wa where wai in (select evi from gtd_ev 
-          where evd >= '${agdata.evd}' and (evi = '${masterEvi}' or rtevi =  '${masterEvi}') ; `;
+      //删除原事件中从当前事件开始所有提醒 evd使用原事件evd
+      sq = `delete from gtd_wa where wai in (select evi from gtd_ev
+          where evd >= '${oriAgdata.evd}' and (evi = '${masterEvi}' or rtevi =  '${masterEvi}')
+           and obt = '${anyenum.ObjectType.Event}' and  del ='${anyenum.DelType.del}' ; `;
       sqlparam.push(sq);
 
 
 
       //新建新事件日程
-      let newAgdata = {} as AgendaData;
-      Object.assign(newAgdata ,agdata );
+      let nwAgdata = {} as AgendaData;
+      Object.assign(nwAgdata ,newAgdata );
+      nwAgdata.sd = nwAgdata.evd;
 
       let retParamEv = new RetParamEv();
-      retParamEv = await this.newAgenda(newAgdata);
+      retParamEv = await this.newAgenda(nwAgdata);
 
-      sqlparam = [...sqlparam, ...retParamEv.sqlparam];
+      //复制原参与人到新事件
+      let nwpar = new Array<any>();
+      nwpar = this.sqlparamAddPar(retParamEv.rtevi , oriAgdata.parters);
+
+      sqlparam = [...sqlparam, ...retParamEv.sqlparam, ...nwpar];
       outAgds = retParamEv.outAgdatas;
 
     }else if(modiType == anyenum.OperateType.OnlySel) {
 
       //事件表更新
+      newAgdata.mi = UserConfig.account.id;
 
       let rtjon = new RtJson();
       rtjon.cycletype = anyenum.CycleType.close;
@@ -330,47 +507,79 @@ export class EventService extends BaseService {
       rtjon.over.type = anyenum.OverType.fornever;
       rtjon.cyclenum = 1;
       rtjon.openway = new Array<number>();
-      agdata.rt = JSON.stringify(rtjon);
-      agdata.rts = !agdata.rts ? "" : agdata.rts ;
+      newAgdata.rt = JSON.stringify(rtjon);
+      newAgdata.rts = !newAgdata.rts ? "" : newAgdata.rts ;
 
-      if (agdata.rfg == anyenum.RepeatFlag.Repeat){
-        agdata.rfg = anyenum.RepeatFlag.RepeatToNon;
+      if (oriAgdata.rfg == anyenum.RepeatFlag.Repeat){
+        newAgdata.rfg = anyenum.RepeatFlag.RepeatToNon;
       }
 
-      agdata.tx = JSON.stringify(agdata.txjson);
+      newAgdata.tx = JSON.stringify(newAgdata.txjson);
 
       let ev = new EvTbl();
-      ev.evi = agdata.evi;
-      ev.evn = agdata.evn;
-      ev.evd = agdata.evd;
-      ev.ji = agdata.ji;
-      ev.bz = agdata.bz;
-      ev.tx = agdata.tx;
-      ev.txs = agdata.txs;
-      ev.rt = agdata.rt;
-      ev.rts = agdata.rts;
-      ev.rfg = agdata.rfg;
+      ev.evi = oriAgdata.evi;//evi使用原evi
+      ev.evn = newAgdata.evn;
+      ev.evd = newAgdata.evd;
+      ev.ji = newAgdata.ji;
+      ev.bz = newAgdata.bz;
+      ev.tx = newAgdata.tx;
+      ev.txs = newAgdata.txs;
+      ev.rt = newAgdata.rt;
+      ev.rts = newAgdata.rts;
+      ev.rfg = newAgdata.rfg;
 
-      sqlparam.push(ev.upTParam());
+      await this.sqlExce.updateByParam(ev);
 
       let outAgd  = {} as AgendaData;
       Object.assign(outAgd,ev);
-      outAgds.push(agdata);
+      outAgds.push(newAgdata);
 
       // 删除相关提醒
       let wa = new WaTbl();
-      wa.obi = agdata.evi;
+      wa.obi = oriAgdata.evi;//obi使用原evi
       wa.obt = anyenum.ObjectType.Event;
       sqlparam.push(wa.dTParam());
 
       //提醒新建
-      if (agdata.txjson.type != anyenum.TxType.close) {
-        sqlparam.push(this.sqlparamAddTxWa(ev, agdata.st, agdata.al, agdata.txjson).rpTParam());
+      if (newAgdata.txjson.type != anyenum.TxType.close) {
+        sqlparam.push(this.sqlparamAddTxWa(ev, newAgdata.st, newAgdata.al, newAgdata.txjson).rpTParam());
       }
+
+      let nwEvs = Array<EvTbl>();
+      let nwEv = new EvTbl();
+      let sq : string ;
+      //如果当前更新对象是父节点，则为当前重复日程重建新的父记录，值为ev表里的第一条做为父记录
+      if (!oriAgdata.rtevi && oriAgdata.rtevi =="" && oriAgdata.rfg == anyenum.RepeatFlag.Repeat){
+        sq = `select * from gtd_ev where rtevi = '${oriAgdata.evi}' and  rfg = '${anyenum.RepeatFlag.Repeat}'
+         and del <>  '${anyenum.DelType.del}' order by evd ;`;
+
+        nwEvs = await this.sqlExce.getExtList<EvTbl>(sq);
+        if (nwEvs != null && nwEvs.length >0){
+          //更新首条为父事件
+          Object.assign(nwEv, nwEvs[0]);
+          nwEv.rtevi = "";
+          sqlparam.push(nwEv.upTParam());
+
+          //原重复子事件的父字段改为新的父事件
+          sq = `update gtd_ev set rtevi = '${nwEv.evi}' where rtevi = '${oriAgdata.evi}'; `;
+          sqlparam.push(sq);
+
+          //为新的父事件建立新的对应日程
+          let nwca = new Array<any>();
+          nwca = this.sqlparamAddCa(nwEv.evi ,nwEv.evd,oriAgdata.ed,oriAgdata);
+
+          //复制原参与人到新的父事件
+          let nwpar = new Array<any>();
+          nwpar = this.sqlparamAddPar(nwEv.evi , oriAgdata.parters);
+
+          sqlparam = [...sqlparam, ...nwca, ...nwpar];
+        }
+      }
+
       //日程表新建或更新
       let caparam = new Array<any>();
-      caparam = this.sqlparamAddCa(agdata.evi ,agdata.evd,agdata.evd,agdata);
-      console.log(JSON.stringify(caparam));
+      caparam = this.sqlparamAddCa(oriAgdata.evi ,newAgdata.evd,newAgdata.evd,newAgdata);//evi使用原evi
+      //console.log(JSON.stringify(caparam));
 
       sqlparam = [...sqlparam, ...caparam];
 
@@ -389,6 +598,32 @@ export class EventService extends BaseService {
     }
     this.emitService.emitRef(scd.sd);*/
 
+  }
+
+  /**
+   * 创建参与人
+   * @param {string} evi
+   * @param {Array<Parter>} pars
+   * @returns {Array<any>}
+   */
+  private sqlparamAddPar(evi : string ,pars : Array<Parter>):Array<any>{
+    let ret = new Array<any>();
+    if (!pars && pars.length > 0){
+      for (let j = 0 ,len = pars.length;j < len ; j++){
+        let par = new ParTbl();
+        par.pari = this.util.getUuid();
+        par.pwi = pars[j].pwi;
+        par.ui = pars[j].ui;
+        par.obt = anyenum.ObjectType.Event;
+        par.obi = evi;
+        par.sa = pars[j].sa;
+        par.sdt = pars[j].sdt;
+        par.tb = pars[j].tb;
+        par.del = pars[j].del;
+        ret.push(par.inTParam());
+      }
+    }
+    return ret;
   }
 
   /**
@@ -515,7 +750,7 @@ export class EventService extends BaseService {
         break;
       case anyenum.OverType.limitdate :
         this.assertEmpty(rtjson.over.value);    // 结束条件不能为空
-        repeatEndDay = rtjson.over.value;
+        repeatEndDay = moment(rtjson.over.value).add(1,'days').format("YYYY/MM/DD");
         break;
       case anyenum.OverType.fornever :
         break;
@@ -687,7 +922,7 @@ export class EventService extends BaseService {
       }
       wa.wd = moment(date).format("YYYY/MM/DD");
       wa.wt = moment(date).format("HH:mm");
-      console.log('-------- 插入提醒表 --------');
+      //console.log('-------- 插入提醒表 --------');
 
     }
 
@@ -762,13 +997,8 @@ export class EventService extends BaseService {
 			Object.assign(evdb, tx);
 		  await this.sqlExce.updateByParam(evdb);
 		  let ttdb: TTbl = new TTbl();
-			//根据主键ID获取任务详情
-			ttdb.evi = tx.evi;
-			let ttdbNew = await this.sqlExce.getOneByParam<TTbl>(ttdb);
-			if (ttdbNew && ttdbNew.evi) {
-				Object.assign(ttdbNew, tx);
-				await this.sqlExce.updateByParam(ttdb);
-			}
+		  Object.assign(ttdb, tx);
+			await this.sqlExce.updateByParam(ttdb);
 		} else {
 			//创建事件
 			tx.evi = this.util.getUuid();
@@ -785,24 +1015,14 @@ export class EventService extends BaseService {
 			//创建任务
 			let ttdb: TTbl = new TTbl();
 			tx.cs = anyenum.IsSuccess.wait;
-			if(tx.isrt==''||tx.isrt == null || tx.isrt == "undefined")
-			{
-				tx.isrt = anyenum.IsCreate.isNo;
-			}
+			tx.isrt = tx.isrt || anyenum.IsCreate.isNo;
 			Object.assign(ttdb, tx);
 			await this.sqlExce.saveByParam(ttdb);
 		}
-		let txx: TaskData = {} as TaskData;
-		if(evi !="")
-		{
-			console.info("获取evi--"+evi);
-			let params= Array<any>();
-			let sqlparam: string =`select ev.*,td.cs,td.isrt,td.cd,td.fd from gtd_ev  ev left join gtd_t  td on ev.evi = td.evi where ev.evi ='${evi}'`;
-			console.info("执行的SQL"+sqlparam);
-			txx = await this.sqlExce.getExtOneByParam<TaskData>(sqlparam,params);
-			console.info("执行的结果"+txx.evi);
-		}
-		return txx;
+
+    this.emitService.emit("mwxing.calendar.activities.changed", tx);
+
+		return tx;
   }
 
 	/**
@@ -810,14 +1030,13 @@ export class EventService extends BaseService {
 	 */
 	async getTask(evi: string): Promise<TaskData> {
 			this.assertEmpty(evi); // id不能为空
-//			let sqlparam: string =`select ev.*,td.cs,td.isrt,td.cd,td.fd from gtd_ev  ev left join gtd_t  td on ev.evi = td.evi where ev.evi =${evi} `;
-  		let evdb: EvTbl = new EvTbl();
-  		evdb.evi = evi;
-  		let evdbNew =  await this.sqlExce.getOneByParam<EvTbl>(evdb);
-  		let data: TaskData  = {} as TaskData;
-//		data = await this.sqlExce.getExtOneByParam<TaskData>(sqlparam,null);
-			Object.assign(data, evdbNew);
-  		return data;
+			let txx: TaskData = {} as TaskData;
+			let params= Array<any>();
+			let sqlparam: string =`select ev.*,td.cs,td.isrt,td.cd,td.fd from gtd_ev  ev left join gtd_t  td on ev.evi = td.evi where ev.evi ='${evi}'`;
+			console.info("执行的SQL"+sqlparam);
+			txx = await this.sqlExce.getExtOneByParam<TaskData>(sqlparam,params);
+			console.info("执行的结果"+txx.evi);
+  		return txx;
 	}
 
   /**
@@ -835,7 +1054,7 @@ export class EventService extends BaseService {
 			minitask.evi = this.util.getUuid();
 			minitask.ui= UserConfig.account.id;
 			minitask.type = anyenum.EventType.MiniTask;
-			minitask.evd = moment().format('YYYY/MM/DD');
+			minitask.evd = minitask.evd || moment().format('YYYY/MM/DD');
 			minitask.gs = anyenum.GsType.self;
 			minitask.tb = anyenum.SyncType.unsynch;
 			minitask.del = anyenum.DelType.undel;
@@ -869,7 +1088,7 @@ export class EventService extends BaseService {
 	 * 完成任务
 	 * @author ying<343253410@qq.com>
 	 */
-  async finishTask(evi: string):  Promise <string> {
+  async finishTask(evi: string) {
   	this.assertEmpty(evi); // 事件ID不能为空
   	let tdb: TTbl = new TTbl();
 		tdb.evi = evi;
@@ -878,35 +1097,32 @@ export class EventService extends BaseService {
 		await this.sqlExce.updateByParam(tdb);
 		//TODO 是否推送事件完成消息
 		//this.emitService.emit(`mwxing.event.task.finish`);
-		return tdb.isrt;
+		return ;
   }
 
   /**
    * 当是自动创建的任务的情况下,进行下一步操作
    * @author ying<343253410@qq.com>
    */
-  async finishTaskNext(evi: string) {
+  async finishTaskNext(evi: string) :Promise <TaskData> {
   	this.assertEmpty(evi);
-  	let evdb: EvTbl = new EvTbl();
-		evdb.evi = evi;
-		evdb = await this.sqlExce.getOneByParam<EvTbl>(evdb);
-		if (evdb.type != anyenum.EventType.Task) {
-			throw new Error("非任务类型,无法自动创建");
-		}
-  	let tdb: TTbl = new TTbl();
-		tdb.evi = evi;
-		tdb =	await this.sqlExce.getOneByParam<TTbl>(tdb);
-		if (tdb.isrt == anyenum.IsCreate.isYes) {
+  	let txx: TaskData = {} as TaskData;
+  	txx = await this.getTask(evi);
+  	let txx2: TaskData = {} as TaskData;
+		if (txx.isrt == anyenum.IsCreate.isYes) {
 			//创建新的任务事件
 			let tx:TaskData = {} as TaskData;
-			evdb.rtevi = evi;
-			evdb.evi = "";
-			Object.assign(tx, evdb);
+			Object.assign(tx, txx);
+			if(!tx.rtevi) {
+					tx.rtevi = evi;
+			}
+			tx.evi = "";
+			tx.evd = moment().format('YYYY/MM/DD');
 			tx.cs = anyenum.IsSuccess.wait;
 			tx.isrt = anyenum.IsCreate.isYes;
-			await this.saveTask(tx);
+			txx2 = await this.saveTask(tx);
 		}
-		return ;
+		return txx2;
   }
 	 /**
    * 根据evi获取复制的任务
@@ -934,7 +1150,7 @@ export class EventService extends BaseService {
 	 */
   async fetchPagedTasks(day: string = moment().format('YYYY/MM/DD'),evi: string): Promise<Array<TaskData>>{
   	this.assertEmpty(day); //验证日期是否为空
-  	let sqlparam: string =`select ev.*,td.cs,td.isrt,td.cd,td.fd from gtd_ev  ev left join gtd_t  td on ev.evi = td.evi where 1=1 and ev.type='${anyenum.EventType.Task}' and  ev.evd = '${day}'  ${(evi)? ('and ev.evi>'+evi):''} limit 10`;
+  	let sqlparam: string =`select ev.*,td.cs,td.isrt,td.cd,td.fd from gtd_ev  ev left join gtd_t  td on ev.evi = td.evi where 1=1 and ev.type='${anyenum.EventType.Task}' and  ev.evd = '${day}'  ${(evi)? ('and ev.evi>'+evi):''}  limit 10`;
   	let data: Array<TaskData> = new Array<TaskData>();
   	data = await this.sqlExce.getExtList<TaskData>(sqlparam);
   	return data;
@@ -1021,42 +1237,42 @@ export class EventService extends BaseService {
 			let ev = new EvTbl();
 			let sqls = new Array <string> ();
 			//先删除
-			await this.sqlExce.dropByParam(ev);
+			await this.sqlExce.delByParam(ev);
 			//恢复数据
 			for(let j = 0, len = outRecoverProNew.ev.length; j < len; j++) {
 				let ev = new EvTbl();
 				Object.assign(ev, outRecoverProNew.ev[j]);
 				sqls.push(ev.inTParam());
 			}
-			await this.sqlExce.batExecSql(sqls);
+			await this.sqlExce.batExecSqlByParam(sqls);
 		}
 		//恢复日程表
 		if (outRecoverProNew.ca.length > 0) {
 			let ca = new CaTbl();
 			let sqls = new Array <string> ();
 			//先删除
-			await this.sqlExce.dropByParam(ca);
+			await this.sqlExce.delByParam(ca);
 			//恢复数据
 			for(let j = 0, len = outRecoverProNew.ca.length; j < len; j++) {
 				let ca = new CaTbl();
 				Object.assign(ca, outRecoverProNew.ca[j]);
 				sqls.push(ca.inTParam());
 			}
-			await this.sqlExce.batExecSql(sqls);
+			await this.sqlExce.batExecSqlByParam(sqls);
 		}
 		//恢复任务表
 		if (outRecoverProNew.tt.length > 0) {
 			let tt = new TTbl();
 			let sqls = new Array <string> ();
 			//先删除
-			await this.sqlExce.dropByParam(tt);
+			await this.sqlExce.delByParam(tt);
 			//恢复数据
 			for(let j = 0, len = outRecoverProNew.tt.length; j < len; j++) {
 				let tt = new TTbl();
 				Object.assign(tt, outRecoverProNew.tt[j]);
 				sqls.push(tt.inTParam());
 			}
-			await this.sqlExce.batExecSql(sqls);
+			await this.sqlExce.batExecSqlByParam(sqls);
 		}
 		return ;
   }
@@ -1068,8 +1284,32 @@ export interface EventData extends EvTbl {
 
 //画面传入事件service参数体
 export interface AgendaData extends EventData, CaTbl {
+
+  //重复设定
   rtjson :RtJson;
+  //提醒设定
   txjson :TxJson;
+  //参与人
+  parters : Array<Parter>;
+  //计划
+  jha : JhaTbl;
+  //发起人
+  originator: Parter;
+
+}
+
+export interface  Parter extends ParTbl{
+
+  ran: string ; //联系人别称
+  ranpy: string; //联系人别称拼音
+  hiu: string ;  // 联系人头像
+  rn: string ;  // 联系人名称
+  rnpy: string ;  //联系人名称拼音
+  rc: string ;  //联系人联系方式
+  rel: string; //系类型 1是个人，2是群，0未注册用户
+  src : string;//联系人来源
+  bhi: string ; //头像表ID 用于判断是否有头像记录
+  bhiu:string ;//base64图片
 
 }
 

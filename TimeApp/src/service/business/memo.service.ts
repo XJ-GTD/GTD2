@@ -60,15 +60,15 @@ export class MemoService extends BaseService {
 		let memodb: MomTbl = new MomTbl();
 		memodb.moi = moi;
 		let sqls: Array <any> = new Array <any> ();
-		sqls.push(memodb.drTParam());
+		sqls.push(memodb.dTParam());
 		//删除备忘相关的附件
-		sqls.push(`delete * from gtd_fj where obt = '${ObjectType.Calendar}' and obi ='${moi}';`);
+		sqls.push(`delete from gtd_fj where obt = '${ObjectType.Calendar}' and obi ='${moi}';`);
 		//删除备忘相关的标签
-		sqls.push(`delete * from gtd_mk where obt = '${ObjectType.Calendar}' and obi ='${moi}';`);
+		sqls.push(`delete from gtd_mrk where obt = '${ObjectType.Calendar}' and obi ='${moi}';`);
 		//删除参与人表
-		sqls.push(`delete * from gtd_d where obt = '${ObjectType.Calendar}' and obi ='${moi}';`);
+		sqls.push(`delete from gtd_par where obt = '${ObjectType.Calendar}' and obi ='${moi}';`);
 		//删除消息表
-		sqls.push(`delete * from gtd_wa where obt = '${ObjectType.Calendar}' and obi ='${moi}';`);
+		sqls.push(`delete from gtd_wa where obt = '${ObjectType.Calendar}' and obi ='${moi}';`);
 		await this.sqlExce.batExecSqlByParam(sqls);
 		return ;
 	}
@@ -148,7 +148,7 @@ export class MemoService extends BaseService {
 	 * 恢复备忘,根据服务器同步到客户端
 	 * @author ying<343253410@qq.com>
 	 */
-	async recovery(outRecoverPro: OutRecoverPro, bts: Number = 0) {
+	async recovery(outRecoverPro: OutRecoverPro, bts: Number = 0,flag: Number =0 ): Promise<Array<any>> {
 		if (bts == 0) {
 			this.assertNull(outRecoverPro);
 		}
@@ -167,20 +167,23 @@ export class MemoService extends BaseService {
 		} else {
 			outRecoverProNew = outRecoverPro;
 		}
+		let sqls = new Array <string> ();
 		if (outRecoverProNew.mom.length > 0) {
 			let mom = new MomTbl();
-			let sqls = new Array <string> ();
 			//先删除
-			await this.sqlExce.dropByParam(mom);
+			await this.sqlExce.delByParam(mom);
 			//恢复数据
 			for(let j = 0, len = outRecoverProNew.mom.length; j < len; j++) {
 				let mom = new MomTbl();
 				Object.assign(mom, outRecoverProNew.mom[j]);
 				sqls.push(mom.inTParam());
 			}
-			await this.sqlExce.batExecSql(sqls);
+			if(flag==0)
+			{
+				await this.sqlExce.batExecSqlByParam(sqls);
+			}
 		}
-		return ;
+		return sqls;
 	}
 }
 
