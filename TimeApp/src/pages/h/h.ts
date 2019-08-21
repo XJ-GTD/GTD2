@@ -268,7 +268,7 @@ export class HPage {
       this.sqlexce.createByParam(wa);*/
 
 
-/*      let agdata = {} as   AgendaData;
+      /*let agdata = {} as   AgendaData;
       agdata.evn = "测试重复日程添加0819";
       agdata.sd = "2019/08/19";
 
@@ -285,7 +285,7 @@ export class HPage {
       txjson.type = anyenum.TxType.m30;
       agdata.txjson = txjson;
 
-      agdata.al = "1";
+      agdata.al = "0";
       agdata.st = "11:20";
       agdata.ct = 20;
       this.evtserv.saveAgenda(agdata).then(data=>{
@@ -293,7 +293,7 @@ export class HPage {
       });*/
 /*      let oriagdata = {} as AgendaData;
       let newagdata = {} as AgendaData;
-      this.evtserv.getAgenda('c2363821ed4a81d1032f0224a0716517').then(data => {
+      this.evtserv.getAgenda('2f60e34a09ad504c8bae9d4a27ce8ab8').then(data => {
         oriagdata = data;
         Object.assign(newagdata, oriagdata);
         newagdata.evn = '测试重复日程修改0819 onlysel第三条'
@@ -304,7 +304,7 @@ export class HPage {
       })*/
 /*      let oriagdata = {} as AgendaData;
       let newagdata = {} as AgendaData;
-      this.evtserv.getAgenda('bef2380aa1d8055eda67fe8be338f492').then(data =>{
+      this.evtserv.getAgenda('d31694ae41ebba72421a6572f0979467').then(data =>{
         oriagdata = data;
         Object.assign(newagdata,oriagdata);
         newagdata.evn = '测试重复日程修改0819 onlysel第一条'
@@ -314,13 +314,43 @@ export class HPage {
         this.evtserv.saveAgenda(newagdata,oriagdata,anyenum.OperateType.OnlySel);
         //修改
       });*/
-      let oriagdata = {} as AgendaData;
-      this.evtserv.getAgenda('4c63f60065fa4a58a3815e4570e528e7').then(data =>{
+      /*let oriagdata = {} as AgendaData;
+      this.evtserv.getAgenda('2f60e34a09ad504c8bae9d4a27ce8ab8').then(data =>{
         oriagdata = data;
 
         this.evtserv.delAgenda(oriagdata,anyenum.OperateType.OnlySel);
         //修改
-      });
+      });*/
+      /*let oriagdata = {} as AgendaData;
+      let newagdata = {} as AgendaData;
+      this.evtserv.getAgenda('c9a919de861ef2555cd4d22aaa9be54a').then(data => {
+        oriagdata = data;
+        Object.assign(newagdata, oriagdata);
+        newagdata.evn = 'modifromsel测试重复 '
+        let txjson = new TxJson();
+        txjson.type = anyenum.TxType.h1;
+        newagdata.txjson = txjson;
+
+        let rtjon = new RtJson();
+        rtjon.cycletype = anyenum.CycleType.day;
+        rtjon.over.value = "2019/08/30";
+        rtjon.over.type = anyenum.OverType.limitdate;
+        rtjon.cyclenum = 1;
+        rtjon.openway = new Array<number>();
+
+        newagdata.rtjson = rtjon;
+        newagdata.evd ="2019/08/17";
+        newagdata.al = "1";
+
+        this.evtserv.saveAgenda(newagdata, oriagdata, anyenum.OperateType.FromSel);
+      })*/
+      let oriagdata = {} as AgendaData;
+      this.evtserv.getAgenda('1e6f4d3ba795bb33d809dc09e518acd2').then(data =>{
+        oriagdata = data;
+
+        this.evtserv.delAgenda(oriagdata,anyenum.OperateType.FromSel);
+        //修改
+});
       return ;
     }
     let p: ScdPageParamter = new ScdPageParamter();
