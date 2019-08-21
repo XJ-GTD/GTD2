@@ -220,7 +220,7 @@ export class EventService extends BaseService {
       let ca = new CaTbl();
       ca.evi = caevi;
       if (evtbls.length > 0){
-        ca.ed = moment(oriAgdata.evd).subtract(1,'d').format("YYYY/MM/dd");
+        ca.ed = moment(oriAgdata.evd).subtract(1,'d').format("YYYY/MM/DD");
         sqlparam.push(ca.upTParam());
       }else{
         sqlparam.push(ca.dTParam());
@@ -458,7 +458,7 @@ export class EventService extends BaseService {
       let ca = new CaTbl();
       ca.evi = caevi;
       if (evtbls.length > 0){
-        ca.ed = moment(oriAgdata.evd).subtract(1,'d').format("YYYY/MM/dd");//evd使用原日程evd
+        ca.ed = moment(oriAgdata.evd).subtract(1,'d').format("YYYY/MM/DD");//evd使用原日程evd
         sqlparam.push(ca.upTParam());
       }else{
         sqlparam.push(ca.dTParam());
@@ -475,7 +475,7 @@ export class EventService extends BaseService {
       //新建新事件日程
       let nwAgdata = {} as AgendaData;
       Object.assign(nwAgdata ,newAgdata );
-
+      nwAgdata.sd = nwAgdata.evd;
       let retParamEv = new RetParamEv();
       retParamEv = await this.newAgenda(nwAgdata);
 

@@ -138,8 +138,8 @@ export enum IsCreate {
 
 //是否全天
 export enum IsWholeday {
-  Whole = "0",
-  NonWhole = "1"
+  Whole = "1",
+  NonWhole = "0"
 
 }
 
