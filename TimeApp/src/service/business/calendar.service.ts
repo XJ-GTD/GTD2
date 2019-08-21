@@ -309,7 +309,7 @@ export class CalendarService extends BaseService {
 
       let minitasksql = `select *
                          from gtd_ev
-                         where ev.type = '${EventType.MiniTask}' and ev.ji = ?`;
+                         where type = '${EventType.MiniTask}' and ji = ?`;
 
       let minitasks: Array<MiniTaskData> = await this.sqlExce.getExtLstByParam<MiniTaskData>(minitasksql, params);
 
@@ -345,7 +345,7 @@ export class CalendarService extends BaseService {
 
     let sqls: Array<any> = new Array<any>();
 
-    sqls.push(plandb.drTParam());
+    sqls.push(plandb.dTParam());
 
     // 同时删除日历项
     if (withchildren) {
@@ -353,13 +353,13 @@ export class CalendarService extends BaseService {
         let planitemdb: JtaTbl = new JtaTbl();
         planitemdb.ji = ji;
 
-        sqls.push(planitemdb.drTParam());
+        sqls.push(planitemdb.dTParam());
 
         // 删除关联表，通过未关联主表条件删除
         sqls.push(`delete from gtd_fj where obt = '${ObjectType.Calendar}' and obi not in (select jti from gtd_jt);`);   // 附件表
-        sqls.push(`delete from gtd_e where obt = '${ObjectType.Calendar}' and obi not in (select jti from gtd_jt);`);    // 提醒表
-        sqls.push(`delete from gtd_d where obt = '${ObjectType.Calendar}' and obi not in (select jti from gtd_jt);`);    // 参与人表
-        sqls.push(`delete from gtd_mk where obt = '${ObjectType.Calendar}' and obi not in (select jti from gtd_jt);`);   // 标签表
+        sqls.push(`delete from gtd_wa where obt = '${ObjectType.Calendar}' and obi not in (select jti from gtd_jt);`);    // 提醒表
+        sqls.push(`delete from gtd_par where obt = '${ObjectType.Calendar}' and obi not in (select jti from gtd_jt);`);    // 参与人表
+        sqls.push(`delete from gtd_mrk where obt = '${ObjectType.Calendar}' and obi not in (select jti from gtd_jt);`);   // 标签表
       }
 
       if (jt == PlanType.PrivatePlan) {
@@ -367,28 +367,28 @@ export class CalendarService extends BaseService {
         eventdb.ji = ji;
 
         // 删除事件主表
-        sqls.push(eventdb.drTParam());
+        sqls.push(eventdb.dTParam());
 
         // 删除关联表，通过未关联主表条件删除
-        sqls.push(`delete from gtd_ea where evi not in (select evi from gtd_ev);`);   // 日程表
-        sqls.push(`delete from gtd_et where evi not in (select evi from gtd_ev);`);   // 任务表
+        sqls.push(`delete from gtd_ca where evi not in (select evi from gtd_ev);`);   // 日程表
+        sqls.push(`delete from gtd_t where evi not in (select evi from gtd_ev);`);   // 任务表
 
         sqls.push(`delete from gtd_fj where obt = '${ObjectType.Event}' and obi not in (select evi from gtd_ev);`);   // 附件表
-        sqls.push(`delete from gtd_e where obt = '${ObjectType.Event}' and obi not in (select evi from gtd_ev);`);    // 提醒表
-        sqls.push(`delete from gtd_d where obt = '${ObjectType.Event}' and obi not in (select evi from gtd_ev);`);    // 参与人表
-        sqls.push(`delete from gtd_mk where obt = '${ObjectType.Event}' and obi not in (select evi from gtd_ev);`);   // 标签表
+        sqls.push(`delete from gtd_wa where obt = '${ObjectType.Event}' and obi not in (select evi from gtd_ev);`);    // 提醒表
+        sqls.push(`delete from gtd_par where obt = '${ObjectType.Event}' and obi not in (select evi from gtd_ev);`);    // 参与人表
+        sqls.push(`delete from gtd_mrk where obt = '${ObjectType.Event}' and obi not in (select evi from gtd_ev);`);   // 标签表
 
         let memodb: MomTbl = new MomTbl();
         memodb.ji = ji;
 
         // 删除备忘主表
-        sqls.push(memodb.drTParam());
+        sqls.push(memodb.dTParam());
 
         // 删除关联表，通过未关联主表条件删除
         sqls.push(`delete from gtd_fj where obt = '${ObjectType.Memo}' and obi not in (select moi from gtd_mo);`);   // 附件表
-        sqls.push(`delete from gtd_e where obt = '${ObjectType.Memo}' and obi not in (select moi from gtd_mo);`);    // 提醒表
-        sqls.push(`delete from gtd_d where obt = '${ObjectType.Memo}' and obi not in (select moi from gtd_mo);`);    // 参与人表
-        sqls.push(`delete from gtd_mk where obt = '${ObjectType.Memo}' and obi not in (select moi from gtd_mo);`);   // 标签表
+        sqls.push(`delete from gtd_wa where obt = '${ObjectType.Memo}' and obi not in (select moi from gtd_mo);`);    // 提醒表
+        sqls.push(`delete from gtd_par where obt = '${ObjectType.Memo}' and obi not in (select moi from gtd_mo);`);    // 参与人表
+        sqls.push(`delete from gtd_mrk where obt = '${ObjectType.Memo}' and obi not in (select moi from gtd_mo);`);   // 标签表
       }
     } else {
       // 不删除子元素，需要把子元素的计划ID更新为空/默认计划ID
@@ -499,7 +499,7 @@ export class CalendarService extends BaseService {
     let planitemdb: JtaTbl = new JtaTbl();
     planitemdb.jti = jti;
 
-    await this.sqlExce.dropByParam(planitemdb);
+    await this.sqlExce.delByParam(planitemdb);
 
     // 删除日历项关联表项目
 
@@ -584,7 +584,7 @@ export class CalendarService extends BaseService {
 
     this.assertEmpty(ji);   // 入参不能为空
 
-    let sql: string = `select * from gtd_mom where ji = '${ji}' order by evd ${sort}`;
+    let sql: string = `select * from gtd_mom where ji = '${ji}' order by sd ${sort}`;
 
     return await this.sqlExce.getExtList<MemoData>(sql);
   }
@@ -1309,11 +1309,11 @@ export class CalendarService extends BaseService {
         ciwhere += `sd <= ? `;
         ciargs.push(condition.ed);
 
-        evwhere += (evwhere? '' : 'where ');
+        evwhere += (evwhere? 'and ' : 'where ');
         evwhere += `evd <= ? `;
         evargs.push(condition.ed);
 
-        mowhere += (mowhere? '' : 'where ');
+        mowhere += (mowhere? 'and ' : 'where ');
         mowhere += `sd <= ? `;
         moargs.push(condition.ed);
       }
@@ -1322,41 +1322,42 @@ export class CalendarService extends BaseService {
       if (condition.text) {
         ciwhere += (ciwhere? 'and ' : 'where ');
         ciwhere += `jtn like ? `;
-        ciargs.push(condition.text);
+        ciargs.push("%" + condition.text + "%");
 
         evwhere += (evwhere? 'and ' : 'where ');
         evwhere += `(evn like ? or bz like ?) `;
-        evargs.push(condition.text);
-        evargs.push(condition.text);
+        evargs.push("%" + condition.text + "%");
+        evargs.push("%" + condition.text + "%");
 
         mowhere += (mowhere? 'and ' : 'where ');
         mowhere += `mon like ? `;
-        moargs.push(condition.text);
+        moargs.push("%" + condition.text + "%");
       }
 
       // 标签查询
       if (condition.mark && condition.mark.length > 0) {
         let likes: string = new Array<string>(condition.mark.length).fill('?', 0, condition.mark.length).join(' or mkl like ');
+        let querymarks: Array<string> = condition.mark.map(value => { return "%" + value + "%";});
 
         ciwhere += (ciwhere? 'and ' : 'where ');
-        ciwhere += `jti in (select obi from gtd_mk where obt = ? and (mkl like ${likes}) `;
+        ciwhere += `jti in (select obi from gtd_mrk where obt = ? and (mkl like ${likes}) `;
         ciargs.push(ObjectType.Calendar);
-        ciargs.concat(condition.mark);
+        ciargs.concat(querymarks);
 
         evwhere += (evwhere? 'and ' : 'where ');
-        evwhere += `evi in (select obi from gtd_mk where obt = ? and (mkl like ${likes}) `;
+        evwhere += `evi in (select obi from gtd_mrk where obt = ? and (mkl like ${likes}) `;
         evargs.push(ObjectType.Event);
-        evargs.concat(condition.mark);
+        evargs.concat(querymarks);
 
         mowhere += (mowhere? 'and ' : 'where ');
-        mowhere += `moi in (select obi from gtd_mk where obt = ? and (mkl like ${likes}) `;
+        mowhere += `moi in (select obi from gtd_mrk where obt = ? and (mkl like ${likes}) `;
         moargs.push(ObjectType.Memo);
-        moargs.concat(condition.mark);
+        moargs.concat(querymarks);
       }
 
-      sqlcalitems = `select * from gtd_jta ${ciwhere} order by st asc`;
-      sqlevents = `select * from gtd_ev ${evwhere} order by st asc`;
-      sqlmemos = `select * from gtd_mom ${mowhere} order by st asc`;
+      sqlcalitems = `select * from gtd_jta ${ciwhere} order by sd asc`;
+      sqlevents = `select * from gtd_ev ${evwhere} order by evd asc`;
+      sqlmemos = `select * from gtd_mom ${mowhere} order by sd asc`;
     }
 
     // 执行查询

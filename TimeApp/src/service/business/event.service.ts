@@ -1237,42 +1237,42 @@ export class EventService extends BaseService {
 			let ev = new EvTbl();
 			let sqls = new Array <string> ();
 			//先删除
-			await this.sqlExce.dropByParam(ev);
+			await this.sqlExce.delByParam(ev);
 			//恢复数据
 			for(let j = 0, len = outRecoverProNew.ev.length; j < len; j++) {
 				let ev = new EvTbl();
 				Object.assign(ev, outRecoverProNew.ev[j]);
 				sqls.push(ev.inTParam());
 			}
-			await this.sqlExce.batExecSql(sqls);
+			await this.sqlExce.batExecSqlByParam(sqls);
 		}
 		//恢复日程表
 		if (outRecoverProNew.ca.length > 0) {
 			let ca = new CaTbl();
 			let sqls = new Array <string> ();
 			//先删除
-			await this.sqlExce.dropByParam(ca);
+			await this.sqlExce.delByParam(ca);
 			//恢复数据
 			for(let j = 0, len = outRecoverProNew.ca.length; j < len; j++) {
 				let ca = new CaTbl();
 				Object.assign(ca, outRecoverProNew.ca[j]);
 				sqls.push(ca.inTParam());
 			}
-			await this.sqlExce.batExecSql(sqls);
+			await this.sqlExce.batExecSqlByParam(sqls);
 		}
 		//恢复任务表
 		if (outRecoverProNew.tt.length > 0) {
 			let tt = new TTbl();
 			let sqls = new Array <string> ();
 			//先删除
-			await this.sqlExce.dropByParam(tt);
+			await this.sqlExce.delByParam(tt);
 			//恢复数据
 			for(let j = 0, len = outRecoverProNew.tt.length; j < len; j++) {
 				let tt = new TTbl();
 				Object.assign(tt, outRecoverProNew.tt[j]);
 				sqls.push(tt.inTParam());
 			}
-			await this.sqlExce.batExecSql(sqls);
+			await this.sqlExce.batExecSqlByParam(sqls);
 		}
 		return ;
   }
