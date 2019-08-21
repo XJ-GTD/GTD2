@@ -383,10 +383,16 @@ describe('CalendarService test suite', () => {
 
   });
 
-  it(`Case 15 - 1 downloadPublicPlan 下载日历 - 无报错`, () => {
-    expect(function() {
-      calendarService.downloadPublicPlan("chinese_famous_2019", PlanType.CalendarPlan);
-    }).not.toThrow();
+  it(`Case 15 - 1 downloadPublicPlan 下载日历 - 无报错`, (done: DoneFn) => {
+    calendarService.downloadPublicPlan("chinese_famous_2019", PlanType.CalendarPlan)
+    .then(() => {
+      expect("").toBe("");
+      done();
+    })
+    .catch(e => {
+      fail("预期无报错");
+      done();
+    });
   });
 
   it(`Case 14 - 1 removePlan 删除日历 - 不包含子项目(没有子项目)`, async () => {
