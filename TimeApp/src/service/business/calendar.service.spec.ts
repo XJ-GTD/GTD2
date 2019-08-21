@@ -174,6 +174,30 @@ describe('CalendarService test suite', () => {
 
   });
 
+  it(`Case 17 - 3 - 1 getCalendarActivities 取得日历画面显示活动一览 - 向下拉加载(未初始化报错)`, (done: DoneFn) => {
+    calendarService.getCalendarActivities(PageDirection.PageDown)
+    .then(() => {
+      fail("未抛出异常, 出错");
+      done();
+    })
+    .catch(e => {
+      expect(e).not.toBe("");
+      done();
+    });
+  });
+
+  it(`Case 17 - 2 - 1 getCalendarActivities 取得日历画面显示活动一览 - 向上拉加载(未初始化报错)`, (done: DoneFn) => {
+    calendarService.getCalendarActivities(PageDirection.PageUp)
+    .then(() => {
+      fail("未抛出异常, 出错");
+      done();
+    })
+    .catch(e => {
+      expect(e).not.toBe("");
+      done();
+    });
+  });
+
   it(`Case 21 - 2 mergeCalendarActivity 合并日历显示列表活动数据 - 合并1个任务`, async () => {
     // 初始化
     let calendaractivities = await calendarService.getCalendarActivities();
@@ -274,18 +298,6 @@ describe('CalendarService test suite', () => {
     expect(activities.memos.length).toBe(0);
   });
 
-  it(`Case 17 - 3 - 1 getCalendarActivities 取得日历画面显示活动一览 - 向下拉加载(未初始化报错)`, (done: DoneFn) => {
-    calendarService.getCalendarActivities(PageDirection.PageDown)
-    .then(() => {
-      fail("未抛出异常, 出错");
-      done();
-    })
-    .catch(e => {
-      expect(e).not.toBe("");
-      done();
-    });
-  });
-
   it(`Case 17 - 3 getCalendarActivities 取得日历画面显示活动一览 - 向下拉加载`, async () => {
     let month: string = moment().format("YYYY/MM");
 
@@ -301,18 +313,6 @@ describe('CalendarService test suite', () => {
     expect(calendarholdings[2].month).toBe(month);
     expect(calendarholdings[3].month).toBe(moment(month).add(1, "months").format("YYYY/MM"));
     expect(calendarholdings[4].month).toBe(moment(month).add(2, "months").format("YYYY/MM"));
-  });
-
-  it(`Case 17 - 2 - 1 getCalendarActivities 取得日历画面显示活动一览 - 向上拉加载(未初始化报错)`, (done: DoneFn) => {
-    calendarService.getCalendarActivities(PageDirection.PageUp)
-    .then(() => {
-      fail("未抛出异常, 出错");
-      done();
-    })
-    .catch(e => {
-      expect(e).not.toBe("");
-      done();
-    });
   });
 
   it(`Case 17 - 2 getCalendarActivities 取得日历画面显示活动一览 - 向上拉加载`, async () => {
