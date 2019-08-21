@@ -499,7 +499,7 @@ export class CalendarService extends BaseService {
     let planitemdb: JtaTbl = new JtaTbl();
     planitemdb.jti = jti;
 
-    await this.sqlExce.dropByParam(planitemdb);
+    await this.sqlExce.delByParam(planitemdb);
 
     // 删除日历项关联表项目
 
