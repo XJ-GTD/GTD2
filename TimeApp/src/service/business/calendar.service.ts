@@ -359,7 +359,7 @@ export class CalendarService extends BaseService {
         sqls.push(`delete from gtd_fj where obt = '${ObjectType.Calendar}' and obi not in (select jti from gtd_jt);`);   // 附件表
         sqls.push(`delete from gtd_e where obt = '${ObjectType.Calendar}' and obi not in (select jti from gtd_jt);`);    // 提醒表
         sqls.push(`delete from gtd_d where obt = '${ObjectType.Calendar}' and obi not in (select jti from gtd_jt);`);    // 参与人表
-        sqls.push(`delete from gtd_mk where obt = '${ObjectType.Calendar}' and obi not in (select jti from gtd_jt);`);   // 标签表
+        sqls.push(`delete from gtd_mrk where obt = '${ObjectType.Calendar}' and obi not in (select jti from gtd_jt);`);   // 标签表
       }
 
       if (jt == PlanType.PrivatePlan) {
@@ -376,7 +376,7 @@ export class CalendarService extends BaseService {
         sqls.push(`delete from gtd_fj where obt = '${ObjectType.Event}' and obi not in (select evi from gtd_ev);`);   // 附件表
         sqls.push(`delete from gtd_e where obt = '${ObjectType.Event}' and obi not in (select evi from gtd_ev);`);    // 提醒表
         sqls.push(`delete from gtd_d where obt = '${ObjectType.Event}' and obi not in (select evi from gtd_ev);`);    // 参与人表
-        sqls.push(`delete from gtd_mk where obt = '${ObjectType.Event}' and obi not in (select evi from gtd_ev);`);   // 标签表
+        sqls.push(`delete from gtd_mrk where obt = '${ObjectType.Event}' and obi not in (select evi from gtd_ev);`);   // 标签表
 
         let memodb: MomTbl = new MomTbl();
         memodb.ji = ji;
@@ -388,7 +388,7 @@ export class CalendarService extends BaseService {
         sqls.push(`delete from gtd_fj where obt = '${ObjectType.Memo}' and obi not in (select moi from gtd_mo);`);   // 附件表
         sqls.push(`delete from gtd_e where obt = '${ObjectType.Memo}' and obi not in (select moi from gtd_mo);`);    // 提醒表
         sqls.push(`delete from gtd_d where obt = '${ObjectType.Memo}' and obi not in (select moi from gtd_mo);`);    // 参与人表
-        sqls.push(`delete from gtd_mk where obt = '${ObjectType.Memo}' and obi not in (select moi from gtd_mo);`);   // 标签表
+        sqls.push(`delete from gtd_mrk where obt = '${ObjectType.Memo}' and obi not in (select moi from gtd_mo);`);   // 标签表
       }
     } else {
       // 不删除子元素，需要把子元素的计划ID更新为空/默认计划ID
@@ -1339,17 +1339,17 @@ export class CalendarService extends BaseService {
         let likes: string = new Array<string>(condition.mark.length).fill('?', 0, condition.mark.length).join(' or mkl like ');
 
         ciwhere += (ciwhere? 'and ' : 'where ');
-        ciwhere += `jti in (select obi from gtd_mk where obt = ? and (mkl like ${likes}) `;
+        ciwhere += `jti in (select obi from gtd_mrk where obt = ? and (mkl like ${likes}) `;
         ciargs.push(ObjectType.Calendar);
         ciargs.concat(condition.mark);
 
         evwhere += (evwhere? 'and ' : 'where ');
-        evwhere += `evi in (select obi from gtd_mk where obt = ? and (mkl like ${likes}) `;
+        evwhere += `evi in (select obi from gtd_mrk where obt = ? and (mkl like ${likes}) `;
         evargs.push(ObjectType.Event);
         evargs.concat(condition.mark);
 
         mowhere += (mowhere? 'and ' : 'where ');
-        mowhere += `moi in (select obi from gtd_mk where obt = ? and (mkl like ${likes}) `;
+        mowhere += `moi in (select obi from gtd_mrk where obt = ? and (mkl like ${likes}) `;
         moargs.push(ObjectType.Memo);
         moargs.concat(condition.mark);
       }
