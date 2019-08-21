@@ -60,7 +60,7 @@ export class MemoService extends BaseService {
 		let memodb: MomTbl = new MomTbl();
 		memodb.moi = moi;
 		let sqls: Array <any> = new Array <any> ();
-		sqls.push(memodb.drTParam());
+		sqls.push(memodb.dTParam());
 		//删除备忘相关的附件
 		sqls.push(`delete from gtd_fj where obt = '${ObjectType.Calendar}' and obi ='${moi}';`);
 		//删除备忘相关的标签
