@@ -180,7 +180,7 @@ export class MemoService extends BaseService {
 			}
 			if(flag==0)
 			{
-				await this.sqlExce.batExecSql(sqls);
+				await this.sqlExce.batExecSqlByParam(sqls);
 			}
 		}
 		return sqls;
