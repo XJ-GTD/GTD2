@@ -93,8 +93,13 @@ export class EventService extends BaseService {
     //主evi设定
     let masterEvi : string;
     if (agdata.rtevi == ""){
+      //非重复数据或重复数据的父记录
       masterEvi = agdata.evi;
-    }else {
+    }else if (agdata.rfg == anyenum.RepeatFlag.RepeatToNon){
+      //重复中独立数据
+      masterEvi = agdata.evi;
+    }else{
+      //重复数据
       masterEvi = agdata.rtevi;
     }
 
@@ -245,8 +250,13 @@ export class EventService extends BaseService {
       //主evi设定
       let masterEvi : string;
       if (oriAgdata.rtevi == ""){
+        //非重复数据或重复数据的父记录
         masterEvi = oriAgdata.evi;
-      }else {
+      }else if (oriAgdata.rfg == anyenum.RepeatFlag.RepeatToNon){
+        //重复中独立数据
+        masterEvi = oriAgdata.evi;
+      }else{
+        //重复数据
         masterEvi = oriAgdata.rtevi;
       }
 
@@ -258,12 +268,10 @@ export class EventService extends BaseService {
       let nwEvs = Array<EvTbl>();
       let nwEv = new EvTbl();
 
-      let caevi : string = masterEvi;
-      let ca = new CaTbl();
-      ca.evi = caevi;
-
-
       if (evtbls.length == 0){
+        let caevi : string = masterEvi;
+        let ca = new CaTbl();
+        ca.evi = caevi;
         sqlparam.push(ca.dTParam());
 
         //本地删除日程参与人
@@ -272,7 +280,7 @@ export class EventService extends BaseService {
         par.obi = masterEvi;
         sqlparam.push(par.dTParam());
       }else{
-        //如果当前删除对象是父节点，则为当前重复日程重建新的父记录，值为ev表里的第一条做为父记录
+        //如果当前删除对象是父记录，则为当前重复日程重建新的父记录，值为ev表里的第一条做为父记录
         if (!oriAgdata.rtevi && oriAgdata.rtevi =="" && oriAgdata.rfg == anyenum.RepeatFlag.Repeat){
           sq = `select * from gtd_ev where rtevi = '${oriAgdata.evi}' and  rfg = '${anyenum.RepeatFlag.Repeat}'
          and del <>  '${anyenum.DelType.del}' order by evd ;`;
@@ -287,6 +295,11 @@ export class EventService extends BaseService {
             //原子记录的父字段改为新的父记录
             sq = `update gtd_ev set rtevi = '${nwEv.evi}' where rtevi = '${oriAgdata.evi}'; `;
             sqlparam.push(sq);
+
+            //原对应日程删除
+            let delca = new CaTbl();
+            delca.evi = oriAgdata.evi;
+            sqlparam.push(delca.dTParam());
 
             //为新的父记录建立新的对应日程
             let nwca = new Array<any>();
@@ -313,7 +326,7 @@ export class EventService extends BaseService {
    * @param {AgendaData} newAgdata 新日程详情
    * @param {AgendaData} oriAgdata 原日程详情 修改场合必须传入
    * @param {OperateType} modiType
-   * 修改非重复日程to非重复日程、重复日程中的某一日程to非重复日程使用OperateType.OnlySel，
+   * 修改非重复日程to非重复日程、重复日程中的某一日程to独立日程使用OperateType.OnlySel，
    * 修改重复日程to重复日程、非重复日程to重复日程使用OperateType.FromSel，
    * 新建日程使用 OperateType.Non
    * @returns {Promise<Array<AgendaData>>}
@@ -533,7 +546,7 @@ export class EventService extends BaseService {
           nwEv.rtevi = "";
           sqlparam.push(nwEv.upTParam());
 
-          //原子记录的父字段改为新的父记录
+          //原重复子记录的父字段改为新的父记录
           sq = `update gtd_ev set rtevi = '${nwEv.evi}' where rtevi = '${oriAgdata.evi}'; `;
           sqlparam.push(sq);
 
