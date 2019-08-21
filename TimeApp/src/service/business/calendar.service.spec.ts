@@ -174,30 +174,6 @@ describe('CalendarService test suite', () => {
 
   });
 
-  fit(`Case 17 - 3 - 1 getCalendarActivities 取得日历画面显示活动一览 - 向下拉加载(未初始化报错)`, (done: DoneFn) => {
-    calendarService.getCalendarActivities(PageDirection.PageDown)
-    .then(() => {
-      fail("未抛出异常, 出错");
-      done();
-    })
-    .catch(e => {
-      expect(e).not.toBe("");
-      done();
-    });
-  });
-
-  fit(`Case 17 - 2 - 1 getCalendarActivities 取得日历画面显示活动一览 - 向上拉加载(未初始化报错)`, (done: DoneFn) => {
-    calendarService.getCalendarActivities(PageDirection.PageUp)
-    .then(() => {
-      fail("未抛出异常, 出错");
-      done();
-    })
-    .catch(e => {
-      expect(e).not.toBe("");
-      done();
-    });
-  });
-
   it(`Case 21 - 2 mergeCalendarActivity 合并日历显示列表活动数据 - 合并1个任务`, async () => {
     // 初始化
     let calendaractivities = await calendarService.getCalendarActivities();
@@ -2886,6 +2862,30 @@ describe('CalendarService test suite', () => {
   // 需要同步执行
   it('Case 1 - 1 service should be created', () => {
     expect(calendarService).toBeTruthy();
+  });
+
+  it(`Case 17 - 3 - 1 getCalendarActivities 取得日历画面显示活动一览 - 向下拉加载(未初始化报错)`, (done: DoneFn) => {
+    calendarService.getCalendarActivities(PageDirection.PageDown)
+    .then(() => {
+      fail("未抛出异常, 出错");
+      done();
+    })
+    .catch(e => {
+      expect(e).not.toBe("");
+      done();
+    });
+  });
+
+  it(`Case 17 - 2 - 1 getCalendarActivities 取得日历画面显示活动一览 - 向上拉加载(未初始化报错)`, (done: DoneFn) => {
+    calendarService.getCalendarActivities(PageDirection.PageUp)
+    .then(() => {
+      fail("未抛出异常, 出错");
+      done();
+    })
+    .catch(e => {
+      expect(e).not.toBe("");
+      done();
+    });
   });
 
   // 所有测试case执行结束后
