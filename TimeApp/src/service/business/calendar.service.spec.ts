@@ -1489,6 +1489,48 @@ describe('CalendarService test suite', () => {
 
   });
 
+  it(`Case 7 - 2 - 1 mergeDayActivities 合并指定日期的活动 - 存在活动(不增加)`, async () => {
+    let day: string = moment().format("YYYY/MM/DD");
+
+    // 日历项
+    let planitem1: PlanItemData = {} as PlanItemData;
+
+    planitem1.sd = day;
+    planitem1.jtn = "结婚纪念日";
+    planitem1.jtt = PlanItemType.Activity;
+
+    await calendarService.savePlanItem(planitem1);
+
+    // 任务
+    let task: TaskData = {} as TaskData;
+
+    task.evd = day;
+    task.evn = "结婚纪念日前给太太买礼物";
+
+    await eventService.saveTask(task);
+
+    // 备忘
+    let memo: MemoData = {} as MemoData;
+
+    memo.sd = day;
+    memo.mon = "结婚纪念日买了一块定制巧克力给太太, 太太很高兴";
+
+    await memoService.saveMemo(memo);
+
+    let dayActivities: DayActivityData = await calendarService.fetchDayActivities();
+
+    dayActivities = await calendarService.mergeDayActivities(dayActivities, []);
+
+    expect(dayActivities.day).toBe(day);
+    expect(dayActivities.calendaritems).toBeDefined();
+    expect(dayActivities.calendaritems.length).toBe(1);
+    expect(dayActivities.events).toBeDefined();
+    expect(dayActivities.events.length).toBe(1);
+    expect(dayActivities.memos).toBeDefined();
+    expect(dayActivities.memos.length).toBe(1);
+
+  });
+
   it(`Case 7 - 2 mergeDayActivities 合并指定日期的活动 - 存在活动(增加1个日历项、1个任务、1个备忘)`, async () => {
     let day: string = moment().format("YYYY/MM/DD");
 
