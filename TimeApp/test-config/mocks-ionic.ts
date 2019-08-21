@@ -17,7 +17,10 @@ export class RestfulClientMock {
       case "R" : // 恢复
         bts = body.d.bts;
         let data = this.backup.get(bts);
-        return {d: data};
+        return {d: {
+          bts: bts,
+          rdn: data
+        }};
       case "PU" : // 分享日历
         return {d: {
           psurl: "https://mock.data/shareplan"
