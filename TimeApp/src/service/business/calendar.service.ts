@@ -25,6 +25,10 @@ export class CalendarService extends BaseService {
     super();
   }
 
+  clearCalendarActivities() {
+    this.calendaractivities.length = 0;
+  }
+
   /**
    * 取得日历显示列表
    *
