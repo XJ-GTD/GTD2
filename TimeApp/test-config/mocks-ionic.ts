@@ -1,5 +1,6 @@
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
+import * as moment from "moment";
 
 export class RestfulClientMock {
   private backup: Map<number, any> = new Map<number, any>();
