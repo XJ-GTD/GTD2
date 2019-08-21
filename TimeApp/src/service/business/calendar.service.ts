@@ -1354,9 +1354,9 @@ export class CalendarService extends BaseService {
         moargs.concat(condition.mark);
       }
 
-      sqlcalitems = `select * from gtd_jta ${ciwhere} order by st asc`;
-      sqlevents = `select * from gtd_ev ${evwhere} order by st asc`;
-      sqlmemos = `select * from gtd_mom ${mowhere} order by st asc`;
+      sqlcalitems = `select * from gtd_jta ${ciwhere} order by sd asc`;
+      sqlevents = `select * from gtd_ev ${evwhere} order by evd asc`;
+      sqlmemos = `select * from gtd_mom ${mowhere} order by sd asc`;
     }
 
     // 执行查询
