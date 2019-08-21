@@ -2,11 +2,21 @@ import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 
 export class RestfulClientMock {
+  private backup: Map<number, any> = new Map<number, any>;
+
   init() {}
 
   async post(url: any, body: any): Promise<any> {
     console.log(JSON.stringify(url));
     switch (url.key) {
+      case "B" : // 备份
+        let bts: number = moment().valueOf();
+        this.backup.set(bts, body.d);
+        return {d: {bts: bts}};
+      case "R" : // 恢复
+        let bts: number = body.d.bts;
+        let data = this.backup.get(bts);
+        return {d: data};
       case "PU" : // 分享日历
         return {d: {
           psurl: "https://mock.data/shareplan"
