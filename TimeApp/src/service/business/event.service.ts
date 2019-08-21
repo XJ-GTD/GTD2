@@ -134,7 +134,7 @@ export class EventService extends BaseService {
   }
 
   /**
-   * 根据日程Id获取联系人信息
+   * 根据事件Id获取联系人信息
    * @returns {Promise<Array<Parter>>}
    */
   private async getParterByEvi(evi:string):Promise<Array<Parter>>{
@@ -183,11 +183,11 @@ export class EventService extends BaseService {
   }
 
   /**
-   * 删除日程
+   * 删除事件
    * @param {AgendaData} oriAgdata
    * @param {OperateType} delType
-   * 删除非重复日程、重复日程中的某一日程使用OperateType.OnlySel
-   * 删除重复日程、非重复日程to重复日程使用OperateType.FromSel
+   * 删除非重复事件、重复事件中的独立日使用OperateType.OnlySel
+   * 删除重复事件使用OperateType.FromSel
    * @returns {Promise<Array<AgendaData>>}
    */
   async delAgenda(oriAgdata : AgendaData, delType : anyenum.OperateType):Promise<Array<AgendaData>>{
@@ -199,7 +199,7 @@ export class EventService extends BaseService {
 
     if (delType == anyenum.OperateType.FromSel){
       let sq : string ;
-      //删除事件中从当前开始所有日程
+      //删除事件中从当前开始所有事件
       //主evi设定
       let masterEvi : string;
       if (oriAgdata.rtevi == ""){
@@ -225,14 +225,14 @@ export class EventService extends BaseService {
       }else{
         sqlparam.push(ca.dTParam());
 
-        //本地删除日程参与人
+        //本地删除事件参与人
         let par: ParTbl = new ParTbl();
         par.obt = anyenum.ObjectType.Event;
         par.obi = masterEvi;
         sqlparam.push(par.dTParam());
       }
 
-      //删除原事件中从当前日程开始所有提醒
+      //删除原事件中从当前事件开始所有提醒
       sq = `delete from gtd_wa where wai in (select evi from gtd_ev
           where evd >= '${oriAgdata.evd}' and (evi = '${masterEvi}' or rtevi =  '${masterEvi}')
           and obt = '${anyenum.ObjectType.Event}'and  del ='${anyenum.DelType.del}' ; `;
@@ -253,7 +253,7 @@ export class EventService extends BaseService {
         //非重复数据或重复数据的父记录
         masterEvi = oriAgdata.evi;
       }else if (oriAgdata.rfg == anyenum.RepeatFlag.RepeatToNon){
-        //重复中独立数据
+        //重复中独立日
         masterEvi = oriAgdata.evi;
       }else{
         //重复数据
@@ -274,25 +274,25 @@ export class EventService extends BaseService {
         ca.evi = caevi;
         sqlparam.push(ca.dTParam());
 
-        //本地删除日程参与人
+        //本地删除事件参与人
         let par: ParTbl = new ParTbl();
         par.obt = anyenum.ObjectType.Event;
         par.obi = masterEvi;
         sqlparam.push(par.dTParam());
       }else{
-        //如果当前删除对象是父记录，则为当前重复日程重建新的父记录，值为ev表里的第一条做为父记录
+        //如果当前删除对象是父事件，则为当前重复事件重建新的父事件，值为ev表重复记录里的第一条做为父事件
         if (!oriAgdata.rtevi && oriAgdata.rtevi =="" && oriAgdata.rfg == anyenum.RepeatFlag.Repeat){
           sq = `select * from gtd_ev where rtevi = '${oriAgdata.evi}' and  rfg = '${anyenum.RepeatFlag.Repeat}'
          and del <>  '${anyenum.DelType.del}' order by evd ;`;
 
           nwEvs = await this.sqlExce.getExtList<EvTbl>(sq);
           if (nwEvs != null && nwEvs.length >0){
-            //更新首条为父记录
+            //更新首条为父事件
             Object.assign(nwEv, nwEvs[0]);
             nwEv.rtevi = "";
             sqlparam.push(nwEv.upTParam());
 
-            //原子记录的父字段改为新的父记录
+            //原子事件的父字段改为新的父事件
             sq = `update gtd_ev set rtevi = '${nwEv.evi}' where rtevi = '${oriAgdata.evi}'; `;
             sqlparam.push(sq);
 
@@ -301,10 +301,15 @@ export class EventService extends BaseService {
             delca.evi = oriAgdata.evi;
             sqlparam.push(delca.dTParam());
 
-            //为新的父记录建立新的对应日程
+            //为新的父事件建立新的对应日程
             let nwca = new Array<any>();
             nwca = this.sqlparamAddCa(nwEv.evi ,nwEv.evd,oriAgdata.ed,oriAgdata);
-            sqlparam = [...sqlparam, ...nwca];
+
+            //复制原参与人到新的父事件
+            let nwpar = new Array<any>();
+            nwpar = this.sqlparamAddPar(nwEv.evi , oriAgdata.parters);
+
+            sqlparam = [...sqlparam, ...nwca, ...nwpar];
           }
         }
       }
@@ -322,31 +327,31 @@ export class EventService extends BaseService {
   }
 
   /**
-   * 保存或修改日程
-   * @param {AgendaData} newAgdata 新日程详情
-   * @param {AgendaData} oriAgdata 原日程详情 修改场合必须传入
+   * 保存或修改事件
+   * @param {AgendaData} newAgdata 新事件详情
+   * @param {AgendaData} oriAgdata 原事件详情 修改场合必须传入
    * @param {OperateType} modiType
-   * 修改非重复日程to非重复日程、重复日程中的某一日程to独立日程使用OperateType.OnlySel，
-   * 修改重复日程to重复日程、非重复日程to重复日程使用OperateType.FromSel，
-   * 新建日程使用 OperateType.Non
+   * 修改非重复事件to非重复日程、重复事件中的某一日程to独立日程使用OperateType.OnlySel，
+   * 修改重复事件to重复事件、非重复事件to重复事件使用OperateType.FromSel，
+   * 新建事件使用 OperateType.Non
    * @returns {Promise<Array<AgendaData>>}
    */
   async saveAgenda(newAgdata : AgendaData, oriAgdata:AgendaData = null, modiType : anyenum.OperateType = anyenum.OperateType.Non): Promise<Array<AgendaData>> {
     // 入参不能为空
     this.assertEmpty(newAgdata);
-    this.assertEmpty(newAgdata.sd);    // 日程开始日期不能为空
-    this.assertEmpty(newAgdata.evn);   // 日程标题不能为空
+    this.assertEmpty(newAgdata.sd);    // 事件开始日期不能为空
+    this.assertEmpty(newAgdata.evn);   // 事件标题不能为空
 
-    // 新建日程
+    // 新建事件
     if (!newAgdata.evi || newAgdata.evi == "") {
       if (newAgdata.rtjson || newAgdata.rt || newAgdata.rts) {
-        this.assertEmpty(newAgdata.rtjson);  // 新建重复日程不能为空
+        this.assertEmpty(newAgdata.rtjson);  // 新建事件重复设置不能为空
       } else {
         newAgdata.rtjson = new RtJson();
       }
 
       if (newAgdata.txjson || newAgdata.tx || newAgdata.txs) {
-        this.assertEmpty(newAgdata.txjson);  // 新建日程提醒不能为空
+        this.assertEmpty(newAgdata.txjson);  // 新建事件提醒不能为空
       } else {
         newAgdata.txjson = new TxJson();
       }
@@ -354,7 +359,7 @@ export class EventService extends BaseService {
 
     if (newAgdata.evi != null && newAgdata.evi != "") {
       /*修改*/
-      this.assertNull(oriAgdata);   // 原始日程详情不能为空
+      this.assertNull(oriAgdata);   // 原始事件详情不能为空
 
       let outAgdatas = await this.updateAgenda(newAgdata,oriAgdata,modiType);
 
@@ -385,7 +390,7 @@ export class EventService extends BaseService {
   }
 
   /**
-   * 新增日程
+   * 新增事件
    * @param {AgendaData} agdata
    * @returns {Promise<Array<AgendaData>>}
    */
@@ -415,7 +420,7 @@ export class EventService extends BaseService {
   }
 
   /**
-   * 更新日程
+   * 更新事件
    * @param {AgendaData} newAgdata
    * @param {AgendaData} oriAgdata
    * @param {OperateType} modiType
@@ -436,16 +441,14 @@ export class EventService extends BaseService {
     if (modiType == anyenum.OperateType.FromSel ){
 
       let sq : string ;
-      //删除原事件中从当前开始所有日程
-
-      //主evi设定
-      let masterEvi : string;
+      //删除原事件中从当前开始所有事件
+      let masterEvi : string;//主evi设定
       if (oriAgdata.rtevi == ""){
         masterEvi = oriAgdata.evi;
       }else {
         masterEvi = oriAgdata.rtevi;
       }
-      //evd使用原日程evd
+      //evd使用原事件evd
       sq = `update  gtd_ev set del ='${anyenum.DelType.del}' where evd >= '${oriAgdata.evd}' and (evi = '${masterEvi}' or rtevi =  '${masterEvi}') ;`;
       await this.sqlExce.execSql(sq);
 
@@ -458,13 +461,19 @@ export class EventService extends BaseService {
       let ca = new CaTbl();
       ca.evi = caevi;
       if (evtbls.length > 0){
-        ca.ed = moment(oriAgdata.evd).subtract(1,'d').format("YYYY/MM/DD");//evd使用原日程evd
+        ca.ed = moment(oriAgdata.evd).subtract(1,'d').format("YYYY/MM/DD");//evd使用原事件evd
         sqlparam.push(ca.upTParam());
       }else{
         sqlparam.push(ca.dTParam());
+
+        //本地删除事件参与人
+        let par: ParTbl = new ParTbl();
+        par.obt = anyenum.ObjectType.Event;
+        par.obi = masterEvi;
+        sqlparam.push(par.dTParam());
       }
 
-      //删除原事件中从当前日程开始所有提醒 evd使用原日程evd
+      //删除原事件中从当前事件开始所有提醒 evd使用原事件evd
       sq = `delete from gtd_wa where wai in (select evi from gtd_ev
           where evd >= '${oriAgdata.evd}' and (evi = '${masterEvi}' or rtevi =  '${masterEvi}')
            and obt = '${anyenum.ObjectType.Event}' and  del ='${anyenum.DelType.del}' ; `;
@@ -476,10 +485,15 @@ export class EventService extends BaseService {
       let nwAgdata = {} as AgendaData;
       Object.assign(nwAgdata ,newAgdata );
       nwAgdata.sd = nwAgdata.evd;
+
       let retParamEv = new RetParamEv();
       retParamEv = await this.newAgenda(nwAgdata);
 
-      sqlparam = [...sqlparam, ...retParamEv.sqlparam];
+      //复制原参与人到新事件
+      let nwpar = new Array<any>();
+      nwpar = this.sqlparamAddPar(retParamEv.rtevi , oriAgdata.parters);
+
+      sqlparam = [...sqlparam, ...retParamEv.sqlparam, ...nwpar];
       outAgds = retParamEv.outAgdatas;
 
     }else if(modiType == anyenum.OperateType.OnlySel) {
@@ -541,19 +555,24 @@ export class EventService extends BaseService {
 
         nwEvs = await this.sqlExce.getExtList<EvTbl>(sq);
         if (nwEvs != null && nwEvs.length >0){
-          //更新首条为父记录
+          //更新首条为父事件
           Object.assign(nwEv, nwEvs[0]);
           nwEv.rtevi = "";
           sqlparam.push(nwEv.upTParam());
 
-          //原重复子记录的父字段改为新的父记录
+          //原重复子事件的父字段改为新的父事件
           sq = `update gtd_ev set rtevi = '${nwEv.evi}' where rtevi = '${oriAgdata.evi}'; `;
           sqlparam.push(sq);
 
-          //为新的父记录建立新的对应日程
+          //为新的父事件建立新的对应日程
           let nwca = new Array<any>();
           nwca = this.sqlparamAddCa(nwEv.evi ,nwEv.evd,oriAgdata.ed,oriAgdata);
-          sqlparam = [...sqlparam, ...nwca];
+
+          //复制原参与人到新的父事件
+          let nwpar = new Array<any>();
+          nwpar = this.sqlparamAddPar(nwEv.evi , oriAgdata.parters);
+
+          sqlparam = [...sqlparam, ...nwca, ...nwpar];
         }
       }
 
@@ -579,6 +598,32 @@ export class EventService extends BaseService {
     }
     this.emitService.emitRef(scd.sd);*/
 
+  }
+
+  /**
+   * 创建参与人
+   * @param {string} evi
+   * @param {Array<Parter>} pars
+   * @returns {Array<any>}
+   */
+  private sqlparamAddPar(evi : string ,pars : Array<Parter>):Array<any>{
+    let ret = new Array<any>();
+    if (!pars && pars.length > 0){
+      for (let j = 0 ,len = pars.length;j < len ; j++){
+        let par = new ParTbl();
+        par.pari = this.util.getUuid();
+        par.pwi = pars[j].pwi;
+        par.ui = pars[j].ui;
+        par.obt = anyenum.ObjectType.Event;
+        par.obi = evi;
+        par.sa = pars[j].sa;
+        par.sdt = pars[j].sdt;
+        par.tb = pars[j].tb;
+        par.del = pars[j].del;
+        ret.push(par.inTParam());
+      }
+    }
+    return ret;
   }
 
   /**
