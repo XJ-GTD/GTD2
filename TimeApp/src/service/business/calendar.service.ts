@@ -1322,36 +1322,37 @@ export class CalendarService extends BaseService {
       if (condition.text) {
         ciwhere += (ciwhere? 'and ' : 'where ');
         ciwhere += `jtn like ? `;
-        ciargs.push(condition.text);
+        ciargs.push("%" + condition.text + "%");
 
         evwhere += (evwhere? 'and ' : 'where ');
         evwhere += `(evn like ? or bz like ?) `;
-        evargs.push(condition.text);
-        evargs.push(condition.text);
+        evargs.push("%" + condition.text + "%");
+        evargs.push("%" + condition.text + "%");
 
         mowhere += (mowhere? 'and ' : 'where ');
         mowhere += `mon like ? `;
-        moargs.push(condition.text);
+        moargs.push("%" + condition.text + "%");
       }
 
       // 标签查询
       if (condition.mark && condition.mark.length > 0) {
         let likes: string = new Array<string>(condition.mark.length).fill('?', 0, condition.mark.length).join(' or mkl like ');
+        let querymarks: Array<string> = condition.mark.map(value => { return "%" + value + "%";});
 
         ciwhere += (ciwhere? 'and ' : 'where ');
         ciwhere += `jti in (select obi from gtd_mrk where obt = ? and (mkl like ${likes}) `;
         ciargs.push(ObjectType.Calendar);
-        ciargs.concat(condition.mark);
+        ciargs.concat(querymarks);
 
         evwhere += (evwhere? 'and ' : 'where ');
         evwhere += `evi in (select obi from gtd_mrk where obt = ? and (mkl like ${likes}) `;
         evargs.push(ObjectType.Event);
-        evargs.concat(condition.mark);
+        evargs.concat(querymarks);
 
         mowhere += (mowhere? 'and ' : 'where ');
         mowhere += `moi in (select obi from gtd_mrk where obt = ? and (mkl like ${likes}) `;
         moargs.push(ObjectType.Memo);
-        moargs.concat(condition.mark);
+        moargs.concat(querymarks);
       }
 
       sqlcalitems = `select * from gtd_jta ${ciwhere} order by sd asc`;
