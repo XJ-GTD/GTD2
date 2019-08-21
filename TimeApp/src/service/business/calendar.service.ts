@@ -370,8 +370,8 @@ export class CalendarService extends BaseService {
         sqls.push(eventdb.drTParam());
 
         // 删除关联表，通过未关联主表条件删除
-        sqls.push(`delete from gtd_ea where evi not in (select evi from gtd_ev);`);   // 日程表
-        sqls.push(`delete from gtd_et where evi not in (select evi from gtd_ev);`);   // 任务表
+        sqls.push(`delete from gtd_ca where evi not in (select evi from gtd_ev);`);   // 日程表
+        sqls.push(`delete from gtd_t where evi not in (select evi from gtd_ev);`);   // 任务表
 
         sqls.push(`delete from gtd_fj where obt = '${ObjectType.Event}' and obi not in (select evi from gtd_ev);`);   // 附件表
         sqls.push(`delete from gtd_wa where obt = '${ObjectType.Event}' and obi not in (select evi from gtd_ev);`);    // 提醒表
