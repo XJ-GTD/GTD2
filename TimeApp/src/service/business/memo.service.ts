@@ -62,13 +62,13 @@ export class MemoService extends BaseService {
 		let sqls: Array <any> = new Array <any> ();
 		sqls.push(memodb.drTParam());
 		//删除备忘相关的附件
-		sqls.push(`delete * from gtd_fj where obt = '${ObjectType.Calendar}' and obi ='${moi}';`);
+		sqls.push(`delete from gtd_fj where obt = '${ObjectType.Calendar}' and obi ='${moi}';`);
 		//删除备忘相关的标签
-		sqls.push(`delete * from gtd_mk where obt = '${ObjectType.Calendar}' and obi ='${moi}';`);
+		sqls.push(`delete from gtd_mk where obt = '${ObjectType.Calendar}' and obi ='${moi}';`);
 		//删除参与人表
-		sqls.push(`delete * from gtd_d where obt = '${ObjectType.Calendar}' and obi ='${moi}';`);
+		sqls.push(`delete from gtd_d where obt = '${ObjectType.Calendar}' and obi ='${moi}';`);
 		//删除消息表
-		sqls.push(`delete * from gtd_wa where obt = '${ObjectType.Calendar}' and obi ='${moi}';`);
+		sqls.push(`delete from gtd_wa where obt = '${ObjectType.Calendar}' and obi ='${moi}';`);
 		await this.sqlExce.batExecSqlByParam(sqls);
 		return ;
 	}
