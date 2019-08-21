@@ -309,7 +309,7 @@ export class CalendarService extends BaseService {
 
       let minitasksql = `select *
                          from gtd_ev
-                         where ev.type = '${EventType.MiniTask}' and ev.ji = ?`;
+                         where type = '${EventType.MiniTask}' and ji = ?`;
 
       let minitasks: Array<MiniTaskData> = await this.sqlExce.getExtLstByParam<MiniTaskData>(minitasksql, params);
 
