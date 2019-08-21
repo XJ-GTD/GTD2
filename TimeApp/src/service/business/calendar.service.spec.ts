@@ -174,11 +174,11 @@ describe('CalendarService test suite', () => {
 
   });
 
-  xit(`Case 21 - 2 mergeCalendarActivity 合并日历显示列表活动数据 - 合并1个任务`, async () => {
+  it(`Case 21 - 2 mergeCalendarActivity 合并日历显示列表活动数据 - 合并1个任务`, async () => {
     // 初始化
     let calendaractivities = await calendarService.getCalendarActivities();
 
-    spyOn(calendarService, 'mergeCalendarActivity');
+    const mergeSpy = spyOn(calendarService, 'mergeCalendarActivity').and.callThrough();
 
     // 任务
     let task: TaskData = {} as TaskData;
@@ -187,7 +187,7 @@ describe('CalendarService test suite', () => {
 
     await eventService.saveTask(task);
 
-    expect(calendarService.mergeCalendarActivity).toHaveBeenCalled();
+    expect(mergeSpy.calls.any()).toBe(true, 'calendarService.mergeCalendarActivity called');
   });
 
   it(`Case 21 - 1 mergeCalendarActivity 合并日历显示列表活动数据 - 入参为空(报错)`, () => {
