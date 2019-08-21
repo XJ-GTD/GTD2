@@ -264,9 +264,12 @@ describe('CalendarService test suite', () => {
     expect(activities.memos.length).toBe(0);
   });
 
-  // xit(`Case 17 - 3 - 1 getCalendarActivities 取得日历画面显示活动一览 - 向下拉加载(未初始化报错)`, <any>fakeAsync(() => {
-  //   await expectAsync(calendarService.getCalendarActivities(PageDirection.PageDown)).toBeRejected();
-  // }));
+  it(`Case 17 - 3 - 1 getCalendarActivities 取得日历画面显示活动一览 - 向下拉加载(未初始化报错)`, (done: DoneFn) => {
+    calendarService.getCalendarActivities(PageDirection.PageDown)).catch(e => {
+      expect(e).not.toBe("");
+      done();
+    });
+  });
 
   it(`Case 17 - 3 getCalendarActivities 取得日历画面显示活动一览 - 向下拉加载`, async () => {
     let month: string = moment().format("YYYY/MM");
