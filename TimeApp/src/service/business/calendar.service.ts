@@ -789,6 +789,8 @@ export class CalendarService extends BaseService {
       return days;
     }, days);
 
+    monthActivity.days = days;
+
     return monthActivity;
   }
 
