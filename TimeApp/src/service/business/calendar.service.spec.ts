@@ -47,6 +47,8 @@ import {CaTbl} from "../sqlite/tbl/ca.tbl";
 import {TTbl} from "../sqlite/tbl/t.tbl";
 import {WaTbl} from "../sqlite/tbl/wa.tbl";
 import {FjTbl} from "../sqlite/tbl/fj.tbl";
+import {MrkTbl} from "../sqlite/tbl/mrk.tbl";
+import {ParTbl} from "../sqlite/tbl/par.tbl";
 
 import { CalendarService, PlanData, PlanItemData, MonthActivityData, MonthActivitySummaryData, DayActivityData, DayActivitySummaryData, PagedActivityData, FindActivityCondition } from "./calendar.service";
 import { EventService, AgendaData, TaskData, RtJson } from "./event.service";
@@ -162,6 +164,14 @@ describe('CalendarService test suite', () => {
     await sqlExce.dropByParam(fj);
     await sqlExce.createByParam(fj);
 
+    let mrk: MrkTbl = new MrkTbl();
+    await sqlExce.dropByParam(mrk);
+    await sqlExce.createByParam(mrk);
+
+    let par: ParTbl = new ParTbl();
+    await sqlExce.dropByParam(par);
+    await sqlExce.createByParam(par);
+
   });
 
   it(`Case 21 - 2 mergeCalendarActivity 合并日历显示列表活动数据 - 合并1个任务`, async () => {
@@ -264,9 +274,17 @@ describe('CalendarService test suite', () => {
     expect(activities.memos.length).toBe(0);
   });
 
-  // xit(`Case 17 - 3 - 1 getCalendarActivities 取得日历画面显示活动一览 - 向下拉加载(未初始化报错)`, <any>fakeAsync(() => {
-  //   await expectAsync(calendarService.getCalendarActivities(PageDirection.PageDown)).toBeRejected();
-  // }));
+  it(`Case 17 - 3 - 1 getCalendarActivities 取得日历画面显示活动一览 - 向下拉加载(未初始化报错)`, (done: DoneFn) => {
+    calendarService.getCalendarActivities(PageDirection.PageDown)
+    .then(() => {
+      fail("未抛出异常, 出错");
+      done();
+    })
+    .catch(e => {
+      expect(e).not.toBe("");
+      done();
+    });
+  });
 
   it(`Case 17 - 3 getCalendarActivities 取得日历画面显示活动一览 - 向下拉加载`, async () => {
     let month: string = moment().format("YYYY/MM");
@@ -286,7 +304,12 @@ describe('CalendarService test suite', () => {
   });
 
   it(`Case 17 - 2 - 1 getCalendarActivities 取得日历画面显示活动一览 - 向上拉加载(未初始化报错)`, (done: DoneFn) => {
-    calendarService.getCalendarActivities(PageDirection.PageUp).catch(e => {
+    calendarService.getCalendarActivities(PageDirection.PageUp)
+    .then(() => {
+      fail("未抛出异常, 出错");
+      done();
+    })
+    .catch(e => {
       expect(e).not.toBe("");
       done();
     });

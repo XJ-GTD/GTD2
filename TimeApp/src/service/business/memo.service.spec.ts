@@ -189,9 +189,9 @@ describe('MemoService test suite', () => {
 	    expect(mom.moi).toBeDefined();
   	  let bts: Number = moment().unix();
   	  //先备份
-  		memoService.backup(bts);
+  		await memoService.backup(bts);
   		//后还原
-  		memoService.recovery(null,bts);
+  		await memoService.recovery(null,bts);
   		//验证还原后的数据是否和原有数据匹配
   		let gmom: MemoData = {} as MemoData;
 	    gmom = await memoService.getMemo(mom.moi);
