@@ -1,4 +1,16 @@
 ion-calendar {
+
+  .yearshow{
+    font-family: "Arial";
+    font-size: 139px;
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    text-align: center;
+    opacity: 0.08;
+    font-weight: 400;
+    line-height: 300px;
+  }
   .animated.faster {
     -webkit-animation-duration: .3s;
     animation-duration: .3s
@@ -10,51 +22,48 @@ ion-calendar {
   }
 
   box-sizing: border-box;
-  display: inline-block;
-  background-color: transparent;
+  display: block;
   width: 100%;
   letter-spacing: -1px;
 
   .card-ios {
     border-radius: 0px;
-    width: calc(100% - 24px);
     background: transparent;
     box-shadow: none;
     -webkit-box-shadow: none;
-    margin: 0px 12px 0px 12px;
+    width: 100%;
+    margin: 0;
     p{
       margin: 0;
+    }
+    ion-card-content{
+      position: relative;
     }
   }
 
   .card-content-ios {
     padding: 0px;
   }
-  .thisM{
-    color: $monthColor;
-  }
+
   .title {
     overflow: hidden;
-    height: 70px;
+    height: 44px;
     font-weight: bold;
     margin-left: 5%;
-    color: #fff;
+    margin-right: 5%;
+    margin-top: 20px;
 
     img{
-      width: 16px;
-      margin: 20px;
+      width: 17px;
+      margin: 10px 0px;
     }
 
     b{
-      letter-spacing: 5px;
+      letter-spacing: 0px;
     }
     p {
-      font-size: 24px;
-      color: #fff;
-      span {
-        font-size: 15px;
-        letter-spacing: 3px;
-      }
+      font-size: 18px;
+      font-weight:500;
     }
 
     .arrow-dropdown {
@@ -66,7 +75,6 @@ ion-calendar {
       width: 100%;
       text-align: center;
       line-height: 32px;
-      color: #757575;
 
       .arrow-dropdown {
         margin-left: 5px;

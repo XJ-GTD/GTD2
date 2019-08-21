@@ -9,16 +9,12 @@ page-h {
   //background: -moz-linear-gradient(right, color($background-color-content, first, start), color($background-color-content, first, end)); /* Firefox 3.6 - 15 */
   //background: linear-gradient(to right, color($background-color-content, first, start), color($background-color-content, first, end)); /* 标准的语法（必须放在最后） */
 
-  background: #000000; /* Safari 5.1 - 6.0 */
-
-  .content-ios {
-    background-color: transparent;
-  }
-
   .haContent {
-    position: absolute;
+    //position: absolute;
     //width: calc(100% - 14px);
-    margin-top: 33px;
+    //margin-top: 44px;
+    height: 100%;
+  ;
   }
 
   .rightm {

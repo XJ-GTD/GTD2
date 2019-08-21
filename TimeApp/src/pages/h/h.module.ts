@@ -7,6 +7,7 @@ import {BackComponentModule} from "../../components/backComponent/back.module";
 import {AiComponentModule} from "../../components/ai/answer/ai.module";
 import { InAppBrowser } from '@ionic-native/in-app-browser';
 
+import { TdlPageModule } from '../tdl/tdl.module';
 @NgModule({
   declarations: [
     HPage,
@@ -16,6 +17,7 @@ import { InAppBrowser } from '@ionic-native/in-app-browser';
     CalendarModule,
     BackComponentModule,
     AiComponentModule,
+    TdlPageModule
   ],
   entryComponents: [
     HPage

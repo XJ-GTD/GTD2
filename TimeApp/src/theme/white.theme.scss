@@ -1,0 +1,171 @@
+//颜色变量
+//全局页面背景
+$baseBackColor_white: rgba(0, 12, 31, 1);
+
+.white_theme{
+
+  page-h {
+    background:$baseBackColor_white;
+  }
+
+  ion-calendar {
+    .yearshow{
+      color: #0D7088;
+    }
+    background:rgba(0,53,66,1);
+
+    .card-ios {
+      ion-card-header{
+        border-bottom: 1px rgba(30,69,89,1) solid;
+      }
+    }
+
+    .title {
+      color: #fff;
+      p {
+        color: rgba(201, 242, 252, 1);
+      }
+    }
+
+
+  }
+
+  ion-calendar-week {
+    .week-title li {
+      color: rgba(75,107,115,1);
+    }
+
+    //.week-title li:nth-of-type(7n), .week-title li:nth-of-type(7n+1) {
+    //  width: 15%;
+    //}
+
+  }
+
+
+  ion-calendar-month {
+    button.days-btn p {
+      color: rgba(235,239,250,1);
+    }
+    //
+    //button.days-btn .repeatDay {
+    //  background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAFCAYAAAAkG+5xAAAAkklEQVQokcXSsQpBARgF4O/mFg+hKINHkLKw3TyIyaCUwSsY7LyByS73OQw2g0dgYkD96Sq3lDOd099/zunvT3rLlR+giSkaOGCB8zeLKUbolwzcYR30DPUnb2OMeZhP0CnwyVNkqJQsMAwFqiH8hVbgNQw++GQpNh4XSL4Mv2Ef9BWntxLHwC/Yolvgkyf//oE78isZElZ6OD4AAAAASUVORK5CYII=) no-repeat ;
+    //  height: 1px;
+    //  width: 9px;
+    //  margin: 0;
+    //  display: inline-block;
+    //  position: relative;
+    //  top: 18px;
+    //  background-size: 100%;
+    //  line-height: 1px;
+    //}
+    //
+    //button.someting p {
+    //  color: $fontMasterColor;
+    //}
+    //
+    //.on-selected{
+    //  button.days-btn small {
+    //    color: $fontSecondColor;
+    //  }
+    //}
+    //
+    //.cal-color {
+    //
+    //  .borderDiv {
+    //    width: 38px;
+    //    height: 38px;
+    //    margin: 4px auto;
+    //    //border: 1px double #000;
+    //    border: none;
+    //    border-radius: 40px;
+    //
+    //  }
+    //
+    //  .on-selected {
+    //    border-color: $fontMasterColor;
+    //
+    //    button.days-btn small {
+    //      color: $fontMasterColor;
+    //    }
+    //  }
+    //
+    //
+    //  .days {
+    //
+    //
+    //    .message{
+    //      background-color: red;
+    //      width: 4px;
+    //      height: 4px;
+    //      margin-bottom: 20px;
+    //      margin-left: 25px;
+    //      border-radius: 3px;
+    //    }
+    //
+    //
+    //    .hassometing {
+    //      background: $hassometing;
+    //
+    //      p {
+    //        color: $fontMasterColor;
+    //      }
+    //
+    //      small {
+    //        color: $fontSecondColor;
+    //      }
+    //    }
+    //
+    //    .busysometing {
+    //      background: $busysometing;
+    //
+    //      p {
+    //        color: $fontMasterColor;
+    //      }
+    //
+    //
+    //      small {
+    //        color: $fontSecondColor;
+    //
+    //      }
+    //    }
+    //
+    //    .allsometing {
+    //      background: $allsometing;
+    //
+    //      p {
+    //        color: $fontMasterColor;
+    //      }
+    //
+    //
+    //      small {
+    //        color: $fontSecondColor;
+    //
+    //      }
+    //    }
+    //
+    //    .today {
+    //      background: -webkit-linear-gradient(left, $spcColorf, $spcColort); /* Safari 5.1 - 6.0 */
+    //      background: -o-linear-gradient(right, $spcColorf, $spcColort); /* Opera 11.1 - 12.0 */
+    //      background: -moz-linear-gradient(right, $spcColorf, $spcColort); /* Firefox 3.6 - 15 */
+    //      background: linear-gradient(to right, $spcColorf, $spcColort); /* 标准的语法（必须放在最后） */
+    //
+    //      p {
+    //        color: $fontMasterColor;
+    //      }
+    //
+    //      small {
+    //        color: $fontSecondColor;
+    //      }
+    //    }
+    //
+    //  }
+    //
+    //}
+
+  }
+}
+
+
+
+
+

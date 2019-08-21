@@ -45,26 +45,25 @@ import {MemoData, MemoService} from "../../service/business/memo.service";
   template: `
     <ion-content>
       <div class="haContent">
-        <div #calendarDiv class="haCalendar">
           <ion-calendar #calendar
                         [options]="options"
                         (onSelect)="onSelect($event)"
                         (onPress)="onPress($event)">
           </ion-calendar>
-        </div>
-        <ng-template [ngIf]="hdata.isShow">
-          <p class="tipDay">
-            <span class="showDay">{{hdata.showDay}}</span>
-            <span class="showDay2">{{hdata.showDay2}}</span>
-            <span class="showDay3" *ngFor="let jt of hdata.jtl" (click)="gotojt(jt)">{{jt.spn}}</span>
-          </p>
-          <p class="tipDay" *ngIf="hdata.things > 0"><a class="cls" (click)="gotodaily()">
-            <ion-icon name="done-all"></ion-icon>
-            {{hdata.things}} 个活动, {{hdata.newmessge}} 条新消息</a></p>
-          <p class="tipDay"><a class="cls2" (click)="newcd()">
-            <ion-icon name="add"></ion-icon>
-            添加新事件</a></p>
-        </ng-template>
+          <page-tdl></page-tdl>
+        <!--<ng-template [ngIf]="hdata.isShow">-->
+          <!--<p class="tipDay">-->
+            <!--<span class="showDay">{{hdata.showDay}}</span>-->
+            <!--<span class="showDay2">{{hdata.showDay2}}</span>-->
+            <!--<span class="showDay3" *ngFor="let jt of hdata.jtl" (click)="gotojt(jt)">{{jt.spn}}</span>-->
+          <!--</p>-->
+          <!--<p class="tipDay" *ngIf="hdata.things > 0"><a class="cls" (click)="gotodaily()">-->
+            <!--<ion-icon name="done-all"></ion-icon>-->
+            <!--{{hdata.things}} 个活动, {{hdata.newmessge}} 条新消息</a></p>-->
+          <!--<p class="tipDay"><a class="cls2" (click)="newcd()">-->
+            <!--<ion-icon name="add"></ion-icon>-->
+            <!--添加新事件</a></p>-->
+        <!--</ng-template>-->
       </div>
       <!--<div class="rightm">-->
       <!--&nbsp;-->
@@ -74,9 +73,6 @@ import {MemoData, MemoService} from "../../service/business/memo.service";
   `,
 })
 export class HPage {
-
-  @ViewChild('calendarDiv')
-  calendarDiv: ElementRef;
   @ViewChild('aiDiv')
   aiDiv: AiComponent;
   @ViewChild('calendar')
@@ -226,133 +222,76 @@ export class HPage {
 
   newcd() {
 
-    if (1==1){
-/*     let ev = new EvTbl();
-      this.sqlexce.dropByParam(ev);
-      this.sqlexce.createByParam(ev);*/
-
-/*     let ca =  new CaTbl();
-      this.sqlexce.dropByParam(ca);
-      this.sqlexce.createByParam(ca);*/
-
-/*      let t =  new TTbl();
-      this.sqlexce.dropByParam(t);
-      this.sqlexce.createByParam(t);*/
-
-/*      let fj =  new FjTbl();
-      this.sqlexce.dropByParam(fj);
-      this.sqlexce.createByParam(fj);*/
-
-/*      let mom =  new MomTbl();
-      this.sqlexce.dropByParam(mom);
-      this.sqlexce.createByParam(mom);*/
-
-/*      let jta =  new JtaTbl();
-      this.sqlexce.dropByParam(jta);
-      this.sqlexce.createByParam(jta);*/
-
-/*      let par =  new ParTbl();
-      this.sqlexce.dropByParam(par);
-      this.sqlexce.createByParam(par);*/
-
-/*      let mrk =  new MrkTbl();
-      this.sqlexce.dropByParam(mrk);
-      this.sqlexce.createByParam(mrk);*/
-
-/*      let jha =  new JhaTbl();
-      this.sqlexce.dropByParam(jha);
-      this.sqlexce.createByParam(jha);*/
-
-/*      let wa =  new WaTbl();
-      this.sqlexce.dropByParam(wa);
-      this.sqlexce.createByParam(wa);*/
-
-
-      /*let agdata = {} as   AgendaData;
-      agdata.evn = "测试重复日程添加0819";
-      agdata.sd = "2019/08/19";
-
-      let rtjon = new RtJson();
-      rtjon.cycletype = anyenum.CycleType.day;
-      rtjon.over.value = "2019/08/27";
-      rtjon.over.type = anyenum.OverType.limitdate;
-      rtjon.cyclenum = 1;
-      rtjon.openway = new Array<number>();
-
-      agdata.rtjson = rtjon;
-
-      let txjson = new TxJson();
-      txjson.type = anyenum.TxType.m30;
-      agdata.txjson = txjson;
-
-      agdata.al = "0";
-      agdata.st = "11:20";
-      agdata.ct = 20;
-      this.evtserv.saveAgenda(agdata).then(data=>{
-        console.log(JSON.stringify(data));
-      });*/
-/*      let oriagdata = {} as AgendaData;
-      let newagdata = {} as AgendaData;
-      this.evtserv.getAgenda('2f60e34a09ad504c8bae9d4a27ce8ab8').then(data => {
-        oriagdata = data;
-        Object.assign(newagdata, oriagdata);
-        newagdata.evn = '测试重复日程修改0819 onlysel第三条'
-        let txjson = new TxJson();
-        txjson.type = anyenum.TxType.m10;
-        newagdata.txjson = txjson;
-        this.evtserv.saveAgenda(newagdata, oriagdata, anyenum.OperateType.OnlySel);
-      })*/
-/*      let oriagdata = {} as AgendaData;
-      let newagdata = {} as AgendaData;
-      this.evtserv.getAgenda('d31694ae41ebba72421a6572f0979467').then(data =>{
-        oriagdata = data;
-        Object.assign(newagdata,oriagdata);
-        newagdata.evn = '测试重复日程修改0819 onlysel第一条'
-        let txjson = new TxJson();
-        txjson.type = anyenum.TxType.h1;
-        newagdata.txjson = txjson;
-        this.evtserv.saveAgenda(newagdata,oriagdata,anyenum.OperateType.OnlySel);
-        //修改
-      });*/
-      /*let oriagdata = {} as AgendaData;
-      this.evtserv.getAgenda('2f60e34a09ad504c8bae9d4a27ce8ab8').then(data =>{
-        oriagdata = data;
-
-        this.evtserv.delAgenda(oriagdata,anyenum.OperateType.OnlySel);
-        //修改
-      });*/
-      /*let oriagdata = {} as AgendaData;
-      let newagdata = {} as AgendaData;
-      this.evtserv.getAgenda('c9a919de861ef2555cd4d22aaa9be54a').then(data => {
-        oriagdata = data;
-        Object.assign(newagdata, oriagdata);
-        newagdata.evn = 'modifromsel测试重复 '
-        let txjson = new TxJson();
-        txjson.type = anyenum.TxType.h1;
-        newagdata.txjson = txjson;
-
-        let rtjon = new RtJson();
-        rtjon.cycletype = anyenum.CycleType.day;
-        rtjon.over.value = "2019/08/30";
-        rtjon.over.type = anyenum.OverType.limitdate;
-        rtjon.cyclenum = 1;
-        rtjon.openway = new Array<number>();
-
-        newagdata.rtjson = rtjon;
-        newagdata.evd ="2019/08/17";
-        newagdata.al = "1";
-
-        this.evtserv.saveAgenda(newagdata, oriagdata, anyenum.OperateType.FromSel);
-      })*/
-      let oriagdata = {} as AgendaData;
-      this.evtserv.getAgenda('1e6f4d3ba795bb33d809dc09e518acd2').then(data =>{
-        oriagdata = data;
-
-        this.evtserv.delAgenda(oriagdata,anyenum.OperateType.FromSel);
-        //修改
-});
-      return ;
-    }
+//     if (1==1){
+//  /*     let ev = new EvTbl();
+//       this.sqlexce.dropByParam(ev);
+//       this.sqlexce.createByParam(ev);*/
+//
+// /*     let ca =  new CaTbl();
+//       this.sqlexce.dropByParam(ca);
+//       this.sqlexce.createByParam(ca);*/
+//
+// /*      let t =  new TTbl();
+//       this.sqlexce.dropByParam(t);
+//       this.sqlexce.createByParam(t);*/
+//
+// /*      let fj =  new FjTbl();
+//       this.sqlexce.dropByParam(fj);
+//       this.sqlexce.createByParam(fj);*/
+//
+// /*      let mom =  new MomTbl();
+//       this.sqlexce.dropByParam(mom);
+//       this.sqlexce.createByParam(mom);*/
+//
+// /*      let jta =  new JtaTbl();
+//       this.sqlexce.dropByParam(jta);
+//       this.sqlexce.createByParam(jta);*/
+//
+// /*      let par =  new ParTbl();
+//       this.sqlexce.dropByParam(par);
+//       this.sqlexce.createByParam(par);*/
+//
+// /*      let mrk =  new MrkTbl();
+//       this.sqlexce.dropByParam(mrk);
+//       this.sqlexce.createByParam(mrk);*/
+//
+// /*      let jha =  new JhaTbl();
+//       this.sqlexce.dropByParam(jha);
+//       this.sqlexce.createByParam(jha);*/
+//
+// /*      let wa =  new WaTbl();
+//       this.sqlexce.dropByParam(wa);
+//       this.sqlexce.createByParam(wa);*/
+//
+//
+//       /*let agdata = {} as   AgendaData;
+//       agdata.evn = "测试重复日程添加0827";
+//       agdata.sd = "2019/08/27";
+//
+//       let rtjon = new RtJson();
+//       rtjon.cycletype = anyenum.CycleType.w;
+//       rtjon.over.value = "2";
+//       rtjon.over.type = anyenum.OverType.times;
+//       rtjon.cyclenum = 3;
+//       rtjon.openway = anyenum.OpenWay.Wednesday;
+//
+//       agdata.rtjson = rtjon;
+//
+//       let txjson = new TxJson();
+//       txjson.type = anyenum.TxType.m30;
+//       agdata.txjson = txjson;
+//
+//       agdata.al = "1";
+//       agdata.st = "11:20";
+//       agdata.ct = 20;
+//       this.evtserv.saveAgenda(agdata).then(data=>{
+//         console.log(JSON.stringify(data));
+//       });*/
+//
+//       let mom = {} as MemoData;
+//       this.momserv.saveMemo(mom);
+//       return ;
+//     }
     let p: ScdPageParamter = new ScdPageParamter();
     p.d = moment(this.hdata.selectDay.time);
 

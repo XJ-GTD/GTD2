@@ -5,7 +5,7 @@ import {
   Output,
   EventEmitter,
   forwardRef,
-  Provider, ViewChild
+  Provider, ViewChild, Renderer2
 } from '@angular/core';
 
 import {
@@ -18,7 +18,7 @@ import {ControlValueAccessor, NG_VALUE_ACCESSOR} from '@angular/forms';
 import * as moment from 'moment';
 import {defaults, pickModes} from "../config";
 import {FeedbackService} from "../../../service/cordova/feedback.service";
-import {Card} from "ionic-angular";
+import {Card, CardContent} from "ionic-angular";
 
 export const ION_CAL_VALUE_ACCESSOR: Provider = {
   provide: NG_VALUE_ACCESSOR,
@@ -36,39 +36,27 @@ export const ION_CAL_VALUE_ACCESSOR: Provider = {
       <ion-card-header no-padding>
 
         <div class="title">
-          <ng-template [ngIf]="_showMonthPicker" [ngIfElse]="title">
             <div float-left >
-              <!--<div float-left (click)="switchView()" >-->
-              <p><b [class.thisM]="_thisMonth">{{_showMonth}}</b></p>
-              <p float-left no-margin>
-                <span [class.thisM]="_thisMonth">{{monthOpt.original.year}}</span>
-              </p>
+              <div float-left (click)="switchView()" >
+              <p><b [class.thisM]="_thisMonth">{{_showMonth}}</b>
+                <ion-icon class="arrow-dropdown"
+                          [name]="_view === 'days' ? 'md-arrow-dropright' : 'md-arrow-dropdown'"
+                          [class.thisM]="_thisMonth"></ion-icon></p>
 
-              <!--<ion-icon class="arrow-dropdown"
-                        [name]="_view === 'days' ? 'md-arrow-dropright' : 'md-arrow-dropdown'"
-                        [class.thisM]="_thisMonth"></ion-icon>-->
+              </div>
             </div>
-            <div float-right *ngIf="!_thisMonth" (click)="gotoToday()">
+            <div float-right (click)="gotoToday()">
               <img src="./assets/imgs/fhby.png"/>
             </div>
-          </ng-template>
-          <ng-template [ngIf]="_showToggleButtons">
-            <button type='button' ion-button clear class="back" [disabled]="!canBack()" (click)="prev()">
-              <ion-icon name="ios-arrow-back"></ion-icon>
-            </button>
-            <button type='button' ion-button clear class="forward" [disabled]="!canNext()" (click)="next()">
-              <ion-icon name="ios-arrow-forward"></ion-icon>
-            </button>
-          </ng-template>
         </div>
       </ion-card-header>
       <ion-card-content>
-        <ng-template [ngIf]="_view === 'days'" [ngIfElse]="monthPicker">
+          <div class="yearshow">{{monthOpt.original.year}}</div>
           <ion-calendar-week color="transparent"
                              [weekArray]="_d.weekdays"
                              [weekStart]="_d.weekStart">
           </ion-calendar-week>
-
+          
           <ion-calendar-month class="component-mode"
                               [(ngModel)]="_calendarMonthValue"
                               [month]="monthOpt"
@@ -82,21 +70,8 @@ export const ION_CAL_VALUE_ACCESSOR: Provider = {
                               (onSelectEnd)="onSelectEnd.emit($event)"
                               [pickMode]="_d.pickMode"
                               [color]="_d.color">
+                              
           </ion-calendar-month>
-        </ng-template>
-
-        <ng-template #monthPicker>
-          <!--<ion-calendar-month-picker [color]="_d.color"-->
-                                     <!--[monthFormat]="_options?.monthPickerFormat"-->
-                                     <!--(onMonthSelect)="monthOnSelect($event)"-->
-                                     <!--(onYearSelect)="yearOnSelect($event)"-->
-                                     <!--[month]="monthOpt">-->
-          <!--</ion-calendar-month-picker>-->
-          <ion-calendar-month-picker (onMonthSelect)="monthOnSelect($event)"
-                                     (onYearSelect)="yearOnSelect($event)"
-                                     [month]="monthOpt">
-          </ion-calendar-month-picker>
-        </ng-template>
       </ion-card-content>
     </ion-card>
 
@@ -115,35 +90,35 @@ export class CalendarComponent implements ControlValueAccessor, OnInit {
   string;
   _thisMonth: boolean;
 
-  _showToggleButtons = false;
-
   selectDay: CalendarDay;
 
   select($event: CalendarDay) {
     this.selectDay = $event;
     this.onSelect.emit($event)
   }
+  //
+  // get showToggleButtons(): boolean {
+  //   return this._showToggleButtons;
+  // }
+  //
+  // set showToggleButtons(value: boolean) {
+  //   this._showToggleButtons = value;
+  // }
 
-  get showToggleButtons(): boolean {
-    return this._showToggleButtons;
-  }
-
-  set showToggleButtons(value: boolean) {
-    this._showToggleButtons = value;
-  }
-
-  _showMonthPicker = true;
-  get showMonthPicker(): boolean {
-    return this._showMonthPicker;
-  }
-
-  set showMonthPicker(value: boolean) {
-    this._showMonthPicker = value;
-  }
+  // _showMonthPicker = true;
+  // get showMonthPicker(): boolean {
+  //   return this._showMonthPicker;
+  // }
+  //
+  // set showMonthPicker(value: boolean) {
+  //   this._showMonthPicker = value;
+  // }
 
   monthOpt: CalendarMonth;
   @ViewChild(Card)
   card: Card;
+  @ViewChild(CardContent)
+  cardContent: CardContent;
 
   @Input() format: string = defaults.DATE_FORMAT;
   @Input() type: CalendarComponentTypeProperty = 'string';
@@ -167,9 +142,18 @@ export class CalendarComponent implements ControlValueAccessor, OnInit {
   }
 
 
-  constructor(public calSvc: CalendarService, public feekback: FeedbackService) {
+  constructor(public calSvc: CalendarService, public feekback: FeedbackService, private _renderer: Renderer2) {
 
   }
+
+  closeMonth(){
+    this._renderer.setStyle(this.cardContent.getElementRef().nativeElement,"height","0px");
+  }
+
+  openMonth(){
+    this._renderer.setStyle(this.cardContent.getElementRef().nativeElement,"height","auto");
+  }
+
 
 
   get options(): CalendarComponentOptions {
@@ -219,6 +203,12 @@ export class CalendarComponent implements ControlValueAccessor, OnInit {
 
   switchView(): void {
     this._view = this._view === 'days' ? 'month' : 'days';
+    if (this._view === 'days') {
+      this.closeMonth();
+    }else{
+      this.openMonth();
+    }
+
   }
 
   prev(): void {
@@ -422,15 +412,15 @@ export class CalendarComponent implements ControlValueAccessor, OnInit {
   }
 
   private initOpt(): void {
-    if (this._options && typeof this._options.showToggleButtons === 'boolean') {
-      this.showToggleButtons = this._options.showToggleButtons;
-    }
-    if (this._options && typeof this._options.showMonthPicker === 'boolean') {
-      this.showMonthPicker = this._options.showMonthPicker;
-      if (this._view !== 'days' && !this.showMonthPicker) {
-        this._view = 'days';
-      }
-    }
+    // if (this._options && typeof this._options.showToggleButtons === 'boolean') {
+    //   this.showToggleButtons = this._options.showToggleButtons;
+    // }
+    // if (this._options && typeof this._options.showMonthPicker === 'boolean') {
+    //   this.showMonthPicker = this._options.showMonthPicker;
+    //   if (this._view !== 'days' && !this.showMonthPicker) {
+    //     this._view = 'days';
+    //   }
+    // }
     this._d = this.calSvc.safeOpt(this._options || {});
   }
 
