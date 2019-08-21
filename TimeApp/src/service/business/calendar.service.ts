@@ -584,7 +584,7 @@ export class CalendarService extends BaseService {
 
     this.assertEmpty(ji);   // 入参不能为空
 
-    let sql: string = `select * from gtd_mom where ji = '${ji}' order by evd ${sort}`;
+    let sql: string = `select * from gtd_mom where ji = '${ji}' order by sd ${sort}`;
 
     return await this.sqlExce.getExtList<MemoData>(sql);
   }
