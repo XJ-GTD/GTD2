@@ -174,7 +174,7 @@ describe('CalendarService test suite', () => {
 
   });
 
-  it(`Case 17 - 3 - 1 getCalendarActivities 取得日历画面显示活动一览 - 向下拉加载(未初始化报错)`, (done: DoneFn) => {
+  fit(`Case 17 - 3 - 1 getCalendarActivities 取得日历画面显示活动一览 - 向下拉加载(未初始化报错)`, (done: DoneFn) => {
     calendarService.getCalendarActivities(PageDirection.PageDown)
     .then(() => {
       fail("未抛出异常, 出错");
@@ -186,7 +186,7 @@ describe('CalendarService test suite', () => {
     });
   });
 
-  it(`Case 17 - 2 - 1 getCalendarActivities 取得日历画面显示活动一览 - 向上拉加载(未初始化报错)`, (done: DoneFn) => {
+  fit(`Case 17 - 2 - 1 getCalendarActivities 取得日历画面显示活动一览 - 向上拉加载(未初始化报错)`, (done: DoneFn) => {
     calendarService.getCalendarActivities(PageDirection.PageUp)
     .then(() => {
       fail("未抛出异常, 出错");
