@@ -609,7 +609,7 @@ export class CalendarService extends BaseService {
       // 删除既存数据
       let delexistsqls: Array<any> = this.removePlanSqls(ji, jt);
 
-      sqls.concat(delexistsqls);
+      sqls = sqls.concat(delexistsqls);
 
       // 创建新数据
       let plandb: JhaTbl = new JhaTbl();
