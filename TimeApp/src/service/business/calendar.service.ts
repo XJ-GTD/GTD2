@@ -101,6 +101,11 @@ export class CalendarService extends BaseService {
   mergeCalendarActivity(activity: any) {
     this.assertEmpty(activity);   // 入参不能为空
 
+    // 如果没有缓存数据，不处理
+    if (this.calendaractivities.length < 1) {
+      return;
+    }
+
     // 判断活动数据类型
     let activityType: string = this.getActivityType(activity);
 
