@@ -162,6 +162,14 @@ describe('CalendarService test suite', () => {
     await sqlExce.dropByParam(fj);
     await sqlExce.createByParam(fj);
 
+    let mrk: MrkTbl = new MrkTbl();
+    await sqlExce.dropByParam(mrk);
+    await sqlExce.createByParam(mrk);
+
+    let par: ParTbl = new ParTbl();
+    await sqlExce.dropByParam(par);
+    await sqlExce.createByParam(par);
+
   });
 
   it(`Case 21 - 2 mergeCalendarActivity 合并日历显示列表活动数据 - 合并1个任务`, async () => {
