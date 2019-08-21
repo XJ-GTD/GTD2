@@ -1309,11 +1309,11 @@ export class CalendarService extends BaseService {
         ciwhere += `sd <= ? `;
         ciargs.push(condition.ed);
 
-        evwhere += (evwhere? '' : 'where ');
+        evwhere += (evwhere? 'and ' : 'where ');
         evwhere += `evd <= ? `;
         evargs.push(condition.ed);
 
-        mowhere += (mowhere? '' : 'where ');
+        mowhere += (mowhere? 'and ' : 'where ');
         mowhere += `sd <= ? `;
         moargs.push(condition.ed);
       }
