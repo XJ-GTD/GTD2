@@ -11,7 +11,7 @@ export class RestfulClientMock {
     let bts: number;
     switch (url.key) {
       case "B" : // 备份
-        bts = moment().valueOf()
+        bts = body.d.bts || moment().valueOf()
         this.backup.set(bts, body.d);
         return {d: {bts: bts}};
       case "R" : // 恢复
