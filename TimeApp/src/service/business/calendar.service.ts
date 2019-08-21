@@ -357,8 +357,8 @@ export class CalendarService extends BaseService {
 
         // 删除关联表，通过未关联主表条件删除
         sqls.push(`delete from gtd_fj where obt = '${ObjectType.Calendar}' and obi not in (select jti from gtd_jt);`);   // 附件表
-        sqls.push(`delete from gtd_e where obt = '${ObjectType.Calendar}' and obi not in (select jti from gtd_jt);`);    // 提醒表
-        sqls.push(`delete from gtd_d where obt = '${ObjectType.Calendar}' and obi not in (select jti from gtd_jt);`);    // 参与人表
+        sqls.push(`delete from gtd_wa where obt = '${ObjectType.Calendar}' and obi not in (select jti from gtd_jt);`);    // 提醒表
+        sqls.push(`delete from gtd_par where obt = '${ObjectType.Calendar}' and obi not in (select jti from gtd_jt);`);    // 参与人表
         sqls.push(`delete from gtd_mrk where obt = '${ObjectType.Calendar}' and obi not in (select jti from gtd_jt);`);   // 标签表
       }
 
@@ -374,8 +374,8 @@ export class CalendarService extends BaseService {
         sqls.push(`delete from gtd_et where evi not in (select evi from gtd_ev);`);   // 任务表
 
         sqls.push(`delete from gtd_fj where obt = '${ObjectType.Event}' and obi not in (select evi from gtd_ev);`);   // 附件表
-        sqls.push(`delete from gtd_e where obt = '${ObjectType.Event}' and obi not in (select evi from gtd_ev);`);    // 提醒表
-        sqls.push(`delete from gtd_d where obt = '${ObjectType.Event}' and obi not in (select evi from gtd_ev);`);    // 参与人表
+        sqls.push(`delete from gtd_wa where obt = '${ObjectType.Event}' and obi not in (select evi from gtd_ev);`);    // 提醒表
+        sqls.push(`delete from gtd_par where obt = '${ObjectType.Event}' and obi not in (select evi from gtd_ev);`);    // 参与人表
         sqls.push(`delete from gtd_mrk where obt = '${ObjectType.Event}' and obi not in (select evi from gtd_ev);`);   // 标签表
 
         let memodb: MomTbl = new MomTbl();
@@ -386,8 +386,8 @@ export class CalendarService extends BaseService {
 
         // 删除关联表，通过未关联主表条件删除
         sqls.push(`delete from gtd_fj where obt = '${ObjectType.Memo}' and obi not in (select moi from gtd_mo);`);   // 附件表
-        sqls.push(`delete from gtd_e where obt = '${ObjectType.Memo}' and obi not in (select moi from gtd_mo);`);    // 提醒表
-        sqls.push(`delete from gtd_d where obt = '${ObjectType.Memo}' and obi not in (select moi from gtd_mo);`);    // 参与人表
+        sqls.push(`delete from gtd_wa where obt = '${ObjectType.Memo}' and obi not in (select moi from gtd_mo);`);    // 提醒表
+        sqls.push(`delete from gtd_par where obt = '${ObjectType.Memo}' and obi not in (select moi from gtd_mo);`);    // 参与人表
         sqls.push(`delete from gtd_mrk where obt = '${ObjectType.Memo}' and obi not in (select moi from gtd_mo);`);   // 标签表
       }
     } else {
