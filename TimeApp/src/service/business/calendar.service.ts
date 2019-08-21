@@ -1340,17 +1340,17 @@ export class CalendarService extends BaseService {
         let querymarks: Array<string> = condition.mark.map(value => { return "%" + value + "%";});
 
         ciwhere += (ciwhere? 'and ' : 'where ');
-        ciwhere += `jti in (select obi from gtd_mrk where obt = ? and (mkl like ${likes}) `;
+        ciwhere += `jti in (select obi from gtd_mrk where obt = ? and (mkl like ${likes})) `;
         ciargs.push(ObjectType.Calendar);
         ciargs.concat(querymarks);
 
         evwhere += (evwhere? 'and ' : 'where ');
-        evwhere += `evi in (select obi from gtd_mrk where obt = ? and (mkl like ${likes}) `;
+        evwhere += `evi in (select obi from gtd_mrk where obt = ? and (mkl like ${likes})) `;
         evargs.push(ObjectType.Event);
         evargs.concat(querymarks);
 
         mowhere += (mowhere? 'and ' : 'where ');
-        mowhere += `moi in (select obi from gtd_mrk where obt = ? and (mkl like ${likes}) `;
+        mowhere += `moi in (select obi from gtd_mrk where obt = ? and (mkl like ${likes})) `;
         moargs.push(ObjectType.Memo);
         moargs.concat(querymarks);
       }
