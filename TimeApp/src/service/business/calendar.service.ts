@@ -382,7 +382,7 @@ export class CalendarService extends BaseService {
         sqls.push(eventdb.upTParam());
 
         // 删除关联表，通过未关联主表条件删除
-        sqls.push(`update gtd_ca set del = '${DelType.del}' where evi not in (select evi from gtd_ev where del <> '${DelType.del}');`);   // 日程表
+        sqls.push(`delete from gtd_ca where evi not in (select evi from gtd_ev where del <> '${DelType.del}');`);   // 日程表
         sqls.push(`update gtd_t set del = '${DelType.del}' where evi not in (select evi from gtd_ev where del <> '${DelType.del}');`);   // 任务表
 
         sqls.push(`update gtd_fj set del = '${DelType.del}' where obt = '${ObjectType.Event}' and obi not in (select evi from gtd_ev where del <> '${DelType.del}');`);   // 附件表
@@ -527,7 +527,7 @@ export class CalendarService extends BaseService {
    **/
   async fetchAllPlans(jts:Array<PlanType> = []): Promise<Array<PlanData>> {
 
-    let sql: string = `select * from gtd_jha ${(jts && jts.length > 0)? ('where jt in (' + jts.join(', ') + ')') : ''} and del <> '${DelType.del}' order by jt asc, wtt desc`;
+    let sql: string = `select * from gtd_jha where ${(jts && jts.length > 0)? ('jt in (' + jts.join(', ') + ')') : ''} and del <> '${DelType.del}' order by jt asc, wtt desc`;
 
     let plans: Array<PlanData> = await this.sqlExce.getExtList<PlanData>(sql);
 
