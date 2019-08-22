@@ -163,3 +163,9 @@ export enum SyncDataSecurity {
   ShareModify               = 'ShareModify',              // 所有人都可以修改
   ShareModifyWithoutSender  = 'ShareModifyWithoutSender'  // 共享后发起人本地删除
 }
+
+// 数据同步状态
+export enum SyncDataStatus {
+  Deleted = "del",
+  UnDeleted = "undel"
+}
