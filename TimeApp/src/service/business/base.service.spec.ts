@@ -24,6 +24,19 @@ describe('BaseService test suite', () => {
     baseService = TestBed.get(BaseService);
   });
 
+  it('Case 4 - 2 assertNumber("4")', () => {
+    expect(function() {
+      let test = Number("4");
+      baseService.assertNumber("4");
+    }).not.toThrow();
+  });
+
+  it('Case 4 - 1 assertNumber("not number")', () => {
+    expect(function() {
+      baseService.assertNumber("not number");
+    }).toThrow();
+  });
+
   it('Case 3 - 1 assertNull(null)', () => {
     expect(function() {
       baseService.assertNull(null);
