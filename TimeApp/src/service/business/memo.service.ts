@@ -6,6 +6,7 @@ import { MomTbl } from "../sqlite/tbl/mom.tbl";
 import { BackupPro, BacRestful, OutRecoverPro, RecoverPro } from "../restful/bacsev";
 import { UserConfig } from "../config/user.config";
 import * as moment from "moment";
+import { SyncType, DelType } from "../../data.enum";
 
 @Injectable()
 export class MemoService extends BaseService {
@@ -26,12 +27,17 @@ export class MemoService extends BaseService {
 			//更新内容
 			let memodb: MomTbl = new MomTbl();
 			Object.assign(memodb, memo);
+			memodb.tb = SyncType.unsynch;
+
 			await this.sqlExce.updateByParam(memodb);
 		} else {
 			//创建
 			memo.moi = this.util.getUuid();
 			let memodb: MomTbl = new MomTbl();
 			Object.assign(memodb, memo);
+			memodb.del = DelType.undel;
+			memodb.tb = SyncType.unsynch;
+
 			await this.sqlExce.saveByParam(memodb);
 		}
 		return memo;
