@@ -1,0 +1,11 @@
+page-aip {
+  background-color: $baseBackColor;
+
+  ion-header ion-toolbar .toolbar-background,.toolbar-background-md,.toolbar-background-ios {
+    background-color: $lsback1;
+  }
+  .img-header-left, .img-header-right {
+    width: 4vmin;
+    height: 4vmin;
+  }
+}

@@ -20,7 +20,6 @@ import {
 @Component({
   selector: 'AiComponent',
   template: `
-    <ion-content>
       <div class="aiWarp" #aiWarp>
         <ion-card class="card" #card3 *ngIf="aiData3">
           <AiChildenComponent [aiData] = "aiData3"></AiChildenComponent>
@@ -32,11 +31,10 @@ import {
           <AiChildenComponent [aiData] = "aiData1"></AiChildenComponent>
         </ion-card>
       </div>
-      <div class="aiWarpBack" #aiWarpback>
-      </div>
+      <!--<div class="aiWarpBack" #aiWarpback>-->
+      <!--</div>-->
       <!--<ion-icon name="backspace" (click)="rad()" class="backspace"></ion-icon>-->
-      <ion-icon name="close" (click)="closePage()" class="close" #close></ion-icon>
-    </ion-content>
+      <!--<ion-icon name="close" (click)="closePage()" class="close" #close></ion-icon>-->
     <PointComponent *ngIf="ready"></PointComponent>
   `,
 })
@@ -160,29 +158,29 @@ export class AiComponent {
   }
 
   closePage() {
-    this._renderer.setStyle(this.aiWarp.nativeElement, "transform", "translateY(-9999px)");
-    this._renderer.setStyle(this.aiWarpback.nativeElement, "transform", "translateY(-9999px)");
+    // this._renderer.setStyle(this.aiWarp.nativeElement, "transform", "translateY(-9999px)");
+    // this._renderer.setStyle(this.aiWarpback.nativeElement, "transform", "translateY(-9999px)");
 
     this.aiData1 = new AiData();
     this.aiData2 = new AiData();
     this.aiData3 = new AiData();
-    this._renderer.setStyle(this.close.nativeElement, "transform", "translateY(-9999px)");
+    // this._renderer.setStyle(this.close.nativeElement, "transform", "translateY(-9999px)");
 
 
   }
 
   private calcheight() {
 
-    this._renderer.setStyle(this.aiWarp.nativeElement, "transform", "translateY(0px)");
-    this._renderer.setStyle(this.aiWarpback.nativeElement, "transform", "translateY(0px)");
-    this._renderer.setStyle(this.close.nativeElement, "transform", "translateY(-0px)");
+    // this._renderer.setStyle(this.aiWarp.nativeElement, "transform", "translateY(0px)");
+    // this._renderer.setStyle(this.aiWarpback.nativeElement, "transform", "translateY(0px)");
+    // this._renderer.setStyle(this.close.nativeElement, "transform", "translateY(-0px)");
     let winhi = window.innerHeight;
     let aiWarpHi = winhi - 125;
     let top = -125 - aiWarpHi;
-    this._renderer.setStyle(this.aiWarp.nativeElement, "top", top + "px");
-    this._renderer.setStyle(this.aiWarpback.nativeElement, "top", top + "px");
-    this._renderer.setStyle(this.aiWarp.nativeElement, "height", aiWarpHi + "px");
-    this._renderer.setStyle(this.aiWarpback.nativeElement, "height", aiWarpHi + "px");
+    // this._renderer.setStyle(this.aiWarp.nativeElement, "top", top + "px");
+    // this._renderer.setStyle(this.aiWarpback.nativeElement, "top", top + "px");
+    // this._renderer.setStyle(this.aiWarp.nativeElement, "height", aiWarpHi + "px");
+    // this._renderer.setStyle(this.aiWarpback.nativeElement, "height", aiWarpHi + "px");
     //this._renderer.
     // console.log("card1" + this.card1.nativeElement.clientHeight)
     // console.log("card2" +this.card2.nativeElement.clientHeight)

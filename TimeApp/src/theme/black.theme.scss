@@ -20,9 +20,26 @@ $cal_day_font_color_black: rgba(235, 239, 250, 1);
 $cal_otherday_font_color_black: rgba(47, 78, 86, 1);
 //日历说明的字体颜色
 $cal_day2_font_color_black: rgba(73, 110, 119, 1);
-
 //日期选择边框色
 $cal_day_selected_color_black: rgba(19, 72, 75, 1);
+//列表头部日期字体颜色
+$ym_fsize_font_color_black:rgba(235,239,250,1);
+//日期星期字体颜色
+$d_fsize_font_color_black:rgba(73,152,188,1);
+//日期说明颜色
+$ys_fsize_font_color_black:rgba(204,204,204,1);
+//列表日期详情背景
+$d_title_back_black:rgba(237,241,254,.1);
+//列表日期详情firest背景
+$first_back_black:rgba(237,241,254,.05);
+//列表日期详情first背景
+$first_font_black:rgba(235,239,250,1);
+//列表日程背景
+$dayagendacontent_back_black: rgba(237, 241, 254, 0.05);
+//列表日程文字色
+$agenda_sn_font_black:rgba(255,255,255,1);
+//列表日程时间文字色
+$agenda_st_font_black:rgba(153,152,152,1);
 
 .black-theme {
   ion-app, ion-nav, ion-tab, ion-tabs, .app-root {
@@ -33,72 +50,49 @@ $cal_day_selected_color_black: rgba(19, 72, 75, 1);
       background-color: transparent;
 
       .ym-fsize {
-        color:rgba(235,239,250,1);
+        color:$ym_fsize_font_color_black
       }
 
       .ys-fsize {
-        color:rgba(204,204,204,1);
+        color:$ys_fsize_font_color_black
       }
       .d-fsize{
-        color:rgba(73,152,188,1);
+        color: $d_fsize_font_color_black;
 
       }
       .d-title{
 
-        background:rgba(237,241,254,.1);
+        background:$d_title_back_black;
         box-shadow:0px 0px 10px 0px rgba(3,0,0,0.2);
         .first{
-          background:rgba(237,241,254,.05);
+          background:$first_back_black;
           box-shadow:0px 0px 10px 0px rgba(3,0,0,0.2);
-          color:rgba(235,239,250,1);
+          color:$first_font_black;
         }
 
       }
     }
 
-    .dayagendacontent {
-      position: relative;
-      background: rgba(237, 241, 254, 0.05);
+    .dayagenda-content {
+      background:$dayagendacontent_back_black;
       box-shadow: 0px 0px 10px 0px rgba(3, 0, 0, 0.2);
-      border-radius: 10px;
-      width: 70%;
-      margin-left: 75px;
-      min-height: 84px;
 
       .agendaline1 {
         .agenda-st {
-          color:rgba(153,152,152,1);
+          color:$agenda_st_font_black;
         }
 
         .chip-ios {
-          background-color: transparent;
-          border-radius: 25px;
-          height: 25px;
-          font-size: 13px;
-          line-height: 25px;
-          margin: 2px 0;
 
           ion-avatar {
-            width: 25px;
-            height: 25px;
-            min-width: 25px;
-            min-height: 25px;
-            margin: 0 auto;
 
           }
         }
 
         .chip-ios > ion-label {
-          margin: 2px;
-          font-size: 10px;
-          color: $fontSecondColor;
         }
 
         .chip-ios > .newMessage {
-          //font-weight: bold;
-          color: $adornColor;
-          //-webkit-box-shadow: 0px 0px 17px 3px $adornColor;
-          //box-shadow: 1px 1px 1px 1px $adornColor;
         }
 
       }
@@ -123,10 +117,33 @@ $cal_day_selected_color_black: rgba(19, 72, 75, 1);
         }
 
         .agenda-sn {
-          color: rgba(255,255,255,1);
+          color: $agenda_sn_font_black;
+
         }
       }
 
+
+    }
+
+    .dayagenda-no-content{
+      background:rgba(237,241,254,.05);
+      p{
+        color: rgba(121,140,170,1);
+      }
+    }
+    .dayagenda-month{
+      p{
+      }
+      p:first-child{
+        color:rgba(235,239,250,1);
+      }
+      p:last-child{
+        color:rgba(235,239,250,1);
+      }
+    }
+
+    .month7{
+      background-image: url("../assets/imgs/listicon/month_7_back.png");
 
     }
 

@@ -1,169 +1,214 @@
-//颜色变量
 //全局页面背景
-$baseBackColor_white: rgba(0, 12, 31, 1);
+$baseBackcolor_white: rgba(241,241,241,1);
+//日历头部背景色
+$cal_header_back_color_white: rgba(0, 53, 66, 1);
+//日历头部月份字体颜色
+$cal_header_month_font_color_white: rgba(201, 242, 252, 1);
+//日历头部月份（当前）字体颜色
+$cal_header_thismonth_font_color_white: rgba(201, 242, 252, 1);
+//日历头部和月份分割线颜色
+$cal_header_month_splite_color_white: rgba(241,241,241,1);
+//日历月背景色
+$cal_month_back_color_white: rgba(255,255,255,1);
+//日历月份中背景年字体颜色
+$year_back_font_color_white:rgba(241,247,249,1);
+//日历星期字体颜色
+$cal_week_font_color_white: rgba(153,153,153,1);
+//日历日期当月字体颜色
+$cal_day_font_color_white: rgba(51,51,51,1);
+//日历上月下月天的字体颜色
+$cal_otherday_font_color_white: rgba(220,221,221,1);
+//日历说明的字体颜色
+$cal_day2_font_color_white: rgba(188,188,188,1);
 
-.white_theme{
+//日期选择边框色
+$cal_day_selected_color_white: rgba(19, 72, 75, 1);
+
+.white-theme {
+  ion-app, ion-nav, ion-tab, ion-tabs, .app-root {
+    background: $baseBackcolor_white;
+  }
+  page-tdl {
+    .daynav {
+      background-color: transparent;
+
+      .ym-fsize {
+        color:rgba(235,239,250,1);
+      }
+
+      .ys-fsize {
+        color:rgba(204,204,204,1);
+      }
+      .d-fsize{
+        color:rgba(73,152,188,1);
+
+      }
+      .d-title{
+
+        background:rgba(237,241,254,.1);
+        box-shadow:0px 0px 10px 0px rgba(3,0,0,0.2);
+        .first{
+          background:rgba(237,241,254,.05);
+          box-shadow:0px 0px 10px 0px rgba(3,0,0,0.2);
+          color:rgba(235,239,250,1);
+        }
+
+      }
+    }
+
+    .dayagendacontent {
+      position: relative;
+      background: rgba(237, 241, 254, 0.05);
+      box-shadow: 0px 0px 10px 0px rgba(3, 0, 0, 0.2);
+      border-radius: 10px;
+      width: 70%;
+      margin-left: 75px;
+      min-height: 84px;
+
+      .agendaline1 {
+        .agenda-st {
+          color:rgba(153,152,152,1);
+        }
+
+        .chip-ios {
+          background-color: transparent;
+          border-radius: 25px;
+          height: 25px;
+          font-size: 13px;
+          line-height: 25px;
+          margin: 2px 0;
+
+          ion-avatar {
+            width: 25px;
+            height: 25px;
+            min-width: 25px;
+            min-height: 25px;
+            margin: 0 auto;
+
+          }
+        }
+
+        .chip-ios > ion-label {
+          margin: 2px;
+          font-size: 10px;
+          color: $fontSecondColor;
+        }
+
+        .chip-ios > .newMessage {
+          //font-weight: bold;
+          color: $adornColor;
+          //-webkit-box-shadow: 0px 0px 17px 3px $adornColor;
+          //box-shadow: 1px 1px 1px 1px $adornColor;
+        }
+
+      }
+
+      .agendaline2 {
+
+        .agenda-icon {
+          .icon{
+          }
+          .icon1{
+            background-image: url("../assets/imgs/listicon/icon1.png");
+
+          }
+          .icon2{
+            background-image: url("../assets/imgs/listicon/icon2.png");
+
+          }
+          .icon3{
+            background-image: url("../assets/imgs/listicon/icon3.png");
+
+          }
+        }
+
+        .agenda-sn {
+          color: rgba(255,255,255,1);
+        }
+      }
+
+
+    }
+
+  }
 
   page-h {
-    background:$baseBackColor_white;
-  }
+    .haContent {
+      ion-calendar {
+        ion-card-header {
+          background: $cal_header_back_color_white;
+          border-bottom: 1px $cal_header_month_splite_color_white solid;
 
-  ion-calendar {
-    .yearshow{
-      color: #0D7088;
-    }
-    background:rgba(0,53,66,1);
+          .title {
+            p {
 
-    .card-ios {
-      ion-card-header{
-        border-bottom: 1px rgba(30,69,89,1) solid;
+              color: $cal_header_month_font_color_white;
+            }
+          }
+
+          .thisM {
+            color: $cal_header_month_font_color_white;
+          }
+
+
+        }
+
+        ion-card-content {
+          background: $cal_month_back_color_white;
+
+          ion-calendar-week {
+            .week-title li {
+              color: $cal_week_font_color_white;
+            }
+          }
+
+          .yearshow {
+            color: $year_back_font_color_white;
+          }
+
+        }
+      }
+
+      ion-calendar-month {
+        .days {
+          p {
+            color: $cal_day_font_color_white;
+          }
+
+          .last-month-day p, .next-month-day p {
+            color: $cal_otherday_font_color_white;
+          }
+
+          small {
+            color: $cal_day2_font_color_white;
+          }
+
+          .on-selected {
+            border: 1px $cal_day_selected_color_white solid;
+          }
+
+          .today {
+            background: -webkit-linear-gradient(left, $spcColorf, $spcColort); /* Safari 5.1 - 6.0 */
+            background: -o-linear-gradient(right, $spcColorf, $spcColort); /* Opera 11.1 - 12.0 */
+            background: -moz-linear-gradient(right, $spcColorf, $spcColort); /* Firefox 3.6 - 15 */
+            background: linear-gradient(to right, $spcColorf, $spcColort); /* 标准的语法（必须放在最后） */
+            border-radius: 50%;
+
+            p {
+              color: $fontMasterColor;
+            }
+
+            small {
+              color: $fontSecondColor;
+            }
+          }
+
+        }
       }
     }
-
-    .title {
-      color: #fff;
-      p {
-        color: rgba(201, 242, 252, 1);
-      }
-    }
-
-
-  }
-
-  ion-calendar-week {
-    .week-title li {
-      color: rgba(75,107,115,1);
-    }
-
-    //.week-title li:nth-of-type(7n), .week-title li:nth-of-type(7n+1) {
-    //  width: 15%;
-    //}
-
-  }
-
-
-  ion-calendar-month {
-    button.days-btn p {
-      color: rgba(235,239,250,1);
-    }
-    //
-    //button.days-btn .repeatDay {
-    //  background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAFCAYAAAAkG+5xAAAAkklEQVQokcXSsQpBARgF4O/mFg+hKINHkLKw3TyIyaCUwSsY7LyByS73OQw2g0dgYkD96Sq3lDOd099/zunvT3rLlR+giSkaOGCB8zeLKUbolwzcYR30DPUnb2OMeZhP0CnwyVNkqJQsMAwFqiH8hVbgNQw++GQpNh4XSL4Mv2Ef9BWntxLHwC/Yolvgkyf//oE78isZElZ6OD4AAAAASUVORK5CYII=) no-repeat ;
-    //  height: 1px;
-    //  width: 9px;
-    //  margin: 0;
-    //  display: inline-block;
-    //  position: relative;
-    //  top: 18px;
-    //  background-size: 100%;
-    //  line-height: 1px;
-    //}
-    //
-    //button.someting p {
-    //  color: $fontMasterColor;
-    //}
-    //
-    //.on-selected{
-    //  button.days-btn small {
-    //    color: $fontSecondColor;
-    //  }
-    //}
-    //
-    //.cal-color {
-    //
-    //  .borderDiv {
-    //    width: 38px;
-    //    height: 38px;
-    //    margin: 4px auto;
-    //    //border: 1px double #000;
-    //    border: none;
-    //    border-radius: 40px;
-    //
-    //  }
-    //
-    //  .on-selected {
-    //    border-color: $fontMasterColor;
-    //
-    //    button.days-btn small {
-    //      color: $fontMasterColor;
-    //    }
-    //  }
-    //
-    //
-    //  .days {
-    //
-    //
-    //    .message{
-    //      background-color: red;
-    //      width: 4px;
-    //      height: 4px;
-    //      margin-bottom: 20px;
-    //      margin-left: 25px;
-    //      border-radius: 3px;
-    //    }
-    //
-    //
-    //    .hassometing {
-    //      background: $hassometing;
-    //
-    //      p {
-    //        color: $fontMasterColor;
-    //      }
-    //
-    //      small {
-    //        color: $fontSecondColor;
-    //      }
-    //    }
-    //
-    //    .busysometing {
-    //      background: $busysometing;
-    //
-    //      p {
-    //        color: $fontMasterColor;
-    //      }
-    //
-    //
-    //      small {
-    //        color: $fontSecondColor;
-    //
-    //      }
-    //    }
-    //
-    //    .allsometing {
-    //      background: $allsometing;
-    //
-    //      p {
-    //        color: $fontMasterColor;
-    //      }
-    //
-    //
-    //      small {
-    //        color: $fontSecondColor;
-    //
-    //      }
-    //    }
-    //
-    //    .today {
-    //      background: -webkit-linear-gradient(left, $spcColorf, $spcColort); /* Safari 5.1 - 6.0 */
-    //      background: -o-linear-gradient(right, $spcColorf, $spcColort); /* Opera 11.1 - 12.0 */
-    //      background: -moz-linear-gradient(right, $spcColorf, $spcColort); /* Firefox 3.6 - 15 */
-    //      background: linear-gradient(to right, $spcColorf, $spcColort); /* 标准的语法（必须放在最后） */
-    //
-    //      p {
-    //        color: $fontMasterColor;
-    //      }
-    //
-    //      small {
-    //        color: $fontSecondColor;
-    //      }
-    //    }
-    //
-    //  }
-    //
-    //}
-
   }
 }
+
 
 
 

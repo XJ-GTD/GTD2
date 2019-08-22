@@ -1,9 +1,6 @@
-import {Component, ComponentRef, ElementRef, Renderer2, TemplateRef, ViewChild} from '@angular/core';
+import {Component, Renderer2, ViewChild} from '@angular/core';
 import {IonicPage, MenuController, ModalController, NavController} from 'ionic-angular';
-import {
-  CalendarComponent,
-  CalendarComponentOptions, CalendarDay
-} from "../../components/ion2-calendar";
+import {CalendarComponent, CalendarComponentOptions, CalendarDay} from "../../components/ion2-calendar";
 import {HService} from "./h.service";
 import * as moment from "moment";
 import {AiComponent} from "../../components/ai/answer/ai";
@@ -16,21 +13,12 @@ import {HData, ScdPageParamter} from "../../data.mapping";
 import {FeedbackService} from "../../service/cordova/feedback.service";
 import {DataConfig} from "../../service/config/data.config";
 import {UserConfig} from "../../service/config/user.config";
-import { InAppBrowser } from '@ionic-native/in-app-browser';
-import {EvTbl} from "../../service/sqlite/tbl/ev.tbl";
+import {InAppBrowser} from '@ionic-native/in-app-browser';
 import {SqliteExec} from "../../service/util-service/sqlite.exec";
-import {CaTbl} from "../../service/sqlite/tbl/ca.tbl";
-import {AgendaData, EventService, RtJson, TxJson} from "../../service/business/event.service";
-import {TTbl} from "../../service/sqlite/tbl/t.tbl";
-import {FjTbl} from "../../service/sqlite/tbl/fj.tbl";
-import {JtaTbl} from "../../service/sqlite/tbl/jta.tbl";
-import {MomTbl} from "../../service/sqlite/tbl/mom.tbl";
-import {ParTbl} from "../../service/sqlite/tbl/par.tbl";
-import {MrkTbl} from "../../service/sqlite/tbl/mrk.tbl";
-import {JhaTbl} from "../../service/sqlite/tbl/jha.tbl";
-import {WaTbl} from "../../service/sqlite/tbl/wa.tbl";
-import * as anyenum from "../../data.enum";
-import {MemoData, MemoService} from "../../service/business/memo.service";
+import {EventService} from "../../service/business/event.service";
+import {MemoService} from "../../service/business/memo.service";
+import {SettingsProvider} from "../../providers/settings/settings";
+import {AipPage} from "../aip/aip";
 
 /**
  * Generated class for the 首页 page.
@@ -45,30 +33,54 @@ import {MemoData, MemoService} from "../../service/business/memo.service";
   template: `
     <ion-content>
       <div class="haContent">
-          <ion-calendar #calendar
-                        [options]="options"
-                        (onSelect)="onSelect($event)"
-                        (onPress)="onPress($event)">
-          </ion-calendar>
-          <page-tdl></page-tdl>
+        <ion-calendar #calendar
+                      [options]="options"
+                      (onSelect)="onSelect($event)"
+                      (onPress)="onPress($event)">
+        </ion-calendar>
+        <page-tdl></page-tdl>
         <!--<ng-template [ngIf]="hdata.isShow">-->
-          <!--<p class="tipDay">-->
-            <!--<span class="showDay">{{hdata.showDay}}</span>-->
-            <!--<span class="showDay2">{{hdata.showDay2}}</span>-->
-            <!--<span class="showDay3" *ngFor="let jt of hdata.jtl" (click)="gotojt(jt)">{{jt.spn}}</span>-->
-          <!--</p>-->
-          <!--<p class="tipDay" *ngIf="hdata.things > 0"><a class="cls" (click)="gotodaily()">-->
-            <!--<ion-icon name="done-all"></ion-icon>-->
-            <!--{{hdata.things}} 个活动, {{hdata.newmessge}} 条新消息</a></p>-->
-          <!--<p class="tipDay"><a class="cls2" (click)="newcd()">-->
-            <!--<ion-icon name="add"></ion-icon>-->
-            <!--添加新事件</a></p>-->
+        <!--<p class="tipDay">-->
+        <!--<span class="showDay">{{hdata.showDay}}</span>-->
+        <!--<span class="showDay2">{{hdata.showDay2}}</span>-->
+        <!--<span class="showDay3" *ngFor="let jt of hdata.jtl" (click)="gotojt(jt)">{{jt.spn}}</span>-->
+        <!--</p>-->
+        <!--<p class="tipDay" *ngIf="hdata.things > 0"><a class="cls" (click)="gotodaily()">-->
+        <!--<ion-icon name="done-all"></ion-icon>-->
+        <!--{{hdata.things}} 个活动, {{hdata.newmessge}} 条新消息</a></p>-->
+        <!--<p class="tipDay"><a class="cls2" (click)="newcd()">-->
+        <!--<ion-icon name="add"></ion-icon>-->
+        <!--添加新事件</a></p>-->
         <!--</ng-template>-->
       </div>
       <!--<div class="rightm">-->
       <!--&nbsp;-->
       <!--</div>-->
-      <AiComponent [ready]="aiready" #aiDiv></AiComponent>
+      <!--<AiComponent [ready]="aiready" #aiDiv></AiComponent>-->
+      <ion-fab bottom right class="shortcut">
+        <button ion-fab mini>
+          <ion-icon name="add"></ion-icon>
+        </button>
+        <ion-fab-list side="top">
+          <button ion-fab (click)="changetheme()">
+            <ion-icon name="contrast"></ion-icon>
+          </button>
+          <button ion-fab>
+            <ion-icon name="albums"></ion-icon>
+          </button>
+          <button ion-fab>
+            <ion-icon name="contact" (click)="openm()"></ion-icon>
+          </button>
+          <button ion-fab>
+            <ion-icon name="add" (click)="newcd()"></ion-icon>
+          </button>
+        </ion-fab-list>
+      </ion-fab>
+      <ion-fab bottom right>
+        <button ion-fab mini (click)="openAi()">
+          <ion-icon name="chatbubbles" ></ion-icon>
+        </button>
+      </ion-fab>
     </ion-content>
   `,
 })
@@ -77,6 +89,7 @@ export class HPage {
   aiDiv: AiComponent;
   @ViewChild('calendar')
   calendar: CalendarComponent;
+  selectedTheme: string;
 
   aiready: boolean = false;
 
@@ -97,9 +110,27 @@ export class HPage {
               private menuController: MenuController,
               private emitService: EmitService,
               private feedback: FeedbackService,
-              private  evtserv :EventService,
-              private sqlexce :SqliteExec,private  momserv :MemoService) {
+              private  evtserv: EventService,
+              private sqlexce: SqliteExec, private  momserv: MemoService,
+              private settings: SettingsProvider) {
     this.hdata = new HData();
+    this.settings.getActiveTheme().subscribe(val => this.selectedTheme = val);
+  }
+
+  openm() {
+    this.menuController.open("scalePush");
+  }
+  openAi(){
+     this.modalCtr.create(AipPage).present();
+  }
+
+  changetheme() {
+    if (this.selectedTheme === 'black-theme') {
+      this.settings.setActiveTheme('white-theme');
+    } else {
+      this.settings.setActiveTheme('black-theme');
+    }
+
   }
 
   ionViewDidLoad() {
@@ -173,7 +204,7 @@ export class HPage {
     //每日简报消息回调
     this.emitService.register('on.dailyreport.message.click', (data) => {
       console.log("Daily report message clicked.")
-      let timestamp: number = data.eventdata? data.eventdata['timestamp'] : (moment().unix() * 1000);
+      let timestamp: number = data.eventdata ? data.eventdata['timestamp'] : (moment().unix() * 1000);
 
       if (!timestamp) {
         timestamp = moment().unix() * 1000;
@@ -194,7 +225,7 @@ export class HPage {
 
     //操作反馈消息回调
     this.emitService.register('on.feedback.message.click', (data) => {
-      let scd = data.eventdata? data.eventdata['scd'] : null;
+      let scd = data.eventdata ? data.eventdata['scd'] : null;
       if (scd && scd.si) {
         this.gotodetail(scd);
       }
@@ -313,7 +344,7 @@ export class HPage {
   }
 
   gotodaily(day?: CalendarDay) {
-    let selectDay: CalendarDay = day? day : this.hdata.selectDay;
+    let selectDay: CalendarDay = day ? day : this.hdata.selectDay;
 
     this.modalCtr.create(DataConfig.PAGE._DA_PAGE, selectDay).present();
   }
@@ -323,7 +354,7 @@ export class HPage {
     //this.navController.push(DataConfig.PAGE._TDL_PAGE, {selectDay: this.hdata.selectDay.time});
   }
 
-  gotojt(jt){
+  gotojt(jt) {
     let p: ScdPageParamter = new ScdPageParamter();
     p.si = jt.si;
     p.d = moment(jt.sd);

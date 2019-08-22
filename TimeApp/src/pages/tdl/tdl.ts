@@ -40,54 +40,64 @@ import {FeedbackService} from "../../service/cordova/feedback.service";
     </div>
     <ion-content #contentD>
       <ion-grid #grid4Hight>
-        <ion-row *ngFor="let sdl of scdlDataList;let i = index;" class="anch" id="day{{sdl.id}}">
-          <div class="daynav">
-            <div class="dayheader">
+        <ng-template ngFor let-sdl [ngForOf]="scdlDataList">
+          <ion-row *ngIf="(sdl.d | formatedate:'DD') == '01'" class="dayagenda-month" [class.month7] = "true">
+              <p>
+                {{sdl.d  | formatedate :"CYYYY/MM"}}
+              </p>
+              <p>
+                感知天气冷暖我们生来便会，感知人情冷暖还要慢慢体会。 
+              </p>            
+          </ion-row>
+        <ion-row class="anch" id="day{{sdl.id}}">
+          <ng-template [ngIf]="sdl.scdl.length > 0" [ngIfElse]="noscd">
+            <div class="daynav">
+              <div class="dayheader">
 
-              <div class="d-fsize text-center">{{sdl.d | formatedate :"CWEEK"}}</div>
-              <div class="ym-fsize text-center ">{{sdl.d | formatedate:"DD"}}</div>
-              <div class="ys-fsize text-center " *ngFor="let jt of sdl.jtl" (click)="toDetail(jt.si,jt.sd,'3')">{{jt.spn}}</div>
+                <div class="d-fsize text-center">{{sdl.d | formatedate :"CWEEK"}}</div>
+                <div class="ym-fsize text-center ">{{sdl.d | formatedate:"DD"}}</div>
+                <div class="ys-fsize text-center " *ngFor="let jt of sdl.jtl" (click)="toDetail(jt.si,jt.sd,'3')">{{jt.spn}}</div>
+              </div>
+              <div class="d-title text-center ">
+                <div class="first d-title-chr">日记</div>
+                <div class=" d-title-chr">10条日程</div>
+                <div class=" d-title-chr">10条任务</div>
+                <div class=" d-title-chr">10条任务</div>
+              </div>
             </div>
-            <div class="d-title text-center ">
-              <div class="first d-title-chr">日记</div>
-              <div class=" d-title-chr">10条日程</div>
-              <div class=" d-title-chr">10条任务</div>
-              <div class=" d-title-chr">10条任务</div>
-            </div>
-          </div>
-          <ion-grid *ngIf="sdl.scdl.length > 0">
-            <ion-row *ngFor="let scd of sdl.scdl;" (click)="toDetail(scd.si,sdl.d,scd.gs)" >
-              <div class="dayagendacontent">
-                <div class="agendaline2">
-                  <div class="agenda-icon">
-                    <div class="icon icon1" ></div>
-                    <div class="icon icon2" ></div>
+            <ion-grid>
+              <ion-row *ngFor="let scd of sdl.scdl;" (click)="toDetail(scd.si,sdl.d,scd.gs)" >
+                <div class="dayagenda-content">
+                  <div class="agendaline2">
+                    <div class="agenda-icon">
+                      <div class="icon icon1" ></div>
+                      <div class="icon icon2" ></div>
+                    </div>
+                    <div class="agenda-sn">{{scd.sn}}</div>
                   </div>
-                  <div class="agenda-sn">{{scd.sn}}</div>
-                </div>
-                <div class="agendaline1">
-                  <div class="agenda-st">{{this.util.adStrShow(scd.st)}}</div>
-                  <div class="dot-set " [ngStyle]="{'background-color':scd.p.jc}"></div>
-                  
-                  <!--<ion-chip *ngIf="scd.gs == '1'" >-->
+                  <div class="agendaline1">
+                    <div class="agenda-st">{{this.util.adStrShow(scd.st)}}</div>
+                    <div class="dot-set " [ngStyle]="{'background-color':scd.p.jc}"></div>
+
+                    <!--<ion-chip *ngIf="scd.gs == '1'" >-->
                     <!--<ion-avatar>-->
-                      <!--<img src="{{scd.fs.bhiu}}"/>-->
+                    <!--<img src="{{scd.fs.bhiu}}"/>-->
                     <!--</ion-avatar>-->
                     <!--<ion-label [class.newMessage]="scd.du != '0'">{{scd.fs.ran}}</ion-label>-->
-                  <!--</ion-chip>-->
+                    <!--</ion-chip>-->
+                  </div>
                 </div>
-              </div>
-            </ion-row>
-          </ion-grid>
-           
-            <!--<ng-template #noscd>-->
-              <!--<div class="dayagenda row subheight" (click)="toAdd(sdl.d)">-->
-                <!--<div class="dayagendacontent w-auto agenda-none" [class.none1]="sdl.bc == 1"-->
-                     <!--[class.none0]="sdl.bc == 0">-->
-                <!--</div>-->
-              <!--</div>-->
-            <!--</ng-template>-->
+              </ion-row>
+            </ion-grid>
+          </ng-template>
+          <ng-template #noscd>
+            <div class="dayagenda-no-content" (click)="toAdd(sdl.d)">
+              <p>{{sdl.d | formatedate :"CYYYY/MM/DD"}}</p>
+            </div>
+          </ng-template>
+         
         </ion-row>
+        </ng-template>
       </ion-grid>
     </ion-content>
   `
