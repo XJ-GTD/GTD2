@@ -17,6 +17,7 @@ import {ParTbl} from "../sqlite/tbl/par.tbl";
 import {JhaTbl} from "../sqlite/tbl/jha.tbl";
 import {DataConfig} from "../config/data.config";
 import {BTbl} from "../sqlite/tbl/b.tbl";
+import {FjTbl} from "../sqlite/tbl/fj.tbl";
 
 @Injectable()
 export class EventService extends BaseService {
@@ -120,9 +121,30 @@ export class EventService extends BaseService {
     jha = await this.sqlExce.getOneByParam<JhaTbl>(jha);
     agdata.jha = jha;
 
+    //附件数据
+    let fj = new FjTbl();
+    fj.obi = agdata.evi;
+    fj.obt = anyenum.ObjectType.Event;
+    let fjs = new Array<FjTbl>();
+    fjs = await this.sqlExce.getLstByParam<FjTbl>(fj);
+    agdata.fjs = fjs;
+    //附件数量
+    if (fjs != null){
+      agdata.fj = fjs.length +"";
+    }else{
+      agdata.fj = 0 + "";
+    }
+
+
     if(agdata.gs == '0'){
       //共享人信息
       agdata.parters = await this.getParterByEvi(masterEvi);
+      //参与人数量
+      if (agdata.parters !=null){
+        agdata.pn = agdata.parters.length ;
+      }else{
+        agdata.pn = 0 ;
+      }
     }
 
     if(agdata.gs == '1'){
@@ -1307,6 +1329,9 @@ export interface AgendaData extends EventData, CaTbl {
   jha : JhaTbl;
   //发起人
   originator: Parter;
+
+  //附件
+  fjs : Array<FjTbl>;
 
 }
 
