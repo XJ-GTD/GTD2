@@ -12,6 +12,8 @@ export class FjTbl implements ITblParam {
   fjn: string;
   ext: string;
   fj: string;
+  tb: string;
+  del: string;
 
 
   cTParam():string {
@@ -23,6 +25,8 @@ export class FjTbl implements ITblParam {
      ,fjn varchar(50) 
      ,ext varchar(50) 
      ,fj varchar(50) 
+      ,tb varchar(6) 
+      ,del varchar(6) 
      ,wtt integer  ,utt integer 
      );`;
 
@@ -38,7 +42,8 @@ export class FjTbl implements ITblParam {
     if(this.fjn!=null && this.fjn!=''){      sq=sq+', fjn= ? ';      params.push(this.fjn);    }
     if(this.ext!=null && this.ext!=''){      sq=sq+', ext= ? ';      params.push(this.ext);    }
     if(this.fj!=null && this.fj!=''){      sq=sq+', fj= ? ';      params.push(this.fj);    }
-
+    if(this.tb!=null && this.tb!=''){      sq=sq+', tb= ? ';      params.push(this.tb);    }
+    if(this.del!=null && this.del!=''){      sq=sq+', del= ? ';      params.push(this.del);    }
 
     sq =`update gtd_fj set utt =${moment().unix()}  ${sq} where fji = ? ;`;
     params.push(this.fji);
@@ -83,6 +88,8 @@ export class FjTbl implements ITblParam {
     if(this.fjn!=null && this.fjn!=''){      sq=sq+' and fjn= ? ';      params.push(this.fjn);    }
     if(this.ext!=null && this.ext!=''){      sq=sq+' and  ext= ? ';      params.push(this.ext);    }
     if(this.fj!=null && this.fj!=''){      sq=sq+' and fj= ? ';      params.push(this.fj);    }
+    if(this.tb!=null && this.tb!=''){      sq=sq+' and tb= ? ';      params.push(this.tb);    }
+    if(this.del!=null && this.del!=''){      sq=sq+' and del= ? ';      params.push(this.del);    }
 
     sq = sq + ';';
 
@@ -101,14 +108,16 @@ export class FjTbl implements ITblParam {
   inTParam():any {
     let params = new Array<any>();
     let sq =`insert into gtd_fj 
-       (    fji ,obt ,obi ,fjn ,ext ,fj ,wtt,utt) 
-       values(?,?,?,?,?,?,${moment().unix()},${moment().unix()});`;
+       (    fji ,obt ,obi ,fjn ,ext ,fj ,tb,del,wtt,utt) 
+       values(?,?,?,?,?,?,?,?,${moment().unix()},${moment().unix()});`;
     params.push(this.fji);
     params.push(this.obt);
     params.push(this.obi);
     params.push(this.fjn);
     params.push(this.ext);
     params.push(this.fj);
+    params.push(this.tb);
+    params.push(this.del);
 
     let ret = new Array<any>();
     ret.push(sq);
@@ -119,14 +128,16 @@ export class FjTbl implements ITblParam {
   rpTParam():any {
     let params = new Array<any>();
     let sq =`replace into gtd_fj 
-       (    fji ,obt ,obi ,fjn ,ext ,fj ,wtt ,utt ) 
-       values(?,?,?,?,?,?,${moment().unix()},${moment().unix()});`;
+       (    fji ,obt ,obi ,fjn ,ext ,fj ,tb,del,wtt ,utt ) 
+       values(?,?,?,?,?,?,?,?,${moment().unix()},${moment().unix()});`;
     params.push(this.fji);
     params.push(this.obt);
     params.push(this.obi);
     params.push(this.fjn);
     params.push(this.ext);
     params.push(this.fj);
+    params.push(this.tb);
+    params.push(this.del);
 
     let ret = new Array<any>();
     ret.push(sq);
