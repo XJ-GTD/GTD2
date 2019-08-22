@@ -208,7 +208,8 @@ export class EventService extends BaseService {
         masterEvi = oriAgdata.rtevi;
       }
 
-      sq = `update gtd_ev set del ='${anyenum.DelType.del}'  where evd >= '${oriAgdata.evd}' and (evi = '${masterEvi}' or rtevi =  '${masterEvi}') ;`;
+      sq = `update gtd_ev set del ='${anyenum.DelType.del}' ,mi='${UserConfig.account.id}',tb = '${anyenum.SyncType.unsynch}' 
+       where evd >= '${oriAgdata.evd}' and (evi = '${masterEvi}' or rtevi =  '${masterEvi}') ;`;
       await this.sqlExce.execSql(sq);
 
       //更新原事件日程结束日或事件表无记录了则删除
@@ -233,9 +234,9 @@ export class EventService extends BaseService {
       }
 
       //删除原事件中从当前事件开始所有提醒
-      sq = `delete from gtd_wa where wai in (select evi from gtd_ev
+      sq = `delete from gtd_wa where obt = '${anyenum.ObjectType.Event}' and obi in (select evi from gtd_ev
           where evd >= '${oriAgdata.evd}' and (evi = '${masterEvi}' or rtevi =  '${masterEvi}')
-          and obt = '${anyenum.ObjectType.Event}'and  del ='${anyenum.DelType.del}' ; `;
+          and  del ='${anyenum.DelType.del}' ) ; `;
       sqlparam.push(sq);
     }else{
 
@@ -245,6 +246,8 @@ export class EventService extends BaseService {
       let ev = new EvTbl();
       ev.evi = oriAgdata.evi;
       ev.del = anyenum.DelType.del;
+      ev.tb = anyenum.SyncType.unsynch;
+      ev.mi = UserConfig.account.id;
       await this.sqlExce.updateByParam(ev);
 
       //主evi设定
@@ -290,10 +293,13 @@ export class EventService extends BaseService {
             //更新首条为父事件
             Object.assign(nwEv, nwEvs[0]);
             nwEv.rtevi = "";
+            nwEv.tb = anyenum.SyncType.unsynch;
+            nwEv.mi = UserConfig.account.id;
             sqlparam.push(nwEv.upTParam());
 
             //原子事件的父字段改为新的父事件
-            sq = `update gtd_ev set rtevi = '${nwEv.evi}' where rtevi = '${oriAgdata.evi}'; `;
+            sq = `update gtd_ev set rtevi = '${nwEv.evi}',mi='${UserConfig.account.id}',tb = '${anyenum.SyncType.unsynch}' 
+             where rtevi = '${oriAgdata.evi}'; `;
             sqlparam.push(sq);
 
             //原对应日程删除
@@ -434,6 +440,8 @@ export class EventService extends BaseService {
     //批量本地更新
     let sqlparam = new Array<any>();
 
+    newAgdata.mi = UserConfig.account.id;
+
     /*如果只改当天，则
     1.修改当前数据内容 2.日程表新增一条对应数据 3重建相关提醒
     如果改变从当前所有，则
@@ -449,8 +457,10 @@ export class EventService extends BaseService {
         masterEvi = oriAgdata.rtevi;
       }
       //evd使用原事件evd
-      sq = `update  gtd_ev set del ='${anyenum.DelType.del}' where evd >= '${oriAgdata.evd}' and (evi = '${masterEvi}' or rtevi =  '${masterEvi}') ;`;
+      sq = `update  gtd_ev set del ='${anyenum.DelType.del}' , mi ='${newAgdata.mi}',tb = '${anyenum.SyncType.unsynch}' 
+       where evd >= '${oriAgdata.evd}' and (evi = '${masterEvi}' or rtevi =  '${masterEvi}') ;`;
       await this.sqlExce.execSql(sq);
+
 
       //更新原事件日程结束日或事件表无记录了则删除
       sq = `select * from gtd_ev where (evi = '${masterEvi}' or rtevi =  '${masterEvi}') and del <> '${anyenum.DelType.del}' ;`;
@@ -474,9 +484,9 @@ export class EventService extends BaseService {
       }
 
       //删除原事件中从当前事件开始所有提醒 evd使用原事件evd
-      sq = `delete from gtd_wa where wai in (select evi from gtd_ev
+      sq = `delete from gtd_wa where obt = '${anyenum.ObjectType.Event}' and  obi in (select evi from gtd_ev
           where evd >= '${oriAgdata.evd}' and (evi = '${masterEvi}' or rtevi =  '${masterEvi}')
-           and obt = '${anyenum.ObjectType.Event}' and  del ='${anyenum.DelType.del}' ; `;
+           and  del ='${anyenum.DelType.del}' ); `;
       sqlparam.push(sq);
 
 
@@ -499,7 +509,6 @@ export class EventService extends BaseService {
     }else if(modiType == anyenum.OperateType.OnlySel) {
 
       //事件表更新
-      newAgdata.mi = UserConfig.account.id;
 
       let rtjon = new RtJson();
       rtjon.cycletype = anyenum.CycleType.close;
@@ -527,12 +536,13 @@ export class EventService extends BaseService {
       ev.rt = newAgdata.rt;
       ev.rts = newAgdata.rts;
       ev.rfg = newAgdata.rfg;
-
+      ev.mi = newAgdata.mi;
+      ev.tb = anyenum.SyncType.unsynch;
       await this.sqlExce.updateByParam(ev);
 
       let outAgd  = {} as AgendaData;
       Object.assign(outAgd,ev);
-      outAgds.push(newAgdata);
+      outAgds.push(outAgd);
 
       // 删除相关提醒
       let wa = new WaTbl();
@@ -558,10 +568,13 @@ export class EventService extends BaseService {
           //更新首条为父事件
           Object.assign(nwEv, nwEvs[0]);
           nwEv.rtevi = "";
+          nwEv.mi = newAgdata.mi;
+          nwEv.tb = anyenum.SyncType.unsynch;
           sqlparam.push(nwEv.upTParam());
 
           //原重复子事件的父字段改为新的父事件
-          sq = `update gtd_ev set rtevi = '${nwEv.evi}' where rtevi = '${oriAgdata.evi}'; `;
+          sq = `update gtd_ev set rtevi = '${nwEv.evi}', mi = '${newAgdata.mi}',tb='${anyenum.SyncType.unsynch}' 
+          where rtevi = '${oriAgdata.evi}'; `;
           sqlparam.push(sq);
 
           //为新的父事件建立新的对应日程
