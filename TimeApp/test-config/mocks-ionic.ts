@@ -10,6 +10,9 @@ export class RestfulClientMock {
   async post(url: any, body: any): Promise<any> {
     let bts: number;
     switch (url.key) {
+      case "SPH" : // 数据同步Push
+      case "SPL" : // 数据同步Pull
+        break;
       case "B" : // 备份
         bts = body.d.bts || moment().valueOf()
         this.backup.set(bts, body.d);
