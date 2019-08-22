@@ -229,7 +229,7 @@ export class EventService extends BaseService {
         masterEvi = oriAgdata.rtevi;
       }
 
-      sq = `update gtd_ev set del ='${anyenum.DelType.del}' ,mi='${UserConfig.account.id}',tb = '${anyenum.SyncType.unsynch}' 
+      sq = `update gtd_ev set del ='${anyenum.DelType.del}' ,mi='${UserConfig.account.id}',tb = '${anyenum.SyncType.unsynch}'
        where evd >= '${oriAgdata.evd}' and (evi = '${masterEvi}' or rtevi =  '${masterEvi}') ;`;
       await this.sqlExce.execSql(sq);
 
@@ -317,7 +317,7 @@ export class EventService extends BaseService {
             sqlparam.push(nwEv.upTParam());
 
             //原子事件的父字段改为新的父事件
-            sq = `update gtd_ev set rtevi = '${nwEv.evi}',mi='${UserConfig.account.id}',tb = '${anyenum.SyncType.unsynch}' 
+            sq = `update gtd_ev set rtevi = '${nwEv.evi}',mi='${UserConfig.account.id}',tb = '${anyenum.SyncType.unsynch}'
              where rtevi = '${oriAgdata.evi}'; `;
             sqlparam.push(sq);
 
@@ -480,7 +480,7 @@ export class EventService extends BaseService {
         masterEvi = oriAgdata.rtevi;
       }
       //evd使用原事件evd
-      sq = `update  gtd_ev set del ='${anyenum.DelType.del}' , mi ='${newAgdata.mi}',tb = '${anyenum.SyncType.unsynch}' 
+      sq = `update  gtd_ev set del ='${anyenum.DelType.del}' , mi ='${newAgdata.mi}',tb = '${anyenum.SyncType.unsynch}'
        where evd >= '${oriAgdata.evd}' and (evi = '${masterEvi}' or rtevi =  '${masterEvi}') ;`;
       await this.sqlExce.execSql(sq);
 
@@ -599,7 +599,7 @@ export class EventService extends BaseService {
           sqlparam.push(nwEv.upTParam());
 
           //原重复子事件的父字段改为新的父事件
-          sq = `update gtd_ev set rtevi = '${nwEv.evi}', mi = '${newAgdata.mi}',tb='${anyenum.SyncType.unsynch}' 
+          sq = `update gtd_ev set rtevi = '${nwEv.evi}', mi = '${newAgdata.mi}',tb='${anyenum.SyncType.unsynch}'
           where rtevi = '${oriAgdata.evi}'; `;
           sqlparam.push(sq);
 
@@ -839,7 +839,7 @@ export class EventService extends BaseService {
     switch(rtjson.over.type) {
       case anyenum.OverType.times :
         this.assertEmpty(rtjson.over.value);    // 结束条件不能为空
-        this.assertNumber(rtjson.over.value);   // 结束条件不能为数字字符串以外的值
+        this.assertNotNumber(rtjson.over.value);   // 结束条件不能为数字字符串以外的值
         repeatTimes = (Number(rtjson.over.value) > 0)? Number(rtjson.over.value) : 1;
         break;
       case anyenum.OverType.limitdate :

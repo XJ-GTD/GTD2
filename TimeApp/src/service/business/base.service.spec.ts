@@ -26,7 +26,6 @@ describe('BaseService test suite', () => {
 
   it('Case 4 - 2 assertNumber("4")', () => {
     expect(function() {
-      let test = Number("4");
       baseService.assertNumber("4");
     }).not.toThrow();
   });
