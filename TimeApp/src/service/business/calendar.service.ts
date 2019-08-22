@@ -397,10 +397,10 @@ export class CalendarService extends BaseService {
         sqls.push(memodb.dTParam());
 
         // 删除关联表，通过未关联主表条件删除
-        sqls.push(`update gtd_fj set del = '${DelType.del}' where obt = '${ObjectType.Memo}' and obi not in (select moi from gtd_mo where del <> '${DelType.del}');`);   // 附件表
-        sqls.push(`update gtd_wa set del = '${DelType.del}' where obt = '${ObjectType.Memo}' and obi not in (select moi from gtd_mo where del <> '${DelType.del}');`);    // 提醒表
-        sqls.push(`update gtd_par set del = '${DelType.del}' where obt = '${ObjectType.Memo}' and obi not in (select moi from gtd_mo where del <> '${DelType.del}');`);    // 参与人表
-        sqls.push(`update gtd_mrk set del = '${DelType.del}' where obt = '${ObjectType.Memo}' and obi not in (select moi from gtd_mo where del <> '${DelType.del}');`);   // 标签表
+        sqls.push(`update gtd_fj set del = '${DelType.del}' where obt = '${ObjectType.Memo}' and obi not in (select moi from gtd_mom where del <> '${DelType.del}');`);   // 附件表
+        sqls.push(`update gtd_wa set del = '${DelType.del}' where obt = '${ObjectType.Memo}' and obi not in (select moi from gtd_mom where del <> '${DelType.del}');`);    // 提醒表
+        sqls.push(`update gtd_par set del = '${DelType.del}' where obt = '${ObjectType.Memo}' and obi not in (select moi from gtd_mom where del <> '${DelType.del}');`);    // 参与人表
+        sqls.push(`update gtd_mrk set del = '${DelType.del}' where obt = '${ObjectType.Memo}' and obi not in (select moi from gtd_mom where del <> '${DelType.del}');`);   // 标签表
       }
     } else {
       // 不删除子元素，需要把子元素的计划ID更新为空/默认计划ID
@@ -689,15 +689,15 @@ export class CalendarService extends BaseService {
                               max(gdayev.agendascount) agendascount,
                               max(gdayev.taskscount) taskscount,
                               max(gdayev.repeateventscount) repeateventscount,
-                              sum(CASE IFNULL(gmo.moi, '') WHEN '' THEN 0 ELSE 1 END) memoscount,
+                              sum(CASE WHEN IFNULL(gmo.moi, '') = '' OR gev.del = '${DelType.del}' THEN 0 ELSE 1 END) memoscount,
                               0 bookedtimesummary
                       from (select gdayjta.day day,
                                   max(gdayjta.calendaritemscount) calendaritemscount,
                                   max(gdayjta.activityitemscount) activityitemscount,
-                                  sum(CASE IFNULL(gev.evi, '') WHEN '' THEN 0 ELSE 1 END) eventscount,
+                                  sum(CASE WHEN IFNULL(gev.evi, '') = '' OR gev.del = '${DelType.del}' THEN 0 ELSE 1 END) eventscount,
                                   sum(CASE WHEN gev.type = '${EventType.Agenda}' AND gev.del <> '${DelType.del}' THEN 1 ELSE 0 END) agendascount,
                                   sum(CASE WHEN gev.type = '${EventType.Task}' AND gev.del <> '${DelType.del}' THEN 1 ELSE 0 END) taskscount,
-                                  sum(CASE IFNULL(gev.rtevi, '') WHEN '' THEN 0 ELSE 1 END) repeateventscount
+                                  sum(CASE WHEN IFNULL(gev.rtevi, '') = '' OR gev.del = '${DelType.del}' THEN 0 ELSE 1 END) repeateventscount
                             from (select gday.sd day,
                                     sum(CASE WHEN gjt.jtt = '${PlanItemType.Holiday}' AND gjt.del <> '${DelType.del}' THEN 1 ELSE 0 END) calendaritemscount,
                                     sum(CASE WHEN gjt.jtt = '${PlanItemType.Activity}' AND gjt.del <> '${DelType.del}' THEN 1 ELSE 0 END) activityitemscount
@@ -744,7 +744,7 @@ export class CalendarService extends BaseService {
       days.set(day, new DayActivityData(day));
     }
 
-    let sqlcalitems: string = `select * from gtd_jta where substr(sd, 1, 7) = '${month}' order by sd asc, st asc`;
+    let sqlcalitems: string = `select * from gtd_jta where substr(sd, 1, 7) = '${month}' AND del <> '${DelType.del}' order by sd asc, st asc`;
 
     monthActivity.calendaritems = await this.sqlExce.getExtList<PlanItemData>(sqlcalitems);
 
@@ -760,7 +760,7 @@ export class CalendarService extends BaseService {
       return days;
     }, days);
 
-    let sqlevents: string = `select * from gtd_ev where substr(evd, 1, 7) = '${month}' order by evd asc`;
+    let sqlevents: string = `select * from gtd_ev where substr(evd, 1, 7) = '${month}' AND del <> '${DelType.del}' order by evd asc`;
 
     monthActivity.events = await this.sqlExce.getExtList<EventData>(sqlevents);
 
@@ -776,7 +776,7 @@ export class CalendarService extends BaseService {
       return days;
     }, days);
 
-    let sqlmemos: string = `select * from gtd_mom where substr(sd, 1, 7) = '${month}' order by sd asc`;
+    let sqlmemos: string = `select * from gtd_mom where substr(sd, 1, 7) = '${month}' AND del <> '${DelType.del}' order by sd asc`;
 
     monthActivity.memos = await this.sqlExce.getExtList<MemoData>(sqlmemos);
 
@@ -1042,18 +1042,18 @@ export class CalendarService extends BaseService {
                               max(gdayev.agendascount) agendascount,
                               max(gdayev.taskscount) taskscount,
                               max(gdayev.repeateventscount) repeateventscount,
-                              sum(CASE IFNULL(gmo.moi, '') WHEN '' THEN 0 ELSE 1 END) memoscount,
+                              sum(CASE WHEN IFNULL(gmo.moi, '') = '' OR gmo.del = '${DelType.del}' THEN 0 ELSE 1 END) memoscount,
                               0 bookedtimesummary
                       from (select gdayjta.day day,
                                   max(gdayjta.calendaritemscount) calendaritemscount,
                                   max(gdayjta.activityitemscount) activityitemscount,
-                                  sum(CASE IFNULL(gev.evi, '') WHEN '' THEN 0 ELSE 1 END) eventscount,
-                                  sum(CASE gev.type WHEN '${EventType.Agenda}' THEN 1 ELSE 0 END) agendascount,
-                                  sum(CASE gev.type WHEN '${EventType.Task}' THEN 1 ELSE 0 END) taskscount,
-                                  sum(CASE IFNULL(gev.rtevi, '') WHEN '' THEN 0 ELSE 1 END) repeateventscount
+                                  sum(CASE WHEN IFNULL(gev.evi, '') = '' OR gev.del = '${DelType.del}' THEN 0 ELSE 1 END) eventscount,
+                                  sum(CASE WHEN gev.type = '${EventType.Agenda}' AND gev.del <> '${DelType.del}' THEN 1 ELSE 0 END) agendascount,
+                                  sum(CASE WHEN gev.type = '${EventType.Task}' AND gev.del <> '${DelType.del}' THEN 1 ELSE 0 END) taskscount,
+                                  sum(CASE WHEN IFNULL(gev.rtevi, '') = '' OR gev.del = '${DelType.del}' THEN 0 ELSE 1 END) repeateventscount
                             from (select gday.sd day,
-                                    sum(CASE gjt.jtt WHEN '${PlanItemType.Holiday}' THEN 1 ELSE 0 END) calendaritemscount,
-                                    sum(CASE gjt.jtt WHEN '${PlanItemType.Activity}' THEN 1 ELSE 0 END) activityitemscount
+                                    sum(CASE WHEN gjt.jtt '${PlanItemType.Holiday}' AND gjt.del <> '${DelType.del}' THEN 1 ELSE 0 END) calendaritemscount,
+                                    sum(CASE WHEN gjt.jtt = '${PlanItemType.Activity}' AND gjt.del <> '${DelType.del}' THEN 1 ELSE 0 END) activityitemscount
                                   from (select '${day}' sd) gday
                                       left join gtd_jta gjt on gday.sd = gjt.sd
                                   group by gday.sd) gdayjta
@@ -1080,15 +1080,15 @@ export class CalendarService extends BaseService {
 
     dayActivity.day = day;
 
-    let sqlcalitems: string = `select * from gtd_jta where sd = '${day}' order by st asc`;
+    let sqlcalitems: string = `select * from gtd_jta where sd = '${day}' and del <> '${DelType.del}' order by st asc`;
 
     dayActivity.calendaritems = await this.sqlExce.getExtList<PlanItemData>(sqlcalitems);
 
-    let sqlevents: string = `select * from gtd_ev where evd = '${day}'`;
+    let sqlevents: string = `select * from gtd_ev where evd = '${day}' and del <> '${DelType.del}'`;
 
     dayActivity.events = await this.sqlExce.getExtList<EventData>(sqlevents);
 
-    let sqlmemos: string = `select * from gtd_mom where sd = '${day}'`;
+    let sqlmemos: string = `select * from gtd_mom where sd = '${day}' and del <> '${DelType.del}'`;
 
     dayActivity.memos = await this.sqlExce.getExtList<MemoData>(sqlmemos);
 
