@@ -914,7 +914,7 @@ export class EventService extends BaseService {
 
         } else if (repeatType == "months") {
           let dayOfMonth: number = Number(moment(stepDay).format("D"));
-          let maxDayOfMonth: number = moment().month(moment(stepDay).month()).endOf('month').days();
+          let maxDayOfMonth: number = moment().daysInMonth();
 
           for (let option of options) {
 
