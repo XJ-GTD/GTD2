@@ -216,6 +216,7 @@ export class CalendarService extends BaseService {
       // 更新
       let plandb: JhaTbl = new JhaTbl();
       Object.assign(plandb, plan);
+      plandb.tb = SyncType.unsynch;
 
       await this.sqlExce.updateByParam(plandb);
 
@@ -226,6 +227,9 @@ export class CalendarService extends BaseService {
 
       let plandb: JhaTbl = new JhaTbl();
       Object.assign(plandb, plan);
+
+      plandb.del = DelType.undel;
+      plandb.tb = SyncType.unsynch;
 
       await this.sqlExce.saveByParam(plandb);
 
@@ -249,6 +253,7 @@ export class CalendarService extends BaseService {
 
     plandb.ji = ji;
     plandb.jc = jc;
+    plandb.tb = SyncType.unsynch;
 
     await this.sqlExce.updateByParam(plandb);
 
@@ -267,9 +272,9 @@ export class CalendarService extends BaseService {
     let plan: PlanData = {} as PlanData;
     let plandb: JhaTbl = new JhaTbl();
 
-    plandb.ji = ji;
+    let plansql: string = `select * from gtd_jha where ji = ? and del = ?`;
 
-    plandb = await this.sqlExce.getOneByParam<JhaTbl>(plandb);
+    plandb = await this.sqlExce.getExtOneByParam<JhaTbl>(plansql, [ji, DelType.undel]);
 
     // 计划不存在直接返回
     if (!plandb) {
@@ -447,9 +452,10 @@ export class CalendarService extends BaseService {
     this.assertEmpty(jti);       // 入参不能为空
 
     let planitemdb: JtaTbl = new JtaTbl();
-    planitemdb.jti = jti;
 
-    planitemdb = await this.sqlExce.getOneByParam<JtaTbl>(planitemdb);
+    let sql: string = `select * from gtd_jta where jti = ? and del = ?`;
+
+    planitemdb = await this.sqlExce.getExtOneByParam<JtaTbl>(sql, [jti, DelType.undel]);
 
     let planitem: PlanItemData = {} as PlanItemData;
 
@@ -478,6 +484,8 @@ export class CalendarService extends BaseService {
       let planitemdb: JtaTbl = new JtaTbl();
       Object.assign(planitemdb, item);
 
+      planitemdb.tb = SyncType.unsynch;
+
       await this.sqlExce.updateByParam(planitemdb);
 
       this.emitService.emit(`mwxing.calendar.${item.ji}.item.updated`);
@@ -488,7 +496,7 @@ export class CalendarService extends BaseService {
       let planitemdb: JtaTbl = new JtaTbl();
       Object.assign(planitemdb, item);
 
-      planitemdb.tb = SyncType.synch;
+      planitemdb.tb = SyncType.unsynch;
       planitemdb.del = DelType.undel;
 
       await this.sqlExce.saveByParam(planitemdb);
@@ -695,12 +703,12 @@ export class CalendarService extends BaseService {
                                   max(gdayjta.calendaritemscount) calendaritemscount,
                                   max(gdayjta.activityitemscount) activityitemscount,
                                   sum(CASE WHEN IFNULL(gev.evi, '') = '' THEN 0 WHEN gev.del = '${DelType.del}' THEN 0 ELSE 1 END) eventscount,
-                                  sum(CASE WHEN gev.type <> '${EventType.Agenda}' THEN 0 WHEN gev.del = '${DelType.del}' THEN 0 ELSE 1 END) agendascount,
-                                  sum(CASE WHEN gev.type <> '${EventType.Task}' THEN 0 WHEN gev.del = '${DelType.del}' THEN 0 ELSE 1 END) taskscount,
+                                  sum(CASE WHEN IFNULL(gev.evi, '') = '' THEN 0 WHEN gev.type <> '${EventType.Agenda}' THEN 0 WHEN gev.del = '${DelType.del}' THEN 0 ELSE 1 END) agendascount,
+                                  sum(CASE WHEN IFNULL(gev.evi, '') = '' THEN 0 WHEN gev.type <> '${EventType.Task}' THEN 0 WHEN gev.del = '${DelType.del}' THEN 0 ELSE 1 END) taskscount,
                                   sum(CASE WHEN IFNULL(gev.rtevi, '') = '' THEN 0 WHEN gev.del = '${DelType.del}' THEN 0 ELSE 1 END) repeateventscount
                             from (select gday.sd day,
-                                    sum(CASE WHEN gjt.jtt <> '${PlanItemType.Holiday}' THEN 0 WHEN gjt.del <> '${DelType.del}' THEN 0 ELSE 1 END) calendaritemscount,
-                                    sum(CASE WHEN gjt.jtt <> '${PlanItemType.Activity}' THEN 0 WHEN gjt.del <> '${DelType.del}' THEN 0 ELSE 1 END) activityitemscount
+                                    sum(CASE WHEN IFNULL(gjt.jti, '') = '' THEN 0 WHEN gjt.jtt <> '${PlanItemType.Holiday}' THEN 0 WHEN gjt.del <> '${DelType.del}' THEN 0 ELSE 1 END) calendaritemscount,
+                                    sum(CASE WHEN IFNULL(gjt.jti, '') = '' THEN 0 WHEN gjt.jtt <> '${PlanItemType.Activity}' THEN 0 WHEN gjt.del <> '${DelType.del}' THEN 0 ELSE 1 END) activityitemscount
                                   from (${daysql}) gday
                                       left join gtd_jta gjt on gday.sd = gjt.sd
                                   group by gday.sd) gdayjta
@@ -1048,12 +1056,12 @@ export class CalendarService extends BaseService {
                                   max(gdayjta.calendaritemscount) calendaritemscount,
                                   max(gdayjta.activityitemscount) activityitemscount,
                                   sum(CASE WHEN IFNULL(gev.evi, '') = '' THEN 0 WHEN gev.del = '${DelType.del}' THEN 0 ELSE 1 END) eventscount,
-                                  sum(CASE WHEN gev.type <> '${EventType.Agenda}' THEN 0 WHEN gev.del = '${DelType.del}' THEN 0 ELSE 1 END) agendascount,
-                                  sum(CASE WHEN gev.type <> '${EventType.Task}' THEN 0 WHEN gev.del = '${DelType.del}' THEN 0 ELSE 1 END) taskscount,
+                                  sum(CASE WHEN IFNULL(gev.evi, '') = '' THEN 0 WHEN gev.type <> '${EventType.Agenda}' THEN 0 WHEN gev.del = '${DelType.del}' THEN 0 ELSE 1 END) agendascount,
+                                  sum(CASE WHEN IFNULL(gev.evi, '') = '' THEN 0 WHEN gev.type <> '${EventType.Task}' THEN 0 WHEN gev.del = '${DelType.del}' THEN 0 ELSE 1 END) taskscount,
                                   sum(CASE WHEN IFNULL(gev.rtevi, '') = '' THEN 0 WHEN gev.del = '${DelType.del}' THEN 0 ELSE 1 END) repeateventscount
                             from (select gday.sd day,
-                                    sum(CASE WHEN gjt.jtt <> '${PlanItemType.Holiday}' THEN 0 WHEN gjt.del = '${DelType.del}' THEN 0 ELSE 1 END) calendaritemscount,
-                                    sum(CASE WHEN gjt.jtt <> '${PlanItemType.Activity}' THEN 0 WHEN gjt.del = '${DelType.del}' THEN 0 ELSE 1 END) activityitemscount
+                                    sum(CASE WHEN IFNULL(gjt.jti, '') = '' THEN 0 WHEN gjt.jtt <> '${PlanItemType.Holiday}' THEN 0 WHEN gjt.del = '${DelType.del}' THEN 0 ELSE 1 END) calendaritemscount,
+                                    sum(CASE WHEN IFNULL(gjt.jti, '') = '' THEN 0 WHEN gjt.jtt <> '${PlanItemType.Activity}' THEN 0 WHEN gjt.del = '${DelType.del}' THEN 0 ELSE 1 END) activityitemscount
                                   from (select '${day}' sd) gday
                                       left join gtd_jta gjt on gday.sd = gjt.sd
                                   group by gday.sd) gdayjta
