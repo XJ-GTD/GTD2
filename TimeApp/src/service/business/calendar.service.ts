@@ -454,6 +454,7 @@ export class CalendarService extends BaseService {
 
     let planitemdb: JtaTbl = new JtaTbl();
     planitemdb.jti = jti;
+    planitemdb.del = DelType.undel;
 
     planitemdb = await this.sqlExce.getOneByParam<JtaTbl>(planitemdb);
 
