@@ -247,6 +247,7 @@ export class EventService extends BaseService {
       ev.evi = oriAgdata.evi;
       ev.del = anyenum.DelType.del;
       ev.tb = anyenum.SyncType.unsynch;
+      ev.mi = UserConfig.account.id;
       await this.sqlExce.updateByParam(ev);
 
       //主evi设定
