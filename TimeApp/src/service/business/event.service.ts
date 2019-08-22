@@ -147,8 +147,8 @@ export class EventService extends BaseService {
     pars = await this.sqlExce.getLstByParam<ParTbl>(par);
     for (let j = 0, len = pars.length; j < len; j++) {
       let parter = {} as Parter;
-      //todo userConfig改造
-      //parter = this.userConfig.GetOneBTbl(pars[j].pwi);
+
+      parter = this.userConfig.GetOneBTbl2(pars[j].pwi);
       if(parter && parter != null){
         parters.push(parter);
       }
@@ -163,10 +163,9 @@ export class EventService extends BaseService {
   private async getParterByUi(ui:string):Promise<Parter>{
     let parter = {} as Parter;
     //发起人信息
-    let tmp = this.userConfig.GetOneBTbl(ui);
+    let tmp = this.userConfig.GetOneBTbl2(ui);
     if (tmp) {
-      //todo userConfig改造
-      //parter = tmp;
+      parter = tmp;
     }else{
       //不存在查询数据库
       let b = new BTbl();
