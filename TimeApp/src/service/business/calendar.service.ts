@@ -273,6 +273,7 @@ export class CalendarService extends BaseService {
     let plandb: JhaTbl = new JhaTbl();
 
     plandb.ji = ji;
+    plandb.del = DelType.undel;
 
     plandb = await this.sqlExce.getOneByParam<JhaTbl>(plandb);
 
