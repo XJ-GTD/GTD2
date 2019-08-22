@@ -689,7 +689,7 @@ export class CalendarService extends BaseService {
                               max(gdayev.agendascount) agendascount,
                               max(gdayev.taskscount) taskscount,
                               max(gdayev.repeateventscount) repeateventscount,
-                              sum(CASE WHEN IFNULL(gmo.moi, '') = '' THEN 0 WHEN gev.del = '${DelType.del}' THEN 0 ELSE 1 END) memoscount,
+                              sum(CASE WHEN IFNULL(gmo.moi, '') = '' THEN 0 WHEN gmo.del = '${DelType.del}' THEN 0 ELSE 1 END) memoscount,
                               0 bookedtimesummary
                       from (select gdayjta.day day,
                                   max(gdayjta.calendaritemscount) calendaritemscount,
