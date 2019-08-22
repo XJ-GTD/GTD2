@@ -383,7 +383,7 @@ export class CalendarService extends BaseService {
 
         // 删除关联表，通过未关联主表条件删除
         sqls.push(`delete from gtd_ca where evi not in (select evi from gtd_ev where del <> '${DelType.del}');`);   // 日程表
-        sqls.push(`update gtd_t set del = '${DelType.del}' where evi not in (select evi from gtd_ev where del <> '${DelType.del}');`);   // 任务表
+        sqls.push(`delete from gtd_t where evi not in (select evi from gtd_ev where del <> '${DelType.del}');`);   // 任务表
 
         sqls.push(`update gtd_fj set del = '${DelType.del}' where obt = '${ObjectType.Event}' and obi not in (select evi from gtd_ev where del <> '${DelType.del}');`);   // 附件表
         sqls.push(`delete from gtd_wa where obt = '${ObjectType.Event}' and obi not in (select evi from gtd_ev where del <> '${DelType.del}');`);    // 提醒表
