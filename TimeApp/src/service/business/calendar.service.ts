@@ -216,6 +216,7 @@ export class CalendarService extends BaseService {
       // 更新
       let plandb: JhaTbl = new JhaTbl();
       Object.assign(plandb, plan);
+      plandb.tb = SyncType.unsynch;
 
       await this.sqlExce.updateByParam(plandb);
 
@@ -226,6 +227,9 @@ export class CalendarService extends BaseService {
 
       let plandb: JhaTbl = new JhaTbl();
       Object.assign(plandb, plan);
+
+      plandb.del = DelType.undel;
+      plandb.tb = SyncType.unsynch;
 
       await this.sqlExce.saveByParam(plandb);
 
@@ -249,6 +253,7 @@ export class CalendarService extends BaseService {
 
     plandb.ji = ji;
     plandb.jc = jc;
+    plandb.tb = SyncType.unsynch;
 
     await this.sqlExce.updateByParam(plandb);
 
@@ -478,6 +483,8 @@ export class CalendarService extends BaseService {
       let planitemdb: JtaTbl = new JtaTbl();
       Object.assign(planitemdb, item);
 
+      planitemdb.tb = SyncType.unsynch;
+
       await this.sqlExce.updateByParam(planitemdb);
 
       this.emitService.emit(`mwxing.calendar.${item.ji}.item.updated`);
@@ -488,7 +495,7 @@ export class CalendarService extends BaseService {
       let planitemdb: JtaTbl = new JtaTbl();
       Object.assign(planitemdb, item);
 
-      planitemdb.tb = SyncType.synch;
+      planitemdb.tb = SyncType.unsynch;
       planitemdb.del = DelType.undel;
 
       await this.sqlExce.saveByParam(planitemdb);
