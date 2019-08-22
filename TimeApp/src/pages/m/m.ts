@@ -21,12 +21,7 @@ import {RabbitMQService} from "../../service/cordova/rabbitmq.service";
   providers: [],
   template: `
 
-    <BackComponent></BackComponent>
-
-    <ion-menu [content]="ha" side="right" swipeEnabled="true" [maxEdgeStart]="maxEdgeStart" type="lsPush" class="ls" id="ls">
-      <page-tdl></page-tdl>
-    </ion-menu>
-    <ion-menu [content]="ha" side="left" swipeEnabled="true" [maxEdgeStart]="maxEdgeStart" type="scalePush" class="menu" >
+    <ion-menu [content]="ha" side="left" swipeEnabled="true"  type="scalePush" class="menu" id="scalePush">
       <ion-content>
         <ion-grid>
           <ion-row>

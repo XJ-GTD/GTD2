@@ -8,7 +8,7 @@ import {TdlService} from "./tdl.service";
 import {DataConfig} from "../../service/config/data.config";
 import * as moment from "moment";
 import {EmitService} from "../../service/util-service/emit.service";
-import {ScdlData, ScdPageParamter} from "../../data.mapping";
+import {ScdData, ScdlData, ScdPageParamter} from "../../data.mapping";
 import {UtilService} from "../../service/util-service/util.service";
 import {FeedbackService} from "../../service/cordova/feedback.service";
 
@@ -23,59 +23,83 @@ import {FeedbackService} from "../../service/cordova/feedback.service";
   template:
       `
     <div class="header-set">
-            <span class="headerY">{{headerDate| formatedate:"YYYY"}}</span>
-            <span class="headerMD">{{headerDate| formatedate:"CMM/DD"}} </span>
+      <div class="daynav">
+        <div class="dayheader">
+
+          <div class="d-fsize text-center">{{headerDate | formatedate :"CWEEK"}}</div>
+          <div class="ym-fsize text-center ">{{headerDate | formatedate:"DD"}}</div>
+          <!--<div class="ys-fsize text-center " *ngFor="let jt of headerData.jtl" (click)="toDetail(jt.si,jt.sd,'3')">{{jt.spn}}</div>-->
+        </div>
+        <div class="d-title text-center ">
+          <div class="first d-title-chr">日记</div>
+          <div class=" d-title-chr">10条日程</div>
+          <div class=" d-title-chr">10条任务</div>
+          <div class=" d-title-chr">10条任务</div>
+        </div>
+      </div>
     </div>
     <ion-content #contentD>
       <ion-grid #grid4Hight>
-        <ion-row *ngFor="let sdl of scdlDataList;let i = index;" class="anch" id="day{{sdl.id}}">
-          <div class="daynav">
-            <div class="dayheader w-auto">
-              <div class="d-fsize text-center">{{sdl.d | formatedate :"CWEEK"}}</div>
-              <div class="ym-fsize text-center ">{{sdl.d | formatedate:"DD"}}</div>
-              <div class="ys-fsize text-center " *ngFor="let jt of sdl.jtl" (click)="toDetail(jt.si,jt.sd,'3')">{{jt.spn}}</div>
+        <ng-template ngFor let-sdl [ngForOf]="scdlDataList">
+          <ion-row *ngIf="(sdl.d | formatedate:'DD') == '01'" class="dayagenda-month" [class.month7] = "true">
+              <p>
+                {{sdl.d  | formatedate :"CYYYY/MM"}}
+              </p>
+              <p>
+                感知天气冷暖我们生来便会，感知人情冷暖还要慢慢体会。 
+              </p>            
+          </ion-row>
+        <ion-row class="anch" id="day{{sdl.id}}">
+          <ng-template [ngIf]="sdl.scdl.length > 0" [ngIfElse]="noscd">
+            <div class="daynav">
+              <div class="dayheader">
+
+                <div class="d-fsize text-center">{{sdl.d | formatedate :"CWEEK"}}</div>
+                <div class="ym-fsize text-center ">{{sdl.d | formatedate:"DD"}}</div>
+                <div class="ys-fsize text-center " *ngFor="let jt of sdl.jtl" (click)="toDetail(jt.si,jt.sd,'3')">{{jt.spn}}</div>
+              </div>
+              <div class="d-title text-center ">
+                <div class="first d-title-chr">日记</div>
+                <div class=" d-title-chr">10条日程</div>
+                <div class=" d-title-chr">10条任务</div>
+                <div class=" d-title-chr">10条任务</div>
+              </div>
             </div>
-          </div>
-          <div class="dayagendas w-auto">
-            <ng-template [ngIf]="sdl.scdl.length > 0" [ngIfElse]="noscd">
-              <div class="dayagenda row " [class.back0]="scd.cbkcolor == 0" [class.back1]="scd.cbkcolor == 1"
-                   *ngFor="let scd of sdl.scdl;" (click)="toDetail(scd.si,sdl.d,scd.gs)" >
-                <div class="dayagendacontent w-auto">
-                  <div class="agendaline2 row">
-                    <div class="agenda-st">{{this.util.adStrShow(scd.st)}}</div>
-                    <div class="dot-set " [ngStyle]="{'background-color':scd.p.jc}"></div>
+            <ion-grid>
+              <ion-row *ngFor="let scd of sdl.scdl;" (click)="toDetail(scd.si,sdl.d,scd.gs)" >
+                <div class="dayagenda-content">
+                  <div class="agendaline2">
+                    <div class="agenda-icon">
+                      <div class="icon icon1" ></div>
+                      <div class="icon icon2" ></div>
+                    </div>
                     <div class="agenda-sn">{{scd.sn}}</div>
                   </div>
+                  <div class="agendaline1">
+                    <div class="agenda-st">{{this.util.adStrShow(scd.st)}}</div>
+                    <div class="dot-set " [ngStyle]="{'background-color':scd.p.jc}"></div>
 
-                  <div class="agendaline1" *ngIf="scd.gs == '1'">
-                    <ion-chip >
-                      <ion-avatar>
-                        <img src="{{scd.fs.bhiu}}"/>
-                      </ion-avatar>
-                      <ion-label [class.newMessage]="scd.du != '0'">{{scd.fs.ran}}</ion-label>
-                    </ion-chip>
+                    <!--<ion-chip *ngIf="scd.gs == '1'" >-->
+                    <!--<ion-avatar>-->
+                    <!--<img src="{{scd.fs.bhiu}}"/>-->
+                    <!--</ion-avatar>-->
+                    <!--<ion-label [class.newMessage]="scd.du != '0'">{{scd.fs.ran}}</ion-label>-->
+                    <!--</ion-chip>-->
                   </div>
-                  <!--<div class="agendaline1" *ngIf="scd.gs == '0'">参与事件：{{scd.fss.length}}人</div>-->
-                  <div class="agendaline1" *ngIf="scd.gs == '0'">&nbsp;</div>
-                  <div class="agendaline1" *ngIf="scd.gs == '2'">下载：{{scd.p.jn}}</div>
                 </div>
-              </div>
-            </ng-template>
-            <ng-template #noscd>
-              <div class="dayagenda row subheight" (click)="toAdd(sdl.d)">
-                <div class="dayagendacontent w-auto agenda-none" [class.none1]="sdl.bc == 1"
-                     [class.none0]="sdl.bc == 0">
-                </div>
-              </div>
-            </ng-template>
-          </div>
+              </ion-row>
+            </ion-grid>
+          </ng-template>
+          <ng-template #noscd>
+            <div class="dayagenda-no-content" (click)="toAdd(sdl.d)">
+              <p>{{sdl.d | formatedate :"CYYYY/MM/DD"}}</p>
+            </div>
+          </ng-template>
+         
         </ion-row>
+        </ng-template>
       </ion-grid>
     </ion-content>
-
-    <div class="backdrop" (click)="goBack()">
-      <img src="../../assets/imgs/xll.png"/>
-    </div>
   `
 
 
@@ -127,6 +151,8 @@ export class TdlPage {
         this.isgetData = !this.isgetData;
       });
     });
+
+
 
     this.emitService.registerRef((data) => {
       this.createData(this.headerMoment, 0, 0).then(data => {
@@ -287,12 +313,6 @@ export class TdlPage {
 
     }, 100);
   }
-
-  //回主页
-  goBack() {
-    this.menuController.close("ls");
-  }
-
 
   toDetail(si, d, gs) {
 

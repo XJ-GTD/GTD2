@@ -50,6 +50,7 @@ import {FoGitHubPage} from "../../pages/fo/fogithub";
 import {FoFirIMPage} from "../../pages/fo/fofirim";
 import {FoTravisCIPage} from "../../pages/fo/fotravisci";
 import {FoConfigurePage} from "../../pages/fo/foconfigure";
+import {AipPage} from "../../pages/aip/aip";
 
 export class DataConfig {
   public static isdebug: boolean  = true;
@@ -232,6 +233,7 @@ export class DataConfig {
   static PAGE = {
 
     _H_PAGE: HPage,        // 首页 - 首页
+    _Ai_PAGE: AipPage,     // 设置项目跟进实例可选项
     _TDL_PAGE: TdlPage,        // 日程 - 日程列表
     _TDM_PAGE: TdmPage,        // 日程 - TimePage风格日程详情新建
     _TDME_PAGE: TdmePage,      // 日程 - TimePage风格日程详情修改

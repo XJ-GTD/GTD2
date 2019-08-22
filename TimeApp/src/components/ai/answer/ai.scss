@@ -1,9 +1,9 @@
 aicomponent {
   transition: all 1.5s ease 0.2s;
   position: fixed;
-  bottom: 0px;
+  top: -44px;
   width: 100%;
-  height: auto;
+  height: 100%;
 
   .card {
     background: $aiBackColor;
@@ -162,6 +162,7 @@ aicomponent {
     opacity: 1;
     padding: 5px;
     width: 100%;
+    height: 100%;
   }
   .aiWarpBack {
     position: absolute;
