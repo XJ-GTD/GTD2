@@ -7,6 +7,7 @@ import {UtilService} from "../util-service/util.service";
 import {EmitService} from "../util-service/emit.service";
 import {DataConfig} from "./data.config";
 import {FsData, PageDcData} from "../../data.mapping";
+import {Parter} from "../business/event.service";
 
 /**
  * create by on 2019/3/5
@@ -59,6 +60,8 @@ export class UserConfig {
   //参与人
   static friends: Array<FsData> = new Array<FsData>();
 
+  static parters: Array<Parter> = new Array<Parter>();
+
   //重复调用防止
   static troublestop: Map<string, any> = new Map<string, any>();
 
@@ -73,6 +76,9 @@ export class UserConfig {
     await this.RefreshUTbl();
     await this.RefreshATbl();
     await this.RefreshBTbl();
+
+    await this.RefreshBTbl2();
+
     await this.RefreshGTbl();
   }
 
@@ -191,6 +197,9 @@ export class UserConfig {
 
   public async RefreshFriend() {
     await this.RefreshBTbl();
+
+    await this.RefreshBTbl2();
+
     await this.RefreshGTbl();
     return;
 
@@ -345,6 +354,92 @@ export class UserConfig {
     }
     return bhiu;
   }
+
+  /*新的parter对象 进行缓存的方法*/
+  //参与人
+  private async RefreshBTbl2() {
+    //获取本地参与人
+    let sql = `select gb.*,bh.hiu bhiu
+               from gtd_b gb
+                      left join gtd_bh bh on bh.pwi = gb.pwi;`;
+    UserConfig.parters.splice(0, UserConfig.parters.length);
+
+    let data: Array<Parter> = await this.sqlliteExec.getExtList<Parter>(sql);
+    for (let par of data) {
+      if (!par.bhiu || par.bhiu == '') {
+        par.bhiu = DataConfig.HUIBASE64;
+      }
+      UserConfig.parters.push(par);
+    }
+    //增加内部事件通知
+    this.emitService.emit("mwxing.config.user.btbl.refreshed");
+    return;
+  }
+
+  RefreshOneBTbl2(par: Parter): Parter {
+    let ret: Parter;
+    ret = this.GetOneBTbl2(par.pwi);
+    if (ret) {
+      Object.assign(ret, par);
+    }
+    return ret;
+  }
+
+  GetOneBTbl2(id: string): Parter {
+    console.log('GetOneBTbl with id ' + id);
+    let par : Parter = {} as Parter;
+    par =  UserConfig.parters.find(value => {
+      return value.pwi == id || value.ui == id;
+    });
+
+    if  (par){
+      if (par.bhiu == ""){
+        par.bhiu  = DataConfig.HUIBASE64;
+      }
+    }
+    return par;
+  }
+
+  GetOneBhiu2(id: string): string {
+    let bhiu :string = "";
+    let par : Parter = {} as Parter;
+    par  = UserConfig.parters.find(value => {
+      return value.pwi == id || value.ui == id;
+    });
+    if  (par){
+      if (par.bhiu == ""){
+        bhiu  = DataConfig.HUIBASE64;
+      }else{
+        bhiu  = par.bhiu;
+      }
+
+    }else{
+      bhiu = DataConfig.HUIBASE64;
+    }
+    return bhiu;
+  }
+
+  GetMultiBTbls2(ids: Array<string>): Array<Parter> {
+    console.log('GetMultiBTbls with ids ' + ids.join(","));
+
+    let matches: string = ids.join(",");
+
+    let parters : Array<Parter> = new Array<Parter>();
+    parters =  UserConfig.parters.filter(value => {
+      return ((matches.indexOf(value.pwi) >= 0) || (matches.indexOf(value.ui) >= 0));
+    });
+
+    if  (parters && parters.length > 0) {
+      for (let par of parters) {
+        if (par.bhiu == ""){
+          par.bhiu = DataConfig.HUIBASE64;
+        }
+      }
+    }
+
+    return parters;
+  }
+
 }
 
 export class Setting {
