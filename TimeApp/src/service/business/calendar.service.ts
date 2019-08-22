@@ -272,10 +272,9 @@ export class CalendarService extends BaseService {
     let plan: PlanData = {} as PlanData;
     let plandb: JhaTbl = new JhaTbl();
 
-    plandb.ji = ji;
-    plandb.del = DelType.undel;
+    let plansql: string = `select * from gtd_jha where ji = ? and del = ?`;
 
-    plandb = await this.sqlExce.getOneByParam<JhaTbl>(plandb);
+    plandb = await this.sqlExce.getExtOneByParam<JhaTbl>(plansql, [ji, DelType.undel]);
 
     // 计划不存在直接返回
     if (!plandb) {
@@ -453,10 +452,10 @@ export class CalendarService extends BaseService {
     this.assertEmpty(jti);       // 入参不能为空
 
     let planitemdb: JtaTbl = new JtaTbl();
-    planitemdb.jti = jti;
-    planitemdb.del = DelType.undel;
 
-    planitemdb = await this.sqlExce.getOneByParam<JtaTbl>(planitemdb);
+    let sql: string = `select * from gtd_jta where jti = ? and del = ?`;
+
+    planitemdb = await this.sqlExce.getExtOneByParam<JtaTbl>(sql, [jti, DelType.undel]);
 
     let planitem: PlanItemData = {} as PlanItemData;
 
