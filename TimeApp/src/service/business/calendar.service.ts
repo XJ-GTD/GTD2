@@ -287,7 +287,7 @@ export class CalendarService extends BaseService {
 
     // 检索可能的事件/备忘
     if (plan.jt == PlanType.CalendarPlan || plan.jt == PlanType.ActivityPlan) {
-      let sql = `select * from gtd_jta where ji = ?`;
+      let sql = `select * from gtd_jta where ji = ? and del <> '${DelType.del}'`;
 
       plan.items = await this.sqlExce.getExtLstByParam<PlanItemData>(sql, params);
     }
@@ -301,7 +301,7 @@ export class CalendarService extends BaseService {
                               ea.ct ct
                        from gtd_ev ev
                           left join gtd_ca ea on ea.evi = ev.evi
-                       where ev.type = '${EventType.Agenda}' and ev.ji = ?`;
+                       where ev.type = '${EventType.Agenda}' and ev.ji = ? and ev.del <> '${DelType.del}'`;
 
       let agendas: Array<AgendaData> = await this.sqlExce.getExtLstByParam<AgendaData>(agendasql, params);
 
@@ -312,17 +312,17 @@ export class CalendarService extends BaseService {
                             et.fd fd
                      from gtd_ev ev
                         left join gtd_t et on et.evi = ev.evi
-                     where ev.type = '${EventType.Task}' and ev.ji = ?`;
+                     where ev.type = '${EventType.Task}' and ev.ji = ? and ev.del <> '${DelType.del}'`;
 
       let tasks: Array<TaskData> = await this.sqlExce.getExtLstByParam<TaskData>(tasksql, params);
 
       let minitasksql = `select *
                          from gtd_ev
-                         where type = '${EventType.MiniTask}' and ji = ?`;
+                         where type = '${EventType.MiniTask}' and ji = ? and del <> '${DelType.del}'`;
 
       let minitasks: Array<MiniTaskData> = await this.sqlExce.getExtLstByParam<MiniTaskData>(minitasksql, params);
 
-      let memosql = `select * from gtd_mom where ji = ?`;
+      let memosql = `select * from gtd_mom where ji = ? and del <> '${DelType.del}'`;
 
       let memos: Array<MemoData> = await this.sqlExce.getExtLstByParam<MemoData>(memosql, params);
 
@@ -351,41 +351,44 @@ export class CalendarService extends BaseService {
 
     let plandb: JhaTbl = new JhaTbl();
     plandb.ji = ji;
+    plandb.del = DelType.del;
 
     let sqls: Array<any> = new Array<any>();
 
-    sqls.push(plandb.dTParam());
+    sqls.push(plandb.upTParam());
 
     // 同时删除日历项
     if (withchildren) {
       if (jt == PlanType.CalendarPlan || jt == PlanType.ActivityPlan) {
         let planitemdb: JtaTbl = new JtaTbl();
         planitemdb.ji = ji;
+        planitemdb.del = DelType.del;
 
-        sqls.push(planitemdb.dTParam());
+        sqls.push(planitemdb.upTParam());
 
         // 删除关联表，通过未关联主表条件删除
-        sqls.push(`delete from gtd_fj where obt = '${ObjectType.Calendar}' and obi not in (select jti from gtd_jt);`);   // 附件表
-        sqls.push(`delete from gtd_wa where obt = '${ObjectType.Calendar}' and obi not in (select jti from gtd_jt);`);    // 提醒表
-        sqls.push(`delete from gtd_par where obt = '${ObjectType.Calendar}' and obi not in (select jti from gtd_jt);`);    // 参与人表
-        sqls.push(`delete from gtd_mrk where obt = '${ObjectType.Calendar}' and obi not in (select jti from gtd_jt);`);   // 标签表
+        sqls.push(`update gtd_fj set del = '${DelType.del}' where obt = '${ObjectType.Calendar}' and obi not in (select jti from gtd_jt where del <> '${DelType.del}');`);   // 附件表
+        sqls.push(`update gtd_wa set del = '${DelType.del}' where obt = '${ObjectType.Calendar}' and obi not in (select jti from gtd_jt where del <> '${DelType.del}');`);    // 提醒表
+        sqls.push(`update gtd_par set del = '${DelType.del}' where obt = '${ObjectType.Calendar}' and obi not in (select jti from gtd_jt where del <> '${DelType.del}');`);    // 参与人表
+        sqls.push(`update gtd_mrk set del = '${DelType.del}' where obt = '${ObjectType.Calendar}' and obi not in (select jti from gtd_jt where del <> '${DelType.del}');`);   // 标签表
       }
 
       if (jt == PlanType.PrivatePlan) {
         let eventdb: EvTbl = new EvTbl();
         eventdb.ji = ji;
+        eventdb.del = DelType.del;
 
         // 删除事件主表
-        sqls.push(eventdb.dTParam());
+        sqls.push(eventdb.upTParam());
 
         // 删除关联表，通过未关联主表条件删除
-        sqls.push(`delete from gtd_ca where evi not in (select evi from gtd_ev);`);   // 日程表
-        sqls.push(`delete from gtd_t where evi not in (select evi from gtd_ev);`);   // 任务表
+        sqls.push(`update gtd_ca set del = '${DelType.del}' where evi not in (select evi from gtd_ev where del <> '${DelType.del}');`);   // 日程表
+        sqls.push(`update gtd_t set del = '${DelType.del}' where evi not in (select evi from gtd_ev where del <> '${DelType.del}');`);   // 任务表
 
-        sqls.push(`delete from gtd_fj where obt = '${ObjectType.Event}' and obi not in (select evi from gtd_ev);`);   // 附件表
-        sqls.push(`delete from gtd_wa where obt = '${ObjectType.Event}' and obi not in (select evi from gtd_ev);`);    // 提醒表
-        sqls.push(`delete from gtd_par where obt = '${ObjectType.Event}' and obi not in (select evi from gtd_ev);`);    // 参与人表
-        sqls.push(`delete from gtd_mrk where obt = '${ObjectType.Event}' and obi not in (select evi from gtd_ev);`);   // 标签表
+        sqls.push(`update gtd_fj set del = '${DelType.del}' where obt = '${ObjectType.Event}' and obi not in (select evi from gtd_ev where del <> '${DelType.del}');`);   // 附件表
+        sqls.push(`update gtd_wa set del = '${DelType.del}' where obt = '${ObjectType.Event}' and obi not in (select evi from gtd_ev where del <> '${DelType.del}');`);    // 提醒表
+        sqls.push(`update gtd_par set del = '${DelType.del}' where obt = '${ObjectType.Event}' and obi not in (select evi from gtd_ev where del <> '${DelType.del}');`);    // 参与人表
+        sqls.push(`update gtd_mrk set del = '${DelType.del}' where obt = '${ObjectType.Event}' and obi not in (select evi from gtd_ev where del <> '${DelType.del}');`);   // 标签表
 
         let memodb: MomTbl = new MomTbl();
         memodb.ji = ji;
@@ -394,10 +397,10 @@ export class CalendarService extends BaseService {
         sqls.push(memodb.dTParam());
 
         // 删除关联表，通过未关联主表条件删除
-        sqls.push(`delete from gtd_fj where obt = '${ObjectType.Memo}' and obi not in (select moi from gtd_mo);`);   // 附件表
-        sqls.push(`delete from gtd_wa where obt = '${ObjectType.Memo}' and obi not in (select moi from gtd_mo);`);    // 提醒表
-        sqls.push(`delete from gtd_par where obt = '${ObjectType.Memo}' and obi not in (select moi from gtd_mo);`);    // 参与人表
-        sqls.push(`delete from gtd_mrk where obt = '${ObjectType.Memo}' and obi not in (select moi from gtd_mo);`);   // 标签表
+        sqls.push(`update gtd_fj set del = '${DelType.del}' where obt = '${ObjectType.Memo}' and obi not in (select moi from gtd_mo where del <> '${DelType.del}');`);   // 附件表
+        sqls.push(`update gtd_wa set del = '${DelType.del}' where obt = '${ObjectType.Memo}' and obi not in (select moi from gtd_mo where del <> '${DelType.del}');`);    // 提醒表
+        sqls.push(`update gtd_par set del = '${DelType.del}' where obt = '${ObjectType.Memo}' and obi not in (select moi from gtd_mo where del <> '${DelType.del}');`);    // 参与人表
+        sqls.push(`update gtd_mrk set del = '${DelType.del}' where obt = '${ObjectType.Memo}' and obi not in (select moi from gtd_mo where del <> '${DelType.del}');`);   // 标签表
       }
     } else {
       // 不删除子元素，需要把子元素的计划ID更新为空/默认计划ID
@@ -524,7 +527,7 @@ export class CalendarService extends BaseService {
    **/
   async fetchAllPlans(jts:Array<PlanType> = []): Promise<Array<PlanData>> {
 
-    let sql: string = `select * from gtd_jha ${(jts && jts.length > 0)? ('where jt in (' + jts.join(', ') + ')') : ''} order by jt asc, wtt desc`;
+    let sql: string = `select * from gtd_jha ${(jts && jts.length > 0)? ('where jt in (' + jts.join(', ') + ')') : ''} and del <> '${DelType.del}' order by jt asc, wtt desc`;
 
     let plans: Array<PlanData> = await this.sqlExce.getExtList<PlanData>(sql);
 
@@ -563,7 +566,7 @@ export class CalendarService extends BaseService {
 
     this.assertEmpty(ji);   // 入参不能为空
 
-    let sql: string = `select * from gtd_jta where ji = '${ji}' order by sd asc`;
+    let sql: string = `select * from gtd_jta where ji = '${ji}' and del <> '${DelType.del}' order by sd asc`;
 
     return await this.sqlExce.getExtList<PlanItemData>(sql);
   }
@@ -578,7 +581,7 @@ export class CalendarService extends BaseService {
 
     this.assertEmpty(ji);   // 入参不能为空
 
-    let sql: string = `select * from gtd_ev where ji = '${ji}' order by evd asc`;
+    let sql: string = `select * from gtd_ev where ji = '${ji}' and del <> '${DelType.del}' order by evd asc`;
 
     return await this.sqlExce.getExtList<EventData>(sql);
   }
@@ -593,7 +596,7 @@ export class CalendarService extends BaseService {
 
     this.assertEmpty(ji);   // 入参不能为空
 
-    let sql: string = `select * from gtd_mom where ji = '${ji}' order by sd ${sort}`;
+    let sql: string = `select * from gtd_mom where ji = '${ji}' and del <> '${DelType.del}' order by sd ${sort}`;
 
     return await this.sqlExce.getExtList<MemoData>(sql);
   }
@@ -692,12 +695,12 @@ export class CalendarService extends BaseService {
                                   max(gdayjta.calendaritemscount) calendaritemscount,
                                   max(gdayjta.activityitemscount) activityitemscount,
                                   sum(CASE IFNULL(gev.evi, '') WHEN '' THEN 0 ELSE 1 END) eventscount,
-                                  sum(CASE gev.type WHEN '${EventType.Agenda}' THEN 1 ELSE 0 END) agendascount,
-                                  sum(CASE gev.type WHEN '${EventType.Task}' THEN 1 ELSE 0 END) taskscount,
+                                  sum(CASE WHEN gev.type = '${EventType.Agenda}' AND gev.del <> '${DelType.del}' THEN 1 ELSE 0 END) agendascount,
+                                  sum(CASE WHEN gev.type = '${EventType.Task}' AND gev.del <> '${DelType.del}' THEN 1 ELSE 0 END) taskscount,
                                   sum(CASE IFNULL(gev.rtevi, '') WHEN '' THEN 0 ELSE 1 END) repeateventscount
                             from (select gday.sd day,
-                                    sum(CASE gjt.jtt WHEN '${PlanItemType.Holiday}' THEN 1 ELSE 0 END) calendaritemscount,
-                                    sum(CASE gjt.jtt WHEN '${PlanItemType.Activity}' THEN 1 ELSE 0 END) activityitemscount
+                                    sum(CASE WHEN gjt.jtt = '${PlanItemType.Holiday}' AND gjt.del <> '${DelType.del}' THEN 1 ELSE 0 END) calendaritemscount,
+                                    sum(CASE WHEN gjt.jtt = '${PlanItemType.Activity}' AND gjt.del <> '${DelType.del}' THEN 1 ELSE 0 END) activityitemscount
                                   from (${daysql}) gday
                                       left join gtd_jta gjt on gday.sd = gjt.sd
                                   group by gday.sd) gdayjta
