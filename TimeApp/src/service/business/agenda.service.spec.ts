@@ -228,6 +228,163 @@ describe('EventService test suite for agenda', () => {
     expect(agendas.length).toBe(1);
   });
 
+	it('Case 1 - 2 - 1 saveAgenda 保存日程 - 每天重复 -重复2次结束', async () => {
+    let day: string = moment().format("YYYY/MM");
+
+    let agenda: AgendaData = {} as AgendaData;
+
+    // 每日重复, 永远
+    let rt: RtJson = new RtJson();
+    rt.cycletype = CycleType.day;
+    rt.over.type = OverType.times;
+    rt.cyclenum = 2;
+    rt.over.value ="2";
+
+    agenda.sd = day;
+    agenda.evn = "每天重复 -重复2次结束";
+    agenda.rtjson = rt;
+
+    let agendas = await eventService.saveAgenda(agenda);
+
+    expect(agendas).toBeDefined();
+    expect(agendas.length).toBeGreaterThan(0);
+  });
+  
+  it('Case 1 - 2 - 2 saveAgenda 保存日程 - 每天重复 -直到2019/08/31', async () => {
+    let day: string = moment().format("YYYY/MM");
+
+    let agenda: AgendaData = {} as AgendaData;
+
+    // 每日重复, 永远
+    let rt: RtJson = new RtJson();
+    rt.cycletype = CycleType.day;
+    rt.over.type = OverType.limitdate;
+		rt.over.value ="2019/08/31";
+		
+    agenda.sd = day;
+    agenda.evn = "每天重复 -直到2019/08/31";
+    agenda.rtjson = rt;
+
+    let agendas = await eventService.saveAgenda(agenda);
+
+    expect(agendas).toBeDefined();
+    expect(agendas.length).toBeGreaterThan(0);
+  });
+  
+	it('Case 1 - 3 - 1 saveAgenda 保存日程 - 每周重复 - 周三重复2次', async () => {
+    let day: string = moment().format("YYYY/MM");
+
+    let agenda: AgendaData = {} as AgendaData;
+
+    // 每周重复 - 周三重复2次
+    let rt: RtJson = new RtJson();
+    rt.cycletype = CycleType.week;
+    rt.over.type = OverType.times;
+    rt.openway.push(3);
+    rt.cyclenum = 2;
+    rt.over.value ="2";
+
+    agenda.sd = day;
+    agenda.evn = "每周重复 - 周三重复2次";
+    agenda.rtjson = rt;
+
+    let agendas = await eventService.saveAgenda(agenda);
+
+    expect(agendas).toBeDefined();
+    expect(agendas.length).toBeGreaterThan(0);
+  });
+  
+  it('Case 1 - 3 - 2 saveAgenda 保存日程 - 每周重复 - 周三重复到2019/08/31', async () => {
+    let day: string = moment().format("YYYY/MM");
+
+    let agenda: AgendaData = {} as AgendaData;
+
+    // 每周重复 - 周三重复2次
+    let rt: RtJson = new RtJson();
+    rt.cycletype = CycleType.week;
+    rt.over.type = OverType.limitdate;
+    rt.openway.push(3);
+    rt.over.value ="2019/08/31";
+
+    agenda.sd = day;
+    agenda.evn = "周三重复到2019/08/31";
+    agenda.rtjson = rt;
+
+    let agendas = await eventService.saveAgenda(agenda);
+
+    expect(agendas).toBeDefined();
+    expect(agendas.length).toBeGreaterThan(0);
+  });
+
+  it('Case 1 - 4 - 1 saveAgenda 保存日程 - 每月重复 - 每个月13号执行，间隔2个月执行一次，循环4次', async () => {
+    let day: string = moment().format("YYYY/MM");
+
+    let agenda: AgendaData = {} as AgendaData;
+
+    // 每日重复, 永远
+    let rt: RtJson = new RtJson();
+    rt.cycletype = CycleType.month;
+    rt.over.type = OverType.times;
+    rt.cyclenum = 2;
+    rt.openway.push(12);
+    rt.over.value ="4";
+
+    agenda.sd = day;
+    agenda.evn = "每个月13号执行，间隔2个月执行一次，循环4次";
+    agenda.rtjson = rt;
+
+    let agendas = await eventService.saveAgenda(agenda);
+
+    expect(agendas).toBeDefined();
+    expect(agendas.length).toBeGreaterThan(0);
+  });
+  
+  it('Case 1 - 4 - 2 saveAgenda 保存日程 - 每月重复 - 每个月13号执行，间隔2个月执行一次，直到2019/12/31', async () => {
+    let day: string = moment().format("YYYY/MM");
+
+    let agenda: AgendaData = {} as AgendaData;
+
+    // 每日重复, 永远
+    let rt: RtJson = new RtJson();
+    rt.cycletype = CycleType.month;
+    rt.over.type = OverType.limitdate;
+    rt.cyclenum = 2;
+    rt.openway.push(12);
+    rt.over.value ="2019/12/31";
+
+    agenda.sd = day;
+    agenda.evn = "每个月13号执行，间隔2个月执行一次，直到2019/12/31";
+    agenda.rtjson = rt;
+
+    let agendas = await eventService.saveAgenda(agenda);
+
+    expect(agendas).toBeDefined();
+    expect(agendas.length).toBeGreaterThan(0);
+  });
+  
+  it('Case 1 - 5 - 1 saveAgenda 保存日程 - 每年重复 - 每年8月13号执行一次，间隔 2年，循环四次', async () => {
+    let day: string = moment().format("YYYY/MM");
+
+    let agenda: AgendaData = {} as AgendaData;
+
+    // 每日重复, 永远
+    let rt: RtJson = new RtJson();
+    rt.cycletype = CycleType.year;
+    rt.over.type = OverType.times;
+    rt.cyclenum = 2;
+    rt.openway.push(13);
+    rt.over.value ="4";
+
+    agenda.sd = day;
+    agenda.evn = "每年重复";
+    agenda.rtjson = rt;
+
+    let agendas = await eventService.saveAgenda(agenda);
+
+    expect(agendas).toBeDefined();
+    expect(agendas.length).toBeGreaterThan(0);
+  });
+  
   afterAll(() => {
     TestBed.resetTestingModule();
   });
