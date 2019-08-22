@@ -40,6 +40,7 @@ import {AssistantService} from "../service/cordova/assistant.service";
 import {BlaRestful} from "../service/restful/blasev";
 import {BacRestful} from "../service/restful/bacsev";
 import {ShaeRestful} from "../service/restful/shaesev";
+import {DataRestful} from "../service/restful/datasev";
 import {EmitService} from "../service/util-service/emit.service";
 import {WebsocketModule} from "../ws/websocket.module";
 import {FeedbackService} from "../service/cordova/feedback.service";
@@ -214,6 +215,7 @@ import {MemoService} from "../service/business/memo.service";
     BlaRestful,
     BacRestful,
     ShaeRestful,
+    DataRestful,
     AssistantService,
     FeedbackService,
     AlarmService,

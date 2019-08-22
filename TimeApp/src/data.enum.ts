@@ -155,3 +155,17 @@ export enum OperateType  {
   Non ="Non"
 
 }
+
+// 数据同步权限
+export enum SyncDataSecurity {
+  None                      = 'None',                     // 非共享/多设备间同步
+  SelfModify                = 'SelfModify',               // 只有发起人可以修改
+  ShareModify               = 'ShareModify',              // 所有人都可以修改
+  ShareModifyWithoutSender  = 'ShareModifyWithoutSender'  // 共享后发起人本地删除
+}
+
+// 数据同步状态
+export enum SyncDataStatus {
+  Deleted = "del",
+  UnDeleted = "undel"
+}
