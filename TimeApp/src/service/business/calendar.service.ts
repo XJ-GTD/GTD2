@@ -406,15 +406,15 @@ export class CalendarService extends BaseService {
       // 不删除子元素，需要把子元素的计划ID更新为空/默认计划ID
       if (jt == PlanType.CalendarPlan || jt == PlanType.ActivityPlan) {
         // 更新日历项表计划ID
-        sqls.push(`update table gtd_jta set ji = '', utt = ${moment().unix()} where ji = '${ji}'`);
+        sqls.push(`update gtd_jta set ji = '', utt = ${moment().unix()} where ji = '${ji}'`);
       }
 
       if (jt == PlanType.PrivatePlan) {
         // 更新事件主表
-        sqls.push(`update table gtd_ev set ji = '', utt = ${moment().unix()} where ji = '${ji}'`);
+        sqls.push(`update gtd_ev set ji = '', utt = ${moment().unix()} where ji = '${ji}'`);
 
         // 更新备忘主表
-        sqls.push(`update table gtd_mom set ji = '', utt = ${moment().unix()} where ji = '${ji}'`);
+        sqls.push(`update gtd_mom set ji = '', utt = ${moment().unix()} where ji = '${ji}'`);
       }
     }
 
