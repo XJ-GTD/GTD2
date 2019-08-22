@@ -24,64 +24,9 @@
   transition-timing-function: $args;
 }
 
-@mixin month-color($background-color: primary, $color: #fff) {
-  button.days-btn small,
-  .days .marked p,
-  .days .today p {
-    //color: bindColors($background-color);
-  }
-  button.days-btn small {
-    overflow: hidden;
-    display: block;
-    left: 0;
-    right: 0;
-    bottom: 5px;
-    position: absolute;
-    z-index: 0;
-    text-align: center;
-    color: $fontThirdColor;
-    font-size: 10px;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    //background: -webkit-linear-gradient(left, rgb(149, 58, 139), rgb(86, 82, 222)); /* Safari 5.1 - 6.0 */
-    //background: -o-linear-gradient(right, rgb(149, 58, 139), rgb(86, 82, 222)); /* Opera 11.1 - 12.0 */
-    //background: -moz-linear-gradient(right, rgb(149, 58, 139), rgb(86, 82, 222)); /* Firefox 3.6 - 15 */
-    //background: linear-gradient(to right, rgb(149, 58, 139), rgb(86, 82, 222)); /* 标准的语法（必须放在最后） */
-    //border-radius: 4px;
-  }
-  .days .today p {
-    //font-weight: 700;
-  }
-  .days .last-month-day p,
-  .days .next-month-day p {
-    color: $fontThirdColor;
-  }
-  .days .today.on-selected p,
-  .days .marked.on-selected p {
-    //color: $color;
-  }
-  //.days .on-selected,
-  //.startSelection button.days-btn,
-  //.endSelection button.days-btn {
-  //  background-color: bindColors($background-color);
-  //  background: -webkit-linear-gradient(left, rgb(149,58,139),rgb(86,82,222)); /* Safari 5.1 - 6.0 */
-  //  background: -o-linear-gradient(right, rgb(149,58,139),rgb(86,82,222)); /* Opera 11.1 - 12.0 */
-  //  background: -moz-linear-gradient(right, rgb(149,58,139),rgb(86,82,222)); /* Firefox 3.6 - 15 */
-  //  background: linear-gradient(to right, rgb(149,58,139),rgb(86,82,222)); /* 标准的语法（必须放在最后） */
-  //
-  //  color: $color;
-  //}
-
-}
-
 ion-calendar-month {
   display: inline-block;
   width: 100%;
-  height: 290px;
-
-  .days-box {
-    padding: 0.5rem 0 0.5rem 0;
-  }
 
   .days:nth-of-type(7n),
   .days:nth-of-type(7n+1) {
@@ -92,7 +37,7 @@ ion-calendar-month {
     width: 14.2%;
     float: left;
     text-align: center;
-    height: 48px;
+    height: 38px;
   }
 
   .days .marked p {
@@ -100,14 +45,13 @@ ion-calendar-month {
   }
 
   button.days-btn {
-    border-radius: 34px;
     width: 34px;
-    display: block;
-    margin: 1px auto;
-    padding: 0;
     height: 34px;
+    display: block;
+    padding: 0;
     background-color: transparent;
     position: relative;
+    border-radius:50%;
   }
 
   button.warp-days-btn {
@@ -116,15 +60,16 @@ ion-calendar-month {
   }
 
   button.days-btn p {
-    font-size: 14px;
-    color: $fontMasterColor;
+
+    font-family: "Arial";
+    font-size: 12px;
     letter-spacing: 0px;
     width: auto;
     height: auto;
-    margin: -14px auto;
+    margin: -12px auto;
     text-align: center;
-    line-height: 14px;
-    font-weight:bolder;
+    line-height: 12px;
+    font-weight: 400;
   }
 
   button.days-btn .repeatDay {
@@ -143,37 +88,35 @@ ion-calendar-month {
     color: $fontMasterColor;
   }
 
-  .on-selected{
-    button.days-btn small {
-      color: $fontSecondColor;
-    }
-  }
-
   .cal-color {
 
-    @include month-color(cal-color, #222222);
+    button.days-btn small {
+      overflow: hidden;
+      display: block;
+      left: 0;
+      right: 0;
+      bottom: 5px;
+      position: absolute;
+      z-index: 0;
+      text-align: center;
+      font-size: 9px;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      font-weight: 500;
+    }
 
     .borderDiv {
-      width: 38px;
-      height: 38px;
-      margin: 4px auto;
-      border: 1px double #000;
-      border-radius: 40px;
-
+      width: 34px;
+      height: 34px;
+      margin: 2px auto;
+      //border: 1px double #000;
+      border: none;
+      border-radius: 50%;
     }
 
-    .on-selected {
-      border-color: $fontMasterColor;
-
-      button.days-btn small {
-        color: $fontMasterColor;
-      }
-    }
 
 
     .days {
-
-
       .message{
         background-color: red;
         width: 4px;
@@ -223,22 +166,6 @@ ion-calendar-month {
 
         }
       }
-
-      .today {
-        background: -webkit-linear-gradient(left, $spcColorf, $spcColort); /* Safari 5.1 - 6.0 */
-        background: -o-linear-gradient(right, $spcColorf, $spcColort); /* Opera 11.1 - 12.0 */
-        background: -moz-linear-gradient(right, $spcColorf, $spcColort); /* Firefox 3.6 - 15 */
-        background: linear-gradient(to right, $spcColorf, $spcColort); /* 标准的语法（必须放在最后） */
-
-        p {
-          color: $fontMasterColor;
-        }
-
-        small {
-          color: $fontSecondColor;
-        }
-      }
-
     }
 
   }

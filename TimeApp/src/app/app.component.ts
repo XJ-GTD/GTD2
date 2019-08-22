@@ -14,10 +14,11 @@ import {JPushService} from "../service/cordova/jpush.service";
 import {RabbitMQService} from "../service/cordova/rabbitmq.service";
 import { Geoposition, Geolocation } from '@ionic-native/geolocation';
 import {RestFulConfig} from "../service/config/restful.config";
+import {SettingsProvider} from "../providers/settings/settings";
 
 @Component({
   template: `
-    <ion-nav></ion-nav>
+    <ion-nav [class]="selectedTheme"></ion-nav>
   `
 })
 export class MyApp {
@@ -25,6 +26,7 @@ export class MyApp {
   @ViewChild(Nav) nav: Nav;
   hex: string[] = ['0','1','2','3','4','5','6','7','8','9','A','B','C','D','E','F'];
   statusbarcolors: Array<string> = new Array<string>();
+  selectedTheme: string = "black-theme";
 
   constructor(public app: App,
               private platform: Platform,
@@ -38,10 +40,13 @@ export class MyApp {
               private statusBar: StatusBar,
               private feekback: FeedbackService,
               private jpush: JPushService,
-              private rabbitmq: RabbitMQService) {
+              private rabbitmq: RabbitMQService,
+              private settings: SettingsProvider) {
     //特殊菜单设置
     MenuController.registerType('scalePush', MenuScalePushType);
     MenuController.registerType('lsPush', LsPushType);
+    this.settings.getActiveTheme().subscribe(val => this.selectedTheme = val);
+
 
     // let status bar overlay webview
     // statusBar.overlaysWebView(true);

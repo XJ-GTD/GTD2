@@ -107,6 +107,8 @@ import { DirectivesModule } from "../directives/directives.module";
 import { BaiduMapModule } from 'angular2-baidu-map';
 import {EventService} from "../service/business/event.service";
 import {MemoService} from "../service/business/memo.service";
+import {AipPageModule} from "../pages/aip/aip.module";
+import { SettingsProvider } from '../providers/settings/settings';
 
 @NgModule({
   declarations: [
@@ -162,6 +164,7 @@ import {MemoService} from "../service/business/memo.service";
     DzPageModule,
     CfPageModule,
     FoPageModule,
+    AipPageModule,
     ConfirmboxComponentModule,
     CardListComponentModule,
     ScrollSelectComponentModule,
@@ -229,6 +232,7 @@ import {MemoService} from "../service/business/memo.service";
     RemindService,
     EventService,
     MemoService,
+    SettingsProvider,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     {provide: HAMMER_GESTURE_CONFIG, useClass: HammerDIRECTIONALLConfig}
   ]

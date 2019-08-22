@@ -1,9 +1,6 @@
-import {Component, ComponentRef, ElementRef, Renderer2, TemplateRef, ViewChild} from '@angular/core';
+import {Component, Renderer2, ViewChild} from '@angular/core';
 import {IonicPage, MenuController, ModalController, NavController} from 'ionic-angular';
-import {
-  CalendarComponent,
-  CalendarComponentOptions, CalendarDay
-} from "../../components/ion2-calendar";
+import {CalendarComponent, CalendarComponentOptions, CalendarDay} from "../../components/ion2-calendar";
 import {HService} from "./h.service";
 import * as moment from "moment";
 import {AiComponent} from "../../components/ai/answer/ai";
@@ -16,21 +13,12 @@ import {HData, ScdPageParamter} from "../../data.mapping";
 import {FeedbackService} from "../../service/cordova/feedback.service";
 import {DataConfig} from "../../service/config/data.config";
 import {UserConfig} from "../../service/config/user.config";
-import { InAppBrowser } from '@ionic-native/in-app-browser';
-import {EvTbl} from "../../service/sqlite/tbl/ev.tbl";
+import {InAppBrowser} from '@ionic-native/in-app-browser';
 import {SqliteExec} from "../../service/util-service/sqlite.exec";
-import {CaTbl} from "../../service/sqlite/tbl/ca.tbl";
-import {AgendaData, EventService, RtJson, TxJson} from "../../service/business/event.service";
-import {TTbl} from "../../service/sqlite/tbl/t.tbl";
-import {FjTbl} from "../../service/sqlite/tbl/fj.tbl";
-import {JtaTbl} from "../../service/sqlite/tbl/jta.tbl";
-import {MomTbl} from "../../service/sqlite/tbl/mom.tbl";
-import {ParTbl} from "../../service/sqlite/tbl/par.tbl";
-import {MrkTbl} from "../../service/sqlite/tbl/mrk.tbl";
-import {JhaTbl} from "../../service/sqlite/tbl/jha.tbl";
-import {WaTbl} from "../../service/sqlite/tbl/wa.tbl";
-import * as anyenum from "../../data.enum";
-import {MemoData, MemoService} from "../../service/business/memo.service";
+import {EventService} from "../../service/business/event.service";
+import {MemoService} from "../../service/business/memo.service";
+import {SettingsProvider} from "../../providers/settings/settings";
+import {AipPage} from "../aip/aip";
 
 /**
  * Generated class for the 首页 page.
@@ -45,42 +33,63 @@ import {MemoData, MemoService} from "../../service/business/memo.service";
   template: `
     <ion-content>
       <div class="haContent">
-        <div #calendarDiv class="haCalendar">
-          <ion-calendar #calendar
-                        [options]="options"
-                        (onSelect)="onSelect($event)"
-                        (onPress)="onPress($event)">
-          </ion-calendar>
-        </div>
-        <ng-template [ngIf]="hdata.isShow">
-          <p class="tipDay">
-            <span class="showDay">{{hdata.showDay}}</span>
-            <span class="showDay2">{{hdata.showDay2}}</span>
-            <span class="showDay3" *ngFor="let jt of hdata.jtl" (click)="gotojt(jt)">{{jt.spn}}</span>
-          </p>
-          <p class="tipDay" *ngIf="hdata.things > 0"><a class="cls" (click)="gotodaily()">
-            <ion-icon name="done-all"></ion-icon>
-            {{hdata.things}} 个活动, {{hdata.newmessge}} 条新消息</a></p>
-          <p class="tipDay"><a class="cls2" (click)="newcd()">
-            <ion-icon name="add"></ion-icon>
-            添加新事件</a></p>
-        </ng-template>
+        <ion-calendar #calendar
+                      [options]="options"
+                      (onSelect)="onSelect($event)"
+                      (onPress)="onPress($event)">
+        </ion-calendar>
+        <page-tdl></page-tdl>
+        <!--<ng-template [ngIf]="hdata.isShow">-->
+        <!--<p class="tipDay">-->
+        <!--<span class="showDay">{{hdata.showDay}}</span>-->
+        <!--<span class="showDay2">{{hdata.showDay2}}</span>-->
+        <!--<span class="showDay3" *ngFor="let jt of hdata.jtl" (click)="gotojt(jt)">{{jt.spn}}</span>-->
+        <!--</p>-->
+        <!--<p class="tipDay" *ngIf="hdata.things > 0"><a class="cls" (click)="gotodaily()">-->
+        <!--<ion-icon name="done-all"></ion-icon>-->
+        <!--{{hdata.things}} 个活动, {{hdata.newmessge}} 条新消息</a></p>-->
+        <!--<p class="tipDay"><a class="cls2" (click)="newcd()">-->
+        <!--<ion-icon name="add"></ion-icon>-->
+        <!--添加新事件</a></p>-->
+        <!--</ng-template>-->
       </div>
       <!--<div class="rightm">-->
       <!--&nbsp;-->
       <!--</div>-->
-      <AiComponent [ready]="aiready" #aiDiv></AiComponent>
+      <!--<AiComponent [ready]="aiready" #aiDiv></AiComponent>-->
+      <ion-fab bottom right class="shortcut">
+        <button ion-fab mini>
+          <ion-icon name="add"></ion-icon>
+        </button>
+        <ion-fab-list side="top">
+          <button ion-fab (click)="changetheme()">
+            <ion-icon name="contrast"></ion-icon>
+          </button>
+          <button ion-fab>
+            <ion-icon name="albums"></ion-icon>
+          </button>
+          <button ion-fab>
+            <ion-icon name="contact" (click)="openm()"></ion-icon>
+          </button>
+          <button ion-fab>
+            <ion-icon name="add" (click)="newcd()"></ion-icon>
+          </button>
+        </ion-fab-list>
+      </ion-fab>
+      <ion-fab bottom right>
+        <button ion-fab mini (click)="openAi()">
+          <ion-icon name="chatbubbles" ></ion-icon>
+        </button>
+      </ion-fab>
     </ion-content>
   `,
 })
 export class HPage {
-
-  @ViewChild('calendarDiv')
-  calendarDiv: ElementRef;
   @ViewChild('aiDiv')
   aiDiv: AiComponent;
   @ViewChild('calendar')
   calendar: CalendarComponent;
+  selectedTheme: string;
 
   aiready: boolean = false;
 
@@ -101,9 +110,27 @@ export class HPage {
               private menuController: MenuController,
               private emitService: EmitService,
               private feedback: FeedbackService,
-              private  evtserv :EventService,
-              private sqlexce :SqliteExec,private  momserv :MemoService) {
+              private  evtserv: EventService,
+              private sqlexce: SqliteExec, private  momserv: MemoService,
+              private settings: SettingsProvider) {
     this.hdata = new HData();
+    this.settings.getActiveTheme().subscribe(val => this.selectedTheme = val);
+  }
+
+  openm() {
+    this.menuController.open("scalePush");
+  }
+  openAi(){
+     this.modalCtr.create(AipPage).present();
+  }
+
+  changetheme() {
+    if (this.selectedTheme === 'black-theme') {
+      this.settings.setActiveTheme('white-theme');
+    } else {
+      this.settings.setActiveTheme('black-theme');
+    }
+
   }
 
   ionViewDidLoad() {
@@ -177,7 +204,7 @@ export class HPage {
     //每日简报消息回调
     this.emitService.register('on.dailyreport.message.click', (data) => {
       console.log("Daily report message clicked.")
-      let timestamp: number = data.eventdata? data.eventdata['timestamp'] : (moment().unix() * 1000);
+      let timestamp: number = data.eventdata ? data.eventdata['timestamp'] : (moment().unix() * 1000);
 
       if (!timestamp) {
         timestamp = moment().unix() * 1000;
@@ -198,7 +225,7 @@ export class HPage {
 
     //操作反馈消息回调
     this.emitService.register('on.feedback.message.click', (data) => {
-      let scd = data.eventdata? data.eventdata['scd'] : null;
+      let scd = data.eventdata ? data.eventdata['scd'] : null;
       if (scd && scd.si) {
         this.gotodetail(scd);
       }
@@ -226,133 +253,76 @@ export class HPage {
 
   newcd() {
 
-    if (1==1){
-/*     let ev = new EvTbl();
-      this.sqlexce.dropByParam(ev);
-      this.sqlexce.createByParam(ev);*/
-
-/*     let ca =  new CaTbl();
-      this.sqlexce.dropByParam(ca);
-      this.sqlexce.createByParam(ca);*/
-
-/*      let t =  new TTbl();
-      this.sqlexce.dropByParam(t);
-      this.sqlexce.createByParam(t);*/
-
-/*      let fj =  new FjTbl();
-      this.sqlexce.dropByParam(fj);
-      this.sqlexce.createByParam(fj);*/
-
-/*      let mom =  new MomTbl();
-      this.sqlexce.dropByParam(mom);
-      this.sqlexce.createByParam(mom);*/
-
-/*      let jta =  new JtaTbl();
-      this.sqlexce.dropByParam(jta);
-      this.sqlexce.createByParam(jta);*/
-
-/*      let par =  new ParTbl();
-      this.sqlexce.dropByParam(par);
-      this.sqlexce.createByParam(par);*/
-
-/*      let mrk =  new MrkTbl();
-      this.sqlexce.dropByParam(mrk);
-      this.sqlexce.createByParam(mrk);*/
-
-/*      let jha =  new JhaTbl();
-      this.sqlexce.dropByParam(jha);
-      this.sqlexce.createByParam(jha);*/
-
-/*      let wa =  new WaTbl();
-      this.sqlexce.dropByParam(wa);
-      this.sqlexce.createByParam(wa);*/
-
-
-      /*let agdata = {} as   AgendaData;
-      agdata.evn = "测试重复日程添加0819";
-      agdata.sd = "2019/08/19";
-
-      let rtjon = new RtJson();
-      rtjon.cycletype = anyenum.CycleType.day;
-      rtjon.over.value = "2019/08/27";
-      rtjon.over.type = anyenum.OverType.limitdate;
-      rtjon.cyclenum = 1;
-      rtjon.openway = new Array<number>();
-
-      agdata.rtjson = rtjon;
-
-      let txjson = new TxJson();
-      txjson.type = anyenum.TxType.m30;
-      agdata.txjson = txjson;
-
-      agdata.al = "0";
-      agdata.st = "11:20";
-      agdata.ct = 20;
-      this.evtserv.saveAgenda(agdata).then(data=>{
-        console.log(JSON.stringify(data));
-      });*/
-/*      let oriagdata = {} as AgendaData;
-      let newagdata = {} as AgendaData;
-      this.evtserv.getAgenda('2f60e34a09ad504c8bae9d4a27ce8ab8').then(data => {
-        oriagdata = data;
-        Object.assign(newagdata, oriagdata);
-        newagdata.evn = '测试重复日程修改0819 onlysel第三条'
-        let txjson = new TxJson();
-        txjson.type = anyenum.TxType.m10;
-        newagdata.txjson = txjson;
-        this.evtserv.saveAgenda(newagdata, oriagdata, anyenum.OperateType.OnlySel);
-      })*/
-/*      let oriagdata = {} as AgendaData;
-      let newagdata = {} as AgendaData;
-      this.evtserv.getAgenda('d31694ae41ebba72421a6572f0979467').then(data =>{
-        oriagdata = data;
-        Object.assign(newagdata,oriagdata);
-        newagdata.evn = '测试重复日程修改0819 onlysel第一条'
-        let txjson = new TxJson();
-        txjson.type = anyenum.TxType.h1;
-        newagdata.txjson = txjson;
-        this.evtserv.saveAgenda(newagdata,oriagdata,anyenum.OperateType.OnlySel);
-        //修改
-      });*/
-      /*let oriagdata = {} as AgendaData;
-      this.evtserv.getAgenda('2f60e34a09ad504c8bae9d4a27ce8ab8').then(data =>{
-        oriagdata = data;
-
-        this.evtserv.delAgenda(oriagdata,anyenum.OperateType.OnlySel);
-        //修改
-      });*/
-      /*let oriagdata = {} as AgendaData;
-      let newagdata = {} as AgendaData;
-      this.evtserv.getAgenda('c9a919de861ef2555cd4d22aaa9be54a').then(data => {
-        oriagdata = data;
-        Object.assign(newagdata, oriagdata);
-        newagdata.evn = 'modifromsel测试重复 '
-        let txjson = new TxJson();
-        txjson.type = anyenum.TxType.h1;
-        newagdata.txjson = txjson;
-
-        let rtjon = new RtJson();
-        rtjon.cycletype = anyenum.CycleType.day;
-        rtjon.over.value = "2019/08/30";
-        rtjon.over.type = anyenum.OverType.limitdate;
-        rtjon.cyclenum = 1;
-        rtjon.openway = new Array<number>();
-
-        newagdata.rtjson = rtjon;
-        newagdata.evd ="2019/08/17";
-        newagdata.al = "1";
-
-        this.evtserv.saveAgenda(newagdata, oriagdata, anyenum.OperateType.FromSel);
-      })*/
-      let oriagdata = {} as AgendaData;
-      this.evtserv.getAgenda('1e6f4d3ba795bb33d809dc09e518acd2').then(data =>{
-        oriagdata = data;
-
-        this.evtserv.delAgenda(oriagdata,anyenum.OperateType.FromSel);
-        //修改
-});
-      return ;
-    }
+//     if (1==1){
+//  /*     let ev = new EvTbl();
+//       this.sqlexce.dropByParam(ev);
+//       this.sqlexce.createByParam(ev);*/
+//
+// /*     let ca =  new CaTbl();
+//       this.sqlexce.dropByParam(ca);
+//       this.sqlexce.createByParam(ca);*/
+//
+// /*      let t =  new TTbl();
+//       this.sqlexce.dropByParam(t);
+//       this.sqlexce.createByParam(t);*/
+//
+// /*      let fj =  new FjTbl();
+//       this.sqlexce.dropByParam(fj);
+//       this.sqlexce.createByParam(fj);*/
+//
+// /*      let mom =  new MomTbl();
+//       this.sqlexce.dropByParam(mom);
+//       this.sqlexce.createByParam(mom);*/
+//
+// /*      let jta =  new JtaTbl();
+//       this.sqlexce.dropByParam(jta);
+//       this.sqlexce.createByParam(jta);*/
+//
+// /*      let par =  new ParTbl();
+//       this.sqlexce.dropByParam(par);
+//       this.sqlexce.createByParam(par);*/
+//
+// /*      let mrk =  new MrkTbl();
+//       this.sqlexce.dropByParam(mrk);
+//       this.sqlexce.createByParam(mrk);*/
+//
+// /*      let jha =  new JhaTbl();
+//       this.sqlexce.dropByParam(jha);
+//       this.sqlexce.createByParam(jha);*/
+//
+// /*      let wa =  new WaTbl();
+//       this.sqlexce.dropByParam(wa);
+//       this.sqlexce.createByParam(wa);*/
+//
+//
+//       /*let agdata = {} as   AgendaData;
+//       agdata.evn = "测试重复日程添加0827";
+//       agdata.sd = "2019/08/27";
+//
+//       let rtjon = new RtJson();
+//       rtjon.cycletype = anyenum.CycleType.w;
+//       rtjon.over.value = "2";
+//       rtjon.over.type = anyenum.OverType.times;
+//       rtjon.cyclenum = 3;
+//       rtjon.openway = anyenum.OpenWay.Wednesday;
+//
+//       agdata.rtjson = rtjon;
+//
+//       let txjson = new TxJson();
+//       txjson.type = anyenum.TxType.m30;
+//       agdata.txjson = txjson;
+//
+//       agdata.al = "1";
+//       agdata.st = "11:20";
+//       agdata.ct = 20;
+//       this.evtserv.saveAgenda(agdata).then(data=>{
+//         console.log(JSON.stringify(data));
+//       });*/
+//
+//       let mom = {} as MemoData;
+//       this.momserv.saveMemo(mom);
+//       return ;
+//     }
     let p: ScdPageParamter = new ScdPageParamter();
     p.d = moment(this.hdata.selectDay.time);
 
@@ -374,7 +344,7 @@ export class HPage {
   }
 
   gotodaily(day?: CalendarDay) {
-    let selectDay: CalendarDay = day? day : this.hdata.selectDay;
+    let selectDay: CalendarDay = day ? day : this.hdata.selectDay;
 
     this.modalCtr.create(DataConfig.PAGE._DA_PAGE, selectDay).present();
   }
@@ -384,7 +354,7 @@ export class HPage {
     //this.navController.push(DataConfig.PAGE._TDL_PAGE, {selectDay: this.hdata.selectDay.time});
   }
 
-  gotojt(jt){
+  gotojt(jt) {
     let p: ScdPageParamter = new ScdPageParamter();
     p.si = jt.si;
     p.d = moment(jt.sd);

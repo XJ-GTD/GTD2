@@ -25,6 +25,10 @@ export class FormatedatePipe implements PipeTransform {
       if (args[0] == "CYYYY/M/DD"){
         return moment(value).format("YYYY年M月DD日");
       }
+
+      if (args[0] == "CYYYY/MM"){
+        return moment(value).format("YYYY年MM月");
+      }
       if (args[0] == "CWEEK"){
         let d =  moment(value).format("d");
         let ret = "";

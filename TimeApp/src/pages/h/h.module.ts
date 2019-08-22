@@ -4,9 +4,9 @@ import {HPage} from './h';
 import {CalendarModule} from "../../components/ion2-calendar";
 import {HService} from "./h.service";
 import {BackComponentModule} from "../../components/backComponent/back.module";
-import {AiComponentModule} from "../../components/ai/answer/ai.module";
 import { InAppBrowser } from '@ionic-native/in-app-browser';
 
+import { TdlPageModule } from '../tdl/tdl.module';
 @NgModule({
   declarations: [
     HPage,
@@ -15,7 +15,7 @@ import { InAppBrowser } from '@ionic-native/in-app-browser';
     IonicPageModule.forChild(HPage),
     CalendarModule,
     BackComponentModule,
-    AiComponentModule,
+    TdlPageModule
   ],
   entryComponents: [
     HPage
