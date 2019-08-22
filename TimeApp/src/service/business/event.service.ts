@@ -247,11 +247,10 @@ export class EventService extends BaseService {
       }else{
         sqlparam.push(ca.dTParam());
 
-        //本地删除事件参与人
-        let par: ParTbl = new ParTbl();
-        par.obt = anyenum.ObjectType.Event;
-        par.obi = masterEvi;
-        sqlparam.push(par.dTParam());
+        //本地删除事件参与人和附件
+        let pfs = new Array<any>();
+        pfs = this.sqlparamDelParFj(masterEvi);
+        sqlparam = [...sqlparam ,...pfs];
       }
 
       //删除原事件中从当前事件开始所有提醒
@@ -298,11 +297,10 @@ export class EventService extends BaseService {
         ca.evi = caevi;
         sqlparam.push(ca.dTParam());
 
-        //本地删除事件参与人
-        let par: ParTbl = new ParTbl();
-        par.obt = anyenum.ObjectType.Event;
-        par.obi = masterEvi;
-        sqlparam.push(par.dTParam());
+        //本地删除事件参与人和附件
+        let pfs = new Array<any>();
+        pfs = this.sqlparamDelParFj(masterEvi);
+        sqlparam = [...sqlparam ,...pfs];
       }else{
         //如果当前删除对象是父事件，则为当前重复事件重建新的父事件，值为ev表重复记录里的第一条做为父事件
         if (!oriAgdata.rtevi && oriAgdata.rtevi =="" && oriAgdata.rfg == anyenum.RepeatFlag.Repeat){
@@ -336,7 +334,11 @@ export class EventService extends BaseService {
             let nwpar = new Array<any>();
             nwpar = this.sqlparamAddPar(nwEv.evi , oriAgdata.parters);
 
-            sqlparam = [...sqlparam, ...nwca, ...nwpar];
+            //复制原附件到新的父事件
+            let nwfj = new Array<any>();
+            nwfj = this.sqlparamAddFj(nwEv.evi , oriAgdata.fjs);
+
+            sqlparam = [...sqlparam, ...nwca, ...nwpar, ...nwfj];
           }
         }
       }
@@ -497,11 +499,10 @@ export class EventService extends BaseService {
       }else{
         sqlparam.push(ca.dTParam());
 
-        //本地删除事件参与人
-        let par: ParTbl = new ParTbl();
-        par.obt = anyenum.ObjectType.Event;
-        par.obi = masterEvi;
-        sqlparam.push(par.dTParam());
+        //本地删除事件参与人和附件
+        let pfs = new Array<any>();
+        pfs = this.sqlparamDelParFj(masterEvi);
+        sqlparam = [...sqlparam ,...pfs];
       }
 
       //删除原事件中从当前事件开始所有提醒 evd使用原事件evd
@@ -524,7 +525,11 @@ export class EventService extends BaseService {
       let nwpar = new Array<any>();
       nwpar = this.sqlparamAddPar(retParamEv.rtevi , oriAgdata.parters);
 
-      sqlparam = [...sqlparam, ...retParamEv.sqlparam, ...nwpar];
+      //复制原附件到新事件
+      let nwfj = new Array<any>();
+      nwfj = this.sqlparamAddFj(retParamEv.rtevi, oriAgdata.fjs);
+
+      sqlparam = [...sqlparam, ...retParamEv.sqlparam, ...nwpar, ...nwfj];
       outAgds = retParamEv.outAgdatas;
 
     }else if(modiType == anyenum.OperateType.OnlySel) {
@@ -606,7 +611,10 @@ export class EventService extends BaseService {
           let nwpar = new Array<any>();
           nwpar = this.sqlparamAddPar(nwEv.evi , oriAgdata.parters);
 
-          sqlparam = [...sqlparam, ...nwca, ...nwpar];
+          //复制原附件到新事件
+          let nwfj = new Array<any>();
+          nwfj = this.sqlparamAddFj(nwEv.evi, oriAgdata.fjs);
+          sqlparam = [...sqlparam, ...nwca, ...nwpar, ...nwfj];
         }
       }
 
@@ -635,6 +643,58 @@ export class EventService extends BaseService {
   }
 
   /**
+   * 删除与evi相关所有附件与参与人
+   * @param {string} evi
+   * @param {AgendaData} agdata
+   * @returns {Array<any>}
+   */
+  private sqlparamDelParFj(evi : string) : Array<any>{
+    let ret = new Array<any>();
+
+    //本地删除事件参与人
+    let par: ParTbl = new ParTbl();
+    par.obt = anyenum.ObjectType.Event;
+    par.obi = evi;
+    par.del = anyenum.DelType.del;
+    par.tb = anyenum.SyncType.unsynch;
+    ret.push(par.upTParam());
+
+    //本地删除附件
+    let fj: FjTbl = new FjTbl();
+    fj.obt = anyenum.ObjectType.Event;
+    fj.obi = evi;
+    fj.del = anyenum.DelType.del;
+    fj.tb = anyenum.SyncType.unsynch;
+    ret.push(fj.upTParam());
+    return ret;
+  }
+
+  /**
+   * 创建附件
+   * @param {string} evi
+   * @param {Array<FjTbl>} fjs
+   * @returns {Array<any>}
+   */
+  private sqlparamAddFj(evi : string ,fjs : Array<FjTbl>):Array<any>{
+    let ret = new Array<any>();
+    if (!fjs && fjs.length > 0){
+      for (let j = 0 ,len = fjs.length;j < len ; j++){
+        let fj = new FjTbl();
+        fj.fji = this.util.getUuid();
+        fj.obt = anyenum.ObjectType.Event;
+        fj.obi = evi;
+        fj.fjn = fj[j].fjn;
+        fj.ext = fj[j].ext;
+        fj.fj = fj[j].fj;
+        fj.tb = anyenum.SyncType.unsynch;
+        fj.del = anyenum.DelType.undel;
+        ret.push(fj.inTParam());
+      }
+    }
+    return ret;
+  }
+
+  /**
    * 创建参与人
    * @param {string} evi
    * @param {Array<Parter>} pars
@@ -652,8 +712,8 @@ export class EventService extends BaseService {
         par.obi = evi;
         par.sa = pars[j].sa;
         par.sdt = pars[j].sdt;
-        par.tb = pars[j].tb;
-        par.del = pars[j].del;
+        par.tb = anyenum.SyncType.unsynch;
+        par.del = anyenum.DelType.undel;
         ret.push(par.inTParam());
       }
     }
