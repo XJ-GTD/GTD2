@@ -40,6 +40,7 @@ import {AssistantService} from "../service/cordova/assistant.service";
 import {BlaRestful} from "../service/restful/blasev";
 import {BacRestful} from "../service/restful/bacsev";
 import {ShaeRestful} from "../service/restful/shaesev";
+import {DataRestful} from "../service/restful/datasev";
 import {EmitService} from "../service/util-service/emit.service";
 import {WebsocketModule} from "../ws/websocket.module";
 import {FeedbackService} from "../service/cordova/feedback.service";
@@ -106,8 +107,8 @@ import { DirectivesModule } from "../directives/directives.module";
 import { BaiduMapModule } from 'angular2-baidu-map';
 import {EventService} from "../service/business/event.service";
 import {MemoService} from "../service/business/memo.service";
-import { SettingsProvider } from '../providers/settings/settings';
 import {AipPageModule} from "../pages/aip/aip.module";
+import { SettingsProvider } from '../providers/settings/settings';
 
 @NgModule({
   declarations: [
@@ -217,6 +218,7 @@ import {AipPageModule} from "../pages/aip/aip.module";
     BlaRestful,
     BacRestful,
     ShaeRestful,
+    DataRestful,
     AssistantService,
     FeedbackService,
     AlarmService,
@@ -230,9 +232,9 @@ import {AipPageModule} from "../pages/aip/aip.module";
     RemindService,
     EventService,
     MemoService,
+    SettingsProvider,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
-    {provide: HAMMER_GESTURE_CONFIG, useClass: HammerDIRECTIONALLConfig},
-    SettingsProvider
+    {provide: HAMMER_GESTURE_CONFIG, useClass: HammerDIRECTIONALLConfig}
   ]
 })
 export class AppModule {
