@@ -339,7 +339,7 @@ describe('EventService test suite for agenda', () => {
   });
 
   it('Case 1 - 4 - 1 saveAgenda 保存日程 - 每月重复 - 每个月13号执行，间隔2个月执行一次，循环4次', async () => {
-    let day: string = moment().format("YYYY/MM/DD");
+    let day: string = "2019/08/23";
 
     let agenda: AgendaData = {} as AgendaData;
 
@@ -359,6 +359,10 @@ describe('EventService test suite for agenda', () => {
 
     expect(agendas).toBeDefined();
     expect(agendas.length).toBeGreaterThan(0);
+
+    for (let each of agendas) {
+      expect(["2019/09/13", "2019/11/13", "2020/01/13", "2020/03/13"].indexOf(each.evd)).toBeGreaterThanOrEqual(0);
+    }
   });
 
 
