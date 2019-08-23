@@ -1379,6 +1379,19 @@ export class CalendarService extends BaseService {
         moargs = moargs.concat(querymarks);
       }
 
+      // 增加删除标记判断
+      ciwhere += (ciwhere? 'and ' : 'where ');
+      ciwhere += `del <> ? `;
+      ciargs.push(DelType.del);
+
+      evwhere += (evwhere? 'and ' : 'where ');
+      evwhere += `del <> ? `;
+      evargs.push(DelType.del);
+
+      mowhere += (mowhere? 'and ' : 'where ');
+      mowhere += `del <> ? `;
+      moargs.push(DelType.del);
+
       sqlcalitems = `select * from gtd_jta ${ciwhere} order by sd asc`;
       sqlevents = `select * from gtd_ev ${evwhere} order by evd asc`;
       sqlmemos = `select * from gtd_mom ${mowhere} order by sd asc`;
