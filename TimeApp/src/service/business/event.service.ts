@@ -392,6 +392,8 @@ export class EventService extends BaseService {
 
       let outAgdatas = await this.updateAgenda(newAgdata,oriAgdata,modiType);
 
+      this.emitService.emit("mwxing.calendar.activities.changed", outAgdatas);
+
       return outAgdatas;
 
     } else {
@@ -413,6 +415,8 @@ export class EventService extends BaseService {
 
       this.emitService.emitRef(newAgdata.sd);
       console.log(newAgdata);
+
+      this.emitService.emit("mwxing.calendar.activities.changed", retParamEv.outAgdatas);
 
       return retParamEv.outAgdatas;
     }
@@ -1156,6 +1160,9 @@ export class EventService extends BaseService {
 			Object.assign(evdb, minitask);
 			await this.sqlExce.saveByParam(evdb);
 		}
+
+    this.emitService.emit("mwxing.calendar.activities.changed", minitask);
+
 		return minitask;
   }
 
