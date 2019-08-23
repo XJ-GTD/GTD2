@@ -1497,6 +1497,13 @@ export class CalendarService extends BaseService {
 
   }
 
+  /**
+   * 分享日历
+   *
+   * 日历数据上传服务器，并获得分享URL
+   *
+   * @author leon_xi@163.com
+   **/
   async sharePlan(plan: PlanData, refreshChildren: boolean = false): Promise<string> {
     this.assertEmpty(plan);     // 入参不能为空
     this.assertEmpty(plan.ji);  // 计划ID不能为空
