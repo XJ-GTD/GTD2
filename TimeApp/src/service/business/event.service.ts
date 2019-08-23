@@ -229,35 +229,9 @@ export class EventService extends BaseService {
         masterEvi = oriAgdata.rtevi;
       }
 
-      sq = `update gtd_ev set del ='${anyenum.DelType.del}' ,mi='${UserConfig.account.id}',tb = '${anyenum.SyncType.unsynch}'
-       where evd >= '${oriAgdata.evd}' and (evi = '${masterEvi}' or rtevi =  '${masterEvi}') ;`;
-      await this.sqlExce.execSql(sq);
+      //删除原事件中从当前开始所有事件
+      await this.delFromsel(masterEvi ,oriAgdata ,sqlparam,outAgds);
 
-      //更新原事件日程结束日或事件表无记录了则删除
-      sq = `select * from gtd_ev where (evi = '${masterEvi}' or rtevi =  '${masterEvi}') and del <>'${anyenum.DelType.del}' ;`;
-      let evtbls = new Array<EvTbl>();
-      evtbls = await this.sqlExce.getExtList<EvTbl>(sq);
-
-      let caevi : string = masterEvi;
-      let ca = new CaTbl();
-      ca.evi = caevi;
-      if (evtbls.length > 0){
-        ca.ed = moment(oriAgdata.evd).subtract(1,'d').format("YYYY/MM/DD");
-        sqlparam.push(ca.upTParam());
-      }else{
-        sqlparam.push(ca.dTParam());
-
-        //本地删除事件参与人和附件
-        let pfs = new Array<any>();
-        pfs = this.sqlparamDelParFj(masterEvi);
-        sqlparam = [...sqlparam ,...pfs];
-      }
-
-      //删除原事件中从当前事件开始所有提醒
-      sq = `delete from gtd_wa where obt = '${anyenum.ObjectType.Event}' and obi in (select evi from gtd_ev
-          where evd >= '${oriAgdata.evd}' and (evi = '${masterEvi}' or rtevi =  '${masterEvi}')
-          and  del ='${anyenum.DelType.del}' ) ; `;
-      sqlparam.push(sq);
     }else{
 
       let sq : string;
@@ -297,51 +271,24 @@ export class EventService extends BaseService {
         ca.evi = caevi;
         sqlparam.push(ca.dTParam());
 
-        //本地删除事件参与人和附件
-        let pfs = new Array<any>();
-        pfs = this.sqlparamDelParFj(masterEvi);
-        sqlparam = [...sqlparam ,...pfs];
+        //本地删除事件参与人
+        let par: ParTbl = new ParTbl();
+        par.obt = anyenum.ObjectType.Event;
+        par.obi = masterEvi;
+        par.del = anyenum.DelType.del;
+        par.tb = anyenum.SyncType.unsynch;
+        sqlparam.push(par.upTParam());
+
+        //本地删除附件
+        let fj: FjTbl = new FjTbl();
+        fj.obt = anyenum.ObjectType.Event;
+        fj.obi = masterEvi;
+        fj.del = anyenum.DelType.del;
+        fj.tb = anyenum.SyncType.unsynch;
+        sqlparam.push(fj.upTParam());
       }else{
         //如果当前删除对象是父事件，则为当前重复事件重建新的父事件，值为ev表重复记录里的第一条做为父事件
-        if (!oriAgdata.rtevi && oriAgdata.rtevi =="" && oriAgdata.rfg == anyenum.RepeatFlag.Repeat){
-          sq = `select * from gtd_ev where rtevi = '${oriAgdata.evi}' and  rfg = '${anyenum.RepeatFlag.Repeat}'
-         and del <>  '${anyenum.DelType.del}' order by evd ;`;
-
-          nwEvs = await this.sqlExce.getExtList<EvTbl>(sq);
-          if (nwEvs != null && nwEvs.length >0){
-            //更新首条为父事件
-            Object.assign(nwEv, nwEvs[0]);
-            nwEv.rtevi = "";
-            nwEv.tb = anyenum.SyncType.unsynch;
-            nwEv.mi = UserConfig.account.id;
-            sqlparam.push(nwEv.upTParam());
-
-            //原子事件的父字段改为新的父事件
-            sq = `update gtd_ev set rtevi = '${nwEv.evi}',mi='${UserConfig.account.id}',tb = '${anyenum.SyncType.unsynch}'
-             where rtevi = '${oriAgdata.evi}'; `;
-            sqlparam.push(sq);
-
-            //原对应日程删除
-            let delca = new CaTbl();
-            delca.evi = oriAgdata.evi;
-            sqlparam.push(delca.dTParam());
-
-            //为新的父事件建立新的对应日程
-            let nwca = new CaTbl();
-            nwca = this.sqlparamAddCa(nwEv.evi ,nwEv.evd,oriAgdata.ed,oriAgdata);
-            sqlparam.push(nwca.rpTParam());
-
-            //复制原参与人到新的父事件
-            let nwpar = new Array<any>();
-            nwpar = this.sqlparamAddPar(nwEv.evi , oriAgdata.parters);
-
-            //复制原附件到新的父事件
-            let nwfj = new Array<any>();
-            nwfj = this.sqlparamAddFj(nwEv.evi , oriAgdata.fjs);
-
-            sqlparam = [...sqlparam, ...nwpar, ...nwfj];
-          }
-        }
+        await this.operateForParentAgd(oriAgdata,sqlparam,DUflag.del);
       }
 
       // 删除相关提醒
@@ -445,7 +392,7 @@ export class EventService extends BaseService {
     for (let j = 0, len = retParamEv.outAgdatas.length; j < len ; j++){
       let outAgd = {} as AgendaData;
       outAgd = retParamEv.outAgdatas[j];
-      if (outAgd.rtevi == ""){
+      if (outAgd.rtevi == "" && outAgd.evi == caparam.evi){
         Object.assign(outAgd,caparam);
         break;
       }
@@ -468,7 +415,8 @@ export class EventService extends BaseService {
   private async updateAgenda(newAgdata: AgendaData,oriAgdata : AgendaData, modiType : anyenum.OperateType):Promise<Array<AgendaData>> {
 
 
-    let outAgds = new Array<AgendaData>();
+    let outAgds = new Array<AgendaData>();//返回事件
+
 
     //批量本地更新
     let sqlparam = new Array<any>();
@@ -482,46 +430,16 @@ export class EventService extends BaseService {
     if (modiType == anyenum.OperateType.FromSel ){
 
       let sq : string ;
-      //删除原事件中从当前开始所有事件
+
       let masterEvi : string;//主evi设定
       if (oriAgdata.rtevi == ""){
         masterEvi = oriAgdata.evi;
       }else {
         masterEvi = oriAgdata.rtevi;
       }
-      //evd使用原事件evd
-      sq = `update  gtd_ev set del ='${anyenum.DelType.del}' , mi ='${newAgdata.mi}',tb = '${anyenum.SyncType.unsynch}'
-       where evd >= '${oriAgdata.evd}' and (evi = '${masterEvi}' or rtevi =  '${masterEvi}') ;`;
-      await this.sqlExce.execSql(sq);
 
-
-      //更新原事件日程结束日或事件表无记录了则删除
-      sq = `select * from gtd_ev where (evi = '${masterEvi}' or rtevi =  '${masterEvi}') and del <> '${anyenum.DelType.del}' ;`;
-      let evtbls = new Array<EvTbl>();
-      evtbls = await this.sqlExce.getExtList<EvTbl>(sq);
-
-      let caevi : string = masterEvi;
-      let ca = new CaTbl();
-      ca.evi = caevi;
-      if (evtbls.length > 0){
-        ca.ed = moment(oriAgdata.evd).subtract(1,'d').format("YYYY/MM/DD");//evd使用原事件evd
-        sqlparam.push(ca.upTParam());
-      }else{
-        sqlparam.push(ca.dTParam());
-
-        //本地删除事件参与人和附件
-        let pfs = new Array<any>();
-        pfs = this.sqlparamDelParFj(masterEvi);
-        sqlparam = [...sqlparam ,...pfs];
-      }
-
-      //删除原事件中从当前事件开始所有提醒 evd使用原事件evd
-      sq = `delete from gtd_wa where obt = '${anyenum.ObjectType.Event}' and  obi in (select evi from gtd_ev
-          where evd >= '${oriAgdata.evd}' and (evi = '${masterEvi}' or rtevi =  '${masterEvi}')
-           and  del ='${anyenum.DelType.del}' ); `;
-      sqlparam.push(sq);
-
-
+      //删除原事件中从当前开始所有事件
+      await this.delFromsel(masterEvi ,oriAgdata ,sqlparam,outAgds);
 
       //新建新事件日程
       let nwAgdata = {} as AgendaData;
@@ -540,7 +458,9 @@ export class EventService extends BaseService {
       nwfj = this.sqlparamAddFj(retParamEv.rtevi, oriAgdata.fjs);
 
       sqlparam = [...sqlparam, ...retParamEv.sqlparam, ...nwpar, ...nwfj];
-      outAgds = retParamEv.outAgdatas;
+
+      //修改与新增记录合并成返回事件
+      outAgds = [...outAgds, ...retParamEv.outAgdatas];
 
     }else if(modiType == anyenum.OperateType.OnlySel) {
 
@@ -560,7 +480,7 @@ export class EventService extends BaseService {
       }
 
       newAgdata.tx = JSON.stringify(newAgdata.txjson);
-
+      newAgdata.tb = anyenum.SyncType.unsynch;
       let ev = new EvTbl();
       ev.evi = oriAgdata.evi;//evi使用原evi
       ev.evn = newAgdata.evn;
@@ -573,9 +493,10 @@ export class EventService extends BaseService {
       ev.rts = newAgdata.rts;
       ev.rfg = newAgdata.rfg;
       ev.mi = newAgdata.mi;
-      ev.tb = anyenum.SyncType.unsynch;
+      ev.tb = newAgdata.tb;
       await this.sqlExce.updateByParam(ev);
 
+      //放入返回事件
       let outAgd  = {} as AgendaData;
       Object.assign(outAgd,ev);
       outAgds.push(outAgd);
@@ -591,43 +512,8 @@ export class EventService extends BaseService {
         sqlparam.push(this.sqlparamAddTxWa(ev, newAgdata.st, newAgdata.al, newAgdata.txjson).rpTParam());
       }
 
-      let nwEvs = Array<EvTbl>();
-      let nwEv = new EvTbl();
-      let sq : string ;
       //如果当前更新对象是父节点，则为当前重复日程重建新的父记录，值为ev表里的第一条做为父记录
-      if (!oriAgdata.rtevi && oriAgdata.rtevi =="" && oriAgdata.rfg == anyenum.RepeatFlag.Repeat){
-        sq = `select * from gtd_ev where rtevi = '${oriAgdata.evi}' and  rfg = '${anyenum.RepeatFlag.Repeat}'
-         and del <>  '${anyenum.DelType.del}' order by evd ;`;
-
-        nwEvs = await this.sqlExce.getExtList<EvTbl>(sq);
-        if (nwEvs != null && nwEvs.length >0){
-          //更新首条为父事件
-          Object.assign(nwEv, nwEvs[0]);
-          nwEv.rtevi = "";
-          nwEv.mi = newAgdata.mi;
-          nwEv.tb = anyenum.SyncType.unsynch;
-          sqlparam.push(nwEv.upTParam());
-
-          //原重复子事件的父字段改为新的父事件
-          sq = `update gtd_ev set rtevi = '${nwEv.evi}', mi = '${newAgdata.mi}',tb='${anyenum.SyncType.unsynch}'
-          where rtevi = '${oriAgdata.evi}'; `;
-          sqlparam.push(sq);
-
-          //为新的父事件建立新的对应日程
-          let nwca =  new CaTbl();
-          nwca = this.sqlparamAddCa(nwEv.evi ,nwEv.evd,oriAgdata.ed,oriAgdata);
-          sqlparam.push(nwca.rpTParam());
-
-          //复制原参与人到新的父事件
-          let nwpar = new Array<any>();
-          nwpar = this.sqlparamAddPar(nwEv.evi , oriAgdata.parters);
-
-          //复制原附件到新事件
-          let nwfj = new Array<any>();
-          nwfj = this.sqlparamAddFj(nwEv.evi, oriAgdata.fjs);
-          sqlparam = [...sqlparam, ...nwpar, ...nwfj];
-        }
-      }
+      await this.operateForParentAgd(oriAgdata,sqlparam,DUflag.update);
 
       //日程表新建或更新
       let caparam = new CaTbl();
@@ -643,30 +529,160 @@ export class EventService extends BaseService {
   }
 
   /**
-   * 删除与evi相关所有附件与参与人
-   * @param {string} evi
-   * @param {AgendaData} agdata
-   * @returns {Array<any>}
+   * 如果当前删除对象是父事件，则为当前重复事件重建新的父事件，值为ev表重复记录里的第一条做为父事件
+   * @param {AgendaData} oriAgdata
+   * @param {Array<any>} sqlparam
+   * @param {DUflag} doflag
+   * @returns {Promise<void>}
    */
-  private sqlparamDelParFj(evi : string) : Array<any>{
-    let ret = new Array<any>();
+  private async operateForParentAgd(oriAgdata : AgendaData,sqlparam : Array<any>,
+                                        doflag : DUflag){
+    let nwEvs = Array<EvTbl>();
+    let nwEv = new EvTbl();
+    let sq : string ;
+    if (!oriAgdata.rtevi && oriAgdata.rtevi =="" && oriAgdata.rfg == anyenum.RepeatFlag.Repeat){
+      sq = `select * from gtd_ev where rtevi = '${oriAgdata.evi}' and  rfg = '${anyenum.RepeatFlag.Repeat}'
+         and del <>  '${anyenum.DelType.del}' order by evd ;`;
 
-    //本地删除事件参与人
-    let par: ParTbl = new ParTbl();
-    par.obt = anyenum.ObjectType.Event;
-    par.obi = evi;
-    par.del = anyenum.DelType.del;
-    par.tb = anyenum.SyncType.unsynch;
-    ret.push(par.upTParam());
+      nwEvs = await this.sqlExce.getExtList<EvTbl>(sq);
+      if (nwEvs != null && nwEvs.length >0){
+        //更新首条为父事件
+        Object.assign(nwEv, nwEvs[0]);
+        nwEv.rtevi = "";
+        nwEv.tb = anyenum.SyncType.unsynch;
+        nwEv.mi = UserConfig.account.id;
+        sqlparam.push(nwEv.upTParam());
 
-    //本地删除附件
-    let fj: FjTbl = new FjTbl();
-    fj.obt = anyenum.ObjectType.Event;
-    fj.obi = evi;
-    fj.del = anyenum.DelType.del;
-    fj.tb = anyenum.SyncType.unsynch;
-    ret.push(fj.upTParam());
-    return ret;
+        //原子事件的父字段改为新的父事件
+        sq = `update gtd_ev set rtevi = '${nwEv.evi}',mi='${UserConfig.account.id}',tb = '${anyenum.SyncType.unsynch}'
+             where rtevi = '${oriAgdata.evi}'; `;
+        sqlparam.push(sq);
+
+        if (doflag == Doflag.del){
+          //原对应日程删除
+          let delca = new CaTbl();
+          delca.evi = oriAgdata.evi;
+          sqlparam.push(delca.dTParam());
+        }
+
+        //为新的父事件建立新的对应日程
+        let nwca = new CaTbl();
+        nwca = this.sqlparamAddCa(nwEv.evi ,nwEv.evd,oriAgdata.ed,oriAgdata);
+        sqlparam.push(nwca.rpTParam());
+
+        //复制原参与人到新的父事件
+        let nwpar = new Array<any>();
+        nwpar = this.sqlparamAddPar(nwEv.evi , oriAgdata.parters);
+
+        //复制原附件到新的父事件
+        let nwfj = new Array<any>();
+        nwfj = this.sqlparamAddFj(nwEv.evi , oriAgdata.fjs);
+
+        sqlparam = [...sqlparam, ...nwpar, ...nwfj];
+      }
+    }
+  }
+
+  /**
+   * 删除原事件中从当前开始所有事件
+   * @param {string} masterEvi
+   * @param {AgendaData} oriAgdata
+   * @param {AgendaData} newAgdata
+   * @param {Array<any>} sqlparam
+   * @param {Array<AgendaData>} outAgds
+   * @returns {Promise<void>}
+   */
+  private async delFromsel(masterEvi : string ,oriAgdata : AgendaData ,
+                             sqlparam : Array<any>,outAgds : Array<AgendaData>){
+    let delAgds = new Array<AgendaData>();//保存删除的事件用
+    let delcondi :string ;
+
+    let sq : string ;
+    //删除原事件中从当前开始所有事件 evd使用原事件evd
+    delcondi = ` evd >= '${oriAgdata.evd}' and (evi = '${masterEvi}' or rtevi =  '${masterEvi}') `
+    sq = `update  gtd_ev set del ='${anyenum.DelType.del}' , mi ='${UserConfig.account.id}',tb = '${anyenum.SyncType.unsynch}'
+        where ${delcondi} ;`;
+    await this.sqlExce.execSql(sq);
+
+    //上记标记为删除的记录放入返回事件中
+    sq = ` select * from gtd_ev where ${delcondi} ; `;
+    delAgds = await this.sqlExce.getExtLstByParam<AgendaData>(sq,[]);
+
+    //更新原事件日程结束日或事件表无记录了则删除
+    sq = `select * from gtd_ev where (evi = '${masterEvi}' or rtevi =  '${masterEvi}') and del <> '${anyenum.DelType.del}'  
+      order by evd  ;`;
+    let evtbls = new Array<AgendaData>();
+    evtbls = await this.sqlExce.getExtLstByParam<AgendaData>(sq ,[]);
+
+
+    let caevi : string = masterEvi;
+    let ca = new CaTbl();
+    ca.evi = caevi;
+    ca = await this.sqlExce.getOneByParam<CaTbl>(ca);
+
+    if (evtbls.length > 0){
+      ca.ed = moment(oriAgdata.evd).subtract(1,'d').format("YYYY/MM/DD");//evd使用原事件evd
+      sqlparam.push(ca.upTParam());
+
+      //日程信息修改了，把日程信息复制到事件父信息内，并把父记录放入返回事件
+      for (let j = 0 ,len = evtbls.length ; j < len ; j++){
+        if (evtbls[j].rtevi == "" && evtbls[j].evi == ca.evi){
+          Object.assign(evtbls[j],ca);
+          outAgds.push(evtbls[j]);
+          break;
+        }
+      }
+
+    }else{
+      sqlparam.push(ca.dTParam());
+
+      //本地删除事件参与人
+      let par: ParTbl = new ParTbl();
+      par.obt = anyenum.ObjectType.Event;
+      par.obi = masterEvi;
+      par.del = anyenum.DelType.del;
+      par.tb = anyenum.SyncType.unsynch;
+      sqlparam.push(par.upTParam());
+
+      //本地删除附件
+      let fj: FjTbl = new FjTbl();
+      fj.obt = anyenum.ObjectType.Event;
+      fj.obi = masterEvi;
+      fj.del = anyenum.DelType.del;
+      fj.tb = anyenum.SyncType.unsynch;
+      sqlparam.push(fj.upTParam());
+
+      //删除原事件中从当前事件开始所有提醒 evd使用原事件evd
+      sq = `delete from gtd_wa where obt = '${anyenum.ObjectType.Event}' and  obi in (select evi from gtd_ev
+          where evd >= '${oriAgdata.evd}' and (evi = '${masterEvi}' or rtevi =  '${masterEvi}')
+           and  del ='${anyenum.DelType.del}' ); `;
+      sqlparam.push(sq);
+
+      //取得所有删除的参与人
+      let delpars = new Array<Parter>();
+      let delpar = new  ParTbl();
+      delpar.obt = anyenum.ObjectType.Event;
+      delpar.obi = masterEvi;
+      delpars = await this.sqlExce.getLstByParam<Parter>(delpar);
+
+      //取得所有删除的附件
+      let delfjs = new Array<FjTbl>();
+      let delfj = new  FjTbl();
+      delfj.obt = anyenum.ObjectType.Event;
+      delfj.obi = masterEvi;
+      delfjs = await this.sqlExce.getLstByParam<FjTbl>(delfj);
+
+      //把删除的日程信息、参与人、附件复制到删除的事件父信息内
+      for (let j = 0 ,len = delAgds.length ; j < len ; j++){
+        if (delAgds[j].rtevi == "" && delAgds[j].evi == ca.evi){
+          Object.assign(delAgds[j],ca);
+          delAgds[j].parters = delpars;
+          delAgds[j].fjs = delfjs;
+          break;
+        }
+      }
+    }
+    outAgds = [...outAgds, ...delAgds];
   }
 
   /**
@@ -1414,4 +1430,9 @@ export class RtJson {
 
 export class TxJson {
   type: anyenum.TxType;
+}
+
+enum DUflag {
+  del = "del",
+  update = "update"
 }
