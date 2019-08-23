@@ -125,7 +125,7 @@ export class CalendarService extends BaseService {
         // 判断数据是否属于当前缓存日期范围
         currentmonth = moment(item.sd).format("YYYY/MM");
 
-        if (firstmonth >= currentmonth && currentmonth <= lastmonth) {
+        if (moment(firstmonth).diff(currentmonth, "months") <= 0 && moment(currentmonth).diff(lastmonth, "months") <= 0) {
           let diff = moment(currentmonth).diff(firstmonth, "months");
 
           let currentmonthactivities = this.calendaractivities[diff];
@@ -141,7 +141,7 @@ export class CalendarService extends BaseService {
         // 判断数据是否属于当前缓存日期范围
         currentmonth = moment(agenda.evd).format("YYYY/MM");
 
-        if (firstmonth >= currentmonth && currentmonth <= lastmonth) {
+        if (moment(firstmonth).diff(currentmonth, "months") <= 0 && moment(currentmonth).diff(lastmonth, "months") <= 0) {
           let diff = moment(currentmonth).diff(firstmonth, "months");
 
           let currentmonthactivities = this.calendaractivities[diff];
@@ -157,7 +157,7 @@ export class CalendarService extends BaseService {
         // 判断数据是否属于当前缓存日期范围
         currentmonth = moment(task.evd).format("YYYY/MM");
 
-        if (firstmonth >= currentmonth && currentmonth <= lastmonth) {
+        if (moment(firstmonth).diff(currentmonth, "months") <= 0 && moment(currentmonth).diff(lastmonth, "months") <= 0) {
           let diff = moment(currentmonth).diff(firstmonth, "months");
 
           let currentmonthactivities = this.calendaractivities[diff];
@@ -173,7 +173,7 @@ export class CalendarService extends BaseService {
         // 判断数据是否属于当前缓存日期范围
         currentmonth = moment(minitask.evd).format("YYYY/MM");
 
-        if (firstmonth >= currentmonth && currentmonth <= lastmonth) {
+        if (moment(firstmonth).diff(currentmonth, "months") <= 0 && moment(currentmonth).diff(lastmonth, "months") <= 0) {
           let diff = moment(currentmonth).diff(firstmonth, "months");
 
           let currentmonthactivities = this.calendaractivities[diff];
@@ -189,7 +189,7 @@ export class CalendarService extends BaseService {
         // 判断数据是否属于当前缓存日期范围
         currentmonth = moment(memo.sd).format("YYYY/MM");
 
-        if (firstmonth >= currentmonth && currentmonth <= lastmonth) {
+        if (moment(firstmonth).diff(currentmonth, "months") <= 0 && moment(currentmonth).diff(lastmonth, "months") <= 0) {
           let diff = moment(currentmonth).diff(firstmonth, "months");
 
           let currentmonthactivities = this.calendaractivities[diff];
@@ -760,7 +760,7 @@ export class CalendarService extends BaseService {
 
     let sqlcalitems: string = `select * from gtd_jta where substr(sd, 1, 7) = '${month}' AND del <> '${DelType.del}' order by sd asc, st asc`;
 
-    monthActivity.calendaritems = await this.sqlExce.getExtList<PlanItemData>(sqlcalitems);
+    monthActivity.calendaritems = await this.sqlExce.getExtList<PlanItemData>(sqlcalitems) || new Array<PlanItemData>();
 
     days = monthActivity.calendaritems.reduce((days, value) => {
       let day: string = value.sd;
@@ -776,7 +776,7 @@ export class CalendarService extends BaseService {
 
     let sqlevents: string = `select * from gtd_ev where substr(evd, 1, 7) = '${month}' AND del <> '${DelType.del}' order by evd asc`;
 
-    monthActivity.events = await this.sqlExce.getExtList<EventData>(sqlevents);
+    monthActivity.events = await this.sqlExce.getExtList<EventData>(sqlevents) || new Array<EventData>();
 
     days = monthActivity.events.reduce((days, value) => {
       let day: string = value.evd;
@@ -792,7 +792,7 @@ export class CalendarService extends BaseService {
 
     let sqlmemos: string = `select * from gtd_mom where substr(sd, 1, 7) = '${month}' AND del <> '${DelType.del}' order by sd asc`;
 
-    monthActivity.memos = await this.sqlExce.getExtList<MemoData>(sqlmemos);
+    monthActivity.memos = await this.sqlExce.getExtList<MemoData>(sqlmemos) || new Array<MemoData>();
 
     days = monthActivity.memos.reduce((days, value) => {
       let day: string = value.sd;
@@ -1096,15 +1096,15 @@ export class CalendarService extends BaseService {
 
     let sqlcalitems: string = `select * from gtd_jta where sd = '${day}' and del <> '${DelType.del}' order by st asc`;
 
-    dayActivity.calendaritems = await this.sqlExce.getExtList<PlanItemData>(sqlcalitems);
+    dayActivity.calendaritems = await this.sqlExce.getExtList<PlanItemData>(sqlcalitems) || new Array<PlanItemData>();
 
     let sqlevents: string = `select * from gtd_ev where evd = '${day}' and del <> '${DelType.del}'`;
 
-    dayActivity.events = await this.sqlExce.getExtList<EventData>(sqlevents);
+    dayActivity.events = await this.sqlExce.getExtList<EventData>(sqlevents) || new Array<EventData>();
 
     let sqlmemos: string = `select * from gtd_mom where sd = '${day}' and del <> '${DelType.del}'`;
 
-    dayActivity.memos = await this.sqlExce.getExtList<MemoData>(sqlmemos);
+    dayActivity.memos = await this.sqlExce.getExtList<MemoData>(sqlmemos) || new Array<MemoData>();
 
     return dayActivity;
   }
@@ -1403,15 +1403,15 @@ export class CalendarService extends BaseService {
 
     // 执行查询
     if (sqlcalitems) {
-      resultActivity.calendaritems = await this.sqlExce.getExtLstByParam<PlanItemData>(sqlcalitems, ciargs);
+      resultActivity.calendaritems = await this.sqlExce.getExtLstByParam<PlanItemData>(sqlcalitems, ciargs) || new Array<PlanItemData>();
     }
 
     if (sqlevents) {
-      resultActivity.events = await this.sqlExce.getExtLstByParam<EventData>(sqlevents, evargs);
+      resultActivity.events = await this.sqlExce.getExtLstByParam<EventData>(sqlevents, evargs) || new Array<EventData>();
     }
 
     if (sqlmemos) {
-      resultActivity.memos = await this.sqlExce.getExtLstByParam<MemoData>(sqlmemos, moargs);
+      resultActivity.memos = await this.sqlExce.getExtLstByParam<MemoData>(sqlmemos, moargs) || new Array<MemoData>();
     }
 
     return resultActivity;
@@ -2144,18 +2144,18 @@ export interface PlanItemData extends JtaTbl {
 export class PagedActivityData {
   startday: string;                     // 开始日期
   endday: string;                       // 结束日期
-  calendaritems: Array<PlanItemData>;   // 日历项
-  events: Array<EventData>;             // 事件
-  memos: Array<MemoData>;               // 备忘
-  days: Map<string, DayActivityData>;   // 指定期间每天的活动
+  calendaritems: Array<PlanItemData> = new Array<PlanItemData>();   // 日历项
+  events: Array<EventData> = new Array<EventData>();             // 事件
+  memos: Array<MemoData> = new Array<MemoData>();               // 备忘
+  days: Map<string, DayActivityData> = new Map<string, DayActivityData>();   // 指定期间每天的活动
 }
 
 export class MonthActivityData {
   month: string;                        // 所属年月
-  calendaritems: Array<PlanItemData>;   // 日历项
-  events: Array<EventData>;             // 事件
-  memos: Array<MemoData>;               // 备忘
-  days: Map<string, DayActivityData>;   // 当月每天的活动
+  calendaritems: Array<PlanItemData> = new Array<PlanItemData>();   // 日历项
+  events: Array<EventData> = new Array<EventData>();             // 事件
+  memos: Array<MemoData> = new Array<MemoData>();               // 备忘
+  days: Map<string, DayActivityData> = new Map<string, DayActivityData>();   // 当月每天的活动
 }
 
 export class DayActivityData {
@@ -2171,14 +2171,14 @@ export class DayActivityData {
 
 export class ActivityData {
   condition: FindActivityCondition;     // 查询条件
-  calendaritems: Array<PlanItemData>;   // 日历项
-  events: Array<EventData>;             // 事件
-  memos: Array<MemoData>;               // 备忘
+  calendaritems: Array<PlanItemData> = new Array<PlanItemData>();   // 日历项
+  events: Array<EventData> = new Array<EventData>();             // 事件
+  memos: Array<MemoData> = new Array<MemoData>();               // 备忘
 }
 
 export class MonthActivitySummaryData {
   month: string;                        // 所属年月
-  days: Array<DayActivitySummaryData>;  // 每日活动汇总
+  days: Array<DayActivitySummaryData> = new Array<DayActivitySummaryData>();  // 每日活动汇总
 }
 
 export class DayActivitySummaryData {
