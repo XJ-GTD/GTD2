@@ -1478,7 +1478,7 @@ export class CalendarService extends BaseService {
     sync.id = plan.ji;
     sync.type = "Plan";
     sync.security = SyncDataSecurity.None;
-    sync.status = plan.del;
+    sync.status = SyncDataStatus[plan.del];
     sync.payload = plan;
 
     push.d.push(sync);
