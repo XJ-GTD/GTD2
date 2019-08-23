@@ -452,7 +452,7 @@ export class EventService extends BaseService {
     }
 
     //批量本地入库
-    sqlparam = retParamEv.sqlparam;
+    sqlparam = [...sqlparam, ...retParamEv.sqlparam];
     await this.sqlExce.batExecSqlByParam(sqlparam);
 
     return retParamEv;
@@ -639,15 +639,6 @@ export class EventService extends BaseService {
     await this.sqlExce.batExecSqlByParam(sqlparam);
 
     return outAgds;
-    /*
-    await this.sqlExce.update(c);
-    if(c.rt=="0" || (c.rt != "0" && c.sn != oldc.sn)){
-      //restful用参数
-      let agd = new AgdPro();
-      this.setAdgPro(agd, c);
-      await this.agdRest.save(agd);
-    }
-    this.emitService.emitRef(scd.sd);*/
 
   }
 
