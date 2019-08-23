@@ -2144,18 +2144,18 @@ export interface PlanItemData extends JtaTbl {
 export class PagedActivityData {
   startday: string;                     // 开始日期
   endday: string;                       // 结束日期
-  calendaritems: Array<PlanItemData>;   // 日历项
-  events: Array<EventData>;             // 事件
-  memos: Array<MemoData>;               // 备忘
-  days: Map<string, DayActivityData>;   // 指定期间每天的活动
+  calendaritems: Array<PlanItemData> = new Array<PlanItemData>();   // 日历项
+  events: Array<EventData> = new Array<EventData>();             // 事件
+  memos: Array<MemoData> = new Array<MemoData>();               // 备忘
+  days: Map<string, DayActivityData> = new Map<string, DayActivityData>();   // 指定期间每天的活动
 }
 
 export class MonthActivityData {
   month: string;                        // 所属年月
-  calendaritems: Array<PlanItemData>;   // 日历项
-  events: Array<EventData>;             // 事件
-  memos: Array<MemoData>;               // 备忘
-  days: Map<string, DayActivityData>;   // 当月每天的活动
+  calendaritems: Array<PlanItemData> = new Array<PlanItemData>();   // 日历项
+  events: Array<EventData> = new Array<EventData>();             // 事件
+  memos: Array<MemoData> = new Array<MemoData>();               // 备忘
+  days: Map<string, DayActivityData> = new Map<string, DayActivityData>();   // 当月每天的活动
 }
 
 export class DayActivityData {
@@ -2171,14 +2171,14 @@ export class DayActivityData {
 
 export class ActivityData {
   condition: FindActivityCondition;     // 查询条件
-  calendaritems: Array<PlanItemData>;   // 日历项
-  events: Array<EventData>;             // 事件
-  memos: Array<MemoData>;               // 备忘
+  calendaritems: Array<PlanItemData> = new Array<PlanItemData>();   // 日历项
+  events: Array<EventData> = new Array<EventData>();             // 事件
+  memos: Array<MemoData> = new Array<MemoData>();               // 备忘
 }
 
 export class MonthActivitySummaryData {
   month: string;                        // 所属年月
-  days: Array<DayActivitySummaryData>;  // 每日活动汇总
+  days: Array<DayActivitySummaryData> = new Array<DayActivitySummaryData>();  // 每日活动汇总
 }
 
 export class DayActivitySummaryData {
