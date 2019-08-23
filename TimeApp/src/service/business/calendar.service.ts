@@ -1493,8 +1493,32 @@ export class CalendarService extends BaseService {
    *
    * @author leon_xi@163.com
    **/
-  syncPrivatePlans() {
+  async syncPrivatePlans() {
+    let sql: string = `select * from gtd_jha where jt = ? and tb = ?`;
 
+    let unsyncedplans = await this.sqlExce.getExtLstByParam<PlanData>(sql, [PlanType.PrivatePlan, SyncType.unsynch]);
+
+    // 存在未同步日历
+    if (unsyncedplans && unsyncedplans.length > 0) {
+      // 构造Push数据结构
+      let push: PushInData = new PushInData();
+
+      for (let plan of unsyncedplans) {
+        let sync: SyncData = new SyncData();
+
+        sync.id = plan.ji;
+        sync.type = "Plan";
+        sync.security = SyncDataSecurity.None;
+        sync.status = SyncDataStatus[plan.del];
+        sync.payload = plan;
+
+        push.d.push(sync);
+      }
+
+      await this.dataRestful.push(push);
+    }
+
+    return;
   }
 
   /**
