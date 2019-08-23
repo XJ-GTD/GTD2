@@ -900,8 +900,8 @@ export class EventService extends BaseService {
               //当月日期
               days.push(moment(stepDay).add(duration, "days").format("YYYY/MM/DD"));
             } else {
-              //下月日程（跨月）
-              days.push(moment().month(moment(stepDay).month()).add(1, "months").days(option).format("YYYY/MM/DD"));
+              //下月日期（跨月）
+              days.push(moment().month(moment(stepDay).month()).add(1, "months").dates(option + 1).format("YYYY/MM/DD"));
             }
           }
 
