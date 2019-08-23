@@ -7,11 +7,13 @@ import { BackupPro, BacRestful, OutRecoverPro, RecoverPro } from "../restful/bac
 import { UserConfig } from "../config/user.config";
 import * as moment from "moment";
 import { SyncType, DelType } from "../../data.enum";
+import {EmitService} from "../util-service/emit.service";
 
 @Injectable()
 export class MemoService extends BaseService {
 	constructor(private sqlExce: SqliteExec,
 		private bacRestful: BacRestful,
+		private emitService: EmitService,
 		private util: UtilService) {
 		super();
 	}
