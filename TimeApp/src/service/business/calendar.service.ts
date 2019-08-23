@@ -125,7 +125,7 @@ export class CalendarService extends BaseService {
         // 判断数据是否属于当前缓存日期范围
         currentmonth = moment(item.sd).format("YYYY/MM");
 
-        if (firstmonth >= currentmonth && currentmonth <= lastmonth) {
+        if (moment(firstmonth).diff(currentmonth, "months") <= 0 && moment(currentmonth).diff(lastmonth, "months") <= 0) {
           let diff = moment(currentmonth).diff(firstmonth, "months");
 
           let currentmonthactivities = this.calendaractivities[diff];
@@ -141,7 +141,7 @@ export class CalendarService extends BaseService {
         // 判断数据是否属于当前缓存日期范围
         currentmonth = moment(agenda.evd).format("YYYY/MM");
 
-        if (firstmonth >= currentmonth && currentmonth <= lastmonth) {
+        if (moment(firstmonth).diff(currentmonth, "months") <= 0 && moment(currentmonth).diff(lastmonth, "months") <= 0) {
           let diff = moment(currentmonth).diff(firstmonth, "months");
 
           let currentmonthactivities = this.calendaractivities[diff];
@@ -173,7 +173,7 @@ export class CalendarService extends BaseService {
         // 判断数据是否属于当前缓存日期范围
         currentmonth = moment(minitask.evd).format("YYYY/MM");
 
-        if (firstmonth >= currentmonth && currentmonth <= lastmonth) {
+        if (moment(firstmonth).diff(currentmonth, "months") <= 0 && moment(currentmonth).diff(lastmonth, "months") <= 0) {
           let diff = moment(currentmonth).diff(firstmonth, "months");
 
           let currentmonthactivities = this.calendaractivities[diff];
@@ -189,7 +189,7 @@ export class CalendarService extends BaseService {
         // 判断数据是否属于当前缓存日期范围
         currentmonth = moment(memo.sd).format("YYYY/MM");
 
-        if (firstmonth >= currentmonth && currentmonth <= lastmonth) {
+        if (moment(firstmonth).diff(currentmonth, "months") <= 0 && moment(currentmonth).diff(lastmonth, "months") <= 0) {
           let diff = moment(currentmonth).diff(firstmonth, "months");
 
           let currentmonthactivities = this.calendaractivities[diff];
