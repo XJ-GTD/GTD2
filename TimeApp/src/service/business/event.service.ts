@@ -77,7 +77,7 @@ export class EventService extends BaseService {
 
   /**
    * 取得日程相关所有信息
-   * @param {string} evi
+  * @param {string} evi
    * @returns {Promise<Array<AgendaData>>}
    */
   async getAgenda(evi : string):Promise<AgendaData>{
@@ -327,8 +327,9 @@ export class EventService extends BaseService {
             sqlparam.push(delca.dTParam());
 
             //为新的父事件建立新的对应日程
-            let nwca = new Array<any>();
+            let nwca = new CaTbl();
             nwca = this.sqlparamAddCa(nwEv.evi ,nwEv.evd,oriAgdata.ed,oriAgdata);
+            sqlparam.push(nwca.rpTParam());
 
             //复制原参与人到新的父事件
             let nwpar = new Array<any>();
@@ -338,7 +339,7 @@ export class EventService extends BaseService {
             let nwfj = new Array<any>();
             nwfj = this.sqlparamAddFj(nwEv.evi , oriAgdata.fjs);
 
-            sqlparam = [...sqlparam, ...nwca, ...nwpar, ...nwfj];
+            sqlparam = [...sqlparam, ...nwpar, ...nwfj];
           }
         }
       }
@@ -401,13 +402,7 @@ export class EventService extends BaseService {
       retParamEv = await this.newAgenda(newAgdata);
 
       //提交服务器
-      let agdPro: AgdPro = new AgdPro();
-      //restFul保存事件日程
-      this.setAgdPro(agdPro, newAgdata,retParamEv.rtevi);
-      // 语音创建的时候，如果不同步，会导致服务器还没有保存完日程，保存联系人的请求就来了，导致查不到日程无法触发共享联系人动作
-      // 必须增加await，否则，页面创建和语音创建方法必须分开
-      let rst = await this.agdRest.save(agdPro);
-      console.log(JSON.stringify(rst));
+
 
       //如果网络正常提交到服务器，则更新同步标志同步通过websocket来通知
 
@@ -429,6 +424,8 @@ export class EventService extends BaseService {
     this.initAgdParam(agdata);
     //console.log(JSON.stringify(agdata));
 
+    let sqlparam = new Array<any>();
+
     //事件sqlparam 及提醒sqlparam
     let retParamEv = new RetParamEv();
     retParamEv = this.sqlparamAddEv2(agdata);
@@ -436,13 +433,22 @@ export class EventService extends BaseService {
 
 
     //日程表sqlparam
-    let caparam = new Array<any>();
+    let caparam = new CaTbl();
     caparam = this.sqlparamAddCa(retParamEv.rtevi,agdata.sd,retParamEv.ed,agdata);
-    //console.log(JSON.stringify(caparam));
+    sqlparam.push(caparam.rpTParam());
+
+    //日程表信息放入返回事件的父记录信息中
+    for (let j = 0, len = retParamEv.outAgdatas.length; j < len ; j++){
+      let outAgd = {} as AgendaData;
+      outAgd = retParamEv.outAgdatas[j];
+      if (outAgd.rtevi == ""){
+        Object.assign(outAgd,caparam);
+        break;
+      }
+    }
 
     //批量本地入库
-    let sqlparam = new Array<any>();
-    sqlparam = [...retParamEv.sqlparam, ...caparam];
+    sqlparam = retParamEv.sqlparam;
     await this.sqlExce.batExecSqlByParam(sqlparam);
 
     return retParamEv;
@@ -604,8 +610,9 @@ export class EventService extends BaseService {
           sqlparam.push(sq);
 
           //为新的父事件建立新的对应日程
-          let nwca = new Array<any>();
+          let nwca =  new CaTbl();
           nwca = this.sqlparamAddCa(nwEv.evi ,nwEv.evd,oriAgdata.ed,oriAgdata);
+          sqlparam.push(nwca.rpTParam());
 
           //复制原参与人到新的父事件
           let nwpar = new Array<any>();
@@ -614,16 +621,14 @@ export class EventService extends BaseService {
           //复制原附件到新事件
           let nwfj = new Array<any>();
           nwfj = this.sqlparamAddFj(nwEv.evi, oriAgdata.fjs);
-          sqlparam = [...sqlparam, ...nwca, ...nwpar, ...nwfj];
+          sqlparam = [...sqlparam, ...nwpar, ...nwfj];
         }
       }
 
       //日程表新建或更新
-      let caparam = new Array<any>();
+      let caparam = new CaTbl();
       caparam = this.sqlparamAddCa(oriAgdata.evi ,newAgdata.evd,newAgdata.evd,newAgdata);//evi使用原evi
-      //console.log(JSON.stringify(caparam));
-
-      sqlparam = [...sqlparam, ...caparam];
+      sqlparam.push(caparam.rpTParam());
 
     }
 
@@ -770,37 +775,6 @@ export class EventService extends BaseService {
     agdata.st = !agdata.st ? "00:00" : agdata.st;
     agdata.et = !agdata.et ? "23:59" : agdata.et;
     agdata.ct = !agdata.ct ? 0 :agdata.ct;
-  }
-
-
-  /**
-   * 新增接口restful参数设置
-   * @param {AgdPro} agd
-   * @param {AgendaData} agdata
-   * @param {string} rtevi
-   */
-  private setAgdPro(agd: AgdPro, agdata : AgendaData, rtevi : string ) {
-    //关联日程ID
-    agd.rai = agdata.sr;
-    //日程发送人用户ID
-    agd.fc = agdata.ui;
-    //日程ID
-    agd.ai = rtevi;
-    //主题
-    agd.at = agdata.evn;
-    //时间(YYYY/MM/DD)
-    agd.adt = agdata.sd;
-    agd.st = agdata.st;
-    agd.ed = agdata.ed;
-    agd.et = agdata.et;
-    //计划
-    agd.ap = agdata.ji;
-    //重复
-    agd.ar = agdata.rt;
-    //提醒
-    agd.aa = agdata.tx;
-    //备注
-    agd.am = agdata.bz;
   }
 
   private sqlparamAddEv2(agdata: AgendaData): RetParamEv {
@@ -1031,7 +1005,7 @@ export class EventService extends BaseService {
    * @param {AgendaData} agdata
    * @returns {Array<any>}
    */
-  private sqlparamAddCa(rtevi : string,sd : string ,ed :string, agdata : AgendaData): Array<any> {
+  private sqlparamAddCa(rtevi : string,sd : string ,ed :string, agdata : AgendaData): CaTbl {
 
     agdata.sd = sd;
     agdata.ed = ed;
@@ -1067,12 +1041,9 @@ export class EventService extends BaseService {
     ca.ct = agdata.ct;
     ca.al = agdata.al;
     ca.st = agdata.st;
-    ca.ed = agdata.ed;
     ca.et = agdata.et;
 
-    let ret = new Array<any>();
-    ret.push(ca.rpTParam());
-    return ret;
+    return ca;
   }
 
 	/**
