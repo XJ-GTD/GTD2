@@ -882,7 +882,7 @@ export class EventService extends BaseService {
           }
 
         } else if (repeatType == "months") {
-          let dayOfMonth: number = Number(moment(stepDay).format("D"));
+          let dayOfMonth: number = Number(moment(stepDay).format("D")) - 1;   // 0 - 30 和options设置日期匹配
           let maxDayOfMonth: number = moment().daysInMonth();
 
           for (let option of options) {
