@@ -38,6 +38,8 @@ export class MemoService extends BaseService {
 		} else {
 			//创建
 			memo.moi = this.util.getUuid();
+			memo.sd = memo.sd || moment().format("YYYY/MM/DD");	// 没有设置日期默认当天
+
 			let memodb: MomTbl = new MomTbl();
 			Object.assign(memodb, memo);
 			memodb.del = DelType.undel;
