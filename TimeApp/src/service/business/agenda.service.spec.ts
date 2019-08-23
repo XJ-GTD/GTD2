@@ -288,12 +288,41 @@ describe('EventService test suite for agenda', () => {
     let rt: RtJson = new RtJson();
     rt.cycletype = CycleType.week;
     rt.over.type = OverType.times;
-    rt.openway.push(3);
+    rt.openway.push(2);
     rt.cyclenum = 2;
     rt.over.value ="2";
 
     agenda.sd = day;
     agenda.evn = "每周重复 - 周三重复2次";
+    agenda.rtjson = rt;
+
+    let agendas = await eventService.saveAgenda(agenda);
+
+    expect(agendas).toBeDefined();
+    expect(agendas.length).toBe(2);
+
+    for (let each of agendas) {
+      expect(["2019/08/28", "2019/09/11"].indexOf(each.evd)).toBeGreaterThanOrEqual(0);
+    }
+  });
+  
+  
+  it('Case 1 - 3 - 1 - 2  saveAgenda 保存日程 - 每周重复 - 间隔2周执行一次, 周三、周四重复2次', async () => {
+    let day: string = "2019/08/23";
+
+    let agenda: AgendaData = {} as AgendaData;
+
+    // 每周重复 - 周三重复2次
+    let rt: RtJson = new RtJson();
+    rt.cycletype = CycleType.week;
+    rt.over.type = OverType.times;
+    rt.openway.push(2);
+    rt.openway.push(3);
+    rt.cyclenum = 2;
+    rt.over.value ="2";
+
+    agenda.sd = day;
+    agenda.evn = "每周重复 - 周三、周四重复2次";
     agenda.rtjson = rt;
 
     let agendas = await eventService.saveAgenda(agenda);
@@ -315,6 +344,34 @@ describe('EventService test suite for agenda', () => {
     let rt: RtJson = new RtJson();
     rt.cycletype = CycleType.week;
     rt.over.type = OverType.limitdate;
+    rt.openway.push(2);
+    rt.over.value ="2019/08/31";
+
+    agenda.sd = day;
+    agenda.evn = "周三重复到2019/08/31";
+    agenda.rtjson = rt;
+
+    let agendas = await eventService.saveAgenda(agenda);
+
+    expect(agendas).toBeDefined();
+    expect(agendas.length).toBe(3);
+
+    for (let each of agendas) {
+      expect(["2019/08/14", "2019/08/21", "2019/08/28"].indexOf(each.evd)).toBeGreaterThanOrEqual(0);
+    }
+  });
+  
+  
+   it('Case 1 - 3 - 2 - 1 saveAgenda 保存日程 - 每周重复 - 周三、周四 重复到2019/08/31', async () => {
+    let day: string = "2019/08/13";
+
+    let agenda: AgendaData = {} as AgendaData;
+
+    // 每周重复 - 周三重复2次
+    let rt: RtJson = new RtJson();
+    rt.cycletype = CycleType.week;
+    rt.over.type = OverType.limitdate;
+    rt.openway.push(2);
     rt.openway.push(3);
     rt.over.value ="2019/08/31";
 
@@ -384,6 +441,35 @@ describe('EventService test suite for agenda', () => {
       expect(["2019/09/13", "2019/11/13", "2020/01/13", "2020/03/13"].indexOf(each.evd)).toBeGreaterThanOrEqual(0);
     }
   });
+  
+  
+  it('Case 1 - 4 - 1 saveAgenda 保存日程 - 每月重复 - 每个月13、14号执行，间隔2个月执行一次，循环4次', async () => {
+    let day: string = "2019/08/23";
+
+    let agenda: AgendaData = {} as AgendaData;
+
+    // 每日重复, 永远
+    let rt: RtJson = new RtJson();
+    rt.cycletype = CycleType.month;
+    rt.over.type = OverType.times;
+    rt.cyclenum = 2;
+    rt.openway.push(12);
+    rt.openway.push(13);
+    rt.over.value ="4";
+
+    agenda.sd = day;
+    agenda.evn = "每个月13号执行，间隔2个月执行一次，循环4次";
+    agenda.rtjson = rt;
+
+    let agendas = await eventService.saveAgenda(agenda);
+
+    expect(agendas).toBeDefined();
+    expect(agendas.length).toBeGreaterThan(0);
+
+    for (let each of agendas) {
+      expect(["2019/09/13","2019/09/14", "2019/11/13","2019/11/14", "2020/01/13","2020/01/14", "2020/03/13","2020/03/14"].indexOf(each.evd)).toBeGreaterThanOrEqual(0);
+    }
+  });
 
 
   it('Case 1 - 4 - 2 saveAgenda 保存日程 - 每月重复 - 每个月13号执行，间隔2个月执行一次，直到2019/12/31', async () => {
@@ -410,6 +496,35 @@ describe('EventService test suite for agenda', () => {
 
     for (let each of agendas) {
       expect(["2019/08/13", "2019/10/13", "2019/12/13"].indexOf(each.evd)).toBeGreaterThanOrEqual(0);
+    }
+  });
+  
+  
+  it('Case 1 - 4 - 2 - 1 saveAgenda 保存日程 - 每月重复 - 每个月13、14号执行，间隔2个月执行一次，直到2019/12/31', async () => {
+    let day: string = "2019/08/13";
+
+    let agenda: AgendaData = {} as AgendaData;
+
+    // 每日重复, 永远
+    let rt: RtJson = new RtJson();
+    rt.cycletype = CycleType.month;
+    rt.over.type = OverType.limitdate;
+    rt.cyclenum = 2;
+    rt.openway.push(12);
+    rt.openway.push(13);
+    rt.over.value ="2019/12/31";
+
+    agenda.sd = day;
+    agenda.evn = "每个月13号执行，间隔2个月执行一次，直到2019/12/31";
+    agenda.rtjson = rt;
+
+    let agendas = await eventService.saveAgenda(agenda);
+
+    expect(agendas).toBeDefined();
+    expect(agendas.length).toBe(3);
+
+    for (let each of agendas) {
+      expect(["2019/08/13", "2019/08/14"，"2019/10/13","2019/10/14", "2019/12/13", "2019/12/14"].indexOf(each.evd)).toBeGreaterThanOrEqual(0);
     }
   });
 
@@ -465,7 +580,7 @@ describe('EventService test suite for agenda', () => {
     }
   });
 
-  it('Case 1 - 5 - 2 saveAgenda 保存日程 - 每年重复 - 每年当前时间执行一次，间隔 2年，直到2020/1/1', async () => {
+  it('Case 1 - 5 - 2 saveAgenda 保存日程 - 每年重复 - 每年当前时间执行一次，间隔 2年，直到2021/1/1', async () => {
     let day: string = "2019/08/23";
 
     let agenda: AgendaData = {} as AgendaData;
@@ -475,7 +590,7 @@ describe('EventService test suite for agenda', () => {
     rt.cycletype = CycleType.year;
     rt.over.type = OverType.limitdate;
     rt.cyclenum = 2;
-    rt.over.value ="2020/1/1";
+    rt.over.value ="2021/1/1";
 
     agenda.sd = day;
     agenda.evn = "每年重复";
@@ -484,7 +599,11 @@ describe('EventService test suite for agenda', () => {
     let agendas = await eventService.saveAgenda(agenda);
 
     expect(agendas).toBeDefined();
-    expect(agendas.length).toBe(1);
+    expect(agendas.length).toBe(2);
+    
+    for (let each of agendas) {
+      expect(["2019/08/23", "2020/08/23"].indexOf(each.evd)).toBeGreaterThanOrEqual(0);
+    }
   });
 
   afterAll(() => {

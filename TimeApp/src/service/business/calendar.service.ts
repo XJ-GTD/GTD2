@@ -576,12 +576,18 @@ export class CalendarService extends BaseService {
 
     this.assertEmpty(jti);    // 入参不能为空
 
-    let planitemdb: JtaTbl = new JtaTbl();
-    planitemdb.jti = jti;
+    let sqls: Array<any> = new Array<any>();
 
-    await this.sqlExce.delByParam(planitemdb);
+    // 设置日历项删除标志
+    sqls.push([`update gtd_jta set del = ?, tb = ? where jti = ?`, [DelType.del, SyncType.unsynch, jti]]);
 
-    // 删除日历项关联表项目
+    // 设置关联数据删除标志
+    sqls.push([`update gtd_par set del = ?, tb = ? where obt = ? and obi = ?`, [DelType.del, SyncType.unsynch, ObjectType.Calendar, jti]]);
+    sqls.push([`update gtd_fj set del = ?, tb = ? where obt = ? and obi = ?`, [DelType.del, SyncType.unsynch, ObjectType.Calendar, jti]]);
+    sqls.push([`delete from gtd_wa where obt = ? and obi = ?`, [ObjectType.Calendar, jti]]);    // 提醒表
+    sqls.push([`delete from gtd_mrk where obt = ? and obi = ?`, [ObjectType.Calendar, jti]]);   // 标签表
+
+    await this.sqlExce.batExecSqlByParam(sqls);
 
     return;
   }
