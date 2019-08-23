@@ -39,6 +39,7 @@ import { ShaeRestful } from "../restful/shaesev";
 import {SyncRestful} from "../restful/syncsev";
 import { AgdRestful } from "../restful/agdsev";
 import { BacRestful } from "../restful/bacsev";
+import { DataRestful } from "../restful/datasev";
 import {JhaTbl} from "../sqlite/tbl/jha.tbl";
 import {MomTbl} from "../sqlite/tbl/mom.tbl";
 import {JtaTbl} from "../sqlite/tbl/jta.tbl";
@@ -99,6 +100,7 @@ describe('CalendarService test suite', () => {
         SyncRestful,
         AgdRestful,
         BacRestful,
+        DataRestful,
         Network,
         HTTP,
         HttpClient,
