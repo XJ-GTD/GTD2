@@ -760,7 +760,7 @@ export class CalendarService extends BaseService {
 
     let sqlcalitems: string = `select * from gtd_jta where substr(sd, 1, 7) = '${month}' AND del <> '${DelType.del}' order by sd asc, st asc`;
 
-    monthActivity.calendaritems = await this.sqlExce.getExtList<PlanItemData>(sqlcalitems);
+    monthActivity.calendaritems = await this.sqlExce.getExtList<PlanItemData>(sqlcalitems) || new Array<PlanItemData>();
 
     days = monthActivity.calendaritems.reduce((days, value) => {
       let day: string = value.sd;
@@ -776,7 +776,7 @@ export class CalendarService extends BaseService {
 
     let sqlevents: string = `select * from gtd_ev where substr(evd, 1, 7) = '${month}' AND del <> '${DelType.del}' order by evd asc`;
 
-    monthActivity.events = await this.sqlExce.getExtList<EventData>(sqlevents);
+    monthActivity.events = await this.sqlExce.getExtList<EventData>(sqlevents) || new Array<EventData>();
 
     days = monthActivity.events.reduce((days, value) => {
       let day: string = value.evd;
@@ -792,7 +792,7 @@ export class CalendarService extends BaseService {
 
     let sqlmemos: string = `select * from gtd_mom where substr(sd, 1, 7) = '${month}' AND del <> '${DelType.del}' order by sd asc`;
 
-    monthActivity.memos = await this.sqlExce.getExtList<MemoData>(sqlmemos);
+    monthActivity.memos = await this.sqlExce.getExtList<MemoData>(sqlmemos) || new Array<MemoData>();
 
     days = monthActivity.memos.reduce((days, value) => {
       let day: string = value.sd;
@@ -1096,15 +1096,15 @@ export class CalendarService extends BaseService {
 
     let sqlcalitems: string = `select * from gtd_jta where sd = '${day}' and del <> '${DelType.del}' order by st asc`;
 
-    dayActivity.calendaritems = await this.sqlExce.getExtList<PlanItemData>(sqlcalitems);
+    dayActivity.calendaritems = await this.sqlExce.getExtList<PlanItemData>(sqlcalitems) || new Array<PlanItemData>();
 
     let sqlevents: string = `select * from gtd_ev where evd = '${day}' and del <> '${DelType.del}'`;
 
-    dayActivity.events = await this.sqlExce.getExtList<EventData>(sqlevents);
+    dayActivity.events = await this.sqlExce.getExtList<EventData>(sqlevents) || new Array<EventData>();
 
     let sqlmemos: string = `select * from gtd_mom where sd = '${day}' and del <> '${DelType.del}'`;
 
-    dayActivity.memos = await this.sqlExce.getExtList<MemoData>(sqlmemos);
+    dayActivity.memos = await this.sqlExce.getExtList<MemoData>(sqlmemos) || new Array<MemoData>();
 
     return dayActivity;
   }
@@ -1403,15 +1403,15 @@ export class CalendarService extends BaseService {
 
     // 执行查询
     if (sqlcalitems) {
-      resultActivity.calendaritems = await this.sqlExce.getExtLstByParam<PlanItemData>(sqlcalitems, ciargs);
+      resultActivity.calendaritems = await this.sqlExce.getExtLstByParam<PlanItemData>(sqlcalitems, ciargs) || new Array<PlanItemData>();
     }
 
     if (sqlevents) {
-      resultActivity.events = await this.sqlExce.getExtLstByParam<EventData>(sqlevents, evargs);
+      resultActivity.events = await this.sqlExce.getExtLstByParam<EventData>(sqlevents, evargs) || new Array<EventData>();
     }
 
     if (sqlmemos) {
-      resultActivity.memos = await this.sqlExce.getExtLstByParam<MemoData>(sqlmemos, moargs);
+      resultActivity.memos = await this.sqlExce.getExtLstByParam<MemoData>(sqlmemos, moargs) || new Array<MemoData>();
     }
 
     return resultActivity;
