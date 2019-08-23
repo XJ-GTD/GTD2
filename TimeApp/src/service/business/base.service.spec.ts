@@ -24,6 +24,54 @@ describe('BaseService test suite', () => {
     baseService = TestBed.get(BaseService);
   });
 
+  it('Case 7 - 4 assertFalse(false)', () => {
+    expect(function() {
+      baseService.assertFalse(false);
+    }).toThrow();
+  });
+
+  it('Case 7 - 3 assertFalse((<string>"4" == <string>"5"))', () => {
+    expect(function() {
+      baseService.assertFalse((<string>"4" == <string>"5"));
+    }).toThrow();
+  });
+
+  it('Case 7 - 2 assertFalse(true)', () => {
+    expect(function() {
+      baseService.assertFalse(true);
+    }).not.toThrow();
+  });
+
+  it('Case 7 - 1 assertFalse("4" == "4")', () => {
+    expect(function() {
+      baseService.assertFalse(("4" == "4"));
+    }).not.toThrow();
+  });
+
+  it('Case 6 - 4 assertTrue(false)', () => {
+    expect(function() {
+      baseService.assertTrue(false);
+    }).not.toThrow();
+  });
+
+  it('Case 6 - 3 assertTrue((<string>"4" == <string>"5"))', () => {
+    expect(function() {
+      baseService.assertTrue((<string>"4" == <string>"5"));
+    }).not.toThrow();
+  });
+
+  it('Case 6 - 2 assertTrue(true)', () => {
+    expect(function() {
+      baseService.assertTrue(true);
+    }).toThrow();
+  });
+
+  it('Case 6 - 1 assertTrue("4" == "4")', () => {
+    expect(function() {
+      baseService.assertTrue(("4" == "4"));
+    }).toThrow();
+  });
+
   it('Case 5 - 2 assertNotNumber("4")', () => {
     expect(function() {
       baseService.assertNotNumber("4");

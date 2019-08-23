@@ -842,24 +842,24 @@ export class EventService extends BaseService {
       case anyenum.CycleType.day :
         repeatType = "days";
         repeatTimes = repeatTimes || moment(repeatStartDay).add(1, "years").diff(repeatStartDay, "days");
-        repeatEndDay = repeatEndDay || moment(repeatStartDay).add(repeatTimes, "days").add(1, "days").format("YYYY/MM/DD");
+        repeatEndDay = repeatEndDay || moment(repeatStartDay).add(repeatTimes * repeatStep, "days").format("YYYY/MM/DD");
         break;
       case anyenum.CycleType.week :
         repeatType = "weeks";
         options = rtjson.openway || options;
         repeatTimes = repeatTimes || moment(repeatStartDay).add(2, "years").diff(repeatStartDay, "weeks");
-        repeatEndDay = repeatEndDay || moment(repeatStartDay).add(repeatTimes, "weeks").add(1, "days").format("YYYY/MM/DD");
+        repeatEndDay = repeatEndDay || moment(repeatStartDay).add(repeatTimes * repeatStep, "weeks").format("YYYY/MM/DD");
         break;
       case anyenum.CycleType.month :
         repeatType = "months";
         options = rtjson.openway || options;
         repeatTimes = repeatTimes || moment(repeatStartDay).add(3, "years").diff(repeatStartDay, "months");
-        repeatEndDay = repeatEndDay || moment(repeatStartDay).add(repeatTimes, "months").add(1, "days").format("YYYY/MM/DD");
+        repeatEndDay = repeatEndDay || moment(repeatStartDay).add(repeatTimes * repeatStep, "months").format("YYYY/MM/DD");
         break;
       case anyenum.CycleType.year :
         repeatType = "years";
-        repeatTimes = 20;
-        repeatEndDay = repeatEndDay || moment(repeatStartDay).add(20, "years").add(1, "days").format("YYYY/MM/DD");
+        repeatTimes = repeatTimes || 20;
+        repeatEndDay = repeatEndDay || moment(repeatStartDay).add(repeatTimes * repeatStep, "years").format("YYYY/MM/DD");
         break;
       case anyenum.CycleType.close :    // 不重复日程
         repeatType = "days";
@@ -898,14 +898,14 @@ export class EventService extends BaseService {
           }
 
         } else if (repeatType == "months") {
-          let dayOfMonth: number = Number(moment(stepDay).format("D"));
+          let dayOfMonth: number = Number(moment(stepDay).format("D")) - 1;   // 0 - 30 和options设置日期匹配
           let maxDayOfMonth: number = moment().daysInMonth();
 
           for (let option of options) {
 
             // 当月没有这一天
             if (option > maxDayOfMonth) {
-              break;
+              continue;
             }
 
             let duration: number = option - dayOfMonth;
@@ -916,8 +916,8 @@ export class EventService extends BaseService {
               //当月日期
               days.push(moment(stepDay).add(duration, "days").format("YYYY/MM/DD"));
             } else {
-              //下月日程（跨月）
-              days.push(moment().month(moment(stepDay).month()).add(1, "months").days(option).format("YYYY/MM/DD"));
+              //下月日期（跨月）
+              days.push(moment(stepDay).add(1, "months").dates(option + 1).format("YYYY/MM/DD"));
             }
           }
 
