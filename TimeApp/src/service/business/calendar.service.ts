@@ -6,7 +6,7 @@ import { EmitService } from "../util-service/emit.service";
 import { BipdshaeData, Plan, PlanPa, ShareData, ShaeRestful } from "../restful/shaesev";
 import { SyncData, PushInData, PullInData, DataRestful } from "../restful/datasev";
 import { EventData, TaskData, AgendaData, MiniTaskData } from "./event.service";
-import { EventType, PlanType, PlanItemType, PlanDownloadType, ObjectType, PageDirection, SyncType, DelType, SyncDataSecurity } from "../../data.enum";
+import { EventType, PlanType, PlanItemType, PlanDownloadType, ObjectType, PageDirection, SyncType, DelType, SyncDataSecurity, SyncDataStatus } from "../../data.enum";
 import { MemoData } from "./memo.service";
 import * as moment from "moment";
 import { JhaTbl } from "../sqlite/tbl/jha.tbl";
