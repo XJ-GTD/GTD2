@@ -558,7 +558,7 @@ export class EventService extends BaseService {
              where rtevi = '${oriAgdata.evi}'; `;
         sqlparam.push(sq);
 
-        if (doflag == Doflag.del){
+        if (doflag == DUflag.del){
           //原对应日程删除
           let delca = new CaTbl();
           delca.evi = oriAgdata.evi;
