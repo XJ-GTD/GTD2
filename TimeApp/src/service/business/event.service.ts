@@ -288,7 +288,7 @@ export class EventService extends BaseService {
         sqlparam.push(fj.upTParam());
       }else{
         //如果当前删除对象是父事件，则为当前重复事件重建新的父事件，值为ev表重复记录里的第一条做为父事件
-        await this.operateForParentAgd(oriAgdata,sqlparam,DUflag.del);
+        await this.operateForParentAgd(oriAgdata,sqlparam,outAgds,DUflag.del);
       }
 
       // 删除相关提醒
@@ -513,7 +513,7 @@ export class EventService extends BaseService {
       }
 
       //如果当前更新对象是父节点，则为当前重复日程重建新的父记录，值为ev表里的第一条做为父记录
-      await this.operateForParentAgd(oriAgdata,sqlparam,DUflag.update);
+      await this.operateForParentAgd(oriAgdata,sqlparam,outAgds,DUflag.update);
 
       //日程表新建或更新
       let caparam = new CaTbl();
@@ -536,7 +536,7 @@ export class EventService extends BaseService {
    * @returns {Promise<void>}
    */
   private async operateForParentAgd(oriAgdata : AgendaData,sqlparam : Array<any>,
-                                        doflag : DUflag){
+                                      outAgds : Array<AgendaData>,  doflag : DUflag){
     let nwEvs = Array<EvTbl>();
     let nwEv = new EvTbl();
     let sq : string ;
@@ -620,7 +620,7 @@ export class EventService extends BaseService {
     ca.evi = caevi;
     ca = await this.sqlExce.getOneByParam<CaTbl>(ca);
 
-    if (evtbls.length > 0){
+    if (evtbls.length > 0){//有数据，需要更新日程结束日
       ca.ed = moment(oriAgdata.evd).subtract(1,'d').format("YYYY/MM/DD");//evd使用原事件evd
       sqlparam.push(ca.upTParam());
 
@@ -633,7 +633,7 @@ export class EventService extends BaseService {
         }
       }
 
-    }else{
+    }else{//无数据，需要删除关联表数据
       sqlparam.push(ca.dTParam());
 
       //本地删除事件参与人
