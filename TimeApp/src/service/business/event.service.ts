@@ -842,7 +842,7 @@ export class EventService extends BaseService {
         break;
       case anyenum.CycleType.year :
         repeatType = "years";
-        repeatTimes = 20;
+        repeatTimes = repeatTimes || 20;
         repeatEndDay = repeatEndDay || moment(repeatStartDay).add(20, "years").add(1, "days").format("YYYY/MM/DD");
         break;
       case anyenum.CycleType.close :    // 不重复日程
