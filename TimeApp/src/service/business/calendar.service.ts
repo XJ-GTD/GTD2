@@ -13,6 +13,7 @@ import { JhaTbl } from "../sqlite/tbl/jha.tbl";
 import { JtaTbl } from "../sqlite/tbl/jta.tbl";
 import { EvTbl } from "../sqlite/tbl/ev.tbl";
 import { MomTbl } from "../sqlite/tbl/mom.tbl";
+import { ParTbl } from "../sqlite/tbl/par.tbl";
 
 @Injectable()
 export class CalendarService extends BaseService {
