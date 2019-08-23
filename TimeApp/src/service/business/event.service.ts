@@ -889,7 +889,7 @@ export class EventService extends BaseService {
 
             // 当月没有这一天
             if (option > maxDayOfMonth) {
-              break;
+              continue;
             }
 
             let duration: number = option - dayOfMonth;
