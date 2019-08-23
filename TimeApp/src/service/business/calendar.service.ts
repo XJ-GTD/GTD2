@@ -4,7 +4,7 @@ import { SqliteExec } from "../util-service/sqlite.exec";
 import { UtilService } from "../util-service/util.service";
 import { EmitService } from "../util-service/emit.service";
 import { BipdshaeData, Plan, PlanPa, ShareData, ShaeRestful } from "../restful/shaesev";
-import { SyncData, PushInData, PullInData, DataRestful } from "../service/restful/datasev";
+import { SyncData, PushInData, PullInData, DataRestful } from "../restful/datasev";
 import { EventData, TaskData, AgendaData, MiniTaskData } from "./event.service";
 import { EventType, PlanType, PlanItemType, PlanDownloadType, ObjectType, PageDirection, SyncType, DelType, SyncDataSecurity } from "../../data.enum";
 import { MemoData } from "./memo.service";
@@ -1405,8 +1405,12 @@ export class CalendarService extends BaseService {
    *
    * @author leon_xi@163.com
    **/
-  sendPlan(plan: PlanData) {
-    this.syncPrivatePlan(plan);
+  async sendPlan(plan: PlanData) {
+    this.assertEmpty(plan);     // 入参不能为空
+
+    await this.syncPrivatePlan(plan);
+
+    return;
   }
 
   /**
