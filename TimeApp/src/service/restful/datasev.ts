@@ -49,17 +49,17 @@ export class DataRestful {
 }
 
 export class SyncData {
-  src: string;        // 元数据唯一标识符(修改他人共享给自己的数据进行同步时使用)
+  src: string = "";        // 元数据唯一标识符(修改他人共享给自己的数据进行同步时使用)
   id: string;         // 本地数据唯一标识符
   type: string;       // 数据类型(可以自定义, 建议使用Plan|PlanItem|Agenda|Task|MiniTask|Memo)
-  to: Array<string>;  // 被共享人手机号(可以为空, 表示非共享数据)
-  security: SyncDataSecurity;   // None(非共享/多设备间同步), SelfModify(只有发起人可以修改), ShareModify(所有人都可以修改), ShareModifyWithoutSender(共享后发起人本地删除)
+  to: Array<string> = new Array<string>();  // 被共享人手机号(可以为空, 表示非共享数据)
+  security: SyncDataSecurity = SyncDataSecurity.None;   // None(非共享/多设备间同步), SelfModify(只有发起人可以修改), ShareModify(所有人都可以修改), ShareModifyWithoutSender(共享后发起人本地删除)
   status: SyncDataStatus; // 删除/未删除
   payload: any;       // 数据
 }
 
 export class PushInData {
-  d: Array<SyncData>;   // 需要同步的数据负载
+  d: Array<SyncData> = new Array<SyncData>();   // 需要同步的数据负载
 }
 
 export class PushOutData {
@@ -67,7 +67,7 @@ export class PushOutData {
 }
 
 export class PullInData {
-  d: Array<string>;     // 需要拉取得数据唯一标识符数组, 可以为空(表示拉取所有未拉取的数据)
+  d: Array<string> = new Array<string>();     // 需要拉取得数据唯一标识符数组, 可以为空(表示拉取所有未拉取的数据)
 }
 
 export class PullOutData {

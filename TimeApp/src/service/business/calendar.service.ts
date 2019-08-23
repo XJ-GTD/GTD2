@@ -4,8 +4,9 @@ import { SqliteExec } from "../util-service/sqlite.exec";
 import { UtilService } from "../util-service/util.service";
 import { EmitService } from "../util-service/emit.service";
 import { BipdshaeData, Plan, PlanPa, ShareData, ShaeRestful } from "../restful/shaesev";
+import { SyncData, PushInData, PullInData, DataRestful } from "../service/restful/datasev";
 import { EventData, TaskData, AgendaData, MiniTaskData } from "./event.service";
-import { EventType, PlanType, PlanItemType, PlanDownloadType, ObjectType, PageDirection, SyncType, DelType } from "../../data.enum";
+import { EventType, PlanType, PlanItemType, PlanDownloadType, ObjectType, PageDirection, SyncType, DelType, SyncDataSecurity } from "../../data.enum";
 import { MemoData } from "./memo.service";
 import * as moment from "moment";
 import { JhaTbl } from "../sqlite/tbl/jha.tbl";
@@ -21,7 +22,8 @@ export class CalendarService extends BaseService {
   constructor(private sqlExce: SqliteExec,
               private util: UtilService,
               private emitService: EmitService,
-              private shareRestful: ShaeRestful) {
+              private shareRestful: ShaeRestful,
+              private dataRestful: DataRestful) {
     super();
   }
 
@@ -1398,28 +1400,98 @@ export class CalendarService extends BaseService {
     return resultActivity;
   }
 
-  sendPlan() {}
+  /**
+   * 共享日历
+   *
+   * @author leon_xi@163.com
+   **/
+  sendPlan(plan: PlanData) {
+    this.syncPrivatePlan(plan);
+  }
+
+  /**
+   * 接收日历数据同步
+   *
+   * @author leon_xi@163.com
+   **/
+  async receivedPlan(ji: string) {
+
+    this.assertEmpty(ji);   // 入参不能为空
+
+    let pull: PullInData = new PullInData();
+
+    pull.d.push(ji);
+
+    // 发送下载日历请求
+    await this.dataRestful.pull(pull);
+
+    return;
+  }
 
   /**
    * 接收日历保存到本地
    *
    * @author leon_xi@163.com
    **/
-  async receivedPlan(ji: string): Promise<PlanData> {
+  async receivedPlanData(plan: PlanData, status: SyncDataStatus): Promise<PlanData> {
 
-    this.assertEmpty(ji);   // 入参不能为空
+    this.assertEmpty(plan);     // 入参不能为空
+    this.assertEmpty(plan.ji);  // 计划ID不能为空
+    this.assertEmpty(status);   // 入参不能为空
 
-    // 从服务器下载计划
+    let plandb: JhaTbl = new JhaTbl();
 
-    // 保存计划
-    return null;
+    Object.assign(plandb, plan);
+
+    plandb.del = status;
+    plandb.tb = SyncType.synch;
+
+    await this.sqlExce.repTByParam(plandb);
+
+    let localplan: PlanData = {} as PlanData;
+
+    Object.assign(localplan, plandb);
+
+    return localplan;
   }
 
-  syncPrivatePlan(plan: PlanData) {
+  /**
+   * 同步指定自定义日历
+   *
+   * @author leon_xi@163.com
+   **/
+  async syncPrivatePlan(plan: PlanData) {
 
+    this.assertEmpty(plan);       // 入参不能为空
+    this.assertEmpty(plan.ji);    // 日历ID不能为空
+    this.assertEmpty(plan.del);   // 删除标记不能为空
+
+    // 构造Push数据结构
+    let push: PushInData = new PushInData();
+
+    let sync: SyncData = new SyncData();
+
+    sync.id = plan.ji;
+    sync.type = "Plan";
+    sync.security = SyncDataSecurity.None;
+    sync.status = plan.del;
+    sync.payload = plan;
+
+    push.d.push(sync);
+
+    await this.dataRestful.push(push);
+
+    return;
   }
 
-  syncPrivatePlans() {}
+  /**
+   * 同步所有自定义日历
+   *
+   * @author leon_xi@163.com
+   **/
+  syncPrivatePlans() {
+
+  }
 
   async sharePlan(plan: PlanData, refreshChildren: boolean = false): Promise<string> {
     this.assertEmpty(plan);     // 入参不能为空
