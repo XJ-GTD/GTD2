@@ -254,7 +254,7 @@ describe('EventService test suite for agenda', () => {
     }
   });
 
-  it('Case 1 - 2 - 2 saveAgenda 保存日程 - 每天重复 -直到2019/08/31', async () => {
+  it('Case 1 - 2 - 2 saveAgenda 保存日程 - 每天重复 - 直到2019/08/31', async () => {
     let day: string = "2019/08/23";
 
     let agenda: AgendaData = {} as AgendaData;
