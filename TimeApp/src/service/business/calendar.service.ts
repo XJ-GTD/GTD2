@@ -216,24 +216,72 @@ export class CalendarService extends BaseService {
 
     if (plan.ji) {
       // 更新
+      let sqls: Array<any> = new Array<any>();
+
+      plan.tb = SyncType.unsynch;
+
       let plandb: JhaTbl = new JhaTbl();
       Object.assign(plandb, plan);
-      plandb.tb = SyncType.unsynch;
 
-      await this.sqlExce.updateByParam(plandb);
+      sqls.push(plandb.upTParam());
+
+      // 保存日历成员
+      if (plan.members && plan.members.length > 0) {
+        for (let member of plan.members) {
+          if (member.pari) {
+            member.tb = SyncType.unsynch;
+          } else {
+            member.pari = this.util.getUuid();
+            member.obt = ObjectType.CalendarPlan;
+            member.obi = plan.ji;
+            member.del = DelType.undel;
+            member.tb = SyncType.unsynch;
+          }
+
+          let memberdb: ParTbl = new ParTbl();
+          Object.assign(memberdb, member);
+
+          sqls.push(memberdb.rpTParam());
+        }
+      } else {
+        plan.members = plan.members || new Array<PlanMember>();
+      }
+
+      await this.sqlExce.batExecSqlByParam(sqls);
 
       this.emitService.emit(`mwxing.calendar.${plan.ji}.updated`);
     } else {
       // 新建
+      let sqls: Array<any> = new Array<any>();
+
       plan.ji = this.util.getUuid();
+      plan.del = DelType.undel;
+      plan.tb = SyncType.unsynch;
 
       let plandb: JhaTbl = new JhaTbl();
       Object.assign(plandb, plan);
 
-      plandb.del = DelType.undel;
-      plandb.tb = SyncType.unsynch;
+      sqls.push(plandb.inTParam());
 
-      await this.sqlExce.saveByParam(plandb);
+      // 保存日历成员
+      if (plan.members && plan.members.length > 0) {
+        for (let member of plan.members) {
+          member.pari = this.util.getUuid();
+          member.obt = ObjectType.CalendarPlan;
+          member.obi = plan.ji;
+          member.del = DelType.undel;
+          member.tb = SyncType.unsynch;
+
+          let memberdb: ParTbl = new ParTbl();
+          Object.assign(memberdb, member);
+
+          sqls.push(memberdb.inTParam());
+        }
+      } else {
+        plan.members = plan.members || new Array<PlanMember>();
+      }
+
+      await this.sqlExce.batExecSqlByParam(sqls);
 
       this.emitService.emit(`mwxing.calendar.plan.created`);
     }
@@ -284,6 +332,11 @@ export class CalendarService extends BaseService {
     }
 
     Object.assign(plan, plandb);
+
+    // 取得计划共享成员
+    let planmembersql: string = `select * from gtd_par where obt = ? and obi = ? and del = ?`;
+
+    plan.members = await this.sqlExce.getExtLstByParam<PlanMember>(planmembersql, [ObjectType.CalendarPlan, ji, DelType.undel]) || new Array<PlanMember>();
 
     if (!withchildren) {
       return plan;
@@ -2133,8 +2186,13 @@ export class FindActivityCondition {
   target: Array<ObjectType> = new Array<ObjectType>();
 }
 
+export interface PlanMember extends ParTbl {
+
+}
+
 export interface PlanData extends JhaTbl {
   items: Array<PlanItemData | AgendaData | TaskData | MiniTaskData | MemoData>;
+  members: Array<PlanMember>;
 }
 
 export interface PlanItemData extends JtaTbl {

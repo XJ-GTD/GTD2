@@ -30,7 +30,7 @@ describe('BaseService test suite', () => {
     }).toThrow();
   });
 
-  it('Case 7 - 3 assertFalse("4" == "5")', () => {
+  it('Case 7 - 3 assertFalse((<string>"4" == <string>"5"))', () => {
     expect(function() {
       baseService.assertFalse((<string>"4" == <string>"5"));
     }).toThrow();
@@ -54,7 +54,7 @@ describe('BaseService test suite', () => {
     }).not.toThrow();
   });
 
-  it('Case 6 - 3 assertTrue("4" == "5")', () => {
+  it('Case 6 - 3 assertTrue((<string>"4" == <string>"5"))', () => {
     expect(function() {
       baseService.assertTrue((<string>"4" == <string>"5"));
     }).not.toThrow();

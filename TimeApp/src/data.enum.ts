@@ -32,7 +32,8 @@ export enum PageDirection {
 export enum ObjectType {
   Event = 'event',
   Memo = 'memo',
-  Calendar = 'calendar'
+  Calendar = 'calendar',
+  CalendarPlan = 'plan'
 }
 
 //是否同步
