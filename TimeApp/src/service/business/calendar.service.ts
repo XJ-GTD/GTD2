@@ -490,7 +490,9 @@ export class CalendarService extends BaseService {
 
       await this.sqlExce.updateByParam(planitemdb);
 
-      this.emitService.emit(`mwxing.calendar.${item.ji}.item.updated`);
+      Object.assign(item, planitemdb);
+
+      this.emitService.emit("mwxing.calendar.activities.changed", item);
     } else {
       // 新建
       item.jti = this.util.getUuid();
@@ -503,7 +505,9 @@ export class CalendarService extends BaseService {
 
       await this.sqlExce.saveByParam(planitemdb);
 
-      this.emitService.emit(`mwxing.calendar.${item.ji}.item.created`);
+      Object.assign(item, planitemdb);
+
+      this.emitService.emit("mwxing.calendar.activities.changed", item);
     }
 
     return item;

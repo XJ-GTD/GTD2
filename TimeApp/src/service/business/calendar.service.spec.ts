@@ -176,6 +176,64 @@ describe('CalendarService test suite', () => {
 
   });
 
+  it(`Case 21 - 5 mergeCalendarActivity 合并日历显示列表活动数据 - 合并1个备忘`, async () => {
+    // 初始化
+    let calendaractivities = await calendarService.getCalendarActivities();
+
+    const mergeSpy = spyOn(calendarService, 'mergeCalendarActivity').and.callThrough();
+
+    let day: string = moment().format("YYYY/MM/DD");
+
+    // 备忘
+    let memo: MemoData = {} as MemoData;
+
+    memo.sd = day;
+    memo.mon = "结婚纪念日买了一块定制巧克力给太太, 太太很高兴";
+
+    await memoService.saveMemo(memo);
+
+    expect(mergeSpy.calls.any()).toBe(true, 'calendarService.mergeCalendarActivity called');
+  });
+
+  it(`Case 21 - 4 mergeCalendarActivity 合并日历显示列表活动数据 - 合并1个日历项`, async () => {
+    // 初始化
+    let calendaractivities = await calendarService.getCalendarActivities();
+
+    const mergeSpy = spyOn(calendarService, 'mergeCalendarActivity').and.callThrough();
+
+    let day: string = moment().format("YYYY/MM/DD");
+
+    // 日历项
+    let planitem1: PlanItemData = {} as PlanItemData;
+
+    planitem1.sd = day;
+    planitem1.jtn = "结婚纪念日";
+    planitem1.jtt = PlanItemType.Activity;
+
+    await calendarService.savePlanItem(planitem1);
+
+    expect(mergeSpy.calls.any()).toBe(true, 'calendarService.mergeCalendarActivity called');
+  });
+
+  it(`Case 21 - 3 mergeCalendarActivity 合并日历显示列表活动数据 - 合并1个日程`, async () => {
+    // 初始化
+    let calendaractivities = await calendarService.getCalendarActivities();
+
+    const mergeSpy = spyOn(calendarService, 'mergeCalendarActivity').and.callThrough();
+
+    let day: string = moment().format("YYYY/MM/DD");
+
+    // 日程
+    let agenda: AgendaData = {} as AgendaData;
+
+    agenda.sd = day;
+    agenda.evn = "结婚纪念日买礼物给太太";
+
+    await eventService.saveAgenda(agenda);
+
+    expect(mergeSpy.calls.any()).toBe(true, 'calendarService.mergeCalendarActivity called');
+  });
+
   it(`Case 21 - 2 mergeCalendarActivity 合并日历显示列表活动数据 - 合并1个任务`, async () => {
     // 初始化
     let calendaractivities = await calendarService.getCalendarActivities();

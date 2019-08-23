@@ -7,11 +7,13 @@ import { BackupPro, BacRestful, OutRecoverPro, RecoverPro } from "../restful/bac
 import { UserConfig } from "../config/user.config";
 import * as moment from "moment";
 import { SyncType, DelType } from "../../data.enum";
+import {EmitService} from "../util-service/emit.service";
 
 @Injectable()
 export class MemoService extends BaseService {
 	constructor(private sqlExce: SqliteExec,
 		private bacRestful: BacRestful,
+		private emitService: EmitService,
 		private util: UtilService) {
 		super();
 	}
@@ -30,6 +32,9 @@ export class MemoService extends BaseService {
 			memodb.tb = SyncType.unsynch;
 
 			await this.sqlExce.updateByParam(memodb);
+
+			Object.assign(memo, memodb);
+			this.emitService.emit("mwxing.calendar.activities.changed", memo);
 		} else {
 			//创建
 			memo.moi = this.util.getUuid();
@@ -39,6 +44,9 @@ export class MemoService extends BaseService {
 			memodb.tb = SyncType.unsynch;
 
 			await this.sqlExce.saveByParam(memodb);
+
+			Object.assign(memo, memodb);
+			this.emitService.emit("mwxing.calendar.activities.changed", memo);
 		}
 		return memo;
 	}
