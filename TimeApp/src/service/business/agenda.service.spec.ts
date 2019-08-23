@@ -251,7 +251,7 @@ describe('EventService test suite for agenda', () => {
   });
 
   it('Case 1 - 2 - 2 saveAgenda 保存日程 - 每天重复 -直到2019/08/31', async () => {
-    let day: string = moment().format("YYYY/MM/DD");
+    let day: string = "2019/08/23";
 
     let agenda: AgendaData = {} as AgendaData;
 
@@ -268,7 +268,11 @@ describe('EventService test suite for agenda', () => {
     let agendas = await eventService.saveAgenda(agenda);
 
     expect(agendas).toBeDefined();
-    expect(agendas.length).toBeGreaterThan(0);
+    expect(agendas.length).toBe(9);
+
+    for (let each of agendas) {
+      expect(["2019/08/23", "2019/08/24", "2019/08/25", "2019/08/26", "2019/08/27", "2019/08/28", "2019/08/29", "2019/08/30", "2019/08/31"].indexOf(each.evd)).toBeGreaterThanOrEqual(0);
+    }
   });
 
 	it('Case 1 - 3 - 1 saveAgenda 保存日程 - 每周重复 - 间隔2周执行一次, 周三重复2次', async () => {
