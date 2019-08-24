@@ -157,7 +157,9 @@ export class RestFulConfigMock {
     {name:"EDTTS", value:"https://pluto.guobaa.com/aag/register/tasks", desc:"注册事件分发任务"},
     {name:"DRT", value:"https://pluto.guobaa.com/cdc/mwxing_daily_summary_start/json/trigger", desc:"每日简报触发"},
     {name:"HWT", value:"https://pluto.guobaa.com/cdc/mwxing_hourly_weather_start/json/trigger", desc:"每小时天气预报触发"},
-    {name:"WHK", value:"https://pluto.guobaa.com/cdc/mwxing_webhook_notification_start/json/trigger", desc:"WebHooks事件触发"}
+    {name:"WHK", value:"https://pluto.guobaa.com/cdc/mwxing_webhook_notification_start/json/trigger", desc:"WebHooks事件触发"},
+    {name:"SPH", value:"https://pluto.guobaa.com/cdc/mwxing_data_sync_push_start/json/trigger", desc:"数据同步push"},
+    {name:"SPL", value:"https://pluto.guobaa.com/cdc/mwxing_data_sync_pull_start/json/trigger", desc:"数据同步pull"}
   ];
 
   public createHeader() {

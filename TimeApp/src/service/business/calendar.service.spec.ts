@@ -176,7 +176,7 @@ describe('CalendarService test suite', () => {
 
   });
 
-  it(`Case 23 - 1 receivedPlan 接收日历共享请求(无日历ID报错)`, (done: DoneFn) => {
+  it(`Case 23 - 2 receivedPlan 接收日历共享请求(无日历ID报错)`, (done: DoneFn) => {
     calendarService.receivedPlan("")
     .then(() => {
       fail("未抛出异常, 出错");
