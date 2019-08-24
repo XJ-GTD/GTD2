@@ -235,6 +235,7 @@ export class EventService extends BaseService {
     }else{
 
       let sq : string;
+      let outAgd = {} as AgendaData;
 
       //删除事件表数据
       let ev = new EvTbl();
@@ -243,6 +244,10 @@ export class EventService extends BaseService {
       ev.tb = anyenum.SyncType.unsynch;
       ev.mi = UserConfig.account.id;
       await this.sqlExce.updateByParam(ev);
+
+      //事件对象放入返回事件
+      Object.assign(outAgd,ev);
+      outAgds.push(outAgd);
 
       //主evi设定
       let masterEvi : string;
@@ -262,13 +267,12 @@ export class EventService extends BaseService {
       let evtbls = new Array<EvTbl>();
       evtbls = await this.sqlExce.getExtList<EvTbl>(sq);
 
-      let nwEvs = Array<EvTbl>();
-      let nwEv = new EvTbl();
+      let caevi : string = masterEvi;
+      let ca = new CaTbl();
+      ca.evi = caevi;
+      ca = await this.sqlExce.getOneByParam<CaTbl>(ca);
 
       if (evtbls.length == 0){
-        let caevi : string = masterEvi;
-        let ca = new CaTbl();
-        ca.evi = caevi;
         sqlparam.push(ca.dTParam());
 
         //本地删除事件参与人
@@ -286,21 +290,41 @@ export class EventService extends BaseService {
         fj.del = anyenum.DelType.del;
         fj.tb = anyenum.SyncType.unsynch;
         sqlparam.push(fj.upTParam());
+
+        //取得所有删除的参与人
+        let delpars = new Array<Parter>();
+        let delpar = new  ParTbl();
+        delpar.obt = anyenum.ObjectType.Event;
+        delpar.obi = masterEvi;
+        delpars = await this.sqlExce.getLstByParam<Parter>(delpar);
+
+        //取得所有删除的附件
+        let delfjs = new Array<FjTbl>();
+        let delfj = new  FjTbl();
+        delfj.obt = anyenum.ObjectType.Event;
+        delfj.obi = masterEvi;
+        delfjs = await this.sqlExce.getLstByParam<FjTbl>(delfj);
+
+        //删除的日程放入返回事件的事件对象
+        Object.assign(outAgd,ca);
+        //把删除参与人放入事件信息
+        outAgd.parters = delpars;
+        //把删除的附件复制放入事件信息
+        outAgd.fjs = delfjs;
+
       }else{
         if (!oriAgdata.rtevi && oriAgdata.rtevi =="" && oriAgdata.rfg == anyenum.RepeatFlag.Repeat){
 
           //是父对象删除则原对应日程删除
-          let delca = new CaTbl();
-          delca.evi = oriAgdata.evi;
-          delca = await this.sqlExce.getOneByParam<CaTbl>(delca);
+          sqlparam.push(ca.dTParam());
 
-          sqlparam.push(delca.dTParam());
+          //删除的日程放入返回事件的事件对象
+          Object.assign(outAgd,ca);
+
         }
 
         //如果当前删除对象是父事件，则为当前重复事件重建新的父事件，值为ev表重复记录里的第一条做为父事件
         await this.operateForParentAgd(oriAgdata,sqlparam,outAgds);
-
-
 
       }
 
@@ -478,6 +502,7 @@ export class EventService extends BaseService {
     }else if(modiType == anyenum.OperateType.OnlySel) {
 
       //事件表更新
+      let outAgd  = {} as AgendaData;
 
       let rtjon = new RtJson();
       rtjon.cycletype = anyenum.CycleType.close;
@@ -508,9 +533,7 @@ export class EventService extends BaseService {
       ev.mi = newAgdata.mi;
       ev.tb = newAgdata.tb;
       await this.sqlExce.updateByParam(ev);
-
       //事件对象放入返回事件
-      let outAgd  = {} as AgendaData;
       Object.assign(outAgd,ev);
       outAgds.push(outAgd);
 
@@ -535,6 +558,8 @@ export class EventService extends BaseService {
 
       //变化或新增的日程放入事件对象
       Object.assign(outAgd,caparam);
+
+
 
     }
 
