@@ -24,6 +24,30 @@ describe('BaseService test suite', () => {
     baseService = TestBed.get(BaseService);
   });
 
+  it('Case 9 - 2 assertNotEqual("false", "true")', () => {
+    expect(function() {
+      baseService.assertNotEqual("false", "true");
+    }).toThrow();
+  });
+
+  it('Case 9 - 1 assertNotEqual(false, false)', () => {
+    expect(function() {
+      baseService.assertNotEqual(false, false);
+    }).not.toThrow();
+  });
+
+  it('Case 8 - 2 assertEqual("false", "true")', () => {
+    expect(function() {
+      baseService.assertEqual("false", "true");
+    }).not.toThrow();
+  });
+
+  it('Case 8 - 1 assertEqual(false, false)', () => {
+    expect(function() {
+      baseService.assertEqual(false, false);
+    }).toThrow();
+  });
+
   it('Case 7 - 4 assertFalse(false)', () => {
     expect(function() {
       baseService.assertFalse(false);

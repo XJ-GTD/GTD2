@@ -1,4 +1,16 @@
 export class BaseService {
+  assertNotEqual(src: any, dest: any, msg: string = "Assert Not Equal Error.") {
+    if (src !== dest) {
+      throw new Error(msg);
+    }
+  }
+
+  assertEqual(src: any, dest: any, msg: string = "Assert Equal Error.") {
+    if (src === dest) {
+      throw new Error(msg);
+    }
+  }
+
   assertTrue(src: any, msg: string = "Assert True Error.") {
     if (src) {
       throw new Error(msg);

@@ -1484,6 +1484,7 @@ export class CalendarService extends BaseService {
    **/
   async sendPlan(plan: PlanData) {
     this.assertEmpty(plan);     // 入参不能为空
+    this.assertNotEqual(plan.jt, PlanType.PrivatePlan);   // 非自定义日历不能共享
 
     await this.syncPrivatePlan(plan);
 

@@ -305,8 +305,8 @@ describe('EventService test suite for agenda', () => {
       expect(["2019/08/28", "2019/09/11"].indexOf(each.evd)).toBeGreaterThanOrEqual(0);
     }
   });
-  
-  
+
+
   it('Case 1 - 3 - 1 - 2  saveAgenda 保存日程 - 每周重复 - 间隔2周执行一次, 周三、周四重复2次', async () => {
     let day: string = "2019/08/23";
 
@@ -360,8 +360,8 @@ describe('EventService test suite for agenda', () => {
       expect(["2019/08/14", "2019/08/21", "2019/08/28"].indexOf(each.evd)).toBeGreaterThanOrEqual(0);
     }
   });
-  
-  
+
+
    it('Case 1 - 3 - 2 - 1 saveAgenda 保存日程 - 每周重复 - 周三、周四 重复到2019/08/31', async () => {
     let day: string = "2019/08/13";
 
@@ -441,8 +441,8 @@ describe('EventService test suite for agenda', () => {
       expect(["2019/09/13", "2019/11/13", "2020/01/13", "2020/03/13"].indexOf(each.evd)).toBeGreaterThanOrEqual(0);
     }
   });
-  
-  
+
+
   it('Case 1 - 4 - 1 saveAgenda 保存日程 - 每月重复 - 每个月13、14号执行，间隔2个月执行一次，循环4次', async () => {
     let day: string = "2019/08/23";
 
@@ -498,8 +498,8 @@ describe('EventService test suite for agenda', () => {
       expect(["2019/08/13", "2019/10/13", "2019/12/13"].indexOf(each.evd)).toBeGreaterThanOrEqual(0);
     }
   });
-  
-  
+
+
   it('Case 1 - 4 - 2 - 1 saveAgenda 保存日程 - 每月重复 - 每个月13、14号执行，间隔2个月执行一次，直到2019/12/31', async () => {
     let day: string = "2019/08/13";
 
@@ -524,7 +524,7 @@ describe('EventService test suite for agenda', () => {
     expect(agendas.length).toBe(3);
 
     for (let each of agendas) {
-      expect(["2019/08/13", "2019/08/14"，"2019/10/13","2019/10/14", "2019/12/13", "2019/12/14"].indexOf(each.evd)).toBeGreaterThanOrEqual(0);
+      expect(["2019/08/13", "2019/08/14", "2019/10/13", "2019/10/14", "2019/12/13", "2019/12/14"].indexOf(each.evd)).toBeGreaterThanOrEqual(0);
     }
   });
 
@@ -600,7 +600,7 @@ describe('EventService test suite for agenda', () => {
 
     expect(agendas).toBeDefined();
     expect(agendas.length).toBe(2);
-    
+
     for (let each of agendas) {
       expect(["2019/08/23", "2020/08/23"].indexOf(each.evd)).toBeGreaterThanOrEqual(0);
     }
