@@ -1034,15 +1034,27 @@ describe('CalendarService test suite', () => {
     expect(monthSummary.days.length).toBe(days);
 
     for (let daySummary of monthSummary.days) {
-      expect(daySummary.day).toBeDefined();
-      expect(daySummary.calendaritemscount).toBe(0);
-      expect(daySummary.activityitemscount).toBe(0);
-      expect(daySummary.eventscount).toBe(0);
-      expect(daySummary.agendascount).toBe(0);
-      expect(daySummary.taskscount).toBe(0);
-      expect(daySummary.memoscount).toBe(0);
-      expect(daySummary.repeateventscount).toBe(0);
-      expect(daySummary.bookedtimesummary).toBe(0);
+      if (daySummary.day == day) {
+        expect(daySummary.day).toBeDefined();
+        expect(daySummary.calendaritemscount).toBe(0);
+        expect(daySummary.activityitemscount).toBe(0);
+        expect(daySummary.eventscount).toBe(1);
+        expect(daySummary.agendascount).toBe(0);
+        expect(daySummary.taskscount).toBe(0);
+        expect(daySummary.memoscount).toBe(0);
+        expect(daySummary.repeateventscount).toBe(0);
+        expect(daySummary.bookedtimesummary).toBe(0);
+      } else {
+        expect(daySummary.day).toBeDefined();
+        expect(daySummary.calendaritemscount).toBe(0);
+        expect(daySummary.activityitemscount).toBe(0);
+        expect(daySummary.eventscount).toBe(0);
+        expect(daySummary.agendascount).toBe(0);
+        expect(daySummary.taskscount).toBe(0);
+        expect(daySummary.memoscount).toBe(0);
+        expect(daySummary.repeateventscount).toBe(0);
+        expect(daySummary.bookedtimesummary).toBe(0);
+      }
     }
   });
 
@@ -2275,7 +2287,7 @@ describe('CalendarService test suite', () => {
     expect(daySummary.day).toBe(day);
     expect(daySummary.calendaritemscount).toBe(0);
     expect(daySummary.activityitemscount).toBe(0);
-    expect(daySummary.eventscount).toBe(0);
+    expect(daySummary.eventscount).toBe(1);
     expect(daySummary.agendascount).toBe(0);
     expect(daySummary.taskscount).toBe(0);
     expect(daySummary.memoscount).toBe(0);
