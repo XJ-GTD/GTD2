@@ -287,8 +287,21 @@ export class EventService extends BaseService {
         fj.tb = anyenum.SyncType.unsynch;
         sqlparam.push(fj.upTParam());
       }else{
+        if (!oriAgdata.rtevi && oriAgdata.rtevi =="" && oriAgdata.rfg == anyenum.RepeatFlag.Repeat){
+
+          //是父对象删除则原对应日程删除
+          let delca = new CaTbl();
+          delca.evi = oriAgdata.evi;
+          delca = await this.sqlExce.getOneByParam<CaTbl>(delca);
+
+          sqlparam.push(delca.dTParam());
+        }
+
         //如果当前删除对象是父事件，则为当前重复事件重建新的父事件，值为ev表重复记录里的第一条做为父事件
-        await this.operateForParentAgd(oriAgdata,sqlparam,outAgds,DUflag.del);
+        await this.operateForParentAgd(oriAgdata,sqlparam,outAgds);
+
+
+
       }
 
       // 删除相关提醒
@@ -496,7 +509,7 @@ export class EventService extends BaseService {
       ev.tb = newAgdata.tb;
       await this.sqlExce.updateByParam(ev);
 
-      //放入返回事件
+      //事件对象放入返回事件
       let outAgd  = {} as AgendaData;
       Object.assign(outAgd,ev);
       outAgds.push(outAgd);
@@ -513,12 +526,15 @@ export class EventService extends BaseService {
       }
 
       //如果当前更新对象是父节点，则为当前重复日程重建新的父记录，值为ev表里的第一条做为父记录
-      await this.operateForParentAgd(oriAgdata,sqlparam,outAgds,DUflag.update);
+      await this.operateForParentAgd(oriAgdata,sqlparam,outAgds);
 
-      //日程表新建或更新
+      //日程表新建或更新,修改为独立日的也需要为自己创建对应的日程
       let caparam = new CaTbl();
       caparam = this.sqlparamAddCa(oriAgdata.evi ,newAgdata.evd,newAgdata.evd,newAgdata);//evi使用原evi
       sqlparam.push(caparam.rpTParam());
+
+      //变化或新增的日程放入事件对象
+      Object.assign(outAgd,caparam);
 
     }
 
@@ -536,10 +552,16 @@ export class EventService extends BaseService {
    * @returns {Promise<void>}
    */
   private async operateForParentAgd(oriAgdata : AgendaData,sqlparam : Array<any>,
-                                      outAgds : Array<AgendaData>,  doflag : DUflag){
+                                      outAgds : Array<AgendaData>){
+    let sq : string ;
+
+    let outAgd = {} as AgendaData;
     let nwEvs = Array<EvTbl>();
     let nwEv = new EvTbl();
-    let sq : string ;
+
+    let upcondi :string ;
+    let upAgds = new Array<AgendaData>();//保存修改的事件用
+
     if (!oriAgdata.rtevi && oriAgdata.rtevi =="" && oriAgdata.rfg == anyenum.RepeatFlag.Repeat){
       sq = `select * from gtd_ev where rtevi = '${oriAgdata.evi}' and  rfg = '${anyenum.RepeatFlag.Repeat}'
          and del <>  '${anyenum.DelType.del}' order by evd ;`;
@@ -551,19 +573,17 @@ export class EventService extends BaseService {
         nwEv.rtevi = "";
         nwEv.tb = anyenum.SyncType.unsynch;
         nwEv.mi = UserConfig.account.id;
-        sqlparam.push(nwEv.upTParam());
+        await this.sqlExce.updateByParam(nwEv.upTParam());
 
         //原子事件的父字段改为新的父事件
+        upcondi = ` rtevi = '${oriAgdata.evi}'; `
         sq = `update gtd_ev set rtevi = '${nwEv.evi}',mi='${UserConfig.account.id}',tb = '${anyenum.SyncType.unsynch}'
-             where rtevi = '${oriAgdata.evi}'; `;
-        sqlparam.push(sq);
+             where  ${upcondi}; `;
+        await this.sqlExce.execSql(sq);
 
-        if (doflag == DUflag.del){
-          //原对应日程删除
-          let delca = new CaTbl();
-          delca.evi = oriAgdata.evi;
-          sqlparam.push(delca.dTParam());
-        }
+        //上记标记为修改的记录放入返回事件中
+        sq = ` select * from where ${upcondi} ; `
+        upAgds = await this.sqlExce.getExtLstByParam<AgendaData>(sq,[]);
 
         //为新的父事件建立新的对应日程
         let nwca = new CaTbl();
@@ -579,6 +599,19 @@ export class EventService extends BaseService {
         nwfj = this.sqlparamAddFj(nwEv.evi , oriAgdata.fjs);
 
         sqlparam = [...sqlparam, ...nwpar, ...nwfj];
+
+        //新的父事件放入返回事件
+        Object.assign(outAgd, nwEv);
+        //把新日程放入返回事件的父事件中
+        Object.assign(outAgd , nwca);
+        //复制原参与人放入返回事件的父事件中
+        outAgd.parters = oriAgdata.parters;
+        //复制原附件放入返回事件的父事件中
+        outAgd.fjs = oriAgdata.fjs;
+
+        outAgds.push(outAgd);
+
+        outAgds = [...outAgds ,...upAgds];
       }
     }
   }
