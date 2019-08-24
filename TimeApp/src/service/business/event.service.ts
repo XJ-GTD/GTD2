@@ -509,11 +509,6 @@ export class EventService extends BaseService {
       ev.tb = newAgdata.tb;
       await this.sqlExce.updateByParam(ev);
 
-      //事件对象放入返回事件
-      let outAgd  = {} as AgendaData;
-      Object.assign(outAgd,ev);
-      outAgds.push(outAgd);
-
       // 删除相关提醒
       let wa = new WaTbl();
       wa.obi = oriAgdata.evi;//obi使用原evi
@@ -533,8 +528,13 @@ export class EventService extends BaseService {
       caparam = this.sqlparamAddCa(oriAgdata.evi ,newAgdata.evd,newAgdata.evd,newAgdata);//evi使用原evi
       sqlparam.push(caparam.rpTParam());
 
+      //事件对象放入返回事件
+      let outAgd  = {} as AgendaData;
+      Object.assign(outAgd,ev);
       //变化或新增的日程放入事件对象
       Object.assign(outAgd,caparam);
+      outAgds.push(outAgd);
+
 
     }
 
