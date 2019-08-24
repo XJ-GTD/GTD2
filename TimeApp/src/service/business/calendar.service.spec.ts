@@ -178,6 +178,39 @@ describe('CalendarService test suite', () => {
 
   });
 
+  it(`Case 26 - 1 - 1 syncPrivatePlans 同步所有未同步自定义日历 - 有未同步数据(不报错)`, async (done: DoneFn) => {
+    // 自定义日历
+    let plan: PlanData = {} as PlanData;
+
+    plan.jn = '冥王星服务类 自动测试';
+    plan.jc = '#f1f1f1';
+    plan.jt = PlanType.PrivatePlan;
+
+    plan = await calendarService.savePlan(plan);
+
+    calendarService.syncPrivatePlans()
+    .then(() => {
+      expect("success").toBe("success");
+      done();
+    })
+    .catch(e => {
+      fail("抛出异常, 出错");
+      done();
+    });
+  });
+
+  it(`Case 26 - 1 syncPrivatePlans 同步所有未同步自定义日历 - 无数据(不报错)`, async (done: DoneFn) => {
+    calendarService.syncPrivatePlans()
+    .then(() => {
+      expect("success").toBe("success");
+      done();
+    })
+    .catch(e => {
+      fail("抛出异常, 出错");
+      done();
+    });
+  });
+
   it(`Case 25 - 2 syncPrivatePlan 同步自定义日历数据 - 冥王星公共日历(报错)`, async (done: DoneFn) => {
     // 下载公共日历
     await calendarService.downloadPublicPlan("shanghai_animation_exhibition_2019", PlanType.ActivityPlan);
