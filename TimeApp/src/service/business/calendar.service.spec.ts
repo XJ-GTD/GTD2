@@ -176,6 +176,46 @@ describe('CalendarService test suite', () => {
 
   });
 
+  it(`Case 22 - 2 sendPlan 共享日历 - 冥王星公共日历(报错)`, async (done: DoneFn) => {
+    // 下载公共日历
+    await calendarService.downloadPublicPlan("shanghai_animation_exhibition_2019", PlanType.ActivityPlan);
+
+    let plan = await calendarService.getPlan("shanghai_animation_exhibition_2019");
+
+    // 共享自定义日历
+    calendarService.sendPlan(plan)
+    .then(() => {
+      fail("未抛出异常, 出错");
+      done();
+    })
+    .catch(e => {
+      expect(e).not.toBe("");
+      done();
+    });
+  });
+
+  it(`Case 22 - 1 sendPlan 共享日历 - 自定义日历(无报错)`, async (done: DoneFn) => {
+    // 自定义日历
+    let plan: PlanData = {} as PlanData;
+
+    plan.jn = '冥王星服务类 自动测试';
+    plan.jc = '#f1f1f1';
+    plan.jt = PlanType.PrivatePlan;
+
+    plan = await calendarService.savePlan(plan);
+
+    // 共享自定义日历
+    calendarService.sendPlan(plan)
+    .then(() => {
+      expect("success").toBe("success");
+      done();
+    })
+    .catch(e => {
+      fail("未抛出异常, 出错");
+      done();
+    });
+  });
+
   it(`Case 21 - 5 mergeCalendarActivity 合并日历显示列表活动数据 - 合并1个备忘`, async () => {
     // 初始化
     let calendaractivities = await calendarService.getCalendarActivities();
