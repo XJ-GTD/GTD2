@@ -57,7 +57,7 @@ import {BxTbl} from "../sqlite/tbl/bx.tbl";
 import {BhTbl} from "../sqlite/tbl/bh.tbl";
 
 import { CalendarService, PlanData, PlanItemData, PlanMember, MonthActivityData, MonthActivitySummaryData, DayActivityData, DayActivitySummaryData, PagedActivityData, FindActivityCondition } from "./calendar.service";
-import { EventService, AgendaData, TaskData, RtJson } from "./event.service";
+import { EventService, AgendaData, TaskData, MiniTaskData, RtJson } from "./event.service";
 import { MemoService, MemoData } from "./memo.service";
 import { PlanType, PlanItemType, CycleType, OverType, PageDirection, SyncType, DelType, SyncDataStatus } from "../../data.enum";
 
@@ -2221,6 +2221,31 @@ describe('CalendarService test suite', () => {
     expect(dayActivities.events.length).toBe(0);
     expect(dayActivities.memos).toBeDefined();
     expect(dayActivities.memos.length).toBe(0);
+  });
+
+  it(`Case 5 - 9 fetchDayActivitiesSummary 取得指定日期概要 - 存在1个小任务`, async () => {
+    let day: string = moment().format("YYYY/MM/DD");
+
+    // 小任务
+    let minitask: MiniTaskData = {} as MiniTaskData;
+
+    minitask.evd = day;
+    minitask.evn = "结婚纪念日前给太太买礼物";
+
+    await eventService.saveMiniTask(minitask);
+
+    let daySummary: DayActivitySummaryData = await calendarService.fetchDayActivitiesSummary(day);
+
+    expect(daySummary).toBeDefined();
+    expect(daySummary.day).toBe(day);
+    expect(daySummary.calendaritemscount).toBe(0);
+    expect(daySummary.activityitemscount).toBe(0);
+    expect(daySummary.eventscount).toBe(0);
+    expect(daySummary.agendascount).toBe(0);
+    expect(daySummary.taskscount).toBe(0);
+    expect(daySummary.memoscount).toBe(0);
+    expect(daySummary.repeateventscount).toBe(0);
+    expect(daySummary.bookedtimesummary).toBe(0);
   });
 
   it(`Case 5 - 9 fetchDayActivitiesSummary 取得指定日期概要 - 存在1个日程、1个任务(日程每日重复)`, async () => {
