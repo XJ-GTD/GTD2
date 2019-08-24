@@ -89,7 +89,6 @@ describe('CalendarService test suite', () => {
   let luojianfei: BTbl;
   let huitailang: BTbl;
   let xuezhenyang: BTbl;
-  let luojianfei: BTbl;
 
   let prepareContacts = async function() {
     let sqls: Array<string> = new Array<string>();
@@ -3588,7 +3587,7 @@ describe('CalendarService test suite', () => {
     }
   });
 
-  it(`Case 1 - 2 - 1 savePlan 新建日历 - 自定义日历(包含共享成员)`, async (done: DoneFn) => {
+  it(`Case 1 - 2 - 1 savePlan 新建日历 - 自定义日历(包含1个共享成员)`, async (done: DoneFn) => {
     // 准备联系人数据
     await prepareContacts();
 
