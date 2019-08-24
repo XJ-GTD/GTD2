@@ -81,6 +81,16 @@ describe('CalendarService test suite', () => {
   let sqlExce: SqliteExec;
   let util: UtilService;
 
+  // 联系人用于测试
+  let xiaopangzi: BTbl;
+  let xiaohaizi: BTbl;
+  let xiaolenzi: BTbl;
+  let caoping: BTbl;
+  let luojianfei: BTbl;
+  let huitailang: BTbl;
+  let xuezhenyang: BTbl;
+  let luojianfei: BTbl;
+
   let prepareContacts = async function() {
     let sqls: Array<string> = new Array<string>();
 
@@ -99,6 +109,8 @@ describe('CalendarService test suite', () => {
     btbl.ui = btbl.rc;
     sqls.push(btbl.inT());
     btbls.push(btbl);
+
+    xiaopangzi = btbl;
 
     bhtbl = new BhTbl();
     bhtbl.bhi = util.getUuid();
@@ -119,6 +131,7 @@ describe('CalendarService test suite', () => {
     sqls.push(btbl.inT());
     btbls.push(btbl);
 
+    xiaohaizi = btbl;
 
     bhtbl = new BhTbl();
     bhtbl.bhi = util.getUuid();
@@ -139,6 +152,8 @@ describe('CalendarService test suite', () => {
     sqls.push(btbl.inT());
     btbls.push(btbl);
 
+    xiaolenzi = btbl;
+
     bhtbl = new BhTbl();
     bhtbl.bhi = util.getUuid();
     bhtbl.pwi = btbl.pwi;
@@ -157,6 +172,8 @@ describe('CalendarService test suite', () => {
     btbl.ui = btbl.rc;
     sqls.push(btbl.inT());
     btbls.push(btbl);
+
+    caoping = btbl;
 
     bhtbl = new BhTbl();
     bhtbl.bhi = util.getUuid();
@@ -177,6 +194,8 @@ describe('CalendarService test suite', () => {
     sqls.push(btbl.inT());
     btbls.push(btbl);
 
+    luojianfei = btbl;
+
     bhtbl = new BhTbl();
     bhtbl.bhi = util.getUuid();
     bhtbl.pwi = btbl.pwi;
@@ -196,6 +215,8 @@ describe('CalendarService test suite', () => {
     sqls.push(btbl.inT());
     btbls.push(btbl);
 
+    huitailang = btbl;
+
     bhtbl = new BhTbl();
     bhtbl.bhi = util.getUuid();
     bhtbl.pwi = btbl.pwi;
@@ -214,6 +235,8 @@ describe('CalendarService test suite', () => {
     btbl.ui = btbl.rc;
     sqls.push(btbl.inT());
     btbls.push(btbl);
+
+    xuezhenyang = btbl;
 
     bhtbl = new BhTbl();
     bhtbl.bhi = util.getUuid();
@@ -3578,6 +3601,11 @@ describe('CalendarService test suite', () => {
     plan.members = new Array<PlanMember>();
 
     let member: PlanMember = {} as PlanMember;
+
+    member.pwi = xiaohaizi.pwi;
+    member.ui = xiaohaizi.ui;
+
+    plan.members.push(member);
 
     calendarService.savePlan(plan)
     .then(() => {
