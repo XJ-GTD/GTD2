@@ -176,6 +176,18 @@ describe('CalendarService test suite', () => {
 
   });
 
+  it(`Case 23 - 1 receivedPlan 接收日历共享请求(无报错)`, (done: DoneFn) => {
+    calendarService.receivedPlan("plan id")
+    .then(() => {
+      expect("success").toBe("success");
+      done();
+    })
+    .catch(e => {
+      fail("抛出异常, 出错");
+      done();
+    });
+  });
+
   it(`Case 22 - 2 sendPlan 共享日历 - 冥王星公共日历(报错)`, async (done: DoneFn) => {
     // 下载公共日历
     await calendarService.downloadPublicPlan("shanghai_animation_exhibition_2019", PlanType.ActivityPlan);
@@ -211,7 +223,7 @@ describe('CalendarService test suite', () => {
       done();
     })
     .catch(e => {
-      fail("未抛出异常, 出错");
+      fail("抛出异常, 出错");
       done();
     });
   });
