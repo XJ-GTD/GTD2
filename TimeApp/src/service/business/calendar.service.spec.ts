@@ -614,6 +614,27 @@ describe('CalendarService test suite', () => {
     });
   });
 
+  it(`Case 21 - 6 mergeCalendarActivity 合并日历显示列表活动数据 - 合并1个小任务`, async () => {
+    // 初始化
+    let calendaractivities = await calendarService.getCalendarActivities();
+
+    const mergeSpy = spyOn(calendarService, 'mergeCalendarActivity').and.callThrough();
+
+    let day: string = moment().format("YYYY/MM/DD");
+
+    // 小任务
+    let minitask: MiniTaskData = {} as MiniTaskData;
+
+    minitask.evd = day;
+    minitask.evn = "结婚纪念日前给太太买礼物";
+
+    await eventService.saveMiniTask(minitask);
+
+    expect(mergeSpy.calls.any()).toBe(true, 'calendarService.mergeCalendarActivity called');
+    // 本月备忘为1
+    expect(calendaractivities[1].events.length).toBe(1);
+  });
+
   it(`Case 21 - 5 mergeCalendarActivity 合并日历显示列表活动数据 - 合并1个备忘`, async () => {
     // 初始化
     let calendaractivities = await calendarService.getCalendarActivities();
