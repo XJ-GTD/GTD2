@@ -355,7 +355,7 @@ describe('CalendarService test suite', () => {
     await init.initData();
     restConfig.init();
 
-    jasmine.DEFAULT_TIMEOUT_INTERVAL = 60 * 1000;  // 每个Case超时时间
+    jasmine.DEFAULT_TIMEOUT_INTERVAL = 2 * 60 * 1000;  // 每个Case超时时间
   });
 
   beforeEach(async () => {
@@ -410,7 +410,7 @@ describe('CalendarService test suite', () => {
   // 美术 | 品生 | 美术 | 写子 | 体育   14:00 ~ 14:40
   // 音乐 | 体育 | 音乐 | 班队 | 品生   14:50 ~ 15:35
   //  无  | 无  | 兴趣  |  无  | 无    15:45 ~ 16:25
-  it(`Case 99 - 1 小学2018年第二学期课程表`, async (done: DoneFn) => {
+  it(`Case 99 - 1 2018年第一学期 小学课程表(2018/09/01 ~ 2019/01/18)`, async (done: DoneFn) => {
     let day: string = "2018/09/01";
     let end: string = "2019/01/18";
     let timeranges: Array<Array<string>> = [
