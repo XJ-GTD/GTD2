@@ -1012,6 +1012,40 @@ describe('CalendarService test suite', () => {
     expect(updatedPlan.jc).toBe("#1a1a1a");
   });
 
+  it(`Case 10 - 1 - 2 fetchMonthActivitiesSummary 取得指定月概要 - 1个小任务`, async () => {
+    let day: string = moment().format("YYYY/MM/DD");
+
+    // 小任务
+    let minitask: MiniTaskData = {} as MiniTaskData;
+
+    minitask.evd = day;
+    minitask.evn = "结婚纪念日前给太太买礼物";
+
+    await eventService.saveMiniTask(minitask);
+
+    let month: string = moment().format("YYYY/MM");
+    let days: number = moment(month).daysInMonth();
+
+    let monthSummary: MonthActivitySummaryData = await calendarService.fetchMonthActivitiesSummary(month);
+
+    expect(monthSummary).toBeDefined();
+    expect(monthSummary.month).toBe(month);
+    expect(monthSummary.days).toBeDefined();
+    expect(monthSummary.days.length).toBe(days);
+
+    for (let daySummary of monthSummary.days) {
+      expect(daySummary.day).toBeDefined();
+      expect(daySummary.calendaritemscount).toBe(0);
+      expect(daySummary.activityitemscount).toBe(0);
+      expect(daySummary.eventscount).toBe(0);
+      expect(daySummary.agendascount).toBe(0);
+      expect(daySummary.taskscount).toBe(0);
+      expect(daySummary.memoscount).toBe(0);
+      expect(daySummary.repeateventscount).toBe(0);
+      expect(daySummary.bookedtimesummary).toBe(0);
+    }
+  });
+
   it(`Case 10 - 1 - 1 fetchMonthActivitiesSummary 取得指定月概要 - 1个日历项、1个任务、1个备忘`, async () => {
     let day: string = moment().format("YYYY/MM/DD");
 
@@ -2234,6 +2268,7 @@ describe('CalendarService test suite', () => {
 
     await eventService.saveMiniTask(minitask);
 
+    // 小任务数据不显示在日历中（式样要求）
     let daySummary: DayActivitySummaryData = await calendarService.fetchDayActivitiesSummary(day);
 
     expect(daySummary).toBeDefined();
