@@ -54,7 +54,7 @@ import {ParTbl} from "../sqlite/tbl/par.tbl";
 import { CalendarService, PlanData, PlanItemData, MonthActivityData, MonthActivitySummaryData, DayActivityData, DayActivitySummaryData, PagedActivityData, FindActivityCondition } from "./calendar.service";
 import { EventService, AgendaData, TaskData, RtJson } from "./event.service";
 import { MemoService, MemoData } from "./memo.service";
-import { PlanType, PlanItemType, CycleType, OverType, PageDirection } from "../../data.enum";
+import { PlanType, PlanItemType, CycleType, OverType, PageDirection, SyncType, DelType, SyncDataStatus } from "../../data.enum";
 
 /**
  * 日历Service 持续集成CI 自动测试Case
@@ -202,7 +202,7 @@ describe('CalendarService test suite', () => {
     expect(received.del).toBe(DelType.undel);
 
     // 重新查询确认保存的共享数据
-    let fetched = calendarService.getPlan(received.ji);
+    let fetched = await calendarService.getPlan(received.ji);
 
     expect(fetched).toBeDefined();
     expect(fetched.ji).toBe(plan.ji);
