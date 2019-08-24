@@ -355,7 +355,7 @@ describe('CalendarService test suite', () => {
     await init.initData();
     restConfig.init();
 
-    jasmine.DEFAULT_TIMEOUT_INTERVAL = 2 * 60 * 1000;  // 每个Case超时时间
+    jasmine.DEFAULT_TIMEOUT_INTERVAL = 5 * 60 * 1000;  // 每个Case超时时间
   });
 
   beforeEach(async () => {
