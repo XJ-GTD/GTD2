@@ -74,6 +74,7 @@ describe('CalendarService test suite', () => {
   let memoService: MemoService;
   let httpMock: HttpTestingController;
   let sqlExce: SqliteExec;
+  let util: UtilService;
 
   // 所有测试case执行前, 只执行一次
   beforeAll(async () => {
@@ -123,6 +124,7 @@ describe('CalendarService test suite', () => {
     memoService = TestBed.get(MemoService);
     restConfig = TestBed.get(RestFulConfig);
     sqlExce = TestBed.get(SqliteExec);
+    util = TestBed.get(UtilService);
 
     await config.generateDb();
     await init.createTables();
@@ -174,6 +176,28 @@ describe('CalendarService test suite', () => {
     await sqlExce.dropByParam(par);
     await sqlExce.createByParam(par);
 
+  });
+
+  it(`Case 24 - 1 receivedPlanData 接收日历数据 - 新共享日历`, async () => {
+    let plan: PlanData = {} as PlanData;
+
+    plan.ji = util.getUuid();
+    plan.jn = "新共享日历";
+    plan.jc = "#8f8f8f";
+    plan.jt = PlanType.PrivatePlan;
+    plan.wtt = moment().unix();
+    plan.utt = moment().unix();
+    plan.tb = SyncType.unsynch;
+    plan.del = DelType.undel;
+
+    let received = await calendarService.receivedPlanData(plan, SyncDataStatus.UnDeleted);
+
+    expect(received).toBeDefined();
+    expect(received.ji).toBe(plan.ji);
+    expect(received.jn).toBe(plan.jn);
+    expect(received.jt).toBe(plan.jt);
+    expect(received.tb).toBe(SyncType.synch);
+    expect(received.del).toBe(DelType.undel);
   });
 
   it(`Case 23 - 2 receivedPlan 接收日历共享请求(无日历ID报错)`, (done: DoneFn) => {
