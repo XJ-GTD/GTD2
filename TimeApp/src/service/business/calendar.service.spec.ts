@@ -54,7 +54,7 @@ import {ParTbl} from "../sqlite/tbl/par.tbl";
 import { CalendarService, PlanData, PlanItemData, MonthActivityData, MonthActivitySummaryData, DayActivityData, DayActivitySummaryData, PagedActivityData, FindActivityCondition } from "./calendar.service";
 import { EventService, AgendaData, TaskData, RtJson } from "./event.service";
 import { MemoService, MemoData } from "./memo.service";
-import { PlanType, PlanItemType, CycleType, OverType, PageDirection } from "../../data.enum";
+import { PlanType, PlanItemType, CycleType, OverType, PageDirection, SyncType, DelType, SyncDataStatus } from "../../data.enum";
 
 /**
  * 日历Service 持续集成CI 自动测试Case
@@ -178,7 +178,93 @@ describe('CalendarService test suite', () => {
 
   });
 
-  it(`Case 24 - 1 receivedPlanData 接收日历数据 - 新共享日历`, async () => {
+  it(`Case 27 - 1 acceptSyncPrivatePlans 更新已同步日历标志 - 本地无数据(无报错)`, (done: DoneFn) => {
+    calendarService.acceptSyncPrivatePlans([["planid", moment().unix()]])
+    .then(() => {
+      expect("success").toBe("success");
+      done();
+    })
+    .catch(e => {
+      fail("抛出异常, 出错");
+      done();
+    });
+  });
+
+  it(`Case 26 - 1 - 1 syncPrivatePlans 同步所有未同步自定义日历 - 有未同步数据(不报错)`, async (done: DoneFn) => {
+    // 自定义日历
+    let plan: PlanData = {} as PlanData;
+
+    plan.jn = '冥王星服务类 自动测试';
+    plan.jc = '#f1f1f1';
+    plan.jt = PlanType.PrivatePlan;
+
+    plan = await calendarService.savePlan(plan);
+
+    calendarService.syncPrivatePlans()
+    .then(() => {
+      expect("success").toBe("success");
+      done();
+    })
+    .catch(e => {
+      fail("抛出异常, 出错");
+      done();
+    });
+  });
+
+  it(`Case 26 - 1 syncPrivatePlans 同步所有未同步自定义日历 - 无数据(不报错)`, async (done: DoneFn) => {
+    calendarService.syncPrivatePlans()
+    .then(() => {
+      expect("success").toBe("success");
+      done();
+    })
+    .catch(e => {
+      fail("抛出异常, 出错");
+      done();
+    });
+  });
+
+  it(`Case 25 - 2 syncPrivatePlan 同步自定义日历数据 - 冥王星公共日历(报错)`, async (done: DoneFn) => {
+    // 下载公共日历
+    await calendarService.downloadPublicPlan("shanghai_animation_exhibition_2019", PlanType.ActivityPlan);
+
+    let plan = await calendarService.getPlan("shanghai_animation_exhibition_2019");
+
+    // 共享自定义日历
+    calendarService.syncPrivatePlan(plan)
+    .then(() => {
+      fail("未抛出异常, 出错");
+      done();
+    })
+    .catch(e => {
+      expect(e).not.toBe("");
+      done();
+    });
+  });
+
+  it(`Case 25 - 1 syncPrivatePlan 同步自定义日历数据(无报错)`, async (done: DoneFn) => {
+    // 自定义日历
+    let plan: PlanData = {} as PlanData;
+
+    plan.jn = '冥王星服务类 自动测试';
+    plan.jc = '#f1f1f1';
+    plan.jt = PlanType.PrivatePlan;
+
+    plan = await calendarService.savePlan(plan);
+
+    // 同步自定义日历数据
+    calendarService.syncPrivatePlan(plan)
+    .then(() => {
+      expect("success").toBe("success");
+      done();
+    })
+    .catch(e => {
+      fail("抛出异常, 出错");
+      done();
+    });
+  });
+
+  it(`Case 24 - 2 receivedPlanData 接收日历数据 - 删除共享日历`, async () => {
+    // 准备共享日历
     let plan: PlanData = {} as PlanData;
 
     plan.ji = util.getUuid();
@@ -190,6 +276,36 @@ describe('CalendarService test suite', () => {
     plan.tb = SyncType.unsynch;
     plan.del = DelType.undel;
 
+    // 接收共享数据
+    let received = await calendarService.receivedPlanData(plan, SyncDataStatus.Deleted);
+
+    expect(received).toBeDefined();
+    expect(received.ji).toBe(plan.ji);
+    expect(received.jn).toBe(plan.jn);
+    expect(received.jt).toBe(plan.jt);
+    expect(received.tb).toBe(SyncType.synch);
+    expect(received.del).toBe(DelType.del);
+
+    // 重新查询确认保存的共享数据
+    let fetched = await calendarService.getPlan(received.ji);
+
+    expect(fetched).toBeNull();
+  });
+
+  it(`Case 24 - 1 receivedPlanData 接收日历数据 - 新共享日历`, async () => {
+    // 准备共享日历
+    let plan: PlanData = {} as PlanData;
+
+    plan.ji = util.getUuid();
+    plan.jn = "新共享日历";
+    plan.jc = "#8f8f8f";
+    plan.jt = PlanType.PrivatePlan;
+    plan.wtt = moment().unix();
+    plan.utt = moment().unix();
+    plan.tb = SyncType.unsynch;
+    plan.del = DelType.undel;
+
+    // 接收共享数据
     let received = await calendarService.receivedPlanData(plan, SyncDataStatus.UnDeleted);
 
     expect(received).toBeDefined();
@@ -198,6 +314,16 @@ describe('CalendarService test suite', () => {
     expect(received.jt).toBe(plan.jt);
     expect(received.tb).toBe(SyncType.synch);
     expect(received.del).toBe(DelType.undel);
+
+    // 重新查询确认保存的共享数据
+    let fetched = await calendarService.getPlan(received.ji);
+
+    expect(fetched).toBeDefined();
+    expect(fetched.ji).toBe(plan.ji);
+    expect(fetched.jn).toBe(plan.jn);
+    expect(fetched.jt).toBe(plan.jt);
+    expect(fetched.tb).toBe(SyncType.synch);
+    expect(fetched.del).toBe(DelType.undel);
   });
 
   it(`Case 23 - 2 receivedPlan 接收日历共享请求(无日历ID报错)`, (done: DoneFn) => {
