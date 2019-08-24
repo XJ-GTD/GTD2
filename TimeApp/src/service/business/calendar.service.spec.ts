@@ -177,7 +177,7 @@ describe('CalendarService test suite', () => {
   });
 
   it(`Case 23 - 1 receivedPlan 接收日历共享请求(无日历ID报错)`, (done: DoneFn) => {
-    calendarService.receivedPlan("plan id")
+    calendarService.receivedPlan("")
     .then(() => {
       fail("未抛出异常, 出错");
       done();
@@ -189,7 +189,7 @@ describe('CalendarService test suite', () => {
   });
 
   it(`Case 23 - 1 receivedPlan 接收日历共享请求(无报错)`, (done: DoneFn) => {
-    calendarService.receivedPlan("")
+    calendarService.receivedPlan("plan id")
     .then(() => {
       expect("success").toBe("success");
       done();
