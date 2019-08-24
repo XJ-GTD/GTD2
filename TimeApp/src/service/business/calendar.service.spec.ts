@@ -730,7 +730,7 @@ describe('CalendarService test suite', () => {
 
     expect(month1902Summary).toBeDefined();
 
-    for (let daySummary of month1808Summary.days) {
+    for (let daySummary of month1902Summary.days) {
       expect(daySummary.day).toBeDefined();
       expect(daySummary.calendaritemscount).toBe(0);
       expect(daySummary.activityitemscount).toBe(0);
