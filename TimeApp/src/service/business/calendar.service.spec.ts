@@ -59,7 +59,7 @@ import {BhTbl} from "../sqlite/tbl/bh.tbl";
 import { CalendarService, PlanData, PlanItemData, PlanMember, MonthActivityData, MonthActivitySummaryData, DayActivityData, DayActivitySummaryData, PagedActivityData, FindActivityCondition } from "./calendar.service";
 import { EventService, AgendaData, TaskData, MiniTaskData, RtJson } from "./event.service";
 import { MemoService, MemoData } from "./memo.service";
-import { PlanType, PlanItemType, CycleType, OverType, PageDirection, SyncType, DelType, SyncDataStatus } from "../../data.enum";
+import { PlanType, PlanItemType, CycleType, OverType, PageDirection, SyncType, DelType, SyncDataStatus, IsWholeday } from "../../data.enum";
 
 /**
  * 日历Service 持续集成CI 自动测试Case
@@ -434,6 +434,7 @@ describe('CalendarService test suite', () => {
 		math1rt.over.value = end;
 
     math1.sd = day;
+    math1.al = IsWholeday.NonWhole;
     math1.st = timeranges[0][0];
     math1.et = timeranges[0][1];
     math1.evn = "数学";
@@ -453,6 +454,7 @@ describe('CalendarService test suite', () => {
     chinese1rt.over.value = end;
 
     chinese1.sd = day;
+    chinese1.al = IsWholeday.NonWhole;
     chinese1.st = timeranges[0][0];
     chinese1.et = timeranges[0][1];
     chinese1.evn = "语文";
@@ -472,6 +474,7 @@ describe('CalendarService test suite', () => {
 		math2rt.over.value = end;
 
     math2.sd = day;
+    math2.al = IsWholeday.NonWhole;
     math2.st = timeranges[1][0];
     math2.et = timeranges[1][1];
     math2.evn = "数学";
@@ -491,6 +494,7 @@ describe('CalendarService test suite', () => {
     chinese2rt.over.value = end;
 
     chinese2.sd = day;
+    chinese2.al = IsWholeday.NonWhole;
     chinese2.st = timeranges[1][0];
     chinese2.et = timeranges[1][1];
     chinese2.evn = "语文";
@@ -509,6 +513,7 @@ describe('CalendarService test suite', () => {
     character3rt.over.value = end;
 
     character3.sd = day;
+    character3.al = IsWholeday.NonWhole;
     character3.st = timeranges[2][0];
     character3.et = timeranges[2][1];
     character3.evn = "品生";
@@ -527,6 +532,7 @@ describe('CalendarService test suite', () => {
     pe3rt.over.value = end;
 
     pe3.sd = day;
+    pe3.al = IsWholeday.NonWhole;
     pe3.st = timeranges[2][0];
     pe3.et = timeranges[2][1];
     pe3.evn = "体育";
@@ -545,6 +551,7 @@ describe('CalendarService test suite', () => {
     chinese3rt.over.value = end;
 
     chinese3.sd = day;
+    chinese3.al = IsWholeday.NonWhole;
     chinese3.st = timeranges[2][0];
     chinese3.et = timeranges[2][1];
     chinese3.evn = "语文";
@@ -564,6 +571,7 @@ describe('CalendarService test suite', () => {
     art4rt.over.value = end;
 
     art4.sd = day;
+    art4.al = IsWholeday.NonWhole;
     art4.st = timeranges[3][0];
     art4.et = timeranges[3][1];
     art4.evn = "美术";
@@ -581,6 +589,7 @@ describe('CalendarService test suite', () => {
     character4rt.over.value = end;
 
     character4.sd = day;
+    character4.al = IsWholeday.NonWhole;
     character4.st = timeranges[3][0];
     character4.et = timeranges[3][1];
     character4.evn = "品生";
@@ -598,6 +607,7 @@ describe('CalendarService test suite', () => {
     writing4rt.over.value = end;
 
     writing4.sd = day;
+    writing4.al = IsWholeday.NonWhole;
     writing4.st = timeranges[3][0];
     writing4.et = timeranges[3][1];
     writing4.evn = "写字";
@@ -615,6 +625,7 @@ describe('CalendarService test suite', () => {
     pe4rt.over.value = end;
 
     pe4.sd = day;
+    pe4.al = IsWholeday.NonWhole;
     pe4.st = timeranges[3][0];
     pe4.et = timeranges[3][1];
     pe4.evn = "体育";
@@ -634,6 +645,7 @@ describe('CalendarService test suite', () => {
     music5rt.over.value = end;
 
     music5.sd = day;
+    music5.al = IsWholeday.NonWhole;
     music5.st = timeranges[4][0];
     music5.et = timeranges[4][1];
     music5.evn = "音乐";
@@ -651,6 +663,7 @@ describe('CalendarService test suite', () => {
     pe5rt.over.value = end;
 
     pe5.sd = day;
+    pe5.al = IsWholeday.NonWhole;
     pe5.st = timeranges[4][0];
     pe5.et = timeranges[4][1];
     pe5.evn = "体育";
@@ -668,6 +681,7 @@ describe('CalendarService test suite', () => {
     activity5rt.over.value = end;
 
     activity5.sd = day;
+    activity5.al = IsWholeday.NonWhole;
     activity5.st = timeranges[4][0];
     activity5.et = timeranges[4][1];
     activity5.evn = "班队";
@@ -685,6 +699,7 @@ describe('CalendarService test suite', () => {
     character5rt.over.value = end;
 
     character5.sd = day;
+    character5.al = IsWholeday.NonWhole;
     character5.st = timeranges[4][0];
     character5.et = timeranges[4][1];
     character5.evn = "品生";
@@ -703,6 +718,7 @@ describe('CalendarService test suite', () => {
     interest5rt.over.value = end;
 
     interest5.sd = day;
+    interest5.al = IsWholeday.NonWhole;
     interest5.st = timeranges[5][0];
     interest5.et = timeranges[5][1];
     interest5.evn = "兴趣";
