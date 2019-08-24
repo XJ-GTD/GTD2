@@ -198,6 +198,15 @@ describe('CalendarService test suite', () => {
     expect(received.jt).toBe(plan.jt);
     expect(received.tb).toBe(SyncType.synch);
     expect(received.del).toBe(DelType.undel);
+
+    let fetched = calendarService.getPlan(received.ji);
+
+    expect(fetched).toBeDefined();
+    expect(fetched.ji).toBe(plan.ji);
+    expect(fetched.jn).toBe(plan.jn);
+    expect(fetched.jt).toBe(plan.jt);
+    expect(fetched.tb).toBe(SyncType.synch);
+    expect(fetched.del).toBe(DelType.undel);
   });
 
   it(`Case 23 - 2 receivedPlan 接收日历共享请求(无日历ID报错)`, (done: DoneFn) => {
