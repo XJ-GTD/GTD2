@@ -1601,6 +1601,31 @@ export class CalendarService extends BaseService {
   }
 
   /**
+   * 更新已同步标志
+   * 根据日历ID和更新时间戳
+   *
+   * @author leon_xi@163.com
+   **/
+  async acceptSyncPrivatePlans(syncids: Array<Array<any>>) {
+
+    this.assertEmpty(syncids);    // 入参不能为空
+
+    if (syncids.length < 1) {     // 入参是空数组直接返回
+      return;
+    }
+
+    let sqls: Array<any> = new Array<any>();
+
+    for (let syncid of syncids) {
+      sqls.push([`update gtd_jha set tb = ? where ji = ? and utt = ?`, [SyncType.synch, ...syncid]]);
+    }
+
+    await this.sqlExce.batExecSqlByParam(sqls);
+
+    return;
+  }
+
+  /**
    * 分享日历
    *
    * 日历数据上传服务器，并获得分享URL

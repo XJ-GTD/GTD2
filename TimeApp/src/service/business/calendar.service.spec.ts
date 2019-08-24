@@ -178,6 +178,18 @@ describe('CalendarService test suite', () => {
 
   });
 
+  it(`Case 27 - 1 acceptSyncPrivatePlans 更新已同步日历标志 - 本地无数据(无报错)`, (done: DoneFn) => {
+    calendarService.acceptSyncPrivatePlans([["planid", moment().unix()]])
+    .then(() => {
+      expect("success").toBe("success");
+      done();
+    })
+    .catch(e => {
+      fail("抛出异常, 出错");
+      done();
+    });
+  });
+
   it(`Case 26 - 1 - 1 syncPrivatePlans 同步所有未同步自定义日历 - 有未同步数据(不报错)`, async (done: DoneFn) => {
     // 自定义日历
     let plan: PlanData = {} as PlanData;
@@ -277,7 +289,7 @@ describe('CalendarService test suite', () => {
     // 重新查询确认保存的共享数据
     let fetched = await calendarService.getPlan(received.ji);
 
-    expect(fetched).not.toBeDefined();
+    expect(fetched).toBeNull();
   });
 
   it(`Case 24 - 1 receivedPlanData 接收日历数据 - 新共享日历`, async () => {
