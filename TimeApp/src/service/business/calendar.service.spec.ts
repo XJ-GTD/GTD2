@@ -28,6 +28,7 @@ import {MyApp} from '../../app/app.component';
 import {SqliteConfig} from "../config/sqlite.config";
 import {RestFulConfig} from "../config/restful.config";
 import {UserConfig} from "../config/user.config";
+import {DataConfig} from "../config/data.config";
 
 import {EmitService} from "../util-service/emit.service";
 import {UtilService} from "../util-service/util.service";
@@ -76,6 +77,202 @@ describe('CalendarService test suite', () => {
   let sqlExce: SqliteExec;
   let util: UtilService;
 
+  let prepareContacts = async function() {
+    let sqls: Array<string> = new Array<string>();
+
+    //参与人
+    let btbls: Array<BTbl> = [];
+    let btbl: BTbl = new BTbl();
+    let bhtbl = new BhTbl();
+    btbl.pwi = util.getUuid();
+    btbl.ran = '小胖子';
+    btbl.ranpy = 'xiaopangzi';
+    btbl.hiu = '';
+    btbl.rn = '张金洋';
+    btbl.rnpy = 'zhangjinyang';
+    btbl.rc = '15821947260';
+    btbl.rel = '1';
+    btbl.ui = btbl.rc;
+    sqls.push(btbl.inT());
+    btbls.push(btbl);
+
+    bhtbl = new BhTbl();
+    bhtbl.bhi = util.getUuid();
+    bhtbl.pwi = btbl.pwi;
+    bhtbl.hiu = DataConfig.HUIBASE64;
+    sqls.push(bhtbl.inT());
+
+    btbl = new BTbl();
+    btbl.pwi = util.getUuid();
+    btbl.ran = '小孩子';
+    btbl.ranpy = 'xiaohaizi';
+    btbl.hiu = '';
+    btbl.rn = '许赵平';
+    btbl.rnpy = 'xuzhaopin';
+    btbl.rc = '13661617252';
+    btbl.rel = '0';
+    btbl.ui = btbl.rc;
+    sqls.push(btbl.inT());
+    btbls.push(btbl);
+
+
+    bhtbl = new BhTbl();
+    bhtbl.bhi = util.getUuid();
+    bhtbl.pwi = btbl.pwi;
+    bhtbl.hiu = DataConfig.HUIBASE64;
+    sqls.push(bhtbl.inT());
+
+    btbl = new BTbl();
+    btbl.pwi = util.getUuid();
+    btbl.ran = '小楞子';
+    btbl.ranpy = 'xiaolenzi';
+    btbl.hiu = '';
+    btbl.rn = '席理加';
+    btbl.rnpy = 'xilijia';
+    btbl.rc = '13585820972';
+    btbl.rel = '1';
+    btbl.ui = btbl.rc;
+    sqls.push(btbl.inT());
+    btbls.push(btbl);
+
+    bhtbl = new BhTbl();
+    bhtbl.bhi = util.getUuid();
+    bhtbl.pwi = btbl.pwi;
+    bhtbl.hiu = DataConfig.HUIBASE64;
+    sqls.push(bhtbl.inT());
+
+    btbl = new BTbl();
+    btbl.pwi = util.getUuid();
+    btbl.ran = '草帽';
+    btbl.ranpy = '草帽';
+    btbl.hiu = '';
+    btbl.rn = '漕屏';
+    btbl.rnpy = 'caoping';
+    btbl.rc = '16670129762';
+    btbl.rel = '0';
+    btbl.ui = btbl.rc;
+    sqls.push(btbl.inT());
+    btbls.push(btbl);
+
+    bhtbl = new BhTbl();
+    bhtbl.bhi = util.getUuid();
+    bhtbl.pwi = btbl.pwi;
+    bhtbl.hiu = DataConfig.HUIBASE64;
+    sqls.push(bhtbl.inT());
+
+    btbl = new BTbl();
+    btbl.pwi = util.getUuid();
+    btbl.ran = '飞飞飞';
+    btbl.ranpy = 'feifeifei';
+    btbl.hiu = '';
+    btbl.rn = '罗建飞';
+    btbl.rnpy = 'luojianfei';
+    btbl.rc = '13564242673';
+    btbl.rel = '1';
+    btbl.ui = btbl.rc;
+    sqls.push(btbl.inT());
+    btbls.push(btbl);
+
+    bhtbl = new BhTbl();
+    bhtbl.bhi = util.getUuid();
+    bhtbl.pwi = btbl.pwi;
+    bhtbl.hiu = DataConfig.HUIBASE64;
+    sqls.push(bhtbl.inT());
+
+    btbl = new BTbl();
+    btbl.pwi = util.getUuid();
+    btbl.ran = '灰太郎';
+    btbl.ranpy = 'huitailang';
+    btbl.hiu = '';
+    btbl.rn = '丁朝辉';
+    btbl.rnpy = 'dingchaohui';
+    btbl.rc = '15737921611';
+    btbl.rel = '1';
+    btbl.ui = btbl.rc;
+    sqls.push(btbl.inT());
+    btbls.push(btbl);
+
+    bhtbl = new BhTbl();
+    bhtbl.bhi = util.getUuid();
+    bhtbl.pwi = btbl.pwi;
+    bhtbl.hiu = DataConfig.HUIBASE64;
+    sqls.push(bhtbl.inT());
+
+    btbl = new BTbl();
+    btbl.pwi = util.getUuid();
+    btbl.ran = '牛牛';
+    btbl.ranpy = 'niuniu';
+    btbl.hiu = '';
+    btbl.rn = '薛震洋';
+    btbl.rnpy = 'xuezhenyang';
+    btbl.rc = '18602150145';
+    btbl.rel = '1';
+    btbl.ui = btbl.rc;
+    sqls.push(btbl.inT());
+    btbls.push(btbl);
+
+    bhtbl = new BhTbl();
+    bhtbl.bhi = util.getUuid();
+    bhtbl.pwi = btbl.pwi;
+    bhtbl.hiu = DataConfig.HUIBASE64;
+    sqls.push(bhtbl.inT());
+
+    //群组
+    let gtbl: GTbl = new GTbl();
+    gtbl.gi = util.getUuid();
+    gtbl.gn = '拼命三郎';
+    gtbl.gm = '拼命三郎'
+    gtbl.gnpy = 'pinmingsanlang';
+    sqls.push(gtbl.inT());
+
+    //群组关系
+    let bxtbl: BxTbl = new BxTbl();
+    bxtbl.bi = gtbl.gi;
+    bxtbl.bmi = btbls[0].pwi;
+    sqls.push(bxtbl.inT());
+
+    bxtbl = new BxTbl();
+    bxtbl.bi = gtbl.gi;
+    bxtbl.bmi = btbls[1].pwi;
+    sqls.push(bxtbl.inT());
+
+    bxtbl = new BxTbl();
+    bxtbl.bi = gtbl.gi;
+    bxtbl.bmi = btbls[3].pwi;
+    sqls.push(bxtbl.inT());
+
+    bxtbl = new BxTbl();
+    bxtbl.bi = gtbl.gi;
+    bxtbl.bmi = btbls[5].pwi;
+    sqls.push(bxtbl.inT());
+
+    gtbl = new GTbl();
+    gtbl.gi = util.getUuid();
+    gtbl.gn = '合作二人组合';
+    gtbl.gm = '合作二人组合'
+    gtbl.gnpy = 'hezuoerrenzuhe';
+    sqls.push(gtbl.inT());
+
+    bxtbl = new BxTbl();
+    bxtbl.bi = gtbl.gi;
+    bxtbl.bmi = btbls[2].pwi;
+    sqls.push(bxtbl.inT());
+
+    bxtbl = new BxTbl();
+    bxtbl.bi = gtbl.gi;
+    bxtbl.bmi = btbls[4].pwi;
+    sqls.push(bxtbl.inT());
+
+    bxtbl = new BxTbl();
+    bxtbl.bi = gtbl.gi;
+    bxtbl.bmi = btbls[5].pwi;
+    sqls.push(bxtbl.inT());
+
+    await sqlExce.batExecSql(sqls);
+
+    return;
+  };
+
   // 所有测试case执行前, 只执行一次
   beforeAll(async () => {
     TestBed.configureTestingModule({
@@ -95,6 +292,7 @@ describe('CalendarService test suite', () => {
         SqliteExec,
         SqliteInit,
         UserConfig,
+        DataConfig,
         UtilService,
         EmitService,
         ShaeRestful,
@@ -3361,6 +3559,31 @@ describe('CalendarService test suite', () => {
     } else {
       fail("保存失败, 无返回值.");
     }
+  });
+
+  it(`Case 1 - 2 - 1 savePlan 新建日历 - 自定义日历(包含共享成员)`, async (done: DoneFn) => {
+    // 准备联系人数据
+    await prepareContacts();
+
+    let plan: PlanData = {} as PlanData;
+
+    plan.jn = '冥王星服务类 自动测试';
+    plan.jc = '#f1f1f1';
+    plan.jt = PlanType.PrivatePlan;
+
+    plan.members = new Array<PlanMember>();
+
+    let member: PlanMember = {} as PlanMember;
+
+    calendarService.savePlan(plan)
+    .then(() => {
+      expect("success").toBe("success");
+      done();
+    })
+    .catch(e => {
+      fail("抛出异常, 出错");
+      done();
+    });
   });
 
   // 需要同步执行
