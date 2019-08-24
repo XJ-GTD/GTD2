@@ -51,8 +51,12 @@ import {WaTbl} from "../sqlite/tbl/wa.tbl";
 import {FjTbl} from "../sqlite/tbl/fj.tbl";
 import {MrkTbl} from "../sqlite/tbl/mrk.tbl";
 import {ParTbl} from "../sqlite/tbl/par.tbl";
+import {BTbl} from "../sqlite/tbl/b.tbl";
+import {GTbl} from "../sqlite/tbl/g.tbl";
+import {BxTbl} from "../sqlite/tbl/bx.tbl";
+import {BhTbl} from "../sqlite/tbl/bh.tbl";
 
-import { CalendarService, PlanData, PlanItemData, MonthActivityData, MonthActivitySummaryData, DayActivityData, DayActivitySummaryData, PagedActivityData, FindActivityCondition } from "./calendar.service";
+import { CalendarService, PlanData, PlanItemData, PlanMember, MonthActivityData, MonthActivitySummaryData, DayActivityData, DayActivitySummaryData, PagedActivityData, FindActivityCondition } from "./calendar.service";
 import { EventService, AgendaData, TaskData, RtJson } from "./event.service";
 import { MemoService, MemoData } from "./memo.service";
 import { PlanType, PlanItemType, CycleType, OverType, PageDirection, SyncType, DelType, SyncDataStatus } from "../../data.enum";
