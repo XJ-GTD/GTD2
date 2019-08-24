@@ -3587,6 +3587,38 @@ describe('CalendarService test suite', () => {
     }
   });
 
+  it(`Case 1 - 2 - 2 savePlan 新建日历 - 自定义日历(包含3个共享成员)`, async (done: DoneFn) => {
+    // 准备联系人数据
+    await prepareContacts();
+
+    let plan: PlanData = {} as PlanData;
+
+    plan.jn = '冥王星服务类 自动测试';
+    plan.jc = '#f1f1f1';
+    plan.jt = PlanType.PrivatePlan;
+
+    plan.members = new Array<PlanMember>();
+
+    for (let contact of [xiaopangzi, xiaohaizi, xuezhenyang]) {
+      let member: PlanMember = {} as PlanMember;
+
+      member.pwi = contact.pwi;
+      member.ui = contact.ui;
+
+      plan.members.push(member);
+    }
+
+    calendarService.savePlan(plan)
+    .then(() => {
+      expect("success").toBe("success");
+      done();
+    })
+    .catch(e => {
+      fail("抛出异常, 出错");
+      done();
+    });
+  });
+
   it(`Case 1 - 2 - 1 savePlan 新建日历 - 自定义日历(包含1个共享成员)`, async (done: DoneFn) => {
     // 准备联系人数据
     await prepareContacts();
