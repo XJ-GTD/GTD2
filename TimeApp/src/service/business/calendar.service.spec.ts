@@ -178,6 +178,35 @@ describe('CalendarService test suite', () => {
 
   });
 
+  it(`Case 24 - 2 receivedPlanData 接收日历数据 - 删除共享日历`, async () => {
+    // 准备共享日历
+    let plan: PlanData = {} as PlanData;
+
+    plan.ji = util.getUuid();
+    plan.jn = "新共享日历";
+    plan.jc = "#8f8f8f";
+    plan.jt = PlanType.PrivatePlan;
+    plan.wtt = moment().unix();
+    plan.utt = moment().unix();
+    plan.tb = SyncType.unsynch;
+    plan.del = DelType.undel;
+
+    // 接收共享数据
+    let received = await calendarService.receivedPlanData(plan, SyncDataStatus.Deleted);
+
+    expect(received).toBeDefined();
+    expect(received.ji).toBe(plan.ji);
+    expect(received.jn).toBe(plan.jn);
+    expect(received.jt).toBe(plan.jt);
+    expect(received.tb).toBe(SyncType.synch);
+    expect(received.del).toBe(DelType.del);
+
+    // 重新查询确认保存的共享数据
+    let fetched = await calendarService.getPlan(received.ji);
+
+    expect(fetched).not.toBeDefined();
+  });
+
   it(`Case 24 - 1 receivedPlanData 接收日历数据 - 新共享日历`, async () => {
     // 准备共享日历
     let plan: PlanData = {} as PlanData;
