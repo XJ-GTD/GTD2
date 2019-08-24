@@ -6,7 +6,7 @@ import { EvTbl } from "../sqlite/tbl/ev.tbl";
 import { TTbl } from "../sqlite/tbl/t.tbl";
 import { CaTbl } from "../sqlite/tbl/ca.tbl";
 import {UserConfig} from "../config/user.config";
-import {AgdPro, AgdRestful} from "../restful/agdsev";
+import {AgdRestful} from "../restful/agdsev";
 import * as moment from "moment";
 import {ETbl} from "../sqlite/tbl/e.tbl";
 import {EmitService} from "../util-service/emit.service";
@@ -18,13 +18,81 @@ import {JhaTbl} from "../sqlite/tbl/jha.tbl";
 import {DataConfig} from "../config/data.config";
 import {BTbl} from "../sqlite/tbl/b.tbl";
 import {FjTbl} from "../sqlite/tbl/fj.tbl";
+import {DataRestful, PullInData, PushInData, SyncData} from "../restful/datasev";
+import {SyncDataStatus} from "../../data.enum";
+import {PlanType} from "../../data.enum";
+import {PlanData} from "./calendar.service";
+import {SyncDataSecurity} from "../../data.enum";
 
 @Injectable()
 export class EventService extends BaseService {
   constructor(private sqlExce: SqliteExec, private util: UtilService,
               private agdRest: AgdRestful,private emitService:EmitService,
-              private bacRestful: BacRestful,private userConfig: UserConfig) {
+              private bacRestful: BacRestful,private userConfig: UserConfig,
+              private dataRestful: DataRestful) {
     super();
+  }
+
+  /**
+   * 接收日程数据同步
+   *
+   * @author leon_xi@163.com
+   **/
+  async receivedAgend(evi: string) {
+
+    this.assertEmpty(evi);   // 入参不能为空
+
+    let pull: PullInData = new PullInData();
+
+    pull.d.push(evi);
+
+    // 发送下载日程请求
+    await this.dataRestful.pull(pull);
+
+    return;
+  }
+
+  /**
+   * 同步指定日程
+   *
+   * @author leon_xi@163.com
+   **/
+  async syncPrivateAgdent(agdatas: Array<AgendaData>) {
+
+    this.assertEmpty(agdatas);       // 入参不能为空
+
+    // 构造Push数据结构
+    let push: PushInData = new PushInData();
+
+    for (let j = 0 ,len = agdatas.length ; j< len ; j++){
+      let agd = {} as AgendaData;
+      agd = agdatas[j];
+      let sync: SyncData = new SyncData();
+      sync.id = agd.evi;
+      sync.type = "Agenda";
+
+      //修改权限设定
+      if (agd.md == anyenum.ModiPower.disable){
+        sync.security = SyncDataSecurity.SelfModify;
+      }
+      if (agd.md == anyenum.ModiPower.enable){
+        sync.security = SyncDataSecurity.ShareModify;
+      }
+
+      //删除设定
+      if (agd.del == anyenum.DelType.del){
+        sync.status = SyncDataStatus.Deleted;
+      }
+
+      sync.payload = agd;
+      push.d.push(sync);
+    }
+
+
+
+    await this.dataRestful.push(push);
+
+    return;
   }
 
   /**
