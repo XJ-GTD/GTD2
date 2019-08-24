@@ -84,7 +84,7 @@ describe('CalendarService test suite', () => {
     let btbls: Array<BTbl> = [];
     let btbl: BTbl = new BTbl();
     let bhtbl = new BhTbl();
-    btbl.pwi = util.getUuid();
+    btbl.pwi = "xiaopangzi";
     btbl.ran = '小胖子';
     btbl.ranpy = 'xiaopangzi';
     btbl.hiu = '';
@@ -103,7 +103,7 @@ describe('CalendarService test suite', () => {
     sqls.push(bhtbl.inT());
 
     btbl = new BTbl();
-    btbl.pwi = util.getUuid();
+    btbl.pwi = "xiaohaizi";
     btbl.ran = '小孩子';
     btbl.ranpy = 'xiaohaizi';
     btbl.hiu = '';
@@ -123,7 +123,7 @@ describe('CalendarService test suite', () => {
     sqls.push(bhtbl.inT());
 
     btbl = new BTbl();
-    btbl.pwi = util.getUuid();
+    btbl.pwi = 'xiaolenzi';
     btbl.ran = '小楞子';
     btbl.ranpy = 'xiaolenzi';
     btbl.hiu = '';
@@ -142,7 +142,7 @@ describe('CalendarService test suite', () => {
     sqls.push(bhtbl.inT());
 
     btbl = new BTbl();
-    btbl.pwi = util.getUuid();
+    btbl.pwi = 'caoping';
     btbl.ran = '草帽';
     btbl.ranpy = '草帽';
     btbl.hiu = '';
@@ -161,7 +161,7 @@ describe('CalendarService test suite', () => {
     sqls.push(bhtbl.inT());
 
     btbl = new BTbl();
-    btbl.pwi = util.getUuid();
+    btbl.pwi = 'luojianfei';
     btbl.ran = '飞飞飞';
     btbl.ranpy = 'feifeifei';
     btbl.hiu = '';
@@ -180,7 +180,7 @@ describe('CalendarService test suite', () => {
     sqls.push(bhtbl.inT());
 
     btbl = new BTbl();
-    btbl.pwi = util.getUuid();
+    btbl.pwi = 'huitailang';
     btbl.ran = '灰太郎';
     btbl.ranpy = 'huitailang';
     btbl.hiu = '';
@@ -199,7 +199,7 @@ describe('CalendarService test suite', () => {
     sqls.push(bhtbl.inT());
 
     btbl = new BTbl();
-    btbl.pwi = util.getUuid();
+    btbl.pwi = 'xuezhenyang';
     btbl.ran = '牛牛';
     btbl.ranpy = 'niuniu';
     btbl.hiu = '';
