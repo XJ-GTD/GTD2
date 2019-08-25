@@ -1016,7 +1016,7 @@ describe('CalendarService test suite', () => {
 
       });
 
-      it(`Case 1 - 1 确认18年09月活动`, () => {
+      it(`Case 1 - 1 确认18年09月活动`, async () => {
         let month1809Summary = await calendarService.fetchMonthActivitiesSummary("2018/09");
 
         expect(month1809Summary).toBeDefined();
@@ -1127,7 +1127,7 @@ describe('CalendarService test suite', () => {
         }
       });
 
-      it(`Case 1 - 2 确认18年10月活动`, () => {
+      it(`Case 1 - 2 确认18年10月活动`, async () => {
         let month1810Summary = await calendarService.fetchMonthActivitiesSummary("2018/10");
 
         expect(month1810Summary).toBeDefined();
