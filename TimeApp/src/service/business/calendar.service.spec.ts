@@ -59,7 +59,7 @@ import {BhTbl} from "../sqlite/tbl/bh.tbl";
 import { CalendarService, PlanData, PlanItemData, PlanMember, MonthActivityData, MonthActivitySummaryData, DayActivityData, DayActivitySummaryData, PagedActivityData, FindActivityCondition } from "./calendar.service";
 import { EventService, AgendaData, TaskData, MiniTaskData, RtJson } from "./event.service";
 import { MemoService, MemoData } from "./memo.service";
-import { PlanType, PlanItemType, CycleType, OverType, PageDirection, SyncType, DelType, SyncDataStatus, IsWholeday } from "../../data.enum";
+import { PlanType, PlanItemType, CycleType, OverType, PageDirection, SyncType, DelType, SyncDataStatus, IsWholeday, OperateType, EventType } from "../../data.enum";
 
 /**
  * 日历Service 持续集成CI 自动测试Case
@@ -859,6 +859,325 @@ describe('CalendarService test suite', () => {
         expect(daySummary.repeateventscount).toBe(0);
         expect(daySummary.bookedtimesummary).toBe(0);
       }
+    });
+
+    describe(`Case 1 - 4 2018/10/01 国庆节课程调整 (09/29 周六上周一课程, 09/30 周日上周二课程)`, () => {
+      beforeAll(() => {
+        jasmine.DEFAULT_TIMEOUT_INTERVAL = 60 * 1000;  // 每个Case超时时间
+      });
+
+      beforeEach(async () => {
+        // 取得10月所有活动
+        let month1810Activities = await calendarService.fetchMonthActivities("2018/10");
+
+        // 删除10月01日 ~ 10月05日课程
+        let day1001Activities = month1810Activities.days.get("2018/10/01");
+        let day1002Activities = month1810Activities.days.get("2018/10/02");
+        let day1003Activities = month1810Activities.days.get("2018/10/03");
+        let day1004Activities = month1810Activities.days.get("2018/10/04");
+        let day1005Activities = month1810Activities.days.get("2018/10/05");
+
+        for (let dayActivities of [day1001Activities, day1002Activities, day1003Activities, day1004Activities, day1005Activities]) {
+          for (let event of dayActivities.events) {
+            if (event.type == EventType.Agenda) {
+              let agenda: AgendaData = {} as AgendaData;
+              Object.assign(agenda, event);
+
+              await eventService.removeAgenda(agenda, OperateType.OnlySel);
+            }
+          }
+        }
+
+        // 新增09/29, 09/30日课程
+        // 数学 | 语文 | 语文 | 语文 | 数学   08:20 ~ 09:00
+        // 语文 | 数学 | 语文 | 数学 | 语文   09:30 ~ 10:15
+        // 品生 | 语文 | 体育 | 体育 | 语文   10:25 ~ 11:05
+        // =============下午=============
+        // 美术 | 品生 | 美术 | 写子 | 体育   14:00 ~ 14:40
+        // 音乐 | 体育 | 音乐 | 班队 | 品生   14:50 ~ 15:35
+        //  无  | 无  | 兴趣  |  无  | 无    15:45 ~ 16:25
+
+        // 数学 | 语文 | 语文 | 语文 | 数学   08:20 ~ 09:00
+        // 第一节课 星期一、星期五 数学
+        let day29 = "2018/09/29";
+        let day30 = "2018/09/30";
+        let math1: AgendaData = {} as AgendaData;
+
+        math1.sd = day29;
+        math1.al = IsWholeday.NonWhole;
+        math1.st = timeranges[0][0];
+        math1.et = timeranges[0][1];
+        math1.evn = "数学";
+
+        await eventService.saveAgenda(math1);
+
+        // 第一节课 星期二、星期三、星期四 语文
+        let chinese1: AgendaData = {} as AgendaData;
+
+        chinese1.sd = day30;
+        chinese1.al = IsWholeday.NonWhole;
+        chinese1.st = timeranges[0][0];
+        chinese1.et = timeranges[0][1];
+        chinese1.evn = "语文";
+
+        await eventService.saveAgenda(chinese1);
+
+        // 语文 | 数学 | 语文 | 数学 | 语文   09:30 ~ 10:15
+        // 第二节课 星期二、星期四 数学
+        let math2: AgendaData = {} as AgendaData;
+
+        math2.sd = day30;
+        math2.al = IsWholeday.NonWhole;
+        math2.st = timeranges[1][0];
+        math2.et = timeranges[1][1];
+        math2.evn = "数学";
+
+        await eventService.saveAgenda(math2);
+
+        // 第二节课 星期一、星期三、星期五 语文
+        let chinese2: AgendaData = {} as AgendaData;
+
+        chinese2.sd = day29;
+        chinese2.al = IsWholeday.NonWhole;
+        chinese2.st = timeranges[1][0];
+        chinese2.et = timeranges[1][1];
+        chinese2.evn = "语文";
+
+        await eventService.saveAgenda(chinese2);
+
+        // 品生 | 语文 | 体育 | 体育 | 语文   10:25 ~ 11:05
+        // 第三节课 星期一 品生
+        let character3: AgendaData = {} as AgendaData;
+
+        character3.sd = day29;
+        character3.al = IsWholeday.NonWhole;
+        character3.st = timeranges[2][0];
+        character3.et = timeranges[2][1];
+        character3.evn = "品生";
+
+        await eventService.saveAgenda(character3);
+
+        // 第三节课 星期二、星期五 语文
+        let chinese3: AgendaData = {} as AgendaData;
+
+        chinese3.sd = day30;
+        chinese3.al = IsWholeday.NonWhole;
+        chinese3.st = timeranges[2][0];
+        chinese3.et = timeranges[2][1];
+        chinese3.evn = "语文";
+
+        await eventService.saveAgenda(chinese3);
+
+        // 美术 | 品生 | 美术 | 写字 | 体育   14:00 ~ 14:40
+        // 第四节课 星期一、星期三 美术
+        let art4: AgendaData = {} as AgendaData;
+
+        art4.sd = day29;
+        art4.al = IsWholeday.NonWhole;
+        art4.st = timeranges[3][0];
+        art4.et = timeranges[3][1];
+        art4.evn = "美术";
+
+        await eventService.saveAgenda(art4);
+
+        // 第四节课 星期二 品生
+        let character4: AgendaData = {} as AgendaData;
+
+        character4.sd = day30;
+        character4.al = IsWholeday.NonWhole;
+        character4.st = timeranges[3][0];
+        character4.et = timeranges[3][1];
+        character4.evn = "品生";
+
+        await eventService.saveAgenda(character4);
+
+        // 音乐 | 体育 | 音乐 | 班队 | 品生   14:50 ~ 15:35
+        // 第五节课 星期一、星期三 音乐
+        let music5: AgendaData = {} as AgendaData;
+
+        music5.sd = day29;
+        music5.al = IsWholeday.NonWhole;
+        music5.st = timeranges[4][0];
+        music5.et = timeranges[4][1];
+        music5.evn = "音乐";
+
+        await eventService.saveAgenda(music5);
+
+        // 第五节课 星期二 体育
+        let pe5: AgendaData = {} as AgendaData;
+
+        pe5.sd = day30;
+        pe5.al = IsWholeday.NonWhole;
+        pe5.st = timeranges[4][0];
+        pe5.et = timeranges[4][1];
+        pe5.evn = "体育";
+
+        await eventService.saveAgenda(pe5);
+
+      });
+
+      it(`Case 1 - 1 确认18年09月活动`, async () => {
+        let month1809Summary = await calendarService.fetchMonthActivitiesSummary("2018/09");
+
+        expect(month1809Summary).toBeDefined();
+
+        for (let daySummary of month1809Summary.days) {
+          expect(daySummary.day).toBeDefined();
+
+          let dayOfWeek = Number(moment(daySummary.day).format("d"));
+          if (dayOfWeek > 0 && dayOfWeek < 6) {             // 非周末
+            if (dayOfWeek == 3) {                           // 星期三
+              if (daySummary.day == "2018/09/05") {  // 第三天
+                expect(daySummary.calendaritemscount).toBe(0);
+                expect(daySummary.activityitemscount).toBe(0);
+                expect(daySummary.eventscount).toBe(6);
+                expect(daySummary.agendascount).toBe(2);
+                expect(daySummary.taskscount).toBe(0);
+                expect(daySummary.memoscount).toBe(0);
+                expect(daySummary.repeateventscount).toBe(4);
+                expect(daySummary.bookedtimesummary).toBe(0);
+              } else {
+                expect(daySummary.calendaritemscount).toBe(0);
+                expect(daySummary.activityitemscount).toBe(0);
+                expect(daySummary.eventscount).toBe(6);
+                expect(daySummary.agendascount).toBe(0);
+                expect(daySummary.taskscount).toBe(0);
+                expect(daySummary.memoscount).toBe(0);
+                expect(daySummary.repeateventscount).toBe(6);
+                expect(daySummary.bookedtimesummary).toBe(0);
+              }
+            } else {                                        // 星期三以外
+              if (daySummary.day == "2018/09/03") {         // 第一天
+                expect(daySummary.calendaritemscount).toBe(0);
+                expect(daySummary.activityitemscount).toBe(0);
+                expect(daySummary.eventscount).toBe(5);
+                expect(daySummary.agendascount).toBe(5);
+                expect(daySummary.taskscount).toBe(0);
+                expect(daySummary.memoscount).toBe(0);
+                expect(daySummary.repeateventscount).toBe(0);
+                expect(daySummary.bookedtimesummary).toBe(0);
+              } else if (daySummary.day == "2018/09/04") {  // 第二天
+                expect(daySummary.calendaritemscount).toBe(0);
+                expect(daySummary.activityitemscount).toBe(0);
+                expect(daySummary.eventscount).toBe(5);
+                expect(daySummary.agendascount).toBe(5);
+                expect(daySummary.taskscount).toBe(0);
+                expect(daySummary.memoscount).toBe(0);
+                expect(daySummary.repeateventscount).toBe(0);
+                expect(daySummary.bookedtimesummary).toBe(0);
+              } else if (daySummary.day == "2018/09/06") {  // 第四天
+                expect(daySummary.calendaritemscount).toBe(0);
+                expect(daySummary.activityitemscount).toBe(0);
+                expect(daySummary.eventscount).toBe(5);
+                expect(daySummary.agendascount).toBe(2);
+                expect(daySummary.taskscount).toBe(0);
+                expect(daySummary.memoscount).toBe(0);
+                expect(daySummary.repeateventscount).toBe(3);
+                expect(daySummary.bookedtimesummary).toBe(0);
+              } else if (daySummary.day == "2018/09/07") {  // 第五天
+                expect(daySummary.calendaritemscount).toBe(0);
+                expect(daySummary.activityitemscount).toBe(0);
+                expect(daySummary.eventscount).toBe(5);
+                expect(daySummary.agendascount).toBe(2);
+                expect(daySummary.taskscount).toBe(0);
+                expect(daySummary.memoscount).toBe(0);
+                expect(daySummary.repeateventscount).toBe(3);
+                expect(daySummary.bookedtimesummary).toBe(0);
+              } else {                                      // 重复天
+                expect(daySummary.calendaritemscount).toBe(0);
+                expect(daySummary.activityitemscount).toBe(0);
+                expect(daySummary.eventscount).toBe(5);
+                expect(daySummary.agendascount).toBe(0);
+                expect(daySummary.taskscount).toBe(0);
+                expect(daySummary.memoscount).toBe(0);
+                expect(daySummary.repeateventscount).toBe(5);
+                expect(daySummary.bookedtimesummary).toBe(0);
+              }
+            }
+          } else {                                          // 周末
+            if (daySummary.day == "2018/09/29") {
+              expect(daySummary.calendaritemscount).toBe(0);
+              expect(daySummary.activityitemscount).toBe(0);
+              expect(daySummary.eventscount).toBe(5);
+              expect(daySummary.agendascount).toBe(5);
+              expect(daySummary.taskscount).toBe(0);
+              expect(daySummary.memoscount).toBe(0);
+              expect(daySummary.repeateventscount).toBe(0);
+              expect(daySummary.bookedtimesummary).toBe(0);
+            } else if (daySummary.day == "2018/09/30") {
+              expect(daySummary.calendaritemscount).toBe(0);
+              expect(daySummary.activityitemscount).toBe(0);
+              expect(daySummary.eventscount).toBe(5);
+              expect(daySummary.agendascount).toBe(5);
+              expect(daySummary.taskscount).toBe(0);
+              expect(daySummary.memoscount).toBe(0);
+              expect(daySummary.repeateventscount).toBe(0);
+              expect(daySummary.bookedtimesummary).toBe(0);
+            } else {
+              expect(daySummary.calendaritemscount).toBe(0);
+              expect(daySummary.activityitemscount).toBe(0);
+              expect(daySummary.eventscount).toBe(0);
+              expect(daySummary.agendascount).toBe(0);
+              expect(daySummary.taskscount).toBe(0);
+              expect(daySummary.memoscount).toBe(0);
+              expect(daySummary.repeateventscount).toBe(0);
+              expect(daySummary.bookedtimesummary).toBe(0);
+            }
+          }
+        }
+      });
+
+      it(`Case 1 - 2 确认18年10月活动`, async () => {
+        let month1810Summary = await calendarService.fetchMonthActivitiesSummary("2018/10");
+
+        expect(month1810Summary).toBeDefined();
+
+        for (let daySummary of month1810Summary.days) {
+          expect(daySummary.day).toBeDefined();
+          if (["2018/10/01", "2018/10/02", "2018/10/03", "2018/10/04", "2018/10/05"].indexOf(daySummary.day) >= 0) {
+            expect(daySummary.calendaritemscount).toBe(0);
+            expect(daySummary.activityitemscount).toBe(0);
+            expect(daySummary.eventscount).toBe(0);
+            expect(daySummary.agendascount).toBe(0);
+            expect(daySummary.taskscount).toBe(0);
+            expect(daySummary.memoscount).toBe(0);
+            expect(daySummary.repeateventscount).toBe(0);
+            expect(daySummary.bookedtimesummary).toBe(0);
+          } else {
+            let dayOfWeek = Number(moment(daySummary.day).format("d"));
+            if (dayOfWeek > 0 && dayOfWeek < 6) {             // 非周末
+              if (dayOfWeek == 3) {
+                expect(daySummary.calendaritemscount).toBe(0);
+                expect(daySummary.activityitemscount).toBe(0);
+                expect(daySummary.eventscount).toBe(6);
+                expect(daySummary.agendascount).toBe(0);
+                expect(daySummary.taskscount).toBe(0);
+                expect(daySummary.memoscount).toBe(0);
+                expect(daySummary.repeateventscount).toBe(6);
+                expect(daySummary.bookedtimesummary).toBe(0);
+              } else {
+                expect(daySummary.calendaritemscount).toBe(0);
+                expect(daySummary.activityitemscount).toBe(0);
+                expect(daySummary.eventscount).toBe(5);
+                expect(daySummary.agendascount).toBe(0);
+                expect(daySummary.taskscount).toBe(0);
+                expect(daySummary.memoscount).toBe(0);
+                expect(daySummary.repeateventscount).toBe(5);
+                expect(daySummary.bookedtimesummary).toBe(0);
+              }
+            } else {                                          // 周末
+              expect(daySummary.calendaritemscount).toBe(0);
+              expect(daySummary.activityitemscount).toBe(0);
+              expect(daySummary.eventscount).toBe(0);
+              expect(daySummary.agendascount).toBe(0);
+              expect(daySummary.taskscount).toBe(0);
+              expect(daySummary.memoscount).toBe(0);
+              expect(daySummary.repeateventscount).toBe(0);
+              expect(daySummary.bookedtimesummary).toBe(0);
+            }
+          }
+        }
+      });
     });
 
   });
