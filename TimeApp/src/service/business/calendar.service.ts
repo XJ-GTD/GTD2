@@ -769,7 +769,7 @@ export class CalendarService extends BaseService {
                                   max(gdayjta.calendaritemscount) calendaritemscount,
                                   max(gdayjta.activityitemscount) activityitemscount,
                                   sum(CASE WHEN IFNULL(gev.evi, '') = '' THEN 0 WHEN gev.del = '${DelType.del}' THEN 0 ELSE 1 END) eventscount,
-                                  sum(CASE WHEN IFNULL(gev.evi, '') = '' THEN 0 WHEN gev.type <> '${EventType.Agenda}' THEN 0 WHEN gev.del = '${DelType.del}' THEN 0 ELSE 1 END) agendascount,
+                                  sum(CASE WHEN IFNULL(gev.evi, '') = '' THEN 0 WHEN IFNULL(gev.rtevi, '') <> '' THEN 0 WHEN gev.type <> '${EventType.Agenda}' THEN 0 WHEN gev.del = '${DelType.del}' THEN 0 ELSE 1 END) agendascount,
                                   sum(CASE WHEN IFNULL(gev.evi, '') = '' THEN 0 WHEN gev.type <> '${EventType.Task}' THEN 0 WHEN gev.del = '${DelType.del}' THEN 0 ELSE 1 END) taskscount,
                                   sum(CASE WHEN IFNULL(gev.rtevi, '') = '' THEN 0 WHEN gev.del = '${DelType.del}' THEN 0 ELSE 1 END) repeateventscount
                             from (select gday.sd day,
@@ -1122,7 +1122,7 @@ export class CalendarService extends BaseService {
                                   max(gdayjta.calendaritemscount) calendaritemscount,
                                   max(gdayjta.activityitemscount) activityitemscount,
                                   sum(CASE WHEN IFNULL(gev.evi, '') = '' THEN 0 WHEN gev.del = '${DelType.del}' THEN 0 ELSE 1 END) eventscount,
-                                  sum(CASE WHEN IFNULL(gev.evi, '') = '' THEN 0 WHEN gev.type <> '${EventType.Agenda}' THEN 0 WHEN gev.del = '${DelType.del}' THEN 0 ELSE 1 END) agendascount,
+                                  sum(CASE WHEN IFNULL(gev.evi, '') = '' THEN 0 WHEN IFNULL(gev.rtevi, '') <> '' THEN 0 WHEN gev.type <> '${EventType.Agenda}' THEN 0 WHEN gev.del = '${DelType.del}' THEN 0 ELSE 1 END) agendascount,
                                   sum(CASE WHEN IFNULL(gev.evi, '') = '' THEN 0 WHEN gev.type <> '${EventType.Task}' THEN 0 WHEN gev.del = '${DelType.del}' THEN 0 ELSE 1 END) taskscount,
                                   sum(CASE WHEN IFNULL(gev.rtevi, '') = '' THEN 0 WHEN gev.del = '${DelType.del}' THEN 0 ELSE 1 END) repeateventscount
                             from (select gday.sd day,
