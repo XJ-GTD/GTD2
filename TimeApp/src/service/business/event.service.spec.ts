@@ -38,6 +38,7 @@ import {NetworkService} from "../cordova/network.service";
 import { ShaeRestful } from "../restful/shaesev";
 import { AgdRestful } from "../restful/agdsev";
 import { BacRestful } from "../restful/bacsev";
+import { DataRestful } from "../restful/datasev";
 import {SyncRestful} from "../restful/syncsev";
 import {EvTbl} from "../sqlite/tbl/ev.tbl";
 import {CaTbl} from "../sqlite/tbl/ca.tbl";
@@ -88,6 +89,7 @@ describe('EventService test suite', () => {
         ShaeRestful,
         AgdRestful,
         BacRestful,
+        DataRestful,
         SyncRestful,
         Network,
         HTTP,
@@ -209,7 +211,7 @@ describe('EventService test suite', () => {
     expect(tx).toBeDefined();
     expect(tx.evi).toBeDefined();
 		await eventService.finishTask(tx.evi);
-		
+
 		let txx: TaskData = {} as TaskData;
     txx = await eventService.getTask(tx.evi);
     expect(txx).toBeDefined();
@@ -299,23 +301,23 @@ describe('EventService test suite', () => {
   })
 
 	it('Case 8 - 1 backup 备份、恢复', async() => {
-		
+
 		let tx: TaskData = {} as TaskData;
     tx.evn ="shopping,今天穿的是花裤衩";
     tx = await eventService.saveTask(tx);
     expect(tx).toBeDefined();
     expect(tx.evi).toBeDefined();
-    
+
     let bts: Number = moment().unix();
     await eventService.backup(bts);
-    
+
     await eventService.recovery(null,bts);
-    
+
     let txx: TaskData = {} as TaskData;
     txx = await eventService.getTask(tx.evi);
     expect(txx).toBeDefined();
     expect(txx.evn).toBe(tx.evn);
-	
+
 	})
   afterAll(() => {
     TestBed.resetTestingModule();
