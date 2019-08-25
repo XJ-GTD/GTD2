@@ -59,7 +59,7 @@ import {BhTbl} from "../sqlite/tbl/bh.tbl";
 import { CalendarService, PlanData, PlanItemData, PlanMember, MonthActivityData, MonthActivitySummaryData, DayActivityData, DayActivitySummaryData, PagedActivityData, FindActivityCondition } from "./calendar.service";
 import { EventService, AgendaData, TaskData, MiniTaskData, RtJson } from "./event.service";
 import { MemoService, MemoData } from "./memo.service";
-import { PlanType, PlanItemType, CycleType, OverType, PageDirection, SyncType, DelType, SyncDataStatus, IsWholeday } from "../../data.enum";
+import { PlanType, PlanItemType, CycleType, OverType, PageDirection, SyncType, DelType, SyncDataStatus, IsWholeday, OperateType, EventType } from "../../data.enum";
 
 /**
  * 日历Service 持续集成CI 自动测试Case
