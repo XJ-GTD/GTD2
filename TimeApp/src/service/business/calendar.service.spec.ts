@@ -59,7 +59,7 @@ import {BhTbl} from "../sqlite/tbl/bh.tbl";
 import { CalendarService, PlanData, PlanItemData, PlanMember, MonthActivityData, MonthActivitySummaryData, DayActivityData, DayActivitySummaryData, PagedActivityData, FindActivityCondition } from "./calendar.service";
 import { EventService, AgendaData, TaskData, MiniTaskData, RtJson } from "./event.service";
 import { MemoService, MemoData } from "./memo.service";
-import { PlanType, PlanItemType, CycleType, OverType, PageDirection, SyncType, DelType, SyncDataStatus } from "../../data.enum";
+import { PlanType, PlanItemType, CycleType, OverType, PageDirection, SyncType, DelType, SyncDataStatus, IsWholeday } from "../../data.enum";
 
 /**
  * 日历Service 持续集成CI 自动测试Case
@@ -399,6 +399,467 @@ describe('CalendarService test suite', () => {
     let par: ParTbl = new ParTbl();
     await sqlExce.dropByParam(par);
     await sqlExce.createByParam(par);
+
+  });
+
+  // 2018/09/01 ~ 2019/01/18
+  // 数学 | 语文 | 语文 | 语文 | 数学   08:20 ~ 09:00
+  // 语文 | 数学 | 语文 | 数学 | 语文   09:30 ~ 10:15
+  // 品生 | 语文 | 体育 | 体育 | 语文   10:25 ~ 11:05
+  // =============下午=============
+  // 美术 | 品生 | 美术 | 写子 | 体育   14:00 ~ 14:40
+  // 音乐 | 体育 | 音乐 | 班队 | 品生   14:50 ~ 15:35
+  //  无  | 无  | 兴趣  |  无  | 无    15:45 ~ 16:25
+  describe(`Case 28 - 1 重复集成测试 2018年第一学期 小学课程表(2018/09/01 ~ 2019/01/18)`, () => {
+    let day: string = "2018/09/01";
+    let end: string = "2019/01/18";
+    let timeranges: Array<Array<string>> = [
+      ["08:20", "09:00"],
+      ["09:30", "10:15"],
+      ["10:25", "11:05"],
+      ["14:00", "14:40"],
+      ["14:50", "15:35"],
+      ["15:45", "16:25"]
+    ];
+
+    beforeAll(() => {
+      jasmine.DEFAULT_TIMEOUT_INTERVAL = 60 * 1000;  // 每个Case超时时间
+    });
+
+    beforeEach(async () => {
+
+      // 数学 | 语文 | 语文 | 语文 | 数学   08:20 ~ 09:00
+      // 第一节课 星期一、星期五 数学
+      let math1: AgendaData = {} as AgendaData;
+
+      let math1rt: RtJson = new RtJson();
+      math1rt.cycletype = CycleType.week;
+      math1rt.openway.push(1);
+      math1rt.openway.push(5);
+      math1rt.over.type = OverType.limitdate;
+      math1rt.over.value = end;
+
+      math1.sd = day;
+      math1.al = IsWholeday.NonWhole;
+      math1.st = timeranges[0][0];
+      math1.et = timeranges[0][1];
+      math1.evn = "数学";
+      math1.rtjson = math1rt;
+
+      await eventService.saveAgenda(math1);
+
+      // 第一节课 星期二、星期三、星期四 语文
+      let chinese1: AgendaData = {} as AgendaData;
+
+      let chinese1rt: RtJson = new RtJson();
+      chinese1rt.cycletype = CycleType.week;
+      chinese1rt.openway.push(2);
+      chinese1rt.openway.push(3);
+      chinese1rt.openway.push(4);
+      chinese1rt.over.type = OverType.limitdate;
+      chinese1rt.over.value = end;
+
+      chinese1.sd = day;
+      chinese1.al = IsWholeday.NonWhole;
+      chinese1.st = timeranges[0][0];
+      chinese1.et = timeranges[0][1];
+      chinese1.evn = "语文";
+      chinese1.rtjson = chinese1rt;
+
+      await eventService.saveAgenda(chinese1);
+
+      // 语文 | 数学 | 语文 | 数学 | 语文   09:30 ~ 10:15
+      // 第二节课 星期二、星期四 数学
+      let math2: AgendaData = {} as AgendaData;
+
+      let math2rt: RtJson = new RtJson();
+      math2rt.cycletype = CycleType.week;
+      math2rt.openway.push(2);
+      math2rt.openway.push(4);
+      math2rt.over.type = OverType.limitdate;
+      math2rt.over.value = end;
+
+      math2.sd = day;
+      math2.al = IsWholeday.NonWhole;
+      math2.st = timeranges[1][0];
+      math2.et = timeranges[1][1];
+      math2.evn = "数学";
+      math2.rtjson = math2rt;
+
+      await eventService.saveAgenda(math2);
+
+      // 第二节课 星期一、星期三、星期五 语文
+      let chinese2: AgendaData = {} as AgendaData;
+
+      let chinese2rt: RtJson = new RtJson();
+      chinese2rt.cycletype = CycleType.week;
+      chinese2rt.openway.push(1);
+      chinese2rt.openway.push(3);
+      chinese2rt.openway.push(5);
+      chinese2rt.over.type = OverType.limitdate;
+      chinese2rt.over.value = end;
+
+      chinese2.sd = day;
+      chinese2.al = IsWholeday.NonWhole;
+      chinese2.st = timeranges[1][0];
+      chinese2.et = timeranges[1][1];
+      chinese2.evn = "语文";
+      chinese2.rtjson = chinese2rt;
+
+      await eventService.saveAgenda(chinese2);
+
+      // 品生 | 语文 | 体育 | 体育 | 语文   10:25 ~ 11:05
+      // 第三节课 星期一 品生
+      let character3: AgendaData = {} as AgendaData;
+
+      let character3rt: RtJson = new RtJson();
+      character3rt.cycletype = CycleType.week;
+      character3rt.openway.push(1);
+      character3rt.over.type = OverType.limitdate;
+      character3rt.over.value = end;
+
+      character3.sd = day;
+      character3.al = IsWholeday.NonWhole;
+      character3.st = timeranges[2][0];
+      character3.et = timeranges[2][1];
+      character3.evn = "品生";
+      character3.rtjson = character3rt;
+
+      await eventService.saveAgenda(character3);
+
+      // 第三节课 星期三、星期四 体育
+      let pe3: AgendaData = {} as AgendaData;
+
+      let pe3rt: RtJson = new RtJson();
+      pe3rt.cycletype = CycleType.week;
+      pe3rt.openway.push(3);
+      pe3rt.openway.push(4);
+      pe3rt.over.type = OverType.limitdate;
+      pe3rt.over.value = end;
+
+      pe3.sd = day;
+      pe3.al = IsWholeday.NonWhole;
+      pe3.st = timeranges[2][0];
+      pe3.et = timeranges[2][1];
+      pe3.evn = "体育";
+      pe3.rtjson = pe3rt;
+
+      await eventService.saveAgenda(pe3);
+
+      // 第三节课 星期二、星期五 语文
+      let chinese3: AgendaData = {} as AgendaData;
+
+      let chinese3rt: RtJson = new RtJson();
+      chinese3rt.cycletype = CycleType.week;
+      chinese3rt.openway.push(2);
+      chinese3rt.openway.push(5);
+      chinese3rt.over.type = OverType.limitdate;
+      chinese3rt.over.value = end;
+
+      chinese3.sd = day;
+      chinese3.al = IsWholeday.NonWhole;
+      chinese3.st = timeranges[2][0];
+      chinese3.et = timeranges[2][1];
+      chinese3.evn = "语文";
+      chinese3.rtjson = chinese3rt;
+
+      await eventService.saveAgenda(chinese3);
+
+      // 美术 | 品生 | 美术 | 写字 | 体育   14:00 ~ 14:40
+      // 第四节课 星期一、星期三 美术
+      let art4: AgendaData = {} as AgendaData;
+
+      let art4rt: RtJson = new RtJson();
+      art4rt.cycletype = CycleType.week;
+      art4rt.openway.push(1);
+      art4rt.openway.push(3);
+      art4rt.over.type = OverType.limitdate;
+      art4rt.over.value = end;
+
+      art4.sd = day;
+      art4.al = IsWholeday.NonWhole;
+      art4.st = timeranges[3][0];
+      art4.et = timeranges[3][1];
+      art4.evn = "美术";
+      art4.rtjson = art4rt;
+
+      await eventService.saveAgenda(art4);
+
+      // 第四节课 星期二 品生
+      let character4: AgendaData = {} as AgendaData;
+
+      let character4rt: RtJson = new RtJson();
+      character4rt.cycletype = CycleType.week;
+      character4rt.openway.push(2);
+      character4rt.over.type = OverType.limitdate;
+      character4rt.over.value = end;
+
+      character4.sd = day;
+      character4.al = IsWholeday.NonWhole;
+      character4.st = timeranges[3][0];
+      character4.et = timeranges[3][1];
+      character4.evn = "品生";
+      character4.rtjson = character4rt;
+
+      await eventService.saveAgenda(character4);
+
+      // 第四节课 星期四 写字
+      let writing4: AgendaData = {} as AgendaData;
+
+      let writing4rt: RtJson = new RtJson();
+      writing4rt.cycletype = CycleType.week;
+      writing4rt.openway.push(4);
+      writing4rt.over.type = OverType.limitdate;
+      writing4rt.over.value = end;
+
+      writing4.sd = day;
+      writing4.al = IsWholeday.NonWhole;
+      writing4.st = timeranges[3][0];
+      writing4.et = timeranges[3][1];
+      writing4.evn = "写字";
+      writing4.rtjson = writing4rt;
+
+      await eventService.saveAgenda(writing4);
+
+      // 第四节课 星期五 体育
+      let pe4: AgendaData = {} as AgendaData;
+
+      let pe4rt: RtJson = new RtJson();
+      pe4rt.cycletype = CycleType.week;
+      pe4rt.openway.push(5);
+      pe4rt.over.type = OverType.limitdate;
+      pe4rt.over.value = end;
+
+      pe4.sd = day;
+      pe4.al = IsWholeday.NonWhole;
+      pe4.st = timeranges[3][0];
+      pe4.et = timeranges[3][1];
+      pe4.evn = "体育";
+      pe4.rtjson = pe4rt;
+
+      await eventService.saveAgenda(pe4);
+
+      // 音乐 | 体育 | 音乐 | 班队 | 品生   14:50 ~ 15:35
+      // 第五节课 星期一、星期三 音乐
+      let music5: AgendaData = {} as AgendaData;
+
+      let music5rt: RtJson = new RtJson();
+      music5rt.cycletype = CycleType.week;
+      music5rt.openway.push(1);
+      music5rt.openway.push(3);
+      music5rt.over.type = OverType.limitdate;
+      music5rt.over.value = end;
+
+      music5.sd = day;
+      music5.al = IsWholeday.NonWhole;
+      music5.st = timeranges[4][0];
+      music5.et = timeranges[4][1];
+      music5.evn = "音乐";
+      music5.rtjson = music5rt;
+
+      await eventService.saveAgenda(music5);
+
+      // 第五节课 星期二 体育
+      let pe5: AgendaData = {} as AgendaData;
+
+      let pe5rt: RtJson = new RtJson();
+      pe5rt.cycletype = CycleType.week;
+      pe5rt.openway.push(2);
+      pe5rt.over.type = OverType.limitdate;
+      pe5rt.over.value = end;
+
+      pe5.sd = day;
+      pe5.al = IsWholeday.NonWhole;
+      pe5.st = timeranges[4][0];
+      pe5.et = timeranges[4][1];
+      pe5.evn = "体育";
+      pe5.rtjson = pe5rt;
+
+      await eventService.saveAgenda(pe5);
+
+      // 第五节课 星期四 班队
+      let activity5: AgendaData = {} as AgendaData;
+
+      let activity5rt: RtJson = new RtJson();
+      activity5rt.cycletype = CycleType.week;
+      activity5rt.openway.push(4);
+      activity5rt.over.type = OverType.limitdate;
+      activity5rt.over.value = end;
+
+      activity5.sd = day;
+      activity5.al = IsWholeday.NonWhole;
+      activity5.st = timeranges[4][0];
+      activity5.et = timeranges[4][1];
+      activity5.evn = "班队";
+      activity5.rtjson = activity5rt;
+
+      await eventService.saveAgenda(activity5);
+
+      // 第五节课 星期五 品生
+      let character5: AgendaData = {} as AgendaData;
+
+      let character5rt: RtJson = new RtJson();
+      character5rt.cycletype = CycleType.week;
+      character5rt.openway.push(5);
+      character5rt.over.type = OverType.limitdate;
+      character5rt.over.value = end;
+
+      character5.sd = day;
+      character5.al = IsWholeday.NonWhole;
+      character5.st = timeranges[4][0];
+      character5.et = timeranges[4][1];
+      character5.evn = "品生";
+      character5.rtjson = character5rt;
+
+      await eventService.saveAgenda(character5);
+
+      //  无  | 无  | 兴趣  |  无  | 无    15:45 ~ 16:25
+      // 第六节课 星期三 兴趣
+      let interest5: AgendaData = {} as AgendaData;
+
+      let interest5rt: RtJson = new RtJson();
+      interest5rt.cycletype = CycleType.week;
+      interest5rt.openway.push(3);
+      interest5rt.over.type = OverType.limitdate;
+      interest5rt.over.value = end;
+
+      interest5.sd = day;
+      interest5.al = IsWholeday.NonWhole;
+      interest5.st = timeranges[5][0];
+      interest5.et = timeranges[5][1];
+      interest5.evn = "兴趣";
+      interest5.rtjson = interest5rt;
+
+      await eventService.saveAgenda(interest5);
+
+    });
+
+    it(`Case 1 - 1 2018/08 无活动`, async () => {
+      let month1808Summary = await calendarService.fetchMonthActivitiesSummary("2018/08");
+
+      expect(month1808Summary).toBeDefined();
+
+      for (let daySummary of month1808Summary.days) {
+        expect(daySummary.day).toBeDefined();
+        expect(daySummary.calendaritemscount).toBe(0);
+        expect(daySummary.activityitemscount).toBe(0);
+        expect(daySummary.eventscount).toBe(0);
+        expect(daySummary.agendascount).toBe(0);
+        expect(daySummary.taskscount).toBe(0);
+        expect(daySummary.memoscount).toBe(0);
+        expect(daySummary.repeateventscount).toBe(0);
+        expect(daySummary.bookedtimesummary).toBe(0);
+      }
+    });
+
+    it(`Case 1 - 2 2018/09 有活动`, async () => {
+      let month1809Summary = await calendarService.fetchMonthActivitiesSummary("2018/09");
+
+      expect(month1809Summary).toBeDefined();
+
+      for (let daySummary of month1809Summary.days) {
+        expect(daySummary.day).toBeDefined();
+
+        let dayOfWeek = Number(moment(daySummary.day).format("d"));
+        if (dayOfWeek > 0 && dayOfWeek < 6) {             // 非周末
+          if (dayOfWeek == 3) {                           // 星期三
+            if (daySummary.day == "2018/09/05") {  // 第三天
+              expect(daySummary.calendaritemscount).toBe(0);
+              expect(daySummary.activityitemscount).toBe(0);
+              expect(daySummary.eventscount).toBe(6);
+              expect(daySummary.agendascount).toBe(2);
+              expect(daySummary.taskscount).toBe(0);
+              expect(daySummary.memoscount).toBe(0);
+              expect(daySummary.repeateventscount).toBe(4);
+              expect(daySummary.bookedtimesummary).toBe(0);
+            } else {
+              expect(daySummary.calendaritemscount).toBe(0);
+              expect(daySummary.activityitemscount).toBe(0);
+              expect(daySummary.eventscount).toBe(6);
+              expect(daySummary.agendascount).toBe(0);
+              expect(daySummary.taskscount).toBe(0);
+              expect(daySummary.memoscount).toBe(0);
+              expect(daySummary.repeateventscount).toBe(6);
+              expect(daySummary.bookedtimesummary).toBe(0);
+            }
+          } else {                                        // 星期三以外
+            if (daySummary.day == "2018/09/03") {         // 第一天
+              expect(daySummary.calendaritemscount).toBe(0);
+              expect(daySummary.activityitemscount).toBe(0);
+              expect(daySummary.eventscount).toBe(5);
+              expect(daySummary.agendascount).toBe(5);
+              expect(daySummary.taskscount).toBe(0);
+              expect(daySummary.memoscount).toBe(0);
+              expect(daySummary.repeateventscount).toBe(0);
+              expect(daySummary.bookedtimesummary).toBe(0);
+            } else if (daySummary.day == "2018/09/04") {  // 第二天
+              expect(daySummary.calendaritemscount).toBe(0);
+              expect(daySummary.activityitemscount).toBe(0);
+              expect(daySummary.eventscount).toBe(5);
+              expect(daySummary.agendascount).toBe(5);
+              expect(daySummary.taskscount).toBe(0);
+              expect(daySummary.memoscount).toBe(0);
+              expect(daySummary.repeateventscount).toBe(0);
+              expect(daySummary.bookedtimesummary).toBe(0);
+            } else if (daySummary.day == "2018/09/06") {  // 第四天
+              expect(daySummary.calendaritemscount).toBe(0);
+              expect(daySummary.activityitemscount).toBe(0);
+              expect(daySummary.eventscount).toBe(5);
+              expect(daySummary.agendascount).toBe(2);
+              expect(daySummary.taskscount).toBe(0);
+              expect(daySummary.memoscount).toBe(0);
+              expect(daySummary.repeateventscount).toBe(3);
+              expect(daySummary.bookedtimesummary).toBe(0);
+            } else if (daySummary.day == "2018/09/07") {  // 第五天
+              expect(daySummary.calendaritemscount).toBe(0);
+              expect(daySummary.activityitemscount).toBe(0);
+              expect(daySummary.eventscount).toBe(5);
+              expect(daySummary.agendascount).toBe(2);
+              expect(daySummary.taskscount).toBe(0);
+              expect(daySummary.memoscount).toBe(0);
+              expect(daySummary.repeateventscount).toBe(3);
+              expect(daySummary.bookedtimesummary).toBe(0);
+            } else {                                      // 重复天
+              expect(daySummary.calendaritemscount).toBe(0);
+              expect(daySummary.activityitemscount).toBe(0);
+              expect(daySummary.eventscount).toBe(5);
+              expect(daySummary.agendascount).toBe(0);
+              expect(daySummary.taskscount).toBe(0);
+              expect(daySummary.memoscount).toBe(0);
+              expect(daySummary.repeateventscount).toBe(5);
+              expect(daySummary.bookedtimesummary).toBe(0);
+            }
+          }
+        } else {                                          // 周末
+          expect(daySummary.calendaritemscount).toBe(0);
+          expect(daySummary.activityitemscount).toBe(0);
+          expect(daySummary.eventscount).toBe(0);
+          expect(daySummary.agendascount).toBe(0);
+          expect(daySummary.taskscount).toBe(0);
+          expect(daySummary.memoscount).toBe(0);
+          expect(daySummary.repeateventscount).toBe(0);
+          expect(daySummary.bookedtimesummary).toBe(0);
+        }
+      }
+    });
+
+    it(`Case 1 - 3 2019/02 无活动`, async () => {
+      let month1902Summary = await calendarService.fetchMonthActivitiesSummary("2019/02");
+
+      expect(month1902Summary).toBeDefined();
+
+      for (let daySummary of month1902Summary.days) {
+        expect(daySummary.day).toBeDefined();
+        expect(daySummary.calendaritemscount).toBe(0);
+        expect(daySummary.activityitemscount).toBe(0);
+        expect(daySummary.eventscount).toBe(0);
+        expect(daySummary.agendascount).toBe(0);
+        expect(daySummary.taskscount).toBe(0);
+        expect(daySummary.memoscount).toBe(0);
+        expect(daySummary.repeateventscount).toBe(0);
+        expect(daySummary.bookedtimesummary).toBe(0);
+      }
+    });
 
   });
 
@@ -2571,7 +3032,7 @@ describe('CalendarService test suite', () => {
     expect(nextdaySummary.calendaritemscount).toBe(0);
     expect(nextdaySummary.activityitemscount).toBe(0);
     expect(nextdaySummary.eventscount).toBe(1);
-    expect(nextdaySummary.agendascount).toBe(1);
+    expect(nextdaySummary.agendascount).toBe(0);
     expect(nextdaySummary.taskscount).toBe(0);
     expect(nextdaySummary.memoscount).toBe(0);
     expect(nextdaySummary.repeateventscount).toBe(1);
@@ -2616,7 +3077,7 @@ describe('CalendarService test suite', () => {
     expect(nextdaySummary.calendaritemscount).toBe(0);
     expect(nextdaySummary.activityitemscount).toBe(0);
     expect(nextdaySummary.eventscount).toBe(1);
-    expect(nextdaySummary.agendascount).toBe(1);
+    expect(nextdaySummary.agendascount).toBe(0);
     expect(nextdaySummary.taskscount).toBe(0);
     expect(nextdaySummary.memoscount).toBe(0);
     expect(nextdaySummary.repeateventscount).toBe(1);
@@ -2661,7 +3122,7 @@ describe('CalendarService test suite', () => {
     expect(nextdaySummary.calendaritemscount).toBe(0);
     expect(nextdaySummary.activityitemscount).toBe(0);
     expect(nextdaySummary.eventscount).toBe(1);
-    expect(nextdaySummary.agendascount).toBe(1);
+    expect(nextdaySummary.agendascount).toBe(0);
     expect(nextdaySummary.taskscount).toBe(0);
     expect(nextdaySummary.memoscount).toBe(0);
     expect(nextdaySummary.repeateventscount).toBe(1);
@@ -2706,7 +3167,7 @@ describe('CalendarService test suite', () => {
     expect(nextdaySummary.calendaritemscount).toBe(0);
     expect(nextdaySummary.activityitemscount).toBe(0);
     expect(nextdaySummary.eventscount).toBe(1);
-    expect(nextdaySummary.agendascount).toBe(1);
+    expect(nextdaySummary.agendascount).toBe(0);
     expect(nextdaySummary.taskscount).toBe(0);
     expect(nextdaySummary.memoscount).toBe(0);
     expect(nextdaySummary.repeateventscount).toBe(1);
