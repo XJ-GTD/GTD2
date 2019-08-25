@@ -279,7 +279,7 @@ export class EventService extends BaseService {
    * 删除重复事件使用OperateType.FromSel
    * @returns {Promise<Array<AgendaData>>}
    */
-  async delAgenda(oriAgdata : AgendaData, delType : anyenum.OperateType):Promise<Array<AgendaData>>{
+  async removeAgenda(oriAgdata : AgendaData, delType : anyenum.OperateType):Promise<Array<AgendaData>>{
 
     let outAgds = new Array<AgendaData>();
 
@@ -735,7 +735,7 @@ export class EventService extends BaseService {
     delAgds = await this.sqlExce.getExtLstByParam<AgendaData>(sq,[]);
 
     //更新原事件日程结束日或事件表无记录了则删除
-    sq = `select * from gtd_ev where (evi = '${masterEvi}' or rtevi =  '${masterEvi}') and del <> '${anyenum.DelType.del}'  
+    sq = `select * from gtd_ev where (evi = '${masterEvi}' or rtevi =  '${masterEvi}') and del <> '${anyenum.DelType.del}'
       order by evd  ;`;
     let evtbls = new Array<AgendaData>();
     evtbls = await this.sqlExce.getExtLstByParam<AgendaData>(sq ,[]);
