@@ -57,16 +57,16 @@ export class EventService extends BaseService {
    *
    * @author leon_xi@163.com
    **/
-  async syncPrivateAgdent(agdatas: Array<AgendaData>) {
+  async syncPrivateAgdent(uploadAgdData: UploadAgdData) {
 
-    this.assertEmpty(agdatas);       // 入参不能为空
+    this.assertEmpty(uploadAgdData);       // 入参不能为空
 
     // 构造Push数据结构
     let push: PushInData = new PushInData();
 
-    for (let j = 0 ,len = agdatas.length ; j< len ; j++){
+    for (let j = 0 ,len = uploadAgdData.agendas.length ; j< len ; j++){
       let agd = {} as AgendaData;
-      agd = agdatas[j];
+      agd = uploadAgdData.agendas[j];
       let sync: SyncData = new SyncData();
       sync.id = agd.evi;
       sync.type = "Agenda";
@@ -83,7 +83,7 @@ export class EventService extends BaseService {
       if (agd.del == anyenum.DelType.del){
         sync.status = SyncDataStatus.Deleted;
       }
-
+      sync.to = [];
       sync.payload = agd;
       push.d.push(sync);
     }
@@ -1151,16 +1151,22 @@ export class EventService extends BaseService {
       agdata.et = "23:59";
     }else{
       //不是全天，结束时间通过时长计算
-      if (agdata.ct == 0 ){
-        agdata.et = agdata.st;
-      }else{
-        let tmpdatetime1 = moment(agdata.ed + " " + agdata.st).add(agdata.ct, 'm');
-        //时长相加后，如果超出一天，则使用当天的23:59
-        if (moment(tmpdatetime1).isBefore(moment(agdata.ed + " " + "00:00").add(1,'d'))){
-          agdata.et = moment(tmpdatetime1).format("HH:mm");
+      if (agdata.et == ""){
+        if (agdata.ct == 0 ){
+          agdata.et = agdata.st;
         }else{
-          agdata.et = "23:59";
+          let tmpdatetime1 = moment(agdata.ed + " " + agdata.st).add(agdata.ct, 'm');
+          //时长相加后，如果超出一天，则使用当天的23:59
+          if (moment(tmpdatetime1).isBefore(moment(agdata.ed + " " + "00:00").add(1,'d'))){
+            agdata.et = moment(tmpdatetime1).format("HH:mm");
+          }else{
+            agdata.et = "23:59";
+          }
         }
+      }else{
+        //结束时间不为空，则算时长
+        let ct = moment(agdata.ed + " " + agdata.st).diff(agdata.ed + " " + agdata.et, 'm');
+        agdata.ct = ct;
       }
     }
 
@@ -1481,6 +1487,11 @@ export class EventService extends BaseService {
 		}
 		return ;
   }
+}
+
+export class UploadAgdData{
+  agendas : Array<AgendaData>;
+  ParterUi:Array<string>;
 }
 
 export interface EventData extends EvTbl {
