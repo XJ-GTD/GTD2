@@ -763,7 +763,7 @@ describe('CalendarService test suite', () => {
         let dayOfWeek = Number(moment(daySummary.day).format("d"));
         if (dayOfWeek > 0 && dayOfWeek < 6) {             // 非周末
           if (dayOfWeek == 3) {                           // 星期三
-            if (daySummary.day == "2019/09/05") {  // 第三天
+            if (daySummary.day == "2018/09/05") {  // 第三天
               expect(daySummary.calendaritemscount).toBe(0);
               expect(daySummary.activityitemscount).toBe(0);
               expect(daySummary.eventscount).toBe(6);
@@ -783,7 +783,7 @@ describe('CalendarService test suite', () => {
               expect(daySummary.bookedtimesummary).toBe(0);
             }
           } else {                                        // 星期三以外
-            if (daySummary.day == "2019/09/03") {         // 第一天
+            if (daySummary.day == "2018/09/03") {         // 第一天
               expect(daySummary.calendaritemscount).toBe(0);
               expect(daySummary.activityitemscount).toBe(0);
               expect(daySummary.eventscount).toBe(5);
@@ -792,7 +792,7 @@ describe('CalendarService test suite', () => {
               expect(daySummary.memoscount).toBe(0);
               expect(daySummary.repeateventscount).toBe(0);
               expect(daySummary.bookedtimesummary).toBe(0);
-            } else if (daySummary.day == "2019/09/04") {  // 第二天
+            } else if (daySummary.day == "2018/09/04") {  // 第二天
               expect(daySummary.calendaritemscount).toBe(0);
               expect(daySummary.activityitemscount).toBe(0);
               expect(daySummary.eventscount).toBe(5);
@@ -801,7 +801,7 @@ describe('CalendarService test suite', () => {
               expect(daySummary.memoscount).toBe(0);
               expect(daySummary.repeateventscount).toBe(0);
               expect(daySummary.bookedtimesummary).toBe(0);
-            } else if (daySummary.day == "2019/09/06") {  // 第四天
+            } else if (daySummary.day == "2018/09/06") {  // 第四天
               expect(daySummary.calendaritemscount).toBe(0);
               expect(daySummary.activityitemscount).toBe(0);
               expect(daySummary.eventscount).toBe(5);
@@ -810,7 +810,7 @@ describe('CalendarService test suite', () => {
               expect(daySummary.memoscount).toBe(0);
               expect(daySummary.repeateventscount).toBe(3);
               expect(daySummary.bookedtimesummary).toBe(0);
-            } else if (daySummary.day == "2019/09/07") {  // 第五天
+            } else if (daySummary.day == "2018/09/07") {  // 第五天
               expect(daySummary.calendaritemscount).toBe(0);
               expect(daySummary.activityitemscount).toBe(0);
               expect(daySummary.eventscount).toBe(5);
