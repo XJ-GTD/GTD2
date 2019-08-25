@@ -20,8 +20,6 @@ import {BTbl} from "../sqlite/tbl/b.tbl";
 import {FjTbl} from "../sqlite/tbl/fj.tbl";
 import {DataRestful, PullInData, PushInData, SyncData} from "../restful/datasev";
 import {SyncDataStatus} from "../../data.enum";
-import {PlanType} from "../../data.enum";
-import {PlanData} from "./calendar.service";
 import {SyncDataSecurity} from "../../data.enum";
 
 @Injectable()
@@ -83,7 +81,7 @@ export class EventService extends BaseService {
       if (agd.del == anyenum.DelType.del){
         sync.status = SyncDataStatus.Deleted;
       }
-      sync.to = [];
+      sync.to = (!agd.tos || agd.tos == "" || agd.tos == null) ? [] : agd.tos.split(",") ;
       sync.payload = agd;
       push.d.push(sync);
     }
@@ -298,7 +296,7 @@ export class EventService extends BaseService {
       }
 
       //删除原事件中从当前开始所有事件
-      await this.delFromsel(masterEvi ,oriAgdata ,sqlparam,outAgds);
+      await this.delFromsel(masterEvi ,oriAgdata ,oriAgdata.parters,sqlparam,outAgds);
 
     }else{
 
@@ -386,13 +384,47 @@ export class EventService extends BaseService {
           //是父对象删除则原对应日程删除
           sqlparam.push(ca.dTParam());
 
+          //本地删除事件参与人
+          let par: ParTbl = new ParTbl();
+          par.obt = anyenum.ObjectType.Event;
+          par.obi = masterEvi;
+          par.del = anyenum.DelType.del;
+          par.tb = anyenum.SyncType.unsynch;
+          sqlparam.push(par.upTParam());
+
+          //本地删除附件
+          let fj: FjTbl = new FjTbl();
+          fj.obt = anyenum.ObjectType.Event;
+          fj.obi = masterEvi;
+          fj.del = anyenum.DelType.del;
+          fj.tb = anyenum.SyncType.unsynch;
+          sqlparam.push(fj.upTParam());
+
+          //取得所有删除的参与人
+          let delpars = new Array<Parter>();
+          let delpar = new  ParTbl();
+          delpar.obt = anyenum.ObjectType.Event;
+          delpar.obi = masterEvi;
+          delpars = await this.sqlExce.getLstByParam<Parter>(delpar);
+
+          //取得所有删除的附件
+          let delfjs = new Array<FjTbl>();
+          let delfj = new  FjTbl();
+          delfj.obt = anyenum.ObjectType.Event;
+          delfj.obi = masterEvi;
+          delfjs = await this.sqlExce.getLstByParam<FjTbl>(delfj);
+
           //删除的日程放入返回事件的事件对象
           Object.assign(outAgd,ca);
+          //把删除参与人放入事件信息
+          outAgd.parters = delpars;
+          //把删除的附件复制放入事件信息
+          outAgd.fjs = delfjs;
 
         }
 
         //如果当前删除对象是父事件，则为当前重复事件重建新的父事件，值为ev表重复记录里的第一条做为父事件
-        await this.operateForParentAgd(oriAgdata,sqlparam,outAgds);
+        await this.operateForParentAgd(oriAgdata,oriAgdata.parters,sqlparam,outAgds);
 
       }
 
@@ -493,14 +525,19 @@ export class EventService extends BaseService {
     caparam = this.sqlparamAddCa(retParamEv.rtevi,agdata.sd,retParamEv.ed,agdata);
     sqlparam.push(caparam.rpTParam());
 
+    let tos : string;//需要发送的参与人手机号
+    tos = this.getParterPhone(agdata.parters);
+
     //日程表信息放入返回事件的父记录信息中
     for (let j = 0, len = retParamEv.outAgdatas.length; j < len ; j++){
       let outAgd = {} as AgendaData;
       outAgd = retParamEv.outAgdatas[j];
       if (outAgd.rtevi == "" && outAgd.evi == caparam.evi){
         Object.assign(outAgd,caparam);
-        break;
+        //break;
       }
+      outAgd.tos = tos;
+
     }
 
     //批量本地入库
@@ -528,6 +565,9 @@ export class EventService extends BaseService {
 
     newAgdata.mi = UserConfig.account.id;
 
+    let tos : string;//需要发送的参与人手机号
+    tos = this.getParterPhone(newAgdata.parters);
+
     /*如果只改当天，则
     1.修改当前数据内容 2.日程表新增一条对应数据 3重建相关提醒
     如果改变从当前所有，则
@@ -544,7 +584,7 @@ export class EventService extends BaseService {
       }
 
       //删除原事件中从当前开始所有事件
-      await this.delFromsel(masterEvi ,oriAgdata ,sqlparam,outAgds);
+      await this.delFromsel(masterEvi ,oriAgdata ,newAgdata.parters,sqlparam,outAgds);
 
       //新建新事件日程
       let nwAgdata = {} as AgendaData;
@@ -603,6 +643,9 @@ export class EventService extends BaseService {
       await this.sqlExce.updateByParam(ev);
       //事件对象放入返回事件
       Object.assign(outAgd,ev);
+
+      outAgd.tos = tos;//需要发送的参与人
+
       outAgds.push(outAgd);
 
       // 删除相关提醒
@@ -617,7 +660,7 @@ export class EventService extends BaseService {
       }
 
       //如果当前更新对象是父节点，则为当前重复日程重建新的父记录，值为ev表里的第一条做为父记录
-      await this.operateForParentAgd(oriAgdata,sqlparam,outAgds);
+      await this.operateForParentAgd(oriAgdata,newAgdata.parters,sqlparam,outAgds);
 
       //日程表新建或更新,修改为独立日的也需要为自己创建对应的日程
       let caparam = new CaTbl();
@@ -640,17 +683,23 @@ export class EventService extends BaseService {
   /**
    * 如果当前删除对象是父事件，则为当前重复事件重建新的父事件，值为ev表重复记录里的第一条做为父事件
    * @param {AgendaData} oriAgdata
+   * @param {Array<Parter>} parters
    * @param {Array<any>} sqlparam
    * @param {DUflag} doflag
    * @returns {Promise<void>}
    */
-  private async operateForParentAgd(oriAgdata : AgendaData,sqlparam : Array<any>,
+  private async operateForParentAgd(oriAgdata : AgendaData,
+                                      parters : Array<Parter>,
+                                      sqlparam : Array<any>,
                                       outAgds : Array<AgendaData>){
     let sq : string ;
 
     let outAgd = {} as AgendaData;
     let nwEvs = Array<EvTbl>();
     let nwEv = new EvTbl();
+
+    let tos : string;//需要发送的参与人手机号
+    tos = this.getParterPhone(parters);
 
     let upcondi :string ;
     let upAgds = new Array<AgendaData>();//保存修改的事件用
@@ -675,7 +724,7 @@ export class EventService extends BaseService {
         await this.sqlExce.execSql(sq);
 
         //上记标记为修改的记录放入返回事件中
-        sq = ` select * from where ${upcondi} ; `
+        sq = ` select *, '${tos}' as tos from gtd_ev where ${upcondi} ; `
         upAgds = await this.sqlExce.getExtLstByParam<AgendaData>(sq,[]);
 
         //为新的父事件建立新的对应日程
@@ -702,6 +751,9 @@ export class EventService extends BaseService {
         //复制原附件放入返回事件的父事件中
         outAgd.fjs = oriAgdata.fjs;
 
+        outAgd.tos = tos;//需要发送的参与人
+
+
         outAgds.push(outAgd);
 
         outAgds = [...outAgds ,...upAgds];
@@ -713,15 +765,21 @@ export class EventService extends BaseService {
    * 删除原事件中从当前开始所有事件
    * @param {string} masterEvi
    * @param {AgendaData} oriAgdata
-   * @param {AgendaData} newAgdata
+   * @param {Array<Parter>} parters
    * @param {Array<any>} sqlparam
    * @param {Array<AgendaData>} outAgds
    * @returns {Promise<void>}
    */
-  private async delFromsel(masterEvi : string ,oriAgdata : AgendaData ,
-                             sqlparam : Array<any>,outAgds : Array<AgendaData>){
+  private async delFromsel(masterEvi : string ,
+                           oriAgdata : AgendaData ,
+                           parters : Array<Parter>,
+                           sqlparam : Array<any>,
+                           outAgds : Array<AgendaData>){
     let delAgds = new Array<AgendaData>();//保存删除的事件用
     let delcondi :string ;
+
+    let tos : string;//需要发送的参与人手机号
+    tos = this.getParterPhone(parters);
 
     let sq : string ;
     //删除原事件中从当前开始所有事件 evd使用原事件evd
@@ -754,6 +812,9 @@ export class EventService extends BaseService {
       for (let j = 0 ,len = evtbls.length ; j < len ; j++){
         if (evtbls[j].rtevi == "" && evtbls[j].evi == ca.evi){
           Object.assign(evtbls[j],ca);
+
+          evtbls[j].tos = tos;//需要发送的参与人
+
           outAgds.push(evtbls[j]);
           break;
         }
@@ -809,6 +870,23 @@ export class EventService extends BaseService {
       }
     }
     outAgds = [...outAgds, ...delAgds];
+  }
+
+  /**
+   * 获取参与人手机号
+   * @param {Array<Parter>} parters
+   * @returns {Array<string>}
+   */
+  private getParterPhone(parters : Array<Parter>): string{
+
+    let ret : Array<string> = [];
+    if (!parters || parters == null) {
+      return "";
+    }
+    for (let j = 0,len = parters.length; j < len ; j++){
+      ret.push(parters[j].rc);
+    }
+    return ret.join(",");
   }
 
   /**
@@ -1514,6 +1592,9 @@ export interface AgendaData extends EventData, CaTbl {
 
   //附件
   fjs : Array<FjTbl>;
+
+  //用于数据上传给服务器时，给哪些参与人，[]无参与人或参与人被全删
+  tos : string;
 
 }
 
