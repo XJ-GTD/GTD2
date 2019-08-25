@@ -3032,7 +3032,7 @@ describe('CalendarService test suite', () => {
     expect(nextdaySummary.calendaritemscount).toBe(0);
     expect(nextdaySummary.activityitemscount).toBe(0);
     expect(nextdaySummary.eventscount).toBe(1);
-    expect(nextdaySummary.agendascount).toBe(1);
+    expect(nextdaySummary.agendascount).toBe(0);
     expect(nextdaySummary.taskscount).toBe(0);
     expect(nextdaySummary.memoscount).toBe(0);
     expect(nextdaySummary.repeateventscount).toBe(1);
@@ -3077,7 +3077,7 @@ describe('CalendarService test suite', () => {
     expect(nextdaySummary.calendaritemscount).toBe(0);
     expect(nextdaySummary.activityitemscount).toBe(0);
     expect(nextdaySummary.eventscount).toBe(1);
-    expect(nextdaySummary.agendascount).toBe(1);
+    expect(nextdaySummary.agendascount).toBe(0);
     expect(nextdaySummary.taskscount).toBe(0);
     expect(nextdaySummary.memoscount).toBe(0);
     expect(nextdaySummary.repeateventscount).toBe(1);
@@ -3122,7 +3122,7 @@ describe('CalendarService test suite', () => {
     expect(nextdaySummary.calendaritemscount).toBe(0);
     expect(nextdaySummary.activityitemscount).toBe(0);
     expect(nextdaySummary.eventscount).toBe(1);
-    expect(nextdaySummary.agendascount).toBe(1);
+    expect(nextdaySummary.agendascount).toBe(0);
     expect(nextdaySummary.taskscount).toBe(0);
     expect(nextdaySummary.memoscount).toBe(0);
     expect(nextdaySummary.repeateventscount).toBe(1);
@@ -3167,7 +3167,7 @@ describe('CalendarService test suite', () => {
     expect(nextdaySummary.calendaritemscount).toBe(0);
     expect(nextdaySummary.activityitemscount).toBe(0);
     expect(nextdaySummary.eventscount).toBe(1);
-    expect(nextdaySummary.agendascount).toBe(1);
+    expect(nextdaySummary.agendascount).toBe(0);
     expect(nextdaySummary.taskscount).toBe(0);
     expect(nextdaySummary.memoscount).toBe(0);
     expect(nextdaySummary.repeateventscount).toBe(1);
