@@ -410,7 +410,7 @@ describe('CalendarService test suite', () => {
   // 美术 | 品生 | 美术 | 写子 | 体育   14:00 ~ 14:40
   // 音乐 | 体育 | 音乐 | 班队 | 品生   14:50 ~ 15:35
   //  无  | 无  | 兴趣  |  无  | 无    15:45 ~ 16:25
-  describe(`2018年第一学期 小学课程表(2018/09/01 ~ 2019/01/18)`, () => {
+  describe(`Case 28 - 1 重复集成测试 2018年第一学期 小学课程表(2018/09/01 ~ 2019/01/18)`, () => {
     let day: string = "2018/09/01";
     let end: string = "2019/01/18";
     let timeranges: Array<Array<string>> = [
@@ -748,7 +748,60 @@ describe('CalendarService test suite', () => {
       }
     });
 
-    it(`Case 1 - 2 2019/02 无活动`, async () => {
+    it(`Case 1 - 2 2018/09 有活动`, async () => {
+      let month1809Summary = await calendarService.fetchMonthActivitiesSummary("2018/09");
+
+      expect(month1809Summary).toBeDefined();
+
+      for (let daySummary of month1809Summary.days) {
+        expect(daySummary.day).toBeDefined();
+
+        let dayOfWeek = Number(moment(daySummary.day).format("d"));
+        if (dayOfWeek > 0 && dayOfWeek < 6) {
+          if (dayOfWeek == 3) { // 星期三
+            expect(daySummary.calendaritemscount).toBe(0);
+            expect(daySummary.activityitemscount).toBe(0);
+            expect(daySummary.eventscount).toBe(6);
+            expect(daySummary.agendascount).toBe(0);
+            expect(daySummary.taskscount).toBe(0);
+            expect(daySummary.memoscount).toBe(0);
+            expect(daySummary.repeateventscount).toBe(6);
+            expect(daySummary.bookedtimesummary).toBe(0);
+          } else {  // 星期三以外
+            if (daySummary.day == "2019/09/03") {   // 第一天
+              expect(daySummary.calendaritemscount).toBe(0);
+              expect(daySummary.activityitemscount).toBe(0);
+              expect(daySummary.eventscount).toBe(5);
+              expect(daySummary.agendascount).toBe(5);
+              expect(daySummary.taskscount).toBe(0);
+              expect(daySummary.memoscount).toBe(0);
+              expect(daySummary.repeateventscount).toBe(0);
+              expect(daySummary.bookedtimesummary).toBe(0);
+            } else {    // 重复天
+              expect(daySummary.calendaritemscount).toBe(0);
+              expect(daySummary.activityitemscount).toBe(0);
+              expect(daySummary.eventscount).toBe(5);
+              expect(daySummary.agendascount).toBe(0);
+              expect(daySummary.taskscount).toBe(0);
+              expect(daySummary.memoscount).toBe(0);
+              expect(daySummary.repeateventscount).toBe(5);
+              expect(daySummary.bookedtimesummary).toBe(0);
+            }
+          }
+        } else {
+          expect(daySummary.calendaritemscount).toBe(0);
+          expect(daySummary.activityitemscount).toBe(0);
+          expect(daySummary.eventscount).toBe(0);
+          expect(daySummary.agendascount).toBe(0);
+          expect(daySummary.taskscount).toBe(0);
+          expect(daySummary.memoscount).toBe(0);
+          expect(daySummary.repeateventscount).toBe(0);
+          expect(daySummary.bookedtimesummary).toBe(0);
+        }
+      }
+    });
+
+    it(`Case 1 - 3 2019/02 无活动`, async () => {
       let month1902Summary = await calendarService.fetchMonthActivitiesSummary("2019/02");
 
       expect(month1902Summary).toBeDefined();
