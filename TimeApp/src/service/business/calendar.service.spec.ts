@@ -422,7 +422,7 @@ describe('CalendarService test suite', () => {
       ["15:45", "16:25"]
     ];
 
-    beforeAll(async () => {
+    beforeEach(async () => {
 
       // 数学 | 语文 | 语文 | 语文 | 数学   08:20 ~ 09:00
       // 第一节课 星期一、星期五 数学
@@ -757,8 +757,8 @@ describe('CalendarService test suite', () => {
         expect(daySummary.day).toBeDefined();
 
         let dayOfWeek = Number(moment(daySummary.day).format("d"));
-        if (dayOfWeek > 0 && dayOfWeek < 6) {
-          if (dayOfWeek == 3) { // 星期三
+        if (dayOfWeek > 0 && dayOfWeek < 6) {             // 非周末
+          if (dayOfWeek == 3) {                           // 星期三
             expect(daySummary.calendaritemscount).toBe(0);
             expect(daySummary.activityitemscount).toBe(0);
             expect(daySummary.eventscount).toBe(6);
@@ -767,8 +767,8 @@ describe('CalendarService test suite', () => {
             expect(daySummary.memoscount).toBe(0);
             expect(daySummary.repeateventscount).toBe(6);
             expect(daySummary.bookedtimesummary).toBe(0);
-          } else {  // 星期三以外
-            if (daySummary.day == "2019/09/03") {   // 第一天
+          } else {                                        // 星期三以外
+            if (daySummary.day == "2019/09/03") {         // 第一天
               expect(daySummary.calendaritemscount).toBe(0);
               expect(daySummary.activityitemscount).toBe(0);
               expect(daySummary.eventscount).toBe(5);
@@ -777,7 +777,7 @@ describe('CalendarService test suite', () => {
               expect(daySummary.memoscount).toBe(0);
               expect(daySummary.repeateventscount).toBe(0);
               expect(daySummary.bookedtimesummary).toBe(0);
-            } else {    // 重复天
+            } else {                                      // 重复天
               expect(daySummary.calendaritemscount).toBe(0);
               expect(daySummary.activityitemscount).toBe(0);
               expect(daySummary.eventscount).toBe(5);
@@ -788,7 +788,7 @@ describe('CalendarService test suite', () => {
               expect(daySummary.bookedtimesummary).toBe(0);
             }
           }
-        } else {
+        } else {                                          // 周末
           expect(daySummary.calendaritemscount).toBe(0);
           expect(daySummary.activityitemscount).toBe(0);
           expect(daySummary.eventscount).toBe(0);
