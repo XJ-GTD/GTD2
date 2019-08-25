@@ -384,8 +384,42 @@ export class EventService extends BaseService {
           //是父对象删除则原对应日程删除
           sqlparam.push(ca.dTParam());
 
+          //本地删除事件参与人
+          let par: ParTbl = new ParTbl();
+          par.obt = anyenum.ObjectType.Event;
+          par.obi = masterEvi;
+          par.del = anyenum.DelType.del;
+          par.tb = anyenum.SyncType.unsynch;
+          sqlparam.push(par.upTParam());
+
+          //本地删除附件
+          let fj: FjTbl = new FjTbl();
+          fj.obt = anyenum.ObjectType.Event;
+          fj.obi = masterEvi;
+          fj.del = anyenum.DelType.del;
+          fj.tb = anyenum.SyncType.unsynch;
+          sqlparam.push(fj.upTParam());
+
+          //取得所有删除的参与人
+          let delpars = new Array<Parter>();
+          let delpar = new  ParTbl();
+          delpar.obt = anyenum.ObjectType.Event;
+          delpar.obi = masterEvi;
+          delpars = await this.sqlExce.getLstByParam<Parter>(delpar);
+
+          //取得所有删除的附件
+          let delfjs = new Array<FjTbl>();
+          let delfj = new  FjTbl();
+          delfj.obt = anyenum.ObjectType.Event;
+          delfj.obi = masterEvi;
+          delfjs = await this.sqlExce.getLstByParam<FjTbl>(delfj);
+
           //删除的日程放入返回事件的事件对象
           Object.assign(outAgd,ca);
+          //把删除参与人放入事件信息
+          outAgd.parters = delpars;
+          //把删除的附件复制放入事件信息
+          outAgd.fjs = delfjs;
 
         }
 
