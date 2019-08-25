@@ -769,7 +769,7 @@ export class CalendarService extends BaseService {
                                   max(gdayjta.calendaritemscount) calendaritemscount,
                                   max(gdayjta.activityitemscount) activityitemscount,
                                   sum(CASE WHEN IFNULL(gev.evi, '') = '' THEN 0 WHEN gev.del = '${DelType.del}' THEN 0 ELSE 1 END) eventscount,
-                                  sum(CASE WHEN IFNULL(gev.evi, '') = '' THEN 0 WHEN gev.type <> '${EventType.Agenda}' THEN 0 WHEN gev.del = '${DelType.del}' THEN 0 ELSE 1 END) agendascount,
+                                  sum(CASE WHEN IFNULL(gev.evi, '') = '' THEN 0 WHEN IFNULL(gev.rtevi, '') <> '' THEN 0 WHEN gev.type <> '${EventType.Agenda}' THEN 0 WHEN gev.del = '${DelType.del}' THEN 0 ELSE 1 END) agendascount,
                                   sum(CASE WHEN IFNULL(gev.evi, '') = '' THEN 0 WHEN gev.type <> '${EventType.Task}' THEN 0 WHEN gev.del = '${DelType.del}' THEN 0 ELSE 1 END) taskscount,
                                   sum(CASE WHEN IFNULL(gev.rtevi, '') = '' THEN 0 WHEN gev.del = '${DelType.del}' THEN 0 ELSE 1 END) repeateventscount
                             from (select gday.sd day,
@@ -1122,7 +1122,7 @@ export class CalendarService extends BaseService {
                                   max(gdayjta.calendaritemscount) calendaritemscount,
                                   max(gdayjta.activityitemscount) activityitemscount,
                                   sum(CASE WHEN IFNULL(gev.evi, '') = '' THEN 0 WHEN gev.del = '${DelType.del}' THEN 0 ELSE 1 END) eventscount,
-                                  sum(CASE WHEN IFNULL(gev.evi, '') = '' THEN 0 WHEN gev.type <> '${EventType.Agenda}' THEN 0 WHEN gev.del = '${DelType.del}' THEN 0 ELSE 1 END) agendascount,
+                                  sum(CASE WHEN IFNULL(gev.evi, '') = '' THEN 0 WHEN IFNULL(gev.rtevi, '') <> '' THEN 0 WHEN gev.type <> '${EventType.Agenda}' THEN 0 WHEN gev.del = '${DelType.del}' THEN 0 ELSE 1 END) agendascount,
                                   sum(CASE WHEN IFNULL(gev.evi, '') = '' THEN 0 WHEN gev.type <> '${EventType.Task}' THEN 0 WHEN gev.del = '${DelType.del}' THEN 0 ELSE 1 END) taskscount,
                                   sum(CASE WHEN IFNULL(gev.rtevi, '') = '' THEN 0 WHEN gev.del = '${DelType.del}' THEN 0 ELSE 1 END) repeateventscount
                             from (select gday.sd day,
@@ -1545,6 +1545,7 @@ export class CalendarService extends BaseService {
   async syncPrivatePlan(plan: PlanData) {
 
     this.assertEmpty(plan);       // 入参不能为空
+    this.assertNotEqual(plan.jt, PlanType.PrivatePlan);   // 非自定义日历不能共享
     this.assertEmpty(plan.ji);    // 日历ID不能为空
     this.assertEmpty(plan.del);   // 删除标记不能为空
 
@@ -1595,6 +1596,31 @@ export class CalendarService extends BaseService {
 
       await this.dataRestful.push(push);
     }
+
+    return;
+  }
+
+  /**
+   * 更新已同步标志
+   * 根据日历ID和更新时间戳
+   *
+   * @author leon_xi@163.com
+   **/
+  async acceptSyncPrivatePlans(syncids: Array<Array<any>>) {
+
+    this.assertEmpty(syncids);    // 入参不能为空
+
+    if (syncids.length < 1) {     // 入参是空数组直接返回
+      return;
+    }
+
+    let sqls: Array<any> = new Array<any>();
+
+    for (let syncid of syncids) {
+      sqls.push([`update gtd_jha set tb = ? where ji = ? and utt = ?`, [SyncType.synch, ...syncid]]);
+    }
+
+    await this.sqlExce.batExecSqlByParam(sqls);
 
     return;
   }
