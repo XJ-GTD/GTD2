@@ -1668,6 +1668,19 @@ describe('CalendarService test suite', () => {
     expect(events.length).toBe(0);
   });
 
+  it(`Case 18 - 1 - 5 findActivities 活动查询 - 毕业典礼在什么时候开?(没有毕业典礼)`, async () => {
+    let condition: FindActivityCondition = new FindActivityCondition();
+
+    condition.text = "毕业典礼";
+
+    let activities = await calendarService.findActivities(condition);
+
+    expect(activities).toBeDefined();
+    expect(activities.calendaritems.length).toBe(0);
+    expect(activities.events.length).toBe(0);
+    expect(activities.memos.length).toBe(0);
+  });
+
   it(`Case 18 - 1 - 4 findActivities 活动查询 - 还有哪些数学课要上?(没有数学课)`, async () => {
     let condition: FindActivityCondition = new FindActivityCondition();
 
