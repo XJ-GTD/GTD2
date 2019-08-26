@@ -54,6 +54,7 @@ describe('MemoService test suite', () => {
   let init: SqliteInit;
   let restConfig: RestFulConfig;
   let memoService: MemoService;
+  let calendarService: CalendarService;
   let planforUpdate: PlanData;
   let sqlExce: SqliteExec;
 
@@ -96,6 +97,7 @@ describe('MemoService test suite', () => {
     restConfig = TestBed.get(RestFulConfig);
 		sqlExce = TestBed.get(SqliteExec);
     memoService = TestBed.get(MemoService);
+    calendarService = TestBed.get(CalendarService);
 
     await config.generateDb();
     await init.createTables();
@@ -180,7 +182,7 @@ describe('MemoService test suite', () => {
     expect(gmom).toBeNull();
   });
 
-  xit('Case 5 - 1   backup与recovery  备份恢复任务- 备份任务、 恢复任务、查询任务', async () => {
+  it('Case 5 - 1   backup与recovery  备份恢复任务- 备份任务、 恢复任务、查询任务', async () => {
 
   		let mom: MemoData = {} as MemoData;
 	   	mom.mon='我老大，叫老席，你动我代码试试';
@@ -191,12 +193,11 @@ describe('MemoService test suite', () => {
   	  //先备份
   		await memoService.backup(bts);
   		//后还原
-  		// await memoService.recovery(null,bts);
-  		// //验证还原后的数据是否和原有数据匹配
-  		// let gmom: MemoData = {} as MemoData;
-	    // gmom = await memoService.getMemo(mom.moi);
-	    // expect(gmom).toBeDefined();
-	    // expect(gmom.mon).toBe(mom.mon);
+  		await calendarService.recovery(bts, true);
+  		//验证还原后的数据是否和原有数据匹配
+  		let gmom: MemoData = await memoService.getMemo(mom.moi);
+	    expect(gmom).toBeDefined();
+	    expect(gmom.mon).toBe(mom.mon);
   });
 
 

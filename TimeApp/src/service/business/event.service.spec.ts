@@ -62,6 +62,7 @@ describe('EventService test suite', () => {
   let init: SqliteInit;
   let restConfig: RestFulConfig;
   let eventService: EventService;
+  let calendarService: CalendarService;
   let planforUpdate: PlanData;
   let sqlExce: SqliteExec;
 
@@ -107,6 +108,7 @@ describe('EventService test suite', () => {
     restConfig = TestBed.get(RestFulConfig);  // 别删除
 		sqlExce = TestBed.get(SqliteExec);
 
+    calendarService = TestBed.get(CalendarService);
     eventService = TestBed.get(EventService);
     await config.generateDb();
     await init.createTables();
@@ -300,7 +302,7 @@ describe('EventService test suite', () => {
 		expect(data.length).toBeGreaterThan(0);
   })
 
-	xit('Case 8 - 1 backup 备份、恢复', async() => {
+	it('Case 8 - 1 backup 备份、恢复', async() => {
 
 		let tx: TaskData = {} as TaskData;
     tx.evn ="shopping,今天穿的是花裤衩";
@@ -311,12 +313,11 @@ describe('EventService test suite', () => {
     let bts: Number = moment().unix();
     await eventService.backup(bts);
 
-    // await eventService.recovery(null,bts);
-    //
-    // let txx: TaskData = {} as TaskData;
-    // txx = await eventService.getTask(tx.evi);
-    // expect(txx).toBeDefined();
-    // expect(txx.evn).toBe(tx.evn);
+    await calendarService.recovery(bts, true);
+
+    let txx: TaskData = await eventService.getTask(tx.evi);
+    expect(txx).toBeDefined();
+    expect(txx.evn).toBe(tx.evn);
 
 	})
   afterAll(() => {
