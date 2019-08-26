@@ -93,6 +93,23 @@ describe('CalendarService test suite', () => {
   let prepareContacts = async function() {
     let sqls: Array<string> = new Array<string>();
 
+    // 删除已存在数据
+    let b: BTbl = new BTbl();
+    await sqlExce.drop(b);
+    await sqlExce.create(b);
+
+    let bh: BhTbl = new BhTbl();
+    await sqlExce.drop(bh);
+    await sqlExce.create(bh);
+
+    let g: GTbl = new GTbl();
+    await sqlExce.drop(g);
+    await sqlExce.create(g);
+
+    let bx: BxTbl = new BxTbl();
+    await sqlExce.drop(bx);
+    await sqlExce.create(bx);
+
     //参与人
     let btbls: Array<BTbl> = [];
     let btbl: BTbl = new BTbl();
@@ -427,6 +444,7 @@ describe('CalendarService test suite', () => {
     });
 
     beforeEach(async () => {
+      await prepareContacts();
       // 下载公共日历
       await calendarService.downloadPublicPlan("shanghai_animation_exhibition_2019", PlanType.ActivityPlan);
 
