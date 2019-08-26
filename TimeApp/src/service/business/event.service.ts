@@ -19,7 +19,7 @@ import {DataConfig} from "../config/data.config";
 import {BTbl} from "../sqlite/tbl/b.tbl";
 import {FjTbl} from "../sqlite/tbl/fj.tbl";
 import {DataRestful, PullInData, PushInData, SyncData} from "../restful/datasev";
-import {SyncDataStatus} from "../../data.enum";
+import {SyncType, DelType, SyncDataStatus} from "../../data.enum";
 import {SyncDataSecurity} from "../../data.enum";
 
 @Injectable()
@@ -1432,7 +1432,7 @@ export class EventService extends BaseService {
   async sendEvent(tt: TaskData) {
   	this.assertEmpty(tt); 
   	this.assertNotEqual(tt.type, anyenum.EventType.Task);  //不是任务不能发送共享
-  	await this.syncPrivateEvent(tt,"Task");
+  	await this.syncPrivateTaskEvent(tt);
   	return ;
   }
   
@@ -1442,14 +1442,14 @@ export class EventService extends BaseService {
   async sendMiniEvent(tt: MiniTaskData) {
   	this.assertEmpty(tt); 
   	this.assertNotEqual(tt.type, anyenum.EventType.MiniTask);  //不是任务不能发送共享
-  	await this.syncPrivateEvent(tt,"MiniTask");
+  	await this.syncPrivateMiniTaskEvent(tt);
   	return ;
   }
   
   /**
    * 共享任务
    */
-  async syncPrivateEvent(tt: TaskData, flag: string) {
+  async syncPrivateTaskEvent(tt: TaskData) {
   	this.assertEmpty(tt);       // 入参不能为空
 	  this.assertEmpty(tt.evi);    // ID不能为空
 	  this.assertEmpty(tt.del);   // 删除标记不能为空
@@ -1457,7 +1457,27 @@ export class EventService extends BaseService {
 	  let push: PushInData = new PushInData();
 	  let sync: SyncData = new SyncData();
 	  sync.id = tt.evi;
-    sync.type = flag;
+    sync.type = "Task";
+    sync.security = SyncDataSecurity.None;
+    sync.status = SyncDataStatus[tt.del];
+    sync.payload = tt;
+    push.d.push(sync);
+    await this.dataRestful.push(push);
+    return;
+  }
+  
+  /**
+   * 共享小任务
+   */
+  async syncPrivateMiniTaskEvent(tt: MiniTaskData) {
+  	this.assertEmpty(tt);       // 入参不能为空
+	  this.assertEmpty(tt.evi);    // ID不能为空
+	  this.assertEmpty(tt.del);   // 删除标记不能为空
+	  
+	  let push: PushInData = new PushInData();
+	  let sync: SyncData = new SyncData();
+	  sync.id = tt.evi;
+    sync.type = "MiniTask";
     sync.security = SyncDataSecurity.None;
     sync.status = SyncDataStatus[tt.del];
     sync.payload = tt;
@@ -1499,7 +1519,7 @@ export class EventService extends BaseService {
   /**
    * 接收小任务保存到本地
    */
-  async acceptReceivedMiniEvent(tt: MiniTaskData,status: SyncDataStatus): Promise<TaskData> {
+  async acceptReceivedMiniEvent(tt: MiniTaskData,status: SyncDataStatus): Promise<MiniTaskData> {
   	this.assertEmpty(tt);     // 入参不能为空
     this.assertEmpty(tt.evi);  // ID不能为空
     this.assertNotEqual(tt.type, anyenum.EventType.MiniTask);  //不是任务不能发送共享
@@ -1524,7 +1544,7 @@ export class EventService extends BaseService {
   	this.assertEmpty(evi);
   	let tt = await this.getTask(evi); 
 		if(tt && (tt.tb == SyncType.unsynch)) {
-			await this.syncPrivateEvent(tt,"Task");
+			await this.syncPrivateTaskEvent(tt);
 		}
 		return ;
   }
@@ -1536,7 +1556,7 @@ export class EventService extends BaseService {
   	this.assertEmpty(evi);
   	let tt = await this.getMiniTask(evi); 
 		if(tt && (tt.tb == SyncType.unsynch)) {
-			await this.syncPrivateEvent(tt,"MiniTask");
+			await this.syncPrivateMiniTaskEvent(tt);
 		}
 		return ;
   }
