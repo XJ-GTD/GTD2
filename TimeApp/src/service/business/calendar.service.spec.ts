@@ -427,6 +427,43 @@ describe('CalendarService test suite', () => {
     });
 
     beforeEach(async () => {
+      // 下载公共日历
+      await calendarService.downloadPublicPlan("shanghai_animation_exhibition_2019", PlanType.ActivityPlan);
+
+      let day: string = moment().format("YYYY/MM/DD");
+
+      // 小任务
+      let minitask: MiniTaskData = {} as MiniTaskData;
+
+      minitask.evd = day;
+      minitask.evn = "结婚纪念日前给太太买礼物";
+
+      await eventService.saveMiniTask(minitask);
+
+      // 任务
+      let task: TaskData = {} as TaskData;
+
+      task.evn = "结婚纪念日前给太太买礼物";
+
+      await eventService.saveTask(task);
+
+      // 备忘
+      let memo: MemoData = {} as MemoData;
+
+      memo.sd = day;
+      memo.mon = "结婚纪念日买了一块定制巧克力给太太, 太太很高兴";
+
+      await memoService.saveMemo(memo);
+
+      // 日历项
+      let planitem1: PlanItemData = {} as PlanItemData;
+
+      planitem1.sd = day;
+      planitem1.jtn = "结婚纪念日";
+      planitem1.jtt = PlanItemType.Activity;
+
+      await calendarService.savePlanItem(planitem1);
+
       // 自定义日历
       let plan: PlanData = {} as PlanData;
 
