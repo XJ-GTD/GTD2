@@ -2281,8 +2281,26 @@ export class CalendarService extends BaseService {
    *
    * @author leon_xi@163.com
    **/
-  recoveryCalendar(recoveries: OutRecoverPro): Array<any> {
-    this.assertEmpty(recoveries);   // 入参不能为空
+  async recoveryCalendar(bts: number): Array<any> {
+    this.assertEmpty(bts);   // 入参不能为空
+
+    let recoverPro: RecoverPro = new RecoverPro();
+    //操作账户ID
+    recoverPro.oai = UserConfig.account.id;
+    //操作手机号码
+    recoverPro.ompn = UserConfig.account.phone;
+    recoverPro.d.bts = bts;
+    let rdn = new Array <string> ();
+    rdn.push('jha');
+    rdn.push('jta');
+    rdn.push('ev');
+    rdn.push('ca');
+    rdn.push('tt');
+    rdn.push('mom');
+    rdn.push('par');
+    rdn.push('fj');
+    recoverPro.d.rdn = rdn;
+    let recoveries = await this.bacRestful.recover(recoverPro);
 
     // JhaTbl
     // JtaTbl
