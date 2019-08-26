@@ -189,7 +189,7 @@ describe('MemoService test suite', () => {
 	   	mom = await memoService.saveMemo(mom);
 	   	expect(mom).toBeDefined();
 	    expect(mom.moi).toBeDefined();
-  	  let bts: Number = moment().unix();
+  	  let bts: number = moment().unix();
   	  //先备份
   		await memoService.backup(bts);
   		//后还原

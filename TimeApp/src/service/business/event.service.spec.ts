@@ -310,7 +310,7 @@ describe('EventService test suite', () => {
     expect(tx).toBeDefined();
     expect(tx.evi).toBeDefined();
 
-    let bts: Number = moment().unix();
+    let bts: number = moment().unix();
     await eventService.backup(bts);
 
     await calendarService.recoveryCalendar(bts, true);

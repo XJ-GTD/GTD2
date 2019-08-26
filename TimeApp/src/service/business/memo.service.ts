@@ -146,7 +146,7 @@ export class MemoService extends BaseService {
 	 * 备份备忘到服务器
 	 * @author ying<343253410@qq.com>
 	 */
-	async backup(bts: Number) {
+	async backup(bts: number) {
 		let backupPro: BackupPro = new BackupPro();
 		//操作账户ID
 		backupPro.oai = UserConfig.account.id
