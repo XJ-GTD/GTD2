@@ -937,7 +937,11 @@ describe('CalendarService test suite', () => {
       for (let daySummary of month1902Summary.days) {
         expect(daySummary.day).toBeDefined();
         expect(daySummary.calendaritemscount).toBe(0);
-        expect(daySummary.activityitemscount).toBe(0);
+        if (["2019/02/16", "2019/02/17"].indexOf(daySummary.day) >= 0) {
+          expect(daySummary.activityitemscount).toBe(1);
+        } else {
+          expect(daySummary.activityitemscount).toBe(0);
+        }
         expect(daySummary.eventscount).toBe(0);
         expect(daySummary.agendascount).toBe(0);
         expect(daySummary.taskscount).toBe(0);
