@@ -290,7 +290,7 @@ describe('EventService test suite for agenda', () => {
     let rt: RtJson = new RtJson();
     rt.cycletype = CycleType.week;
     rt.over.type = OverType.times;
-    rt.openway.push(2);
+    rt.openway.push(3);
     rt.cyclenum = 2;
     rt.over.value ="2";
 
@@ -318,8 +318,8 @@ describe('EventService test suite for agenda', () => {
     let rt: RtJson = new RtJson();
     rt.cycletype = CycleType.week;
     rt.over.type = OverType.times;
-    rt.openway.push(2);
     rt.openway.push(3);
+    rt.openway.push(4);
     rt.cyclenum = 2;
     rt.over.value ="2";
 
@@ -330,10 +330,10 @@ describe('EventService test suite for agenda', () => {
     let agendas = await eventService.saveAgenda(agenda);
 
     expect(agendas).toBeDefined();
-    expect(agendas.length).toBe(2);
+    expect(agendas.length).toBe(4);
 
     for (let each of agendas) {
-      expect(["2019/08/28", "2019/09/11"].indexOf(each.evd)).toBeGreaterThanOrEqual(0);
+      expect(["2019/08/28","2019/08/29", "2019/09/11", "2019/09/12"].indexOf(each.evd)).toBeGreaterThanOrEqual(0);
     }
   });
 
@@ -373,8 +373,8 @@ describe('EventService test suite for agenda', () => {
     let rt: RtJson = new RtJson();
     rt.cycletype = CycleType.week;
     rt.over.type = OverType.limitdate;
-    rt.openway.push(2);
     rt.openway.push(3);
+    rt.openway.push(4);
     rt.over.value ="2019/08/31";
 
     agenda.sd = day;
@@ -384,10 +384,10 @@ describe('EventService test suite for agenda', () => {
     let agendas = await eventService.saveAgenda(agenda);
 
     expect(agendas).toBeDefined();
-    expect(agendas.length).toBe(3);
+    expect(agendas.length).toBe(6);
 
     for (let each of agendas) {
-      expect(["2019/08/14", "2019/08/21", "2019/08/28"].indexOf(each.evd)).toBeGreaterThanOrEqual(0);
+      expect(["2019/08/14","2019/08/15", "2019/08/21", "2019/08/22", "2019/08/28","2019/08/29"].indexOf(each.evd)).toBeGreaterThanOrEqual(0);
     }
   });
 
@@ -437,7 +437,7 @@ describe('EventService test suite for agenda', () => {
     let agendas = await eventService.saveAgenda(agenda);
 
     expect(agendas).toBeDefined();
-    expect(agendas.length).toBeGreaterThan(0);
+    expect(agendas.length).toBe(4);
 
     for (let each of agendas) {
       expect(["2019/09/13", "2019/11/13", "2020/01/13", "2020/03/13"].indexOf(each.evd)).toBeGreaterThanOrEqual(0);
@@ -466,7 +466,7 @@ describe('EventService test suite for agenda', () => {
     let agendas = await eventService.saveAgenda(agenda);
 
     expect(agendas).toBeDefined();
-    expect(agendas.length).toBeGreaterThan(0);
+    expect(agendas.length).toBeGreaterThan(8);
 
     for (let each of agendas) {
       expect(["2019/09/13","2019/09/14", "2019/11/13","2019/11/14", "2020/01/13","2020/01/14", "2020/03/13","2020/03/14"].indexOf(each.evd)).toBeGreaterThanOrEqual(0);
@@ -523,7 +523,7 @@ describe('EventService test suite for agenda', () => {
     let agendas = await eventService.saveAgenda(agenda);
 
     expect(agendas).toBeDefined();
-    expect(agendas.length).toBe(3);
+    expect(agendas.length).toBe(6);
 
     for (let each of agendas) {
       expect(["2019/08/13", "2019/08/14", "2019/10/13", "2019/10/14", "2019/12/13", "2019/12/14"].indexOf(each.evd)).toBeGreaterThanOrEqual(0);
