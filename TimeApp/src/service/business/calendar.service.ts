@@ -2298,10 +2298,31 @@ export class CalendarService extends BaseService {
 
     // ParTbl
     // FjTbl
-    // WaTbl    提醒不备份
-    // MrkTbl   标注不备份
+    // WaTbl    提醒不备份 删除原有提醒, 恢复数据提醒重新生成(过期提醒无需生成)
+    // MrkTbl   标注不备份 删除原有标注, 恢复数据标注重新生成
+    let sqls: Array<any> = new Array<any>();
 
-    return [...planrecoveries, ...eventrecoveries, ...memorecoveries];
+    let pars = recoveries.par;
+
+    // 删除参与人
+    sqls.push([`delete from gtd_par;`, []]);
+
+    // 恢复备份参与人
+    for (let par of pars) {
+      sqls.push(par.inTParam());
+    }
+
+    let fjs = recoveries.fj;
+
+    // 删除附件
+    sqls.push([`delete from gtd_fj;`, []]);
+
+    // 恢复备份附件
+    for (let fj of fjs) {
+      sqls.push(fj.inTParam());
+    }
+
+    return [...planrecoveries, ...eventrecoveries, ...memorecoveries, ...sqls];
   }
 
   /**
@@ -2345,8 +2366,6 @@ export class CalendarService extends BaseService {
 
     let sqls: Array<any> = new Array<any>();
 
-    let plans = recoveries.jha;
-
     let planitems = recoveries.jta;
 
     // 删除自定义日历项
@@ -2356,6 +2375,8 @@ export class CalendarService extends BaseService {
     for (let planitem of planitems) {
       sqls.push(planitem.inTParam());
     }
+
+    let plans = recoveries.jha;
 
     // 删除自定义日历
     sqls.push([`delete from gtd_jha where jt = ?`, [PlanType.PrivatePlan]]);
