@@ -1519,7 +1519,7 @@ export class EventService extends BaseService {
   /**
    * 接收小任务保存到本地
    */
-  async acceptReceivedMiniEvent(tt: MiniTaskData,status: SyncDataStatus): Promise<TaskData> {
+  async acceptReceivedMiniEvent(tt: MiniTaskData,status: SyncDataStatus): Promise<MiniTaskData> {
   	this.assertEmpty(tt);     // 入参不能为空
     this.assertEmpty(tt.evi);  // ID不能为空
     this.assertNotEqual(tt.type, anyenum.EventType.MiniTask);  //不是任务不能发送共享
