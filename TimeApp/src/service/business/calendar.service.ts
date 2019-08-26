@@ -2396,7 +2396,10 @@ export class CalendarService extends BaseService {
 
     // 恢复备份日历项
     for (let planitem of planitems) {
-      sqls.push(<JtaTbl>planitem.inTParam());
+      let planitemdb: JtaTbl = new JtaTbl();
+      Object.assign(planitemdb, planitem);
+
+      sqls.push(planitemdb.inTParam());
     }
 
     let plans = recoveries.jha;
@@ -2406,7 +2409,10 @@ export class CalendarService extends BaseService {
 
     // 恢复备份日历
     for (let plan of plans) {
-      sqls.push(<JhaTbl>plan.inTParam());
+      let plandb: JhaTbl = new JhaTbl();
+      Object.assign(plandb, plan);
+
+      sqls.push(plandb.inTParam());
     }
 
     return sqls;
