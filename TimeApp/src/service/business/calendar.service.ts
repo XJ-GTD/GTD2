@@ -2223,7 +2223,26 @@ export class CalendarService extends BaseService {
    * @author leon_xi@163.com
    **/
   async backupCalendar(bts: number) {
+    this.assertEmpty(bts);    // 入参不能为空
 
+    // JhaTbl
+    // JtaTbl
+    await this.backup(bts);
+
+    // EvTbl
+    // CaTbl
+    // TTbl
+    await this.eventService.backup(bts);
+
+    // MomTbl
+    await this.memoService.backup(bts);
+
+    // ParTbl
+    // FjTbl
+    // WaTbl
+    // MrkTbl
+
+    return;
   }
 
   /**
@@ -2243,6 +2262,26 @@ export class CalendarService extends BaseService {
    * @author leon_xi@163.com
    **/
   recoveryCalendar(recoveries: OutRecoverPro): Array<any> {
+    this.assertEmpty(recoveries);   // 入参不能为空
+
+    // JhaTbl
+    // JtaTbl
+    let planrecoveries = this.recovery(recoveries);
+
+    // EvTbl
+    // CaTbl
+    // TTbl
+    let eventrecoveries = this.eventService.recovery(recoveries);
+
+    // MomTbl
+    let memorecoveries = this.memoService.recovery(recoveries);
+
+    // ParTbl
+    // FjTbl
+    // WaTbl
+    // MrkTbl
+
+    return [...planrecoveries, ...eventrecoveries, ...memorecoveries];
   }
 
   /**
