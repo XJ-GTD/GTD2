@@ -313,7 +313,7 @@ describe('EventService test suite', () => {
     let bts: Number = moment().unix();
     await eventService.backup(bts);
 
-    await calendarService.recovery(bts, true);
+    await calendarService.recoveryCalendar(bts, true);
 
     let txx: TaskData = await eventService.getTask(tx.evi);
     expect(txx).toBeDefined();

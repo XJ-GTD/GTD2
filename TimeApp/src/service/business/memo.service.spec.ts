@@ -193,7 +193,7 @@ describe('MemoService test suite', () => {
   	  //先备份
   		await memoService.backup(bts);
   		//后还原
-  		await calendarService.recovery(bts, true);
+  		await calendarService.recoveryCalendar(bts, true);
   		//验证还原后的数据是否和原有数据匹配
   		let gmom: MemoData = await memoService.getMemo(mom.moi);
 	    expect(gmom).toBeDefined();
