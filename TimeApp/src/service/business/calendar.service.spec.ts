@@ -472,6 +472,7 @@ describe('CalendarService test suite', () => {
       // 日历项
       let planitem1: PlanItemData = {} as PlanItemData;
 
+      planitem1.sd = moment().format("YYYY/MM/DD");
       planitem1.jtn = "结婚纪念日";
       planitem1.jtt = PlanItemType.Activity;
 
