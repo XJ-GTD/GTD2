@@ -4570,6 +4570,47 @@ describe('CalendarService test suite', () => {
     expect(result.length).toBeGreaterThan(0);
   }));
 
+  it(`Case 1 - 3 - 1 savePlan 更新日历 - 更新日历成员(增加1个新成员)`, async (done: DoneFn) => {
+    // 准备联系人数据
+    await prepareContacts();
+
+    let plan: PlanData = {} as PlanData;
+
+    plan.jn = '冥王星服务类 自动测试';
+    plan.jc = '#f1f1f1';
+    plan.jt = PlanType.PrivatePlan;
+
+    plan.members = new Array<PlanMember>();
+
+    for (let contact of [xiaopangzi, xiaohaizi, xuezhenyang]) {
+      let member: PlanMember = {} as PlanMember;
+
+      member.pwi = contact.pwi;
+      member.ui = contact.ui;
+
+      plan.members.push(member);
+    }
+
+    let savedplan = await calendarService.savePlan(plan);
+
+    let newmember: PlanMember = {} as PlanMember;
+
+    newmember.pwi = xiaolenzi.pwi;
+    newmember.ui = xiaolenzi.ui;
+
+    savedplan.members.push(newmember);
+
+    calendarService.savePlan(savedplan)
+    .then(() => {
+      expect("success").toBe("success");
+      done();
+    })
+    .catch(e => {
+      fail("抛出异常, 出错");
+      done();
+    });
+  });
+
   // 需要同步执行
   it(`Case 1 - 3 savePlan 更新日历 - 更新日历颜色`, async () => {
     let planforUpdate: PlanData = {} as PlanData;
