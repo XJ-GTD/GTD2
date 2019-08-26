@@ -1514,7 +1514,10 @@ export class EventService extends BaseService {
 
     // 恢复备份事件
     for (let event of events) {
-      sqls.push(<EvTbl>event.inTParam());
+      let eventdb: EvTbl = new EvTbl();
+      Object.assign(eventdb, event);
+
+      sqls.push(eventdb.inTParam());
     }
 
 		//恢复日程表
@@ -1525,7 +1528,10 @@ export class EventService extends BaseService {
 
     // 恢复备份日程
     for (let agenda of agendas) {
-      sqls.push(<CaTbl>agenda.inTParam());
+      let agendadb: CaTbl = new CaTbl();
+      Object.assign(agendadb, agenda);
+
+      sqls.push(agendadb.inTParam());
     }
 
 		//恢复任务表
@@ -1536,7 +1542,10 @@ export class EventService extends BaseService {
 
     // 恢复备份任务
     for (let task of tasks) {
-      sqls.push(<TTbl>task.inTParam());
+      let taskdb: TTbl = new TTbl();
+      Object.assign(taskdb, task);
+
+      sqls.push(taskdb.inTParam());
     }
 
 		return sqls;
