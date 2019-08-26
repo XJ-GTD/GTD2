@@ -17,6 +17,8 @@ import { MomTbl } from "../sqlite/tbl/mom.tbl";
 import { EvTbl } from "../sqlite/tbl/ev.tbl";
 import { TTbl } from "../sqlite/tbl/t.tbl";
 import { CaTbl } from "../sqlite/tbl/ca.tbl";
+import { ParTbl } from "../sqlite/tbl/par.tbl";
+import { FjTbl } from "../sqlite/tbl/fj.tbl";
 
 
 /**
@@ -126,6 +128,10 @@ export class BackupProSub {
   ca: Array<CaTbl> = new Array<CaTbl>();
   //任务表数据
   tt: Array<TTbl> = new Array<TTbl>();
+  //参与人表数据
+  par: Array<ParTbl> = new Array<ParTbl>();
+  //附件表数据
+  fj: Array<FjTbl> = new Array<FjTbl>();
   //分批备份最后一次设为true
   commit: boolean = false;
 
@@ -198,4 +204,8 @@ export class OutRecoverPro {
   ca: Array<CaTbl> = new Array<CaTbl>();
   //任务表数据
   tt: Array<TTbl> = new Array<TTbl>();
+  //参与人表数据
+  par: Array<ParTbl> = new Array<ParTbl>();
+  //附件表数据
+  fj: Array<FjTbl> = new Array<FjTbl>();
 }

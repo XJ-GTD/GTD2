@@ -6,16 +6,17 @@ import { EmitService } from "../util-service/emit.service";
 import { BipdshaeData, Plan, PlanPa, ShareData, ShaeRestful } from "../restful/shaesev";
 import { SyncData, PushInData, PullInData, DataRestful } from "../restful/datasev";
 import { BackupPro, BacRestful, OutRecoverPro, RecoverPro } from "../restful/bacsev";
-import { EventData, TaskData, AgendaData, MiniTaskData } from "./event.service";
+import { EventData, TaskData, AgendaData, MiniTaskData, EventService } from "./event.service";
+import { MemoData, MemoService } from "./memo.service";
 import { EventType, PlanType, PlanItemType, PlanDownloadType, ObjectType, PageDirection, SyncType, DelType, SyncDataSecurity, SyncDataStatus } from "../../data.enum";
 import { UserConfig } from "../config/user.config";
-import { MemoData } from "./memo.service";
 import * as moment from "moment";
 import { JhaTbl } from "../sqlite/tbl/jha.tbl";
 import { JtaTbl } from "../sqlite/tbl/jta.tbl";
 import { EvTbl } from "../sqlite/tbl/ev.tbl";
 import { MomTbl } from "../sqlite/tbl/mom.tbl";
 import { ParTbl } from "../sqlite/tbl/par.tbl";
+import { FjTbl } from "../sqlite/tbl/fj.tbl";
 
 @Injectable()
 export class CalendarService extends BaseService {
@@ -26,6 +27,8 @@ export class CalendarService extends BaseService {
               private util: UtilService,
               private emitService: EmitService,
               private userConfig: UserConfig,
+              private eventService: EventService,
+              private memoService: MemoService,
               private bacRestful: BacRestful,
               private shareRestful: ShaeRestful,
               private dataRestful: DataRestful) {
@@ -2217,8 +2220,8 @@ export class CalendarService extends BaseService {
    * MomTbl
    * ParTbl
    * FjTbl
-   * WaTbl
-   * MrkTbl
+   * WaTbl    提醒不备份
+   * MrkTbl   标注不备份
    *
    * @author leon_xi@163.com
    **/
@@ -2239,8 +2242,25 @@ export class CalendarService extends BaseService {
 
     // ParTbl
     // FjTbl
-    // WaTbl
-    // MrkTbl
+    // WaTbl    提醒不备份
+    // MrkTbl   标注不备份
+    let backupPro: BackupPro = new BackupPro();
+    //操作账户ID
+    backupPro.oai = UserConfig.account.id
+    //操作手机号码
+    backupPro.ompn = UserConfig.account.phone;
+    //时间戳
+    backupPro.d.bts = bts;
+
+    // 参与人
+    let par = new ParTbl();
+    backupPro.d.par = await this.sqlExce.getLstByParam<ParTbl>(par);
+
+    // 附件
+    let fj = new FjTbl();
+    backupPro.d.fj = await this.sqlExce.getLstByParam<FjTbl>(fj);
+
+    await this.bacRestful.backup(backupPro);
 
     return;
   }
@@ -2278,8 +2298,8 @@ export class CalendarService extends BaseService {
 
     // ParTbl
     // FjTbl
-    // WaTbl
-    // MrkTbl
+    // WaTbl    提醒不备份
+    // MrkTbl   标注不备份
 
     return [...planrecoveries, ...eventrecoveries, ...memorecoveries];
   }
