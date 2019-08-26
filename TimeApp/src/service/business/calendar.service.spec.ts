@@ -427,6 +427,25 @@ describe('CalendarService test suite', () => {
     });
 
     beforeEach(async () => {
+      // 自定义日历
+      let plan: PlanData = {} as PlanData;
+
+      plan.jn = '2018年第一学期 课程表';
+      plan.jc = '#ababab';
+      plan.jt = PlanType.PrivatePlan;
+
+      plan.members = new Array<PlanMember>();
+
+      for (let contact of [xiaopangzi, xiaohaizi, xuezhenyang]) {
+        let member: PlanMember = {} as PlanMember;
+
+        member.pwi = contact.pwi;
+        member.ui = contact.ui;
+
+        plan.members.push(member);
+      }
+
+      plan = await calendarService.savePlan(plan);
 
       // 数学 | 语文 | 语文 | 语文 | 数学   08:20 ~ 09:00
       // 第一节课 星期一、星期五 数学
@@ -439,6 +458,7 @@ describe('CalendarService test suite', () => {
       math1rt.over.type = OverType.limitdate;
       math1rt.over.value = end;
 
+      math1.ji = plan.ji;
       math1.sd = day;
       math1.al = IsWholeday.NonWhole;
       math1.st = timeranges[0][0];
@@ -459,6 +479,7 @@ describe('CalendarService test suite', () => {
       chinese1rt.over.type = OverType.limitdate;
       chinese1rt.over.value = end;
 
+      chinese1.ji = plan.ji;
       chinese1.sd = day;
       chinese1.al = IsWholeday.NonWhole;
       chinese1.st = timeranges[0][0];
@@ -479,6 +500,7 @@ describe('CalendarService test suite', () => {
       math2rt.over.type = OverType.limitdate;
       math2rt.over.value = end;
 
+      math2.ji = plan.ji;
       math2.sd = day;
       math2.al = IsWholeday.NonWhole;
       math2.st = timeranges[1][0];
@@ -499,6 +521,7 @@ describe('CalendarService test suite', () => {
       chinese2rt.over.type = OverType.limitdate;
       chinese2rt.over.value = end;
 
+      chinese2.ji = plan.ji;
       chinese2.sd = day;
       chinese2.al = IsWholeday.NonWhole;
       chinese2.st = timeranges[1][0];
@@ -518,6 +541,7 @@ describe('CalendarService test suite', () => {
       character3rt.over.type = OverType.limitdate;
       character3rt.over.value = end;
 
+      character3.ji = plan.ji;
       character3.sd = day;
       character3.al = IsWholeday.NonWhole;
       character3.st = timeranges[2][0];
@@ -537,6 +561,7 @@ describe('CalendarService test suite', () => {
       pe3rt.over.type = OverType.limitdate;
       pe3rt.over.value = end;
 
+      pe3.ji = plan.ji;
       pe3.sd = day;
       pe3.al = IsWholeday.NonWhole;
       pe3.st = timeranges[2][0];
@@ -556,6 +581,7 @@ describe('CalendarService test suite', () => {
       chinese3rt.over.type = OverType.limitdate;
       chinese3rt.over.value = end;
 
+      chinese3.ji = plan.ji;
       chinese3.sd = day;
       chinese3.al = IsWholeday.NonWhole;
       chinese3.st = timeranges[2][0];
@@ -576,6 +602,7 @@ describe('CalendarService test suite', () => {
       art4rt.over.type = OverType.limitdate;
       art4rt.over.value = end;
 
+      art4.ji = plan.ji;
       art4.sd = day;
       art4.al = IsWholeday.NonWhole;
       art4.st = timeranges[3][0];
@@ -594,6 +621,7 @@ describe('CalendarService test suite', () => {
       character4rt.over.type = OverType.limitdate;
       character4rt.over.value = end;
 
+      character4.ji = plan.ji;
       character4.sd = day;
       character4.al = IsWholeday.NonWhole;
       character4.st = timeranges[3][0];
@@ -612,6 +640,7 @@ describe('CalendarService test suite', () => {
       writing4rt.over.type = OverType.limitdate;
       writing4rt.over.value = end;
 
+      writing4.ji = plan.ji;
       writing4.sd = day;
       writing4.al = IsWholeday.NonWhole;
       writing4.st = timeranges[3][0];
@@ -630,6 +659,7 @@ describe('CalendarService test suite', () => {
       pe4rt.over.type = OverType.limitdate;
       pe4rt.over.value = end;
 
+      pe4.ji = plan.ji;
       pe4.sd = day;
       pe4.al = IsWholeday.NonWhole;
       pe4.st = timeranges[3][0];
@@ -650,6 +680,7 @@ describe('CalendarService test suite', () => {
       music5rt.over.type = OverType.limitdate;
       music5rt.over.value = end;
 
+      music5.ji = plan.ji;
       music5.sd = day;
       music5.al = IsWholeday.NonWhole;
       music5.st = timeranges[4][0];
@@ -668,6 +699,7 @@ describe('CalendarService test suite', () => {
       pe5rt.over.type = OverType.limitdate;
       pe5rt.over.value = end;
 
+      pe5.ji = plan.ji;
       pe5.sd = day;
       pe5.al = IsWholeday.NonWhole;
       pe5.st = timeranges[4][0];
@@ -686,6 +718,7 @@ describe('CalendarService test suite', () => {
       activity5rt.over.type = OverType.limitdate;
       activity5rt.over.value = end;
 
+      activity5.ji = plan.ji;
       activity5.sd = day;
       activity5.al = IsWholeday.NonWhole;
       activity5.st = timeranges[4][0];
@@ -704,6 +737,7 @@ describe('CalendarService test suite', () => {
       character5rt.over.type = OverType.limitdate;
       character5rt.over.value = end;
 
+      character5.ji = plan.ji;
       character5.sd = day;
       character5.al = IsWholeday.NonWhole;
       character5.st = timeranges[4][0];
@@ -723,6 +757,7 @@ describe('CalendarService test suite', () => {
       interest5rt.over.type = OverType.limitdate;
       interest5rt.over.value = end;
 
+      interest5.ji = plan.ji;
       interest5.sd = day;
       interest5.al = IsWholeday.NonWhole;
       interest5.st = timeranges[5][0];
