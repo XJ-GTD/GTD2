@@ -1668,6 +1668,36 @@ describe('CalendarService test suite', () => {
     expect(events.length).toBe(0);
   });
 
+  it(`Case 18 - 1 - 4 findActivities 活动查询 - 还有哪些数学课要上?(没有数学课)`, async () => {
+    let condition: FindActivityCondition = new FindActivityCondition();
+
+    condition.sd = moment().format("YYYY/MM/DD");
+    condition.text = "数学课";
+    condition.mark.push("数学课");
+
+    let activities = await calendarService.findActivities(condition);
+
+    expect(activities).toBeDefined();
+    expect(activities.calendaritems.length).toBe(0);
+    expect(activities.events.length).toBe(0);
+    expect(activities.memos.length).toBe(0);
+  });
+
+  it(`Case 18 - 1 - 3 findActivities 活动查询 - 到今天为止上过了那些数学课?(没有数学课)`, async () => {
+    let condition: FindActivityCondition = new FindActivityCondition();
+
+    condition.ed = moment().format("YYYY/MM/DD");
+    condition.text = "数学课";
+    condition.mark.push("数学课");
+
+    let activities = await calendarService.findActivities(condition);
+
+    expect(activities).toBeDefined();
+    expect(activities.calendaritems.length).toBe(0);
+    expect(activities.events.length).toBe(0);
+    expect(activities.memos.length).toBe(0);
+  });
+
   it(`Case 18 - 1 - 2 findActivities 活动查询 - 今天上午有什么会议?(没有会议)`, async () => {
     let condition: FindActivityCondition = new FindActivityCondition();
 
