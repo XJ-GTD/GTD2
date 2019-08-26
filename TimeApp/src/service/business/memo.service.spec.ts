@@ -22,6 +22,7 @@ import {
   RestFulConfigMock,
   RestfulClientMock
 } from '../../../test-config/mocks-ionic';
+import {UserConfig} from "../config/user.config";
 
 import {MyApp} from '../../app/app.component';
 import {SqliteConfig} from "../config/sqlite.config";
@@ -76,6 +77,7 @@ describe('MemoService test suite', () => {
         SQLite,
         SQLitePorter,
         SqliteConfig,
+        UserConfig,
         SqliteExec,
         SqliteInit,
         UtilService,
