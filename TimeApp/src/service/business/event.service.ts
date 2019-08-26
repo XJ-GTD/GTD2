@@ -1497,10 +1497,56 @@ export class EventService extends BaseService {
   }
 
   /**
+   * 恢复事件
+   *
+	 * @author leon_xi@163.com
+   */
+  recovery(recoveries: OutRecoverPro): Array<any> {
+		this.assertNull(recoveries);
+
+    let sqls: Array<any> = new Array<any>();
+
+		//恢复事件表
+    let events = recoveries.ev;
+
+    // 删除事件
+    sqls.push([`delete from gtd_ev;`, []]);
+
+    // 恢复备份事件
+    for (let event of events) {
+      sqls.push(event.inTParam());
+    }
+
+		//恢复日程表
+    let agendas = recoveries.ca;
+
+    // 删除日程
+    sqls.push([`delete from gtd_ca;`, []]);
+
+    // 恢复备份日程
+    for (let agenda of agendas) {
+      sqls.push(agenda.inTParam());
+    }
+
+		//恢复任务表
+    let tasks = recoveries.tt;
+
+    // 删除任务
+    sqls.push([`delete from gtd_t;`, []]);
+
+    // 恢复备份任务
+    for (let task of tasks) {
+      sqls.push(task.inTParam());
+    }
+
+		return sqls;
+  }
+
+  /**
    * 恢复
 	 * @author ying<343253410@qq.com>
    */
-  async recovery(outRecoverPro: OutRecoverPro, bts: Number = 0) {
+  /*async recovery(outRecoverPro: OutRecoverPro, bts: Number = 0) {
   	if (bts == 0) {
 			this.assertNull(outRecoverPro);
 		}
@@ -1564,7 +1610,7 @@ export class EventService extends BaseService {
 			await this.sqlExce.batExecSqlByParam(sqls);
 		}
 		return ;
-  }
+  }*/
 }
 
 export class UploadAgdData{

@@ -161,10 +161,34 @@ export class MemoService extends BaseService {
 	}
 
 	/**
+   * 恢复备忘
+   *
+	 * @author leon_xi@163.com
+   */
+  recovery(recoveries: OutRecoverPro): Array<any> {
+		this.assertNull(recoveries);
+
+    let sqls: Array<any> = new Array<any>();
+
+		//恢复备忘表
+    let memos = recoveries.mom;
+
+    // 删除备忘
+    sqls.push([`delete from gtd_mom;`, []]);
+
+    // 恢复备份备忘
+    for (let memo of memos) {
+      sqls.push(memo.inTParam());
+    }
+
+		return sqls;
+  }
+
+	/**
 	 * 恢复备忘,根据服务器同步到客户端
 	 * @author ying<343253410@qq.com>
 	 */
-	async recovery(outRecoverPro: OutRecoverPro, bts: Number = 0,flag: Number =0 ): Promise<Array<any>> {
+	/*async recovery(outRecoverPro: OutRecoverPro, bts: Number = 0,flag: Number =0 ): Promise<Array<any>> {
 		if (bts == 0) {
 			this.assertNull(outRecoverPro);
 		}
@@ -200,7 +224,7 @@ export class MemoService extends BaseService {
 			}
 		}
 		return sqls;
-	}
+	}*/
 }
 
 export interface MemoData extends MomTbl {
