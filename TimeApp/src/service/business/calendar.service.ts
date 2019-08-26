@@ -5,8 +5,10 @@ import { UtilService } from "../util-service/util.service";
 import { EmitService } from "../util-service/emit.service";
 import { BipdshaeData, Plan, PlanPa, ShareData, ShaeRestful } from "../restful/shaesev";
 import { SyncData, PushInData, PullInData, DataRestful } from "../restful/datasev";
+import { BackupPro, BacRestful, OutRecoverPro, RecoverPro } from "../restful/bacsev";
 import { EventData, TaskData, AgendaData, MiniTaskData } from "./event.service";
 import { EventType, PlanType, PlanItemType, PlanDownloadType, ObjectType, PageDirection, SyncType, DelType, SyncDataSecurity, SyncDataStatus } from "../../data.enum";
+import { UserConfig } from "../config/user.config";
 import { MemoData } from "./memo.service";
 import * as moment from "moment";
 import { JhaTbl } from "../sqlite/tbl/jha.tbl";
@@ -23,6 +25,8 @@ export class CalendarService extends BaseService {
   constructor(private sqlExce: SqliteExec,
               private util: UtilService,
               private emitService: EmitService,
+              private userConfig: UserConfig,
+              private bacRestful: BacRestful,
               private shareRestful: ShaeRestful,
               private dataRestful: DataRestful) {
     super();
