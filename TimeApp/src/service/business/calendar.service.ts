@@ -2281,7 +2281,7 @@ export class CalendarService extends BaseService {
    *
    * @author leon_xi@163.com
    **/
-  async recoveryCalendar(bts: number): Array<any> {
+  async recoveryCalendar(bts: number, autoSave: boolean = true): Array<any> {
     this.assertEmpty(bts);   // 入参不能为空
 
     let recoverPro: RecoverPro = new RecoverPro();
@@ -2338,6 +2338,11 @@ export class CalendarService extends BaseService {
     // 恢复备份附件
     for (let fj of fjs) {
       sqls.push(fj.inTParam());
+    }
+
+    // 自动保存到数据库
+    if (autoSave) {
+      await this.sqlExce.batExecSqlByParam([...planrecoveries, ...eventrecoveries, ...memorecoveries, ...sqls]);
     }
 
     return [...planrecoveries, ...eventrecoveries, ...memorecoveries, ...sqls];
