@@ -2281,7 +2281,7 @@ export class CalendarService extends BaseService {
    *
    * @author leon_xi@163.com
    **/
-  async recoveryCalendar(bts: number, autoSave: boolean = true): Array<any> {
+  async recoveryCalendar(bts: number, autoSave: boolean = true): Promise<Array<any>> {
     this.assertEmpty(bts);   // 入参不能为空
 
     let recoverPro: RecoverPro = new RecoverPro();
