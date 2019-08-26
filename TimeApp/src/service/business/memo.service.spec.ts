@@ -35,6 +35,7 @@ import { RestfulClient } from "../util-service/restful.client";
 import {NetworkService} from "../cordova/network.service";
 import { ShaeRestful } from "../restful/shaesev";
 import { AgdRestful } from "../restful/agdsev";
+import { DataRestful } from "../restful/datasev";
 import { BacRestful } from "../restful/bacsev";
 import {SyncRestful} from "../restful/syncsev";
 import {MomTbl} from "../sqlite/tbl/mom.tbl";
@@ -85,6 +86,7 @@ describe('MemoService test suite', () => {
         EmitService,
         ShaeRestful,
         AgdRestful,
+        DataRestful,
         BacRestful,
         SyncRestful,
         Network,
