@@ -38,6 +38,7 @@ import {SyncRestful} from "../restful/syncsev";
 import {MomTbl} from "../sqlite/tbl/mom.tbl";
 import { CalendarService, PlanData } from "./calendar.service";
 import { MemoService,MemoData } from "./memo.service";
+import { EventService } from "./event.service";
 import { PlanType,ObjectType } from "../../data.enum";
 
 /**
@@ -70,6 +71,7 @@ describe('MemoService test suite', () => {
       providers: [
         MemoService,
         CalendarService,
+        EventService,
         Device,
         SQLite,
         SQLitePorter,

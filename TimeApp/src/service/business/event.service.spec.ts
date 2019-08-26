@@ -46,6 +46,7 @@ import {TTbl} from "../sqlite/tbl/t.tbl";
 import {WaTbl} from "../sqlite/tbl/wa.tbl";
 import { CalendarService, PlanData } from "./calendar.service";
 import { EventService,TaskData,MiniTaskData} from "./event.service";
+import { MemoService } from "./memo.service";
 import { PlanType,IsCreate,IsSuccess} from "../../data.enum";
 
 /**
@@ -78,6 +79,7 @@ describe('EventService test suite', () => {
       providers: [
         EventService,
         CalendarService,
+        MemoService,
         Device,
         SQLite,
         SQLitePorter,
