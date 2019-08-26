@@ -861,7 +861,37 @@ describe('CalendarService test suite', () => {
       }
     });
 
-    describe(`Case 1 - 4 2018/10/01 国庆节课程调整 (09/29 周六上周一课程, 09/30 周日上周二课程)`, () => {
+    it(`Case 1 - 4 backupCalendar 备份日历和所有活动 - 无报错`, async (done: DoneFn) => {
+      let bts: number = moment().unix();
+
+      calendarService.backupCalendar(bts)
+      .then(() => {
+        expect("success").toBe("success");
+        done();
+      })
+      .catch(e => {
+        fail("抛出异常, 出错");
+        done();
+      });
+    });
+
+    it(`Case 1 - 5 recoveryCalendar 恢复备份日历和所有活动 - 无报错`, async (done: DoneFn) => {
+      let bts: number = moment().unix();
+
+      await calendarService.backupCalendar(bts);
+
+      calendarService.recoveryCalendar(bts, true)
+      .then(() => {
+        expect("success").toBe("success");
+        done();
+      })
+      .catch(e => {
+        fail("抛出异常, 出错");
+        done();
+      });
+    });
+
+    describe(`Case 1 - 6 2018/10/01 国庆节课程调整 (09/29 周六上周一课程, 09/30 周日上周二课程)`, () => {
       beforeAll(() => {
         jasmine.DEFAULT_TIMEOUT_INTERVAL = 60 * 1000;  // 每个Case超时时间
       });
