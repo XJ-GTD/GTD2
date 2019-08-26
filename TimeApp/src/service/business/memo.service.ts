@@ -168,6 +168,7 @@ export class MemoService extends BaseService {
 		 this.assertEmpty(memo);     // 入参不能为空
     	 this.assertEmpty(memo.moi);  // 备忘ID不能为空
     	 this.assertEmpty(status);   // 入参不能为空
+    	 
     	 let memodb: MomTbl = new MomTbl();
     	 Object.assign(memodb, memo);
     	 memodb.del = status;
@@ -186,15 +187,7 @@ export class MemoService extends BaseService {
 		this.assertEmpty(moi);     // 入参不能为空
 		let memo = await this.getMemo(moi); 
 		if(memo && (memo.tb == SyncType.unsynch)) {
-			let push: PushInData = new PushInData();
-			let sync: SyncData = new SyncData();
-			sync.id = memo.moi;
-			sync.type = "Memo";
-			sync.security = SyncDataSecurity.None;
-			sync.status = SyncDataStatus[memo.del];
-			sync.payload = memo;
-			push.d.push(sync);
-			await this.dataRestful.push(push);
+			await this.syncPrivateMemo(memo);
 		}
 		return ;
 	}
