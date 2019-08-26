@@ -171,7 +171,7 @@ export class MemoService extends BaseService {
     let sqls: Array<any> = new Array<any>();
 
 		//恢复备忘表
-    let memos = recoveries.mom;
+    let memos: Array<MomTbl> = recoveries.mom;
 
     // 删除备忘
     sqls.push([`delete from gtd_mom;`, []]);
