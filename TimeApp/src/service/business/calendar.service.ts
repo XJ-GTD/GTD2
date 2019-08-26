@@ -468,21 +468,21 @@ export class CalendarService extends BaseService {
         sqls.push(`update gtd_fj set del = '${DelType.del}' where obt = '${ObjectType.Memo}' and obi not in (select moi from gtd_mom where del <> '${DelType.del}');`);   // 附件表
         sqls.push(`delete from gtd_wa where obt = '${ObjectType.Memo}' and obi not in (select moi from gtd_mom where del <> '${DelType.del}');`);    // 提醒表
         sqls.push(`update gtd_par set del = '${DelType.del}' where obt = '${ObjectType.Memo}' and obi not in (select moi from gtd_mom where del <> '${DelType.del}');`);    // 参与人表
-        sqls.push(`delete from gtd_mrk where obt = '${ObjectType.Memo}' and obi not in (select moi from gtd_mom where del <> '${DelType.del}');`);   // 标签表
+        sqls.push([`delete from gtd_mrk where obt = ? and obi not in (select moi from gtd_mom where del <> ?);`, [ObjectType.Memo, DelType.del]]);   // 标签表
       }
     } else {
       // 不删除子元素，需要把子元素的计划ID更新为空/默认计划ID
       if (jt == PlanType.CalendarPlan || jt == PlanType.ActivityPlan) {
         // 更新日历项表计划ID
-        sqls.push(`update gtd_jta set ji = '', utt = ${moment().unix()} where ji = '${ji}'`);
+        sqls.push([`update gtd_jta set ji = ?, utt = ? where ji = ?`, ['', moment().unix(), ji]]);
       }
 
       if (jt == PlanType.PrivatePlan) {
         // 更新事件主表
-        sqls.push(`update gtd_ev set ji = '', utt = ${moment().unix()} where ji = '${ji}'`);
+        sqls.push([`update gtd_ev set ji = ?, utt = ? where ji = ?`, ['', moment().unix(), ji]]);
 
         // 更新备忘主表
-        sqls.push(`update gtd_mom set ji = '', utt = ${moment().unix()} where ji = '${ji}'`);
+        sqls.push([`update gtd_mom set ji = ?, utt = ? where ji = ?`, ['', moment().unix(), ji]]);
       }
     }
 
