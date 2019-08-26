@@ -2207,6 +2207,45 @@ export class CalendarService extends BaseService {
   }
 
   /**
+   * 备份所有日历和活动
+   *
+   * JhaTbl
+   * JtaTbl
+   * EvTbl
+   * CaTbl
+   * TTbl
+   * MomTbl
+   * ParTbl
+   * FjTbl
+   * WaTbl
+   * MrkTbl
+   *
+   * @author leon_xi@163.com
+   **/
+  async backupCalendar(bts: number) {
+
+  }
+
+  /**
+   * 恢复所有日历和活动
+   *
+   * JhaTbl
+   * JtaTbl
+   * EvTbl
+   * CaTbl
+   * TTbl
+   * MomTbl
+   * ParTbl
+   * FjTbl
+   * WaTbl
+   * MrkTbl
+   *
+   * @author leon_xi@163.com
+   **/
+  recoveryCalendar(recoveries: OutRecoverPro): Array<any> {
+  }
+
+  /**
    * 备份日历和日历项
    *
    * @author leon_xi@163.com
@@ -2230,7 +2269,7 @@ export class CalendarService extends BaseService {
 
     // 日历项(自定义日历项)
     let jtasql = `select * from gtd_jta where ji in (select ji from gtd_jha where jt = ?) or ji is null or ji = ?`;
-    backupPro.d.jta = await this.sqlExce.getExtLstByParam(jtasql, [PlanType.PrivatePlan, '']);
+    backupPro.d.jta = await this.sqlExce.getExtLstByParam<JtaTbl>(jtasql, [PlanType.PrivatePlan, '']);
 
     await this.bacRestful.backup(backupPro);
 
