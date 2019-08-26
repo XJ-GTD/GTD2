@@ -2327,7 +2327,10 @@ export class CalendarService extends BaseService {
 
     // 恢复备份参与人
     for (let par of pars) {
-      sqls.push(par.inTParam());
+      let pardb: ParTbl = new ParTbl();
+      Object.assign(pardb, par);
+
+      sqls.push(pardb.inTParam());
     }
 
     let fjs = recoveries.fj;
@@ -2337,7 +2340,10 @@ export class CalendarService extends BaseService {
 
     // 恢复备份附件
     for (let fj of fjs) {
-      sqls.push(fj.inTParam());
+      let fjdb: ParTbl = new ParTbl();
+      Object.assign(fjdb, fj);
+
+      sqls.push(fjdb.inTParam());
     }
 
     // 自动保存到数据库
@@ -2396,7 +2402,10 @@ export class CalendarService extends BaseService {
 
     // 恢复备份日历项
     for (let planitem of planitems) {
-      sqls.push(<JtaTbl>planitem.inTParam());
+      let planitemdb: JtaTbl = new JtaTbl();
+      Object.assign(planitemdb, planitem);
+
+      sqls.push(planitemdb.inTParam());
     }
 
     let plans = recoveries.jha;
@@ -2406,7 +2415,10 @@ export class CalendarService extends BaseService {
 
     // 恢复备份日历
     for (let plan of plans) {
-      sqls.push(<JhaTbl>plan.inTParam());
+      let plandb: JhaTbl = new JhaTbl();
+      Object.assign(plandb, plan);
+
+      sqls.push(plandb.inTParam());
     }
 
     return sqls;
