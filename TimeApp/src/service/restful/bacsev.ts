@@ -7,6 +7,8 @@ import {MoTbl} from "../sqlite/tbl/mo.tbl";
 import {DTbl} from "../sqlite/tbl/d.tbl";
 import {GTbl} from "../sqlite/tbl/g.tbl";
 import {JhTbl} from "../sqlite/tbl/jh.tbl";
+import {JhaTbl} from "../sqlite/tbl/jha.tbl";
+import {JtaTbl} from "../sqlite/tbl/jta.tbl";
 import {RestFulConfig, UrlEntity} from "../config/restful.config";
 import {CTbl} from "../sqlite/tbl/c.tbl";
 import {BxTbl} from "../sqlite/tbl/bx.tbl";
@@ -15,6 +17,8 @@ import { MomTbl } from "../sqlite/tbl/mom.tbl";
 import { EvTbl } from "../sqlite/tbl/ev.tbl";
 import { TTbl } from "../sqlite/tbl/t.tbl";
 import { CaTbl } from "../sqlite/tbl/ca.tbl";
+import { ParTbl } from "../sqlite/tbl/par.tbl";
+import { FjTbl } from "../sqlite/tbl/fj.tbl";
 
 
 /**
@@ -110,6 +114,10 @@ export class BackupProSub {
   bx: Array<BxTbl> = new Array<BxTbl>();
   //获取本地计划
   jh: Array<JhTbl> = new Array<JhTbl>();
+  //获取本地计划(三期新)
+  jha: Array<JhaTbl> = new Array<JhaTbl>();
+  //获取本地日历项(三期新)
+  jta: Array<JtaTbl> = new Array<JtaTbl>();
   //获取用户偏好
   y: Array<YTbl> = new Array<YTbl>();
   //新版备忘表数据
@@ -120,6 +128,10 @@ export class BackupProSub {
   ca: Array<CaTbl> = new Array<CaTbl>();
   //任务表数据
   tt: Array<TTbl> = new Array<TTbl>();
+  //参与人表数据
+  par: Array<ParTbl> = new Array<ParTbl>();
+  //附件表数据
+  fj: Array<FjTbl> = new Array<FjTbl>();
   //分批备份最后一次设为true
   commit: boolean = false;
 
@@ -178,6 +190,10 @@ export class OutRecoverPro {
   bx: Array<BxTbl> = new Array<BxTbl>();
   //获取本地计划
   jh: Array<JhTbl> = new Array<JhTbl>();
+  //获取本地计划(三期新)
+  jha: Array<JhaTbl> = new Array<JhaTbl>();
+  //获取本地日历项(三期新)
+  jta: Array<JtaTbl> = new Array<JtaTbl>();
   //用户偏好
   y: Array<YTbl> = new Array<YTbl>();
    //新版备忘表数据
@@ -188,4 +204,8 @@ export class OutRecoverPro {
   ca: Array<CaTbl> = new Array<CaTbl>();
   //任务表数据
   tt: Array<TTbl> = new Array<TTbl>();
+  //参与人表数据
+  par: Array<ParTbl> = new Array<ParTbl>();
+  //附件表数据
+  fj: Array<FjTbl> = new Array<FjTbl>();
 }

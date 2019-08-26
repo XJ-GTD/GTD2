@@ -1354,6 +1354,76 @@ describe('CalendarService test suite', () => {
     });
   });
 
+  it(`Case 22 - 4 sendPlan 共享日历 - 自定义日历(3个成员)`, async (done: DoneFn) => {
+    // 准备联系人数据
+    await prepareContacts();
+
+    let plan: PlanData = {} as PlanData;
+
+    plan.jn = '冥王星服务类 自动测试';
+    plan.jc = '#f1f1f1';
+    plan.jt = PlanType.PrivatePlan;
+
+    plan.members = new Array<PlanMember>();
+
+    for (let contact of [xiaopangzi, xiaohaizi, xuezhenyang]) {
+      let member: PlanMember = {} as PlanMember;
+
+      member.pwi = contact.pwi;
+      member.ui = contact.ui;
+
+      plan.members.push(member);
+    }
+
+    let savedplan = await calendarService.savePlan(plan);
+
+    // 共享自定义日历
+    calendarService.sendPlan(plan)
+    .then(() => {
+      expect("success").toBe("success");
+      done();
+    })
+    .catch(e => {
+      fail("抛出异常, 出错");
+      done();
+    });
+  });
+
+  it(`Case 22 - 3 sendPlan 共享日历 - 自定义日历(1个成员)`, async (done: DoneFn) => {
+    // 准备联系人数据
+    await prepareContacts();
+
+    let plan: PlanData = {} as PlanData;
+
+    plan.jn = '冥王星服务类 自动测试';
+    plan.jc = '#f1f1f1';
+    plan.jt = PlanType.PrivatePlan;
+
+    plan.members = new Array<PlanMember>();
+
+    for (let contact of [xiaopangzi, xiaohaizi, xuezhenyang]) {
+      let member: PlanMember = {} as PlanMember;
+
+      member.pwi = contact.pwi;
+      member.ui = contact.ui;
+
+      plan.members.push(member);
+    }
+
+    let savedplan = await calendarService.savePlan(plan);
+
+    // 共享自定义日历
+    calendarService.sendPlan(plan)
+    .then(() => {
+      expect("success").toBe("success");
+      done();
+    })
+    .catch(e => {
+      fail("抛出异常, 出错");
+      done();
+    });
+  });
+
   it(`Case 22 - 2 sendPlan 共享日历 - 冥王星公共日历(报错)`, async (done: DoneFn) => {
     // 下载公共日历
     await calendarService.downloadPublicPlan("shanghai_animation_exhibition_2019", PlanType.ActivityPlan);
@@ -4499,6 +4569,47 @@ describe('CalendarService test suite', () => {
     expect(result).toBeDefined();
     expect(result.length).toBeGreaterThan(0);
   }));
+
+  it(`Case 1 - 3 - 1 savePlan 更新日历 - 更新日历成员(增加1个新成员)`, async (done: DoneFn) => {
+    // 准备联系人数据
+    await prepareContacts();
+
+    let plan: PlanData = {} as PlanData;
+
+    plan.jn = '冥王星服务类 自动测试';
+    plan.jc = '#f1f1f1';
+    plan.jt = PlanType.PrivatePlan;
+
+    plan.members = new Array<PlanMember>();
+
+    for (let contact of [xiaopangzi, xiaohaizi, xuezhenyang]) {
+      let member: PlanMember = {} as PlanMember;
+
+      member.pwi = contact.pwi;
+      member.ui = contact.ui;
+
+      plan.members.push(member);
+    }
+
+    let savedplan = await calendarService.savePlan(plan);
+
+    let newmember: PlanMember = {} as PlanMember;
+
+    newmember.pwi = xiaolenzi.pwi;
+    newmember.ui = xiaolenzi.ui;
+
+    savedplan.members.push(newmember);
+
+    calendarService.savePlan(savedplan)
+    .then(() => {
+      expect("success").toBe("success");
+      done();
+    })
+    .catch(e => {
+      fail("抛出异常, 出错");
+      done();
+    });
+  });
 
   // 需要同步执行
   it(`Case 1 - 3 savePlan 更新日历 - 更新日历颜色`, async () => {
