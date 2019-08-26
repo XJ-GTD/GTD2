@@ -2291,10 +2291,10 @@ export class CalendarService extends BaseService {
     // EvTbl
     // CaTbl
     // TTbl
-    let eventrecoveries = this.eventService.recovery(recoveries);
+    let eventrecoveries = await this.eventService.recovery(recoveries);
 
     // MomTbl
-    let memorecoveries = this.memoService.recovery(recoveries);
+    let memorecoveries = await this.memoService.recovery(recoveries);
 
     // ParTbl
     // FjTbl
