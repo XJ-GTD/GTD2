@@ -434,6 +434,17 @@ describe('CalendarService test suite', () => {
       plan.jc = '#ababab';
       plan.jt = PlanType.PrivatePlan;
 
+      plan.members = new Array<PlanMember>();
+
+      for (let contact of [xiaopangzi, xiaohaizi, xuezhenyang]) {
+        let member: PlanMember = {} as PlanMember;
+
+        member.pwi = contact.pwi;
+        member.ui = contact.ui;
+
+        plan.members.push(member);
+      }
+
       plan = await calendarService.savePlan(plan);
 
       // 数学 | 语文 | 语文 | 语文 | 数学   08:20 ~ 09:00
