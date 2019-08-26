@@ -346,7 +346,7 @@ describe('EventService test suite for agenda', () => {
     let rt: RtJson = new RtJson();
     rt.cycletype = CycleType.week;
     rt.over.type = OverType.limitdate;
-    rt.openway.push(2);
+    rt.openway.push(3);
     rt.over.value ="2019/08/31";
 
     agenda.sd = day;
@@ -466,7 +466,7 @@ describe('EventService test suite for agenda', () => {
     let agendas = await eventService.saveAgenda(agenda);
 
     expect(agendas).toBeDefined();
-    expect(agendas.length).toBeGreaterThan(8);
+    expect(agendas.length).toBe(8);
 
     for (let each of agendas) {
       expect(["2019/09/13","2019/09/14", "2019/11/13","2019/11/14", "2020/01/13","2020/01/14", "2020/03/13","2020/03/14"].indexOf(each.evd)).toBeGreaterThanOrEqual(0);
@@ -582,7 +582,7 @@ describe('EventService test suite for agenda', () => {
     }
   });
 
-  it('Case 1 - 5 - 2 saveAgenda 保存日程 - 每年重复 - 每年当前时间执行一次，间隔 2年，直到2021/1/1', async () => {
+  it('Case 1 - 5 - 2 saveAgenda 保存日程 - 每年重复 - 每年当前时间执行一次，间隔 2年，直到2023/1/1', async () => {
     let day: string = "2019/08/23";
 
     let agenda: AgendaData = {} as AgendaData;
@@ -592,7 +592,7 @@ describe('EventService test suite for agenda', () => {
     rt.cycletype = CycleType.year;
     rt.over.type = OverType.limitdate;
     rt.cyclenum = 2;
-    rt.over.value ="2021/1/1";
+    rt.over.value ="2023/1/1";
 
     agenda.sd = day;
     agenda.evn = "每年重复";
@@ -604,7 +604,7 @@ describe('EventService test suite for agenda', () => {
     expect(agendas.length).toBe(2);
 
     for (let each of agendas) {
-      expect(["2019/08/23", "2020/08/23"].indexOf(each.evd)).toBeGreaterThanOrEqual(0);
+      expect(["2019/08/23", "2021/08/23"].indexOf(each.evd)).toBeGreaterThanOrEqual(0);
     }
   });
 
