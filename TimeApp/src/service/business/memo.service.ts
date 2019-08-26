@@ -178,7 +178,7 @@ export class MemoService extends BaseService {
 
     // 恢复备份备忘
     for (let memo of memos) {
-      sqls.push(memo.inTParam());
+      sqls.push(<MomTbl>memo.inTParam());
     }
 
 		return sqls;

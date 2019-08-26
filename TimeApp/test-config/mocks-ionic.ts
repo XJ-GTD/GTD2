@@ -14,7 +14,7 @@ export class RestfulClientMock {
       case "SPL" : // 数据同步Pull
         break;
       case "B" : // 备份
-        bts = body.d.bts || moment().valueOf()
+        bts = body.d.bts || moment().valueOf();
         this.backup.set(bts, body.d);
         return {d: {bts: bts}};
       case "R" : // 恢复
