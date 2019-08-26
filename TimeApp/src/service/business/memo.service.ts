@@ -3,10 +3,12 @@ import { BaseService } from "./base.service";
 import { SqliteExec } from "../util-service/sqlite.exec";
 import { UtilService } from "../util-service/util.service";
 import { MomTbl } from "../sqlite/tbl/mom.tbl";
+import { BipdshaeData, Plan, PlanPa, ShareData, ShaeRestful } from "../restful/shaesev";
+import { SyncData, PushInData, PullInData, DataRestful } from "../restful/datasev";
 import { BackupPro, BacRestful, OutRecoverPro, RecoverPro } from "../restful/bacsev";
 import { UserConfig } from "../config/user.config";
 import * as moment from "moment";
-import { SyncType, DelType } from "../../data.enum";
+import { SyncType, DelType,SyncDataSecurity, SyncDataStatus } from "../../data.enum";
 import {EmitService} from "../util-service/emit.service";
 
 @Injectable()
@@ -14,7 +16,9 @@ export class MemoService extends BaseService {
 	constructor(private sqlExce: SqliteExec,
 		private bacRestful: BacRestful,
 		private emitService: EmitService,
-		private util: UtilService) {
+		private util: UtilService,
+		private dataRestful: DataRestful,
+		private shareRestful: ShaeRestful) {
 		super();
 	}
 
@@ -116,31 +120,131 @@ export class MemoService extends BaseService {
 	 * 发送备忘进行共享.
 	 * @author ying<343253410@qq.com>
 	 */
-	sendMemo() {}
+	async sendMemo(memo: MemoData) {
+		this.assertEmpty(memo);     // 入参不能为空
+		await this.syncPrivateMemo(memo);
+
+    	return;
+	}
+	/**
+	 * 发送备忘进行共享
+	 */
+	async syncPrivateMemo(memo: MemoData) {
+		this.assertEmpty(memo);       // 入参不能为空
+	    this.assertEmpty(memo.moi);    // 日历ID不能为空
+	    this.assertEmpty(memo.del);   // 删除标记不能为空
+	
+	    // 构造Push数据结构
+	    let push: PushInData = new PushInData();
+	
+	    let sync: SyncData = new SyncData();
+	
+	    sync.id = memo.moi;
+	    sync.type = "Memo";
+	    sync.security = SyncDataSecurity.None;
+	    sync.status = SyncDataStatus[memo.del];
+	    sync.payload = memo;
+	    push.d.push(sync);
+	    await this.dataRestful.push(push);
+	    return;
+	}
 
 	/**
-	 * 接收共享备忘
+	 * 接收备忘数据同步
 	 * @author ying<343253410@qq.com>
 	 */
-	receivedMemo() {}
-
+	async receivedMemo(moi: string) {
+		this.assertEmpty(moi);   // 入参不能为空
+		let pull: PullInData = new PullInData();
+		pull.d.push(ji);
+		await this.dataRestful.pull(pull);
+		return;
+	}
+	
+	/**
+	 * 接收备忘保存在本地
+	 */
+	async receivedMemoData(memo: MemoData, status: SyncDataStatus): Promise<MemoData> {
+		 this.assertEmpty(memo);     // 入参不能为空
+    	 this.assertEmpty(memo.moi);  // 备忘ID不能为空
+    	 this.assertEmpty(status);   // 入参不能为空
+    	 let memodb: MomTbl = new MomTbl();
+    	 Object.assign(memodb, memo);
+    	 memodb.del = status;
+    	 memodb.tb = SyncType.synch;
+    	 await this.sqlExce.repTByParam(memodb);
+    	 let backMemo: MemoData = {} as MemoData;
+    	 Object.assign(backMemo, memodb);
+    	 return backMemo;
+	}
+	
 	/**
 	 * 同步备忘到服务器
 	 * @author ying<343253410@qq.com>
 	 */
-	syncMemo() {}
+	async syncMemo(moi: string) {
+		this.assertEmpty(moi);     // 入参不能为空
+		let memo = await this.getMemo(moi); 
+		if(memo && (memo.tb == SyncType.unsynch)) {
+			let push: PushInData = new PushInData();
+			let sync: SyncData = new SyncData();
+			sync.id = memo.moi;
+			sync.type = "Memo";
+			sync.security = SyncDataSecurity.None;
+			sync.status = SyncDataStatus[memo.del];
+			sync.payload = memo;
+			push.d.push(sync);
+			await this.dataRestful.push(push);
+		}
+		return ;
+	}
 
 	/**
 	 * 未同步备忘,同步到服务器
 	 * @author ying<343253410@qq.com>
 	 */
-	syncMemos() {}
+	async syncMemos() {
+		let sql: string = `select * from gtd_mom where  tb = ?`;
+		let unsyncedplans = await this.sqlExce.getExtLstByParam<MemoData>(sql, [SyncType.unsynch]);
+		//当存在未同步的情况下,进行同步
+		if (unsyncedplans && unsyncedplans.length > 0) {
+			 let push: PushInData = new PushInData();
+			 for (let memo of unsyncedplans) {
+			 	 let sync: SyncData = new SyncData();
+			 	 sync.id = memo.moi;
+			     sync.type = "Memo";
+			     sync.security = SyncDataSecurity.None;
+			     sync.status = SyncDataStatus[memo.del];
+			     sync.payload = memo;
+			     push.d.push(sync);
+			 }
+			 await this.dataRestful.push(push);
+		}
+		return ;
+	}
 
 	/**
 	 * 服务器发送一个链接,然后客户端进行分享
 	 * @author ying<343253410@qq.com>
 	 */
-	shareMemo() {}
+	async shareMemo(memo: MemoData, refreshChildren: boolean = false): Promise<string> {
+		this.assertEmpty(memo);     // 入参不能为空
+    	this.assertEmpty(memo.moi);  // 备忘ID不能为空
+    	if (refreshChildren) {
+      		memo = await this.getMemo(memo.moi);
+    	}
+    	//TODO 此处待定,老席答复后修复
+    	let upplan: ShareData = new ShareData();
+    	upplan.oai = "";
+    	upplan.ompn = "";
+    	upplan.c = "";
+    	upplan.d.p = memo;
+    	let shared = await this.shareRestful.share(upplan);
+    	if (shared)
+	      return shared.psurl;
+	    else
+	      return "";
+	}
 
 	/**
 	 * 备份备忘到服务器
