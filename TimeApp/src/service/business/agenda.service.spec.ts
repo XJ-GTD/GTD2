@@ -437,7 +437,7 @@ describe('EventService test suite for agenda', () => {
     let agendas = await eventService.saveAgenda(agenda);
 
     expect(agendas).toBeDefined();
-    expect(agendas.length).toBeGreaterThan(0);
+    expect(agendas.length).toBe(4);
 
     for (let each of agendas) {
       expect(["2019/09/13", "2019/11/13", "2020/01/13", "2020/03/13"].indexOf(each.evd)).toBeGreaterThanOrEqual(0);
