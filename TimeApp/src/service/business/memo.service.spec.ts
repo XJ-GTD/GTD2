@@ -180,7 +180,7 @@ describe('MemoService test suite', () => {
     expect(gmom).toBeNull();
   });
 
-  it('Case 5 - 1   backup与recovery  备份恢复任务- 备份任务、 恢复任务、查询任务', async () => {
+  xit('Case 5 - 1   backup与recovery  备份恢复任务- 备份任务、 恢复任务、查询任务', async () => {
 
   		let mom: MemoData = {} as MemoData;
 	   	mom.mon='我老大，叫老席，你动我代码试试';
