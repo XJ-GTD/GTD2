@@ -2202,9 +2202,66 @@ export class CalendarService extends BaseService {
     this.assertFail();
   }
 
-  backup(bts: number) {}
-  recovery(plans: Array<PlanData>): Array<any> {
+  /**
+   * 备份日历和日历项
+   *
+   * @author leon_xi@163.com
+   **/
+  async backup(bts: number) {
+    this.assertEmpty(bts);    // 入参不能为空
+
+    let backupPro: BackupPro = new BackupPro();
+    //操作账户ID
+    backupPro.oai = UserConfig.account.id
+    //操作手机号码
+    backupPro.ompn = UserConfig.account.phone;
+    //时间戳
+    backupPro.d.bts = bts;
+
+    // 日历(自定义日历)
+    let jha = new JhaTbl();
+    jha.jt = PlanType.PrivatePlan;
+
+    backupPro.d.jha = await this.sqlExce.getLstByParam<JhaTbl>(jha);
+
+    // 日历项(自定义日历项)
+    let jtasql = `select * from gtd_jta where ji in (select ji from gtd_jha where jt = ?) or ji is null or ji = ?`;
+    backupPro.d.jta = await this.sqlExce.getExtLstByParam(jtasql, [PlanType.PrivatePlan, '']);
+
+    await this.bacRestful.backup(backupPro);
+
+    return;
+  }
+
+  /**
+   * 恢复日历和日历项
+   *
+   * @author leon_xi@163.com
+   **/
+  recovery(recoveries: OutRecoverPro): Array<any> {
+    this.assertEmpty(recoveries);   // 入参不能为空
+
     let sqls: Array<any> = new Array<any>();
+
+    let plans = recoveries.jha;
+
+    let planitems = recoveries.jta;
+
+    // 删除自定义日历项
+    sqls.push([`delete from gtd_jta where ji in (select ji from gtd_jha where jt = ?) or ji is null or ji = ?;`, [PlanType.PrivatePlan, '']]);
+
+    // 恢复备份日历项
+    for (let planitem of planitems) {
+      sqls.push(planitem.inTParam());
+    }
+
+    // 删除自定义日历
+    sqls.push([`delete from gtd_jha where jt = ?`, [PlanType.PrivatePlan]]);
+
+    // 恢复备份日历
+    for (let plan of plans) {
+      sqls.push(plan.inTParam());
+    }
 
     return sqls;
   }

@@ -7,6 +7,8 @@ import {MoTbl} from "../sqlite/tbl/mo.tbl";
 import {DTbl} from "../sqlite/tbl/d.tbl";
 import {GTbl} from "../sqlite/tbl/g.tbl";
 import {JhTbl} from "../sqlite/tbl/jh.tbl";
+import {JhaTbl} from "../sqlite/tbl/jha.tbl";
+import {JtaTbl} from "../sqlite/tbl/jta.tbl";
 import {RestFulConfig, UrlEntity} from "../config/restful.config";
 import {CTbl} from "../sqlite/tbl/c.tbl";
 import {BxTbl} from "../sqlite/tbl/bx.tbl";
@@ -110,6 +112,10 @@ export class BackupProSub {
   bx: Array<BxTbl> = new Array<BxTbl>();
   //获取本地计划
   jh: Array<JhTbl> = new Array<JhTbl>();
+  //获取本地计划(三期新)
+  jha: Array<JhaTbl> = new Array<JhaTbl>();
+  //获取本地日历项(三期新)
+  jta: Array<JtaTbl> = new Array<JtaTbl>();
   //获取用户偏好
   y: Array<YTbl> = new Array<YTbl>();
   //新版备忘表数据
@@ -178,6 +184,10 @@ export class OutRecoverPro {
   bx: Array<BxTbl> = new Array<BxTbl>();
   //获取本地计划
   jh: Array<JhTbl> = new Array<JhTbl>();
+  //获取本地计划(三期新)
+  jha: Array<JhaTbl> = new Array<JhaTbl>();
+  //获取本地日历项(三期新)
+  jta: Array<JtaTbl> = new Array<JtaTbl>();
   //用户偏好
   y: Array<YTbl> = new Array<YTbl>();
    //新版备忘表数据
