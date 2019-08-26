@@ -231,7 +231,7 @@ export class MemoService extends BaseService {
     	upplan.oai = "";
     	upplan.ompn = "";
     	upplan.c = "";
-    	upplan.d.p = memo;
+    	//upplan.d.p = memo;
     	let shared = await this.shareRestful.share(upplan);
     	if (shared)
 	      return shared.psurl;
