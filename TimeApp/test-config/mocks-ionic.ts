@@ -15,7 +15,33 @@ export class RestfulClientMock {
         break;
       case "B" : // 备份
         bts = body.d.bts || moment().valueOf();
-        this.backup.set(bts, body.d);
+
+        let backuped = this.backup.get(bts);
+
+        if (backuped) {
+          backuped.jha = body.d.jha || backuped.jha;
+          backuped.jta = body.d.jta || backuped.jta;
+          backuped.mom = body.d.mom || backuped.mom;
+          backuped.ev = body.d.ev || backuped.ev;
+          backuped.ca = body.d.ca || backuped.ca;
+          backuped.tt = body.d.tt || backuped.tt;
+          backuped.par = body.d.par || backuped.par;
+          backuped.fj = body.d.fj || backuped.fj;
+          backuped.y = body.d.y || backuped.y;
+          backuped.jh = body.d.jh || backuped.jh;
+          backuped.bx = body.d.bx || backuped.bx;
+          backuped.g = body.d.g || backuped.g;
+          backuped.b = body.d.b || backuped.b;
+          backuped.d = body.d.d || backuped.d;
+          backuped.mo = body.d.mo || backuped.mo;
+          backuped.e = body.d.e || backuped.e;
+          backuped.sp = body.d.sp || backuped.sp;
+          backuped.c = body.d.c || backuped.c;
+        } else {
+          backuped = body.d;
+        }
+
+        this.backup.set(bts, backuped);
         return {d: {bts: bts}};
       case "R" : // 恢复
         bts = body.d.bts;
