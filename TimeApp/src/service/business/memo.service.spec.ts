@@ -215,7 +215,9 @@ describe('MemoService test suite', () => {
   	let mom: MemoData = {} as MemoData;
 	  mom.mon='你们都是大爷';
 	  mom = await memoService.saveMemo(mom);
-	  await memoService.syncMemo(mom);
+	  expect(mom).toBeDefined();
+	  expect(mom.moi).toBeDefined();
+	  await memoService.syncMemo(mom.moi);
 	  //TODO 如何预期
     
   });
