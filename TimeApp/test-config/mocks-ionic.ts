@@ -17,26 +17,39 @@ export class RestfulClientMock {
         bts = body.d.bts || moment().valueOf();
 
         let backuped = this.backup.get(bts);
+        let valueOf = function(val1, val2) {
+          if (val1 instanceof Array && val2 instanceof Array) {
+            if (val1.length > 0) {
+              return val1;
+            }
+
+            if (val2.length > 0) {
+              return val2;
+            }
+          }
+
+          return val1 || val2;
+        };
 
         if (backuped) {
-          backuped.jha = body.d.jha || backuped.jha;
-          backuped.jta = body.d.jta || backuped.jta;
-          backuped.mom = body.d.mom || backuped.mom;
-          backuped.ev = body.d.ev || backuped.ev;
-          backuped.ca = body.d.ca || backuped.ca;
-          backuped.tt = body.d.tt || backuped.tt;
-          backuped.par = body.d.par || backuped.par;
-          backuped.fj = body.d.fj || backuped.fj;
-          backuped.y = body.d.y || backuped.y;
-          backuped.jh = body.d.jh || backuped.jh;
-          backuped.bx = body.d.bx || backuped.bx;
-          backuped.g = body.d.g || backuped.g;
-          backuped.b = body.d.b || backuped.b;
-          backuped.d = body.d.d || backuped.d;
-          backuped.mo = body.d.mo || backuped.mo;
-          backuped.e = body.d.e || backuped.e;
-          backuped.sp = body.d.sp || backuped.sp;
-          backuped.c = body.d.c || backuped.c;
+          backuped.jha = valueOf(body.d.jha, backuped.jha);
+          backuped.jta = valueOf(body.d.jta, backuped.jta);
+          backuped.mom = valueOf(body.d.mom, backuped.mom);
+          backuped.ev = valueOf(body.d.ev, backuped.ev);
+          backuped.ca = valueOf(body.d.ca, backuped.ca);
+          backuped.tt = valueOf(body.d.tt, backuped.tt);
+          backuped.par = valueOf(body.d.par, backuped.par);
+          backuped.fj = valueOf(body.d.fj, backuped.fj);
+          backuped.y = valueOf(body.d.y, backuped.y);
+          backuped.jh = valueOf(body.d.jh, backuped.jh);
+          backuped.bx = valueOf(body.d.bx, backuped.bx);
+          backuped.g = valueOf(body.d.g, backuped.g);
+          backuped.b = valueOf(body.d.b, backuped.b);
+          backuped.d = valueOf(body.d.d, backuped.d);
+          backuped.mo = valueOf(body.d.mo, backuped.mo);
+          backuped.e = valueOf(body.d.e, backuped.e);
+          backuped.sp = valueOf(body.d.sp, backuped.sp);
+          backuped.c = valueOf(body.d.c, backuped.c);
         } else {
           backuped = body.d;
         }
