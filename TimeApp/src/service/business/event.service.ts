@@ -1244,7 +1244,7 @@ export class EventService extends BaseService {
         }
       }else{
         //结束时间不为空，则算时长
-        let ct = moment(agdata.ed + " " + agdata.st).diff(agdata.ed + " " + agdata.et, 'm');
+        let ct = moment(agdata.ed + " " + agdata.et).diff(agdata.ed + " " + agdata.st, 'm');
         agdata.ct = ct;
       }
     }
