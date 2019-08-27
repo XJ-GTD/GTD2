@@ -1307,7 +1307,7 @@ describe('CalendarService test suite', () => {
         for (let event of day0911Activities.events) {
           if (event.evn == "数学") {
             let origin: AgendaData = await eventService.getAgenda(event.evi);
-            
+
             let changed: AgendaData = {} as AgendaData;
             Object.assign(changed, origin);
 
@@ -1331,7 +1331,7 @@ describe('CalendarService test suite', () => {
           }
         }
 
-        expect(chinesecount).toBe(2);
+        expect(chinesecount).toBe(3);
       });
     });
   });
