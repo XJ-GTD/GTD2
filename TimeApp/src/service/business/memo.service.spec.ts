@@ -210,30 +210,31 @@ describe('MemoService test suite', () => {
 	    expect(gmom.mon).toBe(mom.mon);
   });
 
-  it('Case 6 - 1   acceptSyncPrivateMemos 更新已同步备忘标志 - 本地无数据(无报错)', (done: DoneFn) => {
+  it('Case 6 - 1   syncMemo 更新已同步备忘标志 - 本地无数据(无报错)', async () => {
   	
-  	memoService.acceptSyncPrivateMemos([["moi", moment().unix()]])
-    .then(() => {
-      expect("success").toBe("success");
-      done();
-    })
-    .catch(e => {
-      fail("抛出异常, 出错");
-      done();
-    });
+  	let mom: MemoData = {} as MemoData;
+	  mom.mon='你们都是大爷';
+	  mom = await memoService.saveMemo(mom);
+	  await memoService.syncMemo(mom);
+	  //TODO 如何预期
     
   });
 
-	it('Case 7 - 1   acceptSyncPrivateMemos 同步所有未同备忘 - 本地无数据(无报错)', (done: DoneFn) => {
-	  memoService.syncPrivateMemo()
-    .then(() => {
-      expect("success").toBe("success");
-      done();
-    })
-    .catch(e => {
-      fail("抛出异常, 出错");
-      done();
-    });
+	it('Case 7 - 1   syncMemos 同步所有未同备忘 - 本地无数据(无报错)', async () => {
+		
+		let mom: MemoData = {} as MemoData;
+	  mom.mon='你们都是大爷';
+	  mom = await memoService.saveMemo(mom);
+	  expect(mom).toBeDefined();
+	  
+	  let mom1: MemoData = {} as MemoData;
+	  mom1.mon='你们都是大爷1';
+	  mom1 = await memoService.saveMemo(mom1);
+	  expect(mom1).toBeDefined();
+	  
+	  await memoService.syncMemos();
+	  //TODO 如何预期
+	  
 	});
 	
 	
