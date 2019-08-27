@@ -42,7 +42,7 @@ import {MomTbl} from "../sqlite/tbl/mom.tbl";
 import { CalendarService, PlanData } from "./calendar.service";
 import { MemoService,MemoData } from "./memo.service";
 import { EventService } from "./event.service";
-import { PlanType,ObjectType } from "../../data.enum";
+import { PlanType,ObjectType , SyncType, DelType, SyncDataStatus} from "../../data.enum";
 
 /**
  * 备忘Service 持续集成CI 自动测试Case
@@ -208,7 +208,114 @@ describe('MemoService test suite', () => {
 	    expect(gmom.mon).toBe(mom.mon);
   });
 
+  it('Case 6 - 1   acceptSyncPrivateMemos 更新已同步备忘标志 - 本地无数据(无报错)', (done: DoneFn) => {
+  	
+  	memoService.acceptSyncPrivateMemos([["moi", moment().unix()]])
+    .then(() => {
+      expect("success").toBe("success");
+      done();
+    })
+    .catch(e => {
+      fail("抛出异常, 出错");
+      done();
+    });
+    
+  });
 
+	it('Case 7 - 1   acceptSyncPrivateMemos 同步所有未同备忘 - 本地无数据(无报错)', (done: DoneFn) => {
+		
+		let mom: MemoData = {} as MemoData;
+	  mom.mon='你们都是大爷';
+	  mom = await memoService.saveMemo(mom);
+	  
+	  memoService.syncPrivateMemo()
+    .then(() => {
+      expect("success").toBe("success");
+      done();
+    })
+    .catch(e => {
+      fail("抛出异常, 出错");
+      done();
+    });
+	});
+	
+	
+	it(`Case 8 - 1 receivedMemoData 接收备忘数据 - 不删除共享备忘`, async () => {
+		
+		let mom: MemoData = {} as MemoData;
+		mom.moi = util.getUuid();
+	  mom.mon='你们都是大爷';
+	  mom.wtt = moment().unix();
+    mom.utt = moment().unix();
+    mom.tb = SyncType.unsynch;
+    mom.del = DelType.undel;
+	  mom = await memoService.saveMemo(mom);
+	  
+	  let receivedMemoData = await memoService.receivedMemoData(mom,SyncDataStatus.UnDeleted);
+	  
+	  expect(receivedMemoData).toBeDefined();
+	  expect(receivedMemoData.moi).toBe(mom.moi);
+	  expect(receivedMemoData.tb).toBe(SyncType.synch);
+    expect(receivedMemoData.del).toBe(DelType.undel);
+    
+    let fetched = await memoService.getMemo(receivedMemoData.moi);
+    expect(fetched).toBeDefined();
+	  expect(fetched.moi).toBe(mom.moi);
+	  expect(fetched.tb).toBe(SyncType.synch);
+    expect(fetched.del).toBe(DelType.undel);
+		
+	});
+	
+	it(`Case 8 - 2 receivedMemoData 接收备忘数据 - 删除共享备忘`, async () => {
+		
+		let mom: MemoData = {} as MemoData;
+		mom.moi = util.getUuid();
+	  mom.mon='你们都是大爷';
+	  mom.wtt = moment().unix();
+    mom.utt = moment().unix();
+    mom.tb = SyncType.unsynch;
+    mom.del = DelType.undel;
+	  mom = await memoService.saveMemo(mom);
+	  
+	  let receivedMemoData = await memoService.receivedMemoData(mom,SyncDataStatus.Deleted);
+	  
+	  expect(receivedMemoData).toBeDefined();
+	  expect(receivedMemoData.moi).toBe(mom.moi);
+	  expect(receivedMemoData.tb).toBe(SyncType.synch);
+    expect(receivedMemoData.del).toBe(DelType.del);
+    
+    let fetched = await memoService.getMemo(receivedMemoData.moi);
+    expect(fetched).toBeNull();
+		
+	});
+	
+	
+	it(`Case 9 - 1 receivedMemo 接收备忘共享请求(无日历ID报错)`, (done: DoneFn) => {
+    memoService.receivedMemo("")
+    .then(() => {
+      fail("未抛出异常, 出错");
+      done();
+    })
+    .catch(e => {
+      expect(e).not.toBe("");
+      done();
+    });
+  });
+  
+  it(`Case 9 - 2 receivedMemo 接收备忘共享请求(无报错)`, (done: DoneFn) => {
+    memoService.receivedMemo(util.getUuid();)
+    .then(() => {
+      fail("未抛出异常, 出错");
+      done();
+    })
+    .catch(e => {
+      expect(e).not.toBe("");
+      done();
+    });
+  });
+  
+  
+  
   afterAll(() => {
     TestBed.resetTestingModule();
   });

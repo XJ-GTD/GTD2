@@ -217,6 +217,23 @@ export class MemoService extends BaseService {
 	}
 
 	/**
+	 * 更新已同步标志
+	 * @author ying<343253410@qq.com>
+	 */
+    async acceptSyncPrivateMemos(syncids: Array<Array<any>>) {
+	    this.assertEmpty(syncids);    // 入参不能为空
+	    if (syncids.length < 1) {     // 入参是空数组直接返回
+	      return;
+	    }
+	    let sqls: Array<any> = new Array<any>();
+	    for (let syncid of syncids) {
+	      sqls.push([`update gtd_mom set tb = ? where moi = ? and utt = ?`, [SyncType.synch, ...syncid]]);
+	    }
+	    await this.sqlExce.batExecSqlByParam(sqls);
+	    return;
+  	}
+    
+	/**
 	 * 服务器发送一个链接,然后客户端进行分享
 	 * @author ying<343253410@qq.com>
 	 */
