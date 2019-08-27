@@ -225,11 +225,6 @@ describe('MemoService test suite', () => {
   });
 
 	it('Case 7 - 1   acceptSyncPrivateMemos 同步所有未同备忘 - 本地无数据(无报错)', (done: DoneFn) => {
-		
-		let mom: MemoData = {} as MemoData;
-	  mom.mon='你们都是大爷';
-	  mom = await memoService.saveMemo(mom);
-	  
 	  memoService.syncPrivateMemo()
     .then(() => {
       expect("success").toBe("success");
