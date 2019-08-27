@@ -802,7 +802,8 @@ export class EventService extends BaseService {
     let caevi : string = masterEvi;
     let ca = new CaTbl();
     ca.evi = caevi;
-    ca = await this.sqlExce.getOneByParam<CaTbl>(ca);
+    let existca = await this.sqlExce.getOneByParam<CaTbl>(ca);
+    Object.assign(ca, existca);
 
     if (evtbls.length > 0){//有数据，需要更新日程结束日
       ca.ed = moment(oriAgdata.evd).subtract(1,'d').format("YYYY/MM/DD");//evd使用原事件evd
@@ -1430,22 +1431,22 @@ export class EventService extends BaseService {
 	 * 发送任务进行共享
 	 */
   async sendEvent(tt: TaskData) {
-  	this.assertEmpty(tt); 
+  	this.assertEmpty(tt);
   	this.assertNotEqual(tt.type, anyenum.EventType.Task);  //不是任务不能发送共享
   	await this.syncPrivateTaskEvent(tt);
   	return ;
   }
-  
+
   /**
    * 发送小任务进行共享
    */
   async sendMiniEvent(tt: MiniTaskData) {
-  	this.assertEmpty(tt); 
+  	this.assertEmpty(tt);
   	this.assertNotEqual(tt.type, anyenum.EventType.MiniTask);  //不是任务不能发送共享
   	await this.syncPrivateMiniTaskEvent(tt);
   	return ;
   }
-  
+
   /**
    * 共享任务
    */
@@ -1453,7 +1454,7 @@ export class EventService extends BaseService {
   	this.assertEmpty(tt);       // 入参不能为空
 	  this.assertEmpty(tt.evi);    // ID不能为空
 	  this.assertEmpty(tt.del);   // 删除标记不能为空
-	  
+
 	  let push: PushInData = new PushInData();
 	  let sync: SyncData = new SyncData();
 	  sync.id = tt.evi;
@@ -1465,7 +1466,7 @@ export class EventService extends BaseService {
     await this.dataRestful.push(push);
     return;
   }
-  
+
   /**
    * 共享小任务
    */
@@ -1473,7 +1474,7 @@ export class EventService extends BaseService {
   	this.assertEmpty(tt);       // 入参不能为空
 	  this.assertEmpty(tt.evi);    // ID不能为空
 	  this.assertEmpty(tt.del);   // 删除标记不能为空
-	  
+
 	  let push: PushInData = new PushInData();
 	  let sync: SyncData = new SyncData();
 	  sync.id = tt.evi;
@@ -1485,7 +1486,7 @@ export class EventService extends BaseService {
     await this.dataRestful.push(push);
     return;
   }
-  
+
   /**
    * 接收任务
    */
@@ -1496,7 +1497,7 @@ export class EventService extends BaseService {
 		await this.dataRestful.pull(pull);
 		return;
   }
-  
+
   /**
    * 接收任务保存到本地
    */
@@ -1505,7 +1506,7 @@ export class EventService extends BaseService {
     this.assertEmpty(tt.evi);  // ID不能为空
     this.assertNotEqual(tt.type, anyenum.EventType.Task);  //不是任务不能发送共享
     this.assertEmpty(status);   // 入参不能为空
-    
+
     let evdb: EvTbl = new EvTbl();
     Object.assign(evdb, tt);
     evdb.del = status;
@@ -1515,7 +1516,7 @@ export class EventService extends BaseService {
     Object.assign(backMEvent, evdb);
     return backMEvent;
   }
-  
+
   /**
    * 接收小任务保存到本地
    */
@@ -1524,7 +1525,7 @@ export class EventService extends BaseService {
     this.assertEmpty(tt.evi);  // ID不能为空
     this.assertNotEqual(tt.type, anyenum.EventType.MiniTask);  //不是任务不能发送共享
     this.assertEmpty(status);   // 入参不能为空
-    
+
     let evdb: EvTbl = new EvTbl();
     Object.assign(evdb, tt);
     evdb.del = status;
@@ -1534,33 +1535,33 @@ export class EventService extends BaseService {
     Object.assign(backMEvent, evdb);
     return backMEvent;
   }
-  
+
   rejectReceivedEvent() {}
-  
+
   /**
    * 同步任务到服务器
    */
   async syncEvent(evi: string) {
   	this.assertEmpty(evi);
-  	let tt = await this.getTask(evi); 
+  	let tt = await this.getTask(evi);
 		if(tt && (tt.tb == SyncType.unsynch)) {
 			await this.syncPrivateTaskEvent(tt);
 		}
 		return ;
   }
-  
+
   /**
    * 同步小任务到服务器
    */
   async syncMiniEvent(evi: string) {
   	this.assertEmpty(evi);
-  	let tt = await this.getMiniTask(evi); 
+  	let tt = await this.getMiniTask(evi);
 		if(tt && (tt.tb == SyncType.unsynch)) {
 			await this.syncPrivateMiniTaskEvent(tt);
 		}
 		return ;
   }
-  
+
   /**
    * 同步全部的未同步的任务到服务器
    */
@@ -1583,7 +1584,7 @@ export class EventService extends BaseService {
 		}
 		return ;
   }
-  
+
   /**
    * 同步全部的未同步的小任务到服务器
    */
