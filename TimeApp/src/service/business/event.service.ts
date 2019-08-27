@@ -1856,7 +1856,7 @@ export class RtJson {
 }
 
 export class TxJson {
-  type: anyenum.TxType;
+  type: anyenum.TxType = anyenum.TxType.close;
 }
 
 enum DUflag {
