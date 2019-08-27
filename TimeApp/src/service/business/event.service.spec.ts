@@ -412,6 +412,29 @@ describe('EventService test suite', () => {
 	    expect(fetched.del).toBe(DelType.undel);
   });
   
+   it(`Case 12 - 2 acceptReceivedTask 接收任务,有数据,删除共享`,  async () => {	  
+    	let tx: TaskData = {} as TaskData;
+	    tx.evn ="shopping,今天穿的是花裤衩";
+	    tx.evi = util.getUuid();
+		  tx.wtt = moment().unix();
+	    tx.utt = moment().unix();
+	    tx.tb = SyncType.unsynch;
+	    tx.del = DelType.undel;
+	    tx = await eventService.saveTask(tx);
+	    expect(tx).toBeDefined();
+	    expect(tx.evi).toBeDefined();
+	    
+	    let received = await eventService.acceptReceivedTask(tx,SyncDataStatus.Deleted);
+	    
+	    expect(received).toBeDefined();
+		  expect(received.evi).toBe(tx.evi);
+		  expect(received.tb).toBe(SyncType.synch);
+	    expect(received.del).toBe(DelType.del);
+	    
+	    let fetched = await eventService.getTask(received.evi);
+	    expect(fetched).toBeNull();
+  });
+  
   
   it(`Case 13 - 1 acceptReceivedMiniTask 接收小任务,有数据,不删除共享`,  async () => {	  
     	let tx: MiniTaskData = {} as MiniTaskData;
@@ -438,6 +461,79 @@ describe('EventService test suite', () => {
 		  expect(fetched.tb).toBe(SyncType.synch);
 	    expect(fetched.del).toBe(DelType.undel);
   });
+	
+	it(`Case 13 - 2 acceptReceivedMiniTask 接收小任务,有数据,删除共享`,  async () => {	  
+    	let tx: MiniTaskData = {} as MiniTaskData;
+	    tx.evn ="shopping,今天穿的是花裤衩";
+	    tx.evi = util.getUuid();
+		  tx.wtt = moment().unix();
+	    tx.utt = moment().unix();
+	    tx.tb = SyncType.unsynch;
+	    tx.del = DelType.undel;
+	    tx = await eventService.saveMiniTask(tx);
+	    expect(tx).toBeDefined();
+	    expect(tx.evi).toBeDefined();
+	    
+	    let received = await eventService.acceptReceivedMiniTask(tx,SyncDataStatus.Deleted);
+	    
+	    expect(received).toBeDefined();
+		  expect(received.evi).toBe(tx.evi);
+		  expect(received.tb).toBe(SyncType.synch);
+	    expect(received.del).toBe(DelType.del);
+	    
+	    let fetched = await eventService.getMiniTask(received.evi);
+	    expect(fetched).toBeNull();
+  });
+  
+  
+  it('Case 14 - 1   syncTask 更新单个任务到服务器 ', async () => {
+  	
+  	let tx: TaskData = {} as TaskData;
+    tx.evn ="shopping,今天穿的是花裤衩";
+    tx = await eventService.saveTask(tx);
+    expect(tx).toBeDefined();
+    expect(tx.evi).toBeDefined();
+    
+    await eventService.syncTask(tx);
+    
+  });
+  
+  it('Case 15 - 1   syncMiniTask 更新单个小任务到服务器 ', async () => {
+  	
+  	let tx: MiniTaskData = {} as MiniTaskData;
+    tx.evn ="shopping,今天穿的是花裤衩";
+    tx = await eventService.saveMiniTask(tx);
+    expect(tx).toBeDefined();
+    expect(tx.evi).toBeDefined();
+    
+    await eventService.syncMiniTask(tx);
+    
+  });
+  
+  it('Case 16 - 1   syncTasks 同步全部的未同步的任务到服务器 ', async () => {
+  	
+  	let tx: TaskData = {} as TaskData;
+    tx.evn ="shopping,今天穿的是花裤衩";
+    tx = await eventService.saveTask(tx);
+    expect(tx).toBeDefined();
+    expect(tx.evi).toBeDefined();
+    
+    await eventService.syncTasks();
+    
+  });
+  
+  it('Case 17 - 1   syncMiniTasks 同步全部的未同步的小任务到服务器 ', async () => {
+  	
+  	let tx: MiniTaskData = {} as MiniTaskData;
+    tx.evn ="shopping,今天穿的是花裤衩";
+    tx = await eventService.saveMiniTask(tx);
+    expect(tx).toBeDefined();
+    expect(tx.evi).toBeDefined();
+    
+    await eventService.syncMiniTasks();
+    
+  });
+	
 	
   afterAll(() => {
     TestBed.resetTestingModule();
