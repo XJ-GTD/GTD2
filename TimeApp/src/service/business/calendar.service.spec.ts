@@ -1424,6 +1424,130 @@ describe('CalendarService test suite', () => {
         expect(mathcount).toBe(1);
       });
     });
+
+    describe(`Case 1 - 9 2018/09/01 起 每月5日 公布 当月家长开放日安排`, () => {
+      beforeEach(async () => {
+        let openfamily: AgendaData = {} as AgendaData;
+
+        let openfamilyrt: RtJson = new RtJson();
+        openfamilyrt.cycletype = CycleType.month;
+        openfamilyrt.openway.push(4);
+        openfamilyrt.over.type = OverType.limitdate;
+        openfamilyrt.over.value = end;
+
+        openfamily.sd = day;
+        openfamily.evn = "公布 当月家长开放日安排";
+        openfamily.rtjson = openfamilyrt;
+
+        await eventService.saveAgenda(openfamily);
+
+      });
+
+      it(`Case 1 - 1 2018/09/05 备注 公布 09/15 家长开放日`, async () => {
+        let dayActivities = await calendarService.fetchDayActivities("2018/09/05");
+
+        let count: number = 0;
+        for (let event of dayActivities.events) {
+          if (event.evn == "公布 当月家长开放日安排") {
+            let origin: AgendaData = eventService.getAgenda(event.evi);
+
+            let changed: AgendaData = {} as AgendaData;
+            Object.assign(changed, origin);
+
+            changed.bz = "09/15 家长开放日";
+
+            await eventService.saveAgenda(changed, origin, OperateType.OnlySel);
+            count++;
+          }
+        }
+
+        expect(count).toBe(1);
+      });
+
+      it(`Case 1 - 2 2018/10/05 备注 公布 10/16 家长开放日`, async () => {
+        let dayActivities = await calendarService.fetchDayActivities("2018/10/05");
+
+        let count: number = 0;
+        for (let event of dayActivities.events) {
+          if (event.evn == "公布 当月家长开放日安排") {
+            let origin: AgendaData = eventService.getAgenda(event.evi);
+
+            let changed: AgendaData = {} as AgendaData;
+            Object.assign(changed, origin);
+
+            changed.bz = "10/16 家长开放日";
+
+            await eventService.saveAgenda(changed, origin, OperateType.OnlySel);
+            count++;
+          }
+        }
+
+        expect(count).toBe(1);
+      });
+
+      it(`Case 1 - 3 2018/11/05 备注 公布 11/15 家长开放日`, async () => {
+        let dayActivities = await calendarService.fetchDayActivities("2018/11/05");
+
+        let count: number = 0;
+        for (let event of dayActivities.events) {
+          if (event.evn == "公布 当月家长开放日安排") {
+            let origin: AgendaData = eventService.getAgenda(event.evi);
+
+            let changed: AgendaData = {} as AgendaData;
+            Object.assign(changed, origin);
+
+            changed.bz = "11/15 家长开放日";
+
+            await eventService.saveAgenda(changed, origin, OperateType.OnlySel);
+            count++;
+          }
+        }
+
+        expect(count).toBe(1);
+      });
+
+      it(`Case 1 - 4 2018/12/05 备注 公布 12/11 家长开放日`, async () => {
+        let dayActivities = await calendarService.fetchDayActivities("2018/12/05");
+
+        let count: number = 0;
+        for (let event of dayActivities.events) {
+          if (event.evn == "公布 当月家长开放日安排") {
+            let origin: AgendaData = eventService.getAgenda(event.evi);
+
+            let changed: AgendaData = {} as AgendaData;
+            Object.assign(changed, origin);
+
+            changed.bz = "12/11 家长开放日";
+
+            await eventService.saveAgenda(changed, origin, OperateType.OnlySel);
+            count++;
+          }
+        }
+
+        expect(count).toBe(1);
+      });
+
+      it(`Case 1 - 5 2019/01/05 备注 公布 取消本月家长开放日`, async () => {
+        let dayActivities = await calendarService.fetchDayActivities("2019/01/05");
+
+        let count: number = 0;
+        for (let event of dayActivities.events) {
+          if (event.evn == "公布 当月家长开放日安排") {
+            let origin: AgendaData = eventService.getAgenda(event.evi);
+
+            let changed: AgendaData = {} as AgendaData;
+            Object.assign(changed, origin);
+
+            changed.bz = "取消本月家长开放日";
+
+            await eventService.saveAgenda(changed, origin, OperateType.OnlySel);
+            count++;
+          }
+        }
+
+        expect(count).toBe(1);
+      });
+    });
   });
 
   it(`Case 27 - 1 acceptSyncPrivatePlans 更新已同步日历标志 - 本地无数据(无报错)`, (done: DoneFn) => {
