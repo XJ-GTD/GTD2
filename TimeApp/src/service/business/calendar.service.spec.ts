@@ -1488,7 +1488,7 @@ describe('CalendarService test suite', () => {
             }
           }
 
-          expect(rtevi).not.toBe("");
+          expect(rtevi).toBe("");
           expect(evi).not.toBe("");
         });
         it(`Case 1 - 3 确认 2018/11/05 的 开放日日程为重复日程`, async () => {
@@ -1597,7 +1597,7 @@ describe('CalendarService test suite', () => {
               }
             }
 
-            expect(rtevi).not.toBe("");
+            expect(rtevi).toBe("");
             expect(evi).not.toBe("");
           });
           it(`Case 1 - 4 确认 2018/12/05 的 开放日日程为重复日程`, async () => {
@@ -1706,7 +1706,7 @@ describe('CalendarService test suite', () => {
                 }
               }
 
-              expect(rtevi).not.toBe("");
+              expect(rtevi).toBe("");
               expect(evi).not.toBe("");
             });
             it(`Case 1 - 5 确认 2019/01/05 的 开放日日程为重复日程`, async () => {
@@ -1815,7 +1815,7 @@ describe('CalendarService test suite', () => {
                   }
                 }
 
-                expect(rtevi).not.toBe("");
+                expect(rtevi).toBe("");
                 expect(evi).not.toBe("");
               });
 
