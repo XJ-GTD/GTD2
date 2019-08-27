@@ -1300,7 +1300,7 @@ describe('CalendarService test suite', () => {
       });
     });
 
-    describe(`Case 1 - 7 2018/09/11 星期二 数学课老师请病假 改成 语文课`, () => {
+    describe(`Case 1 - 7 2018/09/11 星期二 数学课老师请病假 与 星期三的语文课 调课`, () => {
       beforeEach(async () => {
         let day0911Activities = await calendarService.fetchDayActivities("2018/09/11");
 
@@ -1312,10 +1312,30 @@ describe('CalendarService test suite', () => {
             Object.assign(changed, origin);
 
             changed.evn = "语文";
+            changed.bz = "张老师病假, 与星期三的语文课调课";
 
             await eventService.saveAgenda(changed, origin, OperateType.OnlySel);
           }
         }
+
+        let day0912Activities = await calendarService.fetchDayActivities("2018/09/12");
+
+        for (let event of day0912Activities.events) {
+          if (event.evn == "语文") {
+            let origin: AgendaData = await eventService.getAgenda(event.evi);
+
+            let changed: AgendaData = {} as AgendaData;
+            Object.assign(changed, origin);
+
+            changed.evn = "数学";
+            changed.bz = "星期二数学张老师病假, 与星期三的语文课调课";
+
+            await eventService.saveAgenda(changed, origin, OperateType.OnlySel);
+
+            break;
+          }
+        }
+
       });
 
       it(`Case 1 - 1 确认 2018/09/11 星期二 调整后的课程表`, async () => {
@@ -1332,6 +1352,24 @@ describe('CalendarService test suite', () => {
         }
 
         expect(chinesecount).toBe(3);
+      });
+
+      it(`Case 1 - 2 确认 2018/09/12 星期三 调整后的课程表`, async () => {
+        let day0912Activities = await calendarService.fetchDayActivities("2018/09/12");
+
+        let mathcount: number = 0;
+        let chinesecount: number = 0;
+        for (let event of day0912Activities.events) {
+          if (event.evn == "语文") {
+            chinesecount++;
+          }
+          if (event.evn == "数学") {
+            mathcount++;
+          }
+        }
+
+        expect(chinesecount).toBe(1);
+        expect(mathcount).toBe(1);
       });
     });
   });
