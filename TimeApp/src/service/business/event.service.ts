@@ -718,7 +718,7 @@ export class EventService extends BaseService {
         await this.sqlExce.updateByParam(nwEv);
 
         //原子事件的父字段改为新的父事件
-        upcondi = ` rtevi = '${oriAgdata.evi}'; `
+        upcondi = ` rtevi = '${oriAgdata.evi}' `
         sq = `update gtd_ev set rtevi = '${nwEv.evi}',mi='${UserConfig.account.id}',tb = '${anyenum.SyncType.unsynch}'
              where  ${upcondi}; `;
         await this.sqlExce.execSql(sq);
