@@ -1392,7 +1392,7 @@ describe('CalendarService test suite', () => {
         }
       });
 
-      it(`Case 1 - 1 确认 2019/01/07 调整后的课程表`, () => {
+      it(`Case 1 - 1 确认 2019/01/07 调整后的课程表`, async () => {
         let day0107Activities = await calendarService.fetchDayActivities("2019/01/07");
 
         let mathcount: number = 0;
@@ -1408,7 +1408,7 @@ describe('CalendarService test suite', () => {
         expect(mathcount).toBe(2);
       });
 
-      it(`Case 1 - 2 确认 2019/01/09 调整后的课程表`, () => {
+      it(`Case 1 - 2 确认 2019/01/09 调整后的课程表`, async () => {
         let day0109Activities = await calendarService.fetchDayActivities("2019/01/09");
 
         let mathcount: number = 0;
