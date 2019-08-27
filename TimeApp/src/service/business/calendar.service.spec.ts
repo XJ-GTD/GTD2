@@ -1449,7 +1449,7 @@ describe('CalendarService test suite', () => {
         let count: number = 0;
         for (let event of dayActivities.events) {
           if (event.evn == "公布 当月家长开放日安排") {
-            let origin: AgendaData = eventService.getAgenda(event.evi);
+            let origin: AgendaData = await eventService.getAgenda(event.evi);
 
             let changed: AgendaData = {} as AgendaData;
             Object.assign(changed, origin);
@@ -1470,7 +1470,7 @@ describe('CalendarService test suite', () => {
         let count: number = 0;
         for (let event of dayActivities.events) {
           if (event.evn == "公布 当月家长开放日安排") {
-            let origin: AgendaData = eventService.getAgenda(event.evi);
+            let origin: AgendaData = await eventService.getAgenda(event.evi);
 
             let changed: AgendaData = {} as AgendaData;
             Object.assign(changed, origin);
@@ -1491,7 +1491,7 @@ describe('CalendarService test suite', () => {
         let count: number = 0;
         for (let event of dayActivities.events) {
           if (event.evn == "公布 当月家长开放日安排") {
-            let origin: AgendaData = eventService.getAgenda(event.evi);
+            let origin: AgendaData = await eventService.getAgenda(event.evi);
 
             let changed: AgendaData = {} as AgendaData;
             Object.assign(changed, origin);
@@ -1512,7 +1512,7 @@ describe('CalendarService test suite', () => {
         let count: number = 0;
         for (let event of dayActivities.events) {
           if (event.evn == "公布 当月家长开放日安排") {
-            let origin: AgendaData = eventService.getAgenda(event.evi);
+            let origin: AgendaData = await eventService.getAgenda(event.evi);
 
             let changed: AgendaData = {} as AgendaData;
             Object.assign(changed, origin);
@@ -1533,7 +1533,7 @@ describe('CalendarService test suite', () => {
         let count: number = 0;
         for (let event of dayActivities.events) {
           if (event.evn == "公布 当月家长开放日安排") {
-            let origin: AgendaData = eventService.getAgenda(event.evi);
+            let origin: AgendaData = await eventService.getAgenda(event.evi);
 
             let changed: AgendaData = {} as AgendaData;
             Object.assign(changed, origin);
