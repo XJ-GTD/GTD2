@@ -61,6 +61,7 @@ describe('MemoService test suite', () => {
   let calendarService: CalendarService;
   let planforUpdate: PlanData;
   let sqlExce: SqliteExec;
+  let util: UtilService;
 
   beforeAll(async () => {
     TestBed.configureTestingModule({
@@ -106,6 +107,7 @@ describe('MemoService test suite', () => {
 		sqlExce = TestBed.get(SqliteExec);
     memoService = TestBed.get(MemoService);
     calendarService = TestBed.get(CalendarService);
+    util = TestBed.get(UtilService);
 
     await config.generateDb();
     await init.createTables();
@@ -290,7 +292,7 @@ describe('MemoService test suite', () => {
 	});
 	
 	
-	it(`Case 9 - 1 receivedMemo 接收备忘共享请求(无日历ID报错)`, (done: DoneFn) => {
+	it(`Case 9 - 1 receivedMemo 接收备忘共享请求(无ID报错)`, (done: DoneFn) => {
     memoService.receivedMemo("")
     .then(() => {
       fail("未抛出异常, 出错");
@@ -303,7 +305,7 @@ describe('MemoService test suite', () => {
   });
   
   it(`Case 9 - 2 receivedMemo 接收备忘共享请求(无报错)`, (done: DoneFn) => {
-    memoService.receivedMemo(util.getUuid();)
+    memoService.receivedMemo(util.getUuid())
     .then(() => {
       fail("未抛出异常, 出错");
       done();
