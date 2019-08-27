@@ -59,7 +59,7 @@ import {BhTbl} from "../sqlite/tbl/bh.tbl";
 import { CalendarService, PlanData, PlanItemData, PlanMember, MonthActivityData, MonthActivitySummaryData, DayActivityData, DayActivitySummaryData, PagedActivityData, FindActivityCondition } from "./calendar.service";
 import { EventService, AgendaData, TaskData, MiniTaskData, RtJson } from "./event.service";
 import { MemoService, MemoData } from "./memo.service";
-import { PlanType, PlanItemType, CycleType, OverType, PageDirection, SyncType, DelType, SyncDataStatus, IsWholeday, OperateType, EventType } from "../../data.enum";
+import { PlanType, PlanItemType, CycleType, OverType, RepeatFlag, PageDirection, SyncType, DelType, SyncDataStatus, IsWholeday, OperateType, EventType } from "../../data.enum";
 
 /**
  * 日历Service 持续集成CI 自动测试Case
@@ -1481,14 +1481,17 @@ describe('CalendarService test suite', () => {
 
           let rtevi: string;
           let evi: string;
+          let rfg: string;
           for (let event of dayActivities.events) {
             if (event.evn == "公布 当月家长开放日安排") {
               rtevi = event.rtevi;
               evi = event.evi;
+              rfg = event.rfg;
             }
           }
 
           expect(rtevi).toBe("");
+          expect(rfg).toBe(RepeatFlag.Repeat);
           expect(evi).not.toBe("");
         });
         it(`Case 1 - 3 确认 2018/11/05 的 开放日日程为重复日程`, async () => {
@@ -1590,14 +1593,17 @@ describe('CalendarService test suite', () => {
 
             let rtevi: string;
             let evi: string;
+            let rfg: string;
             for (let event of dayActivities.events) {
               if (event.evn == "公布 当月家长开放日安排") {
                 rtevi = event.rtevi;
                 evi = event.evi;
+                rfg = event.rfg;
               }
             }
 
             expect(rtevi).toBe("");
+            expect(rfg).toBe(RepeatFlag.Repeat);
             expect(evi).not.toBe("");
           });
           it(`Case 1 - 4 确认 2018/12/05 的 开放日日程为重复日程`, async () => {
@@ -1699,14 +1705,17 @@ describe('CalendarService test suite', () => {
 
               let rtevi: string;
               let evi: string;
+              let rfg: string;
               for (let event of dayActivities.events) {
                 if (event.evn == "公布 当月家长开放日安排") {
                   rtevi = event.rtevi;
                   evi = event.evi;
+                  rfg = event.rfg;
                 }
               }
 
               expect(rtevi).toBe("");
+              expect(rfg).toBe(RepeatFlag.Repeat);
               expect(evi).not.toBe("");
             });
             it(`Case 1 - 5 确认 2019/01/05 的 开放日日程为重复日程`, async () => {
@@ -1808,14 +1817,17 @@ describe('CalendarService test suite', () => {
 
                 let rtevi: string;
                 let evi: string;
+                let rfg: string;
                 for (let event of dayActivities.events) {
                   if (event.evn == "公布 当月家长开放日安排") {
                     rtevi = event.rtevi;
                     evi = event.evi;
+                    rfg = event.rfg;
                   }
                 }
 
                 expect(rtevi).toBe("");
+                expect(rfg).toBe(RepeatFlag.Repeat);
                 expect(evi).not.toBe("");
               });
 
