@@ -1306,12 +1306,14 @@ describe('CalendarService test suite', () => {
 
         for (let event of day0911Activities.events) {
           if (event.evn == "数学") {
+            let origin: AgendaData = await eventService.getAgenda(event.evi);
+            
             let changed: AgendaData = {} as AgendaData;
-            Object.assign(changed, event);
+            Object.assign(changed, origin);
 
             changed.evn = "语文";
 
-            await eventService.saveAgenda(changed, event, OperateType.OnlySel);
+            await eventService.saveAgenda(changed, origin, OperateType.OnlySel);
           }
         }
       });
