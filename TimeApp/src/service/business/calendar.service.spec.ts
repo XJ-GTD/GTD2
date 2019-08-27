@@ -57,7 +57,7 @@ import {BxTbl} from "../sqlite/tbl/bx.tbl";
 import {BhTbl} from "../sqlite/tbl/bh.tbl";
 
 import { CalendarService, PlanData, PlanItemData, PlanMember, MonthActivityData, MonthActivitySummaryData, DayActivityData, DayActivitySummaryData, PagedActivityData, FindActivityCondition } from "./calendar.service";
-import { EventService, AgendaData, TaskData, MiniTaskData, RtJson } from "./event.service";
+import { EventService, AgendaData, TaskData, MiniTaskData, RtJson, TxJson } from "./event.service";
 import { MemoService, MemoData } from "./memo.service";
 import { PlanType, PlanItemType, CycleType, OverType, RepeatFlag, PageDirection, SyncType, DelType, SyncDataStatus, IsWholeday, OperateType, EventType, TxType } from "../../data.enum";
 
