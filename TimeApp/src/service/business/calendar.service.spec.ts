@@ -1372,6 +1372,58 @@ describe('CalendarService test suite', () => {
         expect(mathcount).toBe(1);
       });
     });
+
+    describe(`Case 1 - 8 2019/01/07 起 美术课 调整为 数学课`, () => {
+      beforeEach(async () => {
+        let day0107Activities = await calendarService.fetchDayActivities("2019/01/07");
+
+        for (let event of day0107Activities.events) {
+          if (event.evn == "美术") {
+            let origin: AgendaData = await eventService.getAgenda(event.evi);
+
+            let changed: AgendaData = {} as AgendaData;
+            Object.assign(changed, origin);
+
+            changed.evn = "数学";
+            changed.bz = "期末美术课改上数学课";
+
+            await eventService.saveAgenda(changed, origin, OperateType.FromSel);
+          }
+        }
+      });
+
+      it(`Case 1 - 1 确认 2019/01/07 调整后的课程表`, () => {
+        let day0107Activities = await calendarService.fetchDayActivities("2019/01/07");
+
+        let mathcount: number = 0;
+        for (let event of day0107Activities.events) {
+          if (event.evn == "美术") {
+            fail("美术课已经调整为数学课");
+          }
+          if (event.evn == "数学") {
+            mathcount++;
+          }
+        }
+
+        expect(mathcount).toBe(2);
+      });
+
+      it(`Case 1 - 2 确认 2019/01/09 调整后的课程表`, () => {
+        let day0109Activities = await calendarService.fetchDayActivities("2019/01/09");
+
+        let mathcount: number = 0;
+        for (let event of day0109Activities.events) {
+          if (event.evn == "美术") {
+            fail("美术课已经调整为数学课");
+          }
+          if (event.evn == "数学") {
+            mathcount++;
+          }
+        }
+
+        expect(mathcount).toBe(1);
+      });
+    });
   });
 
   it(`Case 27 - 1 acceptSyncPrivatePlans 更新已同步日历标志 - 本地无数据(无报错)`, (done: DoneFn) => {
