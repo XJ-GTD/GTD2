@@ -1300,6 +1300,38 @@ describe('CalendarService test suite', () => {
       });
     });
 
+    describe(`Case 1 - 7 2018/09/11 星期二 数学课老师请病假 改成 语文课`, () => {
+      beforeEach(async () => {
+        let day0911Activities = await calendarService.fetchDayActivities("2018/09/11");
+
+        for (let event of day0911Activities.events) {
+          if (event.evn == "数学") {
+            let changed: AgendaData = {} as AgendaData;
+            Object.assign(changed, event);
+
+            changed.evn = "语文";
+
+            await eventService.saveAgenda(changed, event, OperateType.OnlySel);
+          }
+        }
+      });
+
+      it(`Case 1 - 1 确认 2018/09/11 星期二 调整后的课程表`, async () => {
+        let day0911Activities = await calendarService.fetchDayActivities("2018/09/11");
+
+        let chinesecount: number = 0;
+        for (let event of day0911Activities.events) {
+          if (event.evn == "数学") {
+            fail("数学课已经调整为语文课");
+          }
+          if (event.evn == "语文") {
+            chinesecount++;
+          }
+        }
+
+        expect(chinesecount).toBe(2);
+      });
+    });
   });
 
   it(`Case 27 - 1 acceptSyncPrivatePlans 更新已同步日历标志 - 本地无数据(无报错)`, (done: DoneFn) => {
