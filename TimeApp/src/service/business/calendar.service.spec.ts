@@ -59,7 +59,7 @@ import {BhTbl} from "../sqlite/tbl/bh.tbl";
 import { CalendarService, PlanData, PlanItemData, PlanMember, MonthActivityData, MonthActivitySummaryData, DayActivityData, DayActivitySummaryData, PagedActivityData, FindActivityCondition } from "./calendar.service";
 import { EventService, AgendaData, TaskData, MiniTaskData, RtJson } from "./event.service";
 import { MemoService, MemoData } from "./memo.service";
-import { PlanType, PlanItemType, CycleType, OverType, RepeatFlag, PageDirection, SyncType, DelType, SyncDataStatus, IsWholeday, OperateType, EventType } from "../../data.enum";
+import { PlanType, PlanItemType, CycleType, OverType, RepeatFlag, PageDirection, SyncType, DelType, SyncDataStatus, IsWholeday, OperateType, EventType, TxType } from "../../data.enum";
 
 /**
  * 日历Service 持续集成CI 自动测试Case
@@ -1435,9 +1435,13 @@ describe('CalendarService test suite', () => {
         openfamilyrt.over.type = OverType.limitdate;
         openfamilyrt.over.value = end;
 
+        let openfamilytx: TxJson = new TxJson();
+        openfamilytx.type = TxType.d1;
+
         openfamily.sd = day;
         openfamily.evn = "公布 当月家长开放日安排";
         openfamily.rtjson = openfamilyrt;
+        openfamily.txjson = openfamilytx;
 
         await eventService.saveAgenda(openfamily);
 
