@@ -715,7 +715,7 @@ export class EventService extends BaseService {
         nwEv.rtevi = "";
         nwEv.tb = anyenum.SyncType.unsynch;
         nwEv.mi = UserConfig.account.id;
-        await this.sqlExce.updateByParam(nwEv.upTParam());
+        await this.sqlExce.updateByParam(nwEv);
 
         //原子事件的父字段改为新的父事件
         upcondi = ` rtevi = '${oriAgdata.evi}'; `
