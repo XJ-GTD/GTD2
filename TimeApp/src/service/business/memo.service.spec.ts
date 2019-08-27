@@ -258,6 +258,7 @@ describe('MemoService test suite', () => {
     
     let fetched = await memoService.getMemo(receivedMemoData.moi);
     expect(fetched).toBeDefined();
+    expect(fetched.moi).toBeDefined();
 	  expect(fetched.moi).toBe(mom.moi);
 	  expect(fetched.tb).toBe(SyncType.synch);
     expect(fetched.del).toBe(DelType.undel);
