@@ -1430,67 +1430,28 @@ export class EventService extends BaseService {
 	/**
 	 * 发送任务进行共享
 	 */
-  async sendEvent(tt: TaskData) {
+  async sendTask(tt: TaskData) {
   	this.assertEmpty(tt);
   	this.assertNotEqual(tt.type, anyenum.EventType.Task);  //不是任务不能发送共享
-  	await this.syncPrivateTaskEvent(tt);
+  	await this.syncTask(tt);
   	return ;
   }
 
   /**
    * 发送小任务进行共享
    */
-  async sendMiniEvent(tt: MiniTaskData) {
+  async sendMiniTask(tt: MiniTaskData) {
   	this.assertEmpty(tt);
   	this.assertNotEqual(tt.type, anyenum.EventType.MiniTask);  //不是任务不能发送共享
-  	await this.syncPrivateMiniTaskEvent(tt);
+  	await this.syncMiniTask(tt);
   	return ;
   }
 
-  /**
-   * 共享任务
-   */
-  async syncPrivateTaskEvent(tt: TaskData) {
-  	this.assertEmpty(tt);       // 入参不能为空
-	  this.assertEmpty(tt.evi);    // ID不能为空
-	  this.assertEmpty(tt.del);   // 删除标记不能为空
-
-	  let push: PushInData = new PushInData();
-	  let sync: SyncData = new SyncData();
-	  sync.id = tt.evi;
-    sync.type = "Task";
-    sync.security = SyncDataSecurity.None;
-    sync.status = SyncDataStatus[tt.del];
-    sync.payload = tt;
-    push.d.push(sync);
-    await this.dataRestful.push(push);
-    return;
-  }
-
-  /**
-   * 共享小任务
-   */
-  async syncPrivateMiniTaskEvent(tt: MiniTaskData) {
-  	this.assertEmpty(tt);       // 入参不能为空
-	  this.assertEmpty(tt.evi);    // ID不能为空
-	  this.assertEmpty(tt.del);   // 删除标记不能为空
-
-	  let push: PushInData = new PushInData();
-	  let sync: SyncData = new SyncData();
-	  sync.id = tt.evi;
-    sync.type = "MiniTask";
-    sync.security = SyncDataSecurity.None;
-    sync.status = SyncDataStatus[tt.del];
-    sync.payload = tt;
-    push.d.push(sync);
-    await this.dataRestful.push(push);
-    return;
-  }
-
+ 
   /**
    * 接收任务
    */
-  async receivedEvent(evi: string) {
+  async receivedTask(evi: string) {
   	this.assertEmpty(evi);   // 入参不能为空
 		let pull: PullInData = new PullInData();
 		pull.d.push(evi);
@@ -1501,7 +1462,7 @@ export class EventService extends BaseService {
   /**
    * 接收任务保存到本地
    */
-  async acceptReceivedEvent(tt: TaskData,status: SyncDataStatus): Promise<TaskData> {
+  async acceptReceivedTask(tt: TaskData,status: SyncDataStatus): Promise<TaskData> {
   	this.assertEmpty(tt);     // 入参不能为空
     this.assertEmpty(tt.evi);  // ID不能为空
     this.assertNotEqual(tt.type, anyenum.EventType.Task);  //不是任务不能发送共享
@@ -1520,7 +1481,7 @@ export class EventService extends BaseService {
   /**
    * 接收小任务保存到本地
    */
-  async acceptReceivedMiniEvent(tt: MiniTaskData,status: SyncDataStatus): Promise<MiniTaskData> {
+  async acceptReceivedMiniTask(tt: MiniTaskData,status: SyncDataStatus): Promise<MiniTaskData> {
   	this.assertEmpty(tt);     // 入参不能为空
     this.assertEmpty(tt.evi);  // ID不能为空
     this.assertNotEqual(tt.type, anyenum.EventType.MiniTask);  //不是任务不能发送共享
@@ -1541,31 +1502,49 @@ export class EventService extends BaseService {
   /**
    * 同步任务到服务器
    */
-  async syncEvent(evi: string) {
-  	this.assertEmpty(evi);
-  	let tt = await this.getTask(evi);
-		if(tt && (tt.tb == SyncType.unsynch)) {
-			await this.syncPrivateTaskEvent(tt);
-		}
-		return ;
+  async syncTask(tt: TaskData) {
+  	
+  	this.assertEmpty(tt);       // 入参不能为空
+	  this.assertEmpty(tt.evi);    // ID不能为空
+	  this.assertEmpty(tt.del);   // 删除标记不能为空
+
+	  let push: PushInData = new PushInData();
+	  let sync: SyncData = new SyncData();
+	  sync.id = tt.evi;
+    sync.type = "Task";
+    sync.security = SyncDataSecurity.None;
+    sync.status = SyncDataStatus[tt.del];
+    sync.payload = tt;
+    push.d.push(sync);
+    await this.dataRestful.push(push);
+    
+    return ;
   }
 
   /**
    * 同步小任务到服务器
    */
-  async syncMiniEvent(evi: string) {
-  	this.assertEmpty(evi);
-  	let tt = await this.getMiniTask(evi);
-		if(tt && (tt.tb == SyncType.unsynch)) {
-			await this.syncPrivateMiniTaskEvent(tt);
-		}
-		return ;
+  async syncMiniTask(tt: MiniTaskData) {
+  	this.assertEmpty(tt);       // 入参不能为空
+	  this.assertEmpty(tt.evi);    // ID不能为空
+	  this.assertEmpty(tt.del);   // 删除标记不能为空
+
+	  let push: PushInData = new PushInData();
+	  let sync: SyncData = new SyncData();
+	  sync.id = tt.evi;
+    sync.type = "MiniTask";
+    sync.security = SyncDataSecurity.None;
+    sync.status = SyncDataStatus[tt.del];
+    sync.payload = tt;
+    push.d.push(sync);
+    await this.dataRestful.push(push);
+    return;
   }
 
   /**
    * 同步全部的未同步的任务到服务器
    */
-  async syncEvents() {
+  async syncTasks() {
   	let sql: string = `select * from gtd_ev where type = ? and   tb = ?`;
 		let unsyncedplans = await this.sqlExce.getExtLstByParam<TaskData>(sql, [anyenum.EventType.Task, SyncType.unsynch]);
 		//当存在未同步的情况下,进行同步
@@ -1588,7 +1567,7 @@ export class EventService extends BaseService {
   /**
    * 同步全部的未同步的小任务到服务器
    */
-  async syncMiniEvents() {
+  async syncMiniTasks() {
   	let sql: string = `select * from gtd_ev where type = ? and   tb = ?`;
 		let unsyncedplans = await this.sqlExce.getExtLstByParam<TaskData>(sql, [anyenum.EventType.MiniTask, SyncType.unsynch]);
 		//当存在未同步的情况下,进行同步

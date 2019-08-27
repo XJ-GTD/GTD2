@@ -47,7 +47,7 @@ import {WaTbl} from "../sqlite/tbl/wa.tbl";
 import { CalendarService, PlanData } from "./calendar.service";
 import { EventService,TaskData,MiniTaskData} from "./event.service";
 import { MemoService } from "./memo.service";
-import { PlanType,IsCreate,IsSuccess} from "../../data.enum";
+import { PlanType,IsCreate,IsSuccess , SyncType, DelType, SyncDataStatus} from "../../data.enum";
 
 /**
  * 事件Service 持续集成CI 自动测试Case
@@ -66,6 +66,7 @@ describe('EventService test suite', () => {
   let calendarService: CalendarService;
   let planforUpdate: PlanData;
   let sqlExce: SqliteExec;
+  let util: UtilService;
 
   beforeAll(async () => {
     TestBed.configureTestingModule({
@@ -109,6 +110,7 @@ describe('EventService test suite', () => {
     init = TestBed.get(SqliteInit);
     restConfig = TestBed.get(RestFulConfig);  // 别删除
 		sqlExce = TestBed.get(SqliteExec);
+		util = TestBed.get(UtilService);
 
     calendarService = TestBed.get(CalendarService);
     eventService = TestBed.get(EventService);
@@ -321,7 +323,122 @@ describe('EventService test suite', () => {
     expect(txx).toBeDefined();
     expect(txx.evn).toBe(tx.evn);
 
-	})
+	});
+	
+	it(`Case 9 - 1 sendTask 发送任务`,  async (done: DoneFn) => {
+  	let tx: TaskData = {} as TaskData;
+    tx.evn ="shopping,今天穿的是花裤衩";
+    tx = await eventService.saveTask(tx);
+    expect(tx).toBeDefined();
+    expect(tx.evi).toBeDefined();
+	  
+    eventService.sendTask(tx)
+    .then(() => {
+      fail("未抛出异常, 出错");
+      done();
+    })
+    .catch(e => {
+      expect(e).not.toBe("");
+      done();
+    });
+  });
+  
+  it(`Case 10 - 1 sendMiniTask 发送任务`,  async (done: DoneFn) => {
+  	let tx: MiniTaskData = {} as MiniTaskData;
+    tx.evn ="shopping,今天穿的是花裤衩";
+    tx = await eventService.saveMiniTask(tx);
+    expect(tx).toBeDefined();
+    expect(tx.evi).toBeDefined();
+	  
+    eventService.sendMiniTask(tx)
+    .then(() => {
+      fail("未抛出异常, 出错");
+      done();
+    })
+    .catch(e => {
+      expect(e).not.toBe("");
+      done();
+    });
+  });
+  
+  it(`Case 11 - 1 receivedTask 接收任务`,   (done: DoneFn) => {	  
+    eventService.receivedTask("")
+    .then(() => {
+      fail("未抛出异常, 出错");
+      done();
+    })
+    .catch(e => {
+      expect(e).not.toBe("");
+      done();
+    });
+  });
+  
+  it(`Case 11 - 2 receivedTask 接收任务,有数据`,   (done: DoneFn) => {	  
+    eventService.receivedTask(util.getUuid())
+    .then(() => {
+      fail("未抛出异常, 出错");
+      done();
+    })
+    .catch(e => {
+      expect(e).not.toBe("");
+      done();
+    });
+  });
+  
+  
+  it(`Case 12 - 1 acceptReceivedTask 接收任务,有数据,不删除共享`,  async () => {	  
+    	let tx: TaskData = {} as TaskData;
+	    tx.evn ="shopping,今天穿的是花裤衩";
+	    tx.evi = util.getUuid();
+		  tx.wtt = moment().unix();
+	    tx.utt = moment().unix();
+	    tx.tb = SyncType.unsynch;
+	    tx.del = DelType.undel;
+	    tx = await eventService.saveTask(tx);
+	    expect(tx).toBeDefined();
+	    expect(tx.evi).toBeDefined();
+	    
+	    let received = await eventService.acceptReceivedTask(tx,SyncDataStatus.UnDeleted);
+	    
+	    expect(received).toBeDefined();
+		  expect(received.evi).toBe(tx.evi);
+		  expect(received.tb).toBe(SyncType.synch);
+	    expect(received.del).toBe(DelType.undel);
+	    
+	    let fetched = await eventService.getTask(received.evi);
+	    expect(fetched).toBeDefined();
+		  expect(fetched.evi).toBe(tx.evi);
+		  expect(fetched.tb).toBe(SyncType.synch);
+	    expect(fetched.del).toBe(DelType.undel);
+  });
+  
+  
+  it(`Case 13 - 1 acceptReceivedMiniTask 接收小任务,有数据,不删除共享`,  async () => {	  
+    	let tx: MiniTaskData = {} as MiniTaskData;
+	    tx.evn ="shopping,今天穿的是花裤衩";
+	    tx.evi = util.getUuid();
+		  tx.wtt = moment().unix();
+	    tx.utt = moment().unix();
+	    tx.tb = SyncType.unsynch;
+	    tx.del = DelType.undel;
+	    tx = await eventService.saveMiniTask(tx);
+	    expect(tx).toBeDefined();
+	    expect(tx.evi).toBeDefined();
+	    
+	    let received = await eventService.acceptReceivedMiniTask(tx,SyncDataStatus.UnDeleted);
+	    
+	    expect(received).toBeDefined();
+		  expect(received.evi).toBe(tx.evi);
+		  expect(received.tb).toBe(SyncType.synch);
+	    expect(received.del).toBe(DelType.undel);
+	    
+	    let fetched = await eventService.getMiniTask(received.evi);
+	    expect(fetched).toBeDefined();
+		  expect(fetched.evi).toBe(tx.evi);
+		  expect(fetched.tb).toBe(SyncType.synch);
+	    expect(fetched.del).toBe(DelType.undel);
+  });
+	
   afterAll(() => {
     TestBed.resetTestingModule();
   });

@@ -122,31 +122,8 @@ export class MemoService extends BaseService {
 	 */
 	async sendMemo(memo: MemoData) {
 		this.assertEmpty(memo);     // 入参不能为空
-		await this.syncPrivateMemo(memo);
-
+		await this.syncMemo(memo);
     	return;
-	}
-	/**
-	 * 发送备忘进行共享
-	 */
-	async syncPrivateMemo(memo: MemoData) {
-		this.assertEmpty(memo);       // 入参不能为空
-	    this.assertEmpty(memo.moi);    // 日历ID不能为空
-	    this.assertEmpty(memo.del);   // 删除标记不能为空
-	
-	    // 构造Push数据结构
-	    let push: PushInData = new PushInData();
-	
-	    let sync: SyncData = new SyncData();
-	
-	    sync.id = memo.moi;
-	    sync.type = "Memo";
-	    sync.security = SyncDataSecurity.None;
-	    sync.status = SyncDataStatus[memo.del];
-	    sync.payload = memo;
-	    push.d.push(sync);
-	    await this.dataRestful.push(push);
-	    return;
 	}
 
 	/**
@@ -183,13 +160,24 @@ export class MemoService extends BaseService {
 	 * 同步备忘到服务器
 	 * @author ying<343253410@qq.com>
 	 */
-	async syncMemo(moi: string) {
-		this.assertEmpty(moi);     // 入参不能为空
-		let memo = await this.getMemo(moi); 
-		if(memo && (memo.tb == SyncType.unsynch)) {
-			await this.syncPrivateMemo(memo);
-		}
-		return ;
+	async syncMemo(memo: MemoData) {
+		this.assertEmpty(memo);       // 入参不能为空
+	    this.assertEmpty(memo.moi);    // 日历ID不能为空
+	    this.assertEmpty(memo.del);   // 删除标记不能为空
+	
+	    // 构造Push数据结构
+	    let push: PushInData = new PushInData();
+	
+	    let sync: SyncData = new SyncData();
+	
+	    sync.id = memo.moi;
+	    sync.type = "Memo";
+	    sync.security = SyncDataSecurity.None;
+	    sync.status = SyncDataStatus[memo.del];
+	    sync.payload = memo;
+	    push.d.push(sync);
+	    await this.dataRestful.push(push);
+	    return;
 	}
 
 	/**
@@ -216,22 +204,6 @@ export class MemoService extends BaseService {
 		return ;
 	}
 
-	/**
-	 * 更新已同步标志
-	 * @author ying<343253410@qq.com>
-	 */
-    async acceptSyncPrivateMemos(syncids: Array<Array<any>>) {
-	    this.assertEmpty(syncids);    // 入参不能为空
-	    if (syncids.length < 1) {     // 入参是空数组直接返回
-	      return;
-	    }
-	    let sqls: Array<any> = new Array<any>();
-	    for (let syncid of syncids) {
-	      sqls.push([`update gtd_mom set tb = ? where moi = ? and utt = ?`, [SyncType.synch, ...syncid]]);
-	    }
-	    await this.sqlExce.batExecSqlByParam(sqls);
-	    return;
-  	}
     
 	/**
 	 * 服务器发送一个链接,然后客户端进行分享
