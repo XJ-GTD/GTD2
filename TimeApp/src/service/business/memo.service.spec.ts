@@ -287,7 +287,7 @@ describe('MemoService test suite', () => {
 	});
 	
   
-  it(`Case 9 - 1 receivedMemo 接收备忘共享请求(无报错)`, async (done: DoneFn) => {
+  it(`Case 9 - 1 receivedMemo 接收备忘共享请求(无报错)`,  (done: DoneFn) => {
     memoService.receivedMemo(util.getUuid())
     .then(() => {
       	expect("success").toBe("success");
