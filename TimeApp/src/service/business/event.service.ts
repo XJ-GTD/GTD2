@@ -1322,7 +1322,6 @@ export class EventService extends BaseService {
 			let sqlparam: string =`select ev.*,td.cs,td.isrt,td.cd,td.fd from gtd_ev  ev left join gtd_t  td on ev.evi = td.evi where ev.evi ='${evi}' and  ev.del ='undel'`;
 			console.info("执行的SQL"+sqlparam);
 			txx = await this.sqlExce.getExtOneByParam<TaskData>(sqlparam,params);
-			console.info("执行的结果"+txx.evi);
   		return txx;
 	}
 
