@@ -589,7 +589,9 @@ export class EventService extends BaseService {
       //新建新事件日程
       let nwAgdata = {} as AgendaData;
       Object.assign(nwAgdata ,newAgdata );
-      nwAgdata.sd = nwAgdata.evd;
+      if (nwAgdata.sd == oriAgdata.sd) {
+        nwAgdata.sd = nwAgdata.evd;
+      }
 
       let retParamEv = new RetParamEv();
       retParamEv = await this.newAgenda(nwAgdata);
@@ -1447,7 +1449,7 @@ export class EventService extends BaseService {
   	return ;
   }
 
- 
+
   /**
    * 接收任务
    */
@@ -1503,7 +1505,7 @@ export class EventService extends BaseService {
    * 同步任务到服务器
    */
   async syncTask(tt: TaskData) {
-  	
+
   	this.assertEmpty(tt);       // 入参不能为空
 	  this.assertEmpty(tt.evi);    // ID不能为空
 	  this.assertEmpty(tt.del);   // 删除标记不能为空
@@ -1517,7 +1519,7 @@ export class EventService extends BaseService {
     sync.payload = tt;
     push.d.push(sync);
     await this.dataRestful.push(push);
-    
+
     return ;
   }
 
