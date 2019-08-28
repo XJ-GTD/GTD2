@@ -118,6 +118,8 @@ describe('EventService test suite', () => {
     await init.createTables();
     await init.initData();
     restConfig.init();
+    
+    jasmine.DEFAULT_TIMEOUT_INTERVAL = 60 * 1000;  // 每个Case超时时间
   });
 
   beforeEach(async () => {
@@ -416,12 +418,10 @@ describe('EventService test suite', () => {
    it(`Case 12 - 2 acceptReceivedTask 接收任务,有数据,删除共享`,  async () => {	  
     	let tx: TaskData = {} as TaskData;
 	    tx.evn ="shopping,今天穿的是花裤衩";
-	    tx.evi = util.getUuid();
 		  tx.wtt = moment().unix();
 	    tx.utt = moment().unix();
 	    tx.tb = SyncType.unsynch;
 	    tx.del = DelType.undel;
-	    tx.type =EventType.Task;
 	    tx = await eventService.saveTask(tx);
 	    expect(tx).toBeDefined();
 	    expect(tx.evi).toBeDefined();
@@ -441,12 +441,10 @@ describe('EventService test suite', () => {
   it(`Case 13 - 1 acceptReceivedMiniTask 接收小任务,有数据,不删除共享`,  async () => {	  
     	let tx: MiniTaskData = {} as MiniTaskData;
 	    tx.evn ="shopping,今天穿的是花裤衩";
-	    tx.evi = util.getUuid();
 		  tx.wtt = moment().unix();
 	    tx.utt = moment().unix();
 	    tx.tb = SyncType.unsynch;
 	    tx.del = DelType.undel;
-	    tx.type =EventType.MiniTask;
 	    tx = await eventService.saveMiniTask(tx);
 	    expect(tx).toBeDefined();
 	    expect(tx.evi).toBeDefined();
@@ -468,12 +466,10 @@ describe('EventService test suite', () => {
 	it(`Case 13 - 2 acceptReceivedMiniTask 接收小任务,有数据,删除共享`,  async () => {	  
     	let tx: MiniTaskData = {} as MiniTaskData;
 	    tx.evn ="shopping,今天穿的是花裤衩";
-	    tx.evi = util.getUuid();
 		  tx.wtt = moment().unix();
 	    tx.utt = moment().unix();
 	    tx.tb = SyncType.unsynch;
 	    tx.del = DelType.undel;
-	    tx.type =EventType.MiniTask;
 	    tx = await eventService.saveMiniTask(tx);
 	    expect(tx).toBeDefined();
 	    expect(tx.evi).toBeDefined();
