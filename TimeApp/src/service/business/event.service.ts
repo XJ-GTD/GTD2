@@ -1397,7 +1397,7 @@ export class EventService extends BaseService {
   	this.assertEmpty(evi);
   	let task: TaskData = {} as TaskData;
   	task = await this.getTask(evi);
-  	let task2: TaskData = {} as TaskData;
+  	let task2: TaskData = null;
 		if (task.isrt == anyenum.IsCreate.isYes) {
 			//创建新的任务事件
 			let task3:TaskData = {} as TaskData;
@@ -1411,7 +1411,7 @@ export class EventService extends BaseService {
 			task3.isrt = anyenum.IsCreate.isYes;
 			task2 = await this.saveTask(task3);
 		}
-		return ;
+		return task2;
   }
 
 	/**
