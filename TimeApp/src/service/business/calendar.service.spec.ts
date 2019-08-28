@@ -513,7 +513,8 @@ describe('CalendarService test suite', () => {
       math1.sd = day;
       math1.al = IsWholeday.NonWhole;
       math1.st = timeranges[0][0];
-      math1.et = timeranges[0][1];
+      //math1.et = timeranges[0][1];
+      math1.ct = 40;  // 持续40分钟
       math1.evn = "数学";
       math1.rtjson = math1rt;
 
