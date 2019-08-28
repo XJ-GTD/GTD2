@@ -244,6 +244,8 @@ describe('MemoService test suite', () => {
 	  mom.mon='你们都是大爷';
 	  mom.wtt = moment().unix();
     mom.utt = moment().unix();
+    mom.tb = SyncType.unsynch;
+    mom.del = DelType.undel;
 	  mom = await memoService.saveMemo(mom);
 	  
 	  let receivedMemoData = await memoService.receivedMemoData(mom,SyncDataStatus.UnDeleted);
