@@ -241,12 +241,9 @@ describe('MemoService test suite', () => {
 	it(`Case 8 - 1 receivedMemoData 接收备忘数据 - 不删除共享备忘`, async () => {
 		
 		let mom: MemoData = {} as MemoData;
-		mom.moi = util.getUuid();
 	  mom.mon='你们都是大爷';
 	  mom.wtt = moment().unix();
     mom.utt = moment().unix();
-    mom.tb = SyncType.unsynch;
-    mom.del = DelType.undel;
 	  mom = await memoService.saveMemo(mom);
 	  
 	  let receivedMemoData = await memoService.receivedMemoData(mom,SyncDataStatus.UnDeleted);
@@ -287,27 +284,9 @@ describe('MemoService test suite', () => {
 		
 	});
 	
-	
-	it(`Case 9 - 1 receivedMemo 接收备忘共享请求(无ID报错)`, (done: DoneFn) => {
-    memoService.receivedMemo("")
-    .then(() => {
-     	expect("success").toBe("success");
-      done();
-    })
-    .catch(e => {
-      fail("抛出异常, 出错");
-      done();
-    });
-  });
   
-  it(`Case 9 - 2 receivedMemo 接收备忘共享请求(无报错)`, async (done: DoneFn) => {
-  	let mom: MemoData = {} as MemoData;
-	  mom.mon='你们都是大爷';
-	  mom = await memoService.saveMemo(mom);
-	  expect(mom).toBeDefined();
-	  expect(mom.moi).toBeDefined();
-	  
-    memoService.receivedMemo(mom.moi)
+  it(`Case 9 - 1 receivedMemo 接收备忘共享请求(无报错)`, async (done: DoneFn) => {
+    memoService.receivedMemo(util.getUuid())
     .then(() => {
       	expect("success").toBe("success");
      		 done();
