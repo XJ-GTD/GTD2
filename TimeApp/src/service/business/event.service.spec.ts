@@ -47,7 +47,7 @@ import {WaTbl} from "../sqlite/tbl/wa.tbl";
 import { CalendarService, PlanData } from "./calendar.service";
 import { EventService,TaskData,MiniTaskData} from "./event.service";
 import { MemoService } from "./memo.service";
-import { PlanType,IsCreate,IsSuccess , SyncType, DelType, SyncDataStatus} from "../../data.enum";
+import { PlanType,IsCreate,IsSuccess , SyncType, DelType, SyncDataStatus,EventType} from "../../data.enum";
 
 /**
  * 事件Service 持续集成CI 自动测试Case
@@ -394,6 +394,7 @@ describe('EventService test suite', () => {
 	    tx.utt = moment().unix();
 	    tx.tb = SyncType.unsynch;
 	    tx.del = DelType.undel;
+	    tx.type =EventType.Task;
 	    tx = await eventService.saveTask(tx);
 	    expect(tx).toBeDefined();
 	    expect(tx.evi).toBeDefined();
@@ -420,6 +421,7 @@ describe('EventService test suite', () => {
 	    tx.utt = moment().unix();
 	    tx.tb = SyncType.unsynch;
 	    tx.del = DelType.undel;
+	    tx.type =EventType.Task;
 	    tx = await eventService.saveTask(tx);
 	    expect(tx).toBeDefined();
 	    expect(tx.evi).toBeDefined();
@@ -444,6 +446,7 @@ describe('EventService test suite', () => {
 	    tx.utt = moment().unix();
 	    tx.tb = SyncType.unsynch;
 	    tx.del = DelType.undel;
+	    tx.type =EventType.MiniTask;
 	    tx = await eventService.saveMiniTask(tx);
 	    expect(tx).toBeDefined();
 	    expect(tx.evi).toBeDefined();
@@ -470,6 +473,7 @@ describe('EventService test suite', () => {
 	    tx.utt = moment().unix();
 	    tx.tb = SyncType.unsynch;
 	    tx.del = DelType.undel;
+	    tx.type =EventType.MiniTask;
 	    tx = await eventService.saveMiniTask(tx);
 	    expect(tx).toBeDefined();
 	    expect(tx.evi).toBeDefined();
@@ -490,6 +494,8 @@ describe('EventService test suite', () => {
   	
   	let tx: TaskData = {} as TaskData;
     tx.evn ="shopping,今天穿的是花裤衩";
+    tx.type =EventType.Task;
+    tx.tb = SyncType.unsynch;
     tx = await eventService.saveTask(tx);
     expect(tx).toBeDefined();
     expect(tx.evi).toBeDefined();
@@ -502,6 +508,8 @@ describe('EventService test suite', () => {
   	
   	let tx: MiniTaskData = {} as MiniTaskData;
     tx.evn ="shopping,今天穿的是花裤衩";
+    tx.type =EventType.MiniTask;
+    tx.tb = SyncType.unsynch;
     tx = await eventService.saveMiniTask(tx);
     expect(tx).toBeDefined();
     expect(tx.evi).toBeDefined();
@@ -514,6 +522,8 @@ describe('EventService test suite', () => {
   	
   	let tx: TaskData = {} as TaskData;
     tx.evn ="shopping,今天穿的是花裤衩";
+    tx.type =EventType.Task;
+    tx.tb = SyncType.unsynch;
     tx = await eventService.saveTask(tx);
     expect(tx).toBeDefined();
     expect(tx.evi).toBeDefined();
@@ -526,6 +536,8 @@ describe('EventService test suite', () => {
   	
   	let tx: MiniTaskData = {} as MiniTaskData;
     tx.evn ="shopping,今天穿的是花裤衩";
+    tx.type =EventType.MiniTask;
+    tx.tb = SyncType.unsynch;
     tx = await eventService.saveMiniTask(tx);
     expect(tx).toBeDefined();
     expect(tx.evi).toBeDefined();

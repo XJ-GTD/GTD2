@@ -258,7 +258,6 @@ describe('MemoService test suite', () => {
     
     let fetched = await memoService.getMemo(receivedMemoData.moi);
     expect(fetched).toBeDefined();
-    expect(fetched.moi).toBeDefined();
 	  expect(fetched.moi).toBe(mom.moi);
 	  expect(fetched.tb).toBe(SyncType.synch);
     expect(fetched.del).toBe(DelType.undel);
@@ -301,8 +300,14 @@ describe('MemoService test suite', () => {
     });
   });
   
-  it(`Case 9 - 2 receivedMemo 接收备忘共享请求(无报错)`, (done: DoneFn) => {
-    memoService.receivedMemo(util.getUuid())
+  it(`Case 9 - 2 receivedMemo 接收备忘共享请求(无报错)`, async (done: DoneFn) => {
+  	let mom: MemoData = {} as MemoData;
+	  mom.mon='你们都是大爷';
+	  mom = await memoService.saveMemo(mom);
+	  expect(mom).toBeDefined();
+	  expect(mom.moi).toBeDefined();
+	  
+    memoService.receivedMemo(mom.moi)
     .then(() => {
       fail("未抛出异常, 出错");
       done();
@@ -318,6 +323,8 @@ describe('MemoService test suite', () => {
 	  mom.mon='你们都是大爷';
 	  mom = await memoService.saveMemo(mom);
 	  expect(mom).toBeDefined();
+	  expect(mom.moi).toBeDefined();
+	  expect(mom.del).toBeDefined();
 	  
     memoService.sendMemo(mom)
     .then(() => {
