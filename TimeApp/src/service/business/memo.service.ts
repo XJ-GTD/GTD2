@@ -100,10 +100,8 @@ export class MemoService extends BaseService {
 	 */
 	async getMemo(moi: string): Promise<MemoData> {
 		this.assertEmpty(moi); // id不能为空
-
 		let params= Array<any>();
-		let sqlparams: string = ` select * from gtd_mom where moi = ?  and del ='undel' `;
-		params.push(moi);
+		let sqlparams: string = ` select * from gtd_mom where moi = '${moi}'  and del ='undel' `;
 		let existMemo: MomTbl =  await this.sqlExce.getExtOneByParam<MomTbl>(sqlparams,params);
 		if (existMemo && existMemo.moi) {
 			let memo: MemoData = {} as MemoData;

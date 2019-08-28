@@ -1358,8 +1358,7 @@ export class EventService extends BaseService {
 	async getMiniTask(evi: string): Promise<MiniTaskData> {
 			this.assertEmpty(evi); // id不能为空
 			let params= Array<any>();
-			let sqlparam: string =`select * from gtd_ev where evi = ? and  del ='undel'`;
-			params.push(evi);
+			let sqlparam: string =`select * from gtd_ev where evi = '${evi}' and  del ='undel'`;
 			let evdbnew = await this.sqlExce.getExtOneByParam<TaskData>(sqlparam,params);
   		if (evdbnew && evdbnew.evi) {
 				let ev: MiniTaskData = {} as MiniTaskData;
