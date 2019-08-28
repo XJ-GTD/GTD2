@@ -2072,12 +2072,15 @@ describe('CalendarService test suite', () => {
           let event = day1010Activities.events[0];
 
           // 2019年 改成 每年 08/16 体检
-          let healthcare: AgendaData = await eventService.getAgenda(event.evi);
+          let origin: AgendaData = await eventService.getAgenda(event.evi);
+          let changed: AgendaData = {} as AgendaData;
 
-          healthcare.sd = "2018/08/16";
-          healthcare.evn = "体检 08/16";
+          Object.assign(changed, origin);
 
-          await eventService.saveAgenda(healthcare);
+          changed.sd = "2018/08/16";
+          changed.evn = "体检 08/16";
+
+          await eventService.saveAgenda(changed, origin, OperateType.FromSel);
         });
 
         it(`Case 1 - 1 2019/08/16 存在体检日程`, async () => {
