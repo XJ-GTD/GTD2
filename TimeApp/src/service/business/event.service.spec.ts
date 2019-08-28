@@ -363,17 +363,6 @@ describe('EventService test suite', () => {
     });
   });
   
-  it(`Case 11 - 1 receivedTask 接收任务`,   (done: DoneFn) => {	  
-    eventService.receivedTask("")
-    .then(() => {
-      expect("success").toBe("success");
-     	done();
-    })
-    .catch(e => {
-      fail("抛出异常, 出错");
-      done();
-    });
-  });
   
   it(`Case 11 - 2 receivedTask 接收任务,有数据`,   (done: DoneFn) => {	  
     eventService.receivedTask(util.getUuid())
