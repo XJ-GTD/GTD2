@@ -36,7 +36,7 @@ export class EventService extends BaseService {
    *
    * @author leon_xi@163.com
    **/
-  async receivedAgend(evi: string) {
+  async receivedAgenda(evi: string) {
 
     this.assertEmpty(evi);   // 入参不能为空
 
@@ -55,7 +55,7 @@ export class EventService extends BaseService {
    *
    * @author leon_xi@163.com
    **/
-  async syncPrivateAgdent(uploadAgdData: UploadAgdData) {
+  async syncAgenda(uploadAgdData: UploadAgdData) {
 
     this.assertEmpty(uploadAgdData);       // 入参不能为空
 
