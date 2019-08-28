@@ -380,12 +380,9 @@ describe('EventService test suite', () => {
   it(`Case 12 - 1 acceptReceivedTask 接收任务,有数据,不删除共享`,  async () => {	  
     	let tx: TaskData = {} as TaskData;
 	    tx.evn ="shopping,今天穿的是花裤衩";
-	    tx.evi = util.getUuid();
 		  tx.wtt = moment().unix();
 	    tx.utt = moment().unix();
 	    tx.tb = SyncType.unsynch;
-	    tx.del = DelType.undel;
-	    tx.type =EventType.Task;
 	    tx = await eventService.saveTask(tx);
 	    expect(tx).toBeDefined();
 	    expect(tx.evi).toBeDefined();
@@ -409,8 +406,6 @@ describe('EventService test suite', () => {
 	    tx.evn ="shopping,今天穿的是花裤衩";
 		  tx.wtt = moment().unix();
 	    tx.utt = moment().unix();
-	    tx.tb = SyncType.unsynch;
-	    tx.del = DelType.undel;
 	    tx = await eventService.saveTask(tx);
 	    expect(tx).toBeDefined();
 	    expect(tx.evi).toBeDefined();
