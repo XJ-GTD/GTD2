@@ -291,11 +291,11 @@ describe('MemoService test suite', () => {
 	it(`Case 9 - 1 receivedMemo 接收备忘共享请求(无ID报错)`, (done: DoneFn) => {
     memoService.receivedMemo("")
     .then(() => {
-      fail("未抛出异常, 出错");
+     	expect("success").toBe("success");
       done();
     })
     .catch(e => {
-      expect(e).not.toBe("");
+      fail("抛出异常, 出错");
       done();
     });
   });
@@ -309,11 +309,11 @@ describe('MemoService test suite', () => {
 	  
     memoService.receivedMemo(mom.moi)
     .then(() => {
-      fail("未抛出异常, 出错");
-      done();
+      	expect("success").toBe("success");
+     		 done();
     })
     .catch(e => {
-      expect(e).not.toBe("");
+      fail("抛出异常, 出错");
       done();
     });
   });
@@ -328,11 +328,11 @@ describe('MemoService test suite', () => {
 	  
     memoService.sendMemo(mom)
     .then(() => {
-      fail("未抛出异常, 出错");
-      done();
+      expect("success").toBe("success");
+     	done();
     })
     .catch(e => {
-      expect(e).not.toBe("");
+      fail("抛出异常, 出错");
       done();
     });
   });

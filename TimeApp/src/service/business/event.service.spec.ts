@@ -334,11 +334,11 @@ describe('EventService test suite', () => {
 	  
     eventService.sendTask(tx)
     .then(() => {
-      fail("未抛出异常, 出错");
-      done();
+      expect("success").toBe("success");
+     	done();
     })
     .catch(e => {
-      expect(e).not.toBe("");
+      fail("抛出异常, 出错");
       done();
     });
   });
@@ -352,11 +352,11 @@ describe('EventService test suite', () => {
 	  
     eventService.sendMiniTask(tx)
     .then(() => {
-      fail("未抛出异常, 出错");
-      done();
+      expect("success").toBe("success");
+     	done();
     })
     .catch(e => {
-      expect(e).not.toBe("");
+      fail("抛出异常, 出错");
       done();
     });
   });
@@ -364,11 +364,11 @@ describe('EventService test suite', () => {
   it(`Case 11 - 1 receivedTask 接收任务`,   (done: DoneFn) => {	  
     eventService.receivedTask("")
     .then(() => {
-      fail("未抛出异常, 出错");
-      done();
+      expect("success").toBe("success");
+     	done();
     })
     .catch(e => {
-      expect(e).not.toBe("");
+      fail("抛出异常, 出错");
       done();
     });
   });
@@ -376,11 +376,11 @@ describe('EventService test suite', () => {
   it(`Case 11 - 2 receivedTask 接收任务,有数据`,   (done: DoneFn) => {	  
     eventService.receivedTask(util.getUuid())
     .then(() => {
-      fail("未抛出异常, 出错");
-      done();
+      expect("success").toBe("success");
+     	done();
     })
     .catch(e => {
-      expect(e).not.toBe("");
+      fail("抛出异常, 出错");
       done();
     });
   });
