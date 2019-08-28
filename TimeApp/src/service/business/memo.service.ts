@@ -102,6 +102,7 @@ export class MemoService extends BaseService {
 		this.assertEmpty(moi); // id不能为空
 		let params= Array<any>();
 		let sqlparams: string = ` select * from gtd_mom where moi = '${moi}' and del ='undel' ;`;
+		console.info("执行的SQL"+sqlparams);
 		let existMemo  =  await this.sqlExce.getExtOneByParam<MomTbl>(sqlparams,params);
 		if (existMemo && existMemo.moi) {
 			let memo: MemoData = {} as MemoData;
