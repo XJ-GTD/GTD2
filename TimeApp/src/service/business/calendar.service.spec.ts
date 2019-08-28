@@ -2040,6 +2040,68 @@ describe('CalendarService test suite', () => {
         expect(count).toBe(1);
       });
     });
+
+    describe(`Case 1 - 10 2018年 每年 10/10 体检`, () => {
+      beforeEach(async () => {
+        // 每年 10/10 体检
+        let healthcare: AgendaData = {} as AgendaData;
+
+        let healthcarert: RtJson = new RtJson();
+        healthcarert.cycletype = CycleType.year;
+        healthcarert.over.type = OverType.fornever;
+
+        healthcare.sd = "2018/10/10";
+        healthcare.evn = "体检";
+        healthcare.rtjson = healthcarert;
+
+        await eventService.saveAgenda(healthcare);
+
+      });
+
+      it(`Case 1 - 1 2019/10/10 存在体检日程`, async () => {
+        let day1010Activities = await calendarService.fetchDayActivities("2019/10/10");
+
+        expect(day1010Activities).toBeDefined();
+        expect(day1010Activities.events.length).toBe(1);
+      });
+
+      describe(`Case 1 - 2 2019年 改成 每年 08/16 体检`, () => {
+        beforeEach(async () => {
+          let day1010Activities = await calendarService.fetchDayActivities("2019/10/10");
+
+          let event = day1010Activities.events[0];
+
+          // 2019年 改成 每年 08/16 体检
+          let healthcare: AgendaData = await eventService.getAgenda(event.evi);
+
+          healthcare.sd = "2018/08/16";
+          healthcare.evn = "体检 08/16";
+
+          await eventService.saveAgenda(healthcare);
+        });
+
+        it(`Case 1 - 1 2019/08/16 存在体检日程`, async () => {
+          let day0816Activities = await calendarService.fetchDayActivities("2019/08/16");
+
+          expect(day0816Activities).toBeDefined();
+          expect(day0816Activities.events.length).toBe(1);
+        });
+
+        it(`Case 1 - 2 2019/10/10 不存在体检日程`, async () => {
+          let day1010Activities = await calendarService.fetchDayActivities("2019/10/10");
+
+          expect(day1010Activities).toBeDefined();
+          expect(day1010Activities.events.length).toBe(0);
+        });
+
+        it(`Case 1 - 3 2020/08/16 存在体检日程`, async () => {
+          let day0816Activities = await calendarService.fetchDayActivities("2020/08/16");
+
+          expect(day0816Activities).toBeDefined();
+          expect(day0816Activities.events.length).toBe(1);
+        });
+      });
+    });
   });
 
   it(`Case 27 - 1 acceptSyncPrivatePlans 更新已同步日历标志 - 本地无数据(无报错)`, (done: DoneFn) => {
