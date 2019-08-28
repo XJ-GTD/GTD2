@@ -2077,7 +2077,7 @@ describe('CalendarService test suite', () => {
 
           Object.assign(changed, origin);
 
-          changed.sd = "2018/08/16";
+          changed.evd = "2018/08/16";
           changed.evn = "体检 08/16";
 
           await eventService.saveAgenda(changed, origin, OperateType.FromSel);

@@ -589,9 +589,7 @@ export class EventService extends BaseService {
       //新建新事件日程
       let nwAgdata = {} as AgendaData;
       Object.assign(nwAgdata ,newAgdata );
-      if (nwAgdata.sd == oriAgdata.sd) {
-        nwAgdata.sd = nwAgdata.evd;
-      }
+      nwAgdata.sd = nwAgdata.evd;
 
       let retParamEv = new RetParamEv();
       retParamEv = await this.newAgenda(nwAgdata);
