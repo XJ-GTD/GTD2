@@ -183,11 +183,11 @@ export class MemoService extends BaseService {
 	 */
 	async syncMemos() {
 		let sql: string = `select * from gtd_mom where  tb = ?`;
-		let unsyncedplans = await this.sqlExce.getExtLstByParam<MemoData>(sql, [SyncType.unsynch]);
+		let unsyncedmemos = await this.sqlExce.getExtLstByParam<MemoData>(sql, [SyncType.unsynch]);
 		//当存在未同步的情况下,进行同步
-		if (unsyncedplans && unsyncedplans.length > 0) {
+		if (unsyncedmemos && unsyncedmemos.length > 0) {
 			 let push: PushInData = new PushInData();
-			 for (let memo of unsyncedplans) {
+			 for (let memo of unsyncedmemos) {
 			 	 let sync: SyncData = new SyncData();
 			 	 sync.id = memo.moi;
 			     sync.type = "Memo";
@@ -206,23 +206,21 @@ export class MemoService extends BaseService {
 	 * 服务器发送一个链接,然后客户端进行分享
 	 * @author ying<343253410@qq.com>
 	 */
-	async shareMemo(memo: MemoData, refreshChildren: boolean = false): Promise<string> {
+	async shareMemo(memo: MemoData): Promise<string> {
 		this.assertEmpty(memo);     // 入参不能为空
     	this.assertEmpty(memo.moi);  // 备忘ID不能为空
-    	if (refreshChildren) {
-      		memo = await this.getMemo(memo.moi);
-    	}
-    	//TODO 此处待定,老席答复后修复
-    	let upplan: ShareData = new ShareData();
-    	upplan.oai = "";
-    	upplan.ompn = "";
-    	upplan.c = "";
-    	//upplan.d.p = memo;
-    	let shared = await this.shareRestful.share(upplan);
-    	if (shared)
-	      return shared.psurl;
-	    else
-	      return "";
+    	
+//  	let upplan: ShareData = new ShareData();
+//  	upplan.oai = "";
+//  	upplan.ompn = "";
+//  	upplan.c = "";
+//  	//upplan.d.p = memo;
+//  	let shared = await this.shareRestful.share(upplan);
+//  	if (shared)
+//	      return shared.psurl;
+//	    else
+//	      return "";
+		return ;
 	}
 
 	/**

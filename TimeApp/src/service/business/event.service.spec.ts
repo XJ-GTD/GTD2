@@ -498,7 +498,7 @@ describe('EventService test suite', () => {
     
   });
   
-  it('Case 16 - 1   syncTasks 同步全部的未同步的任务到服务器 ', async () => {
+  it('Case 16 - 1   syncTasks 同步全部的未同步的任务到服务器 ，本地有数据（不报错）', async () => {
   	
   	let tx: TaskData = {} as TaskData;
     tx.evn ="shopping,今天穿的是花裤衩";
@@ -512,7 +512,21 @@ describe('EventService test suite', () => {
     
   });
   
-  it('Case 17 - 1   syncMiniTasks 同步全部的未同步的小任务到服务器 ', async () => {
+  it('Case 16 - 2   syncTasks 同步全部的未同步的任务到服务器  ，本地无数据（不报错）', (done: DoneFn) => {
+    eventService.syncTasks()
+    .then(() => {
+      expect("success").toBe("success");
+     	done();
+    })
+    .catch(e => {
+      fail("抛出异常, 出错");
+      done();
+    });
+    
+  });
+  
+  
+  it('Case 17 - 1   syncMiniTasks 同步全部的未同步的小任务到服务器，本地有数据（不报错） ', async () => {
   	
   	let tx: MiniTaskData = {} as MiniTaskData;
     tx.evn ="shopping,今天穿的是花裤衩";
@@ -523,6 +537,19 @@ describe('EventService test suite', () => {
     expect(tx.evi).toBeDefined();
     
     await eventService.syncMiniTasks();
+    
+  });
+  
+  it('Case 17 - 2   syncMiniTasks 同步全部的未同步的小任务到服务器 ，本地无数据（不报错）', (done: DoneFn) => {
+    eventService.syncMiniTasks()
+    .then(() => {
+      expect("success").toBe("success");
+     	done();
+    })
+    .catch(e => {
+      fail("抛出异常, 出错");
+      done();
+    });
     
   });
 	
