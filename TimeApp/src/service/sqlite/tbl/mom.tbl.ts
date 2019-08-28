@@ -134,7 +134,7 @@ export class MomTbl implements ITblParam {
   rpTParam():any {
     let params = new Array<any>();
     let sq =`replace into gtd_mom
-       (  moi ,ji ,sd,mon ,mk ,fj ,tb,del, ,wtt ,utt)
+       (  moi ,ji ,sd,mon ,mk ,fj ,tb,del ,wtt ,utt)
        values(?,?,?,?,?,?,?,?,?,?);`;
     params.push(this.moi);
     params.push(this.ji);
