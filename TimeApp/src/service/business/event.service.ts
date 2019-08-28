@@ -1319,7 +1319,7 @@ export class EventService extends BaseService {
 			this.assertEmpty(evi); // id不能为空
 			let txx: TaskData = {} as TaskData;
 			let params= Array<any>();
-			let sqlparam: string =`select ev.*,td.cs,td.isrt,td.cd,td.fd from gtd_ev  ev left join gtd_t  td on ev.evi = td.evi where ev.evi ='${evi}'`;
+			let sqlparam: string =`select ev.*,td.cs,td.isrt,td.cd,td.fd from gtd_ev  ev left join gtd_t  td on ev.evi = td.evi where ev.evi ='${evi}' and  ev.del ='undel'`;
 			console.info("执行的SQL"+sqlparam);
 			txx = await this.sqlExce.getExtOneByParam<TaskData>(sqlparam,params);
 			console.info("执行的结果"+txx.evi);
@@ -1359,6 +1359,7 @@ export class EventService extends BaseService {
 			this.assertEmpty(evi); // id不能为空
 			let evdb: EvTbl = new EvTbl();
 			evdb.evi = evi;
+			evdb.del = anyenum.DelType.undel;
 			let evdbnew = await this.sqlExce.getOneByParam<EvTbl>(evdb);
   		if (evdbnew && evdbnew.evi) {
 				let ev: MiniTaskData = {} as MiniTaskData;

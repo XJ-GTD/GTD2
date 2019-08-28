@@ -103,6 +103,7 @@ export class MemoService extends BaseService {
 
 		let memodb: MomTbl = new MomTbl();
 		memodb.moi = moi;
+		memodb.del = DelType.undel;
 
 		let existMemo: MomTbl = await this.sqlExce.getOneByParam<MomTbl>(memodb);
 
