@@ -101,12 +101,10 @@ export class MemoService extends BaseService {
 	async getMemo(moi: string): Promise<MemoData> {
 		this.assertEmpty(moi); // id不能为空
 
-		let memodb: MomTbl = new MomTbl();
-		memodb.moi = moi;
-		memodb.del = DelType.undel;
-
-		let existMemo: MomTbl = await this.sqlExce.getOneByParam<MomTbl>(memodb);
-
+		let params= Array<any>();
+		let sqlparams: string = ` select * from gtd_mom where moi = ?  and del ='undel' `;
+		params.push(moi);
+		let existMemo: MomTbl =  await this.sqlExce.getExtOneByParam<MomTbl>(sqlparams,params);
 		if (existMemo && existMemo.moi) {
 			let memo: MemoData = {} as MemoData;
 			Object.assign(memo, existMemo);
