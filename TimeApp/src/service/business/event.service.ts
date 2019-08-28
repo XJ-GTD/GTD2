@@ -1448,7 +1448,7 @@ export class EventService extends BaseService {
   	return ;
   }
 
- 
+
   /**
    * 接收任务
    */
@@ -1504,7 +1504,7 @@ export class EventService extends BaseService {
    * 同步任务到服务器
    */
   async syncTask(tt: TaskData) {
-  	
+
   	this.assertEmpty(tt);       // 入参不能为空
 	  this.assertEmpty(tt.evi);    // ID不能为空
 	  this.assertEmpty(tt.del);   // 删除标记不能为空
@@ -1518,7 +1518,7 @@ export class EventService extends BaseService {
     sync.payload = tt;
     push.d.push(sync);
     await this.dataRestful.push(push);
-    
+
     return ;
   }
 
