@@ -47,7 +47,7 @@ import {WaTbl} from "../sqlite/tbl/wa.tbl";
 import { CalendarService, PlanData } from "./calendar.service";
 import { EventService, AgendaData, TaskData, MiniTaskData} from "./event.service";
 import { MemoService } from "./memo.service";
-import { PlanType, IsCreate, IsSuccess, IsWholeday, SyncType, DelType, SyncDataStatus, EventType} from "../../data.enum";
+import { PlanType, IsCreate, IsSuccess, IsWholeday, SyncType, DelType, SyncDataStatus, EventType, OperateType} from "../../data.enum";
 
 /**
  * 事件Service 持续集成CI 自动测试Case
@@ -637,7 +637,7 @@ describe('EventService test suite', () => {
       expect(isChanged).toBe(false);
     });
 
-    it(`Case 2 - 1 receivedAgenda 接收共享日程 - 无报错`, async () => {
+    it(`Case 2 - 1 receivedAgenda 接收共享日程 - 无报错`, async (done: DoneFn) => {
       eventService.receivedAgenda("agenda id")
       .then(() => {
         expect("success").toBe("success");
@@ -647,6 +647,16 @@ describe('EventService test suite', () => {
         fail("抛出异常, 出错");
         done();
       });
+    });
+
+    it(`Case 3 - 1 removeAgenda 删除重复日程 - 第一个日程开始删除`, async () => {
+      let agenda = dayDayRepeatAgendas[0];
+
+      await eventService.removeAgenda(agenda, OperateType.FromSel);
+
+      let agenda1 = await eventService.getAgenda(agenda.evi);
+
+      expect(agenda1).toBeNull();
     });
   });
 
