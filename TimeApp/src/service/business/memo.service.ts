@@ -96,7 +96,7 @@ export class MemoService extends BaseService {
 	/**
 	 * 根据备忘ID获取备忘
 	 *
-	 * @author leon_xi@163.com
+	 * @author ying<343253410@qq.com>
 	 */
 	async getMemo(moi: string): Promise<MemoData> {
 		this.assertEmpty(moi); // id不能为空
@@ -137,6 +137,7 @@ export class MemoService extends BaseService {
 	
 	/**
 	 * 接收备忘保存在本地
+	 * @author ying<343253410@qq.com>
 	 */
 	async receivedMemoData(memo: MemoData, status: SyncDataStatus): Promise<MemoData> {
 		 this.assertEmpty(memo);     // 入参不能为空

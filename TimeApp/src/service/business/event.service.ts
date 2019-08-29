@@ -1314,6 +1314,7 @@ export class EventService extends BaseService {
 
 	/**
 	 * 根据事件ID获取任务
+	  @author ying<343253410@qq.com>
 	 */
 	async getTask(evi: string): Promise<TaskData> {
 			this.assertEmpty(evi); // id不能为空
@@ -1353,7 +1354,11 @@ export class EventService extends BaseService {
 
 		return minitask;
   }
-
+  
+	/**
+	 *  获取小任务
+	 * @author ying<343253410@qq.com>
+	 */
 	async getMiniTask(evi: string): Promise<MiniTaskData> {
 			this.assertEmpty(evi); // id不能为空
 			let params= Array<any>();
@@ -1416,6 +1421,7 @@ export class EventService extends BaseService {
 
 	/**
 	 * 发送任务进行共享
+	 * @author ying<343253410@qq.com>
 	 */
   async sendTask(tt: TaskData) {
   	this.assertEmpty(tt);
@@ -1426,6 +1432,7 @@ export class EventService extends BaseService {
 
   /**
    * 发送小任务进行共享
+   * @author ying<343253410@qq.com>
    */
   async sendMiniTask(tt: MiniTaskData) {
   	this.assertEmpty(tt);
@@ -1437,6 +1444,7 @@ export class EventService extends BaseService {
 
   /**
    * 接收任务
+   * @author ying<343253410@qq.com>
    */
   async receivedTask(evi: string) {
   	this.assertEmpty(evi);   // 入参不能为空
@@ -1448,6 +1456,7 @@ export class EventService extends BaseService {
 
   /**
    * 接收任务保存到本地
+   * @author ying<343253410@qq.com>
    */
   async acceptReceivedTask(tt: TaskData,status: SyncDataStatus): Promise<TaskData> {
   	this.assertEmpty(tt);     // 入参不能为空
@@ -1467,6 +1476,7 @@ export class EventService extends BaseService {
 
   /**
    * 接收小任务保存到本地
+   * @author ying<343253410@qq.com>
    */
   async acceptReceivedMiniTask(tt: MiniTaskData,status: SyncDataStatus): Promise<MiniTaskData> {
   	this.assertEmpty(tt);     // 入参不能为空
@@ -1488,6 +1498,7 @@ export class EventService extends BaseService {
 
   /**
    * 同步任务到服务器
+   * @author ying<343253410@qq.com>
    */
   async syncTask(tt: TaskData) {
 
@@ -1510,6 +1521,7 @@ export class EventService extends BaseService {
 
   /**
    * 同步小任务到服务器
+   * @author ying<343253410@qq.com>
    */
   async syncMiniTask(tt: MiniTaskData) {
   	this.assertEmpty(tt);       // 入参不能为空
@@ -1530,6 +1542,7 @@ export class EventService extends BaseService {
 
   /**
    * 同步全部的未同步的任务到服务器
+   * @author ying<343253410@qq.com>
    */
   async syncTasks() {
   	let sql: string = `select * from gtd_ev where type = ? and   tb = ?`;
@@ -1553,6 +1566,7 @@ export class EventService extends BaseService {
 
   /**
    * 同步全部的未同步的小任务到服务器
+   * @author ying<343253410@qq.com>
    */
   async syncMiniTasks() {
   	let sql: string = `select * from gtd_ev where type = ? and   tb = ?`;
