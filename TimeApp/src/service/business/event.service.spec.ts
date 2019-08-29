@@ -629,7 +629,7 @@ describe('EventService test suite', () => {
     });
 
     it(`Case 1 - 1 isAgendaChanged 判断日程是否已被修改 - 未修改`, async () => {
-      let agenda = dayNoneRepeat[0];
+      let agenda = dayNoneRepeatAgendas[0];
       let agenda1 = await eventService.getAgenda(agenda.evi);
 
       let isChanged = eventService.isAgendaChanged(agenda1, agenda);
