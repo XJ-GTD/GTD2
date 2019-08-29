@@ -611,7 +611,7 @@ describe('EventService test suite', () => {
       monthRepeat.evn = "每月重复";
       monthRepeat.rtjson = monthRepeatrt;
 
-      dayMonthRepeat = await eventService.saveAgenda(monthRepeat);
+      dayMonthRepeatAgendas = await eventService.saveAgenda(monthRepeat);
 
       // 创建每年重复日程
       let yearRepeat: AgendaData = {} as AgendaData;
