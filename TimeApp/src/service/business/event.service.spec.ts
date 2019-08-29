@@ -553,25 +553,102 @@ describe('EventService test suite', () => {
 
   });
 
-  it(`Case 18 - 1 isAgendaChanged 判断日程是否已被修改 - 未修改`, async () => {
-    // 创建不重复日程
-    let math1: AgendaData = {} as AgendaData;
+  describe(`创建不重复与重复（每天、每周、每月、每年）日程`, () => {
+    let dayNoneRepeat: string = moment().format("YYYY/MM/DD");
+    let dayDayRepeat: string = moment().add(1, "weeks").format("YYYY/MM/DD");
+    let dayWeekRepeat: string = moment().add(1, "months").format("YYYY/MM/DD");
+    let dayMonthRepeat: string = moment().add(1, "years").format("YYYY/MM/DD");
+    let dayYearRepeat: string = moment().add(2, "years").format("YYYY/MM/DD");
+    let dayNoneRepeatAgendas: Array<AgendaData>;
+    let dayDayRepeatAgendas: Array<AgendaData>;
+    let dayWeekRepeatAgendas: Array<AgendaData>;
+    let dayMonthRepeatAgendas: Array<AgendaData>;
+    let dayYearRepeatAgendas: Array<AgendaData>;
 
-    math1.sd = "2019/09/18";
-    math1.al = IsWholeday.NonWhole;
-    math1.st = "09:00";
-    math1.ct = 40;  // 持续40分钟
-    math1.evn = "数学";
+    beforeEach(async () => {
+      // 创建不重复日程
+      let noneRepeat: AgendaData = {} as AgendaData;
 
-    let maths = await eventService.saveAgenda(math1);
+      noneRepeat.sd = dayNoneRepeat;
+      noneRepeat.evn = "不重复";
 
-    let math2 = await eventService.getAgenda(math1.evi);
+      dayNoneRepeatAgendas = eventService.saveAgenda(noneRepeat);
 
-    let isChanged = eventService.isAgendaChanged(maths[0], math2);
+      // 创建每天重复日程
+      let dayRepeat: AgendaData = {} as AgendaData;
 
-    expect(isChanged).toBe(false);
+      let dayRepeatrt: RtJson = new RtJson();
+      dayRepeatrt.cycletype = CycleType.day;
+      dayRepeatrt.over.type = OverType.fornever;
+
+      dayRepeat.sd = dayDayRepeat;
+      dayRepeat.evn = "每天重复";
+      dayRepeat.rtjson = dayRepeatrt;
+
+      dayDayRepeatAgendas = eventService.saveAgenda(dayRepeat);
+
+      // 创建每周重复日程
+      let weekRepeat: AgendaData = {} as AgendaData;
+
+      let weekRepeatrt: RtJson = new RtJson();
+      weekRepeatrt.cycletype = CycleType.week;
+      weekRepeatrt.over.type = OverType.fornever;
+
+      weekRepeat.sd = dayWeekRepeat;
+      weekRepeat.evn = "每周重复";
+      weekRepeat.rtjson = weekRepeatrt;
+
+      dayWeekRepeatAgendas = eventService.saveAgenda(weekRepeat);
+
+      // 创建每月重复日程
+      let monthRepeat: AgendaData = {} as AgendaData;
+
+      let monthRepeatrt: RtJson = new RtJson();
+      monthRepeatrt.cycletype = CycleType.month;
+      monthRepeatrt.over.type = OverType.fornever;
+
+      monthRepeat.sd = dayMonthRepeat;
+      monthRepeat.evn = "每月重复";
+      monthRepeat.rtjson = monthRepeatrt;
+
+      dayMonthRepeat = eventService.saveAgenda(monthRepeat);
+
+      // 创建每年重复日程
+      let yearRepeat: AgendaData = {} as AgendaData;
+
+      let yearRepeatrt: RtJson = new RtJson();
+      yearRepeatrt.cycletype = CycleType.month;
+      yearRepeatrt.over.type = OverType.fornever;
+
+      yearRepeat.sd = dayYearRepeat;
+      yearRepeat.evn = "每年重复";
+      yearRepeat.rtjson = yearRepeatrt;
+
+      dayYearRepeatAgendas = eventService.saveAgenda(yearRepeat);
+
+    });
+
+    it(`Case 1 - 1 isAgendaChanged 判断日程是否已被修改 - 未修改`, async () => {
+      let agenda = dayNoneRepeat[0];
+      let agenda1 = await eventService.getAgenda(agenda.evi);
+
+      let isChanged = eventService.isAgendaChanged(agenda1, agenda);
+
+      expect(isChanged).toBe(false);
+    });
+
+    it(`Case 2 - 1 receivedAgenda 接收共享日程 - 无报错`, async () => {
+      eventService.receivedAgenda("agenda id")
+      .then(() => {
+        expect("success").toBe("success");
+        done();
+      })
+      .catch(e => {
+        fail("抛出异常, 出错");
+        done();
+      });
+    });
   });
-
 
   afterAll(() => {
     TestBed.resetTestingModule();
