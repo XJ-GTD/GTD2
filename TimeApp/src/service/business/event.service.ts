@@ -153,6 +153,12 @@ export class EventService extends BaseService {
     let ev = new EvTbl();
     ev.evi = evi;
     ev = await this.sqlExce.getOneByParam<EvTbl>(ev);
+
+    // 如果事件不存在
+    if (!ev) {
+      return null;
+    }
+
     Object.assign(agdata , ev);
     agdata.rtjson = JSON.parse(agdata.rt);
     agdata.txjson = JSON.parse(agdata.tx);
@@ -1354,7 +1360,7 @@ export class EventService extends BaseService {
 
 		return minitask;
   }
-  
+
 	/**
 	 *  获取小任务
 	 * @author ying<343253410@qq.com>
