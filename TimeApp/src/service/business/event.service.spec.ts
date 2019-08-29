@@ -118,7 +118,7 @@ describe('EventService test suite', () => {
     await init.createTables();
     await init.initData();
     restConfig.init();
-    
+
     jasmine.DEFAULT_TIMEOUT_INTERVAL = 60 * 1000;  // 每个Case超时时间
   });
 
@@ -326,14 +326,14 @@ describe('EventService test suite', () => {
     expect(txx.evn).toBe(tx.evn);
 
 	});
-	
+
 	it(`Case 9 - 1 sendTask 发送任务`,  async (done: DoneFn) => {
   	let tx: TaskData = {} as TaskData;
     tx.evn ="shopping,今天穿的是花裤衩";
     tx = await eventService.saveTask(tx);
     expect(tx).toBeDefined();
     expect(tx.evi).toBeDefined();
-	  
+
     eventService.sendTask(tx)
     .then(() => {
       expect("success").toBe("success");
@@ -344,14 +344,14 @@ describe('EventService test suite', () => {
       done();
     });
   });
-  
+
   it(`Case 10 - 1 sendMiniTask 发送任务`,  async (done: DoneFn) => {
   	let tx: MiniTaskData = {} as MiniTaskData;
     tx.evn ="shopping,今天穿的是花裤衩";
     tx = await eventService.saveMiniTask(tx);
     expect(tx).toBeDefined();
     expect(tx.evi).toBeDefined();
-	  
+
     eventService.sendMiniTask(tx)
     .then(() => {
       expect("success").toBe("success");
@@ -362,9 +362,9 @@ describe('EventService test suite', () => {
       done();
     });
   });
-  
-  
-  it(`Case 11 - 2 receivedTask 接收任务,有数据`,   (done: DoneFn) => {	  
+
+
+  it(`Case 11 - 2 receivedTask 接收任务,有数据`,   (done: DoneFn) => {
     eventService.receivedTask(util.getUuid())
     .then(() => {
       expect("success").toBe("success");
@@ -375,9 +375,9 @@ describe('EventService test suite', () => {
       done();
     });
   });
-  
-  
-  it(`Case 12 - 1 acceptReceivedTask 接收任务,有数据,不删除共享`,  async () => {	  
+
+
+  it(`Case 12 - 1 acceptReceivedTask 接收任务,有数据,不删除共享`,  async () => {
     	let tx: TaskData = {} as TaskData;
 	    tx.evn ="shopping,今天穿的是花裤衩";
 		  tx.wtt = moment().unix();
@@ -386,22 +386,22 @@ describe('EventService test suite', () => {
 	    tx = await eventService.saveTask(tx);
 	    expect(tx).toBeDefined();
 	    expect(tx.evi).toBeDefined();
-	    
+
 	    let received = await eventService.acceptReceivedTask(tx,SyncDataStatus.UnDeleted);
-	    
+
 	    expect(received).toBeDefined();
 		  expect(received.evi).toBe(tx.evi);
 		  expect(received.tb).toBe(SyncType.synch);
 	    expect(received.del).toBe(DelType.undel);
-	    
+
 	    let fetched = await eventService.getTask(received.evi);
 	    expect(fetched).toBeDefined();
 		  expect(fetched.evi).toBe(tx.evi);
 		  expect(fetched.tb).toBe(SyncType.synch);
 	    expect(fetched.del).toBe(DelType.undel);
   });
-  
-   it(`Case 12 - 2 acceptReceivedTask 接收任务,有数据,删除共享`,  async () => {	  
+
+   it(`Case 12 - 2 acceptReceivedTask 接收任务,有数据,删除共享`,  async () => {
     	let tx: TaskData = {} as TaskData;
 	    tx.evn ="shopping,今天穿的是花裤衩";
 		  tx.wtt = moment().unix();
@@ -409,20 +409,20 @@ describe('EventService test suite', () => {
 	    tx = await eventService.saveTask(tx);
 	    expect(tx).toBeDefined();
 	    expect(tx.evi).toBeDefined();
-	    
+
 	    let received = await eventService.acceptReceivedTask(tx,SyncDataStatus.Deleted);
-	    
+
 	    expect(received).toBeDefined();
 		  expect(received.evi).toBe(tx.evi);
 		  expect(received.tb).toBe(SyncType.synch);
 	    expect(received.del).toBe(DelType.del);
-	    
+
 	    let fetched = await eventService.getTask(received.evi);
 	    expect(fetched).toBeNull();
   });
-  
-  
-  it(`Case 13 - 1 acceptReceivedMiniTask 接收小任务,有数据,不删除共享`,  async () => {	  
+
+
+  it(`Case 13 - 1 acceptReceivedMiniTask 接收小任务,有数据,不删除共享`,  async () => {
     	let tx: MiniTaskData = {} as MiniTaskData;
 	    tx.evn ="shopping,今天穿的是花裤衩";
 		  tx.wtt = moment().unix();
@@ -432,22 +432,22 @@ describe('EventService test suite', () => {
 	    tx = await eventService.saveMiniTask(tx);
 	    expect(tx).toBeDefined();
 	    expect(tx.evi).toBeDefined();
-	    
+
 	    let received = await eventService.acceptReceivedMiniTask(tx,SyncDataStatus.UnDeleted);
-	    
+
 	    expect(received).toBeDefined();
 		  expect(received.evi).toBe(tx.evi);
 		  expect(received.tb).toBe(SyncType.synch);
 	    expect(received.del).toBe(DelType.undel);
-	    
+
 	    let fetched = await eventService.getMiniTask(received.evi);
 	    expect(fetched).toBeDefined();
 		  expect(fetched.evi).toBe(tx.evi);
 		  expect(fetched.tb).toBe(SyncType.synch);
 	    expect(fetched.del).toBe(DelType.undel);
   });
-	
-	it(`Case 13 - 2 acceptReceivedMiniTask 接收小任务,有数据,删除共享`,  async () => {	  
+
+	it(`Case 13 - 2 acceptReceivedMiniTask 接收小任务,有数据,删除共享`,  async () => {
     	let tx: MiniTaskData = {} as MiniTaskData;
 	    tx.evn ="shopping,今天穿的是花裤衩";
 		  tx.wtt = moment().unix();
@@ -457,21 +457,21 @@ describe('EventService test suite', () => {
 	    tx = await eventService.saveMiniTask(tx);
 	    expect(tx).toBeDefined();
 	    expect(tx.evi).toBeDefined();
-	    
+
 	    let received = await eventService.acceptReceivedMiniTask(tx,SyncDataStatus.Deleted);
-	    
+
 	    expect(received).toBeDefined();
 		  expect(received.evi).toBe(tx.evi);
 		  expect(received.tb).toBe(SyncType.synch);
 	    expect(received.del).toBe(DelType.del);
-	    
+
 	    let fetched = await eventService.getMiniTask(received.evi);
 	    expect(fetched).toBeNull();
   });
-  
-  
+
+
   it('Case 14 - 1   syncTask 更新单个任务到服务器 ', async () => {
-  	
+
   	let tx: TaskData = {} as TaskData;
     tx.evn ="shopping,今天穿的是花裤衩";
     tx.type =EventType.Task;
@@ -479,13 +479,13 @@ describe('EventService test suite', () => {
     tx = await eventService.saveTask(tx);
     expect(tx).toBeDefined();
     expect(tx.evi).toBeDefined();
-    
+
     await eventService.syncTask(tx);
-    
+
   });
-  
+
   it('Case 15 - 1   syncMiniTask 更新单个小任务到服务器 ', async () => {
-  	
+
   	let tx: MiniTaskData = {} as MiniTaskData;
     tx.evn ="shopping,今天穿的是花裤衩";
     tx.type =EventType.MiniTask;
@@ -493,13 +493,13 @@ describe('EventService test suite', () => {
     tx = await eventService.saveMiniTask(tx);
     expect(tx).toBeDefined();
     expect(tx.evi).toBeDefined();
-    
+
     await eventService.syncMiniTask(tx);
-    
+
   });
-  
+
   it('Case 16 - 1   syncTasks 同步全部的未同步的任务到服务器 ，本地有数据（不报错）', async () => {
-  	
+
   	let tx: TaskData = {} as TaskData;
     tx.evn ="shopping,今天穿的是花裤衩";
     tx.type =EventType.Task;
@@ -507,11 +507,11 @@ describe('EventService test suite', () => {
     tx = await eventService.saveTask(tx);
     expect(tx).toBeDefined();
     expect(tx.evi).toBeDefined();
-    
+
     await eventService.syncTasks();
-    
+
   });
-  
+
   it('Case 16 - 2   syncTasks 同步全部的未同步的任务到服务器  ，本地无数据（不报错）', (done: DoneFn) => {
     eventService.syncTasks()
     .then(() => {
@@ -522,12 +522,12 @@ describe('EventService test suite', () => {
       fail("抛出异常, 出错");
       done();
     });
-    
+
   });
-  
-  
+
+
   it('Case 17 - 1   syncMiniTasks 同步全部的未同步的小任务到服务器，本地有数据（不报错） ', async () => {
-  	
+
   	let tx: MiniTaskData = {} as MiniTaskData;
     tx.evn ="shopping,今天穿的是花裤衩";
     tx.type =EventType.MiniTask;
@@ -535,11 +535,11 @@ describe('EventService test suite', () => {
     tx = await eventService.saveMiniTask(tx);
     expect(tx).toBeDefined();
     expect(tx.evi).toBeDefined();
-    
+
     await eventService.syncMiniTasks();
-    
+
   });
-  
+
   it('Case 17 - 2   syncMiniTasks 同步全部的未同步的小任务到服务器 ，本地无数据（不报错）', (done: DoneFn) => {
     eventService.syncMiniTasks()
     .then(() => {
@@ -550,10 +550,29 @@ describe('EventService test suite', () => {
       fail("抛出异常, 出错");
       done();
     });
-    
+
   });
-	
-	
+
+  it(`Case 18 - 1 isAgendaChanged 判断日程是否已被修改 - 未修改`, async () => {
+    // 创建不重复日程
+    let math1: AgendaData = {} as AgendaData;
+
+    math1.sd = "2019/09/18";
+    math1.al = IsWholeday.NonWhole;
+    math1.st = timeranges[0][0];
+    math1.ct = 40;  // 持续40分钟
+    math1.evn = "数学";
+
+    let maths = await eventService.saveAgenda(math1);
+
+    let math2 = await eventService.getAgenda(math1.evi);
+
+    let isChanged = eventService.isAgendaChanged(maths[0], math2);
+
+    expect(isChanged).toBe(false);
+  });
+
+
   afterAll(() => {
     TestBed.resetTestingModule();
   });

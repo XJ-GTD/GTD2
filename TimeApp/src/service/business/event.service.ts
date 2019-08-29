@@ -99,7 +99,7 @@ export class EventService extends BaseService {
    * @param {AgendaData} oldAgd
    * @returns {boolean}
    */
-  isAgdChanged(newAgd : AgendaData ,oldAgd : AgendaData): boolean{
+  isAgendaChanged(newAgd : AgendaData ,oldAgd : AgendaData): boolean{
     //重复选项发生变化
     if (newAgd.rtjson.cycletype != oldAgd.rtjson.cycletype){
       return true;
