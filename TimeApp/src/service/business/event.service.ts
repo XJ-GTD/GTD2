@@ -152,10 +152,9 @@ export class EventService extends BaseService {
 
     let agdata = {} as AgendaData;
     //获取事件详情
-    let ev = new EvTbl();
-    ev.evi = evi;
-    ev = await this.sqlExce.getOneByParam<EvTbl>(ev);
-
+    let sql: string = `select * from gtd_ev where evi = ? and del = ?`;
+    let ev: EvTbl = await this.sqlExce.getExtOneByParam<EvTbl>(sql, [evi, DelType.undel]);
+    
     // 如果事件不存在
     if (!ev) {
       return null;
