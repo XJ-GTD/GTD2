@@ -11,7 +11,7 @@ import { ScdData, ScdPageParamter } from "../../data.mapping";
 import {EmitService} from "../../service/util-service/emit.service";
 import {DataConfig} from "../../service/config/data.config";
 import {FeedbackService} from "../../service/cordova/feedback.service";
-import {CardListComponent} from "../../components/card-list/card-list";
+import {TaskListComponent} from "../../components/task-list/task-list";
 
 /**
  * Generated class for the 待处理/已处理任务一览 page.
@@ -35,15 +35,15 @@ import {CardListComponent} from "../../components/card-list/card-list";
     </ion-header>
 
     <ion-content padding>
-      <card-list #cardlist (onStartLoad)="getData($event, day)" (onCardClick)="gotoDetail($event)" (onCreateNew)="goNew()" #cardlist></card-list>
+      <task-list (onStartLoad)="getData($event, day)" (onCardClick)="gotoDetail($event)" (onCreateNew)="goNew()" #tasklist></task-list>
     </ion-content>
     `
 })
 export class DoPage {
   statusBarColor: string = "#3c4d55";
 
-  cardlist: CardListComponent;
-  @ViewChildren("cardlist") cardlists: QueryList<CardListComponent>;
+  tasklist: TaskListComponent;
+  @ViewChildren("tasklist") tasklists: QueryList<TaskListComponent>;
 
   constructor(public navCtrl: NavController,
               public navParams: NavParams,
