@@ -45,9 +45,9 @@ import {CaTbl} from "../sqlite/tbl/ca.tbl";
 import {TTbl} from "../sqlite/tbl/t.tbl";
 import {WaTbl} from "../sqlite/tbl/wa.tbl";
 import { CalendarService, PlanData } from "./calendar.service";
-import { EventService,TaskData,MiniTaskData} from "./event.service";
+import { EventService, AgendaData, TaskData, MiniTaskData} from "./event.service";
 import { MemoService } from "./memo.service";
-import { PlanType,IsCreate,IsSuccess , SyncType, DelType, SyncDataStatus,EventType} from "../../data.enum";
+import { PlanType, IsCreate, IsSuccess, IsWholeday, SyncType, DelType, SyncDataStatus, EventType} from "../../data.enum";
 
 /**
  * 事件Service 持续集成CI 自动测试Case
@@ -559,7 +559,7 @@ describe('EventService test suite', () => {
 
     math1.sd = "2019/09/18";
     math1.al = IsWholeday.NonWhole;
-    math1.st = timeranges[0][0];
+    math1.st = "09:00";
     math1.ct = 40;  // 持续40分钟
     math1.evn = "数学";
 
