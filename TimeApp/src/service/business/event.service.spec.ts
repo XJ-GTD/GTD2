@@ -658,6 +658,21 @@ describe('EventService test suite', () => {
 
       expect(agenda1).toBeNull();
     });
+
+    it(`Case 3 - 2 removeAgenda 删除重复日程 - 第二个日程开始删除`, async () => {
+      let agenda0 = dayDayRepeatAgendas[0];
+      let agenda = dayDayRepeatAgendas[1];
+
+      await eventService.removeAgenda(agenda, OperateType.FromSel);
+
+      let hasagenda = await eventService.getAgenda(agenda0.evi);
+
+      expect(hasagenda).toBeDefined();
+
+      let agenda1 = await eventService.getAgenda(agenda.evi);
+
+      expect(agenda1).toBeNull();
+    });
   });
 
   afterAll(() => {
