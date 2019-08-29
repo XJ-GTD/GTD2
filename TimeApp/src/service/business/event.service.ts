@@ -148,6 +148,8 @@ export class EventService extends BaseService {
    */
   async getAgenda(evi : string):Promise<AgendaData>{
 
+    this.assertEmpty(evi);    // 入参不能为空
+
     let agdata = {} as AgendaData;
     //获取事件详情
     let ev = new EvTbl();
