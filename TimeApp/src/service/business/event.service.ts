@@ -107,9 +107,13 @@ export class EventService extends BaseService {
     if (newAgd.rtjson.cyclenum != oldAgd.rtjson.cyclenum){
       return true;
     }
-    if (newAgd.rtjson.openway != oldAgd.rtjson.openway){
+    if (!newAgd.rtjson.openway != !oldAgd.rtjson.openway){
       return true;
     }
+    if (newAgd.rtjson.openway.length != oldAgd.rtjson.openway.length){
+      return true;
+    }
+    // TODO:判断newAgd.rtjson.openway每个值是否相同
     if (newAgd.rtjson.over.type != oldAgd.rtjson.over.type){
       return true;
     }
@@ -154,7 +158,7 @@ export class EventService extends BaseService {
     //获取事件详情
     let sql: string = `select * from gtd_ev where evi = ? and del = ?`;
     let ev: EvTbl = await this.sqlExce.getExtOneByParam<EvTbl>(sql, [evi, DelType.undel]);
-    
+
     // 如果事件不存在
     if (!ev) {
       return null;
