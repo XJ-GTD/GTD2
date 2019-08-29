@@ -45,9 +45,9 @@ import {CaTbl} from "../sqlite/tbl/ca.tbl";
 import {TTbl} from "../sqlite/tbl/t.tbl";
 import {WaTbl} from "../sqlite/tbl/wa.tbl";
 import { CalendarService, PlanData } from "./calendar.service";
-import { EventService, AgendaData, TaskData, MiniTaskData} from "./event.service";
+import { EventService, AgendaData, TaskData, MiniTaskData, RtJson} from "./event.service";
 import { MemoService } from "./memo.service";
-import { PlanType, IsCreate, IsSuccess, IsWholeday, SyncType, DelType, SyncDataStatus, EventType, OperateType} from "../../data.enum";
+import { PlanType, IsCreate, IsSuccess, IsWholeday, SyncType, DelType, SyncDataStatus, EventType, OperateType, CycleType, OverType} from "../../data.enum";
 
 /**
  * 事件Service 持续集成CI 自动测试Case
@@ -572,7 +572,7 @@ describe('EventService test suite', () => {
       noneRepeat.sd = dayNoneRepeat;
       noneRepeat.evn = "不重复";
 
-      dayNoneRepeatAgendas = eventService.saveAgenda(noneRepeat);
+      dayNoneRepeatAgendas = await eventService.saveAgenda(noneRepeat);
 
       // 创建每天重复日程
       let dayRepeat: AgendaData = {} as AgendaData;
@@ -585,7 +585,7 @@ describe('EventService test suite', () => {
       dayRepeat.evn = "每天重复";
       dayRepeat.rtjson = dayRepeatrt;
 
-      dayDayRepeatAgendas = eventService.saveAgenda(dayRepeat);
+      dayDayRepeatAgendas = await eventService.saveAgenda(dayRepeat);
 
       // 创建每周重复日程
       let weekRepeat: AgendaData = {} as AgendaData;
@@ -598,7 +598,7 @@ describe('EventService test suite', () => {
       weekRepeat.evn = "每周重复";
       weekRepeat.rtjson = weekRepeatrt;
 
-      dayWeekRepeatAgendas = eventService.saveAgenda(weekRepeat);
+      dayWeekRepeatAgendas = await eventService.saveAgenda(weekRepeat);
 
       // 创建每月重复日程
       let monthRepeat: AgendaData = {} as AgendaData;
@@ -611,7 +611,7 @@ describe('EventService test suite', () => {
       monthRepeat.evn = "每月重复";
       monthRepeat.rtjson = monthRepeatrt;
 
-      dayMonthRepeat = eventService.saveAgenda(monthRepeat);
+      dayMonthRepeat = await eventService.saveAgenda(monthRepeat);
 
       // 创建每年重复日程
       let yearRepeat: AgendaData = {} as AgendaData;
@@ -624,7 +624,7 @@ describe('EventService test suite', () => {
       yearRepeat.evn = "每年重复";
       yearRepeat.rtjson = yearRepeatrt;
 
-      dayYearRepeatAgendas = eventService.saveAgenda(yearRepeat);
+      dayYearRepeatAgendas = await eventService.saveAgenda(yearRepeat);
 
     });
 
