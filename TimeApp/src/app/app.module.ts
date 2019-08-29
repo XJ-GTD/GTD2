@@ -97,6 +97,7 @@ import {DzPageModule} from "../pages/dz/dz.module";
 import {CfPageModule} from "../pages/cf/cf.module";
 import {FoPageModule} from "../pages/fo/fo.module";
 import {CardListComponentModule} from "../components/card-list/card-list.module";
+import {TaskListComponentModule} from "../components/task-list/task-list.module";
 import {ScrollSelectComponentModule} from "../components/scroll-select/scroll-select.module";
 import {RadioSelectComponentModule} from "../components/radio-select/radio-select.module";
 import {ScrollRangePickerComponentModule} from "../components/scroll-range-picker/scroll-range-picker.module";
@@ -167,6 +168,7 @@ import { SettingsProvider } from '../providers/settings/settings';
     AipPageModule,
     ConfirmboxComponentModule,
     CardListComponentModule,
+    TaskListComponentModule,
     ScrollSelectComponentModule,
     RadioSelectComponentModule,
     ScrollRangePickerComponentModule,
