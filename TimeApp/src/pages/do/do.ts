@@ -61,7 +61,7 @@ export class DoPage {
               privaate eventService: EventService,
               private sqlite:SqliteExec) {
     moment.locale('zh-cn');
-    days.push(moment().format("YYYY/MM/DD"));
+    this.days.push(moment().format("YYYY/MM/DD"));
   }
 
   ionViewDidLoad() {
@@ -78,7 +78,7 @@ export class DoPage {
       direction = PageDirection.PageUp;
     }
 
-    eventService.fetchPagedTasks(day, direction)
+    this.eventService.fetchPagedTasks(day, direction)
     .then((d) => {
       target.tasklist = d;
     });
