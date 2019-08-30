@@ -1635,7 +1635,7 @@ export class EventService extends BaseService {
 
       let data: Array<TaskData> = await this.sqlExce.getExtLstByParam<TaskData>(sql, [top, anyenum.EventType.Task, DelType.undel, top]);
 
-      if (data) {
+      if (data && data.length > 0) {
         pagetasks = data;
       }
     }
@@ -1660,7 +1660,7 @@ export class EventService extends BaseService {
 
       let data: Array<TaskData> = await this.sqlExce.getExtLstByParam<TaskData>(sql, [bottom, anyenum.EventType.Task, DelType.undel, bottom]);
 
-      if (data) {
+      if (data && data.length > 0) {
         pagetasks = pagetasks.concat(data);
       }
     }
