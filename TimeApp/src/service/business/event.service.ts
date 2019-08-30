@@ -1629,6 +1629,7 @@ export class EventService extends BaseService {
                                 from gtd_ev ev
                                 left join gtd_t tt
                                 on tt.evi = ev.evi
+                                where ev.type = ?2
                               ) page1
                               where page1.cs = '1' or (page1.cs = '0' and date(replace(page1.evd, '/', '-')) >= date(replace(?4, '/', '-')))
                               union all
@@ -1638,6 +1639,7 @@ export class EventService extends BaseService {
                                 from gtd_ev ev
                                 left join gtd_t tt
                                 on tt.evi = ev.evi
+                                where ev.type = ?2
                               ) page0
                               where page0.cs = '0' and date(replace(page0.evd, '/', '-')) < date(replace(?4, '/', '-'))
                             ) evnext
@@ -1652,6 +1654,7 @@ export class EventService extends BaseService {
                               from gtd_ev ev
                               left join gtd_t tt
                               on tt.evi = ev.evi
+                              where ev.type = ?2
                             ) page1
                             where page1.cs = '1' or (page1.cs = '0' and date(replace(page1.evd, '/', '-')) >= date(replace(?4, '/', '-')))
                             union all
@@ -1661,6 +1664,7 @@ export class EventService extends BaseService {
                               from gtd_ev ev
                               left join gtd_t tt
                               on tt.evi = ev.evi
+                              where ev.type = ?2
                             ) page0
                             where page0.cs = '0' and date(replace(page0.evd, '/', '-')) < date(replace(?4, '/', '-'))
                           ) ev
@@ -1690,6 +1694,7 @@ export class EventService extends BaseService {
                                 from gtd_ev ev
                                 left join gtd_t tt
                                 on tt.evi = ev.evi
+                                where ev.type = ?2
                               ) page1
                               where page1.cs = '1' or (page1.cs = '0' and date(replace(page1.evd, '/', '-')) >= date(replace(?4, '/', '-')))
                               union all
@@ -1699,6 +1704,7 @@ export class EventService extends BaseService {
                                 from gtd_ev ev
                                 left join gtd_t tt
                                 on tt.evi = ev.evi
+                                where ev.type = ?2
                               ) page0
                               where page0.cs = '0' and date(replace(page0.evd, '/', '-')) < date(replace(?4, '/', '-'))
                             ) evnext
@@ -1713,6 +1719,7 @@ export class EventService extends BaseService {
                               from gtd_ev ev
                               left join gtd_t tt
                               on tt.evi = ev.evi
+                              where ev.type = ?2
                             ) page1
                             where page1.cs = '1' or (page1.cs = '0' and date(replace(page1.evd, '/', '-')) >= date(replace(?4, '/', '-')))
                             union all
@@ -1722,6 +1729,7 @@ export class EventService extends BaseService {
                               from gtd_ev ev
                               left join gtd_t tt
                               on tt.evi = ev.evi
+                              where ev.type = ?2
                             ) page0
                             where page0.cs = '0' and date(replace(page0.evd, '/', '-')) < date(replace(?4, '/', '-'))
                           ) ev
