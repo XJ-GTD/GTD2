@@ -1,4 +1,4 @@
-import {Component, ElementRef, ViewChild} from '@angular/core';
+import {Component, ElementRef, Renderer2, ViewChild} from '@angular/core';
 import {
   Content,
   MenuController,
@@ -49,8 +49,13 @@ import {FeedbackService} from "../../service/cordova/feedback.service";
                 感知天气冷暖我们生来便会，感知人情冷暖还要慢慢体会。 
               </p>            
           </ion-row>
-        <ion-row class="anch" id="day{{sdl.id}}">
+          <ion-row  class="dayagenda-week"  *ngIf="(sdl.d | formatedate:'DWEEK') == '7'">
+            <p>
+              {{sdl.d | formatedate :"CYYYY/MM/DD"}}- {{sdl.d | formatedate :"ADD7CYYYY/MM/DD"}}
+            </p>
+          </ion-row>
           <ng-template [ngIf]="sdl.scdl.length > 0" [ngIfElse]="noscd">
+            <ion-row class="anch" id="day{{sdl.id}}">
             <div class="daynav">
               <div class="dayheader">
 
@@ -89,14 +94,15 @@ import {FeedbackService} from "../../service/cordova/feedback.service";
                 </div>
               </ion-row>
             </ion-grid>
+            </ion-row>
           </ng-template>
           <ng-template #noscd>
-            <div class="dayagenda-no-content" (click)="toAdd(sdl.d)">
+            <ion-row class="anch dayagenda-none-display" id="day{{sdl.id}}">
+            <div class="dayagenda-no-content "  (click)="toAdd(sdl.d)">
               <p>{{sdl.d | formatedate :"CYYYY/MM/DD"}}</p>
             </div>
+            </ion-row>
           </ng-template>
-         
-        </ion-row>
         </ng-template>
       </ion-grid>
     </ion-content>
@@ -131,7 +137,8 @@ export class TdlPage {
               private emitService: EmitService,
               private el: ElementRef,
               private util: UtilService,
-              private feedback: FeedbackService
+              private feedback: FeedbackService,
+              private renderer2: Renderer2
   ) {
   }
 
@@ -269,40 +276,28 @@ export class TdlPage {
         // datas = await this.tdlServ.after(selectDate.format("YYYY/MM/DD"), 30);
         datas = await this.tdlServ.getL(selectDate.format("YYYY/MM/DD"),'2', 30);
       }
-      //替换交替颜色
-      if (type == 0 || type == 2)
-        for (let scdl of datas) {
-          for (let scd of scdl.scdl) {
-            lastcolor = (lastcolor + 1) % 2
-            scd.cbkcolor = lastcolor;
-          }
-        }
-      if (type == 1) {
-        let len = datas.length;
-        let len2 = 0;
-        for (let i = len - 1; i > -1; i--) {
-          let scdl = datas[i].scdl;
-          let len2 = scdl.length;
-          for (let j = len2 - 1; j > -1; j--) {
-            lastcolor = (lastcolor + 1) % 2
-            scdl[j].cbkcolor = lastcolor;
-          }
-        }
-      }
+
       return datas;
     }
   }
 
+  currDayel:any;
   gotoEl(id) {
     setTimeout(() => {
       try {
-        let el = this.el.nativeElement.querySelector("#day" + id);
+        if (this.currDayel){
+          this.renderer2.removeClass(this.currDayel,"dayagenda-display");
+          this.renderer2.addClass(this.currDayel,"dayagenda-none-display");
+        }
+        this.currDayel = this.el.nativeElement.querySelector("#day" + id);
+        this.renderer2.removeClass(this.currDayel,"dayagenda-none-display");
+        this.renderer2.addClass(this.currDayel,"dayagenda-display");
 
         this.headerDate = moment(id).format("YYYY/MM/DD");
         this.headerMoment = moment(id);
-        if (el) {
+        if (this.currDayel) {
           this.gridHight = this.grid.nativeElement.clientHeight;
-          this.contentD.scrollTo(0, el.offsetTop + 2, 0).then(datza => {
+          this.contentD.scrollTo(0, this.currDayel.offsetTop + 2, 0).then(datza => {
             this.gridHight = this.grid.nativeElement.clientHeight;
           })
         } else {

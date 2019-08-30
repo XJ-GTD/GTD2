@@ -65,7 +65,7 @@ import {AipPage} from "../aip/aip";
           <button ion-fab (click)="changetheme()">
             <ion-icon name="contrast"></ion-icon>
           </button>
-          <button ion-fab>
+          <button ion-fab (click)="todoList()">
             <ion-icon name="albums"></ion-icon>
           </button>
           <button ion-fab>
@@ -78,7 +78,7 @@ import {AipPage} from "../aip/aip";
       </ion-fab>
       <ion-fab bottom right>
         <button ion-fab mini (click)="openAi()">
-          <ion-icon name="chatbubbles" ></ion-icon>
+          <ion-icon name="chatbubbles"></ion-icon>
         </button>
       </ion-fab>
     </ion-content>
@@ -120,8 +120,9 @@ export class HPage {
   openm() {
     this.menuController.open("scalePush");
   }
-  openAi(){
-     this.modalCtr.create(AipPage).present();
+
+  openAi() {
+    this.modalCtr.create(AipPage).present();
   }
 
   changetheme() {
@@ -135,6 +136,7 @@ export class HPage {
 
   ionViewDidLoad() {
   }
+
 
   ngOnInit() {
     // websocket连接成功消息回调
@@ -210,7 +212,7 @@ export class HPage {
         timestamp = moment().unix() * 1000;
       }
 
-      this.gotodaily({
+      this.todoList({
         time: timestamp,
         isToday: false,
         selected: false,
@@ -330,8 +332,11 @@ export class HPage {
     this.modalCtr.create(TdcPage, p).present();
   }
 
-  //查询当天日程
-  onSelect(selectDay: CalendarDay) {
+//查询当天日程
+  onSelect(selectDay
+             :
+             CalendarDay
+  ) {
     this.feedback.audioClick();
     if (selectDay) this.emitService.emitSelectDate(moment(selectDay.time));
     this.hService.centerShow(selectDay).then(d => {
@@ -343,7 +348,7 @@ export class HPage {
     })
   }
 
-  gotodaily(day?: CalendarDay) {
+  todoList(day ?: CalendarDay) {
     let selectDay: CalendarDay = day ? day : this.hdata.selectDay;
 
     this.modalCtr.create(DataConfig.PAGE._DA_PAGE, selectDay).present();

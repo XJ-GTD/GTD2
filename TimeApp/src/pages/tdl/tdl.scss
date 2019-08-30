@@ -253,6 +253,30 @@ page-tdl {
       margin-left:16px
     }
   }
+
+  .dayagenda-none-display{
+    display: none;
+  }
+  .dayagenda-display{
+    display:block;
+  }
+
+  .dayagenda-week{
+    width: 100%;
+    margin: 0 15px 0 15px;
+    height: 34px;
+    background:rgba(237,241,254,.05);
+    box-shadow:0px 0px 10px 0px rgba(3,0,0,0.2);
+    border-radius:10px;
+    p{
+      font-size: 11px;
+      color: rgba(121,140,170,1);
+      letter-spacing: 1px;
+      line-height: 34px;
+      margin: 0;
+      margin-left:16px
+    }
+  }
   .dayagenda-month{
     height: 85px;
     margin: 0 12px 0 12px;
