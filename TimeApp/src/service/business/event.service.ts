@@ -1619,7 +1619,7 @@ export class EventService extends BaseService {
     if (direction == PageDirection.PageInit || direction == PageDirection.PageDown) {
       let sql: string = `select distinct task.*, tt.cs, tt.isrt, tt.cd, tt.fd
                         from (
-                          select evpage.evd, ev.*
+                          select evpage.day evd, ev.*
                           from (
                             select evnext.day day, julianday(replace(?1, '/', '-'), '+1 days') - julianday(replace(evnext.day, '/', '-')) sortid
                             from (
@@ -1680,7 +1680,7 @@ export class EventService extends BaseService {
     if (direction == PageDirection.PageInit || direction == PageDirection.PageUp) {
       let sql: string = `select distinct task.*, tt.cs, tt.isrt, tt.cd, tt.fd
                         from (
-                          select evpage.evd, ev.*
+                          select evpage.day evd, ev.*
                           from (
                             select evnext.day day, julianday(replace(evnext.day, '/', '-')) - julianday(replace(?1, '/', '-'), '+1 days') sortid
                             from (
