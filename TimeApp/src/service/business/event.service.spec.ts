@@ -47,7 +47,7 @@ import {WaTbl} from "../sqlite/tbl/wa.tbl";
 import { CalendarService, PlanData } from "./calendar.service";
 import { EventService, AgendaData, TaskData, MiniTaskData, RtJson} from "./event.service";
 import { MemoService } from "./memo.service";
-import { PlanType, IsCreate, IsSuccess, IsWholeday, SyncType, DelType, SyncDataStatus, EventType, OperateType, CycleType, OverType} from "../../data.enum";
+import { PlanType, IsCreate, IsSuccess, IsWholeday, PageDirection, SyncType, DelType, SyncDataStatus, EventType, OperateType, CycleType, OverType} from "../../data.enum";
 
 /**
  * 事件Service 持续集成CI 自动测试Case
@@ -685,21 +685,101 @@ describe('EventService test suite', () => {
 
       let subtask1: TaskData = {} as TaskData;
       subtask1.evn = "设计";
-      subtask1.evd = "2019/06/01";
+      subtask1.evd = "2019/06/02";
       subtask1.rtevi = task.evi;
       subtask1 = await eventService.saveTask(subtask1);
 
       let subtask2: TaskData = {} as TaskData;
       subtask2.evn = "开发";
-      subtask2.evd = "2019/06/01";
+      subtask2.evd = "2019/06/03";
       subtask2.rtevi = task.evi;
       subtask2 = await eventService.saveTask(subtask2);
 
       let subtask3: TaskData = {} as TaskData;
       subtask3.evn = "测试";
-      subtask3.evd = "2019/06/01";
+      subtask3.evd = "2019/06/04";
       subtask3.rtevi = task.evi;
       subtask3 = await eventService.saveTask(subtask3);
+
+      let subtask1_1: TaskData = {} as TaskData;
+      subtask1_1.evn = "画面UI设计";
+      subtask1_1.evd = "2019/06/05";
+      subtask1_1.rtevi = subtask1.evi;
+      subtask1_1.cs = IsSuccess.success;
+      subtask1_1 = await eventService.saveTask(subtask1_1);
+
+      let subtask1_1_1: TaskData = {} as TaskData;
+      subtask1_1_1.evn = "画面首页设计";
+      subtask1_1_1.evd = "2019/06/06";
+      subtask1_1_1.rtevi = subtask1_1.evi;
+      subtask1_1_1.cs = IsSuccess.success;
+      subtask1_1_1 = await eventService.saveTask(subtask1_1_1);
+
+      let subtask1_1_2: TaskData = {} as TaskData;
+      subtask1_1_2.evn = "画面待处理一览设计";
+      subtask1_1_2.evd = "2019/06/07";
+      subtask1_1_2.rtevi = subtask1_1.evi;
+      subtask1_1_2.cs = IsSuccess.success;
+      subtask1_1_2 = await eventService.saveTask(subtask1_1_2);
+
+      let subtask1_1_3: TaskData = {} as TaskData;
+      subtask1_1_3.evn = "画面新建任务设计";
+      subtask1_1_3.evd = "2019/06/08";
+      subtask1_1_3.rtevi = subtask1_1.evi;
+      subtask1_1_3.cs = IsSuccess.success;
+      subtask1_1_3 = await eventService.saveTask(subtask1_1_3);
+
+      let subtask1_1_4: TaskData = {} as TaskData;
+      subtask1_1_4.evn = "画面新建日程设计";
+      subtask1_1_4.evd = "2019/06/09";
+      subtask1_1_4.rtevi = subtask1_1.evi;
+      subtask1_1_4.cs = IsSuccess.success;
+      subtask1_1_4 = await eventService.saveTask(subtask1_1_4);
+
+      let subtask1_1_5: TaskData = {} as TaskData;
+      subtask1_1_5.evn = "画面新建日程设计";
+      subtask1_1_5.evd = "2019/06/10";
+      subtask1_1_5.rtevi = subtask1_1.evi;
+      subtask1_1_5.cs = IsSuccess.success;
+      subtask1_1_5 = await eventService.saveTask(subtask1_1_5);
+
+      let subtask1_1_6: TaskData = {} as TaskData;
+      subtask1_1_6.evn = "画面新建日历项设计";
+      subtask1_1_6.evd = "2019/08/30";
+      subtask1_1_6.rtevi = subtask1_1.evi;
+      subtask1_1_6 = await eventService.saveTask(subtask1_1_6);
+
+      let subtask1_2: TaskData = {} as TaskData;
+      subtask1_2.evn = "前端服务设计";
+      subtask1_2.evd = "2019/06/06";
+      subtask1_2.rtevi = subtask1.evi;
+      subtask1_2.cs = IsSuccess.success;
+      subtask1_2 = await eventService.saveTask(subtask1_2);
+
+      let subtask1_3: TaskData = {} as TaskData;
+      subtask1_3.evn = "后端云服务设计";
+      subtask1_3.evd = "2019/06/07";
+      subtask1_3.rtevi = subtask1.evi;
+      subtask1_3 = await eventService.saveTask(subtask1_3);
+
+      let subtask2_1: TaskData = {} as TaskData;
+      subtask2_1.evn = "页面UI开发";
+      subtask2_1.evd = "2019/09/01";
+      subtask2_1.rtevi = subtask2.evi;
+      subtask2_1 = await eventService.saveTask(subtask2_1);
+
+      let subtask2_2: TaskData = {} as TaskData;
+      subtask2_2.evn = "后端云服务开发";
+      subtask2_2.evd = "2019/09/11";
+      subtask2_2.rtevi = subtask2.evi;
+      subtask2_2 = await eventService.saveTask(subtask2_2);
+
+      let subtask2_3: TaskData = {} as TaskData;
+      subtask2_3.evn = "前端服务开发";
+      subtask2_3.evd = "2019/08/18";
+      subtask2_3.rtevi = subtask2.evi;
+      subtask2_3.cs = IsSuccess.success;
+      subtask2_3 = await eventService.saveTask(subtask2_3);
     });
 
     it(`Case 1 - 1 fetchPagedTasks 获取翻页任务 - 初始化`, async () => {
@@ -707,6 +787,34 @@ describe('EventService test suite', () => {
 
       expect(pagetasks).toBeDefined();
       expect(pagetasks.length).toBeGreaterThan(0);
+
+    });
+
+    it(`Case 1 - 2 fetchPagedTasks 获取翻页任务 - 初始化后下拉翻页`, async () => {
+      let pagetasks = await eventService.fetchPagedTasks();
+
+      expect(pagetasks).toBeDefined();
+      expect(pagetasks.length).toBeGreaterThan(0);
+
+      let topday: string = pagetasks[0].evd;
+      let prevpagetasks = await eventService.fetchPagedTasks(topday, PageDirection.PageDown);
+
+      expect(prevpagetasks).toBeDefined();
+      expect(prevpagetasks.length).toBeGreaterThan(0);
+
+    });
+
+    it(`Case 1 - 3 fetchPagedTasks 获取翻页任务 - 初始化后上拉翻页`, async () => {
+      let pagetasks = await eventService.fetchPagedTasks();
+
+      expect(pagetasks).toBeDefined();
+      expect(pagetasks.length).toBeGreaterThan(0);
+
+      let bottomday: string = pagetasks[pagetasks.length - 1].evd;
+      let nextpagetasks = await eventService.fetchPagedTasks(bottomday, PageDirection.PageUp);
+
+      expect(nextpagetasks).toBeDefined();
+      expect(nextpagetasks.length).toBe(0);
 
     });
   });
