@@ -258,7 +258,7 @@ describe('EventService test suite', () => {
 
 		let day: string = moment().format('YYYY/MM/DD');
 		let data: Array<TaskData> = new Array<TaskData>();
-		data = await eventService.fetchPagedTasks(day,"");
+		data = await eventService.fetchPagedTasks(day);
 		expect(data).toBeDefined();
 		expect(data.length).toBeGreaterThan(0);
   })
@@ -672,6 +672,42 @@ describe('EventService test suite', () => {
       let agenda1 = await eventService.getAgenda(agenda.evi);
 
       expect(agenda1).toBeNull();
+    });
+  });
+
+  describe(`创建任务`, async () => {
+    beforeEach(() => {
+      //创建任务
+      let task: TaskData = {} as TaskData;
+      task.evn = "冥王星三期";
+      task.evd = "2019/06/01";
+      task = await eventService.saveTask(task);
+
+      let subtask1: TaskData = {} as TaskData;
+      subtask1.evn = "设计";
+      subtask1.evd = "2019/06/01";
+      subtask1.rtevi = task.evi;
+      subtask1 = await eventService.saveTask(subtask1);
+
+      let subtask2: TaskData = {} as TaskData;
+      subtask2.evn = "开发";
+      subtask2.evd = "2019/06/01";
+      subtask2.rtevi = task.evi;
+      subtask2 = await eventService.saveTask(subtask2);
+
+      let subtask3: TaskData = {} as TaskData;
+      subtask3.evn = "测试";
+      subtask3.evd = "2019/06/01";
+      subtask3.rtevi = task.evi;
+      subtask3 = await eventService.saveTask(subtask3);
+    });
+
+    it(`Case 1 - 1 fetchPagedTasks 获取翻页任务 - 初始化`, async () => {
+      let pagetasks = await eventService.fetchPagedTasks();
+
+      expect(pagetasks).toBeDefined();
+      expect(pagetasks.length).toBeGreaterThan(0);
+
     });
   });
 
