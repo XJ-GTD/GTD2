@@ -19,8 +19,7 @@ import {DataConfig} from "../config/data.config";
 import {BTbl} from "../sqlite/tbl/b.tbl";
 import {FjTbl} from "../sqlite/tbl/fj.tbl";
 import {DataRestful, PullInData, PushInData, SyncData} from "../restful/datasev";
-import {SyncType, DelType, SyncDataStatus} from "../../data.enum";
-import {SyncDataSecurity} from "../../data.enum";
+import {SyncType, DelType, SyncDataStatus, PageDirection, SyncDataSecurity} from "../../data.enum";
 
 @Injectable()
 export class EventService extends BaseService {
