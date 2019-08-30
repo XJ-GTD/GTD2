@@ -12,6 +12,8 @@ import {EmitService} from "../../service/util-service/emit.service";
 import {DataConfig} from "../../service/config/data.config";
 import {FeedbackService} from "../../service/cordova/feedback.service";
 import {TaskListComponent} from "../../components/task-list/task-list";
+import {EventService} from "../../service/business/event.service";
+import { PageDirection } from "../../data.enum";
 
 /**
  * Generated class for the 待处理/已处理任务一览 page.
@@ -35,7 +37,9 @@ import {TaskListComponent} from "../../components/task-list/task-list";
     </ion-header>
 
     <ion-content padding>
-      <task-list (onStartLoad)="getData($event, day)" (onCardClick)="gotoDetail($event)" (onCreateNew)="goNew()" #tasklist></task-list>
+      <ng-container *ngFor="let day of days">
+        <task-list (onStartLoad)="getData($event, day)" (onCardClick)="gotoDetail($event)" (onCreateNew)="goNew()" #tasklist></task-list>
+      </ng-container>
     </ion-content>
     `
 })
@@ -45,6 +49,8 @@ export class DoPage {
   tasklist: TaskListComponent;
   @ViewChildren("tasklist") tasklists: QueryList<TaskListComponent>;
 
+  days: Array<string> = new Array<string>();
+
   constructor(public navCtrl: NavController,
               public navParams: NavParams,
               private modalCtr: ModalController,
@@ -52,13 +58,37 @@ export class DoPage {
               private doService: DoService,
               private util: UtilService,
               private feedback: FeedbackService,
+              privaate eventService: EventService,
               private sqlite:SqliteExec) {
     moment.locale('zh-cn');
-
+    days.push(moment().format("YYYY/MM/DD"));
   }
 
   ionViewDidLoad() {
   }
+
+  getData(target: any, day: string) {
+    let direction: PageDirection = PageDirection.PageInit;
+
+    if (moment().diff(day) > 0) {
+      direction = PageDirection.PageDown;
+    }
+
+    if (moment().diff(day) < 0) {
+      direction = PageDirection.PageUp;
+    }
+
+    eventService.fetchPagedTasks(day, direction)
+    .then((d) => {
+      target.tasklist = d;
+    });
+  }
+
+  gotoDetail(target: any) {
+
+  }
+
+  goNew() {}
 
   goBack() {
     this.navCtrl.pop();
