@@ -471,3 +471,7 @@ export class Parter {
   bhi: string   = "" ; //头像表ID 用于判断是否有头像记录
   bhiu:string  = "" ;//base64图片
 }
+
+export class TxJson {
+  type: string="";
+}

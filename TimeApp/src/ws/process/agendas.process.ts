@@ -92,7 +92,7 @@ export class AgendasProcess extends BaseProcess implements MQProcess,OptProcess{
       }
 
       for (let f of  fs){
-        rcIn.fss.push(f);
+        rcIn.parters.push(f);
       }
 
       if (prvOpt == AG.C){
@@ -101,7 +101,7 @@ export class AgendasProcess extends BaseProcess implements MQProcess,OptProcess{
         console.log("******************agendas do AG.U")
         await this.eventService.saveAgenda(rcIn);
       }else{
-        await this.busiService.YuYinDelRc( rcIn.si, rcIn.sd);
+        await this.busiService.YuYinDelRc( rcIn.evi, rcIn.sd);
       }
     }
     console.log("******************agendas do end")
