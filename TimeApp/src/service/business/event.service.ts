@@ -1643,7 +1643,7 @@ export class EventService extends BaseService {
                               ) page0
                               where page0.cs = '0' and date(replace(page0.evd, '/', '-')) < date(replace(?4, '/', '-'))
                             ) evnext
-                            where evnext.type = ?2 and evnext.del = ?3 and julianday(replace(evnext.day, '/', '-')) < julianday(replace(?, '/', '-'), '+1 days')
+                            where evnext.type = ?2 and evnext.del = ?3 and julianday(replace(evnext.day, '/', '-')) < julianday(replace(?1, '/', '-'), '+1 days')
                             order by sortid
                             limit 5
                           ) evpage
