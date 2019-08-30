@@ -195,15 +195,8 @@ export class TdlPage {
       }
     });
     this.tdlServ.initLsData().then(data => {
-      setTimeout(() => {
-        for(let ss of data){
-          ss.days.forEach((v,k,m)=>{
-            ss.lsdays.push(v);
-          })
-        }
         this.monthActivityDatas = data;
-      },500)
-    })
+    });
   }
 
 
