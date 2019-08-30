@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { IonicPageModule } from 'ionic-angular';
 import { DoPage } from "./do";
 import { DoService } from "./do.service";
-import {CardListComponentModule} from "../../components/card-list/card-list.module";
+import {TaskListComponentModule} from "../../components/task-list/task-list.module";
 
 @NgModule({
   declarations: [
@@ -10,7 +10,7 @@ import {CardListComponentModule} from "../../components/card-list/card-list.modu
   ],
   imports: [
     IonicPageModule.forChild(DoPage),
-    CardListComponentModule
+    TaskListComponentModule
   ],
   providers: [
     DoService

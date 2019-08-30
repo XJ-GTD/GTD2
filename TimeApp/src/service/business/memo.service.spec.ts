@@ -210,7 +210,7 @@ describe('MemoService test suite', () => {
 	    expect(gmom.mon).toBe(mom.mon);
   });
 
-  it('Case 6 - 1   syncMemo 更新已同步备忘标志 - 本地无数据(无报错)', async () => {
+  it('Case 6 - 1   syncMemo 更新已同步备忘标志 - 本地有数据(无报错)', async () => {
   	
   	let mom: MemoData = {} as MemoData;
 	  mom.mon='你们都是大爷';
@@ -220,8 +220,9 @@ describe('MemoService test suite', () => {
 	  await memoService.syncMemo(mom);
     
   });
-
-	it('Case 7 - 1   syncMemos 同步所有未同备忘 - 本地无数据(无报错)', async () => {
+  
+  
+	it('Case 7 - 1   syncMemos 同步所有未同备忘 - 本地有数据(无报错)', async () => {
 		
 		let mom: MemoData = {} as MemoData;
 	  mom.mon='你们都是大爷';
@@ -238,10 +239,23 @@ describe('MemoService test suite', () => {
 	});
 	
 	
+	it('Case 7 - 2   syncMemos 同步所有未同备忘 - 本地无数据(无报错)', (done: DoneFn) => {
+	   memoService.syncMemos()
+    .then(() => {
+      	expect("success").toBe("success");
+     		 done();
+    })
+    .catch(e => {
+      fail("抛出异常, 出错");
+      done();
+    });
+
+	});
+	
+	
 	it(`Case 8 - 1 receivedMemoData 接收备忘数据 - 不删除共享备忘`, async () => {
 		
 		let mom: MemoData = {} as MemoData;
-		mom.moi = util.getUuid();
 	  mom.mon='你们都是大爷';
 	  mom.wtt = moment().unix();
     mom.utt = moment().unix();
@@ -287,27 +301,9 @@ describe('MemoService test suite', () => {
 		
 	});
 	
-	
-	it(`Case 9 - 1 receivedMemo 接收备忘共享请求(无ID报错)`, (done: DoneFn) => {
-    memoService.receivedMemo("")
-    .then(() => {
-     	expect("success").toBe("success");
-      done();
-    })
-    .catch(e => {
-      fail("抛出异常, 出错");
-      done();
-    });
-  });
   
-  it(`Case 9 - 2 receivedMemo 接收备忘共享请求(无报错)`, async (done: DoneFn) => {
-  	let mom: MemoData = {} as MemoData;
-	  mom.mon='你们都是大爷';
-	  mom = await memoService.saveMemo(mom);
-	  expect(mom).toBeDefined();
-	  expect(mom.moi).toBeDefined();
-	  
-    memoService.receivedMemo(mom.moi)
+  it(`Case 9 - 1 receivedMemo 接收备忘共享请求(无报错)`,  (done: DoneFn) => {
+    memoService.receivedMemo(util.getUuid())
     .then(() => {
       	expect("success").toBe("success");
      		 done();
@@ -337,7 +333,24 @@ describe('MemoService test suite', () => {
     });
   });
   
-  
+  it(`Case 11 - 1 shareMemo 分享备忘(无报错)`,  async (done: DoneFn) => {
+  	let mom: MemoData = {} as MemoData;
+	  mom.mon='你们都是大爷';
+	  mom = await memoService.saveMemo(mom);
+	  expect(mom).toBeDefined();
+	  expect(mom.moi).toBeDefined();
+	  expect(mom.del).toBeDefined();
+	  
+    memoService.shareMemo(mom)
+    .then(() => {
+      expect("success").toBe("success");
+     	done();
+    })
+    .catch(e => {
+      fail("抛出异常, 出错");
+      done();
+    });
+  });
   
   afterAll(() => {
     TestBed.resetTestingModule();

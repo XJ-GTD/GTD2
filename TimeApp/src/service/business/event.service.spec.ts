@@ -45,9 +45,9 @@ import {CaTbl} from "../sqlite/tbl/ca.tbl";
 import {TTbl} from "../sqlite/tbl/t.tbl";
 import {WaTbl} from "../sqlite/tbl/wa.tbl";
 import { CalendarService, PlanData } from "./calendar.service";
-import { EventService,TaskData,MiniTaskData} from "./event.service";
+import { EventService, AgendaData, TaskData, MiniTaskData, RtJson} from "./event.service";
 import { MemoService } from "./memo.service";
-import { PlanType,IsCreate,IsSuccess , SyncType, DelType, SyncDataStatus,EventType} from "../../data.enum";
+import { PlanType, IsCreate, IsSuccess, IsWholeday, SyncType, DelType, SyncDataStatus, EventType, OperateType, CycleType, OverType} from "../../data.enum";
 
 /**
  * 事件Service 持续集成CI 自动测试Case
@@ -118,6 +118,8 @@ describe('EventService test suite', () => {
     await init.createTables();
     await init.initData();
     restConfig.init();
+
+    jasmine.DEFAULT_TIMEOUT_INTERVAL = 60 * 1000;  // 每个Case超时时间
   });
 
   beforeEach(async () => {
@@ -256,7 +258,7 @@ describe('EventService test suite', () => {
 
 		let day: string = moment().format('YYYY/MM/DD');
 		let data: Array<TaskData> = new Array<TaskData>();
-		data = await eventService.fetchPagedTasks(day,"");
+		data = await eventService.fetchPagedTasks(day);
 		expect(data).toBeDefined();
 		expect(data.length).toBeGreaterThan(0);
   })
@@ -324,14 +326,14 @@ describe('EventService test suite', () => {
     expect(txx.evn).toBe(tx.evn);
 
 	});
-	
+
 	it(`Case 9 - 1 sendTask 发送任务`,  async (done: DoneFn) => {
   	let tx: TaskData = {} as TaskData;
     tx.evn ="shopping,今天穿的是花裤衩";
     tx = await eventService.saveTask(tx);
     expect(tx).toBeDefined();
     expect(tx.evi).toBeDefined();
-	  
+
     eventService.sendTask(tx)
     .then(() => {
       expect("success").toBe("success");
@@ -342,14 +344,14 @@ describe('EventService test suite', () => {
       done();
     });
   });
-  
+
   it(`Case 10 - 1 sendMiniTask 发送任务`,  async (done: DoneFn) => {
   	let tx: MiniTaskData = {} as MiniTaskData;
     tx.evn ="shopping,今天穿的是花裤衩";
     tx = await eventService.saveMiniTask(tx);
     expect(tx).toBeDefined();
     expect(tx.evi).toBeDefined();
-	  
+
     eventService.sendMiniTask(tx)
     .then(() => {
       expect("success").toBe("success");
@@ -360,20 +362,9 @@ describe('EventService test suite', () => {
       done();
     });
   });
-  
-  it(`Case 11 - 1 receivedTask 接收任务`,   (done: DoneFn) => {	  
-    eventService.receivedTask("")
-    .then(() => {
-      expect("success").toBe("success");
-     	done();
-    })
-    .catch(e => {
-      fail("抛出异常, 出错");
-      done();
-    });
-  });
-  
-  it(`Case 11 - 2 receivedTask 接收任务,有数据`,   (done: DoneFn) => {	  
+
+
+  it(`Case 11 - 2 receivedTask 接收任务,有数据`,   (done: DoneFn) => {
     eventService.receivedTask(util.getUuid())
     .then(() => {
       expect("success").toBe("success");
@@ -384,114 +375,103 @@ describe('EventService test suite', () => {
       done();
     });
   });
-  
-  
-  it(`Case 12 - 1 acceptReceivedTask 接收任务,有数据,不删除共享`,  async () => {	  
+
+
+  it(`Case 12 - 1 acceptReceivedTask 接收任务,有数据,不删除共享`,  async () => {
     	let tx: TaskData = {} as TaskData;
 	    tx.evn ="shopping,今天穿的是花裤衩";
-	    tx.evi = util.getUuid();
 		  tx.wtt = moment().unix();
 	    tx.utt = moment().unix();
 	    tx.tb = SyncType.unsynch;
-	    tx.del = DelType.undel;
-	    tx.type =EventType.Task;
 	    tx = await eventService.saveTask(tx);
 	    expect(tx).toBeDefined();
 	    expect(tx.evi).toBeDefined();
-	    
+
 	    let received = await eventService.acceptReceivedTask(tx,SyncDataStatus.UnDeleted);
-	    
+
 	    expect(received).toBeDefined();
 		  expect(received.evi).toBe(tx.evi);
 		  expect(received.tb).toBe(SyncType.synch);
 	    expect(received.del).toBe(DelType.undel);
-	    
+
 	    let fetched = await eventService.getTask(received.evi);
 	    expect(fetched).toBeDefined();
 		  expect(fetched.evi).toBe(tx.evi);
 		  expect(fetched.tb).toBe(SyncType.synch);
 	    expect(fetched.del).toBe(DelType.undel);
   });
-  
-   it(`Case 12 - 2 acceptReceivedTask 接收任务,有数据,删除共享`,  async () => {	  
+
+   it(`Case 12 - 2 acceptReceivedTask 接收任务,有数据,删除共享`,  async () => {
     	let tx: TaskData = {} as TaskData;
 	    tx.evn ="shopping,今天穿的是花裤衩";
-	    tx.evi = util.getUuid();
 		  tx.wtt = moment().unix();
 	    tx.utt = moment().unix();
-	    tx.tb = SyncType.unsynch;
-	    tx.del = DelType.undel;
-	    tx.type =EventType.Task;
 	    tx = await eventService.saveTask(tx);
 	    expect(tx).toBeDefined();
 	    expect(tx.evi).toBeDefined();
-	    
+
 	    let received = await eventService.acceptReceivedTask(tx,SyncDataStatus.Deleted);
-	    
+
 	    expect(received).toBeDefined();
 		  expect(received.evi).toBe(tx.evi);
 		  expect(received.tb).toBe(SyncType.synch);
 	    expect(received.del).toBe(DelType.del);
-	    
+
 	    let fetched = await eventService.getTask(received.evi);
 	    expect(fetched).toBeNull();
   });
-  
-  
-  it(`Case 13 - 1 acceptReceivedMiniTask 接收小任务,有数据,不删除共享`,  async () => {	  
+
+
+  it(`Case 13 - 1 acceptReceivedMiniTask 接收小任务,有数据,不删除共享`,  async () => {
     	let tx: MiniTaskData = {} as MiniTaskData;
 	    tx.evn ="shopping,今天穿的是花裤衩";
-	    tx.evi = util.getUuid();
 		  tx.wtt = moment().unix();
 	    tx.utt = moment().unix();
 	    tx.tb = SyncType.unsynch;
 	    tx.del = DelType.undel;
-	    tx.type =EventType.MiniTask;
 	    tx = await eventService.saveMiniTask(tx);
 	    expect(tx).toBeDefined();
 	    expect(tx.evi).toBeDefined();
-	    
+
 	    let received = await eventService.acceptReceivedMiniTask(tx,SyncDataStatus.UnDeleted);
-	    
+
 	    expect(received).toBeDefined();
 		  expect(received.evi).toBe(tx.evi);
 		  expect(received.tb).toBe(SyncType.synch);
 	    expect(received.del).toBe(DelType.undel);
-	    
+
 	    let fetched = await eventService.getMiniTask(received.evi);
 	    expect(fetched).toBeDefined();
 		  expect(fetched.evi).toBe(tx.evi);
 		  expect(fetched.tb).toBe(SyncType.synch);
 	    expect(fetched.del).toBe(DelType.undel);
   });
-	
-	it(`Case 13 - 2 acceptReceivedMiniTask 接收小任务,有数据,删除共享`,  async () => {	  
+
+	it(`Case 13 - 2 acceptReceivedMiniTask 接收小任务,有数据,删除共享`,  async () => {
     	let tx: MiniTaskData = {} as MiniTaskData;
 	    tx.evn ="shopping,今天穿的是花裤衩";
-	    tx.evi = util.getUuid();
 		  tx.wtt = moment().unix();
 	    tx.utt = moment().unix();
 	    tx.tb = SyncType.unsynch;
 	    tx.del = DelType.undel;
-	    tx.type =EventType.MiniTask;
 	    tx = await eventService.saveMiniTask(tx);
 	    expect(tx).toBeDefined();
 	    expect(tx.evi).toBeDefined();
-	    
+
 	    let received = await eventService.acceptReceivedMiniTask(tx,SyncDataStatus.Deleted);
-	    
+
 	    expect(received).toBeDefined();
 		  expect(received.evi).toBe(tx.evi);
 		  expect(received.tb).toBe(SyncType.synch);
 	    expect(received.del).toBe(DelType.del);
-	    
+
 	    let fetched = await eventService.getMiniTask(received.evi);
 	    expect(fetched).toBeNull();
   });
-  
-  
+
+
   it('Case 14 - 1   syncTask 更新单个任务到服务器 ', async () => {
-  	
+
   	let tx: TaskData = {} as TaskData;
     tx.evn ="shopping,今天穿的是花裤衩";
     tx.type =EventType.Task;
@@ -499,13 +479,13 @@ describe('EventService test suite', () => {
     tx = await eventService.saveTask(tx);
     expect(tx).toBeDefined();
     expect(tx.evi).toBeDefined();
-    
+
     await eventService.syncTask(tx);
-    
+
   });
-  
+
   it('Case 15 - 1   syncMiniTask 更新单个小任务到服务器 ', async () => {
-  	
+
   	let tx: MiniTaskData = {} as MiniTaskData;
     tx.evn ="shopping,今天穿的是花裤衩";
     tx.type =EventType.MiniTask;
@@ -513,13 +493,13 @@ describe('EventService test suite', () => {
     tx = await eventService.saveMiniTask(tx);
     expect(tx).toBeDefined();
     expect(tx.evi).toBeDefined();
-    
+
     await eventService.syncMiniTask(tx);
-    
+
   });
-  
-  it('Case 16 - 1   syncTasks 同步全部的未同步的任务到服务器 ', async () => {
-  	
+
+  it('Case 16 - 1   syncTasks 同步全部的未同步的任务到服务器 ，本地有数据（不报错）', async () => {
+
   	let tx: TaskData = {} as TaskData;
     tx.evn ="shopping,今天穿的是花裤衩";
     tx.type =EventType.Task;
@@ -527,13 +507,27 @@ describe('EventService test suite', () => {
     tx = await eventService.saveTask(tx);
     expect(tx).toBeDefined();
     expect(tx.evi).toBeDefined();
-    
+
     await eventService.syncTasks();
-    
+
   });
-  
-  it('Case 17 - 1   syncMiniTasks 同步全部的未同步的小任务到服务器 ', async () => {
-  	
+
+  it('Case 16 - 2   syncTasks 同步全部的未同步的任务到服务器  ，本地无数据（不报错）', (done: DoneFn) => {
+    eventService.syncTasks()
+    .then(() => {
+      expect("success").toBe("success");
+     	done();
+    })
+    .catch(e => {
+      fail("抛出异常, 出错");
+      done();
+    });
+
+  });
+
+
+  it('Case 17 - 1   syncMiniTasks 同步全部的未同步的小任务到服务器，本地有数据（不报错） ', async () => {
+
   	let tx: MiniTaskData = {} as MiniTaskData;
     tx.evn ="shopping,今天穿的是花裤衩";
     tx.type =EventType.MiniTask;
@@ -541,12 +535,182 @@ describe('EventService test suite', () => {
     tx = await eventService.saveMiniTask(tx);
     expect(tx).toBeDefined();
     expect(tx.evi).toBeDefined();
-    
+
     await eventService.syncMiniTasks();
-    
+
   });
-	
-	
+
+  it('Case 17 - 2   syncMiniTasks 同步全部的未同步的小任务到服务器 ，本地无数据（不报错）', (done: DoneFn) => {
+    eventService.syncMiniTasks()
+    .then(() => {
+      expect("success").toBe("success");
+     	done();
+    })
+    .catch(e => {
+      fail("抛出异常, 出错");
+      done();
+    });
+
+  });
+
+  describe(`创建不重复与重复（每天、每周、每月、每年）日程`, () => {
+    let dayNoneRepeat: string = moment().format("YYYY/MM/DD");
+    let dayDayRepeat: string = moment().add(1, "weeks").format("YYYY/MM/DD");
+    let dayWeekRepeat: string = moment().add(1, "months").format("YYYY/MM/DD");
+    let dayMonthRepeat: string = moment().add(1, "years").format("YYYY/MM/DD");
+    let dayYearRepeat: string = moment().add(2, "years").format("YYYY/MM/DD");
+    let dayNoneRepeatAgendas: Array<AgendaData>;
+    let dayDayRepeatAgendas: Array<AgendaData>;
+    let dayWeekRepeatAgendas: Array<AgendaData>;
+    let dayMonthRepeatAgendas: Array<AgendaData>;
+    let dayYearRepeatAgendas: Array<AgendaData>;
+
+    beforeEach(async () => {
+      // 创建不重复日程
+      let noneRepeat: AgendaData = {} as AgendaData;
+
+      noneRepeat.sd = dayNoneRepeat;
+      noneRepeat.evn = "不重复";
+
+      dayNoneRepeatAgendas = await eventService.saveAgenda(noneRepeat);
+
+      // 创建每天重复日程
+      let dayRepeat: AgendaData = {} as AgendaData;
+
+      let dayRepeatrt: RtJson = new RtJson();
+      dayRepeatrt.cycletype = CycleType.day;
+      dayRepeatrt.over.type = OverType.fornever;
+
+      dayRepeat.sd = dayDayRepeat;
+      dayRepeat.evn = "每天重复";
+      dayRepeat.rtjson = dayRepeatrt;
+
+      dayDayRepeatAgendas = await eventService.saveAgenda(dayRepeat);
+
+      // 创建每周重复日程
+      let weekRepeat: AgendaData = {} as AgendaData;
+
+      let weekRepeatrt: RtJson = new RtJson();
+      weekRepeatrt.cycletype = CycleType.week;
+      weekRepeatrt.over.type = OverType.fornever;
+
+      weekRepeat.sd = dayWeekRepeat;
+      weekRepeat.evn = "每周重复";
+      weekRepeat.rtjson = weekRepeatrt;
+
+      dayWeekRepeatAgendas = await eventService.saveAgenda(weekRepeat);
+
+      // 创建每月重复日程
+      let monthRepeat: AgendaData = {} as AgendaData;
+
+      let monthRepeatrt: RtJson = new RtJson();
+      monthRepeatrt.cycletype = CycleType.month;
+      monthRepeatrt.over.type = OverType.fornever;
+
+      monthRepeat.sd = dayMonthRepeat;
+      monthRepeat.evn = "每月重复";
+      monthRepeat.rtjson = monthRepeatrt;
+
+      dayMonthRepeatAgendas = await eventService.saveAgenda(monthRepeat);
+
+      // 创建每年重复日程
+      let yearRepeat: AgendaData = {} as AgendaData;
+
+      let yearRepeatrt: RtJson = new RtJson();
+      yearRepeatrt.cycletype = CycleType.month;
+      yearRepeatrt.over.type = OverType.fornever;
+
+      yearRepeat.sd = dayYearRepeat;
+      yearRepeat.evn = "每年重复";
+      yearRepeat.rtjson = yearRepeatrt;
+
+      dayYearRepeatAgendas = await eventService.saveAgenda(yearRepeat);
+
+    });
+
+    it(`Case 1 - 1 isAgendaChanged 判断日程是否已被修改 - 未修改`, async () => {
+      let agenda = dayNoneRepeatAgendas[0];
+      let agenda1 = await eventService.getAgenda(agenda.evi);
+
+      let isChanged = eventService.isAgendaChanged(agenda1, agenda);
+
+      expect(isChanged).toBe(false);
+    });
+
+    it(`Case 2 - 1 receivedAgenda 接收共享日程 - 无报错`, async (done: DoneFn) => {
+      eventService.receivedAgenda("agenda id")
+      .then(() => {
+        expect("success").toBe("success");
+        done();
+      })
+      .catch(e => {
+        fail("抛出异常, 出错");
+        done();
+      });
+    });
+
+    it(`Case 3 - 1 removeAgenda 删除重复日程 - 第一个日程开始删除`, async () => {
+      let agenda = dayDayRepeatAgendas[0];
+
+      await eventService.removeAgenda(agenda, OperateType.FromSel);
+
+      let agenda1 = await eventService.getAgenda(agenda.evi);
+
+      expect(agenda1).toBeNull();
+    });
+
+    it(`Case 3 - 2 removeAgenda 删除重复日程 - 第二个日程开始删除`, async () => {
+      let agenda0 = dayDayRepeatAgendas[0];
+      let agenda = dayDayRepeatAgendas[1];
+
+      await eventService.removeAgenda(agenda, OperateType.FromSel);
+
+      let hasagenda = await eventService.getAgenda(agenda0.evi);
+
+      expect(hasagenda).toBeDefined();
+
+      let agenda1 = await eventService.getAgenda(agenda.evi);
+
+      expect(agenda1).toBeNull();
+    });
+  });
+
+  describe(`创建任务`, () => {
+    beforeEach(async () => {
+      //创建任务
+      let task: TaskData = {} as TaskData;
+      task.evn = "冥王星三期";
+      task.evd = "2019/06/01";
+      task = await eventService.saveTask(task);
+
+      let subtask1: TaskData = {} as TaskData;
+      subtask1.evn = "设计";
+      subtask1.evd = "2019/06/01";
+      subtask1.rtevi = task.evi;
+      subtask1 = await eventService.saveTask(subtask1);
+
+      let subtask2: TaskData = {} as TaskData;
+      subtask2.evn = "开发";
+      subtask2.evd = "2019/06/01";
+      subtask2.rtevi = task.evi;
+      subtask2 = await eventService.saveTask(subtask2);
+
+      let subtask3: TaskData = {} as TaskData;
+      subtask3.evn = "测试";
+      subtask3.evd = "2019/06/01";
+      subtask3.rtevi = task.evi;
+      subtask3 = await eventService.saveTask(subtask3);
+    });
+
+    it(`Case 1 - 1 fetchPagedTasks 获取翻页任务 - 初始化`, async () => {
+      let pagetasks = await eventService.fetchPagedTasks();
+
+      expect(pagetasks).toBeDefined();
+      expect(pagetasks.length).toBeGreaterThan(0);
+
+    });
+  });
+
   afterAll(() => {
     TestBed.resetTestingModule();
   });

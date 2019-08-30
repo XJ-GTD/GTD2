@@ -19,8 +19,7 @@ import {DataConfig} from "../config/data.config";
 import {BTbl} from "../sqlite/tbl/b.tbl";
 import {FjTbl} from "../sqlite/tbl/fj.tbl";
 import {DataRestful, PullInData, PushInData, SyncData} from "../restful/datasev";
-import {SyncType, DelType, SyncDataStatus} from "../../data.enum";
-import {SyncDataSecurity} from "../../data.enum";
+import {SyncType, DelType, SyncDataStatus, PageDirection, SyncDataSecurity} from "../../data.enum";
 
 @Injectable()
 export class EventService extends BaseService {
@@ -36,7 +35,7 @@ export class EventService extends BaseService {
    *
    * @author leon_xi@163.com
    **/
-  async receivedAgend(evi: string) {
+  async receivedAgenda(evi: string) {
 
     this.assertEmpty(evi);   // 入参不能为空
 
@@ -55,7 +54,7 @@ export class EventService extends BaseService {
    *
    * @author leon_xi@163.com
    **/
-  async syncPrivateAgdent(uploadAgdData: UploadAgdData) {
+  async syncAgenda(uploadAgdData: UploadAgdData) {
 
     this.assertEmpty(uploadAgdData);       // 入参不能为空
 
@@ -99,7 +98,7 @@ export class EventService extends BaseService {
    * @param {AgendaData} oldAgd
    * @returns {boolean}
    */
-  isAgdChanged(newAgd : AgendaData ,oldAgd : AgendaData): boolean{
+  isAgendaChanged(newAgd : AgendaData ,oldAgd : AgendaData): boolean{
     //重复选项发生变化
     if (newAgd.rtjson.cycletype != oldAgd.rtjson.cycletype){
       return true;
@@ -107,9 +106,13 @@ export class EventService extends BaseService {
     if (newAgd.rtjson.cyclenum != oldAgd.rtjson.cyclenum){
       return true;
     }
-    if (newAgd.rtjson.openway != oldAgd.rtjson.openway){
+    if (!newAgd.rtjson.openway != !oldAgd.rtjson.openway){
       return true;
     }
+    if (newAgd.rtjson.openway.length != oldAgd.rtjson.openway.length){
+      return true;
+    }
+    // TODO:判断newAgd.rtjson.openway每个值是否相同
     if (newAgd.rtjson.over.type != oldAgd.rtjson.over.type){
       return true;
     }
@@ -148,11 +151,18 @@ export class EventService extends BaseService {
    */
   async getAgenda(evi : string):Promise<AgendaData>{
 
+    this.assertEmpty(evi);    // 入参不能为空
+
     let agdata = {} as AgendaData;
     //获取事件详情
-    let ev = new EvTbl();
-    ev.evi = evi;
-    ev = await this.sqlExce.getOneByParam<EvTbl>(ev);
+    let sql: string = `select * from gtd_ev where evi = ? and del = ?`;
+    let ev: EvTbl = await this.sqlExce.getExtOneByParam<EvTbl>(sql, [evi, DelType.undel]);
+
+    // 如果事件不存在
+    if (!ev) {
+      return null;
+    }
+
     Object.assign(agdata , ev);
     agdata.rtjson = JSON.parse(agdata.rt);
     agdata.txjson = JSON.parse(agdata.tx);
@@ -1272,58 +1282,58 @@ export class EventService extends BaseService {
 	 * 创建更新任务
 	 * @author ying<343253410@qq.com>
 	 */
-  async saveTask(tx: TaskData): Promise <TaskData> {
-		this.assertEmpty(tx); // 对象不能为空
-		this.assertEmpty(tx.evn); // 事件主题不能为空
+  async saveTask(task: TaskData): Promise <TaskData> {
+		this.assertEmpty(task); // 对象不能为空
+		this.assertEmpty(task.evn); // 事件主题不能为空
 		let evi: string ="";
-		if(tx.evi) {
-			evi = tx.evi;
+		if(task.evi) {
+			evi = task.evi;
 			//更新任务事件
 			let evdb: EvTbl = new EvTbl();
-			tx.mi = UserConfig.account.id; //更新者
-			Object.assign(evdb, tx);
+			task.mi = UserConfig.account.id; //更新者
+			Object.assign(evdb, task);
 		  await this.sqlExce.updateByParam(evdb);
 		  let ttdb: TTbl = new TTbl();
-		  Object.assign(ttdb, tx);
+		  Object.assign(ttdb, task);
 			await this.sqlExce.updateByParam(ttdb);
 		} else {
 			//创建事件
-			tx.evi = this.util.getUuid();
-			evi = tx.evi;
-			tx.ui = UserConfig.account.id;
-			tx.type = anyenum.EventType.Task;
-			tx.evd = tx.evd || moment().format('YYYY/MM/DD');
-			tx.gs = anyenum.GsType.self;
-			tx.tb = anyenum.SyncType.unsynch;
-			tx.del = anyenum.DelType.undel;
+			task.evi = this.util.getUuid();
+			evi = task.evi;
+			task.ui = UserConfig.account.id;
+			task.type = anyenum.EventType.Task;
+			task.evd = task.evd || moment().format('YYYY/MM/DD');
+			task.gs = anyenum.GsType.self;
+			task.tb = anyenum.SyncType.unsynch;
+			task.del = anyenum.DelType.undel;
 			let evdb: EvTbl = new EvTbl();
-			Object.assign(evdb, tx);
+			Object.assign(evdb, task);
 			await this.sqlExce.saveByParam(evdb);
 			//创建任务
 			let ttdb: TTbl = new TTbl();
-			tx.cs = anyenum.IsSuccess.wait;
-			tx.isrt = tx.isrt || anyenum.IsCreate.isNo;
-			Object.assign(ttdb, tx);
+			task.cs = anyenum.IsSuccess.wait;
+			task.isrt = task.isrt || anyenum.IsCreate.isNo;
+			Object.assign(ttdb, task);
 			await this.sqlExce.saveByParam(ttdb);
 		}
 
-    this.emitService.emit("mwxing.calendar.activities.changed", tx);
+    this.emitService.emit("mwxing.calendar.activities.changed", task);
 
-		return tx;
+		return task;
   }
 
 	/**
 	 * 根据事件ID获取任务
+	  @author ying<343253410@qq.com>
 	 */
 	async getTask(evi: string): Promise<TaskData> {
 			this.assertEmpty(evi); // id不能为空
-			let txx: TaskData = {} as TaskData;
+			let task: TaskData = {} as TaskData;
 			let params= Array<any>();
 			let sqlparam: string =`select ev.*,td.cs,td.isrt,td.cd,td.fd from gtd_ev  ev left join gtd_t  td on ev.evi = td.evi where ev.evi ='${evi}' and  ev.del ='undel'`;
 			console.info("执行的SQL"+sqlparam);
-			txx = await this.sqlExce.getExtOneByParam<TaskData>(sqlparam,params);
-			console.info("执行的结果"+txx.evi);
-  		return txx;
+			task = await this.sqlExce.getExtOneByParam<TaskData>(sqlparam,params);
+  		return task;
 	}
 
   /**
@@ -1355,12 +1365,15 @@ export class EventService extends BaseService {
 		return minitask;
   }
 
+	/**
+	 *  获取小任务
+	 * @author ying<343253410@qq.com>
+	 */
 	async getMiniTask(evi: string): Promise<MiniTaskData> {
 			this.assertEmpty(evi); // id不能为空
-			let evdb: EvTbl = new EvTbl();
-			evdb.evi = evi;
-			evdb.del = anyenum.DelType.undel;
-			let evdbnew = await this.sqlExce.getOneByParam<EvTbl>(evdb);
+			let params= Array<any>();
+			let sqlparam: string =`select * from gtd_ev where evi = '${evi}' and  del ='undel'`;
+			let evdbnew = await this.sqlExce.getExtOneByParam<TaskData>(sqlparam,params);
   		if (evdbnew && evdbnew.evi) {
 				let ev: MiniTaskData = {} as MiniTaskData;
 				Object.assign(ev, evdbnew);
@@ -1397,39 +1410,28 @@ export class EventService extends BaseService {
    */
   async finishTaskNext(evi: string) :Promise <TaskData> {
   	this.assertEmpty(evi);
-  	let txx: TaskData = {} as TaskData;
-  	txx = await this.getTask(evi);
-  	let txx2: TaskData = {} as TaskData;
-		if (txx.isrt == anyenum.IsCreate.isYes) {
+  	let task: TaskData = {} as TaskData;
+  	task = await this.getTask(evi);
+  	let task2: TaskData = null;
+		if (task.isrt == anyenum.IsCreate.isYes) {
 			//创建新的任务事件
-			let tx:TaskData = {} as TaskData;
-			Object.assign(tx, txx);
-			if(!tx.rtevi) {
-					tx.rtevi = evi;
+			let task3:TaskData = {} as TaskData;
+			Object.assign(task3, task);
+			if(!task3.rtevi) {
+					task3.rtevi = evi;
 			}
-			tx.evi = "";
-			tx.evd = moment().format('YYYY/MM/DD');
-			tx.cs = anyenum.IsSuccess.wait;
-			tx.isrt = anyenum.IsCreate.isYes;
-			txx2 = await this.saveTask(tx);
+			task3.evi = "";
+			task3.evd = moment().format('YYYY/MM/DD');
+			task3.cs = anyenum.IsSuccess.wait;
+			task3.isrt = anyenum.IsCreate.isYes;
+			task2 = await this.saveTask(task3);
 		}
-		return txx2;
-  }
-	 /**
-   * 根据evi获取复制的任务
-   */
-  async getTaskNext(evi: string): Promise <TaskData> {
-  	this.assertEmpty(evi);
-  	let evdb: EvTbl = new EvTbl();
-		evdb.rtevi = evi;
-		let evdbNew = await this.sqlExce.getOneByParam<EvTbl>(evdb);
-		let tx: TaskData = {} as TaskData;
-		Object.assign(tx, evdbNew);
-		return tx;
+		return task2;
   }
 
 	/**
 	 * 发送任务进行共享
+	 * @author ying<343253410@qq.com>
 	 */
   async sendTask(tt: TaskData) {
   	this.assertEmpty(tt);
@@ -1440,6 +1442,7 @@ export class EventService extends BaseService {
 
   /**
    * 发送小任务进行共享
+   * @author ying<343253410@qq.com>
    */
   async sendMiniTask(tt: MiniTaskData) {
   	this.assertEmpty(tt);
@@ -1451,6 +1454,7 @@ export class EventService extends BaseService {
 
   /**
    * 接收任务
+   * @author ying<343253410@qq.com>
    */
   async receivedTask(evi: string) {
   	this.assertEmpty(evi);   // 入参不能为空
@@ -1462,6 +1466,7 @@ export class EventService extends BaseService {
 
   /**
    * 接收任务保存到本地
+   * @author ying<343253410@qq.com>
    */
   async acceptReceivedTask(tt: TaskData,status: SyncDataStatus): Promise<TaskData> {
   	this.assertEmpty(tt);     // 入参不能为空
@@ -1481,6 +1486,7 @@ export class EventService extends BaseService {
 
   /**
    * 接收小任务保存到本地
+   * @author ying<343253410@qq.com>
    */
   async acceptReceivedMiniTask(tt: MiniTaskData,status: SyncDataStatus): Promise<MiniTaskData> {
   	this.assertEmpty(tt);     // 入参不能为空
@@ -1502,6 +1508,7 @@ export class EventService extends BaseService {
 
   /**
    * 同步任务到服务器
+   * @author ying<343253410@qq.com>
    */
   async syncTask(tt: TaskData) {
 
@@ -1524,6 +1531,7 @@ export class EventService extends BaseService {
 
   /**
    * 同步小任务到服务器
+   * @author ying<343253410@qq.com>
    */
   async syncMiniTask(tt: MiniTaskData) {
   	this.assertEmpty(tt);       // 入参不能为空
@@ -1544,14 +1552,15 @@ export class EventService extends BaseService {
 
   /**
    * 同步全部的未同步的任务到服务器
+   * @author ying<343253410@qq.com>
    */
   async syncTasks() {
   	let sql: string = `select * from gtd_ev where type = ? and   tb = ?`;
-		let unsyncedplans = await this.sqlExce.getExtLstByParam<TaskData>(sql, [anyenum.EventType.Task, SyncType.unsynch]);
+		let unsyncedtasks = await this.sqlExce.getExtLstByParam<TaskData>(sql, [anyenum.EventType.Task, SyncType.unsynch]);
 		//当存在未同步的情况下,进行同步
-		if (unsyncedplans && unsyncedplans.length > 0) {
+		if (unsyncedtasks && unsyncedtasks.length > 0) {
 			 let push: PushInData = new PushInData();
-			 for (let tt of unsyncedplans) {
+			 for (let tt of unsyncedtasks) {
 			 	 	let sync: SyncData = new SyncData();
 			 	 	sync.id = tt.evi;
 			    sync.type = "Task";
@@ -1567,14 +1576,15 @@ export class EventService extends BaseService {
 
   /**
    * 同步全部的未同步的小任务到服务器
+   * @author ying<343253410@qq.com>
    */
   async syncMiniTasks() {
   	let sql: string = `select * from gtd_ev where type = ? and   tb = ?`;
-		let unsyncedplans = await this.sqlExce.getExtLstByParam<TaskData>(sql, [anyenum.EventType.MiniTask, SyncType.unsynch]);
+		let unsyncedminitasks = await this.sqlExce.getExtLstByParam<TaskData>(sql, [anyenum.EventType.MiniTask, SyncType.unsynch]);
 		//当存在未同步的情况下,进行同步
-		if (unsyncedplans && unsyncedplans.length > 0) {
+		if (unsyncedminitasks && unsyncedminitasks.length > 0) {
 			 let push: PushInData = new PushInData();
-			 for (let tt of unsyncedplans) {
+			 for (let tt of unsyncedminitasks) {
 			 	 	let sync: SyncData = new SyncData();
 			 	 	sync.id = tt.evi;
 			    sync.type = "MiniTask";
@@ -1592,12 +1602,70 @@ export class EventService extends BaseService {
 	 * 根据年月日检索任务  只检索任务,不检索小任务
 	 * @author ying<343253410@qq.com>
 	 */
-  async fetchPagedTasks(day: string = moment().format('YYYY/MM/DD'),evi: string): Promise<Array<TaskData>>{
-  	this.assertEmpty(day); //验证日期是否为空
-  	let sqlparam: string =`select ev.*,td.cs,td.isrt,td.cd,td.fd from gtd_ev  ev left join gtd_t  td on ev.evi = td.evi where 1=1 and ev.type='${anyenum.EventType.Task}' and  ev.evd = '${day}'  ${(evi)? ('and ev.evi>'+evi):''}  limit 10`;
-  	let data: Array<TaskData> = new Array<TaskData>();
-  	data = await this.sqlExce.getExtList<TaskData>(sqlparam);
-  	return data;
+  async fetchPagedTasks(day: string = moment().format('YYYY/MM/DD'), direction: PageDirection = PageDirection.PageInit): Promise<Array<TaskData>>{
+  	this.assertEmpty(day);         // 验证日期是否为空
+    this.assertEmpty(direction);   // 入参不能为空
+
+    let pagetasks: Array<TaskData> = new Array<TaskData>();
+    let top: string = day;
+    let bottom: string = moment(day).add(1, "days").format('YYYY/MM/DD');
+
+    // 下拉刷新时需要减一天
+    if (direction == PageDirection.PageDown) {
+      top = moment(day).subtract(1, "days").format('YYYY/MM/DD');
+    }
+
+    if (direction == PageDirection.PageInit || direction == PageDirection.PageDown) {
+      let sql: string = `select distinct task.*, tt.cs, tt.isrt, tt.cd, tt.fd
+                        from (
+                          select evpage.evd, ev.*
+                          from (
+                            select evnext.evd, julianday(replace(?, '/', '-'), '+1 days') - julianday(replace(evnext.evd, '/', '-')) sortid
+                            from gtd_ev evnext
+                            where evnext.type = ? and evnext.del = ? and julianday(replace(evnext.evd, '/', '-')) < julianday(replace(?, '/', '-'), '+1 days')
+                            order by sortid
+                            limit 5
+                          ) evpage
+                          left join gtd_ev ev
+                          on ev.evd = evpage.evd
+                        ) task
+                        left join gtd_t tt
+                        on tt.evi = task.evi
+                        order by task.evd asc`;
+
+      let data: Array<TaskData> = await this.sqlExce.getExtLstByParam<TaskData>(sql, [top, anyenum.EventType.Task, DelType.undel, top]);
+
+      if (data && data.length > 0) {
+        pagetasks = data;
+      }
+    }
+
+    if (direction == PageDirection.PageInit || direction == PageDirection.PageUp) {
+      let sql: string = `select distinct task.*, tt.cs, tt.isrt, tt.cd, tt.fd
+                        from (
+                          select evpage.evd, ev.*
+                          from (
+                            select evnext.evd, julianday(replace(evnext.evd, '/', '-')) - julianday(replace(?, '/', '-'), '+1 days') sortid
+                            from gtd_ev evnext
+                            where evnext.type = ? and evnext.del = ? and julianday(replace(evnext.evd, '/', '-')) > julianday(replace(?, '/', '-'), '+1 days')
+                            order by sortid
+                            limit 5
+                          ) evpage
+                          left join gtd_ev ev
+                          on ev.evd = evpage.evd
+                        ) task
+                        left join gtd_t tt
+                        on tt.evi = task.evi
+                        order by task.evd asc`;
+
+      let data: Array<TaskData> = await this.sqlExce.getExtLstByParam<TaskData>(sql, [bottom, anyenum.EventType.Task, DelType.undel, bottom]);
+
+      if (data && data.length > 0) {
+        pagetasks = pagetasks.concat(data);
+      }
+    }
+
+  	return pagetasks;
   }
 
   /**
