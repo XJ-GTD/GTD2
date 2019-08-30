@@ -2467,7 +2467,7 @@ export class MonthActivityData {
   events: Array<EventData> = new Array<EventData>();             // 事件
   memos: Array<MemoData> = new Array<MemoData>();               // 备忘
   days: Map<string, DayActivityData> = new Map<string, DayActivityData>();   // 当月每天的活动
-  arraydays：Array<DayActivityData> = new Array<DayActivityData>();
+  arraydays: Array<DayActivityData> = new Array<DayActivityData>();
 }
 
 export class DayActivityData {
