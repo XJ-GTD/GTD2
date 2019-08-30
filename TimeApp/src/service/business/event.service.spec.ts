@@ -708,6 +708,41 @@ describe('EventService test suite', () => {
       subtask1_1.cs = IsSuccess.success;
       subtask1_1 = await eventService.saveTask(subtask1_1);
 
+      let subtask1_1_1: TaskData = {} as TaskData;
+      subtask1_1_1.evn = "画面首页设计";
+      subtask1_1_1.evd = "2019/06/06";
+      subtask1_1_1.rtevi = subtask1_1.evi;
+      subtask1_1_1.cs = IsSuccess.success;
+      subtask1_1_1 = await eventService.saveTask(subtask1_1_1);
+
+      let subtask1_1_2: TaskData = {} as TaskData;
+      subtask1_1_2.evn = "画面待处理一览设计";
+      subtask1_1_2.evd = "2019/06/07";
+      subtask1_1_2.rtevi = subtask1_1.evi;
+      subtask1_1_2.cs = IsSuccess.success;
+      subtask1_1_2 = await eventService.saveTask(subtask1_1_2);
+
+      let subtask1_1_3: TaskData = {} as TaskData;
+      subtask1_1_3.evn = "画面新建任务设计";
+      subtask1_1_3.evd = "2019/06/08";
+      subtask1_1_3.rtevi = subtask1_1.evi;
+      subtask1_1_3.cs = IsSuccess.success;
+      subtask1_1_3 = await eventService.saveTask(subtask1_1_3);
+
+      let subtask1_1_4: TaskData = {} as TaskData;
+      subtask1_1_4.evn = "画面新建日程设计";
+      subtask1_1_4.evd = "2019/06/09";
+      subtask1_1_4.rtevi = subtask1_1.evi;
+      subtask1_1_4.cs = IsSuccess.success;
+      subtask1_1_4 = await eventService.saveTask(subtask1_1_4);
+
+      let subtask1_1_5: TaskData = {} as TaskData;
+      subtask1_1_5.evn = "画面新建日程设计";
+      subtask1_1_5.evd = "2019/06/10";
+      subtask1_1_5.rtevi = subtask1_1.evi;
+      subtask1_1_5.cs = IsSuccess.success;
+      subtask1_1_5 = await eventService.saveTask(subtask1_1_5);
+
       let subtask1_2: TaskData = {} as TaskData;
       subtask1_2.evn = "前端服务设计";
       subtask1_2.evd = "2019/06/06";
