@@ -19,6 +19,7 @@ import {EventService} from "../../service/business/event.service";
 import {MemoService} from "../../service/business/memo.service";
 import {SettingsProvider} from "../../providers/settings/settings";
 import {AipPage} from "../aip/aip";
+import {DoPage} from "../do/do";
 
 /**
  * Generated class for the 首页 page.
@@ -66,7 +67,7 @@ import {AipPage} from "../aip/aip";
             <ion-icon name="contrast"></ion-icon>
           </button>
           <button ion-fab>
-            <ion-icon name="albums"></ion-icon>
+            <ion-icon name="albums" (click)="opentask()"></ion-icon>
           </button>
           <button ion-fab>
             <ion-icon name="contact" (click)="openm()"></ion-icon>
@@ -115,6 +116,10 @@ export class HPage {
               private settings: SettingsProvider) {
     this.hdata = new HData();
     this.settings.getActiveTheme().subscribe(val => this.selectedTheme = val);
+  }
+
+  opentask() {
+    this.modalCtr.create(DoPage).present();
   }
 
   openm() {
