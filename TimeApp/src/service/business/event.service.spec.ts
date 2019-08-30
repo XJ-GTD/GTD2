@@ -700,6 +700,42 @@ describe('EventService test suite', () => {
       subtask3.evd = "2019/06/01";
       subtask3.rtevi = task.evi;
       subtask3 = await eventService.saveTask(subtask3);
+
+      let subtask1_1: TaskData = {} as TaskData;
+      subtask1_1.evn = "画面UI设计";
+      subtask1_1.evd = "2019/06/01";
+      subtask1_1.rtevi = subtask1.evi;
+      subtask1_1 = await eventService.saveTask(subtask1_1);
+
+      let subtask1_2: TaskData = {} as TaskData;
+      subtask1_2.evn = "前端服务设计";
+      subtask1_2.evd = "2019/06/01";
+      subtask1_2.rtevi = subtask1.evi;
+      subtask1_2 = await eventService.saveTask(subtask1_2);
+
+      let subtask1_3: TaskData = {} as TaskData;
+      subtask1_3.evn = "后端云服务设计";
+      subtask1_3.evd = "2019/06/01";
+      subtask1_3.rtevi = subtask1.evi;
+      subtask1_3 = await eventService.saveTask(subtask1_3);
+
+      let subtask2_1: TaskData = {} as TaskData;
+      subtask2_1.evn = "页面UI开发";
+      subtask2_1.evd = "2019/09/01";
+      subtask2_1.rtevi = subtask2.evi;
+      subtask2_1 = await eventService.saveTask(subtask2_1);
+
+      let subtask2_2: TaskData = {} as TaskData;
+      subtask2_2.evn = "后端云服务开发";
+      subtask2_2.evd = "2019/09/11";
+      subtask2_2.rtevi = subtask2.evi;
+      subtask2_2 = await eventService.saveTask(subtask2_2);
+
+      let subtask2_3: TaskData = {} as TaskData;
+      subtask2_3.evn = "前端服务开发";
+      subtask2_3.evd = "2019/08/18";
+      subtask2_3.rtevi = subtask2.evi;
+      subtask2_3 = await eventService.saveTask(subtask2_3);
     });
 
     it(`Case 1 - 1 fetchPagedTasks 获取翻页任务 - 初始化`, async () => {
@@ -707,6 +743,34 @@ describe('EventService test suite', () => {
 
       expect(pagetasks).toBeDefined();
       expect(pagetasks.length).toBeGreaterThan(0);
+
+    });
+
+    it(`Case 1 - 2 fetchPagedTasks 获取翻页任务 - 初始化后下拉翻页`, async () => {
+      let pagetasks = await eventService.fetchPagedTasks();
+
+      expect(pagetasks).toBeDefined();
+      expect(pagetasks.length).toBeGreaterThan(0);
+
+      let topday: string = pagetasks[0].evd;
+      let prevpagetasks = await eventService.fetchPagedTasks(topday, PageDirection.PageDown);
+
+      expect(prevpagetasks).toBeDefined();
+      expect(prevpagetasks.length).toBeGreaterThan(0);
+
+    });
+
+    it(`Case 1 - 3 fetchPagedTasks 获取翻页任务 - 初始化后上拉翻页`, async () => {
+      let pagetasks = await eventService.fetchPagedTasks();
+
+      expect(pagetasks).toBeDefined();
+      expect(pagetasks.length).toBeGreaterThan(0);
+
+      let bottomday: string = pagetasks[pagetasks.length - 1].evd;
+      let prevpagetasks = await eventService.fetchPagedTasks(bottomday, PageDirection.PageUp);
+
+      expect(prevpagetasks).toBeDefined();
+      expect(prevpagetasks.length).toBe(0);
 
     });
   });
