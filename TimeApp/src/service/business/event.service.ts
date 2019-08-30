@@ -1623,7 +1623,7 @@ export class EventService extends BaseService {
                           from (
                             select evnext.day day, julianday(replace(?1, '/', '-'), '+1 days') - julianday(replace(evnext.day, '/', '-')) sortid
                             from (
-                              select page1.evd day, page1.*
+                              select distinct page1.evd day, page1.type, page1.del
                               from (
                                 select ev.*, tt.cs, tt.isrt, tt.cd, tt.fd
                                 from gtd_ev ev
@@ -1631,9 +1631,9 @@ export class EventService extends BaseService {
                                 on tt.evi = ev.evi
                                 where ev.type = ?2
                               ) page1
-                              where page1.cs = '1' or (page1.cs = '0' and date(replace(page1.evd, '/', '-')) >= date(replace(?4, '/', '-')))
+                              where page1.cs = '1' or (page1.cs = '0' and date(replace(page1.evd, '/', '-')) > date(replace(?4, '/', '-')))
                               union all
-                              select ?4 day, page0.*
+                              select distinct ?4 day, page0.type, page0.del
                               from (
                                 select ev.*, tt.cs, tt.isrt, tt.cd, tt.fd
                                 from gtd_ev ev
@@ -1641,7 +1641,7 @@ export class EventService extends BaseService {
                                 on tt.evi = ev.evi
                                 where ev.type = ?2
                               ) page0
-                              where page0.cs = '0' and date(replace(page0.evd, '/', '-')) < date(replace(?4, '/', '-'))
+                              where page0.cs = '0' and date(replace(page0.evd, '/', '-')) <= date(replace(?4, '/', '-'))
                             ) evnext
                             where evnext.type = ?2 and evnext.del = ?3 and julianday(replace(evnext.day, '/', '-')) < julianday(replace(?1, '/', '-'), '+1 days')
                             order by sortid
@@ -1688,7 +1688,7 @@ export class EventService extends BaseService {
                           from (
                             select evnext.day day, julianday(replace(evnext.day, '/', '-')) - julianday(replace(?1, '/', '-'), '+1 days') sortid
                             from (
-                              select page1.evd day, page1.*
+                              select distinct page1.evd day, page1.type, page1.del
                               from (
                                 select ev.*, tt.cs, tt.isrt, tt.cd, tt.fd
                                 from gtd_ev ev
@@ -1698,7 +1698,7 @@ export class EventService extends BaseService {
                               ) page1
                               where page1.cs = '1' or (page1.cs = '0' and date(replace(page1.evd, '/', '-')) >= date(replace(?4, '/', '-')))
                               union all
-                              select ?4 day, page0.*
+                              select distinct ?4 day, page0.type, page0.del
                               from (
                                 select ev.*, tt.cs, tt.isrt, tt.cd, tt.fd
                                 from gtd_ev ev
