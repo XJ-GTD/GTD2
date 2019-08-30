@@ -1603,11 +1603,69 @@ export class EventService extends BaseService {
 	 * 根据年月日检索任务  只检索任务,不检索小任务
 	 * @author ying<343253410@qq.com>
 	 */
-  async fetchPagedTasks(day: string = moment().format('YYYY/MM/DD'),evi: string): Promise<Array<TaskData>>{
-  	this.assertEmpty(day); //验证日期是否为空
-  	let sqlparam: string =`select ev.*,td.cs,td.isrt,td.cd,td.fd from gtd_ev  ev left join gtd_t  td on ev.evi = td.evi where 1=1 and ev.type='${anyenum.EventType.Task}' and  ev.evd = '${day}'  ${(evi)? ('and ev.evi>'+evi):''}  limit 10`;
-  	let data: Array<TaskData> = new Array<TaskData>();
-  	data = await this.sqlExce.getExtList<TaskData>(sqlparam);
+  async fetchPagedTasks(day: string = moment().format('YYYY/MM/DD'), direction: PageDirection = PageDirection.PageInit): Promise<Array<TaskData>>{
+  	this.assertEmpty(day);         // 验证日期是否为空
+    this.assertEmpty(direction);   // 入参不能为空
+
+    let pagetasks: Array<TaskData> = new Array<TaskData>();
+    let top: string = day;
+    let bottom: string = moment(day).add(1, "days").format('YYYY/MM/DD');
+
+    // 下拉刷新时需要减一天
+    if (direction == PageDirection.PageDown) {
+      top = moment(day).subtract(1, "days").format('YYYY/MM/DD');
+    }
+
+    if (direction == PageDirection.PageInit || direction == PageDirection.PageDown) {
+      let sql: string = `select task.*, tt.cs, tt.isrt, tt.cd, tt.fd
+                        from (
+                          select evpage.evd, ev.*
+                          from (
+                            select evnext.evd, julianday(replace(?, '/', '-'), '+1 days') - julianday(replace(evnext.evd, '/', '-')) sortid
+                            from gtd_ev evnext
+                            where evnext.type = ? and evnext.del = ? and julianday(replace(evnext.evd, '/', '-')) < julianday(replace(?, '/', '-'), '+1 days')
+                            order by sortid
+                            limit 5
+                          ) evpage
+                          left join gtd_ev ev
+                          on ev.evd = evpage.evd
+                        ) task
+                        left join gtd_t tt
+                        on tt.evi = task.evi
+                        order by task.evd asc`;
+
+      let data: Array<TaskData> = await this.sqlExce.getExtLstByParam<TaskData>(sql, [top, anyenum.EventType.Task, DelType.undel, top]);
+
+      if (data) {
+        pagetasks = data;
+      }
+    }
+
+    if (direction == PageDirection.PageInit || direction == PageDirection.PageUp) {
+      let sql: string = `select task.*, tt.cs, tt.isrt, tt.cd, tt.fd
+                        from (
+                          select evpage.evd, ev.*
+                          from (
+                            select evnext.evd, julianday(replace(evnext.evd, '/', '-')) - julianday(replace(?, '/', '-'), '+1 days') sortid
+                            from gtd_ev evnext
+                            where evnext.type = ? and evnext.del = ? and julianday(replace(evnext.evd, '/', '-')) > julianday(replace(?, '/', '-'), '+1 days')
+                            order by sortid
+                            limit 5
+                          ) evpage
+                          left join gtd_ev ev
+                          on ev.evd = evpage.evd
+                        ) task
+                        left join gtd_t tt
+                        on tt.evi = task.evi
+                        order by task.evd asc`;
+
+      let data: Array<TaskData> = await this.sqlExce.getExtLstByParam<TaskData>(sql, [bottom, anyenum.EventType.Task, DelType.undel, bottom]);
+
+      if (data) {
+        pagetasks = pagetasks.concat(data);
+      }
+    }
+
   	return data;
   }
 
