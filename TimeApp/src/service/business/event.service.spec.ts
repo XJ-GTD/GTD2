@@ -47,7 +47,7 @@ import {WaTbl} from "../sqlite/tbl/wa.tbl";
 import { CalendarService, PlanData } from "./calendar.service";
 import { EventService, AgendaData, TaskData, MiniTaskData, RtJson} from "./event.service";
 import { MemoService } from "./memo.service";
-import { PlanType, IsCreate, IsSuccess, IsWholeday, SyncType, DelType, SyncDataStatus, EventType, OperateType, CycleType, OverType} from "../../data.enum";
+import { PlanType, IsCreate, IsSuccess, IsWholeday, PageDirection, SyncType, DelType, SyncDataStatus, EventType, OperateType, CycleType, OverType} from "../../data.enum";
 
 /**
  * 事件Service 持续集成CI 自动测试Case
@@ -767,10 +767,10 @@ describe('EventService test suite', () => {
       expect(pagetasks.length).toBeGreaterThan(0);
 
       let bottomday: string = pagetasks[pagetasks.length - 1].evd;
-      let prevpagetasks = await eventService.fetchPagedTasks(bottomday, PageDirection.PageUp);
+      let nextpagetasks = await eventService.fetchPagedTasks(bottomday, PageDirection.PageUp);
 
-      expect(prevpagetasks).toBeDefined();
-      expect(prevpagetasks.length).toBe(0);
+      expect(nextpagetasks).toBeDefined();
+      expect(nextpagetasks.length).toBe(0);
 
     });
   });
