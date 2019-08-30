@@ -675,8 +675,8 @@ describe('EventService test suite', () => {
     });
   });
 
-  describe(`创建任务`, async () => {
-    beforeEach(() => {
+  describe(`创建任务`, () => {
+    beforeEach(async () => {
       //创建任务
       let task: TaskData = {} as TaskData;
       task.evn = "冥王星三期";
