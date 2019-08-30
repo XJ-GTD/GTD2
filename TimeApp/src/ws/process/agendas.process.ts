@@ -83,7 +83,7 @@ export class AgendasProcess extends BaseProcess implements MQProcess,OptProcess{
 //      await this.busiService.YuYinDelRc( rcIn.si, rcIn.sd);
 //    }
 	  //2019-08-30   ying 改版
-	 let rcIn:AgendaData = new AgendaData();
+	 let rcIn:AgendaData = {} as AgendaData();
       rcIn.evn = c.sn;
       rcIn.st = c.st;
       rcIn.sd = c.sd;
