@@ -1311,7 +1311,7 @@ export class EventService extends BaseService {
 			await this.sqlExce.saveByParam(evdb);
 			//创建任务
 			let ttdb: TTbl = new TTbl();
-			task.cs = anyenum.IsSuccess.wait;
+			task.cs = task.cs || anyenum.IsSuccess.wait;
 			task.isrt = task.isrt || anyenum.IsCreate.isNo;
 			Object.assign(ttdb, task);
 			await this.sqlExce.saveByParam(ttdb);
