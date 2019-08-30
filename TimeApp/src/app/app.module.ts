@@ -110,6 +110,7 @@ import {EventService} from "../service/business/event.service";
 import {MemoService} from "../service/business/memo.service";
 import {AipPageModule} from "../pages/aip/aip.module";
 import { SettingsProvider } from '../providers/settings/settings';
+import {CalendarService} from "../service/business/calendar.service";
 
 @NgModule({
   declarations: [
@@ -235,6 +236,7 @@ import { SettingsProvider } from '../providers/settings/settings';
     EventService,
     MemoService,
     SettingsProvider,
+    CalendarService,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     {provide: HAMMER_GESTURE_CONFIG, useClass: HammerDIRECTIONALLConfig}
   ]

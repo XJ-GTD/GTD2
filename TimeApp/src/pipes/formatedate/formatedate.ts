@@ -22,6 +22,9 @@ export class FormatedatePipe implements PipeTransform {
       if (args[0] == "ADD7CYYYY/MM/DD") {
         return moment(value).add(7, "days").format("YYYY年MM月DD日");
       }
+      if (args[0] == "YYYYMMDD") {
+        return moment(value).format("YYYYMMDD");
+      }
 
       if (args[0] == "CYYYY/MM/DD"){
         return moment(value).format("YYYY年MM月DD日");
@@ -32,6 +35,9 @@ export class FormatedatePipe implements PipeTransform {
 
       if (args[0] == "CYYYY/MM"){
         return moment(value).format("YYYY年MM月");
+      }
+      if (args[0] == "CYYYY/MM/ND"){
+        return moment(value+"/01").format("YYYY年MM月");
       }
       if (args[0] == "CWEEK"){
         let d =  moment(value).format("d");
