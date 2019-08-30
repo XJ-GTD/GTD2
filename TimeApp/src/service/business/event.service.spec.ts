@@ -743,6 +743,12 @@ describe('EventService test suite', () => {
       subtask1_1_5.cs = IsSuccess.success;
       subtask1_1_5 = await eventService.saveTask(subtask1_1_5);
 
+      let subtask1_1_6: TaskData = {} as TaskData;
+      subtask1_1_6.evn = "画面新建日历项设计";
+      subtask1_1_6.evd = "2019/08/30";
+      subtask1_1_6.rtevi = subtask1_1.evi;
+      subtask1_1_6 = await eventService.saveTask(subtask1_1_6);
+
       let subtask1_2: TaskData = {} as TaskData;
       subtask1_2.evn = "前端服务设计";
       subtask1_2.evd = "2019/06/06";
