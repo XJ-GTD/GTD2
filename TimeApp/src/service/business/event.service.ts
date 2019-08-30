@@ -1631,9 +1631,10 @@ export class EventService extends BaseService {
                         ) task
                         left join gtd_t tt
                         on tt.evi = task.evi
+                        where tt.cs = ?
                         order by task.evd asc`;
 
-      let data: Array<TaskData> = await this.sqlExce.getExtLstByParam<TaskData>(sql, [top, anyenum.EventType.Task, DelType.undel, top]);
+      let data: Array<TaskData> = await this.sqlExce.getExtLstByParam<TaskData>(sql, [top, anyenum.EventType.Task, DelType.undel, top, anyenum.IsSuccess.success]);
 
       if (data && data.length > 0) {
         pagetasks = data;
@@ -1656,9 +1657,10 @@ export class EventService extends BaseService {
                         ) task
                         left join gtd_t tt
                         on tt.evi = task.evi
+                        where tt.cs = ?
                         order by task.evd asc`;
 
-      let data: Array<TaskData> = await this.sqlExce.getExtLstByParam<TaskData>(sql, [bottom, anyenum.EventType.Task, DelType.undel, bottom]);
+      let data: Array<TaskData> = await this.sqlExce.getExtLstByParam<TaskData>(sql, [bottom, anyenum.EventType.Task, DelType.undel, bottom, anyenum.IsSuccess.success]);
 
       if (data && data.length > 0) {
         pagetasks = pagetasks.concat(data);

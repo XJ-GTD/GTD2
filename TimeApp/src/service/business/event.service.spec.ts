@@ -705,12 +705,14 @@ describe('EventService test suite', () => {
       subtask1_1.evn = "画面UI设计";
       subtask1_1.evd = "2019/06/05";
       subtask1_1.rtevi = subtask1.evi;
+      subtask1_1.cs = IsSuccess.success;
       subtask1_1 = await eventService.saveTask(subtask1_1);
 
       let subtask1_2: TaskData = {} as TaskData;
       subtask1_2.evn = "前端服务设计";
       subtask1_2.evd = "2019/06/06";
       subtask1_2.rtevi = subtask1.evi;
+      subtask1_2.cs = IsSuccess.success;
       subtask1_2 = await eventService.saveTask(subtask1_2);
 
       let subtask1_3: TaskData = {} as TaskData;
@@ -735,6 +737,7 @@ describe('EventService test suite', () => {
       subtask2_3.evn = "前端服务开发";
       subtask2_3.evd = "2019/08/18";
       subtask2_3.rtevi = subtask2.evi;
+      subtask2_3.cs = IsSuccess.success;
       subtask2_3 = await eventService.saveTask(subtask2_3);
     });
 
