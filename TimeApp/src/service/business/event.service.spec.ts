@@ -685,37 +685,37 @@ describe('EventService test suite', () => {
 
       let subtask1: TaskData = {} as TaskData;
       subtask1.evn = "设计";
-      subtask1.evd = "2019/06/01";
+      subtask1.evd = "2019/06/02";
       subtask1.rtevi = task.evi;
       subtask1 = await eventService.saveTask(subtask1);
 
       let subtask2: TaskData = {} as TaskData;
       subtask2.evn = "开发";
-      subtask2.evd = "2019/06/01";
+      subtask2.evd = "2019/06/03";
       subtask2.rtevi = task.evi;
       subtask2 = await eventService.saveTask(subtask2);
 
       let subtask3: TaskData = {} as TaskData;
       subtask3.evn = "测试";
-      subtask3.evd = "2019/06/01";
+      subtask3.evd = "2019/06/04";
       subtask3.rtevi = task.evi;
       subtask3 = await eventService.saveTask(subtask3);
 
       let subtask1_1: TaskData = {} as TaskData;
       subtask1_1.evn = "画面UI设计";
-      subtask1_1.evd = "2019/06/01";
+      subtask1_1.evd = "2019/06/05";
       subtask1_1.rtevi = subtask1.evi;
       subtask1_1 = await eventService.saveTask(subtask1_1);
 
       let subtask1_2: TaskData = {} as TaskData;
       subtask1_2.evn = "前端服务设计";
-      subtask1_2.evd = "2019/06/01";
+      subtask1_2.evd = "2019/06/06";
       subtask1_2.rtevi = subtask1.evi;
       subtask1_2 = await eventService.saveTask(subtask1_2);
 
       let subtask1_3: TaskData = {} as TaskData;
       subtask1_3.evn = "后端云服务设计";
-      subtask1_3.evd = "2019/06/01";
+      subtask1_3.evd = "2019/06/07";
       subtask1_3.rtevi = subtask1.evi;
       subtask1_3 = await eventService.saveTask(subtask1_3);
 
