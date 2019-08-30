@@ -58,7 +58,7 @@ export class DoPage {
               private doService: DoService,
               private util: UtilService,
               private feedback: FeedbackService,
-              privaate eventService: EventService,
+              private eventService: EventService,
               private sqlite:SqliteExec) {
     moment.locale('zh-cn');
     this.days.push(moment().format("YYYY/MM/DD"));
