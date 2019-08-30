@@ -1616,7 +1616,7 @@ export class EventService extends BaseService {
     }
 
     if (direction == PageDirection.PageInit || direction == PageDirection.PageDown) {
-      let sql: string = `select task.*, tt.cs, tt.isrt, tt.cd, tt.fd
+      let sql: string = `select distinct task.*, tt.cs, tt.isrt, tt.cd, tt.fd
                         from (
                           select evpage.evd, ev.*
                           from (
@@ -1641,7 +1641,7 @@ export class EventService extends BaseService {
     }
 
     if (direction == PageDirection.PageInit || direction == PageDirection.PageUp) {
-      let sql: string = `select task.*, tt.cs, tt.isrt, tt.cd, tt.fd
+      let sql: string = `select distinct task.*, tt.cs, tt.isrt, tt.cd, tt.fd
                         from (
                           select evpage.evd, ev.*
                           from (
