@@ -83,7 +83,7 @@ export class AgendasProcess extends BaseProcess implements MQProcess,OptProcess{
 //      await this.busiService.YuYinDelRc( rcIn.si, rcIn.sd);
 //    }
 	  //2019-08-30   ying 改版
-	 let rcIn:AgendaData = {} as AgendaData();
+	 let rcIn: AgendaData = {} as AgendaData;
       rcIn.evn = c.sn;
       rcIn.st = c.st;
       rcIn.sd = c.sd;
@@ -91,9 +91,9 @@ export class AgendasProcess extends BaseProcess implements MQProcess,OptProcess{
         rcIn.evi = c.si;
       }
 
-      for (let f of  fs){
-        rcIn.parters.push(f);
-      }
+      //for (let f of  fs){
+      //  rcIn.parters.push(f);
+      //}
 
       if (prvOpt == AG.C){
         await this.eventService.saveAgenda(rcIn);
