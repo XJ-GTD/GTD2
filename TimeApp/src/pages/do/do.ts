@@ -106,11 +106,11 @@ export class DoPage {
   getData(target: any, day: string) {
     let direction: PageDirection = PageDirection.PageInit;
 
-    if (moment().diff(day) > 0) {
+    if (this.days.length > 1 && this.days.indexOf(day) == (this.days.length - 1)) {
       direction = PageDirection.PageDown;
     }
 
-    if (moment().diff(day) < 0) {
+    if (this.days.length > 1 && this.days.indexOf(day) == 0) {
       direction = PageDirection.PageUp;
     }
 
