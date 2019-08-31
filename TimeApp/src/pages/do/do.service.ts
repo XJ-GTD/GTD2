@@ -8,7 +8,8 @@ import { EventService, TaskData } from "../../service/business/event.service";
 
 @Injectable()
 export class DoService {
-  constructor(private pgservice:PgBusiService,
+  constructor(private pgservice: PgBusiService,
+              private eventService: EventService,
               private assistantService: AssistantService) {
     moment.locale('zh-cn');
     this.createTestDatas();
