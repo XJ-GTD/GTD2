@@ -80,6 +80,7 @@ export class DoPage {
   }
 
   ionViewDidLoad() {
+    this.doService.createTestDatas();
   }
 
   pagedown(target: any) {
