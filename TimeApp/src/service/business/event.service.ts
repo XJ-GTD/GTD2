@@ -1758,7 +1758,6 @@ export class EventService extends BaseService {
     this.assertEmpty(direction);   // 入参不能为空
 
     let pagetasks: Array<TaskData> = new Array<TaskData>();
-    let today: string = moment().format('YYYY/MM/DD');
     let top: string = day;
     let bottom: string = moment(day).add(1, "days").format('YYYY/MM/DD');
 
@@ -1805,7 +1804,7 @@ export class EventService extends BaseService {
                         on tt.evi = task.evi
                         order by task.evd asc`;
 
-      let data: Array<TaskData> = await this.sqlExce.getExtLstByParam<TaskData>(sql, [top, anyenum.EventType.Task, DelType.undel, today]);
+      let data: Array<TaskData> = await this.sqlExce.getExtLstByParam<TaskData>(sql, [top, anyenum.EventType.Task, DelType.undel]);
 
       if (data && data.length > 0) {
         pagetasks = data;
@@ -1850,7 +1849,7 @@ export class EventService extends BaseService {
                         on tt.evi = task.evi
                         order by task.evd asc`;
 
-      let data: Array<TaskData> = await this.sqlExce.getExtLstByParam<TaskData>(sql, [bottom, anyenum.EventType.Task, DelType.undel, today]);
+      let data: Array<TaskData> = await this.sqlExce.getExtLstByParam<TaskData>(sql, [bottom, anyenum.EventType.Task, DelType.undel]);
 
       if (data && data.length > 0) {
         pagetasks = pagetasks.concat(data);
