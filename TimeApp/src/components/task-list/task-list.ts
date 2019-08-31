@@ -11,6 +11,7 @@ import { Component, Output, EventEmitter } from "@angular/core";
           <ng-container *ngFor="let task of tasklist">
           <ion-card (click)="gotoDetail(task)">
             <div class="card-title">{{task.evn}}</div>
+            <div class="card-subtitle">{{task.evd}}</div>
           </ion-card>
           </ng-container>
         </ion-row>
