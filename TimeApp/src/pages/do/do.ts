@@ -84,10 +84,12 @@ export class DoPage {
 
   pagedown(target: any) {
     this.days.unshift(this.topday);
+    target.complete();
   }
 
   pageup(target: any) {
     this.days.push(this.bottomday);
+    target.complete();
   }
 
   getData(target: any, day: string) {
