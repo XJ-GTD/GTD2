@@ -76,13 +76,13 @@ export class DoPage {
               private eventService: EventService,
               private sqlite:SqliteExec) {
     moment.locale('zh-cn');
+  }
+
+  ionViewDidLoad() {
     this.doService.createTestDatas()
     .then(() => {
       this.days.push(moment().format("YYYY/MM/DD"));
     });
-  }
-
-  ionViewDidLoad() {
   }
 
   pagedown(target: any) {
