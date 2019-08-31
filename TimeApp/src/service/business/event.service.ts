@@ -1753,25 +1753,262 @@ export class EventService extends BaseService {
 	 * 检索完成任务
 	 * @author ying<343253410@qq.com>
 	 */
-  async fetchPagedCompletedTasks(day: string = moment().format('YYYY/MM/DD'),evi: string): Promise<Array<TaskData>> {
-  	this.assertEmpty(day); //验证日期是否为空
-  	let sqlparam: string =`select ev.*,td.cs,td.isrt,td.cd,td.fd from gtd_ev ev left join gtd_t  td on ev.evi = td.evi and td.cs='${anyenum.IsSuccess.success}' where 1=1 and ev.type='${anyenum.EventType.Task}' and  ev.evd = '${day}'  ${(evi)? ('and ev.evi>'+evi):''} limit 10`;
-  	let data: Array<TaskData> = new Array<TaskData>();
-  	data = await this.sqlExce.getExtList<TaskData>(sqlparam);
-  	return data;
+  async fetchPagedCompletedTasks(day: string = moment().format('YYYY/MM/DD'), direction: PageDirection = PageDirection.PageInit): Promise<Array<TaskData>> {
+    this.assertEmpty(day);         // 验证日期是否为空
+    this.assertEmpty(direction);   // 入参不能为空
+
+    let pagetasks: Array<TaskData> = new Array<TaskData>();
+    let today: string = moment().format('YYYY/MM/DD');
+    let top: string = day;
+    let bottom: string = moment(day).add(1, "days").format('YYYY/MM/DD');
+
+    // 下拉刷新时需要减一天
+    if (direction == PageDirection.PageDown) {
+      top = moment(day).subtract(1, "days").format('YYYY/MM/DD');
+    }
+
+    if (direction == PageDirection.PageInit || direction == PageDirection.PageDown) {
+      let sql: string = `select distinct task.*, tt.cs, tt.isrt, tt.cd, tt.fd
+                        from (
+                          select evpage.day evd, ev.*
+                          from (
+                            select evnext.day day, julianday(replace(?1, '/', '-'), '+1 days') - julianday(replace(evnext.day, '/', '-')) sortid
+                            from (
+                              select distinct page1.evd day, page1.type, page1.del
+                              from (
+                                select ev.*, tt.cs, tt.isrt, tt.cd, tt.fd
+                                from gtd_ev ev
+                                left join gtd_t tt
+                                on tt.evi = ev.evi
+                                where ev.type = ?2
+                              ) page1
+                              where page1.cs = '1'
+                            ) evnext
+                            where evnext.type = ?2 and evnext.del = ?3 and julianday(replace(evnext.day, '/', '-')) < julianday(replace(?1, '/', '-'), '+1 days')
+                            order by sortid
+                            limit 5
+                          ) evpage
+                          left join (
+                            select page1.evd day, page1.*
+                            from (
+                              select ev.*, tt.cs, tt.isrt, tt.cd, tt.fd
+                              from gtd_ev ev
+                              left join gtd_t tt
+                              on tt.evi = ev.evi
+                              where ev.type = ?2
+                            ) page1
+                            where page1.cs = '1'
+                          ) ev
+                          on ev.day = evpage.day
+                        ) task
+                        left join gtd_t tt
+                        on tt.evi = task.evi
+                        order by task.evd asc`;
+
+      let data: Array<TaskData> = await this.sqlExce.getExtLstByParam<TaskData>(sql, [top, anyenum.EventType.Task, DelType.undel, today]);
+
+      if (data && data.length > 0) {
+        pagetasks = data;
+      }
+    }
+
+    if (direction == PageDirection.PageInit || direction == PageDirection.PageUp) {
+      let sql: string = `select distinct task.*, tt.cs, tt.isrt, tt.cd, tt.fd
+                        from (
+                          select evpage.day evd, ev.*
+                          from (
+                            select evnext.day day, julianday(replace(evnext.day, '/', '-')) - julianday(replace(?1, '/', '-'), '+1 days') sortid
+                            from (
+                              select distinct page1.evd day, page1.type, page1.del
+                              from (
+                                select ev.*, tt.cs, tt.isrt, tt.cd, tt.fd
+                                from gtd_ev ev
+                                left join gtd_t tt
+                                on tt.evi = ev.evi
+                                where ev.type = ?2
+                              ) page1
+                              where page1.cs = '1'
+                            ) evnext
+                            where evnext.type = ?2 and evnext.del = ?3 and julianday(replace(evnext.day, '/', '-')) > julianday(replace(?1, '/', '-'), '+1 days')
+                            order by sortid
+                            limit 5
+                          ) evpage
+                          left join (
+                            select page1.evd day, page1.*
+                            from (
+                              select ev.*, tt.cs, tt.isrt, tt.cd, tt.fd
+                              from gtd_ev ev
+                              left join gtd_t tt
+                              on tt.evi = ev.evi
+                              where ev.type = ?2
+                            ) page1
+                            where page1.cs = '1'
+                          ) ev
+                          on ev.day = evpage.day
+                        ) task
+                        left join gtd_t tt
+                        on tt.evi = task.evi
+                        order by task.evd asc`;
+
+      let data: Array<TaskData> = await this.sqlExce.getExtLstByParam<TaskData>(sql, [bottom, anyenum.EventType.Task, DelType.undel, today]);
+
+      if (data && data.length > 0) {
+        pagetasks = pagetasks.concat(data);
+      }
+    }
+
+  	return pagetasks;
   }
 
   /**
 	 * 检索未完成的任务
 	 * @author ying<343253410@qq.com>
 	 */
-  async fetchPagedUncompletedTasks(day: string = moment().format('YYYY/MM/DD'),evi: string): Promise<Array<TaskData>> {
-  	this.assertEmpty(day); //验证日期是否为空
-  	let sqlparam: string =`select ev.*,td.cs,td.isrt,td.cd,td.fd from gtd_ev  ev left join gtd_t  td on ev.evi = td.evi and td.cs='${anyenum.IsSuccess.wait}' where 1=1 and ev.type='${anyenum.EventType.Task}' and  ev.evd = '${day}'  ${(evi)? ('and ev.evi>'+evi):''} limit 10`;
-  	let data: Array<TaskData> = new Array<TaskData>();
-  	data = await this.sqlExce.getExtList<TaskData>(sqlparam);
-  	return data;
+  async fetchPagedUncompletedTasks(day: string = moment().format('YYYY/MM/DD'), direction: PageDirection = PageDirection.PageInit): Promise<Array<TaskData>> {
+    this.assertEmpty(day);         // 验证日期是否为空
+    this.assertEmpty(direction);   // 入参不能为空
 
+    let pagetasks: Array<TaskData> = new Array<TaskData>();
+    let today: string = moment().format('YYYY/MM/DD');
+    let top: string = day;
+    let bottom: string = moment(day).add(1, "days").format('YYYY/MM/DD');
+
+    // 下拉刷新时需要减一天
+    if (direction == PageDirection.PageDown) {
+      top = moment(day).subtract(1, "days").format('YYYY/MM/DD');
+    }
+
+    if (direction == PageDirection.PageInit || direction == PageDirection.PageDown) {
+      let sql: string = `select distinct task.*, tt.cs, tt.isrt, tt.cd, tt.fd
+                        from (
+                          select evpage.day evd, ev.*
+                          from (
+                            select evnext.day day, julianday(replace(?1, '/', '-'), '+1 days') - julianday(replace(evnext.day, '/', '-')) sortid
+                            from (
+                              select distinct page1.evd day, page1.type, page1.del
+                              from (
+                                select ev.*, tt.cs, tt.isrt, tt.cd, tt.fd
+                                from gtd_ev ev
+                                left join gtd_t tt
+                                on tt.evi = ev.evi
+                                where ev.type = ?2
+                              ) page1
+                              where page1.cs = '0' and date(replace(page1.evd, '/', '-')) > date(replace(?4, '/', '-'))
+                              union all
+                              select distinct ?4 day, page0.type, page0.del
+                              from (
+                                select ev.*, tt.cs, tt.isrt, tt.cd, tt.fd
+                                from gtd_ev ev
+                                left join gtd_t tt
+                                on tt.evi = ev.evi
+                                where ev.type = ?2
+                              ) page0
+                              where page0.cs = '0' and date(replace(page0.evd, '/', '-')) <= date(replace(?4, '/', '-'))
+                            ) evnext
+                            where evnext.type = ?2 and evnext.del = ?3 and julianday(replace(evnext.day, '/', '-')) < julianday(replace(?1, '/', '-'), '+1 days')
+                            order by sortid
+                            limit 5
+                          ) evpage
+                          left join (
+                            select page1.evd day, page1.*
+                            from (
+                              select ev.*, tt.cs, tt.isrt, tt.cd, tt.fd
+                              from gtd_ev ev
+                              left join gtd_t tt
+                              on tt.evi = ev.evi
+                              where ev.type = ?2
+                            ) page1
+                            where page1.cs = '0' and date(replace(page1.evd, '/', '-')) > date(replace(?4, '/', '-'))
+                            union all
+                            select ?4 day, page0.*
+                            from (
+                              select ev.*, tt.cs, tt.isrt, tt.cd, tt.fd
+                              from gtd_ev ev
+                              left join gtd_t tt
+                              on tt.evi = ev.evi
+                              where ev.type = ?2
+                            ) page0
+                            where page0.cs = '0' and date(replace(page0.evd, '/', '-')) <= date(replace(?4, '/', '-'))
+                          ) ev
+                          on ev.day = evpage.day
+                        ) task
+                        left join gtd_t tt
+                        on tt.evi = task.evi
+                        order by task.evd asc`;
+
+      let data: Array<TaskData> = await this.sqlExce.getExtLstByParam<TaskData>(sql, [top, anyenum.EventType.Task, DelType.undel, today]);
+
+      if (data && data.length > 0) {
+        pagetasks = data;
+      }
+    }
+
+    if (direction == PageDirection.PageInit || direction == PageDirection.PageUp) {
+      let sql: string = `select distinct task.*, tt.cs, tt.isrt, tt.cd, tt.fd
+                        from (
+                          select evpage.day evd, ev.*
+                          from (
+                            select evnext.day day, julianday(replace(evnext.day, '/', '-')) - julianday(replace(?1, '/', '-'), '+1 days') sortid
+                            from (
+                              select distinct page1.evd day, page1.type, page1.del
+                              from (
+                                select ev.*, tt.cs, tt.isrt, tt.cd, tt.fd
+                                from gtd_ev ev
+                                left join gtd_t tt
+                                on tt.evi = ev.evi
+                                where ev.type = ?2
+                              ) page1
+                              where page1.cs = '0' and date(replace(page1.evd, '/', '-')) > date(replace(?4, '/', '-'))
+                              union all
+                              select distinct ?4 day, page0.type, page0.del
+                              from (
+                                select ev.*, tt.cs, tt.isrt, tt.cd, tt.fd
+                                from gtd_ev ev
+                                left join gtd_t tt
+                                on tt.evi = ev.evi
+                                where ev.type = ?2
+                              ) page0
+                              where page0.cs = '0' and date(replace(page0.evd, '/', '-')) <= date(replace(?4, '/', '-'))
+                            ) evnext
+                            where evnext.type = ?2 and evnext.del = ?3 and julianday(replace(evnext.day, '/', '-')) > julianday(replace(?1, '/', '-'), '+1 days')
+                            order by sortid
+                            limit 5
+                          ) evpage
+                          left join (
+                            select page1.evd day, page1.*
+                            from (
+                              select ev.*, tt.cs, tt.isrt, tt.cd, tt.fd
+                              from gtd_ev ev
+                              left join gtd_t tt
+                              on tt.evi = ev.evi
+                              where ev.type = ?2
+                            ) page1
+                            where page1.cs = '0' and date(replace(page1.evd, '/', '-')) > date(replace(?4, '/', '-'))
+                            union all
+                            select ?4 day, page0.*
+                            from (
+                              select ev.*, tt.cs, tt.isrt, tt.cd, tt.fd
+                              from gtd_ev ev
+                              left join gtd_t tt
+                              on tt.evi = ev.evi
+                              where ev.type = ?2
+                            ) page0
+                            where page0.cs = '0' and date(replace(page0.evd, '/', '-')) <= date(replace(?4, '/', '-'))
+                          ) ev
+                          on ev.day = evpage.day
+                        ) task
+                        left join gtd_t tt
+                        on tt.evi = task.evi
+                        order by task.evd asc`;
+
+      let data: Array<TaskData> = await this.sqlExce.getExtLstByParam<TaskData>(sql, [bottom, anyenum.EventType.Task, DelType.undel, today]);
+
+      if (data && data.length > 0) {
+        pagetasks = pagetasks.concat(data);
+      }
+    }
+
+  	return pagetasks;
   }
 
   /**
