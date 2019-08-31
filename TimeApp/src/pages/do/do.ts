@@ -83,13 +83,21 @@ export class DoPage {
   }
 
   pagedown(target: any) {
-    this.days.unshift(this.topday);
-    target.complete();
+    if (this.days.indexOf(this.topday) >= 0) {
+      target.cancel();
+    } else {
+      this.days.unshift(this.topday);
+      target.complete();
+    }
   }
 
   pageup(target: any) {
-    this.days.push(this.bottomday);
-    target.complete();
+    if (this.days.indexOf(this.bottomday) >= 0) {
+      target.cancel();
+    } else {
+      this.days.push(this.bottomday);
+      target.complete();
+    }
   }
 
   getData(target: any, day: string) {
