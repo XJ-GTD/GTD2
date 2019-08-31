@@ -37,9 +37,22 @@ import { PageDirection } from "../../data.enum";
     </ion-header>
 
     <ion-content padding>
+      <!-- 下拉PageDown -->
+      <ion-refresher (ionRefresh)="pagedown($event)">
+        <ion-refresher-content pullingIcon="arrow-dropdown"
+                               pullingText="下拉刷新"
+                               refreshingSpinner="circles"
+                               refreshingText="刷新中..."></ion-refresher-content>
+      </ion-refresher>
       <ng-container *ngFor="let day of days">
         <task-list (onStartLoad)="getData($event, day)" (onCardClick)="gotoDetail($event)" (onCreateNew)="goNew()" #tasklist></task-list>
       </ng-container>
+      <!-- 上拉PageUp -->
+      <ion-infinite-scroll (ionInfinite)="pageup($event)"
+                           enabled="true"
+                           threshold="100px">
+        <ion-infinite-scroll-content loadingSpinner="bubbles" loadingText="加载更多"></ion-infinite-scroll-content>
+      </ion-infinite-scroll>
     </ion-content>
     `
 })
@@ -50,6 +63,8 @@ export class DoPage {
   @ViewChildren("tasklist") tasklists: QueryList<TaskListComponent>;
 
   days: Array<string> = new Array<string>();
+  topday: string = moment().format("YYYY/MM/DD");
+  bottomday: string = moment().format("YYYY/MM/DD");
 
   constructor(public navCtrl: NavController,
               public navParams: NavParams,
@@ -67,6 +82,14 @@ export class DoPage {
   ionViewDidLoad() {
   }
 
+  pagedown(target: any) {
+    this.days.unshift(this.topday);
+  }
+
+  pageup(target: any) {
+    this.days.push(this.bottomday);
+  }
+
   getData(target: any, day: string) {
     let direction: PageDirection = PageDirection.PageInit;
 
@@ -80,7 +103,12 @@ export class DoPage {
 
     this.eventService.fetchPagedTasks(day, direction)
     .then((d) => {
-      target.tasklist = d;
+      if (d && d.length > 0) {
+        this.topday = d[0].evd;
+        this.bottomday = d[d.length - 1].evd;
+
+        target.tasklist = d;
+      }
     });
   }
 
