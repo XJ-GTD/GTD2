@@ -107,11 +107,11 @@ export class DoPage {
     let direction: PageDirection = PageDirection.PageInit;
 
     if (this.days.length > 1 && this.days.indexOf(day) == (this.days.length - 1)) {
-      direction = PageDirection.PageDown;
+      direction = PageDirection.PageUp;
     }
 
     if (this.days.length > 1 && this.days.indexOf(day) == 0) {
-      direction = PageDirection.PageUp;
+      direction = PageDirection.PageDown;
     }
 
     this.eventService.fetchPagedTasks(day, direction)
