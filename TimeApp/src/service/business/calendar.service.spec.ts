@@ -4773,8 +4773,8 @@ describe('CalendarService test suite', () => {
     // 增加1个日历项、1个日程(不重复)、1个任务、1个备忘
     monthActivity = calendarService.mergeMonthActivities(monthActivity, activities);
 
-    let startday: string = moment(moment().format("YYYY/MM")).startOf('month').format("YYYY/MM/DD");
-    let endday: string = moment(moment().format("YYYY/MM")).endOf('month').format("YYYY/MM/DD");
+    let startday: string = moment("2019/08").startOf('month').format("YYYY/MM/DD");
+    let endday: string = moment("2019/08").endOf('month').format("YYYY/MM/DD");
 
     expect(monthActivity.month).toBe(moment().format("YYYY/MM"));
     expect(monthActivity.calendaritems).toBeDefined();
@@ -4837,10 +4837,10 @@ describe('CalendarService test suite', () => {
     // 增加1个日程(每日重复)
     monthActivity = calendarService.mergeMonthActivities(monthActivity, savedagenda);
 
-    let startday: string = moment(moment().format("YYYY/MM")).startOf('month').format("YYYY/MM/DD");
-    let endday: string = moment(moment().format("YYYY/MM")).endOf('month').format("YYYY/MM/DD");
+    let startday: string = moment("2019/08").startOf('month').format("YYYY/MM/DD");
+    let endday: string = moment("2019/08").endOf('month').format("YYYY/MM/DD");
 
-    let betweenMonthEndDays: number = moment(moment().format("YYYY/MM")).endOf('month').diff(day, "days") + 1;
+    let betweenMonthEndDays: number = moment("2019/08").endOf('month').diff(day, "days") + 1;
 
     expect(monthActivity.month).toBe(moment().format("YYYY/MM"));
     expect(monthActivity.calendaritems).toBeDefined();
@@ -4896,8 +4896,8 @@ describe('CalendarService test suite', () => {
     // 增加1个日程(不重复)
     monthActivity = calendarService.mergeMonthActivities(monthActivity, savedagenda);
 
-    let startday: string = moment(moment().format("YYYY/MM")).startOf('month').format("YYYY/MM/DD");
-    let endday: string = moment(moment().format("YYYY/MM")).endOf('month').format("YYYY/MM/DD");
+    let startday: string = moment("2019/08").startOf('month').format("YYYY/MM/DD");
+    let endday: string = moment("2019/08").endOf('month').format("YYYY/MM/DD");
 
     expect(monthActivity.month).toBe(moment().format("YYYY/MM"));
     expect(monthActivity.calendaritems).toBeDefined();
@@ -4954,8 +4954,8 @@ describe('CalendarService test suite', () => {
     // 增加1个日历项
     monthActivity = calendarService.mergeMonthActivities(monthActivity, [planitem1]);
 
-    let startday: string = moment(moment().format("YYYY/MM")).startOf('month').format("YYYY/MM/DD");
-    let endday: string = moment(moment().format("YYYY/MM")).endOf('month').format("YYYY/MM/DD");
+    let startday: string = moment("2019/08").startOf('month').format("YYYY/MM/DD");
+    let endday: string = moment("2019/08").endOf('month').format("YYYY/MM/DD");
 
     expect(monthActivity.month).toBe(moment().format("YYYY/MM"));
     expect(monthActivity.calendaritems).toBeDefined();
@@ -5011,8 +5011,8 @@ describe('CalendarService test suite', () => {
     // 增加1个备忘
     monthActivity = calendarService.mergeMonthActivities(monthActivity, [memo]);
 
-    let startday: string = moment(moment().format("YYYY/MM")).startOf('month').format("YYYY/MM/DD");
-    let endday: string = moment(moment().format("YYYY/MM")).endOf('month').format("YYYY/MM/DD");
+    let startday: string = moment("2019/08").startOf('month').format("YYYY/MM/DD");
+    let endday: string = moment("2019/08").endOf('month').format("YYYY/MM/DD");
 
     expect(monthActivity.month).toBe(moment().format("YYYY/MM"));
     expect(monthActivity.calendaritems).toBeDefined();
@@ -5068,8 +5068,8 @@ describe('CalendarService test suite', () => {
     // 增加1个任务
     monthActivity = calendarService.mergeMonthActivities(monthActivity, [task]);
 
-    let startday: string = moment(moment().format("YYYY/MM")).startOf('month').format("YYYY/MM/DD");
-    let endday: string = moment(moment().format("YYYY/MM")).endOf('month').format("YYYY/MM/DD");
+    let startday: string = moment("2019/08").startOf('month').format("YYYY/MM/DD");
+    let endday: string = moment("2019/08").endOf('month').format("YYYY/MM/DD");
 
     expect(monthActivity.month).toBe(moment().format("YYYY/MM"));
     expect(monthActivity.calendaritems).toBeDefined();
