@@ -485,6 +485,8 @@ export class EventService extends BaseService {
       /*修改*/
       this.assertNull(oriAgdata);   // 原始事件详情不能为空
 
+      this.assertNotEqual(oriAgdata.sd, newAgdata.sd);//原事件的开始日期与新事件的开始事件没有一致
+
       let outAgdatas = await this.updateAgenda(newAgdata,oriAgdata,modiType);
 
       this.emitService.emit("mwxing.calendar.activities.changed", outAgdatas);
