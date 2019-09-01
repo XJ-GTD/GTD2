@@ -4685,10 +4685,10 @@ describe('CalendarService test suite', () => {
     // 不增加数据
     monthActivity = calendarService.mergeMonthActivities(monthActivity, []);
 
-    let startday: string = moment(moment().format("YYYY/MM")).startOf('month').format("YYYY/MM/DD");
-    let endday: string = moment(moment().format("YYYY/MM")).endOf('month').format("YYYY/MM/DD");
+    let startday: string = moment("2019/08").startOf('month').format("YYYY/MM/DD");
+    let endday: string = moment("2019/08").endOf('month').format("YYYY/MM/DD");
 
-    expect(monthActivity.month).toBe(moment().format("YYYY/MM"));
+    expect(monthActivity.month).toBe("2019/08");
     expect(monthActivity.calendaritems).toBeDefined();
     expect(monthActivity.calendaritems.length).toBe(1);
     expect(monthActivity.events).toBeDefined();
