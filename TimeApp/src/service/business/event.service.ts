@@ -539,7 +539,7 @@ export class EventService extends BaseService {
     let tos : string;//需要发送的参与人手机号
     tos = this.getParterPhone(agdata.parters);
 
-    //日程表信息放入返回事件的父记录信息中
+    //日程表信息，附件信息，参与人信息放入返回事件的父记录信息中
     for (let j = 0, len = retParamEv.outAgdatas.length; j < len ; j++){
       let outAgd = {} as AgendaData;
       outAgd = retParamEv.outAgdatas[j];
@@ -1015,6 +1015,13 @@ export class EventService extends BaseService {
 
     let ret = new RetParamEv();
     let outAgds = new Array<AgendaData>();
+
+    //字段evt 设定
+    if (agdata.al == anyenum.IsWholeday.Whole){
+      agdata.evt = "00:00";
+    }else{
+      agdata.evt = agdata.st;
+    }
 
     let rtjson: RtJson = agdata.rtjson;
     agdata.rt = JSON.stringify(agdata.rtjson);
