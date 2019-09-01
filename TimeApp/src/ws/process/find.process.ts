@@ -56,7 +56,7 @@ export class FindProcess extends BaseProcess implements MQProcess {
     //console.log("============ mq返回内容："+ JSON.stringify(content));
     //处理区分
     //let ctbls:Array<CTbl> = new Array<CTbl>();
-    //let scd:Array<ScdData> = new Array<ScdData>();
+    let scd:Array<ScdData> = new Array<ScdData>();
 
     if (content.option == F.C) {
       // TODO 增加根据人查询日程
