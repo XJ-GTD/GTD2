@@ -1,0 +1,11 @@
+page-box {
+  .box-page {
+    height: 100vmax;
+    background-color: #f1f1f1;
+  }
+
+  .box-content {
+    height: calc(100vmax - 10rem);
+    background-color: #fafafa;
+  }
+}
