@@ -1321,6 +1321,7 @@ export class EventService extends BaseService {
 			task.gs = anyenum.GsType.self;
 			task.tb = anyenum.SyncType.unsynch;
 			task.del = anyenum.DelType.undel;
+			task.evt = task.evt || "23:59";
 			let evdb: EvTbl = new EvTbl();
 			Object.assign(evdb, task);
 			await this.sqlExce.saveByParam(evdb);
@@ -1370,6 +1371,7 @@ export class EventService extends BaseService {
 			minitask.gs = anyenum.GsType.self;
 			minitask.tb = anyenum.SyncType.unsynch;
 			minitask.del = anyenum.DelType.undel;
+			minitask.evt = minitask.evt || "23:59";
 			let evdb: EvTbl = new EvTbl();
 			Object.assign(evdb, minitask);
 			await this.sqlExce.saveByParam(evdb);
