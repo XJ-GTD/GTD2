@@ -503,7 +503,6 @@ export class EventService extends BaseService {
       //如果网络正常提交到服务器，则更新同步标志同步通过websocket来通知
 
       this.emitService.emitRef(newAgdata.sd);
-      console.log(newAgdata);
 
       this.emitService.emit("mwxing.calendar.activities.changed", retParamEv.outAgdatas);
 
