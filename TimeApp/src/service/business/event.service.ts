@@ -434,7 +434,7 @@ export class EventService extends BaseService {
         }
 
         //如果当前删除对象是父事件，则为当前重复事件重建新的父事件，值为ev表重复记录里的第一条做为父事件
-        await this.operateForParentAgd(oriAgdata,oriAgdata.parters,sqlparam,outAgds);
+        await this.operateForParentAgd(oriAgdata,oriAgdata.parters,oriAgdata.fjs,sqlparam,outAgds);
 
       }
 
@@ -543,6 +543,9 @@ export class EventService extends BaseService {
       outAgd = retParamEv.outAgdatas[j];
       if (outAgd.rtevi == "" && outAgd.evi == caparam.evi){
         Object.assign(outAgd,caparam);
+
+        outAgd.parters = agdata.parters;
+        outAgd.fjs = agdata.fjs;
         //break;
       }
       outAgd.tos = tos;
@@ -605,11 +608,11 @@ export class EventService extends BaseService {
 
       //复制原参与人到新事件
       let nwpar = new Array<any>();
-      nwpar = this.sqlparamAddPar(retParamEv.rtevi , oriAgdata.parters);
+      nwpar = this.sqlparamAddPar(retParamEv.rtevi , newAgdata.parters);
 
       //复制原附件到新事件
       let nwfj = new Array<any>();
-      nwfj = this.sqlparamAddFj(retParamEv.rtevi, oriAgdata.fjs);
+      nwfj = this.sqlparamAddFj(retParamEv.rtevi, newAgdata.fjs);
 
       sqlparam = [...sqlparam, ...retParamEv.sqlparam, ...nwpar, ...nwfj];
 
@@ -669,7 +672,7 @@ export class EventService extends BaseService {
       }
 
       //如果当前更新对象是父节点，则为当前重复日程重建新的父记录，值为ev表里的第一条做为父记录
-      await this.operateForParentAgd(oriAgdata,newAgdata.parters,sqlparam,outAgds);
+      await this.operateForParentAgd(oriAgdata,newAgdata.parters,newAgdata.fjs,sqlparam,outAgds);
 
       //日程表新建或更新,修改为独立日的也需要为自己创建对应的日程
       let caparam = new CaTbl();
@@ -690,15 +693,17 @@ export class EventService extends BaseService {
   }
 
   /**
-   * 如果当前删除对象是父事件，则为当前重复事件重建新的父事件，值为ev表重复记录里的第一条做为父事件
+   * 如果当前单一对象是父事件，则为当前重复事件重建新的父事件，值为ev表重复记录里的第一条做为父事件
    * @param {AgendaData} oriAgdata
    * @param {Array<Parter>} parters
+   * @param {Array<FjTbl>} fjs
    * @param {Array<any>} sqlparam
    * @param {DUflag} doflag
    * @returns {Promise<void>}
    */
   private async operateForParentAgd(oriAgdata : AgendaData,
                                       parters : Array<Parter>,
+                                      fjs : Array<FjTbl>,
                                       sqlparam : Array<any>,
                                       outAgds : Array<AgendaData>){
     let sq : string ;
@@ -743,11 +748,11 @@ export class EventService extends BaseService {
 
         //复制原参与人到新的父事件
         let nwpar = new Array<any>();
-        nwpar = this.sqlparamAddPar(nwEv.evi , oriAgdata.parters);
+        nwpar = this.sqlparamAddPar(nwEv.evi , parters);
 
         //复制原附件到新的父事件
         let nwfj = new Array<any>();
-        nwfj = this.sqlparamAddFj(nwEv.evi , oriAgdata.fjs);
+        nwfj = this.sqlparamAddFj(nwEv.evi , fjs);
 
         sqlparam = [...sqlparam, ...nwpar, ...nwfj];
 
@@ -756,9 +761,9 @@ export class EventService extends BaseService {
         //把新日程放入返回事件的父事件中
         Object.assign(outAgd , nwca);
         //复制原参与人放入返回事件的父事件中
-        outAgd.parters = oriAgdata.parters;
+        outAgd.parters = parters;
         //复制原附件放入返回事件的父事件中
-        outAgd.fjs = oriAgdata.fjs;
+        outAgd.fjs = fjs;
 
         outAgd.tos = tos;//需要发送的参与人
 
@@ -875,6 +880,8 @@ export class EventService extends BaseService {
           Object.assign(delAgds[j],ca);
           delAgds[j].parters = delpars;
           delAgds[j].fjs = delfjs;
+
+          delAgds[j].tos = tos;//需要发送的参与人
           break;
         }
       }
