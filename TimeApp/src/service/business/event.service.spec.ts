@@ -282,7 +282,7 @@ describe('EventService test suite', () => {
 
 		let day: string = moment().format('YYYY/MM/DD');
 		let data: Array<TaskData> = new Array<TaskData>();
-		data = await eventService.fetchPagedCompletedTasks(day,"");
+		data = await eventService.fetchPagedCompletedTasks(day);
 		expect(data).toBeDefined();
 		expect(data.length).toBeGreaterThan(0);
   })
@@ -303,7 +303,7 @@ describe('EventService test suite', () => {
 
 		let day: string = moment().format('YYYY/MM/DD');
 		let data: Array<TaskData> = new Array<TaskData>();
-		data = await eventService.fetchPagedUncompletedTasks(day,"");
+		data = await eventService.fetchPagedUncompletedTasks(day);
 		expect(data).toBeDefined();
 		expect(data.length).toBeGreaterThan(0);
   })

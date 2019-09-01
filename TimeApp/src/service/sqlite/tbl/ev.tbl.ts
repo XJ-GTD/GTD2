@@ -11,6 +11,7 @@ export class EvTbl implements ITblParam {
   ui: string;
   mi: string;
   evd: string;
+  evt: string;
   rtevi: string;
   ji: string;
   bz: string;
@@ -34,7 +35,7 @@ export class EvTbl implements ITblParam {
   cTParam():string {
 
     let sq =`create table if not exists gtd_ev( evi varchar(50) PRIMARY KEY ,
-          evn varchar(50)  ,ui varchar(50)  ,mi varchar(50)  ,evd varchar(20)  ,
+          evn varchar(50)  ,ui varchar(50)  ,mi varchar(50)  ,evd varchar(20)  ,evt varchar(20)  ,
           rtevi varchar(50)  ,ji varchar(50)  ,bz varchar(50)  ,type varchar(4)  ,
           tx varchar(50)  ,txs varchar(50)  ,rt varchar(50)  ,rts varchar(50)  ,
           fj varchar(50)  ,pn integer  ,md varchar(4)  ,iv varchar(4)  ,sr varchar(50)  ,
@@ -64,6 +65,10 @@ export class EvTbl implements ITblParam {
     if(this.evd!=null && this.evd!=""){
       sq=sq+', evd= ? ';
       params.push(this.evd);
+    }
+    if(this.evt!=null && this.evt!=""){
+      sq=sq+', evt= ? ';
+      params.push(this.evt);
     }
     if(this.rtevi!=null ){
       sq=sq+', rtevi= ? ';
@@ -182,6 +187,10 @@ export class EvTbl implements ITblParam {
       sq=sq+' and evd= ? ';
       params.push(this.evd);
     }
+    if(this.evt!=null && this.evt!=""){
+      sq=sq+' and evt= ? ';
+      params.push(this.evt);
+    }
     if(this.rtevi!=null && this.rtevi!=""){
       sq=sq+' and rtevi= ? ';
       params.push(this.rtevi);
@@ -255,15 +264,16 @@ export class EvTbl implements ITblParam {
   inTParam():any {
     let params = new Array<any>();
     let sq =`insert into gtd_ev
-       ( evi ,evn ,ui ,mi ,evd ,rtevi ,ji ,bz ,
+       ( evi ,evn ,ui ,mi ,evd ,evt ,rtevi ,ji ,bz ,
        type ,tx ,txs ,rt ,rts ,fj ,pn ,md ,iv ,
        sr ,wtt ,utt ,gs,tb,del,rfg)
-       values( ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);`;
+       values( ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);`;
     params.push(this.evi);
     params.push(this.evn);
     params.push(this.ui);
     params.push(this.mi);
     params.push(this.evd);
+    params.push(this.evt);
     params.push(this.rtevi);
     params.push(this.ji);
     params.push(this.nll2str(this.bz));
@@ -293,15 +303,16 @@ export class EvTbl implements ITblParam {
   rpTParam():any {
     let params = new Array<any>();
     let sq =`replace into gtd_ev
-       ( evi ,evn ,ui ,mi ,evd ,rtevi ,ji ,bz ,
+       ( evi ,evn ,ui ,mi ,evd ,evt ,rtevi ,ji ,bz ,
        type ,tx ,txs ,rt ,rts ,fj ,pn ,md ,iv ,
        sr ,wtt ,utt ,gs,tb,del,rfg)
-       values( ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);`;
+       values( ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);`;
     params.push(this.evi);
     params.push(this.evn);
     params.push(this.ui);
     params.push(this.mi);
     params.push(this.evd);
+    params.push(this.evt);
     params.push(this.rtevi);
     params.push(this.ji);
     params.push(this.nll2str(this.bz));

@@ -13,7 +13,6 @@ export class DoService {
               private eventService: EventService,
               private assistantService: AssistantService) {
     moment.locale('zh-cn');
-    this.createTestDatas();
   }
 
   async createTestDatas() {

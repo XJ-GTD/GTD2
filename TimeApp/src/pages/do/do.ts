@@ -76,10 +76,13 @@ export class DoPage {
               private eventService: EventService,
               private sqlite:SqliteExec) {
     moment.locale('zh-cn');
-    this.days.push(moment().format("YYYY/MM/DD"));
   }
 
   ionViewDidLoad() {
+    this.doService.createTestDatas()
+    .then(() => {
+      this.days.push(moment().format("YYYY/MM/DD"));
+    });
   }
 
   pagedown(target: any) {
@@ -103,12 +106,12 @@ export class DoPage {
   getData(target: any, day: string) {
     let direction: PageDirection = PageDirection.PageInit;
 
-    if (moment().diff(day) > 0) {
-      direction = PageDirection.PageDown;
+    if (this.days.length > 1 && this.days.indexOf(day) == (this.days.length - 1)) {
+      direction = PageDirection.PageUp;
     }
 
-    if (moment().diff(day) < 0) {
-      direction = PageDirection.PageUp;
+    if (this.days.length > 1 && this.days.indexOf(day) == 0) {
+      direction = PageDirection.PageDown;
     }
 
     this.eventService.fetchPagedTasks(day, direction)
