@@ -55,42 +55,37 @@ export class FindProcess extends BaseProcess implements MQProcess {
     fs = await this.findsimilarityfs(findData.fs);
     //console.log("============ mq返回内容："+ JSON.stringify(content));
     //处理区分
-    let ctbls:Array<CTbl> = new Array<CTbl>();
-    let scd:Array<ScdData> = new Array<ScdData>();
+    //let ctbls:Array<CTbl> = new Array<CTbl>();
+    //let scd:Array<ScdData> = new Array<ScdData>();
+
     if (content.option == F.C) {
       // TODO 增加根据人查询日程
       if (fs) {
         findData.scd.fs = fs;
       }
       //TODO 获取全部的日程事件,目前无法event.service中无此函数获取相关数据,只有根据evi获取单个日程的方法
-      let ctbls = await this.findScd(findData.scd);
-      for (let j = 0, len = ctbls.length; j < len; j++) {
+      //let ctbls = await this.findScd(findData.scd);
+//    for (let j = 0, len = ctbls.length; j < len; j++) {
 //      let fss : Array<FsData> = new Array<FsData>();
 //      fss = await this.findScdFss(ctbls[j].si);
 
-		// 20190901 ying 获取相关联系人
-		let fss : Array<Parter> = new Array<Parter>();
-		fss = await eventService.getParterByEvi(ctbls[j].si);
 		
         //let cfs :FsData = new FsData();
         //cfs = this.userConfig.GetOneBTbl(ctbls[j].ui);
         
-        // 20190901 ying 根据相关联系人获取参与人
-        let cfs : Parter = {} as Parter;
-        cfs =await eventService.getParterByUi(ctbls[j].ui);
         //防止在服务器与客户端交互时，因图像太大而出错
-        if (cfs){
-          cfs.bhiu = "";
-        }else{
-          cfs  = {} as Parter;
-        }
-
-        let c :ScdData = new ScdData();
-        Object.assign(c,ctbls[j]);
-        c.fs = cfs;
-        c.fss = fss;
-        scd.push(c);
-      }
+//      if (cfs){
+//        cfs.bhiu = "";
+//      }else{
+//        cfs  = {} as Parter;
+//      }
+//
+//      let c :ScdData = new ScdData();
+//      Object.assign(c,ctbls[j]);
+//      c.fs = cfs;
+//      c.fss = fss;
+//      scd.push(c);
+//    }
     }
 
     //增加排序处理
