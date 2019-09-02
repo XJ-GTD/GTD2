@@ -145,7 +145,7 @@ export class DoPage {
       if (changed.cs != IsSuccess.success) {
         tasks[index] = changed;
       } else {
-        tasks.splice(index);
+        tasks.splice(index, 1);
       }
     } else {
       if (changed.cs != IsSuccess.success) {
