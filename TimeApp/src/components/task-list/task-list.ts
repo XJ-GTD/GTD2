@@ -23,7 +23,7 @@ import { Component, Output, EventEmitter } from "@angular/core";
               </ion-col>
               <ion-col>
                 <button ion-button clear small>
-                  <div>{{task.evd | formatedate:'CYYYY/M/DD'}}</div>
+                  <div>{{task.evd | formatedate:'YYYY年M月D日'}}</div>
                 </button>
               </ion-col>
             </ion-row>

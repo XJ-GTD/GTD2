@@ -96,6 +96,9 @@ export class FormatedatePipe implements PipeTransform {
           return moment(value).toNow();
         }
       }
+      if (args[0] == "YYYY年M月D日"){
+        return moment(value).format("YYYY年M月D日");
+      }
       if (args[0] == "YYYY"){
         return moment(value).format("YYYY");
       }
