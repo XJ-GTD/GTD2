@@ -218,7 +218,7 @@ describe('EventService test suite', () => {
     tx = await eventService.saveTask(tx);
     expect(tx).toBeDefined();
     expect(tx.evi).toBeDefined();
-		await eventService.finishTask(tx.evi);
+		await eventService.finishTask(tx);
 
 		let txx: TaskData = {} as TaskData;
     txx = await eventService.getTask(tx.evi);
