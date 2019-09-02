@@ -116,5 +116,6 @@ export class DoPage {
 
   complete(target: any) {
     console.log(target);
+    this.eventService.finishTask(target);
   }
 }
