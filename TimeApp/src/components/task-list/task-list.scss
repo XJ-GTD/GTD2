@@ -18,16 +18,14 @@ task-list {
     div {
       background-color: #9d9d9d;
     }
+  }
 
+  ion-card {
     ion-card-content {
       ion-checkbox.checkbox-ios {
         position: absolute;
         top: 16px;
         right: 16px;
-      }
-
-      p {
-
       }
     }
   }
