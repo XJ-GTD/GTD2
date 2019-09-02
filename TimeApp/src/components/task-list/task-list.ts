@@ -6,7 +6,7 @@ import { Component, Output, EventEmitter } from "@angular/core";
   <ion-grid class="h70">
     <ion-row class="h100" align-items-center>
       <ion-grid>
-        <ion-row justify-content-center>
+        <ion-row>
           <ng-container *ngFor="let task of tasklist">
           <ion-card [ngClass]="{'complete': task.cs == '1'}" (click)="gotoDetail(task)">
             <ion-card-content>
