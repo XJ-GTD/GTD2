@@ -5,7 +5,6 @@ import { Component, Output, EventEmitter } from "@angular/core";
   template: `
   <ion-grid class="h70">
     <ion-row class="h100" align-items-center>
-      <p class="p15"></p>
       <ion-grid>
         <ion-row justify-content-center>
           <ng-container *ngFor="let task of tasklist">
@@ -31,8 +30,6 @@ import { Component, Output, EventEmitter } from "@angular/core";
           </ng-container>
         </ion-row>
       </ion-grid>
-      <p class="p15"></p>
-      <p class="p15"></p>
     </ion-row>
   </ion-grid>
   `
