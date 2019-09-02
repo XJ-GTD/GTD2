@@ -233,6 +233,7 @@ import { SettingsProvider } from '../providers/settings/settings';
     RabbitMQService,
     MIPushService,
     RemindService,
+    CalendarService,
     EventService,
     MemoService,
     SettingsProvider,
