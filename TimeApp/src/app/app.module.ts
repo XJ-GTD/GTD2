@@ -106,6 +106,7 @@ import { WeatherIconsModule } from 'ngx-icons';
 import { JPush } from '@jiguang-ionic/jpush';
 import { DirectivesModule } from "../directives/directives.module";
 import { BaiduMapModule } from 'angular2-baidu-map';
+import {CalendarService} from "../service/business/calendar.service";
 import {EventService} from "../service/business/event.service";
 import {MemoService} from "../service/business/memo.service";
 import {AipPageModule} from "../pages/aip/aip.module";
