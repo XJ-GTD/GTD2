@@ -23,7 +23,7 @@ import { Component, Output, EventEmitter } from "@angular/core";
               </ion-col>
               <ion-col>
                 <button ion-button clear small>
-                  <div>{{task.evd | formatedate:'YYYY年M月D日'}}</div>
+                  <div>{{task.ui | formatuser: currentuser: friends}}</div>
                 </button>
               </ion-col>
             </ion-row>
@@ -50,6 +50,11 @@ export class TaskListComponent {
   private onComplete: EventEmitter<any> = new EventEmitter<any>();
 
   tasklist: Array<any> = new Array<any>();
+
+  @Input()
+  currentuser: string = "";
+  @Input()
+  friends: Array<any> = new Array<any>();
 
   constructor() {
   }
