@@ -16,7 +16,9 @@ import { Events } from 'ionic-angular';
     <ion-row>
       <ion-grid>
         <ion-row class="box-content">
-          <ng-content></ng-content>
+          <ion-scroll direction="y" zooming="false">
+            <ng-content></ng-content>
+          </ion-scroll>
         </ion-row>
       </ion-grid>
     </ion-row>

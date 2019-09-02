@@ -26,17 +26,6 @@ import { PageDirection } from "../../data.enum";
 @Component({
   selector: 'page-do',
   template: `
-    <ion-header no-border>
-      <ion-toolbar>
-        <ion-title>待处理</ion-title>
-        <ion-buttons right>
-          <button ion-button icon-only (click)="goNew()" color="danger">
-          <img class="img-header-right" src="./assets/imgs/qtj-white.png">
-          </button>
-        </ion-buttons>
-      </ion-toolbar>
-    </ion-header>
-
     <ion-content padding>
       <page-box>
       <ng-container *ngFor="let day of days">
