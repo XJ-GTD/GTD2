@@ -26,21 +26,10 @@ import { PageDirection } from "../../data.enum";
 @Component({
   selector: 'page-do',
   template: `
-    <ion-header no-border>
-      <ion-toolbar>
-        <ion-title>待处理</ion-title>
-        <ion-buttons right>
-          <button ion-button icon-only (click)="goNew()" color="danger">
-          <img class="img-header-right" src="./assets/imgs/qtj-white.png">
-          </button>
-        </ion-buttons>
-      </ion-toolbar>
-    </ion-header>
-
     <ion-content padding>
-      <page-box>
+      <page-box title="Todo List" (onBack)="goBack()">
       <ng-container *ngFor="let day of days">
-        <task-list (onStartLoad)="getData($event, day)" (onCardClick)="gotoDetail($event)" (onCreateNew)="goNew()" #tasklist></task-list>
+        <task-list (onStartLoad)="getData($event, day)" (onCardClick)="gotoDetail($event)" (onCreateNew)="goNew()" (onComplete)="complete($event)" #tasklist></task-list>
       </ng-container>
       </page-box>
     </ion-content>
@@ -104,7 +93,7 @@ export class DoPage {
       direction = PageDirection.PageDown;
     }
 
-    this.eventService.fetchPagedTasks(day, direction)
+    this.eventService.fetchPagedUncompletedTasks(day, direction)
     .then((d) => {
       if (d && d.length > 0) {
         this.topday = d[0].evd;
@@ -123,5 +112,10 @@ export class DoPage {
 
   goBack() {
     this.navCtrl.pop();
+  }
+
+  complete(target: any) {
+    console.log(target);
+    this.eventService.finishTask(target);
   }
 }

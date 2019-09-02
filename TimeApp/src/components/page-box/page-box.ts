@@ -10,13 +10,18 @@ import { Events } from 'ionic-angular';
 @Component({
   selector: 'page-box',
   template: `<ion-grid class="box-page">
-    <ion-row>
-      {{title}}
+    <ion-row class="box-header">
+      <h1>{{title}}</h1>
+      <button ion-button icon-only (click)="goBack()">
+        <ion-icon ios="md-arrow-back" md="md-arrow-back"></ion-icon>
+      </button>
     </ion-row>
     <ion-row>
       <ion-grid>
         <ion-row class="box-content">
-          <ng-content></ng-content>
+          <ion-scroll direction="y" zooming="false">
+            <ng-content></ng-content>
+          </ion-scroll>
         </ion-row>
       </ion-grid>
     </ion-row>
@@ -26,7 +31,14 @@ export class PageBoxComponent {
   @Input()
   title: string = "";
 
+  @Output()
+  private onBack: EventEmitter<any> = new EventEmitter<any>();
+
   constructor(public events: Events) {
 
+  }
+
+  goBack() {
+    this.onBack.emit(this);
   }
 }
