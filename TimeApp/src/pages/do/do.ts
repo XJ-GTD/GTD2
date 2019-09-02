@@ -30,7 +30,7 @@ import { PageDirection, IsSuccess } from "../../data.enum";
     <ion-content padding>
       <page-box title="Todo List" (onBack)="goBack()">
       <ng-container *ngFor="let day of days">
-        <task-list (onStartLoad)="getData($event, day)" (onCardClick)="gotoDetail($event)" (onCreateNew)="goNew()" (onComplete)="complete($event)" #tasklist></task-list>
+        <task-list [currentuser]="currentuser" [friends]="friends" (onStartLoad)="getData($event, day)" (onCardClick)="gotoDetail($event)" (onCreateNew)="goNew()" (onComplete)="complete($event)" #tasklist></task-list>
       </ng-container>
       </page-box>
     </ion-content>
@@ -38,6 +38,9 @@ import { PageDirection, IsSuccess } from "../../data.enum";
 })
 export class DoPage {
   statusBarColor: string = "#3c4d55";
+
+  currentuser: string = UserConfig.account.id;
+  friends: Array<any> = UserConfig.friends;
 
   tasklist: TaskListComponent;
   @ViewChildren("tasklist") tasklists: QueryList<TaskListComponent>;
