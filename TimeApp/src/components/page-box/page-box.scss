@@ -7,5 +7,9 @@ page-box {
   .box-content {
     height: calc(100vmax - 10rem);
     background-color: #fafafa;
+
+    ion-scroll {
+      width: 100%;
+    }
   }
 }
