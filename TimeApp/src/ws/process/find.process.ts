@@ -50,9 +50,9 @@ export class FindProcess extends BaseProcess implements MQProcess {
     //处理所需要参数
     let findData: FindPara = content.parameters;
     //查找联系人
-    //let fs :Array<FsData> = new Array<FsData>();
-    let fs :Array<Parter> = new Array<Parter>();
-    fs = await this.findsimilarityfs(findData.fs);
+    let fs :Array<FsData> = new Array<FsData>();
+    //let fs :Array<Parter> = new Array<Parter>();
+    //fs = await this.findsimilarityfs(findData.fs);
     //console.log("============ mq返回内容："+ JSON.stringify(content));
     //处理区分
     //let ctbls:Array<CTbl> = new Array<CTbl>();
@@ -69,10 +69,10 @@ export class FindProcess extends BaseProcess implements MQProcess {
 //      let fss : Array<FsData> = new Array<FsData>();
 //      fss = await this.findScdFss(ctbls[j].si);
 
-		
+
         //let cfs :FsData = new FsData();
         //cfs = this.userConfig.GetOneBTbl(ctbls[j].ui);
-        
+
         //防止在服务器与客户端交互时，因图像太大而出错
 //      if (cfs){
 //        cfs.bhiu = "";
@@ -197,7 +197,7 @@ export class FindProcess extends BaseProcess implements MQProcess {
     }
 
     //获取联系人列表
-    let bs: Array<Parter> = this.fsService.getfriend(null);
+    let bs: Array<FsData> = this.fsService.getfriend(null);
     let b3ran: Array<string> = new Array();
     let b3rn: Array<string> = new Array();
 
