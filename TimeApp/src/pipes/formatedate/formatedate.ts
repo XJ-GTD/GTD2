@@ -91,9 +91,11 @@ export class FormatedatePipe implements PipeTransform {
       }
       if (args[0] == "withNow"){
         if (moment(value).diff(moment()) > 0) {
-          return moment(value).fromNow();
+          return moment(value).fromNow(true) + "后";
+        } else if (moment(value).diff(moment()) < 0) {
+          return moment(value).toNow(true) + "前";
         } else {
-          return moment(value).toNow();
+          return moment(value).toNow(true);
         }
       }
       if (args[0] == "YYYY年M月D日"){
