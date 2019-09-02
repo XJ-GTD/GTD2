@@ -31,6 +31,58 @@ export class EventService extends BaseService {
   }
 
   /**
+   * 接收事件日程保存到本地
+   * @param {Array<AgendaData>} pullAgdatas
+   * @param {SyncDataStatus} status
+   * @returns {Promise<Array<AgendaData>>}
+   */
+  async receivedAgendaData(pullAgdatas: Array<AgendaData>, status: SyncDataStatus): Promise<Array<AgendaData>> {
+
+    this.assertEmpty(pullAgdatas);     // 入参不能为空
+    this.assertEmpty(status);   // 入参不能为空
+
+    let sqlparam = new Array<any>();
+
+    if (pullAgdatas && pullAgdatas !=null ){
+      for (let j = 0 , len = pullAgdatas.length; j < len ; j++){
+        let agd = {} as AgendaData;
+        agd = pullAgdatas[j];
+        agd.tb  = status;
+        let ev = new EvTbl();
+        Object.assign(ev,agd);
+        sqlparam.push(ev.rpTParam());
+
+        //相关日程更新
+        if (agd.sd && agd.sd != ''){
+          let ca = new CaTbl();
+          Object.assign(ca,agd);
+          sqlparam.push(ca.rpTParam());
+        }
+
+        //相关附件更新
+        if (agd.fjs && agd.fjs !=null && agd.fjs.length > 0){
+          for ( let k = 0, len = agd.fjs.length; k < len ; k++ ){
+            let fj = new FjTbl();
+            Object.assign(fj,agd.fjs[k]);
+            sqlparam.push(fj.rpTParam());
+          }
+        }
+
+        //相关参与人更新
+        if (agd.parters && agd.parters !=null && agd.parters.length > 0){
+          for ( let k = 0, len = agd.parters.length; k < len ; k++ ){
+            let par = new ParTbl();
+            Object.assign(par,agd.parters[k]);
+            sqlparam.push(par.rpTParam());
+          }
+        }
+      }
+    }
+
+    return pullAgdatas;
+  }
+
+  /**
    * 接收日程数据同步
    *
    * @author leon_xi@163.com
@@ -54,16 +106,16 @@ export class EventService extends BaseService {
    *
    * @author leon_xi@163.com
    **/
-  async syncAgenda(uploadAgdData: UploadAgdData) {
+  async syncAgenda(uploadAgdDatas: Array<AgendaData>) {
 
-    this.assertEmpty(uploadAgdData);       // 入参不能为空
+    this.assertEmpty(uploadAgdDatas);       // 入参不能为空
 
     // 构造Push数据结构
     let push: PushInData = new PushInData();
 
-    for (let j = 0 ,len = uploadAgdData.agendas.length ; j< len ; j++){
+    for (let j = 0 ,len = uploadAgdDatas.length ; j< len ; j++){
       let agd = {} as AgendaData;
-      agd = uploadAgdData.agendas[j];
+      agd = uploadAgdDatas[j];
       let sync: SyncData = new SyncData();
       sync.id = agd.evi;
       sync.type = "Agenda";
@@ -2177,11 +2229,6 @@ export class EventService extends BaseService {
 		}
 		return ;
   }*/
-}
-
-export class UploadAgdData{
-  agendas : Array<AgendaData>;
-  ParterUi:Array<string>;
 }
 
 export interface EventData extends EvTbl {
