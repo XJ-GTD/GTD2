@@ -8,7 +8,6 @@ import {DataConfig} from "../../service/config/data.config";
 import {CTbl} from "../../service/sqlite/tbl/c.tbl";
 import {AG, O, SS} from "../model/ws.enum";
 import {FsData, RcInParam, ScdData} from "../../data.mapping";
-import {PgBusiService} from "../../service/pagecom/pgbusi.service";
 import {EventService,AgendaData} from "../../service/business/event.service";
 import {WsDataConfig} from "../wsdata.config";
 import {BaseProcess} from "./base.process";
@@ -21,8 +20,7 @@ import * as anyenum from "../../data.enum";
  */
 @Injectable()
 export class AgendasProcess extends BaseProcess implements MQProcess,OptProcess{
-  constructor(private busiService:PgBusiService,
-  			  private eventService:EventService) {
+  constructor(private eventService: EventService) {
     super();
   }
 
@@ -102,8 +100,8 @@ export class AgendasProcess extends BaseProcess implements MQProcess,OptProcess{
         await this.eventService.saveAgenda(rcIn);
       }else{
       	let oldAgendaData: AgendaData = {} as AgendaData;
-      	oldAgendaData = await this.busiService.getAgenda(rcIn.evi);
-        await this.busiService.removeAgenda(oldAgendaData,anyenum.OperateType.OnlySel);
+      	oldAgendaData = await this.eventService.getAgenda(rcIn.evi);
+        await this.eventService.removeAgenda(oldAgendaData,anyenum.OperateType.OnlySel);
       }
     }
     console.log("******************agendas do end")
