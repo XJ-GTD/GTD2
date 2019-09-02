@@ -2116,8 +2116,7 @@ export class EventService extends BaseService {
                       left join gtd_t t
                       on t.evi = ev.evi
                       where ev.del = ?1 and ev.type = ?2 and t.cs = ?3
-                      order by ev.evd asc, ev.evt asc
-                      `;
+                      order by ev.evd asc, ev.evt asc`;
 
     let tasks: Array<TaskData> = await this.sqlExce.getExtLstByParam<TaskData>(sql, [DelType.undel, anyenum.EventType.Task, IsSuccess.wait]) || new Array<TaskData>();
 

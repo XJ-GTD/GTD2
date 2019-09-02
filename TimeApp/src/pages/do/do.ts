@@ -99,7 +99,7 @@ export class DoPage {
       direction = PageDirection.PageDown;
     }
 
-    this.eventService.fetchPagedUncompletedTasks(day, direction)
+    this.eventService.fetchUncompletedTasks()
     .then((d) => {
       if (d && d.length > 0) {
 
