@@ -1,6 +1,6 @@
 page-box {
   .box-page {
-    height: 100vmax;
+    height: calc(100vmax - 32px);
     background-color: #f1f1f1;
   }
 
