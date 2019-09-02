@@ -10,8 +10,23 @@ import { Component, Output, EventEmitter } from "@angular/core";
         <ion-row justify-content-center>
           <ng-container *ngFor="let task of tasklist">
           <ion-card [ngClass]="{'complete': task.cs == '1'}" (click)="gotoDetail(task)">
-            <div class="card-title">{{task.evn}}</div>
-            <div class="card-subtitle">{{task.evd}}</div>
+            <ion-card-content>
+              <p>{{task.evn}}</p>
+            </ion-card-content>
+
+            <ion-row>
+              <ion-col>
+                <button ion-button icon-start clear small>
+                  <ion-icon name="thumbs-up"></ion-icon>
+                  <div>12天前</div>
+                </button>
+              </ion-col>
+              <ion-col>
+                <button ion-button clear small>
+                  <div>{{task.evd}}</div>
+                </button>
+              </ion-col>
+            </ion-row>
           </ion-card>
           </ng-container>
         </ion-row>
