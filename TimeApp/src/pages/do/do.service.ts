@@ -5,11 +5,13 @@ import { RcInParam, ScdData } from "../../data.mapping";
 import {PgBusiService} from "../../service/pagecom/pgbusi.service";
 import {AssistantService} from "../../service/cordova/assistant.service";
 import { EventService, TaskData } from "../../service/business/event.service";
-import { IsSuccess } from "../../data.enum";
+import { IsSuccess, SyncDataStatus } from "../../data.enum";
+import {UtilService} from "../../service/util-service/util.service";
 
 @Injectable()
 export class DoService {
   constructor(private pgservice: PgBusiService,
+              private util: UtilService,
               private eventService: EventService,
               private assistantService: AssistantService) {
     moment.locale('zh-cn');
@@ -87,6 +89,14 @@ export class DoService {
     subtask1_1_6.evd = "2019/08/30";
     subtask1_1_6.rtevi = subtask1_1.evi;
     subtask1_1_6 = await this.eventService.saveTask(subtask1_1_6);
+
+    let share: TaskData = {} as TaskData;
+    Object.assign(share, subtask1_1_6);
+
+    share.evi = this.util.getUuid();
+    share.evn = "画面任务一览设计";
+    share.ui = "13564242673";
+    await this.eventService.acceptReceivedTask(share, SyncDataStatus.UnDeleted);
 
     let subtask1_2: TaskData = {} as TaskData;
     subtask1_2.evn = "前端服务设计";
