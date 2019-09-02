@@ -102,7 +102,6 @@ export class DoPage {
 
         this.emitService.register("mwxing.calendar.activities.changed", (data) => {
           if (!data) {
-            this.assertFail("事件mwxing.calendar.activities.changed无扩展数据");
             return;
           }
 
