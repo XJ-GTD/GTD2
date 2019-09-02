@@ -817,6 +817,15 @@ describe('EventService test suite', () => {
       expect(nextpagetasks.length).toBe(0);
 
     });
+
+    it(`Case 2 - 1 fetchUncompletedTasks 获取所有未完成任务`, async () => {
+      let tasks = await eventService.fetchUncompletedTasks();
+
+      expect(tasks).toBeDefined();
+      expect(tasks.length).toBeGreaterThan(0);
+
+    });
+
   });
 
   afterAll(() => {
