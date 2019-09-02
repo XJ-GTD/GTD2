@@ -4,8 +4,12 @@ page-box {
     background-color: #f1f1f1;
   }
 
+  .box-header {
+    height: 20vmax;
+  }
+
   .box-content {
-    height: calc(100vmax - 10rem);
+    height: calc(100vmax - 20vmax - 10rem);
     background-color: #fafafa;
 
     ion-scroll {

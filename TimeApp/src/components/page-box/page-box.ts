@@ -10,7 +10,7 @@ import { Events } from 'ionic-angular';
 @Component({
   selector: 'page-box',
   template: `<ion-grid class="box-page">
-    <ion-row>
+    <ion-row class="box-header">
       {{title}}
     </ion-row>
     <ion-row>
