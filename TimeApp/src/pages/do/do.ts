@@ -14,7 +14,7 @@ import {FeedbackService} from "../../service/cordova/feedback.service";
 import {PageBoxComponent} from "../../components/page-box/page-box";
 import {TaskListComponent} from "../../components/task-list/task-list";
 import {CalendarService} from "../../service/business/calendar.service";
-import {EventService} from "../../service/business/event.service";
+import {EventService, TaskData} from "../../service/business/event.service";
 import { PageDirection, IsSuccess } from "../../data.enum";
 
 /**
