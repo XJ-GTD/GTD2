@@ -170,7 +170,7 @@ export class FindProcess extends BaseProcess implements MQProcess {
     let res: Array<FsData> = new Array<FsData>();
     let rsbs: Map<string, FsData> = new Map<string, FsData>();
     if (!ns || ns.length == 0) {
-      return new Array<Parter>();
+      return new Array<FsData>();
     }
 
     //TODO 联系人和群组是否要放入环境中，每次取性能有影响
