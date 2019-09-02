@@ -1461,16 +1461,32 @@ export class EventService extends BaseService {
 	 * 完成任务
 	 * @author ying<343253410@qq.com>
 	 */
-  async finishTask(evi: string) {
-  	this.assertEmpty(evi); // 事件ID不能为空
-  	let tdb: TTbl = new TTbl();
-		tdb.evi = evi;
-		tdb.cs = anyenum.IsSuccess.success;
-		tdb.fd = moment().format('YYYY/MM/DD');
-		await this.sqlExce.updateByParam(tdb);
-		//TODO 是否推送事件完成消息
-		//this.emitService.emit(`mwxing.event.task.finish`);
-		return ;
+  async finishTask(task: TaskData): Promise<TaskData> {
+    this.assertEmpty(task);        // 入参不能为空
+  	this.assertEmpty(task.evi);    // 事件ID不能为空
+
+    task.cs = anyenum.IsSuccess.success;
+    task.evd = moment().format('YYYY/MM/DD');
+    task.evt = moment().format('HH:mm');
+    task.fd = moment().format('YYYY/MM/DD');
+
+    let sqls: Array<any> = new Array<any>();
+
+    let evdb: EvTbl = new EvTbl();
+    Object.assign(evdb, task);
+
+    sqls.push(evdb.rpTParam());
+
+    let tdb: TTbl = new TTbl();
+    Object.assign(tdb, task);
+
+    sqls.push(tdb.rpTParam());
+
+		await this.sqlExce.batExecSqlByParam(sqls);
+
+    this.emitService.emit("mwxing.calendar.activities.changed", task);
+
+		return task;
   }
 
   /**
