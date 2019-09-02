@@ -15,6 +15,7 @@ import {WsDataConfig} from "../wsdata.config";
 import {BaseProcess} from "./base.process";
 import {BTbl} from "../../service/sqlite/tbl/b.tbl";
 import {UserConfig} from "../../service/config/user.config";
+import {EventService,Parter} from "../../service/business/event.service";
 
 /**
  * 查询联系人和日历
@@ -24,7 +25,7 @@ import {UserConfig} from "../../service/config/user.config";
 @Injectable()
 export class FindProcess extends BaseProcess implements MQProcess {
   constructor(private sqliteExec: SqliteExec, private fsService: FsService,
-              private glService: GlService, private util:UtilService,
+              private glService: GlService, private util:UtilService,private eventService:EventService,
               private userConfig: UserConfig) {
     super();
   }
@@ -49,36 +50,42 @@ export class FindProcess extends BaseProcess implements MQProcess {
     //处理所需要参数
     let findData: FindPara = content.parameters;
     //查找联系人
-    let fs :Array<FsData> = new Array<FsData>();
+    //let fs :Array<FsData> = new Array<FsData>();
+    let fs :Array<Parter> = new Array<Parter>();
     fs = await this.findsimilarityfs(findData.fs);
     //console.log("============ mq返回内容："+ JSON.stringify(content));
     //处理区分
-    let ctbls:Array<CTbl> = new Array<CTbl>();
+    //let ctbls:Array<CTbl> = new Array<CTbl>();
     let scd:Array<ScdData> = new Array<ScdData>();
+
     if (content.option == F.C) {
       // TODO 增加根据人查询日程
       if (fs) {
         findData.scd.fs = fs;
       }
-      let ctbls = await this.findScd(findData.scd);
-      for (let j = 0, len = ctbls.length; j < len; j++) {
-        let fss : Array<FsData> = new Array<FsData>();
-        fss = await this.findScdFss(ctbls[j].si);
-        let cfs :FsData = new FsData();
-        cfs = this.userConfig.GetOneBTbl(ctbls[j].ui);
-        //防止在服务器与客户端交互时，因图像太大而出错
-        if (cfs){
-          cfs.bhiu = "";
-        }else{
-          cfs  = new FsData();
-        }
+      //TODO 获取全部的日程事件,目前无法event.service中无此函数获取相关数据,只有根据evi获取单个日程的方法
+      //let ctbls = await this.findScd(findData.scd);
+//    for (let j = 0, len = ctbls.length; j < len; j++) {
+//      let fss : Array<FsData> = new Array<FsData>();
+//      fss = await this.findScdFss(ctbls[j].si);
 
-        let c :ScdData = new ScdData();
-        Object.assign(c,ctbls[j]);
-        c.fs = cfs;
-        c.fss = fss;
-        scd.push(c);
-      }
+		
+        //let cfs :FsData = new FsData();
+        //cfs = this.userConfig.GetOneBTbl(ctbls[j].ui);
+        
+        //防止在服务器与客户端交互时，因图像太大而出错
+//      if (cfs){
+//        cfs.bhiu = "";
+//      }else{
+//        cfs  = {} as Parter;
+//      }
+//
+//      let c :ScdData = new ScdData();
+//      Object.assign(c,ctbls[j]);
+//      c.fs = cfs;
+//      c.fss = fss;
+//      scd.push(c);
+//    }
     }
 
     //增加排序处理
@@ -159,11 +166,11 @@ export class FindProcess extends BaseProcess implements MQProcess {
   }
 
   // 根据相似性匹配本地联系人
-  private findsimilarityfs(ns: Array<any>): Array<FsData> {
-    let res: Array<FsData> = new Array<FsData>();
-    let rsbs: Map<string, FsData> = new Map<string, FsData>();
+  private findsimilarityfs(ns: Array<any>): Array<Parter> {
+    let res: Array<Parter> = new Array<Parter>();
+    let rsbs: Map<string, Parter> = new Map<string, Parter>();
     if (!ns || ns.length == 0) {
-      return new Array<FsData>();
+      return new Array<Parter>();
     }
 
     //TODO 联系人和群组是否要放入环境中，每次取性能有影响
@@ -190,7 +197,7 @@ export class FindProcess extends BaseProcess implements MQProcess {
     }
 
     //获取联系人列表
-    let bs: Array<FsData> = this.fsService.getfriend(null);
+    let bs: Array<Parter> = this.fsService.getfriend(null);
     let b3ran: Array<string> = new Array();
     let b3rn: Array<string> = new Array();
 
@@ -251,7 +258,7 @@ export class FindProcess extends BaseProcess implements MQProcess {
     })
     return res;
   }
-
+  //ying 20190901 add 注释:根据日程事件ID获取参与人
   private async findScdFss(si: string): Promise<Array<FsData>> {
 
     let res: Array<FsData> = new Array<FsData>();
@@ -264,6 +271,7 @@ export class FindProcess extends BaseProcess implements MQProcess {
     return res;
   }
 
+  //ying 20190901 add 注释:获取日程事件
   private findScd(scd: any): Promise<Array<CTbl>> {
     return new Promise<Array<CTbl>>(async resolve => {
       console.log("============ mq查询日程scd："+ JSON.stringify(scd));

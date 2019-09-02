@@ -434,7 +434,7 @@ export class EventService extends BaseService {
         }
 
         //如果当前删除对象是父事件，则为当前重复事件重建新的父事件，值为ev表重复记录里的第一条做为父事件
-        await this.operateForParentAgd(oriAgdata,oriAgdata.parters,sqlparam,outAgds);
+        await this.operateForParentAgd(oriAgdata,oriAgdata.parters,oriAgdata.fjs,sqlparam,outAgds);
 
       }
 
@@ -484,6 +484,8 @@ export class EventService extends BaseService {
     if (newAgdata.evi != null && newAgdata.evi != "") {
       /*修改*/
       this.assertNull(oriAgdata);   // 原始事件详情不能为空
+
+      this.assertNotEqual(oriAgdata.sd, newAgdata.sd);//原事件的开始日期与新事件的开始事件没有一致
 
       let outAgdatas = await this.updateAgenda(newAgdata,oriAgdata,modiType);
 
@@ -537,12 +539,15 @@ export class EventService extends BaseService {
     let tos : string;//需要发送的参与人手机号
     tos = this.getParterPhone(agdata.parters);
 
-    //日程表信息放入返回事件的父记录信息中
+    //日程表信息，附件信息，参与人信息放入返回事件的父记录信息中
     for (let j = 0, len = retParamEv.outAgdatas.length; j < len ; j++){
       let outAgd = {} as AgendaData;
       outAgd = retParamEv.outAgdatas[j];
       if (outAgd.rtevi == "" && outAgd.evi == caparam.evi){
         Object.assign(outAgd,caparam);
+
+        outAgd.parters = agdata.parters;
+        outAgd.fjs = agdata.fjs;
         //break;
       }
       outAgd.tos = tos;
@@ -605,11 +610,11 @@ export class EventService extends BaseService {
 
       //复制原参与人到新事件
       let nwpar = new Array<any>();
-      nwpar = this.sqlparamAddPar(retParamEv.rtevi , oriAgdata.parters);
+      nwpar = this.sqlparamAddPar(retParamEv.rtevi , newAgdata.parters);
 
       //复制原附件到新事件
       let nwfj = new Array<any>();
-      nwfj = this.sqlparamAddFj(retParamEv.rtevi, oriAgdata.fjs);
+      nwfj = this.sqlparamAddFj(retParamEv.rtevi, newAgdata.fjs);
 
       sqlparam = [...sqlparam, ...retParamEv.sqlparam, ...nwpar, ...nwfj];
 
@@ -669,7 +674,7 @@ export class EventService extends BaseService {
       }
 
       //如果当前更新对象是父节点，则为当前重复日程重建新的父记录，值为ev表里的第一条做为父记录
-      await this.operateForParentAgd(oriAgdata,newAgdata.parters,sqlparam,outAgds);
+      await this.operateForParentAgd(oriAgdata,newAgdata.parters,newAgdata.fjs,sqlparam,outAgds);
 
       //日程表新建或更新,修改为独立日的也需要为自己创建对应的日程
       let caparam = new CaTbl();
@@ -690,15 +695,17 @@ export class EventService extends BaseService {
   }
 
   /**
-   * 如果当前删除对象是父事件，则为当前重复事件重建新的父事件，值为ev表重复记录里的第一条做为父事件
+   * 如果当前单一对象是父事件，则为当前重复事件重建新的父事件，值为ev表重复记录里的第一条做为父事件
    * @param {AgendaData} oriAgdata
    * @param {Array<Parter>} parters
+   * @param {Array<FjTbl>} fjs
    * @param {Array<any>} sqlparam
    * @param {DUflag} doflag
    * @returns {Promise<void>}
    */
   private async operateForParentAgd(oriAgdata : AgendaData,
                                       parters : Array<Parter>,
+                                      fjs : Array<FjTbl>,
                                       sqlparam : Array<any>,
                                       outAgds : Array<AgendaData>){
     let sq : string ;
@@ -743,11 +750,11 @@ export class EventService extends BaseService {
 
         //复制原参与人到新的父事件
         let nwpar = new Array<any>();
-        nwpar = this.sqlparamAddPar(nwEv.evi , oriAgdata.parters);
+        nwpar = this.sqlparamAddPar(nwEv.evi , parters);
 
         //复制原附件到新的父事件
         let nwfj = new Array<any>();
-        nwfj = this.sqlparamAddFj(nwEv.evi , oriAgdata.fjs);
+        nwfj = this.sqlparamAddFj(nwEv.evi , fjs);
 
         sqlparam = [...sqlparam, ...nwpar, ...nwfj];
 
@@ -756,9 +763,9 @@ export class EventService extends BaseService {
         //把新日程放入返回事件的父事件中
         Object.assign(outAgd , nwca);
         //复制原参与人放入返回事件的父事件中
-        outAgd.parters = oriAgdata.parters;
+        outAgd.parters = parters;
         //复制原附件放入返回事件的父事件中
-        outAgd.fjs = oriAgdata.fjs;
+        outAgd.fjs = fjs;
 
         outAgd.tos = tos;//需要发送的参与人
 
@@ -875,6 +882,8 @@ export class EventService extends BaseService {
           Object.assign(delAgds[j],ca);
           delAgds[j].parters = delpars;
           delAgds[j].fjs = delfjs;
+
+          delAgds[j].tos = tos;//需要发送的参与人
           break;
         }
       }
@@ -1006,6 +1015,13 @@ export class EventService extends BaseService {
 
     let ret = new RetParamEv();
     let outAgds = new Array<AgendaData>();
+
+    //字段evt 设定
+    if (agdata.al == anyenum.IsWholeday.Whole){
+      agdata.evt = "00:00";
+    }else{
+      agdata.evt = agdata.st;
+    }
 
     let rtjson: RtJson = agdata.rtjson;
     agdata.rt = JSON.stringify(agdata.rtjson);
@@ -1305,6 +1321,7 @@ export class EventService extends BaseService {
 			task.gs = anyenum.GsType.self;
 			task.tb = anyenum.SyncType.unsynch;
 			task.del = anyenum.DelType.undel;
+			task.evt = task.evt || "23:59";
 			let evdb: EvTbl = new EvTbl();
 			Object.assign(evdb, task);
 			await this.sqlExce.saveByParam(evdb);
@@ -1354,6 +1371,7 @@ export class EventService extends BaseService {
 			minitask.gs = anyenum.GsType.self;
 			minitask.tb = anyenum.SyncType.unsynch;
 			minitask.del = anyenum.DelType.undel;
+			minitask.evt = minitask.evt || "23:59";
 			let evdb: EvTbl = new EvTbl();
 			Object.assign(evdb, minitask);
 			await this.sqlExce.saveByParam(evdb);

@@ -101,7 +101,9 @@ export class AgendasProcess extends BaseProcess implements MQProcess,OptProcess{
         console.log("******************agendas do AG.U")
         await this.eventService.saveAgenda(rcIn);
       }else{
-        await this.busiService.YuYinDelRc( rcIn.evi, rcIn.sd);
+      	let oldAgendaData: AgendaData = {} as AgendaData;
+      	oldAgendaData = await this.busiService.getAgenda(rcIn.evi);
+        await this.busiService.removeAgenda(oldAgendaData,anyenum.OperateType.OnlySel);
       }
     }
     console.log("******************agendas do end")
