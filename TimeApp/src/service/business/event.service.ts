@@ -1553,7 +1553,7 @@ export class EventService extends BaseService {
    * 接收任务保存到本地
    * @author ying<343253410@qq.com>
    */
-  async acceptReceivedTask(task: TaskData,status: SyncDataStatus): Promise<TaskData> {
+  async acceptReceivedTask(task: TaskData, status: SyncDataStatus): Promise<TaskData> {
   	this.assertEmpty(task);     // 入参不能为空
     this.assertEmpty(task.evi);  // ID不能为空
     this.assertNotEqual(task.type, anyenum.EventType.Task);  //不是任务不能发送共享
@@ -1569,7 +1569,7 @@ export class EventService extends BaseService {
     sqls.push(evdb.rpTParam());
 
     let tdb: TTbl = new TTbl();
-    Object.assign(tdb, tt);
+    Object.assign(tdb, task);
     sqls.push(tdb.rpTParam());
 
     await this.sqlExce.batExecSqlByParam(sqls);
