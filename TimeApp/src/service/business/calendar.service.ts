@@ -1378,9 +1378,9 @@ export class CalendarService extends BaseService {
     let evargs: any = [];
     let moargs: any = [];
 
-    let seachCalendar: boolean = fasle;
-    let seachEvent: boolean = fasle;
-    let seachMemo: boolean = fasle;
+    let seachCalendar: boolean = false;
+    let seachEvent: boolean = false;
+    let seachMemo: boolean = false;
 
     // 查询范围
     if (condition.target && condition.target.length > 0) {
