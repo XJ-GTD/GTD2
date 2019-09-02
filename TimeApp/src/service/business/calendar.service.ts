@@ -1378,110 +1378,126 @@ export class CalendarService extends BaseService {
     let evargs: any = [];
     let moargs: any = [];
 
+    let seachCalendar: boolean = fasle;
+    let seachEvent: boolean = fasle;
+    let seachMemo: boolean = fasle;
+
     // 查询范围
     if (condition.target && condition.target.length > 0) {
-
+      if (condition.target.indexOf(ObjectType.Calendar) >= 0) {
+        seachCalendar = true;
+      }
+      if (condition.target.indexOf(ObjectType.Event) >= 0) {
+        seachEvent = true;
+      }
+      if (condition.target.indexOf(ObjectType.Memo) >= 0) {
+        seachMemo = true;
+      }
     } else {
-      // 查询全部类型 日历项/事件/备忘
-      let ciwhere: string = '';
-      let evwhere: string = '';
-      let mowhere: string = '';
-
-      // 开始日期
-      if (condition.sd) {
-        ciwhere += (ciwhere? '' : 'where ');
-        ciwhere += `sd >= ? `;
-        ciargs.push(condition.sd);
-
-        evwhere += (evwhere? '' : 'where ');
-        evwhere += `evd >= ? `;
-        evargs.push(condition.sd);
-
-        mowhere += (mowhere? '' : 'where ');
-        mowhere += `sd >= ? `;
-        moargs.push(condition.sd);
-      }
-
-      // 结束日期
-      if (condition.ed) {
-        ciwhere += (ciwhere? 'and ' : 'where ');
-        ciwhere += `sd <= ? `;
-        ciargs.push(condition.ed);
-
-        evwhere += (evwhere? 'and ' : 'where ');
-        evwhere += `evd <= ? `;
-        evargs.push(condition.ed);
-
-        mowhere += (mowhere? 'and ' : 'where ');
-        mowhere += `sd <= ? `;
-        moargs.push(condition.ed);
-      }
-
-      // 内容查询
-      if (condition.text) {
-        ciwhere += (ciwhere? 'and ' : 'where ');
-        ciwhere += `jtn like ? `;
-        ciargs.push("%" + condition.text + "%");
-
-        evwhere += (evwhere? 'and ' : 'where ');
-        evwhere += `(evn like ? or bz like ?) `;
-        evargs.push("%" + condition.text + "%");
-        evargs.push("%" + condition.text + "%");
-
-        mowhere += (mowhere? 'and ' : 'where ');
-        mowhere += `mon like ? `;
-        moargs.push("%" + condition.text + "%");
-      }
-
-      // 标签查询
-      if (condition.mark && condition.mark.length > 0) {
-        let likes: string = new Array<string>(condition.mark.length).fill('?', 0, condition.mark.length).join(' or mkl like ');
-        let querymarks: Array<string> = condition.mark.map(value => { return "%" + value + "%";});
-
-        ciwhere += (ciwhere? 'and ' : 'where ');
-        ciwhere += `jti in (select obi from gtd_mrk where obt = ? and (mkl like ${likes})) `;
-        ciargs.push(ObjectType.Calendar);
-        ciargs = ciargs.concat(querymarks);
-
-        evwhere += (evwhere? 'and ' : 'where ');
-        evwhere += `evi in (select obi from gtd_mrk where obt = ? and (mkl like ${likes})) `;
-        evargs.push(ObjectType.Event);
-        evargs = evargs.concat(querymarks);
-
-        mowhere += (mowhere? 'and ' : 'where ');
-        mowhere += `moi in (select obi from gtd_mrk where obt = ? and (mkl like ${likes})) `;
-        moargs.push(ObjectType.Memo);
-        moargs = moargs.concat(querymarks);
-      }
-
-      // 增加删除标记判断
-      ciwhere += (ciwhere? 'and ' : 'where ');
-      ciwhere += `del <> ? `;
-      ciargs.push(DelType.del);
-
-      evwhere += (evwhere? 'and ' : 'where ');
-      evwhere += `del <> ? `;
-      evargs.push(DelType.del);
-
-      mowhere += (mowhere? 'and ' : 'where ');
-      mowhere += `del <> ? `;
-      moargs.push(DelType.del);
-
-      sqlcalitems = `select * from gtd_jta ${ciwhere} order by sd asc`;
-      sqlevents = `select * from gtd_ev ${evwhere} order by evd asc`;
-      sqlmemos = `select * from gtd_mom ${mowhere} order by sd asc`;
+      seachCalendar = true;
+      seachEvent = true;
+      seachMemo = true;
     }
 
+    // 查询全部类型 日历项/事件/备忘
+    let ciwhere: string = '';
+    let evwhere: string = '';
+    let mowhere: string = '';
+
+    // 开始日期
+    if (condition.sd) {
+      ciwhere += (ciwhere? '' : 'where ');
+      ciwhere += `sd >= ? `;
+      ciargs.push(condition.sd);
+
+      evwhere += (evwhere? '' : 'where ');
+      evwhere += `evd >= ? `;
+      evargs.push(condition.sd);
+
+      mowhere += (mowhere? '' : 'where ');
+      mowhere += `sd >= ? `;
+      moargs.push(condition.sd);
+    }
+
+    // 结束日期
+    if (condition.ed) {
+      ciwhere += (ciwhere? 'and ' : 'where ');
+      ciwhere += `sd <= ? `;
+      ciargs.push(condition.ed);
+
+      evwhere += (evwhere? 'and ' : 'where ');
+      evwhere += `evd <= ? `;
+      evargs.push(condition.ed);
+
+      mowhere += (mowhere? 'and ' : 'where ');
+      mowhere += `sd <= ? `;
+      moargs.push(condition.ed);
+    }
+
+    // 内容查询
+    if (condition.text) {
+      ciwhere += (ciwhere? 'and ' : 'where ');
+      ciwhere += `jtn like ? `;
+      ciargs.push("%" + condition.text + "%");
+
+      evwhere += (evwhere? 'and ' : 'where ');
+      evwhere += `(evn like ? or bz like ?) `;
+      evargs.push("%" + condition.text + "%");
+      evargs.push("%" + condition.text + "%");
+
+      mowhere += (mowhere? 'and ' : 'where ');
+      mowhere += `mon like ? `;
+      moargs.push("%" + condition.text + "%");
+    }
+
+    // 标签查询
+    if (condition.mark && condition.mark.length > 0) {
+      let likes: string = new Array<string>(condition.mark.length).fill('?', 0, condition.mark.length).join(' or mkl like ');
+      let querymarks: Array<string> = condition.mark.map(value => { return "%" + value + "%";});
+
+      ciwhere += (ciwhere? 'and ' : 'where ');
+      ciwhere += `jti in (select obi from gtd_mrk where obt = ? and (mkl like ${likes})) `;
+      ciargs.push(ObjectType.Calendar);
+      ciargs = ciargs.concat(querymarks);
+
+      evwhere += (evwhere? 'and ' : 'where ');
+      evwhere += `evi in (select obi from gtd_mrk where obt = ? and (mkl like ${likes})) `;
+      evargs.push(ObjectType.Event);
+      evargs = evargs.concat(querymarks);
+
+      mowhere += (mowhere? 'and ' : 'where ');
+      mowhere += `moi in (select obi from gtd_mrk where obt = ? and (mkl like ${likes})) `;
+      moargs.push(ObjectType.Memo);
+      moargs = moargs.concat(querymarks);
+    }
+
+    // 增加删除标记判断
+    ciwhere += (ciwhere? 'and ' : 'where ');
+    ciwhere += `del <> ? `;
+    ciargs.push(DelType.del);
+
+    evwhere += (evwhere? 'and ' : 'where ');
+    evwhere += `del <> ? `;
+    evargs.push(DelType.del);
+
+    mowhere += (mowhere? 'and ' : 'where ');
+    mowhere += `del <> ? `;
+    moargs.push(DelType.del);
+
+    sqlcalitems = `select * from gtd_jta ${ciwhere} order by sd asc`;
+    sqlevents = `select * from gtd_ev ${evwhere} order by evd asc`;
+    sqlmemos = `select * from gtd_mom ${mowhere} order by sd asc`;
+
     // 执行查询
-    if (sqlcalitems) {
+    if (sqlcalitems && seachCalendar) {
       resultActivity.calendaritems = await this.sqlExce.getExtLstByParam<PlanItemData>(sqlcalitems, ciargs) || new Array<PlanItemData>();
     }
 
-    if (sqlevents) {
+    if (sqlevents && seachEvent) {
       resultActivity.events = await this.sqlExce.getExtLstByParam<EventData>(sqlevents, evargs) || new Array<EventData>();
     }
 
-    if (sqlmemos) {
+    if (sqlmemos && seachMemo) {
       resultActivity.memos = await this.sqlExce.getExtLstByParam<MemoData>(sqlmemos, moargs) || new Array<MemoData>();
     }
 
