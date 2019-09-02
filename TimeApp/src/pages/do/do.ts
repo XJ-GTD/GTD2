@@ -13,6 +13,7 @@ import {DataConfig} from "../../service/config/data.config";
 import {FeedbackService} from "../../service/cordova/feedback.service";
 import {PageBoxComponent} from "../../components/page-box/page-box";
 import {TaskListComponent} from "../../components/task-list/task-list";
+import {CalendarService} from "../../service/business/calendar.service";
 import {EventService} from "../../service/business/event.service";
 import { PageDirection, IsSuccess } from "../../data.enum";
 
@@ -53,6 +54,7 @@ export class DoPage {
               private doService: DoService,
               private util: UtilService,
               private feedback: FeedbackService,
+              private calendarService: CalendarService,
               private eventService: EventService,
               private sqlite:SqliteExec) {
     moment.locale('zh-cn');
@@ -125,7 +127,7 @@ export class DoPage {
   }
 
   mergeUncompletedTask(tasks: Array<TaskData>, changed: TaskData) {
-    let activityType: string = this.getActivityType(changed);
+    let activityType: string = this.calendarService.getActivityType(changed);
 
     if (activityType != "TaskData") {
       return tasks;
