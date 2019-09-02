@@ -15,7 +15,7 @@ page-box {
     ion-scroll {
       width: 100%;
 
-      .scroll-content {
+      &> .scroll-content {
         padding: 0;
       }
     }
