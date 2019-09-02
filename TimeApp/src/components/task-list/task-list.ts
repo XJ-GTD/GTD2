@@ -18,12 +18,12 @@ import { Component, Output, EventEmitter } from "@angular/core";
               <ion-col>
                 <button ion-button icon-start clear small>
                   <ion-icon name="thumbs-up"></ion-icon>
-                  <div>12天前</div>
+                  <div>{{(task.evd + ' ' + task.evt) | formatedate:'withNow'}}</div>
                 </button>
               </ion-col>
               <ion-col>
                 <button ion-button clear small>
-                  <div>{{task.evd}}</div>
+                  <div>{{task.evd | formatedate:'CYYYY/M/DD'}}</div>
                 </button>
               </ion-col>
             </ion-row>
