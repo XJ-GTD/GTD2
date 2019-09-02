@@ -2106,6 +2106,80 @@ export class EventService extends BaseService {
   }
 
   /**
+   * 合并待处理任务列表
+   *
+   * 返回原待处理任务列表数组对象，控制页面刷新
+   *
+   * @author leon_xi@163.com
+   **/
+  mergeUncompletedTasks(tasks: Array<TaskData>, changed: TaskData) {
+    let activityType: string = this.getEventType(changed);
+
+    if (activityType != "TaskData") {
+      return tasks;
+    }
+
+    let taskids: Array<string> = new Array<string>();
+
+    tasks.reduce((taskids, value) => {
+      taskids.push(value.evi);
+      return taskids;
+    }, taskids);
+
+    // 更新原有任务信息
+    let index: number = taskids.indexOf(changed.evi);
+    if (index >= 0) {
+      if (changed.cs != IsSuccess.success) {
+        tasks[index] = changed;
+      } else {
+        tasks.splice(index, 1);
+      }
+    } else {
+      if (changed.cs != IsSuccess.success) {
+        let newIndex: number = tasks.findIndex((val, index, arr) => {
+          return moment(val.evd + ' ' + val.evt).diff(changed.evd + ' ' + changed.evt) >= 0;
+        });
+
+        if (newIndex > 0) {
+          tasks.splice(newIndex - 1, 0, changed);
+        } else if (newIndex == 0) {
+          tasks.unshift(changed);
+        } else {
+          tasks.push(changed);
+        }
+      }
+    }
+
+    return tasks;
+  }
+
+  /**
+   * 取得事件类型
+   *
+   * @author leon_xi@163.com
+   **/
+  getEventType(source: AgendaData | TaskData | MiniTaskData): string {
+
+    this.assertEmpty(source);
+
+    let src: any = source;
+
+    if (src.evi && src.ed) {    // AgendaData
+      return "AgendaData";
+    }
+
+    if (src.evi && src.cs) {    // TaskData
+      return "TaskData";
+    }
+
+    if (src.evi && !src.cs && !src.ed) {    // MiniTaskData
+      return "MiniTaskData";
+    }
+
+    this.assertFail();
+  }
+
+  /**
    * 备份,三张表备份
 	 * @author ying<343253410@qq.com>
    */

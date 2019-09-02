@@ -111,10 +111,10 @@ export class DoPage {
           // 多条数据同时更新/单条数据更新
           if (data instanceof Array) {
             for (let single of data) {
-              this.cachedtasks = this.mergeUncompletedTask(this.cachedtasks, single);
+              this.cachedtasks = this.eventService.mergeUncompletedTasks(this.cachedtasks, single);
             }
           } else {
-            this.cachedtasks = this.mergeUncompletedTask(this.cachedtasks, data);
+            this.cachedtasks = this.eventService.mergeUncompletedTasks(this.cachedtasks, data);
           }
         });
 
@@ -126,47 +126,6 @@ export class DoPage {
         target.tasklist = this.cachedtasks;
       }
     });
-  }
-
-  mergeUncompletedTask(tasks: Array<TaskData>, changed: TaskData) {
-    let activityType: string = this.calendarService.getActivityType(changed);
-
-    if (activityType != "TaskData") {
-      return tasks;
-    }
-
-    let taskids: Array<string> = new Array<string>();
-
-    tasks.reduce((taskids, value) => {
-      taskids.push(value.evi);
-      return taskids;
-    }, taskids);
-
-    // 更新原有任务信息
-    let index: number = taskids.indexOf(changed.evi);
-    if (index >= 0) {
-      if (changed.cs != IsSuccess.success) {
-        tasks[index] = changed;
-      } else {
-        tasks.splice(index, 1);
-      }
-    } else {
-      if (changed.cs != IsSuccess.success) {
-        let newIndex: number = tasks.findIndex((val, index, arr) => {
-          return moment(val.evd + ' ' + val.evt).diff(changed.evd + ' ' + changed.evt) >= 0;
-        });
-
-        if (newIndex > 0) {
-          tasks.splice(newIndex - 1, 0, changed);
-        } else if (newIndex == 0) {
-          tasks.unshift(changed);
-        } else {
-          tasks.push(changed);
-        }
-      }
-    }
-
-    return tasks;
   }
 
   gotoDetail(target: any) {
