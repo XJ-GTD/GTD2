@@ -10,7 +10,7 @@ import { Component, Output, EventEmitter } from "@angular/core";
           <ng-container *ngFor="let task of tasklist">
           <ion-card [ngClass]="{'complete': task.cs == '1'}" (click)="gotoDetail(task)">
             <ion-card-content>
-              <ion-checkbox color="dark" checked="false"></ion-checkbox>
+              <ion-checkbox color="dark" checked="false" (ionChange)="complete($event)"></ion-checkbox>
               <p>{{task.evn}}</p>
             </ion-card-content>
 
@@ -46,6 +46,9 @@ export class TaskListComponent {
   @Output()
   private onCreateNew: EventEmitter<any> = new EventEmitter<any>();
 
+  @Output()
+  private onComplete: EventEmitter<any> = new EventEmitter<any>();
+
   tasklist: Array<any> = new Array<any>();
 
   constructor() {
@@ -65,5 +68,9 @@ export class TaskListComponent {
 
   refresh() {
     this.onStartLoad.emit(this);
+  }
+
+  complete(target: any) {
+    this.onComplete.emit(target);
   }
 }

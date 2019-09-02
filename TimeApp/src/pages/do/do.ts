@@ -29,7 +29,7 @@ import { PageDirection } from "../../data.enum";
     <ion-content padding>
       <page-box title="Todo List" (onBack)="goBack()">
       <ng-container *ngFor="let day of days">
-        <task-list (onStartLoad)="getData($event, day)" (onCardClick)="gotoDetail($event)" (onCreateNew)="goNew()" #tasklist></task-list>
+        <task-list (onStartLoad)="getData($event, day)" (onCardClick)="gotoDetail($event)" (onCreateNew)="goNew()" (onComplete)="complete($event)" #tasklist></task-list>
       </ng-container>
       </page-box>
     </ion-content>
@@ -112,5 +112,9 @@ export class DoPage {
 
   goBack() {
     this.navCtrl.pop();
+  }
+
+  complete(target: any) {
+    console.log(target);
   }
 }
