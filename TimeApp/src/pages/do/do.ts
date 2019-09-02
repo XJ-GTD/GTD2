@@ -149,7 +149,17 @@ export class DoPage {
       }
     } else {
       if (changed.cs != IsSuccess.success) {
-        tasks.push(changed);
+        let newIndex: number = tasks.findIndex((val, index, arr) => {
+          return moment(val.evd + ' ' + val.evt).diff(changed.evd + ' ' + changed.evt) >= 0;
+        });
+
+        if (newIndex > 0) {
+          tasks.splice(newIndex - 1, 0, changed);
+        } else if (newIndex == 0) {
+          tasks.unshift(changed);
+        } else {
+          tasks.push(changed);
+        }
       }
     }
 
