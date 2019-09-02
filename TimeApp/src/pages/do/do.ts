@@ -14,7 +14,7 @@ import {FeedbackService} from "../../service/cordova/feedback.service";
 import {PageBoxComponent} from "../../components/page-box/page-box";
 import {TaskListComponent} from "../../components/task-list/task-list";
 import {EventService} from "../../service/business/event.service";
-import { PageDirection } from "../../data.enum";
+import { PageDirection, IsSuccess } from "../../data.enum";
 
 /**
  * Generated class for the 待处理/已处理任务一览 page.
@@ -40,6 +40,7 @@ export class DoPage {
 
   tasklist: TaskListComponent;
   @ViewChildren("tasklist") tasklists: QueryList<TaskListComponent>;
+  cachedtasks: Array<TaskData>;
 
   days: Array<string> = new Array<string>();
   topday: string = moment().format("YYYY/MM/DD");
@@ -96,12 +97,60 @@ export class DoPage {
     this.eventService.fetchPagedUncompletedTasks(day, direction)
     .then((d) => {
       if (d && d.length > 0) {
+
+        this.emitService.register("mwxing.calendar.activities.changed", (data) => {
+          if (!data) {
+            this.assertFail("事件mwxing.calendar.activities.changed无扩展数据");
+            return;
+          }
+
+          // 多条数据同时更新/单条数据更新
+          if (data instanceof Array) {
+            for (let single of data) {
+              this.cachedtasks = this.mergeUncompletedTask(this.cachedtasks, single);
+            }
+          } else {
+            this.cachedtasks = this.mergeUncompletedTask(this.cachedtasks, data);
+          }
+        });
+
+        this.cachedtasks = d;
+
         this.topday = d[0].evd;
         this.bottomday = d[d.length - 1].evd;
 
-        target.tasklist = d;
+        target.tasklist = this.cachedtasks;
       }
     });
+  }
+
+  mergeUncompletedTask(tasks: Array<TaskData>, changed: TaskData) {
+    let activityType: string = this.getActivityType(changed);
+
+    if (activityType != "TaskData") {
+      return tasks;
+    }
+
+    let taskids: Array<string> = new Array<string>();
+
+    tasks.reduce((taskids, value) => {
+      taskids.push(value.evi);
+      return taskids;
+    }, taskids);
+
+    // 更新原有任务信息
+    let index: number = taskids.indexOf(changed.evi);
+    if (index >= 0) {
+      if (changed.cs != IsSuccess.success) {
+        tasks[index] = changed;
+      }
+    } else {
+      if (changed.cs != IsSuccess.success) {
+        tasks.push(changed);
+      }
+    }
+
+    return tasks;
   }
 
   gotoDetail(target: any) {
