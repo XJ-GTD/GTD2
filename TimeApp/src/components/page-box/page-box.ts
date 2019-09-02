@@ -11,7 +11,7 @@ import { Events } from 'ionic-angular';
   selector: 'page-box',
   template: `<ion-grid class="box-page">
     <ion-row class="box-header">
-      {{title}}
+      <h1>{{title}}</h1>
       <button ion-button icon-only (click)="goBack()">
         <ion-icon ios="md-arrow-back" md="md-arrow-back"></ion-icon>
       </button>
