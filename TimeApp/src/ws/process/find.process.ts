@@ -166,9 +166,9 @@ export class FindProcess extends BaseProcess implements MQProcess {
   }
 
   // 根据相似性匹配本地联系人
-  private findsimilarityfs(ns: Array<any>): Array<Parter> {
-    let res: Array<Parter> = new Array<Parter>();
-    let rsbs: Map<string, Parter> = new Map<string, Parter>();
+  private findsimilarityfs(ns: Array<any>): Array<FsData> {
+    let res: Array<FsData> = new Array<FsData>();
+    let rsbs: Map<string, FsData> = new Map<string, FsData>();
     if (!ns || ns.length == 0) {
       return new Array<Parter>();
     }
