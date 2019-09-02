@@ -27,7 +27,7 @@ import { PageDirection } from "../../data.enum";
   selector: 'page-do',
   template: `
     <ion-content padding>
-      <page-box title="Todo List">
+      <page-box title="Todo List" (onBack)="goBack()">
       <ng-container *ngFor="let day of days">
         <task-list (onStartLoad)="getData($event, day)" (onCardClick)="gotoDetail($event)" (onCreateNew)="goNew()" #tasklist></task-list>
       </ng-container>
