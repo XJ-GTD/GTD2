@@ -16,6 +16,7 @@ import {BaseProcess} from "./base.process";
 import {BTbl} from "../../service/sqlite/tbl/b.tbl";
 import {UserConfig} from "../../service/config/user.config";
 import {EventService,Parter} from "../../service/business/event.service";
+import {CalendarService} from "../../service/business/calendar.service";
 
 /**
  * 查询联系人和日历
@@ -24,7 +25,7 @@ import {EventService,Parter} from "../../service/business/event.service";
  */
 @Injectable()
 export class FindProcess extends BaseProcess implements MQProcess {
-  constructor(private sqliteExec: SqliteExec, private fsService: FsService,
+  constructor(private sqliteExec: SqliteExec, private fsService: FsService,private calendarService:CalendarService,
               private glService: GlService, private util:UtilService,private eventService:EventService,
               private userConfig: UserConfig) {
     super();
@@ -63,7 +64,7 @@ export class FindProcess extends BaseProcess implements MQProcess {
       if (fs) {
         findData.scd.fs = fs;
       }
-      //TODO 获取全部的日程事件,目前无法event.service中无此函数获取相关数据,只有根据evi获取单个日程的方法
+      //TODO 使用findActivities ,该方法联系人尚未完善
       //let ctbls = await this.findScd(findData.scd);
 //    for (let j = 0, len = ctbls.length; j < len; j++) {
 //      let fss : Array<FsData> = new Array<FsData>();
