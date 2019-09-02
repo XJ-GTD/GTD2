@@ -1553,20 +1553,30 @@ export class EventService extends BaseService {
    * 接收任务保存到本地
    * @author ying<343253410@qq.com>
    */
-  async acceptReceivedTask(tt: TaskData,status: SyncDataStatus): Promise<TaskData> {
-  	this.assertEmpty(tt);     // 入参不能为空
-    this.assertEmpty(tt.evi);  // ID不能为空
-    this.assertNotEqual(tt.type, anyenum.EventType.Task);  //不是任务不能发送共享
+  async acceptReceivedTask(task: TaskData,status: SyncDataStatus): Promise<TaskData> {
+  	this.assertEmpty(task);     // 入参不能为空
+    this.assertEmpty(task.evi);  // ID不能为空
+    this.assertNotEqual(task.type, anyenum.EventType.Task);  //不是任务不能发送共享
     this.assertEmpty(status);   // 入参不能为空
 
+    task.del = status;
+    task.tb = SyncType.synch;
+
+    let sqls: Array<any> = new Array<any>();
+
     let evdb: EvTbl = new EvTbl();
-    Object.assign(evdb, tt);
-    evdb.del = status;
-    evdb.tb = SyncType.synch;
-    await this.sqlExce.repTByParam(evdb);
-    let backMEvent: TaskData = {} as TaskData;
-    Object.assign(backMEvent, evdb);
-    return backMEvent;
+    Object.assign(evdb, task);
+    sqls.push(evdb.rpTParam());
+
+    let tdb: TTbl = new TTbl();
+    Object.assign(tdb, tt);
+    sqls.push(tdb.rpTParam());
+
+    await this.sqlExce.batExecSqlByParam(sqls);
+
+    this.emitService.emit("mwxing.calendar.activities.changed", task);
+
+    return task;
   }
 
   /**
