@@ -2106,6 +2106,25 @@ export class EventService extends BaseService {
   }
 
   /**
+	 * 检索所有未完成的任务
+   *
+	 * @author leon_xi@163.com
+	 */
+  async fetchUncompletedTasks(): Promise<Array<TaskData>> {
+    let sql: string = `select ev.*, t.cs, t.isrt, t.cd, t.fd
+                      from gtd_ev ev
+                      left join gtd_t t
+                      on t.evi = ev.evi
+                      where ev.del = ?1 and ev.type = ?2 and t.cs = ?3
+                      order by ev.evd asc, ev.evt asc
+                      `;
+
+    let tasks: Array<TaskData> = await this.sqlExce.getExtLstByParam<TaskData>(sql, [DelType.undel, anyenum.EventType.Task, IsSuccess.wait]) || new Array<TaskData>();
+
+    return tasks;
+  }
+
+  /**
    * 合并待处理任务列表
    *
    * 返回原待处理任务列表数组对象，控制页面刷新
