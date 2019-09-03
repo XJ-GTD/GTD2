@@ -1479,7 +1479,7 @@ export class EventService extends BaseService {
   }
 
 	// 获取循环的时间
-	private getOutDays(rtjson : TxJson, repeatStartDay: string,repeatType: string ,repeatStep: number, options: Array<number>, repeatTimes: number,repeatEndDay: string) : Array<OutDate> {
+	private getOutDays(rtjson : RtJson, repeatStartDay: string,repeatType: string ,repeatStep: number, options: Array<number>, repeatTimes: number,repeatEndDay: string) : Array<OutDate> {
 		 let outDateArray:  Array<OutDate> = new  Array<OutDate>();
 		   // 根据结束类型设置重复次数/结束日期
     switch(rtjson.over.type) {
