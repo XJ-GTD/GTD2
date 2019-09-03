@@ -2727,7 +2727,3 @@ enum DUflag {
   update = "update"
 }
 
-export class OutDate {
-	days: Array<string> = new Array<string>,
-	repeatEndDay: string 
-}
