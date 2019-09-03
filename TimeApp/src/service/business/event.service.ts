@@ -1401,7 +1401,7 @@ export class EventService extends BaseService {
 		return task;
   }
 
-		private sqlparamAddTaskData(taskData: TaskData): RetParamTaskData {
+	private sqlparamAddTaskData(taskData: TaskData): RetParamTaskData {
 
     let ret = new RetParamTaskData();
     let outTasks = new Array<TaskData>();
@@ -1479,7 +1479,7 @@ export class EventService extends BaseService {
   }
 
 	// 获取循环的时间
-	private getOutDays(rtjson : RtJson, repeatStartDay: string,repeatType: string ,repeatStep: number, options: Array<number>, repeatTimes: number,repeatEndDay: string) : Array<OutDate> {
+	private getOutDays(rtjson : RtJson, repeatStartDay: string,repeatType: moment.unitOfTime.DurationConstructor ,repeatStep: number, options: Array<number>, repeatTimes: number,repeatEndDay: string) : Array<OutDate> {
 		 let outDateArray:  Array<OutDate> = new  Array<OutDate>();
 		   // 根据结束类型设置重复次数/结束日期
     switch(rtjson.over.type) {
@@ -1641,9 +1641,9 @@ export class EventService extends BaseService {
   private sqlparamAddTaskTt(ev: EvTbl,cs: string, isrt : string ): TTbl {
     //创建任务
 		let ttdb: TTbl = new TTbl();
-		ev.cs = ev.cs || anyenum.IsSuccess.wait;
-		ev.isrt = ev.isrt || anyenum.IsCreate.isNo;
-		ev.cd = moment(date).format("YYYY/MM/DD");
+		ttdb.cs = ev.cs || anyenum.IsSuccess.wait;
+		ttdb.isrt = ev.isrt || anyenum.IsCreate.isNo;
+		ttdb.cd = moment(date).format("YYYY/MM/DD");
     return ttdb;
   }
 
