@@ -1435,52 +1435,49 @@ export class EventService extends BaseService {
     let repeatTimes: number;
     // 结束日期（指定结束日期时使用指定结束日期，否则使用计算出来的结束日期）
     let repeatEndDay: string = "";
-		let outDateArray: Array<OutDate> = new Array<OutDate>();
+		let days: Array<string> = new Array<string>();
 		//获取重复日期
-		outDateArray = this.getOutDays(rtjson,repeatStartDay,repeatType ,repeatStep,options,repeatTimes,repeatEndDay);
-	  for (let outDate of outDateArray) {
-
-	  	for(let day of outDate.days) {
-	  		  // 判断是否超过结束日期
-		   	 if (!moment(day).isBefore(outDate.repeatEndDay)) {
-		      	continue;
-		  	  }
-		   	  let ev = new EvTbl();
-			    Object.assign(ev, taskData);
-			    ev.evi = this.util.getUuid();
-			    // 非重复日程及重复日程的第一条的rtevi（父日程evi）字段设为空。遵循父子关系，
-			    // 父记录的父节点字段rtevi设为空，子记录的父节点字段rtevi设为父记录的evi
-			    if (ret.sqlparam.length < 1) {
-			      ret.rtevi = ev.evi;
-			      taskData.evi = ev.evi;
-			      ev.rtevi = "";
-			    }else{
-			      ev.rtevi = ret.rtevi;
-			    }
-			    ev.evd = day;
-			    ev.type = anyenum.EventType.Task;
-			    ev.tb = anyenum.SyncType.unsynch;
-			    ev.del = anyenum.DelType.undel;
-			    ret.sqlparam.push(ev.rpTParam());
-			    //添加提醒的SQL
-		      if (txjson.reminds && txjson.reminds.length > 0) {
-   	 			  ret.sqlparam = [...ret.sqlparam ,...this.sqlparamAddTaskWa(ev,anyenum.ObjectType.Memo,txjson)];
-   			  }
-			    //创建任务SQL
-			     ret.sqlparam.push(this.sqlparamAddTaskTt(ev,taskData.cs, taskData.isrt))
-			    //新增数据需要返回出去
-			    let task2 = {} as TaskData;
-			    Object.assign(task2,ev);
-			    outTasks.push(task2);
-	  	}
-		}
+		days = this.getOutDays(rtjson,repeatStartDay,repeatType ,repeatStep,options,repeatTimes,repeatEndDay);
+  	for(let day of days) {
+  		  // 判断是否超过结束日期
+	   	 if (!moment(day).isBefore(repeatEndDay)) {
+	      	continue;
+	  	  }
+	   	  let ev = new EvTbl();
+		    Object.assign(ev, taskData);
+		    ev.evi = this.util.getUuid();
+		    // 非重复日程及重复日程的第一条的rtevi（父日程evi）字段设为空。遵循父子关系，
+		    // 父记录的父节点字段rtevi设为空，子记录的父节点字段rtevi设为父记录的evi
+		    if (ret.sqlparam.length < 1) {
+		      ret.rtevi = ev.evi;
+		      taskData.evi = ev.evi;
+		      ev.rtevi = "";
+		    }else{
+		      ev.rtevi = ret.rtevi;
+		    }
+		    ev.evd = day;
+		    ev.type = anyenum.EventType.Task;
+		    ev.tb = anyenum.SyncType.unsynch;
+		    ev.del = anyenum.DelType.undel;
+		    ret.sqlparam.push(ev.rpTParam());
+		    //添加提醒的SQL
+	      if (txjson.reminds && txjson.reminds.length > 0) {
+ 			  	ret.sqlparam = [...ret.sqlparam ,...this.sqlparamAddTaskWa(ev,anyenum.ObjectType.Memo,txjson)];
+		  	}
+		    //创建任务SQL
+		     ret.sqlparam.push(this.sqlparamAddTaskTt(ev,taskData.cs, taskData.isrt))
+		    //新增数据需要返回出去
+		    let task2 = {} as TaskData;
+		    Object.assign(task2,ev);
+		    outTasks.push(task2);
+  	}
   	ret.outTasks = outTasks;
   	return ret;
   }
 
 	// 获取循环的时间
-	private getOutDays(rtjson : RtJson, repeatStartDay: string,repeatType: moment.unitOfTime.DurationConstructor ,repeatStep: number, options: Array<number>, repeatTimes: number,repeatEndDay: string) : Array<OutDate> {
-		 let outDateArray:  Array<OutDate> = new  Array<OutDate>();
+	private getOutDays(rtjson : RtJson, repeatStartDay: string,repeatType: moment.unitOfTime.DurationConstructor ,repeatStep: number, options: Array<number>, repeatTimes: number,repeatEndDay: string) : Array<string> {
+		let days: Array<string> = new Array<string>();
 		   // 根据结束类型设置重复次数/结束日期
     switch(rtjson.over.type) {
       case anyenum.OverType.times :
@@ -1535,8 +1532,7 @@ export class EventService extends BaseService {
 
     // 循环开始日期 ~ 结束日期
     while (moment(stepDay).isBefore(repeatEndDay)) {
-    		let days: Array<string> = new Array<string>();
-    		let outDate: OutDate = new OutDate();
+    	
 	      if (options.length > 0) {
 	        // 星期多选/每月日期多选
 	        if (repeatType == "weeks") {
@@ -1588,11 +1584,8 @@ export class EventService extends BaseService {
 	        days.push(stepDay);
 	      }
 	       stepDay = moment(stepDay).add(repeatStep, repeatType).format("YYYY/MM/DD");
-	       outDate.days = days;
-	       outDate.repeatEndDay = repeatEndDay;
-	       outDateArray.push(outDate);
       }
-      return outDateArray;
+      return days;
 	}
 
 
@@ -2725,9 +2718,4 @@ export class TxJson {
 enum DUflag {
   del = "del",
   update = "update"
-}
-
-export class OutDate {
-	days: Array<string> = new Array<string>();
-	repeatEndDay: string = "";
 }
