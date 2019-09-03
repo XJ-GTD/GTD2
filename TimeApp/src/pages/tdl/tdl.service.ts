@@ -19,8 +19,8 @@ export class TdlService {
     return this.calendarService.getCalendarActivities();
   }
 
-  public throughData(direction: PageDirection){
-    this.calendarService.getCalendarActivities(direction);
+  public throughData(direction: PageDirection):Promise<any>{
+    return this.calendarService.getCalendarActivities(direction);
   }
 
   // /**

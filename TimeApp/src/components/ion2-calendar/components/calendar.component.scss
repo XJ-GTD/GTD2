@@ -1,4 +1,19 @@
 ion-calendar {
+  .swiper-slide{
+    height: 0px;
+
+  }
+  .swiper-slide-prev{
+    height: 100%;
+
+  }
+  .swiper-slide-next{
+    height: 100%;
+
+  }
+  .swiper-slide-active{
+    height: 100%;
+  }
 
   .yearshow{
     font-family: "Arial";

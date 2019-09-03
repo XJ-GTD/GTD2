@@ -1,13 +1,19 @@
 import { Injectable } from '@angular/core';
-import { ModalController } from 'ionic-angular';
+import {ModalController, Platform} from 'ionic-angular';
 import { ModalOptions, CalendarModalOptions } from './calendar.model'
 import { CalendarService } from './services/calendar.service';
+import {CalendarComponent} from "./components/calendar.component";
+import {CalendarAnimation} from "./calendar-animation";
 
 @Injectable()
 export class CalendarController {
 
   constructor(public modalCtrl: ModalController,
               public calSvc: CalendarService) {
+  }
+
+  static create(cmp: CalendarComponent, plt: Platform):CalendarAnimation{
+    return new CalendarAnimation(plt,cmp);
   }
 
   /**

@@ -22,7 +22,7 @@ export class CalendarService {
   constructor(private sqlite:SqliteExec,
               private readlocal:LocalcalendarService,
               private util:UtilService,
-              private  busiServ: PgBusiService,) {
+              private busiServ: PgBusiService) {
 
   }
 

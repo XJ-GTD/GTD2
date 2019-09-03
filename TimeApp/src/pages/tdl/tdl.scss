@@ -3,14 +3,9 @@ page-tdl {
   position: relative;
   display: block;
 
-  .scroll-content {
-    overflow-y: auto;
-  }
-
   div {
     position: relative;
   }
-
 
   ion-grid.grid {
     padding: 0px;

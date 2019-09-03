@@ -24,7 +24,6 @@ export const MONTH_VALUE_ACCESSOR: any = {
   providers: [MONTH_VALUE_ACCESSOR],
   template: `
     <div [class]="color">
-      <ng-template [ngIf]="!_isRange" [ngIfElse]="rangeBox">
         <div class="days-box">
           <ng-template ngFor let-day [ngForOf]="month.days" [ngForTrackBy]="trackByTime">
             <div class="days">
@@ -53,7 +52,6 @@ export const MONTH_VALUE_ACCESSOR: any = {
             </div>
           </ng-template>
         </div>
-      </ng-template>
       
     </div>
   `

@@ -1,5 +1,12 @@
-import {Component, ElementRef, Renderer2, ViewChild} from '@angular/core';
-import {Content, MenuController, ModalController, ScrollEvent,} from 'ionic-angular';
+import {Component, ElementRef, Renderer, Renderer2, ViewChild} from '@angular/core';
+import {
+  Content, DomController,
+  GestureController,
+  MenuController,
+  ModalController,
+  Platform,
+  ScrollEvent,
+} from 'ionic-angular';
 import {TdlService} from "./tdl.service";
 import {DataConfig} from "../../service/config/data.config";
 import * as moment from "moment";
@@ -9,6 +16,9 @@ import {UtilService} from "../../service/util-service/util.service";
 import {FeedbackService} from "../../service/cordova/feedback.service";
 import {DayActivityData, MonthActivityData} from "../../service/business/calendar.service";
 import {PageDirection} from "../../data.enum";
+import {TdlGesture} from "./tdl-gestures";
+import {Ion} from "ionic-angular/umd";
+import {CalendarComponent} from "../../components/ion2-calendar";
 
 /**
  * Generated class for the 日程列表 page.
@@ -39,7 +49,7 @@ import {PageDirection} from "../../data.enum";
     <ion-content #contentD>
       <ion-grid #grid4Hight>
         <ng-template ngFor let-monthActivityData [ngForOf]="monthActivityDatas">
-          <ion-row class="dayagenda-month" [class.month7]="true" >
+          <ion-row class="dayagenda-month" [class.month7]="true">
             <p>
               {{monthActivityData.month  | formatedate :"CYYYY/MM/ND"}}
             </p>
@@ -49,8 +59,8 @@ import {PageDirection} from "../../data.enum";
           </ion-row>
           <ion-row>
             <ion-grid>
-              <ng-template ngFor let-days [ngForOf]="monthActivityData.lsdays">
-                <ion-row class="dayagenda-week"  *ngIf="(days.day | formatedate:'DWEEK') == '7'">
+              <ng-template ngFor let-days [ngForOf]="monthActivityData.arraydays">
+                <ion-row class="dayagenda-week" *ngIf="(days.day | formatedate:'DWEEK') == '7'">
                   <p>
                     {{days.day | formatedate :"CYYYY/MM/DD"}}-{{days.day | formatedate :"ADD7CYYYY/MM/DD"}}
                   </p>
@@ -116,7 +126,7 @@ import {PageDirection} from "../../data.enum";
 
 
 })
-export class TdlPage {
+export class TdlPage{
 
   @ViewChild('contentD') contentD: Content;
   @ViewChild('grid4Hight') grid: ElementRef;
@@ -131,6 +141,8 @@ export class TdlPage {
   headerDate: string;
   headerMoment: moment.Moment;
 
+  _gesture: TdlGesture;
+
 
   //画面数据List
   monthActivityDatas: Array<MonthActivityData> = new Array<MonthActivityData>();
@@ -144,47 +156,68 @@ export class TdlPage {
               private util: UtilService,
               private feedback: FeedbackService,
               private renderer2: Renderer2,
+              private _plt: Platform,
+              private _gestureCtrl: GestureController,
+              private _domCtrl: DomController
   ) {
   }
 
+  getNativeElement():any{
+    return this.contentD._scrollContent.nativeElement;
+  }
+
+
+  setScroll(scroll: boolean) {
+    if (scroll) {
+      this.renderer2.setStyle(this.contentD._scrollContent.nativeElement, "overflow-y", "auto");
+      this._gesture.unlisten();
+    } else {
+      this.renderer2.setStyle(this.contentD._scrollContent.nativeElement, "overflow-y", "hidden");
+      this._gesture.listen();
+    }
+
+  }
+
+  regeditCalendar(calda:CalendarComponent){
+    this._gesture = new TdlGesture(this._plt, this, this._gestureCtrl, this._domCtrl,calda);
+    this._gesture.listen();
+  }
+
   ngOnInit() {
+    this.tdlServ.initLsData().then(data => {
+      this.monthActivityDatas = data;
+      this.gotoEl(moment().format("YYYYMMDD"));
+    });
 
     //this.contentD.enableJsScroll();
 
     this.emitService.registerSelectDate((selectDate: moment.Moment) => {
       this.gotoEl(selectDate.format("YYYYMMDD"));
-
-      // this.createData(selectDate, 0, 0).then(data => {
-      //   // this.scdlDataList.push(...data);
-      //
-      //   // this.isgetData = !this.isgetData;
-      //
-      //   this.gotoEl(selectDate.format("YYYYMMDD"));
-      // }).catch(error => {
-      //   // this.isgetData = !this.isgetData;
-      // });
     });
-
-
-
-    // this.emitService.registerRef((data) => {
-    //   this.createData(this.headerMoment, 0, 0).then(data => {
-    //     this.scdlDataList.push(...data);
-    //
-    //     this.isgetData = !this.isgetData;
-    //
-    //     this.gotoEl(this.headerMoment.format("YYYYMMDD"));
-    //   }).catch(error => {
-    //     this.isgetData = !this.isgetData;
-    //   });
-    // })
 
 
     this.contentD.ionScroll.subscribe(($event: ScrollEvent) => {
 
+      // //显示当前顶部滑动日期
+      // for (let scdlData of this.monthActivityDatas) {
+      //   let el = this.el.nativeElement.querySelector("#day" + scdlData.id);
+      //   if (el && $event.scrollTop - el.offsetTop < el.clientHeight && $event.scrollTop - el.offsetTop > 0) {
+      //     this.headerDate = moment(scdlData.d).format("YYYY/MM/DD");
+      //     this.headerMoment = moment(scdlData.d);
+      //     //this.feedback.audioTrans();
+      //     break;
+      //   }
+      // }
+
       if ($event.directionY == 'up') {
         if ($event.scrollTop < 10) {
-          this.tdlServ.throughData(PageDirection.PageDown);
+          let monthActivityData = this.monthActivityDatas[0];
+          let scdId = monthActivityData.arraydays[0].day;
+          scdId = moment(scdId).format("YYYYMMDD")
+
+          this.tdlServ.throughData(PageDirection.PageDown).then(data => {
+            this.gotoEl(scdId);
+          })
         }
       }
 
@@ -193,9 +226,6 @@ export class TdlPage {
           this.tdlServ.throughData(PageDirection.PageUp);
         }
       }
-    });
-    this.tdlServ.initLsData().then(data => {
-        this.monthActivityDatas = data;
     });
   }
 
@@ -217,7 +247,7 @@ export class TdlPage {
         this.headerMoment = moment(id);
         if (this.currDayel) {
           this.gridHight = this.grid.nativeElement.clientHeight;
-          this.contentD.scrollTo(0, this.currDayel.offsetTop + 2, 0).then(datza => {
+          this.contentD.scrollTo(0, this.currDayel.offsetTop + 2, 200).then(datza => {
             this.gridHight = this.grid.nativeElement.clientHeight;
           })
         } else {
