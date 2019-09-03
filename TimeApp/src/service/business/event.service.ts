@@ -47,7 +47,9 @@ export class EventService extends BaseService {
       for (let j = 0 , len = pullAgdatas.length; j < len ; j++){
         let agd = {} as AgendaData;
         agd = pullAgdatas[j];
-        agd.tb  = status;
+        agd.del = status;
+        agd.tb = SyncType.synch;
+
         let ev = new EvTbl();
         Object.assign(ev,agd);
         sqlparam.push(ev.rpTParam());
@@ -1391,7 +1393,7 @@ export class EventService extends BaseService {
 			let retParamTaskData = new RetParamTaskData();
 			retParamTaskData = this.sqlparamAddTaskData(task);
 			sqlparam = [...retParamTaskData.sqlparam];
-      await this.sqlExce.batExecSqlByParam(sqlparam);	
+      await this.sqlExce.batExecSqlByParam(sqlparam);
 		}
 
     this.emitService.emit("mwxing.calendar.activities.changed", task);
@@ -1437,7 +1439,7 @@ export class EventService extends BaseService {
 		//获取重复日期
 		outDateArray = this.getOutDays(txjson,repeatStartDay,repeatType ,repeatStep,options,repeatTimes,repeatEndDay);
 	  for (let outDate of outDateArray) {
-	  	
+
 	  	for(let day of outDate.days) {
 	  		  // 判断是否超过结束日期
 		   	 if (!moment(day).isBefore(outDate.repeatEndDay)) {
@@ -1475,7 +1477,7 @@ export class EventService extends BaseService {
   	ret.outTasks = outTasks;
   	return ret;
   }
-	
+
 	// 获取循环的时间
 	private getOutDays(txjson : TxJson, repeatStartDay: string,repeatType: string ,repeatStep: number, options: Array<number>, repeatTimes: number,repeatEndDay: string) : Array<OutDate> {
 		 let outDateArray:  Array<OutDate> = new  Array<OutDate>();
@@ -1539,10 +1541,10 @@ export class EventService extends BaseService {
 	        // 星期多选/每月日期多选
 	        if (repeatType == "weeks") {
 	          let dayOfWeek: number = Number(moment(stepDay).format("d"));
-	
+
 	          for (let option of options) {
 	            let duration: number = option - dayOfWeek;
-	
+
 	            if (duration == 0) {
 	              days.push(stepDay);     // 当前日期为重复日期
 	            } else if (duration > 0) {
@@ -1553,20 +1555,20 @@ export class EventService extends BaseService {
 	              days.push(moment(stepDay).add(7, "days").subtract(Math.abs(duration), "days").format("YYYY/MM/DD"));
 	            }
 	          }
-	
+
 	        } else if (repeatType == "months") {
 	          let dayOfMonth: number = Number(moment(stepDay).format("D")) - 1;   // 0 - 30 和options设置日期匹配
 	          let maxDayOfMonth: number = moment().daysInMonth();
-	
+
 	          for (let option of options) {
-	
+
 	            // 当月没有这一天
 	            if (option > maxDayOfMonth) {
 	              continue;
 	            }
-	
+
 	            let duration: number = option - dayOfMonth;
-	
+
 	            if (duration == 0) {
 	              days.push(stepDay);     // 当前日期为重复日期
 	            } else if (duration > 0) {
@@ -1577,7 +1579,7 @@ export class EventService extends BaseService {
 	              days.push(moment(stepDay).add(1, "months").dates(option + 1).format("YYYY/MM/DD"));
 	            }
 	          }
-	
+
 	        } else {
 	          this.assertFail();    // 预期外值, 程序异常
 	        }
@@ -1617,8 +1619,8 @@ export class EventService extends BaseService {
     }
     return wa;
   }
-  
-  
+
+
   	/**
    *  获取任务SQL
    * @param {EvTbl}
