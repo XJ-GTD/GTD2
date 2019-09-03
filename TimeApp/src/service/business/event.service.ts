@@ -1463,9 +1463,9 @@ export class EventService extends BaseService {
 			    ev.del = anyenum.DelType.undel;
 			    ret.sqlparam.push(ev.rpTParam());
 			    //添加提醒的SQL
-			    if (txjson.type != anyenum.TxType.close) {
-			      ret.sqlparam.push(this.sqlparamAddTaskWa(ev,anyenum.ObjectType.Memo,txjson).rpTParam());
-			    }
+		      if (txjson.reminds && txjson.reminds.length > 0) {
+   	 			  ret.sqlparam = [...ret.sqlparam ,...this.sqlparamAddTaskWa(ev,anyenum.ObjectType.Memo,txjson)];
+   			  }
 			    //创建任务SQL
 			     ret.sqlparam.push(this.sqlparamAddTaskTt(ev,taskData.cs, taskData.isrt))
 			    //新增数据需要返回出去
@@ -1602,22 +1602,33 @@ export class EventService extends BaseService {
    * @param {ev: EvTbl,st:string ,sd:string,txjson :TxJson }
    * @returns {ETbl}
    */
-  private sqlparamAddTaskWa(ev: EvTbl,obtType: string, txjson :TxJson ): WaTbl {
-    let wa = new WaTbl();//提醒表
-    wa.wai = this.util.getUuid();
-    wa.obt = obtType;
-    wa.obi = ev.evi;
-    //todo tx需要解析
-    //let tx  = ;
-    if (txjson.type != anyenum.TxType.close) {
-      wa.st = ev.evn;
-      let time = parseInt(txjson.type);
-     	let date = moment(ev.evd + " " + "08:00").subtract(time, 'm').format("YYYY/MM/DD HH:mm");
-      wa.wd = moment(date).format("YYYY/MM/DD");
-      wa.wt = moment(date).format("HH:mm");
-      //console.log('-------- 插入提醒表 --------');
+  private sqlparamAddTaskWa(ev: EvTbl,obtType: string, txjson :TxJson, al: string = "" ,st:string=""): Array<any> {
+    let ret = new Array<any>();
+    if (txjson.reminds && txjson.reminds.length > 0) {
+      for ( let j = 0, len = txjson.reminds.length ;j < len ; j++) {
+        let wa = new WaTbl();//提醒表
+        let remind : anyenum.RemindTime;
+        wa.wai = this.util.getUuid();
+        wa.obt = obtType;
+        wa.obi = ev.evi;
+        remind = txjson.reminds[j];
+        wa.st = ev.evn;
+        let time = parseInt(remind);
+       let date;
+        if (al == anyenum.IsWholeday.NonWhole) {
+          date = moment(ev.evd + " " + st).subtract(time, 'm').format("YYYY/MM/DD HH:mm");
+
+        } else {
+          date = moment(ev.evd + " " + "08:00").subtract(time, 'm').format("YYYY/MM/DD HH:mm");
+
+        }
+        wa.wd = moment(date).format("YYYY/MM/DD");
+        wa.wt = moment(date).format("HH:mm");
+        ret.push(wa.rpTParam());
+        //console.log('-------- 插入提醒表 --------');
+      }
     }
-    return wa;
+    return ret;
   }
 
 
