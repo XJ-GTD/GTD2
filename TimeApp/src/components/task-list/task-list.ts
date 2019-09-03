@@ -4,7 +4,7 @@ import { Component, Output, Input, EventEmitter } from "@angular/core";
   selector: 'task-list',
   template: `
   <ion-grid>
-    <ion-row class="h100" align-items-center>
+    <ion-row align-items-center>
       <ion-grid>
         <ion-row>
           <ng-container *ngFor="let task of tasklist">
