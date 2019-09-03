@@ -53,7 +53,7 @@ export const ION_CAL_VALUE_ACCESSOR: Provider = {
         </div>
       </ion-card-header>
       <ion-card-content>
-        <ion-slides speed="1000" (ionSlideWillChange)="slideChanged($event)" (ionSlidePrevStart)="ionSlidePrevStart()" (ionSlidePrevEnd)="ionSlidePrevEnd()" (ionSlideProgress)="ionSlideProgress()">
+        <ion-slides (ionSlideWillChange)="slideChanged($event)" (ionSlidePrevStart)="ionSlidePrevStart()" (ionSlidePrevEnd)="ionSlidePrevEnd()" (ionSlideProgress)="ionSlideProgress()">
           <ion-slide *ngFor="let monthOpt of monthOpts">
             <div class="yearshow">{{monthOpt.original.year}}</div>
             <ion-calendar-week color="transparent">
@@ -207,9 +207,12 @@ export class CalendarComponent implements OnInit {
   }
 
   ngAfterViewInit() {
-    if (!this.calendarAnimation) {
-      this.calendarAnimation = CalendarController.create(this, this.plt)
-    }
+    setTimeout(()=>{
+      if (!this.calendarAnimation) {
+        this.calendarAnimation = CalendarController.create(this, this.plt)
+      }
+
+    },1000)
   }
 
   initMonthData() {

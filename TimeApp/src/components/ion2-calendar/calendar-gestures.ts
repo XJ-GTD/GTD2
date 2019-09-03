@@ -39,7 +39,7 @@ export class CalendarGesture extends SlideGesture {
   };
 
   onSlideStart(_slide?: SlideData, _ev?: any): void{
-    this.calendarComponent.calendarAnimation.nextMonthStart();
+    // this.calendarComponent.calendarAnimation.nextMonthStart();
     // console.log("onSlideStart=====" );
 
   }

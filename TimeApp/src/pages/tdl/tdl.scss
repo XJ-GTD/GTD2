@@ -11,8 +11,17 @@ page-tdl {
     padding: 0px;
 
     .row {
-      padding: 4px 0 4px 0;
+      margin-top: 4px;
+      margin-bottom: 4px;
     }
+
+    .dayagenda-none-display{
+      display: none;
+    }
+    .dayagenda-display{
+      display:block;
+    }
+
   }
 
 
@@ -233,7 +242,6 @@ page-tdl {
   }
 
   .dayagenda-no-content{
-    width: 100%;
     margin: 0 15px 0 15px;
     height: 34px;
     background:rgba(237,241,254,.05);
@@ -249,15 +257,7 @@ page-tdl {
     }
   }
 
-  .dayagenda-none-display{
-    display: none;
-  }
-  .dayagenda-display{
-    display:block;
-  }
-
   .dayagenda-week{
-    width: 100%;
     margin: 0 15px 0 15px;
     height: 34px;
     background:rgba(237,241,254,.05);

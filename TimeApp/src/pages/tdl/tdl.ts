@@ -57,68 +57,63 @@ import {CalendarComponent} from "../../components/ion2-calendar";
               感知天气冷暖我们生来便会，感知人情冷暖还要慢慢体会。
             </p>
           </ion-row>
-          <ion-row>
-            <ion-grid>
-              <ng-template ngFor let-days [ngForOf]="monthActivityData.arraydays">
-                <ion-row class="dayagenda-week" *ngIf="(days.day | formatedate:'DWEEK') == '7'">
-                  <p>
-                    {{days.day | formatedate :"CYYYY/MM/DD"}}-{{days.day | formatedate :"ADD7CYYYY/MM/DD"}}
-                  </p>
-                </ion-row>
-                <ng-template [ngIf]="days.events.length > 0 || days.calendaritems.length > 0 || days.memos.length > 0 "
-                             [ngIfElse]="noscd">
-                  <ion-row class="anch" id="day{{days.day | formatedate:'YYYYMMDD'}}">
-                    <div class="daynav">
-                      <div class="dayheader">
+          <ng-template ngFor let-days [ngForOf]="monthActivityData.arraydays">
+            <ion-row class="dayagenda-week" *ngIf="(days.day | formatedate:'DWEEK') == '7'">
+              <p>
+                {{days.day | formatedate :"CYYYY/MM/DD"}}-{{days.day | formatedate :"ADD7CYYYY/MM/DD"}}
+              </p>
+            </ion-row>
+            <ng-template [ngIf]="days.events.length > 0 || days.calendaritems.length > 0 || days.memos.length > 0 "
+                         [ngIfElse]="noscd">
+              <ion-row class="anch" id="day{{days.day | formatedate:'YYYYMMDD'}}">
+                <div class="daynav">
+                  <div class="dayheader">
 
-                        <div class="d-fsize text-center">{{days.day | formatedate :"CWEEK"}}</div>
-                        <div class="ym-fsize text-center ">{{days.day | formatedate:"DD"}}</div>
-                        <div class="ys-fsize text-center " *ngFor="let jt of days.calendaritems"
-                             (click)="toDetail(jt.si,jt.sd,'3')">{{jt.spn}}</div>
-                      </div>
-                      <div class="d-title text-center ">
-                        <div class="first d-title-chr">日记</div>
-                        <div class=" d-title-chr">{{days.events.length}}条日程</div>
-                        <div class=" d-title-chr">{{days.calendaritems.length}}条日历项</div>
-                        <div class=" d-title-chr">{{days.memos.length}}条日记</div>
-                      </div>
-                    </div>
-                    <ion-grid>
-                      <ion-row *ngFor="let event of days.events;" (click)="toDetail(event.evi,event.evd,event.gs)">
-                        <div class="dayagenda-content">
-                          <div class="agendaline2">
-                            <div class="agenda-icon">
-                              <div class="icon icon1"></div>
-                              <div class="icon icon2"></div>
-                            </div>
-                            <div class="agenda-sn">{{event.evn}}</div>
-                          </div>
-                          <div class="agendaline1">
-                            <div class="agenda-st">{{this.util.adStrShow("09:00")}}</div>
-                            <!--<div class="dot-set " [ngStyle]="{'background-color':scd.p.jc}"></div>-->
+                    <div class="d-fsize text-center">{{days.day | formatedate :"CWEEK"}}</div>
+                    <div class="ym-fsize text-center ">{{days.day | formatedate:"DD"}}</div>
+                    <div class="ys-fsize text-center " *ngFor="let jt of days.calendaritems"
+                         (click)="toDetail(jt.si,jt.sd,'3')">{{jt.spn}}</div>
+                  </div>
+                  <div class="d-title text-center ">
+                    <div class="first d-title-chr">日记</div>
+                    <div class=" d-title-chr">{{days.events.length}}条日程</div>
+                    <div class=" d-title-chr">{{days.calendaritems.length}}条日历项</div>
+                    <div class=" d-title-chr">{{days.memos.length}}条日记</div>
+                  </div>
+                </div>
+              </ion-row>
 
-                            <!--<ion-chip *ngIf="scd.gs == '1'" >-->
-                            <!--<ion-avatar>-->
-                            <!--<img src="{{scd.fs.bhiu}}"/>-->
-                            <!--</ion-avatar>-->
-                            <!--<ion-label [class.newMessage]="scd.du != '0'">{{scd.fs.ran}}</ion-label>-->
-                            <!--</ion-chip>-->
-                          </div>
-                        </div>
-                      </ion-row>
-                    </ion-grid>
-                  </ion-row>
-                </ng-template>
-                <ng-template #noscd>
-                  <ion-row class="anch dayagenda-none-display" id="day{{days.day | formatedate:'YYYYMMDD'}}">
-                    <div class="dayagenda-no-content " (click)="toAdd(days.day)">
-                      <p>{{days.day | formatedate :"CYYYY/MM/DD"}}</p>
+              <ion-row *ngFor="let event of days.events;" (click)="toDetail(event.evi,event.evd,event.gs)">
+                <div class="dayagenda-content">
+                  <div class="agendaline2">
+                    <div class="agenda-icon">
+                      <div class="icon icon1"></div>
+                      <div class="icon icon2"></div>
                     </div>
-                  </ion-row>
-                </ng-template>
-              </ng-template>
-            </ion-grid>
-          </ion-row>
+                    <div class="agenda-sn">{{event.evn}}</div>
+                  </div>
+                  <div class="agendaline1">
+                    <div class="agenda-st">{{this.util.adStrShow("09:00")}}</div>
+                    <!--<div class="dot-set " [ngStyle]="{'background-color':scd.p.jc}"></div>-->
+
+                    <!--<ion-chip *ngIf="scd.gs == '1'" >-->
+                    <!--<ion-avatar>-->
+                    <!--<img src="{{scd.fs.bhiu}}"/>-->
+                    <!--</ion-avatar>-->
+                    <!--<ion-label [class.newMessage]="scd.du != '0'">{{scd.fs.ran}}</ion-label>-->
+                    <!--</ion-chip>-->
+                  </div>
+                </div>
+              </ion-row>
+            </ng-template>
+            <ng-template #noscd>
+              <ion-row class="anch dayagenda-none-display" id="day{{days.day | formatedate:'YYYYMMDD'}}">
+                <div class="dayagenda-no-content " (click)="toAdd(days.day)">
+                  <p>{{days.day | formatedate :"CYYYY/MM/DD"}}</p>
+                </div>
+              </ion-row>
+            </ng-template>
+          </ng-template>
         </ng-template>
       </ion-grid>
     </ion-content>
@@ -126,7 +121,7 @@ import {CalendarComponent} from "../../components/ion2-calendar";
 
 
 })
-export class TdlPage{
+export class TdlPage {
 
   @ViewChild('contentD') contentD: Content;
   @ViewChild('grid4Hight') grid: ElementRef;
@@ -162,7 +157,7 @@ export class TdlPage{
   ) {
   }
 
-  getNativeElement():any{
+  getNativeElement(): any {
     return this.contentD._scrollContent.nativeElement;
   }
 
@@ -178,8 +173,8 @@ export class TdlPage{
 
   }
 
-  regeditCalendar(calda:CalendarComponent){
-    this._gesture = new TdlGesture(this._plt, this, this._gestureCtrl, this._domCtrl,calda);
+  regeditCalendar(calda: CalendarComponent) {
+    this._gesture = new TdlGesture(this._plt, this, this._gestureCtrl, this._domCtrl, calda);
     this._gesture.listen();
   }
 

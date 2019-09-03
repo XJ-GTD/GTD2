@@ -14,9 +14,6 @@ export class CalendarAnimation{
   viewHeight:number;
   viewAni:Animation;
 
-  //月份
-  ani2:Animation;
-
   constructor(
     private plt:Platform,private calendar:CalendarComponent) {
     this.ani = new Animation(plt);
@@ -33,13 +30,6 @@ export class CalendarAnimation{
     // this.viewAni.fromTo('top',"0px",this.viewHeight * -1 + "px");
     this.ani.add(this.viewAni);
 
-
-    this.ani2 = new Animation(plt);
-
-    this.ani2
-      .easing('cubic-bezier(0.0, 0.0, 0.2, 1)')
-      .easingReverse('cubic-bezier(0.4, 0.0, 0.6, 1)')
-      .duration(280);
   }
 
   closeView(done,animated){
@@ -82,27 +72,6 @@ export class CalendarAnimation{
     var factor = 1 - Math.min(Math.abs(velocity) / 4, 0.7);
     var dur = ani.getDuration() * factor;
     ani.progressEnd(shouldComplete, currentStepValue, dur);
-  }
-
-  nextMonthStart(){
-  }
-
-  nextMonthProgess(stepValue:number){
-    this.ani.progressStep(stepValue);
-  }
-  nextMonthEnd(shouldComplete: boolean, currentStepValue: number, velocity: number, done: Function){
-
-  }
-
-
-  prvMonthStart(){
-  }
-
-  prvMonthProgess(stepValue:number){
-    this.ani.progressStep(stepValue);
-  }
-  prvMonthEnd(shouldComplete: boolean, currentStepValue: number, velocity: number, done: Function){
-
   }
 }
 
