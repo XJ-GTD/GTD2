@@ -4,11 +4,13 @@ import { FormatstringPipe } from './formatstring/formatstring';
 import { FormatWeatherPipe } from './formatweather/formatweather';
 import { FormatRepeatPipe } from './formatrepeat/formatrepeat';
 import { FormatRemindPipe } from './formatremind/formatremind';
+import { FormatUserPipe } from './formatuser/formatuser';
 
 @NgModule({
 	declarations: [
 		FormatedatePipe,
 		FormatstringPipe,
+		FormatUserPipe,
 		FormatWeatherPipe,
 		FormatRepeatPipe,
 		FormatRemindPipe
@@ -17,6 +19,7 @@ import { FormatRemindPipe } from './formatremind/formatremind';
 	exports: [
 		FormatedatePipe,
 		FormatstringPipe,
+		FormatUserPipe,
 		FormatWeatherPipe,
 		FormatRepeatPipe,
 		FormatRemindPipe

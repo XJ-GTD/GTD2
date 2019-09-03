@@ -1,11 +1,11 @@
 page-box {
   .box-page {
     height: calc(100vmax - 32px);
-    background-color: #f1f1f1;
+    background-color: #e1e1e1;
   }
 
   .box-header {
-    height: 20vmax;
+    height: calc(20vmax);
 
     h1 {
       position: absolute;
@@ -15,8 +15,8 @@ page-box {
 
     button {
       position: absolute;
-      top: 10vmax;
       right: 26px;
+      bottom: 80vmax;
     }
   }
 
@@ -25,10 +25,13 @@ page-box {
     background-color: #fafafa;
 
     ion-scroll {
-      width: 100%;
+      width: calc(100vmin - 32px);
+      height: calc(80vmax - 64px);
+      position: absolute;
+      bottom: 32px !important;
 
       &> .scroll-content {
-        padding: 0 !important;
+        padding: 20px 0 0 0 !important;
       }
     }
   }

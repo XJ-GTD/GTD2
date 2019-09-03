@@ -13,8 +13,9 @@ import {DataConfig} from "../../service/config/data.config";
 import {FeedbackService} from "../../service/cordova/feedback.service";
 import {PageBoxComponent} from "../../components/page-box/page-box";
 import {TaskListComponent} from "../../components/task-list/task-list";
-import {EventService} from "../../service/business/event.service";
-import { PageDirection } from "../../data.enum";
+import {CalendarService} from "../../service/business/calendar.service";
+import {EventService, TaskData} from "../../service/business/event.service";
+import { PageDirection, IsSuccess } from "../../data.enum";
 
 /**
  * Generated class for the 待处理/已处理任务一览 page.
@@ -29,7 +30,7 @@ import { PageDirection } from "../../data.enum";
     <ion-content padding>
       <page-box title="Todo List" (onBack)="goBack()">
       <ng-container *ngFor="let day of days">
-        <task-list (onStartLoad)="getData($event, day)" (onCardClick)="gotoDetail($event)" (onCreateNew)="goNew()" (onComplete)="complete($event)" #tasklist></task-list>
+        <task-list [currentuser]="currentuser" [friends]="friends" (onStartLoad)="getData($event, day)" (onCardClick)="gotoDetail($event)" (onCreateNew)="goNew()" (onComplete)="complete($event)" #tasklist></task-list>
       </ng-container>
       </page-box>
     </ion-content>
@@ -38,8 +39,12 @@ import { PageDirection } from "../../data.enum";
 export class DoPage {
   statusBarColor: string = "#3c4d55";
 
+  currentuser: string = UserConfig.account.id;
+  friends: Array<any> = UserConfig.friends;
+
   tasklist: TaskListComponent;
   @ViewChildren("tasklist") tasklists: QueryList<TaskListComponent>;
+  cachedtasks: Array<TaskData>;
 
   days: Array<string> = new Array<string>();
   topday: string = moment().format("YYYY/MM/DD");
@@ -52,6 +57,7 @@ export class DoPage {
               private doService: DoService,
               private util: UtilService,
               private feedback: FeedbackService,
+              private calendarService: CalendarService,
               private eventService: EventService,
               private sqlite:SqliteExec) {
     moment.locale('zh-cn');
@@ -93,13 +99,31 @@ export class DoPage {
       direction = PageDirection.PageDown;
     }
 
-    this.eventService.fetchPagedUncompletedTasks(day, direction)
+    this.eventService.fetchUncompletedTasks()
     .then((d) => {
       if (d && d.length > 0) {
+
+        this.emitService.register("mwxing.calendar.activities.changed", (data) => {
+          if (!data) {
+            return;
+          }
+
+          // 多条数据同时更新/单条数据更新
+          if (data instanceof Array) {
+            for (let single of data) {
+              this.cachedtasks = this.eventService.mergeUncompletedTasks(this.cachedtasks, single);
+            }
+          } else {
+            this.cachedtasks = this.eventService.mergeUncompletedTasks(this.cachedtasks, data);
+          }
+        });
+
+        this.cachedtasks = d;
+
         this.topday = d[0].evd;
         this.bottomday = d[d.length - 1].evd;
 
-        target.tasklist = d;
+        target.tasklist = this.cachedtasks;
       }
     });
   }
