@@ -1693,9 +1693,23 @@ export class EventService extends BaseService {
 			minitask.tb = anyenum.SyncType.unsynch;
 			minitask.del = anyenum.DelType.undel;
 			minitask.evt = minitask.evt || "23:59";
-			let evdb: EvTbl = new EvTbl();
-			Object.assign(evdb, minitask);
-			await this.sqlExce.saveByParam(evdb);
+			
+			let txjson = new TxJson();
+    	minitask.txjson = minitask.txjson ||  txjson;
+      minitask.txs = minitask.txs || "";
+	    let rtjon = new RtJson();
+	    rtjon.cycletype = anyenum.CycleType.close;
+	    rtjon.over.value = "";
+	    rtjon.over.type = anyenum.OverType.fornever;
+	    rtjon.cyclenum = 1;
+	    rtjon.openway = new Array<number>();
+	    minitask.rtjson = minitask.rtjson || rtjon;
+	    
+			let sqlparam = new Array<any>();
+			let retParamMiniTaskData = new RetParamMiniTaskData();
+			retParamMiniTaskData = this.sqlparamAddTaskData(minitask);
+			sqlparam = [...retParamTaskData.sqlparam];
+      await this.sqlExce.batExecSqlByParam(sqlparam);
 		}
 
     this.emitService.emit("mwxing.calendar.activities.changed", minitask);
