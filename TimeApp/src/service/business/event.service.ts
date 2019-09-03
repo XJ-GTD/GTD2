@@ -1389,6 +1389,18 @@ export class EventService extends BaseService {
 			task.evt = task.evt || "23:59";
 		  task.cs = task.cs || anyenum.IsSuccess.wait;
 			task.isrt = task.isrt || anyenum.IsCreate.isNo;
+			
+			let txjson = new TxJson();
+    	task.txjson = task.txjson ||  txjson;
+      task.txs = task.txs || "";
+	    let rtjon = new RtJson();
+	    rtjon.cycletype = anyenum.CycleType.close;
+	    rtjon.over.value = "";
+	    rtjon.over.type = anyenum.OverType.fornever;
+	    rtjon.cyclenum = 1;
+	    rtjon.openway = new Array<number>();
+	    task.rtjson = task.rtjson || rtjon;
+	    
 			let sqlparam = new Array<any>();
 			let retParamTaskData = new RetParamTaskData();
 			retParamTaskData = this.sqlparamAddTaskData(task);
@@ -1459,7 +1471,7 @@ export class EventService extends BaseService {
 	    ret.sqlparam.push(ev.rpTParam());
 	    //添加提醒的SQL
       if (txjson.reminds && txjson.reminds.length > 0) {
-		  	ret.sqlparam = [...ret.sqlparam ,...this.sqlparamAddTaskWa(ev,anyenum.ObjectType.Memo,txjson)];
+		  	ret.sqlparam = [...ret.sqlparam ,...this.sqlparamAddTaskWa(ev,anyenum.ObjectType.Event,txjson)];
 	  	}
 	    //创建任务SQL
 	     ret.sqlparam.push(this.sqlparamAddTaskTt(ev,taskData.cs, taskData.isrt))
@@ -1690,6 +1702,76 @@ export class EventService extends BaseService {
 
 		return minitask;
   }
+
+	private sqlparamAddMiniTaskData(minitask: MiniTaskData): RetParamMiniTaskData {
+
+    let ret = new RetParamMiniTaskData();
+    let outTasks = new Array<MiniTaskData>();
+
+    //字段evt 设定
+   	minitask.evt = minitask.evt||"23:59";
+
+    let rtjson: RtJson = minitask.rtjson;
+    minitask.rt = JSON.stringify(minitask.rtjson);
+
+    if (rtjson.cycletype == anyenum.CycleType.close){
+
+      minitask.rfg = anyenum.RepeatFlag.NonRepeat;
+    }else{
+
+      minitask.rfg = anyenum.RepeatFlag.Repeat;
+    }
+
+    let txjson : TxJson  = minitask.txjson;
+    minitask.tx = JSON.stringify(minitask.txjson);
+
+    // 开始日期
+    let repeatStartDay: string = minitask.evt;
+    // 重复类型（天/周/月/年）
+    let repeatType: moment.unitOfTime.DurationConstructor = "days";
+    // 重复周期（n天/n周/n月/n年重复一次）
+    let repeatStep: number = rtjson.cyclenum || 1;
+    // 开启方式（天（无）,周多选（一、二、三、四、五、六、日[0 - 6]）,月多选（1、2、...、31[0 - 30]）,年（无））
+    let options: Array<number> = new Array<number>();
+    // 结束条件（n次后结束、到某天结束、永远不结束（天（设置1年）、周（设置2年）、月（设置3年）、年（设置20年）））
+    let repeatTimes: number;
+    // 结束日期（指定结束日期时使用指定结束日期，否则使用计算出来的结束日期）
+    let repeatEndDay: string = "";
+		let days: Array<string> = new Array<string>();
+		//获取重复日期
+		days = this.getOutDays(rtjson,repeatStartDay,repeatType ,repeatStep,options,repeatTimes,repeatEndDay);
+		for(let day of days) {
+	  
+   	  let ev = new EvTbl();
+	    Object.assign(ev, minitask);
+	    ev.evi = this.util.getUuid();
+	    // 非重复日程及重复日程的第一条的rtevi（父日程evi）字段设为空。遵循父子关系，
+	    // 父记录的父节点字段rtevi设为空，子记录的父节点字段rtevi设为父记录的evi
+	    if (ret.sqlparam.length < 1) {
+	      ret.rtevi = ev.evi;
+	      minitask.evi = ev.evi;
+	      ev.rtevi = "";
+	    }else{
+	      ev.rtevi = ret.rtevi;
+	    }
+	    ev.evd = day;
+	    ev.type = anyenum.EventType.MiniTask;
+	    ev.tb = anyenum.SyncType.unsynch;
+	    ev.del = anyenum.DelType.undel;
+	    ret.sqlparam.push(ev.rpTParam());
+	    //添加提醒的SQL
+      if (txjson.reminds && txjson.reminds.length > 0) {
+		  	ret.sqlparam = [...ret.sqlparam ,...this.sqlparamAddTaskWa(ev,anyenum.ObjectType.Event,txjson)];
+	  	}
+	    //新增数据需要返回出去
+	    let task2 = {} as MiniTaskData;
+	    Object.assign(task2,ev);
+	    outTasks.push(task2);
+		}
+  	ret.outTasks = outTasks;
+  	return ret;
+  }
+
 
 	/**
 	 *  获取小任务
