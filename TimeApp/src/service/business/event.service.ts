@@ -2636,12 +2636,38 @@ export interface  Parter extends ParTbl{
 }
 
 export interface TaskData extends EventData,TTbl {
+	//重复设定
+  rtjson :RtJson;
+  //提醒设定
+  txjson :TxJson;
+  //参与人
+  parters : Array<Parter>;
+  //发起人
+  originator: Parter;
 
+  //附件
+  fjs : Array<FjTbl>;
+
+  //用于数据上传给服务器时，给哪些参与人，[]无参与人或参与人被全删
+  tos : string;
 }
 
 
 export interface MiniTaskData extends EventData {
+	//重复设定
+  rtjson :RtJson;
+  //提醒设定
+  txjson :TxJson;
+  //参与人
+  parters : Array<Parter>;
+  //发起人
+  originator: Parter;
 
+  //附件
+  fjs : Array<FjTbl>;
+
+  //用于数据上传给服务器时，给哪些参与人，[]无参与人或参与人被全删
+  tos : string;
 }
 
 export class RetParamEv{
