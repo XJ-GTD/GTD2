@@ -1437,7 +1437,7 @@ export class EventService extends BaseService {
     let repeatEndDay: string = "";
 		let outDateArray: Array<OutDate> = new Array<OutDate>();
 		//获取重复日期
-		outDateArray = this.getOutDays(txjson,repeatStartDay,repeatType ,repeatStep,options,repeatTimes,repeatEndDay);
+		outDateArray = this.getOutDays(rtjson,repeatStartDay,repeatType ,repeatStep,options,repeatTimes,repeatEndDay);
 	  for (let outDate of outDateArray) {
 
 	  	for(let day of outDate.days) {
@@ -1458,14 +1458,14 @@ export class EventService extends BaseService {
 			      ev.rtevi = ret.rtevi;
 			    }
 			    ev.evd = day;
-			    ev.type = anyenum.EventType.Memo;
+			    ev.type = anyenum.EventType.Task;
 			    ev.tb = anyenum.SyncType.unsynch;
 			    ev.del = anyenum.DelType.undel;
 			    ret.sqlparam.push(ev.rpTParam());
 			    //添加提醒的SQL
-			    if (txjson.type != anyenum.TxType.close) {
-			      ret.sqlparam.push(this.sqlparamAddTaskWa(ev,anyenum.ObjectType.Memo,txjson).rpTParam());
-			    }
+		      if (txjson.reminds && txjson.reminds.length > 0) {
+   	 			  ret.sqlparam = [...ret.sqlparam ,...this.sqlparamAddTaskWa(ev,anyenum.ObjectType.Memo,txjson)];
+   			  }
 			    //创建任务SQL
 			     ret.sqlparam.push(this.sqlparamAddTaskTt(ev,taskData.cs, taskData.isrt))
 			    //新增数据需要返回出去
@@ -1479,7 +1479,7 @@ export class EventService extends BaseService {
   }
 
 	// 获取循环的时间
-	private getOutDays(txjson : TxJson, repeatStartDay: string,repeatType: string ,repeatStep: number, options: Array<number>, repeatTimes: number,repeatEndDay: string) : Array<OutDate> {
+	private getOutDays(rtjson : RtJson, repeatStartDay: string,repeatType: string ,repeatStep: number, options: Array<number>, repeatTimes: number,repeatEndDay: string) : Array<OutDate> {
 		 let outDateArray:  Array<OutDate> = new  Array<OutDate>();
 		   // 根据结束类型设置重复次数/结束日期
     switch(rtjson.over.type) {
@@ -1602,22 +1602,33 @@ export class EventService extends BaseService {
    * @param {ev: EvTbl,st:string ,sd:string,txjson :TxJson }
    * @returns {ETbl}
    */
-  private sqlparamAddTaskWa(ev: EvTbl,obtType: string, txjson :TxJson ): WaTbl {
-    let wa = new WaTbl();//提醒表
-    wa.wai = this.util.getUuid();
-    wa.obt = obtType;
-    wa.obi = ev.evi;
-    //todo tx需要解析
-    //let tx  = ;
-    if (txjson.type != anyenum.TxType.close) {
-      wa.st = ev.evn;
-      let time = parseInt(txjson.type);
-     	let date = moment(ev.evd + " " + "08:00").subtract(time, 'm').format("YYYY/MM/DD HH:mm");
-      wa.wd = moment(date).format("YYYY/MM/DD");
-      wa.wt = moment(date).format("HH:mm");
-      //console.log('-------- 插入提醒表 --------');
+  private sqlparamAddTaskWa(ev: EvTbl,obtType: string, txjson :TxJson, al: string = "" ,st:string=""): Array<any> {
+    let ret = new Array<any>();
+    if (txjson.reminds && txjson.reminds.length > 0) {
+      for ( let j = 0, len = txjson.reminds.length ;j < len ; j++) {
+        let wa = new WaTbl();//提醒表
+        let remind : anyenum.RemindTime;
+        wa.wai = this.util.getUuid();
+        wa.obt = obtType;
+        wa.obi = ev.evi;
+        remind = txjson.reminds[j];
+        wa.st = ev.evn;
+        let time = parseInt(remind);
+       let date;
+        if (al == anyenum.IsWholeday.NonWhole) {
+          date = moment(ev.evd + " " + st).subtract(time, 'm').format("YYYY/MM/DD HH:mm");
+
+        } else {
+          date = moment(ev.evd + " " + "08:00").subtract(time, 'm').format("YYYY/MM/DD HH:mm");
+
+        }
+        wa.wd = moment(date).format("YYYY/MM/DD");
+        wa.wt = moment(date).format("HH:mm");
+        ret.push(wa.rpTParam());
+        //console.log('-------- 插入提醒表 --------');
+      }
     }
-    return wa;
+    return ret;
   }
 
 
@@ -1630,10 +1641,9 @@ export class EventService extends BaseService {
   private sqlparamAddTaskTt(ev: EvTbl,cs: string, isrt : string ): TTbl {
     //创建任务
 		let ttdb: TTbl = new TTbl();
-		task.cs = task.cs || anyenum.IsSuccess.wait;
-		task.isrt = task.isrt || anyenum.IsCreate.isNo;
-		task.cd = moment(date).format("YYYY/MM/DD");
-		Object.assign(ttdb, task);
+		ev.cs = ev.cs || anyenum.IsSuccess.wait;
+		ev.isrt = ev.isrt || anyenum.IsCreate.isNo;
+		ev.cd = moment(date).format("YYYY/MM/DD");
     return ttdb;
   }
 
