@@ -28,7 +28,7 @@ page-box {
       width: calc(100vmin - 32px);
       height: calc(80vmax - 32px);
       position: absolute;
-      top: calc(20vmax + 32px) !important;
+      bottom: calc(80vmax - 32px) !important;
 
       &> .scroll-content {
         padding: 0 !important;
