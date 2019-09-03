@@ -3,7 +3,7 @@ import { Component, Output, Input, EventEmitter } from "@angular/core";
 @Component({
   selector: 'task-list',
   template: `
-  <ion-grid class="h70">
+  <ion-grid>
     <ion-row class="h100" align-items-center>
       <ion-grid>
         <ion-row>
