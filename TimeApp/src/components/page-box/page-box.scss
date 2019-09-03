@@ -10,13 +10,13 @@ page-box {
     h1 {
       position: absolute;
       left: 26px;
-      bottom: 80vmax;
+      bottom: calc(80vmax + 20px);
     }
 
     button {
       position: absolute;
       right: 26px;
-      bottom: 80vmax;
+      bottom: calc(80vmax + 20px);
     }
   }
 
