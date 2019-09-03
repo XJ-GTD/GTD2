@@ -26,6 +26,8 @@ page-box {
 
     ion-scroll {
       width: 100%;
+      position: absolute;
+      top: 20vmax !important;
 
       &> .scroll-content {
         padding: 0 !important;
