@@ -164,7 +164,14 @@ export class EventService extends BaseService {
     if (newAgd.rtjson.openway.length != oldAgd.rtjson.openway.length){
       return true;
     }
-    // TODO:判断newAgd.rtjson.openway每个值是否相同
+    //判断newAgd.rtjson.openway每个值是否相同
+    if (newAgd.rtjson.openway && oldAgd.rtjson.openway){
+      let opstr : string = newAgd.rtjson.openway.join(',');
+      let oldopstr : string = oldAgd.rtjson.openway.join(',');
+      if (opstr != oldopstr){
+        return true;
+      }
+    }
     if (newAgd.rtjson.over.type != oldAgd.rtjson.over.type){
       return true;
     }
@@ -721,8 +728,8 @@ export class EventService extends BaseService {
       sqlparam.push(wa.dTParam());
 
       //提醒新建
-      if (newAgdata.txjson.type != anyenum.TxType.close) {
-        sqlparam.push(this.sqlparamAddTxWa(ev, newAgdata.st, newAgdata.al, newAgdata.txjson).rpTParam());
+      if (newAgdata.txjson.reminds && newAgdata.txjson.reminds.length > 0) {
+        sqlparam = [...sqlparam , ...this.sqlparamAddTxWa(ev, newAgdata.st, newAgdata.al, newAgdata.txjson)];
       }
 
       //如果当前更新对象是父节点，则为当前重复日程重建新的父记录，值为ev表里的第一条做为父记录
@@ -1026,8 +1033,6 @@ export class EventService extends BaseService {
     agdata.type = !agdata.type ? anyenum.ObjectType.Calendar : agdata.type ;
 
     let txjson = new TxJson();
-    txjson.type = anyenum.TxType.close;
-
     //agdata.tx = !agdata.tx ? JSON.stringify(txjson) : agdata.tx ;
     agdata.txjson = (agdata.txjson && agdata.txjson !=null) ? agdata.txjson : txjson;
 
@@ -1240,8 +1245,8 @@ export class EventService extends BaseService {
         ev.del = anyenum.DelType.undel;
         ret.ed = ev.evd;
         ret.sqlparam.push(ev.rpTParam());
-        if (txjson.type != anyenum.TxType.close) {
-          ret.sqlparam.push(this.sqlparamAddTxWa(ev,agdata.st,agdata.al,txjson).rpTParam());
+        if (txjson.reminds && txjson.reminds.length > 0) {
+          ret.sqlparam = [...ret.sqlparam ,...this.sqlparamAddTxWa(ev,agdata.st,agdata.al,txjson)];
         }
 
         //新增数据需要返回出去
@@ -1263,31 +1268,37 @@ export class EventService extends BaseService {
    * @param {ev: EvTbl,st:string ,sd:string,txjson :TxJson }
    * @returns {ETbl}
    */
-  private sqlparamAddTxWa(ev: EvTbl,st:string,al: string, txjson :TxJson ): WaTbl {
-    let wa = new WaTbl();//提醒表
-    wa.wai = this.util.getUuid();
-    wa.obt = anyenum.ObjectType.Event;
-    wa.obi = ev.evi;
-    //todo tx需要解析
-    //let tx  = ;
-    if (txjson.type != anyenum.TxType.close) {
-      wa.st = ev.evn;
-      let time = parseInt(txjson.type);
-      let date;
-      if (al == anyenum.IsWholeday.NonWhole) {
-        date = moment(ev.evd + " " + st).subtract(time, 'm').format("YYYY/MM/DD HH:mm");
+  private sqlparamAddTxWa(ev: EvTbl,st:string,al: string, txjson :TxJson ): Array<any> {
+    let ret = new Array<any>();
+    if (txjson.reminds && txjson.reminds.length > 0) {
+      for ( let j = 0, len = txjson.reminds.length ;j < len ; j++){
 
-      } else {
-        date = moment(ev.evd + " " + "08:00").subtract(time, 'm').format("YYYY/MM/DD HH:mm");
+        let wa = new WaTbl();//提醒表
+        let remind : anyenum.RemindTime;
 
+        wa.wai = this.util.getUuid();
+        wa.obt = anyenum.ObjectType.Event;
+        wa.obi = ev.evi;
+        remind = txjson.reminds[j];
+
+        wa.st = ev.evn;
+        let time = parseInt(remind);
+        let date;
+        if (al == anyenum.IsWholeday.NonWhole) {
+          date = moment(ev.evd + " " + st).subtract(time, 'm').format("YYYY/MM/DD HH:mm");
+
+        } else {
+          date = moment(ev.evd + " " + "08:00").subtract(time, 'm').format("YYYY/MM/DD HH:mm");
+
+        }
+        wa.wd = moment(date).format("YYYY/MM/DD");
+        wa.wt = moment(date).format("HH:mm");
+
+        ret.push(wa.rpTParam());
+        //console.log('-------- 插入提醒表 --------');
       }
-      wa.wd = moment(date).format("YYYY/MM/DD");
-      wa.wt = moment(date).format("HH:mm");
-      //console.log('-------- 插入提醒表 --------');
-
     }
-
-    return wa;
+    return ret;
   }
 
   /**
@@ -2414,9 +2425,9 @@ export class RtOver {
 export class RtJson {
   //重复类型
   cycletype: anyenum.CycleType = anyenum.CycleType.close;
-  //重复次数（n天、n周、n月、n年）
+  //重复周期（n天、n周、n月、n年）
   cyclenum: number = 1;//重复周期默认1, 不得小于1
-  //开启方式：周一，周二....
+  //开启方式：.一、二、三、四、五、六、日[0 - 6]
   openway: Array<number> = new Array<number>();
 
   //重复结束设定
@@ -2424,7 +2435,7 @@ export class RtJson {
 }
 
 export class TxJson {
-  type: anyenum.TxType = anyenum.TxType.close;
+  reminds = new Array<anyenum.RemindTime>();
 }
 
 enum DUflag {
