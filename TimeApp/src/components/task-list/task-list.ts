@@ -1,22 +1,36 @@
-import { Component, Output, EventEmitter } from "@angular/core";
+import { Component, Output, Input, EventEmitter } from "@angular/core";
 
 @Component({
   selector: 'task-list',
   template: `
-  <ion-grid class="h70">
-    <ion-row class="h100" align-items-center>
-      <p class="p15"></p>
+  <ion-grid>
+    <ion-row align-items-center>
       <ion-grid>
-        <ion-row justify-content-center>
+        <ion-row>
           <ng-container *ngFor="let task of tasklist">
-          <ion-card (click)="gotoDetail(task)">
-            <div class="card-title">{{task.evn}}</div>
+          <ion-card [ngClass]="{'complete': task.cs == '1'}" (click)="gotoDetail(task)">
+            <ion-card-content>
+              <ion-checkbox color="dark" checked="false" (ionChange)="complete(task)"></ion-checkbox>
+              <p>{{task.evn}}</p>
+            </ion-card-content>
+
+            <ion-row>
+              <ion-col>
+                <button ion-button icon-start clear small>
+                  <ion-icon name="thumbs-up"></ion-icon>
+                  <div>{{(task.evd + ' ' + task.evt) | formatedate:'withNow'}}</div>
+                </button>
+              </ion-col>
+              <ion-col>
+                <button ion-button clear small>
+                  <div>{{task.ui | formatuser: currentuser: friends}}</div>
+                </button>
+              </ion-col>
+            </ion-row>
           </ion-card>
           </ng-container>
         </ion-row>
       </ion-grid>
-      <p class="p15"></p>
-      <p class="p15"></p>
     </ion-row>
   </ion-grid>
   `
@@ -32,7 +46,15 @@ export class TaskListComponent {
   @Output()
   private onCreateNew: EventEmitter<any> = new EventEmitter<any>();
 
+  @Output()
+  private onComplete: EventEmitter<any> = new EventEmitter<any>();
+
   tasklist: Array<any> = new Array<any>();
+
+  @Input()
+  currentuser: string = "";
+  @Input()
+  friends: Array<any> = new Array<any>();
 
   constructor() {
   }
@@ -51,5 +73,9 @@ export class TaskListComponent {
 
   refresh() {
     this.onStartLoad.emit(this);
+  }
+
+  complete(target: any) {
+    this.onComplete.emit(target);
   }
 }

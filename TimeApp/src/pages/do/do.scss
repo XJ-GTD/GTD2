@@ -8,7 +8,6 @@ page-do {
   ion-card, .card-ios {
     background-color: $lsback0;
     position: relative;
-    text-align: center;
     padding-top: 8px;
     padding-bottom: 8px;
     box-shadow: 0 0 0;
@@ -48,10 +47,6 @@ page-do {
 
   .grid {
     padding: 0;
-  }
-
-  .grid .row {
-    height: 100%;
   }
 
   ion-grid.h70 {

@@ -218,7 +218,7 @@ describe('EventService test suite', () => {
     tx = await eventService.saveTask(tx);
     expect(tx).toBeDefined();
     expect(tx.evi).toBeDefined();
-		await eventService.finishTask(tx.evi);
+		await eventService.finishTask(tx);
 
 		let txx: TaskData = {} as TaskData;
     txx = await eventService.getTask(tx.evi);
@@ -282,7 +282,7 @@ describe('EventService test suite', () => {
 
 		let day: string = moment().format('YYYY/MM/DD');
 		let data: Array<TaskData> = new Array<TaskData>();
-		data = await eventService.fetchPagedCompletedTasks(day,"");
+		data = await eventService.fetchPagedCompletedTasks(day);
 		expect(data).toBeDefined();
 		expect(data.length).toBeGreaterThan(0);
   })
@@ -303,7 +303,7 @@ describe('EventService test suite', () => {
 
 		let day: string = moment().format('YYYY/MM/DD');
 		let data: Array<TaskData> = new Array<TaskData>();
-		data = await eventService.fetchPagedUncompletedTasks(day,"");
+		data = await eventService.fetchPagedUncompletedTasks(day);
 		expect(data).toBeDefined();
 		expect(data.length).toBeGreaterThan(0);
   })
@@ -817,6 +817,15 @@ describe('EventService test suite', () => {
       expect(nextpagetasks.length).toBe(0);
 
     });
+
+    it(`Case 2 - 1 fetchUncompletedTasks 获取所有未完成任务`, async () => {
+      let tasks = await eventService.fetchUncompletedTasks();
+
+      expect(tasks).toBeDefined();
+      expect(tasks.length).toBeGreaterThan(0);
+
+    });
+
   });
 
   afterAll(() => {

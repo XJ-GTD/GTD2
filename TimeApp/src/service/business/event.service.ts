@@ -19,7 +19,7 @@ import {DataConfig} from "../config/data.config";
 import {BTbl} from "../sqlite/tbl/b.tbl";
 import {FjTbl} from "../sqlite/tbl/fj.tbl";
 import {DataRestful, PullInData, PushInData, SyncData} from "../restful/datasev";
-import {SyncType, DelType, SyncDataStatus, PageDirection, SyncDataSecurity} from "../../data.enum";
+import {SyncType, DelType, IsSuccess, SyncDataStatus, PageDirection, SyncDataSecurity} from "../../data.enum";
 
 @Injectable()
 export class EventService extends BaseService {
@@ -28,6 +28,58 @@ export class EventService extends BaseService {
               private bacRestful: BacRestful,private userConfig: UserConfig,
               private dataRestful: DataRestful) {
     super();
+  }
+
+  /**
+   * 接收事件日程保存到本地
+   * @param {Array<AgendaData>} pullAgdatas
+   * @param {SyncDataStatus} status
+   * @returns {Promise<Array<AgendaData>>}
+   */
+  async receivedAgendaData(pullAgdatas: Array<AgendaData>, status: SyncDataStatus): Promise<Array<AgendaData>> {
+
+    this.assertEmpty(pullAgdatas);     // 入参不能为空
+    this.assertEmpty(status);   // 入参不能为空
+
+    let sqlparam = new Array<any>();
+
+    if (pullAgdatas && pullAgdatas !=null ){
+      for (let j = 0 , len = pullAgdatas.length; j < len ; j++){
+        let agd = {} as AgendaData;
+        agd = pullAgdatas[j];
+        agd.tb  = status;
+        let ev = new EvTbl();
+        Object.assign(ev,agd);
+        sqlparam.push(ev.rpTParam());
+
+        //相关日程更新
+        if (agd.sd && agd.sd != ''){
+          let ca = new CaTbl();
+          Object.assign(ca,agd);
+          sqlparam.push(ca.rpTParam());
+        }
+
+        //相关附件更新
+        if (agd.fjs && agd.fjs !=null && agd.fjs.length > 0){
+          for ( let k = 0, len = agd.fjs.length; k < len ; k++ ){
+            let fj = new FjTbl();
+            Object.assign(fj,agd.fjs[k]);
+            sqlparam.push(fj.rpTParam());
+          }
+        }
+
+        //相关参与人更新
+        if (agd.parters && agd.parters !=null && agd.parters.length > 0){
+          for ( let k = 0, len = agd.parters.length; k < len ; k++ ){
+            let par = new ParTbl();
+            Object.assign(par,agd.parters[k]);
+            sqlparam.push(par.rpTParam());
+          }
+        }
+      }
+    }
+
+    return pullAgdatas;
   }
 
   /**
@@ -54,16 +106,16 @@ export class EventService extends BaseService {
    *
    * @author leon_xi@163.com
    **/
-  async syncAgenda(uploadAgdData: UploadAgdData) {
+  async syncAgenda(uploadAgdDatas: Array<AgendaData>) {
 
-    this.assertEmpty(uploadAgdData);       // 入参不能为空
+    this.assertEmpty(uploadAgdDatas);       // 入参不能为空
 
     // 构造Push数据结构
     let push: PushInData = new PushInData();
 
-    for (let j = 0 ,len = uploadAgdData.agendas.length ; j< len ; j++){
+    for (let j = 0 ,len = uploadAgdDatas.length ; j< len ; j++){
       let agd = {} as AgendaData;
-      agd = uploadAgdData.agendas[j];
+      agd = uploadAgdDatas[j];
       let sync: SyncData = new SyncData();
       sync.id = agd.evi;
       sync.type = "Agenda";
@@ -434,7 +486,7 @@ export class EventService extends BaseService {
         }
 
         //如果当前删除对象是父事件，则为当前重复事件重建新的父事件，值为ev表重复记录里的第一条做为父事件
-        await this.operateForParentAgd(oriAgdata,oriAgdata.parters,sqlparam,outAgds);
+        await this.operateForParentAgd(oriAgdata,oriAgdata.parters,oriAgdata.fjs,sqlparam,outAgds);
 
       }
 
@@ -485,6 +537,8 @@ export class EventService extends BaseService {
       /*修改*/
       this.assertNull(oriAgdata);   // 原始事件详情不能为空
 
+      this.assertNotEqual(oriAgdata.sd, newAgdata.sd);//原事件的开始日期与新事件的开始事件没有一致
+
       let outAgdatas = await this.updateAgenda(newAgdata,oriAgdata,modiType);
 
       this.emitService.emit("mwxing.calendar.activities.changed", outAgdatas);
@@ -503,7 +557,6 @@ export class EventService extends BaseService {
       //如果网络正常提交到服务器，则更新同步标志同步通过websocket来通知
 
       this.emitService.emitRef(newAgdata.sd);
-      console.log(newAgdata);
 
       this.emitService.emit("mwxing.calendar.activities.changed", retParamEv.outAgdatas);
 
@@ -538,12 +591,15 @@ export class EventService extends BaseService {
     let tos : string;//需要发送的参与人手机号
     tos = this.getParterPhone(agdata.parters);
 
-    //日程表信息放入返回事件的父记录信息中
+    //日程表信息，附件信息，参与人信息放入返回事件的父记录信息中
     for (let j = 0, len = retParamEv.outAgdatas.length; j < len ; j++){
       let outAgd = {} as AgendaData;
       outAgd = retParamEv.outAgdatas[j];
       if (outAgd.rtevi == "" && outAgd.evi == caparam.evi){
         Object.assign(outAgd,caparam);
+
+        outAgd.parters = agdata.parters;
+        outAgd.fjs = agdata.fjs;
         //break;
       }
       outAgd.tos = tos;
@@ -606,11 +662,11 @@ export class EventService extends BaseService {
 
       //复制原参与人到新事件
       let nwpar = new Array<any>();
-      nwpar = this.sqlparamAddPar(retParamEv.rtevi , oriAgdata.parters);
+      nwpar = this.sqlparamAddPar(retParamEv.rtevi , newAgdata.parters);
 
       //复制原附件到新事件
       let nwfj = new Array<any>();
-      nwfj = this.sqlparamAddFj(retParamEv.rtevi, oriAgdata.fjs);
+      nwfj = this.sqlparamAddFj(retParamEv.rtevi, newAgdata.fjs);
 
       sqlparam = [...sqlparam, ...retParamEv.sqlparam, ...nwpar, ...nwfj];
 
@@ -670,7 +726,7 @@ export class EventService extends BaseService {
       }
 
       //如果当前更新对象是父节点，则为当前重复日程重建新的父记录，值为ev表里的第一条做为父记录
-      await this.operateForParentAgd(oriAgdata,newAgdata.parters,sqlparam,outAgds);
+      await this.operateForParentAgd(oriAgdata,newAgdata.parters,newAgdata.fjs,sqlparam,outAgds);
 
       //日程表新建或更新,修改为独立日的也需要为自己创建对应的日程
       let caparam = new CaTbl();
@@ -691,15 +747,17 @@ export class EventService extends BaseService {
   }
 
   /**
-   * 如果当前删除对象是父事件，则为当前重复事件重建新的父事件，值为ev表重复记录里的第一条做为父事件
+   * 如果当前单一对象是父事件，则为当前重复事件重建新的父事件，值为ev表重复记录里的第一条做为父事件
    * @param {AgendaData} oriAgdata
    * @param {Array<Parter>} parters
+   * @param {Array<FjTbl>} fjs
    * @param {Array<any>} sqlparam
    * @param {DUflag} doflag
    * @returns {Promise<void>}
    */
   private async operateForParentAgd(oriAgdata : AgendaData,
                                       parters : Array<Parter>,
+                                      fjs : Array<FjTbl>,
                                       sqlparam : Array<any>,
                                       outAgds : Array<AgendaData>){
     let sq : string ;
@@ -744,11 +802,11 @@ export class EventService extends BaseService {
 
         //复制原参与人到新的父事件
         let nwpar = new Array<any>();
-        nwpar = this.sqlparamAddPar(nwEv.evi , oriAgdata.parters);
+        nwpar = this.sqlparamAddPar(nwEv.evi , parters);
 
         //复制原附件到新的父事件
         let nwfj = new Array<any>();
-        nwfj = this.sqlparamAddFj(nwEv.evi , oriAgdata.fjs);
+        nwfj = this.sqlparamAddFj(nwEv.evi , fjs);
 
         sqlparam = [...sqlparam, ...nwpar, ...nwfj];
 
@@ -757,9 +815,9 @@ export class EventService extends BaseService {
         //把新日程放入返回事件的父事件中
         Object.assign(outAgd , nwca);
         //复制原参与人放入返回事件的父事件中
-        outAgd.parters = oriAgdata.parters;
+        outAgd.parters = parters;
         //复制原附件放入返回事件的父事件中
-        outAgd.fjs = oriAgdata.fjs;
+        outAgd.fjs = fjs;
 
         outAgd.tos = tos;//需要发送的参与人
 
@@ -876,6 +934,8 @@ export class EventService extends BaseService {
           Object.assign(delAgds[j],ca);
           delAgds[j].parters = delpars;
           delAgds[j].fjs = delfjs;
+
+          delAgds[j].tos = tos;//需要发送的参与人
           break;
         }
       }
@@ -1007,6 +1067,13 @@ export class EventService extends BaseService {
 
     let ret = new RetParamEv();
     let outAgds = new Array<AgendaData>();
+
+    //字段evt 设定
+    if (agdata.al == anyenum.IsWholeday.Whole){
+      agdata.evt = "00:00";
+    }else{
+      agdata.evt = agdata.st;
+    }
 
     let rtjson: RtJson = agdata.rtjson;
     agdata.rt = JSON.stringify(agdata.rtjson);
@@ -1306,20 +1373,255 @@ export class EventService extends BaseService {
 			task.gs = anyenum.GsType.self;
 			task.tb = anyenum.SyncType.unsynch;
 			task.del = anyenum.DelType.undel;
-			let evdb: EvTbl = new EvTbl();
-			Object.assign(evdb, task);
-			await this.sqlExce.saveByParam(evdb);
-			//创建任务
-			let ttdb: TTbl = new TTbl();
-			task.cs = task.cs || anyenum.IsSuccess.wait;
+			task.evt = task.evt || "23:59";
+		  task.cs = task.cs || anyenum.IsSuccess.wait;
 			task.isrt = task.isrt || anyenum.IsCreate.isNo;
-			Object.assign(ttdb, task);
-			await this.sqlExce.saveByParam(ttdb);
+			let sqlparam = new Array<any>();
+			let retParamTaskData = new RetParamTaskData();
+			retParamTaskData = this.sqlparamAddTaskData(task);
+			sqlparam = [...retParamTaskData.sqlparam];
+      await this.sqlExce.batExecSqlByParam(sqlparam);	
 		}
 
     this.emitService.emit("mwxing.calendar.activities.changed", task);
 
 		return task;
+  }
+
+		private sqlparamAddTaskData(taskData: TaskData): RetParamTaskData {
+
+    let ret = new RetParamTaskData();
+    let outTasks = new Array<TaskData>();
+
+    //字段evt 设定
+   	taskData.evt = taskData.evt||"23:59";
+
+    let rtjson: RtJson = taskData.rtjson;
+    taskData.rt = JSON.stringify(taskData.rtjson);
+
+    if (rtjson.cycletype == anyenum.CycleType.close){
+
+      taskData.rfg = anyenum.RepeatFlag.NonRepeat;
+    }else{
+
+      taskData.rfg = anyenum.RepeatFlag.Repeat;
+    }
+
+    let txjson : TxJson  = taskData.txjson;
+    taskData.tx = JSON.stringify(taskData.txjson);
+
+    // 开始日期
+    let repeatStartDay: string = taskData.evt;
+    // 重复类型（天/周/月/年）
+    let repeatType: moment.unitOfTime.DurationConstructor = "days";
+    // 重复周期（n天/n周/n月/n年重复一次）
+    let repeatStep: number = rtjson.cyclenum || 1;
+    // 开启方式（天（无）,周多选（一、二、三、四、五、六、日[0 - 6]）,月多选（1、2、...、31[0 - 30]）,年（无））
+    let options: Array<number> = new Array<number>();
+    // 结束条件（n次后结束、到某天结束、永远不结束（天（设置1年）、周（设置2年）、月（设置3年）、年（设置20年）））
+    let repeatTimes: number;
+    // 结束日期（指定结束日期时使用指定结束日期，否则使用计算出来的结束日期）
+    let repeatEndDay: string = "";
+		let outDateArray: Array<OutDate> = new Array<OutDate>();
+		//获取重复日期
+		outDateArray = this.getOutDays(txjson,repeatStartDay,repeatType ,repeatStep,options,repeatTimes,repeatEndDay);
+	  for (let outDate of outDateArray) {
+	  	
+	  	for(let day of outDate.days) {
+	  		  // 判断是否超过结束日期
+		   	 if (!moment(day).isBefore(outDate.repeatEndDay)) {
+		      	continue;
+		  	  }
+		   	  let ev = new EvTbl();
+			    Object.assign(ev, taskData);
+			    ev.evi = this.util.getUuid();
+			    // 非重复日程及重复日程的第一条的rtevi（父日程evi）字段设为空。遵循父子关系，
+			    // 父记录的父节点字段rtevi设为空，子记录的父节点字段rtevi设为父记录的evi
+			    if (ret.sqlparam.length < 1) {
+			      ret.rtevi = ev.evi;
+			      taskData.evi = ev.evi;
+			      ev.rtevi = "";
+			    }else{
+			      ev.rtevi = ret.rtevi;
+			    }
+			    ev.evd = day;
+			    ev.type = anyenum.EventType.Memo;
+			    ev.tb = anyenum.SyncType.unsynch;
+			    ev.del = anyenum.DelType.undel;
+			    ret.sqlparam.push(ev.rpTParam());
+			    //添加提醒的SQL
+			    if (txjson.type != anyenum.TxType.close) {
+			      ret.sqlparam.push(this.sqlparamAddTaskWa(ev,anyenum.ObjectType.Memo,txjson).rpTParam());
+			    }
+			    //创建任务SQL
+			     ret.sqlparam.push(this.sqlparamAddTaskTt(ev,taskData.cs, taskData.isrt))
+			    //新增数据需要返回出去
+			    let task2 = {} as TaskData;
+			    Object.assign(task2,ev);
+			    outTasks.push(task2);
+	  	}
+		}
+  	ret.outTasks = outTasks;
+  	return ret;
+  }
+	
+	// 获取循环的时间
+	private getOutDays(txjson : TxJson, repeatStartDay: string,repeatType: string ,repeatStep: number, options: Array<number>, repeatTimes: number,repeatEndDay: string) : Array<OutDate> {
+		 let outDateArray:  Array<OutDate> = new  Array<OutDate>();
+		   // 根据结束类型设置重复次数/结束日期
+    switch(rtjson.over.type) {
+      case anyenum.OverType.times :
+        this.assertEmpty(rtjson.over.value);    // 结束条件不能为空
+        this.assertNotNumber(rtjson.over.value);   // 结束条件不能为数字字符串以外的值
+        repeatTimes = (Number(rtjson.over.value) > 0)? Number(rtjson.over.value) : 1;
+        break;
+      case anyenum.OverType.limitdate :
+        this.assertEmpty(rtjson.over.value);    // 结束条件不能为空
+        repeatEndDay = moment(rtjson.over.value).add(1,'days').format("YYYY/MM/DD");
+        break;
+      case anyenum.OverType.fornever :
+        break;
+      default:
+        this.assertFail();    // 预期外值, 程序异常
+    }
+
+    // 根据重复类型设置 重复类型/开启方式/重复次数/结束日期
+    switch(rtjson.cycletype) {
+      case anyenum.CycleType.day :
+        repeatType = "days";
+        repeatTimes = repeatTimes || moment(repeatStartDay).add(1, "years").diff(repeatStartDay, "days");
+        repeatEndDay = repeatEndDay || moment(repeatStartDay).add(repeatTimes * repeatStep, "days").format("YYYY/MM/DD");
+        break;
+      case anyenum.CycleType.week :
+        repeatType = "weeks";
+        options = rtjson.openway || options;
+        repeatTimes = repeatTimes || moment(repeatStartDay).add(2, "years").diff(repeatStartDay, "weeks");
+        repeatEndDay = repeatEndDay || moment(repeatStartDay).add(repeatTimes * repeatStep, "weeks").format("YYYY/MM/DD");
+        break;
+      case anyenum.CycleType.month :
+        repeatType = "months";
+        options = rtjson.openway || options;
+        repeatTimes = repeatTimes || moment(repeatStartDay).add(3, "years").diff(repeatStartDay, "months");
+        repeatEndDay = repeatEndDay || moment(repeatStartDay).add(repeatTimes * repeatStep, "months").format("YYYY/MM/DD");
+        break;
+      case anyenum.CycleType.year :
+        repeatType = "years";
+        repeatTimes = repeatTimes || 20;
+        repeatEndDay = repeatEndDay || moment(repeatStartDay).add(repeatTimes * repeatStep, "years").format("YYYY/MM/DD");
+        break;
+      case anyenum.CycleType.close :    // 不重复日程
+        repeatType = "days";
+        repeatTimes = 1;
+        repeatEndDay = moment(repeatStartDay).add(1, "days").format("YYYY/MM/DD");
+        break;
+      default:
+        this.assertFail();    // 预期外值, 程序异常
+    }
+
+    let stepDay: string = repeatStartDay;
+
+    // 循环开始日期 ~ 结束日期
+    while (moment(stepDay).isBefore(repeatEndDay)) {
+    		let days: Array<string> = new Array<string>();
+    		let outDate: OutDate = new OutDate();
+	      if (options.length > 0) {
+	        // 星期多选/每月日期多选
+	        if (repeatType == "weeks") {
+	          let dayOfWeek: number = Number(moment(stepDay).format("d"));
+	
+	          for (let option of options) {
+	            let duration: number = option - dayOfWeek;
+	
+	            if (duration == 0) {
+	              days.push(stepDay);     // 当前日期为重复日期
+	            } else if (duration > 0) {
+	              //当周日期
+	              days.push(moment(stepDay).add(duration, "days").format("YYYY/MM/DD"));
+	            } else {
+	              //下周日期（跨周）
+	              days.push(moment(stepDay).add(7, "days").subtract(Math.abs(duration), "days").format("YYYY/MM/DD"));
+	            }
+	          }
+	
+	        } else if (repeatType == "months") {
+	          let dayOfMonth: number = Number(moment(stepDay).format("D")) - 1;   // 0 - 30 和options设置日期匹配
+	          let maxDayOfMonth: number = moment().daysInMonth();
+	
+	          for (let option of options) {
+	
+	            // 当月没有这一天
+	            if (option > maxDayOfMonth) {
+	              continue;
+	            }
+	
+	            let duration: number = option - dayOfMonth;
+	
+	            if (duration == 0) {
+	              days.push(stepDay);     // 当前日期为重复日期
+	            } else if (duration > 0) {
+	              //当月日期
+	              days.push(moment(stepDay).add(duration, "days").format("YYYY/MM/DD"));
+	            } else {
+	              //下月日期（跨月）
+	              days.push(moment(stepDay).add(1, "months").dates(option + 1).format("YYYY/MM/DD"));
+	            }
+	          }
+	
+	        } else {
+	          this.assertFail();    // 预期外值, 程序异常
+	        }
+	      } else {
+	        // 普通重复
+	        days.push(stepDay);
+	      }
+	       stepDay = moment(stepDay).add(repeatStep, repeatType).format("YYYY/MM/DD");
+	       outDate.days = days;
+	       outDate.repeatEndDay = repeatEndDay;
+	       outDateArray.push(outDate);
+      }
+      return outDateArray;
+	}
+
+
+	/**
+   *获取提醒表sql
+   * @param {EvTbl}
+   * @param {ev: EvTbl,st:string ,sd:string,txjson :TxJson }
+   * @returns {ETbl}
+   */
+  private sqlparamAddTaskWa(ev: EvTbl,obtType: string, txjson :TxJson ): WaTbl {
+    let wa = new WaTbl();//提醒表
+    wa.wai = this.util.getUuid();
+    wa.obt = obtType;
+    wa.obi = ev.evi;
+    //todo tx需要解析
+    //let tx  = ;
+    if (txjson.type != anyenum.TxType.close) {
+      wa.st = ev.evn;
+      let time = parseInt(txjson.type);
+     	let date = moment(ev.evd + " " + "08:00").subtract(time, 'm').format("YYYY/MM/DD HH:mm");
+      wa.wd = moment(date).format("YYYY/MM/DD");
+      wa.wt = moment(date).format("HH:mm");
+      //console.log('-------- 插入提醒表 --------');
+    }
+    return wa;
+  }
+  
+  
+  	/**
+   *  获取任务SQL
+   * @param {EvTbl}
+   * @param {ev: EvTbl,st:string ,sd:string,txjson :TxJson }
+   * @returns {ETbl}
+   */
+  private sqlparamAddTaskTt(ev: EvTbl,cs: string, isrt : string ): TTbl {
+    //创建任务
+		let ttdb: TTbl = new TTbl();
+		task.cs = task.cs || anyenum.IsSuccess.wait;
+		task.isrt = task.isrt || anyenum.IsCreate.isNo;
+		task.cd = moment(date).format("YYYY/MM/DD");
+		Object.assign(ttdb, task);
+    return ttdb;
   }
 
 	/**
@@ -1355,6 +1657,7 @@ export class EventService extends BaseService {
 			minitask.gs = anyenum.GsType.self;
 			minitask.tb = anyenum.SyncType.unsynch;
 			minitask.del = anyenum.DelType.undel;
+			minitask.evt = minitask.evt || "23:59";
 			let evdb: EvTbl = new EvTbl();
 			Object.assign(evdb, minitask);
 			await this.sqlExce.saveByParam(evdb);
@@ -1392,16 +1695,32 @@ export class EventService extends BaseService {
 	 * 完成任务
 	 * @author ying<343253410@qq.com>
 	 */
-  async finishTask(evi: string) {
-  	this.assertEmpty(evi); // 事件ID不能为空
-  	let tdb: TTbl = new TTbl();
-		tdb.evi = evi;
-		tdb.cs = anyenum.IsSuccess.success;
-		tdb.fd = moment().format('YYYY/MM/DD');
-		await this.sqlExce.updateByParam(tdb);
-		//TODO 是否推送事件完成消息
-		//this.emitService.emit(`mwxing.event.task.finish`);
-		return ;
+  async finishTask(task: TaskData): Promise<TaskData> {
+    this.assertEmpty(task);        // 入参不能为空
+  	this.assertEmpty(task.evi);    // 事件ID不能为空
+
+    task.cs = anyenum.IsSuccess.success;
+    task.evd = moment().format('YYYY/MM/DD');
+    task.evt = moment().format('HH:mm');
+    task.fd = moment().format('YYYY/MM/DD');
+
+    let sqls: Array<any> = new Array<any>();
+
+    let evdb: EvTbl = new EvTbl();
+    Object.assign(evdb, task);
+
+    sqls.push(evdb.rpTParam());
+
+    let tdb: TTbl = new TTbl();
+    Object.assign(tdb, task);
+
+    sqls.push(tdb.rpTParam());
+
+		await this.sqlExce.batExecSqlByParam(sqls);
+
+    this.emitService.emit("mwxing.calendar.activities.changed", task);
+
+		return task;
   }
 
   /**
@@ -1468,20 +1787,30 @@ export class EventService extends BaseService {
    * 接收任务保存到本地
    * @author ying<343253410@qq.com>
    */
-  async acceptReceivedTask(tt: TaskData,status: SyncDataStatus): Promise<TaskData> {
-  	this.assertEmpty(tt);     // 入参不能为空
-    this.assertEmpty(tt.evi);  // ID不能为空
-    this.assertNotEqual(tt.type, anyenum.EventType.Task);  //不是任务不能发送共享
+  async acceptReceivedTask(task: TaskData, status: SyncDataStatus): Promise<TaskData> {
+  	this.assertEmpty(task);     // 入参不能为空
+    this.assertEmpty(task.evi);  // ID不能为空
+    this.assertNotEqual(task.type, anyenum.EventType.Task);  //不是任务不能发送共享
     this.assertEmpty(status);   // 入参不能为空
 
+    task.del = status;
+    task.tb = SyncType.synch;
+
+    let sqls: Array<any> = new Array<any>();
+
     let evdb: EvTbl = new EvTbl();
-    Object.assign(evdb, tt);
-    evdb.del = status;
-    evdb.tb = SyncType.synch;
-    await this.sqlExce.repTByParam(evdb);
-    let backMEvent: TaskData = {} as TaskData;
-    Object.assign(backMEvent, evdb);
-    return backMEvent;
+    Object.assign(evdb, task);
+    sqls.push(evdb.rpTParam());
+
+    let tdb: TTbl = new TTbl();
+    Object.assign(tdb, task);
+    sqls.push(tdb.rpTParam());
+
+    await this.sqlExce.batExecSqlByParam(sqls);
+
+    this.emitService.emit("mwxing.calendar.activities.changed", task);
+
+    return task;
   }
 
   /**
@@ -1623,7 +1952,7 @@ export class EventService extends BaseService {
                           from (
                             select evnext.day day, julianday(replace(?1, '/', '-'), '+1 days') - julianday(replace(evnext.day, '/', '-')) sortid
                             from (
-                              select page1.evd day, page1.*
+                              select distinct page1.evd day, page1.type, page1.del
                               from (
                                 select ev.*, tt.cs, tt.isrt, tt.cd, tt.fd
                                 from gtd_ev ev
@@ -1631,9 +1960,9 @@ export class EventService extends BaseService {
                                 on tt.evi = ev.evi
                                 where ev.type = ?2
                               ) page1
-                              where page1.cs = '1' or (page1.cs = '0' and date(replace(page1.evd, '/', '-')) >= date(replace(?4, '/', '-')))
+                              where page1.cs = '1' or (page1.cs = '0' and date(replace(page1.evd, '/', '-')) > date(replace(?4, '/', '-')))
                               union all
-                              select ?4 day, page0.*
+                              select distinct ?4 day, page0.type, page0.del
                               from (
                                 select ev.*, tt.cs, tt.isrt, tt.cd, tt.fd
                                 from gtd_ev ev
@@ -1641,7 +1970,7 @@ export class EventService extends BaseService {
                                 on tt.evi = ev.evi
                                 where ev.type = ?2
                               ) page0
-                              where page0.cs = '0' and date(replace(page0.evd, '/', '-')) < date(replace(?4, '/', '-'))
+                              where page0.cs = '0' and date(replace(page0.evd, '/', '-')) <= date(replace(?4, '/', '-'))
                             ) evnext
                             where evnext.type = ?2 and evnext.del = ?3 and julianday(replace(evnext.day, '/', '-')) < julianday(replace(?1, '/', '-'), '+1 days')
                             order by sortid
@@ -1656,7 +1985,7 @@ export class EventService extends BaseService {
                               on tt.evi = ev.evi
                               where ev.type = ?2
                             ) page1
-                            where page1.cs = '1' or (page1.cs = '0' and date(replace(page1.evd, '/', '-')) >= date(replace(?4, '/', '-')))
+                            where page1.cs = '1' or (page1.cs = '0' and date(replace(page1.evd, '/', '-')) > date(replace(?4, '/', '-')))
                             union all
                             select ?4 day, page0.*
                             from (
@@ -1666,7 +1995,7 @@ export class EventService extends BaseService {
                               on tt.evi = ev.evi
                               where ev.type = ?2
                             ) page0
-                            where page0.cs = '0' and date(replace(page0.evd, '/', '-')) < date(replace(?4, '/', '-'))
+                            where page0.cs = '0' and date(replace(page0.evd, '/', '-')) <= date(replace(?4, '/', '-'))
                           ) ev
                           on ev.day = evpage.day
                         ) task
@@ -1688,7 +2017,7 @@ export class EventService extends BaseService {
                           from (
                             select evnext.day day, julianday(replace(evnext.day, '/', '-')) - julianday(replace(?1, '/', '-'), '+1 days') sortid
                             from (
-                              select page1.evd day, page1.*
+                              select distinct page1.evd day, page1.type, page1.del
                               from (
                                 select ev.*, tt.cs, tt.isrt, tt.cd, tt.fd
                                 from gtd_ev ev
@@ -1696,9 +2025,9 @@ export class EventService extends BaseService {
                                 on tt.evi = ev.evi
                                 where ev.type = ?2
                               ) page1
-                              where page1.cs = '1' or (page1.cs = '0' and date(replace(page1.evd, '/', '-')) >= date(replace(?4, '/', '-')))
+                              where page1.cs = '1' or (page1.cs = '0' and date(replace(page1.evd, '/', '-')) > date(replace(?4, '/', '-')))
                               union all
-                              select ?4 day, page0.*
+                              select distinct ?4 day, page0.type, page0.del
                               from (
                                 select ev.*, tt.cs, tt.isrt, tt.cd, tt.fd
                                 from gtd_ev ev
@@ -1706,7 +2035,7 @@ export class EventService extends BaseService {
                                 on tt.evi = ev.evi
                                 where ev.type = ?2
                               ) page0
-                              where page0.cs = '0' and date(replace(page0.evd, '/', '-')) < date(replace(?4, '/', '-'))
+                              where page0.cs = '0' and date(replace(page0.evd, '/', '-')) <= date(replace(?4, '/', '-'))
                             ) evnext
                             where evnext.type = ?2 and evnext.del = ?3 and julianday(replace(evnext.day, '/', '-')) > julianday(replace(?1, '/', '-'), '+1 days')
                             order by sortid
@@ -1721,7 +2050,7 @@ export class EventService extends BaseService {
                               on tt.evi = ev.evi
                               where ev.type = ?2
                             ) page1
-                            where page1.cs = '1' or (page1.cs = '0' and date(replace(page1.evd, '/', '-')) >= date(replace(?4, '/', '-')))
+                            where page1.cs = '1' or (page1.cs = '0' and date(replace(page1.evd, '/', '-')) > date(replace(?4, '/', '-')))
                             union all
                             select ?4 day, page0.*
                             from (
@@ -1731,7 +2060,7 @@ export class EventService extends BaseService {
                               on tt.evi = ev.evi
                               where ev.type = ?2
                             ) page0
-                            where page0.cs = '0' and date(replace(page0.evd, '/', '-')) < date(replace(?4, '/', '-'))
+                            where page0.cs = '0' and date(replace(page0.evd, '/', '-')) <= date(replace(?4, '/', '-'))
                           ) ev
                           on ev.day = evpage.day
                         ) task
@@ -1753,25 +2082,353 @@ export class EventService extends BaseService {
 	 * 检索完成任务
 	 * @author ying<343253410@qq.com>
 	 */
-  async fetchPagedCompletedTasks(day: string = moment().format('YYYY/MM/DD'),evi: string): Promise<Array<TaskData>> {
-  	this.assertEmpty(day); //验证日期是否为空
-  	let sqlparam: string =`select ev.*,td.cs,td.isrt,td.cd,td.fd from gtd_ev ev left join gtd_t  td on ev.evi = td.evi and td.cs='${anyenum.IsSuccess.success}' where 1=1 and ev.type='${anyenum.EventType.Task}' and  ev.evd = '${day}'  ${(evi)? ('and ev.evi>'+evi):''} limit 10`;
-  	let data: Array<TaskData> = new Array<TaskData>();
-  	data = await this.sqlExce.getExtList<TaskData>(sqlparam);
-  	return data;
+  async fetchPagedCompletedTasks(day: string = moment().format('YYYY/MM/DD'), direction: PageDirection = PageDirection.PageInit): Promise<Array<TaskData>> {
+    this.assertEmpty(day);         // 验证日期是否为空
+    this.assertEmpty(direction);   // 入参不能为空
+
+    let pagetasks: Array<TaskData> = new Array<TaskData>();
+    let top: string = day;
+    let bottom: string = moment(day).add(1, "days").format('YYYY/MM/DD');
+
+    // 下拉刷新时需要减一天
+    if (direction == PageDirection.PageDown) {
+      top = moment(day).subtract(1, "days").format('YYYY/MM/DD');
+    }
+
+    if (direction == PageDirection.PageInit || direction == PageDirection.PageDown) {
+      let sql: string = `select distinct task.*, tt.cs, tt.isrt, tt.cd, tt.fd
+                        from (
+                          select evpage.day evd, ev.*
+                          from (
+                            select evnext.day day, julianday(replace(?1, '/', '-'), '+1 days') - julianday(replace(evnext.day, '/', '-')) sortid
+                            from (
+                              select distinct page1.evd day, page1.type, page1.del
+                              from (
+                                select ev.*, tt.cs, tt.isrt, tt.cd, tt.fd
+                                from gtd_ev ev
+                                left join gtd_t tt
+                                on tt.evi = ev.evi
+                                where ev.type = ?2
+                              ) page1
+                              where page1.cs = '1'
+                            ) evnext
+                            where evnext.type = ?2 and evnext.del = ?3 and julianday(replace(evnext.day, '/', '-')) < julianday(replace(?1, '/', '-'), '+1 days')
+                            order by sortid
+                            limit 5
+                          ) evpage
+                          left join (
+                            select page1.evd day, page1.*
+                            from (
+                              select ev.*, tt.cs, tt.isrt, tt.cd, tt.fd
+                              from gtd_ev ev
+                              left join gtd_t tt
+                              on tt.evi = ev.evi
+                              where ev.type = ?2
+                            ) page1
+                            where page1.cs = '1'
+                          ) ev
+                          on ev.day = evpage.day
+                        ) task
+                        left join gtd_t tt
+                        on tt.evi = task.evi
+                        order by task.evd asc`;
+
+      let data: Array<TaskData> = await this.sqlExce.getExtLstByParam<TaskData>(sql, [top, anyenum.EventType.Task, DelType.undel]);
+
+      if (data && data.length > 0) {
+        pagetasks = data;
+      }
+    }
+
+    if (direction == PageDirection.PageInit || direction == PageDirection.PageUp) {
+      let sql: string = `select distinct task.*, tt.cs, tt.isrt, tt.cd, tt.fd
+                        from (
+                          select evpage.day evd, ev.*
+                          from (
+                            select evnext.day day, julianday(replace(evnext.day, '/', '-')) - julianday(replace(?1, '/', '-'), '+1 days') sortid
+                            from (
+                              select distinct page1.evd day, page1.type, page1.del
+                              from (
+                                select ev.*, tt.cs, tt.isrt, tt.cd, tt.fd
+                                from gtd_ev ev
+                                left join gtd_t tt
+                                on tt.evi = ev.evi
+                                where ev.type = ?2
+                              ) page1
+                              where page1.cs = '1'
+                            ) evnext
+                            where evnext.type = ?2 and evnext.del = ?3 and julianday(replace(evnext.day, '/', '-')) > julianday(replace(?1, '/', '-'), '+1 days')
+                            order by sortid
+                            limit 5
+                          ) evpage
+                          left join (
+                            select page1.evd day, page1.*
+                            from (
+                              select ev.*, tt.cs, tt.isrt, tt.cd, tt.fd
+                              from gtd_ev ev
+                              left join gtd_t tt
+                              on tt.evi = ev.evi
+                              where ev.type = ?2
+                            ) page1
+                            where page1.cs = '1'
+                          ) ev
+                          on ev.day = evpage.day
+                        ) task
+                        left join gtd_t tt
+                        on tt.evi = task.evi
+                        order by task.evd asc`;
+
+      let data: Array<TaskData> = await this.sqlExce.getExtLstByParam<TaskData>(sql, [bottom, anyenum.EventType.Task, DelType.undel]);
+
+      if (data && data.length > 0) {
+        pagetasks = pagetasks.concat(data);
+      }
+    }
+
+  	return pagetasks;
   }
 
   /**
 	 * 检索未完成的任务
 	 * @author ying<343253410@qq.com>
 	 */
-  async fetchPagedUncompletedTasks(day: string = moment().format('YYYY/MM/DD'),evi: string): Promise<Array<TaskData>> {
-  	this.assertEmpty(day); //验证日期是否为空
-  	let sqlparam: string =`select ev.*,td.cs,td.isrt,td.cd,td.fd from gtd_ev  ev left join gtd_t  td on ev.evi = td.evi and td.cs='${anyenum.IsSuccess.wait}' where 1=1 and ev.type='${anyenum.EventType.Task}' and  ev.evd = '${day}'  ${(evi)? ('and ev.evi>'+evi):''} limit 10`;
-  	let data: Array<TaskData> = new Array<TaskData>();
-  	data = await this.sqlExce.getExtList<TaskData>(sqlparam);
-  	return data;
+  async fetchPagedUncompletedTasks(day: string = moment().format('YYYY/MM/DD'), direction: PageDirection = PageDirection.PageInit): Promise<Array<TaskData>> {
+    this.assertEmpty(day);         // 验证日期是否为空
+    this.assertEmpty(direction);   // 入参不能为空
 
+    let pagetasks: Array<TaskData> = new Array<TaskData>();
+    let today: string = moment().format('YYYY/MM/DD');
+    let top: string = day;
+    let bottom: string = moment(day).add(1, "days").format('YYYY/MM/DD');
+
+    // 下拉刷新时需要减一天
+    if (direction == PageDirection.PageDown) {
+      top = moment(day).subtract(1, "days").format('YYYY/MM/DD');
+    }
+
+    if (direction == PageDirection.PageInit || direction == PageDirection.PageDown) {
+      let sql: string = `select distinct task.*, tt.cs, tt.isrt, tt.cd, tt.fd
+                        from (
+                          select evpage.day evd, ev.*
+                          from (
+                            select evnext.day day, julianday(replace(?1, '/', '-'), '+1 days') - julianday(replace(evnext.day, '/', '-')) sortid
+                            from (
+                              select distinct page1.evd day, page1.type, page1.del
+                              from (
+                                select ev.*, tt.cs, tt.isrt, tt.cd, tt.fd
+                                from gtd_ev ev
+                                left join gtd_t tt
+                                on tt.evi = ev.evi
+                                where ev.type = ?2
+                              ) page1
+                              where page1.cs = '0' and date(replace(page1.evd, '/', '-')) > date(replace(?4, '/', '-'))
+                              union all
+                              select distinct ?4 day, page0.type, page0.del
+                              from (
+                                select ev.*, tt.cs, tt.isrt, tt.cd, tt.fd
+                                from gtd_ev ev
+                                left join gtd_t tt
+                                on tt.evi = ev.evi
+                                where ev.type = ?2
+                              ) page0
+                              where page0.cs = '0' and date(replace(page0.evd, '/', '-')) <= date(replace(?4, '/', '-'))
+                            ) evnext
+                            where evnext.type = ?2 and evnext.del = ?3 and julianday(replace(evnext.day, '/', '-')) < julianday(replace(?1, '/', '-'), '+1 days')
+                            order by sortid
+                            limit 5
+                          ) evpage
+                          left join (
+                            select page1.evd day, page1.*
+                            from (
+                              select ev.*, tt.cs, tt.isrt, tt.cd, tt.fd
+                              from gtd_ev ev
+                              left join gtd_t tt
+                              on tt.evi = ev.evi
+                              where ev.type = ?2
+                            ) page1
+                            where page1.cs = '0' and date(replace(page1.evd, '/', '-')) > date(replace(?4, '/', '-'))
+                            union all
+                            select ?4 day, page0.*
+                            from (
+                              select ev.*, tt.cs, tt.isrt, tt.cd, tt.fd
+                              from gtd_ev ev
+                              left join gtd_t tt
+                              on tt.evi = ev.evi
+                              where ev.type = ?2
+                            ) page0
+                            where page0.cs = '0' and date(replace(page0.evd, '/', '-')) <= date(replace(?4, '/', '-'))
+                          ) ev
+                          on ev.day = evpage.day
+                        ) task
+                        left join gtd_t tt
+                        on tt.evi = task.evi
+                        order by task.evd asc`;
+
+      let data: Array<TaskData> = await this.sqlExce.getExtLstByParam<TaskData>(sql, [top, anyenum.EventType.Task, DelType.undel, today]);
+
+      if (data && data.length > 0) {
+        pagetasks = data;
+      }
+    }
+
+    if (direction == PageDirection.PageInit || direction == PageDirection.PageUp) {
+      let sql: string = `select distinct task.*, tt.cs, tt.isrt, tt.cd, tt.fd
+                        from (
+                          select evpage.day evd, ev.*
+                          from (
+                            select evnext.day day, julianday(replace(evnext.day, '/', '-')) - julianday(replace(?1, '/', '-'), '+1 days') sortid
+                            from (
+                              select distinct page1.evd day, page1.type, page1.del
+                              from (
+                                select ev.*, tt.cs, tt.isrt, tt.cd, tt.fd
+                                from gtd_ev ev
+                                left join gtd_t tt
+                                on tt.evi = ev.evi
+                                where ev.type = ?2
+                              ) page1
+                              where page1.cs = '0' and date(replace(page1.evd, '/', '-')) > date(replace(?4, '/', '-'))
+                              union all
+                              select distinct ?4 day, page0.type, page0.del
+                              from (
+                                select ev.*, tt.cs, tt.isrt, tt.cd, tt.fd
+                                from gtd_ev ev
+                                left join gtd_t tt
+                                on tt.evi = ev.evi
+                                where ev.type = ?2
+                              ) page0
+                              where page0.cs = '0' and date(replace(page0.evd, '/', '-')) <= date(replace(?4, '/', '-'))
+                            ) evnext
+                            where evnext.type = ?2 and evnext.del = ?3 and julianday(replace(evnext.day, '/', '-')) > julianday(replace(?1, '/', '-'), '+1 days')
+                            order by sortid
+                            limit 5
+                          ) evpage
+                          left join (
+                            select page1.evd day, page1.*
+                            from (
+                              select ev.*, tt.cs, tt.isrt, tt.cd, tt.fd
+                              from gtd_ev ev
+                              left join gtd_t tt
+                              on tt.evi = ev.evi
+                              where ev.type = ?2
+                            ) page1
+                            where page1.cs = '0' and date(replace(page1.evd, '/', '-')) > date(replace(?4, '/', '-'))
+                            union all
+                            select ?4 day, page0.*
+                            from (
+                              select ev.*, tt.cs, tt.isrt, tt.cd, tt.fd
+                              from gtd_ev ev
+                              left join gtd_t tt
+                              on tt.evi = ev.evi
+                              where ev.type = ?2
+                            ) page0
+                            where page0.cs = '0' and date(replace(page0.evd, '/', '-')) <= date(replace(?4, '/', '-'))
+                          ) ev
+                          on ev.day = evpage.day
+                        ) task
+                        left join gtd_t tt
+                        on tt.evi = task.evi
+                        order by task.evd asc`;
+
+      let data: Array<TaskData> = await this.sqlExce.getExtLstByParam<TaskData>(sql, [bottom, anyenum.EventType.Task, DelType.undel, today]);
+
+      if (data && data.length > 0) {
+        pagetasks = pagetasks.concat(data);
+      }
+    }
+
+  	return pagetasks;
+  }
+
+  /**
+	 * 检索所有未完成的任务
+   *
+	 * @author leon_xi@163.com
+	 */
+  async fetchUncompletedTasks(): Promise<Array<TaskData>> {
+    let sql: string = `select ev.*, t.cs, t.isrt, t.cd, t.fd
+                      from gtd_ev ev
+                      left join gtd_t t
+                      on t.evi = ev.evi
+                      where ev.del = ?1 and ev.type = ?2 and t.cs = ?3
+                      order by ev.evd asc, ev.evt asc`;
+
+    let tasks: Array<TaskData> = await this.sqlExce.getExtLstByParam<TaskData>(sql, [DelType.undel, anyenum.EventType.Task, IsSuccess.wait]) || new Array<TaskData>();
+
+    return tasks;
+  }
+
+  /**
+   * 合并待处理任务列表
+   *
+   * 返回原待处理任务列表数组对象，控制页面刷新
+   *
+   * @author leon_xi@163.com
+   **/
+  mergeUncompletedTasks(tasks: Array<TaskData>, changed: TaskData) {
+    let activityType: string = this.getEventType(changed);
+
+    if (activityType != "TaskData") {
+      return tasks;
+    }
+
+    let taskids: Array<string> = new Array<string>();
+
+    tasks.reduce((taskids, value) => {
+      taskids.push(value.evi);
+      return taskids;
+    }, taskids);
+
+    // 更新原有任务信息
+    let index: number = taskids.indexOf(changed.evi);
+    if (index >= 0) {
+      if (changed.cs != IsSuccess.success) {
+        tasks[index] = changed;
+      } else {
+        tasks.splice(index, 1);
+      }
+    } else {
+      if (changed.cs != IsSuccess.success) {
+        let newIndex: number = tasks.findIndex((val, index, arr) => {
+          return moment(val.evd + ' ' + val.evt).diff(changed.evd + ' ' + changed.evt) >= 0;
+        });
+
+        if (newIndex > 0) {
+          tasks.splice(newIndex - 1, 0, changed);
+        } else if (newIndex == 0) {
+          tasks.unshift(changed);
+        } else {
+          tasks.push(changed);
+        }
+      }
+    }
+
+    return tasks;
+  }
+
+  /**
+   * 取得事件类型
+   *
+   * @author leon_xi@163.com
+   **/
+  getEventType(source: AgendaData | TaskData | MiniTaskData): string {
+
+    this.assertEmpty(source);
+
+    let src: any = source;
+
+    if (src.evi && src.ed) {    // AgendaData
+      return "AgendaData";
+    }
+
+    if (src.evi && src.cs) {    // TaskData
+      return "TaskData";
+    }
+
+    if (src.evi && !src.cs && !src.ed) {    // MiniTaskData
+      return "MiniTaskData";
+    }
+
+    this.assertFail();
   }
 
   /**
@@ -1926,11 +2583,6 @@ export class EventService extends BaseService {
   }*/
 }
 
-export class UploadAgdData{
-  agendas : Array<AgendaData>;
-  ParterUi:Array<string>;
-}
-
 export interface EventData extends EvTbl {
 
 }
@@ -1973,12 +2625,38 @@ export interface  Parter extends ParTbl{
 }
 
 export interface TaskData extends EventData,TTbl {
+	//重复设定
+  rtjson :RtJson;
+  //提醒设定
+  txjson :TxJson;
+  //参与人
+  parters : Array<Parter>;
+  //发起人
+  originator: Parter;
 
+  //附件
+  fjs : Array<FjTbl>;
+
+  //用于数据上传给服务器时，给哪些参与人，[]无参与人或参与人被全删
+  tos : string;
 }
 
 
 export interface MiniTaskData extends EventData {
+	//重复设定
+  rtjson :RtJson;
+  //提醒设定
+  txjson :TxJson;
+  //参与人
+  parters : Array<Parter>;
+  //发起人
+  originator: Parter;
 
+  //附件
+  fjs : Array<FjTbl>;
+
+  //用于数据上传给服务器时，给哪些参与人，[]无参与人或参与人被全删
+  tos : string;
 }
 
 export class RetParamEv{
@@ -1986,6 +2664,18 @@ export class RetParamEv{
   ed:string = "";
   sqlparam  = new  Array<any>();
   outAgdatas = new Array<AgendaData>();
+}
+
+export class RetParamTaskData {
+  rtevi:string ="";
+  sqlparam  = new  Array<any>();
+  outTasks = new Array<TaskData>();
+}
+
+export class RetParamMiniTaskData {
+  rtevi:string ="";
+  sqlparam  = new  Array<any>();
+  outTasks = new Array<MiniTaskData>();
 }
 
 export class RtOver {
@@ -2012,4 +2702,9 @@ export class TxJson {
 enum DUflag {
   del = "del",
   update = "update"
+}
+
+export class OutDate {
+	days: Array<string> = new Array<string>();
+	repeatEndDay: string = "";
 }

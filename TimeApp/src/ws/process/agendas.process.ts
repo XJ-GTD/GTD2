@@ -8,9 +8,10 @@ import {DataConfig} from "../../service/config/data.config";
 import {CTbl} from "../../service/sqlite/tbl/c.tbl";
 import {AG, O, SS} from "../model/ws.enum";
 import {FsData, RcInParam, ScdData} from "../../data.mapping";
-import {PgBusiService} from "../../service/pagecom/pgbusi.service";
+import {EventService,AgendaData} from "../../service/business/event.service";
 import {WsDataConfig} from "../wsdata.config";
 import {BaseProcess} from "./base.process";
+import * as anyenum from "../../data.enum";
 
 /**
  * 日程处理
@@ -19,7 +20,7 @@ import {BaseProcess} from "./base.process";
  */
 @Injectable()
 export class AgendasProcess extends BaseProcess implements MQProcess,OptProcess{
-  constructor(private busiService:PgBusiService) {
+  constructor(private eventService: EventService) {
     super();
   }
 
@@ -59,25 +60,48 @@ export class AgendasProcess extends BaseProcess implements MQProcess,OptProcess{
     //确认操作
     for (let c of scd){
       //tx rt
-      let rcIn:RcInParam = new RcInParam();
-      rcIn.sn = c.sn;
+//    let rcIn:RcInParam = new RcInParam();
+//    rcIn.sn = c.sn;
+//    rcIn.st = c.st;
+//    rcIn.sd = c.sd;
+//    if(c.si && c.si != null && c.si != ''){
+//      rcIn.si = c.si;
+//    }
+//
+//    for (let f of  fs){
+//      rcIn.fss.push(f);
+//    }
+//
+//    if (prvOpt == AG.C){
+//      await this.busiService.saveOrUpdate(rcIn);
+//    }else if (prvOpt == AG.U){
+//      console.log("******************agendas do AG.U")
+//      await this.busiService.saveOrUpdate(rcIn);
+//    }else{
+//      await this.busiService.YuYinDelRc( rcIn.si, rcIn.sd);
+//    }
+	  //2019-08-30   ying 改版
+	 let rcIn: AgendaData = {} as AgendaData;
+      rcIn.evn = c.sn;
       rcIn.st = c.st;
       rcIn.sd = c.sd;
       if(c.si && c.si != null && c.si != ''){
-        rcIn.si = c.si;
+        rcIn.evi = c.si;
       }
 
-      for (let f of  fs){
-        rcIn.fss.push(f);
-      }
+      //for (let f of  fs){
+      //  rcIn.parters.push(f);
+      //}
 
       if (prvOpt == AG.C){
-        await this.busiService.saveOrUpdate(rcIn);
+        await this.eventService.saveAgenda(rcIn);
       }else if (prvOpt == AG.U){
         console.log("******************agendas do AG.U")
-        await this.busiService.saveOrUpdate(rcIn);
+        await this.eventService.saveAgenda(rcIn);
       }else{
-        await this.busiService.YuYinDelRc( rcIn.si, rcIn.sd);
+      	let oldAgendaData: AgendaData = {} as AgendaData;
+      	oldAgendaData = await this.eventService.getAgenda(rcIn.evi);
+        await this.eventService.removeAgenda(oldAgendaData,anyenum.OperateType.OnlySel);
       }
     }
     console.log("******************agendas do end")
