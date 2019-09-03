@@ -5,7 +5,7 @@ page-box {
   }
 
   .box-header {
-    height: 20vmax;
+    height: calc(20vmax - 20px);
 
     h1 {
       position: absolute;
@@ -26,7 +26,7 @@ page-box {
 
     ion-scroll {
       width: calc(100vmin - 32px);
-      height: calc(80vmax - 32px);
+      height: calc(80vmax - 32px - 20px);
       position: absolute;
       bottom: 32px !important;
 
