@@ -63,10 +63,10 @@ $agenda_st_font_black:rgba(153,152,152,1);
       .d-title{
 
         background:$d_title_back_black;
-        box-shadow:0px 0px 10px 0px rgba(3,0,0,0.2);
+       box-shadow:0px 0px 5px 0px rgba(3,0,0,0.2);
         .first{
           background:$first_back_black;
-          box-shadow:0px 0px 10px 0px rgba(3,0,0,0.2);
+         box-shadow:0px 0px 5px 0px rgba(3,0,0,0.2);
           color:$first_font_black;
         }
 
@@ -75,7 +75,7 @@ $agenda_st_font_black:rgba(153,152,152,1);
 
     .dayagenda-content {
       background:$dayagendacontent_back_black;
-      box-shadow: 0px 0px 10px 0px rgba(3, 0, 0, 0.2);
+      box-shadow: 0px 0px 5px 0px rgba(3, 0, 0, 0.2);
 
       .agendaline1 {
         .agenda-st {

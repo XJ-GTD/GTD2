@@ -364,7 +364,7 @@ export class HPage {
   todoList(day ?: CalendarDay) {
     let selectDay: CalendarDay = day ? day : this.hdata.selectDay;
 
-    this.modalCtr.create(DataConfig.PAGE._DA_PAGE, selectDay).present();
+    this.modalCtr.create(DataConfig.PAGE._DO_PAGE, selectDay).present();
   }
 
   gotolist() {
