@@ -1437,7 +1437,7 @@ export class EventService extends BaseService {
     let repeatEndDay: string = "";
 		let outDateArray: Array<OutDate> = new Array<OutDate>();
 		//获取重复日期
-		outDateArray = this.getOutDays(txjson,repeatStartDay,repeatType ,repeatStep,options,repeatTimes,repeatEndDay);
+		outDateArray = this.getOutDays(rtjson,repeatStartDay,repeatType ,repeatStep,options,repeatTimes,repeatEndDay);
 	  for (let outDate of outDateArray) {
 
 	  	for(let day of outDate.days) {
