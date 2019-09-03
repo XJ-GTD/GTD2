@@ -197,6 +197,7 @@ describe('EventService test suite', () => {
   	// 创建任务
     let tx: TaskData = {} as TaskData;
     tx.evn ="shopping,今天穿的是花裤衩";
+    tx.rtjson = new RtJson();
     tx = await eventService.saveTask(tx);
     expect(tx).toBeDefined();
     expect(tx.evi).toBeDefined();
@@ -211,6 +212,7 @@ describe('EventService test suite', () => {
   	// 创建任务
     let tx: TaskData = {} as TaskData;
     tx.evn ="shopping,今天穿的是花裤衩";
+    tx.rtjson = new RtJson();
     tx = await eventService.saveTask(tx);
     expect(tx).toBeDefined();
     expect(tx.evi).toBeDefined();
@@ -229,6 +231,7 @@ describe('EventService test suite', () => {
   	// 创建任务
     let tx: MiniTaskData = {} as MiniTaskData;
     tx.evn ="shopping,今天穿的是花裤衩";
+    tx.rtjson = new RtJson();
     tx = await eventService.saveMiniTask(tx);
     expect(tx).toBeDefined();
     expect(tx.evi).toBeDefined();
@@ -243,6 +246,7 @@ describe('EventService test suite', () => {
 
   	let tx: MiniTaskData = {} as MiniTaskData;
     tx.evn ="shopping,今天穿的是花裤衩";
+    tx.rtjson = new RtJson();
     tx = await eventService.saveMiniTask(tx);
     expect(tx).toBeDefined();
     expect(tx.evi).toBeDefined();
@@ -261,6 +265,7 @@ describe('EventService test suite', () => {
 
   	let tx: TaskData = {} as TaskData;
     tx.evn ="shopping,今天穿的是花裤衩";
+    tx.rtjson = new RtJson();
     tx = await eventService.saveTask(tx);
     expect(tx).toBeDefined();
     expect(tx.evi).toBeDefined();
@@ -276,6 +281,7 @@ describe('EventService test suite', () => {
 
   	let tx: TaskData = {} as TaskData;
     tx.evn ="shopping,今天穿的是花裤衩";
+    tx.rtjson = new RtJson();
     tx.isrt = IsCreate.isYes;
     tx = await eventService.saveTask(tx);
     expect(tx).toBeDefined();
@@ -292,12 +298,14 @@ describe('EventService test suite', () => {
 		//创建任务
 		let tx: TaskData = {} as TaskData;
     tx.evn ="shopping,今天穿的是花裤衩";
+    tx.rtjson = new RtJson();
     tx = await eventService.saveTask(tx);
     expect(tx).toBeDefined();
     expect(tx.evi).toBeDefined();
 
     let tx2: TaskData = {} as TaskData;
     tx2.evn ="shopping,今天穿的是花裤衩 2019-08-17";
+    tx2.rtjson = new RtJson();
     tx2 = await eventService.saveTask(tx2);
     expect(tx2).toBeDefined();
     expect(tx2.evi).toBeDefined();
@@ -313,6 +321,7 @@ describe('EventService test suite', () => {
 
 		let tx: TaskData = {} as TaskData;
     tx.evn ="shopping,今天穿的是花裤衩";
+    tx.rtjson = new RtJson();
     tx.cs = IsSuccess.success;
     tx = await eventService.saveTask(tx);
     expect(tx).toBeDefined();
@@ -320,6 +329,7 @@ describe('EventService test suite', () => {
 
     let tx2: TaskData = {} as TaskData;
     tx2.evn ="shopping,今天穿的是花裤衩 2019-08-17";
+    tx2.rtjson = new RtJson();
     tx2.cs = IsSuccess.success;
     tx2 = await eventService.saveTask(tx2);
     expect(tx2).toBeDefined();
@@ -337,12 +347,14 @@ describe('EventService test suite', () => {
 
 		let tx: TaskData = {} as TaskData;
     tx.evn ="shopping,今天穿的是花裤衩";
+    tx.rtjson = new RtJson();
     tx = await eventService.saveTask(tx);
     expect(tx).toBeDefined();
     expect(tx.evi).toBeDefined();
 
     let tx2: TaskData = {} as TaskData;
     tx2.evn ="shopping,今天穿的是花裤衩 2019-08-17";
+    tx2.rtjson = new RtJson();
     tx2 = await eventService.saveTask(tx2);
     expect(tx2).toBeDefined();
     expect(tx2.evi).toBeDefined();
@@ -358,6 +370,7 @@ describe('EventService test suite', () => {
 
 		let tx: TaskData = {} as TaskData;
     tx.evn ="shopping,今天穿的是花裤衩";
+    tx.rtjson = new RtJson();
     tx = await eventService.saveTask(tx);
     expect(tx).toBeDefined();
     expect(tx.evi).toBeDefined();
@@ -376,6 +389,7 @@ describe('EventService test suite', () => {
 	it(`Case 9 - 1 sendTask 发送任务`,  async (done: DoneFn) => {
   	let tx: TaskData = {} as TaskData;
     tx.evn ="shopping,今天穿的是花裤衩";
+    tx.rtjson = new RtJson();
     tx = await eventService.saveTask(tx);
     expect(tx).toBeDefined();
     expect(tx.evi).toBeDefined();
@@ -394,6 +408,7 @@ describe('EventService test suite', () => {
   it(`Case 10 - 1 sendMiniTask 发送任务`,  async (done: DoneFn) => {
   	let tx: MiniTaskData = {} as MiniTaskData;
     tx.evn ="shopping,今天穿的是花裤衩";
+    tx.rtjson = new RtJson();
     tx = await eventService.saveMiniTask(tx);
     expect(tx).toBeDefined();
     expect(tx.evi).toBeDefined();
@@ -426,6 +441,7 @@ describe('EventService test suite', () => {
   it(`Case 12 - 1 acceptReceivedTask 接收任务,有数据,不删除共享`,  async () => {
     	let tx: TaskData = {} as TaskData;
 	    tx.evn ="shopping,今天穿的是花裤衩";
+	    tx.rtjson = new RtJson();
 		  tx.wtt = moment().unix();
 	    tx.utt = moment().unix();
 	    tx.tb = SyncType.unsynch;
@@ -450,6 +466,7 @@ describe('EventService test suite', () => {
    it(`Case 12 - 2 acceptReceivedTask 接收任务,有数据,删除共享`,  async () => {
     	let tx: TaskData = {} as TaskData;
 	    tx.evn ="shopping,今天穿的是花裤衩";
+	    tx.rtjson = new RtJson();
 		  tx.wtt = moment().unix();
 	    tx.utt = moment().unix();
 	    tx = await eventService.saveTask(tx);
@@ -471,6 +488,7 @@ describe('EventService test suite', () => {
   it(`Case 13 - 1 acceptReceivedMiniTask 接收小任务,有数据,不删除共享`,  async () => {
     	let tx: MiniTaskData = {} as MiniTaskData;
 	    tx.evn ="shopping,今天穿的是花裤衩";
+	    tx.rtjson = new RtJson();
 		  tx.wtt = moment().unix();
 	    tx.utt = moment().unix();
 	    tx.tb = SyncType.unsynch;
@@ -496,6 +514,7 @@ describe('EventService test suite', () => {
 	it(`Case 13 - 2 acceptReceivedMiniTask 接收小任务,有数据,删除共享`,  async () => {
     	let tx: MiniTaskData = {} as MiniTaskData;
 	    tx.evn ="shopping,今天穿的是花裤衩";
+	    tx.rtjson = new RtJson();
 		  tx.wtt = moment().unix();
 	    tx.utt = moment().unix();
 	    tx.tb = SyncType.unsynch;
@@ -520,6 +539,7 @@ describe('EventService test suite', () => {
 
   	let tx: TaskData = {} as TaskData;
     tx.evn ="shopping,今天穿的是花裤衩";
+    tx.rtjson = new RtJson();
     tx.type =EventType.Task;
     tx.tb = SyncType.unsynch;
     tx = await eventService.saveTask(tx);
@@ -534,6 +554,7 @@ describe('EventService test suite', () => {
 
   	let tx: MiniTaskData = {} as MiniTaskData;
     tx.evn ="shopping,今天穿的是花裤衩";
+    tx.rtjson = new RtJson();
     tx.type =EventType.MiniTask;
     tx.tb = SyncType.unsynch;
     tx = await eventService.saveMiniTask(tx);
@@ -548,6 +569,7 @@ describe('EventService test suite', () => {
 
   	let tx: TaskData = {} as TaskData;
     tx.evn ="shopping,今天穿的是花裤衩";
+    tx.rtjson = new RtJson();
     tx.type =EventType.Task;
     tx.tb = SyncType.unsynch;
     tx = await eventService.saveTask(tx);
@@ -576,6 +598,7 @@ describe('EventService test suite', () => {
 
   	let tx: MiniTaskData = {} as MiniTaskData;
     tx.evn ="shopping,今天穿的是花裤衩";
+    tx.rtjson = new RtJson();
     tx.type =EventType.MiniTask;
     tx.tb = SyncType.unsynch;
     tx = await eventService.saveMiniTask(tx);
