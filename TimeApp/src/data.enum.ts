@@ -91,14 +91,14 @@ export enum RepeatFlag {
 
 //重复开启选项
 export enum OpenWay {
-  close = "close",
-  Monday  = "Monday",
-  Tuesday  = "Tuesday",
-  Wednesday  = "Wednesday",
-  Thursday  = "Thursday",
-  Friday = "Friday",
-  Saturday = "Saturday",
-  Sunday = "Sunday"
+  close = -1,
+  Monday  = 0,
+  Tuesday  = 1,
+  Wednesday  = 2,
+  Thursday  = 3,
+  Friday = 4,
+  Saturday = 5,
+  Sunday = 6
 }
 
 //修改权限
@@ -114,7 +114,7 @@ export enum InvitePowr {
 }
 
 //提醒选项
-export enum TxType {
+export enum RemindTime {
   close = "0",
   m10  = "10",
   m30 = "30",

@@ -11,6 +11,7 @@ import {SQLitePorter} from "@ionic-native/sqlite-porter";
 import {StatusBar} from '@ionic-native/status-bar';
 import {SplashScreen} from '@ionic-native/splash-screen';
 import * as moment from "moment";
+import * as anyenum from "../../data.enum";
 import {
   IonicModule,
   Platform
@@ -45,7 +46,7 @@ import {CaTbl} from "../sqlite/tbl/ca.tbl";
 import {TTbl} from "../sqlite/tbl/t.tbl";
 import {WaTbl} from "../sqlite/tbl/wa.tbl";
 import { CalendarService, PlanData } from "./calendar.service";
-import { EventService, AgendaData, TaskData, MiniTaskData, RtJson} from "./event.service";
+import {EventService, AgendaData, TaskData, MiniTaskData, RtJson, TxJson} from "./event.service";
 import { MemoService } from "./memo.service";
 import { PlanType, IsCreate, IsSuccess, IsWholeday, PageDirection, SyncType, DelType, SyncDataStatus, EventType, OperateType, CycleType, OverType} from "../../data.enum";
 
@@ -145,6 +146,41 @@ describe('EventService test suite', () => {
   // 需要同步执行
   it('Case 1 - 1 service should be created', () => {
     expect(eventService).toBeTruthy();
+  });
+
+  it('Case 1 - 1 被分享人保存事件到本地 创建重复事件 -》被分享人保存到本地',async()=>{
+    //创建重复事件
+    let agdata = {} as   AgendaData;
+    agdata.evn = "测试重复日程添加0911";
+    agdata.sd = "2019/09/11";
+
+    let rtjon = new RtJson();
+    rtjon.cycletype = anyenum.CycleType.week;
+    rtjon.over.value = "2019/10/11";
+    rtjon.over.type = anyenum.OverType.limitdate;
+    rtjon.cyclenum = 2;
+    rtjon.openway.push(anyenum.OpenWay.Wednesday);
+
+    agdata.rtjson = rtjon;
+
+    let txjson = new TxJson();
+    txjson.reminds.push(anyenum.RemindTime.m30);
+    txjson.reminds.push(anyenum.RemindTime.h1);
+    agdata.txjson = txjson;
+
+    agdata.al = anyenum.IsWholeday.NonWhole;
+    agdata.st = "11:20";
+    agdata.ct = 20;
+    let outagds = new Array<AgendaData>();
+    outagds = await eventService.saveAgenda(agdata);
+    expect(outagds).toBeDefined();
+    //分享新增事件
+    for (let j=0,len = outagds.length ; j<len ;j++){
+      outagds[j].evi = util.getUuid();
+      outagds[j].ui = 'frompublisher1';
+    }
+
+
   });
 
   it('Case 2 - 1 saveTask 保存任务 - 保存1个任务，查询这个任务，查询任务主题', async() => {
