@@ -1634,9 +1634,10 @@ export class EventService extends BaseService {
   private sqlparamAddTaskTt(ev: EvTbl,cs: string, isrt : string ): TTbl {
     //创建任务
 		let ttdb: TTbl = new TTbl();
-		ttdb.cs = ev.cs || anyenum.IsSuccess.wait;
-		ttdb.isrt = ev.isrt || anyenum.IsCreate.isNo;
-		ttdb.cd = moment(date).format("YYYY/MM/DD");
+		ttdb.evi = ev.evi;
+		ttdb.cs = cs || anyenum.IsSuccess.wait;
+		ttdb.isrt = isrt || anyenum.IsCreate.isNo;
+		ttdb.cd = moment().format('YYYY/MM/DD');
     return ttdb;
   }
 
