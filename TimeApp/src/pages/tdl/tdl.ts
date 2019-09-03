@@ -1,16 +1,24 @@
-import {Component, ElementRef, ViewChild} from '@angular/core';
+import {Component, ElementRef, Renderer, Renderer2, ViewChild} from '@angular/core';
 import {
-  Content,
+  Content, DomController,
+  GestureController,
   MenuController,
-  ModalController, ScrollEvent,
+  ModalController,
+  Platform,
+  ScrollEvent,
 } from 'ionic-angular';
 import {TdlService} from "./tdl.service";
 import {DataConfig} from "../../service/config/data.config";
 import * as moment from "moment";
 import {EmitService} from "../../service/util-service/emit.service";
-import {ScdData, ScdlData, ScdPageParamter} from "../../data.mapping";
+import {ScdPageParamter} from "../../data.mapping";
 import {UtilService} from "../../service/util-service/util.service";
 import {FeedbackService} from "../../service/cordova/feedback.service";
+import {DayActivityData, MonthActivityData} from "../../service/business/calendar.service";
+import {PageDirection} from "../../data.enum";
+import {TdlGesture} from "./tdl-gestures";
+import {Ion} from "ionic-angular/umd";
+import {CalendarComponent} from "../../components/ion2-calendar";
 
 /**
  * Generated class for the 日程列表 page.
@@ -22,62 +30,71 @@ import {FeedbackService} from "../../service/cordova/feedback.service";
   selector: 'page-tdl',
   template:
       `
-    <div class="header-set">
-      <div class="daynav">
-        <div class="dayheader">
+    <!--<div class="header-set">-->
+    <!--<div class="daynav">-->
+    <!--<div class="dayheader">-->
 
-          <div class="d-fsize text-center">{{headerDate | formatedate :"CWEEK"}}</div>
-          <div class="ym-fsize text-center ">{{headerDate | formatedate:"DD"}}</div>
-          <!--<div class="ys-fsize text-center " *ngFor="let jt of headerData.jtl" (click)="toDetail(jt.si,jt.sd,'3')">{{jt.spn}}</div>-->
-        </div>
-        <div class="d-title text-center ">
-          <div class="first d-title-chr">日记</div>
-          <div class=" d-title-chr">10条日程</div>
-          <div class=" d-title-chr">10条任务</div>
-          <div class=" d-title-chr">10条任务</div>
-        </div>
-      </div>
-    </div>
+    <!--<div class="d-fsize text-center">{{headerDate | formatedate :"CWEEK"}}</div>-->
+    <!--<div class="ym-fsize text-center ">{{headerDate | formatedate:"DD"}}</div>-->
+    <!--&lt;!&ndash;<div class="ys-fsize text-center " *ngFor="let jt of headerData.jtl" (click)="toDetail(jt.si,jt.sd,'3')">{{jt.spn}}</div>&ndash;&gt;-->
+    <!--</div>-->
+    <!--<div class="d-title text-center ">-->
+    <!--<div class="first d-title-chr">日记</div>-->
+    <!--<div class=" d-title-chr">10条日程</div>-->
+    <!--<div class=" d-title-chr">10条任务</div>-->
+    <!--<div class=" d-title-chr">10条任务</div>-->
+    <!--</div>-->
+    <!--</div>-->
+    <!--</div>-->
     <ion-content #contentD>
       <ion-grid #grid4Hight>
-        <ng-template ngFor let-sdl [ngForOf]="scdlDataList">
-          <ion-row *ngIf="(sdl.d | formatedate:'DD') == '01'" class="dayagenda-month" [class.month7] = "true">
-              <p>
-                {{sdl.d  | formatedate :"CYYYY/MM"}}
-              </p>
-              <p>
-                感知天气冷暖我们生来便会，感知人情冷暖还要慢慢体会。 
-              </p>            
+        <ng-template ngFor let-monthActivityData [ngForOf]="monthActivityDatas">
+          <ion-row class="dayagenda-month" [class.month7]="true">
+            <p>
+              {{monthActivityData.month  | formatedate :"CYYYY/MM/ND"}}
+            </p>
+            <p>
+              感知天气冷暖我们生来便会，感知人情冷暖还要慢慢体会。
+            </p>
           </ion-row>
-        <ion-row class="anch" id="day{{sdl.id}}">
-          <ng-template [ngIf]="sdl.scdl.length > 0" [ngIfElse]="noscd">
-            <div class="daynav">
-              <div class="dayheader">
+          <ng-template ngFor let-days [ngForOf]="monthActivityData.arraydays">
+            <ion-row class="dayagenda-week" *ngIf="(days.day | formatedate:'DWEEK') == '7'">
+              <p>
+                {{days.day | formatedate :"CYYYY/MM/DD"}}-{{days.day | formatedate :"ADD7CYYYY/MM/DD"}}
+              </p>
+            </ion-row>
+            <ng-template [ngIf]="days.events.length > 0 || days.calendaritems.length > 0 || days.memos.length > 0 "
+                         [ngIfElse]="noscd">
+              <ion-row class="anch" id="day{{days.day | formatedate:'YYYYMMDD'}}">
+                <div class="daynav">
+                  <div class="dayheader">
 
-                <div class="d-fsize text-center">{{sdl.d | formatedate :"CWEEK"}}</div>
-                <div class="ym-fsize text-center ">{{sdl.d | formatedate:"DD"}}</div>
-                <div class="ys-fsize text-center " *ngFor="let jt of sdl.jtl" (click)="toDetail(jt.si,jt.sd,'3')">{{jt.spn}}</div>
-              </div>
-              <div class="d-title text-center ">
-                <div class="first d-title-chr">日记</div>
-                <div class=" d-title-chr">10条日程</div>
-                <div class=" d-title-chr">10条任务</div>
-                <div class=" d-title-chr">10条任务</div>
-              </div>
-            </div>
-            <ion-grid>
-              <ion-row *ngFor="let scd of sdl.scdl;" (click)="toDetail(scd.si,sdl.d,scd.gs)" >
+                    <div class="d-fsize text-center">{{days.day | formatedate :"CWEEK"}}</div>
+                    <div class="ym-fsize text-center ">{{days.day | formatedate:"DD"}}</div>
+                    <div class="ys-fsize text-center " *ngFor="let jt of days.calendaritems"
+                         (click)="toDetail(jt.si,jt.sd,'3')">{{jt.spn}}</div>
+                  </div>
+                  <div class="d-title text-center ">
+                    <div class="first d-title-chr">日记</div>
+                    <div class=" d-title-chr">{{days.events.length}}条日程</div>
+                    <div class=" d-title-chr">{{days.calendaritems.length}}条日历项</div>
+                    <div class=" d-title-chr">{{days.memos.length}}条日记</div>
+                  </div>
+                </div>
+              </ion-row>
+
+              <ion-row *ngFor="let event of days.events;" (click)="toDetail(event.evi,event.evd,event.gs)">
                 <div class="dayagenda-content">
                   <div class="agendaline2">
                     <div class="agenda-icon">
-                      <div class="icon icon1" ></div>
-                      <div class="icon icon2" ></div>
+                      <div class="icon icon1"></div>
+                      <div class="icon icon2"></div>
                     </div>
-                    <div class="agenda-sn">{{scd.sn}}</div>
+                    <div class="agenda-sn">{{event.evn}}</div>
                   </div>
                   <div class="agendaline1">
-                    <div class="agenda-st">{{this.util.adStrShow(scd.st)}}</div>
-                    <div class="dot-set " [ngStyle]="{'background-color':scd.p.jc}"></div>
+                    <div class="agenda-st">{{this.util.adStrShow("09:00")}}</div>
+                    <!--<div class="dot-set " [ngStyle]="{'background-color':scd.p.jc}"></div>-->
 
                     <!--<ion-chip *ngIf="scd.gs == '1'" >-->
                     <!--<ion-avatar>-->
@@ -88,15 +105,15 @@ import {FeedbackService} from "../../service/cordova/feedback.service";
                   </div>
                 </div>
               </ion-row>
-            </ion-grid>
+            </ng-template>
+            <ng-template #noscd>
+              <ion-row class="anch dayagenda-none-display" id="day{{days.day | formatedate:'YYYYMMDD'}}">
+                <div class="dayagenda-no-content " (click)="toAdd(days.day)">
+                  <p>{{days.day | formatedate :"CYYYY/MM/DD"}}</p>
+                </div>
+              </ion-row>
+            </ng-template>
           </ng-template>
-          <ng-template #noscd>
-            <div class="dayagenda-no-content" (click)="toAdd(sdl.d)">
-              <p>{{sdl.d | formatedate :"CYYYY/MM/DD"}}</p>
-            </div>
-          </ng-template>
-         
-        </ion-row>
         </ng-template>
       </ion-grid>
     </ion-content>
@@ -114,16 +131,17 @@ export class TdlPage {
   gridHight: number = 0;
   gridHightsub: number = 0;
 
-  isgetData: boolean = false;
-
-
-  //画面数据List
-  scdlDataList: Array<ScdlData> = new Array<ScdlData>();
-
-
+  // isgetData: boolean = false;
   //头部显示日期
   headerDate: string;
   headerMoment: moment.Moment;
+
+  _gesture: TdlGesture;
+
+
+  //画面数据List
+  monthActivityDatas: Array<MonthActivityData> = new Array<MonthActivityData>();
+
 
   constructor(private tdlServ: TdlService,
               private modalCtr: ModalController,
@@ -131,178 +149,100 @@ export class TdlPage {
               private emitService: EmitService,
               private el: ElementRef,
               private util: UtilService,
-              private feedback: FeedbackService
+              private feedback: FeedbackService,
+              private renderer2: Renderer2,
+              private _plt: Platform,
+              private _gestureCtrl: GestureController,
+              private _domCtrl: DomController
   ) {
   }
 
+  getNativeElement(): any {
+    return this.contentD._scrollContent.nativeElement;
+  }
+
+
+  setScroll(scroll: boolean) {
+    if (scroll) {
+      this.renderer2.setStyle(this.contentD._scrollContent.nativeElement, "overflow-y", "auto");
+      this._gesture.unlisten();
+    } else {
+      this.renderer2.setStyle(this.contentD._scrollContent.nativeElement, "overflow-y", "hidden");
+      this._gesture.listen();
+    }
+
+  }
+
+  regeditCalendar(calda: CalendarComponent) {
+    this._gesture = new TdlGesture(this._plt, this, this._gestureCtrl, this._domCtrl, calda);
+    this._gesture.listen();
+  }
+
   ngOnInit() {
+    this.tdlServ.initLsData().then(data => {
+      this.monthActivityDatas = data;
+      this.gotoEl(moment().format("YYYYMMDD"));
+    });
 
     //this.contentD.enableJsScroll();
 
     this.emitService.registerSelectDate((selectDate: moment.Moment) => {
-
-      this.createData(selectDate, 0, 0).then(data => {
-        this.scdlDataList.push(...data);
-
-        this.isgetData = !this.isgetData;
-
-        this.gotoEl(selectDate.format("YYYYMMDD"));
-      }).catch(error => {
-        this.isgetData = !this.isgetData;
-      });
+      this.gotoEl(selectDate.format("YYYYMMDD"));
     });
-
-
-
-    this.emitService.registerRef((data) => {
-      this.createData(this.headerMoment, 0, 0).then(data => {
-        this.scdlDataList.push(...data);
-
-        this.isgetData = !this.isgetData;
-
-        this.gotoEl(this.headerMoment.format("YYYYMMDD"));
-      }).catch(error => {
-        this.isgetData = !this.isgetData;
-      });
-    })
 
 
     this.contentD.ionScroll.subscribe(($event: ScrollEvent) => {
 
-      try {
-        //显示当前顶部滑动日期
-        for (let scdlData of this.scdlDataList) {
-          let el = this.el.nativeElement.querySelector("#day" + scdlData.id);
-          if (el && $event.scrollTop - el.offsetTop < el.clientHeight && $event.scrollTop - el.offsetTop > 0) {
-            this.headerDate = moment(scdlData.d).format("YYYY/MM/DD");
-            this.headerMoment = moment(scdlData.d);
-            //this.feedback.audioTrans();
-            break;
-          }
+      // //显示当前顶部滑动日期
+      // for (let scdlData of this.monthActivityDatas) {
+      //   let el = this.el.nativeElement.querySelector("#day" + scdlData.id);
+      //   if (el && $event.scrollTop - el.offsetTop < el.clientHeight && $event.scrollTop - el.offsetTop > 0) {
+      //     this.headerDate = moment(scdlData.d).format("YYYY/MM/DD");
+      //     this.headerMoment = moment(scdlData.d);
+      //     //this.feedback.audioTrans();
+      //     break;
+      //   }
+      // }
+
+      if ($event.directionY == 'up') {
+        if ($event.scrollTop < 10) {
+          let monthActivityData = this.monthActivityDatas[0];
+          let scdId = monthActivityData.arraydays[0].day;
+          scdId = moment(scdId).format("YYYYMMDD")
+
+          this.tdlServ.throughData(PageDirection.PageDown).then(data => {
+            this.gotoEl(scdId);
+          })
         }
-
-        if ($event.directionY == 'up') {
-
-          if ($event.scrollTop < 10) {
-
-            let d = this.scdlDataList[0];
-            let scdd = d.d;
-            let scdId = d.id;
-            let condi = moment(scdd).subtract(1, "day");
-            ;
-            let last = 0;
-            if (d.scdl.length > 0) {
-              last = d.scdl[0].cbkcolor;
-            }
-            this.createData(condi, 1, last).then(data => {
-              this.scdlDataList.unshift(...data);
-              this.isgetData = false;
-              this.gotoEl(scdId);
-
-            }).catch(error => {
-              this.isgetData = false;
-            });
-          }
-
-        }
-
-        if ($event.directionY == 'down') {
-
-          if ($event.scrollTop == this.grid.nativeElement.clientHeight - $event.scrollElement.clientHeight) {
-            let d = this.scdlDataList[this.scdlDataList.length - 1];
-            let scdd = d.d;
-            let scdId = d.id;
-            let condi = moment(scdd).add(1, "day");
-            let last = 0;
-            if (d.scdl.length > 0) {
-              last = d.scdl[d.scdl.length - 1].cbkcolor;
-            }
-            this.createData(condi, 2, last).then(data => {
-              this.scdlDataList.push(...data);
-              this.isgetData = false;
-              this.gotoEl(scdId);
-
-            }).catch(error => {
-              this.isgetData = false;
-            });
-          }
-
-        }
-      } catch (e) {
-
       }
 
-
-    });
-    let today = moment();
-    this.createData(today, 0, 0).then(data => {
-
-      this.scdlDataList.push(...data);
-      this.isgetData = false;
-
-      this.gotoEl(today.format("YYYYMMDD"));
-    }).catch(error => {
-      this.isgetData = false;
+      if ($event.directionY == 'down') {
+        if ($event.scrollTop == this.grid.nativeElement.clientHeight - $event.scrollElement.clientHeight) {
+          this.tdlServ.throughData(PageDirection.PageUp);
+        }
+      }
     });
   }
 
-  //获取数据
-  async createData(selectDate: moment.Moment, type: number, lastcolor: number) {
-    //全部数据
-    let datas: Array<ScdlData> = new Array<ScdlData>();
-    if (!this.isgetData) {
-      this.isgetData = true;
-      if (type == 0) {
-        this.scdlDataList = new Array<ScdlData>();
-        let condi = selectDate.format("YYYY/MM/DD");
-        //  //获取当前日期之前的30条记录
-        //  let dwdata = await this.tdlServ.before(condi, 30);
-        //  //获取当前日期之后的30条记录
-        //  let updata = await this.tdlServ.after(moment(condi).add(1, 'd').format("YYYY/MM/DD"), 30);
-        // datas = datas.concat(dwdata, updata);
-        datas= await this.tdlServ.getL(moment(condi).add(1, 'd').format("YYYY/MM/DD"),'0', 30);
-      } else if (type == 1) {
-        // datas = await this.tdlServ.before(selectDate.format("YYYY/MM/DD"), 30);
-        datas = await this.tdlServ.getL(selectDate.format("YYYY/MM/DD"),'1', 30);
 
-      } else if (type == 2) {
-        // datas = await this.tdlServ.after(selectDate.format("YYYY/MM/DD"), 30);
-        datas = await this.tdlServ.getL(selectDate.format("YYYY/MM/DD"),'2', 30);
-      }
-      //替换交替颜色
-      if (type == 0 || type == 2)
-        for (let scdl of datas) {
-          for (let scd of scdl.scdl) {
-            lastcolor = (lastcolor + 1) % 2
-            scd.cbkcolor = lastcolor;
-          }
-        }
-      if (type == 1) {
-        let len = datas.length;
-        let len2 = 0;
-        for (let i = len - 1; i > -1; i--) {
-          let scdl = datas[i].scdl;
-          let len2 = scdl.length;
-          for (let j = len2 - 1; j > -1; j--) {
-            lastcolor = (lastcolor + 1) % 2
-            scdl[j].cbkcolor = lastcolor;
-          }
-        }
-      }
-      return datas;
-    }
-  }
+  currDayel: any;
 
   gotoEl(id) {
     setTimeout(() => {
       try {
-        let el = this.el.nativeElement.querySelector("#day" + id);
+        if (this.currDayel) {
+          this.renderer2.removeClass(this.currDayel, "dayagenda-display");
+          this.renderer2.addClass(this.currDayel, "dayagenda-none-display");
+        }
+        this.currDayel = this.el.nativeElement.querySelector("#day" + id);
+        this.renderer2.removeClass(this.currDayel, "dayagenda-none-display");
+        this.renderer2.addClass(this.currDayel, "dayagenda-display");
 
         this.headerDate = moment(id).format("YYYY/MM/DD");
         this.headerMoment = moment(id);
-        if (el) {
+        if (this.currDayel) {
           this.gridHight = this.grid.nativeElement.clientHeight;
-          this.contentD.scrollTo(0, el.offsetTop + 2, 0).then(datza => {
+          this.contentD.scrollTo(0, this.currDayel.offsetTop + 2, 200).then(datza => {
             this.gridHight = this.grid.nativeElement.clientHeight;
           })
         } else {

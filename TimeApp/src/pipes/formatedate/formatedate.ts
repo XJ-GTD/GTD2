@@ -19,6 +19,13 @@ export class FormatedatePipe implements PipeTransform {
     }
 
     if (args.length ==1 ){
+      if (args[0] == "ADD7CYYYY/MM/DD") {
+        return moment(value).add(7, "days").format("YYYY年MM月DD日");
+      }
+      if (args[0] == "YYYYMMDD") {
+        return moment(value).format("YYYYMMDD");
+      }
+
       if (args[0] == "CYYYY/MM/DD"){
         return moment(value).format("YYYY年MM月DD日");
       }
@@ -28,6 +35,9 @@ export class FormatedatePipe implements PipeTransform {
 
       if (args[0] == "CYYYY/MM"){
         return moment(value).format("YYYY年MM月");
+      }
+      if (args[0] == "CYYYY/MM/ND"){
+        return moment(value+"/01").format("YYYY年MM月");
       }
       if (args[0] == "CWEEK"){
         let d =  moment(value).format("d");
@@ -55,6 +65,35 @@ export class FormatedatePipe implements PipeTransform {
           default:
             ret =  "星期日";
         };
+
+        return ret;
+      }
+      if (args[0] == "DWEEK") {
+        let d = moment(value).format("d");
+        let ret = "";
+
+        switch (d) {
+          case "1":
+            ret = "1";
+            break;
+          case "2":
+            ret = "2";
+            break;
+          case "3":
+            ret = "3";
+            break;
+          case "4":
+            ret = "4";
+            break;
+          case "5":
+            ret = "5";
+            break;
+          case "6":
+            ret = "6";
+            break;
+          default:
+            ret = "7";
+        }
 
         return ret;
       }
@@ -88,18 +127,6 @@ export class FormatedatePipe implements PipeTransform {
         if (today.format("YYYY") != currentDay.format("YYYY")) {
           return currentDay.format("YYYY年M月D日 A h:mm");
         }
-      }
-      if (args[0] == "withNow"){
-        if (moment(value).diff(moment()) > 0) {
-          return moment(value).fromNow(true) + "后";
-        } else if (moment(value).diff(moment()) < 0) {
-          return moment(value).toNow(true) + "前";
-        } else {
-          return moment(value).toNow(true);
-        }
-      }
-      if (args[0] == "YYYY年M月D日"){
-        return moment(value).format("YYYY年M月D日");
       }
       if (args[0] == "YYYY"){
         return moment(value).format("YYYY");

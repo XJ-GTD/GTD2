@@ -106,11 +106,11 @@ import { WeatherIconsModule } from 'ngx-icons';
 import { JPush } from '@jiguang-ionic/jpush';
 import { DirectivesModule } from "../directives/directives.module";
 import { BaiduMapModule } from 'angular2-baidu-map';
-import {CalendarService} from "../service/business/calendar.service";
 import {EventService} from "../service/business/event.service";
 import {MemoService} from "../service/business/memo.service";
 import {AipPageModule} from "../pages/aip/aip.module";
 import { SettingsProvider } from '../providers/settings/settings';
+import {CalendarService} from "../service/business/calendar.service";
 
 @NgModule({
   declarations: [
@@ -233,10 +233,10 @@ import { SettingsProvider } from '../providers/settings/settings';
     RabbitMQService,
     MIPushService,
     RemindService,
-    CalendarService,
     EventService,
     MemoService,
     SettingsProvider,
+    CalendarService,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     {provide: HAMMER_GESTURE_CONFIG, useClass: HammerDIRECTIONALLConfig}
   ]

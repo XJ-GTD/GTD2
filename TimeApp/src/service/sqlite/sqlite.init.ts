@@ -29,6 +29,8 @@ import {CaTbl} from "./tbl/ca.tbl";
 import {TTbl} from "./tbl/t.tbl";
 import {WaTbl} from "./tbl/wa.tbl";
 import {FjTbl} from "./tbl/fj.tbl";
+import {MrkTbl} from "./tbl/mrk.tbl";
+import {ParTbl} from "./tbl/par.tbl";
 
 /**
  * create by on 2019/3/5
@@ -150,6 +152,15 @@ export class SqliteInit {
     let fj: FjTbl = new FjTbl();
     await this.sqlexec.dropByParam(fj);
     await this.sqlexec.createByParam(fj);
+
+
+    let mrk: MrkTbl = new MrkTbl();
+    await this.sqlexec.dropByParam(mrk);
+    await this.sqlexec.createByParam(mrk);
+
+    let par: ParTbl = new ParTbl();
+    await this.sqlexec.dropByParam(par);
+    await this.sqlexec.createByParam(par);
 
   }
 

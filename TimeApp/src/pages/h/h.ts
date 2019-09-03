@@ -1,5 +1,5 @@
 import {Component, Renderer2, ViewChild} from '@angular/core';
-import {IonicPage, MenuController, ModalController, NavController} from 'ionic-angular';
+import {IonicPage, MenuController, ModalController, NavController, Platform} from 'ionic-angular';
 import {CalendarComponent, CalendarComponentOptions, CalendarDay} from "../../components/ion2-calendar";
 import {HService} from "./h.service";
 import * as moment from "moment";
@@ -19,7 +19,8 @@ import {EventService} from "../../service/business/event.service";
 import {MemoService} from "../../service/business/memo.service";
 import {SettingsProvider} from "../../providers/settings/settings";
 import {AipPage} from "../aip/aip";
-import {DoPage} from "../do/do";
+import { Animation } from 'ionic-angular/animations/animation';
+import {TdlPage} from "../tdl/tdl";
 
 /**
  * Generated class for the 首页 page.
@@ -37,9 +38,10 @@ import {DoPage} from "../do/do";
         <ion-calendar #calendar
                       [options]="options"
                       (onSelect)="onSelect($event)"
-                      (onPress)="onPress($event)">
+                      (onPress)="onPress($event)"
+                      (viewShow) = "viewShow($event)">
         </ion-calendar>
-        <page-tdl></page-tdl>
+        <page-tdl #tdl ></page-tdl>
         <!--<ng-template [ngIf]="hdata.isShow">-->
         <!--<p class="tipDay">-->
         <!--<span class="showDay">{{hdata.showDay}}</span>-->
@@ -66,20 +68,20 @@ import {DoPage} from "../do/do";
           <button ion-fab (click)="changetheme()">
             <ion-icon name="contrast"></ion-icon>
           </button>
-          <button ion-fab>
-            <ion-icon name="albums" (click)="opentask()"></ion-icon>
+          <button ion-fab (click)="todoList()">
+            <ion-icon name="albums"></ion-icon>
           </button>
-          <button ion-fab>
-            <ion-icon name="contact" (click)="openm()"></ion-icon>
+          <button ion-fab (click)="openm()">
+            <ion-icon name="contact" ></ion-icon>
           </button>
-          <button ion-fab>
-            <ion-icon name="add" (click)="newcd()"></ion-icon>
+          <button ion-fab  (click)="newcd()">
+            <ion-icon name="add"></ion-icon>
           </button>
         </ion-fab-list>
       </ion-fab>
       <ion-fab bottom right>
         <button ion-fab mini (click)="openAi()">
-          <ion-icon name="chatbubbles" ></ion-icon>
+          <ion-icon name="chatbubbles"></ion-icon>
         </button>
       </ion-fab>
     </ion-content>
@@ -90,6 +92,8 @@ export class HPage {
   aiDiv: AiComponent;
   @ViewChild('calendar')
   calendar: CalendarComponent;
+  @ViewChild('tdl')
+  tdl: TdlPage;
   selectedTheme: string;
 
   aiready: boolean = false;
@@ -113,20 +117,23 @@ export class HPage {
               private feedback: FeedbackService,
               private  evtserv: EventService,
               private sqlexce: SqliteExec, private  momserv: MemoService,
-              private settings: SettingsProvider) {
+              private settings: SettingsProvider,
+              private plt:Platform) {
     this.hdata = new HData();
     this.settings.getActiveTheme().subscribe(val => this.selectedTheme = val);
-  }
 
-  opentask() {
-    this.modalCtr.create(DoPage).present();
+
+  }
+  viewShow($event:boolean){
+    this.tdl.setScroll(!$event);
   }
 
   openm() {
-    this.menuController.open("scalePush");
+    this.menuController.open();
   }
-  openAi(){
-     this.modalCtr.create(AipPage).present();
+
+  openAi() {
+    this.modalCtr.create(AipPage).present();
   }
 
   changetheme() {
@@ -141,7 +148,10 @@ export class HPage {
   ionViewDidLoad() {
   }
 
+
   ngOnInit() {
+
+    this.tdl.regeditCalendar(this.calendar);
     // websocket连接成功消息回调
     this.emitService.register("on.websocket.connected", () => {
       this.aiready = true;
@@ -164,7 +174,7 @@ export class HPage {
     });
 
     this.emitService.registerRef(data => {
-      this.calendar.createMonth(this.calendar.monthOpt.original.time);
+      //this.calendar.createMonth(this.calendar.monthOpt.original.time);
     });
 
     //极光推送跳转打开外部网页
@@ -215,7 +225,7 @@ export class HPage {
         timestamp = moment().unix() * 1000;
       }
 
-      this.gotodaily({
+      this.todoList({
         time: timestamp,
         isToday: false,
         selected: false,
@@ -335,8 +345,11 @@ export class HPage {
     this.modalCtr.create(TdcPage, p).present();
   }
 
-  //查询当天日程
-  onSelect(selectDay: CalendarDay) {
+//查询当天日程
+  onSelect(selectDay
+             :
+             CalendarDay
+  ) {
     this.feedback.audioClick();
     if (selectDay) this.emitService.emitSelectDate(moment(selectDay.time));
     this.hService.centerShow(selectDay).then(d => {
@@ -348,10 +361,10 @@ export class HPage {
     })
   }
 
-  gotodaily(day?: CalendarDay) {
+  todoList(day ?: CalendarDay) {
     let selectDay: CalendarDay = day ? day : this.hdata.selectDay;
 
-    this.modalCtr.create(DataConfig.PAGE._DA_PAGE, selectDay).present();
+    this.modalCtr.create(DataConfig.PAGE._DO_PAGE, selectDay).present();
   }
 
   gotolist() {

@@ -24,7 +24,6 @@ export const MONTH_VALUE_ACCESSOR: any = {
   providers: [MONTH_VALUE_ACCESSOR],
   template: `
     <div [class]="color">
-      <ng-template [ngIf]="!_isRange" [ngIfElse]="rangeBox">
         <div class="days-box">
           <ng-template ngFor let-day [ngForOf]="month.days" [ngForTrackBy]="trackByTime">
             <div class="days">
@@ -32,11 +31,7 @@ export const MONTH_VALUE_ACCESSOR: any = {
                 <div class="borderDiv"
                   [class.on-selected]="isSelected(day.time)  && !day.isLastMonth && !day.isNextMonth">
                   <button type='button'
-                          [class]="'days-btn warp-days-btn'"                          
-                          [class.marked]="day.marked"
-                          [class.hassometing]="day.hassometing && !day.isLastMonth && !day.isNextMonth"
-                          [class.busysometing]="day.busysometing && !day.isLastMonth && !day.isNextMonth"
-                          [class.allsometing]="day.allsometing && !day.isLastMonth && !day.isNextMonth"
+                          [class]="'days-btn warp-days-btn'"      
                           (click)="onSelected(day)"
                           (press)="onPressed(day)"
                           [class.last-month-day]="day.isLastMonth"
@@ -46,15 +41,17 @@ export const MONTH_VALUE_ACCESSOR: any = {
                     <p *ngIf="day.isToday">今</p>
                     <p *ngIf="!day.isToday">{{day.title}}</p>
                     <small>{{day.subTitle}}</small>
-                    <small *ngIf="day.newmessage > 0" class = "message"></small>
-                    <p [class.repeatDay] = "!day.isLastMonth && !day.isNextMonth && !day.isToday && day.onlyRepeat"></p>
                   </button>
+                   <ion-icon class = "message fa fa-bell-o"  *ngIf="!day.isLastMonth && !day.isNextMonth && day.newmessage > 0" ></ion-icon>
+                   <ion-icon class = "update fa fa-building-o" *ngIf="!day.isLastMonth && !day.isNextMonth  && day.hassometing" ></ion-icon>
+                   <ion-icon class = "active fa fa-comments" *ngIf="!day.isLastMonth && !day.isNextMonth  && day.busysometing"></ion-icon>
+                   <ion-icon class = "diary fa fa-crosshairs" *ngIf="!day.isLastMonth && !day.isNextMonth && day.allsometing"></ion-icon>
+                  <ion-icon class = "repeat fa fa-fire" *ngIf="!day.isLastMonth && !day.isNextMonth && day.onlyRepeat"></ion-icon>
                 </div>
               </ng-container>
             </div>
           </ng-template>
         </div>
-      </ng-template>
       
     </div>
   `

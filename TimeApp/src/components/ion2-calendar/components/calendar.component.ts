@@ -5,7 +5,7 @@ import {
   Output,
   EventEmitter,
   forwardRef,
-  Provider, ViewChild, Renderer2
+  Provider, ViewChild
 } from '@angular/core';
 
 import {
@@ -18,7 +18,10 @@ import {ControlValueAccessor, NG_VALUE_ACCESSOR} from '@angular/forms';
 import * as moment from 'moment';
 import {defaults, pickModes} from "../config";
 import {FeedbackService} from "../../../service/cordova/feedback.service";
-import {Card, CardContent} from "ionic-angular";
+import {Card, CardContent, Platform, Slides} from "ionic-angular";
+import {CalendarAnimation} from "../calendar-animation";
+import {CalendarController} from "../calendar.controller";
+import set = Reflect.set;
 
 export const ION_CAL_VALUE_ACCESSOR: Provider = {
   provide: NG_VALUE_ACCESSOR,
@@ -30,95 +33,79 @@ export const ION_CAL_VALUE_ACCESSOR: Provider = {
   selector: 'ion-calendar',
   providers: [ION_CAL_VALUE_ACCESSOR],
   template: `
-    <ion-card #monthcompent no-padding class="animated faster"
-              [class.fadeInUp]="_fadeInUp"
-              [class.fadeInDown]="_fadeInDown">
+    <ion-card #monthcompent no-padding>
       <ion-card-header no-padding>
 
         <div class="title">
-            <div float-left >
-              <div float-left (click)="switchView()" >
+          <div float-left>
+            <div float-left (click)="switchView()">
               <p><b [class.thisM]="_thisMonth">{{_showMonth}}</b>
                 <ion-icon class="arrow-dropdown"
-                          [name]="_view === 'days' ? 'md-arrow-dropright' : 'md-arrow-dropdown'"
-                          [class.thisM]="_thisMonth"></ion-icon></p>
+                          [name]="_view ? 'md-arrow-dropdown' : 'md-arrow-dropright'"
+                          [class.thisM]="_thisMonth"></ion-icon>
+              </p>
 
-              </div>
             </div>
-            <div float-right (click)="gotoToday()">
-              <img src="./assets/imgs/fhby.png"/>
-            </div>
+          </div>
+          <div float-right (click)="gotoToday()">
+            <img src="./assets/imgs/fhby.png"/>
+          </div>
         </div>
       </ion-card-header>
       <ion-card-content>
-          <div class="yearshow">{{monthOpt.original.year}}</div>
-          <ion-calendar-week color="transparent"
-                             [weekArray]="_d.weekdays"
-                             [weekStart]="_d.weekStart">
-          </ion-calendar-week>
-          
-          <ion-calendar-month class="component-mode"
-                              [(ngModel)]="_calendarMonthValue"
-                              [month]="monthOpt"
-                              [readonly]="readonly"
-                              (onChange)="onChanged($event)"
-                              (swipe)="swipeEvent($event)"
-                              (cumClick)="monthClick($event)"
-                              (onSelect)="select($event)"
-                              (onPress)="onPress.emit($event)"
-                              (onSelectStart)="onSelectStart.emit($event)"
-                              (onSelectEnd)="onSelectEnd.emit($event)"
-                              [pickMode]="_d.pickMode"
-                              [color]="_d.color">
-                              
-          </ion-calendar-month>
+        <ion-slides (ionSlideWillChange)="slideChanged($event)" (ionSlidePrevStart)="ionSlidePrevStart()" (ionSlidePrevEnd)="ionSlidePrevEnd()" (ionSlideProgress)="ionSlideProgress()">
+          <ion-slide *ngFor="let monthOpt of monthOpts">
+            <div class="yearshow">{{monthOpt.original.year}}</div>
+            <ion-calendar-week color="transparent">
+            </ion-calendar-week>
+            <ion-calendar-month class="component-mode"
+                                [month]="monthOpt"
+                                [readonly]="readonly"
+                                (onSelect)="select($event)"
+                                (onPress)="onPress.emit($event)">
+
+            </ion-calendar-month>
+          </ion-slide>
+        </ion-slides>
       </ion-card-content>
+
     </ion-card>
 
 
   `
 })
-export class CalendarComponent implements ControlValueAccessor, OnInit {
+export class CalendarComponent implements OnInit {
+
+  ionSlidePrevStart(ss){
+    console.log("ionSlidePrevStart");
+  }
+  ionSlideProgress(ss){
+    console.log("ionSlideProgress");
+  }
+
+  ionSlidePrevEnd(ss){
+    console.log("ionSlidePrevEnd");
+  }
 
 
   _d: CalendarModalOptions;
   _options: CalendarComponentOptions;
-  _view: 'month' | 'days' = 'days';
-  _calendarMonthValue: CalendarDay[] = [null, null];
-  css: number = 1;
+  _view: boolean = true
   _showMonth;
   string;
   _thisMonth: boolean;
 
-  selectDay: CalendarDay;
 
-  select($event: CalendarDay) {
-    this.selectDay = $event;
-    this.onSelect.emit($event)
-  }
-  //
-  // get showToggleButtons(): boolean {
-  //   return this._showToggleButtons;
-  // }
-  //
-  // set showToggleButtons(value: boolean) {
-  //   this._showToggleButtons = value;
-  // }
+  calendarAnimation: CalendarAnimation;
 
-  // _showMonthPicker = true;
-  // get showMonthPicker(): boolean {
-  //   return this._showMonthPicker;
-  // }
-  //
-  // set showMonthPicker(value: boolean) {
-  //   this._showMonthPicker = value;
-  // }
-
-  monthOpt: CalendarMonth;
+  monthOpts: Array<CalendarMonth> = new Array<CalendarMonth>();
   @ViewChild(Card)
   card: Card;
   @ViewChild(CardContent)
   cardContent: CardContent;
+  @ViewChild(Slides)
+  slides: Slides;
+
 
   @Input() format: string = defaults.DATE_FORMAT;
   @Input() type: CalendarComponentTypeProperty = 'string';
@@ -127,395 +114,147 @@ export class CalendarComponent implements ControlValueAccessor, OnInit {
   @Output() monthChange: EventEmitter<CalendarComponentMonthChange> = new EventEmitter();
   @Output() onSelect: EventEmitter<CalendarDay> = new EventEmitter();
   @Output() onPress: EventEmitter<CalendarDay> = new EventEmitter();
-  @Output() onSelectStart: EventEmitter<CalendarDay> = new EventEmitter();
-  @Output() onSelectEnd: EventEmitter<CalendarDay> = new EventEmitter();
+  @Output() viewShow: EventEmitter<boolean> = new EventEmitter();
 
+
+  constructor(public calSvc: CalendarService, public feekback: FeedbackService, private plt: Platform) {
+
+  }
 
   @Input()
   set options(value: CalendarComponentOptions) {
     this._options = value;
     this.initOpt();
-    if (this.monthOpt && this.monthOpt.original) {
-      //新日程进来不需要刷新日历
-      this.createMonth(this.monthOpt.original.time);
+  }
+
+  select($event: CalendarDay) {
+    this.onSelect.emit($event)
+  }
+
+  slideChanged($event: Slides) {
+    this.feekback.audioTrans();
+    let i = $event.getActiveIndex();
+    let monthOpt = this.monthOpts[i];
+    let monthTime;
+
+    if (!monthOpt) return;
+    this._showMonth = defaults.MONTH_FORMAT[monthOpt.original.month];
+    this._thisMonth = monthOpt.original.month == moment().month() && monthOpt.original.year == moment().year();
+
+    if ($event.swipeDirection == "next") {
+      let lastmonth:CalendarMonth = this.monthOpts[this.monthOpts.length - 1]
+
+      let month_len:number = this.monthOpts.length;
+      if (month_len - i <= 2){
+        let time =  monthTime = moment(lastmonth.original.time).add(1, 'months').valueOf();
+        let months = this.calSvc.createMonthsByPeriod(time, 1, this._d);
+        this.monthOpts.push(months[0]);
+      }
+
+    } else if ($event.swipeDirection == "prev") {
+
+      let firstmonth:CalendarMonth = this.monthOpts[0];
+
+      if (i <= 2){
+        let time =  monthTime = moment(firstmonth.original.time).subtract(1, 'months').valueOf();
+        let months = this.calSvc.createMonthsByPeriod(time, 1, this._d);
+        this.monthOpts.unshift(months[0]);
+        this.slides.slideNext(0,false);
+        this.slides.update();
+
+      }
+
     }
+
+    this.calSvc.getMonthData(monthOpt);
   }
 
 
-  constructor(public calSvc: CalendarService, public feekback: FeedbackService, private _renderer: Renderer2) {
-
+  closeMonth() {
+    this.calendarAnimation.closeView(() => {
+      this.changestat();
+    }, true);
   }
 
-  closeMonth(){
-    this._renderer.setStyle(this.cardContent.getElementRef().nativeElement,"height","0px");
+  changestat() {
+    this._view = !this._view;
+    this.viewShow.emit(this._view);
   }
 
-  openMonth(){
-    this._renderer.setStyle(this.cardContent.getElementRef().nativeElement,"height","auto");
+  openMonth() {
+    this.calendarAnimation.openView(() => {
+      this.changestat();
+    }, true);
   }
-
 
 
   get options(): CalendarComponentOptions {
     return this._options;
   }
 
-  showMonth() {
-    this._showMonth = defaults.MONTH_FORMAT[this.monthOpt.original.month];
-  }
-
-  thisMonth() {
-    this._thisMonth = this.monthOpt.original.month == moment().month() && this.monthOpt.original.year == moment().year();
-  }
-
-
-  webkitAnimationEnd: boolean = true;
-
-  ngOnInit(): void {
-    this.card.getElementRef().nativeElement.addEventListener("webkitAnimationEnd", () => {
-      this._fadeInUp = false;
-      this._fadeInDown = false;
-      this.webkitAnimationEnd = true;
-    });
-    this.card.getElementRef().nativeElement.addEventListener("webkitAnimationStart", () => {
-      this.webkitAnimationEnd = false;
-    });
-
-    requestAnimationFrame(() => {
-      this.startSwipe();
-    });
-    this.initOpt();
-    this.createMonth(new Date().getTime());
-    // this.emitService.registerRef(data =>{
-    //   console.log("######" + data);
-    //   console.log("######this.monthOpt.original.time" + this.monthOpt.original.time);
-    //   this.createMonth(this.monthOpt.original.time);
-    // });
-  }
-
-  getViewDate() {
-    return this._handleType(this.monthOpt.original.time);
-  }
-
-  setViewDate(value: CalendarComponentPayloadTypes) {
-    this.createMonth(this._payloadToTimeNumber(value));
-  }
 
   switchView(): void {
-    this._view = this._view === 'days' ? 'month' : 'days';
-    if (this._view === 'days') {
+    if (this._view) {
       this.closeMonth();
-    }else{
+    } else {
       this.openMonth();
     }
-
   }
 
-  prev(): void {
-    if (this._view === 'days') {
-      this.backMonth();
-    } else {
-      this.prevYear();
-    }
+  ngOnInit(): void {
+    this.initOpt();
+    this.gotoToday();
   }
 
-  next(): void {
-    if (this._view === 'days') {
-      this.nextMonth();
-    } else {
-      this.nextYear();
-    }
-  }
-
-  prevYear(): void {
-
-    //重新创建月清除选择状态    //
-    // this.monthComponent.onSelected(null);
-    if (moment(this.monthOpt.original.time).year() === 1970) return;
-    const backTime = moment(this.monthOpt.original.time).subtract(1, 'year').valueOf();
-    this.createMonth(backTime);
-
-  }
-
-  nextYear(): void {
-
-    //重新创建月清除选择状态    //
-    // this.monthComponent.onSelected(null);
-    const nextTime = moment(this.monthOpt.original.time).add(1, 'year').valueOf();
-    this.createMonth(nextTime);
-
-  }
-
-  nextMonth(): void {
-
-    //重新创建月清除选择状态
-
-    // this.monthComponent.onSelected(null);
-    const nextTime = moment(this.monthOpt.original.time).add(1, 'months').valueOf();
-    this.monthChange.emit({
-      oldMonth: this.calSvc.multiFormat(this.monthOpt.original.time),
-      newMonth: this.calSvc.multiFormat(nextTime)
-    });
-
-    this._fadeInUp = false;
-    this._fadeInDown = !this._fadeInUp;
-    this.createMonth(nextTime);
-
-  }
-
-  canNext(): boolean {
-    if (!this._d.to || this._view !== 'days') return true;
-    return this.monthOpt.original.time < moment(this._d.to).valueOf();
-  }
-
-  backMonth(): void {
-
-    //重新创建月清除选择状态
-    // this.monthComponent.onSelected(null);
-
-    const backTime = moment(this.monthOpt.original.time).subtract(1, 'months').valueOf();
-    this.monthChange.emit({
-      oldMonth: this.calSvc.multiFormat(this.monthOpt.original.time),
-      newMonth: this.calSvc.multiFormat(backTime)
-    });
-    this._fadeInUp = true;
-    this._fadeInDown = !this._fadeInUp;
-    this.createMonth(backTime);
-
-  }
-
-  canBack(): boolean {
-    if (!this._d.from || this._view !== 'days') return true;
-    return this.monthOpt.original.time > moment(this._d.from).valueOf();
-  }
-
-
-  yearOnSelect(year: number): void {
-    this._view = 'days';
-    const newMonth = moment(this.monthOpt.original.time).year(year).valueOf();
-    this.monthChange.emit({
-      oldMonth: this.calSvc.multiFormat(this.monthOpt.original.time),
-      newMonth: this.calSvc.multiFormat(newMonth)
-    });
-    this.createMonth(newMonth);
-  }
-
-  monthOnSelect(month: number): void {
-    this._view = 'days';
-    const newMonth = moment(this.monthOpt.original.time).month(month).valueOf();
-    this.monthChange.emit({
-      oldMonth: this.calSvc.multiFormat(this.monthOpt.original.time),
-      newMonth: this.calSvc.multiFormat(newMonth)
-    });
-   this.createMonth(newMonth);
-  }
-
-  onChanged($event: CalendarDay[]): void {
-    switch (this._d.pickMode) {
-      case pickModes.SINGLE:
-        const date = this._handleType($event[0].time);
-        this._onChanged(date);
-        this.onChange.emit(date);
-        break;
-
-      case pickModes.RANGE:
-        if ($event[0] && $event[1]) {
-          const rangeDate = {
-            from: this._handleType($event[0].time),
-            to: this._handleType($event[1].time)
-          };
-          this._onChanged(rangeDate);
-          this.onChange.emit(rangeDate);
-        }
-        break;
-
-      case pickModes.MULTI:
-        let dates = [];
-
-        for (let i = 0; i < $event.length; i++) {
-          if ($event[i] && $event[i].time) {
-            dates.push(this._handleType($event[i].time));
-          }
-        }
-
-        this._onChanged(dates);
-        this.onChange.emit(dates);
-        break;
-
-      default:
-
-    }
-  }
-
-  nextArray: Array<boolean> = new Array<boolean>();
-  _fadeInUp: boolean = true;
-  _fadeInDown: boolean = false;
-
-  swipeEvent($event: any): void {
-
-    if ((50 < $event.angle && $event.angle < 130) || (-50 > $event.angle && $event.angle > -130)){
-      let nextan: boolean = false;
-      if (50 < $event.angle && $event.angle < 130) nextan = false;
-      if (-50 > $event.angle && $event.angle > -130) nextan = true;
-      this.nextArray.push(nextan);
-    }
-  }
-
-  startSwipe() {
-    this.swipeEventS().then((d) => {
-      requestAnimationFrame(() => {
-        this.startSwipe();
-      });
-    });
-  }
-
-  swipeEventS(): Promise<any> {
-    return new Promise<any>((resolve, reject) => {
-      if (this.nextArray.length > 0) {
-
-        if (this.webkitAnimationEnd) {
-          let next = this.nextArray.pop();
-          if (next && this.canNext()) {
-            this.nextMonth();
-
-          } else if (!next && this.canBack()) {
-            this.backMonth();
-          }
-
-          this.feekback.audioTrans();
-            //this.onSelect.emit();
-
-        }
+  ngAfterViewInit() {
+    setTimeout(()=>{
+      if (!this.calendarAnimation) {
+        this.calendarAnimation = CalendarController.create(this, this.plt)
       }
-      resolve(true);
-    })
+
+    },1000)
   }
 
-  _onChanged: Function = () => {
-  };
+  initMonthData() {
 
-  _onTouched: Function = () => {
-  };
+    let time = moment().valueOf();
 
-  _payloadToTimeNumber(value: CalendarComponentPayloadTypes): number {
-    let date;
-    if (this.type === 'string') {
-      date = moment(value, this.format);
-    } else {
-      date = moment(value);
-    }
-    return date.valueOf();
+    let months = this.calSvc.createMonthsByPeriod(time, 3, this._d);
+    this.monthOpts.push(months[0]);
+    this.monthOpts.push(months[1]);
+    this.monthOpts.push(months[2]);
+    let monthOpt = this.monthOpts[0];
+    this._showMonth = defaults.MONTH_FORMAT[monthOpt.original.month];
+    this._thisMonth = monthOpt.original.month == moment().month() && monthOpt.original.year == moment().year();
+    this.calSvc.getMonthData(monthOpt);
+    setTimeout(()=>{
+      let time = moment().subtract(2,"months").valueOf();
+      let months = this.calSvc.createMonthsByPeriod(time, 2, this._d);
+      this.monthOpts.unshift(months[1]);
+      this.monthOpts.unshift(months[0]);
+      this.slides.slideNext(0,false);
+      this.slides.slideNext(0,false);
+      this.slides.update();
+    },500)
   }
 
-  _monthFormat(date: number): string {
-    return moment(date).format(this._d.monthFormat.replace(/y/g, 'Y'))
-  }
+
+  // canNext(): boolean {
+  //   if (!this._d.to) return true;
+  //   return this.monthOpt.original.time < moment(this._d.to).valueOf();
+  // }
+  // canBack(): boolean {
+  //   if (!this._d.from) return true;
+  //   return this.monthOpt.original.time > moment(this._d.from).valueOf();
+  // }
+
 
   private initOpt(): void {
-    // if (this._options && typeof this._options.showToggleButtons === 'boolean') {
-    //   this.showToggleButtons = this._options.showToggleButtons;
-    // }
-    // if (this._options && typeof this._options.showMonthPicker === 'boolean') {
-    //   this.showMonthPicker = this._options.showMonthPicker;
-    //   if (this._view !== 'days' && !this.showMonthPicker) {
-    //     this._view = 'days';
-    //   }
-    // }
     this._d = this.calSvc.safeOpt(this._options || {});
   }
 
-  createMonth(date: number): CalendarMonth {
-    this.monthOpt = this.calSvc.createMonthsByPeriod(date, 1, this._d)[0];
-    this.showMonth();
-    this.thisMonth();
-    this.calSvc.getMonthData(this.monthOpt);
-    return this.monthOpt;
-  }
-
-  _createCalendarDay(value: CalendarComponentPayloadTypes): CalendarDay {
-    return this.calSvc.createCalendarDay(this._payloadToTimeNumber(value), this._d);
-  }
-
-  _handleType(value: number): CalendarComponentPayloadTypes {
-    let date = moment(value);
-    switch (this.type) {
-      case 'string':
-        return date.format(this.format);
-      case 'js-date':
-        return date.toDate();
-      case 'moment':
-        return date;
-      case 'time':
-        return date.valueOf();
-      case 'object':
-        return date.toObject();
-    }
-    return date;
-  }
-
-  writeValue(obj: any): void {
-    this._writeValue(obj);
-    if (obj) {
-      if (this._calendarMonthValue[0]) {
-        this.createMonth(this._calendarMonthValue[0].time);
-      } else {
-        this.createMonth(new Date().getTime());
-      }
-    }
-  }
-
-  registerOnChange(fn: () => {}): void {
-    this._onChanged = fn;
-  }
-
-  registerOnTouched(fn: () => {}): void {
-    this._onTouched = fn;
-  }
-
-  _writeValue(value: any): void {
-    if (!value) {
-      this._calendarMonthValue = [null, null];
-      return;
-    }
-
-    switch (this._d.pickMode) {
-      case 'single':
-        this._calendarMonthValue[0] = this._createCalendarDay(value);
-        break;
-
-      case 'range':
-        if (value.from) {
-          this._calendarMonthValue[0] = value.from ? this._createCalendarDay(value.from) : null;
-        }
-        if (value.to) {
-          this._calendarMonthValue[1] = value.to ? this._createCalendarDay(value.to) : null;
-        }
-        break;
-
-      case 'multi':
-        if (Array.isArray(value)) {
-          this._calendarMonthValue = value.map(e => {
-            return this._createCalendarDay(e)
-          });
-        } else {
-          this._calendarMonthValue = [null, null];
-        }
-        break;
-
-      default:
-
-    }
-  }
-
-  monthClick(event: CalendarDay) {
-    if (event.isToday == false && event.isNextMonth) {
-      this.nextMonth();
-    } else if (event.isToday == false && event.isLastMonth) {
-      this.backMonth()
-    }
-  }
 
   gotoToday() {
-    this.setViewDate(moment().format("YYYY/MM/DD"));
+    this.initMonthData();
   }
 }

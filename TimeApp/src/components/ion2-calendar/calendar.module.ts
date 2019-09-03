@@ -3,6 +3,7 @@ import { CalendarController } from './calendar.controller';
 import { IonicModule, ModalController } from 'ionic-angular';
 import { CalendarService } from "./services/calendar.service";
 import { CALENDAR_COMPONENTS } from "./components/index";
+import {CalendarAnimation} from "./calendar-animation";
 
 export function calendarController(modalCtrl: ModalController,
                                    calSvc: CalendarService) {
