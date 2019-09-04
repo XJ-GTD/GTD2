@@ -1588,8 +1588,8 @@ export class EventService extends BaseService {
 
 			let sqlparam = new Array<any>();
 			let retParamMiniTaskData = new RetParamMiniTaskData();
-			retParamMiniTaskData = this.sqlparamAddTaskData(minitask);
-			sqlparam = [...retParamTaskData.sqlparam];
+			retParamMiniTaskData = this.sqlparamAddMiniTaskData(minitask);
+			sqlparam = [...retParamMiniTaskData.sqlparam];
       await this.sqlExce.batExecSqlByParam(sqlparam);
 		}
 
