@@ -20,6 +20,19 @@ import {BTbl} from "../sqlite/tbl/b.tbl";
 import {FjTbl} from "../sqlite/tbl/fj.tbl";
 import {DataRestful, PullInData, PushInData, SyncData} from "../restful/datasev";
 import {SyncType, DelType, IsSuccess, SyncDataStatus, PageDirection, SyncDataSecurity} from "../../data.enum";
+import {
+  assertNotEqual,
+  assertEqual,
+  assertTrue,
+  assertFalse,
+  assertNotNumber,
+  assertNumber,
+  assertEmpty,
+  assertNotEmpty,
+  assertNull,
+  assertNotNull,
+  assertFail
+} from "../../util/util";
 
 @Injectable()
 export class EventService extends BaseService {
@@ -1270,11 +1283,9 @@ export class EventService extends BaseService {
     let txjson : TxJson  = taskData.txjson;
     taskData.tx = JSON.stringify(taskData.txjson);
 
-		let days: Array<string> = new Array<string>();
+//		let days: Array<string> = new Array<string>();
 		//获取重复日期
-		days = this.getOutDays(rtjson,taskData.evt);
-		for(let day of days) {
-
+    rtjson.each(taskData.evd, (day) => {
    	  let ev = new EvTbl();
 	    Object.assign(ev, taskData);
 	    ev.evi = this.util.getUuid();
@@ -1302,7 +1313,38 @@ export class EventService extends BaseService {
 	    let task2 = {} as TaskData;
 	    Object.assign(task2,ev);
 	    outTasks.push(task2);
-		}
+    });
+		// days = this.getOutDays(rtjson,taskData.evt);
+		// for(let day of days) {
+    //
+   	//   let ev = new EvTbl();
+	  //   Object.assign(ev, taskData);
+	  //   ev.evi = this.util.getUuid();
+	  //   // 非重复日程及重复日程的第一条的rtevi（父日程evi）字段设为空。遵循父子关系，
+	  //   // 父记录的父节点字段rtevi设为空，子记录的父节点字段rtevi设为父记录的evi
+	  //   if (ret.sqlparam.length < 1) {
+	  //     ret.rtevi = ev.evi;
+	  //     taskData.evi = ev.evi;
+	  //     ev.rtevi = "";
+	  //   }else{
+	  //     ev.rtevi = ret.rtevi;
+	  //   }
+	  //   ev.evd = day;
+	  //   ev.type = anyenum.EventType.Task;
+	  //   ev.tb = anyenum.SyncType.unsynch;
+	  //   ev.del = anyenum.DelType.undel;
+	  //   ret.sqlparam.push(ev.rpTParam());
+	  //   //添加提醒的SQL
+    //   if (txjson.reminds && txjson.reminds.length > 0) {
+		//   	ret.sqlparam = [...ret.sqlparam ,...this.sqlparamAddTxWa(ev,anyenum.ObjectType.Event,txjson)];
+	  // 	}
+	  //   //创建任务SQL
+	  //    ret.sqlparam.push(this.sqlparamAddTaskTt(ev,taskData.cs, taskData.isrt))
+	  //   //新增数据需要返回出去
+	  //   let task2 = {} as TaskData;
+	  //   Object.assign(task2,ev);
+	  //   outTasks.push(task2);
+		// }
   	ret.outTasks = outTasks;
   	return ret;
   }
@@ -1493,14 +1535,14 @@ export class EventService extends BaseService {
    * @param {ev: EvTbl,st:string ,sd:string,txjson :TxJson }
    * @returns {ETbl}
    */
-  private sqlparamAddTaskTt(ev: EvTbl,cs: string, isrt : string ): TTbl {
+  private sqlparamAddTaskTt(ev: EvTbl,cs: string, isrt : string ): any {
     //创建任务
 		let ttdb: TTbl = new TTbl();
 		ttdb.evi = ev.evi;
 		ttdb.cs = cs || anyenum.IsSuccess.wait;
 		ttdb.isrt = isrt || anyenum.IsCreate.isNo;
 		ttdb.cd = moment().format('YYYY/MM/DD');
-    return ttdb;
+    return ttdb.rpTParam();
   }
 
 	/**
@@ -1583,37 +1625,64 @@ export class EventService extends BaseService {
     let txjson : TxJson  = minitask.txjson;
     minitask.tx = JSON.stringify(minitask.txjson);
 
-		let days: Array<string> = new Array<string>();
+		// let days: Array<string> = new Array<string>();
 		//获取重复日期
-		days = this.getOutDays(rtjson,minitask.evt);
-		for(let day of days) {
-
-   	  let ev = new EvTbl();
-	    Object.assign(ev, minitask);
-	    ev.evi = this.util.getUuid();
-	    // 非重复日程及重复日程的第一条的rtevi（父日程evi）字段设为空。遵循父子关系，
-	    // 父记录的父节点字段rtevi设为空，子记录的父节点字段rtevi设为父记录的evi
-	    if (ret.sqlparam.length < 1) {
-	      ret.rtevi = ev.evi;
-	      minitask.evi = ev.evi;
-	      ev.rtevi = "";
-	    }else{
-	      ev.rtevi = ret.rtevi;
-	    }
-	    ev.evd = day;
-	    ev.type = anyenum.EventType.MiniTask;
-	    ev.tb = anyenum.SyncType.unsynch;
-	    ev.del = anyenum.DelType.undel;
-	    ret.sqlparam.push(ev.rpTParam());
-	    //添加提醒的SQL
+    rtjson.each(minitask.evd, (day) => {
+      let ev = new EvTbl();
+      Object.assign(ev, minitask);
+      ev.evi = this.util.getUuid();
+      // 非重复日程及重复日程的第一条的rtevi（父日程evi）字段设为空。遵循父子关系，
+      // 父记录的父节点字段rtevi设为空，子记录的父节点字段rtevi设为父记录的evi
+      if (ret.sqlparam.length < 1) {
+        ret.rtevi = ev.evi;
+        minitask.evi = ev.evi;
+        ev.rtevi = "";
+      }else{
+        ev.rtevi = ret.rtevi;
+      }
+      ev.evd = day;
+      ev.type = anyenum.EventType.MiniTask;
+      ev.tb = anyenum.SyncType.unsynch;
+      ev.del = anyenum.DelType.undel;
+      ret.sqlparam.push(ev.rpTParam());
+      //添加提醒的SQL
       if (txjson.reminds && txjson.reminds.length > 0) {
-		  	ret.sqlparam = [...ret.sqlparam ,...this.sqlparamAddTxWa(ev,anyenum.ObjectType.Event,txjson)];
-	  	}
-	    //新增数据需要返回出去
-	    let task2 = {} as MiniTaskData;
-	    Object.assign(task2,ev);
-	    outTasks.push(task2);
-		}
+        ret.sqlparam = [...ret.sqlparam ,...this.sqlparamAddTxWa(ev,anyenum.ObjectType.Event,txjson)];
+      }
+      //新增数据需要返回出去
+      let task2 = {} as MiniTaskData;
+      Object.assign(task2,ev);
+      outTasks.push(task2);
+    });
+		// days = this.getOutDays(rtjson,minitask.evt);
+		// for(let day of days) {
+    //
+   	//   let ev = new EvTbl();
+	  //   Object.assign(ev, minitask);
+	  //   ev.evi = this.util.getUuid();
+	  //   // 非重复日程及重复日程的第一条的rtevi（父日程evi）字段设为空。遵循父子关系，
+	  //   // 父记录的父节点字段rtevi设为空，子记录的父节点字段rtevi设为父记录的evi
+	  //   if (ret.sqlparam.length < 1) {
+	  //     ret.rtevi = ev.evi;
+	  //     minitask.evi = ev.evi;
+	  //     ev.rtevi = "";
+	  //   }else{
+	  //     ev.rtevi = ret.rtevi;
+	  //   }
+	  //   ev.evd = day;
+	  //   ev.type = anyenum.EventType.MiniTask;
+	  //   ev.tb = anyenum.SyncType.unsynch;
+	  //   ev.del = anyenum.DelType.undel;
+	  //   ret.sqlparam.push(ev.rpTParam());
+	  //   //添加提醒的SQL
+    //   if (txjson.reminds && txjson.reminds.length > 0) {
+		//   	ret.sqlparam = [...ret.sqlparam ,...this.sqlparamAddTxWa(ev,anyenum.ObjectType.Event,txjson)];
+	  // 	}
+	  //   //新增数据需要返回出去
+	  //   let task2 = {} as MiniTaskData;
+	  //   Object.assign(task2,ev);
+	  //   outTasks.push(task2);
+		// }
   	ret.outTasks = outTasks;
   	return ret;
   }
@@ -2631,7 +2700,29 @@ export class RetParamMiniTaskData {
 
 export class RtOver {
   type: anyenum.OverType = anyenum.OverType.fornever;
-  value:string;
+  value: string;
+  text(): string {
+    let text: string = "";
+
+    switch(this.type) {
+      case anyenum.OverType.times :
+        assertEmpty(this.value);    // 结束条件不能为空
+        assertNotNumber(this.value);   // 结束条件不能为数字字符串以外的值
+        text = this.value + "次";
+        break;
+      case anyenum.OverType.limitdate :
+        assertEmpty(this.value);    // 结束条件不能为空
+        text = moment(this.value).format("YYYY年M月D日");
+        break;
+      case anyenum.OverType.fornever :
+        text = "永远"
+        break;
+      default:
+        assertFail();    // 预期外值, 程序异常
+    }
+
+    return text;
+  }
 }
 
 export class RtJson {
@@ -2644,6 +2735,215 @@ export class RtJson {
 
   //重复结束设定
   over: RtOver = new RtOver();
+
+  //重复设置文字说明
+  text(): string {
+    let text: string = "";
+
+    let freqtitle = (cyclenum: number, title: string): string => {
+      return (cyclenum > 1? cyclenum : "") + title;
+    };
+
+    let optiontitle = (openway: Array<number>, type: string, comma: string): string => {
+      let text: string = "";
+
+      // 选项不存在
+      if (openway || openway.length < 1) {
+        return text;
+      }
+
+      switch(type) {
+        case "周":
+          let weekdays = openway.map((val) => {
+            switch(val) {
+              case 0:
+                return "星期日";
+              case 1:
+                return "星期一";
+              case 2:
+                return "星期二";
+              case 3:
+                return "星期三";
+              case 4:
+                return "星期四";
+              case 5:
+                return "星期五";
+              case 6:
+                return "星期六";
+              default:
+                assertFail();    // 预期外值, 程序异常
+            }
+          });
+          text = weekdays.join(", ") + comma;
+          break;
+        case "月":
+          let monthdays = openway.map((val) => {
+            return (val + 1) + "日";
+          });
+          text = monthdays.join(", ") + comma;
+          break;
+        default:
+          assertFail();    // 预期外值, 程序异常
+      }
+
+      return text;
+    };
+
+    switch(this.cycletype) {
+      case anyenum.CycleType.day :
+        text = "重复周期 " + freqtitle(this.cyclenum, "天") + ", " + this.over.text();
+        break;
+      case anyenum.CycleType.week :
+        text = "重复周期 " + freqtitle(this.cyclenum, "周") + ", " + optiontitle(this.openway, "周", ", ") + this.over.text();
+        break;
+      case anyenum.CycleType.month :
+        text = "重复周期 " + freqtitle(this.cyclenum, "月") + ", " + optiontitle(this.openway, "月", ", ") + this.over.text();
+        break;
+      case anyenum.CycleType.year :
+        text = "重复周期 " + freqtitle(this.cyclenum, "年") + ", " + this.over.text();
+        break;
+      case anyenum.CycleType.close :    // 不重复日程
+        text = "重复关闭。";
+        break;
+      default:
+        assertFail();    // 预期外值, 程序异常
+    }
+
+    return text;
+  }
+
+  //遍历重复日期
+  each(from: string, callback: (day: string) => void) {
+    // 开始日期
+    let repeatStartDay: string = from;
+    // 重复类型（天/周/月/年）
+    let repeatType: moment.unitOfTime.DurationConstructor = "days";
+    // 重复周期（n天/n周/n月/n年重复一次）
+    let repeatStep: number = this.cyclenum || 1;
+    // 开启方式（天（无）,周多选（一、二、三、四、五、六、日[0 - 6]）,月多选（1、2、...、31[0 - 30]）,年（无））
+    let options: Array<number> = new Array<number>();
+    // 结束条件（n次后结束、到某天结束、永远不结束（天（设置1年）、周（设置2年）、月（设置3年）、年（设置20年）））
+    let repeatTimes: number;
+    // 结束日期（指定结束日期时使用指定结束日期，否则使用计算出来的结束日期）
+    let repeatEndDay: string = "";
+
+    // 根据结束类型设置重复次数/结束日期
+    switch(this.over.type) {
+      case anyenum.OverType.times :
+        assertEmpty(this.over.value);    // 结束条件不能为空
+        assertNotNumber(this.over.value);   // 结束条件不能为数字字符串以外的值
+        repeatTimes = (Number(this.over.value) > 0)? Number(this.over.value) : 1;
+        break;
+      case anyenum.OverType.limitdate :
+        assertEmpty(this.over.value);    // 结束条件不能为空
+        repeatEndDay = moment(this.over.value).add(1,'days').format("YYYY/MM/DD");
+        break;
+      case anyenum.OverType.fornever :
+        break;
+      default:
+        assertFail();    // 预期外值, 程序异常
+    }
+
+    // 根据重复类型设置 重复类型/开启方式/重复次数/结束日期
+    switch(this.cycletype) {
+      case anyenum.CycleType.day :
+        repeatType = "days";
+        repeatTimes = repeatTimes || moment(repeatStartDay).add(1, "years").diff(repeatStartDay, "days");
+        repeatEndDay = repeatEndDay || moment(repeatStartDay).add(repeatTimes * repeatStep, "days").format("YYYY/MM/DD");
+        break;
+      case anyenum.CycleType.week :
+        repeatType = "weeks";
+        options = this.openway || options;
+        repeatTimes = repeatTimes || moment(repeatStartDay).add(2, "years").diff(repeatStartDay, "weeks");
+        repeatEndDay = repeatEndDay || moment(repeatStartDay).add(repeatTimes * repeatStep, "weeks").format("YYYY/MM/DD");
+        break;
+      case anyenum.CycleType.month :
+        repeatType = "months";
+        options = this.openway || options;
+        repeatTimes = repeatTimes || moment(repeatStartDay).add(3, "years").diff(repeatStartDay, "months");
+        repeatEndDay = repeatEndDay || moment(repeatStartDay).add(repeatTimes * repeatStep, "months").format("YYYY/MM/DD");
+        break;
+      case anyenum.CycleType.year :
+        repeatType = "years";
+        repeatTimes = repeatTimes || 20;
+        repeatEndDay = repeatEndDay || moment(repeatStartDay).add(repeatTimes * repeatStep, "years").format("YYYY/MM/DD");
+        break;
+      case anyenum.CycleType.close :    // 不重复日程
+        repeatType = "days";
+        repeatTimes = 1;
+        repeatEndDay = moment(repeatStartDay).add(1, "days").format("YYYY/MM/DD");
+        break;
+      default:
+        assertFail();    // 预期外值, 程序异常
+    }
+
+    let stepDay: string = repeatStartDay;
+
+    // 循环开始日期 ~ 结束日期
+    while (moment(stepDay).isBefore(repeatEndDay)) {
+
+      let days: Array<string> = new Array<string>();
+
+      if (options.length > 0) {
+        // 星期多选/每月日期多选
+        if (repeatType == "weeks") {
+          let dayOfWeek: number = Number(moment(stepDay).format("d"));
+
+          for (let option of options) {
+            let duration: number = option - dayOfWeek;
+
+            if (duration == 0) {
+              days.push(stepDay);     // 当前日期为重复日期
+            } else if (duration > 0) {
+              //当周日期
+              days.push(moment(stepDay).add(duration, "days").format("YYYY/MM/DD"));
+            } else {
+              //下周日期（跨周）
+              days.push(moment(stepDay).add(7, "days").subtract(Math.abs(duration), "days").format("YYYY/MM/DD"));
+            }
+          }
+
+        } else if (repeatType == "months") {
+          let dayOfMonth: number = Number(moment(stepDay).format("D")) - 1;   // 0 - 30 和options设置日期匹配
+          let maxDayOfMonth: number = moment().daysInMonth();
+
+          for (let option of options) {
+
+            // 当月没有这一天
+            if (option > maxDayOfMonth) {
+              continue;
+            }
+
+            let duration: number = option - dayOfMonth;
+
+            if (duration == 0) {
+              days.push(stepDay);     // 当前日期为重复日期
+            } else if (duration > 0) {
+              //当月日期
+              days.push(moment(stepDay).add(duration, "days").format("YYYY/MM/DD"));
+            } else {
+              //下月日期（跨月）
+              days.push(moment(stepDay).add(1, "months").dates(option + 1).format("YYYY/MM/DD"));
+            }
+          }
+
+        } else {
+          assertFail();    // 预期外值, 程序异常
+        }
+      } else {
+        // 普通重复
+        days.push(stepDay);
+      }
+
+      for (let day of days) {
+        if (moment(day).isBefore(repeatEndDay)) {
+          callback(day);
+        }
+      }
+
+      stepDay = moment(stepDay).add(repeatStep, repeatType).format("YYYY/MM/DD");
+    }
+  }
 }
 
 export class TxJson {
@@ -2654,4 +2954,3 @@ enum DUflag {
   del = "del",
   update = "update"
 }
-

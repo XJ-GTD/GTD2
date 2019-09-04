@@ -1,66 +1,60 @@
+import {
+  assertNotEqual,
+  assertEqual,
+  assertTrue,
+  assertFalse,
+  assertNotNumber,
+  assertNumber,
+  assertEmpty,
+  assertNotEmpty,
+  assertNull,
+  assertNotNull,
+  assertFail
+} from "../../util/util";
+
 export class BaseService {
   assertNotEqual(src: any, dest: any, msg: string = "Assert Not Equal Error.") {
-    if (src !== dest) {
-      throw new Error(msg);
-    }
+    assertNotEqual(src, dest, msg);
   }
 
   assertEqual(src: any, dest: any, msg: string = "Assert Equal Error.") {
-    if (src === dest) {
-      throw new Error(msg);
-    }
+    assertEqual(src, dest, msg);
   }
 
   assertTrue(src: any, msg: string = "Assert True Error.") {
-    if (src) {
-      throw new Error(msg);
-    }
+    assertTrue(src, msg);
   }
 
   assertFalse(src: any, msg: string = "Assert False Error.") {
-    if (!src) {
-      throw new Error(msg);
-    }
+    assertFalse(src, msg);
   }
 
   assertNotNumber(src: any, msg: string = "Assert Not Number Error.") {
-    if (isNaN(Number(src))) {
-      throw new Error(msg);
-    }
+    assertNotNumber(src, msg);
   }
 
   assertNumber(src: any, msg: string = "Assert Number Error.") {
-    if (!isNaN(Number(src))) {
-      throw new Error(msg);
-    }
+    assertNumber(src, msg);
   }
 
   assertEmpty(src: any, msg: string = "Assert Empty Error.") {
-    if (!src) {
-      throw new Error(msg);
-    }
+    assertEmpty(src, msg);
   }
 
   assertNotEmpty(src: any, msg: string = "Assert Empty Error.") {
-    if (src) {
-      throw new Error(msg);
-    }
+    assertNotEmpty(src, msg);
   }
 
   assertNull(src: any, msg: string = "Assert Null Error.") {
-    if (src == null || src == "undefined") {
-      throw new Error(msg);
-    }
+    assertNull(src, msg);
   }
 
   assertNotNull(src: any, msg: string = "Assert Null Error.") {
-    if (src != null && src != "undefined") {
-      throw new Error(msg);
-    }
+    assertNotNull(src, msg);
   }
 
   assertFail(msg: string = "Assert Fail Error.") {
-    throw new Error(msg);
+    assertFail(msg);
   }
 }
 
