@@ -1535,14 +1535,14 @@ export class EventService extends BaseService {
    * @param {ev: EvTbl,st:string ,sd:string,txjson :TxJson }
    * @returns {ETbl}
    */
-  private sqlparamAddTaskTt(ev: EvTbl,cs: string, isrt : string ): TTbl {
+  private sqlparamAddTaskTt(ev: EvTbl,cs: string, isrt : string ): any {
     //创建任务
 		let ttdb: TTbl = new TTbl();
 		ttdb.evi = ev.evi;
 		ttdb.cs = cs || anyenum.IsSuccess.wait;
 		ttdb.isrt = isrt || anyenum.IsCreate.isNo;
 		ttdb.cd = moment().format('YYYY/MM/DD');
-    return ttdb;
+    return ttdb.rpTParam();
   }
 
 	/**
