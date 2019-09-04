@@ -1283,11 +1283,9 @@ export class EventService extends BaseService {
     let txjson : TxJson  = taskData.txjson;
     taskData.tx = JSON.stringify(taskData.txjson);
 
-		let days: Array<string> = new Array<string>();
+//		let days: Array<string> = new Array<string>();
 		//获取重复日期
-		days = this.getOutDays(rtjson,taskData.evt);
-		for(let day of days) {
-
+    rtjson.each(taskData.evd, (day) => {
    	  let ev = new EvTbl();
 	    Object.assign(ev, taskData);
 	    ev.evi = this.util.getUuid();
@@ -1315,7 +1313,38 @@ export class EventService extends BaseService {
 	    let task2 = {} as TaskData;
 	    Object.assign(task2,ev);
 	    outTasks.push(task2);
-		}
+    });
+		// days = this.getOutDays(rtjson,taskData.evt);
+		// for(let day of days) {
+    //
+   	//   let ev = new EvTbl();
+	  //   Object.assign(ev, taskData);
+	  //   ev.evi = this.util.getUuid();
+	  //   // 非重复日程及重复日程的第一条的rtevi（父日程evi）字段设为空。遵循父子关系，
+	  //   // 父记录的父节点字段rtevi设为空，子记录的父节点字段rtevi设为父记录的evi
+	  //   if (ret.sqlparam.length < 1) {
+	  //     ret.rtevi = ev.evi;
+	  //     taskData.evi = ev.evi;
+	  //     ev.rtevi = "";
+	  //   }else{
+	  //     ev.rtevi = ret.rtevi;
+	  //   }
+	  //   ev.evd = day;
+	  //   ev.type = anyenum.EventType.Task;
+	  //   ev.tb = anyenum.SyncType.unsynch;
+	  //   ev.del = anyenum.DelType.undel;
+	  //   ret.sqlparam.push(ev.rpTParam());
+	  //   //添加提醒的SQL
+    //   if (txjson.reminds && txjson.reminds.length > 0) {
+		//   	ret.sqlparam = [...ret.sqlparam ,...this.sqlparamAddTxWa(ev,anyenum.ObjectType.Event,txjson)];
+	  // 	}
+	  //   //创建任务SQL
+	  //    ret.sqlparam.push(this.sqlparamAddTaskTt(ev,taskData.cs, taskData.isrt))
+	  //   //新增数据需要返回出去
+	  //   let task2 = {} as TaskData;
+	  //   Object.assign(task2,ev);
+	  //   outTasks.push(task2);
+		// }
   	ret.outTasks = outTasks;
   	return ret;
   }
