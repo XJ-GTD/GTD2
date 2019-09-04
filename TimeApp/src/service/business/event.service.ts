@@ -20,6 +20,19 @@ import {BTbl} from "../sqlite/tbl/b.tbl";
 import {FjTbl} from "../sqlite/tbl/fj.tbl";
 import {DataRestful, PullInData, PushInData, SyncData} from "../restful/datasev";
 import {SyncType, DelType, IsSuccess, SyncDataStatus, PageDirection, SyncDataSecurity} from "../../data.enum";
+import {
+  assertNotEqual,
+  assertEqual,
+  assertTrue,
+  assertFalse,
+  assertNotNumber,
+  assertNumber,
+  assertEmpty,
+  assertNotEmpty,
+  assertNull,
+  assertNotNull,
+  assertFail
+} from "../../util/util";
 
 @Injectable()
 export class EventService extends BaseService {
@@ -2663,18 +2676,18 @@ export class RtJson {
     // 根据结束类型设置重复次数/结束日期
     switch(this.over.type) {
       case anyenum.OverType.times :
-        this.assertEmpty(this.over.value);    // 结束条件不能为空
-        this.assertNotNumber(this.over.value);   // 结束条件不能为数字字符串以外的值
+        assertEmpty(this.over.value);    // 结束条件不能为空
+        assertNotNumber(this.over.value);   // 结束条件不能为数字字符串以外的值
         repeatTimes = (Number(this.over.value) > 0)? Number(this.over.value) : 1;
         break;
       case anyenum.OverType.limitdate :
-        this.assertEmpty(this.over.value);    // 结束条件不能为空
+        assertEmpty(this.over.value);    // 结束条件不能为空
         repeatEndDay = moment(this.over.value).add(1,'days').format("YYYY/MM/DD");
         break;
       case anyenum.OverType.fornever :
         break;
       default:
-        this.assertFail();    // 预期外值, 程序异常
+        assertFail();    // 预期外值, 程序异常
     }
 
     // 根据重复类型设置 重复类型/开启方式/重复次数/结束日期
@@ -2707,7 +2720,7 @@ export class RtJson {
         repeatEndDay = moment(repeatStartDay).add(1, "days").format("YYYY/MM/DD");
         break;
       default:
-        this.assertFail();    // 预期外值, 程序异常
+        assertFail();    // 预期外值, 程序异常
     }
 
     let stepDay: string = repeatStartDay;
@@ -2761,7 +2774,7 @@ export class RtJson {
           }
 
         } else {
-          this.assertFail();    // 预期外值, 程序异常
+          assertFail();    // 预期外值, 程序异常
         }
       } else {
         // 普通重复
