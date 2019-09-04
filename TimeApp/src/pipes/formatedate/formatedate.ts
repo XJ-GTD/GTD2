@@ -128,6 +128,18 @@ export class FormatedatePipe implements PipeTransform {
           return currentDay.format("YYYY年M月D日 A h:mm");
         }
       }
+      if (args[0] == "withNow"){
+        if (moment(value).diff(moment()) > 0) {
+          return moment(value).fromNow(true) + "后";
+        } else if (moment(value).diff(moment()) < 0) {
+          return moment(value).toNow(true) + "前";
+        } else {
+          return moment(value).toNow(true);
+        }
+      }
+      if (args[0] == "YYYY年M月D日"){
+        return moment(value).format("YYYY年M月D日");
+      }
       if (args[0] == "YYYY"){
         return moment(value).format("YYYY");
       }
