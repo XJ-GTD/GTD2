@@ -2691,7 +2691,7 @@ export class RtJson {
     }
 
     // 根据重复类型设置 重复类型/开启方式/重复次数/结束日期
-    switch(rtjson.cycletype) {
+    switch(this.cycletype) {
       case anyenum.CycleType.day :
         repeatType = "days";
         repeatTimes = repeatTimes || moment(repeatStartDay).add(1, "years").diff(repeatStartDay, "days");
