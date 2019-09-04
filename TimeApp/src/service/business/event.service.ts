@@ -2700,7 +2700,29 @@ export class RetParamMiniTaskData {
 
 export class RtOver {
   type: anyenum.OverType = anyenum.OverType.fornever;
-  value:string;
+  value: string;
+  text(): string {
+    let text: string = "";
+
+    switch(this.type) {
+      case anyenum.OverType.times :
+        assertEmpty(this.value);    // 结束条件不能为空
+        assertNotNumber(this.value);   // 结束条件不能为数字字符串以外的值
+        text = this.value + "次";
+        break;
+      case anyenum.OverType.limitdate :
+        assertEmpty(this.value);    // 结束条件不能为空
+        text = moment(this.value).format("YYYY年M月D日");
+        break;
+      case anyenum.OverType.fornever :
+        text = "永远"
+        break;
+      default:
+        assertFail();    // 预期外值, 程序异常
+    }
+
+    return text;
+  }
 }
 
 export class RtJson {
@@ -2713,6 +2735,82 @@ export class RtJson {
 
   //重复结束设定
   over: RtOver = new RtOver();
+
+  //重复设置文字说明
+  text(): string {
+    let text: string = "";
+
+    let freqtitle = (cyclenum: number, title: string): string => {
+      return (cyclenum > 1? cyclenum : "") + title;
+    };
+
+    let optiontitle = (openway: Array<number>, type: string, comma: string): string => {
+      let text: string = "";
+
+      // 选项不存在
+      if (openway || openway.length < 1) {
+        return text;
+      }
+
+      switch(type) {
+        case "周":
+          let weekdays = openway.map((val) => {
+            switch(val) {
+              case 0:
+                return "星期日";
+              case 1:
+                return "星期一";
+              case 2:
+                return "星期二";
+              case 3:
+                return "星期三";
+              case 4:
+                return "星期四";
+              case 5:
+                return "星期五";
+              case 6:
+                return "星期六";
+              default:
+                assertFail();    // 预期外值, 程序异常
+            }
+          });
+          text = weekdays.join(", ") + comma;
+          break;
+        case "月":
+          let monthdays = openway.map((val) => {
+            return (val + 1) + "日";
+          });
+          text = monthdays.join(", ") + comma;
+          break;
+        default:
+          assertFail();    // 预期外值, 程序异常
+      }
+
+      return text;
+    };
+
+    switch(this.cycletype) {
+      case anyenum.CycleType.day :
+        text = "重复周期 " + freqtitle(this.cyclenum, "天") + ", " + this.over.text();
+        break;
+      case anyenum.CycleType.week :
+        text = "重复周期 " + freqtitle(this.cyclenum, "周") + ", " + optiontitle(this.openway, "周", ", ") + this.over.text();
+        break;
+      case anyenum.CycleType.month :
+        text = "重复周期 " + freqtitle(this.cyclenum, "月") + ", " + optiontitle(this.openway, "月", ", ") + this.over.text();
+        break;
+      case anyenum.CycleType.year :
+        text = "重复周期 " + freqtitle(this.cyclenum, "年") + ", " + this.over.text();
+        break;
+      case anyenum.CycleType.close :    // 不重复日程
+        text = "重复关闭。";
+        break;
+      default:
+        assertFail();    // 预期外值, 程序异常
+    }
+
+    return text;
+  }
 
   //遍历重复日期
   each(from: string, callback: (day: string) => void) {
