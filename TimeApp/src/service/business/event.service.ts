@@ -731,7 +731,7 @@ export class EventService extends BaseService {
 
       //提醒新建
       if (newAgdata.txjson.reminds && newAgdata.txjson.reminds.length > 0) {
-        sqlparam = [...sqlparam , ...this.sqlparamAddTxWa(ev, newAgdata.st, newAgdata.al, newAgdata.txjson)];
+        sqlparam = [...sqlparam , ...this.sqlparamAddTxWa(ev, anyenum.ObjectType.Event,  newAgdata.txjson,newAgdata.al, newAgdata.st)];
       }
 
       //如果当前更新对象是父节点，则为当前重复日程重建新的父记录，值为ev表里的第一条做为父记录
@@ -1125,7 +1125,7 @@ export class EventService extends BaseService {
       ret.ed = ev.evd;
       ret.sqlparam.push(ev.rpTParam());
       if (txjson.reminds && txjson.reminds.length > 0) {
-        ret.sqlparam = [...ret.sqlparam ,...this.sqlparamAddTxWa(ev,agdata.st,agdata.al,txjson)];
+        ret.sqlparam = [...ret.sqlparam ,...this.sqlparamAddTxWa(ev,anyenum.ObjectType.Event,txjson,agdata.al,agdata.st)];
       }
 
       //新增数据需要返回出去
@@ -1135,45 +1135,6 @@ export class EventService extends BaseService {
     }
 
     ret.outAgdatas = outAgds;
-    return ret;
-  }
-
-  /**
-   *获取提醒表sql
-   * @param {EvTbl}
-   * @param {ev: EvTbl,st:string ,sd:string,txjson :TxJson }
-   * @returns {ETbl}
-   */
-  private sqlparamAddTxWa(ev: EvTbl,st:string,al: string, txjson :TxJson ): Array<any> {
-    let ret = new Array<any>();
-    if (txjson.reminds && txjson.reminds.length > 0) {
-      for ( let j = 0, len = txjson.reminds.length ;j < len ; j++){
-
-        let wa = new WaTbl();//提醒表
-        let remind : anyenum.RemindTime;
-
-        wa.wai = this.util.getUuid();
-        wa.obt = anyenum.ObjectType.Event;
-        wa.obi = ev.evi;
-        remind = txjson.reminds[j];
-
-        wa.st = ev.evn;
-        let time = parseInt(remind);
-        let date;
-        if (al == anyenum.IsWholeday.NonWhole) {
-          date = moment(ev.evd + " " + st).subtract(time, 'm').format("YYYY/MM/DD HH:mm");
-
-        } else {
-          date = moment(ev.evd + " " + "08:00").subtract(time, 'm').format("YYYY/MM/DD HH:mm");
-
-        }
-        wa.wd = moment(date).format("YYYY/MM/DD");
-        wa.wt = moment(date).format("HH:mm");
-
-        ret.push(wa.rpTParam());
-        //console.log('-------- 插入提醒表 --------');
-      }
-    }
     return ret;
   }
 
@@ -1333,7 +1294,7 @@ export class EventService extends BaseService {
 	    ret.sqlparam.push(ev.rpTParam());
 	    //添加提醒的SQL
       if (txjson.reminds && txjson.reminds.length > 0) {
-		  	ret.sqlparam = [...ret.sqlparam ,...this.sqlparamAddTaskWa(ev,anyenum.ObjectType.Event,txjson)];
+		  	ret.sqlparam = [...ret.sqlparam ,...this.sqlparamAddTxWa(ev,anyenum.ObjectType.Event,txjson)];
 	  	}
 	    //创建任务SQL
 	     ret.sqlparam.push(this.sqlparamAddTaskTt(ev,taskData.cs, taskData.isrt))
@@ -1487,14 +1448,16 @@ export class EventService extends BaseService {
       return daysNew;
 	}
 
-
-	/**
-   *获取提醒表sql
-   * @param {EvTbl}
-   * @param {ev: EvTbl,st:string ,sd:string,txjson :TxJson }
-   * @returns {ETbl}
+  /**
+   * 获取提醒表sql
+   * @param {EvTbl} ev
+   * @param {string} obtType
+   * @param {TxJson} txjson
+   * @param {string} al
+   * @param {string} st
+   * @returns {Array<any>}
    */
-  private sqlparamAddTaskWa(ev: EvTbl,obtType: string, txjson :TxJson, al: string = "" ,st:string=""): Array<any> {
+  private sqlparamAddTxWa(ev: EvTbl,obtType: string, txjson :TxJson, al: string = "" ,st:string=""): Array<any> {
     let ret = new Array<any>();
     if (txjson.reminds && txjson.reminds.length > 0) {
       for ( let j = 0, len = txjson.reminds.length ;j < len ; j++) {
@@ -1506,7 +1469,7 @@ export class EventService extends BaseService {
         remind = txjson.reminds[j];
         wa.st = ev.evn;
         let time = parseInt(remind);
-       let date;
+        let date;
         if (al == anyenum.IsWholeday.NonWhole) {
           date = moment(ev.evd + " " + st).subtract(time, 'm').format("YYYY/MM/DD HH:mm");
 
@@ -1644,7 +1607,7 @@ export class EventService extends BaseService {
 	    ret.sqlparam.push(ev.rpTParam());
 	    //添加提醒的SQL
       if (txjson.reminds && txjson.reminds.length > 0) {
-		  	ret.sqlparam = [...ret.sqlparam ,...this.sqlparamAddTaskWa(ev,anyenum.ObjectType.Event,txjson)];
+		  	ret.sqlparam = [...ret.sqlparam ,...this.sqlparamAddTxWa(ev,anyenum.ObjectType.Event,txjson)];
 	  	}
 	    //新增数据需要返回出去
 	    let task2 = {} as MiniTaskData;
