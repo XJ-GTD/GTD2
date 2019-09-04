@@ -179,14 +179,17 @@ describe('EventService test suite', () => {
       outagds[j].evi = util.getUuid();
       outagds[j].ui = 'frompublisher1';
 
-      for (let k =0 ,len = outagds[j].fjs.length; k < len ;k++){
-        outagds[j].fjs[k].fji = util.getUuid();
-        outagds[j].fjs[k].obi = outagds[j].evi;
+      if (outagds[j].fjs && outagds[j].fjs !=null) {
+        for (let k = 0, len = outagds[j].fjs.length; k < len; k++) {
+          outagds[j].fjs[k].fji = util.getUuid();
+          outagds[j].fjs[k].obi = outagds[j].evi;
+        }
       }
-
-      for (let k =0 ,len = outagds[j].parters.length; k < len ;k++){
-        outagds[j].parters[k].pari = util.getUuid();
-        outagds[j].parters[k].obi = outagds[j].evi;
+      if (outagds[j].parters && outagds[j].parters != null) {
+        for (let k = 0, len = outagds[j].parters.length; k < len; k++) {
+          outagds[j].parters[k].pari = util.getUuid();
+          outagds[j].parters[k].obi = outagds[j].evi;
+        }
       }
     }
     await eventService.receivedAgendaData(outagds,anyenum.SyncDataStatus.Deleted);
