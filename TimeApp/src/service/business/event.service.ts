@@ -707,7 +707,7 @@ export class EventService extends BaseService {
       rtjon.cyclenum = 1;
       rtjon.openway = new Array<number>();
       newAgdata.rt = JSON.stringify(rtjon);
-      newAgdata.rts = !newAgdata.rts ? "" : newAgdata.rts ;
+      newAgdata.rts = rtjon.text() ;
 
       if (oriAgdata.rfg == anyenum.RepeatFlag.Repeat){
         newAgdata.rfg = anyenum.RepeatFlag.RepeatToNon;
@@ -1097,6 +1097,7 @@ export class EventService extends BaseService {
 
     let rtjson: RtJson = agdata.rtjson;
     agdata.rt = JSON.stringify(agdata.rtjson);
+    agdata.rts = rtjson.text();
 
     if (rtjson.cycletype == anyenum.CycleType.close){
 
