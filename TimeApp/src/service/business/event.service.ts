@@ -1097,7 +1097,7 @@ export class EventService extends BaseService {
 
     let rtjson: RtJson = agdata.rtjson;
     agdata.rt = JSON.stringify(agdata.rtjson);
-    agdata.rts = rtjson.text();
+    agdata.rts = (<RtJson>rtjson).text();
 
     if (rtjson.cycletype == anyenum.CycleType.close){
 
