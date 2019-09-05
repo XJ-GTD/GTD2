@@ -707,7 +707,7 @@ export class EventService extends BaseService {
       rtjon.cyclenum = 1;
       rtjon.openway = new Array<number>();
       newAgdata.rt = JSON.stringify(rtjon);
-      newAgdata.rts = !newAgdata.rts ? "" : newAgdata.rts ;
+      newAgdata.rts = (<RtJson>rtjon).text() ;
 
       if (oriAgdata.rfg == anyenum.RepeatFlag.Repeat){
         newAgdata.rfg = anyenum.RepeatFlag.RepeatToNon;
@@ -1097,6 +1097,7 @@ export class EventService extends BaseService {
 
     let rtjson: RtJson = agdata.rtjson;
     agdata.rt = JSON.stringify(agdata.rtjson);
+    agdata.rts = (<RtJson>rtjson).text();
 
     if (rtjson.cycletype == anyenum.CycleType.close){
 
@@ -1280,12 +1281,12 @@ export class EventService extends BaseService {
       taskData.rfg = anyenum.RepeatFlag.Repeat;
     }
 
-    let txjson : TxJson  = taskData.txjson;
+    let txjson : TxJson  =  taskData.txjson;
     taskData.tx = JSON.stringify(taskData.txjson);
 
 //		let days: Array<string> = new Array<string>();
 		//获取重复日期
-    rtjson.each(taskData.evd, (day) => {
+   (<RtJson> rtjson).each(taskData.evd, (day) => {
    	  let ev = new EvTbl();
 	    Object.assign(ev, taskData);
 	    ev.evi = this.util.getUuid();
@@ -1622,12 +1623,12 @@ export class EventService extends BaseService {
       minitask.rfg = anyenum.RepeatFlag.Repeat;
     }
 
-    let txjson : TxJson  = minitask.txjson;
+    let txjson : TxJson  =  minitask.txjson;
     minitask.tx = JSON.stringify(minitask.txjson);
 
 		// let days: Array<string> = new Array<string>();
 		//获取重复日期
-    rtjson.each(minitask.evd, (day) => {
+    (<RtJson>rtjson).each(minitask.evd, (day) => {
       let ev = new EvTbl();
       Object.assign(ev, minitask);
       ev.evi = this.util.getUuid();
