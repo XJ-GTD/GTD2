@@ -1,5 +1,5 @@
-import { Component, Input, Output, EventEmitter, ViewChild, ElementRef, ContentChildren, QueryList } from '@angular/core';
-import { Events } from 'ionic-angular';
+import {Component, Input, Output, EventEmitter, ViewChild, ElementRef, ContentChildren, QueryList} from '@angular/core';
+import {Events} from 'ionic-angular';
 
 /**
  * Generated class for the ScrollSelectComponent component.
@@ -9,23 +9,24 @@ import { Events } from 'ionic-angular';
  */
 @Component({
   selector: 'page-box',
-  template: `<ion-grid class="box-page">
-    <ion-row class="box-header">
-      <h1>{{title}}</h1>
-      <button ion-button icon-only (click)="goBack()">
-        <ion-icon ios="md-arrow-back" md="md-arrow-back"></ion-icon>
-      </button>
-    </ion-row>
-    <ion-row>
-      <ion-grid>
-        <ion-row class="box-content">
-          <ion-scroll direction="y" zooming="false">
-            <ng-content></ng-content>
-          </ion-scroll>
-        </ion-row>
-      </ion-grid>
-    </ion-row>
-  </ion-grid>`
+  template:
+      `
+    <div class="box-page">
+      <ion-header class="box-header">
+        <ion-toolbar >
+          <ion-title>{{title}}</ion-title>
+          <ion-buttons end>
+            <button (click)="goBack()">
+              <ion-icon ios="md-arrow-back" md="md-arrow-back"></ion-icon>
+            </button>
+          </ion-buttons>
+        </ion-toolbar>
+      </ion-header>
+      <ion-content class="box-content">
+        <ng-content></ng-content>
+      </ion-content>
+
+  `
 })
 export class PageBoxComponent {
   @Input()

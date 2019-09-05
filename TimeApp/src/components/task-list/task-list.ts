@@ -1,38 +1,23 @@
-import { Component, Output, Input, EventEmitter } from "@angular/core";
+import {Component, Output, Input, EventEmitter} from "@angular/core";
 
 @Component({
   selector: 'task-list',
   template: `
-  <ion-grid>
-    <ion-row align-items-center>
-      <ion-grid>
-        <ion-row>
-          <ng-container *ngFor="let task of tasklist">
-          <ion-card [ngClass]="{'complete': task.cs == '1'}" (click)="gotoDetail(task)">
-            <ion-card-content>
-              <ion-checkbox color="dark" checked="false" (ionChange)="complete(task)"></ion-checkbox>
-              <p>{{task.evn}}</p>
-            </ion-card-content>
-
-            <ion-row>
-              <ion-col>
-                <button ion-button icon-start clear small>
-                  <ion-icon name="thumbs-up"></ion-icon>
-                  <div>{{(task.evd + ' ' + task.evt) | formatedate:'withNow'}}</div>
-                </button>
-              </ion-col>
-              <ion-col>
-                <button ion-button clear small>
-                  <div>{{task.ui | formatuser: currentuser: friends}}</div>
-                </button>
-              </ion-col>
-            </ion-row>
-          </ion-card>
-          </ng-container>
-        </ion-row>
-      </ion-grid>
-    </ion-row>
-  </ion-grid>
+    <ion-grid class = "list-contont">
+      <ion-row class="list-todolist-content task-item" *ngFor="let task of tasklist"  [ngClass]="{'complete': task.cs == '1'}" (click)="gotoDetail(task)" >
+          <div class="agendaline">
+            <div class="agenda-icon"></div>
+            <div class="agenda-sn">{{task.evn}}</div>
+          </div>
+          <div class="agendaline">
+            <div class="agenda-icon">
+              <ion-icon name="thumbs-up"></ion-icon>
+            </div>
+              <div class="agenda-st">{{(task.evd + ' ' + task.evt) | formatedate:'withNow'}}</div>
+              <div  class="agenda-person">{{task.ui | formatuser: currentuser: friends}}</div>
+          </div>
+      </ion-row>
+    </ion-grid>
   `
 })
 export class TaskListComponent {
