@@ -707,7 +707,7 @@ export class EventService extends BaseService {
       rtjon.cyclenum = 1;
       rtjon.openway = new Array<number>();
       newAgdata.rt = JSON.stringify(rtjon);
-      newAgdata.rts = rtjon.text() ;
+      newAgdata.rts = (<RtJson>rtjon).text() ;
 
       if (oriAgdata.rfg == anyenum.RepeatFlag.Repeat){
         newAgdata.rfg = anyenum.RepeatFlag.RepeatToNon;
@@ -1628,7 +1628,7 @@ export class EventService extends BaseService {
 
 		// let days: Array<string> = new Array<string>();
 		//获取重复日期
-    rtjson.each(minitask.evd, (day) => {
+    (<RtJson>rtjson).each(minitask.evd, (day) => {
       let ev = new EvTbl();
       Object.assign(ev, minitask);
       ev.evi = this.util.getUuid();
