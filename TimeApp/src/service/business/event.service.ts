@@ -1270,7 +1270,7 @@ export class EventService extends BaseService {
     //字段evt 设定
    	taskData.evt = taskData.evt||"23:59";
 
-    let rtjson: RtJson = taskData.rtjson;
+    let rtjson: RtJson = (RtJson) taskData.rtjson;
     taskData.rt = JSON.stringify(taskData.rtjson);
 
     if (rtjson.cycletype == anyenum.CycleType.close){
@@ -1281,7 +1281,7 @@ export class EventService extends BaseService {
       taskData.rfg = anyenum.RepeatFlag.Repeat;
     }
 
-    let txjson : TxJson  = taskData.txjson;
+    let txjson : TxJson  = (TxJson) taskData.txjson;
     taskData.tx = JSON.stringify(taskData.txjson);
 
 //		let days: Array<string> = new Array<string>();
@@ -1612,7 +1612,7 @@ export class EventService extends BaseService {
     //字段evt 设定
    	minitask.evt = minitask.evt||"23:59";
 
-    let rtjson: RtJson = minitask.rtjson;
+    let rtjson: RtJson = (RtJson) minitask.rtjson;
     minitask.rt = JSON.stringify(minitask.rtjson);
 
     if (rtjson.cycletype == anyenum.CycleType.close){
@@ -1623,7 +1623,7 @@ export class EventService extends BaseService {
       minitask.rfg = anyenum.RepeatFlag.Repeat;
     }
 
-    let txjson : TxJson  = minitask.txjson;
+    let txjson : TxJson  = (TxJson) minitask.txjson;
     minitask.tx = JSON.stringify(minitask.txjson);
 
 		// let days: Array<string> = new Array<string>();
