@@ -1286,7 +1286,7 @@ export class EventService extends BaseService {
 
 //		let days: Array<string> = new Array<string>();
 		//获取重复日期
-    rtjson.each(taskData.evd, (day) => {
+   (<RtJson> rtjson).each(taskData.evd, (day) => {
    	  let ev = new EvTbl();
 	    Object.assign(ev, taskData);
 	    ev.evi = this.util.getUuid();
