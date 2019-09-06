@@ -1145,29 +1145,29 @@ export class CalendarService extends BaseService {
                           gdaymom.memoscount memoscount,
                           gdaymom.bookedtimesummary bookedtimesummary
                       from (select gdayev.day day,
-                              max(gdayev.calendaritemscount) calendaritemscount,
-                              max(gdayev.activityitemscount) activityitemscount,
-                              max(gdayev.eventscount) eventscount,
-                              max(gdayev.agendascount) agendascount,
-                              max(gdayev.taskscount) taskscount,
-                              max(gdayev.repeateventscount) repeateventscount,
-                              sum(CASE WHEN IFNULL(gmo.moi, '') = '' THEN 0 WHEN gmo.del = '${DelType.del}' THEN 0 ELSE 1 END) memoscount,
-                              0 bookedtimesummary
-                          from (select gdayjta.day day,
-                                  max(gdayjta.calendaritemscount) calendaritemscount,
-                                  max(gdayjta.activityitemscount) activityitemscount,
-                                  sum(CASE WHEN IFNULL(gev.evi, '') = '' THEN 0 WHEN gev.del = '${DelType.del}' THEN 0 ELSE 1 END) eventscount,
-                                  sum(CASE WHEN IFNULL(gev.evi, '') = '' THEN 0 WHEN IFNULL(gev.rtevi, '') <> '' THEN 0 WHEN gev.type <> '${EventType.Agenda}' THEN 0 WHEN gev.del = '${DelType.del}' THEN 0 ELSE 1 END) agendascount,
-                                  sum(CASE WHEN IFNULL(gev.evi, '') = '' THEN 0 WHEN gev.type <> '${EventType.Task}' THEN 0 WHEN gev.del = '${DelType.del}' THEN 0 ELSE 1 END) taskscount,
-                                  sum(CASE WHEN IFNULL(gev.rtevi, '') = '' THEN 0 WHEN gev.del = '${DelType.del}' THEN 0 ELSE 1 END) repeateventscount
-                            from (select gday.sd day,
-                                    sum(CASE WHEN IFNULL(gjt.jti, '') = '' THEN 0 WHEN gjt.jtt <> '${PlanItemType.Holiday}' THEN 0 WHEN gjt.del = '${DelType.del}' THEN 0 ELSE 1 END) calendaritemscount,
-                                    sum(CASE WHEN IFNULL(gjt.jti, '') = '' THEN 0 WHEN gjt.jtt <> '${PlanItemType.Activity}' THEN 0 WHEN gjt.del = '${DelType.del}' THEN 0 ELSE 1 END) activityitemscount
-                                  from (select '${day}' sd) gday
-                                      left join gtd_jta gjt on gday.sd = gjt.sd
-                                  group by gday.sd) gdayjta
-                              left join gtd_ev gev on gdayjta.day = gev.evd
-                            group by gdayjta.day) gdayev
+                            max(gdayev.calendaritemscount) calendaritemscount,
+                            max(gdayev.activityitemscount) activityitemscount,
+                            max(gdayev.eventscount) eventscount,
+                            max(gdayev.agendascount) agendascount,
+                            max(gdayev.taskscount) taskscount,
+                            max(gdayev.repeateventscount) repeateventscount,
+                            sum(CASE WHEN IFNULL(gmo.moi, '') = '' THEN 0 WHEN gmo.del = '${DelType.del}' THEN 0 ELSE 1 END) memoscount,
+                            0 bookedtimesummary
+                        from (select gdayjta.day day,
+                                max(gdayjta.calendaritemscount) calendaritemscount,
+                                max(gdayjta.activityitemscount) activityitemscount,
+                                sum(CASE WHEN IFNULL(gev.evi, '') = '' THEN 0 WHEN gev.del = '${DelType.del}' THEN 0 ELSE 1 END) eventscount,
+                                sum(CASE WHEN IFNULL(gev.evi, '') = '' THEN 0 WHEN IFNULL(gev.rtevi, '') <> '' THEN 0 WHEN gev.type <> '${EventType.Agenda}' THEN 0 WHEN gev.del = '${DelType.del}' THEN 0 ELSE 1 END) agendascount,
+                                sum(CASE WHEN IFNULL(gev.evi, '') = '' THEN 0 WHEN gev.type <> '${EventType.Task}' THEN 0 WHEN gev.del = '${DelType.del}' THEN 0 ELSE 1 END) taskscount,
+                                sum(CASE WHEN IFNULL(gev.rtevi, '') = '' THEN 0 WHEN gev.del = '${DelType.del}' THEN 0 ELSE 1 END) repeateventscount
+                          from (select gday.sd day,
+                                  sum(CASE WHEN IFNULL(gjt.jti, '') = '' THEN 0 WHEN gjt.jtt <> '${PlanItemType.Holiday}' THEN 0 WHEN gjt.del = '${DelType.del}' THEN 0 ELSE 1 END) calendaritemscount,
+                                  sum(CASE WHEN IFNULL(gjt.jti, '') = '' THEN 0 WHEN gjt.jtt <> '${PlanItemType.Activity}' THEN 0 WHEN gjt.del = '${DelType.del}' THEN 0 ELSE 1 END) activityitemscount
+                                from (select '${day}' sd) gday
+                                    left join gtd_jta gjt on gday.sd = gjt.sd
+                                group by gday.sd) gdayjta
+                            left join gtd_ev gev on gdayjta.day = gev.evd
+                          group by gdayjta.day) gdayev
                       left join gtd_mom gmo on gdayev.day = gmo.sd
                       group by gdayev.day) gdaymom
                     left join (
