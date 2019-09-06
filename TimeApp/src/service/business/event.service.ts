@@ -2429,6 +2429,29 @@ export class EventService extends BaseService {
     return tasks;
   }
 
+  	/**
+  	 * 查询获取todolist的数据
+  	 * 内容  时间 年月日
+  	 * @author ying<343253410@qq.com>
+  	 */
+   async todolist(): Promise<Array<AgendaData>> {
+   	 let sql: string = `
+   	 										select evnext.* ,MIN(evnext.day) from (
+  		 	 										select  evv.*,
+  		 	 										ABS(julianday(datetime(replace(evv.evd, '/', '-'),evv.evt)) - julianday(datetime('now'))) day
+  		 	 										from (
+  			 	 										select ev.*,
+  			 	 										case when ev.rfg = '1' and ev.rtevi is not null  then  ev.rtevi  else ev.evi end newrtevi
+  			                      from gtd_ev ev
+  			                      where ev.todolist = ?1
+  		                    ) evv
+  	                    ) evnext
+                      group by evnext.newrtevi
+                       	`;
+      let agendaArray: Array<AgendaData> = await this.sqlExce.getExtLstByParam<AgendaData>(sql, [anyenum.ToDoListStatus.On]) || new Array<AgendaData>();
+  		return agendaArray;
+   }
+
   /**
    * 取得事件类型
    *
