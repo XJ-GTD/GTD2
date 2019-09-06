@@ -12,7 +12,7 @@ import {
   CalendarMonth, CalendarModalOptions, CalendarComponentOptions, CalendarDay,
   CalendarComponentPayloadTypes, CalendarComponentMonthChange, CalendarComponentTypeProperty, DayConfig
 } from '../calendar.model'
-import {CalendarService} from "../services/calendar.service";
+import {IonCalendarService} from "../services/calendar.service";
 import {ControlValueAccessor, NG_VALUE_ACCESSOR} from '@angular/forms';
 
 import * as moment from 'moment';
@@ -117,7 +117,7 @@ export class CalendarComponent implements OnInit {
   @Output() viewShow: EventEmitter<boolean> = new EventEmitter();
 
 
-  constructor(public calSvc: CalendarService, public feekback: FeedbackService, private plt: Platform) {
+  constructor(public calSvc: IonCalendarService, public feekback: FeedbackService, private plt: Platform) {
 
   }
 

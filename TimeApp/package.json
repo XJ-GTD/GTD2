@@ -88,7 +88,6 @@
     "cordova-plugin-inappbrowser": "3.0.0",
     "cordova-plugin-ionic-webview": "~2.3.1",
     "cordova-plugin-local-notification": "~0.9.0-beta.2",
-    "cordova-plugin-mipush": "git+https://github.com/xiaoji-duan/mipush-cordova-plugin.git",
     "cordova-plugin-rabbitmq": "git+https://github.com/xiaoji-duan/cordova-plugin-rabbitmq.git",
     "cordova-plugin-nativeaudio": "~3.0.9",
     "cordova-plugin-network-information": "2.0.1",
@@ -177,12 +176,6 @@
       "jpush-phonegap-plugin": {
         "APP_KEY": "e8b1f201b4e0cc102f665238",
         "CHANNEL": "cn.sh.com.xj.timeApp"
-      },
-      "cordova-plugin-mipush": {
-        "MI_PUSH_APP_KEY": "5761800292512",
-        "MI_PUSH_APP_ID": "OX5QyByW/cVhxEUA6jhQQA==",
-        "MI_PUSH_APP_IOS_ID": "your_mipush_appid",
-        "MI_PUSH_APP_IOS_KEY": "your_mipush_appkey"
       },
       "cordova-plugin-geolocation": {
         "GEOLOCATION_USAGE_DESCRIPTION": "使用定位以获得更准确的天气预报"

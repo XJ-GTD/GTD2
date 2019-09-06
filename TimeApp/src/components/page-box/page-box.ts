@@ -25,7 +25,7 @@ import {Events} from 'ionic-angular';
       <ion-content class="box-content">
         <ng-content></ng-content>
       </ion-content>
-
+    </div>
   `
 })
 export class PageBoxComponent {

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import {ModalController, Platform} from 'ionic-angular';
 import { ModalOptions, CalendarModalOptions } from './calendar.model'
-import { CalendarService } from './services/calendar.service';
+import { IonCalendarService } from './services/calendar.service';
 import {CalendarComponent} from "./components/calendar.component";
 import {CalendarAnimation} from "./calendar-animation";
 
@@ -9,7 +9,7 @@ import {CalendarAnimation} from "./calendar-animation";
 export class CalendarController {
 
   constructor(public modalCtrl: ModalController,
-              public calSvc: CalendarService) {
+              public calSvc: IonCalendarService) {
   }
 
   static create(cmp: CalendarComponent, plt: Platform):CalendarAnimation{

@@ -128,6 +128,7 @@ export class AlService {
             this.contactsService.updateFs();
           }else{
             // 在浏览器测试时使用测试数据
+            // await this.createTestData();
             await this.createTestData();
           }
 

@@ -1,5 +1,5 @@
 import {Component} from '@angular/core';
-import {IonicPage, Nav} from 'ionic-angular';
+import {App, IonicPage, Nav} from 'ionic-angular';
 import {AlService} from "./al.service";
 import {DataConfig} from "../../service/config/data.config";
 import {NotificationsService} from "../../service/cordova/notifications.service";
@@ -30,13 +30,16 @@ export class AlPage {
 
   constructor(private alService: AlService,
               private nav: Nav,
-              private rabbitmq: RabbitMQService) {
+              private rabbitmq: RabbitMQService,
+              public app: App) {
     this.alData.text = "正在初始化";
 
   }
 
   ionViewDidEnter() {
     this.alinit();
+
+    this.app.setElementClass("black-theme",true);
   }
 
   async alinit() {

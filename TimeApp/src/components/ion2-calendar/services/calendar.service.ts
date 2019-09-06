@@ -10,19 +10,16 @@ import {
 } from '../calendar.model'
 import * as moment from 'moment';
 import {defaults, pickModes} from "../config";
-import {SqliteExec} from "../../../service/util-service/sqlite.exec";
 import {LocalcalendarService} from "../../../service/cordova/localcalendar.service";
 import {UtilService} from "../../../service/util-service/util.service";
-import {PgBusiService} from "../../../service/pagecom/pgbusi.service";
-import {MonthData} from "../../../data.mapping";
+import {CalendarService, MonthActivityData, MonthActivitySummaryData} from "../../../service/business/calendar.service";
 
 @Injectable()
-export class CalendarService {
+export class IonCalendarService {
 
-  constructor(private sqlite:SqliteExec,
-              private readlocal:LocalcalendarService,
+  constructor(private readlocal:LocalcalendarService,
               private util:UtilService,
-              private busiServ: PgBusiService) {
+              private calendarService:CalendarService) {
 
   }
 
@@ -174,13 +171,11 @@ export class CalendarService {
       disable: _disable,
       isFirst: date.date() === 1,
       isLast: date.date() === date.daysInMonth(),
-      hasting: dayConfig ? dayConfig.hasting || false : false,
-      things: dayConfig ? dayConfig.things || 0 : 0,
-      newmessage: dayConfig ? dayConfig.newmessage || 0 : 0,
-      hassometing: dayConfig ? dayConfig.hassometing || false : false,
-      busysometing: dayConfig ? dayConfig.busysometing || false : false,
-      allsometing: dayConfig ? dayConfig.allsometing || false : false,
-      onlyRepeat:dayConfig ? dayConfig.onlyRepeat || false : false,
+      hasevent:  false,
+      hasrepeat:  false,
+      hasmessage:   false,
+      hasMemo:  false,
+
     }
   }
 
@@ -286,72 +281,62 @@ export class CalendarService {
 
 
   async getMonthData(month:CalendarMonth){
-    let data:Array<MonthData> = await this.busiServ.getHomeMonthData(month.original.time);
-    for (let d of data){
-      let calendarDay:CalendarDay = month.days.find((n) => moment(d.sd).isSame(moment(n.time), 'day'));
+    let data:MonthActivitySummaryData = await this.calendarService.fetchMonthActivitiesSummary(moment(month.original.date).format('YYYY/MM'));
+    data.days.forEach((v,k,m)=>{
+      let calendarDay:CalendarDay = month.days.find((n) => moment(v.day).isSame(moment(n.time), 'day'));
 
-      //判断是否存在非重复类型  or 判断是否存在重复日期为开始日期
-      if(d.csd !=d.sd && d.scds > 0){
-        calendarDay.onlyRepeat = true;
-      }else {
-        calendarDay.onlyRepeat = false;
-      }
-      calendarDay.things = d.scds;
-      calendarDay.hassometing = d.scds > 0 && !calendarDay.onlyRepeat ;
-      calendarDay.busysometing = d.scds >= 4 && !calendarDay.onlyRepeat ;
-      calendarDay.allsometing = d.scds >= 8 && !calendarDay.onlyRepeat ;
-      calendarDay.newmessage = d.news
-      calendarDay.hasting = d.scds > 0;
-      calendarDay.subTitle = d.spn ? d.spn: calendarDay.subTitle;
-      calendarDay.marked = false;
-    }
+      calendarDay.hasevent = v.eventscount - v.repeateventscount > 0;
+      calendarDay.hasrepeat = v.repeateventscount > 0;
+      // calendarDay.hasmessage = v.;
+      calendarDay.hasMemo = v.memoscount > 0;
 
+    });
   }
 
-  async refSpcDay(start:moment.Moment,month:CalendarMonth){
-
-    let starts = start.format("YYYY/MM/DD");
-
-    let sql:string = `select gc.sd csd,sp.sd,count(*) scds,sum(itx) news,min(gc.rt) minrt from gtd_c gc join gtd_sp sp on gc.si = sp.si
-      where sp.sd = "` + starts + `" group by sp.sd ,gc.sd`;
-
-
-    let local = await this.readlocal.findEventRc('',start,start);
-    this.sqlite.getExtList<MonthData>(sql).then(data=>{
-
-      //本地日历加入主页日历显示中
-      for(let lo of local){
-        let md:MonthData = data.find((n) => moment(lo.sd).isSame(moment(n.sd), 'day'));
-        if (md){
-          md.scds = md.scds + 1;
-        }else{
-          md = new MonthData();
-          md.sd=lo.sd;
-          md.scds=1;
-          md.news=0;
-          data.push(md);
-        }
-      }
-      for (let d of data){
-        let calendarDay:CalendarDay = month.days.find((n) => moment(d.sd).isSame(moment(n.time), 'day'));
-
-        //判断是否存在非重复类型  or 判断是否存在重复日期为开始日期
-        if(d.minrt == '0' || d.csd ==d.sd){
-          calendarDay.onlyRepeat = false;
-        }else {
-          calendarDay.onlyRepeat = true;
-        }
-        calendarDay.things = d.scds;
-        calendarDay.hassometing = d.scds > 0 && !calendarDay.onlyRepeat ;
-        calendarDay.busysometing = d.scds >= 4 && !calendarDay.onlyRepeat ;
-        calendarDay.allsometing = d.scds >= 8 && !calendarDay.onlyRepeat ;
-        calendarDay.newmessage = d.news
-        calendarDay.hasting = d.scds > 0;
-        //calendarDay.subTitle = d.news > 0? `\u2022`: "";
-        calendarDay.marked = false;
-      }
-    })
-  }
+  // async refSpcDay(start:moment.Moment,month:CalendarMonth){
+  //
+  //   let starts = start.format("YYYY/MM/DD");
+  //
+  //   let sql:string = `select gc.sd csd,sp.sd,count(*) scds,sum(itx) news,min(gc.rt) minrt from gtd_c gc join gtd_sp sp on gc.si = sp.si
+  //     where sp.sd = "` + starts + `" group by sp.sd ,gc.sd`;
+  //
+  //
+  //   let local = await this.readlocal.findEventRc('',start,start);
+  //   this.sqlite.getExtList<MonthData>(sql).then(data=>{
+  //
+  //     //本地日历加入主页日历显示中
+  //     for(let lo of local){
+  //       let md:MonthData = data.find((n) => moment(lo.sd).isSame(moment(n.sd), 'day'));
+  //       if (md){
+  //         md.scds = md.scds + 1;
+  //       }else{
+  //         md = new MonthData();
+  //         md.sd=lo.sd;
+  //         md.scds=1;
+  //         md.news=0;
+  //         data.push(md);
+  //       }
+  //     }
+  //     for (let d of data){
+  //       let calendarDay:CalendarDay = month.days.find((n) => moment(d.sd).isSame(moment(n.time), 'day'));
+  //
+  //       //判断是否存在非重复类型  or 判断是否存在重复日期为开始日期
+  //       if(d.minrt == '0' || d.csd ==d.sd){
+  //         calendarDay.onlyRepeat = false;
+  //       }else {
+  //         calendarDay.onlyRepeat = true;
+  //       }
+  //       calendarDay.things = d.scds;
+  //       calendarDay.hassometing = d.scds > 0 && !calendarDay.onlyRepeat ;
+  //       calendarDay.busysometing = d.scds >= 4 && !calendarDay.onlyRepeat ;
+  //       calendarDay.allsometing = d.scds >= 8 && !calendarDay.onlyRepeat ;
+  //       calendarDay.newmessage = d.news
+  //       calendarDay.hasting = d.scds > 0;
+  //       //calendarDay.subTitle = d.news > 0? `\u2022`: "";
+  //       calendarDay.marked = false;
+  //     }
+  //   })
+  // }
 
 
 }

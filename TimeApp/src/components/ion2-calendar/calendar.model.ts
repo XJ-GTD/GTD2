@@ -25,13 +25,10 @@ export interface CalendarDay {
   isFirst?: boolean;
   isLast?: boolean;
 
-  hasting?: boolean;
-  things?: number;
-  newmessage?: number;
-  hassometing:boolean;
-  busysometing:boolean;
-  allsometing:boolean;
-  onlyRepeat:boolean;
+  hasevent: boolean;
+  hasrepeat: boolean;
+  hasmessage?: boolean;
+  hasMemo?:boolean;
 }
 
 export class CalendarMonth {
