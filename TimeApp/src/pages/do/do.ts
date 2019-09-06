@@ -26,14 +26,13 @@ import { PageDirection, IsSuccess } from "../../data.enum";
 @IonicPage()
 @Component({
   selector: 'page-do',
-  template: `
-    <ion-content padding>
-      <page-box title="Todo List" (onBack)="goBack()">
+  template:
+    `
+      <page-box title="重要事项" (onBack)="goBack()">
       <ng-container *ngFor="let day of days">
         <task-list [currentuser]="currentuser" [friends]="friends" (onStartLoad)="getData($event, day)" (onCardClick)="gotoDetail($event)" (onCreateNew)="goNew()" (onComplete)="complete($event)" #tasklist></task-list>
       </ng-container>
       </page-box>
-    </ion-content>
     `
 })
 export class DoPage {

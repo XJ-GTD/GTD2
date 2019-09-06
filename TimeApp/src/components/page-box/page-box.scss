@@ -1,38 +1,51 @@
 page-box {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+
   .box-page {
-    height: calc(100vmax - 32px);
-    background-color: #e1e1e1;
+    height: 100%;
+    padding: 0px 15px 0 15px;
   }
 
   .box-header {
-    height: calc(20vmax);
+    height: 108px;
 
-    h1 {
-      position: absolute;
-      left: 26px;
-      bottom: 80vmax;
-    }
+    ion-toolbar {
+      height: 100%;
+      padding: 0px 15px 0 15px;
 
-    button {
-      position: absolute;
-      right: 26px;
-      bottom: 80vmax;
+      .toolbar-background {
+        border-style: none;
+        background-color: transparent;
+      }
+
+      ion-title {
+        padding: 0;
+
+        .toolbar-title {
+          font-size: 24px;
+          font-weight: 500;
+          position: absolute;
+          bottom: 15px;
+          left: 15px;
+          width: auto;
+        }
+
+      }
+
     }
   }
 
   .box-content {
-    height: calc(100vmax - 20vmax - 32px);
-    background-color: #fafafa;
+    .fixed-content {
+      border-radius: 4px;
+      margin-bottom: 47px;
+    }
 
-    ion-scroll {
-      width: calc(100vmin - 32px);
-      height: calc(80vmax - 64px);
-      position: absolute;
-      bottom: 32px !important;
+    .scroll-content {
+      margin-bottom: 49px;
 
-      &> .scroll-content {
-        padding: 0 0 0 0 !important;
-      }
     }
   }
 }

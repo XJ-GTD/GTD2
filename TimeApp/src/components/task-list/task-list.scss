@@ -1,32 +1,23 @@
 task-list {
-  p.p15 {
-    padding: 15px;
+  .grid{
+    width: 96%;
   }
+  .list-contont {
+    .task-item {
+      width: 100%;
+      margin: 6px auto;
 
-  ion-card wi {
-    font-size: 3.4rem;
-  }
-
-  ion-card {
-    padding-left: 5vmin;
-    padding-right: 5vmin;
-  }
-
-  ion-card.complete {
-    background-color: #9d9d9d;
-
-    div {
-      background-color: #9d9d9d;
-    }
-  }
-
-  ion-card {
-    ion-card-content {
-      ion-checkbox.checkbox-ios {
-        position: absolute;
-        top: 16px;
-        right: 16px;
+      .task-content {
+        ion-checkbox.checkbox-ios {
+          position: absolute;
+          top: 16px;
+          right: 16px;
+        }
       }
     }
+
   }
 }
+
+
+
