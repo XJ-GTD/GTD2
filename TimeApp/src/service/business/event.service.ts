@@ -2793,18 +2793,21 @@ export class RtJson {
       return text;
     };
 
+    let overclass = new RtOver();
+    Object.assign(overclass, this.over);
+
     switch(this.cycletype) {
       case anyenum.CycleType.day :
-        text = "重复周期 " + freqtitle(this.cyclenum, "天") + ", " + this.over.text();
+        text = "重复周期 " + freqtitle(this.cyclenum, "天") + ", " + overclass.text();
         break;
       case anyenum.CycleType.week :
-        text = "重复周期 " + freqtitle(this.cyclenum, "周") + ", " + optiontitle(this.openway, "周", ", ") + this.over.text();
+        text = "重复周期 " + freqtitle(this.cyclenum, "周") + ", " + optiontitle(this.openway, "周", ", ") + overclass.text();
         break;
       case anyenum.CycleType.month :
-        text = "重复周期 " + freqtitle(this.cyclenum, "月") + ", " + optiontitle(this.openway, "月", ", ") + this.over.text();
+        text = "重复周期 " + freqtitle(this.cyclenum, "月") + ", " + optiontitle(this.openway, "月", ", ") + overclass.text();
         break;
       case anyenum.CycleType.year :
-        text = "重复周期 " + freqtitle(this.cyclenum, "年") + ", " + this.over.text();
+        text = "重复周期 " + freqtitle(this.cyclenum, "年") + ", " + overclass.text();
         break;
       case anyenum.CycleType.close :    // 不重复日程
         text = "重复关闭。";
