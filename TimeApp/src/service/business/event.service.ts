@@ -707,7 +707,7 @@ export class EventService extends BaseService {
       rtjon.cyclenum = 1;
       rtjon.openway = new Array<number>();
       newAgdata.rt = JSON.stringify(rtjon);
-      newAgdata.rts = (<RtJson>rtjon).text() ;
+      newAgdata.rts = rtjon.text() ;
 
       if (oriAgdata.rfg == anyenum.RepeatFlag.Repeat){
         newAgdata.rfg = anyenum.RepeatFlag.RepeatToNon;
@@ -1095,9 +1095,10 @@ export class EventService extends BaseService {
       agdata.evt = agdata.st;
     }
 
-    let rtjson: RtJson = agdata.rtjson;
+    let rtjson: RtJson = new RtJson();
+    Object.assign(rtjson, agdata.rtjson);
     agdata.rt = JSON.stringify(agdata.rtjson);
-    agdata.rts = (<RtJson>rtjson).text();
+    agdata.rts = rtjson.text();
 
     if (rtjson.cycletype == anyenum.CycleType.close){
 
@@ -1270,7 +1271,8 @@ export class EventService extends BaseService {
     //字段evt 设定
    	taskData.evt = taskData.evt||"23:59";
 
-    let rtjson: RtJson = taskData.rtjson;
+    let rtjson: RtJson = new RtJson();
+    Object.assign(rtjson, taskData.rtjson);
     taskData.rt = JSON.stringify(taskData.rtjson);
 
     if (rtjson.cycletype == anyenum.CycleType.close){
@@ -1286,7 +1288,7 @@ export class EventService extends BaseService {
 
 //		let days: Array<string> = new Array<string>();
 		//获取重复日期
-   (<RtJson> rtjson).each(taskData.evd, (day) => {
+   rtjson.each(taskData.evd, (day) => {
    	  let ev = new EvTbl();
 	    Object.assign(ev, taskData);
 	    ev.evi = this.util.getUuid();
@@ -1612,7 +1614,8 @@ export class EventService extends BaseService {
     //字段evt 设定
    	minitask.evt = minitask.evt||"23:59";
 
-    let rtjson: RtJson = minitask.rtjson;
+    let rtjson: RtJson = new RtJson();
+    Object.assign(rtjson, minitask.rtjson);
     minitask.rt = JSON.stringify(minitask.rtjson);
 
     if (rtjson.cycletype == anyenum.CycleType.close){
@@ -1628,7 +1631,7 @@ export class EventService extends BaseService {
 
 		// let days: Array<string> = new Array<string>();
 		//获取重复日期
-    (<RtJson>rtjson).each(minitask.evd, (day) => {
+    rtjson.each(minitask.evd, (day) => {
       let ev = new EvTbl();
       Object.assign(ev, minitask);
       ev.evi = this.util.getUuid();
@@ -2790,18 +2793,21 @@ export class RtJson {
       return text;
     };
 
+    let overclass = new RtOver();
+    Object.assign(overclass, this.over);
+
     switch(this.cycletype) {
       case anyenum.CycleType.day :
-        text = "重复周期 " + freqtitle(this.cyclenum, "天") + ", " + this.over.text();
+        text = "重复周期 " + freqtitle(this.cyclenum, "天") + ", " + overclass.text();
         break;
       case anyenum.CycleType.week :
-        text = "重复周期 " + freqtitle(this.cyclenum, "周") + ", " + optiontitle(this.openway, "周", ", ") + this.over.text();
+        text = "重复周期 " + freqtitle(this.cyclenum, "周") + ", " + optiontitle(this.openway, "周", ", ") + overclass.text();
         break;
       case anyenum.CycleType.month :
-        text = "重复周期 " + freqtitle(this.cyclenum, "月") + ", " + optiontitle(this.openway, "月", ", ") + this.over.text();
+        text = "重复周期 " + freqtitle(this.cyclenum, "月") + ", " + optiontitle(this.openway, "月", ", ") + overclass.text();
         break;
       case anyenum.CycleType.year :
-        text = "重复周期 " + freqtitle(this.cyclenum, "年") + ", " + this.over.text();
+        text = "重复周期 " + freqtitle(this.cyclenum, "年") + ", " + overclass.text();
         break;
       case anyenum.CycleType.close :    // 不重复日程
         text = "重复关闭。";
