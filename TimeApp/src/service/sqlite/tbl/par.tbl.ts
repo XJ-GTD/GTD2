@@ -14,24 +14,26 @@ export class ParTbl implements ITblParam {
   sa: string;
   sdt: string;
   tb: string;
+  wc: string;       // 2019/09/06 增加完成状态
   del: string;
   utt: number;
   wtt: number;
 
   cTParam():string {
 
-    let sq =`create table if not exists gtd_par(    
+    let sq =`create table if not exists gtd_par(
        pari varchar(50) PRIMARY KEY
-       ,pwi varchar(50) 
-       ,ui varchar(50) 
-       ,obt varchar(50) 
-       ,obi varchar(50) 
-       ,sa varchar(4) 
-       ,sdt varchar(4) 
-       ,tb varchar(6) 
-       ,del varchar(6) 
-       ,wtt integer 
-       ,utt integer  
+       ,pwi varchar(50)
+       ,ui varchar(50)
+       ,obt varchar(50)
+       ,obi varchar(50)
+       ,sa varchar(4)
+       ,sdt varchar(4)
+       ,tb varchar(6)
+       ,wc varchar(6)
+       ,del varchar(6)
+       ,wtt integer
+       ,utt integer
      );`;
 
     return sq;
@@ -48,6 +50,7 @@ export class ParTbl implements ITblParam {
     if(this.sa!=null && this.sa!=''){      sq=sq+', sa= ? ';      params.push(this.sa);    }
     if(this.sdt!=null && this.sdt!=''){      sq=sq+', sdt= ? ';      params.push(this.sdt);    }
     if(this.tb!=null && this.tb!=''){      sq=sq+', tb= ? ';      params.push(this.tb);    }
+    if(this.wc!=null && this.wc!=''){      sq=sq+', wc= ? ';      params.push(this.wc);    }
     if(this.del!=null && this.del!=''){      sq=sq+', del= ? ';      params.push(this.del);    }
 
 
@@ -96,6 +99,7 @@ export class ParTbl implements ITblParam {
     if(this.sa!=null && this.sa!=''){      sq=sq+' and sa= ? ';      params.push(this.sa);    }
     if(this.sdt!=null && this.sdt!=''){      sq=sq+' and sdt= ? ';      params.push(this.sdt);    }
     if(this.tb!=null && this.tb!=''){      sq=sq+' and tb= ? ';      params.push(this.tb);    }
+    if(this.wc!=null && this.wc!=''){      sq=sq+' and wc= ? ';      params.push(this.wc);    }
     if(this.del!=null && this.del!=''){      sq=sq+' and del= ? ';      params.push(this.del);    }
 
     sq = sq + ';';
@@ -114,9 +118,9 @@ export class ParTbl implements ITblParam {
 
   inTParam():any {
     let params = new Array<any>();
-    let sq =`insert into gtd_par 
-       (   pari ,pwi ,ui ,obt ,obi ,sa ,sdt ,tb ,del ,wtt ,utt) 
-       values(?,?,?,?,?,?,?,?,?,${moment().unix()},${moment().unix()});`;
+    let sq =`insert into gtd_par
+       (   pari ,pwi ,ui ,obt ,obi ,sa ,sdt ,tb ,wc ,del ,wtt ,utt)
+       values(?,?,?,?,?,?,?,?,?,?,${moment().unix()},${moment().unix()});`;
     params.push(this.pari);
     params.push(this.pwi);
     params.push(this.ui);
@@ -125,6 +129,7 @@ export class ParTbl implements ITblParam {
     params.push(this.sa);
     params.push(this.sdt);
     params.push(this.tb);
+    params.push(this.wc);
     params.push(this.del);
 
     let ret = new Array<any>();
@@ -135,9 +140,9 @@ export class ParTbl implements ITblParam {
 
   rpTParam():any {
     let params = new Array<any>();
-    let sq =`replace into gtd_par 
-       (   pari ,pwi ,ui ,obt ,obi ,sa ,sdt ,tb ,del ,wtt ,utt) 
-       values(?,?,?,?,?,?,?,?,?,${moment().unix()},${moment().unix()});`;
+    let sq =`replace into gtd_par
+       (   pari ,pwi ,ui ,obt ,obi ,sa ,sdt ,tb ,wc ,del ,wtt ,utt)
+       values(?,?,?,?,?,?,?,?,?,?,${moment().unix()},${moment().unix()});`;
     params.push(this.pari);
     params.push(this.pwi);
     params.push(this.ui);
@@ -146,6 +151,7 @@ export class ParTbl implements ITblParam {
     params.push(this.sa);
     params.push(this.sdt);
     params.push(this.tb);
+    params.push(this.wc);
     params.push(this.del);
 
     let ret = new Array<any>();
