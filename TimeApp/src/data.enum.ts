@@ -170,3 +170,9 @@ export enum SyncDataStatus {
   Deleted = "del",
   UnDeleted = "undel"
 }
+
+// 是否加入todolist
+export enum ToDoListStatus {
+  On = "0",
+  Off = "1"
+}
