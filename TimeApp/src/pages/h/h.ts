@@ -230,11 +230,7 @@ export class HPage {
         isToday: false,
         selected: false,
         disable: false,
-        cssClass: '',
-        hassometing: false,
-        busysometing: false,
-        allsometing: false,
-        onlyRepeat: false
+        cssClass: ''
       });
     });
 

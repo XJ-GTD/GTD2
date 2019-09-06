@@ -289,6 +289,7 @@ export class IonCalendarService {
       calendarDay.hasrepeat = v.repeateventscount > 0;
       // calendarDay.hasmessage = v.;
       calendarDay.hasMemo = v.memoscount > 0;
+      calendarDay.subTitle = v.daycalendaritem?v.daycalendaritem:calendarDay.subTitle;
 
     });
   }

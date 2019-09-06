@@ -25,8 +25,8 @@ export interface CalendarDay {
   isFirst?: boolean;
   isLast?: boolean;
 
-  hasevent: boolean;
-  hasrepeat: boolean;
+  hasevent?: boolean;
+  hasrepeat?: boolean;
   hasmessage?: boolean;
   hasMemo?:boolean;
 }
