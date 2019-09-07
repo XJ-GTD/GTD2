@@ -1,7 +1,8 @@
 import { Component } from "@angular/core";
 
 @Component({
-  selector: 'corner-badge'
+  selector: 'corner-badge',
+  template: `<ng-content></ng-content>`
 })
 export class CornerBadgeComponent {
 }
