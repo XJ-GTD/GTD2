@@ -28,7 +28,7 @@ import { PageDirection, IsSuccess } from "../../data.enum";
   selector: 'page-agenda',
   template: `<page-box title="活动" [subtitle]="currentAgenda.evd" [data]="currentAgenda.evi" (onSubTitleClick)="changeDatetime()" (onRemove)="goRemove()" (onBack)="goBack()">
         <ion-card>
-          <ion-card-content *ngIf="currentAgenda.evi && ((currentAgenda.fj && currentAgenda.fj > 0) || false || (currentAgenda.bz && currentAgenda.bz != ''))">
+          <ion-card-content>
             <!--主题-->
             <ion-textarea [value]="currentAgenda.evn" placeholder="参加小明的生日Party"></ion-textarea>
 
