@@ -30,6 +30,27 @@ import { PageDirection, IsSuccess } from "../../data.enum";
           <!--主题-->
           <ion-textarea></ion-textarea>
 
+          <ion-card-content>
+            <div class="card-subtitle">
+              <button ion-button icon-end clear small>
+                <div>附件: 点此查看附件</div>
+                <ion-icon ios="md-attach" md="md-attach"></ion-icon>
+              </button>
+            </div>
+            <div class="card-subtitle">
+              <button ion-button icon-end clear small>
+                <ion-icon ios="ios-pin" md="ios-pin"></ion-icon>
+                <div>地址</div>
+              </button>
+            </div>
+            <div class="card-subtitle">
+              <button ion-button icon-end clear small>
+                <ion-icon ios="ios-create" md="ios-create"></ion-icon>
+                <div>备注</div>
+              </button>
+            </div>
+          </ion-card-content>
+
           <!--附加属性操作-->
           <ion-row>
             <ion-col>
