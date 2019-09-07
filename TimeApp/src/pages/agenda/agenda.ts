@@ -78,6 +78,24 @@ import { PageDirection, IsSuccess } from "../../data.enum";
             </ion-col>
           </ion-row>
 
+          <ion-row>
+            <ion-col>
+              <button ion-button small>
+                <div>半小时后提醒</div>
+              </button>
+            </ion-col>
+            <ion-col>
+              <button ion-button small>
+                <div>重复周期 2周, 星期一、星期三、星期五, 3次</div>
+              </button>
+            </ion-col>
+            <ion-col>
+              <button ion-button small>
+                <div>参与人</div>
+              </button>
+            </ion-col>
+          </ion-row>
+
           <!--控制操作-->
           <ion-row>
             <ion-col>
