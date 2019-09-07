@@ -269,7 +269,7 @@ export class TdlPage {
       this.modalCtr.create(DataConfig.PAGE._AGENDA_PAGE, p).present();
     } else {
       //系统画面
-      this.modalCtr.create(DataConfig.PAGE._AGENDA_PAGE, p).present();
+      this.modalCtr.create(DataConfig.PAGE._TDDS_PAGE, p).present();
     }
 
   }
