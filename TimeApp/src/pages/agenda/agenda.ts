@@ -120,7 +120,7 @@ import { PageDirection, IsSuccess } from "../../data.enum";
                 <div>提醒</div>
               </button>
             </ion-col>
-            <ion-col *ngIf="!currentAgenda.rts || currentAgenda.rts == ''>
+            <ion-col *ngIf="!currentAgenda.rts || currentAgenda.rts == ''">
               <button ion-button icon-start clear small>
                 <ion-icon ios="ios-repeat" md="ios-repeat"></ion-icon>
                 <div>重复</div>
