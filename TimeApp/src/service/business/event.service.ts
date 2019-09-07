@@ -1138,6 +1138,7 @@ export class EventService extends BaseService {
       ev.tb = anyenum.SyncType.unsynch;
       ev.del = anyenum.DelType.undel;
       ret.ed = ev.evd;
+      ev.todolist = anyenum.ToDoListStatus.On;
       ret.sqlparam.push(ev.rpTParam());
       if (txjson.reminds && txjson.reminds.length > 0) {
         ret.sqlparam = [...ret.sqlparam ,...this.sqlparamAddTxWa(ev,anyenum.ObjectType.Event,txjson,agdata.al,agdata.st)];
@@ -2441,7 +2442,7 @@ export class EventService extends BaseService {
   		 	 										ABS(julianday(datetime(replace(evv.evd, '/', '-'),evv.evt)) - julianday(datetime('now'))) day
   		 	 										from (
   			 	 										select ev.*,
-  			 	 										case when ev.rfg = '1' and ev.rtevi is not null  then  ev.rtevi  else ev.evi end newrtevi
+  			 	 										case when ifnull(ev.rtevi,'') = ''  then  ev.rtevi  else ev.evi end newrtevi
   			                      from gtd_ev ev
   			                      where ev.todolist = ?1
   		                    ) evv

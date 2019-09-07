@@ -1,0 +1,178 @@
+import {Component, ElementRef, Renderer2, ViewChild, ViewChildren, QueryList } from '@angular/core';
+import {IonicPage, NavController, ModalController, NavParams, Slides} from 'ionic-angular';
+import {UtilService} from "../../service/util-service/util.service";
+import {UserConfig} from "../../service/config/user.config";
+import {RestFulHeader, RestFulConfig} from "../../service/config/restful.config";
+import {SqliteExec} from "../../service/util-service/sqlite.exec";
+import * as moment from "moment";
+import { CalendarDay } from "../../components/ion2-calendar";
+import { AgendaService } from "./agenda.service";
+import { ScdData, ScdPageParamter } from "../../data.mapping";
+import {EmitService} from "../../service/util-service/emit.service";
+import {DataConfig} from "../../service/config/data.config";
+import {FeedbackService} from "../../service/cordova/feedback.service";
+import {PageBoxComponent} from "../../components/page-box/page-box";
+import {CornerBadgeComponent} from "../../components/corner-badge/corner-badge";
+import {CalendarService} from "../../service/business/calendar.service";
+import {EventService, AgendaData} from "../../service/business/event.service";
+import { PageDirection, IsSuccess } from "../../data.enum";
+
+/**
+ * Generated class for the 日程创建/修改 page.
+ *
+ * See https://ionicframework.com/docs/components/#navigation for more info on
+ * Ionic pages and navigation.
+ */
+@IonicPage()
+@Component({
+  selector: 'page-agenda',
+  template: `<page-box title="活动" (onBack)="goBack()">
+        <ion-card>
+          <!--主题-->
+          <ion-textarea></ion-textarea>
+
+          <ion-card-content *ngIf="currentAgenda.evi">
+            <div class="card-subtitle">
+              <button ion-button icon-end clear small>
+                <div>附件: 点此查看附件</div>
+                <ion-icon ios="md-attach" md="md-attach"></ion-icon>
+              </button>
+            </div>
+            <div class="card-subtitle">
+              <button ion-button icon-end clear small>
+                <div>地址: 浦东新区红枫路108弄11号1201室</div>
+                <ion-icon ios="ios-pin" md="ios-pin"></ion-icon>
+              </button>
+            </div>
+            <div class="card-subtitle">
+              <button ion-button icon-end clear small>
+                <div>备注: 数据都是假的, 请勿模仿</div>
+                <ion-icon ios="ios-create" md="ios-create"></ion-icon>
+              </button>
+            </div>
+          </ion-card-content>
+
+          <!--附加属性操作-->
+          <ion-row *ngIf="currentAgenda.evi">
+            <ion-col>
+              <button ion-button icon-start clear small>
+                <ion-icon ios="md-attach" md="md-attach"></ion-icon>
+                <div>附件</div>
+              </button>
+            </ion-col>
+            <ion-col>
+              <button ion-button icon-start clear small>
+                <ion-icon ios="ios-pin" md="ios-pin"></ion-icon>
+                <div>地址</div>
+              </button>
+            </ion-col>
+            <ion-col>
+              <button ion-button icon-start clear small>
+                <ion-icon ios="ios-create" md="ios-create"></ion-icon>
+                <div>备注</div>
+              </button>
+            </ion-col>
+            <ion-col>
+              <button ion-button icon-only clear small>
+                <ion-icon ios="md-star-outline" md="md-star-outline"></ion-icon>
+              </button>
+            </ion-col>
+          </ion-row>
+
+          <ion-row *ngIf="currentAgenda.evi">
+            <ion-col>
+              <button ion-button small>
+                <div>
+                  参与人
+                  <corner-badge>3</corner-badge>
+                </div>
+              </button>
+            </ion-col>
+            <ion-col>
+              <button ion-button small>
+                <div>
+                半小时后提醒
+                <corner-badge>3</corner-badge>
+                </div>
+              </button>
+            </ion-col>
+            <ion-col>
+              <button ion-button small>
+                <div>
+                重复周期 2周, 星期一、星期三、星期五, 3次
+                <corner-badge>3</corner-badge>
+                </div>
+              </button>
+            </ion-col>
+          </ion-row>
+
+          <!--控制操作-->
+          <ion-row *ngIf="currentAgenda.evi">
+            <ion-col>
+              <button ion-button icon-start clear small>
+                <ion-icon ios="ios-add" md="ios-add"></ion-icon>
+                <div>计划</div>
+              </button>
+            </ion-col>
+            <ion-col>
+              <button ion-button icon-start clear small>
+                <ion-icon ios="md-notifications" md="md-notifications"></ion-icon>
+                <div>提醒</div>
+              </button>
+            </ion-col>
+            <ion-col>
+              <button ion-button icon-start clear small>
+                <ion-icon ios="ios-repeat" md="ios-repeat"></ion-icon>
+                <div>重复</div>
+              </button>
+            </ion-col>
+            <ion-col>
+              <button ion-button icon-start clear small>
+                <ion-icon ios="ios-person-add" md="ios-person-add"></ion-icon>
+                <div>邀请</div>
+              </button>
+            </ion-col>
+          </ion-row>
+        </ion-card>
+      </page-box>`
+})
+export class AgendaPage {
+  statusBarColor: string = "#3c4d55";
+
+  currentAgenda: AgendaData = {} as AgendaData;
+
+  constructor(public navCtrl: NavController,
+              public navParams: NavParams,
+              private modalCtr: ModalController,
+              private emitService: EmitService,
+              private agendaService: AgendaService,
+              private util: UtilService,
+              private feedback: FeedbackService,
+              private calendarService: CalendarService,
+              private eventService: EventService,
+              private sqlite:SqliteExec) {
+    moment.locale('zh-cn');
+  }
+
+  ionViewDidLoad() {
+  }
+
+  ionViewWillEnter() {
+    if (this.navParams) {
+      let paramter: ScdPageParamter = this.navParams.data;
+      this.currentAgenda.sd = paramter.d.format("YYYY-MM-DD");
+      if (paramter.t) {
+        this.currentAgenda.st = paramter.t;
+      } else {
+        this.currentAgenda.st = moment().add(1, "h").format("HH:00");
+      }
+
+      if (paramter.sn) this.currentAgenda.evn = paramter.sn;
+
+    }
+  }
+
+  goBack() {
+    this.navCtrl.pop();
+  }
+}

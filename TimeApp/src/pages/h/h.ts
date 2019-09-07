@@ -21,6 +21,7 @@ import {SettingsProvider} from "../../providers/settings/settings";
 import {AipPage} from "../aip/aip";
 import { Animation } from 'ionic-angular/animations/animation';
 import {TdlPage} from "../tdl/tdl";
+import {AgendaPage} from "../agenda/agenda";
 
 /**
  * Generated class for the 首页 page.
@@ -338,7 +339,7 @@ export class HPage {
     p.d = moment(this.hdata.selectDay.time);
 
     this.feedback.audioPress();
-    this.modalCtr.create(TdcPage, p).present();
+    this.modalCtr.create(AgendaPage, p).present();
   }
 
 //查询当天日程
