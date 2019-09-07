@@ -88,5 +88,25 @@ import { PageDirection, IsSuccess } from "../../data.enum";
       </page-box>`
 })
 export class AgendaPage {
+  statusBarColor: string = "#3c4d55";
 
+  constructor(public navCtrl: NavController,
+              public navParams: NavParams,
+              private modalCtr: ModalController,
+              private emitService: EmitService,
+              private doService: DoService,
+              private util: UtilService,
+              private feedback: FeedbackService,
+              private calendarService: CalendarService,
+              private eventService: EventService,
+              private sqlite:SqliteExec) {
+    moment.locale('zh-cn');
+  }
+
+  ionViewDidLoad() {
+  }
+
+  goBack() {
+    this.navCtrl.pop();
+  }
 }
