@@ -77,7 +77,7 @@ import { PageDirection, IsSuccess } from "../../data.enum";
                 <div>重复</div>
               </button>
             </ion-col>
-            <ion-col align-self-center text-center>
+            <ion-col>
               <button ion-button icon-start clear small>
                 <ion-icon ios="ios-person-add" md="ios-person-add"></ion-icon>
                 <div>邀请</div>
