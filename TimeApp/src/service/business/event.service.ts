@@ -2442,7 +2442,7 @@ export class EventService extends BaseService {
   		 	 										ABS(julianday(datetime(replace(evv.evd, '/', '-'),evv.evt)) - julianday(datetime('now'))) day
   		 	 										from (
   			 	 										select ev.*,
-  			 	 										case when ev.rtevi is not null  then  ev.rtevi  else ev.evi end newrtevi
+  			 	 										case when ifnull(ev.rtevi,'') = ''  then  ev.rtevi  else ev.evi end newrtevi
   			                      from gtd_ev ev
   			                      where ev.todolist = ?1
   		                    ) evv
