@@ -30,7 +30,7 @@ import { PageDirection, IsSuccess } from "../../data.enum";
         <ion-card>
           <ion-card-content>
             <!--主题-->
-            <ion-textarea [value]="currentAgenda.evn" placeholder="参加小明的生日Party" (ionBlur)="save()"></ion-textarea>
+            <ion-textarea [(ngModel)]="currentAgenda.evn" placeholder="参加小明的生日Party" (ionBlur)="save()"></ion-textarea>
 
             <div class="card-subtitle" *ngIf="currentAgenda.fj && currentAgenda.fj > 0">
               <button ion-button icon-end clear small>
