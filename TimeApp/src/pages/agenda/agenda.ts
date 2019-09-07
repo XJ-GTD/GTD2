@@ -26,7 +26,7 @@ import { PageDirection, IsSuccess } from "../../data.enum";
 @IonicPage()
 @Component({
   selector: 'page-agenda',
-  template: `<page-box title="活动" [subtitle]="currentAgenda.sd" [data]="currentAgenda.evi" (onSubTitleClick)="changeDatetime()" (onRemove)="goRemove()" (onBack)="goBack()">
+  template: `<page-box title="活动" [subtitle]="currentAgenda.evd" [data]="currentAgenda.evi" (onSubTitleClick)="changeDatetime()" (onRemove)="goRemove()" (onBack)="goBack()">
         <ion-card>
           <ion-card-content *ngIf="currentAgenda.evi && ((currentAgenda.fj && currentAgenda.fj > 0) || false || (currentAgenda.bz && currentAgenda.bz != ''))">
             <!--主题-->
