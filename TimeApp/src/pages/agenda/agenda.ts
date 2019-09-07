@@ -12,6 +12,7 @@ import {EmitService} from "../../service/util-service/emit.service";
 import {DataConfig} from "../../service/config/data.config";
 import {FeedbackService} from "../../service/cordova/feedback.service";
 import {PageBoxComponent} from "../../components/page-box/page-box";
+import {CornerBadgeComponent} from "../../components/corner-badge/corner-badge";
 import {CalendarService} from "../../service/business/calendar.service";
 import {EventService, TaskData} from "../../service/business/event.service";
 import { PageDirection, IsSuccess } from "../../data.enum";
@@ -81,17 +82,26 @@ import { PageDirection, IsSuccess } from "../../data.enum";
           <ion-row>
             <ion-col>
               <button ion-button small>
-                <div>半小时后提醒</div>
+                <div>
+                半小时后提醒
+                <corner-badge>3</corner-badge>
+                </div>
               </button>
             </ion-col>
             <ion-col>
               <button ion-button small>
-                <div>重复周期 2周, 星期一、星期三、星期五, 3次</div>
+                <div>
+                重复周期 2周, 星期一、星期三、星期五, 3次
+                <corner-badge>3</corner-badge>
+                </div>
               </button>
             </ion-col>
             <ion-col>
               <button ion-button small>
-                <div>参与人</div>
+                <div>
+                  参与人
+                  <corner-badge>3</corner-badge>
+                </div>
               </button>
             </ion-col>
           </ion-row>

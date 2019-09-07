@@ -3,6 +3,7 @@ import { IonicPageModule } from 'ionic-angular';
 import { AgendaPage } from "./agenda";
 import { AgendaService } from "./agenda.service";
 import {PageBoxComponentModule} from "../../components/page-box/page-box.module";
+import {CornerBadgeComponentModule} from "../../components/corner-badge/corner-badge.module";
 
 @NgModule({
   declarations: [
@@ -10,7 +11,8 @@ import {PageBoxComponentModule} from "../../components/page-box/page-box.module"
   ],
   imports: [
     IonicPageModule.forChild(AgendaPage),
-    PageBoxComponentModule
+    PageBoxComponentModule,
+    CornerBadgeComponentModule
   ],
   providers: [
     AgendaService
