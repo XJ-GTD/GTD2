@@ -36,6 +36,9 @@ export class FormatedatePipe implements PipeTransform {
       if (args[0] == "CYYYY/MM"){
         return moment(value).format("YYYY年MM月");
       }
+      if (args[0] == "CMM"){
+        return moment(value).format("MM月");
+      }
       if (args[0] == "CYYYY/MM/ND"){
         return moment(value+"/01").format("YYYY年MM月");
       }

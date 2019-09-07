@@ -1,11 +1,12 @@
 task-list {
   .grid{
-    width: 96%;
+    width: 100%;
+    padding: 12px 0;
   }
   .list-contont {
     .task-item {
-      width: 100%;
-      margin: 6px auto;
+      width: auto;
+      margin: 6px 15px;
 
       .task-content {
         ion-checkbox.checkbox-ios {

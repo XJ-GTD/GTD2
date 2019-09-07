@@ -61,14 +61,6 @@ $baseBackcolor_black: rgba(0, 12, 31, 1);
           background: -moz-linear-gradient(right, $spcColorf, $spcColort); /* Firefox 3.6 - 15 */
           background: linear-gradient(to right, $spcColorf, $spcColort); /* 标准的语法（必须放在最后） */
           border-radius: 50%;
-
-          p {
-            color: $fontMasterColor;
-          }
-
-          small {
-            color: $fontSecondColor;
-          }
         }
 
       }
@@ -125,10 +117,24 @@ $baseBackcolor_black: rgba(0, 12, 31, 1);
         background: rgba(237, 241, 254, .1);
         box-shadow: 0px 0px 5px 0px rgba(3, 0, 0, 0.2);
 
+
+        .d-title-chr {
+          color:#556E99;
+          span{
+            color:rgba(235,239,250,1);
+          }
+
+          .daycoment{
+            color: rgba(73, 152, 188, 1);
+          }
+        }
+
         .first {
           background: rgba(237, 241, 254, .05);
           box-shadow: 0px 0px 5px 0px rgba(3, 0, 0, 0.2);
           color: rgba(235, 239, 250, 1);
+        }
+        .last {
         }
       }
     }
@@ -238,7 +244,6 @@ $baseBackcolor_black: rgba(0, 12, 31, 1);
           .toolbar-title {
             color: rgba(235,239,250,1);
           }
-
         }
       }
     }

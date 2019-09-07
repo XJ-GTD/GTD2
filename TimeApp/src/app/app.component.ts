@@ -18,7 +18,7 @@ import {SettingsProvider} from "../providers/settings/settings";
 
 @Component({
   template: `
-    <ion-nav [class]="selectedTheme"></ion-nav>
+    <ion-nav></ion-nav>
   `
 })
 export class MyApp {
@@ -26,7 +26,8 @@ export class MyApp {
   @ViewChild(Nav) nav: Nav;
   hex: string[] = ['0','1','2','3','4','5','6','7','8','9','A','B','C','D','E','F'];
   statusbarcolors: Array<string> = new Array<string>();
-  selectedTheme: string = "black-theme";
+  blackTheme: string = "black-theme";
+  whiteTheme: string = "white-theme";
 
   constructor(public app: App,
               private platform: Platform,
@@ -45,7 +46,15 @@ export class MyApp {
     //特殊菜单设置
     MenuController.registerType('scalePush', MenuScalePushType);
     MenuController.registerType('lsPush', LsPushType);
-    this.settings.getActiveTheme().subscribe(val => this.selectedTheme = val);
+
+    this.settings.getActiveTheme().subscribe(val => {
+      app.setElementClass(val,true);
+      if (this.blackTheme == val){
+        app.setElementClass(this.whiteTheme,false);
+      }else{
+        app.setElementClass(this.blackTheme,false);
+      }
+    });
 
 
     // let status bar overlay webview

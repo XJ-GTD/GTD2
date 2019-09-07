@@ -49,13 +49,15 @@ import {CalendarComponent} from "../../components/ion2-calendar";
     <ion-content #contentD>
       <ion-grid #grid4Hight class = "list-contont">
         <ng-template ngFor let-monthActivityData [ngForOf]="monthActivityDatas" >
-          <ion-row class="list-dayagenda-month" [class.month7]="true">
+          <ion-row class="list-dayagenda-month" >
+                <div class="back" [class.month7]="true" >
                 <p class="month-a">
                   {{monthActivityData.month  | formatedate :"CYYYY/MM/ND"}}
                 </p>
                 <p class="month-b">
                   感知天气冷暖我们生来便会，感知人情冷暖还要慢慢体会。
                 </p>
+                </div>
           </ion-row>
           <ng-template ngFor let-days [ngForOf]="monthActivityData.arraydays">
             <ion-row class="list-dayagenda-week" *ngIf="(days.day | formatedate:'DWEEK') == '7'">
@@ -70,30 +72,35 @@ import {CalendarComponent} from "../../components/ion2-calendar";
 
                     <div class="d-fsize text-center">{{days.day | formatedate :"CWEEK"}}</div>
                     <div class="ym-fsize text-center ">{{days.day | formatedate:"DD"}}</div>
-                    <div class="ys-fsize text-center " *ngFor="let jt of days.calendaritems"
-                         (click)="toDetail(jt.si,jt.sd,'3')">{{jt.spn}}</div>
+                    <div class="ys-fsize text-center ">{{days.day | formatedate:"CMM"}}</div>
                   </div>
                   <div class="d-title text-center ">
                     <div class="first d-title-chr">日记</div>
-                    <div class=" d-title-chr">{{days.events.length}}条日程</div>
-                    <div class=" d-title-chr">{{days.calendaritems.length}}条日历项</div>
-                    <div class=" d-title-chr">{{days.memos.length}}条日记</div>
+                    <div class=" d-title-chr">
+                      <span class="daycoment">{{this.util.lunar4str(days.day,"D")}}</span>
+                      <span class="daycoment" *ngFor="let jt of days.calendaritems">{{jt.jtn}}</span>
+                    </div>
+                    <div class=" d-title-chr last"><span>{{days.events.length}}</span> 活动</div>
                   </div>
               </ion-row>
-
               <ion-row class="list-dayagenda-content" *ngFor="let event of days.events;" (click)="toDetail(event.evi,event.evd,event.gs)">
                 
                   <div class="agendaline">
                     <div class="agenda-icon">
-                      <div class="icon icon1"></div>
-                      <div class="icon icon2"></div>
+                      <ion-icon class = "tasks fa fa-tasks"></ion-icon>
                     </div>
                     <div class="agenda-sn">{{event.evn}}</div>
                   </div>
                   <div class="agendaline">
+                    <div class="agenda-icon">
+                      <ion-icon class = "tasks fa fa-clock-o clock-o "></ion-icon>
+                    </div>
                     <div class="agenda-st">{{this.util.adStrShow("09:00")}}</div>
                   </div>
                   <div class="agendaline">
+                    <div class="agenda-icon">
+                      <ion-icon class = "user-o fa fa-user-o"></ion-icon>
+                    </div>
                     <div class="agenda-person">--来自小仙女</div>
                   </div>
               </ion-row>

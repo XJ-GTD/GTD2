@@ -689,6 +689,9 @@ export class UtilService {
   public lunar(d:moment.Moment,format?:string):string{
     return this.chineseLunar.solarToLunar(moment(d.format("YYYY/MM/DD")).toDate(),format);
   }
+  public lunar4str(date:string,format?:string):string{
+    return this.lunar(moment(date),format);
+  }
 
 
   isAday(t:string) : boolean{
