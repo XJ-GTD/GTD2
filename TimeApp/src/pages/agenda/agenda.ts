@@ -161,6 +161,7 @@ export class AgendaPage {
     if (this.navParams) {
       let paramter: ScdPageParamter = this.navParams.data;
       this.currentAgenda.sd = paramter.d.format("YYYY-MM-DD");
+
       if (paramter.t) {
         this.currentAgenda.st = paramter.t;
       } else {
@@ -169,6 +170,7 @@ export class AgendaPage {
 
       if (paramter.sn) this.currentAgenda.evn = paramter.sn;
 
+      if (paramter.si) this.currentAgenda.evi = paramter.si;
     }
   }
 
