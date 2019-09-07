@@ -39,14 +39,14 @@ import { PageDirection, IsSuccess } from "../../data.enum";
             </div>
             <div class="card-subtitle">
               <button ion-button icon-end clear small>
+                <div>地址: 浦东新区红枫路108弄11号1201室</div>
                 <ion-icon ios="ios-pin" md="ios-pin"></ion-icon>
-                <div>地址</div>
               </button>
             </div>
             <div class="card-subtitle">
               <button ion-button icon-end clear small>
+                <div>备注: 数据都是假的, 请勿模仿</div>
                 <ion-icon ios="ios-create" md="ios-create"></ion-icon>
-                <div>备注</div>
               </button>
             </div>
           </ion-card-content>
