@@ -165,7 +165,7 @@ export class AgendaPage {
   ionViewWillEnter() {
     if (this.navParams) {
       let paramter: ScdPageParamter = this.navParams.data;
-      this.currentAgenda.sd = paramter.d.format("YYYY-MM-DD");
+      this.currentAgenda.sd = paramter.d.format("YYYY/MM/DD");
 
       if (paramter.t) {
         this.currentAgenda.st = paramter.t;
