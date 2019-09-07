@@ -40,13 +40,13 @@ import { PageDirection, IsSuccess } from "../../data.enum";
             </ion-col>
             <ion-col>
               <button ion-button icon-start clear small>
-                <ion-icon name="thumbs-up"></ion-icon>
+                <ion-icon ios="ios-pin" md="ios-pin"></ion-icon>
                 <div>地址</div>
               </button>
             </ion-col>
             <ion-col>
               <button ion-button icon-start clear small>
-                <ion-icon name="text"></ion-icon>
+                <ion-icon ios="ios-create" md="ios-create"></ion-icon>
                 <div>备注</div>
               </button>
             </ion-col>
@@ -61,25 +61,25 @@ import { PageDirection, IsSuccess } from "../../data.enum";
           <ion-row>
             <ion-col>
               <button ion-button icon-start clear small>
-                <ion-icon name="thumbs-up"></ion-icon>
+                <ion-icon ios="ios-add" md="ios-add"></ion-icon>
                 <div>计划</div>
               </button>
             </ion-col>
             <ion-col>
               <button ion-button icon-start clear small>
-                <ion-icon name="thumbs-up"></ion-icon>
+                <ion-icon ios="md-notifications" md="md-notifications"></ion-icon>
                 <div>提醒</div>
               </button>
             </ion-col>
             <ion-col>
               <button ion-button icon-start clear small>
-                <ion-icon name="text"></ion-icon>
+                <ion-icon ios="ios-repeat" md="ios-repeat"></ion-icon>
                 <div>重复</div>
               </button>
             </ion-col>
             <ion-col align-self-center text-center>
               <button ion-button icon-start clear small>
-                <ion-icon name="text"></ion-icon>
+                <ion-icon ios="ios-person-add" md="ios-person-add"></ion-icon>
                 <div>邀请</div>
               </button>
             </ion-col>
