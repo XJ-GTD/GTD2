@@ -30,7 +30,7 @@ import { PageDirection, IsSuccess } from "../../data.enum";
         <ion-card>
           <ion-card-content>
             <!--主题-->
-            <ion-textarea [value]="currentAgenda.evn" placeholder="参加小明的生日Party"></ion-textarea>
+            <ion-textarea [value]="currentAgenda.evn" placeholder="参加小明的生日Party" (ionBlur)="save()"></ion-textarea>
 
             <div class="card-subtitle" *ngIf="currentAgenda.fj && currentAgenda.fj > 0">
               <button ion-button icon-end clear small>
@@ -189,5 +189,21 @@ export class AgendaPage {
 
   goBack() {
     this.navCtrl.pop();
+  }
+
+  validCheck(): boolean {
+    if (this.currentAgenda.evn && this.currentAgenda.evn != "") {
+      return true;
+    }
+  }
+
+  save() {
+    if (validCheck()) {
+      this.eventService.saveAgenda(this.currentAgenda).then((agenda) => {
+        if (agenda) {
+          this.currentAgenda = agenda;
+        }
+      });
+    }
   }
 }
