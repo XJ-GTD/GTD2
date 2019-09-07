@@ -83,6 +83,14 @@ import { PageDirection, IsSuccess } from "../../data.enum";
             <ion-col>
               <button ion-button small>
                 <div>
+                  参与人
+                  <corner-badge>3</corner-badge>
+                </div>
+              </button>
+            </ion-col>
+            <ion-col>
+              <button ion-button small>
+                <div>
                 半小时后提醒
                 <corner-badge>3</corner-badge>
                 </div>
@@ -93,14 +101,6 @@ import { PageDirection, IsSuccess } from "../../data.enum";
                 <div>
                 重复周期 2周, 星期一、星期三、星期五, 3次
                 <corner-badge>3</corner-badge>
-                </div>
-              </button>
-            </ion-col>
-            <ion-col>
-              <button ion-button small>
-                <div>
-                  参与人
-                  <corner-badge>3</corner-badge>
                 </div>
               </button>
             </ion-col>
