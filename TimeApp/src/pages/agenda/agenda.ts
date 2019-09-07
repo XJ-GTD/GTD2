@@ -200,8 +200,8 @@ export class AgendaPage {
   save() {
     if (validCheck()) {
       this.eventService.saveAgenda(this.currentAgenda).then((agenda) => {
-        if (agenda) {
-          this.currentAgenda = agenda;
+        if (agenda && agenda.length > 0) {
+          this.currentAgenda = agenda[0];
         }
       });
     }
