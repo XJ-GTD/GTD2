@@ -1,6 +1,5 @@
 // http://ionicframework.com/docs/theming/
 
-
 // App Global Sass
 // --------------------------------------------------
 // Put style rules here that you want to apply globally. These
@@ -35,8 +34,89 @@
 //  url('../assets/fonts/PingFang Medium.woff2') format('woff2'),
 //  url('../assets/fonts/PingFang Medium.svg') format('svg');
 //}
-* {
-  font-family: PingFang-Regular, PingFang-SC-Regular, PingFang-SC, "微软雅黑", Roboto
+@font-face {
+  font-family: 'Alibaba-PuHuiTi-Bold';
+  src: url('../assets/fonts/Alibaba-PuHuiTi-Bold.otf') format('opentype');
+}
+
+@font-face {
+  font-family: 'Alibaba-PuHuiTi-Heavy';
+  src: url('../assets/fonts/Alibaba-PuHuiTi-Heavy.otf') format('opentype');
+}
+
+@font-face {
+  font-family: 'Alibaba-PuHuiTi-Bold';
+  src: url('../assets/fonts/Alibaba-PuHuiTi-Bold.otf') format('opentype');
+}
+
+@font-face {
+  font-family: 'Alibaba-PuHuiTi-Light';
+  src: url('../assets/fonts/Alibaba-PuHuiTi-Light.otf') format('opentype');
+}
+
+@font-face {
+  font-family: 'Alibaba-PuHuiTi-Medium';
+  src: url('../assets/fonts/Alibaba-PuHuiTi-Medium.otf') format('opentype');
+}
+
+@font-face {
+  font-family: 'Alibaba-PuHuiTi-Regular';
+  src: url('../assets/fonts/Alibaba-PuHuiTi-Regular.otf') format('opentype');
+}
+
+@font-face {
+  font-family: 'AlibabaSans-Black';
+  src: url('../assets/fonts/AlibabaSans-Black.otf') format('opentype');
+}
+
+@font-face {
+  font-family: 'AlibabaSans-Bold';
+  src: url('../assets/fonts/AlibabaSans-Bold.otf') format('opentype');
+}
+
+@font-face {
+  font-family: 'AlibabaSans-BoldItalic';
+  src: url('../assets/fonts/AlibabaSans-BoldItalic.otf') format('opentype');
+}
+
+@font-face {
+  font-family: 'AlibabaSans-Heavy';
+  src: url('../assets/fonts/AlibabaSans-Heavy.otf') format('opentype');
+}
+
+@font-face {
+  font-family: 'AlibabaSans-HeavyItalic';
+  src: url('../assets/fonts/AlibabaSans-HeavyItalic.otf') format('opentype');
+}
+
+@font-face {
+  font-family: 'AlibabaSans-Italic';
+  src: url('../assets/fonts/AlibabaSans-Italic.otf') format('opentype');
+}
+
+@font-face {
+  font-family: 'AlibabaSans-Light';
+  src: url('../assets/fonts/AlibabaSans-Light.otf') format('opentype');
+}
+
+@font-face {
+  font-family: 'AlibabaSans-LightItalic';
+  src: url('../assets/fonts/AlibabaSans-LightItalic.otf') format('opentype');
+}
+
+@font-face {
+  font-family: 'AlibabaSans-Medium';
+  src: url('../assets/fonts/AlibabaSans-Medium.otf') format('opentype');
+}
+
+@font-face {
+  font-family: 'AlibabaSans-MediumItalic';
+  src: url('../assets/fonts/AlibabaSans-MediumItalic.otf') format('opentype');
+}
+
+@font-face {
+  font-family: 'AlibabaSans-Regular';
+  src: url('../assets/fonts/AlibabaSans-Regular.otf') format('opentype');
 }
 
 @font-face {
@@ -45,6 +125,10 @@
   url('../assets/fonts/PingFangRegular.eot') format('embedded-opentype'),
   url('../assets/fonts/PingFangRegular.woff') format('woff'),
   url('../assets/fonts/PingFangRegular.svg') format('svg');
+}
+
+* {
+  font-family: Alibaba-PuHuiTi-Regular, PingFang-Regular, "微软雅黑", Roboto
 }
 
 @import "../assets/css/weather-icons.min.css";
@@ -69,12 +153,11 @@ body {
     text-align: center;
   }
 
-
   .content-ios {
     background-color: transparent;
   }
 
-  .ios .menu-inner{
+  .ios .menu-inner {
     background-color: transparent;
   }
 
@@ -95,12 +178,12 @@ body {
     .toast-message {
       font-size: 12px;
       color: $fontMasterColor;
-      text-align:center;
+      text-align: center;
       padding: 5px;
     }
 
     .toast-wrapper {
-      background:$aiBackColor;
+      background: $aiBackColor;
     }
   }
 
@@ -111,13 +194,13 @@ body {
   .picker-ios {
     .picker-wrapper {
       background: $selectColor;
-      border-top:0px;
+      border-top: 0px;
     }
 
     .picker-toolbar {
       background: $secondColor;
-      border-top:0px;
-      border-bottom:0px;
+      border-top: 0px;
+      border-bottom: 0px;
     }
 
     .picker-above-highlight {
@@ -139,7 +222,7 @@ body {
       color: $fontThirdColor;
       font-size: 16px;
     }
-    .picker-opt-selected{
+    .picker-opt-selected {
       color: $fontMasterColor;
 
     }
@@ -152,13 +235,13 @@ body {
     }
   }
 
-  .popover-ios{
-    ion-backdrop{
-      background-color:$popBackColor;
-      opacity:.8;
+  .popover-ios {
+    ion-backdrop {
+      background-color: $popBackColor;
+      opacity: .8;
 
     }
-    .popover-content{
+    .popover-content {
       font-size: 15px;
       min-width: 260px;
       min-height: 70px;
@@ -167,34 +250,34 @@ body {
     }
   }
   .alert-ios {
-    ion-backdrop{
-      background-color:$popBackColor;
-      opacity:.8;
+    ion-backdrop {
+      background-color: $popBackColor;
+      opacity: .8;
 
     }
-    .alert-wrapper{
-      background-color:$aiBackColor;
+    .alert-wrapper {
+      background-color: $aiBackColor;
       color: $fontMasterColor;
       width: 270px;
-      .alert-message{
+      .alert-message {
         font-size: 16px;
       }
     }
-    .alert-button{
+    .alert-button {
       border-top: 1px solid $fontThirdColor;
-      border-right:1px solid  $fontThirdColor;
+      border-right: 1px solid $fontThirdColor;
       font-size: 17px;
       color: $selectColor
     }
-    button:first-child{
+    button:first-child {
       color: $fontSecondColor
     }
   }
 
-  .spinanimation{
+  .spinanimation {
     animation: spin 1s linear infinite;
   }
-  .datetime-disabled{
+  .datetime-disabled {
     opacity: 1;
   }
 }
