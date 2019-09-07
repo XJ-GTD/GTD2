@@ -14,7 +14,7 @@ import {FeedbackService} from "../../service/cordova/feedback.service";
 import {PageBoxComponent} from "../../components/page-box/page-box";
 import {CornerBadgeComponent} from "../../components/corner-badge/corner-badge";
 import {CalendarService} from "../../service/business/calendar.service";
-import {EventService, TaskData} from "../../service/business/event.service";
+import {EventService, AgendaData} from "../../service/business/event.service";
 import { PageDirection, IsSuccess } from "../../data.enum";
 
 /**
@@ -31,7 +31,7 @@ import { PageDirection, IsSuccess } from "../../data.enum";
           <!--主题-->
           <ion-textarea></ion-textarea>
 
-          <ion-card-content>
+          <ion-card-content *ngIf="currentAgenda.evi">
             <div class="card-subtitle">
               <button ion-button icon-end clear small>
                 <div>附件: 点此查看附件</div>
@@ -53,7 +53,7 @@ import { PageDirection, IsSuccess } from "../../data.enum";
           </ion-card-content>
 
           <!--附加属性操作-->
-          <ion-row>
+          <ion-row *ngIf="currentAgenda.evi">
             <ion-col>
               <button ion-button icon-start clear small>
                 <ion-icon ios="md-attach" md="md-attach"></ion-icon>
@@ -79,7 +79,7 @@ import { PageDirection, IsSuccess } from "../../data.enum";
             </ion-col>
           </ion-row>
 
-          <ion-row>
+          <ion-row *ngIf="currentAgenda.evi">
             <ion-col>
               <button ion-button small>
                 <div>
@@ -107,7 +107,7 @@ import { PageDirection, IsSuccess } from "../../data.enum";
           </ion-row>
 
           <!--控制操作-->
-          <ion-row>
+          <ion-row *ngIf="currentAgenda.evi">
             <ion-col>
               <button ion-button icon-start clear small>
                 <ion-icon ios="ios-add" md="ios-add"></ion-icon>
@@ -139,6 +139,8 @@ import { PageDirection, IsSuccess } from "../../data.enum";
 export class AgendaPage {
   statusBarColor: string = "#3c4d55";
 
+  currentAgenda: AgendaData = {} as AgendaData;
+
   constructor(public navCtrl: NavController,
               public navParams: NavParams,
               private modalCtr: ModalController,
@@ -153,6 +155,21 @@ export class AgendaPage {
   }
 
   ionViewDidLoad() {
+  }
+
+  ionViewWillEnter() {
+    if (this.navParams) {
+      let paramter: ScdPageParamter = this.navParams.data;
+      this.currentAgenda.sd = paramter.d.format("YYYY-MM-DD");
+      if (paramter.t) {
+        this.currentAgenda.st = paramter.t;
+      } else {
+        this.currentAgenda.st = moment().add(1, "h").format("HH:00");
+      }
+
+      if (paramter.sn) this.currentAgenda.evn = paramter.sn;
+
+    }
   }
 
   goBack() {
