@@ -50,7 +50,7 @@ import { PageDirection, IsSuccess } from "../../data.enum";
                 <div>备注</div>
               </button>
             </ion-col>
-            <ion-col align-self-center text-center>
+            <ion-col>
               <button ion-button icon-only clear small>
                 <ion-icon ios="md-star-outline" md="md-star-outline"></ion-icon>
               </button>
