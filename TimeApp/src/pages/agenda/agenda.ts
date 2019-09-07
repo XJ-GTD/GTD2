@@ -26,12 +26,12 @@ import { PageDirection, IsSuccess } from "../../data.enum";
 @IonicPage()
 @Component({
   selector: 'page-agenda',
-  template: `<page-box title="活动" (onBack)="goBack()">
+  template: `<page-box title="活动" [subtitle]="currentAgenda.sd" [data]="currentAgenda.evi" (onSubTitleClick)="changeDatetime()" (onRemove)="goRemove()" (onBack)="goBack()">
         <ion-card>
-          <!--主题-->
-          <ion-textarea [value]="currentAgenda.evn" placeholder="参加小明的生日Party"></ion-textarea>
-
           <ion-card-content *ngIf="currentAgenda.evi && ((currentAgenda.fj && currentAgenda.fj > 0) || false || (currentAgenda.bz && currentAgenda.bz != ''))">
+            <!--主题-->
+            <ion-textarea [value]="currentAgenda.evn" placeholder="参加小明的生日Party"></ion-textarea>
+
             <div class="card-subtitle" *ngIf="currentAgenda.fj && currentAgenda.fj > 0">
               <button ion-button icon-end clear small>
                 <div>附件: 点此查看附件</div>
@@ -177,6 +177,10 @@ export class AgendaPage {
       }
     }
   }
+
+  changeDatetime() {}
+
+  goRemove() {}
 
   goBack() {
     this.navCtrl.pop();
