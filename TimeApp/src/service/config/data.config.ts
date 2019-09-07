@@ -38,6 +38,7 @@ import {LogPage} from "../../pages/log/log";
 import {AtPage} from "../../pages/at/at";
 import {DaPage} from "../../pages/da/da";
 import {DoPage} from "../../pages/do/do";
+import {AgendaPage} from "../../pages/agenda/agenda";
 import {DrPage} from "../../pages/dr/dr";
 import {TxPage} from "../../pages/tx/tx";
 import {BzPage} from "../../pages/bz/bz";
@@ -267,6 +268,7 @@ export class DataConfig {
     _AT_PAGE: AtPage,       // 关于
     _DA_PAGE: DaPage,       // 日程 - 每日日程
     _DO_PAGE: DoPage,       // 任务 - 待处理/已处理任务一览
+    _AGENDA_PAGE: AgendaPage, // 日程 - 创建/修改
     _DR_PAGE: DrPage,       // 每日简报设置 - 智能提醒
     _TX_PAGE: TxPage,       // 设置提醒
     _BZ_PAGE: BzPage,       // 设置备注
@@ -315,6 +317,7 @@ export class DataConfig {
     AtPage,       // 关于
     DaPage,       // 日程 - 每日日程
     DoPage,       // 任务 - 待处理/已处理任务一览
+    AgendaPage,   // 日程 - 创建/修改
     DrPage,       // 每日简报设置 - 智能提醒
     TxPage,       // 设置提醒
     BzPage,       // 设置备注
