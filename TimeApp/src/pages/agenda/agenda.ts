@@ -50,6 +50,9 @@ import { PageDirection, IsSuccess } from "../../data.enum";
                 <ion-icon ios="ios-create" md="ios-create"></ion-icon>
               </button>
             </div>
+            <div class="card-subtitle" *ngIf="currentAgenda.ui && currentAgenda.ui != currentuser">
+              {{currentAgenda.ui | formatuser: currentuser: friends}}
+            </div>
           </ion-card-content>
 
           <!--附加属性操作-->
@@ -139,6 +142,8 @@ import { PageDirection, IsSuccess } from "../../data.enum";
 export class AgendaPage {
   statusBarColor: string = "#3c4d55";
 
+  currentuser: string = UserConfig.account.id;
+  friends: Array<any> = UserConfig.friends;
   currentAgenda: AgendaData = {} as AgendaData;
 
   constructor(public navCtrl: NavController,
