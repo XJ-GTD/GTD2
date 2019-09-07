@@ -12,12 +12,12 @@
   .list-dayagenda-month {
     height: 85px;
     margin: 0 12px 0 12px;
-    .back{
+    .back {
       background-repeat: no-repeat;
       background-size: 100% 100%;
       -moz-background-size: 100% 100%;
       display: block;
-      width:100%;
+      width: 100%;
     }
 
     p {
@@ -39,6 +39,55 @@
       font-weight: 300;
       margin-top: 7px;
     }
+    .month1 {
+      background-image: url("../assets/imgs/listicon/1@3x.png");
+    }
+    .month2 {
+      background-image: url("../assets/imgs/listicon/2@3x.png");
+
+    }
+    .month3 {
+      background-image: url("../assets/imgs/listicon/3@3x.png");
+
+    }
+    .month4 {
+      background-image: url("../assets/imgs/listicon/4@3x.png");
+
+    }
+
+    .month5 {
+      background-image: url("../assets/imgs/listicon/5@3x.png");
+
+    }
+    .month6 {
+      background-image: url("../assets/imgs/listicon/6@3x.png");
+
+    }
+    .month7 {
+      background-image: url("../assets/imgs/listicon/7@3x.png");
+
+    }
+    .month8 {
+      background-image: url("../assets/imgs/listicon/8@3x.png");
+
+    }
+    .month9 {
+      background-image: url("../assets/imgs/listicon/9@3x.png");
+
+    }
+    .month10 {
+      background-image: url("../assets/imgs/listicon/10@3x.png");
+
+    }
+    .month11 {
+      background-image: url("../assets/imgs/listicon/11@3x.png");
+
+    }
+    .month12 {
+      background-image: url("../assets/imgs/listicon/12@3x.png");
+
+    }
+
   }
 
   //列表一周
@@ -101,19 +150,18 @@
         margin-right: 15px;
         max-width: 150px;
         overflow: hidden;
-        span{
+        span {
           font-size: 18px;
-          font-weight:400;
-          color:rgba(235,239,250,1);
+          font-weight: 400;
+          color: rgba(235, 239, 250, 1);
         }
-        .daycoment{
+        .daycoment {
           font-size: 12px;
           font-weight: 300;
-          margin-right:3px;
+          margin-right: 3px;
         }
 
       }
-
 
       .first {
         width: 50px;
@@ -122,7 +170,6 @@
         font-weight: 300;
         letter-spacing: 2px;
       }
-
 
       .last {
         float: right;
@@ -133,7 +180,7 @@
 
     }
   }
-  .list-todolist-content{
+  .list-todolist-content {
     position: relative;
     border-radius: 4px;
     width: 70%;
@@ -142,7 +189,6 @@
     .agendaline:last-child {
       margin-top: 0px
     }
-
 
     .agendaline {
       position: relative;
@@ -165,7 +211,6 @@
         font-weight: 300;
 
       }
-
 
       .agenda-sn {
         position: relative;
@@ -196,7 +241,6 @@
       }
     }
 
-
   }
 
   //列表每一个日程
@@ -211,7 +255,6 @@
     .agendaline:last-child {
       margin-top: 0px
     }
-
 
     .agendaline {
 
@@ -245,7 +288,6 @@
       }
     }
 
-
     .agenda-icon {
       position: relative;
       width: 12%;
@@ -256,13 +298,13 @@
 
       .icon {
         font-size: 12px;
-        color:rgba(62,111,202,1);
+        color: rgba(62, 111, 202, 1);
       }
-      .user-o{
-        color: rgba(100,88,188,1);
+      .user-o {
+        color: rgba(100, 88, 188, 1);
       }
-      .clock-o{
-        color: rgba(125,85,37,1);
+      .clock-o {
+        color: rgba(125, 85, 37, 1);
       }
       //color: rgba(100,88,188,1);
       //color:  rgba(65,59,124,1);
