@@ -198,7 +198,7 @@ export class AgendaPage {
   }
 
   save() {
-    if (validCheck()) {
+    if (this.validCheck()) {
       this.eventService.saveAgenda(this.currentAgenda).then((agenda) => {
         if (agenda && agenda.length > 0) {
           this.currentAgenda = agenda[0];
