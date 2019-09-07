@@ -29,22 +29,22 @@ import { PageDirection, IsSuccess } from "../../data.enum";
   template: `<page-box title="活动" (onBack)="goBack()">
         <ion-card>
           <!--主题-->
-          <ion-textarea></ion-textarea>
+          <ion-textarea>{{currentAgenda.evn}}</ion-textarea>
 
-          <ion-card-content *ngIf="currentAgenda.evi">
-            <div class="card-subtitle">
+          <ion-card-content *ngIf="currentAgenda.evi && ((currentAgenda.fj && currentAgenda.fj > 0) || false || (currentAgenda.bz && currentAgenda.bz != ''))">
+            <div class="card-subtitle" *ngIf="currentAgenda.fj && currentAgenda.fj > 0">
               <button ion-button icon-end clear small>
                 <div>附件: 点此查看附件</div>
                 <ion-icon ios="md-attach" md="md-attach"></ion-icon>
               </button>
             </div>
-            <div class="card-subtitle">
+            <div class="card-subtitle" *ngIf="false">
               <button ion-button icon-end clear small>
                 <div>地址: 浦东新区红枫路108弄11号1201室</div>
                 <ion-icon ios="ios-pin" md="ios-pin"></ion-icon>
               </button>
             </div>
-            <div class="card-subtitle">
+            <div class="card-subtitle" *ngIf="currentAgenda.bz && currentAgenda.bz != ''">
               <button ion-button icon-end clear small>
                 <div>备注: 数据都是假的, 请勿模仿</div>
                 <ion-icon ios="ios-create" md="ios-create"></ion-icon>
@@ -54,19 +54,19 @@ import { PageDirection, IsSuccess } from "../../data.enum";
 
           <!--附加属性操作-->
           <ion-row *ngIf="currentAgenda.evi">
-            <ion-col>
+            <ion-col *ngIf="!currentAgenda.fj || currentAgenda.fj == 0">
               <button ion-button icon-start clear small>
                 <ion-icon ios="md-attach" md="md-attach"></ion-icon>
                 <div>附件</div>
               </button>
             </ion-col>
-            <ion-col>
+            <ion-col *ngIf="true">
               <button ion-button icon-start clear small>
                 <ion-icon ios="ios-pin" md="ios-pin"></ion-icon>
                 <div>地址</div>
               </button>
             </ion-col>
-            <ion-col>
+            <ion-col *ngIf="!currentAgenda.bz || currentAgenda.bz == ''">
               <button ion-button icon-start clear small>
                 <ion-icon ios="ios-create" md="ios-create"></ion-icon>
                 <div>备注</div>
@@ -79,16 +79,16 @@ import { PageDirection, IsSuccess } from "../../data.enum";
             </ion-col>
           </ion-row>
 
-          <ion-row *ngIf="currentAgenda.evi">
-            <ion-col>
+          <ion-row *ngIf="currentAgenda.evi && (currentAgenda.pn > 0 || (currentAgenda.txs && currentAgenda.txs != '') || (currentAgenda.rts && currentAgenda.rts != ''))">
+            <ion-col *ngIf="currentAgenda.pn > 0">
               <button ion-button small>
                 <div>
                   参与人
-                  <corner-badge>3</corner-badge>
+                  <corner-badge>{{currentAgenda.pn}}</corner-badge>
                 </div>
               </button>
             </ion-col>
-            <ion-col>
+            <ion-col *ngIf="currentAgenda.txs && currentAgenda.txs != ''">
               <button ion-button small>
                 <div>
                 半小时后提醒
@@ -96,7 +96,7 @@ import { PageDirection, IsSuccess } from "../../data.enum";
                 </div>
               </button>
             </ion-col>
-            <ion-col>
+            <ion-col *ngIf="currentAgenda.rts && currentAgenda.rts != ''">
               <button ion-button small>
                 <div>
                 重复周期 2周, 星期一、星期三、星期五, 3次
@@ -114,19 +114,19 @@ import { PageDirection, IsSuccess } from "../../data.enum";
                 <div>计划</div>
               </button>
             </ion-col>
-            <ion-col>
+            <ion-col *ngIf="!currentAgenda.txs || currentAgenda.txs == ''">
               <button ion-button icon-start clear small>
                 <ion-icon ios="md-notifications" md="md-notifications"></ion-icon>
                 <div>提醒</div>
               </button>
             </ion-col>
-            <ion-col>
+            <ion-col *ngIf="!currentAgenda.rts || currentAgenda.rts == ''>
               <button ion-button icon-start clear small>
                 <ion-icon ios="ios-repeat" md="ios-repeat"></ion-icon>
                 <div>重复</div>
               </button>
             </ion-col>
-            <ion-col>
+            <ion-col *ngIf="!currentAgenda.pn || currentAgenda.pn == 0">
               <button ion-button icon-start clear small>
                 <ion-icon ios="ios-person-add" md="ios-person-add"></ion-icon>
                 <div>邀请</div>
@@ -170,7 +170,9 @@ export class AgendaPage {
 
       if (paramter.sn) this.currentAgenda.evn = paramter.sn;
 
-      if (paramter.si) this.currentAgenda.evi = paramter.si;
+      if (paramter.si) {
+        this.currentAgenda = this.eventService.getAgenda(paramter.si);
+      }
     }
   }
 
