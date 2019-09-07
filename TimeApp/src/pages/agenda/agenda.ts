@@ -171,7 +171,9 @@ export class AgendaPage {
       if (paramter.sn) this.currentAgenda.evn = paramter.sn;
 
       if (paramter.si) {
-        this.currentAgenda = this.eventService.getAgenda(paramter.si);
+        this.eventService.getAgenda(paramter.si).then((agenda) => {
+          this.currentAgenda = agenda;
+        });
       }
     }
   }
