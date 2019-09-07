@@ -745,6 +745,15 @@ describe('EventService test suite', () => {
 
       expect(agenda1).toBeNull();
     });
+    
+    it(`Case 4 - 1 todolist 是否加入todoList`, async () => {
+      
+			let agenda2: Array<AgendaData> = new Array<AgendaData>();
+      agenda2 = await eventService.todolist();
+
+      expect(agenda2).toBeNull();
+      expect(agenda2.length).toBeGreaterThan(0);
+    });
   });
 
   describe(`创建任务`, () => {

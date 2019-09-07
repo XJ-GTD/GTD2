@@ -1138,6 +1138,7 @@ export class EventService extends BaseService {
       ev.tb = anyenum.SyncType.unsynch;
       ev.del = anyenum.DelType.undel;
       ret.ed = ev.evd;
+      ev.todolist = anyenum.ToDoListStatus.On;
       ret.sqlparam.push(ev.rpTParam());
       if (txjson.reminds && txjson.reminds.length > 0) {
         ret.sqlparam = [...ret.sqlparam ,...this.sqlparamAddTxWa(ev,anyenum.ObjectType.Event,txjson,agdata.al,agdata.st)];
