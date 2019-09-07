@@ -29,7 +29,7 @@ import { PageDirection, IsSuccess } from "../../data.enum";
   template: `<page-box title="活动" (onBack)="goBack()">
         <ion-card>
           <!--主题-->
-          <ion-textarea>{{currentAgenda.evn}}</ion-textarea>
+          <ion-textarea [value]="currentAgenda.evn" placeholder="参加小明的生日Party"></ion-textarea>
 
           <ion-card-content *ngIf="currentAgenda.evi && ((currentAgenda.fj && currentAgenda.fj > 0) || false || (currentAgenda.bz && currentAgenda.bz != ''))">
             <div class="card-subtitle" *ngIf="currentAgenda.fj && currentAgenda.fj > 0">
