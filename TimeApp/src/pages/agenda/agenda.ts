@@ -34,7 +34,7 @@ import { PageDirection, IsSuccess } from "../../data.enum";
           <ion-row>
             <ion-col>
               <button ion-button icon-start clear small>
-                <ion-icon name="thumbs-up"></ion-icon>
+                <ion-icon ios="md-attach" md="md-attach"></ion-icon>
                 <div>附件</div>
               </button>
             </ion-col>
@@ -94,7 +94,7 @@ export class AgendaPage {
               public navParams: NavParams,
               private modalCtr: ModalController,
               private emitService: EmitService,
-              private doService: DoService,
+              private agendaService: AgendaService,
               private util: UtilService,
               private feedback: FeedbackService,
               private calendarService: CalendarService,
