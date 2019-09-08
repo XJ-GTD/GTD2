@@ -39,6 +39,52 @@ export class FormatedatePipe implements PipeTransform {
       if (args[0] == "CMM"){
         return moment(value).format("MM月");
       }
+      if (args[0] == "CSSMM"){
+        let ret;
+        console.log(moment(value).format("M") + "aaaa");
+        switch (moment(value).format("M")) {
+          case "1":
+            ret = "month1";
+            break;
+          case "2":
+            ret =  "month2";
+            break;
+          case "3":
+            ret =  "month3";
+            break;
+          case "4":
+            ret =  "month4";
+            break;
+          case "5":
+            ret =  "month5";
+            break;
+          case "6":
+            ret =  "month6";
+            break;
+          case "7":
+            ret = "month7";
+            break;
+          case "8":
+            ret =  "month8";
+            break;
+          case "9":
+            ret =  "month9";
+            break;
+          case "10":
+            ret =  "month10";
+            break;
+          case "11":
+            ret =  "month11";
+            break;
+          case "12":
+            ret =  "month12";
+            break;
+          default:
+            ret =  "month6";
+
+        }
+        return ret;
+      }
       if (args[0] == "CYYYY/MM/ND"){
         return moment(value+"/01").format("YYYY年MM月");
       }

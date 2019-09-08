@@ -49,9 +49,11 @@ import {CalendarComponent} from "../../components/ion2-calendar";
     <ion-content #contentD>
       <ion-grid #grid4Hight class = "list-contont">
         <ng-template ngFor let-monthActivityData [ngForOf]="monthActivityDatas" >
+          
           <ion-row class="list-dayagenda-month" >
-                <div class="back" [class.month7]="true" >
+                <div class="back {{monthActivityData.month  | formatedate :'CSSMM'}}" >
                 <p class="month-a">
+                 
                   {{monthActivityData.month  | formatedate :"CYYYY/MM/ND"}}
                 </p>
                 <p class="month-b">
