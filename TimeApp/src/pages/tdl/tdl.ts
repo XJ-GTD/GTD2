@@ -84,7 +84,7 @@ import {CalendarComponent} from "../../components/ion2-calendar";
                   </div>
               </ion-row>
               <ion-row class="list-dayagenda-content" *ngFor="let event of days.events;" (click)="toDetail(event.evi,event.evd,event.gs)">
-                
+
                   <div class="agendaline">
                     <div class="agenda-icon">
                       <ion-icon class = "tasks fa fa-tasks"></ion-icon>
@@ -263,10 +263,10 @@ export class TdlPage {
     this.feedback.audioClick();
     if (gs == "0") {
       //本人画面
-      this.modalCtr.create(DataConfig.PAGE._TDDJ_PAGE, p).present();
+      this.modalCtr.create(DataConfig.PAGE._AGENDA_PAGE, p).present();
     } else if (gs == "1") {
       //受邀人画面
-      this.modalCtr.create(DataConfig.PAGE._TDDI_PAGE, p).present();
+      this.modalCtr.create(DataConfig.PAGE._AGENDA_PAGE, p).present();
     } else {
       //系统画面
       this.modalCtr.create(DataConfig.PAGE._TDDS_PAGE, p).present();
@@ -278,7 +278,7 @@ export class TdlPage {
     let p: ScdPageParamter = new ScdPageParamter();
     p.d = moment(d);
     this.feedback.audioClick();
-    this.modalCtr.create(DataConfig.PAGE._TDC_PAGE, p).present();
+    this.modalCtr.create(DataConfig.PAGE._AGENDA_PAGE, p).present();
   }
 
 }
