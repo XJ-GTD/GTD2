@@ -14,7 +14,7 @@ import {FeedbackService} from "../../service/cordova/feedback.service";
 import {PageBoxComponent} from "../../components/page-box/page-box";
 import {CornerBadgeComponent} from "../../components/corner-badge/corner-badge";
 import {CalendarService} from "../../service/business/calendar.service";
-import {EventService, AgendaData} from "../../service/business/event.service";
+import {EventService, AgendaData, RtJson, TxJson} from "../../service/business/event.service";
 import { PageDirection, IsSuccess } from "../../data.enum";
 
 /**
@@ -100,7 +100,7 @@ import { PageDirection, IsSuccess } from "../../data.enum";
               </button>
             </ion-col>
             <ion-col *ngIf="currentAgenda.rts && currentAgenda.rts != ''">
-              <button ion-button small>
+              <button ion-button small (click)="changeRepeat()">
                 <div>
                 重复周期 2周, 星期一、星期三、星期五, 3次
                 <corner-badge>3</corner-badge>
@@ -124,7 +124,7 @@ import { PageDirection, IsSuccess } from "../../data.enum";
               </button>
             </ion-col>
             <ion-col *ngIf="!currentAgenda.rts || currentAgenda.rts == ''">
-              <button ion-button icon-start clear small>
+              <button ion-button icon-start clear small (click)="changeRepeat()">
                 <ion-icon ios="ios-repeat" md="ios-repeat"></ion-icon>
                 <div>重复</div>
               </button>
@@ -145,10 +145,11 @@ export class AgendaPage {
   currentuser: string = UserConfig.account.id;
   friends: Array<any> = UserConfig.friends;
   currentAgenda: AgendaData = {} as AgendaData;
+  originAgenda: AgendaData = {} as AgendaData;;
 
   constructor(public navCtrl: NavController,
               public navParams: NavParams,
-              private modalCtr: ModalController,
+              public modalCtrl: ModalController,
               private emitService: EmitService,
               private agendaService: AgendaService,
               private util: UtilService,
@@ -178,12 +179,33 @@ export class AgendaPage {
       if (paramter.si) {
         this.eventService.getAgenda(paramter.si).then((agenda) => {
           this.currentAgenda = agenda;
+          Object.assign(this.originAgenda, agenda);
         });
       }
     }
   }
 
   changeDatetime() {}
+
+  changeRepeat() {
+    if (!this.currentAgenda.rtjson && this.currentAgenda.rt) {
+      this.currentAgenda.rtjson = new RtJson();
+      let rtdata = JSON.parse(this.currentAgenda.rt);
+      Object.assign(this.currentAgenda.rtjson, rtdata);
+    } else {
+      this.currentAgenda.rtjson = new RtJson();
+    }
+
+    let modal = this.modalCtrl.create(DataConfig.PAGE._CF_PAGE, {value: this.currentAgenda.rtjson});
+    modal.onDidDismiss(async (data) => {
+      if (data) {
+        this.currentAgenda.rtjson = data;
+        this.currentAgenda.rt = JSON.stringify(this.currentAgenda.rtjson);
+        this.currentAgenda.rts = this.currentAgenda.rtjson.text();
+      }
+    });
+    modal.present();
+  }
 
   goRemove() {}
 
