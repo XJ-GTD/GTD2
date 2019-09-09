@@ -221,11 +221,27 @@ export class AgendaPage {
 
   save() {
     if (this.validCheck()) {
-      this.eventService.saveAgenda(this.currentAgenda).then((agenda) => {
-        if (agenda && agenda.length > 0) {
-          this.currentAgenda = agenda[0];
+      if (this.currentAgenda.evi) {
+        if (this.originAgenda.rfg == RepeatFlag.Repeat) {
+          this.eventService.saveAgenda(this.currentAgenda, this.originAgenda, OperateType.OnlySel).then((agenda) => {
+            if (agenda && agenda.length > 0) {
+              this.currentAgenda = agenda[0];
+            }
+          });
+        } else {
+          this.eventService.saveAgenda(this.currentAgenda, this.originAgenda, OperateType.OnlySel).then((agenda) => {
+            if (agenda && agenda.length > 0) {
+              this.currentAgenda = agenda[0];
+            }
+          });
         }
-      });
+      } else {
+        this.eventService.saveAgenda(this.currentAgenda).then((agenda) => {
+          if (agenda && agenda.length > 0) {
+            this.currentAgenda = agenda[0];
+          }
+        });
+      }
     }
   }
 }
