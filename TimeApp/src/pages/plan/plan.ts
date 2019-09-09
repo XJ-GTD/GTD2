@@ -2,6 +2,7 @@ import { Component, ElementRef, QueryList, Renderer2, ViewChild, ViewChildren } 
 import { IonicPage, NavController, NavParams, ViewController, ModalController, Scroll } from 'ionic-angular';
 import {UtilService} from "../../service/util-service/util.service";
 import {CalendarService} from "../../service/business/calendar.service";
+import {ModalBoxComponent} from "../../components/modal-box/modal-box";
 
 @IonicPage()
 @Component({
