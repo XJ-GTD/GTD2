@@ -32,7 +32,7 @@ import {Events} from 'ionic-angular';
     </div>
   `
 })
-export class PageBoxComponent {
+export class ModalBoxComponent {
   @Input()
   title: string = "";
 
