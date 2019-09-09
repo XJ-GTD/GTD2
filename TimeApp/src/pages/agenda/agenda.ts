@@ -70,7 +70,7 @@ import { PageDirection, IsSuccess, OperateType, RepeatFlag, ToDoListStatus } fro
               </button>
             </ion-col>
             <ion-col *ngIf="!currentAgenda.bz || currentAgenda.bz == ''">
-              <button ion-button icon-start clear small>
+              <button ion-button icon-start clear small (click)="changeComment()">
                 <ion-icon ios="ios-create" md="ios-create"></ion-icon>
                 <div>备注</div>
               </button>
@@ -207,6 +207,18 @@ export class AgendaPage {
 
   changeDatetime() {}
 
+  changeComment() {
+    let modal = this.modalCtrl.create(DataConfig.PAGE._BZ_PAGE, {value: this.currentAgenda.bz});
+    modal.onDidDismiss(async (data)=>{
+      this.currentAgenda.bz = data.bz;
+
+      if (this.eventService.isAgendaChanged(this.currentAgenda, this.originAgenda)) {
+        this.doOptionSave(OperateType.OnlySel);
+      }
+    });
+    modal.present();
+  }
+
   changeRepeat() {
     if (!this.currentAgenda.rtjson && this.currentAgenda.rt) {
       this.currentAgenda.rtjson = new RtJson();
@@ -334,7 +346,7 @@ export class AgendaPage {
 
           this.modifyConfirm.present();
         } else {                          // 非重复/重复已经修改为非重复
-          this.eventService.saveAgenda(this.currentAgenda, this.originAgenda).then((agenda) => {
+          this.eventService.saveAgenda(this.currentAgenda, this.originAgenda, OperateType.OnlySel).then((agenda) => {
             if (agenda && agenda.length > 0) {
               this.currentAgenda = agenda[0];
               Object.assign(this.originAgenda, agenda[0]);
