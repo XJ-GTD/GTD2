@@ -128,8 +128,14 @@ export class DoPage {
     });
   }
 
-  gotoDetail(target: any) {
+  gotoDetail(component: any, target: any) {
+    let p: ScdPageParamter = new ScdPageParamter();
 
+    p.si = target.evi;
+    p.d = moment(target.evd);
+
+    this.feedback.audioClick();
+    this.modalCtr.create(DataConfig.PAGE._AGENDA_PAGE, p).present();
   }
 
   goNew() {}
