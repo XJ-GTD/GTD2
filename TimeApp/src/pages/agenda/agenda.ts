@@ -212,7 +212,7 @@ export class AgendaPage {
     modal.onDidDismiss(async (data)=>{
       this.currentAgenda.bz = data.bz;
 
-      if (this.eventService.isAgendaChanged(this.currentAgenda, this.originAgenda)) {
+      if (this.originAgenda.bz != this.currentAgenda.bz) {
         this.doOptionSave(OperateType.OnlySel);
       }
     });
