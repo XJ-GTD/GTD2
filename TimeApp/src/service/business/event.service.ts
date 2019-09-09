@@ -755,18 +755,9 @@ export class EventService extends BaseService {
       newAgdata.tx = JSON.stringify(newAgdata.txjson);
       newAgdata.tb = anyenum.SyncType.unsynch;
       let ev = new EvTbl();
+      Object.assign(ev,newAgdata);
       ev.evi = oriAgdata.evi;//evi使用原evi
-      ev.evn = newAgdata.evn;
-      ev.evd = newAgdata.evd;
-      ev.ji = newAgdata.ji;
-      ev.bz = newAgdata.bz;
-      ev.tx = newAgdata.tx;
-      ev.txs = newAgdata.txs;
-      ev.rt = newAgdata.rt;
-      ev.rts = newAgdata.rts;
-      ev.rfg = newAgdata.rfg;
-      ev.mi = newAgdata.mi;
-      ev.tb = newAgdata.tb;
+
       await this.sqlExce.updateByParam(ev);
       //事件对象放入返回事件
       Object.assign(outAgd,ev);
