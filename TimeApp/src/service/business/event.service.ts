@@ -437,7 +437,8 @@ export class EventService extends BaseService {
       let caevi : string = masterEvi;
       let ca = new CaTbl();
       ca.evi = caevi;
-      ca = await this.sqlExce.getOneByParam<CaTbl>(ca);
+      let existca = await this.sqlExce.getOneByParam<CaTbl>(ca);
+      Object.assign(ca, existca);
 
       if (evtbls.length == 0){
         sqlparam.push(ca.dTParam());
