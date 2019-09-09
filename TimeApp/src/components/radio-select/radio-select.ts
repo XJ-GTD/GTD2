@@ -93,7 +93,7 @@ export class RadioSelectComponent implements ControlValueAccessor {
 
   set value(v: any){
     if (this.isMultiSelect) {
-      if (v && typeof v === 'array') {
+      if (v && v instanceof Array) {
         if (this._values.length != this.options.length) {
           this._values = new Array<any>(this.options.length);
         }
@@ -130,7 +130,7 @@ export class RadioSelectComponent implements ControlValueAccessor {
 
   writeValue(val: any): void {
     if (this.isMultiSelect) {
-      if (v && typeof v === 'array') {
+      if (v && v instanceof Array) {
         if (this._values.length != this.options.length) {
           this._values = new Array<any>(this.options.length);
         }
