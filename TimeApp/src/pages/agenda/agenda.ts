@@ -117,7 +117,7 @@ import { PageDirection, IsSuccess, OperateType, RepeatFlag, ToDoListStatus } fro
           <!--控制操作-->
           <ion-row *ngIf="currentAgenda.evi">
             <ion-col>
-              <button ion-button icon-start clear small>
+              <button ion-button icon-start clear small (click)="changePlan()">
                 <ion-icon ios="ios-add" md="ios-add"></ion-icon>
                 <div>计划</div>
               </button>
@@ -206,6 +206,18 @@ export class AgendaPage {
   }
 
   changeDatetime() {}
+
+  changePlan() {
+    let modal = this.modalCtrl.create(DataConfig.PAGE._JH_PAGE, {ji: this.currentAgenda.ji});
+    modal.onDidDismiss(async (data)=>{
+      this.currentAgenda.ji = data.jh.ji;
+
+      if (this.originAgenda.ji != this.currentAgenda.ji) {
+        this.doOptionSave(OperateType.OnlySel);
+      }
+    });
+    modal.present();
+  }
 
   changeComment() {
     let modal = this.modalCtrl.create(DataConfig.PAGE._BZ_PAGE, {value: this.currentAgenda.bz});
