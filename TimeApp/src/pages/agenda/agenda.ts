@@ -75,12 +75,12 @@ import { PageDirection, IsSuccess, OperateType, RepeatFlag, ToDoListStatus } fro
                 <div>备注</div>
               </button>
             </ion-col>
-            <ion-col *ngIf="currentAgenda.todolist == ToDoListStatus.On">
+            <ion-col *ngIf="currentAgenda.todolist == todoliston">
               <button ion-button icon-only clear small>
                 <ion-icon ios="md-star" md="md-star"></ion-icon>
               </button>
             </ion-col>
-            <ion-col *ngIf="currentAgenda.todolist == ToDoListStatus.Off">
+            <ion-col *ngIf="currentAgenda.todolist == todolistoff">
               <button ion-button icon-only clear small>
                 <ion-icon ios="md-star-outline" md="md-star-outline"></ion-icon>
               </button>
@@ -153,6 +153,9 @@ export class AgendaPage {
   originAgenda: AgendaData = {} as AgendaData;
 
   modifyConfirm;
+
+  todoliston = ToDoListStatus.On;
+  todolistoff = ToDoListStatus.Off;
 
   constructor(public navCtrl: NavController,
               public navParams: NavParams,
