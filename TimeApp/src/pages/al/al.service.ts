@@ -239,6 +239,7 @@ export class AlService {
         if (data.length > 0) {
           alData.text = "用户已登录";
           alData.islogin = true;
+          UserConfig.privateplans = await this.calendarService.fetchPrivatePlans();
         } else {
           alData.text = "用户未登录";
           alData.islogin = false;
