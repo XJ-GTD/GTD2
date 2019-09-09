@@ -130,13 +130,13 @@ export class RadioSelectComponent implements ControlValueAccessor {
 
   writeValue(val: any): void {
     if (this.isMultiSelect) {
-      if (v && v instanceof Array) {
+      if (val && val instanceof Array) {
         if (this._values.length != this.options.length) {
           this._values = new Array<any>(this.options.length);
         }
 
         this.options.reduce((target, curr, currindex) => {
-          if (v.indexOf(curr.value) >= 0) {
+          if (val.indexOf(curr.value) >= 0) {
             target[currindex] = curr.value;
           } else {
             target[currindex] = null;
