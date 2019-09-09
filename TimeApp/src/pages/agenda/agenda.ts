@@ -210,7 +210,7 @@ export class AgendaPage {
   changeDatetime() {}
 
   changePlan() {
-    let modal = this.modalCtrl.create(DataConfig.PAGE._JH_PAGE, {ji: this.currentAgenda.ji});
+    let modal = this.modalCtrl.create(DataConfig.PAGE._PLAN_PAGE, {ji: this.currentAgenda.ji});
     modal.onDidDismiss(async (data)=>{
       this.currentAgenda.ji = data.jh.ji;
 
@@ -222,7 +222,7 @@ export class AgendaPage {
   }
 
   changeComment() {
-    let modal = this.modalCtrl.create(DataConfig.PAGE._BZ_PAGE, {value: this.currentAgenda.bz});
+    let modal = this.modalCtrl.create(DataConfig.PAGE._COMMENT_PAGE, {value: this.currentAgenda.bz});
     modal.onDidDismiss(async (data)=>{
       this.currentAgenda.bz = data.bz;
 
