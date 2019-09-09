@@ -15,7 +15,7 @@ import {PageBoxComponent} from "../../components/page-box/page-box";
 import {CornerBadgeComponent} from "../../components/corner-badge/corner-badge";
 import {CalendarService} from "../../service/business/calendar.service";
 import {EventService, AgendaData, RtJson, TxJson} from "../../service/business/event.service";
-import { PageDirection, IsSuccess, OperateType, RepeatFlag } from "../../data.enum";
+import { PageDirection, IsSuccess, OperateType, RepeatFlag, ToDoListStatus } from "../../data.enum";
 
 /**
  * Generated class for the 日程创建/修改 page.
@@ -75,7 +75,12 @@ import { PageDirection, IsSuccess, OperateType, RepeatFlag } from "../../data.en
                 <div>备注</div>
               </button>
             </ion-col>
-            <ion-col>
+            <ion-col *ngIf="currentAgenda.todolist == ToDoListStatus.On">
+              <button ion-button icon-only clear small>
+                <ion-icon ios="md-star" md="md-star"></ion-icon>
+              </button>
+            </ion-col>
+            <ion-col *ngIf="currentAgenda.todolist == ToDoListStatus.Off">
               <button ion-button icon-only clear small>
                 <ion-icon ios="md-star-outline" md="md-star-outline"></ion-icon>
               </button>
