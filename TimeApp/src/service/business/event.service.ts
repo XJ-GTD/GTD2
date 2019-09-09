@@ -2448,6 +2448,7 @@ export class EventService extends BaseService {
   		                    ) evv
   	                    ) evnext
                       group by evnext.newrtevi
+                      order by evnext.day asc
                        	`;
       let agendaArray: Array<AgendaData> = await this.sqlExce.getExtLstByParam<AgendaData>(sql, [anyenum.ToDoListStatus.On]) || new Array<AgendaData>();
   		return agendaArray;
