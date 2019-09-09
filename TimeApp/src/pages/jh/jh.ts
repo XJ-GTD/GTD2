@@ -1,7 +1,7 @@
 import { Component, ElementRef, QueryList, Renderer2, ViewChild, ViewChildren } from '@angular/core';
 import { IonicPage, NavController, NavParams, ViewController, ModalController, Scroll } from 'ionic-angular';
 import {UtilService} from "../../service/util-service/util.service";
-import {PlService} from "../pl/pl.service";
+import {CalendarService} from "../../service/business/calendar.service";
 
 @IonicPage()
 @Component({
@@ -41,7 +41,7 @@ export class JhPage {
   constructor(public navCtrl: NavController,
               public navParams: NavParams,
               public viewCtrl: ViewController,
-              private plService: PlService,
+              private calendarService: CalendarService,
               private util: UtilService) {
     if (this.navParams && this.navParams.data) {
       this.selectedJh = this.navParams.data;
@@ -55,7 +55,7 @@ export class JhPage {
 
   getAllJh(){
     this.util.loadingStart();
-    this.plService.getPlan().then(data=>{
+    this.calendarService.fetchPrivatePlans().then(data=>{
       this.jhoptions = data.zdyJh;
 
       this.util.loadingEnd();
