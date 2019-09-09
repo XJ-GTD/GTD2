@@ -5,6 +5,7 @@ import { RadioSelectComponent } from "../../components/radio-select/radio-select
 import { RadioSpinnerComponent } from "../../components/radio-spinner/radio-spinner";
 import { DatePickerComponent } from "../../components/date-picker/date-picker";
 import * as moment from "moment";
+import {ModalBoxComponent} from "../../components/modal-box/modal-box";
 
 @IonicPage()
 @Component({
