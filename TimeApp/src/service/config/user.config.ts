@@ -8,6 +8,7 @@ import {EmitService} from "../util-service/emit.service";
 import {DataConfig} from "./data.config";
 import {FsData, PageDcData} from "../../data.mapping";
 import {Parter} from "../business/event.service";
+import {CalendarService, Plan} from "../business/calendar.service";
 
 /**
  * create by on 2019/3/5
@@ -62,13 +63,19 @@ export class UserConfig {
 
   static parters: Array<Parter> = new Array<Parter>();
 
+  //个人计划
+  static privateplans: Array<Plan> = new Array<Plan>();
+
   //重复调用防止
   static troublestop: Map<string, any> = new Map<string, any>();
 
   //群组
   static groups: Array<PageDcData> = new Array<PageDcData>();
 
-  constructor(private sqlliteExec: SqliteExec, private util: UtilService, private emitService: EmitService) {
+  constructor(private sqlliteExec: SqliteExec,
+              private util: UtilService,
+              private calendarService: CalendarService,
+              private emitService: EmitService) {
   }
 
   async init() {
@@ -80,6 +87,7 @@ export class UserConfig {
     await this.RefreshBTbl2();
 
     await this.RefreshGTbl();
+    await this.RefreshPrivatePlans();
   }
 
   static getSetting(key: string):boolean {
@@ -130,6 +138,10 @@ export class UserConfig {
 
   static setTroubleStop(key: string, value: any) {
     UserConfig.troublestop.set(key, value);
+  }
+
+  public async RefreshPrivatePlans() {
+    UserConfig.privateplans = await this.calendarService.fetchPrivatePlans();
   }
 
   public async RefreshYTbl() {

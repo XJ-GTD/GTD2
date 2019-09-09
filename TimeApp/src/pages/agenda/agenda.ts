@@ -119,7 +119,7 @@ import { PageDirection, IsSuccess, OperateType, RepeatFlag, ToDoListStatus } fro
             <ion-col>
               <button ion-button icon-start clear small (click)="changePlan()">
                 <ion-icon ios="ios-add" md="ios-add"></ion-icon>
-                <div>计划</div>
+                <div>{{currentAgenda.ji | formatplan: '计划': privateplans}}</div>
               </button>
             </ion-col>
             <ion-col *ngIf="!currentAgenda.txs || currentAgenda.txs == ''">
@@ -151,6 +151,8 @@ export class AgendaPage {
   friends: Array<any> = UserConfig.friends;
   currentAgenda: AgendaData = {} as AgendaData;
   originAgenda: AgendaData = {} as AgendaData;
+
+  privateplans: Array<any> = UserConfig.privateplans;
 
   modifyConfirm;
 
