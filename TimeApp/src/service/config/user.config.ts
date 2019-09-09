@@ -8,7 +8,7 @@ import {EmitService} from "../util-service/emit.service";
 import {DataConfig} from "./data.config";
 import {FsData, PageDcData} from "../../data.mapping";
 import {Parter} from "../business/event.service";
-import {CalendarService, Plan} from "../business/calendar.service";
+import {CalendarService, PlanData} from "../business/calendar.service";
 
 /**
  * create by on 2019/3/5
@@ -64,7 +64,7 @@ export class UserConfig {
   static parters: Array<Parter> = new Array<Parter>();
 
   //个人计划
-  static privateplans: Array<Plan> = new Array<Plan>();
+  static privateplans: Array<PlanData> = new Array<PlanData>();
 
   //重复调用防止
   static troublestop: Map<string, any> = new Map<string, any>();

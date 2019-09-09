@@ -56,7 +56,7 @@ export class JhPage {
   getAllJh(){
     this.util.loadingStart();
     this.calendarService.fetchPrivatePlans().then(data=>{
-      this.jhoptions = data.zdyJh;
+      this.jhoptions = data;
 
       this.util.loadingEnd();
     }).catch(error=>{
