@@ -266,12 +266,10 @@ export class AgendaPage {
     if (this.validCheck()) {              // 输入校验
       if (this.currentAgenda.evi) {       // 修改日程
         if (this.originAgenda.rfg == RepeatFlag.Repeat) { // 重复
-          if (!this.modifyConfirm) {
-            this.modifyConfirm = this.createConfirm();
-          } else {
+          if (this.modifyConfirm) {
             this.modifyConfirm.dismiss();
-            this.modifyConfirm = this.createConfirm();
           }
+          this.modifyConfirm = this.createConfirm();
 
           this.modifyConfirm.present();
         } else {                          // 非重复/重复已经修改为非重复
