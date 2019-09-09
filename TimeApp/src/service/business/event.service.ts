@@ -2444,13 +2444,13 @@ export class EventService extends BaseService {
   			 	 										select ev.*,
   			 	 										case when ifnull(ev.rtevi,'') = ''  then  ev.rtevi  else ev.evi end newrtevi
   			                      from gtd_ev ev
-  			                      where ev.todolist = ?1
+  			                      where ev.todolist = ?1 and ev.del = ?2
   		                    ) evv
   	                    ) evnext
                       group by evnext.newrtevi
                       order by evnext.day asc
                        	`;
-      let agendaArray: Array<AgendaData> = await this.sqlExce.getExtLstByParam<AgendaData>(sql, [anyenum.ToDoListStatus.On]) || new Array<AgendaData>();
+      let agendaArray: Array<AgendaData> = await this.sqlExce.getExtLstByParam<AgendaData>(sql, [anyenum.ToDoListStatus.On,anyenum.DelType.undel]) || new Array<AgendaData>();
   		return agendaArray;
    }
 
