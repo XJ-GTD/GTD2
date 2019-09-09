@@ -64,9 +64,10 @@ export class DoPage {
 
   ionViewDidLoad() {
     //this.doService.createTestDatas()
-    .then(() => {
-      this.days.push(moment().format("YYYY/MM/DD"));
-    });
+    // .then(() => {
+    //   this.days.push(moment().format("YYYY/MM/DD"));
+    // });
+    this.days.push(moment().format("YYYY/MM/DD"));
   }
 
   pagedown(target: any) {
