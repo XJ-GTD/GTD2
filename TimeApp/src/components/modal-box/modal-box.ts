@@ -22,7 +22,7 @@ import {Events} from 'ionic-angular';
       <ion-content class="box-content">
         <ng-content></ng-content>
       </ion-content>
-      <ion-footer class="foot-set">
+      <ion-footer class="box-footer">
         <ion-toolbar>
         <button ion-button full (click)="close()">
           关闭
