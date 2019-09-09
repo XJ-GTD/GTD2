@@ -14,13 +14,17 @@ export class FormatPlanPipe implements PipeTransform {
    * Takes a value and makes it lowercase.
    */
   transform(value: any, ...args) {
-    if (!value || typeof value !== 'string') {
+    if (value && typeof value !== 'string') {
       return value;
     }
 
     if (args.length == 2 ) {
       let defaultplan = args[0];
       let plans = args[1];
+
+      if (!value) {
+        return defaultplan;
+      }
 
       let plan = plans.find((val) => {
         return value == val.ji;
