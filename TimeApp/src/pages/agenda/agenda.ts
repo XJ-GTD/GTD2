@@ -258,6 +258,7 @@ export class AgendaPage {
     this.eventService.saveAgenda(this.currentAgenda, this.originAgenda, op).then((agenda) => {
       if (agenda && agenda.length > 0) {
         this.currentAgenda = agenda[0];
+        Object.assign(this.originAgenda, agenda[0]);
       }
     });
   }
@@ -280,6 +281,7 @@ export class AgendaPage {
           this.eventService.saveAgenda(this.currentAgenda, this.originAgenda).then((agenda) => {
             if (agenda && agenda.length > 0) {
               this.currentAgenda = agenda[0];
+              Object.assign(this.originAgenda, agenda[0]);
             }
           });
         }
@@ -287,6 +289,7 @@ export class AgendaPage {
         this.eventService.saveAgenda(this.currentAgenda).then((agenda) => {
           if (agenda && agenda.length > 0) {
             this.currentAgenda = agenda[0];
+            Object.assign(this.originAgenda, agenda[0]);
           }
         });
       }
