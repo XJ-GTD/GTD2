@@ -96,7 +96,7 @@ import {CalendarComponent} from "../../components/ion2-calendar";
                     <div class="agenda-icon">
                       <ion-icon class = "tasks fa fa-clock-o clock-o "></ion-icon>
                     </div>
-                    <div class="agenda-st">{{this.util.adStrShow("09:00")}}</div>
+                    <div class="agenda-st">{{this.util.adStrShow(event.evt)}}</div>
                   </div>
                   <div class="agendaline">
                     <div class="agenda-icon">
