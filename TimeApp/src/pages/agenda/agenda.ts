@@ -268,6 +268,9 @@ export class AgendaPage {
         if (this.originAgenda.rfg == RepeatFlag.Repeat) { // 重复
           if (!this.modifyConfirm) {
             this.modifyConfirm = this.createConfirm();
+          } else {
+            this.modifyConfirm.dismiss();
+            this.modifyConfirm = this.createConfirm();
           }
 
           this.modifyConfirm.present();
