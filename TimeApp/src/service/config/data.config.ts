@@ -53,6 +53,7 @@ import {FoTravisCIPage} from "../../pages/fo/fotravisci";
 import {FoConfigurePage} from "../../pages/fo/foconfigure";
 import {AipPage} from "../../pages/aip/aip";
 import {CommentPage} from "../../pages/comment/comment";
+import {RepeatPage} from "../../pages/repeat/repeat";
 import {PlanPage} from "../../pages/plan/plan";
 
 export class DataConfig {
@@ -272,6 +273,7 @@ export class DataConfig {
     _DO_PAGE: DoPage,       // 任务 - 待处理/已处理任务一览
     _AGENDA_PAGE: AgendaPage, // 日程 - 创建/修改
     _COMMENT_PAGE: CommentPage, // 日程 - 备注
+    _REPEAT_PAGE: RepeatPage, // 日程 - 重复
     _PLAN_PAGE: PlanPage,   // 日程 - 计划
     _DR_PAGE: DrPage,       // 每日简报设置 - 智能提醒
     _TX_PAGE: TxPage,       // 设置提醒
@@ -322,6 +324,7 @@ export class DataConfig {
     DaPage,       // 日程 - 每日日程
     DoPage,       // 任务 - 待处理/已处理任务一览
     AgendaPage,   // 日程 - 创建/修改
+    RepeatPage,   // 日程 - 重复
     CommentPage,  // 日程 - 备注
     PlanPage,     // 日程 - 计划
     DrPage,       // 每日简报设置 - 智能提醒
