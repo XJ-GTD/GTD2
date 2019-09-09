@@ -1,5 +1,5 @@
 import {Component, ElementRef, Renderer2, ViewChild, ViewChildren, QueryList } from '@angular/core';
-import {IonicPage, NavController, ModalController, NavParams, Slides} from 'ionic-angular';
+import {IonicPage, NavController, ModalController, ActionSheetController, NavParams, Slides} from 'ionic-angular';
 import {UtilService} from "../../service/util-service/util.service";
 import {UserConfig} from "../../service/config/user.config";
 import {RestFulHeader, RestFulConfig} from "../../service/config/restful.config";
@@ -15,7 +15,7 @@ import {PageBoxComponent} from "../../components/page-box/page-box";
 import {CornerBadgeComponent} from "../../components/corner-badge/corner-badge";
 import {CalendarService} from "../../service/business/calendar.service";
 import {EventService, AgendaData, RtJson, TxJson} from "../../service/business/event.service";
-import { PageDirection, IsSuccess } from "../../data.enum";
+import { PageDirection, IsSuccess, OperateType, RepeatFlag } from "../../data.enum";
 
 /**
  * Generated class for the 日程创建/修改 page.
@@ -145,11 +145,14 @@ export class AgendaPage {
   currentuser: string = UserConfig.account.id;
   friends: Array<any> = UserConfig.friends;
   currentAgenda: AgendaData = {} as AgendaData;
-  originAgenda: AgendaData = {} as AgendaData;;
+  originAgenda: AgendaData = {} as AgendaData;
+
+  modifyConfirm;
 
   constructor(public navCtrl: NavController,
               public navParams: NavParams,
               public modalCtrl: ModalController,
+              private actionSheetCtrl: ActionSheetController,
               private emitService: EmitService,
               private agendaService: AgendaService,
               private util: UtilService,
@@ -182,6 +185,12 @@ export class AgendaPage {
           Object.assign(this.originAgenda, agenda);
         });
       }
+    }
+  }
+
+  ionViewWillLeave() {
+    if (this.modifyConfirm !== undefined) {
+      this.modifyConfirm.dismiss();
     }
   }
 
@@ -219,23 +228,57 @@ export class AgendaPage {
     }
   }
 
+  createConfirm() {
+    return this.actionSheetCtrl.create({
+      buttons: [
+        {
+          text: '仅针对此日程存储',
+          handler: () => {
+            this.doOptionSave(OperateType.OnlySel);
+          }
+        },
+        {
+          text: '针对将来日程存储',
+          handler: () => {
+            this.doOptionSave(OperateType.FromSel);
+          }
+        },
+        {
+          text: '取消',
+          role: 'cancel',
+          handler: () => {
+            console.log('Cancel clicked');
+          }
+        }
+      ]
+    });
+  }
+
+  doOptionSave(op: OperateType) {
+    this.eventService.saveAgenda(this.currentAgenda, this.originAgenda, op).then((agenda) => {
+      if (agenda && agenda.length > 0) {
+        this.currentAgenda = agenda[0];
+      }
+    });
+  }
+
   save() {
-    if (this.validCheck()) {
-      if (this.currentAgenda.evi) {
-        if (this.originAgenda.rfg == RepeatFlag.Repeat) {
-          this.eventService.saveAgenda(this.currentAgenda, this.originAgenda, OperateType.OnlySel).then((agenda) => {
-            if (agenda && agenda.length > 0) {
-              this.currentAgenda = agenda[0];
-            }
-          });
-        } else {
-          this.eventService.saveAgenda(this.currentAgenda, this.originAgenda, OperateType.OnlySel).then((agenda) => {
+    if (this.validCheck()) {              // 输入校验
+      if (this.currentAgenda.evi) {       // 修改日程
+        if (this.originAgenda.rfg == RepeatFlag.Repeat) { // 重复
+          if (!this.modifyConfirm) {
+            this.modifyConfirm = this.createConfirm();
+          }
+
+          this.modifyConfirm.present();
+        } else {                          // 非重复/重复已经修改为非重复
+          this.eventService.saveAgenda(this.currentAgenda, this.originAgenda).then((agenda) => {
             if (agenda && agenda.length > 0) {
               this.currentAgenda = agenda[0];
             }
           });
         }
-      } else {
+      } else {                            // 新建日程
         this.eventService.saveAgenda(this.currentAgenda).then((agenda) => {
           if (agenda && agenda.length > 0) {
             this.currentAgenda = agenda[0];
