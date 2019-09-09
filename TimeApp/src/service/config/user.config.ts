@@ -8,6 +8,7 @@ import {EmitService} from "../util-service/emit.service";
 import {DataConfig} from "./data.config";
 import {FsData, PageDcData} from "../../data.mapping";
 import {Parter} from "../business/event.service";
+import {PlanData} from "../business/calendar.service";
 
 /**
  * create by on 2019/3/5
@@ -62,13 +63,18 @@ export class UserConfig {
 
   static parters: Array<Parter> = new Array<Parter>();
 
+  //个人计划
+  static privateplans: Array<PlanData> = new Array<PlanData>();
+
   //重复调用防止
   static troublestop: Map<string, any> = new Map<string, any>();
 
   //群组
   static groups: Array<PageDcData> = new Array<PageDcData>();
 
-  constructor(private sqlliteExec: SqliteExec, private util: UtilService, private emitService: EmitService) {
+  constructor(private sqlliteExec: SqliteExec,
+              private util: UtilService,
+              private emitService: EmitService) {
   }
 
   async init() {

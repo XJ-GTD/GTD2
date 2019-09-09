@@ -167,6 +167,22 @@ export class EventService extends BaseService {
    * @returns {boolean}
    */
   isAgendaChanged(newAgd : AgendaData ,oldAgd : AgendaData): boolean{
+    if (!newAgd.rtjson) {
+      if (newAgd.rt) {
+        newAgd.rtjson = JSON.parse(newAgd.rt);
+      } else {
+        newAgd.rtjson = new RtJson();
+      }
+    }
+
+    if (!oldAgd.rtjson) {
+      if (oldAgd.rt) {
+        oldAgd.rtjson = JSON.parse(oldAgd.rt);
+      } else {
+        oldAgd.rtjson = new RtJson();
+      }
+    }
+
     //重复选项发生变化
     if (newAgd.rtjson.cycletype != oldAgd.rtjson.cycletype){
       return true;
@@ -1129,6 +1145,9 @@ export class EventService extends BaseService {
     if (rtjson.cycletype == anyenum.CycleType.close){
 
       agdata.rfg = anyenum.RepeatFlag.NonRepeat;
+    }else{
+
+      agdata.rfg = anyenum.RepeatFlag.Repeat;
     }
 
     let txjson : TxJson  = agdata.txjson;
@@ -2467,12 +2486,13 @@ export class EventService extends BaseService {
   			 	 										select ev.*,
   			 	 										case when ifnull(ev.rtevi,'') = ''  then  ev.rtevi  else ev.evi end newrtevi
   			                      from gtd_ev ev
-  			                      where ev.todolist = ?1
+  			                      where ev.todolist = ?1 and ev.del = ?2
   		                    ) evv
   	                    ) evnext
                       group by evnext.newrtevi
+                      order by evnext.day asc
                        	`;
-      let agendaArray: Array<AgendaData> = await this.sqlExce.getExtLstByParam<AgendaData>(sql, [anyenum.ToDoListStatus.On]) || new Array<AgendaData>();
+      let agendaArray: Array<AgendaData> = await this.sqlExce.getExtLstByParam<AgendaData>(sql, [anyenum.ToDoListStatus.On,anyenum.DelType.undel]) || new Array<AgendaData>();
   		return agendaArray;
    }
 

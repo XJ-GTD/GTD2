@@ -1,5 +1,5 @@
 import {Component, ElementRef, Renderer2, ViewChild, ViewChildren, QueryList } from '@angular/core';
-import {IonicPage, NavController, ModalController, NavParams, Slides} from 'ionic-angular';
+import {IonicPage, NavController, ModalController, ActionSheetController, NavParams, Slides} from 'ionic-angular';
 import {UtilService} from "../../service/util-service/util.service";
 import {UserConfig} from "../../service/config/user.config";
 import {RestFulHeader, RestFulConfig} from "../../service/config/restful.config";
@@ -15,7 +15,7 @@ import {PageBoxComponent} from "../../components/page-box/page-box";
 import {CornerBadgeComponent} from "../../components/corner-badge/corner-badge";
 import {CalendarService} from "../../service/business/calendar.service";
 import {EventService, AgendaData, RtJson, TxJson} from "../../service/business/event.service";
-import { PageDirection, IsSuccess } from "../../data.enum";
+import { PageDirection, IsSuccess, OperateType, RepeatFlag, ToDoListStatus } from "../../data.enum";
 
 /**
  * Generated class for the 日程创建/修改 page.
@@ -45,8 +45,8 @@ import { PageDirection, IsSuccess } from "../../data.enum";
               </button>
             </div>
             <div class="card-subtitle" *ngIf="currentAgenda.bz && currentAgenda.bz != ''">
-              <button ion-button icon-end clear small>
-                <div>备注: 数据都是假的, 请勿模仿</div>
+              <button ion-button icon-end clear small (click)="changeComment()">
+                <div>备注: {{currentAgenda.bz}}</div>
                 <ion-icon ios="ios-create" md="ios-create"></ion-icon>
               </button>
             </div>
@@ -70,12 +70,17 @@ import { PageDirection, IsSuccess } from "../../data.enum";
               </button>
             </ion-col>
             <ion-col *ngIf="!currentAgenda.bz || currentAgenda.bz == ''">
-              <button ion-button icon-start clear small>
+              <button ion-button icon-start clear small (click)="changeComment()">
                 <ion-icon ios="ios-create" md="ios-create"></ion-icon>
                 <div>备注</div>
               </button>
             </ion-col>
-            <ion-col>
+            <ion-col *ngIf="currentAgenda.todolist == todoliston">
+              <button ion-button icon-only clear small>
+                <ion-icon ios="md-star" md="md-star"></ion-icon>
+              </button>
+            </ion-col>
+            <ion-col *ngIf="currentAgenda.todolist == todolistoff">
               <button ion-button icon-only clear small>
                 <ion-icon ios="md-star-outline" md="md-star-outline"></ion-icon>
               </button>
@@ -99,10 +104,10 @@ import { PageDirection, IsSuccess } from "../../data.enum";
                 </div>
               </button>
             </ion-col>
-            <ion-col *ngIf="currentAgenda.rts && currentAgenda.rts != ''">
+            <ion-col *ngIf="currentAgenda.rfg == repeatflag">
               <button ion-button small (click)="changeRepeat()">
                 <div>
-                重复周期 2周, 星期一、星期三、星期五, 3次
+                {{currentAgenda.rts}}
                 <corner-badge>3</corner-badge>
                 </div>
               </button>
@@ -112,9 +117,9 @@ import { PageDirection, IsSuccess } from "../../data.enum";
           <!--控制操作-->
           <ion-row *ngIf="currentAgenda.evi">
             <ion-col>
-              <button ion-button icon-start clear small>
+              <button ion-button icon-start clear small (click)="changePlan()">
                 <ion-icon ios="ios-add" md="ios-add"></ion-icon>
-                <div>计划</div>
+                <div>{{currentAgenda.ji | formatplan: '计划': privateplans}}</div>
               </button>
             </ion-col>
             <ion-col *ngIf="!currentAgenda.txs || currentAgenda.txs == ''">
@@ -123,7 +128,7 @@ import { PageDirection, IsSuccess } from "../../data.enum";
                 <div>提醒</div>
               </button>
             </ion-col>
-            <ion-col *ngIf="!currentAgenda.rts || currentAgenda.rts == ''">
+            <ion-col *ngIf="!currentAgenda.rfg || currentAgenda.rfg == nonrepeatflag">
               <button ion-button icon-start clear small (click)="changeRepeat()">
                 <ion-icon ios="ios-repeat" md="ios-repeat"></ion-icon>
                 <div>重复</div>
@@ -145,11 +150,22 @@ export class AgendaPage {
   currentuser: string = UserConfig.account.id;
   friends: Array<any> = UserConfig.friends;
   currentAgenda: AgendaData = {} as AgendaData;
-  originAgenda: AgendaData = {} as AgendaData;;
+  originAgenda: AgendaData = {} as AgendaData;
+
+  privateplans: Array<any> = UserConfig.privateplans;
+
+  modifyConfirm;
+
+  todoliston = ToDoListStatus.On;
+  todolistoff = ToDoListStatus.Off;
+
+  repeatflag = RepeatFlag.Repeat;
+  nonrepeatflag = RepeatFlag.NonRepeat;
 
   constructor(public navCtrl: NavController,
               public navParams: NavParams,
               public modalCtrl: ModalController,
+              private actionSheetCtrl: ActionSheetController,
               private emitService: EmitService,
               private agendaService: AgendaService,
               private util: UtilService,
@@ -185,7 +201,37 @@ export class AgendaPage {
     }
   }
 
+  ionViewWillLeave() {
+    if (this.modifyConfirm !== undefined) {
+      this.modifyConfirm.dismiss();
+    }
+  }
+
   changeDatetime() {}
+
+  changePlan() {
+    let modal = this.modalCtrl.create(DataConfig.PAGE._PLAN_PAGE, {ji: this.currentAgenda.ji});
+    modal.onDidDismiss(async (data)=>{
+      this.currentAgenda.ji = data.jh.ji;
+
+      if (this.originAgenda.ji != this.currentAgenda.ji) {
+        this.doOptionSave(OperateType.OnlySel);
+      }
+    });
+    modal.present();
+  }
+
+  changeComment() {
+    let modal = this.modalCtrl.create(DataConfig.PAGE._COMMENT_PAGE, {value: this.currentAgenda.bz});
+    modal.onDidDismiss(async (data)=>{
+      this.currentAgenda.bz = data.bz;
+
+      if (this.originAgenda.bz != this.currentAgenda.bz) {
+        this.doOptionSave(OperateType.OnlySel);
+      }
+    });
+    modal.present();
+  }
 
   changeRepeat() {
     if (!this.currentAgenda.rtjson && this.currentAgenda.rt) {
@@ -207,7 +253,29 @@ export class AgendaPage {
     modal.present();
   }
 
-  goRemove() {}
+  doOptionRemove(op: OperateType) {
+    this.eventService.removeAgenda(this.originAgenda, op)
+    .then(() => {
+      this.goBack();
+    });
+  }
+
+  goRemove() {
+    if (this.originAgenda.rfg == RepeatFlag.Repeat) { // 重复
+      if (this.modifyConfirm) {
+        this.modifyConfirm.dismiss();
+      }
+      this.modifyConfirm = this.createConfirm(true);
+
+      this.modifyConfirm.present();
+
+    } else {
+      this.eventService.removeAgenda(this.originAgenda, OperateType.OnlySel)
+      .then(() => {
+        this.goBack();
+      });
+    }
+  }
 
   goBack() {
     this.navCtrl.pop();
@@ -219,13 +287,94 @@ export class AgendaPage {
     }
   }
 
-  save() {
-    if (this.validCheck()) {
-      this.eventService.saveAgenda(this.currentAgenda).then((agenda) => {
-        if (agenda && agenda.length > 0) {
-          this.currentAgenda = agenda[0];
+  createConfirm(remove: boolean = false) {
+    let buttons: Array<any> = new Array<any>();
+
+    if (remove) {
+      buttons.push({
+        text: '仅删除此日程',
+        role: 'remove',
+        handler: () => {
+          this.doOptionRemove(OperateType.OnlySel);
         }
       });
+      buttons.push({
+        text: '删除所有将来日程',
+        role: 'remove',
+        handler: () => {
+          this.doOptionRemove(OperateType.FromSel);
+        }
+      });
+    } else {
+      buttons.push({
+        text: '仅针对此日程存储',
+        role: 'modify',
+        handler: () => {
+          this.doOptionSave(OperateType.OnlySel);
+        }
+      });
+      buttons.push({
+        text: '针对将来日程存储',
+        role: 'modify',
+        handler: () => {
+          this.doOptionSave(OperateType.FromSel);
+        }
+      });
+    }
+
+    buttons.push({
+      text: '取消',
+      role: 'cancel',
+      handler: () => {
+        console.log('Cancel clicked');
+      }
+    });
+
+    return this.actionSheetCtrl.create({
+      title: "此为重复日程。",
+      buttons: buttons
+    });
+  }
+
+  doOptionSave(op: OperateType) {
+    this.eventService.saveAgenda(this.currentAgenda, this.originAgenda, op).then((agenda) => {
+      if (agenda && agenda.length > 0) {
+        this.currentAgenda = agenda[0];
+        Object.assign(this.originAgenda, agenda[0]);
+      }
+    });
+  }
+
+  save() {
+    if (this.validCheck()) {              // 输入校验
+      if (this.currentAgenda.evi) {       // 修改日程
+        if (!this.eventService.isAgendaChanged(this.currentAgenda, this.originAgenda)) {
+          return;
+        }
+
+        if (this.originAgenda.rfg == RepeatFlag.Repeat) { // 重复
+          if (this.modifyConfirm) {
+            this.modifyConfirm.dismiss();
+          }
+          this.modifyConfirm = this.createConfirm();
+
+          this.modifyConfirm.present();
+        } else {                          // 非重复/重复已经修改为非重复
+          this.eventService.saveAgenda(this.currentAgenda, this.originAgenda, OperateType.OnlySel).then((agenda) => {
+            if (agenda && agenda.length > 0) {
+              this.currentAgenda = agenda[0];
+              Object.assign(this.originAgenda, agenda[0]);
+            }
+          });
+        }
+      } else {                            // 新建日程
+        this.eventService.saveAgenda(this.currentAgenda).then((agenda) => {
+          if (agenda && agenda.length > 0) {
+            this.currentAgenda = agenda[0];
+            Object.assign(this.originAgenda, agenda[0]);
+          }
+        });
+      }
     }
   }
 }
