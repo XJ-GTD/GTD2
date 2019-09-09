@@ -163,7 +163,11 @@ export class RadioSelectComponent implements ControlValueAccessor {
 
   change(e, val, index) {
     if (this.isMultiSelect) {
-      this._values[index] = val;
+      if (this._values[index] == val) {
+        this._values[index] = null;
+      } else {
+        this._values[index] = val;
+      }
       this.onModelChange(this._values);
       this.changedPropEvent.emit(this._values);
     } else {
