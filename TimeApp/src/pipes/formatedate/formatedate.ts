@@ -10,6 +10,9 @@ import * as moment from "moment";
   name: 'formatedate',
 })
 export class FormatedatePipe implements PipeTransform {
+
+
+  rang:number = 1000*60*60*24;
   /**
    * Takes a value and makes it lowercase.
    */
@@ -39,8 +42,54 @@ export class FormatedatePipe implements PipeTransform {
       if (args[0] == "CMM"){
         return moment(value).format("MM月");
       }
+      if (args[0] == "CSSMM"){
+        let ret;
+        console.log(moment(value).format("M") + "aaaa");
+        switch (moment(value).format("M")) {
+          case "1":
+            ret = "month1";
+            break;
+          case "2":
+            ret =  "month2";
+            break;
+          case "3":
+            ret =  "month3";
+            break;
+          case "4":
+            ret =  "month4";
+            break;
+          case "5":
+            ret =  "month5";
+            break;
+          case "6":
+            ret =  "month6";
+            break;
+          case "7":
+            ret = "month7";
+            break;
+          case "8":
+            ret =  "month8";
+            break;
+          case "9":
+            ret =  "month9";
+            break;
+          case "10":
+            ret =  "month10";
+            break;
+          case "11":
+            ret =  "month11";
+            break;
+          case "12":
+            ret =  "month12";
+            break;
+          default:
+            ret =  "month6";
+
+        }
+        return ret;
+      }
       if (args[0] == "CYYYY/MM/ND"){
-        return moment(value+"/01").format("YYYY年MM月");
+        return moment(value+"/01").locale("en").format("MMM .YYYY");
       }
       if (args[0] == "CWEEK"){
         let d =  moment(value).format("d");
@@ -140,6 +189,20 @@ export class FormatedatePipe implements PipeTransform {
           return moment(value).toNow(true);
         }
       }
+
+      if (args[0] == "withNowcss"){
+
+        let n = moment().diff(value);
+
+        if (n  > this.rang) {
+          return "fa fa-angle-double-up after";
+        } else if (n  < this.rang * -1 ) {
+          return "fa fa-angle-double-down before";
+        } else {
+          return "fa fa-angle-double-right current";
+        }
+      }
+
       if (args[0] == "YYYY年M月D日"){
         return moment(value).format("YYYY年M月D日");
       }

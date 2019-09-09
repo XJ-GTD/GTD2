@@ -1,5 +1,77 @@
 // http://ionicframework.com/docs/theming/
-
+//@font-face {
+//  font-family: 'Alibaba-PuHuiTi-Bold';
+//  src: url('../assets/fonts/Alibaba-PuHuiTi-Bold.otf') format('opentype');
+//}
+//
+//@font-face {
+//  font-family: 'Alibaba-PuHuiTi-Heavy';
+//  src: url('../assets/fonts/Alibaba-PuHuiTi-Heavy.otf') format('opentype');
+//}
+//
+//@font-face {
+//  font-family: 'Alibaba-PuHuiTi-Bold';
+//  src: url('../assets/fonts/Alibaba-PuHuiTi-Bold.otf') format('opentype');
+//}
+//
+//@font-face {
+//  font-family: 'Alibaba-PuHuiTi-Light';
+//  src: url('../assets/fonts/Alibaba-PuHuiTi-Light.otf') format('opentype');
+//}
+//
+//@font-face {
+//  font-family: 'Alibaba-PuHuiTi-Medium';
+//  src: url('../assets/fonts/Alibaba-PuHuiTi-Medium.otf') format('opentype');
+//}
+//@font-face {
+//  font-family: 'AlibabaSans-Black';
+//  src: url('../assets/fonts/AlibabaSans-Black.otf') format('opentype');
+//}
+//
+//@font-face {
+//  font-family: 'AlibabaSans-Bold';
+//  src: url('../assets/fonts/AlibabaSans-Bold.otf') format('opentype');
+//}
+//
+//@font-face {
+//  font-family: 'AlibabaSans-BoldItalic';
+//  src: url('../assets/fonts/AlibabaSans-BoldItalic.otf') format('opentype');
+//}
+//
+//@font-face {
+//  font-family: 'AlibabaSans-Heavy';
+//  src: url('../assets/fonts/AlibabaSans-Heavy.otf') format('opentype');
+//}
+//
+//@font-face {
+//  font-family: 'AlibabaSans-HeavyItalic';
+//  src: url('../assets/fonts/AlibabaSans-HeavyItalic.otf') format('opentype');
+//}
+//
+//@font-face {
+//  font-family: 'AlibabaSans-Italic';
+//  src: url('../assets/fonts/AlibabaSans-Italic.otf') format('opentype');
+//}
+//
+//@font-face {
+//  font-family: 'AlibabaSans-Light';
+//  src: url('../assets/fonts/AlibabaSans-Light.otf') format('opentype');
+//}
+//
+//@font-face {
+//  font-family: 'AlibabaSans-LightItalic';
+//  src: url('../assets/fonts/AlibabaSans-LightItalic.otf') format('opentype');
+//}
+//
+//@font-face {
+//  font-family: 'AlibabaSans-Medium';
+//  src: url('../assets/fonts/AlibabaSans-Medium.otf') format('opentype');
+//}
+//
+//@font-face {
+//  font-family: 'AlibabaSans-MediumItalic';
+//  src: url('../assets/fonts/AlibabaSans-MediumItalic.otf') format('opentype');
+//}
 // App Global Sass
 // --------------------------------------------------
 // Put style rules here that you want to apply globally. These
@@ -35,100 +107,12 @@
 //  url('../assets/fonts/PingFang Medium.svg') format('svg');
 //}
 @font-face {
-  font-family: 'Alibaba-PuHuiTi-Bold';
-  src: url('../assets/fonts/Alibaba-PuHuiTi-Bold.otf') format('opentype');
-}
-
-@font-face {
-  font-family: 'Alibaba-PuHuiTi-Heavy';
-  src: url('../assets/fonts/Alibaba-PuHuiTi-Heavy.otf') format('opentype');
-}
-
-@font-face {
-  font-family: 'Alibaba-PuHuiTi-Bold';
-  src: url('../assets/fonts/Alibaba-PuHuiTi-Bold.otf') format('opentype');
-}
-
-@font-face {
-  font-family: 'Alibaba-PuHuiTi-Light';
-  src: url('../assets/fonts/Alibaba-PuHuiTi-Light.otf') format('opentype');
-}
-
-@font-face {
-  font-family: 'Alibaba-PuHuiTi-Medium';
-  src: url('../assets/fonts/Alibaba-PuHuiTi-Medium.otf') format('opentype');
-}
-
-@font-face {
   font-family: 'Alibaba-PuHuiTi-Regular';
   src: url('../assets/fonts/Alibaba-PuHuiTi-Regular.otf') format('opentype');
 }
 
-@font-face {
-  font-family: 'AlibabaSans-Black';
-  src: url('../assets/fonts/AlibabaSans-Black.otf') format('opentype');
-}
-
-@font-face {
-  font-family: 'AlibabaSans-Bold';
-  src: url('../assets/fonts/AlibabaSans-Bold.otf') format('opentype');
-}
-
-@font-face {
-  font-family: 'AlibabaSans-BoldItalic';
-  src: url('../assets/fonts/AlibabaSans-BoldItalic.otf') format('opentype');
-}
-
-@font-face {
-  font-family: 'AlibabaSans-Heavy';
-  src: url('../assets/fonts/AlibabaSans-Heavy.otf') format('opentype');
-}
-
-@font-face {
-  font-family: 'AlibabaSans-HeavyItalic';
-  src: url('../assets/fonts/AlibabaSans-HeavyItalic.otf') format('opentype');
-}
-
-@font-face {
-  font-family: 'AlibabaSans-Italic';
-  src: url('../assets/fonts/AlibabaSans-Italic.otf') format('opentype');
-}
-
-@font-face {
-  font-family: 'AlibabaSans-Light';
-  src: url('../assets/fonts/AlibabaSans-Light.otf') format('opentype');
-}
-
-@font-face {
-  font-family: 'AlibabaSans-LightItalic';
-  src: url('../assets/fonts/AlibabaSans-LightItalic.otf') format('opentype');
-}
-
-@font-face {
-  font-family: 'AlibabaSans-Medium';
-  src: url('../assets/fonts/AlibabaSans-Medium.otf') format('opentype');
-}
-
-@font-face {
-  font-family: 'AlibabaSans-MediumItalic';
-  src: url('../assets/fonts/AlibabaSans-MediumItalic.otf') format('opentype');
-}
-
-@font-face {
-  font-family: 'AlibabaSans-Regular';
-  src: url('../assets/fonts/AlibabaSans-Regular.otf') format('opentype');
-}
-
-@font-face {
-  font-family: 'PingFang-Regular';
-  src: url('../assets/fonts/PingFangRegular.ttf') format('truetype'),
-  url('../assets/fonts/PingFangRegular.eot') format('embedded-opentype'),
-  url('../assets/fonts/PingFangRegular.woff') format('woff'),
-  url('../assets/fonts/PingFangRegular.svg') format('svg');
-}
-
 * {
-  font-family: Alibaba-PuHuiTi-Regular, PingFang-Regular, "微软雅黑", Roboto
+  font-family: Alibaba-PuHuiTi-Regular, Helvetica, Arial, sans-serif;
 }
 
 @import "../assets/css/weather-icons.min.css";

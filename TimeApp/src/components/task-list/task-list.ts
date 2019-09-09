@@ -1,4 +1,5 @@
 import {Component, Output, Input, EventEmitter} from "@angular/core";
+import * as moment from "moment";
 
 @Component({
   selector: 'task-list',
@@ -6,12 +7,15 @@ import {Component, Output, Input, EventEmitter} from "@angular/core";
     <ion-grid class = "list-contont">
       <ion-row class="list-todolist-content task-item" *ngFor="let task of tasklist"  [ngClass]="{'complete': task.cs == '1'}" (click)="gotoDetail(task)" >
           <div class="agendaline">
-            <div class="agenda-icon"></div>
             <div class="agenda-sn">{{task.evn}}</div>
+            <div class="agenda-tool">
+              <ion-icon class="fa fa-eraser"></ion-icon>
+              <ion-icon class="fa fa-check"></ion-icon>
+            </div>
           </div>
           <div class="agendaline">
             <div class="agenda-icon">
-              <ion-icon name="thumbs-up"></ion-icon>
+              <ion-icon class="{{(task.evd + ' ' + task.evt) | formatedate:'withNowcss'}}"></ion-icon>
             </div>
               <div class="agenda-st">{{(task.evd + ' ' + task.evt) | formatedate:'withNow'}}</div>
               <div  class="agenda-person">{{task.ui | formatuser: currentuser: friends}}</div>

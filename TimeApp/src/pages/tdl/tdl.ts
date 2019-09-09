@@ -17,7 +17,6 @@ import {FeedbackService} from "../../service/cordova/feedback.service";
 import {DayActivityData, MonthActivityData} from "../../service/business/calendar.service";
 import {PageDirection} from "../../data.enum";
 import {TdlGesture} from "./tdl-gestures";
-import {Ion} from "ionic-angular/umd";
 import {CalendarComponent} from "../../components/ion2-calendar";
 
 /**
@@ -49,9 +48,11 @@ import {CalendarComponent} from "../../components/ion2-calendar";
     <ion-content #contentD>
       <ion-grid #grid4Hight class = "list-contont">
         <ng-template ngFor let-monthActivityData [ngForOf]="monthActivityDatas" >
+          
           <ion-row class="list-dayagenda-month" >
-                <div class="back" [class.month7]="true" >
+                <div class="back {{monthActivityData.month  | formatedate :'CSSMM'}}" >
                 <p class="month-a">
+                 
                   {{monthActivityData.month  | formatedate :"CYYYY/MM/ND"}}
                 </p>
                 <p class="month-b">

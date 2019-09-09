@@ -18,14 +18,22 @@ import {Events} from 'ionic-angular';
           {{title}}
           <ion-badge *ngIf="data" (click)="clickSubtitle()">{{subtitle}}</ion-badge>
           </ion-title>
-          <ion-buttons end>
-            <button *ngIf="data" (click)="goRemove()">
-              <ion-icon ios="ios-trash" md="ios-trash"></ion-icon>
-            </button>
-            <button (click)="goBack()">
-              <ion-icon ios="md-arrow-back" md="md-arrow-back"></ion-icon>
-            </button>
-          </ion-buttons>
+          <div class="toolbar">
+            <div (click)="goRemove()">
+              <ion-icon class="fa fa-trash-o"></ion-icon>
+            </div>
+
+            <div  (click)="goRemove()">
+              <ion-icon class="fa fa-share-square-o"></ion-icon>
+            </div>
+
+            <div  (click)="goRemove()">
+              <ion-icon class="fa fa-floppy-o"></ion-icon>
+            </div>
+            <div (click)="goBack()">
+              <ion-icon class="fa fa-undo"></ion-icon>
+            </div>
+          </div>
         </ion-toolbar>
       </ion-header>
       <ion-content class="box-content">
