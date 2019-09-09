@@ -17,7 +17,6 @@ import {FeedbackService} from "../../service/cordova/feedback.service";
 import {DayActivityData, MonthActivityData} from "../../service/business/calendar.service";
 import {PageDirection} from "../../data.enum";
 import {TdlGesture} from "./tdl-gestures";
-import {Ion} from "ionic-angular/umd";
 import {CalendarComponent} from "../../components/ion2-calendar";
 
 /**

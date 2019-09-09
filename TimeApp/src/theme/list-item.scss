@@ -41,50 +41,62 @@
     }
     .month1 {
       background-image: url("../assets/imgs/listicon/1@3x.png");
+      color:rgba(69,60,133,1);
     }
     .month2 {
       background-image: url("../assets/imgs/listicon/2@3x.png");
+      color:rgba(143,37,101,1);
 
     }
     .month3 {
       background-image: url("../assets/imgs/listicon/3@3x.png");
+      color:rgba(141,107,34,1);
 
     }
     .month4 {
       background-image: url("../assets/imgs/listicon/4@3x.png");
+      color:rgba(153,13,70,1);
 
     }
 
     .month5 {
       background-image: url("../assets/imgs/listicon/5@3x.png");
+      color:rgba(254,240,246,1);
 
     }
     .month6 {
       background-image: url("../assets/imgs/listicon/6@3x.png");
+      color:rgba(45,101,105,1);
 
     }
     .month7 {
       background-image: url("../assets/imgs/listicon/7@3x.png");
+      color:rgba(157,20,40,1);
 
     }
     .month8 {
       background-image: url("../assets/imgs/listicon/8@3x.png");
+      color:rgba(20,88,98,1);
 
     }
     .month9 {
       background-image: url("../assets/imgs/listicon/9@3x.png");
+      color:rgba(255,252,245,1);
 
     }
     .month10 {
       background-image: url("../assets/imgs/listicon/10@3x.png");
+      color:rgba(93,90,19,1);
 
     }
     .month11 {
       background-image: url("../assets/imgs/listicon/11@3x.png");
+      color:rgba(119,92,72,1);
 
     }
     .month12 {
       background-image: url("../assets/imgs/listicon/12@3x.png");
+      color:rgba(78,70,119,1);
 
     }
 
@@ -191,21 +203,31 @@
 
     .agendaline {
       position: relative;
-      display: inline-block;
+      display: flex;
       width: 100%;
       height: auto;
       margin-top: 5px;
       margin-bottom: 5px;
+      margin-left: 14px;
+      .agenda-tool{
+        width: 20%;
+        text-align: center;
+        font-size: 16px;
+        .icon{
+          margin-left: 8px;
+          color: white;
+        }
+
+      }
 
       .agenda-st {
         font-size: 12px;
-        letter-spacing: 1px;
         float: left;
-        font-weight: 400;
+        font-weight: 500;
       }
 
       .agenda-person {
-        margin-left: 12%;
+        //margin-left: 12%;
         font-size: 10px;
         font-weight: 300;
 
@@ -217,7 +239,6 @@
         text-overflow: ellipsis;
         overflow: hidden;
         font-size: 16px;
-        letter-spacing: 1px;
         font-weight: 500;
         height: 100%;
         display: -webkit-box;
@@ -226,16 +247,25 @@
         overflow: hidden;
       }
 
+
       .agenda-icon {
         position: relative;
-        width: 12%;
         text-align: center;
         height: 100%;
         float: left;
-
+        padding-right: 4px;
+        line-height: 16px;
         .icon {
           font-size: 12px;
-          color: red;
+        }
+        .before {
+          color: #11758D
+        }
+        .after {
+          color: #11758D;
+        }
+        .current {
+          color: #B18E00;
         }
       }
     }
@@ -258,7 +288,7 @@
     .agendaline {
 
       position: relative;
-      display: inline-block;
+      display: flex;
       width: 100%;
       height: auto;
       margin-top: 5px;
@@ -267,12 +297,10 @@
       .agenda-st {
         font-size: 12px;
         letter-spacing: 1px;
-        margin-left: 12%;
         font-weight: 400;
       }
 
       .agenda-person {
-        margin-left: 12%;
         font-size: 10px;
         font-weight: 300;
 

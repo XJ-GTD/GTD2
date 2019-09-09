@@ -72,11 +72,11 @@ $baseBackcolor_black: rgba(0, 12, 31, 1);
     //月份表示列表
     .list-dayagenda-month {
       .month-a {
-        color: rgba(235, 239, 250, 1);
+        //color: rgba(235, 239, 250, 1);
       }
 
       .month-b {
-        color: rgba(235, 239, 250, 1);
+        //color: rgba(235, 239, 250, 1);
       }
 
 
@@ -144,6 +144,11 @@ $baseBackcolor_black: rgba(0, 12, 31, 1);
       box-shadow: 0px 0px 5px 0px rgba(3, 0, 0, 0.2);
 
       .agendaline {
+        .agenda-tool {
+          .icon {
+            color: rgba(255, 255, 255, 1);
+          }
+        }
         .agenda-sn {
           color: rgba(255, 255, 255, 1);
 
@@ -207,12 +212,15 @@ $baseBackcolor_black: rgba(0, 12, 31, 1);
   page-box {
     .box-header {
       ion-toolbar {
-        .toolbar-background {
-        }
         ion-title{
           .toolbar-title {
             color: rgba(235,239,250,1);
           }
+
+
+        }
+        .icon {
+          color: rgba(235,239,250,1);
         }
       }
     }

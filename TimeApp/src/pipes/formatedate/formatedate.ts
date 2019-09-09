@@ -10,6 +10,9 @@ import * as moment from "moment";
   name: 'formatedate',
 })
 export class FormatedatePipe implements PipeTransform {
+
+
+  rang:number = 1000*60*60*24;
   /**
    * Takes a value and makes it lowercase.
    */
@@ -86,7 +89,7 @@ export class FormatedatePipe implements PipeTransform {
         return ret;
       }
       if (args[0] == "CYYYY/MM/ND"){
-        return moment(value+"/01").format("YYYY年MM月");
+        return moment(value+"/01").locale("en").format("MMM .YYYY");
       }
       if (args[0] == "CWEEK"){
         let d =  moment(value).format("d");
@@ -186,6 +189,20 @@ export class FormatedatePipe implements PipeTransform {
           return moment(value).toNow(true);
         }
       }
+
+      if (args[0] == "withNowcss"){
+
+        let n = moment().diff(value);
+
+        if (n  > this.rang) {
+          return "fa fa-angle-double-up after";
+        } else if (n  < this.rang * -1 ) {
+          return "fa fa-angle-double-down before";
+        } else {
+          return "fa fa-angle-double-right current";
+        }
+      }
+
       if (args[0] == "YYYY年M月D日"){
         return moment(value).format("YYYY年M月D日");
       }

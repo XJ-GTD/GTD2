@@ -7,7 +7,7 @@ $baseBackcolor_white: rgba(241,241,241,1);
   .haContent {
     ion-calendar {
       ion-card-header {
-        background: rgba(0, 53, 66, 1);;
+        background:rgba(0,53,66,1);
         border-bottom: 0px rgba(30, 69, 89, 1) solid;
         .title {
           p {
@@ -73,11 +73,11 @@ $baseBackcolor_white: rgba(241,241,241,1);
     //月份表示列表
     .list-dayagenda-month {
       .month-a {
-        color:rgba(51,51,51,1);
+        //color:rgba(51,51,51,1);
       }
 
       .month-b {
-        color:rgba(51,51,51,1);
+        //color:rgba(51,51,51,1);
       }
     }
 
@@ -100,18 +100,30 @@ $baseBackcolor_white: rgba(241,241,241,1);
         }
 
         .ys-fsize {
-          color:rgba(56,160,185,1);
+          color:rgba(153,153,153,1);
         }
 
         .d-fsize {
-          color:rgba(153,153,153,1);
+          color:rgba(56,160,185,1);
         }
 
       }
 
+
       .d-title {
         background:rgba(42,119,138,1);
         box-shadow:0px 0px 10px 0px rgba(3,0,0,0.2);
+
+        .d-title-chr {
+          color:rgba(150,189,199,1);
+          span{
+            color:rgba(235,239,250,1);
+          }
+
+          .daycoment{
+            color:rgba(56,160,185,1);
+          }
+        }
 
         .first {
           background:rgba(53,152,176,1);
@@ -129,6 +141,11 @@ $baseBackcolor_white: rgba(241,241,241,1);
       box-shadow:0px 0px 5px 0px rgba(201,200,200,0.4);
 
       .agendaline {
+        .agenda-tool {
+          .icon {
+            color:rgba(51,51,51,1);
+          }
+        }
         .agenda-sn {
           color:rgba(51,51,51,1);
 
@@ -191,12 +208,13 @@ $baseBackcolor_white: rgba(241,241,241,1);
   page-box {
     .box-header {
       ion-toolbar {
-        .toolbar-background {
-        }
         ion-title{
           .toolbar-title {
             color:rgba(17,117,141,1);
           }
+        }
+        .icon {
+          color:rgba(17,117,141,1);
         }
       }
     }
@@ -218,9 +236,9 @@ $baseBackcolor_white: rgba(241,241,241,1);
     background: $baseBackcolor_white;
   }
   page-do {
-    background:rgba(248,248,248,1);
+    background: $baseBackcolor_white;
   }
   page-agenda {
-    background:rgba(248,248,248,1);
+    background: $baseBackcolor_white;
   }
 }
