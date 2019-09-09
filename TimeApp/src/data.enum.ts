@@ -175,3 +175,8 @@ export enum ToDoListStatus {
   On = "0",
   Off = "1"
 }
+
+export enum EventFinishStatus{
+  Finished = "0",
+  NonFinish = "1"
+}

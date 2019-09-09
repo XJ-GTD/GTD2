@@ -33,6 +33,7 @@ import {
   assertNotNull,
   assertFail
 } from "../../util/util";
+import {ToDoListStatus} from "../../data.enum";
 
 @Injectable()
 export class EventService extends BaseService {
@@ -357,8 +358,8 @@ export class EventService extends BaseService {
    * 删除事件
    * @param {AgendaData} oriAgdata
    * @param {OperateType} delType
-   * 删除非重复事件、重复事件中的独立日使用OperateType.OnlySel
-   * 删除重复事件使用OperateType.FromSel
+   * 重复事件删除，选仅删除当前事件使用OperateType.OnlySel，选从删除日程开始修改使用OperateType.FromSel，
+   * 其他事件删除使用OperateType.FromSel，
    * @returns {Promise<Array<AgendaData>>}
    */
   async removeAgenda(oriAgdata : AgendaData, delType : anyenum.OperateType):Promise<Array<AgendaData>>{
@@ -529,8 +530,8 @@ export class EventService extends BaseService {
    * @param {AgendaData} newAgdata 新事件详情
    * @param {AgendaData} oriAgdata 原事件详情 修改场合必须传入
    * @param {OperateType} modiType
-   * 修改非重复事件to非重复日程、重复事件中的某一日程to独立日程使用OperateType.OnlySel，
-   * 修改重复事件to重复事件、非重复事件to重复事件使用OperateType.FromSel，
+   * 重复事件修改，选仅修改当前事件使用OperateType.OnlySel，选从当前日程开始修改使用OperateType.FromSel，
+   * 其他事件修改使用OperateType.FromSel，
    * 新建事件使用 OperateType.Non
    * @returns {Promise<Array<AgendaData>>}
    */
@@ -644,7 +645,28 @@ export class EventService extends BaseService {
    */
   private async updateAgenda(newAgdata: AgendaData,oriAgdata : AgendaData, modiType : anyenum.OperateType):Promise<Array<AgendaData>> {
 
-
+    //重复设定
+    let repeatModify : RepeatModify = RepeatModify.NonRepeatToNonRepeat;
+  /* 修改场景：
+  *  非重复事件to非重复、重复事件中的某一日程to独立日程
+  * `修改重复事件to重复事件、非重复事件to重复事件
+  */
+    //非重复事件to非重复
+    if (oriAgdata.rfg ==  anyenum.RepeatFlag.NonRepeat && newAgdata.rtjson.cycletype == anyenum.CycleType.close){
+      repeatModify = RepeatModify.NonRepeatToNonRepeat;
+    }
+    //非重复事件to重复事件
+    if (oriAgdata.rfg ==  anyenum.RepeatFlag.NonRepeat  && newAgdata.rtjson.cycletype != anyenum.CycleType.close){
+      repeatModify = RepeatModify.NonRepeatToRepeat;
+    }
+    //重复事件中的某一日程to独立日程
+    if (oriAgdata.rfg == anyenum.RepeatFlag.Repeat && modiType == anyenum.OperateType.OnlySel){
+      repeatModify = RepeatModify.RepeatToNon;
+    }
+    //重复事件to重复事件或非重复
+    if (oriAgdata.rfg == anyenum.RepeatFlag.Repeat && modiType == anyenum.OperateType.FromSel){
+      repeatModify = RepeatModify.RepeatToRepeat;
+    }
     let outAgds = new Array<AgendaData>();//返回事件
 
 
@@ -660,7 +682,7 @@ export class EventService extends BaseService {
     1.修改当前数据内容 2.日程表新增一条对应数据 3重建相关提醒
     如果改变从当前所有，则
     1.改变原日程结束日 2.删除从当前所有事件及相关提醒 3.新建新事件日程*/
-    if (modiType == anyenum.OperateType.FromSel ){
+    if (repeatModify == RepeatModify.RepeatToRepeat || repeatModify == RepeatModify.NonRepeatToRepeat ){
 
       let sq : string ;
 
@@ -695,7 +717,7 @@ export class EventService extends BaseService {
       //修改与新增记录合并成返回事件
       outAgds = [...outAgds, ...retParamEv.outAgdatas];
 
-    }else if(modiType == anyenum.OperateType.OnlySel) {
+    }else if(repeatModify == RepeatModify.RepeatToNon || repeatModify == RepeatModify.NonRepeatToNonRepeat ) {
 
       //事件表更新
       let outAgd  = {} as AgendaData;
@@ -1071,6 +1093,10 @@ export class EventService extends BaseService {
     agdata.iv = !agdata.iv ? anyenum.InvitePowr.disable : agdata.iv ;
     agdata.sr = !agdata.sr ? "" : agdata.sr ;
     agdata.gs = !agdata.gs ? anyenum.GsType.self : agdata.gs ;
+
+    agdata.wc = !agdata.wc ? anyenum.EventFinishStatus.NonFinish : agdata.wc ;
+    agdata.todolist = !agdata.todolist ? anyenum.ToDoListStatus.Off : agdata.todolist ;
+
     agdata.tb = !agdata.tb ? anyenum.SyncType.unsynch : agdata.tb ;
     agdata.del = !agdata.del ? anyenum.DelType.undel : agdata.del ;
     agdata.rfg = !agdata.rfg ? anyenum.RepeatFlag.NonRepeat : agdata.rfg ;
@@ -1103,9 +1129,6 @@ export class EventService extends BaseService {
     if (rtjson.cycletype == anyenum.CycleType.close){
 
       agdata.rfg = anyenum.RepeatFlag.NonRepeat;
-    }else{
-
-      agdata.rfg = anyenum.RepeatFlag.Repeat;
     }
 
     let txjson : TxJson  = agdata.txjson;
@@ -1138,7 +1161,7 @@ export class EventService extends BaseService {
       ev.tb = anyenum.SyncType.unsynch;
       ev.del = anyenum.DelType.undel;
       ret.ed = ev.evd;
-      ev.todolist = anyenum.ToDoListStatus.On;
+
       ret.sqlparam.push(ev.rpTParam());
       if (txjson.reminds && txjson.reminds.length > 0) {
         ret.sqlparam = [...ret.sqlparam ,...this.sqlparamAddTxWa(ev,anyenum.ObjectType.Event,txjson,agdata.al,agdata.st)];
@@ -2981,6 +3004,12 @@ export class TxJson {
   reminds = new Array<anyenum.RemindTime>();
 }
 
+enum RepeatModify {
+  NonRepeatToNonRepeat = "NonRepeatToNonRepeat",//非重复事件to非重复事件
+  RepeatToNon = "RepeatToNon",//重复事件中的某一日程to独立日程
+  RepeatToRepeat = "RepeatToRepeat",//修改重复事件to重复事件
+  NonRepeatToRepeat = "NonRepeatToRepeat" //非重复事件to重复事件
+}
 enum DUflag {
   del = "del",
   update = "update"
