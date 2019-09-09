@@ -227,7 +227,29 @@ export class AgendaPage {
     modal.present();
   }
 
-  goRemove() {}
+  doOptionRemove(op: OperateType) {
+    this.eventService.removeAgenda(this.originAgenda, op)
+    .then(() => {
+      this.goBack();
+    });
+  }
+
+  goRemove() {
+    if (this.originAgenda.rfg == RepeatFlag.Repeat) { // 重复
+      if (this.modifyConfirm) {
+        this.modifyConfirm.dismiss();
+      }
+      this.modifyConfirm = this.createConfirm(true);
+
+      this.modifyConfirm.present();
+
+    } else {
+      this.eventService.removeAgenda(this.originAgenda, OperateType.OnlySel)
+      .then(() => {
+        this.goBack();
+      });
+    }
+  }
 
   goBack() {
     this.navCtrl.pop();
@@ -239,29 +261,52 @@ export class AgendaPage {
     }
   }
 
-  createConfirm() {
-    return this.actionSheetCtrl.create({
-      buttons: [
-        {
-          text: '仅针对此日程存储',
-          handler: () => {
-            this.doOptionSave(OperateType.OnlySel);
-          }
-        },
-        {
-          text: '针对将来日程存储',
-          handler: () => {
-            this.doOptionSave(OperateType.FromSel);
-          }
-        },
-        {
-          text: '取消',
-          role: 'cancel',
-          handler: () => {
-            console.log('Cancel clicked');
-          }
+  createConfirm(remove: boolean = false) {
+    let buttons: Array<any> = new Array<any>();
+
+    if (remove) {
+      buttons.push({
+        text: '仅删除此日程',
+        role: 'remove',
+        handler: () => {
+          this.doOptionRemove(OperateType.OnlySel);
         }
-      ]
+      });
+      buttons.push({
+        text: '删除所有将来日程',
+        role: 'remove',
+        handler: () => {
+          this.doOptionRemove(OperateType.FromSel);
+        }
+      });
+    } else {
+      buttons.push({
+        text: '仅针对此日程存储',
+        role: 'modify',
+        handler: () => {
+          this.doOptionSave(OperateType.OnlySel);
+        }
+      });
+      buttons.push({
+        text: '针对将来日程存储',
+        role: 'modify',
+        handler: () => {
+          this.doOptionSave(OperateType.FromSel);
+        }
+      });
+    }
+
+    buttons.push({
+      text: '取消',
+      role: 'cancel',
+      handler: () => {
+        console.log('Cancel clicked');
+      }
+    });
+
+    return this.actionSheetCtrl.create({
+      title: "此为重复日程。",
+      buttons: buttons
     });
   }
 
