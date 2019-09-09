@@ -45,8 +45,8 @@ import { PageDirection, IsSuccess, OperateType, RepeatFlag, ToDoListStatus } fro
               </button>
             </div>
             <div class="card-subtitle" *ngIf="currentAgenda.bz && currentAgenda.bz != ''">
-              <button ion-button icon-end clear small>
-                <div>备注: 数据都是假的, 请勿模仿</div>
+              <button ion-button icon-end clear small (click)="changeComment()">
+                <div>备注: {{currentAgenda.bz}}</div>
                 <ion-icon ios="ios-create" md="ios-create"></ion-icon>
               </button>
             </div>
