@@ -167,7 +167,7 @@ export class EventService extends BaseService {
    * @returns {boolean}
    */
   isAgendaChanged(newAgd : AgendaData ,oldAgd : AgendaData): boolean{
-    if (!newAgd.rtjson) {
+    /*if (!newAgd.rtjson) {
       if (newAgd.rt) {
         newAgd.rtjson = JSON.parse(newAgd.rt);
       } else {
@@ -181,7 +181,7 @@ export class EventService extends BaseService {
       } else {
         oldAgd.rtjson = new RtJson();
       }
-    }
+    }*/
 
     //重复选项发生变化
     if (newAgd.rtjson.cycletype != oldAgd.rtjson.cycletype){
