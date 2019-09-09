@@ -104,10 +104,10 @@ import { PageDirection, IsSuccess, OperateType, RepeatFlag, ToDoListStatus } fro
                 </div>
               </button>
             </ion-col>
-            <ion-col *ngIf="currentAgenda.rts && currentAgenda.rts != ''">
+            <ion-col *ngIf="currentAgenda.rfg == repeatflag">
               <button ion-button small (click)="changeRepeat()">
                 <div>
-                重复周期 2周, 星期一、星期三、星期五, 3次
+                {{currentAgenda.rts}}
                 <corner-badge>3</corner-badge>
                 </div>
               </button>
@@ -156,6 +156,8 @@ export class AgendaPage {
 
   todoliston = ToDoListStatus.On;
   todolistoff = ToDoListStatus.Off;
+
+  repeatflag = RepeatFlag.Repeat;
 
   constructor(public navCtrl: NavController,
               public navParams: NavParams,
