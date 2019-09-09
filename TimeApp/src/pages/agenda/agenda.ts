@@ -76,12 +76,12 @@ import { PageDirection, IsSuccess, OperateType, RepeatFlag, ToDoListStatus } fro
               </button>
             </ion-col>
             <ion-col *ngIf="currentAgenda.todolist == todoliston">
-              <button ion-button icon-only clear small>
+              <button ion-button icon-only clear small (click)="removeTodolist()">
                 <ion-icon ios="md-star" md="md-star"></ion-icon>
               </button>
             </ion-col>
             <ion-col *ngIf="currentAgenda.todolist == todolistoff">
-              <button ion-button icon-only clear small>
+              <button ion-button icon-only clear small (click)="addTodolist()">
                 <ion-icon ios="md-star-outline" md="md-star-outline"></ion-icon>
               </button>
             </ion-col>
@@ -209,6 +209,16 @@ export class AgendaPage {
 
   changeDatetime() {}
 
+  addTodolist() {
+    this.currentAgenda.todolist = ToDoListStatus.On;
+    this.doOptionSave(OperateType.OnlySel);
+  }
+
+  removeTodolist() {
+    this.currentAgenda.todolist = ToDoListStatus.Off;
+    this.doOptionSave(OperateType.OnlySel);
+  }
+
   changePlan() {
     let modal = this.modalCtrl.create(DataConfig.PAGE._PLAN_PAGE, {ji: this.currentAgenda.ji});
     modal.onDidDismiss(async (data)=>{
@@ -242,7 +252,7 @@ export class AgendaPage {
       this.currentAgenda.rtjson = new RtJson();
     }
 
-    let modal = this.modalCtrl.create(DataConfig.PAGE._CF_PAGE, {value: this.currentAgenda.rtjson});
+    let modal = this.modalCtrl.create(DataConfig.PAGE._REPEAT_PAGE, {value: this.currentAgenda.rtjson});
     modal.onDidDismiss(async (data) => {
       if (data) {
         this.currentAgenda.rtjson = data;

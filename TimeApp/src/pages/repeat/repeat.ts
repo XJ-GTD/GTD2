@@ -73,7 +73,7 @@ import {ModalBoxComponent} from "../../components/modal-box/modal-box";
             <p>重复开启</p>
           </ion-row>
           <ion-row justify-content-start>
-            <radio-select [options]="itemRangeOptions" [(ngModel)]="cfWeekOptions.freqOption" (onChanged)="onFreqOptionChanged($event)"></radio-select>
+            <radio-select [options]="itemRangeOptions"  multiple="true" [(ngModel)]="cfWeekOptions.freqOption" (onChanged)="onFreqOptionChanged($event)"></radio-select>
           </ion-row>
         </ion-grid>
       </ion-row>
@@ -120,7 +120,7 @@ import {ModalBoxComponent} from "../../components/modal-box/modal-box";
             <p>重复开启</p>
           </ion-row>
           <ion-row justify-content-start>
-            <radio-select [options]="itemRangeOptions" [(ngModel)]="cfMonthOptions.freqOption" (onChanged)="onFreqOptionChanged($event)"></radio-select>
+            <radio-select [options]="itemRangeOptions" multiple="true" [(ngModel)]="cfMonthOptions.freqOption" (onChanged)="onFreqOptionChanged($event)"></radio-select>
           </ion-row>
         </ion-grid>
       </ion-row>
