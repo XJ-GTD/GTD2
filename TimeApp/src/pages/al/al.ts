@@ -22,7 +22,6 @@ import {RabbitMQService} from "../../service/cordova/rabbitmq.service";
       </div>
       <div class="text">{{ alData.text }}</div>
     </div>
-    <BackComponent></BackComponent>
   `
 })
 export class AlPage {
