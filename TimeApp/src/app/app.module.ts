@@ -97,6 +97,9 @@ import {JhPageModule} from "../pages/jh/jh.module";
 import {DzPageModule} from "../pages/dz/dz.module";
 import {CfPageModule} from "../pages/cf/cf.module";
 import {FoPageModule} from "../pages/fo/fo.module";
+import {CommentPageModule} from "../pages/comment/comment.module";
+import {RepeatPageModule} from "../pages/repeat/repeat.module";
+import {PlanPageModule} from "../pages/plan/plan.module";
 import {CardListComponentModule} from "../components/card-list/card-list.module";
 import {TaskListComponentModule} from "../components/task-list/task-list.module";
 import {ScrollSelectComponentModule} from "../components/scroll-select/scroll-select.module";
@@ -169,6 +172,9 @@ import {CalendarService} from "../service/business/calendar.service";
     CfPageModule,
     FoPageModule,
     AipPageModule,
+    RepeatPageModule,
+    CommentPageModule,
+    PlanPageModule,
     ConfirmboxComponentModule,
     CardListComponentModule,
     TaskListComponentModule,

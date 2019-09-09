@@ -14,7 +14,7 @@ import {FeedbackService} from "../../service/cordova/feedback.service";
 import {PageBoxComponent} from "../../components/page-box/page-box";
 import {TaskListComponent} from "../../components/task-list/task-list";
 import {CalendarService} from "../../service/business/calendar.service";
-import {EventService, TaskData} from "../../service/business/event.service";
+import {EventService, AgendaData} from "../../service/business/event.service";
 import { PageDirection, IsSuccess } from "../../data.enum";
 
 /**
@@ -43,7 +43,7 @@ export class DoPage {
 
   tasklist: TaskListComponent;
   @ViewChildren("tasklist") tasklists: QueryList<TaskListComponent>;
-  cachedtasks: Array<TaskData>;
+  cachedtasks: Array<AgendaData>;
 
   days: Array<string> = new Array<string>();
   topday: string = moment().format("YYYY/MM/DD");
@@ -63,10 +63,11 @@ export class DoPage {
   }
 
   ionViewDidLoad() {
-    this.doService.createTestDatas()
-    .then(() => {
-      this.days.push(moment().format("YYYY/MM/DD"));
-    });
+    //this.doService.createTestDatas()
+    // .then(() => {
+    //   this.days.push(moment().format("YYYY/MM/DD"));
+    // });
+    this.days.push(moment().format("YYYY/MM/DD"));
   }
 
   pagedown(target: any) {
@@ -98,24 +99,24 @@ export class DoPage {
       direction = PageDirection.PageDown;
     }
 
-    this.eventService.fetchUncompletedTasks()
+    this.eventService.todolist()
     .then((d) => {
       if (d && d.length > 0) {
 
-        this.emitService.register("mwxing.calendar.activities.changed", (data) => {
-          if (!data) {
-            return;
-          }
-
-          // 多条数据同时更新/单条数据更新
-          if (data instanceof Array) {
-            for (let single of data) {
-              this.cachedtasks = this.eventService.mergeUncompletedTasks(this.cachedtasks, single);
-            }
-          } else {
-            this.cachedtasks = this.eventService.mergeUncompletedTasks(this.cachedtasks, data);
-          }
-        });
+        // this.emitService.register("mwxing.calendar.activities.changed", (data) => {
+        //   if (!data) {
+        //     return;
+        //   }
+        //
+        //   // 多条数据同时更新/单条数据更新
+        //   if (data instanceof Array) {
+        //     for (let single of data) {
+        //       this.cachedtasks = this.eventService.mergeUncompletedTasks(this.cachedtasks, single);
+        //     }
+        //   } else {
+        //     this.cachedtasks = this.eventService.mergeUncompletedTasks(this.cachedtasks, data);
+        //   }
+        // });
 
         this.cachedtasks = d;
 
@@ -127,8 +128,18 @@ export class DoPage {
     });
   }
 
-  gotoDetail(target: any) {
+  gotoDetail(event: any) {
+    if (event && event.value) {
+      let target = event.value;
 
+      let p: ScdPageParamter = new ScdPageParamter();
+
+      p.si = target.evi;
+      p.d = moment(target.evd);
+
+      this.feedback.audioClick();
+      this.modalCtr.create(DataConfig.PAGE._AGENDA_PAGE, p).present();
+    }
   }
 
   goNew() {}
@@ -139,6 +150,6 @@ export class DoPage {
 
   complete(target: any) {
     console.log(target);
-    this.eventService.finishTask(target);
+    // this.eventService.finishTask(target);
   }
 }
