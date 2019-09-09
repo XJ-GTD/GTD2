@@ -104,6 +104,8 @@ export class RadioSelectComponent implements ControlValueAccessor {
           } else {
             target[currindex] = null;
           }
+
+          return target;
         }, this._values);
       }
       this.onModelChange(this._values);
@@ -141,6 +143,8 @@ export class RadioSelectComponent implements ControlValueAccessor {
           } else {
             target[currindex] = null;
           }
+
+          return target;
         }, this._values);
       }
     } else {
