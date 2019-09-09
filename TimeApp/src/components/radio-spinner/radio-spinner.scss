@@ -6,7 +6,7 @@ radio-spinner {
   }
 
   button, .button-ios, .button-clear-ios {
-    background-color: transparent;
+    background-color: #111;
     color: #fff;
     border: 1.5px solid #fff;
     border-right: 0px;
@@ -16,17 +16,17 @@ radio-spinner {
   }
 
   button.checked, .button-ios.checked, .button-clear-ios.checked {
-    background-color: #fff;
+    background-color: #111;
     color: $masterColor;
   }
 
   button.checked:first-child, .button-ios.checked:first-child, .button-clear-ios.checked:first-child {
-    background-color: #fff;
+    background-color: #111;
     color: $masterColor;
   }
 
   button.checked:last-child, .button-ios.checked:last-child, .button-clear-ios.checked:last-child {
-    background-color: #fff;
+    background-color: #111;
     color: $masterColor;
   }
 
