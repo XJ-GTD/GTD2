@@ -255,7 +255,7 @@ export class AgendaPage {
     let modal = this.modalCtrl.create(DataConfig.PAGE._REPEAT_PAGE, {value: this.currentAgenda.rtjson});
     modal.onDidDismiss(async (data) => {
       if (data && data.rtjson) {
-        this.currentAgenda.rtjson = data;
+        this.currentAgenda.rtjson = data.rtjson;
         this.currentAgenda.rt = JSON.stringify(this.currentAgenda.rtjson);
         this.currentAgenda.rts = this.currentAgenda.rtjson.text();
       }
