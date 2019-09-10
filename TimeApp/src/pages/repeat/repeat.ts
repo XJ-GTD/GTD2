@@ -495,6 +495,8 @@ export class RepeatPage {
               if (val) {
                 target.push(index);
               }
+
+              return target;
             }, rtjson.openway);
           }
         }
@@ -527,6 +529,8 @@ export class RepeatPage {
               if (val) {
                 target.push(index);
               }
+
+              return target;
             }, rtjson.openway);
           }
         }
