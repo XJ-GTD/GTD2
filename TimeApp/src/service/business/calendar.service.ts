@@ -40,6 +40,57 @@ export class CalendarService extends BaseService {
   }
 
   /**
+   * 刷新日历显示列表到指定月份
+   *
+   * 所有月份数据保持在calendaractivities中
+   *
+   * @author leon_xi@163.com
+   **/
+  async refreshCalendarActivitiesToMonth(month: string = moment().format("YYYY/MM")): Promise<Array<MonthActivityData>> {
+    this.assertEmpty(month);    // 入参不能为空
+
+    // 数据不存在
+    if (!this.calendaractivities || this.calendaractivities.length <= 0) {
+      await this.getCalendarActivities(PageDirection.PageInit);
+    }
+
+    let firstMonth: string = this.calendaractivities[0].month;
+    let lastMonth: string = this.calendaractivities[this.calendaractivities.length - 1].month;
+
+    // 往前添加
+    if (moment(month).isBefore(firstMonth)) {
+      let currentMonth: string = moment(firstMonth).subtract(1, "months").format("YYYY/MM");
+
+      while(true) {
+        await this.getCalendarActivities(PageDirection.PageDown);
+
+        if (month == currentMonth) {
+          break;
+        }
+
+        currentMonth = moment(currentMonth).subtract(1, "months").format("YYYY/MM");
+      }
+    }
+
+    // 往后添加
+    if (moment(lastMonth).isBefore(month)) {
+      let currentMonth: string = moment(lastMonth).add(1, "months").format("YYYY/MM");
+
+      while(true) {
+        await this.getCalendarActivities(PageDirection.PageUp);
+
+        if (month == currentMonth) {
+          break;
+        }
+
+        currentMonth = moment(currentMonth).add(1, "months").format("YYYY/MM");
+      }
+    }
+
+    return this.calendaractivities;
+  }
+
+  /**
    * 取得日历显示列表
    *
    * 所有月份数据保持在calendaractivities中
