@@ -1057,7 +1057,7 @@ export class EventService extends BaseService {
    */
   private sqlparamAddFj(evi : string ,fjs : Array<FjTbl>):Array<any>{
     let ret = new Array<any>();
-    if (!fjs && fjs.length > 0){
+    if (fjs && fjs.length > 0){
       for (let j = 0 ,len = fjs.length;j < len ; j++){
         let fj = new FjTbl();
         fj.fji = this.util.getUuid();
