@@ -28,6 +28,9 @@ export class FormatedatePipe implements PipeTransform {
       if (args[0] == "YYYYMMDD") {
         return moment(value).format("YYYYMMDD");
       }
+      if (args[0] == "YYYYMM") {
+        return moment(value + "/01").format("YYYYMM");
+      }
 
       if (args[0] == "CYYYY/MM/DD"){
         return moment(value).format("YYYY年MM月DD日");

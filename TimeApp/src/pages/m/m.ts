@@ -22,51 +22,43 @@ import {RabbitMQService} from "../../service/cordova/rabbitmq.service";
   template: `
 
     <ion-menu [content]="ha" side="left" swipeEnabled="true"  type="scalePush" class="menu" id="scalePush">
-      <ion-content>
         <ion-grid>
-          <ion-row>
-            <ion-list>
-              <ion-list-header>
-                <ion-item  (click)="goPsPage()">
-                  <ion-avatar item-start>
-                    <img [src]="avatar" class="img_size">
-                  </ion-avatar>
-                  <h2>{{name}}</h2>
-                  <p>{{phone}}</p>
-                </ion-item>
-              </ion-list-header>
-              <ion-item>
-                <h1>冥王星</h1>
-              </ion-item>
-            </ion-list>
+          <ion-row (click)="goPsPage()">
+
+                  <h1>冥王星</h1>
+                  <h4>{{phone}}</h4>
+            <!--<span>-->
+                  <!--<h2>{{name}}</h2>-->
+                  <!--<p>{{phone}}</p>-->
+            <!--</span>-->
           </ion-row>
-          <ion-row class="margin-for-middle">
-            <ion-list>
-              <ion-item (click)="goGlPage()">
-                <h3>群组</h3>
-              </ion-item>
-              <ion-item (click)="goPlPage()">
-                <h3>活动日历</h3>
-              </ion-item>
-              <ion-item (click)="goBlPage()">
-                <h3>黑名单</h3>
-              </ion-item>
-              <ion-item (click)="goSsPage()">
-                <h3>设置</h3>
-              </ion-item>
-              <ion-item (click)="goBrPage()">
-                <h3>备份与恢复</h3>
-              </ion-item>
-              <ion-item *ngIf="isdebug" (click)="gologPage()">
-                <h3>日志</h3>
-              </ion-item>
-              <ion-item (click)="goatPage()">
-                <h3>关于</h3>
-              </ion-item>
-            </ion-list>
+          <ion-row >
+          </ion-row>
+          <ion-row (click)="goPsPage()">
+            <h3>个人设置</h3>
+          </ion-row>
+          <ion-row (click)="goGlPage()">
+            <h3>群组</h3>
+          </ion-row>
+          <ion-row (click)="goGlPage()">
+            <h3>活动日历</h3>
+          </ion-row>
+          <ion-row (click)="goBlPage()">
+            <h3>黑名单</h3>
+          </ion-row>
+          <ion-row (click)="goSsPage()">
+            <h3>设置</h3>
+          </ion-row>
+            <ion-row (click)="goBrPage()">
+              <h3>备份与恢复</h3>
+            </ion-row>
+          <ion-row *ngIf="isdebug" (click)="gologPage()">
+            <h3>日志</h3>
+          </ion-row>
+          <ion-row (click)="goatPage()">
+            <h3>关于</h3>
           </ion-row>
         </ion-grid>
-      </ion-content>
     </ion-menu>
 
     <ion-nav #ha [root]="hPage"></ion-nav>

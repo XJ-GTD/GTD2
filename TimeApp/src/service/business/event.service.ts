@@ -167,7 +167,7 @@ export class EventService extends BaseService {
    * @returns {boolean}
    */
   isAgendaChanged(newAgd : AgendaData ,oldAgd : AgendaData): boolean{
-    if (!newAgd.rtjson) {
+    /*if (!newAgd.rtjson) {
       if (newAgd.rt) {
         newAgd.rtjson = JSON.parse(newAgd.rt);
       } else {
@@ -181,7 +181,7 @@ export class EventService extends BaseService {
       } else {
         oldAgd.rtjson = new RtJson();
       }
-    }
+    }*/
 
     //重复选项发生变化
     if (newAgd.rtjson.cycletype != oldAgd.rtjson.cycletype){
@@ -662,6 +662,27 @@ export class EventService extends BaseService {
    */
   private async updateAgenda(newAgdata: AgendaData,oriAgdata : AgendaData, modiType : anyenum.OperateType):Promise<Array<AgendaData>> {
 
+    //批量本地更新
+    let sqlparam = new Array<any>();
+
+    let outAgds = new Array<AgendaData>();//返回事件
+
+    //判断进行本地更新
+    if (!this.isAgendaChanged(newAgdata,oriAgdata)){
+      let ev = new EvTbl();
+      ev.evi = newAgdata.evi;
+      ev.ji  = newAgdata.ji;
+      ev.bz = newAgdata.bz;
+      ev.todolist =newAgdata.todolist;
+      newAgdata.tx = JSON.stringify(newAgdata.txjson);
+      ev.tx = newAgdata.tx;
+      ev.fj =newAgdata.fj;
+      ev.pn = newAgdata.pn;
+      await this.sqlExce.updateByParam(ev);
+      outAgds.push(newAgdata);
+      return outAgds;
+    }
+
     //重复设定
     let repeatModify : RepeatModify = RepeatModify.NonRepeatToNonRepeat;
   /* 修改场景：
@@ -684,11 +705,7 @@ export class EventService extends BaseService {
     if (oriAgdata.rfg == anyenum.RepeatFlag.Repeat && modiType == anyenum.OperateType.FromSel){
       repeatModify = RepeatModify.RepeatToRepeat;
     }
-    let outAgds = new Array<AgendaData>();//返回事件
 
-
-    //批量本地更新
-    let sqlparam = new Array<any>();
 
     newAgdata.mi = UserConfig.account.id;
 
@@ -1078,9 +1095,9 @@ export class EventService extends BaseService {
     agdata.type = !agdata.type ? anyenum.ObjectType.Calendar : agdata.type ;
 
     let txjson = new TxJson();
-    //agdata.tx = !agdata.tx ? JSON.stringify(txjson) : agdata.tx ;
-    agdata.txjson = (agdata.txjson && agdata.txjson !=null) ? agdata.txjson : txjson;
 
+    agdata.txjson = (agdata.txjson && agdata.txjson !=null) ? agdata.txjson : txjson;
+    agdata.tx = !agdata.tx ? JSON.stringify(agdata.txjson) : agdata.tx ;
     agdata.txs = !agdata.txs ? "" : agdata.txs ;
 
     let rtjon = new RtJson();
@@ -1089,9 +1106,9 @@ export class EventService extends BaseService {
     rtjon.over.type = anyenum.OverType.fornever;
     rtjon.cyclenum = 1;
     rtjon.openway = new Array<number>();
-    //agdata.rt = !agdata.rt ? JSON.stringify(rtjon) : agdata.rt ;
-    agdata.rtjson = (agdata.rtjson && agdata.rtjson !=null) ? agdata.rtjson : rtjon;
 
+    agdata.rtjson = (agdata.rtjson && agdata.rtjson !=null) ? agdata.rtjson : rtjon;
+    agdata.rt = !agdata.rt ? JSON.stringify(agdata.rtjson) : agdata.rt ;
     agdata.rts = !agdata.rts ? "" : agdata.rts ;
 
 

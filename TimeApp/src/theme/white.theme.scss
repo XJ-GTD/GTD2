@@ -241,4 +241,20 @@ $baseBackcolor_white: rgba(241,241,241,1);
   page-agenda {
     background: $baseBackcolor_white;
   }
+
+  page-m {
+    .menu {
+      background: rgba(248,248,248,1);
+
+      .grid {
+        .row {
+          color: rgba(51,51,51,1);
+
+        }
+        h1,h4{
+          color: rgba(73, 152, 188, 1);
+        }
+      }
+    }
+  }
 }

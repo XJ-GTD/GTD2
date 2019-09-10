@@ -1,133 +1,31 @@
 page-m {
-  background: $baseBackColor;
-
-  ion-menu {
-    background: $masterColor;
-  }
-
-  .ls {
-    background: $baseBackColor;
-    display: block;
-
-    .menu-inner {
-      width: 100%;
-    }
-  }
-
   .menu {
-    .content-ios {
-      background: $masterColor;
-    }
+    .grid {
+      padding-top: 65px;
 
-    .item-ios {
-      background: transparent;
-      color: #fff;
-
-      h1 {
-        font-size: 24px;
-      }
-
-      h3 {
-        font-size: 17px;
-        letter-spacing: 1px
-      }
-
-      h2 {
-        width: 140px;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-      }
-
-      p {
-        color: #fff;
-        opacity: 0.5;
-        margin-top: 1px;
-        font-size: 1.3vmin;
-      }
-    }
-    
-    .margin-for-middle > .list-ios {
-        margin-top: 0px;
-      @media screen and (min-height: 960px) {
-        margin-top: calc(50vmax - calc(calc(259px) + calc(50%)));
-      }
-    }
-    
-    .list-ios {
-      margin: 60px 32px;
-      margin-bottom: 0px;
-
-      .item-block:last-child {
-        border-bottom: 0px;
-      }
-    }
-
-    .list-header {
-      border-bottom: 0px;
-      width: 245px;
-      margin: 0 auto;
-
-      .item-ios {
-        height: 65px;
-        background: #fff;
-        border-radius: 9px;
+      .row {
         opacity: 0.8;
-      }
+        margin-left: 15%;
 
-      ion-item ion-label{
-        margin: 11px 8px 11px 10px;
-      }
-
-      h2 {
-        width: 100px;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-        color: #222;
-        font-weight: 600;
-        opacity: 0.8;
-      }
-
-      p {
-        opacity: 0.5;
-        margin-top: 1px;
-        font-size: 12px;
-        color: #222;
-      }
-
-      ion-avatar {
-        width: 44px;
-        height: 44px;
-        margin: 0 auto;
-
-        .img_size {
-          width: 44px !important;
-          height: 44px !important;
-          display: inline;
+        h1 {
+          font-size: 26px;
+          opacity: 0.5;
+          display: block;
         }
+
+
+        h3 {
+          font-size: 18px;
+          letter-spacing: 1px
+        }
+        h4{
+
+          font-size: 16px;
+          opacity: 0.5;
+        }
+
       }
     }
-
-    .item-inner, .item-block {
-      border-bottom: 0px !important;
-      min-height: 44px;
-    }
-
-    ion-list > ion-item:first-child {
-      //border-top-color: #e5e5e5 !important;
-      border-top: none !important;
-    }
-
   }
-
-  //  background: $masterColor;
-
-
-  //.content-ios {
-  //  color: #fff;
-  //  background-color: $baseBackColor;
-  //}
-
 
 }

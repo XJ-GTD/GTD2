@@ -1,4 +1,4 @@
-import {Component, ElementRef, Renderer, Renderer2, ViewChild} from '@angular/core';
+import {ChangeDetectorRef, Component, ElementRef, Renderer, Renderer2, ViewChild} from '@angular/core';
 import {
   Content, DomController,
   GestureController,
@@ -49,7 +49,7 @@ import {CalendarComponent} from "../../components/ion2-calendar";
       <ion-grid #grid4Hight class = "list-contont">
         <ng-template ngFor let-monthActivityData [ngForOf]="monthActivityDatas" >
           
-          <ion-row class="list-dayagenda-month" >
+          <ion-row class="list-dayagenda-month" id="month{{monthActivityData.month | formatedate:'YYYYMM'}}">
                 <div class="back {{monthActivityData.month  | formatedate :'CSSMM'}}" >
                 <p class="month-a">
                  
@@ -96,7 +96,7 @@ import {CalendarComponent} from "../../components/ion2-calendar";
                     <div class="agenda-icon">
                       <ion-icon class = "tasks fa fa-clock-o clock-o "></ion-icon>
                     </div>
-                    <div class="agenda-st">{{this.util.adStrShow("09:00")}}</div>
+                    <div class="agenda-st">{{this.util.adStrShow(event.evt)}}</div>
                   </div>
                   <div class="agendaline">
                     <div class="agenda-icon">
@@ -131,7 +131,8 @@ export class TdlPage {
   gridHight: number = 0;
   gridHightsub: number = 0;
 
-  // isgetData: boolean = false;
+   isgetData: boolean = false;
+   loopmonth = false;
   //头部显示日期
   headerDate: string;
   headerMoment: moment.Moment;
@@ -153,7 +154,8 @@ export class TdlPage {
               private renderer2: Renderer2,
               private _plt: Platform,
               private _gestureCtrl: GestureController,
-              private _domCtrl: DomController
+              private _domCtrl: DomController,
+              public changeDetectorRef:ChangeDetectorRef
   ) {
   }
 
@@ -181,17 +183,87 @@ export class TdlPage {
   ngOnInit() {
     this.tdlServ.initLsData().then(data => {
       this.monthActivityDatas = data;
-      this.gotoEl(moment().format("YYYYMMDD"));
+      this.gotoEl("#day" + moment().format("YYYYMMDD"));
     });
 
     //this.contentD.enableJsScroll();
 
     this.emitService.registerSelectDate((selectDate: moment.Moment) => {
-      this.gotoEl(selectDate.format("YYYYMMDD"));
+      this.gotoEl("#day" + selectDate.format("YYYYMMDD"));
     });
 
 
     this.contentD.ionScroll.subscribe(($event: ScrollEvent) => {
+      try{
+
+        //显示当前顶部滑动日期
+        if (!this.loopmonth){
+          this.loopmonth = !this.loopmonth;
+          setTimeout(()=>{
+            for (let i = this.monthActivityDatas.length -1; i >= 0; i-- ) {
+              //let monthActivityData = this.monthActivityDatas[0];
+              let scdId = this.monthActivityDatas[i].month;
+              scdId = "#month" + moment(scdId+"/01").format("YYYYMM");
+              let el = this.el.nativeElement.querySelector(scdId);
+              console.log("###" + el);
+              // if (el && $event.scrollTop - el.offsetTop < el.clientHeight && $event.scrollTop - el.offsetTop > 0) {
+              if (el && $event.scrollTop - el.offsetTop > 0) {
+                //this.headerDate = moment(scdlData.d).format("YYYY/MM/DD");
+                //this.headerMoment = moment(scdlData.d);
+                //this.feedback.audioTrans();
+                this.loopmonth = !this.loopmonth;
+                console.log("###" + scdId);
+
+                //准备发出emit
+                //TODO
+                break;
+              }
+            }
+
+          },500);
+
+        }
+
+        if (this.isgetData) return;
+
+        if ($event.directionY == 'up') {
+          if ($event.scrollTop < 100) {
+            this.isgetData  = !this.isgetData;
+            let monthActivityData = this.monthActivityDatas[0];
+            let scdId = monthActivityData.month;
+             scdId = "#month" + moment(scdId+"/01").format("YYYYMM");
+
+            this.tdlServ.throughData(PageDirection.PageDown).then(data => {
+              this.gotoEl4month(scdId);
+              this.changeDetectorRef.markForCheck();
+              this.changeDetectorRef.detectChanges();
+              setTimeout(()=>{
+                this.isgetData  = !this.isgetData;
+              },200);
+            })
+          }
+        }
+
+        if ($event.directionY == 'down') {
+          if ($event.scrollTop + 100 > this.grid.nativeElement.clientHeight - $event.scrollElement.clientHeight) {
+            this.isgetData  = !this.isgetData;
+
+            this.tdlServ.throughData(PageDirection.PageUp).then(data=>{
+
+              this.changeDetectorRef.markForCheck();
+              this.changeDetectorRef.detectChanges();
+              setTimeout(()=>{
+                this.isgetData  = !this.isgetData;
+
+              },200);
+            })
+          }
+        }
+
+      }catch (e) {
+        console.log(e);
+
+      }
 
       // //显示当前顶部滑动日期
       // for (let scdlData of this.monthActivityDatas) {
@@ -204,23 +276,6 @@ export class TdlPage {
       //   }
       // }
 
-      if ($event.directionY == 'up') {
-        if ($event.scrollTop < 10) {
-          let monthActivityData = this.monthActivityDatas[0];
-          let scdId = monthActivityData.arraydays[0].day;
-          scdId = moment(scdId).format("YYYYMMDD")
-
-          this.tdlServ.throughData(PageDirection.PageDown).then(data => {
-            this.gotoEl(scdId);
-          })
-        }
-      }
-
-      if ($event.directionY == 'down') {
-        if ($event.scrollTop == this.grid.nativeElement.clientHeight - $event.scrollElement.clientHeight) {
-          this.tdlServ.throughData(PageDirection.PageUp);
-        }
-      }
     });
   }
 
@@ -234,7 +289,7 @@ export class TdlPage {
           this.renderer2.removeClass(this.currDayel, "item-display");
           this.renderer2.addClass(this.currDayel, "item-no-display");
         }
-        this.currDayel = this.el.nativeElement.querySelector("#day" + id);
+        this.currDayel = this.el.nativeElement.querySelector(id);
         this.renderer2.removeClass(this.currDayel, "item-no-display");
         this.renderer2.addClass(this.currDayel, "item-display");
 
@@ -254,6 +309,24 @@ export class TdlPage {
     }, 100);
   }
 
+  gotoEl4month(id) {
+    setTimeout(() => {
+      try {
+        let currmonthel = this.el.nativeElement.querySelector(id);
+
+        if (currmonthel) {
+          this.gridHight = this.grid.nativeElement.clientHeight;
+          this.contentD.scrollTo(0, currmonthel.offsetTop + 2, 200).then(datza => {
+            this.gridHight = this.grid.nativeElement.clientHeight;
+          })
+        } else {
+          this.gotoEl4month(id);
+        }
+      } catch (e) {
+      }
+
+    }, 100);
+  }
   toDetail(si, d, gs) {
 
     let p: ScdPageParamter = new ScdPageParamter();

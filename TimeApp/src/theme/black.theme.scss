@@ -8,6 +8,7 @@ $baseBackcolor_black: rgba(0, 12, 31, 1);
       ion-card-header {
         background: rgba(0, 53, 66, 1);;
         border-bottom: 1px rgba(30, 69, 89, 1) solid;
+
         .title {
           p {
             color: rgba(201, 242, 252, 1);
@@ -116,12 +117,13 @@ $baseBackcolor_black: rgba(0, 12, 31, 1);
 
 
         .d-title-chr {
-          color:#556E99;
-          span{
-            color:rgba(235,239,250,1);
+          color: #556E99;
+
+          span {
+            color: rgba(235, 239, 250, 1);
           }
 
-          .daycoment{
+          .daycoment {
             color: rgba(73, 152, 188, 1);
           }
         }
@@ -131,6 +133,7 @@ $baseBackcolor_black: rgba(0, 12, 31, 1);
           box-shadow: 0px 0px 5px 0px rgba(3, 0, 0, 0.2);
           color: rgba(235, 239, 250, 1);
         }
+
         .last {
         }
       }
@@ -149,6 +152,7 @@ $baseBackcolor_black: rgba(0, 12, 31, 1);
             color: rgba(255, 255, 255, 1);
           }
         }
+
         .agenda-sn {
           color: rgba(255, 255, 255, 1);
 
@@ -212,23 +216,24 @@ $baseBackcolor_black: rgba(0, 12, 31, 1);
   page-box {
     .box-header {
       ion-toolbar {
-        ion-title{
+        ion-title {
           .toolbar-title {
-            color: rgba(235,239,250,1);
+            color: rgba(235, 239, 250, 1);
           }
 
 
         }
+
         .icon {
-          color: rgba(235,239,250,1);
+          color: rgba(235, 239, 250, 1);
         }
       }
     }
 
     .box-content {
-      .fixed-content{
-        background-color: rgba(255,255,255,.05);
-        box-shadow:5px 3px 10px 0px rgba(0,12,31,0.73);
+      .fixed-content {
+        background-color: rgba(255, 255, 255, .05);
+        box-shadow: 5px 3px 10px 0px rgba(0, 12, 31, 0.73);
       }
     }
   }
@@ -241,11 +246,30 @@ $baseBackcolor_black: rgba(0, 12, 31, 1);
   page-h {
     background: $baseBackcolor_black;
   }
+
   page-do {
     background: $baseBackcolor_black;
   }
+
   page-agenda {
     background: $baseBackcolor_black;
+  }
+
+  page-m {
+    .menu {
+      background: rgba(13, 24, 42, 1);
+
+      .grid {
+        .row {
+          color:rgba(235,239,250,1);
+          h1,h4{
+            color: rgba(73, 152, 188, 1);
+          }
+
+
+        }
+      }
+    }
   }
 }
 
