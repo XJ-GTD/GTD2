@@ -122,7 +122,7 @@ import {CycleType, OverType} from "../../data.enum";
             <p>重复开启</p>
           </ion-row>
           <ion-row justify-content-start>
-            <radio-select [options]="itemRangeOptions" multiple="true" [(ngModel)]="cfMonthOptions.freqOption" (onChanged)="onFreqOptionChanged($event)"></radio-select>
+            <radio-select [options]="itemMonthDayRangeOptions" multiple="true" [(ngModel)]="cfMonthOptions.freqOption" (onChanged)="onFreqOptionChanged($event)"></radio-select>
           </ion-row>
         </ion-grid>
       </ion-row>
@@ -356,7 +356,7 @@ export class RepeatPage {
   initRepeatShow() {
     switch(this.currentRepeat.cycletype) {
       case CycleType.day:
-        cfType = "day";
+        this.cfType = "day";
         this.cfDayOptions.frequency = this.currentRepeat.cyclenum;
         switch(this.currentRepeat.over.type) {
           case OverType.fornever:
@@ -375,7 +375,7 @@ export class RepeatPage {
         }
         break;
       case CycleType.week:
-        cfType = "week";
+        this.cfType = "week";
         this.cfWeekOptions.frequency = this.currentRepeat.cyclenum;
         if (this.currentRepeat.openway && this.currentRepeat.openway.length > 0) {
           this.cfWeekOptions.freqOption = new Array<any>();
@@ -404,7 +404,7 @@ export class RepeatPage {
         }
         break;
       case CycleType.month:
-        cfType = "month";
+        this.cfType = "month";
         this.cfMonthOptions.frequency = this.currentRepeat.cyclenum;
         if (this.currentRepeat.openway && this.currentRepeat.openway.length > 0) {
           this.cfMonthOptions.freqOption = new Array<any>();
@@ -433,7 +433,7 @@ export class RepeatPage {
         }
         break;
       case CycleType.year:
-        cfType = "year";
+        this.cfType = "year";
         this.cfYearOptions.frequency = this.currentRepeat.cyclenum;
         switch(this.currentRepeat.over.type) {
           case OverType.fornever:
@@ -452,7 +452,7 @@ export class RepeatPage {
         }
         break;
       default:
-        cfType = "";
+        this.cfType = "";
         break;
     }
   }
