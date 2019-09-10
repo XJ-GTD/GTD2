@@ -352,20 +352,96 @@ export class RepeatPage {
       case "day":
         if (target == "cycletype") rtjson.cycletype = CycleType.day;
         if (target == "cyclenum") rtjson.cyclenum = this.cfDayOptions.frequency;
+        if (target == "over") {
+          switch (this.cfDayOptions.endType) {
+            case "never":
+              rtjson.over.type = OverType.fornever;
+              break;
+            case "aftertimes":
+              rtjson.over.type = OverType.times;
+              rtjson.over.value = this.cfDayOptions.afterTimes;
+              break;
+            case "tosomeday":
+              rtjson.over.type = OverType.limitdate;
+              rtjson.over.value = moment(this.cfDayOptions.toSomeDay, "YYYY年M月D日").format("YYYY/MM/DD");
+              break;
+            default:
+              break;
+          }
+        }
         break;
       case "week":
         if (target == "cycletype") rtjson.cycletype = CycleType.week;
         if (target == "cyclenum") rtjson.cyclenum = this.cfWeekOptions.frequency;
-        if (target == "openway") rtjson.openway = this.cfDayOptions.frequency;
+        if (target == "openway") {
+          rtjson.openway.length = 0;
+
+          let opt = this.cfWeekOptions.freqOption;
+        }
+        if (target == "over") {
+          switch (this.cfWeekOptions.endType) {
+            case "never":
+              rtjson.over.type = OverType.fornever;
+              break;
+            case "aftertimes":
+              rtjson.over.type = OverType.times;
+              rtjson.over.value = this.cfWeekOptions.afterTimes;
+              break;
+            case "tosomeday":
+              rtjson.over.type = OverType.limitdate;
+              rtjson.over.value = moment(this.cfWeekOptions.toSomeDay, "YYYY年M月D日").format("YYYY/MM/DD");
+              break;
+            default:
+              break;
+          }
+        }
         break;
       case "month":
         if (target == "cycletype") rtjson.cycletype = CycleType.month;
         if (target == "cyclenum") rtjson.cyclenum = this.cfMonthOptions.frequency;
-        if (target == "openway") rtjson.openway = this.cfDayOptions.frequency;
+        if (target == "openway") {
+          rtjson.openway.length = 0;
+
+          let opt = this.cfMonthOptions.freqOption;
+        }
+        if (target == "over") {
+          switch (this.cfMonthOptions.endType) {
+            case "never":
+              rtjson.over.type = OverType.fornever;
+              break;
+            case "aftertimes":
+              rtjson.over.type = OverType.times;
+              rtjson.over.value = this.cfMonthOptions.afterTimes;
+              break;
+            case "tosomeday":
+              rtjson.over.type = OverType.limitdate;
+              rtjson.over.value = moment(this.cfMonthOptions.toSomeDay, "YYYY年M月D日").format("YYYY/MM/DD");
+              break;
+            default:
+              break;
+          }
+        }
         break;
       case "year":
         if (target == "cycletype") rtjson.cycletype = CycleType.year;
         if (target == "cyclenum") rtjson.cyclenum = this.cfYearOptions.frequency;
+        if (target == "over") {
+          switch (this.cfYearOptions.endType) {
+            case "never":
+              rtjson.over.type = OverType.fornever;
+              break;
+            case "aftertimes":
+              rtjson.over.type = OverType.times;
+              rtjson.over.value = this.cfYearOptions.afterTimes;
+              break;
+            case "tosomeday":
+              rtjson.over.type = OverType.limitdate;
+              rtjson.over.value = moment(this.cfYearOptions.toSomeDay, "YYYY年M月D日").format("YYYY/MM/DD");
+              break;
+            default:
+              break;
+          }
+        }
         break;
       default:
         if (target == "cycletype") rtjson.cycletype = CycleType.close;
@@ -377,24 +453,26 @@ export class RepeatPage {
 
   onTypeChanged(value) {
     this.currentRepeat = this.resetValueWithType(this.currentRepeat, value);
-    this.resetTitle(value);
+    this.title = this.currentRepeat.text();
   }
 
   onFreqChanged() {
     this.currentRepeat = this.resetValueWithType(this.currentRepeat, this.cfType, "cyclenum");
-    this.resetTitle(this.cfType);
+    this.title = this.currentRepeat.text();
   }
 
   onFreqOptionChanged() {
     this.currentRepeat = this.resetValueWithType(this.currentRepeat, this.cfType, "openway");
-    this.resetTitle(this.cfType);
+    this.title = this.currentRepeat.text();
   }
 
   onEndTypeChanged(value) {
-    this.resetTitle(this.cfType);
+    this.currentRepeat = this.resetValueWithType(this.currentRepeat, this.cfType, "over");
+    this.title = this.currentRepeat.text();
   }
 
   onEndAfterTimesChanged(value) {
-    this.resetTitle(this.cfType);
+    this.currentRepeat = this.resetValueWithType(this.currentRepeat, this.cfType, "over");
+    this.title = this.currentRepeat.text();
   }
 }
