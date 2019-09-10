@@ -376,7 +376,13 @@ export class RepeatPage {
         if (target == "openway") {
           rtjson.openway.length = 0;
 
-          let opt = this.cfWeekOptions.freqOption;
+          if (this.cfWeekOptions.freqOption && this.cfWeekOptions.freqOption instanceof Array) {
+            rtjson.openway = this.cfWeekOptions.freqOption.reduce((target, val, index) => {
+              if (val) {
+                target.push(index);
+              }
+            }, rtjson.openway);
+          }
         }
         if (target == "over") {
           switch (this.cfWeekOptions.endType) {
@@ -402,7 +408,13 @@ export class RepeatPage {
         if (target == "openway") {
           rtjson.openway.length = 0;
 
-          let opt = this.cfMonthOptions.freqOption;
+          if (this.cfMonthOptions.freqOption && this.cfMonthOptions.freqOption instanceof Array) {
+            rtjson.openway = this.cfMonthOptions.freqOption.reduce((target, val, index) => {
+              if (val) {
+                target.push(index);
+              }
+            }, rtjson.openway);
+          }
         }
         if (target == "over") {
           switch (this.cfMonthOptions.endType) {
