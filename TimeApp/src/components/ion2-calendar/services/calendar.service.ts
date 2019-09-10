@@ -113,7 +113,8 @@ export class IonCalendarService {
   createCalendarDay(time: number, opt: CalendarModalOptions, month?: number): CalendarDay {
     let _time = moment(time);
     let date = moment(time);
-    let isToday = moment().isSame(_time, 'days');
+    //let isToday = moment().isSame(_time, 'days');
+    let isToday = false;
     let dayConfig = this.findDayConfig(_time, opt);
     let _rangeBeg = moment(opt.from).valueOf();
     let _rangeEnd = moment(opt.to).valueOf();
@@ -281,6 +282,9 @@ export class IonCalendarService {
 
 
   async getMonthData(month:CalendarMonth){
+    console.log(moment(month.original.date).format("YYYY/MM"));
+    this.calendarService.refreshCalendarActivitiesToMonth(moment(month.original.date).format("YYYY/MM"));
+    console.log(moment(month.original.date).format("YYYY/MM"));
     let data:MonthActivitySummaryData = await this.calendarService.fetchMonthActivitiesSummary(moment(month.original.date).format('YYYY/MM'));
     data.days.forEach((v,k,m)=>{
       let calendarDay:CalendarDay = month.days.find((n) => moment(v.day).isSame(moment(n.time), 'day'));
@@ -290,6 +294,7 @@ export class IonCalendarService {
       // calendarDay.hasmessage = v.;
       calendarDay.hasMemo = v.memoscount > 0;
       calendarDay.subTitle = v.daycalendaritem?v.daycalendaritem:calendarDay.subTitle;
+      calendarDay.isToday = moment().isSame(calendarDay.time, 'days');
 
     });
   }

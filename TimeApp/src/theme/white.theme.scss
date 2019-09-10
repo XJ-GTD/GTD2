@@ -6,6 +6,8 @@ $baseBackcolor_white: rgba(241,241,241,1);
 
   .haContent {
     ion-calendar {
+
+      box-shadow: 0px 0px 5px 0px rgba(201,200,200,0.28);
       ion-card-header {
         background:rgba(0,53,66,1);
         border-bottom: 0px rgba(30, 69, 89, 1) solid;
@@ -83,11 +85,11 @@ $baseBackcolor_white: rgba(241,241,241,1);
 
     //列表一周
     .list-dayagenda-week {
-      background:rgba(42,119,138,1);
-      box-shadow:0px 0px 10px 0px rgba(3,0,0,0.2);
+      background:rgba(217,233,238,1);
+      box-shadow:0px 0px 5px 0px rgba(3,0,0,0.2);
 
       p {
-        color:rgba(229,250,255,1);
+        color:rgba(7,109,138,1);
       }
     }
 
@@ -112,7 +114,7 @@ $baseBackcolor_white: rgba(241,241,241,1);
 
       .d-title {
         background:rgba(42,119,138,1);
-        box-shadow:0px 0px 10px 0px rgba(3,0,0,0.2);
+        box-shadow:0px 0px 5px 0px rgba(3,0,0,0.2);
 
         .d-title-chr {
           color:rgba(150,189,199,1);
@@ -171,7 +173,7 @@ $baseBackcolor_white: rgba(241,241,241,1);
     .list-dayagenda-content {
 
       background:rgba(255,255,255,1);
-      box-shadow:0px 0px 10px 0px rgba(153,153,153,0.28);
+      box-shadow:0px 0px 5px 0px rgba(153,153,153,0.28);
 
       .agendaline {
         .agenda-sn {
@@ -197,7 +199,7 @@ $baseBackcolor_white: rgba(241,241,241,1);
     //没有日程
     .dayagenda-no-content {
       background:rgba(42,119,138,1);
-      box-shadow:0px 0px 10px 0px rgba(3,0,0,0.2);
+      box-shadow:0px 0px 5px 0px rgba(3,0,0,0.2);
 
       p {
         color:rgba(229,250,255,1);
