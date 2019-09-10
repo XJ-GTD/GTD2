@@ -419,6 +419,61 @@ describe('CalendarService test suite', () => {
 
   });
 
+  it(`Case 29 - 1 - 2 refreshCalendarActivitiesToMonth 刷新日历显示列表到指定月份 - 已存在初始化数据(刷新到当前月)`, async () => {
+    let month: string = moment().format("YYYY/MM");
+
+    calendarService.clearCalendarActivities();
+    let calendarholdings = await calendarService.getCalendarActivities();
+
+    await calendarService.refreshCalendarActivitiesToMonth(month);
+
+    expect(calendarholdings).toBeDefined();
+    expect(calendarholdings.length).toBe(3);
+    expect(calendarholdings[0].month).toBe(moment(month).subtract(1, "months").format("YYYY/MM"));
+    expect(calendarholdings[1].month).toBe(month);
+    expect(calendarholdings[2].month).toBe(moment(month).add(1, "months").format("YYYY/MM"));
+  });
+
+  it(`Case 29 - 1 - 1 refreshCalendarActivitiesToMonth 刷新日历显示列表到指定月份 - 已存在初始化数据(刷新到往后5个月)`, async () => {
+    let month: string = moment().format("YYYY/MM");
+    let after5month: string = moment(month).add(5, "months").format("YYYY/MM");
+
+    calendarService.clearCalendarActivities();
+    let calendarholdings = await calendarService.getCalendarActivities();
+
+    await calendarService.refreshCalendarActivitiesToMonth(after5month);
+
+    expect(calendarholdings).toBeDefined();
+    expect(calendarholdings.length).toBe(7);
+    expect(calendarholdings[0].month).toBe(moment(month).subtract(1, "months").format("YYYY/MM"));
+    expect(calendarholdings[1].month).toBe(month);
+    expect(calendarholdings[2].month).toBe(moment(month).add(1, "months").format("YYYY/MM"));
+    expect(calendarholdings[3].month).toBe(moment(month).add(2, "months").format("YYYY/MM"));
+    expect(calendarholdings[4].month).toBe(moment(month).add(3, "months").format("YYYY/MM"));
+    expect(calendarholdings[5].month).toBe(moment(month).add(4, "months").format("YYYY/MM"));
+    expect(calendarholdings[6].month).toBe(moment(month).add(5, "months").format("YYYY/MM"));
+  });
+
+  it(`Case 29 - 1 refreshCalendarActivitiesToMonth 刷新日历显示列表到指定月份 - 已存在初始化数据(刷新到往前5个月)`, async () => {
+    let month: string = moment().format("YYYY/MM");
+    let before5month: string = moment(month).subtract(5, "months").format("YYYY/MM");
+
+    calendarService.clearCalendarActivities();
+    let calendarholdings = await calendarService.getCalendarActivities();
+
+    await calendarService.refreshCalendarActivitiesToMonth(before5month);
+
+    expect(calendarholdings).toBeDefined();
+    expect(calendarholdings.length).toBe(7);
+    expect(calendarholdings[0].month).toBe(moment(month).subtract(5, "months").format("YYYY/MM"));
+    expect(calendarholdings[1].month).toBe(moment(month).subtract(4, "months").format("YYYY/MM"));
+    expect(calendarholdings[2].month).toBe(moment(month).subtract(3, "months").format("YYYY/MM"));
+    expect(calendarholdings[3].month).toBe(moment(month).subtract(2, "months").format("YYYY/MM"));
+    expect(calendarholdings[4].month).toBe(moment(month).subtract(1, "months").format("YYYY/MM"));
+    expect(calendarholdings[5].month).toBe(month);
+    expect(calendarholdings[6].month).toBe(moment(month).add(1, "months").format("YYYY/MM"));
+  });
+
   // 创建课程表
   // 课程从哪天开始, 到哪天结束? => 9月1日到明年1月18日
   // 上午是否上三节课? => 是的/对的,三节课
