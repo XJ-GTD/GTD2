@@ -248,16 +248,19 @@ export class AgendaPage {
       this.currentAgenda.rtjson = new RtJson();
       let rtdata = JSON.parse(this.currentAgenda.rt);
       Object.assign(this.currentAgenda.rtjson, rtdata);
-    } else {
+    } else if (!this.currentAgenda.rtjson && !this.currentAgenda.rt) {
       this.currentAgenda.rtjson = new RtJson();
     }
 
     let modal = this.modalCtrl.create(DataConfig.PAGE._REPEAT_PAGE, {value: this.currentAgenda.rtjson});
     modal.onDidDismiss(async (data) => {
       if (data && data.rtjson) {
-        this.currentAgenda.rtjson = data;
+        this.currentAgenda.rtjson = new RtJson();
+        Object.assign(this.currentAgenda.rtjson, data.rtjson);
         this.currentAgenda.rt = JSON.stringify(this.currentAgenda.rtjson);
         this.currentAgenda.rts = this.currentAgenda.rtjson.text();
+
+        this.save();
       }
     });
     modal.present();
@@ -268,16 +271,19 @@ export class AgendaPage {
       this.currentAgenda.txjson = new TxJson();
       let txdata = JSON.parse(this.currentAgenda.tx);
       Object.assign(this.currentAgenda.txjson, txdata);
-    } else {
+    } else if (!this.currentAgenda.txjson && !this.currentAgenda.tx) {
       this.currentAgenda.txjson = new TxJson();
     }
 
     let modal = this.modalCtrl.create(DataConfig.PAGE._REMIND_PAGE, {value: this.currentAgenda.txjson});
     modal.onDidDismiss(async (data) => {
       if (data && data.txjson) {
-        this.currentAgenda.txjson = data.txjson;
+        this.currentAgenda.txjson = new TxJson();
+        Object.assign(this.currentAgenda.txjson, data.txjson);
         this.currentAgenda.tx = JSON.stringify(this.currentAgenda.txjson);
         //this.currentAgenda.txs = this.currentAgenda.txjson.text();
+
+        this.doOptionSave(OperateType.OnlySel);
       }
     });
     modal.present();

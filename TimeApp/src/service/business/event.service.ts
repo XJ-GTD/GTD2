@@ -539,6 +539,9 @@ export class EventService extends BaseService {
     }
 
     await this.sqlExce.batExecSqlByParam(sqlparam);
+
+    this.emitService.emit("mwxing.calendar.activities.changed", outAgds);
+
     return outAgds;
   }
 
@@ -1026,7 +1029,7 @@ export class EventService extends BaseService {
         }
       }
     }
-    outAgds = [...outAgds, ...delAgds];
+    Object.assign(outAgds,[...outAgds, ...delAgds]);
   }
 
   /**
@@ -1054,7 +1057,7 @@ export class EventService extends BaseService {
    */
   private sqlparamAddFj(evi : string ,fjs : Array<FjTbl>):Array<any>{
     let ret = new Array<any>();
-    if (!fjs && fjs.length > 0){
+    if (fjs && fjs.length > 0){
       for (let j = 0 ,len = fjs.length;j < len ; j++){
         let fj = new FjTbl();
         fj.fji = this.util.getUuid();
@@ -1079,7 +1082,7 @@ export class EventService extends BaseService {
    */
   private sqlparamAddPar(evi : string ,pars : Array<Parter>):Array<any>{
     let ret = new Array<any>();
-    if (!pars && pars.length > 0){
+    if (pars && pars.length > 0){
       for (let j = 0 ,len = pars.length;j < len ; j++){
         let par = new ParTbl();
         par.pari = this.util.getUuid();
@@ -1576,13 +1579,13 @@ export class EventService extends BaseService {
     if (txjson.reminds && txjson.reminds.length > 0) {
       for ( let j = 0, len = txjson.reminds.length ;j < len ; j++) {
         let wa = new WaTbl();//提醒表
-        let remind : anyenum.RemindTime;
+        let remind : number;
         wa.wai = this.util.getUuid();
         wa.obt = obtType;
         wa.obi = ev.evi;
         remind = txjson.reminds[j];
         wa.st = ev.evn;
-        let time = parseInt(remind);
+        let time = remind;
         let date;
         if (al == anyenum.IsWholeday.NonWhole) {
           date = moment(ev.evd + " " + st).subtract(time, 'm').format("YYYY/MM/DD HH:mm");
@@ -2862,7 +2865,7 @@ export class RtJson {
       let text: string = "";
 
       // 选项不存在
-      if (openway || openway.length < 1) {
+      if (!openway || openway.length < 1) {
         return text;
       }
 
@@ -3064,7 +3067,23 @@ export class RtJson {
 }
 
 export class TxJson {
-  reminds = new Array<anyenum.RemindTime>();
+  reminds: Array<number> = new Array<number>();
+
+  text(first: boolean = true): string {
+    this.reminds.sort((a, b) => {
+      if (a > b) return -1;
+      if (a < b) return 1;
+      return 0;
+    });
+
+    if (this.reminds && this.reminds.length > 0) {
+      let humanremind: string = moment.duration(this.reminds[0], "minutes").humanize();
+      if (first && this.reminds[0] > 0) return `提前{humanremind}提醒`;
+      if (first && this.reminds[0] == 0) return `事件开始时提醒`;
+    } else {
+      return "";
+    }
+  }
 }
 
 enum RepeatModify {
