@@ -1035,21 +1035,10 @@ export class CalendarService extends BaseService {
             // 更新/删除
             if (item.del == DelType.del) {
               // 删除
-              if (index == 0) {
-                monthActivities.calendaritems = monthActivities.calendaritems.slice(1);
-              } else {
-                monthActivities.calendaritems = monthActivities.calendaritems.slice(0, index).concat(monthActivities.calendaritems.slice(index + 1));
-              }
+              monthActivities.calendaritems.splice(index, 1);
             } else {
               // 更新
-              if (index == 0) {
-                monthActivities.calendaritems = monthActivities.calendaritems.slice(1);
-                monthActivities.calendaritems.unshift(item);
-              } else {
-                let tail = monthActivities.calendaritems.slice(index + 1);
-                tail.unshift(item);
-                monthActivities.calendaritems = monthActivities.calendaritems.slice(0, index).concat(tail);
-              }
+              monthActivities.calendaritems.splice(index, 1, item);
             }
           } else {
             // 插入
@@ -1068,21 +1057,10 @@ export class CalendarService extends BaseService {
             // 更新/删除
             if (event.del == DelType.del) {
               // 删除
-              if (index == 0) {
-                monthActivities.events = monthActivities.events.slice(1);
-              } else {
-                monthActivities.events = monthActivities.events.slice(0, index).concat(monthActivities.events.slice(index + 1));
-              }
+              monthActivities.events.splice(index, 1);
             } else {
               // 更新
-              if (index == 0) {
-                monthActivities.events = monthActivities.events.slice(1);
-                monthActivities.events.unshift(event);
-              } else {
-                let tail = monthActivities.events.slice(index + 1);
-                tail.unshift(event);
-                monthActivities.events = monthActivities.events.slice(0, index).concat(tail);
-              }
+              monthActivities.events.splice(index, 1, event);
             }
           } else {
             monthActivities.events.push(event);
@@ -1097,21 +1075,10 @@ export class CalendarService extends BaseService {
             // 更新/删除
             if (memo.del == DelType.del) {
               // 删除
-              if (index == 0) {
-                monthActivities.memos = monthActivities.memos.slice(1);
-              } else {
-                monthActivities.memos = monthActivities.memos.slice(0, index).concat(monthActivities.memos.slice(index + 1));
-              }
+              monthActivities.memos.splice(index, 1);
             } else {
               // 更新
-              if (index == 0) {
-                monthActivities.memos = monthActivities.memos.slice(1);
-                monthActivities.memos.unshift(memo);
-              } else {
-                let tail = monthActivities.memos.slice(index + 1);
-                tail.unshift(memo);
-                monthActivities.memos = monthActivities.memos.slice(0, index).concat(tail);
-              }
+              monthActivities.memos.splice(index, 1, memo);
             }
           } else {
             monthActivities.memos.push(memo);

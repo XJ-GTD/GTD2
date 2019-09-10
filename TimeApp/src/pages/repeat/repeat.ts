@@ -122,7 +122,7 @@ import {CycleType, OverType} from "../../data.enum";
             <p>重复开启</p>
           </ion-row>
           <ion-row justify-content-start>
-            <radio-select [options]="itemRangeOptions" multiple="true" [(ngModel)]="cfMonthOptions.freqOption" (onChanged)="onFreqOptionChanged($event)"></radio-select>
+            <radio-select [options]="itemMonthDayRangeOptions" multiple="true" [(ngModel)]="cfMonthOptions.freqOption" (onChanged)="onFreqOptionChanged($event)"></radio-select>
           </ion-row>
         </ion-grid>
       </ion-row>
@@ -205,6 +205,7 @@ export class RepeatPage {
   items: Array<any> = new Array<any>();
   itemRanges: Array<any> = new Array<any>();
   itemRangeOptions: Array<any> = new Array<any>();
+  itemMonthDayRangeOptions: Array<any> = new Array<any>();
 
   title: string = "重复关闭。";
   cfType: string = "";
@@ -280,10 +281,15 @@ export class RepeatPage {
     this.itemRangeOptions.push({value: "thursday", caption: "四"});
     this.itemRangeOptions.push({value: "friday", caption: "五"});
     this.itemRangeOptions.push({value: "saturday", caption: "六"});
+
+    for (let day = 1; day <= 31; day++) {
+      this.itemMonthDayRangeOptions.push({value: `${day}`, caption: `${day}`});
+    }
+
+    this.initRepeatShow();
   }
 
   ionViewDidEnter() {
-
   }
 
   close() {
@@ -343,6 +349,114 @@ export class RepeatPage {
         break;
       default:
         this.title = "重复关闭。";
+        break;
+    }
+  }
+
+  initRepeatShow() {
+    switch(this.currentRepeat.cycletype) {
+      case CycleType.day:
+        this.cfType = "day";
+        this.cfDayOptions.frequency = this.currentRepeat.cyclenum;
+        switch(this.currentRepeat.over.type) {
+          case OverType.fornever:
+            this.cfDayOptions.endType = "never";
+            break;
+          case OverType.times:
+            this.cfDayOptions.endType = "aftertimes";
+            this.cfDayOptions.afterTimes = this.currentRepeat.over.value;
+            break;
+          case OverType.limitdate:
+            this.cfDayOptions.endType = "tosomeday";
+            this.cfDayOptions.toSomeDay = moment(this.currentRepeat.over.value, "YYYY/MM/DD").format("YYYY年M月D日");
+            break;
+          default:
+            break;
+        }
+        break;
+      case CycleType.week:
+        this.cfType = "week";
+        this.cfWeekOptions.frequency = this.currentRepeat.cyclenum;
+        if (this.currentRepeat.openway && this.currentRepeat.openway.length > 0) {
+          this.cfWeekOptions.freqOption = new Array<any>();
+          this.cfWeekOptions.freqOption = this.itemRangeOptions.reduce((target, val, index) => {
+            if (this.currentRepeat.openway.indexOf(index) >= 0) {
+              target.push(val.value);
+            } else {
+              target.push(null);
+            }
+
+            return target;
+          }, this.cfWeekOptions.freqOption);
+        }
+        switch(this.currentRepeat.over.type) {
+          case OverType.fornever:
+            this.cfWeekOptions.endType = "never";
+            break;
+          case OverType.times:
+            this.cfWeekOptions.endType = "aftertimes";
+            this.cfWeekOptions.afterTimes = this.currentRepeat.over.value;
+            break;
+          case OverType.limitdate:
+            this.cfWeekOptions.endType = "tosomeday";
+            this.cfWeekOptions.toSomeDay = moment(this.currentRepeat.over.value, "YYYY/MM/DD").format("YYYY年M月D日");
+            break;
+          default:
+            break;
+        }
+        break;
+      case CycleType.month:
+        this.cfType = "month";
+        this.cfMonthOptions.frequency = this.currentRepeat.cyclenum;
+        if (this.currentRepeat.openway && this.currentRepeat.openway.length > 0) {
+          this.cfMonthOptions.freqOption = new Array<any>();
+          this.cfMonthOptions.freqOption = this.itemMonthDayRangeOptions.reduce((target, val, index) => {
+            if (this.currentRepeat.openway.indexOf(index) >= 0) {
+              target.push(val.value);
+            } else {
+              target.push(null);
+            }
+
+            return target;
+          }, this.cfMonthOptions.freqOption);
+        }
+        switch(this.currentRepeat.over.type) {
+          case OverType.fornever:
+            this.cfMonthOptions.endType = "never";
+            break;
+          case OverType.times:
+            this.cfMonthOptions.endType = "aftertimes";
+            this.cfMonthOptions.afterTimes = this.currentRepeat.over.value;
+            break;
+          case OverType.limitdate:
+            this.cfMonthOptions.endType = "tosomeday";
+            this.cfMonthOptions.toSomeDay = moment(this.currentRepeat.over.value, "YYYY/MM/DD").format("YYYY年M月D日");
+            break;
+          default:
+            break;
+        }
+        break;
+      case CycleType.year:
+        this.cfType = "year";
+        this.cfYearOptions.frequency = this.currentRepeat.cyclenum;
+        switch(this.currentRepeat.over.type) {
+          case OverType.fornever:
+            this.cfDayOptions.endType = "never";
+            break;
+          case OverType.times:
+            this.cfYearOptions.endType = "aftertimes";
+            this.cfYearOptions.afterTimes = this.currentRepeat.over.value;
+            break;
+          case OverType.limitdate:
+            this.cfYearOptions.endType = "tosomeday";
+            this.cfYearOptions.toSomeDay = moment(this.currentRepeat.over.value, "YYYY/MM/DD").format("YYYY年M月D日");
+            break;
+          default:
+            break;
+        }
+        break;
+      default:
+        this.cfType = "";
         break;
     }
   }

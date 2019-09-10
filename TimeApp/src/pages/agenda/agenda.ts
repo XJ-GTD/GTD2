@@ -248,7 +248,7 @@ export class AgendaPage {
       this.currentAgenda.rtjson = new RtJson();
       let rtdata = JSON.parse(this.currentAgenda.rt);
       Object.assign(this.currentAgenda.rtjson, rtdata);
-    } else {
+    } else if (!this.currentAgenda.rtjson && !this.currentAgenda.rt) {
       this.currentAgenda.rtjson = new RtJson();
     }
 
@@ -271,7 +271,7 @@ export class AgendaPage {
       this.currentAgenda.txjson = new TxJson();
       let txdata = JSON.parse(this.currentAgenda.tx);
       Object.assign(this.currentAgenda.txjson, txdata);
-    } else {
+    } else if (!this.currentAgenda.txjson && !this.currentAgenda.tx) {
       this.currentAgenda.txjson = new TxJson();
     }
 
