@@ -99,6 +99,7 @@ import {CfPageModule} from "../pages/cf/cf.module";
 import {FoPageModule} from "../pages/fo/fo.module";
 import {CommentPageModule} from "../pages/comment/comment.module";
 import {RepeatPageModule} from "../pages/repeat/repeat.module";
+import {RemindPageModule} from "../pages/remind/remind.module";
 import {PlanPageModule} from "../pages/plan/plan.module";
 import {CardListComponentModule} from "../components/card-list/card-list.module";
 import {TaskListComponentModule} from "../components/task-list/task-list.module";
@@ -173,6 +174,7 @@ import {CalendarService} from "../service/business/calendar.service";
     FoPageModule,
     AipPageModule,
     RepeatPageModule,
+    RemindPageModule,
     CommentPageModule,
     PlanPageModule,
     ConfirmboxComponentModule,
