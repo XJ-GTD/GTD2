@@ -1079,7 +1079,7 @@ export class EventService extends BaseService {
    */
   private sqlparamAddPar(evi : string ,pars : Array<Parter>):Array<any>{
     let ret = new Array<any>();
-    if (!pars && pars.length > 0){
+    if (pars && pars.length > 0){
       for (let j = 0 ,len = pars.length;j < len ; j++){
         let par = new ParTbl();
         par.pari = this.util.getUuid();
