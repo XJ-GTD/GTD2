@@ -2519,22 +2519,32 @@ export class EventService extends BaseService {
   		                    ) evv
   	                    ) evnext
                       group by evnext.newrtevi
-                      order by evnext.day asc
+                      order by  evnext.day , evnext.evd, evnext.evt asc
                        	`;
       let agendaArray: Array<AgendaData> = await this.sqlExce.getExtLstByParam<AgendaData>(sql, [anyenum.ToDoListStatus.On,anyenum.DelType.undel]) || new Array<AgendaData>();
   		return agendaArray;
    }
    /**
    *有数据更新或者新增，自动刷新页面
+   * 当有新的数据加入时，则对原有的数据进行从新排列
    * @author ying<343253410@qq.com>
    */
   async mergeTodolist(todolist: Array<AgendaData>, changed: AgendaData): Promise<Array<AgendaData>> {
       let agendaArray: Array<AgendaData> = new Array<AgendaData>();
       if (todolist&&changed) {
+        let flag = true;
         for (let td of todolist) {
-          if(td.evd)
+          if((moment(changed.evd + ' ' + changed.evt).diff(td.evd + ' ' + td.evt)>=0))
           {
-
+              agendaArray.push(td)
+          }
+          else
+          {
+              if(flag){
+                flag = false;
+                agendaArray.push(changed)
+              }
+              agendaArray.push(td);
           }
         }
       }
