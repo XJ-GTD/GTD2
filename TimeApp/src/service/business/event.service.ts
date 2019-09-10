@@ -1580,13 +1580,13 @@ export class EventService extends BaseService {
     if (txjson.reminds && txjson.reminds.length > 0) {
       for ( let j = 0, len = txjson.reminds.length ;j < len ; j++) {
         let wa = new WaTbl();//提醒表
-        let remind : anyenum.RemindTime;
+        let remind : number;
         wa.wai = this.util.getUuid();
         wa.obt = obtType;
         wa.obi = ev.evi;
         remind = txjson.reminds[j];
         wa.st = ev.evn;
-        let time = parseInt(remind);
+        let time = remind;
         let date;
         if (al == anyenum.IsWholeday.NonWhole) {
           date = moment(ev.evd + " " + st).subtract(time, 'm').format("YYYY/MM/DD HH:mm");
