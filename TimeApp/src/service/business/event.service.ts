@@ -539,6 +539,9 @@ export class EventService extends BaseService {
     }
 
     await this.sqlExce.batExecSqlByParam(sqlparam);
+
+    this.emitService.emit("mwxing.calendar.activities.changed", outAgds);
+
     return outAgds;
   }
 
