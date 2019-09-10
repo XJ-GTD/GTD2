@@ -2526,7 +2526,16 @@ export class EventService extends BaseService {
    * @author ying<343253410@qq.com>
    */
   async mergeTodolist(todolist: Array<AgendaData>, changed: AgendaData): Promise<Array<AgendaData>> {
+      let agendaArray: Array<AgendaData> = new Array<AgendaData>();
+      if (todolist&&changed) {
+        for (let td for todolist) {
+          if(td.evd)
+          {
 
+          }
+        }
+      }
+      return agendaArray;
   }
 
 
