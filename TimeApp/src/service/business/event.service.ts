@@ -1029,7 +1029,7 @@ export class EventService extends BaseService {
         }
       }
     }
-    outAgds = [...outAgds, ...delAgds];
+    outAgds = outAgds.splice((outAgds.length == 0? 0 : outAgds.length - 1), 0, ...delAgds);
   }
 
   /**
