@@ -3068,7 +3068,23 @@ export class RtJson {
 }
 
 export class TxJson {
-  reminds = new Array<anyenum.RemindTime>();
+  reminds: Array<number> = new Array<number>();
+
+  text(first: boolean = true): string {
+    reminds.sort((a, b) => {
+      if (a > b) return -1;
+      if (a < b) return 1;
+      return 0;
+    });
+
+    if (this.reminds && this.reminds.length > 0) {
+      let humanremind: string = moment.duration(reminds[0], "minutes").humanize();
+      if (first && reminds[0] > 0) return `提前{humanremind}提醒`;
+      if (first && reminds[0] == 0) return `事件开始时提醒`;
+    } else {
+      return "";
+    }
+  }
 }
 
 enum RepeatModify {
