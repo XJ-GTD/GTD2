@@ -283,7 +283,7 @@ export class RepeatPage {
     this.itemRangeOptions.push({value: "saturday", caption: "六"});
 
     for (let day = 1; day <= 31; day++) {
-      this.itemMonthDayRangeOptions.push({value: `"${day}"`, caption: `"${day}"`});
+      this.itemMonthDayRangeOptions.push({value: `${day}`, caption: `${day}`});
     }
 
     this.initRepeatShow();
