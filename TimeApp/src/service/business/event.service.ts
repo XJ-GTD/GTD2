@@ -167,7 +167,7 @@ export class EventService extends BaseService {
    * @returns {boolean}
    */
   isAgendaChanged(newAgd : AgendaData ,oldAgd : AgendaData): boolean{
-    /*if (!newAgd.rtjson) {
+    if (!newAgd.rtjson) {
       if (newAgd.rt) {
         newAgd.rtjson = JSON.parse(newAgd.rt);
       } else {
@@ -181,7 +181,7 @@ export class EventService extends BaseService {
       } else {
         oldAgd.rtjson = new RtJson();
       }
-    }*/
+    }
 
     //重复选项发生变化
     if (newAgd.rtjson.cycletype != oldAgd.rtjson.cycletype){
@@ -661,6 +661,23 @@ export class EventService extends BaseService {
    * @returns {Promise<Array<AgendaData>>}
    */
   private async updateAgenda(newAgdata: AgendaData,oriAgdata : AgendaData, modiType : anyenum.OperateType):Promise<Array<AgendaData>> {
+
+    //如果不使用页面对象，而直接使用更新后的返回数据对象作为参数，则rtjson，txjson为空
+    if (!newAgdata.rtjson) {
+      if (newAgdata.rt) {
+        newAgdata.rtjson = JSON.parse(newAgdata.rt);
+      } else {
+        newAgdata.rtjson = new RtJson();
+      }
+    }
+
+    if (!oriAgdata.rtjson) {
+      if (oriAgdata.rt) {
+        oriAgdata.rtjson = JSON.parse(oriAgdata.rt);
+      } else {
+        oriAgdata.rtjson = new RtJson();
+      }
+    }
 
     //批量本地更新
     let sqlparam = new Array<any>();
