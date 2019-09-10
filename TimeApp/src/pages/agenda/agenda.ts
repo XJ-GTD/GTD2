@@ -259,6 +259,8 @@ export class AgendaPage {
         Object.assign(this.currentAgenda.rtjson, data.rtjson);
         this.currentAgenda.rt = JSON.stringify(this.currentAgenda.rtjson);
         this.currentAgenda.rts = this.currentAgenda.rtjson.text();
+
+        this.save();
       }
     });
     modal.present();
@@ -280,6 +282,8 @@ export class AgendaPage {
         Object.assign(this.currentAgenda.txjson, data.txjson);
         this.currentAgenda.tx = JSON.stringify(this.currentAgenda.txjson);
         //this.currentAgenda.txs = this.currentAgenda.txjson.text();
+
+        this.doOptionSave(OperateType.OnlySel);
       }
     });
     modal.present();
