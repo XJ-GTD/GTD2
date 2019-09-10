@@ -385,6 +385,8 @@ export class RepeatPage {
             } else {
               target.push(null);
             }
+
+            return target;
           }, this.cfWeekOptions.freqOption);
         }
         switch(this.currentRepeat.over.type) {
@@ -414,6 +416,8 @@ export class RepeatPage {
             } else {
               target.push(null);
             }
+
+            return target;
           }, this.cfMonthOptions.freqOption);
         }
         switch(this.currentRepeat.over.type) {
