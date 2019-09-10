@@ -2521,6 +2521,14 @@ export class EventService extends BaseService {
       let agendaArray: Array<AgendaData> = await this.sqlExce.getExtLstByParam<AgendaData>(sql, [anyenum.ToDoListStatus.On,anyenum.DelType.undel]) || new Array<AgendaData>();
   		return agendaArray;
    }
+   /**
+   *有数据更新或者新增，自动刷新页面
+   * @author ying<343253410@qq.com>
+   */
+  async mergeTodolist(todolist: Array<AgendaData>, changed: AgendaData): Promise<Array<AgendaData>> {
+
+  }
+
 
   /**
    * 取得事件类型
