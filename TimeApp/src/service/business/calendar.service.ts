@@ -1075,10 +1075,10 @@ export class CalendarService extends BaseService {
             // 更新/删除
             if (memo.del == DelType.del) {
               // 删除
-              monthActivities.memos.slice(index, 1);
+              monthActivities.memos.splice(index, 1);
             } else {
               // 更新
-              monthActivities.memos.slice(index, 1, memo);
+              monthActivities.memos.splice(index, 1, memo);
             }
           } else {
             monthActivities.memos.push(memo);
