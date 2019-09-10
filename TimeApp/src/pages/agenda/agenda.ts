@@ -97,7 +97,7 @@ import { PageDirection, IsSuccess, OperateType, RepeatFlag, ToDoListStatus } fro
               </button>
             </ion-col>
             <ion-col *ngIf="currentAgenda.txs && currentAgenda.txs != ''">
-              <button ion-button small>
+              <button ion-button small (click)="changeRemind()">
                 <div>
                 半小时后提醒
                 <corner-badge>3</corner-badge>
@@ -123,7 +123,7 @@ import { PageDirection, IsSuccess, OperateType, RepeatFlag, ToDoListStatus } fro
               </button>
             </ion-col>
             <ion-col *ngIf="!currentAgenda.txs || currentAgenda.txs == ''">
-              <button ion-button icon-start clear small>
+              <button ion-button icon-start clear small (click)="changeRemind()">
                 <ion-icon ios="md-notifications" md="md-notifications"></ion-icon>
                 <div>提醒</div>
               </button>
@@ -254,10 +254,30 @@ export class AgendaPage {
 
     let modal = this.modalCtrl.create(DataConfig.PAGE._REPEAT_PAGE, {value: this.currentAgenda.rtjson});
     modal.onDidDismiss(async (data) => {
-      if (data) {
+      if (data && data.rtjson) {
         this.currentAgenda.rtjson = data;
         this.currentAgenda.rt = JSON.stringify(this.currentAgenda.rtjson);
         this.currentAgenda.rts = this.currentAgenda.rtjson.text();
+      }
+    });
+    modal.present();
+  }
+
+  changeRemind() {
+    if (!this.currentAgenda.txjson && this.currentAgenda.tx) {
+      this.currentAgenda.txjson = new TxJson();
+      let txdata = JSON.parse(this.currentAgenda.tx);
+      Object.assign(this.currentAgenda.txjson, txdata);
+    } else {
+      this.currentAgenda.txjson = new TxJson();
+    }
+
+    let modal = this.modalCtrl.create(DataConfig.PAGE._REMIND_PAGE, {value: this.currentAgenda.txjson});
+    modal.onDidDismiss(async (data) => {
+      if (data && data.txjson) {
+        this.currentAgenda.txjson = data.txjson;
+        this.currentAgenda.tx = JSON.stringify(this.currentAgenda.txjson);
+        //this.currentAgenda.txs = this.currentAgenda.txjson.text();
       }
     });
     modal.present();

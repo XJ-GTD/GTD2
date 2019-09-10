@@ -1,11 +1,13 @@
 import { Component, ElementRef, QueryList, Renderer2, ViewChild, ViewChildren } from '@angular/core';
-import { IonicPage, NavController, NavParams, ModalController, Scroll } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, ModalController, ViewController, Scroll } from 'ionic-angular';
 import {Keyboard} from "@ionic-native/keyboard";
 import { RadioSelectComponent } from "../../components/radio-select/radio-select";
 import { RadioSpinnerComponent } from "../../components/radio-spinner/radio-spinner";
 import { DatePickerComponent } from "../../components/date-picker/date-picker";
 import * as moment from "moment";
 import {ModalBoxComponent} from "../../components/modal-box/modal-box";
+import {RtOver, RtJson} from "../../service/business/event.service";
+import {CycleType, OverType} from "../../data.enum";
 
 @IonicPage()
 @Component({
@@ -197,6 +199,9 @@ import {ModalBoxComponent} from "../../components/modal-box/modal-box";
 export class RepeatPage {
   statusBarColor: string = "#3c4d55";
 
+  originRepeat: RtJson;
+  currentRepeat: RtJson;
+
   items: Array<any> = new Array<any>();
   itemRanges: Array<any> = new Array<any>();
   itemRangeOptions: Array<any> = new Array<any>();
@@ -248,11 +253,15 @@ export class RepeatPage {
 
   constructor(public navCtrl: NavController,
               private keyboard: Keyboard,
+              public viewCtrl: ViewController,
               public navParams: NavParams) {
     if (this.navParams && this.navParams.data) {
       let value = this.navParams.data.value;
 
       if (value) {
+        this.originRepeat = value;
+        this.currentRepeat = new RtJson();
+        Object.assign(this.currentRepeat, this.originRepeat);
       }
     }
     this.items.push({value: "", caption: "关"});
@@ -278,7 +287,9 @@ export class RepeatPage {
   }
 
   close() {
-    this.navCtrl.pop();
+    Object.assign(this.originRepeat, this.currentRepeat);
+    let data: Object = {rtjson: this.originRepeat};
+    this.viewCtrl.dismiss(data);
   }
 
   private getFreqTitle(title: string, option: any) {
@@ -336,15 +347,46 @@ export class RepeatPage {
     }
   }
 
+  resetValueWithType(rtjson: RtJson, cfType: string, target: string = "cycletype", value: any = undefined): RtJson {
+    switch (cfType) {
+      case "day":
+        if (target == "cycletype") rtjson.cycletype = CycleType.day;
+        if (target == "cyclenum") rtjson.cyclenum = this.cfDayOptions.frequency;
+        break;
+      case "week":
+        if (target == "cycletype") rtjson.cycletype = CycleType.week;
+        if (target == "cyclenum") rtjson.cyclenum = this.cfWeekOptions.frequency;
+        if (target == "openway") rtjson.openway = this.cfDayOptions.frequency;
+        break;
+      case "month":
+        if (target == "cycletype") rtjson.cycletype = CycleType.month;
+        if (target == "cyclenum") rtjson.cyclenum = this.cfMonthOptions.frequency;
+        if (target == "openway") rtjson.openway = this.cfDayOptions.frequency;
+        break;
+      case "year":
+        if (target == "cycletype") rtjson.cycletype = CycleType.year;
+        if (target == "cyclenum") rtjson.cyclenum = this.cfYearOptions.frequency;
+        break;
+      default:
+        if (target == "cycletype") rtjson.cycletype = CycleType.close;
+        break;
+    }
+
+    return rtjson;
+  }
+
   onTypeChanged(value) {
+    this.currentRepeat = this.resetValueWithType(this.currentRepeat, value);
     this.resetTitle(value);
   }
 
   onFreqChanged() {
+    this.currentRepeat = this.resetValueWithType(this.currentRepeat, this.cfType, "cyclenum");
     this.resetTitle(this.cfType);
   }
 
   onFreqOptionChanged() {
+    this.currentRepeat = this.resetValueWithType(this.currentRepeat, this.cfType, "openway");
     this.resetTitle(this.cfType);
   }
 
