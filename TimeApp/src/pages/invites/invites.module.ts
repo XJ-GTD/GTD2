@@ -1,5 +1,5 @@
 import {NgModule} from '@angular/core';
-import {FsService} from "./fs.service";
+import {FsService} from "../fs/fs.service";
 import {GcService} from "../gc/gc.service";
 import {FdService} from "../fd/fd.service";
 import {GlService} from "../gl/gl.service";
