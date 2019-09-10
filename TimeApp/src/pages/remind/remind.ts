@@ -1,6 +1,7 @@
 import { Component, ElementRef, QueryList, Renderer2, ViewChild, ViewChildren } from '@angular/core';
 import { IonicPage, NavController, NavParams, ModalController, Scroll } from 'ionic-angular';
 import { ScrollSelectComponent } from "../../components/scroll-select/scroll-select";
+import {ModalBoxComponent} from "../../components/modal-box/modal-box";
 
 @IonicPage()
 @Component({
