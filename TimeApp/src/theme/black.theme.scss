@@ -5,6 +5,7 @@ $baseBackcolor_black: rgba(0, 12, 31, 1);
 
   .haContent {
     ion-calendar {
+      box-shadow: 0px 0px 5px 0px rgba(3, 0, 0, 0.2);
       ion-card-header {
         background: rgba(0, 53, 66, 1);;
         border-bottom: 1px rgba(30, 69, 89, 1) solid;
@@ -233,7 +234,7 @@ $baseBackcolor_black: rgba(0, 12, 31, 1);
     .box-content {
       .fixed-content {
         background-color: rgba(255, 255, 255, .05);
-        box-shadow: 5px 3px 10px 0px rgba(0, 12, 31, 0.73);
+        box-shadow: 5px 3px 5px 0px rgba(0, 12, 31, 0.73);
       }
     }
   }

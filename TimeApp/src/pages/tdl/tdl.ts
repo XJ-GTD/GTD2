@@ -186,10 +186,11 @@ export class TdlPage {
       this.gotoEl("#day" + moment().format("YYYYMMDD"));
     });
 
-    //this.contentD.enableJsScroll();
+    // this.contentD.enableJsScroll();
 
     this.emitService.registerSelectDate((selectDate: moment.Moment) => {
       this.gotoEl("#day" + selectDate.format("YYYYMMDD"));
+
     });
 
 
@@ -227,35 +228,49 @@ export class TdlPage {
         if (this.isgetData) return;
 
         if ($event.directionY == 'up') {
-          if ($event.scrollTop < 100) {
+          if ($event.scrollTop < 1000) {
             this.isgetData  = !this.isgetData;
-            let monthActivityData = this.monthActivityDatas[0];
-            let scdId = monthActivityData.month;
-             scdId = "#month" + moment(scdId+"/01").format("YYYYMM");
+            //this.setScroll(false);
+            // let monthActivityData = this.monthActivityDatas[0];
+            // let scdId = monthActivityData.month;
+            //  scdId = "#month" + moment(scdId+"/01").format("YYYYMM");
+            //  this.gotoEl4month(scdId);
+            // this.renderer2.setStyle(this.contentD._scrollContent.nativeElement, "overflow-y", "hidden");
 
+            // this.tdlServ.throughData(PageDirection.PageDown).then(data => {
+            //   //this.gotoEl4month(scdId);
+            //   this.changeDetectorRef.markForCheck();
+            //   this.changeDetectorRef.detectChanges();
+            //   // setTimeout(()=>{
+            //
+            //   // this.setScroll(false);
+            //   // this.isgetData  = !this.isgetData;
+            //   // },200);
+            // })
             this.tdlServ.throughData(PageDirection.PageDown).then(data => {
-              this.gotoEl4month(scdId);
+              // this.gotoEl4month(scdId);
+
+              this.isgetData  = !this.isgetData;
               this.changeDetectorRef.markForCheck();
               this.changeDetectorRef.detectChanges();
-              setTimeout(()=>{
-                this.isgetData  = !this.isgetData;
-              },200);
+              // setTimeout(()=>{
+
+              // this.setScroll(false);
+              // this.isgetData  = !this.isgetData;
+              // },200);
             })
           }
         }
 
         if ($event.directionY == 'down') {
-          if ($event.scrollTop + 100 > this.grid.nativeElement.clientHeight - $event.scrollElement.clientHeight) {
+          if ($event.scrollTop + 300 > this.grid.nativeElement.clientHeight - $event.scrollElement.clientHeight) {
             this.isgetData  = !this.isgetData;
 
             this.tdlServ.throughData(PageDirection.PageUp).then(data=>{
 
               this.changeDetectorRef.markForCheck();
               this.changeDetectorRef.detectChanges();
-              setTimeout(()=>{
-                this.isgetData  = !this.isgetData;
-
-              },200);
+              this.isgetData  = !this.isgetData;
             })
           }
         }
@@ -310,22 +325,23 @@ export class TdlPage {
   }
 
   gotoEl4month(id) {
-    setTimeout(() => {
       try {
         let currmonthel = this.el.nativeElement.querySelector(id);
 
         if (currmonthel) {
           this.gridHight = this.grid.nativeElement.clientHeight;
-          this.contentD.scrollTo(0, currmonthel.offsetTop + 2, 200).then(datza => {
+          this.contentD.scrollTo(0, currmonthel.offsetTop + 2, 0).then(datza => {
             this.gridHight = this.grid.nativeElement.clientHeight;
+            //this.setScroll(true);
+            // this.isgetData  = !this.isgetData;
+            console.log("##############");
           })
         } else {
           this.gotoEl4month(id);
         }
       } catch (e) {
+        console.log(e)
       }
-
-    }, 100);
   }
   toDetail(si, d, gs) {
 
