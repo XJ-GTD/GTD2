@@ -1123,17 +1123,26 @@ export class CalendarService extends BaseService {
     }
 
     // 重构每天活动数据
-    let days: Map<string, DayActivityData> = new Map<string, DayActivityData>();
+    // let days: Map<string, DayActivityData> = new Map<string, DayActivityData>();
 
     // 初始化每日记录
-    days.set(startday, new DayActivityData(startday));
-    let stepday: string = startday;
-    while (stepday != endday) {
-      stepday = moment(stepday).add(1, "days").format("YYYY/MM/DD");
+    // days.set(startday, new DayActivityData(startday));
+    // let stepday: string = startday;
+    // while (stepday != endday) {
+    //   stepday = moment(stepday).add(1, "days").format("YYYY/MM/DD");
+    //
+    //   let day: string = stepday;
+    //   days.set(day, new DayActivityData(day));
+    // }
 
-      let day: string = stepday;
-      days.set(day, new DayActivityData(day));
-    }
+    let days: Map<string, DayActivityData> = monthActivities.days;
+
+    // 清空数据
+    days.forEach((dayActivity) => {
+      dayActivity.calendaritems.length = 0;
+      dayActivity.events.length = 0;
+      dayActivity.memos.length = 0;
+    });
 
     days = monthActivities.calendaritems.reduce((days, value) => {
       let day: string = value.sd;
