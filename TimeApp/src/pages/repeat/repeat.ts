@@ -1,5 +1,5 @@
 import { Component, ElementRef, QueryList, Renderer2, ViewChild, ViewChildren } from '@angular/core';
-import { IonicPage, NavController, NavParams, ModalController, Scroll } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, ModalController, ViewController, Scroll } from 'ionic-angular';
 import {Keyboard} from "@ionic-native/keyboard";
 import { RadioSelectComponent } from "../../components/radio-select/radio-select";
 import { RadioSpinnerComponent } from "../../components/radio-spinner/radio-spinner";
@@ -347,7 +347,7 @@ export class RepeatPage {
     }
   }
 
-  resetValueWithType(rtjson: RtJson, cfType: string, target: string = "cycletype", value: any): RtJson {
+  resetValueWithType(rtjson: RtJson, cfType: string, target: string = "cycletype", value: any = undefined): RtJson {
     switch (cfType) {
       case "day":
         if (target == "cycletype") rtjson.cycletype = CycleType.day;
