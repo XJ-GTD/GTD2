@@ -289,7 +289,7 @@ export class RepeatPage {
   }
 
   ionViewDidEnter() {
-    initRepeatShow();
+    this.initRepeatShow();
   }
 
   close() {
