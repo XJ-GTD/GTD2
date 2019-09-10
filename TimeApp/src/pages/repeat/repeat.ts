@@ -6,8 +6,8 @@ import { RadioSpinnerComponent } from "../../components/radio-spinner/radio-spin
 import { DatePickerComponent } from "../../components/date-picker/date-picker";
 import * as moment from "moment";
 import {ModalBoxComponent} from "../../components/modal-box/modal-box";
-import {RtJson} from "../../service/business/event.service";
-import {CycleType, RtOver, OverType} from "../../data.enum";
+import {RtOver, RtJson} from "../../service/business/event.service";
+import {CycleType, OverType} from "../../data.enum";
 
 @IonicPage()
 @Component({
