@@ -2865,7 +2865,7 @@ export class RtJson {
       let text: string = "";
 
       // 选项不存在
-      if (openway || openway.length < 1) {
+      if (!openway || openway.length < 1) {
         return text;
       }
 
