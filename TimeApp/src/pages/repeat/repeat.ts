@@ -286,10 +286,10 @@ export class RepeatPage {
       this.itemMonthDayRangeOptions.push({value: `"${day}"`, caption: `"${day}"`});
     }
 
+    this.initRepeatShow();
   }
 
   ionViewDidEnter() {
-    this.initRepeatShow();
   }
 
   close() {
