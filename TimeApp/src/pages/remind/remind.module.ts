@@ -10,6 +10,7 @@ import {ModalBoxComponentModule} from "../../components/modal-box/modal-box.modu
   ],
   imports: [
       IonicModule,
+      ModalBoxComponentModule,
       ScrollSelectComponentModule
   ],
   providers: [
