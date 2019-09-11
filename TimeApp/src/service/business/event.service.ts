@@ -161,6 +161,140 @@ export class EventService extends BaseService {
   }
 
   /**
+   * 判断两个日程是否相同
+   *
+   * @param {AgendaData} one
+   * @param {AgendaData} another
+   * @returns {boolean}
+   *
+   * @author leon_xi@163.com
+   */
+  isSameAgenda(one: AgendaData, another: AgendaData): boolean {
+    if (!one || !another) return false;
+
+    for (let key of Object.keys(one)) {
+      if (one.hasOwnProperty(key)) {
+        let value = one[key];
+
+        // 如果两个值都为空, 继续
+        if (!value && !another[key]) {
+          continue;
+        }
+
+        // 如果one的值为空, 不一致
+        if (!value) return false;
+
+        if (typeof value === 'string' || typeof value === 'number') {
+          if (value != another[key]) return false;
+        }
+
+        if (value instanceof Array) {
+          if (value.length != another[key].length) return false;
+
+          if (value.length > 0) {
+            if (value[0] instanceof Parter && another[key][0] instanceof Parter) {
+              let compare = value.concat(another[key]);
+
+              compare.sort((a, b) => {
+                if (a.pari > b.pari) return -1;
+                if (a.pari < b.pari) return 1;
+                return 0;
+              });
+
+              let result = compare.reduce((target, val) => {
+                if (!target) {
+                  target = val;
+                } else {
+                  if (!val) {
+                    target = {};
+                  } else {
+                    let issame: boolean = true;
+
+                    for (let key of Object.keys(target)) {
+                      if (target.hasOwnProperty(key)) {
+                        let value = target[key];
+
+                        if (typeof value === 'string' || typeof value === 'number') {
+                          if (value != val[key]) issame = false;
+                        }
+                      }
+                    }
+
+                    if (issame) {
+                      target = null;
+                    } else {
+                      target = {};
+                    }
+                  }
+                }
+
+                return target;
+              }, null);
+
+              if (result && result.isEmpty()) return false;
+
+            } else if (value[0] instanceof FjTbl && another[key][0] instanceof FjTbl) {
+
+              let compare = value.concat(another[key]);
+
+              compare.sort((a, b) => {
+                if (a.fji > b.fji) return -1;
+                if (a.fji < b.fji) return 1;
+                return 0;
+              });
+
+              let result = compare.reduce((target, val) => {
+                if (!target) {
+                  target = val;
+                } else {
+                  if (!val) {
+                    target = {};
+                  } else {
+                    let issame: boolean = true;
+
+                    for (let key of Object.keys(target)) {
+                      if (target.hasOwnProperty(key)) {
+                        let value = target[key];
+
+                        if (typeof value === 'string' || typeof value === 'number') {
+                          if (value != val[key]) issame = false;
+                        }
+                      }
+                    }
+
+                    if (issame) {
+                      target = null;
+                    } else {
+                      target = {};
+                    }
+                  }
+                }
+
+                return target;
+              }, null);
+
+              if (result && result.isEmpty()) return false;
+
+            } else {
+              return false;
+            }
+          }
+        }
+
+        if (value instanceof RtJson || value instanceof TxJson) {
+          if (!value.sameWith(another)) return false;
+        }
+
+        if (value instanceof Parter || value instanceof JhaTbl) {
+          //skip
+        }
+      }
+    }
+
+    return true;                                                                                                                                                                                                                                                                                                                                                                                                                       szz
+  }
+
+  /**
    * 页面判断重复设置是否改变
    * @param {AgendaData} newAgd
    * @param {AgendaData} oldAgd
@@ -189,7 +323,7 @@ export class EventService extends BaseService {
     //title发生变化
     if (newAgd.evn != oldAgd.evn){
       return true;
-    }
+  }
     //开始日发生变化
     if (newAgd.sd != oldAgd.sd){
       return true;
