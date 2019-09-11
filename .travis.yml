@@ -20,8 +20,9 @@ matrix:
     addons:
       apt:
         sources:
-        - sourceline: deb https://packagecloud.io/github/git-lfs/ubuntu/ trusty main
-          key_url: https://packagecloud.io/github/git-lfs/gpgkey
+        - sourceline: deb https://dl.yarnpkg.com/debian/ stable main
+          key_url: https://dl.yarnpkg.com/debian/pubkey.gpg
+        - key_url: https://packagecloud.io/github/git-lfs/gpgkey
         packages:
         - yarn
         - jq
