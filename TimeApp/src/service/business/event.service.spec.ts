@@ -643,6 +643,7 @@ describe('EventService test suite', () => {
 
       noneRepeat.sd = dayNoneRepeat;
       noneRepeat.evn = "不重复";
+      noneRepeat.todolist = anyenum.ToDoListStatus.On;
 
       dayNoneRepeatAgendas = await eventService.saveAgenda(noneRepeat);
 
@@ -656,6 +657,7 @@ describe('EventService test suite', () => {
       dayRepeat.sd = dayDayRepeat;
       dayRepeat.evn = "每天重复";
       dayRepeat.rtjson = dayRepeatrt;
+      dayRepeat.todolist = anyenum.ToDoListStatus.On;
 
       dayDayRepeatAgendas = await eventService.saveAgenda(dayRepeat);
 
