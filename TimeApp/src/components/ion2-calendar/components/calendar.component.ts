@@ -267,7 +267,7 @@ export class CalendarComponent implements OnInit {
 
         this.changeDetectorRef.markForCheck();
         this.changeDetectorRef.detectChanges();
-        this.swiper.updateSlides();
+        // this.swiper.updateSlides();
       });
 
       this.swiper.on("slideChange", ()=> {

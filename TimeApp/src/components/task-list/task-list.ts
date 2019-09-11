@@ -9,16 +9,21 @@ import * as moment from "moment";
           <div class="agendaline">
             <div class="agenda-sn">{{task.evn}}</div>
             <div class="agenda-tool">
-              <ion-icon class="fa fa-eraser"></ion-icon>
-              <ion-icon class="fa fa-check"></ion-icon>
+              <ion-icon class="fa fa-eraser">移除</ion-icon>
             </div>
           </div>
           <div class="agendaline">
-            <div class="agenda-icon">
-              <ion-icon class="{{(task.evd + ' ' + task.evt) | formatedate:'withNowcss'}}"></ion-icon>
-            </div>
+            
+            <div class="agenda-warp">
+              <div class="agenda-icon">
+                <ion-icon class="{{(task.evd + ' ' + task.evt) | formatedate:'withNowcss'}}"></ion-icon>
+              </div>
               <div class="agenda-st">{{(task.evd + ' ' + task.evt) | formatedate:'withNow'}}</div>
-              <div  class="agenda-person">{{task.ui | formatuser: currentuser: friends}}</div>
+              <div  class="agenda-person">---来自小酒仙{{task.ui | formatuser: currentuser: friends}}</div>
+            </div>
+            <div class="agenda-tool">
+              <ion-icon class="fa fa-check">完成</ion-icon>
+            </div>
           </div>
       </ion-row>
     </ion-grid>
