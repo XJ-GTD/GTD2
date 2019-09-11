@@ -281,8 +281,12 @@ export class EventService extends BaseService {
           }
         }
 
-        if (value instanceof RtJson || value instanceof TxJson) {
-          if (!value.sameWith(another)) return false;
+        if (value instanceof RtJson) {
+          if (!<RtJson>value.sameWith(another)) return false;
+        }
+
+        if (value instanceof TxJson) {
+          if (!<TxJson>value.sameWith(another)) return false;
         }
 
         if (value instanceof Parter || value instanceof JhaTbl) {
