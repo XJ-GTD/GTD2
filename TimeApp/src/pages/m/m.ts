@@ -40,7 +40,7 @@ import {RabbitMQService} from "../../service/cordova/rabbitmq.service";
           <ion-row (click)="goGlPage()">
             <h3>群组</h3>
           </ion-row>
-          <ion-row (click)="goGlPage()">
+          <ion-row (click)="goPlPage()">
             <h3>活动日历</h3>
           </ion-row>
           <ion-row (click)="goBlPage()">

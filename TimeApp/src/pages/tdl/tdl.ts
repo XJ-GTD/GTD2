@@ -127,17 +127,16 @@ export class TdlPage {
   @ViewChild('grid4Hight') grid: ElementRef;
 
 
-  //取底部数据
-  gridHight: number = 0;
-  gridHightsub: number = 0;
 
    isgetData: boolean = false;
    loopmonth = false;
-  //头部显示日期
-  headerDate: string;
-  headerMoment: moment.Moment;
+
+  listmonth:moment.Moment = moment(moment().format("YYYYMM") + "01");
 
   _gesture: TdlGesture;
+
+
+  currDayel: any;
 
 
   //画面数据List
@@ -168,6 +167,7 @@ export class TdlPage {
     if (scroll) {
       this.renderer2.setStyle(this.contentD._scrollContent.nativeElement, "overflow-y", "auto");
       this._gesture.unlisten();
+
     } else {
       this.renderer2.setStyle(this.contentD._scrollContent.nativeElement, "overflow-y", "hidden");
       this._gesture.listen();
@@ -186,120 +186,140 @@ export class TdlPage {
       this.gotoEl("#day" + moment().format("YYYYMMDD"));
     });
 
-    //this.contentD.enableJsScroll();
+    // this.contentD.enableJsScroll();
 
     this.emitService.registerSelectDate((selectDate: moment.Moment) => {
       this.gotoEl("#day" + selectDate.format("YYYYMMDD"));
+
     });
 
+    this.emitService.register("calendar.change.month",($data)=>{
+      this.gotoEl4month("#month" + $data);
+      this.listmonth = moment($data + "01");
+    });
+    setTimeout(()=>{
 
-    this.contentD.ionScroll.subscribe(($event: ScrollEvent) => {
-      try{
+      this.contentD.ionScroll.subscribe(($event: ScrollEvent) => {
+        try{
 
-        //显示当前顶部滑动日期
-        if (!this.loopmonth){
-          this.loopmonth = !this.loopmonth;
-          setTimeout(()=>{
-            for (let i = this.monthActivityDatas.length -1; i >= 0; i-- ) {
-              //let monthActivityData = this.monthActivityDatas[0];
-              let scdId = this.monthActivityDatas[i].month;
-              scdId = "#month" + moment(scdId+"/01").format("YYYYMM");
-              let el = this.el.nativeElement.querySelector(scdId);
-              console.log("###" + el);
-              // if (el && $event.scrollTop - el.offsetTop < el.clientHeight && $event.scrollTop - el.offsetTop > 0) {
-              if (el && $event.scrollTop - el.offsetTop > 0) {
-                //this.headerDate = moment(scdlData.d).format("YYYY/MM/DD");
-                //this.headerMoment = moment(scdlData.d);
-                //this.feedback.audioTrans();
-                this.loopmonth = !this.loopmonth;
-                console.log("###" + scdId);
+          if (!$event) return;
 
-                //准备发出emit
-                //TODO
-                break;
+          //显示当前顶部滑动日期
+          if (!this.loopmonth){
+            this.loopmonth = !this.loopmonth;
+            setTimeout(()=>{
+              for (let i = this.monthActivityDatas.length -1; i >= 0; i-- ) {
+                //let monthActivityData = this.monthActivityDatas[0];
+                let monobj = moment(this.monthActivityDatas[i].month +"/01");
+                let key = "#month" + monobj.format("YYYYMM");
+                let el = this.el.nativeElement.querySelector(key);
+                // if (el && $event.scrollTop - el.offsetTop < el.clientHeight && $event.scrollTop - el.offsetTop > 0) {
+                if (el && $event.scrollTop - el.offsetTop > 0) {
+                  //this.headerDate = moment(scdlData.d).format("YYYY/MM/DD");
+                  //this.headerMoment = moment(scdlData.d);
+                  //this.feedback.audioTrans();
+                  this.loopmonth = !this.loopmonth;
+
+                  //准备发出emit
+                  // if (this.listmonth.isBefore(monobj)){
+                  //   this.emitService.emit("list.change.month","next");
+                  // }
+                  // if (this.listmonth.isAfter(monobj)){
+                  //   this.emitService.emit("list.change.month","prev");
+                  // }
+                  this.listmonth = monobj;
+                  break;
+                }
               }
+
+            },500);
+
+          }
+
+          if (this.isgetData) return;
+
+          if ($event.directionY == 'up') {
+            if ($event.scrollTop < 1000) {
+              this.isgetData  = !this.isgetData;
+              //this.setScroll(false);
+              // let monthActivityData = this.monthActivityDatas[0];
+              // let scdId = monthActivityData.month;
+              //  scdId = "#month" + moment(scdId+"/01").format("YYYYMM");
+              //  this.gotoEl4month(scdId);
+              // this.renderer2.setStyle(this.contentD._scrollContent.nativeElement, "overflow-y", "hidden");
+
+              // this.tdlServ.throughData(PageDirection.PageDown).then(data => {
+              //   //this.gotoEl4month(scdId);
+              //   this.changeDetectorRef.markForCheck();
+              //   this.changeDetectorRef.detectChanges();
+              //   // setTimeout(()=>{
+              //
+              //   // this.setScroll(false);
+              //   // this.isgetData  = !this.isgetData;
+              //   // },200);
+              // })
+              this.tdlServ.throughData(PageDirection.PageDown).then(data => {
+                // this.gotoEl4month(scdId);
+
+                this.isgetData  = !this.isgetData;
+                this.changeDetectorRef.markForCheck();
+                this.changeDetectorRef.detectChanges();
+                // setTimeout(()=>{
+
+                // this.setScroll(false);
+                // this.isgetData  = !this.isgetData;
+                // },200);
+              })
             }
-
-          },500);
-
-        }
-
-        if (this.isgetData) return;
-
-        if ($event.directionY == 'up') {
-          if ($event.scrollTop < 100) {
-            this.isgetData  = !this.isgetData;
-            let monthActivityData = this.monthActivityDatas[0];
-            let scdId = monthActivityData.month;
-             scdId = "#month" + moment(scdId+"/01").format("YYYYMM");
-
-            this.tdlServ.throughData(PageDirection.PageDown).then(data => {
-              this.gotoEl4month(scdId);
-              this.changeDetectorRef.markForCheck();
-              this.changeDetectorRef.detectChanges();
-              setTimeout(()=>{
-                this.isgetData  = !this.isgetData;
-              },200);
-            })
           }
-        }
 
-        if ($event.directionY == 'down') {
-          if ($event.scrollTop + 100 > this.grid.nativeElement.clientHeight - $event.scrollElement.clientHeight) {
-            this.isgetData  = !this.isgetData;
+          if ($event.directionY == 'down') {
+            if ($event.scrollTop + 300 > this.grid.nativeElement.clientHeight - $event.scrollElement.clientHeight) {
+              this.isgetData  = !this.isgetData;
 
-            this.tdlServ.throughData(PageDirection.PageUp).then(data=>{
+              this.tdlServ.throughData(PageDirection.PageUp).then(data=>{
 
-              this.changeDetectorRef.markForCheck();
-              this.changeDetectorRef.detectChanges();
-              setTimeout(()=>{
+                this.changeDetectorRef.markForCheck();
+                this.changeDetectorRef.detectChanges();
                 this.isgetData  = !this.isgetData;
-
-              },200);
-            })
+              })
+            }
           }
+
+        }catch (e) {
+          console.log(e);
+
         }
 
-      }catch (e) {
-        console.log(e);
+        // //显示当前顶部滑动日期
+        // for (let scdlData of this.monthActivityDatas) {
+        //   let el = this.el.nativeElement.querySelector("#day" + scdlData.id);
+        //   if (el && $event.scrollTop - el.offsetTop < el.clientHeight && $event.scrollTop - el.offsetTop > 0) {
+        //     this.headerDate = moment(scdlData.d).format("YYYY/MM/DD");
+        //     this.headerMoment = moment(scdlData.d);
+        //     //this.feedback.audioTrans();
+        //     break;
+        //   }
+        // }
 
-      }
-
-      // //显示当前顶部滑动日期
-      // for (let scdlData of this.monthActivityDatas) {
-      //   let el = this.el.nativeElement.querySelector("#day" + scdlData.id);
-      //   if (el && $event.scrollTop - el.offsetTop < el.clientHeight && $event.scrollTop - el.offsetTop > 0) {
-      //     this.headerDate = moment(scdlData.d).format("YYYY/MM/DD");
-      //     this.headerMoment = moment(scdlData.d);
-      //     //this.feedback.audioTrans();
-      //     break;
-      //   }
-      // }
-
-    });
+      });
+    },2000);
   }
-
-
-  currDayel: any;
 
   gotoEl(id) {
     setTimeout(() => {
       try {
-        if (this.currDayel) {
+        if (this.currDayel && this.currDayel.className.indexOf("ayagenda-no-content") > -1) {
           this.renderer2.removeClass(this.currDayel, "item-display");
           this.renderer2.addClass(this.currDayel, "item-no-display");
         }
         this.currDayel = this.el.nativeElement.querySelector(id);
+        console.log(this.currDayel.className);
         this.renderer2.removeClass(this.currDayel, "item-no-display");
         this.renderer2.addClass(this.currDayel, "item-display");
 
-        this.headerDate = moment(id).format("YYYY/MM/DD");
-        this.headerMoment = moment(id);
         if (this.currDayel) {
-          this.gridHight = this.grid.nativeElement.clientHeight;
-          this.contentD.scrollTo(0, this.currDayel.offsetTop + 2, 200).then(datza => {
-            this.gridHight = this.grid.nativeElement.clientHeight;
-          })
+          this.contentD.scrollTo(0, this.currDayel.offsetTop + 2, 800);
         } else {
           this.gotoEl(id);
         }
@@ -310,22 +330,20 @@ export class TdlPage {
   }
 
   gotoEl4month(id) {
-    setTimeout(() => {
-      try {
+      setTimeout(()=>{
+        try{
         let currmonthel = this.el.nativeElement.querySelector(id);
 
         if (currmonthel) {
-          this.gridHight = this.grid.nativeElement.clientHeight;
-          this.contentD.scrollTo(0, currmonthel.offsetTop + 2, 200).then(datza => {
-            this.gridHight = this.grid.nativeElement.clientHeight;
-          })
+          this.contentD.scrollTo(0, currmonthel.offsetTop + 2, 800);
         } else {
           this.gotoEl4month(id);
         }
       } catch (e) {
-      }
+      console.log(e)
+    }
+      },200);
 
-    }, 100);
   }
   toDetail(si, d, gs) {
 
