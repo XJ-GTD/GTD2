@@ -89,7 +89,7 @@ import { PageDirection, IsSuccess, OperateType, RepeatFlag, ToDoListStatus } fro
 
           <ion-row *ngIf="currentAgenda.evi && (currentAgenda.pn > 0 || (currentAgenda.txs && currentAgenda.txs != '') || (currentAgenda.rts && currentAgenda.rts != ''))">
             <ion-col *ngIf="currentAgenda.pn > 0">
-              <button ion-button small>
+              <button ion-button small (click)="changeInvites()">
                 <div>
                   参与人
                   <corner-badge>{{currentAgenda.pn}}</corner-badge>
@@ -135,7 +135,7 @@ import { PageDirection, IsSuccess, OperateType, RepeatFlag, ToDoListStatus } fro
               </button>
             </ion-col>
             <ion-col *ngIf="!currentAgenda.pn || currentAgenda.pn == 0">
-              <button ion-button icon-start clear small>
+              <button ion-button icon-start clear small (click)="changeInvites()">
                 <ion-icon ios="ios-person-add" md="ios-person-add"></ion-icon>
                 <div>邀请</div>
               </button>
@@ -217,6 +217,14 @@ export class AgendaPage {
   removeTodolist() {
     this.currentAgenda.todolist = ToDoListStatus.Off;
     this.doOptionSave(OperateType.OnlySel);
+  }
+
+  changeInvites() {
+    let modal = this.modalCtrl.create(DataConfig.PAGE._INVITES_PAGE);
+    modal.onDidDismiss(async (data)=>{
+
+    });
+    modal.present();
   }
 
   changePlan() {

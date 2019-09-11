@@ -1,5 +1,5 @@
 import {Component} from '@angular/core';
-import {ModalController, NavController, NavParams} from 'ionic-angular';
+import {ModalController, NavController, NavParams, ViewController} from 'ionic-angular';
 import {FsService} from "../fs/fs.service";
 import {FdService} from "../fd/fd.service";
 import {UtilService} from "../../service/util-service/util.service";
@@ -19,7 +19,7 @@ import {ModalBoxComponent} from "../../components/modal-box/modal-box";
 @Component({
   selector: 'page-invites',
   template: `
-    <modal-box>
+    <modal-box title="邀请人" (onClose)="close()">
       <div class="name-input w-auto">
         <ion-searchbar type="text" placeholder="手机号 姓名" (ionChange)="getContacts()" [(ngModel)]="tel"
                    text-center></ion-searchbar>
@@ -67,6 +67,7 @@ export class InvitesPage {
 
   constructor(public navCtrl: NavController,
               public navParams: NavParams,
+              public viewCtrl: ViewController,
               private fsService: FsService,
               private util: UtilService,
               private fdService: FdService,
@@ -99,6 +100,11 @@ export class InvitesPage {
       this.util.popoverStart("请先选择朋友");
     }
 
+  }
+
+  close() {
+    let data: Object = {};
+    this.viewCtrl.dismiss(data);
   }
 
   addsel(fs: FsPageData) {
