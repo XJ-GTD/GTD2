@@ -289,9 +289,6 @@ export class EventService extends BaseService {
           if (!((<TxJson>value).sameWith(another[key]))) return false;
         }
 
-        if (value instanceof Parter || value instanceof JhaTbl) {
-          //skip
-        }
       }
     }
 
