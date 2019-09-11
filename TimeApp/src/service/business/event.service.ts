@@ -702,7 +702,9 @@ export class EventService extends BaseService {
       ev.bz = newAgdata.bz;
       ev.todolist =newAgdata.todolist;
       newAgdata.tx = JSON.stringify(newAgdata.txjson);
+      newAgdata.txs = newAgdata.txjson.text();
       ev.tx = newAgdata.tx;
+      ev.txs = newAgdata.txs
       ev.fj =newAgdata.fj;
       ev.pn = newAgdata.pn;
       await this.sqlExce.updateByParam(ev);
@@ -802,6 +804,7 @@ export class EventService extends BaseService {
       }
 
       newAgdata.tx = JSON.stringify(newAgdata.txjson);
+      newAgdata.txs = newAgdata.txjson.text();
       newAgdata.tb = anyenum.SyncType.unsynch;
       let ev = new EvTbl();
       Object.assign(ev,newAgdata);
@@ -1198,6 +1201,7 @@ export class EventService extends BaseService {
 
     let txjson : TxJson  = agdata.txjson;
     agdata.tx = JSON.stringify(agdata.txjson);
+    agdata.txs = agdata.txjson.text();
 
     let days: Array<string> = new Array<string>();
     //获取重复日期
