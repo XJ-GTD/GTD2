@@ -268,7 +268,9 @@ export class AgendaPage {
       this.currentAgenda.rtjson = new RtJson();
     }
 
-    let modal = this.modalCtrl.create(DataConfig.PAGE._REPEAT_PAGE, {value: this.currentAgenda.rtjson});
+    let data = new RtJson();
+    Object.assign(data, this.currentAgenda.rtjson);
+    let modal = this.modalCtrl.create(DataConfig.PAGE._REPEAT_PAGE, {value: data});
     modal.onDidDismiss(async (data) => {
       if (data && data.rtjson) {
         this.currentAgenda.rtjson = new RtJson();
@@ -291,7 +293,9 @@ export class AgendaPage {
       this.currentAgenda.txjson = new TxJson();
     }
 
-    let modal = this.modalCtrl.create(DataConfig.PAGE._REMIND_PAGE, {value: this.currentAgenda.txjson});
+    let data = new TxJson();
+    Object.assign(data, this.currentAgenda.txjson);
+    let modal = this.modalCtrl.create(DataConfig.PAGE._REMIND_PAGE, {value: data});
     modal.onDidDismiss(async (data) => {
       if (data && data.txjson) {
         this.currentAgenda.txjson = new TxJson();
