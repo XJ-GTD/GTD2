@@ -22,7 +22,7 @@ import {Card, CardContent, Platform, Slides} from "ionic-angular";
 import {CalendarAnimation} from "../calendar-animation";
 import {CalendarController} from "../calendar.controller";
 import set = Reflect.set;
-import {Swiper, SwiperEvent} from "swiper";
+import Swiper, {SwiperEvent} from "swiper";
 import {EmitService} from "../../../service/util-service/emit.service";
 
 export const ION_CAL_VALUE_ACCESSOR: Provider = {
