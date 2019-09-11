@@ -19,7 +19,7 @@ import {ModalBoxComponent} from "../../components/modal-box/modal-box";
 @Component({
   selector: 'page-invites',
   template: `
-    <modal-box>
+    <modal-box title="邀请人" (onClose)="close()">
       <div class="name-input w-auto">
         <ion-searchbar type="text" placeholder="手机号 姓名" (ionChange)="getContacts()" [(ngModel)]="tel"
                    text-center></ion-searchbar>
@@ -99,6 +99,11 @@ export class InvitesPage {
       this.util.popoverStart("请先选择朋友");
     }
 
+  }
+
+  close() {
+    let data: Object = {};
+    this.viewCtrl.dismiss(data);
   }
 
   addsel(fs: FsPageData) {
