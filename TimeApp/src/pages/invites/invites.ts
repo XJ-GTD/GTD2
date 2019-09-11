@@ -1,5 +1,5 @@
 import {Component} from '@angular/core';
-import {ModalController, NavController, NavParams} from 'ionic-angular';
+import {ModalController, NavController, NavParams, ViewController} from 'ionic-angular';
 import {FsService} from "../fs/fs.service";
 import {FdService} from "../fd/fd.service";
 import {UtilService} from "../../service/util-service/util.service";
@@ -67,6 +67,7 @@ export class InvitesPage {
 
   constructor(public navCtrl: NavController,
               public navParams: NavParams,
+              public viewCtrl: ViewController,
               private fsService: FsService,
               private util: UtilService,
               private fdService: FdService,
