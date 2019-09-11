@@ -18,7 +18,7 @@ matrix:
       - extra-google-m2repository
       - extra-android-m2repository
     before_install:
-      - curl -sSL "https://packagecloud.io/github/git-lfs/gpgkey" | sudo -E apt-key add -
+      - curl -s https://packagecloud.io/install/repositories/github/git-lfs/script.deb.sh | sudo bash
     addons:
       apt:
         sources:
