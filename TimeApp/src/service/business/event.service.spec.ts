@@ -911,6 +911,83 @@ describe('EventService test suite', () => {
 
   });
 
+
+  describe(`创建排序事件`, () => {
+    beforeEach(async () => {
+      //===================普通事件===========================
+      let ag1: AgendaData = {} as AgendaData;
+      ag1.sd = "2019/09/12";
+      ag1.evn = "2019/09/12写一个代码";
+      ag1.todolist = anyenum.ToDoListStatus.On;
+      ag1.del = anyenum.DelType.undel;
+      await eventService.saveAgenda(ag1);
+
+      //===================每天重复事件===========================
+      let ag2: AgendaData = {} as AgendaData;
+      let day: string = "2019/09/11";
+      let rt: RtJson = new RtJson();
+      rt.cycletype = CycleType.day;
+      rt.over.type = OverType.limitdate;
+  		rt.over.value ="2020/08/31";
+      ag2.sd = day;
+      ag2.evn = "每天重复,测试todoLoist排序";
+      ag2.rtjson = rt;
+      ag2.todolist = anyenum.ToDoListStatus.On;
+      ag2.del = anyenum.DelType.undel;
+      await eventService.saveAgenda(ag2);
+
+
+      //===================普通事件===========================
+      let ag3: AgendaData = {} as AgendaData;
+      ag3.sd = "2019/09/13";
+      ag3.evn = "2019/09/13写一个代码";
+      ag3.todolist = anyenum.ToDoListStatus.On;
+      ag3.del = anyenum.DelType.undel;
+      await eventService.saveAgenda(ag3);
+
+
+      //===================普通事件===========================
+      let ag4: AgendaData = {} as AgendaData;
+      ag4.sd = "2019/09/14";
+      ag4.evn = "2019/09/14写一个代码";
+      ag4.todolist = anyenum.ToDoListStatus.On;
+      ag4.del = anyenum.DelType.undel;
+      await eventService.saveAgenda(ag4);
+
+
+
+      //===================普通事件===========================
+      let ag5: AgendaData = {} as AgendaData;
+      ag5.sd = "2019/09/15";
+      ag5.evn = "2019/09/15写一个代码";
+      ag5.todolist = anyenum.ToDoListStatus.On;
+      ag5.del = anyenum.DelType.undel;
+      await eventService.saveAgenda(ag5);
+
+
+
+
+      //===================普通事件===========================
+      let ag6: AgendaData = {} as AgendaData;
+      ag6.sd = "2019/09/16";
+      ag6.evn = "2019/09/16写一个代码";
+      ag6.todolist = anyenum.ToDoListStatus.On;
+      ag6.del = anyenum.DelType.undel;
+      await eventService.saveAgenda(ag6);
+
+    });
+
+    it(`Case 1 - 1 测试todolist排序任务`, async () => {
+      let agendaArray: Array<AgendaData> = new Array<AgendaData>();
+      agendaArray = await eventService.todolist();
+      expect(agendaArray).toBeDefined();
+      expect(agendaArray.length).toBeGreaterThan(0);
+      expect(agendaArray[3].sd).toBe("2019/09/14");
+    });
+
+
+  });
+
   afterAll(() => {
     TestBed.resetTestingModule();
   });

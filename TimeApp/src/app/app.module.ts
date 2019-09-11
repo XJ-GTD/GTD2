@@ -101,6 +101,8 @@ import {CommentPageModule} from "../pages/comment/comment.module";
 import {RepeatPageModule} from "../pages/repeat/repeat.module";
 import {RemindPageModule} from "../pages/remind/remind.module";
 import {PlanPageModule} from "../pages/plan/plan.module";
+import {InvitesPageModule} from "../pages/invites/invites.module";
+import {LocationPageModule} from "../pages/location/location.module";
 import {CardListComponentModule} from "../components/card-list/card-list.module";
 import {TaskListComponentModule} from "../components/task-list/task-list.module";
 import {ScrollSelectComponentModule} from "../components/scroll-select/scroll-select.module";
@@ -177,6 +179,8 @@ import {CalendarService} from "../service/business/calendar.service";
     RemindPageModule,
     CommentPageModule,
     PlanPageModule,
+    InvitesPageModule,
+    LocationPageModule,
     ConfirmboxComponentModule,
     CardListComponentModule,
     TaskListComponentModule,

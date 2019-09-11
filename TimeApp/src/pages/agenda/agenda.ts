@@ -39,7 +39,7 @@ import { PageDirection, IsSuccess, OperateType, RepeatFlag, ToDoListStatus } fro
               </button>
             </div>
             <div class="card-subtitle" *ngIf="false">
-              <button ion-button icon-end clear small>
+              <button ion-button icon-end clear small (click)="changeLocation()">
                 <div>地址: 浦东新区红枫路108弄11号1201室</div>
                 <ion-icon ios="ios-pin" md="ios-pin"></ion-icon>
               </button>
@@ -64,7 +64,7 @@ import { PageDirection, IsSuccess, OperateType, RepeatFlag, ToDoListStatus } fro
               </button>
             </ion-col>
             <ion-col *ngIf="true">
-              <button ion-button icon-start clear small>
+              <button ion-button icon-start clear small (click)="changeLocation()">
                 <ion-icon ios="ios-pin" md="ios-pin"></ion-icon>
                 <div>地址</div>
               </button>
@@ -89,7 +89,7 @@ import { PageDirection, IsSuccess, OperateType, RepeatFlag, ToDoListStatus } fro
 
           <ion-row *ngIf="currentAgenda.evi && (currentAgenda.pn > 0 || (currentAgenda.txs && currentAgenda.txs != '') || (currentAgenda.rts && currentAgenda.rts != ''))">
             <ion-col *ngIf="currentAgenda.pn > 0">
-              <button ion-button small>
+              <button ion-button small (click)="changeInvites()">
                 <div>
                   参与人
                   <corner-badge>{{currentAgenda.pn}}</corner-badge>
@@ -135,7 +135,7 @@ import { PageDirection, IsSuccess, OperateType, RepeatFlag, ToDoListStatus } fro
               </button>
             </ion-col>
             <ion-col *ngIf="!currentAgenda.pn || currentAgenda.pn == 0">
-              <button ion-button icon-start clear small>
+              <button ion-button icon-start clear small (click)="changeInvites()">
                 <ion-icon ios="ios-person-add" md="ios-person-add"></ion-icon>
                 <div>邀请</div>
               </button>
@@ -174,12 +174,6 @@ export class AgendaPage {
               private eventService: EventService,
               private sqlite:SqliteExec) {
     moment.locale('zh-cn');
-  }
-
-  ionViewDidLoad() {
-  }
-
-  ionViewWillEnter() {
     if (this.navParams) {
       let paramter: ScdPageParamter = this.navParams.data;
       this.currentAgenda.sd = paramter.d.format("YYYY/MM/DD");
@@ -201,6 +195,12 @@ export class AgendaPage {
     }
   }
 
+  ionViewDidLoad() {
+  }
+
+  ionViewWillEnter() {
+  }
+
   ionViewWillLeave() {
     if (this.modifyConfirm !== undefined) {
       this.modifyConfirm.dismiss();
@@ -219,6 +219,14 @@ export class AgendaPage {
     this.doOptionSave(OperateType.OnlySel);
   }
 
+  changeInvites() {
+    let modal = this.modalCtrl.create(DataConfig.PAGE._INVITES_PAGE);
+    modal.onDidDismiss(async (data)=>{
+
+    });
+    modal.present();
+  }
+
   changePlan() {
     let modal = this.modalCtrl.create(DataConfig.PAGE._PLAN_PAGE, {ji: this.currentAgenda.ji});
     modal.onDidDismiss(async (data)=>{
@@ -227,6 +235,14 @@ export class AgendaPage {
       if (this.originAgenda.ji != this.currentAgenda.ji) {
         this.doOptionSave(OperateType.OnlySel);
       }
+    });
+    modal.present();
+  }
+
+  changeLocation() {
+    let modal = this.modalCtrl.create(DataConfig.PAGE._LOCATION_PAGE);
+    modal.onDidDismiss(async (data)=>{
+
     });
     modal.present();
   }
@@ -252,7 +268,9 @@ export class AgendaPage {
       this.currentAgenda.rtjson = new RtJson();
     }
 
-    let modal = this.modalCtrl.create(DataConfig.PAGE._REPEAT_PAGE, {value: this.currentAgenda.rtjson});
+    let data = new RtJson();
+    Object.assign(data, this.currentAgenda.rtjson);
+    let modal = this.modalCtrl.create(DataConfig.PAGE._REPEAT_PAGE, {value: data});
     modal.onDidDismiss(async (data) => {
       if (data && data.rtjson) {
         this.currentAgenda.rtjson = new RtJson();
@@ -275,7 +293,9 @@ export class AgendaPage {
       this.currentAgenda.txjson = new TxJson();
     }
 
-    let modal = this.modalCtrl.create(DataConfig.PAGE._REMIND_PAGE, {value: this.currentAgenda.txjson});
+    let data = new TxJson();
+    Object.assign(data, this.currentAgenda.txjson);
+    let modal = this.modalCtrl.create(DataConfig.PAGE._REMIND_PAGE, {value: data});
     modal.onDidDismiss(async (data) => {
       if (data && data.txjson) {
         this.currentAgenda.txjson = new TxJson();

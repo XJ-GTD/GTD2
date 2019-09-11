@@ -397,8 +397,9 @@ export class EventService extends BaseService {
       }
 
       //删除原事件中从当前开始所有事件
+      console.log("**** removeAgenda start :****" + moment().format("YYYY/MM/DD HH:mm:ss SSS"))
       await this.delFromsel(masterEvi ,oriAgdata ,oriAgdata.parters,sqlparam,outAgds);
-
+      console.log("**** removeAgenda end :****" + moment().format("YYYY/MM/DD HH:mm:ss SSS"))
     }else{
 
       let sq : string;
@@ -582,7 +583,9 @@ export class EventService extends BaseService {
 
       this.assertNotEqual(oriAgdata.sd, newAgdata.sd);//原事件的开始日期与新事件的开始事件没有一致
 
+      console.log("**** updateAgenda start :****" + moment().format("YYYY/MM/DD HH:mm:ss SSS"))
       let outAgdatas = await this.updateAgenda(newAgdata,oriAgdata,modiType);
+      console.log("**** updateAgenda end :****" + moment().format("YYYY/MM/DD HH:mm:ss SSS"))
 
       this.emitService.emit("mwxing.calendar.activities.changed", outAgdatas);
 
@@ -592,8 +595,11 @@ export class EventService extends BaseService {
 
       /*新增*/
       let retParamEv = new RetParamEv();
-      retParamEv = await this.newAgenda(newAgdata);
+      console.log("**** newAgenda start :****" + moment().format("YYYY/MM/DD HH:mm:ss SSS"))
+      retParamEv = this.newAgenda(newAgdata);
+      console.log("**** newAgenda end :****" + moment().format("YYYY/MM/DD HH:mm:ss SSS"))
 
+      await this.sqlExce.batExecSqlByParam(retParamEv.sqlparam);
       //提交服务器
 
 
@@ -612,7 +618,7 @@ export class EventService extends BaseService {
    * @param {AgendaData} agdata
    * @returns {Promise<Array<AgendaData>>}
    */
-  private async newAgenda(agdata: AgendaData):Promise<RetParamEv> {
+  private newAgenda(agdata: AgendaData):RetParamEv {
 
     //设置页面参数初始化
     this.initAgdParam(agdata);
@@ -622,7 +628,10 @@ export class EventService extends BaseService {
 
     //事件sqlparam 及提醒sqlparam
     let retParamEv = new RetParamEv();
+
+    console.log("**** newAgenda sqlparamAddEv2 start :****" + moment().format("YYYY/MM/DD HH:mm:ss SSS"))
     retParamEv = this.sqlparamAddEv2(agdata);
+    console.log("**** newAgenda sqlparamAddEv2 end :****" + moment().format("YYYY/MM/DD HH:mm:ss SSS"))
     //console.log(JSON.stringify(retParamEv));
 
 
@@ -650,9 +659,7 @@ export class EventService extends BaseService {
     }
 
     //批量本地入库
-    sqlparam = [...sqlparam, ...retParamEv.sqlparam];
-    await this.sqlExce.batExecSqlByParam(sqlparam);
-
+    retParamEv.sqlparam = [...sqlparam, ...retParamEv.sqlparam];
     return retParamEv;
   }
 
@@ -748,16 +755,18 @@ export class EventService extends BaseService {
       }
 
       //删除原事件中从当前开始所有事件
+      console.log("**** updateAgenda delFromsel start :****" + moment().format("YYYY/MM/DD HH:mm:ss SSS"))
       await this.delFromsel(masterEvi ,oriAgdata ,newAgdata.parters,sqlparam,outAgds);
-
+      console.log("**** updateAgenda delFromsel end :****" + moment().format("YYYY/MM/DD HH:mm:ss SSS"))
       //新建新事件日程
       let nwAgdata = {} as AgendaData;
       Object.assign(nwAgdata ,newAgdata );
       nwAgdata.sd = nwAgdata.evd;
 
       let retParamEv = new RetParamEv();
-      retParamEv = await this.newAgenda(nwAgdata);
-
+      console.log("**** updateAgenda newAgenda start :****" + moment().format("YYYY/MM/DD HH:mm:ss SSS"))
+      retParamEv = this.newAgenda(nwAgdata);
+      console.log("**** updateAgenda newAgenda end :****" + moment().format("YYYY/MM/DD HH:mm:ss SSS"))
       //复制原参与人到新事件
       let nwpar = new Array<any>();
       nwpar = this.sqlparamAddPar(retParamEv.rtevi , newAgdata.parters);
@@ -769,7 +778,10 @@ export class EventService extends BaseService {
       sqlparam = [...sqlparam, ...retParamEv.sqlparam, ...nwpar, ...nwfj];
 
       //修改与新增记录合并成返回事件
-      outAgds = [...outAgds, ...retParamEv.outAgdatas];
+
+      console.log("**** updateAgenda outAgds = [...outAgds, ...retParamEv.outAgdatas]; start :****" + moment().format("YYYY/MM/DD HH:mm:ss SSS"))
+      outAgds = [ ...retParamEv.outAgdatas,...outAgds];
+      console.log("**** updateAgenda outAgds = [...outAgds, ...retParamEv.outAgdatas]; end :****" + moment().format("YYYY/MM/DD HH:mm:ss SSS"))
 
     }else if(repeatModify == RepeatModify.RepeatToNon || repeatModify == RepeatModify.NonRepeatToNonRepeat ) {
 
@@ -815,8 +827,9 @@ export class EventService extends BaseService {
       }
 
       //如果当前更新对象是父节点，则为当前重复日程重建新的父记录，值为ev表里的第一条做为父记录
+      console.log("**** updateAgenda operateForParentAgd start :****" + moment().format("YYYY/MM/DD HH:mm:ss SSS"))
       await this.operateForParentAgd(oriAgdata,newAgdata.parters,newAgdata.fjs,sqlparam,outAgds);
-
+      console.log("**** updateAgenda operateForParentAgd end :****" + moment().format("YYYY/MM/DD HH:mm:ss SSS"))
       //日程表新建或更新,修改为独立日的也需要为自己创建对应的日程
       let caparam = new CaTbl();
       caparam = this.sqlparamAddCa(oriAgdata.evi ,newAgdata.evd,newAgdata.evd,newAgdata);//evi使用原evi
@@ -828,9 +841,9 @@ export class EventService extends BaseService {
 
 
     }
-
+    console.log("**** updateAgenda batExecSqlByParam start :****" + moment().format("YYYY/MM/DD HH:mm:ss SSS"))
     await this.sqlExce.batExecSqlByParam(sqlparam);
-
+    console.log("**** updateAgenda batExecSqlByParam end :****" + moment().format("YYYY/MM/DD HH:mm:ss SSS"))
     return outAgds;
 
   }
@@ -897,7 +910,7 @@ export class EventService extends BaseService {
         let nwfj = new Array<any>();
         nwfj = this.sqlparamAddFj(nwEv.evi , fjs);
 
-        sqlparam = [...sqlparam, ...nwpar, ...nwfj];
+        Object.assign(sqlparam , [...sqlparam, ...nwpar, ...nwfj]);
 
         //新的父事件放入返回事件
         Object.assign(outAgd, nwEv);
@@ -913,7 +926,7 @@ export class EventService extends BaseService {
 
         outAgds.push(outAgd);
 
-        outAgds = [...outAgds ,...upAgds];
+        Object.assign(outAgds , [...outAgds ,...upAgds]);
       }
     }
   }
@@ -1029,7 +1042,11 @@ export class EventService extends BaseService {
         }
       }
     }
+    console.log("**** updateAgenda delFromsel 结果数组合并 start :****" + moment().format("YYYY/MM/DD HH:mm:ss SSS"))
+    console.log("**** updateAgenda delFromsel 结果数组合并 outAgds.length :" + outAgds.length +" ,delAgds.length:"+delAgds.length);
     Object.assign(outAgds,[...outAgds, ...delAgds]);
+    console.log("**** updateAgenda delFromsel 结果数组合并 end :****" + moment().format("YYYY/MM/DD HH:mm:ss SSS"))
+
   }
 
   /**

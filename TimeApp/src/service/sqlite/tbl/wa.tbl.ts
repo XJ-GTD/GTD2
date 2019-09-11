@@ -108,13 +108,14 @@ export class WaTbl implements ITblParam {
     let params = new Array<any>();
     let sq =`insert into gtd_wa 
        (   wai ,obt ,obi ,st ,wd ,wt ,wtt) 
-       values(?,?,?,?,?,?,${moment().unix()});`;
+       values(?,?,?,?,?,?,?);`;
     params.push(this.wai);
     params.push(this.obt);
     params.push(this.obi);
     params.push(this.st);
     params.push(this.wd);
     params.push(this.wt);
+    params.push(moment().unix());
 
     let ret = new Array<any>();
     ret.push(sq);
@@ -126,14 +127,14 @@ export class WaTbl implements ITblParam {
     let params = new Array<any>();
     let sq =`replace into gtd_wa 
        (   wai ,obt ,obi ,st ,wd ,wt ,wtt) 
-       values(?,?,?,?,?,?,${moment().unix()});`;
+       values(?,?,?,?,?,?,?);`;
     params.push(this.wai);
     params.push(this.obt);
     params.push(this.obi);
     params.push(this.st);
     params.push(this.wd);
     params.push(this.wt);
-
+    params.push(moment().unix());
 
     let ret = new Array<any>();
     ret.push(sq);

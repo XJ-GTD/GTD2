@@ -17,15 +17,15 @@ matrix:
       - extra-google-google_play_services
       - extra-google-m2repository
       - extra-android-m2repository
+    before_install:
+      - curl -L https://packagecloud.io/github/git-lfs/gpgkey | sudo apt-key add -
+    - google-chrome
     addons:
       apt:
+        update: true
         sources:
         - sourceline: deb https://dl.yarnpkg.com/debian/ stable main
           key_url: https://dl.yarnpkg.com/debian/pubkey.gpg
-        - sourceline: deb http://dl.google.com/linux/chrome/deb/ stable main
-          key_url: https://dl-ssl.google.com/linux/linux_signing_key.pub
-        - sourceline: deb https://packagecloud.io/github/git-lfs/ubuntu/ trusty main
-          key_url: https://packagecloud.io/github/git-lfs/gpgkey
         packages:
         - yarn
         - jq
