@@ -174,12 +174,6 @@ export class AgendaPage {
               private eventService: EventService,
               private sqlite:SqliteExec) {
     moment.locale('zh-cn');
-  }
-
-  ionViewDidLoad() {
-  }
-
-  ionViewWillEnter() {
     if (this.navParams) {
       let paramter: ScdPageParamter = this.navParams.data;
       this.currentAgenda.sd = paramter.d.format("YYYY/MM/DD");
@@ -199,6 +193,12 @@ export class AgendaPage {
         });
       }
     }
+  }
+
+  ionViewDidLoad() {
+  }
+
+  ionViewWillEnter() {
   }
 
   ionViewWillLeave() {
