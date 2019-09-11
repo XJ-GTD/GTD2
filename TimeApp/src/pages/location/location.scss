@@ -1,0 +1,34 @@
+page-location {
+  ion-searchbar {
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    z-index: 999;
+  }
+
+  .searchbar-ios {
+    background-color: transparent;
+  }
+
+  baidu-map {
+    width: 100vmin;
+    height: 100vmax;
+
+    .anchorBL {
+      display: none;
+    }
+  }
+
+  .fab-ios {
+    background-color: $lsback1;
+  }
+
+  .fab-ios.activated {
+    background-color: $activatedColor;
+  }
+
+  .fab ion-icon {
+    font-size: 4.4rem;
+  }
+
+}
