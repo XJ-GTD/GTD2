@@ -2849,6 +2849,16 @@ export class RetParamMiniTaskData {
 export class RtOver {
   type: anyenum.OverType = anyenum.OverType.fornever;
   value: string;
+
+  sameWith(another: RtOver): boolean {
+    if (!another) return false;
+
+    if (this.type != another.type) return false;
+    if (this.type != anyenum.OverType.fornever && this.value != another.value) return false;
+
+    return true;
+  }
+
   text(): string {
     let text: string = "";
 
@@ -2883,6 +2893,37 @@ export class RtJson {
 
   //重复结束设定
   over: RtOver = new RtOver();
+
+  sameWith(another: RtJson): boolean {
+    if (!another) return false;
+
+    if (this.cycletype != another.cycletype) return false;
+    if (this.cyclenum != another.cyclenum) return false;
+
+    let compare: Array<number> = this.openway.concat(another.openway);
+    compare.sort((a, b) => a - b);
+
+    if (compare.length % 2 != 0) return false;
+    let last = compare.reduce((target, val) => {
+      if (target == -1) {
+        target = val;
+      } else {
+        if (target == val) {
+          target = -1;
+        } else {
+          target = -99;
+        }
+      }
+
+      return target;
+    }, -1);
+
+    if (last != -1) return false;
+
+    if (!this.over.sameWith(another.over)) return false;
+
+    return true;
+  }
 
   //重复设置文字说明
   text(): string {
@@ -3126,7 +3167,9 @@ export class TxJson {
     }
   }
 
-  same(another: TxJson): boolean {
+  sameWith(another: TxJson): boolean {
+    if (!another) return false;
+
     let compare: Array<number> = this.reminds.concat(another.reminds);
     compare.sort((a, b) => a - b);
 
