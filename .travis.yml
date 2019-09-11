@@ -17,9 +17,10 @@ matrix:
       - extra-google-google_play_services
       - extra-google-m2repository
       - extra-android-m2repository
+    before_install:
+      - apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 6B05F25D762E3157
     addons:
       apt:
-        update: true
         sources:
         - sourceline: deb https://dl.yarnpkg.com/debian/ stable main
           key_url: https://dl.yarnpkg.com/debian/pubkey.gpg
