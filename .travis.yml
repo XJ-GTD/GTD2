@@ -22,8 +22,6 @@ matrix:
         sources:
         - sourceline: deb https://dl.yarnpkg.com/debian/ stable main
           key_url: https://dl.yarnpkg.com/debian/pubkey.gpg0
-        - sourceline: deb https://packagecloud.io/github/git-lfs/ubuntu trusty InRelease
-          key_url: https://packagecloud.io/gpg.key
         - google-chrome
         packages:
         - yarn
