@@ -164,8 +164,8 @@ describe('EventService test suite', () => {
     agdata.rtjson = rtjon;
 
     let txjson = new TxJson();
-    txjson.reminds.push(anyenum.RemindTime.m30);
-    txjson.reminds.push(anyenum.RemindTime.h1);
+    txjson.reminds.push(30);    // 提前30分钟提醒
+    txjson.reminds.push(60); // 提前1小时提醒
     agdata.txjson = txjson;
 
     agdata.al = anyenum.IsWholeday.NonWhole;

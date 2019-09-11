@@ -1512,7 +1512,7 @@ describe('CalendarService test suite', () => {
         openfamilyrt.over.value = end;
 
         let openfamilytx: TxJson = new TxJson();
-        openfamilytx.reminds.push(RemindTime.d1);
+        openfamilytx.reminds.push(60 * 24);       // 提前一天提醒 60分钟 * 24小时
 
         openfamily.sd = day;
         openfamily.evn = "公布 当月家长开放日安排";
