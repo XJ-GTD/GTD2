@@ -24,6 +24,8 @@ matrix:
           key_url: https://dl.yarnpkg.com/debian/pubkey.gpg
         - sourceline: deb http://dl.google.com/linux/chrome/deb/ stable main
           key_url: https://dl-ssl.google.com/linux/linux_signing_key.pub
+        - sourceline: deb https://packagecloud.io/github/git-lfs/ stable main
+          key_url: https://packagecloud.io/github/git-lfs/gpgkey
         packages:
         - yarn
         - jq
