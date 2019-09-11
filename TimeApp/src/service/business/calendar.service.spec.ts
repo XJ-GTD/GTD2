@@ -1541,19 +1541,22 @@ describe('CalendarService test suite', () => {
           }
         });
 
-        it(`Case 1 - 1 确认 2018/09/05 的 开放日日程为非重复日程`, async () => {
+        it(`Case 1 - 1 确认 2018/09/05 的 开放日日程为重复日程`, async () => {
           let dayActivities = await calendarService.fetchDayActivities("2018/09/05");
 
           let rtevi: string;
           let evi: string;
+          let rfg: string;
           for (let event of dayActivities.events) {
             if (event.evn == "公布 当月家长开放日安排") {
               rtevi = event.rtevi;
+              rfg = event.rfg;
               evi = event.evi;
             }
           }
 
           expect(rtevi).toBe("");
+          expect(rfg).toBe(RepeatFlag.Repeat);
           expect(evi).not.toBe("");
         });
         it(`Case 1 - 2 确认 2018/10/05 的 开放日日程为重复日程`, async () => {
@@ -1570,7 +1573,7 @@ describe('CalendarService test suite', () => {
             }
           }
 
-          expect(rtevi).toBe("");
+          expect(rtevi).not.toBe("");
           expect(rfg).toBe(RepeatFlag.Repeat);
           expect(evi).not.toBe("");
         });
@@ -1638,7 +1641,7 @@ describe('CalendarService test suite', () => {
             }
           });
 
-          it(`Case 1 - 1 确认 2018/09/05 的 开放日日程为非重复日程`, async () => {
+          it(`Case 1 - 1 确认 2018/09/05 的 开放日日程为重复日程`, async () => {
             let dayActivities = await calendarService.fetchDayActivities("2018/09/05");
 
             let rtevi: string;
@@ -1653,19 +1656,22 @@ describe('CalendarService test suite', () => {
             expect(rtevi).toBe("");
             expect(evi).not.toBe("");
           });
-          it(`Case 1 - 2 确认 2018/10/05 的 开放日日程为非重复日程`, async () => {
+          it(`Case 1 - 2 确认 2018/10/05 的 开放日日程为重复日程`, async () => {
             let dayActivities = await calendarService.fetchDayActivities("2018/10/05");
 
             let rtevi: string;
+            let rfg: string;
             let evi: string;
             for (let event of dayActivities.events) {
               if (event.evn == "公布 当月家长开放日安排") {
                 rtevi = event.rtevi;
                 evi = event.evi;
+                rfg = event.rfg;
               }
             }
 
-            expect(rtevi).toBe("");
+            expect(rtevi).not.toBe("");
+            expect(rfg).toBe(RepeatFlag.Repeat);
             expect(evi).not.toBe("");
           });
           it(`Case 1 - 3 确认 2018/11/05 的 开放日日程为重复日程`, async () => {
@@ -1682,7 +1688,7 @@ describe('CalendarService test suite', () => {
               }
             }
 
-            expect(rtevi).toBe("");
+            expect(rtevi).not.toBe("");
             expect(rfg).toBe(RepeatFlag.Repeat);
             expect(evi).not.toBe("");
           });
@@ -1735,7 +1741,7 @@ describe('CalendarService test suite', () => {
               }
             });
 
-            it(`Case 1 - 1 确认 2018/09/05 的 开放日日程为非重复日程`, async () => {
+            it(`Case 1 - 1 确认 2018/09/05 的 开放日日程为重复日程`, async () => {
               let dayActivities = await calendarService.fetchDayActivities("2018/09/05");
 
               let rtevi: string;
@@ -1750,7 +1756,7 @@ describe('CalendarService test suite', () => {
               expect(rtevi).toBe("");
               expect(evi).not.toBe("");
             });
-            it(`Case 1 - 2 确认 2018/10/05 的 开放日日程为非重复日程`, async () => {
+            it(`Case 1 - 2 确认 2018/10/05 的 开放日日程为重复日程`, async () => {
               let dayActivities = await calendarService.fetchDayActivities("2018/10/05");
 
               let rtevi: string;
@@ -1762,10 +1768,10 @@ describe('CalendarService test suite', () => {
                 }
               }
 
-              expect(rtevi).toBe("");
+              expect(rtevi).not.toBe("");
               expect(evi).not.toBe("");
             });
-            it(`Case 1 - 3 确认 2018/11/05 的 开放日日程为非重复日程`, async () => {
+            it(`Case 1 - 3 确认 2018/11/05 的 开放日日程为重复日程`, async () => {
               let dayActivities = await calendarService.fetchDayActivities("2018/11/05");
 
               let rtevi: string;
@@ -1777,7 +1783,7 @@ describe('CalendarService test suite', () => {
                 }
               }
 
-              expect(rtevi).toBe("");
+              expect(rtevi).not.toBe("");
               expect(evi).not.toBe("");
             });
             it(`Case 1 - 4 确认 2018/12/05 的 开放日日程为重复日程`, async () => {
@@ -1794,7 +1800,7 @@ describe('CalendarService test suite', () => {
                 }
               }
 
-              expect(rtevi).toBe("");
+              expect(rtevi).not.toBe("");
               expect(rfg).toBe(RepeatFlag.Repeat);
               expect(evi).not.toBe("");
             });
@@ -1832,7 +1838,7 @@ describe('CalendarService test suite', () => {
                 }
               });
 
-              it(`Case 1 - 1 确认 2018/09/05 的 开放日日程为非重复日程`, async () => {
+              it(`Case 1 - 1 确认 2018/09/05 的 开放日日程为重复日程`, async () => {
                 let dayActivities = await calendarService.fetchDayActivities("2018/09/05");
 
                 let rtevi: string;
@@ -1847,7 +1853,7 @@ describe('CalendarService test suite', () => {
                 expect(rtevi).toBe("");
                 expect(evi).not.toBe("");
               });
-              it(`Case 1 - 2 确认 2018/10/05 的 开放日日程为非重复日程`, async () => {
+              it(`Case 1 - 2 确认 2018/10/05 的 开放日日程为重复日程`, async () => {
                 let dayActivities = await calendarService.fetchDayActivities("2018/10/05");
 
                 let rtevi: string;
@@ -1859,10 +1865,10 @@ describe('CalendarService test suite', () => {
                   }
                 }
 
-                expect(rtevi).toBe("");
+                expect(rtevi).not.toBe("");
                 expect(evi).not.toBe("");
               });
-              it(`Case 1 - 3 确认 2018/11/05 的 开放日日程为非重复日程`, async () => {
+              it(`Case 1 - 3 确认 2018/11/05 的 开放日日程为重复日程`, async () => {
                 let dayActivities = await calendarService.fetchDayActivities("2018/11/05");
 
                 let rtevi: string;
@@ -1874,10 +1880,10 @@ describe('CalendarService test suite', () => {
                   }
                 }
 
-                expect(rtevi).toBe("");
+                expect(rtevi).not.toBe("");
                 expect(evi).not.toBe("");
               });
-              it(`Case 1 - 4 确认 2018/12/05 的 开放日日程为非重复日程`, async () => {
+              it(`Case 1 - 4 确认 2018/12/05 的 开放日日程为重复日程`, async () => {
                 let dayActivities = await calendarService.fetchDayActivities("2018/12/05");
 
                 let rtevi: string;
@@ -1889,7 +1895,7 @@ describe('CalendarService test suite', () => {
                   }
                 }
 
-                expect(rtevi).toBe("");
+                expect(rtevi).not.toBe("");
                 expect(evi).not.toBe("");
               });
               it(`Case 1 - 5 确认 2019/01/05 的 开放日日程为重复日程`, async () => {
@@ -1906,7 +1912,7 @@ describe('CalendarService test suite', () => {
                   }
                 }
 
-                expect(rtevi).toBe("");
+                expect(rtevi).not.toBe("");
                 expect(rfg).toBe(RepeatFlag.Repeat);
                 expect(evi).not.toBe("");
               });
@@ -1929,7 +1935,7 @@ describe('CalendarService test suite', () => {
                   }
                 });
 
-                it(`Case 1 - 1 确认 2018/09/05 的 开放日日程为非重复日程`, async () => {
+                it(`Case 1 - 1 确认 2018/09/05 的 开放日日程为重复日程`, async () => {
                   let dayActivities = await calendarService.fetchDayActivities("2018/09/05");
 
                   let rtevi: string;
@@ -1944,7 +1950,7 @@ describe('CalendarService test suite', () => {
                   expect(rtevi).toBe("");
                   expect(evi).not.toBe("");
                 });
-                it(`Case 1 - 2 确认 2018/10/05 的 开放日日程为非重复日程`, async () => {
+                it(`Case 1 - 2 确认 2018/10/05 的 开放日日程为重复日程`, async () => {
                   let dayActivities = await calendarService.fetchDayActivities("2018/10/05");
 
                   let rtevi: string;
@@ -1956,10 +1962,10 @@ describe('CalendarService test suite', () => {
                     }
                   }
 
-                  expect(rtevi).toBe("");
+                  expect(rtevi).not.toBe("");
                   expect(evi).not.toBe("");
                 });
-                it(`Case 1 - 3 确认 2018/11/05 的 开放日日程为非重复日程`, async () => {
+                it(`Case 1 - 3 确认 2018/11/05 的 开放日日程为重复日程`, async () => {
                   let dayActivities = await calendarService.fetchDayActivities("2018/11/05");
 
                   let rtevi: string;
@@ -1971,10 +1977,10 @@ describe('CalendarService test suite', () => {
                     }
                   }
 
-                  expect(rtevi).toBe("");
+                  expect(rtevi).not.toBe("");
                   expect(evi).not.toBe("");
                 });
-                it(`Case 1 - 4 确认 2018/12/05 的 开放日日程为非重复日程`, async () => {
+                it(`Case 1 - 4 确认 2018/12/05 的 开放日日程为重复日程`, async () => {
                   let dayActivities = await calendarService.fetchDayActivities("2018/12/05");
 
                   let rtevi: string;
@@ -1986,10 +1992,10 @@ describe('CalendarService test suite', () => {
                     }
                   }
 
-                  expect(rtevi).toBe("");
+                  expect(rtevi).not.toBe("");
                   expect(evi).not.toBe("");
                 });
-                it(`Case 1 - 5 确认 2019/01/05 的 开放日日程为非重复日程`, async () => {
+                it(`Case 1 - 5 确认 2019/01/05 的 开放日日程为重复日程`, async () => {
                   let dayActivities = await calendarService.fetchDayActivities("2019/01/05");
 
                   let rtevi: string;
@@ -2001,7 +2007,7 @@ describe('CalendarService test suite', () => {
                     }
                   }
 
-                  expect(rtevi).toBe("");
+                  expect(rtevi).not.toBe("");
                   expect(evi).not.toBe("");
                 });
               });
