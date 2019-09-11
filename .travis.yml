@@ -7,7 +7,7 @@ matrix:
   - os: linux
     sudo: true
     language: android
-    dist: trusty
+    dist: xenial
     android:
       components:
       - platform-tools
