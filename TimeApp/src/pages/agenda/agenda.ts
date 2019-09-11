@@ -39,7 +39,7 @@ import { PageDirection, IsSuccess, OperateType, RepeatFlag, ToDoListStatus } fro
               </button>
             </div>
             <div class="card-subtitle" *ngIf="false">
-              <button ion-button icon-end clear small>
+              <button ion-button icon-end clear small (click)="changeLocation()">
                 <div>地址: 浦东新区红枫路108弄11号1201室</div>
                 <ion-icon ios="ios-pin" md="ios-pin"></ion-icon>
               </button>
@@ -64,7 +64,7 @@ import { PageDirection, IsSuccess, OperateType, RepeatFlag, ToDoListStatus } fro
               </button>
             </ion-col>
             <ion-col *ngIf="true">
-              <button ion-button icon-start clear small>
+              <button ion-button icon-start clear small (click)="changeLocation()">
                 <ion-icon ios="ios-pin" md="ios-pin"></ion-icon>
                 <div>地址</div>
               </button>
@@ -235,6 +235,14 @@ export class AgendaPage {
       if (this.originAgenda.ji != this.currentAgenda.ji) {
         this.doOptionSave(OperateType.OnlySel);
       }
+    });
+    modal.present();
+  }
+
+  changeLocation() {
+    let modal = this.modalCtrl.create(DataConfig.PAGE._LOCATION_PAGE);
+    modal.onDidDismiss(async (data)=>{
+
     });
     modal.present();
   }
