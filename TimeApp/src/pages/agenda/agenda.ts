@@ -99,7 +99,7 @@ import { PageDirection, IsSuccess, OperateType, RepeatFlag, ToDoListStatus } fro
             <ion-col *ngIf="currentAgenda.txs && currentAgenda.txs != ''">
               <button ion-button small (click)="changeRemind()">
                 <div>
-                半小时后提醒
+                {{currentAgenda.txs}}
                 <corner-badge>3</corner-badge>
                 </div>
               </button>
@@ -281,7 +281,7 @@ export class AgendaPage {
         this.currentAgenda.txjson = new TxJson();
         Object.assign(this.currentAgenda.txjson, data.txjson);
         this.currentAgenda.tx = JSON.stringify(this.currentAgenda.txjson);
-        //this.currentAgenda.txs = this.currentAgenda.txjson.text();
+        this.currentAgenda.txs = this.currentAgenda.txjson.text();
 
         this.doOptionSave(OperateType.OnlySel);
       }
