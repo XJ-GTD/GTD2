@@ -164,8 +164,8 @@ describe('EventService test suite', () => {
     agdata.rtjson = rtjon;
 
     let txjson = new TxJson();
-    txjson.reminds.push(anyenum.RemindTime.m30);
-    txjson.reminds.push(anyenum.RemindTime.h1);
+    txjson.reminds.push(30);    // 提前30分钟提醒
+    txjson.reminds.push(60); // 提前1小时提醒
     agdata.txjson = txjson;
 
     agdata.al = anyenum.IsWholeday.NonWhole;
@@ -643,6 +643,7 @@ describe('EventService test suite', () => {
 
       noneRepeat.sd = dayNoneRepeat;
       noneRepeat.evn = "不重复";
+      noneRepeat.todolist = anyenum.ToDoListStatus.On;
 
       dayNoneRepeatAgendas = await eventService.saveAgenda(noneRepeat);
 
@@ -656,6 +657,7 @@ describe('EventService test suite', () => {
       dayRepeat.sd = dayDayRepeat;
       dayRepeat.evn = "每天重复";
       dayRepeat.rtjson = dayRepeatrt;
+      dayRepeat.todolist = anyenum.ToDoListStatus.On;
 
       dayDayRepeatAgendas = await eventService.saveAgenda(dayRepeat);
 

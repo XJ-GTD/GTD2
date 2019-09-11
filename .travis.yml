@@ -22,7 +22,10 @@ matrix:
         sources:
         - sourceline: deb https://dl.yarnpkg.com/debian/ stable main
           key_url: https://dl.yarnpkg.com/debian/pubkey.gpg
-        - google-chrome
+        - sourceline: deb http://dl.google.com/linux/chrome/deb/ stable main
+          key_url: https://dl-ssl.google.com/linux/linux_signing_key.pub
+        - sourceline: deb https://packagecloud.io/github/git-lfs/ubuntu/ trusty main
+          key_url: https://packagecloud.io/github/git-lfs/gpgkey
         packages:
         - yarn
         - jq
