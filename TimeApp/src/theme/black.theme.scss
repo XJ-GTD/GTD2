@@ -33,7 +33,7 @@ $baseBackcolor_black: rgba(0, 12, 31, 1);
         }
 
         .yearshow {
-          color: rgba(13, 112, 136, 1);
+          color: rgba(13, 112, 136, 0.08);
         }
 
       }
@@ -58,11 +58,14 @@ $baseBackcolor_black: rgba(0, 12, 31, 1);
         }
 
         .today {
-          background: -webkit-linear-gradient(left, $spcColorf, $spcColort); /* Safari 5.1 - 6.0 */
-          background: -o-linear-gradient(right, $spcColorf, $spcColort); /* Opera 11.1 - 12.0 */
-          background: -moz-linear-gradient(right, $spcColorf, $spcColort); /* Firefox 3.6 - 15 */
-          background: linear-gradient(to right, $spcColorf, $spcColort); /* 标准的语法（必须放在最后） */
-          border-radius: 50%;
+          //color: -webkit-linear-gradient(left, $spcColorf, $spcColort); /* Safari 5.1 - 6.0 */
+          //color: -o-linear-gradient(right, $spcColorf, $spcColort); /* Opera 11.1 - 12.0 */
+          //color: -moz-linear-gradient(right, $spcColorf, $spcColort); /* Firefox 3.6 - 15 */
+          //color: linear-gradient(to right, $spcColorf, $spcColort); /* 标准的语法（必须放在最后） */
+          p{
+            font-weight: bold;
+          }
+
         }
 
       }
