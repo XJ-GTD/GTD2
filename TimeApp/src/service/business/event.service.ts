@@ -3125,6 +3125,32 @@ export class TxJson {
       return "";
     }
   }
+
+  same(another: TxJson): boolean {
+    let compare: Array<number> = this.reminds.concat(another.reminds);
+    compare.sort((a, b) => a - b);
+
+    if (compare.length % 2 != 0) return false;
+    let last = compare.reduce((target, val) => {
+      if (target == -1) {
+        target = val;
+      } else {
+        if (target == val) {
+          target = -1;
+        } else {
+          target = -99;
+        }
+      }
+
+      return target;
+    }, -1);
+
+    if (last == -1) {
+      return true;
+    } else {
+      return false;
+    }
+  }
 }
 
 enum RepeatModify {
