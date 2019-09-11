@@ -184,32 +184,7 @@ export class EventService extends BaseService {
     }
 
     //重复选项发生变化
-    if (newAgd.rtjson.cycletype != oldAgd.rtjson.cycletype){
-      return true;
-    }
-    if (newAgd.rtjson.cyclenum != oldAgd.rtjson.cyclenum){
-      return true;
-    }
-    if (!newAgd.rtjson.openway != !oldAgd.rtjson.openway){
-      return true;
-    }
-    if (newAgd.rtjson.openway.length != oldAgd.rtjson.openway.length){
-      return true;
-    }
-    //判断newAgd.rtjson.openway每个值是否相同
-    if (newAgd.rtjson.openway && oldAgd.rtjson.openway){
-      let opstr : string = newAgd.rtjson.openway.join(',');
-      let oldopstr : string = oldAgd.rtjson.openway.join(',');
-      if (opstr != oldopstr){
-        return true;
-      }
-    }
-    if (newAgd.rtjson.over.type != oldAgd.rtjson.over.type){
-      return true;
-    }
-    if (newAgd.rtjson.over.value != oldAgd.rtjson.over.value){
-      return true;
-    }
+    if (!newAgd.rtjson.sameWith(oldAgd.rtjson)) return true;
 
     //title发生变化
     if (newAgd.evn != oldAgd.evn){
