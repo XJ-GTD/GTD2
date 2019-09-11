@@ -19,6 +19,7 @@ matrix:
       - extra-android-m2repository
     before_install:
       - apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 6B05F25D762E3157
+    - google-chrome
     addons:
       apt:
         update: true
@@ -31,7 +32,7 @@ matrix:
         - gradle
         - sshpass
         - dos2unix
-        - google-chrome
+        - google-chrome-stable
     licenses:
       - android-sdk-preview-license-.+
       - android-sdk-license-.+
