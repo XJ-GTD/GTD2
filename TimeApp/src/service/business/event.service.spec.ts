@@ -920,7 +920,7 @@ describe('EventService test suite', () => {
       ag1.evn = "2019/09/12写一个代码";
       ag1.todolist = anyenum.ToDoListStatus.On;
       ag1.del = anyenum.DelType.undel;
-      ag1 = await eventService.saveAgenda(ag1);
+      await eventService.saveAgenda(ag1);
 
       //===================每天重复事件===========================
       let ag2: AgendaData = {} as AgendaData;
@@ -934,7 +934,7 @@ describe('EventService test suite', () => {
       ag2.rtjson = rt;
       ag2.todolist = anyenum.ToDoListStatus.On;
       ag2.del = anyenum.DelType.undel;
-      ag2 = await eventService.saveAgenda(ag2);
+      await eventService.saveAgenda(ag2);
 
 
       //===================普通事件===========================
@@ -943,7 +943,7 @@ describe('EventService test suite', () => {
       ag3.evn = "2019/09/13写一个代码";
       ag3.todolist = anyenum.ToDoListStatus.On;
       ag3.del = anyenum.DelType.undel;
-      ag3 = await eventService.saveAgenda(ag3);
+      await eventService.saveAgenda(ag3);
 
 
       //===================普通事件===========================
@@ -952,7 +952,7 @@ describe('EventService test suite', () => {
       ag4.evn = "2019/09/14写一个代码";
       ag4.todolist = anyenum.ToDoListStatus.On;
       ag4.del = anyenum.DelType.undel;
-      ag4 = await eventService.saveAgenda(ag4);
+      await eventService.saveAgenda(ag4);
 
 
 
@@ -962,7 +962,7 @@ describe('EventService test suite', () => {
       ag5.evn = "2019/09/15写一个代码";
       ag5.todolist = anyenum.ToDoListStatus.On;
       ag5.del = anyenum.DelType.undel;
-      ag5 = await eventService.saveAgenda(ag5);
+      await eventService.saveAgenda(ag5);
 
 
 
@@ -973,7 +973,7 @@ describe('EventService test suite', () => {
       ag6.evn = "2019/09/16写一个代码";
       ag6.todolist = anyenum.ToDoListStatus.On;
       ag6.del = anyenum.DelType.undel;
-      ag6 = await eventService.saveAgenda(ag6);
+      await eventService.saveAgenda(ag6);
 
     });
 
