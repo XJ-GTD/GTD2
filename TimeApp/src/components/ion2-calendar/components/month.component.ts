@@ -142,75 +142,91 @@ export class MonthComponent implements ControlValueAccessor, AfterViewInit {
     return this._date[0].time === day.time && this._date[1] !== null;
   }
 
+  // isSelected(time: number): boolean {
+  //
+  //   if (Array.isArray(this._date)) {
+  //
+  //     if (this.pickMode !== pickModes.MULTI) {
+  //       if (this._date[0] !== null) {
+  //         return time === this._date[0].time
+  //       }
+  //
+  //       if (this._date[1] !== null) {
+  //         return time === this._date[1].time
+  //       }
+  //     } else {
+  //       return this._date.findIndex(e => e !== null && e.time === time) !== -1;
+  //     }
+  //
+  //   } else {
+  //     return false
+  //   }
+  // }
+
   isSelected(time: number): boolean {
 
     if (Array.isArray(this._date)) {
-
-      if (this.pickMode !== pickModes.MULTI) {
         if (this._date[0] !== null) {
           return time === this._date[0].time
         }
-
         if (this._date[1] !== null) {
           return time === this._date[1].time
         }
-      } else {
-        return this._date.findIndex(e => e !== null && e.time === time) !== -1;
-      }
 
     } else {
       return false
     }
   }
 
+
   onSelected(item: CalendarDay): void {
     if (this.readonly) return;
     item.selected = true;
     this.onSelect.emit(item);
-    if (this.pickMode === pickModes.SINGLE) {
-      this._date[0] = item;
-      this.onChange.emit(this._date);
+    // if (this.pickMode === pickModes.SINGLE) {
+    this._date[0] = item;
+    this.onChange.emit(this._date);
 
-      if (this._isRange == false) {
-        this.cumClick.emit(item);
-      }
-      return;
+    if (this._isRange == false) {
+      this.cumClick.emit(item);
     }
-
-    if (this.pickMode === pickModes.RANGE) {
-      if (this._date[0] === null) {
-        this._date[0] = item;
-        this.onSelectStart.emit(item);
-      } else if (this._date[1] === null) {
-        if (this._date[0].time < item.time) {
-          this._date[1] = item;
-          this.onSelectEnd.emit(item);
-        } else {
-          this._date[1] = this._date[0];
-          this.onSelectEnd.emit(this._date[0]);
-          this._date[0] = item;
-          this.onSelectStart.emit(item);
-        }
-      } else {
-        this._date[0] = item;
-        this.onSelectStart.emit(item);
-        this._date[1] = null;
-      }
-      this.onChange.emit(this._date);
-      return;
-    }
-
-    if (this.pickMode === pickModes.MULTI) {
-
-      const index = this._date.findIndex(e => e !== null && e.time === item.time);
-
-      if (index === -1) {
-        this._date.push(item);
-      } else {
-        this._date.splice(index, 1);
-      }
-      this.onChange.emit(this._date.filter(e => e !== null));
-    }
+    return;
+    // }
+    //
+    // if (this.pickMode === pickModes.RANGE) {
+    //   if (this._date[0] === null) {
+    //     this._date[0] = item;
+    //     this.onSelectStart.emit(item);
+    //   } else if (this._date[1] === null) {
+    //     if (this._date[0].time < item.time) {
+    //       this._date[1] = item;
+    //       this.onSelectEnd.emit(item);
+    //     } else {
+    //       this._date[1] = this._date[0];
+    //       this.onSelectEnd.emit(this._date[0]);
+    //       this._date[0] = item;
+    //       this.onSelectStart.emit(item);
+    //     }
+    //   } else {
+    //     this._date[0] = item;
+    //     this.onSelectStart.emit(item);
+    //     this._date[1] = null;
+    //   }
+    //   this.onChange.emit(this._date);
+    //   return;
+    // }
+    //
+    // if (this.pickMode === pickModes.MULTI) {
+    //
+    //   const index = this._date.findIndex(e => e !== null && e.time === item.time);
+    //
+    //   if (index === -1) {
+    //     this._date.push(item);
+    //   } else {
+    //     this._date.splice(index, 1);
+    //   }
+    //   this.onChange.emit(this._date.filter(e => e !== null));
+    // }
   }
 
 

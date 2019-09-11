@@ -106,7 +106,7 @@ export class CalendarComponent implements OnInit {
   _showMonth;
   string;
   _thisMonth: boolean;
-  //swiper:Swiper;
+  // swiper:Swiper;
   swiper:any;
 
   change4emit:boolean = true;
@@ -253,7 +253,7 @@ export class CalendarComponent implements OnInit {
 
   ngOnInit(): void {
     this.initOpt();
-    this.gotoToday();
+    this.initMonthData();
   }
 
   index:number;
@@ -287,11 +287,10 @@ export class CalendarComponent implements OnInit {
           this.swiper.activeIndex = this.swiper.activeIndex  + 1;
         }
         this.index = this.swiper.activeIndex;
+        if (this.change4emit)
+          this.emitService.emit("calendar.change.month",moment(monthOpt.original.time).format("YYYYMM"));
 
-        // if (this.change4emit)
-        //   this.emitService.emit("calendar.change.month",moment(monthOpt.original.time).format("YYYYMM"));
-        //
-        // this.change4emit = true;
+        this.change4emit = true;
       });
 
     },1000);
@@ -305,20 +304,19 @@ export class CalendarComponent implements OnInit {
 
 
 
-    this.swiper.slideTo(2,0,false);
-    this.index = 2;
+    this.swiper.slideTo(12 * 2 ,500,false);
+    this.index = 12 * 2;
 
 
     this.emitService.register("list.change.month",($data)=>{
-      console.log("QQQQQQQQQQQQQQQ" + $data);
       if ($data =="next"){
         this.change4emit = false;
-        this.swiper.slideNext(0,true);
+        this.swiper.slideNext(100,true);
 
       }
       if ($data =="prev"){
         this.change4emit = false;
-        this.swiper.slidePrev(0,true);
+        this.swiper.slidePrev(100,true);
       }
 
     });
@@ -337,18 +335,17 @@ export class CalendarComponent implements OnInit {
 
     let time = moment().valueOf();
 
-    let months = this.calSvc.createMonthsByPeriod(time, 3, this._d);
-    this.monthOpts.push(months[0]);
-    this.monthOpts.push(months[1]);
-    this.monthOpts.push(months[2]);
-    let monthOpt = this.monthOpts[0];
-    this._showMonth = defaults.MONTH_FORMAT[monthOpt.original.month];
-    this._thisMonth = monthOpt.original.month == moment().month() && monthOpt.original.year == moment().year();
-    this.calSvc.getMonthData(monthOpt);
-    time = moment().subtract(2,"months").valueOf();
-    months = this.calSvc.createMonthsByPeriod(time, 2, this._d);
-    this.monthOpts.unshift(months[1]);
-    this.monthOpts.unshift(months[0]);
+    let months:Array<CalendarMonth> = this.calSvc.createMonthsByPeriod(time, 12 * 2, this._d);
+    months.forEach((v)=>{
+      this.monthOpts.push(v);
+    })
+    this.swiperover4data(this.monthOpts[0]);
+
+    time = moment().subtract(12 * 2,"months").valueOf();
+    months = this.calSvc.createMonthsByPeriod(time, 12 * 2, this._d);
+    months.reverse().forEach((v)=>{
+      this.monthOpts.unshift(v);
+    })
   }
 
 
@@ -368,6 +365,11 @@ export class CalendarComponent implements OnInit {
 
 
   gotoToday() {
-    this.initMonthData();
+    let year = moment().year();
+    let month = moment().month();
+    let index = this.monthOpts.findIndex((value, index, arr)=>{
+      return value.original.year == year && value.original.month == month;
+    });
+    this.swiper.slideTo(index,500,true);
   }
 }
