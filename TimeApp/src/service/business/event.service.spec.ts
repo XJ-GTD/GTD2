@@ -625,6 +625,19 @@ describe('EventService test suite', () => {
 
   });
 
+  it(`Case 18 - 1 isSameAgenda 比较两个日程是否相同 - 保存后比较`, async () => {
+    let agenda: AgendaData = {} as AgendaData;
+
+    agenda.sd = moment().format("YYYY/MM/DD");
+    agenda.evn = "比较两个日程是否相同 - 保存后比较";
+
+    let results = eventService.saveAgenda(agenda);
+
+    let same: boolean = eventService.isSameAgenda(agenda, results[0]);
+
+    expect(same).toBe(true);
+  });
+
   describe(`创建不重复与重复（每天、每周、每月、每年）日程`, () => {
     let dayNoneRepeat: string = moment().format("YYYY/MM/DD");
     let dayDayRepeat: string = moment().add(1, "weeks").format("YYYY/MM/DD");
@@ -910,7 +923,6 @@ describe('EventService test suite', () => {
     });
 
   });
-
 
   describe(`创建排序事件`, () => {
     beforeEach(async () => {
