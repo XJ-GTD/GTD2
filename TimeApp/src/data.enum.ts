@@ -114,12 +114,12 @@ export enum InvitePowr {
 
 //提醒选项
 export enum RemindTime {
-  beginevent = "0",
-  m10  = "10",
-  m30 = "30",
-  h1  = "60",
-  h4 = "240",
-  d1  = "1440"
+  beginevent = 0,
+  m10  = 10,
+  m30 = 30,
+  h1  = 60,
+  h4 = 240,
+  d1  = 440
 }
 
 //是否完成

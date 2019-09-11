@@ -45,8 +45,13 @@ export class RemindPage {
       if (value) {
         this.currentTx = new TxJson();
         Object.assign(this.currentTx, value);
-        for (let j = 0, len = this.currentTx.reminds.length ; j < len ; j++){
-          this.reminds.push({value:this.currentTx.reminds[j]});
+        if (this.currentTx.reminds.length > 0){
+          this.reminds.push({value:""});
+          for (let j = 0, len = this.currentTx.reminds.length ; j < len ; j++){
+            this.reminds.push({value:this.currentTx.reminds[j]});
+          }
+        }else{
+          this.reminds.push({value:""});
         }
       }
     }
