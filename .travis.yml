@@ -7,7 +7,7 @@ matrix:
   - os: linux
     sudo: true
     language: android
-    dist: xenial
+    dist: trusty
     android:
       components:
       - platform-tools
@@ -22,6 +22,8 @@ matrix:
         sources:
         - sourceline: deb https://dl.yarnpkg.com/debian/ stable main
           key_url: https://dl.yarnpkg.com/debian/pubkey.gpg
+        - sourceline: deb http://dl.google.com/linux/chrome/deb/ stable main
+          key_url: https://dl-ssl.google.com/linux/linux_signing_key.pub
         - google-chrome
         packages:
         - yarn
