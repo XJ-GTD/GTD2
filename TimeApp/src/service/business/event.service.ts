@@ -3070,6 +3070,16 @@ export class RtJson {
 export class TxJson {
   reminds: Array<number> = new Array<number>();
 
+  static name(minutes: number): string {
+    let humanremind: string = moment.duration(minutes, "minutes").humanize();
+
+    if (minutes > 0) {
+      return `提前${humanremind}提醒`;
+    } else {
+      return `事件开始时提醒`;
+    }
+  }
+
   text(first: boolean = true): string {
     this.reminds.sort((a, b) => {
       if (a > b) return -1;
@@ -3079,7 +3089,7 @@ export class TxJson {
 
     if (this.reminds && this.reminds.length > 0) {
       let humanremind: string = moment.duration(this.reminds[0], "minutes").humanize();
-      if (first && this.reminds[0] > 0) return `提前{humanremind}提醒`;
+      if (first && this.reminds[0] > 0) return `提前${humanremind}提醒`;
       if (first && this.reminds[0] == 0) return `事件开始时提醒`;
     } else {
       return "";
