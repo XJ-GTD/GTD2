@@ -85,7 +85,7 @@ export const ION_CAL_VALUE_ACCESSOR: Provider = {
               </ion-calendar-month>
             </div>
           </div>
-         
+
         </div>
       </ion-card-content>
 
