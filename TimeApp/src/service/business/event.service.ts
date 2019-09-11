@@ -1043,6 +1043,7 @@ export class EventService extends BaseService {
       }
     }
     console.log("**** updateAgenda delFromsel 结果数组合并 start :****" + moment().format("YYYY/MM/DD HH:mm:ss SSS"))
+    console.log("**** updateAgenda delFromsel 结果数组合并 outAgds.length :" + outAgds.length +" ,delAgds.length:"+delAgds.length);
     Object.assign(outAgds,[...outAgds, ...delAgds]);
     console.log("**** updateAgenda delFromsel 结果数组合并 end :****" + moment().format("YYYY/MM/DD HH:mm:ss SSS"))
 
