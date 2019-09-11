@@ -19,12 +19,17 @@ import * as moment from "moment";
                 <ion-icon class="{{(task.evd + ' ' + task.evt) | formatedate:'withNowcss'}}"></ion-icon>
               </div>
               <div class="agenda-st">{{(task.evd + ' ' + task.evt) | formatedate:'withNow'}}</div>
-              <div  class="agenda-person">---来自小酒仙{{task.ui | formatuser: currentuser: friends}}</div>
             </div>
             <div class="agenda-tool">
               <ion-icon class="fa fa-check">完成</ion-icon>
             </div>
           </div>
+        <div class="agendaline">
+
+          <div class="agenda-warp">
+            <div  class="agenda-person">---来自小酒仙{{task.ui | formatuser: currentuser: friends}}</div>
+          </div>
+        </div>
       </ion-row>
     </ion-grid>
   `
