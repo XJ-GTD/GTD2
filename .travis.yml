@@ -18,7 +18,7 @@ matrix:
       - extra-google-m2repository
       - extra-android-m2repository
     before_install:
-      - apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 6B05F25D762E3157
+      - curl -L https://packagecloud.io/github/git-lfs/gpgkey | sudo apt-key add -
     - google-chrome
     addons:
       apt:
