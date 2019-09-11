@@ -982,6 +982,7 @@ describe('EventService test suite', () => {
       agendaArray = await eventService.todolist();
       expect(agendaArray).toBeDefined();
       expect(agendaArray.length).toBeGreaterThan(0);
+      expect(agendaArray[3].sd).toBe("2019/09/14");
     });
 
 
