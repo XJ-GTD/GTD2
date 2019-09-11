@@ -30,7 +30,7 @@ matrix:
         - gradle
         - sshpass
         - dos2unix
-        - google-chrome-stable
+        - google-chrome
     licenses:
       - android-sdk-preview-license-.+
       - android-sdk-license-.+
