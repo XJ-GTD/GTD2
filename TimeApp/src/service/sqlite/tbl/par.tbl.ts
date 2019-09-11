@@ -120,7 +120,7 @@ export class ParTbl implements ITblParam {
     let params = new Array<any>();
     let sq =`insert into gtd_par
        (   pari ,pwi ,ui ,obt ,obi ,sa ,sdt ,tb ,wc ,del ,wtt ,utt)
-       values(?,?,?,?,?,?,?,?,?,?,${moment().unix()},${moment().unix()});`;
+       values(?,?,?,?,?,?,?,?,?,?,?,?);`;
     params.push(this.pari);
     params.push(this.pwi);
     params.push(this.ui);
@@ -131,7 +131,8 @@ export class ParTbl implements ITblParam {
     params.push(this.tb);
     params.push(this.wc);
     params.push(this.del);
-
+    params.push(moment().unix());
+    params.push(moment().unix());
     let ret = new Array<any>();
     ret.push(sq);
     ret.push(params);
@@ -142,7 +143,7 @@ export class ParTbl implements ITblParam {
     let params = new Array<any>();
     let sq =`replace into gtd_par
        (   pari ,pwi ,ui ,obt ,obi ,sa ,sdt ,tb ,wc ,del ,wtt ,utt)
-       values(?,?,?,?,?,?,?,?,?,?,${moment().unix()},${moment().unix()});`;
+       values(?,?,?,?,?,?,?,?,?,?,?,?);`;
     params.push(this.pari);
     params.push(this.pwi);
     params.push(this.ui);
@@ -153,6 +154,8 @@ export class ParTbl implements ITblParam {
     params.push(this.tb);
     params.push(this.wc);
     params.push(this.del);
+    params.push(moment().unix());
+    params.push(moment().unix());
 
     let ret = new Array<any>();
     ret.push(sq);
