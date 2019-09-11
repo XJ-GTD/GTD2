@@ -292,7 +292,7 @@ export class EventService extends BaseService {
       }
     }
 
-    return true;                                                                                                                                                                                                                                                                                                                                                                                                                       szz
+    return true;
   }
 
   /**
