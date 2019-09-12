@@ -173,6 +173,8 @@ export class EventService extends BaseService {
     if (!one || !another) return false;
 
     for (let key of Object.keys(one)) {
+      if (["wtt", "utt", "rtjson", "txjson", "rts", "txs", "originator", "tos"].indexOf(key) >= 0) continue;   // 忽略字段
+
       if (one.hasOwnProperty(key)) {
         let value = one[key];
 
@@ -184,7 +186,31 @@ export class EventService extends BaseService {
         // 如果one的值为空, 不一致
         if (!value) return false;
 
-        if (typeof value === 'string' || typeof value === 'number') {
+        if (typeof value === 'string' || typeof value === 'number' || typeof value === 'boolean') {
+          if (typeof value === 'string' && value != "" && another[key] != "" && key == "rt") {
+            let onert: RtJson = new RtJson();
+            Object.assign(onert, JSON.parse(value));
+
+            let anotherrt: RtJson = new RtJson();
+            Object.assign(anotherrt, JSON.parse(another[key]));
+
+            if (!(onert.sameWith(anotherrt))) return false;
+
+            continue;
+          }
+
+          if (typeof value === 'string' && value != "" && another[key] != "" && key == "tx") {
+            let onetx: TxJson = new TxJson();
+            Object.assign(onetx, JSON.parse(value));
+
+            let anothertx: TxJson = new TxJson();
+            Object.assign(anothertx, JSON.parse(another[key]));
+
+            if (!(onetx.sameWith(anothertx))) return false;
+
+            continue;
+          }
+
           if (value != another[key]) return false;
         }
 
@@ -211,10 +237,12 @@ export class EventService extends BaseService {
                     let issame: boolean = true;
 
                     for (let key of Object.keys(target)) {
+                      if (["wtt", "utt"].indexOf(key) >= 0) continue;   // 忽略字段
+
                       if (target.hasOwnProperty(key)) {
                         let value = target[key];
 
-                        if (typeof value === 'string' || typeof value === 'number') {
+                        if (typeof value === 'string' || typeof value === 'number' || typeof value === 'boolean') {
                           if (value != val[key]) issame = false;
                         }
                       }
@@ -253,10 +281,12 @@ export class EventService extends BaseService {
                     let issame: boolean = true;
 
                     for (let key of Object.keys(target)) {
+                      if (["wtt", "utt"].indexOf(key) >= 0) continue;   // 忽略字段
+
                       if (target.hasOwnProperty(key)) {
                         let value = target[key];
 
-                        if (typeof value === 'string' || typeof value === 'number') {
+                        if (typeof value === 'string' || typeof value === 'number' || typeof value === 'boolean') {
                           if (value != val[key]) issame = false;
                         }
                       }
@@ -281,14 +311,6 @@ export class EventService extends BaseService {
           }
         }
 
-        if (value instanceof RtJson) {
-          if (!((<RtJson>value).sameWith(another[key]))) return false;
-        }
-
-        if (value instanceof TxJson) {
-          if (!((<TxJson>value).sameWith(another[key]))) return false;
-        }
-
       }
     }
 
@@ -304,7 +326,8 @@ export class EventService extends BaseService {
   isAgendaChanged(newAgd : AgendaData ,oldAgd : AgendaData): boolean{
     if (!newAgd.rtjson) {
       if (newAgd.rt) {
-        newAgd.rtjson = JSON.parse(newAgd.rt);
+        newAgd.rtjson = new RtJson();
+        Object.assign(newAgd.rtjson, JSON.parse(newAgd.rt));
       } else {
         newAgd.rtjson = new RtJson();
       }
@@ -312,7 +335,8 @@ export class EventService extends BaseService {
 
     if (!oldAgd.rtjson) {
       if (oldAgd.rt) {
-        oldAgd.rtjson = JSON.parse(oldAgd.rt);
+        oldAgd.rtjson = new RtJson();
+        Object.assign(oldAgd.rtjson, JSON.parse(oldAgd.rt));
       } else {
         oldAgd.rtjson = new RtJson();
       }
