@@ -624,7 +624,6 @@ export class EventService extends BaseService {
       //更新原事件日程结束日或事件表无记录了则删除
       sq = `select * from gtd_ev where (evi = ? or rtevi =  ?) and del <> ? ;`;
       let evtbls = new Array<EvTbl>();
-      params.length = 0;
       params.push(masterEvi);
       params.push(masterEvi);
       params.push(anyenum.DelType.del);
@@ -1088,7 +1087,6 @@ export class EventService extends BaseService {
     if (!oriAgdata.rtevi && oriAgdata.rtevi =="" && oriAgdata.rfg == anyenum.RepeatFlag.Repeat){
       sq = `select * from gtd_ev where rtevi = ? and  rfg = ? and del <>  ? order by evd ;`;
       params = new Array<any>();
-      params.length = 0;
       params.push(oriAgdata.evi);
       params.push(anyenum.RepeatFlag.Repeat);
       params.push(anyenum.DelType.del);
@@ -1106,7 +1104,6 @@ export class EventService extends BaseService {
         upcondi = ` rtevi = ? `
         sq = `update gtd_ev set rtevi = ?,mi= ?,tb = ? where  ${upcondi}; `;
         params = new Array<any>();
-        params.length = 0;
         params.push(nwEv.evi);
         params.push(UserConfig.account.id);
         params.push(anyenum.SyncType.unsynch);
@@ -1116,8 +1113,7 @@ export class EventService extends BaseService {
         //上记标记为修改的记录放入返回事件中
         sq = ` select *, '${tos}' as tos from gtd_ev where ${upcondi} ; `
         params = new Array<any>();
-        params.length = 0;
-        params.push(oriAgdata.evi);
+        params.push(nwEv.evi);
         upAgds = await this.sqlExce.getExtLstByParam<AgendaData>(sq,params);
 
         //为新的父事件建立新的对应日程
@@ -1180,8 +1176,6 @@ export class EventService extends BaseService {
     //标记为删除的记录放入返回事件中
     delcondi = ` evd >= ? and (evi = ? or rtevi =  ?) and del <> ? `;
     sq = ` select * from gtd_ev where ${delcondi} ; `;
-    params = new Array<any>();
-    params.length = 0;
     params.push(oriAgdata.evd);
     params.push(masterEvi);
     params.push(masterEvi);
@@ -1192,7 +1186,6 @@ export class EventService extends BaseService {
     sq = `delete from gtd_wa where obt = ? and  obi in (select evi from gtd_ev
           where ${delcondi} ); `;
     params = new Array<any>();
-    params.length = 0;
     params.push(anyenum.ObjectType.Event);
     params.push(oriAgdata.evd);
     params.push(masterEvi);
@@ -1204,7 +1197,6 @@ export class EventService extends BaseService {
     sq = `select * from gtd_ev where (evi = ? or rtevi =  ?) and del <> ? order by evd  ;`;
     let evtbls = new Array<AgendaData>();
     params = new Array<any>();
-    params.length = 0;
     params.push(masterEvi);
     params.push(masterEvi);
     params.push(anyenum.DelType.del);
