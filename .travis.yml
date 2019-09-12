@@ -51,7 +51,10 @@ matrix:
 #  - "$HOME/.cache/yarn/v1/"
 before_install:
   - curl -L https://packagecloud.io/github/git-lfs/gpgkey | sudo apt-key add -
-  - sudo apt-cache search all | grep google-chrome
+  - sudo apt-cache search google-chrome
+  - sudo apt-cache madison google-chrome-beta
+  - sudo apt-cache madison google-chrome-stable
+  - sudo apt-cache madison google-chrome-unstable
   - sudo apt-get install -y yarn jq gradle sshpass dos2unix google-chrome-stable=76.0.3809.132-1
   - export LANG=zh_CN.UTF-8
   - export GRADLE_HOME=/usr/local/gradle
