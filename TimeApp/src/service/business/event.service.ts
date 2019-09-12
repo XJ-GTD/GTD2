@@ -1181,6 +1181,13 @@ export class EventService extends BaseService {
     params.push(masterEvi);
     params.push(anyenum.DelType.del);
     delAgds = await this.sqlExce.getExtLstByParam<AgendaData>(sq,params);
+    if (delAgds && delAgds != null && delAgds.length >0 ){
+      for (let j = 0, len = delAgds.length; j < len ;j++){
+        delAgds[j].del = anyenum.DelType.del;
+        delAgds[j].mi = UserConfig.account.id;
+        delAgds[j].tb = anyenum.SyncType.unsynch;
+      }
+    }
 
     //删除原事件中从当前事件开始所有提醒 evd使用原事件evd
     sq = `delete from gtd_wa where obt = ? and  obi in (select evi from gtd_ev
