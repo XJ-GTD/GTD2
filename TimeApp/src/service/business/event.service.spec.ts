@@ -638,6 +638,27 @@ describe('EventService test suite', () => {
     expect(same).toBe(true);
   });
 
+  it(`Case 19 - 1 hasAgendaModifyConfirm 判断日程修改是否需要确认 - 修改备注`, async () => {
+    let agenda: AgendaData = {} as AgendaData;
+
+    let dayRepeatrt: RtJson = new RtJson();
+    dayRepeatrt.cycletype = CycleType.day;
+    dayRepeatrt.over.type = OverType.fornever;
+
+    agenda.sd = moment().format("YYYY/MM/DD");
+    agenda.evn = "判断日程修改是否需要确认 - 修改备注";
+    agenda.rtjson = dayRepeatrt;
+
+    let results = await eventService.saveAgenda(agenda);
+
+    let newAgenda: AgendaData = results[0];
+    newAgenda.bz = "修改备注";
+
+    let confirm: boolean = eventService.hasAgendaModifyConfirm(agenda, newAgenda);
+
+    expect(confim).toBe(false);
+  });
+
   describe(`创建不重复与重复（每天、每周、每月、每年）日程`, () => {
     let dayNoneRepeat: string = moment().format("YYYY/MM/DD");
     let dayDayRepeat: string = moment().add(1, "weeks").format("YYYY/MM/DD");

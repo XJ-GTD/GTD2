@@ -184,7 +184,7 @@ export class EventService extends BaseService {
         }
 
         // 如果one的值为空, 不一致
-        if (!value) return false;
+        if (!value || !another[key]) return false;
 
         if (typeof value === 'string' || typeof value === 'number' || typeof value === 'boolean') {
           if (typeof value === 'string' && value != "" && another[key] != "" && key == "rt") {
@@ -315,6 +315,54 @@ export class EventService extends BaseService {
     }
 
     return true;
+  }
+
+  /**
+   * 判断日程修改是否需要确认
+   * 当前日程修改 还是 将来日程全部修改
+   *
+   * @param {AgendaData} newAgd
+   * @param {AgendaData} oldAgd
+   * @returns {boolean}
+   */
+  hasAgendaModifyConfirm(before: AgendaData, after: AgendaData): boolean {
+    assertEmpty(before);  // 入参不能为空
+    assertEmpty(after);  // 入参不能为空
+
+    // 确认修改前日程是否重复
+    if (before.rfg != RepeatFlag.Repeat) return false;
+
+    for (let key of Object.keys(before)) {
+      if (["sd", "st", "al", "ct", "evn", "rt"].indexOf(key) >= 0) {   // 比较字段
+        let value = before[key];
+
+        // 如果两个值都为空, 继续
+        if (!value && !after[key]) {
+          continue;
+        }
+
+        // 如果one的值为空, 不一致
+        if (!value || !after[key]) return true;
+
+        if (typeof value === 'string' || typeof value === 'number' || typeof value === 'boolean') {
+          if (typeof value === 'string' && value != "" && after[key] != "" && key == "rt") {
+            let onert: RtJson = new RtJson();
+            Object.assign(onert, JSON.parse(value));
+
+            let anotherrt: RtJson = new RtJson();
+            Object.assign(anotherrt, JSON.parse(after[key]));
+
+            if (!(onert.sameWith(anotherrt))) return true;
+
+            continue;
+          }
+
+          if (value != after[key]) return true;
+        }
+      }
+    }
+
+    return false;
   }
 
   /**
@@ -518,6 +566,7 @@ export class EventService extends BaseService {
 
     //批量本地更新
     let sqlparam = new Array<any>();
+    let params = new Array<any>();
 
     if (delType == anyenum.OperateType.FromSel){
       let sq : string ;
@@ -565,9 +614,13 @@ export class EventService extends BaseService {
       }
 
       //更新原事件日程结束日或事件表无记录了则删除
-      sq = `select * from gtd_ev where (evi = '${masterEvi}' or rtevi =  '${masterEvi}') and del <>'${anyenum.DelType.del}' ;`;
+      sq = `select * from gtd_ev where (evi = ? or rtevi =  ?) and del <> ? ;`;
       let evtbls = new Array<EvTbl>();
-      evtbls = await this.sqlExce.getExtList<EvTbl>(sq);
+      params.length = 0;
+      params.push(masterEvi);
+      params.push(masterEvi);
+      params.push(anyenum.DelType.del);
+      evtbls = await this.sqlExce.getExtLstByParam<EvTbl>(sq,params);
 
       let caevi : string = masterEvi;
       let ca = new CaTbl();
@@ -1000,6 +1053,7 @@ export class EventService extends BaseService {
                                       sqlparam : Array<any>,
                                       outAgds : Array<AgendaData>){
     let sq : string ;
+    let params  = new Array<any>();
 
     let outAgd = {} as AgendaData;
     let nwEvs = Array<EvTbl>();
@@ -1012,10 +1066,13 @@ export class EventService extends BaseService {
     let upAgds = new Array<AgendaData>();//保存修改的事件用
 
     if (!oriAgdata.rtevi && oriAgdata.rtevi =="" && oriAgdata.rfg == anyenum.RepeatFlag.Repeat){
-      sq = `select * from gtd_ev where rtevi = '${oriAgdata.evi}' and  rfg = '${anyenum.RepeatFlag.Repeat}'
-         and del <>  '${anyenum.DelType.del}' order by evd ;`;
+      sq = `select * from gtd_ev where rtevi = ? and  rfg = ? and del <>  ? order by evd ;`;
+      params.length = 0;
+      params.push(oriAgdata.evi);
+      params.push(anyenum.RepeatFlag.Repeat);
+      params.push(anyenum.DelType.del);
 
-      nwEvs = await this.sqlExce.getExtList<EvTbl>(sq);
+      nwEvs = await this.sqlExce.getExtLstByParam<EvTbl>(sq,params);
       if (nwEvs != null && nwEvs.length >0){
         //更新首条为父事件
         Object.assign(nwEv, nwEvs[0]);
@@ -1025,14 +1082,20 @@ export class EventService extends BaseService {
         await this.sqlExce.updateByParam(nwEv);
 
         //原子事件的父字段改为新的父事件
-        upcondi = ` rtevi = '${oriAgdata.evi}' `
-        sq = `update gtd_ev set rtevi = '${nwEv.evi}',mi='${UserConfig.account.id}',tb = '${anyenum.SyncType.unsynch}'
-             where  ${upcondi}; `;
-        await this.sqlExce.execSql(sq);
+        upcondi = ` rtevi = ? `
+        sq = `update gtd_ev set rtevi = ?,mi= ?,tb = ? where  ${upcondi}; `;
+        params.length = 0;
+        params.push(nwEv.evi);
+        params.push(UserConfig.account.id);
+        params.push(anyenum.SyncType.unsynch);
+        params.push(oriAgdata.evi);
+        await this.sqlExce.execSql(sq,params);
 
         //上记标记为修改的记录放入返回事件中
         sq = ` select *, '${tos}' as tos from gtd_ev where ${upcondi} ; `
-        upAgds = await this.sqlExce.getExtLstByParam<AgendaData>(sq,[]);
+        params.length = 0;
+        params.push(oriAgdata.evi);
+        upAgds = await this.sqlExce.getExtLstByParam<AgendaData>(sq,params);
 
         //为新的父事件建立新的对应日程
         let nwca = new CaTbl();
@@ -1089,21 +1152,37 @@ export class EventService extends BaseService {
     tos = this.getParterPhone(parters);
 
     let sq : string ;
+    let params = Array<any>();
     //删除原事件中从当前开始所有事件 evd使用原事件evd
-    delcondi = ` evd >= '${oriAgdata.evd}' and (evi = '${masterEvi}' or rtevi =  '${masterEvi}') `
-    sq = `update  gtd_ev set del ='${anyenum.DelType.del}' , mi ='${UserConfig.account.id}',tb = '${anyenum.SyncType.unsynch}'
-        where ${delcondi} ;`;
-    await this.sqlExce.execSql(sq);
+    delcondi = ` evd >= ? and (evi = ? or rtevi =  ?) `;
+
+    sq = `update  gtd_ev set del = ? , mi =?,tb = ?  where ${delcondi} ;`;
+    params.length = 0;
+    params.push(anyenum.DelType.del);
+    params.push(UserConfig.account.id);
+    params.push(anyenum.SyncType.unsynch);
+    params.push(oriAgdata.evd);
+    params.push(masterEvi);
+    params.push(masterEvi);
+
+    await this.sqlExce.execSql(sq,params);
 
     //上记标记为删除的记录放入返回事件中
     sq = ` select * from gtd_ev where ${delcondi} ; `;
-    delAgds = await this.sqlExce.getExtLstByParam<AgendaData>(sq,[]);
+    params.length = 0;
+    params.push(oriAgdata.evd);
+    params.push(masterEvi);
+    params.push(masterEvi);
+    delAgds = await this.sqlExce.getExtLstByParam<AgendaData>(sq,params);
 
     //更新原事件日程结束日或事件表无记录了则删除
-    sq = `select * from gtd_ev where (evi = '${masterEvi}' or rtevi =  '${masterEvi}') and del <> '${anyenum.DelType.del}'
-      order by evd  ;`;
+    sq = `select * from gtd_ev where (evi = ? or rtevi =  ?) and del <> ? order by evd  ;`;
     let evtbls = new Array<AgendaData>();
-    evtbls = await this.sqlExce.getExtLstByParam<AgendaData>(sq ,[]);
+    params.length = 0;
+    params.push(masterEvi);
+    params.push(masterEvi);
+    params.push(anyenum.DelType.del);
+    evtbls = await this.sqlExce.getExtLstByParam<AgendaData>(sq ,params);
 
 
     let caevi : string = masterEvi;
@@ -1148,10 +1227,15 @@ export class EventService extends BaseService {
       sqlparam.push(fj.upTParam());
 
       //删除原事件中从当前事件开始所有提醒 evd使用原事件evd
-      sq = `delete from gtd_wa where obt = '${anyenum.ObjectType.Event}' and  obi in (select evi from gtd_ev
-          where evd >= '${oriAgdata.evd}' and (evi = '${masterEvi}' or rtevi =  '${masterEvi}')
-           and  del ='${anyenum.DelType.del}' ); `;
-      sqlparam.push(sq);
+      sq = `delete from gtd_wa where obt = ? and  obi in (select evi from gtd_ev
+          where evd >= ? and (evi = ? or rtevi =  ?) and  del = ? ); `;
+      params.length = 0;
+      params.push(anyenum.ObjectType.Event);
+      params.push(oriAgdata.evd);
+      params.push(masterEvi);
+      params.push(masterEvi);
+      params.push(anyenum.DelType.del);
+      sqlparam.push([sq,params]);
 
       //取得所有删除的参与人
       let delpars = new Array<Parter>();
@@ -1266,7 +1350,7 @@ export class EventService extends BaseService {
     agdata.rtevi = !agdata.rtevi ? "" : agdata.rtevi ;
     agdata.ji = !agdata.ji ?  "" : agdata.ji;
     agdata.bz = !agdata.bz ? "" : agdata.bz ;
-    agdata.type = !agdata.type ? anyenum.ObjectType.Calendar : agdata.type ;
+    agdata.type = !agdata.type ? anyenum.EventType.Agenda : agdata.type ;
 
     let txjson = new TxJson();
 
@@ -3115,7 +3199,17 @@ export class RtJson {
 
     if (last != -1) return false;
 
-    if (!this.over.sameWith(another.over)) return false;
+    if (this.over && another.over) {
+      let oneover: RtOver = new RtOver();
+      Object.assign(oneover, this.over);
+
+      let anotherover: RtOver = new RtOver();
+      Object.assign(anotherover, another.over);
+
+      if (!(oneover.sameWith(anotherover))) return false;
+    }
+
+    if ((!this.over || !another.over) && (this.over || another.over)) return false;
 
     return true;
   }
