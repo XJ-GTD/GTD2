@@ -326,7 +326,8 @@ export class EventService extends BaseService {
   isAgendaChanged(newAgd : AgendaData ,oldAgd : AgendaData): boolean{
     if (!newAgd.rtjson) {
       if (newAgd.rt) {
-        newAgd.rtjson = JSON.parse(newAgd.rt);
+        newAgd.rtjson = new RtJson();
+        Object.assign(newAgd.rtjson, JSON.parse(newAgd.rt));
       } else {
         newAgd.rtjson = new RtJson();
       }
@@ -334,7 +335,8 @@ export class EventService extends BaseService {
 
     if (!oldAgd.rtjson) {
       if (oldAgd.rt) {
-        oldAgd.rtjson = JSON.parse(oldAgd.rt);
+        oldAgd.rtjson = new RtJson();
+        Object.assign(oldAgd.rtjson, JSON.parse(oldAgd.rt));
       } else {
         oldAgd.rtjson = new RtJson();
       }
