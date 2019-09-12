@@ -59,6 +59,7 @@ matrix:
 #  - "$HOME/Library/Caches/Yarn/v1/"
 #  - "$HOME/.cache/yarn/v1/"
 before_install:
+  - sudo apt-get update
   - sudo apt-get install google-chrome-stable
   - export LANG=zh_CN.UTF-8
   - export GRADLE_HOME=/usr/local/gradle
