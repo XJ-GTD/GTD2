@@ -2774,6 +2774,7 @@ export class EventService extends BaseService {
   	 */
    async todolist(): Promise<Array<AgendaData>> {
    	 let sql: string = `
+                      select * from (
    	 									 select evnext.* ,MIN(evnext.day) from (
   		 	 										select  evv.*,
   		 	 										ABS(julianday(datetime(replace(evv.evd, '/', '-'),evv.evt)) - julianday(datetime('now'))) day
@@ -2787,7 +2788,9 @@ export class EventService extends BaseService {
   	                    ) evnext
                       group by evnext.newrtevi
                       order by  evnext.day , evnext.evd, evnext.evt desc
+                     )
                       union
+                      select * from (
                       select evnext.* ,MIN(evnext.day) from (
                             select  evv.*,
                             ABS(julianday(datetime(replace(evv.evd, '/', '-'),evv.evt)) - julianday(datetime('now'))) day
@@ -2801,6 +2804,7 @@ export class EventService extends BaseService {
                         ) evnext
                       group by evnext.newrtevi
                       order by  evnext.day , evnext.evd, evnext.evt asc
+                      )
                        	`;
       let agendaArray: Array<AgendaData> = await this.sqlExce.getExtLstByParam<AgendaData>(sql, [anyenum.ToDoListStatus.On,anyenum.DelType.undel]) || new Array<AgendaData>();
   		return agendaArray;
