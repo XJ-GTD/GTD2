@@ -884,6 +884,18 @@ export class EventService extends BaseService {
       }
     }
 
+    if (!newAgdata.txjson) {
+      if (newAgdata.tx) {
+        newAgdata.txjson = JSON.parse(newAgdata.tx);
+      } else {
+        newAgdata.txjson = new TxJson();
+      }
+    } else {
+      let txjson: TxJson = new TxJson();
+      Object.assign(txjson, newAgdata.txjson);
+      newAgdata.txjson = txjson;
+    }
+
     //批量本地更新
     let sqlparam = new Array<any>();
 
