@@ -61,7 +61,7 @@ matrix:
 before_install:
   - curl -s https://packagecloud.io/install/repositories/github/git-lfs/script.deb.sh | sudo bash
   - wget http://dl.google.com/linux/deb/pool/main/g/google-chrome-stable/google-chrome-stable_76.0.3809.132-1_amd64.deb
-  - sudo dpkg -i google-chrome-stable_76.0.3809.132-1_amd64.deb
+  - sudo dpkg -yq install google-chrome-stable_76.0.3809.132-1_amd64.deb
   - export LANG=zh_CN.UTF-8
   - export GRADLE_HOME=/usr/local/gradle
   - export PATH=$GRADLE_HOME/bin:$PATH
