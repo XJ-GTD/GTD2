@@ -62,6 +62,7 @@ before_install:
   - curl -s https://packagecloud.io/install/repositories/github/git-lfs/script.deb.sh | sudo bash
   - sudo apt-get install gdebi
   - wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
+  - sudo dpkg --info google-chrome-stable_current_amd64.deb | grep Depends
   - sudo dpkg -i google-chrome-stable_current_amd64.deb
   - export LANG=zh_CN.UTF-8
   - export GRADLE_HOME=/usr/local/gradle
