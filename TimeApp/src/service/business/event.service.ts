@@ -187,7 +187,7 @@ export class EventService extends BaseService {
         if (!value) return false;
 
         if (typeof value === 'string' || typeof value === 'number' || typeof value === 'boolean') {
-          if (value != "" && another[key] != "" && key == "rt") {
+          if (typeof value === 'string' && value != "" && another[key] != "" && key == "rt") {
             let onert: RtJson = new RtJson();
             Object.assign(onert, JSON.parse(value));
 
@@ -199,7 +199,7 @@ export class EventService extends BaseService {
             continue;
           }
 
-          if (value != "" && another[key] != "" && key == "tx") {
+          if (typeof value === 'string' && value != "" && another[key] != "" && key == "tx") {
             let onetx: TxJson = new TxJson();
             Object.assign(onetx, JSON.parse(value));
 
