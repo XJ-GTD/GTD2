@@ -631,7 +631,7 @@ describe('EventService test suite', () => {
     agenda.sd = moment().format("YYYY/MM/DD");
     agenda.evn = "比较两个日程是否相同 - 保存后比较";
 
-    let results = eventService.saveAgenda(agenda);
+    let results = await eventService.saveAgenda(agenda);
 
     let same: boolean = eventService.isSameAgenda(agenda, results[0]);
 
