@@ -184,7 +184,7 @@ export class EventService extends BaseService {
         }
 
         // 如果one的值为空, 不一致
-        if (!value) return false;
+        if (!value || !another[key]) return false;
 
         if (typeof value === 'string' || typeof value === 'number' || typeof value === 'boolean') {
           if (typeof value === 'string' && value != "" && another[key] != "" && key == "rt") {
@@ -315,6 +315,54 @@ export class EventService extends BaseService {
     }
 
     return true;
+  }
+
+  /**
+   * 判断日程修改是否需要确认
+   * 当前日程修改 还是 将来日程全部修改
+   *
+   * @param {AgendaData} newAgd
+   * @param {AgendaData} oldAgd
+   * @returns {boolean}
+   */
+  hasAgendaModifyConfirm(before: AgendaData, after: AgendaData): boolean {
+    assertEmpty(before);  // 入参不能为空
+    assertEmpty(after);  // 入参不能为空
+
+    // 确认修改前日程是否重复
+    if (before.rfg != RepeatFlag.Repeat) return false;
+
+    for (let key of Object.keys(before)) {
+      if (["sd", "st", "al", "ct", "evn", "rt"].indexOf(key) >= 0) {   // 比较字段
+        let value = before[key];
+
+        // 如果两个值都为空, 继续
+        if (!value && !after[key]) {
+          continue;
+        }
+
+        // 如果one的值为空, 不一致
+        if (!value || !after[key]) return true;
+
+        if (typeof value === 'string' || typeof value === 'number' || typeof value === 'boolean') {
+          if (typeof value === 'string' && value != "" && after[key] != "" && key == "rt") {
+            let onert: RtJson = new RtJson();
+            Object.assign(onert, JSON.parse(value));
+
+            let anotherrt: RtJson = new RtJson();
+            Object.assign(anotherrt, JSON.parse(after[key]));
+
+            if (!(onert.sameWith(anotherrt))) return true;
+
+            continue;
+          }
+
+          if (value != after[key]) return true;
+        }
+      }
+    }
+
+    return false;
   }
 
   /**
