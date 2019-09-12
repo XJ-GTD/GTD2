@@ -19,13 +19,13 @@ matrix:
       - extra-android-m2repository
     before_install:
       - curl -L https://packagecloud.io/github/git-lfs/gpgkey | sudo apt-key add -
-    - google-chrome
     addons:
       apt:
         update: true
         sources:
         - sourceline: deb https://dl.yarnpkg.com/debian/ stable main
           key_url: https://dl.yarnpkg.com/debian/pubkey.gpg
+        - google-chrome
         packages:
         - yarn
         - jq
