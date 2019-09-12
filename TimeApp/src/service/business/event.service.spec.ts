@@ -641,8 +641,13 @@ describe('EventService test suite', () => {
   it(`Case 19 - 1 hasAgendaModifyConfirm 判断日程修改是否需要确认 - 修改备注`, async () => {
     let agenda: AgendaData = {} as AgendaData;
 
+    let dayRepeatrt: RtJson = new RtJson();
+    dayRepeatrt.cycletype = CycleType.day;
+    dayRepeatrt.over.type = OverType.fornever;
+
     agenda.sd = moment().format("YYYY/MM/DD");
     agenda.evn = "判断日程修改是否需要确认 - 修改备注";
+    agenda.rtjson = dayRepeatrt;
 
     let results = await eventService.saveAgenda(agenda);
 
