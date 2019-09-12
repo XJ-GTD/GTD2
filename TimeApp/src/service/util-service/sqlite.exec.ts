@@ -56,7 +56,7 @@ export class SqliteExec {
             this.noteLog(log);
           }
 
-          console.log("sql [" + sql + "] params [" + (params? params.join(",") : "") + "] log error :" + JSON.stringify(err));
+          console.log("sql [" + sql + "] params [" + (params? params.join(",") : "") + "] log error :" + err.message);
           resolve(err);
         });
       });
