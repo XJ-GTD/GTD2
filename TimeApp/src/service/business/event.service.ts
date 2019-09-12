@@ -242,7 +242,7 @@ export class EventService extends BaseService {
                       if (target.hasOwnProperty(key)) {
                         let value = target[key];
 
-                        if (typeof value === 'string' || typeof value === 'number') {
+                        if (typeof value === 'string' || typeof value === 'number' || typeof value === 'boolean') {
                           if (value != val[key]) issame = false;
                         }
                       }
@@ -286,7 +286,7 @@ export class EventService extends BaseService {
                       if (target.hasOwnProperty(key)) {
                         let value = target[key];
 
-                        if (typeof value === 'string' || typeof value === 'number') {
+                        if (typeof value === 'string' || typeof value === 'number' || typeof value === 'boolean') {
                           if (value != val[key]) issame = false;
                         }
                       }
