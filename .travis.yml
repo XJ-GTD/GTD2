@@ -23,6 +23,8 @@ matrix:
         sources:
         - sourceline: deb https://dl.yarnpkg.com/debian/ stable main
           key_url: https://dl.yarnpkg.com/debian/pubkey.gpg
+        - sourceline: deb https://dl.google.com/linux/deb/ stable main
+          key_url: https://dl.google.com/linux/linux_signing_key.pub
         - google-chrome
         packages:
           - yarn
