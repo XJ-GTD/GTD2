@@ -2819,10 +2819,12 @@ export class EventService extends BaseService {
       else {
         if ( (  changed.todolist == anyenum.ToDoListStatus.Off ) || ( changed.del == anyenum.DelType.del ) || (changed.wc == anyenum.IsSuccess.success) ) {
                 //移除数据 取消todolist、删除 、 事件完成
+                let j = 0;
                 for (let td of todolist) {
                   if ( (td.evi == changed.evi) || (td.rtevi == changed.evi ) ) {
-                      todolist.remove(td);
+                      todolist.splice(j, 1);
                   }
+                  j++;
                 }
                 agendaArray = todolist;
         }
@@ -2861,7 +2863,7 @@ export class EventService extends BaseService {
                       agendaArray.push(td);
                     }
                   }
-                  gendaArray.push(td);
+                  agendaArray.push(td);
                 }
            }
         }
