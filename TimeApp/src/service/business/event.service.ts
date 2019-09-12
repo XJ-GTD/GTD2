@@ -3090,7 +3090,17 @@ export class RtJson {
 
     if (last != -1) return false;
 
-    if (!this.over.sameWith(another.over)) return false;
+    if (this.over && another.over) {
+      let oneover: RtOver = new RtOver();
+      Object.assign(oneover, this.over);
+
+      let anotherover: RtOver = new RtOver();
+      Object.assign(anotherover, another.over);
+
+      if (!(oneover.sameWith(anotherover))) return false;
+    }
+
+    if ((!this.over || !another.over) && (this.over || another.over)) return false;
 
     return true;
   }
