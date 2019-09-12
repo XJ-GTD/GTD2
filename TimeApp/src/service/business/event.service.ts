@@ -237,6 +237,8 @@ export class EventService extends BaseService {
                     let issame: boolean = true;
 
                     for (let key of Object.keys(target)) {
+                      if (["wtt", "utt"].indexOf(key) >= 0) continue;   // 忽略字段
+
                       if (target.hasOwnProperty(key)) {
                         let value = target[key];
 
@@ -279,6 +281,8 @@ export class EventService extends BaseService {
                     let issame: boolean = true;
 
                     for (let key of Object.keys(target)) {
+                      if (["wtt", "utt"].indexOf(key) >= 0) continue;   // 忽略字段
+
                       if (target.hasOwnProperty(key)) {
                         let value = target[key];
 
