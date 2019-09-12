@@ -19,7 +19,7 @@ import {DataConfig} from "../config/data.config";
 import {BTbl} from "../sqlite/tbl/b.tbl";
 import {FjTbl} from "../sqlite/tbl/fj.tbl";
 import {DataRestful, PullInData, PushInData, SyncData} from "../restful/datasev";
-import {SyncType, DelType, IsSuccess, SyncDataStatus, PageDirection, SyncDataSecurity} from "../../data.enum";
+import {SyncType, DelType, IsSuccess, SyncDataStatus, RepeatFlag, PageDirection, SyncDataSecurity} from "../../data.enum";
 import {
   assertNotEqual,
   assertEqual,
@@ -379,6 +379,10 @@ export class EventService extends BaseService {
       } else {
         newAgd.rtjson = new RtJson();
       }
+    } else {
+      let rtjson: RtJson = new RtJson();
+      Object.assign(rtjson, newAgd.rtjson);
+      newAgd.rtjson = rtjson;
     }
 
     if (!oldAgd.rtjson) {
@@ -388,6 +392,10 @@ export class EventService extends BaseService {
       } else {
         oldAgd.rtjson = new RtJson();
       }
+    } else {
+      let rtjson: RtJson = new RtJson();
+      Object.assign(rtjson, oldAgd.rtjson);
+      oldAgd.rtjson = rtjson;
     }
 
     //重复选项发生变化

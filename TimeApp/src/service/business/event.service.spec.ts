@@ -656,7 +656,7 @@ describe('EventService test suite', () => {
 
     let confirm: boolean = eventService.hasAgendaModifyConfirm(agenda, newAgenda);
 
-    expect(confim).toBe(false);
+    expect(confirm).toBe(false);
   });
 
   describe(`创建不重复与重复（每天、每周、每月、每年）日程`, () => {
