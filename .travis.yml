@@ -23,7 +23,17 @@ matrix:
         sources:
         - sourceline: deb https://dl.yarnpkg.com/debian/ stable main
           key_url: https://dl.yarnpkg.com/debian/pubkey.gpg
+        - sourceline: deb https://dl.google.com/linux/deb/ stable main
+          key_url: https://dl.google.com/linux/linux_signing_key.pub
         - google-chrome
+        - rabbitmq-trusty
+        packages:
+          - yarn
+          - jq
+          - gradle
+          - sshpass
+          - dos2unix
+          - gdebi
     licenses:
       - android-sdk-preview-license-.+
       - android-sdk-license-.+
@@ -50,12 +60,8 @@ matrix:
 #  - "$HOME/Library/Caches/Yarn/v1/"
 #  - "$HOME/.cache/yarn/v1/"
 before_install:
-  - curl -L https://packagecloud.io/github/git-lfs/gpgkey | sudo apt-key add -
-  - sudo apt-cache search google-chrome
-  - sudo apt-cache madison google-chrome-beta
-  - sudo apt-cache madison google-chrome-stable
-  - sudo apt-cache madison google-chrome-unstable
-  - sudo apt-get install -y yarn jq gradle sshpass dos2unix google-chrome-stable=76.0.3809.132-1
+  - curl -s https://packagecloud.io/install/repositories/github/git-lfs/script.deb.sh | sudo bash
+  - sudo apt-get install google-chrome-stable
   - export LANG=zh_CN.UTF-8
   - export GRADLE_HOME=/usr/local/gradle
   - export PATH=$GRADLE_HOME/bin:$PATH
