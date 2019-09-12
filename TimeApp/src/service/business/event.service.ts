@@ -2782,7 +2782,7 @@ export class EventService extends BaseService {
   			 	 										case when ifnull(ev.rtevi,'') = ''  then  ev.rtevi  else ev.evi end newrtevi
   			                      from gtd_ev ev
   			                      where ev.todolist = ?1 and ev.del = ?2
-                              and julianday(datetime(replace(evv.evd, '/', '-'),evv.evt))<julianday(datetime('now'))
+                              and julianday(datetime(replace(ev.evd, '/', '-'),ev.evt))<julianday(datetime('now'))
   		                    ) evv
   	                    ) evnext
                       group by evnext.newrtevi
@@ -2796,7 +2796,7 @@ export class EventService extends BaseService {
                               case when ifnull(ev.rtevi,'') = ''  then  ev.rtevi  else ev.evi end newrtevi
                               from gtd_ev ev
                               where ev.todolist = ?1 and ev.del = ?2
-                              and julianday(datetime(replace(evv.evd, '/', '-'),evv.evt))>=julianday(datetime('now'))
+                              and julianday(datetime(replace(ev.evd, '/', '-'),ev.evt))>=julianday(datetime('now'))
                           ) evv
                         ) evnext
                       group by evnext.newrtevi
