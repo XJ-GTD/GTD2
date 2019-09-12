@@ -51,7 +51,7 @@ matrix:
 #  - "$HOME/.cache/yarn/v1/"
 before_install:
   - curl -L https://packagecloud.io/github/git-lfs/gpgkey | sudo apt-key add -
-  - sudo apt-get install -q yarn jq gradle sshpass dos2unix fonts-liberation google-chrome-stable
+  - sudo apt-get install -y yarn jq gradle sshpass dos2unix fonts-liberation google-chrome-stable
   - export LANG=zh_CN.UTF-8
   - export GRADLE_HOME=/usr/local/gradle
   - export PATH=$GRADLE_HOME/bin:$PATH
