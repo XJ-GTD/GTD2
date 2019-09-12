@@ -1105,27 +1105,27 @@ export class EventService extends BaseService {
 
     let sq : string ;
     let params = Array<any>();
-    //删除原事件中从当前开始所有事件 evd使用原事件evd
-    delcondi = ` evd >= ? and (evi = ? or rtevi =  ?) `;
 
-    sq = `update  gtd_ev set del = ? , mi =?,tb = ?  where ${delcondi} ;`;
-    params.length = 0;
-    params.push(anyenum.DelType.del);
-    params.push(UserConfig.account.id);
-    params.push(anyenum.SyncType.unsynch);
-    params.push(oriAgdata.evd);
-    params.push(masterEvi);
-    params.push(masterEvi);
-
-    await this.sqlExce.execSql(sq,params);
-
-    //上记标记为删除的记录放入返回事件中
+    //标记为删除的记录放入返回事件中
+    delcondi = ` evd >= ? and (evi = ? or rtevi =  ?) and del <> ? `;
     sq = ` select * from gtd_ev where ${delcondi} ; `;
     params.length = 0;
     params.push(oriAgdata.evd);
     params.push(masterEvi);
     params.push(masterEvi);
+    params.push(anyenum.DelType.del);
     delAgds = await this.sqlExce.getExtLstByParam<AgendaData>(sq,params);
+
+    //删除原事件中从当前事件开始所有提醒 evd使用原事件evd
+    sq = `delete from gtd_wa where obt = ? and  obi in (select evi from gtd_ev
+          where ${delcondi} ); `;
+    params.length = 0;
+    params.push(anyenum.ObjectType.Event);
+    params.push(oriAgdata.evd);
+    params.push(masterEvi);
+    params.push(masterEvi);
+    params.push(anyenum.DelType.del);
+    sqlparam.push([sq,params]);
 
     //更新原事件日程结束日或事件表无记录了则删除
     sq = `select * from gtd_ev where (evi = ? or rtevi =  ?) and del <> ? order by evd  ;`;
@@ -1136,14 +1136,13 @@ export class EventService extends BaseService {
     params.push(anyenum.DelType.del);
     evtbls = await this.sqlExce.getExtLstByParam<AgendaData>(sq ,params);
 
-
     let caevi : string = masterEvi;
     let ca = new CaTbl();
     ca.evi = caevi;
     let existca = await this.sqlExce.getOneByParam<CaTbl>(ca);
     Object.assign(ca, existca);
 
-    if (evtbls.length > 0){//有数据，需要更新日程结束日
+    if (evtbls.length > delAgds.length){//有数据，需要更新日程结束日
       ca.ed = moment(oriAgdata.evd).subtract(1,'d').format("YYYY/MM/DD");//evd使用原事件evd
       sqlparam.push(ca.upTParam());
 
@@ -1178,17 +1177,6 @@ export class EventService extends BaseService {
       fj.tb = anyenum.SyncType.unsynch;
       sqlparam.push(fj.upTParam());
 
-      //删除原事件中从当前事件开始所有提醒 evd使用原事件evd
-      sq = `delete from gtd_wa where obt = ? and  obi in (select evi from gtd_ev
-          where evd >= ? and (evi = ? or rtevi =  ?) and  del = ? ); `;
-      params.length = 0;
-      params.push(anyenum.ObjectType.Event);
-      params.push(oriAgdata.evd);
-      params.push(masterEvi);
-      params.push(masterEvi);
-      params.push(anyenum.DelType.del);
-      sqlparam.push([sq,params]);
-
       //取得所有删除的参与人
       let delpars = new Array<Parter>();
       let delpar = new  ParTbl();
@@ -1215,6 +1203,19 @@ export class EventService extends BaseService {
         }
       }
     }
+
+    //删除原事件中从当前开始所有事件 evd使用原事件evd
+    sq = `update  gtd_ev set del = ? , mi =?,tb = ?  where ${delcondi} ;`;
+    params.length = 0;
+    params.push(anyenum.DelType.del);
+    params.push(UserConfig.account.id);
+    params.push(anyenum.SyncType.unsynch);
+    params.push(oriAgdata.evd);
+    params.push(masterEvi);
+    params.push(masterEvi);
+    params.push(anyenum.DelType.del);
+    sqlparam.push([sq,params]);
+
     console.log("**** updateAgenda delFromsel 结果数组合并 start :****" + moment().format("YYYY/MM/DD HH:mm:ss SSS"))
     console.log("**** updateAgenda delFromsel 结果数组合并 outAgds.length :" + outAgds.length +" ,delAgds.length:"+delAgds.length);
     Object.assign(outAgds,[...outAgds, ...delAgds]);
