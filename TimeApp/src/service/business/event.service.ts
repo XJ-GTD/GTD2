@@ -1302,7 +1302,7 @@ export class EventService extends BaseService {
     agdata.rtevi = !agdata.rtevi ? "" : agdata.rtevi ;
     agdata.ji = !agdata.ji ?  "" : agdata.ji;
     agdata.bz = !agdata.bz ? "" : agdata.bz ;
-    agdata.type = !agdata.type ? anyenum.ObjectType.Calendar : agdata.type ;
+    agdata.type = !agdata.type ? anyenum.EventType.Agenda : agdata.type ;
 
     let txjson = new TxJson();
 
