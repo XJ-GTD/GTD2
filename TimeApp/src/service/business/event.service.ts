@@ -2663,7 +2663,7 @@ export class EventService extends BaseService {
   	 */
    async todolist(): Promise<Array<AgendaData>> {
    	 let sql: string = `
-   	 										select evnext.* ,MIN(evnext.day) from (
+   	 									 select evnext.* ,MIN(evnext.day) from (
   		 	 										select  evv.*,
   		 	 										ABS(julianday(datetime(replace(evv.evd, '/', '-'),evv.evt)) - julianday(datetime('now'))) day
   		 	 										from (
@@ -2671,8 +2671,23 @@ export class EventService extends BaseService {
   			 	 										case when ifnull(ev.rtevi,'') = ''  then  ev.rtevi  else ev.evi end newrtevi
   			                      from gtd_ev ev
   			                      where ev.todolist = ?1 and ev.del = ?2
+                              and julianday(datetime(replace(evv.evd, '/', '-'),evv.evt))<julianday(datetime('now'))
   		                    ) evv
   	                    ) evnext
+                      group by evnext.newrtevi
+                      order by  evnext.day , evnext.evd, evnext.evt desc
+                      union
+                      select evnext.* ,MIN(evnext.day) from (
+                            select  evv.*,
+                            ABS(julianday(datetime(replace(evv.evd, '/', '-'),evv.evt)) - julianday(datetime('now'))) day
+                            from (
+                              select ev.*,
+                              case when ifnull(ev.rtevi,'') = ''  then  ev.rtevi  else ev.evi end newrtevi
+                              from gtd_ev ev
+                              where ev.todolist = ?1 and ev.del = ?2
+                              and julianday(datetime(replace(evv.evd, '/', '-'),evv.evt))>=julianday(datetime('now'))
+                          ) evv
+                        ) evnext
                       group by evnext.newrtevi
                       order by  evnext.day , evnext.evd, evnext.evt asc
                        	`;
@@ -2685,24 +2700,70 @@ export class EventService extends BaseService {
    * @author ying<343253410@qq.com>
    */
   async mergeTodolist(todolist: Array<AgendaData>, changed: AgendaData): Promise<Array<AgendaData>> {
+      //传入数据不能为空
+      this.assertEmpty(changed);
+
       let agendaArray: Array<AgendaData> = new Array<AgendaData>();
-      if (todolist&&changed) {
-        let flag = true;
-        for (let td of todolist) {
-          if((moment(changed.evd + ' ' + changed.evt).diff(td.evd + ' ' + td.evt)>=0))
+      if (todolist.length == 0) {
+          //当缓存时间为空的情况下，新加入todoList
+          if ( ( changed.todolist == anyenum.ToDoListStatus.On ) && ( changed.del == anyenum.DelType.undel ) )
           {
-              agendaArray.push(td)
+                //将数据加入到todolist缓存
+                agendaArray.push(changed);
           }
-          else
-          {
-              if(flag){
-                flag = false;
-                agendaArray.push(changed)
-              }
-              agendaArray.push(td);
+      }
+      else {
+        if ( (  changed.todolist == anyenum.ToDoListStatus.Off ) || ( changed.del == anyenum.DelType.del ) || (changed.wc == anyenum.IsSuccess.success) ) {
+                //移除数据 取消todolist、删除 、 事件完成
+                for (let td of todolist) {
+                  if ( (td.evi == changed.evi) || (td.rtevi == changed.evi ) ) {
+                      todolist.remove(td);
+                  }
+                }
+                agendaArray = todolist;
+        }
+        else {
+          //将数据加到新的排序中去
+          //todolist已经进行过排序，按照日期排列 ,快速排序算法，还是太慢，
+          //1.新加入的事件的日期，比todolist第一个日期还小,缩短循环排序时间
+          if (moment(changed.evd + ' ' + changed.evt).diff(todolist[0].evd + ' ' + todolist[0].evt)<=0) {
+              let agendaArrayNew: Array<AgendaData> = new Array<AgendaData>();
+              agendaArrayNew.push(changed);
+              agendaArray = agendaArrayNew.concat(todolist);
           }
+
+          //2.新加入的事件的日期，比todolist的最后一个日期还小
+          if (moment(changed.evd + ' ' + changed.evt).diff(todolist[todolist.length-1].evd + ' ' + todolist[todolist.length-1].evt)>=0) {
+              todolist.push(changed);
+              agendaArray = todolist;
+          }
+
+          //3. 当事件的日期，在todolist中间时
+          if ((moment(changed.evd + ' ' + changed.evt).diff(todolist[todolist.length-1].evd + ' ' + todolist[todolist.length-1].evt)<0)
+              || (moment(changed.evd + ' ' + changed.evt).diff(todolist[0].evd + ' ' + todolist[0].evt)>0)) {
+                let flag = true;
+                let i=1;
+                for (let td of todolist) {
+                  //todolist 已经是按照日期顺序排列好的，然后根据日期大小进行排序，当change的日期比todolist的小的时候插入进去
+                  if(((moment(changed.evd + ' ' + changed.evt).diff(td.evd + ' ' + td.evt)<=0)&&flag))
+                  {
+                    //验证当前的数据是否重复，如果重复，则替换，如果不重复则插入
+                    flag = false;
+                    if(this.isSameAgenda(changed,td)) {
+                        agendaArray.push(changed)
+                    }
+                    else {
+                      agendaArray.push(changed);
+                      agendaArray.push(td);
+                    }
+                  }
+                  gendaArray.push(td);
+                }
+           }
         }
       }
+      //更新相关实体数据内容
+      this.saveAgenda(changed);
       return agendaArray;
   }
 
