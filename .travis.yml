@@ -50,8 +50,9 @@ matrix:
 #  - "$HOME/Library/Caches/Yarn/v1/"
 #  - "$HOME/.cache/yarn/v1/"
 before_install:
-  - curl -s https://packagecloud.io/install/repositories/github/git-lfs/script.deb.sh | sudo bash
-  - sudo apt-get install -y yarn jq gradle sshpass dos2unix fonts-liberation google-chrome-stable
+  - curl -L https://packagecloud.io/github/git-lfs/gpgkey | sudo apt-key add -
+  - sudo apt-cache madison google-chrome-stable
+  - sudo apt-get install -y yarn jq gradle sshpass dos2unix google-chrome-stable
   - export LANG=zh_CN.UTF-8
   - export GRADLE_HOME=/usr/local/gradle
   - export PATH=$GRADLE_HOME/bin:$PATH
