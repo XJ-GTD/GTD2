@@ -26,6 +26,7 @@ matrix:
         - sourceline: deb https://dl.google.com/linux/deb/ stable main
           key_url: https://dl.google.com/linux/linux_signing_key.pub
         - google-chrome
+        - rabbitmq-trusty
         packages:
           - yarn
           - jq
