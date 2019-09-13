@@ -8,7 +8,21 @@ import {ModalBoxComponent} from "../../components/modal-box/modal-box";
   selector: 'page-attach',
   template: `
   <modal-box title="附件" (onClose)="close()">
-
+    <ion-grid>
+      <ion-row>
+        暂无附件
+      </ion-row>
+      <ion-row>
+        <button ion-button icon-start clear (click)="shot()">
+          <ion-icon ios="ios-camera" md="ios-camera"></ion-icon>
+          <div>拍照</div>
+        </button>
+        <button ion-button icon-start clear (click)="select()">
+          <ion-icon ios="ios-albums" md="ios-albums"></ion-icon>
+          <div>相册</div>
+        </button>
+      </ion-row>
+    </ion-grid>
   </modal-box>
   `
 })
