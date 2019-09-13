@@ -103,7 +103,7 @@ export class DoPage {
     .then((d) => {
       if (d && d.length > 0) {
 
-        this.emitService.register("mwxing.calendar.activities.changed", (data) => {
+        this.emitService.register("mwxing.calendar.activities.changed", async (data) => {
           if (!data) {
             return;
           }
