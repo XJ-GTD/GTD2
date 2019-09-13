@@ -2863,7 +2863,7 @@ export class EventService extends BaseService {
 
           //2.新加入的事件的日期，比todolist的最后一个日期还小
           if (moment(changed.evd + ' ' + changed.evt).diff(todolist[todolist.length-1].evd + ' ' + todolist[todolist.length-1].evt)>=0) {
-            if(this.isSameAgenda(changed,todolist[0])) {
+            if(this.isSameAgenda(changed,todolist[todolist.length-1])) {
                 todolist[todolist.length-1] = changed;
              }
              else {
