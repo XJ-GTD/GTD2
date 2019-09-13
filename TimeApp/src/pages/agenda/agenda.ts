@@ -33,7 +33,7 @@ import { PageDirection, IsSuccess, OperateType, RepeatFlag, ToDoListStatus } fro
             <ion-textarea [(ngModel)]="currentAgenda.evn" placeholder="参加小明的生日Party" (ionBlur)="save()"></ion-textarea>
 
             <div class="card-subtitle" *ngIf="currentAgenda.fj && currentAgenda.fj > 0">
-              <button ion-button icon-end clear small>
+              <button ion-button icon-end clear small (click)="changeAttach()">
                 <div>附件: 点此查看附件</div>
                 <ion-icon ios="md-attach" md="md-attach"></ion-icon>
               </button>
@@ -58,7 +58,7 @@ import { PageDirection, IsSuccess, OperateType, RepeatFlag, ToDoListStatus } fro
           <!--附加属性操作-->
           <ion-row *ngIf="currentAgenda.evi">
             <ion-col *ngIf="!currentAgenda.fj || currentAgenda.fj == 0">
-              <button ion-button icon-start clear small>
+              <button ion-button icon-start clear small (click)="changeAttach()">
                 <ion-icon ios="md-attach" md="md-attach"></ion-icon>
                 <div>附件</div>
               </button>
@@ -217,6 +217,14 @@ export class AgendaPage {
   removeTodolist() {
     this.currentAgenda.todolist = ToDoListStatus.Off;
     this.doOptionSave(OperateType.OnlySel);
+  }
+
+  changeAttach() {
+    let modal = this.modalCtrl.create(DataConfig.PAGE._ATTACH_PAGE);
+    modal.onDidDismiss(async (data)=>{
+
+    });
+    modal.present();
   }
 
   changeInvites() {
