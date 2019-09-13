@@ -766,7 +766,7 @@ export class CalendarService extends BaseService {
       plandb.tb = SyncType.synch;
       plandb.del = DelType.undel;
 
-      sqls.push(plandb.inTParam());
+      sqls.push(plandb.rpTParam());
 
       let itemType: PlanItemType = (jt == PlanType.CalendarPlan? PlanItemType.Holiday : PlanItemType.Activity);
 
@@ -785,7 +785,7 @@ export class CalendarService extends BaseService {
           planitemdb.tb = SyncType.synch;
           planitemdb.del = DelType.undel;
 
-          sqls.push(planitemdb.inTParam());
+          sqls.push(planitemdb.rpTParam());
         }
       }
     }
