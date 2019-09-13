@@ -111,10 +111,10 @@ export class DoPage {
           // 多条数据同时更新/单条数据更新
           if (data instanceof Array) {
             for (let single of data) {
-              this.cachedtasks = this.eventService.mergeTodolist(this.cachedtasks, single);
+              this.cachedtasks = await this.eventService.mergeTodolist(this.cachedtasks, single);
             }
           } else {
-            this.cachedtasks = this.eventService.mergeTodolist(this.cachedtasks, data);
+            this.cachedtasks = await this.eventService.mergeTodolist(this.cachedtasks, data);
           }
         });
 
