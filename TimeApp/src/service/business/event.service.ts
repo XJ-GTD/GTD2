@@ -2774,7 +2774,7 @@ export class EventService extends BaseService {
   	 */
    async todolist(): Promise<Array<AgendaData>> {
    	 let sql: string = `
-                        select eex,*,ca.* from (
+                        select eex.* , ca.* from (
                          select * from (
                                 select * from (
                                       select evnext.* ,MIN(evnext.day) as minDay from (
