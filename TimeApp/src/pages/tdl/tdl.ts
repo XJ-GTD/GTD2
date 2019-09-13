@@ -48,11 +48,11 @@ import {CalendarComponent} from "../../components/ion2-calendar";
     <ion-content #contentD>
       <ion-grid #grid4Hight class = "list-contont">
         <ng-template ngFor let-monthActivityData [ngForOf]="monthActivityDatas" >
-          
+
           <ion-row class="list-dayagenda-month" id="month{{monthActivityData.month | formatedate:'YYYYMM'}}">
                 <div class="back {{monthActivityData.month  | formatedate :'CSSMM'}}" >
                 <p class="month-a">
-                 
+
                   {{monthActivityData.month  | formatedate :"CYYYY/MM/ND"}}
                 </p>
                 <p class="month-b">
@@ -76,7 +76,7 @@ import {CalendarComponent} from "../../components/ion2-calendar";
                     <div class="ys-fsize text-center ">{{days.day | formatedate:"CMM"}}</div>
                   </div>
                   <div class="d-title text-center ">
-                    <div class="first d-title-chr">日记</div>
+                    <div class="first d-title-chr" (click)="toMemo(days.day)">日记</div>
                     <div class=" d-title-chr">
                       <span class="daycoment">{{this.util.lunar4str(days.day,"D")}}</span>
                       <span class="daycoment" *ngFor="let jt of days.calendaritems">{{jt.jtn}}</span>
@@ -345,6 +345,13 @@ export class TdlPage {
       },200);
 
   }
+
+  toMemo(day) {
+    let p: ScdPageParamter = new ScdPageParamter();
+    p.d = moment(day);
+    this.modalCtr.create(DataConfig.PAGE._MEMO_PAGE, p).present();
+  }
+
   toDetail(si, d, gs) {
 
     let p: ScdPageParamter = new ScdPageParamter();
