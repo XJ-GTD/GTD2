@@ -984,12 +984,11 @@ describe('EventService test suite', () => {
 
       //===================每天重复事件===========================
       let ag2: AgendaData = {} as AgendaData;
-      let day: string = "2019/09/11";
       let rt: RtJson = new RtJson();
       rt.cycletype = CycleType.day;
       rt.over.type = OverType.limitdate;
   		rt.over.value ="2020/08/31";
-      ag2.sd = day;
+      ag2.sd = "2019/09/11";
       ag2.evn = "每天重复,测试todoLoist排序";
       ag2.rtjson = rt;
       ag2.todolist = anyenum.ToDoListStatus.On;
@@ -1026,14 +1025,13 @@ describe('EventService test suite', () => {
 
       //===================每天重复事件===========================
       let ag6: AgendaData = {} as AgendaData;
-      let day: string = "2019/09/15";
-      let rt: RtJson = new RtJson();
-      rt.cycletype = CycleType.day;
-      rt.over.type = OverType.limitdate;
-  		rt.over.value ="2020/08/31";
-      ag6.sd = day;
+      let rt6: RtJson = new RtJson();
+      rt6.cycletype = CycleType.day;
+      rt6.over.type = OverType.limitdate;
+  		rt6.over.value ="2020/08/31";
+      ag6.sd = "2019/09/15";
       ag6.evn = "每天重复,测试2019/09/15todoLoist排序";
-      ag6.rtjson = rt;
+      ag6.rtjson = rt6;
       ag6.todolist = anyenum.ToDoListStatus.On;
       ag6.del = anyenum.DelType.undel;
       await eventService.saveAgenda(ag6);
