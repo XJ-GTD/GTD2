@@ -2850,7 +2850,7 @@ export class EventService extends BaseService {
           //1.新加入的事件的日期，比todolist第一个日期还小,缩短循环排序时间
           if (moment(changed.evd + ' ' + changed.evt).diff(todolist[0].evd + ' ' + todolist[0].evt)<=0) {
               //验证是否为同一个事件
-              if(this.isSameAgenda(changed,todolist[0])) {
+              if(changed.evi == todolist[0].evi ) {
                   todolist[0] = changed;
                   agendaArray = todolist;
                }
@@ -2863,7 +2863,7 @@ export class EventService extends BaseService {
 
           //2.新加入的事件的日期，比todolist的最后一个日期还小
           if (moment(changed.evd + ' ' + changed.evt).diff(todolist[todolist.length-1].evd + ' ' + todolist[todolist.length-1].evt)>=0) {
-            if(this.isSameAgenda(changed,todolist[todolist.length-1])) {
+            if(changed.evi == todolist[todolist.length-1].evi) {
                 todolist[todolist.length-1] = changed;
              }
              else {
@@ -2883,7 +2883,7 @@ export class EventService extends BaseService {
                   {
                     //验证当前的数据是否重复，如果重复，则替换，如果不重复则插入
                     flag = false;
-                    if(this.isSameAgenda(changed,td)) {
+                    if(changed.evi == td.evi)) {
                         agendaArray.push(changed)
                     }
                     else {
