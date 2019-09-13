@@ -2880,7 +2880,7 @@ export class EventService extends BaseService {
         }
       }
       //更新相关实体数据内容
-      this.saveAgenda(changed);
+      //this.saveAgenda(changed);
       return agendaArray;
   }
 
