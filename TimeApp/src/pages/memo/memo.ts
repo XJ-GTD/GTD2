@@ -19,11 +19,14 @@ import * as moment from "moment";
 @IonicPage()
 @Component({
   selector: 'page-memo',
-  template: `<page-box title="备忘" [subtitle]="currentAgenda.evd" [data]="currentAgenda.evi" (onSubTitleClick)="changeDatetime()" (onRemove)="goRemove()" (onBack)="goBack()">
+  template: `<page-box title="备忘" [subtitle]="day" (onSubTitleClick)="changeDatetime()" (onRemove)="goRemove()" (onBack)="goBack()">
       </page-box>`
 })
 export class MemoPage {
   statusBarColor: string = "#3c4d55";
+
+  memos: Array<MemoData> = new Array<MemoData>();
+  day: string = moment().format("YYYY/MM/DD");
 
   constructor(public navCtrl: NavController,
               public navParams: NavParams,
@@ -34,5 +37,9 @@ export class MemoPage {
               private util: UtilService,
               private feedback: FeedbackService) {
     moment.locale('zh-cn');
+  }
+
+  goBack() {
+    this.navCtrl.pop();
   }
 }
