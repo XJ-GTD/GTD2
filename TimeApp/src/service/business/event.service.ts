@@ -2774,7 +2774,7 @@ export class EventService extends BaseService {
   	 */
    async todolist(): Promise<Array<AgendaData>> {
    	 let sql: string = `
-                        select eex.* , ca.* from (
+                        select eex.* , ca.sd,ca.ed,ca.st,ca.et,ca.al,ca.ct from (
                          select * from (
                                 select * from (
                                       select evnext.* ,MIN(evnext.day) as minDay from (
@@ -2822,12 +2822,6 @@ export class EventService extends BaseService {
   async mergeTodolist(todolist: Array<AgendaData>, changed: AgendaData): Promise<Array<AgendaData>> {
       //传入数据不能为空
       this.assertEmpty(changed);
-
-      let activityType: string = this.getEventType(changed);
-
-      if (activityType != "AgendaData") {
-        return todolist;
-      }
 
       let agendaArray: Array<AgendaData> = new Array<AgendaData>();
       if (todolist.length == 0) {
