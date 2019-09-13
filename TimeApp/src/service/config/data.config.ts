@@ -39,6 +39,7 @@ import {AtPage} from "../../pages/at/at";
 import {DaPage} from "../../pages/da/da";
 import {DoPage} from "../../pages/do/do";
 import {AgendaPage} from "../../pages/agenda/agenda";
+import {MemoPage} from "../../pages/memo/memo";
 import {DrPage} from "../../pages/dr/dr";
 import {TxPage} from "../../pages/tx/tx";
 import {BzPage} from "../../pages/bz/bz";
@@ -275,7 +276,8 @@ export class DataConfig {
     _AT_PAGE: AtPage,       // 关于
     _DA_PAGE: DaPage,       // 日程 - 每日日程
     _DO_PAGE: DoPage,       // 任务 - 待处理/已处理任务一览
-    _AGENDA_PAGE: AgendaPage, // 日程 - 创建/修改
+    _AGENDA_PAGE: AgendaPage,   // 日程 - 创建/修改
+    _MEMO_PAGE: MemoPage,       // 备忘 - 创建/修改
     _COMMENT_PAGE: CommentPage, // 日程 - 备注
     _REPEAT_PAGE: RepeatPage, // 日程 - 重复
     _REMIND_PAGE: RemindPage,   // 日程 - 提醒
@@ -331,6 +333,7 @@ export class DataConfig {
     AtPage,       // 关于
     DaPage,       // 日程 - 每日日程
     DoPage,       // 任务 - 待处理/已处理任务一览
+    MemoPage,     // 备忘 - 创建/修改
     AgendaPage,   // 日程 - 创建/修改
     RepeatPage,   // 日程 - 重复
     RemindPage,   // 日程 - 提醒

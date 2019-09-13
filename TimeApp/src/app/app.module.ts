@@ -64,6 +64,7 @@ import {TdmPageModule} from "../pages/tdm/tdm.module";
 import {FsPageModule} from "../pages/fs/fs.module";
 import {AlPageModule} from "../pages/al/al.module";
 import {AgendaPageModule} from "../pages/agenda/agenda.module";
+import {MemoPageModule} from "../pages/memo/memo.module";
 import {BlPageModule} from "../pages/bl/bl.module";
 import {BrPageModule} from "../pages/br/br.module";
 import {FdPageModule} from "../pages/fd/fd.module";
@@ -144,6 +145,7 @@ import {CalendarService} from "../service/business/calendar.service";
     FsPageModule,
     AlPageModule,
     AgendaPageModule,
+    MemoPageModule,
     BlPageModule,
     BrPageModule,
     FdPageModule,
