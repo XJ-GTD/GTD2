@@ -2833,7 +2833,7 @@ export class EventService extends BaseService {
           }
       }
       else {
-        if ( (  changed.todolist == anyenum.ToDoListStatus.Off ) || ( changed.del == anyenum.DelType.del ) || (changed.wc == anyenum.IsSuccess.success) ) {
+        if ( (  changed.todolist == anyenum.ToDoListStatus.Off ) || ( changed.del == anyenum.DelType.del ) || (changed.wc == anyenum.EventFinishStatus.Finished) ) {
                 //移除数据 取消todolist、删除 、 事件完成
                 let j = 0;
                 for (let td of todolist) {
