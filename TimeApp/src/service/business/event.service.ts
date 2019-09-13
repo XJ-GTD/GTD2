@@ -2789,9 +2789,9 @@ export class EventService extends BaseService {
                                       ) evnext
                                       group by evnext.newrtevi
                                 ) evnext2
-                                order by  evnext2.minDay , evnext2.evd, evnext2.evt desc
+                                order by  evnext2.minDay desc
                       )
-                    union
+                    union all
                     select *  from (
                             select * from (
                                     select evnext.* ,MIN(evnext.day) as minDay from (
@@ -2807,7 +2807,7 @@ export class EventService extends BaseService {
                                     ) evnext
                                     group by evnext.newrtevi
                             ) evnext2
-                            order by  evnext2.minDay , evnext2.evd, evnext2.evt asc
+                            order by  evnext2.minDay asc
                     )
                        	`;
       let agendaArray: Array<AgendaData> = await this.sqlExce.getExtLstByParam<AgendaData>(sql, [anyenum.ToDoListStatus.On,anyenum.DelType.undel]) || new Array<AgendaData>();
