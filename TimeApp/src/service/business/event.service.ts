@@ -2792,7 +2792,7 @@ export class EventService extends BaseService {
                                 order by  evnext2.minDay , evnext2.evd, evnext2.evt desc
                       )
                     union
-                    select* (
+                    select *  from (
                             select * from (
                                     select evnext.* ,MIN(evnext.day) as minDay from (
                                           select  evv.*,
