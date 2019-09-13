@@ -2883,7 +2883,7 @@ export class EventService extends BaseService {
                   {
                     //验证当前的数据是否重复，如果重复，则替换，如果不重复则插入
                     flag = false;
-                    if(changed.evi == td.evi)) {
+                    if(changed.evi == td.evi) {
                         agendaArray.push(changed)
                     }
                     else {
