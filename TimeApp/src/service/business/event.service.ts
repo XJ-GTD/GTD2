@@ -2774,37 +2774,41 @@ export class EventService extends BaseService {
   	 */
    async todolist(): Promise<Array<AgendaData>> {
    	 let sql: string = `
-                      select * from (
-   	 									 select evnext.* ,MIN(evnext.day) from (
-  		 	 										select  evv.*,
-  		 	 										ABS(julianday(datetime(replace(evv.evd, '/', '-'),evv.evt)) - julianday(datetime('now'))) day
-  		 	 										from (
-  			 	 										select ev.*,
-  			 	 										case when ifnull(ev.rtevi,'') = ''  then  ev.rtevi  else ev.evi end newrtevi
-  			                      from gtd_ev ev
-  			                      where ev.todolist = ?1 and ev.del = ?2
-                              and julianday(datetime(replace(ev.evd, '/', '-'),ev.evt))<julianday(datetime('now'))
-  		                    ) evv
-  	                    ) evnext
-                      group by evnext.newrtevi
-                      order by  evnext.day , evnext.evd, evnext.evt desc
-                     )
-                      union
-                      select * from (
-                      select evnext.* ,MIN(evnext.day) from (
-                            select  evv.*,
-                            ABS(julianday(datetime(replace(evv.evd, '/', '-'),evv.evt)) - julianday(datetime('now'))) day
-                            from (
-                              select ev.*,
-                              case when ifnull(ev.rtevi,'') = ''  then  ev.rtevi  else ev.evi end newrtevi
-                              from gtd_ev ev
-                              where ev.todolist = ?1 and ev.del = ?2
-                              and julianday(datetime(replace(ev.evd, '/', '-'),ev.evt))>=julianday(datetime('now'))
-                          ) evv
-                        ) evnext
-                      group by evnext.newrtevi
-                      order by  evnext.day , evnext.evd, evnext.evt asc
+                         select * from (
+                                select * from (
+                                      select evnext.* ,MIN(evnext.day) as minDay from (
+                                              select  evv.*,
+                                              ABS(julianday(datetime(replace(evv.evd, '/', '-'),evv.evt)) - julianday(datetime('now'))) day
+                                              from (
+                                                     select ev.*,
+                                                     case when ifnull(ev.rtevi,'') = ''  then  ev.rtevi  else ev.evi end newrtevi
+                                                    from gtd_ev ev
+                                                    where ev.todolist = ?1 and ev.del = ?2
+                                                    and julianday(datetime(replace(ev.evd, '/', '-'),ev.evt))<julianday(datetime('now'))
+                                              ) evv
+                                      ) evnext
+                                      group by evnext.newrtevi
+                                ) evnext2
+                                order by  evnext2.minDay , evnext2.evd, evnext2.evt desc
                       )
+                    union
+                    select* (
+                            select * from (
+                                    select evnext.* ,MIN(evnext.day) as minDay from (
+                                          select  evv.*,
+                                          ABS(julianday(datetime(replace(evv.evd, '/', '-'),evv.evt)) - julianday(datetime('now'))) day
+                                          from (
+                                                  select ev.*,
+                                                  case when ifnull(ev.rtevi,'') = ''  then  ev.rtevi  else ev.evi end newrtevi
+                                                  from gtd_ev ev
+                                                  where ev.todolist = ?1 and ev.del = ?2
+                                                  and julianday(datetime(replace(ev.evd, '/', '-'),ev.evt))>=julianday(datetime('now'))
+                                          ) evv
+                                    ) evnext
+                                    group by evnext.newrtevi
+                            ) evnext2
+                            order by  evnext2.minDay , evnext2.evd, evnext2.evt asc
+                    )
                        	`;
       let agendaArray: Array<AgendaData> = await this.sqlExce.getExtLstByParam<AgendaData>(sql, [anyenum.ToDoListStatus.On,anyenum.DelType.undel]) || new Array<AgendaData>();
   		return agendaArray;
