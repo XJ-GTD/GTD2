@@ -58,6 +58,7 @@ import {RemindPage} from "../../pages/remind/remind";
 import {PlanPage} from "../../pages/plan/plan";
 import {InvitesPage} from "../../pages/invites/invites";
 import {LocationPage} from "../../pages/location/location";
+import {AttachPage} from "../../pages/attach/attach";
 
 export class DataConfig {
   public static isdebug: boolean  = true;
@@ -281,6 +282,7 @@ export class DataConfig {
     _PLAN_PAGE: PlanPage,   // 日程 - 计划
     _INVITES_PAGE: InvitesPage, // 日程 - 邀请人
     _LOCATION_PAGE: LocationPage, // 日程 - 地址
+    _ATTACH_PAGE: AttachPage,     // 日程 - 附件
     _DR_PAGE: DrPage,       // 每日简报设置 - 智能提醒
     _TX_PAGE: TxPage,       // 设置提醒
     _BZ_PAGE: BzPage,       // 设置备注
@@ -336,6 +338,7 @@ export class DataConfig {
     PlanPage,     // 日程 - 计划
     InvitesPage,  // 日程 - 邀请人
     LocationPage, // 日程 - 地址
+    AttachPage,   // 日程 - 附件
     DrPage,       // 每日简报设置 - 智能提醒
     TxPage,       // 设置提醒
     BzPage,       // 设置备注
