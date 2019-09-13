@@ -2823,6 +2823,12 @@ export class EventService extends BaseService {
       //传入数据不能为空
       this.assertEmpty(changed);
 
+      let activityType: string = this.getEventType(changed);
+
+      if (activityType != "AgendaData") {
+        return todolist;
+      }
+
       let agendaArray: Array<AgendaData> = new Array<AgendaData>();
       if (todolist.length == 0) {
           //当缓存时间为空的情况下，新加入todoList

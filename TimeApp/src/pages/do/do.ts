@@ -103,20 +103,20 @@ export class DoPage {
     .then((d) => {
       if (d && d.length > 0) {
 
-        // this.emitService.register("mwxing.calendar.activities.changed", (data) => {
-        //   if (!data) {
-        //     return;
-        //   }
-        //
-        //   // 多条数据同时更新/单条数据更新
-        //   if (data instanceof Array) {
-        //     for (let single of data) {
-        //       this.cachedtasks = this.eventService.mergeUncompletedTasks(this.cachedtasks, single);
-        //     }
-        //   } else {
-        //     this.cachedtasks = this.eventService.mergeUncompletedTasks(this.cachedtasks, data);
-        //   }
-        // });
+        this.emitService.register("mwxing.calendar.activities.changed", (data) => {
+          if (!data) {
+            return;
+          }
+
+          // 多条数据同时更新/单条数据更新
+          if (data instanceof Array) {
+            for (let single of data) {
+              this.cachedtasks = this.eventService.mergeTodolist(this.cachedtasks, single);
+            }
+          } else {
+            this.cachedtasks = this.eventService.mergeTodolist(this.cachedtasks, data);
+          }
+        });
 
         this.cachedtasks = d;
 
