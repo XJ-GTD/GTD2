@@ -2849,14 +2849,26 @@ export class EventService extends BaseService {
           //todolist已经进行过排序，按照日期排列 ,快速排序算法，还是太慢，
           //1.新加入的事件的日期，比todolist第一个日期还小,缩短循环排序时间
           if (moment(changed.evd + ' ' + changed.evt).diff(todolist[0].evd + ' ' + todolist[0].evt)<=0) {
-              let agendaArrayNew: Array<AgendaData> = new Array<AgendaData>();
-              agendaArrayNew.push(changed);
-              agendaArray = agendaArrayNew.concat(todolist);
+              //验证是否为同一个事件
+              if(this.isSameAgenda(changed,todolist[0])) {
+                  todolist[0] = changed;
+                  agendaArray = todolist;
+               }
+               else {
+                 let agendaArrayNew: Array<AgendaData> = new Array<AgendaData>();
+                 agendaArrayNew.push(changed);
+                 agendaArray = agendaArrayNew.concat(todolist);
+               }
           }
 
           //2.新加入的事件的日期，比todolist的最后一个日期还小
           if (moment(changed.evd + ' ' + changed.evt).diff(todolist[todolist.length-1].evd + ' ' + todolist[todolist.length-1].evt)>=0) {
-              todolist.push(changed);
+            if(this.isSameAgenda(changed,todolist[0])) {
+                todolist[todolist.length-1] = changed;
+             }
+             else {
+               todolist.push(changed);
+             }
               agendaArray = todolist;
           }
 
