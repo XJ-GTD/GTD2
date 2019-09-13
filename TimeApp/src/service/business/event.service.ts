@@ -2774,6 +2774,7 @@ export class EventService extends BaseService {
   	 */
    async todolist(): Promise<Array<AgendaData>> {
    	 let sql: string = `
+                        select eex,*,ca.* from (
                          select * from (
                                 select * from (
                                       select evnext.* ,MIN(evnext.day) as minDay from (
@@ -2781,7 +2782,7 @@ export class EventService extends BaseService {
                                               ABS(julianday(datetime(replace(evv.evd, '/', '-'),evv.evt)) - julianday(datetime('now'))) day
                                               from (
                                                      select ev.*,
-                                                     case when ifnull(ev.rtevi,'') = ''  then  ev.rtevi  else ev.evi end newrtevi
+                                                     case when ifnull(ev.rtevi,'') <> ''  then  ev.rtevi  else ev.evi end newrtevi
                                                     from gtd_ev ev
                                                     where ev.todolist = ?1 and ev.del = ?2
                                                     and julianday(datetime(replace(ev.evd, '/', '-'),ev.evt))<julianday(datetime('now'))
@@ -2799,7 +2800,7 @@ export class EventService extends BaseService {
                                           ABS(julianday(datetime(replace(evv.evd, '/', '-'),evv.evt)) - julianday(datetime('now'))) day
                                           from (
                                                   select ev.*,
-                                                  case when ifnull(ev.rtevi,'') = ''  then  ev.rtevi  else ev.evi end newrtevi
+                                                  case when ifnull(ev.rtevi,'') <> ''  then  ev.rtevi  else ev.evi end newrtevi
                                                   from gtd_ev ev
                                                   where ev.todolist = ?1 and ev.del = ?2
                                                   and julianday(datetime(replace(ev.evd, '/', '-'),ev.evt))>=julianday(datetime('now'))
@@ -2808,7 +2809,7 @@ export class EventService extends BaseService {
                                     group by evnext.newrtevi
                             ) evnext2
                             order by  evnext2.minDay asc
-                    )
+                    )) eex left join gtd_ca ca on ca.evi = eex.newrtevi
                        	`;
       let agendaArray: Array<AgendaData> = await this.sqlExce.getExtLstByParam<AgendaData>(sql, [anyenum.ToDoListStatus.On,anyenum.DelType.undel]) || new Array<AgendaData>();
   		return agendaArray;
