@@ -2,6 +2,13 @@ import {Component, ElementRef, Renderer2, ViewChild, ViewChildren, QueryList } f
 import {IonicPage, NavController, ModalController, ActionSheetController, NavParams, Slides} from 'ionic-angular';
 import { MemoService, MemoData } from "../../service/business/memo.service";
 import {PageBoxComponent} from "../../components/page-box/page-box";
+import {EmitService} from "../../service/util-service/emit.service";
+import {FeedbackService} from "../../service/cordova/feedback.service";
+import {UtilService} from "../../service/util-service/util.service";
+import {UserConfig} from "../../service/config/user.config";
+import { ScdData, ScdPageParamter } from "../../data.mapping";
+import {DataConfig} from "../../service/config/data.config";
+import * as moment from "moment";
 
 /**
  * Generated class for the 备忘创建/修改 page.
@@ -25,10 +32,7 @@ export class MemoPage {
               private emitService: EmitService,
               private memoService: MemoService,
               private util: UtilService,
-              private feedback: FeedbackService,
-              private calendarService: CalendarService,
-              private eventService: EventService,
-              private sqlite:SqliteExec) {
+              private feedback: FeedbackService) {
     moment.locale('zh-cn');
   }
 }
