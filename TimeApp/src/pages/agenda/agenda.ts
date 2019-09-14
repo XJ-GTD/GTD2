@@ -412,7 +412,7 @@ export class AgendaPage {
   save() {
     if (this.validCheck()) {              // 输入校验
       if (this.currentAgenda.evi) {       // 修改日程
-        if (!this.eventService.isSameAgenda(this.currentAgenda, this.originAgenda)) {
+        if (this.eventService.isSameAgenda(this.currentAgenda, this.originAgenda)) {
           return;
         }
 
