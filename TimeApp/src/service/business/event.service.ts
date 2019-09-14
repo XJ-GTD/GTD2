@@ -2829,7 +2829,7 @@ export class EventService extends BaseService {
           if ( ( changed.todolist == anyenum.ToDoListStatus.On ) && ( changed.del == anyenum.DelType.undel ) )
           {
                 //将数据加入到todolist缓存
-                agendaArray.push(changed);
+                todolist.push(changed);
           }
       }
       else {
@@ -2842,7 +2842,6 @@ export class EventService extends BaseService {
                   }
                   j++;
                 }
-                agendaArray = todolist;
         }
         else {
           //将数据加到新的排序中去
@@ -2852,12 +2851,9 @@ export class EventService extends BaseService {
               //验证是否为同一个事件
               if(changed.evi == todolist[0].evi ) {
                   todolist[0] = changed;
-                  agendaArray = todolist;
                }
                else {
-                 let agendaArrayNew: Array<AgendaData> = new Array<AgendaData>();
-                 agendaArrayNew.push(changed);
-                 agendaArray = agendaArrayNew.concat(todolist);
+                 todolist.unshift(changed);
                }
           }
 
@@ -2869,14 +2865,14 @@ export class EventService extends BaseService {
              else {
                todolist.push(changed);
              }
-              agendaArray = todolist;
           }
 
           //3. 当事件的日期，在todolist中间时
           if ((moment(changed.evd + ' ' + changed.evt).diff(todolist[todolist.length-1].evd + ' ' + todolist[todolist.length-1].evt)<0)
               || (moment(changed.evd + ' ' + changed.evt).diff(todolist[0].evd + ' ' + todolist[0].evt)>0)) {
                 let flag = true;
-                let i=1;
+                let i=0;
+                let agendaArrayNew2: Array<AgendaData> = new Array<AgendaData>();
                 for (let td of todolist) {
                   //todolist 已经是按照日期顺序排列好的，然后根据日期大小进行排序，当change的日期比todolist的小的时候插入进去
                   if(((moment(changed.evd + ' ' + changed.evt).diff(td.evd + ' ' + td.evt)<=0)&&flag))
@@ -2884,23 +2880,30 @@ export class EventService extends BaseService {
                     //验证当前的数据是否重复，如果重复，则替换，如果不重复则插入
                     flag = false;
                     if(changed.evi == td.evi) {
-                        agendaArray.push(changed)
+                        todolist[i] = changed;
+                        break;
                     }
                     else {
-                      agendaArray.push(changed);
-                      agendaArray.push(td);
+                      //将数据数据先截取出来
+                      agendaArrayNew2 = todolist.slice(i,todolist.length-1);
+                      //新加数据
+                      todolist[i] = changed;
+                      break;
                     }
                   }
-                  agendaArray.push(td);
+                  i++;
+                }
+                for(let td1 of agendaArrayNew2)
+                {
+                      todolist.push(td1);
                 }
            }
         }
       }
       //更新相关实体数据内容
       //this.saveAgenda(changed);
-      return agendaArray;
+      return todolist;
   }
-
 
   /**
    * 取得事件类型
