@@ -49,7 +49,7 @@ export class DoPage {
   topday: string = moment().format("YYYY/MM/DD");
   bottomday: string = moment().format("YYYY/MM/DD");
 
-  onrefresh: EventEmitter;
+  onrefresh: EventEmitter<any>;
 
   constructor(public navCtrl: NavController,
               public navParams: NavParams,
