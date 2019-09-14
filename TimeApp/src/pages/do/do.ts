@@ -75,6 +75,7 @@ export class DoPage {
   ngOnDestroy() {
     if (this.onrefresh) {
       this.onrefresh.unsubscribe();
+      this.onrefresh = undefined;
     }
   }
 
