@@ -121,10 +121,18 @@ export class DoPage {
             // 多条数据同时更新/单条数据更新
             if (data instanceof Array) {
               for (let single of data) {
-                this.cachedtasks = await this.eventService.mergeTodolist(this.cachedtasks, single);
+                let activityType: string = this.eventService.getEventType(activity);
+
+                if (activityType == "AgendaData") {
+                  this.cachedtasks = await this.eventService.mergeTodolist(this.cachedtasks, single);
+                }
               }
             } else {
-              this.cachedtasks = await this.eventService.mergeTodolist(this.cachedtasks, data);
+              let activityType: string = this.eventService.getEventType(activity);
+
+              if (activityType == "AgendaData") {
+                this.cachedtasks = await this.eventService.mergeTodolist(this.cachedtasks, data);
+              }
             }
           });
         }
