@@ -111,20 +111,22 @@ export class DoPage {
     .then((d) => {
       if (d && d.length > 0) {
 
-        this.onrefresh = this.emitService.register("mwxing.calendar.activities.changed", async (data) => {
-          if (!data) {
-            return;
-          }
-
-          // 多条数据同时更新/单条数据更新
-          if (data instanceof Array) {
-            for (let single of data) {
-              this.cachedtasks = await this.eventService.mergeTodolist(this.cachedtasks, single);
+        if (!this.onrefresh) {
+          this.onrefresh = this.emitService.register("mwxing.calendar.activities.changed", async (data) => {
+            if (!data) {
+              return;
             }
-          } else {
-            this.cachedtasks = await this.eventService.mergeTodolist(this.cachedtasks, data);
-          }
-        });
+
+            // 多条数据同时更新/单条数据更新
+            if (data instanceof Array) {
+              for (let single of data) {
+                this.cachedtasks = await this.eventService.mergeTodolist(this.cachedtasks, single);
+              }
+            } else {
+              this.cachedtasks = await this.eventService.mergeTodolist(this.cachedtasks, data);
+            }
+          });
+        }
 
         this.cachedtasks = d;
 
