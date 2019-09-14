@@ -122,8 +122,14 @@ export class CalendarService extends BaseService {
 
           // 多条数据同时更新/单条数据更新
           if (data instanceof Array) {
+            let index = 0;
             for (let single of data) {
-              this.mergeCalendarActivity(single);
+              if (index < (data.length - 1)) {
+                this.mergeCalendarActivity(single, false);
+              } else {
+                this.mergeCalendarActivity(single, true);
+              }
+              index++;
             }
           } else {
             this.mergeCalendarActivity(data);
@@ -159,7 +165,7 @@ export class CalendarService extends BaseService {
    *
    * @author leon_xi@163.com
    **/
-  mergeCalendarActivity(activity: any) {
+  mergeCalendarActivity(activity: any, update: boolean = true) {
     this.assertEmpty(activity);   // 入参不能为空
 
     // 如果没有缓存数据，不处理
@@ -188,7 +194,7 @@ export class CalendarService extends BaseService {
           let diff = moment(currentmonth).diff(firstmonth, "months");
 
           let currentmonthactivities = this.calendaractivities[diff];
-          this.mergeMonthActivities(currentmonthactivities, [item]);
+          this.mergeMonthActivities(currentmonthactivities, [item], update);
         }
 
         break;
@@ -204,7 +210,7 @@ export class CalendarService extends BaseService {
           let diff = moment(currentmonth).diff(firstmonth, "months");
 
           let currentmonthactivities = this.calendaractivities[diff];
-          this.mergeMonthActivities(currentmonthactivities, [agenda]);
+          this.mergeMonthActivities(currentmonthactivities, [agenda], update);
         }
 
         break;
@@ -220,7 +226,7 @@ export class CalendarService extends BaseService {
           let diff = moment(currentmonth).diff(firstmonth, "months");
 
           let currentmonthactivities = this.calendaractivities[diff];
-          this.mergeMonthActivities(currentmonthactivities, [task]);
+          this.mergeMonthActivities(currentmonthactivities, [task], update);
         }
 
         break;
@@ -236,7 +242,7 @@ export class CalendarService extends BaseService {
           let diff = moment(currentmonth).diff(firstmonth, "months");
 
           let currentmonthactivities = this.calendaractivities[diff];
-          this.mergeMonthActivities(currentmonthactivities, [minitask]);
+          this.mergeMonthActivities(currentmonthactivities, [minitask], update);
         }
 
         break;
@@ -252,7 +258,7 @@ export class CalendarService extends BaseService {
           let diff = moment(currentmonth).diff(firstmonth, "months");
 
           let currentmonthactivities = this.calendaractivities[diff];
-          this.mergeMonthActivities(currentmonthactivities, [memo]);
+          this.mergeMonthActivities(currentmonthactivities, [memo], update);
         }
 
         break;
@@ -955,7 +961,7 @@ export class CalendarService extends BaseService {
    *
    * @author leon_xi@163.com
    **/
-  mergeMonthActivities(monthActivities: MonthActivityData, activitiedatas: Array<PlanItemData | AgendaData | TaskData | MiniTaskData | MemoData>): MonthActivityData {
+  mergeMonthActivities(monthActivities: MonthActivityData, activitiedatas: Array<PlanItemData | AgendaData | TaskData | MiniTaskData | MemoData>, update: boolean = true): MonthActivityData {
 
     // 入参不能为空
     this.assertEmpty(monthActivities);            // 月活动数据不能为空
@@ -1102,52 +1108,54 @@ export class CalendarService extends BaseService {
     //   days.set(day, new DayActivityData(day));
     // }
 
-    let days: Map<string, DayActivityData> = monthActivities.days;
+    if (update) {
+      let days: Map<string, DayActivityData> = monthActivities.days;
 
-    // 清空数据
-    days.forEach((dayActivity) => {
-      dayActivity.calendaritems.length = 0;
-      dayActivity.events.length = 0;
-      dayActivity.memos.length = 0;
-    });
+      // 清空数据
+      days.forEach((dayActivity) => {
+        dayActivity.calendaritems.length = 0;
+        dayActivity.events.length = 0;
+        dayActivity.memos.length = 0;
+      });
 
-    days = monthActivities.calendaritems.reduce((days, value) => {
-      let day: string = value.sd;
-      let dayActivity: DayActivityData = days.get(day);
+      days = monthActivities.calendaritems.reduce((days, value) => {
+        let day: string = value.sd;
+        let dayActivity: DayActivityData = days.get(day);
 
-      this.assertNull(dayActivity);
+        this.assertNull(dayActivity);
 
-      dayActivity.calendaritems.push(value);
-      days.set(day, dayActivity);
+        dayActivity.calendaritems.push(value);
+        days.set(day, dayActivity);
 
-      return days;
-    }, days);
+        return days;
+      }, days);
 
-    days = monthActivities.events.reduce((days, value) => {
-      let day: string = value.evd;
-      let dayActivity: DayActivityData = days.get(day);
+      days = monthActivities.events.reduce((days, value) => {
+        let day: string = value.evd;
+        let dayActivity: DayActivityData = days.get(day);
 
-      this.assertNull(dayActivity);
+        this.assertNull(dayActivity);
 
-      dayActivity.events.push(value);
-      days.set(day, dayActivity);
+        dayActivity.events.push(value);
+        days.set(day, dayActivity);
 
-      return days;
-    }, days);
+        return days;
+      }, days);
 
-    days = monthActivities.memos.reduce((days, value) => {
-      let day: string = value.sd;
-      let dayActivity: DayActivityData = days.get(day);
+      days = monthActivities.memos.reduce((days, value) => {
+        let day: string = value.sd;
+        let dayActivity: DayActivityData = days.get(day);
 
-      this.assertNull(dayActivity);
+        this.assertNull(dayActivity);
 
-      dayActivity.memos.push(value);
-      days.set(day, dayActivity);
+        dayActivity.memos.push(value);
+        days.set(day, dayActivity);
 
-      return days;
-    }, days);
+        return days;
+      }, days);
 
-    monthActivities.days = days;
+      monthActivities.days = days;
+    }
 
     return monthActivities;
   }
