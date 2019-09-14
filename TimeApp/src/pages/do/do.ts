@@ -72,7 +72,7 @@ export class DoPage {
     this.days.push(moment().format("YYYY/MM/DD"));
   }
 
-  ionViewWillLeave() {
+  ngOnDestroy() {
     if (this.onrefresh) {
       this.onrefresh.unsubscribe();
     }
