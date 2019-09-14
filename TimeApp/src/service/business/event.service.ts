@@ -2853,10 +2853,7 @@ export class EventService extends BaseService {
                   todolist[0] = changed;
                }
                else {
-                 let agendaArrayNew: Array<AgendaData> = new Array<AgendaData>();
-                 agendaArrayNew = todolist;
-                 todolist[0] = changed;
-                 todolist.splice(1,todolist.length-1,agendaArrayNew);
+                 todolist.unshift(changed);
                }
           }
 
@@ -2875,6 +2872,7 @@ export class EventService extends BaseService {
               || (moment(changed.evd + ' ' + changed.evt).diff(todolist[0].evd + ' ' + todolist[0].evt)>0)) {
                 let flag = true;
                 let i=0;
+                let agendaArrayNew2: Array<AgendaData> = new Array<AgendaData>();
                 for (let td of todolist) {
                   //todolist 已经是按照日期顺序排列好的，然后根据日期大小进行排序，当change的日期比todolist的小的时候插入进去
                   if(((moment(changed.evd + ' ' + changed.evt).diff(td.evd + ' ' + td.evt)<=0)&&flag))
@@ -2887,17 +2885,18 @@ export class EventService extends BaseService {
                     }
                     else {
                       //将数据数据先截取出来
-                      let agendaArrayNew2: Array<AgendaData> = new Array<AgendaData>();
-                      agendaArrayNew2 = todolist.slice(i+1,todolist.length-1);
+                      agendaArrayNew2 = todolist.slice(i,todolist.length-1);
                       //新加数据
-                      todolist[i+1] = changed;
-                      //清空原有数据，并填充数据
-                      todolist.splice(i+2,todolist.length-1,agendaArrayNew2);
-
+                      todolist[i] = changed;
+                      break;
                     }
                   }
+                  i++;
                 }
-                i++;
+                for(let td1 of agendaArrayNew2)
+                {
+                      todolist.push(td1);
+                }
            }
         }
       }
@@ -2905,7 +2904,6 @@ export class EventService extends BaseService {
       //this.saveAgenda(changed);
       return todolist;
   }
-
 
   /**
    * 取得事件类型
