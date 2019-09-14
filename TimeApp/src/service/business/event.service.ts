@@ -2784,7 +2784,7 @@ export class EventService extends BaseService {
                                                      select ev.*,
                                                      case when ifnull(ev.rtevi,'') <> ''  then  ev.rtevi  else ev.evi end newrtevi
                                                     from gtd_ev ev
-                                                    where ev.todolist = ?1 and ev.del = ?2
+                                                    where ev.todolist = ?1 and ev.del = ?2 and ev.type = ?3
                                                     and julianday(datetime(replace(ev.evd, '/', '-'),ev.evt))<julianday(datetime('now'))
                                               ) evv
                                       ) evnext
@@ -2802,7 +2802,7 @@ export class EventService extends BaseService {
                                                   select ev.*,
                                                   case when ifnull(ev.rtevi,'') <> ''  then  ev.rtevi  else ev.evi end newrtevi
                                                   from gtd_ev ev
-                                                  where ev.todolist = ?1 and ev.del = ?2
+                                                  where ev.todolist = ?1 and ev.del = ?2 and ev.type = ?3
                                                   and julianday(datetime(replace(ev.evd, '/', '-'),ev.evt))>=julianday(datetime('now'))
                                           ) evv
                                     ) evnext
@@ -2811,7 +2811,7 @@ export class EventService extends BaseService {
                             order by  evnext2.minDay asc
                     )) eex left join gtd_ca ca on ca.evi = eex.newrtevi
                        	`;
-      let agendaArray: Array<AgendaData> = await this.sqlExce.getExtLstByParam<AgendaData>(sql, [anyenum.ToDoListStatus.On,anyenum.DelType.undel]) || new Array<AgendaData>();
+      let agendaArray: Array<AgendaData> = await this.sqlExce.getExtLstByParam<AgendaData>(sql, [anyenum.ToDoListStatus.On,anyenum.DelType.undel,anyenum.EventType.Agenda]) || new Array<AgendaData>();
   		return agendaArray;
    }
    /**
