@@ -49,6 +49,8 @@ export class DoPage {
   topday: string = moment().format("YYYY/MM/DD");
   bottomday: string = moment().format("YYYY/MM/DD");
 
+  onrefresh: EventEmitter;
+
   constructor(public navCtrl: NavController,
               public navParams: NavParams,
               private modalCtr: ModalController,
@@ -68,6 +70,12 @@ export class DoPage {
     //   this.days.push(moment().format("YYYY/MM/DD"));
     // });
     this.days.push(moment().format("YYYY/MM/DD"));
+  }
+
+  ionViewWillLeave() {
+    if (this.onrefresh) {
+      this.onrefresh.unsubscribe();
+    }
   }
 
   pagedown(target: any) {
@@ -103,7 +111,7 @@ export class DoPage {
     .then((d) => {
       if (d && d.length > 0) {
 
-        this.emitService.register("mwxing.calendar.activities.changed", async (data) => {
+        this.onrefresh = this.emitService.register("mwxing.calendar.activities.changed", async (data) => {
           if (!data) {
             return;
           }
