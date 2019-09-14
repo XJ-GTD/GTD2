@@ -1,4 +1,4 @@
-import {Component, ElementRef, Renderer2, ViewChild, ViewChildren, QueryList } from '@angular/core';
+import {Component, ElementRef, Renderer2, ViewChild, EventEmitter, ViewChildren, QueryList } from '@angular/core';
 import {IonicPage, NavController, ModalController, NavParams, Slides} from 'ionic-angular';
 import {UtilService} from "../../service/util-service/util.service";
 import {UserConfig} from "../../service/config/user.config";
