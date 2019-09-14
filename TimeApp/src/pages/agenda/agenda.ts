@@ -412,11 +412,11 @@ export class AgendaPage {
   save() {
     if (this.validCheck()) {              // 输入校验
       if (this.currentAgenda.evi) {       // 修改日程
-        if (!this.eventService.isAgendaChanged(this.currentAgenda, this.originAgenda)) {
+        if (this.eventService.isSameAgenda(this.currentAgenda, this.originAgenda)) {
           return;
         }
 
-        if (this.originAgenda.rfg == RepeatFlag.Repeat) { // 重复
+        if (this.eventService.hasAgendaModifyConfirm(this.originAgenda, this.currentAgenda)) { // 重复修改
           if (this.modifyConfirm) {
             this.modifyConfirm.dismiss();
           }
