@@ -2893,9 +2893,12 @@ export class EventService extends BaseService {
                   }
                   i++;
                 }
-                for(let td1 of agendaArrayNew2)
+                if(agendaArrayNew2 && agendaArrayNew2.length>0)
                 {
-                      todolist.push(td1);
+                  for(let td1 of agendaArrayNew2)
+                  {
+                        todolist.push(td1);
+                  }
                 }
            }
         }
