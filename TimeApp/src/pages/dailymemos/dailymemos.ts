@@ -67,7 +67,7 @@ export class DailyMemosPage {
   }
 
   addMemo() {
-    this.modalCtr.create(DataConfig.PAGE._MEMO_PAGE, this.day).present();
+    this.modalCtr.create(DataConfig.PAGE._MEMO_PAGE, {day: this.day}).present();
   }
 
   goBack() {
