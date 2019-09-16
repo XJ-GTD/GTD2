@@ -288,6 +288,11 @@ export class AgendaPage {
 
   repeatflag = RepeatFlag.Repeat;
   nonrepeatflag = RepeatFlag.NonRepeat;
+  @ViewChild(PageBoxComponent)
+  pageBoxComponent:PageBoxComponent
+
+
+
 
   constructor(public navCtrl: NavController,
               public navParams: NavParams,
@@ -323,6 +328,12 @@ export class AgendaPage {
   }
 
   ionViewDidLoad() {
+
+  }
+
+  ionViewDidEnter(){
+    this.pageBoxComponent.setBoxContent();
+    console.log("3.0 ionViewDidEnter 当进入页面时触发");
   }
 
   ionViewWillEnter() {
