@@ -161,6 +161,208 @@ export class EventService extends BaseService {
   }
 
   /**
+   * 取得两个日程变化的字段名成数组
+   *
+   * @param {AgendaData} one
+   * @param {AgendaData} another
+   * @returns {Array<string>}
+   *
+   * @author leon_xi@163.com
+   */
+  changedAgendaFields(one: AgendaData, another: AgendaData): Array<string> {
+    assertEmpty(one);   // 入参不能为空
+    assertEmpty(another);   // 入参不能为空
+
+    let changed: Array<string> = new Array<string>();
+
+    for (let key of Object.keys(one)) {
+      if (["wtt", "utt", "rts", "txs", "fj", "pn", "originator", "tos"].indexOf(key) >= 0) continue;   // 忽略字段
+
+      if (one.hasOwnProperty(key)) {
+        let value = one[key];
+
+        // 如果两个值都为空, 继续
+        if (!value && !another[key]) {
+          continue;
+        }
+
+        // 如果one的值为空, 不一致
+        if (!value || !another[key]) {
+          changed.push(key);
+          continue;
+        }
+
+        if (typeof value === 'string' || typeof value === 'number' || typeof value === 'boolean') {
+          if (typeof value === 'string' && value != "" && another[key] != "" && key == "rt") {
+            let onert: RtJson = new RtJson();
+            Object.assign(onert, JSON.parse(value));
+
+            let anotherrt: RtJson = new RtJson();
+            Object.assign(anotherrt, JSON.parse(another[key]));
+
+            if (!(onert.sameWith(anotherrt))) {
+              changed.push(key);
+              continue;
+            }
+          }
+
+          if (typeof value === 'string' && value != "" && another[key] != "" && key == "tx") {
+            let onetx: TxJson = new TxJson();
+            Object.assign(onetx, JSON.parse(value));
+
+            let anothertx: TxJson = new TxJson();
+            Object.assign(anothertx, JSON.parse(another[key]));
+
+            if (!(onetx.sameWith(anothertx))) {
+              changed.push(key);
+              continue;
+            }
+          }
+
+          if (value != another[key]) {
+            changed.push(key);
+            continue;
+          }
+        }
+
+        if (value instanceof RtJson) {
+          let onert: RtJson = new RtJson();
+          Object.assign(onert, value);
+
+          let anotherrt: RtJson = new RtJson();
+          Object.assign(anotherrt, another[key]);
+
+          if (!(onert.sameWith(anotherrt))) {
+            changed.push(key);
+            continue;
+          }
+        }
+
+        if (value instanceof TxJson) {
+          let onetx: TxJson = new TxJson();
+          Object.assign(onetx, value);
+
+          let anothertx: TxJson = new TxJson();
+          Object.assign(anothertx, another[key]);
+
+          if (!(onetx.sameWith(anothertx))) {
+            changed.push(key);
+            continue;
+          }
+        }
+
+        if (value instanceof Array) {
+          if (value.length != another[key].length) {
+            changed.push(key);
+            continue;
+          }
+
+          if (value.length > 0) {
+            if (value[0] && value[0].hasOwnProperty("pari") && another[key][0] && another[key][0].hasOwnProperty("pari")) {
+              let compare = value.concat(another[key]);
+
+              compare.sort((a, b) => {
+                if (a.pari > b.pari) return -1;
+                if (a.pari < b.pari) return 1;
+                return 0;
+              });
+
+              let result = compare.reduce((target, val) => {
+                if (!target) {
+                  target = val;
+                } else {
+                  if (!val) {
+                    target = {};
+                  } else {
+                    let issame: boolean = true;
+
+                    for (let key of Object.keys(target)) {
+                      if (["wtt", "utt"].indexOf(key) >= 0) continue;   // 忽略字段
+
+                      if (target.hasOwnProperty(key)) {
+                        let value = target[key];
+
+                        if (typeof value === 'string' || typeof value === 'number' || typeof value === 'boolean') {
+                          if (value != val[key]) issame = false;
+                        }
+                      }
+                    }
+
+                    if (issame) {
+                      target = null;
+                    } else {
+                      target = {};
+                    }
+                  }
+                }
+
+                return target;
+              }, null);
+
+              if (result && result.isEmpty()) {
+                changed.push(key);
+                continue;
+              }
+
+            } else if (value[0] instanceof FjTbl && another[key][0] instanceof FjTbl) {
+
+              let compare = value.concat(another[key]);
+
+              compare.sort((a, b) => {
+                if (a.fji > b.fji) return -1;
+                if (a.fji < b.fji) return 1;
+                return 0;
+              });
+
+              let result = compare.reduce((target, val) => {
+                if (!target) {
+                  target = val;
+                } else {
+                  if (!val) {
+                    target = {};
+                  } else {
+                    let issame: boolean = true;
+
+                    for (let key of Object.keys(target)) {
+                      if (["wtt", "utt"].indexOf(key) >= 0) continue;   // 忽略字段
+
+                      if (target.hasOwnProperty(key)) {
+                        let value = target[key];
+
+                        if (typeof value === 'string' || typeof value === 'number' || typeof value === 'boolean') {
+                          if (value != val[key]) issame = false;
+                        }
+                      }
+                    }
+
+                    if (issame) {
+                      target = null;
+                    } else {
+                      target = {};
+                    }
+                  }
+                }
+
+                return target;
+              }, null);
+
+              if (result && result.isEmpty()) {
+                changed.push(key);
+                continue;
+              }
+
+            } else {
+              continue; // 非比较字段，忽略
+            }
+          }
+        }
+      }
+    }
+
+    return changed;
+  }
+
+  /**
    * 判断两个日程是否相同
    *
    * @param {AgendaData} one
@@ -173,7 +375,7 @@ export class EventService extends BaseService {
     if (!one || !another) return false;
 
     for (let key of Object.keys(one)) {
-      if (["wtt", "utt", "rtjson", "txjson", "rts", "txs", "originator", "tos"].indexOf(key) >= 0) continue;   // 忽略字段
+      if (["wtt", "utt", "rts", "txs", "fj", "pn", "originator", "tos"].indexOf(key) >= 0) continue;   // 忽略字段
 
       if (one.hasOwnProperty(key)) {
         let value = one[key];
@@ -212,6 +414,30 @@ export class EventService extends BaseService {
           }
 
           if (value != another[key]) return false;
+        }
+
+        if (value instanceof RtJson) {
+          let onert: RtJson = new RtJson();
+          Object.assign(onert, value);
+
+          let anotherrt: RtJson = new RtJson();
+          Object.assign(anotherrt, another[key]);
+
+          if (!(onert.sameWith(anotherrt))) return false;
+
+          continue;
+        }
+
+        if (value instanceof TxJson) {
+          let onetx: TxJson = new TxJson();
+          Object.assign(onetx, value);
+
+          let anothertx: TxJson = new TxJson();
+          Object.assign(anothertx, another[key]);
+
+          if (!(onetx.sameWith(anothertx))) return false;
+
+          continue;
         }
 
         if (value instanceof Array) {
@@ -333,7 +559,7 @@ export class EventService extends BaseService {
     if (before.rfg != RepeatFlag.Repeat) return false;
 
     for (let key of Object.keys(before)) {
-      if (["sd", "st", "al", "ct", "evn", "rt"].indexOf(key) >= 0) {   // 比较字段
+      if (["sd", "st", "al", "ct", "evn", "rt", "rtjson"].indexOf(key) >= 0) {   // 比较字段
         let value = before[key];
 
         // 如果两个值都为空, 继续
@@ -358,6 +584,18 @@ export class EventService extends BaseService {
           }
 
           if (value != after[key]) return true;
+        }
+
+        if (value instanceof RtJson) {
+          let onert: RtJson = new RtJson();
+          Object.assign(onert, value);
+
+          let anotherrt: RtJson = new RtJson();
+          Object.assign(anotherrt, after[key]);
+
+          if (!(onert.sameWith(anotherrt))) return true;
+
+          continue;
         }
       }
     }
@@ -445,8 +683,10 @@ export class EventService extends BaseService {
     }
 
     Object.assign(agdata , ev);
-    agdata.rtjson = JSON.parse(agdata.rt);
-    agdata.txjson = JSON.parse(agdata.tx);
+    agdata.rtjson = new RtJson();
+    Object.assign(agdata.rtjson , JSON.parse(agdata.rt));
+    agdata.txjson = new TxJson();
+    Object.assign(agdata.txjson , JSON.parse(agdata.tx));
 
     //主evi设定
     let masterEvi : string;
@@ -574,7 +814,7 @@ export class EventService extends BaseService {
 
     //批量本地更新
     let sqlparam = new Array<any>();
-    let params = new Array<any>();
+    let params : Array<any>;
 
     if (delType == anyenum.OperateType.FromSel){
       let sq : string ;
@@ -598,11 +838,11 @@ export class EventService extends BaseService {
 
       //删除事件表数据
       let ev = new EvTbl();
-      ev.evi = oriAgdata.evi;
+      Object.assign(ev, oriAgdata);
       ev.del = anyenum.DelType.del;
       ev.tb = anyenum.SyncType.unsynch;
       ev.mi = UserConfig.account.id;
-      await this.sqlExce.updateByParam(ev);
+      sqlparam.push(ev.upTParam());
 
       //事件对象放入返回事件
       Object.assign(outAgd,ev);
@@ -624,6 +864,7 @@ export class EventService extends BaseService {
       //更新原事件日程结束日或事件表无记录了则删除
       sq = `select * from gtd_ev where (evi = ? or rtevi =  ?) and del <> ? ;`;
       let evtbls = new Array<EvTbl>();
+      params = new Array<any>();
       params.push(masterEvi);
       params.push(masterEvi);
       params.push(anyenum.DelType.del);
@@ -635,7 +876,7 @@ export class EventService extends BaseService {
       let existca = await this.sqlExce.getOneByParam<CaTbl>(ca);
       Object.assign(ca, existca);
 
-      if (evtbls.length == 0){
+      if (evtbls.length == 1){//一条即为当前要删除记录
         sqlparam.push(ca.dTParam());
 
         //本地删除事件参与人
@@ -718,10 +959,12 @@ export class EventService extends BaseService {
           //把删除的附件复制放入事件信息
           outAgd.fjs = delfjs;
 
+          //如果当前删除对象是父事件，则为当前重复事件重建新的父事件，值为ev表重复记录里的第一条做为父事件
+          await this.operateForParentAgd(oriAgdata,oriAgdata.parters,oriAgdata.fjs,sqlparam,outAgds);
+
         }
 
-        //如果当前删除对象是父事件，则为当前重复事件重建新的父事件，值为ev表重复记录里的第一条做为父事件
-        await this.operateForParentAgd(oriAgdata,oriAgdata.parters,oriAgdata.fjs,sqlparam,outAgds);
+
 
       }
 
@@ -869,7 +1112,8 @@ export class EventService extends BaseService {
     //如果不使用页面对象，而直接使用更新后的返回数据对象作为参数，则rtjson，txjson为空
     if (!newAgdata.rtjson) {
       if (newAgdata.rt) {
-        newAgdata.rtjson = JSON.parse(newAgdata.rt);
+        newAgdata.rtjson = new RtJson();
+        Object.assign(newAgdata.rtjson, JSON.parse(newAgdata.rt));
       } else {
         newAgdata.rtjson = new RtJson();
       }
@@ -877,7 +1121,8 @@ export class EventService extends BaseService {
 
     if (!oriAgdata.rtjson) {
       if (oriAgdata.rt) {
-        oriAgdata.rtjson = JSON.parse(oriAgdata.rt);
+        oriAgdata.rtjson = new RtJson();
+        Object.assign(oriAgdata.rtjson, JSON.parse(oriAgdata.rt));
       } else {
         oriAgdata.rtjson = new RtJson();
       }
@@ -885,7 +1130,8 @@ export class EventService extends BaseService {
 
     if (!newAgdata.txjson) {
       if (newAgdata.tx) {
-        newAgdata.txjson = JSON.parse(newAgdata.tx);
+        newAgdata.txjson = new TxJson();
+        Object.assign(newAgdata.txjson, JSON.parse(newAgdata.tx));
       } else {
         newAgdata.txjson = new TxJson();
       }
@@ -913,6 +1159,7 @@ export class EventService extends BaseService {
       ev.txs = newAgdata.txs
       ev.fj =newAgdata.fj;
       ev.pn = newAgdata.pn;
+      ev.wc = newAgdata.wc;
       await this.sqlExce.updateByParam(ev);
       outAgds.push(newAgdata);
       return outAgds;
@@ -1015,8 +1262,8 @@ export class EventService extends BaseService {
       let ev = new EvTbl();
       Object.assign(ev,newAgdata);
       ev.evi = oriAgdata.evi;//evi使用原evi
+      sqlparam.push(ev.upTParam());
 
-      await this.sqlExce.updateByParam(ev);
       //事件对象放入返回事件
       Object.assign(outAgd,ev);
 
@@ -1072,10 +1319,8 @@ export class EventService extends BaseService {
                                       sqlparam : Array<any>,
                                       outAgds : Array<AgendaData>){
     let sq : string ;
-    let params  = new Array<any>();
+    let params : Array<any>;
 
-    let outAgd = {} as AgendaData;
-    let nwEvs = Array<EvTbl>();
     let nwEv = new EvTbl();
 
     let tos : string;//需要发送的参与人手机号
@@ -1083,67 +1328,73 @@ export class EventService extends BaseService {
 
     let upcondi :string ;
     let upAgds = new Array<AgendaData>();//保存修改的事件用
+    let upParent = {} as AgendaData;//新的父节点
 
     if (!oriAgdata.rtevi && oriAgdata.rtevi =="" && oriAgdata.rfg == anyenum.RepeatFlag.Repeat){
-      sq = `select * from gtd_ev where rtevi = ? and  rfg = ? and del <>  ? order by evd ;`;
+
+      //标记为修改的记录放入返回事件中
+      upcondi = ` rtevi = ? `
+      sq = ` select *, '${tos}' as tos from gtd_ev where ${upcondi} order by evd ; `
       params = new Array<any>();
       params.push(oriAgdata.evi);
-      params.push(anyenum.RepeatFlag.Repeat);
-      params.push(anyenum.DelType.del);
+      upAgds = await this.sqlExce.getExtLstByParam<AgendaData>(sq,params);
+      if (upAgds.length > 0){
+        //找到满足条件的首条记录
+        upParent = upAgds.find((value, index,arr)=>{
+          return value.rtevi == oriAgdata.evi && value.rfg == anyenum.RepeatFlag.Repeat && value.del != anyenum.DelType.del;
+        });
+        if (upParent){
+          //更新首条为父事件
+          Object.assign(nwEv, upParent);
+          nwEv.rtevi = "";
+          nwEv.tb = anyenum.SyncType.unsynch;
+          nwEv.mi = UserConfig.account.id;
+          sqlparam.push(nwEv.upTParam());
 
-      nwEvs = await this.sqlExce.getExtLstByParam<EvTbl>(sq,params);
-      if (nwEvs != null && nwEvs.length >0){
-        //更新首条为父事件
-        Object.assign(nwEv, nwEvs[0]);
-        nwEv.rtevi = "";
-        nwEv.tb = anyenum.SyncType.unsynch;
-        nwEv.mi = UserConfig.account.id;
-        await this.sqlExce.updateByParam(nwEv);
+          //原子事件的父字段改为新的父事件
+          sq = `update gtd_ev set rtevi = ?,mi= ?,tb = ? where  ${upcondi}; `;
+          params = new Array<any>();
+          params.push(nwEv.evi);
+          params.push(UserConfig.account.id);
+          params.push(anyenum.SyncType.unsynch);
+          params.push(oriAgdata.evi);
+          sqlparam.push([sq,params]);
 
-        //原子事件的父字段改为新的父事件
-        upcondi = ` rtevi = ? `
-        sq = `update gtd_ev set rtevi = ?,mi= ?,tb = ? where  ${upcondi}; `;
-        params = new Array<any>();
-        params.push(nwEv.evi);
-        params.push(UserConfig.account.id);
-        params.push(anyenum.SyncType.unsynch);
-        params.push(oriAgdata.evi);
-        await this.sqlExce.execSql(sq,params);
+          //为新的父事件建立新的对应日程
+          let nwca = new CaTbl();
+          nwca = this.sqlparamAddCa(nwEv.evi ,nwEv.evd,oriAgdata.ed,oriAgdata);
+          sqlparam.push(nwca.rpTParam());
 
-        //上记标记为修改的记录放入返回事件中
-        sq = ` select *, '${tos}' as tos from gtd_ev where ${upcondi} ; `
-        params = new Array<any>();
-        params.push(nwEv.evi);
-        upAgds = await this.sqlExce.getExtLstByParam<AgendaData>(sq,params);
+          //复制原参与人到新的父事件
+          let nwpar = new Array<any>();
+          nwpar = this.sqlparamAddPar(nwEv.evi , parters);
 
-        //为新的父事件建立新的对应日程
-        let nwca = new CaTbl();
-        nwca = this.sqlparamAddCa(nwEv.evi ,nwEv.evd,oriAgdata.ed,oriAgdata);
-        sqlparam.push(nwca.rpTParam());
+          //复制原附件到新的父事件
+          let nwfj = new Array<any>();
+          nwfj = this.sqlparamAddFj(nwEv.evi , fjs);
 
-        //复制原参与人到新的父事件
-        let nwpar = new Array<any>();
-        nwpar = this.sqlparamAddPar(nwEv.evi , parters);
+          Object.assign(sqlparam , [...sqlparam, ...nwpar, ...nwfj]);
 
-        //复制原附件到新的父事件
-        let nwfj = new Array<any>();
-        nwfj = this.sqlparamAddFj(nwEv.evi , fjs);
+          //新的父事件放入返回事件
+          Object.assign(upParent, nwEv);
+          //把新日程放入返回事件的父事件中
+          Object.assign(upParent , nwca);
+          //复制原参与人放入返回事件的父事件中
+          upParent.parters = parters;
+          //复制原附件放入返回事件的父事件中
+          upParent.fjs = fjs;
 
-        Object.assign(sqlparam , [...sqlparam, ...nwpar, ...nwfj]);
+          upParent.tos = tos;//需要发送的参与人
 
-        //新的父事件放入返回事件
-        Object.assign(outAgd, nwEv);
-        //把新日程放入返回事件的父事件中
-        Object.assign(outAgd , nwca);
-        //复制原参与人放入返回事件的父事件中
-        outAgd.parters = parters;
-        //复制原附件放入返回事件的父事件中
-        outAgd.fjs = fjs;
-
-        outAgd.tos = tos;//需要发送的参与人
-
-
-        outAgds.push(outAgd);
+          //新父节点记录以外数据对象内容设置
+          for (let j = 0 ,len = upAgds.length; j < len ;j ++){
+            if (upAgds[j].rtevi != ""){
+              upAgds[j].rtevi = upParent.evi;
+              upAgds[j].mi = UserConfig.account.id;
+              upAgds[j].tb = anyenum.SyncType.unsynch;
+            }
+          }
+        }
 
         Object.assign(outAgds , [...outAgds ,...upAgds]);
       }
@@ -1171,11 +1422,12 @@ export class EventService extends BaseService {
     tos = this.getParterPhone(parters);
 
     let sq : string ;
-    let params = new Array<any>();
+    let params : Array<any>;
 
     //标记为删除的记录放入返回事件中
     delcondi = ` evd >= ? and (evi = ? or rtevi =  ?) and del <> ? `;
     sq = ` select * from gtd_ev where ${delcondi} ; `;
+    params = new Array<any>();
     params.push(oriAgdata.evd);
     params.push(masterEvi);
     params.push(masterEvi);
@@ -1215,8 +1467,8 @@ export class EventService extends BaseService {
     let existca = await this.sqlExce.getOneByParam<CaTbl>(ca);
     Object.assign(ca, existca);
 
-    if (evtbls.length > delAgds.length){//有数据，需要更新日程结束日
-      ca.ed = moment(oriAgdata.evd).subtract(1,'d').format("YYYY/MM/DD");//evd使用原事件evd
+    if (evtbls.length > delAgds.length){//有数据，需要更新日程结束日（暂不处理）
+      /*ca.ed = moment(oriAgdata.evd).subtract(1,'d').format("YYYY/MM/DD");//evd使用原事件evd
       sqlparam.push(ca.upTParam());
 
       //日程信息修改了，把日程信息复制到事件父信息内，并把父记录放入返回事件
@@ -1229,7 +1481,7 @@ export class EventService extends BaseService {
           outAgds.push(evtbls[j]);
           break;
         }
-      }
+      }*/
 
     }else{//无数据，需要删除关联表数据
       sqlparam.push(ca.dTParam());
@@ -1280,7 +1532,6 @@ export class EventService extends BaseService {
     //删除原事件中从当前开始所有事件 evd使用原事件evd
     sq = `update  gtd_ev set del = ? , mi =?,tb = ?  where ${delcondi} ;`;
     params = new Array<any>();
-    params.length = 0;
     params.push(anyenum.DelType.del);
     params.push(UserConfig.account.id);
     params.push(anyenum.SyncType.unsynch);

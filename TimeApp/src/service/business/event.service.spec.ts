@@ -48,7 +48,7 @@ import {WaTbl} from "../sqlite/tbl/wa.tbl";
 import { CalendarService, PlanData } from "./calendar.service";
 import {EventService, AgendaData, TaskData, MiniTaskData, RtJson, TxJson} from "./event.service";
 import { MemoService } from "./memo.service";
-import { PlanType, IsCreate, IsSuccess, IsWholeday, PageDirection, SyncType, DelType, SyncDataStatus, EventType, OperateType, CycleType, OverType} from "../../data.enum";
+import { PlanType, IsCreate, IsSuccess, IsWholeday, PageDirection, SyncType, DelType, SyncDataStatus, EventType, OperateType, CycleType, OverType, ToDoListStatus, EventFinishStatus } from "../../data.enum";
 
 /**
  * 事件Service 持续集成CI 自动测试Case
@@ -684,6 +684,161 @@ describe('EventService test suite', () => {
     let confirm: boolean = eventService.hasAgendaModifyConfirm(agenda, newAgenda);
 
     expect(confirm).toBe(false);
+  });
+
+  describe(`Case 20 - 1 取得两个日程变化的字段名成数组`, () => {
+    let beforechange: AgendaData;
+
+    beforeEach(async () => {
+      let agenda: AgendaData = {} as AgendaData;
+
+      agenda.sd = moment().format("YYYY/MM/DD");
+      agenda.evn = "取得两个日程变化的字段名成数组 - 保存后比较";
+
+      let results = await eventService.saveAgenda(agenda);
+
+      beforechange = results[0];
+    });
+
+    it(`Case 20 - 1 - 1 changedAgendaFields 取得两个日程变化的字段名成数组 - 保存后比较`, async () => {
+      let agenda: AgendaData = await eventService.getAgenda(beforechange.evi);
+
+      let changed: Array<string> = eventService.changedAgendaFields(agenda, beforechange);
+
+      expect(changed).toBeDefined();
+      expect(changed.length).toBeDefined(0);
+    });
+
+    it(`Case 20 - 1 - 2 changedAgendaFields 取得两个日程变化的字段名成数组 - 修改主题后比较`, async () => {
+      let agenda: AgendaData = await eventService.getAgenda(beforechange.evi);
+
+      agenda.evn = "修改主题后";
+
+      let changed: Array<string> = eventService.changedAgendaFields(agenda, beforechange);
+
+      expect(changed).toBeDefined();
+      expect(changed.length).toBeDefined(1);
+      expect(changed[0]).toBe("evn");
+    });
+
+    it(`Case 20 - 1 - 3 changedAgendaFields 取得两个日程变化的字段名成数组 - 修改备注后比较`, async () => {
+      let agenda: AgendaData = await eventService.getAgenda(beforechange.evi);
+
+      agenda.bz = "修改备注后";
+
+      let changed: Array<string> = eventService.changedAgendaFields(agenda, beforechange);
+
+      expect(changed).toBeDefined();
+      expect(changed.length).toBeDefined(1);
+      expect(changed[0]).toBe("bz");
+    });
+
+    it(`Case 20 - 1 - 4 changedAgendaFields 取得两个日程变化的字段名成数组 - 修改重复后比较`, async () => {
+      let agenda: AgendaData = await eventService.getAgenda(beforechange.evi);
+
+      let rtjon = new RtJson();
+      rtjon.cycletype = anyenum.CycleType.week;
+      rtjon.over.value = moment().add(2, "months").format("YYYY/MM/DD");
+      rtjon.over.type = anyenum.OverType.limitdate;
+      rtjon.cyclenum = 2;
+      rtjon.openway.push(anyenum.OpenWay.Wednesday);
+
+      agenda.rtjson = rtjon;
+
+      let changed: Array<string> = eventService.changedAgendaFields(agenda, beforechange);
+
+      expect(changed).toBeDefined();
+      expect(changed.length).toBeDefined(1);
+      expect(changed[0]).toBe("rtjson");
+    });
+
+    it(`Case 20 - 1 - 5 changedAgendaFields 取得两个日程变化的字段名成数组 - 修改提醒后比较`, async () => {
+      let agenda: AgendaData = await eventService.getAgenda(beforechange.evi);
+
+      let txjson = new TxJson();
+      txjson.reminds.push(30);    // 提前30分钟提醒
+      txjson.reminds.push(60);    // 提前1小时提醒
+
+      agenda.txjson = txjson;
+
+      let changed: Array<string> = eventService.changedAgendaFields(agenda, beforechange);
+
+      expect(changed).toBeDefined();
+      expect(changed.length).toBeDefined(1);
+      expect(changed[0]).toBe("txjson");
+    });
+
+    it(`Case 20 - 1 - 6 changedAgendaFields 取得两个日程变化的字段名成数组 - 修改todolist后比较`, async () => {
+      let agenda: AgendaData = await eventService.getAgenda(beforechange.evi);
+
+      agenda.todolist = ToDoListStatus.On;
+
+      let changed: Array<string> = eventService.changedAgendaFields(agenda, beforechange);
+
+      expect(changed).toBeDefined();
+      expect(changed.length).toBeDefined(1);
+      expect(changed[0]).toBe("todolist");
+    });
+
+    it(`Case 20 - 1 - 7 changedAgendaFields 取得两个日程变化的字段名成数组 - 修改完成状态后比较`, async () => {
+      let agenda: AgendaData = await eventService.getAgenda(beforechange.evi);
+
+      agenda.wc = EventFinishStatus.Finished;
+
+      let changed: Array<string> = eventService.changedAgendaFields(agenda, beforechange);
+
+      expect(changed).toBeDefined();
+      expect(changed.length).toBeDefined(1);
+      expect(changed[0]).toBe("wc");
+    });
+
+    it(`Case 20 - 1 - 8 changedAgendaFields 取得两个日程变化的字段名成数组 - 修改开始日期后比较`, async () => {
+      let agenda: AgendaData = await eventService.getAgenda(beforechange.evi);
+
+      agenda.sd = moment(agenda.sd).add(1, "days").format("YYYY/MM/DD");
+
+      let changed: Array<string> = eventService.changedAgendaFields(agenda, beforechange);
+
+      expect(changed).toBeDefined();
+      expect(changed.length).toBeDefined(1);
+      expect(changed[0]).toBe("sd");
+    });
+
+    it(`Case 20 - 1 - 9 changedAgendaFields 取得两个日程变化的字段名成数组 - 修改开始时间后比较`, async () => {
+      let agenda: AgendaData = await eventService.getAgenda(beforechange.evi);
+
+      agenda.st = "10:00";
+
+      let changed: Array<string> = eventService.changedAgendaFields(agenda, beforechange);
+
+      expect(changed).toBeDefined();
+      expect(changed.length).toBeDefined(1);
+      expect(changed[0]).toBe("st");
+    });
+
+    it(`Case 20 - 1 - 10 changedAgendaFields 取得两个日程变化的字段名成数组 - 修改计划后比较`, async () => {
+      let agenda: AgendaData = await eventService.getAgenda(beforechange.evi);
+
+      agenda.ji = "private";
+
+      let changed: Array<string> = eventService.changedAgendaFields(agenda, beforechange);
+
+      expect(changed).toBeDefined();
+      expect(changed.length).toBeDefined(1);
+      expect(changed[0]).toBe("ji");
+    });
+
+    it(`Case 20 - 1 - 11 changedAgendaFields 取得两个日程变化的字段名成数组 - 修改地址后比较`, async () => {
+      let agenda: AgendaData = await eventService.getAgenda(beforechange.evi);
+
+      agenda.adr = "上海市闵行区七莘路1188弄A座513室";
+
+      let changed: Array<string> = eventService.changedAgendaFields(agenda, beforechange);
+
+      expect(changed).toBeDefined();
+      expect(changed.length).toBeDefined(1);
+      expect(changed[0]).toBe("adr");
+    });
   });
 
   describe(`创建不重复与重复（每天、每周、每月、每年）日程`, () => {
