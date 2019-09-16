@@ -815,6 +815,18 @@ describe('EventService test suite', () => {
       expect(changed.length).toBeDefined(1);
       expect(changed[0]).toBe("st");
     });
+
+    it(`Case 20 - 1 - 10 changedAgendaFields 取得两个日程变化的字段名成数组 - 修改计划后比较`, async () => {
+      let agenda: AgendaData = await eventService.getAgenda(beforechange.evi);
+
+      agenda.ji = "private";
+
+      let changed: Array<string> = eventService.changedAgendaFields(agenda, beforechange);
+
+      expect(changed).toBeDefined();
+      expect(changed.length).toBeDefined(1);
+      expect(changed[0]).toBe("ji");
+    });
   });
 
   describe(`创建不重复与重复（每天、每周、每月、每年）日程`, () => {
