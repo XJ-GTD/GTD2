@@ -622,8 +622,8 @@ export class EventService extends BaseService {
     }
 
     Object.assign(agdata , ev);
-    agdata.rtjson = JSON.parse(agdata.rt);
-    agdata.txjson = JSON.parse(agdata.tx);
+    Object.assign(agdata.rtjson , JSON.parse(agdata.rt));
+    Object.assign(agdata.txjson , JSON.parse(agdata.tx));
 
     //主evi设定
     let masterEvi : string;
@@ -751,7 +751,7 @@ export class EventService extends BaseService {
 
     //批量本地更新
     let sqlparam = new Array<any>();
-    let params = new Array<any>();
+    let params : Array<any>;
 
     if (delType == anyenum.OperateType.FromSel){
       let sq : string ;
@@ -801,6 +801,7 @@ export class EventService extends BaseService {
       //更新原事件日程结束日或事件表无记录了则删除
       sq = `select * from gtd_ev where (evi = ? or rtevi =  ?) and del <> ? ;`;
       let evtbls = new Array<EvTbl>();
+      params = new Array<any>();
       params.push(masterEvi);
       params.push(masterEvi);
       params.push(anyenum.DelType.del);
@@ -1093,6 +1094,7 @@ export class EventService extends BaseService {
       ev.txs = newAgdata.txs
       ev.fj =newAgdata.fj;
       ev.pn = newAgdata.pn;
+      ev.wc = this.newAgenda.wc;
       await this.sqlExce.updateByParam(ev);
       outAgds.push(newAgdata);
       return outAgds;
@@ -1195,8 +1197,8 @@ export class EventService extends BaseService {
       let ev = new EvTbl();
       Object.assign(ev,newAgdata);
       ev.evi = oriAgdata.evi;//evi使用原evi
+      sqlparam.push(ev.upTParam());
 
-      await this.sqlExce.updateByParam(ev);
       //事件对象放入返回事件
       Object.assign(outAgd,ev);
 
@@ -1252,10 +1254,8 @@ export class EventService extends BaseService {
                                       sqlparam : Array<any>,
                                       outAgds : Array<AgendaData>){
     let sq : string ;
-    let params  = new Array<any>();
+    let params : Array<any>;
 
-    let outAgd = {} as AgendaData;
-    let nwEvs = Array<EvTbl>();
     let nwEv = new EvTbl();
 
     let tos : string;//需要发送的参与人手机号
@@ -1263,67 +1263,64 @@ export class EventService extends BaseService {
 
     let upcondi :string ;
     let upAgds = new Array<AgendaData>();//保存修改的事件用
+    let upParent = {} as AgendaData;//新的父节点
 
     if (!oriAgdata.rtevi && oriAgdata.rtevi =="" && oriAgdata.rfg == anyenum.RepeatFlag.Repeat){
-      sq = `select * from gtd_ev where rtevi = ? and  rfg = ? and del <>  ? order by evd ;`;
+
+      //标记为修改的记录放入返回事件中
+      upcondi = ` rtevi = ? `
+      sq = ` select *, '${tos}' as tos from gtd_ev where ${upcondi} order by evd ; `
       params = new Array<any>();
       params.push(oriAgdata.evi);
-      params.push(anyenum.RepeatFlag.Repeat);
-      params.push(anyenum.DelType.del);
+      upAgds = await this.sqlExce.getExtLstByParam<AgendaData>(sq,params);
+      if (upAgds.length > 0){
+        //找到满足条件的首条记录
+        upParent = upAgds.find((value, index,arr)=>{
+          return value.rtevi == oriAgdata.evi && value.rfg == anyenum.RepeatFlag.Repeat && value.del != anyenum.DelType.del;
+        });
+        if (upParent){
+          //更新首条为父事件
+          Object.assign(nwEv, upParent);
+          nwEv.rtevi = "";
+          nwEv.tb = anyenum.SyncType.unsynch;
+          nwEv.mi = UserConfig.account.id;
+          sqlparam.push(nwEv.upTParam());
 
-      nwEvs = await this.sqlExce.getExtLstByParam<EvTbl>(sq,params);
-      if (nwEvs != null && nwEvs.length >0){
-        //更新首条为父事件
-        Object.assign(nwEv, nwEvs[0]);
-        nwEv.rtevi = "";
-        nwEv.tb = anyenum.SyncType.unsynch;
-        nwEv.mi = UserConfig.account.id;
-        await this.sqlExce.updateByParam(nwEv);
+          //原子事件的父字段改为新的父事件
+          sq = `update gtd_ev set rtevi = ?,mi= ?,tb = ? where  ${upcondi}; `;
+          params = new Array<any>();
+          params.push(nwEv.evi);
+          params.push(UserConfig.account.id);
+          params.push(anyenum.SyncType.unsynch);
+          params.push(oriAgdata.evi);
+          sqlparam.push([sq,params]);
 
-        //原子事件的父字段改为新的父事件
-        upcondi = ` rtevi = ? `
-        sq = `update gtd_ev set rtevi = ?,mi= ?,tb = ? where  ${upcondi}; `;
-        params = new Array<any>();
-        params.push(nwEv.evi);
-        params.push(UserConfig.account.id);
-        params.push(anyenum.SyncType.unsynch);
-        params.push(oriAgdata.evi);
-        await this.sqlExce.execSql(sq,params);
+          //为新的父事件建立新的对应日程
+          let nwca = new CaTbl();
+          nwca = this.sqlparamAddCa(nwEv.evi ,nwEv.evd,oriAgdata.ed,oriAgdata);
+          sqlparam.push(nwca.rpTParam());
 
-        //上记标记为修改的记录放入返回事件中
-        sq = ` select *, '${tos}' as tos from gtd_ev where ${upcondi} ; `
-        params = new Array<any>();
-        params.push(nwEv.evi);
-        upAgds = await this.sqlExce.getExtLstByParam<AgendaData>(sq,params);
+          //复制原参与人到新的父事件
+          let nwpar = new Array<any>();
+          nwpar = this.sqlparamAddPar(nwEv.evi , parters);
 
-        //为新的父事件建立新的对应日程
-        let nwca = new CaTbl();
-        nwca = this.sqlparamAddCa(nwEv.evi ,nwEv.evd,oriAgdata.ed,oriAgdata);
-        sqlparam.push(nwca.rpTParam());
+          //复制原附件到新的父事件
+          let nwfj = new Array<any>();
+          nwfj = this.sqlparamAddFj(nwEv.evi , fjs);
 
-        //复制原参与人到新的父事件
-        let nwpar = new Array<any>();
-        nwpar = this.sqlparamAddPar(nwEv.evi , parters);
+          Object.assign(sqlparam , [...sqlparam, ...nwpar, ...nwfj]);
 
-        //复制原附件到新的父事件
-        let nwfj = new Array<any>();
-        nwfj = this.sqlparamAddFj(nwEv.evi , fjs);
+          //新的父事件放入返回事件
+          Object.assign(upParent, nwEv);
+          //把新日程放入返回事件的父事件中
+          Object.assign(upParent , nwca);
+          //复制原参与人放入返回事件的父事件中
+          upParent.parters = parters;
+          //复制原附件放入返回事件的父事件中
+          upParent.fjs = fjs;
 
-        Object.assign(sqlparam , [...sqlparam, ...nwpar, ...nwfj]);
-
-        //新的父事件放入返回事件
-        Object.assign(outAgd, nwEv);
-        //把新日程放入返回事件的父事件中
-        Object.assign(outAgd , nwca);
-        //复制原参与人放入返回事件的父事件中
-        outAgd.parters = parters;
-        //复制原附件放入返回事件的父事件中
-        outAgd.fjs = fjs;
-
-        outAgd.tos = tos;//需要发送的参与人
-
-
-        outAgds.push(outAgd);
+          upParent.tos = tos;//需要发送的参与人
+        }
 
         Object.assign(outAgds , [...outAgds ,...upAgds]);
       }
@@ -1351,11 +1348,12 @@ export class EventService extends BaseService {
     tos = this.getParterPhone(parters);
 
     let sq : string ;
-    let params = new Array<any>();
+    let params : Array<any>;
 
     //标记为删除的记录放入返回事件中
     delcondi = ` evd >= ? and (evi = ? or rtevi =  ?) and del <> ? `;
     sq = ` select * from gtd_ev where ${delcondi} ; `;
+    params = new Array<any>();
     params.push(oriAgdata.evd);
     params.push(masterEvi);
     params.push(masterEvi);
@@ -1460,7 +1458,6 @@ export class EventService extends BaseService {
     //删除原事件中从当前开始所有事件 evd使用原事件evd
     sq = `update  gtd_ev set del = ? , mi =?,tb = ?  where ${delcondi} ;`;
     params = new Array<any>();
-    params.length = 0;
     params.push(anyenum.DelType.del);
     params.push(UserConfig.account.id);
     params.push(anyenum.SyncType.unsynch);
