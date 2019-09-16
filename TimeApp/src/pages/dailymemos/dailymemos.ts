@@ -32,7 +32,11 @@ import * as moment from "moment";
             </button>
           </ion-item>
         </ion-list>
-        <ion-textarea type="text" placeholder="备注" [(ngModel)]="bz" class="memo-set" autosize maxHeight="400" #bzRef></ion-textarea>
+        <ion-fab bottom center>
+          <button ion-fab mini (click)="addMemo()">
+            <ion-icon name="add"></ion-icon>
+          </button>
+        </ion-fab>
       </page-box>`
 })
 export class DailyMemosPage {
@@ -56,6 +60,14 @@ export class DailyMemosPage {
       this.day = this.dayActivities.day;
       this.memos = this.dayActivities.memos;
     }
+
+    if (this.memos.length == 0) {
+      addMemo();
+    }
+  }
+
+  addMemo() {
+    this.modalCtr.create(DataConfig.PAGE._MEMO_PAGE, this.day).present();
   }
 
   goBack() {
