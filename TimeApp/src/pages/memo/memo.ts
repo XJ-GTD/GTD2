@@ -39,7 +39,7 @@ export class MemoPage {
     }
   }
 
-  goBack() {
+  close() {
     this.navCtrl.pop();
   }
 }
