@@ -176,7 +176,7 @@ export class EventService extends BaseService {
     let changed: Array<string> = new Array<string>();
 
     for (let key of Object.keys(one)) {
-      if (["wtt", "utt", "rtjson", "txjson", "rts", "txs", "originator", "tos"].indexOf(key) >= 0) continue;   // 忽略字段
+      if (["wtt", "utt", "rts", "txs", "fj", "pn", "originator", "tos"].indexOf(key) >= 0) continue;   // 忽略字段
 
       if (one.hasOwnProperty(key)) {
         let value = one[key];
@@ -220,6 +220,32 @@ export class EventService extends BaseService {
           }
 
           if (value != another[key]) {
+            changed.push(key);
+            continue;
+          }
+        }
+
+        if (value instanceof RtJson) {
+          let onert: RtJson = new RtJson();
+          Object.assign(onert, value);
+
+          let anotherrt: RtJson = new RtJson();
+          Object.assign(anotherrt, another[key]);
+
+          if (!(onert.sameWith(anotherrt))) {
+            changed.push(key);
+            continue;
+          }
+        }
+
+        if (value instanceof TxJson) {
+          let onetx: TxJson = new TxJson();
+          Object.assign(onetx, value);
+
+          let anothertx: TxJson = new TxJson();
+          Object.assign(anothertx, another[key]);
+
+          if (!(onetx.sameWith(anothertx))) {
             changed.push(key);
             continue;
           }
@@ -349,7 +375,7 @@ export class EventService extends BaseService {
     if (!one || !another) return false;
 
     for (let key of Object.keys(one)) {
-      if (["wtt", "utt", "rtjson", "txjson", "rts", "txs", "originator", "tos"].indexOf(key) >= 0) continue;   // 忽略字段
+      if (["wtt", "utt", "rts", "txs", "fj", "pn", "originator", "tos"].indexOf(key) >= 0) continue;   // 忽略字段
 
       if (one.hasOwnProperty(key)) {
         let value = one[key];
@@ -388,6 +414,30 @@ export class EventService extends BaseService {
           }
 
           if (value != another[key]) return false;
+        }
+
+        if (value instanceof RtJson) {
+          let onert: RtJson = new RtJson();
+          Object.assign(onert, value);
+
+          let anotherrt: RtJson = new RtJson();
+          Object.assign(anotherrt, another[key]);
+
+          if (!(onert.sameWith(anotherrt))) return false;
+
+          continue;
+        }
+
+        if (value instanceof TxJson) {
+          let onetx: TxJson = new TxJson();
+          Object.assign(onetx, value);
+
+          let anothertx: TxJson = new TxJson();
+          Object.assign(anothertx, another[key]);
+
+          if (!(onetx.sameWith(anothertx))) return false;
+
+          continue;
         }
 
         if (value instanceof Array) {
@@ -509,7 +559,7 @@ export class EventService extends BaseService {
     if (before.rfg != RepeatFlag.Repeat) return false;
 
     for (let key of Object.keys(before)) {
-      if (["sd", "st", "al", "ct", "evn", "rt"].indexOf(key) >= 0) {   // 比较字段
+      if (["sd", "st", "al", "ct", "evn", "rt", "rtjson"].indexOf(key) >= 0) {   // 比较字段
         let value = before[key];
 
         // 如果两个值都为空, 继续
@@ -534,6 +584,18 @@ export class EventService extends BaseService {
           }
 
           if (value != after[key]) return true;
+        }
+
+        if (value instanceof RtJson) {
+          let onert: RtJson = new RtJson();
+          Object.assign(onert, value);
+
+          let anotherrt: RtJson = new RtJson();
+          Object.assign(anotherrt, after[key]);
+
+          if (!(onert.sameWith(anotherrt))) return true;
+
+          continue;
         }
       }
     }
