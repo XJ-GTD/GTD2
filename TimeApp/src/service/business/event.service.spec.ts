@@ -789,7 +789,7 @@ describe('EventService test suite', () => {
 
       expect(changed).toBeDefined();
       expect(changed.length).toBeDefined(1);
-      expect(changed[0]).toBe("todolist");
+      expect(changed[0]).toBe("wc");
     });
   });
 
