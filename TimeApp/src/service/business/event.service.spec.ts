@@ -791,6 +791,30 @@ describe('EventService test suite', () => {
       expect(changed.length).toBeDefined(1);
       expect(changed[0]).toBe("wc");
     });
+
+    it(`Case 20 - 1 - 8 changedAgendaFields 取得两个日程变化的字段名成数组 - 修改开始日期后比较`, async () => {
+      let agenda: AgendaData = await eventService.getAgenda(beforechange.evi);
+
+      agenda.sd = moment(agenda.sd).add(1, "days").format("YYYY/MM/DD");
+
+      let changed: Array<string> = eventService.changedAgendaFields(agenda, beforechange);
+
+      expect(changed).toBeDefined();
+      expect(changed.length).toBeDefined(1);
+      expect(changed[0]).toBe("sd");
+    });
+
+    it(`Case 20 - 1 - 9 changedAgendaFields 取得两个日程变化的字段名成数组 - 修改开始时间后比较`, async () => {
+      let agenda: AgendaData = await eventService.getAgenda(beforechange.evi);
+
+      agenda.st = "10:00";
+
+      let changed: Array<string> = eventService.changedAgendaFields(agenda, beforechange);
+
+      expect(changed).toBeDefined();
+      expect(changed.length).toBeDefined(1);
+      expect(changed[0]).toBe("st");
+    });
   });
 
   describe(`创建不重复与重复（每天、每周、每月、每年）日程`, () => {
