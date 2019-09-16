@@ -15,7 +15,7 @@ import {PageBoxComponent} from "../../components/page-box/page-box";
 import {TaskListComponent} from "../../components/task-list/task-list";
 import {CalendarService} from "../../service/business/calendar.service";
 import {EventService, AgendaData} from "../../service/business/event.service";
-import { PageDirection, IsSuccess } from "../../data.enum";
+import { PageDirection, IsSuccess, OperateType, EventFinishStatus } from "../../data.enum";
 
 /**
  * Generated class for the 待处理/已处理任务一览 page.
