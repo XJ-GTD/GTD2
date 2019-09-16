@@ -690,12 +690,14 @@ describe('EventService test suite', () => {
     let beforechange: AgendaData;
 
     beforeEach(async () => {
-      beforechange = {} as AgendaData;
+      let agenda: AgendaData = {} as AgendaData;
 
-      beforechange.sd = moment().format("YYYY/MM/DD");
-      beforechange.evn = "取得两个日程变化的字段名成数组 - 保存后比较";
+      agenda.sd = moment().format("YYYY/MM/DD");
+      agenda.evn = "取得两个日程变化的字段名成数组 - 保存后比较";
 
-      await eventService.saveAgenda(beforechange);
+      let results = await eventService.saveAgenda(agenda);
+
+      beforechange = results[0];
     });
 
     it(`Case 20 - 1 - 1 changedAgendaFields 取得两个日程变化的字段名成数组 - 保存后比较`, async () => {
