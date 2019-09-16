@@ -622,8 +622,8 @@ export class EventService extends BaseService {
     }
 
     Object.assign(agdata , ev);
-    agdata.rtjson = JSON.parse(agdata.rt);
-    agdata.txjson = JSON.parse(agdata.tx);
+    Object.assign(agdata.rtjson , JSON.parse(agdata.rt));
+    Object.assign(agdata.txjson , JSON.parse(agdata.tx));
 
     //主evi设定
     let masterEvi : string;
