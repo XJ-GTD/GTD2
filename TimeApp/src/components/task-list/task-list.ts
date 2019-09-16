@@ -4,6 +4,8 @@ import * as moment from "moment";
 @Component({
   selector: 'task-list',
   template: `
+    <ng-template [ngIf]="tasklist.length > 0"
+                 [ngIfElse]="notask">
     <ion-grid class = "list-contont">
       <ion-row class="list-todolist-content task-item" *ngFor="let task of tasklist"  [ngClass]="{'complete': task.cs == '1'}" (click)="gotoDetail(task)" >
           <div class="agendaline">
@@ -32,6 +34,16 @@ import * as moment from "moment";
         </div>
       </ion-row>
     </ion-grid>
+    </ng-template>
+    <ng-template #notask>
+      <div class="notask">
+        <ion-icon class="fa fa-calendar-minus-o"></ion-icon>
+        <span>没有重要事项了哟～</span>
+        <button>
+          创建活动
+        </button>
+      </div>
+    </ng-template>
   `
 })
 export class TaskListComponent {
