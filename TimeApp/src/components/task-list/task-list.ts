@@ -78,11 +78,13 @@ export class TaskListComponent {
   }
 
   erease(event: any, target: any) {
-    event.preventDefault(); // 忽略事件传递
+    event.stopPropagation();  // 阻止冒泡
+    event.preventDefault();   // 忽略事件传递
     this.onErease.emit(target);
   }
 
   complete(event: any, target: any) {
+    event.stopPropagation();  // 阻止冒泡
     event.preventDefault(); // 忽略事件传递
     this.onComplete.emit(target);
   }
