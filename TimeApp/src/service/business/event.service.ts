@@ -838,11 +838,11 @@ export class EventService extends BaseService {
 
       //删除事件表数据
       let ev = new EvTbl();
-      ev.evi = oriAgdata.evi;
+      Object.assign(ev, oriAgdata);
       ev.del = anyenum.DelType.del;
       ev.tb = anyenum.SyncType.unsynch;
       ev.mi = UserConfig.account.id;
-      await this.sqlExce.updateByParam(ev);
+      sqlparam.push(ev.upTParam());
 
       //事件对象放入返回事件
       Object.assign(outAgd,ev);
@@ -876,7 +876,7 @@ export class EventService extends BaseService {
       let existca = await this.sqlExce.getOneByParam<CaTbl>(ca);
       Object.assign(ca, existca);
 
-      if (evtbls.length == 0){
+      if (evtbls.length == 1){//一条即为当前要删除记录
         sqlparam.push(ca.dTParam());
 
         //本地删除事件参与人
@@ -959,10 +959,12 @@ export class EventService extends BaseService {
           //把删除的附件复制放入事件信息
           outAgd.fjs = delfjs;
 
+          //如果当前删除对象是父事件，则为当前重复事件重建新的父事件，值为ev表重复记录里的第一条做为父事件
+          await this.operateForParentAgd(oriAgdata,oriAgdata.parters,oriAgdata.fjs,sqlparam,outAgds);
+
         }
 
-        //如果当前删除对象是父事件，则为当前重复事件重建新的父事件，值为ev表重复记录里的第一条做为父事件
-        await this.operateForParentAgd(oriAgdata,oriAgdata.parters,oriAgdata.fjs,sqlparam,outAgds);
+
 
       }
 
@@ -1383,6 +1385,15 @@ export class EventService extends BaseService {
           upParent.fjs = fjs;
 
           upParent.tos = tos;//需要发送的参与人
+
+          //新父节点记录以外数据对象内容设置
+          for (let j = 0 ,len = upAgds.length; j < len ;j ++){
+            if (upAgds[j].rtevi != ""){
+              upAgds[j].rtevi = upParent.evi;
+              upAgds[j].mi = UserConfig.account.id;
+              upAgds[j].tb = anyenum.SyncType.unsynch;
+            }
+          }
         }
 
         Object.assign(outAgds , [...outAgds ,...upAgds]);
