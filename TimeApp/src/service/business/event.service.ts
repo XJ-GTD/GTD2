@@ -3046,7 +3046,7 @@ export class EventService extends BaseService {
   	 * 内容  时间 年月日
   	 * @author ying<343253410@qq.com>
   	 */
-   async todolist(): Promise<Array<AgendaData>> {
+  async todolist(): Promise<Array<AgendaData>> {
    	 let sql: string = `
                         select eex.* , ca.sd,ca.ed,ca.st,ca.et,ca.al,ca.ct from (
                          select * from (
@@ -3058,14 +3058,13 @@ export class EventService extends BaseService {
                                                      select ev.*,
                                                      case when ifnull(ev.rtevi,'') <> ''  then  ev.rtevi  else ev.evi end newrtevi
                                                     from gtd_ev ev
-                                                    where ev.todolist = ?1 and ev.del = ?2 and ev.type = ?3
-                                                    and julianday(datetime(replace(ev.evd, '/', '-'),ev.evt))<julianday(datetime('now'))
+                                                    where ev.todolist = ?1 and ev.del = ?2 and ev.type = ?3 and ev.wc = ?4
                                               ) evv
                                       ) evnext
                                       group by evnext.newrtevi
-                                ) evnext2
-                                order by  evnext2.minDay desc
-                      )
+                                ) evnext2 where  julianday(datetime(replace(evnext2.evd, '/', '-'),evnext2.evt))<julianday(datetime('now'))
+                              order by  evnext2.minDay desc
+                     )
                     union all
                     select *  from (
                             select * from (
@@ -3076,16 +3075,15 @@ export class EventService extends BaseService {
                                                   select ev.*,
                                                   case when ifnull(ev.rtevi,'') <> ''  then  ev.rtevi  else ev.evi end newrtevi
                                                   from gtd_ev ev
-                                                  where ev.todolist = ?1 and ev.del = ?2 and ev.type = ?3
-                                                  and julianday(datetime(replace(ev.evd, '/', '-'),ev.evt))>=julianday(datetime('now'))
+                                                  where ev.todolist = ?1 and ev.del = ?2 and ev.type = ?3 and ev.wc = ?4
                                           ) evv
                                     ) evnext
                                     group by evnext.newrtevi
-                            ) evnext2
+                            ) evnext2 where   julianday(datetime(replace(evnext2.evd, '/', '-'),evnext2.evt))>=julianday(datetime('now'))
                             order by  evnext2.minDay asc
                     )) eex left join gtd_ca ca on ca.evi = eex.newrtevi
                        	`;
-      let agendaArray: Array<AgendaData> = await this.sqlExce.getExtLstByParam<AgendaData>(sql, [anyenum.ToDoListStatus.On,anyenum.DelType.undel,anyenum.EventType.Agenda]) || new Array<AgendaData>();
+      let agendaArray: Array<AgendaData> = await this.sqlExce.getExtLstByParam<AgendaData>(sql, [anyenum.ToDoListStatus.On,anyenum.DelType.undel,anyenum.EventType.Agenda,anyenum.EventFinishStatus.NonFinish]) || new Array<AgendaData>();
   		return agendaArray;
    }
    /**
@@ -3096,11 +3094,11 @@ export class EventService extends BaseService {
   async mergeTodolist(todolist: Array<AgendaData>, changed: AgendaData): Promise<Array<AgendaData>> {
       //传入数据不能为空
       this.assertEmpty(changed);
-
       let agendaArray: Array<AgendaData> = new Array<AgendaData>();
+      let flag: boolean = true;
       if (todolist.length == 0) {
           //当缓存时间为空的情况下，新加入todoList
-          if ( ( changed.todolist == anyenum.ToDoListStatus.On ) && ( changed.del == anyenum.DelType.undel ) )
+          if ( ( changed.todolist == anyenum.ToDoListStatus.On ) && ( changed.del == anyenum.DelType.undel ) && (changed.wc == anyenum.EventFinishStatus.NonFinish) )
           {
                 //将数据加入到todolist缓存
                 todolist.push(changed);
@@ -3116,8 +3114,29 @@ export class EventService extends BaseService {
                   }
                   j++;
                 }
+                //当前事件已完成，验证当前事件是否为重复事件，如果为重复事件，则删除当前的，重新插入下一个
+                if ((changed.rfg == RepeatFlag.Repeat) && (changed.wc == anyenum.EventFinishStatus.Finished) ) {
+                  let newsql : string  =  ` select * from  gtd_ev ev left join gtd_ca ca on ca.evi = ev.rtevi where ev.rtevi =?1 and ev.del = ?2 and ev.type = ?3 and ev.wc = ?4 order by ev.evd asc `;
+                  let rtevi: string ="";
+                  if (changed.rtevi == '') {
+                      rtevi = changed.evi;
+                  }
+                  else {
+                      rtevi = changed.rtevi;
+                  }
+                  let ag1: Array<AgendaData> = await this.sqlExce.getExtLstByParam<AgendaData>(newsql, [rtevi,anyenum.DelType.undel,anyenum.EventType.Agenda,anyenum.EventFinishStatus.NonFinish]) || new Array<AgendaData>();
+                  if (ag1&&ag1.length>0){
+                        changed = ag1[0];
+                  }
+                  else {
+                     flag = false;
+                  }
+                }
+                else {
+                   flag = false;
+                }
         }
-        else {
+        if (flag) {
           //将数据加到新的排序中去
           //todolist已经进行过排序，按照日期排列 ,快速排序算法，还是太慢，
           //1.新加入的事件的日期，比todolist第一个日期还小,缩短循环排序时间
