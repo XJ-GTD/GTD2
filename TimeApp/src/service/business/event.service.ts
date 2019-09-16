@@ -869,7 +869,8 @@ export class EventService extends BaseService {
     //如果不使用页面对象，而直接使用更新后的返回数据对象作为参数，则rtjson，txjson为空
     if (!newAgdata.rtjson) {
       if (newAgdata.rt) {
-        newAgdata.rtjson = JSON.parse(newAgdata.rt);
+        newAgdata.rtjson = new RtJson();
+        Object.assign(newAgdata.rtjson, JSON.parse(newAgdata.rt));
       } else {
         newAgdata.rtjson = new RtJson();
       }
@@ -877,7 +878,8 @@ export class EventService extends BaseService {
 
     if (!oriAgdata.rtjson) {
       if (oriAgdata.rt) {
-        oriAgdata.rtjson = JSON.parse(oriAgdata.rt);
+        oriAgdata.rtjson = new RtJson();
+        Object.assign(oriAgdata.rtjson, JSON.parse(oriAgdata.rt));
       } else {
         oriAgdata.rtjson = new RtJson();
       }
@@ -885,7 +887,8 @@ export class EventService extends BaseService {
 
     if (!newAgdata.txjson) {
       if (newAgdata.tx) {
-        newAgdata.txjson = JSON.parse(newAgdata.tx);
+        newAgdata.txjson = new TxJson();
+        Object.assign(newAgdata.txjson, JSON.parse(newAgdata.tx));
       } else {
         newAgdata.txjson = new TxJson();
       }
