@@ -39,6 +39,7 @@ import {AtPage} from "../../pages/at/at";
 import {DaPage} from "../../pages/da/da";
 import {DoPage} from "../../pages/do/do";
 import {AgendaPage} from "../../pages/agenda/agenda";
+import {MemoPage} from "../../pages/memo/memo";
 import {DrPage} from "../../pages/dr/dr";
 import {TxPage} from "../../pages/tx/tx";
 import {BzPage} from "../../pages/bz/bz";
@@ -58,6 +59,7 @@ import {RemindPage} from "../../pages/remind/remind";
 import {PlanPage} from "../../pages/plan/plan";
 import {InvitesPage} from "../../pages/invites/invites";
 import {LocationPage} from "../../pages/location/location";
+import {AttachPage} from "../../pages/attach/attach";
 
 export class DataConfig {
   public static isdebug: boolean  = true;
@@ -274,13 +276,15 @@ export class DataConfig {
     _AT_PAGE: AtPage,       // 关于
     _DA_PAGE: DaPage,       // 日程 - 每日日程
     _DO_PAGE: DoPage,       // 任务 - 待处理/已处理任务一览
-    _AGENDA_PAGE: AgendaPage, // 日程 - 创建/修改
+    _AGENDA_PAGE: AgendaPage,   // 日程 - 创建/修改
+    _MEMO_PAGE: MemoPage,       // 备忘 - 创建/修改
     _COMMENT_PAGE: CommentPage, // 日程 - 备注
     _REPEAT_PAGE: RepeatPage, // 日程 - 重复
     _REMIND_PAGE: RemindPage,   // 日程 - 提醒
     _PLAN_PAGE: PlanPage,   // 日程 - 计划
     _INVITES_PAGE: InvitesPage, // 日程 - 邀请人
     _LOCATION_PAGE: LocationPage, // 日程 - 地址
+    _ATTACH_PAGE: AttachPage,     // 日程 - 附件
     _DR_PAGE: DrPage,       // 每日简报设置 - 智能提醒
     _TX_PAGE: TxPage,       // 设置提醒
     _BZ_PAGE: BzPage,       // 设置备注
@@ -329,6 +333,7 @@ export class DataConfig {
     AtPage,       // 关于
     DaPage,       // 日程 - 每日日程
     DoPage,       // 任务 - 待处理/已处理任务一览
+    MemoPage,     // 备忘 - 创建/修改
     AgendaPage,   // 日程 - 创建/修改
     RepeatPage,   // 日程 - 重复
     RemindPage,   // 日程 - 提醒
@@ -336,6 +341,7 @@ export class DataConfig {
     PlanPage,     // 日程 - 计划
     InvitesPage,  // 日程 - 邀请人
     LocationPage, // 日程 - 地址
+    AttachPage,   // 日程 - 附件
     DrPage,       // 每日简报设置 - 智能提醒
     TxPage,       // 设置提醒
     BzPage,       // 设置备注

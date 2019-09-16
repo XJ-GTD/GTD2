@@ -64,6 +64,7 @@ import {TdmPageModule} from "../pages/tdm/tdm.module";
 import {FsPageModule} from "../pages/fs/fs.module";
 import {AlPageModule} from "../pages/al/al.module";
 import {AgendaPageModule} from "../pages/agenda/agenda.module";
+import {MemoPageModule} from "../pages/memo/memo.module";
 import {BlPageModule} from "../pages/bl/bl.module";
 import {BrPageModule} from "../pages/br/br.module";
 import {FdPageModule} from "../pages/fd/fd.module";
@@ -103,6 +104,7 @@ import {RemindPageModule} from "../pages/remind/remind.module";
 import {PlanPageModule} from "../pages/plan/plan.module";
 import {InvitesPageModule} from "../pages/invites/invites.module";
 import {LocationPageModule} from "../pages/location/location.module";
+import {AttachPageModule} from "../pages/attach/attach.module";
 import {CardListComponentModule} from "../components/card-list/card-list.module";
 import {TaskListComponentModule} from "../components/task-list/task-list.module";
 import {ScrollSelectComponentModule} from "../components/scroll-select/scroll-select.module";
@@ -143,6 +145,7 @@ import {CalendarService} from "../service/business/calendar.service";
     FsPageModule,
     AlPageModule,
     AgendaPageModule,
+    MemoPageModule,
     BlPageModule,
     BrPageModule,
     FdPageModule,
@@ -181,6 +184,7 @@ import {CalendarService} from "../service/business/calendar.service";
     PlanPageModule,
     InvitesPageModule,
     LocationPageModule,
+    AttachPageModule,
     ConfirmboxComponentModule,
     CardListComponentModule,
     TaskListComponentModule,

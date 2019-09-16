@@ -1,4 +1,4 @@
-import {Component, ElementRef, Renderer2, ViewChild, ViewChildren, QueryList } from '@angular/core';
+import {Component, ElementRef, Renderer2, ViewChild, EventEmitter, ViewChildren, QueryList } from '@angular/core';
 import {IonicPage, NavController, ModalController, NavParams, Slides} from 'ionic-angular';
 import {UtilService} from "../../service/util-service/util.service";
 import {UserConfig} from "../../service/config/user.config";
@@ -49,6 +49,8 @@ export class DoPage {
   topday: string = moment().format("YYYY/MM/DD");
   bottomday: string = moment().format("YYYY/MM/DD");
 
+  onrefresh: EventEmitter<any>;
+
   constructor(public navCtrl: NavController,
               public navParams: NavParams,
               private modalCtr: ModalController,
@@ -68,6 +70,13 @@ export class DoPage {
     //   this.days.push(moment().format("YYYY/MM/DD"));
     // });
     this.days.push(moment().format("YYYY/MM/DD"));
+  }
+
+  ngOnDestroy() {
+    if (this.onrefresh) {
+      this.onrefresh.unsubscribe();
+      this.onrefresh = undefined;
+    }
   }
 
   pagedown(target: any) {
@@ -103,20 +112,30 @@ export class DoPage {
     .then((d) => {
       if (d && d.length > 0) {
 
-        // this.emitService.register("mwxing.calendar.activities.changed", (data) => {
-        //   if (!data) {
-        //     return;
-        //   }
-        //
-        //   // 多条数据同时更新/单条数据更新
-        //   if (data instanceof Array) {
-        //     for (let single of data) {
-        //       this.cachedtasks = this.eventService.mergeUncompletedTasks(this.cachedtasks, single);
-        //     }
-        //   } else {
-        //     this.cachedtasks = this.eventService.mergeUncompletedTasks(this.cachedtasks, data);
-        //   }
-        // });
+        if (!this.onrefresh) {
+          this.onrefresh = this.emitService.register("mwxing.calendar.activities.changed", async (data) => {
+            if (!data) {
+              return;
+            }
+
+            // 多条数据同时更新/单条数据更新
+            if (data instanceof Array) {
+              for (let single of data) {
+                let activityType: string = this.eventService.getEventType(single);
+
+                if (activityType == "AgendaData") {
+                  this.cachedtasks = await this.eventService.mergeTodolist(this.cachedtasks, single);
+                }
+              }
+            } else {
+              let activityType: string = this.eventService.getEventType(data);
+
+              if (activityType == "AgendaData") {
+                this.cachedtasks = await this.eventService.mergeTodolist(this.cachedtasks, data);
+              }
+            }
+          });
+        }
 
         this.cachedtasks = d;
 

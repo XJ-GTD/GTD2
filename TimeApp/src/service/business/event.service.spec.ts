@@ -631,11 +631,59 @@ describe('EventService test suite', () => {
     agenda.sd = moment().format("YYYY/MM/DD");
     agenda.evn = "比较两个日程是否相同 - 保存后比较";
 
-    let results = eventService.saveAgenda(agenda);
+    let results = await eventService.saveAgenda(agenda);
 
     let same: boolean = eventService.isSameAgenda(agenda, results[0]);
 
     expect(same).toBe(true);
+  });
+
+  it(`Case 19 - 1 hasAgendaModifyConfirm 判断日程修改是否需要确认 - 修改备注`, async () => {
+    let agenda: AgendaData = {} as AgendaData;
+
+    let dayRepeatrt: RtJson = new RtJson();
+    dayRepeatrt.cycletype = CycleType.day;
+    dayRepeatrt.over.type = OverType.fornever;
+
+    agenda.sd = moment().format("YYYY/MM/DD");
+    agenda.evn = "判断日程修改是否需要确认 - 修改备注";
+    agenda.rtjson = dayRepeatrt;
+
+    let results = await eventService.saveAgenda(agenda);
+
+    let newAgenda: AgendaData = results[0];
+    newAgenda.bz = "修改备注";
+
+    let confirm: boolean = eventService.hasAgendaModifyConfirm(agenda, newAgenda);
+
+    expect(confirm).toBe(false);
+  });
+
+  it(`Case 19 - 1 - 1 hasAgendaModifyConfirm 判断日程修改是否需要确认 - 添加提醒`, async () => {
+    let agenda: AgendaData = {} as AgendaData;
+
+    let dayRepeatrt: RtJson = new RtJson();
+    dayRepeatrt.cycletype = CycleType.day;
+    dayRepeatrt.over.type = OverType.fornever;
+
+    agenda.sd = moment().format("YYYY/MM/DD");
+    agenda.evn = "判断日程修改是否需要确认 - 修改备注";
+    agenda.rtjson = dayRepeatrt;
+
+    let results = await eventService.saveAgenda(agenda);
+
+    let newAgenda: AgendaData = results[0];
+
+    let tx: TxJson = new TxJson();
+    tx.reminds.push(30);
+
+    newAgenda.txjson = tx;
+    newAgenda.tx = JSON.stringify(tx);
+    newAgenda.txs = tx.text();
+
+    let confirm: boolean = eventService.hasAgendaModifyConfirm(agenda, newAgenda);
+
+    expect(confirm).toBe(false);
   });
 
   describe(`创建不重复与重复（每天、每周、每月、每年）日程`, () => {
@@ -936,12 +984,11 @@ describe('EventService test suite', () => {
 
       //===================每天重复事件===========================
       let ag2: AgendaData = {} as AgendaData;
-      let day: string = "2019/09/11";
       let rt: RtJson = new RtJson();
       rt.cycletype = CycleType.day;
       rt.over.type = OverType.limitdate;
   		rt.over.value ="2020/08/31";
-      ag2.sd = day;
+      ag2.sd = "2019/09/11";
       ag2.evn = "每天重复,测试todoLoist排序";
       ag2.rtjson = rt;
       ag2.todolist = anyenum.ToDoListStatus.On;
@@ -976,16 +1023,27 @@ describe('EventService test suite', () => {
       ag5.del = anyenum.DelType.undel;
       await eventService.saveAgenda(ag5);
 
-
-
-
-      //===================普通事件===========================
+      //===================每天重复事件===========================
       let ag6: AgendaData = {} as AgendaData;
-      ag6.sd = "2019/09/16";
-      ag6.evn = "2019/09/16写一个代码";
+      let rt6: RtJson = new RtJson();
+      rt6.cycletype = CycleType.day;
+      rt6.over.type = OverType.limitdate;
+  		rt6.over.value ="2020/08/31";
+      ag6.sd = "2019/09/15";
+      ag6.evn = "每天重复,测试2019/09/15todoLoist排序";
+      ag6.rtjson = rt6;
       ag6.todolist = anyenum.ToDoListStatus.On;
       ag6.del = anyenum.DelType.undel;
       await eventService.saveAgenda(ag6);
+
+
+      //===================普通事件===========================
+      let ag7: AgendaData = {} as AgendaData;
+      ag7.sd = "2019/09/16";
+      ag7.evn = "2019/09/16写一个代码";
+      ag7.todolist = anyenum.ToDoListStatus.On;
+      ag7.del = anyenum.DelType.undel;
+      await eventService.saveAgenda(ag7);
 
     });
 

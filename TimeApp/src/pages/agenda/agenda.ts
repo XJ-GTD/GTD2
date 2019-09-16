@@ -1,13 +1,13 @@
-import {Component, ElementRef, Renderer2, ViewChild, ViewChildren, QueryList} from '@angular/core';
+import {Component, ElementRef, Renderer2, ViewChild, ViewChildren, QueryList } from '@angular/core';
 import {IonicPage, NavController, ModalController, ActionSheetController, NavParams, Slides} from 'ionic-angular';
 import {UtilService} from "../../service/util-service/util.service";
 import {UserConfig} from "../../service/config/user.config";
 import {RestFulHeader, RestFulConfig} from "../../service/config/restful.config";
 import {SqliteExec} from "../../service/util-service/sqlite.exec";
 import * as moment from "moment";
-import {CalendarDay} from "../../components/ion2-calendar";
-import {AgendaService} from "./agenda.service";
-import {ScdData, ScdPageParamter} from "../../data.mapping";
+import { CalendarDay } from "../../components/ion2-calendar";
+import { AgendaService } from "./agenda.service";
+import { ScdData, ScdPageParamter } from "../../data.mapping";
 import {EmitService} from "../../service/util-service/emit.service";
 import {DataConfig} from "../../service/config/data.config";
 import {FeedbackService} from "../../service/cordova/feedback.service";
@@ -15,7 +15,7 @@ import {PageBoxComponent} from "../../components/page-box/page-box";
 import {CornerBadgeComponent} from "../../components/corner-badge/corner-badge";
 import {CalendarService} from "../../service/business/calendar.service";
 import {EventService, AgendaData, RtJson, TxJson} from "../../service/business/event.service";
-import {PageDirection, IsSuccess, OperateType, RepeatFlag, ToDoListStatus} from "../../data.enum";
+import { PageDirection, IsSuccess, OperateType, RepeatFlag, ToDoListStatus } from "../../data.enum";
 
 /**
  * Generated class for the 日程创建/修改 page.
@@ -340,6 +340,14 @@ export class AgendaPage {
     this.doOptionSave(OperateType.OnlySel);
   }
 
+  changeAttach() {
+    let modal = this.modalCtrl.create(DataConfig.PAGE._ATTACH_PAGE);
+    modal.onDidDismiss(async (data)=>{
+
+    });
+    modal.present();
+  }
+
   changeInvites() {
     let modal = this.modalCtrl.create(DataConfig.PAGE._INVITES_PAGE);
     modal.onDidDismiss(async (data) => {
@@ -432,9 +440,9 @@ export class AgendaPage {
 
   doOptionRemove(op: OperateType) {
     this.eventService.removeAgenda(this.originAgenda, op)
-      .then(() => {
-        this.goBack();
-      });
+    .then(() => {
+      this.goBack();
+    });
   }
 
   goRemove() {
@@ -448,9 +456,9 @@ export class AgendaPage {
 
     } else {
       this.eventService.removeAgenda(this.originAgenda, OperateType.OnlySel)
-        .then(() => {
-          this.goBack();
-        });
+      .then(() => {
+        this.goBack();
+      });
     }
   }
 
@@ -525,11 +533,11 @@ export class AgendaPage {
   save() {
     if (this.validCheck()) {              // 输入校验
       if (this.currentAgenda.evi) {       // 修改日程
-        if (!this.eventService.isAgendaChanged(this.currentAgenda, this.originAgenda)) {
+        if (this.eventService.isSameAgenda(this.currentAgenda, this.originAgenda)) {
           return;
         }
 
-        if (this.originAgenda.rfg == RepeatFlag.Repeat) { // 重复
+        if (this.eventService.hasAgendaModifyConfirm(this.originAgenda, this.currentAgenda)) { // 重复修改
           if (this.modifyConfirm) {
             this.modifyConfirm.dismiss();
           }
