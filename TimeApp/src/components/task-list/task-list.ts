@@ -8,13 +8,13 @@ import * as moment from "moment";
       <ion-row class="list-todolist-content task-item" *ngFor="let task of tasklist"  [ngClass]="{'complete': task.cs == '1'}" (click)="gotoDetail(task)" >
           <div class="agendaline">
             <div class="agenda-sn">{{task.evn}}</div>
-            <div class="agenda-tool">
+            <div class="agenda-tool" (click)="erease($event, task)">
               <ion-icon class="fa fa-eraser">移除</ion-icon>
             </div>
           </div>
           <div class="agendaline">
 
-            <div class="agenda-warp" (click)="erease($event, task)">
+            <div class="agenda-warp">
               <div class="agenda-icon">
                 <ion-icon class="{{(task.evd + ' ' + task.evt) | formatedate:'withNowcss'}}"></ion-icon>
               </div>
