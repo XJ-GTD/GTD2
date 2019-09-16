@@ -776,7 +776,7 @@ export class EventService extends BaseService {
 
       //删除事件表数据
       let ev = new EvTbl();
-      ev.evi = oriAgdata.evi;
+      Object.assign(ev, oriAgdata);
       ev.del = anyenum.DelType.del;
       ev.tb = anyenum.SyncType.unsynch;
       ev.mi = UserConfig.account.id;
