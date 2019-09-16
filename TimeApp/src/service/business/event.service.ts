@@ -854,7 +854,7 @@ export class EventService extends BaseService {
         //非重复数据或重复数据的父记录
         masterEvi = oriAgdata.evi;
       }else if (oriAgdata.rfg == anyenum.RepeatFlag.RepeatToNon){
-        //重复中独立日
+        //重复中独立日只能删自己
         masterEvi = oriAgdata.evi;
       }else{
         //重复数据
@@ -1144,15 +1144,16 @@ export class EventService extends BaseService {
     //批量本地更新
     let sqlparam = new Array<any>();
 
+    let sq : string ;
     let outAgds = new Array<AgendaData>();//返回事件
+    let params : Array<any>;
 
     //判断进行本地更新
     if (!this.isAgendaChanged(newAgdata,oriAgdata)){
       let ev = new EvTbl();
-      ev.evi = newAgdata.evi;
+      ev.evi = oriAgdata.evi;
       ev.ji  = newAgdata.ji;
       ev.bz = newAgdata.bz;
-      ev.todolist =newAgdata.todolist;
       newAgdata.tx = JSON.stringify(newAgdata.txjson);
       newAgdata.txs = newAgdata.txjson.text();
       ev.tx = newAgdata.tx;
@@ -1160,7 +1161,30 @@ export class EventService extends BaseService {
       ev.fj =newAgdata.fj;
       ev.pn = newAgdata.pn;
       ev.wc = newAgdata.wc;
-      await this.sqlExce.updateByParam(ev);
+      sqlparam.push(ev.upTParam());
+
+      //todolist处理
+      if (newAgdata.todolist != oriAgdata.todolist){
+        //主evi设定
+        let masterEvi : string;
+        if (oriAgdata.rtevi == ""){
+          //非重复数据或重复数据的父记录
+          masterEvi = oriAgdata.evi;
+        }else if (oriAgdata.rfg == anyenum.RepeatFlag.RepeatToNon){
+          //重复中独立日只能修改自己
+          masterEvi = oriAgdata.evi;
+        }else{
+          //重复数据
+          masterEvi = oriAgdata.rtevi;
+        }
+        sq = " update gtd_ev set todolist = ? where evi = ? or rtevi = ?  ";
+        params = new Array<any>();
+        params.push(newAgdata.todolist);
+        params.push(masterEvi);
+        params.push(masterEvi);
+        sqlparam.push([sq,params]);
+      }
+      this.sqlExce.batExecSqlByParam(sqlparam);
       outAgds.push(newAgdata);
       return outAgds;
     }
@@ -1199,8 +1223,6 @@ export class EventService extends BaseService {
     如果改变从当前所有，则
     1.改变原日程结束日 2.删除从当前所有事件及相关提醒 3.新建新事件日程*/
     if (repeatModify == RepeatModify.RepeatToRepeat || repeatModify == RepeatModify.NonRepeatToRepeat ){
-
-      let sq : string ;
 
       let masterEvi : string;//主evi设定
       if (oriAgdata.rtevi == ""){
@@ -1467,8 +1489,8 @@ export class EventService extends BaseService {
     let existca = await this.sqlExce.getOneByParam<CaTbl>(ca);
     Object.assign(ca, existca);
 
-    if (evtbls.length > delAgds.length){//有数据，需要更新日程结束日
-      ca.ed = moment(oriAgdata.evd).subtract(1,'d').format("YYYY/MM/DD");//evd使用原事件evd
+    if (evtbls.length > delAgds.length){//有数据，需要更新日程结束日（暂不处理）
+      /*ca.ed = moment(oriAgdata.evd).subtract(1,'d').format("YYYY/MM/DD");//evd使用原事件evd
       sqlparam.push(ca.upTParam());
 
       //日程信息修改了，把日程信息复制到事件父信息内，并把父记录放入返回事件
@@ -1481,7 +1503,7 @@ export class EventService extends BaseService {
           outAgds.push(evtbls[j]);
           break;
         }
-      }
+      }*/
 
     }else{//无数据，需要删除关联表数据
       sqlparam.push(ca.dTParam());
@@ -1725,6 +1747,7 @@ export class EventService extends BaseService {
       ev.type = anyenum.EventType.Agenda;
       ev.tb = anyenum.SyncType.unsynch;
       ev.del = anyenum.DelType.undel;
+
       ret.ed = ev.evd;
 
       ret.sqlparam.push(ev.rpTParam());
