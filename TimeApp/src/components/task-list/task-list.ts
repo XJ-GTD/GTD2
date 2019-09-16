@@ -13,14 +13,14 @@ import * as moment from "moment";
             </div>
           </div>
           <div class="agendaline">
-            
-            <div class="agenda-warp">
+
+            <div class="agenda-warp" (click)="erease($event, task)">
               <div class="agenda-icon">
                 <ion-icon class="{{(task.evd + ' ' + task.evt) | formatedate:'withNowcss'}}"></ion-icon>
               </div>
               <div class="agenda-st">{{(task.evd + ' ' + task.evt) | formatedate:'withNow'}}</div>
             </div>
-            <div class="agenda-tool">
+            <div class="agenda-tool" (click)="complete($event, task)">
               <ion-icon class="fa fa-check">完成</ion-icon>
             </div>
           </div>
@@ -44,6 +44,9 @@ export class TaskListComponent {
 
   @Output()
   private onCreateNew: EventEmitter<any> = new EventEmitter<any>();
+
+  @Output()
+  private onErease: EventEmitter<any> = new EventEmitter<any>();
 
   @Output()
   private onComplete: EventEmitter<any> = new EventEmitter<any>();
@@ -74,7 +77,13 @@ export class TaskListComponent {
     this.onStartLoad.emit(this);
   }
 
-  complete(target: any) {
+  erease(event: any, target: any) {
+    event.preventDefault(); // 忽略事件传递
+    this.onErease.emit(target);
+  }
+
+  complete(event: any, target: any) {
+    event.preventDefault(); // 忽略事件传递
     this.onComplete.emit(target);
   }
 }

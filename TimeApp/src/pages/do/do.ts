@@ -30,7 +30,7 @@ import { PageDirection, IsSuccess } from "../../data.enum";
     `
       <page-box title="重要事项" (onBack)="goBack()">
       <ng-container *ngFor="let day of days">
-        <task-list [currentuser]="currentuser" [friends]="friends" (onStartLoad)="getData($event, day)" (onCardClick)="gotoDetail($event)" (onCreateNew)="goNew()" (onComplete)="complete($event)" #tasklist></task-list>
+        <task-list [currentuser]="currentuser" [friends]="friends" (onStartLoad)="getData($event, day)" (onCardClick)="gotoDetail($event)" (onErease)="goErease($event)" (onComplete)="complete($event)" #tasklist></task-list>
       </ng-container>
       </page-box>
     `
@@ -161,7 +161,9 @@ export class DoPage {
     }
   }
 
-  goNew() {}
+  goErease(target: any) {
+    this.eventService.removeAgenda(target, OperateType.OnlySel);
+  }
 
   goBack() {
     this.navCtrl.pop();
@@ -169,6 +171,10 @@ export class DoPage {
 
   complete(target: any) {
     console.log(target);
-    // this.eventService.finishTask(target);
+    let complete: AgendaData = {} as AgendaData;
+    Object.assign(complete, target);
+    complete.wc = EventFinishStatus.Finished;
+
+    this.eventService.saveAgenda(complete, target, OperateType.OnlySel);
   }
 }
