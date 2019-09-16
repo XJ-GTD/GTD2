@@ -1,5 +1,15 @@
-import {Component, Input, Output, EventEmitter, ViewChild, ElementRef, ContentChildren, QueryList} from '@angular/core';
-import {Events} from 'ionic-angular';
+import {
+  Component,
+  Input,
+  Output,
+  EventEmitter,
+  ViewChild,
+  ElementRef,
+  ContentChildren,
+  QueryList,
+  Renderer2
+} from '@angular/core';
+import {Content, Events, Ion, IonicPage} from 'ionic-angular';
 
 /**
  * Generated class for the ScrollSelectComponent component.
@@ -7,6 +17,7 @@ import {Events} from 'ionic-angular';
  * See https://angular.io/api/core/Component for more info on Angular
  * Components.
  */
+@IonicPage()
 @Component({
   selector: 'page-box',
   template:
@@ -35,13 +46,16 @@ import {Events} from 'ionic-angular';
           </div>
         </ion-toolbar>
       </ion-header>
-      <ion-content class="box-content">
+      <ion-content class="box-content" #pagecontent>
         <ng-content></ng-content>
       </ion-content>
     </div>
   `
 })
-export class PageBoxComponent {
+export class PageBoxComponent{
+
+  @ViewChild('pagecontent') pagecontent: Content;
+
   @Input()
   title: string = "";
 
@@ -60,9 +74,20 @@ export class PageBoxComponent {
   @Output()
   private onRemove: EventEmitter<any> = new EventEmitter<any>();
 
-  constructor(public events: Events) {
+  constructor(public events: Events,
+            private renderer2: Renderer2,) {
 
   }
+
+  setBoxContent(){
+    let height = this.pagecontent._scrollContent.nativeElement.clientHeight;
+    this.renderer2.setStyle(this.pagecontent._scrollContent.nativeElement, "height", height + "px");
+    this.renderer2.setStyle(this.pagecontent._scrollContent.nativeElement, "overflow-y", height + "hidden");
+    this.renderer2.setStyle(this.pagecontent._fixedContent.nativeElement, "height", height + "px");
+    this.renderer2.setStyle(this.pagecontent._fixedContent.nativeElement, "overflow-y", height + "hidden");
+
+  }
+
 
   clickSubtitle() {
     this.onSubTitleClick.emit(this);
