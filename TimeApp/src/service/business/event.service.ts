@@ -230,7 +230,7 @@ export class EventService extends BaseService {
           Object.assign(onert, value);
 
           let anotherrt: RtJson = new RtJson();
-          Object.assign(anotherrt, after[key]);
+          Object.assign(anotherrt, another[key]);
 
           if (!(onert.sameWith(anotherrt))) {
             changed.push(key);
@@ -421,7 +421,7 @@ export class EventService extends BaseService {
           Object.assign(onert, value);
 
           let anotherrt: RtJson = new RtJson();
-          Object.assign(anotherrt, after[key]);
+          Object.assign(anotherrt, another[key]);
 
           if (!(onert.sameWith(anotherrt))) return false;
 
