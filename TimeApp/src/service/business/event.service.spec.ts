@@ -730,6 +730,41 @@ describe('EventService test suite', () => {
       expect(changed.length).toBeDefined(1);
       expect(changed[0]).toBeDefined("bz");
     });
+
+    it(`Case 20 - 1 - 4 changedAgendaFields 取得两个日程变化的字段名成数组 - 修改重复后比较`, async () => {
+      let agenda: AgendaData = await eventService.getAgenda(beforechange.evi);
+
+      let rtjon = new RtJson();
+      rtjon.cycletype = anyenum.CycleType.week;
+      rtjon.over.value = moment().add(2, "months").format("YYYY/MM/DD");
+      rtjon.over.type = anyenum.OverType.limitdate;
+      rtjon.cyclenum = 2;
+      rtjon.openway.push(anyenum.OpenWay.Wednesday);
+
+      agenda.rtjson = rtjon;
+
+      let changed: Array<string> = eventService.changedAgendaFields(agenda, beforechange);
+
+      expect(changed).toBeDefined();
+      expect(changed.length).toBeDefined(1);
+      expect(changed[0]).toBeDefined("rtjson");
+    });
+
+    it(`Case 20 - 1 - 5 changedAgendaFields 取得两个日程变化的字段名成数组 - 修改提醒后比较`, async () => {
+      let agenda: AgendaData = await eventService.getAgenda(beforechange.evi);
+
+      let txjson = new TxJson();
+      txjson.reminds.push(30);    // 提前30分钟提醒
+      txjson.reminds.push(60);    // 提前1小时提醒
+
+      agenda.txjson = txjson;
+
+      let changed: Array<string> = eventService.changedAgendaFields(agenda, beforechange);
+
+      expect(changed).toBeDefined();
+      expect(changed.length).toBeDefined(1);
+      expect(changed[0]).toBeDefined("txjson");
+    });
   });
 
   describe(`创建不重复与重复（每天、每周、每月、每年）日程`, () => {

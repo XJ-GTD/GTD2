@@ -326,8 +326,7 @@ export class EventService extends BaseService {
               }
 
             } else {
-              changed.push(key);
-              continue;
+              continue; // 非比较字段，忽略
             }
           }
         }
@@ -622,7 +621,9 @@ export class EventService extends BaseService {
     }
 
     Object.assign(agdata , ev);
+    agdata.rtjson = new RtJson();
     Object.assign(agdata.rtjson , JSON.parse(agdata.rt));
+    agdata.txjson = new TxJson();
     Object.assign(agdata.txjson , JSON.parse(agdata.tx));
 
     //主evi设定
