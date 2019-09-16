@@ -1405,8 +1405,8 @@ export class EventService extends BaseService {
     let existca = await this.sqlExce.getOneByParam<CaTbl>(ca);
     Object.assign(ca, existca);
 
-    if (evtbls.length > delAgds.length){//有数据，需要更新日程结束日
-      ca.ed = moment(oriAgdata.evd).subtract(1,'d').format("YYYY/MM/DD");//evd使用原事件evd
+    if (evtbls.length > delAgds.length){//有数据，需要更新日程结束日（暂不处理）
+      /*ca.ed = moment(oriAgdata.evd).subtract(1,'d').format("YYYY/MM/DD");//evd使用原事件evd
       sqlparam.push(ca.upTParam());
 
       //日程信息修改了，把日程信息复制到事件父信息内，并把父记录放入返回事件
@@ -1419,7 +1419,7 @@ export class EventService extends BaseService {
           outAgds.push(evtbls[j]);
           break;
         }
-      }
+      }*/
 
     }else{//无数据，需要删除关联表数据
       sqlparam.push(ca.dTParam());
