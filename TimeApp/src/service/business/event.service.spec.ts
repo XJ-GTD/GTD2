@@ -687,9 +687,11 @@ describe('EventService test suite', () => {
   });
 
   describe(`Case 20 - 1 取得两个日程变化的字段名成数组`, () => {
-    let beforechange: AgendaData = {} as AgendaData;
+    let beforechange: AgendaData;
 
-    beforeAll(async () => {
+    beforeEach(async () => {
+      beforechange = {} as AgendaData;
+
       beforechange.sd = moment().format("YYYY/MM/DD");
       beforechange.evn = "取得两个日程变化的字段名成数组 - 保存后比较";
 
