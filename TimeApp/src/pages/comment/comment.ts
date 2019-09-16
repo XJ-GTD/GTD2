@@ -8,7 +8,7 @@ import {ModalBoxComponent} from "../../components/modal-box/modal-box";
   selector: 'page-comment',
   template: `
   <modal-box title="备注" (onClose)="close()">
-    <ion-textarea type="text" placeholder="备注" [(ngModel)]="bz" class="memo-set" autosize maxHeight="400" #bzRef></ion-textarea>
+    <ion-textarea  placeholder="备注"  class="memo-set" rows="8" (ionBlur)="save()" #bzRef [(ngModel)]="bz" ></ion-textarea>
   </modal-box>
   `
 })

@@ -155,8 +155,7 @@ import { PageDirection, IsSuccess, OperateType, RepeatFlag, ToDoListStatus } fro
       <ion-grid>
         <ion-row class="agendaEvn">
           <!--主题-->
-          <ion-textarea rows="8" [(ngModel)]="currentAgenda.evn" placeholder="参加小明的生日Party"
-                        (ionBlur)="save()"></ion-textarea>
+          <ion-textarea rows="8" [(ngModel)]="currentAgenda.evn" (ionBlur)="save()"></ion-textarea>
 
           <div class="agendatodo">
             <button ion-button icon-only clear  (click)="addTodolist()" *ngIf="true">
@@ -174,7 +173,7 @@ import { PageDirection, IsSuccess, OperateType, RepeatFlag, ToDoListStatus } fro
             <ion-row class="agendaOptionThree">
               <button ion-button  clear (click)="changeRepeat()">
                 <div class="agendarepeat">
-                  <ion-icon class="fa fa-copy  iconCopy"></ion-icon>
+                  <!--<ion-icon class="fa fa-copy  iconCopy"></ion-icon>-->
                   重复{{currentAgenda.rts}}
                   <corner-badge><p><i class="fa fa-copy "></i></p></corner-badge>
                 </div>
@@ -184,21 +183,21 @@ import { PageDirection, IsSuccess, OperateType, RepeatFlag, ToDoListStatus } fro
             <ion-row class="agendaOptionTwo">
               <ion-col class="agendaPlayer">
                 <button ion-button  clear (click)="changeInvites()">
-                    <ion-icon class="fa fa-address-book-o iconUserPlus"></ion-icon>
+                    <!--<ion-icon class="fa fa-address-book-o iconUserPlus"></ion-icon>-->
                     参与人
                     <corner-badge>{{currentAgenda.pn}}</corner-badge>
                 </button>
               </ion-col>
               <ion-col  class="agendaRemind">
                 <button ion-button clear (click)="changeRemind()">
-                    <ion-icon class="fa fa-bell iconBell"></ion-icon>
+                    <!--<ion-icon class="fa fa-bell iconBell"></ion-icon>-->
                     30分钟后{{currentAgenda.txs}}
                   <corner-badge><p>999</p></corner-badge>
                 </button>
               </ion-col>
               <ion-col class="agendaAttach">
                 <button ion-button clear icon-end >
-                    <ion-icon class="fa fa-paperclip iconAttach"></ion-icon>
+                    <!--<ion-icon class="fa fa-paperclip iconAttach"></ion-icon>-->
                      补充
                     <corner-badge><p>3</p></corner-badge>
                 </button>
@@ -239,12 +238,12 @@ import { PageDirection, IsSuccess, OperateType, RepeatFlag, ToDoListStatus } fro
             <ion-row>
               <ion-col  class="agendaDate" (click)="clickSubtitle()">
                 <button ion-button icon-end clear  >
-                  <span>
+                  <span class="content">
                     日期：2019-12-12
                     </span>
                       </button>
                 <button ion-button icon-end clear  >
-                  <span>
+                  <span class="content">
                     时间：19:23 16H15M
                     </span>
                 </button>
@@ -255,7 +254,7 @@ import { PageDirection, IsSuccess, OperateType, RepeatFlag, ToDoListStatus } fro
                 </button>
               </ion-col>
               <ion-col class="agendaSender">
-            <span class="readonly">
+            <span class="content">
                ---来自小小女
               </span>
               </ion-col>
@@ -269,6 +268,12 @@ import { PageDirection, IsSuccess, OperateType, RepeatFlag, ToDoListStatus } fro
 
       </ion-grid>
     </page-box>
+    
+    <!--<div class="create">-->
+      <!--&lt;!&ndash;主题&ndash;&gt;-->
+      <!--<ion-textarea rows="8" [(ngModel)]="currentAgenda.evn" placeholder="参加小明的生日Party"-->
+                    <!--(ionBlur)="save()"></ion-textarea>-->
+    <!--</div>-->
   `
 })
 export class AgendaPage {

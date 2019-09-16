@@ -12,23 +12,33 @@ import {Events} from 'ionic-angular';
   template:
       `
     <div class="box-modal">
+
       <ion-header class="box-header">
         <ion-toolbar >
           <ion-title>
-          {{title}}
+            {{title}}
           </ion-title>
+          <div class="toolbar">
+            <div (click)="goRemove()">
+              <ion-icon class="fa fa-trash-o"></ion-icon>
+            </div>
+
+            <div  (click)="goRemove()">
+              <ion-icon class="fa fa-share-square-o"></ion-icon>
+            </div>
+
+            <div  (click)="goRemove()">
+              <ion-icon class="fa fa-floppy-o"></ion-icon>
+            </div>
+            <div (click)="goBack()">
+              <ion-icon class="fa fa-undo"></ion-icon>
+            </div>
+          </div>
         </ion-toolbar>
       </ion-header>
       <ion-content class="box-content">
         <ng-content></ng-content>
       </ion-content>
-      <ion-footer class="box-footer">
-        <ion-toolbar>
-        <button ion-button full (click)="close()">
-          关闭
-        </button>
-        </ion-toolbar>
-      </ion-footer>
     </div>
   `
 })

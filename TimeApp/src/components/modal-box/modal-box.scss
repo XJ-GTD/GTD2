@@ -1,8 +1,8 @@
 modal-box {
-  position: absolute;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.7);
+  background:rgba(0,0,0,0.8);;
+  position: absolute;
 
   .box-modal {
     height: 100%;
@@ -27,12 +27,23 @@ modal-box {
         .toolbar-title {
           font-size: 24px;
           font-weight: 500;
-          color: #ffffff;
           position: absolute;
           bottom: 15px;
           left: 15px;
           width: auto;
-          font-family:PingFang SC;
+        }
+
+      }
+
+      .toolbar {
+        position: absolute;
+        width: auto;
+        right: 15px;
+        bottom: 15px;
+        .icon {
+          font-size: 24px;
+          font-weight: 500;
+          margin-left: 20px;
         }
 
       }
@@ -44,7 +55,7 @@ modal-box {
     .fixed-content {
       border-radius: 4px;
       margin-bottom: 47px;
-      background-color: #ffffff;
+
     }
 
     .scroll-content {
