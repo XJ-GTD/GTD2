@@ -1094,7 +1094,7 @@ export class EventService extends BaseService {
       ev.txs = newAgdata.txs
       ev.fj =newAgdata.fj;
       ev.pn = newAgdata.pn;
-      ev.wc = newAgenda.wc;
+      ev.wc = newAgdata.wc;
       await this.sqlExce.updateByParam(ev);
       outAgds.push(newAgdata);
       return outAgds;
