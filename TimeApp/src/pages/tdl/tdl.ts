@@ -76,7 +76,7 @@ import {CalendarComponent} from "../../components/ion2-calendar";
                     <div class="ys-fsize text-center ">{{days.day | formatedate:"CMM"}}</div>
                   </div>
                   <div class="d-title text-center ">
-                    <div class="first d-title-chr" (click)="toMemo(days.day)">日记</div>
+                    <div class="first d-title-chr" (click)="toMemo(days)">日记</div>
                     <div class=" d-title-chr">
                       <span class="daycoment">{{this.util.lunar4str(days.day,"D")}}</span>
                       <span class="daycoment" *ngFor="let jt of days.calendaritems">{{jt.jtn}}</span>
@@ -347,9 +347,7 @@ export class TdlPage {
   }
 
   toMemo(day) {
-    let p: ScdPageParamter = new ScdPageParamter();
-    p.d = moment(day);
-    this.modalCtr.create(DataConfig.PAGE._MEMO_PAGE, p).present();
+    this.modalCtr.create(DataConfig.PAGE._DAILYMEMOS_PAGE, day).present();
   }
 
   toDetail(si, d, gs) {
