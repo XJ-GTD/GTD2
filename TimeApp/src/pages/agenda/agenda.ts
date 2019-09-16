@@ -159,106 +159,113 @@ import { PageDirection, IsSuccess, OperateType, RepeatFlag, ToDoListStatus } fro
                         (ionBlur)="save()"></ion-textarea>
 
           <div class="agendatodo">
-            <button ion-button icon-only clear  (click)="removeTodolist()" *ngIf="true">
+            <button ion-button icon-only clear  (click)="addTodolist()" *ngIf="true">
               <ion-icon ios="md-star" md="md-star"></ion-icon>
             </button>
-            <button ion-button icon-only clear  (click)="addTodolist()" *ngIf="false">
+            <button ion-button icon-only clear  (click)="removeTodolist()" *ngIf="false">
               <ion-icon ios="md-star-outline" md="md-star-outline"></ion-icon>
             </button>
           </div>
         </ion-row>
 
+        <ion-row class="optionRow">
+          <ion-grid>
 
-        <ion-row>
-          <ion-col  class="agendaDate">
-          <button ion-button icon-end clear  (click)="clickSubtitle()">
+            <ion-row class="agendaOptionThree">
+              <button ion-button  clear (click)="changeRepeat()">
+                <div class="agendarepeat">
+                  <ion-icon class="fa fa-copy  iconCopy"></ion-icon>
+                  重复{{currentAgenda.rts}}
+                  <corner-badge><p><i class="fa fa-copy "></i></p></corner-badge>
+                </div>
+              </button>
+            </ion-row>
+            
+            <ion-row class="agendaOptionTwo">
+              <ion-col class="agendaPlayer">
+                <button ion-button  clear (click)="changeInvites()">
+                    <ion-icon class="fa fa-address-book-o iconUserPlus"></ion-icon>
+                    参与人
+                    <corner-badge>{{currentAgenda.pn}}</corner-badge>
+                </button>
+              </ion-col>
+              <ion-col  class="agendaRemind">
+                <button ion-button clear (click)="changeRemind()">
+                    <ion-icon class="fa fa-bell iconBell"></ion-icon>
+                    30分钟后{{currentAgenda.txs}}
+                  <corner-badge><p>999</p></corner-badge>
+                </button>
+              </ion-col>
+              <ion-col class="agendaAttach">
+                <button ion-button clear icon-end >
+                    <ion-icon class="fa fa-paperclip iconAttach"></ion-icon>
+                     补充
+                    <corner-badge><p>3</p></corner-badge>
+                </button>
+              </ion-col>
+            </ion-row>
+            <!--附加属性操作-->
+            <ion-row class="agendaOptionOne">
+              <button class="agendaPinbutton" ion-button icon-start clear  (click)="changeLocation()">
+                <ion-icon class="fa fa-map-marker iconPin"></ion-icon>
+                <div>地址</div>
+              </button>
+              <button class="agendaRemarkbutton" ion-button icon-start clear  (click)="changeComment()">
+                <ion-icon class="fa fa-edit iconRemark"></ion-icon>
+                <div>备注</div>
+              </button>
+              <button class="agendaPlanbutton"  ion-button icon-start clear  (click)="changePlan()">
+                <ion-icon class="fa fa-plus-square iconPlus"></ion-icon>
+                <div>{{currentAgenda.ji | formatplan: '计划': privateplans}}</div>
+              </button>
+            </ion-row>
+            <ion-row class="agendaRemark">
+              <button  ion-button icon-end clear   (click)="changeComment()">
             <span class="content">
-              <p>日期：2019-12-12</p>
-              <p>时间：19:23 16H15M</p>
+                备注：备注备注备注备注备注备注备注备注备注备注备注备注备注备注备注备注备注备注
               </span>
-            <ion-icon class="fa fa-calendar iconCalendar"></ion-icon>
-          </button>
-          </ion-col>
+                <ion-icon class="fa fa-edit iconRemark"></ion-icon>
+              </button>
+            </ion-row>
 
-          <ion-col class="agendaSender">
+            <ion-row class="agendaPin">
+              <button  ion-button icon-end clear  (click)="changeLocation()">
+            <span class="content">
+              地址：浦东新区红枫路108弄11号1201室  
+              </span>
+                <ion-icon class="fa fa-map-marker iconPin"></ion-icon>
+              </button>
+            </ion-row>
+            <ion-row>
+              <ion-col  class="agendaDate" (click)="clickSubtitle()">
+                <button ion-button icon-end clear  >
+                  <span>
+                    日期：2019-12-12
+                    </span>
+                      </button>
+                <button ion-button icon-end clear  >
+                  <span>
+                    时间：19:23 16H15M
+                    </span>
+                </button>
+              </ion-col>
+              <ion-col  (click)="clickSubtitle()">
+                <button ion-button icon-end clear  >
+                  <ion-icon class="fa fa-calendar iconCalendar"></ion-icon>
+                </button>
+              </ion-col>
+              <ion-col class="agendaSender">
             <span class="readonly">
                ---来自小小女
               </span>
-          </ion-col>
-        </ion-row>
+              </ion-col>
+            </ion-row>
 
-        <ion-row class="agendaPin">
-          <button  ion-button icon-end clear  (click)="changeLocation()">
-            <span class="content">
-              浦东新区红枫路108弄11号1201室  
-              </span>
-            <ion-icon class="fa fa-map-marker iconPin"></ion-icon>
-          </button>
+
+          </ion-grid>
         </ion-row>
-        <ion-row class="agendaRemark">
-          <button  ion-button icon-end clear   (click)="changeComment()">
-            <span class="content">
-                备注备注备注备注备注备注备注备注备注备注备注备注备注备注备注备注备注
-              </span>
-            <ion-icon class="fa fa-edit iconRemark"></ion-icon>
-          </button>
-        </ion-row>
-        <!--附加属性操作-->
-        <ion-row class="agendaOptionOne">
-          <ion-buttons left>
-            <button ion-button icon-start clear  (click)="changeLocation()">
-              <ion-icon class="fa fa-map-marker iconPin"></ion-icon>
-              <div>地址</div>
-            </button>
-            <button ion-button icon-start clear  (click)="changeComment()">
-              <ion-icon class="fa fa-edit iconRemark"></ion-icon>
-              <div>备注</div>
-            </button>
-          </ion-buttons>
-          <ion-buttons right>
-            <button ion-button icon-start clear  (click)="changePlan()">
-              <ion-icon ios="ios-add" md="ios-add"></ion-icon>
-              <div>{{currentAgenda.ji | formatplan: '计划': privateplans}}</div>
-            </button>
-          </ion-buttons>
-        </ion-row>
-        <ion-row class="agendaOptionTwo">
-          <ion-col>
-            <button ion-button  (click)="changeInvites()">
-              <div class="agendaPlayer">
-                <ion-icon class="fa fa-user-plus iconUserPlus"></ion-icon>
-                参与人
-                <corner-badge>{{currentAgenda.pn}}</corner-badge>
-              </div>
-            </button>
-          </ion-col>
-          <ion-col>
-            <button ion-button  (click)="changeRemind()">
-              <div class="agendaRemind">
-                <ion-icon class="fa fa-bell iconBell"></ion-icon>
-                提醒：{{currentAgenda.txs}}
-                <corner-badge>3</corner-badge>
-              </div>
-            </button>
-          </ion-col>
-          <ion-col>
-            <button ion-button icon-end >
-              <div class="agendaAttach">
-                <ion-icon class="fa fa-paperclip iconAttach"></ion-icon>
-                点此查看附件
-                <corner-badge>3</corner-badge>
-              </div>
-            </button>
-          </ion-col>
-        </ion-row>
-        <ion-row class="agendaOptionThree">
-          <button ion-button  (click)="changeRepeat()">
-            <div class="agendarepeat">
-              <ion-icon class="fa fa-copy  iconCopy"></ion-icon>
-              重复{{currentAgenda.rts}}
-            </div>
-          </button>
-        </ion-row>
+       
+       
 
       </ion-grid>
     </page-box>

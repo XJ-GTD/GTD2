@@ -3,127 +3,232 @@ page-agenda {
     height: 100%;
     width: 100%;
     margin: 0px;
-    padding: 14px;
+    padding: 0px 14px;
     border-radius: 0px;
     -webkit-box-shadow: none;
     background: transparent;
     box-shadow: none;
-    .row{
-      .col{
+
+    .row {
+      .col {
         padding: 0px;
       }
-    }
 
+      .icon {
+        font-size: 16px;
+      }
 
+      .content {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        text-align: left;
+        width: 100%;
+      }
 
-    .agendaDate,.agendaSender,.agendaPin,.agendaRemark{
-      button{
+      button {
         margin: 0px;
         padding: 0px;
-        font-weight:400;
-        color:rgba(17,117,141,1);
+        font-weight: 400;
+        color: rgba(51, 51, 51, 1);
         max-width: 100%;
-        font-size:14px;
-        height:1.5em;
-        .button-inner{
+        font-size: 14px;
+        height: 28px;
+
+        .button-inner {
           width: auto;
           text-align: left;
         }
       }
-      .readonly{
-        color:rgba(153,153,153,1);
-
-      }
-      .icon{
-        width: 30px;
-        font-size: 16px;
-        //width: 30px;
-        text-align: left;
-      }
-      .content{
-          overflow: hidden;
-          text-overflow: ellipsis;
-          text-align: left;
-          width: 100%;
-      }
-
-    }
-    .agendaSender{
-      span{
-        position: absolute;
-        bottom: 15px;
-        right: 0px;
-      }
-
     }
 
-    .agendaPin{
-      .icon{
-        color: #CEA75D;
+    .agendaOptionOne {
+      button {
+        padding-right: 20px;
+      }
+
+      button:last-child {
+        padding-right: 0px;
+      }
+
+      .agendaPinbutton {
+        //color: rgba(153, 153, 153, 1);
+
+      }
+
+      .agendaRemarkbutton {
+
+
+      }
+
+      .agendaPlanbutton {
+        flex-grow: 1;
+        float: right;
+
+        .button-inner {
+          float: right;
+        }
+
+      }
+    }
+.agendaOptionThree{
+  button {
+    width: 100%;
+  }
+}
+    .agendaOptionTwo,.agendaOptionThree {
+      margin: 4px 0px;
+      button {
+        background: rgba(239, 239, 239, 1);
+        border-radius: 2px;
+        padding: 7px 14px;
+      }
+
+      .agendaAttach {
+        button{
+          float: right;
+          corner-badge{
+            background-color: #FF7474;
+          }
+        }
+      }
+
+      .agendaRemind {
+        text-align: center;
+        corner-badge{
+          background-color: #4E70B6;
+        }
+      }
+      .agendaPlayer{
+        corner-badge{
+          background-color: #3EA7C0;
+        }
+
+      }
+      .agendarepeat{
+        corner-badge{
+          background-color: #EC8020;
+        }
+
       }
     }
 
-    .agendaRemark{
-      .icon{
-        color: #3EA7C0;
+    //主题设置
+    .agendaEvn, .optionRow {
+      height: 50%;
+      padding: 10px 0px;
+
+      .grid {
+        padding: 0px;
+        flex-direction: column-reverse;
       }
     }
 
-    .agendaPin{
-      .icon{
-        color: red;
-      }
-    }
+    //主题设置
+    .agendaEvn {
+      min-height: 300px;
 
-    .agendaPin{
-      .icon{
-        color: red;
-      }
-    }
-
-    .agendaOptionRight{
-      flex-direction: row-reverse;
-    }
-    .agendaDate{
-      button{
-        height: auto;
-      }
-      //width: 60%;
-    }
-    .agendaSender{
-      //width: 40%;
-
-    }
-    .agendaEvn{
-      height:50%;
-      ion-textarea{
-        font-size:18px;
-        font-weight:400;
-        color:rgba(51,51,51,1);
-        line-height:24px;
+      ion-textarea {
+        font-size: 18px;
+        font-weight: 400;
+        color: rgba(51, 51, 51, 1);
+        line-height: 24px;
       }
 
-      .agendatodo{
+      .agendatodo {
         position: absolute;
         right: 2%;
-        top:2%;
-        button{
-          height:  auto;
-          .icon{
+        top: 2%;
+
+        button {
+          height: auto;
+
+          .icon {
             font-size: 32px;
             width: auto;
-            line-height:1;
+            line-height: 1;
             padding: 0px;
             margin: 0px;
           }
         }
 
-
       }
 
     }
-    .agendaRemark{
+
+    .agendaSender, .agendaPin, .agendaRemark, .agendaDate {
+      .button-inner, span {
+        color: rgba(153, 153, 153, 1);
+      }
+
     }
+
+    //发送人
+    .agendaSender {
+      span {
+        position: absolute;
+        right: 0px;
+      }
+    }
+
+    //时间
+    .iconCalendar {
+      color: rgba(17, 117, 141, 1);
+    }
+
+    .iconPin {
+      color: #CEA75D;
+
+    }
+
+    .iconRemark {
+      color: #3EA7C0;
+
+    }
+
+    .iconPlus {
+      color: #FF7474;
+
+    }
+
+    .iconUserPlus {
+      color: #3EA7C0;
+
+    }
+
+    .iconBell {
+      color: #4E70B6;
+
+    }
+
+    .iconAttach {
+      color: #FF7474;
+
+
+    }
+
+    .iconCopy {
+      color: #EC8020;
+
+    }
+
+    //地址内容
+    .agendaPin {
+      .icon {
+        color: #CEA75D;
+      }
+    }
+
+    //备注内容
+    .agendaRemark {
+      .button-inner {
+        color: rgba(153, 153, 153, 1);
+      }
+
+      .icon {
+        color: #3EA7C0;
+      }
+    }
+
 
   }
 }
