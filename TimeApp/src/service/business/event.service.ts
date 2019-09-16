@@ -780,7 +780,7 @@ export class EventService extends BaseService {
       ev.del = anyenum.DelType.del;
       ev.tb = anyenum.SyncType.unsynch;
       ev.mi = UserConfig.account.id;
-      await this.sqlExce.updateByParam(ev);
+      sqlparam.push(ev.upTParam());
 
       //事件对象放入返回事件
       Object.assign(outAgd,ev);
@@ -814,7 +814,7 @@ export class EventService extends BaseService {
       let existca = await this.sqlExce.getOneByParam<CaTbl>(ca);
       Object.assign(ca, existca);
 
-      if (evtbls.length == 0){
+      if (evtbls.length == 1){//一条即为当前要删除记录
         sqlparam.push(ca.dTParam());
 
         //本地删除事件参与人
