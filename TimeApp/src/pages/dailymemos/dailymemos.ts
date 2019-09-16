@@ -1,6 +1,7 @@
 import {Component, ElementRef, Renderer2, ViewChild, ViewChildren, QueryList } from '@angular/core';
 import {IonicPage, NavController, ModalController, ActionSheetController, NavParams, Slides} from 'ionic-angular';
 import { MemoService, MemoData } from "../../service/business/memo.service";
+import { DayActivityData } from "../../service/business/calendar.service";
 import {PageBoxComponent} from "../../components/page-box/page-box";
 import {EmitService} from "../../service/util-service/emit.service";
 import {FeedbackService} from "../../service/cordova/feedback.service";

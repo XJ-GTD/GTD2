@@ -1,6 +1,5 @@
 import {Component, ElementRef, Renderer2, ViewChild, ViewChildren, QueryList } from '@angular/core';
 import {IonicPage, NavController, ModalController, ActionSheetController, NavParams, Slides} from 'ionic-angular';
-import { MemoService, MemoData } from "../../service/business/memo.service";
 import {ModalBoxComponent} from "../../components/modal-box/modal-box";
 import {EmitService} from "../../service/util-service/emit.service";
 import {FeedbackService} from "../../service/cordova/feedback.service";
@@ -26,23 +25,17 @@ import * as moment from "moment";
 export class MemoPage {
   statusBarColor: string = "#3c4d55";
 
-  memos: Array<MemoData> = new Array<MemoData>();
   day: string = moment().format("YYYY/MM/DD");
-  dayActivities: DayActivityData;
 
   constructor(public navCtrl: NavController,
               public navParams: NavParams,
               public modalCtrl: ModalController,
               private actionSheetCtrl: ActionSheetController,
               private emitService: EmitService,
-              private memoService: MemoService,
               private util: UtilService,
               private feedback: FeedbackService) {
     moment.locale('zh-cn');
     if (this.navParams) {
-      this.dayActivities = this.navParams.data;
-      this.day = this.dayActivities.day;
-      this.memos = this.dayActivities.memos;
     }
   }
 
