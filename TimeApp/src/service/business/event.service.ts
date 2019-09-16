@@ -896,10 +896,12 @@ export class EventService extends BaseService {
           //把删除的附件复制放入事件信息
           outAgd.fjs = delfjs;
 
+          //如果当前删除对象是父事件，则为当前重复事件重建新的父事件，值为ev表重复记录里的第一条做为父事件
+          await this.operateForParentAgd(oriAgdata,oriAgdata.parters,oriAgdata.fjs,sqlparam,outAgds);
+
         }
 
-        //如果当前删除对象是父事件，则为当前重复事件重建新的父事件，值为ev表重复记录里的第一条做为父事件
-        await this.operateForParentAgd(oriAgdata,oriAgdata.parters,oriAgdata.fjs,sqlparam,outAgds);
+
 
       }
 
@@ -1320,6 +1322,15 @@ export class EventService extends BaseService {
           upParent.fjs = fjs;
 
           upParent.tos = tos;//需要发送的参与人
+
+          //新父节点记录以外数据对象内容设置
+          for (let j = 0 ,len = upAgds.length; j < len ;j ++){
+            if (upAgds[j].rtevi != ""){
+              upAgds[j].rtevi = upParent.evi;
+              upAgds[j].mi = UserConfig.account.id;
+              upAgds[j].tb = anyenum.SyncType.unsynch;
+            }
+          }
         }
 
         Object.assign(outAgds , [...outAgds ,...upAgds]);
