@@ -176,7 +176,7 @@ export class EventService extends BaseService {
     let changed: Array<string> = new Array<string>();
 
     for (let key of Object.keys(one)) {
-      if (["wtt", "utt", "rts", "txs", "originator", "tos"].indexOf(key) >= 0) continue;   // 忽略字段
+      if (["wtt", "utt", "rts", "txs", "fj", "originator", "tos"].indexOf(key) >= 0) continue;   // 忽略字段
 
       if (one.hasOwnProperty(key)) {
         let value = one[key];
@@ -375,7 +375,7 @@ export class EventService extends BaseService {
     if (!one || !another) return false;
 
     for (let key of Object.keys(one)) {
-      if (["wtt", "utt", "rts", "txs", "originator", "tos"].indexOf(key) >= 0) continue;   // 忽略字段
+      if (["wtt", "utt", "rts", "txs", "fj", "originator", "tos"].indexOf(key) >= 0) continue;   // 忽略字段
 
       if (one.hasOwnProperty(key)) {
         let value = one[key];
