@@ -716,7 +716,7 @@ describe('EventService test suite', () => {
 
       expect(changed).toBeDefined();
       expect(changed.length).toBeDefined(1);
-      expect(changed[0]).toBeDefined("evn");
+      expect(changed[0]).toBe("evn");
     });
 
     it(`Case 20 - 1 - 3 changedAgendaFields 取得两个日程变化的字段名成数组 - 修改备注后比较`, async () => {
@@ -728,7 +728,7 @@ describe('EventService test suite', () => {
 
       expect(changed).toBeDefined();
       expect(changed.length).toBeDefined(1);
-      expect(changed[0]).toBeDefined("bz");
+      expect(changed[0]).toBe("bz");
     });
 
     it(`Case 20 - 1 - 4 changedAgendaFields 取得两个日程变化的字段名成数组 - 修改重复后比较`, async () => {
@@ -747,7 +747,7 @@ describe('EventService test suite', () => {
 
       expect(changed).toBeDefined();
       expect(changed.length).toBeDefined(1);
-      expect(changed[0]).toBeDefined("rtjson");
+      expect(changed[0]).toBe("rtjson");
     });
 
     it(`Case 20 - 1 - 5 changedAgendaFields 取得两个日程变化的字段名成数组 - 修改提醒后比较`, async () => {
@@ -763,7 +763,7 @@ describe('EventService test suite', () => {
 
       expect(changed).toBeDefined();
       expect(changed.length).toBeDefined(1);
-      expect(changed[0]).toBeDefined("txjson");
+      expect(changed[0]).toBe("txjson");
     });
   });
 
