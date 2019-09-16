@@ -1,21 +1,21 @@
 import { NgModule } from '@angular/core';
 import { IonicPageModule } from 'ionic-angular';
-import { MemoPage } from "./memo";
-import {ModalBoxComponentModule} from "../../components/modal-box/modal-box.module";
+import { DailyMemosPage } from "./dailymemos";
+import {PageBoxComponentModule} from "../../components/page-box/page-box.module";
 import {CornerBadgeComponentModule} from "../../components/corner-badge/corner-badge.module";
 import {PipesModule} from "../../pipes/pipes.module";
 
 @NgModule({
   declarations: [
-    MemoPage,
+    DailyMemosPage,
   ],
   imports: [
     PipesModule,
-    IonicPageModule.forChild(MemoPage),
-    ModalBoxComponentModule,
+    IonicPageModule.forChild(DailyMemosPage),
+    PageBoxComponentModule,
     CornerBadgeComponentModule
   ],
   providers: [
   ],
 })
-export class MemoPageModule {}
+export class DailyMemosPageModule {}

@@ -1,7 +1,7 @@
 import {Component, ElementRef, Renderer2, ViewChild, ViewChildren, QueryList } from '@angular/core';
 import {IonicPage, NavController, ModalController, ActionSheetController, NavParams, Slides} from 'ionic-angular';
 import { MemoService, MemoData } from "../../service/business/memo.service";
-import {ModalBoxComponent} from "../../components/modal-box/modal-box";
+import {PageBoxComponent} from "../../components/page-box/page-box";
 import {EmitService} from "../../service/util-service/emit.service";
 import {FeedbackService} from "../../service/cordova/feedback.service";
 import {UtilService} from "../../service/util-service/util.service";
@@ -18,12 +18,23 @@ import * as moment from "moment";
  */
 @IonicPage()
 @Component({
-  selector: 'page-memo',
-  template: `  <modal-box title="备注" (onClose)="close()">
+  selector: 'page-dailymemos',
+  template: `<page-box title="备忘" [subtitle]="day" (onSubTitleClick)="changeDatetime()" (onRemove)="goRemove()" (onBack)="goBack()">
+        <ion-list>
+          <ion-item *ngFor="let memo of memos">
+            <button ion-button small clear item-start>
+            {{memo.utt | formatedate: 'HH:mm'}}
+            </button>
+            <h2>{{memo.mon}}</h2>
+            <button ion-button icon-only clear item-end>
+              <ion-icon class="fa fa-trash-o"></ion-icon>
+            </button>
+          </ion-item>
+        </ion-list>
         <ion-textarea type="text" placeholder="备注" [(ngModel)]="bz" class="memo-set" autosize maxHeight="400" #bzRef></ion-textarea>
-      </modal-box>`
+      </page-box>`
 })
-export class MemoPage {
+export class DailyMemosPage {
   statusBarColor: string = "#3c4d55";
 
   memos: Array<MemoData> = new Array<MemoData>();
