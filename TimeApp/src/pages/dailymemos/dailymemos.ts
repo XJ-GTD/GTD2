@@ -48,7 +48,7 @@ export class DailyMemosPage {
 
   constructor(public navCtrl: NavController,
               public navParams: NavParams,
-              public modalCtrl: ModalController,
+              public modalCtr: ModalController,
               private actionSheetCtrl: ActionSheetController,
               private emitService: EmitService,
               private memoService: MemoService,
@@ -62,7 +62,7 @@ export class DailyMemosPage {
     }
 
     if (this.memos.length == 0) {
-      addMemo();
+      this.addMemo();
     }
   }
 
