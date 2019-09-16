@@ -827,6 +827,18 @@ describe('EventService test suite', () => {
       expect(changed.length).toBeDefined(1);
       expect(changed[0]).toBe("ji");
     });
+
+    it(`Case 20 - 1 - 11 changedAgendaFields 取得两个日程变化的字段名成数组 - 修改地址后比较`, async () => {
+      let agenda: AgendaData = await eventService.getAgenda(beforechange.evi);
+
+      agenda.adr = "上海市闵行区七莘路1188弄A座513室";
+
+      let changed: Array<string> = eventService.changedAgendaFields(agenda, beforechange);
+
+      expect(changed).toBeDefined();
+      expect(changed.length).toBeDefined(1);
+      expect(changed[0]).toBe("adr");
+    });
   });
 
   describe(`创建不重复与重复（每天、每周、每月、每年）日程`, () => {
