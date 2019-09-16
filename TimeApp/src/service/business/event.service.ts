@@ -161,6 +161,183 @@ export class EventService extends BaseService {
   }
 
   /**
+   * 取得两个日程变化的字段名成数组
+   *
+   * @param {AgendaData} one
+   * @param {AgendaData} another
+   * @returns {Array<string>}
+   *
+   * @author leon_xi@163.com
+   */
+  changedAgendaFields(one: AgendaData, another: AgendaData): Array<string> {
+    assertEmpty(one);   // 入参不能为空
+    assertEmpty(another);   // 入参不能为空
+
+    let changed: Array<string> = new Array<string>();
+
+    for (let key of Object.keys(one)) {
+      if (["wtt", "utt", "rtjson", "txjson", "rts", "txs", "originator", "tos"].indexOf(key) >= 0) continue;   // 忽略字段
+
+      if (one.hasOwnProperty(key)) {
+        let value = one[key];
+
+        // 如果两个值都为空, 继续
+        if (!value && !another[key]) {
+          continue;
+        }
+
+        // 如果one的值为空, 不一致
+        if (!value || !another[key]) {
+          changed.push(key);
+          continue;
+        }
+
+        if (typeof value === 'string' || typeof value === 'number' || typeof value === 'boolean') {
+          if (typeof value === 'string' && value != "" && another[key] != "" && key == "rt") {
+            let onert: RtJson = new RtJson();
+            Object.assign(onert, JSON.parse(value));
+
+            let anotherrt: RtJson = new RtJson();
+            Object.assign(anotherrt, JSON.parse(another[key]));
+
+            if (!(onert.sameWith(anotherrt))) {
+              changed.push(key);
+              continue;
+            }
+          }
+
+          if (typeof value === 'string' && value != "" && another[key] != "" && key == "tx") {
+            let onetx: TxJson = new TxJson();
+            Object.assign(onetx, JSON.parse(value));
+
+            let anothertx: TxJson = new TxJson();
+            Object.assign(anothertx, JSON.parse(another[key]));
+
+            if (!(onetx.sameWith(anothertx))) {
+              changed.push(key);
+              continue;
+            }
+          }
+
+          if (value != another[key]) {
+            changed.push(key);
+            continue;
+          }
+        }
+
+        if (value instanceof Array) {
+          if (value.length != another[key].length) {
+            changed.push(key);
+            continue;
+          }
+
+          if (value.length > 0) {
+            if (value[0] && value[0].hasOwnProperty("pari") && another[key][0] && another[key][0].hasOwnProperty("pari")) {
+              let compare = value.concat(another[key]);
+
+              compare.sort((a, b) => {
+                if (a.pari > b.pari) return -1;
+                if (a.pari < b.pari) return 1;
+                return 0;
+              });
+
+              let result = compare.reduce((target, val) => {
+                if (!target) {
+                  target = val;
+                } else {
+                  if (!val) {
+                    target = {};
+                  } else {
+                    let issame: boolean = true;
+
+                    for (let key of Object.keys(target)) {
+                      if (["wtt", "utt"].indexOf(key) >= 0) continue;   // 忽略字段
+
+                      if (target.hasOwnProperty(key)) {
+                        let value = target[key];
+
+                        if (typeof value === 'string' || typeof value === 'number' || typeof value === 'boolean') {
+                          if (value != val[key]) issame = false;
+                        }
+                      }
+                    }
+
+                    if (issame) {
+                      target = null;
+                    } else {
+                      target = {};
+                    }
+                  }
+                }
+
+                return target;
+              }, null);
+
+              if (result && result.isEmpty()) {
+                changed.push(key);
+                continue;
+              }
+
+            } else if (value[0] instanceof FjTbl && another[key][0] instanceof FjTbl) {
+
+              let compare = value.concat(another[key]);
+
+              compare.sort((a, b) => {
+                if (a.fji > b.fji) return -1;
+                if (a.fji < b.fji) return 1;
+                return 0;
+              });
+
+              let result = compare.reduce((target, val) => {
+                if (!target) {
+                  target = val;
+                } else {
+                  if (!val) {
+                    target = {};
+                  } else {
+                    let issame: boolean = true;
+
+                    for (let key of Object.keys(target)) {
+                      if (["wtt", "utt"].indexOf(key) >= 0) continue;   // 忽略字段
+
+                      if (target.hasOwnProperty(key)) {
+                        let value = target[key];
+
+                        if (typeof value === 'string' || typeof value === 'number' || typeof value === 'boolean') {
+                          if (value != val[key]) issame = false;
+                        }
+                      }
+                    }
+
+                    if (issame) {
+                      target = null;
+                    } else {
+                      target = {};
+                    }
+                  }
+                }
+
+                return target;
+              }, null);
+
+              if (result && result.isEmpty()) {
+                changed.push(key);
+                continue;
+              }
+
+            } else {
+              changed.push(key);
+              continue;
+            }
+          }
+        }
+      }
+    }
+
+    return changed;
+  }
+
+  /**
    * 判断两个日程是否相同
    *
    * @param {AgendaData} one
@@ -870,7 +1047,8 @@ export class EventService extends BaseService {
     //如果不使用页面对象，而直接使用更新后的返回数据对象作为参数，则rtjson，txjson为空
     if (!newAgdata.rtjson) {
       if (newAgdata.rt) {
-        newAgdata.rtjson = JSON.parse(newAgdata.rt);
+        newAgdata.rtjson = new RtJson();
+        Object.assign(newAgdata.rtjson, JSON.parse(newAgdata.rt));
       } else {
         newAgdata.rtjson = new RtJson();
       }
@@ -878,7 +1056,8 @@ export class EventService extends BaseService {
 
     if (!oriAgdata.rtjson) {
       if (oriAgdata.rt) {
-        oriAgdata.rtjson = JSON.parse(oriAgdata.rt);
+        oriAgdata.rtjson = new RtJson();
+        Object.assign(oriAgdata.rtjson, JSON.parse(oriAgdata.rt));
       } else {
         oriAgdata.rtjson = new RtJson();
       }
@@ -886,7 +1065,8 @@ export class EventService extends BaseService {
 
     if (!newAgdata.txjson) {
       if (newAgdata.tx) {
-        newAgdata.txjson = JSON.parse(newAgdata.tx);
+        newAgdata.txjson = new TxJson();
+        Object.assign(newAgdata.txjson, JSON.parse(newAgdata.tx));
       } else {
         newAgdata.txjson = new TxJson();
       }

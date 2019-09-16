@@ -10,13 +10,12 @@ import {Events} from 'ionic-angular';
 @Component({
   selector: 'page-box',
   template:
-      `
+  `
     <div class="box-page">
       <ion-header class="box-header">
         <ion-toolbar >
           <ion-title>
           {{title}}
-          <ion-badge *ngIf="data" (click)="clickSubtitle()">{{subtitle}}</ion-badge>
           </ion-title>
           <div class="toolbar">
             <div (click)="goRemove()">

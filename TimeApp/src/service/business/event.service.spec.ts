@@ -686,6 +686,50 @@ describe('EventService test suite', () => {
     expect(confirm).toBe(false);
   });
 
+  describe(`Case 20 - 1 取得两个日程变化的字段名成数组`, () => {
+    let beforechange: AgendaData = {} as AgendaData;
+
+    beforeAll(async () => {
+      beforechange.sd = moment().format("YYYY/MM/DD");
+      beforechange.evn = "取得两个日程变化的字段名成数组 - 保存后比较";
+
+      await eventService.saveAgenda(beforechange);
+    });
+
+    it(`Case 20 - 1 - 1 changedAgendaFields 取得两个日程变化的字段名成数组 - 保存后比较`, async () => {
+      let agenda: AgendaData = await eventService.getAgenda(beforechange.evi);
+
+      let changed: Array<string> = eventService.changedAgendaFields(agenda, beforechange);
+
+      expect(changed).toBeDefined();
+      expect(changed.length).toBeDefined(0);
+    });
+
+    it(`Case 20 - 1 - 2 changedAgendaFields 取得两个日程变化的字段名成数组 - 修改主题后比较`, async () => {
+      let agenda: AgendaData = await eventService.getAgenda(beforechange.evi);
+
+      agenda.evn = "修改主题后";
+
+      let changed: Array<string> = eventService.changedAgendaFields(agenda, beforechange);
+
+      expect(changed).toBeDefined();
+      expect(changed.length).toBeDefined(1);
+      expect(changed[0]).toBeDefined("evn");
+    });
+
+    it(`Case 20 - 1 - 3 changedAgendaFields 取得两个日程变化的字段名成数组 - 修改备注后比较`, async () => {
+      let agenda: AgendaData = await eventService.getAgenda(beforechange.evi);
+
+      agenda.bz = "修改备注后";
+
+      let changed: Array<string> = eventService.changedAgendaFields(agenda, beforechange);
+
+      expect(changed).toBeDefined();
+      expect(changed.length).toBeDefined(1);
+      expect(changed[0]).toBeDefined("bz");
+    });
+  });
+
   describe(`创建不重复与重复（每天、每周、每月、每年）日程`, () => {
     let dayNoneRepeat: string = moment().format("YYYY/MM/DD");
     let dayDayRepeat: string = moment().add(1, "weeks").format("YYYY/MM/DD");
