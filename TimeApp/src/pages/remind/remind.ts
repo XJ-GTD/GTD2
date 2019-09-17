@@ -8,7 +8,7 @@ import {RtJson, TxJson} from "../../service/business/event.service";
 @Component({
   selector: 'page-remind',
   template: `
-  <modal-box title="提醒" (onClose)="close()">
+  <modal-box title="提醒" [buttons]="buttons" (onSave)="save()" (onCancel)="cancel()">
     <scroll-select type="scroll-with-button" *ngFor="let remind of reminds"  [value]="remind.value" (changed)="onRemindChanged($event)">
       <scroll-select-option value="">滑动以添加</scroll-select-option>
       <scroll-select-option [value]="opt.value" *ngFor="let opt of selectOption">
@@ -21,6 +21,13 @@ import {RtJson, TxJson} from "../../service/business/event.service";
 export class RemindPage {
   statusBarColor: string = "#3c4d55";
 
+  buttons: any = {
+    remove: false,
+    share: false,
+    save: true,
+    cancel: true
+  };
+
   @ViewChildren(ScrollSelectComponent)
   remindComponents: QueryList<ScrollSelectComponent>;
 
@@ -29,6 +36,7 @@ export class RemindPage {
   currentTx: TxJson;
 
   constructor(public navCtrl: NavController,
+              public modalCtrl: ModalController,
               public viewCtrl: ViewController,
               public navParams: NavParams) {
     if (this.navParams && this.navParams.data) {
@@ -59,7 +67,7 @@ export class RemindPage {
 
   }
 
-  close() {
+  save() {
     this.currentTx.reminds.length = 0;
     this.remindComponents.forEach((value,index,array)=>{
       if (value.value !=""){
@@ -69,6 +77,10 @@ export class RemindPage {
 
     let data: Object = {txjson: this.currentTx};
     this.viewCtrl.dismiss(data);
+  }
+
+  cancel() {
+    this.navCtrl.pop();
   }
 
   onRemindChanged(value1) {

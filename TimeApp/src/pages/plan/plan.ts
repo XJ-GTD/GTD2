@@ -8,7 +8,7 @@ import {ModalBoxComponent} from "../../components/modal-box/modal-box";
 @Component({
   selector: 'page-plan',
   template: `
-  <modal-box title="计划" (onClose)="close()">
+  <modal-box title="计划" [buttons]="buttons" (onSave)="save()" (onCancel)="cancel()">
     <ion-list radio-group [(ngModel)]="selected" (ionChange)="jhChanged()">
       <ion-item *ngFor="let option of jhoptions">
         <ion-label><i class="color-dot" [ngStyle]="{'background-color': option.jc }"></i> {{option.jn}}</ion-label>
@@ -20,6 +20,13 @@ import {ModalBoxComponent} from "../../components/modal-box/modal-box";
 })
 export class PlanPage {
   statusBarColor: string = "#3c4d55";
+
+  buttons: any = {
+    remove: false,
+    share: false,
+    save: true,
+    cancel: true
+  };
 
   jhoptions: Array<any> = new Array<any>();
   selected: string = "";
@@ -61,9 +68,12 @@ export class PlanPage {
     }
   }
 
-  close() {
+  save() {
     let data: Object = {jh: this.selectedJh};
     this.viewCtrl.dismiss(data);
   }
 
+  cancel() {
+    this.navCtrl.pop();
+  }
 }

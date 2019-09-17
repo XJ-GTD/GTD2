@@ -29,18 +29,18 @@ import {Content, Events, Ion, IonicPage} from 'ionic-angular';
           {{title}}
           </ion-title>
           <div class="toolbar">
-            <div (click)="goRemove()">
+            <div (click)="goRemove()" *ngIf="buttons.remove">
               <ion-icon class="fa fa-trash-o"></ion-icon>
             </div>
 
-            <div  (click)="goRemove()">
+            <div  (click)="goRemove()" *ngIf="buttons.share">
               <ion-icon class="fa fa-share-square-o"></ion-icon>
             </div>
 
-            <div  (click)="goRemove()">
+            <div  (click)="goRemove()" *ngIf="buttons.save">
               <ion-icon class="fa fa-floppy-o"></ion-icon>
             </div>
-            <div (click)="goBack()">
+            <div (click)="goBack()" *ngIf="buttons.cancel">
               <ion-icon class="fa fa-undo"></ion-icon>
             </div>
           </div>
@@ -64,6 +64,14 @@ export class PageBoxComponent{
 
   @Input()
   data: any;
+
+  @Input()
+  buttons: any = {
+    remove: false,
+    share: false,
+    save: false,
+    cancel: true
+  };
 
   @Output()
   private onSubTitleClick: EventEmitter<any> = new EventEmitter<any>();
