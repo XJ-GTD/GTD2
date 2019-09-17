@@ -150,15 +150,14 @@ import { PageDirection, IsSuccess, OperateType, RepeatFlag, ToDoListStatus } fro
     <!--</ion-grid>-->
     <!--</page-box>-->
 
-    <page-box title="活动" [subtitle]="currentAgenda.evd" [data]="currentAgenda.evi" (onSubTitleClick)="changeDatetime()"
-              (onRemove)="goRemove()" (onBack)="goBack()">
+    <page-box title="活动" [buttons]="buttons" [data]="currentAgenda.evi" (onRemove)="goRemove()" (onBack)="save()" (onBack)="goBack()">
       <ion-grid>
         <ion-row class="agendaEvn">
           <!--主题-->
           <ion-textarea rows="8" [(ngModel)]="currentAgenda.evn" (ionBlur)="save()"></ion-textarea>
 
           <div class="agendatodo">
-            <button ion-button icon-only clear  (click)="addTodolist()" *ngIf="true">
+            <button ion-button icon-only clear  (click)="changeTodolist()" *ngIf="true">
               <ion-icon ios="md-star" md="md-star"></ion-icon>
             </button>
             <button ion-button icon-only clear  (click)="removeTodolist()" *ngIf="false">
@@ -220,7 +219,7 @@ import { PageDirection, IsSuccess, OperateType, RepeatFlag, ToDoListStatus } fro
                 </div>
               </button>
             </ion-row>
-            
+
             <ion-row class="agendaRemark">
               <button  ion-button icon-end clear   (click)="changeComment()">
             <span class="content">
@@ -282,6 +281,13 @@ import { PageDirection, IsSuccess, OperateType, RepeatFlag, ToDoListStatus } fro
 export class AgendaPage {
   statusBarColor: string = "#3c4d55";
 
+  buttons: any = {
+    remove: false,
+    share: false,
+    save: false,
+    cancel: true
+  };
+
   currentuser: string = UserConfig.account.id;
   friends: Array<any> = UserConfig.friends;
   currentAgenda: AgendaData = {} as AgendaData;
@@ -330,6 +336,8 @@ export class AgendaPage {
         this.eventService.getAgenda(paramter.si).then((agenda) => {
           this.currentAgenda = agenda;
           Object.assign(this.originAgenda, agenda);
+
+          this.buttons.remove = true;
         });
       }
     }
@@ -356,14 +364,14 @@ export class AgendaPage {
   changeDatetime() {
   }
 
-  addTodolist() {
+  changeTodolist() {
     this.currentAgenda.todolist = ToDoListStatus.On;
-    this.doOptionSave(OperateType.OnlySel);
-  }
 
-  removeTodolist() {
-    this.currentAgenda.todolist = ToDoListStatus.Off;
-    this.doOptionSave(OperateType.OnlySel);
+    if (this.currentAgenda.todolist == ToDoListStatus.On) {
+      this.currentAgenda.todolist = ToDoListStatus.Off;
+    } else {
+      this.currentAgenda.todolist = ToDoListStatus.On;
+    }
   }
 
   changeAttach() {
@@ -389,8 +397,10 @@ export class AgendaPage {
 
       this.currentAgenda.ji = data.jh.ji;
 
-      if (this.originAgenda.ji != this.currentAgenda.ji) {
-        this.doOptionSave(OperateType.OnlySel);
+      if (!this.eventService.isSameAgenda(this.currentAgenda, this.originAgenda)) {
+        this.buttons.save = true;
+      } else {
+        this.buttons.save = false;
       }
     });
     modal.present();
@@ -411,8 +421,10 @@ export class AgendaPage {
 
       this.currentAgenda.bz = data.bz;
 
-      if (this.originAgenda.bz != this.currentAgenda.bz) {
-        this.doOptionSave(OperateType.OnlySel);
+      if (!this.eventService.isSameAgenda(this.currentAgenda, this.originAgenda)) {
+        this.buttons.save = true;
+      } else {
+        this.buttons.save = false;
       }
     });
     modal.present();
@@ -437,7 +449,11 @@ export class AgendaPage {
         this.currentAgenda.rt = JSON.stringify(this.currentAgenda.rtjson);
         this.currentAgenda.rts = this.currentAgenda.rtjson.text();
 
-        this.save();
+        if (!this.eventService.isSameAgenda(this.currentAgenda, this.originAgenda)) {
+          this.buttons.save = true;
+        } else {
+          this.buttons.save = false;
+        }
       }
     });
     modal.present();
@@ -462,7 +478,11 @@ export class AgendaPage {
         this.currentAgenda.tx = JSON.stringify(this.currentAgenda.txjson);
         this.currentAgenda.txs = this.currentAgenda.txjson.text();
 
-        this.doOptionSave(OperateType.OnlySel);
+        if (!this.eventService.isSameAgenda(this.currentAgenda, this.originAgenda)) {
+          this.buttons.save = true;
+        } else {
+          this.buttons.save = false;
+        }
       }
     });
     modal.present();
