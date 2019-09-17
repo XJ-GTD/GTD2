@@ -27,7 +27,7 @@ import * as moment from "moment";
             {{memo.utt | formatedate: 'HH:mm'}}
             </button>
             <h2>{{memo.mon}}</h2>
-            <button ion-button icon-only clear item-end>
+            <button ion-button icon-only clear item-end (click)="remove($event, memo)">
               <ion-icon class="fa fa-trash-o"></ion-icon>
             </button>
           </ion-item>
@@ -93,6 +93,12 @@ export class DailyMemosPage {
       }
     });
     modal.present();
+  }
+
+  remove(event, memo) {
+    event.stopPropagation();  // 阻止冒泡
+    event.preventDefault();   // 忽略事件传递
+    this.memoService.removeMemo(memo.moi);
   }
 
   goBack() {
