@@ -195,7 +195,7 @@ import { PageDirection, IsSuccess, OperateType, RepeatFlag, ToDoListStatus, IsWh
                 <button ion-button clear (click)="changeRemind()">
                     <ion-icon class="fa fa-bell iconBell" *ngIf="!currentAgenda.txs"></ion-icon>
                     {{currentAgenda.txs || "提醒"}}
-                  <corner-badge *ngIf="currentAgenda.txs"><p>currentAgenda.txjson.reminds.length</p></corner-badge>
+                  <corner-badge *ngIf="currentAgenda.txs"><p>{{currentAgenda.txjson.reminds.length}}</p></corner-badge>
                 </button>
               </ion-col>
               <ion-col class="agendaAttach">
