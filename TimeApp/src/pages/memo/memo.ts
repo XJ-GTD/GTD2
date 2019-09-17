@@ -60,7 +60,10 @@ export class MemoPage {
   }
 
   close() {
-    let data: Object = {memo: this.memo};
+    let data: Object = {
+      day: this.day,
+      memo: this.memo
+    };
     this.viewCtrl.dismiss(data);
   }
 }
