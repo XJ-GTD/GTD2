@@ -19,7 +19,7 @@ import {ModalBoxComponent} from "../../components/modal-box/modal-box";
 @Component({
   selector: 'page-invites',
   template: `
-    <modal-box title="邀请人" (onSave)="saveToClose()" (onCancel)="cancel()">
+    <modal-box title="邀请人" [buttons]="buttons" (onSave)="saveToClose()" (onCancel)="cancel()">
       <div class="name-input w-auto">
         <ion-searchbar type="text" placeholder="手机号 姓名" (ionChange)="getContacts()" [(ngModel)]="tel"
                    text-center></ion-searchbar>
@@ -59,6 +59,13 @@ import {ModalBoxComponent} from "../../components/modal-box/modal-box";
 })
 export class InvitesPage {
   statusBarColor: string = "#3c4d55";
+
+  buttons: any = {
+    remove: false,
+    share: false,
+    save: true,
+    cancel: true
+  };
 
   tel: any;//手机号
   pageFsl: Array<FsPageData> = new Array<FsPageData>();

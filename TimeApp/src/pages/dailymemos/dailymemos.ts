@@ -20,7 +20,7 @@ import * as moment from "moment";
 @IonicPage()
 @Component({
   selector: 'page-dailymemos',
-  template: `<page-box title="备忘" [subtitle]="day" (onSubTitleClick)="changeDatetime()" (onRemove)="goRemove()" (onBack)="goBack()">
+  template: `<page-box title="备忘" [subtitle]="day" [buttons]="buttons" (onSubTitleClick)="changeDatetime()" (onRemove)="goRemove()" (onBack)="goBack()">
         <ion-list>
           <ion-item *ngFor="let memo of memos" (click)="goDetail(memo)">
             <button ion-button small clear item-start>
@@ -41,6 +41,13 @@ import * as moment from "moment";
 })
 export class DailyMemosPage {
   statusBarColor: string = "#3c4d55";
+
+  buttons: any = {
+    remove: false,
+    share: false,
+    save: false,
+    cancel: true
+  };
 
   memos: Array<MemoData> = new Array<MemoData>();
   day: string = moment().format("YYYY/MM/DD");

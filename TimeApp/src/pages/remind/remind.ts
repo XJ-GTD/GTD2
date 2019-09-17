@@ -8,7 +8,7 @@ import {RtJson, TxJson} from "../../service/business/event.service";
 @Component({
   selector: 'page-remind',
   template: `
-  <modal-box title="提醒" (onSave)="save()" (onCancel)="cancel()">
+  <modal-box title="提醒" [buttons]="buttons" (onSave)="save()" (onCancel)="cancel()">
     <scroll-select type="scroll-with-button" *ngFor="let remind of reminds"  [value]="remind.value" (changed)="onRemindChanged($event)">
       <scroll-select-option value="">滑动以添加</scroll-select-option>
       <scroll-select-option [value]="opt.value" *ngFor="let opt of selectOption">
@@ -20,6 +20,13 @@ import {RtJson, TxJson} from "../../service/business/event.service";
 })
 export class RemindPage {
   statusBarColor: string = "#3c4d55";
+
+  buttons: any = {
+    remove: false,
+    share: false,
+    save: true,
+    cancel: true
+  };
 
   @ViewChildren(ScrollSelectComponent)
   remindComponents: QueryList<ScrollSelectComponent>;

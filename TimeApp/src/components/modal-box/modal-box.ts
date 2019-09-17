@@ -19,18 +19,18 @@ import {Events} from 'ionic-angular';
             {{title}}
           </ion-title>
           <div class="toolbar">
-            <div (click)="goRemove()">
+            <div (click)="goRemove()" *ngIf="buttons.remove">
               <ion-icon class="fa fa-trash-o"></ion-icon>
             </div>
 
-            <div  (click)="goRemove()">
+            <div  (click)="goRemove()" *ngIf="buttons.share">
               <ion-icon class="fa fa-share-square-o"></ion-icon>
             </div>
 
-            <div  (click)="save()">
+            <div  (click)="save()" *ngIf="buttons.save">
               <ion-icon class="fa fa-floppy-o"></ion-icon>
             </div>
-            <div (click)="cancel()">
+            <div (click)="cancel()" *ngIf="buttons.cancel">
               <ion-icon class="fa fa-undo"></ion-icon>
             </div>
           </div>
@@ -45,6 +45,14 @@ import {Events} from 'ionic-angular';
 export class ModalBoxComponent {
   @Input()
   title: string = "";
+
+  @Input()
+  buttons: any = {
+    remove: false,
+    share: false,
+    save: false,
+    cancel: true
+  };
 
   @Output()
   private onSave: EventEmitter<any> = new EventEmitter<any>();

@@ -7,7 +7,7 @@ import {ModalBoxComponent} from "../../components/modal-box/modal-box";
 @Component({
   selector: 'page-attach',
   template: `
-  <modal-box title="附件" (onSave)="save()" (onCancel)="cancel()">
+  <modal-box title="附件" [buttons]="buttons" (onSave)="save()" (onCancel)="cancel()">
     <ion-grid>
       <ion-row>
         暂无附件
@@ -28,6 +28,13 @@ import {ModalBoxComponent} from "../../components/modal-box/modal-box";
 })
 export class AttachPage {
   statusBarColor: string = "#3c4d55";
+
+  buttons: any = {
+    remove: false,
+    share: false,
+    save: true,
+    cancel: true
+  };
 
   constructor(public navCtrl: NavController,
               public viewCtrl: ViewController,
