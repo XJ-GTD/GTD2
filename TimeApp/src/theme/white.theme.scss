@@ -282,7 +282,13 @@ $baseBackcolor_white: rgba(241, 241, 241, 1);
       ion-textarea {
         color: rgba(51, 51, 51, 1);
       }
-
+      .agendatodo {
+        button {
+          .icon {
+            color:#11758D;
+          }
+        }
+      }
     }
 
 

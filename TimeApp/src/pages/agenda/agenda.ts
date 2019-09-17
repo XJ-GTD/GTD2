@@ -157,11 +157,8 @@ import { PageDirection, IsSuccess, OperateType, RepeatFlag, ToDoListStatus } fro
           <ion-textarea rows="8" [(ngModel)]="currentAgenda.evn" (ionBlur)="save()"></ion-textarea>
 
           <div class="agendatodo">
-            <button ion-button icon-only clear  (click)="changeTodolist()" *ngIf="true">
-              <ion-icon ios="md-star" md="md-star"></ion-icon>
-            </button>
-            <button ion-button icon-only clear  (click)="removeTodolist()" *ngIf="false">
-              <ion-icon ios="md-star-outline" md="md-star-outline"></ion-icon>
+            <button ion-button icon-only clear  (click)="changeTodolist()">
+              <ion-icon class="fa" [class.fa-star] = "currentAgenda.todolist == '0'" [class.fa-star-o] = "currentAgenda.todolist == '1'"></ion-icon>
             </button>
           </div>
         </ion-row>
