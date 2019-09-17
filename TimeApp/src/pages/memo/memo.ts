@@ -1,5 +1,5 @@
 import {Component, ElementRef, Renderer2, ViewChild, ViewChildren, QueryList } from '@angular/core';
-import {IonicPage, NavController, ModalController, ActionSheetController, NavParams, Slides} from 'ionic-angular';
+import {IonicPage, NavController, ViewController, ActionSheetController, NavParams, Slides} from 'ionic-angular';
 import {ModalBoxComponent} from "../../components/modal-box/modal-box";
 import {EmitService} from "../../service/util-service/emit.service";
 import {FeedbackService} from "../../service/cordova/feedback.service";
@@ -18,28 +18,48 @@ import * as moment from "moment";
 @IonicPage()
 @Component({
   selector: 'page-memo',
-  template: `  <modal-box title="备注" (onClose)="close()">
-        <ion-textarea type="text" placeholder="备注" [(ngModel)]="bz" class="memo-set" autosize maxHeight="400" #bzRef></ion-textarea>
+  template: `  <modal-box title="备忘" (onClose)="close()">
+        <ion-textarea type="text" placeholder="备注" [(ngModel)]="memo" class="memo-set" autosize maxHeight="400" #bzRef></ion-textarea>
       </modal-box>`
 })
 export class MemoPage {
   statusBarColor: string = "#3c4d55";
 
+  @ViewChild("bzRef", {read: ElementRef})
+  _bzRef: ElementRef;
+
   day: string = moment().format("YYYY/MM/DD");
+  memo: string = "";
 
   constructor(public navCtrl: NavController,
               public navParams: NavParams,
-              public modalCtrl: ModalController,
+              public viewCtrl: ViewController,
               private actionSheetCtrl: ActionSheetController,
               private emitService: EmitService,
               private util: UtilService,
               private feedback: FeedbackService) {
     moment.locale('zh-cn');
     if (this.navParams) {
+      let data = this.navParams.data;
+
+      this.day = data.day;
+
+      if (data.memo) {
+        this.memo = data.memo;
+      }
     }
   }
 
+  ionViewDidEnter() {
+    setTimeout(() => {
+      let el = this._bzRef.nativeElement.querySelector('textarea');
+      el.focus();
+      this.keyboard.show();   //for android
+    }, 500);
+  }
+
   close() {
-    this.navCtrl.pop();
+    let data: Object = {memo: this.memo};
+    this.viewCtrl.dismiss(data);
   }
 }

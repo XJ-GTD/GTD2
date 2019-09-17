@@ -48,7 +48,7 @@ export class DailyMemosPage {
 
   constructor(public navCtrl: NavController,
               public navParams: NavParams,
-              public modalCtr: ModalController,
+              public modalCtrl: ModalController,
               private actionSheetCtrl: ActionSheetController,
               private emitService: EmitService,
               private memoService: MemoService,
@@ -67,7 +67,18 @@ export class DailyMemosPage {
   }
 
   addMemo() {
-    this.modalCtr.create(DataConfig.PAGE._MEMO_PAGE, {day: this.day}).present();
+    let modal = this.modalCtrl.create(DataConfig.PAGE._MEMO_PAGE, {day: this.day});
+    modal.onDidDismiss(async (data) => {
+      if (data.memo && typeof data.memo === 'string') { // 创建新备忘
+        let memo: MemoData = {} as MemoData;
+
+        memo.sd = data.day;
+        memo.mon = data.memo;
+
+        await this.memoService.saveMemo(memo);
+      }
+    });
+    modal.present();
   }
 
   goBack() {
