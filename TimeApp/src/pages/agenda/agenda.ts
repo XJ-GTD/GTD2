@@ -170,13 +170,20 @@ import { PageDirection, IsSuccess, OperateType, RepeatFlag, ToDoListStatus } fro
         <ion-row class="optionRow">
           <ion-grid>
 
-            <ion-row class="agendaOptionThree">
-              <button ion-button  clear (click)="changeRepeat()">
-                <div class="agendarepeat">
-                  <!--<ion-icon class="fa fa-copy  iconCopy"></ion-icon>-->
-                  重复{{currentAgenda.rts}}
-                  <corner-badge><p><i class="fa fa-copy "></i></p></corner-badge>
-                </div>
+
+            <!--附加属性操作-->
+            <ion-row class="agendaOptionOne">
+              <button class="agendaPinbutton" ion-button icon-start clear  (click)="changeLocation()">
+                <ion-icon class="fa fa-map-marker iconPin"></ion-icon>
+                <div>地址</div>
+              </button>
+              <button class="agendaRemarkbutton" ion-button icon-start clear  (click)="changeComment()">
+                <ion-icon class="fa fa-edit iconRemark"></ion-icon>
+                <div>备注</div>
+              </button>
+              <button class="agendaPlanbutton"  ion-button icon-start clear  (click)="changePlan()">
+                <ion-icon class="fa fa-plus-square iconPlus"></ion-icon>
+                <div>{{currentAgenda.ji | formatplan: '计划': privateplans}}</div>
               </button>
             </ion-row>
             
@@ -203,21 +210,17 @@ import { PageDirection, IsSuccess, OperateType, RepeatFlag, ToDoListStatus } fro
                 </button>
               </ion-col>
             </ion-row>
-            <!--附加属性操作-->
-            <ion-row class="agendaOptionOne">
-              <button class="agendaPinbutton" ion-button icon-start clear  (click)="changeLocation()">
-                <ion-icon class="fa fa-map-marker iconPin"></ion-icon>
-                <div>地址</div>
-              </button>
-              <button class="agendaRemarkbutton" ion-button icon-start clear  (click)="changeComment()">
-                <ion-icon class="fa fa-edit iconRemark"></ion-icon>
-                <div>备注</div>
-              </button>
-              <button class="agendaPlanbutton"  ion-button icon-start clear  (click)="changePlan()">
-                <ion-icon class="fa fa-plus-square iconPlus"></ion-icon>
-                <div>{{currentAgenda.ji | formatplan: '计划': privateplans}}</div>
+
+            <ion-row class="agendaOptionThree">
+              <button ion-button  clear (click)="changeRepeat()">
+                <div class="agendarepeat">
+                  <!--<ion-icon class="fa fa-copy  iconCopy"></ion-icon>-->
+                  重复{{currentAgenda.rts}}
+                  <corner-badge><p><i class="fa fa-copy "></i></p></corner-badge>
+                </div>
               </button>
             </ion-row>
+            
             <ion-row class="agendaRemark">
               <button  ion-button icon-end clear   (click)="changeComment()">
             <span class="content">
