@@ -9,8 +9,8 @@ import {ModalBoxComponent} from "../../components/modal-box/modal-box";
   selector: 'page-location',
   template: `
   <modal-box title="地址" (onClose)="close()">
-    <ion-searchbar (ionInput)="getItems($event)" placeholder="上海市东方明珠塔" animated="true"></ion-searchbar>
-    <baidu-map [options]="options" (loaded)="maploaded($event)">
+    <ion-searchbar (ionBlur)="search(map)"  (ionInput)="getItems($event)" [(ngModel)]="searchText" placeholder="上海市东方明珠塔" animated="true"></ion-searchbar>
+    <baidu-map #l-map id="map_container" [options]="options" (loaded)="maploaded($event)">
       <control type="navigation" [options]="navOptions"></control>
       <marker *ngFor="let marker of markers" [point]="marker.point" [options]="marker.options"></marker>
     </baidu-map>
@@ -30,6 +30,9 @@ export class LocationPage {
   markers: Array<any> = new Array<any>();
   local: any;
   dz: string = "";
+  searchText: string;
+  map : any;
+  @ViewChild('l-map') map_container: ElementRef;
 
   constructor(public navCtrl: NavController,
               public viewCtrl: ViewController,
@@ -45,9 +48,9 @@ export class LocationPage {
     //百度地图设置
     this.options = {
       centerAndZoom: {
-        lat: 39.920116,
-        lng: 116.403703,
-        zoom: 12
+        lat: 31.244604,
+        lng: 121.51606,
+        zoom: 16
       },
       enableScrollWheelZoom: true,
       enableKeyboard: true
@@ -59,24 +62,40 @@ export class LocationPage {
   		type: NavigationControlType.BMAP_NAVIGATION_CONTROL_PAN
 	  };
 
-    this.markers.push({
-      options: {
+    this.markers.push(
+      {
+        options: {
           icon: {
-            imageUrl: 'assets/imgs/map/baidu_map_markers_2x.png',
+            imageUrl: '/assets/imgs/map/markericon.png',
             size: {
-              height: 23,
+              height: 35,
+              width: 25
+            },
+            imageSize: {
+              height: 35,
               width: 25
             }
-          },
-          title: '天安门'
+          }
         },
         point: {
-          lat: 39.920116,
-          lng: 116.403703
+          lat: 31.244604,
+          lng: 121.51606
         }
-    });
+      },
+      {
+        point: {
+          lat: 31.246124,
+          lng: 121.51232
+        }
+      }
+    );
+
+
   }
 
+  ionViewDidLoad() {
+    this.map = new BMap.Map("map_container");
+  }
   close() {
     this.navCtrl.pop();
   }
@@ -84,10 +103,12 @@ export class LocationPage {
   getItems(ev) {
     console.log(ev);
     this.options['currentCity'] = '上海市';
+    this.search(this.searchText);
+
   }
 
   maploaded(e: any) {
-
+    BMap = e;
   }
 
   search(e: any) { // 对应baidu-map中loaded事件即地图加载时运行的方法 官方介绍e可以是map实例
