@@ -7,7 +7,7 @@ import {ModalBoxComponent} from "../../components/modal-box/modal-box";
 @Component({
   selector: 'page-comment',
   template: `
-  <modal-box title="备注" (onClose)="close()">
+  <modal-box title="备注" (onSave)="save()" (onCancel)="cancel()">
     <ion-textarea  placeholder="备注"  class="memo-set" rows="8" (ionBlur)="save()" #bzRef [(ngModel)]="bz" ></ion-textarea>
   </modal-box>
   `
@@ -21,6 +21,7 @@ export class CommentPage {
   bz: string = "";  //备注
 
   constructor(public navCtrl: NavController,
+              public modalCtrl: ModalController,
               public viewCtrl: ViewController,
               public navParams: NavParams,
               private keyboard: Keyboard) {
@@ -41,9 +42,12 @@ export class CommentPage {
     }, 500);
   }
 
-  close() {
+  save() {
     let data: Object = {bz: this.bz};
     this.viewCtrl.dismiss(data);
   }
 
+  cancel() {
+    this.modalCtrl.pop();
+  }
 }

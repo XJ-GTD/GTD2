@@ -1,5 +1,5 @@
 import {Component, ElementRef, Renderer2, ViewChild, ViewChildren, QueryList } from '@angular/core';
-import {IonicPage, NavController, ViewController, ActionSheetController, NavParams, Slides} from 'ionic-angular';
+import {IonicPage, NavController, ViewController, ModalController, ActionSheetController, NavParams, Slides} from 'ionic-angular';
 import {ModalBoxComponent} from "../../components/modal-box/modal-box";
 import {EmitService} from "../../service/util-service/emit.service";
 import {FeedbackService} from "../../service/cordova/feedback.service";
@@ -18,7 +18,7 @@ import * as moment from "moment";
 @IonicPage()
 @Component({
   selector: 'page-memo',
-  template: `  <modal-box title="备忘" (onClose)="close()">
+  template: `  <modal-box title="备忘" (onSave)="save()" (onCancel)="cancel()">
         <ion-textarea type="text" placeholder="备注" [(ngModel)]="memo" class="memo-set" autosize maxHeight="400" #bzRef></ion-textarea>
       </modal-box>`
 })
@@ -33,6 +33,7 @@ export class MemoPage {
 
   constructor(public navCtrl: NavController,
               public navParams: NavParams,
+              public modalCtrl: ModalController,
               public viewCtrl: ViewController,
               private actionSheetCtrl: ActionSheetController,
               private emitService: EmitService,
@@ -59,11 +60,15 @@ export class MemoPage {
     }, 500);
   }
 
-  close() {
+  save() {
     let data: Object = {
       day: this.day,
       memo: this.memo
     };
     this.viewCtrl.dismiss(data);
+  }
+
+  cancel() {
+    this.modalCtrl.pop();
   }
 }
