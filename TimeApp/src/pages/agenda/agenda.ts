@@ -246,7 +246,7 @@ import { PageDirection, IsSuccess, OperateType, RepeatFlag, ToDoListStatus, IsWh
                     全天
                   </span>
                   <span class="content" *ngIf="currentAgenda.al != wholeday">
-                    时间：{{currentAgenda.evt | formtedate: "HH:mm"}} {{currentAgenda.ct | formatedate: "duration"}}
+                    时间：{{currentAgenda.evt | formatedate: "HH:mm"}} {{currentAgenda.ct | formatedate: "duration"}}
                     </span>
                 </button>
               </ion-col>
