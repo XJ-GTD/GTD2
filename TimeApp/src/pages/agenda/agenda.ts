@@ -154,7 +154,7 @@ import { PageDirection, IsSuccess, OperateType, RepeatFlag, ToDoListStatus, IsWh
       <ion-grid>
         <ion-row class="agendaEvn">
           <!--主题-->
-          <ion-textarea rows="8" [(ngModel)]="currentAgenda.evn" (ionBlur)="save()"></ion-textarea>
+          <ion-textarea rows="8" [(ngModel)]="currentAgenda.evn" (ionChange)="changeTitle()"></ion-textarea>
 
           <div class="agendatodo" *ngIf="currentAgenda.todolist">
             <button ion-button icon-only clear  (click)="changeTodolist()">
@@ -195,7 +195,7 @@ import { PageDirection, IsSuccess, OperateType, RepeatFlag, ToDoListStatus, IsWh
                 <button ion-button clear (click)="changeRemind()">
                     <ion-icon class="fa fa-bell iconBell" *ngIf="!currentAgenda.txs"></ion-icon>
                     {{currentAgenda.txs || "提醒"}}
-                  <corner-badge *ngIf="currentAgenda.txs"><p>999</p></corner-badge>
+                  <corner-badge *ngIf="currentAgenda.txs"><p>currentAgenda.txjson.reminds.length</p></corner-badge>
                 </button>
               </ion-col>
               <ion-col class="agendaAttach">
@@ -364,6 +364,22 @@ export class AgendaPage {
   }
 
   changeDatetime() {
+  }
+
+  changeTitle() {
+    if (this.currentAgenda.evi) {
+      if (!this.eventService.isSameAgenda(this.currentAgenda, this.originAgenda)) {
+        this.buttons.save = true;
+      } else {
+        this.buttons.save = false;
+      }
+    } else {
+      if (this.currentAgenda.evn != "") {
+        this.buttons.save = true;
+      } else {
+        this.buttons.save = false;
+      }
+    }
   }
 
   changeTodolist() {
