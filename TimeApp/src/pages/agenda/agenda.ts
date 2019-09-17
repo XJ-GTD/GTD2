@@ -154,7 +154,7 @@ import { PageDirection, IsSuccess, OperateType, RepeatFlag, ToDoListStatus, IsWh
       <ion-grid>
         <ion-row class="agendaEvn">
           <!--主题-->
-          <ion-textarea rows="8" [(ngModel)]="currentAgenda.evn" (ionChange)="changeTitle()"></ion-textarea>
+          <ion-textarea rows="8" [(ngModel)]="currentAgenda.evn" (ionChange)="changeTitle()" #bzRef></ion-textarea>
 
           <div class="agendatodo" *ngIf="currentAgenda.todolist">
             <button ion-button icon-only clear  (click)="changeTodolist()">
@@ -307,6 +307,8 @@ export class AgendaPage {
   @ViewChild(PageBoxComponent)
   pageBoxComponent:PageBoxComponent
 
+  @ViewChild("bzRef", {read: ElementRef})
+  _bzRef: ElementRef;
 
 
 
@@ -351,7 +353,11 @@ export class AgendaPage {
 
   ionViewDidEnter(){
     this.pageBoxComponent.setBoxContent();
-    console.log("3.0 ionViewDidEnter 当进入页面时触发");
+    setTimeout(() => {
+      let el = this._bzRef.nativeElement.querySelector('textarea');
+      el.focus();
+      this.keyboard.show();   //for android
+    }, 500);
   }
 
   ionViewWillEnter() {
