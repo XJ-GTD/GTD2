@@ -179,7 +179,7 @@ import { PageDirection, IsSuccess, OperateType, RepeatFlag, ToDoListStatus } fro
                 </div>
               </button>
             </ion-row>
-            
+
             <ion-row class="agendaOptionTwo">
               <ion-col class="agendaPlayer">
                 <button ion-button  clear (click)="changeInvites()">
@@ -230,7 +230,7 @@ import { PageDirection, IsSuccess, OperateType, RepeatFlag, ToDoListStatus } fro
             <ion-row class="agendaPin">
               <button  ion-button icon-end clear  (click)="changeLocation()">
             <span class="content">
-              地址：浦东新区红枫路108弄11号1201室  
+              地址：浦东新区红枫路108弄11号1201室
               </span>
                 <ion-icon class="fa fa-map-marker iconPin"></ion-icon>
               </button>
@@ -263,12 +263,12 @@ import { PageDirection, IsSuccess, OperateType, RepeatFlag, ToDoListStatus } fro
 
           </ion-grid>
         </ion-row>
-       
-       
+
+
 
       </ion-grid>
     </page-box>
-    
+
     <!--<div class="create">-->
       <!--&lt;!&ndash;主题&ndash;&gt;-->
       <!--<ion-textarea rows="8" [(ngModel)]="currentAgenda.evn" placeholder="参加小明的生日Party"-->
@@ -382,6 +382,8 @@ export class AgendaPage {
   changePlan() {
     let modal = this.modalCtrl.create(DataConfig.PAGE._PLAN_PAGE, {ji: this.currentAgenda.ji});
     modal.onDidDismiss(async (data) => {
+      if (!data) return;
+
       this.currentAgenda.ji = data.jh.ji;
 
       if (this.originAgenda.ji != this.currentAgenda.ji) {
@@ -402,6 +404,8 @@ export class AgendaPage {
   changeComment() {
     let modal = this.modalCtrl.create(DataConfig.PAGE._COMMENT_PAGE, {value: this.currentAgenda.bz});
     modal.onDidDismiss(async (data) => {
+      if (!data) return;
+
       this.currentAgenda.bz = data.bz;
 
       if (this.originAgenda.bz != this.currentAgenda.bz) {

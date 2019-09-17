@@ -1,11 +1,12 @@
 import {Component, ElementRef, Renderer2, ViewChild, ViewChildren, QueryList } from '@angular/core';
-import {IonicPage, NavController, ViewController, ActionSheetController, NavParams, Slides} from 'ionic-angular';
+import {IonicPage, NavController, ViewController, ModalController, ActionSheetController, NavParams, Slides} from 'ionic-angular';
 import {ModalBoxComponent} from "../../components/modal-box/modal-box";
+import { MemoData } from "../../service/business/memo.service";
 import {EmitService} from "../../service/util-service/emit.service";
 import {FeedbackService} from "../../service/cordova/feedback.service";
 import {UtilService} from "../../service/util-service/util.service";
 import {UserConfig} from "../../service/config/user.config";
-import { ScdData, ScdPageParamter } from "../../data.mapping";
+import {Keyboard} from "@ionic-native/keyboard";
 import {DataConfig} from "../../service/config/data.config";
 import * as moment from "moment";
 
@@ -18,7 +19,7 @@ import * as moment from "moment";
 @IonicPage()
 @Component({
   selector: 'page-memo',
-  template: `  <modal-box title="备忘" (onClose)="close()">
+  template: `  <modal-box title="备忘" (onSave)="save()" (onCancel)="cancel()">
         <ion-textarea type="text" placeholder="备注" [(ngModel)]="memo" class="memo-set" autosize maxHeight="400" #bzRef></ion-textarea>
       </modal-box>`
 })
@@ -30,22 +31,31 @@ export class MemoPage {
 
   day: string = moment().format("YYYY/MM/DD");
   memo: string = "";
+  origin: MemoData;
 
   constructor(public navCtrl: NavController,
               public navParams: NavParams,
+              public modalCtrl: ModalController,
               public viewCtrl: ViewController,
               private actionSheetCtrl: ActionSheetController,
               private emitService: EmitService,
               private util: UtilService,
-              private feedback: FeedbackService) {
+              private feedback: FeedbackService,
+              private keyboard: Keyboard) {
     moment.locale('zh-cn');
     if (this.navParams) {
       let data = this.navParams.data;
 
       this.day = data.day;
 
-      if (data.memo) {
+      if (data.memo && typeof data.memo === "string") {
+        this.origin = undefined;
         this.memo = data.memo;
+      }
+
+      if (data.memo && typeof data.memo !== "string") {
+        this.origin = data.memo;
+        this.memo = this.origin.mon;
       }
     }
   }
@@ -58,8 +68,19 @@ export class MemoPage {
     }, 500);
   }
 
-  close() {
-    let data: Object = {memo: this.memo};
+  save() {
+    if (this.origin) {
+      this.origin.mon = this.memo;
+    }
+
+    let data: Object = {
+      day: this.day,
+      memo: this.origin? this.origin : this.memo
+    };
     this.viewCtrl.dismiss(data);
+  }
+
+  cancel() {
+    this.navCtrl.pop();
   }
 }

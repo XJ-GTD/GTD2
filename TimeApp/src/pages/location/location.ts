@@ -8,8 +8,8 @@ import {ModalBoxComponent} from "../../components/modal-box/modal-box";
 @Component({
   selector: 'page-location',
   template: `
-  <modal-box title="地址" (onClose)="close()">
-    <ion-searchbar (ionBlur)="search(map)"  (ionInput)="getItems($event)" [(ngModel)]="searchText" placeholder="上海市东方明珠塔" animated="true"></ion-searchbar>
+  <modal-box title="地址" (onSave)="save()" (onCancel)="cancel()">
+    <ion-searchbar (ionBlur)="search(map)" (ionInput)="getItems($event)" placeholder="上海市东方明珠塔" animated="true"></ion-searchbar>
     <baidu-map #l-map id="map_container" [options]="options" (loaded)="maploaded($event)">
       <control type="navigation" [options]="navOptions"></control>
       <marker *ngFor="let marker of markers" [point]="marker.point" [options]="marker.options"></marker>
@@ -58,9 +58,9 @@ export class LocationPage {
 
     //百度地图导航条选项
     this.navOptions = {
-  		anchor: ControlAnchor.BMAP_ANCHOR_BOTTOM_RIGHT,
-  		type: NavigationControlType.BMAP_NAVIGATION_CONTROL_PAN
-	  };
+      anchor: ControlAnchor.BMAP_ANCHOR_BOTTOM_RIGHT,
+      type: NavigationControlType.BMAP_NAVIGATION_CONTROL_PAN
+    };
 
     this.markers.push(
       {
@@ -89,26 +89,27 @@ export class LocationPage {
         }
       }
     );
-
-
   }
 
   ionViewDidLoad() {
     this.map = new BMap.Map("map_container");
   }
-  close() {
+
+  save() {
+    this.navCtrl.pop();
+  }
+
+  cancel() {
     this.navCtrl.pop();
   }
 
   getItems(ev) {
     console.log(ev);
     this.options['currentCity'] = '上海市';
-    this.search(this.searchText);
-
   }
 
   maploaded(e: any) {
-    BMap = e;
+
   }
 
   search(e: any) { // 对应baidu-map中loaded事件即地图加载时运行的方法 官方介绍e可以是map实例
