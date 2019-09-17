@@ -1,6 +1,7 @@
 import {Component, ElementRef, Renderer2, ViewChild, ViewChildren, QueryList } from '@angular/core';
 import {IonicPage, NavController, ViewController, ModalController, ActionSheetController, NavParams, Slides} from 'ionic-angular';
 import {ModalBoxComponent} from "../../components/modal-box/modal-box";
+import { MemoData } from "../../service/business/memo.service";
 import {EmitService} from "../../service/util-service/emit.service";
 import {FeedbackService} from "../../service/cordova/feedback.service";
 import {UtilService} from "../../service/util-service/util.service";
