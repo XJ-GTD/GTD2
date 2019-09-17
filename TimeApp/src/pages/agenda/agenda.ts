@@ -158,7 +158,7 @@ import { PageDirection, IsSuccess, OperateType, RepeatFlag, ToDoListStatus } fro
 
           <div class="agendatodo">
             <button ion-button icon-only clear  (click)="changeTodolist()">
-              <ion-icon class="fa" [class.fa-star] = "currentAgenda.todolist == '0'" [class.fa-star-o] = "currentAgenda.todolist == '1'"></ion-icon>
+              <ion-icon class="fa" [class.fa-star] = "currentAgenda.todolist == todoliston" [class.fa-star-o] = "currentAgenda.todolist != todoliston"></ion-icon>
             </button>
           </div>
         </ion-row>
