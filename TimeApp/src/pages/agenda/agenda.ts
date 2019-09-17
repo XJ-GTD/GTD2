@@ -16,6 +16,7 @@ import {CornerBadgeComponent} from "../../components/corner-badge/corner-badge";
 import {CalendarService} from "../../service/business/calendar.service";
 import {EventService, AgendaData, RtJson, TxJson} from "../../service/business/event.service";
 import { PageDirection, IsSuccess, OperateType, RepeatFlag, ToDoListStatus, IsWholeday } from "../../data.enum";
+import {Keyboard} from "@ionic-native/keyboard";
 
 /**
  * Generated class for the 日程创建/修改 page.
@@ -322,7 +323,8 @@ export class AgendaPage {
               private feedback: FeedbackService,
               private calendarService: CalendarService,
               private eventService: EventService,
-              private sqlite: SqliteExec) {
+              private sqlite: SqliteExec,
+              private keyboard: Keyboard) {
     moment.locale('zh-cn');
     if (this.navParams) {
       let paramter: ScdPageParamter = this.navParams.data;
