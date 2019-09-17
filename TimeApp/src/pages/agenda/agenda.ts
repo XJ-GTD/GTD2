@@ -200,9 +200,9 @@ import { PageDirection, IsSuccess, OperateType, RepeatFlag, ToDoListStatus, IsWh
               </ion-col>
               <ion-col class="agendaAttach">
                 <button ion-button clear icon-end >
-                    <ion-icon class="fa fa-paperclip iconAttach" *ngIf="!currentAgenda.fj"></ion-icon>
+                    <ion-icon class="fa fa-paperclip iconAttach" *ngIf="!currentAgenda.fj || currentAgenda.fj == '0'"></ion-icon>
                      补充
-                    <corner-badge *ngIf="currentAgenda.fj"><p>{{currentAgenda.fj}}</p></corner-badge>
+                    <corner-badge *ngIf="currentAgenda.fj && currentAgenda.fj != '0'"><p>{{currentAgenda.fj}}</p></corner-badge>
                 </button>
               </ion-col>
             </ion-row>
