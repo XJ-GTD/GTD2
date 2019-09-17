@@ -98,7 +98,7 @@ export class DailyMemosPage {
   remove(event, memo) {
     event.stopPropagation();  // 阻止冒泡
     event.preventDefault();   // 忽略事件传递
-    await this.memoService.removeMemo(memo.moi);
+    this.memoService.removeMemo(memo.moi);
   }
 
   goBack() {
