@@ -467,15 +467,16 @@ export class AgendaPage {
   }
 
   doOptionSave(op: OperateType) {
-    this.util.loadingStart();
-    this.eventService.saveAgenda(this.currentAgenda, this.originAgenda, op).then((agenda) => {
-      if (agenda && agenda.length > 0) {
-        this.currentAgenda = agenda[0];
-        Object.assign(this.originAgenda, agenda[0]);
+    this.util.loadingStart().then(() => {
+      this.eventService.saveAgenda(this.currentAgenda, this.originAgenda, op).then((agenda) => {
+        if (agenda && agenda.length > 0) {
+          this.currentAgenda = agenda[0];
+          Object.assign(this.originAgenda, agenda[0]);
 
-        this.buttons.save = false;
-      }
-      this.util.loadingEnd();
+          this.buttons.save = false;
+        }
+        this.util.loadingEnd();
+      });
     });
   }
 
@@ -494,28 +495,30 @@ export class AgendaPage {
 
           this.modifyConfirm.present();
         } else {                          // 非重复/重复已经修改为非重复
-          this.util.loadingStart();
-          this.eventService.saveAgenda(this.currentAgenda, this.originAgenda, OperateType.OnlySel).then((agenda) => {
+          this.util.loadingStart().then(() => {
+            this.eventService.saveAgenda(this.currentAgenda, this.originAgenda, OperateType.OnlySel).then((agenda) => {
+              if (agenda && agenda.length > 0) {
+                this.currentAgenda = agenda[0];
+                Object.assign(this.originAgenda, agenda[0]);
+
+                this.buttons.save = false;
+              }
+              this.util.loadingEnd();
+            });
+          });
+        }
+      } else {                            // 新建日程
+        this.util.loadingStart().then(() => {
+          this.eventService.saveAgenda(this.currentAgenda).then((agenda) => {
             if (agenda && agenda.length > 0) {
               this.currentAgenda = agenda[0];
               Object.assign(this.originAgenda, agenda[0]);
 
+              this.buttons.remove = true;
               this.buttons.save = false;
             }
             this.util.loadingEnd();
           });
-        }
-      } else {                            // 新建日程
-        this.util.loadingStart();
-        this.eventService.saveAgenda(this.currentAgenda).then((agenda) => {
-          if (agenda && agenda.length > 0) {
-            this.currentAgenda = agenda[0];
-            Object.assign(this.originAgenda, agenda[0]);
-
-            this.buttons.remove = true;
-            this.buttons.save = false;
-          }
-          this.util.loadingEnd();
         });
       }
     }
