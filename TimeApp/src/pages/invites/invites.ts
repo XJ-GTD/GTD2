@@ -19,7 +19,7 @@ import {ModalBoxComponent} from "../../components/modal-box/modal-box";
 @Component({
   selector: 'page-invites',
   template: `
-    <modal-box title="邀请人" (onClose)="close()">
+    <modal-box title="邀请人" (onSave)="saveToClose()" (onCancel)="cancel()">
       <div class="name-input w-auto">
         <ion-searchbar type="text" placeholder="手机号 姓名" (ionChange)="getContacts()" [(ngModel)]="tel"
                    text-center></ion-searchbar>
@@ -102,9 +102,13 @@ export class InvitesPage {
 
   }
 
-  close() {
+  saveToClose() {
     let data: Object = {};
     this.viewCtrl.dismiss(data);
+  }
+
+  cancel() {
+    this.navCtrl.pop();
   }
 
   addsel(fs: FsPageData) {

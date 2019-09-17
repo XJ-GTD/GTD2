@@ -8,7 +8,7 @@ import {ModalBoxComponent} from "../../components/modal-box/modal-box";
 @Component({
   selector: 'page-location',
   template: `
-  <modal-box title="地址" (onClose)="close()">
+  <modal-box title="地址" (onSave)="save()" (onCancel)="cancel()">
     <ion-searchbar (ionInput)="getItems($event)" placeholder="上海市东方明珠塔" animated="true"></ion-searchbar>
     <baidu-map [options]="options" (loaded)="maploaded($event)">
       <control type="navigation" [options]="navOptions"></control>
@@ -77,7 +77,11 @@ export class LocationPage {
     });
   }
 
-  close() {
+  save() {
+    this.navCtrl.pop();
+  }
+
+  cancel() {
     this.navCtrl.pop();
   }
 
