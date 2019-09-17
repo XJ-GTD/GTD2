@@ -303,13 +303,8 @@ export class CalendarComponent implements OnInit {
     this.swiper  = new Swiper('.swiper-container', {
       autoHeight: true, //高度随内容变化
       observer:true,
-      init:true,
     });
 
-
-    this.swiper.on("init",()=>{
-      console.log("this is 4 ====>" + this.swiper.activeIndex + "len==>" + this.swiper.slides.length);
-    });
 
 
     //
