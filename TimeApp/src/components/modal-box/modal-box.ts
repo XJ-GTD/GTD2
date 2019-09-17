@@ -61,6 +61,6 @@ export class ModalBoxComponent {
   }
 
   cancel() {
-    this.onClose.emit(this);
+    this.onCancel.emit(this);
   }
 }

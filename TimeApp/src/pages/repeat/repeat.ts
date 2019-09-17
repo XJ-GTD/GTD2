@@ -300,7 +300,7 @@ export class RepeatPage {
   }
 
   cancel() {
-    this.modalCtrl.pop();
+    this.navCtrl.pop();
   }
 
   private getFreqTitle(title: string, option: any) {

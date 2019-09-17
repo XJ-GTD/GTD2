@@ -73,7 +73,7 @@ export class RemindPage {
   }
 
   cancel() {
-    this.modalCtrl.pop();
+    this.navCtrl.pop();
   }
 
   onRemindChanged(value1) {

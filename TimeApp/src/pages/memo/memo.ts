@@ -69,6 +69,6 @@ export class MemoPage {
   }
 
   cancel() {
-    this.modalCtrl.pop();
+    this.navCtrl.pop();
   }
 }
