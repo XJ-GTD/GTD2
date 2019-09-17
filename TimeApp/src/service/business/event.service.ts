@@ -1145,6 +1145,7 @@ export class EventService extends BaseService {
     let sqlparam = new Array<any>();
 
     let sq : string ;
+    let tmpsq : string;
     let outAgds = new Array<AgendaData>();//返回事件
     let params : Array<any>;
 
@@ -1177,11 +1178,19 @@ export class EventService extends BaseService {
           //重复数据
           masterEvi = oriAgdata.rtevi;
         }
-        sq = " update gtd_ev set todolist = ? where evi = ? or rtevi = ?  ";
+
         params = new Array<any>();
         params.push(newAgdata.todolist);
+        if (newAgdata.todolist == anyenum.ToDoListStatus.On){
+          tmpsq = " , wc = ? ";
+          params.push(anyenum.EventFinishStatus.NonFinish);
+
+        }else{
+          tmpsq = "";
+        }
         params.push(masterEvi);
         params.push(masterEvi);
+        sq = ` update gtd_ev set todolist = ?  ${tmpsq} where evi = ? or rtevi = ?  `;
         sqlparam.push([sq,params]);
       }
       this.sqlExce.batExecSqlByParam(sqlparam);
