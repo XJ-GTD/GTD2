@@ -7,7 +7,7 @@ import {ModalBoxComponent} from "../../components/modal-box/modal-box";
 @Component({
   selector: 'page-attach',
   template: `
-  <modal-box title="附件" (onClose)="close()">
+  <modal-box title="附件" (onSave)="save()" (onCancel)="cancel()">
     <ion-grid>
       <ion-row>
         暂无附件
@@ -46,9 +46,12 @@ export class AttachPage {
 
   }
 
-  close() {
+  save() {
     let data: Object = {attach: {}};
     this.viewCtrl.dismiss(data);
   }
 
+  cancel() {
+    this.navCtrl.pop();
+  }
 }
