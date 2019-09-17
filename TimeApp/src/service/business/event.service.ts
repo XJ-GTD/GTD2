@@ -3132,7 +3132,7 @@ export class EventService extends BaseService {
                         and ev.del = ?2
                         and ev.type = ?3
                         and ev.wc = ?4
-                        and julianday(datetime(replace(evv.evd, '/', '-'),evv.evt)) > julianday(datetime(replace(?5, '/', '-'),?6)
+                        and (julianday(datetime(replace(evv.evd, '/', '-'),evv.evt)) > julianday(datetime(replace(?5, '/', '-'),?6)))
                         order by ev.evd asc `;
                   let rtevi: string ="";
                   if (changed.rtevi == '') {
