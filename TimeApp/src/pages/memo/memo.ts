@@ -5,7 +5,7 @@ import {EmitService} from "../../service/util-service/emit.service";
 import {FeedbackService} from "../../service/cordova/feedback.service";
 import {UtilService} from "../../service/util-service/util.service";
 import {UserConfig} from "../../service/config/user.config";
-import { ScdData, ScdPageParamter } from "../../data.mapping";
+import {Keyboard} from "@ionic-native/keyboard";
 import {DataConfig} from "../../service/config/data.config";
 import * as moment from "moment";
 
@@ -37,7 +37,8 @@ export class MemoPage {
               private actionSheetCtrl: ActionSheetController,
               private emitService: EmitService,
               private util: UtilService,
-              private feedback: FeedbackService) {
+              private feedback: FeedbackService,
+              private keyboard: Keyboard) {
     moment.locale('zh-cn');
     if (this.navParams) {
       let data = this.navParams.data;
