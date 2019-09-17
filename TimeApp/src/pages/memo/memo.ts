@@ -19,12 +19,19 @@ import * as moment from "moment";
 @IonicPage()
 @Component({
   selector: 'page-memo',
-  template: `  <modal-box title="备忘" (onSave)="save()" (onCancel)="cancel()">
+  template: `  <modal-box title="备忘" [buttons]="buttons" (onSave)="save()" (onCancel)="cancel()">
         <ion-textarea type="text" placeholder="备注" [(ngModel)]="memo" class="memo-set" autosize maxHeight="400" #bzRef></ion-textarea>
       </modal-box>`
 })
 export class MemoPage {
   statusBarColor: string = "#3c4d55";
+
+  buttons: any = {
+    remove: false,
+    share: false,
+    save: true,
+    cancel: true
+  };
 
   @ViewChild("bzRef", {read: ElementRef})
   _bzRef: ElementRef;
