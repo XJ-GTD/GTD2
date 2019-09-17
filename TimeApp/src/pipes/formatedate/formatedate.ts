@@ -236,7 +236,7 @@ export class FormatedatePipe implements PipeTransform {
         return moment(value).format("dddd MMMM D")
       }
       if (args[0] == "duration") {
-        return moment.duration(value).humanize();
+        return moment.duration(value, "minutes").humanize();
       }
     }
     return value;
