@@ -1,3 +1,41 @@
 page-dailymemos {
 
+  .grid {
+    width: 100%;
+    padding: 12px 0;
+  }
+
+  .notask {
+    margin: 90px auto;
+    text-align: center;
+
+    .icon {
+      font-size: 150px;
+      clear: both;
+      display: block;
+      color: #C9C8C8;
+    }
+
+    span {
+      font-weight: 400;
+      color: rgba(140, 150, 162, 1);
+      font-size: 16px;
+      margin: 20px auto;
+      display: block;
+    }
+
+    button {
+      display: block;
+      margin: 120px auto;
+      font-size: 18px;
+      background: rgba(70, 159, 175, 1);
+      border-radius: 10px;
+      font-weight: 400;
+      color: rgba(255, 255, 255, 1);
+      padding: 12px 80px;
+      border-radius: 4px;
+
+    }
+  }
+
 }

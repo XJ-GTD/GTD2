@@ -212,6 +212,33 @@ $baseBackcolor_white: rgba(241, 241, 241, 1);
         color: rgba(229, 250, 255, 1);
       }
     }
+
+
+    //日记列表
+    .list-daily-content {
+      background:rgba(255,255,255,1);
+      box-shadow:0px 0px 5px 0px rgba(201,200,200,0.28);
+
+      .agendaline {
+
+
+
+        .agenda-tool {
+          .icon {
+            color: #999999;
+          }
+        }
+
+        .agenda-st {
+          color: rgba(153, 153, 153, 1);
+        }
+
+
+        .agenda-sn {
+          color:rgba(51,51,51,1);
+        }
+      }
+    }
   }
 
   page-box {
@@ -220,6 +247,10 @@ $baseBackcolor_white: rgba(241, 241, 241, 1);
         ion-title {
           .toolbar-title {
             color: rgba(17, 117, 141, 1);
+            .subtilte{
+              color:rgba(51,51,51,1);
+              background:rgba(239,239,239,1);
+            }
           }
         }
 
@@ -238,6 +269,7 @@ $baseBackcolor_white: rgba(241, 241, 241, 1);
   }
 
   modal-box {
+    background:rgba(0,0,0,0.8);
     .box-header {
       ion-toolbar {
         ion-title {
@@ -256,6 +288,10 @@ $baseBackcolor_white: rgba(241, 241, 241, 1);
       .fixed-content {
         background: rgba(255, 255, 255, 1);
         box-shadow: 0px 0px 5px 0px rgba(201, 200, 200, 0.28);
+      }
+
+      .memo-set {
+        color: rgba(51, 51, 51, 1);
       }
     }
   }
@@ -377,6 +413,18 @@ $baseBackcolor_white: rgba(241, 241, 241, 1);
     }
   }
 
+    .notask{
+      .icon{
+        color: #C9C8C8;
+      }
+      span{
+        color:rgba(140,150,162,1);
+      }
+      button{
+        background:rgba(70,159,175,1);
+        color:rgba(255,255,255,1);
+      }
+    }
 
   page-tdl {
     background: $baseBackcolor_white;

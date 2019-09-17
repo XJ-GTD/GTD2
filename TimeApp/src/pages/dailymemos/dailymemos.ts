@@ -1,15 +1,13 @@
-import {Component, ElementRef, Renderer2, ViewChild, ViewChildren, QueryList } from '@angular/core';
+import {Component} from '@angular/core';
 import {IonicPage, NavController, ModalController, ActionSheetController, NavParams, Slides} from 'ionic-angular';
-import { MemoService, MemoData } from "../../service/business/memo.service";
-import { DayActivityData } from "../../service/business/calendar.service";
-import {PageBoxComponent} from "../../components/page-box/page-box";
+import {MemoService, MemoData} from "../../service/business/memo.service";
+import {DayActivityData} from "../../service/business/calendar.service";
 import {EmitService} from "../../service/util-service/emit.service";
 import {FeedbackService} from "../../service/cordova/feedback.service";
 import {UtilService} from "../../service/util-service/util.service";
-import {UserConfig} from "../../service/config/user.config";
-import { ScdData, ScdPageParamter } from "../../data.mapping";
 import {DataConfig} from "../../service/config/data.config";
 import * as moment from "moment";
+import {unitOfTime} from "moment";
 
 /**
  * Generated class for the 备忘创建/修改 page.
@@ -20,38 +18,51 @@ import * as moment from "moment";
 @IonicPage()
 @Component({
   selector: 'page-dailymemos',
-  template: `<page-box title="备忘" [subtitle]="day" [buttons]="buttons" (onSubTitleClick)="changeDatetime()" (onRemove)="goRemove()" (onBack)="goBack()">
-        <ion-list>
-          <ion-item *ngFor="let memo of memos" (click)="goDetail(memo)">
-            <button ion-button small clear item-start>
-            {{memo.utt | formatedate: 'HH:mm'}}
-            </button>
-            <h2>{{memo.mon}}</h2>
-            <button ion-button icon-only clear item-end (click)="remove($event, memo)">
-              <ion-icon class="fa fa-trash-o"></ion-icon>
-            </button>
-          </ion-item>
-        </ion-list>
-        <ion-fab bottom center>
-          <button ion-fab mini (click)="addMemo()">
-            <ion-icon name="add"></ion-icon>
+  template:
+      `    
+    <page-box title="备忘" [subtitle]="day | formatedate:'CYYYY/MM/DD'" [buttons]="buttons"  (onBack)="goBack()" (onCreate)="addMemo()" >
+      <ng-template [ngIf]="memos.length > 0"
+                   [ngIfElse]="notask">
+       
+        <ion-grid class="list-contont">
+          <ion-row class="list-daily-content" *ngFor="let memo of memos" (click)="goDetail(memo)">
+            <div class="agendaline">
+              <div class="agenda-st">{{memo.utt | formatedate: 'HH:mm'}}</div>
+              <div class="agenda-sn">{{memo.mon}}</div>
+              <div class="agenda-tool" (click)="remove($event, memo)">
+                <ion-icon class="fa fa-trash-o"></ion-icon>
+              </div>
+            </div>
+          </ion-row>
+        </ion-grid>
+      </ng-template>
+      <ng-template #notask>
+        <div class="notask">
+          <ion-icon class="fa fa-calendar-minus-o"></ion-icon>
+          <span>{{day}}没有记录哟～</span>
+          <button *ngIf="istoday" (click)="addMemo()">
+            创建备忘
           </button>
-        </ion-fab>
-      </page-box>`
+        </div>
+      </ng-template>
+    </page-box>
+  `
 })
 export class DailyMemosPage {
-  statusBarColor: string = "#3c4d55";
 
   buttons: any = {
     remove: false,
     share: false,
     save: false,
+    create:false,
     cancel: true
   };
 
   memos: Array<MemoData> = new Array<MemoData>();
   day: string = moment().format("YYYY/MM/DD");
   dayActivities: DayActivityData;
+
+  istoday:boolean = false;
 
   constructor(public navCtrl: NavController,
               public navParams: NavParams,
@@ -66,10 +77,8 @@ export class DailyMemosPage {
       this.dayActivities = this.navParams.data;
       this.day = this.dayActivities.day;
       this.memos = this.dayActivities.memos;
-    }
-
-    if (this.memos.length == 0) {
-      this.addMemo();
+      this.istoday = moment(this.day).isSame(moment(),"days");
+      this.buttons.create = this.istoday;
     }
   }
 

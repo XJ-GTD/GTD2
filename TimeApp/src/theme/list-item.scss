@@ -194,8 +194,6 @@
   .list-todolist-content {
     position: relative;
     border-radius: 4px;
-    width: 70%;
-    margin-left: 75px;
     padding-top: 5px;
     .agendaline:last-child {
       margin-top: 0px
@@ -381,6 +379,55 @@
       margin: 0;
       margin-left: 16px
     }
+  }
+
+
+  //日记列表
+  .list-daily-content {
+    position: relative;
+    width: auto;
+    margin: 6px 14px;
+    font-size: 14px;
+    letter-spacing: 1px;
+
+    .agendaline {
+      position: relative;
+      display: flex;
+      width: 100%;
+      padding: 20px 12px;
+
+      border-radius:4px;
+
+
+      .agenda-tool {
+        width: 20px;
+        text-align: right;
+
+        .icon {
+          font-size: 14px;
+        }
+
+
+      }
+
+      .agenda-st {
+        font-weight: 400;
+        line-height:16px;
+      }
+
+
+      .agenda-sn {
+        position: relative;
+        width: 80%;
+        font-weight:400;
+        line-height:16px;
+        padding-left: 10px;
+        flex-grow: 1;
+      }
+
+
+    }
+
   }
 
 }

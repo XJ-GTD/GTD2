@@ -19,13 +19,12 @@ import * as moment from "moment";
 @IonicPage()
 @Component({
   selector: 'page-memo',
-  template: `  <modal-box title="备忘" [buttons]="buttons" (onSave)="save()" (onCancel)="cancel()">
-        <ion-textarea type="text" placeholder="备注" [(ngModel)]="memo" class="memo-set" autosize maxHeight="400" #bzRef></ion-textarea>
+  template: `  
+    <modal-box title="添加备忘" [buttons]="buttons" (onSave)="save()" (onCancel)="cancel()">
+      <ion-textarea placeholder="你想记录什么。。。。"  rows="8" [(ngModel)]="memo" class="memo-set"  #bzRef></ion-textarea>
       </modal-box>`
 })
 export class MemoPage {
-  statusBarColor: string = "#3c4d55";
-
   buttons: any = {
     remove: false,
     share: false,

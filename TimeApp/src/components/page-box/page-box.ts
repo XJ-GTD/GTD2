@@ -27,6 +27,9 @@ import {Content, Events, Ion, IonicPage} from 'ionic-angular';
         <ion-toolbar >
           <ion-title>
           {{title}}
+            <span *ngIf="subtitle" class="subtilte">
+              {{subtitle}}
+            </span>
           </ion-title>
           <div class="toolbar">
             <div (click)="goRemove()" *ngIf="buttons.remove">
@@ -36,6 +39,12 @@ import {Content, Events, Ion, IonicPage} from 'ionic-angular';
             <div  (click)="goShare()" *ngIf="buttons.share">
               <ion-icon class="fa fa-share-square-o"></ion-icon>
             </div>
+
+
+            <div  (click)="goCreate()" *ngIf="buttons.create">
+              <ion-icon class="fa fa-plus-square-o"></ion-icon>
+            </div>
+            
 
             <div  (click)="goSave()" *ngIf="buttons.save">
               <ion-icon class="fa fa-floppy-o"></ion-icon>
@@ -70,6 +79,7 @@ export class PageBoxComponent{
     remove: false,
     share: false,
     save: false,
+    create: false,
     cancel: true
   };
 
@@ -84,6 +94,9 @@ export class PageBoxComponent{
 
   @Output()
   private onRemove: EventEmitter<any> = new EventEmitter<any>();
+
+  @Output()
+  private onCreate: EventEmitter<any> = new EventEmitter<any>();
 
   constructor(public events: Events,
             private renderer2: Renderer2,) {
@@ -118,5 +131,9 @@ export class PageBoxComponent{
 
   goBack() {
     this.onBack.emit(this);
+  }
+
+  goCreate() {
+    this.onCreate.emit(this);
   }
 }
