@@ -384,9 +384,12 @@ export class AgendaPage {
   }
 
   doOptionRemove(op: OperateType) {
-    this.eventService.removeAgenda(this.originAgenda, op)
-    .then(() => {
-      this.goBack();
+    this.util.loadingStart().then(() => {
+      this.eventService.removeAgenda(this.originAgenda, op)
+      .then(() => {
+        this.util.loadingEnd();
+        this.goBack();
+      });
     });
   }
 
@@ -400,9 +403,12 @@ export class AgendaPage {
       this.modifyConfirm.present();
 
     } else {
-      this.eventService.removeAgenda(this.originAgenda, OperateType.OnlySel)
-      .then(() => {
-        this.goBack();
+      this.util.loadingStart().then(() => {
+        this.eventService.removeAgenda(this.originAgenda, OperateType.OnlySel)
+        .then(() => {
+          this.util.loadingEnd();
+          this.goBack();
+        });
       });
     }
   }
