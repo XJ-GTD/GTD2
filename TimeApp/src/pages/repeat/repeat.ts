@@ -13,7 +13,7 @@ import {CycleType, OverType} from "../../data.enum";
 @Component({
   selector: 'page-repeat',
   template: `
-  <modal-box title="重复" (onSave)="save()" (onCancel)="cancel()">
+  <modal-box title="重复" [buttons]="buttons" (onSave)="save()" (onCancel)="cancel()">
     <ion-grid class="h100">
       <ion-row justify-content-center>
         <p class="title">{{title}}</p>
@@ -198,6 +198,13 @@ import {CycleType, OverType} from "../../data.enum";
 })
 export class RepeatPage {
   statusBarColor: string = "#3c4d55";
+
+  buttons: any = {
+    remove: false,
+    share: false,
+    save: true,
+    cancel: true
+  };
 
   originRepeat: RtJson;
   currentRepeat: RtJson;
