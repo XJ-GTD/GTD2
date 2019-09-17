@@ -243,7 +243,7 @@ import { PageDirection, IsSuccess, OperateType, RepeatFlag, ToDoListStatus, IsWh
                       </button>
                 <button ion-button icon-end clear  >
                   <span class="content" *ngIf="currentAgenda.al == wholeday">
-                    全天
+                    时间：全天
                   </span>
                   <span class="content" *ngIf="currentAgenda.al != wholeday">
                     时间：{{currentAgenda.evt | formatedate: "HH:mm"}} {{currentAgenda.ct | formatedate: "duration"}}
@@ -634,6 +634,7 @@ export class AgendaPage {
             this.currentAgenda = agenda[0];
             Object.assign(this.originAgenda, agenda[0]);
 
+            this.buttons.remove = true;
             this.buttons.save = false;
           }
         });
