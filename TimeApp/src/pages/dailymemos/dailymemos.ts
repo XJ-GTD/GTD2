@@ -69,7 +69,7 @@ export class DailyMemosPage {
   addMemo() {
     let modal = this.modalCtrl.create(DataConfig.PAGE._MEMO_PAGE, {day: this.day});
     modal.onDidDismiss(async (data) => {
-      if (data.memo && typeof data.memo === 'string') { // 创建新备忘
+      if (data && data.memo && typeof data.memo === 'string') { // 创建新备忘
         let memo: MemoData = {} as MemoData;
 
         memo.sd = data.day;
