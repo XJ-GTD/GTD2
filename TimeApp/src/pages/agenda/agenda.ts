@@ -221,9 +221,11 @@ export class AgendaPage {
   ionViewDidEnter(){
     this.pageBoxComponent.setBoxContent();
     setTimeout(() => {
-      let el = this._bzRef.nativeElement.querySelector('textarea');
-      el.focus();
-      this.keyboard.show();   //for android
+      if (!this.currentAgenda.evi) {
+        let el = this._bzRef.nativeElement.querySelector('textarea');
+        el.focus();
+        this.keyboard.show();   //for android
+      }
     }, 500);
   }
 
