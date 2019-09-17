@@ -48,6 +48,6 @@ export class CommentPage {
   }
 
   cancel() {
-    this.modalCtrl.pop();
+    this.navCtrl.pop();
   }
 }
