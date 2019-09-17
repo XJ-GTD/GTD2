@@ -1,16 +1,16 @@
 import { Component, ElementRef, QueryList, Renderer2, ViewChild, ViewChildren } from '@angular/core';
 import { IonicPage, NavController, NavParams, ModalController, ViewController, Scroll } from 'ionic-angular';
 import { ControlAnchor, MapOptions, NavigationControlOptions, NavigationControlType } from 'angular2-baidu-map';
-declare var BMap: any;
-import {ModalBoxComponent} from "../../components/modal-box/modal-box";
 
+import {ModalBoxComponent} from "../../components/modal-box/modal-box";
+declare var BMap;
 @IonicPage()
 @Component({
   selector: 'page-location',
   template: `
   <modal-box title="地址" (onSave)="save()" (onCancel)="cancel()">
     <ion-searchbar (ionBlur)="search(map)" (ionInput)="getItems($event)" placeholder="上海市东方明珠塔" animated="true"></ion-searchbar>
-    <baidu-map #l-map id="map_container" [options]="options" (loaded)="maploaded($event)">
+    <baidu-map #lmap id="map_container" [options]="options" (loaded)="maploaded($event)">
       <control type="navigation" [options]="navOptions"></control>
       <marker *ngFor="let marker of markers" [point]="marker.point" [options]="marker.options"></marker>
     </baidu-map>
@@ -32,7 +32,7 @@ export class LocationPage {
   dz: string = "";
   searchText: string;
   map : any;
-  @ViewChild('l-map') map_container: ElementRef;
+  @ViewChild('lmap') map_container: ElementRef;
 
   constructor(public navCtrl: NavController,
               public viewCtrl: ViewController,
