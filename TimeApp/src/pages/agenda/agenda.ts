@@ -255,7 +255,7 @@ import { PageDirection, IsSuccess, OperateType, RepeatFlag, ToDoListStatus, IsWh
                   <ion-icon class="fa fa-calendar iconCalendar"></ion-icon>
                 </button>
               </ion-col>
-              <ion-col class="agendaSender" *ngIf="currentAgenda.ui">
+              <ion-col class="agendaSender" *ngIf="currentAgenda.ui != currentuser">
             <span class="content">
                ---来自{{currentAgenda.ui | formatuser: currentuser: friends}}
               </span>
