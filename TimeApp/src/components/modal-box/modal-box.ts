@@ -27,10 +27,10 @@ import {Events} from 'ionic-angular';
               <ion-icon class="fa fa-share-square-o"></ion-icon>
             </div>
 
-            <div  (click)="goRemove()">
+            <div  (click)="save()">
               <ion-icon class="fa fa-floppy-o"></ion-icon>
             </div>
-            <div (click)="goBack()">
+            <div (click)="cancel()">
               <ion-icon class="fa fa-undo"></ion-icon>
             </div>
           </div>
@@ -47,14 +47,20 @@ export class ModalBoxComponent {
   title: string = "";
 
   @Output()
-  private onClose: EventEmitter<any> = new EventEmitter<any>();
+  private onSave: EventEmitter<any> = new EventEmitter<any>();
+
+  @Output()
+  private onCancel: EventEmitter<any> = new EventEmitter<any>();
 
   constructor(public events: Events) {
 
   }
 
-  close() {
-    this.onClose.emit(this);
+  save() {
+    this.onSave.emit(this);
   }
 
+  cancel() {
+    this.onClose.emit(this);
+  }
 }
