@@ -3116,7 +3116,15 @@ export class EventService extends BaseService {
                 }
                 //当前事件已完成，验证当前事件是否为重复事件，如果为重复事件，则删除当前的，重新插入下一个
                 if ((changed.rfg == RepeatFlag.Repeat) && (changed.wc == anyenum.EventFinishStatus.Finished) ) {
-                  let newsql : string  =  ` select * from  gtd_ev ev left join gtd_ca ca on ca.evi = ev.rtevi where ev.rtevi =?1 and ev.del = ?2 and ev.type = ?3 and ev.wc = ?4 order by ev.evd asc `;
+                  let newsql : string  =  ` select * from
+                      gtd_ev ev left join gtd_ca ca on ca.evi = ev.rtevi
+                        where
+                        ev.rtevi =?1
+                        and ev.del = ?2
+                        and ev.type = ?3
+                        and ev.wc = ?4
+                        and julianday(datetime(replace(evv.evd, '/', '-'),evv.evt)) > julianday(datetime(replace(?5, '/', '-'),?6)
+                        order by ev.evd asc `;
                   let rtevi: string ="";
                   if (changed.rtevi == '') {
                       rtevi = changed.evi;
@@ -3124,7 +3132,8 @@ export class EventService extends BaseService {
                   else {
                       rtevi = changed.rtevi;
                   }
-                  let ag1: Array<AgendaData> = await this.sqlExce.getExtLstByParam<AgendaData>(newsql, [rtevi,anyenum.DelType.undel,anyenum.EventType.Agenda,anyenum.EventFinishStatus.NonFinish]) || new Array<AgendaData>();
+                  let ag1: Array<AgendaData> = await this.sqlExce.getExtLstByParam<AgendaData>(newsql,
+                     [rtevi,anyenum.DelType.undel,anyenum.EventType.Agenda,anyenum.EventFinishStatus.NonFinish,changed.evd,changed.evt]) || new Array<AgendaData>();
                   if (ag1&&ag1.length>0){
                         changed = ag1[0];
                   }
