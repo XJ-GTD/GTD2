@@ -22,7 +22,7 @@ import * as moment from "moment";
   selector: 'page-dailymemos',
   template: `<page-box title="备忘" [subtitle]="day" (onSubTitleClick)="changeDatetime()" (onRemove)="goRemove()" (onBack)="goBack()">
         <ion-list>
-          <ion-item *ngFor="let memo of memos">
+          <ion-item *ngFor="let memo of memos" (click)="goDetail(memo)">
             <button ion-button small clear item-start>
             {{memo.utt | formatedate: 'HH:mm'}}
             </button>
@@ -76,6 +76,20 @@ export class DailyMemosPage {
         memo.mon = data.memo;
 
         await this.memoService.saveMemo(memo);
+      }
+    });
+    modal.present();
+  }
+
+  goDetail(memo) {
+    let modal = this.modalCtrl.create(DataConfig.PAGE._MEMO_PAGE, {day: this.day, memo: memo});
+    modal.onDidDismiss(async (data) => {
+      if (data && data.memo && typeof data.memo !== 'string') { // 创建新备忘
+        let changed: MemoData = {} as MemoData;
+
+        Object.assign(changed, data.memo)
+
+        await this.memoService.saveMemo(changed);
       }
     });
     modal.present();

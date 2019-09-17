@@ -30,6 +30,7 @@ export class MemoPage {
 
   day: string = moment().format("YYYY/MM/DD");
   memo: string = "";
+  origin: MemoData;
 
   constructor(public navCtrl: NavController,
               public navParams: NavParams,
@@ -46,8 +47,14 @@ export class MemoPage {
 
       this.day = data.day;
 
-      if (data.memo) {
+      if (data.memo && typeof data.memo === "string") {
+        this.origin = undefined;
         this.memo = data.memo;
+      }
+
+      if (data.memo && typeof data.memo !== "string") {
+        this.origin = data.memo;
+        this.memo = this.origin.mon;
       }
     }
   }
@@ -61,9 +68,13 @@ export class MemoPage {
   }
 
   save() {
+    if (this.origin) {
+      this.origin.mon = this.memo;
+    }
+
     let data: Object = {
       day: this.day,
-      memo: this.memo
+      memo: this.origin? this.origin : this.memo
     };
     this.viewCtrl.dismiss(data);
   }
