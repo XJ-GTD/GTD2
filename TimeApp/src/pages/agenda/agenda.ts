@@ -242,7 +242,10 @@ import { PageDirection, IsSuccess, OperateType, RepeatFlag, ToDoListStatus } fro
                     </span>
                       </button>
                 <button ion-button icon-end clear  >
-                  <span class="content">
+                  <span class="content" *ngIf="currentAgenda.al == wholeday">
+                    全天
+                  </span>
+                  <span class="content" *ngIf="currentAgenda.al != wholeday">
                     时间：{{currentAgenda.evt | formtedate: "HH:mm"}} {{currentAgenda.ct | formatedate: "duration"}}
                     </span>
                 </button>
@@ -296,6 +299,8 @@ export class AgendaPage {
 
   todoliston = ToDoListStatus.On;
   todolistoff = ToDoListStatus.Off;
+
+  wholeday = IsWholeday.Whole;
 
   repeatflag = RepeatFlag.Repeat;
   nonrepeatflag = RepeatFlag.NonRepeat;
