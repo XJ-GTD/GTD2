@@ -77,10 +77,17 @@ export class MemoService extends BaseService {
 	 */
 	async removeMemo(moi: string) {
 		this.assertEmpty(moi); // id不能为空
+
+		let memo: MemoData = this.getMemo(moi);
+
+		memo.del = DelType.del;
+
 		let memodb: MomTbl = new MomTbl();
-		memodb.moi = moi;
+
+		Object.assign(memodb, memo);
+
 		let sqls: Array <any> = new Array <any> ();
-		sqls.push(memodb.dTParam());
+		sqls.push(memodb.rpTParam());
 		//删除备忘相关的附件
 		sqls.push(`delete from gtd_fj where obt = '${ObjectType.Calendar}' and obi ='${moi}';`);
 		//删除备忘相关的标签
@@ -90,6 +97,9 @@ export class MemoService extends BaseService {
 		//删除消息表
 		sqls.push(`delete from gtd_wa where obt = '${ObjectType.Calendar}' and obi ='${moi}';`);
 		await this.sqlExce.batExecSqlByParam(sqls);
+
+		this.emitService.emit("mwxing.calendar.activities.changed", memo);
+
 		return ;
 	}
 
@@ -134,7 +144,7 @@ export class MemoService extends BaseService {
 		await this.dataRestful.pull(pull);
 		return;
 	}
-	
+
 	/**
 	 * 接收备忘保存在本地
 	 * @author ying<343253410@qq.com>
@@ -143,7 +153,7 @@ export class MemoService extends BaseService {
 		 this.assertEmpty(memo);     // 入参不能为空
     	 this.assertEmpty(memo.moi);  // 备忘ID不能为空
     	 this.assertEmpty(status);   // 入参不能为空
-    	 
+
     	 let memodb: MomTbl = new MomTbl();
     	 Object.assign(memodb, memo);
     	 memodb.del = status;
@@ -153,7 +163,7 @@ export class MemoService extends BaseService {
     	 Object.assign(backMemo, memodb);
     	 return backMemo;
 	}
-	
+
 	/**
 	 * 同步备忘到服务器
 	 * @author ying<343253410@qq.com>
@@ -162,12 +172,12 @@ export class MemoService extends BaseService {
 		this.assertEmpty(memo);       // 入参不能为空
 	    this.assertEmpty(memo.moi);    // 日历ID不能为空
 	    this.assertEmpty(memo.del);   // 删除标记不能为空
-	
+
 	    // 构造Push数据结构
 	    let push: PushInData = new PushInData();
-	
+
 	    let sync: SyncData = new SyncData();
-	
+
 	    sync.id = memo.moi;
 	    sync.type = "Memo";
 	    sync.security = SyncDataSecurity.None;
@@ -202,7 +212,7 @@ export class MemoService extends BaseService {
 		return ;
 	}
 
-    
+
 	/**
 	 * 服务器发送一个链接,然后客户端进行分享
 	 * @author ying<343253410@qq.com>
@@ -210,7 +220,7 @@ export class MemoService extends BaseService {
 	async shareMemo(memo: MemoData): Promise<string> {
 		this.assertEmpty(memo);     // 入参不能为空
     	this.assertEmpty(memo.moi);  // 备忘ID不能为空
-    	
+
 //  	let upplan: ShareData = new ShareData();
 //  	upplan.oai = "";
 //  	upplan.ompn = "";
