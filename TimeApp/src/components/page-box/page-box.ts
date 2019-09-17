@@ -33,11 +33,11 @@ import {Content, Events, Ion, IonicPage} from 'ionic-angular';
               <ion-icon class="fa fa-trash-o"></ion-icon>
             </div>
 
-            <div  (click)="goRemove()" *ngIf="buttons.share">
+            <div  (click)="goShare()" *ngIf="buttons.share">
               <ion-icon class="fa fa-share-square-o"></ion-icon>
             </div>
 
-            <div  (click)="goRemove()" *ngIf="buttons.save">
+            <div  (click)="goSave()" *ngIf="buttons.save">
               <ion-icon class="fa fa-floppy-o"></ion-icon>
             </div>
             <div (click)="goBack()" *ngIf="buttons.cancel">
@@ -80,6 +80,9 @@ export class PageBoxComponent{
   private onBack: EventEmitter<any> = new EventEmitter<any>();
 
   @Output()
+  private onSave: EventEmitter<any> = new EventEmitter<any>();
+
+  @Output()
   private onRemove: EventEmitter<any> = new EventEmitter<any>();
 
   constructor(public events: Events,
@@ -103,6 +106,14 @@ export class PageBoxComponent{
 
   goRemove() {
     this.onRemove.emit(this);
+  }
+
+  goShare() {
+    this.onRemove.emit(this);
+  }
+
+  goSave() {
+    this.onSave.emit(this);
   }
 
   goBack() {
