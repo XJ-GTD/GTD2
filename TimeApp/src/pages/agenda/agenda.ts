@@ -112,7 +112,7 @@ import {Keyboard} from "@ionic-native/keyboard";
               </button>
             </ion-row>
             <ion-row *ngIf="currentAgenda.evd">
-              <ion-col  class="agendaDate" (click)="clickSubtitle()">
+              <ion-col  class="agendaDate" (click)="changeDatetime()">
                 <button ion-button icon-end clear  >
                   <span class="content">
                     日期：{{currentAgenda.evd | formatedate: "YYYY年M月D日"}}
@@ -127,7 +127,7 @@ import {Keyboard} from "@ionic-native/keyboard";
                     </span>
                 </button>
               </ion-col>
-              <ion-col  (click)="clickSubtitle()">
+              <ion-col  (click)="changeDatetime()">
                 <button ion-button icon-end clear  >
                   <ion-icon class="fa fa-calendar iconCalendar"></ion-icon>
                 </button>
