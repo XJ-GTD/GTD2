@@ -474,8 +474,8 @@ export class AgendaPage {
         Object.assign(this.originAgenda, agenda[0]);
 
         this.buttons.save = false;
-        this.util.loadingEnd();
       }
+      this.util.loadingEnd();
     });
   }
 
@@ -501,8 +501,8 @@ export class AgendaPage {
               Object.assign(this.originAgenda, agenda[0]);
 
               this.buttons.save = false;
-              this.util.loadingEnd();
             }
+            this.util.loadingEnd();
           });
         }
       } else {                            // 新建日程
@@ -514,8 +514,8 @@ export class AgendaPage {
 
             this.buttons.remove = true;
             this.buttons.save = false;
-            this.util.loadingEnd();
           }
+          this.util.loadingEnd();
         });
       }
     }
