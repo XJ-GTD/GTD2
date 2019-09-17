@@ -365,12 +365,16 @@ export class AgendaPage {
   }
 
   changeTodolist() {
-    this.currentAgenda.todolist = ToDoListStatus.On;
-
     if (this.currentAgenda.todolist == ToDoListStatus.On) {
       this.currentAgenda.todolist = ToDoListStatus.Off;
     } else {
       this.currentAgenda.todolist = ToDoListStatus.On;
+    }
+
+    if (!this.eventService.isSameAgenda(this.currentAgenda, this.originAgenda)) {
+      this.buttons.save = true;
+    } else {
+      this.buttons.save = false;
     }
   }
 
