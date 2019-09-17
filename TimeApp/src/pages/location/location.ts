@@ -8,7 +8,7 @@ declare var BMap;
 @Component({
   selector: 'page-location',
   template: `
-  <modal-box title="地址" (onSave)="save()" (onCancel)="cancel()">
+  <modal-box title="地址" [buttons]="buttons" (onSave)="save()" (onCancel)="cancel()">
     <ion-searchbar (ionBlur)="search(map)" (ionInput)="getItems($event)" placeholder="上海市东方明珠塔" animated="true"></ion-searchbar>
     <baidu-map #lmap id="map_container" [options]="options" (loaded)="maploaded($event)">
       <control type="navigation" [options]="navOptions"></control>
@@ -23,6 +23,14 @@ declare var BMap;
   `
 })
 export class LocationPage {
+
+  buttons: any = {
+    remove: false,
+    share: false,
+    save: true,
+    cancel: true
+  };
+
   statusBarColor: string = "#fff";
 
   options: MapOptions;  //百度地图选项
@@ -91,7 +99,7 @@ export class LocationPage {
     );
   }
 
-  ionViewDidLoad() {
+  ionViewDidEnter() {
     this.map = new BMap.Map("map_container");
   }
 
