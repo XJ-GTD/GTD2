@@ -78,7 +78,7 @@ export class MemoService extends BaseService {
 	async removeMemo(moi: string) {
 		this.assertEmpty(moi); // id不能为空
 
-		let memo: MemoData = this.getMemo(moi);
+		let memo: MemoData = await this.getMemo(moi);
 
 		memo.del = DelType.del;
 
