@@ -582,6 +582,8 @@ export class AgendaPage {
       if (agenda && agenda.length > 0) {
         this.currentAgenda = agenda[0];
         Object.assign(this.originAgenda, agenda[0]);
+
+        this.buttons.save = false;
       }
     });
   }
@@ -605,6 +607,8 @@ export class AgendaPage {
             if (agenda && agenda.length > 0) {
               this.currentAgenda = agenda[0];
               Object.assign(this.originAgenda, agenda[0]);
+
+              this.buttons.save = false;
             }
           });
         }
@@ -613,6 +617,8 @@ export class AgendaPage {
           if (agenda && agenda.length > 0) {
             this.currentAgenda = agenda[0];
             Object.assign(this.originAgenda, agenda[0]);
+
+            this.buttons.save = false;
           }
         });
       }
