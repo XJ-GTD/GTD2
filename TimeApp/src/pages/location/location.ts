@@ -1,16 +1,16 @@
 import { Component, ElementRef, QueryList, Renderer2, ViewChild, ViewChildren } from '@angular/core';
 import { IonicPage, NavController, NavParams, ModalController, ViewController, Scroll } from 'ionic-angular';
 import { ControlAnchor, MapOptions, NavigationControlOptions, NavigationControlType } from 'angular2-baidu-map';
-declare var BMap: any;
-import {ModalBoxComponent} from "../../components/modal-box/modal-box";
 
+import {ModalBoxComponent} from "../../components/modal-box/modal-box";
+declare var BMap;
 @IonicPage()
 @Component({
   selector: 'page-location',
   template: `
-  <modal-box title="地址" (onClose)="close()">
-    <ion-searchbar (ionInput)="getItems($event)" placeholder="上海市东方明珠塔" animated="true"></ion-searchbar>
-    <baidu-map [options]="options" (loaded)="maploaded($event)">
+  <modal-box title="地址" [buttons]="buttons" (onSave)="save()" (onCancel)="cancel()">
+    <ion-searchbar (ionBlur)="search(map)" (ionInput)="getItems($event)" placeholder="上海市东方明珠塔" animated="true"></ion-searchbar>
+    <baidu-map #lmap id="map_container" [options]="options" (loaded)="maploaded($event)">
       <control type="navigation" [options]="navOptions"></control>
       <marker *ngFor="let marker of markers" [point]="marker.point" [options]="marker.options"></marker>
     </baidu-map>
@@ -23,6 +23,14 @@ import {ModalBoxComponent} from "../../components/modal-box/modal-box";
   `
 })
 export class LocationPage {
+
+  buttons: any = {
+    remove: false,
+    share: false,
+    save: true,
+    cancel: true
+  };
+
   statusBarColor: string = "#fff";
 
   options: MapOptions;  //百度地图选项
@@ -30,6 +38,9 @@ export class LocationPage {
   markers: Array<any> = new Array<any>();
   local: any;
   dz: string = "";
+  searchText: string;
+  map : any;
+  @ViewChild('lmap') map_container: ElementRef;
 
   constructor(public navCtrl: NavController,
               public viewCtrl: ViewController,
@@ -45,9 +56,9 @@ export class LocationPage {
     //百度地图设置
     this.options = {
       centerAndZoom: {
-        lat: 39.920116,
-        lng: 116.403703,
-        zoom: 12
+        lat: 31.244604,
+        lng: 121.51606,
+        zoom: 16
       },
       enableScrollWheelZoom: true,
       enableKeyboard: true
@@ -55,29 +66,48 @@ export class LocationPage {
 
     //百度地图导航条选项
     this.navOptions = {
-  		anchor: ControlAnchor.BMAP_ANCHOR_BOTTOM_RIGHT,
-  		type: NavigationControlType.BMAP_NAVIGATION_CONTROL_PAN
-	  };
+      anchor: ControlAnchor.BMAP_ANCHOR_BOTTOM_RIGHT,
+      type: NavigationControlType.BMAP_NAVIGATION_CONTROL_PAN
+    };
 
-    this.markers.push({
-      options: {
+    this.markers.push(
+      {
+        options: {
           icon: {
-            imageUrl: 'assets/imgs/map/baidu_map_markers_2x.png',
+            imageUrl: '/assets/imgs/map/markericon.png',
             size: {
-              height: 23,
+              height: 35,
+              width: 25
+            },
+            imageSize: {
+              height: 35,
               width: 25
             }
-          },
-          title: '天安门'
+          }
         },
         point: {
-          lat: 39.920116,
-          lng: 116.403703
+          lat: 31.244604,
+          lng: 121.51606
         }
-    });
+      },
+      {
+        point: {
+          lat: 31.246124,
+          lng: 121.51232
+        }
+      }
+    );
   }
 
-  close() {
+  ionViewDidEnter() {
+    this.map = new BMap.Map("map_container");
+  }
+
+  save() {
+    this.navCtrl.pop();
+  }
+
+  cancel() {
     this.navCtrl.pop();
   }
 

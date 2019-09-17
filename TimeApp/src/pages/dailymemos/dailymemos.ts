@@ -20,14 +20,14 @@ import * as moment from "moment";
 @IonicPage()
 @Component({
   selector: 'page-dailymemos',
-  template: `<page-box title="备忘" [subtitle]="day" (onSubTitleClick)="changeDatetime()" (onRemove)="goRemove()" (onBack)="goBack()">
+  template: `<page-box title="备忘" [subtitle]="day" [buttons]="buttons" (onSubTitleClick)="changeDatetime()" (onRemove)="goRemove()" (onBack)="goBack()">
         <ion-list>
-          <ion-item *ngFor="let memo of memos">
+          <ion-item *ngFor="let memo of memos" (click)="goDetail(memo)">
             <button ion-button small clear item-start>
             {{memo.utt | formatedate: 'HH:mm'}}
             </button>
             <h2>{{memo.mon}}</h2>
-            <button ion-button icon-only clear item-end>
+            <button ion-button icon-only clear item-end (click)="remove($event, memo)">
               <ion-icon class="fa fa-trash-o"></ion-icon>
             </button>
           </ion-item>
@@ -41,6 +41,13 @@ import * as moment from "moment";
 })
 export class DailyMemosPage {
   statusBarColor: string = "#3c4d55";
+
+  buttons: any = {
+    remove: false,
+    share: false,
+    save: false,
+    cancel: true
+  };
 
   memos: Array<MemoData> = new Array<MemoData>();
   day: string = moment().format("YYYY/MM/DD");
@@ -69,7 +76,7 @@ export class DailyMemosPage {
   addMemo() {
     let modal = this.modalCtrl.create(DataConfig.PAGE._MEMO_PAGE, {day: this.day});
     modal.onDidDismiss(async (data) => {
-      if (data.memo && typeof data.memo === 'string') { // 创建新备忘
+      if (data && data.memo && typeof data.memo === 'string') { // 创建新备忘
         let memo: MemoData = {} as MemoData;
 
         memo.sd = data.day;
@@ -79,6 +86,26 @@ export class DailyMemosPage {
       }
     });
     modal.present();
+  }
+
+  goDetail(memo) {
+    let modal = this.modalCtrl.create(DataConfig.PAGE._MEMO_PAGE, {day: this.day, memo: memo});
+    modal.onDidDismiss(async (data) => {
+      if (data && data.memo && typeof data.memo !== 'string') { // 创建新备忘
+        let changed: MemoData = {} as MemoData;
+
+        Object.assign(changed, data.memo)
+
+        await this.memoService.saveMemo(changed);
+      }
+    });
+    modal.present();
+  }
+
+  remove(event, memo) {
+    event.stopPropagation();  // 阻止冒泡
+    event.preventDefault();   // 忽略事件传递
+    this.memoService.removeMemo(memo.moi);
   }
 
   goBack() {

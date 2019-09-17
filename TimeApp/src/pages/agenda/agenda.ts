@@ -15,7 +15,8 @@ import {PageBoxComponent} from "../../components/page-box/page-box";
 import {CornerBadgeComponent} from "../../components/corner-badge/corner-badge";
 import {CalendarService} from "../../service/business/calendar.service";
 import {EventService, AgendaData, RtJson, TxJson} from "../../service/business/event.service";
-import { PageDirection, IsSuccess, OperateType, RepeatFlag, ToDoListStatus } from "../../data.enum";
+import { PageDirection, IsSuccess, OperateType, RepeatFlag, ToDoListStatus, IsWholeday } from "../../data.enum";
+import {Keyboard} from "@ionic-native/keyboard";
 
 /**
  * Generated class for the 日程创建/修改 page.
@@ -28,188 +29,28 @@ import { PageDirection, IsSuccess, OperateType, RepeatFlag, ToDoListStatus } fro
   selector: 'page-agenda',
   template:
       `
-    <!--<page-box title="活动" [subtitle]="currentAgenda.evd" [data]="currentAgenda.evi" (onSubTitleClick)="changeDatetime()"-->
-    <!--(onRemove)="goRemove()" (onBack)="goBack()">-->
-    <!--<ion-grid>-->
-    <!--<ion-row class="agendaEvn">-->
-    <!--&lt;!&ndash;主题&ndash;&gt;-->
-    <!--<ion-textarea [(ngModel)]="currentAgenda.evn" placeholder="参加小明的生日Party" (ionBlur)="save()"-->
-    <!--rows="8"></ion-textarea>-->
-    <!--</ion-row>-->
-    <!--<ion-row class="agendaAttach" *ngIf="currentAgenda.fj && currentAgenda.fj > 0">-->
-    <!--<button ion-button icon-end clear >-->
-    <!--<div>附件: 点此查看附件</div>-->
-    <!--<ion-icon ios="md-attach" md="md-attach"></ion-icon>-->
-    <!--</button>-->
-    <!--</ion-row>-->
-    <!--<ion-row class="agendaPin" *ngIf="false">-->
-    <!--<button ion-button icon-end clear  (click)="changeLocation()">-->
-    <!--<div>地址: 浦东新区红枫路108弄11号1201室</div>-->
-    <!--<ion-icon ios="ios-pin" md="ios-pin"></ion-icon>-->
-    <!--</button>-->
-    <!--</ion-row>-->
-    <!--<ion-row class="agendaRemark" *ngIf="currentAgenda.bz && currentAgenda.bz != ''">-->
-    <!--<button ion-button icon-end clear  (click)="changeComment()">-->
-    <!--<div>备注: {{currentAgenda.bz}}</div>-->
-    <!--<ion-icon ios="ios-create" md="ios-create"></ion-icon>-->
-    <!--</button>-->
-    <!--</ion-row>-->
-    <!--<ion-row class="agendaDate">-->
-    <!--<ion-badge *ngIf="currentAgenda.evi" (click)="clickSubtitle()">{{currentAgenda.evd}}</ion-badge>-->
-    <!--</ion-row>-->
-    <!--<ion-row class="agendaSender" *ngIf="currentAgenda.ui && currentAgenda.ui != currentuser">-->
-    <!--{{currentAgenda.ui | formatuser: currentuser: friends}}-->
-    <!--</ion-row>-->
-    <!--&lt;!&ndash;附加属性操作&ndash;&gt;-->
-    <!--<ion-row class="agendaOptionRight" *ngIf="currentAgenda.evi">-->
-    <!--<ion-col *ngIf="!currentAgenda.fj || currentAgenda.fj == 0">-->
-    <!--<button ion-button icon-start clear >-->
-    <!--<ion-icon ios="md-attach" md="md-attach"></ion-icon>-->
-    <!--<div>附件</div>-->
-    <!--</button>-->
-    <!--</ion-col>-->
-    <!--<ion-col *ngIf="true">-->
-    <!--<button ion-button icon-start clear  (click)="changeLocation()">-->
-    <!--<ion-icon ios="ios-pin" md="ios-pin"></ion-icon>-->
-    <!--<div>地址</div>-->
-    <!--</button>-->
-    <!--</ion-col>-->
-    <!--<ion-col *ngIf="!currentAgenda.bz || currentAgenda.bz == ''">-->
-    <!--<button ion-button icon-start clear  (click)="changeComment()">-->
-    <!--<ion-icon ios="ios-create" md="ios-create"></ion-icon>-->
-    <!--<div>备注</div>-->
-    <!--</button>-->
-    <!--</ion-col>-->
-    <!--<ion-col *ngIf="currentAgenda.todolist == todoliston">-->
-    <!--<button ion-button icon-only clear  (click)="removeTodolist()">-->
-    <!--<ion-icon ios="md-star" md="md-star"></ion-icon>-->
-    <!--</button>-->
-    <!--</ion-col>-->
-    <!--<ion-col *ngIf="currentAgenda.todolist == todolistoff">-->
-    <!--<button ion-button icon-only clear  (click)="addTodolist()">-->
-    <!--<ion-icon ios="md-star-outline" md="md-star-outline"></ion-icon>-->
-    <!--</button>-->
-    <!--</ion-col>-->
-    <!--</ion-row>-->
-    <!--&lt;!&ndash;控制操作&ndash;&gt;-->
-    <!--<ion-row *ngIf="currentAgenda.evi" class="agendaOptionLeft" >-->
-    <!--<ion-col>-->
-    <!--<button ion-button icon-start clear  (click)="changePlan()">-->
-    <!--<ion-icon ios="ios-add" md="ios-add"></ion-icon>-->
-    <!--<div>{{currentAgenda.ji | formatplan: '计划': privateplans}}</div>-->
-    <!--</button>-->
-    <!--</ion-col>-->
-    <!--<ion-col *ngIf="!currentAgenda.txs || currentAgenda.txs == ''">-->
-    <!--<button ion-button icon-start clear  (click)="changeRemind()">-->
-    <!--<ion-icon ios="md-notifications" md="md-notifications"></ion-icon>-->
-    <!--<div>提醒</div>-->
-    <!--</button>-->
-    <!--</ion-col>-->
-    <!--<ion-col *ngIf="!currentAgenda.rfg || currentAgenda.rfg == nonrepeatflag">-->
-    <!--<button ion-button icon-start clear  (click)="changeRepeat()">-->
-    <!--<ion-icon ios="ios-repeat" md="ios-repeat"></ion-icon>-->
-    <!--<div>重复</div>-->
-    <!--</button>-->
-    <!--</ion-col>-->
-    <!--<ion-col *ngIf="!currentAgenda.pn || currentAgenda.pn == 0">-->
-    <!--<button ion-button icon-start clear  (click)="changeInvites()">-->
-    <!--<ion-icon ios="ios-person-add" md="ios-person-add"></ion-icon>-->
-    <!--<div>邀请</div>-->
-    <!--</button>-->
-    <!--</ion-col>-->
-    <!--</ion-row>-->
-
-    <!--<ion-row *ngIf="currentAgenda.evi && (currentAgenda.pn > 0 || (currentAgenda.txs && currentAgenda.txs != '') || (currentAgenda.rts && currentAgenda.rts != ''))">-->
-    <!--<ion-col *ngIf="currentAgenda.pn > 0">-->
-    <!--<button ion-button  (click)="changeInvites()">-->
-    <!--<div class="agendaPlayer">-->
-    <!--参与人-->
-    <!--<corner-badge>{{currentAgenda.pn}}</corner-badge>-->
-    <!--</div>-->
-    <!--</button>-->
-    <!--</ion-col>-->
-    <!--<ion-col *ngIf="currentAgenda.txs && currentAgenda.txs != ''">-->
-    <!--<button ion-button  (click)="changeRemind()">-->
-    <!--<div class="agendaRemind">-->
-    <!--{{currentAgenda.txs}}-->
-    <!--<corner-badge>3</corner-badge>-->
-    <!--</div>-->
-    <!--</button>-->
-    <!--</ion-col>-->
-    <!--<ion-col *ngIf="currentAgenda.rfg == repeatflag">-->
-    <!--<button ion-button  (click)="changeRepeat()">-->
-    <!--<div class="agendarepeat">-->
-    <!--{{currentAgenda.rts}}-->
-    <!--<corner-badge>3</corner-badge>-->
-    <!--</div>-->
-    <!--</button>-->
-    <!--</ion-col>-->
-    <!--</ion-row>-->
-
-
-    <!--</ion-grid>-->
-    <!--</page-box>-->
-
-    <page-box title="活动" [subtitle]="currentAgenda.evd" [data]="currentAgenda.evi" (onSubTitleClick)="changeDatetime()"
-              (onRemove)="goRemove()" (onBack)="goBack()">
+    <page-box title="活动" [buttons]="buttons" [data]="currentAgenda.evi" (onRemove)="goRemove()" (onSave)="save()" (onBack)="goBack()">
       <ion-grid>
         <ion-row class="agendaEvn">
           <!--主题-->
-          <ion-textarea rows="8" [(ngModel)]="currentAgenda.evn" (ionBlur)="save()"></ion-textarea>
+          <ion-textarea rows="8" [(ngModel)]="currentAgenda.evn" (ionChange)="changeTitle()" #bzRef></ion-textarea>
 
-          <div class="agendatodo">
-            <button ion-button icon-only clear  (click)="addTodolist()" *ngIf="true">
-              <ion-icon ios="md-star" md="md-star"></ion-icon>
-            </button>
-            <button ion-button icon-only clear  (click)="removeTodolist()" *ngIf="false">
-              <ion-icon ios="md-star-outline" md="md-star-outline"></ion-icon>
+          <div class="agendatodo" *ngIf="currentAgenda.todolist">
+            <button ion-button icon-only clear  (click)="changeTodolist()">
+              <ion-icon class="fa" [class.fa-star] = "currentAgenda.todolist == todoliston" [class.fa-star-o] = "currentAgenda.todolist != todoliston"></ion-icon>
             </button>
           </div>
         </ion-row>
 
         <ion-row class="optionRow">
           <ion-grid>
-
-            <ion-row class="agendaOptionThree">
-              <button ion-button  clear (click)="changeRepeat()">
-                <div class="agendarepeat">
-                  <!--<ion-icon class="fa fa-copy  iconCopy"></ion-icon>-->
-                  重复{{currentAgenda.rts}}
-                  <corner-badge><p><i class="fa fa-copy "></i></p></corner-badge>
-                </div>
-              </button>
-            </ion-row>
-            
-            <ion-row class="agendaOptionTwo">
-              <ion-col class="agendaPlayer">
-                <button ion-button  clear (click)="changeInvites()">
-                    <!--<ion-icon class="fa fa-address-book-o iconUserPlus"></ion-icon>-->
-                    参与人
-                    <corner-badge>{{currentAgenda.pn}}</corner-badge>
-                </button>
-              </ion-col>
-              <ion-col  class="agendaRemind">
-                <button ion-button clear (click)="changeRemind()">
-                    <!--<ion-icon class="fa fa-bell iconBell"></ion-icon>-->
-                    30分钟后{{currentAgenda.txs}}
-                  <corner-badge><p>999</p></corner-badge>
-                </button>
-              </ion-col>
-              <ion-col class="agendaAttach">
-                <button ion-button clear icon-end >
-                    <!--<ion-icon class="fa fa-paperclip iconAttach"></ion-icon>-->
-                     补充
-                    <corner-badge><p>3</p></corner-badge>
-                </button>
-              </ion-col>
-            </ion-row>
             <!--附加属性操作-->
-            <ion-row class="agendaOptionOne">
-              <button class="agendaPinbutton" ion-button icon-start clear  (click)="changeLocation()">
+            <ion-row class="agendaOptionOne" *ngIf="currentAgenda.evi">
+              <button class="agendaPinbutton" ion-button icon-start clear  (click)="changeLocation()" *ngIf="!currentAgenda.adr">
                 <ion-icon class="fa fa-map-marker iconPin"></ion-icon>
                 <div>地址</div>
               </button>
-              <button class="agendaRemarkbutton" ion-button icon-start clear  (click)="changeComment()">
+              <button class="agendaRemarkbutton" ion-button icon-start clear  (click)="changeComment()" *ngIf="!currentAgenda.bz">
                 <ion-icon class="fa fa-edit iconRemark"></ion-icon>
                 <div>备注</div>
               </button>
@@ -218,66 +59,100 @@ import { PageDirection, IsSuccess, OperateType, RepeatFlag, ToDoListStatus } fro
                 <div>{{currentAgenda.ji | formatplan: '计划': privateplans}}</div>
               </button>
             </ion-row>
-            <ion-row class="agendaRemark">
+
+            <ion-row class="agendaOptionTwo" *ngIf="currentAgenda.evi">
+              <ion-col class="agendaPlayer">
+                <button ion-button  clear (click)="changeInvites()">
+                    <ion-icon class="fa fa-address-book-o iconUserPlus" *ngIf="currentAgenda.pn <= 0"></ion-icon>
+                    参与人
+                    <corner-badge *ngIf="currentAgenda.pn > 0">{{currentAgenda.pn}}</corner-badge>
+                </button>
+              </ion-col>
+              <ion-col  class="agendaRemind">
+                <button ion-button clear (click)="changeRemind()">
+                    <ion-icon class="fa fa-bell iconBell" *ngIf="!currentAgenda.txs"></ion-icon>
+                    {{currentAgenda.txs || "提醒"}}
+                  <corner-badge *ngIf="currentAgenda.txs"><p>{{currentAgenda.txjson.reminds.length}}</p></corner-badge>
+                </button>
+              </ion-col>
+              <ion-col class="agendaAttach">
+                <button ion-button clear icon-end >
+                    <ion-icon class="fa fa-paperclip iconAttach" *ngIf="!currentAgenda.fj || currentAgenda.fj == '0'"></ion-icon>
+                     补充
+                    <corner-badge *ngIf="currentAgenda.fj && currentAgenda.fj != '0'"><p>{{currentAgenda.fj}}</p></corner-badge>
+                </button>
+              </ion-col>
+            </ion-row>
+
+            <ion-row class="agendaOptionThree" *ngIf="currentAgenda.evi">
+              <button ion-button  clear (click)="changeRepeat()">
+                <div class="agendarepeat">
+                  <ion-icon class="fa fa-copy  iconCopy" *ngIf="!currentAgenda.rts"></ion-icon>
+                  {{currentAgenda.rts || "重复"}}
+                  <corner-badge *ngIf="currentAgenda.rts"><p><i class="fa fa-copy "></i></p></corner-badge>
+                </div>
+              </button>
+            </ion-row>
+
+            <ion-row class="agendaRemark" *ngIf="currentAgenda.bz">
               <button  ion-button icon-end clear   (click)="changeComment()">
             <span class="content">
-                备注：备注备注备注备注备注备注备注备注备注备注备注备注备注备注备注备注备注备注
+                备注：{{currentAgenda.bz}}
               </span>
                 <ion-icon class="fa fa-edit iconRemark"></ion-icon>
               </button>
             </ion-row>
 
-            <ion-row class="agendaPin">
+            <ion-row class="agendaPin" *ngIf="currentAgenda.adr">
               <button  ion-button icon-end clear  (click)="changeLocation()">
             <span class="content">
-              地址：浦东新区红枫路108弄11号1201室  
+              地址：{{currentAgenda.adr}}
               </span>
                 <ion-icon class="fa fa-map-marker iconPin"></ion-icon>
               </button>
             </ion-row>
-            <ion-row>
-              <ion-col  class="agendaDate" (click)="clickSubtitle()">
+            <ion-row *ngIf="currentAgenda.evd">
+              <ion-col  class="agendaDate" (click)="changeDatetime()">
                 <button ion-button icon-end clear  >
                   <span class="content">
-                    日期：2019-12-12
+                    日期：{{currentAgenda.evd | formatedate: "YYYY年M月D日"}}
                     </span>
                       </button>
                 <button ion-button icon-end clear  >
-                  <span class="content">
-                    时间：19:23 16H15M
+                  <span class="content" *ngIf="currentAgenda.al == wholeday">
+                    时间：全天
+                  </span>
+                  <span class="content" *ngIf="currentAgenda.al != wholeday">
+                    时间：{{currentAgenda.evt | formatedate: "HH:mm"}} {{currentAgenda.ct | formatedate: "duration"}}
                     </span>
                 </button>
               </ion-col>
-              <ion-col  (click)="clickSubtitle()">
+              <ion-col  (click)="changeDatetime()">
                 <button ion-button icon-end clear  >
                   <ion-icon class="fa fa-calendar iconCalendar"></ion-icon>
                 </button>
               </ion-col>
-              <ion-col class="agendaSender">
+              <ion-col class="agendaSender" *ngIf="currentAgenda.ui != currentuser">
             <span class="content">
-               ---来自小小女
+               ---来自{{currentAgenda.ui | formatuser: currentuser: friends}}
               </span>
               </ion-col>
             </ion-row>
-
-
           </ion-grid>
         </ion-row>
-       
-       
-
       </ion-grid>
     </page-box>
-    
-    <!--<div class="create">-->
-      <!--&lt;!&ndash;主题&ndash;&gt;-->
-      <!--<ion-textarea rows="8" [(ngModel)]="currentAgenda.evn" placeholder="参加小明的生日Party"-->
-                    <!--(ionBlur)="save()"></ion-textarea>-->
-    <!--</div>-->
   `
 })
 export class AgendaPage {
   statusBarColor: string = "#3c4d55";
+
+  buttons: any = {
+    remove: false,
+    share: false,
+    save: false,
+    cancel: true
+  };
 
   currentuser: string = UserConfig.account.id;
   friends: Array<any> = UserConfig.friends;
@@ -291,11 +166,15 @@ export class AgendaPage {
   todoliston = ToDoListStatus.On;
   todolistoff = ToDoListStatus.Off;
 
+  wholeday = IsWholeday.Whole;
+
   repeatflag = RepeatFlag.Repeat;
   nonrepeatflag = RepeatFlag.NonRepeat;
   @ViewChild(PageBoxComponent)
   pageBoxComponent:PageBoxComponent
 
+  @ViewChild("bzRef", {read: ElementRef})
+  _bzRef: ElementRef;
 
 
 
@@ -309,7 +188,8 @@ export class AgendaPage {
               private feedback: FeedbackService,
               private calendarService: CalendarService,
               private eventService: EventService,
-              private sqlite: SqliteExec) {
+              private sqlite: SqliteExec,
+              private keyboard: Keyboard) {
     moment.locale('zh-cn');
     if (this.navParams) {
       let paramter: ScdPageParamter = this.navParams.data;
@@ -327,6 +207,8 @@ export class AgendaPage {
         this.eventService.getAgenda(paramter.si).then((agenda) => {
           this.currentAgenda = agenda;
           Object.assign(this.originAgenda, agenda);
+
+          this.buttons.remove = true;
         });
       }
     }
@@ -338,7 +220,13 @@ export class AgendaPage {
 
   ionViewDidEnter(){
     this.pageBoxComponent.setBoxContent();
-    console.log("3.0 ionViewDidEnter 当进入页面时触发");
+    setTimeout(() => {
+      if (!this.currentAgenda.evi) {
+        let el = this._bzRef.nativeElement.querySelector('textarea');
+        el.focus();
+        this.keyboard.show();   //for android
+      }
+    }, 500);
   }
 
   ionViewWillEnter() {
@@ -353,14 +241,34 @@ export class AgendaPage {
   changeDatetime() {
   }
 
-  addTodolist() {
-    this.currentAgenda.todolist = ToDoListStatus.On;
-    this.doOptionSave(OperateType.OnlySel);
+  changeTitle() {
+    if (this.currentAgenda.evi) {
+      if (!this.eventService.isSameAgenda(this.currentAgenda, this.originAgenda)) {
+        this.buttons.save = true;
+      } else {
+        this.buttons.save = false;
+      }
+    } else {
+      if (this.currentAgenda.evn != "") {
+        this.buttons.save = true;
+      } else {
+        this.buttons.save = false;
+      }
+    }
   }
 
-  removeTodolist() {
-    this.currentAgenda.todolist = ToDoListStatus.Off;
-    this.doOptionSave(OperateType.OnlySel);
+  changeTodolist() {
+    if (this.currentAgenda.todolist == ToDoListStatus.On) {
+      this.currentAgenda.todolist = ToDoListStatus.Off;
+    } else {
+      this.currentAgenda.todolist = ToDoListStatus.On;
+    }
+
+    if (!this.eventService.isSameAgenda(this.currentAgenda, this.originAgenda)) {
+      this.buttons.save = true;
+    } else {
+      this.buttons.save = false;
+    }
   }
 
   changeAttach() {
@@ -382,10 +290,14 @@ export class AgendaPage {
   changePlan() {
     let modal = this.modalCtrl.create(DataConfig.PAGE._PLAN_PAGE, {ji: this.currentAgenda.ji});
     modal.onDidDismiss(async (data) => {
+      if (!data) return;
+
       this.currentAgenda.ji = data.jh.ji;
 
-      if (this.originAgenda.ji != this.currentAgenda.ji) {
-        this.doOptionSave(OperateType.OnlySel);
+      if (!this.eventService.isSameAgenda(this.currentAgenda, this.originAgenda)) {
+        this.buttons.save = true;
+      } else {
+        this.buttons.save = false;
       }
     });
     modal.present();
@@ -402,10 +314,14 @@ export class AgendaPage {
   changeComment() {
     let modal = this.modalCtrl.create(DataConfig.PAGE._COMMENT_PAGE, {value: this.currentAgenda.bz});
     modal.onDidDismiss(async (data) => {
+      if (!data) return;
+
       this.currentAgenda.bz = data.bz;
 
-      if (this.originAgenda.bz != this.currentAgenda.bz) {
-        this.doOptionSave(OperateType.OnlySel);
+      if (!this.eventService.isSameAgenda(this.currentAgenda, this.originAgenda)) {
+        this.buttons.save = true;
+      } else {
+        this.buttons.save = false;
       }
     });
     modal.present();
@@ -430,7 +346,11 @@ export class AgendaPage {
         this.currentAgenda.rt = JSON.stringify(this.currentAgenda.rtjson);
         this.currentAgenda.rts = this.currentAgenda.rtjson.text();
 
-        this.save();
+        if (!this.eventService.isSameAgenda(this.currentAgenda, this.originAgenda)) {
+          this.buttons.save = true;
+        } else {
+          this.buttons.save = false;
+        }
       }
     });
     modal.present();
@@ -455,16 +375,23 @@ export class AgendaPage {
         this.currentAgenda.tx = JSON.stringify(this.currentAgenda.txjson);
         this.currentAgenda.txs = this.currentAgenda.txjson.text();
 
-        this.doOptionSave(OperateType.OnlySel);
+        if (!this.eventService.isSameAgenda(this.currentAgenda, this.originAgenda)) {
+          this.buttons.save = true;
+        } else {
+          this.buttons.save = false;
+        }
       }
     });
     modal.present();
   }
 
   doOptionRemove(op: OperateType) {
-    this.eventService.removeAgenda(this.originAgenda, op)
-    .then(() => {
-      this.goBack();
+    this.util.loadingStart().then(() => {
+      this.eventService.removeAgenda(this.originAgenda, op)
+      .then(() => {
+        this.util.loadingEnd();
+        this.goBack();
+      });
     });
   }
 
@@ -478,9 +405,12 @@ export class AgendaPage {
       this.modifyConfirm.present();
 
     } else {
-      this.eventService.removeAgenda(this.originAgenda, OperateType.OnlySel)
-      .then(() => {
-        this.goBack();
+      this.util.loadingStart().then(() => {
+        this.eventService.removeAgenda(this.originAgenda, OperateType.OnlySel)
+        .then(() => {
+          this.util.loadingEnd();
+          this.goBack();
+        });
       });
     }
   }
@@ -545,11 +475,16 @@ export class AgendaPage {
   }
 
   doOptionSave(op: OperateType) {
-    this.eventService.saveAgenda(this.currentAgenda, this.originAgenda, op).then((agenda) => {
-      if (agenda && agenda.length > 0) {
-        this.currentAgenda = agenda[0];
-        Object.assign(this.originAgenda, agenda[0]);
-      }
+    this.util.loadingStart().then(() => {
+      this.eventService.saveAgenda(this.currentAgenda, this.originAgenda, op).then((agenda) => {
+        if (agenda && agenda.length > 0) {
+          this.currentAgenda = agenda[0];
+          Object.assign(this.originAgenda, agenda[0]);
+
+          this.buttons.save = false;
+        }
+        this.util.loadingEnd();
+      });
     });
   }
 
@@ -568,19 +503,30 @@ export class AgendaPage {
 
           this.modifyConfirm.present();
         } else {                          // 非重复/重复已经修改为非重复
-          this.eventService.saveAgenda(this.currentAgenda, this.originAgenda, OperateType.OnlySel).then((agenda) => {
-            if (agenda && agenda.length > 0) {
-              this.currentAgenda = agenda[0];
-              Object.assign(this.originAgenda, agenda[0]);
-            }
+          this.util.loadingStart().then(() => {
+            this.eventService.saveAgenda(this.currentAgenda, this.originAgenda, OperateType.OnlySel).then((agenda) => {
+              if (agenda && agenda.length > 0) {
+                this.currentAgenda = agenda[0];
+                Object.assign(this.originAgenda, agenda[0]);
+
+                this.buttons.save = false;
+              }
+              this.util.loadingEnd();
+            });
           });
         }
       } else {                            // 新建日程
-        this.eventService.saveAgenda(this.currentAgenda).then((agenda) => {
-          if (agenda && agenda.length > 0) {
-            this.currentAgenda = agenda[0];
-            Object.assign(this.originAgenda, agenda[0]);
-          }
+        this.util.loadingStart().then(() => {
+          this.eventService.saveAgenda(this.currentAgenda).then((agenda) => {
+            if (agenda && agenda.length > 0) {
+              this.currentAgenda = agenda[0];
+              Object.assign(this.originAgenda, agenda[0]);
+
+              this.buttons.remove = true;
+              this.buttons.save = false;
+            }
+            this.util.loadingEnd();
+          });
         });
       }
     }

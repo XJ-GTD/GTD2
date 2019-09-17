@@ -128,6 +128,7 @@ import {CalendarService} from "../service/business/calendar.service";
   ],
   imports: [
     BrowserModule,
+    BaiduMapModule.forRoot({ ak: 'zD6zCIA9w7ItoXwxQ8IRPD4rk5E9GEew' }),
     IonicModule.forRoot(MyApp, {
       tabsHideOnSubPages: 'true',
       //强制使用IOS风格
@@ -194,7 +195,7 @@ import {CalendarService} from "../service/business/calendar.service";
     RadioSelectComponentModule,
     ScrollRangePickerComponentModule,
     SpeechBubbleComponentModule,
-    BaiduMapModule.forRoot({ ak: 'zD6zCIA9w7ItoXwxQ8IRPD4rk5E9GEew' })
+
   ],
   bootstrap: [IonicApp],
   entryComponents: [

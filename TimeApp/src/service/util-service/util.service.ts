@@ -595,12 +595,12 @@ export class UtilService {
   }
 
 
-  loadingStart() {
+  async loadingStart() {
     this.loading = this.loadingCtrl.create({
       spinner: 'circles',
     });
 
-    this.loading.present();
+    await this.loading.present();
   }
 
   loadingEnd() {

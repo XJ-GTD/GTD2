@@ -1,6 +1,7 @@
 import {Component, ElementRef, Renderer2, ViewChild, ViewChildren, QueryList } from '@angular/core';
 import {IonicPage, NavController, ViewController, ModalController, ActionSheetController, NavParams, Slides} from 'ionic-angular';
 import {ModalBoxComponent} from "../../components/modal-box/modal-box";
+import { MemoData } from "../../service/business/memo.service";
 import {EmitService} from "../../service/util-service/emit.service";
 import {FeedbackService} from "../../service/cordova/feedback.service";
 import {UtilService} from "../../service/util-service/util.service";
@@ -18,18 +19,26 @@ import * as moment from "moment";
 @IonicPage()
 @Component({
   selector: 'page-memo',
-  template: `  <modal-box title="备忘" (onSave)="save()" (onCancel)="cancel()">
+  template: `  <modal-box title="备忘" [buttons]="buttons" (onSave)="save()" (onCancel)="cancel()">
         <ion-textarea type="text" placeholder="备注" [(ngModel)]="memo" class="memo-set" autosize maxHeight="400" #bzRef></ion-textarea>
       </modal-box>`
 })
 export class MemoPage {
   statusBarColor: string = "#3c4d55";
 
+  buttons: any = {
+    remove: false,
+    share: false,
+    save: true,
+    cancel: true
+  };
+
   @ViewChild("bzRef", {read: ElementRef})
   _bzRef: ElementRef;
 
   day: string = moment().format("YYYY/MM/DD");
   memo: string = "";
+  origin: MemoData;
 
   constructor(public navCtrl: NavController,
               public navParams: NavParams,
@@ -46,8 +55,14 @@ export class MemoPage {
 
       this.day = data.day;
 
-      if (data.memo) {
+      if (data.memo && typeof data.memo === "string") {
+        this.origin = undefined;
         this.memo = data.memo;
+      }
+
+      if (data.memo && typeof data.memo !== "string") {
+        this.origin = data.memo;
+        this.memo = this.origin.mon;
       }
     }
   }
@@ -61,9 +76,13 @@ export class MemoPage {
   }
 
   save() {
+    if (this.origin) {
+      this.origin.mon = this.memo;
+    }
+
     let data: Object = {
       day: this.day,
-      memo: this.memo
+      memo: this.origin? this.origin : this.memo
     };
     this.viewCtrl.dismiss(data);
   }

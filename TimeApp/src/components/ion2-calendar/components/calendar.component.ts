@@ -73,7 +73,7 @@ export const ION_CAL_VALUE_ACCESSOR: Provider = {
 
           <div class="swiper-wrapper">
             <div *ngFor="let monthOpt of monthOpts" class="swiper-slide">
-              <div class="yearshow">{{monthOpt.original.year}}</div>
+              <div class="yearshow">{{monthOpt.original.month + 1}}</div>
               <ion-calendar-week color="transparent">
               </ion-calendar-week>
               <ion-calendar-month class="component-mode"
@@ -160,6 +160,7 @@ export class CalendarComponent implements OnInit {
       //不影响编译
       this.swiper.setTransition(10);
       this.swiper.setTranslate(this.swiper.translate - window.innerWidth);
+      this.swiper.activeIndex = this.swiper.activeIndex  + 1;
     }
 
   }
@@ -259,10 +260,12 @@ export class CalendarComponent implements OnInit {
   index:number;
 
   ngAfterViewInit() {
+
     setTimeout(()=>{
       if (!this.calendarAnimation) {
         this.calendarAnimation = CalendarController.create(this, this.plt);
       }
+
       this.swiper.on("slideChangeTransitionEnd", ()=>{
 
         this.changeDetectorRef.markForCheck();
@@ -284,8 +287,10 @@ export class CalendarComponent implements OnInit {
           this.slideNextEnd();
         }else{
           this.slidePrevEnd();
-          this.swiper.activeIndex = this.swiper.activeIndex  + 1;
         }
+        this.swiper.updateSize()
+        this.swiper.update();
+        this.swiper.updateSlidesClasses();
         this.index = this.swiper.activeIndex;
         if (this.change4emit)
           this.emitService.emit("calendar.change.month",moment(monthOpt.original.time).format("YYYYMM"));
@@ -295,7 +300,15 @@ export class CalendarComponent implements OnInit {
 
     },1000);
 
-    this.swiper  = new Swiper('.swiper-container');
+    this.swiper  = new Swiper('.swiper-container', {
+      autoHeight: true, //高度随内容变化
+      observer:true,
+    });
+
+
+
+    //
+    // this.swiper  = new Swiper('.swiper-container');
 
     // this.swiper.on("slideNextTransitionEnd", ()=>{
     //   this.slideNextEnd();
