@@ -150,7 +150,7 @@ import { PageDirection, IsSuccess, OperateType, RepeatFlag, ToDoListStatus } fro
     <!--</ion-grid>-->
     <!--</page-box>-->
 
-    <page-box title="活动" [buttons]="buttons" [data]="currentAgenda.evi" (onRemove)="goRemove()" (onBack)="save()" (onBack)="goBack()">
+    <page-box title="活动" [buttons]="buttons" [data]="currentAgenda.evi" (onRemove)="goRemove()" (onSave)="save()" (onBack)="goBack()">
       <ion-grid>
         <ion-row class="agendaEvn">
           <!--主题-->
