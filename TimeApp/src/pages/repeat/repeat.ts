@@ -13,7 +13,7 @@ import {CycleType, OverType} from "../../data.enum";
 @Component({
   selector: 'page-repeat',
   template: `
-  <modal-box title="重复" (onClose)="close()">
+  <modal-box title="重复" (onSave)="save()" (onCancel)="cancel()">
     <ion-grid class="h100">
       <ion-row justify-content-center>
         <p class="title">{{title}}</p>
@@ -254,6 +254,7 @@ export class RepeatPage {
 
   constructor(public navCtrl: NavController,
               private keyboard: Keyboard,
+              public modalCtrl: ModalController,
               public viewCtrl: ViewController,
               public navParams: NavParams) {
     if (this.navParams && this.navParams.data) {
@@ -292,10 +293,14 @@ export class RepeatPage {
   ionViewDidEnter() {
   }
 
-  close() {
+  save() {
     Object.assign(this.originRepeat, this.currentRepeat);
     let data: Object = {rtjson: this.originRepeat};
     this.viewCtrl.dismiss(data);
+  }
+
+  cancel() {
+    this.modalCtrl.pop();
   }
 
   private getFreqTitle(title: string, option: any) {
