@@ -9,7 +9,7 @@ declare var BMap;
   selector: 'page-location',
   template: `
   <modal-box title="地址" [buttons]="buttons" (onSave)="save()" (onCancel)="cancel()">
-    <ion-searchbar  (ionBlur)="search(searchText)"  [(ngModel)]="searchText" (ionInput)="getItems($event)" placeholder="上海市东方明珠塔" animated="true"></ion-searchbar>
+    <ion-searchbar  (ionBlur)="search(searchText.addr)"  [(ngModel)]="searchText.addr" (ionInput)="getItems($event)" placeholder="上海市东方明珠塔" animated="true"></ion-searchbar>
     <baidu-map #lmap id="map_container" [options] = "mapOptions" (loaded)="maploaded($event)">
       <control type="navigation" [options]="navOptions"></control>
       <marker *ngFor="let marker of markers" [point]="marker.point" [options]="marker.options"></marker>
@@ -38,19 +38,24 @@ export class LocationPage {
   navOptions: NavigationControlOptions; //百度导航条选项
   markers: Array<any> = new Array<any>();
   local: any;
-  dz: string = "";
-  searchText: string;
+  searchText:any =  {
+    adr :"",
+    adx :"",
+    ady :""
+  };
   map : any;
+
+
   @ViewChild('lmap') map_container: ElementRef;
 
   constructor(public navCtrl: NavController,
               public viewCtrl: ViewController,
               public navParams: NavParams) {
     if (this.navParams && this.navParams.data) {
-      let value = this.navParams.data.value;
+      let value = this.navParams.data;
 
-      if (value) {
-        this.dz = value;
+      if (value){
+        Object.assign(this.searchText,value);
       }
     }
 
@@ -101,10 +106,7 @@ export class LocationPage {
   }
 
   ionViewDidEnter() {
-    /*this.map = new BMap.Map("map_container");
-    let point = new BMap.Point( 121.51606,31.244604);
-    this.map.centerAndZoom(point, 16);
-    this.map.enableAutoResize();*/
+
   }
 
   save() {
@@ -113,6 +115,15 @@ export class LocationPage {
 
   cancel() {
     this.navCtrl.pop();
+  }
+
+  close(){
+    let data: Object = {
+      adr: this.searchText.adr,
+      adx: this.searchText.adx,
+      ady: this.searchText.ady
+    };
+    this.viewCtrl.dismiss(data);
   }
 
   getItems(ev) {
@@ -124,15 +135,6 @@ export class LocationPage {
     this.map = e;
   }
 
-  search2(txt){
-    var myKeys = [txt];
-    var local = new BMap.LocalSearch(this.map, {
-      renderOptions:{map: this.map, panel:"r-result"},
-      pageCapacity:5
-    });
-    local.searchInBounds(myKeys, this.map.getBounds());
-
-  }
   search(txt) { // 对应baidu-map中loaded事件即地图加载时运行的方法 官方介绍e可以是map实例
     var myKeys = [txt];
   	//创建一个搜索类实例
@@ -180,4 +182,6 @@ export class LocationPage {
     });
     this.local.search(myKeys);
   }
+
+
 }
