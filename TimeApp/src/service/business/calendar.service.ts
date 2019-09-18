@@ -330,7 +330,7 @@ export class CalendarService extends BaseService {
 
       await this.sqlExce.batExecSqlByParam(sqls);
 
-      this.emitService.emit(`mwxing.calendar.${plan.ji}.updated`);
+      this.emitService.emit(`mwxing.calendar.plans.changed`, plan);
     } else {
       // 新建
       let sqls: Array<any> = new Array<any>();
@@ -364,7 +364,7 @@ export class CalendarService extends BaseService {
 
       await this.sqlExce.batExecSqlByParam(sqls);
 
-      this.emitService.emit(`mwxing.calendar.plan.created`);
+      this.emitService.emit(`mwxing.calendar.plans.changed`, plan);
     }
 
     return plan;
@@ -387,6 +387,10 @@ export class CalendarService extends BaseService {
     plandb.tb = SyncType.unsynch;
 
     await this.sqlExce.updateByParam(plandb);
+
+    let plan: PlanData = await this.getPlan(ji, false);
+
+    this.emitService.emit(`mwxing.calendar.plans.changed`, plan);
 
     return;
   }
@@ -683,7 +687,7 @@ export class CalendarService extends BaseService {
 
     let sql: string = `select * from gtd_jha where ${(jts && jts.length > 0)? ('jt in (' + jts.join(', ') + ') and') : ''} del <> '${DelType.del}' order by jt asc, wtt desc`;
 
-    let plans: Array<PlanData> = await this.sqlExce.getExtList<PlanData>(sql);
+    let plans: Array<PlanData> = await this.sqlExce.getExtList<PlanData>(sql) || new Array<PlanData>();
 
     // 获取每个日历的日历项
 
@@ -698,6 +702,42 @@ export class CalendarService extends BaseService {
    **/
   async fetchPrivatePlans(): Promise<Array<PlanData>> {
     return await this.fetchAllPlans([PlanType.PrivatePlan]);
+  }
+
+  /**
+   * 合并日历一览
+   *
+   * @author leon_xi@163.com
+   **/
+  mergePlans(plans: Array<PlanData>, plan: PlanData): Array<PlanData> {
+    this.assertEmpty(plans);   // 入参不能为空
+    this.assertEmpty(plan);    // 入参不能为空
+
+    let existids: Array<string> = new Array<string>();
+
+    existids = plans.reduce((target, val) => {
+      target.push(val.ji);
+
+      return target;
+    }, existids);
+
+    let index: number = existids.indexOf(plan.ji);
+
+    if (index >= 0) {
+      // 更新/删除原有日历
+      if (plan.del != DelType.del) {
+        plans.splice(index, 1, plan);
+      } else {
+        plans.splice(index, 1);
+      }
+    } else {
+      // 新增日历
+      if (plan.del != DelType.del) {
+        plans.unshift(plan);
+      }
+    }
+
+    return plans;
   }
 
   /**

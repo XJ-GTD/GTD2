@@ -1456,7 +1456,7 @@ export class EventService extends BaseService {
     let params : Array<any>;
 
     //标记为删除的记录放入返回事件中
-    delcondi = ` evd >= ? and (evi = ? or rtevi =  ?) and del <> ? `;
+    delcondi = ` evd > ? and (evi = ? or rtevi =  ?) and del <> ? `;
     sq = ` select * from gtd_ev where ${delcondi} ; `;
     params = new Array<any>();
     params.push(oriAgdata.evd);
@@ -2111,6 +2111,15 @@ export class EventService extends BaseService {
     			daysNew.push(day);
     		}
     	}
+    	//开始日期默认做为重复的第一天加入到重复
+      if (daysNew.length > 0){
+    	  if (daysNew[0] != repeatStartDay ){
+          daysNew.unshift(repeatStartDay);
+        }
+      }else{
+        daysNew.push(repeatStartDay);
+      }
+
       return daysNew;
 	}
 

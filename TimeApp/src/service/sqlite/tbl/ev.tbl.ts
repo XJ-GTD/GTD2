@@ -45,9 +45,9 @@ export class EvTbl implements ITblParam {
           tx varchar(50)  ,txs varchar(50)  ,rt varchar(50)  ,rts varchar(50)  ,
           fj varchar(50)  ,pn integer  ,md varchar(4)  ,iv varchar(4)  ,sr varchar(50)  ,
           wtt integer  ,utt integer  ,gs varchar(4)  ,tb varchar(6)  ,wc varchar(6)  ,todolist varchar(6)  ,
-          del varchar(6),rfg varchar(6),adr varchar(6) 
-          ,adrx integer 
-          ,adry integer 
+          del varchar(6),rfg varchar(6),adr varchar(6)
+          ,adrx integer
+          ,adry integer
         );`;
 
     return sq;
@@ -367,6 +367,76 @@ export class EvTbl implements ITblParam {
 
   }
 
+  fastParam(): any {
+    let params: Array<any> = new Array<any>();
+
+    params.push(this.evi);
+    params.push(this.evn);
+    params.push(this.ui);
+    params.push(this.mi);
+    params.push(this.evd);
+    params.push(this.evt);
+    params.push(this.rtevi);
+    params.push(this.ji);
+    params.push(this.nll2str(this.bz));
+    params.push(this.type);
+    params.push(this.tx);
+    params.push(this.nll2str(this.txs));
+    params.push(this.rt);
+    params.push(this.nll2str(this.rts));
+    params.push(this.fj);
+    params.push(this.pn);
+    params.push(this.md);
+    params.push(this.iv);
+    params.push(this.sr);
+    params.push(this.wtt? this.wtt : moment().unix());
+    params.push(moment().unix());
+    params.push(this.gs);
+    params.push(this.tb);
+    params.push(this.wc);
+    params.push(this.todolist);
+    params.push(this.del);
+    params.push(this.rfg);
+    params.push(this.adr);
+    params.push(this.adrx);
+    params.push(this.adry);
+
+    return [`replace into gtd_ev (
+        evi,
+        evn,
+        ui,
+        mi,
+        evd,
+        evt,
+        rtevi,
+        ji,
+        bz,
+        type,
+        tx,
+        txs,
+        rt,
+        rts,
+        fj,
+        pn,
+        md,
+        iv,
+        sr,
+        wtt,
+        utt,
+        gs,
+        tb,
+        wc,
+        todolist,
+        del,
+        rfg,
+        adr,
+        adrx,
+        adry
+      )`,
+      `select ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?`,
+      params
+     ]
+  }
 
   nll2str(ob):any{
     if (ob == null || !ob ){

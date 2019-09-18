@@ -32,6 +32,7 @@ import {CycleType, IsWholeday, OverType, PlanItemType, PlanType, ToDoListStatus}
 import {AgendaData, EventService, MiniTaskData, RtJson, TaskData} from "../../service/business/event.service";
 import {MemoData, MemoService} from "../../service/business/memo.service";
 import {CalendarService, PlanData, PlanItemData, PlanMember} from "../../service/business/calendar.service";
+import { EmitService } from "../../service/util-service/emit.service";
 
 @Injectable()
 export class AlService {
@@ -41,6 +42,7 @@ export class AlService {
               private sqlLiteInit: SqliteInit,
               private sqlExce: SqliteExec,
               private util: UtilService,
+              private emitService: EmitService,
               private restfulConfig: RestFulConfig,
               private wsserivce: WebsocketService,
               private userConfig: UserConfig,
@@ -232,11 +234,29 @@ export class AlService {
       // TODO 判断用户是否登陆
       let aTbl: ATbl = new ATbl();
       let alData: AlData = new AlData();
+
       this.sqlExce.getList<ATbl>(aTbl).then(async (data) => {
+        UserConfig.privateplans = await this.calendarService.fetchPrivatePlans();
+
+        this.emitService.destroy("mwxing.calendar.plans.changed");
+        this.emitService.register("mwxing.calendar.plans.changed", (data) => {
+          if (!data) {
+            return;
+          }
+
+          // 多条数据同时更新/单条数据更新
+          if (data instanceof Array) {
+            for (let single of data) {
+              UserConfig.privateplans = this.calendarService.mergePlans(UserConfig.privateplans, single);
+            }
+          } else {
+            UserConfig.privateplans = this.calendarService.mergePlans(UserConfig.privateplans, data);
+          }
+        });
+
         if (data.length > 0) {
           alData.text = "用户已登录";
           alData.islogin = true;
-          UserConfig.privateplans = await this.calendarService.fetchPrivatePlans();
         } else {
           alData.text = "用户未登录";
           alData.islogin = false;
