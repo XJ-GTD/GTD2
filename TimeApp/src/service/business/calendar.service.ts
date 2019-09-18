@@ -388,6 +388,10 @@ export class CalendarService extends BaseService {
 
     await this.sqlExce.updateByParam(plandb);
 
+    let plan: PlanData = await this.getPlan(ji, false);
+
+    this.emitService.emit(`mwxing.calendar.plans.changed`, plan);
+
     return;
   }
 
