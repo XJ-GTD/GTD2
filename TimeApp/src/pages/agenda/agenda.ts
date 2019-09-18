@@ -304,7 +304,11 @@ export class AgendaPage {
   }
 
   changeLocation() {
-    let modal = this.modalCtrl.create(DataConfig.PAGE._LOCATION_PAGE);
+    let modal = this.modalCtrl.create(DataConfig.PAGE._LOCATION_PAGE, {
+      adr: this.currentAgenda.adr,
+      adrx: this.currentAgenda.adrx,
+      adry: this.currentAgenda.adry
+    });
     modal.onDidDismiss(async (data) => {
 
     });
