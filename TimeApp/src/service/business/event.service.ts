@@ -1456,7 +1456,7 @@ export class EventService extends BaseService {
     let params : Array<any>;
 
     //标记为删除的记录放入返回事件中
-    delcondi = ` evd > ? and (evi = ? or rtevi =  ?) and del <> ? `;
+    delcondi = ` evd >= ? and (evi = ? or rtevi =  ?) and del <> ? `;
     sq = ` select * from gtd_ev where ${delcondi} ; `;
     params = new Array<any>();
     params.push(oriAgdata.evd);
@@ -1705,6 +1705,8 @@ export class EventService extends BaseService {
 
     let ret = new RetParamEv();
     let outAgds = new Array<AgendaData>();
+    let evs = new Array<EvTbl>();
+    let was = new Array<WaTbl>();
 
     //字段evt 设定
     if (agdata.al == anyenum.IsWholeday.Whole){
@@ -1758,10 +1760,10 @@ export class EventService extends BaseService {
       ev.del = anyenum.DelType.undel;
 
       ret.ed = ev.evd;
+      evs.push(ev);
 
-      ret.sqlparam.push(ev.rpTParam());
       if (txjson.reminds && txjson.reminds.length > 0) {
-        ret.sqlparam = [...ret.sqlparam ,...this.sqlparamAddTxWa(ev,anyenum.ObjectType.Event,txjson,agdata.al,agdata.st)];
+        was = [...was,...this.sqlparamAddTxWa2(ev,anyenum.ObjectType.Event,txjson,agdata.al,agdata.st)];
       }
 
       //新增数据需要返回出去
@@ -1769,6 +1771,10 @@ export class EventService extends BaseService {
       Object.assign(outAgd,ev);
       outAgds.push(outAgd);
     }
+
+    let evparams : Array<any> = this.sqlExce.getFastSaveSqlByParam(evs);
+    let waparams : Array<any> = this.sqlExce.getFastSaveSqlByParam(was);
+    ret.sqlparam = [...evparams,...waparams,...ret.sqlparam];
 
     ret.outAgdatas = outAgds;
     return ret;
@@ -2122,6 +2128,43 @@ export class EventService extends BaseService {
 
       return daysNew;
 	}
+  /**
+   * 获取提醒表sql
+   * @param {EvTbl} ev
+   * @param {string} obtType
+   * @param {TxJson} txjson
+   * @param {string} al
+   * @param {string} st
+   * @returns {Array<any>}
+   */
+  private sqlparamAddTxWa2(ev: EvTbl,obtType: string, txjson :TxJson, al: string = "" ,st:string=""): Array<WaTbl> {
+    let ret = new Array<WaTbl>();
+    if (txjson.reminds && txjson.reminds.length > 0) {
+      for ( let j = 0, len = txjson.reminds.length ;j < len ; j++) {
+        let wa = new WaTbl();//提醒表
+        let remind : number;
+        wa.wai = this.util.getUuid();
+        wa.obt = obtType;
+        wa.obi = ev.evi;
+        remind = txjson.reminds[j];
+        wa.st = ev.evn;
+        let time = remind;
+        let date;
+        if (al == anyenum.IsWholeday.NonWhole) {
+          date = moment(ev.evd + " " + st).subtract(time, 'm').format("YYYY/MM/DD HH:mm");
+
+        } else {
+          date = moment(ev.evd + " " + "08:00").subtract(time, 'm').format("YYYY/MM/DD HH:mm");
+
+        }
+        wa.wd = moment(date).format("YYYY/MM/DD");
+        wa.wt = moment(date).format("HH:mm");
+        ret.push(wa);
+        //console.log('-------- 插入提醒表 --------');
+      }
+    }
+    return ret;
+  }
 
   /**
    * 获取提醒表sql
