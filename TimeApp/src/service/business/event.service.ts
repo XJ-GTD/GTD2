@@ -1746,7 +1746,7 @@ export class EventService extends BaseService {
 
       // 非重复日程及重复日程的第一条的rtevi（父日程evi）字段设为空。遵循父子关系，
       // 父记录的父节点字段rtevi设为空，子记录的父节点字段rtevi设为父记录的evi
-      if (ret.sqlparam.length < 1) {
+      if (evs.length < 1) {
         ret.rtevi = ev.evi;
         agdata.evi = ev.evi;
         ev.rtevi = "";
