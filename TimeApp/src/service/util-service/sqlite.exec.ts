@@ -375,6 +375,10 @@ export class SqliteExec {
       }
     }
 
+    if (sql != "") {
+      sqlparams.push([sql, params]);
+    }
+
     return sqlparams;
   }
 
