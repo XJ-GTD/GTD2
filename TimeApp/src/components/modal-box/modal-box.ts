@@ -20,18 +20,17 @@ import {Events} from 'ionic-angular';
           </ion-title>
           <div class="toolbar">
             <div (click)="goRemove()" *ngIf="buttons.remove">
-              <ion-icon class="fa fa-trash-o"></ion-icon>
+              <ion-icon class="fal fa-trash-alt"></ion-icon>
             </div>
 
             <div  (click)="goRemove()" *ngIf="buttons.share">
-              <ion-icon class="fa fa-share-square-o"></ion-icon>
+              <ion-icon class="fal fa-share-all"></ion-icon>
             </div>
-
-            <div  (click)="save()" *ngIf="buttons.save">
-              <ion-icon class="fa fa-floppy-o"></ion-icon>
+            <div (click)="save()" *ngIf="buttons.save">
+              <ion-icon class="fal fa-save"></ion-icon>
             </div>
             <div (click)="cancel()" *ngIf="buttons.cancel">
-              <ion-icon class="fa fa-undo"></ion-icon>
+              <ion-icon class="fal fa-undo-alt"></ion-icon>
             </div>
           </div>
         </ion-toolbar>
