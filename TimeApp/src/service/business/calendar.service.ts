@@ -710,8 +710,8 @@ export class CalendarService extends BaseService {
    * @author leon_xi@163.com
    **/
   mergePlans(plans: Array<PlanData>, plan: PlanData): Array<PlanData> {
-    assertEmpty(plans);   // 入参不能为空
-    assertEmpty(plan);    // 入参不能为空
+    this.assertEmpty(plans);   // 入参不能为空
+    this.assertEmpty(plan);    // 入参不能为空
 
     let existids: Array<string> = new Array<string>();
 
