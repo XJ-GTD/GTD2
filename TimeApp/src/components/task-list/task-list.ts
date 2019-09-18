@@ -11,7 +11,7 @@ import * as moment from "moment";
           <div class="agendaline">
             <div class="agenda-sn">{{task.evn}}</div>
             <div class="agenda-tool" (click)="erease($event, task)">
-              <ion-icon class="fa fa-eraser">移除</ion-icon>
+              <ion-icon class="fal fa-minus-circle">移除</ion-icon>
             </div>
           </div>
           <div class="agendaline">
@@ -23,7 +23,7 @@ import * as moment from "moment";
               <div class="agenda-st">{{(task.evd + ' ' + task.evt) | formatedate:'withNow'}}</div>
             </div>
             <div class="agenda-tool" (click)="complete($event, task)">
-              <ion-icon class="fa fa-check">完成</ion-icon>
+              <ion-icon class="fal fa-check-circle">完成</ion-icon>
             </div>
           </div>
         <div class="agendaline">
@@ -37,7 +37,7 @@ import * as moment from "moment";
     </ng-template>
     <ng-template #notask>
       <div class="notask">
-        <ion-icon class="fa fa-calendar-minus-o"></ion-icon>
+        <ion-icon class="fal fa-angry"></ion-icon>
         <span>没有重要事项了哟～</span>
         <button>
           创建活动

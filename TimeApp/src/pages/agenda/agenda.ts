@@ -37,7 +37,7 @@ import {Keyboard} from "@ionic-native/keyboard";
 
           <div class="agendatodo" *ngIf="currentAgenda.todolist">
             <button ion-button icon-only clear  (click)="changeTodolist()">
-              <ion-icon class="fa" [class.fa-star] = "currentAgenda.todolist == todoliston" [class.fa-star-o] = "currentAgenda.todolist != todoliston"></ion-icon>
+              <ion-icon class="fa" [class.fal-haykal] = "currentAgenda.todolist == todoliston" [class.fal-star] = "currentAgenda.todolist != todoliston"></ion-icon>
             </button>
           </div>
         </ion-row>
@@ -47,15 +47,15 @@ import {Keyboard} from "@ionic-native/keyboard";
             <!--附加属性操作-->
             <ion-row class="agendaOptionOne" *ngIf="currentAgenda.evi">
               <button class="agendaPinbutton" ion-button icon-start clear  (click)="changeLocation()" *ngIf="!currentAgenda.adr">
-                <ion-icon class="fa fa-map-marker iconPin"></ion-icon>
+                <ion-icon class="fal fa-map-marker-alt iconPin"></ion-icon>
                 <div>地址</div>
               </button>
               <button class="agendaRemarkbutton" ion-button icon-start clear  (click)="changeComment()" *ngIf="!currentAgenda.bz">
-                <ion-icon class="fa fa-edit iconRemark"></ion-icon>
+                <ion-icon class="fal fa-edit iconRemark"></ion-icon>
                 <div>备注</div>
               </button>
               <button class="agendaPlanbutton"  ion-button icon-start clear  (click)="changePlan()">
-                <ion-icon class="fa fa-plus-square iconPlus"></ion-icon>
+                <ion-icon class="fal fa-plus iconPlus"></ion-icon>
                 <div>{{currentAgenda.ji | formatplan: '计划': privateplans}}</div>
               </button>
             </ion-row>
@@ -63,21 +63,21 @@ import {Keyboard} from "@ionic-native/keyboard";
             <ion-row class="agendaOptionTwo" *ngIf="currentAgenda.evi">
               <ion-col class="agendaPlayer">
                 <button ion-button  clear (click)="changeInvites()">
-                    <ion-icon class="fa fa-address-book-o iconUserPlus" *ngIf="currentAgenda.pn <= 0"></ion-icon>
+                    <ion-icon class="fal fa-user-friends iconUserPlus" *ngIf="currentAgenda.pn <= 0"></ion-icon>
                     参与人
                     <corner-badge *ngIf="currentAgenda.pn > 0">{{currentAgenda.pn}}</corner-badge>
                 </button>
               </ion-col>
               <ion-col  class="agendaRemind">
                 <button ion-button clear (click)="changeRemind()">
-                    <ion-icon class="fa fa-bell iconBell" *ngIf="!currentAgenda.txs"></ion-icon>
+                    <ion-icon class="fal fa-bells iconBell" *ngIf="!currentAgenda.txs"></ion-icon>
                     {{currentAgenda.txs || "提醒"}}
                   <corner-badge *ngIf="currentAgenda.txs"><p>{{currentAgenda.txjson.reminds.length}}</p></corner-badge>
                 </button>
               </ion-col>
               <ion-col class="agendaAttach">
                 <button ion-button clear icon-end >
-                    <ion-icon class="fa fa-paperclip iconAttach" *ngIf="!currentAgenda.fj || currentAgenda.fj == '0'"></ion-icon>
+                    <ion-icon class="fal fa-sparkles iconAttach" *ngIf="!currentAgenda.fj || currentAgenda.fj == '0'"></ion-icon>
                      补充
                     <corner-badge *ngIf="currentAgenda.fj && currentAgenda.fj != '0'"><p>{{currentAgenda.fj}}</p></corner-badge>
                 </button>
@@ -87,7 +87,7 @@ import {Keyboard} from "@ionic-native/keyboard";
             <ion-row class="agendaOptionThree" *ngIf="currentAgenda.evi">
               <button ion-button  clear (click)="changeRepeat()">
                 <div class="agendarepeat">
-                  <ion-icon class="fa fa-copy  iconCopy" *ngIf="!currentAgenda.rts"></ion-icon>
+                  <ion-icon class="fal fa-copy  iconCopy" *ngIf="!currentAgenda.rts"></ion-icon>
                   {{currentAgenda.rts || "重复"}}
                   <corner-badge *ngIf="currentAgenda.rts"><p><i class="fa fa-copy "></i></p></corner-badge>
                 </div>
@@ -99,7 +99,7 @@ import {Keyboard} from "@ionic-native/keyboard";
             <span class="content">
                 备注：{{currentAgenda.bz}}
               </span>
-                <ion-icon class="fa fa-edit iconRemark"></ion-icon>
+                <ion-icon class="fal fa-edit iconRemark"></ion-icon>
               </button>
             </ion-row>
 
@@ -108,7 +108,7 @@ import {Keyboard} from "@ionic-native/keyboard";
             <span class="content">
               地址：{{currentAgenda.adr}}
               </span>
-                <ion-icon class="fa fa-map-marker iconPin"></ion-icon>
+                <ion-icon class="fal fa-map-marker-alt iconPin"></ion-icon>
               </button>
             </ion-row>
             <ion-row *ngIf="currentAgenda.evd">
@@ -129,7 +129,7 @@ import {Keyboard} from "@ionic-native/keyboard";
               </ion-col>
               <ion-col  (click)="changeDatetime()">
                 <button ion-button icon-end clear  >
-                  <ion-icon class="fa fa-calendar iconCalendar"></ion-icon>
+                  <ion-icon class="fal fa-calendar-alt iconCalendar"></ion-icon>
                 </button>
               </ion-col>
               <ion-col class="agendaSender" *ngIf="currentAgenda.ui != currentuser">
