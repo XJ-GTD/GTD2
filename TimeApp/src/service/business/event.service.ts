@@ -3741,11 +3741,6 @@ export class RtJson {
 
       let days: Array<string> = new Array<string>();
 
-      // 增加创建当天是否需要添加此事件
-      if (withFrom && stepDay == repeatStartDay) {
-        days.push(from);
-      }
-
       if (options.length > 0) {
         // 星期多选/每月日期多选
         if (repeatType == "weeks") {
@@ -3795,6 +3790,13 @@ export class RtJson {
       } else {
         // 普通重复
         days.push(stepDay);
+      }
+
+      // 增加创建当天是否需要添加此事件
+      if (withFrom && stepDay == repeatStartDay) {
+        if (days.length > 0 && days[0] != from) {
+          days.unshift(from);
+        }
       }
 
       for (let day of days) {
