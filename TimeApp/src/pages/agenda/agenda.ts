@@ -37,7 +37,7 @@ import {Keyboard} from "@ionic-native/keyboard";
 
           <div class="agendatodo" *ngIf="currentAgenda.todolist">
             <button ion-button icon-only clear  (click)="changeTodolist()">
-              <ion-icon class="fa" [class.fal-haykal] = "currentAgenda.todolist == todoliston" [class.fal-star] = "currentAgenda.todolist != todoliston"></ion-icon>
+              <ion-icon class="fa" [class.fa-haykal] = "currentAgenda.todolist == todoliston" [class.fa-star] = "currentAgenda.todolist != todoliston"></ion-icon>
             </button>
           </div>
         </ion-row>
