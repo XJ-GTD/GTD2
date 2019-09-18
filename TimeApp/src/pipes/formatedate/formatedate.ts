@@ -197,11 +197,11 @@ export class FormatedatePipe implements PipeTransform {
         let n = moment().diff(value);
 
         if (n  > this.rang) {
-          return "fa fa-angle-double-up after";
+          return "fal fa-hourglass-start after";
         } else if (n  < this.rang * -1 ) {
-          return "fa fa-angle-double-down before";
+          return "fal fa-hourglass-end before";
         } else {
-          return "fa fa-angle-double-right current";
+          return "fal fa-hourglass-half current";
         }
       }
 
