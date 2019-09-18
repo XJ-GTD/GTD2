@@ -687,7 +687,7 @@ export class CalendarService extends BaseService {
 
     let sql: string = `select * from gtd_jha where ${(jts && jts.length > 0)? ('jt in (' + jts.join(', ') + ') and') : ''} del <> '${DelType.del}' order by jt asc, wtt desc`;
 
-    let plans: Array<PlanData> = await this.sqlExce.getExtList<PlanData>(sql);
+    let plans: Array<PlanData> = await this.sqlExce.getExtList<PlanData>(sql) || new Array<PlanData>();
 
     // 获取每个日历的日历项
 
