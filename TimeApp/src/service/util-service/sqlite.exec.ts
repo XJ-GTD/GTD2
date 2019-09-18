@@ -370,7 +370,9 @@ export class SqliteExec {
         sql += fastparam[1];
       }
 
-      params.splice(params.length - 1, 0, ...fastparam[2]);
+      for (let param of fastparam[2]) {
+        params.push(param);
+      }
     }
 
     return sqlparams;
