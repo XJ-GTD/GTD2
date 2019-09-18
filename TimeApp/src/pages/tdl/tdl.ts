@@ -220,12 +220,12 @@ export class TdlPage {
                   this.loopmonth = !this.loopmonth;
 
                   //准备发出emit
-                  // if (this.listmonth.isBefore(monobj)){
-                  //   this.emitService.emit("list.change.month","next");
-                  // }
-                  // if (this.listmonth.isAfter(monobj)){
-                  //   this.emitService.emit("list.change.month","prev");
-                  // }
+                  if (this.listmonth.isBefore(monobj)){
+                    this.emitService.emit("list.change.month","next");
+                  }
+                  if (this.listmonth.isAfter(monobj)){
+                    this.emitService.emit("list.change.month","prev");
+                  }
                   this.listmonth = monobj;
                   break;
                 }

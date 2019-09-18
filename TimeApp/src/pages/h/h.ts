@@ -152,7 +152,7 @@ export class HPage {
 
   ngOnInit() {
 
-    this.tdl.regeditCalendar(this.calendar);
+     this.tdl.regeditCalendar(this.calendar);
     // websocket连接成功消息回调
     this.emitService.register("on.websocket.connected", () => {
       this.aiready = true;
