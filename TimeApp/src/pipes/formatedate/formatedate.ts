@@ -191,7 +191,6 @@ export class FormatedatePipe implements PipeTransform {
           return moment(value).toNow(true);
         }
       }
-
       if (args[0] == "withNowcss"){
 
         let n = moment().diff(value);
