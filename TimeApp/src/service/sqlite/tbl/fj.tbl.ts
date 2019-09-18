@@ -15,19 +15,22 @@ export class FjTbl implements ITblParam {
   tb: string;
   del: string;
 
+  fastParam(): any {
+    return [];
+  }
 
   cTParam():string {
 
-    let sq =`create table if not exists gtd_fj(    
+    let sq =`create table if not exists gtd_fj(
      fji varchar(50) PRIMARY KEY
-     ,obt varchar(50) 
-     ,obi varchar(50) 
-     ,fjn varchar(50) 
-     ,ext varchar(50) 
-     ,fj varchar(50) 
-      ,tb varchar(6) 
-      ,del varchar(6) 
-     ,wtt integer  ,utt integer 
+     ,obt varchar(50)
+     ,obi varchar(50)
+     ,fjn varchar(50)
+     ,ext varchar(50)
+     ,fj varchar(50)
+      ,tb varchar(6)
+      ,del varchar(6)
+     ,wtt integer  ,utt integer
      );`;
 
     return sq;
@@ -107,8 +110,8 @@ export class FjTbl implements ITblParam {
 
   inTParam():any {
     let params = new Array<any>();
-    let sq =`insert into gtd_fj 
-       (    fji ,obt ,obi ,fjn ,ext ,fj ,tb,del,wtt,utt) 
+    let sq =`insert into gtd_fj
+       (    fji ,obt ,obi ,fjn ,ext ,fj ,tb,del,wtt,utt)
        values(?,?,?,?,?,?,?,?,?,?);`;
     params.push(this.fji);
     params.push(this.obt);
@@ -129,8 +132,8 @@ export class FjTbl implements ITblParam {
 
   rpTParam():any {
     let params = new Array<any>();
-    let sq =`replace into gtd_fj 
-       (    fji ,obt ,obi ,fjn ,ext ,fj ,tb,del,wtt ,utt ) 
+    let sq =`replace into gtd_fj
+       (    fji ,obt ,obi ,fjn ,ext ,fj ,tb,del,wtt ,utt )
        values(?,?,?,?,?,?,?,?,?,?);`;
     params.push(this.fji);
     params.push(this.obt);

@@ -5,21 +5,21 @@
 //接口
 export interface ITblParam {
 
-  cTParam():string ;
+  cTParam(): string ;
 
-  upTParam():any ;
+  upTParam(): any ;
 
-  dTParam():any ;
+  dTParam(): any ;
 
-  sloTParam():any ;
+  sloTParam(): any ;
 
-  slTParam():any ;
+  slTParam(): any ;
 
-  drTParam():string ;
+  drTParam(): string ;
 
-  inTParam():any ;
+  inTParam(): any ;
 
-  rpTParam():any ;
+  rpTParam(): any ;
 
-
+  fastParam(): any;
 }

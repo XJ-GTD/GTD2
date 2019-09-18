@@ -19,6 +19,10 @@ export class ParTbl implements ITblParam {
   utt: number;
   wtt: number;
 
+  fastParam(): any {
+    return [];
+  }
+
   cTParam():string {
 
     let sq =`create table if not exists gtd_par(

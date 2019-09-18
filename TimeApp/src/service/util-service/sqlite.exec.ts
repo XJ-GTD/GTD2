@@ -342,6 +342,15 @@ export class SqliteExec {
    * @param {ITblParam} itp
    * @returns {Promise<any>}
    */
+  getFastSaveSqlByParam(datas: Array<ITblParam>): Array<any> {
+    [`replace into gtd_ev values select ?, ?, ? union all select ?, ?, ?, ?`, params];
+  }
+
+  /**
+   * 创建表Paramer方式
+   * @param {ITblParam} itp
+   * @returns {Promise<any>}
+   */
   createByParam(itp: ITblParam): Promise<any> {
     return this.execSql(itp.cTParam());
   }
