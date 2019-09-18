@@ -1456,7 +1456,7 @@ export class EventService extends BaseService {
     let params : Array<any>;
 
     //标记为删除的记录放入返回事件中
-    delcondi = ` evd > ? and (evi = ? or rtevi =  ?) and del <> ? `;
+    delcondi = ` evd >= ? and (evi = ? or rtevi =  ?) and del <> ? `;
     sq = ` select * from gtd_ev where ${delcondi} ; `;
     params = new Array<any>();
     params.push(oriAgdata.evd);
