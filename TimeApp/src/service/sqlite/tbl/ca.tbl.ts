@@ -17,7 +17,21 @@ export class CaTbl implements ITblParam {
   wtt: number;
 
   fastParam(): any {
-    return [];
+    let params: Array<any> = new Array<any>();
+    params.push(this.evi);
+    params.push(this.sd);
+    params.push(this.st);
+    params.push(this.ed);
+    params.push(this.et);
+    params.push(this.al);
+    params.push(this.ct);
+    params.push(this.wtt? this.wtt : moment().unix());
+    params.push(moment().unix());
+
+    return [`replace into gtd_ca
+       (  evi ,sd ,st ,ed ,et ,al,ct ,wtt ,utt)`,
+     `select ?,?,?,?,?,?,?,?,?`,
+   params];
   }
 
   cTParam():string {

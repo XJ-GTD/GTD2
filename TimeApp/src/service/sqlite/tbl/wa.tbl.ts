@@ -15,7 +15,19 @@ export class WaTbl implements ITblParam {
   wtt: number;
 
   fastParam(): any {
-    return [];
+    let params: Array<any> = new Array<any>();
+    params.push(this.wai);
+    params.push(this.obt);
+    params.push(this.obi);
+    params.push(this.st);
+    params.push(this.wd);
+    params.push(this.wt);
+    params.push(this.wtt || moment().unix());
+
+    return [`replace into gtd_wa
+       (   wai ,obt ,obi ,st ,wd ,wt ,wtt)`,
+     `select ?,?,?,?,?,?,?`,
+    params];
   }
 
   cTParam():string {

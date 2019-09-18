@@ -13,7 +13,19 @@ export class TTbl implements ITblParam {
   fd: string;
 
   fastParam(): any {
-    return [];
+    let params: Array<any> = new Array<any>();
+    params.push(this.evi);
+    params.push(this.cs);
+    params.push(this.isrt);
+    params.push(this.cd);
+    params.push(this.fd);
+    params.push(this.wtt || moment().unix());
+    params.push(moment().unix());
+
+    return [`replace into gtd_t
+       (   evi ,cs ,isrt ,cd ,fd ,wtt ,utt)`,
+     `select ?,?,?,?,?,?,?`,
+    params];
   }
 
   cTParam():string {
