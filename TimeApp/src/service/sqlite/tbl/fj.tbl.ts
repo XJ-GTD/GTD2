@@ -14,6 +14,8 @@ export class FjTbl implements ITblParam {
   fj: string;
   tb: string;
   del: string;
+  wtt: number;
+  utt: number;
 
   fastParam(): any {
     let params: Array<any> = new Array<any>();

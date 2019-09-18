@@ -11,6 +11,8 @@ export class TTbl implements ITblParam {
   isrt: string;
   cd: string;
   fd: string;
+  wtt: number;
+  utt: number;
 
   fastParam(): any {
     let params: Array<any> = new Array<any>();
