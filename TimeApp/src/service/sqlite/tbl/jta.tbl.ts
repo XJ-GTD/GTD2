@@ -20,6 +20,28 @@ export class JtaTbl implements ITblParam {
   utt: number;
   wtt: number;
 
+  fastParam(): any {
+    let params: Array<any> = new Array<any>();
+    params.push(this.jti);
+    params.push(this.ji);
+    params.push(this.jtn);
+    params.push(this.sd);
+    params.push(this.st);
+    params.push(this.jtt);
+    params.push(this.jtc);
+    params.push(this.px);
+    params.push(this.nll2str(this.bz));
+    params.push(this.wtt? this.wtt : moment().unix());
+    params.push(moment().unix());
+    params.push(this.tb);
+    params.push(this.del);
+
+    return [`replace into gtd_jta
+       (   jti ,ji ,jtn ,sd ,st ,jtt ,jtc ,px ,bz ,wtt ,utt,tb,del)`,
+     `select ?,?,?,?,?,?,?,?,?,?,?,?,?`,
+    params];
+  }
+
   cTParam():string {
 
     let sq =`create table if not exists gtd_jta(

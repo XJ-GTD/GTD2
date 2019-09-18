@@ -152,9 +152,10 @@ $baseBackcolor_black: rgba(0, 12, 31, 1);
 
       .agendaline {
         .agenda-tool {
-          .icon {
-            color: rgba(255, 255, 255, 1);
-          }
+            .icon {
+              color:rgba(255, 255, 255, 1);
+              border-bottom :1px rgba(201, 200, 200, 0.4) solid;
+            }
         }
 
         .agenda-sn {

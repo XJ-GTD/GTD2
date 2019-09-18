@@ -14,16 +14,32 @@ export class MrkTbl implements ITblParam {
   utt: number;
   wtt: number;
 
+  fastParam(): any {
+    let params: Array<any> = new Array<any>();
+    params.push(this.mki);
+    params.push(this.mkl);
+    params.push(this.obt);
+    params.push(this.obi);
+    params.push(this.mkt);
+    params.push(this.wtt || moment().unix());
+    params.push(moment().unix());
+
+    return [`replace into gtd_mrk
+       (    mki ,mkl ,obt ,obi ,mkt ,wtt ,utt)`,
+     `select ?,?,?,?,?,?,?`,
+    params];
+  }
+
   cTParam():string {
 
-    let sq =`create table if not exists gtd_mrk(    
+    let sq =`create table if not exists gtd_mrk(
      mki varchar(50) PRIMARY KEY
-     ,mkl varchar(50) 
-     ,obt varchar(50) 
-     ,obi varchar(50) 
-     ,mkt varchar(50) 
-     ,wtt integer 
-     ,utt integer 
+     ,mkl varchar(50)
+     ,obt varchar(50)
+     ,obi varchar(50)
+     ,mkt varchar(50)
+     ,wtt integer
+     ,utt integer
      );`;
 
     return sq;
@@ -99,7 +115,7 @@ export class MrkTbl implements ITblParam {
   inTParam():any {
     let params = new Array<any>();
     let sq =`insert into gtd_mrk
-       (    mki ,mkl ,obt ,obi ,mkt ,wtt ,utt) 
+       (    mki ,mkl ,obt ,obi ,mkt ,wtt ,utt)
        values(?,?,?,?,?,${moment().unix()},${moment().unix()});`;
     params.push(this.mki);
     params.push(this.mkl);
@@ -117,7 +133,7 @@ export class MrkTbl implements ITblParam {
   rpTParam():any {
     let params = new Array<any>();
     let sq =`replace into gtd_mrk
-       (    mki ,mkl ,obt ,obi ,mkt ,wtt ,utt) 
+       (    mki ,mkl ,obt ,obi ,mkt ,wtt ,utt)
        values(?,?,?,?,?,${moment().unix()},${moment().unix()});`;
     params.push(this.mki);
     params.push(this.mkl);

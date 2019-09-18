@@ -33,24 +33,24 @@ import {Content, Events, Ion, IonicPage} from 'ionic-angular';
           </ion-title>
           <div class="toolbar">
             <div (click)="goRemove()" *ngIf="buttons.remove">
-              <ion-icon class="fa fa-trash-o"></ion-icon>
+              <ion-icon class="fal fa-trash-alt"></ion-icon>
             </div>
 
             <div  (click)="goShare()" *ngIf="buttons.share">
-              <ion-icon class="fa fa-share-square-o"></ion-icon>
+              <ion-icon class="fal fa-share-all"></ion-icon>
             </div>
 
 
             <div  (click)="goCreate()" *ngIf="buttons.create">
-              <ion-icon class="fa fa-plus-square-o"></ion-icon>
+              <ion-icon class="fal fa-plus-hexagon"></ion-icon>
             </div>
             
 
             <div  (click)="goSave()" *ngIf="buttons.save">
-              <ion-icon class="fa fa-floppy-o"></ion-icon>
+              <ion-icon class="fal fa-save"></ion-icon>
             </div>
             <div (click)="goBack()" *ngIf="buttons.cancel">
-              <ion-icon class="fa fa-undo"></ion-icon>
+              <ion-icon class="fal fa-undo-alt"></ion-icon>
             </div>
           </div>
         </ion-toolbar>

@@ -17,19 +17,38 @@ export class JhaTbl implements ITblParam {
   utt: number;
   wtt: number;
 
+  fastParam(): any {
+    let params: Array<any> = new Array<any>();
+    params.push(this.ji);
+    params.push(this.jn);
+    params.push(this.jg);
+    params.push(this.jc);
+    params.push(this.jt);
+    params.push(this.jtd);
+    params.push(this.wtt? this.wtt : moment().unix());
+    params.push(moment().unix());
+    params.push(this.tb);
+    params.push(this.del);
+
+    return [`replace into gtd_jha
+       (     ji ,jn ,jg ,jc ,jt ,jtd ,wtt ,utt,tb,del)`,
+     `select ?,?,?,?,?,?,?,?,?,?`,
+    params];
+  }
+
   cTParam():string {
 
-    let sq =`create table if not exists gtd_jha(    
+    let sq =`create table if not exists gtd_jha(
        ji VARCHAR(50) PRIMARY KEY
-       ,jn VARCHAR(100) 
-       ,jg VARCHAR(100) 
-       ,jc VARCHAR(10) 
-       ,jt VARCHAR(4) 
-       ,jtd VARCHAR(4) 
-       ,wtt integer 
-       ,utt integer 
-       ,tb varchar(6) 
-       ,del varchar(6) 
+       ,jn VARCHAR(100)
+       ,jg VARCHAR(100)
+       ,jc VARCHAR(10)
+       ,jt VARCHAR(4)
+       ,jtd VARCHAR(4)
+       ,wtt integer
+       ,utt integer
+       ,tb varchar(6)
+       ,del varchar(6)
      );`;
 
     return sq;
@@ -110,7 +129,7 @@ export class JhaTbl implements ITblParam {
   inTParam():any {
     let params = new Array<any>();
     let sq =`insert into gtd_jha
-       (     ji ,jn ,jg ,jc ,jt ,jtd ,wtt ,utt,tb,del) 
+       (     ji ,jn ,jg ,jc ,jt ,jtd ,wtt ,utt,tb,del)
        values(?,?,?,?,?,?,${moment().unix()},${moment().unix()},?,?);`;
     params.push(this.ji);
     params.push(this.jn);
@@ -130,7 +149,7 @@ export class JhaTbl implements ITblParam {
   rpTParam():any {
     let params = new Array<any>();
     let sq =`replace into gtd_jha
-       (     ji ,jn ,jg ,jc ,jt ,jtd ,wtt ,utt,tb,del) 
+       (     ji ,jn ,jg ,jc ,jt ,jtd ,wtt ,utt,tb,del)
        values(?,?,?,?,?,?,${moment().unix()},${moment().unix()},?,?);`;
     params.push(this.ji);
     params.push(this.jn);

@@ -19,6 +19,27 @@ export class ParTbl implements ITblParam {
   utt: number;
   wtt: number;
 
+  fastParam(): any {
+    let params: Array<any> = new Array<any>();
+    params.push(this.pari);
+    params.push(this.pwi);
+    params.push(this.ui);
+    params.push(this.obt);
+    params.push(this.obi);
+    params.push(this.sa);
+    params.push(this.sdt);
+    params.push(this.tb);
+    params.push(this.wc);
+    params.push(this.del);
+    params.push(this.wtt || moment().unix());
+    params.push(moment().unix());
+
+    return [`replace into gtd_par
+       (   pari ,pwi ,ui ,obt ,obi ,sa ,sdt ,tb ,wc ,del ,wtt ,utt)`,
+     `select ?,?,?,?,?,?,?,?,?,?,?,?`,
+    params];
+  }
+
   cTParam():string {
 
     let sq =`create table if not exists gtd_par(

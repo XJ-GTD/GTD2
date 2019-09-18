@@ -14,16 +14,32 @@ export class WaTbl implements ITblParam {
   wt: string;
   wtt: number;
 
+  fastParam(): any {
+    let params: Array<any> = new Array<any>();
+    params.push(this.wai);
+    params.push(this.obt);
+    params.push(this.obi);
+    params.push(this.st);
+    params.push(this.wd);
+    params.push(this.wt);
+    params.push(this.wtt || moment().unix());
+
+    return [`replace into gtd_wa
+       (   wai ,obt ,obi ,st ,wd ,wt ,wtt)`,
+     `select ?,?,?,?,?,?,?`,
+    params];
+  }
+
   cTParam():string {
 
-    let sq =`create table if not exists gtd_wa(  
+    let sq =`create table if not exists gtd_wa(
      wai varchar(50) PRIMARY KEY
-     ,obt varchar(50) 
-     ,obi varchar(50) 
-     ,st varchar(50) 
-     ,wd varchar(20) 
-     ,wt varchar(20) 
-     ,wtt integer 
+     ,obt varchar(50)
+     ,obi varchar(50)
+     ,st varchar(50)
+     ,wd varchar(20)
+     ,wt varchar(20)
+     ,wtt integer
         );`;
 
     return sq;
@@ -106,8 +122,8 @@ export class WaTbl implements ITblParam {
 
   inTParam():any {
     let params = new Array<any>();
-    let sq =`insert into gtd_wa 
-       (   wai ,obt ,obi ,st ,wd ,wt ,wtt) 
+    let sq =`insert into gtd_wa
+       (   wai ,obt ,obi ,st ,wd ,wt ,wtt)
        values(?,?,?,?,?,?,?);`;
     params.push(this.wai);
     params.push(this.obt);
@@ -125,8 +141,8 @@ export class WaTbl implements ITblParam {
 
   rpTParam():any {
     let params = new Array<any>();
-    let sq =`replace into gtd_wa 
-       (   wai ,obt ,obi ,st ,wd ,wt ,wtt) 
+    let sq =`replace into gtd_wa
+       (   wai ,obt ,obi ,st ,wd ,wt ,wtt)
        values(?,?,?,?,?,?,?);`;
     params.push(this.wai);
     params.push(this.obt);

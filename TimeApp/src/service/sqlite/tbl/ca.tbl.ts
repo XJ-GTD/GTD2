@@ -16,17 +16,35 @@ export class CaTbl implements ITblParam {
   utt: number;
   wtt: number;
 
+  fastParam(): any {
+    let params: Array<any> = new Array<any>();
+    params.push(this.evi);
+    params.push(this.sd);
+    params.push(this.st);
+    params.push(this.ed);
+    params.push(this.et);
+    params.push(this.al);
+    params.push(this.ct);
+    params.push(this.wtt? this.wtt : moment().unix());
+    params.push(moment().unix());
+
+    return [`replace into gtd_ca
+       (  evi ,sd ,st ,ed ,et ,al,ct ,wtt ,utt)`,
+     `select ?,?,?,?,?,?,?,?,?`,
+   params];
+  }
+
   cTParam():string {
 
     let sq =`create table if not exists gtd_ca(  evi varchar(50) PRIMARY KEY
-       ,sd varchar(20) 
-       ,st varchar(20) 
-       ,ed varchar(20) 
-       ,et varchar(20) 
+       ,sd varchar(20)
+       ,st varchar(20)
+       ,ed varchar(20)
+       ,et varchar(20)
        ,al varchar(4)
-       ,ct integer 
-       ,wtt integer 
-       ,utt integer 
+       ,ct integer
+       ,wtt integer
+       ,utt integer
         );`;
 
     return sq;
@@ -104,8 +122,8 @@ export class CaTbl implements ITblParam {
 
   inTParam():any {
     let params = new Array<any>();
-    let sq =`insert into gtd_ca 
-       (  evi ,sd ,st ,ed ,et ,al,ct ,wtt ,utt) 
+    let sq =`insert into gtd_ca
+       (  evi ,sd ,st ,ed ,et ,al,ct ,wtt ,utt)
        values(?,?,?,?,?,?,?,?,?);`;
     params.push(this.evi);
     params.push(this.sd);
@@ -125,8 +143,8 @@ export class CaTbl implements ITblParam {
 
   rpTParam():any {
     let params = new Array<any>();
-    let sq =`replace into gtd_ca 
-       (  evi ,sd ,st ,ed ,et ,al,ct ,wtt ,utt) 
+    let sq =`replace into gtd_ca
+       (  evi ,sd ,st ,ed ,et ,al,ct ,wtt ,utt)
        values(?,?,?,?,?,?,?,?,?);`;
     params.push(this.evi);
     params.push(this.sd);

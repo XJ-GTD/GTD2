@@ -11,17 +11,35 @@ export class TTbl implements ITblParam {
   isrt: string;
   cd: string;
   fd: string;
+  wtt: number;
+  utt: number;
+
+  fastParam(): any {
+    let params: Array<any> = new Array<any>();
+    params.push(this.evi);
+    params.push(this.cs);
+    params.push(this.isrt);
+    params.push(this.cd);
+    params.push(this.fd);
+    params.push(this.wtt || moment().unix());
+    params.push(moment().unix());
+
+    return [`replace into gtd_t
+       (   evi ,cs ,isrt ,cd ,fd ,wtt ,utt)`,
+     `select ?,?,?,?,?,?,?`,
+    params];
+  }
 
   cTParam():string {
 
-    let sq =`create table if not exists gtd_t(    
+    let sq =`create table if not exists gtd_t(
     evi varchar(50) PRIMARY KEY
-     ,cs varchar(4) 
-     ,isrt varchar(4) 
-     ,cd varchar(20) 
-     ,fd varchar(20) 
-     ,wtt integer 
-     ,utt integer 
+     ,cs varchar(4)
+     ,isrt varchar(4)
+     ,cd varchar(20)
+     ,fd varchar(20)
+     ,wtt integer
+     ,utt integer
      );`;
 
     return sq;
@@ -95,8 +113,8 @@ export class TTbl implements ITblParam {
 
   inTParam():any {
     let params = new Array<any>();
-    let sq =`insert into gtd_t 
-       (   evi ,cs ,isrt ,cd ,fd ,wtt ,utt) 
+    let sq =`insert into gtd_t
+       (   evi ,cs ,isrt ,cd ,fd ,wtt ,utt)
        values(?,?,?,?,?,${moment().unix()},${moment().unix()});`;
     params.push(this.evi);
     params.push(this.cs);
@@ -113,8 +131,8 @@ export class TTbl implements ITblParam {
 
   rpTParam():any {
     let params = new Array<any>();
-    let sq =`replace into gtd_t 
-       (   evi ,cs ,isrt ,cd ,fd ,wtt ,utt) 
+    let sq =`replace into gtd_t
+       (   evi ,cs ,isrt ,cd ,fd ,wtt ,utt)
        values(?,?,?,?,?,${moment().unix()},${moment().unix()});`;
     params.push(this.evi);
     params.push(this.cs);

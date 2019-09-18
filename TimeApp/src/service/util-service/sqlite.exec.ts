@@ -338,6 +338,45 @@ export class SqliteExec {
   }
 
   /**
+   * 批量快速保存数据Paramer方式
+   * @param {Array<ITblParam>} datas
+   * @returns {Array<any>}
+   */
+  getFastSaveSqlByParam(datas: Array<ITblParam>): Array<any> {
+    let sqlparams: Array<any> = new Array<any>();
+    let paramscount: number = 0;
+    let sql = "";
+    let params: Array<any> = new Array<any>();
+
+    for (let data of datas) {
+      let fastparam = data.fastParam();
+
+      paramscount += fastparam[2].length;
+
+      if (paramscount > 999) {
+        sqlparams.push([sql, params]);
+
+        paramscount = fastparam[2].length;
+        sql = "";
+        params = new Array<any>();
+      }
+
+      if (sql == "") {
+        sql += fastparam[0];
+        sql += " ";
+        sql += fastparam[1];
+      } else {
+        sql += " union all ";
+        sql += fastparam[1];
+      }
+
+      params.splice(params.length - 1, 0, ...fastparam[2]);
+    }
+
+    return sqlparams;
+  }
+
+  /**
    * 创建表Paramer方式
    * @param {ITblParam} itp
    * @returns {Promise<any>}

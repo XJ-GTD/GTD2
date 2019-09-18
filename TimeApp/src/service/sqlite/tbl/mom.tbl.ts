@@ -17,6 +17,25 @@ export class MomTbl implements ITblParam {
   utt: number;
   wtt: number;
 
+  fastParam(): any {
+    let params: Array<any> = new Array<any>();
+    params.push(this.moi);
+    params.push(this.ji);
+    params.push(this.sd || moment().format('YYYY/MM/DD'));
+    params.push(this.mon);
+    params.push(this.mk);
+    params.push(this.fj);
+    params.push(this.tb);
+    params.push(this.del);
+    params.push(this.wtt || moment().unix());
+    params.push(moment().unix());
+
+    return [`replace into gtd_mom
+       (  moi ,ji ,sd,mon ,mk ,fj ,tb,del ,wtt ,utt)`,
+     `select ?,?,?,?,?,?,?,?,?,?`,
+    params];
+  }
+
   cTParam():string {
 
     let sq =`create table if not exists gtd_mom(
