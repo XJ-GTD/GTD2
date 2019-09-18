@@ -343,7 +343,7 @@ export class SqliteExec {
    * @returns {Promise<any>}
    */
   getFastSaveSqlByParam(datas: Array<ITblParam>): Array<any> {
-    [`replace into gtd_ev values select ?, ?, ? union all select ?, ?, ?, ?`, params];
+    return [];
   }
 
   /**
