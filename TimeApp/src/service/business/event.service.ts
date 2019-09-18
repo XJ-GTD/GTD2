@@ -3670,7 +3670,7 @@ export class RtJson {
   }
 
   //遍历重复日期
-  each(from: string, callback: (day: string) => void) {
+  each(from: string, callback: (day: string) => void, withFrom: boolean = false) {
     // 开始日期
     let repeatStartDay: string = from;
     // 重复类型（天/周/月/年）
@@ -3740,6 +3740,11 @@ export class RtJson {
     while (moment(stepDay).isBefore(repeatEndDay)) {
 
       let days: Array<string> = new Array<string>();
+
+      // 增加创建当天是否需要添加此事件
+      if (withFrom && stepDay == repeatStartDay) {
+        days.push(from);
+      }
 
       if (options.length > 0) {
         // 星期多选/每月日期多选
