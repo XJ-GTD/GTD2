@@ -104,7 +104,8 @@ export class HPage {
     pickMode: 'single',
     from: new Date(1900, 0, 1),
     to: new Date(2299, 0, 1),
-    daysConfig: []
+    daysConfig: [],
+    defaultDate: moment().format("YYYY/MM/DD")
   };
 
 
