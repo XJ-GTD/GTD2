@@ -54,8 +54,8 @@ export class LocationPage {
   searchText:any =  {
     title:"",
     adr :"",
-    adx :0,
-    ady :0
+    adlat :0,
+    adlng :0
   };
   map : any;
 
@@ -94,8 +94,28 @@ export class LocationPage {
       if (value ){
         this.searchText.title = value.adr;
         this.searchText.adr = value.adr;
-        this.searchText.adx = value.adx;
-        this.searchText.ady = value.ady;
+        this.searchText.adlat = value.adx;
+        this.searchText.adlng = value.ady;
+
+        this.mapOptions = {
+          centerAndZoom: {
+            lat: this.searchText.adlat,
+            lng: this.searchText.adlng,
+            zoom: 16
+          },
+          enableScrollWheelZoom: true,
+          enableKeyboard: true
+        };
+        this.markers.push(
+
+          {
+            point: {
+              lat: this.searchText.adlat,
+              lng: this.searchText.adlng
+            }
+          }
+        );
+
       }
 
     }
@@ -145,8 +165,8 @@ export class LocationPage {
   save() {
     let data: Object = {
       adr: this.searchText.title,
-      adx: this.searchText.adx,
-      ady: this.searchText.ady
+      adx: this.searchText.adlat,
+      ady: this.searchText.adlng
     };
     this.viewCtrl.dismiss(data);
 
@@ -182,8 +202,8 @@ export class LocationPage {
         this.isShowMarkers = false;
         this.searchText.title = "";
         this.searchText.adr = "";
-        this.searchText.adx = 0;
-        this.searchText.ady = 0;
+        this.searchText.adlat = 0;
+        this.searchText.adlng = 0;
         return;
       }
 
@@ -206,8 +226,8 @@ export class LocationPage {
         //点击标识后显示的内容
         this.markers[i].title = searchResult[i].title;
         this.markers[i].adr = searchResult[i].address;
-        this.markers[i].adx = searchResult[i].point.lat;
-        this.markers[i].ady = searchResult[i].point.lng;
+        this.markers[i].adlat = searchResult[i].point.lat;
+        this.markers[i].adlng = searchResult[i].point.lng;
 
         //添加点击事件监听
         this.markers[i].addEventListener("click", () => {
@@ -217,8 +237,8 @@ export class LocationPage {
           //点击内容显示在searchbar上
           this.searchText.title = this.markers[i].title + " " + this.markers[i].adr;
           this.searchText.adr = this.markers[i].adr;
-          this.searchText.adx = this.markers[i].adx;
-          this.searchText.ady = this.markers[i].ady;
+          this.searchText.adlat = this.markers[i].adlat;
+          this.searchText.adlng = this.markers[i].adlng;
         });// 在点击标识的时候显示标识点信息
 
         this.map.addOverlay(this.markers[i]);// 添加标识
@@ -244,8 +264,8 @@ export class LocationPage {
     marker.openInfoWindow(infoWindow);
     this.searchText.title = marker.title + " " + marker.adr;
     this.searchText.adr = marker.adr;
-    this.searchText.adx = marker.adx;
-    this.searchText.ady = marker.ady;
+    this.searchText.adlat = marker.adlat;
+    this.searchText.adlng = marker.adlng;
   }
 
   getLocation() {
