@@ -20,6 +20,8 @@ import {Vibration} from "@ionic-native/vibration";
 import {Geolocation} from '@ionic-native/geolocation';
 import {NativeAudio} from "@ionic-native/native-audio";
 import {Clipboard} from '@ionic-native/clipboard';
+import { Camera } from '@ionic-native/camera';
+import { Chooser } from '@ionic-native/chooser';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {RouterModule} from '@angular/router';
 import {MyApp} from './app.component';
@@ -214,6 +216,8 @@ import {CalendarService} from "../service/business/calendar.service";
     NativeAudio,
     Keyboard,
     Clipboard,
+    Camera,
+    Chooser,
     ContactsService,
     NetworkService,
     ScreenOrientation,
