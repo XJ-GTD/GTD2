@@ -3124,6 +3124,13 @@ export class EventService extends BaseService {
                                       ) evnext
                                       group by evnext.newrtevi
                                 ) evnext2 where  julianday(datetime(replace(evnext2.evd, '/', '-'),evnext2.evt))<julianday(datetime('now'))
+                                and evnext2.newrtevi not in (
+                                  select
+                                  case when ifnull(evk.rtevi,'') <> ''  then  evk.rtevi  else evk.evi end newrtevi
+                                  from gtd_ev evk
+                                  where evk.todolist = ?1  and evk.type = ?3 and evk.wc = ?5 and julianday(datetime(replace(evk.evd, '/', '-'),evk.evt))>=julianday(datetime('now'))
+                                )
+                            )
                               order by  evnext2.minDay desc
                      )
                     union all
@@ -3144,7 +3151,7 @@ export class EventService extends BaseService {
                             order by  evnext2.minDay asc
                     )) eex left join gtd_ca ca on ca.evi = eex.newrtevi
                        	`;
-      let agendaArray: Array<AgendaData> = await this.sqlExce.getExtLstByParam<AgendaData>(sql, [anyenum.ToDoListStatus.On,anyenum.DelType.undel,anyenum.EventType.Agenda,anyenum.EventFinishStatus.NonFinish]) || new Array<AgendaData>();
+      let agendaArray: Array<AgendaData> = await this.sqlExce.getExtLstByParam<AgendaData>(sql, [anyenum.ToDoListStatus.On,anyenum.DelType.undel,anyenum.EventType.Agenda,anyenum.EventFinishStatus.NonFinish,anyenum.EventFinishStatus.Finished]) || new Array<AgendaData>();
   		return agendaArray;
    }
    /**
