@@ -247,7 +247,7 @@ export class AgendaPage {
 
   changeTitle() {
     if (this.currentAgenda.evi) {
-      if (!this.eventService.isSameAgenda(this.currentAgenda, this.originAgenda)) {
+      if (this.currentAgenda.evn != "" && !this.eventService.isSameAgenda(this.currentAgenda, this.originAgenda)) {
         this.buttons.save = true;
       } else {
         this.buttons.save = false;
