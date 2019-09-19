@@ -267,6 +267,8 @@ export class ScdPageParamter{
   sn:string;
   //原归属ID
   gs:string="";
+  //创建到todolist
+  todolist:boolean=false;
 }
 
 export class PagePlData {

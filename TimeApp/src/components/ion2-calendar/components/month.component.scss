@@ -102,12 +102,12 @@ ion-calendar-month {
         bottom: -7px;
 
         //todo
-        -webkit-transform:scale(0.5);
+        //-webkit-transform:scale(0.5);
       }
       color:  rgba(189,166,96,1);
 
       .active {
-        left: calc(100% / 2 - 6px);
+        left: calc(100% / 2 - 3px);
         color:  rgba(62,111,202,1);
       }
 

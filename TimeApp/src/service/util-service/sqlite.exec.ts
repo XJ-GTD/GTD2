@@ -353,7 +353,7 @@ export class SqliteExec {
 
       paramscount += fastparam[2].length;
 
-      if (paramscount > 999) {
+      if (paramscount > 999) {  // sqlite默认参数不能超过999个
         sqlparams.push([sql, params]);
 
         paramscount = fastparam[2].length;

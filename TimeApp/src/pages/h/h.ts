@@ -152,7 +152,7 @@ export class HPage {
 
   ngOnInit() {
 
-    this.tdl.regeditCalendar(this.calendar);
+     this.tdl.regeditCalendar(this.calendar);
     // websocket连接成功消息回调
     this.emitService.register("on.websocket.connected", () => {
       this.aiready = true;
@@ -336,7 +336,12 @@ export class HPage {
 //       return ;
 //     }
     let p: ScdPageParamter = new ScdPageParamter();
-    p.d = moment(this.hdata.selectDay.time);
+
+    if (this.hdata.selectDay){
+      p.d = moment(this.hdata.selectDay.time);
+    }else{
+      p.d = moment();
+    }
 
     this.feedback.audioPress();
     this.modalCtr.create(AgendaPage, p).present();

@@ -35,7 +35,7 @@ import {Keyboard} from "@ionic-native/keyboard";
           <!--主题-->
           <ion-textarea rows="8" [(ngModel)]="currentAgenda.evn" (ionChange)="changeTitle()" #bzRef></ion-textarea>
 
-          <div class="agendatodo" *ngIf="currentAgenda.todolist">
+          <div class="agendatodo" *ngIf="currentAgenda.evi && currentAgenda.todolist">
             <button ion-button icon-only clear  (click)="changeTodolist()">
               <ion-icon class="fa" [class.fa-haykal] = "currentAgenda.todolist == todoliston" [class.fa-star] = "currentAgenda.todolist != todoliston"></ion-icon>
             </button>
@@ -76,7 +76,7 @@ import {Keyboard} from "@ionic-native/keyboard";
                 </button>
               </ion-col>
               <ion-col class="agendaAttach">
-                <button ion-button clear icon-end >
+                <button ion-button clear icon-end  (click)="changeAttach()">
                     <ion-icon class="fal fa-sparkles iconAttach" *ngIf="!currentAgenda.fj || currentAgenda.fj == '0'"></ion-icon>
                      补充
                     <corner-badge *ngIf="currentAgenda.fj && currentAgenda.fj != '0'"><p>{{currentAgenda.fj}}</p></corner-badge>
@@ -193,16 +193,6 @@ export class AgendaPage {
     moment.locale('zh-cn');
     if (this.navParams) {
       let paramter: ScdPageParamter = this.navParams.data;
-      this.currentAgenda.sd = paramter.d.format("YYYY/MM/DD");
-
-      if (paramter.t) {
-        this.currentAgenda.st = paramter.t;
-      } else {
-        this.currentAgenda.st = moment().add(1, "h").format("HH:00");
-      }
-
-      if (paramter.sn) this.currentAgenda.evn = paramter.sn;
-
       if (paramter.si) {
         this.eventService.getAgenda(paramter.si).then((agenda) => {
           this.currentAgenda = agenda;
@@ -210,6 +200,20 @@ export class AgendaPage {
 
           this.buttons.remove = true;
         });
+      } else {
+        this.currentAgenda.sd = paramter.d.format("YYYY/MM/DD");
+
+        if (paramter.t) {
+          this.currentAgenda.st = paramter.t;
+        } else {
+          this.currentAgenda.st = moment().add(1, "h").format("HH:00");
+        }
+
+        if (paramter.sn) this.currentAgenda.evn = paramter.sn;
+
+        if (paramter.todolist) {
+          this.currentAgenda.todolist = ToDoListStatus.On;
+        }
       }
     }
   }
@@ -243,7 +247,7 @@ export class AgendaPage {
 
   changeTitle() {
     if (this.currentAgenda.evi) {
-      if (!this.eventService.isSameAgenda(this.currentAgenda, this.originAgenda)) {
+      if (this.currentAgenda.evn != "" && !this.eventService.isSameAgenda(this.currentAgenda, this.originAgenda)) {
         this.buttons.save = true;
       } else {
         this.buttons.save = false;
@@ -310,6 +314,17 @@ export class AgendaPage {
       adry: this.currentAgenda.adry
     });
     modal.onDidDismiss(async (data) => {
+      if (!data) return;
+
+      this.currentAgenda.adr = this.currentAgenda.adr || "";
+      this.currentAgenda.adrx = this.currentAgenda.adrx || 0;
+      this.currentAgenda.adry = this.currentAgenda.adry || 0;
+
+      if (!this.eventService.isSameAgenda(this.currentAgenda, this.originAgenda)) {
+        this.buttons.save = true;
+      } else {
+        this.buttons.save = false;
+      }
 
     });
     modal.present();

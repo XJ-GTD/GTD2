@@ -17,9 +17,12 @@ import {CalendarService, MonthActivityData, MonthActivitySummaryData} from "../.
 @Injectable()
 export class IonCalendarService {
 
+  public static selecttime:number;
+
   constructor(private readlocal:LocalcalendarService,
               private util:UtilService,
               private calendarService:CalendarService) {
+    IonCalendarService.selecttime =  moment(moment().format("YYYY-MM-DD")).valueOf();
 
   }
 
