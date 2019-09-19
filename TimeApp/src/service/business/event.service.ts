@@ -3163,6 +3163,7 @@ export class EventService extends BaseService {
           {
                 //将数据加入到todolist缓存
                 todolist.push(changed);
+                flag = false;
           }
       }
       else {
