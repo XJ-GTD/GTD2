@@ -46,12 +46,16 @@ export class CalendarService extends BaseService {
    *
    * @author leon_xi@163.com
    **/
-  async refreshCalendarActivitiesToMonth(month: string = moment().format("YYYY/MM")): Promise<Array<MonthActivityData>> {
+  async refreshCalendarActivitiesToMonth(month: string = moment().format("YYYY/MM"), skipInit: boolean = true): Promise<Array<MonthActivityData>> {
     this.assertEmpty(month);    // 入参不能为空
 
     // 数据不存在
     if (!this.calendaractivities || this.calendaractivities.length <= 0) {
-      await this.getCalendarActivities(PageDirection.PageInit);
+      if (!skipInit) {
+        await this.getCalendarActivities(PageDirection.PageInit);
+      } else {
+        return this.calendaractivities;
+      }
     }
 
     let firstMonth: string = this.calendaractivities[0].month;

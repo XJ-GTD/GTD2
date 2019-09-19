@@ -1456,7 +1456,7 @@ export class EventService extends BaseService {
     let params : Array<any>;
 
     //标记为删除的记录放入返回事件中
-    delcondi = ` evd > ? and (evi = ? or rtevi =  ?) and del <> ? `;
+    delcondi = ` evd >= ? and (evi = ? or rtevi =  ?) and del <> ? `;
     sq = ` select * from gtd_ev where ${delcondi} ; `;
     params = new Array<any>();
     params.push(oriAgdata.evd);
@@ -1705,6 +1705,8 @@ export class EventService extends BaseService {
 
     let ret = new RetParamEv();
     let outAgds = new Array<AgendaData>();
+    let evs = new Array<EvTbl>();
+    let was = new Array<WaTbl>();
 
     //字段evt 设定
     if (agdata.al == anyenum.IsWholeday.Whole){
@@ -1744,7 +1746,7 @@ export class EventService extends BaseService {
 
       // 非重复日程及重复日程的第一条的rtevi（父日程evi）字段设为空。遵循父子关系，
       // 父记录的父节点字段rtevi设为空，子记录的父节点字段rtevi设为父记录的evi
-      if (ret.sqlparam.length < 1) {
+      if (evs.length < 1) {
         ret.rtevi = ev.evi;
         agdata.evi = ev.evi;
         ev.rtevi = "";
@@ -1758,10 +1760,10 @@ export class EventService extends BaseService {
       ev.del = anyenum.DelType.undel;
 
       ret.ed = ev.evd;
+      evs.push(ev);
 
-      ret.sqlparam.push(ev.rpTParam());
       if (txjson.reminds && txjson.reminds.length > 0) {
-        ret.sqlparam = [...ret.sqlparam ,...this.sqlparamAddTxWa(ev,anyenum.ObjectType.Event,txjson,agdata.al,agdata.st)];
+        was = [...was,...this.sqlparamAddTxWa2(ev,anyenum.ObjectType.Event,txjson,agdata.al,agdata.st)];
       }
 
       //新增数据需要返回出去
@@ -1769,6 +1771,10 @@ export class EventService extends BaseService {
       Object.assign(outAgd,ev);
       outAgds.push(outAgd);
     }
+
+    let evparams : Array<any> = this.sqlExce.getFastSaveSqlByParam(evs);
+    let waparams : Array<any> = this.sqlExce.getFastSaveSqlByParam(was);
+    ret.sqlparam = [...evparams,...waparams,...ret.sqlparam];
 
     ret.outAgdatas = outAgds;
     return ret;
@@ -2122,6 +2128,43 @@ export class EventService extends BaseService {
 
       return daysNew;
 	}
+  /**
+   * 获取提醒表sql
+   * @param {EvTbl} ev
+   * @param {string} obtType
+   * @param {TxJson} txjson
+   * @param {string} al
+   * @param {string} st
+   * @returns {Array<any>}
+   */
+  private sqlparamAddTxWa2(ev: EvTbl,obtType: string, txjson :TxJson, al: string = "" ,st:string=""): Array<WaTbl> {
+    let ret = new Array<WaTbl>();
+    if (txjson.reminds && txjson.reminds.length > 0) {
+      for ( let j = 0, len = txjson.reminds.length ;j < len ; j++) {
+        let wa = new WaTbl();//提醒表
+        let remind : number;
+        wa.wai = this.util.getUuid();
+        wa.obt = obtType;
+        wa.obi = ev.evi;
+        remind = txjson.reminds[j];
+        wa.st = ev.evn;
+        let time = remind;
+        let date;
+        if (al == anyenum.IsWholeday.NonWhole) {
+          date = moment(ev.evd + " " + st).subtract(time, 'm').format("YYYY/MM/DD HH:mm");
+
+        } else {
+          date = moment(ev.evd + " " + "08:00").subtract(time, 'm').format("YYYY/MM/DD HH:mm");
+
+        }
+        wa.wd = moment(date).format("YYYY/MM/DD");
+        wa.wt = moment(date).format("HH:mm");
+        ret.push(wa);
+        //console.log('-------- 插入提醒表 --------');
+      }
+    }
+    return ret;
+  }
 
   /**
    * 获取提醒表sql
@@ -3081,6 +3124,12 @@ export class EventService extends BaseService {
                                       ) evnext
                                       group by evnext.newrtevi
                                 ) evnext2 where  julianday(datetime(replace(evnext2.evd, '/', '-'),evnext2.evt))<julianday(datetime('now'))
+                                and evnext2.newrtevi not in (
+                                  select
+                                  case when ifnull(evk.rtevi,'') <> ''  then  evk.rtevi  else evk.evi end newrtevi
+                                  from gtd_ev evk
+                                  where evk.todolist = ?1  and evk.type = ?3 and evk.wc = ?5 and julianday(datetime(replace(evk.evd, '/', '-'),evk.evt))>=julianday(datetime('now'))
+                                )
                               order by  evnext2.minDay desc
                      )
                     union all
@@ -3101,7 +3150,7 @@ export class EventService extends BaseService {
                             order by  evnext2.minDay asc
                     )) eex left join gtd_ca ca on ca.evi = eex.newrtevi
                        	`;
-      let agendaArray: Array<AgendaData> = await this.sqlExce.getExtLstByParam<AgendaData>(sql, [anyenum.ToDoListStatus.On,anyenum.DelType.undel,anyenum.EventType.Agenda,anyenum.EventFinishStatus.NonFinish]) || new Array<AgendaData>();
+      let agendaArray: Array<AgendaData> = await this.sqlExce.getExtLstByParam<AgendaData>(sql, [anyenum.ToDoListStatus.On,anyenum.DelType.undel,anyenum.EventType.Agenda,anyenum.EventFinishStatus.NonFinish,anyenum.EventFinishStatus.Finished]) || new Array<AgendaData>();
   		return agendaArray;
    }
    /**
@@ -3120,6 +3169,7 @@ export class EventService extends BaseService {
           {
                 //将数据加入到todolist缓存
                 todolist.push(changed);
+                flag = false;
           }
       }
       else {
@@ -3670,7 +3720,7 @@ export class RtJson {
   }
 
   //遍历重复日期
-  each(from: string, callback: (day: string) => void) {
+  each(from: string, callback: (day: string) => void, withFrom: boolean = false) {
     // 开始日期
     let repeatStartDay: string = from;
     // 重复类型（天/周/月/年）
@@ -3790,6 +3840,13 @@ export class RtJson {
       } else {
         // 普通重复
         days.push(stepDay);
+      }
+
+      // 增加创建当天是否需要添加此事件
+      if (withFrom && stepDay == repeatStartDay) {
+        if (days.length > 0 && days[0] != from) {
+          days.unshift(from);
+        }
       }
 
       for (let day of days) {

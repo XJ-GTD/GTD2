@@ -18,7 +18,22 @@ export class JhaTbl implements ITblParam {
   wtt: number;
 
   fastParam(): any {
-    return [];
+    let params: Array<any> = new Array<any>();
+    params.push(this.ji);
+    params.push(this.jn);
+    params.push(this.jg);
+    params.push(this.jc);
+    params.push(this.jt);
+    params.push(this.jtd);
+    params.push(this.wtt? this.wtt : moment().unix());
+    params.push(moment().unix());
+    params.push(this.tb);
+    params.push(this.del);
+
+    return [`replace into gtd_jha
+       (     ji ,jn ,jg ,jc ,jt ,jtd ,wtt ,utt,tb,del)`,
+     `select ?,?,?,?,?,?,?,?,?,?`,
+    params];
   }
 
   cTParam():string {

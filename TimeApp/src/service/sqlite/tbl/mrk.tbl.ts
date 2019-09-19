@@ -15,7 +15,19 @@ export class MrkTbl implements ITblParam {
   wtt: number;
 
   fastParam(): any {
-    return [];
+    let params: Array<any> = new Array<any>();
+    params.push(this.mki);
+    params.push(this.mkl);
+    params.push(this.obt);
+    params.push(this.obi);
+    params.push(this.mkt);
+    params.push(this.wtt || moment().unix());
+    params.push(moment().unix());
+
+    return [`replace into gtd_mrk
+       (    mki ,mkl ,obt ,obi ,mkt ,wtt ,utt)`,
+     `select ?,?,?,?,?,?,?`,
+    params];
   }
 
   cTParam():string {

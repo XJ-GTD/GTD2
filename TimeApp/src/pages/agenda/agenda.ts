@@ -37,7 +37,7 @@ import {Keyboard} from "@ionic-native/keyboard";
 
           <div class="agendatodo" *ngIf="currentAgenda.todolist">
             <button ion-button icon-only clear  (click)="changeTodolist()">
-              <ion-icon class="fa" [class.fal-haykal] = "currentAgenda.todolist == todoliston" [class.fal-star] = "currentAgenda.todolist != todoliston"></ion-icon>
+              <ion-icon class="fa" [class.fa-haykal] = "currentAgenda.todolist == todoliston" [class.fa-star] = "currentAgenda.todolist != todoliston"></ion-icon>
             </button>
           </div>
         </ion-row>
@@ -76,7 +76,7 @@ import {Keyboard} from "@ionic-native/keyboard";
                 </button>
               </ion-col>
               <ion-col class="agendaAttach">
-                <button ion-button clear icon-end >
+                <button ion-button clear icon-end  (click)="changeAttach()">
                     <ion-icon class="fal fa-sparkles iconAttach" *ngIf="!currentAgenda.fj || currentAgenda.fj == '0'"></ion-icon>
                      补充
                     <corner-badge *ngIf="currentAgenda.fj && currentAgenda.fj != '0'"><p>{{currentAgenda.fj}}</p></corner-badge>
@@ -304,7 +304,11 @@ export class AgendaPage {
   }
 
   changeLocation() {
-    let modal = this.modalCtrl.create(DataConfig.PAGE._LOCATION_PAGE);
+    let modal = this.modalCtrl.create(DataConfig.PAGE._LOCATION_PAGE, {
+      adr: this.currentAgenda.adr,
+      adrx: this.currentAgenda.adrx,
+      adry: this.currentAgenda.adry
+    });
     modal.onDidDismiss(async (data) => {
 
     });

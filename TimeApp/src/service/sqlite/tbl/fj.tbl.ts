@@ -14,9 +14,26 @@ export class FjTbl implements ITblParam {
   fj: string;
   tb: string;
   del: string;
+  wtt: number;
+  utt: number;
 
   fastParam(): any {
-    return [];
+    let params: Array<any> = new Array<any>();
+    params.push(this.fji);
+    params.push(this.obt);
+    params.push(this.obi);
+    params.push(this.fjn);
+    params.push(this.ext);
+    params.push(this.fj);
+    params.push(this.tb);
+    params.push(this.del);
+    params.push(this.wtt? this.wtt : moment().unix());
+    params.push(moment().unix());
+
+    return [`replace into gtd_fj
+       (    fji ,obt ,obi ,fjn ,ext ,fj ,tb,del,wtt ,utt )`,
+     `select ?,?,?,?,?,?,?,?,?,?`,
+    params];
   }
 
   cTParam():string {
