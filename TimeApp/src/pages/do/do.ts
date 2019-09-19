@@ -30,7 +30,7 @@ import { PageDirection, IsSuccess, OperateType, EventFinishStatus } from "../../
     `
       <page-box title="重要事项" (onBack)="goBack()">
       <ng-container *ngFor="let day of days">
-        <task-list [currentuser]="currentuser" [friends]="friends" (onStartLoad)="getData($event, day)" (onCardClick)="gotoDetail($event)" (onErease)="goErease($event)" (onComplete)="complete($event)" #tasklist></task-list>
+        <task-list [currentuser]="currentuser" [friends]="friends" (onStartLoad)="getData($event, day)" (onCreateNew)="goCreate()" (onCardClick)="gotoDetail($event)" (onErease)="goErease($event)" (onComplete)="complete($event)" #tasklist></task-list>
       </ng-container>
       </page-box>
     `
@@ -167,6 +167,15 @@ export class DoPage {
 
   goBack() {
     this.navCtrl.pop();
+  }
+
+  goCreate() {
+    let p: ScdPageParamter = new ScdPageParamter();
+
+    p.d = moment();
+
+    this.feedback.audioPress();
+    this.modalCtr.create(DataConfig.PAGE._AGENDA_PAGE, p).present();
   }
 
   complete(target: any) {
