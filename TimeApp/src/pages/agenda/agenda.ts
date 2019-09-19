@@ -314,6 +314,17 @@ export class AgendaPage {
       adry: this.currentAgenda.adry
     });
     modal.onDidDismiss(async (data) => {
+      if (!data) return;
+
+      this.currentAgenda.adr = this.currentAgenda.adr || "";
+      this.currentAgenda.adrx = this.currentAgenda.adrx || 0;
+      this.currentAgenda.adry = this.currentAgenda.adry || 0;
+
+      if (!this.eventService.isSameAgenda(this.currentAgenda, this.originAgenda)) {
+        this.buttons.save = true;
+      } else {
+        this.buttons.save = false;
+      }
 
     });
     modal.present();
