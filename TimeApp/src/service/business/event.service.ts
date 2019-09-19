@@ -3130,7 +3130,6 @@ export class EventService extends BaseService {
                                   from gtd_ev evk
                                   where evk.todolist = ?1  and evk.type = ?3 and evk.wc = ?5 and julianday(datetime(replace(evk.evd, '/', '-'),evk.evt))>=julianday(datetime('now'))
                                 )
-                            )
                               order by  evnext2.minDay desc
                      )
                     union all
