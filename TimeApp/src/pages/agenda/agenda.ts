@@ -316,9 +316,9 @@ export class AgendaPage {
     modal.onDidDismiss(async (data) => {
       if (!data) return;
 
-      this.currentAgenda.adr = this.currentAgenda.adr || "";
-      this.currentAgenda.adrx = this.currentAgenda.adrx || 0;
-      this.currentAgenda.adry = this.currentAgenda.adry || 0;
+      this.currentAgenda.adr = data.adr || "";
+      this.currentAgenda.adrx = data.adrx || 0;
+      this.currentAgenda.adry = data.adry || 0;
 
       if (!this.eventService.isSameAgenda(this.currentAgenda, this.originAgenda)) {
         this.buttons.save = true;
