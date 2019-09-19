@@ -336,7 +336,12 @@ export class HPage {
 //       return ;
 //     }
     let p: ScdPageParamter = new ScdPageParamter();
-    p.d = moment(this.hdata.selectDay.time);
+
+    if (this.hdata.selectDay){
+      p.d = moment(this.hdata.selectDay.time);
+    }else{
+      p.d = moment();
+    }
 
     this.feedback.audioPress();
     this.modalCtr.create(AgendaPage, p).present();

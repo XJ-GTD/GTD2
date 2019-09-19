@@ -104,7 +104,6 @@ export class CalendarComponent implements OnInit {
   _options: CalendarComponentOptions;
   _view: boolean = true
   _showMonth;
-  string;
   _thisMonth: boolean;
   swiper:Swiper;
   //swiper:any;
@@ -117,7 +116,8 @@ export class CalendarComponent implements OnInit {
   @ViewChild(Card)
   card: Card;
   @ViewChild(CardContent)
-  cardContent: CardContent;
+  cardContent: CardContent
+
   // @ViewChild(Slides)
   // slides: Slides;
 
@@ -133,7 +133,7 @@ export class CalendarComponent implements OnInit {
 
 
   constructor(public calSvc: IonCalendarService, public feekback: FeedbackService, private plt: Platform,
-  public changeDetectorRef:ChangeDetectorRef,private emitService:EmitService) {
+    public changeDetectorRef:ChangeDetectorRef,private emitService:EmitService) {
 
   }
 
@@ -264,7 +264,6 @@ export class CalendarComponent implements OnInit {
 
     this.swiper  = new Swiper('.swiper-container', {
       autoHeight: true, //高度随内容变化
-      observer:true,
       initialSlide:1
     });
 
@@ -272,7 +271,6 @@ export class CalendarComponent implements OnInit {
     this.swiperover4data(1);
 
     this.swiper.on("slideNextTransitionEnd", ()=>{
-
       this.slideNextEnd();
       this.swiper.activeIndex = this.swiper.activeIndex -1;
       this.swiperover4data(this.swiper.activeIndex);
@@ -298,7 +296,6 @@ export class CalendarComponent implements OnInit {
     });
 
     this.swiper.on("slidePrevTransitionStart", ()=> {
-
       this.feekback.audioTrans();
     });
 
