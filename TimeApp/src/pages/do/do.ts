@@ -173,6 +173,7 @@ export class DoPage {
     let p: ScdPageParamter = new ScdPageParamter();
 
     p.d = moment();
+    p.todolist = true;
 
     this.feedback.audioPress();
     this.modalCtr.create(DataConfig.PAGE._AGENDA_PAGE, p).present();

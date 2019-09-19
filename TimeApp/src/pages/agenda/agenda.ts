@@ -193,16 +193,6 @@ export class AgendaPage {
     moment.locale('zh-cn');
     if (this.navParams) {
       let paramter: ScdPageParamter = this.navParams.data;
-      this.currentAgenda.sd = paramter.d.format("YYYY/MM/DD");
-
-      if (paramter.t) {
-        this.currentAgenda.st = paramter.t;
-      } else {
-        this.currentAgenda.st = moment().add(1, "h").format("HH:00");
-      }
-
-      if (paramter.sn) this.currentAgenda.evn = paramter.sn;
-
       if (paramter.si) {
         this.eventService.getAgenda(paramter.si).then((agenda) => {
           this.currentAgenda = agenda;
@@ -210,6 +200,20 @@ export class AgendaPage {
 
           this.buttons.remove = true;
         });
+      } else {
+        this.currentAgenda.sd = paramter.d.format("YYYY/MM/DD");
+
+        if (paramter.t) {
+          this.currentAgenda.st = paramter.t;
+        } else {
+          this.currentAgenda.st = moment().add(1, "h").format("HH:00");
+        }
+
+        if (paramter.sn) this.currentAgenda.evn = paramter.sn;
+
+        if (paramter.todolist) {
+          this.currentAgenda.todolist = ToDoListStatus.On;
+        }
       }
     }
   }
