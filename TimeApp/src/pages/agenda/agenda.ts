@@ -35,7 +35,7 @@ import {Keyboard} from "@ionic-native/keyboard";
           <!--主题-->
           <ion-textarea rows="8" [(ngModel)]="currentAgenda.evn" (ionChange)="changeTitle()" #bzRef></ion-textarea>
 
-          <div class="agendatodo" *ngIf="currentAgenda.todolist">
+          <div class="agendatodo" *ngIf="currentAgenda.evi && currentAgenda.todolist">
             <button ion-button icon-only clear  (click)="changeTodolist()">
               <ion-icon class="fa" [class.fa-haykal] = "currentAgenda.todolist == todoliston" [class.fa-star] = "currentAgenda.todolist != todoliston"></ion-icon>
             </button>
