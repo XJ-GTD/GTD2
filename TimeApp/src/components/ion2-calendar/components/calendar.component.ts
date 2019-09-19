@@ -255,7 +255,6 @@ export class CalendarComponent implements OnInit {
 
   ngOnInit(): void {
     this.initOpt();
-    this._selection = this.calSvc.createCalendarDay(moment().valueOf(), this._d);
     this.initMonthData();
   }
 
