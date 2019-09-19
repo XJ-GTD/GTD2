@@ -24,7 +24,7 @@ declare var BMap;
   <div id="r-result" class = "div-mapresult" *ngIf="isShowMarkers">
     <!--<div class="shade"  (click)="closeDialog()" *ngIf="isShowCover"></div>-->
     <ion-list no-lines  class="mark-list">
-      <button ion-item detail-none *ngFor="let marker of markers" (click)="buttonClick(marker)">
+      <button ion-item detail-none *ngFor="let marker of markers" (click)="markerClick(marker)">
         <div class="color-dot"  item-start></div>
         <ion-label>{{marker.title}}</ion-label>
         <ion-label>{{marker.adr}}</ion-label>
@@ -54,8 +54,8 @@ export class LocationPage {
   searchText:any =  {
     title:"",
     adr :"",
-    adx :"",
-    ady :""
+    adx :0,
+    ady :0
   };
   map : any;
 
@@ -69,15 +69,7 @@ export class LocationPage {
               public viewCtrl: ViewController,
               public navParams: NavParams,
               public geolocation: Geolocation) {
-    if (this.navParams && this.navParams.data) {
-      let value = this.navParams.data;
 
-      if (value){
-        Object.assign(this.searchText,value);
-      }
-
-      //this.curIcon = new BMap.Icon("http://api.map.baidu.com/img/markers.png", new BMap.Size(32, 32));
-    }
 
     //百度地图设置
     this.mapOptions = {
@@ -95,6 +87,18 @@ export class LocationPage {
       anchor: ControlAnchor.BMAP_ANCHOR_BOTTOM_RIGHT,
       type: NavigationControlType.BMAP_NAVIGATION_CONTROL_PAN
     };
+
+    if (this.navParams && this.navParams.data) {
+      let value = this.navParams.data;
+
+      if (value ){
+        this.searchText.title = value.adr;
+        this.searchText.adr = value.adr;
+        this.searchText.adx = value.adx;
+        this.searchText.ady = value.ady;
+      }
+
+    }
 
     /*this.markers.push(
       {
@@ -126,18 +130,21 @@ export class LocationPage {
   }
 
   ionViewDidEnter() {
-    this.myGeo = new BMap.Geocoder();
+    if (!this.navParams.data || !this.navParams.data.adr || this.navParams.data.adr == ""){
+      this.myGeo = new BMap.Geocoder();
 
-    var geolocationControl = new BMap.GeolocationControl();
+      var geolocationControl = new BMap.GeolocationControl();
 
-    this.map.addControl(geolocationControl);
+      this.map.addControl(geolocationControl);
 
-    this.getLocation();
+      this.getLocation();
+    }
+
   }
 
   save() {
     let data: Object = {
-      adr: this.searchText.adr,
+      adr: this.searchText.title,
       adx: this.searchText.adx,
       ady: this.searchText.ady
     };
@@ -175,8 +182,8 @@ export class LocationPage {
         this.isShowMarkers = false;
         this.searchText.title = "";
         this.searchText.adr = "";
-        this.searchText.adx = "";
-        this.searchText.ady = "";
+        this.searchText.adx = 0;
+        this.searchText.ady = 0;
         return;
       }
 
@@ -208,7 +215,7 @@ export class LocationPage {
           this.markers[i].openInfoWindow(infoWindow);
 
           //点击内容显示在searchbar上
-          this.searchText.title = this.markers[i].title;
+          this.searchText.title = this.markers[i].title + " " + this.markers[i].adr;
           this.searchText.adr = this.markers[i].adr;
           this.searchText.adx = this.markers[i].adx;
           this.searchText.ady = this.markers[i].ady;
@@ -232,10 +239,10 @@ export class LocationPage {
     }
   }
 
-  buttonClick(marker){
+  markerClick(marker){
     var infoWindow = new BMap.InfoWindow("<div style='font-size:14px;'>" + marker.title + "</div><div style='font-size:14px;'>地址：" + marker.adr + "</div>");
     marker.openInfoWindow(infoWindow);
-    this.searchText.title = marker.title;
+    this.searchText.title = marker.title + " " + marker.adr;
     this.searchText.adr = marker.adr;
     this.searchText.adx = marker.adx;
     this.searchText.ady = marker.ady;
