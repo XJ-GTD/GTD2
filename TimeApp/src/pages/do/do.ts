@@ -110,8 +110,7 @@ export class DoPage {
 
     this.eventService.todolist()
     .then((d) => {
-      if (d && d.length > 0) {
-
+      if (d) {
         if (!this.onrefresh) {
           this.onrefresh = this.emitService.register("mwxing.calendar.activities.changed", async (data) => {
             if (!data) {
@@ -139,8 +138,10 @@ export class DoPage {
 
         this.cachedtasks = d;
 
-        this.topday = d[0].evd;
-        this.bottomday = d[d.length - 1].evd;
+        if (d.length > 0) {
+          this.topday = d[0].evd;
+          this.bottomday = d[d.length - 1].evd;
+        }
 
         target.tasklist = this.cachedtasks;
       }
