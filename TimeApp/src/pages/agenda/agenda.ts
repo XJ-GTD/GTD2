@@ -76,7 +76,7 @@ import {Keyboard} from "@ionic-native/keyboard";
                 </button>
               </ion-col>
               <ion-col class="agendaAttach">
-                <button ion-button clear icon-end >
+                <button ion-button clear icon-end  (click)="changeAttach()">
                     <ion-icon class="fal fa-sparkles iconAttach" *ngIf="!currentAgenda.fj || currentAgenda.fj == '0'"></ion-icon>
                      补充
                     <corner-badge *ngIf="currentAgenda.fj && currentAgenda.fj != '0'"><p>{{currentAgenda.fj}}</p></corner-badge>
