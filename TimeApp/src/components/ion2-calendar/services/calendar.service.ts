@@ -80,7 +80,7 @@ export class IonCalendarService {
       defaultTitle,
       defaultSubtitle,
       defaultScrollTo: calendarOptions.defaultScrollTo || from,
-      defaultDate: calendarOptions.defaultDate || moment().format("YYYY/MM/DD"),
+      defaultDate: calendarOptions.defaultDate || null,
       defaultDates: calendarOptions.defaultDates || null,
       defaultDateRange: calendarOptions.defaultDateRange || null,
       showAdjacentMonthDay

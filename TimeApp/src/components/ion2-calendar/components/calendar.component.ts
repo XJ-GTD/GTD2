@@ -77,6 +77,7 @@ export const ION_CAL_VALUE_ACCESSOR: Provider = {
               <ion-calendar-week color="transparent">
               </ion-calendar-week>
               <ion-calendar-month class="component-mode"
+                                  [(ngModel)]="_selection"
                                   [month]="monthOpt"
                                   [readonly]="readonly"
                                   (onSelect)="select($event)"
@@ -121,6 +122,7 @@ export class CalendarComponent implements OnInit {
   // @ViewChild(Slides)
   // slides: Slides;
 
+  _selection: CalendarDay;
 
   @Input() format: string = defaults.DATE_FORMAT;
   @Input() type: CalendarComponentTypeProperty = 'string';
@@ -134,7 +136,6 @@ export class CalendarComponent implements OnInit {
 
   constructor(public calSvc: IonCalendarService, public feekback: FeedbackService, private plt: Platform,
   public changeDetectorRef:ChangeDetectorRef,private emitService:EmitService) {
-
   }
 
   @Input()
@@ -254,6 +255,7 @@ export class CalendarComponent implements OnInit {
 
   ngOnInit(): void {
     this.initOpt();
+    this._selection = this.calSvc.createCalendarDay(moment().valueOf(), this._d);
     this.initMonthData();
   }
 
