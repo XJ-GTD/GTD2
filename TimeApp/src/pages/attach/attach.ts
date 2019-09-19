@@ -1,6 +1,8 @@
 import { Component, ElementRef, QueryList, Renderer2, ViewChild, ViewChildren } from '@angular/core';
 import { IonicPage, NavController, NavParams, ViewController, ModalController, Scroll } from 'ionic-angular';
 import {Keyboard} from "@ionic-native/keyboard";
+import {File} from '@ionic-native/file';
+import { FileTransfer } from '@ionic-native/file-transfer';
 import {ModalBoxComponent} from "../../components/modal-box/modal-box";
 
 @IonicPage()
@@ -39,6 +41,8 @@ export class AttachPage {
   constructor(public navCtrl: NavController,
               public viewCtrl: ViewController,
               public navParams: NavParams,
+              private file :File,
+              private fileTransfer:FileTransfer,
               private keyboard: Keyboard) {
     if (this.navParams && this.navParams.data) {
       let value = this.navParams.data.value;
@@ -60,5 +64,19 @@ export class AttachPage {
 
   cancel() {
     this.navCtrl.pop();
+  }
+
+  /**
+  * 拍照  ying<343253410@qq.com>
+  */
+  shot() {
+
+  }
+
+  /**
+  * 文件上传  ying<343253410@qq.com>
+  */
+  select() {
+
   }
 }
