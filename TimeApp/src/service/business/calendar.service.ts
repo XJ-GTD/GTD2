@@ -498,14 +498,14 @@ export class CalendarService extends BaseService {
     this.assertEmpty(ji);   // id不能为空
     this.assertNull(jt);    // 计划类型不能为空
 
+    let sqls: Array<any> = new Array<any>();
+
     // 同时删除日历项
     if (withchildren) {
       if (jt == PlanType.CalendarPlan || jt == PlanType.ActivityPlan) {
         let plandb: JhaTbl = new JhaTbl();
         plandb.ji = ji;
         plandb.del = DelType.del;
-
-        let sqls: Array<any> = new Array<any>();
 
         sqls.push(plandb.upTParam());
 
@@ -526,8 +526,6 @@ export class CalendarService extends BaseService {
         let plandb: JhaTbl = new JhaTbl();
         plandb.ji = ji;
         plandb.del = DelType.del;
-
-        let sqls: Array<any> = new Array<any>();
 
         sqls.push(plandb.upTParam());
 
@@ -566,8 +564,6 @@ export class CalendarService extends BaseService {
         plandb.ji = ji;
         plandb.jtd = "0";
 
-        let sqls: Array<any> = new Array<any>();
-
         sqls.push(plandb.upTParam());
 
         // 更新日历项表计划ID
@@ -578,8 +574,6 @@ export class CalendarService extends BaseService {
         let plandb: JhaTbl = new JhaTbl();
         plandb.ji = ji;
         plandb.del = DelType.del;
-
-        let sqls: Array<any> = new Array<any>();
 
         sqls.push(plandb.upTParam());
 
