@@ -1,6 +1,6 @@
 import { Component, ElementRef, QueryList, Renderer2, ViewChild, ViewChildren } from '@angular/core';
 import { IonicPage, NavController, NavParams, ModalController, ViewController, Scroll } from 'ionic-angular';
-import { ControlAnchor, MapOptions, NavigationControlOptions, NavigationControlType } from 'angular2-baidu-map';
+import {ControlAnchor, MapOptions, Marker, NavigationControlOptions, NavigationControlType} from 'angular2-baidu-map';
 import { Geolocation } from '@ionic-native/geolocation';
 import {ModalBoxComponent} from "../../components/modal-box/modal-box";
 declare var BMap;
@@ -19,12 +19,11 @@ declare var BMap;
     </baidu-map>
   </modal-box>
   <div id="r-result" class = "div-mapresult" *ngIf="isShowMarkers">
-    <!--<div class="shade"  (click)="closeDialog()" *ngIf="isShowCover"></div>-->
     <ion-list no-lines  class="mark-list">
-      <button ion-item detail-none *ngFor="let marker of markers" (click)="resultListClick(marker)">
+      <button ion-item detail-none *ngFor="let rst of resultList" (click)="resultListClick(rst)">
         <div class="color-dot"  item-start></div>
-        <ion-label>{{marker.title}}</ion-label>
-        <ion-label>{{marker.adr}}</ion-label>
+        <ion-label>{{rst.title}}</ion-label>
+        <ion-label>{{rst.adr}}</ion-label>
       </button>
     </ion-list>
   </div>
@@ -40,13 +39,13 @@ export class LocationPage {
   };
 
   isShowMarkers : boolean = false;
-  isShowCover : boolean = false;
 
   statusBarColor: string = "#fff";
 
   mapOptions: MapOptions;  //百度地图选项
   navOptions: NavigationControlOptions; //百度导航条选项
   markers: Array<any> = new Array<any>();
+  resultList: Array<any> = new Array<any>();
   local: any;
   searchText:any =  {
     title:"",
@@ -58,7 +57,7 @@ export class LocationPage {
 
   myGeo: any;
 
-  curIcon: any;
+  focusIcon: any;
 
   @ViewChild('lmap') map_container: ElementRef;
 
@@ -67,6 +66,10 @@ export class LocationPage {
               public navParams: NavParams,
               public geolocation: Geolocation) {
 
+    this.focusIcon = new BMap.Icon("/assets/imgs/map/markers.png", new BMap.Size(23, 25), { // 设置地图标记的icon
+      offset: new BMap.Size(10, 30),
+      imageOffset: new BMap.Size(0, 0 - 10 * 30)
+    });
 
     //百度地图默认设置
     this.mapOptions = {
@@ -78,7 +81,7 @@ export class LocationPage {
       enableScrollWheelZoom: true,
       enableKeyboard: true
     };
-
+    this.resultList = [];
 
     //百度地图导航条选项
     this.navOptions = {
@@ -86,33 +89,6 @@ export class LocationPage {
       type: NavigationControlType.BMAP_NAVIGATION_CONTROL_PAN
     };
 
-    /*this.markers.push(
-      {
-        options: {
-          icon: {
-            imageUrl: '/assets/imgs/map/markericon.png',
-            size: {
-              height: 45,
-              width: 35
-            },
-            imageSize: {
-              height:45,
-              width: 35
-            }
-          }
-        },
-        point: {
-          lat: 31.244604,
-          lng: 121.51606
-        }
-      },
-      {
-        point: {
-          lat: 31.246124,
-          lng: 121.51232
-        }
-      }
-    );*/
   }
 
   ionViewDidEnter() {
@@ -133,9 +109,14 @@ export class LocationPage {
         enableKeyboard: true
       };
       this.markers = [];
+
+
       this.markers.push(
 
         {
+          options: {
+            icon: this.focusIcon
+          },
           point: {
             lat: this.searchText.adlat,
             lng: this.searchText.adlng
@@ -181,12 +162,19 @@ export class LocationPage {
   }
 
   search(txt) { // 对应baidu-map中loaded事件即地图加载时运行的方法 官方介绍e可以是map实例
-    var myKeys = [txt];
-  	//创建一个搜索类实例
-  	this.local = new BMap.LocalSearch(this.map);
 
-  	// 设置查询完成时的回调函数
-  	this.local.setSearchCompleteCallback(async (searchResults) => {
+    let myKeys = [txt];
+
+    if (txt.trim() == ""){
+      return;
+    }
+  	//创建一个搜索类实例
+  	this.local = new BMap.LocalSearch(this.map,{
+      renderOptions:{map: this.map}//marker及动态处理百度自动添加设定
+    });
+
+  	// 设置查询完成时的回调函数(添加自定义marker处理 暂不使用)
+  	/*this.local.setSearchCompleteCallback(async (searchResults) => {
       	let markeSize = this.markers.length; //每次搜索都会在地图上留下标记，这是去除以前留下的标记
       	for (let i = 0; i < markeSize; i++) {
        	 	this.map.removeOverlay(this.markers[i]);
@@ -210,14 +198,15 @@ export class LocationPage {
         this.isShowCover = true;
       }
 
-      let myIcon = new BMap.Icon("http://api.map.baidu.com/img/markers.png", new BMap.Size(31, 49), { // 设置地图标记的icon
-        offset: new BMap.Size(10, 25),
-        imageOffset: new BMap.Size(0, 0 - 10 * 25)
-      });
-      myIcon.imageSize =  new BMap.Size(31, 49);
+      /!*let myIcon = new BMap.Icon("http://api.map.baidu.com/img/markers.png", new BMap.Size(23, 25), { // 设置地图标记的icon
+        offset: new BMap.Size(10, 27.5),
+        imageOffset: new BMap.Size(0, 0 - 10 * 27.5)
+
+      });*!/
 
       for (let i = 0; i < size; i++) {
-        this.markers[i] = new BMap.Marker(new BMap.Point(searchResult[i].point.lng, searchResult[i].point.lat), {icon: myIcon});//在地图上添加标识
+        //this.markers[i] = new BMap.Marker(new BMap.Point(searchResult[i].point.lng, searchResult[i].point.lat), {icon: myIcon});//在地图上添加标识
+        this.markers[i] = new BMap.Marker(new BMap.Point(searchResult[i].point.lng, searchResult[i].point.lat));
         //点击标识后显示的内容
         this.markers[i].title = searchResult[i].title;
         this.markers[i].adr = searchResult[i].address;
@@ -238,34 +227,67 @@ export class LocationPage {
 
         this.map.addOverlay(this.markers[i]);// 添加标识
 
-        /*if (i == 0) { // 默认显示查询结果第一条
+        /!*if (i == 0) { // 默认显示查询结果第一条
           var infoWindow = new BMap.InfoWindow("<div style='font-size:14px;'>" + this.markers[0].title + "</div><div style='font-size:14px;'>地址：" + this.markers[0].adr + "</div>");
           this.markers[0].openInfoWindow(infoWindow);
-        }*/
+        }*!/
+      }
+    });*/
+
+  	//百度自动加好标注后的处理
+    this.local.setMarkersSetCallback(async (pois) =>{
+      this.resultList = [];
+
+      for(var i=0;i<pois.length;i++){
+        let marker = pois[i].marker;
+        let rst = {
+          title : pois[i].title,
+          adr:pois[i].address,
+          adlat:pois[i].point.lat,
+          adlng:pois[i].point.lng,
+          marker:marker
+        }
+
+        this.resultList.push(rst);
+        marker.addEventListener("click", (e)=>{
+          this.searchText.title = rst.title + " " + rst.adr;
+          this.searchText.adr = rst.adr;
+          this.searchText.adlat = rst.adlat;
+          this.searchText.adlng = rst.adlng;
+        })
+      }
+
+      if (this.resultList.length > 0 ){
+        this.isShowMarkers = true;
+      }else{
+        this.isShowMarkers = false;
+        this.searchText.title = "";
+        this.searchText.adr = "";
+        this.searchText.adlat = 0;
+        this.searchText.adlng = 0;
       }
     });
+
     this.local.search(myKeys);
   }
   closeDialog() {
     if (this.isShowMarkers) {
       this.isShowMarkers = false;
-      this.isShowCover = false;
 
     }
   }
 
-  resultListClick(marker){
-    var infoWindow = new BMap.InfoWindow("<div style='font-size:14px;'>" + marker.title + "</div><div style='font-size:14px;'>地址：" + marker.adr + "</div>");
-    marker.openInfoWindow(infoWindow);
-    this.searchText.title = marker.title + " " + marker.adr;
-    this.searchText.adr = marker.adr;
-    this.searchText.adlat = marker.adlat;
-    this.searchText.adlng = marker.adlng;
+  resultListClick(rst){
+    var infoWindow = new BMap.InfoWindow("<div style='font-size:14px;'>" + rst.title + "</div><div style='font-size:14px;'>地址：" + rst.adr + "</div>");
+    rst.marker.openInfoWindow(infoWindow);
+    this.searchText.title = rst.title + " " + rst.adr;
+    this.searchText.adr = rst.adr;
+    this.searchText.adlat = rst.adlat;
+    this.searchText.adlng = rst.adlng;
     this.isShowMarkers = false;
   }
 
   getLocation() {
-    this.curIcon = new BMap.Icon("http://api.map.baidu.com/img/markers.png", new BMap.Size(32, 32));
     this.geolocation.getCurrentPosition().then((resp) => {
 
       if (resp && resp.coords) {
@@ -282,7 +304,7 @@ export class LocationPage {
 
           if (data.status === 0) {
 
-            let marker = new BMap.Marker(data.points[0], { icon: this.curIcon });
+            let marker = new BMap.Marker(data.points[0], { icon: this.focusIcon });
 
             this.map.panTo(data.points[0]);
 
