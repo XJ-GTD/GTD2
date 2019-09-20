@@ -79,7 +79,7 @@ import {AgendaPage} from "../agenda/agenda";
             <ion-icon name="add"></ion-icon>
           </button>
           <button ion-fab  (click)="newpi()">
-            <ion-icon name="add"></ion-icon>
+            <ion-icon name="star"></ion-icon>
           </button>
         </ion-fab-list>
       </ion-fab>
