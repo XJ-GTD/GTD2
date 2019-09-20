@@ -4,7 +4,6 @@ import {BipdshaeData, Plan, ShaeRestful} from "../../service/restful/shaesev";
 import {JhTbl} from "../../service/sqlite/tbl/jh.tbl";
 import {PagePDPro, PagePlData, RcInParam} from "../../data.mapping";
 import * as moment from "moment";
-import {PgBusiService} from "../../service/pagecom/pgbusi.service";
 import {EmitService} from "../../service/util-service/emit.service";
 import {CalendarService, PlanData} from "../../service/business/calendar.service";
 import {PlanType} from "../../data.enum";
@@ -15,7 +14,6 @@ export class PlService {
   constructor(private sqlExec: SqliteExec,
               private shareRestful:ShaeRestful,
               private calendarService: CalendarService,
-              private pgService:PgBusiService,
               private emitService:EmitService) {}
 
   //下载系统计划
@@ -33,7 +31,7 @@ export class PlService {
 
   //删除系统计划
   async delete(jh:PagePDPro){
-    return this.pgService.delRcByJiAndJt(jh.ji,jh.jt);
+    return this.calendarService.removePlan(jh.ji, <PlanType>jh.jt);
   }
 
   //获取计划
