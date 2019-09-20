@@ -182,6 +182,22 @@ export class CommemorationDayPage {
     modal.present();
   }
 
+  changePlan() {
+    let modal = this.modalCtrl.create(DataConfig.PAGE._PLAN_PAGE, {ji: this.currentPlanItem.ji});
+    modal.onDidDismiss(async (data) => {
+      if (!data) return;
+
+      this.currentPlanItem.ji = data.jh.ji;
+
+      if (!this.calendarService.isSamePlanItem(this.currentPlanItem, this.originPlanItem)) {
+        this.buttons.save = true;
+      } else {
+        this.buttons.save = false;
+      }
+    });
+    modal.present();
+  }
+
   validCheck(): boolean {
     if (this.currentPlanItem.jtn && this.currentPlanItem.jtn != "") {
       return true;
