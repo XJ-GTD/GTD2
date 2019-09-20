@@ -86,6 +86,16 @@ export class CommemorationDayPage {
     }
   }
 
+  ionViewDidEnter(){
+    setTimeout(() => {
+      if (!this.currentPlanItem.jti) {
+        let el = this._bzRef.nativeElement.querySelector('textarea');
+        el.focus();
+        this.keyboard.show();   //for android
+      }
+    }, 500);
+  }
+
   changeTitle() {
     if (this.currentPlanItem.jti) {
       if (this.currentPlanItem.jtn != "" && !this.calendarService.isSamePlanItem(this.currentPlanItem, this.originPlanItem)) {
