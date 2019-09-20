@@ -151,4 +151,8 @@ export class CommemorationDayPage {
       }
     }
   }
+
+  goBack() {
+    this.navCtrl.pop();
+  }
 }
