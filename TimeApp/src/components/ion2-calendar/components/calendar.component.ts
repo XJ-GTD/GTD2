@@ -221,7 +221,18 @@ export class CalendarComponent implements OnInit {
 
   ngOnInit(): void {
     this.initOpt();
-    this.initMonthData();
+
+
+    let time =  moment().subtract( 1,"months").valueOf();
+
+    let months:Array<CalendarMonth> = this.calSvc.createMonthsByPeriod(time,  3, this._d);
+    months.forEach((v)=>{
+
+      let warp:any = {};
+      warp.opts = v;
+      this.monthOptsWarp.push(warp)
+      // this.monthOpts.push(v);
+    });
   }
 
 
@@ -241,6 +252,7 @@ export class CalendarComponent implements OnInit {
 
 
     this.swiperover4data(1);
+
 
     this.swiper.on("slideNextTransitionEnd", ()=>{
 
@@ -296,6 +308,7 @@ export class CalendarComponent implements OnInit {
     });
 
 
+
   }
 
   slidePrevEnd(){
@@ -342,6 +355,7 @@ export class CalendarComponent implements OnInit {
 
   }
 
+
   swiperover4data(index:number){
 
        // this.swiper.update()
@@ -368,21 +382,6 @@ export class CalendarComponent implements OnInit {
     this.changeDetectorRef.detectChanges();
   }
 
-  initMonthData() {
-
-    let time = moment().valueOf();
-
-    time = moment().subtract( 1,"months").valueOf();
-
-    let months:Array<CalendarMonth> = this.calSvc.createMonthsByPeriod(time,  3, this._d);
-    months.forEach((v)=>{
-
-      let warp:any = {};
-      warp.opts = v;
-      this.monthOptsWarp.push(warp)
-      // this.monthOpts.push(v);
-    })
-  }
 
 
   // canNext(): boolean {
@@ -401,12 +400,22 @@ export class CalendarComponent implements OnInit {
 
 
   gotoToday() {
-    // let year = moment().year();
-    // let month = moment().month();
-    // let index = this.monthOptsWarp.findIndex((value, index, arr)=>{
-    //   return value.opts .original.year == year && value.opts .original.month == month;
-    // });
-    // this.swiper.slideTo(index,500,true);
-    this.initMonthData();
+    this.feekback.audioTrans();
+
+    let time =  moment().subtract( 1,"months").valueOf();
+
+    let months:Array<CalendarMonth> = this.calSvc.createMonthsByPeriod(time,  3, this._d);
+    // this.monthOpts.shift();
+    this.monthOptsWarp[0].opts  = months[0];
+    this.monthOptsWarp[1].opts  = months[1];
+    this.monthOptsWarp[2].opts  = months[2];
+    // this.swiper.activeIndex = this.swiper.activeIndex -1;
+
+    // this.monthOpts.push(months[0]);
+    // this.swiper.setTransition(10);
+    // this.swiper.setTranslate(this.swiper.translate + window.innerWidth);
+
+    this.swiperover4data(1);
+    IonCalendarService.selecttime =  moment(moment().format("YYYY-MM-DD")).valueOf();
   }
 }
