@@ -924,6 +924,7 @@ export class CalendarService extends BaseService {
     await this.sqlExce.batExecSqlByParam(sqls);
 
     this.emitService.emit(`mwxing.calendar.plans.changed`, plandata);
+    this.emitService.emit(`mwxing.calendar.activities.changed`, plandata.items);
 
     return plandata;
   }
