@@ -50,6 +50,7 @@ export class PlService {
       let jhc: PagePDPro = new PagePDPro();
 
       Object.assign(jhc, plan);
+      jhc.js = plan.items.length;
 
       if (plan.jt == PlanType.PrivatePlan) {
         zdyJh.push(jhc);
