@@ -705,26 +705,26 @@ export class CalendarService extends BaseService {
       }
 
       let subsqlagenda: string = `select agenda.*
-                                    from (select ev.* from gtd_ev ev where ev.ji = ?1 and ev.rfg = ?2 and del <> ?5) agenda
+                                    from (select ev.* from gtd_ev ev where ev.type = ?6 and ev.ji = ?1 and ev.rfg = ?2 and del <> ?5) agenda
                                     left join gtd_ca ca on ca.evi = agenda.evi
                                   union all
                                   select agenda.*
-                                    from (select ev.* from gtd_ev ev where ev.ji = ?1 and del <> ?5 and (ev.rfg = ?3 or ev.rfg = ?4)) agenda
+                                    from (select ev.* from gtd_ev ev where ev.type = ?6 and ev.ji = ?1 and del <> ?5 and (ev.rfg = ?3 or ev.rfg = ?4)) agenda
                                     left join gtd_ca ca on ca.evi = agenda.rtevi`;
-      let planagendas: Array<AgendaData> = await this.sqlExce.getExtLstByParam<AgendaData>(subsqlagenda, [plan.ji, RepeatFlag.NonRepeat, RepeatFlag.Repeat, RepeatFlag.RepeatToNon, DelType.del]) || new Array<AgendaData>();
+      let planagendas: Array<AgendaData> = await this.sqlExce.getExtLstByParam<AgendaData>(subsqlagenda, [plan.ji, RepeatFlag.NonRepeat, RepeatFlag.Repeat, RepeatFlag.RepeatToNon, DelType.del, EventType.Agenda]) || new Array<AgendaData>();
 
       for (let planagenda of planagendas) {
         items.push(planagenda);
       }
 
       let subsqltask: string = `select task.*
-                                  from (select ev.* from gtd_ev ev where ev.ji = ?1 and ev.rfg = ?2 and del <> ?5) task
+                                  from (select ev.* from gtd_ev ev where ev.type = ?6 and ev.ji = ?1 and ev.rfg = ?2 and del <> ?5) task
                                   left join gtd_ca ca on ca.evi = task.evi
                                 union all
                                 select task.*
-                                  from (select ev.* from gtd_ev ev where ev.ji = ?1 and del <> ?5 and (ev.rfg = ?3 or ev.rfg = ?4)) task
+                                  from (select ev.* from gtd_ev ev where ev.type = ?6 and ev.ji = ?1 and del <> ?5 and (ev.rfg = ?3 or ev.rfg = ?4)) task
                                   left join gtd_ca ca on ca.evi = task.rtevi`;
-      let plantasks: Array<TaskData> = await this.sqlExce.getExtLstByParam<TaskData>(subsqltask, [plan.ji, RepeatFlag.NonRepeat, RepeatFlag.Repeat, RepeatFlag.RepeatToNon, DelType.del]) || new Array<TaskData>();
+      let plantasks: Array<TaskData> = await this.sqlExce.getExtLstByParam<TaskData>(subsqltask, [plan.ji, RepeatFlag.NonRepeat, RepeatFlag.Repeat, RepeatFlag.RepeatToNon, DelType.del, EventType.Task]) || new Array<TaskData>();
 
       for (let plantask of plantasks) {
         items.push(plantask);
