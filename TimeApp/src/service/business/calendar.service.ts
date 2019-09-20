@@ -505,13 +505,13 @@ export class CalendarService extends BaseService {
       if (jt == PlanType.CalendarPlan || jt == PlanType.ActivityPlan) {
         let plandb: JhaTbl = new JhaTbl();
         plandb.ji = ji;
-        plandb.del = DelType.del;
+        plandb.jtd = "0";
 
         sqls.push(plandb.upTParam());
 
         let planitemdb: JtaTbl = new JtaTbl();
         planitemdb.ji = ji;
-        plandb.jtd = "0";
+        planitemdb.del = DelType.del;
 
         sqls.push(planitemdb.upTParam());
 
