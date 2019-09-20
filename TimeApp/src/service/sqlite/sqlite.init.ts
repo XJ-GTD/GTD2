@@ -31,7 +31,7 @@ import {WaTbl} from "./tbl/wa.tbl";
 import {FjTbl} from "./tbl/fj.tbl";
 import {MrkTbl} from "./tbl/mrk.tbl";
 import {ParTbl} from "./tbl/par.tbl";
-import {DelType} from "../../data.enum";
+import {DelType, SyncType} from "../../data.enum";
 
 /**
  * create by on 2019/3/5
@@ -372,9 +372,10 @@ export class SqliteInit {
           jhatbl.jg = bipl.plandesc;
           jhatbl.jc = bipl.planmark;
           jhatbl.jt = "1";
+          jhatbl.tb = SyncType.synch;
           jhatbl.del = DelType.undel;
           jhatbl.jtd = "0";
-          urlList.push(jhtbl.inTParam());
+          urlList.push(jhatbl.inTParam());
         }
 
         //服务器 用户偏好数据
