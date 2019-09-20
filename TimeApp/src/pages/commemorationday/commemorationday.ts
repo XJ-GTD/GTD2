@@ -68,7 +68,7 @@ import {Keyboard} from "@ionic-native/keyboard";
               </button>
             </ion-row>
 
-            <ion-row *ngIf="currentPlanItem.sd">
+            <ion-row *ngIf="currentPlanItem.jti && currentPlanItem.sd">
               <ion-col  class="agendaDate" (click)="changeDatetime()">
                 <button ion-button icon-end clear  >
                   <span class="content">
