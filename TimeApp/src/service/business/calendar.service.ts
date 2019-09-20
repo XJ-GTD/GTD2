@@ -6,9 +6,9 @@ import { EmitService } from "../util-service/emit.service";
 import { BipdshaeData, Plan, PlanPa, ShareData, ShaeRestful } from "../restful/shaesev";
 import { SyncData, PushInData, PullInData, DataRestful } from "../restful/datasev";
 import { BackupPro, BacRestful, OutRecoverPro, RecoverPro } from "../restful/bacsev";
-import { EventData, TaskData, AgendaData, MiniTaskData, EventService } from "./event.service";
+import { EventData, TaskData, AgendaData, MiniTaskData, EventService, RtJson, TxJson } from "./event.service";
 import { MemoData, MemoService } from "./memo.service";
-import { EventType, PlanType, PlanItemType, PlanDownloadType, ObjectType, PageDirection, SyncType, DelType, SyncDataSecurity, SyncDataStatus } from "../../data.enum";
+import { EventType, PlanType, PlanItemType, PlanDownloadType, ObjectType, PageDirection, SyncType, RepeatFlag, DelType, SyncDataSecurity, SyncDataStatus } from "../../data.enum";
 import { UserConfig } from "../config/user.config";
 import * as moment from "moment";
 import { JhaTbl } from "../sqlite/tbl/jha.tbl";
@@ -498,17 +498,17 @@ export class CalendarService extends BaseService {
     this.assertEmpty(ji);   // id不能为空
     this.assertNull(jt);    // 计划类型不能为空
 
-    let plandb: JhaTbl = new JhaTbl();
-    plandb.ji = ji;
-    plandb.del = DelType.del;
-
     let sqls: Array<any> = new Array<any>();
-
-    sqls.push(plandb.upTParam());
 
     // 同时删除日历项
     if (withchildren) {
       if (jt == PlanType.CalendarPlan || jt == PlanType.ActivityPlan) {
+        let plandb: JhaTbl = new JhaTbl();
+        plandb.ji = ji;
+        plandb.jtd = "0";
+
+        sqls.push(plandb.upTParam());
+
         let planitemdb: JtaTbl = new JtaTbl();
         planitemdb.ji = ji;
         planitemdb.del = DelType.del;
@@ -523,6 +523,12 @@ export class CalendarService extends BaseService {
       }
 
       if (jt == PlanType.PrivatePlan) {
+        let plandb: JhaTbl = new JhaTbl();
+        plandb.ji = ji;
+        plandb.del = DelType.del;
+
+        sqls.push(plandb.upTParam());
+
         let eventdb: EvTbl = new EvTbl();
         eventdb.ji = ji;
         eventdb.del = DelType.del;
@@ -554,11 +560,23 @@ export class CalendarService extends BaseService {
     } else {
       // 不删除子元素，需要把子元素的计划ID更新为空/默认计划ID
       if (jt == PlanType.CalendarPlan || jt == PlanType.ActivityPlan) {
+        let plandb: JhaTbl = new JhaTbl();
+        plandb.ji = ji;
+        plandb.jtd = "0";
+
+        sqls.push(plandb.upTParam());
+
         // 更新日历项表计划ID
         sqls.push([`update gtd_jta set ji = ?, utt = ? where ji = ?`, ['', moment().unix(), ji]]);
       }
 
       if (jt == PlanType.PrivatePlan) {
+        let plandb: JhaTbl = new JhaTbl();
+        plandb.ji = ji;
+        plandb.del = DelType.del;
+
+        sqls.push(plandb.upTParam());
+
         // 更新事件主表
         sqls.push([`update gtd_ev set ji = ?, utt = ? where ji = ?`, ['', moment().unix(), ji]]);
 
@@ -606,6 +624,178 @@ export class CalendarService extends BaseService {
     Object.assign(planitem, planitemdb);
 
     return planitem;
+  }
+
+  isSamePlanItem(one: PlanItemData, another: PlanItemData): boolean {
+    if (!one || !another) return false;
+
+    for (let key of Object.keys(one)) {
+      if (["wtt", "utt", "rts", "txs"].indexOf(key) >= 0) continue;   // 忽略字段
+
+      if (one.hasOwnProperty(key)) {
+        let value = one[key];
+
+        // 如果两个值都为空, 继续
+        if (!value && !another[key]) {
+          continue;
+        }
+
+        // 如果one的值为空, 不一致
+        if (!value || !another[key]) return false;
+
+        if (typeof value === 'string' || typeof value === 'number' || typeof value === 'boolean') {
+          if (typeof value === 'string' && value != "" && another[key] != "" && key == "rt") {
+            let onert: RtJson = new RtJson();
+            Object.assign(onert, JSON.parse(value));
+
+            let anotherrt: RtJson = new RtJson();
+            Object.assign(anotherrt, JSON.parse(another[key]));
+
+            if (!(onert.sameWith(anotherrt))) return false;
+
+            continue;
+          }
+
+          if (typeof value === 'string' && value != "" && another[key] != "" && key == "tx") {
+            let onetx: TxJson = new TxJson();
+            Object.assign(onetx, JSON.parse(value));
+
+            let anothertx: TxJson = new TxJson();
+            Object.assign(anothertx, JSON.parse(another[key]));
+
+            if (!(onetx.sameWith(anothertx))) return false;
+
+            continue;
+          }
+
+          if (value != another[key]) return false;
+        }
+
+        if (value instanceof RtJson) {
+          let onert: RtJson = new RtJson();
+          Object.assign(onert, value);
+
+          let anotherrt: RtJson = new RtJson();
+          Object.assign(anotherrt, another[key]);
+
+          if (!(onert.sameWith(anotherrt))) return false;
+
+          continue;
+        }
+
+        if (value instanceof TxJson) {
+          let onetx: TxJson = new TxJson();
+          Object.assign(onetx, value);
+
+          let anothertx: TxJson = new TxJson();
+          Object.assign(anothertx, another[key]);
+
+          if (!(onetx.sameWith(anothertx))) return false;
+
+          continue;
+        }
+
+        if (value instanceof Array) {
+          if (value.length != another[key].length) return false;
+
+          if (value.length > 0) {
+            if (value[0] && value[0].hasOwnProperty("pari") && another[key][0] && another[key][0].hasOwnProperty("pari")) {
+              let compare = value.concat(another[key]);
+
+              compare.sort((a, b) => {
+                if (a.pari > b.pari) return -1;
+                if (a.pari < b.pari) return 1;
+                return 0;
+              });
+
+              let result = compare.reduce((target, val) => {
+                if (!target) {
+                  target = val;
+                } else {
+                  if (!val) {
+                    target = {};
+                  } else {
+                    let issame: boolean = true;
+
+                    for (let key of Object.keys(target)) {
+                      if (["wtt", "utt"].indexOf(key) >= 0) continue;   // 忽略字段
+
+                      if (target.hasOwnProperty(key)) {
+                        let value = target[key];
+
+                        if (typeof value === 'string' || typeof value === 'number' || typeof value === 'boolean') {
+                          if (value != val[key]) issame = false;
+                        }
+                      }
+                    }
+
+                    if (issame) {
+                      target = null;
+                    } else {
+                      target = {};
+                    }
+                  }
+                }
+
+                return target;
+              }, null);
+
+              if (result && result.isEmpty()) return false;
+
+            } else if (value[0] instanceof FjTbl && another[key][0] instanceof FjTbl) {
+
+              let compare = value.concat(another[key]);
+
+              compare.sort((a, b) => {
+                if (a.fji > b.fji) return -1;
+                if (a.fji < b.fji) return 1;
+                return 0;
+              });
+
+              let result = compare.reduce((target, val) => {
+                if (!target) {
+                  target = val;
+                } else {
+                  if (!val) {
+                    target = {};
+                  } else {
+                    let issame: boolean = true;
+
+                    for (let key of Object.keys(target)) {
+                      if (["wtt", "utt"].indexOf(key) >= 0) continue;   // 忽略字段
+
+                      if (target.hasOwnProperty(key)) {
+                        let value = target[key];
+
+                        if (typeof value === 'string' || typeof value === 'number' || typeof value === 'boolean') {
+                          if (value != val[key]) issame = false;
+                        }
+                      }
+                    }
+
+                    if (issame) {
+                      target = null;
+                    } else {
+                      target = {};
+                    }
+                  }
+                }
+
+                return target;
+              }, null);
+
+              if (result && result.isEmpty()) return false;
+
+            } else {
+              return false;
+            }
+          }
+        }
+
+      }
+    }
+
+    return true;
   }
 
   /**
@@ -694,6 +884,51 @@ export class CalendarService extends BaseService {
     let plans: Array<PlanData> = await this.sqlExce.getExtList<PlanData>(sql) || new Array<PlanData>();
 
     // 获取每个日历的日历项
+    for (let plan of plans) {
+      let items: Array<any> = new Array<any>();
+
+      let subsqljta: string = `select * from gtd_jta where ji = ?1 and del <> ?2`;
+      let planitems: Array<PlanItemData> = await this.sqlExce.getExtLstByParam<PlanItemData>(subsqljta, [plan.ji, DelType.del]) || new Array<PlanItemData>();
+
+      for (let planitem of planitems) {
+        items.push(planitem);
+      }
+
+      let subsqlagenda: string = `select agenda.*
+                                    from (select ev.* from gtd_ev ev where ev.type = ?6 and ev.ji = ?1 and ev.rfg = ?2 and del <> ?5) agenda
+                                    left join gtd_ca ca on ca.evi = agenda.evi
+                                  union all
+                                  select agenda.*
+                                    from (select ev.* from gtd_ev ev where ev.type = ?6 and ev.ji = ?1 and del <> ?5 and (ev.rfg = ?3 or ev.rfg = ?4)) agenda
+                                    left join gtd_ca ca on ca.evi = agenda.rtevi`;
+      let planagendas: Array<AgendaData> = await this.sqlExce.getExtLstByParam<AgendaData>(subsqlagenda, [plan.ji, RepeatFlag.NonRepeat, RepeatFlag.Repeat, RepeatFlag.RepeatToNon, DelType.del, EventType.Agenda]) || new Array<AgendaData>();
+
+      for (let planagenda of planagendas) {
+        items.push(planagenda);
+      }
+
+      let subsqltask: string = `select task.*
+                                  from (select ev.* from gtd_ev ev where ev.type = ?6 and ev.ji = ?1 and ev.rfg = ?2 and del <> ?5) task
+                                  left join gtd_ca ca on ca.evi = task.evi
+                                union all
+                                select task.*
+                                  from (select ev.* from gtd_ev ev where ev.type = ?6 and ev.ji = ?1 and del <> ?5 and (ev.rfg = ?3 or ev.rfg = ?4)) task
+                                  left join gtd_ca ca on ca.evi = task.rtevi`;
+      let plantasks: Array<TaskData> = await this.sqlExce.getExtLstByParam<TaskData>(subsqltask, [plan.ji, RepeatFlag.NonRepeat, RepeatFlag.Repeat, RepeatFlag.RepeatToNon, DelType.del, EventType.Task]) || new Array<TaskData>();
+
+      for (let plantask of plantasks) {
+        items.push(plantask);
+      }
+
+      let subsqlmemo: string = `select * from gtd_mom where ji = ?1 and del <> ?2`;
+      let planmemos: Array<MemoData> = await this.sqlExce.getExtLstByParam<MemoData>(subsqlmemo, [plan.ji, DelType.del]) || new Array<MemoData>();
+
+      for (let planmemo of planmemos) {
+        items.push(planmemo);
+      }
+
+      plan.items = items;
+    }
 
     return plans;
   }
@@ -804,9 +1039,11 @@ export class CalendarService extends BaseService {
    *
    * @author leon_xi@163.com
    **/
-  async downloadPublicPlan(ji: string, jt: PlanType) {
+  async downloadPublicPlan(ji: string, jt: PlanType): Promise<PlanData> {
 
     this.assertEmpty(ji);   // 入参不能为空
+
+    let plandata: PlanData = {} as PlanData;
 
     //restful获取计划日程
     let bip = new BipdshaeData();
@@ -832,13 +1069,20 @@ export class CalendarService extends BaseService {
       plandb.tb = SyncType.synch;
       plandb.del = DelType.undel;
 
+      Object.assign(plandata, plandb);
+      plandata.items = new Array<any>();
+
       sqls.push(plandb.rpTParam());
 
       let itemType: PlanItemType = (jt == PlanType.CalendarPlan? PlanItemType.Holiday : PlanItemType.Activity);
 
       // 创建日历项
       if (plan.pa && plan.pa.length > 0) {
+        let planitems: Array<JtaTbl> = new Array<JtaTbl>();
+
         for (let pa of plan.pa) {
+          let planitemdata: PlanItemData = {} as PlanItemData;
+
           let planitemdb: JtaTbl = new JtaTbl();
           planitemdb.jti = this.util.getUuid();
           planitemdb.ji = ji;         //计划ID
@@ -851,16 +1095,28 @@ export class CalendarService extends BaseService {
           planitemdb.tb = SyncType.synch;
           planitemdb.del = DelType.undel;
 
-          sqls.push(planitemdb.rpTParam());
+          Object.assign(planitemdata, planitemdb);
+          plandata.items.push(planitemdata);
+
+          planitems.push(planitemdb)
+        }
+
+        if (planitems.length > 0) {
+          let subsqls = this.sqlExce.getFastSaveSqlByParam(planitems);
+
+          for (let subsql of subsqls) {
+            sqls.push(subsql);
+          }
         }
       }
     }
 
     await this.sqlExce.batExecSqlByParam(sqls);
 
-    this.emitService.emit(`mwxing.calendar.${ji}.updated`);
+    this.emitService.emit(`mwxing.calendar.plans.changed`, plandata);
+    this.emitService.emit(`mwxing.calendar.activities.changed`, plandata.items);
 
-    return;
+    return plandata;
   }
 
   /**

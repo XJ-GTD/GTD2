@@ -1,32 +1,29 @@
 import {Injectable} from "@angular/core";
 import {SqliteExec} from "../../service/util-service/sqlite.exec";
 import {UtilService} from "../../service/util-service/util.service";
-import {JhTbl} from "../../service/sqlite/tbl/jh.tbl";
 import {PagePcPro} from "../../data.mapping";
+import {CalendarService, PlanData} from "../../service/business/calendar.service";
+import {PlanType} from "../../data.enum";
 
 @Injectable()
 export class PcService {
   constructor(
               private sqlExce: SqliteExec,
               private util: UtilService,
+              private calendarService: CalendarService
   ) {
   }
 
   //保存计划
-  savePlan(pcData:PagePcPro):Promise<any>{
-    return new Promise<any>((resolve, reject) => {
-      //保存本地计划
-      let jh = new JhTbl();
-      jh.ji = this.util.getUuid();
-      jh.jc = pcData.jc;
-      jh.jg = pcData.jg;
-      jh.jn = pcData.jn;
-      jh.jt = "2";
-      this.sqlExce.save(jh).then(data =>{
-        resolve(data);
-      })
+  async savePlan(pcData:PagePcPro): Promise<any> {
+    let plan: PlanData = {} as PlanData;
 
-    })
+    Object.assign(plan, pcData);
+    plan.jt = PlanType.PrivatePlan;
+
+    plan = await this.calendarService.savePlan(plan);
+
+    return plan;
   }
 
 }

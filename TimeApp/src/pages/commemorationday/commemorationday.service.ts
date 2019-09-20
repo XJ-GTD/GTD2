@@ -8,7 +8,7 @@ import { IsSuccess, SyncDataStatus } from "../../data.enum";
 import {UtilService} from "../../service/util-service/util.service";
 
 @Injectable()
-export class AgendaService {
+export class CommemorationDayService {
   constructor(private util: UtilService,
               private eventService: EventService,
               private assistantService: AssistantService) {

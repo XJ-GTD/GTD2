@@ -72,12 +72,12 @@ export const ION_CAL_VALUE_ACCESSOR: Provider = {
         <div class="swiper-container">
 
           <div class="swiper-wrapper">
-            <div *ngFor="let monthOpt of monthOpts" class="swiper-slide">
-              <div class="yearshow">{{monthOpt.original.year}}</div>
+            <div *ngFor="let warp of monthOptsWarp" class="swiper-slide">
+              <div class="yearshow">{{warp.opts.original.year}}</div>
               <ion-calendar-week color="transparent">
               </ion-calendar-week>
               <ion-calendar-month class="component-mode"
-                                  [month]="monthOpt"
+                                  [month]="warp.opts"
                                   [readonly]="readonly"
                                   (onSelect)="select($event)"
                                   (onPress)="onPress.emit($event)">
@@ -112,7 +112,9 @@ export class CalendarComponent implements OnInit {
 
   calendarAnimation: CalendarAnimation;
 
-  monthOpts: Array<CalendarMonth> = new Array<CalendarMonth>();
+  monthOptsWarp: Array<any> = new Array<any>();
+
+  // monthOpts: Array<CalendarMonth> = new Array<CalendarMonth>();
   @ViewChild(Card)
   card: Card;
   @ViewChild(CardContent)
@@ -147,73 +149,43 @@ export class CalendarComponent implements OnInit {
     this.onSelect.emit($event)
   }
 
-  slidePrevEnd(){
-
-      let firstmonth:CalendarMonth = this.monthOpts[0];
-
-      let time  = moment(firstmonth.original.time).subtract(1, 'months').valueOf();
-      let months = this.calSvc.createMonthsByPeriod(time, 1, this._d);
-      this.monthOpts.pop();
-      this.monthOpts.unshift(months[0]);
-      //不影响编译
-      // this.swiper.setTransition(10);
-     // this.swiper.setTranslate(this.swiper.translate - window.innerWidth);
-
-  }
 
 
-  slideNextEnd(){
-
-
-      let lastmonth:CalendarMonth = this.monthOpts[2];
-
-      let month_len:number = this.monthOpts.length;
-      let time  = moment(lastmonth.original.time).add(1, 'months').valueOf();
-      let months = this.calSvc.createMonthsByPeriod(time, 1, this._d);
-      this.monthOpts.shift();
-      this.monthOpts.push(months[0]);
-    // this.swiper.setTransition(10);
-    // this.swiper.setTranslate(this.swiper.translate + window.innerWidth);
-
-
-
-  }
-
-  slideChanged($event: Slides) {
-    this.feekback.audioTrans();
-    let monthOpt = this.monthOpts[2];
-    let monthTime;
-
-    if (!monthOpt) return;
-    this._showMonth = defaults.MONTH_FORMAT[monthOpt.original.month];
-    this._thisMonth = monthOpt.original.month == moment().month() && monthOpt.original.year == moment().year();
-
-    if ($event.swipeDirection == "next") {
-      let lastmonth:CalendarMonth = this.monthOpts[this.monthOpts.length - 1]
-
-      let month_len:number = this.monthOpts.length;
-        let time =  monthTime = moment(lastmonth.original.time).add(1, 'months').valueOf();
-        let months = this.calSvc.createMonthsByPeriod(time, 1, this._d);
-        this.monthOpts.push(months[0]);
-        this.monthOpts.shift();
-
-    } else if ($event.swipeDirection == "prev") {
-
-      let firstmonth:CalendarMonth = this.monthOpts[0];
-
-        let time =  monthTime = moment(firstmonth.original.time).subtract(1, 'months').valueOf();
-        let months = this.calSvc.createMonthsByPeriod(time, 1, this._d);
-        this.monthOpts.unshift(months[0]);
-        this.monthOpts.pop();
-
-        //this.slides.slideNext(0,false);
-        //this.slides.update();
-
-    }
-
-    this.calSvc.getMonthData(monthOpt);
-
-  }
+  // slideChanged($event: Slides) {
+  //   this.feekback.audioTrans();
+  //   let monthOpt = this.monthOpts[2];
+  //   let monthTime;
+  //
+  //   if (!monthOpt) return;
+  //   this._showMonth = defaults.MONTH_FORMAT[monthOpt.original.month];
+  //   this._thisMonth = monthOpt.original.month == moment().month() && monthOpt.original.year == moment().year();
+  //
+  //   if ($event.swipeDirection == "next") {
+  //     let lastmonth:CalendarMonth = this.monthOpts[this.monthOpts.length - 1]
+  //
+  //     let month_len:number = this.monthOpts.length;
+  //       let time =  monthTime = moment(lastmonth.original.time).add(1, 'months').valueOf();
+  //       let months = this.calSvc.createMonthsByPeriod(time, 1, this._d);
+  //       this.monthOpts.push(months[0]);
+  //       this.monthOpts.shift();
+  //
+  //   } else if ($event.swipeDirection == "prev") {
+  //
+  //     let firstmonth:CalendarMonth = this.monthOpts[0];
+  //
+  //       let time =  monthTime = moment(firstmonth.original.time).subtract(1, 'months').valueOf();
+  //       let months = this.calSvc.createMonthsByPeriod(time, 1, this._d);
+  //       this.monthOpts.unshift(months[0]);
+  //       this.monthOpts.pop();
+  //
+  //       //this.slides.slideNext(0,false);
+  //       //this.slides.update();
+  //
+  //   }
+  //
+  //   this.calSvc.getMonthData(monthOpt);
+  //
+  // }
 
 
   closeMonth() {
@@ -249,7 +221,18 @@ export class CalendarComponent implements OnInit {
 
   ngOnInit(): void {
     this.initOpt();
-    this.initMonthData();
+
+
+    let time =  moment().subtract( 1,"months").valueOf();
+
+    let months:Array<CalendarMonth> = this.calSvc.createMonthsByPeriod(time,  3, this._d);
+    months.forEach((v)=>{
+
+      let warp:any = {};
+      warp.opts = v;
+      this.monthOptsWarp.push(warp)
+      // this.monthOpts.push(v);
+    });
   }
 
 
@@ -264,24 +247,20 @@ export class CalendarComponent implements OnInit {
 
     this.swiper  = new Swiper('.swiper-container', {
       autoHeight: true, //高度随内容变化
-      initialSlide:1
+      // initialSlide:1,
     });
 
 
     this.swiperover4data(1);
 
+
     this.swiper.on("slideNextTransitionEnd", ()=>{
+
       this.slideNextEnd();
-      this.swiper.activeIndex = this.swiper.activeIndex -1;
-      this.swiperover4data(this.swiper.activeIndex);
 
-    });
+      // setTimeout(()=>{
+      // },1000);
 
-    this.swiper.on("slidePrevTransitionEnd", ()=>{
-
-      this.slidePrevEnd();
-      this.swiper.activeIndex = this.swiper.activeIndex  + 1;
-      this.swiperover4data(this.swiper.activeIndex);
 
 
       // this.changeDetectorRef.markForCheck();
@@ -289,14 +268,15 @@ export class CalendarComponent implements OnInit {
       // this.swiper.updateSlides();
     });
 
-    this.swiper.on("slideNextTransitionStart", ()=> {
+    // this.swiper.on("slideChange", ()=> {
+    //
+    //
+    //
+    // });
 
-      this.feekback.audioTrans();
+    this.swiper.on("slidePrevTransitionEnd", ()=> {
 
-    });
-
-    this.swiper.on("slidePrevTransitionStart", ()=> {
-      this.feekback.audioTrans();
+      this.slidePrevEnd();
     });
 
 
@@ -317,50 +297,91 @@ export class CalendarComponent implements OnInit {
     this.emitService.register("list.change.month",($data)=>{
       if ($data =="next"){
         this.change4emit = false;
-        this.swiper.slideNext(100,true);
+        this.slideNextEnd();
 
       }
       if ($data =="prev"){
         this.change4emit = false;
-        this.swiper.slidePrev(100,true);
+        this.slidePrevEnd();
       }
 
     });
 
+
+
   }
+
+  slidePrevEnd(){
+
+    this.feekback.audioTrans();
+
+    let firstmonth:CalendarMonth = this.monthOptsWarp[0].opts;
+
+    let time  = moment(firstmonth.original.time).subtract(1, 'months').valueOf();
+    let months = this.calSvc.createMonthsByPeriod(time, 1, this._d);
+    this.monthOptsWarp[2].opts = this.monthOptsWarp[1].opts;
+    this.monthOptsWarp[1].opts = this.monthOptsWarp[0].opts;
+    this.monthOptsWarp[0].opts = months[0];
+    // this.swiper.activeIndex = this.swiper.activeIndex  + 1;
+    //不影响编译
+    // this.swiper.setTransition(10);
+    // this.swiper.setTranslate(this.swiper.translate - window.innerWidth);
+    this.swiperover4data(1);
+
+  }
+
+
+  slideNextEnd(){
+
+
+    this.feekback.audioTrans();
+
+    let lastmonth:CalendarMonth = this.monthOptsWarp[2].opts;
+    let time  = moment(lastmonth.original.time).add(1, 'months').valueOf();
+    let months = this.calSvc.createMonthsByPeriod(time, 1, this._d);
+   // this.monthOpts.shift();
+    this.monthOptsWarp[0].opts  = this.monthOptsWarp[1].opts;
+    this.monthOptsWarp[1].opts  = this.monthOptsWarp[2].opts;
+    this.monthOptsWarp[2].opts  = months[0];
+    // this.swiper.activeIndex = this.swiper.activeIndex -1;
+
+    // this.monthOpts.push(months[0]);
+    // this.swiper.setTransition(10);
+    // this.swiper.setTranslate(this.swiper.translate + window.innerWidth);
+
+    this.swiperover4data(1);
+
+
+
+  }
+
 
   swiperover4data(index:number){
 
-    this.swiper.update();
-    this.swiper.updateSlidesClasses();
+       // this.swiper.update()
+      // this.swiper.updateSlidesClasses();
+     //
 
-    let monthOpt = this.monthOpts[index];
+      let monthOpt = this.monthOptsWarp[index].opts ;
 
-    if (!monthOpt) return;
-    this._showMonth = defaults.MONTH_FORMAT[monthOpt.original.month];
-    this._thisMonth = monthOpt.original.month == moment().month() && monthOpt.original.year == moment().year();
-    this.calSvc.getMonthData(monthOpt);
+      if (!monthOpt) return;
+      this._showMonth = defaults.MONTH_FORMAT[monthOpt.original.month];
+      this._thisMonth = monthOpt.original.month == moment().month() && monthOpt.original.year == moment().year();
+      this.calSvc.getMonthData(monthOpt);
 
-    if (this.change4emit)
-      this.emitService.emit("calendar.change.month",moment(monthOpt.original.time).format("YYYYMM"));
+      if (this.change4emit)
+        this.emitService.emit("calendar.change.month",moment(monthOpt.original.time).format("YYYYMM"));
 
-    this.change4emit = true;
+      this.change4emit = true;
+
+        if (this.swiper){
+          this.swiper.slideTo(index,0,false);
+        }
 
     this.changeDetectorRef.markForCheck();
     this.changeDetectorRef.detectChanges();
   }
 
-  initMonthData() {
-
-    let time = moment().valueOf();
-
-    time = moment().subtract( 1,"months").valueOf();
-
-    let months:Array<CalendarMonth> = this.calSvc.createMonthsByPeriod(time,  3, this._d);
-    months.forEach((v)=>{
-      this.monthOpts.push(v);
-    })
-  }
 
 
   // canNext(): boolean {
@@ -379,11 +400,22 @@ export class CalendarComponent implements OnInit {
 
 
   gotoToday() {
-    let year = moment().year();
-    let month = moment().month();
-    let index = this.monthOpts.findIndex((value, index, arr)=>{
-      return value.original.year == year && value.original.month == month;
-    });
-    this.swiper.slideTo(index,500,true);
+    this.feekback.audioTrans();
+
+    let time =  moment().subtract( 1,"months").valueOf();
+
+    let months:Array<CalendarMonth> = this.calSvc.createMonthsByPeriod(time,  3, this._d);
+    // this.monthOpts.shift();
+    this.monthOptsWarp[0].opts  = months[0];
+    this.monthOptsWarp[1].opts  = months[1];
+    this.monthOptsWarp[2].opts  = months[2];
+    // this.swiper.activeIndex = this.swiper.activeIndex -1;
+
+    // this.monthOpts.push(months[0]);
+    // this.swiper.setTransition(10);
+    // this.swiper.setTranslate(this.swiper.translate + window.innerWidth);
+
+    this.swiperover4data(1);
+    IonCalendarService.selecttime =  moment(moment().format("YYYY-MM-DD")).valueOf();
   }
 }
