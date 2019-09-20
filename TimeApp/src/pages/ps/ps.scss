@@ -1,105 +1,40 @@
 page-ps {
-
-  background-color: $baseBackColor;
-
-  .w-auto {
-    flex: 1;
-  }
-
   .grid {
     padding: 0;
   }
-
   .grid .row {
     height: 100%;
   }
 
-  .list {
-    width: 100%;
-  }
-
-  .list-header, .list-header-md, .list-header-ios {
-    border: 0;
-  }
-
-  ion-header ion-toolbar .toolbar-background,.toolbar-background-md,.toolbar-background-ios {
-    background-color: $baseBackColor;
-  }
-
-  ion-content.content {
-    background-color: $baseBackColor;
-    color: #fff;
-  }
-
-  ion-content .plan-list-item {
-    background-color: $baseBackColor;
-    color: #fff;
-  }
-
-  ion-header{
-    padding: 4px 20px;
-  }
-
-  .img-header-left{
-    width: 4vmin;
-    height: 4vmin;
-  }
-
-  ion-list-header.plan-list-item {
-    color: rgb(153,153,153);
-  }
-
-  ion-item {
-    height: 60px;
-  }
-
-  .bg-right-img {
-    background-image: url("../../assets/imgs/xlr.png");
-    background-repeat: no-repeat;
-    background-position: right 14px center;
-    background-size: 14px 14px;
-    padding-right: 32px;
+  ion-item:last-child .input-wrapper{
+    border-width: 0px ;
   }
 
   ion-list{
-    padding-top: 50px;
+    background:rgba(255,255,255,1);
+    box-shadow:0px 0px 5px 0px rgba(201,200,200,0.28);
+    border-radius:4px;
+    font-size:16px;
+    font-family:Alibaba PuHuiTi;
+    font-weight:400;
+    color:rgba(51,51,51,1);
+    .item{
+      background-color: transparent;
+      min-height:50px;
+      padding-right:0px;
+      [item-end]{
+        margin: 0px;
+      }
+    }
+    .input-wrapper{
+      margin: 0px 14px;
+      border-bottom: 0.55px rgba(234,234,234,1) solid;
+      border-width: 0.55px ;
+    }
+    ion-label{
+      font-weight:400;
+      color:rgba(153,153,153,1);
+    }
   }
 
-  .list-ios > .item-block:nth-child(1),
-  .list-ios > .item-block:nth-child(2),
-  .list-ios > .item-block:nth-child(3){
-    border-bottom: 0.5px solid rgba(255, 255, 255, 0.3);
-  }
-
-  .list-ios > .item-block:nth-child(2){
-    border-top:none;
-  }
-
-  .list-ios > .item-block:first-child{
-    border-top:none;
-  }
-
-  .list-ios > .item-block:last-child {
-    border: none;
-  }
-
-  .scroll-content {
-    padding-left: 0 !important;
-    padding-right: 0 !important;
-    padding-bottom: 0 !important;
-    overflow-x: hidden;
-    overflow-y: hidden;
-  }
-
-  .item-inner{
-    border-bottom: 0px !important;
-  }
-
-  .item-block {
-    border-bottom: 1px solid #545454 ;
-    background-color: $baseBackColor;
-    color:#FFF;
-    width: 94%;
-    margin-left: 3%;
-  }
 }

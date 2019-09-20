@@ -94,6 +94,10 @@ ion-calendar-month {
 
     }
 
+    .next-month-day,.last-month-day{
+      opacity: 0.5;
+    }
+
 
     .days {
       .icon{
