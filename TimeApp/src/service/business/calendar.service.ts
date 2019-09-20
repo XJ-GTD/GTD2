@@ -731,7 +731,7 @@ export class CalendarService extends BaseService {
       }
 
       let subsqlmemo: string = `select * from gtd_mom where ji = ?1 and del <> ?2`;
-      let planmemos: Array<MemoData> = await this.sqlExce.getExtLstByParam<MemoData>(subsqljta, [plan.ji, DelType.del]) || new Array<MemoData>();
+      let planmemos: Array<MemoData> = await this.sqlExce.getExtLstByParam<MemoData>(subsqlmemo, [plan.ji, DelType.del]) || new Array<MemoData>();
 
       for (let planmemo of planmemos) {
         items.push(planmemo);
