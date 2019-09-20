@@ -212,6 +212,19 @@ export class CommemorationDayPage {
           return;
         }
 
+        this.util.loadingStart().then(() => {
+          this.calendarService.savePlanItem(this.currentPlanItem).then((commemorationday) => {
+            if (commemorationday) {
+              this.currentPlanItem = commemorationday;
+              Object.assign(this.originPlanItem, commemorationday);
+
+              this.buttons.remove = true;
+              this.buttons.save = false;
+            }
+            this.util.loadingEnd();
+          });
+        });
+
         // if (this.calendarService.hasAgendaModifyConfirm(this.originAgenda, this.currentPlanItem)) { // 重复修改
         //   if (this.modifyConfirm) {
         //     this.modifyConfirm.dismiss();
