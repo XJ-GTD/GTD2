@@ -62,7 +62,6 @@ export class CommemorationDayPage {
               public modalCtrl: ModalController,
               private actionSheetCtrl: ActionSheetController,
               private emitService: EmitService,
-              private agendaService: AgendaService,
               private util: UtilService,
               private feedback: FeedbackService,
               private calendarService: CalendarService,
