@@ -110,6 +110,7 @@ export class CommemorationDayPage {
 
   currentuser: string = UserConfig.account.id;
   friends: Array<any> = UserConfig.friends;
+  privateplans: Array<any> = UserConfig.privateplans;
 
   constructor(public navCtrl: NavController,
               public navParams: NavParams,
