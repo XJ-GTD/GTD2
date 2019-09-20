@@ -371,7 +371,7 @@ export class SqliteInit {
           jhtbl.jg = bipl.plandesc;
           jhtbl.jc = bipl.planmark;
           jhtbl.jt = "1";
-          urlList.push(jhtbl.inT());
+          urlList.push(jhtbl.inTParam());
         }
 
         //服务器 用户偏好数据
