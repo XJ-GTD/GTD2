@@ -6,7 +6,7 @@ import { EmitService } from "../util-service/emit.service";
 import { BipdshaeData, Plan, PlanPa, ShareData, ShaeRestful } from "../restful/shaesev";
 import { SyncData, PushInData, PullInData, DataRestful } from "../restful/datasev";
 import { BackupPro, BacRestful, OutRecoverPro, RecoverPro } from "../restful/bacsev";
-import { EventData, TaskData, AgendaData, MiniTaskData, EventService } from "./event.service";
+import { EventData, TaskData, AgendaData, MiniTaskData, EventService, RtJson, TxJson } from "./event.service";
 import { MemoData, MemoService } from "./memo.service";
 import { EventType, PlanType, PlanItemType, PlanDownloadType, ObjectType, PageDirection, SyncType, RepeatFlag, DelType, SyncDataSecurity, SyncDataStatus } from "../../data.enum";
 import { UserConfig } from "../config/user.config";
