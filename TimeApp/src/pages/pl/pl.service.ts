@@ -71,27 +71,14 @@ export class PlService {
   }
 
   async getJh(ji: string, prop: string = 'all') {
-    let jh:JhTbl = new JhTbl();
-    jh.ji = ji;
+    let plandata: PlanData = await this.calendarService.getPlan(ji, prop == 'all');
 
-    jh = await this.sqlExec.getOne<JhTbl>(jh);
-
-    if (prop == 'all') {
-      return jh;
-    } else {
-      return jh[prop];
-    }
+    return plandata;
   }
 
   //获取计划
-  getPlanCus():Promise<Array<JhTbl>>{
-    return new Promise<Array<JhTbl>>(async (resolve, reject) => {
-      //获取本地计划
-      let j:JhTbl = new JhTbl();
-      j.jt = "2";
-      let jhTbl: Array<JhTbl> = await this.sqlExec.getList<JhTbl>(j);
-      resolve(jhTbl);
-      return;
-    })
+  async getPlanCus() {
+    let plans: Array<PlanData> = await this.calendarService.fetchPrivatePlans();
+    return plans;
   }
 }
