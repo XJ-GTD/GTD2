@@ -235,7 +235,7 @@ export class TdcPage {
   ionViewWillEnter() {
 
     this.plsevice.getPlanCus().then(data => {
-      this.jhs = data;
+      //this.jhs = data;
     })
 
     //新建的场合初始化
