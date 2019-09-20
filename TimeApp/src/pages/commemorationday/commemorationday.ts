@@ -34,8 +34,62 @@ import {Keyboard} from "@ionic-native/keyboard";
             <!--主题-->
             <ion-textarea rows="8" [(ngModel)]="currentPlanItem.jtn" (ionChange)="changeTitle()" #bzRef></ion-textarea>
           </ion-row>
-        </ion-grid>
 
+          <ion-row class="optionRow">
+            <ion-grid>
+            <!--附加属性操作-->
+            <ion-row class="agendaOptionOne" *ngIf="currentPlanItem.jti">
+              <button class="agendaRemarkbutton" ion-button icon-start clear  (click)="changeComment()" *ngIf="!currentPlanItem.bz">
+                <ion-icon class="fal fa-edit iconRemark"></ion-icon>
+                <div>备注</div>
+              </button>
+              <button class="agendaPlanbutton"  ion-button icon-start clear  (click)="changePlan()">
+                <ion-icon class="fal fa-plus iconPlus"></ion-icon>
+                <div>{{currentPlanItem.ji | formatplan: '计划': privateplans}}</div>
+              </button>
+            </ion-row>
+
+            <ion-row class="agendaOptionThree" *ngIf="currentPlanItem.jti">
+              <button ion-button  clear (click)="changeRepeat()">
+                <div class="agendarepeat">
+                  <ion-icon class="fal fa-copy  iconCopy" *ngIf="!currentPlanItem.rts"></ion-icon>
+                  {{currentPlanItem.rts || "重复"}}
+                  <corner-badge *ngIf="currentPlanItem.rts"><p><i class="fa fa-copy "></i></p></corner-badge>
+                </div>
+              </button>
+            </ion-row>
+
+            <ion-row class="agendaRemark" *ngIf="currentPlanItem.bz">
+              <button  ion-button icon-end clear   (click)="changeComment()">
+            <span class="content">
+                备注：{{currentPlanItem.bz}}
+              </span>
+                <ion-icon class="fal fa-edit iconRemark"></ion-icon>
+              </button>
+            </ion-row>
+
+            <ion-row *ngIf="currentPlanItem.sd">
+              <ion-col  class="agendaDate" (click)="changeDatetime()">
+                <button ion-button icon-end clear  >
+                  <span class="content">
+                    日期：{{currentPlanItem.sd | formatedate: "YYYY年M月D日"}}
+                  </span>
+                </button>
+                <button ion-button icon-end clear  *ngIf="currentPlanItem.st">
+                  <span class="content">
+                    时间：{{currentPlanItem.st | formatedate: "HH:mm"}}
+                  </span>
+                </button>
+              </ion-col>
+              <ion-col  (click)="changeDatetime()">
+                <button ion-button icon-end clear  >
+                  <ion-icon class="fal fa-calendar-alt iconCalendar"></ion-icon>
+                </button>
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+        </ion-row>
+      </ion-grid>
       </page-box>`
 })
 export class CommemorationDayPage {
@@ -125,7 +179,7 @@ export class CommemorationDayPage {
           return;
         }
 
-        // if (this.calendarService.hasAgendaModifyConfirm(this.originAgenda, this.currentAgenda)) { // 重复修改
+        // if (this.calendarService.hasAgendaModifyConfirm(this.originAgenda, this.currentPlanItem)) { // 重复修改
         //   if (this.modifyConfirm) {
         //     this.modifyConfirm.dismiss();
         //   }
@@ -134,9 +188,9 @@ export class CommemorationDayPage {
         //   this.modifyConfirm.present();
         // } else {                          // 非重复/重复已经修改为非重复
         //   this.util.loadingStart().then(() => {
-        //     this.eventService.saveAgenda(this.currentAgenda, this.originAgenda, OperateType.OnlySel).then((agenda) => {
+        //     this.eventService.saveAgenda(this.currentPlanItem, this.originAgenda, OperateType.OnlySel).then((agenda) => {
         //       if (agenda && agenda.length > 0) {
-        //         this.currentAgenda = agenda[0];
+        //         this.currentPlanItem = agenda[0];
         //         Object.assign(this.originAgenda, agenda[0]);
         //
         //         this.buttons.save = false;
