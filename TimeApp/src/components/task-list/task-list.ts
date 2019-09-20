@@ -39,7 +39,7 @@ import * as moment from "moment";
       <div class="notask">
         <ion-icon class="fal fa-angry"></ion-icon>
         <span>没有重要事项了哟～</span>
-        <button>
+        <button (click)="create()">
           创建活动
         </button>
       </div>
@@ -93,6 +93,10 @@ export class TaskListComponent {
     event.stopPropagation();  // 阻止冒泡
     event.preventDefault();   // 忽略事件传递
     this.onErease.emit(target);
+  }
+
+  create() {
+    this.onCreateNew.emit(this);
   }
 
   complete(event: any, target: any) {

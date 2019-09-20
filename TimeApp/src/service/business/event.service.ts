@@ -1162,6 +1162,9 @@ export class EventService extends BaseService {
       ev.fj =newAgdata.fj;
       ev.pn = newAgdata.pn;
       ev.wc = newAgdata.wc;
+      ev.adr = newAgdata.adr;
+      ev.adrx = newAgdata.adrx;
+      ev.adry = newAgdata.adry;
       sqlparam.push(ev.upTParam());
 
       //todolist处理

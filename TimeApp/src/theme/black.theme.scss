@@ -297,7 +297,7 @@ $baseBackcolor_black: rgba(0, 12, 31, 1);
     }
   }
 
-  page-agenda {
+  page-agenda, page-commemorationday {
 
     //新建主题
     .create {
@@ -449,6 +449,10 @@ $baseBackcolor_black: rgba(0, 12, 31, 1);
     background: $baseBackcolor_black;
   }
 
+  page-commemorationday {
+    background: $baseBackcolor_black;
+  }
+
   page-m {
     .menu {
       background: rgba(13, 24, 42, 1);
@@ -462,6 +466,67 @@ $baseBackcolor_black: rgba(0, 12, 31, 1);
 
 
         }
+      }
+    }
+  }
+  page-ps {
+    background: $baseBackcolor_black;
+    page-box {
+      .box-content {
+        .fixed-content {
+          background: $baseBackcolor_black;
+          -webkit-box-shadow: 0px 0px 0px 0px rgba(201, 200, 200, 0.28);
+          box-shadow: 0px 0px 0px 0px rgba(201, 200, 200, 0.28);
+        }
+      }
+    }
+
+    ion-list{
+      background-color: rgba(255, 255, 255, .05);
+      box-shadow:0px 0px 5px 0px rgba(201,200,200,0.28);
+
+      input,select,.item{
+
+        color:rgba(255,255,255,1);
+      }
+
+      .input-wrapper{
+        border-bottom: 0.55px rgba(237,241,254,.5) solid;
+      }
+      ion-label{
+        color:rgba(121,140,170,1)
+      }
+    }
+  }
+
+  page-ss {
+    background: $baseBackcolor_black;
+    page-box {
+      .box-content {
+        .fixed-content {
+          background: $baseBackcolor_black;
+          -webkit-box-shadow: 0px 0px 0px 0px rgba(201, 200, 200, 0.28);
+          box-shadow: 0px 0px 0px 0px rgba(201, 200, 200, 0.28);
+        }
+      }
+    }
+
+    ion-list{
+      .list-header-ios{
+        .input-wrapper{
+          border-bottom: 0.55px rgba(237,241,254,.5) solid;
+        }
+      }
+      background-color: rgba(255, 255, 255, .05);
+      box-shadow:0px 0px 5px 0px rgba(201,200,200,0.28);
+
+      input,select,.item{
+
+        color:rgba(255,255,255,1);
+      }
+
+      ion-label{
+        color:rgba(121,140,170,1)
       }
     }
   }

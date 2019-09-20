@@ -1,0 +1,210 @@
+page-commemorationday {
+  //新建主题
+  .create {
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    padding: 118px 29px 0px 29px;
+    z-index: 11;
+
+    ion-textarea {
+      font-size: 18px;
+    }
+  }
+
+  .grid {
+    height: 100%;
+    width: 100%;
+    margin: 0px;
+    padding: 0px 14px;
+    border-radius: 0px;
+    -webkit-box-shadow: none;
+    background: transparent;
+    box-shadow: none;
+
+    .row {
+      .col {
+        padding: 0px;
+      }
+
+      .icon {
+        font-size: 16px;
+      }
+
+      .content {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        text-align: left;
+        width: 100%;
+        font-size: 14px;
+      }
+
+      button {
+        margin: 0px;
+        padding: 0px;
+        font-weight: 400;
+        max-width: 100%;
+        height: 25px;
+        font-size: 14px;
+
+        .button-inner {
+          width: auto;
+          text-align: left;
+        }
+      }
+
+    }
+
+    //主题设置
+    .agendaEvn {
+      min-height: 300px;
+
+      ion-textarea {
+        font-size: 18px;
+        font-weight: 400;
+        line-height: 24px;
+      }
+
+      .agendatodo {
+        position: absolute;
+        right: 14px;
+        top: 27px;
+
+        button {
+          height: auto;
+
+          .icon {
+            font-size: 24px;
+            width: auto;
+            line-height: 1;
+            padding: 0px;
+            margin: 0px;
+          }
+        }
+
+      }
+
+    }
+
+
+    .agendaOptionOne {
+      button {
+        padding-right: 20px;
+      }
+
+      button:last-child {
+        padding-right: 0px;
+      }
+
+      .agendaPlanbutton {
+        flex-grow: 1;
+        float: right;
+
+        .button-inner {
+          float: right;
+        }
+
+      }
+    }
+
+    .agendaOptionThree, .agendaOptionTwo, agendaOptionOne {
+      margin: 6px 0px;
+
+      button {
+        min-width: 80px;
+        max-width: 100%;
+      }
+    }
+
+    .agendaOptionTwo, .agendaOptionThree {
+
+      button {
+        border-radius: 2px;
+        padding: 7px 14px;
+        height: 28px;
+      }
+
+      .agendaAttach {
+        button {
+          float: right;
+
+          corner-badge {
+          }
+        }
+      }
+
+      .agendaRemind {
+        text-align: center;
+
+        corner-badge {
+        }
+      }
+
+      .agendaPlayer {
+        corner-badge {
+        }
+
+      }
+
+      .agendarepeat {
+        corner-badge {
+        }
+
+      }
+    }
+
+    //主题设置
+    .agendaEvn, .optionRow {
+      height: 50%;
+      padding: 10px 0px;
+
+      .grid {
+        padding: 0px;
+        flex-direction: column-reverse;
+      }
+    }
+
+
+    .agendaSender, .agendaPin, .agendaRemark, .agendaDate {
+      .button-inner, span {
+      }
+
+    }
+
+    //发送人
+    .agendaSender {
+      text-align: right;
+    }
+
+    //时间
+    .iconCalendar {
+    }
+
+    .iconPin {
+
+    }
+
+    .iconRemark {
+
+    }
+
+    .iconPlus {
+
+    }
+
+    .iconUserPlus {
+
+    }
+
+    .iconBell {
+    }
+
+    .iconAttach {
+    }
+
+    .iconCopy {
+
+    }
+  }
+
+}

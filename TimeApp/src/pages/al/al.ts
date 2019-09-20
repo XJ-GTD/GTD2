@@ -38,7 +38,7 @@ export class AlPage {
   ionViewDidEnter() {
     this.alinit();
 
-    this.app.setElementClass("black-theme",true);
+    this.app.setElementClass("white-theme",true);
   }
 
   async alinit() {

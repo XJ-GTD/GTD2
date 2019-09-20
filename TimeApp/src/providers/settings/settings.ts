@@ -5,7 +5,7 @@ export class SettingsProvider {
   theme: BehaviorSubject <string>;
   constructor() {
     //默认初始值
-    this.theme = new BehaviorSubject('black-theme');
+    this.theme = new BehaviorSubject('white-theme');
   }
   setActiveTheme(val){
     //新值

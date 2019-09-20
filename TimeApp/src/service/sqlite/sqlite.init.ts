@@ -31,6 +31,7 @@ import {WaTbl} from "./tbl/wa.tbl";
 import {FjTbl} from "./tbl/fj.tbl";
 import {MrkTbl} from "./tbl/mrk.tbl";
 import {ParTbl} from "./tbl/par.tbl";
+import {DelType, SyncType} from "../../data.enum";
 
 /**
  * create by on 2019/3/5
@@ -351,7 +352,7 @@ export class SqliteInit {
         await this.sqlexec.drop(s);
         await this.sqlexec.create(s);
         //服务器URL数据
-        let urlList: Array<string> = [];
+        let urlList: Array<any> = new Array<any>();
         for (let apil of data.apil) {
           let stbl = new STbl();
           stbl.si = this.util.getUuid();
@@ -365,13 +366,16 @@ export class SqliteInit {
 
         //服务器 计划数据
         for (let bipl of data.bipl) {
-          let jhtbl = new JhTbl();
-          jhtbl.ji = bipl.planid;
-          jhtbl.jn = bipl.planname;
-          jhtbl.jg = bipl.plandesc;
-          jhtbl.jc = bipl.planmark;
-          jhtbl.jt = "1";
-          urlList.push(jhtbl.inT());
+          let jhatbl = new JhaTbl();
+          jhatbl.ji = bipl.planid;
+          jhatbl.jn = bipl.planname;
+          jhatbl.jg = bipl.plandesc;
+          jhatbl.jc = bipl.planmark;
+          jhatbl.jt = "1";
+          jhatbl.tb = SyncType.synch;
+          jhatbl.del = DelType.undel;
+          jhatbl.jtd = "0";
+          urlList.push(jhatbl.inTParam());
         }
 
         //服务器 用户偏好数据
@@ -409,7 +413,7 @@ export class SqliteInit {
           }
         }
         //web端
-        this.sqlexec.batExecSql(urlList).then(data => {
+        this.sqlexec.batExecSqlByParam(urlList).then(data => {
             resolve(data);
 
           }

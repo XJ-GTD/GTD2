@@ -129,6 +129,7 @@ export class TdlPage {
 
    isgetData: boolean = false;
    loopmonth = false;
+   canscroll:boolean = false;
 
   listmonth:moment.Moment = moment(moment().format("YYYYMM") + "01");
 
@@ -163,6 +164,7 @@ export class TdlPage {
 
 
   setScroll(scroll: boolean) {
+    this.canscroll = scroll;
     if (scroll) {
       this.renderer2.setStyle(this.contentD._scrollContent.nativeElement, "overflow-y", "auto");
       this._gesture.unlisten();
@@ -220,12 +222,15 @@ export class TdlPage {
                   this.loopmonth = !this.loopmonth;
 
                   //准备发出emit
-                  // if (this.listmonth.isBefore(monobj)){
-                  //   this.emitService.emit("list.change.month","next");
-                  // }
-                  // if (this.listmonth.isAfter(monobj)){
-                  //   this.emitService.emit("list.change.month","prev");
-                  // }
+                  if (this.canscroll){
+                    if (this.listmonth.isBefore(monobj)){
+                      this.emitService.emit("list.change.month","next");
+                    }
+                    if (this.listmonth.isAfter(monobj)){
+                      this.emitService.emit("list.change.month","prev");
+                    }
+
+                  }
                   this.listmonth = monobj;
                   break;
                 }
@@ -318,14 +323,14 @@ export class TdlPage {
         this.renderer2.addClass(this.currDayel, "item-display");
 
         if (this.currDayel) {
-          this.contentD.scrollTo(0, this.currDayel.offsetTop + 2, 800);
+          this.contentD.scrollTo(0, this.currDayel.offsetTop + 2, 300);
         } else {
           this.gotoEl(id);
         }
       } catch (e) {
       }
 
-    }, 100);
+    }, 200);
   }
 
   gotoEl4month(id) {
@@ -334,7 +339,7 @@ export class TdlPage {
         let currmonthel = this.el.nativeElement.querySelector(id);
 
         if (currmonthel) {
-          this.contentD.scrollTo(0, currmonthel.offsetTop + 2, 800);
+          this.contentD.scrollTo(0, currmonthel.offsetTop + 2, 300);
         } else {
           this.gotoEl4month(id);
         }

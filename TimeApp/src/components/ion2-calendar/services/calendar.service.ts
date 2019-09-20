@@ -17,9 +17,12 @@ import {CalendarService, MonthActivityData, MonthActivitySummaryData} from "../.
 @Injectable()
 export class IonCalendarService {
 
+  public static selecttime:number;
+
   constructor(private readlocal:LocalcalendarService,
               private util:UtilService,
               private calendarService:CalendarService) {
+    IonCalendarService.selecttime =  moment(moment().format("YYYY-MM-DD")).valueOf();
 
   }
 
@@ -215,12 +218,12 @@ export class IonCalendarService {
         }
       }
       //补齐6行 by zhangjy
-      // if (days.length == 35){
-      //   for (endOffsetIndex; endOffsetIndex < 35 +  7; endOffsetIndex++) {
-      //     const dayAfter = moment(days[endOffsetIndex - 1].time).clone().add(1, 'd');
-      //     days[endOffsetIndex] = this.createCalendarDay(dayAfter.valueOf(), opt, thisMonth);
-      //   }
-      // }
+      if (days.length == 35){
+        for (endOffsetIndex; endOffsetIndex < 35 +  7; endOffsetIndex++) {
+          const dayAfter = moment(days[endOffsetIndex - 1].time).clone().add(1, 'd');
+          days[endOffsetIndex] = this.createCalendarDay(dayAfter.valueOf(), opt, thisMonth);
+        }
+      }
     }
 
     return {

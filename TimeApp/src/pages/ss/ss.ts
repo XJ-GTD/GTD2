@@ -19,92 +19,101 @@ import * as moment from "moment";
   selector: 'page-ss',
   template:
   `
-    <ion-header no-border>
-      <ion-toolbar>
-        <ion-buttons left>
-          <button ion-button icon-only (click)="goBack()" color="danger">
-            <img class="img-header-left" src="./assets/imgs/back.png">
-          </button>
-        </ion-buttons>
-        <ion-title>设置</ion-title>
-      </ion-toolbar>
-    </ion-header>
+    <page-box title="设置" [buttons]="buttons" (onSave)="save()" (onBack)="goBack()">
 
-    <ion-content padding>
-          <ion-list no-lines>
-            <ion-list-header>
-              <ion-label>新消息</ion-label>
-            </ion-list-header>
+      <ion-list>
+        <ion-list-header>
+          <ion-label>新消息</ion-label>
+        </ion-list-header>
+        
+        <ion-item no-lines no-padding no-margin no-border>
+          <ion-label>新消息提醒</ion-label>
+          <ion-toggle [(ngModel)]="bt" (ionChange)="save(t, bt)"></ion-toggle>
+        </ion-item>
+      </ion-list>
+        <ion-list>
 
-            <ion-item class="plan-list-item" >
-              <ion-label>新消息提醒</ion-label>
-              <ion-toggle [(ngModel)]="bt" (ionChange)="save(t, bt)"></ion-toggle>
-            </ion-item>
+        <ion-list-header>
+          <ion-label>语音</ion-label>
+        </ion-list-header>
+        
+        <ion-item no-lines no-padding no-margin no-border>
+          <ion-label>语音唤醒</ion-label>
+          <ion-toggle [(ngModel)]="bh" (ionChange)="save(h, bh)"></ion-toggle>
+        </ion-item>
+        <ion-item no-lines no-padding no-margin no-border>
+          <ion-label>语音播报</ion-label>
+          <ion-toggle [(ngModel)]="bb" (ionChange)="save(b, bb)"></ion-toggle>
+        </ion-item>
+        <ion-item no-lines no-padding no-margin no-border>
+          <ion-label>语音唤醒</ion-label>
+          <ion-toggle [(ngModel)]="bh" (ionChange)="save(h, bh)"></ion-toggle>
+        </ion-item>
+        <ion-item no-lines no-padding no-margin no-border>
+          <ion-label>震动音效</ion-label>
+          <ion-toggle [(ngModel)]="bz" (ionChange)="save(z, bz)"></ion-toggle>
+        </ion-item>
+        </ion-list>
+      <ion-list>
+        <ion-list-header>
+          <ion-label>联系人</ion-label>
+        </ion-list-header>
+        
+        <ion-item no-lines no-padding no-margin no-border  [attr.detail-push]="lfsloading? null : ''" [attr.detail-none]="lfsloading? '' : null" (click)="resfriend()">
+            <ion-label>本地联系人</ion-label>
+            <ion-note *ngIf="!lfsloading" item-end>{{localfriends}}</ion-note>
+            <ion-spinner *ngIf="lfsloading" icon="circles" item-end></ion-spinner>
+        </ion-item>
+      </ion-list>
+      <ion-list>
+        <ion-list-header>
+          <ion-label>智能提醒</ion-label>
+        </ion-list-header>
+        
+        <ion-item no-lines no-padding no-margin no-border>
+            <ion-label>每日简报</ion-label>
+            <ion-note item-end (click)="gotodrsetting()">{{bdr? sdrp1 : '关闭'}}</ion-note>
+        </ion-item>
+        <ion-item no-lines no-padding no-margin no-border detail-push (click)="gotopjfollowsetting()">
+            <ion-label>项目跟进</ion-label>
+            <ion-note item-end *ngIf="!spfon">打开</ion-note>
+            <ion-note item-end *ngIf="spfon" class="inline-icons">
+              <ion-icon *ngIf="spfon && github" ios="logo-github" md="logo-github"></ion-icon>
+              <!-- Travis CI设置选项隐藏 -->
+              <!--
+                              <img *ngIf="spfon && travisci" src="assets/imgs/travisci/travisci-worker-logo.svg">
+              -->
+              <ion-icon *ngIf="spfon && firim" ios="logo-dropbox" md="logo-dropbox"></ion-icon>
+            </ion-note>
+        </ion-item>
+      </ion-list>
+      <ion-list>
+        <ion-list-header>
+          <ion-label>日历</ion-label>
+        </ion-list-header>
 
-            <ion-list-header>
-              <ion-label>语音</ion-label>
-            </ion-list-header>
+        <ion-item no-lines no-padding no-margin no-border detail-push (click)="gotodjhsetting()">
+            <ion-label>默认日历</ion-label>
+            <ion-note item-end>{{sdjhn}}</ion-note>
+        </ion-item>
+        
+      </ion-list>
+  
+    </page-box>
 
-            <ion-item class="plan-list-item" >
-              <ion-label>语音唤醒</ion-label>
-              <ion-toggle [(ngModel)]="bh" (ionChange)="save(h, bh)"></ion-toggle>
-            </ion-item>
-
-            <ion-item class="plan-list-item" >
-              <ion-label>语音播报</ion-label>
-              <ion-toggle [(ngModel)]="bb" (ionChange)="save(b, bb)"></ion-toggle>
-            </ion-item>
-
-            <ion-item class="plan-list-item" >
-              <ion-label>震动音效</ion-label>
-              <ion-toggle [(ngModel)]="bz" (ionChange)="save(z, bz)"></ion-toggle>
-            </ion-item>
-
-            <ion-list-header>
-              <ion-label>联系人</ion-label>
-            </ion-list-header>
-
-            <button ion-item class="plan-list-item" [attr.detail-push]="lfsloading? null : ''" [attr.detail-none]="lfsloading? '' : null" (click)="resfriend()">
-              <ion-label>本地联系人</ion-label>
-              <ion-note *ngIf="!lfsloading" item-end>{{localfriends}}</ion-note>
-              <ion-spinner *ngIf="lfsloading" icon="circles" item-end></ion-spinner>
-            </button>
-
-            <ion-list-header>
-              <ion-label>智能提醒</ion-label>
-            </ion-list-header>
-
-            <button ion-item class="plan-list-item" detail-push (click)="gotodrsetting()">
-              <ion-label>每日简报</ion-label>
-              <ion-note item-end>{{bdr? sdrp1 : '关闭'}}</ion-note>
-            </button>
-
-            <button ion-item class="plan-list-item" detail-push (click)="gotopjfollowsetting()">
-              <ion-label>项目跟进</ion-label>
-              <ion-note item-end *ngIf="!spfon">打开</ion-note>
-              <ion-note item-end *ngIf="spfon" class="inline-icons">
-                <ion-icon *ngIf="spfon && github" ios="logo-github" md="logo-github"></ion-icon>
-<!-- Travis CI设置选项隐藏 -->
-<!--
-                <img *ngIf="spfon && travisci" src="assets/imgs/travisci/travisci-worker-logo.svg">
--->
-                <ion-icon *ngIf="spfon && firim" ios="logo-dropbox" md="logo-dropbox"></ion-icon>
-              </ion-note>
-            </button>
-
-            <ion-list-header>
-              <ion-label>日历</ion-label>
-            </ion-list-header>
-
-            <button ion-item class="plan-list-item" detail-push (click)="gotodjhsetting()">
-              <ion-label>默认日历</ion-label>
-              <ion-note item-end>{{sdjhn}}</ion-note>
-            </button>
-          </ion-list>
-    </ion-content>
+         
   `,
 })
 export class SsPage {
+
+
+  buttons: any = {
+    remove: false,
+    share: false,
+    save: false,
+    cancel: true
+  };
+
   h:Setting;        //唤醒
   t:Setting;        //新消息提醒
   b:Setting;        //语音播报

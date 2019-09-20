@@ -244,7 +244,7 @@ export class TddiPage {
 
     //TODO 缓存里后获取发送信息
 
-    this.jhs = await this.plsevice.getPlanCus();
+    //this.jhs = await this.plsevice.getPlanCus();
     for (let i = 0; i < this.jhs.length; i++) {
       if (this.jhs[i].ji == this.sp.ji) {
         this.sp.p = this.jhs[i];
