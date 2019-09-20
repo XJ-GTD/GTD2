@@ -20,7 +20,7 @@ import {Keyboard} from "@ionic-native/keyboard";
   providers: [],
   template: `
     <page-box title="个人信息" [buttons]="buttons" (onSave)="save()" (onBack)="goBack()">    
-      <ion-list class="listone">
+      <ion-list>
         <ion-item no-lines no-padding no-margin no-border>
           <ion-label>注册手机</ion-label>
           <ion-input type="text"  [(ngModel)]="uo.user.aid" item-end text-end readonly="true"></ion-input>
@@ -34,7 +34,7 @@ import {Keyboard} from "@ionic-native/keyboard";
           <ion-input type="text"  [(ngModel)]="uo.user.name" item-end text-end></ion-input>
         </ion-item>
       </ion-list>
-    <ion-list class="listtwo">
+    <ion-list >
         <ion-item (click)="selectSex()" no-lines no-padding no-margin no-border>
           <ion-label>性别</ion-label>
           <ion-input type="text"  [(ngModel)]="uo.user.sex" item-end text-end text="this.uo.user.sex"></ion-input>

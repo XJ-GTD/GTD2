@@ -1,9 +1,10 @@
 page-ps {
-  .grid {
-    padding: 0;
-  }
-  .grid .row {
-    height: 100%;
+
+  page-box .box-content {
+    .scroll-content,.fixed-content {
+      margin-bottom: 0;
+    }
+
   }
 
   ion-item:last-child .input-wrapper{
@@ -11,13 +12,10 @@ page-ps {
   }
 
   ion-list{
-    background:rgba(255,255,255,1);
-    box-shadow:0px 0px 5px 0px rgba(201,200,200,0.28);
     border-radius:4px;
     font-size:16px;
     font-family:Alibaba PuHuiTi;
     font-weight:400;
-    color:rgba(51,51,51,1);
     .item{
       background-color: transparent;
       min-height:50px;
@@ -28,12 +26,10 @@ page-ps {
     }
     .input-wrapper{
       margin: 0px 14px;
-      border-bottom: 0.55px rgba(234,234,234,1) solid;
       border-width: 0.55px ;
     }
     ion-label{
       font-weight:400;
-      color:rgba(153,153,153,1);
     }
   }
 

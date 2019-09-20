@@ -10,7 +10,7 @@ import {PageBoxComponentModule} from "../../components/page-box/page-box.module"
   ],
   imports: [
     IonicPageModule.forChild(PsPage),
-    PageBoxComponentModule,
+    PageBoxComponentModule
   ],
   providers: [
     PsService,
