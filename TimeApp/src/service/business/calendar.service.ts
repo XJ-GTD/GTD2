@@ -8,7 +8,7 @@ import { SyncData, PushInData, PullInData, DataRestful } from "../restful/datase
 import { BackupPro, BacRestful, OutRecoverPro, RecoverPro } from "../restful/bacsev";
 import { EventData, TaskData, AgendaData, MiniTaskData, EventService } from "./event.service";
 import { MemoData, MemoService } from "./memo.service";
-import { EventType, PlanType, PlanItemType, PlanDownloadType, ObjectType, PageDirection, SyncType, DelType, SyncDataSecurity, SyncDataStatus } from "../../data.enum";
+import { EventType, PlanType, PlanItemType, PlanDownloadType, ObjectType, PageDirection, SyncType, RepeatFlag, DelType, SyncDataSecurity, SyncDataStatus } from "../../data.enum";
 import { UserConfig } from "../config/user.config";
 import * as moment from "moment";
 import { JhaTbl } from "../sqlite/tbl/jha.tbl";
@@ -694,6 +694,51 @@ export class CalendarService extends BaseService {
     let plans: Array<PlanData> = await this.sqlExce.getExtList<PlanData>(sql) || new Array<PlanData>();
 
     // 获取每个日历的日历项
+    for (let plan of plans) {
+      let items: Array<any> = new Array<any>();
+
+      let subsqljta: string = `select * from gtd_jta where ji = ?1 and del <> ?2`;
+      let planitems: Array<PlanItemData> = await this.sqlExce.getExtLstByParam<PlanItemData>(subsqljta, [plan.ji, DelType.del]) || new Array<PlanItemData>();
+
+      for (let planitem of planitems) {
+        items.push(planitem);
+      }
+
+      let subsqlagenda: string = `select agenda.*
+                                    from (select ev.* from gtd_ev ev where ev.ji = ?1 and ev.rfg = ?2 and del <> ?5) agenda
+                                    left join gtd_ca ca on ca.evi = agenda.evi
+                                  union all
+                                  select agenda.*
+                                    from (select ev.* from gtd_ev ev where ev.ji = ?1 and del <> ?5 and (ev.rfg = ?3 or ev.rfg = ?4)) agenda
+                                    left join gtd_ca ca on ca.evi = agenda.rtevi`;
+      let planagendas: Array<AgendaData> = await this.sqlExce.getExtLstByParam<AgendaData>(subsqlagenda, [plan.ji, RepeatFlag.NonRepeat, RepeatFlag.Repeat, RepeatFlag.RepeatToNon, DelType.del]) || new Array<AgendaData>();
+
+      for (let planagenda of planagendas) {
+        items.push(planagenda);
+      }
+
+      let subsqltask: string = `select task.*
+                                  from (select ev.* from gtd_ev ev where ev.ji = ?1 and ev.rfg = ?2 and del <> ?5) task
+                                  left join gtd_ca ca on ca.evi = task.evi
+                                union all
+                                select task.*
+                                  from (select ev.* from gtd_ev ev where ev.ji = ?1 and del <> ?5 and (ev.rfg = ?3 or ev.rfg = ?4)) task
+                                  left join gtd_ca ca on ca.evi = task.rtevi`;
+      let plantasks: Array<TaskData> = await this.sqlExce.getExtLstByParam<TaskData>(subsqltask, [plan.ji, RepeatFlag.NonRepeat, RepeatFlag.Repeat, RepeatFlag.RepeatToNon, DelType.del]) || new Array<TaskData>();
+
+      for (let plantask of plantasks) {
+        items.push(plantask);
+      }
+
+      let subsqlmemo: string = `select * from gtd_mom where ji = ?1 and del <> ?2`;
+      let planmemos: Array<MemoData> = await this.sqlExce.getExtLstByParam<MemoData>(subsqlmemo, [plan.ji, DelType.del]) || new Array<MemoData>();
+
+      for (let planmemo of planmemos) {
+        items.push(planmemo);
+      }
+
+      plan.items = items;
+    }
 
     return plans;
   }
@@ -804,9 +849,11 @@ export class CalendarService extends BaseService {
    *
    * @author leon_xi@163.com
    **/
-  async downloadPublicPlan(ji: string, jt: PlanType) {
+  async downloadPublicPlan(ji: string, jt: PlanType): Promise<PlanData> {
 
     this.assertEmpty(ji);   // 入参不能为空
+
+    let plandata: PlanData = {} as PlanData;
 
     //restful获取计划日程
     let bip = new BipdshaeData();
@@ -832,13 +879,20 @@ export class CalendarService extends BaseService {
       plandb.tb = SyncType.synch;
       plandb.del = DelType.undel;
 
+      Object.assign(plandata, plandb);
+      plandata.items = new Array<any>();
+
       sqls.push(plandb.rpTParam());
 
       let itemType: PlanItemType = (jt == PlanType.CalendarPlan? PlanItemType.Holiday : PlanItemType.Activity);
 
       // 创建日历项
       if (plan.pa && plan.pa.length > 0) {
+        let planitems: Array<JtaTbl> = new Array<JtaTbl>();
+
         for (let pa of plan.pa) {
+          let planitemdata: PlanItemData = {} as PlanItemData;
+
           let planitemdb: JtaTbl = new JtaTbl();
           planitemdb.jti = this.util.getUuid();
           planitemdb.ji = ji;         //计划ID
@@ -851,16 +905,28 @@ export class CalendarService extends BaseService {
           planitemdb.tb = SyncType.synch;
           planitemdb.del = DelType.undel;
 
-          sqls.push(planitemdb.rpTParam());
+          Object.assign(planitemdata, planitemdb);
+          plandata.items.push(planitemdata);
+
+          planitems.push(planitemdb)
+        }
+
+        if (planitems.length > 0) {
+          let subsqls = this.sqlExce.getFastSaveSqlByParam(planitems);
+
+          for (let subsql of subsqls) {
+            sqls.push(subsql);
+          }
         }
       }
     }
 
     await this.sqlExce.batExecSqlByParam(sqls);
 
-    this.emitService.emit(`mwxing.calendar.${ji}.updated`);
+    this.emitService.emit(`mwxing.calendar.plans.changed`, plandata);
+    this.emitService.emit(`mwxing.calendar.activities.changed`, plandata.items);
 
-    return;
+    return plandata;
   }
 
   /**
