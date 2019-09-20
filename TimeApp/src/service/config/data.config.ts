@@ -61,7 +61,7 @@ import {InvitesPage} from "../../pages/invites/invites";
 import {LocationPage} from "../../pages/location/location";
 import {AttachPage} from "../../pages/attach/attach";
 import {DailyMemosPage} from "../../pages/dailymemos/dailymemos";
-import { CommemorationDayPage } from "./commemorationday";
+import { CommemorationDayPage } from "../../pages/commemorationday/commemorationday";
 
 export class DataConfig {
   public static isdebug: boolean  = true;

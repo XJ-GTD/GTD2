@@ -108,7 +108,7 @@ import {PlanPageModule} from "../pages/plan/plan.module";
 import {InvitesPageModule} from "../pages/invites/invites.module";
 import {LocationPageModule} from "../pages/location/location.module";
 import {AttachPageModule} from "../pages/attach/attach.module";
-import { CommemorationDayPageModule } from "./commemorationday.module";
+import { CommemorationDayPageModule } from "../pages/commemorationday/commemorationday.module";
 import {CardListComponentModule} from "../components/card-list/card-list.module";
 import {TaskListComponentModule} from "../components/task-list/task-list.module";
 import {ScrollSelectComponentModule} from "../components/scroll-select/scroll-select.module";
