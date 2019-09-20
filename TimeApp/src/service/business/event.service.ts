@@ -3204,6 +3204,11 @@ export class EventService extends BaseService {
                      [rtevi,anyenum.DelType.undel,anyenum.EventType.Agenda,anyenum.EventFinishStatus.NonFinish,changed.evd,changed.evt]) || new Array<AgendaData>();
                   if (ag1&&ag1.length>0){
                         changed = ag1[0];
+                        if(todolist.length==0)
+                        {
+                          todolist.push(changed);
+                           flag = false;
+                        }
                   }
                   else {
                      flag = false;
@@ -3229,7 +3234,8 @@ export class EventService extends BaseService {
 
           //2.新加入的事件的日期，比todolist的最后一个日期还小
           if (moment(changed.evd + ' ' + changed.evt).diff(todolist[todolist.length-1].evd + ' ' + todolist[todolist.length-1].evt)>=0) {
-            if(changed.evi == todolist[todolist.length-1].evi) {
+            //当同一事件的情况下 、 重复事件的情况下
+            if((changed.evi == todolist[todolist.length-1].evi)||(changed.rtevi == todolist[todolist.length-1].rtevi)||(changed.rtevi == todolist[todolist.length-1].evi)) {
                 todolist[todolist.length-1] = changed;
              }
              else {
@@ -3249,7 +3255,7 @@ export class EventService extends BaseService {
                   {
                     //验证当前的数据是否重复，如果重复，则替换，如果不重复则插入
                     flag = false;
-                    if(changed.evi == td.evi) {
+                    if((changed.evi == td.evi)) {
                         todolist[i] = changed;
                         break;
                     }
