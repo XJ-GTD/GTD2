@@ -351,7 +351,7 @@ export class SqliteInit {
         await this.sqlexec.drop(s);
         await this.sqlexec.create(s);
         //服务器URL数据
-        let urlList: Array<string> = [];
+        let urlList: Array<any> = new Array<any>();
         for (let apil of data.apil) {
           let stbl = new STbl();
           stbl.si = this.util.getUuid();
@@ -365,7 +365,7 @@ export class SqliteInit {
 
         //服务器 计划数据
         for (let bipl of data.bipl) {
-          let jhtbl = new JhTbl();
+          let jhtbl = new JhaTbl();
           jhtbl.ji = bipl.planid;
           jhtbl.jn = bipl.planname;
           jhtbl.jg = bipl.plandesc;
@@ -409,7 +409,7 @@ export class SqliteInit {
           }
         }
         //web端
-        this.sqlexec.batExecSql(urlList).then(data => {
+        this.sqlexec.batExecSqlByParam(urlList).then(data => {
             resolve(data);
 
           }
