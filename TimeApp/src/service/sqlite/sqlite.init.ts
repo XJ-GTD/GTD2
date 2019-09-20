@@ -31,6 +31,7 @@ import {WaTbl} from "./tbl/wa.tbl";
 import {FjTbl} from "./tbl/fj.tbl";
 import {MrkTbl} from "./tbl/mrk.tbl";
 import {ParTbl} from "./tbl/par.tbl";
+import {DelType} from "../../data.enum";
 
 /**
  * create by on 2019/3/5
@@ -365,12 +366,14 @@ export class SqliteInit {
 
         //服务器 计划数据
         for (let bipl of data.bipl) {
-          let jhtbl = new JhaTbl();
-          jhtbl.ji = bipl.planid;
-          jhtbl.jn = bipl.planname;
-          jhtbl.jg = bipl.plandesc;
-          jhtbl.jc = bipl.planmark;
-          jhtbl.jt = "1";
+          let jhatbl = new JhaTbl();
+          jhatbl.ji = bipl.planid;
+          jhatbl.jn = bipl.planname;
+          jhatbl.jg = bipl.plandesc;
+          jhatbl.jc = bipl.planmark;
+          jhatbl.jt = "1";
+          jhatbl.del = DelType.undel;
+          jhatbl.jtd = "0";
           urlList.push(jhtbl.inTParam());
         }
 
