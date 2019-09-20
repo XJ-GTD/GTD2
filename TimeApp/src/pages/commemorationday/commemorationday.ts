@@ -166,6 +166,22 @@ export class CommemorationDayPage {
     }
   }
 
+  changeComment() {
+    let modal = this.modalCtrl.create(DataConfig.PAGE._COMMENT_PAGE, {value: this.currentPlanItem.bz});
+    modal.onDidDismiss(async (data) => {
+      if (!data) return;
+
+      this.currentPlanItem.bz = data.bz;
+
+      if (!this.calendarService.isSamePlanItem(this.currentPlanItem, this.originPlanItem)) {
+        this.buttons.save = true;
+      } else {
+        this.buttons.save = false;
+      }
+    });
+    modal.present();
+  }
+
   validCheck(): boolean {
     if (this.currentPlanItem.jtn && this.currentPlanItem.jtn != "") {
       return true;
