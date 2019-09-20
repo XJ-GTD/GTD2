@@ -72,12 +72,12 @@ export const ION_CAL_VALUE_ACCESSOR: Provider = {
         <div class="swiper-container">
 
           <div class="swiper-wrapper">
-            <div *ngFor="let monthOpt of monthOpts" class="swiper-slide">
-              <div class="yearshow">{{monthOpt.original.month + 1}}</div>
+            <div *ngFor="let warp of monthOptsWarp" class="swiper-slide">
+              <div class="yearshow">{{warp.opts.original.year}}</div>
               <ion-calendar-week color="transparent">
               </ion-calendar-week>
               <ion-calendar-month class="component-mode"
-                                  [month]="monthOpt"
+                                  [month]="warp.opts"
                                   [readonly]="readonly"
                                   (onSelect)="select($event)"
                                   (onPress)="onPress.emit($event)">
@@ -112,7 +112,9 @@ export class CalendarComponent implements OnInit {
 
   calendarAnimation: CalendarAnimation;
 
-  monthOpts: Array<CalendarMonth> = new Array<CalendarMonth>();
+  monthOptsWarp: Array<any> = new Array<any>();
+
+  // monthOpts: Array<CalendarMonth> = new Array<CalendarMonth>();
   @ViewChild(Card)
   card: Card;
   @ViewChild(CardContent)
@@ -234,7 +236,7 @@ export class CalendarComponent implements OnInit {
 
     this.swiper  = new Swiper('.swiper-container', {
       autoHeight: true, //高度随内容变化
-      initialSlide:1,
+      // initialSlide:1,
     });
 
 
@@ -242,9 +244,11 @@ export class CalendarComponent implements OnInit {
 
     this.swiper.on("slideNextTransitionEnd", ()=>{
 
-    });
+      this.slideNextEnd();
 
-    this.swiper.on("slidePrevTransitionEnd", ()=>{
+      // setTimeout(()=>{
+      // },1000);
+
 
 
       // this.changeDetectorRef.markForCheck();
@@ -252,21 +256,15 @@ export class CalendarComponent implements OnInit {
       // this.swiper.updateSlides();
     });
 
-    this.swiper.on("slideNextTransitionStart", ()=> {
+    // this.swiper.on("slideChange", ()=> {
+    //
+    //
+    //
+    // });
 
-      this.feekback.audioTrans();
-      this.slideNextEnd();
-      this.swiperover4data(this.swiper.activeIndex);
-      console.log("slideNextTransitionEnd" +  this.swiper.activeIndex);
-
-    });
-
-    this.swiper.on("slidePrevTransitionStart", ()=> {
-      this.feekback.audioTrans();
+    this.swiper.on("slidePrevTransitionEnd", ()=> {
 
       this.slidePrevEnd();
-      this.swiperover4data(this.swiper.activeIndex);
-      console.log("slidePrevTransitionEnd" +  this.swiper.activeIndex);
     });
 
 
@@ -287,31 +285,35 @@ export class CalendarComponent implements OnInit {
     this.emitService.register("list.change.month",($data)=>{
       if ($data =="next"){
         this.change4emit = false;
-        this.swiper.slideNext(100,true);
+        this.slideNextEnd();
 
       }
       if ($data =="prev"){
         this.change4emit = false;
-        this.swiper.slidePrev(100,true);
+        this.slidePrevEnd();
       }
 
     });
+
 
   }
 
   slidePrevEnd(){
 
-    let firstmonth:CalendarMonth = this.monthOpts[0];
+    this.feekback.audioTrans();
+
+    let firstmonth:CalendarMonth = this.monthOptsWarp[0].opts;
 
     let time  = moment(firstmonth.original.time).subtract(1, 'months').valueOf();
     let months = this.calSvc.createMonthsByPeriod(time, 1, this._d);
-    this.monthOpts[2] = this.monthOpts[1];
-    this.monthOpts[1] = this.monthOpts[0];
-    this.monthOpts[0] = months[0];
-    this.swiper.activeIndex = this.swiper.activeIndex  + 1;
+    this.monthOptsWarp[2].opts = this.monthOptsWarp[1].opts;
+    this.monthOptsWarp[1].opts = this.monthOptsWarp[0].opts;
+    this.monthOptsWarp[0].opts = months[0];
+    // this.swiper.activeIndex = this.swiper.activeIndex  + 1;
     //不影响编译
     // this.swiper.setTransition(10);
     // this.swiper.setTranslate(this.swiper.translate - window.innerWidth);
+    this.swiperover4data(1);
 
   }
 
@@ -319,18 +321,22 @@ export class CalendarComponent implements OnInit {
   slideNextEnd(){
 
 
-    let lastmonth:CalendarMonth = this.monthOpts[2];
+    this.feekback.audioTrans();
+
+    let lastmonth:CalendarMonth = this.monthOptsWarp[2].opts;
     let time  = moment(lastmonth.original.time).add(1, 'months').valueOf();
     let months = this.calSvc.createMonthsByPeriod(time, 1, this._d);
    // this.monthOpts.shift();
-    this.monthOpts[0] = this.monthOpts[1];
-    this.monthOpts[1] = this.monthOpts[2];
-    this.monthOpts[2] = months[0];
-    this.swiper.activeIndex = this.swiper.activeIndex -1;
+    this.monthOptsWarp[0].opts  = this.monthOptsWarp[1].opts;
+    this.monthOptsWarp[1].opts  = this.monthOptsWarp[2].opts;
+    this.monthOptsWarp[2].opts  = months[0];
+    // this.swiper.activeIndex = this.swiper.activeIndex -1;
 
     // this.monthOpts.push(months[0]);
     // this.swiper.setTransition(10);
     // this.swiper.setTranslate(this.swiper.translate + window.innerWidth);
+
+    this.swiperover4data(1);
 
 
 
@@ -338,10 +344,11 @@ export class CalendarComponent implements OnInit {
 
   swiperover4data(index:number){
 
-      // this.swiper.update();
+       // this.swiper.update()
       // this.swiper.updateSlidesClasses();
+     //
 
-      let monthOpt = this.monthOpts[index];
+      let monthOpt = this.monthOptsWarp[index].opts ;
 
       if (!monthOpt) return;
       this._showMonth = defaults.MONTH_FORMAT[monthOpt.original.month];
@@ -353,8 +360,12 @@ export class CalendarComponent implements OnInit {
 
       this.change4emit = true;
 
-    // this.changeDetectorRef.markForCheck();
-    // this.changeDetectorRef.detectChanges();
+        if (this.swiper){
+          this.swiper.slideTo(index,0,false);
+        }
+
+    this.changeDetectorRef.markForCheck();
+    this.changeDetectorRef.detectChanges();
   }
 
   initMonthData() {
@@ -365,7 +376,11 @@ export class CalendarComponent implements OnInit {
 
     let months:Array<CalendarMonth> = this.calSvc.createMonthsByPeriod(time,  3, this._d);
     months.forEach((v)=>{
-      this.monthOpts.push(v);
+
+      let warp:any = {};
+      warp.opts = v;
+      this.monthOptsWarp.push(warp)
+      // this.monthOpts.push(v);
     })
   }
 
@@ -386,11 +401,12 @@ export class CalendarComponent implements OnInit {
 
 
   gotoToday() {
-    let year = moment().year();
-    let month = moment().month();
-    let index = this.monthOpts.findIndex((value, index, arr)=>{
-      return value.original.year == year && value.original.month == month;
-    });
-    this.swiper.slideTo(index,500,true);
+    // let year = moment().year();
+    // let month = moment().month();
+    // let index = this.monthOptsWarp.findIndex((value, index, arr)=>{
+    //   return value.opts .original.year == year && value.opts .original.month == month;
+    // });
+    // this.swiper.slideTo(index,500,true);
+    this.initMonthData();
   }
 }
