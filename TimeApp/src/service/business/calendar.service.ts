@@ -498,20 +498,20 @@ export class CalendarService extends BaseService {
     this.assertEmpty(ji);   // id不能为空
     this.assertNull(jt);    // 计划类型不能为空
 
-    let plandb: JhaTbl = new JhaTbl();
-    plandb.ji = ji;
-    plandb.del = DelType.del;
-
-    let sqls: Array<any> = new Array<any>();
-
-    sqls.push(plandb.upTParam());
-
     // 同时删除日历项
     if (withchildren) {
       if (jt == PlanType.CalendarPlan || jt == PlanType.ActivityPlan) {
+        let plandb: JhaTbl = new JhaTbl();
+        plandb.ji = ji;
+        plandb.del = DelType.del;
+
+        let sqls: Array<any> = new Array<any>();
+
+        sqls.push(plandb.upTParam());
+
         let planitemdb: JtaTbl = new JtaTbl();
         planitemdb.ji = ji;
-        planitemdb.del = DelType.del;
+        plandb.jtd = "0";
 
         sqls.push(planitemdb.upTParam());
 
@@ -523,6 +523,14 @@ export class CalendarService extends BaseService {
       }
 
       if (jt == PlanType.PrivatePlan) {
+        let plandb: JhaTbl = new JhaTbl();
+        plandb.ji = ji;
+        plandb.del = DelType.del;
+
+        let sqls: Array<any> = new Array<any>();
+
+        sqls.push(plandb.upTParam());
+
         let eventdb: EvTbl = new EvTbl();
         eventdb.ji = ji;
         eventdb.del = DelType.del;
@@ -554,11 +562,27 @@ export class CalendarService extends BaseService {
     } else {
       // 不删除子元素，需要把子元素的计划ID更新为空/默认计划ID
       if (jt == PlanType.CalendarPlan || jt == PlanType.ActivityPlan) {
+        let plandb: JhaTbl = new JhaTbl();
+        plandb.ji = ji;
+        plandb.jtd = "0";
+
+        let sqls: Array<any> = new Array<any>();
+
+        sqls.push(plandb.upTParam());
+
         // 更新日历项表计划ID
         sqls.push([`update gtd_jta set ji = ?, utt = ? where ji = ?`, ['', moment().unix(), ji]]);
       }
 
       if (jt == PlanType.PrivatePlan) {
+        let plandb: JhaTbl = new JhaTbl();
+        plandb.ji = ji;
+        plandb.del = DelType.del;
+
+        let sqls: Array<any> = new Array<any>();
+
+        sqls.push(plandb.upTParam());
+
         // 更新事件主表
         sqls.push([`update gtd_ev set ji = ?, utt = ? where ji = ?`, ['', moment().unix(), ji]]);
 
