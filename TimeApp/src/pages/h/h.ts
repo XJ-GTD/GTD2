@@ -78,6 +78,9 @@ import {AgendaPage} from "../agenda/agenda";
           <button ion-fab  (click)="newcd()">
             <ion-icon name="add"></ion-icon>
           </button>
+          <button ion-fab  (click)="newpi()">
+            <ion-icon name="star"></ion-icon>
+          </button>
         </ion-fab-list>
       </ion-fab>
       <ion-fab bottom right>
@@ -345,6 +348,19 @@ export class HPage {
 
     this.feedback.audioPress();
     this.modalCtr.create(AgendaPage, p).present();
+  }
+
+  newpi() {
+    let p: ScdPageParamter = new ScdPageParamter();
+
+    if (this.hdata.selectDay){
+      p.d = moment(this.hdata.selectDay.time);
+    }else{
+      p.d = moment();
+    }
+
+    this.feedback.audioPress();
+    this.modalCtr.create(DataConfig.PAGE._COMMEMORATIONDAY_PAGE, p).present();
   }
 
 //查询当天日程
