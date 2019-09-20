@@ -22,7 +22,7 @@ export class PlService {
   async downloadPlan(jh:PagePDPro){
     // 出参
     let count = 0;
-    let plandata: PlanData = await this.calendarService.downloadPublicPlan(jh.ji, jh.jt);
+    let plandata: PlanData = await this.calendarService.downloadPublicPlan(jh.ji, PlanType[jh.jt]);
 
     if (plandata && plandata.items) {
       count = plandata.items.length;
