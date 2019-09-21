@@ -3247,7 +3247,7 @@ export class EventService extends BaseService {
             for(let td of todolist){
               if((changed.evi == td.evi)||(changed.rtevi == td.rtevi)||(changed.rtevi == td.evi)){
                    bf = false;
-                  if(moment().diff(td.evd + ' ' + td.evt)>moment().diff(changed.evd + ' ' + changed.evt)){
+                  if(Math.abs(moment().diff(td.evd + ' ' + td.evt))>Math.abs(moment().diff(changed.evd + ' ' + changed.evt))){
                     todolist[todolist.length-1] = changed;
                     break;
                   }
