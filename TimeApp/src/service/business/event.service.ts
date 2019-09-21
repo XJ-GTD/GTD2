@@ -3178,7 +3178,7 @@ export class EventService extends BaseService {
       else {
         if ( (  changed.todolist == anyenum.ToDoListStatus.Off ) || ( changed.del == anyenum.DelType.del ) || (changed.wc == anyenum.EventFinishStatus.Finished) ) {
                 //移除数据 取消todolist、删除 、 事件完成
-                let j = 0;
+                let j: number = 0;
                 for (let td of todolist) {
                   if ( (td.evi == changed.evi) || (td.rtevi == changed.evi ) ) {
                       todolist.splice(j, 1);
@@ -3244,19 +3244,24 @@ export class EventService extends BaseService {
           if (moment(changed.evd + ' ' + changed.evt).diff(todolist[todolist.length-1].evd + ' ' + todolist[todolist.length-1].evt)>=0) {
             //当同一事件的情况下 、 重复事件的情况下
             let bf: boolean = true;
+            let f: number = 0;
             for(let td of todolist){
               if((changed.evi == td.evi)||(changed.rtevi == td.rtevi)||(changed.rtevi == td.evi)){
                    bf = false;
                    console.info("时间与当前时间"+td.evd + ' ' + td.evt+"获取绝对值 1："+Math.abs(moment().diff(td.evd + ' ' + td.evt)));
                    console.info("时间与当前时间"+ changed.evd + ' ' + changed.evt+"获取绝对值 2："+Math.abs(moment().diff(changed.evd + ' ' + changed.evt)));
                   if(Math.abs(moment().diff(td.evd + ' ' + td.evt))>Math.abs(moment().diff(changed.evd + ' ' + changed.evt))){
-                    todolist[todolist.length-1] = changed;
+                    //比之前的序列大，则先删除以前的，在数组后面追加一个
+                    todolist.splice(f, 1);
+                    todolist.push(changed);
+                    //todolist[todolist.length-1] = changed;
                     break;
                   }
                   else {
                     todolist.push(changed);
                   }
               }
+              f++;
             }
             if(bf){
                  todolist.push(changed);
