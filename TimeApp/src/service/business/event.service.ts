@@ -3229,9 +3229,11 @@ export class EventService extends BaseService {
               //验证是否为同一个事件
               if(changed.evi == todolist[0].evi ) {
                   todolist[0] = changed;
+                  return todolist;
                }
                else {
                  todolist.unshift(changed);
+                 return todolist;
                }
           }
 
@@ -3240,9 +3242,11 @@ export class EventService extends BaseService {
             //当同一事件的情况下 、 重复事件的情况下
             if((changed.evi == todolist[todolist.length-1].evi)||(changed.rtevi == todolist[todolist.length-1].rtevi)||(changed.rtevi == todolist[todolist.length-1].evi)) {
                 todolist[todolist.length-1] = changed;
+                return todolist;
              }
              else {
                todolist.push(changed);
+               return todolist;
              }
           }
 
