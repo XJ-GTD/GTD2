@@ -3222,10 +3222,11 @@ export class EventService extends BaseService {
                 }
         }
         if (flag) {
+
           //将数据加到新的排序中去
           //todolist已经进行过排序，按照日期排列 ,快速排序算法，还是太慢，
           //1.新加入的事件的日期，比todolist第一个日期还小,缩短循环排序时间
-          if (moment(changed.evd + ' ' + changed.evt).diff(todolist[0].evd + ' ' + todolist[0].evt)<=0) {
+          if ((moment(changed.evd + ' ' + changed.evt).diff(todolist[0].evd + ' ' + todolist[0].evt)<=0)) {
               //验证是否为同一个事件
               if(changed.evi == todolist[0].evi ) {
                   todolist[0] = changed;
@@ -3237,17 +3238,39 @@ export class EventService extends BaseService {
                }
           }
 
+
+
           //2.新加入的事件的日期，比todolist的最后一个日期还小
           if (moment(changed.evd + ' ' + changed.evt).diff(todolist[todolist.length-1].evd + ' ' + todolist[todolist.length-1].evt)>=0) {
             //当同一事件的情况下 、 重复事件的情况下
-            if((changed.evi == todolist[todolist.length-1].evi)||(changed.rtevi == todolist[todolist.length-1].rtevi)||(changed.rtevi == todolist[todolist.length-1].evi)) {
-                todolist[todolist.length-1] = changed;
-                return todolist;
-             }
-             else {
-               todolist.push(changed);
-               return todolist;
-             }
+            let bf: boolean = true;
+            for(let td of todolist){
+              if((changed.evi == td.evi)||(changed.rtevi == td.rtevi)||(changed.rtevi == td.evi)){
+                   bf = false;
+                  if(moment("YYYY/MM/DD HH:mm:ss").diff(td.evd + ' ' + td.evt)>moment("YYYY/MM/DD HH:mm:ss").diff(changed.evd + ' ' + changed.evt)){
+                    todolist[todolist.length-1] = changed;
+                    break;
+                  }
+                  else {
+                    todolist.push(changed);
+                  }
+              }
+            }
+            if(bf){
+                 todolist.push(changed);
+            }
+            return todolist;
+
+
+
+            // if((changed.evi == todolist[todolist.length-1].evi)||(changed.rtevi == todolist[todolist.length-1].rtevi)||(changed.rtevi == todolist[todolist.length-1].evi)) {
+            //     todolist[todolist.length-1] = changed;
+            //     return todolist;
+            //  }
+            //  else {
+            //    todolist.push(changed);
+            //    return todolist;
+            //  }
           }
 
           //3. 当事件的日期，在todolist中间时
