@@ -19,6 +19,12 @@ export class JtaTbl implements ITblParam {
   del: string;
   utt: number;
   wtt: number;
+  tx: string;
+  txs: string;
+  rt: string;
+  rts: string;
+  rfg: string;
+  rtjti: string;
 
   fastParam(): any {
     let params: Array<any> = new Array<any>();
@@ -35,10 +41,16 @@ export class JtaTbl implements ITblParam {
     params.push(moment().unix());
     params.push(this.tb);
     params.push(this.del);
+    params.push(this.tx);
+    params.push(this.txs);
+    params.push(this.rt);
+    params.push(this.rts);
+    params.push(this.rfg);
+    params.push(this.rtjti);
 
     return [`replace into gtd_jta
-       (   jti ,ji ,jtn ,sd ,st ,jtt ,jtc ,px ,bz ,wtt ,utt,tb,del)`,
-     `select ?,?,?,?,?,?,?,?,?,?,?,?,?`,
+       (   jti ,ji ,jtn ,sd ,st ,jtt ,jtc ,px ,bz ,wtt ,utt,tb,del,tx,txs,rt,rts,rfg,rtjti)`,
+     `select ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?`,
     params];
   }
 
@@ -58,6 +70,12 @@ export class JtaTbl implements ITblParam {
      ,utt integer
      ,tb varchar(6)
      ,del varchar(6)
+     ,tx varchar(50)
+     ,txs varchar(50)
+     ,rt varchar(50)
+     ,rts varchar(50)
+     ,rfg varchar(6)
+     ,rtjti varchar(50)
 
      );`;
 
@@ -78,6 +96,12 @@ export class JtaTbl implements ITblParam {
     if(this.bz!=null && this.bz!=''){      sq=sq+', bz= ? ';      params.push(this.bz);    }
     if(this.tb!=null && this.tb!=''){      sq=sq+', tb= ? ';      params.push(this.tb);    }
     if(this.del!=null && this.del!=''){      sq=sq+', del= ? ';      params.push(this.del);    }
+    if(this.tx!=null && this.tx!=''){      sq=sq+', tx= ? ';      params.push(this.tx);    }
+    if(this.txs!=null && this.txs!=''){      sq=sq+', txs= ? ';      params.push(this.txs);    }
+    if(this.rt!=null && this.rt!=''){      sq=sq+', rt= ? ';      params.push(this.rt);    }
+    if(this.rts!=null && this.rts!=''){      sq=sq+', rts= ? ';      params.push(this.rts);    }
+    if(this.rfg!=null && this.rfg!=''){      sq=sq+', rfg= ? ';      params.push(this.rfg);    }
+    if(this.rtjti!=null && this.rtjti!=''){      sq=sq+', rtjti= ? ';      params.push(this.rtjti);    }
 
     sq =`update gtd_jta set utt =${moment().unix()}  ${sq} where jti = ? ;`;
     params.push(this.jti);
@@ -127,6 +151,12 @@ export class JtaTbl implements ITblParam {
     if(this.bz!=null && this.bz!=''){      sq=sq+' and bz= ? ';      params.push(this.bz);    }
     if(this.tb!=null && this.tb!=''){      sq=sq+' and tb= ? ';      params.push(this.tb);    }
     if(this.del!=null && this.del!=''){      sq=sq+' and del= ? ';      params.push(this.del);    }
+    if(this.tx!=null && this.tx!=''){      sq=sq+' and tx= ? ';      params.push(this.tx);    }
+    if(this.txs!=null && this.txs!=''){      sq=sq+' and txs= ? ';      params.push(this.txs);    }
+    if(this.rt!=null && this.rt!=''){      sq=sq+' and rt= ? ';      params.push(this.rt);    }
+    if(this.rts!=null && this.rts!=''){      sq=sq+' and rts= ? ';      params.push(this.rts);    }
+    if(this.rfg!=null && this.rfg!=''){      sq=sq+' and rfg= ? ';      params.push(this.rfg);    }
+    if(this.rtjti!=null && this.rtjti!=''){      sq=sq+' and rtjti= ? ';      params.push(this.rtjti);    }
 
     sq = sq + ';';
 
@@ -145,8 +175,8 @@ export class JtaTbl implements ITblParam {
   inTParam():any {
     let params = new Array<any>();
     let sq =`insert into gtd_jta
-       (   jti ,ji ,jtn ,sd ,st ,jtt ,jtc ,px ,bz ,wtt ,utt,tb,del)
-       values(?,?,?,?,?,?,?,?,?,?,?,?,?);`;
+       (   jti ,ji ,jtn ,sd ,st ,jtt ,jtc ,px ,bz ,wtt ,utt,tb,del,tx,txs,rt,rts,rfg,rtjti)
+       values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);`;
     params.push(this.jti);
     params.push(this.ji);
     params.push(this.jtn);
@@ -160,6 +190,12 @@ export class JtaTbl implements ITblParam {
     params.push(moment().unix());
     params.push(this.tb);
     params.push(this.del);
+    params.push(this.tx);
+    params.push(this.txs);
+    params.push(this.rt);
+    params.push(this.rts);
+    params.push(this.rfg);
+    params.push(this.rtjti);
 
     let ret = new Array<any>();
     ret.push(sq);
@@ -170,8 +206,8 @@ export class JtaTbl implements ITblParam {
   rpTParam():any {
     let params = new Array<any>();
     let sq =`replace into gtd_jta
-       (   jti ,ji ,jtn ,sd ,st ,jtt ,jtc ,px ,bz ,wtt ,utt,tb,del)
-       values(?,?,?,?,?,?,?,?,?,${moment().unix()},${moment().unix()},?,?);`;
+       (   jti ,ji ,jtn ,sd ,st ,jtt ,jtc ,px ,bz ,wtt ,utt,tb,del,tx,txs,rt,rts,rfg,rtjti)
+       values(?,?,?,?,?,?,?,?,?,${moment().unix()},${moment().unix()},?,?,?,?,?,?,?,?);`;
     params.push(this.jti);
     params.push(this.ji);
     params.push(this.jtn);
@@ -183,6 +219,12 @@ export class JtaTbl implements ITblParam {
     params.push(this.nll2str(this.bz));
     params.push(this.tb);
     params.push(this.del);
+    params.push(this.tx);
+    params.push(this.txs);
+    params.push(this.rt);
+    params.push(this.rts);
+    params.push(this.rfg);
+    params.push(this.rtjti);
 
     let ret = new Array<any>();
     ret.push(sq);
