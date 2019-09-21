@@ -3247,6 +3247,8 @@ export class EventService extends BaseService {
             for(let td of todolist){
               if((changed.evi == td.evi)||(changed.rtevi == td.rtevi)||(changed.rtevi == td.evi)){
                    bf = false;
+                   console.info("时间与当前时间"+td.evd + ' ' + td.evt+"获取绝对值 1："+Math.abs(moment().diff(td.evd + ' ' + td.evt)));
+                   console.info("时间与当前时间"+ changed.evd + ' ' + changed.evt+"获取绝对值 2："+Math.abs(moment().diff(changed.evd + ' ' + changed.evt)));
                   if(Math.abs(moment().diff(td.evd + ' ' + td.evt))>Math.abs(moment().diff(changed.evd + ' ' + changed.evt))){
                     todolist[todolist.length-1] = changed;
                     break;
