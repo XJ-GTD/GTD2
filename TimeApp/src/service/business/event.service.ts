@@ -3255,12 +3255,8 @@ export class EventService extends BaseService {
                     todolist.splice(f, 1);
                     todolist.push(changed);
                     //todolist[todolist.length-1] = changed;
-                    
+                    break;
                   }
-                  else {
-                    todolist.push(changed);
-                  }
-                  break;
               }
               f++;
             }
