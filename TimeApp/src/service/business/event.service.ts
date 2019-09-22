@@ -3187,7 +3187,9 @@ export class EventService extends BaseService {
                 }
                 //当前事件已完成，验证当前事件是否为重复事件，如果为重复事件，则删除当前的，重新插入下一个
                 if ((changed.rfg == RepeatFlag.Repeat) && (changed.wc == anyenum.EventFinishStatus.Finished) ) {
-                  let newsql : string  =  ` select * from
+                  let newsql : string  =  ` select ev.*,
+                  ca.sd,ca.st,ca.ed,ca.et,ca.ct
+                   from
                       gtd_ev ev left join gtd_ca ca on ca.evi = ev.rtevi
                         where
                         ev.rtevi =?1
