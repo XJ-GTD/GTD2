@@ -3185,7 +3185,9 @@ export class EventService extends BaseService {
                 }
                 //当前事件已完成，验证当前事件是否为重复事件，如果为重复事件，则删除当前的，重新插入下一个
                 if ((changed.rfg == RepeatFlag.Repeat) && (changed.wc == anyenum.EventFinishStatus.Finished) ) {
-                  let newsql : string  =  ` select * from
+                  let newsql : string  =  ` select ev.*,
+                  ca.sd,ca.st,ca.ed,ca.et,ca.ct
+                   from
                       gtd_ev ev left join gtd_ca ca on ca.evi = ev.rtevi
                         where
                         ev.rtevi =?1
@@ -3882,7 +3884,7 @@ export class RtJson {
 
       // 增加创建当天是否需要添加此事件
       if (withFrom && stepDay == repeatStartDay) {
-        if (days.length > 0 && days[0] != from) {
+        if (days.length > 0 && days.indexOf(from) >= 0) {
           days.unshift(from);
         }
       }
@@ -3965,4 +3967,38 @@ enum RepeatModify {
 enum DUflag {
   del = "del",
   update = "update"
+}
+
+export function generateRtJson(rtjson: RtJson, rt: string) {
+  if (!rtjson) {
+    if (rt) {
+      rtjson = new RtJson();
+      Object.assign(rtjson, JSON.parse(rt));
+    } else {
+      rtjson = new RtJson();
+    }
+  } else {
+    let newrtjson: RtJson = new RtJson();
+    Object.assign(newrtjson, rtjson);
+    rtjson = newrtjson;
+  }
+
+  return rtjson;
+}
+
+export function generateTxJson(txjson: TxJson, tx: string) {
+  if (!txjson) {
+    if (tx) {
+      txjson = new TxJson();
+      Object.assign(txjson, JSON.parse(tx));
+    } else {
+      txjson = new TxJson();
+    }
+  } else {
+    let newtxjson: TxJson = new TxJson();
+    Object.assign(newtxjson, txjson);
+    txjson = newtxjson;
+  }
+
+  return txjson;
 }
