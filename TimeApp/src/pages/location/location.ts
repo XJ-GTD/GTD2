@@ -3,6 +3,7 @@ import { IonicPage, NavController, NavParams, ModalController, ViewController, S
 import {ControlAnchor, MapOptions, Marker, NavigationControlOptions, NavigationControlType} from 'angular2-baidu-map';
 import { Geolocation } from '@ionic-native/geolocation';
 import {ModalBoxComponent} from "../../components/modal-box/modal-box";
+import {LocalRestful} from "../../service/restful/localsev";
 declare var BMap;
 @IonicPage()
 @Component({
@@ -64,12 +65,13 @@ export class LocationPage {
   constructor(public navCtrl: NavController,
               public viewCtrl: ViewController,
               public navParams: NavParams,
-              public geolocation: Geolocation) {
+              public geolocation: Geolocation,
+              public localRestful : LocalRestful) {
 
-    this.focusIcon = new BMap.Icon("/assets/imgs/map/markers.png", new BMap.Size(23, 25), { // 设置地图标记的icon
+    /*this.focusIcon = new BMap.Icon("/assets/imgs/map/markers.png", new BMap.Size(23, 25), { // 设置地图标记的icon
       offset: new BMap.Size(10, 30),
       imageOffset: new BMap.Size(0, 0 - 10 * 30)
-    });
+    });*/
 
     //百度地图默认设置
     this.mapOptions = {
@@ -127,13 +129,13 @@ export class LocationPage {
 
     }else{//gps获取位置
 
-      this.myGeo = new BMap.Geocoder();
+      /*this.myGeo = new BMap.Geocoder();
 
       var geolocationControl = new BMap.GeolocationControl();
 
       this.map.addControl(geolocationControl);
 
-      this.getLocation();
+      this.getLocation();*/
     }
 
   }
@@ -162,6 +164,12 @@ export class LocationPage {
   }
 
   search(txt) { // 对应baidu-map中loaded事件即地图加载时运行的方法 官方介绍e可以是map实例
+    if (1 ==1){
+      this.localRestful.queryPlace("陆家嘴").then(data =>{
+        let lst = data;
+        console.log(lst);
+      })
+    }
 
     let myKeys = [txt];
 

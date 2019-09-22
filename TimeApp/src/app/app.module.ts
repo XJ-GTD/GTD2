@@ -124,6 +124,7 @@ import {MemoService} from "../service/business/memo.service";
 import {AipPageModule} from "../pages/aip/aip.module";
 import { SettingsProvider } from '../providers/settings/settings';
 import {CalendarService} from "../service/business/calendar.service";
+import {LocalRestful} from "../service/restful/localsev";
 
 @NgModule({
   declarations: [
@@ -242,6 +243,7 @@ import {CalendarService} from "../service/business/calendar.service";
     SyncRestful,
     SqliteInit,
     PersonRestful,
+    LocalRestful,
     SmsRestful,
     AuthRestful,
     AgdRestful,
