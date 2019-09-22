@@ -3968,3 +3968,37 @@ enum DUflag {
   del = "del",
   update = "update"
 }
+
+export function generateRtJson(rtjson: RtJson, rt: string) {
+  if (!rtjson) {
+    if (rt) {
+      rtjson = new RtJson();
+      Object.assign(rtjson, JSON.parse(rt));
+    } else {
+      rtjson = new RtJson();
+    }
+  } else {
+    let newrtjson: RtJson = new RtJson();
+    Object.assign(newrtjson, rtjson);
+    rtjson = newrtjson;
+  }
+
+  return rtjson;
+}
+
+export function generateTxJson(txjson: TxJson, tx: string) {
+  if (!txjson) {
+    if (tx) {
+      txjson = new TxJson();
+      Object.assign(txjson, JSON.parse(tx));
+    } else {
+      txjson = new TxJson();
+    }
+  } else {
+    let newtxjson: TxJson = new TxJson();
+    Object.assign(newtxjson, txjson);
+    txjson = newtxjson;
+  }
+
+  return txjson;
+}
