@@ -3178,7 +3178,7 @@ export class EventService extends BaseService {
       else {
         if ( (  changed.todolist == anyenum.ToDoListStatus.Off ) || ( changed.del == anyenum.DelType.del ) || (changed.wc == anyenum.EventFinishStatus.Finished) ) {
                 //移除数据 取消todolist、删除 、 事件完成
-                let j = 0;
+                let j: number = 0;
                 for (let td of todolist) {
                   if ( (td.evi == changed.evi) || (td.rtevi == changed.evi ) ) {
                       todolist.splice(j, 1);
@@ -3222,28 +3222,59 @@ export class EventService extends BaseService {
                 }
         }
         if (flag) {
+
           //将数据加到新的排序中去
           //todolist已经进行过排序，按照日期排列 ,快速排序算法，还是太慢，
           //1.新加入的事件的日期，比todolist第一个日期还小,缩短循环排序时间
-          if (moment(changed.evd + ' ' + changed.evt).diff(todolist[0].evd + ' ' + todolist[0].evt)<=0) {
+          if ((moment(changed.evd + ' ' + changed.evt).diff(todolist[0].evd + ' ' + todolist[0].evt)<=0)) {
               //验证是否为同一个事件
               if(changed.evi == todolist[0].evi ) {
                   todolist[0] = changed;
+                  return todolist;
                }
                else {
                  todolist.unshift(changed);
+                 return todolist;
                }
           }
+
+
 
           //2.新加入的事件的日期，比todolist的最后一个日期还小
           if (moment(changed.evd + ' ' + changed.evt).diff(todolist[todolist.length-1].evd + ' ' + todolist[todolist.length-1].evt)>=0) {
             //当同一事件的情况下 、 重复事件的情况下
-            if((changed.evi == todolist[todolist.length-1].evi)||(changed.rtevi == todolist[todolist.length-1].rtevi)||(changed.rtevi == todolist[todolist.length-1].evi)) {
-                todolist[todolist.length-1] = changed;
-             }
-             else {
-               todolist.push(changed);
-             }
+            let bf: boolean = true;
+            let f: number = 0;
+            for(let td of todolist){
+              if((changed.evi == td.evi)||(changed.rtevi == td.rtevi)||(changed.rtevi == td.evi)){
+                   bf = false;
+                   console.info("时间与当前时间"+td.evd + ' ' + td.evt+"获取绝对值 1："+Math.abs(moment().diff(td.evd + ' ' + td.evt)));
+                   console.info("时间与当前时间"+ changed.evd + ' ' + changed.evt+"获取绝对值 2："+Math.abs(moment().diff(changed.evd + ' ' + changed.evt)));
+                  if(Math.abs(moment().diff(td.evd + ' ' + td.evt))>Math.abs(moment().diff(changed.evd + ' ' + changed.evt))){
+                    //比之前的序列大，则先删除以前的，在数组后面追加一个
+                    todolist.splice(f, 1);
+                    todolist.push(changed);
+                    //todolist[todolist.length-1] = changed;
+                    break;
+                  }
+              }
+              f++;
+            }
+            if(bf){
+                 todolist.push(changed);
+            }
+            return todolist;
+
+
+
+            // if((changed.evi == todolist[todolist.length-1].evi)||(changed.rtevi == todolist[todolist.length-1].rtevi)||(changed.rtevi == todolist[todolist.length-1].evi)) {
+            //     todolist[todolist.length-1] = changed;
+            //     return todolist;
+            //  }
+            //  else {
+            //    todolist.push(changed);
+            //    return todolist;
+            //  }
           }
 
           //3. 当事件的日期，在todolist中间时
