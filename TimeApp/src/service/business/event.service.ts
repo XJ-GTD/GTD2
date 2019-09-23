@@ -3131,7 +3131,7 @@ export class EventService extends BaseService {
                                   select
                                   case when ifnull(evk.rtevi,'') <> ''  then  evk.rtevi  else evk.evi end newrtevi
                                   from gtd_ev evk
-                                  where evk.todolist = ?1  and evk.type = ?3 and evk.wc = ?5 and julianday(datetime(replace(evk.evd, '/', '-'),evk.evt))>=julianday(datetime('now'))
+                                  where evk.todolist = ?1  and evk.type = ?3 and evk.wc = ?5 )
                                 )
                               order by  evnext2.minDay desc
                      )
