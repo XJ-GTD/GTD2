@@ -25,7 +25,7 @@ import { PageDirection, IsSuccess, OperateType, EventFinishStatus } from "../../
  */
 @IonicPage()
 @Component({
-  selector: 'page-doscrum',
+  selector: 'page-do-scrum',
   template:
     `
       <page-box title="敏捷开发" [buttons]="buttons" (onCreate)="goCreate()" (onBack)="goBack()">

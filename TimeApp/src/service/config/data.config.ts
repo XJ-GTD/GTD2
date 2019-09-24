@@ -38,7 +38,7 @@ import {LogPage} from "../../pages/log/log";
 import {AtPage} from "../../pages/at/at";
 import {DaPage} from "../../pages/da/da";
 import {DoPage} from "../../pages/do/do";
-import {DoScrumPage} from "../../pages/do/do.scrum";
+import {DoScrumPage} from "../../pages/do/do-scrum";
 import {AgendaPage} from "../../pages/agenda/agenda";
 import {MemoPage} from "../../pages/memo/memo";
 import {DrPage} from "../../pages/dr/dr";
