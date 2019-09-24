@@ -1218,6 +1218,8 @@ describe('EventService test suite', () => {
         let pre: number = moment(preday).valueOf();
         let cur: number = moment(agenda.sd).valueOf();
         expect(cur).toBeGreaterThanOrEqual(pre);  //当前日期必须大于等于前一个日期
+
+        preday = agenda.sd;
       }
     });
 
