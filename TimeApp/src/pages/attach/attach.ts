@@ -58,7 +58,6 @@ export class AttachPage {
     }
   }
 
-  const fileTransfer: FileTransferObject = this.transfer.create();
 
   ionViewDidEnter() {
 
@@ -102,9 +101,7 @@ export class AttachPage {
   * 文件上传  ying<343253410@qq.com>
   */
   select() {
-      this.chooser.getFile().then(file => {
-            console.log(file ? file.name : 'canceled')
-          })
+      this.chooser.getFile('image/*,video/*').then(file => console.log(file ? file.name : 'canceled'))
         .catch((error: any)=> console.error(error));
   }
 
@@ -112,6 +109,7 @@ export class AttachPage {
   * 调用文件上传接口
   */
   upload() {
+      let fileTransfer: FileTransferObject = this.transfer.create();
       let options: FileUploadOptions = {
           fileKey: 'file',
           fileName: 'name.jpg',
@@ -119,7 +117,7 @@ export class AttachPage {
           params: {}
       }
 
-      this.fileTransfer.upload(this.imgUrl, 'http://www.baidu.com', options).then((data) => {
+      fileTransfer.upload(this.imgUrl, 'http://www.baidu.com', options).then((data) => {
          // success
          console.info("上传成功"+JSON.stringify(data));
       }, (err) => {
