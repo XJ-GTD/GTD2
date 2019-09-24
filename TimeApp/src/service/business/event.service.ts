@@ -2445,6 +2445,70 @@ export class EventService extends BaseService {
 		return task2;
   }
 
+  /**
+	 * 发送日程进行共享
+   *
+	 * @author leon_xi@163.com
+	 */
+  async sendAgenda(agendas: Array<AgendaData>) {
+    this.assertEmpty(agendas);  // 入参不能为空
+    await this.syncAgendas(agendas);
+  	return ;
+  }
+
+  /**
+   * 同步全部的未同步的日程/指定日程到服务器
+   *
+   * @author leon_xi@163.com
+   */
+  async syncAgendas(agendas: Array<AgendaData> = new Array<AgendaData>()) {
+    this.assertEmpty(agendas);  // 入参不能为空
+
+    if (agendas.length > 0) {
+      let push: PushInData = new PushInData();
+
+      for (let agenda of agendas) {
+        let sync: SyncData = new SyncData();
+        sync.id = agenda.evi;
+        sync.type = "Agenda";
+        sync.security = SyncDataSecurity.None;
+        sync.status = SyncDataStatus[agenda.del];
+        sync.payload = agenda;
+        push.d.push(sync);
+      }
+
+      await this.dataRestful.push(push);
+    } else {
+
+      let sql: string = `select ev.*, ca.sd, ca.ed, ca.st, ca.et, ca.al, ca.ct
+                        from (select *, case when ifnull(rtevi, '') = '' then evi else rtevi end forceevi
+                          from gtd_ev
+                          where type = ?1 and tb = ?2) ev
+                        left join gtd_ca ca
+                        on ca.evi = ev.forceevi`;
+  		let unsyncedagendas = await this.sqlExce.getExtLstByParam<AgendaData>(sql, [anyenum.EventType.Agenda, SyncType.unsynch]);
+
+  		//当存在未同步的情况下,进行同步
+  		if (unsyncedagendas && unsyncedagendas.length > 0) {
+  			 let push: PushInData = new PushInData();
+
+  			 for (let agenda of unsyncedagendas) {
+  			 	 	let sync: SyncData = new SyncData();
+  			 	 	sync.id = agenda.evi;
+  			    sync.type = "Agenda";
+  			    sync.security = SyncDataSecurity.None;
+  			    sync.status = SyncDataStatus[agenda.del];
+  			    sync.payload = agenda;
+  			    push.d.push(sync);
+  			 }
+
+  			 await this.dataRestful.push(push);
+  		}
+    }
+
+		return ;
+  }
+
 	/**
 	 * 发送任务进行共享
 	 * @author ying<343253410@qq.com>

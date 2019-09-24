@@ -125,6 +125,7 @@ import {AipPageModule} from "../pages/aip/aip.module";
 import { SettingsProvider } from '../providers/settings/settings';
 import {CalendarService} from "../service/business/calendar.service";
 import {LocationSearchService} from "../service/restful/LocationSearchService";
+import {EffectService} from "../service/business/effect.service";
 
 @NgModule({
   declarations: [
@@ -265,6 +266,7 @@ import {LocationSearchService} from "../service/restful/LocationSearchService";
     MemoService,
     SettingsProvider,
     CalendarService,
+    EffectService,
     LocationSearchService,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     {provide: HAMMER_GESTURE_CONFIG, useClass: HammerDIRECTIONALLConfig}
