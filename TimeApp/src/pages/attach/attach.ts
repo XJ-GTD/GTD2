@@ -2,9 +2,9 @@ import { Component, ElementRef, QueryList, Renderer2, ViewChild, ViewChildren } 
 import { IonicPage, NavController, NavParams, ViewController, ModalController, Scroll } from 'ionic-angular';
 import {Keyboard} from "@ionic-native/keyboard";
 import {File} from '@ionic-native/file';
-import {FileTransfer, FileUploadOptions, FileTransferObject  } from '@ionic-native/file-transfer/ngx';
-import { Camera, CameraOptions } from '@ionic-native/camera/ngx';
-import { Chooser } from '@ionic-native/chooser/ngx';
+import {FileTransfer, FileUploadOptions, FileTransferObject  } from '@ionic-native/file-transfer';
+import { Camera, CameraOptions } from '@ionic-native/camera';
+import { Chooser } from '@ionic-native/chooser';
 import {ModalBoxComponent} from "../../components/modal-box/modal-box";
 
 @IonicPage()
