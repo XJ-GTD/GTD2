@@ -8,7 +8,7 @@ import { SyncData, PushInData, PullInData, DataRestful } from "../restful/datase
 import { BackupPro, BacRestful, OutRecoverPro, RecoverPro } from "../restful/bacsev";
 import { EventData, TaskData, AgendaData, MiniTaskData, EventService, RtJson, TxJson, generateRtJson, generateTxJson } from "./event.service";
 import { MemoData, MemoService } from "./memo.service";
-import { EventType, PlanType, PlanItemType, PlanDownloadType, ObjectType, PageDirection, CycleType, SyncType, RepeatFlag, DelType, SyncDataSecurity, SyncDataStatus } from "../../data.enum";
+import { EventType, PlanType, PlanItemType, PlanDownloadType, OperateType, ObjectType, PageDirection, CycleType, SyncType, RepeatFlag, DelType, SyncDataSecurity, SyncDataStatus } from "../../data.enum";
 import { UserConfig } from "../config/user.config";
 import * as moment from "moment";
 import { JhaTbl } from "../sqlite/tbl/jha.tbl";
@@ -803,7 +803,7 @@ export class CalendarService extends BaseService {
    *
    * @author leon_xi@163.com
    **/
-  async savePlanItem(item: PlanItemData): Promise<Array<PlanItemData>> {
+  async savePlanItem(item: PlanItemData, origin: PlanItemData = null, modiType: OperateType = OperateType.Non): Promise<Array<PlanItemData>> {
 
     this.assertEmpty(item);       // 入参不能为空
     this.assertEmpty(item.sd);    // 日历项所属日期不能为空
@@ -816,6 +816,9 @@ export class CalendarService extends BaseService {
     let items: Array<PlanItemData> = new Array<PlanItemData>();
 
     if (item.jti) {
+      let rtjson: RtJson = generateRtJson(item.rtjson, item.rt);
+      let txjson: TxJson = generateTxJson(item.txjson, item.tx);
+
       // 更新
       let planitemdb: JtaTbl = new JtaTbl();
       Object.assign(planitemdb, item);
