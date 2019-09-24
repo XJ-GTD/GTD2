@@ -124,7 +124,7 @@ import {MemoService} from "../service/business/memo.service";
 import {AipPageModule} from "../pages/aip/aip.module";
 import { SettingsProvider } from '../providers/settings/settings';
 import {CalendarService} from "../service/business/calendar.service";
-import {LocalRestful} from "../service/restful/localsev";
+import {LocationSearchService} from "../service/restful/LocationSearchService";
 
 @NgModule({
   declarations: [
@@ -200,7 +200,7 @@ import {LocalRestful} from "../service/restful/localsev";
     RadioSelectComponentModule,
     ScrollRangePickerComponentModule,
     SpeechBubbleComponentModule,
-    HttpClientJsonpModule
+    HttpClientJsonpModule,
   ],
   bootstrap: [IonicApp],
   entryComponents: [
@@ -243,7 +243,6 @@ import {LocalRestful} from "../service/restful/localsev";
     SyncRestful,
     SqliteInit,
     PersonRestful,
-    LocalRestful,
     SmsRestful,
     AuthRestful,
     AgdRestful,
@@ -266,6 +265,7 @@ import {LocalRestful} from "../service/restful/localsev";
     MemoService,
     SettingsProvider,
     CalendarService,
+    LocationSearchService,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     {provide: HAMMER_GESTURE_CONFIG, useClass: HammerDIRECTIONALLConfig}
   ]
