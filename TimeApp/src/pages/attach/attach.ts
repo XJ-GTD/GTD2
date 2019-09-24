@@ -101,7 +101,7 @@ export class AttachPage {
   * 文件上传  ying<343253410@qq.com>
   */
   select() {
-      this.chooser.getFile().then(file => console.log(file ? file.name : 'canceled'))
+      this.chooser.getFile('image/*,video/*').then(file => console.log(file ? file.name : 'canceled'))
         .catch((error: any)=> console.error(error));
   }
 
