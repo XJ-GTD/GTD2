@@ -2,7 +2,9 @@ import { Component, ElementRef, QueryList, Renderer2, ViewChild, ViewChildren } 
 import { IonicPage, NavController, NavParams, ViewController, ModalController, Scroll } from 'ionic-angular';
 import {Keyboard} from "@ionic-native/keyboard";
 import {File} from '@ionic-native/file';
-import { FileTransfer } from '@ionic-native/file-transfer';
+import {FileTransfer, FileUploadOptions, FileTransferObject  } from '@ionic-native/file-transfer/ngx';
+import { Camera, CameraOptions } from '@ionic-native/camera/ngx';
+import { Chooser } from '@ionic-native/chooser/ngx';
 import {ModalBoxComponent} from "../../components/modal-box/modal-box";
 
 @IonicPage()
@@ -30,7 +32,7 @@ import {ModalBoxComponent} from "../../components/modal-box/modal-box";
 })
 export class AttachPage {
   statusBarColor: string = "#3c4d55";
-
+  imgUrl: string = "";
   buttons: any = {
     remove: false,
     share: false,
@@ -38,11 +40,14 @@ export class AttachPage {
     cancel: true
   };
 
+
   constructor(public navCtrl: NavController,
               public viewCtrl: ViewController,
               public navParams: NavParams,
-              private file :File,
-              private fileTransfer:FileTransfer,
+              private file: File,
+              private camera: Camera,
+              private chooser: Chooser,
+              private transfer:FileTransfer,
               private keyboard: Keyboard) {
     if (this.navParams && this.navParams.data) {
       let value = this.navParams.data.value;
@@ -52,6 +57,8 @@ export class AttachPage {
       }
     }
   }
+
+  const fileTransfer: FileTransferObject = this.transfer.create();
 
   ionViewDidEnter() {
 
@@ -70,13 +77,54 @@ export class AttachPage {
   * 拍照  ying<343253410@qq.com>
   */
   shot() {
+    const options: CameraOptions = {
+       quality: 95,
+       destinationType: this.camera.DestinationType.FILE_URI,
+       encodingType: this.camera.EncodingType.JPEG,
+       mediaType: this.camera.MediaType.PICTURE,
+       sourceType: this.camera.PictureSourceType.CAMERA , //打开方式 PHOTOLIBRARY  相册 CAMERA  拍照
+       saveToPhotoAlbum: true //是否保存相册
+    }
+    this.camera.getPicture(options).then((imageData) => {
+      console.info("开始拍照上传照片");
+      let base64Image = 'data:image/jpeg;base64,' + imageData;
+      this.imgUrl = base64Image;
+      alert(this.imgUrl);
+      //TODO  调研图片上传的Service,并将附件的返回值返回给上一页
+      //this.upload();
 
+    }, (err) => {
+        console.info("拍照上传附件异常，异常信息："+ err);
+    });
   }
 
   /**
   * 文件上传  ying<343253410@qq.com>
   */
   select() {
+      this.chooser.getFile().then(file => {
+            console.log(file ? file.name : 'canceled')
+          })
+        .catch((error: any)=> console.error(error));
+  }
 
+  /**
+  * 调用文件上传接口
+  */
+  upload() {
+      let options: FileUploadOptions = {
+          fileKey: 'file',
+          fileName: 'name.jpg',
+          headers: {},
+          params: {}
+      }
+
+      this.fileTransfer.upload(this.imgUrl, 'http://www.baidu.com', options).then((data) => {
+         // success
+         console.info("上传成功"+JSON.stringify(data));
+      }, (err) => {
+          // error
+           console.info("上传失败"+JSON.stringify(err));
+      })
   }
 }
