@@ -1211,15 +1211,15 @@ describe('EventService test suite', () => {
       let preday: string = "";
       for (let agenda of agendaArray) {
         if (preday == "") {
-          preday = agenda.sd;
+          preday = agenda.evd;
           continue;
         }
 
         let pre: number = moment(preday).valueOf();
-        let cur: number = moment(agenda.sd).valueOf();
+        let cur: number = moment(agenda.evd).valueOf();
         expect(cur).toBeGreaterThanOrEqual(pre);  //当前日期必须大于等于前一个日期
 
-        preday = agenda.sd;
+        preday = agenda.evd;
       }
     });
 

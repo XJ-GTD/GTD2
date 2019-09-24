@@ -3888,6 +3888,10 @@ export class RtJson {
         }
       }
 
+      days.sort((a, b) => {
+        return moment(a).valueOf() - moment(b).valueOf();
+      });
+
       for (let day of days) {
         if (moment(day).isBefore(repeatEndDay)) {
           callback(day);

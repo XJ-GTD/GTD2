@@ -386,7 +386,12 @@ export class AgendaPage {
 
     let data = new TxJson();
     Object.assign(data, this.currentAgenda.txjson);
-    let modal = this.modalCtrl.create(DataConfig.PAGE._REMIND_PAGE, {value: data});
+    let modal = this.modalCtrl.create(DataConfig.PAGE._REMIND_PAGE, {value: {
+      txjson: data,
+      evd: this.currentAgenda.evd,
+      evt: this.currentAgenda.evt,
+      al: this.currentAgenda.al
+    }});
     modal.onDidDismiss(async (data) => {
       if (data && data.txjson) {
         this.currentAgenda.txjson = new TxJson();
