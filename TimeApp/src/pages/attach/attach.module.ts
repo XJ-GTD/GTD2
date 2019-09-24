@@ -16,12 +16,12 @@ import { Chooser } from '@ionic-native/chooser';
     IonicModule,
     ModalBoxComponentModule,
     DirectivesModule,
+  ],
+  providers: [
     FileTransfer,
     File,
     Camera,
     Chooser
-  ],
-  providers: [
   ],
   entryComponents:[
     AttachPage
