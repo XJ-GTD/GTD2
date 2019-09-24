@@ -1735,11 +1735,8 @@ export class EventService extends BaseService {
     agdata.tx = JSON.stringify(agdata.txjson);
     agdata.txs = agdata.txjson.text();
 
-    let days: Array<string> = new Array<string>();
     //获取重复日期
-    days = this.getOutDays(rtjson,agdata.sd);
-
-    for (let day of days) {
+    rtjson.each(agdata.sd, (day) => {
 
       let ev = new EvTbl();
 
@@ -1773,7 +1770,7 @@ export class EventService extends BaseService {
       let outAgd = {} as AgendaData;
       Object.assign(outAgd,ev);
       outAgds.push(outAgd);
-    }
+    });
 
     let evparams : Array<any> = this.sqlExce.getFastSaveSqlByParam(evs);
     let waparams : Array<any> = this.sqlExce.getFastSaveSqlByParam(was);
