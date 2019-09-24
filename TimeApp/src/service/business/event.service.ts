@@ -3886,7 +3886,7 @@ export class RtJson {
 
       // 增加创建当天是否需要添加此事件
       if (withFrom && stepDay == repeatStartDay) {
-        if (days.length > 0 && days[0] != from) {
+        if (days.length > 0 && days.indexOf(from) < 0) {
           days.unshift(from);
         }
       }
