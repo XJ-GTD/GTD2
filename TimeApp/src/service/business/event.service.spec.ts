@@ -1207,7 +1207,18 @@ describe('EventService test suite', () => {
       agendaArray = await eventService.todolist();
       expect(agendaArray).toBeDefined();
       expect(agendaArray.length).toBeGreaterThan(0);
-      expect(agendaArray[3].sd).toBe("2019/09/14");
+
+      let preday: string = "";
+      for (let agenda of agendaArray) {
+        if (preday == "") {
+          preday = agenda.sd;
+          continue;
+        }
+
+        let pre: number = moment(preday).valueOf();
+        let cur: number = moment(agenda.sd).valueOf();
+        expect(cur).toBeGreaterThanOrEqual(pre);  //当前日期必须大于等于前一个日期
+      }
     });
 
 
