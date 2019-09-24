@@ -6,9 +6,9 @@ import { EmitService } from "../util-service/emit.service";
 import { BipdshaeData, Plan, PlanPa, ShareData, ShaeRestful } from "../restful/shaesev";
 import { SyncData, PushInData, PullInData, DataRestful } from "../restful/datasev";
 import { BackupPro, BacRestful, OutRecoverPro, RecoverPro } from "../restful/bacsev";
-import { EventData, TaskData, AgendaData, MiniTaskData, EventService, RtJson, TxJson } from "./event.service";
+import { EventData, TaskData, AgendaData, MiniTaskData, EventService, RtJson, TxJson, generateRtJson, generateTxJson } from "./event.service";
 import { MemoData, MemoService } from "./memo.service";
-import { EventType, PlanType, PlanItemType, PlanDownloadType, ObjectType, PageDirection, SyncType, RepeatFlag, DelType, SyncDataSecurity, SyncDataStatus } from "../../data.enum";
+import { EventType, PlanType, PlanItemType, PlanDownloadType, OperateType, ObjectType, PageDirection, CycleType, SyncType, RepeatFlag, DelType, SyncDataSecurity, SyncDataStatus } from "../../data.enum";
 import { UserConfig } from "../config/user.config";
 import * as moment from "moment";
 import { JhaTbl } from "../sqlite/tbl/jha.tbl";
@@ -803,7 +803,7 @@ export class CalendarService extends BaseService {
    *
    * @author leon_xi@163.com
    **/
-  async savePlanItem(item: PlanItemData): Promise<PlanItemData> {
+  async savePlanItem(item: PlanItemData, origin: PlanItemData = null, modiType: OperateType = OperateType.Non): Promise<Array<PlanItemData>> {
 
     this.assertEmpty(item);       // 入参不能为空
     this.assertEmpty(item.sd);    // 日历项所属日期不能为空
@@ -813,7 +813,12 @@ export class CalendarService extends BaseService {
       item.jtt = PlanItemType.Activity;
     }
 
+    let items: Array<PlanItemData> = new Array<PlanItemData>();
+
     if (item.jti) {
+      let rtjson: RtJson = generateRtJson(item.rtjson, item.rt);
+      let txjson: TxJson = generateTxJson(item.txjson, item.tx);
+
       // 更新
       let planitemdb: JtaTbl = new JtaTbl();
       Object.assign(planitemdb, item);
@@ -827,22 +832,62 @@ export class CalendarService extends BaseService {
       this.emitService.emit("mwxing.calendar.activities.changed", item);
     } else {
       // 新建
-      item.jti = this.util.getUuid();
+      let itemdbs: Array<JtaTbl> = new Array<JtaTbl>();
 
-      let planitemdb: JtaTbl = new JtaTbl();
-      Object.assign(planitemdb, item);
+      let rtjson: RtJson = generateRtJson(item.rtjson, item.rt);
+      let txjson: TxJson = generateTxJson(item.txjson, item.tx);
 
-      planitemdb.tb = SyncType.unsynch;
-      planitemdb.del = DelType.undel;
+      let rtjti: string = "";
 
-      await this.sqlExce.saveByParam(planitemdb);
+      rtjson.each(item.sd, (day) => {
+        let newitem: PlanItemData = {} as PlanItemData;
+        Object.assign(newitem, item);
 
-      Object.assign(item, planitemdb);
+        newitem.jti = this.util.getUuid();
+        newitem.sd = day;
 
-      this.emitService.emit("mwxing.calendar.activities.changed", item);
+        if (rtjson.cycletype != CycleType.close) {
+          // 重复标志
+          newitem.rfg = RepeatFlag.Repeat;
+
+          if (rtjti != "") {
+            newitem.rtjti = rtjti;
+          }
+        } else {
+          // 非重复标志
+          newitem.rfg = RepeatFlag.NonRepeat;
+        }
+
+        newitem.rtjson = rtjson;
+        newitem.rt = JSON.stringify(rtjson);
+        newitem.rts = rtjson.text();
+
+        newitem.txjson = txjson;
+        newitem.tx = JSON.stringify(txjson);
+        newitem.txs = txjson.text();
+
+        newitem.tb = SyncType.unsynch;
+        newitem.del = DelType.undel;
+
+        let planitemdb: JtaTbl = new JtaTbl();
+        Object.assign(planitemdb, newitem);
+
+        itemdbs.push(planitemdb);
+        items.push(newitem);
+
+        if (rtjti == "" && rtjson.cycletype != CycleType.close) {
+          rtjti = newitem.jti;
+        }
+      });
+
+      let sqls: Array<any> = this.sqlExce.getFastSaveSqlByParam(itemdbs) || new Array<any>();
+
+      await this.sqlExce.batExecSqlByParam(sqls);
+
+      this.emitService.emit("mwxing.calendar.activities.changed", items);
     }
 
-    return item;
+    return items;
   }
 
   /**
@@ -2844,7 +2889,8 @@ export interface PlanData extends JhaTbl {
 }
 
 export interface PlanItemData extends JtaTbl {
-
+  rtjson: RtJson;
+  txjson: TxJson;
 }
 
 export class PagedActivityData {

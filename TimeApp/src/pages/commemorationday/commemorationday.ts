@@ -167,6 +167,35 @@ export class CommemorationDayPage {
     }
   }
 
+  changeRepeat() {
+    if (!this.currentPlanItem.rtjson && this.currentPlanItem.rt) {
+      this.currentPlanItem.rtjson = new RtJson();
+      let rtdata = JSON.parse(this.currentPlanItem.rt);
+      Object.assign(this.currentPlanItem.rtjson, rtdata);
+    } else if (!this.currentPlanItem.rtjson && !this.currentPlanItem.rt) {
+      this.currentPlanItem.rtjson = new RtJson();
+    }
+
+    let data = new RtJson();
+    Object.assign(data, this.currentPlanItem.rtjson);
+    let modal = this.modalCtrl.create(DataConfig.PAGE._REPEAT_PAGE, {value: data});
+    modal.onDidDismiss(async (data) => {
+      if (data && data.rtjson) {
+        this.currentPlanItem.rtjson = new RtJson();
+        Object.assign(this.currentPlanItem.rtjson, data.rtjson);
+        this.currentPlanItem.rt = JSON.stringify(this.currentPlanItem.rtjson);
+        this.currentPlanItem.rts = this.currentPlanItem.rtjson.text();
+
+        if (!this.calendarService.isSamePlanItem(this.currentPlanItem, this.originPlanItem)) {
+          this.buttons.save = true;
+        } else {
+          this.buttons.save = false;
+        }
+      }
+    });
+    modal.present();
+  }
+
   changeComment() {
     let modal = this.modalCtrl.create(DataConfig.PAGE._COMMENT_PAGE, {value: this.currentPlanItem.bz});
     modal.onDidDismiss(async (data) => {
@@ -214,9 +243,9 @@ export class CommemorationDayPage {
 
         this.util.loadingStart().then(() => {
           this.calendarService.savePlanItem(this.currentPlanItem).then((commemorationday) => {
-            if (commemorationday) {
-              this.currentPlanItem = commemorationday;
-              Object.assign(this.originPlanItem, commemorationday);
+            if (commemorationday && commemorationday.length > 0) {
+              this.currentPlanItem = commemorationday[0];
+              Object.assign(this.originPlanItem, commemorationday[0]);
 
               this.buttons.remove = true;
               this.buttons.save = false;
@@ -248,9 +277,9 @@ export class CommemorationDayPage {
       } else {                            // 新建日程
         this.util.loadingStart().then(() => {
           this.calendarService.savePlanItem(this.currentPlanItem).then((commemorationday) => {
-            if (commemorationday) {
-              this.currentPlanItem = commemorationday;
-              Object.assign(this.originPlanItem, commemorationday);
+            if (commemorationday && commemorationday.length > 0) {
+              this.currentPlanItem = commemorationday[0];
+              Object.assign(this.originPlanItem, commemorationday[0]);
 
               this.buttons.remove = true;
               this.buttons.save = false;

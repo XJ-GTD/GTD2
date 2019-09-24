@@ -192,5 +192,7 @@ $range-ios-tick-active-background-color: transparent;
 // 主题
 @import "black.theme";
 @import "white.theme";
-@import "list-item";;
+@import "list-item";
+
+@import "../../node_modules/ionic2-auto-complete/auto-complete";
 
