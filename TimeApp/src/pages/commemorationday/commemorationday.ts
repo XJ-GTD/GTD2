@@ -214,9 +214,9 @@ export class CommemorationDayPage {
 
         this.util.loadingStart().then(() => {
           this.calendarService.savePlanItem(this.currentPlanItem).then((commemorationday) => {
-            if (commemorationday) {
-              this.currentPlanItem = commemorationday;
-              Object.assign(this.originPlanItem, commemorationday);
+            if (commemorationday && commemorationday.length > 0) {
+              this.currentPlanItem = commemorationday[0];
+              Object.assign(this.originPlanItem, commemorationday[0]);
 
               this.buttons.remove = true;
               this.buttons.save = false;
@@ -248,9 +248,9 @@ export class CommemorationDayPage {
       } else {                            // 新建日程
         this.util.loadingStart().then(() => {
           this.calendarService.savePlanItem(this.currentPlanItem).then((commemorationday) => {
-            if (commemorationday) {
-              this.currentPlanItem = commemorationday;
-              Object.assign(this.originPlanItem, commemorationday);
+            if (commemorationday && commemorationday.length > 0) {
+              this.currentPlanItem = commemorationday[0];
+              Object.assign(this.originPlanItem, commemorationday[0]);
 
               this.buttons.remove = true;
               this.buttons.save = false;
