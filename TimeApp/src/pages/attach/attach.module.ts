@@ -3,6 +3,10 @@ import { AttachPage } from './attach';
 import { IonicModule } from "ionic-angular";
 import { DirectivesModule } from "../../directives/directives.module";
 import {ModalBoxComponentModule} from "../../components/modal-box/modal-box.module";
+import {File} from '@ionic-native/file';
+import {FileTransfer, FileUploadOptions, FileTransferObject  } from '@ionic-native/file-transfer';
+import { Camera, CameraOptions } from '@ionic-native/camera';
+import { Chooser } from '@ionic-native/chooser';
 
 @NgModule({
   declarations: [
@@ -11,7 +15,14 @@ import {ModalBoxComponentModule} from "../../components/modal-box/modal-box.modu
   imports: [
     IonicModule,
     ModalBoxComponentModule,
-    DirectivesModule
+    DirectivesModule,
+    FileTransfer,
+    File,
+    FileUploadOptions,
+    FileTransferObject,
+    Camera,
+    CameraOptions,
+    Chooser
   ],
   providers: [
   ],
