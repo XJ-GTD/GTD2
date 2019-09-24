@@ -10,7 +10,7 @@ import {ModalBoxComponentModule} from "../../components/modal-box/modal-box.modu
   ],
   imports: [
     IonicModule,
-    BaiduMapModule.forRoot({ ak: 'zD6zCIA9w7ItoXwxQ8IRPD4rk5E9GEew' }),
+    BaiduMapModule.forRoot({ ak: '98TMZR5WnSwbH5FdnHHDe0917UlcDfCL' }),
     ModalBoxComponentModule
   ],
   providers: [

@@ -167,9 +167,11 @@ export class LocationPage {
     if (1 ==1){
       this.localRestful.queryPlace("陆家嘴").then(data =>{
         let lst = data;
-        console.log(lst);
+        alert("地图searchok");
+        console.log("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ + " + data);
       })
     }
+
 
     let myKeys = [txt];
 

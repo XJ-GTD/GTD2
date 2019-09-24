@@ -1,11 +1,10 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
-import { HTTP } from "@ionic-native/http";
+import {HTTP} from "@ionic-native/http";
 import {UrlEntity, RestFulConfig, RestFulHeader} from "../config/restful.config";
 import {UtilService} from "./util.service";
 import {SqliteExec} from "./sqlite.exec";
 import {LogTbl} from "../sqlite/tbl/log.tbl";
-import {DataConfig} from "../config/data.config";
 import {NetworkService} from "../cordova/network.service";
 
 /**
@@ -15,23 +14,23 @@ import {NetworkService} from "../cordova/network.service";
 export class RestfulClient {
 
   constructor(private http: HTTP,
-    private httpClient:HttpClient,
-    private networkService: NetworkService,
-    private restConfig:RestFulConfig,
-    private util:UtilService,
-    private sqlitExc:SqliteExec){
-      this.init()
+              private httpClient: HttpClient,
+              private networkService: NetworkService,
+              private restConfig: RestFulConfig,
+              private util: UtilService,
+              private sqlitExc: SqliteExec) {
+    this.init()
   }
 
-  init(){
-    if (this.util.hasCordova()){
+  init() {
+    if (this.util.hasCordova()) {
       this.http.setDataSerializer("json");
-      this.http.setSSLCertMode("nocheck").then(data=>{
+      this.http.setSSLCertMode("nocheck").then(data => {
       })
     }
   }
 
-  post(url:UrlEntity, body:any):Promise<any> {
+  post(url: UrlEntity, body: any): Promise<any> {
     return new Promise((resolve, reject) => {
 
       // 没有网络的时候，直接返回
@@ -40,55 +39,55 @@ export class RestfulClient {
         return;
       }
 
-      let log:LogTbl = new LogTbl();
+      let log: LogTbl = new LogTbl();
       log.id = this.util.getUuid();
       log.su = url.key;
       log.ss = new Date().valueOf();
       log.t = 1;
       let header = this.restConfig.createHeader();
-        if(this.util.hasCordova()){
-          return this.http.post(url.url,body,header).then(data=>{
-            // console.log(data.status);
-            // console.log(data.data); // data received by server
-            // console.log(data.headers);
-            let jsonData = JSON.parse(data.data);
+      if (this.util.hasCordova()) {
+        return this.http.post(url.url, body, header).then(data => {
+          // console.log(data.status);
+          // console.log(data.data); // data received by server
+          // console.log(data.headers);
+          let jsonData = JSON.parse(data.data);
 
-            log.ss = new Date().valueOf() - log.ss;
-            log.st = true;
-            this.sqlitExc.noteLog(log);
-            resolve(jsonData);
-          }).catch(err=>{
-            this.util.toastStart("冥王星" + url.desc + "服务访问失败" ,2000);
-            log.ss = new Date().valueOf() - log.ss;
-            log.st = false;
-            log.er = err;
-            this.sqlitExc.noteLog(log);
-            reject(err);
-          })
-        }else{
-          //浏览器测试使用
-          let warHeader:any={};
-          warHeader.headers = header;
-          this.httpClient.post(url.url,body,warHeader).subscribe(data=>{
+          log.ss = new Date().valueOf() - log.ss;
+          log.st = true;
+          this.sqlitExc.noteLog(log);
+          resolve(jsonData);
+        }).catch(err => {
+          this.util.toastStart("冥王星" + url.desc + "服务访问失败", 2000);
+          log.ss = new Date().valueOf() - log.ss;
+          log.st = false;
+          log.er = err;
+          this.sqlitExc.noteLog(log);
+          reject(err);
+        })
+      } else {
+        //浏览器测试使用
+        let warHeader: any = {};
+        warHeader.headers = header;
+        this.httpClient.post(url.url, body, warHeader).subscribe(data => {
 
-            log.ss = new Date().valueOf() - log.ss;
-            log.st = true;
-            this.sqlitExc.noteLog(log);
-            resolve(data);
-          },err => {
+          log.ss = new Date().valueOf() - log.ss;
+          log.st = true;
+          this.sqlitExc.noteLog(log);
+          resolve(data);
+        }, err => {
 
-            log.ss = new Date().valueOf() - log.ss;
-            log.st = false;
-            log.er = err;
-            this.sqlitExc.noteLog(log);
-            this.util.toastStart("冥王星" + url.desc + "服务访问失败",2000);
-            reject(err)
-          })
-        }
-      });
+          log.ss = new Date().valueOf() - log.ss;
+          log.st = false;
+          log.er = err;
+          this.sqlitExc.noteLog(log);
+          this.util.toastStart("冥王星" + url.desc + "服务访问失败", 2000);
+          reject(err)
+        })
+      }
+    });
   }
 
-  get(url:UrlEntity):Promise<any> {
+  get(url: UrlEntity): Promise<any> {
     return new Promise((resolve, reject) => {
       // 没有网络的时候，直接返回
       if (!this.networkService.isConnected()) {
@@ -96,52 +95,52 @@ export class RestfulClient {
         return;
       }
 
-      let log:LogTbl = new LogTbl();
+      let log: LogTbl = new LogTbl();
       log.id = this.util.getUuid();
       log.su = url.key;
       log.ss = new Date().valueOf();
       log.t = 1;
       let header = this.restConfig.createHeader();
-        if(this.util.hasCordova()){
-          return this.http.get(url.url,{},header).then(data=>{
-            let jsonData = JSON.parse(data.data);
-            log.ss = new Date().valueOf() - log.ss;
-            log.st = true;
-            this.sqlitExc.noteLog(log);
-            resolve(jsonData);
-          }).catch(err=>{
+      if (this.util.hasCordova()) {
+        return this.http.get(url.url, {}, header).then(data => {
+          let jsonData = JSON.parse(data.data);
+          log.ss = new Date().valueOf() - log.ss;
+          log.st = true;
+          this.sqlitExc.noteLog(log);
+          resolve(jsonData);
+        }).catch(err => {
 
-            log.ss = new Date().valueOf() - log.ss;
-            log.st = false;
-            log.er = err;
-            this.sqlitExc.noteLog(log);
-            this.util.toastStart("冥王星" + url.desc + "服务访问失败",2000);
-            reject(err);
-          })
-        }else{
-          //浏览器测试使用
-          let warHeader:any={};
-          warHeader.headers = header;
-          this.httpClient.get(url.url,warHeader).subscribe(data=>{
+          log.ss = new Date().valueOf() - log.ss;
+          log.st = false;
+          log.er = err;
+          this.sqlitExc.noteLog(log);
+          this.util.toastStart("冥王星" + url.desc + "服务访问失败", 2000);
+          reject(err);
+        })
+      } else {
+        //浏览器测试使用
+        let warHeader: any = {};
+        warHeader.headers = header;
+        this.httpClient.get(url.url, warHeader).subscribe(data => {
 
-            log.ss = new Date().valueOf() - log.ss;
-            log.st = true;
-            this.sqlitExc.noteLog(log);
-            resolve(data);
-          },err => {
+          log.ss = new Date().valueOf() - log.ss;
+          log.st = true;
+          this.sqlitExc.noteLog(log);
+          resolve(data);
+        }, err => {
 
-            log.ss = new Date().valueOf() - log.ss;
-            log.st = false;
-            log.er = err;
-            this.sqlitExc.noteLog(log);
-            this.util.toastStart("冥王星" + url.desc + "服务访问失败",2000);
-            reject(err)
-          })
-        }
-      });
+          log.ss = new Date().valueOf() - log.ss;
+          log.st = false;
+          log.er = err;
+          this.sqlitExc.noteLog(log);
+          this.util.toastStart("冥王星" + url.desc + "服务访问失败", 2000);
+          reject(err)
+        })
+      }
+    });
   }
 
-  put(url:UrlEntity, body:any):Promise<any> {
+  put(url: UrlEntity, body: any): Promise<any> {
     return new Promise((resolve, reject) => {
       // 没有网络的时候，直接返回
       if (!this.networkService.isConnected()) {
@@ -149,49 +148,49 @@ export class RestfulClient {
         return;
       }
 
-      let log:LogTbl = new LogTbl();
+      let log: LogTbl = new LogTbl();
       log.id = this.util.getUuid();
       log.su = url.key;
       log.ss = new Date().valueOf();
       log.t = 1;
       let header = this.restConfig.createHeader();
-        if(this.util.hasCordova()){
-          return this.http.put(url.url,body,header).then(data=>{
-            let jsonData = JSON.parse(data.data);
+      if (this.util.hasCordova()) {
+        return this.http.put(url.url, body, header).then(data => {
+          let jsonData = JSON.parse(data.data);
 
-            log.ss = new Date().valueOf() - log.ss;
-            log.st = true;
-            this.sqlitExc.noteLog(log);
-            resolve(jsonData);
-          }).catch(err=>{
+          log.ss = new Date().valueOf() - log.ss;
+          log.st = true;
+          this.sqlitExc.noteLog(log);
+          resolve(jsonData);
+        }).catch(err => {
 
-            log.ss = new Date().valueOf() - log.ss;
-            log.st = false;
-            log.er = err;
-            this.sqlitExc.noteLog(log);
-            this.util.toastStart("冥王星" + url.desc + "服务访问失败",2000);
-            reject(err);
-          })
-        }else{
-          //浏览器测试使用
-          let warHeader:any={};
-          warHeader.headers = header;
-          this.httpClient.put(url.url,body,warHeader).subscribe(data=>{
-            log.ss = new Date().valueOf() - log.ss;
-            log.st = true;
-            this.sqlitExc.noteLog(log);
-            log.t = 1;
-            resolve(data);
-          },err => {
-            log.ss = new Date().valueOf() - log.ss;
-            log.st = false;
-            log.er = err;
-            this.sqlitExc.noteLog(log);
-            this.util.toastStart("冥王星" + url.desc + "服务访问失败",2000);
-            reject(err)
-          })
-        }
-      });
+          log.ss = new Date().valueOf() - log.ss;
+          log.st = false;
+          log.er = err;
+          this.sqlitExc.noteLog(log);
+          this.util.toastStart("冥王星" + url.desc + "服务访问失败", 2000);
+          reject(err);
+        })
+      } else {
+        //浏览器测试使用
+        let warHeader: any = {};
+        warHeader.headers = header;
+        this.httpClient.put(url.url, body, warHeader).subscribe(data => {
+          log.ss = new Date().valueOf() - log.ss;
+          log.st = true;
+          this.sqlitExc.noteLog(log);
+          log.t = 1;
+          resolve(data);
+        }, err => {
+          log.ss = new Date().valueOf() - log.ss;
+          log.st = false;
+          log.er = err;
+          this.sqlitExc.noteLog(log);
+          this.util.toastStart("冥王星" + url.desc + "服务访问失败", 2000);
+          reject(err)
+        })
+      }
+    });
   }
 
   /**
@@ -200,8 +199,8 @@ export class RestfulClient {
    * @param header
    * @param body
    */
-  specPost(url:string,header:RestFulHeader,body:any):Promise<any> {
-    let log:LogTbl = new LogTbl();
+  specPost(url: string, header: RestFulHeader, body: any): Promise<any> {
+    let log: LogTbl = new LogTbl();
     log.id = this.util.getUuid();
     log.su = url;
     log.ss = new Date().valueOf();
@@ -213,39 +212,39 @@ export class RestfulClient {
         return;
       }
 
-        if(this.util.hasCordova()){
-          return this.http.post(url,body,header).then(data=>{
-            log.ss = new Date().valueOf() - log.ss;
-            log.st = true;
-            this.sqlitExc.noteLog(log);
-            resolve(JSON.parse(data.data));
-          }).catch(err=>{
-            log.ss = new Date().valueOf() - log.ss;
-            log.st = false;
-            log.er = err;
-            this.sqlitExc.noteLog(log);
-            this.util.toastStart("初始化数据获取失败",2000);
-            resolve();
-            //reject(e);
-          })
-        }else{
-          //浏览器测试使用
-          let warHeader:any={};
-          warHeader.headers = header;
-          this.httpClient.post(url,body,warHeader).subscribe(data=>{
-            log.ss = new Date().valueOf() - log.ss;
-            log.st = true;
-            this.sqlitExc.noteLog(log);
-            resolve(data);
-          },err => {
-            log.ss = new Date().valueOf() - log.ss;
-            log.st = false;
-            log.er = err;
-            this.sqlitExc.noteLog(log);
-            this.util.toastStart("初始化数据获取失败",2000);
-            resolve();
-          })
-        }
+      if (this.util.hasCordova()) {
+        return this.http.post(url, body, header).then(data => {
+          log.ss = new Date().valueOf() - log.ss;
+          log.st = true;
+          this.sqlitExc.noteLog(log);
+          resolve(JSON.parse(data.data));
+        }).catch(err => {
+          log.ss = new Date().valueOf() - log.ss;
+          log.st = false;
+          log.er = err;
+          this.sqlitExc.noteLog(log);
+          this.util.toastStart("初始化数据获取失败", 2000);
+          resolve();
+          //reject(e);
+        })
+      } else {
+        //浏览器测试使用
+        let warHeader: any = {};
+        warHeader.headers = header;
+        this.httpClient.post(url, body, warHeader).subscribe(data => {
+          log.ss = new Date().valueOf() - log.ss;
+          log.st = true;
+          this.sqlitExc.noteLog(log);
+          resolve(data);
+        }, err => {
+          log.ss = new Date().valueOf() - log.ss;
+          log.st = false;
+          log.er = err;
+          this.sqlitExc.noteLog(log);
+          this.util.toastStart("初始化数据获取失败", 2000);
+          resolve();
+        })
+      }
     });
   }
 
@@ -255,8 +254,8 @@ export class RestfulClient {
    * @param header
    * @param body
    */
-  get4Text(url:string,header:RestFulHeader,body:any):Promise<any> {
-    let log:LogTbl = new LogTbl();
+  get4Text(url: string, header: RestFulHeader, body: any): Promise<any> {
+    let log: LogTbl = new LogTbl();
     log.id = this.util.getUuid();
     log.su = url;
     log.ss = new Date().valueOf();
@@ -269,38 +268,66 @@ export class RestfulClient {
       }
 
       header["Content-Type"] = "text/plain"
-      if(this.util.hasCordova()){
-        return this.http.get(url,body,header).then(data=>{
+      if (this.util.hasCordova()) {
+        return this.http.get(url, body, header).then(data => {
           log.ss = new Date().valueOf() - log.ss;
           log.st = true;
           this.sqlitExc.noteLog(log);
           resolve(data.data);
-        }).catch(err=>{
+        }).catch(err => {
           log.ss = new Date().valueOf() - log.ss;
           log.st = false;
           log.er = err;
           this.sqlitExc.noteLog(log);
-          this.util.toastStart("初始化数据获取失败",2000);
+          this.util.toastStart("初始化数据获取失败", 2000);
           reject(err);
         })
-      }else{
+      } else {
         //浏览器测试使用
-        let warHeader:any={};
+        let warHeader: any = {};
         warHeader.headers = header;
-        this.httpClient.get(url,warHeader).subscribe(data=>{
+        this.httpClient.get(url, warHeader).subscribe(data => {
           log.ss = new Date().valueOf() - log.ss;
           log.st = true;
           this.sqlitExc.noteLog(log);
           resolve(data);
-        },err => {
+        }, err => {
           log.ss = new Date().valueOf() - log.ss;
           log.st = false;
           log.er = err;
           this.sqlitExc.noteLog(log);
-          this.util.toastStart("初始化数据获取失败",2000);
+          this.util.toastStart("初始化数据获取失败", 2000);
           reject(err)
         })
       }
     });
   }
+
+  /**
+   * http请求
+   * @param url
+   * @param header
+   * @param body
+   */
+  get4thridAPI(url: string): Promise<any> {
+
+    return new Promise((resolve, reject) => {
+
+      if (this.util.hasCordova()) {
+        return this.http.get(url, {}, {}).then(data => {
+          resolve(data);
+        }).catch(err => {
+        })
+      } else {
+
+        this.httpClient.jsonp(url, "callback").subscribe((data) => {
+          resolve(data);
+        });
+      }
+
+    });
+  }
+
 }
+
+

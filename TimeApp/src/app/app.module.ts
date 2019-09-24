@@ -13,7 +13,7 @@ import {SQLitePorter} from '@ionic-native/sqlite-porter';
 import {BackgroundMode} from '@ionic-native/background-mode';
 import {AndroidPermissions} from '@ionic-native/android-permissions';
 import {HTTP} from "@ionic-native/http";
-import {HttpClientModule} from "@angular/common/http";
+import {HttpClientJsonpModule, HttpClientModule} from "@angular/common/http";
 import {Network} from "@ionic-native/network";
 import {Contacts} from "@ionic-native/contacts";
 import {Vibration} from "@ionic-native/vibration";
@@ -200,7 +200,7 @@ import {LocalRestful} from "../service/restful/localsev";
     RadioSelectComponentModule,
     ScrollRangePickerComponentModule,
     SpeechBubbleComponentModule,
-
+    HttpClientJsonpModule
   ],
   bootstrap: [IonicApp],
   entryComponents: [
