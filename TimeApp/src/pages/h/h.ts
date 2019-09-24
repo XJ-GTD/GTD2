@@ -72,6 +72,9 @@ import {AgendaPage} from "../agenda/agenda";
           <button ion-fab (click)="todoList()">
             <ion-icon name="albums"></ion-icon>
           </button>
+          <button ion-fab (click)="todoscrumList()">
+            <ion-icon name="clock"></ion-icon>
+          </button>
           <button ion-fab (click)="openm()">
             <ion-icon name="contact" ></ion-icon>
           </button>
@@ -383,6 +386,12 @@ export class HPage {
     let selectDay: CalendarDay = day ? day : this.hdata.selectDay;
 
     this.modalCtr.create(DataConfig.PAGE._DO_PAGE, selectDay).present();
+  }
+
+  todoscrumList(day ?: CalendarDay) {
+    let selectDay: CalendarDay = day ? day : this.hdata.selectDay;
+
+    this.modalCtr.create(DataConfig.PAGE._DOSCRUM_PAGE, selectDay).present();
   }
 
   gotolist() {
