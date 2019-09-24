@@ -309,12 +309,12 @@ export class RestfulClient {
    * @param header
    * @param body
    */
-  get4thridAPI(url: string): Promise<any> {
+  get4thridAPIJSONP(url: string): Promise<any> {
 
     return new Promise((resolve, reject) => {
 
       if (this.util.hasCordova()) {
-        return this.http.get(url, {}, {}).then(data => {
+         this.http.get(url, {}, {}).then(data => {
           resolve(data);
         }).catch(err => {
         })
@@ -327,6 +327,32 @@ export class RestfulClient {
 
     });
   }
+
+  /**
+   * http请求
+   * @param url
+   * @param header
+   * @param body
+   */
+  get4thridAPIGET(url: string): Promise<any> {
+
+    return new Promise((resolve, reject) => {
+
+      if (this.util.hasCordova()) {
+        this.http.get(url, {}, {}).then(data => {
+          resolve(data);
+        }).catch(err => {
+        })
+      } else {
+
+        this.httpClient.get(url).subscribe((data) => {
+          resolve(data);
+        });
+      }
+
+    });
+  }
+
 
 }
 

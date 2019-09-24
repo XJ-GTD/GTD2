@@ -109,6 +109,7 @@
     "ionic": "^4.3.0",
     "ionic-angular": "3.9.2",
     "ionic-plugin-keyboard": "~2.2.1",
+    "ionic2-auto-complete": "^1.6.2-alpha",
     "ionicons": "3.0.0",
     "moment": "^2.22.2",
     "ngx-icons": "^0.3.0",
