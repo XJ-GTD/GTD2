@@ -4,6 +4,8 @@ import {ControlAnchor, MapOptions, Marker, NavigationControlOptions, NavigationC
 import {AutoCompleteComponent} from "ionic2-auto-complete";
 import {LocationSearchService} from "../../service/restful/LocationSearchService";
 import {CenterAndZoom} from "angular2-baidu-map/types/Map";
+import {PageBoxComponent} from "../../components/page-box/page-box";
+import {ModalBoxComponent} from "../../components/modal-box/modal-box";
 
 declare var BMap;
 
@@ -31,6 +33,9 @@ export class LocationPage {
 
   @ViewChild(AutoCompleteComponent)
   searchbar: AutoCompleteComponent;
+
+  @ViewChild(ModalBoxComponent)
+  modalBoxComponent:ModalBoxComponent
 
   buttons: any = {
     remove: false,
@@ -101,6 +106,8 @@ export class LocationPage {
 
 
   ionViewDidEnter() {
+
+    this.modalBoxComponent.setBoxContent();
 
     if (this.navParams && this.navParams.data && this.navParams.data.adrx) {
       let value = this.navParams.data;

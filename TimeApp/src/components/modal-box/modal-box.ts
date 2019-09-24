@@ -1,5 +1,15 @@
-import {Component, Input, Output, EventEmitter, ViewChild, ElementRef, ContentChildren, QueryList} from '@angular/core';
-import {Events} from 'ionic-angular';
+import {
+  Component,
+  Input,
+  Output,
+  EventEmitter,
+  ViewChild,
+  ElementRef,
+  ContentChildren,
+  QueryList,
+  Renderer2
+} from '@angular/core';
+import {Content, Events} from 'ionic-angular';
 
 /**
  * Generated class for the ScrollSelectComponent component.
@@ -35,7 +45,7 @@ import {Events} from 'ionic-angular';
           </div>
         </ion-toolbar>
       </ion-header>
-      <ion-content class="box-content">
+      <ion-content class="box-content" #modalcontent>
         <ng-content></ng-content>
       </ion-content>
     </div>
@@ -44,6 +54,8 @@ import {Events} from 'ionic-angular';
 export class ModalBoxComponent {
   @Input()
   title: string = "";
+
+  @ViewChild('modalcontent') modalcontent: Content;
 
   @Input()
   buttons: any = {
@@ -59,7 +71,16 @@ export class ModalBoxComponent {
   @Output()
   private onCancel: EventEmitter<any> = new EventEmitter<any>();
 
-  constructor(public events: Events) {
+  constructor(public events: Events,private renderer2: Renderer2,) {
+
+  }
+
+  setBoxContent(){
+    let height = this.modalcontent._scrollContent.nativeElement.clientHeight;
+    this.renderer2.setStyle(this.modalcontent._scrollContent.nativeElement, "height", height + "px");
+    this.renderer2.setStyle(this.modalcontent._scrollContent.nativeElement, "overflow-y", height + "hidden");
+    this.renderer2.setStyle(this.modalcontent._fixedContent.nativeElement, "height", height + "px");
+    this.renderer2.setStyle(this.modalcontent._fixedContent.nativeElement, "overflow-y", height + "hidden");
 
   }
 

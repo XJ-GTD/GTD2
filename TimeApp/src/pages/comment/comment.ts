@@ -1,5 +1,5 @@
 import { Component, ElementRef, QueryList, Renderer2, ViewChild, ViewChildren } from '@angular/core';
-import { IonicPage, NavController, NavParams, ViewController, ModalController, Scroll } from 'ionic-angular';
+import {IonicPage, NavController, NavParams, ViewController, ModalController, Scroll, TextInput} from 'ionic-angular';
 import {Keyboard} from "@ionic-native/keyboard";
 import {ModalBoxComponent} from "../../components/modal-box/modal-box";
 
@@ -8,12 +8,17 @@ import {ModalBoxComponent} from "../../components/modal-box/modal-box";
   selector: 'page-comment',
   template: `
   <modal-box title="备注" [buttons]="buttons" (onSave)="save()" (onCancel)="cancel()">
-    <ion-textarea  placeholder="备注"  class="memo-set" rows="8" #bzRef [(ngModel)]="bz" ></ion-textarea>
+    <ion-textarea  #textarea placeholder="备注"  class="memo-set" rows="8" [(ngModel)]="bz" ></ion-textarea>
   </modal-box>
   `
 })
 export class CommentPage {
-  statusBarColor: string = "#3c4d55";
+
+  @ViewChild(ModalBoxComponent)
+  modalBoxComponent:ModalBoxComponent;
+
+  @ViewChild("input")
+  textarea: TextInput;
 
   buttons: any = {
     remove: false,
@@ -22,8 +27,6 @@ export class CommentPage {
     cancel: true
   };
 
-  @ViewChild("bzRef", {read: ElementRef})
-  _bzRef: ElementRef;
 
   bz: string = "";  //备注
 
@@ -42,11 +45,10 @@ export class CommentPage {
   }
 
   ionViewDidEnter() {
-    setTimeout(() => {
-      let el = this._bzRef.nativeElement.querySelector('textarea');
-      el.focus();
-      this.keyboard.show();   //for android
-    }, 500);
+
+    this.modalBoxComponent.setBoxContent();
+
+    this.textarea.setFocus();
   }
 
   save() {

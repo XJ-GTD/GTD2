@@ -315,8 +315,10 @@ export class RestfulClient {
 
       if (this.util.hasCordova()) {
          this.http.get(url, {}, {}).then(data => {
-          resolve(data);
+
+           resolve(JSON.parse(data.data));
         }).catch(err => {
+          alert(err)
         })
       } else {
 
@@ -340,7 +342,7 @@ export class RestfulClient {
 
       if (this.util.hasCordova()) {
         this.http.get(url, {}, {}).then(data => {
-          resolve(data);
+          resolve(JSON.parse(data.data));
         }).catch(err => {
         })
       } else {
