@@ -18,10 +18,7 @@ import { Chooser } from '@ionic-native/chooser';
     DirectivesModule,
     FileTransfer,
     File,
-    FileUploadOptions,
-    FileTransferObject,
     Camera,
-    CameraOptions,
     Chooser
   ],
   providers: [
