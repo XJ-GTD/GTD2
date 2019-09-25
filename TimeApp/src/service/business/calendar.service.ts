@@ -1320,14 +1320,14 @@ export class CalendarService extends BaseService {
               let futureallsqls: Array<any> = new Array<any>();
 
               // 创建新的重复日历项
-              let anewitem: PlanItemData = {} as PlanItemData;
-              Object.assign(anewitem, item);
+              let bnewitem: PlanItemData = {} as PlanItemData;
+              Object.assign(bnewitem, item);
 
               // 重置日历项ID
-              anewitem.jti = "";
-              anewitem.rtjti = "";
+              bnewitem.jti = "";
+              bnewitem.rtjti = "";
 
-              this.newPlanitem(anewitem, (newitems, newsqls) => {
+              this.newPlanitem(bnewitem, (newitems, newsqls) => {
                 for (let newitem of newitems) {
                   items.push(newitem);
                 }
@@ -1338,7 +1338,7 @@ export class CalendarService extends BaseService {
               });
 
               // 删除将来所有重复日历项
-              let rtjti: string = origin.rtjti? origin.rtjti : origin.jti;
+              let futureallrtjti: string = origin.rtjti? origin.rtjti : origin.jti;
 
               let fetchFromSel: string = `select *
                                           from gtd_jta
@@ -1348,11 +1348,11 @@ export class CalendarService extends BaseService {
                                             and del <> ?4
                                           order by sd asc`;
 
-              let originitems: Array<PlanItemData> = await this.sqlExce.getExtLstByParam<PlanItemData>(fetchFromSel, [rtjti, RepeatFlag.Repeat, origin.sd, DelType.undel]) || new Array<PlanItemData>();
+              let futurealloriginitems: Array<PlanItemData> = await this.sqlExce.getExtLstByParam<PlanItemData>(fetchFromSel, [futureallrtjti, RepeatFlag.Repeat, origin.sd, DelType.undel]) || new Array<PlanItemData>();
 
-              let originitemsdb: Array<JtaTbl> = new Array<JtaTbl>();
+              let futurealloriginitemsdb: Array<JtaTbl> = new Array<JtaTbl>();
 
-              for (let originitem of originitems) {
+              for (let originitem of futurealloriginitems) {
                 originitem.del = DelType.del;
                 originitem.tb = SyncType.unsynch;
 
@@ -1360,12 +1360,12 @@ export class CalendarService extends BaseService {
                 Object.assign(planitemdb, originitem);
 
                 items.push(originitem);
-                originitemsdb.push(planitemdb);
+                futurealloriginitemsdb.push(planitemdb);
               }
 
-              let originitemssqls: Array<any> = this.sqlExce.getFastSaveSqlByParam(originitemsdb) || new Array<any>();
+              let futurealloriginitemssqls: Array<any> = this.sqlExce.getFastSaveSqlByParam(futurealloriginitemsdb) || new Array<any>();
 
-              for (let originitemsql of originitemssqls) {
+              for (let originitemsql of futurealloriginitemssqls) {
                 futureallsqls.unshift(originitemsql);
               }
 
@@ -1377,7 +1377,7 @@ export class CalendarService extends BaseService {
               let allsqls: Array<any> = new Array<any>();
 
               // 查询原有重复日历项
-              let rtjti: string = origin.rtjti? origin.rtjti : origin.jti;
+              let allrtjti: string = origin.rtjti? origin.rtjti : origin.jti;
 
               let fetchAll: string = `select *
                                           from gtd_jta
@@ -1386,18 +1386,18 @@ export class CalendarService extends BaseService {
                                             and del <> ?3
                                           order by sd asc`;
 
-              let originitems: Array<PlanItemData> = await this.sqlExce.getExtLstByParam<PlanItemData>(fetchAll, [rtjti, RepeatFlag.Repeat, DelType.undel]) || new Array<PlanItemData>();
+              let alloriginitems: Array<PlanItemData> = await this.sqlExce.getExtLstByParam<PlanItemData>(fetchAll, [allrtjti, RepeatFlag.Repeat, DelType.undel]) || new Array<PlanItemData>();
 
               // 创建新的重复日历项
-              let anewitem: PlanItemData = {} as PlanItemData;
-              Object.assign(anewitem, item);
+              let cnewitem: PlanItemData = {} as PlanItemData;
+              Object.assign(cnewitem, item);
 
               // 重置日历项ID,开始日期
-              anewitem.jti = "";
-              anewitem.rtjti = "";
-              anewitem.sd = originitems[0].sd;
+              cnewitem.jti = "";
+              cnewitem.rtjti = "";
+              cnewitem.sd = alloriginitems[0].sd;
 
-              this.newPlanitem(anewitem, (newitems, newsqls) => {
+              this.newPlanitem(cnewitem, (newitems, newsqls) => {
                 for (let newitem of newitems) {
                   items.push(newitem);
                 }
@@ -1408,9 +1408,9 @@ export class CalendarService extends BaseService {
               });
 
               // 删除将来所有重复日历项
-              let originitemsdb: Array<JtaTbl> = new Array<JtaTbl>();
+              let alloriginitemsdb: Array<JtaTbl> = new Array<JtaTbl>();
 
-              for (let originitem of originitems) {
+              for (let originitem of alloriginitems) {
                 originitem.del = DelType.del;
                 originitem.tb = SyncType.unsynch;
 
@@ -1418,12 +1418,12 @@ export class CalendarService extends BaseService {
                 Object.assign(planitemdb, originitem);
 
                 items.push(originitem);
-                originitemsdb.push(planitemdb);
+                alloriginitemsdb.push(planitemdb);
               }
 
-              let originitemssqls: Array<any> = this.sqlExce.getFastSaveSqlByParam(originitemsdb) || new Array<any>();
+              let alloriginitemssqls: Array<any> = this.sqlExce.getFastSaveSqlByParam(alloriginitemsdb) || new Array<any>();
 
-              for (let originitemsql of originitemssqls) {
+              for (let originitemsql of alloriginitemssqls) {
                 allsqls.unshift(originitemsql);
               }
 
