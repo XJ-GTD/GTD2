@@ -56,7 +56,7 @@ import {Keyboard} from "@ionic-native/keyboard";
               </button>
               <button class="agendaPlanbutton"  ion-button icon-start clear  (click)="changePlan()">
                 <ion-icon class="fal fa-line-columns iconPlus"></ion-icon>
-                <div>{{currentAgenda.ji | formatplan: '计划': privateplans}}</div>
+                <div>{{currentAgenda.ji | formatplan: 'name' :'加入日历': privateplans}}</div>
               </button>
             </ion-row>
 
@@ -145,7 +145,6 @@ import {Keyboard} from "@ionic-native/keyboard";
   `
 })
 export class AgendaPage {
-  statusBarColor: string = "#3c4d55";
 
   buttons: any = {
     remove: false,
@@ -296,7 +295,7 @@ export class AgendaPage {
     modal.onDidDismiss(async (data) => {
       if (!data) return;
 
-      this.currentAgenda.ji = data.jh.ji;
+      this.currentAgenda.ji = data;
 
       if (!this.eventService.isSameAgenda(this.currentAgenda, this.originAgenda)) {
         this.buttons.save = true;

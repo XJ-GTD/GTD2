@@ -1,49 +1,95 @@
 page-plan {
-  ion-item.item-ios {
-    background-color: $masterColor;
-    color: #fff;
-    border: 0px;
+  .box-content {
 
-    .item-inner {
-      border: 0px;
+    .addplan{
+      margin: 90px auto;
+      text-align: center;
+      .icon{
+        font-size: 150px;
+        clear: both;
+        display: block;
+      }
+      span{
+        font-weight:400;
+        font-size: 16px;
+        margin: 20px auto;
+        display: block;
+      }
+      button{
+        display: block;
+        margin: 120px auto;
+        font-size: 18px;
+        border-radius:10px;
+        font-weight:400;
+        padding: 12px 80px;
+        border-radius: 4px;
+
+      }
     }
-  }
 
-  .list-ios .item-block .item-inner {
-    border: 0px;
-  }
+    .toolbar-ios {
+      margin-top: 14px;
+      ion-title{
+        padding: 12px;
+        margin: 0 auto;
+        width: 85%;
+        font-size: 16px;
+        color:  rgba(51, 51, 51, 1);
+        position: relative;
+        height: 45px;
+        box-shadow:5px 3px 10px 0px rgba(58,58,58,0.73);
+        border-radius:4px;
+      }
 
-  .item-ios.item-block .item-inner {
-    border: 0px;
-  }
+      .toolbar-background-ios {
+        background: transparent;
+      }
+    }
 
-  .list-ios > .item-block:first-child, .list-ios > .item-wrapper:first-child .item-block {
-    border: 0px;
-  }
+    .list-ios {
+      width: auto;
+      overflow-y: auto;
+      height: 75%;
+      margin: 12px;
+      padding-bottom: 1px;
+      background: rgba(255, 255, 255, 1);
+      box-shadow: 2.5px 1.5px 10px 0px rgba(201, 200, 200, 0.73);
+      border-radius: 4px;
 
-  .list-ios > .item-block:last-child, .list-ios > .item-wrapper:last-child .item-block {
-    border: 0px;
-  }
+      .item > ion-icon{
+        font-size: 24px;
+        line-height: 1;
+        min-height:24px;
+      }
+      .item .radio-ios{
+        position: absolute;
+        margin: 0;
+        left: 18px;
 
-  .item-radio-checked.item-ios ion-label {
-    color: #fff;
-  }
+      }
 
-  .item-radio.item-ios ion-label {
-    font-size: 1.4rem;
-  }
 
-  i.color-dot {
-    width: 1.5vmin;
-    height: 1.5vmin;
-    background-color: #fff;
-    border-radius: 50%;
-    display: inline-block;
-    margin-bottom: 0.1rem;
-  }
+      .item-block, .item-block:last-child {
+        min-height: 45px;
+        background: transparent;
+        border-width: 0;
+        padding: 0 16px;
 
-  .radio-ios .radio-checked .radio-inner {
-    border-color: #fff;
+        .item-inner {
+          border-width: 0;
+
+          ion-label{
+            font-weight: 400;
+            color: rgba(51, 51, 51, 1);
+            font-size: 14px;
+            letter-spacing: 1px;
+            margin: 11px 4px 11px 0;
+          }
+        }
+      }
+
+
+    }
   }
 
 }

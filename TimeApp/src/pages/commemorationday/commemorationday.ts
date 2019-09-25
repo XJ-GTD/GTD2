@@ -45,7 +45,7 @@ import {Keyboard} from "@ionic-native/keyboard";
               </button>
               <button class="agendaPlanbutton"  ion-button icon-start clear  (click)="changePlan()">
                 <ion-icon class="fal fa-line-columns iconPlus"></ion-icon>
-                <div>{{currentPlanItem.ji | formatplan: '计划': privateplans}}</div>
+                <div>{{currentPlanItem.ji | formatplan: 'name' : '加入日历': privateplans}}</div>
               </button>
             </ion-row>
 

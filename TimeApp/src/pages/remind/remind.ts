@@ -12,7 +12,7 @@ import * as anyenum from "../../data.enum";
   selector: 'page-remind',
   template: `
     <modal-box title="提醒" [buttons]="buttons" (onSave)="save()" (onCancel)="cancel()">
-      <ion-toolbar class="remind-header">
+      <ion-toolbar>
         <ion-buttons item-start>
           <button clear  ion-button  *ngIf="true"><ion-icon class = "fal fa-bell-slash"></ion-icon>开启</button>
           <button clear  ion-button *ngIf="false"><ion-icon class = "fal fa-bell"  ></ion-icon>关闭</button>
@@ -23,7 +23,7 @@ import * as anyenum from "../../data.enum";
         </ion-buttons>
       </ion-toolbar>
       
-        <ion-list  class="reind-list">
+        <ion-list>
           <ion-list-header>
             还剩余{{reminds.length}}条提醒
           </ion-list-header>
