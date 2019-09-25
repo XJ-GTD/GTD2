@@ -1374,7 +1374,7 @@ export class CalendarService extends BaseService {
 
               break;
             case ConfirmType.All:                 // 修改所有日历项
-              let sqls: Array<any> = new Array<any>();
+              let allsqls: Array<any> = new Array<any>();
 
               // 查询原有重复日历项
               let rtjti: string = origin.rtjti? origin.rtjti : origin.jti;
@@ -1403,7 +1403,7 @@ export class CalendarService extends BaseService {
                 }
 
                 for (let sql of newsqls) {
-                  sqls.push(sql);
+                  allsqls.push(sql);
                 }
               });
 
@@ -1424,11 +1424,11 @@ export class CalendarService extends BaseService {
               let originitemssqls: Array<any> = this.sqlExce.getFastSaveSqlByParam(originitemsdb) || new Array<any>();
 
               for (let originitemsql of originitemssqls) {
-                sqls.unshift(originitemsql);
+                allsqls.unshift(originitemsql);
               }
 
               // 执行SQL
-              await this.sqlExce.batExecSqlByParam(sqls);
+              await this.sqlExce.batExecSqlByParam(allsqls);
 
               break;
             default:
