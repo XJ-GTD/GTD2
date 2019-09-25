@@ -2,7 +2,7 @@ page-location {
   .mapwrap{
     width: auto;
     margin: 7px 7px;
-    height: 86%;
+    height: 88%;
     border: 0.55px #3A3A3A dotted;
     baidu-map{
       width:98%;
@@ -21,12 +21,24 @@ page-location {
 
   ion-auto-complete{
     width: 100%;
+    ul{
+      background: #FFF;
+      width: 100%;
+      left:0px;
+      li{
+        margin: 7px 18px;
+        padding: 8px;
+        border-bottom: 0.55px solid  rgba(174,174,174,1);
+        font-size: 14px;
+      }
+
+    }
     .searchbar-input-container{
       margin: 0 14px;
       border-bottom: 0.55px solid  rgba(174,174,174,1);
     }
     .searchbar-ios{
-      border-bottom: 0px solid rgba(0, 0, 0, 0.05);
+      border-bottom: none;
       .searchbar-search-icon{
         width: 16px;
         height: 16px;

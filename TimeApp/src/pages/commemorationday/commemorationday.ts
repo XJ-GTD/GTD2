@@ -40,11 +40,11 @@ import {Keyboard} from "@ionic-native/keyboard";
             <!--附加属性操作-->
             <ion-row class="agendaOptionOne" *ngIf="currentPlanItem.jti">
               <button class="agendaRemarkbutton" ion-button icon-start clear  (click)="changeComment()" *ngIf="!currentPlanItem.bz">
-                <ion-icon class="fal fa-edit iconRemark"></ion-icon>
+                <ion-icon class="fal fa-fa-comment-edit iconRemark"></ion-icon>
                 <div>备注</div>
               </button>
               <button class="agendaPlanbutton"  ion-button icon-start clear  (click)="changePlan()">
-                <ion-icon class="fal fa-plus iconPlus"></ion-icon>
+                <ion-icon class="fal fa-line-columns iconPlus"></ion-icon>
                 <div>{{currentPlanItem.ji | formatplan: '计划': privateplans}}</div>
               </button>
             </ion-row>
@@ -64,7 +64,7 @@ import {Keyboard} from "@ionic-native/keyboard";
             <span class="content">
                 备注：{{currentPlanItem.bz}}
               </span>
-                <ion-icon class="fal fa-edit iconRemark"></ion-icon>
+                <ion-icon class="fal fa-fa-comment-edit iconRemark"></ion-icon>
               </button>
             </ion-row>
 
@@ -83,7 +83,7 @@ import {Keyboard} from "@ionic-native/keyboard";
               </ion-col>
               <ion-col  (click)="changeDatetime()">
                 <button ion-button icon-end clear  >
-                  <ion-icon class="fal fa-calendar-alt iconCalendar"></ion-icon>
+                  <ion-icon class="fal fa-calendar-check  iconCalendar"></ion-icon>
                 </button>
               </ion-col>
             </ion-row>

@@ -87,7 +87,7 @@ import {CalendarComponent} from "../../components/ion2-calendar";
               <ion-row class="list-dayagenda-content" *ngFor="let event of days.events;" (click)="toDetail(event.evi,event.evd,event.gs)">
                   <div class="agendaline">
                     <div class="agenda-icon">
-                      <ion-icon class = "tasks fal fa-tasks"></ion-icon>
+                      <ion-icon class = "tasks fal fa-calendar-star"></ion-icon>
                     </div>
                     <div class="agenda-sn">{{event.evn}}</div>
                   </div>
@@ -99,7 +99,7 @@ import {CalendarComponent} from "../../components/ion2-calendar";
                   </div>
                   <div class="agendaline">
                     <div class="agenda-icon">
-                      <ion-icon class = "user-o fal fa-user"></ion-icon>
+                      <ion-icon class = "user-o fal fa-user-tag"></ion-icon>
                     </div>
                     <div class="agenda-person">--来自小仙女</div>
                   </div>

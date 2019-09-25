@@ -37,7 +37,7 @@ import {Keyboard} from "@ionic-native/keyboard";
 
           <div class="agendatodo" *ngIf="currentAgenda.evi && currentAgenda.todolist">
             <button ion-button icon-only clear  (click)="changeTodolist()">
-              <ion-icon class="fa" [class.fa-haykal] = "currentAgenda.todolist == todoliston" [class.fa-star] = "currentAgenda.todolist != todoliston"></ion-icon>
+              <ion-icon class="fa" [class.fa-star-exclamation] = "currentAgenda.todolist == todoliston" [class.fa-star] = "currentAgenda.todolist != todoliston"></ion-icon>
             </button>
           </div>
         </ion-row>
@@ -51,11 +51,11 @@ import {Keyboard} from "@ionic-native/keyboard";
                 <div>地址</div>
               </button>
               <button class="agendaRemarkbutton" ion-button icon-start clear  (click)="changeComment()" *ngIf="!currentAgenda.bz">
-                <ion-icon class="fal fa-edit iconRemark"></ion-icon>
+                <ion-icon class="fal fa-comment-edit iconRemark"></ion-icon>
                 <div>备注</div>
               </button>
               <button class="agendaPlanbutton"  ion-button icon-start clear  (click)="changePlan()">
-                <ion-icon class="fal fa-plus iconPlus"></ion-icon>
+                <ion-icon class="fal fa-line-columns iconPlus"></ion-icon>
                 <div>{{currentAgenda.ji | formatplan: '计划': privateplans}}</div>
               </button>
             </ion-row>
@@ -99,7 +99,7 @@ import {Keyboard} from "@ionic-native/keyboard";
             <span class="content">
                 备注：{{currentAgenda.bz}}
               </span>
-                <ion-icon class="fal fa-edit iconRemark"></ion-icon>
+                <ion-icon class="fal fa-comment-edit iconRemark"></ion-icon>
               </button>
             </ion-row>
 
@@ -129,7 +129,7 @@ import {Keyboard} from "@ionic-native/keyboard";
               </ion-col>
               <ion-col  (click)="changeDatetime()">
                 <button ion-button icon-end clear  >
-                  <ion-icon class="fal fa-calendar-alt iconCalendar"></ion-icon>
+                  <ion-icon class="fal fa-calendar-check iconCalendar"></ion-icon>
                 </button>
               </ion-col>
               <ion-col class="agendaSender" *ngIf="currentAgenda.ui != currentuser">

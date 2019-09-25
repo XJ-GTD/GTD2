@@ -37,7 +37,7 @@ import * as moment from "moment";
     </ng-template>
     <ng-template #notask>
       <div class="notask">
-        <ion-icon class="fal fa-angry"></ion-icon>
+        <ion-icon class="fal fa-grin-beam"></ion-icon>
         <span>没有重要事项了哟～</span>
         <button (click)="create()">
           创建活动

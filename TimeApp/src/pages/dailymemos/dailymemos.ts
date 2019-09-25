@@ -30,7 +30,7 @@ import {unitOfTime} from "moment";
               <div class="agenda-st">{{memo.utt | formatedate: 'HH:mm'}}</div>
               <div class="agenda-sn">{{memo.mon}}</div>
               <div class="agenda-tool" (click)="remove($event, memo)">
-                <ion-icon class="fal fa-minus-hexagon"></ion-icon>
+                <ion-icon class="fal fa-minus-circle"></ion-icon>
               </div>
             </div>
           </ion-row>
@@ -38,7 +38,7 @@ import {unitOfTime} from "moment";
       </ng-template>
       <ng-template #notask>
         <div class="notask">
-          <ion-icon class="fal fa-person-booth"></ion-icon>
+          <ion-icon class="fal fa-icons"></ion-icon>
           <span>{{day}}没有记录哟～</span>
           <button *ngIf="istoday" (click)="addMemo()">
             创建备忘

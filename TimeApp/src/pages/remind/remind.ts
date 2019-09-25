@@ -15,7 +15,7 @@ import * as anyenum from "../../data.enum";
       <!--<scroll-select type="scroll-with-button" *ngFor="let remind of reminds"  [value]="remind.value" (changed)="onRemindChanged($event)">-->
       <!--<scroll-select-option value="">滑动以添加</scroll-select-option>-->
       <!--<scroll-select-option [value]="opt.value" *ngFor="let opt of selectOption">-->
-      <!--{{opt.caption}}-->
+      <!--{{opt.caption}}-->ioni
       <!--</scroll-select-option>-->
       <!--</scroll-select>-->
       <ion-content>
