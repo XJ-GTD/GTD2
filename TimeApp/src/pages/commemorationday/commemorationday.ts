@@ -217,7 +217,7 @@ export class CommemorationDayPage {
     modal.onDidDismiss(async (data) => {
       if (!data) return;
 
-      this.currentPlanItem.ji = data.jh.ji;
+      this.currentPlanItem.ji = data;
 
       if (!this.calendarService.isSamePlanItem(this.currentPlanItem, this.originPlanItem)) {
         this.buttons.save = true;
