@@ -39,9 +39,10 @@ modal-box {
         width: auto;
         right: 15px;
         bottom: 15px;
+
         .icon {
           font-size: 24px;
-          margin-left: 20px;
+          margin-left: 24px;
         }
 
       }
@@ -59,6 +60,7 @@ modal-box {
 
     .scroll-content {
       //margin-bottom: 49px;
+      overflow-y: hidden
 
     }
   }

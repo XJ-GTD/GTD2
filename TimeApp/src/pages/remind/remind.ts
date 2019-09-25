@@ -12,38 +12,40 @@ import * as anyenum from "../../data.enum";
   selector: 'page-remind',
   template: `
     <modal-box title="提醒" [buttons]="buttons" (onSave)="save()" (onCancel)="cancel()">
-      <!--<scroll-select type="scroll-with-button" *ngFor="let remind of reminds"  [value]="remind.value" (changed)="onRemindChanged($event)">-->
-      <!--<scroll-select-option value="">滑动以添加</scroll-select-option>-->
-      <!--<scroll-select-option [value]="opt.value" *ngFor="let opt of selectOption">-->
-      <!--{{opt.caption}}-->ioni
-      <!--</scroll-select-option>-->
-      <!--</scroll-select>-->
-      <ion-content>
-        <button (click)="openRemindTiqian()" ion-button>提前提醒</button>
-        <button (click)="openRemindDt()" ion-button>日期提醒</button>
-        <ion-item>
-        <ion-multi-picker #remindTiqian [(ngModel)]="tiqianvalue" 
-                          (ngModelChange)="tiqianselect()" [multiPickerColumns]="dependentColumns"
-                          cancelText="取消" doneText="确认"></ion-multi-picker>
-          <div>
-            <ion-datetime #remindDt displayFormat="YYYY年MM月DD日 HH:mm"
-                          pickerFormat="YYYY MM DD HH mm" color="light"
-                          [(ngModel)]="dtvalue" (ngModelChange)="dtselect()"
-                          min="1999-01-01" max="2039-12-31" cancelText="取消" doneText="确认"
-            ></ion-datetime>
-          </div>
-        </ion-item>
-        <ion-list no-lines  class="reind-list">
-          <ion-item class="plan-list-item"  *ngFor="let remind of reminds; let idx = index" >
-            <div class="color-dot"  item-start></div>
+      <ion-toolbar class="remind-header">
+        <ion-buttons item-start>
+          <button clear  ion-button  *ngIf="true"><ion-icon class = "fal fa-bell-slash"></ion-icon>开启</button>
+          <button clear  ion-button *ngIf="false"><ion-icon class = "fal fa-bell"  ></ion-icon>关闭</button>
+        </ion-buttons>
+        <ion-buttons end>
+          <button clear (click)="openRemindTiqian()" ion-button>设定提醒</button>
+          <button clear (click)="openRemindDt()" ion-button>指定日期</button>
+        </ion-buttons>
+      </ion-toolbar>
+      
+        <ion-list  class="reind-list">
+          <ion-list-header>
+            还剩余{{reminds.length}}条提醒
+          </ion-list-header>
+          <ion-item  *ngFor="let remind of reminds">
             <ion-label>{{remind.datename}}</ion-label>
-            <button ion-button color="danger" (click)="delRemind(idx)" clear item-end>
-              <img class="content-gc" src="./assets/imgs/sc.png">
+            <button ion-button  (click)="delRemind(idx)" clear item-end>
+              <ion-icon class="fal fa-minus-circle"></ion-icon>
             </button>
           </ion-item>
         </ion-list>
-      </ion-content>
     </modal-box>
+    <div style="display: none">
+      <ion-multi-picker #remindTiqian [(ngModel)]="tiqianvalue"
+                        (ngModelChange)="tiqianselect()" [multiPickerColumns]="dependentColumns"
+                        cancelText="取消" doneText="确认"></ion-multi-picker>
+      <ion-datetime #remindDt displayFormat="YYYY年MM月DD日 HH:mm"
+                    pickerFormat="YYYY MM DD HH mm" color="light"
+                    [(ngModel)]="dtvalue" (ngModelChange)="dtselect()"
+                    min="1999-01-01" max="2039-12-31" cancelText="取消" doneText="确认"
+      ></ion-datetime>
+    </div>
+  
   `
 })
 export class RemindPage {
@@ -54,7 +56,6 @@ export class RemindPage {
   @ViewChild("remindDt")
   remindDt:DateTime;
 
-  statusBarColor: string = "#3c4d55";
 
   buttons: any = {
     remove: false,
@@ -86,6 +87,7 @@ export class RemindPage {
       {
         columnWidth: '100px',
         options: [
+          {text: '', value: this.day2min(0)},
           {text: '1天', value: this.day2min(1)},
           {text: '2天', value: this.day2min(2)},
           {text: '3天', value: this.day2min(3)},
@@ -122,7 +124,6 @@ export class RemindPage {
         columnWidth: '100px',
         options:
           [
-            {text: '', value: 0},
             {text: '5分钟', value: 5},
             {text: '10分钟', value: 10},
             {text: '15分钟', value: 15},
@@ -177,11 +178,12 @@ export class RemindPage {
     this.viewCtrl.dismiss(data);
   }
 
+
   getShowDateName(time){
     let ret : string;
-    ret = moment(this.evdatetime).subtract(time, 'm').format("YYYY/MM/DD HH:mm");
+    ret = moment(this.evdatetime).subtract(time, 'm').format("MM月DD HH:mm");
 
-    ret = ret + "(" +TxJson.caption(time) + ")";
+    ret = "" +TxJson.caption(time) + "- -" + ret ;
 
     return ret;
   }
@@ -216,8 +218,7 @@ export class RemindPage {
     dt = moment(this.evdatetime).subtract(time,'m');
     this.reminds.push(
       {
-        datename:moment(this.evdatetime).subtract(time, 'm').format("YYYY/MM/DD HH:mm")
-        + "(" +TxJson.caption(time) + ")",
+        datename:"" +TxJson.caption(time) + "- -" + moment(this.evdatetime).subtract(time, 'm').format("MM月DD HH:mm"),
         value:time
       });
   }
@@ -229,7 +230,7 @@ export class RemindPage {
     let time = moment(this.evdatetime).diff(dt,'m');
     this.reminds.push(
       {
-        datename:moment(dt).format("YYYY/MM/DD HH:mm") + "(" +TxJson.caption(time) + ")",
+        datename: "" +TxJson.caption(time) + "- -" + moment(dt).format("MM月DD HH:mm"),
         value:time
       });
   }
