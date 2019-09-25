@@ -17,6 +17,19 @@ import { EvTbl } from "../sqlite/tbl/ev.tbl";
 import { MomTbl } from "../sqlite/tbl/mom.tbl";
 import { ParTbl } from "../sqlite/tbl/par.tbl";
 import { FjTbl } from "../sqlite/tbl/fj.tbl";
+import {
+  assertNotEqual,
+  assertEqual,
+  assertTrue,
+  assertFalse,
+  assertNotNumber,
+  assertNumber,
+  assertEmpty,
+  assertNotEmpty,
+  assertNull,
+  assertNotNull,
+  assertFail
+} from "../../util/util";
 
 @Injectable()
 export class CalendarService extends BaseService {
@@ -1083,83 +1096,205 @@ export class CalendarService extends BaseService {
     let items: Array<PlanItemData> = new Array<PlanItemData>();
 
     if (item.jti) {
-      let rtjson: RtJson = generateRtJson(item.rtjson, item.rt);
-      let txjson: TxJson = generateTxJson(item.txjson, item.tx);
+      this.assertEmpty(origin);   // 修改日历项原日历项不能为空
+      this.assertEmpty(modiType); // 修改日历项修改类型不能为空
 
-      // 更新
-      let planitemdb: JtaTbl = new JtaTbl();
-      Object.assign(planitemdb, item);
+      // 获取改变字段
+      let changed: Array<string> = this.changedPlanItemFields(item, origin);
 
-      planitemdb.tb = SyncType.unsynch;
+      if (changed && changed.length > 0) {
+        // 存在修改
+        let rtjson: RtJson = generateRtJson(item.rtjson, item.rt);
+        let txjson: TxJson = generateTxJson(item.txjson, item.tx);
 
-      await this.sqlExce.updateByParam(planitemdb);
+        if (origin.rfg == repeatType.NonRepeat) {
+          // 修改前为非重复日历项
+          if (rtjson.cycletype == CycleType.close) {
+            // 修改为非重复日历项
+            item.rtjson = rtjson;
+            item.rt = JSON.stringify(rtjson);
+            item.rts = rtjson.text();
 
-      Object.assign(item, planitemdb);
+            item.txjson = txjson;
+            item.tx = JSON.stringify(txjson);
+            item.txs = txjson.text();
 
-      this.emitService.emit("mwxing.calendar.activities.changed", item);
-    } else {
+            let planitemdb: JtaTbl = new JtaTbl();
+            Object.assign(planitemdb, item);
 
-      if (!item.jtt) {
-        item.jtt = PlanItemType.Activity;
-      }
+            planitemdb.tb = SyncType.unsynch;
 
-      // 新建
-      let itemdbs: Array<JtaTbl> = new Array<JtaTbl>();
+            await this.sqlExce.updateByParam(planitemdb);
 
-      let rtjson: RtJson = generateRtJson(item.rtjson, item.rt);
-      let txjson: TxJson = generateTxJson(item.txjson, item.tx);
+            Object.assign(item, planitemdb);
 
-      let rtjti: string = "";
+            items.push(item);
+          } else {
+            // 修改为重复日历项(删除后创建)
+            let sqls: Array<any> = new Array<any>();
 
-      rtjson.each(item.sd, (day) => {
-        let newitem: PlanItemData = {} as PlanItemData;
-        Object.assign(newitem, item);
+            // 删除当前日历项
+            origin.del = DelType.del;
 
-        newitem.jti = this.util.getUuid();
-        newitem.sd = day;
+            let planitemdb: JtaTbl = new JtaTbl();
+            Object.assign(planitemdb, origin);
 
-        if (rtjson.cycletype != CycleType.close) {
-          // 重复标志
-          newitem.rfg = RepeatFlag.Repeat;
+            sqls.push(planitemdb.upTParam());
 
-          if (rtjti != "") {
-            newitem.rtjti = rtjti;
+            // 创建新的重复日历项
+            let anewitem: PlanItemData = {} as PlanItemData;
+            Object.assign(anewitem, item);
+
+            // 重置日历项ID
+            anewitem.jti = "";
+            anewitem.rtjti = "";
+
+            this.newPlanitem(anewitem, (newitems, newsqls) => {
+              for (let newitem of newitems) {
+                items.push(newitem);
+              }
+
+              for (let sql of newsqls) {
+                sqls.push(sql);
+              }
+            });
+
+            // 删除日历项放在返回日历项的最后
+            items.push(origin);
+
+            await this.sqlExce.batExecSqlByParam(sqls);
           }
         } else {
-          // 非重复标志
-          newitem.rfg = RepeatFlag.NonRepeat;
+          // 修改前为重复日历项
+          if (hasPlanItemModifyConfirm(origin, item)) {
+            // 修改当前/将来所有日历项
+            this.assertEqual(modiType, OperateType.Non);  // 入参不能为Non
+
+            // 之修改当前日历项
+            if (modiType == OperateType.OnlySel) {
+              item.rfg = RepeatFlag.RepeatToNon;
+            }
+
+            // 修改当前及以后所有日历项
+            if (modiType == OperateType.FromSel) {
+
+            }
+          } else {
+            // 修改当前日历项
+            item.rtjson = rtjson;
+            item.rt = JSON.stringify(rtjson);
+            item.rts = rtjson.text();
+
+            item.txjson = txjson;
+            item.tx = JSON.stringify(txjson);
+            item.txs = txjson.text();
+
+            let planitemdb: JtaTbl = new JtaTbl();
+            Object.assign(planitemdb, item);
+
+            planitemdb.tb = SyncType.unsynch;
+
+            await this.sqlExce.updateByParam(planitemdb);
+
+            Object.assign(item, planitemdb);
+
+            items.push(item);
+          }
+        }
+      } else {
+        // 没有修改
+        items.push(item);
+      }
+    } else {
+      // 新建
+      let sqls: Array<any> = new Array<any>();
+
+      this.newPlanitem(item, (newitems, newsqls) => {
+        for (let newitem of newitems) {
+          items.push(newitem);
         }
 
-        newitem.rtjson = rtjson;
-        newitem.rt = JSON.stringify(rtjson);
-        newitem.rts = rtjson.text();
-
-        newitem.txjson = txjson;
-        newitem.tx = JSON.stringify(txjson);
-        newitem.txs = txjson.text();
-
-        newitem.tb = SyncType.unsynch;
-        newitem.del = DelType.undel;
-
-        let planitemdb: JtaTbl = new JtaTbl();
-        Object.assign(planitemdb, newitem);
-
-        itemdbs.push(planitemdb);
-        items.push(newitem);
-
-        if (rtjti == "" && rtjson.cycletype != CycleType.close) {
-          rtjti = newitem.jti;
+        for (let sql of newsqls) {
+          sqls.push(sql);
         }
       });
 
-      let sqls: Array<any> = this.sqlExce.getFastSaveSqlByParam(itemdbs) || new Array<any>();
-
+      // 执行创建SQL
       await this.sqlExce.batExecSqlByParam(sqls);
-
-      this.emitService.emit("mwxing.calendar.activities.changed", items);
     }
 
+    this.emitService.emit("mwxing.calendar.activities.changed", items);
+
     return items;
+  }
+
+  private newPlanitem(item: PlanItemData, callback: (items, sqls) => void) {
+    this.assertEmpty(item);           // 入参不能为空
+    this.assertEmpty(item.sd);        // 日历项所属日期不能为空
+    this.assertEmpty(item.jtn);       // 日历项名称不能为空
+
+    this.assertNotEmpty(item.jti);    // 日历项ID不能有值
+    this.assertNotEmpty(item.rtjti);  // 重复日历项ID不能有值
+
+    // 日历项类型默认活动
+    if (!item.jtt) {
+      item.jtt = PlanItemType.Activity;
+    }
+
+    let items: Array<PlanItemData> = new Array<PlanItemData>();
+    let itemdbs: Array<JtaTbl> = new Array<JtaTbl>();
+
+    let rtjson: RtJson = generateRtJson(item.rtjson, item.rt);
+    let txjson: TxJson = generateTxJson(item.txjson, item.tx);
+
+    let rtjti: string = "";
+
+    rtjson.each(item.sd, (day) => {
+      let newitem: PlanItemData = {} as PlanItemData;
+      Object.assign(newitem, item);
+
+      newitem.jti = this.util.getUuid();
+      newitem.sd = day;
+
+      if (rtjson.cycletype != CycleType.close) {
+        // 重复标志
+        newitem.rfg = RepeatFlag.Repeat;
+
+        if (rtjti != "") {
+          newitem.rtjti = rtjti;
+        }
+      } else {
+        // 非重复标志
+        newitem.rfg = RepeatFlag.NonRepeat;
+      }
+
+      newitem.rtjson = rtjson;
+      newitem.rt = JSON.stringify(rtjson);
+      newitem.rts = rtjson.text();
+
+      newitem.txjson = txjson;
+      newitem.tx = JSON.stringify(txjson);
+      newitem.txs = txjson.text();
+
+      newitem.tb = SyncType.unsynch;
+      newitem.del = DelType.undel;
+
+      let planitemdb: JtaTbl = new JtaTbl();
+      Object.assign(planitemdb, newitem);
+
+      itemdbs.push(planitemdb);
+      items.push(newitem);
+
+      if (rtjti == "" && rtjson.cycletype != CycleType.close) {
+        rtjti = newitem.jti;
+      }
+    });
+
+    let sqls: Array<any> = this.sqlExce.getFastSaveSqlByParam(itemdbs) || new Array<any>();
+
+    callback(items, sqls);
+
+    return;
   }
 
   /**
