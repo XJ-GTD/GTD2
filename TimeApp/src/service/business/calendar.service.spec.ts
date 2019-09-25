@@ -3091,7 +3091,11 @@ describe('CalendarService test suite', () => {
     planitem1.jtn = "结婚纪念日";
     planitem1.jtt = PlanItemType.Activity;
 
-    planitem1 = await calendarService.savePlanItem(planitem1);
+    let saved = await calendarService.savePlanItem(planitem1);
+
+    if (saved && saved.length > 0) {
+      planitem1 = saved[0];
+    }
 
     // 任务
     let task: TaskData = {} as TaskData;
@@ -3177,7 +3181,11 @@ describe('CalendarService test suite', () => {
     planitem1.jtn = "结婚纪念日";
     planitem1.jtt = PlanItemType.Activity;
 
-    planitem1 = await calendarService.savePlanItem(planitem1);
+    let saved = await calendarService.savePlanItem(planitem1);
+
+    if (saved && saved.length > 0) {
+      planitem1 = saved[0];
+    }
 
     // 任务
     let task: TaskData = {} as TaskData;
@@ -3310,7 +3318,11 @@ describe('CalendarService test suite', () => {
     planitem1.jtn = "结婚纪念日";
     planitem1.jtt = PlanItemType.Activity;
 
-    planitem1 = await calendarService.savePlanItem(planitem1);
+    let saved = await calendarService.savePlanItem(planitem1);
+
+    if (saved && saved.length > 0) {
+      planitem1 = saved[0];
+    }
 
     // 增加1个日历项
     pagedActivities = calendarService.mergePagedActivities(pagedActivities, [planitem1]);
@@ -3938,7 +3950,11 @@ describe('CalendarService test suite', () => {
 
     // 更新日历项、任务和备忘
     planitem1.jtn = "结婚";
-    planitem1 = await calendarService.savePlanItem(planitem1);
+    let saved = await calendarService.savePlanItem(planitem1);
+
+    if (saved && saved.length > 0) {
+      planitem1 = saved[0];
+    }
 
     task.evn = "结婚纪念日礼物";
     task = await eventService.saveTask(task);
@@ -4041,7 +4057,11 @@ describe('CalendarService test suite', () => {
     newplanitem.jtn = "结婚纪念日2";
     newplanitem.jtt = PlanItemType.Activity;
 
-    newplanitem = await calendarService.savePlanItem(newplanitem);
+    let saved = await calendarService.savePlanItem(newplanitem);
+
+    if (saved && saved.length > 0) {
+      newplanitem = saved[0];
+    }
 
     // 任务
     let newtask: TaskData = {} as TaskData;
@@ -4083,7 +4103,11 @@ describe('CalendarService test suite', () => {
     planitem1.jtn = "结婚纪念日";
     planitem1.jtt = PlanItemType.Activity;
 
-    planitem1 = await calendarService.savePlanItem(planitem1);
+    let saved = await calendarService.savePlanItem(planitem1);
+
+    if (saved && saved.length > 0) {
+      planitem1 = saved[0];
+    }
 
     // 任务
     let task: TaskData = {} as TaskData;
@@ -4715,7 +4739,11 @@ describe('CalendarService test suite', () => {
     planitem1.jtn = "结婚纪念日";
     planitem1.jtt = PlanItemType.Activity;
 
-    planitem1 = await calendarService.savePlanItem(planitem1);
+    let saved = await calendarService.savePlanItem(planitem1);
+
+    if (saved && saved.length > 0) {
+      planitem1 = saved[0];
+    }
 
     // 日程
     let agenda: AgendaData = {} as AgendaData;
@@ -4799,7 +4827,11 @@ describe('CalendarService test suite', () => {
     planitem1.jtn = "结婚纪念日";
     planitem1.jtt = PlanItemType.Activity;
 
-    planitem1 = await calendarService.savePlanItem(planitem1);
+    let saved = await calendarService.savePlanItem(planitem1);
+
+    if (saved && saved.length > 0) {
+      planitem1 = saved[0];
+    }
 
     // 日程
     let agenda: AgendaData = {} as AgendaData;
@@ -5010,7 +5042,11 @@ describe('CalendarService test suite', () => {
     planitem1.jtn = "结婚纪念日";
     planitem1.jtt = PlanItemType.Activity;
 
-    planitem1 = await calendarService.savePlanItem(planitem1);
+    let saved = await calendarService.savePlanItem(planitem1);
+
+    if (saved && saved.length > 0) {
+      planitem1 = saved[0];
+    }
 
     // 增加1个日历项
     monthActivity = calendarService.mergeMonthActivities(monthActivity, [planitem1]);
@@ -5269,7 +5305,11 @@ describe('CalendarService test suite', () => {
     planitem.sd = "2019/08/11";
     planitem.jtn = "结婚纪念日";
 
-    planitem = await calendarService.savePlanItem(planitem);
+    let saved = await calendarService.savePlanItem(planitem);
+
+    if (saved && saved.length > 0) {
+      planitem = saved[0];
+    }
 
     await calendarService.removePlanItem(planitem.jti);
 
@@ -5298,7 +5338,11 @@ describe('CalendarService test suite', () => {
     planitem.sd = "2019/08/11";
     planitem.jtn = "结婚纪念日";
 
-    planitem = await calendarService.savePlanItem(planitem);
+    let saved = await calendarService.savePlanItem(planitem);
+
+    if (saved && saved.length > 0) {
+      planitem = saved[0];
+    }
 
     // 根据日历ID检索日历项
     let results: Array<PlanItemData> = await calendarService.fetchPlanItems(plan.ji);
@@ -5315,7 +5359,11 @@ describe('CalendarService test suite', () => {
     planitem.jtn = "结婚纪念日";
     planitem.jtt = PlanItemType.Activity;
 
-    planitem = await calendarService.savePlanItem(planitem);
+    let saved = await calendarService.savePlanItem(planitem);
+
+    if (saved && saved.length > 0) {
+      planitem = saved[0];
+    }
 
     expect(planitem).toBeDefined();
     expect(planitem.jti).toBeDefined();
@@ -5340,7 +5388,11 @@ describe('CalendarService test suite', () => {
     planitem.jtn = "结婚纪念日";
     planitem.jtt = PlanItemType.Activity;
 
-    planitem = await calendarService.savePlanItem(planitem);
+    let saved = await calendarService.savePlanItem(planitem);
+
+    if (saved && saved.length > 0) {
+      planitem = saved[0];
+    }
 
     expect(planitem).toBeDefined();
     expect(planitem.jti).toBeDefined();
@@ -5358,7 +5410,11 @@ describe('CalendarService test suite', () => {
     planitem.jtn = "国庆节";
     planitem.jtt = PlanItemType.Holiday;
 
-    planitem = await calendarService.savePlanItem(planitem);
+    let saved = await calendarService.savePlanItem(planitem);
+
+    if (saved && saved.length > 0) {
+      planitem = saved[0];
+    }
 
     expect(planitem).toBeDefined();
     expect(planitem.jti).toBeDefined();
@@ -5383,7 +5439,11 @@ describe('CalendarService test suite', () => {
     planitem.jtn = "国庆节";
     planitem.jtt = PlanItemType.Holiday;
 
-    planitem = await calendarService.savePlanItem(planitem);
+    let saved = await calendarService.savePlanItem(planitem);
+
+    if (saved && saved.length > 0) {
+      planitem = saved[0];
+    }
 
     expect(planitem).toBeDefined();
     expect(planitem.jti).toBeDefined();

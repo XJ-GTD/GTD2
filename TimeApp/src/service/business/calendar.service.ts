@@ -626,6 +626,217 @@ export class CalendarService extends BaseService {
     return planitem;
   }
 
+  /**
+   * 取得两个日历项变化的字段名成数组
+   *
+   * @param {PlanItemData} one
+   * @param {PlanItemData} another
+   * @returns {Array<string>}
+   *
+   * @author leon_xi@163.com
+   */
+  changedPlanItemFields(one: PlanItemData, another: PlanItemData): Array<string> {
+    assertEmpty(one);   // 入参不能为空
+    assertEmpty(another);   // 入参不能为空
+
+    let changed: Array<string> = new Array<string>();
+
+    for (let key of Object.keys(one)) {
+      if (["wtt", "utt", "rts", "txs"].indexOf(key) >= 0) continue;   // 忽略字段
+
+      if (one.hasOwnProperty(key)) {
+        let value = one[key];
+
+        // 如果两个值都为空, 继续
+        if (!value && !another[key]) {
+          continue;
+        }
+
+        // 如果one的值为空, 不一致
+        if (!value || !another[key]) {
+          changed.push(key);
+          continue;
+        }
+
+        if (typeof value === 'string' || typeof value === 'number' || typeof value === 'boolean') {
+          if (typeof value === 'string' && value != "" && another[key] != "" && key == "rt") {
+            let onert: RtJson = new RtJson();
+            Object.assign(onert, JSON.parse(value));
+
+            let anotherrt: RtJson = new RtJson();
+            Object.assign(anotherrt, JSON.parse(another[key]));
+
+            if (!(onert.sameWith(anotherrt))) {
+              changed.push(key);
+              continue;
+            }
+          }
+
+          if (typeof value === 'string' && value != "" && another[key] != "" && key == "tx") {
+            let onetx: TxJson = new TxJson();
+            Object.assign(onetx, JSON.parse(value));
+
+            let anothertx: TxJson = new TxJson();
+            Object.assign(anothertx, JSON.parse(another[key]));
+
+            if (!(onetx.sameWith(anothertx))) {
+              changed.push(key);
+              continue;
+            }
+          }
+
+          if (value != another[key]) {
+            changed.push(key);
+            continue;
+          }
+        }
+
+        if (value instanceof RtJson) {
+          let onert: RtJson = new RtJson();
+          Object.assign(onert, value);
+
+          let anotherrt: RtJson = new RtJson();
+          Object.assign(anotherrt, another[key]);
+
+          if (!(onert.sameWith(anotherrt))) {
+            changed.push(key);
+            continue;
+          }
+        }
+
+        if (value instanceof TxJson) {
+          let onetx: TxJson = new TxJson();
+          Object.assign(onetx, value);
+
+          let anothertx: TxJson = new TxJson();
+          Object.assign(anothertx, another[key]);
+
+          if (!(onetx.sameWith(anothertx))) {
+            changed.push(key);
+            continue;
+          }
+        }
+
+        if (value instanceof Array) {
+          if (value.length != another[key].length) {
+            changed.push(key);
+            continue;
+          }
+
+          if (value.length > 0) {
+            if (value[0] && value[0].hasOwnProperty("pari") && another[key][0] && another[key][0].hasOwnProperty("pari")) {
+              let compare = value.concat(another[key]);
+
+              compare.sort((a, b) => {
+                if (a.pari > b.pari) return -1;
+                if (a.pari < b.pari) return 1;
+                return 0;
+              });
+
+              let result = compare.reduce((target, val) => {
+                if (!target) {
+                  target = val;
+                } else {
+                  if (!val) {
+                    target = {};
+                  } else {
+                    let issame: boolean = true;
+
+                    for (let key of Object.keys(target)) {
+                      if (["wtt", "utt"].indexOf(key) >= 0) continue;   // 忽略字段
+
+                      if (target.hasOwnProperty(key)) {
+                        let value = target[key];
+
+                        if (typeof value === 'string' || typeof value === 'number' || typeof value === 'boolean') {
+                          if (value != val[key]) issame = false;
+                        }
+                      }
+                    }
+
+                    if (issame) {
+                      target = null;
+                    } else {
+                      target = {};
+                    }
+                  }
+                }
+
+                return target;
+              }, null);
+
+              if (result && result.isEmpty()) {
+                changed.push(key);
+                continue;
+              }
+
+            } else if (value[0] instanceof FjTbl && another[key][0] instanceof FjTbl) {
+
+              let compare = value.concat(another[key]);
+
+              compare.sort((a, b) => {
+                if (a.fji > b.fji) return -1;
+                if (a.fji < b.fji) return 1;
+                return 0;
+              });
+
+              let result = compare.reduce((target, val) => {
+                if (!target) {
+                  target = val;
+                } else {
+                  if (!val) {
+                    target = {};
+                  } else {
+                    let issame: boolean = true;
+
+                    for (let key of Object.keys(target)) {
+                      if (["wtt", "utt"].indexOf(key) >= 0) continue;   // 忽略字段
+
+                      if (target.hasOwnProperty(key)) {
+                        let value = target[key];
+
+                        if (typeof value === 'string' || typeof value === 'number' || typeof value === 'boolean') {
+                          if (value != val[key]) issame = false;
+                        }
+                      }
+                    }
+
+                    if (issame) {
+                      target = null;
+                    } else {
+                      target = {};
+                    }
+                  }
+                }
+
+                return target;
+              }, null);
+
+              if (result && result.isEmpty()) {
+                changed.push(key);
+                continue;
+              }
+
+            } else {
+              continue; // 非比较字段，忽略
+            }
+          }
+        }
+      }
+    }
+
+    return changed;
+  }
+
+  /**
+   * 判断两个日历项是否相同
+   *
+   * @param {PlanItemData} one
+   * @param {PlanItemData} another
+   * @returns {boolean}
+   *
+   * @author leon_xi@163.com
+   */
   isSamePlanItem(one: PlanItemData, another: PlanItemData): boolean {
     if (!one || !another) return false;
 
@@ -799,6 +1010,66 @@ export class CalendarService extends BaseService {
   }
 
   /**
+   * 判断日历项修改是否需要确认
+   * 当前日历项修改 还是 将来日历项全部修改
+   *
+   * @param {PlanItemData} before
+   * @param {PlanItemData} after
+   * @returns {boolean}
+   */
+  hasPlanItemModifyConfirm(before: PlanItemData, after: PlanItemData): boolean {
+    assertEmpty(before);  // 入参不能为空
+    assertEmpty(after);  // 入参不能为空
+
+    // 确认修改前日程是否重复
+    if (before.rfg != RepeatFlag.Repeat) return false;
+
+    for (let key of Object.keys(before)) {
+      if (["sd", "st", "jtn", "rt", "rtjson"].indexOf(key) >= 0) {   // 比较字段
+        let value = before[key];
+
+        // 如果两个值都为空, 继续
+        if (!value && !after[key]) {
+          continue;
+        }
+
+        // 如果one的值为空, 不一致
+        if (!value || !after[key]) return true;
+
+        if (typeof value === 'string' || typeof value === 'number' || typeof value === 'boolean') {
+          if (typeof value === 'string' && value != "" && after[key] != "" && key == "rt") {
+            let onert: RtJson = new RtJson();
+            Object.assign(onert, JSON.parse(value));
+
+            let anotherrt: RtJson = new RtJson();
+            Object.assign(anotherrt, JSON.parse(after[key]));
+
+            if (!(onert.sameWith(anotherrt))) return true;
+
+            continue;
+          }
+
+          if (value != after[key]) return true;
+        }
+
+        if (value instanceof RtJson) {
+          let onert: RtJson = new RtJson();
+          Object.assign(onert, value);
+
+          let anotherrt: RtJson = new RtJson();
+          Object.assign(anotherrt, after[key]);
+
+          if (!(onert.sameWith(anotherrt))) return true;
+
+          continue;
+        }
+      }
+    }
+
+    return false;
+  }
+
+  /**
    * 创建/更新日历项
    *
    * @author leon_xi@163.com
@@ -808,10 +1079,6 @@ export class CalendarService extends BaseService {
     this.assertEmpty(item);       // 入参不能为空
     this.assertEmpty(item.sd);    // 日历项所属日期不能为空
     this.assertEmpty(item.jtn);   // 日历项名称不能为空
-
-    if (!item.jtt) {
-      item.jtt = PlanItemType.Activity;
-    }
 
     let items: Array<PlanItemData> = new Array<PlanItemData>();
 
@@ -831,6 +1098,11 @@ export class CalendarService extends BaseService {
 
       this.emitService.emit("mwxing.calendar.activities.changed", item);
     } else {
+
+      if (!item.jtt) {
+        item.jtt = PlanItemType.Activity;
+      }
+
       // 新建
       let itemdbs: Array<JtaTbl> = new Array<JtaTbl>();
 
