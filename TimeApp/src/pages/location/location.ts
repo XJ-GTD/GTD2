@@ -3,11 +3,8 @@ import {IonicPage, NavController, NavParams, ModalController, ViewController,} f
 import {ControlAnchor, MapOptions, Marker, NavigationControlOptions, NavigationControlType} from 'angular2-baidu-map';
 import {AutoCompleteComponent} from "ionic2-auto-complete";
 import {LocationSearchService} from "../../service/restful/LocationSearchService";
-import {CenterAndZoom} from "angular2-baidu-map/types/Map";
-import {PageBoxComponent} from "../../components/page-box/page-box";
 import {ModalBoxComponent} from "../../components/modal-box/modal-box";
 
-declare var BMap;
 
 @IonicPage()
 @Component({

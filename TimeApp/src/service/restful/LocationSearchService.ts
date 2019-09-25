@@ -31,7 +31,7 @@ export class LocationSearchService {
 
       let baiduMapSearchAPI: string = "http://api.map.baidu.com/place/v2/suggestion?query={query}&region=全国&output=json&ak=98TMZR5WnSwbH5FdnHHDe0917UlcDfCL";
       baiduMapSearchAPI = baiduMapSearchAPI.replace("{query}",query);
-      // urlEntity.url = encodeURIComponent(urlEntity.url);
+
       this.request.get4thridAPIJSONP(baiduMapSearchAPI).then(data => {
 
         //处理返回结果
