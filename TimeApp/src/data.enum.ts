@@ -87,6 +87,13 @@ export enum RepeatFlag {
   RepeatToNon = "2",
 }
 
+//修改确认类型
+export enum ConfirmType {
+  None = "None",
+  CurrentOrFutureAll = "CurrentOrFutureAll",
+  FutureAll = "FutureAll",
+  All = "All"
+}
 
 //重复开启选项
 export enum OpenWay {

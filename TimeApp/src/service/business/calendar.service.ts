@@ -8,7 +8,7 @@ import { SyncData, PushInData, PullInData, DataRestful } from "../restful/datase
 import { BackupPro, BacRestful, OutRecoverPro, RecoverPro } from "../restful/bacsev";
 import { EventData, TaskData, AgendaData, MiniTaskData, EventService, RtJson, TxJson, generateRtJson, generateTxJson } from "./event.service";
 import { MemoData, MemoService } from "./memo.service";
-import { EventType, PlanType, PlanItemType, PlanDownloadType, OperateType, ObjectType, PageDirection, CycleType, SyncType, RepeatFlag, DelType, SyncDataSecurity, SyncDataStatus } from "../../data.enum";
+import { EventType, PlanType, PlanItemType, PlanDownloadType, ConfirmType, OperateType, ObjectType, PageDirection, CycleType, SyncType, RepeatFlag, DelType, SyncDataSecurity, SyncDataStatus } from "../../data.enum";
 import { UserConfig } from "../config/user.config";
 import * as moment from "moment";
 import { JhaTbl } from "../sqlite/tbl/jha.tbl";
@@ -1030,12 +1030,14 @@ export class CalendarService extends BaseService {
    * @param {PlanItemData} after
    * @returns {boolean}
    */
-  hasPlanItemModifyConfirm(before: PlanItemData, after: PlanItemData): boolean {
+  hasPlanItemModifyConfirm(before: PlanItemData, after: PlanItemData): ConfirmType {
     assertEmpty(before);  // 入参不能为空
     assertEmpty(after);  // 入参不能为空
 
+    let confirm: ConfirmType = ConfirmType.None;
+
     // 确认修改前日程是否重复
-    if (before.rfg != RepeatFlag.Repeat) return false;
+    if (before.rfg != RepeatFlag.Repeat) return confirm;
 
     for (let key of Object.keys(before)) {
       if (["sd", "st", "jtn", "rt", "rtjson"].indexOf(key) >= 0) {   // 比较字段
@@ -1047,7 +1049,16 @@ export class CalendarService extends BaseService {
         }
 
         // 如果one的值为空, 不一致
-        if (!value || !after[key]) return true;
+        if (!value || !after[key]) {
+
+          if (confirm == ConfirmType.None) {
+            confirm = ConfirmType.CurrentOrFutureAll;
+          } else if (confirm == ConfirmType.All) {
+            confirm = ConfirmType.FutureAll;
+          }
+
+          continue;
+        }
 
         if (typeof value === 'string' || typeof value === 'number' || typeof value === 'boolean') {
           if (typeof value === 'string' && value != "" && after[key] != "" && key == "rt") {
@@ -1057,12 +1068,28 @@ export class CalendarService extends BaseService {
             let anotherrt: RtJson = new RtJson();
             Object.assign(anotherrt, JSON.parse(after[key]));
 
-            if (!(onert.sameWith(anotherrt))) return true;
+            if (!(onert.sameWith(anotherrt))) {
+
+              if (confirm == ConfirmType.None) {
+                confirm = ConfirmType.All;
+              } else if (confirm == ConfirmType.CurrentOrFutureAll) {
+                confirm = ConfirmType.FutureAll;
+              }
+
+            }
 
             continue;
           }
 
-          if (value != after[key]) return true;
+          if (value != after[key]) {
+            if (confirm == ConfirmType.None) {
+              confirm = ConfirmType.CurrentOrFutureAll;
+            } else if (confirm == ConfirmType.All) {
+              confirm = ConfirmType.FutureAll;
+            }
+
+            continue;
+          }
         }
 
         if (value instanceof RtJson) {
@@ -1072,14 +1099,20 @@ export class CalendarService extends BaseService {
           let anotherrt: RtJson = new RtJson();
           Object.assign(anotherrt, after[key]);
 
-          if (!(onert.sameWith(anotherrt))) return true;
+          if (!(onert.sameWith(anotherrt))) {
+            if (confirm == ConfirmType.None) {
+              confirm = ConfirmType.All;
+            } else if (confirm == ConfirmType.CurrentOrFutureAll) {
+              confirm = ConfirmType.FutureAll;
+            }
+          }
 
           continue;
         }
       }
     }
 
-    return false;
+    return confirm;
   }
 
   /**
@@ -1166,40 +1199,241 @@ export class CalendarService extends BaseService {
           }
         } else {
           // 修改前为重复日历项
-          if (this.hasPlanItemModifyConfirm(origin, item)) {
-            // 修改当前/将来所有日历项
-            this.assertEqual(modiType, OperateType.Non);  // 入参不能为Non
 
-            // 之修改当前日历项
-            if (modiType == OperateType.OnlySel) {
-              item.rfg = RepeatFlag.RepeatToNon;
-            }
+          let confirm: ConfirmType = this.hasPlanItemModifyConfirm(origin, item);
 
-            // 修改当前及以后所有日历项
-            if (modiType == OperateType.FromSel) {
+          // 只修改重复 没有确认 修改所有的重复日历项
+          // 只修改重复以外的内容 确认 选择当前/将来所有的重复日历项
+          // 同时修改重复和其它内容 确认 选择将来所有的重复日历项
+          switch (confirm) {
+            case ConfirmType.None:                // 只修改当前日历项
+              // 修改当前日历项
+              item.rtjson = rtjson;
+              item.rt = JSON.stringify(rtjson);
+              item.rts = rtjson.text();
 
-            }
-          } else {
-            // 修改当前日历项
-            item.rtjson = rtjson;
-            item.rt = JSON.stringify(rtjson);
-            item.rts = rtjson.text();
+              item.txjson = txjson;
+              item.tx = JSON.stringify(txjson);
+              item.txs = txjson.text();
 
-            item.txjson = txjson;
-            item.tx = JSON.stringify(txjson);
-            item.txs = txjson.text();
+              let planitemdb: JtaTbl = new JtaTbl();
+              Object.assign(planitemdb, item);
 
-            let planitemdb: JtaTbl = new JtaTbl();
-            Object.assign(planitemdb, item);
+              planitemdb.tb = SyncType.unsynch;
 
-            planitemdb.tb = SyncType.unsynch;
+              await this.sqlExce.updateByParam(planitemdb);
 
-            await this.sqlExce.updateByParam(planitemdb);
+              Object.assign(item, planitemdb);
 
-            Object.assign(item, planitemdb);
+              items.push(item);
+              break;
+            case ConfirmType.CurrentOrFutureAll:  // 修改当前及将来所有日历项
+              // 修改当前/将来所有日历项
+              this.assertEqual(modiType, OperateType.Non);  // 入参不能为Non
 
-            items.push(item);
-          }
+              // 之修改当前日历项
+              if (modiType == OperateType.OnlySel) {
+                item.rfg = RepeatFlag.RepeatToNon;
+
+                item.rtjson = rtjson;
+                item.rt = JSON.stringify(rtjson);
+                item.rts = rtjson.text();
+
+                item.txjson = txjson;
+                item.tx = JSON.stringify(txjson);
+                item.txs = txjson.text();
+
+                let planitemdb: JtaTbl = new JtaTbl();
+                Object.assign(planitemdb, item);
+
+                planitemdb.tb = SyncType.unsynch;
+
+                await this.sqlExce.updateByParam(planitemdb);
+
+                Object.assign(item, planitemdb);
+
+                items.push(item);
+              }
+
+              // 修改当前及以后所有日历项
+              if (modiType == OperateType.FromSel) {
+                let sqls: Array<any> = new Array<any>();
+
+                // 创建新的重复日历项
+                let anewitem: PlanItemData = {} as PlanItemData;
+                Object.assign(anewitem, item);
+
+                // 重置日历项ID
+                anewitem.jti = "";
+                anewitem.rtjti = "";
+
+                this.newPlanitem(anewitem, (newitems, newsqls) => {
+                  for (let newitem of newitems) {
+                    items.push(newitem);
+                  }
+
+                  for (let sql of newsqls) {
+                    sqls.push(sql);
+                  }
+                });
+
+                // 删除将来所有重复日历项
+                let rtjti: string = origin.rtjti? origin.rtjti : origin.jti;
+
+                let fetchFromSel: string = `select *
+                                            from gtd_jta
+                                            where (jti = ?1 or rtjti = ?1)
+                                              and rfg = ?2
+                                              and sd >= ?3
+                                              and del <> ?4
+                                            order by sd asc`;
+
+                let originitems: Array<PlanItemData> = await this.sqlExce.getExtLstByParam<PlanItemData>(fetchFromSel, [rtjti, RepeatFlag.Repeat, origin.sd, DelType.undel]) || new Array<PlanItemData>();
+
+                let originitemsdb: Array<JtaTbl> = new Array<JtaTbl>();
+
+                for (let originitem of originitems) {
+                  originitem.del = DelType.del;
+                  originitem.tb = SyncType.unsynch;
+
+                  let planitemdb: JtaTbl = new JtaTbl();
+                  Object.assign(planitemdb, originitem);
+
+                  items.push(originitem);
+                  originitemsdb.push(planitemdb);
+                }
+
+                let originitemssqls: Array<any> = this.sqlExce.getFastSaveSqlByParam(originitemsdb) || new Array<any>();
+
+                for (let originitemsql of originitemssqls) {
+                  sqls.unshift(originitemsql);
+                }
+
+                // 执行SQL
+                await this.sqlExce.batExecSqlByParam(sqls);
+              }
+              break;
+            case ConfirmType.FutureAll:           // 修改将来所有日历项
+              // 修改将来所有日历项
+              this.assertNotEqual(modiType, OperateType.FromSel);  // 入参不能为FromSel以外
+
+              let futureallsqls: Array<any> = new Array<any>();
+
+              // 创建新的重复日历项
+              let bnewitem: PlanItemData = {} as PlanItemData;
+              Object.assign(bnewitem, item);
+
+              // 重置日历项ID
+              bnewitem.jti = "";
+              bnewitem.rtjti = "";
+
+              this.newPlanitem(bnewitem, (newitems, newsqls) => {
+                for (let newitem of newitems) {
+                  items.push(newitem);
+                }
+
+                for (let sql of newsqls) {
+                  futureallsqls.push(sql);
+                }
+              });
+
+              // 删除将来所有重复日历项
+              let futureallrtjti: string = origin.rtjti? origin.rtjti : origin.jti;
+
+              let fetchFromSel: string = `select *
+                                          from gtd_jta
+                                          where (jti = ?1 or rtjti = ?1)
+                                            and rfg = ?2
+                                            and sd >= ?3
+                                            and del <> ?4
+                                          order by sd asc`;
+
+              let futurealloriginitems: Array<PlanItemData> = await this.sqlExce.getExtLstByParam<PlanItemData>(fetchFromSel, [futureallrtjti, RepeatFlag.Repeat, origin.sd, DelType.undel]) || new Array<PlanItemData>();
+
+              let futurealloriginitemsdb: Array<JtaTbl> = new Array<JtaTbl>();
+
+              for (let originitem of futurealloriginitems) {
+                originitem.del = DelType.del;
+                originitem.tb = SyncType.unsynch;
+
+                let planitemdb: JtaTbl = new JtaTbl();
+                Object.assign(planitemdb, originitem);
+
+                items.push(originitem);
+                futurealloriginitemsdb.push(planitemdb);
+              }
+
+              let futurealloriginitemssqls: Array<any> = this.sqlExce.getFastSaveSqlByParam(futurealloriginitemsdb) || new Array<any>();
+
+              for (let originitemsql of futurealloriginitemssqls) {
+                futureallsqls.unshift(originitemsql);
+              }
+
+              // 执行SQL
+              await this.sqlExce.batExecSqlByParam(futureallsqls);
+
+              break;
+            case ConfirmType.All:                 // 修改所有日历项
+              let allsqls: Array<any> = new Array<any>();
+
+              // 查询原有重复日历项
+              let allrtjti: string = origin.rtjti? origin.rtjti : origin.jti;
+
+              let fetchAll: string = `select *
+                                          from gtd_jta
+                                          where (jti = ?1 or rtjti = ?1)
+                                            and rfg = ?2
+                                            and del <> ?3
+                                          order by sd asc`;
+
+              let alloriginitems: Array<PlanItemData> = await this.sqlExce.getExtLstByParam<PlanItemData>(fetchAll, [allrtjti, RepeatFlag.Repeat, DelType.undel]) || new Array<PlanItemData>();
+
+              // 创建新的重复日历项
+              let cnewitem: PlanItemData = {} as PlanItemData;
+              Object.assign(cnewitem, item);
+
+              // 重置日历项ID,开始日期
+              cnewitem.jti = "";
+              cnewitem.rtjti = "";
+              cnewitem.sd = alloriginitems[0].sd;
+
+              this.newPlanitem(cnewitem, (newitems, newsqls) => {
+                for (let newitem of newitems) {
+                  items.push(newitem);
+                }
+
+                for (let sql of newsqls) {
+                  allsqls.push(sql);
+                }
+              });
+
+              // 删除将来所有重复日历项
+              let alloriginitemsdb: Array<JtaTbl> = new Array<JtaTbl>();
+
+              for (let originitem of alloriginitems) {
+                originitem.del = DelType.del;
+                originitem.tb = SyncType.unsynch;
+
+                let planitemdb: JtaTbl = new JtaTbl();
+                Object.assign(planitemdb, originitem);
+
+                items.push(originitem);
+                alloriginitemsdb.push(planitemdb);
+              }
+
+              let alloriginitemssqls: Array<any> = this.sqlExce.getFastSaveSqlByParam(alloriginitemsdb) || new Array<any>();
+
+              for (let originitemsql of alloriginitemssqls) {
+                allsqls.unshift(originitemsql);
+              }
+
+              // 执行SQL
+              await this.sqlExce.batExecSqlByParam(allsqls);
+
+              break;
+            default:
+              assertFail();
+          } // End of switch
         }
       } else {
         // 没有修改
