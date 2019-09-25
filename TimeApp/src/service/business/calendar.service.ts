@@ -1107,7 +1107,7 @@ export class CalendarService extends BaseService {
         let rtjson: RtJson = generateRtJson(item.rtjson, item.rt);
         let txjson: TxJson = generateTxJson(item.txjson, item.tx);
 
-        if (origin.rfg == repeatType.NonRepeat) {
+        if (origin.rfg == RepeatFlag.NonRepeat) {
           // 修改前为非重复日历项
           if (rtjson.cycletype == CycleType.close) {
             // 修改为非重复日历项
