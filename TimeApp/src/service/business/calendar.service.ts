@@ -1166,7 +1166,7 @@ export class CalendarService extends BaseService {
           }
         } else {
           // 修改前为重复日历项
-          if (hasPlanItemModifyConfirm(origin, item)) {
+          if (this.hasPlanItemModifyConfirm(origin, item)) {
             // 修改当前/将来所有日历项
             this.assertEqual(modiType, OperateType.Non);  // 入参不能为Non
 
