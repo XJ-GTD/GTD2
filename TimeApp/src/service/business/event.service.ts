@@ -44,6 +44,7 @@ export class EventService extends BaseService {
     super();
   }
 
+  EVT_ST = "08:00";//全天开始时间默认为8:00
   /**
    * 接收事件日程保存到本地
    * @param {Array<AgendaData>} pullAgdatas
@@ -999,7 +1000,6 @@ export class EventService extends BaseService {
     this.assertEmpty(newAgdata.sd);    // 事件开始日期不能为空
     this.assertEmpty(newAgdata.evn);   // 事件标题不能为空
 
-    // 新建事件
     if (!newAgdata.evi || newAgdata.evi == "") {
       if (newAgdata.rtjson || newAgdata.rt || newAgdata.rts) {
         this.assertEmpty(newAgdata.rtjson);  // 新建事件重复设置不能为空
@@ -1276,6 +1276,14 @@ export class EventService extends BaseService {
 
       //事件表更新
       let outAgd  = {} as AgendaData;
+      let was = new Array<WaTbl>();
+
+      //字段evt 设定
+      if (newAgdata.al == anyenum.IsWholeday.Whole){
+        newAgdata.evt = this.EVT_ST;//全天开始时间默认为8:00
+      }else{
+        newAgdata.evt = newAgdata.st;
+      }
 
       let rtjon = new RtJson();
       rtjon.cycletype = anyenum.CycleType.close;
@@ -1313,7 +1321,11 @@ export class EventService extends BaseService {
 
       //提醒新建
       if (newAgdata.txjson.reminds && newAgdata.txjson.reminds.length > 0) {
-        sqlparam = [...sqlparam , ...this.sqlparamAddTxWa(ev, anyenum.ObjectType.Event,  newAgdata.txjson,newAgdata.al, newAgdata.st)];
+        was = this.sqlparamAddTxWa2(ev, anyenum.ObjectType.Event,  newAgdata.txjson);
+        for (let j = 0 ,len = was.length ; j < len ; j++ ){
+          sqlparam.push(was[j].rpTParam());
+        }
+
       }
 
       //如果当前更新对象是父节点，则为当前重复日程重建新的父记录，值为ev表里的第一条做为父记录
@@ -1576,7 +1588,6 @@ export class EventService extends BaseService {
     sqlparam.push([sq,params]);
 
     console.log("**** updateAgenda delFromsel 结果数组合并 start :****" + moment().format("YYYY/MM/DD HH:mm:ss SSS"))
-    console.log("**** updateAgenda delFromsel 结果数组合并 outAgds.length :" + outAgds.length +" ,delAgds.length:"+delAgds.length);
     Object.assign(outAgds,[...outAgds, ...delAgds]);
     console.log("**** updateAgenda delFromsel 结果数组合并 end :****" + moment().format("YYYY/MM/DD HH:mm:ss SSS"))
 
@@ -1713,7 +1724,7 @@ export class EventService extends BaseService {
 
     //字段evt 设定
     if (agdata.al == anyenum.IsWholeday.Whole){
-      agdata.evt = "00:00";
+      agdata.evt = this.EVT_ST;//全天开始时间默认为8:00
     }else{
       agdata.evt = agdata.st;
     }
@@ -1763,7 +1774,7 @@ export class EventService extends BaseService {
       evs.push(ev);
 
       if (txjson.reminds && txjson.reminds.length > 0) {
-        was = [...was,...this.sqlparamAddTxWa2(ev,anyenum.ObjectType.Event,txjson,agdata.al,agdata.st)];
+        was = [...was,...this.sqlparamAddTxWa2(ev,anyenum.ObjectType.Event,txjson)];
       }
 
       //新增数据需要返回出去
@@ -1793,7 +1804,7 @@ export class EventService extends BaseService {
     agdata.sd = sd;
     agdata.ed = ed;
     if (agdata.al == anyenum.IsWholeday.Whole){
-      agdata.st = "00:00";
+      agdata.st = this.EVT_ST;//全天开始时间默认为8:00
       agdata.et = "23:59";
     }else{
       //不是全天，结束时间通过时长计算
@@ -1980,155 +1991,6 @@ export class EventService extends BaseService {
   }
 
   /**
-   * 根据重复任务设定，取得所有重复日期
-   * @param {RtJson} rtjson
-   * @param {string} sd
-   * @returns {Array<string>}
-   */
-	private getOutDays(rtjson : RtJson ,sd :string) : Array<string> {
-
-    // 开始日期
-    let repeatStartDay: string = sd;
-    // 重复类型（天/周/月/年）
-    let repeatType: moment.unitOfTime.DurationConstructor = "days";
-    // 重复周期（n天/n周/n月/n年重复一次）
-    let repeatStep: number = rtjson.cyclenum || 1;
-    // 开启方式（天（无）,周多选（一、二、三、四、五、六、日[0 - 6]）,月多选（1、2、...、31[0 - 30]）,年（无））
-    let options: Array<number> = new Array<number>();
-    // 结束条件（n次后结束、到某天结束、永远不结束（天（设置1年）、周（设置2年）、月（设置3年）、年（设置20年）））
-    let repeatTimes: number;
-    // 结束日期（指定结束日期时使用指定结束日期，否则使用计算出来的结束日期）
-    let repeatEndDay: string = "";
-
-		let days: Array<string> = new Array<string>();
-
-		// 根据结束类型设置重复次数/结束日期
-    switch(rtjson.over.type) {
-      case anyenum.OverType.times :
-        this.assertEmpty(rtjson.over.value);    // 结束条件不能为空
-        this.assertNotNumber(rtjson.over.value);   // 结束条件不能为数字字符串以外的值
-        repeatTimes = (Number(rtjson.over.value) > 0)? Number(rtjson.over.value) : 1;
-        break;
-      case anyenum.OverType.limitdate :
-        this.assertEmpty(rtjson.over.value);    // 结束条件不能为空
-        repeatEndDay = moment(rtjson.over.value).add(1,'days').format("YYYY/MM/DD");
-        break;
-      case anyenum.OverType.fornever :
-        break;
-      default:
-        this.assertFail();    // 预期外值, 程序异常
-    }
-
-    // 根据重复类型设置 重复类型/开启方式/重复次数/结束日期
-    switch(rtjson.cycletype) {
-      case anyenum.CycleType.day :
-        repeatType = "days";
-        repeatTimes = repeatTimes || moment(repeatStartDay).add(1, "years").diff(repeatStartDay, "days");
-        repeatEndDay = repeatEndDay || moment(repeatStartDay).add(repeatTimes * repeatStep, "days").format("YYYY/MM/DD");
-        break;
-      case anyenum.CycleType.week :
-        repeatType = "weeks";
-        options = rtjson.openway || options;
-        repeatTimes = repeatTimes || moment(repeatStartDay).add(2, "years").diff(repeatStartDay, "weeks");
-        repeatEndDay = repeatEndDay || moment(repeatStartDay).add(repeatTimes * repeatStep, "weeks").format("YYYY/MM/DD");
-        break;
-      case anyenum.CycleType.month :
-        repeatType = "months";
-        options = rtjson.openway || options;
-        repeatTimes = repeatTimes || moment(repeatStartDay).add(3, "years").diff(repeatStartDay, "months");
-        repeatEndDay = repeatEndDay || moment(repeatStartDay).add(repeatTimes * repeatStep, "months").format("YYYY/MM/DD");
-        break;
-      case anyenum.CycleType.year :
-        repeatType = "years";
-        repeatTimes = repeatTimes || 20;
-        repeatEndDay = repeatEndDay || moment(repeatStartDay).add(repeatTimes * repeatStep, "years").format("YYYY/MM/DD");
-        break;
-      case anyenum.CycleType.close :    // 不重复日程
-        repeatType = "days";
-        repeatTimes = 1;
-        repeatEndDay = moment(repeatStartDay).add(1, "days").format("YYYY/MM/DD");
-        break;
-      default:
-        this.assertFail();    // 预期外值, 程序异常
-    }
-
-    let stepDay: string = repeatStartDay;
-
-    // 循环开始日期 ~ 结束日期
-    while (moment(stepDay).isBefore(repeatEndDay)) {
-
-      if (options.length > 0) {
-        // 星期多选/每月日期多选
-        if (repeatType == "weeks") {
-          let dayOfWeek: number = Number(moment(stepDay).format("d"));
-
-          for (let option of options) {
-            let duration: number = option - dayOfWeek;
-
-            if (duration == 0) {
-              days.push(stepDay);     // 当前日期为重复日期
-            } else if (duration > 0) {
-              //当周日期
-              days.push(moment(stepDay).add(duration, "days").format("YYYY/MM/DD"));
-            } else {
-              //下周日期（跨周）
-              days.push(moment(stepDay).add(7, "days").subtract(Math.abs(duration), "days").format("YYYY/MM/DD"));
-            }
-          }
-
-        } else if (repeatType == "months") {
-          let dayOfMonth: number = Number(moment(stepDay).format("D")) - 1;   // 0 - 30 和options设置日期匹配
-          let maxDayOfMonth: number = moment().daysInMonth();
-
-          for (let option of options) {
-
-            // 当月没有这一天
-            if (option > maxDayOfMonth) {
-              continue;
-            }
-
-            let duration: number = option - dayOfMonth;
-
-            if (duration == 0) {
-              days.push(stepDay);     // 当前日期为重复日期
-            } else if (duration > 0) {
-              //当月日期
-              days.push(moment(stepDay).add(duration, "days").format("YYYY/MM/DD"));
-            } else {
-              //下月日期（跨月）
-              days.push(moment(stepDay).add(1, "months").dates(option + 1).format("YYYY/MM/DD"));
-            }
-          }
-
-        } else {
-          this.assertFail();    // 预期外值, 程序异常
-        }
-      } else {
-        // 普通重复
-        days.push(stepDay);
-      }
-       stepDay = moment(stepDay).add(repeatStep, repeatType).format("YYYY/MM/DD");
-    }
-
-    	let daysNew : Array<string> = new Array<string>();
-    	for(let day of days )
-    	{
-    		if (moment(day).isBefore(repeatEndDay)) {
-    			daysNew.push(day);
-    		}
-    	}
-    	//开始日期默认做为重复的第一天加入到重复
-      if (daysNew.length > 0){
-    	  if (daysNew[0] != repeatStartDay ){
-          daysNew.unshift(repeatStartDay);
-        }
-      }else{
-        daysNew.push(repeatStartDay);
-      }
-
-      return daysNew;
-	}
-  /**
    * 获取提醒表sql
    * @param {EvTbl} ev
    * @param {string} obtType
@@ -2137,7 +1999,7 @@ export class EventService extends BaseService {
    * @param {string} st
    * @returns {Array<any>}
    */
-  private sqlparamAddTxWa2(ev: EvTbl,obtType: string, txjson :TxJson, al: string = "" ,st:string=""): Array<WaTbl> {
+  private sqlparamAddTxWa2(ev: EvTbl,obtType: string, txjson :TxJson): Array<WaTbl> {
     let ret = new Array<WaTbl>();
     if (txjson.reminds && txjson.reminds.length > 0) {
       for ( let j = 0, len = txjson.reminds.length ;j < len ; j++) {
@@ -2150,13 +2012,8 @@ export class EventService extends BaseService {
         wa.st = ev.evn;
         let time = remind;
         let date;
-        if (al == anyenum.IsWholeday.NonWhole) {
-          date = moment(ev.evd + " " + st).subtract(time, 'm').format("YYYY/MM/DD HH:mm");
+        date = moment(ev.evd + " " + ev.evt).subtract(time, 'm').format("YYYY/MM/DD HH:mm");
 
-        } else {
-          date = moment(ev.evd + " " + "08:00").subtract(time, 'm').format("YYYY/MM/DD HH:mm");
-
-        }
         wa.wd = moment(date).format("YYYY/MM/DD");
         wa.wt = moment(date).format("HH:mm");
         ret.push(wa);
@@ -2192,7 +2049,7 @@ export class EventService extends BaseService {
           date = moment(ev.evd + " " + st).subtract(time, 'm').format("YYYY/MM/DD HH:mm");
 
         } else {
-          date = moment(ev.evd + " " + "08:00").subtract(time, 'm').format("YYYY/MM/DD HH:mm");
+          date = moment(ev.evd + " " + this.EVT_ST).subtract(time, 'm').format("YYYY/MM/DD HH:mm");
 
         }
         wa.wd = moment(date).format("YYYY/MM/DD");
