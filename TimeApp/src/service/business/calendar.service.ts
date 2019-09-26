@@ -1168,7 +1168,7 @@ export class CalendarService extends BaseService {
 
             // 删除当前日历项
             origin.del = DelType.del;
-            origin.synch = SyncType.unsynch;
+            origin.tb = SyncType.unsynch;
 
             let planitemdb: JtaTbl = new JtaTbl();
             Object.assign(planitemdb, origin);
@@ -1553,7 +1553,7 @@ export class CalendarService extends BaseService {
       if (modiType == OperateType.OnlySel) {
         // 删除当前日历项
         origin.del = DelType.del;
-        origin.synch = SyncType.unsynch;
+        origin.tb = SyncType.unsynch;
 
         let planitemdb: JtaTbl = new JtaTbl();
         Object.assign(planitemdb, origin);
@@ -1602,7 +1602,7 @@ export class CalendarService extends BaseService {
     } else {  // 非重复 或 重复修改为非重复
       // 删除当前日历项
       origin.del = DelType.del;
-      origin.synch = SyncType.unsynch;
+      origin.tb = SyncType.unsynch;
 
       let planitemdb: JtaTbl = new JtaTbl();
       Object.assign(planitemdb, origin);
