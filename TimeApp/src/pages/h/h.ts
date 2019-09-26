@@ -72,7 +72,7 @@ import {AgendaPage} from "../agenda/agenda";
           <button ion-fab (click)="todoList()">
             <ion-icon name="albums"></ion-icon>
           </button>
-          <button ion-fab (click)="todoscrumList()">
+          <button ion-fab (click)="todoscrumList()" color="danger">
             <ion-icon name="clock"></ion-icon>
           </button>
           <button ion-fab (click)="openm()">
