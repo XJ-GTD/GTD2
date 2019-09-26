@@ -6,6 +6,8 @@ import {UserConfig} from "../../service/config/user.config";
 import {DataConfig} from "../../service/config/data.config";
 import {PageUData} from "../../data.mapping";
 import {Keyboard} from "@ionic-native/keyboard";
+import {DatePickerComponent} from "../../components/date-picker/date-picker";
+import * as moment from "moment";
 
 /**
  * Generated class for the 个人设置 page.
@@ -41,8 +43,8 @@ import {Keyboard} from "@ionic-native/keyboard";
         </ion-item>
           <ion-item no-lines no-padding no-margin no-border>
             <ion-label>生日</ion-label>
-            <ion-datetime displayFormat="YYYY-MM-DD"  [(ngModel)]="birthday"
-                          min="1949-01-01" max="2039-12-31" cancelText="取消" doneText="确认"></ion-datetime>
+            <date-picker #birthdaypicker item-content displayFormat="YYYY年MM月DD日"  [(ngModel)]="birthday"
+                          min="1919-01-01" cancelText="取消" doneText="确认"></date-picker>
           </ion-item>
           <ion-item no-lines no-padding no-margin no-border>
             <ion-label>身份证</ion-label>
@@ -68,6 +70,9 @@ export class PsPage {
   // 判断是否有模态框弹出 控制安卓物理返回键
   @ViewChildren(DateTime) dateTimes: QueryList<DateTime>;
   actionSheet;
+
+  @ViewChild("birthdaypicker")
+  birthdaypicker:DatePickerComponent;
 
   @ViewChild("grid")
   grid: ElementRef;
@@ -116,6 +121,8 @@ export class PsPage {
     }
 
     this.birthday = UserConfig.user.bothday.replace(new RegExp('/', 'g'), '-');
+
+    this.birthdaypicker.max = moment().format("YYYY-MM-DD");
   }
 
   ionViewDidEnter() {

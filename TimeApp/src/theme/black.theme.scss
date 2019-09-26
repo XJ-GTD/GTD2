@@ -565,7 +565,7 @@ $baseBackcolor_black: rgba(0, 12, 31, 1);
 
     }
 
-    .picker-toolbar-cancel {
+    .picker-toolbar-cancel,.picker-toolbar-multi-picker-cancel {
       .picker-button {
         color:rgba(153,153,153,1);
       }
