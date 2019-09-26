@@ -564,6 +564,11 @@ $baseBackcolor_white: rgba(241, 241, 241, 1);
 
     }
 
+    .picker-toolbar-cancel {
+      .picker-button {
+        color:rgba(153,153,153,1);
+      }
+    }
     .picker-button {
       padding-right: 16px;
       padding-left: 16px;

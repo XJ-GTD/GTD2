@@ -25,7 +25,7 @@ import * as anyenum from "../../data.enum";
       
         <ion-list>
           <ion-list-header>
-            还剩余{{reminds.length}}条提醒
+            剩余 <span class="count">{{reminds.length}}</span> 条提醒
           </ion-list-header>
           <ion-item  *ngFor="let remind of reminds">
             <ion-label>{{remind.datename}}</ion-label>
@@ -38,7 +38,7 @@ import * as anyenum from "../../data.enum";
     <div style="display: none">
       <ion-multi-picker #remindTiqian [(ngModel)]="tiqianvalue"
                         (ngModelChange)="tiqianselect()" [multiPickerColumns]="dependentColumns"
-                        cancelText="取消" doneText="确认"></ion-multi-picker>
+                        cancelText="取消" doneText="设定"></ion-multi-picker>
       <date-picker #remindDt 
                     pickerFormat="YYYY ,MM DD"
                     [(ngModel)]="datevalue" (ngModelChange)="dtselect()"
