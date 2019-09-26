@@ -18,7 +18,7 @@ import {UserConfig} from "../../service/config/user.config";
         <ion-list radio-group [(ngModel)]="selected" (ionChange)="jhChanged($event)">
           <ion-item *ngFor="let option of privateplans">
             <ion-label>{{option.jn}}</ion-label>
-            <ion-icon class="fal fa-circle" [ngStyle]="{'color': option.jc}" item-start></ion-icon>
+            <ion-icon class="fal fa-circle" [ngStyle]="{'color': option.jc}" item-end></ion-icon>
             <ion-radio [checked]="option.ji == selected" [value]="option.ji" [color]="option.jc"></ion-radio>
           </ion-item>
         </ion-list>

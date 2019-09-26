@@ -27,6 +27,7 @@ export class PermissionsService {
     this.androidPermissions.PERMISSION.BLUETOOTH,
     this.androidPermissions.PERMISSION.READ_CONTACTS,
     this.androidPermissions.PERMISSION.ACCESS_FINE_LOCATION,
+    this.androidPermissions.PERMISSION.CAMERA,
   ];
 
   constructor(
@@ -42,6 +43,10 @@ export class PermissionsService {
         return this.checkPermission(this.list_all[i++]);
       })
       .then(res => {
+        return this.checkPermission(this.list_all[i++]);
+      }).then(res => {
+        return this.checkPermission(this.list_all[i++]);
+      }).then(res => {
         return this.checkPermission(this.list_all[i++]);
       }).then(res => {
         return this.checkPermission(this.list_all[i++]);

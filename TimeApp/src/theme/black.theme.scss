@@ -530,4 +530,52 @@ $baseBackcolor_black: rgba(0, 12, 31, 1);
       }
     }
   }
+
+  .picker-ios {
+    .picker-wrapper {
+      background:rgba(217,233,238,1);
+      border-width: 0;
+    }
+
+    .picker-toolbar {
+      background:rgba(7,109,138,1);
+      border-width: 0;
+      .picker-toolbar-multi-picker-cancel{
+        text-align:start;
+      }
+    }
+
+    .picker-above-highlight, .picker-below-highlight {
+      background: rgba(239,239,239,1);
+      z-index: -1;
+      font-size: 14px;
+      border-width: 0;
+    }
+
+    .picker-opt {
+      font-weight:400;
+      color:rgba(153,153,153,1);
+      font-size: 14px;
+      height: 44px;
+      line-height: 44px;
+    }
+    .picker-opt-selected {
+      font-weight:400;
+      color:rgba(7,109,138,1);
+
+    }
+
+    .picker-toolbar-cancel,.picker-toolbar-multi-picker-cancel {
+      .picker-button {
+        color:rgba(153,153,153,1);
+      }
+    }
+    .picker-button {
+      padding-right: 16px;
+      padding-left: 16px;
+      font-size: 16px;
+      font-weight:400;
+      color:rgba(255,255,255,1);
+    }
+  }
 }

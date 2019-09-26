@@ -1,26 +1,29 @@
 page-plan {
   .box-content {
 
-    .addplan{
+    .addplan {
       margin: 90px auto;
       text-align: center;
-      .icon{
+
+      .icon {
         font-size: 150px;
         clear: both;
         display: block;
       }
-      span{
-        font-weight:400;
+
+      span {
+        font-weight: 400;
         font-size: 16px;
         margin: 20px auto;
         display: block;
       }
-      button{
+
+      button {
         display: block;
         margin: 120px auto;
         font-size: 18px;
-        border-radius:10px;
-        font-weight:400;
+        border-radius: 10px;
+        font-weight: 400;
         padding: 12px 80px;
         border-radius: 4px;
 
@@ -29,16 +32,17 @@ page-plan {
 
     .toolbar-ios {
       margin-top: 14px;
-      ion-title{
+
+      ion-title {
         padding: 12px;
         margin: 0 auto;
         width: 85%;
         font-size: 16px;
-        color:  rgba(51, 51, 51, 1);
+        color: rgba(51, 51, 51, 1);
         position: relative;
         height: 45px;
-        box-shadow:5px 3px 10px 0px rgba(58,58,58,0.73);
-        border-radius:4px;
+        box-shadow: 5px 3px 10px 0px rgba(58, 58, 58, 0.73);
+        border-radius: 4px;
       }
 
       .toolbar-background-ios {
@@ -56,15 +60,24 @@ page-plan {
       box-shadow: 2.5px 1.5px 10px 0px rgba(201, 200, 200, 0.73);
       border-radius: 4px;
 
-      .item > ion-icon{
+      .item ion-icon[item-end] {
         font-size: 24px;
         line-height: 1;
-        min-height:24px;
+        min-height: 24px;
+        margin-left: 0;
+        margin-top: 0;
+        margin-bottom: 0;
+        margin-right: 0;
       }
-      .item .radio-ios{
-        position: absolute;
+
+      .item .radio-ios {
+        //position: absolute;
         margin: 0;
-        left: 18px;
+        margin-left: -21px;
+
+        .radio-checked .radio-inner {
+          border-color: black;
+        }
 
       }
 
@@ -78,7 +91,7 @@ page-plan {
         .item-inner {
           border-width: 0;
 
-          ion-label{
+          ion-label {
             font-weight: 400;
             color: rgba(51, 51, 51, 1);
             font-size: 14px;

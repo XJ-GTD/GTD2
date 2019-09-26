@@ -46,6 +46,11 @@ page-remind {
         color: rgba(7, 109, 138, 1);
         font-size: 16px;
         border-width: 0;
+        .count{
+          font-weight: 500;
+          font-size: 18px;
+          color:rgba(255, 255, 255, 1);
+        }
       }
 
       .item-block, .item-block:last-child {

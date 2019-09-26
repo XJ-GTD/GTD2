@@ -18,16 +18,7 @@ import { MomTbl } from "../sqlite/tbl/mom.tbl";
 import { ParTbl } from "../sqlite/tbl/par.tbl";
 import { FjTbl } from "../sqlite/tbl/fj.tbl";
 import {
-  assertNotEqual,
-  assertEqual,
-  assertTrue,
-  assertFalse,
-  assertNotNumber,
-  assertNumber,
   assertEmpty,
-  assertNotEmpty,
-  assertNull,
-  assertNotNull,
   assertFail
 } from "../../util/util";
 
@@ -143,6 +134,9 @@ export class CalendarService extends BaseService {
             let monthlyLastDataIndex: Map<string, number> = data.reduce((target, val, index) => {
               if (val.evd) {
                 let month: string = moment(val.evd).format("YYYY/MM");
+                target.set(month, index);
+              } else if (!val.evd && val.sd) {
+                let month: string = moment(val.sd).format("YYYY/MM");
                 target.set(month, index);
               }
 
@@ -1168,6 +1162,7 @@ export class CalendarService extends BaseService {
 
             // 删除当前日历项
             origin.del = DelType.del;
+            origin.tb = SyncType.unsynch;
 
             let planitemdb: JtaTbl = new JtaTbl();
             Object.assign(planitemdb, origin);
@@ -1536,24 +1531,133 @@ export class CalendarService extends BaseService {
    *
    * @author leon_xi@163.com
    **/
-  async removePlanItem(jti: string) {
+  async removePlanItem(origin: PlanItemData, modiType: OperateType = OperateType.Non): Promise<Array<PlanItemData>> {
 
-    this.assertEmpty(jti);    // 入参不能为空
+    this.assertEmpty(origin);    // 入参不能为空
+    this.assertEmpty(modiType);  // 入参不能为空
 
+    let items: Array<PlanItemData> = new Array<PlanItemData>();
     let sqls: Array<any> = new Array<any>();
+    let itemsid: Array<string> = new Array<string>();
 
-    // 设置日历项删除标志
-    sqls.push([`update gtd_jta set del = ?, tb = ? where jti = ?`, [DelType.del, SyncType.unsynch, jti]]);
+    if (origin.rfg == RepeatFlag.Repeat) {  // 重复日历项
+      this.assertEqual(modiType, OperateType.Non);    // 入参不能为Non
+
+      // 只删除当前选择日历项
+      if (modiType == OperateType.OnlySel) {
+        // 删除当前日历项
+        origin.del = DelType.del;
+        origin.tb = SyncType.unsynch;
+
+        let planitemdb: JtaTbl = new JtaTbl();
+        Object.assign(planitemdb, origin);
+
+        sqls.push(planitemdb.upTParam());
+
+        itemsid.push(origin.jti);
+        items.push(origin);
+
+        // 删除第一条（父记录）,重构剩余重复日历项
+        if (!origin.rtjti || origin.rtjti == "") {
+          let rtjti: string = origin.jti;
+
+          let fetchFromSel: string = `select *
+                                      from gtd_jta
+                                      where rtjti = ?1
+                                        and rfg = ?2
+                                        and del <> ?3
+                                      order by sd asc`;
+
+          let originitems: Array<PlanItemData> = await this.sqlExce.getExtLstByParam<PlanItemData>(fetchFromSel, [rtjti, RepeatFlag.Repeat, DelType.del]) || new Array<PlanItemData>();
+
+          let originitemsdb: Array<JtaTbl> = new Array<JtaTbl>();
+
+          rtjti = "";
+
+          for (let originitem of originitems) {
+            originitem.tb = SyncType.unsynch;
+            originitem.rtjti = rtjti;
+
+            if (rtjti == "") {
+              rtjti = originitem.jti;
+            }
+
+            let planitemdb: JtaTbl = new JtaTbl();
+            Object.assign(planitemdb, originitem);
+
+            items.push(originitem);
+            originitemsdb.push(planitemdb);
+          }
+
+          let originitemssqls: Array<any> = this.sqlExce.getFastSaveSqlByParam(originitemsdb) || new Array<any>();
+
+          for (let originitemsql of originitemssqls) {
+            sqls.push(originitemsql);
+          }
+        }
+      }
+
+      // 删除当前选择以及将来所有日历项
+      if (modiType == OperateType.FromSel) {
+        // 删除将来所有重复日历项
+        let rtjti: string = origin.rtjti? origin.rtjti : origin.jti;
+
+        let fetchFromSel: string = `select *
+                                    from gtd_jta
+                                    where (jti = ?1 or rtjti = ?1)
+                                      and rfg = ?2
+                                      and date(replace(sd, '/', '-')) >= date(replace(?3, '/', '-'))
+                                      and del <> ?4
+                                    order by sd asc`;
+
+        let originitems: Array<PlanItemData> = await this.sqlExce.getExtLstByParam<PlanItemData>(fetchFromSel, [rtjti, RepeatFlag.Repeat, origin.sd, DelType.del]) || new Array<PlanItemData>();
+
+        let originitemsdb: Array<JtaTbl> = new Array<JtaTbl>();
+
+        for (let originitem of originitems) {
+          originitem.del = DelType.del;
+          originitem.tb = SyncType.unsynch;
+
+          let planitemdb: JtaTbl = new JtaTbl();
+          Object.assign(planitemdb, originitem);
+
+          itemsid.push(originitem.jti);
+          items.push(originitem);
+          originitemsdb.push(planitemdb);
+        }
+
+        let originitemssqls: Array<any> = this.sqlExce.getFastSaveSqlByParam(originitemsdb) || new Array<any>();
+
+        for (let originitemsql of originitemssqls) {
+          sqls.push(originitemsql);
+        }
+      }
+    } else {  // 非重复 或 重复修改为非重复
+      // 删除当前日历项
+      origin.del = DelType.del;
+      origin.tb = SyncType.unsynch;
+
+      let planitemdb: JtaTbl = new JtaTbl();
+      Object.assign(planitemdb, origin);
+
+      sqls.push(planitemdb.upTParam());
+
+      itemsid.push(origin.jti);
+      items.push(origin);
+    }
 
     // 设置关联数据删除标志
-    sqls.push([`update gtd_par set del = ?, tb = ? where obt = ? and obi = ?`, [DelType.del, SyncType.unsynch, ObjectType.Calendar, jti]]);
-    sqls.push([`update gtd_fj set del = ?, tb = ? where obt = ? and obi = ?`, [DelType.del, SyncType.unsynch, ObjectType.Calendar, jti]]);
-    sqls.push([`delete from gtd_wa where obt = ? and obi = ?`, [ObjectType.Calendar, jti]]);    // 提醒表
-    sqls.push([`delete from gtd_mrk where obt = ? and obi = ?`, [ObjectType.Calendar, jti]]);   // 标签表
+    sqls.push([`update gtd_par set del = ?, tb = ? where obt = ? and obi in (' + itemsid.join(', ') + ')`, [DelType.del, SyncType.unsynch, ObjectType.Calendar]]);
+    sqls.push([`update gtd_fj set del = ?, tb = ? where obt = ? and obi in (' + itemsid.join(', ') + ')`, [DelType.del, SyncType.unsynch, ObjectType.Calendar]]);
+    sqls.push([`delete from gtd_wa where obt = ? and obi in (' + itemsid.join(', ') + ')`, [ObjectType.Calendar,]]);    // 提醒表
+    sqls.push([`delete from gtd_mrk where obt = ? and obi in (' + itemsid.join(', ') + ')`, [ObjectType.Calendar]]);   // 标签表
 
+    // 执行SQL
     await this.sqlExce.batExecSqlByParam(sqls);
 
-    return;
+    this.emitService.emit(`mwxing.calendar.activities.changed`, items);
+
+    return items;
   }
 
   /**
