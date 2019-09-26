@@ -15,7 +15,7 @@ import {PageBoxComponent} from "../../components/page-box/page-box";
 import {CornerBadgeComponent} from "../../components/corner-badge/corner-badge";
 import {CalendarService, PlanItemData} from "../../service/business/calendar.service";
 import {EventService, AgendaData, RtJson, TxJson} from "../../service/business/event.service";
-import { PageDirection, IsSuccess, OperateType, RepeatFlag, ToDoListStatus, IsWholeday } from "../../data.enum";
+import { PageDirection, IsSuccess, OperateType, RepeatFlag, ToDoListStatus, IsWholeday, ConfirmType } from "../../data.enum";
 import {Keyboard} from "@ionic-native/keyboard";
 
 /**
@@ -234,46 +234,99 @@ export class CommemorationDayPage {
     }
   }
 
+  createConfirm(remove: boolean = false) {
+    let buttons: Array<any> = new Array<any>();
+
+    if (remove) {
+      buttons.push({
+        text: '仅删除此纪念日',
+        role: 'remove',
+        handler: () => {
+          this.doOptionRemove(OperateType.OnlySel);
+        }
+      });
+      buttons.push({
+        text: '删除所有将来纪念日',
+        role: 'remove',
+        handler: () => {
+          this.doOptionRemove(OperateType.FromSel);
+        }
+      });
+    } else {
+      buttons.push({
+        text: '仅针对此纪念日存储',
+        role: 'modify',
+        handler: () => {
+          this.doOptionSave(OperateType.OnlySel);
+        }
+      });
+      buttons.push({
+        text: '针对将来纪念日存储',
+        role: 'modify',
+        handler: () => {
+          this.doOptionSave(OperateType.FromSel);
+        }
+      });
+    }
+
+    buttons.push({
+      text: '取消',
+      role: 'cancel',
+      handler: () => {
+        console.log('Cancel clicked');
+      }
+    });
+
+    return this.actionSheetCtrl.create({
+      title: "此为重复纪念日。",
+      buttons: buttons
+    });
+  }
+
+  doOptionSave(op: OperateType) {
+    this.util.loadingStart().then(() => {
+      this.calendarService.savePlanItem(this.currentPlanItem, this.originPlanItem, op).then((planitems) => {
+        if (planitems && planitems.length > 0) {
+          this.currentPlanItem = planitems[0];
+          Object.assign(this.originPlanItem, planitems[0]);
+
+          this.buttons.save = false;
+        }
+        this.util.loadingEnd();
+      });
+    });
+  }
+
   save() {
     if (this.validCheck()) {              // 输入校验
-      if (this.currentPlanItem.jti) {       // 修改日程
+      if (this.currentPlanItem.jti) {       // 修改日历项
         if (this.calendarService.isSamePlanItem(this.currentPlanItem, this.originPlanItem)) {
           return;
         }
 
-        this.util.loadingStart().then(() => {
-          this.calendarService.savePlanItem(this.currentPlanItem).then((commemorationday) => {
-            if (commemorationday && commemorationday.length > 0) {
-              this.currentPlanItem = commemorationday[0];
-              Object.assign(this.originPlanItem, commemorationday[0]);
+        let confirm: ConfirmType = this.calendarService.hasPlanItemModifyConfirm(this.currentPlanItem, this.currentPlanItem);
 
-              this.buttons.remove = true;
-              this.buttons.save = false;
-            }
-            this.util.loadingEnd();
+        if (confirm == ConfirmType.CurrentOrFutureAll || confirm == ConfirmType.FutureAll) { // 重复修改
+          if (this.modifyConfirm) {
+            this.modifyConfirm.dismiss();
+          }
+          this.modifyConfirm = this.createConfirm();
+
+          this.modifyConfirm.present();
+        } else {                          // 非重复/重复已经修改为非重复
+          this.util.loadingStart().then(() => {
+            this.calendarService.savePlanItem(this.currentPlanItem, this.originPlanItem, OperateType.Non).then((planitems) => {
+              if (planitems && planitems.length > 0) {
+                this.currentPlanItem = planitems[0];
+                Object.assign(this.originPlanItem, planitems[0]);
+
+                this.buttons.save = false;
+              }
+              this.util.loadingEnd();
+            });
           });
-        });
+        }
 
-        // if (this.calendarService.hasAgendaModifyConfirm(this.originAgenda, this.currentPlanItem)) { // 重复修改
-        //   if (this.modifyConfirm) {
-        //     this.modifyConfirm.dismiss();
-        //   }
-        //   this.modifyConfirm = this.createConfirm();
-        //
-        //   this.modifyConfirm.present();
-        // } else {                          // 非重复/重复已经修改为非重复
-        //   this.util.loadingStart().then(() => {
-        //     this.eventService.saveAgenda(this.currentPlanItem, this.originAgenda, OperateType.OnlySel).then((agenda) => {
-        //       if (agenda && agenda.length > 0) {
-        //         this.currentPlanItem = agenda[0];
-        //         Object.assign(this.originAgenda, agenda[0]);
-        //
-        //         this.buttons.save = false;
-        //       }
-        //       this.util.loadingEnd();
-        //     });
-        //   });
-        // }
       } else {                            // 新建日程
         this.util.loadingStart().then(() => {
           this.calendarService.savePlanItem(this.currentPlanItem).then((commemorationday) => {
