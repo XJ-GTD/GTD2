@@ -25,7 +25,7 @@ import * as anyenum from "../../data.enum";
       
         <ion-list>
           <ion-list-header>
-            还剩余{{reminds.length}}条提醒
+            剩余 <span class="count">{{reminds.length}}</span> 条提醒
           </ion-list-header>
           <ion-item  *ngFor="let remind of reminds">
             <ion-label>{{remind.datename}}</ion-label>
