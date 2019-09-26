@@ -5370,8 +5370,11 @@ describe('CalendarService test suite', () => {
 
     let qplanitem: PlanItemData = await calendarService.getPlanItem(planitem.jti);
 
-    qplanitem.jtn = "结婚";
-    await calendarService.savePlanItem(qplanitem);
+    let changed: PlanItemData = {} as PlanItemData;
+    Object.assign(changed, qplanitem);
+
+    changed.jtn = "结婚";
+    await calendarService.savePlanItem(changed, qplanitem);
 
     qplanitem = await calendarService.getPlanItem(planitem.jti);
 
@@ -5421,8 +5424,11 @@ describe('CalendarService test suite', () => {
 
     let qplanitem: PlanItemData = await calendarService.getPlanItem(planitem.jti);
 
-    qplanitem.jtn = "国庆";
-    await calendarService.savePlanItem(qplanitem);
+    let changed: PlanItemData = {} as PlanItemData;
+    Object.assign(changed, qplanitem);
+
+    changed.jtn = "国庆";
+    await calendarService.savePlanItem(changed, qplanitem);
 
     qplanitem = await calendarService.getPlanItem(planitem.jti);
 
