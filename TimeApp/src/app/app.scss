@@ -179,50 +179,6 @@ body {
     background: transparent;
   }
 
-  .picker-ios {
-    .picker-wrapper {
-      background: $selectColor;
-      border-top: 0px;
-    }
-
-    .picker-toolbar {
-      background: $secondColor;
-      border-top: 0px;
-      border-bottom: 0px;
-    }
-
-    .picker-above-highlight {
-      background: $secondColor;
-      z-index: -1;
-      color: $fontSecondColor;
-      height: calc(50% - 20px);
-    }
-
-    .picker-below-highlight {
-      background: $secondColor;
-      z-index: -1;
-      color: $fontSecondColor;
-      height: calc(50% - 20px);
-      top: 120px;
-    }
-
-    .picker-opt {
-      color: $fontThirdColor;
-      font-size: 16px;
-    }
-    .picker-opt-selected {
-      color: $fontMasterColor;
-
-    }
-
-    .picker-button {
-      color: $fontMasterColor;
-      padding-right: 50px;
-      padding-left: 50px;
-      font-size: 14px;
-    }
-  }
-
   .popover-ios {
     ion-backdrop {
       background-color: $popBackColor;

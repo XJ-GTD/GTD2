@@ -137,7 +137,7 @@ import {EffectService} from "../service/business/effect.service";
     IonicModule.forRoot(MyApp, {
       tabsHideOnSubPages: 'true',
       //强制使用IOS风格
-      mode: 'ios'
+      mode: 'ios',
     }),
     IonicStorageModule.forRoot(),
     DirectivesModule,

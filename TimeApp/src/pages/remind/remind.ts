@@ -39,11 +39,15 @@ import * as anyenum from "../../data.enum";
       <ion-multi-picker #remindTiqian [(ngModel)]="tiqianvalue"
                         (ngModelChange)="tiqianselect()" [multiPickerColumns]="dependentColumns"
                         cancelText="取消" doneText="确认"></ion-multi-picker>
-      <ion-datetime #remindDt displayFormat="YYYY年MM月DD日 HH:mm"
-                    pickerFormat="YYYY MM DD HH mm" color="light"
-                    [(ngModel)]="dtvalue" (ngModelChange)="dtselect()"
-                    min="1999-01-01" max="2039-12-31" cancelText="取消" doneText="确认"
-      ></ion-datetime>
+      <date-picker #remindDt 
+                    pickerFormat="YYYY ,MM DD"
+                    [(ngModel)]="datevalue" (ngModelChange)="dtselect()"
+                    cancelText="取消" doneText="选择时间"
+      ></date-picker>
+      <date-picker #remindTime  pickerFormat="A hh mm"
+                    [(ngModel)]="timevalue" (ngModelChange)="timeselect()" (ionCancel)="openRemindDt()"
+                     doneText="设定"
+      ></date-picker>
     </div>
   
   `
@@ -56,6 +60,9 @@ export class RemindPage {
   @ViewChild("remindDt")
   remindDt:DateTime;
 
+  @ViewChild("remindTime")
+  remindTime:DateTime;
+
 
   buttons: any = {
     remove: false,
@@ -64,10 +71,11 @@ export class RemindPage {
     cancel: true
   };
 
-  dtvalue : string;
+  datevalue : string;
+  timevalue : string;
   tiqianvalue : string;
 
-  evdatetime ; string;
+  evdatetime ; string ;
 
   reminds: Array<any> = new Array<any>();
   currentTx: TxJson;
@@ -197,6 +205,8 @@ export class RemindPage {
 
   }
   openRemindDt(){
+    this.remindDt.min = moment().format("YYYY-MM-DD");
+    this.remindDt.max =  moment(this.evdatetime).add(2,"M").format("YYYY-MM-DD");
     this.remindDt.open();
 
   }
@@ -224,13 +234,16 @@ export class RemindPage {
   }
 
   dtselect(){
+    this.remindTime.cancelText = "选择日期 " + moment(this.datevalue).format("YYYY年MM月DD日");
+    this.remindTime.open();
+  }
 
-    let dt = this.dtvalue.replace("T"," ");
-    dt = dt.replace("Z","");
+  timeselect(){
+    let dt = this.datevalue + " " + this.timevalue;
     let time = moment(this.evdatetime).diff(dt,'m');
     this.reminds.push(
       {
-        datename: "" +TxJson.caption(time) + "- -" + moment(dt).format("MM月DD HH:mm"),
+        datename: "" +TxJson.caption(time) +  " -- " + moment(dt).format("MM月DD HH:mm"),
         value:time
       });
   }

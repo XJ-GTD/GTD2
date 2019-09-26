@@ -18,16 +18,7 @@ import { MomTbl } from "../sqlite/tbl/mom.tbl";
 import { ParTbl } from "../sqlite/tbl/par.tbl";
 import { FjTbl } from "../sqlite/tbl/fj.tbl";
 import {
-  assertNotEqual,
-  assertEqual,
-  assertTrue,
-  assertFalse,
-  assertNotNumber,
-  assertNumber,
   assertEmpty,
-  assertNotEmpty,
-  assertNull,
-  assertNotNull,
   assertFail
 } from "../../util/util";
 

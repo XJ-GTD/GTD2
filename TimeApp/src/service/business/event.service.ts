@@ -21,19 +21,10 @@ import {FjTbl} from "../sqlite/tbl/fj.tbl";
 import {DataRestful, PullInData, PushInData, SyncData} from "../restful/datasev";
 import {SyncType, DelType, IsSuccess, SyncDataStatus, RepeatFlag, PageDirection, SyncDataSecurity} from "../../data.enum";
 import {
-  assertNotEqual,
-  assertEqual,
-  assertTrue,
-  assertFalse,
   assertNotNumber,
-  assertNumber,
   assertEmpty,
-  assertNotEmpty,
-  assertNull,
-  assertNotNull,
   assertFail
 } from "../../util/util";
-import {ToDoListStatus} from "../../data.enum";
 
 @Injectable()
 export class EventService extends BaseService {
