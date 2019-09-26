@@ -112,6 +112,8 @@ export class CommemorationDayPage {
   friends: Array<any> = UserConfig.friends;
   privateplans: Array<any> = UserConfig.privateplans;
 
+  modifyConfirm;
+
   constructor(public navCtrl: NavController,
               public navParams: NavParams,
               public modalCtrl: ModalController,
