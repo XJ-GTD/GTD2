@@ -135,6 +135,9 @@ export class CalendarService extends BaseService {
               if (val.evd) {
                 let month: string = moment(val.evd).format("YYYY/MM");
                 target.set(month, index);
+              } else if (!val.evd && val.sd) {
+                let month: string = moment(val.sd).format("YYYY/MM");
+                target.set(month, index);
               }
 
               return target;
