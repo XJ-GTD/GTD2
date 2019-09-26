@@ -306,7 +306,7 @@ export class CommemorationDayPage {
           return;
         }
 
-        let confirm: ConfirmType = this.calendarService.hasPlanItemModifyConfirm(this.currentPlanItem, this.currentPlanItem);
+        let confirm: ConfirmType = this.calendarService.hasPlanItemModifyConfirm(this.originPlanItem, this.currentPlanItem);
 
         if (confirm == ConfirmType.CurrentOrFutureAll || confirm == ConfirmType.FutureAll) { // 重复修改
           if (this.modifyConfirm) {
