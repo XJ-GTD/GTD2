@@ -293,7 +293,7 @@ export class CommemorationDayPage {
 
   goRemove() {
     this.util.loadingStart().then(() => {
-      this.calendarService.removePlanItem(this.originPlanItem.jti)
+      this.calendarService.removePlanItem(this.originPlanItem)
       .then(() => {
         this.util.loadingEnd();
         this.goBack();
