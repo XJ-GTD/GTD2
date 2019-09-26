@@ -3928,7 +3928,11 @@ describe('CalendarService test suite', () => {
     planitem1.jtn = "结婚纪念日";
     planitem1.jtt = PlanItemType.Activity;
 
-    await calendarService.savePlanItem(planitem1);
+    let savedplanitems = await calendarService.savePlanItem(planitem1);
+
+    if (savedplanitems && savedplanitems.length > 0) {
+      planitem1 = savedplanitems[0];
+    }
 
     // 任务
     let task: TaskData = {} as TaskData;
