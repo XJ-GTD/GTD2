@@ -208,6 +208,26 @@ export class LocationPage {
     this.searchText.adr = e.name;
     this.searchText.adlat = e.location.lat;
     this.searchText.adlng = e.location.lng;
+
+    this.mapOptions = {
+      centerAndZoom: {
+        lat: this.searchText.adlat,
+        lng: this.searchText.adlng,
+        zoom: 16
+      },
+    };
+
+
+    this.markers.length = 0;
+
+    this.markers.push(
+      {
+        point: {
+          lat: this.searchText.adlat,
+          lng: this.searchText.adlng,
+        }
+      }
+    );
   }
 
   ionAutoInput(e){

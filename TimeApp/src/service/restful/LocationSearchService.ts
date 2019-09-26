@@ -29,7 +29,7 @@ export class LocationSearchService {
   queryPlace(query:string): Promise<any> {
     return new Promise((resolve, reject) => {
 
-      let baiduMapSearchAPI: string = "http://api.map.baidu.com/place/v2/suggestion?query={query}&region=全国&output=json&ak=98TMZR5WnSwbH5FdnHHDe0917UlcDfCL";
+      let baiduMapSearchAPI: string = "http://api.map.baidu.com/place/v2/suggestion?query={query}&region=全国&output=json&ak=TKg1kS9jm5UqhjCOIpeCunT3d6D8l2c0";
       baiduMapSearchAPI = baiduMapSearchAPI.replace("{query}",query);
 
       this.request.get4thridAPIJSONP(baiduMapSearchAPI).then(data => {
