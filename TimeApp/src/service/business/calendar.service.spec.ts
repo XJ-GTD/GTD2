@@ -5318,7 +5318,7 @@ describe('CalendarService test suite', () => {
       planitem = saved[0];
     }
 
-    await calendarService.removePlanItem(planitem.jti);
+    await calendarService.removePlanItem(planitem);
 
     // 根据日历ID检索日历项
     let results: Array<PlanItemData> = await calendarService.fetchPlanItems(plan.ji);
