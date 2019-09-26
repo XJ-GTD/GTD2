@@ -344,14 +344,34 @@ export class CommemorationDayPage {
     }
   }
 
-  goRemove() {
+  doOptionRemove(op: OperateType) {
     this.util.loadingStart().then(() => {
-      this.calendarService.removePlanItem(this.originPlanItem)
+      this.calendarService.removePlanItem(this.originPlanItem, op)
       .then(() => {
         this.util.loadingEnd();
         this.goBack();
       });
     });
+  }
+
+  goRemove() {
+    if (this.originPlanItem.rfg == RepeatFlag.Repeat) { // 重复
+      if (this.modifyConfirm) {
+        this.modifyConfirm.dismiss();
+      }
+      this.modifyConfirm = this.createConfirm(true);
+
+      this.modifyConfirm.present();
+
+    } else {
+      this.util.loadingStart().then(() => {
+        this.calendarService.removePlanItem(this.originPlanItem, OperateType.Non)
+        .then(() => {
+          this.util.loadingEnd();
+          this.goBack();
+        });
+      });
+    }
   }
 
   goBack() {
