@@ -1571,7 +1571,7 @@ export class CalendarService extends BaseService {
                                       and del <> ?4
                                     order by sd asc`;
 
-        let originitems: Array<PlanItemData> = await this.sqlExce.getExtLstByParam<PlanItemData>(fetchFromSel, [rtjti, RepeatFlag.Repeat, origin.sd, DelType.undel]) || new Array<PlanItemData>();
+        let originitems: Array<PlanItemData> = await this.sqlExce.getExtLstByParam<PlanItemData>(fetchFromSel, [rtjti, RepeatFlag.Repeat, origin.sd, DelType.del]) || new Array<PlanItemData>();
 
         let originitemsdb: Array<JtaTbl> = new Array<JtaTbl>();
 
