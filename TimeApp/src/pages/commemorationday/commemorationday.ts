@@ -50,7 +50,14 @@ import {Keyboard} from "@ionic-native/keyboard";
             </ion-row>
 
             <ion-row class="agendaOptionThree" *ngIf="currentPlanItem.jti">
-              <button ion-button  clear (click)="changeRepeat()">
+              <button ion-button *ngIf="currentPlanItem.rfg != repeattonon" clear (click)="changeRepeat()">
+                <div class="agendarepeat">
+                  <ion-icon class="fal fa-copy  iconCopy" *ngIf="!currentPlanItem.rts"></ion-icon>
+                  {{currentPlanItem.rts || "重复"}}
+                  <corner-badge *ngIf="currentPlanItem.rts"><p><i class="fa fa-copy "></i></p></corner-badge>
+                </div>
+              </button>
+              <button ion-button *ngIf="currentPlanItem.rfg == repeattonon" clear>
                 <div class="agendarepeat">
                   <ion-icon class="fal fa-copy  iconCopy" *ngIf="!currentPlanItem.rts"></ion-icon>
                   {{currentPlanItem.rts || "重复"}}
@@ -111,6 +118,8 @@ export class CommemorationDayPage {
   currentuser: string = UserConfig.account.id;
   friends: Array<any> = UserConfig.friends;
   privateplans: Array<any> = UserConfig.privateplans;
+
+  repeattonon: RepeatFlag.RepeatToNon;
 
   modifyConfirm;
 

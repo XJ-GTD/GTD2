@@ -85,7 +85,14 @@ import {Keyboard} from "@ionic-native/keyboard";
             </ion-row>
 
             <ion-row class="agendaOptionThree" *ngIf="currentAgenda.evi">
-              <button ion-button  clear (click)="changeRepeat()">
+              <button ion-button *ngIf="currentAgenda.rfg != repeattonon" clear (click)="changeRepeat()">
+                <div class="agendarepeat">
+                  <ion-icon class="fal fa-copy  iconCopy" *ngIf="!currentAgenda.rts"></ion-icon>
+                  {{currentAgenda.rts || "重复"}}
+                  <corner-badge *ngIf="currentAgenda.rts"><p><i class="fa fa-copy "></i></p></corner-badge>
+                </div>
+              </button>
+              <button ion-button *ngIf="currentAgenda.rfg == repeattonon" clear>
                 <div class="agendarepeat">
                   <ion-icon class="fal fa-copy  iconCopy" *ngIf="!currentAgenda.rts"></ion-icon>
                   {{currentAgenda.rts || "重复"}}
@@ -169,6 +176,8 @@ export class AgendaPage {
 
   repeatflag = RepeatFlag.Repeat;
   nonrepeatflag = RepeatFlag.NonRepeat;
+  repeattonon = RepeatFlag.RepeatToNon;
+
   @ViewChild(PageBoxComponent)
   pageBoxComponent:PageBoxComponent
 
