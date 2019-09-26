@@ -17,7 +17,8 @@ import {ModalBoxComponent} from "../../components/modal-box/modal-box";
 
       <ion-auto-complete #searchbar [dataProvider]="locationSearchService"
                          [options]="{ placeholder : '哪里活动？',autocomplete:'on' }"
-                         (autoBlur)="autoBlur($event)"></ion-auto-complete>
+                         (itemSelected) = "itemSelected($event)"
+                         (ionAutoInput) = "ionAutoInput($event)" ></ion-auto-complete>
       <div class="mapwrap">
         <baidu-map #lmap id="map_container" [options]="mapOptions">
           <marker *ngFor="let marker of markers" [point]="marker.point" [options]="marker.options"></marker>
@@ -33,6 +34,10 @@ export class LocationPage {
 
   @ViewChild(ModalBoxComponent)
   modalBoxComponent:ModalBoxComponent
+
+  //是否选择了查询结果
+  isItemSelected : boolean = false;
+
 
   buttons: any = {
     remove: false,
@@ -106,12 +111,17 @@ export class LocationPage {
 
     this.modalBoxComponent.setBoxContent();
 
+    if (this.navParams && this.navParams.data ) {
+      this.searchText.adr = this.navParams.data.adr==null?"":this.navParams.data.adr;
+      this.searchbar.keyword = this.searchText.adr;
+    }
+
     if (this.navParams && this.navParams.data && this.navParams.data.adrx) {
       let value = this.navParams.data;
-      this.searchText.adr = value.adr;
+
       this.searchText.adlat = value.adrx;
       this.searchText.adlng = value.adry;
-      this.searchbar.keyword = this.searchText.adr;
+
 
       this.mapOptions = {
         centerAndZoom: {
@@ -166,6 +176,20 @@ export class LocationPage {
   }
 
   save() {
+
+    if (this.searchbar.suggestions && this.searchbar.suggestions.length > 0){
+
+      if (!this.isItemSelected){
+        this.searchText.adr = this.searchbar.keyword;
+        this.searchText.adlat = this.searchbar.suggestions[0].location.lat;
+        this.searchText.adlng = this.searchbar.suggestions[0].location.lng;
+      }
+    }else{
+      this.searchText.adr = this.searchbar.keyword;
+      this.searchText.adlat = 0;
+      this.searchText.adlng = 0;
+    }
+
     let data: Object = {
       adr: this.searchText.adr,
       adrx: this.searchText.adlat,
@@ -179,4 +203,15 @@ export class LocationPage {
     this.navCtrl.pop();
   }
 
+  itemSelected(e){
+    this.isItemSelected = true;
+    this.searchText.adr = e.name;
+    this.searchText.adlat = e.location.lat;
+    this.searchText.adlng = e.location.lng;
+  }
+
+  ionAutoInput(e){
+    //重新查询则初始化
+    this.isItemSelected = false;
+  }
 }
