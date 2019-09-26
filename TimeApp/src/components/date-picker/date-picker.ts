@@ -442,7 +442,7 @@ export class DatePickerComponent extends BaseInput<DateTimeData> implements Afte
     @Optional() item: Item,
     @Optional() private _pickerCtrl: PickerController
   ) {
-    super(config, elementRef, renderer, 'datetime', {}, form, item, null);
+    super(config, elementRef, renderer, 'date-picker', {}, form, item, null);
   }
 
   /**

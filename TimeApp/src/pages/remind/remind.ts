@@ -1,8 +1,6 @@
-import {Component, ElementRef, QueryList, Renderer2, ViewChild, ViewChildren} from '@angular/core';
+import {Component, ViewChild} from '@angular/core';
 import {IonicPage, NavController, NavParams, ModalController, Scroll, ViewController, DateTime} from 'ionic-angular';
-import {ScrollSelectComponent} from "../../components/scroll-select/scroll-select";
-import {ModalBoxComponent} from "../../components/modal-box/modal-box";
-import {RtJson, TxJson} from "../../service/business/event.service";
+import {TxJson} from "../../service/business/event.service";
 import {MultiPicker} from "ion-multi-picker";
 import * as moment from "moment";
 import * as anyenum from "../../data.enum";
@@ -14,54 +12,60 @@ import * as anyenum from "../../data.enum";
     <modal-box title="提醒" [buttons]="buttons" (onSave)="save()" (onCancel)="cancel()">
       <ion-toolbar>
         <ion-buttons item-start>
-          <button clear  ion-button  *ngIf="true"><ion-icon class = "fal fa-bell-slash"></ion-icon>开启</button>
-          <button clear  ion-button *ngIf="false"><ion-icon class = "fal fa-bell"  ></ion-icon>关闭</button>
+          <button clear ion-button *ngIf="true">
+            <ion-icon class="fal fa-bell-slash"></ion-icon>
+            开启
+          </button>
+          <button clear ion-button *ngIf="false">
+            <ion-icon class="fal fa-bell"></ion-icon>
+            关闭
+          </button>
         </ion-buttons>
         <ion-buttons end>
           <button clear (click)="openRemindTiqian()" ion-button>设定提醒</button>
           <button clear (click)="openRemindDt()" ion-button>指定日期</button>
         </ion-buttons>
       </ion-toolbar>
-      
-        <ion-list>
-          <ion-list-header>
-            剩余 <span class="count">{{reminds.length}}</span> 条提醒
-          </ion-list-header>
-          <ion-item  *ngFor="let remind of reminds">
-            <ion-label>{{remind.datename}}</ion-label>
-            <button ion-button  (click)="delRemind(idx)" clear item-end>
-              <ion-icon class="fal fa-minus-circle"></ion-icon>
-            </button>
-          </ion-item>
-        </ion-list>
+
+      <ion-list>
+        <ion-list-header>
+          剩余 <span class="count">{{reminds.length}}</span> 条提醒
+        </ion-list-header>
+        <ion-item *ngFor="let remind of reminds">
+          <ion-label>{{remind.datename}}</ion-label>
+          <button ion-button (click)="delRemind(idx)" clear item-end>
+            <ion-icon class="fal fa-minus-circle"></ion-icon>
+          </button>
+        </ion-item>
+      </ion-list>
     </modal-box>
     <div style="display: none">
       <ion-multi-picker #remindTiqian [(ngModel)]="tiqianvalue"
                         (ngModelChange)="tiqianselect()" [multiPickerColumns]="dependentColumns"
                         cancelText="取消" doneText="设定"></ion-multi-picker>
-      <date-picker #remindDt 
-                    pickerFormat="YYYY ,MM DD"
-                    [(ngModel)]="datevalue" (ngModelChange)="dtselect()"
-                    cancelText="取消" doneText="选择时间"
+      <date-picker #remindDt
+                   pickerFormat="YYYY ,MM DD"
+                   [(ngModel)]="datevalue" (ngModelChange)="dtselect()"
+                   cancelText="取消" doneText="选择时间"
       ></date-picker>
-      <date-picker #remindTime  pickerFormat="A hh mm"
-                    [(ngModel)]="timevalue" (ngModelChange)="timeselect()" (ionCancel)="openRemindDt()"
-                     doneText="设定"
+      <date-picker #remindTime pickerFormat="A hh mm"
+                   [(ngModel)]="timevalue" (ngModelChange)="timeselect()" (ionCancel)="openRemindDt()"
+                   doneText="设定"
       ></date-picker>
     </div>
-  
+
   `
 })
 export class RemindPage {
 
   @ViewChild("remindTiqian")
-  remindTiqian:MultiPicker;
+  remindTiqian: MultiPicker;
 
   @ViewChild("remindDt")
-  remindDt:DateTime;
+  remindDt: DateTime;
 
   @ViewChild("remindTime")
-  remindTime:DateTime;
+  remindTime: DateTime;
 
 
   buttons: any = {
@@ -71,11 +75,12 @@ export class RemindPage {
     cancel: true
   };
 
-  datevalue : string;
-  timevalue : string;
-  tiqianvalue : string;
+  datevalue: string;
+  timevalue: string;
+  tiqianvalue: string;
 
-  evdatetime ; string ;
+  evdatetime;
+  string;
 
   reminds: Array<any> = new Array<any>();
   currentTx: TxJson;
@@ -120,13 +125,13 @@ export class RemindPage {
           {text: '7小时', value: this.h2min(7)},
           {text: '8小时', value: this.h2min(8)},
           {text: '9小时', value: this.h2min(9)},
-          {text: '10小时', value:this.h2min(10)},
-          {text: '11小时', value:this.h2min(11)},
-          {text: '12小时', value:this.h2min(12)},
-          {text: '13小时', value:this.h2min(13)},
-          {text: '14小时', value:this.h2min(14)},
-          {text: '15小时', value:this.h2min(15)},
-          {text: '16小时', value:this.h2min(16)}],
+          {text: '10小时', value: this.h2min(10)},
+          {text: '11小时', value: this.h2min(11)},
+          {text: '12小时', value: this.h2min(12)},
+          {text: '13小时', value: this.h2min(13)},
+          {text: '14小时', value: this.h2min(14)},
+          {text: '15小时', value: this.h2min(15)},
+          {text: '16小时', value: this.h2min(16)}],
       },
       {
         columnWidth: '100px',
@@ -165,7 +170,7 @@ export class RemindPage {
           for (let j = 0, len = this.currentTx.reminds.length; j < len; j++) {
             this.reminds.push(
               {
-                datename:this.getShowDateName(this.currentTx.reminds[j]) ,
+                datename: this.getShowDateName(this.currentTx.reminds[j]),
                 value: this.currentTx.reminds[j]
               });
           }
@@ -178,8 +183,8 @@ export class RemindPage {
 
   save() {
     this.currentTx.reminds.length = 0;
-    for (let j = 0,len = this.reminds.length; j < len ; j++){
-        this.currentTx.reminds.push(this.reminds[j].value);
+    for (let j = 0, len = this.reminds.length; j < len; j++) {
+      this.currentTx.reminds.push(this.reminds[j].value);
     }
 
     let data: Object = {txjson: this.currentTx};
@@ -187,11 +192,11 @@ export class RemindPage {
   }
 
 
-  getShowDateName(time){
-    let ret : string;
+  getShowDateName(time) {
+    let ret: string;
     ret = moment(this.evdatetime).subtract(time, 'm').format("MM月DD HH:mm");
 
-    ret = "" +TxJson.caption(time) + "- -" + ret ;
+    ret = "" + TxJson.caption(time) + "- -" + ret;
 
     return ret;
   }
@@ -200,63 +205,64 @@ export class RemindPage {
     this.navCtrl.pop();
   }
 
-  openRemindTiqian(){
+  openRemindTiqian() {
     this.remindTiqian.open();
 
   }
-  openRemindDt(){
+
+  openRemindDt() {
     this.remindDt.min = moment().format("YYYY-MM-DD");
-    this.remindDt.max =  moment(this.evdatetime).add(2,"M").format("YYYY-MM-DD");
+    this.remindDt.max = moment(this.evdatetime).add(2, "M").format("YYYY-MM-DD");
     this.remindDt.open();
 
   }
 
-  tiqianselect(){
+  tiqianselect() {
 
-    if (!this.tiqianvalue){
+    if (!this.tiqianvalue) {
       return;
     }
     let dtsplit = new Array<string>();
     let time;
     let dt;
     dtsplit = this.tiqianvalue.split(" ");
-    if (dtsplit.length < 4){
+    if (dtsplit.length < 4) {
       return;
     }
 
-    time =  parseInt(dtsplit[1]) + parseInt(dtsplit[2]) + parseInt(dtsplit[3]);
-    dt = moment(this.evdatetime).subtract(time,'m');
+    time = parseInt(dtsplit[1]) + parseInt(dtsplit[2]) + parseInt(dtsplit[3]);
+    dt = moment(this.evdatetime).subtract(time, 'm');
     this.reminds.push(
       {
-        datename:"" +TxJson.caption(time) + "- -" + moment(this.evdatetime).subtract(time, 'm').format("MM月DD HH:mm"),
-        value:time
+        datename: "" + TxJson.caption(time) + "- -" + moment(this.evdatetime).subtract(time, 'm').format("MM月DD HH:mm"),
+        value: time
       });
   }
 
-  dtselect(){
+  dtselect() {
     this.remindTime.cancelText = "选择日期 " + moment(this.datevalue).format("YYYY年MM月DD日");
     this.remindTime.open();
   }
 
-  timeselect(){
+  timeselect() {
     let dt = this.datevalue + " " + this.timevalue;
-    let time = moment(this.evdatetime).diff(dt,'m');
+    let time = moment(this.evdatetime).diff(dt, 'm');
     this.reminds.push(
       {
-        datename: "" +TxJson.caption(time) +  " -- " + moment(dt).format("MM月DD HH:mm"),
-        value:time
+        datename: "" + TxJson.caption(time) + " -- " + moment(dt).format("MM月DD HH:mm"),
+        value: time
       });
   }
 
-  day2min(d){
+  day2min(d) {
     return d * 24 * 60;
   }
 
-  h2min(h){
+  h2min(h) {
     return h * 60;
   }
 
-  delRemind(index){
-    this.reminds.splice(index,1);
+  delRemind(index) {
+    this.reminds.splice(index, 1);
   }
 }
