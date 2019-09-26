@@ -17,7 +17,7 @@ export class CommentPage {
   @ViewChild(ModalBoxComponent)
   modalBoxComponent:ModalBoxComponent;
 
-  @ViewChild("input")
+  @ViewChild("textarea")
   textarea: TextInput;
 
   buttons: any = {
@@ -44,11 +44,17 @@ export class CommentPage {
     }
   }
 
+
+
   ionViewDidEnter() {
+  }
+
+  ngAfterViewInit(){
 
     this.modalBoxComponent.setBoxContent();
 
     this.textarea.setFocus();
+
   }
 
   save() {
