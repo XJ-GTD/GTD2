@@ -1320,7 +1320,7 @@ export class CalendarService extends BaseService {
                                             from gtd_jta
                                             where (jti = ?1 or rtjti = ?1)
                                               and rfg = ?2
-                                              and sd >= ?3
+                                              and date(replace(sd, '/', '-')) >= date(replace(?3, '/', '-'))
                                               and del <> ?4
                                             order by sd asc`;
 
@@ -1380,7 +1380,7 @@ export class CalendarService extends BaseService {
                                           from gtd_jta
                                           where (jti = ?1 or rtjti = ?1)
                                             and rfg = ?2
-                                            and sd >= ?3
+                                            and date(replace(sd, '/', '-')) >= date(replace(?3, '/', '-'))
                                             and del <> ?4
                                           order by sd asc`;
 
