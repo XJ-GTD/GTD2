@@ -4,6 +4,7 @@ import { IonicModule } from "ionic-angular";
 import { ScrollSelectComponentModule } from "../../components/scroll-select/scroll-select.module";
 import {ModalBoxComponentModule} from "../../components/modal-box/modal-box.module";
 import {MultiPickerModule} from "ion-multi-picker";
+import {DatePickerComponentModule} from "../../components/date-picker/date-picker.module";
 
 @NgModule({
   declarations: [
@@ -13,7 +14,8 @@ import {MultiPickerModule} from "ion-multi-picker";
       IonicModule,
       ModalBoxComponentModule,
       ScrollSelectComponentModule,
-      MultiPickerModule,
+      MultiPickerModule,DatePickerComponentModule
+
   ],
   providers: [
   ],
