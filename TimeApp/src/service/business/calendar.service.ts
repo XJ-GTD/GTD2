@@ -1232,18 +1232,19 @@ export class CalendarService extends BaseService {
 
                 item.rfg = RepeatFlag.RepeatToNon;
 
-                item.rtjson = rtjson;
-                item.rt = JSON.stringify(rtjson);
-                item.rts = rtjson.text();
+                // 关闭重复
+                item.rtjson = new RtJson();
+                item.rt = JSON.stringify(item.rtjson);
+                item.rts = item.rtjson.text();
 
                 item.txjson = txjson;
                 item.tx = JSON.stringify(txjson);
                 item.txs = txjson.text();
 
+                item.tb = SyncType.unsynch;
+
                 let planitemdb: JtaTbl = new JtaTbl();
                 Object.assign(planitemdb, item);
-
-                planitemdb.tb = SyncType.unsynch;
 
                 sqls.push(planitemdb.upTParam());
 
