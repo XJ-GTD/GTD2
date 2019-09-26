@@ -68,6 +68,10 @@ export class PermissionsService {
         return this.checkPermission(this.list_all[i++]);
       }).then(res => {
         return this.checkPermission(this.list_all[i++]);
+      }).then(res => {
+        return this.checkPermission(this.list_all[i++]);
+      }).then(res => {
+        return this.checkPermission(this.list_all[i++]);
       }).catch(err=>{
         return;
       })
