@@ -1228,26 +1228,67 @@ export class CalendarService extends BaseService {
 
               // 之修改当前日历项
               if (modiType == OperateType.OnlySel) {
+                let sqls: Array<any> = new Array<any>();
+
                 item.rfg = RepeatFlag.RepeatToNon;
 
-                item.rtjson = rtjson;
-                item.rt = JSON.stringify(rtjson);
-                item.rts = rtjson.text();
+                // 关闭重复
+                item.rtjson = new RtJson();
+                item.rt = JSON.stringify(item.rtjson);
+                item.rts = item.rtjson.text();
 
                 item.txjson = txjson;
                 item.tx = JSON.stringify(txjson);
                 item.txs = txjson.text();
 
+                item.tb = SyncType.unsynch;
+
                 let planitemdb: JtaTbl = new JtaTbl();
                 Object.assign(planitemdb, item);
 
-                planitemdb.tb = SyncType.unsynch;
-
-                await this.sqlExce.updateByParam(planitemdb);
-
-                Object.assign(item, planitemdb);
+                sqls.push(planitemdb.upTParam());
 
                 items.push(item);
+
+                // 如果是重复第一条（父记录）,重构剩余重复日历项
+                if (!origin.rtjti || origin.rtjti == "") {
+                  let rtjti: string = origin.jti;
+
+                  let fetchFromSel: string = `select *
+                                              from gtd_jta
+                                              where rtjti = ?1
+                                                and del <> ?2
+                                              order by sd asc`;
+
+                  let originitems: Array<PlanItemData> = await this.sqlExce.getExtLstByParam<PlanItemData>(fetchFromSel, [rtjti, DelType.del]) || new Array<PlanItemData>();
+
+                  let originitemsdb: Array<JtaTbl> = new Array<JtaTbl>();
+
+                  rtjti = "";
+
+                  for (let originitem of originitems) {
+                    originitem.tb = SyncType.unsynch;
+                    originitem.rtjti = rtjti;
+
+                    if (rtjti == "") {
+                      rtjti = originitem.jti;
+                    }
+
+                    let planitemdb: JtaTbl = new JtaTbl();
+                    Object.assign(planitemdb, originitem);
+
+                    items.push(originitem);
+                    originitemsdb.push(planitemdb);
+                  }
+
+                  let originitemssqls: Array<any> = this.sqlExce.getFastSaveSqlByParam(originitemsdb) || new Array<any>();
+
+                  for (let originitemsql of originitemssqls) {
+                    sqls.push(originitemsql);
+                  }
+                }
+
+                await this.sqlExce.batExecSqlByParam(sqls);
               }
 
               // 修改当前及以后所有日历项

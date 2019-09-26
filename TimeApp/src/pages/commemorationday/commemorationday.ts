@@ -236,7 +236,7 @@ export class CommemorationDayPage {
     }
   }
 
-  createConfirm(remove: boolean = false) {
+  createConfirm(remove: boolean = false, confirm: ConfirmType = ConfirmType.CurrentOrFutureAll) {
     let buttons: Array<any> = new Array<any>();
 
     if (remove) {
@@ -255,13 +255,15 @@ export class CommemorationDayPage {
         }
       });
     } else {
-      buttons.push({
-        text: '仅针对此纪念日存储',
-        role: 'modify',
-        handler: () => {
-          this.doOptionSave(OperateType.OnlySel);
-        }
-      });
+      if (confirm == ConfirmType.CurrentOrFutureAll) {
+        buttons.push({
+          text: '仅针对此纪念日存储',
+          role: 'modify',
+          handler: () => {
+            this.doOptionSave(OperateType.OnlySel);
+          }
+        });
+      }
       buttons.push({
         text: '针对将来纪念日存储',
         role: 'modify',
@@ -306,13 +308,13 @@ export class CommemorationDayPage {
           return;
         }
 
-        let confirm: ConfirmType = this.calendarService.hasPlanItemModifyConfirm(this.currentPlanItem, this.currentPlanItem);
+        let confirm: ConfirmType = this.calendarService.hasPlanItemModifyConfirm(this.originPlanItem, this.currentPlanItem);
 
         if (confirm == ConfirmType.CurrentOrFutureAll || confirm == ConfirmType.FutureAll) { // 重复修改
           if (this.modifyConfirm) {
             this.modifyConfirm.dismiss();
           }
-          this.modifyConfirm = this.createConfirm();
+          this.modifyConfirm = this.createConfirm(false, confirm);
 
           this.modifyConfirm.present();
         } else {                          // 非重复/重复已经修改为非重复
