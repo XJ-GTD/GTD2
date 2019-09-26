@@ -1324,7 +1324,7 @@ export class CalendarService extends BaseService {
                                               and del <> ?4
                                             order by sd asc`;
 
-                let originitems: Array<PlanItemData> = await this.sqlExce.getExtLstByParam<PlanItemData>(fetchFromSel, [rtjti, RepeatFlag.Repeat, origin.sd, DelType.undel]) || new Array<PlanItemData>();
+                let originitems: Array<PlanItemData> = await this.sqlExce.getExtLstByParam<PlanItemData>(fetchFromSel, [rtjti, RepeatFlag.Repeat, origin.sd, DelType.del]) || new Array<PlanItemData>();
 
                 let originitemsdb: Array<JtaTbl> = new Array<JtaTbl>();
 
@@ -1384,7 +1384,7 @@ export class CalendarService extends BaseService {
                                             and del <> ?4
                                           order by sd asc`;
 
-              let futurealloriginitems: Array<PlanItemData> = await this.sqlExce.getExtLstByParam<PlanItemData>(fetchFromSel, [futureallrtjti, RepeatFlag.Repeat, origin.sd, DelType.undel]) || new Array<PlanItemData>();
+              let futurealloriginitems: Array<PlanItemData> = await this.sqlExce.getExtLstByParam<PlanItemData>(fetchFromSel, [futureallrtjti, RepeatFlag.Repeat, origin.sd, DelType.del]) || new Array<PlanItemData>();
 
               let futurealloriginitemsdb: Array<JtaTbl> = new Array<JtaTbl>();
 
@@ -1422,7 +1422,7 @@ export class CalendarService extends BaseService {
                                             and del <> ?3
                                           order by sd asc`;
 
-              let alloriginitems: Array<PlanItemData> = await this.sqlExce.getExtLstByParam<PlanItemData>(fetchAll, [allrtjti, RepeatFlag.Repeat, DelType.undel]) || new Array<PlanItemData>();
+              let alloriginitems: Array<PlanItemData> = await this.sqlExce.getExtLstByParam<PlanItemData>(fetchAll, [allrtjti, RepeatFlag.Repeat, DelType.del]) || new Array<PlanItemData>();
 
               // 创建新的重复日历项
               let cnewitem: PlanItemData = {} as PlanItemData;
