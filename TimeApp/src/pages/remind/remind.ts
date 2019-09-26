@@ -38,7 +38,7 @@ import * as anyenum from "../../data.enum";
     <div style="display: none">
       <ion-multi-picker #remindTiqian [(ngModel)]="tiqianvalue"
                         (ngModelChange)="tiqianselect()" [multiPickerColumns]="dependentColumns"
-                        cancelText="取消" doneText="确认"></ion-multi-picker>
+                        cancelText="取消" doneText="设定"></ion-multi-picker>
       <date-picker #remindDt 
                     pickerFormat="YYYY ,MM DD"
                     [(ngModel)]="datevalue" (ngModelChange)="dtselect()"
