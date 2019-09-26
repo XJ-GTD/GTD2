@@ -3928,7 +3928,11 @@ describe('CalendarService test suite', () => {
     planitem1.jtn = "结婚纪念日";
     planitem1.jtt = PlanItemType.Activity;
 
-    await calendarService.savePlanItem(planitem1);
+    let savedplanitems = await calendarService.savePlanItem(planitem1);
+
+    if (savedplanitems && savedplanitems.length > 0) {
+      planitem1 = savedplanitems[0];
+    }
 
     // 任务
     let task: TaskData = {} as TaskData;
@@ -3949,11 +3953,14 @@ describe('CalendarService test suite', () => {
     let dayActivities: DayActivityData = await calendarService.fetchDayActivities();
 
     // 更新日历项、任务和备忘
-    planitem1.jtn = "结婚";
-    let saved = await calendarService.savePlanItem(planitem1);
+    let changed: PlanItemData = {} as PlanItemData;
+    Object.assign(changed, planitem1);
+
+    changed.jtn = "结婚";
+    let saved = await calendarService.savePlanItem(changed, planitem1);
 
     if (saved && saved.length > 0) {
-      planitem1 = saved[0];
+      changed = saved[0];
     }
 
     task.evn = "结婚纪念日礼物";
@@ -3962,7 +3969,7 @@ describe('CalendarService test suite', () => {
     memo.mon = "结婚纪念日买了一块定制巧克力";
     memo = await memoService.saveMemo(memo);
 
-    dayActivities = await calendarService.mergeDayActivities(dayActivities, [planitem1, task, memo]);
+    dayActivities = await calendarService.mergeDayActivities(dayActivities, [changed, task, memo]);
 
     expect(dayActivities.day).toBe(day);
     expect(dayActivities.calendaritems).toBeDefined();
@@ -5311,7 +5318,7 @@ describe('CalendarService test suite', () => {
       planitem = saved[0];
     }
 
-    await calendarService.removePlanItem(planitem.jti);
+    await calendarService.removePlanItem(planitem);
 
     // 根据日历ID检索日历项
     let results: Array<PlanItemData> = await calendarService.fetchPlanItems(plan.ji);
@@ -5370,8 +5377,11 @@ describe('CalendarService test suite', () => {
 
     let qplanitem: PlanItemData = await calendarService.getPlanItem(planitem.jti);
 
-    qplanitem.jtn = "结婚";
-    await calendarService.savePlanItem(qplanitem);
+    let changed: PlanItemData = {} as PlanItemData;
+    Object.assign(changed, qplanitem);
+
+    changed.jtn = "结婚";
+    await calendarService.savePlanItem(changed, qplanitem);
 
     qplanitem = await calendarService.getPlanItem(planitem.jti);
 
@@ -5421,8 +5431,11 @@ describe('CalendarService test suite', () => {
 
     let qplanitem: PlanItemData = await calendarService.getPlanItem(planitem.jti);
 
-    qplanitem.jtn = "国庆";
-    await calendarService.savePlanItem(qplanitem);
+    let changed: PlanItemData = {} as PlanItemData;
+    Object.assign(changed, qplanitem);
+
+    changed.jtn = "国庆";
+    await calendarService.savePlanItem(changed, qplanitem);
 
     qplanitem = await calendarService.getPlanItem(planitem.jti);
 
