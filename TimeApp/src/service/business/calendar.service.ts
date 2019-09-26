@@ -1556,6 +1556,45 @@ export class CalendarService extends BaseService {
 
         itemsid.push(origin.jti);
         items.push(origin);
+
+        // 删除第一条（父记录）,重构剩余重复日历项
+        if (!origin.rtjti || origin.rtjti == "") {
+          let rtjti: string = origin.jti;
+
+          let fetchFromSel: string = `select *
+                                      from gtd_jta
+                                      where rtjti = ?1
+                                        and rfg = ?2
+                                        and del <> ?3
+                                      order by sd asc`;
+
+          let originitems: Array<PlanItemData> = await this.sqlExce.getExtLstByParam<PlanItemData>(fetchFromSel, [rtjti, RepeatFlag.Repeat, DelType.del]) || new Array<PlanItemData>();
+
+          let originitemsdb: Array<JtaTbl> = new Array<JtaTbl>();
+
+          rtjti = "";
+
+          for (let originitem of originitems) {
+            originitem.tb = SyncType.unsynch;
+            originitem.rtjti = rtjti;
+
+            if (rtjti == "") {
+              rtjti = originitem.jti;
+            }
+
+            let planitemdb: JtaTbl = new JtaTbl();
+            Object.assign(planitemdb, originitem);
+
+            items.push(originitem);
+            originitemsdb.push(planitemdb);
+          }
+
+          let originitemssqls: Array<any> = this.sqlExce.getFastSaveSqlByParam(originitemsdb) || new Array<any>();
+
+          for (let originitemsql of originitemssqls) {
+            sqls.push(originitemsql);
+          }
+        }
       }
 
       // 删除当前选择以及将来所有日历项
