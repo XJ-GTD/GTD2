@@ -3949,11 +3949,14 @@ describe('CalendarService test suite', () => {
     let dayActivities: DayActivityData = await calendarService.fetchDayActivities();
 
     // 更新日历项、任务和备忘
-    planitem1.jtn = "结婚";
-    let saved = await calendarService.savePlanItem(planitem1);
+    let changed: PlanItemData = {} as PlanItemData;
+    Object.assign(changed, planitem1);
+
+    changed.jtn = "结婚";
+    let saved = await calendarService.savePlanItem(changed, planitem1);
 
     if (saved && saved.length > 0) {
-      planitem1 = saved[0];
+      changed = saved[0];
     }
 
     task.evn = "结婚纪念日礼物";
@@ -3962,7 +3965,7 @@ describe('CalendarService test suite', () => {
     memo.mon = "结婚纪念日买了一块定制巧克力";
     memo = await memoService.saveMemo(memo);
 
-    dayActivities = await calendarService.mergeDayActivities(dayActivities, [planitem1, task, memo]);
+    dayActivities = await calendarService.mergeDayActivities(dayActivities, [changed, task, memo]);
 
     expect(dayActivities.day).toBe(day);
     expect(dayActivities.calendaritems).toBeDefined();
