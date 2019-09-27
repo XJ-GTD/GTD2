@@ -215,9 +215,6 @@ export class DataConfig {
    */
   public static isFirst: number = 1;
 
-  public static defaultHeadImg: string = "./assets/imgs/headImg.jpg";
-
-  public static NOT_PLAYER: string = "./assets/imgs/headImg.jpg";
 
   /*========== 语音对应文言 start =========*/
   public static XF_SPEECH_SCHEDULE_CREATE: string = "";
