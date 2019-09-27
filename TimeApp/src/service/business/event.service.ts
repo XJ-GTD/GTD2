@@ -19,7 +19,7 @@ import {DataConfig} from "../config/data.config";
 import {BTbl} from "../sqlite/tbl/b.tbl";
 import {FjTbl} from "../sqlite/tbl/fj.tbl";
 import {DataRestful, PullInData, PushInData, SyncData} from "../restful/datasev";
-import {SyncType, DelType, IsSuccess, SyncDataStatus, RepeatFlag, PageDirection, SyncDataSecurity} from "../../data.enum";
+import {SyncType, DelType, IsSuccess, SyncDataStatus, RepeatFlag, ModiPower, PageDirection, SyncDataSecurity} from "../../data.enum";
 import {
   assertNotNumber,
   assertEmpty,
@@ -2312,6 +2312,16 @@ export class EventService extends BaseService {
   async syncAgendas(agendas: Array<AgendaData> = new Array<AgendaData>()) {
     this.assertEmpty(agendas);  // 入参不能为空
 
+    if (agendas.length <= 0) {
+      let sql: string = `select ev.*, ca.sd, ca.ed, ca.st, ca.et, ca.al, ca.ct
+                        from (select *, case when ifnull(rtevi, '') = '' then evi else rtevi end forceevi
+                          from gtd_ev
+                          where type = ?1 and tb = ?2) ev
+                        left join gtd_ca ca
+                        on ca.evi = ev.forceevi`;
+  		agendas = await this.sqlExce.getExtLstByParam<AgendaData>(sql, [anyenum.EventType.Agenda, SyncType.unsynch]) || agendas;
+    }
+
     if (agendas.length > 0) {
       let push: PushInData = new PushInData();
 
@@ -2319,39 +2329,24 @@ export class EventService extends BaseService {
         let sync: SyncData = new SyncData();
         sync.id = agenda.evi;
         sync.type = "Agenda";
+
         sync.security = SyncDataSecurity.None;
+
+        //修改权限设定
+        if (agenda.md == ModiPower.disable){
+          sync.security = SyncDataSecurity.SelfModify;
+        }
+        if (agenda.md == ModiPower.enable){
+          sync.security = SyncDataSecurity.ShareModify;
+        }
+
         sync.status = SyncDataStatus[agenda.del];
+        sync.to = (!agenda.tos || agenda.tos == "" || agenda.tos == null) ? [] : agenda.tos.split(",") ;
         sync.payload = agenda;
         push.d.push(sync);
       }
 
       await this.dataRestful.push(push);
-    } else {
-
-      let sql: string = `select ev.*, ca.sd, ca.ed, ca.st, ca.et, ca.al, ca.ct
-                        from (select *, case when ifnull(rtevi, '') = '' then evi else rtevi end forceevi
-                          from gtd_ev
-                          where type = ?1 and tb = ?2) ev
-                        left join gtd_ca ca
-                        on ca.evi = ev.forceevi`;
-  		let unsyncedagendas = await this.sqlExce.getExtLstByParam<AgendaData>(sql, [anyenum.EventType.Agenda, SyncType.unsynch]);
-
-  		//当存在未同步的情况下,进行同步
-  		if (unsyncedagendas && unsyncedagendas.length > 0) {
-  			 let push: PushInData = new PushInData();
-
-  			 for (let agenda of unsyncedagendas) {
-  			 	 	let sync: SyncData = new SyncData();
-  			 	 	sync.id = agenda.evi;
-  			    sync.type = "Agenda";
-  			    sync.security = SyncDataSecurity.None;
-  			    sync.status = SyncDataStatus[agenda.del];
-  			    sync.payload = agenda;
-  			    push.d.push(sync);
-  			 }
-
-  			 await this.dataRestful.push(push);
-  		}
     }
 
 		return ;
