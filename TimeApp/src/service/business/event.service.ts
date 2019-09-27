@@ -19,7 +19,7 @@ import {DataConfig} from "../config/data.config";
 import {BTbl} from "../sqlite/tbl/b.tbl";
 import {FjTbl} from "../sqlite/tbl/fj.tbl";
 import {DataRestful, PullInData, PushInData, SyncData} from "../restful/datasev";
-import {SyncType, DelType, IsSuccess, SyncDataStatus, RepeatFlag, ModiPower, PageDirection, SyncDataSecurity} from "../../data.enum";
+import {SyncType, DelType, IsSuccess, SyncDataStatus, RepeatFlag, ConfirmType, ModiPower, PageDirection, SyncDataSecurity} from "../../data.enum";
 import {
   assertNotNumber,
   assertEmpty,
@@ -536,6 +536,67 @@ export class EventService extends BaseService {
   }
 
   /**
+   * 页面判断重复设置是否改变
+   * @param {AgendaData} newAgd
+   * @param {AgendaData} oldAgd
+   * @returns {boolean}
+   */
+  isAgendaChanged(newAgd : AgendaData ,oriAgd : AgendaData): Array<string>{
+    let ret = new Array<string>();
+    if (!newAgd.rtjson) {
+      if (newAgd.rt) {
+        newAgd.rtjson = new RtJson();
+        Object.assign(newAgd.rtjson, JSON.parse(newAgd.rt));
+      } else {
+        newAgd.rtjson = new RtJson();
+      }
+    } else {
+      let rtjson: RtJson = new RtJson();
+      Object.assign(rtjson, newAgd.rtjson);
+      newAgd.rtjson = rtjson;
+    }
+
+    if (!oriAgd.rtjson) {
+      if (oriAgd.rt) {
+        oriAgd.rtjson = new RtJson();
+        Object.assign(oriAgd.rtjson, JSON.parse(oriAgd.rt));
+      } else {
+        oriAgd.rtjson = new RtJson();
+      }
+    } else {
+      let rtjson: RtJson = new RtJson();
+      Object.assign(rtjson, oriAgd.rtjson);
+      oriAgd.rtjson = rtjson;
+    }
+
+    //重复选项发生变化
+    if (!newAgd.rtjson.sameWith(oriAgd.rtjson))  ret.push("rt");
+
+    //title发生变化
+    if (newAgd.evn != oriAgd.evn){
+      ret.push("evn");
+  }
+    //开始日发生变化
+    if (newAgd.sd != oriAgd.sd){
+      ret.push("sd");
+    }
+    //开始时间发生变化
+    if (newAgd.st != oriAgd.st){
+      ret.push("st");
+    }
+    //全天条件发生变化
+    if (newAgd.al != oriAgd.al){
+      ret.push("al");
+    }
+
+    //时长发生变化
+    if (newAgd.ct != oriAgd.ct){
+      ret.push("ct");
+    }
+    return ret;
+  }
+
+  /**
    * 判断日程修改是否需要确认
    * 当前日程修改 还是 将来日程全部修改
    *
@@ -543,12 +604,14 @@ export class EventService extends BaseService {
    * @param {AgendaData} oldAgd
    * @returns {boolean}
    */
-  hasAgendaModifyConfirm(before: AgendaData, after: AgendaData): boolean {
+  hasAgendaModifyConfirm(before: AgendaData, after: AgendaData): ConfirmType {
     assertEmpty(before);  // 入参不能为空
     assertEmpty(after);  // 入参不能为空
 
+    let confirm: ConfirmType = ConfirmType.None;
+
     // 确认修改前日程是否重复
-    if (before.rfg != RepeatFlag.Repeat) return false;
+    if (before.rfg != RepeatFlag.Repeat) return confirm;
 
     for (let key of Object.keys(before)) {
       if (["sd", "st", "al", "ct", "evn", "rt", "rtjson"].indexOf(key) >= 0) {   // 比较字段
@@ -560,7 +623,15 @@ export class EventService extends BaseService {
         }
 
         // 如果one的值为空, 不一致
-        if (!value || !after[key]) return true;
+        if (!value || !after[key]) {
+          if (confirm == ConfirmType.None) {
+            confirm = ConfirmType.CurrentOrFutureAll;
+          } else if (confirm == ConfirmType.All) {
+            confirm = ConfirmType.FutureAll;
+          }
+
+          continue;
+        }
 
         if (typeof value === 'string' || typeof value === 'number' || typeof value === 'boolean') {
           if (typeof value === 'string' && value != "" && after[key] != "" && key == "rt") {
@@ -570,12 +641,26 @@ export class EventService extends BaseService {
             let anotherrt: RtJson = new RtJson();
             Object.assign(anotherrt, JSON.parse(after[key]));
 
-            if (!(onert.sameWith(anotherrt))) return true;
+            if (!(onert.sameWith(anotherrt))) {
+              if (confirm == ConfirmType.None) {
+                confirm = ConfirmType.All;
+              } else if (confirm == ConfirmType.CurrentOrFutureAll) {
+                confirm = ConfirmType.FutureAll;
+              }
+            }
 
             continue;
           }
 
-          if (value != after[key]) return true;
+          if (value != after[key]) {
+            if (confirm == ConfirmType.None) {
+              confirm = ConfirmType.CurrentOrFutureAll;
+            } else if (confirm == ConfirmType.All) {
+              confirm = ConfirmType.FutureAll;
+            }
+
+            continue;
+          }
         }
 
         if (value instanceof RtJson) {
@@ -585,14 +670,20 @@ export class EventService extends BaseService {
           let anotherrt: RtJson = new RtJson();
           Object.assign(anotherrt, after[key]);
 
-          if (!(onert.sameWith(anotherrt))) return true;
+          if (!(onert.sameWith(anotherrt))) {
+            if (confirm == ConfirmType.None) {
+              confirm = ConfirmType.All;
+            } else if (confirm == ConfirmType.CurrentOrFutureAll) {
+              confirm = ConfirmType.FutureAll;
+            }
+          }
 
           continue;
         }
       }
     }
 
-    return false;
+    return confirm;
   }
 
   /**
@@ -601,118 +692,43 @@ export class EventService extends BaseService {
    * @param {AgendaData} oldAgd
    * @returns {boolean}
    */
-  isAgendaChanged(newAgd : AgendaData ,oldAgd : AgendaData): boolean{
-    if (!newAgd.rtjson) {
-      if (newAgd.rt) {
-        newAgd.rtjson = new RtJson();
-        Object.assign(newAgd.rtjson, JSON.parse(newAgd.rt));
-      } else {
-        newAgd.rtjson = new RtJson();
+  hasAgendaModifyDo(newAgd : AgendaData ,oriAgd : AgendaData ,modiType : anyenum.OperateType):DoType {
+
+    let changed : Array<string> = this.isAgendaChanged(newAgd,oriAgd);
+
+    let doType  = DoType.Local;
+
+    if (changed.length > 0) {
+      //重复设定
+
+      /* 修改场景：
+      *  非重复事件to非重复、重复事件中的某一日程to独立日程
+      * `修改重复事件to重复事件、非重复事件to重复事件
+      */
+      //非重复事件to非重复
+      if (oriAgd.rfg == anyenum.RepeatFlag.NonRepeat && newAgd.rtjson.cycletype == anyenum.CycleType.close) {
+        doType = DoType.Current;
       }
-    } else {
-      let rtjson: RtJson = new RtJson();
-      Object.assign(rtjson, newAgd.rtjson);
-      newAgd.rtjson = rtjson;
-    }
-
-    if (!oldAgd.rtjson) {
-      if (oldAgd.rt) {
-        oldAgd.rtjson = new RtJson();
-        Object.assign(oldAgd.rtjson, JSON.parse(oldAgd.rt));
-      } else {
-        oldAgd.rtjson = new RtJson();
+      //非重复事件to重复事件
+      if (oriAgd.rfg == anyenum.RepeatFlag.NonRepeat && newAgd.rtjson.cycletype != anyenum.CycleType.close) {
+        doType = DoType.FutureAll;
       }
-    } else {
-      let rtjson: RtJson = new RtJson();
-      Object.assign(rtjson, oldAgd.rtjson);
-      oldAgd.rtjson = rtjson;
-    }
-
-    //重复选项发生变化
-    if (!newAgd.rtjson.sameWith(oldAgd.rtjson)) return true;
-
-    //title发生变化
-    if (newAgd.evn != oldAgd.evn){
-      return true;
-  }
-    //开始日发生变化
-    if (newAgd.sd != oldAgd.sd){
-      return true;
-    }
-    //开始时间发生变化
-    if (newAgd.st != oldAgd.st){
-      return true;
-    }
-    //全天条件发生变化
-    if (newAgd.al != oldAgd.al){
-      return true;
-    }
-
-    //时长发生变化
-    if (newAgd.ct != oldAgd.ct){
-      return true;
-    }
-    return false;
-  }
-
-  /**
-   * 页面判断重复设置是否改变
-   * @param {AgendaData} newAgd
-   * @param {AgendaData} oldAgd
-   * @returns {boolean}
-   */
-  agendaChangeState(newAgd : AgendaData ,oldAgd : AgendaData):ChangeState {
-    if (!newAgd.rtjson) {
-      if (newAgd.rt) {
-        newAgd.rtjson = new RtJson();
-        Object.assign(newAgd.rtjson, JSON.parse(newAgd.rt));
-      } else {
-        newAgd.rtjson = new RtJson();
+      //重复事件中的某一日程to独立日程
+      if (oriAgd.rfg == anyenum.RepeatFlag.Repeat && modiType == anyenum.OperateType.OnlySel) {
+        doType = DoType.Current;
       }
-    } else {
-      let rtjson: RtJson = new RtJson();
-      Object.assign(rtjson, newAgd.rtjson);
-      newAgd.rtjson = rtjson;
-    }
-
-    if (!oldAgd.rtjson) {
-      if (oldAgd.rt) {
-        oldAgd.rtjson = new RtJson();
-        Object.assign(oldAgd.rtjson, JSON.parse(oldAgd.rt));
-      } else {
-        oldAgd.rtjson = new RtJson();
+      //重复事件to重复事件或非重复
+      if (oriAgd.rfg == anyenum.RepeatFlag.Repeat && modiType == anyenum.OperateType.FromSel) {
+        doType = DoType.FutureAll;
+        //如果是修改重复选项
+        if (changed.length == 1 && changed[0] == "rt"){
+          doType = DoType.All;
+        }
       }
-    } else {
-      let rtjson: RtJson = new RtJson();
-      Object.assign(rtjson, oldAgd.rtjson);
-      oldAgd.rtjson = rtjson;
+    }else {
+      doType = DoType.Local;
     }
-
-    //重复选项发生变化
-    if (!newAgd.rtjson.sameWith(oldAgd.rtjson)) return ;
-
-    //title发生变化
-    if (newAgd.evn != oldAgd.evn){
-      return ;
-    }
-    //开始日发生变化
-    if (newAgd.sd != oldAgd.sd){
-      return ;
-    }
-    //开始时间发生变化
-    if (newAgd.st != oldAgd.st){
-      return ;
-    }
-    //全天条件发生变化
-    if (newAgd.al != oldAgd.al){
-      return ;
-    }
-
-    //时长发生变化
-    if (newAgd.ct != oldAgd.ct){
-      return ;
-    }
-    return ChangeState.LocalUpdate;
+    return doType;
   }
 
   /**
@@ -745,7 +761,7 @@ export class EventService extends BaseService {
     if (agdata.rtevi == ""){
       //非重复数据或重复数据的父记录
       masterEvi = agdata.evi;
-    }else if (agdata.rfg == anyenum.RepeatFlag.RepeatToNon){
+    }else if (agdata.rfg == anyenum.RepeatFlag.RepeatToOnly){
       //重复中独立数据
       masterEvi = agdata.evi;
     }else{
@@ -905,7 +921,7 @@ export class EventService extends BaseService {
       if (oriAgdata.rtevi == ""){
         //非重复数据或重复数据的父记录
         masterEvi = oriAgdata.evi;
-      }else if (oriAgdata.rfg == anyenum.RepeatFlag.RepeatToNon){
+      }else if (oriAgdata.rfg == anyenum.RepeatFlag.RepeatToOnly){
         //重复中独立日只能删自己
         masterEvi = oriAgdata.evi;
       }else{
@@ -1199,9 +1215,12 @@ export class EventService extends BaseService {
     let tmpsq : string;
     let outAgds = new Array<AgendaData>();//返回事件
     let params : Array<any>;
+    let doType : DoType;
+
+    doType = this.hasAgendaModifyDo(newAgdata,oriAgdata,modiType);
 
     //判断进行本地更新
-    if (!this.isAgendaChanged(newAgdata,oriAgdata)){
+    if (doType == DoType.Local){
       let ev = new EvTbl();
       ev.evi = oriAgdata.evi;
       ev.ji  = newAgdata.ji;
@@ -1225,7 +1244,7 @@ export class EventService extends BaseService {
         if (oriAgdata.rtevi == ""){
           //非重复数据或重复数据的父记录
           masterEvi = oriAgdata.evi;
-        }else if (oriAgdata.rfg == anyenum.RepeatFlag.RepeatToNon){
+        }else if (oriAgdata.rfg == anyenum.RepeatFlag.RepeatToOnly){
           //重复中独立日只能修改自己
           masterEvi = oriAgdata.evi;
         }else{
@@ -1252,30 +1271,6 @@ export class EventService extends BaseService {
       return outAgds;
     }
 
-    //重复设定
-    let changeState : ChangeState = ChangeState.NonRepeatToNonRepeat;
-  /* 修改场景：
-  *  非重复事件to非重复、重复事件中的某一日程to独立日程
-  * `修改重复事件to重复事件、非重复事件to重复事件
-  */
-    //非重复事件to非重复
-    if (oriAgdata.rfg ==  anyenum.RepeatFlag.NonRepeat && newAgdata.rtjson.cycletype == anyenum.CycleType.close){
-      changeState = ChangeState.NonRepeatToNonRepeat;
-    }
-    //非重复事件to重复事件
-    if (oriAgdata.rfg ==  anyenum.RepeatFlag.NonRepeat  && newAgdata.rtjson.cycletype != anyenum.CycleType.close){
-      changeState = ChangeState.NonRepeatToRepeat;
-    }
-    //重复事件中的某一日程to独立日程
-    if (oriAgdata.rfg == anyenum.RepeatFlag.Repeat && modiType == anyenum.OperateType.OnlySel){
-      changeState = ChangeState.RepeatToNon;
-    }
-    //重复事件to重复事件或非重复
-    if (oriAgdata.rfg == anyenum.RepeatFlag.Repeat && modiType == anyenum.OperateType.FromSel){
-      changeState = ChangeState.RepeatToRepeat;
-    }
-
-
     newAgdata.mi = UserConfig.account.id;
 
     let tos : string;//需要发送的参与人手机号
@@ -1285,7 +1280,7 @@ export class EventService extends BaseService {
     1.修改当前数据内容 2.日程表新增一条对应数据 3重建相关提醒
     如果改变从当前所有，则
     1.改变原日程结束日 2.删除从当前所有事件及相关提醒 3.新建新事件日程*/
-    if (changeState == ChangeState.RepeatToRepeat || changeState == ChangeState.NonRepeatToRepeat ){
+    if (doType == DoType.FutureAll){
 
       let masterEvi : string;//主evi设定
       if (oriAgdata.rtevi == ""){
@@ -1323,7 +1318,37 @@ export class EventService extends BaseService {
       outAgds = [ ...retParamEv.outAgdatas,...outAgds];
       console.log("**** updateAgenda outAgds = [...outAgds, ...retParamEv.outAgdatas]; end :****" + moment().format("YYYY/MM/DD HH:mm:ss SSS"))
 
-    }else if(changeState == ChangeState.RepeatToNon || changeState == ChangeState.NonRepeatToNonRepeat ) {
+    }else if(doType == DoType.All){
+
+      let masterEvi : string;//主evi设定
+      if (oriAgdata.rtevi == ""){
+        masterEvi = oriAgdata.evi;
+      }else {
+        masterEvi = oriAgdata.rtevi;
+      }
+
+      //删除原事件中从当前开始所有事件
+      oriAgdata.evd = oriAgdata.sd;
+      await this.delFromsel(masterEvi ,oriAgdata ,newAgdata.parters,sqlparam,outAgds);
+
+      //新建新事件日程
+      let retParamEv = new RetParamEv();
+      retParamEv = this.newAgenda(newAgdata);
+
+      //复制原参与人到新事件
+      let nwpar = new Array<any>();
+      nwpar = this.sqlparamAddPar(retParamEv.rtevi , newAgdata.parters);
+
+      //复制原附件到新事件
+      let nwfj = new Array<any>();
+      nwfj = this.sqlparamAddFj(retParamEv.rtevi, newAgdata.fjs);
+
+      sqlparam = [...sqlparam, ...retParamEv.sqlparam, ...nwpar, ...nwfj];
+
+      //修改与新增记录合并成返回事件
+      outAgds = [ ...retParamEv.outAgdatas,...outAgds];
+
+    }else if(doType == DoType.Current ) {
 
       //事件表更新
       let outAgd  = {} as AgendaData;
@@ -1346,7 +1371,7 @@ export class EventService extends BaseService {
       newAgdata.rts = rtjon.text() ;
 
       if (oriAgdata.rfg == anyenum.RepeatFlag.Repeat){
-        newAgdata.rfg = anyenum.RepeatFlag.RepeatToNon;
+        newAgdata.rfg = anyenum.RepeatFlag.RepeatToOnly;
       }
 
       newAgdata.tx = JSON.stringify(newAgdata.txjson);
@@ -2376,15 +2401,18 @@ export class EventService extends BaseService {
       let sql: string = `select ev.*, ca.sd, ca.ed, ca.st, ca.et, ca.al, ca.ct
                         from (select *, case when ifnull(rtevi, '') = '' then evi else rtevi end forceevi
                           from gtd_ev
-                          where type = ?1 and tb = ?2) ev
+                          where ui <> '' and ui is not null and type = ?1 and tb = ?2) ev
                         left join gtd_ca ca
                         on ca.evi = ev.forceevi`;
   		agendas = await this.sqlExce.getExtLstByParam<AgendaData>(sql, [anyenum.EventType.Agenda, SyncType.unsynch]) || agendas;
     }
 
+    let maxdata: number = 10;
+
     if (agendas.length > 0) {
       let push: PushInData = new PushInData();
 
+      let index: number = 0;
       for (let agenda of agendas) {
         let sync: SyncData = new SyncData();
         sync.id = agenda.evi;
@@ -2404,9 +2432,18 @@ export class EventService extends BaseService {
         sync.to = (!agenda.tos || agenda.tos == "" || agenda.tos == null) ? [] : agenda.tos.split(",") ;
         sync.payload = agenda;
         push.d.push(sync);
+
+        index++;
+
+        if (index % maxdata == 0) {
+          await this.dataRestful.push(push);
+          push = new PushInData();
+        }
       }
 
-      await this.dataRestful.push(push);
+      if (index % maxdata != 0) {
+        await this.dataRestful.push(push);
+      }
     }
 
 		return ;
@@ -3928,9 +3965,18 @@ export class TxJson {
   }
 }
 
+//处理类型
+export enum DoType {
+  Local = "Local",
+  Current = "Current",
+  FutureAll = "FutureAll",
+  All = "All"
+}
+
 enum ChangeState {
   NonRepeatToNonRepeat = "NonRepeatToNonRepeat",//非重复事件to非重复事件
-  RepeatToNon = "RepeatToNon",//重复事件中的某一日程to独立日程
+  RepeatToOnly = "RepeatToOnly",//重复事件中的某一日程to独立日程
+  RepeatToNon = "RepeatToNon",//重复事件to非重复事件
   RepeatToRepeat = "RepeatToRepeat",//修改重复事件to重复事件
   NonRepeatToRepeat = "NonRepeatToRepeat", //非重复事件to重复事件
   LocalUpdate = "LocalUpdate"

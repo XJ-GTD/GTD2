@@ -84,7 +84,7 @@ export enum CycleType {
 export enum RepeatFlag {
   NonRepeat = "0",
   Repeat = "1",
-  RepeatToNon = "2",
+  RepeatToOnly = "2",
 }
 
 //修改确认类型

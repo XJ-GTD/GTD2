@@ -46,6 +46,19 @@ services:
       replicas: 1
       endpoint_mode: dnsrr
 
+  sa-sas:
+    image: 192.168.0.158:5000/xiaoji-sa-sas
+    hostname: sa-sas
+    configs:
+      - source: sas_config
+        target: /usr/verticles/sas.json
+
+    networks:
+      - mwxing-network-overlay
+    deploy:
+      replicas: 1
+      endpoint_mode: dnsrr
+
   sa-exc:
     image: 192.168.0.158:5000/xiaoji-sa-exc
     hostname: sa-exc
@@ -146,6 +159,8 @@ configs:
     file: ./nlp/nlp.json
   nlp_markup:
     file: ./nlp/userdefined.json
+  sas_config:
+    file: ./sas/sas.json
   exc_config:
     file: ./exc/exc.json
   acj_config:
