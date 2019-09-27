@@ -619,6 +619,11 @@ export class EventService extends BaseService {
 
         // 如果两个值都为空, 继续
         if (!value && !after[key]) {
+          continue;
+        }
+
+        // 如果one的值为空, 不一致
+        if (!value || !after[key]) {
           if (confirm == ConfirmType.None) {
             confirm = ConfirmType.CurrentOrFutureAll;
           } else if (confirm == ConfirmType.All) {
@@ -627,9 +632,6 @@ export class EventService extends BaseService {
 
           continue;
         }
-
-        // 如果one的值为空, 不一致
-        if (!value || !after[key]) return true;
 
         if (typeof value === 'string' || typeof value === 'number' || typeof value === 'boolean') {
           if (typeof value === 'string' && value != "" && after[key] != "" && key == "rt") {
