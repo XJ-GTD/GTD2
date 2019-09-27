@@ -4,6 +4,7 @@
     "trigger": "mwxing_data_sync_push_start",
     "parameters": [
       "mwxing",
+      "mpn",
       "d"
     ],
     "follows": [
@@ -13,6 +14,7 @@
             "parameters": [
               "type;push",
               "header;$.parent.parameters.mwxing",
+              "from;$.parent.parameters.mpn",
               "data;$.parent.parameters.d"
             ],
             "outputs": [
