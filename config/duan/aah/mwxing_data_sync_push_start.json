@@ -3,8 +3,8 @@
     "name": "冥王星数据同步推送请求处理流",
     "trigger": "mwxing_data_sync_push_start",
     "parameters": [
-      "userId",
-      "event"
+      "mwxing",
+      "d"
     ],
     "follows": [
         {
