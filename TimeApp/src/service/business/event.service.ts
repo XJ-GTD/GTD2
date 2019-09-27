@@ -19,7 +19,7 @@ import {DataConfig} from "../config/data.config";
 import {BTbl} from "../sqlite/tbl/b.tbl";
 import {FjTbl} from "../sqlite/tbl/fj.tbl";
 import {DataRestful, PullInData, PushInData, SyncData} from "../restful/datasev";
-import {SyncType, DelType, IsSuccess, SyncDataStatus, RepeatFlag, ModiPower, PageDirection, SyncDataSecurity} from "../../data.enum";
+import {SyncType, DelType, IsSuccess, SyncDataStatus, RepeatFlag, ConfirmType, ModiPower, PageDirection, SyncDataSecurity} from "../../data.enum";
 import {
   assertNotNumber,
   assertEmpty,
@@ -604,12 +604,14 @@ export class EventService extends BaseService {
    * @param {AgendaData} oldAgd
    * @returns {boolean}
    */
-  hasAgendaModifyConfirm(before: AgendaData, after: AgendaData): boolean {
+  hasAgendaModifyConfirm(before: AgendaData, after: AgendaData): ConfirmType {
     assertEmpty(before);  // 入参不能为空
     assertEmpty(after);  // 入参不能为空
 
+    let confirm: ConfirmType = ConfirmType.None;
+
     // 确认修改前日程是否重复
-    if (before.rfg != RepeatFlag.Repeat) return false;
+    if (before.rfg != RepeatFlag.Repeat) return confirm;
 
     for (let key of Object.keys(before)) {
       if (["sd", "st", "al", "ct", "evn", "rt", "rtjson"].indexOf(key) >= 0) {   // 比较字段
@@ -621,7 +623,15 @@ export class EventService extends BaseService {
         }
 
         // 如果one的值为空, 不一致
-        if (!value || !after[key]) return true;
+        if (!value || !after[key]) {
+          if (confirm == ConfirmType.None) {
+            confirm = ConfirmType.CurrentOrFutureAll;
+          } else if (confirm == ConfirmType.All) {
+            confirm = ConfirmType.FutureAll;
+          }
+
+          continue;
+        }
 
         if (typeof value === 'string' || typeof value === 'number' || typeof value === 'boolean') {
           if (typeof value === 'string' && value != "" && after[key] != "" && key == "rt") {
@@ -631,12 +641,26 @@ export class EventService extends BaseService {
             let anotherrt: RtJson = new RtJson();
             Object.assign(anotherrt, JSON.parse(after[key]));
 
-            if (!(onert.sameWith(anotherrt))) return true;
+            if (!(onert.sameWith(anotherrt))) {
+              if (confirm == ConfirmType.None) {
+                confirm = ConfirmType.All;
+              } else if (confirm == ConfirmType.CurrentOrFutureAll) {
+                confirm = ConfirmType.FutureAll;
+              }
+            }
 
             continue;
           }
 
-          if (value != after[key]) return true;
+          if (value != after[key]) {
+            if (confirm == ConfirmType.None) {
+              confirm = ConfirmType.CurrentOrFutureAll;
+            } else if (confirm == ConfirmType.All) {
+              confirm = ConfirmType.FutureAll;
+            }
+
+            continue;
+          }
         }
 
         if (value instanceof RtJson) {
@@ -646,14 +670,20 @@ export class EventService extends BaseService {
           let anotherrt: RtJson = new RtJson();
           Object.assign(anotherrt, after[key]);
 
-          if (!(onert.sameWith(anotherrt))) return true;
+          if (!(onert.sameWith(anotherrt))) {
+            if (confirm == ConfirmType.None) {
+              confirm = ConfirmType.All;
+            } else if (confirm == ConfirmType.CurrentOrFutureAll) {
+              confirm = ConfirmType.FutureAll;
+            }
+          }
 
           continue;
         }
       }
     }
 
-    return false;
+    return confirm;
   }
 
   /**
@@ -3989,5 +4019,3 @@ export function generateTxJson(txjson: TxJson, tx: string) {
 
   return txjson;
 }
-
-

@@ -15,7 +15,7 @@ import {PageBoxComponent} from "../../components/page-box/page-box";
 import {CornerBadgeComponent} from "../../components/corner-badge/corner-badge";
 import {CalendarService} from "../../service/business/calendar.service";
 import {EventService, AgendaData, RtJson, TxJson} from "../../service/business/event.service";
-import { PageDirection, IsSuccess, OperateType, RepeatFlag, ToDoListStatus, IsWholeday } from "../../data.enum";
+import { PageDirection, IsSuccess, OperateType, RepeatFlag, ToDoListStatus, ConfirmType, IsWholeday } from "../../data.enum";
 import {Keyboard} from "@ionic-native/keyboard";
 
 /**
@@ -457,7 +457,7 @@ export class AgendaPage {
     }
   }
 
-  createConfirm(remove: boolean = false) {
+  createConfirm(remove: boolean = false, confirm: ConfirmType = ConfirmType.CurrentOrFutureAll) {
     let buttons: Array<any> = new Array<any>();
 
     if (remove) {
@@ -476,13 +476,15 @@ export class AgendaPage {
         }
       });
     } else {
-      buttons.push({
-        text: '仅针对此日程存储',
-        role: 'modify',
-        handler: () => {
-          this.doOptionSave(OperateType.OnlySel);
-        }
-      });
+      if (confirm == ConfirmType.CurrentOrFutureAll) {
+        buttons.push({
+          text: '仅针对此日程存储',
+          role: 'modify',
+          handler: () => {
+            this.doOptionSave(OperateType.OnlySel);
+          }
+        });
+      }
       buttons.push({
         text: '针对将来日程存储',
         role: 'modify',
@@ -527,11 +529,12 @@ export class AgendaPage {
           return;
         }
 
-        if (this.eventService.hasAgendaModifyConfirm(this.originAgenda, this.currentAgenda)) { // 重复修改
+        let confirm: ConfirmType = this.eventService.hasAgendaModifyConfirm(this.originAgenda, this.currentAgenda);
+        if (confirm == ConfirmType.CurrentOrFutureAll || confirm == ConfirmType.FutureAll) { // 重复修改
           if (this.modifyConfirm) {
             this.modifyConfirm.dismiss();
           }
-          this.modifyConfirm = this.createConfirm();
+          this.modifyConfirm = this.createConfirm(false, confirm);
 
           this.modifyConfirm.present();
         } else {                          // 非重复/重复已经修改为非重复
