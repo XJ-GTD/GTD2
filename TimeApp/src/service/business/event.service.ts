@@ -19,7 +19,7 @@ import {DataConfig} from "../config/data.config";
 import {BTbl} from "../sqlite/tbl/b.tbl";
 import {FjTbl} from "../sqlite/tbl/fj.tbl";
 import {DataRestful, PullInData, PushInData, SyncData} from "../restful/datasev";
-import {SyncType, DelType, IsSuccess, SyncDataStatus, RepeatFlag, PageDirection, SyncDataSecurity} from "../../data.enum";
+import {SyncType, DelType, IsSuccess, SyncDataStatus, RepeatFlag, ModiPower, PageDirection, SyncDataSecurity} from "../../data.enum";
 import {
   assertNotNumber,
   assertEmpty,
@@ -656,6 +656,66 @@ export class EventService extends BaseService {
   }
 
   /**
+   * 页面判断重复设置是否改变
+   * @param {AgendaData} newAgd
+   * @param {AgendaData} oldAgd
+   * @returns {boolean}
+   */
+  agendaChangeState(newAgd : AgendaData ,oldAgd : AgendaData):ChangeState {
+    if (!newAgd.rtjson) {
+      if (newAgd.rt) {
+        newAgd.rtjson = new RtJson();
+        Object.assign(newAgd.rtjson, JSON.parse(newAgd.rt));
+      } else {
+        newAgd.rtjson = new RtJson();
+      }
+    } else {
+      let rtjson: RtJson = new RtJson();
+      Object.assign(rtjson, newAgd.rtjson);
+      newAgd.rtjson = rtjson;
+    }
+
+    if (!oldAgd.rtjson) {
+      if (oldAgd.rt) {
+        oldAgd.rtjson = new RtJson();
+        Object.assign(oldAgd.rtjson, JSON.parse(oldAgd.rt));
+      } else {
+        oldAgd.rtjson = new RtJson();
+      }
+    } else {
+      let rtjson: RtJson = new RtJson();
+      Object.assign(rtjson, oldAgd.rtjson);
+      oldAgd.rtjson = rtjson;
+    }
+
+    //重复选项发生变化
+    if (!newAgd.rtjson.sameWith(oldAgd.rtjson)) return ;
+
+    //title发生变化
+    if (newAgd.evn != oldAgd.evn){
+      return ;
+    }
+    //开始日发生变化
+    if (newAgd.sd != oldAgd.sd){
+      return ;
+    }
+    //开始时间发生变化
+    if (newAgd.st != oldAgd.st){
+      return ;
+    }
+    //全天条件发生变化
+    if (newAgd.al != oldAgd.al){
+      return ;
+    }
+
+    //时长发生变化
+    if (newAgd.ct != oldAgd.ct){
+      return ;
+    }
+    return ChangeState.LocalUpdate;
+  }
+
+  /**
    * 取得日程相关所有信息
   * @param {string} evi
    * @returns {Promise<Array<AgendaData>>}
@@ -1193,26 +1253,26 @@ export class EventService extends BaseService {
     }
 
     //重复设定
-    let repeatModify : RepeatModify = RepeatModify.NonRepeatToNonRepeat;
+    let changeState : ChangeState = ChangeState.NonRepeatToNonRepeat;
   /* 修改场景：
   *  非重复事件to非重复、重复事件中的某一日程to独立日程
   * `修改重复事件to重复事件、非重复事件to重复事件
   */
     //非重复事件to非重复
     if (oriAgdata.rfg ==  anyenum.RepeatFlag.NonRepeat && newAgdata.rtjson.cycletype == anyenum.CycleType.close){
-      repeatModify = RepeatModify.NonRepeatToNonRepeat;
+      changeState = ChangeState.NonRepeatToNonRepeat;
     }
     //非重复事件to重复事件
     if (oriAgdata.rfg ==  anyenum.RepeatFlag.NonRepeat  && newAgdata.rtjson.cycletype != anyenum.CycleType.close){
-      repeatModify = RepeatModify.NonRepeatToRepeat;
+      changeState = ChangeState.NonRepeatToRepeat;
     }
     //重复事件中的某一日程to独立日程
     if (oriAgdata.rfg == anyenum.RepeatFlag.Repeat && modiType == anyenum.OperateType.OnlySel){
-      repeatModify = RepeatModify.RepeatToNon;
+      changeState = ChangeState.RepeatToNon;
     }
     //重复事件to重复事件或非重复
     if (oriAgdata.rfg == anyenum.RepeatFlag.Repeat && modiType == anyenum.OperateType.FromSel){
-      repeatModify = RepeatModify.RepeatToRepeat;
+      changeState = ChangeState.RepeatToRepeat;
     }
 
 
@@ -1225,7 +1285,7 @@ export class EventService extends BaseService {
     1.修改当前数据内容 2.日程表新增一条对应数据 3重建相关提醒
     如果改变从当前所有，则
     1.改变原日程结束日 2.删除从当前所有事件及相关提醒 3.新建新事件日程*/
-    if (repeatModify == RepeatModify.RepeatToRepeat || repeatModify == RepeatModify.NonRepeatToRepeat ){
+    if (changeState == ChangeState.RepeatToRepeat || changeState == ChangeState.NonRepeatToRepeat ){
 
       let masterEvi : string;//主evi设定
       if (oriAgdata.rtevi == ""){
@@ -1263,7 +1323,7 @@ export class EventService extends BaseService {
       outAgds = [ ...retParamEv.outAgdatas,...outAgds];
       console.log("**** updateAgenda outAgds = [...outAgds, ...retParamEv.outAgdatas]; end :****" + moment().format("YYYY/MM/DD HH:mm:ss SSS"))
 
-    }else if(repeatModify == RepeatModify.RepeatToNon || repeatModify == RepeatModify.NonRepeatToNonRepeat ) {
+    }else if(changeState == ChangeState.RepeatToNon || changeState == ChangeState.NonRepeatToNonRepeat ) {
 
       //事件表更新
       let outAgd  = {} as AgendaData;
@@ -2312,6 +2372,16 @@ export class EventService extends BaseService {
   async syncAgendas(agendas: Array<AgendaData> = new Array<AgendaData>()) {
     this.assertEmpty(agendas);  // 入参不能为空
 
+    if (agendas.length <= 0) {
+      let sql: string = `select ev.*, ca.sd, ca.ed, ca.st, ca.et, ca.al, ca.ct
+                        from (select *, case when ifnull(rtevi, '') = '' then evi else rtevi end forceevi
+                          from gtd_ev
+                          where type = ?1 and tb = ?2) ev
+                        left join gtd_ca ca
+                        on ca.evi = ev.forceevi`;
+  		agendas = await this.sqlExce.getExtLstByParam<AgendaData>(sql, [anyenum.EventType.Agenda, SyncType.unsynch]) || agendas;
+    }
+
     if (agendas.length > 0) {
       let push: PushInData = new PushInData();
 
@@ -2319,39 +2389,24 @@ export class EventService extends BaseService {
         let sync: SyncData = new SyncData();
         sync.id = agenda.evi;
         sync.type = "Agenda";
+
         sync.security = SyncDataSecurity.None;
+
+        //修改权限设定
+        if (agenda.md == ModiPower.disable){
+          sync.security = SyncDataSecurity.SelfModify;
+        }
+        if (agenda.md == ModiPower.enable){
+          sync.security = SyncDataSecurity.ShareModify;
+        }
+
         sync.status = SyncDataStatus[agenda.del];
+        sync.to = (!agenda.tos || agenda.tos == "" || agenda.tos == null) ? [] : agenda.tos.split(",") ;
         sync.payload = agenda;
         push.d.push(sync);
       }
 
       await this.dataRestful.push(push);
-    } else {
-
-      let sql: string = `select ev.*, ca.sd, ca.ed, ca.st, ca.et, ca.al, ca.ct
-                        from (select *, case when ifnull(rtevi, '') = '' then evi else rtevi end forceevi
-                          from gtd_ev
-                          where type = ?1 and tb = ?2) ev
-                        left join gtd_ca ca
-                        on ca.evi = ev.forceevi`;
-  		let unsyncedagendas = await this.sqlExce.getExtLstByParam<AgendaData>(sql, [anyenum.EventType.Agenda, SyncType.unsynch]);
-
-  		//当存在未同步的情况下,进行同步
-  		if (unsyncedagendas && unsyncedagendas.length > 0) {
-  			 let push: PushInData = new PushInData();
-
-  			 for (let agenda of unsyncedagendas) {
-  			 	 	let sync: SyncData = new SyncData();
-  			 	 	sync.id = agenda.evi;
-  			    sync.type = "Agenda";
-  			    sync.security = SyncDataSecurity.None;
-  			    sync.status = SyncDataStatus[agenda.del];
-  			    sync.payload = agenda;
-  			    push.d.push(sync);
-  			 }
-
-  			 await this.dataRestful.push(push);
-  		}
     }
 
 		return ;
@@ -3873,11 +3928,12 @@ export class TxJson {
   }
 }
 
-enum RepeatModify {
+enum ChangeState {
   NonRepeatToNonRepeat = "NonRepeatToNonRepeat",//非重复事件to非重复事件
   RepeatToNon = "RepeatToNon",//重复事件中的某一日程to独立日程
   RepeatToRepeat = "RepeatToRepeat",//修改重复事件to重复事件
-  NonRepeatToRepeat = "NonRepeatToRepeat" //非重复事件to重复事件
+  NonRepeatToRepeat = "NonRepeatToRepeat", //非重复事件to重复事件
+  LocalUpdate = "LocalUpdate"
 }
 enum DUflag {
   del = "del",
