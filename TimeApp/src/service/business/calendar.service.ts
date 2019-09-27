@@ -1230,7 +1230,7 @@ export class CalendarService extends BaseService {
               if (modiType == OperateType.OnlySel) {
                 let sqls: Array<any> = new Array<any>();
 
-                item.rfg = RepeatFlag.RepeatToNon;
+                item.rfg = RepeatFlag.RepeatToOnly;
 
                 // 关闭重复
                 item.rtjson = new RtJson();
@@ -1609,7 +1609,7 @@ export class CalendarService extends BaseService {
                                         and del <> ?4
                                       order by sd asc`;
 
-          let originitems: Array<PlanItemData> = await this.sqlExce.getExtLstByParam<PlanItemData>(fetchFromSel, [rtjti, RepeatFlag.Repeat, RepeatFlag.RepeatToNon, DelType.del]) || new Array<PlanItemData>();
+          let originitems: Array<PlanItemData> = await this.sqlExce.getExtLstByParam<PlanItemData>(fetchFromSel, [rtjti, RepeatFlag.Repeat, RepeatFlag.RepeatToOnly, DelType.del]) || new Array<PlanItemData>();
 
           let originitemsdb: Array<JtaTbl> = new Array<JtaTbl>();
 
@@ -1651,7 +1651,7 @@ export class CalendarService extends BaseService {
                                       and del <> ?5
                                     order by sd asc`;
 
-        let originitems: Array<PlanItemData> = await this.sqlExce.getExtLstByParam<PlanItemData>(fetchFromSel, [rtjti, RepeatFlag.Repeat, RepeatFlag.RepeatToNon, origin.sd, DelType.del]) || new Array<PlanItemData>();
+        let originitems: Array<PlanItemData> = await this.sqlExce.getExtLstByParam<PlanItemData>(fetchFromSel, [rtjti, RepeatFlag.Repeat, RepeatFlag.RepeatToOnly, origin.sd, DelType.del]) || new Array<PlanItemData>();
 
         let originitemsdb: Array<JtaTbl> = new Array<JtaTbl>();
 
@@ -1732,7 +1732,7 @@ export class CalendarService extends BaseService {
                                   select agenda.*
                                     from (select ev.* from gtd_ev ev where ev.type = ?6 and ev.ji = ?1 and del <> ?5 and (ev.rfg = ?3 or ev.rfg = ?4)) agenda
                                     left join gtd_ca ca on ca.evi = agenda.rtevi`;
-      let planagendas: Array<AgendaData> = await this.sqlExce.getExtLstByParam<AgendaData>(subsqlagenda, [plan.ji, RepeatFlag.NonRepeat, RepeatFlag.Repeat, RepeatFlag.RepeatToNon, DelType.del, EventType.Agenda]) || new Array<AgendaData>();
+      let planagendas: Array<AgendaData> = await this.sqlExce.getExtLstByParam<AgendaData>(subsqlagenda, [plan.ji, RepeatFlag.NonRepeat, RepeatFlag.Repeat, RepeatFlag.RepeatToOnly, DelType.del, EventType.Agenda]) || new Array<AgendaData>();
 
       for (let planagenda of planagendas) {
         items.push(planagenda);
@@ -1745,7 +1745,7 @@ export class CalendarService extends BaseService {
                                 select task.*
                                   from (select ev.* from gtd_ev ev where ev.type = ?6 and ev.ji = ?1 and del <> ?5 and (ev.rfg = ?3 or ev.rfg = ?4)) task
                                   left join gtd_ca ca on ca.evi = task.rtevi`;
-      let plantasks: Array<TaskData> = await this.sqlExce.getExtLstByParam<TaskData>(subsqltask, [plan.ji, RepeatFlag.NonRepeat, RepeatFlag.Repeat, RepeatFlag.RepeatToNon, DelType.del, EventType.Task]) || new Array<TaskData>();
+      let plantasks: Array<TaskData> = await this.sqlExce.getExtLstByParam<TaskData>(subsqltask, [plan.ji, RepeatFlag.NonRepeat, RepeatFlag.Repeat, RepeatFlag.RepeatToOnly, DelType.del, EventType.Task]) || new Array<TaskData>();
 
       for (let plantask of plantasks) {
         items.push(plantask);
