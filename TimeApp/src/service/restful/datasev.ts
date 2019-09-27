@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import {RestfulClient} from "../util-service/restful.client";
 import {RestFulConfig, UrlEntity} from "../config/restful.config";
+import {UserConfig} from "../config/user.config";
 import {SyncDataSecurity, SyncDataStatus} from "../../data.enum";
 
 /**
@@ -20,6 +21,8 @@ export class DataRestful {
   async push(params: PushInData): Promise<PushOutData> {
     let url: UrlEntity = this.config.getRestFulUrl("SPH");
 
+    params.mpn = UserConfig.account.phone;
+
     let data = await this.request.post(url, params);
 
     if (data) {
@@ -37,6 +40,8 @@ export class DataRestful {
    **/
   async pull(params: PullInData): Promise<PullOutData> {
     let url: UrlEntity = this.config.getRestFulUrl("SPL");
+
+    params.mpn = UserConfig.account.phone;
 
     let data = await this.request.post(url, params);
 
@@ -60,6 +65,7 @@ export class SyncData {
 }
 
 export class PushInData {
+  mpn: string;  // 手机号码
   d: Array<SyncData> = new Array<SyncData>();   // 需要同步的数据负载
 }
 
@@ -68,6 +74,7 @@ export class PushOutData {
 }
 
 export class PullInData {
+  mpn: string;  // 手机号码
   d: Array<string> = new Array<string>();     // 需要拉取得数据唯一标识符数组, 可以为空(表示拉取所有未拉取的数据)
 }
 
