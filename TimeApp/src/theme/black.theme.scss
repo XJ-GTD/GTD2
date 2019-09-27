@@ -516,6 +516,9 @@ $baseBackcolor_black: rgba(0, 12, 31, 1);
         .input-wrapper{
           border-bottom: 0.55px rgba(237,241,254,.5) solid;
         }
+        ion-label{
+          color:rgba(153,153,153,1);
+        }
       }
       background-color: rgba(255, 255, 255, .05);
       box-shadow:0px 0px 5px 0px rgba(201,200,200,0.28);
@@ -576,6 +579,38 @@ $baseBackcolor_black: rgba(0, 12, 31, 1);
       font-size: 16px;
       font-weight:400;
       color:rgba(255,255,255,1);
+    }
+  }
+
+  .toggle-ios{
+    height: 30px;
+    .toggle-icon::before {
+      border-radius: 13px;
+      background-color: rgba(178,205,212,1);
+    }
+    .toggle-icon {
+      width: 40px;
+      height: 13px;
+      position: absolute;
+      top:15px;
+      background-color:rgba(178,205,212,1);
+    }
+    .toggle-inner{
+      height: 22px;
+      width: 22px;
+      background:rgba(178,205,212,1);
+      top:-5px;
+      left:-2px;
+    }
+  }
+  .toggle-ios.toggle-checked {
+    .toggle-icon {
+      background:rgba(93,186,209,1);
+    }
+    .toggle-inner{
+      background:rgba(42,119,138,1);
+      -webkit-transform: translate3d(22px, 0, 0);
+      transform: translate3d(22px, 0, 0);
     }
   }
 }
