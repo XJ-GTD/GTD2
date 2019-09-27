@@ -7,42 +7,53 @@ import * as moment from "moment";
   selector: 'page-dtselect',
   template: `
     <modal-box title="活动日期" [buttons]="buttons" (onSave)="save()" (onCancel)="close()">
-      <div ion-item no-border no-padding no-lines no-margin class="itemwarp">
-        <date-picker item-content [ngModel]="pagedata.sd"
+
+      <div class="itemwarp selectype">
+        <ion-toolbar>
+          <ion-buttons item-start>
+            <button clear ion-button [class.noselect]="pagedata.type == '1'" (click)="changeType('0')">
+              <ion-icon class="fal fa-arrow-alt-from-left"></ion-icon>
+              设置开始日期
+            </button>
+            <button clear ion-button [class.noselect]="pagedata.type == '0'" (click)="changeType('1')">
+              <ion-icon class="fal fa-arrow-alt-from-right"></ion-icon>
+              设置截止日期
+            </button>
+          </ion-buttons>
+        </ion-toolbar>
+      </div>
+
+      
+      <div ion-item no-border no-padding no-lines no-margin class="itemwarp" *ngIf="pagedata.type==0">
+        <date-picker  #startDate item-content [ngModel]="pagedata.sd"
                      pickerFormat="YYYY ,MM DD" displayFormat="YYYY 年 MM 月 DD 日"
-                     cancelText="取消" doneText="选择时间"
+                     cancelText="取消" doneText="选择" (ionChange) = "calcCt()"
         ></date-picker>
+        <ion-label><ion-icon class="fal fa-calendar-alt"></ion-icon>开始日期</ion-label>
+      </div>
+      <div ion-item no-border no-padding no-lines no-margin class="itemwarp" *ngIf="pagedata.type==0">
+        <date-picker #startTime  [ngModel]="pagedata.st" item-content pickerFormat="A hh mm  " displayFormat="A hh 点 mm 分" (ionChange) = "calcCt()"
+                     doneText="选择"
+        ></date-picker>
+        <ion-label><ion-icon class="fal fa-clock"></ion-icon>开始时间</ion-label>
+      </div>
+      <div ion-item no-border no-padding no-lines no-margin class="itemwarp">
+        <date-picker  #endDate item-content [ngModel]="pagedata.ed"
+                      pickerFormat="YYYY ,MM DD" displayFormat="YYYY 年 MM 月 DD 日" (ionChange) = "calcCt()"
+                      cancelText="取消" doneText="选择"
+        ></date-picker>
+        <ion-label><ion-icon class="fal fa-calendar-alt"></ion-icon>结束日期</ion-label>
       </div>
 
       <div ion-item no-border no-padding no-lines no-margin class="itemwarp">
-        <div item-content radio-group class="selectype" [(ngModel)]="selected" >
-          <div class="waper" ion-item float-lg-left>
-            <ion-radio value="0"></ion-radio>
-            <ion-label>开始</ion-label>
-          </div>
-          <div class="waper" ion-item float-lg-right>
-            <ion-radio  value="1"></ion-radio>
-            <ion-label>截止</ion-label>
-          </div>
-        </div>
+        <date-picker #endTime [ngModel]="pagedata.et" item-content pickerFormat="A hh 点 mm 分" (ionChange) = "calcCt()"
+                     doneText="选择"
+        ></date-picker>
+        <ion-label><ion-icon class="fal fa-clock"></ion-icon>结束时间</ion-label>
       </div>
       
-      <div ion-item no-border no-padding no-lines no-margin class="itemwarp">
-        <ion-label *ngIf="pagedata.isall">全天</ion-label>
-        <ion-label *ngIf="!pagedata.isall">时长{{pagedata.ct}}</ion-label>
-        <ion-toggle [(ngModel)]="pagedata.isall"></ion-toggle>
-      </div>
-      <div ion-item no-border no-padding no-lines no-margin *ngIf="!pagedata.isall" class="itemwarp">
-        <ion-label>开始时间</ion-label>
-        <date-picker [ngModel]="pagedata.st" item-content pickerFormat="A hh mm  " displayFormat="A hh 点 mm 分"
-                     doneText="设定"
-        ></date-picker>
-      </div>
-      <div ion-item no-border no-padding no-lines no-margin *ngIf="!pagedata.isall" class="itemwarp">
-        <ion-label>结束时间</ion-label>
-        <date-picker [ngModel]="pagedata.et" item-content pickerFormat="A hh 点 mm 分"
-                     doneText="设定"
-        ></date-picker>
+      <div ion-item no-border no-padding no-lines no-margin class="itemwarp" *ngIf="pagedata.type==0">
+        <ion-label>时长{{pagedata.ct | formatedate:"duration"}}</ion-label>
       </div>
     </modal-box>
   `
@@ -51,14 +62,12 @@ export class DtSelectPage {
 
 
   pagedata = {
-    al: '',
     ct: 0,
     ed: '',
     et: '',
     sd: '',
     st: '',
-    type:'',
-    isall: false
+    type:'1'
   };
 
   buttons: any = {
@@ -72,13 +81,11 @@ export class DtSelectPage {
               public viewCtrl: ViewController,
               public navParams: NavParams) {
     if (this.navParams && this.navParams.data) {
-      this.pagedata.al = this.navParams.data.al;
       this.pagedata.ct = this.navParams.data.ct;
-      this.pagedata.ed = this.navParams.data.ed;
-      this.pagedata.et = this.navParams.data.et;
+      this.pagedata.ed =  moment(this.navParams.data.ed).format("YYYY-MM-DD");
+      this.pagedata.et = this.navParams.data.et?this.navParams.data.et:"08:00";
       this.pagedata.sd = moment(this.navParams.data.sd).format("YYYY-MM-DD");
-      this.pagedata.st = this.navParams.data.st;
-      this.pagedata.isall = this.pagedata.al == "1";
+      this.pagedata.st = this.navParams.data.st?this.navParams.data.st:"08:00";
     }
   }
 
@@ -87,7 +94,18 @@ export class DtSelectPage {
   }
 
   save() {
-    this.pagedata.al = this.pagedata.isall ? "1" : "0";
     this.viewCtrl.dismiss(this.pagedata);
+  }
+
+  calcCt(){
+    if (this.pagedata.sd && this.pagedata.st && this.pagedata.ed && this.pagedata.et){
+      let startm = moment(this.pagedata.sd + "T"+ this.pagedata.st);
+      let endm = moment(this.pagedata.ed + "T"+ this.pagedata.et);
+      this.pagedata.ct = endm.diff(startm, 'm');
+    }
+  }
+
+  changeType(type){
+    this.pagedata.type = type;
   }
 }
