@@ -1,0 +1,25 @@
+page-dtselect{
+
+  .itemwarp:first-child{
+    margin-top:37px
+
+  }
+
+
+  .itemwarp{
+    height:50px;
+    background:rgba(255,255,255,1);
+    box-shadow:0px 0px 5px 0px rgba(201,200,200,0.5);
+    border-radius:4px;
+    margin: 12px 14px;
+    width: auto;
+    date-picker{
+      margin: 0 auto;
+    }
+
+  }
+  .selectype{
+    display: flex;
+    width: 100%;
+  }
+}

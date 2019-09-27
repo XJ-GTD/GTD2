@@ -254,9 +254,8 @@ import {
   compareDates,
   convertDataToISO,
   convertFormatToKey, dateDataSortValue, dateSortValue,
-  DateTimeData, dateValueRange, daysInMonth, getValueFromFormat,
+  DateTimeData, daysInMonth, getValueFromFormat,
   LocaleData, parseDate,
-  parseTemplate, renderDateTime, renderTextFormat,
   updateDate
 } from "ionic-angular/util/datetime-util";
 import {BaseInput} from "ionic-angular/util/base-input";
@@ -774,7 +773,7 @@ export class DatePickerComponent extends BaseInput<DateTimeData> implements Afte
   updateText() {
     // create the text of the formatted data
     const template = this.displayFormat || this.pickerFormat || DEFAULT_FORMAT;
-    this._text = renderDateTime(template, this.getValue(), this._locale);
+    this._text = renderDateTime2(template, this.getValue(), this._locale);
   }
 
   /**
@@ -998,6 +997,74 @@ function dateValueRange2(format, min, max) {
   return opts;
 }
 
+function renderTextFormat(format, value, date, locale) {
+  if (format === FORMAT_DDDD || format === FORMAT_DDD) {
+    try {
+      value = (new Date(date.year, date.month - 1, date.day)).getDay();
+      if (format === FORMAT_DDDD) {
+        return (isPresent(locale.dayNames) ? locale.dayNames : DAY_NAMES)[value];
+      }
+      return (isPresent(locale.dayShortNames) ? locale.dayShortNames : DAY_SHORT_NAMES)[value];
+    } catch (e) {
+    }
+    return '';
+  }
+  if (format === FORMAT_A) {
+    return date ? date.hour < 12 ? '上午' : '下午' : isPresent(value) ? value=='am'? '上午': '下午' : '';
+  }
+  if (format === FORMAT_a) {
+    return date ? date.hour < 12 ? '上午' : '下午' : isPresent(value) ? value=='am'? '上午': '下午'  : '';
+  }
+  if (isBlank(value)) {
+    return '';
+  }
+  if (format === FORMAT_YY ) {
+    return twoDigit(value) ;
+  }
+  if ( format === FORMAT_MM) {
+    return twoDigit(value) ;
+  }
+  if ( format === FORMAT_ss) {
+    return twoDigit(value) ;
+  }
+  if (format === FORMAT_YYYY) {
+    return fourDigit(value) ;
+  }
+
+  if (format === FORMAT_DD) {
+    return twoDigit(value) ;
+  }
+
+  if (format === FORMAT_HH) {
+    return twoDigit(value) ;
+  }
+
+  if (format === FORMAT_mm) {
+    return twoDigit(value) ;
+  }
+
+
+  if (format === FORMAT_MMMM) {
+    return (isPresent(locale.monthNames) ? locale.monthNames : MONTH_NAMES)[value - 1];
+  }
+  if (format === FORMAT_MMM) {
+    return (isPresent(locale.monthShortNames) ? locale.monthShortNames : MONTH_SHORT_NAMES)[value - 1];
+  }
+  if (format === FORMAT_hh || format === FORMAT_h) {
+    if (value === 0) {
+      return '12';
+    }
+    if (value > 12) {
+      value -= 12;
+    }
+    if (format === FORMAT_hh && value < 10) {
+      value = ('0' + value);
+    }
+    return value.toString() ;
+  }
+  return value.toString();
+}
+
 function renderTextFormat2(format, value, date, locale) {
   if (format === FORMAT_DDDD || format === FORMAT_DDD) {
     try {
@@ -1061,8 +1128,35 @@ function renderTextFormat2(format, value, date, locale) {
     if (format === FORMAT_hh && value < 10) {
       value = ('0' + value);
     }
+    return value.toString() + " 点";
   }
-  return value.toString() + " 点";
+  return value.toString();
+}
+
+function renderDateTime2(template, value, locale) {
+  if (isBlank(value)) {
+    return '';
+  }
+  var tokens = [];
+  var hasText = false;
+  FORMAT_KEYS.forEach(function (format, index) {
+    if (template.indexOf(format.f) > -1) {
+      var token = '{' + index + '}';
+      var text = renderTextFormat(format.f, value[format.k], value, locale);
+      if (!hasText && text && isPresent(value[format.k])) {
+        hasText = true;
+      }
+      tokens.push(token, text);
+      template = template.replace(format.f, token);
+    }
+  });
+  if (!hasText) {
+    return '';
+  }
+  for (var i = 0; i < tokens.length; i += 2) {
+    template = template.replace(tokens[i], tokens[i + 1]);
+  }
+  return template;
 }
 
 

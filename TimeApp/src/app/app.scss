@@ -217,12 +217,16 @@ body {
       color: $fontSecondColor
     }
   }
-
   .spinanimation {
     animation: spin 1s linear infinite;
   }
   .datetime-disabled {
     opacity: 1;
+  }
+
+  .item-ios.item-block .item-inner {
+    padding-right: 0;
+    border-width: 0;
   }
 }
 

@@ -251,6 +251,16 @@ export class AgendaPage {
   }
 
   changeDatetime() {
+    let modal = this.modalCtrl.create(DataConfig.PAGE._DTSELECT_PAGE,{sd: this.currentAgenda.evd,
+      st:this.currentAgenda.st,
+      ed: this.currentAgenda.ed,
+      et: this.currentAgenda.et,
+      al:this.currentAgenda.al,
+      ct:this.currentAgenda.ct});
+    modal.onDidDismiss(async (data) => {
+
+    });
+    modal.present();
   }
 
   changeTitle() {

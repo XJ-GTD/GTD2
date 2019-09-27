@@ -126,6 +126,7 @@ import { SettingsProvider } from '../providers/settings/settings';
 import {CalendarService} from "../service/business/calendar.service";
 import {LocationSearchService} from "../service/restful/LocationSearchService";
 import {EffectService} from "../service/business/effect.service";
+import {DtSelectPageModule} from "../pages/dtselect/dtselect.module";
 
 @NgModule({
   declarations: [
@@ -202,6 +203,7 @@ import {EffectService} from "../service/business/effect.service";
     ScrollRangePickerComponentModule,
     SpeechBubbleComponentModule,
     HttpClientJsonpModule,
+    DtSelectPageModule,
   ],
   bootstrap: [IonicApp],
   entryComponents: [

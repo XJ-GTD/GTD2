@@ -63,6 +63,7 @@ import {LocationPage} from "../../pages/location/location";
 import {AttachPage} from "../../pages/attach/attach";
 import {DailyMemosPage} from "../../pages/dailymemos/dailymemos";
 import { CommemorationDayPage } from "../../pages/commemorationday/commemorationday";
+import {DtSelectPage} from "../../pages/dtselect/dtselect";
 
 export class DataConfig {
   public static isdebug: boolean  = true;
@@ -288,6 +289,7 @@ export class DataConfig {
     _ATTACH_PAGE: AttachPage,     // 日程 - 附件
     _DAILYMEMOS_PAGE: DailyMemosPage, // 备忘 - 每日备忘
     _COMMEMORATIONDAY_PAGE: CommemorationDayPage, // 纪念日 - 创建/修改
+    _DTSELECT_PAGE: DtSelectPage, // 纪念日 - 创建/修改
     _DR_PAGE: DrPage,       // 每日简报设置 - 智能提醒
     _TX_PAGE: TxPage,       // 设置提醒
     _BZ_PAGE: BzPage,       // 设置备注
