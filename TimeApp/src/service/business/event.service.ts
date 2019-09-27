@@ -2376,7 +2376,7 @@ export class EventService extends BaseService {
       let sql: string = `select ev.*, ca.sd, ca.ed, ca.st, ca.et, ca.al, ca.ct
                         from (select *, case when ifnull(rtevi, '') = '' then evi else rtevi end forceevi
                           from gtd_ev
-                          where type = ?1 and tb = ?2) ev
+                          where ui <> '' and ui is not null and type = ?1 and tb = ?2) ev
                         left join gtd_ca ca
                         on ca.evi = ev.forceevi`;
   		agendas = await this.sqlExce.getExtLstByParam<AgendaData>(sql, [anyenum.EventType.Agenda, SyncType.unsynch]) || agendas;
