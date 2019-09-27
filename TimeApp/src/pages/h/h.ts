@@ -16,6 +16,7 @@ import {UserConfig} from "../../service/config/user.config";
 import {InAppBrowser} from '@ionic-native/in-app-browser';
 import {SqliteExec} from "../../service/util-service/sqlite.exec";
 import {EventService} from "../../service/business/event.service";
+import {EffectService} from "../../service/business/effect.service";
 import {MemoService} from "../../service/business/memo.service";
 import {SettingsProvider} from "../../providers/settings/settings";
 import {AipPage} from "../aip/aip";
@@ -122,6 +123,7 @@ export class HPage {
               private menuController: MenuController,
               private emitService: EmitService,
               private feedback: FeedbackService,
+              private effectService: EffectService,
               private  evtserv: EventService,
               private sqlexce: SqliteExec, private  momserv: MemoService,
               private settings: SettingsProvider,
@@ -163,6 +165,7 @@ export class HPage {
     this.emitService.register("on.websocket.connected", () => {
       this.aiready = true;
       DataConfig.RABBITMQ_STATUS = "connected";
+      this.effectService.syncStart();
     });
 
     // websocket断开连接消息回调

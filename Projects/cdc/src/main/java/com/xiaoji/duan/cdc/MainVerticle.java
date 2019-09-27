@@ -1,6 +1,8 @@
 package com.xiaoji.duan.cdc;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map.Entry;
 import java.util.Set;
 import java.util.UUID;
@@ -135,6 +137,31 @@ public class MainVerticle extends AbstractVerticle {
 		System.out.println("body: " + ctx.getBodyAsString());
 		String flowid = ctx.request().getParam("flowid");
 		JsonObject query = ctx.getBodyAsJson();
+		
+		List<String> headers = new ArrayList<String>();
+		headers.add("lt");
+		headers.add("pi");
+		headers.add("pv");
+		headers.add("di");
+		headers.add("dt");
+		headers.add("ai");
+		
+		// 增加冥王星客户端请求头参数
+		JsonObject mwxing = new JsonObject();
+
+		for (Entry<String, String> entry : ctx.request().headers().entries()) {
+			String key = entry.getKey();
+			
+			if (headers.contains(key)) {
+				String value = entry.getValue();
+				
+				mwxing.put(key, value);
+			}
+		}
+		
+		if (!mwxing.isEmpty()) {
+			query.put("mwxing", mwxing);
+		}
 		
 		Future<JsonObject> future = Future.future();
 		
