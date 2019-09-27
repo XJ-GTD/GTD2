@@ -597,16 +597,76 @@ export class EventService extends BaseService {
   }
 
   /**
+   * 判断日程修改是否需要确认
+   * 当前日程修改 还是 将来日程全部修改
+   *
+   * @param {AgendaData} newAgd
+   * @param {AgendaData} oldAgd
+   * @returns {boolean}
+   */
+  hasAgendaModifyConfirm(before: AgendaData, after: AgendaData): boolean {
+    assertEmpty(before);  // 入参不能为空
+    assertEmpty(after);  // 入参不能为空
+
+    // 确认修改前日程是否重复
+    if (before.rfg != RepeatFlag.Repeat) return false;
+
+    for (let key of Object.keys(before)) {
+      if (["sd", "st", "al", "ct", "evn", "rt", "rtjson"].indexOf(key) >= 0) {   // 比较字段
+        let value = before[key];
+
+        // 如果两个值都为空, 继续
+        if (!value && !after[key]) {
+          continue;
+        }
+
+        // 如果one的值为空, 不一致
+        if (!value || !after[key]) return true;
+
+        if (typeof value === 'string' || typeof value === 'number' || typeof value === 'boolean') {
+          if (typeof value === 'string' && value != "" && after[key] != "" && key == "rt") {
+            let onert: RtJson = new RtJson();
+            Object.assign(onert, JSON.parse(value));
+
+            let anotherrt: RtJson = new RtJson();
+            Object.assign(anotherrt, JSON.parse(after[key]));
+
+            if (!(onert.sameWith(anotherrt))) return true;
+
+            continue;
+          }
+
+          if (value != after[key]) return true;
+        }
+
+        if (value instanceof RtJson) {
+          let onert: RtJson = new RtJson();
+          Object.assign(onert, value);
+
+          let anotherrt: RtJson = new RtJson();
+          Object.assign(anotherrt, after[key]);
+
+          if (!(onert.sameWith(anotherrt))) return true;
+
+          continue;
+        }
+      }
+    }
+
+    return false;
+  }
+
+  /**
    * 页面判断重复设置是否改变
    * @param {AgendaData} newAgd
    * @param {AgendaData} oldAgd
    * @returns {boolean}
    */
-  hasAgendaModifyConfirm(newAgd : AgendaData ,oriAgd : AgendaData ,modiType : anyenum.OperateType):ConfirmDoType {
+  hasAgendaModifyDo(newAgd : AgendaData ,oriAgd : AgendaData ,modiType : anyenum.OperateType):DoType {
 
     let changed : Array<string> = this.isAgendaChanged(newAgd,oriAgd);
 
-    let confirmDoType  = ConfirmDoType.Local;
+    let doType  = DoType.Local;
 
     if (changed.length > 0) {
       //重复设定
@@ -617,28 +677,28 @@ export class EventService extends BaseService {
       */
       //非重复事件to非重复
       if (oriAgd.rfg == anyenum.RepeatFlag.NonRepeat && newAgd.rtjson.cycletype == anyenum.CycleType.close) {
-        confirmDoType = ConfirmDoType.Current;
+        doType = DoType.Current;
       }
       //非重复事件to重复事件
       if (oriAgd.rfg == anyenum.RepeatFlag.NonRepeat && newAgd.rtjson.cycletype != anyenum.CycleType.close) {
-        confirmDoType = ConfirmDoType.FutureAll;
+        doType = DoType.FutureAll;
       }
       //重复事件中的某一日程to独立日程
       if (oriAgd.rfg == anyenum.RepeatFlag.Repeat && modiType == anyenum.OperateType.OnlySel) {
-        confirmDoType = ConfirmDoType.Current;
+        doType = DoType.Current;
       }
       //重复事件to重复事件或非重复
       if (oriAgd.rfg == anyenum.RepeatFlag.Repeat && modiType == anyenum.OperateType.FromSel) {
-        confirmDoType = ConfirmDoType.FutureAll;
+        doType = DoType.FutureAll;
         //如果是修改重复选项
         if (changed.length == 1 && changed[0] == "rt"){
-          confirmDoType = ConfirmDoType.All;
+          doType = DoType.All;
         }
       }
     }else {
-      confirmDoType = ConfirmDoType.Local;
+      doType = DoType.Local;
     }
-    return confirmDoType;
+    return doType;
   }
 
   /**
@@ -1125,12 +1185,12 @@ export class EventService extends BaseService {
     let tmpsq : string;
     let outAgds = new Array<AgendaData>();//返回事件
     let params : Array<any>;
-    let confirmDoType : ConfirmDoType;
+    let doType : DoType;
 
-    confirmDoType = this.hasAgendaModifyConfirm(newAgdata,oriAgdata,modiType);
+    doType = this.hasAgendaModifyDo(newAgdata,oriAgdata,modiType);
 
     //判断进行本地更新
-    if (confirmDoType == ConfirmDoType.Local){
+    if (doType == DoType.Local){
       let ev = new EvTbl();
       ev.evi = oriAgdata.evi;
       ev.ji  = newAgdata.ji;
@@ -1190,7 +1250,7 @@ export class EventService extends BaseService {
     1.修改当前数据内容 2.日程表新增一条对应数据 3重建相关提醒
     如果改变从当前所有，则
     1.改变原日程结束日 2.删除从当前所有事件及相关提醒 3.新建新事件日程*/
-    if (confirmDoType == ConfirmDoType.FutureAll){
+    if (doType == DoType.FutureAll){
 
       let masterEvi : string;//主evi设定
       if (oriAgdata.rtevi == ""){
@@ -1228,7 +1288,7 @@ export class EventService extends BaseService {
       outAgds = [ ...retParamEv.outAgdatas,...outAgds];
       console.log("**** updateAgenda outAgds = [...outAgds, ...retParamEv.outAgdatas]; end :****" + moment().format("YYYY/MM/DD HH:mm:ss SSS"))
 
-    }else if(confirmDoType == ConfirmDoType.All){
+    }else if(doType == DoType.All){
 
       let masterEvi : string;//主evi设定
       if (oriAgdata.rtevi == ""){
@@ -1258,7 +1318,7 @@ export class EventService extends BaseService {
       //修改与新增记录合并成返回事件
       outAgds = [ ...retParamEv.outAgdatas,...outAgds];
 
-    }else if(confirmDoType == ConfirmDoType.Current ) {
+    }else if(doType == DoType.Current ) {
 
       //事件表更新
       let outAgd  = {} as AgendaData;
@@ -3876,7 +3936,7 @@ export class TxJson {
 }
 
 //处理类型
-export enum ConfirmDoType {
+export enum DoType {
   Local = "Local",
   Current = "Current",
   FutureAll = "FutureAll",

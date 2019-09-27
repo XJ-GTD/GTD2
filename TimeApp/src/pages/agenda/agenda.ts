@@ -176,7 +176,7 @@ export class AgendaPage {
 
   repeatflag = RepeatFlag.Repeat;
   nonrepeatflag = RepeatFlag.NonRepeat;
-  repeattonon = RepeatFlag.RepeatToNon;
+  repeattonon = RepeatFlag.RepeatToOnly;
 
   @ViewChild(PageBoxComponent)
   pageBoxComponent:PageBoxComponent
