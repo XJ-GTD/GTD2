@@ -176,18 +176,17 @@ export class LocationPage {
   }
 
   save() {
-
-    if (this.searchbar.suggestions && this.searchbar.suggestions.length > 0){
-
-      if (!this.isItemSelected){
+    if (!this.isItemSelected){
+      if (this.searchbar.suggestions && this.searchbar.suggestions.length > 0){
         this.searchText.adr = this.searchbar.keyword;
         this.searchText.adlat = this.searchbar.suggestions[0].location.lat;
         this.searchText.adlng = this.searchbar.suggestions[0].location.lng;
+      }else{
+
+        this.searchText.adr = this.searchbar.keyword;
+        this.searchText.adlat = this.searchText.adlat?this.searchText.adlat:0;
+        this.searchText.adlng = this.searchText.adlng?this.searchText.adlng:0;
       }
-    }else{
-      this.searchText.adr = this.searchbar.keyword;
-      this.searchText.adlat = 0;
-      this.searchText.adlng = 0;
     }
 
     let data: Object = {
@@ -233,5 +232,7 @@ export class LocationPage {
   ionAutoInput(e){
     //重新查询则初始化
     this.isItemSelected = false;
+    this.searchText.adlat = 0;
+    this.searchText.adlng = 0;
   }
 }
