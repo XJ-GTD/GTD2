@@ -12,7 +12,8 @@
             "trigger": "sas",
             "parameters": [
                 "type;pull",
-                "datasource;$.parent.parameters"
+                "header;$.parent.parameters.mwxing",
+                "data;$.parent.parameters.d"
             ],
             "outputs": [
                 "cleaned"
