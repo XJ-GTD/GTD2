@@ -119,7 +119,7 @@ export class CommemorationDayPage {
   friends: Array<any> = UserConfig.friends;
   privateplans: Array<any> = UserConfig.privateplans;
 
-  repeattonon = RepeatFlag.RepeatToNon;
+  repeattonon = RepeatFlag.RepeatToOnly;
 
   modifyConfirm;
 
