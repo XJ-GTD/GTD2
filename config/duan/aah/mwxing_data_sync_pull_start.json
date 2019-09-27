@@ -11,7 +11,7 @@
             "name": "数据推送/拉取",
             "trigger": "sas",
             "parameters": [
-                "ruleid;MWXING_DAILYSUMMARY_DR001_V1_2",
+                "type;pull",
                 "datasource;$.parent.parameters"
             ],
             "outputs": [
