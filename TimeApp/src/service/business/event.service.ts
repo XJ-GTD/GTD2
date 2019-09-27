@@ -2382,9 +2382,12 @@ export class EventService extends BaseService {
   		agendas = await this.sqlExce.getExtLstByParam<AgendaData>(sql, [anyenum.EventType.Agenda, SyncType.unsynch]) || agendas;
     }
 
+    let maxdata: number = 10;
+
     if (agendas.length > 0) {
       let push: PushInData = new PushInData();
 
+      let index: number = 0;
       for (let agenda of agendas) {
         let sync: SyncData = new SyncData();
         sync.id = agenda.evi;
@@ -2404,9 +2407,18 @@ export class EventService extends BaseService {
         sync.to = (!agenda.tos || agenda.tos == "" || agenda.tos == null) ? [] : agenda.tos.split(",") ;
         sync.payload = agenda;
         push.d.push(sync);
+
+        index++;
+
+        if (index % maxdata == 0) {
+          await this.dataRestful.push(push);
+          push = new PushInData();
+        }
       }
 
-      await this.dataRestful.push(push);
+      if (index % maxdata != 0) {
+        await this.dataRestful.push(push);
+      }
     }
 
 		return ;
