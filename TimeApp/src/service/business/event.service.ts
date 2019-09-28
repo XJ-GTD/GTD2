@@ -4019,3 +4019,9 @@ export function generateTxJson(txjson: TxJson, tx: string) {
 
   return txjson;
 }
+/**
+* 附件内容接口
+*/
+export interface FjData extends FjTbl {
+
+}
