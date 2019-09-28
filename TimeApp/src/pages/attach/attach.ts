@@ -91,7 +91,7 @@ export class AttachPage {
       if (imageData){
         let fileNameArray: Array<string> = imageData.split("/");
         let fileName = fileNameArray[fileNameArray.length-1];
-        let ext = fileName.substr(fileName.indexof("."),fileName.length);
+        let ext = fileName.split(".")[1];
         let fj =  imageData;
         fjData.obt = this.obt;
         fjData.obi = this.obi;
