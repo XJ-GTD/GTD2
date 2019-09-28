@@ -155,6 +155,8 @@ export class HPage {
   }
 
   ionViewDidLoad() {
+    // 初始化同步
+    this.effectService.syncStart();
   }
 
 
@@ -165,7 +167,6 @@ export class HPage {
     this.emitService.register("on.websocket.connected", () => {
       this.aiready = true;
       DataConfig.RABBITMQ_STATUS = "connected";
-      this.effectService.syncStart();
     });
 
     // websocket断开连接消息回调
