@@ -126,6 +126,7 @@ export class InvitesPage {
     modal.onDidDismiss(async (data) => {
       if (data){
         this.memberSet.members = data.members;
+        this.membernum = this.memberSet.members.length;
       }
 
     });
