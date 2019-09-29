@@ -161,7 +161,7 @@ export class MemberPage {
   getContacts() {
     this.pageGrouList.length = 0;
     this.pageMemberList.length = 0;
-    let groupList = this.glService.getGroups(this.tel);
+    let groupList = this.glService.getMemberGroups(this.tel);
     let memberList = this.memberService.getMembers(this.tel);
     groupList.forEach((value) => {
       let group: PageGroupData = new PageGroupData();

@@ -6,7 +6,6 @@ import {DataConfig} from "../../service/config/data.config";
 import {ModalBoxComponent} from "../../components/modal-box/modal-box";
 import {Member} from "../../service/business/event.service";
 import * as anyenum from "../../data.enum";
-import {InvitePowr} from "../../data.enum";
 /**
  * Generated class for the 参与人选择 page.
  *
@@ -103,8 +102,6 @@ export class InvitesPage {
   }
 
   save(){
-    console.log("this.memberSet.iv:"+this.memberSet.iv);
-    console.log("this.memberSet.md:"+this.memberSet.md);
 
     let data: Object = {
       members : this.memberSet.members,

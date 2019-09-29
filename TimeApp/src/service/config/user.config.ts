@@ -71,6 +71,7 @@ export class UserConfig {
 
   //群组
   static groups: Array<PageDcData> = new Array<PageDcData>();
+  static memberGroups: Array<PageDcData> = new Array<PageDcData>();
 
   constructor(private sqlliteExec: SqliteExec,
               private util: UtilService,
@@ -86,6 +87,8 @@ export class UserConfig {
     await this.RefreshBTbl2();
 
     await this.RefreshGTbl();
+
+    await this.RefreshGTbl2();
   }
 
   static getSetting(key: string):boolean {
@@ -207,6 +210,8 @@ export class UserConfig {
     await this.RefreshBTbl2();
 
     await this.RefreshGTbl();
+
+    await this.RefreshGTbl2();
     return;
 
   }
@@ -362,6 +367,38 @@ export class UserConfig {
   }
 
   /*新的member对象 进行缓存的方法*/
+  //群组
+  private async RefreshGTbl2() {
+    //获取本地群列表
+    let sql = 'select * from gtd_g;';
+
+    UserConfig.memberGroups.splice(0, UserConfig.memberGroups.length);
+    let dcl: Array<PageDcData> = await this.sqlliteExec.getExtList<PageDcData>(sql)
+    if (dcl.length > 0) {
+      //和单群人数
+      for (let dc of dcl) {
+        dc.members = new Array<Member>();
+        let sqlbx = 'select gb.* from gtd_b_x gbx inner join gtd_b gb on gb.pwi = gbx.bmi where gbx.bi="' + dc.gi + '";';
+        let memberList: Array<Member> = await this.sqlliteExec.getExtList<Member>(sqlbx);
+        for (let m of memberList) {
+          let mber: Member = this.GetOneBTbl2(m.pwi);
+          if (!dc.members) {
+            dc.members = new Array<Member>(); //群组成员
+          }
+          if (mber) {
+            dc.members.push(mber);
+          }
+        }
+        dc.gc = dc.members.length;
+        dc.gm = DataConfig.QZ_HUIBASE64;
+        UserConfig.memberGroups.push(dc);
+      }
+    }
+    //增加内部事件通知
+    this.emitService.emit("mwxing.config.user.gtbl.refreshed");
+    return;
+  }
+
   //参与人
   private async RefreshBTbl2() {
     //获取本地参与人
