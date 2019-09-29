@@ -15,7 +15,7 @@ import {WsDataConfig} from "../wsdata.config";
 import {BaseProcess} from "./base.process";
 import {BTbl} from "../../service/sqlite/tbl/b.tbl";
 import {UserConfig} from "../../service/config/user.config";
-import {EventService,Parter} from "../../service/business/event.service";
+import {EventService,Member} from "../../service/business/event.service";
 import {CalendarService} from "../../service/business/calendar.service";
 
 /**

@@ -4,7 +4,7 @@ import {UtilService} from "../../service/util-service/util.service";
 import {FsData, FsPageData, PageGroupData} from "../../data.mapping";
 import {DataConfig} from "../../service/config/data.config";
 import {ModalBoxComponent} from "../../components/modal-box/modal-box";
-import {Parter} from "../../service/business/event.service";
+import {Member} from "../../service/business/event.service";
 import * as anyenum from "../../data.enum";
 import {InvitePowr} from "../../data.enum";
 /**
@@ -21,7 +21,7 @@ import {InvitePowr} from "../../data.enum";
       <ion-list>
         <ion-list-header>
           参与人({{parternum}})
-          <button ion-button clear item-end (click) = "openParterSelect()">
+          <button ion-button clear item-end (click) = "openMemberSelect()">
             <ion-icon ios="ios-add" md="md-add"></ion-icon>
           </button>
         </ion-list-header>
@@ -59,13 +59,13 @@ export class InvitesPage {
     cancel: true
   };
 
-  parterSet : any = {
-    parters : new Array<Parter>(),
+  memberSet : any = {
+    members : new Array<Member>(),
     md : false,
     iv : false,
   }
 
-  parternum : "";
+  membernum : "";
 
   tel: any;//手机号
 
@@ -80,17 +80,17 @@ export class InvitesPage {
     this.modalBoxComponent.setBoxContent();
 
     if (this.navParams && this.navParams.data ) {
-      this.parterSet.parters = this.navParams.data.parters;
-      this.parternum = this.parterSet.parters.length;
+      this.memberSet.members = this.navParams.data.members;
+      this.membernum = this.memberSet.members.length;
       if (this.navParams.data.iv == anyenum.InvitePowr.enable){
-        this.parterSet.iv = true;
+        this.memberSet.iv = true;
       }else{
-        this.parterSet.iv = false;
+        this.memberSet.iv = false;
       }
       if (this.navParams.data.md == anyenum.ModiPower.enable){
-        this.parterSet.md = true;
+        this.memberSet.md = true;
       }else{
-        this.parterSet.md = false;
+        this.memberSet.md = false;
       }
     }
 
@@ -102,8 +102,8 @@ export class InvitesPage {
   }
 
   save(){
-    console.log("this.parterSet.iv:"+this.parterSet.iv);
-    console.log("this.parterSet.md:"+this.parterSet.md);
+    console.log("this.memberSet.iv:"+this.memberSet.iv);
+    console.log("this.memberSet.md:"+this.memberSet.md);
 
     /*let data: Object = {
 
@@ -115,10 +115,10 @@ export class InvitesPage {
     this.navCtrl.pop();
   }
 
-  openParterSelect(){
-    let modal = this.modalCtrl.create(DataConfig.PAGE._PARTER_PAGE,
+  openMemberSelect(){
+    let modal = this.modalCtrl.create(DataConfig.PAGE._MEMBER_PAGE,
       {
-        parters : this.parterSet.parters
+        members : this.memberSet.members
       });
     modal.onDidDismiss(async (data) => {
 
