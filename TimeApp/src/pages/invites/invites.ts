@@ -20,14 +20,14 @@ import {InvitePowr} from "../../data.enum";
     <modal-box title="邀请人" [buttons]="buttons" (onSave)="save()" (onCancel)="cancel()">
       <ion-list>
         <ion-list-header>
-          参与人({{parternum}})
+          参与人({{membernum}})
           <button ion-button clear item-end (click) = "openMemberSelect()">
             <ion-icon ios="ios-add" md="md-add"></ion-icon>
           </button>
         </ion-list-header>
         <ion-item>
-          <div *ngFor = "let parter of parterSet.parters">
-            {{ parter.ran }}
+          <div *ngFor = "let member of memberSet.members">
+            {{ member.ran }}
           </div>
         </ion-item>
         <ion-item no-lines >
@@ -37,11 +37,11 @@ import {InvitePowr} from "../../data.enum";
       <ion-list>
         <ion-item>
           <ion-label>转发</ion-label>
-          <ion-toggle [(ngModel)]="parterSet.iv" ></ion-toggle>
+          <ion-toggle [(ngModel)]="memberSet.iv" ></ion-toggle>
         </ion-item>
         <ion-item>
           <ion-label>编辑</ion-label>
-          <ion-toggle [(ngModel)]="parterSet.md"></ion-toggle>
+          <ion-toggle [(ngModel)]="memberSet.md"></ion-toggle>
         </ion-item>
       </ion-list>
     </modal-box>
@@ -74,13 +74,10 @@ export class InvitesPage {
               public viewCtrl: ViewController,
               private util: UtilService,
               private  modalCtrl: ModalController) {
-  }
 
-  ionViewDidEnter() {
-    this.modalBoxComponent.setBoxContent();
-
+    //下面处理需要放在构造方法里，防止关闭参与人选择页面时进入该处理
     if (this.navParams && this.navParams.data ) {
-      this.memberSet.members = this.navParams.data.members;
+      this.memberSet.members = this.navParams.data.members?this.navParams.data.members : new Array<Member>();
       this.membernum = this.memberSet.members.length;
       if (this.navParams.data.iv == anyenum.InvitePowr.enable){
         this.memberSet.iv = true;
@@ -93,6 +90,10 @@ export class InvitesPage {
         this.memberSet.md = false;
       }
     }
+  }
+
+  ionViewDidEnter() {
+    this.modalBoxComponent.setBoxContent();
 
   }
 
@@ -105,10 +106,12 @@ export class InvitesPage {
     console.log("this.memberSet.iv:"+this.memberSet.iv);
     console.log("this.memberSet.md:"+this.memberSet.md);
 
-    /*let data: Object = {
-
+    let data: Object = {
+      members : this.memberSet.members,
+      md : this.memberSet.md ? anyenum.ModiPower.enable : anyenum.ModiPower.disable,
+      iv : this.memberSet.iv ? anyenum.InvitePowr.enable : anyenum.InvitePowr.disable
     };
-    this.viewCtrl.dismiss(data);*/
+    this.viewCtrl.dismiss(data);
   }
 
   cancel(){
@@ -121,6 +124,9 @@ export class InvitesPage {
         members : this.memberSet.members
       });
     modal.onDidDismiss(async (data) => {
+      if (data){
+        this.memberSet.members = data.members;
+      }
 
     });
     modal.present();

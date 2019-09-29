@@ -1,10 +1,9 @@
 import {Component} from '@angular/core';
-import {ModalController, NavController, NavParams} from 'ionic-angular';
+import {ModalController, NavController, NavParams, ViewController} from 'ionic-angular';
 import {MemberService} from "./member.service";
-import {FdService} from "../fd/fd.service";
 import {UtilService} from "../../service/util-service/util.service";
 import {GlService} from "../gl/gl.service";
-import {FsData, FsPageData, PageGroupData} from "../../data.mapping";
+import {PageGroupData} from "../../data.mapping";
 import {DataConfig} from "../../service/config/data.config";
 import {FeedbackService} from "../../service/cordova/feedback.service";
 import {Member} from "../../service/business/event.service";
@@ -40,11 +39,11 @@ import {Member} from "../../service/business/event.service";
 
     <ion-content padding>
       <div class="selected">
-        <ion-chip *ngFor="let g of selMemberList" (click)="rmSelected(g)">
+        <ion-chip *ngFor="let member of selMemberList" (click)="rmSelected(member)">
           <ion-avatar>
-            <img src={{g.bhiu}}>
+            <img src={{member.bhiu}}>
           </ion-avatar>
-          <ion-label>{{g.ran}}</ion-label>
+          <ion-label>{{member.ran}}</ion-label>
         </ion-chip>
       </div>
       <ion-grid>
@@ -57,16 +56,16 @@ import {Member} from "../../service/business/event.service";
           </ion-label>
           <ion-checkbox (click)="addGroupList(g)" [(ngModel)]="g.checked"></ion-checkbox>
         </ion-row>
-        <ion-row *ngFor="let g of pageMemberList">
-          <ion-avatar item-start (click)="goTofsDetail(g)">
-            <img [src]="g.bhiu">
+        <ion-row *ngFor="let member of pageMemberList">
+          <ion-avatar item-start (click)="goTofsDetail(member)">
+            <img [src]="member.bhiu">
           </ion-avatar>
-          <ion-label (click)="goTofsDetail(g)">
-            {{g.ran}}
+          <ion-label (click)="goTofsDetail(member)">
+            {{member.ran}}
             <!--<span> {{g.rc}}</span>-->
-            <span *ngIf="g.rel ==1">注册</span>
+            <span *ngIf="member.rel ==1">注册</span>
           </ion-label>
-          <ion-checkbox (click)="addsel(g)" [(ngModel)]="g.checked"></ion-checkbox>
+          <ion-checkbox (click)="addsel(member)" [(ngModel)]="member.checked"></ion-checkbox>
         </ion-row>
       </ion-grid>
     </ion-content>
@@ -81,24 +80,28 @@ export class MemberPage {
   selMemberList: Array<Member> = new Array<Member>();
 
   constructor(public navCtrl: NavController,
+              public viewCtrl: ViewController,
               public navParams: NavParams,
               private memberService: MemberService,
               private util: UtilService,
-              private fdService: FdService,
               private glService: GlService,
               private  modalCtrl: ModalController,private feedback:FeedbackService) {
   }
 
   ionViewDidEnter() {
     if (this.navParams && this.navParams.data ) {
-      this.selMemberList = this.navParams.data.parters;
+      if (this.navParams.data.members){
+        Object.assign(this.selMemberList , this.navParams.data.members);
+      }else{
+        this.selMemberList = new Array<Member>();
+      }
     }
     this.getContacts();
   }
 
-  rmSelected(fs: FsData) {
+  rmSelected(member: Member) {
     let index: number = this.selMemberList.findIndex((value) => {
-      return fs.pwi == value.pwi;
+      return member.pwi == value.pwi;
     });
     this.selMemberList.splice(index, 1);
     this.checkedSet();
@@ -107,14 +110,12 @@ export class MemberPage {
   save() {
     let list = this.selMemberList;
     if (list.length > 0) {
-      this.memberService.shareMember(this.navParams.get('tpara'), list).then(data => {
-        this.feedback.audioSend();
-
-        this.navCtrl.popAll();
-
-      });
+      let data: Object = {
+        members : list
+      };
+      this.viewCtrl.dismiss(data);
     } else {
-      this.util.popoverStart("请先选择朋友");
+      this.util.popoverStart("请选择参与人");
     }
 
   }
@@ -161,18 +162,18 @@ export class MemberPage {
     this.pageGrouList.length = 0;
     this.pageMemberList.length = 0;
     let groupList = this.glService.getGroups(this.tel);
-    let parterList = this.memberService.getMembers(this.tel);
+    let memberList = this.memberService.getMembers(this.tel);
     groupList.forEach((value) => {
       let group: PageGroupData = new PageGroupData();
       Object.assign(group, value);
       this.pageGrouList.push(group);
 
     });
-    parterList.forEach((value) => {
-      let parter: MemberPageData = {} as MemberPageData;
-      Object.assign(parter, value);
-      parter.checked = false;
-      this.pageMemberList.push(parter);
+    memberList.forEach((value) => {
+      let member: MemberPageData = {} as MemberPageData;
+      Object.assign(member, value);
+      member.checked = false;
+      this.pageMemberList.push(member);
     });
     this.checkedSet();
   }
@@ -180,8 +181,8 @@ export class MemberPage {
   checkedSet() {
     this.pageMemberList.forEach((value,index,arr) => {
       value.checked = false;
-      let t = this.selMemberList.find(parter => {
-        return value.pwi == parter.pwi;
+      let t = this.selMemberList.find(member => {
+        return value.pwi == member.pwi;
       });
       if (t){
         value.checked = true;
@@ -189,10 +190,10 @@ export class MemberPage {
     });
   }
 
-  goTofsDetail(fs: FsData) {
+/*  goTofsDetail(fs: FsData) {
     let modal = this.modalCtrl.create(DataConfig.PAGE._FD_PAGE, {fsData: fs});
     modal.present();
-  }
+  }*/
 }
 
 /**
