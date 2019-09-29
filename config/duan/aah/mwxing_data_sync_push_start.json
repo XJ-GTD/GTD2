@@ -9,7 +9,7 @@
     ],
     "follows": [
         {
-            "name": "数据推送",
+            "name": "数据推送 - 保存到交换区",
             "trigger": "sas",
             "parameters": [
               "type;push",
@@ -41,7 +41,7 @@
                     ],
                     "next": [
                       {
-                        "name": "数据复制",
+                        "name": "数据复制 - 保存到设备区",
                         "trigger": "sas",
                         "parameters": [
                           "type;copy",
