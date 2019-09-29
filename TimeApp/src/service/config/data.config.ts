@@ -64,6 +64,7 @@ import {AttachPage} from "../../pages/attach/attach";
 import {DailyMemosPage} from "../../pages/dailymemos/dailymemos";
 import { CommemorationDayPage } from "../../pages/commemorationday/commemorationday";
 import {DtSelectPage} from "../../pages/dtselect/dtselect";
+import {ParterPage} from "../../pages/member/member";
 
 export class DataConfig {
   public static isdebug: boolean  = true;
@@ -285,6 +286,7 @@ export class DataConfig {
     _REMIND_PAGE: RemindPage,   // 日程 - 提醒
     _PLAN_PAGE: PlanPage,   // 日程 - 计划
     _INVITES_PAGE: InvitesPage, // 日程 - 邀请人
+    _PARTER_PAGE: ParterPage, // 日程 - 邀请人-选择
     _LOCATION_PAGE: LocationPage, // 日程 - 地址
     _ATTACH_PAGE: AttachPage,     // 日程 - 附件
     _DAILYMEMOS_PAGE: DailyMemosPage, // 备忘 - 每日备忘
@@ -346,6 +348,7 @@ export class DataConfig {
     CommentPage,  // 日程 - 备注
     PlanPage,     // 日程 - 计划
     InvitesPage,  // 日程 - 邀请人
+    ParterPage,
     LocationPage, // 日程 - 地址
     AttachPage,   // 日程 - 附件
     DailyMemosPage, // 备忘 - 每日备忘

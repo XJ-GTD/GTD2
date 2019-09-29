@@ -1,5 +1,6 @@
 import {CalendarDay} from "./components/ion2-calendar";
 import * as moment from "moment";
+import {Member} from "./service/business/event.service";
 
 /**
  * 继承类
@@ -311,6 +312,7 @@ export class PageDcData {
   gm: string = ""; //备注
   gc: number = 0; //群组人数
   fsl: Array<FsData> = new Array<FsData>(); //群组成员
+  members: Array<Member> = new Array<Member>(); //群组成员
 }
 
 export class PageDaData {
