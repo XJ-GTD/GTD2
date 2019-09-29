@@ -48,7 +48,7 @@ import {WaTbl} from "../sqlite/tbl/wa.tbl";
 import { CalendarService, PlanData } from "./calendar.service";
 import {EventService, AgendaData, TaskData, MiniTaskData, RtJson, TxJson} from "./event.service";
 import { MemoService } from "./memo.service";
-import { PlanType, IsCreate, IsSuccess, IsWholeday, PageDirection, SyncType, DelType, SyncDataStatus, EventType, OperateType, CycleType, OverType, ToDoListStatus, EventFinishStatus } from "../../data.enum";
+import { PlanType, IsCreate, IsSuccess, IsWholeday, PageDirection, SyncType, DelType, SyncDataStatus, EventType, OperateType, CycleType, OverType, ToDoListStatus, ConfirmType, EventFinishStatus } from "../../data.enum";
 
 /**
  * 事件Service 持续集成CI 自动测试Case
@@ -654,9 +654,9 @@ describe('EventService test suite', () => {
     let newAgenda: AgendaData = results[0];
     newAgenda.bz = "修改备注";
 
-    let confirm: boolean = eventService.hasAgendaModifyConfirm(agenda, newAgenda);
+    let confirm: ConfirmType = eventService.hasAgendaModifyConfirm(agenda, newAgenda);
 
-    expect(confirm).toBe(false);
+    expect(confirm).toBe(ConfirmType.None);
   });
 
   it(`Case 19 - 1 - 1 hasAgendaModifyConfirm 判断日程修改是否需要确认 - 添加提醒`, async () => {
@@ -681,9 +681,9 @@ describe('EventService test suite', () => {
     newAgenda.tx = JSON.stringify(tx);
     newAgenda.txs = tx.text();
 
-    let confirm: boolean = eventService.hasAgendaModifyConfirm(agenda, newAgenda);
+    let confirm: ConfirmType = eventService.hasAgendaModifyConfirm(agenda, newAgenda);
 
-    expect(confirm).toBe(false);
+    expect(confirm).toBe(ConfirmType.None);
   });
 
   describe(`Case 20 - 1 取得两个日程变化的字段名成数组`, () => {
