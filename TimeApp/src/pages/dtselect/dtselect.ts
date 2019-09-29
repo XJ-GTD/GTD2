@@ -7,7 +7,6 @@ import * as moment from "moment";
   selector: 'page-dtselect',
   template: `
     <modal-box title="活动日期" [buttons]="buttons" (onSave)="save()" (onCancel)="close()">
-
       <div class="itemwarp selectype">
         <ion-toolbar>
           <ion-buttons item-start>
@@ -23,11 +22,11 @@ import * as moment from "moment";
         </ion-toolbar>
       </div>
 
-      
+
       <div ion-item no-border no-padding no-lines no-margin class="itemwarp" *ngIf="pagedata.type==0">
         <date-picker  #startDate item-content [ngModel]="pagedata.sd"
-                     pickerFormat="YYYY ,MM DD" displayFormat="YYYY 年 MM 月 DD 日"
-                     cancelText="取消" doneText="选择" (ionChange) = "calcCt()"
+                      pickerFormat="YYYY ,MM DD" displayFormat="YYYY 年 MM 月 DD 日"
+                      cancelText="取消" doneText="选择" (ionChange) = "calcCt()"
         ></date-picker>
         <ion-label><ion-icon class="fal fa-calendar-alt"></ion-icon>开始日期</ion-label>
       </div>
@@ -51,10 +50,11 @@ import * as moment from "moment";
         ></date-picker>
         <ion-label><ion-icon class="fal fa-clock"></ion-icon>结束时间</ion-label>
       </div>
-      
+
       <div ion-item no-border no-padding no-lines no-margin class="itemwarp" *ngIf="pagedata.type==0">
         <ion-label>时长{{pagedata.ct | formatedate:"duration"}}</ion-label>
       </div>
+     
     </modal-box>
   `
 })
@@ -98,6 +98,7 @@ export class DtSelectPage {
   }
 
   calcCt(){
+    console.log("ssssss");
     if (this.pagedata.sd && this.pagedata.st && this.pagedata.ed && this.pagedata.et){
       let startm = moment(this.pagedata.sd + "T"+ this.pagedata.st);
       let endm = moment(this.pagedata.ed + "T"+ this.pagedata.et);
