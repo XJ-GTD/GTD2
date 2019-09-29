@@ -185,10 +185,10 @@ describe('EventService test suite', () => {
           outagds[j].fjs[k].obi = outagds[j].evi;
         }
       }
-      if (outagds[j].parters && outagds[j].parters != null) {
-        for (let k = 0, len = outagds[j].parters.length; k < len; k++) {
-          outagds[j].parters[k].pari = util.getUuid();
-          outagds[j].parters[k].obi = outagds[j].evi;
+      if (outagds[j].members && outagds[j].members != null) {
+        for (let k = 0, len = outagds[j].members.length; k < len; k++) {
+          outagds[j].members[k].pari = util.getUuid();
+          outagds[j].members[k].obi = outagds[j].evi;
         }
       }
     }
@@ -924,7 +924,8 @@ describe('EventService test suite', () => {
 
       let isChanged = eventService.isAgendaChanged(agenda1, agenda);
 
-      expect(isChanged).toBe(false);
+      expect(isChanged).toBeDefined();
+      expect(isChanged.length).toBeDefined(0);
     });
 
     it(`Case 2 - 1 receivedAgenda 接收共享日程 - 无报错`, async (done: DoneFn) => {

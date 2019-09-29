@@ -47,11 +47,16 @@
                           "type;copy",
                           "header;$.root.parameters.mwxing",
                           "from;$.root.parameters.mpn",
+                          "to;$.parent.parent.outputs.datas[##data_value##]._exchangephoneno",
                           "copyto;$.parent.outputs.executed.response.data",
                           "data;$.parent.parent.outputs.datas[##data_value##].datas"
                         ],
                         "outputs": [
-                            "datas"
+                          "from",
+                          "to",
+                          "copyto",
+                          "header",
+                          "datas"
                         ]
                       }
                     ]
