@@ -2420,7 +2420,7 @@ export class EventService extends BaseService {
         sync.title = agenda.evn;
 
         // 非重复日程/重复日程的第一条需要通知
-        if (!agenda.rtevi || agenda.rfg == RepeatFlag.RepeatToNon) {
+        if (!agenda.rtevi || agenda.rfg == RepeatFlag.RepeatToOnly) {
           sync.main = true;
         }
 
