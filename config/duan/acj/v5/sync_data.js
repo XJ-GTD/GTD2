@@ -127,8 +127,8 @@ function clean(datasource)
         standardnext.announceType = 'agenda_from_share';
         standardnext.announceContent = {
           mwxing: convertMessage(id, type, title, 'SELF_DEVICE'),
-          sms: null,
-          push: null
+          sms: {},
+          push: {}
         };
 
         outputs.push(standardnext);
@@ -139,8 +139,8 @@ function clean(datasource)
         standardnext.announceType = 'agenda_from_share';
         standardnext.announceContent = {
           mwxing: convertMessage(id, type, title, 'SELF_ACCOUNT'),
-          sms: null,
-          push: null
+          sms: {},
+          push: {}
         };
 
         outputs.push(standardnext);
