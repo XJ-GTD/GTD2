@@ -2441,7 +2441,15 @@ export class EventService extends BaseService {
                         on ca.evi = ev.forceevi`;
   		agendas = await this.sqlExce.getExtLstByParam<AgendaData>(sql, [anyenum.EventType.Agenda, SyncType.unsynch]) || agendas;
 
-  		let sqlmember: string = ` select par.*   
+  		let sqlmember: string = ` select par.*  , 
+  		                              b.ran
+                                   b.ranpy
+                                   b.hiu
+                                   b.rn
+                                   b.rnpy
+                                   b.rc
+                                   b.rel
+                                   b.src
   		                        from (select 
                                     case when rfg = '2' then evi 
                                        when ifnull(rtevi, '') = '' then evi 
@@ -2449,7 +2457,9 @@ export class EventService extends BaseService {
                                     from gtd_ev
                                     where ui <> '' and ui is not null and type = ?1 and tb = ?2) ev
                               inner join gtd_par par 
-                              on ev.forceevi = par.obi and par.obt = ?3  `;
+                              on ev.forceevi = par.obi and par.obt = ?3 
+                              inner join gtd_b b 
+                              on par.pwi = b.pwi `;
       members =  await this.sqlExce.getExtLstByParam<Member>(sqlmember,
         [anyenum.EventType.Agenda, SyncType.unsynch,anyenum.ObjectType.Event]) || members;
 
