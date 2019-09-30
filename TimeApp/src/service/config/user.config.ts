@@ -250,10 +250,11 @@ export class UserConfig {
 
     let data: Array<FsData> = await this.sqlliteExec.getExtList<FsData>(sql);
     for (let fs of data) {
-      if (!fs.bhiu || fs.bhiu == '') {
+      /*if (!fs.bhiu || fs.bhiu == '') {
         fs.bhiu = DataConfig.HUIBASE64;
-      }
-      UserConfig.friends.push(fs);
+      }*/
+      fs.bhiu = '';
+        UserConfig.friends.push(fs);
     }
     //增加内部事件通知
     this.emitService.emit("mwxing.config.user.btbl.refreshed");
@@ -309,9 +310,10 @@ export class UserConfig {
     });
 
     if  (fs){
-      if (fs.bhiu == ""){
+      /*if (fs.bhiu == ""){
         fs.bhiu  = DataConfig.HUIBASE64;
-      }
+      }*/
+      fs.bhiu  = '';
     }
     return fs;
   }
@@ -328,9 +330,10 @@ export class UserConfig {
 
     if  (fss && fss.length > 0) {
       for (let fs of fss) {
-        if (fs.bhiu == ""){
+        /*if (fs.bhiu == ""){
           fs.bhiu = DataConfig.HUIBASE64;
-        }
+        }*/
+        fs.bhiu = "";
       }
     }
 
@@ -339,7 +342,7 @@ export class UserConfig {
 
   GetOneBhiu(id: string): string {
     let bhiu :string = "";
-    let fs : FsData = new FsData();
+    /*let fs : FsData = new FsData();
     fs  = UserConfig.friends.find(value => {
       return value.pwi == id || value.ui == id;
     });
@@ -352,7 +355,7 @@ export class UserConfig {
 
     }else{
       bhiu = DataConfig.HUIBASE64;
-    }
+    }*/
     return bhiu;
   }
 

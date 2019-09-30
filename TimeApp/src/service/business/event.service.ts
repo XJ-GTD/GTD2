@@ -1303,6 +1303,7 @@ export class EventService extends BaseService {
         sqlparam.push([sq,params]);
       }
       this.sqlExce.batExecSqlByParam(sqlparam);
+      newAgdata.tos = tos;
       outAgds.push(newAgdata);
       return outAgds;
     }
@@ -2449,7 +2450,7 @@ export class EventService extends BaseService {
   		let sqlmember: string = ` select par.*  ,
   		                              b.ran,
                                    b.ranpy,
-                                   b.hiu,
+                                   '' hiu,
                                    b.rn,
                                    b.rnpy,
                                    b.rc,
