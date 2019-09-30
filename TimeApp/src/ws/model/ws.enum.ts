@@ -16,6 +16,13 @@ export enum F {
   C = "F.C"       // 查询日程
 }
 
+//数据同步
+export enum DS {
+  SD = "DS.SD",  //本设备同步成功
+  SA = "DS.SA",  //本帐号他设备数据同步
+  OA = "DS.OA",  //他帐号数据同步
+}
+
 //日程整理（保存上下文）
 export enum SS {
   C = "SS.C",  //新建日程
