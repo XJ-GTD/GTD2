@@ -86,6 +86,8 @@ export class EventService extends BaseService {
           }
         }
       }
+
+      this.sqlExce.batExecSqlByParam(sqlparam);
     }
 
     return pullAgdatas;
