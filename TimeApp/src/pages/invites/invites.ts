@@ -1,14 +1,11 @@
-import {Component} from '@angular/core';
+import {Component, ViewChild} from '@angular/core';
 import {ModalController, NavController, NavParams, ViewController} from 'ionic-angular';
-import {FsService} from "../fs/fs.service";
-import {FdService} from "../fd/fd.service";
 import {UtilService} from "../../service/util-service/util.service";
-import {GlService} from "../gl/gl.service";
 import {FsData, FsPageData, PageGroupData} from "../../data.mapping";
 import {DataConfig} from "../../service/config/data.config";
-import {FeedbackService} from "../../service/cordova/feedback.service";
 import {ModalBoxComponent} from "../../components/modal-box/modal-box";
-
+import {Member} from "../../service/business/event.service";
+import * as anyenum from "../../data.enum";
 /**
  * Generated class for the 参与人选择 page.
  *
@@ -19,46 +16,40 @@ import {ModalBoxComponent} from "../../components/modal-box/modal-box";
 @Component({
   selector: 'page-invites',
   template: `
-    <modal-box title="邀请人" [buttons]="buttons" (onSave)="saveToClose()" (onCancel)="cancel()">
-      <div class="name-input w-auto">
-        <ion-searchbar type="text" placeholder="手机号 姓名" (ionChange)="getContacts()" [(ngModel)]="tel"
-                   text-center></ion-searchbar>
-      </div>
-      <div class="selected">
-        <ion-chip *ngFor="let g of selFsl" (click)="rmSelected(g)">
-          <ion-avatar>
-            <img src={{g.bhiu}}>
-          </ion-avatar>
-          <ion-label>{{g.ran}}</ion-label>
-        </ion-chip>
-      </div>
-      <ion-grid>
-        <ion-row *ngFor="let g of pageGl" class="group">
-          <ion-avatar item-start>
-            <img src={{g.gm}}>
-          </ion-avatar>
-          <ion-label>
-            {{g.gn}}({{g.gc}})
-          </ion-label>
-          <ion-checkbox (click)="addgl(g)" [(ngModel)]="g.checked"></ion-checkbox>
-        </ion-row>
-        <ion-row *ngFor="let g of pageFsl">
-          <ion-avatar item-start (click)="goTofsDetail(g)">
-            <img [src]="g.bhiu">
-          </ion-avatar>
-          <ion-label (click)="goTofsDetail(g)">
-            {{g.ran}}
-            <!--<span> {{g.rc}}</span>-->
-            <span *ngIf="g.rel ==1">注册</span>
-          </ion-label>
-          <ion-checkbox (click)="addsel(g)" [(ngModel)]="g.checked"></ion-checkbox>
-        </ion-row>
-      </ion-grid>
+    <modal-box title="邀请人" [buttons]="buttons" (onSave)="save()" (onCancel)="cancel()">
+      <ion-list>
+        <ion-list-header>
+          参与人({{membernum}})
+          <button ion-button clear item-end (click) = "openMemberSelect()">
+            <ion-icon ios="ios-add" md="md-add"></ion-icon>
+          </button>
+        </ion-list-header>
+        <ion-item>
+          <div *ngFor = "let member of memberSet.members">
+            {{ member.ran }}
+          </div>
+        </ion-item>
+        <ion-item no-lines >
+          <button ion-button clear item-end>查看全部参与人</button>
+        </ion-item>
+      </ion-list>
+      <ion-list>
+        <ion-item>
+          <ion-label>转发</ion-label>
+          <ion-toggle [(ngModel)]="memberSet.iv" ></ion-toggle>
+        </ion-item>
+        <ion-item>
+          <ion-label>编辑</ion-label>
+          <ion-toggle [(ngModel)]="memberSet.md"></ion-toggle>
+        </ion-item>
+      </ion-list>
     </modal-box>
   `,
 })
 export class InvitesPage {
-  statusBarColor: string = "#3c4d55";
+
+  @ViewChild(ModalBoxComponent)
+  modalBoxComponent:ModalBoxComponent
 
   buttons: any = {
     remove: false,
@@ -67,130 +58,75 @@ export class InvitesPage {
     cancel: true
   };
 
+  memberSet : any = {
+    members : new Array<Member>(),
+    md : false,
+    iv : false,
+  }
+
+  membernum : "";
+
   tel: any;//手机号
-  pageFsl: Array<FsPageData> = new Array<FsPageData>();
-  pageGl: Array<PageGroupData> = new Array<PageGroupData>();
-  selFsl: Array<FsData> = new Array<FsData>();
 
   constructor(public navCtrl: NavController,
               public navParams: NavParams,
               public viewCtrl: ViewController,
-              private fsService: FsService,
               private util: UtilService,
-              private fdService: FdService,
-              private glService: GlService,
-              private  modalCtrl: ModalController,private feedback:FeedbackService) {
+              private  modalCtrl: ModalController) {
+
+    //下面处理需要放在构造方法里，防止关闭参与人选择页面时进入该处理
+    if (this.navParams && this.navParams.data ) {
+      this.memberSet.members = this.navParams.data.members?this.navParams.data.members : new Array<Member>();
+      this.membernum = this.memberSet.members.length;
+      if (this.navParams.data.iv == anyenum.InvitePowr.enable){
+        this.memberSet.iv = true;
+      }else{
+        this.memberSet.iv = false;
+      }
+      if (this.navParams.data.md == anyenum.ModiPower.enable){
+        this.memberSet.md = true;
+      }else{
+        this.memberSet.md = false;
+      }
+    }
   }
 
   ionViewDidEnter() {
-    this.getContacts();
-  }
+    this.modalBoxComponent.setBoxContent();
 
-  rmSelected(fs: FsData) {
-    let index: number = this.selFsl.findIndex((value) => {
-      return fs.pwi == value.pwi;
-    });
-    this.selFsl.splice(index, 1);
-    this.checkedSet();
-  }
-
-  save() {
-    let list = this.selFsl;
-    if (list.length > 0) {
-      this.fsService.sharefriend(this.navParams.get('tpara'), list).then(data => {
-        this.feedback.audioSend();
-
-        this.navCtrl.popAll();
-        //TODO 错误提示
-      });
-    } else {
-      this.util.popoverStart("请先选择朋友");
-    }
-
-  }
-
-  saveToClose() {
-    let data: Object = {};
-    this.viewCtrl.dismiss(data);
-  }
-
-  cancel() {
-    this.navCtrl.pop();
-  }
-
-  addsel(fs: FsPageData) {
-
-    if (fs.checked) {
-      this.selFsl.push(fs);
-    } else {
-      let index: number = this.selFsl.findIndex((value) => {
-        return fs.pwi == value.pwi;
-      });
-      this.selFsl.splice(index, 1);
-    }
-  }
-
-  addgl(fs: PageGroupData) {
-    if (fs.checked) {
-      for (let f of fs.fsl) {
-        let index: number = this.selFsl.findIndex((value) => {
-          return f.pwi == value.pwi;
-        });
-        if (index < 0) {
-          this.selFsl.push(f);
-        }
-      }
-    } else {
-      for (let f of fs.fsl) {
-        let index: number = this.selFsl.findIndex((value) => {
-          return f.pwi == value.pwi;
-        });
-        this.selFsl.splice(index, 1);
-      }
-    }
-
-    this.checkedSet();
-  }
-
-  goBack(page: any, para: any) {
-    this.navCtrl.pop();
-  }
-
-  getContacts() {
-    this.pageGl.splice(0, this.pageGl.length);
-    this.pageFsl.splice(0, this.pageFsl.length);
-    let gl = this.glService.getGroups(this.tel);
-    let fsl = this.fsService.getfriend(this.tel);
-    gl.forEach((value) => {
-      let group: PageGroupData = new PageGroupData();
-      Object.assign(group, value);
-      this.pageGl.push(group);
-
-    });
-    fsl.forEach((value) => {
-      let fs: FsPageData = new FsPageData();
-      Object.assign(fs, value);
-      fs.checked = false;
-      this.pageFsl.push(fs);
-    });
-    this.checkedSet();
-  }
-
-  checkedSet() {
-    this.pageFsl.forEach((value) => {
-      value.checked = false;
-    });
-
-    for (let f of this.selFsl) {
-      let t = this.pageFsl.find(value => {
-        return value.pwi == f.pwi;
-      });
-      if (t) t.checked = true;
-    }
   }
 
   goTofsDetail(fs: FsData) {
     let modal = this.modalCtrl.create(DataConfig.PAGE._FD_PAGE, {fsData: fs});
+    modal.present();
+  }
+
+  save(){
+
+    let data: Object = {
+      members : this.memberSet.members,
+      md : this.memberSet.md ? anyenum.ModiPower.enable : anyenum.ModiPower.disable,
+      iv : this.memberSet.iv ? anyenum.InvitePowr.enable : anyenum.InvitePowr.disable
+    };
+    this.viewCtrl.dismiss(data);
+  }
+
+  cancel(){
+    this.navCtrl.pop();
+  }
+
+  openMemberSelect(){
+    let modal = this.modalCtrl.create(DataConfig.PAGE._MEMBER_PAGE,
+      {
+        members : this.memberSet.members
+      });
+    modal.onDidDismiss(async (data) => {
+      if (data){
+        this.memberSet.members = data.members;
+        this.membernum = this.memberSet.members.length;
+      }
+
+    });
     modal.present();
   }
 }

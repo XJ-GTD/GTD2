@@ -30,7 +30,7 @@ import {PageLoginData} from "../../data.mapping";
         </div>
        <div>
          <button ion-fab class="login-enter" [ngStyle]="{'opacity': opa }" (click)="signIn()">
-           <img class="img-content-enter" src="./assets/imgs/xyb.png">
+           <ion-icon class="fal fa-sign-in-alt"></ion-icon>
          </button>
        </div>
       </ion-row>

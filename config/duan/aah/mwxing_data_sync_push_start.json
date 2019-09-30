@@ -9,7 +9,7 @@
     ],
     "follows": [
         {
-            "name": "数据推送/拉取",
+            "name": "数据推送 - 保存到交换区",
             "trigger": "sas",
             "parameters": [
               "type;push",
@@ -18,20 +18,49 @@
               "data;$.parent.parameters.d"
             ],
             "outputs": [
-                "cleaned"
+                "from",
+                "header",
+                "datas"
             ],
             "next": [
                 {
-                    "name": "冥王星通知服务",
-                    "trigger": "ann",
+                  "type": "loop",
+    							"variable": "data;$.parent.outputs.datas[*]",
+    							"start": "0",
+    							"end": "size",
+    							"task": {
+                    "name": "获取交换区数据所述人帐户信息",
+                    "trigger": "exc",
                     "parameters": [
-                        "announceTo;$.parent.outputs.cleaned.announceTo",
-                        "announceType;$.parent.outputs.cleaned.announceType",
-                        "announceContent;$.parent.outputs.cleaned.announceContent"
+                        "method;get",
+                        "urlabs;http://sa-aup:8080/aup/data/#{_exchangephoneno}/userinfo",
+                        "params;$.parent.outputs.datas[##data_value##]"
                     ],
                     "outputs": [
-                        "result"
+                        "executed"
+                    ],
+                    "next": [
+                      {
+                        "name": "数据复制 - 保存到设备区",
+                        "trigger": "sas",
+                        "parameters": [
+                          "type;copy",
+                          "header;$.root.parameters.mwxing",
+                          "from;$.root.parameters.mpn",
+                          "to;$.parent.parent.outputs.datas[##data_value##]._exchangephoneno",
+                          "copyto;$.parent.outputs.executed.response.data",
+                          "data;$.parent.parent.outputs.datas[##data_value##].datas"
+                        ],
+                        "outputs": [
+                          "from",
+                          "to",
+                          "copyto",
+                          "header",
+                          "datas"
+                        ]
+                      }
                     ]
+                  }
                 }
             ]
         }

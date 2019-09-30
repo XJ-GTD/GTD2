@@ -15,7 +15,7 @@ import {PageBoxComponent} from "../../components/page-box/page-box";
 import {CornerBadgeComponent} from "../../components/corner-badge/corner-badge";
 import {CalendarService} from "../../service/business/calendar.service";
 import {EventService, AgendaData, RtJson, TxJson} from "../../service/business/event.service";
-import { PageDirection, IsSuccess, OperateType, RepeatFlag, ToDoListStatus, ConfirmType, IsWholeday } from "../../data.enum";
+import { PageDirection, IsSuccess, OperateType, RepeatFlag, ToDoListStatus, ConfirmType, IsWholeday,ObjectType } from "../../data.enum";
 import {Keyboard} from "@ionic-native/keyboard";
 
 /**
@@ -292,17 +292,40 @@ export class AgendaPage {
   }
 
   changeAttach() {
-    let modal = this.modalCtrl.create(DataConfig.PAGE._ATTACH_PAGE);
+    let modal = this.modalCtrl.create(DataConfig.PAGE._ATTACH_PAGE,{obt: ObjectType.Event,obi:this.currentAgenda.evi});
     modal.onDidDismiss(async (data)=>{
+        if (!data) return;
 
+        this.currentAgenda.fjs = data.attach;
+
+        if (!this.eventService.isSameAgenda(this.currentAgenda, this.originAgenda)) {
+          this.buttons.save = true;
+        } else {
+          this.buttons.save = false;
+        }
     });
     modal.present();
   }
 
   changeInvites() {
-    let modal = this.modalCtrl.create(DataConfig.PAGE._INVITES_PAGE);
+    let modal = this.modalCtrl.create(DataConfig.PAGE._INVITES_PAGE, {
+      members: this.currentAgenda.members,
+      md: this.currentAgenda.md,
+      iv: this.currentAgenda.iv
+    });
     modal.onDidDismiss(async (data) => {
+      if (!data) return;
 
+      this.currentAgenda.members = data.members;
+      this.currentAgenda.pn = data.members.length;
+      this.currentAgenda.md = data.md;
+      this.currentAgenda.iv = data.iv;
+
+      if (!this.eventService.isSameAgenda(this.currentAgenda, this.originAgenda)) {
+        this.buttons.save = true;
+      } else {
+        this.buttons.save = false;
+      }
     });
     modal.present();
   }

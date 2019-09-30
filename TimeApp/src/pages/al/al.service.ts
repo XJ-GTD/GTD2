@@ -553,6 +553,10 @@ export class AlService {
     await this.memoService.saveMemo(memo);
 
     // 日历项
+
+    let r = this.util.randInt(-100, 100);
+    let repert: RtJson = new RtJson();
+
     let planitem1: PlanItemData = {} as PlanItemData;
 
     planitem1.sd = moment().format("YYYY/MM/DD");
@@ -560,6 +564,51 @@ export class AlService {
     planitem1.jtt = PlanItemType.Activity;
 
     await this.calendarService.savePlanItem(planitem1);
+
+    // 日历项
+    planitem1 = {} as PlanItemData;
+    r = this.util.randInt(-100, 100);
+    planitem1.sd = moment().add(r, 'd').format("YYYY/MM/DD");
+    planitem1.jtn = "小王的生日";
+    planitem1.jtt = PlanItemType.Activity;
+    repert = new RtJson();
+    repert.over.type = OverType.fornever;
+    planitem1.rtjson = repert;
+    await this.calendarService.savePlanItem(planitem1);
+
+    planitem1 = {} as PlanItemData;
+    r = this.util.randInt(-100, 100);
+    planitem1.sd = moment().add(r, 'd').format("YYYY/MM/DD");
+    planitem1.jtn = "系统上线日";
+    planitem1.jtt = PlanItemType.Activity;
+    repert = new RtJson();
+    repert.over.type = OverType.fornever;
+    planitem1.rtjson = repert;
+    await this.calendarService.savePlanItem(planitem1);
+
+
+
+    planitem1 = {} as PlanItemData;
+    r = this.util.randInt(-100, 100);
+    planitem1.sd = moment().add(r, 'd').format("YYYY/MM/DD");
+    planitem1.jtn = "特殊节日";
+    planitem1.jtt = PlanItemType.Activity;
+    repert = new RtJson();
+    repert.over.type = OverType.fornever;
+    planitem1.rtjson = repert;
+    await this.calendarService.savePlanItem(planitem1);
+
+
+    planitem1 = {} as PlanItemData;
+    r = this.util.randInt(-100, 100);
+    planitem1.sd = moment().add(r, 'd').format("YYYY/MM/DD");
+    planitem1.jtn = "流浪地球纪念日";
+    planitem1.jtt = PlanItemType.Activity;
+    repert = new RtJson();
+    repert.over.type = OverType.fornever;
+    planitem1.rtjson = repert;
+    await this.calendarService.savePlanItem(planitem1);
+
 
     // 自定义日历
 
@@ -704,15 +753,26 @@ export class AlService {
 
     let ss: Array<string> = [];
     ss.push("跑步");
-    ss.push("一起吃饭");
+
+    ss.push("飞机--北京");
+    ss.push("飞机--大阪");
+    ss.push("飞机--毛里求斯");
+
+
+    ss.push("经营会议");
+
+
+    ss.push("经营会议");
+
+    ss.push("一起吃饭");;
     ss.push("关于日程的讨论会，没有什么事情的话，都必须要参加的");
-    ss.push("赶飞机");
     ss.push("未来过去和现在，都可以预测的");
     ss.push("你希望你是一个人，其实你的前生已近出卖了你的今天，你还是一个人吗");
+    ss.push("EMBA课程--金鹰是如何炼成的");
     ss.push("节前5000元");
-    ss.push("thanks ");
+    ss.push("thanks i am thanks.thanks i am thanks.thanks i am thanks.thanks i am thanks.thanks i am thanks.thanks i am thanks.");
 
-    for (let i = 0; i < 100; i++) {
+    for (let i = 0; i < 40; i++) {
       let start = moment('2019/01/01');
       let r = this.util.randInt(-100, 100);
       let t = this.util.randInt(0, 24);

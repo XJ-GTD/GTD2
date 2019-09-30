@@ -7,7 +7,7 @@ import {UtilService} from "../util-service/util.service";
 import {EmitService} from "../util-service/emit.service";
 import {DataConfig} from "./data.config";
 import {FsData, PageDcData} from "../../data.mapping";
-import {Parter} from "../business/event.service";
+import {Member} from "../business/event.service";
 import {PlanData} from "../business/calendar.service";
 
 /**
@@ -61,7 +61,7 @@ export class UserConfig {
   //参与人
   static friends: Array<FsData> = new Array<FsData>();
 
-  static parters: Array<Parter> = new Array<Parter>();
+  static members: Array<Member> = new Array<Member>();
 
   //个人计划
   static privateplans: Array<PlanData> = new Array<PlanData>();
@@ -71,6 +71,7 @@ export class UserConfig {
 
   //群组
   static groups: Array<PageDcData> = new Array<PageDcData>();
+  static memberGroups: Array<PageDcData> = new Array<PageDcData>();
 
   constructor(private sqlliteExec: SqliteExec,
               private util: UtilService,
@@ -86,6 +87,8 @@ export class UserConfig {
     await this.RefreshBTbl2();
 
     await this.RefreshGTbl();
+
+    await this.RefreshGTbl2();
   }
 
   static getSetting(key: string):boolean {
@@ -207,6 +210,8 @@ export class UserConfig {
     await this.RefreshBTbl2();
 
     await this.RefreshGTbl();
+
+    await this.RefreshGTbl2();
     return;
 
   }
@@ -361,29 +366,61 @@ export class UserConfig {
     return bhiu;
   }
 
-  /*新的parter对象 进行缓存的方法*/
+  /*新的member对象 进行缓存的方法*/
+  //群组
+  private async RefreshGTbl2() {
+    //获取本地群列表
+    let sql = 'select * from gtd_g;';
+
+    UserConfig.memberGroups.splice(0, UserConfig.memberGroups.length);
+    let dcl: Array<PageDcData> = await this.sqlliteExec.getExtList<PageDcData>(sql)
+    if (dcl.length > 0) {
+      //和单群人数
+      for (let dc of dcl) {
+        dc.members = new Array<Member>();
+        let sqlbx = 'select gb.* from gtd_b_x gbx inner join gtd_b gb on gb.pwi = gbx.bmi where gbx.bi="' + dc.gi + '";';
+        let memberList: Array<Member> = await this.sqlliteExec.getExtList<Member>(sqlbx);
+        for (let m of memberList) {
+          let mber: Member = this.GetOneBTbl2(m.pwi);
+          if (!dc.members) {
+            dc.members = new Array<Member>(); //群组成员
+          }
+          if (mber) {
+            dc.members.push(mber);
+          }
+        }
+        dc.gc = dc.members.length;
+        dc.gm = DataConfig.QZ_HUIBASE64;
+        UserConfig.memberGroups.push(dc);
+      }
+    }
+    //增加内部事件通知
+    this.emitService.emit("mwxing.config.user.gtbl.refreshed");
+    return;
+  }
+
   //参与人
   private async RefreshBTbl2() {
     //获取本地参与人
     let sql = `select gb.*,bh.hiu bhiu
                from gtd_b gb
                       left join gtd_bh bh on bh.pwi = gb.pwi;`;
-    UserConfig.parters.splice(0, UserConfig.parters.length);
+    UserConfig.members.splice(0, UserConfig.members.length);
 
-    let data: Array<Parter> = await this.sqlliteExec.getExtList<Parter>(sql);
+    let data: Array<Member> = await this.sqlliteExec.getExtList<Member>(sql);
     for (let par of data) {
       if (!par.bhiu || par.bhiu == '') {
         par.bhiu = DataConfig.HUIBASE64;
       }
-      UserConfig.parters.push(par);
+      UserConfig.members.push(par);
     }
     //增加内部事件通知
     this.emitService.emit("mwxing.config.user.btbl.refreshed");
     return;
   }
 
-  RefreshOneBTbl2(par: Parter): Parter {
-    let ret: Parter;
+  RefreshOneBTbl2(par: Member): Member {
+    let ret: Member;
     ret = this.GetOneBTbl2(par.pwi);
     if (ret) {
       Object.assign(ret, par);
@@ -391,10 +428,10 @@ export class UserConfig {
     return ret;
   }
 
-  GetOneBTbl2(id: string): Parter {
+  GetOneBTbl2(id: string): Member {
     console.log('GetOneBTbl with id ' + id);
-    let par : Parter = {} as Parter;
-    par =  UserConfig.parters.find(value => {
+    let par : Member = {} as Member;
+    par =  UserConfig.members.find(value => {
       return value.pwi == id || value.ui == id;
     });
 
@@ -408,8 +445,8 @@ export class UserConfig {
 
   GetOneBhiu2(id: string): string {
     let bhiu :string = "";
-    let par : Parter = {} as Parter;
-    par  = UserConfig.parters.find(value => {
+    let par : Member = {} as Member;
+    par  = UserConfig.members.find(value => {
       return value.pwi == id || value.ui == id;
     });
     if  (par){
@@ -425,25 +462,25 @@ export class UserConfig {
     return bhiu;
   }
 
-  GetMultiBTbls2(ids: Array<string>): Array<Parter> {
+  GetMultiBTbls2(ids: Array<string>): Array<Member> {
     console.log('GetMultiBTbls with ids ' + ids.join(","));
 
     let matches: string = ids.join(",");
 
-    let parters : Array<Parter> = new Array<Parter>();
-    parters =  UserConfig.parters.filter(value => {
+    let members : Array<Member> = new Array<Member>();
+    members =  UserConfig.members.filter(value => {
       return ((matches.indexOf(value.pwi) >= 0) || (matches.indexOf(value.ui) >= 0));
     });
 
-    if  (parters && parters.length > 0) {
-      for (let par of parters) {
+    if  (members && members.length > 0) {
+      for (let par of members) {
         if (par.bhiu == ""){
           par.bhiu = DataConfig.HUIBASE64;
         }
       }
     }
 
-    return parters;
+    return members;
   }
 
 }

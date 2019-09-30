@@ -6,6 +6,7 @@ import {FileTransfer, FileUploadOptions, FileTransferObject  } from '@ionic-nati
 import { Camera, CameraOptions } from '@ionic-native/camera';
 import { Chooser } from '@ionic-native/chooser';
 import {ModalBoxComponent} from "../../components/modal-box/modal-box";
+import {FjData} from "../../service/business/event.service";
 
 @IonicPage()
 @Component({
@@ -30,16 +31,19 @@ import {ModalBoxComponent} from "../../components/modal-box/modal-box";
   </modal-box>
   `
 })
+
 export class AttachPage {
   statusBarColor: string = "#3c4d55";
   imgUrl: string = "";
+  fjArray: Array<FjData>;
+  obt: string = "" ;
+  obi: string = "";
   buttons: any = {
     remove: false,
     share: false,
     save: true,
     cancel: true
   };
-
 
   constructor(public navCtrl: NavController,
               public viewCtrl: ViewController,
@@ -50,11 +54,8 @@ export class AttachPage {
               private transfer:FileTransfer,
               private keyboard: Keyboard) {
     if (this.navParams && this.navParams.data) {
-      let value = this.navParams.data.value;
-
-      if (value) {
-
-      }
+      this.obt  = this.navParams.data.obt;
+      this.obi = this.navParams.data.obi;
     }
   }
 
@@ -64,7 +65,7 @@ export class AttachPage {
   }
 
   save() {
-    let data: Object = {attach: {}};
+    let data: Object = {attach: this.fjArray};
     this.viewCtrl.dismiss(data);
   }
 
@@ -86,12 +87,24 @@ export class AttachPage {
     }
     this.camera.getPicture(options).then((imageData) => {
       console.info("开始拍照上传照片");
-      let base64Image = 'data:image/jpeg;base64,' + imageData;
-      this.imgUrl = base64Image;
-      alert(this.imgUrl);
+      let fjData: FjData = {} as FjData;
+      if (imageData){
+        let fileNameArray: Array<string> = imageData.split("/");
+        let fileName = fileNameArray[fileNameArray.length-1];
+        let ext = fileName.split(".")[1];
+        let fj =  imageData;
+        fjData.obt = this.obt;
+        fjData.obi = this.obi;
+        fjData.fjn = fileName;
+        fjData.ext = ext;
+        fjData.fj = fj;
+        this.fjArray.push(fjData);
+      }
+      // let base64Image = 'data:image/jpeg;base64,' + imageData;
+      // this.imgUrl = base64Image;
+      // alert(this.imgUrl);
       //TODO  调研图片上传的Service,并将附件的返回值返回给上一页
       //this.upload();
-
     }, (err) => {
         console.info("拍照上传附件异常，异常信息："+ err);
     });
@@ -101,7 +114,11 @@ export class AttachPage {
   * 文件上传  ying<343253410@qq.com>
   */
   select() {
-      this.chooser.getFile('image/*,video/*').then(file => console.log(file ? file.name : 'canceled'))
+      this.chooser.getFile('image/*,video/*').then((file) => {
+          console.log(file ? file.name : 'canceled');
+          alert("file:"+JSON.stringify(file));
+        }
+      )
         .catch((error: any)=> console.error(error));
   }
 
