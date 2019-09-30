@@ -2424,14 +2424,32 @@ export class EventService extends BaseService {
   async syncAgendas(agendas: Array<AgendaData> = new Array<AgendaData>()) {
     this.assertEmpty(agendas);  // 入参不能为空
 
+    let members = new Array<Member>();
+
     if (agendas.length <= 0) {
       let sql: string = `select ev.*, ca.sd, ca.ed, ca.st, ca.et, ca.al, ca.ct
-                        from (select *, case when ifnull(rtevi, '') = '' then evi else rtevi end forceevi
+                        from (select *, 
+                        case when rfg = '2' then evi 
+                             when ifnull(rtevi, '') = '' then evi 
+                             else rtevi end forceevi
                           from gtd_ev
                           where ui <> '' and ui is not null and type = ?1 and tb = ?2) ev
                         left join gtd_ca ca
                         on ca.evi = ev.forceevi`;
   		agendas = await this.sqlExce.getExtLstByParam<AgendaData>(sql, [anyenum.EventType.Agenda, SyncType.unsynch]) || agendas;
+
+  		let sqlmember: string = ` select par.* from  
+  		                        from (select 
+                                    case when rfg = '2' then evi 
+                                       when ifnull(rtevi, '') = '' then evi 
+                                       else rtevi end forceevi
+                                    from gtd_ev
+                                    where ui <> '' and ui is not null and type = ?1 and tb = ?2) ev
+                              inner join gtd_par par 
+                              on ev.forceevi = par.obi and par.obt = ?3  `;
+      members =  await this.sqlExce.getExtLstByParam<Member>(sqlmember,
+        [anyenum.EventType.Agenda, SyncType.unsynch,anyenum.ObjectType.Event]) || members;
+
     }
 
     let maxdata: number = 10;
@@ -2469,6 +2487,25 @@ export class EventService extends BaseService {
           sync.status = SyncDataStatus.UnDeleted;
         }
 
+        //取得相关参与人
+        if (members.length > 0) {
+          let masterEvi: string;
+          if (agenda.rtevi == "") {
+            //非重复数据或重复数据的父记录
+            masterEvi = agenda.evi;
+          } else if (agenda.rfg == anyenum.RepeatFlag.RepeatToOnly) {
+            //重复中独立数据
+            masterEvi = agenda.evi;
+          } else {
+            //重复数据
+            masterEvi = agenda.rtevi;
+          }
+
+          let membersTos: Array<Member> = members.filter((value, index, arr) => {
+            return masterEvi == value.obi;
+          });
+          agenda.tos = this.getMemberPhone(membersTos);
+        }
         sync.to = (!agenda.tos || agenda.tos == "" || agenda.tos == null) ? [] : agenda.tos.split(",") ;
         sync.payload = agenda;
         push.d.push(sync);
