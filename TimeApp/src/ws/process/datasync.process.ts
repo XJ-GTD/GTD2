@@ -54,6 +54,9 @@ export class DataSyncProcess implements MQProcess {
       //处理所需要参数
       let dsPara: DataSyncPara = content.parameters;
 
+      if (dsPara.type == "Agenda") {
+        this.eventService.receivedAgenda(dsPara.id);
+      }
     }
 
     //他帐号请求,云端同步成功,本地下载完成同步
@@ -61,6 +64,9 @@ export class DataSyncProcess implements MQProcess {
       //处理所需要参数
       let dsPara: DataSyncPara = content.parameters;
 
+      if (dsPara.type == "Agenda") {
+        this.eventService.receivedAgenda(dsPara.id);
+      }
     }
 
     return contextRetMap

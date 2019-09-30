@@ -102,6 +102,7 @@ export class EventService extends BaseService {
 
     let pull: PullInData = new PullInData();
 
+    pull.type = "Agenda";
     pull.d.push(evi);
 
     // 发送下载日程请求
@@ -2510,6 +2511,7 @@ export class EventService extends BaseService {
   async receivedTask(evi: string) {
   	this.assertEmpty(evi);   // 入参不能为空
 		let pull: PullInData = new PullInData();
+    pull.type = "Task";
 		pull.d.push(evi);
 		await this.dataRestful.pull(pull);
 		return;
