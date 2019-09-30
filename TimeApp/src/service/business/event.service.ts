@@ -2420,10 +2420,16 @@ export class EventService extends BaseService {
         let sync: SyncData = new SyncData();
         sync.id = agenda.evi;
         sync.type = "Agenda";
+        sync.title = agenda.evn;
+
+        // 非重复日程/重复日程的第一条需要通知
+        if (!agenda.rtevi || agenda.rfg == RepeatFlag.RepeatToOnly) {
+          sync.main = true;
+        }
 
         sync.security = SyncDataSecurity.None;
 
-        //修改权限设定
+        // 修改权限设定
         if (agenda.md == ModiPower.disable){
           sync.security = SyncDataSecurity.SelfModify;
         }
@@ -2431,7 +2437,13 @@ export class EventService extends BaseService {
           sync.security = SyncDataSecurity.ShareModify;
         }
 
-        sync.status = SyncDataStatus[agenda.del];
+        // 设置删除状态
+        if (agenda.del == DelType.del) {
+          sync.status = SyncDataStatus.Deleted;
+        } else {
+          sync.status = SyncDataStatus.UnDeleted;
+        }
+
         sync.to = (!agenda.tos || agenda.tos == "" || agenda.tos == null) ? [] : agenda.tos.split(",") ;
         sync.payload = agenda;
         push.d.push(sync);

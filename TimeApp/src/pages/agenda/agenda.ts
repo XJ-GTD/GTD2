@@ -310,9 +310,24 @@ export class AgendaPage {
   }
 
   changeInvites() {
-    let modal = this.modalCtrl.create(DataConfig.PAGE._INVITES_PAGE);
+    let modal = this.modalCtrl.create(DataConfig.PAGE._INVITES_PAGE, {
+      members: this.currentAgenda.members,
+      md: this.currentAgenda.md,
+      iv: this.currentAgenda.iv
+    });
     modal.onDidDismiss(async (data) => {
+      if (!data) return;
 
+      this.currentAgenda.members = data.members;
+      this.currentAgenda.pn = data.members.length;
+      this.currentAgenda.md = data.md;
+      this.currentAgenda.iv = data.iv;
+
+      if (!this.eventService.isSameAgenda(this.currentAgenda, this.originAgenda)) {
+        this.buttons.save = true;
+      } else {
+        this.buttons.save = false;
+      }
     });
     modal.present();
   }

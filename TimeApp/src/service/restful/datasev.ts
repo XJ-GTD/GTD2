@@ -58,6 +58,8 @@ export class SyncData {
   id: string;             // 本地数据唯一标识符
   timestamp: number;      // 时间戳与数据唯一标识符确定唯一数据和版本
   type: string;           // 数据类型(可以自定义, 建议使用Plan|PlanItem|Agenda|Task|MiniTask|Memo)
+  title: string;          // 数据标题, 用于通知时使用
+  main: boolean = false;  // 是否主数据, 用于判断是否需要通知(重复数据只需要第一条主数据进行通知)
   to: Array<string> = new Array<string>();  // 被共享人手机号(可以为空, 表示非共享数据)
   security: SyncDataSecurity = SyncDataSecurity.None;   // None(非共享/多设备间同步), SelfModify(只有发起人可以修改), ShareModify(所有人都可以修改), ShareModifyWithoutSender(共享后发起人本地删除)
   status: SyncDataStatus; // 删除/未删除
