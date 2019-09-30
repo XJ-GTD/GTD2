@@ -78,6 +78,7 @@ export class PushOutData {
 
 export class PullInData {
   mpn: string;  // 手机号码
+  type: string; // 拉取数据类型
   d: Array<string> = new Array<string>();     // 需要拉取得数据唯一标识符数组, 可以为空(表示拉取所有未拉取的数据)
 }
 

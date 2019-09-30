@@ -2739,6 +2739,7 @@ export class CalendarService extends BaseService {
 
     let pull: PullInData = new PullInData();
 
+    pull.type = "Plan";
     pull.d.push(ji);
 
     // 发送下载日历请求
