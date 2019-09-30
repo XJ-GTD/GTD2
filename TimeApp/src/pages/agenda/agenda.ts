@@ -70,7 +70,7 @@ import {Keyboard} from "@ionic-native/keyboard";
               </div>
               <div (click)="changePlan()" end>
                 <ion-icon class="fal fa-line-columns  font-normal"></ion-icon>
-                <span class="font-normal content">{{currentAgenda.ji | formatplan: 'name' :'加入日历': privateplans}}</span>
+                <span class="font-normal">{{currentAgenda.ji | formatplan: 'name' :'加入日历': privateplans}}</span>
               </div>
             </ion-row>
 
