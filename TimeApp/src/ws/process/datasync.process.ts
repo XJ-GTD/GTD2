@@ -8,7 +8,7 @@ import {CalendarService} from "../../service/business/calendar.service";
 import {EventService, AgendaData, TaskData, MiniTaskData} from "../../service/business/event.service";
 import {MemoService} from "../../service/business/memo.service";
 import {DataSyncPara} from "../model/datasync.para";
-import {ScdData} from "../../data.mapping";
+import {SyncDataStatus} from "../../data.enum";
 
 /**
  * 数据同步
