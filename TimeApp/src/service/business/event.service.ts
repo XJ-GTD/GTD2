@@ -836,12 +836,14 @@ export class EventService extends BaseService {
     pars = await this.sqlExce.getLstByParam<ParTbl>(par);
     for (let j = 0, len = pars.length; j < len; j++) {
       let member = {} as Member;
+      Object.assign(member,pars[j]);
       let fs : FsData;
       fs = this.userConfig.GetOneBTbl(pars[j].pwi);
       if(fs && fs != null){
         Object.assign(member,fs);
-        members.push(member);
+
       }
+      members.push(member);
     }
     return members;
   }
@@ -1241,20 +1243,40 @@ export class EventService extends BaseService {
       ev.adry = newAgdata.adry;
       sqlparam.push(ev.upTParam());
 
+      //主evi设定
+      let masterEvi : string;
+      if (oriAgdata.rtevi == ""){
+        //非重复数据或重复数据的父记录
+        masterEvi = oriAgdata.evi;
+      }else if (oriAgdata.rfg == anyenum.RepeatFlag.RepeatToOnly){
+        //重复中独立日只能修改自己
+        masterEvi = oriAgdata.evi;
+      }else{
+        //重复数据
+        masterEvi = oriAgdata.rtevi;
+      }
+
+      //删除参与人
+      let par = new ParTbl();
+      par.obt = anyenum.ObjectType.Event;
+      par.obi = masterEvi;
+      sqlparam.push(par.dTParam());
+      //参与人更新
+      let nwpar = new Array<any>();
+      nwpar = this.sqlparamAddPar(masterEvi , newAgdata.members);
+
+      //删除附件
+      let fj = new FjTbl();
+      fj.obt = anyenum.ObjectType.Event;
+      fj.obi = masterEvi;
+      sqlparam.push(fj.dTParam());
+      //附件更新
+      let nwfj = new Array<any>();
+      nwfj = this.sqlparamAddFj(masterEvi, newAgdata.fjs);
+      sqlparam = [...sqlparam,  ...nwpar, ...nwfj];
+
       //todolist处理
       if (newAgdata.todolist != oriAgdata.todolist){
-        //主evi设定
-        let masterEvi : string;
-        if (oriAgdata.rtevi == ""){
-          //非重复数据或重复数据的父记录
-          masterEvi = oriAgdata.evi;
-        }else if (oriAgdata.rfg == anyenum.RepeatFlag.RepeatToOnly){
-          //重复中独立日只能修改自己
-          masterEvi = oriAgdata.evi;
-        }else{
-          //重复数据
-          masterEvi = oriAgdata.rtevi;
-        }
 
         params = new Array<any>();
         params.push(newAgdata.todolist);
@@ -1709,7 +1731,7 @@ export class EventService extends BaseService {
         fj.fj = fj[j].fj;
         fj.tb = anyenum.SyncType.unsynch;
         fj.del = anyenum.DelType.undel;
-        ret.push(fj.inTParam());
+        ret.push(fj.rpTParam());
       }
     }
     return ret;
@@ -1735,7 +1757,7 @@ export class EventService extends BaseService {
         par.sdt = pars[j].sdt;
         par.tb = anyenum.SyncType.unsynch;
         par.del = anyenum.DelType.undel;
-        ret.push(par.inTParam());
+        ret.push(par.rpTParam());
       }
     }
     return ret;
