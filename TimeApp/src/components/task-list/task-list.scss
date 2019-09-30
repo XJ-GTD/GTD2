@@ -3,21 +3,6 @@ task-list {
     width: 100%;
     padding: 1rem 0;
   }
-  .list-contont {
-    .task-item {
-      width: auto;
-      margin: 0.5rem 1rem;
-
-      .task-content {
-        ion-checkbox.checkbox-ios {
-          position: absolute;
-          top: 1rem;
-          right: 1rem;
-        }
-      }
-    }
-
-  }
   .notask{
     margin: 5.5rem auto;
     text-align: center;

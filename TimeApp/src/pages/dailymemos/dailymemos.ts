@@ -22,14 +22,13 @@ import {unitOfTime} from "moment";
       `    
     <page-box title="备忘" [subtitle]="day | formatedate:'CYYYY/MM/DD'" [buttons]="buttons"  (onBack)="goBack()" (onCreate)="addMemo()" >
       <ng-template [ngIf]="memos.length > 0"
-                   [ngIfElse]="notask">
-       
-        <ion-grid class="list-contont">
-          <ion-row class="list-daily-content" *ngFor="let memo of memos" (click)="goDetail(memo)">
-            <div class="agendaline">
-              <div class="agenda-st">{{memo.utt | formatedate: 'HH:mm'}}</div>
-              <div class="agenda-sn">{{memo.mon}}</div>
-              <div class="agenda-tool" (click)="remove($event, memo)">
+                   [ngIfElse]="notask">       
+        <ion-grid class="list-grid-content">
+          <ion-row class="item-content item-content-backgroud" leftmargin toppadding bottompadding rightmargin *ngFor="let memo of memos" (click)="goDetail(memo)">
+            <div class="line font-normal">
+              <div class="st">{{memo.utt | formatedate: 'HH:mm'}}</div>
+              <div class="sn">{{memo.mon}}</div>
+              <div class="icon"  end (click)="remove($event, memo)">
                 <ion-icon class="fal fa-minus-circle"></ion-icon>
               </div>
             </div>

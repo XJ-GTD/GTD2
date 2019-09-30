@@ -6,22 +6,24 @@ import * as moment from "moment";
   template: `
     <ng-template [ngIf]="tasklist.length > 0"
                  [ngIfElse]="notask">
-    <ion-grid class = "list-contont">
-      <ion-row class="list-todolist-content task-item" *ngFor="let task of tasklist"  [ngClass]="{'complete': task.cs == '1'}" (click)="gotoDetail(task)" >
-          <div class="agendaline">
-            <div class="agenda-sn">{{task.evn}}</div>
-            <div class="agenda-tool" >
+      
+    <ion-grid class = "list-grid-content">
+      <ion-row class="item-content item-content-backgroud" leftmargin toppaddingsamll bottompaddingsamll rightmargin *ngFor="let task of tasklist"  [ngClass]="{'complete': task.cs == '1'}" (click)="gotoDetail(task)" >
+          <div class="line font-normal" leftmargin rightmargin>
+            <div class="sn towline">{{task.evn}}</div>
+            <div class="icon" end >
               <ion-icon class="fal fa-minus-circle" (click)="erease($event, task)"></ion-icon>
               <ion-icon class="fal fa-check-circle"  (click)="complete($event, task)"></ion-icon>
             </div>
           </div>
-          <div class="agendaline">
+          <div class="line font-normal" leftmargin rightmargin>
 
-            <div class="agenda-warp">
-              <div class="agenda-st"> <ion-icon class="{{(task.evd + ' ' + task.evt) | formatedate:'withNowcss'}}"></ion-icon> {{(task.evd + ' ' + task.evt) | formatedate:'withNow'}}</div>
-
-              <div  class="agenda-person">---来自小酒仙{{task.ui | formatuser: currentuser: friends}}</div>
+            <div class="icon font-small" >
+              <ion-icon class="{{(task.evd + ' ' + task.evt) | formatedate:'withNowcss'}}"></ion-icon>
             </div>
+              <div class="st font-small">  {{(task.evd + ' ' + task.evt) | formatedate:'withNow'}}</div>
+
+              <div  class="person font-small" end>---来自小酒仙{{task.ui | formatuser: currentuser: friends}}</div>
           </div>
       </ion-row>
     </ion-grid>
