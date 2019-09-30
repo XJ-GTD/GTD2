@@ -135,13 +135,21 @@ html{
 body {
 
   .font-small{
-    font-size: 1.2rem;;
+    font-size: 1.2rem;
+    line-height: 1.2rem;
   }
   .font-normal{
-    font-size: 1.4rem;;
+    font-size: 1.4rem;
+    line-height: 1.4rem;
   }
   .font-large{
-    font-size: 1.6rem;;
+    font-size: 1.6rem;
+    line-height: 1.6rem;
+  }
+
+  .font-large-x{
+    font-size: 1.8rem;
+    line-height: 1.8rem;
   }
   //background-image:url('../assets/imgs/alback.jpg');
   //background-repeat:no-repeat;

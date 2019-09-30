@@ -1,21 +1,16 @@
-import {Component, ElementRef, Renderer2, ViewChild, ViewChildren, QueryList } from '@angular/core';
-import {IonicPage, NavController, ModalController, ActionSheetController, NavParams, Slides} from 'ionic-angular';
+import {Component, ElementRef, ViewChild} from '@angular/core';
+import {IonicPage, NavController, ModalController, ActionSheetController, NavParams,} from 'ionic-angular';
 import {UtilService} from "../../service/util-service/util.service";
 import {UserConfig} from "../../service/config/user.config";
-import {RestFulHeader, RestFulConfig} from "../../service/config/restful.config";
 import {SqliteExec} from "../../service/util-service/sqlite.exec";
 import * as moment from "moment";
-import { CalendarDay } from "../../components/ion2-calendar";
-import { CommemorationDayService } from "./commemorationday.service";
-import { ScdData, ScdPageParamter } from "../../data.mapping";
+import {ScdPageParamter} from "../../data.mapping";
 import {EmitService} from "../../service/util-service/emit.service";
 import {DataConfig} from "../../service/config/data.config";
 import {FeedbackService} from "../../service/cordova/feedback.service";
-import {PageBoxComponent} from "../../components/page-box/page-box";
-import {CornerBadgeComponent} from "../../components/corner-badge/corner-badge";
 import {CalendarService, PlanItemData} from "../../service/business/calendar.service";
-import {EventService, AgendaData, RtJson, TxJson} from "../../service/business/event.service";
-import { PageDirection, IsSuccess, OperateType, RepeatFlag, ToDoListStatus, IsWholeday, ConfirmType } from "../../data.enum";
+import {EventService, RtJson,} from "../../service/business/event.service";
+import {OperateType, RepeatFlag, ConfirmType} from "../../data.enum";
 import {Keyboard} from "@ionic-native/keyboard";
 
 /**
@@ -28,76 +23,90 @@ import {Keyboard} from "@ionic-native/keyboard";
 @Component({
   selector: 'page-commemorationday',
   template:
-      `<page-box title="纪念日" [buttons]="buttons" [data]="currentPlanItem.jti" (onRemove)="goRemove()" (onSave)="save()" (onBack)="goBack()">
-        <ion-grid>
-          <ion-row class="agendaEvn">
+      `
+    <page-box title="纪念日" [buttons]="buttons" [data]="currentPlanItem.jti" (onRemove)="goRemove()" (onSave)="save()"
+              (onBack)="goBack()">
+
+      <ion-grid>
+        <ion-row class="snRow">
+          <div class="sn font-large-x">
             <!--主题-->
             <ion-textarea rows="8" [(ngModel)]="currentPlanItem.jtn" (ionChange)="changeTitle()" #bzRef></ion-textarea>
-          </ion-row>
-
-          <ion-row class="optionRow">
-            <ion-grid>
+          </div>
+        </ion-row>
+        
+        <ion-row class="optionRow">
+          <ion-grid>
             <!--附加属性操作-->
-            <ion-row class="agendaOptionOne" *ngIf="currentPlanItem.jti">
-              <button class="agendaRemarkbutton" ion-button icon-start clear  (click)="changeComment()" *ngIf="!currentPlanItem.bz">
-                <ion-icon class="fal fa-fa-comment-edit iconRemark"></ion-icon>
-                <div>备注</div>
-              </button>
-              <button class="agendaPlanbutton"  ion-button icon-start clear  (click)="changePlan()">
-                <ion-icon class="fal fa-line-columns iconPlus"></ion-icon>
-                <div>{{currentPlanItem.ji | formatplan: 'name' : '加入日历': privateplans}}</div>
+            <ion-row *ngIf="currentPlanItem.jti">
+              <div (click)="changeComment()" *ngIf="!currentPlanItem.bz">
+                <ion-icon class="fal fa-comment-edit font-normal"></ion-icon>
+                <span class="font-normal">备注</span>
+              </div>
+              <div (click)="changePlan()" end>
+                <ion-icon class="fal fa-line-columns "></ion-icon>
+                <span>{{currentPlanItem.ji | formatplan: 'name' : '加入日历': privateplans}}</span>
+              </div>
+            </ion-row>
+
+            <ion-row *ngIf="currentPlanItem.jti">
+              <div>
+                <button ion-button clear (click)="changeInvites()" class="font-normal">
+                  <ion-icon class="fal fa-user-friends font-normal"
+                            *ngIf="currentPlanItem.pn <= 0"></ion-icon>
+                  参与人
+                  <corner-badge fa-user-friends *ngIf="currentPlanItem.pn > 0"><p>{{currentPlanItem.pn}}</p></corner-badge>
+                </button>
+              </div>
+              <div>
+                <button ion-button clear (click)="changeRemind()" class="font-normal">
+                  <ion-icon class="fal fa-bells " *ngIf="!currentPlanItem.txs"></ion-icon>
+                  {{currentPlanItem.txs || "提醒"}}
+                  <corner-badge fa-bells *ngIf="currentPlanItem.txs"><p>{{currentPlanItem.txjson.reminds.length}}</p>
+                  </corner-badge>
+                </button>
+              </div>
+            </ion-row>
+
+            <ion-row *ngIf="currentPlanItem.jti">
+              <button ion-button clear (click)="changeRepeat()" class="font-normal">
+                <ion-icon class="fal fa-copy font-normal" *ngIf="!currentPlanItem.rts"></ion-icon>
+                {{currentPlanItem.rts || "重复"}}
+                <corner-badge *ngIf="currentPlanItem.rts" fa-copy><p><i class="fa fa-copy "></i></p></corner-badge>
               </button>
             </ion-row>
 
-            <ion-row class="agendaOptionThree" *ngIf="currentPlanItem.jti">
-              <button ion-button *ngIf="currentPlanItem.rfg != repeattonon" clear (click)="changeRepeat()">
-                <div class="agendarepeat">
-                  <ion-icon class="fal fa-copy  iconCopy" *ngIf="!currentPlanItem.rts"></ion-icon>
-                  {{currentPlanItem.rts || "重复"}}
-                  <corner-badge *ngIf="currentPlanItem.rts"><p><i class="fa fa-copy "></i></p></corner-badge>
-                </div>
-              </button>
-              <button ion-button *ngIf="currentPlanItem.rfg == repeattonon" clear>
-                <div class="agendarepeat">
-                  <ion-icon class="fal fa-copy  iconCopy" *ngIf="!currentPlanItem.rts"></ion-icon>
-                  {{currentPlanItem.rts || "重复"}}
-                  <corner-badge *ngIf="currentPlanItem.rts"><p><i class="fa fa-copy "></i></p></corner-badge>
-                </div>
-              </button>
-            </ion-row>
-
-            <ion-row class="agendaRemark" *ngIf="currentPlanItem.bz">
-              <button  ion-button icon-end clear   (click)="changeComment()">
-            <span class="content">
-                备注：{{currentPlanItem.bz}}
-              </span>
-                <ion-icon class="fal fa-fa-comment-edit iconRemark"></ion-icon>
-              </button>
+            <ion-row *ngIf="currentPlanItem.bz" (click)="changeComment()">
+                <span class="content font-normal">
+                  备注：{{currentPlanItem.bz}}
+                </span>
+              <ion-icon class="fal fa-comment-edit font-normal"></ion-icon>
             </ion-row>
 
             <ion-row *ngIf="currentPlanItem.jti && currentPlanItem.sd">
-              <ion-col  class="agendaDate" (click)="changeDatetime()">
-                <button ion-button icon-end clear  >
-                  <span class="content">
-                    日期：{{currentPlanItem.sd | formatedate: "YYYY年M月D日"}}
+              <div (click)="changeDatetime()">
+                <span class="content font-normal">
+                  日期：{{currentPlanItem.evd | formatedate: "YYYY年M月D日"}}<br/>
+                
+                  时间：{{currentPlanItem.evt | formatedate: "HH:mm"}} {{currentPlanItem.ct | formatedate: "duration"}}
+                </span>
+                <ion-icon class="font-normal fal fa-calendar-check "></ion-icon>
+              </div>
+              <div (click)="changeDatetime()">
+              </div>
+              <div end *ngIf="currentPlanItem.ui != currentuser">
+                <span class="content  font-normal">
+                   ---来自{{currentPlanItem.ui | formatuser: currentPlanItem: friends}}
                   </span>
-                </button>
-                <button ion-button icon-end clear  *ngIf="currentPlanItem.st">
-                  <span class="content">
-                    时间：{{currentPlanItem.st | formatedate: "HH:mm"}}
-                  </span>
-                </button>
-              </ion-col>
-              <ion-col  (click)="changeDatetime()">
-                <button ion-button icon-end clear  >
-                  <ion-icon class="fal fa-calendar-check  iconCalendar"></ion-icon>
-                </button>
-              </ion-col>
+              </div>
             </ion-row>
           </ion-grid>
         </ion-row>
       </ion-grid>
-      </page-box>`
+    </page-box>
+
+
+  `
 })
 export class CommemorationDayPage {
   statusBarColor: string = "#3c4d55";
@@ -152,7 +161,7 @@ export class CommemorationDayPage {
     }
   }
 
-  ionViewDidEnter(){
+  ionViewDidEnter() {
     setTimeout(() => {
       if (!this.currentPlanItem.jti) {
         let el = this._bzRef.nativeElement.querySelector('textarea');
@@ -360,10 +369,10 @@ export class CommemorationDayPage {
   doOptionRemove(op: OperateType) {
     this.util.loadingStart().then(() => {
       this.calendarService.removePlanItem(this.originPlanItem, op)
-      .then(() => {
-        this.util.loadingEnd();
-        this.goBack();
-      });
+        .then(() => {
+          this.util.loadingEnd();
+          this.goBack();
+        });
     });
   }
 
@@ -379,10 +388,10 @@ export class CommemorationDayPage {
     } else {
       this.util.loadingStart().then(() => {
         this.calendarService.removePlanItem(this.originPlanItem, OperateType.Non)
-        .then(() => {
-          this.util.loadingEnd();
-          this.goBack();
-        });
+          .then(() => {
+            this.util.loadingEnd();
+            this.goBack();
+          });
       });
     }
   }

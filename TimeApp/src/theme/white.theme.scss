@@ -6,6 +6,7 @@ $baseBackcolor_white: rgba(241, 241, 241, 1);
   .haContent {
     ion-calendar {
       box-shadow: 0px 0px 5px 0px rgba(201, 200, 200, 0.28);
+
       ion-card-header {
         background: rgba(0, 53, 66, 1);
         border-bottom: 0px rgba(30, 69, 89, 1) solid;
@@ -85,28 +86,6 @@ $baseBackcolor_white: rgba(241, 241, 241, 1);
     .current {
       color: #B18E00;
     }
-    .icon {
-      .fa-calendar-star, .fa-gift {
-        color: rgba(62, 111, 202, 1);
-      }
-
-      .fa-user-tag {
-        color: rgba(100, 88, 188, 1);
-      }
-
-      .fa-alarm-exclamation {
-        color: rgba(125, 85, 37, 1);
-      }
-
-      .fa-minus-circle {
-        color: rgba(153, 153, 153, 1);
-      }
-
-      .fa-check-circle {
-        color: rgba(17, 117, 141, 1);
-      }
-
-    }
 
 
     .sn {
@@ -119,6 +98,7 @@ $baseBackcolor_white: rgba(241, 241, 241, 1);
 
     .invite {
       color: rgba(0, 109, 136, 1);
+
       span:first-child {
         color: rgba(143, 194, 206, 1);
       }
@@ -208,15 +188,56 @@ $baseBackcolor_white: rgba(241, 241, 241, 1);
     }
   }
 
+
+  page-agenda, page-commemorationday {
+    .grid {
+      .snRow {
+        .sn {
+          color: rgba(51, 51, 51, 1);
+        }
+
+        .agendatodo {
+          .icon {
+            color: rgba(17, 117, 141, 1);
+          }
+        }
+      }
+
+
+      .optionRow {
+        .grid {
+
+
+          span {
+            color: rgba(51,51,51,1);
+          }
+
+          .content {
+            color: rgba(153, 153, 153, 1);
+          }
+
+          button {
+            background: rgba(239, 239, 239, 1);
+            color: rgba(51, 51, 51, 1);
+          }
+        }
+
+      }
+    }
+  }
+
   page-box {
+    background: rgba(248, 248, 248, 1);
+
     .box-header {
       ion-toolbar {
         ion-title {
           .toolbar-title {
             color: rgba(17, 117, 141, 1);
-            .subtilte{
-              color:rgba(51,51,51,1);
-              background:rgba(239,239,239,1);
+
+            .subtilte {
+              color: rgba(51, 51, 51, 1);
+              background: rgba(239, 239, 239, 1);
             }
           }
         }
@@ -236,7 +257,8 @@ $baseBackcolor_white: rgba(241, 241, 241, 1);
   }
 
   modal-box {
-    background:rgba(0,0,0,0.8);
+    background: rgba(0, 0, 0, 0.8);
+
     .box-header {
       ion-toolbar {
         ion-title {
@@ -259,135 +281,20 @@ $baseBackcolor_white: rgba(241, 241, 241, 1);
     }
   }
 
-  page-agenda, page-commemorationday {
-
-    //新建主题
-    .create {
-      ion-textarea {
-        background: rgba(255, 255, 255, 1);
-      }
+  .notask {
+    .icon {
+      color: #C9C8C8;
     }
 
-    .grid {
-      button {
-        color: rgba(51, 51, 51, 1);
-
-      }
-
+    span {
+      color: rgba(140, 150, 162, 1);
     }
 
-    //主题设置
-    .agendaEvn {
-      ion-textarea {
-        color: rgba(51, 51, 51, 1);
-      }
-      .agendatodo {
-        button {
-          .icon {
-            color:#11758D;
-          }
-        }
-      }
-    }
-
-
-    .agendaOptionTwo, .agendaOptionThree {
-
-      button {
-        background: rgba(239, 239, 239, 1);
-      }
-
-      .agendaAttach {
-        button {
-          corner-badge {
-            background-color: #FF7474;
-          }
-        }
-      }
-
-      .agendaRemind {
-
-        corner-badge {
-          background-color: #4E70B6;
-        }
-      }
-
-      .agendaPlayer {
-        corner-badge {
-          background-color: #3EA7C0;
-        }
-
-      }
-
-      .agendarepeat {
-        corner-badge {
-          background-color: #EC8020;
-        }
-
-      }
-    }
-
-
-    .agendaSender, .agendaPin, .agendaRemark, .agendaDate {
-      .button-inner, span {
-        color: rgba(153, 153, 153, 1);
-      }
-    }
-
-    //时间
-    .iconCalendar {
-      color: rgba(17, 117, 141, 1);
-    }
-
-    .iconPin {
-      color: #CEA75D;
-
-    }
-
-    .iconRemark {
-      color: #3EA7C0;
-
-    }
-
-    .iconPlus {
-      color: #FF7474;
-
-    }
-
-    .iconUserPlus {
-      color: #3EA7C0;
-
-    }
-
-    .iconBell {
-      color: #4E70B6;
-
-    }
-
-    .iconAttach {
-      color: #FF7474;
-
-
-    }
-
-    .iconCopy {
-      color: #EC8020;
-
+    button {
+      background: rgba(70, 159, 175, 1);
+      color: rgba(255, 255, 255, 1);
     }
   }
-
-    .notask{
-      .icon{
-        color: #C9C8C8;
-      }
-      span{
-        color:rgba(140,150,162,1);
-      }
-      button{
-        background:rgba(70,159,175,1);
-        color:rgba(255,255,255,1);
-      }
-    }
 
   page-tdl {
     background: $baseBackcolor_white;
@@ -401,17 +308,10 @@ $baseBackcolor_white: rgba(241, 241, 241, 1);
     background: $baseBackcolor_white;
   }
 
-  page-agenda {
-    background: $baseBackcolor_white;
-  }
-
   page-dailymemos {
     background: $baseBackcolor_white;
   }
 
-  page-commemorationday {
-    background: $baseBackcolor_white;
-  }
 
   page-m {
     .menu {
@@ -450,8 +350,9 @@ $baseBackcolor_white: rgba(241, 241, 241, 1);
         .list-header-ios {
           background: rgba(217, 233, 238, 1);
           color: rgba(7, 109, 138, 1);
-          .count{
-            color:rgba(255, 255, 255, 1);
+
+          .count {
+            color: rgba(255, 255, 255, 1);
           }
         }
 
@@ -469,151 +370,126 @@ $baseBackcolor_white: rgba(241, 241, 241, 1);
     }
   }
 
-  page-ps {
-    background: $baseBackcolor_white;
-    page-box {
-      .box-content {
-        .fixed-content {
-          background: $baseBackcolor_white;
-          -webkit-box-shadow: 0px 0px 0px 0px rgba(201, 200, 200, 0.28);
-          box-shadow: 0px 0px 0px 0px rgba(201, 200, 200, 0.28);
-        }
+  page-ss, page-ps {
+    .page-content {
+      .fixed-content {
+        background: transparent;
+        box-shadow: none;
       }
     }
-
-      ion-list{
-        background:rgba(255,255,255,1);
-        box-shadow:0px 0px 5px 0px rgba(201,200,200,0.28);
-
-        input,select,.item{
-          color:rgba(51,51,51,1);
-        }
-
-
-        .input-wrapper{
-          border-bottom: 0.55px rgba(234,234,234,1) solid;
-        }
-        ion-label{
-          color:rgba(153,153,153,1);
-        }
-      }
   }
 
-  page-ss {
-    background: $baseBackcolor_white;
-    page-box {
-      .box-content {
-        .fixed-content {
-          background: $baseBackcolor_white;
-          -webkit-box-shadow: 0px 0px 0px 0px rgba(201, 200, 200, 0.28);
-          box-shadow: 0px 0px 0px 0px rgba(201, 200, 200, 0.28);
-        }
+  ion-list {
+    .list-header-ios {
+      .input-wrapper {
+        border-bottom: 0.55px rgba(234, 234, 234, 1) solid;
+      }
+
+      ion-label {
+        color: rgba(153, 153, 153, 1);
       }
     }
 
-    ion-list{
-      .list-header-ios{
-        .input-wrapper{
-          border-bottom: 0.55px rgba(234,234,234,1) solid;
-        }
-        ion-label{
-          color:rgba(153,153,153,1);
-        }
-      }
-      background:rgba(255,255,255,1);
-      box-shadow:0px 0px 5px 0px rgba(201,200,200,0.28);
+    background: rgba(255, 255, 255, 1);
+    box-shadow: 0px 0px 5px 0px rgba(201, 200, 200, 0.28);
 
-      input,select,.item{
-        color:rgba(51,51,51,1);
-      }
+    input, select, .item {
+      color: rgba(51, 51, 51, 1);
+    }
 
 
-      ion-label{
-        color:rgba(51,51,51,1);
-      }
+    ion-label {
+      color: rgba(51, 51, 51, 1);
     }
   }
 
   .picker-ios {
     .picker-wrapper {
-      background:rgba(217,233,238,1);
+      background: rgba(217, 233, 238, 1);
       border-width: 0;
     }
 
     .picker-toolbar {
-      background:rgba(7,109,138,1);
+      background: rgba(7, 109, 138, 1);
       border-width: 0;
-      .picker-toolbar-multi-picker-cancel{
-        text-align:start;
+
+      .picker-toolbar-multi-picker-cancel {
+        text-align: start;
       }
     }
 
     .picker-above-highlight, .picker-below-highlight {
-      background: rgba(239,239,239,1);
+      background: rgba(239, 239, 239, 1);
       z-index: -1;
       font-size: 14px;
       border-width: 0;
     }
 
     .picker-opt {
-      font-weight:400;
-      color:rgba(153,153,153,1);
+      font-weight: 400;
+      color: rgba(153, 153, 153, 1);
       font-size: 14px;
       height: 44px;
       line-height: 44px;
     }
+
     .picker-opt-selected {
-      font-weight:400;
-      color:rgba(7,109,138,1);
+      font-weight: 400;
+      color: rgba(7, 109, 138, 1);
 
     }
 
-    .picker-toolbar-cancel,.picker-toolbar-multi-picker-cancel {
+    .picker-toolbar-cancel, .picker-toolbar-multi-picker-cancel {
       .picker-button {
-        color:rgba(153,153,153,1);
+        color: rgba(153, 153, 153, 1);
       }
     }
+
     .picker-button {
       padding-right: 16px;
       padding-left: 16px;
       font-size: 16px;
-      font-weight:400;
-      color:rgba(255,255,255,1);
+      font-weight: 400;
+      color: rgba(255, 255, 255, 1);
     }
   }
 
 
-  .toggle-ios{
+  .toggle-ios {
     height: 30px;
+
     .toggle-icon::before {
       border-radius: 13px;
-      background-color: rgba(178,205,212,1);
+      background-color: rgba(178, 205, 212, 1);
     }
+
     .toggle-icon {
       width: 40px;
       height: 13px;
       position: absolute;
-      top:15px;
-      background-color:rgba(178,205,212,1);
+      top: 15px;
+      background-color: rgba(178, 205, 212, 1);
     }
-    .toggle-inner{
+
+    .toggle-inner {
       height: 22px;
       width: 22px;
-      background:rgba(178,205,212,1);
-      top:-5px;
-      left:-2px;
+      background: rgba(178, 205, 212, 1);
+      top: -5px;
+      left: -2px;
     }
   }
+
   .toggle-ios.toggle-checked {
     .toggle-icon {
-      background:rgba(93,186,209,1);
+      background: rgba(93, 186, 209, 1);
     }
-    .toggle-inner{
-      background:rgba(42,119,138,1);
+
+    .toggle-inner {
+      background: rgba(42, 119, 138, 1);
       -webkit-transform: translate3d(22px, 0, 0);
       transform: translate3d(22px, 0, 0);
     }
   }
-
 
 }
