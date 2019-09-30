@@ -5,34 +5,58 @@
     "parameters": [
       "mwxing",
       "mpn",
+      "type",
       "d"
     ],
     "follows": [
         {
-            "name": "数据推送/拉取",
+            "name": "数据拉取",
             "trigger": "sas",
             "parameters": [
                 "type;pull",
                 "header;$.parent.parameters.mwxing",
                 "from;$.parent.parameters.mpn",
+                "datatype;$.parent.parameters.type",
                 "data;$.parent.parameters.d"
             ],
             "outputs": [
-                "cleaned"
+                "from",
+                "header",
+                "datas"
             ],
             "next": [
-                {
-                    "name": "冥王星通知服务",
-                    "trigger": "ann",
-                    "parameters": [
-                        "announceTo;$.parent.outputs.cleaned.announceTo",
-                        "announceType;$.parent.outputs.cleaned.announceType",
-                        "announceContent;$.parent.outputs.cleaned.announceContent"
-                    ],
-                    "outputs": [
-                        "result"
-                    ]
-                }
+              {
+                "name": "生成推送数据",
+                "trigger": "acj",
+                "parameters": [
+                    "ruleid;MWXING_DATASYNC_V1_5",
+                    "datasource;$.parent.outputs"
+                ],
+                "outputs": [
+                    "cleaned"
+                ],
+                "next": [
+                  {
+                    "type": "loop",
+                    "variable": "announce;$.parent.outputs.cleaned.announces[*]",
+                    "start": "0",
+                    "end": "size",
+                    "task": {
+                        "name": "冥王星通知服务",
+                        "trigger": "ann",
+                        "parameters": [
+                            "announceTo;$.parent.outputs.cleaned.announces[##announce_value##].announceTo",
+                            "announceDevice;$.parent.outputs.cleaned.announces[##announce_value##].announceDevice",
+                            "announceType;$.parent.outputs.cleaned.announces[##announce_value##].announceType",
+                            "announceContent;$.parent.outputs.cleaned.announces[##announce_value##].announceContent"
+                        ],
+                        "outputs": [
+                            "result"
+                        ]
+                    }
+                  }
+                ]
+              }
             ]
         }
     ]

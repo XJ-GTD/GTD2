@@ -22,6 +22,7 @@ import {BaseProcess} from "./process/base.process";
 import {MarkupProcess} from "./process/markup.process";
 import {NotificationProcess} from "./process/notification.process";
 import {SpecialDataProcess} from "./process/specialdata.process";
+import {DataSyncProcess} from "./process/datasync.process";
 
 /**
  * WebSocket组件
@@ -33,7 +34,7 @@ import {SpecialDataProcess} from "./process/specialdata.process";
   providers: [WebsocketService,
     OptProcessFactory,
     ProcessFactory, DispatchService,
-    BaseProcess,
+    BaseProcess, DataSyncProcess,
     CudscdProcess, RemindProcess,
     SpeechProcess, ThirdProcess,
     DefaultProcess, FindProcess,

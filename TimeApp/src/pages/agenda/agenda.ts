@@ -65,7 +65,7 @@ import {Keyboard} from "@ionic-native/keyboard";
                 <button ion-button  clear (click)="changeInvites()">
                     <ion-icon class="fal fa-user-friends iconUserPlus" *ngIf="currentAgenda.pn <= 0"></ion-icon>
                     参与人
-                    <corner-badge *ngIf="currentAgenda.pn > 0">{{currentAgenda.pn}}</corner-badge>
+                    <corner-badge *ngIf="currentAgenda.pn > 0"><p>{{currentAgenda.pn}}</p></corner-badge>
                 </button>
               </ion-col>
               <ion-col  class="agendaRemind">
@@ -122,7 +122,7 @@ import {Keyboard} from "@ionic-native/keyboard";
               <ion-col  class="agendaDate" (click)="changeDatetime()">
                   <span class="content">
                     <span>
-                        日期：{{currentAgenda.evd | formatedate: "YYYY年M月D日"}}  
+                        日期：{{currentAgenda.evd | formatedate: "YYYY年M月D日"}}
                     </span>
                     <span  *ngIf="currentAgenda.al == wholeday">
                     时间：全天
@@ -130,9 +130,9 @@ import {Keyboard} from "@ionic-native/keyboard";
                   <span  *ngIf="currentAgenda.al != wholeday">
                     时间：{{currentAgenda.evt | formatedate: "HH:mm"}} {{currentAgenda.ct | formatedate: "duration"}}
                   </span>
-                    
+
                   </span>
-                
+
               </ion-col>
               <ion-col  (click)="changeDatetime()">
                   <ion-icon class="fal fa-calendar-check iconCalendar"></ion-icon>

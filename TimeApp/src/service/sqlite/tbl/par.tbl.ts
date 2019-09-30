@@ -91,6 +91,14 @@ export class ParTbl implements ITblParam {
       sq = sq + 'and  pari = ? ';
       params.push(this.pari);
     }
+    if(this.obt != null && this.obt!=""){
+      sq = sq + 'and  obt = ? ';
+      params.push(this.obt);
+    }
+    if(this.obi != null && this.obi!=""){
+      sq = sq + 'and  obi = ? ';
+      params.push(this.obi);
+    }
     sq = sq + ';';
     let ret = new Array<any>();
     ret.push(sq);

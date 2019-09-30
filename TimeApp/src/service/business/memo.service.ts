@@ -140,6 +140,7 @@ export class MemoService extends BaseService {
 	async receivedMemo(moi: string) {
 		this.assertEmpty(moi);   // 入参不能为空
 		let pull: PullInData = new PullInData();
+		pull.type = "Memo";
 		pull.d.push(moi);
 		await this.dataRestful.pull(pull);
 		return;
