@@ -1,10 +1,11 @@
+// MWXING_DATASYNC_V1_5
 function shouldclean(datasource)
 {
   var result = {};
   // filter source code here start
   var input = JSON.parse(datasource);
 
-  if (input !== undefined && input['name'] && input['from'] && input['to'] && input['header'] && input['datas']) {
+  if (input !== undefined && input['from'] && input['to'] && input['header'] && input['datas']) {
 
     return true;
   }
@@ -44,30 +45,30 @@ function clean(datasource)
     }
   }
 
-  var convertSMS = function() {
+  var convertSMS = function(title) {
     var sms;
 
     // 设置未注册用户短信通知模板
     sms = {template: {
       newuser: '11lnk',
       name: '冥王星用户',
-      title: agenda['at'],
+      title: title,
       url: 'http://u3v.cn/4sUKl3'
     }};
 
   }
 
-  var convertPushMessage = function(id, type, title) {
+  var convertPushMessage = function(id, type, title, datetime) {
     var push = {};
 
     push['title'] = '[##from##] ' + title;
-    push['content'] = formatDateTimeShow(agenda['adt']);
+    push['content'] = formatDateTimeShow(datetime);
     push['extras'] = {
       event: "MWXING_SHAREAGENDA_EVENT",
       dependson: "on.homepage.init",
       eventhandler: "on.agendashare.message.click",
       eventdatafrom: "local",
-      eventdata: JSON.stringify({type: type, id: id});
+      eventdata: JSON.stringify({type: type, id: id})
     };
   }
 
@@ -109,27 +110,63 @@ function clean(datasource)
     var data = datas[index];
 
     var src = data['src'];
+    var id = data['id'];
     var type = data['type'];
     var todevice = data['todevice'];
     var title = data['title'];
+    var datetime = data['datetime'];
     var main = data['main'];
 
     // 本帐户同步
     if (from == to) {
       // 请求设备同步
       if (requestdevice == todevice) {
+        var standardnext = {};
 
+        standardnext.announceTo = [to];
+        standardnext.announceType = 'agenda_from_share';
+        standardnext.announceContent = {
+          mwxing: convertMessage(id, type, title, 'SELF_DEVICE'),
+          sms: null,
+          push: null
+        };
+
+        outputs.push(standardnext);
       } else {  // 他设备同步
+        var standardnext = {};
 
+        standardnext.announceTo = [to];
+        standardnext.announceType = 'agenda_from_share';
+        standardnext.announceContent = {
+          mwxing: convertMessage(id, type, title, 'SELF_ACCOUNT'),
+          sms: null,
+          push: null
+        };
+
+        outputs.push(standardnext);
       }
     } else {  // 他账户共享
+      var standardnext = {};
 
+      standardnext.announceTo = [to];
+      standardnext.announceType = 'agenda_from_share';
+      standardnext.announceContent = {
+        mwxing: convertMessage(id, type, title, 'OTHER_ACCOUNT'),
+        sms: convertSMS(title),
+        push: convertPushMessage(id, type, title, datetime)
+      };
+
+      outputs.push(standardnext);
     }
   }
 
   // 判断发送对象是否未注册
   if (!copyto || !copyto.openid) {
   } else {
-
   }
+
+  print(outputs);
+
+  // filter source code here end
+  return JSON.stringify(outputs);
 }
