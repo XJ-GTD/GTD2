@@ -25,6 +25,7 @@ import {
   assertEmpty,
   assertFail
 } from "../../util/util";
+import {FsData} from "../../data.mapping";
 
 @Injectable()
 export class EventService extends BaseService {
@@ -834,9 +835,10 @@ export class EventService extends BaseService {
     pars = await this.sqlExce.getLstByParam<ParTbl>(par);
     for (let j = 0, len = pars.length; j < len; j++) {
       let member = {} as Member;
-
-      member = this.userConfig.GetOneBTbl2(pars[j].pwi);
-      if(member && member != null){
+      let fs : FsData;
+      fs = this.userConfig.GetOneBTbl(pars[j].pwi);
+      if(fs && fs != null){
+        Object.assign(member,fs);
         members.push(member);
       }
     }
@@ -849,10 +851,11 @@ export class EventService extends BaseService {
    */
   private async getMemberByUi(ui:string):Promise<Member>{
     let member = {} as Member;
+    let fs : FsData;
     //发起人信息
-    let tmp = this.userConfig.GetOneBTbl2(ui);
-    if (tmp) {
-      member = tmp;
+    fs = this.userConfig.GetOneBTbl(ui);
+    if (fs  && fs != null) {
+      Object.assign(member,fs);
     }else{
       //不存在查询数据库
       let b = new BTbl();
@@ -2418,6 +2421,7 @@ export class EventService extends BaseService {
         sync.id = agenda.evi;
         sync.type = "Agenda";
         sync.title = agenda.evn;
+        sync.datetime = agenda.evd + " " + agenda.evt;
 
         // 非重复日程/重复日程的第一条需要通知
         if (!agenda.rtevi || agenda.rfg == RepeatFlag.RepeatToOnly) {

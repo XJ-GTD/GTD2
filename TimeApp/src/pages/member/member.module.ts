@@ -20,5 +20,5 @@ import {MemberPage} from "./member";
     MemberPage,
   ]
 })
-export class ParterPageModule {
+export class MemberPageModule {
 }

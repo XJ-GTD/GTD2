@@ -164,6 +164,7 @@ export class FsData {
   ui: string = "";  //数据归属人ID
   bhi: string = ""; //头像表ID 用于判断是否有头像记录
   bhiu:string="";//base64图片
+  src : string="";//联系人来源
   pi: string=""; //日程参与人表ID
   si: string=""; //日程事件ID
   isbla:boolean=false; //默认非黑名单
@@ -312,7 +313,6 @@ export class PageDcData {
   gm: string = ""; //备注
   gc: number = 0; //群组人数
   fsl: Array<FsData> = new Array<FsData>(); //群组成员
-  members: Array<Member> = new Array<Member>(); //群组成员
 }
 
 export class PageDaData {
