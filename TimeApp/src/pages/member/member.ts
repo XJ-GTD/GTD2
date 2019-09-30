@@ -3,7 +3,7 @@ import {ModalController, NavController, NavParams, ViewController} from 'ionic-a
 import {MemberService} from "./member.service";
 import {UtilService} from "../../service/util-service/util.service";
 import {GlService} from "../gl/gl.service";
-import {PageGroupData} from "../../data.mapping";
+import {FsData, FsPageData, PageGroupData} from "../../data.mapping";
 import {DataConfig} from "../../service/config/data.config";
 import {FeedbackService} from "../../service/cordova/feedback.service";
 import {Member} from "../../service/business/event.service";
@@ -56,7 +56,7 @@ import {Member} from "../../service/business/event.service";
           </ion-label>
           <ion-checkbox (click)="addGroupList(g)" [(ngModel)]="g.checked"></ion-checkbox>
         </ion-row>
-        <ion-row *ngFor="let member of pageMemberList">
+        <ion-row *ngFor="let member of pageFsList">
           <ion-avatar item-start (click)="goTofsDetail(member)">
             <img [src]="member.bhiu">
           </ion-avatar>
@@ -75,7 +75,7 @@ export class MemberPage {
   statusBarColor: string = "#3c4d55";
 
   tel: any;//手机号
-  pageMemberList: Array<MemberPageData> = new Array<MemberPageData>();
+  pageFsList: Array<FsPageData> = new Array<FsPageData>();
   pageGrouList: Array<PageGroupData> = new Array<PageGroupData>();
   selMemberList: Array<Member> = new Array<Member>();
 
@@ -120,13 +120,15 @@ export class MemberPage {
 
   }
 
-  addsel(member: MemberPageData) {
+  addsel(fs: FsPageData) {
 
-    if (member.checked) {
+    let member = {} as Member;
+    if (fs.checked) {
+      Object.assign(member,fs);
       this.selMemberList.push(member);
     } else {
       let index: number = this.selMemberList.findIndex((value) => {
-        return member.pwi == value.pwi;
+        return fs.pwi == value.pwi;
       });
       this.selMemberList.splice(index, 1);
     }
@@ -134,18 +136,20 @@ export class MemberPage {
 
   addGroupList(g: PageGroupData) {
     if (g.checked) {
-      for (let member of g.members) {
+      for (let fs of g.fsl) {
+        let member = {} as Member;
         let index: number = this.selMemberList.findIndex((value) => {
-          return member.pwi == value.pwi;
+          return fs.pwi == value.pwi;
         });
         if (index < 0) {
+          Object.assign(member,fs);
           this.selMemberList.push(member);
         }
       }
     } else {
-      for (let f of g.members) {
+      for (let fs of g.fsl) {
         let index: number = this.selMemberList.findIndex((value) => {
-          return f.pwi == value.pwi;
+          return fs.pwi == value.pwi;
         });
         this.selMemberList.splice(index, 1);
       }
@@ -160,26 +164,26 @@ export class MemberPage {
 
   getContacts() {
     this.pageGrouList.length = 0;
-    this.pageMemberList.length = 0;
-    let groupList = this.glService.getMemberGroups(this.tel);
-    let memberList = this.memberService.getMembers(this.tel);
+    this.pageFsList.length = 0;
+    let groupList = this.glService.getGroups(this.tel);
+    let fsList = this.memberService.getfriend(this.tel);
     groupList.forEach((value) => {
       let group: PageGroupData = new PageGroupData();
       Object.assign(group, value);
       this.pageGrouList.push(group);
 
     });
-    memberList.forEach((value) => {
-      let member: MemberPageData = {} as MemberPageData;
-      Object.assign(member, value);
-      member.checked = false;
-      this.pageMemberList.push(member);
+    fsList.forEach((value) => {
+      let fsp: FsPageData = new FsPageData();
+      Object.assign(fsp, value);
+      fsp.checked = false;
+      this.pageFsList.push(fsp);
     });
     this.checkedSet();
   }
 
   checkedSet() {
-    this.pageMemberList.forEach((value,index,arr) => {
+    this.pageFsList.forEach((value,index,arr) => {
       value.checked = false;
       let t = this.selMemberList.find(member => {
         return value.pwi == member.pwi;
@@ -190,15 +194,8 @@ export class MemberPage {
     });
   }
 
-/*  goTofsDetail(fs: FsData) {
+  goTofsDetail(fs: FsData) {
     let modal = this.modalCtrl.create(DataConfig.PAGE._FD_PAGE, {fsData: fs});
     modal.present();
-  }*/
-}
-
-/**
- * 联系人视图
- */
-export interface MemberPageData extends  Member{
-  checked:boolean ;
+  }
 }

@@ -127,7 +127,8 @@ import {CalendarService} from "../service/business/calendar.service";
 import {LocationSearchService} from "../service/restful/LocationSearchService";
 import {EffectService} from "../service/business/effect.service";
 import {DtSelectPageModule} from "../pages/dtselect/dtselect.module";
-import {ParterPageModule} from "../pages/member/member.module";
+import {MemberPageModule} from "../pages/member/member.module";
+import {MemberInfoPageModule} from "../pages/memberinfo/memberinfo.module";
 
 @NgModule({
   declarations: [
@@ -193,7 +194,8 @@ import {ParterPageModule} from "../pages/member/member.module";
     CommentPageModule,
     PlanPageModule,
     InvitesPageModule,
-    ParterPageModule,
+    MemberPageModule,
+    MemberInfoPageModule,
     LocationPageModule,
     AttachPageModule,
     CommemorationDayPageModule,
