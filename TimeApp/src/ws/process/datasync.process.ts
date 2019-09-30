@@ -5,10 +5,10 @@ import {EmitService} from "../../service/util-service/emit.service";
 import {Injectable} from "@angular/core";
 import {ProcesRs} from "../model/proces.rs";
 import {CalendarService} from "../../service/business/calendar.service";
-import {EventService} from "../../service/business/event.service";
+import {EventService, AgendaData, TaskData, MiniTaskData} from "../../service/business/event.service";
 import {MemoService} from "../../service/business/memo.service";
 import {DataSyncPara} from "../model/datasync.para";
-import {ScdData} from "../../data.mapping";
+import {SyncDataStatus} from "../../data.enum";
 
 /**
  * 数据同步
@@ -69,7 +69,31 @@ export class DataSyncProcess implements MQProcess {
       }
     }
 
+    //拉取数据直接保存
+    if (content.option == DS.DS) {
+      //处理所需要参数
+      let dsPara: DataSyncPara = content.parameters;
+
+      if (dsPara.type == "Agenda") {
+        let agenda: AgendaData = {} as AgendaData;
+        Object.assign(agenda, dsPara.data);
+
+        this.eventService.receivedAgendaData([agenda], this.convertSyncStatus(dsPara.status));
+      }
+    }
+
     return contextRetMap
   }
 
+  private convertSyncStatus(status: string): SyncDataStatus {
+    if (status == SyncDataStatus.Deleted) {
+      return SyncDataStatus.Deleted;
+    }
+
+    if (status == SyncDataStatus.UnDeleted) {
+      return SyncDataStatus.UnDeleted;
+    }
+
+    return SyncDataStatus.UnDeleted;
+  }
 }

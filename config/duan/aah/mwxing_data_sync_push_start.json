@@ -80,6 +80,7 @@
                                     "trigger": "ann",
                                     "parameters": [
                                         "announceTo;$.parent.outputs.cleaned.announces[##announce_value##].announceTo",
+                                        "announceDevice;$.parent.outputs.cleaned.announces[##announce_value##].announceDevice",
                                         "announceType;$.parent.outputs.cleaned.announces[##announce_value##].announceType",
                                         "announceContent;$.parent.outputs.cleaned.announces[##announce_value##].announceContent"
                                     ],
