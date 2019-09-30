@@ -81,6 +81,14 @@ export class FjTbl implements ITblParam {
       sq = sq + 'and  fji = ? ';
       params.push(this.fji);
     }
+    if(this.obt != null && this.obt!=""){
+      sq = sq + 'and  obt = ? ';
+      params.push(this.obt);
+    }
+    if(this.obi != null && this.obi!=""){
+      sq = sq + 'and  obi = ? ';
+      params.push(this.obi);
+    }
     sq = sq + ';';
     let ret = new Array<any>();
     ret.push(sq);
