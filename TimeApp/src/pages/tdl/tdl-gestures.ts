@@ -11,6 +11,7 @@ import {pointerCoord} from "ionic-angular/util/dom";
 import {clamp} from "ionic-angular/util/util";
 
 export class TdlGesture extends SlideGesture {
+
   constructor(plt: Platform, tdl: TdlPage, gestureCtrl: GestureController, domCtrl: DomController,private calendarComponent:CalendarComponent)
   {
     super(plt, tdl.getNativeElement(), {
@@ -41,8 +42,7 @@ export class TdlGesture extends SlideGesture {
   };
 
   onSlideStart(_slide?: SlideData, _ev?: any): void{
-    this.calendarComponent.calendarAnimation.colseStart();
-    // console.log("onSlideStart=====" );
+     this.calendarComponent.calendarAnimation.colseStart();
 
   }
 
@@ -53,13 +53,24 @@ export class TdlGesture extends SlideGesture {
 
   }
   onSlideEnd(_slide?: SlideData, _ev?: any): void{
+
+    if (_slide.distance <= 0){
+       return ;
+    }
+
+
     var currentStepValue = (_slide.distance / 200);
     var velocity = _slide.velocity;
     let shouldComplete:boolean = currentStepValue > 0.5 || _slide.delta > 20;
-    this.calendarComponent.calendarAnimation.colseEnd(shouldComplete, currentStepValue, velocity,()=>{
-      if (shouldComplete)
-        this.calendarComponent.changestat();
-    });
+
+    // if (shouldComplete)
+      this.calendarComponent.calendarAnimation.colseEnd(shouldComplete, currentStepValue, velocity,()=>{
+         if (shouldComplete)
+          this.calendarComponent.changestat();
+      });
+    // else
+    //   this.calendarComponent.calendarAnimation.openView(()=>{},true);
+
 
   }
 }

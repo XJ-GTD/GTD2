@@ -1,45 +1,42 @@
 task-list {
   .grid{
     width: 100%;
-    padding: 12px 0;
+    padding: 1rem 0;
   }
   .list-contont {
     .task-item {
       width: auto;
-      margin: 6px 15px;
+      margin: 0.5rem 1rem;
 
       .task-content {
         ion-checkbox.checkbox-ios {
           position: absolute;
-          top: 16px;
-          right: 16px;
+          top: 1rem;
+          right: 1rem;
         }
       }
     }
 
   }
   .notask{
-    margin: 90px auto;
+    margin: 5.5rem auto;
     text-align: center;
     .icon{
-     font-size: 150px;
+     font-size: 9rem ;
       clear: both;
       display: block;
     }
     span{
-      font-weight:400;
-      font-size: 16px;
-      margin: 20px auto;
+      font-size: 1rem;
+      margin: 1.25rem auto;
       display: block;
     }
     button{
       display: block;
-      margin: 120px auto;
-      font-size: 18px;
-      border-radius:10px;
-      font-weight:400;
-      padding: 12px 80px;
-      border-radius: 4px;
+      margin: 7.5rem auto;
+      font-size: 1.125rem;
+      padding: 1rem 5rem;
+      border-radius: 0.25rem;
 
     }
   }

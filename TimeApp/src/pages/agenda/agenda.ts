@@ -120,24 +120,22 @@ import {Keyboard} from "@ionic-native/keyboard";
             </ion-row>
             <ion-row *ngIf="currentAgenda.evd">
               <ion-col  class="agendaDate" (click)="changeDatetime()">
-                <button ion-button icon-end clear  >
                   <span class="content">
-                    日期：{{currentAgenda.evd | formatedate: "YYYY年M月D日"}}
+                    <span>
+                        日期：{{currentAgenda.evd | formatedate: "YYYY年M月D日"}}  
                     </span>
-                      </button>
-                <button ion-button icon-end clear  >
-                  <span class="content" *ngIf="currentAgenda.al == wholeday">
+                    <span  *ngIf="currentAgenda.al == wholeday">
                     时间：全天
                   </span>
-                  <span class="content" *ngIf="currentAgenda.al != wholeday">
+                  <span  *ngIf="currentAgenda.al != wholeday">
                     时间：{{currentAgenda.evt | formatedate: "HH:mm"}} {{currentAgenda.ct | formatedate: "duration"}}
-                    </span>
-                </button>
+                  </span>
+                    
+                  </span>
+                
               </ion-col>
               <ion-col  (click)="changeDatetime()">
-                <button ion-button icon-end clear  >
                   <ion-icon class="fal fa-calendar-check iconCalendar"></ion-icon>
-                </button>
               </ion-col>
               <ion-col class="agendaSender" *ngIf="currentAgenda.ui != currentuser">
             <span class="content">

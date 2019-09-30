@@ -44,24 +44,7 @@ import {AgendaPage} from "../agenda/agenda";
                       (viewShow) = "viewShow($event)">
         </ion-calendar>
         <page-tdl #tdl ></page-tdl>
-        <!--<ng-template [ngIf]="hdata.isShow">-->
-        <!--<p class="tipDay">-->
-        <!--<span class="showDay">{{hdata.showDay}}</span>-->
-        <!--<span class="showDay2">{{hdata.showDay2}}</span>-->
-        <!--<span class="showDay3" *ngFor="let jt of hdata.jtl" (click)="gotojt(jt)">{{jt.spn}}</span>-->
-        <!--</p>-->
-        <!--<p class="tipDay" *ngIf="hdata.things > 0"><a class="cls" (click)="gotodaily()">-->
-        <!--<ion-icon name="done-all"></ion-icon>-->
-        <!--{{hdata.things}} 个活动, {{hdata.newmessge}} 条新消息</a></p>-->
-        <!--<p class="tipDay"><a class="cls2" (click)="newcd()">-->
-        <!--<ion-icon name="add"></ion-icon>-->
-        <!--添加新事件</a></p>-->
-        <!--</ng-template>-->
       </div>
-      <!--<div class="rightm">-->
-      <!--&nbsp;-->
-      <!--</div>-->
-      <!--<AiComponent [ready]="aiready" #aiDiv></AiComponent>-->
       <ion-fab bottom right class="shortcut">
         <button ion-fab mini>
           <ion-icon name="add"></ion-icon>
@@ -154,11 +137,8 @@ export class HPage {
 
   }
 
+
   ionViewDidLoad() {
-  }
-
-
-  ngOnInit() {
 
      this.tdl.regeditCalendar(this.calendar);
     // websocket连接成功消息回调
@@ -221,10 +201,10 @@ export class HPage {
     //冥王星远程服务地址刷新完成
     //更新每小时天气服务任务
     this.emitService.register('on.mwxing.global.restful.flashed', () => {
-      this.hService.putHourlyWeather(UserConfig.account.id);
+      // this.hService.putHourlyWeather(UserConfig.account.id);
     });
     //初始化时自动触发一次
-    this.hService.putHourlyWeather(UserConfig.account.id);
+    // this.hService.putHourlyWeather(UserConfig.account.id);
 
     //每日简报消息回调
     this.emitService.register('on.dailyreport.message.click', (data) => {

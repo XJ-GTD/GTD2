@@ -14,7 +14,7 @@ export class HService {
 
   //更新每小时天气位置信息
   putHourlyWeather(userId: string) {
-    this.syncRestful.putHourlyWeather(userId);
+    // this.syncRestful.putHourlyWeather(userId);
   }
 
   centerShow(select: CalendarDay): Promise<HData> {

@@ -32,7 +32,8 @@ import {CycleType, IsWholeday, OverType, PlanItemType, PlanType, ToDoListStatus}
 import {AgendaData, EventService, MiniTaskData, RtJson, TaskData} from "../../service/business/event.service";
 import {MemoData, MemoService} from "../../service/business/memo.service";
 import {CalendarService, PlanData, PlanItemData, PlanMember} from "../../service/business/calendar.service";
-import { EmitService } from "../../service/util-service/emit.service";
+import {EmitService} from "../../service/util-service/emit.service";
+import {JhaTbl} from "../../service/sqlite/tbl/jha.tbl";
 
 @Injectable()
 export class AlService {
@@ -128,10 +129,13 @@ export class AlService {
             await this.contactsService.asyncPhoneContacts();
             //异步获取联系人信息
             this.contactsService.updateFs();
+
+
+            await this.createcal();
           } else {
             // 在浏览器测试时使用测试数据
             // await this.createTestData();
-            await this.createTestData();
+            await this.createcal();
           }
 
           // 设置客户端初始化版本号
@@ -196,11 +200,13 @@ export class AlService {
   setSetting(): Promise<AlData> {
     let alData: AlData = new AlData();
 
-    //重新获取服务器数据
-    this.sqlLiteInit.initDataSub()
-
     return new Promise(async (resolve, reject) => {
+
+
       try {
+
+        //重新获取服务器数据
+        await this.sqlLiteInit.initDataSub();
 
         // TODO 系统设置 restHttps设置 用户偏好设置 用户信息 。。。
         await this.restfulConfig.init();
@@ -272,463 +278,6 @@ export class AlService {
       });
     });
   }
-
-  createTestData(): Promise<boolean> {
-    return new Promise<boolean>((resolve, reject) => {
-
-      let start = moment('2019/04/01');
-      let sqls = [];
-      let stMap: Map<string, StTbl> = new Map<string, StTbl>();
-
-      //计划
-      let jhs: Array<JhTbl> = [];
-      let jh: JhTbl = new JhTbl();
-      jh.ji = this.util.getUuid();
-      jh.jn = '冥王星计划';
-      jh.jg = '冥王星计划';
-      jh.jc = '#735e46';
-      jh.jt = '2';
-      sqls.push(jh.inT());
-
-      jhs.push(jh);
-      jh = new JhTbl();
-      jh.jn = '白沙计划';
-      jh.jg = '白沙计划';
-      jh.jc = '#876a29';
-      jh.jt = '2';
-      jh.ji = this.util.getUuid();
-      sqls.push(jh.inT());
-      jhs.push(jh);
-      jh = new JhTbl();
-
-      jh.jn = '戒烟计划';
-      jh.jg = '戒烟计划';
-      jh.jc = '#cf4425';
-      jh.jt = '2';
-      jh.ji = this.util.getUuid();
-      sqls.push(jh.inT());
-      jhs.push(jh);
-      jh = new JhTbl();
-
-
-      jh.jn = '老大养成计划';
-      jh.jg = '老大养成计划';
-      jh.jc = '#af2b24';
-      jh.jt = '2';
-      jh.ji = this.util.getUuid();
-      sqls.push(jh.inT());
-      jhs.push(jh);
-      jh = new JhTbl();
-
-      jh.jn = '西班牙旅游';
-      jh.jg = '西班牙旅游';
-      jh.jc = '#ad837d';
-      jh.jt = '2';
-      jh.ji = this.util.getUuid();
-      sqls.push(jh.inT());
-      jhs.push(jh);
-      jh = new JhTbl();
-
-      jh.jn = '职场进级';
-      jh.jg = '职场进级';
-      jh.jc = '#c077db';
-      jh.jt = '2';
-      jh.ji = this.util.getUuid();
-      sqls.push(jh.inT());
-      jhs.push(jh);
-      jh = new JhTbl();
-
-      jh.jn = '大学4年';
-      jh.jg = '大学4年';
-      jh.jc = '#453b93';
-      jh.jt = '2';
-      jh.ji = this.util.getUuid();
-      sqls.push(jh.inT());
-      jhs.push(jh);
-      jh = new JhTbl();
-
-      jh.jn = '你是我的初恋';
-      jh.jg = '你是我的初恋';
-      jh.jc = '#51aaf2';
-      jh.jt = '2';
-      jh.ji = this.util.getUuid();
-      sqls.push(jh.inT());
-      jhs.push(jh);
-      jh = new JhTbl();
-
-      jh.jn = '做过的那些傻事';
-      jh.jg = '做过的那些傻事';
-      jh.jc = '#35919c';
-      jh.jt = '2';
-      jh.ji = this.util.getUuid();
-      sqls.push(jh.inT());
-      jhs.push(jh);
-      jh = new JhTbl();
-
-      jh.jn = '被你虐待的日子，幸福着痛苦着';
-      jh.jg = '不能忘记这些';
-      jh.jc = '#308158';
-      jh.jt = '2';
-      jh.ji = this.util.getUuid();
-      sqls.push(jh.inT());
-      jhs.push(jh);
-
-      //参与人
-      let btbls: Array<BTbl> = [];
-      let btbl: BTbl = new BTbl();
-      let bhtbl = new BhTbl();
-      btbl.pwi = this.util.getUuid();
-      btbl.ran = '小胖子';
-      btbl.ranpy = 'xiaopangzi';
-      btbl.hiu = '';
-      btbl.rn = '张金洋';
-      btbl.rnpy = 'zhangjinyang';
-      btbl.rc = '15821947260';
-      btbl.rel = '1';
-      btbl.ui = btbl.rc;
-      sqls.push(btbl.inT());
-      btbls.push(btbl);
-
-      bhtbl = new BhTbl();
-      bhtbl.bhi = this.util.getUuid();
-      bhtbl.pwi = btbl.pwi;
-      bhtbl.hiu = DataConfig.HUIBASE64;
-      sqls.push(bhtbl.inT());
-
-      btbl = new BTbl();
-      btbl.pwi = this.util.getUuid();
-      btbl.ran = '小孩子';
-      btbl.ranpy = 'xiaohaizi';
-      btbl.hiu = '';
-      btbl.rn = '许赵平';
-      btbl.rnpy = 'xuzhaopin';
-      btbl.rc = '13661617252';
-      btbl.rel = '0';
-      btbl.ui = btbl.rc;
-      sqls.push(btbl.inT());
-      btbls.push(btbl);
-
-
-      bhtbl = new BhTbl();
-      bhtbl.bhi = this.util.getUuid();
-      bhtbl.pwi = btbl.pwi;
-      bhtbl.hiu = DataConfig.HUIBASE64;
-      sqls.push(bhtbl.inT());
-
-      btbl = new BTbl();
-      btbl.pwi = this.util.getUuid();
-      btbl.ran = '小楞子';
-      btbl.ranpy = 'xiaolenzi';
-      btbl.hiu = '';
-      btbl.rn = '席理加';
-      btbl.rnpy = 'xilijia';
-      btbl.rc = '13585820972';
-      btbl.rel = '1';
-      btbl.ui = btbl.rc;
-      sqls.push(btbl.inT());
-      btbls.push(btbl);
-
-      bhtbl = new BhTbl();
-      bhtbl.bhi = this.util.getUuid();
-      bhtbl.pwi = btbl.pwi;
-      bhtbl.hiu = DataConfig.HUIBASE64;
-      sqls.push(bhtbl.inT());
-
-      btbl = new BTbl();
-      btbl.pwi = this.util.getUuid();
-      btbl.ran = '草帽';
-      btbl.ranpy = '草帽';
-      btbl.hiu = '';
-      btbl.rn = '漕屏';
-      btbl.rnpy = 'caoping';
-      btbl.rc = '16670129762';
-      btbl.rel = '0';
-      btbl.ui = btbl.rc;
-      sqls.push(btbl.inT());
-      btbls.push(btbl);
-
-      bhtbl = new BhTbl();
-      bhtbl.bhi = this.util.getUuid();
-      bhtbl.pwi = btbl.pwi;
-      bhtbl.hiu = DataConfig.HUIBASE64;
-      sqls.push(bhtbl.inT());
-
-      btbl = new BTbl();
-      btbl.pwi = this.util.getUuid();
-      btbl.ran = '飞飞飞';
-      btbl.ranpy = 'feifeifei';
-      btbl.hiu = '';
-      btbl.rn = '罗建飞';
-      btbl.rnpy = 'luojianfei';
-      btbl.rc = '13564242673';
-      btbl.rel = '1';
-      btbl.ui = btbl.rc;
-      sqls.push(btbl.inT());
-      btbls.push(btbl);
-
-      bhtbl = new BhTbl();
-      bhtbl.bhi = this.util.getUuid();
-      bhtbl.pwi = btbl.pwi;
-      bhtbl.hiu = DataConfig.HUIBASE64;
-      sqls.push(bhtbl.inT());
-
-      btbl = new BTbl();
-      btbl.pwi = this.util.getUuid();
-      btbl.ran = '灰太郎';
-      btbl.ranpy = 'huitailang';
-      btbl.hiu = '';
-      btbl.rn = '丁朝辉';
-      btbl.rnpy = 'dingchaohui';
-      btbl.rc = '15737921611';
-      btbl.rel = '1';
-      btbl.ui = btbl.rc;
-      sqls.push(btbl.inT());
-      btbls.push(btbl);
-
-      bhtbl = new BhTbl();
-      bhtbl.bhi = this.util.getUuid();
-      bhtbl.pwi = btbl.pwi;
-      bhtbl.hiu = DataConfig.HUIBASE64;
-      sqls.push(bhtbl.inT());
-
-      btbl = new BTbl();
-      btbl.pwi = this.util.getUuid();
-      btbl.ran = '牛牛';
-      btbl.ranpy = 'niuniu';
-      btbl.hiu = '';
-      btbl.rn = '薛震洋';
-      btbl.rnpy = 'xuezhenyang';
-      btbl.rc = '18602150145';
-      btbl.rel = '1';
-      btbl.ui = btbl.rc;
-      sqls.push(btbl.inT());
-      btbls.push(btbl);
-
-      bhtbl = new BhTbl();
-      bhtbl.bhi = this.util.getUuid();
-      bhtbl.pwi = btbl.pwi;
-      bhtbl.hiu = DataConfig.HUIBASE64;
-      sqls.push(bhtbl.inT());
-
-      //群组
-      let gtbl: GTbl = new GTbl();
-      gtbl.gi = this.util.getUuid();
-      gtbl.gn = '拼命三郎';
-      gtbl.gm = '拼命三郎'
-      gtbl.gnpy = 'pinmingsanlang';
-      sqls.push(gtbl.inT());
-
-      //群组关系
-      let bxtbl: BxTbl = new BxTbl();
-      bxtbl.bi = gtbl.gi;
-      bxtbl.bmi = btbls[0].pwi;
-      sqls.push(bxtbl.inT());
-
-      bxtbl = new BxTbl();
-      bxtbl.bi = gtbl.gi;
-      bxtbl.bmi = btbls[1].pwi;
-      sqls.push(bxtbl.inT());
-
-      bxtbl = new BxTbl();
-      bxtbl.bi = gtbl.gi;
-      bxtbl.bmi = btbls[3].pwi;
-      sqls.push(bxtbl.inT());
-
-      bxtbl = new BxTbl();
-      bxtbl.bi = gtbl.gi;
-      bxtbl.bmi = btbls[5].pwi;
-      sqls.push(bxtbl.inT());
-
-      gtbl = new GTbl();
-      gtbl.gi = this.util.getUuid();
-      gtbl.gn = '合作二人组合';
-      gtbl.gm = '合作二人组合'
-      gtbl.gnpy = 'hezuoerrenzuhe';
-      sqls.push(gtbl.inT());
-
-      bxtbl = new BxTbl();
-      bxtbl.bi = gtbl.gi;
-      bxtbl.bmi = btbls[2].pwi;
-      sqls.push(bxtbl.inT());
-
-      bxtbl = new BxTbl();
-      bxtbl.bi = gtbl.gi;
-      bxtbl.bmi = btbls[4].pwi;
-      sqls.push(bxtbl.inT());
-
-      bxtbl = new BxTbl();
-      bxtbl.bi = gtbl.gi;
-      bxtbl.bmi = btbls[5].pwi;
-      sqls.push(bxtbl.inT());
-
-
-      let ss: Array<string> = [];
-      ss.push("这是一个测试日程");
-      ss.push("跑步");
-      ss.push("一起吃饭");
-      ss.push("会见xi大大");
-      ss.push("关于日程的讨论会，没有什么事情的话，都必须要参加的");
-      ss.push("赶飞机");
-      ss.push("有一个密码你可知道吗?");
-      ss.push("未来过去和现在，都可以预测的");
-      ss.push("你希望你是一个人，其实你的前生已近出卖了你的今天，你还是一个人吗");
-      ss.push("无语");
-      ss.push("节前5000元");
-      ss.push("thanks ");
-      ss.push("好吧，好的");
-      ss.push("冰与火之歌");
-      ss.push("看过不良人吗");
-      ss.push("周末加班");
-
-      for (let i = 0; i < 100; i++) {
-        start = moment('2019/01/01');
-        let r = this.util.randInt(-65, 65);
-        let t = this.util.randInt(0, 24);
-        let jh_i = this.util.randInt(0, 20);
-        let jh_id = "";
-        let r_i = this.util.randInt(0, 15);
-        let r_i2 = this.util.randInt(0, 15);
-        let c_r = this.util.randInt(-5, 10);
-        let c_r2 = this.util.randInt(0, 5);
-        let c_r3 = this.util.randInt(-10, 4);
-
-        if (jh_i < 10) {
-          jh_id = jhs[jh_i].ji;
-        }
-
-        let d = start.add(r, 'd').add(t, 'h');
-        let c: CTbl = new CTbl();
-
-        c.si = this.util.getUuid();
-        c.sn = ss[r_i];
-        c.sd = d.format('YYYY/MM/DD');
-        c.st = d.format('HH:mm');
-        if (c_r3 == 1) {
-          c.ed = moment(c.sd).add(1, "y").format("YYYY/MM/DD");
-          c.rt = "1";
-        } else if (c_r3 == 2) {
-          c.ed = moment(c.sd).add(1, "y").format("YYYY/MM/DD");
-          c.rt = "2";
-        } else if (c_r3 == 3) {
-          c.ed = moment(c.sd).add(3, "y").format("YYYY/MM/DD");
-          c.rt = "3";
-
-        } else if (c_r3 == 4) {
-          c.ed = moment(c.sd).add(20, "y").format("YYYY/MM/DD");
-          c.rt = "4";
-        } else {
-          c.ed = c.sd;
-          c.rt = "0";
-        }
-        c.et = '24:00'
-
-        c.sr = c.si;
-        c.ji = jh_id;
-        c.bz = ss[r_i2];
-
-        if (c_r > 6 && c_r < 0) {
-          c.du = "0"
-          c.ui = btbls[c_r2].pwi;
-          c.gs = "0";
-        } else {
-          c.du = "1"
-          c.ui = 'slef';
-          c.gs = "1";
-        }
-
-        sqls.push(c.inT());
-
-        let len = 0;
-        let add: unitOfTime.DurationConstructor;
-
-        if (c.rt == '1') {
-          len = 365;
-          add = 'd';
-
-        } else if (c.rt == '2') {
-          len = 53;
-          add = "w";
-        } else if (c.rt == '3') {
-          len = 36;
-          add = "M"
-        } else if (c.rt == '4') {
-          len = 30;
-          add = "y"
-        } else if (c.rt == '0') {
-          len = 1;
-          add = "d"
-        }
-        let sql = new Array<string>();
-        for (let i = 0; i < len; i++) {
-          let sp = new SpTbl();
-          let eTbl: ETbl = new ETbl();
-          sp.spi = this.util.getUuid();
-          eTbl.wi = this.util.getUuid();
-          sp.si = c.si;
-          eTbl.si = sp.spi;
-          eTbl.st = c.sn;
-          sp.sd = moment(c.sd).add(i, add).format("YYYY/MM/DD");
-          sp.st = c.st;
-          let rem = moment(sp.sd + " " + sp.st).add(5, "m");
-          eTbl.wd = rem.format("YYYY/MM/DD");
-          eTbl.wt = rem.format("HH:mm");
-          if (c.rt == '0')
-            sp.itx = 1;
-          else
-            sp.itx = 0;
-          sqls.push(sp.inT());
-          sqls.push(eTbl.inT());
-          // if (!stMap.get(sp.sd)){
-          //   let st:StTbl = new StTbl();
-          //   st.c = 0;
-          //   st.bz = "";
-          //   st.n = 0;
-          //   if(c.rt=='0'){
-          //     st.n = st.n  + 1;
-          //   }
-          //   st.d = sp.sd;
-          //   stMap.set(sp.sd,st);
-          // }else{
-          //   stMap.get(sp.sd).c = (stMap.get(sp.sd).c + 1);
-          // }
-        }
-
-        c_r2 = 6;
-        if (!(c_r > 6 && c_r < 0)) {
-          while (c_r > -1) {
-
-            c_r2 = this.util.randInt(0, c_r2 - 1);
-            c_r--;
-            if (c_r2 < 1) break;
-
-            let dtbl: DTbl = new DTbl();
-
-            dtbl.pi = this.util.getUuid();
-            dtbl.si = c.si;
-            dtbl.ai = btbls[c_r2].pwi;
-            sqls.push(dtbl.inT());
-          }
-
-        }
-      }
-      // stMap.forEach((v,k,map) =>{
-      //   sqls.push(v.inT());
-      // })
-
-      this.sqlExce.batExecSql(sqls).then(c => {
-
-        let sql: string = `delete
-                           from gtd_e
-                           where wd <= "` + moment().subtract(1, "d").format("YYYY/MM/DD") + `";`
-        this.sqlExce.execSql(sql);
-      }).then(c => {
-        this.createcal();
-      }).then(c => {
-        resolve(true);
-      });
-    })
-  }
-
 
   // 联系人用于测试
   xiaopangzi: BTbl;
@@ -962,7 +511,7 @@ export class AlService {
 
     await this.sqlExce.batExecSql(sqls);
 
-    return;
+    return btbls;
   };
 
   async createcal() {
@@ -979,7 +528,8 @@ export class AlService {
     ];
 
 
-    await this.prepareContacts();
+    let btbls: Array<BTbl> = await this.prepareContacts();
+
     // 小任务
     let minitask: MiniTaskData = {} as MiniTaskData;
 
@@ -1012,6 +562,8 @@ export class AlService {
     await this.calendarService.savePlanItem(planitem1);
 
     // 自定义日历
+
+    let plans: Array<PlanData> = new Array<PlanData>();
     let plan: PlanData = {} as PlanData;
 
     plan.jn = '2018年第一学期 课程表';
@@ -1030,9 +582,9 @@ export class AlService {
     }
 
     plan = await this.calendarService.savePlan(plan);
+    plans.push(plan);
 
-// 数学 | 语文 | 语文 | 语文 | 数学   08:20 ~ 09:00
-// 第一节课 星期一、星期五 数学
+
     let math1: AgendaData = {} as AgendaData;
 
     let math1rt: RtJson = new RtJson();
@@ -1054,305 +606,556 @@ export class AlService {
 
     await this.eventService.saveAgenda(math1);
 
-// 第一节课 星期二、星期三、星期四 语文
-    let chinese1: AgendaData = {} as AgendaData;
 
-    let chinese1rt: RtJson = new RtJson();
-    chinese1rt.cycletype = CycleType.week;
-    chinese1rt.openway.push(2);
-    chinese1rt.openway.push(3);
-    chinese1rt.openway.push(4);
-    chinese1rt.over.type = OverType.limitdate;
-    chinese1rt.over.value = end;
+    //计划
+    plan = {} as PlanData;
+    plan.jn = '2018年第一学期 课程表';
+    plan.jc = '#ababab';
+    plan.jt = PlanType.PrivatePlan;
+    plan = await this.calendarService.savePlan(plan);
+    plans.push(plan);
 
-    chinese1.ji = plan.ji;
-    chinese1.sd = day;
-    chinese1.al = IsWholeday.NonWhole;
-    chinese1.st = timeranges[0][0];
-    chinese1.et = timeranges[0][1];
-    chinese1.evn = "语文";
-    chinese1.rtjson = chinese1rt;
 
-    await this.eventService.saveAgenda(chinese1);
+    plan = {} as PlanData;
+    plan.jn = '冥王星计划';
+    plan.jc = '#735e46';
+    plan.jt = PlanType.PrivatePlan;
+    plan = await this.calendarService.savePlan(plan);
+    plans.push(plan);
 
-// 语文 | 数学 | 语文 | 数学 | 语文   09:30 ~ 10:15
-// 第二节课 星期二、星期四 数学
-    let math2: AgendaData = {} as AgendaData;
 
-    let math2rt: RtJson = new RtJson();
-    math2rt.cycletype = CycleType.week;
-    math2rt.openway.push(2);
-    math2rt.openway.push(4);
-    math2rt.over.type = OverType.limitdate;
-    math2rt.over.value = end;
+    plan = {} as PlanData;
+    plan.jn = '白沙计划';
+    plan.jc = '#876a29';
+    plan.jt = PlanType.PrivatePlan;
+    plan = await this.calendarService.savePlan(plan);
+    plans.push(plan);
 
-    math2.ji = plan.ji;
-    math2.sd = day;
-    math2.al = IsWholeday.NonWhole;
-    math2.st = timeranges[1][0];
-    math2.et = timeranges[1][1];
-    math2.evn = "数学";
-    math2.rtjson = math2rt;
 
-    await this.eventService.saveAgenda(math2);
+    plan = {} as PlanData;
+    plan.jn = '戒烟计划';
+    plan.jc = '#cf4425';
+    plan.jt = PlanType.PrivatePlan;
+    plan = await this.calendarService.savePlan(plan);
+    plans.push(plan);
 
-// 第二节课 星期一、星期三、星期五 语文
-    let chinese2: AgendaData = {} as AgendaData;
+    plan = {} as PlanData;
+    plan.jn = '老大养成计划';
+    plan.jc = '#af2b24';
+    plan.jt = PlanType.PrivatePlan;
+    plan = await this.calendarService.savePlan(plan);
+    plans.push(plan);
 
-    let chinese2rt: RtJson = new RtJson();
-    chinese2rt.cycletype = CycleType.week;
-    chinese2rt.openway.push(1);
-    chinese2rt.openway.push(3);
-    chinese2rt.openway.push(5);
-    chinese2rt.over.type = OverType.limitdate;
-    chinese2rt.over.value = end;
 
-    chinese2.ji = plan.ji;
-    chinese2.sd = day;
-    chinese2.al = IsWholeday.NonWhole;
-    chinese2.st = timeranges[1][0];
-    chinese2.et = timeranges[1][1];
-    chinese2.evn = "语文";
-    chinese2.rtjson = chinese2rt;
+    plan = {} as PlanData;
+    plan.jn = '西班牙旅游';
+    plan.jc = '#ad837d';
+    plan.jt = PlanType.PrivatePlan;
+    plan = await this.calendarService.savePlan(plan);
+    plans.push(plan);
 
-    await this.eventService.saveAgenda(chinese2);
 
-// 品生 | 语文 | 体育 | 体育 | 语文   10:25 ~ 11:05
-// 第三节课 星期一 品生
-    let character3: AgendaData = {} as AgendaData;
+    plan = {} as PlanData;
+    plan.jn = '职场进级';
+    plan.jc = '#c077db';
+    plan.jt = PlanType.PrivatePlan;
+    plan = await this.calendarService.savePlan(plan);
+    plans.push(plan);
 
-    let character3rt: RtJson = new RtJson();
-    character3rt.cycletype = CycleType.week;
-    character3rt.openway.push(1);
-    character3rt.over.type = OverType.limitdate;
-    character3rt.over.value = end;
 
-    character3.ji = plan.ji;
-    character3.sd = day;
-    character3.al = IsWholeday.NonWhole;
-    character3.st = timeranges[2][0];
-    character3.et = timeranges[2][1];
-    character3.evn = "品生";
-    character3.rtjson = character3rt;
+    plan = {} as PlanData;
+    plan.jn = '大学4年';
+    plan.jc = '#453b93';
+    plan.jt = PlanType.PrivatePlan;
+    plan = await this.calendarService.savePlan(plan);
+    plans.push(plan);
 
-    await this.eventService.saveAgenda(character3);
 
-// 第三节课 星期三、星期四 体育
-    let pe3: AgendaData = {} as AgendaData;
+    plan = {} as PlanData;
+    plan.jn = '你是我的初恋';
+    plan.jc = '#51aaf2';
+    plan.jt = PlanType.PrivatePlan;
+    plan = await this.calendarService.savePlan(plan);
+    plans.push(plan);
 
-    let pe3rt: RtJson = new RtJson();
-    pe3rt.cycletype = CycleType.week;
-    pe3rt.openway.push(3);
-    pe3rt.openway.push(4);
-    pe3rt.over.type = OverType.limitdate;
-    pe3rt.over.value = end;
 
-    pe3.ji = plan.ji;
-    pe3.sd = day;
-    pe3.al = IsWholeday.NonWhole;
-    pe3.st = timeranges[2][0];
-    pe3.et = timeranges[2][1];
-    pe3.evn = "体育";
-    pe3.rtjson = pe3rt;
+    plan = {} as PlanData;
+    plan.jn = '做过的那些傻事';
+    plan.jc = '#35919c';
+    plan.jt = PlanType.PrivatePlan;
+    plan = await this.calendarService.savePlan(plan);
+    plans.push(plan);
 
-    await this.eventService.saveAgenda(pe3);
 
-// 第三节课 星期二、星期五 语文
-    let chinese3: AgendaData = {} as AgendaData;
+    plan = {} as PlanData;
+    plan.jn = '被你虐待的日子，幸福着痛苦着';
+    plan.jc = '#308158';
+    plan.jt = PlanType.PrivatePlan;
+    plan = await this.calendarService.savePlan(plan);
+    plans.push(plan);
 
-    let chinese3rt: RtJson = new RtJson();
-    chinese3rt.cycletype = CycleType.week;
-    chinese3rt.openway.push(2);
-    chinese3rt.openway.push(5);
-    chinese3rt.over.type = OverType.limitdate;
-    chinese3rt.over.value = end;
 
-    chinese3.ji = plan.ji;
-    chinese3.sd = day;
-    chinese3.al = IsWholeday.NonWhole;
-    chinese3.st = timeranges[2][0];
-    chinese3.et = timeranges[2][1];
-    chinese3.evn = "语文";
-    chinese3.rtjson = chinese3rt;
+    plan = {} as PlanData;
+    plan.jn = '长AAABBBBVVVVDDDDDDDAAABBBBVVVVDDDDDDD';
+    plan.jc = '#308158';
+    plan = await this.calendarService.savePlan(plan);
+    plans.push(plan);
 
-    await this.eventService.saveAgenda(chinese3);
 
-// 美术 | 品生 | 美术 | 写字 | 体育   14:00 ~ 14:40
-// 第四节课 星期一、星期三 美术
-    let art4: AgendaData = {} as AgendaData;
+    let ss: Array<string> = [];
+    ss.push("跑步");
+    ss.push("一起吃饭");
+    ss.push("关于日程的讨论会，没有什么事情的话，都必须要参加的");
+    ss.push("赶飞机");
+    ss.push("未来过去和现在，都可以预测的");
+    ss.push("你希望你是一个人，其实你的前生已近出卖了你的今天，你还是一个人吗");
+    ss.push("节前5000元");
+    ss.push("thanks ");
 
-    let art4rt: RtJson = new RtJson();
-    art4rt.cycletype = CycleType.week;
-    art4rt.openway.push(1);
-    art4rt.openway.push(3);
-    art4rt.over.type = OverType.limitdate;
-    art4rt.over.value = end;
+    for (let i = 0; i < 100; i++) {
+      let start = moment('2019/01/01');
+      let r = this.util.randInt(-100, 100);
+      let t = this.util.randInt(0, 24);
+      let jh_i = this.util.randInt(0, 20);
+      let jh_id = "";
+      let r_i = this.util.randInt(0,7);
+      let c_r3 = this.util.randInt(-10, 4);
 
-    art4.ji = plan.ji;
-    art4.sd = day;
-    art4.al = IsWholeday.NonWhole;
-    art4.st = timeranges[3][0];
-    art4.et = timeranges[3][1];
-    art4.evn = "美术";
-    art4.rtjson = art4rt;
+      if (jh_i < 10) {
+        jh_id = plans[jh_i].ji;
+      }
 
-    await this.eventService.saveAgenda(art4);
+      let d = start.add(r, 'd').add(t, 'h');
 
-// 第四节课 星期二 品生
-    let character4: AgendaData = {} as AgendaData;
 
-    let character4rt: RtJson = new RtJson();
-    character4rt.cycletype = CycleType.week;
-    character4rt.openway.push(2);
-    character4rt.over.type = OverType.limitdate;
-    character4rt.over.value = end;
+      let agendaData: AgendaData = {} as AgendaData;
 
-    character4.ji = plan.ji;
-    character4.sd = day;
-    character4.al = IsWholeday.NonWhole;
-    character4.st = timeranges[3][0];
-    character4.et = timeranges[3][1];
-    character4.evn = "品生";
-    character4.rtjson = character4rt;
+      let repert: RtJson = new RtJson();
+      if (c_r3 == 1) {
+        repert.cycletype = CycleType.day;
+        repert.over.type = OverType.fornever;
+      } else if (c_r3 == 2) {
 
-    await this.eventService.saveAgenda(character4);
+        repert.cycletype = CycleType.week;
+        repert.over.type = OverType.fornever;
+      } else if (c_r3 == 3) {
+        repert.cycletype = CycleType.month;
+        repert.over.type = OverType.fornever;
 
-// 第四节课 星期四 写字
-    let writing4: AgendaData = {} as AgendaData;
+      } else if (c_r3 == 4) {
+        repert.cycletype = CycleType.year;
+        repert.over.type = OverType.fornever;
+      } else {
+        repert.cycletype = CycleType.close;
+      }
 
-    let writing4rt: RtJson = new RtJson();
-    writing4rt.cycletype = CycleType.week;
-    writing4rt.openway.push(4);
-    writing4rt.over.type = OverType.limitdate;
-    writing4rt.over.value = end;
 
-    writing4.ji = plan.ji;
-    writing4.sd = day;
-    writing4.al = IsWholeday.NonWhole;
-    writing4.st = timeranges[3][0];
-    writing4.et = timeranges[3][1];
-    writing4.evn = "写字";
-    writing4.rtjson = writing4rt;
+      agendaData.ji = jh_id;
+      agendaData.sd = d.format('YYYY/MM/DD');
+      ;
+      agendaData.al = IsWholeday.NonWhole;
+      agendaData.st = d.format('HH:mm');
+      agendaData.ct = 40;  // 持续40分钟
+      agendaData.evn = ss[r_i];
+      agendaData.rtjson = repert;
+      agendaData.todolist = ToDoListStatus.On;
 
-    await this.eventService.saveAgenda(writing4);
+      await this.eventService.saveAgenda(agendaData);
 
-// 第四节课 星期五 体育
-    let pe4: AgendaData = {} as AgendaData;
+    }
 
-    let pe4rt: RtJson = new RtJson();
-    pe4rt.cycletype = CycleType.week;
-    pe4rt.openway.push(5);
-    pe4rt.over.type = OverType.limitdate;
-    pe4rt.over.value = end;
-
-    pe4.ji = plan.ji;
-    pe4.sd = day;
-    pe4.al = IsWholeday.NonWhole;
-    pe4.st = timeranges[3][0];
-    pe4.et = timeranges[3][1];
-    pe4.evn = "体育";
-    pe4.rtjson = pe4rt;
-
-    await this.eventService.saveAgenda(pe4);
-
-// 音乐 | 体育 | 音乐 | 班队 | 品生   14:50 ~ 15:35
-// 第五节课 星期一、星期三 音乐
-    let music5: AgendaData = {} as AgendaData;
-
-    let music5rt: RtJson = new RtJson();
-    music5rt.cycletype = CycleType.week;
-    music5rt.openway.push(1);
-    music5rt.openway.push(3);
-    music5rt.over.type = OverType.limitdate;
-    music5rt.over.value = end;
-
-    music5.ji = plan.ji;
-    music5.sd = day;
-    music5.al = IsWholeday.NonWhole;
-    music5.st = timeranges[4][0];
-    music5.et = timeranges[4][1];
-    music5.evn = "音乐";
-    music5.rtjson = music5rt;
-
-    await this.eventService.saveAgenda(music5);
-
-// 第五节课 星期二 体育
-    let pe5: AgendaData = {} as AgendaData;
-
-    let pe5rt: RtJson = new RtJson();
-    pe5rt.cycletype = CycleType.week;
-    pe5rt.openway.push(2);
-    pe5rt.over.type = OverType.limitdate;
-    pe5rt.over.value = end;
-
-    pe5.ji = plan.ji;
-    pe5.sd = day;
-    pe5.al = IsWholeday.NonWhole;
-    pe5.st = timeranges[4][0];
-    pe5.et = timeranges[4][1];
-    pe5.evn = "体育";
-    pe5.rtjson = pe5rt;
-
-    await this.eventService.saveAgenda(pe5);
-
-// 第五节课 星期四 班队
-    let activity5: AgendaData = {} as AgendaData;
-
-    let activity5rt: RtJson = new RtJson();
-    activity5rt.cycletype = CycleType.week;
-    activity5rt.openway.push(4);
-    activity5rt.over.type = OverType.limitdate;
-    activity5rt.over.value = end;
-
-    activity5.ji = plan.ji;
-    activity5.sd = day;
-    activity5.al = IsWholeday.NonWhole;
-    activity5.st = timeranges[4][0];
-    activity5.et = timeranges[4][1];
-    activity5.evn = "班队";
-    activity5.rtjson = activity5rt;
-
-    await this.eventService.saveAgenda(activity5);
-
-// 第五节课 星期五 品生
-    let character5: AgendaData = {} as AgendaData;
-
-    let character5rt: RtJson = new RtJson();
-    character5rt.cycletype = CycleType.week;
-    character5rt.openway.push(5);
-    character5rt.over.type = OverType.limitdate;
-    character5rt.over.value = end;
-
-    character5.ji = plan.ji;
-    character5.sd = day;
-    character5.al = IsWholeday.NonWhole;
-    character5.st = timeranges[4][0];
-    character5.et = timeranges[4][1];
-    character5.evn = "品生";
-    character5.rtjson = character5rt;
-
-    await this.eventService.saveAgenda(character5);
-
-//  无  | 无  | 兴趣  |  无  | 无    15:45 ~ 16:25
-// 第六节课 星期三 兴趣
-    let interest5: AgendaData = {} as AgendaData;
-
-    let interest5rt: RtJson = new RtJson();
-    interest5rt.cycletype = CycleType.week;
-    interest5rt.openway.push(3);
-    interest5rt.over.type = OverType.limitdate;
-    interest5rt.over.value = end;
-
-    interest5.ji = plan.ji;
-    interest5.sd = day;
-    interest5.al = IsWholeday.NonWhole;
-    interest5.st = timeranges[5][0];
-    interest5.et = timeranges[5][1];
-    interest5.evn = "兴趣";
-    interest5.rtjson = interest5rt;
-
-    await this.eventService.saveAgenda(interest5);
 
   }
+
+
+//   async createcal() {
+//
+//     let day: string = "2018/09/01";
+//     let end: string = "2022/01/18";
+//     let timeranges: Array<Array<string>> = [
+//       ["08:20", "09:00"],
+//       ["09:30", "10:15"],
+//       ["10:25", "11:05"],
+//       ["14:00", "14:40"],
+//       ["14:50", "15:35"],
+//       ["15:45", "16:25"]
+//     ];
+//
+//
+//     await this.prepareContacts();
+//     // 小任务
+//     let minitask: MiniTaskData = {} as MiniTaskData;
+//
+//     minitask.evn = "结婚纪念日前给太太买礼物";
+//
+//     await this.eventService.saveMiniTask(minitask);
+//
+//     // 任务
+//     let task: TaskData = {} as TaskData;
+//
+//     task.evn = "结婚纪念日前给太太买礼物";
+//     task.todolist = ToDoListStatus.On;
+//
+//     await this.eventService.saveTask(task);
+//
+//     // 备忘
+//     let memo: MemoData = {} as MemoData;
+//
+//     memo.mon = "结婚纪念日买了一块定制巧克力给太太, 太太很高兴";
+//
+//     await this.memoService.saveMemo(memo);
+//
+//     // 日历项
+//     let planitem1: PlanItemData = {} as PlanItemData;
+//
+//     planitem1.sd = moment().format("YYYY/MM/DD");
+//     planitem1.jtn = "结婚纪念日";
+//     planitem1.jtt = PlanItemType.Activity;
+//
+//     await this.calendarService.savePlanItem(planitem1);
+//
+//     // 自定义日历
+//     let plan: PlanData = {} as PlanData;
+//
+//     plan.jn = '2018年第一学期 课程表';
+//     plan.jc = '#ababab';
+//     plan.jt = PlanType.PrivatePlan;
+//
+//     plan.members = new Array<PlanMember>();
+//
+//     for (let contact of [this.xiaopangzi, this.xiaohaizi, this.xuezhenyang]) {
+//       let member: PlanMember = {} as PlanMember;
+//
+//       member.pwi = contact.pwi;
+//       member.ui = contact.ui;
+//
+//       plan.members.push(member);
+//     }
+//
+//     plan = await this.calendarService.savePlan(plan);
+//
+// // 数学 | 语文 | 语文 | 语文 | 数学   08:20 ~ 09:00
+// // 第一节课 星期一、星期五 数学
+//     let math1: AgendaData = {} as AgendaData;
+//
+//     let math1rt: RtJson = new RtJson();
+//     math1rt.cycletype = CycleType.week;
+//     math1rt.openway.push(1);
+//     math1rt.openway.push(5);
+//     math1rt.over.type = OverType.limitdate;
+//     math1rt.over.value = end;
+//
+//     math1.ji = plan.ji;
+//     math1.sd = day;
+//     math1.al = IsWholeday.NonWhole;
+//     math1.st = timeranges[0][0];
+// //math1.et = timeranges[0][1];
+//     math1.ct = 40;  // 持续40分钟
+//     math1.evn = "数学";
+//     math1.rtjson = math1rt;
+//     math1.todolist = ToDoListStatus.On;
+//
+//     await this.eventService.saveAgenda(math1);
+//
+// // 第一节课 星期二、星期三、星期四 语文
+//     let chinese1: AgendaData = {} as AgendaData;
+//
+//     let chinese1rt: RtJson = new RtJson();
+//     chinese1rt.cycletype = CycleType.week;
+//     chinese1rt.openway.push(2);
+//     chinese1rt.openway.push(3);
+//     chinese1rt.openway.push(4);
+//     chinese1rt.over.type = OverType.limitdate;
+//     chinese1rt.over.value = end;
+//
+//     chinese1.ji = plan.ji;
+//     chinese1.sd = day;
+//     chinese1.al = IsWholeday.NonWhole;
+//     chinese1.st = timeranges[0][0];
+//     chinese1.et = timeranges[0][1];
+//     chinese1.evn = "语文";
+//     chinese1.rtjson = chinese1rt;
+//
+//     await this.eventService.saveAgenda(chinese1);
+//
+// // 语文 | 数学 | 语文 | 数学 | 语文   09:30 ~ 10:15
+// // 第二节课 星期二、星期四 数学
+//     let math2: AgendaData = {} as AgendaData;
+//
+//     let math2rt: RtJson = new RtJson();
+//     math2rt.cycletype = CycleType.week;
+//     math2rt.openway.push(2);
+//     math2rt.openway.push(4);
+//     math2rt.over.type = OverType.limitdate;
+//     math2rt.over.value = end;
+//
+//     math2.ji = plan.ji;
+//     math2.sd = day;
+//     math2.al = IsWholeday.NonWhole;
+//     math2.st = timeranges[1][0];
+//     math2.et = timeranges[1][1];
+//     math2.evn = "数学";
+//     math2.rtjson = math2rt;
+//
+//     await this.eventService.saveAgenda(math2);
+//
+// // 第二节课 星期一、星期三、星期五 语文
+//     let chinese2: AgendaData = {} as AgendaData;
+//
+//     let chinese2rt: RtJson = new RtJson();
+//     chinese2rt.cycletype = CycleType.week;
+//     chinese2rt.openway.push(1);
+//     chinese2rt.openway.push(3);
+//     chinese2rt.openway.push(5);
+//     chinese2rt.over.type = OverType.limitdate;
+//     chinese2rt.over.value = end;
+//
+//     chinese2.ji = plan.ji;
+//     chinese2.sd = day;
+//     chinese2.al = IsWholeday.NonWhole;
+//     chinese2.st = timeranges[1][0];
+//     chinese2.et = timeranges[1][1];
+//     chinese2.evn = "语文";
+//     chinese2.rtjson = chinese2rt;
+//
+//     await this.eventService.saveAgenda(chinese2);
+//
+// // 品生 | 语文 | 体育 | 体育 | 语文   10:25 ~ 11:05
+// // 第三节课 星期一 品生
+//     let character3: AgendaData = {} as AgendaData;
+//
+//     let character3rt: RtJson = new RtJson();
+//     character3rt.cycletype = CycleType.week;
+//     character3rt.openway.push(1);
+//     character3rt.over.type = OverType.limitdate;
+//     character3rt.over.value = end;
+//
+//     character3.ji = plan.ji;
+//     character3.sd = day;
+//     character3.al = IsWholeday.NonWhole;
+//     character3.st = timeranges[2][0];
+//     character3.et = timeranges[2][1];
+//     character3.evn = "品生";
+//     character3.rtjson = character3rt;
+//
+//     await this.eventService.saveAgenda(character3);
+//
+// // 第三节课 星期三、星期四 体育
+//     let pe3: AgendaData = {} as AgendaData;
+//
+//     let pe3rt: RtJson = new RtJson();
+//     pe3rt.cycletype = CycleType.week;
+//     pe3rt.openway.push(3);
+//     pe3rt.openway.push(4);
+//     pe3rt.over.type = OverType.limitdate;
+//     pe3rt.over.value = end;
+//
+//     pe3.ji = plan.ji;
+//     pe3.sd = day;
+//     pe3.al = IsWholeday.NonWhole;
+//     pe3.st = timeranges[2][0];
+//     pe3.et = timeranges[2][1];
+//     pe3.evn = "体育";
+//     pe3.rtjson = pe3rt;
+//
+//     await this.eventService.saveAgenda(pe3);
+//
+// // 第三节课 星期二、星期五 语文
+//     let chinese3: AgendaData = {} as AgendaData;
+//
+//     let chinese3rt: RtJson = new RtJson();
+//     chinese3rt.cycletype = CycleType.week;
+//     chinese3rt.openway.push(2);
+//     chinese3rt.openway.push(5);
+//     chinese3rt.over.type = OverType.limitdate;
+//     chinese3rt.over.value = end;
+//
+//     chinese3.ji = plan.ji;
+//     chinese3.sd = day;
+//     chinese3.al = IsWholeday.NonWhole;
+//     chinese3.st = timeranges[2][0];
+//     chinese3.et = timeranges[2][1];
+//     chinese3.evn = "语文";
+//     chinese3.rtjson = chinese3rt;
+//
+//     await this.eventService.saveAgenda(chinese3);
+//
+// // 美术 | 品生 | 美术 | 写字 | 体育   14:00 ~ 14:40
+// // 第四节课 星期一、星期三 美术
+//     let art4: AgendaData = {} as AgendaData;
+//
+//     let art4rt: RtJson = new RtJson();
+//     art4rt.cycletype = CycleType.week;
+//     art4rt.openway.push(1);
+//     art4rt.openway.push(3);
+//     art4rt.over.type = OverType.limitdate;
+//     art4rt.over.value = end;
+//
+//     art4.ji = plan.ji;
+//     art4.sd = day;
+//     art4.al = IsWholeday.NonWhole;
+//     art4.st = timeranges[3][0];
+//     art4.et = timeranges[3][1];
+//     art4.evn = "美术";
+//     art4.rtjson = art4rt;
+//
+//     await this.eventService.saveAgenda(art4);
+//
+// // 第四节课 星期二 品生
+//     let character4: AgendaData = {} as AgendaData;
+//
+//     let character4rt: RtJson = new RtJson();
+//     character4rt.cycletype = CycleType.week;
+//     character4rt.openway.push(2);
+//     character4rt.over.type = OverType.limitdate;
+//     character4rt.over.value = end;
+//
+//     character4.ji = plan.ji;
+//     character4.sd = day;
+//     character4.al = IsWholeday.NonWhole;
+//     character4.st = timeranges[3][0];
+//     character4.et = timeranges[3][1];
+//     character4.evn = "品生";
+//     character4.rtjson = character4rt;
+//
+//     await this.eventService.saveAgenda(character4);
+//
+// // 第四节课 星期四 写字
+//     let writing4: AgendaData = {} as AgendaData;
+//
+//     let writing4rt: RtJson = new RtJson();
+//     writing4rt.cycletype = CycleType.week;
+//     writing4rt.openway.push(4);
+//     writing4rt.over.type = OverType.limitdate;
+//     writing4rt.over.value = end;
+//
+//     writing4.ji = plan.ji;
+//     writing4.sd = day;
+//     writing4.al = IsWholeday.NonWhole;
+//     writing4.st = timeranges[3][0];
+//     writing4.et = timeranges[3][1];
+//     writing4.evn = "写字";
+//     writing4.rtjson = writing4rt;
+//
+//     await this.eventService.saveAgenda(writing4);
+//
+// // 第四节课 星期五 体育
+//     let pe4: AgendaData = {} as AgendaData;
+//
+//     let pe4rt: RtJson = new RtJson();
+//     pe4rt.cycletype = CycleType.week;
+//     pe4rt.openway.push(5);
+//     pe4rt.over.type = OverType.limitdate;
+//     pe4rt.over.value = end;
+//
+//     pe4.ji = plan.ji;
+//     pe4.sd = day;
+//     pe4.al = IsWholeday.NonWhole;
+//     pe4.st = timeranges[3][0];
+//     pe4.et = timeranges[3][1];
+//     pe4.evn = "体育";
+//     pe4.rtjson = pe4rt;
+//
+//     await this.eventService.saveAgenda(pe4);
+//
+// // 音乐 | 体育 | 音乐 | 班队 | 品生   14:50 ~ 15:35
+// // 第五节课 星期一、星期三 音乐
+//     let music5: AgendaData = {} as AgendaData;
+//
+//     let music5rt: RtJson = new RtJson();
+//     music5rt.cycletype = CycleType.week;
+//     music5rt.openway.push(1);
+//     music5rt.openway.push(3);
+//     music5rt.over.type = OverType.limitdate;
+//     music5rt.over.value = end;
+//
+//     music5.ji = plan.ji;
+//     music5.sd = day;
+//     music5.al = IsWholeday.NonWhole;
+//     music5.st = timeranges[4][0];
+//     music5.et = timeranges[4][1];
+//     music5.evn = "音乐";
+//     music5.rtjson = music5rt;
+//
+//     await this.eventService.saveAgenda(music5);
+//
+// // 第五节课 星期二 体育
+//     let pe5: AgendaData = {} as AgendaData;
+//
+//     let pe5rt: RtJson = new RtJson();
+//     pe5rt.cycletype = CycleType.week;
+//     pe5rt.openway.push(2);
+//     pe5rt.over.type = OverType.limitdate;
+//     pe5rt.over.value = end;
+//
+//     pe5.ji = plan.ji;
+//     pe5.sd = day;
+//     pe5.al = IsWholeday.NonWhole;
+//     pe5.st = timeranges[4][0];
+//     pe5.et = timeranges[4][1];
+//     pe5.evn = "体育";
+//     pe5.rtjson = pe5rt;
+//
+//     await this.eventService.saveAgenda(pe5);
+//
+// // 第五节课 星期四 班队
+//     let activity5: AgendaData = {} as AgendaData;
+//
+//     let activity5rt: RtJson = new RtJson();
+//     activity5rt.cycletype = CycleType.week;
+//     activity5rt.openway.push(4);
+//     activity5rt.over.type = OverType.limitdate;
+//     activity5rt.over.value = end;
+//
+//     activity5.ji = plan.ji;
+//     activity5.sd = day;
+//     activity5.al = IsWholeday.NonWhole;
+//     activity5.st = timeranges[4][0];
+//     activity5.et = timeranges[4][1];
+//     activity5.evn = "班队";
+//     activity5.rtjson = activity5rt;
+//
+//     await this.eventService.saveAgenda(activity5);
+//
+// // 第五节课 星期五 品生
+//     let character5: AgendaData = {} as AgendaData;
+//
+//     let character5rt: RtJson = new RtJson();
+//     character5rt.cycletype = CycleType.week;
+//     character5rt.openway.push(5);
+//     character5rt.over.type = OverType.limitdate;
+//     character5rt.over.value = end;
+//
+//     character5.ji = plan.ji;
+//     character5.sd = day;
+//     character5.al = IsWholeday.NonWhole;
+//     character5.st = timeranges[4][0];
+//     character5.et = timeranges[4][1];
+//     character5.evn = "品生";
+//     character5.rtjson = character5rt;
+//
+//     await this.eventService.saveAgenda(character5);
+//
+// //  无  | 无  | 兴趣  |  无  | 无    15:45 ~ 16:25
+// // 第六节课 星期三 兴趣
+//     let interest5: AgendaData = {} as AgendaData;
+//
+//     let interest5rt: RtJson = new RtJson();
+//     interest5rt.cycletype = CycleType.week;
+//     interest5rt.openway.push(3);
+//     interest5rt.over.type = OverType.limitdate;
+//     interest5rt.over.value = end;
+//
+//     interest5.ji = plan.ji;
+//     interest5.sd = day;
+//     interest5.al = IsWholeday.NonWhole;
+//     interest5.st = timeranges[5][0];
+//     interest5.et = timeranges[5][1];
+//     interest5.evn = "兴趣";
+//     interest5.rtjson = interest5rt;
+//
+//     await this.eventService.saveAgenda(interest5);
+//
+//   }
 
 }

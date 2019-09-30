@@ -71,7 +71,10 @@ export class CalendarAnimation{
     }, true);
     var factor = 1 - Math.min(Math.abs(velocity) / 4, 0.7);
     var dur = ani.getDuration() * factor;
+
+
     ani.progressEnd(shouldComplete, currentStepValue, dur);
+
   }
 }
 

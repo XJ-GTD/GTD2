@@ -1,7 +1,7 @@
 import {ChangeDetectorRef, Component, ElementRef, Renderer, Renderer2, ViewChild} from '@angular/core';
 import {
   Content, DomController,
-  GestureController,
+  GestureController, IonicPage,
   MenuController,
   ModalController,
   Platform,
@@ -25,6 +25,7 @@ import {CalendarComponent} from "../../components/ion2-calendar";
  * See https://ionicframework.com/docs/components/#navigation for more info on
  * Ionic pages and navigation.
  */
+@IonicPage()
 @Component({
   selector: 'page-tdl',
   template:
@@ -181,7 +182,8 @@ export class TdlPage {
     this._gesture.listen();
   }
 
-  ngOnInit() {
+
+  ngAfterViewInit() {
     this.tdlServ.initLsData().then(data => {
       this.monthActivityDatas = data;
       this.gotoEl("#day" + moment().format("YYYYMMDD"));
