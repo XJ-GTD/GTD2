@@ -78,7 +78,7 @@ export class DataSyncProcess implements MQProcess {
         let agenda: AgendaData = {} as AgendaData;
         Object.assign(agenda, dsPara.data);
 
-        this.eventService.receivedAgendaData([agenda], convertSyncStatus(dsPara.status));
+        this.eventService.receivedAgendaData([agenda], this.convertSyncStatus(dsPara.status));
       }
     }
 
