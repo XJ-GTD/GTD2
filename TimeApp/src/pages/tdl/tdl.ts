@@ -52,11 +52,11 @@ import {CalendarComponent} from "../../components/ion2-calendar";
         <ng-template ngFor let-monthActivityData [ngForOf]="monthActivityDatas" >
           <ion-row class="item-content dayagenda-month {{monthActivityData.month  | formatedate :'CSSMM'}}" id="month{{monthActivityData.month | formatedate:'YYYYMM'}}">
             <div class="line">
-                <p class="month-a">
+                <p class="month-a font-large">
                   {{monthActivityData.month  | formatedate :"CYYYY/MM/ND"}}
                 </p>
             </div>
-            <div class="line">
+            <div class="line font-normal">
               <p class="month-b">
                 感知天气冷暖我们生来便会，感知人情冷暖还要慢慢体会。
               </p>

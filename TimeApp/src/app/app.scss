@@ -128,10 +128,21 @@
 html{
 
   //默认值16px
-  font-size: 100%;
+  //font-size: 100%;
+
 }
 
 body {
+
+  .font-small{
+    font-size: 1.2rem;;
+  }
+  .font-normal{
+    font-size: 1.4rem;;
+  }
+  .font-large{
+    font-size: 1.6rem;;
+  }
   //background-image:url('../assets/imgs/alback.jpg');
   //background-repeat:no-repeat;
   //background-size:100% 100%;
@@ -262,7 +273,7 @@ body {
             bottom: 1rem;
             left: 1rem;
             width: auto;
-            font-size: 1.5rem;
+            font-size: 2.4rem;
             font-weight: 500;
             .subtilte{
               font-size: 0.875rem;
@@ -281,7 +292,7 @@ body {
           .icon {
             margin: 0 0.75rem;
             padding: 0 0.25rem;
-            font-size: 1.5rem;
+            font-size: 2.4rem;
             font-weight: 500;
           }
         }
@@ -316,9 +327,6 @@ body {
 
       }
     }
-  }
-  .fab ion-icon{
-    font-size: 1.8rem;
   }
 
 }

@@ -15,7 +15,7 @@ import {IonicPage, NavController, NavParams} from 'ionic-angular';
       `
     <page-box title="服务条款和隐私政策" [buttons]="buttons" (onBack)="goBack()">
 
-      <ion-content padding>
+      <ion-content padding class="font-normal">
         <p>
           本应用尊重并保护所有使用服务用户的个人隐私权。<br/>
           为了给您提供更准确、更有个性化的服务，本应用会按照本隐私权政策的规定使用和披露您的个人信息。<br/>

@@ -8,7 +8,6 @@ page-cf {
   }
 
   ion-header ion-title {
-    line-height: 1.5rem;
   }
 
   .img-header-left, .img-header-right {
@@ -18,12 +17,9 @@ page-cf {
 
   .toolbar-title{
     color: white;
-    letter-spacing: 0.5vmin;
-    font-size: 1.5rem;
   }
 
   .button-header-right{
-    font-size: 1.5rem;
     color: $adornColor;
   }
 
@@ -55,20 +51,16 @@ page-cf {
   }
 
   p.title {
-    font-size: 1.7rem;
   }
 
   .endwith {
-    margin-left: calc(-1.4rem - 14px);
     
     .item-block {
-      min-height: 2.4rem;
     }
 
     .item-ios {
       background-color: transparent;
       padding-left: 0px;
-      font-size: 1.4rem;
       color: #fff;
 
       .label-ios {

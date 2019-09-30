@@ -60,19 +60,12 @@ page-fs4c, page-fs4g, page-fs4fo {
 
   .toolbar-title{
     color: white;
-    letter-spacing: 0.5vmin;
-    font-size: 1.5rem;
   }
 
   .button-header-right{
-    font-size: 1.5rem;
     color: $adornColor;
   }
 
-  ion-input{
-    font-size: 1.5rem;
-    color: $fontMasterColor;
-  }
 
   ion-content.content {
     background-color: $baseBackColor;

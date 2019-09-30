@@ -10,11 +10,11 @@ import * as moment from "moment";
       <div class="itemwarp selectype">
         <ion-toolbar>
           <ion-buttons item-start>
-            <button clear ion-button [class.noselect]="pagedata.type == '1'" (click)="changeType('0')">
+            <button clear ion-button [class.noselect]="pagedata.type == '1'" (click)="changeType('0')" class="font-normal">
               <ion-icon class="fal fa-arrow-alt-from-left"></ion-icon>
               设置开始日期
             </button>
-            <button clear ion-button [class.noselect]="pagedata.type == '0'" (click)="changeType('1')">
+            <button clear ion-button [class.noselect]="pagedata.type == '0'" (click)="changeType('1')" class="font-normal">
               <ion-icon class="fal fa-arrow-alt-from-right"></ion-icon>
               设置截止日期
             </button>
@@ -23,20 +23,20 @@ import * as moment from "moment";
       </div>
 
 
-      <div ion-item no-border no-padding no-lines no-margin class="itemwarp" *ngIf="pagedata.type==0">
+      <div ion-item no-border no-padding no-lines no-margin class="itemwarp font-normal" *ngIf="pagedata.type==0">
         <date-picker  #startDate item-content [ngModel]="pagedata.sd"
                       pickerFormat="YYYY ,MM DD" displayFormat="YYYY 年 MM 月 DD 日"
                       cancelText="取消" doneText="选择" (ionChange) = "calcCt()"
         ></date-picker>
         <ion-label><ion-icon class="fal fa-calendar-alt"></ion-icon>开始日期</ion-label>
       </div>
-      <div ion-item no-border no-padding no-lines no-margin class="itemwarp" *ngIf="pagedata.type==0">
+      <div ion-item no-border no-padding no-lines no-margin class="itemwarp font-normal" *ngIf="pagedata.type==0">
         <date-picker #startTime  [ngModel]="pagedata.st" item-content pickerFormat="A hh mm  " displayFormat="A hh 点 mm 分" (ionChange) = "calcCt()"
                      doneText="选择"
         ></date-picker>
         <ion-label><ion-icon class="fal fa-clock"></ion-icon>开始时间</ion-label>
       </div>
-      <div ion-item no-border no-padding no-lines no-margin class="itemwarp">
+      <div ion-item no-border no-padding no-lines no-margin class="itemwarp font-normal">
         <date-picker  #endDate item-content [ngModel]="pagedata.ed"
                       pickerFormat="YYYY ,MM DD" displayFormat="YYYY 年 MM 月 DD 日" (ionChange) = "calcCt()"
                       cancelText="取消" doneText="选择"
@@ -44,14 +44,14 @@ import * as moment from "moment";
         <ion-label><ion-icon class="fal fa-calendar-alt"></ion-icon>结束日期</ion-label>
       </div>
 
-      <div ion-item no-border no-padding no-lines no-margin class="itemwarp">
+      <div ion-item no-border no-padding no-lines no-margin class="itemwarp font-normal">
         <date-picker #endTime [ngModel]="pagedata.et" item-content pickerFormat="A hh 点 mm 分" (ionChange) = "calcCt()"
                      doneText="选择"
         ></date-picker>
         <ion-label><ion-icon class="fal fa-clock"></ion-icon>结束时间</ion-label>
       </div>
 
-      <div ion-item no-border no-padding no-lines no-margin class="itemwarp" *ngIf="pagedata.type==0">
+      <div ion-item no-border no-padding no-lines no-margin class="itemwarp font-normal" *ngIf="pagedata.type==0">
         <ion-label>时长{{pagedata.ct | formatedate:"duration"}}</ion-label>
       </div>
      

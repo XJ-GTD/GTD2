@@ -1,27 +1,27 @@
 task-list {
   .grid{
     width: 100%;
-    padding: 1rem 0;
+    padding: 1.4rem 0;
   }
   .notask{
-    margin: 5.5rem auto;
+    margin: 10rem auto;
     text-align: center;
     .icon{
-     font-size: 9rem ;
+     font-size: 20rem ;
       clear: both;
       display: block;
     }
     span{
-      font-size: 1rem;
-      margin: 1.25rem auto;
+      font-size: 1.6rem;
+      margin: 2.5rem auto;
       display: block;
     }
     button{
       display: block;
       margin: 7.5rem auto;
-      font-size: 1.125rem;
-      padding: 1rem 5rem;
-      border-radius: 0.25rem;
+      font-size: 2rem;
+      padding: 1.5rem 8rem;
+      border-radius: 5px;
 
     }
   }

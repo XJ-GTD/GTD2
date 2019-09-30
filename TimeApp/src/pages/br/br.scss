@@ -29,12 +29,8 @@ page-br {
   .toolbar-title{
     color: white;
     letter-spacing: 0.5vmin;
-    font-size: 1.5rem;
   }
 
-  ion-input{
-    font-size: 1.5rem;
-  }
 
   ion-content.content {
     background-color: $baseBackColor;
@@ -45,7 +41,6 @@ page-br {
     background-color: $baseBackColor;
     color: #fff;
     padding-left: 8px;
-    font-size: 1.5rem;
     min-height: 9vmin;
   }
 
