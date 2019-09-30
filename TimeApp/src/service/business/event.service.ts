@@ -88,6 +88,7 @@ export class EventService extends BaseService {
       }
 
       this.sqlExce.batExecSqlByParam(sqlparam);
+      this.emitService.emit("pull agenda data update", pullAgdatas);
     }
 
     return pullAgdatas;
