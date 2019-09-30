@@ -69,6 +69,19 @@ export class DataSyncProcess implements MQProcess {
       }
     }
 
+    //拉取数据直接保存
+    if (content.option == DS.DS) {
+      //处理所需要参数
+      let dsPara: DataSyncPara = content.parameters;
+
+      if (dsPara.type == "Agenda") {
+        let agenda: AgendaData = {} as AgendaData;
+        Object.assign(agenda, dsPara.data);
+
+        this.eventService.receivedAgendaData([agenda], dsPara.status);
+      }
+    }
+
     return contextRetMap
   }
 

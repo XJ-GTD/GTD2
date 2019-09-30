@@ -5,7 +5,7 @@ function shouldclean(datasource)
   // filter source code here start
   var input = JSON.parse(datasource);
 
-  if (input !== undefined && input['from'] && input['to'] && input['header'] && input['datas']) {
+  if (input !== undefined && input['from'] && input['header'] && input['datas']) {
 
     return true;
   }
@@ -26,7 +26,6 @@ function clean(datasource)
   // filter source code here start
   var input = JSON.parse(datasource);
 
-  var name = input['name'];
   var from = input['from'];
   var to = input['to'];
   var copyto = input['copyto'];
@@ -102,70 +101,117 @@ function clean(datasource)
     return output;
   }
 
+  var convertDataMessage = function(id, type, status, payload) {
+    var output = {};
+
+    // 返回消息头部
+    output.header = {
+    	version: 'V1.1',
+      sender: 'xunfei',
+      datetime: formatDateTime(new Date()),
+      describe: ['DS']
+    };
+
+    output.content = {};
+
+    // 日程共享操作类型设置
+    output.content['0'] = {
+      processor: 'DS',
+      option: 'DS.DS',
+      parameters: {
+        type: type,
+        id: id,
+        status: status,
+        data: payload
+      }
+    };
+
+    return output;
+  }
+
   var outputs = [];
   var requestdevice = header['di'];
 
   // 逐条处理
-  for (var index in datas) {
-    var data = datas[index];
+  if (to) { // 同步/推送通知
+    for (var index in datas) {
+      var data = datas[index];
 
-    var src = data['src'];
-    var id = data['id'];
-    var type = data['type'];
-    var todevice = data['todevice'];
-    var title = data['title'];
-    var datetime = data['datetime'];
-    var main = data['main'];
+      var src = data['src'];
+      var id = data['id'];
+      var type = data['type'];
+      var todevice = data['todevice'];
+      var title = data['title'];
+      var datetime = data['datetime'];
+      var main = data['main'];
 
-    // 本帐户同步
-    if (from == to) {
-      // 请求设备同步
-      if (requestdevice == todevice) {
+      // 本帐户同步
+      if (from == to) {
+        // 请求设备同步
+        if (requestdevice == todevice) {
+          var standardnext = {};
+
+          standardnext.announceTo = [to];
+          standardnext.announceDevice = todevice;
+          standardnext.announceType = 'data_sync';
+          standardnext.announceContent = {
+            mwxing: convertMessage(id, type, title, 'SELF_DEVICE'),
+            sms: {},
+            push: {}
+          };
+
+          outputs.push(standardnext);
+        } else {  // 他设备同步
+          var standardnext = {};
+
+          standardnext.announceTo = [to];
+          standardnext.announceDevice = todevice;
+          standardnext.announceType = 'data_sync';
+          standardnext.announceContent = {
+            mwxing: convertMessage(id, type, title, 'SELF_ACCOUNT'),
+            sms: {},
+            push: {}
+          };
+
+          outputs.push(standardnext);
+        }
+      } else {  // 他账户共享
         var standardnext = {};
 
         standardnext.announceTo = [to];
         standardnext.announceDevice = todevice;
         standardnext.announceType = 'data_sync';
         standardnext.announceContent = {
-          mwxing: convertMessage(id, type, title, 'SELF_DEVICE'),
-          sms: {},
-          push: {}
-        };
-
-        outputs.push(standardnext);
-      } else {  // 他设备同步
-        var standardnext = {};
-
-        standardnext.announceTo = [to];
-        standardnext.announceDevice = todevice;
-        standardnext.announceType = 'data_sync';
-        standardnext.announceContent = {
-          mwxing: convertMessage(id, type, title, 'SELF_ACCOUNT'),
-          sms: {},
-          push: {}
+          mwxing: convertMessage(id, type, title, 'OTHER_ACCOUNT'),
+          sms: convertSMS(title),
+          push: convertPushMessage(id, type, title, datetime)
         };
 
         outputs.push(standardnext);
       }
-    } else {  // 他账户共享
+    }
+  } else {  // 推送数据
+    for (var index in datas) {
+      var data = datas[index];
+
+      var id = data['id'];
+      var type = data['type'];
+      var status = data['status'];
+      var payload = data['payload'];
+
       var standardnext = {};
 
-      standardnext.announceTo = [to];
-      standardnext.announceDevice = todevice;
+      standardnext.announceTo = [from];
+      standardnext.announceDevice = requestdevice;
       standardnext.announceType = 'data_sync';
       standardnext.announceContent = {
-        mwxing: convertMessage(id, type, title, 'OTHER_ACCOUNT'),
-        sms: convertSMS(title),
-        push: convertPushMessage(id, type, title, datetime)
+        mwxing: convertDataMessage(id, type, status, payload),
+        sms: {},
+        push: {}
       };
 
       outputs.push(standardnext);
     }
-  }
-
-  // 判断发送对象是否未注册
-  if (!copyto || !copyto.openid) {
-  } else {
   }
 
   print({announces: outputs});

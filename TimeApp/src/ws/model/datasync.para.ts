@@ -10,4 +10,8 @@ export class DataSyncPara {
   type:string;
   //数据ID
   id:string;
+  //数据状态 删除或非删除
+  status:string;
+  //数据
+  data:any;
 }
