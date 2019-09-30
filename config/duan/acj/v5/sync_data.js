@@ -165,8 +165,8 @@ function clean(datasource)
   } else {
   }
 
-  print(outputs);
+  print({announces: outputs});
 
   // filter source code here end
-  return JSON.stringify(outputs);
+  return JSON.stringify({announces: outputs});
 }
