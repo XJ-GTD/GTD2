@@ -16,16 +16,6 @@ export class GlService {
     else
       return UserConfig.groups;
   }
-
-  //获取本地群列表
-  getMemberGroups(name:string):Array<PageDcData> {
-    if (name)
-      return UserConfig.memberGroups.filter((value)=>{
-        return value.gn.indexOf(name) > -1 || value.gnpy.indexOf(name) > -1
-      });
-    else
-      return UserConfig.memberGroups;
-  }
 }
 
 export class PageGlData {
