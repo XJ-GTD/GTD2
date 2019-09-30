@@ -2418,6 +2418,7 @@ export class EventService extends BaseService {
         sync.id = agenda.evi;
         sync.type = "Agenda";
         sync.title = agenda.evn;
+        sync.datetime = agenda.evd + " " + agenda.evt;
 
         // 非重复日程/重复日程的第一条需要通知
         if (!agenda.rtevi || agenda.rfg == RepeatFlag.RepeatToOnly) {
