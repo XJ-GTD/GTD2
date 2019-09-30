@@ -2465,6 +2465,21 @@ export class EventService extends BaseService {
 		return ;
   }
 
+  /**
+   * 完成日程同步,更新日程同步状态
+   *
+   * @author leon_xi@163.com
+   */
+  async acceptSyncAgendas(ids: Array<string>) {
+    let sqls: Array<any> = new Array<any>();
+
+    let sql: string = `update gtd_ev set tb = ? where evi in (' + ids.join(', ') + ')`;
+
+    sqls.push([sql, [SyncType.synch]]);
+
+    await this.sqlExce.batExecSqlByParam(sqls);
+  }
+
 	/**
 	 * 发送任务进行共享
 	 * @author ying<343253410@qq.com>
