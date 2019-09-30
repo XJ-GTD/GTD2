@@ -1223,7 +1223,7 @@ export class EventService extends BaseService {
     let doType : DoType;
 
     doType = this.hasAgendaModifyDo(newAgdata,oriAgdata,modiType);
-
+    newAgdata.tb = anyenum.SyncType.unsynch;
     //判断进行本地更新
     if (doType == DoType.Local){
       let ev = new EvTbl();
@@ -1240,6 +1240,7 @@ export class EventService extends BaseService {
       ev.adr = newAgdata.adr;
       ev.adrx = newAgdata.adrx;
       ev.adry = newAgdata.adry;
+      ev.tb = newAgdata.tb ;
       sqlparam.push(ev.upTParam());
 
       //主evi设定
