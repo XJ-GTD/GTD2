@@ -1230,6 +1230,10 @@ export class EventService extends BaseService {
 
     doType = this.hasAgendaModifyDo(newAgdata,oriAgdata,modiType);
     newAgdata.tb = anyenum.SyncType.unsynch;
+
+    let tos : string;//需要发送的参与人手机号
+    tos = this.getMemberPhone(newAgdata.members);
+
     //判断进行本地更新
     if (doType == DoType.Local){
       let ev = new EvTbl();
@@ -1305,8 +1309,7 @@ export class EventService extends BaseService {
 
     newAgdata.mi = UserConfig.account.id;
 
-    let tos : string;//需要发送的参与人手机号
-    tos = this.getMemberPhone(newAgdata.members);
+
 
     /*如果只改当天，则
     1.修改当前数据内容 2.日程表新增一条对应数据 3重建相关提醒
