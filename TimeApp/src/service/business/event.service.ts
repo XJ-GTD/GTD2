@@ -835,12 +835,14 @@ export class EventService extends BaseService {
     pars = await this.sqlExce.getLstByParam<ParTbl>(par);
     for (let j = 0, len = pars.length; j < len; j++) {
       let member = {} as Member;
+      Object.assign(member,pars[j]);
       let fs : FsData;
       fs = this.userConfig.GetOneBTbl(pars[j].pwi);
       if(fs && fs != null){
         Object.assign(member,fs);
-        members.push(member);
+
       }
+      members.push(member);
     }
     return members;
   }
