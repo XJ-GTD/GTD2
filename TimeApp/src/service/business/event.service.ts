@@ -2442,13 +2442,13 @@ export class EventService extends BaseService {
   		agendas = await this.sqlExce.getExtLstByParam<AgendaData>(sql, [anyenum.EventType.Agenda, SyncType.unsynch]) || agendas;
 
   		let sqlmember: string = ` select par.*  , 
-  		                              b.ran
-                                   b.ranpy
-                                   b.hiu
-                                   b.rn
-                                   b.rnpy
-                                   b.rc
-                                   b.rel
+  		                              b.ran,
+                                   b.ranpy,
+                                   b.hiu,
+                                   b.rn,
+                                   b.rnpy,
+                                   b.rc,
+                                   b.rel,
                                    b.src
   		                        from (select 
                                     case when rfg = '2' then evi 
