@@ -78,11 +78,22 @@ export class DataSyncProcess implements MQProcess {
         let agenda: AgendaData = {} as AgendaData;
         Object.assign(agenda, dsPara.data);
 
-        this.eventService.receivedAgendaData([agenda], dsPara.status);
+        this.eventService.receivedAgendaData([agenda], convertSyncStatus(dsPara.status));
       }
     }
 
     return contextRetMap
   }
 
+  private convertSyncStatus(status: string): SyncDataStatus {
+    if (status == SyncDataStatus.Deleted) {
+      return SyncDataStatus.Deleted;
+    }
+
+    if (status == SyncDataStatus.UnDeleted) {
+      return SyncDataStatus.UnDeleted;
+    }
+
+    return SyncDataStatus.UnDeleted;
+  }
 }
