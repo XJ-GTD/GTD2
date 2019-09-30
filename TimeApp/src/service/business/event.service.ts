@@ -1101,6 +1101,7 @@ export class EventService extends BaseService {
       console.log("**** updateAgenda end :****" + moment().format("YYYY/MM/DD HH:mm:ss SSS"))
 
       this.emitService.emit("mwxing.calendar.activities.changed", outAgdatas);
+      this.syncAgendas(outAgdatas);
 
       return outAgdatas;
 
@@ -1121,6 +1122,7 @@ export class EventService extends BaseService {
       this.emitService.emitRef(newAgdata.sd);
 
       this.emitService.emit("mwxing.calendar.activities.changed", retParamEv.outAgdatas);
+      this.syncAgendas(retParamEv.outAgdatas);
 
       return retParamEv.outAgdatas;
     }
@@ -2431,9 +2433,9 @@ export class EventService extends BaseService {
 
     if (agendas.length <= 0) {
       let sql: string = `select ev.*, ca.sd, ca.ed, ca.st, ca.et, ca.al, ca.ct
-                        from (select *, 
-                        case when rfg = '2' then evi 
-                             when ifnull(rtevi, '') = '' then evi 
+                        from (select *,
+                        case when rfg = '2' then evi
+                             when ifnull(rtevi, '') = '' then evi
                              else rtevi end forceevi
                           from gtd_ev
                           where ui <> '' and ui is not null and type = ?1 and tb = ?2) ev
@@ -2441,7 +2443,7 @@ export class EventService extends BaseService {
                         on ca.evi = ev.forceevi`;
   		agendas = await this.sqlExce.getExtLstByParam<AgendaData>(sql, [anyenum.EventType.Agenda, SyncType.unsynch]) || agendas;
 
-  		let sqlmember: string = ` select par.*  , 
+  		let sqlmember: string = ` select par.*  ,
   		                              b.ran,
                                    b.ranpy,
                                    b.hiu,
@@ -2450,15 +2452,15 @@ export class EventService extends BaseService {
                                    b.rc,
                                    b.rel,
                                    b.src
-  		                        from (select 
-                                    case when rfg = '2' then evi 
-                                       when ifnull(rtevi, '') = '' then evi 
+  		                        from (select
+                                    case when rfg = '2' then evi
+                                       when ifnull(rtevi, '') = '' then evi
                                        else rtevi end forceevi
                                     from gtd_ev
                                     where ui <> '' and ui is not null and type = ?1 and tb = ?2) ev
-                              inner join gtd_par par 
-                              on ev.forceevi = par.obi and par.obt = ?3 
-                              inner join gtd_b b 
+                              inner join gtd_par par
+                              on ev.forceevi = par.obi and par.obt = ?3
+                              inner join gtd_b b
                               on par.pwi = b.pwi `;
       members =  await this.sqlExce.getExtLstByParam<Member>(sqlmember,
         [anyenum.EventType.Agenda, SyncType.unsynch,anyenum.ObjectType.Event]) || members;
