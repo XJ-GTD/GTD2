@@ -2441,7 +2441,7 @@ export class EventService extends BaseService {
                         on ca.evi = ev.forceevi`;
   		agendas = await this.sqlExce.getExtLstByParam<AgendaData>(sql, [anyenum.EventType.Agenda, SyncType.unsynch]) || agendas;
 
-  		let sqlmember: string = ` select par.* from  
+  		let sqlmember: string = ` select par.*   
   		                        from (select 
                                     case when rfg = '2' then evi 
                                        when ifnull(rtevi, '') = '' then evi 
