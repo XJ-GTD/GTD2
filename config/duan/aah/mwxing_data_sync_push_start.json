@@ -57,6 +57,39 @@
                           "copyto",
                           "header",
                           "datas"
+                        ],
+                        "next": [
+                          {
+                            "name": "生成推送数据",
+                            "trigger": "acj",
+                            "parameters": [
+                                "ruleid;MWXING_DATASYNC_V1_5",
+                                "datasource;$.parent.outputs"
+                            ],
+                            "outputs": [
+                                "cleaned"
+                            ],
+                            "next": [
+                              {
+                                "type": "loop",
+                                "variable": "announce;$.parent.outputs.cleaned.announces[*]",
+                                "start": "0",
+                                "end": "size",
+                                "task": {
+                                    "name": "冥王星通知服务",
+                                    "trigger": "ann",
+                                    "parameters": [
+                                        "announceTo;$.parent.outputs.cleaned.announces[##announce_value##].announceTo",
+                                        "announceType;$.parent.outputs.cleaned.announces[##announce_value##].announceType",
+                                        "announceContent;$.parent.outputs.cleaned.announces[##announce_value##].announceContent"
+                                    ],
+                                    "outputs": [
+                                        "result"
+                                    ]
+                                }
+                              }
+                            ]
+                          }
                         ]
                       }
                     ]

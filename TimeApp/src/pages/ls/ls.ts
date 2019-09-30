@@ -19,21 +19,21 @@ import {PageLoginData} from "../../data.mapping";
   <ion-content>
     <h1>短信登录</h1>
     <ion-grid class="grid-login-basic no-padding-lr">
-      <ion-row justify-content-start align-items-center>
-        <div class="w-auto">
+      <ion-row justify-content-between align-items-center>
+        <div >
           <ion-input class="login-tel" type="tel" placeholder="开始输入手机号" [(ngModel)]="login.phoneno" (input)="format()"></ion-input>
         </div>
         <div>
-          <button ion-button class="send-sms" (click)="sendSms()">{{timeText}}</button>
+          <button ion-button  class="send-sms" (click)="sendSms()">{{timeText}}</button>
         </div>
       </ion-row>
       <ion-row justify-content-between align-items-center>
-        <div class="w-auto">
+        <div >
           <ion-input class="login-code"  type="number" placeholder="短信验证码" [(ngModel)]="login.verifycode" (input)="format()"></ion-input>
         </div>
         <div>
           <button ion-fab class="login-enter" [ngStyle]="{'opacity': opa }" (click)="signIn()">
-            <img class="img-content-enter" src="./assets/imgs/xyb.png">
+            <ion-icon class="fal fa-sign-in-alt"></ion-icon>
           </button>
         </div>
       </ion-row>

@@ -154,7 +154,6 @@ $baseBackcolor_black: rgba(0, 12, 31, 1);
         .agenda-tool {
             .icon {
               color:rgba(255, 255, 255, 1);
-              border-bottom :1px rgba(201, 200, 200, 0.4) solid;
             }
         }
 
@@ -262,7 +261,7 @@ $baseBackcolor_black: rgba(0, 12, 31, 1);
       }
     }
 
-    .box-content {
+    .page-content {
       .fixed-content {
         background-color: rgba(255, 255, 255, .05);
         box-shadow: 5px 3px 5px 0px rgba(0, 12, 31, 0.73);
@@ -271,28 +270,25 @@ $baseBackcolor_black: rgba(0, 12, 31, 1);
   }
 
   modal-box {
-    background:rgba(255,255,255,.95);
+    background:rgba(0,0,0,0.8);
     .box-header {
       ion-toolbar {
         ion-title {
           .toolbar-title {
-            color: rgba(17, 117, 141, 1);
+            color:rgba(235,239,250,1);
           }
         }
 
         .icon {
-          color: rgba(17, 117, 141, 1);
+          color:rgba(235,239,250,1);
         }
       }
     }
 
     .box-content {
       .fixed-content {
-        background: rgba(255, 255, 255, 1);
-        box-shadow: 0px 0px 5px 0px rgba(201, 200, 200, 0.28);
-      }
-      .memo-set {
-        color: rgba(51, 51, 51, 1);
+        background: rgba(12,24,42,1);
+        box-shadow:0px 0px 5px 0px rgba(12,12,12,0.73);
       }
     }
   }
@@ -469,6 +465,46 @@ $baseBackcolor_black: rgba(0, 12, 31, 1);
       }
     }
   }
+
+  page-remind {
+    .box-content {
+
+      .toolbar-ios {
+        button {
+          background: rgba(7,109,138,1);
+
+          .button-inner {
+            color:rgba(255,255,255,1);
+          }
+        }
+      }
+
+      .list-ios {
+        background:rgba(23,41,67,1);
+        box-shadow:0px 0px 5px 0px rgba(12,12,12,0.73);
+
+        .list-header-ios {
+          background:rgba(7,109,138,1);
+          color:rgba(255,255,255,1);
+          .count{
+            color:rgba(255, 255, 255, 1);
+          }
+        }
+
+        .item-block, .item-block:last-child {
+          border-bottom: 0.55px solid rgba(217,233,238,.4);
+
+          .item-inner {
+
+            ion-label, ion-icon {
+              color:rgba(235,239,250,1);
+            }
+          }
+        }
+      }
+    }
+  }
+
   page-ps {
     background: $baseBackcolor_black;
     page-box {

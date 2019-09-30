@@ -125,6 +125,11 @@
 //  url('https://www.guobaa.com/mif/static/xiaoji/fonts/L2ZkZC90aHltZWxlYWYvOTc0MC9qc29uLzk3NDE/PingFang-Regular.woff') format('woff'),
 //  url('https://www.guobaa.com/mif/static/xiaoji/fonts/L2ZkZC90aHltZWxlYWYvOTc0MC9qc29uLzk3NDE/PingFang-Regular.svg') format('svg');
 //}
+html{
+
+  //默认值16px
+  font-size: 100%;
+}
 
 body {
   //background-image:url('../assets/imgs/alback.jpg');
@@ -132,10 +137,6 @@ body {
   //background-size:100% 100%;
   //-moz-background-size:100% 100%;
   background: $baseBackColor;
-
-  //ion-app.ios{
-  //  font-size: 1rem;
-  //}
 
   .text-center {
     text-align: center;
@@ -228,6 +229,98 @@ body {
     padding-right: 0;
     border-width: 0;
   }
+
+
+  //主题页面布局控件
+
+  page-box,modal-box {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+
+    .box-modal,.box-page {
+      height: 100%;
+      padding: 0px 1rem;
+    }
+
+    .box-header {
+      height: 110px;
+
+      ion-toolbar {
+        height: 100%;
+        padding:0px 1rem;
+
+        .toolbar-background {
+          border-style: none;
+          background-color: transparent;
+        }
+
+        ion-title {
+          padding: 0;
+          .toolbar-title {
+            position: absolute;
+            bottom: 1rem;
+            left: 1rem;
+            width: auto;
+            font-size: 1.5rem;
+            font-weight: 500;
+            .subtilte{
+              font-size: 0.875rem;
+              padding: 4px 12px;
+              border-radius:2px;
+              margin-left: 4px;
+            }
+          }
+        }
+
+        .toolbar {
+          position: absolute;
+          width: auto;
+          right: 1rem;
+          bottom: 1rem;
+          .icon {
+            margin: 0 0.75rem;
+            padding: 0 0.25rem;
+            font-size: 1.5rem;
+            font-weight: 500;
+          }
+        }
+
+      }
+    }
+
+    .box-content {
+      .fixed-content {
+        border-top-left-radius: 4px;
+        border-top-right-radius: 4px;
+        //margin-bottom: 47px;
+
+      }
+
+      .scroll-content {
+        //margin-bottom: 49px;
+        overflow-y: hidden
+
+      }
+    }
+
+    .page-content {
+      .fixed-content {
+        border-radius: 4px;
+        margin-bottom: 47px;
+
+      }
+
+      .scroll-content {
+        margin-bottom: 49px;
+
+      }
+    }
+  }
+  .fab ion-icon{
+    font-size: 1.8rem;
+  }
+
 }
 
 @-webkit-keyframes spin {

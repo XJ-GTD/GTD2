@@ -2441,6 +2441,7 @@ export class EventService extends BaseService {
         sync.id = agenda.evi;
         sync.type = "Agenda";
         sync.title = agenda.evn;
+        sync.datetime = agenda.evd + " " + agenda.evt;
 
         // 非重复日程/重复日程的第一条需要通知
         if (!agenda.rtevi || agenda.rfg == RepeatFlag.RepeatToOnly) {
@@ -2482,6 +2483,21 @@ export class EventService extends BaseService {
     }
 
 		return ;
+  }
+
+  /**
+   * 完成日程同步,更新日程同步状态
+   *
+   * @author leon_xi@163.com
+   */
+  async acceptSyncAgendas(ids: Array<string>) {
+    let sqls: Array<any> = new Array<any>();
+
+    let sql: string = `update gtd_ev set tb = ? where evi in ('` + ids.join(', ') + `')`;
+
+    sqls.push([sql, [SyncType.synch]]);
+
+    await this.sqlExce.batExecSqlByParam(sqls);
   }
 
 	/**

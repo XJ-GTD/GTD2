@@ -12,7 +12,7 @@ import { TdlPageModule } from '../tdl/tdl.module';
     HPage,
   ],
   imports: [
-    IonicPageModule.forChild(HPage),
+    IonicPageModule,
     CalendarModule,
     BackComponentModule,
     TdlPageModule

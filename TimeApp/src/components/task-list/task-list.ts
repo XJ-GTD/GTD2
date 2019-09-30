@@ -10,28 +10,19 @@ import * as moment from "moment";
       <ion-row class="list-todolist-content task-item" *ngFor="let task of tasklist"  [ngClass]="{'complete': task.cs == '1'}" (click)="gotoDetail(task)" >
           <div class="agendaline">
             <div class="agenda-sn">{{task.evn}}</div>
-            <div class="agenda-tool" (click)="erease($event, task)">
-              <ion-icon class="fal fa-minus-circle">移除</ion-icon>
+            <div class="agenda-tool" >
+              <ion-icon class="fal fa-minus-circle" (click)="erease($event, task)"></ion-icon>
+              <ion-icon class="fal fa-check-circle"  (click)="complete($event, task)"></ion-icon>
             </div>
           </div>
           <div class="agendaline">
 
             <div class="agenda-warp">
-              <div class="agenda-icon">
-                <ion-icon class="{{(task.evd + ' ' + task.evt) | formatedate:'withNowcss'}}"></ion-icon>
-              </div>
-              <div class="agenda-st">{{(task.evd + ' ' + task.evt) | formatedate:'withNow'}}</div>
-            </div>
-            <div class="agenda-tool" (click)="complete($event, task)">
-              <ion-icon class="fal fa-check-circle">完成</ion-icon>
-            </div>
-          </div>
-        <div class="agendaline">
+              <div class="agenda-st"> <ion-icon class="{{(task.evd + ' ' + task.evt) | formatedate:'withNowcss'}}"></ion-icon> {{(task.evd + ' ' + task.evt) | formatedate:'withNow'}}</div>
 
-          <div class="agenda-warp">
-            <div  class="agenda-person">---来自小酒仙{{task.ui | formatuser: currentuser: friends}}</div>
+              <div  class="agenda-person">---来自小酒仙{{task.ui | formatuser: currentuser: friends}}</div>
+            </div>
           </div>
-        </div>
       </ion-row>
     </ion-grid>
     </ng-template>

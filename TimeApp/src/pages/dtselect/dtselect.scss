@@ -1,25 +1,64 @@
-page-dtselect{
+page-dtselect {
 
-  .itemwarp:first-child{
-    margin-top:37px
+  .toolbar-ios {
+    .toolbar-background-ios {
+      background: transparent;
+    }
+
+    .noselect{
+      background: rgba(201, 200, 200, 0.5);
+      .button-inner {
+        color: rgba(255, 255, 255, 1);
+      }
+    }
+
+    button {
+      background: rgba(217, 233, 238, 1);
+      margin: 0px;
+      padding: 12px 16px;
+      font-weight: 400;
+      height: 50px;
+      width: auto;
+      font-size: 16px;
+      border-radius: 2px;
+      .button-inner {
+        width: auto;
+        text-align: left;
+        color: rgba(7, 109, 138, 1);
+      }
+    }
+  }
+
+  .itemwarp:first-child {
+    margin-top: 37px;
+    border-width:0;
+    box-shadow:none;
 
   }
 
 
-  .itemwarp{
-    height:50px;
-    background:rgba(255,255,255,1);
-    box-shadow:0px 0px 5px 0px rgba(201,200,200,0.5);
-    border-radius:4px;
+  .itemwarp {
+    height: 50px;
+    background: rgba(255, 255, 255, 1);
+    box-shadow: 0px 0px 5px 0px rgba(201, 200, 200, 0.5);
+    border-radius: 4px;
     margin: 12px 14px;
     width: auto;
-    date-picker{
-      margin: 0 auto;
+
+    date-picker {
+      margin: 8px 16px 8px 0
+    }
+    .icon{
+      margin-right: 12px;
+      font-size: 14px;
     }
 
   }
-  .selectype{
+  .selectype {
     display: flex;
     width: 100%;
+  }
+  .label-ios{
+    margin-left: 14px;
   }
 }

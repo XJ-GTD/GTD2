@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { IonicPageModule } from 'ionic-angular';
 import { PPage } from './p';
 import {PService} from "./p.service";
+import {PageBoxComponentModule} from "../../components/page-box/page-box.module";
 
 @NgModule({
   declarations: [
@@ -9,6 +10,7 @@ import {PService} from "./p.service";
   ],
   imports: [
     IonicPageModule.forChild(PPage),
+    PageBoxComponentModule,
   ],
   providers: [
     PService,

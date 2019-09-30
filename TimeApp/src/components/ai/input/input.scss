@@ -5,12 +5,12 @@ inputcomponent {
   .help{
     display: inline-block;
     position:absolute;
-    bottom: 180px;
+    bottom: 11.25rem;
     color: $fontSecondColor;
-    padding:10px;
-    font-size: 16px;
+    padding: 0.625rem;
+    font-size: 1rem;
     .row{
-      margin: 10px;
+      margin: 0.625rem;
     }
 
   }
@@ -18,12 +18,12 @@ inputcomponent {
     transform: translateY(-9999px);
     transition: all 1s ease-in-out 0s;
     position: absolute;
-    bottom: 10px;
+    bottom: 0.625rem;
     width: 100%;
     //z-index:100;
     button{
       width: calc(100% - 28px);
-      height: 40px;
+      height: 2.5rem;
       margin: -5px 0 0 14px;
       //background: -webkit-linear-gradient(left, rgb(149, 58, 139), rgb(86, 82, 222)); /* Safari 5.1 - 6.0 */
       //background: -o-linear-gradient(right, rgb(149, 58, 139), rgb(86, 82, 222)); /* Opera 11.1 - 12.0 */

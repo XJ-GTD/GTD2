@@ -1688,10 +1688,10 @@ export class CalendarService extends BaseService {
     }
 
     // 设置关联数据删除标志
-    sqls.push([`update gtd_par set del = ?, tb = ? where obt = ? and obi in (' + itemsid.join(', ') + ')`, [DelType.del, SyncType.unsynch, ObjectType.Calendar]]);
-    sqls.push([`update gtd_fj set del = ?, tb = ? where obt = ? and obi in (' + itemsid.join(', ') + ')`, [DelType.del, SyncType.unsynch, ObjectType.Calendar]]);
-    sqls.push([`delete from gtd_wa where obt = ? and obi in (' + itemsid.join(', ') + ')`, [ObjectType.Calendar,]]);    // 提醒表
-    sqls.push([`delete from gtd_mrk where obt = ? and obi in (' + itemsid.join(', ') + ')`, [ObjectType.Calendar]]);   // 标签表
+    sqls.push([`update gtd_par set del = ?, tb = ? where obt = ? and obi in ('` + itemsid.join(', ') + `')`, [DelType.del, SyncType.unsynch, ObjectType.Calendar]]);
+    sqls.push([`update gtd_fj set del = ?, tb = ? where obt = ? and obi in ('` + itemsid.join(', ') + `')`, [DelType.del, SyncType.unsynch, ObjectType.Calendar]]);
+    sqls.push([`delete from gtd_wa where obt = ? and obi in ('` + itemsid.join(', ') + `')`, [ObjectType.Calendar]]);    // 提醒表
+    sqls.push([`delete from gtd_mrk where obt = ? and obi in ('` + itemsid.join(', ') + `')`, [ObjectType.Calendar]]);   // 标签表
 
     // 执行SQL
     await this.sqlExce.batExecSqlByParam(sqls);

@@ -44,24 +44,7 @@ import {AgendaPage} from "../agenda/agenda";
                       (viewShow) = "viewShow($event)">
         </ion-calendar>
         <page-tdl #tdl ></page-tdl>
-        <!--<ng-template [ngIf]="hdata.isShow">-->
-        <!--<p class="tipDay">-->
-        <!--<span class="showDay">{{hdata.showDay}}</span>-->
-        <!--<span class="showDay2">{{hdata.showDay2}}</span>-->
-        <!--<span class="showDay3" *ngFor="let jt of hdata.jtl" (click)="gotojt(jt)">{{jt.spn}}</span>-->
-        <!--</p>-->
-        <!--<p class="tipDay" *ngIf="hdata.things > 0"><a class="cls" (click)="gotodaily()">-->
-        <!--<ion-icon name="done-all"></ion-icon>-->
-        <!--{{hdata.things}} 个活动, {{hdata.newmessge}} 条新消息</a></p>-->
-        <!--<p class="tipDay"><a class="cls2" (click)="newcd()">-->
-        <!--<ion-icon name="add"></ion-icon>-->
-        <!--添加新事件</a></p>-->
-        <!--</ng-template>-->
       </div>
-      <!--<div class="rightm">-->
-      <!--&nbsp;-->
-      <!--</div>-->
-      <!--<AiComponent [ready]="aiready" #aiDiv></AiComponent>-->
       <ion-fab bottom right class="shortcut">
         <button ion-fab mini>
           <ion-icon name="add"></ion-icon>
@@ -154,13 +137,10 @@ export class HPage {
 
   }
 
+
   ionViewDidLoad() {
     // 初始化同步
     this.effectService.syncStart();
-  }
-
-
-  ngOnInit() {
 
      this.tdl.regeditCalendar(this.calendar);
     // websocket连接成功消息回调

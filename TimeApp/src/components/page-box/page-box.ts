@@ -55,7 +55,7 @@ import {Content, Events, Ion, IonicPage} from 'ionic-angular';
           </div>
         </ion-toolbar>
       </ion-header>
-      <ion-content class="box-content" #pagecontent>
+      <ion-content class="page-content" #pagecontent>
         <ng-content></ng-content>
       </ion-content>
     </div>

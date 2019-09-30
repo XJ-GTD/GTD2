@@ -23,8 +23,8 @@ export class SsService {
 
   //设置每日简报时间/事件
   putDailySummary(userId: string, timestamp: number, active: boolean) {
-    this.syncRestful.putDailySummary(userId, timestamp, active);
-    this.syncRestful.putHourlyWeather(userId);
+    // this.syncRestful.putDailySummary(userId, timestamp, active);
+    // this.syncRestful.putHourlyWeather(userId);
   }
 
   //设置 Fir.IM WebHook事件

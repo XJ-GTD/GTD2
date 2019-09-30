@@ -20,38 +20,38 @@ import {PageLoginData} from "../../data.mapping";
     <ion-content>
       <h1>注册账号</h1>
       <ion-grid class="grid-login-basic no-padding-lr">
-        <ion-row justify-content-start align-items-center>
-          <div class="w-auto">
-            <ion-input class="register-tel" type="tel" placeholder="开始输入电话号码" [(ngModel)]="login.phoneno" (input)="format()"></ion-input>
+        <ion-row justify-content-between align-items-center>
+          <div >
+            <ion-input class="login-tel" type="tel" placeholder="开始输入电话号码" [(ngModel)]="login.phoneno" (input)="format()"></ion-input>
           </div>
           <div>
             <button ion-button class="send-sms" (click)="sendSms()">{{timeText}}</button>
           </div>
         </ion-row>
         <ion-row justify-content-between align-items-center>
-          <div class="w-auto">
-            <ion-input class="register-code"  type="number" placeholder="短信验证码" [(ngModel)]="login.verifycode" (input)="format()"></ion-input>
+          <div >
+            <ion-input class="login-r-code"  type="number" placeholder="短信验证码" [(ngModel)]="login.verifycode" (input)="format()"></ion-input>
           </div>
         </ion-row>
         <ion-row justify-content-between align-items-center>
-          <div class="w-auto">
-            <ion-input class="register-name"  type="text" placeholder="您的尊称" [(ngModel)]="login.username" (input)="format()"></ion-input>
+          <div >
+            <ion-input class="login-tel"  type="text" placeholder="您的尊称" [(ngModel)]="login.username" (input)="format()"></ion-input>
           </div>
         </ion-row>
         <ion-row justify-content-between align-items-center>
-          <div class="w-auto">
-            <ion-input class="register-pwd" type="password" placeholder="密码" [(ngModel)]="login.userpassword" (input)="format()"></ion-input>
+          <div >
+            <ion-input class="login-r-pwd" type="password" placeholder="密码" [(ngModel)]="login.userpassword" (input)="format()"></ion-input>
           </div>
           <div>
             <button ion-fab class="login-enter" [ngStyle]="{'opacity': opa }" (click)="register()">
-              <img class="img-content-enter" src="./assets/imgs/xyb.png">
+              <ion-icon class="fal fa-sign-in-alt"></ion-icon>
             </button>
           </div>
         </ion-row>
       </ion-grid>
 
-     <div class="register-div" (click)="toLp()">改为用账号登录</div>
-      <div class="register-div" (click)="toLs()">改为用短信验证码登录</div>
+     <div class="login-div" (click)="toLp()">改为用账号登录</div>
+      <div class="login-div" (click)="toLs()">改为用短信验证码登录</div>
 
       <p class="text-agreement">创建帐户即表示您同意我们的 <a class="text-anchor" (click)="userAgreement()">服务条款</a> 和 <a class="text-anchor" (click)="userAgreement()">隐私政策</a> 。</p>
     </ion-content>
