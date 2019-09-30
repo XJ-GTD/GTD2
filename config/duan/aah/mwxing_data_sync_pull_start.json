@@ -20,7 +20,22 @@
                 "data;$.parent.parameters.d"
             ],
             "outputs": [
-                "cleaned"
+                "from",
+                "header",
+                "datas"
+            ],
+            "next": [
+              {
+                "name": "生成推送数据",
+                "trigger": "acj",
+                "parameters": [
+                    "ruleid;MWXING_DATASYNC_V1_5",
+                    "datasource;$.parent.outputs"
+                ],
+                "outputs": [
+                    "cleaned"
+                ],
+              }
             ]
         }
     ]

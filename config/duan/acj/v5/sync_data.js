@@ -124,7 +124,8 @@ function clean(datasource)
         var standardnext = {};
 
         standardnext.announceTo = [to];
-        standardnext.announceType = 'agenda_from_share';
+        standardnext.announceDevice = todevice;
+        standardnext.announceType = 'data_sync';
         standardnext.announceContent = {
           mwxing: convertMessage(id, type, title, 'SELF_DEVICE'),
           sms: {},
@@ -136,7 +137,8 @@ function clean(datasource)
         var standardnext = {};
 
         standardnext.announceTo = [to];
-        standardnext.announceType = 'agenda_from_share';
+        standardnext.announceDevice = todevice;
+        standardnext.announceType = 'data_sync';
         standardnext.announceContent = {
           mwxing: convertMessage(id, type, title, 'SELF_ACCOUNT'),
           sms: {},
@@ -149,7 +151,8 @@ function clean(datasource)
       var standardnext = {};
 
       standardnext.announceTo = [to];
-      standardnext.announceType = 'agenda_from_share';
+      standardnext.announceDevice = todevice;
+      standardnext.announceType = 'data_sync';
       standardnext.announceContent = {
         mwxing: convertMessage(id, type, title, 'OTHER_ACCOUNT'),
         sms: convertSMS(title),
