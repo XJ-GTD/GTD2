@@ -2450,7 +2450,7 @@ export class EventService extends BaseService {
   		let sqlmember: string = ` select par.*  ,
   		                              b.ran,
                                    b.ranpy,
-                                   '' b.hiu,
+                                   '' hiu,
                                    b.rn,
                                    b.rnpy,
                                    b.rc,
