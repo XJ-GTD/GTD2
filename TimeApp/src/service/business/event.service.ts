@@ -1303,6 +1303,7 @@ export class EventService extends BaseService {
         sqlparam.push([sq,params]);
       }
       this.sqlExce.batExecSqlByParam(sqlparam);
+      newAgdata.tos = tos;
       outAgds.push(newAgdata);
       return outAgds;
     }
