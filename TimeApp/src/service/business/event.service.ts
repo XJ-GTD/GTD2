@@ -2526,7 +2526,7 @@ export class EventService extends BaseService {
           agenda.tos = this.getMemberPhone(membersTos);
         }
         sync.to = (!agenda.tos || agenda.tos == "" || agenda.tos == null) ? [] : agenda.tos.split(",") ;
-        sync.payload = agenda;
+        sync.payload = this.cleanAgendaPayload(agenda);
         push.d.push(sync);
 
         index++;
@@ -2543,6 +2543,52 @@ export class EventService extends BaseService {
     }
 
 		return ;
+  }
+
+  /**
+   * 清除同步到云服务日程数据内容
+   *
+   * @author leon_xi@163.com
+   */
+  cleanAgendaPayload(payload: AgendaData): AgendaData {
+    assertEmpty(payload);   // 入参不能为空
+
+    let cleaned: AgendaData = {} as AgendaData;
+    Object.assign(cleaned, payload);
+
+    // 重复临时属性置空
+    cleaned.rtjson = "";
+
+    // 提醒临时属性置空
+    cleaned.txjson = "";
+
+    // 清除参与人设备关联字段
+    let members: Array<Member> = new Array<Member>();
+
+    for (let member of cleaned.members) {
+      member.bhiu = "";
+      members.push(member);
+    }
+
+    cleaned.members = members;
+
+    return cleaned;
+  }
+
+  /**
+   * 重建从云服务拉取的日程数据内容
+   *
+   * @author leon_xi@163.com
+   */
+  buildAgendaPayload(payload: AgendaData): AgendaData {
+    assertEmpty(payload);   // 入参不能为空
+
+    let built: AgendaData = {} as AgendaData;
+    Object.assign(built, payload);
+
+
+
+    return built;
   }
 
   /**
