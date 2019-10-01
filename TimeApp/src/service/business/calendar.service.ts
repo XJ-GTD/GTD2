@@ -2728,6 +2728,13 @@ export class CalendarService extends BaseService {
     return;
   }
 
+  async receiveInitialData() {
+    let pull: PullInData = new PullInData();
+    pull.type = "*";
+    await this.dataRestful.pull(pull);
+    return;
+  }
+
   /**
    * 接收日历数据同步
    *

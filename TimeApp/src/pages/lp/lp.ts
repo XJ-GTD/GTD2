@@ -2,6 +2,7 @@ import {Component} from '@angular/core';
 import {IonicPage, NavController} from 'ionic-angular';
 import {LpService} from "./lp.service";
 import {UtilService} from "../../service/util-service/util.service";
+import {EffectService} from "../../service/business/effect.service";
 import {PageLoginData} from "../../data.mapping";
 
 /**
@@ -51,6 +52,7 @@ export class LpPage {
 
   constructor(public navCtrl: NavController,
               private util:UtilService,
+              private effectService: EffectService,
               private lpService: LpService,) {
   }
 
@@ -96,6 +98,8 @@ export class LpPage {
 
           return this.lpService.getOther();
         }).then(data=>{
+          // 拉取完整同步数据
+          this.effectService.syncInitial();
           this.util.loadingEnd();
           this.navCtrl.setRoot('MPage');
         }).catch(error=>{
