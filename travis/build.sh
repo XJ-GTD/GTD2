@@ -8,7 +8,6 @@ if [ $TRAVIS_OS_NAME = 'osx' ]; then
     #cat $TRAVIS_BUILD_DIR/TimeApp/platforms/ios/cordova/build.xcconfig
 else
     # Build on Linux
-    phonegap platform rm android && phonegap platform add android
     cordova platform remove android
     cordova platform add android@7.1.4
 fi
