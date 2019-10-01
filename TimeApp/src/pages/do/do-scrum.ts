@@ -14,7 +14,7 @@ import {FeedbackService} from "../../service/cordova/feedback.service";
 import {PageBoxComponent} from "../../components/page-box/page-box";
 import {TaskListComponent} from "../../components/task-list/task-list";
 import {CalendarService} from "../../service/business/calendar.service";
-import {EventService, AgendaData} from "../../service/business/event.service";
+import {EventService, TaskData} from "../../service/business/event.service";
 import { PageDirection, IsSuccess, OperateType, EventFinishStatus } from "../../data.enum";
 
 /**
@@ -50,7 +50,7 @@ export class DoScrumPage {
 
   tasklist: TaskListComponent;
   @ViewChildren("tasklist") tasklists: QueryList<TaskListComponent>;
-  cachedtasks: Array<AgendaData>;
+  cachedtasks: Array<TaskData>;
 
   days: Array<string> = new Array<string>();
   topday: string = moment().format("YYYY/MM/DD");
@@ -115,7 +115,7 @@ export class DoScrumPage {
       direction = PageDirection.PageDown;
     }
 
-    this.eventService.todolist()
+    this.eventService.fetchUncompletedTasks()
     .then((d) => {
       if (d) {
         if (!this.onrefresh) {
@@ -129,15 +129,15 @@ export class DoScrumPage {
               for (let single of data) {
                 let activityType: string = this.eventService.getEventType(single);
 
-                if (activityType == "AgendaData") {
-                  this.cachedtasks = await this.eventService.mergeTodolist(this.cachedtasks, single);
+                if (activityType == "TaskData") {
+                  this.cachedtasks = await this.eventService.mergeUncompletedTasks(this.cachedtasks, single);
                 }
               }
             } else {
               let activityType: string = this.eventService.getEventType(data);
 
-              if (activityType == "AgendaData") {
-                this.cachedtasks = await this.eventService.mergeTodolist(this.cachedtasks, data);
+              if (activityType == "TaskData") {
+                this.cachedtasks = await this.eventService.mergeUncompletedTasks(this.cachedtasks, data);
               }
             }
           });
@@ -187,12 +187,11 @@ export class DoScrumPage {
     this.modalCtr.create(DataConfig.PAGE._AGENDA_PAGE, p).present();
   }
 
-  complete(target: any) {
+  async complete(target: any) {
     console.log(target);
-    let complete: AgendaData = {} as AgendaData;
+    let complete: TaskData = {} as TaskData;
     Object.assign(complete, target);
-    complete.wc = EventFinishStatus.Finished;
 
-    this.eventService.saveAgenda(complete, target, OperateType.OnlySel);
+    await this.eventService.finishTask(complete);
   }
 }
