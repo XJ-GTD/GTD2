@@ -51,7 +51,7 @@ import {CalendarComponent} from "../../components/ion2-calendar";
       <ion-grid #grid4Hight class = "list-grid-content">
         <ng-template ngFor let-monthActivityData [ngForOf]="monthActivityDatas" >
           <ion-row class="item-content dayagenda-month {{monthActivityData.month  | formatedate :'CSSMM'}}" id="month{{monthActivityData.month | formatedate:'YYYYMM'}}">
-            <div class="line">
+            <div class="line first-line">
                 <p class="month-a font-large">
                   {{monthActivityData.month  | formatedate :"CYYYY/MM/ND"}}
                 </p>
@@ -89,7 +89,7 @@ import {CalendarComponent} from "../../components/ion2-calendar";
               </ion-row>
               
               <ion-row class="item-content  calendaritem-content item-content-backgroud" *ngFor="let jt of days.calendaritems;" (click)="toPlanItem(jt)">
-                <div class="line font-small">
+                <div class="line font-small first-line">
                   <div class="icon">
                     <ion-icon class = "fal fa-gift"></ion-icon>
                   </div>
@@ -105,7 +105,7 @@ import {CalendarComponent} from "../../components/ion2-calendar";
                 </div>
               </ion-row>
               <ion-row class="item-content dayagenda-content item-content-backgroud" *ngFor="let event of days.events;" (click)="toDetail(event.evi,event.evd,event.gs)">
-                  <div class="line font-small">
+                  <div class="line font-small first-line">
                     <div class="icon">
                       <ion-icon class = "fal fa-calendar-star"></ion-icon>
                     </div>

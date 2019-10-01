@@ -17,34 +17,17 @@ import {PageDcData} from "../../data.mapping";
 @Component({
   selector: 'page-ga',
   template:  `
-  <ion-header no-border>
-    <ion-toolbar>
-      <ion-buttons left>
-        <button ion-button icon-only (click)="goBack()" color="danger">
-            <img class="img-header-left" src="./assets/imgs/back.png">
-        </button>
-      </ion-buttons>
-  
-      <ion-buttons right>
-        <button ion-button class="button-header-right" (click)="save()">
-          保存
-        </button>
-      </ion-buttons>
-    </ion-toolbar>
-  </ion-header>
-  
-  <ion-content padding>
-  <ion-grid>
-    <ion-row justify-content-center>
-      <div class="name-input w-auto">
-      <ion-input #nameInput type="text" placeholder="输入群组名称" [(ngModel)]="tt"  text-center></ion-input>
-      </div>
-    </ion-row>   
-  </ion-grid>
-  </ion-content>
+
+    <modal-box title="添加群组" [buttons]="buttons" (onSave)="save()" (onCancel)="goBack()">
+      <ion-input  #nameInput placeholder="输入群组名称"  class="memo-set" rows="8" [(ngModel)]="tt" class="font-large-x"></ion-input>
+    </modal-box>
 `,
 })
 export class GaPage {
+  buttons: any = {
+    save:true,
+    cancel: true
+  };
   tt:string;
   constructor(public navCtrl: NavController,
               public navParams: NavParams,

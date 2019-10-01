@@ -210,10 +210,8 @@ export class AlService {
 
         // TODO 系统设置 restHttps设置 用户偏好设置 用户信息 。。。
         await this.restfulConfig.init();
-
-
         // 下载公共日历
-        await this.calendarService.downloadPublicPlan("shanghai_animation_exhibition_2019", PlanType.ActivityPlan);
+        // await this.calendarService.downloadPublicPlan("shanghai_animation_exhibition_2019", PlanType.ActivityPlan);
 
 
         //提醒定时
@@ -772,8 +770,8 @@ export class AlService {
     ss.push("节前5000元");
     ss.push("thanks i am thanks.thanks i am thanks.thanks i am thanks.thanks i am thanks.thanks i am thanks.thanks i am thanks.");
 
-    for (let i = 0; i < 40; i++) {
-      let start = moment('2019/01/01');
+    for (let i = 0; i < 10; i++) {
+      let start = moment('2019/09/01');
       let r = this.util.randInt(-100, 100);
       let t = this.util.randInt(0, 24);
       let jh_i = this.util.randInt(0, 20);

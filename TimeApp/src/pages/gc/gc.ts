@@ -17,50 +17,30 @@ import {FsData, PageDcData} from "../../data.mapping";
 @Component({
   selector: 'page-gc',
    template: `
-     <ion-header no-border>
-       <ion-toolbar>
-         <ion-buttons left>
-           <button ion-button icon-only (click)="goBack()" color="danger">
-            <img class="img-header-left" src="./assets/imgs/back.png">
-           </button>
-         </ion-buttons>
-         <ion-title>{{dc.gn}}({{dc.gc}})</ion-title>
-         <ion-buttons right>
-           <button ion-button class="button-header-right" (click)="toAddGroupMember()">
-             <!--<ion-icon name="add"></ion-icon>--> 添加
-           </button>
-         </ion-buttons>
-       </ion-toolbar>
-     </ion-header>
-     
-     <ion-content padding>
-       <ion-grid>
-         <ion-row  *ngFor="let g of fsl" >
-               <ion-avatar item-start (click)="toMemberInfo(g)">
-                 <img [src]="g.bhiu">
-                 <!--<ion-icon name="contact"  style="font-size: 3.0em;color: red;"></ion-icon>-->
-               </ion-avatar>
-                 <!--<ion-item (click)="toGroupMember(g)" style="background-color: black;color:#ffffff;margin-left: -15px;">-->
-                   <!--{{g.rn}} <span>{{g.rc}}</span>-->
-                 <!--</ion-item>-->
-               
-               <ion-label (click)="toMemberInfo(g)" >
-                 {{g.ran}} 
-                 <!--<span>-->
-                   <!--{{g.rc}}-->
-                 <!--</span>-->
 
-                 <span *ngIf="g.rel ==1">注册</span>
-               </ion-label>               
-               <button ion-button color="danger" (click)="delete(g)" clear item-end>
-                 <img class="img-content-del" src="./assets/imgs/yc.png">
-               </button>
-         </ion-row>
-       </ion-grid>
-     </ion-content>
+     <modal-box title="{{dc.gn}}" [buttons]="buttons" (onCancel)="goBack()" (onCreate) = "toAddGroupMember()">
+
+       <ion-scroll scrollY="true" scrollY>
+         <ion-list>
+           <ion-item *ngFor="let g of fsl" >
+             <ion-label (click)="toMemberInfo(g)" >
+               {{g.ran}}
+
+               <span *ngIf="g.rel ==1">（注册）</span>
+               <span *ngIf="g.rel !=1">（未注册）</span>
+             </ion-label>
+             <ion-icon class="fal fa-minus-circle font-large-x" (click)="delete(g)"  item-end></ion-icon>
+           </ion-item>
+         </ion-list>
+       </ion-scroll>
+     </modal-box>
    `,
 })
 export class GcPage {
+  buttons: any = {
+    create:true,
+    cancel: true
+  };
   dc:PageDcData = new PageDcData();
   fsl:Array<FsData> = new Array<FsData>();
   constructor(public navCtrl: NavController,
@@ -69,17 +49,11 @@ export class GcPage {
               private fsService:FsService,
               private util:UtilService,
               private modalCtrl: ModalController) {
+    this.dc = this.navParams.get("g");
   }
 
-  ionViewDidLoad() {
-    this.dc = this.navParams.get("g");
-    console.log('ionViewDidLoad PePage');
-  }
   ionViewDidEnter(){
-    console.log("3.0 ionViewDidEnter 当进入页面时触发");
     this.getData();
-  }
-  ionViewWillEnter() {
   }
 
   backButtonClick = (e: UIEvent) => {
@@ -88,14 +62,9 @@ export class GcPage {
   };
 
   goBack(){
-    console.log('GcPage返回GlPage');
-    //this.navCtrl.push(DataConfig.PAGE._GL_PAGE);
     this.navCtrl.pop();
   }
   toAddGroupMember() {
-    console.log("PePage跳转PgPage");
-    // this.navCtrl.push(DataConfig.PAGE._FS4G_PAGE,{tpara:this.dc,addType:'gc'});
-    // this.navCtrl.push(DataConfig.PAGE._FS4G_PAGE,{tpara:this.dc});
 
     let modal = this.modalCtrl.create(DataConfig.PAGE._FS4G_PAGE,{tpara:this.dc});
     modal.onDidDismiss((data)=>{

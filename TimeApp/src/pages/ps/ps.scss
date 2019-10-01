@@ -6,30 +6,4 @@ page-ps {
     }
 
   }
-
-  ion-item:last-child .input-wrapper{
-    border-width: 0px ;
-  }
-
-  ion-list{
-    border-radius:4px;
-    font-size:16px;
-    font-weight:400;
-    .item{
-      background-color: transparent;
-      min-height:50px;
-      padding-right:0px;
-      [item-end]{
-        margin: 0px;
-      }
-    }
-    .input-wrapper{
-      margin: 0px 14px;
-      border-width: 0.55px ;
-    }
-    ion-label{
-      font-weight:400;
-    }
-  }
-
 }

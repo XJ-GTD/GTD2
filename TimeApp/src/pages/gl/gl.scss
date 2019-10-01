@@ -1,89 +1,10 @@
 page-gl {
-  background-color: $baseBackColor;
-
-  .w-auto {
-    flex: 1;
+  page-box{
+    .page-content{
+      .scroll-content,.fixed-content {
+        margin-bottom: 0;
+      }
+    }
   }
-
-  .grid {
-    padding: 0;
-  }
-
-  .grid .row {
-    height: 100%;
-  }
-
-  .list {
-    width: 100%;
-  }
-
-  .list-header, .list-header-md, .list-header-ios {
-    border: 0;
-  }
-
-  ion-header ion-toolbar .toolbar-background,.toolbar-background-md,.toolbar-background-ios {
-    background-color: $baseBackColor;
-  }
-
-  ion-header{
-    padding: 4px 20px;
-  }
-
-  .img-header-left{
-    width: 4vmin;
-    height: 4vmin;
-  }
-
-  .toolbar-title{
-    color: white;
-    letter-spacing: 0.5vmin;
-  }
-
-  .bar-button-ios{
-    width: 25px;
-    height: 25px;
-  }
-
-  ion-content.content {
-    background-color: $baseBackColor;
-    color: #fff;
-  }
-
-  ion-content .plan-list-item {
-    background-color: $baseBackColor;
-    color: #fff;
-    padding-left: 8px;
-    min-height: 9vmin;
-  }
-
-  .list-ios .item-block .item-inner {
-    padding-right: 0;
-  }
-
-  .content-gc{
-    width: 12px;
-    height: 15px;
-  }
-
-  .scroll-content{
-    overflow-x: auto;
-    overflow-y: auto;
-  }
-
-}
-.gl-alert-top .alert-button{
-  margin: 0;
-  margin-top: 20px;
-  border-top: 0px solid #dbdbdf;
-
 }
 
-.gl-alert-top .alert-wrapper{
-  margin-top: 40%;
-}
-
-.gl-alert-button {
-  background-image: url(../../assets/imgs/gl_addGroup.png);
-  background-repeat: no-repeat;
-  background-position: top;
-}

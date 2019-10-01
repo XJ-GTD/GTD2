@@ -17,52 +17,33 @@ import {FsData} from "../../data.mapping";
 @Component({
   selector: 'page-bl',
   template: `
-    <ion-header no-border>
-      <ion-toolbar>
-        <ion-buttons left>
-          <button ion-button icon-only (click)="goBack()" color="danger">
-            <!--<ion-icon name="arrow-back"></ion-icon>-->
-            <img class="img-header-left" src="./assets/imgs/back.png">
-          </button>
-        </ion-buttons>
-        <ion-title>黑名单</ion-title>
-        <!--<ion-buttons right>-->
-          <!--<button ion-button color="danger" (click)="toAdd()">-->
-            <!--&lt;!&ndash;<ion-icon name="add"></ion-icon>&ndash;&gt;-->
-            <!--添加-->
-          <!--</button>-->
-        <!--</ion-buttons>-->
-      </ion-toolbar>
-    </ion-header>
+    <page-box title="黑名单" [buttons]="buttons"  (onBack)="goBack()">
+      <ion-scroll scrollY="true" scrollY>
+        <ion-list>
+          <ion-list-header>
+            拒绝接受 <span class="count">{{bls.length}}</span> 个人的日程推送 
+          </ion-list-header>
+          <ion-item *ngFor="let g of bls" >
+            <ion-label (click)="goTofsDetail(g)" >
+              {{g.ran}}
 
-    <ion-content padding>
-      <ion-grid>
-        <ion-row>
-          <ion-list no-lines>
-            <ion-item class="plan-list-item"  *ngFor="let g of bls">
-              <ion-avatar item-start  (click)="goTofsDetail(g)" >
-                <!--<img src="http://file03.sg560.com/upimg01/2017/01/932752/Title/0818021950826060932752.jpg">-->
-                <img [src]="g.bhiu">
-              </ion-avatar>
-              <ion-label (click)="goTofsDetail(g)" >
-                {{g.ran}}
-                <!--<span style="font-size:14px;color:rgb(102,102,102);">-->
-                   <!--{{g.rc}}-->
-                 <!--</span>-->
-                <span *ngIf="g.rel ==1">注册</span>
-              </ion-label>
-              <button ion-button color="danger" (click)="delete(g)" clear item-end>
-                <img class="img-delete"  src="./assets/imgs/yc.png">
-              </button>
-            </ion-item>
-          </ion-list>
-        </ion-row>
-      </ion-grid>
-    </ion-content>
+              <span *ngIf="g.rel ==1">（注册）</span>
+              <span *ngIf="g.rel !=1">（未注册）</span>
+            </ion-label>
+            <ion-icon class="fal fa-minus-circle font-large-x" (click)="delete(g)"  item-end></ion-icon>
+          </ion-item>
+        </ion-list>
+      </ion-scroll>
+    </page-box>
   `
 })
 export class BlPage {
-  bls:Array<FsData>;
+  bls:Array<FsData> = new Array<FsData>();
+
+  buttons: any = {
+    cancel: true
+  };
+
   constructor(public navCtrl: NavController,
               public navParams: NavParams,
               private blService : BlService,
@@ -71,12 +52,12 @@ export class BlPage {
               private modalCtrl: ModalController) {
   }
 
-  ionViewDidLoad() {
-    console.log('ionViewDidLoad BlPage');
-  }
   ionViewDidEnter(){
-    console.log("3.0 ionViewDidEnter 当进入页面时触发");
-    this.getBl();
+    this.blService.get().then(data=>{
+      if(data != null){
+        this.bls = data;
+      }
+    });
   }
   goBack(){
     //this.navCtrl.push(DataConfig.PAGE._M_PAGE);
@@ -88,21 +69,16 @@ export class BlPage {
     let profileModal = this.modalCtrl.create(DataConfig.PAGE._FS4G_PAGE,{addType:'bl'});
     profileModal.present();
   }
-
-  getBl(){
-    this.blService.get().then(data=>{
-      if(data != null){
-        this.bls = data;
-      }
-    })
-  }
   //删除黑名单
   delete(g:FsData){
     //this.util.popMsgbox("2",()=>{
       this.fdService.removeBlack(g.ui).then(data=>{
-          this.getBl();
-          this.util.popoverStart('删除黑名单成功！')
-     // })
+        this.blService.get().then(data=>{
+          if(data != null){
+            this.bls = data;
+          }
+        });
+        this.util.popoverStart('删除黑名单成功！')
     });
 
   }

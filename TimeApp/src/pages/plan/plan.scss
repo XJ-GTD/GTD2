@@ -26,82 +26,18 @@ page-plan {
         font-weight: 400;
         padding: 12px 80px;
         border-radius: 4px;
-
       }
     }
 
-    .toolbar-ios {
-      margin-top: 14px;
 
-      ion-title {
-        padding: 12px;
-        margin: 0 auto;
-        width: 85%;
-        font-size: 16px;
-        color: rgba(51, 51, 51, 1);
-        position: relative;
-        height: 45px;
-        box-shadow: 5px 3px 10px 0px rgba(58, 58, 58, 0.73);
-        border-radius: 4px;
-      }
-
-      .toolbar-background-ios {
-        background: transparent;
-      }
-    }
-
-    .list-ios {
-      width: auto;
-      overflow-y: auto;
-      height: 75%;
-      margin: 12px;
-      padding-bottom: 1px;
-      background: rgba(255, 255, 255, 1);
-      box-shadow: 2.5px 1.5px 10px 0px rgba(201, 200, 200, 0.73);
+    .plantitle {
+      padding: 1rem;
+      margin: 1rem;
+      text-align: left;
+      color: rgba(51, 51, 51, 1);
+      position: relative;
+      box-shadow: 2.5px 1.5px 5px 0px rgba(58, 58, 58, 0.73);
       border-radius: 4px;
-
-      .item ion-icon[item-end] {
-        font-size: 24px;
-        line-height: 1;
-        min-height: 24px;
-        margin-left: 0;
-        margin-top: 0;
-        margin-bottom: 0;
-        margin-right: 0;
-      }
-
-      .item .radio-ios {
-        //position: absolute;
-        margin: 0;
-        margin-left: -21px;
-
-        .radio-checked .radio-inner {
-          border-color: black;
-        }
-
-      }
-
-
-      .item-block, .item-block:last-child {
-        min-height: 45px;
-        background: transparent;
-        border-width: 0;
-        padding: 0 16px;
-
-        .item-inner {
-          border-width: 0;
-
-          ion-label {
-            font-weight: 400;
-            color: rgba(51, 51, 51, 1);
-            font-size: 14px;
-            letter-spacing: 1px;
-            margin: 11px 4px 11px 0;
-          }
-        }
-      }
-
-
     }
   }
 

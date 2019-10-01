@@ -28,53 +28,5 @@ page-remind {
         }
       }
     }
-
-    .list-ios {
-      width: auto;
-      overflow-y: auto;
-      height: 75%;
-      margin: 12px;
-      padding-bottom: 1px;
-      background: rgba(255, 255, 255, 1);
-      box-shadow: 2.5px 1.5px 10px 0px rgba(201, 200, 200, 0.73);
-      border-radius: 4px;
-
-      .list-header-ios {
-        min-height: 45px;
-        background: rgba(217, 233, 238, 1);
-        font-weight: 400;
-        color: rgba(7, 109, 138, 1);
-        font-size: 16px;
-        border-width: 0;
-        .count{
-          font-weight: 500;
-          font-size: 18px;
-          color:rgba(255, 255, 255, 1);
-        }
-      }
-
-      .item-block, .item-block:last-child {
-        min-height: 45px;
-        background: transparent;
-        border-bottom: 0.55px solid rgba(217, 233, 238, 1);
-        padding: 0 16px;
-  
-        .item-inner {
-
-          ion-label, ion-icon {
-            font-weight: 400;
-            color: rgba(51, 51, 51, 1);
-            font-size: 14px;
-            letter-spacing: 1px;
-            margin: 11px 4px 11px 0;
-          }
-
-          .item-button {
-            padding: 0;
-            margin: 0;
-          }
-        }
-      }
-    }
   }
 }

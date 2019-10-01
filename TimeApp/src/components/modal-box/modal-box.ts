@@ -31,10 +31,12 @@ import {Content, Events} from 'ionic-angular';
           <div class="toolbar">
             <div (click)="goRemove()" *ngIf="buttons.remove">
               <ion-icon class="fal fa-eraser"></ion-icon>
-            </div>
-
+            </div>            
             <div  (click)="goRemove()" *ngIf="buttons.share">
               <ion-icon class="fal fa-share"></ion-icon>
+            </div>
+            <div  (click)="create()" *ngIf="buttons.create">
+              <ion-icon class="fal fa-plus"></ion-icon>
             </div>
             <div (click)="save()" *ngIf="buttons.save">
               <ion-icon class="fal fa-check"></ion-icon>
@@ -62,6 +64,7 @@ export class ModalBoxComponent {
     remove: false,
     share: false,
     save: false,
+    create: false,
     cancel: true
   };
 
@@ -70,6 +73,10 @@ export class ModalBoxComponent {
 
   @Output()
   private onCancel: EventEmitter<any> = new EventEmitter<any>();
+
+
+  @Output()
+  private onCreate: EventEmitter<any> = new EventEmitter<any>();
 
   constructor(public events: Events,private renderer2: Renderer2,) {
 
@@ -90,5 +97,9 @@ export class ModalBoxComponent {
 
   cancel() {
     this.onCancel.emit(this);
+  }
+
+  create() {
+    this.onCreate.emit(this);
   }
 }

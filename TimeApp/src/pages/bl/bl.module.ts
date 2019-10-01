@@ -3,6 +3,7 @@ import { IonicPageModule } from 'ionic-angular';
 import {BlService} from "../bl/bl.service";
 import {FdService} from "../fd/fd.service";
 import {BlPage} from "./bl";
+import {PageBoxComponentModule} from "../../components/page-box/page-box.module";
 
 @NgModule({
   declarations: [
@@ -10,6 +11,7 @@ import {BlPage} from "./bl";
   ],
   imports: [
     IonicPageModule.forChild(BlPage),
+    PageBoxComponentModule
   ],
   providers: [
     BlService,
