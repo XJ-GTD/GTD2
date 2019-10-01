@@ -9,7 +9,7 @@ if [ $TRAVIS_OS_NAME = 'osx' ]; then
 else
     # Build on Linux
     cordova platform remove android
-    cordova platform add android@7.1.0
+    cordova platform add android@7.1.4
 fi
 
 cp -rf $TRAVIS_BUILD_DIR/TimeAppPatch/platforms/* $TRAVIS_BUILD_DIR/TimeApp/platforms
