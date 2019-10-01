@@ -2563,14 +2563,16 @@ export class EventService extends BaseService {
     cleaned.txjson = "";
 
     // 清除参与人设备关联字段
-    let members: Array<Member> = new Array<Member>();
+    if (cleaned.members) {
+      let members: Array<Member> = new Array<Member>();
 
-    for (let member of cleaned.members) {
-      member.bhiu = "";
-      members.push(member);
+      for (let member of cleaned.members) {
+        member.bhiu = "";
+        members.push(member);
+      }
+
+      cleaned.members = members;
     }
-
-    cleaned.members = members;
 
     return cleaned;
   }
