@@ -22,6 +22,7 @@
     <preference name="SplashScreenDelay" value="1500" />
     <preference name="WKSuspendInBackground" value="false" />
     <preference name="KeyboardDisplayRequiresUserAction" value="false" />
+    <preference name="AndroidPersistentFileLocation" value="Compatibility" />
     <platform name="android">
         <allow-intent href="market:*" />
         <icon density="ldpi" src="resources/android/icon/drawable-ldpi-icon.png" />
