@@ -16,21 +16,25 @@ import * as anyenum from "../../data.enum";
 @Component({
   selector: 'page-invites',
   template: `
-    <modal-box title="邀请人" [buttons]="buttons" (onSave)="save()" (onCancel)="cancel()">
+    <modal-box title="邀请人" [buttons]="buttons" (onSave)="save()" (onCancel)="cancel()" (onCreate) = "openMemberSelect()">
+
       <ion-list>
         <ion-list-header>
-          参与人({{membernum}})
-          <button ion-button clear item-end (click) = "openMemberSelect()">
-            <ion-icon ios="ios-add" md="md-add"></ion-icon>
-          </button>
+          参与人(<span class="count">{{this.memberSet.members.length}}</span>)
         </ion-list-header>
-        <ion-item>
-          <div *ngFor = "let member of memberSet.members">
-            {{ member.ran }}
-          </div>
-        </ion-item>
-        <ion-item no-lines >
-          <button ion-button clear item-end>查看全部参与人</button>
+        <ion-item >
+          <ion-label>
+            <ul>
+                <li *ngFor = "let member of memberSet.members">
+                 
+                  <span class="count"> {{ member.ran }}</span>
+                </li>
+                <li>
+                  查看全部参与人
+                </li>
+              
+            </ul>
+          </ion-label>
         </ion-item>
       </ion-list>
       <ion-list>
@@ -54,6 +58,7 @@ export class InvitesPage {
   buttons: any = {
     remove: false,
     share: false,
+    create:true,
     save: true,
     cancel: true
   };
@@ -64,7 +69,6 @@ export class InvitesPage {
     iv : false,
   }
 
-  membernum : "";
 
   tel: any;//手机号
 
@@ -77,7 +81,6 @@ export class InvitesPage {
     //下面处理需要放在构造方法里，防止关闭参与人选择页面时进入该处理
     if (this.navParams && this.navParams.data ) {
       this.memberSet.members = this.navParams.data.members?this.navParams.data.members : new Array<Member>();
-      this.membernum = this.memberSet.members.length;
       if (this.navParams.data.iv == anyenum.InvitePowr.enable){
         this.memberSet.iv = true;
       }else{
@@ -123,7 +126,6 @@ export class InvitesPage {
     modal.onDidDismiss(async (data) => {
       if (data){
         this.memberSet.members = data.members;
-        this.membernum = this.memberSet.members.length;
       }
 
     });

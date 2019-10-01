@@ -3,6 +3,7 @@ import { IonicPageModule } from 'ionic-angular';
 import { GcPage } from './gc';
 import {GcService} from "./gc.service";
 import {FsService} from "../fs/fs.service";
+import {ModalBoxComponentModule} from "../../components/modal-box/modal-box.module";
 
 @NgModule({
   declarations: [
@@ -10,6 +11,7 @@ import {FsService} from "../fs/fs.service";
   ],
   imports: [
     IonicPageModule.forChild(GcPage),
+    ModalBoxComponentModule
   ],
   providers: [
     GcService,FsService

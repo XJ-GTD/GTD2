@@ -26,18 +26,19 @@ import * as anyenum from "../../data.enum";
           <button clear (click)="openRemindDt()" ion-button>指定日期</button>
         </ion-buttons>
       </ion-toolbar>
-
-      <ion-list>
-        <ion-list-header>
-          剩余 <span class="count">{{reminds.length}}</span> 条提醒
-        </ion-list-header>
-        <ion-item *ngFor="let remind of reminds">
-          <ion-label>{{remind.datename}}</ion-label>
-          <button ion-button (click)="delRemind(idx)" clear item-end>
-            <ion-icon class="fal fa-minus-circle"></ion-icon>
-          </button>
-        </ion-item>
-      </ion-list>
+      <ion-scroll scrollY="true" scrollY>
+        <ion-list>
+          <ion-list-header>
+            剩余 <span class="count">{{reminds.length}}</span> 条提醒
+          </ion-list-header>
+          <ion-item *ngFor="let remind of reminds">
+            <ion-label>{{remind.datename}}</ion-label>
+            <button ion-button (click)="delRemind(idx)" clear item-end>
+              <ion-icon class="fal fa-minus-circle"></ion-icon>
+            </button>
+          </ion-item>
+        </ion-list>
+      </ion-scroll>
     </modal-box>
     <div style="display: none">
       <ion-multi-picker #remindTiqian [(ngModel)]="tiqianvalue"

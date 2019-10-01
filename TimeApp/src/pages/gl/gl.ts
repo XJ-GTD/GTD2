@@ -16,46 +16,32 @@ import {PageDcData} from "../../data.mapping";
 @IonicPage()
 @Component({
   selector: 'page-gl',
-  template:`
-    <ion-header no-border>
-      <ion-toolbar>
-        <ion-buttons left>
-          <button ion-button icon-only (click)="goBack()" color="danger">
-            <img class="img-header-left" src="./assets/imgs/back.png">
-          </button>
-        </ion-buttons>
-        <ion-title>群组</ion-title>
-        <ion-buttons right>
-          <button ion-button (click)="toGroupCreate()" color="danger">
-            <img class="img-header-right" src="./assets/imgs/qtj.png">
-          </button>
-        </ion-buttons>
-      </ion-toolbar>
-    </ion-header>
-
-    <ion-content padding>
-      <ion-grid>
-        <ion-row>
-          <ion-list no-lines>
-            <ion-item class="plan-list-item"  *ngFor="let g of gl" >
-            <ion-avatar item-start (click)="toGroupMember(g)">
-              <img [src]="g.gm">
-              <!--<ion-icon name="contact"  style="font-size: 3.0em;color: red;"></ion-icon>-->
-            </ion-avatar>
-              <ion-label  style="background-color: black;color:#ffffff" (click)="toGroupMember(g)">
-                {{g.gn}}({{g.gc}})
-              </ion-label>
-              <button ion-button color="danger" (click)="delGroup(g)" clear item-end>
-                <img class="content-gc" src="./assets/imgs/sc.png">
-              </button>
-            </ion-item>
-          </ion-list>
-        </ion-row>
-      </ion-grid>
-    </ion-content>
+  template:
+ `
+  <page-box title="快捷群组" [buttons]="buttons" (onBack)="goBack()" (onCreate)="toGroupCreate()" >
+    <ion-scroll scrollY="true" scrollY>
+      <ion-list>
+        <ion-list-header>
+          <span class="count">{{gl.length}}</span> 个群
+        </ion-list-header>
+        <ion-item  *ngFor="let g of gl">          
+          <ion-label (click)="toGroupMember(g)" >
+            {{g.gn}}({{g.gc}})
+          </ion-label>
+          <ion-icon class="fal fa-minus-circle font-large-x" (click)="delGroup(g)"  item-end></ion-icon>
+        </ion-item>
+      </ion-list>
+    </ion-scroll>
+  </page-box>    
 `,
 })
 export class GlPage {
+
+  buttons: any = {
+    create:true,
+    cancel: true
+  };
+
   gl:Array<PageDcData> = new Array<PageDcData>();
   constructor(public navCtrl: NavController,
               public navParams: NavParams,
@@ -63,19 +49,12 @@ export class GlPage {
               private gcService:GcService,
               public modalCtrl: ModalController,
               public util: UtilService) {
+    this.getGroups();
 
   }
 
-  ionViewDidLoad() {
-    console.log('ionViewDidLoad PaPage');
-  }
-  ionViewDidEnter(){
-    console.log("3.0 ionViewDidEnter 当进入页面时触发");
-    this.gl = UserConfig.groups;
-  }
 
   toGroupMember(g){
-    console.log('GlPage =======跳转: GcPage');
     this.modalCtrl.create(DataConfig.PAGE._GC_PAGE,{g:g}).present();
   }
 

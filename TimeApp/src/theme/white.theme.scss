@@ -188,7 +188,6 @@ $baseBackcolor_white: rgba(241, 241, 241, 1);
     }
   }
 
-
   page-agenda, page-commemorationday {
     .grid {
       .snRow {
@@ -338,7 +337,6 @@ $baseBackcolor_white: rgba(241, 241, 241, 1);
 
   page-remind {
     .box-content {
-
       .toolbar-ios {
         button {
           background: rgba(217, 233, 238, 1);
@@ -348,64 +346,18 @@ $baseBackcolor_white: rgba(241, 241, 241, 1);
           }
         }
       }
-
-      .list-ios {
-        background: rgba(255, 255, 255, 1);
-        box-shadow: 2.5px 1.5px 10px 0px rgba(201, 200, 200, 0.73);
-
-        .list-header-ios {
-          background: rgba(217, 233, 238, 1);
-          color: rgba(7, 109, 138, 1);
-
-          .count {
-            color: rgba(255, 255, 255, 1);
-          }
-        }
-
-        .item-block, .item-block:last-child {
-          border-bottom: 0.55px solid rgba(217, 233, 238, 1);
-
-          .item-inner {
-
-            ion-label, ion-icon {
-              color: rgba(51, 51, 51, 1);
-            }
-          }
-        }
-      }
     }
   }
 
-  page-ss, page-ps {
+  page-ss, page-ps ,page-bl,page-gl{
     .page-content {
       .fixed-content {
-        background: transparent;
-        box-shadow: none;
+        //background: transparent;
+        //box-shadow: none;
       }
     }
   }
-
-  ion-list {
-    .list-header-ios {
-      .input-wrapper {
-        border-bottom: 0.55px rgba(234, 234, 234, 1) solid;
-      }
-
-      ion-label {
-        color: rgba(153, 153, 153, 1);
-      }
-    }
-
-    background: rgba(255, 255, 255, 1);
-    box-shadow: 0px 0px 5px 0px rgba(201, 200, 200, 0.28);
-
-    input, select, .item {
-      color: rgba(51, 51, 51, 1);
-    }
-
-
-    ion-label {
-      color: rgba(51, 51, 51, 1);
-    }
+  ion-textarea{
+    color: rgba(51, 51, 51, 1);
   }
 }

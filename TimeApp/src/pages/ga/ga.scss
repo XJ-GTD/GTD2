@@ -1,50 +1,6 @@
 page-ga {
-  background-color: $baseBackColor;
-
-  .w-auto {
-    flex: 1;
-  }
-
-  .grid {
-    padding: 0;
-  }
-
-  .grid .row {
-    height: 100%;
-  }
-
-  .list {
-    width: 100%;
-  }
-
-  .list-header, .list-header-md, .list-header-ios {
-    border: 0;
-  }
-
-  ion-header ion-toolbar .toolbar-background,.toolbar-background-md,.toolbar-background-ios {
-    background-color: $baseBackColor;
-  }
-
-  ion-header{
-    padding: 4px 20px;
-  }
-
-  .img-header-left{
-    width: 4vmin;
-    height: 4vmin;
-  }
-
-  .button-header-right{
-    color: $adornColor;
-  }
-
-  ion-content.content {
-    background-color: $baseBackColor;
-    color: #fff;
-  }
-
-  .scroll-content{
-    overflow-x: hidden;
-    overflow-y: hidden;
+  ion-input{
+    margin: 2rem;
+    width: auto;
   }
 }
