@@ -2557,10 +2557,10 @@ export class EventService extends BaseService {
     Object.assign(cleaned, payload);
 
     // 重复临时属性置空
-    cleaned.rtjson = "";
+    cleaned.rtjson = null;
 
     // 提醒临时属性置空
-    cleaned.txjson = "";
+    cleaned.txjson = null;
 
     // 清除参与人设备关联字段
     if (cleaned.members) {
