@@ -255,7 +255,7 @@ export class EventService extends BaseService {
           }
 
           if (value.length > 0) {
-            if (value[0] && value[0].hasOwnProperty("pari") && another[key][0] && another[key][0].hasOwnProperty("pari")) {
+            if (value[0] && value[0].hasOwnProperty("members") && another[key][0] && another[key][0].hasOwnProperty("members")) {
               let compare = value.concat(another[key]);
 
               compare.sort((a, b) => {
@@ -541,6 +541,187 @@ export class EventService extends BaseService {
   }
 
   /**
+   * 判断两个任务是否相同
+   *
+   * @param {TaskData} one
+   * @param {TaskData} another
+   * @returns {boolean}
+   *
+   * @author leon_xi@163.com
+   */
+  isSameTask(one: TaskData, another: TaskData): boolean {
+    if (!one || !another) return false;
+
+    for (let key of Object.keys(one)) {
+      if (["wtt", "utt", "rts", "txs", "fj", "pn", "originator", "tos"].indexOf(key) >= 0) continue;   // 忽略字段
+
+      if (one.hasOwnProperty(key)) {
+        let value = one[key];
+
+        // 如果两个值都为空, 继续
+        if (!value && !another[key]) {
+          continue;
+        }
+
+        // 如果one的值为空, 不一致
+        if (!value || !another[key]) return false;
+
+        if (typeof value === 'string' || typeof value === 'number' || typeof value === 'boolean') {
+          if (typeof value === 'string' && value != "" && another[key] != "" && key == "rt") {
+            let onert: RtJson = new RtJson();
+            Object.assign(onert, JSON.parse(value));
+
+            let anotherrt: RtJson = new RtJson();
+            Object.assign(anotherrt, JSON.parse(another[key]));
+
+            if (!(onert.sameWith(anotherrt))) return false;
+
+            continue;
+          }
+
+          if (typeof value === 'string' && value != "" && another[key] != "" && key == "tx") {
+            let onetx: TxJson = new TxJson();
+            Object.assign(onetx, JSON.parse(value));
+
+            let anothertx: TxJson = new TxJson();
+            Object.assign(anothertx, JSON.parse(another[key]));
+
+            if (!(onetx.sameWith(anothertx))) return false;
+
+            continue;
+          }
+
+          if (value != another[key]) return false;
+        }
+
+        if (value instanceof RtJson) {
+          let onert: RtJson = new RtJson();
+          Object.assign(onert, value);
+
+          let anotherrt: RtJson = new RtJson();
+          Object.assign(anotherrt, another[key]);
+
+          if (!(onert.sameWith(anotherrt))) return false;
+
+          continue;
+        }
+
+        if (value instanceof TxJson) {
+          let onetx: TxJson = new TxJson();
+          Object.assign(onetx, value);
+
+          let anothertx: TxJson = new TxJson();
+          Object.assign(anothertx, another[key]);
+
+          if (!(onetx.sameWith(anothertx))) return false;
+
+          continue;
+        }
+
+        if (value instanceof Array) {
+          if (value.length != another[key].length) return false;
+
+          if (value.length > 0) {
+            if (value[0] && value[0].hasOwnProperty("members") && another[key][0] && another[key][0].hasOwnProperty("members")) {
+              let compare = value.concat(another[key]);
+
+              compare.sort((a, b) => {
+                if (a.pari > b.pari) return -1;
+                if (a.pari < b.pari) return 1;
+                return 0;
+              });
+
+              let result = compare.reduce((target, val) => {
+                if (!target) {
+                  target = val;
+                } else {
+                  if (!val) {
+                    target = {};
+                  } else {
+                    let issame: boolean = true;
+
+                    for (let key of Object.keys(target)) {
+                      if (["wtt", "utt"].indexOf(key) >= 0) continue;   // 忽略字段
+
+                      if (target.hasOwnProperty(key)) {
+                        let value = target[key];
+
+                        if (typeof value === 'string' || typeof value === 'number' || typeof value === 'boolean') {
+                          if (value != val[key]) issame = false;
+                        }
+                      }
+                    }
+
+                    if (issame) {
+                      target = null;
+                    } else {
+                      target = {};
+                    }
+                  }
+                }
+
+                return target;
+              }, null);
+
+              if (result && result.isEmpty()) return false;
+
+            } else if (value[0] instanceof FjTbl && another[key][0] instanceof FjTbl) {
+
+              let compare = value.concat(another[key]);
+
+              compare.sort((a, b) => {
+                if (a.fji > b.fji) return -1;
+                if (a.fji < b.fji) return 1;
+                return 0;
+              });
+
+              let result = compare.reduce((target, val) => {
+                if (!target) {
+                  target = val;
+                } else {
+                  if (!val) {
+                    target = {};
+                  } else {
+                    let issame: boolean = true;
+
+                    for (let key of Object.keys(target)) {
+                      if (["wtt", "utt"].indexOf(key) >= 0) continue;   // 忽略字段
+
+                      if (target.hasOwnProperty(key)) {
+                        let value = target[key];
+
+                        if (typeof value === 'string' || typeof value === 'number' || typeof value === 'boolean') {
+                          if (value != val[key]) issame = false;
+                        }
+                      }
+                    }
+
+                    if (issame) {
+                      target = null;
+                    } else {
+                      target = {};
+                    }
+                  }
+                }
+
+                return target;
+              }, null);
+
+              if (result && result.isEmpty()) return false;
+
+            } else {
+              return false;
+            }
+          }
+        }
+
+      }
+    }
+
+    return true;
+  }
+
+  /**
    * 页面判断重复设置是否改变
    * @param {AgendaData} newAgd
    * @param {AgendaData} oldAgd
@@ -620,6 +801,96 @@ export class EventService extends BaseService {
 
     for (let key of Object.keys(before)) {
       if (["sd", "st", "al", "ct", "evn", "rt", "rtjson"].indexOf(key) >= 0) {   // 比较字段
+        let value = before[key];
+
+        // 如果两个值都为空, 继续
+        if (!value && !after[key]) {
+          continue;
+        }
+
+        // 如果one的值为空, 不一致
+        if (!value || !after[key]) {
+          if (confirm == ConfirmType.None) {
+            confirm = ConfirmType.CurrentOrFutureAll;
+          } else if (confirm == ConfirmType.All) {
+            confirm = ConfirmType.FutureAll;
+          }
+
+          continue;
+        }
+
+        if (typeof value === 'string' || typeof value === 'number' || typeof value === 'boolean') {
+          if (typeof value === 'string' && value != "" && after[key] != "" && key == "rt") {
+            let onert: RtJson = new RtJson();
+            Object.assign(onert, JSON.parse(value));
+
+            let anotherrt: RtJson = new RtJson();
+            Object.assign(anotherrt, JSON.parse(after[key]));
+
+            if (!(onert.sameWith(anotherrt))) {
+              if (confirm == ConfirmType.None) {
+                confirm = ConfirmType.All;
+              } else if (confirm == ConfirmType.CurrentOrFutureAll) {
+                confirm = ConfirmType.FutureAll;
+              }
+            }
+
+            continue;
+          }
+
+          if (value != after[key]) {
+            if (confirm == ConfirmType.None) {
+              confirm = ConfirmType.CurrentOrFutureAll;
+            } else if (confirm == ConfirmType.All) {
+              confirm = ConfirmType.FutureAll;
+            }
+
+            continue;
+          }
+        }
+
+        if (value instanceof RtJson) {
+          let onert: RtJson = new RtJson();
+          Object.assign(onert, value);
+
+          let anotherrt: RtJson = new RtJson();
+          Object.assign(anotherrt, after[key]);
+
+          if (!(onert.sameWith(anotherrt))) {
+            if (confirm == ConfirmType.None) {
+              confirm = ConfirmType.All;
+            } else if (confirm == ConfirmType.CurrentOrFutureAll) {
+              confirm = ConfirmType.FutureAll;
+            }
+          }
+
+          continue;
+        }
+      }
+    }
+
+    return confirm;
+  }
+
+  /**
+   * 判断任务修改是否需要确认
+   * 当前任务修改 还是 将来任务全部修改
+   *
+   * @param {TaskData} before
+   * @param {TaskData} after
+   * @returns {boolean}
+   */
+  hasTaskModifyConfirm(before: TaskData, after: TaskData): ConfirmType {
+    assertEmpty(before);  // 入参不能为空
+    assertEmpty(after);  // 入参不能为空
+
+    let confirm: ConfirmType = ConfirmType.None;
+
+    // 确认修改前日程是否重复
+    if (before.rfg != RepeatFlag.Repeat) return confirm;
+
+    for (let key of Object.keys(before)) {
+      if (["sd", "st", "evn", "rt", "rtjson"].indexOf(key) >= 0) {   // 比较字段
         let value = before[key];
 
         // 如果两个值都为空, 继续

@@ -243,7 +243,7 @@ export class TaskPage {
 
   changeTitle() {
     if (this.currentTask.evi) {
-      if (this.currentTask.evn != "" && !this.eventService.isSameAgenda(this.currentTask, this.originTask)) {
+      if (this.currentTask.evn != "" && !this.eventService.isSameTask(this.currentTask, this.originTask)) {
         this.buttons.save = true;
       } else {
         this.buttons.save = false;
@@ -267,7 +267,7 @@ export class TaskPage {
 
       this.currentTask.fjs = data.attach;
 
-      if (!this.eventService.isSameAgenda(this.currentTask, this.originTask)) {
+      if (!this.eventService.isSameTask(this.currentTask, this.originTask)) {
         this.buttons.save = true;
       } else {
         this.buttons.save = false;
@@ -290,7 +290,7 @@ export class TaskPage {
       this.currentTask.md = data.md;
       this.currentTask.iv = data.iv;
 
-      if (!this.eventService.isSameAgenda(this.currentTask, this.originTask)) {
+      if (!this.eventService.isSameTask(this.currentTask, this.originTask)) {
         this.buttons.save = true;
       } else {
         this.buttons.save = false;
@@ -306,7 +306,7 @@ export class TaskPage {
 
       this.currentTask.ji = data;
 
-      if (!this.eventService.isSameAgenda(this.currentTask, this.originTask)) {
+      if (!this.eventService.isSameTask(this.currentTask, this.originTask)) {
         this.buttons.save = true;
       } else {
         this.buttons.save = false;
@@ -328,7 +328,7 @@ export class TaskPage {
       this.currentTask.adrx = data.adrx || 0;
       this.currentTask.adry = data.adry || 0;
 
-      if (!this.eventService.isSameAgenda(this.currentTask, this.originTask)) {
+      if (!this.eventService.isSameTask(this.currentTask, this.originTask)) {
         this.buttons.save = true;
       } else {
         this.buttons.save = false;
@@ -345,7 +345,7 @@ export class TaskPage {
 
       this.currentTask.bz = data.bz;
 
-      if (!this.eventService.isSameAgenda(this.currentTask, this.originTask)) {
+      if (!this.eventService.isSameTask(this.currentTask, this.originTask)) {
         this.buttons.save = true;
       } else {
         this.buttons.save = false;
@@ -373,7 +373,7 @@ export class TaskPage {
         this.currentTask.rt = JSON.stringify(this.currentTask.rtjson);
         this.currentTask.rts = this.currentTask.rtjson.text();
 
-        if (!this.eventService.isSameAgenda(this.currentTask, this.originTask)) {
+        if (!this.eventService.isSameTask(this.currentTask, this.originTask)) {
           this.buttons.save = true;
         } else {
           this.buttons.save = false;
@@ -409,7 +409,7 @@ export class TaskPage {
         this.currentTask.tx = JSON.stringify(this.currentTask.txjson);
         this.currentTask.txs = this.currentTask.txjson.text();
 
-        if (!this.eventService.isSameAgenda(this.currentTask, this.originTask)) {
+        if (!this.eventService.isSameTask(this.currentTask, this.originTask)) {
           this.buttons.save = true;
         } else {
           this.buttons.save = false;
@@ -527,11 +527,11 @@ export class TaskPage {
   save() {
     if (this.validCheck()) {              // 输入校验
       if (this.currentTask.evi) {       // 修改日程
-        if (this.eventService.isSameAgenda(this.currentTask, this.originTask)) {
+        if (this.eventService.isSameTask(this.currentTask, this.originTask)) {
           return;
         }
 
-        let confirm: ConfirmType = this.eventService.hasAgendaModifyConfirm(this.originTask, this.currentTask);
+        let confirm: ConfirmType = this.eventService.hasTaskModifyConfirm(this.originTask, this.currentTask);
         if (confirm == ConfirmType.CurrentOrFutureAll || confirm == ConfirmType.FutureAll) { // 重复修改
           if (this.modifyConfirm) {
             this.modifyConfirm.dismiss();
