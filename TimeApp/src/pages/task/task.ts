@@ -37,7 +37,7 @@ import {Keyboard} from "@ionic-native/keyboard";
   selector: 'page-task',
   template:
       `
-    <page-box title="活动" [buttons]="buttons" [data]="currentTask.evi" (onRemove)="goRemove()" (onSave)="save()"
+    <page-box title="任务" [buttons]="buttons" [data]="currentTask.evi" (onRemove)="goRemove()" (onSave)="save()"
               (onBack)="goBack()">
 
       <ion-grid>
