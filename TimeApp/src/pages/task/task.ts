@@ -6,7 +6,7 @@ import {RestFulHeader, RestFulConfig} from "../../service/config/restful.config"
 import {SqliteExec} from "../../service/util-service/sqlite.exec";
 import * as moment from "moment";
 import {CalendarDay} from "../../components/ion2-calendar";
-import {AgendaService} from "./agenda.service";
+import {TaskService} from "./task.service";
 import {ScdData, ScdPageParamter} from "../../data.mapping";
 import {EmitService} from "../../service/util-service/emit.service";
 import {DataConfig} from "../../service/config/data.config";
@@ -420,13 +420,13 @@ export class TaskPage {
   }
 
   doOptionRemove(op: OperateType) {
-    this.util.loadingStart().then(() => {
-      this.eventService.removeAgenda(this.originTask, op)
-        .then(() => {
-          this.util.loadingEnd();
-          this.goBack();
-        });
-    });
+    // this.util.loadingStart().then(() => {
+    //   this.eventService.removeTask(this.originTask)
+    //     .then(() => {
+    //       this.util.loadingEnd();
+    //       this.goBack();
+    //     });
+    // });
   }
 
   goRemove() {
@@ -512,10 +512,10 @@ export class TaskPage {
 
   doOptionSave(op: OperateType) {
     this.util.loadingStart().then(() => {
-      this.eventService.saveTask(this.currentTask).then((agenda) => {
-        if (agenda && agenda.length > 0) {
-          this.currentTask = agenda[0];
-          Object.assign(this.originTask, agenda[0]);
+      this.eventService.saveTask(this.currentTask).then((task) => {
+        if (task && task.length > 0) {
+          this.currentTask = task[0];
+          Object.assign(this.originTask, task[0]);
 
           this.buttons.save = false;
         }
@@ -541,10 +541,10 @@ export class TaskPage {
           this.modifyConfirm.present();
         } else {                          // 非重复/重复已经修改为非重复
           this.util.loadingStart().then(() => {
-            this.eventService.saveTask(this.currentTask).then((agenda) => {
-              if (agenda && agenda.length > 0) {
-                this.currentTask = agenda[0];
-                Object.assign(this.originTask, agenda[0]);
+            this.eventService.saveTask(this.currentTask).then((task) => {
+              if (task && task.length > 0) {
+                this.currentTask = task[0];
+                Object.assign(this.originTask, task[0]);
 
                 this.buttons.save = false;
               }
@@ -554,10 +554,10 @@ export class TaskPage {
         }
       } else {                            // 新建日程
         this.util.loadingStart().then(() => {
-          this.eventService.saveTask(this.currentTask).then((agenda) => {
-            if (agenda && agenda.length > 0) {
-              this.currentTask = agenda[0];
-              Object.assign(this.originTask, agenda[0]);
+          this.eventService.saveTask(this.currentTask).then((task) => {
+            if (task && task.length > 0) {
+              this.currentTask = task[0];
+              Object.assign(this.originTask, task[0]);
 
               this.buttons.remove = true;
               this.buttons.save = false;
