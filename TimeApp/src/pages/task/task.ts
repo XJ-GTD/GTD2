@@ -150,7 +150,7 @@ export class TaskPage {
 
   currentuser: string = UserConfig.account.id;
   friends: Array<any> = UserConfig.friends;
-  currentT: TaskData = {} as TaskData;
+  currentTask: TaskData = {} as TaskData;
   originTask: TaskData = {} as TaskData;
 
   privateplans: Array<any> = UserConfig.privateplans;
