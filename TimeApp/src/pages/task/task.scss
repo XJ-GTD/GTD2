@@ -1,0 +1,71 @@
+page-task {
+  .grid {
+    height: 100%;
+    width: 100%;
+    padding: 1.8rem 1.2rem;
+
+    .snRow {
+      height: 50%;
+
+      .sn {
+        flex-grow: 1;
+      }
+
+      .agendatodo {
+        .icon {
+          line-height: 1.8rem;
+        }
+      }
+    }
+
+
+    .optionRow {
+      height: 50%;
+
+      .grid {
+        flex-direction: column-reverse;
+        padding: 0;
+
+        .row {
+          margin: 5px 0px;
+          flex-wrap: nowrap;
+
+          > div {
+            min-width: 60px;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            overflow: hidden;
+          }
+
+          .icon {
+            margin: 0 4px;
+          }
+
+          div[end] {
+            flex-grow: 1;
+            text-align: right;
+          }
+
+          .content {
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+          }
+
+          button {
+            height: 28px;
+            min-width: 80px;
+            padding: 0.5rem 1.8rem;
+
+            .button-inner {
+              width: auto;
+              text-align: left;
+            }
+          }
+        }
+
+      }
+    }
+
+  }
+}
