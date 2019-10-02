@@ -27,7 +27,7 @@ import {
 import {Keyboard} from "@ionic-native/keyboard";
 
 /**
- * Generated class for the 日程创建/修改 page.
+ * Generated class for the 任务创建/修改 page.
  *
  * See https://ionicframework.com/docs/components/#navigation for more info on
  * Ionic pages and navigation.
@@ -464,14 +464,14 @@ export class TaskPage {
 
     if (remove) {
       buttons.push({
-        text: '仅删除此日程',
+        text: '仅删除此任务',
         role: 'remove',
         handler: () => {
           this.doOptionRemove(OperateType.OnlySel);
         }
       });
       buttons.push({
-        text: '删除所有将来日程',
+        text: '删除所有将来任务',
         role: 'remove',
         handler: () => {
           this.doOptionRemove(OperateType.FromSel);
@@ -480,7 +480,7 @@ export class TaskPage {
     } else {
       if (confirm == ConfirmType.CurrentOrFutureAll) {
         buttons.push({
-          text: '仅针对此日程存储',
+          text: '仅针对此任务存储',
           role: 'modify',
           handler: () => {
             this.doOptionSave(OperateType.OnlySel);
@@ -488,7 +488,7 @@ export class TaskPage {
         });
       }
       buttons.push({
-        text: '针对将来日程存储',
+        text: '针对将来任务存储',
         role: 'modify',
         handler: () => {
           this.doOptionSave(OperateType.FromSel);
@@ -505,7 +505,7 @@ export class TaskPage {
     });
 
     return this.actionSheetCtrl.create({
-      title: "此为重复日程。",
+      title: "此为重复任务。",
       buttons: buttons
     });
   }
@@ -513,9 +513,9 @@ export class TaskPage {
   doOptionSave(op: OperateType) {
     this.util.loadingStart().then(() => {
       this.eventService.saveTask(this.currentTask).then((task) => {
-        if (task && task.length > 0) {
-          this.currentTask = task[0];
-          Object.assign(this.originTask, task[0]);
+        if (task) {
+          this.currentTask = task;
+          Object.assign(this.originTask, task);
 
           this.buttons.save = false;
         }
@@ -526,7 +526,7 @@ export class TaskPage {
 
   save() {
     if (this.validCheck()) {              // 输入校验
-      if (this.currentTask.evi) {       // 修改日程
+      if (this.currentTask.evi) {       // 修改任务
         if (this.eventService.isSameTask(this.currentTask, this.originTask)) {
           return;
         }
@@ -542,9 +542,9 @@ export class TaskPage {
         } else {                          // 非重复/重复已经修改为非重复
           this.util.loadingStart().then(() => {
             this.eventService.saveTask(this.currentTask).then((task) => {
-              if (task && task.length > 0) {
-                this.currentTask = task[0];
-                Object.assign(this.originTask, task[0]);
+              if (task) {
+                this.currentTask = task;
+                Object.assign(this.originTask, task);
 
                 this.buttons.save = false;
               }
@@ -552,12 +552,12 @@ export class TaskPage {
             });
           });
         }
-      } else {                            // 新建日程
+      } else {                            // 新建任务
         this.util.loadingStart().then(() => {
           this.eventService.saveTask(this.currentTask).then((task) => {
-            if (task && task.length > 0) {
-              this.currentTask = task[0];
-              Object.assign(this.originTask, task[0]);
+            if (task) {
+              this.currentTask = task;
+              Object.assign(this.originTask, task);
 
               this.buttons.remove = true;
               this.buttons.save = false;
