@@ -121,7 +121,7 @@ import {Keyboard} from "@ionic-native/keyboard";
                 <span class="content font-normal">
                   日期：{{currentTask.evd | formatedate: "YYYY年M月D日"}}<br/>
 
-                  时间：{{currentTask.evt | formatedate: "HH:mm"}} {{currentTask.ct | formatedate: "duration"}}
+                  时间：{{currentTask.evt | formatedate: "HH:mm"}}
                 </span>
                 <ion-icon class="font-normal fal fa-calendar-check "></ion-icon>
               </div>
@@ -233,11 +233,7 @@ export class TaskPage {
   changeDatetime() {
     let modal = this.modalCtrl.create(DataConfig.PAGE._DTSELECT_PAGE, {
       sd: this.currentTask.evd,
-      st: this.currentTask.st,
-      ed: this.currentTask.ed,
-      et: this.currentTask.et,
-      al: this.currentTask.al,
-      ct: this.currentTask.ct
+      st: this.currentTask.evt
     });
     modal.onDidDismiss(async (data) => {
 
@@ -403,7 +399,7 @@ export class TaskPage {
         txjson: data,
         evd: this.currentTask.evd,
         evt: this.currentTask.evt,
-        al: this.currentTask.al
+        al: IsWholeday.NonWhole
       }
     });
     modal.onDidDismiss(async (data) => {
