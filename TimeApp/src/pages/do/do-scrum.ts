@@ -165,7 +165,7 @@ export class DoScrumPage {
       p.d = moment(target.evd);
 
       this.feedback.audioClick();
-      this.modalCtr.create(DataConfig.PAGE._AGENDA_PAGE, p).present();
+      this.modalCtr.create(DataConfig.PAGE._TASK_PAGE, p).present();
     }
   }
 
@@ -184,7 +184,7 @@ export class DoScrumPage {
     p.todolist = true;
 
     this.feedback.audioPress();
-    this.modalCtr.create(DataConfig.PAGE._AGENDA_PAGE, p).present();
+    this.modalCtr.create(DataConfig.PAGE._TASK_PAGE, p).present();
   }
 
   async complete(target: any) {

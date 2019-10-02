@@ -66,6 +66,7 @@ import {TdmPageModule} from "../pages/tdm/tdm.module";
 import {FsPageModule} from "../pages/fs/fs.module";
 import {AlPageModule} from "../pages/al/al.module";
 import {AgendaPageModule} from "../pages/agenda/agenda.module";
+import {TaskPageModule} from "../pages/task/task.module";
 import {MemoPageModule} from "../pages/memo/memo.module";
 import {DailyMemosPageModule} from "../pages/dailymemos/dailymemos.module";
 import {BlPageModule} from "../pages/bl/bl.module";
@@ -155,6 +156,7 @@ import {MemberInfoPageModule} from "../pages/memberinfo/memberinfo.module";
     FsPageModule,
     AlPageModule,
     AgendaPageModule,
+    TaskPageModule,
     MemoPageModule,
     DailyMemosPageModule,
     BlPageModule,
