@@ -175,7 +175,7 @@ export class TaskPage {
               public modalCtrl: ModalController,
               private actionSheetCtrl: ActionSheetController,
               private emitService: EmitService,
-              private agendaService: AgendaService,
+              private taskService: TaskService,
               private util: UtilService,
               private feedback: FeedbackService,
               private calendarService: CalendarService,
