@@ -127,7 +127,7 @@ import {Keyboard} from "@ionic-native/keyboard";
               </div>
               <div (click)="changeDatetime()">
               </div>
-              <div end *ngIf="currentTask.ui != currentuser">
+              <div end *ngIf="currentTask.evi && currentTask.ui != currentuser">
                 <span class="content  font-normal">
                    ---来自{{currentTask.ui | formatuser: currentuser: friends}}
                   </span>

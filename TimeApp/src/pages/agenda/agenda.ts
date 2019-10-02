@@ -128,14 +128,14 @@ import {Keyboard} from "@ionic-native/keyboard";
               <div (click)="changeDatetime()">
                 <span class="content font-normal">
                   日期：{{currentAgenda.evd | formatedate: "YYYY年M月D日"}}<br/>
-                
+
                   时间：{{currentAgenda.evt | formatedate: "HH:mm"}} {{currentAgenda.ct | formatedate: "duration"}}
                 </span>
                 <ion-icon class="font-normal fal fa-calendar-check "></ion-icon>
               </div>
               <div (click)="changeDatetime()">
               </div>
-              <div end *ngIf="currentAgenda.ui != currentuser">
+              <div end *ngIf="currentAgenda.evi && currentAgenda.ui != currentuser">
                 <span class="content  font-normal">
                    ---来自{{currentAgenda.ui | formatuser: currentuser: friends}}
                   </span>
