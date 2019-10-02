@@ -2229,6 +2229,36 @@ export class EventService extends BaseService {
     return ca;
   }
 
+  /**
+	 * 删除任务
+   *
+	 * @author leon_xi@163.com
+	 */
+  async removeTask(task: TaskData): Promise<TaskData> {
+    this.assertEmpty(task);     // 入参不能为空
+    this.assertEmpty(task.evi); // 任务ID不能为空
+
+    task.del = DelType.del;
+    task.tb = SyncType.unsynch;
+
+    let sqls: Array<string> = new Array<string>();
+
+    let evdb: EvTbl = new EvTbl();
+    Object.assign(evdb, task);
+
+    sqls.push(evdb.upTParam());
+
+    let tdb: TTbl = new TTbl();
+    Object.assign(tdb, task);
+
+    sqls.push(tdb.upTParam());
+
+    await this.sqlExce.batExecSqlByParam(sqls);
+    this.emitService.emit("mwxing.calendar.activities.changed", task);
+
+    return task;
+  }
+
 	/**
 	 * 创建更新任务
 	 * @author ying<343253410@qq.com>

@@ -420,13 +420,13 @@ export class TaskPage {
   }
 
   doOptionRemove(op: OperateType) {
-    // this.util.loadingStart().then(() => {
-    //   this.eventService.removeTask(this.originTask)
-    //     .then(() => {
-    //       this.util.loadingEnd();
-    //       this.goBack();
-    //     });
-    // });
+    this.util.loadingStart().then(() => {
+      this.eventService.removeTask(this.originTask)
+        .then(() => {
+          this.util.loadingEnd();
+          this.goBack();
+        });
+    });
   }
 
   goRemove() {
@@ -439,13 +439,13 @@ export class TaskPage {
       this.modifyConfirm.present();
 
     } else {
-      // this.util.loadingStart().then(() => {
-      //   this.eventService.removeTask(this.originTask, OperateType.OnlySel)
-      //     .then(() => {
-      //       this.util.loadingEnd();
-      //       this.goBack();
-      //     });
-      // });
+      this.util.loadingStart().then(() => {
+        this.eventService.removeTask(this.originTask)
+          .then(() => {
+            this.util.loadingEnd();
+            this.goBack();
+          });
+      });
     }
   }
 
