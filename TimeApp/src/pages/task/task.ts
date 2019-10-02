@@ -516,7 +516,7 @@ export class TaskPage {
 
   doOptionSave(op: OperateType) {
     this.util.loadingStart().then(() => {
-      this.eventService.saveAgenda(this.currentTask, this.originTask, op).then((agenda) => {
+      this.eventService.saveTask(this.currentTask).then((agenda) => {
         if (agenda && agenda.length > 0) {
           this.currentTask = agenda[0];
           Object.assign(this.originTask, agenda[0]);
@@ -545,7 +545,7 @@ export class TaskPage {
           this.modifyConfirm.present();
         } else {                          // 非重复/重复已经修改为非重复
           this.util.loadingStart().then(() => {
-            this.eventService.saveAgenda(this.currentTask, this.originTask, OperateType.OnlySel).then((agenda) => {
+            this.eventService.saveTask(this.currentTask).then((agenda) => {
               if (agenda && agenda.length > 0) {
                 this.currentTask = agenda[0];
                 Object.assign(this.originTask, agenda[0]);
@@ -558,7 +558,7 @@ export class TaskPage {
         }
       } else {                            // 新建日程
         this.util.loadingStart().then(() => {
-          this.eventService.saveAgenda(this.currentTask).then((agenda) => {
+          this.eventService.saveTask(this.currentTask).then((agenda) => {
             if (agenda && agenda.length > 0) {
               this.currentTask = agenda[0];
               Object.assign(this.originTask, agenda[0]);
