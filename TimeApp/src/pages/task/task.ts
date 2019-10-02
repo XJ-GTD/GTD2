@@ -193,12 +193,12 @@ export class TaskPage {
           this.buttons.remove = true;
         });
       } else {
-        this.currentTask.sd = paramter.d.format("YYYY/MM/DD");
+        this.currentTask.evd = paramter.d.format("YYYY/MM/DD");
 
         if (paramter.t) {
-          this.currentTask.st = paramter.t;
+          this.currentTask.evt = paramter.t;
         } else {
-          this.currentTask.st = moment().add(1, "h").format("HH:00");
+          this.currentTask.evt = moment().add(1, "h").format("HH:00");
         }
 
         if (paramter.sn) this.currentTask.evn = paramter.sn;
