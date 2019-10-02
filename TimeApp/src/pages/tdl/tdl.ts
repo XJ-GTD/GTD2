@@ -46,7 +46,7 @@ import {CalendarComponent} from "../../components/ion2-calendar";
     <!--</div>-->
     <!--</div>-->
     <!--</div>-->
-    
+
     <ion-content #contentD>
       <ion-grid #grid4Hight class = "list-grid-content">
         <ng-template ngFor let-monthActivityData [ngForOf]="monthActivityDatas" >
@@ -83,17 +83,17 @@ import {CalendarComponent} from "../../components/ion2-calendar";
                     <div class="d-title-chr" >{{this.util.lunar4str(days.day,"D")}}</div>
                     <div class=" d-title-chr"><span>{{days.events.length}}</span> 活动</div>
                     <div class=" d-title-chr"><span>{{days.calendaritems.length}}</span> 纪念日</div>
-                    <div class=" d-title-chr mome " (click)="toMemo(days)" *ngIf="days.memos.length > 0" [class.item-no-display]="days.memos.length == 0"><span>{{days.events.length}}</span>备忘</div>               
+                    <div class=" d-title-chr mome " (click)="toMemo(days)" *ngIf="days.memos.length > 0" [class.item-no-display]="days.memos.length == 0"><span>{{days.events.length}}</span>备忘</div>
                   </div>
                 </div>
               </ion-row>
-              
+
               <ion-row class="item-content  calendaritem-content item-content-backgroud" *ngFor="let jt of days.calendaritems;" (click)="toPlanItem(jt)">
                 <div class="line font-small first-line">
                   <div class="icon">
                     <ion-icon class = "fal fa-gift"></ion-icon>
                   </div>
-                  <div class="sn">{{jt.jtn}}</div>                 
+                  <div class="sn">{{jt.jtn}}</div>
                 </div>
                 <div class="line font-small">
                   <div class="icon">
@@ -101,10 +101,10 @@ import {CalendarComponent} from "../../components/ion2-calendar";
                   </div>
                   <div class="person ">--来自小仙女</div>
                   <div class="invite" end><span>接受</span><span>拒绝</span></div>
-                  
+
                 </div>
               </ion-row>
-              <ion-row class="item-content dayagenda-content item-content-backgroud" *ngFor="let event of days.events;" (click)="toDetail(event.evi,event.evd,event.gs)">
+              <ion-row class="item-content dayagenda-content item-content-backgroud" *ngFor="let event of days.events;" (click)="toDetail(event.evi,event.evd,event.type,event.gs)">
                   <div class="line font-small first-line">
                     <div class="icon">
                       <ion-icon class = "fal fa-calendar-star"></ion-icon>
@@ -125,9 +125,9 @@ import {CalendarComponent} from "../../components/ion2-calendar";
                     <div class="invite" end><span>接受</span><span>拒绝</span></div>
                   </div>
               </ion-row>
-              
+
             </ng-template>
-            
+
             <ng-template #noscd>
               <ion-row class="item-content no-content item-no-display" id="day{{days.day | formatedate:'YYYYMMDD'}}">
                 <div class="line" (click)="toAdd(days.day)">
@@ -385,7 +385,7 @@ export class TdlPage {
     this.modalCtr.create(DataConfig.PAGE._COMMEMORATIONDAY_PAGE, p).present();
   }
 
-  toDetail(si, d, gs) {
+  toDetail(si, d, type, gs) {
 
     let p: ScdPageParamter = new ScdPageParamter();
     p.si = si;
@@ -395,7 +395,12 @@ export class TdlPage {
     this.feedback.audioClick();
     if (gs == "0") {
       //本人画面
-      this.modalCtr.create(DataConfig.PAGE._AGENDA_PAGE, p).present();
+      if (type == EventType.Agenda) {
+        this.modalCtr.create(DataConfig.PAGE._AGENDA_PAGE, p).present();
+      }
+      if (type == EventType.Task) {
+        this.modalCtr.create(DataConfig.PAGE._TASK_PAGE, p).present();
+      }
     } else if (gs == "1") {
       //受邀人画面
       this.modalCtr.create(DataConfig.PAGE._AGENDA_PAGE, p).present();
