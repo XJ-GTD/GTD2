@@ -115,7 +115,6 @@
   font-family: Alibaba-PuHuiTi-Regular, Helvetica, Arial, sans-serif;
 }
 
-@import "../assets/css/weather-icons.min.css";
 
 //@font-face {
 //  font-family: 'PingFang-Regular';
@@ -137,7 +136,6 @@ body {
   //background-repeat:no-repeat;
   //background-size:100% 100%;
   //-moz-background-size:100% 100%;
-  background: $baseBackColor;
 
   .content-ios {
     background-color: transparent;
@@ -160,61 +158,6 @@ body {
     border: none !important;
   }
 
-  .toast-ios {
-    .toast-message {
-      font-size: 12px;
-      color: $fontMasterColor;
-      text-align: center;
-      padding: 5px;
-    }
-
-    .toast-wrapper {
-      background: $aiBackColor;
-    }
-  }
-
-  .loading-ios .loading-wrapper {
-    background: transparent;
-  }
-
-  .popover-ios {
-    ion-backdrop {
-      background-color: $popBackColor;
-      opacity: .8;
-
-    }
-    .popover-content {
-      font-size: 15px;
-      min-width: 260px;
-      min-height: 70px;
-      color: $masterColor;
-      background-color: $aiBackColor;
-    }
-  }
-  .alert-ios {
-    ion-backdrop {
-      background-color: $popBackColor;
-      opacity: .8;
-
-    }
-    .alert-wrapper {
-      background-color: $aiBackColor;
-      color: $fontMasterColor;
-      width: 270px;
-      .alert-message {
-        font-size: 16px;
-      }
-    }
-    .alert-button {
-      border-top: 1px solid $fontThirdColor;
-      border-right: 1px solid $fontThirdColor;
-      font-size: 17px;
-      color: $selectColor
-    }
-    button:first-child {
-      color: $fontSecondColor
-    }
-  }
   .spinanimation {
     animation: spin 1s linear infinite;
   }
@@ -226,109 +169,6 @@ body {
     padding-right: 0;
     border-width: 0;
   }
-
-
-  //iconcolor
-  .fa-calendar-star, .fa-gift {
-    color: rgba(62, 111, 202, 1);
-  }
-
-  .fa-user-tag {
-    color: rgba(100, 88, 188, 1);
-  }
-
-  .fa-alarm-exclamation {
-    color: rgba(125, 85, 37, 1);
-  }
-
-  .fa-minus-circle {
-    color: rgba(153, 153, 153, 1);
-  }
-
-  .fa-check-circle {
-    color: rgba(17, 117, 141, 1);
-  }
-
-  //时间
-  .fa-calendar-check {
-    color: rgba(17, 117, 141, 1);
-  }
-
-  corner-badge[fa-calendar-check] {
-    background-color: rgba(17, 117, 141, 1);;
-  }
-
-  .fa-map-marker-alt {
-    color: #CEA75D;
-
-  }
-
-  corner-badge[fa-map-marker-alt] {
-    background-color: #CEA75D;
-  }
-
-  .fa-comment-edit {
-    color: #3EA7C0;
-
-  }
-
-  corner-badge[fa-comment-edit] {
-    background-color: #3EA7C0;
-  }
-
-  .fa-line-columns {
-    color: #FF7474;
-
-  }
-
-  corner-badge[fa-line-columns] {
-    background-color: #FF7474;
-  }
-
-  .fa-user-friends {
-    color: #3EA7C0;
-
-  }
-
-  corner-badge[fa-user-friends] {
-    background-color: #3EA7C0;
-  }
-
-  .fa-bells {
-    color: #4E70B6;
-
-  }
-
-  corner-badge[fa-bells] {
-    background-color: #4E70B6;
-  }
-
-  .fa-sparkles {
-    color: #FF7474;
-  }
-
-  corner-badge[fa-sparkles] {
-    background-color: #FF7474;
-  }
-
-
-  .fa-copy {
-    color: #EC8020;
-  }
-
-  corner-badge[fa-copy] {
-    background-color: #EC8020;
-  }
-
-  corner-badge[icon-readonly] {
-    background-color: rgba(153, 153, 153, 1);
-  }
-
-
-  .icon-readonly {
-    color: rgba(153, 153, 153, 1);
-  }
-
 
   .font-small{
     font-size: 1.2rem;
@@ -347,184 +187,18 @@ body {
     font-size: 1.8rem;
     line-height: 1.8rem;
   }
-  //主题页面布局控件
-  page-box,modal-box {
-    width: 100%;
-    height: 100%;
-    position: absolute;
 
-    .box-modal,.box-page {
-      height: 100%;
-      padding: 0px 1rem;
-    }
-
-    .box-header {
-      height: 110px;
-
-      ion-toolbar {
-        height: 100%;
-        padding:0px 1rem;
-
-        .toolbar-background {
-          border-style: none;
-          background-color: transparent;
-        }
-
-        ion-title {
-          padding: 0;
-          .toolbar-title {
-            position: absolute;
-            bottom: 1rem;
-            left: 1rem;
-            width: auto;
-            font-size: 2.4rem;
-            font-weight: 500;
-            max-width: 45%;
-            .subtilte{
-              font-size: 0.875rem;
-              padding: 4px 12px;
-              border-radius:2px;
-              margin-left: 4px;
-            }
-          }
-        }
-
-        .toolbar {
-          position: absolute;
-          width: auto;
-          right: 1rem;
-          bottom: 1rem;
-          .icon {
-            margin: 0 0.75rem;
-            padding: 0 0.25rem;
-            font-size: 2.4rem;
-            font-weight: 500;
-          }
-        }
-
-      }
-    }
-
-    .box-content {
-      .fixed-content {
-        border-top-left-radius: 4px;
-        border-top-right-radius: 4px;
-        //margin-bottom: 47px;
-
-      }
-
-      .scroll-content {
-        //margin-bottom: 49px;
-        overflow-y: hidden
-
-      }
-    }
-
-    .page-content {
-      .fixed-content {
-        border-radius: 4px;
-        margin-bottom: 47px;
-
-      }
-
-      .scroll-content {
-        margin-bottom: 49px;
-
-      }
-    }
+  .towline {
+    min-height: 2.4rem;
   }
 
+  .scroll-y[scrollY] {
+    height: calc(100% - 80px);
 
-
-  .picker-ios {
-    .picker-wrapper {
-      background: rgba(217, 233, 238, 1);
-      border-width: 0;
-    }
-
-    .picker-toolbar {
-      background: rgba(7, 109, 138, 1);
-      border-width: 0;
-
-      .picker-toolbar-multi-picker-cancel {
-        text-align: start;
-      }
-    }
-
-    .picker-above-highlight, .picker-below-highlight {
-      background: rgba(239, 239, 239, 1);
-      z-index: -1;
-      font-size: 14px;
-      border-width: 0;
-    }
-
-    .picker-opt {
-      font-weight: 400;
-      color: rgba(153, 153, 153, 1);
-      font-size: 14px;
-      height: 44px;
-      line-height: 44px;
-    }
-
-    .picker-opt-selected {
-      font-weight: 400;
-      color: rgba(7, 109, 138, 1);
-
-    }
-
-    .picker-toolbar-cancel, .picker-toolbar-multi-picker-cancel {
-      .picker-button {
-        color: rgba(153, 153, 153, 1);
-      }
-    }
-
-    .picker-button {
-      padding-right: 16px;
-      padding-left: 16px;
-      font-size: 16px;
-      font-weight: 400;
-      color: rgba(255, 255, 255, 1);
+    .scroll-content {
+      overflow-y: auto;
     }
   }
-
-
-  .toggle-ios {
-    height: 30px;
-
-    .toggle-icon::before {
-      border-radius: 13px;
-      background-color: rgba(178, 205, 212, 1);
-    }
-
-    .toggle-icon {
-      width: 40px;
-      height: 13px;
-      position: absolute;
-      top: 15px;
-      background-color: rgba(178, 205, 212, 1);
-    }
-
-    .toggle-inner {
-      height: 22px;
-      width: 22px;
-      background: rgba(178, 205, 212, 1);
-      top: -5px;
-      left: -2px;
-    }
-  }
-
-  .toggle-ios.toggle-checked {
-    .toggle-icon {
-      background: rgba(93, 186, 209, 1);
-    }
-
-    .toggle-inner {
-      background: rgba(42, 119, 138, 1);
-      -webkit-transform: translate3d(22px, 0, 0);
-      transform: translate3d(22px, 0, 0);
-    }
-  }
-
 }
 
 @-webkit-keyframes spin {
@@ -544,3 +218,21 @@ body {
     transform: rotate(360deg);
   }
 }
+
+// 主题
+
+@import "../../node_modules/ionic2-auto-complete/auto-complete";
+@import "../theme/autocomplete";
+@import "../assets/css/weather-icons.min.css";
+@import "../theme/entrysystem";
+@import "../theme/black.theme";
+@import "../theme/white.theme";
+@import "../theme/list-grid-content";
+@import "../theme/list-content";
+@import "../theme/pagebox";
+@import "../theme/modalbox";
+@import "../theme/picker";
+@import "../theme/toggle";
+@import "../theme/icon";
+@import "../theme/prompt";
+

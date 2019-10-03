@@ -61,12 +61,9 @@ import {RabbitMQService} from "../service/cordova/rabbitmq.service";
 import {MIPushService} from "../service/cordova/mipush.service";
 import {Badge} from "@ionic-native/badge";
 import {RemindService} from "../service/util-service/remind.service";
-import {TdcPageModule} from "../pages/tdc/tdc.module";
-import {TdmPageModule} from "../pages/tdm/tdm.module";
 import {FsPageModule} from "../pages/fs/fs.module";
 import {AlPageModule} from "../pages/al/al.module";
 import {AgendaPageModule} from "../pages/agenda/agenda.module";
-import {TaskPageModule} from "../pages/task/task.module";
 import {MemoPageModule} from "../pages/memo/memo.module";
 import {DailyMemosPageModule} from "../pages/dailymemos/dailymemos.module";
 import {BlPageModule} from "../pages/bl/bl.module";
@@ -93,15 +90,8 @@ import {PipesModule} from "../pipes/pipes.module";
 import {ConfirmboxComponentModule} from "../components/confirmbox/confirmbox.module";
 import {LogPageModule} from "../pages/log/log.module";
 import {AtPageModule} from "../pages/at/at.module";
-import {DaPageModule} from "../pages/da/da.module";
 import {DoPageModule} from "../pages/do/do.module";
-import {DrPageModule} from "../pages/dr/dr.module";
-import {TxPageModule} from "../pages/tx/tx.module";
-import {BzPageModule} from "../pages/bz/bz.module";
 import {JhPageModule} from "../pages/jh/jh.module";
-import {DzPageModule} from "../pages/dz/dz.module";
-import {CfPageModule} from "../pages/cf/cf.module";
-import {FoPageModule} from "../pages/fo/fo.module";
 import {CommentPageModule} from "../pages/comment/comment.module";
 import {RepeatPageModule} from "../pages/repeat/repeat.module";
 import {RemindPageModule} from "../pages/remind/remind.module";
@@ -151,12 +141,9 @@ import {MemberInfoPageModule} from "../pages/memberinfo/memberinfo.module";
     WebsocketModule,
     WeatherIconsModule,
     PipesModule,
-    TdcPageModule,
-    TdmPageModule,
     FsPageModule,
     AlPageModule,
     AgendaPageModule,
-    TaskPageModule,
     MemoPageModule,
     DailyMemosPageModule,
     BlPageModule,
@@ -181,15 +168,8 @@ import {MemberInfoPageModule} from "../pages/memberinfo/memberinfo.module";
     TdlPageModule,
     LogPageModule,
     AtPageModule,
-    DaPageModule,
     DoPageModule,
-    DrPageModule,
-    TxPageModule,
-    BzPageModule,
     JhPageModule,
-    DzPageModule,
-    CfPageModule,
-    FoPageModule,
     AipPageModule,
     RepeatPageModule,
     RemindPageModule,

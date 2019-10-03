@@ -8,6 +8,11 @@
 //颜色变量
 //全局页面背景
 $baseBackColor:rgba(0,0,0,1);
+//全局页面背景
+$baseBackcolor_black: rgba(0, 12, 31, 1);
+//全局页面背景
+$baseBackcolor_white: rgba(241, 241, 241, 1);
+
 
 //点缀色
 $adornColor:rgba(218,71,57,1);
@@ -172,25 +177,20 @@ $range-ios-tick-active-background-color: transparent;
 // so that the above variables are used and Ionic's
 // default are overridden.
 
-@import "ionic.theme.default";
+//@import "ionic.theme.default";
 
 
 // Ionicons
 // --------------------------------------------------
 // The premium icon font for Ionic. For more info, please see:
 // http://ionicframework.com/docs/ionicons/
-
+//
 @import "ionic.ionicons";
 
 
 // Fonts
 // --------------------------------------------------
 
-@import "roboto";
-@import "noto-sans";
-// 主题
-@import "black.theme";
-@import "white.theme";
-@import "list-item";
+//@import "roboto";
+//@import "noto-sans";
 
-@import "../../node_modules/ionic2-auto-complete/auto-complete";

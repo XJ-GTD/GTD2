@@ -1,0 +1,582 @@
+.list-grid-content {
+
+  .item-content .line[leftmargin], .item-content[leftmargin] {
+    margin-left: 1rem;;
+  }
+
+  .item-content .line[rightmargin], .item-content[rightmargin] {
+    margin-right: 1rem;
+  }
+
+  .item-content .line[toppadding], .item-content[toppadding] {
+    padding-top: 1rem;;
+  }
+
+  .item-content .line[bottompadding], .item-content[bottompadding] {
+    padding-bottom: 1rem;
+  }
+
+  .item-content .line[toppaddingsamll], .item-content[toppaddingsamll] {
+    padding-top: 0.75rem;;
+  }
+
+  .item-content .line[bottompaddingsamll], .item-content[bottompaddingsamll] {
+    padding-bottom: 0.75rem;
+  }
+
+
+  .dayagenda-month.month1 {
+
+    background-image: url("../assets/imgs/listicon/1@3x.png");
+    color: rgba(69, 60, 133, 1);
+  }
+
+  .dayagenda-month.month2 {
+
+    background-image: url("../assets/imgs/listicon/2@3x.png");
+    color: rgba(143, 37, 101, 1);
+
+  }
+
+  .dayagenda-month.month3 {
+
+    background-image: url("../assets/imgs/listicon/3@3x.png");
+    color: rgba(141, 107, 34, 1);
+
+  }
+
+  .dayagenda-month.month4 {
+
+    background-image: url("../assets/imgs/listicon/4@3x.png");
+    color: rgba(153, 13, 70, 1);
+
+  }
+
+  .dayagenda-month.month5 {
+
+    background-image: url("../assets/imgs/listicon/5@3x.png");
+    color: rgba(254, 240, 246, 1);
+
+  }
+
+  .dayagenda-month.month6 {
+
+    background-image: url("../assets/imgs/listicon/6@3x.png");
+    color: rgba(45, 101, 105, 1);
+
+  }
+
+  .dayagenda-month.month7 {
+
+    background-image: url("../assets/imgs/listicon/7@3x.png");
+    color: rgba(157, 20, 40, 1);
+
+  }
+
+  .dayagenda-month.month8 {
+
+    background-image: url("../assets/imgs/listicon/8@3x.png");
+    color: rgba(20, 88, 98, 1);
+
+  }
+
+  .dayagenda-month.month9 {
+
+    background-image: url("../assets/imgs/listicon/9@3x.png");
+    color: rgba(255, 252, 245, 1);
+
+  }
+
+  .dayagenda-month.month10 {
+
+    background-image: url("../assets/imgs/listicon/10@3x.png");
+    color: rgba(93, 90, 19, 1);
+
+  }
+
+  .dayagenda-month.month11 {
+
+    background-image: url("../assets/imgs/listicon/11@3x.png");
+    color: rgba(119, 92, 72, 1);
+
+  }
+
+  .dayagenda-month.month12 {
+
+    background-image: url("../assets/imgs/listicon/12@3x.png");
+    color: rgba(78, 70, 119, 1);
+  }
+
+  .icon {
+    text-align: center;
+    margin: 0rem 0.5rem;
+
+    ion-icon {
+      padding-top: 0.1rem;
+    }
+
+  }
+
+
+  .sn {
+    font-weight: 500;
+    display: -webkit-box;
+    white-space: pre-wrap;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2; /*显示几行*/
+    overflow: hidden;
+    margin: 0 0.5rem;
+  }
+
+  .st {
+    margin: 0 0.5rem;
+  }
+
+  .invite {
+    margin: 0 0.5rem;
+
+    span {
+      margin: 0 0.6rem;
+    }
+
+    span:first-child {
+    }
+  }
+
+  .person {
+    font-weight: 300;
+    margin: 0 0.5rem;
+
+  }
+
+  .item-no-display {
+    display: none;
+  }
+
+  .item-display {
+    display: block;
+  }
+
+  .item-content {
+    border-radius: 4px;
+    height: auto;
+    width: auto;
+    margin: 0.4rem 1rem;
+
+    .line {
+      position: relative;
+      display: flex;
+      width: 100%;
+      height: auto;
+      margin: 0.2rem 0.6rem;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      white-space: nowrap;
+    }
+
+    .first-line {
+      margin: 0.6rem 0.6rem 0.2rem 0.6rem;
+    }
+
+    [end] {
+      flex-grow: 1;
+      text-align: right;
+
+    }
+  }
+
+  //月份表示列表
+  .dayagenda-month {
+    height: 85px;
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+
+    p {
+      margin-top: 0.8rem;
+      margin-left: 1rem;
+      margin-right: 1rem;
+      margin-bottom: 0.6rem;
+      width: auto;
+    }
+
+    .month-a {
+      font-size: 2rem;
+    }
+
+    .month-b {
+      font-size: 0.875rem;
+      margin-top: 0.4rem;
+    }
+
+
+  }
+
+  //列表一周
+  .dayagenda-week, .no-content {
+    height: 34px;
+    margin-left: 1rem;
+    margin-right: 1rem;
+    line-height: 34px;
+
+
+    p {
+      font-size: 1.2rem;
+      letter-spacing: 1px;
+      margin: 0;
+      margin-left: 1rem;
+    }
+  }
+
+
+  //列表每天头部
+  .dayagenda-nav {
+    background: transparent;
+    box-shadow: none;
+
+    .dayheader {
+      width: 60px;
+      float: left;
+      padding-top: 0.5rem;
+      padding-bottom: 0.5rem;
+      padding-right: 1.4rem;
+
+      .ym-fsize {
+        font-size: 2.3rem;
+        line-height: 1.8rem;
+      }
+
+      .ys-fsize {
+        font-size: 1rem;
+        font-weight: 300;
+      }
+
+      .d-fsize {
+        font-size: 0.9rem;
+        font-weight: 300;
+        line-height: 10px;
+        float: right;
+        width: 10px;
+        writing-mode: tb-rl;
+      }
+
+    }
+
+    .d-title {
+      border-radius: 4px;
+      width: 75%;
+      display: inline-flex;
+
+      .d-title-chr {
+        height: 50px;
+        overflow: hidden;
+        font-size: 1.2rem;
+        margin-left: 1rem;
+        margin-right: 1rem;
+        line-height: 50px;
+        text-align: center;
+
+        span {
+          font-size: 1.6rem;
+          letter-spacing: 0;
+          font-weight: 800;
+        }
+      }
+
+      .d-title-chr:first-child {
+        border-radius: 4px;
+        width: 50px;
+        margin-left: 0;
+        margin-right: 0;
+        letter-spacing: 2px;
+        font-size: 1.6rem;
+        font-weight: 800;
+      }
+
+      .mome {
+        flex-grow: 1;
+
+        span {
+        }
+      }
+    }
+  }
+
+
+  .dayagenda-content {
+    width: 70%;
+    margin-left: 75px;
+    padding: 0.2rem;
+  }
+
+  .calendaritem-content {
+    width: 70%;
+    margin-left: 75px;
+    padding: 0.2rem;
+  }
+}
+
+
+.white-theme {
+  .list-grid-content {
+
+    .before {
+      color: #11758D
+    }
+
+    .after {
+      color: #11758D;
+    }
+
+    .current {
+      color: #B18E00;
+    }
+
+
+    .sn {
+      color: rgba(51, 51, 51, 1);
+    }
+
+    .st {
+      color: rgba(153, 152, 152, 1);
+    }
+
+    .invite {
+      color: rgba(0, 109, 136, 1);
+
+      span:first-child {
+        color: rgba(143, 194, 206, 1);
+      }
+    }
+
+    .person {
+      color: rgba(206, 206, 206, 1);
+
+    }
+
+    .item-content-backgroud {
+      background: rgba(255, 255, 255, 1);
+      box-shadow: 0px 0px 5px 0px rgba(153, 153, 153, 0.28);
+    }
+
+    .item-content {
+      .line {
+        color: rgba(51, 51, 51, 1);
+      }
+
+    }
+
+    //列表一周
+    .dayagenda-week, .no-content {
+      background: rgba(217, 233, 238, 1);
+      box-shadow: 0px 0px 5px 0px rgba(3, 0, 0, 0.2);
+
+      p {
+        color: rgba(7, 109, 138, 1);
+      }
+    }
+
+
+    //列表每天头部
+    .dayagenda-nav {
+      .dayheader {
+
+        .ym-fsize {
+          color: rgba(0, 0, 3, 1);
+        }
+
+        .ys-fsize {
+          color: rgba(153, 153, 153, 1);
+        }
+
+        .d-fsize {
+          color: rgba(56, 160, 185, 1);
+        }
+
+      }
+
+      .d-title {
+        background: rgba(42, 119, 138, 1);
+        box-shadow: 0px 0px 5px 0px rgba(3, 0, 0, 0.2);
+
+        .d-title-chr {
+          color: rgba(150, 189, 199, 1);
+
+          span {
+            color: rgba(235, 239, 250, 1);
+          }
+        }
+
+        .d-title-chr:first-child {
+          background: rgba(53, 152, 176, 1);
+          box-shadow: 0px 0px 0px 0px rgba(3, 0, 0, 0.2);
+          color: rgba(235, 239, 250, 1);
+        }
+
+        .mome {
+          color: rgba(255, 255, 255, 1);
+
+          span {
+            color: rgba(255, 255, 255, 1);
+          }
+        }
+      }
+    }
+
+
+    .dayagenda-content {
+    }
+
+    .calendaritem-content {
+      background: rgba(53, 152, 176, 0.2);
+      box-shadow: 0px 0px 5px 0px rgba(62, 153, 175, 0.3);
+    }
+  }
+
+}
+
+.black-theme {
+  .list-grid-content {
+
+    .before {
+      color: #11758D
+    }
+
+    .after {
+      color: #11758D;
+    }
+
+    .current {
+      color: #B18E00;
+    }
+
+    .icon {
+      .fa-calendar-star, .fa-gift {
+        color: rgba(62, 111, 202, 1);
+      }
+
+      .fa-user-tag {
+        color: rgba(100, 88, 188, 1);
+      }
+
+      .fa-alarm-exclamation {
+        color: rgba(125, 85, 37, 1);
+      }
+
+      .fa-minus-circle {
+        color: rgba(153, 153, 153, 1);
+      }
+
+      .fa-check-circle {
+        color: rgba(17, 117, 141, 1);
+      }
+
+    }
+
+
+    .sn {
+      color: rgba(255, 255, 255, 1);
+    }
+
+    .st {
+      color: rgba(153, 152, 152, 1);
+    }
+
+    .invite {
+      color: rgba(62, 111, 202, 1);
+
+      span:first-child {
+        color: rgba(41, 74, 134, 1);
+      }
+    }
+
+    .person {
+      color: rgba(57, 70, 93, 1);
+
+    }
+
+    .item-content-backgroud {
+      background: rgba(237, 241, 254, 0.05);
+      box-shadow: 0px 0px 5px 0px rgba(3, 0, 0, 0.2);
+    }
+
+    .item-content {
+      .line {
+        color: rgba(51, 51, 51, 1);
+      }
+
+    }
+
+    //列表一周
+    .dayagenda-week, .no-content {
+
+      p {
+      }
+
+      background: rgba(237, 241, 254, .05);
+      box-shadow: 0px 0px 5px 0px rgba(3, 0, 0, 0.2);
+
+      p {
+        color: rgba(121, 140, 170, 1);
+      }
+    }
+
+
+    //列表每天头部
+    .dayagenda-nav {
+      .dayheader {
+        .ym-fsize {
+          color: rgba(235, 239, 250, 1)
+        }
+
+        .ys-fsize {
+          color: rgba(204, 204, 204, 1)
+        }
+
+        .d-fsize {
+          color: rgba(73, 152, 188, 1);
+        }
+
+      }
+
+      .d-title {
+        background: rgba(237, 241, 254, .1);
+        box-shadow: 0px 0px 5px 0px rgba(3, 0, 0, 0.2);
+
+        .d-title-chr {
+          color: rgba(85, 110, 153, 1);
+
+          span {
+            color: rgba(235, 239, 250, 1);
+          }
+        }
+
+        .d-title-chr:first-child {
+          background: rgba(237, 241, 254, .05);
+          box-shadow: 0px 0px 5px 0px rgba(3, 0, 0, 0.2);
+          color: rgba(235, 239, 250, 1);
+        }
+
+        .mome {
+          color: rgba(235, 239, 250, 1);
+
+          span {
+            color: rgba(255, 255, 255, 1);
+          }
+        }
+      }
+    }
+
+
+    .dayagenda-content {
+    }
+
+    .calendaritem-content {
+      background: rgba(53, 152, 176, 0.2);
+      box-shadow: 0px 0px 5px 0px rgba(62, 153, 175, 0.3);
+    }
+  }
+}
+
+
+
+

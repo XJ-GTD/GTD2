@@ -1,17 +1,10 @@
 /**
  * 公共配置用
  */
-import {ContextModel, WsModel} from "../../ws/model/ws.model";
 import {ProcesRs} from "../../ws/model/proces.rs";
-import {UserConfig} from "./user.config";
 import {Fs4cPage} from "../../pages/fs/fs4c";
 import {HPage} from "../../pages/h/h";
 import {TdlPage} from "../../pages/tdl/tdl";
-import {TdcPage} from "../../pages/tdc/tdc";
-import {TdmPage} from "../../pages/tdm/tdm";
-import {TdmePage} from "../../pages/tdm/tdme";
-import {TddiPage} from "../../pages/tdc/tddi";
-import {TddjPage} from "../../pages/tdc/tddj";
 import {LpPage} from "../../pages/lp/lp";
 import {LsPage} from "../../pages/ls/ls";
 import {PfPage} from "../../pages/pf/pf";
@@ -33,27 +26,14 @@ import {BlPage} from "../../pages/bl/bl";
 import {PsPage} from "../../pages/ps/ps";
 import {BrPage} from "../../pages/br/br";
 import {AlPage} from "../../pages/al/al";
-import {TddsPage} from "../../pages/tdc/tdds";
 import {LogPage} from "../../pages/log/log";
 import {AtPage} from "../../pages/at/at";
-import {DaPage} from "../../pages/da/da";
 import {DoPage} from "../../pages/do/do";
 import {DoScrumPage} from "../../pages/do/do-scrum";
 import {AgendaPage} from "../../pages/agenda/agenda";
 import {TaskPage} from "../../pages/task/task";
 import {MemoPage} from "../../pages/memo/memo";
-import {DrPage} from "../../pages/dr/dr";
-import {TxPage} from "../../pages/tx/tx";
-import {BzPage} from "../../pages/bz/bz";
 import {JhPage} from "../../pages/jh/jh";
-import {DzPage} from "../../pages/dz/dz";
-import {CfPage} from "../../pages/cf/cf";
-import {FoPage} from "../../pages/fo/fo";
-import {FoSharePage} from "../../pages/fo/foshare";
-import {FoGitHubPage} from "../../pages/fo/fogithub";
-import {FoFirIMPage} from "../../pages/fo/fofirim";
-import {FoTravisCIPage} from "../../pages/fo/fotravisci";
-import {FoConfigurePage} from "../../pages/fo/foconfigure";
 import {AipPage} from "../../pages/aip/aip";
 import {CommentPage} from "../../pages/comment/comment";
 import {RepeatPage} from "../../pages/repeat/repeat";
@@ -243,16 +223,9 @@ export class DataConfig {
 
   /* ============ 页面名字配置 ===============*/
   static PAGE = {
-
     _H_PAGE: HPage,        // 首页 - 首页
     _Ai_PAGE: AipPage,     // 设置项目跟进实例可选项
     _TDL_PAGE: TdlPage,        // 日程 - 日程列表
-    _TDM_PAGE: TdmPage,        // 日程 - TimePage风格日程详情新建
-    _TDME_PAGE: TdmePage,      // 日程 - TimePage风格日程详情修改
-    _TDC_PAGE: TdcPage,        // 日程 - 日程详情新建
-    _TDDI_PAGE: TddiPage,      // 日程 - 日程详情（受邀）
-    _TDDJ_PAGE: TddjPage,      // 日程 - 日程详情(发布人)
-    _TDDS_PAGE: TddsPage,      // 日程 - 日程详情（系统）
     _LP_PAGE: LpPage,       // 登陆注册 - 登陆（密码）
     _LS_PAGE: LsPage,       // 登陆注册 - 登录（验证码）
     _PF_PAGE: PfPage,       // 登陆注册 - 忘记密码
@@ -277,7 +250,6 @@ export class DataConfig {
     _AL_PAGE: AlPage,       //启动页
     _LOG_PAGE: LogPage,       // 辅助功能 - 备份
     _AT_PAGE: AtPage,       // 关于
-    _DA_PAGE: DaPage,       // 日程 - 每日日程
     _DO_PAGE: DoPage,       // 任务 - 待处理/已处理任务一览
     _DOSCRUM_PAGE: DoScrumPage,       // 任务 - 待处理/已处理任务一览
     _AGENDA_PAGE: AgendaPage,   // 日程 - 创建/修改
@@ -294,86 +266,75 @@ export class DataConfig {
     _DAILYMEMOS_PAGE: DailyMemosPage, // 备忘 - 每日备忘
     _COMMEMORATIONDAY_PAGE: CommemorationDayPage, // 纪念日 - 创建/修改
     _DTSELECT_PAGE: DtSelectPage, // 纪念日 - 创建/修改
-    _DR_PAGE: DrPage,       // 每日简报设置 - 智能提醒
-    _TX_PAGE: TxPage,       // 设置提醒
-    _BZ_PAGE: BzPage,       // 设置备注
     _JH_PAGE: JhPage,       // 设置计划/日历
-    _DZ_PAGE: DzPage,       // 设置地址
-    _CF_PAGE: CfPage,       // 设置重复
-    _FO_PAGE: FoPage,       // 设置项目跟进可选项
-    _FOSHARE_PAGE: FoSharePage,       // 设置项目跟进通知可选项
-    _FOGITHUB_PAGE: FoGitHubPage,       // 设置项目跟进GitHub可选项
-    _FOFIRIM_PAGE: FoFirIMPage,       // 设置项目跟进Fir.IM可选项
-    _FOTRAVISCI_PAGE: FoTravisCIPage,       // 设置项目跟进Travis-CI可选项
-    _FOCONFIGURE_PAGE: FoConfigurePage,     // 设置项目跟进实例可选项
   }
-  static PAGES = [
-    HPage,        // 首页 - 首页
-    TdlPage,        // 日程 - 日程列表
-    TdmPage,        // 日程 - TimePage风格日程详情新建
-    TdmePage,      // 日程 - TimePage风格日程详情修改
-    TdcPage,        // 日程 - 日程详情新建
-    TddiPage,      // 日程 - 日程详情（受邀）
-    TddjPage,      // 日程 - 日程详情(发布人)
-    TddsPage,      // 日程 - 日程详情（系统）
-    LpPage,       // 登陆注册 - 登陆（密码）
-    LsPage,       // 登陆注册 - 登录（验证码）
-    PfPage,       // 登陆注册 - 忘记密码
-    RPage,         // 登陆注册 - 注册
-    PPage,        // 登陆注册 - 条款
-    MPage,         // 辅助功能 - 菜单
-    PlPage,       // 辅助功能 - 计划
-    PcPage,       // 辅助功能 - 计划新建
-    PdPage,       // 辅助功能 - 计划展
-    SsPage,       // 辅助功能 - 系统设置
-    HlPage,       // 辅助功能 - 帮助及反馈
-    GlPage,       // 辅助功能 - 群组列表
-    GcPage,       // 辅助功能 - 群组编辑
-    GaPage,       // 辅助功能 - 群组添加
-    Fs4cPage,       // 辅助功能 - 选择参与人日程
-    Fs4gPage,       // 辅助功能 - 选择参与人群组
-    Fs4foPage,      // 辅助功能 - 选择参与人项目跟进通知
-    FdPage,       // 辅助功能 - 参与人详情
-    PsPage,       // 辅助功能 - 个人设置
-    BlPage,       // 辅助功能 - 黑名单
-    BrPage,       // 辅助功能 - 备份
-    AlPage,       //启动页
-    LogPage,       // 辅助功能 - 备份
-    AtPage,       // 关于
-    DaPage,       // 日程 - 每日日程
-    DoPage,       // 任务 - 待处理/已处理任务一览
-    DoScrumPage,       // 任务 - 待处理/已处理任务一览
-    MemoPage,     // 备忘 - 创建/修改
-    AgendaPage,   // 日程 - 创建/修改
-    TaskPage,       // 任务 - 创建/修改
-    RepeatPage,   // 日程 - 重复
-    RemindPage,   // 日程 - 提醒
-    CommentPage,  // 日程 - 备注
-    PlanPage,     // 日程 - 计划
-    InvitesPage,  // 日程 - 邀请人
-    MemberPage,
-    LocationPage, // 日程 - 地址
-    AttachPage,   // 日程 - 附件
-    DailyMemosPage, // 备忘 - 每日备忘
-    CommemorationDayPage, // 纪念日 - 创建/修改
-    DrPage,       // 每日简报设置 - 智能提醒
-    TxPage,       // 设置提醒
-    BzPage,       // 设置备注
-    JhPage,       // 设置计划/日历
-    DzPage,       // 设置地址
-    CfPage,       // 设置重复
-    FoPage,       // 设置项目跟进可选项
-    FoSharePage,       // 设置项目跟进通知可选项
-    FoGitHubPage,       // 设置项目跟进GitHub可选项
-    FoFirIMPage,       // 设置项目跟进Fir.IM可选项
-    FoConfigurePage,   // 设置项目跟进实例可选项
-  ];
-  /* ============ 页面名字配置 ===============*/
-  public static isPage(object: any) {
-    return DataConfig.PAGES.reduce((init, val) => {
-      return init || object instanceof val;
-    }, false);
-  }
+  // static PAGES = [
+  //   HPage,        // 首页 - 首页
+  //   TdlPage,        // 日程 - 日程列表
+  //   TdmPage,        // 日程 - TimePage风格日程详情新建
+  //   TdmePage,      // 日程 - TimePage风格日程详情修改
+  //   TdcPage,        // 日程 - 日程详情新建
+  //   TddiPage,      // 日程 - 日程详情（受邀）
+  //   TddjPage,      // 日程 - 日程详情(发布人)
+  //   TddsPage,      // 日程 - 日程详情（系统）
+  //   LpPage,       // 登陆注册 - 登陆（密码）
+  //   LsPage,       // 登陆注册 - 登录（验证码）
+  //   PfPage,       // 登陆注册 - 忘记密码
+  //   RPage,         // 登陆注册 - 注册
+  //   PPage,        // 登陆注册 - 条款
+  //   MPage,         // 辅助功能 - 菜单
+  //   PlPage,       // 辅助功能 - 计划
+  //   PcPage,       // 辅助功能 - 计划新建
+  //   PdPage,       // 辅助功能 - 计划展
+  //   SsPage,       // 辅助功能 - 系统设置
+  //   HlPage,       // 辅助功能 - 帮助及反馈
+  //   GlPage,       // 辅助功能 - 群组列表
+  //   GcPage,       // 辅助功能 - 群组编辑
+  //   GaPage,       // 辅助功能 - 群组添加
+  //   Fs4cPage,       // 辅助功能 - 选择参与人日程
+  //   Fs4gPage,       // 辅助功能 - 选择参与人群组
+  //   Fs4foPage,      // 辅助功能 - 选择参与人项目跟进通知
+  //   FdPage,       // 辅助功能 - 参与人详情
+  //   PsPage,       // 辅助功能 - 个人设置
+  //   BlPage,       // 辅助功能 - 黑名单
+  //   BrPage,       // 辅助功能 - 备份
+  //   AlPage,       //启动页
+  //   LogPage,       // 辅助功能 - 备份
+  //   AtPage,       // 关于
+  //   DaPage,       // 日程 - 每日日程
+  //   DoPage,       // 任务 - 待处理/已处理任务一览
+  //   DoScrumPage,       // 任务 - 待处理/已处理任务一览
+  //   MemoPage,     // 备忘 - 创建/修改
+  //   AgendaPage,   // 日程 - 创建/修改
+  //   TaskPage,       // 任务 - 创建/修改
+  //   RepeatPage,   // 日程 - 重复
+  //   RemindPage,   // 日程 - 提醒
+  //   CommentPage,  // 日程 - 备注
+  //   PlanPage,     // 日程 - 计划
+  //   InvitesPage,  // 日程 - 邀请人
+  //   MemberPage,
+  //   LocationPage, // 日程 - 地址
+  //   AttachPage,   // 日程 - 附件
+  //   DailyMemosPage, // 备忘 - 每日备忘
+  //   CommemorationDayPage, // 纪念日 - 创建/修改
+  //   DrPage,       // 每日简报设置 - 智能提醒
+  //   TxPage,       // 设置提醒
+  //   BzPage,       // 设置备注
+  //   JhPage,       // 设置计划/日历
+  //   DzPage,       // 设置地址
+  //   CfPage,       // 设置重复
+  //   FoPage,       // 设置项目跟进可选项
+  //   FoSharePage,       // 设置项目跟进通知可选项
+  //   FoGitHubPage,       // 设置项目跟进GitHub可选项
+  //   FoFirIMPage,       // 设置项目跟进Fir.IM可选项
+  //   FoConfigurePage,   // 设置项目跟进实例可选项
+  // ];
+  // /* ============ 页面名字配置 ===============*/
+  // public static isPage(object: any) {
+  //   return DataConfig.PAGES.reduce((init, val) => {
+  //     return init || object instanceof val;
+  //   }, false);
+  // }
 
   /*----===== 语音区分 =====----- */
   public static SPEECH: string = "SPEECH";    //系统表语音key

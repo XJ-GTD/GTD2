@@ -2,7 +2,6 @@ import {Component} from '@angular/core';
 import {App, IonicPage, Nav} from 'ionic-angular';
 import {AlService} from "./al.service";
 import {DataConfig} from "../../service/config/data.config";
-import {NotificationsService} from "../../service/cordova/notifications.service";
 import {AlData} from "../../data.mapping";
 import {RabbitMQService} from "../../service/cordova/rabbitmq.service";
 

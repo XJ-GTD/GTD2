@@ -42,7 +42,7 @@ export class AiService {
     paramter.t = scd.t;
     paramter.d = moment(scd.d);
     paramter.sn = scd.ti;
-    this.modalController.create(DataConfig.PAGE._TDC_PAGE, paramter).present();
+    // this.modalController.create(DataConfig.PAGE._TDC_PAGE, paramter).present();
   }
 
   async createScd(scd: ScdAiData) {
@@ -77,13 +77,13 @@ export class AiService {
 
     if (gs == "0") {
       //本人画面
-      this.modalController.create(DataConfig.PAGE._TDDJ_PAGE, p).present();
+      // this.modalController.create(DataConfig.PAGE._TDDJ_PAGE, p).present();
     } else if (gs == "1") {
       //受邀人画面
-      this.modalController.create(DataConfig.PAGE._TDDI_PAGE, p).present();
+      // this.modalController.create(DataConfig.PAGE._TDDI_PAGE, p).present();
     } else {
       //系统画面
-      this.modalController.create(DataConfig.PAGE._TDDS_PAGE, p).present();
+      // this.modalController.create(DataConfig.PAGE._TDDS_PAGE, p).present();
     }
   }
 

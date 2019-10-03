@@ -5,10 +5,6 @@ import {HService} from "./h.service";
 import * as moment from "moment";
 import {AiComponent} from "../../components/ai/answer/ai";
 import {EmitService} from "../../service/util-service/emit.service";
-import {TdcPage} from "../tdc/tdc";
-import {TdmPage} from "../tdm/tdm";
-import {TddiPage} from "../tdc/tddi";
-import {TddjPage} from "../tdc/tddj";
 import {HData, ScdPageParamter} from "../../data.mapping";
 import {FeedbackService} from "../../service/cordova/feedback.service";
 import {DataConfig} from "../../service/config/data.config";
@@ -20,7 +16,6 @@ import {EffectService} from "../../service/business/effect.service";
 import {MemoService} from "../../service/business/memo.service";
 import {SettingsProvider} from "../../providers/settings/settings";
 import {AipPage} from "../aip/aip";
-import { Animation } from 'ionic-angular/animations/animation';
 import {TdlPage} from "../tdl/tdl";
 import {AgendaPage} from "../agenda/agenda";
 
@@ -36,7 +31,6 @@ import {AgendaPage} from "../agenda/agenda";
   selector: 'page-h',
   template: `
     <ion-content>
-      <div class="haContent">
         <ion-calendar #calendar
                       [options]="options"
                       (onSelect)="onSelect($event)"
@@ -44,7 +38,6 @@ import {AgendaPage} from "../agenda/agenda";
                       (viewShow) = "viewShow($event)">
         </ion-calendar>
         <page-tdl #tdl ></page-tdl>
-      </div>
       <ion-fab bottom right class="shortcut">
         <button ion-fab mini>
           <ion-icon name="add"></ion-icon>
@@ -161,7 +154,7 @@ export class HPage {
       let p: ScdPageParamter = new ScdPageParamter();
       p.si = data.id;
       p.d = moment(data.d);
-      this.modalCtr.create(TddiPage, p).present();
+      this.modalCtr.create(DataConfig.PAGE._AGENDA_PAGE, p).present();
     });
 
     this.emitService.registerRef(data => {
@@ -187,7 +180,7 @@ export class HPage {
       p.si = data.si;
       p.d = moment(data.sd);
       p.gs = data.sr;
-      this.modalCtr.create(TddiPage, p).present();
+      this.modalCtr.create(DataConfig.PAGE._AGENDA_PAGE, p).present();
     });
 
     this.emitService.register('on.agenda.shareevents.message.click', (data) => {
@@ -196,7 +189,7 @@ export class HPage {
       let p: ScdPageParamter = new ScdPageParamter();
       p.si = data.si;
       p.d = moment(data.sd);
-      this.modalCtr.create(TddjPage, p).present();
+      this.modalCtr.create(DataConfig.PAGE._AGENDA_PAGE, p).present();
     });
 
     //冥王星远程服务地址刷新完成
@@ -240,18 +233,11 @@ export class HPage {
   onPress(pressDay) {
     this.hService.centerShow(pressDay).then(d => {
       this.hdata = d;
-      //this.newcdWithTimePage();
       this.newcd();
     })
 
   }
 
-  newcdWithTimePage() {
-    let p: ScdPageParamter = new ScdPageParamter();
-    p.d = moment(this.hdata.selectDay.time);
-    this.feedback.audioPress();
-    this.modalCtr.create(TdmPage, p).present();
-  }
 
   newcd() {
 
@@ -334,7 +320,7 @@ export class HPage {
     }
 
     this.feedback.audioPress();
-    this.modalCtr.create(AgendaPage, p).present();
+    this.modalCtr.create(DataConfig.PAGE._AGENDA_PAGE, p).present();
   }
 
   newpi() {
@@ -389,7 +375,7 @@ export class HPage {
     p.d = moment(jt.sd);
     p.gs = "3";
 
-    this.modalCtr.create(DataConfig.PAGE._TDDS_PAGE, p).present();
+    this.modalCtr.create(DataConfig.PAGE._AGENDA_PAGE, p).present();
   }
 
   gotodetail(scd) {
@@ -400,13 +386,13 @@ export class HPage {
 
     if (scd.gs == "0") {
       //本人画面
-      this.modalCtr.create(DataConfig.PAGE._TDDJ_PAGE, p).present();
+      this.modalCtr.create(DataConfig.PAGE._AGENDA_PAGE, p).present();
     } else if (scd.gs == "1") {
       //受邀人画面
-      this.modalCtr.create(DataConfig.PAGE._TDDI_PAGE, p).present();
+      this.modalCtr.create(DataConfig.PAGE._AGENDA_PAGE, p).present();
     } else {
       //系统画面
-      this.modalCtr.create(DataConfig.PAGE._TDDS_PAGE, p).present();
+      this.modalCtr.create(DataConfig.PAGE._AGENDA_PAGE, p).present();
     }
   }
 }

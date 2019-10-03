@@ -3,7 +3,6 @@ import {IonicPageModule} from 'ionic-angular';
 import {AlPage} from './al';
 import {AlService} from "./al.service";
 import {BackComponentModule} from "../../components/backComponent/back.module";
-import {TdcPageModule} from "../tdc/tdc.module";
 
 @NgModule({
   declarations: [
@@ -12,7 +11,6 @@ import {TdcPageModule} from "../tdc/tdc.module";
   imports: [
     IonicPageModule.forChild(AlPage),
     BackComponentModule,
-    TdcPageModule,
   ],
   providers: [
     AlService,

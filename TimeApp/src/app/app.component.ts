@@ -64,32 +64,32 @@ export class MyApp {
 //     statusBar.backgroundColorByHexString('#000000');
     this.statusBar.overlaysWebView(false);
     //模态框进入时改变状态栏颜色
-    this.app.viewDidEnter.subscribe((event) => {
-      if (event && event.instance && DataConfig.isPage(event.instance)) {
-        if (event.instance.statusBarColor) {
-          this.statusBar.backgroundColorByHexString(event.instance.statusBarColor);
-          this.statusbarcolors.push(event.instance.statusBarColor);
-        } else {
-          this.statusBar.backgroundColorByHexString("#000");
-          this.statusbarcolors.push("#000");
-        }
-      }
-    });
+    // this.app.viewDidEnter.subscribe((event) => {
+    //   if (event && event.instance && DataConfig.isPage(event.instance)) {
+    //     if (event.instance.statusBarColor) {
+    //       this.statusBar.backgroundColorByHexString(event.instance.statusBarColor);
+    //       this.statusbarcolors.push(event.instance.statusBarColor);
+    //     } else {
+    //       this.statusBar.backgroundColorByHexString("#000");
+    //       this.statusbarcolors.push("#000");
+    //     }
+    //   }
+    // });
 
     //模态框退出时还原状态栏颜色
-    this.app.viewWillLeave.subscribe((event) => {
-      if (event && event.instance && DataConfig.isPage(event.instance)) {
-        //清除当前画面颜色
-        this.statusbarcolors.pop();
-        //取得上个画面的颜色
-        if (this.statusbarcolors.length > 0) {
-          let bgcolor = this.statusbarcolors[this.statusbarcolors.length - 1];
-          this.statusBar.backgroundColorByHexString(bgcolor);
-        } else {
-          this.statusBar.backgroundColorByHexString("#000");
-        }
-      }
-    });
+    // this.app.viewWillLeave.subscribe((event) => {
+    //   if (event && event.instance && DataConfig.isPage(event.instance)) {
+    //     //清除当前画面颜色
+    //     this.statusbarcolors.pop();
+    //     //取得上个画面的颜色
+    //     if (this.statusbarcolors.length > 0) {
+    //       let bgcolor = this.statusbarcolors[this.statusbarcolors.length - 1];
+    //       this.statusBar.backgroundColorByHexString(bgcolor);
+    //     } else {
+    //       this.statusBar.backgroundColorByHexString("#000");
+    //     }
+    //   }
+    // });
 
     this.platform.ready().then(() => {
       //this.util.loadingEnd();
