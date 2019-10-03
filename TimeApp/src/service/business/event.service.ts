@@ -2255,6 +2255,7 @@ export class EventService extends BaseService {
 
     await this.sqlExce.batExecSqlByParam(sqls);
     this.emitService.emit("mwxing.calendar.activities.changed", task);
+    this.syncTask(task);
 
     return task;
   }
@@ -2315,7 +2316,7 @@ export class EventService extends BaseService {
 
     this.emitService.emit("mwxing.calendar.activities.changed", task);
     this.syncTask(task);
-    
+
 		return task;
   }
 
