@@ -311,7 +311,7 @@ export class AgendaPage {
 
   changeInvites() {
     let modal = this.modalCtrl.create(DataConfig.PAGE._INVITES_PAGE, {
-      members: this.currentAgenda.members,
+      members: new Array<Member>(...this.currentAgenda.members),
       md: this.currentAgenda.md,
       iv: this.currentAgenda.iv
     });
