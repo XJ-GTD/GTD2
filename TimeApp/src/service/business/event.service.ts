@@ -19,7 +19,7 @@ import {DataConfig} from "../config/data.config";
 import {BTbl} from "../sqlite/tbl/b.tbl";
 import {FjTbl} from "../sqlite/tbl/fj.tbl";
 import {DataRestful, PullInData, PushInData, SyncData} from "../restful/datasev";
-import {SyncType, DelType, IsSuccess, SyncDataStatus, RepeatFlag, ConfirmType, ModiPower, PageDirection, SyncDataSecurity} from "../../data.enum";
+import {SyncType, DelType, ObjectType, IsSuccess, SyncDataStatus, RepeatFlag, ConfirmType, ModiPower, PageDirection, SyncDataSecurity} from "../../data.enum";
 import {
   assertNotNumber,
   assertEmpty,
@@ -78,10 +78,20 @@ export class EventService extends BaseService {
         }
 
         //相关参与人更新
+        let delpar = new ParTbl();
+        delpar.obt = ObjectType.Event;
+        delpar.obi = agd.evi;
+        sqlparam.push(delpar.dTParam());
+
         if (agd.members && agd.members !=null && agd.members.length > 0){
           for ( let k = 0, len = agd.members.length; k < len ; k++ ){
             let par = new ParTbl();
-            Object.assign(par,agd.members[k]);
+            Object.assign(par, agd.members[k]);
+
+            par.pari = this.util.getUuid();
+            par.obi = agd.evi;
+            par.obt = ObjectType.Event;
+
             sqlparam.push(par.rpTParam());
           }
         }
