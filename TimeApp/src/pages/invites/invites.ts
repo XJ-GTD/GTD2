@@ -25,7 +25,7 @@ import * as anyenum from "../../data.enum";
         <ion-item >
           <ion-label>
             <ul>
-                <li *ngFor = "let member of memberSet.members; let index in memberSet.members" (click)="removeMember(index)">
+                <li *ngFor = "let member of memberSet.members; let i = index" (click)="removeMember(i)">
 
                   <span class="count"> {{ member.ran }}</span>
                 </li>
