@@ -91,6 +91,8 @@ export class EventService extends BaseService {
             par.pari = this.util.getUuid();
             par.obi = agd.evi;
             par.obt = ObjectType.Event;
+            par.tb = SyncType.synch;
+            par.del = DelType.undel;
 
             sqlparam.push(par.rpTParam());
           }
