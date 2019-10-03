@@ -5,10 +5,11 @@ import {EmitService} from "../../service/util-service/emit.service";
 import {Injectable} from "@angular/core";
 import {ProcesRs} from "../model/proces.rs";
 import {CalendarService} from "../../service/business/calendar.service";
-import {EventService, AgendaData, TaskData, MiniTaskData} from "../../service/business/event.service";
+import {EventService, AgendaData, TaskData, MiniTaskData, Member} from "../../service/business/event.service";
 import {MemoService} from "../../service/business/memo.service";
 import {DataSyncPara} from "../model/datasync.para";
 import {SyncDataStatus} from "../../data.enum";
+import {UserConfig} from "../../service/config/user.config";
 
 /**
  * 数据同步
@@ -77,6 +78,22 @@ export class DataSyncProcess implements MQProcess {
       if (dsPara.type == "Agenda") {
         let agenda: AgendaData = {} as AgendaData;
         Object.assign(agenda, dsPara.data);
+
+        // 参与人通过to字段重新构造
+        if (dsPara.to && dsPara.to.length > 0) {
+          let fsdatas = UserConfig.friends.filter((element, index, array) => {
+            return (dsPara.to.indexOf(element.rc) >= 0);
+          });
+
+          agenda.members = new Array<Member>();
+
+          for (let fsdata of fsdatas) {
+            let member: Member = {} as Member;
+            Object.assign(member, fsdata);
+
+            agenda.members.push(member);
+          }
+        }
 
         this.eventService.receivedAgendaData([agenda], this.convertSyncStatus(dsPara.status));
       }
