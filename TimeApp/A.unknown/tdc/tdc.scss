@@ -1,0 +1,318 @@
+page-tdc, page-tddi, page-tddj, page-tdds {
+  .footer-ios {
+    .toolbar-background-ios {
+      background-color:$aiBackColor;
+      border-style: none;
+    }
+
+    .button-full-ios {
+      background-color:$aiBackColor;
+    }
+
+    button[block] {
+      width: 30vmin;
+    }
+
+    .bar-button-ios {
+      color: $adornColor;
+      font-size: 15px;
+    }
+
+    .toolbar-content-ios {
+      text-align: center;
+    }
+
+    ion-buttons[padding-left] {
+      padding-left: 50px;
+    }
+
+    ion-buttons[padding-right] {
+      padding-right: 50px;
+    }
+    [icon-only] ion-icon{
+      background-color:$aiBackColor;
+      color: $fontMasterColor;
+    }
+  }
+
+
+  ion-content.content {
+    color: #fff;
+    background-color: $masterColor;
+  }
+
+  .scroll-content {
+    overflow-x: unset;
+    overflow-y: unset
+  }
+
+  .grid {
+
+    height: 100%;
+    letter-spacing: 1px;
+    min-height: 520px;
+
+    div {
+      position: relative;
+    }
+
+    .row {
+      padding: 2px 5px 20px 24px;
+
+      .allday.toggle-checked .toggle-icon {
+        background-color: $selectColor;
+      }
+
+      .toggle-ios .toggle-icon::before {
+        left: 0px;
+        right: 0px;
+        top: 0px;
+        bottom: 0px;
+        background-color:transparent;
+      }
+
+      .allday {
+        width: 75px;
+        margin-right: 15px;
+
+      }
+
+      .allday.toggle-checked .toggle-inner {
+        transform: translate3d(43px, 0, 0);
+      }
+
+      .allday .toggle-inner {
+        background-color: $fontSecondColor;
+      }
+
+      .allday.toggle-checked .toggle-inner {
+      }
+
+
+      .allday .toggle-icon::before {
+        content: "全天";
+        font-size: 12px;
+        transform: scale3d(1, 1, 1);
+        line-height: 30px;
+        letter-spacing: 2px;
+        text-indent: 35px;
+        color:  $selectColor;
+
+      }
+
+      .allday.toggle-checked .toggle-icon::before {
+        content: "全天";
+        font-size: 12px;
+        letter-spacing: 2px;
+        text-align: left;
+        transform: scale3d(1, 1, 1);
+        background-color: $selectColor;
+        line-height: 30px;
+        color: #fff;
+        text-indent: 10px;
+
+      }
+
+      .text-input-ios {
+        color: $fontMasterColor;
+        font-size: 24px;
+        margin: 1px
+      }
+
+      .lbl-jh2 {
+        border-radius: 10px;
+        width: 70px;
+        height: 20px;
+        text-align: center;
+        font-size: 12px;
+        line-height: 20px;
+        margin-right: 12px;
+      }
+      .hasjh{
+        width: 40px;
+      }
+
+      .datetime-ios {
+        padding: 0px !important;
+      }
+
+      .datetime-text {
+        font-size: 16px;
+        line-height: 32px;
+      }
+
+      .reptComm{
+        font-size: 12px;
+        line-height: 35px;
+        float: left;
+        display: inline-flex;
+        margin-right: 4px;
+      }
+
+      .reptlbl, .reptlb2 {
+        font-size: 12px;
+        line-height: 35px;
+        float: left;
+        width: 40px;
+        display: inline-flex;
+        margin-right: 4px;
+
+        .sel-btn-set {
+          font-size: 12px;
+          width: 35px;
+          height: 35px;
+          border-radius: 35px;
+          padding: 0;
+          margin: 0 auto;
+          color: $fontSecondColor;
+        }
+
+        .sel-btn-seled-close {
+          background-color:$selectCloseColor;
+        }
+
+
+        .sel-btn-seled {
+          background-color: $selectColor;
+          color: $fontMasterColor;
+          font-size: 12px;
+          font-weight: bold;
+        }
+      }
+
+      .reptlb2 {
+
+        width: 40px !important;
+      }
+
+
+      .memo-set {
+        .text-input-ios {
+          font-size: 14px;
+          letter-spacing: 1px;
+        }
+      }
+
+      .selected{
+        display: inline-flex;
+        overflow-x: auto;
+        width: 100%;
+        min-height: 65px;
+        .chip-ios {
+          display: inline-block;
+          min-height: 48px;
+          background-color: transparent;
+          ion-label{
+            text-align: center;
+            text-overflow: ellipsis;
+          }
+        }
+      }
+
+    }
+
+
+    .header-set {
+      height: 65px;
+      padding: 0px !important;
+
+      .imgdel-set {
+        width: 15px;
+        height: 15px;
+      }
+
+      .toolbar-background-ios {
+        background-color: transparent;
+        border-style: none;
+      }
+    }
+
+
+    .avatar-set {
+      padding: 0px 5px 3px 24px;
+    }
+
+
+  }
+
+
+  .div-content {
+    .plan-list{
+      position: absolute;
+      width: 100%;
+      height: 260px;
+      z-index: 13;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      margin: auto;
+      display: inherit;
+      overflow: hidden;
+      overflow-y: auto;
+      background-color: $masterColor;
+
+      .item-block {
+        min-height: 3rem;
+        background-color: $masterColor;
+        color: $fontMasterColor;
+
+        ion-label {
+          font-size: 1.5rem;
+        }
+      }
+
+      .color-dot {
+        width: 2vmin;
+        height: 2vmin;
+        background-color: #fff;
+        border-radius: 50%;
+      }
+    }
+
+    .shade {
+      position: absolute;
+      top: 0%;
+      left: 0%;
+      width: 100%;
+      height: 100%;
+      background-color: black;
+      z-index: 12;
+      -moz-opacity: 0.3;
+      opacity: .30;
+      filter: alpha(opacity=30);
+    }
+  }
+
+
+
+  .chip-ios{
+    border-radius: 16px;
+    font-size: 12px;
+    color: #ffffff;
+    margin: 8px;
+    display:contents;
+    min-height: 40px;
+    background-color: transparent;
+    ion-avatar{
+      border-radius: 50%;
+      width: 32px;
+      height: 32px;
+      margin:  0 auto;
+    }
+    ion-label{
+      margin: 0 auto;
+    }
+    ion-icon{
+      background: transparent;
+      text-align: center;
+      border-radius: 50%;
+      width: 20px;
+      height: 20px;
+      font-size: 14px;
+    }
+  }
+
+  .ml4 {
+    margin-left: 4px;
+  }
+}

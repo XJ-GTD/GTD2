@@ -1,0 +1,32 @@
+ion-auto-complete{
+  width: 100%;
+  ul{
+    background: #FFF;
+    width: 100%;
+    left:0px;
+    li{
+      margin: 7px 18px;
+      padding: 8px;
+      border-bottom: 0.55px solid  rgba(174,174,174,1);
+      font-size: 14px;
+    }
+
+  }
+  .searchbar-input-container{
+    margin: 0 14px;
+    border-bottom: 0.55px solid  rgba(174,174,174,1);
+  }
+  .searchbar-ios{
+    border-bottom: none;
+    background-color: transparent;
+    .searchbar-search-icon{
+      width: 16px;
+      height: 16px;
+      background-size: 16px;
+    }
+    .searchbar-input{
+      font-size: 16px;
+      font-weight:400;
+    }
+  }
+}

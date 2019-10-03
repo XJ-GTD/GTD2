@@ -1,0 +1,57 @@
+
+.toast-ios {
+  .toast-message {
+    font-size: 12px;
+    color: $fontMasterColor;
+    text-align: center;
+    padding: 5px;
+  }
+
+  .toast-wrapper {
+    background: $aiBackColor;
+  }
+}
+
+.loading-ios .loading-wrapper {
+  background: transparent;
+}
+
+.popover-ios {
+  ion-backdrop {
+    background-color: $popBackColor;
+    opacity: .8;
+
+  }
+  .popover-content {
+    font-size: 15px;
+    min-width: 260px;
+    min-height: 70px;
+    color: $masterColor;
+    background-color: $aiBackColor;
+  }
+}
+
+.alert-ios {
+  ion-backdrop {
+    background-color: $popBackColor;
+    opacity: .8;
+
+  }
+  .alert-wrapper {
+    background-color: $aiBackColor;
+    color: $fontMasterColor;
+    width: 270px;
+    .alert-message {
+      font-size: 16px;
+    }
+  }
+  .alert-button {
+    border-top: 1px solid $fontThirdColor;
+    border-right: 1px solid $fontThirdColor;
+    font-size: 17px;
+    color: $selectColor
+  }
+  button:first-child {
+    color: $fontSecondColor
+  }
+}

@@ -1,23 +1,18 @@
-import {Component, ElementRef, Renderer2, ViewChild, ViewChildren, QueryList} from '@angular/core';
-import {IonicPage, NavController, ModalController, ActionSheetController, NavParams, Slides} from 'ionic-angular';
+import {Component, ElementRef, ViewChild} from '@angular/core';
+import {IonicPage, NavController, ModalController, ActionSheetController, NavParams,} from 'ionic-angular';
 import {UtilService} from "../../service/util-service/util.service";
 import {UserConfig} from "../../service/config/user.config";
-import {RestFulHeader, RestFulConfig} from "../../service/config/restful.config";
 import {SqliteExec} from "../../service/util-service/sqlite.exec";
 import * as moment from "moment";
-import {CalendarDay} from "../../components/ion2-calendar";
 import {TaskService} from "./task.service";
 import {ScdData, ScdPageParamter} from "../../data.mapping";
 import {EmitService} from "../../service/util-service/emit.service";
 import {DataConfig} from "../../service/config/data.config";
 import {FeedbackService} from "../../service/cordova/feedback.service";
 import {PageBoxComponent} from "../../components/page-box/page-box";
-import {CornerBadgeComponent} from "../../components/corner-badge/corner-badge";
 import {CalendarService} from "../../service/business/calendar.service";
 import {EventService, TaskData, RtJson, TxJson} from "../../service/business/event.service";
 import {
-  PageDirection,
-  IsSuccess,
   OperateType,
   RepeatFlag,
   ConfirmType,

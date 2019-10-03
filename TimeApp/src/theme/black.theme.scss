@@ -1,46 +1,44 @@
-//全局页面背景
-$baseBackcolor_black: rgba(0, 12, 31, 1);
+ion-app.black-theme {
 
-.black-theme {
+  background: $baseBackcolor_black;
 
-  .haContent {
-    ion-calendar {
-      box-shadow: 0px 0px 5px 0px rgba(3, 0, 0, 0.2);
+  ion-calendar {
+    box-shadow: 0px 0px 5px 0px rgba(3, 0, 0, 0.2);
 
-      ion-card-header {
-        background: rgba(0, 53, 66, 1);;
-        border-bottom: 1px rgba(30, 69, 89, 1) solid;
+    ion-card-header {
+      background: rgba(0, 53, 66, 1);;
+      border-bottom: 1px rgba(30, 69, 89, 1) solid;
 
-        .title {
-          p {
-            color: rgba(201, 242, 252, 1);
-          }
-        }
-
-        .thisM {
+      .title {
+        p {
           color: rgba(201, 242, 252, 1);
         }
-
-
       }
 
-      ion-card-content {
-        background: rgba(0, 53, 66, 1);;
-
-        ion-calendar-week {
-          .week-title li {
-            color: rgba(75, 107, 115, 1);
-          }
-        }
-
-        .yearshow {
-          color: rgba(13, 112, 136, 0.08);
-        }
-
+      .thisM {
+        color: rgba(201, 242, 252, 1);
       }
+
+
     }
 
-    ion-calendar-month {
+    ion-card-content {
+      background: rgba(0, 53, 66, 1);;
+
+      ion-calendar-week {
+        .week-title li {
+          color: rgba(75, 107, 115, 1);
+        }
+      }
+
+      .yearshow {
+        color: rgba(13, 112, 136, 0.08);
+      }
+
+    }
+  }
+
+  ion-calendar-month {
       .days {
         p {
           color: rgba(235, 239, 250, 1);
@@ -71,149 +69,6 @@ $baseBackcolor_black: rgba(0, 12, 31, 1);
 
       }
     }
-  }
-
-  .list-grid-content {
-
-    .before {
-      color: #11758D
-    }
-
-    .after {
-      color: #11758D;
-    }
-
-    .current {
-      color: #B18E00;
-    }
-
-    .icon {
-      .fa-calendar-star, .fa-gift {
-        color: rgba(62, 111, 202, 1);
-      }
-
-      .fa-user-tag {
-        color: rgba(100, 88, 188, 1);
-      }
-
-      .fa-alarm-exclamation {
-        color: rgba(125, 85, 37, 1);
-      }
-
-      .fa-minus-circle {
-        color: rgba(153, 153, 153, 1);
-      }
-
-      .fa-check-circle {
-        color: rgba(17, 117, 141, 1);
-      }
-
-    }
-
-
-    .sn {
-      color: rgba(255, 255, 255, 1);
-    }
-
-    .st {
-      color: rgba(153, 152, 152, 1);
-    }
-
-    .invite {
-      color: rgba(62, 111, 202, 1);
-
-      span:first-child {
-        color: rgba(41, 74, 134, 1);
-      }
-    }
-
-    .person {
-      color: rgba(57, 70, 93, 1);
-
-    }
-
-    .item-content-backgroud {
-      background: rgba(237, 241, 254, 0.05);
-      box-shadow: 0px 0px 5px 0px rgba(3, 0, 0, 0.2);
-    }
-
-    .item-content {
-      .line {
-        color: rgba(51, 51, 51, 1);
-      }
-
-    }
-
-    //列表一周
-    .dayagenda-week, .no-content {
-
-      p {
-      }
-
-      background: rgba(237, 241, 254, .05);
-      box-shadow: 0px 0px 5px 0px rgba(3, 0, 0, 0.2);
-
-      p {
-        color: rgba(121, 140, 170, 1);
-      }
-    }
-
-
-    //列表每天头部
-    .dayagenda-nav {
-      .dayheader {
-        .ym-fsize {
-          color: rgba(235, 239, 250, 1)
-        }
-
-        .ys-fsize {
-          color: rgba(204, 204, 204, 1)
-        }
-
-        .d-fsize {
-          color: rgba(73, 152, 188, 1);
-        }
-
-      }
-
-      .d-title {
-        background: rgba(237, 241, 254, .1);
-        box-shadow: 0px 0px 5px 0px rgba(3, 0, 0, 0.2);
-
-        .d-title-chr {
-          color: rgba(85, 110, 153, 1);
-
-          span {
-            color: rgba(235, 239, 250, 1);
-          }
-        }
-
-        .d-title-chr:first-child {
-          background: rgba(237, 241, 254, .05);
-          box-shadow: 0px 0px 5px 0px rgba(3, 0, 0, 0.2);
-          color: rgba(235, 239, 250, 1);
-        }
-
-        .mome {
-          color: rgba(235, 239, 250, 1);
-
-          span {
-            color: rgba(255, 255, 255, 1);
-          }
-        }
-      }
-    }
-
-
-    .dayagenda-content {
-    }
-
-    .calendaritem-content {
-      background: rgba(53, 152, 176, 0.2);
-      box-shadow: 0px 0px 5px 0px rgba(62, 153, 175, 0.3);
-    }
-  }
-
 
   page-agenda, page-task, page-commemorationday {
     .grid {
@@ -257,64 +112,6 @@ $baseBackcolor_black: rgba(0, 12, 31, 1);
     }
   }
 
-  page-box {
-    background: rgba(0, 12, 31, 1);
-
-    .box-header {
-      ion-toolbar {
-        ion-title {
-          .toolbar-title {
-            color: rgba(235, 239, 250, 1);
-
-            .subtilte {
-              color: rgba(235, 239, 250, 1);
-              background: rgba(239, 239, 239, .1);
-            }
-          }
-
-
-        }
-
-        .icon {
-          color: rgba(235, 239, 250, 1);
-        }
-      }
-    }
-
-    .page-content {
-      .fixed-content {
-        background-color: rgba(255, 255, 255, .05);
-        box-shadow: 5px 3px 5px 0px rgba(0, 12, 31, 0.73);
-      }
-    }
-  }
-
-  modal-box {
-    background: rgba(0, 0, 0, 0.8);
-
-    .box-header {
-      ion-toolbar {
-        ion-title {
-          .toolbar-title {
-            color: rgba(235, 239, 250, 1);
-          }
-        }
-
-        .icon {
-          color: rgba(235, 239, 250, 1);
-        }
-      }
-    }
-
-    .box-content {
-      .fixed-content {
-        background: rgba(12, 24, 42, 1);
-        box-shadow: 0px 0px 5px 0px rgba(12, 12, 12, 0.73);
-      }
-    }
-  }
-
-
   .notask {
     .icon {
       color: #C9C8C8;
@@ -328,23 +125,6 @@ $baseBackcolor_black: rgba(0, 12, 31, 1);
       background: rgba(70, 159, 175, 1);
       color: rgba(255, 255, 255, 1);
     }
-  }
-
-
-  page-tdl {
-    background: $baseBackcolor_black;
-  }
-
-  page-h {
-    background: $baseBackcolor_black;
-  }
-
-  page-do, page-do-scrum {
-    background: $baseBackcolor_black;
-  }
-
-  page-commemorationday {
-    background: $baseBackcolor_black;
   }
 
   page-m {
@@ -377,31 +157,6 @@ $baseBackcolor_black: rgba(0, 12, 31, 1);
           }
         }
       }
-
-      .list-ios {
-        background: rgba(23, 41, 67, 1);
-        box-shadow: 0px 0px 5px 0px rgba(12, 12, 12, 0.73);
-
-        .list-header-ios {
-          background: rgba(7, 109, 138, 1);
-          color: rgba(255, 255, 255, 1);
-
-          .count {
-            color: rgba(255, 255, 255, 1);
-          }
-        }
-
-        .item-block, .item-block:last-child {
-          border-bottom: 0.55px solid rgba(217, 233, 238, .4);
-
-          .item-inner {
-
-            ion-label, ion-icon {
-              color: rgba(235, 239, 250, 1);
-            }
-          }
-        }
-      }
     }
   }
 
@@ -414,34 +169,7 @@ $baseBackcolor_black: rgba(0, 12, 31, 1);
     }
   }
 
-
-  ion-list {
-    background-color: rgba(255, 255, 255, .05);
-    box-shadow: 0px 0px 5px 0px rgba(201, 200, 200, 0.28);
-
-    .list-header-ios {
-      .input-wrapper {
-        border-bottom: 0.55px rgba(237, 241, 254, .5) solid;
-      }
-
-      ion-label {
-        color: rgba(153, 153, 153, 1);
-      }
-    }
-
-
-    input, select, .item {
-
-      color: rgba(255, 255, 255, 1);
-    }
-
-    ion-label {
-      color: rgba(121, 140, 170, 1)
-    }
-  }
-
-  ion-textarea{
+  ion-textarea,input{
     color: rgba(235, 239, 250, 1);
   }
-
 }

@@ -152,6 +152,10 @@ export class AlService {
 
           this.notificationsService.badgeClear();
 
+          // 下载公共日历
+          await this.calendarService.downloadPublicPlan("shanghai_animation_exhibition_2019", PlanType.ActivityPlan);
+
+
         }
 
 
@@ -210,9 +214,6 @@ export class AlService {
 
         // TODO 系统设置 restHttps设置 用户偏好设置 用户信息 。。。
         await this.restfulConfig.init();
-        // 下载公共日历
-        // await this.calendarService.downloadPublicPlan("shanghai_animation_exhibition_2019", PlanType.ActivityPlan);
-
 
         //提醒定时
         this.notificationsService.schedule();
@@ -821,7 +822,6 @@ export class AlService {
       await this.eventService.saveAgenda(agendaData);
 
     }
-
 
   }
 

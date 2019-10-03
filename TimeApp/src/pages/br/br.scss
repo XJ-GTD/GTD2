@@ -1,16 +1,9 @@
 page-br {
-  background-color: $baseBackColor;
-
-
-  .list-header, .list-header-md, .list-header-ios {
-    border: 0;
-  }
   .img{
     width: 80%;
     contain:none;
     margin: 0 auto;
     background-color: transparent;
-
   }
 
   ion-header ion-toolbar .toolbar-background,.toolbar-background-md,.toolbar-background-ios {
