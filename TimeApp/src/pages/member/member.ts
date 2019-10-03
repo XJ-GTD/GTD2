@@ -38,7 +38,6 @@ import {Member} from "../../service/business/event.service";
                   <span> {{ member.ran }}</span>
                 </li>
                 <li>
-                  <span></span>
                 </li>
               </ul>
             </ion-label>
