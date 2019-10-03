@@ -115,8 +115,8 @@ export class AttachPage {
   */
   select() {
       this.chooser.getFile('image/*,video/*').then((file) => {
-          console.log(file ? file.name : 'canceled');
-          alert("file:"+JSON.stringify(file));
+          //console.log(file ? file.name : 'canceled');
+          alert("fileName:"+file.name+",mediaType:"+file.mediaType+", uri:"+file.uri+",dataURI:"+file.dataURI);
         }
       )
         .catch((error: any)=> console.error(error));
