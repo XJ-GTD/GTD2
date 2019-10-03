@@ -25,14 +25,14 @@ import * as anyenum from "../../data.enum";
         <ion-item >
           <ion-label>
             <ul>
-                <li *ngFor = "let member of memberSet.members">
-                 
+                <li *ngFor = "let member of memberSet.members; let index in memberSet.members" (click)="removeMember(index)">
+
                   <span class="count"> {{ member.ran }}</span>
                 </li>
                 <li>
                   查看全部参与人
                 </li>
-              
+
             </ul>
           </ion-label>
         </ion-item>
@@ -116,6 +116,10 @@ export class InvitesPage {
 
   cancel(){
     this.navCtrl.pop();
+  }
+
+  removeMember(index: number) {
+    this.memberSet.members.splice(index, 1);
   }
 
   openMemberSelect(){
