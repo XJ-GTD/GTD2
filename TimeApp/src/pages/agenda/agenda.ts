@@ -297,7 +297,7 @@ export class AgendaPage {
     });
     modal.onDidDismiss(async (data) => {
       if (!data) return;
-
+      console.info("附件已经传递过来，data:"+JSON.stringify(data));
       this.currentAgenda.fjs = data.attach;
 
       if (!this.eventService.isSameAgenda(this.currentAgenda, this.originAgenda)) {
@@ -310,8 +310,14 @@ export class AgendaPage {
   }
 
   changeInvites() {
+    let clonemembers;
+    if (this.currentAgenda.members && this.currentAgenda.members.length > 0) {
+      clonemembers = new Array<Member>(...this.currentAgenda.members);
+    } else {
+      clonemembers = new Array<Member>();
+    }
     let modal = this.modalCtrl.create(DataConfig.PAGE._INVITES_PAGE, {
-      members: new Array<Member>(...this.currentAgenda.members),
+      members: clonemembers,
       md: this.currentAgenda.md,
       iv: this.currentAgenda.iv
     });

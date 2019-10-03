@@ -12,6 +12,8 @@ export class DataSyncPara {
   id:string;
   //数据状态 删除或非删除
   status:string;
+  //数据参与成员
+  to:Array<string> = new Array<string>();
   //数据
   data:any;
 }
