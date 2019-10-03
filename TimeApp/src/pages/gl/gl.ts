@@ -18,7 +18,7 @@ import {PageDcData} from "../../data.mapping";
   selector: 'page-gl',
   template:
  `
-  <page-box title="快捷群组" [buttons]="buttons" (onBack)="goBack()" (onCreate)="toGroupCreate()" >
+  <page-box title="快捷群组" [buttons]="buttons" (onBack)="goBack()" (onCreate)="toGroupCreate()"  nobackgroud nobottom>
     <ion-scroll scrollY="true" scrollY>
       <ion-list>
         <ion-list-header>

@@ -71,6 +71,36 @@ page-box {
   }
 }
 
+page-box[nobackgroud] {
+  .box-page {
+    .page-content {
+      > .fixed-content {
+        background: transparent;
+        box-shadow: none
+      }
+
+      > .scroll-content {
+        background: transparent;
+        box-shadow: none
+      }
+    }
+  }
+}
+
+page-box[nobottom] {
+  .box-page {
+    .page-content {
+      > .fixed-content {
+        margin-bottom: 0;
+      }
+
+      > .scroll-content {
+        margin-bottom: 4px;
+      }
+    }
+  }
+}
+
 .white-theme {
   page-box {
     background: rgba(248, 248, 248, 1);

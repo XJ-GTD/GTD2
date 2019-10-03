@@ -141,6 +141,9 @@ ion-list.list-ios {
         }
       }
     }
+    .item-ios[no-lines]{
+      border-width: 0;
+    }
 
   }
 }

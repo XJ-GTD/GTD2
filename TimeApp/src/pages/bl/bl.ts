@@ -17,7 +17,7 @@ import {FsData} from "../../data.mapping";
 @Component({
   selector: 'page-bl',
   template: `
-    <page-box title="黑名单" [buttons]="buttons"  (onBack)="goBack()">
+    <page-box title="黑名单" [buttons]="buttons"  (onBack)="goBack()"  nobackgroud nobottom>
       <ion-scroll scrollY="true" scrollY>
         <ion-list>
           <ion-list-header>

@@ -37,6 +37,7 @@ import {AgendaPage} from "../agenda/agenda";
                       (onPress)="onPress($event)"
                       (viewShow) = "viewShow($event)">
         </ion-calendar>
+      
         <page-tdl #tdl ></page-tdl>
       <ion-fab bottom right class="shortcut">
         <button ion-fab mini>
@@ -49,9 +50,9 @@ import {AgendaPage} from "../agenda/agenda";
           <button ion-fab (click)="todoList()">
             <ion-icon name="albums"></ion-icon>
           </button>
-          <button ion-fab (click)="todoscrumList()">
-            <ion-icon name="clock" color="danger"></ion-icon>
-          </button>
+          <!--<button ion-fab (click)="todoscrumList()">-->
+            <!--<ion-icon name="clock" color="danger"></ion-icon>-->
+          <!--</button>-->
           <button ion-fab (click)="openm()">
             <ion-icon name="contact" ></ion-icon>
           </button>

@@ -19,7 +19,7 @@ import * as moment from "moment";
   selector: 'page-ss',
   template:
       `
-    <page-box title="设置" [buttons]="buttons" (onBack)="goBack()">
+    <page-box title="设置" [buttons]="buttons" (onBack)="goBack()" nobackgroud nobottom>
 
       <ion-list>
         <ion-list-header>
@@ -62,28 +62,28 @@ import * as moment from "moment";
           <ion-spinner *ngIf="lfsloading" icon="circles" item-end></ion-spinner>
         </ion-item>
       </ion-list>
-      <ion-list>
-        <ion-list-header>
-          <ion-label>智能提醒</ion-label>
-        </ion-list-header>
+      <!--<ion-list>-->
+        <!--<ion-list-header>-->
+          <!--<ion-label>智能提醒</ion-label>-->
+        <!--</ion-list-header>-->
 
-        <ion-item no-lines no-padding no-margin no-border>
-          <ion-label>每日简报</ion-label>
-          <ion-note item-end (click)="gotodrsetting()">{{bdr ? sdrp1 : '关闭'}}</ion-note>
-        </ion-item>
-        <ion-item no-lines no-padding no-margin no-border detail-push (click)="gotopjfollowsetting()">
-          <ion-label>项目跟进</ion-label>
-          <ion-note item-end *ngIf="!spfon">打开</ion-note>
-          <ion-note item-end *ngIf="spfon" class="inline-icons">
-            <ion-icon *ngIf="spfon && github" ios="logo-github" md="logo-github"></ion-icon>
-            <!-- Travis CI设置选项隐藏 -->
-            <!--
-                            <img *ngIf="spfon && travisci" src="assets/imgs/travisci/travisci-worker-logo.svg">
-            -->
-            <ion-icon *ngIf="spfon && firim" ios="logo-dropbox" md="logo-dropbox"></ion-icon>
-          </ion-note>
-        </ion-item>
-      </ion-list>
+        <!--<ion-item no-lines no-padding no-margin no-border>-->
+          <!--<ion-label>每日简报</ion-label>-->
+          <!--<ion-note item-end (click)="gotodrsetting()">{{bdr ? sdrp1 : '关闭'}}</ion-note>-->
+        <!--</ion-item>-->
+        <!--<ion-item no-lines no-padding no-margin no-border detail-push (click)="gotopjfollowsetting()">-->
+          <!--<ion-label>项目跟进</ion-label>-->
+          <!--<ion-note item-end *ngIf="!spfon">打开</ion-note>-->
+          <!--<ion-note item-end *ngIf="spfon" class="inline-icons">-->
+            <!--<ion-icon *ngIf="spfon && github" ios="logo-github" md="logo-github"></ion-icon>-->
+            <!--&lt;!&ndash; Travis CI设置选项隐藏 &ndash;&gt;-->
+            <!--&lt;!&ndash;-->
+                            <!--<img *ngIf="spfon && travisci" src="assets/imgs/travisci/travisci-worker-logo.svg">-->
+            <!--&ndash;&gt;-->
+            <!--<ion-icon *ngIf="spfon && firim" ios="logo-dropbox" md="logo-dropbox"></ion-icon>-->
+          <!--</ion-note>-->
+        <!--</ion-item>-->
+      <!--</ion-list>-->
       <ion-list>
         <ion-list-header>
           <ion-label>主题</ion-label>
@@ -210,20 +210,20 @@ export class SsPage {
     this.ssService.save(set);
   }
 
-  //智能提醒 每日简报设置
-  gotodrsetting() {
-    let modal = this.modalController.create(DataConfig.PAGE._DR_PAGE);
-    modal.onDidDismiss((data) => {
-      this.getData();
-
-      this.ssService.putDailySummary(
-        UserConfig.account.id,
-        moment('2019/6/3 ' + this.sdrp1 + ':00').unix() * 1000,
-        this.bdr
-      );
-    });
-    modal.present();
-  }
+  // //智能提醒 每日简报设置
+  // gotodrsetting() {
+  //   let modal = this.modalController.create(DataConfig.PAGE._DR_PAGE);
+  //   modal.onDidDismiss((data) => {
+  //     this.getData();
+  //
+  //     this.ssService.putDailySummary(
+  //       UserConfig.account.id,
+  //       moment('2019/6/3 ' + this.sdrp1 + ':00').unix() * 1000,
+  //       this.bdr
+  //     );
+  //   });
+  //   modal.present();
+  // }
 
   gotodjhsetting() {
     let modal = this.modalController.create(DataConfig.PAGE._JH_PAGE, this.sdjho);
@@ -247,32 +247,32 @@ export class SsPage {
     modal.present();
   }
 
-  gotopjfollowsetting() {
-    let modal = this.modalController.create(DataConfig.PAGE._FO_PAGE);
-    modal.onDidDismiss((data) => {
-      if (data) {
-        if (data.github) {
-          this.sgithub = data.github;
-          this.github = data.github.value == "1" ? true : false;
-        }
-        if (data.travisci) {
-          this.stravisci = data.travisci;
-          this.travisci = data.travisci.value == "1" ? true : false;
-        }
-        if (data.firim) {
-          this.sfirim = data.firim;
-          this.firim = data.firim.value == "1" ? true : false;
-        }
-
-        if (this.github || this.firim || this.travisci) {
-          this.spfon = true;
-        } else {
-          this.spfon = false;
-        }
-      }
-    });
-    modal.present();
-  }
+  // gotopjfollowsetting() {
+  //   let modal = this.modalController.create(DataConfig.PAGE._FO_PAGE);
+  //   modal.onDidDismiss((data) => {
+  //     if (data) {
+  //       if (data.github) {
+  //         this.sgithub = data.github;
+  //         this.github = data.github.value == "1" ? true : false;
+  //       }
+  //       if (data.travisci) {
+  //         this.stravisci = data.travisci;
+  //         this.travisci = data.travisci.value == "1" ? true : false;
+  //       }
+  //       if (data.firim) {
+  //         this.sfirim = data.firim;
+  //         this.firim = data.firim.value == "1" ? true : false;
+  //       }
+  //
+  //       if (this.github || this.firim || this.travisci) {
+  //         this.spfon = true;
+  //       } else {
+  //         this.spfon = false;
+  //       }
+  //     }
+  //   });
+  //   modal.present();
+  // }
 
   private async getData() {
     this.h = UserConfig.settins.get(DataConfig.SYS_H);

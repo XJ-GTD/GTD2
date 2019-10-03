@@ -29,9 +29,7 @@ import {AlPage} from "../../pages/al/al";
 import {LogPage} from "../../pages/log/log";
 import {AtPage} from "../../pages/at/at";
 import {DoPage} from "../../pages/do/do";
-import {DoScrumPage} from "../../pages/do/do-scrum";
 import {AgendaPage} from "../../pages/agenda/agenda";
-import {TaskPage} from "../../pages/task/task";
 import {MemoPage} from "../../pages/memo/memo";
 import {JhPage} from "../../pages/jh/jh";
 import {AipPage} from "../../pages/aip/aip";
@@ -251,9 +249,7 @@ export class DataConfig {
     _LOG_PAGE: LogPage,       // 辅助功能 - 备份
     _AT_PAGE: AtPage,       // 关于
     _DO_PAGE: DoPage,       // 任务 - 待处理/已处理任务一览
-    _DOSCRUM_PAGE: DoScrumPage,       // 任务 - 待处理/已处理任务一览
     _AGENDA_PAGE: AgendaPage,   // 日程 - 创建/修改
-    _TASK_PAGE: TaskPage,       // 任务 - 创建/修改
     _MEMO_PAGE: MemoPage,       // 备忘 - 创建/修改
     _COMMENT_PAGE: CommentPage, // 日程 - 备注
     _REPEAT_PAGE: RepeatPage, // 日程 - 重复

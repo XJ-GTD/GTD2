@@ -21,7 +21,7 @@ import * as moment from "moment";
   selector: 'page-ps',
   providers: [],
   template: `
-    <page-box title="个人信息" [buttons]="buttons" (onSave)="save()" (onBack)="goBack()">    
+    <page-box title="个人信息" [buttons]="buttons" (onSave)="save()" (onBack)="goBack()" nobackgroud nobottom>    
       <ion-list>
         <ion-item no-lines no-padding no-margin no-border>
           <ion-label>注册手机</ion-label>
