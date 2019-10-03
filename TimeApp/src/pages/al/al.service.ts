@@ -287,6 +287,7 @@ export class AlService {
   huitailang: BTbl;
   xuezhenyang: BTbl;
   liying: BTbl;
+  liqiannan: BTbl;
 
   async prepareContacts() {
     let sqls: Array<string> = new Array<string>();
@@ -346,6 +347,27 @@ export class AlService {
     btbls.push(btbl);
 
     this.xiaohaizi = btbl;
+
+    bhtbl = new BhTbl();
+    bhtbl.bhi = this.util.getUuid();
+    bhtbl.pwi = btbl.pwi;
+    bhtbl.hiu = DataConfig.HUIBASE64;
+    sqls.push(bhtbl.inT());
+
+    btbl = new BTbl();
+    btbl.pwi = "liqiannan";
+    btbl.ran = '李倩男';
+    btbl.ranpy = 'liqiannan';
+    btbl.hiu = '';
+    btbl.rn = '李倩男';
+    btbl.rnpy = 'liqiannan';
+    btbl.rc = '18569990239';
+    btbl.rel = '0';
+    btbl.ui = btbl.rc;
+    sqls.push(btbl.inT());
+    btbls.push(btbl);
+
+    this.liqiannan = btbl;
 
     bhtbl = new BhTbl();
     bhtbl.bhi = this.util.getUuid();
