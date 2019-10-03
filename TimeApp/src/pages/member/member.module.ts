@@ -5,13 +5,18 @@ import {FdService} from "../fd/fd.service";
 import {GlService} from "../gl/gl.service";
 import {IonicModule} from "ionic-angular";
 import {MemberPage} from "./member";
+import {ModalBoxComponentModule} from "../../components/modal-box/modal-box.module";
+import {DirectivesModule} from "../../directives/directives.module";
 
 @NgModule({
   declarations: [
     MemberPage,
   ],
   imports: [
-    IonicModule],
+    IonicModule,
+  ModalBoxComponentModule,
+    DirectivesModule
+],
   providers: [
     MemberService, GcService, FdService, GlService
   ],

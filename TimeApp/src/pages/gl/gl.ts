@@ -19,7 +19,7 @@ import {PageDcData} from "../../data.mapping";
   template:
  `
   <page-box title="快捷群组" [buttons]="buttons" (onBack)="goBack()" (onCreate)="toGroupCreate()"  nobackgroud nobottom>
-    <ion-scroll scrollY="true" scrollY>
+    <ion-scroll scrollY="true" scrollheightAuto>
       <ion-list>
         <ion-list-header>
           <span class="count">{{gl.length}}</span> 个群

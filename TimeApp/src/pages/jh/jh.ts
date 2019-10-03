@@ -7,32 +7,29 @@ import {CalendarService} from "../../service/business/calendar.service";
 @Component({
   selector: 'page-jh',
   template: `
-  <ion-header no-border>
-    <ion-toolbar>
-      <ion-title>日历</ion-title>
-    </ion-toolbar>
-  </ion-header>
 
-  <ion-content>
-    <ion-list radio-group [(ngModel)]="selected" (ionChange)="jhChanged()">
-      <ion-item *ngFor="let option of jhoptions">
-        <ion-label><i class="color-dot" [ngStyle]="{'background-color': option.jc }"></i> {{option.jn}}</ion-label>
-        <ion-radio [checked]="option.ji == selected" [value]="option.ji"></ion-radio>
-      </ion-item>
-    </ion-list>
-  </ion-content>
+    <modal-box title="日历" [buttons]="buttons" (onCancel)="close()">
 
-  <ion-footer class="foot-set">
-    <ion-toolbar>
-    <button ion-button full (click)="close()">
-      关闭
-    </button>
-    </ion-toolbar>
-  </ion-footer>
+
+      <ion-scroll scrollY="true" scrollheightAuto>
+        <ion-list radio-group [(ngModel)]="selected" (ionChange)="jhChanged()">
+          <ion-list-header>
+            选择日历
+          </ion-list-header>
+          <ion-item *ngFor="let option of jhoptions">
+            <ion-label><i class="color-dot" [ngStyle]="{'background-color': option.jc }"></i> {{option.jn}}</ion-label>
+            <ion-radio [checked]="option.ji == selected" [value]="option.ji"></ion-radio>
+          </ion-item>
+        </ion-list>
+      </ion-scroll>
+     
+    </modal-box>
   `
 })
 export class JhPage {
-  statusBarColor: string = "#3c4d55";
+  buttons: any = {
+    cancel: true
+  };
 
   jhoptions: Array<any> = new Array<any>();
   selected: string = "";

@@ -20,7 +20,7 @@ import {FsData, PageDcData} from "../../data.mapping";
 
      <modal-box title="{{dc.gn}}" [buttons]="buttons" (onCancel)="goBack()" (onCreate) = "toAddGroupMember()">
 
-       <ion-scroll scrollY="true" scrollY>
+       <ion-scroll scrollY="true" scrollheightAuto>
          <ion-list>
            <ion-item *ngFor="let g of fsl" >
              <ion-label (click)="toMemberInfo(g)" >

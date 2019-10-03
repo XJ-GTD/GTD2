@@ -1,7 +1,14 @@
 page-invites {
-  page-box .box-content {
-    .scroll-content,.fixed-content {
-      margin-bottom: 0;
+  modal-box .box-modal .box-content > .scroll-content {
+    overflow-y: auto;
+    .somemmember{
+      height: 12.5rem;
+    }
+    .showMember{
+      float:right;
+      color: #dddddd;
+      margin: 1rem;
+
     }
   }
 }

@@ -192,15 +192,16 @@ body {
     min-height: 2.4rem;
   }
 
-  .scroll-y[scrollY] {
-    height: calc(100% - 4px);
 
-    .scroll-content {
-      overflow-y: auto;
-    }
-  }
+  //.scroll-y[scrollY] {
+  //  //--top: window.off;
+  //  height: calc(100% - 4px);
+  //
+  //  .scroll-content {
+  //    overflow-y: auto;
+  //  }
+  //}
 }
-
 @-webkit-keyframes spin {
   from {
     -webkit-transform: rotate(0deg);

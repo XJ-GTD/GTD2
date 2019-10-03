@@ -26,7 +26,7 @@ import * as anyenum from "../../data.enum";
           <button clear (click)="openRemindDt()" ion-button>指定日期</button>
         </ion-buttons>
       </ion-toolbar>
-      <ion-scroll scrollY="true" scrollY>
+      <ion-scroll scrollY="true" scrollheightAuto>
         <ion-list>
           <ion-list-header>
             剩余 <span class="count">{{reminds.length}}</span> 条提醒

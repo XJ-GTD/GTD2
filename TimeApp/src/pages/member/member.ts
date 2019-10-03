@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {Component, Renderer2} from '@angular/core';
 import {ModalController, NavController, NavParams, ViewController} from 'ionic-angular';
 import {MemberService} from "./member.service";
 import {UtilService} from "../../service/util-service/util.service";
@@ -18,61 +18,70 @@ import {Member} from "../../service/business/event.service";
 @Component({
   selector: 'page-member',
   template: `
-    <ion-header no-border>
-      <ion-toolbar>
-        <ion-buttons left>
-          <button ion-button icon-only (click)="goBack()" color="danger">
-            <img class="img-header-left" src="./assets/imgs/back-white.png">
-          </button>
-        </ion-buttons>
-        <ion-title>朋友</ion-title>
-        <ion-buttons right>
-          <button ion-button class="button-header-right" (click)="save()"> 确定
-          </button>
-        </ion-buttons>
-      </ion-toolbar>
-      <div class="name-input w-auto">
-        <ion-searchbar type="text" placeholder="手机号 姓名" (ionChange)="getContacts()" [(ngModel)]="tel"
-                   text-center></ion-searchbar>
-      </div>
-    </ion-header>
 
-    <ion-content padding>
-      <div class="selected">
-        <ion-chip *ngFor="let member of selMemberList" (click)="rmSelected(member)">
-          <ion-avatar>
-            <img src={{member.bhiu}}>
-          </ion-avatar>
-          <ion-label>{{member.ran}}</ion-label>
-        </ion-chip>
+    <modal-box title="邀请人" [buttons]="buttons" (onSave)="save()" (onCancel)="goBack()">
+
+      <div class="searchbar">
+        <ion-searchbar type="text" placeholder="手机号 姓名" (ionChange)="getContacts()" [(ngModel)]="tel"
+                       text-center></ion-searchbar>
       </div>
-      <ion-grid>
-        <ion-row *ngFor="let g of pageGrouList" class="group">
-          <ion-avatar item-start>
-            <img src={{g.gm}}>
-          </ion-avatar>
-          <ion-label>
-            {{g.gn}}({{g.gc}})
-          </ion-label>
-          <ion-checkbox (click)="addGroupList(g)" [(ngModel)]="g.checked"></ion-checkbox>
-        </ion-row>
-        <ion-row *ngFor="let member of pageFsList">
-          <ion-avatar item-start (click)="goTofsDetail(member)">
-            <img [src]="member.bhiu">
-          </ion-avatar>
-          <ion-label (click)="goTofsDetail(member)">
-            {{member.ran}}
-            <!--<span> {{g.rc}}</span>-->
-            <span *ngIf="member.rel ==1">注册</span>
-          </ion-label>
-          <ion-checkbox (click)="addsel(member)" [(ngModel)]="member.checked"></ion-checkbox>
-        </ion-row>
-      </ion-grid>
-    </ion-content>
+
+      <ion-scroll scrollY="true" scrollheightAuto>
+        <ion-list>
+          <ion-list-header>
+            选择(<span class="count">{{selMemberList.length}}</span>)人
+          </ion-list-header>
+          <ion-item >
+            <ion-label>
+              <ul>
+                <li *ngFor = "let member of selMemberList">
+                  <span> {{ member.ran }}</span>
+                </li>
+                <li>
+                  <span></span>
+                </li>
+              </ul>
+            </ion-label>
+          </ion-item>
+        </ion-list>
+        
+        <ion-list >
+          <ion-list-header>
+            选择参与人
+          </ion-list-header>
+          <ion-item *ngFor="let g of pageGrouList" >
+
+            <ion-label>
+              {{g.gn}}({{g.gc}})
+            </ion-label>
+
+            <ion-checkbox (click)="addGroupList(g)" [(ngModel)]="g.checked"></ion-checkbox>
+          </ion-item>
+          <ion-item *ngFor="let member of pageFsList" >
+
+            <ion-label>
+              {{member.ran}}
+              <span *ngIf="member.rel ==1">（注册）</span>
+            </ion-label>
+
+            <ion-checkbox (click)="addsel(member)" [(ngModel)]="member.checked"></ion-checkbox>
+          </ion-item>
+        </ion-list>
+      </ion-scroll>
+       
+    </modal-box>
   `,
 })
 export class MemberPage {
-  statusBarColor: string = "#3c4d55";
+
+
+  buttons: any = {
+    remove: false,
+    share: false,
+    create:false,
+    save: true,
+    cancel: true
+  };
 
   tel: any;//手机号
   pageFsList: Array<FsPageData> = new Array<FsPageData>();

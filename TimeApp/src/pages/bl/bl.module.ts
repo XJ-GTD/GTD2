@@ -4,6 +4,7 @@ import {BlService} from "../bl/bl.service";
 import {FdService} from "../fd/fd.service";
 import {BlPage} from "./bl";
 import {PageBoxComponentModule} from "../../components/page-box/page-box.module";
+import {DirectivesModule} from "../../directives/directives.module";
 
 @NgModule({
   declarations: [
@@ -11,7 +12,8 @@ import {PageBoxComponentModule} from "../../components/page-box/page-box.module"
   ],
   imports: [
     IonicPageModule.forChild(BlPage),
-    PageBoxComponentModule
+    PageBoxComponentModule,
+    DirectivesModule
   ],
   providers: [
     BlService,

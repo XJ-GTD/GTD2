@@ -3,6 +3,7 @@ import { PlanPage } from './plan';
 import {IonicModule} from "ionic-angular";
 import {ModalBoxComponentModule} from "../../components/modal-box/modal-box.module";
 import {PipesModule} from "../../pipes/pipes.module";
+import {DirectivesModule} from "../../directives/directives.module";
 
 @NgModule({
   declarations: [
@@ -11,7 +12,8 @@ import {PipesModule} from "../../pipes/pipes.module";
   imports: [
     IonicModule,
     PipesModule,
-    ModalBoxComponentModule
+    ModalBoxComponentModule,
+    DirectivesModule
   ],
   providers: [
   ],

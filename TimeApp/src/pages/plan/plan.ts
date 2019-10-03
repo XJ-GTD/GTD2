@@ -13,14 +13,14 @@ import {UserConfig} from "../../service/config/user.config";
         {{selected | formatplan: 'name' :'选择日历': privateplans}}
       </div>
       <ng-template [ngIf]="privateplans.length > 0" [ngIfElse]="addplan">
-        <ion-scroll scrollY="true" scrollY>
+        <ion-scroll scrollY="true" scrollheightAuto>
           <ion-list radio-group [(ngModel)]="selected" (ionChange)="jhChanged($event)" class="onlyone">
             <ion-item *ngFor="let option of privateplans">
               <ion-label>
                 <ion-icon class="fal fa-circle font-large-x" *ngIf="option.ji != selected"
-                          [ngStyle]="{'color': option.jc}" item-end></ion-icon>
+                          [ngStyle]="{'color': option.jc}" ></ion-icon>
                 <ion-icon class="fal fa-dot-circle font-large-x" *ngIf="option.ji == selected"
-                          [ngStyle]="{'color': option.jc}" item-end></ion-icon>
+                          [ngStyle]="{'color': option.jc}" ></ion-icon>
                 {{option.jn}}</ion-label>
               <ion-radio [value]="option.ji" class="noshow"></ion-radio>
             </ion-item>

@@ -15,121 +15,64 @@ import {PagePcPro} from "../../data.mapping";
 @Component({
   selector: 'page-pc',
   template:
-    `<ion-header no-border>
-  <ion-toolbar>
-    <ion-buttons left>
-      <button ion-button icon-only (click)="goBack()" color="danger">
-        <img class="img-header-left" src="./assets/imgs/back.png">
-      </button>
-    </ion-buttons>
+    `    
+    <modal-box title="添加日历" [buttons]="buttons" (onSave)="save()" (onCancel)="goBack()">
+      <div class="plantitle font-large">
+        <ion-input #input type="text" placeholder="输入日历名称" [(ngModel)]="jhcData.jn" text-center></ion-input>
+      </div>
+        <ion-scroll scrollY="true" scrollheightAuto>
+          <ion-list radio-group [(ngModel)]="jhcData.jc" class="onlyone">
+            <ion-list-header class="plan-list-item">
+              选择颜色
+            </ion-list-header>
+            <ion-item *ngFor="let color of colors">
+              <ion-label>
+                <ion-icon class="fal fa-circle font-large-x"
+                          [ngStyle]="{'color': color.color}" *ngIf="jhcData.jc !=  color.color"></ion-icon>
+                <ion-icon class="fal fa-dot-circle font-large-x"
+                          [ngStyle]="{'color':  color.color}" *ngIf="jhcData.jc ==  color.color"></ion-icon>
+                {{color.name}}
 
-    <ion-buttons right>
-      <button ion-button class="button-header-right" (click)="save()">
-        保存
-      </button>
-    </ion-buttons>
-  </ion-toolbar>
-</ion-header>
-
-<ion-content padding>
-<ion-grid>
-  <ion-row justify-content-center>
-    <div class="name-input w-auto">
-    <ion-input #input type="text" placeholder="输入日历名称" [(ngModel)]="jhcData.jn" text-center></ion-input>
-    </div>
-  </ion-row>
-  <ion-row>
-    <ion-list no-lines radio-group [(ngModel)]="jhcData.jc">
-      <ion-list-header class="plan-list-item">
-        选择颜色
-      </ion-list-header>
-
-      <ion-item class="plan-list-item">
-        <div class="color-dot color-palm" item-start></div>
-        <ion-label>
-        牛皮棕
-        </ion-label>
-        <ion-radio value="#9B5E4B" checked></ion-radio>
-      </ion-item>
-
-      <ion-item class="plan-list-item">
-        <div class="color-dot color-sunflower " item-start></div>
-        <ion-label>
-        向日葵黄
-        </ion-label>
-        <ion-radio value="#996A29"></ion-radio>
-      </ion-item>
-
-      <ion-item class="plan-list-item">
-        <div class="color-dot color-aurantia" item-start></div>
-        <ion-label>
-        橙黄
-        </ion-label>
-        <ion-radio value="#CF4425"></ion-radio>
-      </ion-item>
-
-      <ion-item class="plan-list-item">
-        <div class="color-dot color-orange" item-start></div>
-        <ion-label>
-          橙色
-        </ion-label>
-        <ion-radio value="#AF2B24"></ion-radio>
-      </ion-item>
-
-      <ion-item class="plan-list-item">
-        <div class="color-dot color-pink" item-start></div>
-        <ion-label>
-          粉红色
-        </ion-label>
-        <ion-radio value="#AD8387"></ion-radio>
-      </ion-item>
-
-      <ion-item class="plan-list-item">
-        <div class="color-dot color-lavender" item-start></div>
-        <ion-label>
-          淡紫
-        </ion-label>
-        <ion-radio value="#C077DB"></ion-radio>
-      </ion-item>
-
-      <ion-item class="plan-list-item">
-        <div class="color-dot color-fuchsia" item-start></div>
-        <ion-label>
-          亮紫
-        </ion-label>
-        <ion-radio value="#453B93"></ion-radio>
-      </ion-item>
-
-      <ion-item class="plan-list-item">
-        <div class="color-dot color-sky" item-start></div>
-        <ion-label>
-          天蓝色
-        </ion-label>
-        <ion-radio value="#51AAF2"></ion-radio>
-      </ion-item>
-
-      <ion-item class="plan-list-item">
-        <div class="color-dot color-blue" item-start></div>
-        <ion-label>
-          深水蓝
-        </ion-label>
-        <ion-radio value="#3591A5"></ion-radio>
-      </ion-item>
-
-      <ion-item class="plan-list-item">
-        <div class="color-dot color-daphnite" item-start></div>
-        <ion-label>
-          氧化铁绿
-        </ion-label>
-        <ion-radio value="#308158"></ion-radio>
-      </ion-item>
-      
-    </ion-list>
-  </ion-row>    
-</ion-grid>
-</ion-content>`,
+              </ion-label>
+              <ion-radio value="{{color.color}}"  class="noshow" ></ion-radio>
+            </ion-item>
+          </ion-list>
+        </ion-scroll>
+    </modal-box>    
+`,
 })
 export class PcPage {
+
+  colors:any = [
+    {color:'#308158',name:"氧化铁绿"},
+    {color:'#3591A5',name:"深水蓝"},
+    {color:'#51AAF2',name:"天蓝色"},
+    {color:'#453B93',name:"亮紫"},
+    {color:'#C077DB',name:"淡紫"},
+    {color:'#AD8387',name:"粉红色"},
+    {color:'#AF2B24',name:"橙色"},
+    {color:'#CF4425',name:"橙黄"},
+    {color:'#996A29',name:"向日葵黄"},
+    {color:'#9B5E4B',name:"牛皮棕"},
+    {color:'#308158',name:"氧化铁绿"},
+    {color:'#3591A5',name:"深水蓝"},
+    {color:'#51AAF2',name:"天蓝色"},
+    {color:'#453B93',name:"亮紫"},
+    {color:'#C077DB',name:"淡紫"},
+    {color:'#AD8387',name:"粉红色"},
+    {color:'#AF2B24',name:"橙色"},
+    {color:'#CF4425',name:"橙黄"},
+    {color:'#996A29',name:"向日葵黄"},
+    {color:'#9B5E4B',name:"牛皮棕"},
+  ]
+
+  buttons: any = {
+    remove: false,
+    share: false,
+    save: true,
+    cancel: true
+  };
+
 
   @ViewChild('input') input;
 

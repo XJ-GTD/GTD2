@@ -1,11 +1,12 @@
-import {Component, ViewChild} from '@angular/core';
-import {ModalController, NavController, NavParams, ViewController} from 'ionic-angular';
+import {Component, Renderer2, ViewChild} from '@angular/core';
+import {Label, ModalController, NavController, NavParams, ViewController} from 'ionic-angular';
 import {UtilService} from "../../service/util-service/util.service";
 import {FsData, FsPageData, PageGroupData} from "../../data.mapping";
 import {DataConfig} from "../../service/config/data.config";
 import {ModalBoxComponent} from "../../components/modal-box/modal-box";
 import {Member} from "../../service/business/event.service";
 import * as anyenum from "../../data.enum";
+import {FeedbackService} from "../../service/cordova/feedback.service";
 /**
  * Generated class for the 参与人选择 page.
  *
@@ -23,19 +24,17 @@ import * as anyenum from "../../data.enum";
           参与人(<span class="count">{{this.memberSet.members.length}}</span>)
         </ion-list-header>
         <ion-item >
-          <ion-label>
+          <ion-label #membercom class="somemmember">
             <ul>
                 <li *ngFor = "let member of memberSet.members; let i = index" (click)="removeMember(i)">
-
-                  <span class="count"> {{ member.ran }}</span>
+                  <span> {{ member.ran }}</span>
                 </li>
-                <li>
-                  查看全部参与人
-                </li>
-
+              <li></li>
             </ul>
           </ion-label>
         </ion-item>
+        <span *ngIf="memberSet.members.length / 4 > 4 && showall" (click) ="showMember()" class="showMember">查看全部参与人</span>
+        <span *ngIf="memberSet.members.length / 4 > 4 && !showall" (click) ="showMember()"class="showMember">收起</span>
       </ion-list>
       <ion-list>
         <ion-item>
@@ -53,7 +52,10 @@ import * as anyenum from "../../data.enum";
 export class InvitesPage {
 
   @ViewChild(ModalBoxComponent)
-  modalBoxComponent:ModalBoxComponent
+  modalBoxComponent:ModalBoxComponent;
+  @ViewChild("membercom")
+  membercom:any;
+
 
   buttons: any = {
     remove: false,
@@ -69,14 +71,14 @@ export class InvitesPage {
     iv : false,
   }
 
-
-  tel: any;//手机号
+  showall:boolean = true;
 
   constructor(public navCtrl: NavController,
               public navParams: NavParams,
               public viewCtrl: ViewController,
               private util: UtilService,
-              private  modalCtrl: ModalController) {
+              private  modalCtrl: ModalController,
+              private renderer2: Renderer2) {
 
     //下面处理需要放在构造方法里，防止关闭参与人选择页面时进入该处理
     if (this.navParams && this.navParams.data ) {
@@ -92,6 +94,15 @@ export class InvitesPage {
         this.memberSet.md = false;
       }
     }
+  }
+
+  showMember(){
+    if (this.showall)
+    this.renderer2.removeClass(this.membercom.nativeElement, "somemmember");
+    else
+    this.renderer2.addClass(this.membercom.nativeElement, "somemmember");
+
+    this.showall = !this.showall;
   }
 
   ionViewDidEnter() {
@@ -129,7 +140,10 @@ export class InvitesPage {
       });
     modal.onDidDismiss(async (data) => {
       if (data){
-        this.memberSet.members = data.members;
+        data.members.forEach((v)=>{
+
+          this.memberSet.members.push(v);
+        })
       }
 
     });

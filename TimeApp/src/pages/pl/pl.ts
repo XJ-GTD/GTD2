@@ -17,65 +17,46 @@ import {PagePDPro} from "../../data.mapping";
   selector: 'page-pl',
   template:
     `
-    <ion-header no-border>
-      <ion-toolbar>
-        <ion-buttons left>
-          <button ion-button icon-only (click)="goBack()" color="danger">
-            <img class="img-header-left" src="./assets/imgs/back.png">
-          </button>
-        </ion-buttons>
-        <ion-title>日历</ion-title>
-        <ion-buttons right>
-          <button ion-button class="button-header-right" (click)="newPlan()">
-            添加
-          </button>
-        </ion-buttons>
-      </ion-toolbar>
-    </ion-header>
+    <page-box title="归类日历" [buttons]="buttons" (onBack)="goBack()" (onCreate)="newPlan()"  nobackgroud nobottom>
+      <ion-scroll scrollY="true" scrollheightAuto>
+        <ion-list>
+          <ion-list-header>
+            定义了<span class="count"> {{zdyJhs.length}} </span>个日历 
+          </ion-list-header>
+          <ion-item   *ngFor="let option of zdyJhs" (click)="toPd(option)" >
+            <ion-label >
+              <ion-icon class="fal fa-circle font-small"   [ngStyle]="{'color': option.jc }"></ion-icon>
+              {{option.jn}}(<span class="font-small">{{option.js}}</span>)
+            </ion-label>
+          </ion-item>
+        </ion-list>
 
-    <ion-content padding>
-      <ion-grid>
-        <ion-row>
-          <ion-list no-lines>
-            <ion-list-header class="plan-list-item" (click)="change()">
-              自定义
-              <img class="img-content-plan" src="./assets/imgs/{{picture}}">
-            </ion-list-header>
-            <div *ngFor="let option of zdyJhs" [ngStyle]="{'display': show }">
-              <ion-item class="plan-list-item" (click)="toPd(option)">
-                <div class="color-dot" [ngStyle]="{'background-color': option.jc }" item-start></div>
-                {{option.jn}}({{option.js}})
-              </ion-item>
-            </div>
-            <div [ngStyle]="{'display': zdyDisplay }" class="plan-none"> 暂无自定义日历</div>
-            <div style="height: 60px"></div>
-            <ion-list-header class="plan-list-item">
-              <div style="float: left;">日历</div><small>（长按日历名称可清除）</small>
-            </ion-list-header>
-            <div *ngFor="let option of xtJhs">
-              <ion-item class="plan-list-item"(press)="delPlan(option)" >
-                <div class="color-dot" [ngStyle]="{'background-color': option.jc }" item-start></div>
-                <div (click)="toPd(option)">{{option.jn}}({{option.js}})</div>
-                <button ion-button clear item-end (click)="download(option)">
-                  <div *ngIf="option.jtd == '0'" class="content-download">
-                    下载
-                  </div>
-                  <div *ngIf="option.jtd =='1'">
-                    <img class="img-content-refresh" src="./assets/imgs/sx.png" />
-                  </div>
-                </button>
-              </ion-item>
-            </div>
-          </ion-list>
-        </ion-row>
-      </ion-grid>
-    </ion-content>
+
+        <ion-list>
+          <ion-list-header>
+            系统日历<span class="count"> {{xtJhs.length}} </span>个 <small>（长按日历名称可清除）</small>
+          </ion-list-header>
+          <ion-item   *ngFor="let option of xtJhs" (press)="delPlan(option)" >
+            <ion-label>
+              <ion-icon class="fal fa-circle font-small"   [ngStyle]="{'color': option.jc }"></ion-icon>
+              {{option.jn}}(<span class="font-small">{{option.js}}</span>)
+            </ion-label>
+            <ion-icon class="fal fa-download" *ngIf="option.jtd == '0'" (click)="download(option)" item-end ></ion-icon>
+            <ion-icon class="fal fa-sync" *ngIf="option.jtd =='1'"(click)="download(option)" item-end ></ion-icon>
+          </ion-item>
+        </ion-list>
+      </ion-scroll>
+    </page-box>    
   `,
 })
 export class PlPage {
 
-  xtJhs:any;
-  zdyJhs:any;
+  buttons: any = {
+    create:true,
+    cancel: true
+  };
+  xtJhs:Array<PagePDPro> = new Array<PagePDPro>();
+  zdyJhs:Array<PagePDPro> = new Array<PagePDPro>();
   picture:any = 'xl.png' ;
   zdyDisplay:any = 'none';
   show:any = 'block';
@@ -84,18 +65,6 @@ export class PlPage {
               private plService:PlService,
               private util: UtilService,
               public modalController: ModalController,) {
-  }
-
-  ionViewDidLoad() {
-    console.log('ionViewDidLoad PlPage');
-  }
-
-  ionViewDidEnter(){
-    this.getAllJh();
-  }
-
-  getAllJh(){
-    this.util.loadingStart();
     this.plService.getPlan().then(data=>{
       this.xtJhs = data.xtJh;
       this.zdyJhs = data.zdyJh;
@@ -106,12 +75,13 @@ export class PlPage {
       }else {
         this.zdyDisplay = 'none';
       }
-      this.util.loadingEnd();
     }).catch(error=>{
       this.util.toastStart('获取计划失败',1500);
-      this.util.loadingEnd();
     });
   }
+
+
+
 
   goBack() {
     this.navCtrl.pop();

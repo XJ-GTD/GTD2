@@ -4,6 +4,7 @@ import {GlPage} from './gl';
 import {GlService} from "./gl.service";
 import {GcService} from "../gc/gc.service";
 import {PageBoxComponentModule} from "../../components/page-box/page-box.module";
+import {DirectivesModule} from "../../directives/directives.module";
 
 @NgModule({
   declarations: [
@@ -11,7 +12,8 @@ import {PageBoxComponentModule} from "../../components/page-box/page-box.module"
   ],
   imports: [
     IonicPageModule.forChild(GlPage),
-    PageBoxComponentModule
+    PageBoxComponentModule,DirectivesModule
+
   ],
   providers:[
     GlService,GcService

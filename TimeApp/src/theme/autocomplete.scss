@@ -10,23 +10,22 @@ ion-auto-complete{
       border-bottom: 0.55px solid  rgba(174,174,174,1);
       font-size: 14px;
     }
-
   }
-  .searchbar-input-container{
-    margin: 0 14px;
-    border-bottom: 0.55px solid  rgba(174,174,174,1);
+}
+.searchbar-input-container{
+  margin: 0 14px;
+  border-bottom: 0.55px solid  rgba(174,174,174,1);
+}
+.searchbar-ios{
+  border-bottom: none;
+  background-color: transparent;
+  .searchbar-search-icon{
+    width: 16px;
+    height: 16px;
+    background-size: 16px;
   }
-  .searchbar-ios{
-    border-bottom: none;
-    background-color: transparent;
-    .searchbar-search-icon{
-      width: 16px;
-      height: 16px;
-      background-size: 16px;
-    }
-    .searchbar-input{
-      font-size: 16px;
-      font-weight:400;
-    }
+  .searchbar-input{
+    font-size: 16px;
+    font-weight:400;
   }
 }

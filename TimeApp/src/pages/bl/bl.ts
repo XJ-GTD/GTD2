@@ -18,7 +18,7 @@ import {FsData} from "../../data.mapping";
   selector: 'page-bl',
   template: `
     <page-box title="黑名单" [buttons]="buttons"  (onBack)="goBack()"  nobackgroud nobottom>
-      <ion-scroll scrollY="true" scrollY>
+      <ion-scroll scrollY="true" scrollheightAuto>
         <ion-list>
           <ion-list-header>
             拒绝接受 <span class="count">{{bls.length}}</span> 个人的日程推送 
