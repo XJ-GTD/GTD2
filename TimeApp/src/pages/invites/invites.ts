@@ -139,9 +139,10 @@ export class InvitesPage {
         members : this.memberSet.members
       });
     modal.onDidDismiss(async (data) => {
-      if (data){
-        data.members.forEach((v)=>{
+      if (data && data.members && data.members.length > 0) {
+        this.memberSet.members.length = 0;
 
+        data.members.forEach((v)=>{
           this.memberSet.members.push(v);
         })
       }
