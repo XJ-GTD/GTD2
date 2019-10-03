@@ -2261,6 +2261,10 @@ export class EventService extends BaseService {
 
 	/**
 	 * 创建更新任务
+   *
+   * 重复任务不直接创建多个任务记录
+   * 前面的任务完成后, 新增完成日程后续的新任务
+   *
 	 * @author ying<343253410@qq.com>
 	 */
   async saveTask(task: TaskData): Promise <TaskData> {
@@ -2310,7 +2314,8 @@ export class EventService extends BaseService {
 		}
 
     this.emitService.emit("mwxing.calendar.activities.changed", task);
-
+    this.syncTask(task);
+    
 		return task;
   }
 
@@ -3001,19 +3006,33 @@ export class EventService extends BaseService {
    * 同步任务到服务器
    * @author ying<343253410@qq.com>
    */
-  async syncTask(tt: TaskData) {
+  async syncTask(task: TaskData) {
 
-  	this.assertEmpty(tt);       // 入参不能为空
-	  this.assertEmpty(tt.evi);    // ID不能为空
-	  this.assertEmpty(tt.del);   // 删除标记不能为空
+  	this.assertEmpty(task);       // 入参不能为空
+	  this.assertEmpty(task.evi);    // ID不能为空
+	  this.assertEmpty(task.del);   // 删除标记不能为空
 
 	  let push: PushInData = new PushInData();
 	  let sync: SyncData = new SyncData();
-	  sync.id = tt.evi;
+	  sync.id = task.evi;
     sync.type = "Task";
-    sync.security = SyncDataSecurity.None;
-    sync.status = SyncDataStatus[tt.del];
-    sync.payload = tt;
+
+    //修改权限设定
+    if (task.md == anyenum.ModiPower.disable){
+      sync.security = SyncDataSecurity.SelfModify;
+    }
+    if (task.md == anyenum.ModiPower.enable){
+      sync.security = SyncDataSecurity.ShareModify;
+    }
+
+    //删除设定
+    if (task.del == anyenum.DelType.del){
+      sync.status = SyncDataStatus.Deleted;
+    } else {
+      sync.status = SyncDataStatus.UnDeleted;
+    }
+
+    sync.payload = task;
     push.d.push(sync);
     await this.dataRestful.push(push);
 
