@@ -140,10 +140,16 @@ export class InvitesPage {
       });
     modal.onDidDismiss(async (data) => {
       if (data && data.members && data.members.length > 0) {
-        this.memberSet.members.length = 0;
+        let exists = this.memberSet.members.reduce((target, val) => {
+          target.push(val.rc);
+
+          return target;
+        }, new Array<string>());
 
         data.members.forEach((v)=>{
-          this.memberSet.members.push(v);
+          if (exists.indexOf(v.rc) < 0) {
+            this.memberSet.members.push(v);
+          }
         })
       }
 
