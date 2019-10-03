@@ -193,7 +193,7 @@ body {
   }
 
   .scroll-y[scrollY] {
-    height: calc(100% - 80px);
+    height: calc(100% - 4px);
 
     .scroll-content {
       overflow-y: auto;

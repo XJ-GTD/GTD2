@@ -362,7 +362,7 @@ export class HPage {
   todoscrumList(day ?: CalendarDay) {
     let selectDay: CalendarDay = day ? day : this.hdata.selectDay;
 
-    this.modalCtr.create(DataConfig.PAGE._DOSCRUM_PAGE, selectDay).present();
+    // this.modalCtr.create(DataConfig.PAGE._DOSCRUM_PAGE, selectDay).present();
   }
 
   gotolist() {
