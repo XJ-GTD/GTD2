@@ -6,7 +6,7 @@ import * as moment from "moment";
   template: `
     <ng-template [ngIf]="tasklist.length > 0"
                  [ngIfElse]="notask">
-      
+
     <ion-grid class = "list-grid-content">
       <ion-row class="item-content item-content-backgroud" leftmargin toppaddingsamll bottompaddingsamll rightmargin *ngFor="let task of tasklist"  [ngClass]="{'complete': task.cs == '1'}" (click)="gotoDetail(task)" >
           <div class="line font-normal" leftmargin rightmargin>
@@ -23,7 +23,7 @@ import * as moment from "moment";
             </div>
               <div class="st font-small">  {{(task.evd + ' ' + task.evt) | formatedate:'withNow'}}</div>
 
-              <div  class="person font-small" end>---来自小酒仙{{task.ui | formatuser: currentuser: friends}}</div>
+              <div *ngIf="currentuser != task.ui && task.ui != ''" class="person font-small" end>---来自{{task.ui | formatuser: currentuser: friends}}</div>
           </div>
       </ion-row>
     </ion-grid>

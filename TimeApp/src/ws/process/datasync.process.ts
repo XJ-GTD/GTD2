@@ -9,7 +9,9 @@ import {EventService, AgendaData, TaskData, MiniTaskData, Member} from "../../se
 import {MemoService} from "../../service/business/memo.service";
 import {DataSyncPara} from "../model/datasync.para";
 import {SyncDataStatus} from "../../data.enum";
+import {FsData} from "../../data.mapping";
 import {UserConfig} from "../../service/config/user.config";
+import {ContactsService} from "../../service/cordova/contacts.service";
 
 /**
  * 数据同步
@@ -19,6 +21,7 @@ import {UserConfig} from "../../service/config/user.config";
 @Injectable()
 export class DataSyncProcess implements MQProcess {
   constructor(private emitService: EmitService,
+              private contactsServ: ContactsService,
               private calendarService: CalendarService,
               private eventService: EventService,
               private memoService: MemoService) {
@@ -81,8 +84,14 @@ export class DataSyncProcess implements MQProcess {
 
         // 参与人通过to字段重新构造
         if (dsPara.to && dsPara.to.length > 0) {
+          let unknowncontacts: Array<string> = new Array<string>(...dsPara.to);
+
           let fsdatas = UserConfig.friends.filter((element, index, array) => {
-            return (dsPara.to.indexOf(element.rc) >= 0);
+            let pos: number = dsPara.to.indexOf(element.rc);
+
+            if (pos >= 0) unknowncontacts.splice(pos, 1); // 移出已知联系人
+
+            return (pos >= 0);
           });
 
           agenda.members = new Array<Member>();
@@ -92,6 +101,18 @@ export class DataSyncProcess implements MQProcess {
             Object.assign(member, fsdata);
 
             agenda.members.push(member);
+          }
+
+          // 参与人可能存在没有注册的情况，目前没有考虑
+          for (let unknown of unknowncontacts) {
+            let one: FsData = await this.contactsServ.updateOneFs(unknown);
+
+            if (one) {
+              let member: Member = {} as Member;
+              Object.assign(member, one);
+
+              agenda.members.push(member);
+            }
           }
         }
 

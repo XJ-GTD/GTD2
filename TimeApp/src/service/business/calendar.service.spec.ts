@@ -89,6 +89,9 @@ describe('CalendarService test suite', () => {
   let luojianfei: BTbl;
   let huitailang: BTbl;
   let xuezhenyang: BTbl;
+  let liqiannan: BTbl;
+  let huqiming: BTbl;
+  let liying: BTbl;
 
   let prepareContacts = async function() {
     let sqls: Array<string> = new Array<string>();
@@ -148,6 +151,69 @@ describe('CalendarService test suite', () => {
     btbls.push(btbl);
 
     xiaohaizi = btbl;
+
+    bhtbl = new BhTbl();
+    bhtbl.bhi = util.getUuid();
+    bhtbl.pwi = btbl.pwi;
+    bhtbl.hiu = DataConfig.HUIBASE64;
+    sqls.push(bhtbl.inT());
+
+    btbl = new BTbl();
+    btbl.pwi = 'liqiannan';
+    btbl.ran = '李倩男';
+    btbl.ranpy = 'liqiannan';
+    btbl.hiu = '';
+    btbl.rn = '李倩男';
+    btbl.rnpy = 'liqiannan';
+    btbl.rc = '18569990239';
+    btbl.rel = '1';
+    btbl.ui = btbl.rc;
+    sqls.push(btbl.inT());
+    btbls.push(btbl);
+
+    liqiannan = btbl;
+
+    bhtbl = new BhTbl();
+    bhtbl.bhi = util.getUuid();
+    bhtbl.pwi = btbl.pwi;
+    bhtbl.hiu = DataConfig.HUIBASE64;
+    sqls.push(bhtbl.inT());
+
+    btbl = new BTbl();
+    btbl.pwi = 'huqiming';
+    btbl.ran = '胡启明';
+    btbl.ranpy = 'huqiming';
+    btbl.hiu = '';
+    btbl.rn = '胡启明';
+    btbl.rnpy = 'huqiming';
+    btbl.rc = '15900857417';
+    btbl.rel = '1';
+    btbl.ui = btbl.rc;
+    sqls.push(btbl.inT());
+    btbls.push(btbl);
+
+    huqiming = btbl;
+
+    bhtbl = new BhTbl();
+    bhtbl.bhi = util.getUuid();
+    bhtbl.pwi = btbl.pwi;
+    bhtbl.hiu = DataConfig.HUIBASE64;
+    sqls.push(bhtbl.inT());
+
+    btbl = new BTbl();
+    btbl.pwi = 'liying';
+    btbl.ran = '李滢';
+    btbl.ranpy = 'liying';
+    btbl.hiu = '';
+    btbl.rn = '李滢';
+    btbl.rnpy = 'liying';
+    btbl.rc = '13795398627';
+    btbl.rel = '1';
+    btbl.ui = btbl.rc;
+    sqls.push(btbl.inT());
+    btbls.push(btbl);
+
+    liying = btbl;
 
     bhtbl = new BhTbl();
     bhtbl.bhi = util.getUuid();

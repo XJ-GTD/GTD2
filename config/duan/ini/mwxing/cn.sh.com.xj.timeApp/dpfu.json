@@ -8,5 +8,6 @@
 {"name":"DJH", "value":"personalcalendar", "desc":"日程创建 缺省日历 个人"},
 {"name":"FOGH", "value":"", "desc":"项目跟进 GitHub 关闭"},
 {"name":"FOFIR", "value":"", "desc":"项目跟进 Fir.IM 关闭"},
-{"name":"FOTRACI", "value":"", "desc":"项目跟进 Travis-CI 关闭"}
+{"name":"FOTRACI", "value":"", "desc":"项目跟进 Travis-CI 关闭"},
+{"name":"THEME", "value":"white-theme", "desc":"主题"}
 ]
