@@ -9,6 +9,7 @@ import {EventService, AgendaData, TaskData, MiniTaskData, Member} from "../../se
 import {MemoService} from "../../service/business/memo.service";
 import {DataSyncPara} from "../model/datasync.para";
 import {SyncDataStatus} from "../../data.enum";
+import {FsData} from "../../data.mapping";
 import {UserConfig} from "../../service/config/user.config";
 import {ContactsService} from "../../service/cordova/contacts.service";
 
@@ -86,11 +87,11 @@ export class DataSyncProcess implements MQProcess {
           let unknowncontacts: Array<string> = new Array<string>(...dsPara.to);
 
           let fsdatas = UserConfig.friends.filter((element, index, array) => {
-            let index: number = dsPara.to.indexOf(element.rc);
+            let pos: number = dsPara.to.indexOf(element.rc);
 
-            if (index >= 0) unknowncontacts.splice(index, 1); // 移出已知联系人
+            if (pos >= 0) unknowncontacts.splice(pos, 1); // 移出已知联系人
 
-            return (index >= 0);
+            return (pos >= 0);
           });
 
           agenda.members = new Array<Member>();
@@ -108,7 +109,7 @@ export class DataSyncProcess implements MQProcess {
 
             if (one) {
               let member: Member = {} as Member;
-              Object.assign(member, fsdata);
+              Object.assign(member, one);
 
               agenda.members.push(member);
             }
