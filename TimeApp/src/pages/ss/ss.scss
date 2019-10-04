@@ -1,4 +1,58 @@
 page-ss {
+  .themeselect {
+    width: 100%;
+    display: flex;
+    margin: 0 auto;
+    .item-radio{
+      border-width: 0 !important;
+    }
 
+    ion-list.list-ios .item-ios{
+    }
+    .item-ios .radio-ios{
+      margin: 0;
+
+      .radio-icon{
+        height: 0;
+      }
+    }
+
+    .item-inner {
+      display: block;
+    }
+
+    .waper {
+      text-align: center;
+      width: 50%;
+      margin: 0.3rem;
+
+      .radio-ios .radio-icon {
+        margin: 0 auto;
+      }
+      img {
+        width: 120px;padding: 1rem;
+      }
+    }
+    .themen-select{
+      background: rgba(255,255,255,0.5) !important;
+      border-radius: 10%;
+    }
+  }
+}
+
+.white-theme {
+  .themeselect {
+    .themen-select{
+      background:rgba(7,109,138,0.2) !important;
+    }
+  }
+}
+
+.black-theme{
+  .themeselect {
+    .themen-select{
+      background: rgba(217, 233, 238, 0.2) !important;
+    }
+  }
 }
 

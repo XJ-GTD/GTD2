@@ -6,6 +6,7 @@ import {SsService} from "./ss.service";
 import {PlService} from "../pl/pl.service";
 import {PageY} from "../../data.mapping";
 import * as moment from "moment";
+import {SettingsProvider} from "../../providers/settings/settings";
 
 /**
  * Generated class for the 设置画面 page.
@@ -90,13 +91,13 @@ import * as moment from "moment";
         </ion-list-header>
 
         <ion-item no-lines no-padding no-margin no-border>
-          <div item-content radio-group class="themeselect">
-            <div class="waper" ion-item>
-              <ion-radio value="black"></ion-radio>
+          <div item-content radio-group class="themeselect" (ionChange)="changetheme(theme)" [(ngModel)]="selectedTheme">
+            <div class="waper" ion-item [class.themen-select] = "selectedTheme == 'black-theme'">
+              <ion-radio value="black-theme"  class="noshow" no-margin [disabled]="false"></ion-radio>
               <ion-label><img src="./assets/imgs/black.png"></ion-label>
             </div>
-            <div class="waper" ion-item>
-              <ion-radio  value="white"></ion-radio>
+            <div class="waper" ion-item [class.themen-select] = "selectedTheme == 'white-theme'">
+              <ion-radio  value="white-theme"  class="noshow"  no-margin [disabled]="false"></ion-radio>
               <ion-label><img src="./assets/imgs/white.png"></ion-label>
             </div>
           </div>
@@ -124,9 +125,6 @@ export class SsPage {
 
 
   buttons: any = {
-    remove: false,
-    share: false,
-    save: false,
     cancel: true
   };
 
@@ -140,7 +138,11 @@ export class SsPage {
   sfirim: Setting;
   sgithub: Setting;
   stravisci: Setting;
+  theme: Setting;
 
+
+
+  selectedTheme: string;
   bh: boolean;       //唤醒 页面显示和修改
   bt: boolean;       //新消息提醒 页面显示和修改
   bb: boolean;       //语音播报 页面显示和修改
@@ -162,7 +164,8 @@ export class SsPage {
               public navCtrl: NavController,
               public ssService: SsService,
               private plService: PlService,
-              private _renderer: Renderer2) {
+              private _renderer: Renderer2,
+              private settings: SettingsProvider,) {
     let memFirIMDef = UserConfig.settins.get(DataConfig.SYS_FOFIR);
     let memGithubDef = UserConfig.settins.get(DataConfig.SYS_FOGH);
     let memTravisCIDef = UserConfig.settins.get(DataConfig.SYS_FOTRACI);
@@ -282,6 +285,7 @@ export class SsPage {
     this.dr = UserConfig.settins.get(DataConfig.SYS_DR);
     this.drp1 = UserConfig.settins.get(DataConfig.SYS_DRP1);
     this.djh = UserConfig.settins.get(DataConfig.SYS_DJH);
+    this.theme = UserConfig.settins.get(DataConfig.SYS_THEME);
 
     this.bh = (this.h.value == "1") ? true : false;
     this.bt = (this.t.value == "1") ? true : false;
@@ -291,6 +295,8 @@ export class SsPage {
     this.sdrp1 = (this.drp1 && this.drp1.value) ? this.drp1.value : "08:30";
     this.sdjh = this.djh.value;
     this.sdjho = await this.plService.getJh(this.sdjh);
+
+    if (this.sdjho)
     this.sdjhn = this.sdjho.jn;
 
     this.localfriends = UserConfig.friends ? UserConfig.friends.length : 0;
@@ -303,5 +309,22 @@ export class SsPage {
     this.ssService.resfriend().then(d => {
       this.lfsloading = false;
     })
+  }
+
+  changetheme(setting) {
+
+    if (setting){
+      let set: PageY = new PageY();
+      set.yi = setting.yi;//偏好主键ID
+      set.ytn = setting.bname; //偏好设置类型名称
+      set.yt = setting.typeB; //偏好设置类型
+      set.yn = setting.name;//偏好设置名称
+      set.yk = setting.type;//偏好设置key
+      set.yv = this.selectedTheme;//偏好设置value
+
+      this.ssService.save(set);
+    }
+    this.settings.setActiveTheme(this.selectedTheme);
+
   }
 }

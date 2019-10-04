@@ -90,33 +90,6 @@ ion-list.list-ios {
       .noshow.radio-ios .radio-checked .radio-inner {
         border-color: transparent;
       }
-
-
-      .themeselect {
-        width: 100%;
-        display: flex;
-        margin: 0 auto;
-
-        .item-inner {
-          display: block;
-        }
-
-        .waper {
-          text-align: center;
-          width: 50%;
-          border: 0.55px red solid;
-          margin-right: 10px;
-
-          .radio-ios .radio-icon {
-            margin: 0 auto;
-          }
-
-          img {
-            width: 80%;
-          }
-        }
-
-      }
     }
   }
 

@@ -17,7 +17,7 @@ import {MemoService} from "../../service/business/memo.service";
 import {SettingsProvider} from "../../providers/settings/settings";
 import {AipPage} from "../aip/aip";
 import {TdlPage} from "../tdl/tdl";
-import {AgendaPage} from "../agenda/agenda";
+import {TestDataService} from "../../service/testData.service";
 
 /**
  * Generated class for the 首页 page.
@@ -43,10 +43,7 @@ import {AgendaPage} from "../agenda/agenda";
         <button ion-fab mini>
           <ion-icon name="add"></ion-icon>
         </button>
-        <ion-fab-list side="top">
-          <button ion-fab (click)="changetheme()">
-            <ion-icon name="contrast"></ion-icon>
-          </button>
+        <ion-fab-list side="top">        
           <button ion-fab (click)="todoList()">
             <ion-icon name="albums"></ion-icon>
           </button>
@@ -61,6 +58,9 @@ import {AgendaPage} from "../agenda/agenda";
           </button>
           <button ion-fab  (click)="newpi()">
             <ion-icon name="star"></ion-icon>
+          </button>
+          <button ion-fab  (click)="testDate()">
+            <ion-icon name="compass"></ion-icon>
           </button>
         </ion-fab-list>
       </ion-fab>
@@ -103,10 +103,8 @@ export class HPage {
               private effectService: EffectService,
               private  evtserv: EventService,
               private sqlexce: SqliteExec, private  momserv: MemoService,
-              private settings: SettingsProvider,
-              private plt:Platform) {
+              private testDataService:TestDataService) {
     this.hdata = new HData();
-    this.settings.getActiveTheme().subscribe(val => this.selectedTheme = val);
 
 
   }
@@ -121,16 +119,6 @@ export class HPage {
   openAi() {
     this.modalCtr.create(AipPage).present();
   }
-
-  changetheme() {
-    if (this.selectedTheme === 'black-theme') {
-      this.settings.setActiveTheme('white-theme');
-    } else {
-      this.settings.setActiveTheme('black-theme');
-    }
-
-  }
-
 
   ionViewDidLoad() {
     // 初始化同步
@@ -395,5 +383,9 @@ export class HPage {
       //系统画面
       this.modalCtr.create(DataConfig.PAGE._AGENDA_PAGE, p).present();
     }
+  }
+
+  testDate(){
+    this.testDataService.createcal();
   }
 }

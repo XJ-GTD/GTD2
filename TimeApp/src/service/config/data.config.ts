@@ -169,6 +169,9 @@ export class DataConfig {
   public static SYS_DRP1: string = "DRP1";
   //日历
   public static SYS_DJH: string = "DJH";
+
+  //主题
+  public static SYS_THEME: string = "THEME";
   //项目跟进
   public static SYS_FOGH: string = "FOGH";
   public static SYS_FOGHSECRET: string = "FOGHSECRET";
