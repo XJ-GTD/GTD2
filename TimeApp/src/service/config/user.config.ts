@@ -242,7 +242,7 @@ export class UserConfig {
     return [];
   }
 
-  private async initTesterContacts(): Array<FsData> {
+  private async initTesterContacts(): Promise<Array<FsData>> {
     // 联系人用于测试
     let xiaopangzi: BTbl;
     let xiaohaizi: BTbl;
@@ -276,7 +276,7 @@ export class UserConfig {
     xiaopangzi = btbl;
 
     bhtbl = new BhTbl();
-    bhtbl.bhi = util.getUuid();
+    bhtbl.bhi = this.util.getUuid();
     bhtbl.pwi = btbl.pwi;
     bhtbl.hiu = DataConfig.HUIBASE64;
     sqls.push(bhtbl.inT());
@@ -300,7 +300,7 @@ export class UserConfig {
     xiaohaizi = btbl;
 
     bhtbl = new BhTbl();
-    bhtbl.bhi = util.getUuid();
+    bhtbl.bhi = this.util.getUuid();
     bhtbl.pwi = btbl.pwi;
     bhtbl.hiu = DataConfig.HUIBASE64;
     sqls.push(bhtbl.inT());
@@ -324,7 +324,7 @@ export class UserConfig {
     liqiannan = btbl;
 
     bhtbl = new BhTbl();
-    bhtbl.bhi = util.getUuid();
+    bhtbl.bhi = this.util.getUuid();
     bhtbl.pwi = btbl.pwi;
     bhtbl.hiu = DataConfig.HUIBASE64;
     sqls.push(bhtbl.inT());
@@ -348,7 +348,7 @@ export class UserConfig {
     huqiming = btbl;
 
     bhtbl = new BhTbl();
-    bhtbl.bhi = util.getUuid();
+    bhtbl.bhi = this.util.getUuid();
     bhtbl.pwi = btbl.pwi;
     bhtbl.hiu = DataConfig.HUIBASE64;
     sqls.push(bhtbl.inT());
@@ -372,7 +372,7 @@ export class UserConfig {
     liying = btbl;
 
     bhtbl = new BhTbl();
-    bhtbl.bhi = util.getUuid();
+    bhtbl.bhi = this.util.getUuid();
     bhtbl.pwi = btbl.pwi;
     bhtbl.hiu = DataConfig.HUIBASE64;
     sqls.push(bhtbl.inT());
@@ -396,7 +396,7 @@ export class UserConfig {
     xiaolenzi = btbl;
 
     bhtbl = new BhTbl();
-    bhtbl.bhi = util.getUuid();
+    bhtbl.bhi = this.util.getUuid();
     bhtbl.pwi = btbl.pwi;
     bhtbl.hiu = DataConfig.HUIBASE64;
     sqls.push(bhtbl.inT());
@@ -420,7 +420,7 @@ export class UserConfig {
     caoping = btbl;
 
     bhtbl = new BhTbl();
-    bhtbl.bhi = util.getUuid();
+    bhtbl.bhi = this.util.getUuid();
     bhtbl.pwi = btbl.pwi;
     bhtbl.hiu = DataConfig.HUIBASE64;
     sqls.push(bhtbl.inT());
@@ -444,7 +444,7 @@ export class UserConfig {
     luojianfei = btbl;
 
     bhtbl = new BhTbl();
-    bhtbl.bhi = util.getUuid();
+    bhtbl.bhi = this.util.getUuid();
     bhtbl.pwi = btbl.pwi;
     bhtbl.hiu = DataConfig.HUIBASE64;
     sqls.push(bhtbl.inT());
@@ -468,7 +468,7 @@ export class UserConfig {
     huitailang = btbl;
 
     bhtbl = new BhTbl();
-    bhtbl.bhi = util.getUuid();
+    bhtbl.bhi = this.util.getUuid();
     bhtbl.pwi = btbl.pwi;
     bhtbl.hiu = DataConfig.HUIBASE64;
     sqls.push(bhtbl.inT());
@@ -492,7 +492,7 @@ export class UserConfig {
     xuezhenyang = btbl;
 
     bhtbl = new BhTbl();
-    bhtbl.bhi = util.getUuid();
+    bhtbl.bhi = this.util.getUuid();
     bhtbl.pwi = btbl.pwi;
     bhtbl.hiu = DataConfig.HUIBASE64;
     sqls.push(bhtbl.inT());
