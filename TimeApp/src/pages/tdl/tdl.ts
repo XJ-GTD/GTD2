@@ -122,7 +122,7 @@ import {UserConfig} from "../../service/config/user.config";
                     <div class="icon ">
                       <ion-icon class = "user-o fal fa-user-tag"></ion-icon>
                     </div>
-                    <div class="person" *ngIf="currentuser != event.ui && event.ui != ''">--来自小仙女</div>
+                    <div class="person" *ngIf="currentuser != event.ui && event.ui != ''">--来自{{event.ui | formatuser: currentuser: friends}}</div>
                     <div class="invite" end><span>接受</span><span>拒绝</span></div>
                   </div>
               </ion-row>
@@ -167,6 +167,7 @@ export class TdlPage {
   monthActivityDatas: Array<MonthActivityData> = new Array<MonthActivityData>();
 
   currentuser: string = UserConfig.account.id;
+  friends: Array<any> = UserConfig.friends;
 
   constructor(private tdlServ: TdlService,
               private modalCtr: ModalController,
