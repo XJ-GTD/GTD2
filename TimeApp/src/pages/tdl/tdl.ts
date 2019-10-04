@@ -18,6 +18,7 @@ import {DayActivityData, MonthActivityData} from "../../service/business/calenda
 import {PageDirection, EventType} from "../../data.enum";
 import {TdlGesture} from "./tdl-gestures";
 import {CalendarComponent} from "../../components/ion2-calendar";
+import {UserConfig} from "../../service/config/user.config";
 
 /**
  * Generated class for the 日程列表 page.
@@ -121,7 +122,7 @@ import {CalendarComponent} from "../../components/ion2-calendar";
                     <div class="icon ">
                       <ion-icon class = "user-o fal fa-user-tag"></ion-icon>
                     </div>
-                    <div class="person">--来自小仙女</div>
+                    <div class="person" *ngIf="currentuser != event.ui && event.ui != ''">--来自小仙女</div>
                     <div class="invite" end><span>接受</span><span>拒绝</span></div>
                   </div>
               </ion-row>
@@ -165,6 +166,7 @@ export class TdlPage {
   //画面数据List
   monthActivityDatas: Array<MonthActivityData> = new Array<MonthActivityData>();
 
+  currentuser: string = UserConfig.account.id;
 
   constructor(private tdlServ: TdlService,
               private modalCtr: ModalController,
