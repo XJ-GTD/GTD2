@@ -517,7 +517,7 @@ export class UserConfig {
 
     if (!data || data.length <= 0) {
       // 初始化测试数据
-      data = await this.initTesterContacts();
+      //data = await this.initTesterContacts();
     }
 
     for (let fs of data) {
