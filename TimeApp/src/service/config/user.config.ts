@@ -3,6 +3,8 @@ import {YTbl} from "../sqlite/tbl/y.tbl";
 import {SqliteExec} from "../util-service/sqlite.exec";
 import {ATbl} from "../sqlite/tbl/a.tbl";
 import {UTbl} from "../sqlite/tbl/u.tbl";
+import {BTbl} from "../sqlite/tbl/b.tbl";
+import {BhTbl} from "../sqlite/tbl/bh.tbl";
 import {UtilService} from "../util-service/util.service";
 import {EmitService} from "../util-service/emit.service";
 import {DataConfig} from "./data.config";
@@ -240,6 +242,269 @@ export class UserConfig {
     return [];
   }
 
+  private async initTesterContacts(): Array<FsData> {
+    // 联系人用于测试
+    let xiaopangzi: BTbl;
+    let xiaohaizi: BTbl;
+    let xiaolenzi: BTbl;
+    let caoping: BTbl;
+    let luojianfei: BTbl;
+    let huitailang: BTbl;
+    let xuezhenyang: BTbl;
+    let liqiannan: BTbl;
+    let huqiming: BTbl;
+    let liying: BTbl;
+
+    let datas: Array<FsData> = new Array<FsData>();
+    let sqls: Array<string> = new Array<string>();
+
+    //参与人
+    let fsdata: FsData = new FsData();
+    let btbl: BTbl = new BTbl();
+    let bhtbl = new BhTbl();
+    btbl.pwi = "xiaopangzi";
+    btbl.ran = '小胖子';
+    btbl.ranpy = 'xiaopangzi';
+    btbl.hiu = '';
+    btbl.rn = '张金洋';
+    btbl.rnpy = 'zhangjinyang';
+    btbl.rc = '15821947260';
+    btbl.rel = '1';
+    btbl.ui = btbl.rc;
+    sqls.push(btbl.inT());
+
+    xiaopangzi = btbl;
+
+    bhtbl = new BhTbl();
+    bhtbl.bhi = util.getUuid();
+    bhtbl.pwi = btbl.pwi;
+    bhtbl.hiu = DataConfig.HUIBASE64;
+    sqls.push(bhtbl.inT());
+
+    Object.assign(fsdata, btbl, bhtbl);
+    datas.push(fsdata);
+
+    fsdata = new FsData();
+    btbl = new BTbl();
+    btbl.pwi = "xiaohaizi";
+    btbl.ran = '小孩子';
+    btbl.ranpy = 'xiaohaizi';
+    btbl.hiu = '';
+    btbl.rn = '许赵平';
+    btbl.rnpy = 'xuzhaopin';
+    btbl.rc = '13661617252';
+    btbl.rel = '0';
+    btbl.ui = btbl.rc;
+    sqls.push(btbl.inT());
+
+    xiaohaizi = btbl;
+
+    bhtbl = new BhTbl();
+    bhtbl.bhi = util.getUuid();
+    bhtbl.pwi = btbl.pwi;
+    bhtbl.hiu = DataConfig.HUIBASE64;
+    sqls.push(bhtbl.inT());
+
+    Object.assign(fsdata, btbl, bhtbl);
+    datas.push(fsdata);
+
+    fsdata = new FsData();
+    btbl = new BTbl();
+    btbl.pwi = 'liqiannan';
+    btbl.ran = '李倩男';
+    btbl.ranpy = 'liqiannan';
+    btbl.hiu = '';
+    btbl.rn = '李倩男';
+    btbl.rnpy = 'liqiannan';
+    btbl.rc = '18569990239';
+    btbl.rel = '1';
+    btbl.ui = btbl.rc;
+    sqls.push(btbl.inT());
+
+    liqiannan = btbl;
+
+    bhtbl = new BhTbl();
+    bhtbl.bhi = util.getUuid();
+    bhtbl.pwi = btbl.pwi;
+    bhtbl.hiu = DataConfig.HUIBASE64;
+    sqls.push(bhtbl.inT());
+
+    Object.assign(fsdata, btbl, bhtbl);
+    datas.push(fsdata);
+
+    fsdata = new FsData();
+    btbl = new BTbl();
+    btbl.pwi = 'huqiming';
+    btbl.ran = '胡启明';
+    btbl.ranpy = 'huqiming';
+    btbl.hiu = '';
+    btbl.rn = '胡启明';
+    btbl.rnpy = 'huqiming';
+    btbl.rc = '15900857417';
+    btbl.rel = '1';
+    btbl.ui = btbl.rc;
+    sqls.push(btbl.inT());
+
+    huqiming = btbl;
+
+    bhtbl = new BhTbl();
+    bhtbl.bhi = util.getUuid();
+    bhtbl.pwi = btbl.pwi;
+    bhtbl.hiu = DataConfig.HUIBASE64;
+    sqls.push(bhtbl.inT());
+
+    Object.assign(fsdata, btbl, bhtbl);
+    datas.push(fsdata);
+
+    fsdata = new FsData();
+    btbl = new BTbl();
+    btbl.pwi = 'liying';
+    btbl.ran = '李滢';
+    btbl.ranpy = 'liying';
+    btbl.hiu = '';
+    btbl.rn = '李滢';
+    btbl.rnpy = 'liying';
+    btbl.rc = '13795398627';
+    btbl.rel = '1';
+    btbl.ui = btbl.rc;
+    sqls.push(btbl.inT());
+
+    liying = btbl;
+
+    bhtbl = new BhTbl();
+    bhtbl.bhi = util.getUuid();
+    bhtbl.pwi = btbl.pwi;
+    bhtbl.hiu = DataConfig.HUIBASE64;
+    sqls.push(bhtbl.inT());
+
+    Object.assign(fsdata, btbl, bhtbl);
+    datas.push(fsdata);
+
+    fsdata = new FsData();
+    btbl = new BTbl();
+    btbl.pwi = 'xiaolenzi';
+    btbl.ran = '小楞子';
+    btbl.ranpy = 'xiaolenzi';
+    btbl.hiu = '';
+    btbl.rn = '席理加';
+    btbl.rnpy = 'xilijia';
+    btbl.rc = '13585820972';
+    btbl.rel = '1';
+    btbl.ui = btbl.rc;
+    sqls.push(btbl.inT());
+
+    xiaolenzi = btbl;
+
+    bhtbl = new BhTbl();
+    bhtbl.bhi = util.getUuid();
+    bhtbl.pwi = btbl.pwi;
+    bhtbl.hiu = DataConfig.HUIBASE64;
+    sqls.push(bhtbl.inT());
+
+    Object.assign(fsdata, btbl, bhtbl);
+    datas.push(fsdata);
+
+    fsdata = new FsData();
+    btbl = new BTbl();
+    btbl.pwi = 'caoping';
+    btbl.ran = '草帽';
+    btbl.ranpy = '草帽';
+    btbl.hiu = '';
+    btbl.rn = '漕屏';
+    btbl.rnpy = 'caoping';
+    btbl.rc = '16670129762';
+    btbl.rel = '0';
+    btbl.ui = btbl.rc;
+    sqls.push(btbl.inT());
+
+    caoping = btbl;
+
+    bhtbl = new BhTbl();
+    bhtbl.bhi = util.getUuid();
+    bhtbl.pwi = btbl.pwi;
+    bhtbl.hiu = DataConfig.HUIBASE64;
+    sqls.push(bhtbl.inT());
+
+    Object.assign(fsdata, btbl, bhtbl);
+    datas.push(fsdata);
+
+    fsdata = new FsData();
+    btbl = new BTbl();
+    btbl.pwi = 'luojianfei';
+    btbl.ran = '飞飞飞';
+    btbl.ranpy = 'feifeifei';
+    btbl.hiu = '';
+    btbl.rn = '罗建飞';
+    btbl.rnpy = 'luojianfei';
+    btbl.rc = '13564242673';
+    btbl.rel = '1';
+    btbl.ui = btbl.rc;
+    sqls.push(btbl.inT());
+
+    luojianfei = btbl;
+
+    bhtbl = new BhTbl();
+    bhtbl.bhi = util.getUuid();
+    bhtbl.pwi = btbl.pwi;
+    bhtbl.hiu = DataConfig.HUIBASE64;
+    sqls.push(bhtbl.inT());
+
+    Object.assign(fsdata, btbl, bhtbl);
+    datas.push(fsdata);
+
+    fsdata = new FsData();
+    btbl = new BTbl();
+    btbl.pwi = 'huitailang';
+    btbl.ran = '灰太郎';
+    btbl.ranpy = 'huitailang';
+    btbl.hiu = '';
+    btbl.rn = '丁朝辉';
+    btbl.rnpy = 'dingchaohui';
+    btbl.rc = '15737921611';
+    btbl.rel = '1';
+    btbl.ui = btbl.rc;
+    sqls.push(btbl.inT());
+
+    huitailang = btbl;
+
+    bhtbl = new BhTbl();
+    bhtbl.bhi = util.getUuid();
+    bhtbl.pwi = btbl.pwi;
+    bhtbl.hiu = DataConfig.HUIBASE64;
+    sqls.push(bhtbl.inT());
+
+    Object.assign(fsdata, btbl, bhtbl);
+    datas.push(fsdata);
+
+    fsdata = new FsData();
+    btbl = new BTbl();
+    btbl.pwi = 'xuezhenyang';
+    btbl.ran = '牛牛';
+    btbl.ranpy = 'niuniu';
+    btbl.hiu = '';
+    btbl.rn = '薛震洋';
+    btbl.rnpy = 'xuezhenyang';
+    btbl.rc = '18602150145';
+    btbl.rel = '1';
+    btbl.ui = btbl.rc;
+    sqls.push(btbl.inT());
+
+    xuezhenyang = btbl;
+
+    bhtbl = new BhTbl();
+    bhtbl.bhi = util.getUuid();
+    bhtbl.pwi = btbl.pwi;
+    bhtbl.hiu = DataConfig.HUIBASE64;
+    sqls.push(bhtbl.inT());
+
+    Object.assign(fsdata, btbl, bhtbl);
+    datas.push(fsdata);
+
+    await sqlExce.batExecSql(sqls);
+
+    return datas;
+  }
+
   //参与人
   private async RefreshBTbl() {
     //获取本地参与人
@@ -249,6 +514,12 @@ export class UserConfig {
     UserConfig.friends.splice(0, UserConfig.friends.length);
 
     let data: Array<FsData> = await this.sqlliteExec.getExtList<FsData>(sql);
+
+    if (!data || data.length <= 0) {
+      // 初始化测试数据
+      data = await this.initTesterContacts();
+    }
+
     for (let fs of data) {
       /*if (!fs.bhiu || fs.bhiu == '') {
         fs.bhiu = DataConfig.HUIBASE64;
