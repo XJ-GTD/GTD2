@@ -500,7 +500,7 @@ export class UserConfig {
     Object.assign(fsdata, btbl, bhtbl);
     datas.push(fsdata);
 
-    await sqlExce.batExecSql(sqls);
+    await this.sqlliteExec.batExecSql(sqls);
 
     return datas;
   }
