@@ -14,59 +14,43 @@ import {UtilService} from "../../service/util-service/util.service";
 @Component({
   selector: 'page-br',
   template: `
-    <ion-header no-border>
-      <ion-toolbar>
-        <ion-buttons left>
-          <button ion-button icon-only (click)="goBack()" color="danger">
-            <img class="img-header-left" src="./assets/imgs/back.png">
+
+
+    <page-box title="备份恢复数据" [buttons]="buttons" (onBack)="goBack()">
+
+      <div #resRef  >
+        <div class="img"  >
+          <ion-icon class="fal fa-spinner"></ion-icon>
+        </div>
+      </div>
+      <div ion-item no-border no-padding no-lines no-margin class="itemwarp font-normal">
+        <ion-label>日程/联系人/群组/计划/提醒/设置</ion-label>
+      </div>
+      <div ion-item no-border no-padding no-lines no-margin class="itemwarp font-normal">
+        <ion-label>
+          上次备份时间：<small>{{bts  * 1000 | date:"yyyy年MM月dd日 HH:mm:ss"}}</small></ion-label>
+      </div>
+
+      <div ion-item no-border no-padding no-lines no-margin class="itemwarp">
+          <button item-left padding (click)="backup(is)" [ngStyle]="{'opacity': is ? 1 : 0.2 }">
+            <ion-icon class="fal fa-cloud-upload-alt"></ion-icon>
           </button>
-        </ion-buttons>
-        <ion-title>备份恢复</ion-title>
-      </ion-toolbar>
-    </ion-header>
+          <button item-right padding (click)="recover(isRecover,is)" [ngStyle]="{'opacity': isRecover && is ? 1 : 0.2 }">
+            <ion-icon class="fal fa-cloud-download-alt"></ion-icon>
+          </button>
+      </div>
 
-    <ion-content padding>
-      <ion-grid>
+    </page-box>
+    
 
-        <ion-row>
-          <div #resRef >
-            <ion-img src="./assets/imgs/br-xz.png" class="img"></ion-img>
-          </div>
-        </ion-row>
-
-        <ion-row>
-          <div>日程/联系人/群组/计划/提醒/设置</div>
-        </ion-row>
-        <ion-row [ngStyle]="{'visibility': isRecover ? 'visible':'hidden' }">
-          <div>上次备份时间：<small>{{bts  * 1000 | date:"yyyy年MM月dd日 HH:mm:ss"}}</small></div>
-        </ion-row>
-
-
-      </ion-grid>
-    </ion-content>
-    <ion-footer>
-        <ion-toolbar>
-          <ion-buttons start padding>
-            <button (click)="backup(is)" [ngStyle]="{'opacity': is ? 1 : 0.2 }">
-              <ion-avatar item-start>
-                <img src="./assets/imgs/br-up.png">
-              </ion-avatar>
-              <p>备份</p>
-            </button>
-          </ion-buttons>
-          <ion-buttons end padding>
-            <button (click)="recover(isRecover,is)" [ngStyle]="{'opacity': isRecover && is ? 1 : 0.2 }">
-              <ion-avatar item-start>
-                <img src="./assets/imgs/br-down.png">
-              </ion-avatar>
-              <p>恢复</p>
-            </button>
-          </ion-buttons>
-        </ion-toolbar>
-    </ion-footer>
   `,
 })
 export class BrPage {
+
+
+  buttons: any = {
+    cancel: true
+  };
 
   @ViewChild("resRef")
   resRef:ElementRef;
@@ -81,9 +65,6 @@ export class BrPage {
               private _renderer: Renderer2,) {
   }
 
-  ionViewDidLoad() {
-    console.log('ionViewDidLoad BrPage');
-  }
 
   ionViewDidEnter(){
     this.getLastDate();

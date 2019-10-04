@@ -7,7 +7,7 @@ import * as moment from "moment";
   selector: 'page-dtselect',
   template: `
     <modal-box title="活动日期" [buttons]="buttons" (onSave)="save()" (onCancel)="close()">
-      <div class="itemwarp selectype">
+      <div >
         <ion-toolbar>
           <ion-buttons item-start>
             <button clear ion-button [class.noselect]="pagedata.type == '1'" (click)="changeType('0')" class="font-normal">

@@ -21,39 +21,40 @@ import * as moment from "moment";
   selector: 'page-ps',
   providers: [],
   template: `
-    <page-box title="个人信息" [buttons]="buttons" (onSave)="save()" (onBack)="goBack()" nobackgroud nobottom>    
+    <page-box title="个人信息" [buttons]="buttons" (onSave)="save()" (onBack)="goBack()" nobackgroud nobottom>
       <ion-list>
         <ion-item no-lines no-padding no-margin no-border>
+          <ion-label>用户名</ion-label>
+          <ion-input type="text" [(ngModel)]="uo.user.name" item-end text-end readonly="true"></ion-input>
+        </ion-item>
+        <ion-item no-lines no-padding no-margin no-border>
           <ion-label>注册手机</ion-label>
-          <ion-input type="text"  [(ngModel)]="uo.user.aid" item-end text-end readonly="true"></ion-input>
+          <ion-input type="text" [(ngModel)]="uo.user.aid" item-end text-end readonly="true"></ion-input>
         </ion-item>
         <ion-item no-lines no-padding no-margin no-border>
           <ion-label>姓名</ion-label>
-          <ion-input type="text"  [(ngModel)]="uo.user.realname" item-end text-end></ion-input>
-        </ion-item>
-        <ion-item no-lines no-padding no-margin no-border>
-          <ion-label>用户名</ion-label>
-          <ion-input type="text"  [(ngModel)]="uo.user.name" item-end text-end></ion-input>
+          <ion-input type="text" [(ngModel)]="uo.user.realname" item-end text-end></ion-input>
         </ion-item>
       </ion-list>
-    <ion-list >
+      <ion-list>
         <ion-item (click)="selectSex()" no-lines no-padding no-margin no-border>
           <ion-label>性别</ion-label>
-          <ion-input type="text"  [(ngModel)]="uo.user.sex" item-end text-end text="this.uo.user.sex"></ion-input>
+          <ion-icon item-end text-end class="fal fa-male font-large" *ngIf="uo.user.sex == 1">男</ion-icon>
+          <ion-icon item-end text-end class="fal fa-female font-large" *ngIf="uo.user.sex == 2">女</ion-icon>
         </ion-item>
-          <ion-item no-lines no-padding no-margin no-border>
-            <ion-label>生日</ion-label>
-            <date-picker #birthdaypicker item-content displayFormat="YYYY年MM月DD日"  [(ngModel)]="birthday"
-                          min="1919-01-01" cancelText="取消" doneText="确认"></date-picker>
-          </ion-item>
-          <ion-item no-lines no-padding no-margin no-border>
-            <ion-label>身份证</ion-label>
-            <ion-input type="tel" item-end text-end [(ngModel)]="uo.user.No" ></ion-input>
-          </ion-item>
-          <ion-item no-lines no-padding no-margin no-border>
-            <ion-label>联系方式</ion-label>
-            <ion-input type="tel" text-end [(ngModel)]="uo.user.contact" ></ion-input>
-          </ion-item>
+        <ion-item no-lines no-padding no-margin no-border>
+          <ion-label>生日</ion-label>
+          <date-picker #birthdaypicker item-content displayFormat="YYYY年MM月DD日" [(ngModel)]="birthday"
+                       min="1919-01-01" cancelText="取消" doneText="确认"></date-picker>
+        </ion-item>
+        <ion-item no-lines no-padding no-margin no-border>
+          <ion-label>身份证</ion-label>
+          <ion-input type="tel" item-end text-end [(ngModel)]="uo.user.No"></ion-input>
+        </ion-item>
+        <ion-item no-lines no-padding no-margin no-border>
+          <ion-label>联系方式</ion-label>
+          <ion-input type="tel" text-end [(ngModel)]="uo.user.contact"></ion-input>
+        </ion-item>
       </ion-list>
     </page-box>
   `,
@@ -72,7 +73,7 @@ export class PsPage {
   actionSheet;
 
   @ViewChild("birthdaypicker")
-  birthdaypicker:DatePickerComponent;
+  birthdaypicker: DatePickerComponent;
 
   @ViewChild("grid")
   grid: ElementRef;
@@ -176,19 +177,13 @@ export class PsPage {
       isUpd = true;
       inData = {contact: this.uo.user.contact};
     }
-    if (this.olduo.user.name != this.uo.user.name) {
+    if (this.olduo.user.realname != this.uo.user.realname) {
       isUpd = true;
-      inData = {nickname: this.uo.user.name};
+      inData = {realname: this.uo.user.realname};
     }
     if (this.olduo.user.No != this.uo.user.No) {
       isUpd = true;
       inData = {ic: this.uo.user.No};
-    }
-
-    if (this.uo.user.name == "") {
-      isUpd = false;
-      this.util.popoverStart("用户名不能为空");
-      this.uo.user.name = this.olduo.user.name;
     }
 
     if (isUpd) {

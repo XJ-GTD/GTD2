@@ -1,71 +1,109 @@
 page-br {
-  .img{
-    width: 80%;
-    contain:none;
-    margin: 0 auto;
-    background-color: transparent;
+  modal-box .box-modal .box-content > .scroll-content {
+    overflow-y: auto;
   }
 
-  ion-header ion-toolbar .toolbar-background,.toolbar-background-md,.toolbar-background-ios {
-    background-color: $baseBackColor;
-  }
+  .img {
+    width: 200px;
+    height: 200px;
+    margin: 5rem auto;
 
-  ion-header{
-    padding: 4px 20px;
-  }
-
-  .img-header-left{
-    width: 4vmin;
-    height: 4vmin;
-  }
-
-  .toolbar-title{
-    color: white;
-    letter-spacing: 0.5vmin;
+    .fa-spinner {
+      font-size: 200px;
+    }
   }
 
 
-  ion-content.content {
-    background-color: $baseBackColor;
-    color: #fff;
+  .itemwarp {
+    height: auto;
+    border-radius: 4px;
+    margin: 1rem 3rem;
+    width: auto;
   }
 
-  ion-content .plan-list-item {
-    background-color: $baseBackColor;
-    color: #fff;
-    padding-left: 8px;
-    min-height: 9vmin;
-  }
-
-  ion-row ion-col{
+  .label-ios {
     text-align: center;
   }
-  ion-buttons button{
-    background: transparent;
-    color: $fontMasterColor;
+
+  button {
+    margin: 3px auto;
   }
 
-  ion-avatar{
-    height: 67px;
-    width: 67px;
-    margin-left: calc(calc(100% - 67px)/2);
+
+  .fa-cloud-upload-alt, .fa-cloud-download-alt {
+    font-size: 6rem;
+  }
+}
+
+
+.white-theme {
+  page-br {
+    .img {
+      .fa-spinner {
+        color: rgba(73, 152, 188, 1);
+      }
+    }
+
+
+    button {
+      background: rgba(255, 255, 255, 1);;
+    }
+
+
+    .fa-cloud-upload-alt {
+      color: rgba(73, 152, 188, 1);
+    }
+
+    .fa-cloud-download-alt {
+      color: rgba(73, 152, 188, 1);
+    }
   }
 
-  ion-row:first-child{
-    margin-bottom: 50px;
-  }
+}
 
-  ion-row:nth-child(3){
-    margin-bottom: 20px;
-  }
+.black-theme {
 
-  ion-row div{
-    text-align: center;
-    width: 100%;
-  }
+  page-br {
+    .img {
+      .fa-spinner {
+        color: rgba(255, 255, 255, 1);
+      }
+    }
 
-  .scroll-content{
-    overflow-x: hidden;
-    overflow-y: hidden;
+    button {
+      background: rgba(0,12,31,.1);
+    }
+
+    .itemwarp {
+      background: transparent;
+      box-shadow: 0px 0px 5px 0px rgba(201, 200, 200, 0.5);
+      color: rgba(255, 255, 255, 1);
+    }
+    .itemwarp:last-child{
+
+      box-shadow: none;
+    }
+
+    .fa-cloud-upload-alt {
+      color:  rgba(255, 255, 255, 1);
+    }
+
+    .fa-cloud-download-alt {
+      color: rgba(255, 255, 255, 1);
+    }
+  }
+}
+
+
+.spinanimation {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
   }
 }

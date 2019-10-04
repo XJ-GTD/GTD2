@@ -119,7 +119,6 @@ import {LocationSearchService} from "../service/restful/LocationSearchService";
 import {EffectService} from "../service/business/effect.service";
 import {DtSelectPageModule} from "../pages/dtselect/dtselect.module";
 import {MemberPageModule} from "../pages/member/member.module";
-import {MemberInfoPageModule} from "../pages/memberinfo/memberinfo.module";
 
 @NgModule({
   declarations: [
@@ -177,7 +176,6 @@ import {MemberInfoPageModule} from "../pages/memberinfo/memberinfo.module";
     PlanPageModule,
     InvitesPageModule,
     MemberPageModule,
-    MemberInfoPageModule,
     LocationPageModule,
     AttachPageModule,
     CommemorationDayPageModule,

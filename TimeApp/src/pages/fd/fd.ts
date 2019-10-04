@@ -14,43 +14,61 @@ import {FsData} from "../../data.mapping";
 @IonicPage()
 @Component({
   selector: 'page-fd',
-  template:  `<ion-header no-border>
-    <ion-toolbar>
-      <ion-buttons left>
-        <button ion-button icon-only (click)="dismiss()" color="danger">
-            <img class="img-header-left" src="./assets/imgs/back-white.png">
-        </button>
-      </ion-buttons>
-    </ion-toolbar>
-  </ion-header>
+  template:  `
+    <modal-box title="{{fd.ran}}" [buttons]="buttons" (onSave)="save()" (onCancel)="dismiss()">      
 
-  <ion-content>
-    <ion-grid>
-
-      <ion-row>
-      <ion-avatar item-start>
-        <img  class="img-hiu" [src]="fd.bhiu">
-      </ion-avatar>
-        <ion-label class="fdname">
-          {{fd.ran}}
-        </ion-label>
-      </ion-row>
-      <ion-row>
-        <span >{{fd.rn}}</span>  <span >{{fd.rc}}</span>
-      </ion-row>
-    </ion-grid>
-  </ion-content>
-  <ion-footer>
-    <ion-buttons>
-      <button ion-button  icon-only (click)="black()">
-        {{buttonText}}
-      </button>
-    </ion-buttons>
-
-  </ion-footer>`,
+      <div ion-item no-border no-padding no-lines no-margin class="itemwarp font-normal">
+        <ion-label>联系人别称</ion-label>
+        <ion-label item-end text-end > {{fd.ran}}</ion-label>
+      </div>
+      <div ion-item no-border no-padding no-lines no-margin class="itemwarp font-normal">
+        <ion-label>姓名</ion-label>
+        <ion-label item-end text-end > {{fd.rn}}</ion-label>
+      </div>
+      <div ion-item no-border no-padding no-lines no-margin class="itemwarp font-normal">
+        <ion-label>联系方式</ion-label>
+        <ion-label item-end text-end >{{fd.rc}}</ion-label>
+      </div>
+      <div ion-item no-border no-padding no-lines no-margin class="itemwarp font-normal">
+        <ion-label>注册状态</ion-label>
+        <ion-label item-end text-end *ngIf="fd.rel == 0">未注册</ion-label>
+        <ion-label item-end text-end *ngIf="fd.rel == 1">注册</ion-label>
+      </div>
+      <div ion-item no-border no-padding no-lines no-margin class="itemwarp font-normal">
+        <ion-label>活动接收</ion-label>
+        <ion-label item-end text-end >150个</ion-label>
+      </div>
+      <div ion-item no-border no-padding no-lines no-margin class="itemwarp font-normal">
+        <ion-label>日历项接收</ion-label>
+        <ion-label item-end text-end >250个</ion-label>
+      </div>
+      <div ion-item no-border no-padding no-lines no-margin class="itemwarp font-normal">
+        <ion-label>活动共享</ion-label>
+        <ion-label item-end text-end >30个</ion-label>
+      </div>
+      <div ion-item no-border no-padding no-lines no-margin class="itemwarp font-normal">
+        <ion-label>日历项共享</ion-label>
+        <ion-label item-end text-end >2个</ion-label>
+      </div>
+      
+      <div ion-item no-border no-padding no-lines no-margin class="itemwarp font-normal">
+        <ion-label>来源</ion-label>
+        <ion-label item-end text-end >{{fd.src}}</ion-label>
+      </div>
+      
+      <div ion-item no-border no-padding no-lines no-margin class="itemwarp font-normal">
+        <ion-label>黑名单</ion-label>
+        <ion-toggle [(ngModel)]="fd.isbla" (ionChange)="black(fd.isbla)"></ion-toggle>
+      </div>
+    </modal-box>
+  `,
 })
 export class FdPage {
-  statusBarColor: string = "#3c4d55";
+
+
+  buttons: any = {
+    cancel: true
+  };
 
   fd:FsData = new FsData();
   pwi:string;
@@ -79,17 +97,10 @@ export class FdPage {
           this.fd.ran = this.fd.rn;
         }
       }
-      //console.log(' ========= fdPage=>：'+JSON.stringify(this.fd));
       return this.fdService.getBlack(this.fd.rc);
     }).then( data=>{
       this.fd.isbla = data;
-      if(this.fd.isbla){
-        this.buttonText = "移出黑名单";
-      }else{
-        this.buttonText = "移入黑名单";
-      }
 
-      //console.log(' ========= fdPage=>：'+JSON.stringify(this.fd));
     })
   }
 
@@ -97,8 +108,8 @@ export class FdPage {
     this.viewCtrl.dismiss();
   }
 
-  black(){
-    if(this.fd.isbla){
+  black(b:boolean){
+    if(!b){
       this.util.alterStart("是否确认移出黑名单？",()=>{
         this.rbl();
       });

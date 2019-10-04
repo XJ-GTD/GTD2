@@ -16,57 +16,61 @@ import {DataConfig} from "../../service/config/data.config";
 @Component({
   selector: 'page-fs4g',
   template: `
-    <ion-header no-border>
-      <ion-toolbar>
-        <ion-buttons left>
-          <button ion-button icon-only (click)="goBack()" color="danger">
-            <img class="img-header-left" src="./assets/imgs/back.png">
-          </button>
-        </ion-buttons>
-        <ion-title>朋友</ion-title>
-        <ion-buttons right>
-          <button ion-button class="button-header-right" (click)="save()">
-            <!--<ion-icon name="add"></ion-icon>--> 确定
-          </button>
-        </ion-buttons>
-      </ion-toolbar>
-      <div class="name-input w-auto">
+
+    <modal-box title="{{dc.gn}}" [buttons]="buttons" (onSave)="save()" (onCancel)="goBack()">
+
+      <div class="searchbar">
         <ion-searchbar type="text" placeholder="手机号 姓名" (ionChange)="getContacts()" [(ngModel)]="tel"
                        text-center></ion-searchbar>
       </div>
-    </ion-header>
 
-    <ion-content padding>
-      <div class="selected">
-        <ion-chip *ngFor="let g of selFsl" (click)="rmSelected(g)">
-          <ion-avatar>
-            <img src={{g.bhiu}}>
-          </ion-avatar>
-          <ion-label>{{g.ran}}</ion-label>
-        </ion-chip>
-      </div>
-      <ion-grid>
-        <ion-row *ngFor="let g of pageFsl">
-          <ion-avatar item-start (click)="goTofsDetail(g)">
-            <img [src]="g.bhiu">
-          </ion-avatar>
-          <ion-label (click)="goTofsDetail(g)">
-            {{g.ran}}
-            <!--<span>-->
-                   <!--{{g.rc}}-->
-                 <!--</span>-->
-            <span  *ngIf="g.rel ==1">注册</span>
-          </ion-label>
-          <ion-checkbox (click)="addsel(g)" [(ngModel)]="g.checked"></ion-checkbox>
-        </ion-row>
-      </ion-grid>
-    </ion-content>
+      <ion-scroll scrollY="true" scrollheightAuto>
+        <ion-list>
+          <ion-list-header>
+            选择(<span class="count">{{selFsl.length}}</span>)人
+          </ion-list-header>
+          <ion-item >
+            <ion-label>
+              <ul>
+                <li *ngFor="let g of selFsl" (click)="rmSelected(g)">
+                  <span> {{ g.ran }}</span>
+                </li>
+                <li>
+                </li>
+              </ul>
+            </ion-label>
+          </ion-item>
+        </ion-list>
+
+        <ion-list >
+          <ion-list-header>
+            选择参与人
+          </ion-list-header>
+          <ion-item *ngFor="let g of pageFsl" >
+
+            <ion-label>
+              {{g.ran}}
+              <span *ngIf="g.rel ==1">（注册）</span>
+            </ion-label>
+
+            <ion-checkbox (click)="addsel(g)" [(ngModel)]="g.checked"></ion-checkbox>
+          </ion-item>
+        </ion-list>
+      </ion-scroll>
+    </modal-box>
   `,
 })
 export class Fs4gPage {
+
+  buttons: any = {
+    save: true,
+    cancel: true
+  };
+
   tel: any;//手机号
   pageFsl: Array<FsPageData> = new Array<FsPageData>();
   selFsl: Array<FsData> = new Array<FsData>();
+  dc: PageDcData;
 
   constructor(public navCtrl: NavController,
               public navParams: NavParams,
@@ -75,6 +79,8 @@ export class Fs4gPage {
               private util: UtilService,
               private gsService: GcService,
               private  modalCtrl:ModalController) {
+
+    this.dc = this.navParams.get('tpara');
   }
 
   ionViewDidEnter() {
@@ -93,9 +99,8 @@ export class Fs4gPage {
   save() {
     let list = this.selFsl;
     if (list.length > 0) {
-      let dc: PageDcData = this.navParams.get('tpara');
-      dc.fsl = list;
-      this.gsService.save(dc).then(data => {
+      this.dc.fsl = list;
+      this.gsService.save(this.dc).then(data => {
           this.goBack();
           //TODO 错误提示
       });
@@ -143,9 +148,5 @@ export class Fs4gPage {
       });
       if (t) t.checked = true;
     }
-  }
-  goTofsDetail(fs:FsData){
-    let modal = this.modalCtrl.create(DataConfig.PAGE._FD_PAGE,{fsData:fs});
-    modal.present();
   }
 }

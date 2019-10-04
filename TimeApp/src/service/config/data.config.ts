@@ -2,7 +2,6 @@
  * 公共配置用
  */
 import {ProcesRs} from "../../ws/model/proces.rs";
-import {Fs4cPage} from "../../pages/fs/fs4c";
 import {HPage} from "../../pages/h/h";
 import {TdlPage} from "../../pages/tdl/tdl";
 import {LpPage} from "../../pages/lp/lp";
@@ -241,7 +240,6 @@ export class DataConfig {
     _GL_PAGE: GlPage,       // 辅助功能 - 群组列表
     _GC_PAGE: GcPage,       // 辅助功能 - 群组编辑
     _GA_PAGE: GaPage,       // 辅助功能 - 群组添加
-    _FS4C_PAGE: Fs4cPage,       // 辅助功能 - 选择参与人日程
     _FS4G_PAGE: Fs4gPage,       // 辅助功能 - 选择参与人群组
     _FS4FO_PAGE: Fs4foPage,       // 设置项目跟进通知人选择
     _FD_PAGE: FdPage,       // 辅助功能 - 参与人详情

@@ -110,11 +110,6 @@ export class InvitesPage {
 
   }
 
-  goTofsDetail(fs: FsData) {
-    let modal = this.modalCtrl.create(DataConfig.PAGE._FD_PAGE, {fsData: fs});
-    modal.present();
-  }
-
   save(){
 
     let data: Object = {
@@ -147,9 +142,9 @@ export class InvitesPage {
         }, new Array<string>());
 
         data.members.forEach((v)=>{
-          if (exists.indexOf(v.rc) < 0) {
+           if (exists.indexOf(v.rc) < 0) {
             this.memberSet.members.push(v);
-          }
+           }
         })
       }
 

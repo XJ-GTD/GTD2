@@ -34,7 +34,7 @@ import {Member} from "../../service/business/event.service";
           <ion-item >
             <ion-label>
               <ul>
-                <li *ngFor = "let member of selMemberList">
+                <li *ngFor = "let member of selMemberList" (click)="rmSelected(member)">
                   <span> {{ member.ran }}</span>
                 </li>
                 <li>
@@ -200,10 +200,5 @@ export class MemberPage {
         value.checked = true;
       }
     });
-  }
-
-  goTofsDetail(fs: FsData) {
-    let modal = this.modalCtrl.create(DataConfig.PAGE._FD_PAGE, {fsData: fs});
-    modal.present();
   }
 }
