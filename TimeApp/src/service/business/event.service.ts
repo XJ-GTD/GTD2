@@ -111,14 +111,21 @@ export class EventService extends BaseService {
    *
    * @author leon_xi@163.com
    **/
-  async receivedAgenda(evi: string) {
+  async receivedAgenda(evi: any) {
 
     this.assertEmpty(evi);   // 入参不能为空
 
-    let pull: PullInData = new PullInData();
+    if (evi instanceof Array) {
+      let pull: PullInData = new PullInData();
 
-    pull.type = "Agenda";
-    pull.d.push(evi);
+      pull.type = "Agenda";
+      pull.d.splice(0, 0, ...evi);
+    } else {
+      let pull: PullInData = new PullInData();
+
+      pull.type = "Agenda";
+      pull.d.push(evi);
+    }
 
     // 发送下载日程请求
     await this.dataRestful.pull(pull);
