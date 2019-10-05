@@ -71,7 +71,7 @@ function clean(datasource)
     };
   }
 
-  // messagetype: SD[SELF_DEVICE], SA[SELF_ACCOUNT], OA[OTHER_ACCOUNT]
+  // messagetype: SD[SELF_DEVICE], SA[SELF_ACCOUNT], OA[OTHER_ACCOUNT], SP[SELF_PULL]
   var convertMessage = function(id, type, title, messagetype) {
     var output = {};
 
@@ -97,6 +97,7 @@ function clean(datasource)
     if (messagetype == 'SELF_DEVICE') output.content['0']['option'] = 'DS.SD';
     if (messagetype == 'SELF_ACCOUNT') output.content['0']['option'] = 'DS.SA';
     if (messagetype == 'OTHER_ACCOUNT') output.content['0']['option'] = 'DS.OA';
+    if (messagetype == 'SELF_PULL') output.content['0']['option'] = 'DS.SP';
 
     return output;
   }
@@ -197,22 +198,38 @@ function clean(datasource)
 
       var id = data['id'];
       var type = data['type'];
+      var title = data['title'];
       var status = data['status'];
       var payload = data['payload'];
       var members = data['to'];
 
-      var standardnext = {};
+      if (payload) {
+        var standardnext = {};
 
-      standardnext.announceTo = [from];
-      standardnext.announceDevice = requestdevice;
-      standardnext.announceType = 'data_sync';
-      standardnext.announceContent = {
-        mwxing: convertDataMessage(id, type, status, members, payload),
-        sms: {},
-        push: {}
-      };
+        standardnext.announceTo = [from];
+        standardnext.announceDevice = requestdevice;
+        standardnext.announceType = 'data_sync';
+        standardnext.announceContent = {
+          mwxing: convertDataMessage(id, type, status, members, payload),
+          sms: {},
+          push: {}
+        };
 
-      outputs.push(standardnext);
+        outputs.push(standardnext);
+      } else {
+        var standardnext = {};
+
+        standardnext.announceTo = [from];
+        standardnext.announceDevice = requestdevice;
+        standardnext.announceType = 'data_sync';
+        standardnext.announceContent = {
+          mwxing: convertMessage(id, type, title, 'SELF_PULL'),
+          sms: {},
+          push: {}
+        };
+
+        outputs.push(standardnext);
+      }
     }
   }
 
