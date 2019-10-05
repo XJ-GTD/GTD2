@@ -26,6 +26,7 @@ import {
   ObjectType
 } from "../../data.enum";
 import {Keyboard} from "@ionic-native/keyboard";
+import {ModiPower} from "../../data.enum";
 
 /**
  * Generated class for the 日程创建/修改 page.
@@ -45,7 +46,7 @@ import {Keyboard} from "@ionic-native/keyboard";
         <ion-row class="snRow">
           <div class="sn font-large-x">
             <!--主题-->
-            <ion-textarea rows="8" no-margin [(ngModel)]="currentAgenda.evn" (ionChange)="changeTitle()"
+            <ion-textarea rows="8" no-margin [(ngModel)]="currentAgenda.evn" (ionChange)="changeTitle()" disabled="originAgenda.ui != currentuser && originAgenda.md != enablechange"
                           #bzRef></ion-textarea>
           </div>
 
@@ -76,7 +77,7 @@ import {Keyboard} from "@ionic-native/keyboard";
 
             <ion-row *ngIf="currentAgenda.evi">
               <div>
-                <button ion-button clear (click)="changeInvites()" class="font-normal">
+                <button ion-button clear (click)="changeInvites()" class="font-normal" disabled="originAgenda.ui != currentuser && originAgenda.md != enablechange">
                   <ion-icon class="fal fa-user-friends font-normal"
                             *ngIf="currentAgenda.pn <= 0"></ion-icon>
                   参与人
@@ -104,7 +105,7 @@ import {Keyboard} from "@ionic-native/keyboard";
             </ion-row>
 
             <ion-row *ngIf="currentAgenda.evi">
-              <button ion-button clear (click)="changeRepeat()" class="font-normal">
+              <button ion-button clear (click)="changeRepeat()" class="font-normal" disabled="originAgenda.ui != currentuser && originAgenda.md != enablechange">
                 <ion-icon class="fal fa-copy font-normal" *ngIf="!currentAgenda.rts"></ion-icon>
                 {{currentAgenda.rts || "重复"}}
                 <corner-badge *ngIf="currentAgenda.rts" fa-copy><p><i class="fa fa-copy "></i></p></corner-badge>
@@ -169,6 +170,8 @@ export class AgendaPage {
   todolistoff = ToDoListStatus.Off;
 
   wholeday = IsWholeday.Whole;
+
+  enablechange = ModiPower.enable;
 
   repeatflag = RepeatFlag.Repeat;
   nonrepeatflag = RepeatFlag.NonRepeat;
@@ -246,6 +249,10 @@ export class AgendaPage {
   }
 
   changeDatetime() {
+    if (this.originAgenda.ui != currentuser && this.originAgenda.md != ModiPower.enable) { // 受邀人修改权限检查
+      return;
+    }
+
     let modal = this.modalCtrl.create(DataConfig.PAGE._DTSELECT_PAGE, {
       sd: this.currentAgenda.evd,
       st: this.currentAgenda.st,
@@ -261,6 +268,10 @@ export class AgendaPage {
   }
 
   changeTitle() {
+    if (this.originAgenda.ui != currentuser && this.originAgenda.md != ModiPower.enable) { // 受邀人修改权限检查
+      return;
+    }
+
     if (this.currentAgenda.evi) {
       if (this.currentAgenda.evn != "" && !this.eventService.isSameAgenda(this.currentAgenda, this.originAgenda)) {
         this.buttons.save = true;
@@ -310,6 +321,10 @@ export class AgendaPage {
   }
 
   changeInvites() {
+    if (this.originAgenda.ui != currentuser && this.originAgenda.md != ModiPower.enable) { // 受邀人修改权限检查
+      return;
+    }
+
     let clonemembers;
     if (this.currentAgenda.members && this.currentAgenda.members.length > 0) {
       clonemembers = new Array<Member>(...this.currentAgenda.members);
@@ -394,6 +409,10 @@ export class AgendaPage {
   }
 
   changeRepeat() {
+    if (this.originAgenda.ui != currentuser && this.originAgenda.md != ModiPower.enable) { // 受邀人修改权限检查
+      return;
+    }
+
     if (!this.currentAgenda.rtjson && this.currentAgenda.rt) {
       this.currentAgenda.rtjson = new RtJson();
       let rtdata = JSON.parse(this.currentAgenda.rt);
