@@ -3761,7 +3761,6 @@ export class ActivityData {
 }
 
 export class ActivitySummaryData {
-  daycalendaritem: string;      // 每日日历项
   calendaritemscount: number;   // 日期日历项数量
   activityitemscount: number;   // 活动日历项数量
   eventscount: number;          // 事件数量
