@@ -87,7 +87,7 @@ export class DataSyncProcess implements MQProcess {
           let unknowncontacts: Array<string> = new Array<string>(...dsPara.to);
 
           let fsdatas = UserConfig.friends.filter((element, index, array) => {
-            let pos: number = dsPara.to.indexOf(element.rc);
+            let pos: number = unknowncontacts.indexOf(element.rc);
 
             if (pos >= 0) unknowncontacts.splice(pos, 1); // 移出已知联系人
 
