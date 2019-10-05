@@ -507,25 +507,33 @@ export class UserConfig {
 
   //参与人
   private async RefreshBTbl() {
+    let exists = UserConfig.friends.reduce((target, val) => {
+      if (target.indexOf(val.rc) < 0) {
+        target.push(val.rc);
+      }
+      return target;
+    }, new Array<string>());
+
     //获取本地参与人
     let sql = `select gb.*,bh.hiu bhiu
                from gtd_b gb
                       left join gtd_bh bh on bh.pwi = gb.pwi;`;
-    UserConfig.friends.splice(0, UserConfig.friends.length);
 
     let data: Array<FsData> = await this.sqlliteExec.getExtList<FsData>(sql);
 
-    if (!data || data.length <= 0) {
-      // 初始化测试数据
-      //data = await this.initTesterContacts();
-    }
-
     for (let fs of data) {
-      /*if (!fs.bhiu || fs.bhiu == '') {
-        fs.bhiu = DataConfig.HUIBASE64;
-      }*/
       fs.bhiu = '';
+      let index = exists.indexOf(fs.rc);
+
+      if (index < 0) {
         UserConfig.friends.push(fs);
+      } else {
+        let pos = UserConfig.friends.findIndex((element) => {
+          return (element.rc == fs.rc);
+        });
+
+        UserConfig.friends.splice(pos, 1, fs);
+      }
     }
     //增加内部事件通知
     this.emitService.emit("mwxing.config.user.btbl.refreshed");
