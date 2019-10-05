@@ -194,7 +194,7 @@ function clean(datasource)
     }
   } else {  // 推送数据
     // 拉取数据每10条推送一次
-    let cached = {};
+    var cached = {};
 
     for (var index in datas) {
       var data = datas[index];
