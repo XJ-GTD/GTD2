@@ -72,7 +72,7 @@ function clean(datasource)
   }
 
   // messagetype: SD[SELF_DEVICE], SA[SELF_ACCOUNT], OA[OTHER_ACCOUNT], SP[SELF_PULL]
-  var convertMessage = function(id, type, title, messagetype) {
+  var convertMessage = function(id, type, messagetype) {
     var output = {};
 
     // 返回消息头部
@@ -157,7 +157,7 @@ function clean(datasource)
           standardnext.announceDevice = todevice;
           standardnext.announceType = 'data_sync';
           standardnext.announceContent = {
-            mwxing: convertMessage(id, type, title, 'SELF_DEVICE'),
+            mwxing: convertMessage(id, type, 'SELF_DEVICE'),
             sms: {},
             push: {}
           };
@@ -170,7 +170,7 @@ function clean(datasource)
           standardnext.announceDevice = todevice;
           standardnext.announceType = 'data_sync';
           standardnext.announceContent = {
-            mwxing: convertMessage(id, type, title, 'SELF_ACCOUNT'),
+            mwxing: convertMessage(id, type, 'SELF_ACCOUNT'),
             sms: {},
             push: {}
           };
@@ -184,7 +184,7 @@ function clean(datasource)
         standardnext.announceDevice = todevice;
         standardnext.announceType = 'data_sync';
         standardnext.announceContent = {
-          mwxing: convertMessage(id, type, title, 'OTHER_ACCOUNT'),
+          mwxing: convertMessage(id, type, 'OTHER_ACCOUNT'),
           sms: convertSMS(title),
           push: convertPushMessage(id, type, title, datetime)
         };
@@ -193,6 +193,9 @@ function clean(datasource)
       }
     }
   } else {  // 推送数据
+    // 拉取数据每10条推送一次
+    let cached = {};
+
     for (var index in datas) {
       var data = datas[index];
 
@@ -217,13 +220,42 @@ function clean(datasource)
 
         outputs.push(standardnext);
       } else {
+        var typeid = cached[type];
+
+        if (typeid) {
+          cached[type].push(id);
+
+          if (cached[type].length == 10) {
+            var standardnext = {};
+
+            standardnext.announceTo = [from];
+            standardnext.announceDevice = requestdevice;
+            standardnext.announceType = 'data_sync';
+            standardnext.announceContent = {
+              mwxing: convertMessage(cached[type], type, 'SELF_PULL'),
+              sms: {},
+              push: {}
+            };
+
+            outputs.push(standardnext);
+
+            cached[type] = [];
+          }
+        } else {
+          cached[type] = [id];
+        }
+      }
+    }
+
+    for (var type in cached) {
+      if (cached[type] && cached[type].length > 0) {
         var standardnext = {};
 
         standardnext.announceTo = [from];
         standardnext.announceDevice = requestdevice;
         standardnext.announceType = 'data_sync';
         standardnext.announceContent = {
-          mwxing: convertMessage(id, type, title, 'SELF_PULL'),
+          mwxing: convertMessage(cached[type], type, 'SELF_PULL'),
           sms: {},
           push: {}
         };

@@ -115,14 +115,12 @@ export class EventService extends BaseService {
 
     this.assertEmpty(evi);   // 入参不能为空
 
-    if (evi instanceof Array) {
-      let pull: PullInData = new PullInData();
+    let pull: PullInData = new PullInData();
 
+    if (evi instanceof Array) {
       pull.type = "Agenda";
       pull.d.splice(0, 0, ...evi);
     } else {
-      let pull: PullInData = new PullInData();
-
       pull.type = "Agenda";
       pull.d.push(evi);
     }
