@@ -526,10 +526,8 @@ export class UserConfig {
       let index = exists.indexOf(fs.rc);
 
       if (index < 0) {
-        console.log("add new contact " + fs.rc + " (" + fs.ran + ")");
         UserConfig.friends.push(fs);
       } else {
-        console.log("update contact " + fs.rc + " (" + fs.ran + ")");
         let pos = UserConfig.friends.findIndex((element) => {
           return (element.rc == fs.rc);
         });
