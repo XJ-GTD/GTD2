@@ -249,7 +249,7 @@ export class AgendaPage {
   }
 
   changeDatetime() {
-    if (this.originAgenda.ui != currentuser && this.originAgenda.md != ModiPower.enable) { // 受邀人修改权限检查
+    if (this.originAgenda.ui != this.currentuser && this.originAgenda.md != ModiPower.enable) { // 受邀人修改权限检查
       return;
     }
 
@@ -268,7 +268,7 @@ export class AgendaPage {
   }
 
   changeTitle() {
-    if (this.originAgenda.ui != currentuser && this.originAgenda.md != ModiPower.enable) { // 受邀人修改权限检查
+    if (this.originAgenda.ui != this.currentuser && this.originAgenda.md != ModiPower.enable) { // 受邀人修改权限检查
       return;
     }
 
@@ -321,7 +321,7 @@ export class AgendaPage {
   }
 
   changeInvites() {
-    if (this.originAgenda.ui != currentuser && this.originAgenda.md != ModiPower.enable) { // 受邀人修改权限检查
+    if (this.originAgenda.ui != this.currentuser && this.originAgenda.md != ModiPower.enable) { // 受邀人修改权限检查
       return;
     }
 
@@ -409,7 +409,7 @@ export class AgendaPage {
   }
 
   changeRepeat() {
-    if (this.originAgenda.ui != currentuser && this.originAgenda.md != ModiPower.enable) { // 受邀人修改权限检查
+    if (this.originAgenda.ui != this.currentuser && this.originAgenda.md != ModiPower.enable) { // 受邀人修改权限检查
       return;
     }
 
