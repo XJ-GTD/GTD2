@@ -1951,6 +1951,43 @@ export class CalendarService extends BaseService {
   }
 
   /**
+   * 获取用户的活动汇总
+   *
+   * @author leon_xi@163.com
+   **/
+  async fetchActivitiesSummary(): Promise<ActivitySummaryData> {
+
+    let sql: string = `select
+                        max(jta.calendaritemscount) calendaritemscount,
+                        max(jta.activityitemscount) activityitemscount,
+                        max(ev.eventscount) eventscount,
+                        max(ev.agendascount) agendascount,
+                        max(ev.taskscount) taskscount,
+                        max(ev.repeateventscount) repeateventscount,
+                        max(mo.memoscount) memoscount,
+                        max(mo.bookedtimesummary) bookedtimesummary
+                      from (select
+                              sum(CASE WHEN IFNULL(gjt.jti, '') = '' THEN 0 WHEN gjt.jtt <> '${PlanItemType.Holiday}' THEN 0 WHEN gjt.del = '${DelType.del}' THEN 0 ELSE 1 END) calendaritemscount,
+                              sum(CASE WHEN IFNULL(gjt.jti, '') = '' THEN 0 WHEN gjt.jtt <> '${PlanItemType.Activity}' THEN 0 WHEN gjt.del = '${DelType.del}' THEN 0 ELSE 1 END) activityitemscount
+                            from gtd_jta gjt) jta,
+                            (select
+                              sum(CASE WHEN IFNULL(gev.evi, '') = '' THEN 0 WHEN gev.del = '${DelType.del}' THEN 0 ELSE 1 END) eventscount,
+                              sum(CASE WHEN IFNULL(gev.evi, '') = '' THEN 0 WHEN IFNULL(gev.rtevi, '') <> '' THEN 0 WHEN gev.type <> '${EventType.Agenda}' THEN 0 WHEN gev.del = '${DelType.del}' THEN 0 ELSE 1 END) agendascount,
+                              sum(CASE WHEN IFNULL(gev.evi, '') = '' THEN 0 WHEN gev.type <> '${EventType.Task}' THEN 0 WHEN gev.del = '${DelType.del}' THEN 0 ELSE 1 END) taskscount,
+                              sum(CASE WHEN IFNULL(gev.rtevi, '') = '' THEN 0 WHEN gev.del = '${DelType.del}' THEN 0 ELSE 1 END) repeateventscount
+                            from gtd_ev gev) ev,
+                            (select
+                              sum(CASE WHEN IFNULL(gmo.moi, '') = '' THEN 0 WHEN gmo.del = '${DelType.del}' THEN 0 ELSE 1 END) memoscount,
+                              0 bookedtimesummary
+                            from gtd_mom gmo) mo`;
+
+    let summary: ActivitySummaryData = new ActivitySummaryData();
+    summary = await this.sqlExce.getExtOne<ActivitySummaryData>(sql);
+
+    return summary;
+  }
+
+  /**
    * 获取指定年月下的活动汇总
    *
    * @author leon_xi@163.com
@@ -3721,6 +3758,18 @@ export class ActivityData {
   calendaritems: Array<PlanItemData> = new Array<PlanItemData>();   // 日历项
   events: Array<EventData> = new Array<EventData>();             // 事件
   memos: Array<MemoData> = new Array<MemoData>();               // 备忘
+}
+
+export class ActivitySummaryData {
+  daycalendaritem: string;      // 每日日历项
+  calendaritemscount: number;   // 日期日历项数量
+  activityitemscount: number;   // 活动日历项数量
+  eventscount: number;          // 事件数量
+  agendascount: number;         // 日程数量
+  taskscount: number;           // 任务数量
+  memoscount: number;           // 备忘数量
+  repeateventscount: number;    // 重复事件数量
+  bookedtimesummary: number;    // 总预定时长
 }
 
 export class MonthActivitySummaryData {

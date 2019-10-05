@@ -56,7 +56,7 @@ import {GTbl} from "../sqlite/tbl/g.tbl";
 import {BxTbl} from "../sqlite/tbl/bx.tbl";
 import {BhTbl} from "../sqlite/tbl/bh.tbl";
 
-import { CalendarService, PlanData, PlanItemData, PlanMember, MonthActivityData, MonthActivitySummaryData, DayActivityData, DayActivitySummaryData, PagedActivityData, FindActivityCondition } from "./calendar.service";
+import { CalendarService, PlanData, PlanItemData, PlanMember, ActivitySummaryData, MonthActivityData, MonthActivitySummaryData, DayActivityData, DayActivitySummaryData, PagedActivityData, FindActivityCondition } from "./calendar.service";
 import { EventService, AgendaData, TaskData, MiniTaskData, RtJson, TxJson } from "./event.service";
 import { MemoService, MemoData } from "./memo.service";
 import { PlanType, PlanItemType, CycleType, OverType, RepeatFlag, PageDirection, SyncType, DelType, SyncDataStatus, IsWholeday, OperateType, EventType, RemindTime } from "../../data.enum";
@@ -1512,6 +1512,14 @@ describe('CalendarService test suite', () => {
 
         expect(chinesecount).toBe(1);
         expect(mathcount).toBe(1);
+      });
+
+      it(`Case 1 - 3 确认个人活动汇总`, async () => {
+        let summary: ActivitySummaryData = await calendarService.fetchActivitiesSummary();
+
+        expect(summary).toBeDefined();
+        expect(summary.eventscount).toBeGreaterThan(1);
+        expect(summary.repeateventscount).toBeGreaterThan(1);
       });
     });
 
