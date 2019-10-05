@@ -570,6 +570,18 @@ export class UserConfig {
     if (fs) {
       Object.assign(fs, fsData);
     }
+
+    // 更新到缓存中
+    let exist = UserConfig.friends.findIndex((element) => {
+      return element.rc == fsData.rc;
+    });
+
+    if (exist >= 0) {
+      UserConfig.friends.splice(exist, 1, fsData);
+    } else {
+      UserConfig.friends.push(fsData);
+    }
+
     return fs;
   }
 
