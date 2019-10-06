@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import {RestfulClient} from "../util-service/restful.client";
 import {RestFulConfig, UrlEntity} from "../config/restful.config";
 import {UserConfig} from "../config/user.config";
-import {SyncDataSecurity, SyncDataStatus, InviteState} from "../../data.enum";
+import {SyncDataSecurity, SyncDataStatus, InviteState, CompleteState} from "../../data.enum";
 
 /**
  * 数据同步操作
@@ -69,6 +69,7 @@ export class SyncData {
   security: SyncDataSecurity = SyncDataSecurity.None;   // None(非共享/多设备间同步), SelfModify(只有发起人可以修改), ShareModify(所有人都可以修改), ShareModifyWithoutSender(共享后发起人本地删除)
   status: SyncDataStatus;   // 删除/未删除
   invitestate: InviteState; // 受邀状态
+  todostate: CompleteState = CompleteState.None; // 完成状态
   fields: SyncDataFields = new SyncDataFields();
   payload: any;           // 数据
 }

@@ -19,7 +19,7 @@ import {DataConfig} from "../config/data.config";
 import {BTbl} from "../sqlite/tbl/b.tbl";
 import {FjTbl} from "../sqlite/tbl/fj.tbl";
 import {DataRestful, PullInData, PushInData, SyncData, SyncDataFields} from "../restful/datasev";
-import {SyncType, DelType, ObjectType, IsSuccess, SyncDataStatus, RepeatFlag, ConfirmType, ModiPower, PageDirection, SyncDataSecurity, InviteState} from "../../data.enum";
+import {SyncType, DelType, ObjectType, IsSuccess, SyncDataStatus, RepeatFlag, ConfirmType, ModiPower, PageDirection, SyncDataSecurity, InviteState, CompleteState, EventFinishStatus} from "../../data.enum";
 import {
   assertNotNumber,
   assertEmpty,
@@ -2808,7 +2808,7 @@ export class EventService extends BaseService {
 
         sync.fields.unshared.push("bz");        // 备注为个人数据不共享给他人
         sync.fields.unshared.push("ji");        // 计划为个人数据不共享给他人
-        sync.fields.unshared.push("todolist");  // 待处理任务为个人数据不共享给他人
+        //sync.fields.unshared.push("todolist");  // 待处理任务为个人数据不共享给他人 完成状态需要共享，todolist不能设置为私有
 
         sync.id = agenda.evi;
         sync.type = "Agenda";
@@ -2828,6 +2828,15 @@ export class EventService extends BaseService {
         }
         if (agenda.md == ModiPower.enable){
           sync.security = SyncDataSecurity.ShareModify;
+        }
+
+        // 完成状态
+        if (agenda.wc == EventFinishStatus.Finished) {
+          sync.todostate = CompleteState.Completed;
+        } else if (agenda.wc == EventFinishStatus.NonFinished) {
+          sync.todostate = CompleteState.UnComplete;
+        } else {
+          sync.todostate = CompleteState.None;
         }
 
         // 设置删除状态

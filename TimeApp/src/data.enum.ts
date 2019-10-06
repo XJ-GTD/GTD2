@@ -113,6 +113,13 @@ export enum ModiPower {
   enable  = "1",
 }
 
+// 完成状态
+export enum CompleteState {
+  None = "none",
+  UnComplete = "uncomplete",
+  Completed = "completed"
+}
+
 //邀请状态
 export enum InviteState {
   None = "none",
