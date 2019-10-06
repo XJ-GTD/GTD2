@@ -2997,7 +2997,7 @@ export class EventService extends BaseService {
    *
    * @author leon_xi@163.com
    */
-  async acceptReceivedAgenda(evi: string): Promise<AgendaData> {
+  async rejectReceivedAgenda(evi: string): Promise<AgendaData> {
     this.assertEmpty(evi);       // 入参不能为空
 
     let agenda: AgendaData = await this.getAgenda(evi);

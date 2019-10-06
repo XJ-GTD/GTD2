@@ -391,13 +391,13 @@ export class TdlPage {
     this.modalCtr.create(DataConfig.PAGE._COMMEMORATIONDAY_PAGE, p).present();
   }
 
-  acceptInvite(event) {
+  async acceptInvite(event) {
     if (event && event.type == EventType.Agenda) {
       await this.eventService.acceptReceivedAgenda(event.evi);
     }
   }
 
-  rejectInvite(event) {
+  async rejectInvite(event) {
     if (event && event.type == EventType.Agenda) {
       await this.eventService.rejectReceivedAgenda(event.evi);
     }
