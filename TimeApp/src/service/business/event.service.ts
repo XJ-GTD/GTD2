@@ -2833,7 +2833,13 @@ export class EventService extends BaseService {
         }
 
         // 设置受邀状态
-        sync.invitestate = agenda.invitestatus? agenda.invitestatus : InviteState.None;
+        if (agenda.invitestatus == InviteState.Accepted) {
+          sync.invitestate = InviteState.Accepted;
+        } else if (agenda.invitestatus == InviteState.Rejected) {
+          sync.invitestate = InviteState.Rejected;
+        } else {
+          sync.invitestate = InviteState.None;
+        }
 
         //取得相关参与人
         if (members.length > 0) {
