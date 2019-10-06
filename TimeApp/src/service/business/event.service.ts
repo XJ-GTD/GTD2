@@ -2833,7 +2833,7 @@ export class EventService extends BaseService {
         // 完成状态
         if (agenda.wc == EventFinishStatus.Finished) {
           sync.todostate = CompleteState.Completed;
-        } else if (agenda.wc == EventFinishStatus.NonFinished) {
+        } else if (agenda.wc == EventFinishStatus.NonFinish) {
           sync.todostate = CompleteState.UnComplete;
         } else {
           sync.todostate = CompleteState.None;
