@@ -14,13 +14,6 @@ import {StatusBar} from "@ionic-native/status-bar";
   `
 })
 export class MyApp {
-
-  @ViewChild(Nav) nav: Nav;
-  hex: string[] = ['0','1','2','3','4','5','6','7','8','9','A','B','C','D','E','F'];
-  statusbarcolors: Array<string> = new Array<string>();
-  blackTheme: string = "black-theme";
-  whiteTheme: string = "white-theme";
-
   constructor(public app: App,
               private platform: Platform,
               private appCtrl: IonicApp,
@@ -86,7 +79,7 @@ export class MyApp {
 
 
       //跳转页面（过渡页面）
-      this.nav.setRoot(DataConfig.PAGE._AL_PAGE);
+      this.app.getRootNav().setRoot(DataConfig.PAGE._AL_PAGE);
     });
   }
 

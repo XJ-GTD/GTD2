@@ -23,7 +23,7 @@ import {FeedbackService} from "../../service/cordova/feedback.service";
 import {JPushService} from "../../service/cordova/jpush.service";
 import {RabbitMQService} from "../../service/cordova/rabbitmq.service";
 import {EffectService} from "../../service/business/effect.service";
-import {ModalController} from "ionic-angular";
+import {App, ModalController} from "ionic-angular";
 import {InAppBrowser} from "@ionic-native/in-app-browser";
 
 @Injectable()
@@ -47,7 +47,7 @@ export class AlService {
               private jpush: JPushService,
               private rabbitmq: RabbitMQService,
               private effectService: EffectService,
-              private modalCtr: ModalController,) {
+              private modalCtr: ModalController,public app: App) {
   }
 
 
@@ -209,6 +209,17 @@ export class AlService {
         //用户设置信息初始化
         await this.userConfig.init();
 
+
+        this.settings.getActiveTheme().subscribe(val => {
+
+          let blackTheme: string = "black-theme";
+          let whiteTheme: string = "white-theme";
+
+          this.app.setElementClass(whiteTheme,false);
+          this.app.setElementClass(blackTheme,false);
+          this.app.setElementClass(val,true);
+        });
+
         //设置主题
         this.theme = UserConfig.settins.get(DataConfig.SYS_THEME);
 
@@ -216,6 +227,8 @@ export class AlService {
 
           this.settings.setActiveTheme(this.theme.value);
         }
+
+
 
         //允许进入后台模式
         if (this.util.hasCordova()) {
