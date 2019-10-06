@@ -102,7 +102,7 @@ function clean(datasource)
     return output;
   }
 
-  var convertDataMessage = function(id, type, status, members, payload) {
+  var convertDataMessage = function(id, type, status, share, members, payload) {
     var output = {};
 
     // 返回消息头部
@@ -123,6 +123,7 @@ function clean(datasource)
         type: type,
         id: id,
         status: status,
+        share: share,
         to: members,
         data: payload
       }
@@ -203,6 +204,7 @@ function clean(datasource)
       var type = data['type'];
       var title = data['title'];
       var status = data['status'];
+      var share = data['sharestate'] || {};
       var payload = data['payload'];
       var members = data['to'];
 
@@ -213,7 +215,7 @@ function clean(datasource)
         standardnext.announceDevice = requestdevice;
         standardnext.announceType = 'data_sync';
         standardnext.announceContent = {
-          mwxing: convertDataMessage(id, type, status, members, payload),
+          mwxing: convertDataMessage(id, type, status, share, members, payload),
           sms: {},
           push: {}
         };
