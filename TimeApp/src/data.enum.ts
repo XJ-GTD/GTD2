@@ -113,6 +113,13 @@ export enum ModiPower {
   enable  = "1",
 }
 
+//邀请状态
+export enum InviteState {
+  None: 'none',
+  Accepted: 'accepted',
+  Rejected: 'rejected'
+}
+
 //再邀请权限
 export enum InvitePowr {
   disable = "0",

@@ -29,6 +29,7 @@ export class EvTbl implements ITblParam {
   tb: string;
   wc: string;       // 2019/09/06 增加完成状态
   todolist: string; // 2019/09/06 增加todolist标记
+  invitestatus: string; // 2019/10/06 增加邀请状态
   del: string;
   rfg : string;
   adr:string;
@@ -44,7 +45,7 @@ export class EvTbl implements ITblParam {
           rtevi varchar(50)  ,ji varchar(50)  ,bz varchar(50)  ,type varchar(4)  ,
           tx varchar(50)  ,txs varchar(50)  ,rt varchar(50)  ,rts varchar(50)  ,
           fj varchar(50)  ,pn integer  ,md varchar(4)  ,iv varchar(4)  ,sr varchar(50)  ,
-          wtt integer  ,utt integer  ,gs varchar(4)  ,tb varchar(6)  ,wc varchar(6)  ,todolist varchar(6)  ,
+          wtt integer  ,utt integer  ,gs varchar(4)  ,tb varchar(6)  ,wc varchar(6)  ,todolist varchar(6)  ,invitestatus varchar(6)  ,
           del varchar(6),rfg varchar(6),adr varchar(6)
           ,adrx integer
           ,adry integer
@@ -139,6 +140,7 @@ export class EvTbl implements ITblParam {
     if(this.tb!=null && this.tb!=''){      sq=sq+', tb= ? ';      params.push(this.tb);    }
     if(this.wc!=null && this.wc!=''){      sq=sq+', wc= ? ';      params.push(this.wc);    }
     if(this.todolist!=null && this.todolist!=''){      sq=sq+', todolist= ? ';      params.push(this.todolist);    }
+    if(this.invitestatus!=null && this.invitestatus!=''){      sq=sq+', invitestatus= ? ';      params.push(this.invitestatus);    }
     if(this.del!=null && this.del!=''){      sq=sq+', del= ? ';      params.push(this.del);    }
     if(this.rfg!=null && this.rfg!=''){      sq=sq+', rfg= ? ';      params.push(this.rfg);    }
     if(this.adr!=null && this.adr!=''){      sq=sq+', adr= ? ';      params.push(this.adr);    }
@@ -259,6 +261,7 @@ export class EvTbl implements ITblParam {
     if(this.tb!=null && this.tb!=''){      sq=sq+' and  tb= ? ';      params.push(this.tb);    }
     if(this.wc!=null && this.wc!=''){      sq=sq+' and  wc= ? ';      params.push(this.wc);    }
     if(this.todolist!=null && this.todolist!=''){      sq=sq+' and  todolist= ? ';      params.push(this.todolist);    }
+    if(this.invitestatus!=null && this.invitestatus!=''){      sq=sq+' and  invitestatus= ? ';      params.push(this.invitestatus);    }
     if(this.del!=null && this.del!=''){      sq=sq+' and del= ? ';      params.push(this.del);    }
     if(this.rfg!=null && this.rfg!=''){      sq=sq+' and rfg= ? ';      params.push(this.rfg);    }
     if(this.adr!=null && this.adr!=''){      sq=sq+' and adr= ? ';      params.push(this.adr);    }
@@ -284,8 +287,8 @@ export class EvTbl implements ITblParam {
     let sq =`insert into gtd_ev
        ( evi ,evn ,ui ,mi ,evd ,evt ,rtevi ,ji ,bz ,
        type ,tx ,txs ,rt ,rts ,fj ,pn ,md ,iv ,
-       sr ,wtt ,utt ,gs,tb,wc,todolist,del,rfg,adr,adrx,adry)
-       values( ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);`;
+       sr ,wtt ,utt ,gs,tb,wc,todolist,invitestatus,del,rfg,adr,adrx,adry)
+       values( ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);`;
     params.push(this.evi);
     params.push(this.evn);
     params.push(this.ui);
@@ -311,6 +314,7 @@ export class EvTbl implements ITblParam {
     params.push(this.tb);
     params.push(this.wc);
     params.push(this.todolist);
+    params.push(this.invitestatus);
     params.push(this.del);
     params.push(this.rfg);
     params.push(this.adr);
@@ -328,8 +332,8 @@ export class EvTbl implements ITblParam {
     let sq =`replace into gtd_ev
        ( evi ,evn ,ui ,mi ,evd ,evt ,rtevi ,ji ,bz ,
        type ,tx ,txs ,rt ,rts ,fj ,pn ,md ,iv ,
-       sr ,wtt ,utt ,gs,tb,wc,todolist,del,rfg,adr,adrx,adry)
-       values( ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);`;
+       sr ,wtt ,utt ,gs,tb,wc,todolist,invitestatus,del,rfg,adr,adrx,adry)
+       values( ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);`;
     params.push(this.evi);
     params.push(this.evn);
     params.push(this.ui);
@@ -355,6 +359,7 @@ export class EvTbl implements ITblParam {
     params.push(this.tb);
     params.push(this.wc);
     params.push(this.todolist);
+    params.push(this.invitestatus);
     params.push(this.del);
     params.push(this.rfg);
     params.push(this.adr);
@@ -395,6 +400,7 @@ export class EvTbl implements ITblParam {
     params.push(this.tb);
     params.push(this.wc);
     params.push(this.todolist);
+    params.push(this.invitestatus);
     params.push(this.del);
     params.push(this.rfg);
     params.push(this.adr);
@@ -427,13 +433,14 @@ export class EvTbl implements ITblParam {
         tb,
         wc,
         todolist,
+        invitestatus,
         del,
         rfg,
         adr,
         adrx,
         adry
       )`,
-      `select ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?`,
+      `select ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?`,
       params
      ]
   }
