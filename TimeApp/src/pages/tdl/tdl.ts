@@ -123,7 +123,7 @@ import {UserConfig} from "../../service/config/user.config";
                       <ion-icon class = "user-o fal fa-user-tag"></ion-icon>
                     </div>
                     <div class="person" *ngIf="currentuser != event.ui && event.ui != ''">--来自{{event.ui | formatuser: currentuser: friends}}</div>
-                    <div class="invite" *ngIf="event.invitestatus != inviteaccept || event.invitestatus != invitereject" end><span>接受</span><span>拒绝</span></div>
+                    <div class="invite" *ngIf="event.invitestatus != inviteaccept || event.invitestatus != invitereject" end><span (click)="acceptInvite(event)">接受</span><span (click)="rejectInvite(event)">拒绝</span></div>
                   </div>
               </ion-row>
 
@@ -389,6 +389,18 @@ export class TdlPage {
     p.si = item.jti;
 
     this.modalCtr.create(DataConfig.PAGE._COMMEMORATIONDAY_PAGE, p).present();
+  }
+
+  acceptInvite(event) {
+    if (event && event.type == EventType.Agenda) {
+      await this.eventService.acceptReceivedAgenda(event.evi);
+    }
+  }
+
+  rejectInvite(event) {
+    if (event && event.type == EventType.Agenda) {
+      await this.eventService.rejectReceivedAgenda(event.evi);
+    }
   }
 
   toDetail(si, d, type, gs) {

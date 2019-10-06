@@ -19,7 +19,7 @@ import {DataConfig} from "../config/data.config";
 import {BTbl} from "../sqlite/tbl/b.tbl";
 import {FjTbl} from "../sqlite/tbl/fj.tbl";
 import {DataRestful, PullInData, PushInData, SyncData} from "../restful/datasev";
-import {SyncType, DelType, ObjectType, IsSuccess, SyncDataStatus, RepeatFlag, ConfirmType, ModiPower, PageDirection, SyncDataSecurity} from "../../data.enum";
+import {SyncType, DelType, ObjectType, IsSuccess, SyncDataStatus, RepeatFlag, ConfirmType, ModiPower, PageDirection, SyncDataSecurity, InviteState} from "../../data.enum";
 import {
   assertNotNumber,
   assertEmpty,
@@ -2968,6 +2968,50 @@ export class EventService extends BaseService {
 		pull.d.push(evi);
 		await this.dataRestful.pull(pull);
 		return;
+  }
+
+  /**
+   * 接受邀请
+   *
+   * @author leon_xi@163.com
+   */
+  async acceptReceivedAgenda(evi: string): Promise<AgendaData> {
+    this.assertEmpty(evi);       // 入参不能为空
+
+    let agenda: AgendaData = await this.getAgenda(evi);
+
+    agenda.invitestatus = InviteState.Accepted;
+
+    let evdb: EvTbl = new EvTbl();
+    Object.assign(evdb, agenda);
+
+    await this.sqlExce.repTByParam(evdb);
+    this.emitService.emit("mwxing.calendar.activities.changed", agenda);
+    this.syncAgendas([agenda]);
+
+    return agenda;
+  }
+
+  /**
+   * 拒绝邀请
+   *
+   * @author leon_xi@163.com
+   */
+  async acceptReceivedAgenda(evi: string): Promise<AgendaData> {
+    this.assertEmpty(evi);       // 入参不能为空
+
+    let agenda: AgendaData = await this.getAgenda(evi);
+
+    agenda.invitestatus = InviteState.Rejected;
+
+    let evdb: EvTbl = new EvTbl();
+    Object.assign(evdb, agenda);
+
+    await this.sqlExce.repTByParam(evdb);
+    this.emitService.emit("mwxing.calendar.activities.changed", agenda);
+    this.syncAgendas([agenda]);
+
+    return agenda;
   }
 
   /**
