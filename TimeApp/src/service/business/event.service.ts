@@ -18,7 +18,7 @@ import {JhaTbl} from "../sqlite/tbl/jha.tbl";
 import {DataConfig} from "../config/data.config";
 import {BTbl} from "../sqlite/tbl/b.tbl";
 import {FjTbl} from "../sqlite/tbl/fj.tbl";
-import {DataRestful, PullInData, PushInData, SyncData} from "../restful/datasev";
+import {DataRestful, PullInData, PushInData, SyncData, SyncDataFields} from "../restful/datasev";
 import {SyncType, DelType, ObjectType, IsSuccess, SyncDataStatus, RepeatFlag, ConfirmType, ModiPower, PageDirection, SyncDataSecurity, InviteState} from "../../data.enum";
 import {
   assertNotNumber,
@@ -2805,6 +2805,9 @@ export class EventService extends BaseService {
       let index: number = 0;
       for (let agenda of agendas) {
         let sync: SyncData = new SyncData();
+
+        sync.fields.unshared.push("bz");
+
         sync.id = agenda.evi;
         sync.type = "Agenda";
         sync.title = agenda.evn;
