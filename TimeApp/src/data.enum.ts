@@ -177,6 +177,15 @@ export enum OperateType  {
 
 }
 
+//成员共享状态
+export enum MemberShareState {
+  SendWait = "0",
+  AcceptWait = "1",
+  Accepted = "2",
+  Rejected = "3",
+  Removed = "4"
+}
+
 // 数据同步权限
 export enum SyncDataSecurity {
   None                      = 'None',                     // 非共享/多设备间同步

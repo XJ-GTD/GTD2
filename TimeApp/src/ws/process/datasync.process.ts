@@ -8,7 +8,7 @@ import {CalendarService} from "../../service/business/calendar.service";
 import {EventService, AgendaData, TaskData, MiniTaskData, Member} from "../../service/business/event.service";
 import {MemoService} from "../../service/business/memo.service";
 import {DataSyncPara} from "../model/datasync.para";
-import {SyncDataStatus} from "../../data.enum";
+import {SyncDataStatus, MemberShareState, EventFinishStatus, DelType, InviteState, CompleteState} from "../../data.enum";
 import {FsData} from "../../data.mapping";
 import {UserConfig} from "../../service/config/user.config";
 import {ContactsService} from "../../service/cordova/contacts.service";
@@ -110,6 +110,36 @@ export class DataSyncProcess implements MQProcess {
             let member: Member = {} as Member;
             Object.assign(member, fsdata);
 
+            // 数据共享成员状态
+            let sharestate = dsPara.share[member['rc']];
+
+            if (sharestate) {
+              let datastate = sharestate['datastate'];
+              let invitestate = sharestate['invitestate'];
+              let todostate = sharestate['todostate'];
+
+              if (datastate == DelType.del) {
+                member.sdt = MemberShareState.Removed;
+              } else {
+                if (invitestate == InviteState.Accepted) {
+                  member.sdt = MemberShareState.Accepted;
+                } else if (invitestate == InviteState.Rejected) {
+                  member.sdt = MemberShareState.Rejected;
+                } else {
+                  member.sdt = MemberShareState.AcceptWait;
+                }
+              }
+
+              if (todostate == CompleteState.Completed) {
+                member.wc = EventFinishStatus.Finished;
+              } else {
+                member.wc = EventFinishStatus.NonFinish;
+              }
+            } else {
+              member.sdt = MemberShareState.AcceptWait;
+              member.wc = EventFinishStatus.NonFinish;
+            }
+
             agenda.members.push(member);
           }
 
@@ -120,6 +150,36 @@ export class DataSyncProcess implements MQProcess {
             if (one) {
               let member: Member = {} as Member;
               Object.assign(member, one);
+
+              // 数据共享成员状态
+              let sharestate = dsPara.share[member['rc']];
+
+              if (sharestate) {
+                let datastate = sharestate['datastate'];
+                let invitestate = sharestate['invitestate'];
+                let todostate = sharestate['todostate'];
+
+                if (datastate == DelType.del) {
+                  member.sdt = MemberShareState.Removed;
+                } else {
+                  if (invitestate == InviteState.Accepted) {
+                    member.sdt = MemberShareState.Accepted;
+                  } else if (invitestate == InviteState.Rejected) {
+                    member.sdt = MemberShareState.Rejected;
+                  } else {
+                    member.sdt = MemberShareState.AcceptWait;
+                  }
+                }
+
+                if (todostate == CompleteState.Completed) {
+                  member.wc = EventFinishStatus.Finished;
+                } else {
+                  member.wc = EventFinishStatus.NonFinish;
+                }
+              } else {
+                member.sdt = MemberShareState.AcceptWait;
+                member.wc = EventFinishStatus.NonFinish;
+              }
 
               agenda.members.push(member);
             }
