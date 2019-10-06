@@ -169,8 +169,8 @@ export class TdlPage {
   currentuser: string = UserConfig.account.id;
   friends: Array<any> = UserConfig.friends;
 
-  inviteaccept: InviteState = InviteState.accepted;
-  invitereject: InviteState = InviteState.rejected;
+  inviteaccept: InviteState = InviteState.Accepted;
+  invitereject: InviteState = InviteState.Rejected;
 
   constructor(private tdlServ: TdlService,
               private modalCtr: ModalController,
