@@ -46,7 +46,7 @@ import {ModiPower} from "../../data.enum";
         <ion-row class="snRow">
           <div class="sn font-large-x">
             <!--主题-->
-            <ion-textarea rows="8" no-margin [(ngModel)]="currentAgenda.evn" (ionChange)="changeTitle()" [disabled]="originAgenda.ui != currentuser && originAgenda.md != enablechange"
+            <ion-textarea rows="8" no-margin [(ngModel)]="currentAgenda.evn" (ionChange)="changeTitle()" [disabled]="originAgenda.evi && originAgenda.ui != currentuser && originAgenda.md != enablechange"
                           #bzRef></ion-textarea>
           </div>
 
@@ -77,7 +77,7 @@ import {ModiPower} from "../../data.enum";
 
             <ion-row *ngIf="currentAgenda.evi">
               <div>
-                <button ion-button clear (click)="changeInvites()" class="font-normal" [disabled]="originAgenda.ui != currentuser && originAgenda.md != enablechange">
+                <button ion-button clear (click)="changeInvites()" class="font-normal" [disabled]="originAgenda.evi && originAgenda.ui != currentuser && originAgenda.md != enablechange">
                   <ion-icon class="fal fa-user-friends font-normal"
                             *ngIf="currentAgenda.pn <= 0"></ion-icon>
                   参与人
@@ -105,7 +105,7 @@ import {ModiPower} from "../../data.enum";
             </ion-row>
 
             <ion-row *ngIf="currentAgenda.evi">
-              <button ion-button clear (click)="changeRepeat()" class="font-normal" [disabled]="originAgenda.ui != currentuser && originAgenda.md != enablechange">
+              <button ion-button clear (click)="changeRepeat()" class="font-normal" [disabled]="originAgenda.evi && originAgenda.ui != currentuser && originAgenda.md != enablechange">
                 <ion-icon class="fal fa-copy font-normal" *ngIf="!currentAgenda.rts"></ion-icon>
                 {{currentAgenda.rts || "重复"}}
                 <corner-badge *ngIf="currentAgenda.rts" fa-copy><p><i class="fa fa-copy "></i></p></corner-badge>
