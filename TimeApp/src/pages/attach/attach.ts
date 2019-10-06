@@ -5,6 +5,7 @@ import {File} from '@ionic-native/file';
 import {FileTransfer, FileUploadOptions, FileTransferObject  } from '@ionic-native/file-transfer';
 import { Camera, CameraOptions } from '@ionic-native/camera';
 import { Chooser } from '@ionic-native/chooser';
+import { FilePath } from '@ionic-native/file-path';
 import {ModalBoxComponent} from "../../components/modal-box/modal-box";
 import {FjData} from "../../service/business/event.service";
 
@@ -52,6 +53,7 @@ export class AttachPage {
               private camera: Camera,
               private chooser: Chooser,
               private transfer:FileTransfer,
+              private filePath: FilePath,
               private keyboard: Keyboard) {
     if (this.navParams && this.navParams.data) {
       this.obt  = this.navParams.data.obt;
@@ -114,9 +116,15 @@ export class AttachPage {
   * 文件上传  ying<343253410@qq.com>
   */
   select() {
-      this.chooser.getFile('image/*,video/*').then((file) => {
+      this.chooser.getFile('*/*').then((file) => {
           //console.log(file ? file.name : 'canceled');
-          alert("fileName:"+file.name+",mediaType:"+file.mediaType+", uri:"+file.uri+",dataURI:"+file.dataURI);
+          //alert("fileName:"+file.name+",mediaType:"+file.mediaType+", uri:"+file.uri+",dataURI:"+file.dataURI);
+          this.filePath.resolveNativePath(file.uri)
+          .then((filePath) =>{
+            alert("文件路径:"+filePath)
+          })
+          .catch(err => console.log(err));
+
         }
       )
         .catch((error: any)=> console.error(error));

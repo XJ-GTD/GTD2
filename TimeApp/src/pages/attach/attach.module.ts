@@ -7,6 +7,7 @@ import {File} from '@ionic-native/file';
 import {FileTransfer, FileUploadOptions, FileTransferObject  } from '@ionic-native/file-transfer';
 import { Camera, CameraOptions } from '@ionic-native/camera';
 import { Chooser } from '@ionic-native/chooser';
+import { FilePath } from '@ionic-native/file-path';
 
 @NgModule({
   declarations: [
@@ -21,7 +22,8 @@ import { Chooser } from '@ionic-native/chooser';
     FileTransfer,
     File,
     Camera,
-    Chooser
+    Chooser,
+    FilePath
   ],
   entryComponents:[
     AttachPage
