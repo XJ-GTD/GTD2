@@ -2856,6 +2856,10 @@ export class EventService extends BaseService {
         }
 
         //取得相关参与人
+        if (agenda.members && agenda.members.length > 0) {
+          members = agenda.members;
+        }
+
         if (members.length > 0) {
           let masterEvi: string;
           if (agenda.rtevi == "") {
