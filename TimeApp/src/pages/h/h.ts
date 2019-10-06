@@ -13,7 +13,7 @@ import {InAppBrowser} from '@ionic-native/in-app-browser';
 import {SqliteExec} from "../../service/util-service/sqlite.exec";
 import {EventService} from "../../service/business/event.service";
 import {EffectService} from "../../service/business/effect.service";
-import {MemoService} from "../../service/business/memo.service";
+import {MemoData, MemoService} from "../../service/business/memo.service";
 import {SettingsProvider} from "../../providers/settings/settings";
 import {AipPage} from "../aip/aip";
 import {TdlPage} from "../tdl/tdl";
@@ -45,22 +45,22 @@ import {TestDataService} from "../../service/testData.service";
         </button>
         <ion-fab-list side="top">        
           <button ion-fab (click)="todoList()">
-            <ion-icon name="albums"></ion-icon>
+            重要
           </button>
           <!--<button ion-fab (click)="todoscrumList()">-->
             <!--<ion-icon name="clock" color="danger"></ion-icon>-->
           <!--</button>-->
-          <button ion-fab (click)="openm()">
-            <ion-icon name="contact" ></ion-icon>
-          </button>
           <button ion-fab  (click)="newcd()">
-            <ion-icon name="add"></ion-icon>
+            活动
           </button>
           <button ion-fab  (click)="newpi()">
-            <ion-icon name="star"></ion-icon>
+            日历项
+          </button>
+          <button ion-fab  (click)="toMemo()">
+            备忘
           </button>
           <button ion-fab  (click)="testDate()">
-            <ion-icon name="compass"></ion-icon>
+            测试
           </button>
         </ion-fab-list>
       </ion-fab>
@@ -388,4 +388,23 @@ export class HPage {
   testDate(){
     this.testDataService.createcal();
   }
+
+  toMemo() {
+
+
+    let day: string = moment().format("YYYY/MM/DD");
+    let modal = this.modalCtr.create(DataConfig.PAGE._MEMO_PAGE, {day: day});
+    modal.onDidDismiss(async (data) => {
+      if (data && data.memo && typeof data.memo === 'string') { // 创建新备忘
+        let memo: MemoData = {} as MemoData;
+
+        memo.sd = data.day;
+        memo.mon = data.memo;
+
+        await this.momserv.saveMemo(memo);
+      }
+    });
+    modal.present();
+  }
+
 }

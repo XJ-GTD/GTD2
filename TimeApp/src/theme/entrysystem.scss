@@ -87,6 +87,9 @@ page-pf ,page-lp,page-ls,page-r {
     border: 1px solid #429A81;
     background-color: white;
   }
+  .row{
+    flex-wrap: nowrap;
+  }
 
 }
 

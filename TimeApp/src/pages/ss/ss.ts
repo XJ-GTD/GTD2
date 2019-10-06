@@ -91,12 +91,12 @@ import {SettingsProvider} from "../../providers/settings/settings";
         </ion-list-header>
 
         <ion-item no-lines no-padding no-margin no-border>
-          <div item-content radio-group class="themeselect" (ionChange)="changetheme(theme)" [(ngModel)]="selectedTheme">
-            <div class="waper" ion-item [class.themen-select] = "selectedTheme == 'black-theme'">
+          <div item-content radio-group class="themeselect" (ionChange)="changetheme(theme)" [(ngModel)]="theme.value">
+            <div class="waper" ion-item [class.themen-select] = "theme.value == 'black-theme'">
               <ion-radio value="black-theme"  class="noshow" no-margin [disabled]="false"></ion-radio>
               <ion-label><img src="./assets/imgs/black.png"></ion-label>
             </div>
-            <div class="waper" ion-item [class.themen-select] = "selectedTheme == 'white-theme'">
+            <div class="waper" ion-item [class.themen-select] = "theme.value == 'white-theme'">
               <ion-radio  value="white-theme"  class="noshow"  no-margin [disabled]="false"></ion-radio>
               <ion-label><img src="./assets/imgs/white.png"></ion-label>
             </div>
@@ -140,9 +140,6 @@ export class SsPage {
   stravisci: Setting;
   theme: Setting;
 
-
-
-  selectedTheme: string;
   bh: boolean;       //唤醒 页面显示和修改
   bt: boolean;       //新消息提醒 页面显示和修改
   bb: boolean;       //语音播报 页面显示和修改
@@ -188,12 +185,12 @@ export class SsPage {
     } else {
       this.spfon = false;
     }
+
+    this.getData();
   }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad SsPage');
-
-    this.getData();
   }
 
   goBack() {
@@ -320,11 +317,11 @@ export class SsPage {
       set.yt = setting.typeB; //偏好设置类型
       set.yn = setting.name;//偏好设置名称
       set.yk = setting.type;//偏好设置key
-      set.yv = this.selectedTheme;//偏好设置value
+      set.yv = setting.value;//偏好设置value
 
       this.ssService.save(set);
+      this.settings.setActiveTheme( set.yv);
     }
-    this.settings.setActiveTheme(this.selectedTheme);
 
   }
 }

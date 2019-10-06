@@ -20,6 +20,9 @@ import {PageDirection, EventType, InviteState} from "../../data.enum";
 import {TdlGesture} from "./tdl-gestures";
 import {CalendarComponent} from "../../components/ion2-calendar";
 import {UserConfig} from "../../service/config/user.config";
+import BScroll from '@better-scroll/core'
+import InfinityScroll from '@better-scroll/infinity'
+BScroll.use(InfinityScroll);
 
 /**
  * Generated class for the 日程列表 page.
@@ -49,7 +52,7 @@ import {UserConfig} from "../../service/config/user.config";
     <!--</div>-->
     <!--</div>-->
 
-    <ion-content #contentD>
+    <ion-content #contentD class="monthActivityWapper" >
       <ion-grid #grid4Hight class = "list-grid-content">
         <ng-template ngFor let-monthActivityData [ngForOf]="monthActivityDatas" >
           <ion-row class="item-content dayagenda-month {{monthActivityData.month  | formatedate :'CSSMM'}}" id="month{{monthActivityData.month | formatedate:'YYYYMM'}}">
@@ -102,7 +105,7 @@ import {UserConfig} from "../../service/config/user.config";
                     <ion-icon class = "fal fa-user-tag"></ion-icon>
                   </div>
                   <div class="person ">--来自小仙女</div>
-                  <div class="invite" end><span>接受</span><span>拒绝</span></div>
+                  <div class="invite" end><span>拒绝</span><span>接受</span></div>
 
                 </div>
               </ion-row>
@@ -124,7 +127,7 @@ import {UserConfig} from "../../service/config/user.config";
                       <ion-icon class = "user-o fal fa-user-tag"></ion-icon>
                     </div>
                     <div class="person">--来自{{event.ui | formatuser: currentuser: friends}}</div>
-                    <div class="invite" *ngIf="event.invitestatus != inviteaccept && event.invitestatus != invitereject" end><span (click)="acceptInvite($event, event)">接受</span><span (click)="rejectInvite($event, event)">拒绝</span></div>
+                    <div class="invite" *ngIf="event.invitestatus != inviteaccept && event.invitestatus != invitereject" end><span (click)="rejectInvite($event, event)">拒绝</span><span (click)="acceptInvite($event, event)">接受</span></div>
                   </div>
               </ion-row>
 
@@ -268,7 +271,7 @@ export class TdlPage {
                 }
               }
 
-            },500);
+            },100);
 
           }
 
@@ -340,6 +343,27 @@ export class TdlPage {
 
       });
     },2000);
+
+    new BScroll('.monthActivityWapper', {
+      scrollY: true,
+      disableMouse: false,
+      disableTouch: true
+      // infinity: {
+      //   fetch(count) {
+      //     // 获取大于 count 数量的数据，该函数是异步的，它需要返回一个 Promise。
+      //     // 成功获取数据后，你需要 resolve 数据数组（也可以 resolve 一个 Promise）。
+      //     // 数组的每一个元素是列表数据，在 render 方法执行的时候会传递这个数据渲染。
+      //     // 如果没有数据的时候，你可以 resolve(false)，来告诉无限滚动列表已经没有更多数据了。
+      //   }
+      //   render(item, div) {
+      //     // 渲染每一个元素节点，item 是数据，div 是包裹元素节点的容器。
+      //     // 该函数需要返回渲染后的 DOM 节点。
+      //   },
+      //   createTombstone() {
+      //     // 返回一个墓碑 DOM 节点。
+      //   }
+      // }
+    })
   }
 
   gotoEl(id) {
