@@ -36,7 +36,6 @@ import { PageDirection, IsSuccess, OperateType, EventFinishStatus } from "../../
     `
 })
 export class DoPage {
-  statusBarColor: string = "#3c4d55";
 
   buttons: any = {
     remove: false,

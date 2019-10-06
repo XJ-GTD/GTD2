@@ -13,10 +13,18 @@ import {Setting, UserConfig} from "../../service/config/user.config";
 import {ContactsService} from "../../service/cordova/contacts.service";
 import {DataConfig} from "../../service/config/data.config";
 import {NotificationsService} from "../../service/cordova/notifications.service";
-import {AlData} from "../../data.mapping";
+import {AlData, ScdPageParamter} from "../../data.mapping";
 import {CalendarService} from "../../service/business/calendar.service";
 import {EmitService} from "../../service/util-service/emit.service";
 import {SettingsProvider} from "../../providers/settings/settings";
+import {NetworkService} from "../../service/cordova/network.service";
+import {Geolocation} from "@ionic-native/geolocation";
+import {FeedbackService} from "../../service/cordova/feedback.service";
+import {JPushService} from "../../service/cordova/jpush.service";
+import {RabbitMQService} from "../../service/cordova/rabbitmq.service";
+import {EffectService} from "../../service/business/effect.service";
+import {ModalController} from "ionic-angular";
+import {InAppBrowser} from "@ionic-native/in-app-browser";
 
 @Injectable()
 export class AlService {
@@ -33,7 +41,13 @@ export class AlService {
               private contactsService: ContactsService,
               private notificationsService: NotificationsService,
               private calendarService: CalendarService,
-              private settings: SettingsProvider,) {
+              private settings: SettingsProvider,
+              private networkService: NetworkService,
+              private geolocation: Geolocation, private feekback: FeedbackService,
+              private jpush: JPushService,
+              private rabbitmq: RabbitMQService,
+              private effectService: EffectService,
+              private modalCtr: ModalController,) {
   }
 
 
@@ -185,7 +199,6 @@ export class AlService {
         //重新获取服务器数据
         await this.sqlLiteInit.initDataSub();
 
-        // TODO 系统设置 restHttps设置 用户偏好设置 用户信息 。。。
         await this.restfulConfig.init();
 
         //提醒定时
@@ -199,10 +212,140 @@ export class AlService {
         //设置主题
         this.theme = UserConfig.settins.get(DataConfig.SYS_THEME);
 
-        if (this.theme){
+        if (this.theme) {
 
           this.settings.setActiveTheme(this.theme.value);
         }
+
+        //允许进入后台模式
+        if (this.util.hasCordova()) {
+          //全局网络监控
+          this.networkService.monitorNetwork();
+
+
+          this.feekback.initAudio();
+
+          this.jpush.init();
+          //window.plugins.MiPushPlugin.init();
+          // 初始化GPS
+          let watch = this.geolocation.watchPosition();
+          watch.subscribe((data) => {
+            // data can be a set of coordinates, or an error (if an error occurred).
+            if (data && data.coords) {
+              RestFulConfig.geo.latitude = data.coords.latitude;
+              RestFulConfig.geo.longitude = data.coords.longitude;
+            } else {
+              console.log('Error getting location', data);
+            }
+          });
+        }
+
+        // websocket连接成功消息回调
+        // 初始化同步
+        this.effectService.syncStart();
+
+        this.emitService.register("on.websocket.connected", () => {
+          DataConfig.RABBITMQ_STATUS = "connected";
+        });
+
+        // websocket断开连接消息回调
+        this.emitService.register("on.websocket.closed", () => {
+          DataConfig.RABBITMQ_STATUS = "";
+        });
+
+        //本地通知跳转共享日程页面
+        this.emitService.registerNewMessageClick((data) => {
+
+          let p: ScdPageParamter = new ScdPageParamter();
+          p.si = data.id;
+          p.d = moment(data.d);
+          this.modalCtr.create(DataConfig.PAGE._AGENDA_PAGE, p).present();
+        });
+
+        // this.emitService.registerRef(data => {
+        //   //this.calendar.createMonth(this.calendar.monthOpt.original.time);
+        // });
+
+        //极光推送跳转打开外部网页
+        // this.emitService.register('on.urlopen.message.click', (data) => {
+        //   console.log("Open extend url message to show " + JSON.stringify(data));
+        //
+        //   if (data && data.eventdata && data.eventdata.url) {
+        //     console.log("Open href " + data.eventdata.url);
+        //     let browser = this.iab.create(data.eventdata.url, "_system");
+        //     //browser.show();
+        //   }
+        // });
+
+        //极光推送跳转共享日程页面
+        // this.emitService.register('on.agendashare.message.click', (data) => {
+        //   console.log("Share agenda message to show " + JSON.stringify(data));
+        //
+        //   let p: ScdPageParamter = new ScdPageParamter();
+        //   p.si = data.si;
+        //   p.d = moment(data.sd);
+        //   p.gs = data.sr;
+        //   this.modalCtr.create(DataConfig.PAGE._AGENDA_PAGE, p).present();
+        // });
+
+        // this.emitService.register('on.agenda.shareevents.message.click', (data) => {
+        //   console.log("Agenda share events message to show " + JSON.stringify(data));
+        //
+        //   let p: ScdPageParamter = new ScdPageParamter();
+        //   p.si = data.si;
+        //   p.d = moment(data.sd);
+        //   this.modalCtr.create(DataConfig.PAGE._AGENDA_PAGE, p).present();
+        // });
+
+        //冥王星远程服务地址刷新完成
+        //更新每小时天气服务任务
+        // this.emitService.register('on.mwxing.global.restful.flashed', () => {
+        //   this.hService.putHourlyWeather(UserConfig.account.id);
+        // });
+        // //初始化时自动触发一次
+        // this.hService.putHourlyWeather(UserConfig.account.id);
+
+        //每日简报消息回调
+        this.emitService.register('on.dailyreport.message.click', (data) => {
+          console.log("Daily report message clicked.")
+          let timestamp: number = data.eventdata ? data.eventdata['timestamp'] : (moment().unix() * 1000);
+
+          if (!timestamp) {
+            timestamp = moment().unix() * 1000;
+          }
+
+          // this.todoList({
+          //   time: timestamp,
+          //   isToday: false,
+          //   selected: false,
+          //   disable: false,
+          //   cssClass: ''
+          // });
+        });
+
+        //操作反馈消息回调
+        this.emitService.register('on.feedback.message.click', (data) => {
+          let scd = data.eventdata ? data.eventdata['scd'] : null;
+          if (scd && scd.si) {
+
+            let p: ScdPageParamter = new ScdPageParamter();
+            p.si = scd.si;
+            p.d = moment(scd.sd);
+            p.gs = scd.gs;
+
+            if (scd.gs == "0") {
+              //本人画面
+              this.modalCtr.create(DataConfig.PAGE._AGENDA_PAGE, p).present();
+            } else if (scd.gs == "1") {
+              //受邀人画面
+              this.modalCtr.create(DataConfig.PAGE._AGENDA_PAGE, p).present();
+            } else {
+              //系统画面
+              this.modalCtr.create(DataConfig.PAGE._AGENDA_PAGE, p).present();
+            }
+          }
+        });
+
 
         alData.text = "系统设置完成";
         resolve(alData)

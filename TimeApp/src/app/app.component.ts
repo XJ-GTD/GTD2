@@ -3,18 +3,10 @@ import {Platform, Nav, MenuController, IonicApp, App} from 'ionic-angular';
 import {MenuScalePushType} from "../components/menuType/customType";
 import {BackgroundMode} from '@ionic-native/background-mode';
 import {DataConfig} from "../service/config/data.config";
-import {RestfulClient} from "../service/util-service/restful.client";
 import {UtilService} from "../service/util-service/util.service";
 import {ScreenOrientation} from "@ionic-native/screen-orientation";
 import {LsPushType} from "../components/menuType/LsPushType";
 import {StatusBar} from "@ionic-native/status-bar";
-import {FeedbackService} from "../service/cordova/feedback.service";
-import {NetworkService} from "../service/cordova/network.service";
-import {JPushService} from "../service/cordova/jpush.service";
-import {RabbitMQService} from "../service/cordova/rabbitmq.service";
-import { Geoposition, Geolocation } from '@ionic-native/geolocation';
-import {RestFulConfig} from "../service/config/restful.config";
-import {SettingsProvider} from "../providers/settings/settings";
 
 @Component({
   template: `
@@ -33,36 +25,20 @@ export class MyApp {
               private platform: Platform,
               private appCtrl: IonicApp,
               private backgroundMode: BackgroundMode,
-              private networkService: NetworkService,
-              private geolocation: Geolocation,
-              private restfulClient: RestfulClient,
               private util: UtilService,
               private screenOrientation: ScreenOrientation,
               private statusBar: StatusBar,
-              private feekback: FeedbackService,
-              private jpush: JPushService,
-              private rabbitmq: RabbitMQService,
-              private settings: SettingsProvider) {
+            ) {
     //特殊菜单设置
     MenuController.registerType('scalePush', MenuScalePushType);
     MenuController.registerType('lsPush', LsPushType);
-
-    this.settings.getActiveTheme().subscribe(val => {
-      app.setElementClass(val,true);
-      if (this.blackTheme == val){
-        app.setElementClass(this.whiteTheme,false);
-      }else{
-        app.setElementClass(this.blackTheme,false);
-      }
-    });
-
 
     // let status bar overlay webview
     // statusBar.overlaysWebView(true);
 
 // set status bar to white
 //     statusBar.backgroundColorByHexString('#000000');
-    this.statusBar.overlaysWebView(false);
+    this.statusBar.overlaysWebView(true);
     //模态框进入时改变状态栏颜色
     // this.app.viewDidEnter.subscribe((event) => {
     //   if (event && event.instance && DataConfig.isPage(event.instance)) {
@@ -96,8 +72,6 @@ export class MyApp {
 
       //允许进入后台模式
       if (this.util.hasCordova()) {
-        //全局网络监控
-        this.networkService.monitorNetwork();
 
         this.backgroundMode.setDefaults({silent: true, hidden: true}).then(d => {
           this.backgroundMode.enable();
@@ -108,23 +82,7 @@ export class MyApp {
 
         // set to landscape
         this.screenOrientation.lock(this.screenOrientation.ORIENTATIONS.PORTRAIT);
-        this.feekback.initAudio();
-
-        this.jpush.init();
-        //window.plugins.MiPushPlugin.init();
-        // 初始化GPS
-        let watch = this.geolocation.watchPosition();
-        watch.subscribe((data) => {
-         // data can be a set of coordinates, or an error (if an error occurred).
-          if (data && data.coords) {
-            RestFulConfig.geo.latitude = data.coords.latitude;
-            RestFulConfig.geo.longitude = data.coords.longitude;
-          } else {
-            console.log('Error getting location', data);
-          }
-        });
       }
-      this.restfulClient.init();
 
 
       //跳转页面（过渡页面）
@@ -151,9 +109,5 @@ export class MyApp {
 
 
     }, 1);
-  }
-
-  getHexStr(n: number) {
-    return this.hex[n];
   }
 }
