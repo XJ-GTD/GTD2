@@ -2806,7 +2806,9 @@ export class EventService extends BaseService {
       for (let agenda of agendas) {
         let sync: SyncData = new SyncData();
 
-        sync.fields.unshared.push("bz");
+        sync.fields.unshared.push("bz");        // 备注为个人数据不共享给他人
+        sync.fields.unshared.push("ji");        // 计划为个人数据不共享给他人
+        sync.fields.unshared.push("todolist");  // 待处理任务为个人数据不共享给他人
 
         sync.id = agenda.evi;
         sync.type = "Agenda";
