@@ -119,12 +119,12 @@ import {UserConfig} from "../../service/config/user.config";
                     </div>
                     <div class="st">{{event.evt}}</div>
                   </div>
-                  <div class="line font-small">
+                  <div class="line font-small" *ngIf="currentuser != event.ui && event.ui != ''">
                     <div class="icon ">
                       <ion-icon class = "user-o fal fa-user-tag"></ion-icon>
                     </div>
-                    <div class="person" *ngIf="currentuser != event.ui && event.ui != ''">--来自{{event.ui | formatuser: currentuser: friends}}</div>
-                    <div class="invite" *ngIf="currentuser != event.ui && event.ui != '' && (event.invitestatus != inviteaccept || event.invitestatus != invitereject)" end><span (click)="acceptInvite(event)">接受</span><span (click)="rejectInvite(event)">拒绝</span></div>
+                    <div class="person">--来自{{event.ui | formatuser: currentuser: friends}}</div>
+                    <div class="invite" *ngIf="event.invitestatus != inviteaccept || event.invitestatus != invitereject" end><span (click)="acceptInvite(event)">接受</span><span (click)="rejectInvite(event)">拒绝</span></div>
                   </div>
               </ion-row>
 
