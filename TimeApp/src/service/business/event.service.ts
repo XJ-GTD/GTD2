@@ -2103,6 +2103,7 @@ export class EventService extends BaseService {
 
     agdata.wc = !agdata.wc ? anyenum.EventFinishStatus.NonFinish : agdata.wc ;
     agdata.todolist = !agdata.todolist ? anyenum.ToDoListStatus.Off : agdata.todolist ;
+    agdata.invitestatus = !agdata.invitestatus ? anyenum.InviteState.None : agdata.invitestatus ;
 
     agdata.tb = !agdata.tb ? anyenum.SyncType.unsynch : agdata.tb ;
     agdata.del = !agdata.del ? anyenum.DelType.undel : agdata.del ;

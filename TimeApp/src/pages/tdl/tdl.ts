@@ -15,7 +15,7 @@ import {ScdPageParamter} from "../../data.mapping";
 import {UtilService} from "../../service/util-service/util.service";
 import {FeedbackService} from "../../service/cordova/feedback.service";
 import {DayActivityData, MonthActivityData} from "../../service/business/calendar.service";
-import {PageDirection, EventType} from "../../data.enum";
+import {PageDirection, EventType, InviteState} from "../../data.enum";
 import {TdlGesture} from "./tdl-gestures";
 import {CalendarComponent} from "../../components/ion2-calendar";
 import {UserConfig} from "../../service/config/user.config";
@@ -123,7 +123,7 @@ import {UserConfig} from "../../service/config/user.config";
                       <ion-icon class = "user-o fal fa-user-tag"></ion-icon>
                     </div>
                     <div class="person" *ngIf="currentuser != event.ui && event.ui != ''">--来自{{event.ui | formatuser: currentuser: friends}}</div>
-                    <div class="invite" end><span>接受</span><span>拒绝</span></div>
+                    <div class="invite" *ngIf="event.invitestatus != inviteaccept || event.invitestatus != invitereject" end><span>接受</span><span>拒绝</span></div>
                   </div>
               </ion-row>
 
@@ -168,6 +168,9 @@ export class TdlPage {
 
   currentuser: string = UserConfig.account.id;
   friends: Array<any> = UserConfig.friends;
+
+  inviteaccept: InviteState = InviteState.accepted;
+  invitereject: InviteState = InviteState.rejected;
 
   constructor(private tdlServ: TdlService,
               private modalCtr: ModalController,
