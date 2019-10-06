@@ -2832,6 +2832,9 @@ export class EventService extends BaseService {
           sync.status = SyncDataStatus.UnDeleted;
         }
 
+        // 设置受邀状态
+        sync.invitestate = agenda.invitestatus? agenda.invitestatus : InviteState.None;
+
         //取得相关参与人
         if (members.length > 0) {
           let masterEvi: string;

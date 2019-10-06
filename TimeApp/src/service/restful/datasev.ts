@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import {RestfulClient} from "../util-service/restful.client";
 import {RestFulConfig, UrlEntity} from "../config/restful.config";
 import {UserConfig} from "../config/user.config";
-import {SyncDataSecurity, SyncDataStatus} from "../../data.enum";
+import {SyncDataSecurity, SyncDataStatus, InviteState} from "../../data.enum";
 
 /**
  * 数据同步操作
@@ -53,6 +53,10 @@ export class DataRestful {
   }
 }
 
+export class SyncDataFields {
+  unshared: Array<string> = new Array<string>();
+}
+
 export class SyncData {
   src: string = "";       // 元数据唯一标识符(修改他人共享给自己的数据进行同步时使用)
   id: string;             // 本地数据唯一标识符
@@ -63,7 +67,9 @@ export class SyncData {
   main: boolean = false;  // 是否主数据, 用于判断是否需要通知(重复数据只需要第一条主数据进行通知)
   to: Array<string> = new Array<string>();  // 被共享人手机号(可以为空, 表示非共享数据)
   security: SyncDataSecurity = SyncDataSecurity.None;   // None(非共享/多设备间同步), SelfModify(只有发起人可以修改), ShareModify(所有人都可以修改), ShareModifyWithoutSender(共享后发起人本地删除)
-  status: SyncDataStatus; // 删除/未删除
+  status: SyncDataStatus;   // 删除/未删除
+  invitestate: InviteState; // 受邀状态
+  fields: SyncDataFields = new SyncDataFields();
   payload: any;           // 数据
 }
 
