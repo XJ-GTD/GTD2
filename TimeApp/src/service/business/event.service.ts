@@ -2855,11 +2855,6 @@ export class EventService extends BaseService {
           sync.invitestate = InviteState.None;
         }
 
-        //取得相关参与人
-        if (agenda.members && agenda.members.length > 0) {
-          members = agenda.members;
-        }
-
         if (members.length > 0) {
           let masterEvi: string;
           if (agenda.rtevi == "") {
@@ -2877,6 +2872,16 @@ export class EventService extends BaseService {
             return masterEvi == value.obi;
           });
           agenda.tos = this.getMemberPhone(membersTos);
+        } else {
+          let singlemembers: Array<Member> = new Array<Member>();
+          //取得相关参与人
+          if (agenda.members && agenda.members.length > 0) {
+            singlemembers = agenda.members;
+          }
+
+          if (singlemembers.length > 0) {
+            agenda.tos = this.getMemberPhone(singlemembers);
+          }
         }
         sync.to = (!agenda.tos || agenda.tos == "" || agenda.tos == null) ? [] : agenda.tos.split(",") ;
         sync.payload = this.cleanAgendaPayload(agenda);
