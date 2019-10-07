@@ -1540,6 +1540,8 @@ export class EventService extends BaseService {
       ev.adrx = newAgdata.adrx;
       ev.adry = newAgdata.adry;
       ev.tb = newAgdata.tb ;
+      ev.md = newAgdata.md ;
+      ev.iv = newAgdata.iv ;
       sqlparam.push(ev.upTParam());
 
       //主evi设定
