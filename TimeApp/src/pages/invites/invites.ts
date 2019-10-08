@@ -60,6 +60,7 @@ export class InvitesPage {
 
   powerEnable : boolean = false; //设定控制
   inviteEnable: boolean = false;
+  pubui : string;
 
   buttons: any = {
     remove: false,
@@ -88,7 +89,7 @@ export class InvitesPage {
     //下面处理需要放在构造方法里，防止关闭参与人选择页面时进入该处理
     if (this.navParams && this.navParams.data ) {
       this.memberSet.members = this.navParams.data.members?this.navParams.data.members : new Array<Member>();
-
+      this.pubui = this.navParams.data.ui;
       if (this.navParams.data.iv == anyenum.InvitePowr.enable){
         this.memberSet.iv = true;
       }else{
@@ -148,15 +149,16 @@ export class InvitesPage {
     this.memberSet.members.splice(index, 1);
   }
 
-  memberAcceptColor(member){
+  memberAcceptColor(member : Member){
     let ret = 'gray';
-    if (member.sdt){
-      if ( member.sdt == anyenum.MemberShareState.Accepted ){
-        ret =  'green';
-      }else{
-        ret =  'gray';
-      }
+    if (member.ui == this.pubui){
+      ret = 'green';
+    }else if ( member.sdt && member.sdt == anyenum.MemberShareState.Accepted ){
+      ret =  'green';
+    }else{
+      ret =  'gray';
     }
+
     return ret;
   }
 
