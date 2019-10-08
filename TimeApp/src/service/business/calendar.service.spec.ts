@@ -2544,7 +2544,7 @@ describe('CalendarService test suite', () => {
     });
   });
 
-  it(`Case 21 - 6 mergeCalendarActivity 合并日历显示列表活动数据 - 合并1个小任务`, async () => {
+  it(`Case 21 - 6 mergeCalendarActivity 合并日历显示列表活动数据 - 合并1个小任务`, async (done) => {
     // 初始化
     let calendaractivities = await calendarService.getCalendarActivities();
 
@@ -2560,9 +2560,12 @@ describe('CalendarService test suite', () => {
 
     await eventService.saveMiniTask(minitask);
 
-    expect(mergeSpy.calls.any()).toBe(true, 'calendarService.mergeCalendarActivity called');
-    // 本月备忘为1
-    expect(calendaractivities[1].events.length).toBe(1);
+    setTimeout(() => {
+      expect(mergeSpy.calls.any()).toBe(true, 'calendarService.mergeCalendarActivity called');
+      // 本月备忘为1
+      expect(calendaractivities[1].events.length).toBe(1);
+      done();
+    }, 1000);
   });
 
   it(`Case 21 - 5 mergeCalendarActivity 合并日历显示列表活动数据 - 合并1个备忘`, async () => {
