@@ -26,6 +26,9 @@ export class EffectService extends BaseService {
     await this.calendarService.receiveInitialData();
   }
 
+  /**
+   * 注册同步数据事件
+   **/
   registerSyncEvents() {
     let online = this.emitService.register("on.network.connected", () => {
       online.unsubscribe();
