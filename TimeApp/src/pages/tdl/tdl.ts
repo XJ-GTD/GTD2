@@ -16,7 +16,7 @@ import {UtilService} from "../../service/util-service/util.service";
 import {FeedbackService} from "../../service/cordova/feedback.service";
 import {DayActivityData, MonthActivityData} from "../../service/business/calendar.service";
 import {EventService} from "../../service/business/event.service";
-import {PageDirection, EventType, InviteState} from "../../data.enum";
+import {PageDirection, EventType, InviteState, SyncType} from "../../data.enum";
 import {TdlGesture} from "./tdl-gestures";
 import {CalendarComponent} from "../../components/ion2-calendar";
 import {UserConfig} from "../../service/config/user.config";
@@ -109,7 +109,7 @@ BScroll.use(InfinityScroll);
 
                 </div>
               </ion-row>
-              <ion-row class="item-content dayagenda-content item-content-backgroud" *ngFor="let event of days.events;" (click)="toDetail(event.evi,event.evd,event.type,event.gs)">
+              <ion-row class="item-content dayagenda-content item-content-backgroud" *ngFor="let event of days.events;" [ngClass]="{'unsync': event.tb == unsynch}" (click)="toDetail(event.evi,event.evd,event.type,event.gs)">
                   <div class="line font-small first-line">
                     <div class="icon">
                       <ion-icon class = "fal fa-calendar-star"></ion-icon>
@@ -175,6 +175,8 @@ export class TdlPage {
 
   inviteaccept: InviteState = InviteState.Accepted;
   invitereject: InviteState = InviteState.Rejected;
+
+  unsynch: SyncType = SyncType.unsynch;
 
   constructor(private tdlServ: TdlService,
               private modalCtr: ModalController,
