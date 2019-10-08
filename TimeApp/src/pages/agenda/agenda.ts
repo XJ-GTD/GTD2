@@ -333,6 +333,7 @@ export class AgendaPage {
     }
     let modal = this.modalCtrl.create(DataConfig.PAGE._INVITES_PAGE, {
       ui: this.currentAgenda.ui,
+      mine: this.currentAgenda.ui == this.currentuser,
       members: clonemembers,
       md: this.currentAgenda.md,
       iv: this.currentAgenda.iv
