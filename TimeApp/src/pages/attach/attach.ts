@@ -28,6 +28,9 @@ import {FjData} from "../../service/business/event.service";
           <div>相册</div>
         </button>
       </ion-row>
+      <ion-row>
+        <ion-textarea rows="8" no-margin [(ngModel)]="bw" #bzRef></ion-textarea>
+      </ion-row>
     </ion-grid>
   </modal-box>
   `
@@ -39,6 +42,7 @@ export class AttachPage {
   fjArray: Array<FjData>;
   obt: string = "" ;
   obi: string = "";
+  bw: string = "";
   buttons: any = {
     remove: false,
     share: false,
@@ -59,6 +63,16 @@ export class AttachPage {
       this.obt  = this.navParams.data.obt;
       this.obi = this.navParams.data.obi;
     }
+    //验证缓存文件目录是否存在
+    this.file.checkDir(this.file.externalDataDirectory,'/timeAppfile')
+      .then(_ => console.log('Directory exists'))
+      .catch(err => {
+            this.file.createDir(this.file.externalDataDirectory,"timeAppfile",true).then(result=>{
+               console.log("success")
+            }).catch(err=>{
+              console.log("err:"+JSON.stringify(err))
+            })
+    });
   }
 
 
@@ -91,16 +105,19 @@ export class AttachPage {
       console.info("开始拍照上传照片");
       let fjData: FjData = {} as FjData;
       if (imageData){
-        let fileNameArray: Array<string> = imageData.split("/");
-        let fileName = fileNameArray[fileNameArray.length-1];
-        let ext = fileName.split(".")[1];
-        let fj =  imageData;
+
+        let fileName: string  = imageData.substr(imageData.lastIndexOf("/")+1,imageData.length);
+        let ext: string = fileName.split(".")[1];
+        //将文件copy至缓存文件
+        let imgFileDir: string  =  imageData.substr(0,imageData.lastIndexOf("/")+1);
+        this.file.copyFile(imgFileDir,fileName,this.file.externalDataDirectory+"/timeAppfile",fileName);
         fjData.obt = this.obt;
         fjData.obi = this.obi;
-        fjData.fjn = fileName;
+        fjData.fjn = this.bw;
         fjData.ext = ext;
-        fjData.fj = fj;
+        fjData.fj = this.file.externalDataDirectory+"/timeAppfile/"+fileName;
         this.fjArray.push(fjData);
+        alert("新文件路径："+this.file.externalDataDirectory+"/timeAppfile/"+fileName);
       }
       // let base64Image = 'data:image/jpeg;base64,' + imageData;
       // this.imgUrl = base64Image;
@@ -117,17 +134,28 @@ export class AttachPage {
   */
   select() {
       this.chooser.getFile('*/*').then((file) => {
-          //console.log(file ? file.name : 'canceled');
-          //alert("fileName:"+file.name+",mediaType:"+file.mediaType+", uri:"+file.uri+",dataURI:"+file.dataURI);
           this.filePath.resolveNativePath(file.uri)
           .then((filePath) =>{
             alert("文件路径:"+filePath)
+            if(filePath){
+              let fileName: string  = filePath.substr(filePath.lastIndexOf("/")+1,filePath.length);
+              let ext: string = fileName.split(".")[1];
+              let imgFileDir: string  =  imageData.substr(0,imageData.lastIndexOf("/")+1);
+              this.file.copyFile(imgFileDir,fileName,this.file.externalDataDirectory+"/timeAppfile",fileName);
+              let fjData: FjData = {} as FjData;
+              fjData.obt = this.obt;
+              fjData.obi = this.obi;
+              fjData.fjn = this.bw;
+              fjData.ext = ext;
+              fjData.fj = this.file.externalDataDirectory+"/timeAppfile/"+fileName;
+              this.fjArray.push(fjData);
+              alert("新文件路径："+this.file.externalDataDirectory+"/timeAppfile/"+fileName);
+            }
           })
           .catch(err => console.log(err));
-
         }
       )
-        .catch((error: any)=> console.error(error));
+     .catch((error: any)=> console.error(error));
   }
 
   /**
