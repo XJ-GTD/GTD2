@@ -10,6 +10,7 @@ import { EventData, TaskData, AgendaData, MiniTaskData, EventService, RtJson, Tx
 import { MemoData, MemoService } from "./memo.service";
 import { EventType, PlanType, PlanItemType, PlanDownloadType, ConfirmType, OperateType, ObjectType, PageDirection, CycleType, SyncType, RepeatFlag, DelType, SyncDataSecurity, SyncDataStatus } from "../../data.enum";
 import { UserConfig } from "../config/user.config";
+import * as async from "async/dist/async.js"
 import * as moment from "moment";
 import { JhaTbl } from "../sqlite/tbl/jha.tbl";
 import { JtaTbl } from "../sqlite/tbl/jta.tbl";
