@@ -12,6 +12,7 @@ import {SyncDataStatus, MemberShareState, EventFinishStatus, DelType, InviteStat
 import {FsData} from "../../data.mapping";
 import {UserConfig} from "../../service/config/user.config";
 import {ContactsService} from "../../service/cordova/contacts.service";
+import {BTbl} from "../../service/sqlite/tbl/b.tbl";
 
 /**
  * 数据同步
@@ -152,8 +153,15 @@ export class DataSyncProcess implements MQProcess {
             });
 
             let origin = (origins && origins.length > 0)? origins[0] : null;
+            let btbl = new BTbl();
 
-            let one: FsData = await this.contactsServ.addSharedContact(unknown, origin);
+            if (origin) {
+              Object.assign(btbl, origin);
+            } else {
+              btbl = null;
+            }
+
+            let one: FsData = await this.contactsServ.addSharedContact(unknown, btbl);
 
             if (one && one.rc) { // 注册用户
               let member: Member = {} as Member;
