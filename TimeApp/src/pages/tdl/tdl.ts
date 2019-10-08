@@ -16,7 +16,7 @@ import {UtilService} from "../../service/util-service/util.service";
 import {FeedbackService} from "../../service/cordova/feedback.service";
 import {DayActivityData, MonthActivityData} from "../../service/business/calendar.service";
 import {EventService} from "../../service/business/event.service";
-import {PageDirection, EventType, InviteState} from "../../data.enum";
+import {PageDirection, EventType, InviteState, SyncType, EventFinishStatus} from "../../data.enum";
 import {TdlGesture} from "./tdl-gestures";
 import {CalendarComponent} from "../../components/ion2-calendar";
 import {UserConfig} from "../../service/config/user.config";
@@ -109,12 +109,13 @@ BScroll.use(InfinityScroll);
 
                 </div>
               </ion-row>
-              <ion-row class="item-content dayagenda-content item-content-backgroud" *ngFor="let event of days.events;" (click)="toDetail(event.evi,event.evd,event.type,event.gs)">
+              <ion-row class="item-content dayagenda-content item-content-backgroud" *ngFor="let event of days.events;" [ngStyle]="{'background-color': event.tb == synch? '#00ff80' : '#ff80c0'}" (click)="toDetail(event.evi,event.evd,event.type,event.gs)">
                   <div class="line font-small first-line">
                     <div class="icon">
                       <ion-icon class = "fal fa-calendar-star"></ion-icon>
                     </div>
-                    <div class="sn">{{event.evn}}</div>
+                    <div class="sn" *ngIf="event.wc == finished"><s>{{event.evn}}</s></div>
+                    <div class="sn" *ngIf="event.wc != finished">{{event.evn}}</div>
                   </div>
                   <div class="line font-small">
                     <div class="icon">
@@ -175,6 +176,11 @@ export class TdlPage {
 
   inviteaccept: InviteState = InviteState.Accepted;
   invitereject: InviteState = InviteState.Rejected;
+
+  synch: SyncType = SyncType.synch;
+  unsynch: SyncType = SyncType.unsynch;
+
+  finished: EventFinishStatus = EventFinishStatus.Finished;
 
   constructor(private tdlServ: TdlService,
               private modalCtr: ModalController,

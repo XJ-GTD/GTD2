@@ -39,11 +39,11 @@ import {FeedbackService} from "../../service/cordova/feedback.service";
       <ion-list>
         <ion-item>
           <ion-label>转发</ion-label>
-          <ion-toggle [(ngModel)]="memberSet.iv" ></ion-toggle>
+          <ion-toggle [(ngModel)]="memberSet.iv"  [disabled]="!powerEnable" ></ion-toggle>
         </ion-item>
         <ion-item>
           <ion-label>编辑</ion-label>
-          <ion-toggle [(ngModel)]="memberSet.md"></ion-toggle>
+          <ion-toggle [(ngModel)]="memberSet.md" [disabled]="!powerEnable"></ion-toggle>
         </ion-item>
       </ion-list>
     </modal-box>
@@ -57,6 +57,9 @@ export class InvitesPage {
   membercom:any;
 
 
+  powerEnable : boolean = false; //设定控制
+  inviteEnable: boolean = false;
+
   buttons: any = {
     remove: false,
     share: false,
@@ -69,6 +72,7 @@ export class InvitesPage {
     members : new Array<Member>(),
     md : false,
     iv : false,
+    mine:true
   }
 
   showall:boolean = true;
@@ -83,6 +87,7 @@ export class InvitesPage {
     //下面处理需要放在构造方法里，防止关闭参与人选择页面时进入该处理
     if (this.navParams && this.navParams.data ) {
       this.memberSet.members = this.navParams.data.members?this.navParams.data.members : new Array<Member>();
+
       if (this.navParams.data.iv == anyenum.InvitePowr.enable){
         this.memberSet.iv = true;
       }else{
@@ -92,6 +97,17 @@ export class InvitesPage {
         this.memberSet.md = true;
       }else{
         this.memberSet.md = false;
+      }
+
+      this.memberSet.mine = this.navParams.data.mine;
+      if (this.memberSet.mine){
+        this.powerEnable = true;
+        this.inviteEnable = true;
+      }else{
+        this.powerEnable = false;
+        this.inviteEnable = this.memberSet.iv;
+        this.buttons.create = this.memberSet.iv;
+        this.buttons.save = this.memberSet.iv;
       }
     }
   }
@@ -125,6 +141,9 @@ export class InvitesPage {
   }
 
   removeMember(index: number) {
+    if (!this.memberSet.mine){
+      return;
+    }
     this.memberSet.members.splice(index, 1);
   }
 

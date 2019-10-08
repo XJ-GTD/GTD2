@@ -77,7 +77,7 @@ import {ModiPower} from "../../data.enum";
 
             <ion-row *ngIf="currentAgenda.evi">
               <div>
-                <button ion-button clear (click)="changeInvites()" class="font-normal" [disabled]="originAgenda.evi && originAgenda.ui != currentuser && originAgenda.md != enablechange">
+                <button ion-button clear (click)="changeInvites()" class="font-normal">
                   <ion-icon class="fal fa-user-friends font-normal"
                             *ngIf="currentAgenda.pn <= 0"></ion-icon>
                   参与人
@@ -321,9 +321,9 @@ export class AgendaPage {
   }
 
   changeInvites() {
-    if (this.originAgenda.ui != this.currentuser && this.originAgenda.md != ModiPower.enable) { // 受邀人修改权限检查
-      return;
-    }
+    // if (this.originAgenda.ui != this.currentuser && this.originAgenda.md != ModiPower.enable) { // 受邀人修改权限检查
+    //   return;
+    // }
 
     let clonemembers;
     if (this.currentAgenda.members && this.currentAgenda.members.length > 0) {
@@ -332,6 +332,7 @@ export class AgendaPage {
       clonemembers = new Array<Member>();
     }
     let modal = this.modalCtrl.create(DataConfig.PAGE._INVITES_PAGE, {
+      mine: this.currentAgenda.ui == this.currentuser,
       members: clonemembers,
       md: this.currentAgenda.md,
       iv: this.currentAgenda.iv

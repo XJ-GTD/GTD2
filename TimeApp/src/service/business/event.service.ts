@@ -1200,6 +1200,8 @@ export class EventService extends BaseService {
 
       let sq : string;
       let outAgd = {} as AgendaData;
+      let tos : string;//需要发送的参与人手机号
+      tos = this.getMemberPhone(oriAgdata.members);
 
       //删除事件表数据
       let ev = new EvTbl();
@@ -1211,6 +1213,7 @@ export class EventService extends BaseService {
 
       //事件对象放入返回事件
       Object.assign(outAgd,ev);
+      outAgd.tos = tos;//需要发送的参与人
       outAgds.push(outAgd);
 
       //主evi设定
@@ -1540,6 +1543,8 @@ export class EventService extends BaseService {
       ev.adrx = newAgdata.adrx;
       ev.adry = newAgdata.adry;
       ev.tb = newAgdata.tb ;
+      ev.md = newAgdata.md ;
+      ev.iv = newAgdata.iv ;
       sqlparam.push(ev.upTParam());
 
       //主evi设定
@@ -1831,8 +1836,6 @@ export class EventService extends BaseService {
           //复制原附件放入返回事件的父事件中
           upParent.fjs = fjs;
 
-          upParent.tos = tos;//需要发送的参与人
-
           //新父节点记录以外数据对象内容设置
           for (let j = 0 ,len = upAgds.length; j < len ;j ++){
             if (upAgds[j].rtevi != ""){
@@ -1885,6 +1888,7 @@ export class EventService extends BaseService {
         delAgds[j].del = anyenum.DelType.del;
         delAgds[j].mi = UserConfig.account.id;
         delAgds[j].tb = anyenum.SyncType.unsynch;
+        delAgds[j].tos = tos;//需要发送的参与人
       }
     }
 
@@ -1899,7 +1903,7 @@ export class EventService extends BaseService {
     params.push(anyenum.DelType.del);
     sqlparam.push([sq,params]);
 
-    //更新原事件日程结束日或事件表无记录了则删除
+    //事件表无记录了则删除
     sq = `select * from gtd_ev where (evi = ? or rtevi =  ?) and del <> ? order by evd  ;`;
     let evtbls = new Array<AgendaData>();
     params = new Array<any>();
@@ -1969,8 +1973,6 @@ export class EventService extends BaseService {
           Object.assign(delAgds[j],ca);
           delAgds[j].members = delpars;
           delAgds[j].fjs = delfjs;
-
-          delAgds[j].tos = tos;//需要发送的参与人
           break;
         }
       }
@@ -2855,11 +2857,6 @@ export class EventService extends BaseService {
           sync.invitestate = InviteState.None;
         }
 
-        //取得相关参与人
-        if (agenda.members && agenda.members.length > 0) {
-          members = agenda.members;
-        }
-
         if (members.length > 0) {
           let masterEvi: string;
           if (agenda.rtevi == "") {
@@ -2877,6 +2874,16 @@ export class EventService extends BaseService {
             return masterEvi == value.obi;
           });
           agenda.tos = this.getMemberPhone(membersTos);
+        } else {
+          let singlemembers: Array<Member> = new Array<Member>();
+          //取得相关参与人
+          if (agenda.members && agenda.members.length > 0) {
+            singlemembers = agenda.members;
+          }
+
+          if (singlemembers.length > 0) {
+            agenda.tos = this.getMemberPhone(singlemembers);
+          }
         }
         sync.to = (!agenda.tos || agenda.tos == "" || agenda.tos == null) ? [] : agenda.tos.split(",") ;
         sync.payload = this.cleanAgendaPayload(agenda);
@@ -2959,6 +2966,15 @@ export class EventService extends BaseService {
     sqls.push([sql, [SyncType.synch]]);
 
     await this.sqlExce.batExecSqlByParam(sqls);
+
+    // 同步完成后刷新缓存
+    for (let id of ids) {
+      this.getAgenda(id).then((agenda) => {
+        if (agenda) {
+          this.emitService.emit("mwxing.calendar.activities.changed", agenda);
+        }
+      });
+    }
   }
 
 	/**

@@ -59,10 +59,10 @@ matrix:
 #  - "$HOME/Library/Caches/Yarn/v1/"
 #  - "$HOME/.cache/yarn/v1/"
 before_install:
-  - curl -s https://packagecloud.io/install/repositories/github/git-lfs/script.deb.sh | sudo bash
-  - sudo apt-get -yq install fonts-liberation libappindicator3-1 xdg-utils
-  - wget http://dl.google.com/linux/deb/pool/main/g/google-chrome-stable/google-chrome-stable_76.0.3809.132-1_amd64.deb
-  - sudo dpkg -i google-chrome-stable_76.0.3809.132-1_amd64.deb
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then curl -s https://packagecloud.io/install/repositories/github/git-lfs/script.deb.sh | sudo bash ; fi
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo apt-get -yq install fonts-liberation libappindicator3-1 xdg-utils ; fi
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then wget http://dl.google.com/linux/deb/pool/main/g/google-chrome-stable/google-chrome-stable_76.0.3809.132-1_amd64.deb ; fi
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo dpkg -i google-chrome-stable_76.0.3809.132-1_amd64.deb ; fi
   - export LANG=zh_CN.UTF-8
   - export GRADLE_HOME=/usr/local/gradle
   - export PATH=$GRADLE_HOME/bin:$PATH
@@ -73,6 +73,7 @@ before_install:
   - gem install byebug
   - gem install fir-cli
   - cp $TRAVIS_BUILD_DIR/config/build.gradle $TRAVIS_BUILD_DIR/TimeApp/build.gradle
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sed -i 's/905/'$TRAVIS_BUILD_NUMBER'/g' $TRAVIS_BUILD_DIR/TimeApp/config.xml ; fi
   - cd TimeApp
 before_script:
   - pwd
