@@ -2966,6 +2966,15 @@ export class EventService extends BaseService {
     sqls.push([sql, [SyncType.synch]]);
 
     await this.sqlExce.batExecSqlByParam(sqls);
+
+    // 同步完成后刷新缓存
+    for (let id of ids) {
+      this.getAgenda(id).then((agenda) => {
+        if (agenda) {
+          this.emitService.emit("mwxing.calendar.activities.changed", agenda);
+        }
+      });
+    }
   }
 
 	/**

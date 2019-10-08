@@ -4,6 +4,7 @@ import {UtilService} from "../../service/util-service/util.service";
 import {UserConfig} from "../../service/config/user.config";
 import {RestFulHeader, RestFulConfig} from "../../service/config/restful.config";
 import {SqliteExec} from "../../service/util-service/sqlite.exec";
+import * as async from "async/dist/async.js"
 import * as moment from "moment";
 import { CalendarDay } from "../../components/ion2-calendar";
 import { DoService } from "./do.service";
@@ -58,6 +59,8 @@ export class DoPage {
 
   onrefresh: EventEmitter<any>;
 
+  private todosqueue: any;
+
   constructor(public navCtrl: NavController,
               public navParams: NavParams,
               private modalCtr: ModalController,
@@ -69,6 +72,27 @@ export class DoPage {
               private eventService: EventService,
               private sqlite:SqliteExec) {
     moment.locale('zh-cn');
+
+    this.todosqueue = async.queue(async ({data}, callback) => {
+      // 多条数据同时更新/单条数据更新
+      if (data instanceof Array) {
+        for (let single of data) {
+          let activityType: string = this.eventService.getEventType(single);
+
+          if (activityType == "AgendaData") {
+            this.cachedtasks = await this.eventService.mergeTodolist(this.cachedtasks, single);
+          }
+        }
+      } else {
+        let activityType: string = this.eventService.getEventType(data);
+
+        if (activityType == "AgendaData") {
+          this.cachedtasks = await this.eventService.mergeTodolist(this.cachedtasks, data);
+        }
+      }
+
+      callback();
+    });
   }
 
   ionViewDidLoad() {
@@ -124,22 +148,7 @@ export class DoPage {
               return;
             }
 
-            // 多条数据同时更新/单条数据更新
-            if (data instanceof Array) {
-              for (let single of data) {
-                let activityType: string = this.eventService.getEventType(single);
-
-                if (activityType == "AgendaData") {
-                  this.cachedtasks = await this.eventService.mergeTodolist(this.cachedtasks, single);
-                }
-              }
-            } else {
-              let activityType: string = this.eventService.getEventType(data);
-
-              if (activityType == "AgendaData") {
-                this.cachedtasks = await this.eventService.mergeTodolist(this.cachedtasks, data);
-              }
-            }
+            this.todosqueue.push({data: data});
           });
         }
 
