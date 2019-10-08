@@ -270,4 +270,36 @@ export class AssistantService {
       }, 100);
     });
   }
+
+  /**
+   * 语音助手录音录入 AUDIO
+   */
+  audio2Text(callback,success,error) {
+    if (this.listening) return;
+    if (!this.utilService.isMobile()) {
+      success();
+      return;
+    }
+    this.listening = true;
+    this.stopSpeak(false);
+    this.stopWakeUp();
+    cordova.plugins.XjBaiduSpeech.startListen(result => {
+      callback(result.text);
+
+      if (result.finish) {
+        this.stopListenAudio();
+        success();
+        return;
+      }
+    }, async err => {
+      this.stopListenAudio();
+      setTimeout(async () => {
+        let text = await this.getSpeakText(DataConfig.FF);
+        this.speakText(text);
+        error();
+        return;
+      }, 100);
+    });
+
+  }
 }

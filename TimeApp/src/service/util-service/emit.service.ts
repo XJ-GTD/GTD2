@@ -49,6 +49,9 @@ export class EmitService {
     }
   }
 
+  destroyImmediately() {
+    this.immediatelyEm.unsubscribe();
+  }
 
   //冥王星内建事件订阅/触发管理
   //同一个事件可以被多个调用注册

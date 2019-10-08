@@ -10,6 +10,7 @@ import {
   Renderer2
 } from '@angular/core';
 import {Content, Events, Ion, IonicPage} from 'ionic-angular';
+import {AssistantService} from "../../service/cordova/assistant.service";
 
 /**
  * Generated class for the ScrollSelectComponent component.
@@ -32,6 +33,10 @@ import {Content, Events, Ion, IonicPage} from 'ionic-angular';
             </span>
           </ion-title>
           <div class="toolbar">
+            <div (click)="record()" *ngIf="buttons.record">
+              <ion-icon class="fal fa-microphone"></ion-icon>
+            </div>
+            
             <div (click)="goRemove()" *ngIf="buttons.remove">
               <ion-icon class="fal fa-trash"></ion-icon>
             </div>
@@ -79,6 +84,7 @@ export class PageBoxComponent{
     remove: false,
     share: false,
     save: false,
+    record: false,
     create: false,
     cancel: true
   };
@@ -98,8 +104,12 @@ export class PageBoxComponent{
   @Output()
   private onCreate: EventEmitter<any> = new EventEmitter<any>();
 
+  @Output()
+  private onRecord: EventEmitter<any> = new EventEmitter<any>();
+
   constructor(public events: Events,
-            private renderer2: Renderer2,) {
+            private renderer2: Renderer2,
+              private assistantService: AssistantService) {
 
   }
 
@@ -135,5 +145,18 @@ export class PageBoxComponent{
 
   goCreate() {
     this.onCreate.emit(this);
+  }
+  record() {
+    this.buttons.record = false;
+    this.onRecord.emit("开始说话");
+    this.assistantService.audio2Text((text) => {
+      this.onRecord.emit(text);
+
+    }, () => {
+      this.buttons.record = true;
+    }, () => {
+      this.onRecord.emit("语音不可用");
+      this.buttons.record = true;
+    });
   }
 }

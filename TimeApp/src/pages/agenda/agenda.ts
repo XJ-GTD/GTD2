@@ -1,4 +1,4 @@
-import {Component, ElementRef, Renderer2, ViewChild, ViewChildren, QueryList} from '@angular/core';
+import {Component, ElementRef, Renderer2, ViewChild, ViewChildren, QueryList, ChangeDetectorRef} from '@angular/core';
 import {IonicPage, NavController, ModalController, ActionSheetController, NavParams, Slides} from 'ionic-angular';
 import {UtilService} from "../../service/util-service/util.service";
 import {UserConfig} from "../../service/config/user.config";
@@ -40,7 +40,7 @@ import {ModiPower} from "../../data.enum";
   template:
       `
     <page-box title="活动" [buttons]="buttons" [data]="currentAgenda.evi" (onRemove)="goRemove()" (onSave)="save()"
-              (onBack)="goBack()">
+              (onBack)="goBack()" (onRecord)="record($event)">
 
       <ion-grid>
         <ion-row class="snRow">
@@ -154,6 +154,7 @@ export class AgendaPage {
     remove: false,
     share: false,
     save: false,
+    record:true,
     cancel: true
   };
 
@@ -195,7 +196,8 @@ export class AgendaPage {
               private calendarService: CalendarService,
               private eventService: EventService,
               private sqlite: SqliteExec,
-              private keyboard: Keyboard) {
+              private keyboard: Keyboard,
+              private changeDetectorRef:ChangeDetectorRef) {
     moment.locale('zh-cn');
     if (this.navParams) {
       let paramter: ScdPageParamter = this.navParams.data;
@@ -627,5 +629,12 @@ export class AgendaPage {
         });
       }
     }
+  }
+
+
+  record(text){
+    this.currentAgenda.evn = text;
+    this.changeDetectorRef.markForCheck();
+    this.changeDetectorRef.detectChanges();
   }
 }

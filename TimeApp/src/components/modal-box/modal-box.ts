@@ -7,9 +7,11 @@ import {
   ElementRef,
   ContentChildren,
   QueryList,
-  Renderer2
+  Renderer2, ChangeDetectorRef
 } from '@angular/core';
 import {Content, Events} from 'ionic-angular';
+import {AssistantService} from "../../service/cordova/assistant.service";
+import {EmitService} from "../../service/util-service/emit.service";
 
 /**
  * Generated class for the ScrollSelectComponent component.
@@ -24,18 +26,21 @@ import {Content, Events} from 'ionic-angular';
     <div class="box-modal">
 
       <ion-header class="box-header">
-        <ion-toolbar >
+        <ion-toolbar>
           <ion-title>
             {{title}}
           </ion-title>
           <div class="toolbar">
+            <div (click)="record()" *ngIf="buttons.record">
+              <ion-icon class="fal fa-microphone"></ion-icon>
+            </div>
             <div (click)="goRemove()" *ngIf="buttons.remove">
               <ion-icon class="fal fa-eraser"></ion-icon>
-            </div>            
-            <div  (click)="goRemove()" *ngIf="buttons.share">
+            </div>
+            <div (click)="goRemove()" *ngIf="buttons.share">
               <ion-icon class="fal fa-share"></ion-icon>
             </div>
-            <div  (click)="create()" *ngIf="buttons.create">
+            <div (click)="create()" *ngIf="buttons.create">
               <ion-icon class="fal fa-plus"></ion-icon>
             </div>
             <div (click)="save()" *ngIf="buttons.save">
@@ -64,6 +69,7 @@ export class ModalBoxComponent {
     remove: false,
     share: false,
     save: false,
+    record: false,
     create: false,
     cancel: true
   };
@@ -77,12 +83,16 @@ export class ModalBoxComponent {
 
   @Output()
   private onCreate: EventEmitter<any> = new EventEmitter<any>();
+  @Output()
+  private onRecord: EventEmitter<any> = new EventEmitter<any>();
 
-  constructor(public events: Events,private renderer2: Renderer2,) {
+
+  constructor(public events: Events, private renderer2: Renderer2,
+              private assistantService: AssistantService) {
 
   }
 
-  setBoxContent(){
+  setBoxContent() {
     let height = this.modalcontent._scrollContent.nativeElement.clientHeight;
     this.renderer2.setStyle(this.modalcontent._scrollContent.nativeElement, "height", height + "px");
     this.renderer2.setStyle(this.modalcontent._scrollContent.nativeElement, "overflow-y", height + "hidden");
@@ -101,5 +111,19 @@ export class ModalBoxComponent {
 
   create() {
     this.onCreate.emit(this);
+  }
+
+  record() {
+    this.buttons.record = false;
+    this.onRecord.emit("开始说话");
+    this.assistantService.audio2Text((text) => {
+      this.onRecord.emit(text);
+
+    }, () => {
+      this.buttons.record = true;
+    }, () => {
+      this.onRecord.emit("语音不可用");
+      this.buttons.record = true;
+    });
   }
 }
