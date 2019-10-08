@@ -397,8 +397,6 @@ export class ContactsService {
   async addSharedContact(id: string, shared: BTbl = null): Promise<FsData> {
     let userinfo = await this.personRestful.get(id);
 
-    let exists : FsData = null;
-
     //获取本地参与人
     let sql = 'select gb.*, bh.bhi bhi, bh.hiu bhiu '
             + ' from gtd_b gb '
@@ -430,10 +428,10 @@ export class ContactsService {
       let bh = new BhTbl();
 
       Object.assign(bt, exists);
-      sqls.push(bt.inTParam());
+      sqls.push(bt.inT());
 
       Object.assign(bh, exists);
-      sqls.push(bh.inTParam());
+      sqls.push(bh.inT());
 
       await this.sqlExce.batExecSql(sqls);
 
@@ -453,10 +451,10 @@ export class ContactsService {
       let bh = new BhTbl();
 
       Object.assign(bt, exists);
-      sqls.push(bt.inTParam());
+      sqls.push(bt.inT());
 
       Object.assign(bh, exists);
-      sqls.push(bh.inTParam());
+      sqls.push(bh.inT());
 
       await this.sqlExce.batExecSql(sqls);
     }
