@@ -406,7 +406,7 @@ export class ContactsService {
     // 能够适应使用ui和rc查询是否存在BTbl记录
     let exists : FsData = await this.sqlExce.getExtOne<FsData>(sql);
 
-    if (!exists && userinfo) {
+    if (!exists && userinfo && userinfo.openid) {
       exists = new FsData();
 
       exists.pwi = this.utilService.getUuid();
