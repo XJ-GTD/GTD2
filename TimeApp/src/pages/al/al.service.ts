@@ -243,6 +243,7 @@ export class AlService {
         // websocket连接成功消息回调
         // 初始化同步
         this.effectService.syncStart();
+        this.effectService.registerSyncEvents();
 
         this.emitService.register("on.websocket.connected", () => {
           DataConfig.RABBITMQ_STATUS = "connected";
