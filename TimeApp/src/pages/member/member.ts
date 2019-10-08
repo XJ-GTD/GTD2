@@ -7,6 +7,7 @@ import {FsData, FsPageData, PageGroupData} from "../../data.mapping";
 import {DataConfig} from "../../service/config/data.config";
 import {FeedbackService} from "../../service/cordova/feedback.service";
 import {Member} from "../../service/business/event.service";
+import {UserConfig} from "../../service/config/user.config";
 
 /**
  * Generated class for the 参与人选择 page.
@@ -177,15 +178,28 @@ export class MemberPage {
     let fsList = this.memberService.getfriend(this.tel);
     groupList.forEach((value) => {
       let group: PageGroupData = new PageGroupData();
+
       Object.assign(group, value);
+      group.fsl = new Array<FsData>();
+      value.fsl.forEach((value) => {
+        let fs: FsData = new FsData();
+        Object.assign(fs, value);
+        if (fs.rc != UserConfig.account.id) {
+          group.fsl.push(fs);
+        }
+      });
+      group.gc = group.fsl.length;
+
       this.pageGrouList.push(group);
 
     });
     fsList.forEach((value) => {
       let fsp: FsPageData = new FsPageData();
       Object.assign(fsp, value);
-      fsp.checked = false;
-      this.pageFsList.push(fsp);
+      if (fsp.rc != UserConfig.account.id) {
+        fsp.checked = false;
+        this.pageFsList.push(fsp);
+      }
     });
     this.checkedSet();
   }
