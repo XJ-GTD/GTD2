@@ -12,6 +12,7 @@ import {SyncDataStatus, MemberShareState, EventFinishStatus, DelType, InviteStat
 import {FsData} from "../../data.mapping";
 import {UserConfig} from "../../service/config/user.config";
 import {ContactsService} from "../../service/cordova/contacts.service";
+import {BTbl} from "../../service/sqlite/tbl/b.tbl";
 
 /**
  * 数据同步
@@ -104,6 +105,8 @@ export class DataSyncProcess implements MQProcess {
             return (pos >= 0);
           });
 
+          let originmembers = agenda.members;
+
           agenda.members = new Array<Member>();
 
           for (let fsdata of fsdatas) {
@@ -145,9 +148,22 @@ export class DataSyncProcess implements MQProcess {
 
           // 参与人可能存在没有注册的情况，目前没有考虑
           for (let unknown of unknowncontacts) {
-            let one: FsData = await this.contactsServ.updateOneFs(unknown);
+            let origins = originmembers.filter((element) => {
+              return element.rc == unknown;
+            });
 
-            if (one) {
+            let origin = (origins && origins.length > 0)? origins[0] : null;
+            let btbl = new BTbl();
+
+            if (origin) {
+              Object.assign(btbl, origin);
+            } else {
+              btbl = null;
+            }
+
+            let one: FsData = await this.contactsServ.addSharedContact(unknown, btbl);
+
+            if (one && one.rc) { // 注册用户
               let member: Member = {} as Member;
               Object.assign(member, one);
 
@@ -182,6 +198,8 @@ export class DataSyncProcess implements MQProcess {
               }
 
               agenda.members.push(member);
+            } else {  // 非注册用户
+
             }
           }
         }

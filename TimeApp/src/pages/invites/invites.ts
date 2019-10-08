@@ -7,6 +7,7 @@ import {ModalBoxComponent} from "../../components/modal-box/modal-box";
 import {Member} from "../../service/business/event.service";
 import * as anyenum from "../../data.enum";
 import {FeedbackService} from "../../service/cordova/feedback.service";
+import {MemberShareState} from "../../data.enum";
 /**
  * Generated class for the 参与人选择 page.
  *
@@ -27,7 +28,7 @@ import {FeedbackService} from "../../service/cordova/feedback.service";
           <ion-label #membercom class="somemmember">
             <ul>
                 <li *ngFor = "let member of memberSet.members; let i = index" (click)="removeMember(i)">
-                  <span> {{ member.ran }}</span>
+                  <span [ngStyle]="{'color':memberAcceptColor(member) }"> {{ member.ran }}</span>
                 </li>
               <li></li>
             </ul>
@@ -59,6 +60,7 @@ export class InvitesPage {
 
   powerEnable : boolean = false; //设定控制
   inviteEnable: boolean = false;
+  pubui : string;
 
   buttons: any = {
     remove: false,
@@ -87,7 +89,7 @@ export class InvitesPage {
     //下面处理需要放在构造方法里，防止关闭参与人选择页面时进入该处理
     if (this.navParams && this.navParams.data ) {
       this.memberSet.members = this.navParams.data.members?this.navParams.data.members : new Array<Member>();
-
+      this.pubui = this.navParams.data.ui;
       if (this.navParams.data.iv == anyenum.InvitePowr.enable){
         this.memberSet.iv = true;
       }else{
@@ -145,6 +147,19 @@ export class InvitesPage {
       return;
     }
     this.memberSet.members.splice(index, 1);
+  }
+
+  memberAcceptColor(member : Member){
+    let ret = 'gray';
+    if (member.ui == this.pubui){
+      ret = 'green';
+    }else if ( member.sdt && member.sdt == anyenum.MemberShareState.Accepted ){
+      ret =  'green';
+    }else{
+      ret =  'gray';
+    }
+
+    return ret;
   }
 
   openMemberSelect(){
