@@ -7,6 +7,7 @@ import {ModalBoxComponent} from "../../components/modal-box/modal-box";
 import {Member} from "../../service/business/event.service";
 import * as anyenum from "../../data.enum";
 import {FeedbackService} from "../../service/cordova/feedback.service";
+import {MemberShareState} from "../../data.enum";
 /**
  * Generated class for the 参与人选择 page.
  *
@@ -27,7 +28,7 @@ import {FeedbackService} from "../../service/cordova/feedback.service";
           <ion-label #membercom class="somemmember">
             <ul>
                 <li *ngFor = "let member of memberSet.members; let i = index" (click)="removeMember(i)">
-                  <span> {{ member.ran }}</span>
+                  <span [ngStyle]="{'color':memberAcceptColor(member) }"> {{ member.ran }}</span>
                 </li>
               <li></li>
             </ul>
@@ -145,6 +146,18 @@ export class InvitesPage {
       return;
     }
     this.memberSet.members.splice(index, 1);
+  }
+
+  memberAcceptColor(member){
+    let ret = 'gray';
+    if (member.sdt){
+      if ( member.sdt == anyenum.MemberShareState.Accepted ){
+        ret =  'green';
+      }else{
+        ret =  'gray';
+      }
+    }
+    return ret;
   }
 
   openMemberSelect(){
