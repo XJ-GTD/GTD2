@@ -10,6 +10,7 @@ import { EventData, TaskData, AgendaData, MiniTaskData, EventService, RtJson, Tx
 import { MemoData, MemoService } from "./memo.service";
 import { EventType, PlanType, PlanItemType, PlanDownloadType, ConfirmType, OperateType, ObjectType, PageDirection, CycleType, SyncType, RepeatFlag, DelType, SyncDataSecurity, SyncDataStatus } from "../../data.enum";
 import { UserConfig } from "../config/user.config";
+import * as async from "async/dist/async.js"
 import * as moment from "moment";
 import { JhaTbl } from "../sqlite/tbl/jha.tbl";
 import { JtaTbl } from "../sqlite/tbl/jta.tbl";
@@ -26,6 +27,7 @@ import {
 export class CalendarService extends BaseService {
 
   private calendaractivities: Array<MonthActivityData> = new Array<MonthActivityData>();
+  private activitiesqueue: any;
 
   constructor(private sqlExce: SqliteExec,
               private util: UtilService,
@@ -37,6 +39,44 @@ export class CalendarService extends BaseService {
               private shareRestful: ShaeRestful,
               private dataRestful: DataRestful) {
     super();
+    this.activitiesqueue = async.queue(({data}, callback) => {
+
+      // 多条数据同时更新/单条数据更新
+      if (data instanceof Array) {
+        // 获取每月最后一条数据的索引位置
+        let monthlyLastDataIndex: Map<string, number> = data.reduce((target, val, index) => {
+          if (val.evd) {
+            let month: string = moment(val.evd).format("YYYY/MM");
+            target.set(month, index);
+          } else if (!val.evd && val.sd) {
+            let month: string = moment(val.sd).format("YYYY/MM");
+            target.set(month, index);
+          }
+
+          return target;
+        }, new Map<string, number>());
+
+        let lastindexes: Array<number> = new Array<number>();
+
+        monthlyLastDataIndex.forEach((val) => {
+          lastindexes.push(val);
+        });
+
+        let index = 0;
+        for (let single of data) {
+          if (lastindexes.indexOf(index) >= 0) {
+            this.mergeCalendarActivity(single, true);
+          } else {
+            this.mergeCalendarActivity(single, false);
+          }
+          index++;
+        }
+      } else {
+        this.mergeCalendarActivity(data);
+      }
+
+      callback();
+    });
   }
 
   clearCalendarActivities() {
@@ -128,39 +168,7 @@ export class CalendarService extends BaseService {
             return;
           }
 
-          // 多条数据同时更新/单条数据更新
-          if (data instanceof Array) {
-            // 获取每月最后一条数据的索引位置
-            let monthlyLastDataIndex: Map<string, number> = data.reduce((target, val, index) => {
-              if (val.evd) {
-                let month: string = moment(val.evd).format("YYYY/MM");
-                target.set(month, index);
-              } else if (!val.evd && val.sd) {
-                let month: string = moment(val.sd).format("YYYY/MM");
-                target.set(month, index);
-              }
-
-              return target;
-            }, new Map<string, number>());
-
-            let lastindexes: Array<number> = new Array<number>();
-
-            monthlyLastDataIndex.forEach((val) => {
-              lastindexes.push(val);
-            });
-
-            let index = 0;
-            for (let single of data) {
-              if (lastindexes.indexOf(index) >= 0) {
-                this.mergeCalendarActivity(single, true);
-              } else {
-                this.mergeCalendarActivity(single, false);
-              }
-              index++;
-            }
-          } else {
-            this.mergeCalendarActivity(data);
-          }
+          this.activitiesqueue.push({data: data});
         });
 
         break;
