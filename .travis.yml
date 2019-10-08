@@ -73,7 +73,7 @@ before_install:
   - gem install byebug
   - gem install fir-cli
   - cp $TRAVIS_BUILD_DIR/config/build.gradle $TRAVIS_BUILD_DIR/TimeApp/build.gradle
-  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sed -i 's/905/${TRAVIS_BUILD_NUMBER}/g' $TRAVIS_BUILD_DIR/TimeApp/config.xml ; fi
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sed -i 's/905/'$TRAVIS_BUILD_NUMBER'/g' $TRAVIS_BUILD_DIR/TimeApp/config.xml ; fi
   - cd TimeApp
 before_script:
   - pwd
