@@ -2568,7 +2568,7 @@ describe('CalendarService test suite', () => {
     }, 1000);
   });
 
-  it(`Case 21 - 5 mergeCalendarActivity 合并日历显示列表活动数据 - 合并1个备忘`, async () => {
+  it(`Case 21 - 5 mergeCalendarActivity 合并日历显示列表活动数据 - 合并1个备忘`, async (done) => {
     // 初始化
     let calendaractivities = await calendarService.getCalendarActivities();
 
@@ -2584,12 +2584,15 @@ describe('CalendarService test suite', () => {
 
     await memoService.saveMemo(memo);
 
-    expect(mergeSpy.calls.any()).toBe(true, 'calendarService.mergeCalendarActivity called');
-    // 本月备忘为1
-    expect(calendaractivities[1].memos.length).toBe(1);
+    setTimeout(() => {
+      expect(mergeSpy.calls.any()).toBe(true, 'calendarService.mergeCalendarActivity called');
+      // 本月备忘为1
+      expect(calendaractivities[1].memos.length).toBe(1);
+      done();
+    }, 1000);
   });
 
-  it(`Case 21 - 4 mergeCalendarActivity 合并日历显示列表活动数据 - 合并1个日历项`, async () => {
+  it(`Case 21 - 4 mergeCalendarActivity 合并日历显示列表活动数据 - 合并1个日历项`, async (done) => {
     // 初始化
     let calendaractivities = await calendarService.getCalendarActivities();
 
@@ -2606,12 +2609,15 @@ describe('CalendarService test suite', () => {
 
     await calendarService.savePlanItem(planitem1);
 
-    expect(mergeSpy.calls.any()).toBe(true, 'calendarService.mergeCalendarActivity called');
-    // 本月日历项为1
-    expect(calendaractivities[1].calendaritems.length).toBe(1);
+    setTimeout(() => {
+      expect(mergeSpy.calls.any()).toBe(true, 'calendarService.mergeCalendarActivity called');
+      // 本月日历项为1
+      expect(calendaractivities[1].calendaritems.length).toBe(1);
+      done();
+    }, 1000);
   });
 
-  it(`Case 21 - 3 mergeCalendarActivity 合并日历显示列表活动数据 - 合并1个日程`, async () => {
+  it(`Case 21 - 3 mergeCalendarActivity 合并日历显示列表活动数据 - 合并1个日程`, async (done) => {
     // 初始化
     let calendaractivities = await calendarService.getCalendarActivities();
 
@@ -2627,12 +2633,15 @@ describe('CalendarService test suite', () => {
 
     await eventService.saveAgenda(agenda);
 
-    expect(mergeSpy.calls.any()).toBe(true, 'calendarService.mergeCalendarActivity called');
-    // 本月事件为1
-    expect(calendaractivities[1].events.length).toBe(1);
+    setTimeout(() => {
+      expect(mergeSpy.calls.any()).toBe(true, 'calendarService.mergeCalendarActivity called');
+      // 本月事件为1
+      expect(calendaractivities[1].events.length).toBe(1);
+      done();
+    }, 1000);
   });
 
-  it(`Case 21 - 2 mergeCalendarActivity 合并日历显示列表活动数据 - 合并1个任务`, async () => {
+  it(`Case 21 - 2 mergeCalendarActivity 合并日历显示列表活动数据 - 合并1个任务`, async (done) => {
     // 初始化
     let calendaractivities = await calendarService.getCalendarActivities();
 
@@ -2645,9 +2654,12 @@ describe('CalendarService test suite', () => {
 
     await eventService.saveTask(task);
 
-    expect(mergeSpy.calls.any()).toBe(true, 'calendarService.mergeCalendarActivity called');
-    // 本月事件为1
-    expect(calendaractivities[1].events.length).toBe(1);
+    setTimeout(() => {
+      expect(mergeSpy.calls.any()).toBe(true, 'calendarService.mergeCalendarActivity called');
+      // 本月事件为1
+      expect(calendaractivities[1].events.length).toBe(1);
+      done();
+    }, 1000);
   });
 
   it(`Case 21 - 1 mergeCalendarActivity 合并日历显示列表活动数据 - 入参为空(报错)`, () => {
