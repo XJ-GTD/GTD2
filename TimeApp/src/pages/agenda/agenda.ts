@@ -332,7 +332,7 @@ export class AgendaPage {
       clonemembers = new Array<Member>();
     }
     let modal = this.modalCtrl.create(DataConfig.PAGE._INVITES_PAGE, {
-      mine: this.currentAgenda.ui == this.currentuser,
+      ui: this.currentAgenda.ui,
       members: clonemembers,
       md: this.currentAgenda.md,
       iv: this.currentAgenda.iv
