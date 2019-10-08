@@ -27,7 +27,7 @@ export class EffectService extends BaseService {
   }
 
   registerSyncEvents() {
-    let online = this.emitService.register("on.network.disconnected", () => {
+    let online = this.emitService.register("on.network.connected", () => {
       online.unsubscribe();
       this.syncStart().then(() => {
         this.registerSyncEvents();
