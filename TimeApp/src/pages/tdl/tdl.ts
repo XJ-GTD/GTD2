@@ -109,7 +109,7 @@ BScroll.use(InfinityScroll);
 
                 </div>
               </ion-row>
-              <ion-row class="item-content dayagenda-content item-content-backgroud" *ngFor="let event of days.events;" [ngClass]="{'unsync': event.tb == unsynch}" (click)="toDetail(event.evi,event.evd,event.type,event.gs)">
+              <ion-row class="item-content dayagenda-content item-content-backgroud" *ngFor="let event of days.events;" [ngClass]="{'sync': event.tb == synch, 'unsync': event.tb == unsynch}" (click)="toDetail(event.evi,event.evd,event.type,event.gs)">
                   <div class="line font-small first-line">
                     <div class="icon">
                       <ion-icon class = "fal fa-calendar-star"></ion-icon>
@@ -176,6 +176,7 @@ export class TdlPage {
   inviteaccept: InviteState = InviteState.Accepted;
   invitereject: InviteState = InviteState.Rejected;
 
+  synch: SyncType = SyncType.synch;
   unsynch: SyncType = SyncType.unsynch;
 
   constructor(private tdlServ: TdlService,
