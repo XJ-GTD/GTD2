@@ -413,7 +413,7 @@ export class ContactsService {
       exists.rel = '0';
 
       exists.ui = userinfo.openid;
-      exists.hiu = userinfo.avatarbase64;
+      exists.hiu = "";  //userinfo.avatarbase64;
       exists.ran = userinfo.nickname;
       exists.ranpy = this.utilService.chineseToPinYin(userinfo.nickname);
       exists.rn = userinfo.nickname;
@@ -443,7 +443,7 @@ export class ContactsService {
       exists.rel = '0';
 
       exists.bhi = this.utilService.getUuid();
-      exists.hiu = DataConfig.HUIBASE64;
+      exists.hiu = "";  //DataConfig.HUIBASE64;
 
       let sqls: Array<string> = new Array<string>();
 
