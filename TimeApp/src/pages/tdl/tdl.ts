@@ -109,20 +109,20 @@ BScroll.use(InfinityScroll);
 
                 </div>
               </ion-row>
-              <ion-row class="item-content dayagenda-content item-content-backgroud" *ngFor="let event of days.events;" (click)="toDetail(event.evi,event.evd,event.type,event.gs)">
-                  <div class="line font-small first-line" [ngClass]="{'sync': event.tb == synch, 'unsync': event.tb == unsynch}">
+              <ion-row class="item-content dayagenda-content item-content-backgroud" *ngFor="let event of days.events;" [ngClass]="{'sync': event.tb == synch, 'unsync': event.tb == unsynch}" (click)="toDetail(event.evi,event.evd,event.type,event.gs)">
+                  <div class="line font-small first-line">
                     <div class="icon">
                       <ion-icon class = "fal fa-calendar-star"></ion-icon>
                     </div>
                     <div class="sn">{{event.evn}}</div>
                   </div>
-                  <div class="line font-small" [ngClass]="{'sync': event.tb == synch, 'unsync': event.tb == unsynch}">
+                  <div class="line font-small">
                     <div class="icon">
                       <ion-icon class = "fal fa-alarm-exclamation "></ion-icon>
                     </div>
                     <div class="st">{{event.evt}}</div>
                   </div>
-                  <div class="line font-small" *ngIf="currentuser != event.ui && event.ui != ''" [ngClass]="{'sync': event.tb == synch, 'unsync': event.tb == unsynch}">
+                  <div class="line font-small" *ngIf="currentuser != event.ui && event.ui != ''">
                     <div class="icon ">
                       <ion-icon class = "user-o fal fa-user-tag"></ion-icon>
                     </div>
