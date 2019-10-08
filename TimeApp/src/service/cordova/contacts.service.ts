@@ -394,6 +394,79 @@ export class ContactsService {
     return exists;
   }
 
+  async addSharedContact(id: string, shared: BTbl = null): Promise<FsData> {
+    let userinfo = await this.personRestful.get(id);
+
+    let exists : FsData = null;
+
+    //获取本地参与人
+    let sql = 'select gb.*, bh.bhi bhi, bh.hiu bhiu '
+            + ' from gtd_b gb '
+            + '       left join gtd_bh bh on bh.pwi = gb.pwi '
+            + ' where gb.ui = "' + id + '"'
+            + ' or gb.rc = "' + id + '";';
+    // 能够适应使用ui和rc查询是否存在BTbl记录
+    let exists : FsData = await this.sqlExce.getExtOne<FsData>(sql);
+
+    if (!exists && userinfo) {
+      exists = new FsData();
+
+      exists.pwi = this.utilService.getUuid();
+      exists.rel = '0';
+
+      exists.ui = userinfo.openid;
+      exists.hiu = userinfo.avatarbase64;
+      exists.ran = userinfo.nickname;
+      exists.ranpy = this.utilService.chineseToPinYin(userinfo.nickname);
+      exists.rn = userinfo.nickname;
+      exists.rnpy = this.utilService.chineseToPinYin(userinfo.nickname);
+      exists.rc = userinfo.phoneno;
+
+      exists.bhi = this.utilService.getUuid();
+
+      let sqls: Array<string> = new Array<string>();
+
+      let bt = new BTbl();
+      let bh = new BhTbl();
+
+      Object.assign(bt, exists);
+      sqls.push(bt.inTParam());
+
+      Object.assign(bh, exists);
+      sqls.push(bh.inTParam());
+
+      await this.sqlExce.batExecSql(sqls);
+
+    } else if (!exists && shared) {
+      exists = new FsData();
+
+      Object.assign(exists, shared);
+      exists.pwi = this.utilService.getUuid();
+      exists.rel = '0';
+
+      exists.bhi = this.utilService.getUuid();
+      exists.hiu = DataConfig.HUIBASE64;
+
+      let sqls: Array<string> = new Array<string>();
+
+      let bt = new BTbl();
+      let bh = new BhTbl();
+
+      Object.assign(bt, exists);
+      sqls.push(bt.inTParam());
+
+      Object.assign(bh, exists);
+      sqls.push(bh.inTParam());
+
+      await this.sqlExce.batExecSql(sqls);
+    }
+
+    // 全部更新完成后刷新
+    await this.userConfig.RefreshOneBTbl(exists);
+
+    return exists;
+  }
+
   /**
    *
    * 更新联系人信息和头像

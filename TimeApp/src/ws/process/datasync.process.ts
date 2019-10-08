@@ -104,6 +104,8 @@ export class DataSyncProcess implements MQProcess {
             return (pos >= 0);
           });
 
+          let originmembers = agenda.members;
+
           agenda.members = new Array<Member>();
 
           for (let fsdata of fsdatas) {
@@ -145,9 +147,15 @@ export class DataSyncProcess implements MQProcess {
 
           // 参与人可能存在没有注册的情况，目前没有考虑
           for (let unknown of unknowncontacts) {
-            let one: FsData = await this.contactsServ.updateOneFs(unknown);
+            let origins = originmembers.filter((element) => {
+              return element.rc == unknown;
+            });
 
-            if (one) {
+            let origin = (origins && origins.length > 0)? origins[0] : null;
+
+            let one: FsData = await this.contactsServ.addSharedContact(unknown, origin);
+
+            if (one && one.rc) { // 注册用户
               let member: Member = {} as Member;
               Object.assign(member, one);
 
@@ -182,6 +190,8 @@ export class DataSyncProcess implements MQProcess {
               }
 
               agenda.members.push(member);
+            } else {  // 非注册用户
+
             }
           }
         }
