@@ -2,6 +2,7 @@ import { ModuleWithProviders, NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/
 import { IonicPageModule } from 'ionic-angular';
 import { PageBoxComponent } from './page-box';
 import { PipesModule } from "../../pipes/pipes.module";
+import {} from "../ai/point/point.module";
 
 @NgModule({
   declarations: [

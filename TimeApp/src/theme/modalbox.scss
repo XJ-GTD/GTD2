@@ -10,9 +10,10 @@ modal-box {
     .box-header {
       height: 110px;
 
-      ion-toolbar {
+      > .toolbar-ios {
         height: 100%;
         padding:0px 1rem;
+        margin: 0;
 
         .toolbar-background {
           border-style: none;
@@ -78,7 +79,7 @@ modal-box {
     background: rgba(0, 0, 0, 0.8);
 
     .box-header {
-      ion-toolbar {
+      > .toolbar-ios {
         ion-title {
           .toolbar-title {
             color: rgba(255, 255, 255, 1);
@@ -107,7 +108,7 @@ modal-box {
     background: rgba(0, 0, 0, 0.8);
 
     .box-header {
-      ion-toolbar {
+      > .toolbar-ios {
         ion-title {
           .toolbar-title {
             color: rgba(235, 239, 250, 1);
