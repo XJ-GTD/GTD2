@@ -140,7 +140,7 @@ export class AttachPage {
             if(filePath){
               let fileName: string  = filePath.substr(filePath.lastIndexOf("/")+1,filePath.length);
               let ext: string = fileName.split(".")[1];
-              let imgFileDir: string  =  imageData.substr(0,imageData.lastIndexOf("/")+1);
+              let imgFileDir: string  =  filePath.substr(0,filePath.lastIndexOf("/")+1);
               this.file.copyFile(imgFileDir,fileName,this.file.externalDataDirectory+"/timeAppfile",fileName);
               let fjData: FjData = {} as FjData;
               fjData.obt = this.obt;
