@@ -69,6 +69,8 @@ function clean(datasource)
       eventdatafrom: "local",
       eventdata: JSON.stringify({type: type, id: id})
     };
+
+    return push;
   }
 
   // messagetype: SD[SELF_DEVICE], SA[SELF_ACCOUNT], OA[OTHER_ACCOUNT], SP[SELF_PULL]
