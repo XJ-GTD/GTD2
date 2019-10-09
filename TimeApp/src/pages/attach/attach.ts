@@ -110,7 +110,6 @@ export class AttachPage {
         let ext: string = fileName.split(".")[1];
         //将文件copy至缓存文件
         let imgFileDir: string  =  imageData.substr(0,imageData.lastIndexOf("/")+1);
-        this.file.copyFile(imgFileDir,fileName,this.file.externalDataDirectory+"/timeAppfile",fileName);
         fjData.obt = this.obt;
         fjData.obi = this.obi;
         fjData.fjn = this.bw;
@@ -118,6 +117,8 @@ export class AttachPage {
         fjData.fj = this.file.externalDataDirectory+"/timeAppfile/"+fileName;
         this.fjArray.push(fjData);
         alert("新文件路径："+this.file.externalDataDirectory+"/timeAppfile/"+fileName);
+        this.file.copyFile(imgFileDir,fileName,this.file.externalDataDirectory+"/timeAppfile",fileName);
+
       }
       // let base64Image = 'data:image/jpeg;base64,' + imageData;
       // this.imgUrl = base64Image;
@@ -142,8 +143,6 @@ export class AttachPage {
               let fileName: string  = filePath.substr(filePath.lastIndexOf("/")+1,filePath.length);
               let ext: string = fileName.split(".")[1];
               let imgFileDir: string  =  filePath.substr(0,filePath.lastIndexOf("/")+1);
-              alert("文件路径3:"+fileName+","+ext+","+imgFileDir);
-              this.file.copyFile(imgFileDir,fileName,this.file.externalDataDirectory+"/timeAppfile",fileName);
               let fjData: FjData = {} as FjData;
               fjData.obt = this.obt;
               fjData.obi = this.obi;
@@ -152,6 +151,10 @@ export class AttachPage {
               fjData.fj = this.file.externalDataDirectory+"/timeAppfile/"+fileName;
               this.fjArray.push(fjData);
               alert("新文件路径："+this.file.externalDataDirectory+"/timeAppfile/"+fileName);
+              alert("文件路径3:"+fileName+","+ext+","+imgFileDir);
+              this.file.copyFile(imgFileDir,fileName,this.file.externalDataDirectory+"/timeAppfile",fileName);
+
+
             }
           })
           .catch(err => console.log(err));
