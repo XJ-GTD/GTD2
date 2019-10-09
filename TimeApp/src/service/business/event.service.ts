@@ -2810,7 +2810,10 @@ export class EventService extends BaseService {
 
         sync.fields.unshared.push("bz");        // 备注为个人数据不共享给他人
         sync.fields.unshared.push("ji");        // 计划为个人数据不共享给他人
-        //sync.fields.unshared.push("todolist");  // 待处理任务为个人数据不共享给他人 完成状态需要共享，todolist不能设置为私有
+        sync.fields.unshared.push("tx");        // 提醒为个人数据不共享给他人
+        sync.fields.unshared.push("txs");       // 提醒为个人数据不共享给他人
+        sync.fields.unshared.push("todolist");  // 待处理任务为个人数据不共享给他人
+        sync.fields.unshared.push("wc");        // 完成状态为个人数据不共享给他人
 
         sync.id = agenda.evi;
         sync.type = "Agenda";
