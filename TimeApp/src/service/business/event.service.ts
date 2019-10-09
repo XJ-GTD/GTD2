@@ -2775,6 +2775,7 @@ export class EventService extends BaseService {
         sync.fields.unshared.push("wc");              // 完成状态为个人数据不共享给他人
         sync.fields.unshared.push("invitestatus");    // 接受拒绝状态为个人数据不共享给他人
 
+        sync.src = agenda.ui;
         sync.id = agenda.evi;
         sync.type = "Agenda";
         sync.title = agenda.evn;
