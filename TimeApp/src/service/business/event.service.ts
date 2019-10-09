@@ -2080,8 +2080,8 @@ export class EventService extends BaseService {
 
     agdata.fj = !agdata.fj ? "" : agdata.fj ;
     agdata.pn = !agdata.pn ? 0 : agdata.pn ;
-    agdata.md = !agdata.md ? anyenum.ModiPower.disable : agdata.md ;
-    agdata.iv = !agdata.iv ? anyenum.InvitePowr.disable : agdata.iv ;
+    agdata.md = !agdata.md ? anyenum.ModiPower.enable : agdata.md ;
+    agdata.iv = !agdata.iv ? anyenum.InvitePowr.enable : agdata.iv ;
     agdata.sr = !agdata.sr ? "" : agdata.sr ;
     agdata.gs = !agdata.gs ? anyenum.GsType.self : agdata.gs ;
 
