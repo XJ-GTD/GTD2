@@ -33,29 +33,33 @@ import {AssistantService} from "../../service/cordova/assistant.service";
             </span>
           </ion-title>
           <div class="toolbar">
-            <div (click)="record()" *ngIf="buttons.record">
-              <ion-icon class="fal fa-microphone"></ion-icon>
+            <div (click)="goRecord()" *ngIf="buttons.record">
+              <ion-icon class="fad fa-microphone"></ion-icon>
             </div>
             
             <div (click)="goRemove()" *ngIf="buttons.remove">
-              <ion-icon class="fal fa-trash"></ion-icon>
+              <ion-icon class="fad fa-trash"></ion-icon>
             </div>
 
             <div  (click)="goShare()" *ngIf="buttons.share">
-              <ion-icon class="fal fa-share"></ion-icon>
+              <ion-icon class="fad fa-share"></ion-icon>
             </div>
 
 
             <div  (click)="goCreate()" *ngIf="buttons.create">
-              <ion-icon class="fal fa-plus"></ion-icon>
+              <ion-icon class="fad fa-plus-square"></ion-icon>
             </div>
-            
 
             <div  (click)="goSave()" *ngIf="buttons.save">
-              <ion-icon class="fal fa-save"></ion-icon>
+              <ion-icon class="fad fa-save"></ion-icon>
             </div>
+
+            <div  (click)="goSpeaker()" *ngIf="buttons.speaker">
+              <ion-icon class="fad fa-ear"></ion-icon>
+            </div>
+            
             <div (click)="goBack()" *ngIf="buttons.cancel">
-              <ion-icon class="fal fa-undo"></ion-icon>
+              <ion-icon class="fad fa-undo"></ion-icon>
             </div>
           </div>
         </ion-toolbar>
@@ -80,12 +84,16 @@ export class PageBoxComponent{
   data: any;
 
   @Input()
+  speakData:string;
+
+  @Input()
   buttons: any = {
     remove: false,
     share: false,
     save: false,
     record: false,
     create: false,
+    speaker: false,
     cancel: true
   };
 
@@ -106,6 +114,9 @@ export class PageBoxComponent{
 
   @Output()
   private onRecord: EventEmitter<any> = new EventEmitter<any>();
+
+  @Output()
+  private onSpeaker: EventEmitter<any> = new EventEmitter<any>();
 
   constructor(public events: Events,
             private renderer2: Renderer2,
@@ -146,7 +157,7 @@ export class PageBoxComponent{
   goCreate() {
     this.onCreate.emit(this);
   }
-  record() {
+  goRecord() {
     this.buttons.record = false;
     this.onRecord.emit("开始说话");
     this.assistantService.audio2Text((text) => {
@@ -158,5 +169,11 @@ export class PageBoxComponent{
       this.onRecord.emit("语音不可用");
       this.buttons.record = true;
     });
+  }
+
+  goSpeaker(){
+    this.assistantService.speakText(this.speakData).then(()=>{
+      this.onSpeaker.emit(this);
+    })
   }
 }

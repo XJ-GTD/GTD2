@@ -22,15 +22,11 @@ import * as moment from "moment";
     <ion-header no-border>
       <ion-toolbar>
         <ion-buttons left>
-          <button ion-button icon-only (click)="goBack()" color="danger">
-            <img class="img-header-left" src="./assets/imgs/back.png">
+          <button ion-button icon-only (click)="goBack()">
+            <ion-icon class="fal fa-undo"></ion-icon>
           </button>
         </ion-buttons>
         <ion-title>关于</ion-title>
-        <ion-buttons right>
-          <button ion-button icon-only color="danger">
-          </button>
-        </ion-buttons>
       </ion-toolbar>
     </ion-header>
 

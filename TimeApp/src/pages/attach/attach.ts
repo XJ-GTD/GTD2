@@ -29,7 +29,7 @@ import {FjData} from "../../service/business/event.service";
         </button>
       </ion-row>
       <ion-row>
-        <ion-textarea rows="8" no-margin [(ngModel)]="bw" #bzRef></ion-textarea>
+        <ion-textarea rows="8" no-margin [(ngModel)]="bw"  placeholder="输入你想要添加的附件说明主题"></ion-textarea>
       </ion-row>
     </ion-grid>
   </modal-box>
@@ -104,7 +104,7 @@ export class AttachPage {
     this.camera.getPicture(options).then((imageData) => {
       console.info("开始拍照上传照片");
       let fjData: FjData = {} as FjData;
-      if (imageData){
+      if (imageData !=''){
 
         let fileName: string  = imageData.substr(imageData.lastIndexOf("/")+1,imageData.length);
         let ext: string = fileName.split(".")[1];
@@ -136,8 +136,8 @@ export class AttachPage {
       this.chooser.getFile('*/*').then((file) => {
           this.filePath.resolveNativePath(file.uri)
           .then((filePath) =>{
-            alert("文件路径:"+filePath)
-            if(filePath){
+            //alert("文件路径:"+filePath)
+            if(filePath !=''){
               let fileName: string  = filePath.substr(filePath.lastIndexOf("/")+1,filePath.length);
               let ext: string = fileName.split(".")[1];
               let imgFileDir: string  =  filePath.substr(0,filePath.lastIndexOf("/")+1);

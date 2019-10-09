@@ -32,22 +32,25 @@ import {EmitService} from "../../service/util-service/emit.service";
           </ion-title>
           <div class="toolbar">
             <div (click)="record()" *ngIf="buttons.record">
-              <ion-icon class="fal fa-microphone"></ion-icon>
+              <ion-icon class="fad fa-microphone"></ion-icon>
             </div>
             <div (click)="goRemove()" *ngIf="buttons.remove">
-              <ion-icon class="fal fa-eraser"></ion-icon>
+              <ion-icon class="far fa-eraser"></ion-icon>
             </div>
             <div (click)="goRemove()" *ngIf="buttons.share">
-              <ion-icon class="fal fa-share"></ion-icon>
+              <ion-icon class="far fa-share"></ion-icon>
             </div>
             <div (click)="create()" *ngIf="buttons.create">
-              <ion-icon class="fal fa-plus"></ion-icon>
+              <ion-icon class="far fa-plus-square"></ion-icon>
             </div>
             <div (click)="save()" *ngIf="buttons.save">
-              <ion-icon class="fal fa-check"></ion-icon>
+              <ion-icon class="far fa-check"></ion-icon>
+            </div>
+            <div  (click)="goSpeaker()" *ngIf="buttons.speaker">
+              <ion-icon class="far fa-ear"></ion-icon>
             </div>
             <div (click)="cancel()" *ngIf="buttons.cancel">
-              <ion-icon class="fal fa-times"></ion-icon>
+              <ion-icon class="far fa-times"></ion-icon>
             </div>
           </div>
         </ion-toolbar>
@@ -62,6 +65,9 @@ export class ModalBoxComponent {
   @Input()
   title: string = "";
 
+  @Input()
+  speakData:string;
+
   @ViewChild('modalcontent') modalcontent: Content;
 
   @Input()
@@ -71,6 +77,7 @@ export class ModalBoxComponent {
     save: false,
     record: false,
     create: false,
+    speaker: false,
     cancel: true
   };
 
@@ -85,6 +92,8 @@ export class ModalBoxComponent {
   private onCreate: EventEmitter<any> = new EventEmitter<any>();
   @Output()
   private onRecord: EventEmitter<any> = new EventEmitter<any>();
+  @Output()
+  private onSpeaker: EventEmitter<any> = new EventEmitter<any>();
 
 
   constructor(public events: Events, private renderer2: Renderer2,
@@ -125,5 +134,11 @@ export class ModalBoxComponent {
       this.onRecord.emit("语音不可用");
       this.buttons.record = true;
     });
+  }
+
+  goSpeaker(){
+    this.assistantService.speakText(this.speakData).then(()=>{
+      this.onSpeaker.emit(this);
+    })
   }
 }
