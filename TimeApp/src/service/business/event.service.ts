@@ -55,7 +55,9 @@ export class EventService extends BaseService {
       for (let j = 0 , len = pullAgdatas.length; j < len ; j++){
         let agd = {} as AgendaData;
         agd = pullAgdatas[j];
-        agd.del = status;
+
+        // 删除参与人时，通过这个字段传递删除数据
+        if (status == SyncDataStatus.Deleted) agd.del = DelType.del;
         agd.tb = SyncType.synch;
 
         // 非共享字段，第一次接收需要付初值
