@@ -28,7 +28,7 @@ import {MemberShareState} from "../../data.enum";
           <ion-label #membercom class="somemmember">
             <ul>
                 <li *ngFor = "let member of memberSet.members; let i = index" (click)="removeMember(i)">
-                  <span [ngStyle]="{'color':memberAcceptColor(member) }"> {{ member.ran }}</span>
+                  <span [ngStyle]="{'color':memberAcceptColor(member) }"> {{ member.ran  }}|{{member.ui}}</span>
                 </li>
               <li></li>
             </ul>
