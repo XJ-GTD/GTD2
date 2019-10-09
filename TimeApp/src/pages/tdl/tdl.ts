@@ -123,6 +123,10 @@ BScroll.use(InfinityScroll);
                       <ion-icon class = "fal fa-alarm-exclamation "></ion-icon>
                     </div>
                     <div class="st">{{event.evt}}</div>
+                    
+                    <div class="icon" end>
+                      <ion-icon class = "fal fa-sync" *ngIf = "event.tb == synch"></ion-icon>
+                    </div>
                   </div>
                   <div class="line font-small" *ngIf="currentuser != event.ui && event.ui != ''">
                     <div class="icon ">
