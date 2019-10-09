@@ -82,6 +82,10 @@ export class EventService extends BaseService {
           agd.txs = txjson.text();
         }
 
+        if (!agd.invitestatus) {
+          agd.invitestatus = InviteState.None;
+        }
+
         let ev = new EvTbl();
         Object.assign(ev,agd);
         sqlparam.push(ev.rpTParam());
@@ -2790,12 +2794,13 @@ export class EventService extends BaseService {
       for (let agenda of agendas) {
         let sync: SyncData = new SyncData();
 
-        sync.fields.unshared.push("bz");        // 备注为个人数据不共享给他人
-        sync.fields.unshared.push("ji");        // 计划为个人数据不共享给他人
-        sync.fields.unshared.push("tx");        // 提醒为个人数据不共享给他人
-        sync.fields.unshared.push("txs");       // 提醒为个人数据不共享给他人
-        sync.fields.unshared.push("todolist");  // 待处理任务为个人数据不共享给他人
-        sync.fields.unshared.push("wc");        // 完成状态为个人数据不共享给他人
+        sync.fields.unshared.push("bz");              // 备注为个人数据不共享给他人
+        sync.fields.unshared.push("ji");              // 计划为个人数据不共享给他人
+        sync.fields.unshared.push("tx");              // 提醒为个人数据不共享给他人
+        sync.fields.unshared.push("txs");             // 提醒为个人数据不共享给他人
+        sync.fields.unshared.push("todolist");        // 待处理任务为个人数据不共享给他人
+        sync.fields.unshared.push("wc");              // 完成状态为个人数据不共享给他人
+        sync.fields.unshared.push("invitestatus");    // 接受拒绝状态为个人数据不共享给他人
 
         sync.id = agenda.evi;
         sync.type = "Agenda";
