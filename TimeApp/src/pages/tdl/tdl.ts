@@ -198,7 +198,10 @@ export class TdlPage {
               public changeDetectorRef:ChangeDetectorRef
   ) {
   }
+  ionViewDidEnter() {
 
+    this.friends = UserConfig.friends;
+  }
   getNativeElement(): any {
     return this.contentD._scrollContent.nativeElement;
   }
