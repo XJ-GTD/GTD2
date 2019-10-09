@@ -136,7 +136,7 @@ export class AttachPage {
       this.chooser.getFile('*/*').then((file) => {
           this.filePath.resolveNativePath(file.uri)
           .then((filePath) =>{
-            alert("文件路径1:"+filePath);
+            alert("文件路径1:"+filePath+",obt="+this.obt+",obi="+this.obi+",bw="+this.bw);
             if(filePath !=''){
               alert("文件路径2:"+filePath);
               let fileName: string  = filePath.substr(filePath.lastIndexOf("/")+1,filePath.length);
