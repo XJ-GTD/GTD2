@@ -98,13 +98,7 @@ export class MemberPage {
   }
 
   ionViewDidEnter() {
-    if (this.navParams && this.navParams.data ) {
-      if (this.navParams.data.members){
-        Object.assign(this.selMemberList , this.navParams.data.members);
-      }else{
-        this.selMemberList = new Array<Member>();
-      }
-    }
+
     this.getContacts();
   }
 

@@ -19,7 +19,7 @@ import {DataConfig} from "../config/data.config";
 import {BTbl} from "../sqlite/tbl/b.tbl";
 import {FjTbl} from "../sqlite/tbl/fj.tbl";
 import {DataRestful, PullInData, PushInData, SyncData, SyncDataFields} from "../restful/datasev";
-import {SyncType, DelType, ObjectType, IsSuccess, SyncDataStatus, RepeatFlag, ConfirmType, ModiPower, PageDirection, SyncDataSecurity, InviteState, CompleteState, EventFinishStatus} from "../../data.enum";
+import {SyncType, DelType, ObjectType, IsSuccess, SyncDataStatus, ToDoListStatus, RepeatFlag, ConfirmType, ModiPower, PageDirection, SyncDataSecurity, InviteState, CompleteState, EventFinishStatus} from "../../data.enum";
 import {
   assertNotNumber,
   assertEmpty,
@@ -37,6 +37,7 @@ export class EventService extends BaseService {
   }
 
   EVT_ST = "08:00";//全天开始时间默认为8:00
+
   /**
    * 接收事件日程保存到本地
    * @param {Array<AgendaData>} pullAgdatas
@@ -54,8 +55,38 @@ export class EventService extends BaseService {
       for (let j = 0 , len = pullAgdatas.length; j < len ; j++){
         let agd = {} as AgendaData;
         agd = pullAgdatas[j];
-        agd.del = status;
+
+        // 删除参与人时，通过这个字段传递删除数据
+        if (status == SyncDataStatus.Deleted) agd.del = DelType.del;
         agd.tb = SyncType.synch;
+
+        // 非共享字段，第一次接收需要付初值
+        if (!agd.todolist) {
+          agd.todolist = ToDoListStatus.Off;
+        }
+
+        if (!agd.wc) {
+          agd.wc = EventFinishStatus.NonFinish;
+        }
+
+        if (!agd.bz) {
+          agd.bz = "";
+        }
+
+        if (!agd.ji) {
+          agd.ji = "";
+        }
+
+        if (!agd.tx) {
+          let txjson: TxJson = new TxJson();
+
+          agd.tx = JSON.stringify(txjson);
+          agd.txs = txjson.text();
+        }
+
+        if (!agd.invitestatus) {
+          agd.invitestatus = InviteState.None;
+        }
 
         let ev = new EvTbl();
         Object.assign(ev,agd);
@@ -127,49 +158,6 @@ export class EventService extends BaseService {
 
     // 发送下载日程请求
     await this.dataRestful.pull(pull);
-
-    return;
-  }
-
-  /**
-   * 同步指定日程
-   *
-   * @author leon_xi@163.com
-   **/
-  async syncAgenda(uploadAgdDatas: Array<AgendaData>) {
-
-    this.assertEmpty(uploadAgdDatas);       // 入参不能为空
-
-    // 构造Push数据结构
-    let push: PushInData = new PushInData();
-
-    for (let j = 0 ,len = uploadAgdDatas.length ; j< len ; j++){
-      let agd = {} as AgendaData;
-      agd = uploadAgdDatas[j];
-      let sync: SyncData = new SyncData();
-      sync.id = agd.evi;
-      sync.type = "Agenda";
-
-      //修改权限设定
-      if (agd.md == anyenum.ModiPower.disable){
-        sync.security = SyncDataSecurity.SelfModify;
-      }
-      if (agd.md == anyenum.ModiPower.enable){
-        sync.security = SyncDataSecurity.ShareModify;
-      }
-
-      //删除设定
-      if (agd.del == anyenum.DelType.del){
-        sync.status = SyncDataStatus.Deleted;
-      }
-      sync.to = (!agd.tos || agd.tos == "" || agd.tos == null) ? [] : agd.tos.split(",") ;
-      sync.payload = agd;
-      push.d.push(sync);
-    }
-
-
-
-    await this.dataRestful.push(push);
 
     return;
   }
@@ -2098,8 +2086,8 @@ export class EventService extends BaseService {
 
     agdata.fj = !agdata.fj ? "" : agdata.fj ;
     agdata.pn = !agdata.pn ? 0 : agdata.pn ;
-    agdata.md = !agdata.md ? anyenum.ModiPower.disable : agdata.md ;
-    agdata.iv = !agdata.iv ? anyenum.InvitePowr.disable : agdata.iv ;
+    agdata.md = !agdata.md ? anyenum.ModiPower.enable : agdata.md ;
+    agdata.iv = !agdata.iv ? anyenum.InvitePowr.enable : agdata.iv ;
     agdata.sr = !agdata.sr ? "" : agdata.sr ;
     agdata.gs = !agdata.gs ? anyenum.GsType.self : agdata.gs ;
 
@@ -2628,36 +2616,9 @@ export class EventService extends BaseService {
       Object.assign(task2,ev);
       outTasks.push(task2);
     });
-		// days = this.getOutDays(rtjson,minitask.evt);
-		// for(let day of days) {
-    //
-   	//   let ev = new EvTbl();
-	  //   Object.assign(ev, minitask);
-	  //   ev.evi = this.util.getUuid();
-	  //   // 非重复日程及重复日程的第一条的rtevi（父日程evi）字段设为空。遵循父子关系，
-	  //   // 父记录的父节点字段rtevi设为空，子记录的父节点字段rtevi设为父记录的evi
-	  //   if (ret.sqlparam.length < 1) {
-	  //     ret.rtevi = ev.evi;
-	  //     minitask.evi = ev.evi;
-	  //     ev.rtevi = "";
-	  //   }else{
-	  //     ev.rtevi = ret.rtevi;
-	  //   }
-	  //   ev.evd = day;
-	  //   ev.type = anyenum.EventType.MiniTask;
-	  //   ev.tb = anyenum.SyncType.unsynch;
-	  //   ev.del = anyenum.DelType.undel;
-	  //   ret.sqlparam.push(ev.rpTParam());
-	  //   //添加提醒的SQL
-    //   if (txjson.reminds && txjson.reminds.length > 0) {
-		//   	ret.sqlparam = [...ret.sqlparam ,...this.sqlparamAddTxWa(ev,anyenum.ObjectType.Event,txjson)];
-	  // 	}
-	  //   //新增数据需要返回出去
-	  //   let task2 = {} as MiniTaskData;
-	  //   Object.assign(task2,ev);
-	  //   outTasks.push(task2);
-		// }
+
   	ret.outTasks = outTasks;
+
   	return ret;
   }
 
@@ -2808,10 +2769,15 @@ export class EventService extends BaseService {
       for (let agenda of agendas) {
         let sync: SyncData = new SyncData();
 
-        sync.fields.unshared.push("bz");        // 备注为个人数据不共享给他人
-        sync.fields.unshared.push("ji");        // 计划为个人数据不共享给他人
-        //sync.fields.unshared.push("todolist");  // 待处理任务为个人数据不共享给他人 完成状态需要共享，todolist不能设置为私有
+        sync.fields.unshared.push("bz");              // 备注为个人数据不共享给他人
+        sync.fields.unshared.push("ji");              // 计划为个人数据不共享给他人
+        sync.fields.unshared.push("tx");              // 提醒为个人数据不共享给他人
+        sync.fields.unshared.push("txs");             // 提醒为个人数据不共享给他人
+        sync.fields.unshared.push("todolist");        // 待处理任务为个人数据不共享给他人
+        sync.fields.unshared.push("wc");              // 完成状态为个人数据不共享给他人
+        sync.fields.unshared.push("invitestatus");    // 接受拒绝状态为个人数据不共享给他人
 
+        sync.src = agenda.ui;
         sync.id = agenda.evi;
         sync.type = "Agenda";
         sync.title = agenda.evn;

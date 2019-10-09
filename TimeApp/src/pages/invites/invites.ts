@@ -164,9 +164,7 @@ export class InvitesPage {
 
   openMemberSelect(){
     let modal = this.modalCtrl.create(DataConfig.PAGE._MEMBER_PAGE,
-      {
-        members : this.memberSet.members
-      });
+      {});
     modal.onDidDismiss(async (data) => {
       if (data && data.members && data.members.length > 0) {
         let exists = this.memberSet.members.reduce((target, val) => {
