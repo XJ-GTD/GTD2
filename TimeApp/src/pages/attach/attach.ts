@@ -29,7 +29,7 @@ import {FjData} from "../../service/business/event.service";
         </button>
       </ion-row>
       <ion-row>
-        <ion-textarea rows="8" no-margin [(ngModel)]="bw" #bzRef></ion-textarea>
+        <ion-textarea rows="8" no-margin [(ngModel)]="bw"  placeholder="输入你想要添加的附件说明主题"></ion-textarea>
       </ion-row>
     </ion-grid>
   </modal-box>
