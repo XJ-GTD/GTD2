@@ -136,11 +136,13 @@ export class AttachPage {
       this.chooser.getFile('*/*').then((file) => {
           this.filePath.resolveNativePath(file.uri)
           .then((filePath) =>{
-            //alert("文件路径:"+filePath)
+            alert("文件路径1:"+filePath);
             if(filePath !=''){
+              alert("文件路径2:"+filePath);
               let fileName: string  = filePath.substr(filePath.lastIndexOf("/")+1,filePath.length);
               let ext: string = fileName.split(".")[1];
               let imgFileDir: string  =  filePath.substr(0,filePath.lastIndexOf("/")+1);
+              alert("文件路径3:"+fileName+","+ext+","+imgFileDir);
               this.file.copyFile(imgFileDir,fileName,this.file.externalDataDirectory+"/timeAppfile",fileName);
               let fjData: FjData = {} as FjData;
               fjData.obt = this.obt;
