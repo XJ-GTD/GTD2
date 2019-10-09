@@ -31,6 +31,7 @@ page-box {
             font-size: 2.4rem;
             font-weight: 500;
             max-width: 45%;
+            padding: 0.2rem 0.25rem;
 
             .subtilte {
               font-size: 0.875rem;
@@ -49,9 +50,9 @@ page-box {
 
           .icon {
             margin: 0 0.75rem;
-            padding: 0 0.25rem;
+            padding: 0.2rem 0.25rem;
             font-size: 2.4rem;
-            font-weight: 500;
+            line-height: 2.4rem;
           }
         }
 

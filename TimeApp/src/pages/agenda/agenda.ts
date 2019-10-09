@@ -40,7 +40,7 @@ import {ModiPower} from "../../data.enum";
   template:
       `
     <page-box title="活动" [buttons]="buttons" [data]="currentAgenda.evi" (onRemove)="goRemove()" (onSave)="save()"
-              (onBack)="goBack()" (onRecord)="record($event)">
+              (onBack)="goBack()" (onRecord)="record($event)" (onSpeaker)="speaker($event)" [speakData] = "currentAgenda.evn">
 
       <ion-grid>
         <ion-row class="snRow">
@@ -155,6 +155,7 @@ export class AgendaPage {
     share: false,
     save: false,
     record:true,
+    speaker:true,
     cancel: true
   };
 
@@ -636,5 +637,8 @@ export class AgendaPage {
     this.currentAgenda.evn = text;
     this.changeDetectorRef.markForCheck();
     this.changeDetectorRef.detectChanges();
+  }
+
+  speaker(){
   }
 }
