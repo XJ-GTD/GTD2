@@ -72,8 +72,8 @@ export class InvitesPage {
 
   memberSet : any = {
     members : new Array<Member>(),
-    md : false,
-    iv : false,
+    md : true,
+    iv : true,
     mine:true
   }
 
