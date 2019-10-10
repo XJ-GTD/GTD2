@@ -57,7 +57,13 @@ export class EventService extends BaseService {
         agd = pullAgdatas[j];
 
         // 删除参与人时，通过这个字段传递删除数据
-        if (status == SyncDataStatus.Deleted) agd.del = DelType.del;
+        if (status == SyncDataStatus.Deleted) {
+          agd.del = DelType.del;
+        } else {
+          // 删除字段不共享, 如果不存在需要设置默认值
+          if (!agd.del) agd.del = DelType.undel;
+        }
+
         agd.tb = SyncType.synch;
 
         // 非共享字段，第一次接收需要付初值
@@ -2769,6 +2775,7 @@ export class EventService extends BaseService {
       for (let agenda of agendas) {
         let sync: SyncData = new SyncData();
 
+        sync.fields.unshared.push("del");             // 删除状态为个人数据不共享给他人
         sync.fields.unshared.push("bz");              // 备注为个人数据不共享给他人
         sync.fields.unshared.push("ji");              // 计划为个人数据不共享给他人
         sync.fields.unshared.push("tx");              // 提醒为个人数据不共享给他人

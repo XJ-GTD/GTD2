@@ -188,8 +188,8 @@ function clean(datasource)
         standardnext.announceType = 'data_sync';
         standardnext.announceContent = {
           mwxing: convertMessage(id, type, 'OTHER_ACCOUNT'),
-          sms: convertSMS(title),
-          push: convertPushMessage(id, type, title, datetime)
+          sms: main? convertSMS(title) : {},
+          push: main? convertPushMessage(id, type, title, datetime) : {}
         };
 
         outputs.push(standardnext);
