@@ -2245,8 +2245,12 @@ describe('CalendarService test suite', () => {
         it(`Case 1 - 1 2019/08/16 存在体检日程`, async () => {
           let day0816Activities = await calendarService.fetchDayActivities("2019/08/16");
 
+          let events = day1010Activities.events.filter((element) => {
+            return element.evn == "体检 08/16";
+          });
+
           expect(day0816Activities).toBeDefined();
-          expect(day0816Activities.events.length).toBe(1);
+          expect(events.length).toBe(1);
         });
 
         it(`Case 1 - 2 2019/10/10 不存在体检日程`, async () => {
