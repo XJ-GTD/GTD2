@@ -3028,9 +3028,6 @@ export class EventService extends BaseService {
 
     let saved = await this.saveAgenda(current, origin);
 
-    this.emitService.emit("mwxing.calendar.activities.changed", saved);
-    this.syncAgendas(saved);
-
     return current;
   }
 
@@ -3051,9 +3048,6 @@ export class EventService extends BaseService {
     current.del = DelType.del;                     // 拒绝的日程设置为删除, 从用户日历显示中删除
 
     let saved = await this.saveAgenda(current, origin);
-
-    this.emitService.emit("mwxing.calendar.activities.changed", saved);
-    this.syncAgendas(saved);
 
     return current;
   }
