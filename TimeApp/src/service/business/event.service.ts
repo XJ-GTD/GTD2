@@ -1641,7 +1641,7 @@ export class EventService extends BaseService {
 
       //删除原事件中从当前开始所有事件
       console.log("**** updateAgenda delFromsel start :****" + moment().format("YYYY/MM/DD HH:mm:ss SSS"))
-      await this.delFromsel(masterEvi ,oriAgdata ,newAgdata.members,sqlparam,outAgds);
+      await this.delFromsel(masterEvi ,oriAgdata ,oriAgdata.members,sqlparam,outAgds);
       console.log("**** updateAgenda delFromsel end :****" + moment().format("YYYY/MM/DD HH:mm:ss SSS"))
       //新建新事件日程
       let nwAgdata = {} as AgendaData;
@@ -1673,7 +1673,7 @@ export class EventService extends BaseService {
 
       //删除原事件中从当前开始所有事件
       oriAgdata.evd = oriAgdata.sd;
-      await this.delFromsel(masterEvi ,oriAgdata ,newAgdata.members,sqlparam,outAgds);
+      await this.delFromsel(masterEvi ,oriAgdata ,oriAgdata.members,sqlparam,outAgds);
 
       //新建新事件日程
       let retParamEv = new RetParamEv();
