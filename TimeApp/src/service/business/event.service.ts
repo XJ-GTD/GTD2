@@ -40,6 +40,7 @@ export class EventService extends BaseService {
 
   /**
    * 接收事件日程保存到本地
+   *
    * @param {Array<AgendaData>} pullAgdatas
    * @param {SyncDataStatus} status
    * @returns {Promise<Array<AgendaData>>}
@@ -52,6 +53,8 @@ export class EventService extends BaseService {
     let sqlparam = new Array<any>();
 
     if (pullAgdatas && pullAgdatas !=null ){
+      let saved: Array<AgendaData> = new Array<AgendaData>();
+
       for (let j = 0 , len = pullAgdatas.length; j < len ; j++){
         let agd = {} as AgendaData;
         agd = pullAgdatas[j];
@@ -134,13 +137,15 @@ export class EventService extends BaseService {
             sqlparam.push(par.rpTParam());
           }
         }
+
+        saved.push(agd);
       }
 
       this.sqlExce.batExecSqlByParam(sqlparam);
-      this.emitService.emit("mwxing.calendar.activities.changed", pullAgdatas);
+      this.emitService.emit("mwxing.calendar.activities.changed", saved);
     }
 
-    return pullAgdatas;
+    return saved;
   }
 
   /**
