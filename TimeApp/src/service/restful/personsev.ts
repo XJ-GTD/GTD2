@@ -118,6 +118,7 @@ export class PersonRestful {
   //获取个人信息	AIU	获取个人信息 get
   getself(unionid:string): Promise<PersonOutData> {
 
+    alert(5)
     return new Promise((resolve, reject) => {
       let url: UrlEntity = this.config.getRestFulUrl("AIU");
       let urlEntity: UrlEntity = new UrlEntity();
@@ -126,6 +127,7 @@ export class PersonRestful {
       urlEntity.desc = url.desc;
       urlEntity.url = urlEntity.url.replace("{unionid}",unionid);
       this.request.get(urlEntity).then(data => {
+        alert(6)
         //处理返回结果
         resolve(data.data);
 
