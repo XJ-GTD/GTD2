@@ -47,7 +47,7 @@ export class FormatedatePipe implements PipeTransform {
       }
       if (args[0] == "CSSMM"){
         let ret;
-        switch (moment(value,"YYYY/MM").format("M")) {
+        switch (moment(value,"YYYYMM").format("M")) {
           case "1":
             ret = "month1";
             break;
