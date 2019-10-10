@@ -22,7 +22,7 @@ export class IonCalendarService {
   constructor(private readlocal:LocalcalendarService,
               private util:UtilService,
               private calendarService:CalendarService) {
-    IonCalendarService.selecttime =  moment(moment().format("YYYY-MM-DD")).valueOf();
+    IonCalendarService.selecttime =  moment().valueOf();
 
   }
 

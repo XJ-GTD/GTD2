@@ -106,8 +106,8 @@ export class CalendarService extends BaseService {
     let lastMonth: string = this.calendaractivities[this.calendaractivities.length - 1].month;
 
     // 往前添加
-    if (moment(month).isBefore(firstMonth)) {
-      let currentMonth: string = moment(firstMonth).subtract(1, "months").format("YYYY/MM");
+    if (moment(month,"YYYY/MM").isBefore(firstMonth)) {
+      let currentMonth: string = moment(firstMonth,"YYYY/MM").subtract(1, "months").format("YYYY/MM");
 
       while(true) {
         await this.getCalendarActivities(PageDirection.PageDown);
@@ -121,8 +121,8 @@ export class CalendarService extends BaseService {
     }
 
     // 往后添加
-    if (moment(lastMonth).isBefore(month)) {
-      let currentMonth: string = moment(lastMonth).add(1, "months").format("YYYY/MM");
+    if (moment(lastMonth,"YYYY/MM").isBefore(month)) {
+      let currentMonth: string = moment(lastMonth,"YYYY/MM").add(1, "months").format("YYYY/MM");
 
       while(true) {
         await this.getCalendarActivities(PageDirection.PageUp);
@@ -131,7 +131,7 @@ export class CalendarService extends BaseService {
           break;
         }
 
-        currentMonth = moment(currentMonth).add(1, "months").format("YYYY/MM");
+        currentMonth = moment(currentMonth,"YYYY/MM").add(1, "months").format("YYYY/MM");
       }
     }
 
@@ -177,14 +177,14 @@ export class CalendarService extends BaseService {
           this.assertFail("getCalendarActivities 调用PageDirection.PageUp之前, 请先调用PageDirection.PageInit。");
         }
         let lastmonth: string = this.calendaractivities[this.calendaractivities.length - 1].month;
-        this.calendaractivities.push(await this.fetchMonthActivities(moment(lastmonth).add(1, "months").format("YYYY/MM")));
+        this.calendaractivities.push(await this.fetchMonthActivities(moment(lastmonth,"YYYY/MM").add(1, "months").format("YYYY/MM")));
         break;
       case PageDirection.PageDown :
         if (this.calendaractivities.length < 1) {
           this.assertFail("getCalendarActivities 调用PageDirection.PageDown, 请先调用PageDirection.PageInit。");
         }
         let firstmonth: string = this.calendaractivities[0].month;
-        this.calendaractivities.unshift(await this.fetchMonthActivities(moment(firstmonth).subtract(1, "months").format("YYYY/MM")));
+        this.calendaractivities.unshift(await this.fetchMonthActivities(moment(firstmonth,"YYYY/MM").subtract(1, "months").format("YYYY/MM")));
         break;
       default:
         this.assertFail();    // 非法参数
@@ -225,8 +225,8 @@ export class CalendarService extends BaseService {
         // 判断数据是否属于当前缓存日期范围
         currentmonth = moment(item.sd).format("YYYY/MM");
 
-        if (moment(firstmonth).diff(currentmonth, "months") <= 0 && moment(currentmonth).diff(lastmonth, "months") <= 0) {
-          let diff = moment(currentmonth).diff(firstmonth, "months");
+        if (moment(firstmonth,"YYYY/MM").diff(currentmonth, "months") <= 0 && moment(currentmonth).diff(lastmonth, "months") <= 0) {
+          let diff = moment(currentmonth,"YYYY/MM").diff(firstmonth, "months");
 
           let currentmonthactivities = this.calendaractivities[diff];
           this.mergeMonthActivities(currentmonthactivities, [item], update);
@@ -241,8 +241,8 @@ export class CalendarService extends BaseService {
         // 判断数据是否属于当前缓存日期范围
         currentmonth = moment(agenda.evd).format("YYYY/MM");
 
-        if (moment(firstmonth).diff(currentmonth, "months") <= 0 && moment(currentmonth).diff(lastmonth, "months") <= 0) {
-          let diff = moment(currentmonth).diff(firstmonth, "months");
+        if (moment(firstmonth,"YYYY/MM").diff(currentmonth, "months") <= 0 && moment(currentmonth).diff(lastmonth, "months") <= 0) {
+          let diff = moment(currentmonth,"YYYY/MM").diff(firstmonth, "months");
 
           let currentmonthactivities = this.calendaractivities[diff];
           this.mergeMonthActivities(currentmonthactivities, [agenda], update);
@@ -257,8 +257,8 @@ export class CalendarService extends BaseService {
         // 判断数据是否属于当前缓存日期范围
         currentmonth = moment(task.evd).format("YYYY/MM");
 
-        if (moment(firstmonth).diff(currentmonth, "months") <= 0 && moment(currentmonth).diff(lastmonth, "months") <= 0) {
-          let diff = moment(currentmonth).diff(firstmonth, "months");
+        if (moment(firstmonth,"YYYY/MM").diff(currentmonth, "months") <= 0 && moment(currentmonth,"YYYY/MM").diff(lastmonth, "months") <= 0) {
+          let diff = moment(currentmonth,"YYYY/MM").diff(firstmonth, "months");
 
           let currentmonthactivities = this.calendaractivities[diff];
           this.mergeMonthActivities(currentmonthactivities, [task], update);
@@ -273,7 +273,7 @@ export class CalendarService extends BaseService {
         // 判断数据是否属于当前缓存日期范围
         currentmonth = moment(minitask.evd).format("YYYY/MM");
 
-        if (moment(firstmonth).diff(currentmonth, "months") <= 0 && moment(currentmonth).diff(lastmonth, "months") <= 0) {
+        if (moment(firstmonth,"YYYY/MM").diff(currentmonth, "months") <= 0 && moment(currentmonth,"YYYY/MM").diff(lastmonth, "months") <= 0) {
           let diff = moment(currentmonth).diff(firstmonth, "months");
 
           let currentmonthactivities = this.calendaractivities[diff];
@@ -289,8 +289,8 @@ export class CalendarService extends BaseService {
         // 判断数据是否属于当前缓存日期范围
         currentmonth = moment(memo.sd).format("YYYY/MM");
 
-        if (moment(firstmonth).diff(currentmonth, "months") <= 0 && moment(currentmonth).diff(lastmonth, "months") <= 0) {
-          let diff = moment(currentmonth).diff(firstmonth, "months");
+        if (moment(firstmonth,"YYYY/MM").diff(currentmonth, "months") <= 0 && moment(currentmonth,"YYYY/MM").diff(lastmonth, "months") <= 0) {
+          let diff = moment(currentmonth,"YYYY/MM").diff(firstmonth, "months");
 
           let currentmonthactivities = this.calendaractivities[diff];
           this.mergeMonthActivities(currentmonthactivities, [memo], update);
@@ -2083,7 +2083,7 @@ export class CalendarService extends BaseService {
 
     this.assertEmpty(month);    // 入参不能为空
 
-    let days: number = moment(month).daysInMonth();
+    let days: number = moment(month,"YYYY/MM").daysInMonth();
     let arrDays: Array<string> = new Array<string>(days).fill("01");  // 必须要先填充, 否则不能map
     arrDays = arrDays.map((value, index) => {
       return (month + "/" + ("0" + (index + 1)).slice(-2));
@@ -2154,8 +2154,8 @@ export class CalendarService extends BaseService {
 
     let days: Map<string, DayActivityData> = new Map<string, DayActivityData>();
 
-    let startday: string = moment(month).startOf('month').format("YYYY/MM/DD");
-    let endday: string = moment(month).endOf('month').format("YYYY/MM/DD");
+    let startday: string = moment(month,"YYYY/MM").startOf('month').format("YYYY/MM/DD");
+    let endday: string = moment(month,"YYYY/MM").endOf('month').format("YYYY/MM/DD");
 
     // 初始化每日记录
     days.set(startday, new DayActivityData(startday));
@@ -2246,8 +2246,8 @@ export class CalendarService extends BaseService {
       return monthActivities;
     }
 
-    let startday: string = moment(monthActivities.month).startOf('month').format("YYYY/MM/DD");
-    let endday: string = moment(monthActivities.month).endOf('month').format("YYYY/MM/DD");
+    let startday: string = moment(monthActivities.month,"YYYY/MM").startOf('month').format("YYYY/MM/DD");
+    let endday: string = moment(monthActivities.month,"YYYY/MM").endOf('month').format("YYYY/MM/DD");
 
     // 循环合并更新活动
     for (let activity of activities) {
