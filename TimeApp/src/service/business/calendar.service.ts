@@ -3473,15 +3473,15 @@ export class CalendarService extends BaseService {
       return "PlanItemData";
     }
 
-    if (src.evi && src.ed) {    // AgendaData
+    if (src.evi && src.type == EventType.Agenda) {    // AgendaData
       return "AgendaData";
     }
 
-    if (src.evi && src.cs) {    // TaskData
+    if (src.evi && src.type == EventType.Task) {    // TaskData
       return "TaskData";
     }
 
-    if (src.evi && !src.cs && !src.ed) {    // MiniTaskData
+    if (src.evi && src.type == EventType.MiniTask) {    // MiniTaskData
       return "MiniTaskData";
     }
 
