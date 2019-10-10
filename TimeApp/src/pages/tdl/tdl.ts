@@ -85,7 +85,11 @@ BScroll.use(InfinityScroll);
                     <div class="ys-fsize">{{days.day | formatedate:"CMM"}}</div>
                   </div>
                   <div class="d-title  ">
-                    <div class="d-title-chr" >{{this.util.lunar4str(days.day,"D")}}</div>
+                    <div class="d-title-chr" >
+                      <p>{{this.util.lunar4str(days.day,"d")}}
+                      </p>
+                      <p>{{this.util.lunar4str(days.day,"M")}}</p>
+                    </div>
                     <div class=" d-title-chr"><span>{{days.events.length}}</span> 活动</div>
                     <div class=" d-title-chr"><span>{{days.calendaritems.length}}</span> 纪念日</div>
                     <div class=" d-title-chr mome " (click)="toMemo(days)" *ngIf="days.memos.length > 0" [class.item-no-display]="days.memos.length == 0"><span>{{days.events.length}}</span>备忘</div>

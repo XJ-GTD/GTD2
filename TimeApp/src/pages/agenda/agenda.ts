@@ -52,9 +52,9 @@ import {ModiPower} from "../../data.enum";
           </div>
 
           <div class="agendatodo" *ngIf="currentAgenda.evi && currentAgenda.todolist">
-            <ion-icon (click)="changeTodolist()" class="font-large-x fal"
-                      [class.fa-star-exclamation]="currentAgenda.todolist == todoliston"
-                      [class.fa-star]="currentAgenda.todolist != todoliston"></ion-icon>
+            <ion-icon (click)="changeTodolist()" class="font-large-x  fa-star"
+                      [class.fad]="currentAgenda.todolist == todoliston"
+                      [class.fal]="currentAgenda.todolist != todoliston"></ion-icon>
 
           </div>
         </ion-row>
@@ -109,7 +109,7 @@ import {ModiPower} from "../../data.enum";
               <button ion-button clear (click)="changeRepeat()" class="font-normal" [disabled]="originAgenda.evi && originAgenda.ui != currentuser && originAgenda.md != enablechange">
                 <ion-icon class="fal fa-copy font-normal" *ngIf="!currentAgenda.rts"></ion-icon>
                 {{currentAgenda.rts || "重复"}}
-                <corner-badge *ngIf="currentAgenda.rts" fa-copy><p><i class="fa fa-copy "></i></p></corner-badge>
+                <!--<corner-badge *ngIf="currentAgenda.rts" fa-copy><p><i class="fa fa-copy "></i></p></corner-badge>-->
               </button>
             </ion-row>
 

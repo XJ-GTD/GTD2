@@ -268,11 +268,11 @@
 
       .d-title-chr {
         height: 50px;
+        line-height: 50px;
         overflow: hidden;
         font-size: 1.2rem;
         margin-left: 1rem;
         margin-right: 1rem;
-        line-height: 50px;
         text-align: center;
 
         span {
@@ -288,8 +288,19 @@
         margin-left: 0;
         margin-right: 0;
         letter-spacing: 2px;
-        font-size: 1.6rem;
+        font-size: 1.4rem;
         font-weight: 800;
+        p{
+          font-size: 1.4rem;
+          line-height: 20px;
+          margin: 0 auto;
+          margin-top:8px ;
+        }
+        p:last-child{
+          font-size: 1.2rem;
+          line-height: 15px;
+          margin-top:0px ;
+        }
       }
 
       .mome {
