@@ -46,7 +46,7 @@ import {ModiPower} from "../../data.enum";
         <ion-row class="snRow">
           <div class="sn font-large-x">
             <!--主题-->
-            <ion-textarea rows="8" no-margin [(ngModel)]="currentAgenda.evn" (ionChange)="changeTitle()" [disabled]="originAgenda.evi && originAgenda.ui != currentuser && originAgenda.md != enablechange"
+            <ion-textarea rows="8" no-margin [(ngModel)]="currentAgenda.evn" (ionChange)="changeTitle()" [readonly]="originAgenda.evi && originAgenda.ui != currentuser && (originAgenda.md != enablechange || originAgenda.invitestate != acceptedinvite)"
                           #bzRef></ion-textarea>
           </div>
 
@@ -179,6 +179,8 @@ export class AgendaPage {
   nonrepeatflag = RepeatFlag.NonRepeat;
   repeattonon = RepeatFlag.RepeatToOnly;
 
+  acceptedinvite: InviteState = InviteState.Accepted;
+
   @ViewChild(PageBoxComponent)
   pageBoxComponent: PageBoxComponent
 
@@ -252,7 +254,7 @@ export class AgendaPage {
   }
 
   changeDatetime() {
-    if (this.originAgenda.ui != this.currentuser && this.originAgenda.md != ModiPower.enable) { // 受邀人修改权限检查
+    if (this.originAgenda.ui != this.currentuser && (this.originAgenda.md != ModiPower.enable || this.originAgenda.invitestate != InviteState.Accepted)) { // 受邀人修改权限检查
       return;
     }
 
@@ -271,7 +273,7 @@ export class AgendaPage {
   }
 
   changeTitle() {
-    if (this.originAgenda.evi && this.originAgenda.ui != this.currentuser && this.originAgenda.md != ModiPower.enable) { // 受邀人修改权限检查
+    if (this.originAgenda.evi && this.originAgenda.ui != this.currentuser && (this.originAgenda.md != ModiPower.enable || this.originAgenda.invitestate != InviteState.Accepted)) { // 受邀人修改权限检查
       return;
     }
 
@@ -291,6 +293,10 @@ export class AgendaPage {
   }
 
   changeTodolist() {
+    if (this.originAgenda.ui != this.currentuser && this.originAgenda.invitestate != InviteState.Accepted) { // 受邀人接受状态检查
+      return;
+    }
+
     if (this.currentAgenda.todolist == ToDoListStatus.On) {
       this.currentAgenda.todolist = ToDoListStatus.Off;
     } else {
@@ -305,6 +311,10 @@ export class AgendaPage {
   }
 
   changeAttach() {
+    if (this.originAgenda.ui != this.currentuser && this.originAgenda.invitestate != InviteState.Accepted) { // 受邀人接受状态检查
+      return;
+    }
+
     let modal = this.modalCtrl.create(DataConfig.PAGE._ATTACH_PAGE, {
       obt: ObjectType.Event,
       obi: this.currentAgenda.evi
@@ -360,6 +370,10 @@ export class AgendaPage {
   }
 
   changePlan() {
+    if (this.originAgenda.ui != this.currentuser && this.originAgenda.invitestate != InviteState.Accepted) { // 受邀人接受状态检查
+      return;
+    }
+
     let modal = this.modalCtrl.create(DataConfig.PAGE._PLAN_PAGE, {ji: this.currentAgenda.ji});
     modal.onDidDismiss(async (data) => {
       if (!data) return;
@@ -376,6 +390,10 @@ export class AgendaPage {
   }
 
   changeLocation() {
+    if (this.originAgenda.ui != this.currentuser && this.originAgenda.invitestate != InviteState.Accepted) { // 受邀人接受状态检查
+      return;
+    }
+
     let modal = this.modalCtrl.create(DataConfig.PAGE._LOCATION_PAGE, {
       adr: this.currentAgenda.adr,
       adrx: this.currentAgenda.adrx,
@@ -399,6 +417,10 @@ export class AgendaPage {
   }
 
   changeComment() {
+    if (this.originAgenda.ui != this.currentuser && this.originAgenda.invitestate != InviteState.Accepted) { // 受邀人接受状态检查
+      return;
+    }
+
     let modal = this.modalCtrl.create(DataConfig.PAGE._COMMENT_PAGE, {value: this.currentAgenda.bz});
     modal.onDidDismiss(async (data) => {
       if (!data) return;
@@ -415,7 +437,7 @@ export class AgendaPage {
   }
 
   changeRepeat() {
-    if (this.originAgenda.ui != this.currentuser && this.originAgenda.md != ModiPower.enable) { // 受邀人修改权限检查
+    if (this.originAgenda.ui != this.currentuser && (this.originAgenda.md != ModiPower.enable || this.originAgenda.invitestate != InviteState.Accepted)) { // 受邀人修改权限检查
       return;
     }
 
@@ -448,6 +470,10 @@ export class AgendaPage {
   }
 
   changeRemind() {
+    if (this.originAgenda.ui != this.currentuser && this.originAgenda.invitestate != InviteState.Accepted) { // 受邀人接受状态检查
+      return;
+    }
+
     if (!this.currentAgenda.txjson && this.currentAgenda.tx) {
       this.currentAgenda.txjson = new TxJson();
       let txdata = JSON.parse(this.currentAgenda.tx);
