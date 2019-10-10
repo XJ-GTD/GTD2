@@ -13,6 +13,8 @@ import {FsData} from "../../data.mapping";
 import {UserConfig} from "../../service/config/user.config";
 import {ContactsService} from "../../service/cordova/contacts.service";
 import {BTbl} from "../../service/sqlite/tbl/b.tbl";
+import {PersonRestful} from "../../service/restful/personsev";
+import {SqliteExec} from "../../service/util-service/sqlite.exec";
 
 /**
  * 数据同步
@@ -25,7 +27,9 @@ export class DataSyncProcess implements MQProcess {
               private contactsServ: ContactsService,
               private calendarService: CalendarService,
               private eventService: EventService,
-              private memoService: MemoService) {
+              private memoService: MemoService,
+              private personRestful: PersonRestful,
+              private sqlExce : SqliteExec) {
   }
 
   async gowhen(content: WsContent, contextRetMap: Map<string,any>) {
@@ -109,7 +113,23 @@ export class DataSyncProcess implements MQProcess {
 
           agenda.members = new Array<Member>();
 
+          let bsqls = new Array<string>();
+
           for (let fsdata of fsdatas) {
+
+            //更新参与人ui
+            if (fsdata.ui == ""){
+              let userinfo = await this.personRestful.get(fsdata.rc);
+              if (userinfo && userinfo.openid){
+                fsdata.ui = userinfo.openid;
+
+                let bt = new BTbl();
+                bt.pwi = fsdata.pwi;
+                bt.ui = fsdata.ui;
+                bsqls.push(bt.upT());
+              }
+            }
+
             let member: Member = {} as Member;
             Object.assign(member, fsdata);
 
@@ -144,6 +164,10 @@ export class DataSyncProcess implements MQProcess {
             }
 
             agenda.members.push(member);
+          }
+
+          if (bsqls.length > 0){
+            await this.sqlExce.batExecSql(bsqls);
           }
 
           // 参与人可能存在没有注册的情况，目前没有考虑
