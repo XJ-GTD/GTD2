@@ -17,9 +17,9 @@ export class FormatedatePipe implements PipeTransform {
    * Takes a value and makes it lowercase.
    */
   transform(value: any, ...args) {
-    if (moment(value)+"" == "NaN"){
-      return value;
-    }
+    // if (moment(value,"YYYYMM")+"" == "NaN"){
+    //   return value;
+    // }
 
     if (args.length ==1 ){
       if (args[0] == "ADD7CYYYY/MM/DD") {
@@ -47,7 +47,7 @@ export class FormatedatePipe implements PipeTransform {
       }
       if (args[0] == "CSSMM"){
         let ret;
-        switch (moment(value,"YYYYMM").format("M")) {
+        switch (moment(value,"YYYY/MM").format("M")) {
           case "1":
             ret = "month1";
             break;
