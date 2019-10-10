@@ -40,6 +40,7 @@ export class PersonRestful {
         resolve(personData);
 
       }).catch(error => {
+        alert(1145 + error);
         //处理返回错误
         personData = error;
         resolve(personData);
