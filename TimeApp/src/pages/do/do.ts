@@ -197,11 +197,13 @@ export class DoPage {
   }
 
   complete(target: any) {
-    console.log(target);
+    let origin: AgendaData = this.eventService.getAgenda(target.evi);
+
     let complete: AgendaData = {} as AgendaData;
-    Object.assign(complete, target);
+    Object.assign(complete, origin);
+
     complete.wc = EventFinishStatus.Finished;
 
-    this.eventService.saveAgenda(complete, target, OperateType.OnlySel);
+    this.eventService.saveAgenda(complete, origin, OperateType.OnlySel);
   }
 }
