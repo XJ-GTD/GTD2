@@ -2224,7 +2224,11 @@ describe('CalendarService test suite', () => {
         beforeEach(async () => {
           let day1010Activities = await calendarService.fetchDayActivities("2019/10/10");
 
-          let event = day1010Activities.events[0];
+          let events = day1010Activities.events.filter((element) => {
+            return element.evn == "体检";
+          });
+
+          let event = events[0];
 
           // 2019年 改成 每年 08/16 体检
           let origin: AgendaData = await eventService.getAgenda(event.evi);
