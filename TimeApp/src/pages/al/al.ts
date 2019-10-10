@@ -16,11 +16,17 @@ import {RabbitMQService} from "../../service/cordova/rabbitmq.service";
 @Component({
   selector: 'page-al',
   template: `
-    <div class="container">
       <div class="progress-wrapper">
+        <div class="loader">
+          <div class="face">
+            <div class="circle"></div>
+          </div>
+          <div class="face">
+            <div class="circle"></div>
+          </div>
+        </div>
       </div>
       <div class="text">{{ alData.text }}</div>
-    </div>
   `
 })
 export class AlPage {
@@ -55,12 +61,12 @@ export class AlPage {
     this.alData = await this.alService.setSetting();
     this.alData = await this.alService.checkUserInfo();
     if (!this.alData.islogin) {
-      this.nav.setRoot(DataConfig.PAGE._LP_PAGE);
+       this.nav.setRoot(DataConfig.PAGE._LP_PAGE);
     } else {
       this.alData.text = "正在连接服务器。。。"
       this.alService.connWebSocket();
       this.alData.text = "进入您的日历"
-      this.nav.setRoot(DataConfig.PAGE._M_PAGE);
+       this.nav.setRoot(DataConfig.PAGE._M_PAGE);
     }
   }
 }
