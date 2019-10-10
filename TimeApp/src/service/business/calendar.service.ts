@@ -1996,6 +1996,85 @@ export class CalendarService extends BaseService {
   }
 
   /**
+   * 重新计算指定年月下的活动汇总
+   *
+   * @author leon_xi@163.com
+   **/
+  refreshMonthActivitiesSummary(origin: MonthActivitySummaryData, monthActivities: MonthActivityData): MonthActivitySummaryData {
+    this.assertEmpty(origin);                 // 入参不能为空
+    this.assertEmpty(origin.month);           // 每月概要月份不能为空
+    this.assertEmpty(monthActivities);        // 入参不能为空
+    this.assertEmpty(monthActivities.month);  // 每月活动月份不能为空
+    this.assertNotEqual(origin.month, monthActivities.month); // 两个月份不能不一致
+
+    for (let daysummary of origin.days) {
+      let dayActivities: DayActivityData = monthActivities.days.get(daysummary.day);
+
+      // 计算日历项
+      let calendaritemscount: number = 0;
+      let activityitemscount: number = 0;
+      let daycalendaritem: string = "";
+      let px: number = null;
+
+      for (let item of dayActivities.calendaritems) {
+        if (item.jtt == PlanItemType.Holiday) {
+          calendaritemscount++;
+        }
+
+        if (item.jtt == PlanItemType.Activity) {
+          activityitemscount++;
+        }
+
+        if (!px) {
+          px = item.px;
+          daycalendaritem = item.jtn;
+        } else {
+          if (px > item.px) {
+            px = item.px;
+            daycalendaritem = item.jtn;
+          }
+        }
+      }
+
+      daysummary.daycalendaritem = daycalendaritem;
+      daysummary.calendaritemscount = calendaritemscount;
+      daysummary.activityitemscount = activityitemscount;
+
+      // 计算活动
+      let eventscount: number = 0;
+      let agendascount: number = 0;
+      let taskscount: number = 0;
+      let repeateventscount: number = 0;
+
+      for (let event of dayActivities.events) {
+        eventscount++;
+
+        if (event.type == EventType.Agenda && (!event.rtevi && event.rtevi == "")) {
+          agendascount++;
+        }
+
+        if (event.type == EventType.Task) {
+          taskscount++;
+        }
+
+        if (event.rtevi && event.rtevi != "") {
+          repeateventscount++;
+        }
+      }
+
+      daysummary.eventscount = eventscount;
+      daysummary.agendascount = agendascount;
+      daysummary.taskscount = taskscount;
+      daysummary.repeateventscount = repeateventscount;
+
+      // 计算备忘
+      daysummary.memoscount = dayActivities.memos.length;
+    }
+
+    return origin;
+  }
+
+  /**
    * 获取指定年月下的活动汇总
    *
    * @author leon_xi@163.com
@@ -3473,15 +3552,15 @@ export class CalendarService extends BaseService {
       return "PlanItemData";
     }
 
-    if (src.evi && src.ed) {    // AgendaData
+    if (src.evi && src.type == EventType.Agenda) {    // AgendaData
       return "AgendaData";
     }
 
-    if (src.evi && src.cs) {    // TaskData
+    if (src.evi && src.type == EventType.Task) {    // TaskData
       return "TaskData";
     }
 
-    if (src.evi && !src.cs && !src.ed) {    // MiniTaskData
+    if (src.evi && src.type == EventType.MiniTask) {    // MiniTaskData
       return "MiniTaskData";
     }
 

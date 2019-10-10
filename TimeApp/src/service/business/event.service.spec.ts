@@ -918,11 +918,11 @@ describe('EventService test suite', () => {
 
     });
 
-    it(`Case 1 - 1 isAgendaChanged 判断日程是否已被修改 - 未修改`, async () => {
+    it(`Case 1 - 1 isAgendaRepeatChanged 判断日程是否已被修改 - 未修改`, async () => {
       let agenda = dayNoneRepeatAgendas[0];
       let agenda1 = await eventService.getAgenda(agenda.evi);
 
-      let isChanged = eventService.isAgendaChanged(agenda1, agenda);
+      let isChanged = eventService.isAgendaRepeatChanged(agenda1, agenda);
 
       expect(isChanged).toBeDefined();
       expect(isChanged.length).toBeDefined(0);

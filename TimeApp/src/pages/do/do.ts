@@ -196,12 +196,14 @@ export class DoPage {
     this.modalCtr.create(DataConfig.PAGE._AGENDA_PAGE, p).present();
   }
 
-  complete(target: any) {
-    console.log(target);
+  async complete(target: any) {
+    let origin: AgendaData = await this.eventService.getAgenda(target.evi);
+
     let complete: AgendaData = {} as AgendaData;
-    Object.assign(complete, target);
+    Object.assign(complete, origin);
+
     complete.wc = EventFinishStatus.Finished;
 
-    this.eventService.saveAgenda(complete, target, OperateType.OnlySel);
+    await this.eventService.saveAgenda(complete, origin, OperateType.OnlySel);
   }
 }

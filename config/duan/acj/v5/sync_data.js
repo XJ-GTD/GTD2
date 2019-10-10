@@ -60,7 +60,7 @@ function clean(datasource)
   var convertPushMessage = function(id, type, title, datetime) {
     var push = {};
 
-    push['title'] = '[##from##] ' + title;
+    push['title'] = '[冥王星] ' + title;
     push['content'] = formatDateTimeShow(datetime);
     push['extras'] = {
       event: "MWXING_SHAREAGENDA_EVENT",
@@ -188,8 +188,8 @@ function clean(datasource)
         standardnext.announceType = 'data_sync';
         standardnext.announceContent = {
           mwxing: convertMessage(id, type, 'OTHER_ACCOUNT'),
-          sms: convertSMS(title),
-          push: convertPushMessage(id, type, title, datetime)
+          sms: main? convertSMS(title) : {},
+          push: main? convertPushMessage(id, type, title, datetime) : {}
         };
 
         outputs.push(standardnext);

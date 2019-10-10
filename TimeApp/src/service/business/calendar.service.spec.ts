@@ -2216,15 +2216,23 @@ describe('CalendarService test suite', () => {
       it(`Case 1 - 1 2019/10/10 存在体检日程`, async () => {
         let day1010Activities = await calendarService.fetchDayActivities("2019/10/10");
 
+        let events = day1010Activities.events.filter((element) => {
+          return element.evn == "体检";
+        });
+
         expect(day1010Activities).toBeDefined();
-        expect(day1010Activities.events.length).toBe(1);
+        expect(events.length).toBe(1);
       });
 
       describe(`Case 1 - 2 2019年 改成 每年 08/16 体检`, () => {
         beforeEach(async () => {
           let day1010Activities = await calendarService.fetchDayActivities("2019/10/10");
 
-          let event = day1010Activities.events[0];
+          let events = day1010Activities.events.filter((element) => {
+            return element.evn == "体检";
+          });
+
+          let event = events[0];
 
           // 2019年 改成 每年 08/16 体检
           let origin: AgendaData = await eventService.getAgenda(event.evi);
@@ -2241,15 +2249,23 @@ describe('CalendarService test suite', () => {
         it(`Case 1 - 1 2019/08/16 存在体检日程`, async () => {
           let day0816Activities = await calendarService.fetchDayActivities("2019/08/16");
 
+          let events = day0816Activities.events.filter((element) => {
+            return element.evn == "体检 08/16";
+          });
+
           expect(day0816Activities).toBeDefined();
-          expect(day0816Activities.events.length).toBe(1);
+          expect(events.length).toBe(1);
         });
 
         it(`Case 1 - 2 2019/10/10 不存在体检日程`, async () => {
           let day1010Activities = await calendarService.fetchDayActivities("2019/10/10");
 
+          let events = day1010Activities.events.filter((element) => {
+            return element.evn == "体检";
+          });
+
           expect(day1010Activities).toBeDefined();
-          expect(day1010Activities.events.length).toBe(0);
+          expect(events.length).toBe(0);
         });
 
         it(`Case 1 - 3 2020/08/16 存在体检日程`, async () => {
