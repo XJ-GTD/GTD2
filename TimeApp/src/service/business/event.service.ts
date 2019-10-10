@@ -2994,18 +2994,19 @@ export class EventService extends BaseService {
   async acceptReceivedAgenda(evi: string): Promise<AgendaData> {
     this.assertEmpty(evi);       // 入参不能为空
 
-    let agenda: AgendaData = await this.getAgenda(evi);
+    let origin: AgendaData = await this.getAgenda(evi);
 
-    agenda.invitestatus = InviteState.Accepted;
+    let current: AgendaData = {} as AgendaData;
+    Object.assign(current, origin);
 
-    let evdb: EvTbl = new EvTbl();
-    Object.assign(evdb, agenda);
+    current.invitestatus = InviteState.Accepted;
 
-    await this.sqlExce.repTByParam(evdb);
-    this.emitService.emit("mwxing.calendar.activities.changed", agenda);
-    this.syncAgendas([agenda]);
+    let saved = this.saveAgenda(current, origin, OperateType.FromSel);
 
-    return agenda;
+    this.emitService.emit("mwxing.calendar.activities.changed", saved);
+    this.syncAgendas(saved);
+
+    return current;
   }
 
   /**
@@ -3016,19 +3017,20 @@ export class EventService extends BaseService {
   async rejectReceivedAgenda(evi: string): Promise<AgendaData> {
     this.assertEmpty(evi);       // 入参不能为空
 
-    let agenda: AgendaData = await this.getAgenda(evi);
+    let origin: AgendaData = await this.getAgenda(evi);
 
-    agenda.invitestatus = InviteState.Rejected;
-    agenda.del = DelType.del;                     // 拒绝的日程设置为删除, 从用户日历显示中删除
+    let current: AgendaData = {} as AgendaData;
+    Object.assign(current, origin);
 
-    let evdb: EvTbl = new EvTbl();
-    Object.assign(evdb, agenda);
+    current.invitestatus = InviteState.Rejected;
+    current.del = DelType.del;                     // 拒绝的日程设置为删除, 从用户日历显示中删除
 
-    await this.sqlExce.repTByParam(evdb);
-    this.emitService.emit("mwxing.calendar.activities.changed", agenda);
-    this.syncAgendas([agenda]);
+    let saved = this.saveAgenda(current, origin, OperateType.FromSel);
 
-    return agenda;
+    this.emitService.emit("mwxing.calendar.activities.changed", saved);
+    this.syncAgendas(saved);
+
+    return current;
   }
 
   /**
