@@ -2007,7 +2007,7 @@ export class CalendarService extends BaseService {
     this.assertEmpty(monthActivities.month);  // 每月活动月份不能为空
     this.assertNotEqual(origin.month, monthActivities.month); // 两个月份不能不一致
 
-    for (let daysummary: DayActivitySummaryData of origin.days) {
+    for (let daysummary of origin.days) {
       let dayActivities: DayActivityData = monthActivities.get(daysummary.day);
 
       // 计算日历项
