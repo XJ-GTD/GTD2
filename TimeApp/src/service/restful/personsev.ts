@@ -17,19 +17,24 @@ export class PersonRestful {
   getToken(code:string): Promise<PersonOutData> {
 
     let personData:PersonOutData = new PersonOutData();
+    alert(112);
     return new Promise((resolve, reject) => {
       let url: UrlEntity = this.config.getRestFulUrl("AAT");
       let urlEntity: UrlEntity = new UrlEntity();
       urlEntity.url = url.url;
       urlEntity.key = url.key;
       urlEntity.desc = url.desc;
-      // 根据请求URL判断使用不同的AppId和Secret
+      // 根据请求URL判断使用不同的AppId和Secret;
+           alert(113 + url.url);
       if (url.url.indexOf(RestFulConfig.MWXING_SERVICE_WWW_SITE) > 0) {
         urlEntity.url = urlEntity.url + '?appid=' + RestFulConfig.MWXING_SERVICE_WWW_APPID + '&secret=' + RestFulConfig.MWXING_SERVICE_WWW_SECRET + '&code='+ code +'&grant_type=any';
       } else {
         urlEntity.url = urlEntity.url + '?appid=' + RestFulConfig.MWXING_SERVICE_PLUTO_APPID + '&secret=' + RestFulConfig.MWXING_SERVICE_PLUTO_SECRET + '&code='+ code +'&grant_type=any';
       }
+
+      alert(114 + urlEntity.url);
       return this.request.get(urlEntity).then(data => {
+        alert(1145 + data);
         //处理返回结果
         personData = data;
         resolve(personData);
