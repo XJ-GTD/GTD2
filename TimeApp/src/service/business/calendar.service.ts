@@ -2318,8 +2318,10 @@ export class CalendarService extends BaseService {
               monthActivities.calendaritems.splice(index, 1, item);
             }
           } else {
-            // 插入
-            monthActivities.calendaritems.push(item);
+            if (item.del != DelType.del) {
+              // 插入
+              monthActivities.calendaritems.push(item);
+            }
           }
           break;
         case "AgendaData" :
@@ -2340,7 +2342,9 @@ export class CalendarService extends BaseService {
               monthActivities.events.splice(index, 1, event);
             }
           } else {
-            monthActivities.events.push(event);
+            if (event.del != DelType.del) {
+              monthActivities.events.push(event);
+            }
           }
           break;
         case "MemoData" :
@@ -2358,7 +2362,9 @@ export class CalendarService extends BaseService {
               monthActivities.memos.splice(index, 1, memo);
             }
           } else {
-            monthActivities.memos.push(memo);
+            if (memo.del != DelType.del) {
+              monthActivities.memos.push(memo);
+            }
           }
           break;
         default:
