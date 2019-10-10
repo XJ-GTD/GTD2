@@ -47,14 +47,10 @@ export class LpService {
       let aTbl:ATbl = new ATbl();
       let uTbl:UTbl = new UTbl();
       let yTbl:YTbl = new YTbl();
-      alert(1)
 
       //获得token，放入头部header登录
       this.personRestful.getToken(data.data.code).then(data=>{
-        alert(2)
         if(data && data.unionid != undefined && data.unionid != null && data.unionid != ""){
-
-          alert(3)
           //账户表赋值
           aTbl.ai = data.openid;  //openid
           aTbl.an = data.nickname;
@@ -82,15 +78,11 @@ export class LpService {
             yTbl.yv = data.secrets.github;
           }
 
-
-          alert(4)
           return this.personRestful.getself(data.unionid);
         }else{
           throw  "-1";
         }
       }).then(data=>{
-
-        alert(7)
         if(data && data.avatarbase64 != undefined && data.avatarbase64 != null && data.avatarbase64 != ""){
           uTbl.hiu = data.avatarbase64;//头像
           //删除账户表

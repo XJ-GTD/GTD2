@@ -88,9 +88,13 @@ export class RestfulClient {
   }
 
   get(url: UrlEntity): Promise<any> {
+
+    alert(211);
     return new Promise((resolve, reject) => {
+      alert(212);
       // 没有网络的时候，直接返回
       if (!this.networkService.isConnected()) {
+        alert(222);
         resolve();
         return;
       }
@@ -101,15 +105,22 @@ export class RestfulClient {
       log.ss = new Date().valueOf();
       log.t = 1;
       let header = this.restConfig.createHeader();
+
+      alert(213 + header.pi) ;
       if (this.util.hasCordova()) {
+        alert(214 ) ;
         return this.http.get(url.url, {}, header).then(data => {
+          alert("215" + data ) ;
           let jsonData = JSON.parse(data.data);
           log.ss = new Date().valueOf() - log.ss;
           log.st = true;
+          alert("216" + jsonData ) ;
           this.sqlitExc.noteLog(log);
+          alert("217" + log ) ;
           resolve(jsonData);
         }).catch(err => {
 
+          alert("218" + err ) ;
           log.ss = new Date().valueOf() - log.ss;
           log.st = false;
           log.er = err;

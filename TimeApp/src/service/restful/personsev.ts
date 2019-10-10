@@ -17,30 +17,24 @@ export class PersonRestful {
   getToken(code:string): Promise<PersonOutData> {
 
     let personData:PersonOutData = new PersonOutData();
-    alert(112);
     return new Promise((resolve, reject) => {
       let url: UrlEntity = this.config.getRestFulUrl("AAT");
       let urlEntity: UrlEntity = new UrlEntity();
       urlEntity.url = url.url;
       urlEntity.key = url.key;
       urlEntity.desc = url.desc;
-      // 根据请求URL判断使用不同的AppId和Secret;
-           alert(113 + url.url);
+      // 根据请求URL判断使用不同的AppId和Secret
       if (url.url.indexOf(RestFulConfig.MWXING_SERVICE_WWW_SITE) > 0) {
         urlEntity.url = urlEntity.url + '?appid=' + RestFulConfig.MWXING_SERVICE_WWW_APPID + '&secret=' + RestFulConfig.MWXING_SERVICE_WWW_SECRET + '&code='+ code +'&grant_type=any';
       } else {
         urlEntity.url = urlEntity.url + '?appid=' + RestFulConfig.MWXING_SERVICE_PLUTO_APPID + '&secret=' + RestFulConfig.MWXING_SERVICE_PLUTO_SECRET + '&code='+ code +'&grant_type=any';
       }
-
-      alert(114 + urlEntity.url);
       return this.request.get(urlEntity).then(data => {
-        alert(1145 + data);
         //处理返回结果
         personData = data;
         resolve(personData);
 
       }).catch(error => {
-        alert(1145 + error);
         //处理返回错误
         personData = error;
         resolve(personData);
@@ -124,7 +118,6 @@ export class PersonRestful {
   //获取个人信息	AIU	获取个人信息 get
   getself(unionid:string): Promise<PersonOutData> {
 
-    alert(5)
     return new Promise((resolve, reject) => {
       let url: UrlEntity = this.config.getRestFulUrl("AIU");
       let urlEntity: UrlEntity = new UrlEntity();
@@ -133,7 +126,6 @@ export class PersonRestful {
       urlEntity.desc = url.desc;
       urlEntity.url = urlEntity.url.replace("{unionid}",unionid);
       this.request.get(urlEntity).then(data => {
-        alert(6)
         //处理返回结果
         resolve(data.data);
 
