@@ -28,7 +28,7 @@ import {MemberShareState} from "../../data.enum";
           <ion-label #membercom class="somemmember">
             <ul>
                 <li *ngFor = "let member of memberSet.members; let i = index" (click)="removeMember(i)">
-                  <span [ngStyle]="{'color':memberAcceptColor(member) }"> {{ member.ran  }}|{{member.ui}}</span>
+                  <span [ngStyle]="{'color':memberAcceptColor(member) }"> {{ member.ran  }}</span>
                 </li>
               <li></li>
             </ul>
@@ -110,6 +110,11 @@ export class InvitesPage {
         this.inviteEnable = this.memberSet.iv;
         this.buttons.create = this.memberSet.iv;
         this.buttons.save = this.memberSet.iv;
+      }
+
+      if (!this.memberSet.members || this.memberSet.members.length ==0){
+
+        this.openMemberSelect();
       }
     }
   }
