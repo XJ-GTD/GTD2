@@ -116,7 +116,6 @@ export class AttachPage {
         fjData.ext = ext;
         fjData.fj = this.file.externalDataDirectory+"/timeAppfile/"+fileName;
         this.fjArray.push(fjData);
-        alert("新文件路径："+this.file.externalDataDirectory+"/timeAppfile/"+fileName);
         this.file.copyFile(imgFileDir,fileName,this.file.externalDataDirectory+"/timeAppfile",fileName);
 
       }
@@ -135,40 +134,28 @@ export class AttachPage {
   */
   select() {
 
-    //测试
-    let filePath: string = 'file:///storage/emulated/0/Pictures/12345.jpg';
-    let fileName: string  = filePath.substr(filePath.lastIndexOf("/")+1,filePath.length);
-    let ext: string = fileName.split(".")[1];
-    let imgFileDir: string  =  filePath.substr(0,filePath.lastIndexOf("/")+1);
-    let fjData: FjData = {} as FjData;
-    fjData.obt = this.obt;
-    fjData.obi = this.obi;
-    fjData.fjn = this.bw;
-    fjData.ext = ext;
-    fjData.fj = this.file.externalDataDirectory+"/timeAppfile/"+fileName;
-    this.fjArray.push(fjData);
     //正式代码
-     //  this.chooser.getFile('*/*').then((file) => {
-     //      this.filePath.resolveNativePath(file.uri)
-     //      .then((filePath) =>{
-     //        if(filePath !=''){
-     //          let fileName: string  = filePath.substr(filePath.lastIndexOf("/")+1,filePath.length);
-     //          let ext: string = fileName.split(".")[1];
-     //          let imgFileDir: string  =  filePath.substr(0,filePath.lastIndexOf("/")+1);
-     //          let fjData: FjData = {} as FjData;
-     //          fjData.obt = this.obt;
-     //          fjData.obi = this.obi;
-     //          fjData.fjn = this.bw;
-     //          fjData.ext = ext;
-     //          fjData.fj = this.file.externalDataDirectory+"/timeAppfile/"+fileName;
-     //          this.fjArray.push(fjData);
-     //          this.file.copyFile(imgFileDir,fileName,this.file.externalDataDirectory+"/timeAppfile",fileName);
-     //        }
-     //      })
-     //      .catch(err => console.log(err));
-     //    }
-     //  )
-     // .catch((error: any)=> console.error(error));
+      this.chooser.getFile('*/*').then((file) => {
+          this.filePath.resolveNativePath(file.uri)
+          .then((filePath) =>{
+            if(filePath !=''){
+              let fileName: string  = filePath.substr(filePath.lastIndexOf("/")+1,filePath.length);
+              let ext: string = fileName.split(".")[1];
+              let imgFileDir: string  =  filePath.substr(0,filePath.lastIndexOf("/")+1);
+              let fjData: FjData = {} as FjData;
+              fjData.obt = this.obt;
+              fjData.obi = this.obi;
+              fjData.fjn = this.bw;
+              fjData.ext = ext;
+              fjData.fj = this.file.externalDataDirectory+"/timeAppfile/"+fileName;
+              this.fjArray.push(fjData);
+              this.file.copyFile(imgFileDir,fileName,this.file.externalDataDirectory+"/timeAppfile",fileName);
+            }
+          })
+          .catch(err => console.log(err));
+        }
+      )
+     .catch((error: any)=> console.error(error));
   }
 
   /**
