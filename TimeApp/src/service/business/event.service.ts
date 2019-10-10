@@ -52,9 +52,9 @@ export class EventService extends BaseService {
 
     let sqlparam = new Array<any>();
 
-    if (pullAgdatas && pullAgdatas !=null ){
-      let saved: Array<AgendaData> = new Array<AgendaData>();
+    let saved: Array<AgendaData> = new Array<AgendaData>();
 
+    if (pullAgdatas && pullAgdatas !=null ){
       for (let j = 0 , len = pullAgdatas.length; j < len ; j++){
         let agd = {} as AgendaData;
         Object.assign(agd, pullAgdatas[j]);
