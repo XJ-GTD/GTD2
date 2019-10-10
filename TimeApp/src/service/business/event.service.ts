@@ -738,7 +738,7 @@ export class EventService extends BaseService {
    * @param {AgendaData} oldAgd
    * @returns {boolean}
    */
-  isAgendaChanged(newAgd : AgendaData ,oriAgd : AgendaData): Array<string>{
+  isAgendaRepeatChanged(newAgd : AgendaData ,oriAgd : AgendaData): Array<string>{
     let ret = new Array<string>();
     if (!newAgd.rtjson) {
       if (newAgd.rt) {
@@ -981,7 +981,7 @@ export class EventService extends BaseService {
    */
   hasAgendaModifyDo(newAgd : AgendaData ,oriAgd : AgendaData ,modiType : anyenum.OperateType):DoType {
 
-    let changed : Array<string> = this.isAgendaChanged(newAgd,oriAgd);
+    let changed : Array<string> = this.isAgendaRepeatChanged(newAgd,oriAgd);
 
     let doType  = DoType.Local;
 
@@ -1012,6 +1012,8 @@ export class EventService extends BaseService {
           doType = DoType.All;
         }
       }
+    }else if( newAgd.invitestatus != oriAgd.invitestatus ) {
+      doType = DoType.Invite;
     }else {
       doType = DoType.Local;
     }
@@ -1508,7 +1510,7 @@ export class EventService extends BaseService {
     //批量本地更新
     let sqlparam = new Array<any>();
 
-    let sq : string ;
+    let sq: string ;
     let tmpsq : string;
     let outAgds = new Array<AgendaData>();//返回事件
     let params : Array<any>;
@@ -1519,6 +1521,50 @@ export class EventService extends BaseService {
 
     let tos : string;//需要发送的参与人手机号
     tos = this.getMemberPhone(newAgdata.members);
+
+    newAgdata.mi = UserConfig.account.id;
+
+    //主evi设定
+    let masterEvi : string;
+    if (oriAgdata.rtevi == ""){
+      //非重复数据或重复数据的父记录
+      masterEvi = oriAgdata.evi;
+    }else if (oriAgdata.rfg == anyenum.RepeatFlag.RepeatToOnly){
+      //重复中独立日只能修改自己
+      masterEvi = oriAgdata.evi;
+    }else{
+      //重复数据
+      masterEvi = oriAgdata.rtevi;
+    }
+
+    //接收或拒绝邀请
+    if (doType == DoType.Invite){
+
+      //邀请状态处理
+      if (newAgdata.invitestatus == anyenum.InviteState.Rejected){
+        sq = ` update gtd_ev set invitestatus = ?1 ,del = ?2  where evi = ?3 or rtevi = ?3 ; `;
+        params = new Array<any>();
+        params.push(newAgdata.invitestatus);
+        params.push(anyenum.DelType.del);
+        params.push(masterEvi);
+
+      }else{
+        sq = ` update gtd_ev set invitestatus = ?1  where evi = ?2 or rtevi = ?2 ; `;
+        params = new Array<any>();
+        params.push(newAgdata.invitestatus);
+        params.push(masterEvi);
+      }
+      sqlparam.push([sq,params]);
+      this.sqlExce.batExecSqlByParam(sqlparam);
+
+      sq = ` select *,'${tos}'  from gtd_ev  where evi = ?1 or rtevi = ?1 ; `;
+      params = new Array<any>();
+      params.push(masterEvi);
+
+      outAgds = await this.sqlExce.getExtLstByParam<AgendaData>(sq,params);
+
+      return outAgds;
+    }
 
     //判断进行本地更新
     if (doType == DoType.Local){
@@ -1539,20 +1585,8 @@ export class EventService extends BaseService {
       ev.tb = newAgdata.tb ;
       ev.md = newAgdata.md ;
       ev.iv = newAgdata.iv ;
+      ev.mi = newAgdata.mi;
       sqlparam.push(ev.upTParam());
-
-      //主evi设定
-      let masterEvi : string;
-      if (oriAgdata.rtevi == ""){
-        //非重复数据或重复数据的父记录
-        masterEvi = oriAgdata.evi;
-      }else if (oriAgdata.rfg == anyenum.RepeatFlag.RepeatToOnly){
-        //重复中独立日只能修改自己
-        masterEvi = oriAgdata.evi;
-      }else{
-        //重复数据
-        masterEvi = oriAgdata.rtevi;
-      }
 
       //删除参与人
       let par = new ParTbl();
@@ -1590,13 +1624,12 @@ export class EventService extends BaseService {
         sq = ` update gtd_ev set todolist = ?  ${tmpsq} where evi = ? or rtevi = ?  `;
         sqlparam.push([sq,params]);
       }
+
       this.sqlExce.batExecSqlByParam(sqlparam);
       newAgdata.tos = tos;
       outAgds.push(newAgdata);
       return outAgds;
     }
-
-    newAgdata.mi = UserConfig.account.id;
 
 
 
@@ -1605,13 +1638,6 @@ export class EventService extends BaseService {
     如果改变从当前所有，则
     1.改变原日程结束日 2.删除从当前所有事件及相关提醒 3.新建新事件日程*/
     if (doType == DoType.FutureAll){
-
-      let masterEvi : string;//主evi设定
-      if (oriAgdata.rtevi == ""){
-        masterEvi = oriAgdata.evi;
-      }else {
-        masterEvi = oriAgdata.rtevi;
-      }
 
       //删除原事件中从当前开始所有事件
       console.log("**** updateAgenda delFromsel start :****" + moment().format("YYYY/MM/DD HH:mm:ss SSS"))
@@ -1644,12 +1670,6 @@ export class EventService extends BaseService {
 
     }else if(doType == DoType.All){
 
-      let masterEvi : string;//主evi设定
-      if (oriAgdata.rtevi == ""){
-        masterEvi = oriAgdata.evi;
-      }else {
-        masterEvi = oriAgdata.rtevi;
-      }
 
       //删除原事件中从当前开始所有事件
       oriAgdata.evd = oriAgdata.sd;
@@ -4531,7 +4551,8 @@ export enum DoType {
   Local = "Local",
   Current = "Current",
   FutureAll = "FutureAll",
-  All = "All"
+  All = "All",
+  Invite = "Invite",
 }
 
 enum ChangeState {
