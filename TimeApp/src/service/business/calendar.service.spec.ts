@@ -2245,7 +2245,7 @@ describe('CalendarService test suite', () => {
         it(`Case 1 - 1 2019/08/16 存在体检日程`, async () => {
           let day0816Activities = await calendarService.fetchDayActivities("2019/08/16");
 
-          let events = day1010Activities.events.filter((element) => {
+          let events = day0816Activities.events.filter((element) => {
             return element.evn == "体检 08/16";
           });
 
