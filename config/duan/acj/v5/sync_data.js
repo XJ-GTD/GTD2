@@ -60,7 +60,7 @@ function clean(datasource)
   var convertPushMessage = function(id, type, title, datetime) {
     var push = {};
 
-    push['title'] = '[##from##] ' + title;
+    push['title'] = '[冥王星] ' + title;
     push['content'] = formatDateTimeShow(datetime);
     push['extras'] = {
       event: "MWXING_SHAREAGENDA_EVENT",

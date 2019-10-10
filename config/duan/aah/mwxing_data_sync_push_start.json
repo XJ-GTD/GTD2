@@ -33,7 +33,7 @@
                     "trigger": "exc",
                     "parameters": [
                         "method;get",
-                        "urlabs;http://sa-aup:8080/aup/data/#{_exchangephoneno}/userinfo",
+                        "urlabs;http://sa-aup:8080/aup/data/#{_exchangephoneno}/userinfo?avatar=false",
                         "params;$.parent.outputs.datas[##data_value##]"
                     ],
                     "outputs": [
