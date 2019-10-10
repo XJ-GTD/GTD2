@@ -3012,6 +3012,7 @@ export class EventService extends BaseService {
     let agenda: AgendaData = await this.getAgenda(evi);
 
     agenda.invitestatus = InviteState.Rejected;
+    agenda.del = DelType.del;                     // 拒绝的日程设置为删除, 从用户日历显示中删除
 
     let evdb: EvTbl = new EvTbl();
     Object.assign(evdb, agenda);
