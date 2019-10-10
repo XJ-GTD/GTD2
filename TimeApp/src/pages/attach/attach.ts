@@ -39,7 +39,7 @@ import {FjData} from "../../service/business/event.service";
 export class AttachPage {
   statusBarColor: string = "#3c4d55";
   imgUrl: string = "";
-  fjArray: Array<FjData>;
+  fjArray: Array<FjData> = new Array<FjData>();
   obt: string = "" ;
   obi: string = "";
   bw: string = "";
