@@ -457,6 +457,10 @@ export class ContactsService {
       sqls.push(bh.inT());
 
       await this.sqlExce.batExecSql(sqls);
+    }else if (exists && userinfo && userinfo.openid){
+      if (!exists.ui || exists.ui == ""  ){
+        exists.ui = userinfo.openid;
+      }
     }
 
     // 全部更新完成后刷新
@@ -531,6 +535,8 @@ export class ContactsService {
         console.log('userinfo ' + userinfo.openid);
         console.log('userinfo ' + userinfo.nickname);
         console.log('userinfo ' + userinfo.phoneno);
+
+        bt.ui = userinfo.openid;
 
         if (userinfo.avatarbase64 && userinfo.avatarbase64 != '') {
           bh.hiu = userinfo.avatarbase64;

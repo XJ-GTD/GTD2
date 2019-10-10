@@ -2102,7 +2102,7 @@ export class EventService extends BaseService {
     agdata.sd = agdata.sd || agdata.evd || moment().format("YYYY/MM/DD");
     agdata.ed = agdata.ed || agdata.sd;
     agdata.al = !agdata.al ? anyenum.IsWholeday.Whole :agdata.al;
-    agdata.st = !agdata.st ? "00:00" : agdata.st;
+    agdata.st = !agdata.st ? this.EVT_ST : agdata.st;
     agdata.et = !agdata.et ? "23:59" : agdata.et;
     agdata.ct = !agdata.ct ? 0 :agdata.ct;
   }
