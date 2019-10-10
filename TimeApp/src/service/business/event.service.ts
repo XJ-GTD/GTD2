@@ -2769,6 +2769,7 @@ export class EventService extends BaseService {
       for (let agenda of agendas) {
         let sync: SyncData = new SyncData();
 
+        sync.fields.unshared.push("del");             // 删除状态为个人数据不共享给他人
         sync.fields.unshared.push("bz");              // 备注为个人数据不共享给他人
         sync.fields.unshared.push("ji");              // 计划为个人数据不共享给他人
         sync.fields.unshared.push("tx");              // 提醒为个人数据不共享给他人
