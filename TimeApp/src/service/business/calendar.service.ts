@@ -799,7 +799,7 @@ export class CalendarService extends BaseService {
             removedjtas.push(jtadb);
           }
 
-          let updatesqls: Array<any> = this.sqlExce.getFastSaveSqlByParam<JtaTbl>(removedjtas) || new Array<any>();
+          let updatesqls: Array<any> = this.sqlExce.getFastSaveSqlByParam(removedjtas) || new Array<any>();
 
           for (let updatesql of updatesqls) {
             sqls.push(updatesql);
