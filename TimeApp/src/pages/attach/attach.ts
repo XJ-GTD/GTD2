@@ -7,7 +7,7 @@ import { Camera, CameraOptions } from '@ionic-native/camera';
 import { Chooser } from '@ionic-native/chooser';
 import { FilePath } from '@ionic-native/file-path';
 import {ModalBoxComponent} from "../../components/modal-box/modal-box";
-import {FjData} from "../../service/business/event.service";
+import {FjData, Attachment} from "../../service/business/event.service";
 
 @IonicPage()
 @Component({
