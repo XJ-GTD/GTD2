@@ -114,7 +114,9 @@ export class AtPage {
 
   ionViewDidLoad() {
     this.appVersion.getVersionNumber().then((buildnumber) => {
-      this.build = buildnumber;
+      if (buildnumber) {
+        this.build = buildnumber;
+      }
     });
 
     let restfulHeader = new RestFulHeader();
