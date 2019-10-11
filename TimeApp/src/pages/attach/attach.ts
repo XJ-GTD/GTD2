@@ -30,6 +30,9 @@ import {FjData} from "../../service/business/event.service";
       </ion-row>
       <ion-row>
         <ion-textarea rows="8" no-margin [(ngModel)]="bw"  placeholder="输入你想要添加的附件说明主题"></ion-textarea>
+          <button ion-button clear (click)="saveFile()" class="font-normal">
+               确认保存
+          </button>
       </ion-row>
       <ion-row>
           <ion-list>
@@ -51,6 +54,7 @@ export class AttachPage {
   statusBarColor: string = "#3c4d55";
   imgUrl: string = "";
   fjArray: Array<FjData> = new Array<FjData>();
+  fjData: FjData = {} as FjData;
   obt: string = "" ;
   obi: string = "";
   bw: string = "";
@@ -114,19 +118,18 @@ export class AttachPage {
     }
     this.camera.getPicture(options).then((imageData) => {
       console.info("开始拍照上传照片");
-      let fjData: FjData = {} as FjData;
+      //let fjData: FjData = {} as FjData;
       if (imageData !=''){
 
         let fileName: string  = imageData.substr(imageData.lastIndexOf("/")+1,imageData.length);
         let ext: string = fileName.split(".")[1];
         //将文件copy至缓存文件
         let imgFileDir: string  =  imageData.substr(0,imageData.lastIndexOf("/")+1);
-        fjData.obt = this.obt;
-        fjData.obi = this.obi;
-        fjData.fjn = this.bw;
-        fjData.ext = ext;
-        fjData.fj = this.file.externalDataDirectory+"/timeAppfile/"+fileName;
-        this.fjArray.push(fjData);
+        this.fjData.obt = this.obt;
+        this.fjData.obi = this.obi;
+        this.fjData.fjn = fileName;
+        this.fjData.ext = ext;
+        this.fjData.fj = this.file.externalDataDirectory+"/timeAppfile/"+fileName;
         this.file.copyFile(imgFileDir,fileName,this.file.externalDataDirectory+"/timeAppfile",fileName);
 
       }
@@ -161,13 +164,13 @@ export class AttachPage {
               let fileName: string  = filePath.substr(filePath.lastIndexOf("/")+1,filePath.length);
               let ext: string = fileName.split(".")[1];
               let imgFileDir: string  =  filePath.substr(0,filePath.lastIndexOf("/")+1);
-              let fjData: FjData = {} as FjData;
-              fjData.obt = this.obt;
-              fjData.obi = this.obi;
-              fjData.fjn = this.bw;
-              fjData.ext = ext;
-              fjData.fj = this.file.externalDataDirectory+"/timeAppfile/"+fileName;
-              this.fjArray.push(fjData);
+              // let fjData: FjData = {} as FjData;
+              this.fjData.obt = this.obt;
+              this.fjData.obi = this.obi;
+              this.fjData.fjn = fileName;
+              this.fjData.ext = ext;
+              this.fjData.fj = this.file.externalDataDirectory+"/timeAppfile/"+fileName;
+              //this.fjArray.push(fjData);
               this.file.copyFile(imgFileDir,fileName,this.file.externalDataDirectory+"/timeAppfile",fileName);
             }
           })
@@ -196,5 +199,12 @@ export class AttachPage {
           // error
            console.info("上传失败"+JSON.stringify(err));
       })
+  }
+  // 点击确认，保存文件
+  saveFile() {
+    if(this.bw){
+      this.fjData.fjn = this.bw
+    }
+    this.fjArray.push(this.fjData);
   }
 }
