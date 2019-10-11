@@ -644,11 +644,11 @@ export class CalendarService extends BaseService {
 
       sqls.push(jhadb.upTParam());
 
-      let items: Array<PlanItem> = new Array<PlanItem>();
+      let items: Array<PlanItemData> = new Array<PlanItemData>();
 
       let sql: string = `select * from gtd_jta where ji = ? and del = ?`;
 
-      items = await this.sqlExce.getExtLstByParam<PlanItem>(sql, [ji, DelType.undel]) || items;
+      items = await this.sqlExce.getExtLstByParam<PlanItemData>(sql, [ji, DelType.undel]) || items;
 
       let removeditems: Array<PlanItemData> = new Array<PlanItemData>();
 
@@ -665,7 +665,7 @@ export class CalendarService extends BaseService {
           removedjtas.push(jtadb);
         }
 
-        let removesqls: Array<any> = this.sqlExce.getFastSaveSqlByParam<JtaTbl>(removedjtas) || new Array<any>();
+        let removesqls: Array<any> = this.sqlExce.getFastSaveSqlByParam(removedjtas) || new Array<any>();
 
         for (let removesql of removesqls) {
           sqls.push(removesql);
@@ -712,7 +712,7 @@ export class CalendarService extends BaseService {
             removedjtas.push(jtadb);
           }
 
-          let removesqls: Array<any> = this.sqlExce.getFastSaveSqlByParam<JtaTbl>(removedjtas) || new Array<any>();
+          let removesqls: Array<any> = this.sqlExce.getFastSaveSqlByParam(removedjtas) || new Array<any>();
 
           for (let removesql of removesqls) {
             sqls.push(removesql);
@@ -772,7 +772,7 @@ export class CalendarService extends BaseService {
             updatedactivites.push(memo);
           }
 
-          let removesqls: Array<any> = this.sqlExce.getFastSaveSqlByParam<MomTbl>(removedmoms) || new Array<any>();
+          let removesqls: Array<any> = this.sqlExce.getFastSaveSqlByParam(removedmoms) || new Array<any>();
 
           for (let removesql of removesqls) {
             sqls.push(removesql);
@@ -869,7 +869,7 @@ export class CalendarService extends BaseService {
             updatedactivites.push(memo);
           }
 
-          let updatesqls: Array<any> = this.sqlExce.getFastSaveSqlByParam<MomTbl>(removedmoms) || new Array<any>();
+          let updatesqls: Array<any> = this.sqlExce.getFastSaveSqlByParam(removedmoms) || new Array<any>();
 
           for (let updatesql of updatesqls) {
             sqls.push(updatesql);
