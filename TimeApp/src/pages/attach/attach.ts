@@ -31,6 +31,17 @@ import {FjData} from "../../service/business/event.service";
       <ion-row>
         <ion-textarea rows="8" no-margin [(ngModel)]="bw"  placeholder="输入你想要添加的附件说明主题"></ion-textarea>
       </ion-row>
+      <ion-row>
+          <ion-list>
+            <ng-container *ngFor="let fj of fjArray">
+                <ion-item>
+                   <ion-label>{{fj.fjn}}</ion-label>
+                   <ion-label>查看</ion-label>
+                   <ion-label>下载</ion-label>
+                 </ion-item>
+            </ng-container>
+          </ion-list>
+      </ion-row>
     </ion-grid>
   </modal-box>
   `
@@ -135,35 +146,35 @@ export class AttachPage {
   select() {
 
     //测试数据
-    let fjData: FjData = {} as FjData;
-    fjData.obt = this.obt;
-    fjData.obi = this.obi;
-    fjData.fjn = this.bw;
-    fjData.ext = "jpg";
-    fjData.fj = "/home/storage/ying/liqianna/123.jpg";
-    this.fjArray.push(fjData);
+    // let fjData: FjData = {} as FjData;
+    // fjData.obt = this.obt;
+    // fjData.obi = this.obi;
+    // fjData.fjn = this.bw;
+    // fjData.ext = "jpg";
+    // fjData.fj = "/home/storage/ying/liqianna/123.jpg";
+    // this.fjArray.push(fjData);
     //正式代码
-     //  this.chooser.getFile('*/*').then((file) => {
-     //      this.filePath.resolveNativePath(file.uri)
-     //      .then((filePath) =>{
-     //        if(filePath !=''){
-     //          let fileName: string  = filePath.substr(filePath.lastIndexOf("/")+1,filePath.length);
-     //          let ext: string = fileName.split(".")[1];
-     //          let imgFileDir: string  =  filePath.substr(0,filePath.lastIndexOf("/")+1);
-     //          let fjData: FjData = {} as FjData;
-     //          fjData.obt = this.obt;
-     //          fjData.obi = this.obi;
-     //          fjData.fjn = this.bw;
-     //          fjData.ext = ext;
-     //          fjData.fj = this.file.externalDataDirectory+"/timeAppfile/"+fileName;
-     //          this.fjArray.push(fjData);
-     //          this.file.copyFile(imgFileDir,fileName,this.file.externalDataDirectory+"/timeAppfile",fileName);
-     //        }
-     //      })
-     //      .catch(err => console.log(err));
-     //    }
-     //  )
-     // .catch((error: any)=> console.error(error));
+      this.chooser.getFile('*/*').then((file) => {
+          this.filePath.resolveNativePath(file.uri)
+          .then((filePath) =>{
+            if(filePath !=''){
+              let fileName: string  = filePath.substr(filePath.lastIndexOf("/")+1,filePath.length);
+              let ext: string = fileName.split(".")[1];
+              let imgFileDir: string  =  filePath.substr(0,filePath.lastIndexOf("/")+1);
+              let fjData: FjData = {} as FjData;
+              fjData.obt = this.obt;
+              fjData.obi = this.obi;
+              fjData.fjn = this.bw;
+              fjData.ext = ext;
+              fjData.fj = this.file.externalDataDirectory+"/timeAppfile/"+fileName;
+              this.fjArray.push(fjData);
+              this.file.copyFile(imgFileDir,fileName,this.file.externalDataDirectory+"/timeAppfile",fileName);
+            }
+          })
+          .catch(err => console.log(err));
+        }
+      )
+     .catch((error: any)=> console.error(error));
   }
 
   /**
