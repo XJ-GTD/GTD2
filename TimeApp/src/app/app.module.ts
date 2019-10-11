@@ -19,6 +19,7 @@ import {Contacts} from "@ionic-native/contacts";
 import {Vibration} from "@ionic-native/vibration";
 import {Geolocation} from '@ionic-native/geolocation';
 import {NativeAudio} from "@ionic-native/native-audio";
+import { AppVersion } from '@ionic-native/app-version';
 import {Clipboard} from '@ionic-native/clipboard';
 import { Camera } from '@ionic-native/camera';
 import { Chooser } from '@ionic-native/chooser';
@@ -204,6 +205,7 @@ import {MemberPageModule} from "../pages/member/member.module";
     Vibration,
     Geolocation,
     NativeAudio,
+    AppVersion,
     Keyboard,
     Clipboard,
     Camera,
