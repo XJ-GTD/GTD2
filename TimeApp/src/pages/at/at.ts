@@ -59,7 +59,7 @@ import { AppVersion } from '@ionic-native/app-version';
             <span class="app-profiles">版本</span>
           </ion-row>
           <ion-row justify-content-center>
-            <span class="app-profiles">{{client.mainversion}}.{{client.version}} build {{build}}</span>
+            <span class="app-profiles">{{client.mainversion}}.{{client.version}}{{build==""? "" : (" build " + build)}}</span>
           </ion-row>
           <ion-row justify-content-center>
             <span class="app-profiles">{{server.datacenter}}</span>
@@ -104,20 +104,23 @@ export class AtPage {
 
   network: any = {type: '未知', connected: false};
 
-  build:any = "-";
+  build:any = "";
 
   constructor(public navCtrl: NavController,
               private appVersion: AppVersion,
               private networkService: NetworkService,
+              private util:UtilService,
               private sqlite: SqliteExec) {
   }
 
   ionViewDidLoad() {
-    this.appVersion.getVersionNumber().then((buildnumber) => {
-      if (buildnumber) {
-        this.build = buildnumber;
-      }
-    });
+    if (this.util.hasCordova()) {
+      this.appVersion.getVersionNumber().then((buildnumber) => {
+        if (buildnumber) {
+          this.build = buildnumber;
+        }
+      });
+    }
 
     let restfulHeader = new RestFulHeader();
     this.client.mainversion = restfulHeader.pv? restfulHeader.pv.replace(/v/, 'v0.') : 'v0.0';
