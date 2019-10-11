@@ -2932,6 +2932,8 @@ export class CalendarService extends BaseService {
       let push: PushInData = new PushInData();
 
       for (let plan of plans) {
+        this.assertNotEqual(plan.jt, PlanType.PrivatePlan);   // 非自定义日历不能共享
+
         let sync: SyncData = new SyncData();
 
         sync.id = plan.ji;

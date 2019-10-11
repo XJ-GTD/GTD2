@@ -4,7 +4,7 @@ import {DS} from "../model/ws.enum";
 import {EmitService} from "../../service/util-service/emit.service";
 import {Injectable} from "@angular/core";
 import {ProcesRs} from "../model/proces.rs";
-import {CalendarService, PlanData} from "../../service/business/calendar.service";
+import {CalendarService, PlanData, PlanItemData} from "../../service/business/calendar.service";
 import {EventService, AgendaData, TaskData, MiniTaskData, Member} from "../../service/business/event.service";
 import {MemoService} from "../../service/business/memo.service";
 import {DataSyncPara} from "../model/datasync.para";
