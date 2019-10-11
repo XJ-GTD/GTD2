@@ -2330,7 +2330,7 @@ describe('CalendarService test suite', () => {
     let plan = await calendarService.getPlan("shanghai_animation_exhibition_2019");
 
     // 共享自定义日历
-    calendarService.syncPrivatePlan(plan)
+    calendarService.syncPrivatePlans([plan])
     .then(() => {
       fail("未抛出异常, 出错");
       done();
@@ -2352,7 +2352,7 @@ describe('CalendarService test suite', () => {
     plan = await calendarService.savePlan(plan);
 
     // 同步自定义日历数据
-    calendarService.syncPrivatePlan(plan)
+    calendarService.syncPrivatePlans([plan])
     .then(() => {
       expect("success").toBe("success");
       done();

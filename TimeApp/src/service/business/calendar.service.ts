@@ -2853,7 +2853,7 @@ export class CalendarService extends BaseService {
     this.assertEmpty(plan);     // 入参不能为空
     this.assertNotEqual(plan.jt, PlanType.PrivatePlan);   // 非自定义日历不能共享
 
-    await this.syncPrivatePlan(plan);
+    await this.syncPrivatePlans([plan]);
 
     return;
   }
@@ -2913,51 +2913,25 @@ export class CalendarService extends BaseService {
   }
 
   /**
-   * 同步指定自定义日历
+   * 同步指定或所有自定义日历
    *
    * @author leon_xi@163.com
    **/
-  async syncPrivatePlan(plan: PlanData) {
+  async syncPrivatePlans(plans: Array<PlanData> = new Array<PlanData>()) {
+    this.assertEmpty(plans);    // 入参不能为空
 
-    this.assertEmpty(plan);       // 入参不能为空
-    this.assertNotEqual(plan.jt, PlanType.PrivatePlan);   // 非自定义日历不能共享
-    this.assertEmpty(plan.ji);    // 日历ID不能为空
-    this.assertEmpty(plan.del);   // 删除标记不能为空
+    if (plans.length <= 0) {
+      let sql: string = `select * from gtd_jha where jt = ? and tb = ?`;
 
-    // 构造Push数据结构
-    let push: PushInData = new PushInData();
-
-    let sync: SyncData = new SyncData();
-
-    sync.id = plan.ji;
-    sync.type = "Plan";
-    sync.security = SyncDataSecurity.None;
-    sync.status = SyncDataStatus[plan.del];
-    sync.payload = plan;
-
-    push.d.push(sync);
-
-    await this.dataRestful.push(push);
-
-    return;
-  }
-
-  /**
-   * 同步所有自定义日历
-   *
-   * @author leon_xi@163.com
-   **/
-  async syncPrivatePlans() {
-    let sql: string = `select * from gtd_jha where jt = ? and tb = ?`;
-
-    let unsyncedplans = await this.sqlExce.getExtLstByParam<PlanData>(sql, [PlanType.PrivatePlan, SyncType.unsynch]);
+      plans = await this.sqlExce.getExtLstByParam<PlanData>(sql, [PlanType.PrivatePlan, SyncType.unsynch]) || plans;
+    }
 
     // 存在未同步日历
-    if (unsyncedplans && unsyncedplans.length > 0) {
+    if (plans.length > 0) {
       // 构造Push数据结构
       let push: PushInData = new PushInData();
 
-      for (let plan of unsyncedplans) {
+      for (let plan of plans) {
         let sync: SyncData = new SyncData();
 
         sync.id = plan.ji;
