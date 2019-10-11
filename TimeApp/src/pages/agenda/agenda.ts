@@ -324,7 +324,7 @@ export class AgendaPage {
       if (!data) return;
       //console.info("附件已经传递过来，data:"+JSON.stringify(data));
       alert("附件已经传递过来，data:"+JSON.stringify(data));
-      this.currentAgenda.fjs = data.attach;
+      this.currentAgenda.attachments = data.attach;
 
       if (!this.eventService.isSameAgenda(this.currentAgenda, this.originAgenda)) {
         this.buttons.save = true;
