@@ -2908,6 +2908,7 @@ export class CalendarService extends BaseService {
     let localplan: PlanData = {} as PlanData;
 
     Object.assign(localplan, plandb);
+    this.emitService.emit(`mwxing.calendar.plans.changed`, localplan);
 
     return localplan;
   }
