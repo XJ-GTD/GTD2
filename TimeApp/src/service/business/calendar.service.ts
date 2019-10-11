@@ -881,6 +881,7 @@ export class CalendarService extends BaseService {
 
       this.emitService.emit(`mwxing.calendar.activities.changed`, updatedactivites);
       this.emitService.emit(`mwxing.calendar.plans.changed`, plan);
+      this.syncPrivatePlans([plan]);
     }
 
     return plan;
