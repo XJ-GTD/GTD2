@@ -348,9 +348,8 @@ export class CalendarService extends BaseService {
       }
 
       await this.sqlExce.batExecSqlByParam(sqls);
-
-      this.emitService.emit(`mwxing.calendar.plans.changed`, plan);
     } else {
+
       // 新建
       let sqls: Array<any> = new Array<any>();
 
@@ -382,9 +381,10 @@ export class CalendarService extends BaseService {
       }
 
       await this.sqlExce.batExecSqlByParam(sqls);
-
-      this.emitService.emit(`mwxing.calendar.plans.changed`, plan);
     }
+
+    this.emitService.emit(`mwxing.calendar.plans.changed`, plan);
+    this.syncPrivatePlans([plan]);
 
     return plan;
   }
