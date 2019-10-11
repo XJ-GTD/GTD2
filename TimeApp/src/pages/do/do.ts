@@ -178,8 +178,10 @@ export class DoPage {
     }
   }
 
-  goErease(target: any) {
-    this.eventService.removeAgenda(target, OperateType.OnlySel);
+  async goErease(target: any) {
+    let origin: AgendaData = await this.eventService.getAgenda(target.evi);
+
+    this.eventService.removeAgenda(origin, OperateType.OnlySel);
   }
 
   goBack() {
