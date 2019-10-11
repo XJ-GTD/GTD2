@@ -3209,7 +3209,14 @@ export class CalendarService extends BaseService {
         sync.id = plan.ji;
         sync.type = "Plan";
         sync.security = SyncDataSecurity.None;
-        sync.status = SyncDataStatus[plan.del];
+
+        // 设置删除状态
+        if (plan.del == DelType.del) {
+          sync.status = SyncDataStatus.Deleted;
+        } else {
+          sync.status = SyncDataStatus.UnDeleted;
+        }
+
         sync.payload = plan;
 
         push.d.push(sync);
