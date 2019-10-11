@@ -126,8 +126,16 @@ export class PlPage {
     this.util.loadingStart();
     let count = jh.js;
     this.plService.delete(jh).then(data=>{
-      jh.jtd = '0';//系统计划 jtd 变更
-      jh.js = '?';
+      if (data && data.jt == "2") {
+        let index = this.zdyJhs.findIndex((element) => {
+          return element.ji == data.ji;
+        });
+
+        this.zdyJhs.splice(index, 1);
+      } else {
+        jh.jtd = '0';//系统计划 jtd 变更
+        jh.js = '?';
+      }
       this.util.loadingEnd();
     }).catch(error=>{
       jh.jtd = '1';
