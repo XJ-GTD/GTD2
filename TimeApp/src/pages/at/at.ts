@@ -104,7 +104,7 @@ export class AtPage {
 
   network: any = {type: '未知', connected: false};
 
-  build:any = "0";
+  build:any = "-";
 
   constructor(public navCtrl: NavController,
               private appVersion: AppVersion,
@@ -113,7 +113,9 @@ export class AtPage {
   }
 
   ionViewDidLoad() {
-    this.build = this.appVersion.getVersionNumber();
+    this.appVersion.getVersionNumber().then((buildnumber) => {
+      this.build = buildnumber;
+    });
 
     let restfulHeader = new RestFulHeader();
     this.client.mainversion = restfulHeader.pv? restfulHeader.pv.replace(/v/, 'v0.') : 'v0.0';
