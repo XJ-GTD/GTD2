@@ -115,7 +115,7 @@ export class AtPage {
 
   ionViewDidLoad() {
     if (this.util.hasCordova()) {
-      this.appVersion.getVersionNumber().then((buildnumber) => {
+      this.appVersion.getVersionCode().then((buildnumber) => {
         if (buildnumber) {
           this.build = buildnumber;
         }
