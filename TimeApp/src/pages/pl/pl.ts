@@ -21,9 +21,9 @@ import {PagePDPro} from "../../data.mapping";
       <ion-scroll scrollY="true" scrollheightAuto>
         <ion-list>
           <ion-list-header>
-            定义了<span class="count"> {{zdyJhs.length}} </span>个日历 
+            定义了<span class="count"> {{zdyJhs.length}} </span>个日历
           </ion-list-header>
-          <ion-item   *ngFor="let option of zdyJhs" (click)="toPd(option)" >
+          <ion-item   *ngFor="let option of zdyJhs" (press)="delPlan(option)" (click)="toPd(option)" >
             <ion-label >
               <ion-icon class="fal fa-circle font-small"   [ngStyle]="{'color': option.jc }"></ion-icon>
               {{option.jn}}(<span class="font-small">{{option.js}}</span>)
@@ -46,7 +46,7 @@ import {PagePDPro} from "../../data.mapping";
           </ion-item>
         </ion-list>
       </ion-scroll>
-    </page-box>    
+    </page-box>
   `,
 })
 export class PlPage {
@@ -126,8 +126,16 @@ export class PlPage {
     this.util.loadingStart();
     let count = jh.js;
     this.plService.delete(jh).then(data=>{
-      jh.jtd = '0';//系统计划 jtd 变更
-      jh.js = '?';
+      if (data && data.jt == "2") {
+        let index = this.zdyJhs.findIndex((element) => {
+          return element.ji == data.ji;
+        });
+
+        this.zdyJhs.splice(index, 1);
+      } else {
+        jh.jtd = '0';//系统计划 jtd 变更
+        jh.js = '?';
+      }
       this.util.loadingEnd();
     }).catch(error=>{
       jh.jtd = '1';

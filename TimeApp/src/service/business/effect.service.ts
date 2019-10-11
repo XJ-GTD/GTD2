@@ -17,6 +17,8 @@ export class EffectService extends BaseService {
   }
 
   async syncStart() {
+
+    await this.calendarService.syncPrivatePlans();
     await this.eventService.syncAgendas();
 
     return ;

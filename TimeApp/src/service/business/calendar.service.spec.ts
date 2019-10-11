@@ -2323,14 +2323,14 @@ describe('CalendarService test suite', () => {
     });
   });
 
-  it(`Case 25 - 2 syncPrivatePlan 同步自定义日历数据 - 冥王星公共日历(报错)`, async (done: DoneFn) => {
+  it(`Case 25 - 2 syncPrivatePlans 同步自定义日历数据 - 冥王星公共日历(报错)`, async (done: DoneFn) => {
     // 下载公共日历
     await calendarService.downloadPublicPlan("shanghai_animation_exhibition_2019", PlanType.ActivityPlan);
 
     let plan = await calendarService.getPlan("shanghai_animation_exhibition_2019");
 
     // 共享自定义日历
-    calendarService.syncPrivatePlan(plan)
+    calendarService.syncPrivatePlans([plan])
     .then(() => {
       fail("未抛出异常, 出错");
       done();
@@ -2341,7 +2341,7 @@ describe('CalendarService test suite', () => {
     });
   });
 
-  it(`Case 25 - 1 syncPrivatePlan 同步自定义日历数据(无报错)`, async (done: DoneFn) => {
+  it(`Case 25 - 1 syncPrivatePlans 同步自定义日历数据(无报错)`, async (done: DoneFn) => {
     // 自定义日历
     let plan: PlanData = {} as PlanData;
 
@@ -2352,7 +2352,7 @@ describe('CalendarService test suite', () => {
     plan = await calendarService.savePlan(plan);
 
     // 同步自定义日历数据
-    calendarService.syncPrivatePlan(plan)
+    calendarService.syncPrivatePlans([plan])
     .then(() => {
       expect("success").toBe("success");
       done();
@@ -2961,7 +2961,7 @@ describe('CalendarService test suite', () => {
 
     plan = await calendarService.savePlan(plan);
 
-    await calendarService.removePlan(plan.ji, PlanType.PrivatePlan);
+    await calendarService.removePlan(plan);
 
     let fetchedPlan = await calendarService.getPlan(plan.ji);
 

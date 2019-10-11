@@ -4,7 +4,7 @@ import {DS} from "../model/ws.enum";
 import {EmitService} from "../../service/util-service/emit.service";
 import {Injectable} from "@angular/core";
 import {ProcesRs} from "../model/proces.rs";
-import {CalendarService} from "../../service/business/calendar.service";
+import {CalendarService, PlanData, PlanItemData} from "../../service/business/calendar.service";
 import {EventService, AgendaData, TaskData, MiniTaskData, Member} from "../../service/business/event.service";
 import {MemoService} from "../../service/business/memo.service";
 import {DataSyncPara} from "../model/datasync.para";
@@ -53,6 +53,9 @@ export class DataSyncProcess implements MQProcess {
       //处理所需要参数
       let dsPara: DataSyncPara = content.parameters;
 
+      if (dsPara.type == "Plan") {
+        this.calendarService.acceptSyncPrivatePlans([dsPara.id]);
+      }
       if (dsPara.type == "Agenda") {
         this.eventService.acceptSyncAgendas([dsPara.id]);
       }
@@ -63,6 +66,9 @@ export class DataSyncProcess implements MQProcess {
       //处理所需要参数
       let dsPara: DataSyncPara = content.parameters;
 
+      if (dsPara.type == "Plan") {
+        this.calendarService.receivedPlan(dsPara.id);
+      }
       if (dsPara.type == "Agenda") {
         this.eventService.receivedAgenda(dsPara.id);
       }
@@ -73,6 +79,9 @@ export class DataSyncProcess implements MQProcess {
       //处理所需要参数
       let dsPara: DataSyncPara = content.parameters;
 
+      if (dsPara.type == "Plan") {
+        this.calendarService.receivedPlan(dsPara.id);
+      }
       if (dsPara.type == "Agenda") {
         this.eventService.receivedAgenda(dsPara.id);
       }
@@ -83,6 +92,9 @@ export class DataSyncProcess implements MQProcess {
       //处理所需要参数
       let dsPara: DataSyncPara = content.parameters;
 
+      if (dsPara.type == "Plan") {
+        this.calendarService.receivedPlan(dsPara.id);
+      }
       if (dsPara.type == "Agenda") {
         this.eventService.receivedAgenda(dsPara.id);
       }
@@ -92,6 +104,13 @@ export class DataSyncProcess implements MQProcess {
     if (content.option == DS.DS) {
       //处理所需要参数
       let dsPara: DataSyncPara = content.parameters;
+
+      if (dsPara.type == "Plan") {
+        let plan: PlanData = {} as PlanData;
+        Object.assign(plan, dsPara.data);
+
+        this.calendarService.receivedPlanData(plan, this.convertSyncStatus(dsPara.status));
+      }
 
       if (dsPara.type == "Agenda") {
         let agenda: AgendaData = {} as AgendaData;

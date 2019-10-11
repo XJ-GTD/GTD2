@@ -31,7 +31,9 @@ export class PlService {
 
   //删除系统计划
   async delete(jh:PagePDPro){
-    return this.calendarService.removePlan(jh.ji, <PlanType>jh.jt);
+    let plan: PlanData = await this.calendarService.getPlan(jh.ji);
+
+    return this.calendarService.removePlan(plan);
   }
 
   //获取计划

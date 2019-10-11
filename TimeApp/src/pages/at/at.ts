@@ -7,6 +7,7 @@ import {RestFulHeader, RestFulConfig} from "../../service/config/restful.config"
 import {SqliteExec} from "../../service/util-service/sqlite.exec";
 import {NetworkService} from "../../service/cordova/network.service";
 import * as moment from "moment";
+import { AppVersion } from '@ionic-native/app-version';
 
 /**
  * Generated class for the 关于冥王星 page.
@@ -58,7 +59,7 @@ import * as moment from "moment";
             <span class="app-profiles">版本</span>
           </ion-row>
           <ion-row justify-content-center>
-            <span class="app-profiles">{{client.mainversion}}.{{client.version}}</span>
+            <span class="app-profiles">{{client.mainversion}}.{{client.version}}{{build==""? "" : (" build " + build)}}</span>
           </ion-row>
           <ion-row justify-content-center>
             <span class="app-profiles">{{server.datacenter}}</span>
@@ -103,12 +104,24 @@ export class AtPage {
 
   network: any = {type: '未知', connected: false};
 
+  build:any = "";
+
   constructor(public navCtrl: NavController,
+              private appVersion: AppVersion,
               private networkService: NetworkService,
+              private util:UtilService,
               private sqlite: SqliteExec) {
   }
 
   ionViewDidLoad() {
+    if (this.util.hasCordova()) {
+      this.appVersion.getVersionCode().then((buildnumber) => {
+        if (buildnumber) {
+          this.build = buildnumber;
+        }
+      });
+    }
+
     let restfulHeader = new RestFulHeader();
     this.client.mainversion = restfulHeader.pv? restfulHeader.pv.replace(/v/, 'v0.') : 'v0.0';
     this.client.version = UserConfig.getClientVersion();
