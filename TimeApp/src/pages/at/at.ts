@@ -59,10 +59,7 @@ import { AppVersion } from '@ionic-native/app-version';
             <span class="app-profiles">版本</span>
           </ion-row>
           <ion-row justify-content-center>
-            <span class="app-profiles">build {{build}}</span>
-          </ion-row>
-          <ion-row justify-content-center>
-            <span class="app-profiles">{{client.mainversion}}.{{client.version}}</span>
+            <span class="app-profiles">{{client.mainversion}}.{{client.version}} build {{build}}</span>
           </ion-row>
           <ion-row justify-content-center>
             <span class="app-profiles">{{server.datacenter}}</span>
