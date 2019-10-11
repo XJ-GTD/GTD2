@@ -3167,7 +3167,9 @@ export class CalendarService extends BaseService {
 
     Object.assign(plandb, plan);
 
-    plandb.del = status;
+    if (status == SyncDataStatus.Deleted) {
+      plandb.del = DelType.del;
+    }
     plandb.tb = SyncType.synch;
 
     await this.sqlExce.repTByParam(plandb);
