@@ -608,16 +608,282 @@ export class CalendarService extends BaseService {
    *
    * @author leon_xi@163.com
    **/
-  async removePlan(ji: string, jt: PlanType, withchildren: boolean = true) {
+  // async removePlan(ji: string, jt: PlanType, withchildren: boolean = true) {
+  //
+  //   this.assertEmpty(ji);   // id不能为空
+  //   this.assertNull(jt);    // 计划类型不能为空
+  //
+  //   let sqls: Array<any> = this.removePlanSqls(ji, jt, withchildren);
+  //
+  //   await this.sqlExce.batExecSqlByParam(sqls);
+  //
+  //   return;
+  // }
 
-    this.assertEmpty(ji);   // id不能为空
-    this.assertNull(jt);    // 计划类型不能为空
+  /**
+   * 删除日历
+   *
+   * @author leon_xi@163.com
+   **/
+  async removePlan(plan: PlanData, withchildren: boolean = true): Promise<PlanData> {
+    this.assertEmpty(plan);       // 计划不能为空
+    this.assertEmpty(plan.ji);    // 计划ID不能为空
+    this.assertEmpty(plan.jt);    // 计划类型不能为空
 
-    let sqls: Array<any> = this.removePlanSqls(ji, jt, withchildren);
+    let ji: string = plan.ji;
+    let jt: string = plan.jt;
 
-    await this.sqlExce.batExecSqlByParam(sqls);
+    let sqls: Array<any> = new Array<any>();
 
-    return;
+    // 公共日历 直接删除关联日历项
+    if (jt == PlanType.CalendarPlan || jt == PlanType.ActivityPlan) {
+      plan.del = DelType.del;
+
+      let jhadb: JhaTbl = new JhaTbl();
+      Object.assign(jhadb, plan);
+
+      sqls.push(jhadb.upTParam());
+
+      let items: Array<PlanItem> = new Array<PlanItem>();
+
+      let sql: string = `select * from gtd_jta where ji = ? and del = ?`;
+
+      items = await this.sqlExce.getExtLstByParam<PlanItem>(sql, [ji, DelType.undel]) || items;
+
+      let removeditems: Array<PlanItemData> = new Array<PlanItemData>();
+
+      // 存在日历项
+      if (items.length > 0) {
+        let removedjtas: Array<JtaTbl> = new Array<JtaTbl>();
+        for (let item of items) {
+          item.del = DelType.del;
+
+          let jtadb: JtaTbl = new JtaTbl();
+          Object.assign(jtadb, item);
+
+          removeditems.push(item);
+          removedjtas.push(jtadb);
+        }
+
+        let removesqls: Array<any> = this.sqlExce.getFastSaveSqlByParam<JtaTbl>(removedjtas) || new Array<any>();
+
+        for (let removesql of removesqls) {
+          sqls.push(removesql);
+        }
+      }
+
+      await this.sqlExce.batExecSqlByParam(sqls);
+
+      this.emitService.emit(`mwxing.calendar.activities.changed`, removeditems);
+      this.emitService.emit(`mwxing.calendar.plans.changed`, plan);
+    }
+
+    // 自定义日历
+    if (jt == PlanType.PrivatePlan) {
+      plan.del = DelType.del;
+      plan.tb = SyncType.unsynch;
+
+      let jhadb: JhaTbl = new JhaTbl();
+      Object.assign(jhadb, plan);
+
+      sqls.push(jhadb.upTParam());
+
+      let updatedactivites: Array<PlanItemData | AgendaData | TaskData | MiniTaskData | MemoData> = new Array<PlanItemData | AgendaData | TaskData | MiniTaskData | MemoData>();
+
+      // 同时删除关联日历项/事件/备忘
+      if (withchildren) {
+        // 关联日历项
+        let items: Array<PlanItemData> = new Array<PlanItemData>();
+
+        let itemsql: string = `select * from gtd_jta where ji = ? and del = ?`;
+
+        items = await this.sqlExce.getExtLstByParam<PlanItemData>(itemsql, [ji, DelType.undel]) || items;
+
+        // 存在日历项
+        if (items.length > 0) {
+          let removedjtas: Array<JtaTbl> = new Array<JtaTbl>();
+          for (let item of items) {
+            item.del = DelType.del;
+
+            let jtadb: JtaTbl = new JtaTbl();
+            Object.assign(jtadb, item);
+
+            updatedactivites.push(item);
+            removedjtas.push(jtadb);
+          }
+
+          let removesqls: Array<any> = this.sqlExce.getFastSaveSqlByParam<JtaTbl>(removedjtas) || new Array<any>();
+
+          for (let removesql of removesqls) {
+            sqls.push(removesql);
+          }
+        }
+
+        // 关联日程/任务/小任务
+        let events: Array<EventData> = new Array<EventData>();
+
+        let eventsql: string = `select * from gtd_ev where ji = ? and (rtevi is null or rtevi = '') and del = ?`;
+
+        events = await this.sqlExce.getExtLstByParam<EventData>(eventsql, [ji, DelType.undel]) || events;
+
+        // 存在事件
+        for (let event of events) {
+          let evi: string = event.evi;
+          let type: string = event.type;
+
+          if (type == EventType.Agenda) {
+            let agenda: AgendaData = await this.eventService.getAgenda(evi);
+
+            await this.eventService.removeAgenda(agenda, OperateType.FromSel);
+          }
+
+          if (type == EventType.Task) {
+            let task: TaskData = await this.eventService.getTask(evi);
+
+            await this.eventService.removeTask(task);
+          }
+
+          // 暂未实现删除功能
+          // if (type == EventType.MiniTask) {
+          //   let minitask: MiniTaskData = await this.eventService.getMiniTask(evi);
+          //
+          //   await this.eventService.removeMiniTask(minitask);
+          // }
+        }
+
+        // 关联备忘
+        let memos: Array<MemoData> = new Array<MemoData>();
+
+        let memosql: string = `select * from gtd_mom where ji = ? and del = ?`;
+
+        memos = await this.sqlExce.getExtLstByParam<MemoData>(memosql, [ji, DelType.undel]) || memos;
+
+        // 存在事件
+        if (memos.length > 0) {
+          let removedmoms: Array<MomTbl> = new Array<MomTbl>();
+
+          for (let memo of memos) {
+            memo.del = DelType.del;
+
+            let memodb: MomTbl = new MomTbl();
+            Object.assign(memodb, memo);
+
+            removedmoms.push(memodb);
+            updatedactivites.push(memo);
+          }
+
+          let removesqls: Array<any> = this.sqlExce.getFastSaveSqlByParam<MomTbl>(removedmoms) || new Array<any>();
+
+          for (let removesql of removesqls) {
+            sqls.push(removesql);
+          }
+        }
+      } else {
+        // 关联日历项
+        let items: Array<PlanItemData> = new Array<PlanItemData>();
+
+        let itemsql: string = `select * from gtd_jta where ji = ? and del = ?`;
+
+        items = await this.sqlExce.getExtLstByParam<PlanItemData>(itemsql, [ji, DelType.undel]) || items;
+
+        // 存在日历项
+        if (items.length > 0) {
+          let removedjtas: Array<JtaTbl> = new Array<JtaTbl>();
+          for (let item of items) {
+            item.ji = "";
+
+            let jtadb: JtaTbl = new JtaTbl();
+            Object.assign(jtadb, item);
+
+            updatedactivites.push(item);
+            removedjtas.push(jtadb);
+          }
+
+          let updatesqls: Array<any> = this.sqlExce.getFastSaveSqlByParam<JtaTbl>(removedjtas) || new Array<any>();
+
+          for (let updatesql of updatesqls) {
+            sqls.push(updatesql);
+          }
+        }
+
+        // 关联日程/任务/小任务
+        let events: Array<EventData> = new Array<EventData>();
+
+        let eventsql: string = `select * from gtd_ev where ji = ? and (rtevi is null or rtevi = '') and del = ?`;
+
+        events = await this.sqlExce.getExtLstByParam<EventData>(eventsql, [ji, DelType.undel]) || events;
+
+        // 存在事件
+        for (let event of events) {
+          let evi: string = event.evi;
+          let type: string = event.type;
+
+          if (type == EventType.Agenda) {
+            let agenda: AgendaData = await this.eventService.getAgenda(evi);
+
+            let changed: AgendaData = {} as AgendaData;
+            Object.assign(changed, agenda);
+
+            changed.ji = "";
+
+            await this.eventService.saveAgenda(changed, agenda, OperateType.FromSel);
+          }
+
+          if (type == EventType.Task) {
+            let task: TaskData = await this.eventService.getTask(evi);
+
+            let changed: TaskData = {} as TaskData;
+            Object.assign(changed, task);
+
+            changed.ji = "";
+
+            await this.eventService.saveTask(changed);
+          }
+
+          // 暂未实现删除功能
+          // if (type == EventType.MiniTask) {
+          //   let minitask: MiniTaskData = await this.eventService.getMiniTask(evi);
+          //
+          //   await this.eventService.removeMiniTask(minitask);
+          // }
+        }
+
+        // 关联备忘
+        let memos: Array<MemoData> = new Array<MemoData>();
+
+        let memosql: string = `select * from gtd_mom where ji = ? and del = ?`;
+
+        memos = await this.sqlExce.getExtLstByParam<MemoData>(memosql, [ji, DelType.undel]) || memos;
+
+        // 存在备忘
+        if (memos.length > 0) {
+          let removedmoms: Array<MomTbl> = new Array<MomTbl>();
+
+          for (let memo of memos) {
+            memo.ji = "";
+
+            let memodb: MomTbl = new MomTbl();
+            Object.assign(memodb, memo);
+
+            removedmoms.push(memodb);
+            updatedactivites.push(memo);
+          }
+
+          let updatesqls: Array<any> = this.sqlExce.getFastSaveSqlByParam<MomTbl>(removedmoms) || new Array<any>();
+
+          for (let updatesql of updatesqls) {
+            sqls.push(updatesql);
+          }
+        }
+      }
+
+      await this.sqlExce.batExecSqlByParam(sqls);
+
+      this.emitService.emit(`mwxing.calendar.activities.changed`, updatedactivites);
+      this.emitService.emit(`mwxing.calendar.plans.changed`, plan);
+    }
+
+    return plan;
   }
 
   /**
