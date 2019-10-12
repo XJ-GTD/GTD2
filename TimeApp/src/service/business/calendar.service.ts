@@ -908,7 +908,7 @@ export class CalendarService extends BaseService {
     Object.assign(planitem, planitemdb);
 
     planitem.rtjson = generateRtJson(planitem.rtjson, planitem.rt);
-    planitem.txjson = generateRtJson(planitem.txjson, planitem.tx);
+    planitem.txjson = generateTxJson(planitem.txjson, planitem.tx);
 
     return planitem;
   }
