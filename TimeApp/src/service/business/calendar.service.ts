@@ -6,7 +6,7 @@ import { EmitService } from "../util-service/emit.service";
 import { BipdshaeData, Plan, PlanPa, ShareData, ShaeRestful } from "../restful/shaesev";
 import { SyncData, PushInData, PullInData, DataRestful } from "../restful/datasev";
 import { BackupPro, BacRestful, OutRecoverPro, RecoverPro } from "../restful/bacsev";
-import { EventData, TaskData, AgendaData, MiniTaskData, EventService, RtJson, TxJson, generateRtJson, generateTxJson } from "./event.service";
+import { EventData, TaskData, AgendaData, MiniTaskData, EventService, RtJson, TxJson, Member, generateRtJson, generateTxJson } from "./event.service";
 import { MemoData, MemoService } from "./memo.service";
 import { EventType, PlanType, PlanItemType, PlanDownloadType, ConfirmType, OperateType, ObjectType, PageDirection, CycleType, SyncType, RepeatFlag, DelType, SyncDataSecurity, SyncDataStatus } from "../../data.enum";
 import { UserConfig } from "../config/user.config";
@@ -344,7 +344,7 @@ export class CalendarService extends BaseService {
           sqls.push(memberdb.rpTParam());
         }
       } else {
-        plan.members = plan.members || new Array<PlanMember>();
+        plan.members = plan.members || new Array<Member>();
       }
 
       await this.sqlExce.batExecSqlByParam(sqls);
@@ -377,7 +377,7 @@ export class CalendarService extends BaseService {
           sqls.push(memberdb.inTParam());
         }
       } else {
-        plan.members = plan.members || new Array<PlanMember>();
+        plan.members = plan.members || new Array<Member>();
       }
 
       await this.sqlExce.batExecSqlByParam(sqls);
@@ -440,7 +440,7 @@ export class CalendarService extends BaseService {
     // 取得计划共享成员
     let planmembersql: string = `select * from gtd_par where obt = ? and obi = ? and del = ?`;
 
-    plan.members = await this.sqlExce.getExtLstByParam<PlanMember>(planmembersql, [ObjectType.CalendarPlan, ji, DelType.undel]) || new Array<PlanMember>();
+    plan.members = await this.sqlExce.getExtLstByParam<Member>(planmembersql, [ObjectType.CalendarPlan, ji, DelType.undel]) || new Array<Member>();
 
     if (!withchildren) {
       return plan;
@@ -3112,6 +3112,305 @@ export class CalendarService extends BaseService {
   }
 
   /**
+   * 共享日历项
+   *
+   * @author leon_xi@163.com
+   **/
+  async sendPlanItem(planitem: PlanItemData) {
+    this.assertEmpty(planitem);     // 入参不能为空
+
+    await this.syncPlanItems([planitem]);
+
+    return;
+  }
+
+  async syncPlanItems(planitems: Array<PlanItemData> = new Array<PlanItemData>()) {
+    this.assertEmpty(planitems);    // 入参不能为空
+
+    let members = new Array<Member>();
+
+    if (planitems.length <= 0) {
+      let sql: string = `select * from gtd_jta where tb = ? and del <> ?`;
+
+      planitems = await this.sqlExce.getExtLstByParam<PlanData>(sql, [SyncType.unsynch, DelType.del]) || planitems;
+
+      let sqlmember: string = ` select par.*  ,
+                                    b.ran,
+                                   b.ranpy,
+                                   '' hiu,
+                                   b.rn,
+                                   b.rnpy,
+                                   b.rc,
+                                   b.rel,
+                                   b.src
+                              from (select
+                                    case when rfg = ?1 then jti
+                                       when ifnull(rtjti, '') = '' then jti
+                                       else rtjti end forcejti
+                                    from gtd_jta
+                                    where ui <> '' and ui is not null and tb = ?2) jta
+                              inner join gtd_par par
+                              on jta.forceevi = par.obi and par.obt = ?3
+                              inner join gtd_b b
+                              on par.pwi = b.pwi `;
+      members =  await this.sqlExce.getExtLstByParam<Member>(sqlmember,
+        [RepeatFlag.NonRepeat, SyncType.unsynch, ObjectType.PlanItem]) || members;
+    }
+
+    // 存在未同步日历
+    if (planitems.length > 0) {
+      // 构造Push数据结构
+      let push: PushInData = new PushInData();
+
+      for (let planitem of planitems) {
+        let sync: SyncData = new SyncData();
+
+        sync.fields.unshared.push("del");             // 删除状态为个人数据不共享给他人
+        sync.fields.unshared.push("bz");              // 备注为个人数据不共享给他人
+        sync.fields.unshared.push("ji");              // 计划为个人数据不共享给他人
+        sync.fields.unshared.push("tx");              // 提醒为个人数据不共享给他人
+        sync.fields.unshared.push("txs");             // 提醒为个人数据不共享给他人
+        sync.fields.unshared.push("invitestatus");    // 接受拒绝状态为个人数据不共享给他人
+
+        // 非重复日程/重复日程的第一条需要通知
+        if (!planitem.rtjti || planitem.rfg == RepeatFlag.RepeatToOnly) {
+          sync.main = true;
+        }
+
+        sync.src = planitem.ui;
+        sync.id = planitem.jti;
+        sync.type = "PlanItem";
+        sync.title = planitem.jtn;
+        sync.security = SyncDataSecurity.None;
+
+        // 设置删除状态
+        if (planitem.del == DelType.del) {
+          sync.status = SyncDataStatus.Deleted;
+        } else {
+          sync.status = SyncDataStatus.UnDeleted;
+        }
+
+        // 设置受邀状态
+        if (planitem.invitestatus == InviteState.Accepted) {
+          sync.invitestate = InviteState.Accepted;
+        } else if (planitem.invitestatus == InviteState.Rejected) {
+          sync.invitestate = InviteState.Rejected;
+        } else {
+          sync.invitestate = InviteState.None;
+        }
+
+        if (members.length > 0) {
+          let masterid: string;
+          if (planitem.rtjti == "") {
+            //非重复数据或重复数据的父记录
+            masterid = planitem.jti;
+          } else if (planitem.rfg == RepeatFlag.RepeatToOnly) {
+            //重复中独立数据
+            masterid = planitem.jti;
+          } else {
+            //重复数据
+            masterid = planitem.rtjti;
+          }
+
+          let membersTos: Array<Member> = members.filter((value, index, arr) => {
+            return masterid == value.obi;
+          });
+
+          planitem.members = membersTos;
+        }
+
+        sync.to = (planitem.members && planitem.members.length > 0)? planitem.members.reduce((target, element) => {
+          if (element && element.rc) target.push(element.rc);
+
+          return target;
+        }, new Array<string>()) : [];
+
+        sync.payload = planitem;
+
+        push.d.push(sync);
+      }
+
+      await this.dataRestful.push(push);
+    }
+
+    return;
+  }
+
+  /**
+   * 完成日历项同步,更新日历项同步状态
+   *
+   * @author leon_xi@163.com
+   */
+  async acceptSyncPlanItems(ids: Array<string>) {
+    let sqls: Array<any> = new Array<any>();
+
+    let sql: string = `update gtd_jta set tb = ? where jti in ('` + ids.join(', ') + `')`;
+
+    sqls.push([sql, [SyncType.synch]]);
+
+    await this.sqlExce.batExecSqlByParam(sqls);
+
+    // 同步完成后刷新缓存
+    for (let id of ids) {
+      this.getPlanItem(id).then((planitem) => {
+        if (planitem) {
+          this.emitService.emit("mwxing.calendar.activities.changed", planitem);
+        }
+      });
+    }
+  }
+
+  /**
+   * 接收日历项数据同步
+   *
+   * @author leon_xi@163.com
+   **/
+  async receivedPlanItem(jti: any) {
+
+    this.assertEmpty(jti);   // 入参不能为空
+
+    let pull: PullInData = new PullInData();
+
+    pull.type = "PlanItem";
+
+    if (jti instanceof Array) {
+      pull.d.splice(0, 0, ...jti);
+    } else {
+      pull.d.push(jti);
+    }
+
+    // 发送下载日历项请求
+    await this.dataRestful.pull(pull);
+
+    return;
+  }
+
+  /**
+   * 接收日历项保存到本地
+   *
+   * @author leon_xi@163.com
+   **/
+  async receivedPlanItemData(planitems: Array<PlanItemData>, status: SyncDataStatus): Promise<Array<PlanItemData>> {
+
+    this.assertEmpty(planitems);      // 入参不能为空
+    this.assertEmpty(status);         // 入参不能为空
+
+    let sqlparam = new Array<any>();
+
+    let saved: Array<PlanItemData> = new Array<PlanItemData>();
+
+    for (let planitem of planitems) {
+      let current = {} as PlanItemData;
+      Object.assign(current, planitem);
+
+      // 删除参与人时，通过这个字段传递删除数据
+      if (status == SyncDataStatus.Deleted) {
+        current.del = DelType.del;
+      } else {
+        // 删除字段不共享, 如果不存在需要设置默认值
+        if (!current.del) current.del = DelType.undel;
+      }
+
+      current.tb = SyncType.synch;
+
+      // 非共享字段，第一次接收需要付初值
+      if (!current.bz) {
+        current.bz = "";
+      }
+
+      if (!current.ji) {
+        current.ji = "";
+      }
+
+      if (!current.tx) {
+        let txjson: TxJson = new TxJson();
+
+        current.tx = JSON.stringify(txjson);
+        current.txs = txjson.text();
+      }
+
+      if (!current.invitestatus) {
+        current.invitestatus = InviteState.None;
+      }
+
+      let planitemdb: JtaTbl = new JtaTbl();
+      Object.assign(planitemdb, current);
+      sqlparam.push(planitemdb.rpTParam());
+
+      //相关参与人更新
+      if (current.rfg == RepeatFlag.NonRepeat || (current.rfg != RepeatFlag.NonRepeat && current.rtjti == '')) {
+        let delpar = new ParTbl();
+        delpar.obt = ObjectType.PlanItem;
+        delpar.obi = current.jti;
+        sqlparam.push(delpar.dTParam());
+
+        if (current.members && current.members.length > 0) {
+          for (let member of current.members){
+            let par = new ParTbl();
+            Object.assign(par, member);
+
+            par.pari = this.util.getUuid();
+            par.obi = current.jti;
+            par.obt = ObjectType.PlanItem;
+            par.tb = SyncType.synch;
+            par.del = DelType.undel;
+
+            sqlparam.push(par.rpTParam());
+          }
+        }
+      }
+
+      saved.push(current);
+    }
+
+    this.sqlExce.batExecSqlByParam(sqlparam);
+    this.emitService.emit(`mwxing.calendar.activities.changed`, saved);
+
+    return saved;
+  }
+
+  /**
+   * 接受邀请
+   *
+   * @author leon_xi@163.com
+   */
+  async acceptReceivedPlanItem(jti: string): Promise<PlanItemData> {
+    this.assertEmpty(jti);       // 入参不能为空
+
+    let origin: PlanItemData = await this.getPlanItem(jti);
+
+    let current: PlanItemData = {} as PlanItemData;
+    Object.assign(current, origin);
+
+    current.invitestatus = InviteState.Accepted;
+
+    let saved = await this.savePlanItem(current, origin);
+
+    return current;
+  }
+
+  /**
+   * 拒绝邀请
+   *
+   * @author leon_xi@163.com
+   */
+  async rejectReceivedPlanItem(jti: string): Promise<PlanItemData> {
+    this.assertEmpty(jti);       // 入参不能为空
+
+    let origin: PlanItemData = await this.getPlanItem(jti);
+
+    let current: PlanItemData = {} as PlanItemData;
+    Object.assign(current, origin);
+
+    current.invitestatus = InviteState.Rejected;
+    current.del = DelType.del;                     // 拒绝的日程设置为删除, 从用户日历显示中删除
+
+    let saved = await this.savePlanItem(current, origin);
+
+    return current;
+  }
+
+  /**
    * 共享日历
    *
    * @author leon_xi@163.com
@@ -4063,13 +4362,9 @@ export class FindActivityCondition {
   target: Array<ObjectType> = new Array<ObjectType>();
 }
 
-export interface PlanMember extends ParTbl {
-
-}
-
 export interface PlanData extends JhaTbl {
   items: Array<PlanItemData | AgendaData | TaskData | MiniTaskData | MemoData>;
-  members: Array<PlanMember>;
+  members: Array<Member>;
 }
 
 export interface PlanItemData extends JtaTbl {

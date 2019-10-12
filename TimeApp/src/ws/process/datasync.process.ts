@@ -56,6 +56,9 @@ export class DataSyncProcess implements MQProcess {
       if (dsPara.type == "Plan") {
         this.calendarService.acceptSyncPrivatePlans([dsPara.id]);
       }
+      if (dsPara.type == "PlanItem") {
+        this.calendarService.acceptSyncPlanItems([dsPara.id]);
+      }
       if (dsPara.type == "Agenda") {
         this.eventService.acceptSyncAgendas([dsPara.id]);
       }
@@ -68,6 +71,9 @@ export class DataSyncProcess implements MQProcess {
 
       if (dsPara.type == "Plan") {
         this.calendarService.receivedPlan(dsPara.id);
+      }
+      if (dsPara.type == "PlanItem") {
+        this.calendarService.receivedPlanItem(dsPara.id);
       }
       if (dsPara.type == "Agenda") {
         this.eventService.receivedAgenda(dsPara.id);
@@ -82,6 +88,9 @@ export class DataSyncProcess implements MQProcess {
       if (dsPara.type == "Plan") {
         this.calendarService.receivedPlan(dsPara.id);
       }
+      if (dsPara.type == "PlanItem") {
+        this.calendarService.receivedPlanItem(dsPara.id);
+      }
       if (dsPara.type == "Agenda") {
         this.eventService.receivedAgenda(dsPara.id);
       }
@@ -94,6 +103,9 @@ export class DataSyncProcess implements MQProcess {
 
       if (dsPara.type == "Plan") {
         this.calendarService.receivedPlan(dsPara.id);
+      }
+      if (dsPara.type == "PlanItem") {
+        this.calendarService.receivedPlanItem(dsPara.id);
       }
       if (dsPara.type == "Agenda") {
         this.eventService.receivedAgenda(dsPara.id);
@@ -110,6 +122,128 @@ export class DataSyncProcess implements MQProcess {
         Object.assign(plan, dsPara.data);
 
         this.calendarService.receivedPlanData(plan, this.convertSyncStatus(dsPara.status));
+      }
+
+      if (dsPara.type == "PlanItem") {
+        let planitem: PlanItemData = {} as PlanItemData;
+        Object.assign(planitem, dsPara.data);
+
+        // 参与人通过to字段重新构造
+        if (dsPara.to && dsPara.to.length > 0) {
+          let unknowncontacts: Array<string> = new Array<string>(...dsPara.to);
+
+          let fsdatas = UserConfig.friends.filter((element, index, array) => {
+            let pos: number = unknowncontacts.indexOf(element.rc);
+
+            if (pos >= 0) unknowncontacts.splice(pos, 1); // 移出已知联系人
+
+            return (pos >= 0);
+          });
+
+          let originmembers = planitem.members;
+
+          planitem.members = new Array<Member>();
+
+          let bsqls = new Array<string>();
+
+          for (let fsdata of fsdatas) {
+
+            //更新参与人ui
+            if (fsdata.ui == ""){
+              let userinfo = await this.personRestful.get(fsdata.rc);
+              if (userinfo && userinfo.openid){
+                fsdata.ui = userinfo.openid;
+
+                let bt = new BTbl();
+                bt.pwi = fsdata.pwi;
+                bt.ui = fsdata.ui;
+                bsqls.push(bt.upT());
+              }
+            }
+
+            let member: Member = {} as Member;
+            Object.assign(member, fsdata);
+
+            // 数据共享成员状态
+            let sharestate = dsPara.share[member['rc']];
+
+            if (sharestate) {
+              let datastate = sharestate['datastate'];
+              let invitestate = sharestate['invitestate'];
+
+              if (datastate == DelType.del) {
+                member.sdt = MemberShareState.Removed;
+              } else {
+                if (invitestate == InviteState.Accepted) {
+                  member.sdt = MemberShareState.Accepted;
+                } else if (invitestate == InviteState.Rejected) {
+                  member.sdt = MemberShareState.Rejected;
+                } else {
+                  member.sdt = MemberShareState.AcceptWait;
+                }
+              }
+            } else {
+              member.sdt = MemberShareState.AcceptWait;
+            }
+
+            planitem.members.push(member);
+          }
+
+          if (bsqls.length > 0){
+            await this.sqlExce.batExecSql(bsqls);
+          }
+
+          // 参与人可能存在没有注册的情况，目前没有考虑
+          for (let unknown of unknowncontacts) {
+            let origins = originmembers.filter((element) => {
+              return element.rc == unknown;
+            });
+
+            let origin = (origins && origins.length > 0)? origins[0] : null;
+            let btbl = new BTbl();
+
+            if (origin) {
+              Object.assign(btbl, origin);
+            } else {
+              btbl = null;
+            }
+
+            let one: FsData = await this.contactsServ.addSharedContact(unknown, btbl);
+
+            if (one && one.rc) { // 注册用户
+              let member: Member = {} as Member;
+              Object.assign(member, one);
+
+              // 数据共享成员状态
+              let sharestate = dsPara.share[member['rc']];
+
+              if (sharestate) {
+                let datastate = sharestate['datastate'];
+                let invitestate = sharestate['invitestate'];
+
+                if (datastate == DelType.del) {
+                  member.sdt = MemberShareState.Removed;
+                } else {
+                  if (invitestate == InviteState.Accepted) {
+                    member.sdt = MemberShareState.Accepted;
+                  } else if (invitestate == InviteState.Rejected) {
+                    member.sdt = MemberShareState.Rejected;
+                  } else {
+                    member.sdt = MemberShareState.AcceptWait;
+                  }
+                }
+              } else {
+                member.sdt = MemberShareState.AcceptWait;
+              }
+
+              planitem.members.push(member);
+            } else {  // 非注册用户
+
+            }
+          }
+        }
+
+        this.calendarService.receivedPlanItemData([planitem], this.convertSyncStatus(dsPara.status));
       }
 
       if (dsPara.type == "Agenda") {

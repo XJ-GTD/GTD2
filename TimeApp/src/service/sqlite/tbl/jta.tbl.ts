@@ -9,6 +9,11 @@ export class JtaTbl implements ITblParam {
   jti: string;
   ji: string;
   jtn: string;
+  ui: string;           // 2019/10/12 增加所属帐号
+  invitestatus: string; // 2019/10/12 增加邀请状态
+  pn: number;           // 2019/10/12 增加参与人数
+  md: string;           // 2019/10/12 增加修改权限
+  iv: string;           // 2019/10/12 增加邀请权限
   sd: string;
   st: string;
   jtt: string;
@@ -31,6 +36,11 @@ export class JtaTbl implements ITblParam {
     params.push(this.jti);
     params.push(this.ji);
     params.push(this.jtn);
+    params.push(this.ui);
+    params.push(this.invitestatus);
+    params.push(this.pn);
+    params.push(this.md);
+    params.push(this.iv);
     params.push(this.sd);
     params.push(this.st);
     params.push(this.jtt);
@@ -49,8 +59,8 @@ export class JtaTbl implements ITblParam {
     params.push(this.rtjti);
 
     return [`replace into gtd_jta
-       (   jti ,ji ,jtn ,sd ,st ,jtt ,jtc ,px ,bz ,wtt ,utt,tb,del,tx,txs,rt,rts,rfg,rtjti)`,
-     `select ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?`,
+       (   jti ,ji ,jtn ,ui ,invitestatus ,pn ,md ,iv ,sd ,st ,jtt ,jtc ,px ,bz ,wtt ,utt,tb,del,tx,txs,rt,rts,rfg,rtjti)`,
+     `select ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?`,
     params];
   }
 
@@ -60,6 +70,11 @@ export class JtaTbl implements ITblParam {
       jti varchar(50) PRIMARY KEY
      ,ji varchar(50)
      ,jtn varchar(50)
+     ,ui varchar(50)
+     ,invitestatus varchar(6)
+     ,pn integer
+     ,md varchar(4)
+     ,iv varchar(4)
      ,sd varchar(20)
      ,st varchar(20)
      ,jtt varchar(4)
@@ -88,6 +103,11 @@ export class JtaTbl implements ITblParam {
 
     if(this.ji!=null && this.ji!=''){      sq=sq+', ji= ? ';      params.push(this.ji);    }
     if(this.jtn!=null && this.jtn!=''){      sq=sq+', jtn= ? ';      params.push(this.jtn);    }
+    if(this.ui!=null && this.ui!=''){      sq=sq+', ui= ? ';      params.push(this.ui);    }
+    if(this.invitestatus!=null && this.invitestatus!=''){      sq=sq+', invitestatus= ? ';      params.push(this.invitestatus);    }
+    if(this.pn!=null){      sq=sq+', pn= ? ';      params.push(this.pn);    }
+    if(this.md!=null && this.md!=''){      sq=sq+', md= ? ';      params.push(this.md);    }
+    if(this.iv!=null && this.iv!=''){      sq=sq+', iv= ? ';      params.push(this.iv);    }
     if(this.sd!=null && this.sd!=''){      sq=sq+', sd= ? ';      params.push(this.sd);    }
     if(this.st!=null && this.st!=''){      sq=sq+', st= ? ';      params.push(this.st);    }
     if(this.jtt!=null && this.jtt!=''){      sq=sq+', jtt= ? ';      params.push(this.jtt);    }
@@ -143,6 +163,11 @@ export class JtaTbl implements ITblParam {
 
     if(this.ji!=null && this.ji!=''){      sq=sq+' and ji= ? ';      params.push(this.ji);    }
     if(this.jtn!=null && this.jtn!=''){      sq=sq+' and jtn= ? ';      params.push(this.jtn);    }
+    if(this.ui!=null && this.ui!=''){      sq=sq+' and ui= ? ';      params.push(this.ui);    }
+    if(this.invitestatus!=null && this.invitestatus!=''){      sq=sq+' and invitestatus= ? ';      params.push(this.invitestatus);    }
+    if(this.pn!=null){      sq=sq+' and pn= ? ';      params.push(this.pn);    }
+    if(this.md!=null && this.md!=''){      sq=sq+' and md= ? ';      params.push(this.md);    }
+    if(this.iv!=null && this.iv!=''){      sq=sq+' and iv= ? ';      params.push(this.iv);    }
     if(this.sd!=null && this.sd!=''){      sq=sq+' and sd= ? ';      params.push(this.sd);    }
     if(this.st!=null && this.st!=''){      sq=sq+' and st= ? ';      params.push(this.st);    }
     if(this.jtt!=null && this.jtt!=''){      sq=sq+' and jtt= ? ';      params.push(this.jtt);    }
@@ -175,11 +200,16 @@ export class JtaTbl implements ITblParam {
   inTParam():any {
     let params = new Array<any>();
     let sq =`insert into gtd_jta
-       (   jti ,ji ,jtn ,sd ,st ,jtt ,jtc ,px ,bz ,wtt ,utt,tb,del,tx,txs,rt,rts,rfg,rtjti)
-       values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);`;
+       (   jti ,ji ,jtn ,ui ,invitestatus ,pn ,md ,iv ,sd ,st ,jtt ,jtc ,px ,bz ,wtt ,utt,tb,del,tx,txs,rt,rts,rfg,rtjti)
+       values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);`;
     params.push(this.jti);
     params.push(this.ji);
     params.push(this.jtn);
+    params.push(this.ui);
+    params.push(this.invitestatus);
+    params.push(this.pn);
+    params.push(this.md);
+    params.push(this.iv);
     params.push(this.sd);
     params.push(this.st);
     params.push(this.jtt);
@@ -206,11 +236,16 @@ export class JtaTbl implements ITblParam {
   rpTParam():any {
     let params = new Array<any>();
     let sq =`replace into gtd_jta
-       (   jti ,ji ,jtn ,sd ,st ,jtt ,jtc ,px ,bz ,wtt ,utt,tb,del,tx,txs,rt,rts,rfg,rtjti)
-       values(?,?,?,?,?,?,?,?,?,${moment().unix()},${moment().unix()},?,?,?,?,?,?,?,?);`;
+       (   jti ,ji ,jtn ,ui ,invitestatus ,pn ,md ,iv ,sd ,st ,jtt ,jtc ,px ,bz ,wtt ,utt,tb,del,tx,txs,rt,rts,rfg,rtjti)
+       values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,${moment().unix()},${moment().unix()},?,?,?,?,?,?,?,?);`;
     params.push(this.jti);
     params.push(this.ji);
     params.push(this.jtn);
+    params.push(this.ui);
+    params.push(this.invitestatus);
+    params.push(this.pn);
+    params.push(this.md);
+    params.push(this.iv);
     params.push(this.sd);
     params.push(this.st);
     params.push(this.jtt);
