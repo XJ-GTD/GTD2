@@ -3206,6 +3206,7 @@ export class CalendarService extends BaseService {
 
         let sync: SyncData = new SyncData();
 
+        sync.src = UserConfig.account.id;
         sync.id = plan.ji;
         sync.type = "Plan";
         sync.security = SyncDataSecurity.None;
