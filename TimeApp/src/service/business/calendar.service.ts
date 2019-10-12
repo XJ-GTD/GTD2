@@ -3132,7 +3132,7 @@ export class CalendarService extends BaseService {
     if (planitems.length <= 0) {
       let sql: string = `select * from gtd_jta where tb = ? and del <> ?`;
 
-      planitems = await this.sqlExce.getExtLstByParam<PlanData>(sql, [SyncType.unsynch, DelType.del]) || planitems;
+      planitems = await this.sqlExce.getExtLstByParam<PlanItemData>(sql, [SyncType.unsynch, DelType.del]) || planitems;
 
       let sqlmember: string = ` select par.*  ,
                                     b.ran,
