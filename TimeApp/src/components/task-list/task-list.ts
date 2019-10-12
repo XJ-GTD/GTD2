@@ -19,7 +19,7 @@ import * as moment from "moment";
           <div class="line font-normal" leftmargin rightmargin>
 
             <div class="icon font-small" >
-              <ion-icon class="{{(task.evd + ' ' + task.evt) | formatedate:'withNowcss'}}"></ion-icon>
+              <ion-icon class="{{(task.evd + ' ' + task.evt) | transfromdate :'withNowcss'}}"></ion-icon>
             </div>
               <div class="st font-small">  {{(task.evd + ' ' + task.evt) | formatedate:'withNow'}}</div>
 
