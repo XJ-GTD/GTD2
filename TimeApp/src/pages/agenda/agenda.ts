@@ -131,7 +131,7 @@ import {ModiPower} from "../../data.enum";
                 <span class="content font-normal">
                   日期：{{currentAgenda.evd | formatedate: "YYYY年M月D日"}}<br/>
 
-                  时间：{{currentAgenda.evt | formatedate: "HH:mm"}} {{currentAgenda.ct | formatedate: "duration"}}
+                  时间：{{currentAgenda.evd + " " + currentAgenda.evt | formatedate: "A HH:mm"}}({{currentAgenda.ct | transfromdate: "duration"}})
                 </span>
                 <ion-icon class="font-normal fal fa-calendar-check "></ion-icon>
               </div>

@@ -6,6 +6,7 @@ import { FormatRepeatPipe } from './formatrepeat/formatrepeat';
 import { FormatRemindPipe } from './formatremind/formatremind';
 import { FormatUserPipe } from './formatuser/formatuser';
 import { FormatPlanPipe } from './formatplan/formatplan';
+import {TransFromDatePipe} from "./transformdate/transfromdate";
 
 @NgModule({
 	declarations: [
@@ -15,7 +16,8 @@ import { FormatPlanPipe } from './formatplan/formatplan';
 		FormatPlanPipe,
 		FormatWeatherPipe,
 		FormatRepeatPipe,
-		FormatRemindPipe
+		FormatRemindPipe,
+    TransFromDatePipe
 	],
 	imports: [],
 	exports: [
@@ -25,7 +27,8 @@ import { FormatPlanPipe } from './formatplan/formatplan';
 		FormatPlanPipe,
 		FormatWeatherPipe,
 		FormatRepeatPipe,
-		FormatRemindPipe
+		FormatRemindPipe,
+    TransFromDatePipe
 	]
 })
 export class PipesModule {}

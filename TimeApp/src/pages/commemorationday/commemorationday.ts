@@ -88,7 +88,7 @@ import {Keyboard} from "@ionic-native/keyboard";
                 <span class="content font-normal">
                   日期：{{currentPlanItem.evd | formatedate: "YYYY年M月D日"}}<br/>
                 
-                  时间：{{currentPlanItem.evt | formatedate: "HH:mm"}} {{currentPlanItem.ct | formatedate: "duration"}}
+                  时间：{{currentPlanItem.evd  + " " + currentPlanItem.evt | formatedate: "HH:mm"}} {{currentPlanItem.ct | transfromdate: "duration"}}
                 </span>
                 <ion-icon class="font-normal fal fa-calendar-check "></ion-icon>
               </div>

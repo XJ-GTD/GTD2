@@ -55,7 +55,7 @@ BScroll.use(InfinityScroll);
     <ion-content #contentD class="monthActivityWapper" >
       <ion-grid #grid4Hight class = "list-grid-content">
         <ng-template ngFor let-monthActivityData [ngForOf]="monthActivityDatas" >
-          <ion-row class="item-content dayagenda-month {{monthActivityData.month  | formatedate :'CSSMM'}}" id="month{{monthActivityData.month | formatedate:'YYYYMM'}}">
+          <ion-row class="item-content dayagenda-month {{monthActivityData.month  | transfromdate :'CSSMM'}}" id="month{{monthActivityData.month | formatedate:'YYYYMM'}}">
             <div class="line first-line">
                 <p class="month-a font-large">
                   {{monthActivityData.month  | formatedate :"CYYYY/MM/ND"}}
