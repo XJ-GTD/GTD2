@@ -1226,7 +1226,7 @@ export class EventService extends BaseService {
       outAgds.push(outAgd);
 
       //如果当前删除对象是父事件，则为当前重复事件重建新的父事件，值为ev表重复记录里的第一条做为父事件
-      await this.operateForParentAgd(oriAgdata,oriAgdata.members,sqlparam,outAgds);
+      await this.changedParentAgdForOther(oriAgdata,oriAgdata.members,sqlparam,outAgds);
 
 
 
@@ -1515,28 +1515,8 @@ export class EventService extends BaseService {
       ev.mi = newAgdata.mi;
       sqlparam.push(ev.upTParam());
 
-      //删除参与人
-      let par = new ParTbl();
-      par.obt = anyenum.ObjectType.Event;
-      par.obi = masterEvi;
-      sqlparam.push(par.dTParam());
-      //参与人更新
-      let nwpar = new Array<any>();
-      nwpar = this.sqlparamAddPar(masterEvi , newAgdata.members);
-
-      //删除附件
-      let fj = new FjTbl();
-      fj.obt = anyenum.ObjectType.Event;
-      fj.obi = oriAgdata.evi;
-      sqlparam.push(fj.dTParam());
-      //附件更新
-      let nwfj = new Array<FjTbl>();
-      nwfj = this.sqlparamAddFj(oriAgdata.evi, newAgdata.attachments);
-      let fjparams = new Array<any>();
-      if (nwfj && nwfj.length > 0){
-        fjparams = this.sqlExce.getFastSaveSqlByParam(nwfj);
-      }
-      sqlparam = [...sqlparam,  ...nwpar, ...fjparams];
+      //其他表相关处理
+      this.modifyOnlyoneForOther(sqlparam,oriAgdata,newAgdata);
 
       //todolist处理
       if (newAgdata.todolist != oriAgdata.todolist){
@@ -1657,49 +1637,13 @@ export class EventService extends BaseService {
 
       outAgds.push(outAgd);
 
-      // 删除相关提醒
-      let wa = new WaTbl();
-      wa.obi = oriAgdata.evi;//obi使用原evi
-      wa.obt = anyenum.ObjectType.Event;
-      sqlparam.push(wa.dTParam());
-
-      //提醒新建
-      let waparams = new Array<any>();
-      if (newAgdata.txjson.reminds && newAgdata.txjson.reminds.length > 0) {
-        was = this.sqlparamAddTxWa2(ev, anyenum.ObjectType.Event,  newAgdata.txjson);
-        if (was && was.length > 0){
-          waparams = this.sqlExce.getFastSaveSqlByParam(was);
-        }
-      }
-
-      //删除参与人
-      let par = new ParTbl();
-      par.obt = anyenum.ObjectType.Event;
-      par.obi = masterEvi;
-      sqlparam.push(par.dTParam());
-      //参与人更新
-      let nwpar = new Array<any>();
-      nwpar = this.sqlparamAddPar(masterEvi , newAgdata.members);
-
-
-      //删除附件
-      let fj = new FjTbl();
-      fj.obt = anyenum.ObjectType.Event;
-      fj.obi = oriAgdata.evi;
-      sqlparam.push(fj.dTParam());
-      //附件更新
-      let nwfj = new Array<FjTbl>();
-      nwfj = this.sqlparamAddFj(oriAgdata.evi, newAgdata.attachments);
-      let fjparams = new Array<any>();
-      if (nwfj && nwfj.length > 0){
-        fjparams = this.sqlExce.getFastSaveSqlByParam(nwfj);
-      }
-      sqlparam = [...sqlparam,  ...nwpar,...waparams, ...fjparams];
+      //其他表相关处理
+      this.modifyOnlyoneForOther(sqlparam,oriAgdata,newAgdata);
 
       //如果当前更新对象是父节点，则为当前重复日程重建新的父记录，值为ev表里的第一条做为父记录
-      console.log("**** updateAgenda operateForParentAgd start :****" + moment().format("YYYY/MM/DD HH:mm:ss SSS"))
-      await this.operateForParentAgd(oriAgdata,newAgdata.members,sqlparam,outAgds);
-      console.log("**** updateAgenda operateForParentAgd end :****" + moment().format("YYYY/MM/DD HH:mm:ss SSS"))
+      console.log("**** updateAgenda changedParentAgdForOther start :****" + moment().format("YYYY/MM/DD HH:mm:ss SSS"))
+      await this.changedParentAgdForOther(oriAgdata,newAgdata.members,sqlparam,outAgds);
+      console.log("**** updateAgenda changedParentAgdForOther end :****" + moment().format("YYYY/MM/DD HH:mm:ss SSS"))
 
       //日程表新建或更新,修改为独立日的也需要为自己创建对应的日程
       let caparam = new CaTbl();
@@ -1720,14 +1664,78 @@ export class EventService extends BaseService {
   }
 
   /**
-   * 如果当前单一对象是父事件，则为当前重复事件重建新的父事件，值为ev表重复记录里的第一条做为父事件
+   * 如果只修改单一记录，对提醒，参与人，附件进行先删除再新增操作
+   * @param {Array<any>} sqlparam
+   * @param {AgendaData} oriAgdata
+   * @param {AgendaData} newAgdata
+   */
+  private modifyOnlyoneForOther(sqlparam : Array<any> ,oriAgdata :AgendaData, newAgdata : AgendaData){
+    //主evi设定
+    let masterEvi : string;
+    if (oriAgdata.rtevi == ""){
+      //非重复数据或重复数据的父记录
+      masterEvi = oriAgdata.evi;
+    }else if (oriAgdata.rfg == anyenum.RepeatFlag.RepeatToOnly){
+      //重复中独立日只能修改自己
+      masterEvi = oriAgdata.evi;
+    }else{
+      //重复数据
+      masterEvi = oriAgdata.rtevi;
+    }
+
+    // 删除相关提醒
+    let wa = new WaTbl();
+    wa.obi = oriAgdata.evi;//obi使用原evi
+    wa.obt = anyenum.ObjectType.Event;
+    sqlparam.push(wa.dTParam());
+
+    let ev = new EvTbl();
+    Object.assign(ev,newAgdata);
+    //提醒新建
+    let was = new Array<WaTbl>();
+    let waparams = new Array<any>();
+    if (newAgdata.txjson.reminds && newAgdata.txjson.reminds.length > 0) {
+
+      was = this.sqlparamAddTxWa2(ev, anyenum.ObjectType.Event,  newAgdata.txjson);
+      if (was && was.length > 0){
+        waparams = this.sqlExce.getFastSaveSqlByParam(was);
+      }
+    }
+
+    //删除参与人
+    let par = new ParTbl();
+    par.obt = anyenum.ObjectType.Event;
+    par.obi = masterEvi;
+    sqlparam.push(par.dTParam());
+    //参与人更新
+    let nwpar = new Array<any>();
+    nwpar = this.sqlparamAddPar(masterEvi , newAgdata.members);
+
+    //删除附件
+    let fj = new FjTbl();
+    fj.obt = anyenum.ObjectType.Event;
+    fj.obi = oriAgdata.evi;
+    sqlparam.push(fj.dTParam());
+    //附件更新
+    let nwfj = new Array<FjTbl>();
+    nwfj = this.sqlparamAddFj(oriAgdata.evi, newAgdata.attachments);
+    let fjparams = new Array<any>();
+    if (nwfj && nwfj.length > 0){
+      fjparams = this.sqlExce.getFastSaveSqlByParam(nwfj);
+    }
+    sqlparam =Object.assign(sqlparam, [...sqlparam,  ...nwpar,...waparams, ...fjparams]);
+  }
+
+  /**
+   * 如果当前修改单一对象是父事件，则为当前重复事件重建新的父事件，
+   * 值为ev表重复记录里不为独立日不为删除的第一条做为父事件
    * @param {AgendaData} oriAgdata
    * @param {Array<Member>} members
    * @param {Array<any>} sqlparam
    * @param {DUflag} doflag
    * @returns {Promise<void>}
    */
-  private async operateForParentAgd(oriAgdata : AgendaData,
+  private async changedParentAgdForOther(oriAgdata : AgendaData,
                                       members : Array<Member>,
                                       sqlparam : Array<any>,
                                       outAgds : Array<AgendaData>){
