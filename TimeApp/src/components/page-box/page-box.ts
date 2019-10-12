@@ -1,16 +1,8 @@
-import {
-  Component,
-  Input,
-  Output,
-  EventEmitter,
-  ViewChild,
-  ElementRef,
-  ContentChildren,
-  QueryList,
-  Renderer2
-} from '@angular/core';
-import {Content, Events, Ion, IonicPage} from 'ionic-angular';
+import {Component, EventEmitter, Input, Output, Renderer2, ViewChild} from '@angular/core';
+import {Content, Events, IonicPage} from 'ionic-angular';
 import {AssistantService} from "../../service/cordova/assistant.service";
+import {SettingsProvider} from "../../providers/settings/settings";
+import {StatusType} from "../../data.enum";
 
 /**
  * Generated class for the ScrollSelectComponent component.
@@ -118,10 +110,11 @@ export class PageBoxComponent{
   @Output()
   private onSpeaker: EventEmitter<any> = new EventEmitter<any>();
 
-  constructor(public events: Events,
-            private renderer2: Renderer2,
-              private assistantService: AssistantService) {
-
+  constructor(private events: Events,
+              private renderer2: Renderer2,
+              private assistantService: AssistantService,
+              private settings:SettingsProvider) {
+    settings.setStatusBarColor(StatusType.page);
   }
 
   setBoxContent(){

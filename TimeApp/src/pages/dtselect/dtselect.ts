@@ -98,13 +98,10 @@ export class DtSelectPage {
   }
 
   calcCt(){
-    console.log("ssssss");
     if (this.pagedata.sd && this.pagedata.st && this.pagedata.ed && this.pagedata.et){
       let startm = moment(this.pagedata.sd + "T"+ this.pagedata.st);
       let endm = moment(this.pagedata.ed + "T"+ this.pagedata.et);
       this.pagedata.ct = endm.diff(startm, 'm');
-      console.log("ssssss" + this.pagedata.ct);
-      console.log(moment.duration(this.pagedata.ct, "minutes").humanize());
     }
   }
 
