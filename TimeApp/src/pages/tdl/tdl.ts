@@ -115,14 +115,14 @@ BScroll.use(InfinityScroll);
               </ion-row>
               <!--<ion-row class="item-content dayagenda-content item-content-backgroud" *ngFor="let event of days.events;" [ngStyle]="{'background-color': event.tb == synch? '#00ff80' : '#ff80c0'}" (click)="toDetail(event.evi,event.evd,event.type,event.gs)">-->
               <ion-row class="item-content dayagenda-content item-content-backgroud" *ngFor="let event of days.events;" [ngStyle]="{'border-left': event.ji == ''? '0' : ('0.6rem solid ' + (event.ji | formatplan: 'color': privateplans))}" (click)="toDetail(event.evi,event.evd,event.type,event.gs)">
-                  <div class="line font-small first-line" [ngStyle]="{'margin-left': event.ji == ""? '0.6rem' : '0'}">
+                  <div class="line font-small first-line" [ngStyle]="{'margin-left': event.ji == ''? '0.6rem' : '0'}">
                     <div class="icon">
                       <ion-icon class = "fal fa-calendar-star"></ion-icon>
                     </div>
                     <div class="sn" *ngIf="event.wc == finished"><s>{{event.evn}}</s></div>
                     <div class="sn" *ngIf="event.wc != finished">{{event.evn}}</div>
                   </div>
-                  <div class="line font-small" [ngStyle]="{'margin-left': event.ji == ""? '0.6rem' : '0'}">
+                  <div class="line font-small" [ngStyle]="{'margin-left': event.ji == ''? '0.6rem' : '0'}">
                     <div class="icon">
                       <ion-icon class = "fal fa-alarm-exclamation "></ion-icon>
                     </div>
@@ -132,7 +132,7 @@ BScroll.use(InfinityScroll);
                       <ion-icon class = "fal fa-sync" *ngIf = "event.tb == synch"></ion-icon>
                     </div>
                   </div>
-                  <div class="line font-small" *ngIf="currentuser != event.ui && event.ui != ''" [ngStyle]="{'margin-left': event.ji == ""? '0.6rem' : '0'}">
+                  <div class="line font-small" *ngIf="currentuser != event.ui && event.ui != ''" [ngStyle]="{'margin-left': event.ji == ''? '0.6rem' : '0'}">
                     <div class="icon ">
                       <ion-icon class = "user-o fal fa-user-tag"></ion-icon>
                     </div>
