@@ -323,7 +323,7 @@ export class AgendaPage {
     modal.onDidDismiss(async (data) => {
       if (!data) return;
       //console.info("附件已经传递过来，data:"+JSON.stringify(data));
-      alert("附件已经传递过来，data:"+JSON.stringify(data));
+      //alert("附件已经传递过来，data:"+JSON.stringify(data));
       this.currentAgenda.attachments = data.attach;
 
       if (!this.eventService.isSameAgenda(this.currentAgenda, this.originAgenda)) {
