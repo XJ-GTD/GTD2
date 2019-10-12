@@ -179,10 +179,10 @@ describe('EventService test suite', () => {
       outagds[j].evi = util.getUuid();
       outagds[j].ui = 'frompublisher1';
 
-      if (outagds[j].fjs && outagds[j].fjs !=null) {
-        for (let k = 0, len = outagds[j].fjs.length; k < len; k++) {
-          outagds[j].fjs[k].fji = util.getUuid();
-          outagds[j].fjs[k].obi = outagds[j].evi;
+      if (outagds[j].attachments && outagds[j].attachments !=null) {
+        for (let k = 0, len = outagds[j].attachments.length; k < len; k++) {
+          outagds[j].attachments[k].fji = util.getUuid();
+          outagds[j].attachments[k].obi = outagds[j].evi;
         }
       }
       if (outagds[j].members && outagds[j].members != null) {
