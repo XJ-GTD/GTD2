@@ -53,37 +53,9 @@ export class EventService extends BaseService {
     let sqlparam = new Array<any>();
 
     let saved: Array<AgendaData> = new Array<AgendaData>();
+    let nwfj = new Array<FjTbl>();
 
     if (pullAgdatas && pullAgdatas !=null ){
-
-      /*if (pullAgdatas.length > 0){
-
-        //删除参与人
-        let par = new ParTbl();
-        par.obt = anyenum.ObjectType.Event;
-        par.obi = masterEvi;
-        sqlparam.push(par.dTParam());
-        //参与人更新
-        let nwpar = new Array<any>();
-        nwpar = this.sqlparamAddPar(masterEvi , newAgdata.members);
-
-
-        if (agd.members && agd.members !=null && agd.members.length > 0){
-          for ( let k = 0, len = agd.members.length; k < len ; k++ ){
-            let par = new ParTbl();
-            Object.assign(par, agd.members[k]);
-
-            par.pari = this.util.getUuid();
-            par.obi = agd.evi;
-            par.obt = ObjectType.Event;
-            par.tb = SyncType.synch;
-            par.del = DelType.undel;
-
-            sqlparam.push(par.rpTParam());
-          }
-        }
-      }*/
-
 
       for (let j = 0 , len = pullAgdatas.length; j < len ; j++){
         let agd = {} as AgendaData;
@@ -131,24 +103,40 @@ export class EventService extends BaseService {
         Object.assign(ev,agd);
         sqlparam.push(ev.rpTParam());
 
-        //相关日程更新
-        if (agd.sd && agd.sd != ''){
-          let ca = new CaTbl();
-          Object.assign(ca,agd);
-          sqlparam.push(ca.rpTParam());
+        if (agd.rtevi == ""){
+          //相关日程更新
+          if (agd.sd && agd.sd != ''){
+            let ca = new CaTbl();
+            Object.assign(ca,agd);
+            sqlparam.push(ca.rpTParam());
+          }
+
+          //删除参与人
+          let par = new ParTbl();
+          par.obt = anyenum.ObjectType.Event;
+          par.obi = agd.evi;
+          sqlparam.push(par.dTParam());
+          //参与人更新
+          let nwpar = new Array<any>();
+          nwpar = this.sqlparamAddPar(agd.evi , agd.members);
+
+          sqlparam = [...sqlparam, ...nwpar];
         }
+
 
         //相关附件更新
         if (agd.attachments && agd.attachments !=null && agd.attachments.length > 0){
-          for ( let k = 0, len = agd.attachments.length; k < len ; k++ ){
-            let fj = new FjTbl();
-            Object.assign(fj,agd.attachments[k]);
-            sqlparam.push(fj.rpTParam());
-          }
+          nwfj = [...nwfj,...this.sqlparamAddFj(agd.evi, agd.attachments)];
         }
 
         saved.push(agd);
       }
+
+      let fjparams = new Array<any>();
+      if (nwfj && nwfj.length > 0){
+        fjparams = this.sqlExce.getFastSaveSqlByParam(nwfj);
+      }
+      sqlparam = [...sqlparam, ...fjparams];
 
       this.sqlExce.batExecSqlByParam(sqlparam);
       this.emitService.emit("mwxing.calendar.activities.changed", saved);
@@ -1683,7 +1671,7 @@ export class EventService extends BaseService {
    * @param {AgendaData} newAgdata
    */
   private modifyOnlyoneForOther(sqlparam : Array<any> ,oriAgdata :AgendaData, newAgdata : AgendaData){
-    //主evi设定
+    //取参与人evi设定
     let parEvi : string;
     if (oriAgdata.rtevi == ""){
       //非重复数据或重复数据的父记录
