@@ -901,6 +901,8 @@ export class CalendarService extends BaseService {
 
     planitemdb = await this.sqlExce.getExtOneByParam<JtaTbl>(sql, [jti, DelType.undel]);
 
+    if (!planitemdb) return null;
+
     let planitem: PlanItemData = {} as PlanItemData;
 
     Object.assign(planitem, planitemdb);
