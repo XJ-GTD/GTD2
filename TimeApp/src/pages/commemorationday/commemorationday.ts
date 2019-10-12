@@ -187,6 +187,25 @@ export class CommemorationDayPage {
     }
   }
 
+  changeDatetime() {
+    if (this.originPlanItem.ui != this.currentuser && (this.originPlanItem.md != ModiPower.enable || this.originPlanItem.invitestatus != InviteState.Accepted)) { // 受邀人修改权限检查
+      return;
+    }
+
+    let modal = this.modalCtrl.create(DataConfig.PAGE._DTSELECT_PAGE, {
+      sd: this.currentPlanItem.sd,
+      st: this.currentPlanItem.st,
+      ed: this.currentPlanItem.sd,
+      et: this.currentPlanItem.st,
+      al: IsWholeday.NonWhole,
+      ct: 0
+    });
+    modal.onDidDismiss(async (data) => {
+
+    });
+    modal.present();
+  }
+
   changeInvites() {
     let clonemembers;
     if (this.currentPlanItem.members && this.currentPlanItem.members.length > 0) {
