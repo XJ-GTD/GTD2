@@ -1823,6 +1823,7 @@ export class CalendarService extends BaseService {
       newitem.tx = JSON.stringify(txjson);
       newitem.txs = txjson.text();
 
+      newitem.st = !newitem.st ? moment().format('HH:mm') : newitem.st;
       newitem.pn = !newitem.pn ? 0 : newitem.pn;
       newitem.md = !newitem.md ? ModiPower.enable : newitem.md;
       newitem.iv = !newitem.iv ? InvitePowr.enable : newitem.iv;

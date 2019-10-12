@@ -34,7 +34,7 @@ import {Keyboard} from "@ionic-native/keyboard";
             <ion-textarea rows="8" [(ngModel)]="currentPlanItem.jtn" (ionChange)="changeTitle()" #bzRef></ion-textarea>
           </div>
         </ion-row>
-        
+
         <ion-row class="optionRow">
           <ion-grid>
             <!--附加属性操作-->
@@ -87,8 +87,8 @@ import {Keyboard} from "@ionic-native/keyboard";
               <div (click)="changeDatetime()">
                 <span class="content font-normal">
                   日期：{{currentPlanItem.evd | formatedate: "YYYY年M月D日"}}<br/>
-                
-                  时间：{{currentPlanItem.evd  + " " + currentPlanItem.evt | formatedate: "HH:mm"}} {{currentPlanItem.ct | transfromdate: "duration"}}
+
+                  时间：{{currentPlanItem.sd  + " " + currentPlanItem.st | formatedate: "HH:mm"}}
                 </span>
                 <ion-icon class="font-normal fal fa-calendar-check "></ion-icon>
               </div>
