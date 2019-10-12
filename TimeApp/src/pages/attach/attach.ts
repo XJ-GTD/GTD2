@@ -77,6 +77,7 @@ export class AttachPage {
     if (this.navParams && this.navParams.data) {
       this.obt  = this.navParams.data.obt;
       this.obi = this.navParams.data.obi;
+      this.fjArray = this.navParams.data.attach;
     }
     //验证缓存文件目录是否存在
     this.file.checkDir(this.file.externalDataDirectory,'/timeAppfile')

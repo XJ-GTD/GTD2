@@ -318,12 +318,13 @@ export class AgendaPage {
 
     let modal = this.modalCtrl.create(DataConfig.PAGE._ATTACH_PAGE, {
       obt: ObjectType.Event,
-      obi: this.currentAgenda.evi
+      obi: this.currentAgenda.evi,
+      attach:this.currentAgenda.attachments
     });
     modal.onDidDismiss(async (data) => {
       if (!data) return;
       //console.info("附件已经传递过来，data:"+JSON.stringify(data));
-      alert("附件已经传递过来，data:"+JSON.stringify(data));
+      //alert("附件已经传递过来，data:"+JSON.stringify(data));
       this.currentAgenda.attachments = data.attach;
 
       if (!this.eventService.isSameAgenda(this.currentAgenda, this.originAgenda)) {
