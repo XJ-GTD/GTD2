@@ -3209,6 +3209,7 @@ export class CalendarService extends BaseService {
         sync.src = UserConfig.account.id;
         sync.id = plan.ji;
         sync.type = "Plan";
+        sync.title = plan.jn;
         sync.security = SyncDataSecurity.None;
 
         // 设置删除状态
