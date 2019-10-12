@@ -103,6 +103,7 @@ export class EventService extends BaseService {
         Object.assign(ev,agd);
         sqlparam.push(ev.rpTParam());
 
+
         if (agd.rtevi == ""){
           //相关日程更新
           if (agd.sd && agd.sd != ''){
