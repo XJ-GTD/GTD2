@@ -187,6 +187,37 @@ export class CommemorationDayPage {
     }
   }
 
+  changeInvites() {
+    let clonemembers;
+    if (this.currentPlanItem.members && this.currentPlanItem.members.length > 0) {
+      clonemembers = new Array<Member>(...this.currentPlanItem.members);
+    } else {
+      clonemembers = new Array<Member>();
+    }
+    let modal = this.modalCtrl.create(DataConfig.PAGE._INVITES_PAGE, {
+      ui: this.currentPlanItem.ui,
+      mine: this.currentPlanItem.ui == this.currentuser,
+      members: clonemembers,
+      md: this.currentPlanItem.md,
+      iv: this.currentPlanItem.iv
+    });
+    modal.onDidDismiss(async (data) => {
+      if (!data) return;
+
+      this.currentPlanItem.members = data.members;
+      this.currentPlanItem.pn = data.members.length;
+      this.currentPlanItem.md = data.md;
+      this.currentPlanItem.iv = data.iv;
+
+      if (!this.calendarService.isSamePlanItem(this.currentPlanItem, this.originPlanItem)) {
+        this.buttons.save = true;
+      } else {
+        this.buttons.save = false;
+      }
+    });
+    modal.present();
+  }
+
   changeRepeat() {
     if (!this.currentPlanItem.rtjson && this.currentPlanItem.rt) {
       this.currentPlanItem.rtjson = new RtJson();
