@@ -1769,6 +1769,7 @@ export class CalendarService extends BaseService {
     }
 
     this.emitService.emit("mwxing.calendar.activities.changed", items);
+    this.syncPlanItems(items);
 
     return items;
   }
@@ -1972,6 +1973,7 @@ export class CalendarService extends BaseService {
     await this.sqlExce.batExecSqlByParam(sqls);
 
     this.emitService.emit(`mwxing.calendar.activities.changed`, items);
+    this.syncPlanItems(items);
 
     return items;
   }
