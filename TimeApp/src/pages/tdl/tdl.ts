@@ -114,7 +114,7 @@ BScroll.use(InfinityScroll);
                 </div>
               </ion-row>
               <!--<ion-row class="item-content dayagenda-content item-content-backgroud" *ngFor="let event of days.events;" [ngStyle]="{'background-color': event.tb == synch? '#00ff80' : '#ff80c0'}" (click)="toDetail(event.evi,event.evd,event.type,event.gs)">-->
-              <ion-row class="item-content dayagenda-content item-content-backgroud" *ngFor="let event of days.events;"  (click)="toDetail(event.evi,event.evd,event.type,event.gs)">
+              <ion-row class="item-content dayagenda-content item-content-backgroud" *ngFor="let event of days.events;" [ngStyle]="{'border-left': '8px solid ' + (event.ji | formatplan: 'color' :'0': privateplans)}" (click)="toDetail(event.evi,event.evd,event.type,event.gs)">
                   <div class="line font-small first-line">
                     <div class="icon">
                       <ion-icon class = "fal fa-calendar-star"></ion-icon>
@@ -127,7 +127,7 @@ BScroll.use(InfinityScroll);
                       <ion-icon class = "fal fa-alarm-exclamation "></ion-icon>
                     </div>
                     <div class="st">{{event.evt}}</div>
-                    
+
                     <div class="icon" end>
                       <ion-icon class = "fal fa-sync" *ngIf = "event.tb == synch"></ion-icon>
                     </div>
@@ -182,6 +182,8 @@ export class TdlPage {
 
   currentuser: string = UserConfig.account.id;
   friends: Array<any> = UserConfig.friends;
+
+  privateplans: Array<any> = UserConfig.privateplans;
 
   inviteaccept: InviteState = InviteState.Accepted;
   invitereject: InviteState = InviteState.Rejected;
