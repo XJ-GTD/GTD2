@@ -3252,7 +3252,7 @@ export class CalendarService extends BaseService {
     let sqls: Array<any> = new Array<any>();
 
     for (let syncid of syncids) {
-      sqls.push([`update gtd_jha set tb = ? where ji = ? and utt = ?`, [SyncType.synch, ...syncid]]);
+      sqls.push([`update gtd_jha set tb = ? where ji = ?`, [SyncType.synch, syncid]]);
     }
 
     await this.sqlExce.batExecSqlByParam(sqls);
