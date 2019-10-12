@@ -1801,6 +1801,7 @@ export class CalendarService extends BaseService {
 
       newitem.jti = this.util.getUuid();
       newitem.sd = day;
+      newitem.ui = UserConfig.account.id;
 
       if (rtjson.cycletype != CycleType.close) {
         // 重复标志
