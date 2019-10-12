@@ -1061,15 +1061,19 @@ export class EventService extends BaseService {
 
     //主evi设定
     let masterEvi : string;
+    let parEvi : string;
     if (agdata.rtevi == ""){
       //非重复数据或重复数据的父记录
       masterEvi = agdata.evi;
+      parEvi = agdata.evi;
     }else if (agdata.rfg == anyenum.RepeatFlag.RepeatToOnly){
       //重复中独立数据
       masterEvi = agdata.evi;
+      parEvi = agdata.rtevi;
     }else{
       //重复数据
       masterEvi = agdata.rtevi;
+      parEvi = agdata.rtevi;
     }
 
     //取得日程表详情
@@ -1106,7 +1110,7 @@ export class EventService extends BaseService {
 
     if(agdata.gs == '0'){
       //共享人信息
-      agdata.members = await this.getMemberByEvi(masterEvi);
+      agdata.members = await this.getMemberByEvi(parEvi);
       //参与人数量
       if (agdata.members !=null){
         agdata.pn = agdata.members.length ;
@@ -1680,13 +1684,13 @@ export class EventService extends BaseService {
    */
   private modifyOnlyoneForOther(sqlparam : Array<any> ,oriAgdata :AgendaData, newAgdata : AgendaData){
     //主evi设定
-    let masterEvi : string;
+    let parEvi : string;
     if (oriAgdata.rtevi == ""){
       //非重复数据或重复数据的父记录
-      masterEvi = oriAgdata.evi;
+      parEvi = oriAgdata.evi;
     }else {
       //重复数据(此处包含独立日)
-      masterEvi = oriAgdata.rtevi;
+      parEvi = oriAgdata.rtevi;
     }
 
     // 删除相关提醒
@@ -1711,12 +1715,12 @@ export class EventService extends BaseService {
     //删除参与人
     let par = new ParTbl();
     par.obt = anyenum.ObjectType.Event;
-    par.obi = masterEvi;
+    par.obi = parEvi;
     sqlparam.push(par.dTParam());
 
     //添加参与人
     let nwpar = new Array<any>();
-    nwpar = this.sqlparamAddPar(masterEvi , newAgdata.members);
+    nwpar = this.sqlparamAddPar(parEvi , newAgdata.members);
 
     //删除附件
     let fj = new FjTbl();
@@ -2794,20 +2798,17 @@ export class EventService extends BaseService {
         }
 
         if (members.length > 0) {
-          let masterEvi: string;
+          let parEvi: string;
           if (agenda.rtevi == "") {
             //非重复数据或重复数据的父记录
-            masterEvi = agenda.evi;
-          } else if (agenda.rfg == anyenum.RepeatFlag.RepeatToOnly) {
-            //重复中独立数据
-            masterEvi = agenda.evi;
+            parEvi = agenda.evi;
           } else {
             //重复数据
-            masterEvi = agenda.rtevi;
+            parEvi = agenda.rtevi;
           }
 
           let membersTos: Array<Member> = members.filter((value, index, arr) => {
-            return masterEvi == value.obi;
+            return parEvi == value.obi;
           });
           agenda.tos = this.getMemberPhone(membersTos);
         } else {
