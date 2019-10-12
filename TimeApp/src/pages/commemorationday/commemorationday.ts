@@ -9,7 +9,7 @@ import {EmitService} from "../../service/util-service/emit.service";
 import {DataConfig} from "../../service/config/data.config";
 import {FeedbackService} from "../../service/cordova/feedback.service";
 import {CalendarService, PlanItemData} from "../../service/business/calendar.service";
-import {EventService, RtJson,} from "../../service/business/event.service";
+import {EventService, RtJson, TxJson, Member} from "../../service/business/event.service";
 import {OperateType, RepeatFlag, ConfirmType} from "../../data.enum";
 import {Keyboard} from "@ionic-native/keyboard";
 
