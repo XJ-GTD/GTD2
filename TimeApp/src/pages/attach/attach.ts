@@ -206,5 +206,6 @@ export class AttachPage {
       this.fjData.fjn = this.bw
     }
     this.fjArray.push(this.fjData);
+     this.fjData = {} as Attachment;
   }
 }
