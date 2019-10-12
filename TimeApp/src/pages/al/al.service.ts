@@ -25,6 +25,7 @@ import {RabbitMQService} from "../../service/cordova/rabbitmq.service";
 import {EffectService} from "../../service/business/effect.service";
 import {App, ModalController} from "ionic-angular";
 import {InAppBrowser} from "@ionic-native/in-app-browser";
+import {StatusBar} from "@ionic-native/status-bar";
 
 @Injectable()
 export class AlService {
@@ -47,7 +48,12 @@ export class AlService {
               private jpush: JPushService,
               private rabbitmq: RabbitMQService,
               private effectService: EffectService,
-              private modalCtr: ModalController,public app: App) {
+              private modalCtr: ModalController,
+              private app: App,
+              private statusBar: StatusBar,) {
+
+    this.statusBar.overlaysWebView(true);
+    this.statusBar.hide();
   }
 
 
@@ -215,9 +221,9 @@ export class AlService {
           let blackTheme: string = "black-theme";
           let whiteTheme: string = "white-theme";
 
-          this.app.setElementClass(whiteTheme,false);
-          this.app.setElementClass(blackTheme,false);
-          this.app.setElementClass(val,true);
+          this.app.setElementClass(whiteTheme, false);
+          this.app.setElementClass(blackTheme, false);
+          this.app.setElementClass(val, true);
         });
 
         //设置主题
@@ -228,6 +234,30 @@ export class AlService {
           this.settings.setActiveTheme(this.theme.value);
         }
 
+
+        //显示状态栏
+        this.statusBar.show();
+        //监听statusbar颜色变化
+        this.settings.getStatusBarColor().subscribe(val => {
+          let color:string = this.settings.getStatusColor(val);
+          this.statusBar.backgroundColorByHexString(color);
+        });
+
+        // this.app.viewDidLoad.subscribe((event) => {
+        //   if (event && event.instance && DataConfig.isPage(event.instance)) {
+        //     this.settings.popStatusBarColor();
+        //   }
+        // });
+
+
+
+
+        //模态框退出时还原状态栏颜色
+        this.app.viewWillUnload.subscribe((event) => {
+          if (event && event.instance && DataConfig.isPage(event.instance)) {
+            this.settings.popStatusBarColor();
+          }
+        });
 
 
         //允许进入后台模式

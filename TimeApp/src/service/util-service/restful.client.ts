@@ -318,7 +318,6 @@ export class RestfulClient {
 
            resolve(JSON.parse(data.data));
         }).catch(err => {
-          alert(err)
         })
       } else {
 

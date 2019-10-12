@@ -1,12 +1,14 @@
 import {Component} from '@angular/core';
-import {IonicPage, ModalController, Platform } from 'ionic-angular';
+import {IonicPage, ModalController, Platform} from 'ionic-angular';
 import {DataConfig} from "../../service/config/data.config";
 import {UserConfig} from "../../service/config/user.config";
 import {UtilService} from "../../service/util-service/util.service";
 import {EmitService} from "../../service/util-service/emit.service";
-import { JPushService } from "../../service/cordova/jpush.service";
+import {JPushService} from "../../service/cordova/jpush.service";
 import {PsService} from "../ps/ps.service";
 import {RabbitMQService} from "../../service/cordova/rabbitmq.service";
+import {StatusType} from "../../data.enum";
+import {SettingsProvider} from "../../providers/settings/settings";
 
 /**
  * Generated class for the 菜单 page.
@@ -21,7 +23,8 @@ import {RabbitMQService} from "../../service/cordova/rabbitmq.service";
   providers: [],
   template: `
 
-    <ion-menu [content]="ha" side="left" swipeEnabled="true"  type="scalePush" class="menu" id="scalePush">
+    <ion-menu [content]="ha" side="left" swipeEnabled="true"  type="scalePush" class="menu" id="scalePush" 
+              (ionClose) = "ionClose($evnet)" (ionOpen) = "ionOpen($evnet)" (ionDrag) = "ionDrag($evnet)" >
         <ion-grid>
           <ion-row (click)="goPsPage()">
 
@@ -78,7 +81,8 @@ export class MPage {
               private psService: PsService,
               private util: UtilService,
               private emitService: EmitService,
-              private rabbitmq: RabbitMQService) {
+              private rabbitmq: RabbitMQService,
+              private settings:SettingsProvider) {
     //真机的时候获取JPush注册ID，并保存到服务器注册用户信息
     if (this.util.isMobile()) {
       this.emitService.register("on.jpush.registerid.loaded", () => {
@@ -102,6 +106,8 @@ export class MPage {
         this.rabbitmq.init(UserConfig.user.id, UserConfig.account.device, UserConfig.account.mq);
       }
     }
+
+    settings.setStatusBarColor(StatusType.home);
   }
 
   ionViewDidLoad() {
@@ -170,5 +176,16 @@ export class MPage {
   //日志
   goatPage() {
     this.modalController.create(DataConfig.PAGE._AT_PAGE).present();
+  }
+  ionClose($evnet){
+    this.settings.popStatusBarColor();
+  }
+
+  ionOpen($evnet){
+    this.settings.setStatusBarColor(StatusType.meun);
+
+  }
+  ionDrag($evnet){
+
   }
 }

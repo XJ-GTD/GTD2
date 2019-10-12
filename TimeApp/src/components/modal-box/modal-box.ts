@@ -4,14 +4,12 @@ import {
   Output,
   EventEmitter,
   ViewChild,
-  ElementRef,
-  ContentChildren,
-  QueryList,
-  Renderer2, ChangeDetectorRef
+  Renderer2
 } from '@angular/core';
 import {Content, Events} from 'ionic-angular';
 import {AssistantService} from "../../service/cordova/assistant.service";
-import {EmitService} from "../../service/util-service/emit.service";
+import {StatusType} from "../../data.enum";
+import {SettingsProvider} from "../../providers/settings/settings";
 
 /**
  * Generated class for the ScrollSelectComponent component.
@@ -97,8 +95,9 @@ export class ModalBoxComponent {
 
 
   constructor(public events: Events, private renderer2: Renderer2,
-              private assistantService: AssistantService) {
-
+              private assistantService: AssistantService,
+              private settings:SettingsProvider) {
+    settings.setStatusBarColor(StatusType.page);
   }
 
   setBoxContent() {

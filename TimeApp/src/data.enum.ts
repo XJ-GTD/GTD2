@@ -210,3 +210,11 @@ export enum EventFinishStatus{
   Finished = "0",
   NonFinish = "1"
 }
+
+export enum  StatusType{
+  other = 1,
+  home = 2,
+  meun = 3,
+  page = 4,
+  model = 5
+}
