@@ -10,7 +10,7 @@ import {DataConfig} from "../../service/config/data.config";
 import {FeedbackService} from "../../service/cordova/feedback.service";
 import {CalendarService, PlanItemData} from "../../service/business/calendar.service";
 import {EventService, RtJson, TxJson, Member} from "../../service/business/event.service";
-import {OperateType, RepeatFlag, ConfirmType, IsWholeday} from "../../data.enum";
+import {OperateType, RepeatFlag, ConfirmType, IsWholeday, InviteState} from "../../data.enum";
 import {Keyboard} from "@ionic-native/keyboard";
 
 /**
@@ -277,7 +277,7 @@ export class CommemorationDayPage {
         this.currentPlanItem.tx = JSON.stringify(this.currentPlanItem.txjson);
         this.currentPlanItem.txs = this.currentPlanItem.txjson.text();
 
-        if (!this.calendarService.isSameAgenda(this.currentPlanItem, this.originPlanItem)) {
+        if (!this.calendarService.isSamePlanItem(this.currentPlanItem, this.originPlanItem)) {
           this.buttons.save = true;
         } else {
           this.buttons.save = false;
