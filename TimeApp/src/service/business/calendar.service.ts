@@ -3154,7 +3154,7 @@ export class CalendarService extends BaseService {
                               inner join gtd_b b
                               on par.pwi = b.pwi `;
       members =  await this.sqlExce.getExtLstByParam<Member>(sqlmember,
-        [RepeatFlag.NonRepeat, SyncType.unsynch, ObjectType.PlanItem]) || members;
+        [RepeatFlag.NonRepeat, SyncType.unsynch, ObjectType.Calendar]) || members;
     }
 
     // 存在未同步日历
@@ -3340,7 +3340,7 @@ export class CalendarService extends BaseService {
       //相关参与人更新
       if (current.rfg == RepeatFlag.NonRepeat || (current.rfg != RepeatFlag.NonRepeat && current.rtjti == '')) {
         let delpar = new ParTbl();
-        delpar.obt = ObjectType.PlanItem;
+        delpar.obt = ObjectType.Calendar;
         delpar.obi = current.jti;
         sqlparam.push(delpar.dTParam());
 
@@ -3351,7 +3351,7 @@ export class CalendarService extends BaseService {
 
             par.pari = this.util.getUuid();
             par.obi = current.jti;
-            par.obt = ObjectType.PlanItem;
+            par.obt = ObjectType.Calendar;
             par.tb = SyncType.synch;
             par.del = DelType.undel;
 
@@ -4370,6 +4370,7 @@ export interface PlanData extends JhaTbl {
 export interface PlanItemData extends JtaTbl {
   rtjson: RtJson;
   txjson: TxJson;
+  members: Array<Member>;
 }
 
 export class PagedActivityData {
