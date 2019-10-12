@@ -3137,14 +3137,19 @@ export class CalendarService extends BaseService {
    *
    * @author leon_xi@163.com
    **/
-  async receivedPlan(ji: string) {
+  async receivedPlan(ji: any) {
 
     this.assertEmpty(ji);   // 入参不能为空
 
     let pull: PullInData = new PullInData();
 
     pull.type = "Plan";
-    pull.d.push(ji);
+
+    if (ji instanceof Array) {
+      pull.d.splice(0, 0, ...ji);
+    } else {
+      pull.d.push(ji);
+    }
 
     // 发送下载日历请求
     await this.dataRestful.pull(pull);
