@@ -10,7 +10,7 @@ import {DataConfig} from "../../service/config/data.config";
 import {FeedbackService} from "../../service/cordova/feedback.service";
 import {CalendarService, PlanItemData} from "../../service/business/calendar.service";
 import {EventService, RtJson, TxJson, Member} from "../../service/business/event.service";
-import {OperateType, RepeatFlag, ConfirmType} from "../../data.enum";
+import {OperateType, RepeatFlag, ConfirmType, IsWholeday} from "../../data.enum";
 import {Keyboard} from "@ionic-native/keyboard";
 
 /**
@@ -238,6 +238,46 @@ export class CommemorationDayPage {
         this.currentPlanItem.rts = this.currentPlanItem.rtjson.text();
 
         if (!this.calendarService.isSamePlanItem(this.currentPlanItem, this.originPlanItem)) {
+          this.buttons.save = true;
+        } else {
+          this.buttons.save = false;
+        }
+      }
+    });
+    modal.present();
+  }
+
+  changeRemind() {
+    if (this.currentPlanItem.ui != this.currentuser && this.originPlanItem.invitestatus != InviteState.Accepted) { // 受邀人接受状态检查
+      return;
+    }
+
+    if (!this.currentPlanItem.txjson && this.currentPlanItem.tx) {
+      this.currentPlanItem.txjson = new TxJson();
+      let txdata = JSON.parse(this.currentPlanItem.tx);
+      Object.assign(this.currentPlanItem.txjson, txdata);
+    } else if (!this.currentPlanItem.txjson && !this.currentPlanItem.tx) {
+      this.currentPlanItem.txjson = new TxJson();
+    }
+
+    let data = new TxJson();
+    Object.assign(data, this.currentPlanItem.txjson);
+    let modal = this.modalCtrl.create(DataConfig.PAGE._REMIND_PAGE, {
+      value: {
+        txjson: data,
+        evd: this.currentPlanItem.sd,
+        evt: this.currentPlanItem.st,
+        al: IsWholeday.NonWhole
+      }
+    });
+    modal.onDidDismiss(async (data) => {
+      if (data && data.txjson) {
+        this.currentPlanItem.txjson = new TxJson();
+        Object.assign(this.currentPlanItem.txjson, data.txjson);
+        this.currentPlanItem.tx = JSON.stringify(this.currentPlanItem.txjson);
+        this.currentPlanItem.txs = this.currentPlanItem.txjson.text();
+
+        if (!this.calendarService.isSameAgenda(this.currentPlanItem, this.originPlanItem)) {
           this.buttons.save = true;
         } else {
           this.buttons.save = false;
