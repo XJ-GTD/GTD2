@@ -1459,7 +1459,7 @@ export class CalendarService extends BaseService {
               if (!member.pari) { // 新增参与人
                 member.pari = this.util.getUuid();
                 member.obt = ObjectType.Calendar;
-                member.obi = newitem.jti;
+                member.obi = item.jti;
 
                 member.sdt = MemberShareState.SendWait;
                 member.tb = SyncType.unsynch;
