@@ -217,7 +217,7 @@ describe('MemoService test suite', () => {
 	  mom = await memoService.saveMemo(mom);
 	  expect(mom).toBeDefined();
 
-	  await memoService.syncMemo(mom);
+	  await memoService.syncMemos([mom]);
 
   });
 
