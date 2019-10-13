@@ -20,7 +20,13 @@ export class FormatedatePipe implements PipeTransform {
       m = moment(value, "YYYY/MM")
     }
     if (!m.isValid()) {
+      m = moment(value, "YYYY/MM/DD")
+    }
+    if (!m.isValid()) {
       m = moment(value, "YYYYMM")
+    }
+    if (!m.isValid()) {
+      m = moment(value, "YYYY/MM/DD HH:mm")
     }
     if (!m.isValid() || args.length < 1) {
       return value;
