@@ -3219,6 +3219,11 @@ export class CalendarService extends BaseService {
     return;
   }
 
+  /**
+   * 同步指定/所有未同步日历项
+   *
+   * @author leon_xi@163.com
+   **/
   async syncPlanItems(planitems: Array<PlanItemData> = new Array<PlanItemData>()) {
     this.assertEmpty(planitems);    // 入参不能为空
 
