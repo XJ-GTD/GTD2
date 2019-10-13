@@ -118,25 +118,34 @@ export class EventService extends BaseService {
           sqlparam.push(par.dTParam());
           //参与人更新
           let nwpar = new Array<any>();
-          nwpar = this.sqlparamAddPar(agd.evi , agd.members);
+          nwpar = this.sqlparamAddPar(agd.evi , agd.members) || new Array<any>();
 
-          sqlparam = [...sqlparam, ...nwpar];
+          for (let addsql of nwpar) {
+            sqlparam.push(addsql);
+          }
         }
 
-
         //相关附件更新
-        if (agd.attachments && agd.attachments !=null && agd.attachments.length > 0){
-          nwfj = [...nwfj,...this.sqlparamAddFj(agd.evi, agd.attachments)];
+        if (agd.attachments && agd.attachments != null && agd.attachments.length > 0) {
+          let upfjparams = this.sqlparamAddFj(agd.evi, agd.attachments) || new Array<any>();
+
+          for (let fjadd of upfjparams) {
+            nwfj.push(fjadd);
+          }
         }
 
         saved.push(agd);
       }
 
       let fjparams = new Array<any>();
+
       if (nwfj && nwfj.length > 0){
-        fjparams = this.sqlExce.getFastSaveSqlByParam(nwfj);
+        fjparams = this.sqlExce.getFastSaveSqlByParam(nwfj) || new Array<any>();
       }
-      sqlparam = [...sqlparam, ...fjparams];
+
+      for (let fjadd of fjparams) {
+        sqlparam.push(fjadd);
+      }
 
       this.sqlExce.batExecSqlByParam(sqlparam);
       this.emitService.emit("mwxing.calendar.activities.changed", saved);
