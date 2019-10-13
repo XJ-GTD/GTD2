@@ -6,7 +6,7 @@ import {Injectable} from "@angular/core";
 import {ProcesRs} from "../model/proces.rs";
 import {CalendarService, PlanData, PlanItemData} from "../../service/business/calendar.service";
 import {EventService, AgendaData, TaskData, MiniTaskData, Member} from "../../service/business/event.service";
-import {MemoService} from "../../service/business/memo.service";
+import {MemoService, MemoData} from "../../service/business/memo.service";
 import {DataSyncPara} from "../model/datasync.para";
 import {SyncDataStatus, MemberShareState, EventFinishStatus, DelType, InviteState, CompleteState} from "../../data.enum";
 import {FsData} from "../../data.mapping";
