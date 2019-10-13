@@ -92,7 +92,7 @@ BScroll.use(InfinityScroll);
                     </div>
                     <div class=" d-title-chr"><span>{{days.events.length}}</span> 活动</div>
                     <div class=" d-title-chr"><span>{{days.calendaritems.length}}</span> 纪念日</div>
-                    <div class=" d-title-chr mome " (click)="toMemo(days)" *ngIf="days.memos.length > 0" [class.item-no-display]="days.memos.length == 0"><span>{{days.events.length}}</span>备忘</div>
+                    <div class=" d-title-chr mome " (click)="toMemo(days)" *ngIf="days.memos.length > 0" [class.item-no-display]="days.memos.length == 0"><span>{{days.memos.length}}</span>备忘</div>
                   </div>
                 </div>
               </ion-row>
