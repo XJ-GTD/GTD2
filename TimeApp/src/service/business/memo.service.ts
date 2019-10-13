@@ -169,7 +169,6 @@ export class MemoService extends BaseService {
   	 Object.assign(backMemo, memodb);
 
 		 this.emitService.emit("mwxing.calendar.activities.changed", backMemo);
-		 this.syncMemos([backMemo]);
 
   	 return backMemo;
 	}
