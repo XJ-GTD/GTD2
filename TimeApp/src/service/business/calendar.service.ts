@@ -3245,7 +3245,7 @@ export class CalendarService extends BaseService {
                                     from gtd_jta
                                     where ui <> '' and ui is not null and tb = ?2) jta
                               inner join gtd_par par
-                              on jta.forceevi = par.obi and par.obt = ?3
+                              on jta.forcejti = par.obi and par.obt = ?3
                               inner join gtd_b b
                               on par.pwi = b.pwi `;
       members =  await this.sqlExce.getExtLstByParam<Member>(sqlmember,
