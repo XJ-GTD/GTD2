@@ -8,7 +8,7 @@ import { SyncData, PushInData, PullInData, DataRestful } from "../restful/datase
 import { BackupPro, BacRestful, OutRecoverPro, RecoverPro } from "../restful/bacsev";
 import { EventData, TaskData, AgendaData, MiniTaskData, EventService, RtJson, TxJson, Member, generateRtJson, generateTxJson } from "./event.service";
 import { MemoData, MemoService } from "./memo.service";
-import { EventType, PlanType, PlanItemType, PlanDownloadType, ConfirmType, OperateType, ObjectType, PageDirection, CycleType, SyncType, RepeatFlag, DelType, SyncDataSecurity, SyncDataStatus, InviteState, ModiPower, InvitePowr } from "../../data.enum";
+import { EventType, PlanType, PlanItemType, PlanDownloadType, MemberShareState, ConfirmType, OperateType, ObjectType, PageDirection, CycleType, SyncType, RepeatFlag, DelType, SyncDataSecurity, SyncDataStatus, InviteState, ModiPower, InvitePowr } from "../../data.enum";
 import { UserConfig } from "../config/user.config";
 import * as async from "async/dist/async.js"
 import * as moment from "moment";
@@ -22,6 +22,7 @@ import {
   assertEmpty,
   assertFail
 } from "../../util/util";
+import {FsData} from "../../data.mapping";
 
 @Injectable()
 export class CalendarService extends BaseService {
