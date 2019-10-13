@@ -1469,7 +1469,7 @@ export class EventService extends BaseService {
 
       //取得相关的附件
       let attachs = new Array<Attachment>();
-      sq = `select * from gtd_fj where obt = ?1 and  obi in (select evi 
+      sq = `select * from gtd_fj where obt = ?1 and  obi in (select evi
       from gtd_ev  where evi = ?2 or rtevi = ?2 ); `;
       params = new Array<any>();
       params.push(anyenum.ObjectType.Event);
@@ -2811,6 +2811,9 @@ export class EventService extends BaseService {
           }
         }
         sync.to = (!agenda.tos || agenda.tos == "" || agenda.tos == null) ? [] : agenda.tos.split(",") ;
+
+        this.assertNotEqual(agenda.pn, sync.to.length); // 参与人数量和参与人数组必须相同
+
         sync.payload = this.cleanAgendaPayload(agenda);
         push.d.push(sync);
 
