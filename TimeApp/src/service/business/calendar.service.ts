@@ -1451,12 +1451,42 @@ export class CalendarService extends BaseService {
             item.tx = JSON.stringify(txjson);
             item.txs = txjson.text();
 
+            let members: Array<Member〉= item.members || new Array<Member>();
+            let memberdbs: Array<ParTbl> = new Array<ParTbl>();
+
+            // 保存参与人
+            for (let member of members) {
+              if (!member.pari) { // 新增参与人
+                member.pari = this.util.getUuid();
+                member.obt = ObjectType.Calendar;
+                member.obi = newitem.jti;
+
+                member.sdt = MemberShareState.SendWait;
+                member.tb = SyncType.unsynch;
+                member.del = DelType.undel;
+              }
+
+              let memberdb: ParTbl = new ParTbl();
+              Object.assign(memberdb, member);
+
+              memberdbs.push(memberdb);
+            }
+
+            let sqls: Array<any> = new Array<any>();
+
+            if (memberdbs.lenth > 0) {
+              sqls = this.sqlExce.getFastSaveSqlByParam(memberdbs) || new Array<any>();
+            }
+
+            item.members = members;
+
             let planitemdb: JtaTbl = new JtaTbl();
             Object.assign(planitemdb, item);
 
             planitemdb.tb = SyncType.unsynch;
+            sqls.push(planitemdb.rpTParam());
 
-            await this.sqlExce.updateByParam(planitemdb);
+            await this.sqlExce.batExecSqlByParam(sqls);
 
             Object.assign(item, planitemdb);
 
