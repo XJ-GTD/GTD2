@@ -1474,7 +1474,7 @@ export class CalendarService extends BaseService {
 
             let sqls: Array<any> = new Array<any>();
 
-            if (memberdbs.lenth > 0) {
+            if (memberdbs.length > 0) {
               sqls = this.sqlExce.getFastSaveSqlByParam(memberdbs) || new Array<any>();
             }
 
