@@ -1451,7 +1451,7 @@ export class CalendarService extends BaseService {
             item.tx = JSON.stringify(txjson);
             item.txs = txjson.text();
 
-            let members: Array<Member〉= item.members || new Array<Member>();
+            let members: Array<Member>= item.members || new Array<Member>();
             let memberdbs: Array<ParTbl> = new Array<ParTbl>();
 
             // 保存参与人
