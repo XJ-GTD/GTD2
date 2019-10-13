@@ -223,7 +223,7 @@ export class MemoService extends BaseService {
    *
    * @author leon_xi@163.com
    **/
-  async acceptSyncMemos(syncids: Array<Array<any>>) {
+  async acceptSyncMemos(syncids: Array<string>) {
     this.assertEmpty(syncids);    // 入参不能为空
 
     if (syncids.length < 1) {     // 入参是空数组直接返回

@@ -3635,7 +3635,7 @@ export class CalendarService extends BaseService {
    *
    * @author leon_xi@163.com
    **/
-  async acceptSyncPrivatePlans(syncids: Array<Array<any>>) {
+  async acceptSyncPrivatePlans(syncids: Array<string>) {
 
     this.assertEmpty(syncids);    // 入参不能为空
 
