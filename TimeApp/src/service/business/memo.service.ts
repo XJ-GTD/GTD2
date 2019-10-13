@@ -8,7 +8,7 @@ import { SyncData, PushInData, PullInData, DataRestful } from "../restful/datase
 import { BackupPro, BacRestful, OutRecoverPro, RecoverPro } from "../restful/bacsev";
 import { UserConfig } from "../config/user.config";
 import * as moment from "moment";
-import { SyncType, DelType,SyncDataSecurity, SyncDataStatus } from "../../data.enum";
+import { SyncType, DelType, SyncDataSecurity, SyncDataStatus } from "../../data.enum";
 import {EmitService} from "../util-service/emit.service";
 
 @Injectable()
@@ -38,7 +38,6 @@ export class MemoService extends BaseService {
 			await this.sqlExce.updateByParam(memodb);
 
 			Object.assign(memo, memodb);
-			this.emitService.emit("mwxing.calendar.activities.changed", memo);
 		} else {
 			//创建
 			memo.moi = this.util.getUuid();
@@ -52,8 +51,11 @@ export class MemoService extends BaseService {
 			await this.sqlExce.saveByParam(memodb);
 
 			Object.assign(memo, memodb);
-			this.emitService.emit("mwxing.calendar.activities.changed", memo);
 		}
+
+		this.emitService.emit("mwxing.calendar.activities.changed", memo);
+		this.syncMemos([memo]);
+
 		return memo;
 	}
 
@@ -99,6 +101,7 @@ export class MemoService extends BaseService {
 		await this.sqlExce.batExecSqlByParam(sqls);
 
 		this.emitService.emit("mwxing.calendar.activities.changed", memo);
+		this.syncMemos([memo]);
 
 		return ;
 	}
@@ -129,8 +132,10 @@ export class MemoService extends BaseService {
 	 */
 	async sendMemo(memo: MemoData) {
 		this.assertEmpty(memo);     // 入参不能为空
-		await this.syncMemo(memo);
-    	return;
+
+		await this.syncMemos([memo]);
+
+  	return;
 	}
 
 	/**
@@ -152,67 +157,98 @@ export class MemoService extends BaseService {
 	 */
 	async receivedMemoData(memo: MemoData, status: SyncDataStatus): Promise<MemoData> {
 		 this.assertEmpty(memo);     // 入参不能为空
-    	 this.assertEmpty(memo.moi);  // 备忘ID不能为空
-    	 this.assertEmpty(status);   // 入参不能为空
+  	 this.assertEmpty(memo.moi);  // 备忘ID不能为空
+  	 this.assertEmpty(status);   // 入参不能为空
 
-    	 let memodb: MomTbl = new MomTbl();
-    	 Object.assign(memodb, memo);
-    	 memodb.del = status;
-    	 memodb.tb = SyncType.synch;
-    	 await this.sqlExce.repTByParam(memodb);
-    	 let backMemo: MemoData = {} as MemoData;
-    	 Object.assign(backMemo, memodb);
-    	 return backMemo;
+  	 let memodb: MomTbl = new MomTbl();
+  	 Object.assign(memodb, memo);
+  	 memodb.del = status;
+  	 memodb.tb = SyncType.synch;
+  	 await this.sqlExce.repTByParam(memodb);
+  	 let backMemo: MemoData = {} as MemoData;
+  	 Object.assign(backMemo, memodb);
+
+		 this.emitService.emit("mwxing.calendar.activities.changed", backMemo);
+		 this.syncMemos([backMemo]);
+
+  	 return backMemo;
 	}
 
 	/**
-	 * 同步备忘到服务器
-	 * @author ying<343253410@qq.com>
+	 * 把指定或所有未同步备忘, 同步到服务器
+	 *
+	 * @author ying<343253410@qq.com>, leon_xi@163.com
 	 */
-	async syncMemo(memo: MemoData) {
-		this.assertEmpty(memo);       // 入参不能为空
-	    this.assertEmpty(memo.moi);    // 日历ID不能为空
-	    this.assertEmpty(memo.del);   // 删除标记不能为空
+	async syncMemos(memos: Array<MemoData> = new Array<MemoData>()) {
+		this.assertEmpty(memos);	// 入参不能为空
 
-	    // 构造Push数据结构
-	    let push: PushInData = new PushInData();
+		if (memos.length <= 0) {
+			let sql: string = `select * from gtd_mom where  tb = ?`;
+			memos = await this.sqlExce.getExtLstByParam<MemoData>(sql, [SyncType.unsynch]) || memos;
+		}
 
-	    let sync: SyncData = new SyncData();
-
-	    sync.id = memo.moi;
-	    sync.type = "Memo";
-	    sync.security = SyncDataSecurity.None;
-	    sync.status = SyncDataStatus[memo.del];
-	    sync.payload = memo;
-	    push.d.push(sync);
-	    await this.dataRestful.push(push);
-	    return;
-	}
-
-	/**
-	 * 未同步备忘,同步到服务器
-	 * @author ying<343253410@qq.com>
-	 */
-	async syncMemos() {
-		let sql: string = `select * from gtd_mom where  tb = ?`;
-		let unsyncedmemos = await this.sqlExce.getExtLstByParam<MemoData>(sql, [SyncType.unsynch]);
 		//当存在未同步的情况下,进行同步
-		if (unsyncedmemos && unsyncedmemos.length > 0) {
+		if (memos && memos.length > 0) {
 			 let push: PushInData = new PushInData();
-			 for (let memo of unsyncedmemos) {
+			 for (let memo of memos) {
 			 	 let sync: SyncData = new SyncData();
+
+				 sync.src = UserConfig.account.id;
 			 	 sync.id = memo.moi;
-			     sync.type = "Memo";
-			     sync.security = SyncDataSecurity.None;
-			     sync.status = SyncDataStatus[memo.del];
-			     sync.payload = memo;
-			     push.d.push(sync);
+		     sync.type = "Memo";
+				 sync.title = memo.mon;
+		     sync.security = SyncDataSecurity.None;
+
+				 // 设置删除状态
+         if (memo.del == DelType.del) {
+           sync.status = SyncDataStatus.Deleted;
+         } else {
+           sync.status = SyncDataStatus.UnDeleted;
+         }
+
+		     sync.payload = memo;
+
+		     push.d.push(sync);
 			 }
+
 			 await this.dataRestful.push(push);
 		}
+
 		return ;
 	}
 
+	/**
+   * 更新已同步标志
+   * 根据备忘ID和更新时间戳
+   *
+   * @author leon_xi@163.com
+   **/
+  async acceptSyncMemos(syncids: Array<Array<any>>) {
+    this.assertEmpty(syncids);    // 入参不能为空
+
+    if (syncids.length < 1) {     // 入参是空数组直接返回
+      return;
+    }
+
+    let sqls: Array<any> = new Array<any>();
+
+    for (let syncid of syncids) {
+      sqls.push([`update gtd_mom set tb = ? where moi = ?`, [SyncType.synch, syncid]]);
+    }
+
+    await this.sqlExce.batExecSqlByParam(sqls);
+
+		// 同步完成后刷新缓存
+    for (let id of syncids) {
+      this.getMemo(id).then((memo) => {
+        if (memo) {
+          this.emitService.emit("mwxing.calendar.activities.changed", memo);
+        }
+      });
+    }
+
+    return;
+  }
 
 	/**
 	 * 服务器发送一个链接,然后客户端进行分享
