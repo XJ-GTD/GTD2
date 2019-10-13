@@ -910,6 +910,30 @@ export class CalendarService extends BaseService {
     planitem.rtjson = generateRtJson(planitem.rtjson, planitem.rt);
     planitem.txjson = generateTxJson(planitem.txjson, planitem.tx);
 
+    // 获取参与人
+    let members: Array<Member> = new Array<Member>();
+
+    let querymemberdb: ParTbl = new ParTbl();
+    querymemberdb.obi = jti;
+    querymemberdb.obt = ObjectType.Calendar;
+
+    let memberdbs: Array<ParTbl> = await this.sqlExce.getLstByParam<ParTbl>(querymemberdb) || new Array<ParTbl>();
+
+    for (let memberdb of memberdbs) {
+      let member = {} as Member;
+      Object.assign(member, memberdb);
+
+      let fs: FsData = this.userConfig.GetOneBTbl(memberdb.pwi);
+
+      this.assertEmpty(fs);   // 联系人不能为空
+
+      Object.assign(member, fs);
+
+      members.push(member);
+    }
+
+    planitem.members = members;
+
     return planitem;
   }
 
@@ -1794,6 +1818,8 @@ export class CalendarService extends BaseService {
 
     let items: Array<PlanItemData> = new Array<PlanItemData>();
     let itemdbs: Array<JtaTbl> = new Array<JtaTbl>();
+    let members: Array<Member> = item.members || new Array<Member>();
+    let memberdbs: Array<ParTbl> = new Array<ParTbl>();
 
     let rtjson: RtJson = generateRtJson(item.rtjson, item.rt);
     let txjson: TxJson = generateTxJson(item.txjson, item.tx);
@@ -1818,6 +1844,26 @@ export class CalendarService extends BaseService {
       } else {
         // 非重复标志
         newitem.rfg = RepeatFlag.NonRepeat;
+      }
+
+      if (!rtjti || rtjti == "") {
+        // 保存参与人
+        for (let member of members) {
+          member.pari = this.util.getUuid();
+          member.obt = ObjectType.Calendar;
+          member.obi = newitem.jti;
+
+          member.sdt = MemberShareState.SendWait;
+          member.tb = SyncType.unsynch;
+          member.del = DelType.undel;
+
+          let memberdb: ParTbl = new ParTbl();
+          Object.assign(memberdb, member);
+
+          memberdbs.push(memberdb);
+        }
+
+        newitem.members = members;
       }
 
       newitem.rtjson = rtjson;
@@ -1848,6 +1894,11 @@ export class CalendarService extends BaseService {
     });
 
     let sqls: Array<any> = this.sqlExce.getFastSaveSqlByParam(itemdbs) || new Array<any>();
+    let membersqls: Array<any> = this.sqlExce.getFastSaveSqlByParam(memberdbs) || new Array<any>();
+
+    for (let membersql of membersqls) {
+      sqls.push(membersql);
+    }
 
     callback(items, sqls);
 
