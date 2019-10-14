@@ -1018,14 +1018,14 @@ export class EventService extends BaseService {
       //重复事件中的某一日程to独立日程
       if (oriAgd.rfg == anyenum.RepeatFlag.Repeat && modiType == anyenum.OperateType.OnlySel) {
         doType = DoType.Current;
-      }
-      //重复事件to重复事件或非重复
-      if (oriAgd.rfg == anyenum.RepeatFlag.Repeat && modiType == anyenum.OperateType.FromSel) {
-        doType = DoType.FutureAll;
         //如果是修改重复选项
         if (changed.length == 1 && changed[0] == "rt"){
           doType = DoType.All;
         }
+      }
+      //重复事件to重复事件或非重复
+      if (oriAgd.rfg == anyenum.RepeatFlag.Repeat && modiType == anyenum.OperateType.FromSel) {
+        doType = DoType.FutureAll;
       }
     }else if( newAgd.invitestatus != oriAgd.invitestatus ) {
       doType = DoType.Invite;
