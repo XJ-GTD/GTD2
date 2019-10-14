@@ -6,6 +6,7 @@ import {PgBusiService} from "../../service/pagecom/pgbusi.service";
 import {SpecialDataPara} from "../model/specialdata.para";
 import {RcInParam} from "../../data.mapping";
 import {BaseProcess} from "./base.process";
+import {EmitService} from "../../service/util-service/emit.service";
 
 /**
  * 特殊数据接收
@@ -14,7 +15,8 @@ import {BaseProcess} from "./base.process";
  */
 @Injectable()
 export class SpecialDataProcess extends BaseProcess implements MQProcess {
-  constructor(private busiService: PgBusiService) {
+  constructor(private busiService: PgBusiService,
+              private emitService: EmitService) {
     super();
   }
 
@@ -40,6 +42,10 @@ export class SpecialDataProcess extends BaseProcess implements MQProcess {
       let rcArray: Array<RcInParam> = new Array<RcInParam>();
 
       for (let data of specialDataPara.datas) {
+        if (data.type == "weather") {
+          this.emitService.emit("mwxing.weather.received");
+        }
+
         let rc:RcInParam = new RcInParam();
 
         rc.sn = data.title;//日程事件主题  必传

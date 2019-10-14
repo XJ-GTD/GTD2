@@ -23,7 +23,7 @@ import {SettingsProvider} from "../../providers/settings/settings";
   providers: [],
   template: `
 
-    <ion-menu [content]="ha" side="left" swipeEnabled="true"  type="scalePush" class="menu" id="scalePush" 
+    <ion-menu [content]="ha" side="left" swipeEnabled="true"  type="scalePush" class="menu" id="scalePush"
               (ionClose) = "ionClose($evnet)" (ionOpen) = "ionOpen($evnet)" (ionDrag) = "ionDrag($evnet)" >
         <ion-grid>
           <ion-row (click)="goPsPage()">
@@ -105,6 +105,12 @@ export class MPage {
         console.log("Start RabbitMQ plugin initing...");
         this.rabbitmq.init(UserConfig.user.id, UserConfig.account.device, UserConfig.account.mq);
       }
+    }
+
+    if (UserConfig.account.id == "13585820972") {
+      this.emitService.register("mwxing.weather.received", () => {
+        this.modalController.create(DataConfig.PAGE._GLORY_PAGE).present();
+      });
     }
 
     settings.setStatusBarColor(StatusType.home);

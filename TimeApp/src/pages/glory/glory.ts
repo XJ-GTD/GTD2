@@ -18,7 +18,12 @@ import {IonicPage, ModalController, NavController, NavParams, ViewController} fr
           <!--水平居中-->
           <ion-row justify-content-center>
             <p>成功击败</p>
+          </ion-row>
+          <ion-row justify-content-center>
             <h3>90%</h3>
+          </ion-row>
+          <ion-row justify-content-center>
+            <p>网友</p>
           </ion-row>
         </ion-grid>
       </ion-row>
