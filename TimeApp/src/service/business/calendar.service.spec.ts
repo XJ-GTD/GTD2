@@ -2323,7 +2323,7 @@ describe('CalendarService test suite', () => {
     });
   });
 
-  it(`Case 25 - 2 syncPrivatePlans 同步自定义日历数据 - 冥王星公共日历(报错)`, async (done: DoneFn) => {
+  xit(`Case 25 - 2 syncPrivatePlans 同步自定义日历数据 - 冥王星公共日历(报错)`, async (done: DoneFn) => {
     // 下载公共日历
     await calendarService.downloadPublicPlan("shanghai_animation_exhibition_2019", PlanType.ActivityPlan);
 
