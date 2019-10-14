@@ -43,6 +43,7 @@ import {DailyMemosPage} from "../../pages/dailymemos/dailymemos";
 import {CommemorationDayPage} from "../../pages/commemorationday/commemorationday";
 import {DtSelectPage} from "../../pages/dtselect/dtselect";
 import {MemberPage} from "../../pages/member/member";
+import {GloryPage} from "../../pages/glory/glory";
 
 export class DataConfig {
   public static isdebug: boolean = true;
@@ -257,6 +258,7 @@ export class DataConfig {
     _PLAN_PAGE: PlanPage,   // 日程 - 计划
     _INVITES_PAGE: InvitesPage, // 日程 - 邀请人
     _MEMBER_PAGE: MemberPage, // 日程 - 邀请人-选择
+    _GLORY_PAGE: GloryPage, // 每日荣耀
     _LOCATION_PAGE: LocationPage, // 日程 - 地址
     _ATTACH_PAGE: AttachPage,     // 日程 - 附件
     _DAILYMEMOS_PAGE: DailyMemosPage, // 备忘 - 每日备忘
@@ -300,6 +302,7 @@ export class DataConfig {
     PlanPage,   // 日程 - 计划
     InvitesPage, // 日程 - 邀请人
     MemberPage, // 日程 - 邀请人-选择
+    GloryPage, // 每日荣耀
     LocationPage, // 日程 - 地址
     AttachPage,     // 日程 - 附件
     DailyMemosPage, // 备忘 - 每日备忘
