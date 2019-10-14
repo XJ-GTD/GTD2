@@ -327,10 +327,17 @@ export class AgendaPage {
       return;
     }
 
+    let cloneattachments;
+    if (this.currentAgenda.attachments && this.currentAgenda.attachments.length > 0) {
+      cloneattachments = new Array<Attachment>(...this.currentAgenda.attachments);
+    } else {
+      cloneattachments = new Array<Attachment>();
+    }
+
     let modal = this.modalCtrl.create(DataConfig.PAGE._ATTACH_PAGE, {
       obt: ObjectType.Event,
       obi: this.currentAgenda.evi,
-      attach:this.currentAgenda.attachments
+      attach: cloneattachments
     });
     modal.onDidDismiss(async (data) => {
       if (!data) return;
