@@ -14,7 +14,7 @@ import {FeedbackService} from "../../service/cordova/feedback.service";
 import {PageBoxComponent} from "../../components/page-box/page-box";
 import {CornerBadgeComponent} from "../../components/corner-badge/corner-badge";
 import {CalendarService} from "../../service/business/calendar.service";
-import {EventService, AgendaData, Member, RtJson, TxJson} from "../../service/business/event.service";
+import {EventService, AgendaData, Member, Attachment, RtJson, TxJson} from "../../service/business/event.service";
 import {
   PageDirection,
   IsSuccess,
