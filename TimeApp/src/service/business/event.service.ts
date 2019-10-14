@@ -53,8 +53,10 @@ export class EventService extends BaseService {
     let sqlparam = new Array<any>();
 
     let saved: Array<AgendaData> = new Array<AgendaData>();
+    let nwfj = new Array<FjTbl>();
 
     if (pullAgdatas && pullAgdatas !=null ){
+
       for (let j = 0 , len = pullAgdatas.length; j < len ; j++){
         let agd = {} as AgendaData;
         Object.assign(agd, pullAgdatas[j]);
@@ -101,44 +103,49 @@ export class EventService extends BaseService {
         Object.assign(ev,agd);
         sqlparam.push(ev.rpTParam());
 
-        //相关日程更新
-        if (agd.sd && agd.sd != ''){
-          let ca = new CaTbl();
-          Object.assign(ca,agd);
-          sqlparam.push(ca.rpTParam());
-        }
 
-        //相关附件更新
-        if (agd.attachments && agd.attachments !=null && agd.attachments.length > 0){
-          for ( let k = 0, len = agd.attachments.length; k < len ; k++ ){
-            let fj = new FjTbl();
-            Object.assign(fj,agd.attachments[k]);
-            sqlparam.push(fj.rpTParam());
+        if (agd.rtevi == ""){
+          //相关日程更新
+          if (agd.sd && agd.sd != ''){
+            let ca = new CaTbl();
+            Object.assign(ca,agd);
+            sqlparam.push(ca.rpTParam());
+          }
+
+          //删除参与人
+          let par = new ParTbl();
+          par.obt = anyenum.ObjectType.Event;
+          par.obi = agd.evi;
+          sqlparam.push(par.dTParam());
+          //参与人更新
+          let nwpar = new Array<any>();
+          nwpar = this.sqlparamAddPar(agd.evi , agd.members) || new Array<any>();
+
+          for (let addsql of nwpar) {
+            sqlparam.push(addsql);
           }
         }
 
-        //相关参与人更新
-        let delpar = new ParTbl();
-        delpar.obt = ObjectType.Event;
-        delpar.obi = agd.evi;
-        sqlparam.push(delpar.dTParam());
+        //相关附件更新
+        if (agd.attachments && agd.attachments != null && agd.attachments.length > 0) {
+          let upfjparams = this.sqlparamAddFj(agd.evi, agd.attachments) || new Array<any>();
 
-        if (agd.members && agd.members !=null && agd.members.length > 0){
-          for ( let k = 0, len = agd.members.length; k < len ; k++ ){
-            let par = new ParTbl();
-            Object.assign(par, agd.members[k]);
-
-            par.pari = this.util.getUuid();
-            par.obi = agd.evi;
-            par.obt = ObjectType.Event;
-            par.tb = SyncType.synch;
-            par.del = DelType.undel;
-
-            sqlparam.push(par.rpTParam());
+          for (let fjadd of upfjparams) {
+            nwfj.push(fjadd);
           }
         }
 
         saved.push(agd);
+      }
+
+      let fjparams = new Array<any>();
+
+      if (nwfj && nwfj.length > 0){
+        fjparams = this.sqlExce.getFastSaveSqlByParam(nwfj) || new Array<any>();
+      }
+
+      for (let fjadd of fjparams) {
+        sqlparam.push(fjadd);
       }
 
       this.sqlExce.batExecSqlByParam(sqlparam);
@@ -1052,15 +1059,19 @@ export class EventService extends BaseService {
 
     //主evi设定
     let masterEvi : string;
+    let parEvi : string;
     if (agdata.rtevi == ""){
       //非重复数据或重复数据的父记录
       masterEvi = agdata.evi;
+      parEvi = agdata.evi;
     }else if (agdata.rfg == anyenum.RepeatFlag.RepeatToOnly){
       //重复中独立数据
       masterEvi = agdata.evi;
+      parEvi = agdata.rtevi;
     }else{
       //重复数据
       masterEvi = agdata.rtevi;
+      parEvi = agdata.rtevi;
     }
 
     //取得日程表详情
@@ -1097,7 +1108,7 @@ export class EventService extends BaseService {
 
     if(agdata.gs == '0'){
       //共享人信息
-      agdata.members = await this.getMemberByEvi(masterEvi);
+      agdata.members = await this.getMemberByEvi(parEvi);
       //参与人数量
       if (agdata.members !=null){
         agdata.pn = agdata.members.length ;
@@ -1468,7 +1479,7 @@ export class EventService extends BaseService {
 
       //取得相关的附件
       let attachs = new Array<Attachment>();
-      sq = `select * from gtd_fj where obt = ?1 and  obi in (select evi 
+      sq = `select * from gtd_fj where obt = ?1 and  obi in (select evi
       from gtd_ev  where evi = ?2 or rtevi = ?2 ); `;
       params = new Array<any>();
       params.push(anyenum.ObjectType.Event);
@@ -1670,17 +1681,14 @@ export class EventService extends BaseService {
    * @param {AgendaData} newAgdata
    */
   private modifyOnlyoneForOther(sqlparam : Array<any> ,oriAgdata :AgendaData, newAgdata : AgendaData){
-    //主evi设定
-    let masterEvi : string;
+    //取参与人evi设定
+    let parEvi : string;
     if (oriAgdata.rtevi == ""){
       //非重复数据或重复数据的父记录
-      masterEvi = oriAgdata.evi;
-    }else if (oriAgdata.rfg == anyenum.RepeatFlag.RepeatToOnly){
-      //重复中独立日只能修改自己
-      masterEvi = oriAgdata.evi;
-    }else{
-      //重复数据
-      masterEvi = oriAgdata.rtevi;
+      parEvi = oriAgdata.evi;
+    }else {
+      //重复数据(此处包含独立日)
+      parEvi = oriAgdata.rtevi;
     }
 
     // 删除相关提醒
@@ -1695,7 +1703,7 @@ export class EventService extends BaseService {
     let was = new Array<WaTbl>();
     let waparams = new Array<any>();
     if (newAgdata.txjson.reminds && newAgdata.txjson.reminds.length > 0) {
-
+      ev.evi = oriAgdata.evi;
       was = this.sqlparamAddTxWa2(ev, anyenum.ObjectType.Event,  newAgdata.txjson);
       if (was && was.length > 0){
         waparams = this.sqlExce.getFastSaveSqlByParam(was);
@@ -1705,11 +1713,12 @@ export class EventService extends BaseService {
     //删除参与人
     let par = new ParTbl();
     par.obt = anyenum.ObjectType.Event;
-    par.obi = masterEvi;
+    par.obi = parEvi;
     sqlparam.push(par.dTParam());
-    //参与人更新
+
+    //添加参与人
     let nwpar = new Array<any>();
-    nwpar = this.sqlparamAddPar(masterEvi , newAgdata.members);
+    nwpar = this.sqlparamAddPar(parEvi , newAgdata.members);
 
     //删除附件
     let fj = new FjTbl();
@@ -2787,20 +2796,17 @@ export class EventService extends BaseService {
         }
 
         if (members.length > 0) {
-          let masterEvi: string;
+          let parEvi: string;
           if (agenda.rtevi == "") {
             //非重复数据或重复数据的父记录
-            masterEvi = agenda.evi;
-          } else if (agenda.rfg == anyenum.RepeatFlag.RepeatToOnly) {
-            //重复中独立数据
-            masterEvi = agenda.evi;
+            parEvi = agenda.evi;
           } else {
             //重复数据
-            masterEvi = agenda.rtevi;
+            parEvi = agenda.rtevi;
           }
 
           let membersTos: Array<Member> = members.filter((value, index, arr) => {
-            return masterEvi == value.obi;
+            return parEvi == value.obi;
           });
           agenda.tos = this.getMemberPhone(membersTos);
         } else {
@@ -2815,6 +2821,9 @@ export class EventService extends BaseService {
           }
         }
         sync.to = (!agenda.tos || agenda.tos == "" || agenda.tos == null) ? [] : agenda.tos.split(",") ;
+
+        this.assertNotEqual(agenda.pn, sync.to.length); // 参与人数量和参与人数组必须相同
+
         sync.payload = this.cleanAgendaPayload(agenda);
         push.d.push(sync);
 

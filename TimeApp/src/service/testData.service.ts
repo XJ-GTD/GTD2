@@ -4,10 +4,10 @@ import {BhTbl} from "./sqlite/tbl/bh.tbl";
 import {GTbl} from "./sqlite/tbl/g.tbl";
 import {BxTbl} from "./sqlite/tbl/bx.tbl";
 import {DataConfig} from "./config/data.config";
-import {AgendaData, EventService, MiniTaskData, RtJson,TaskData} from "./business/event.service";
+import {AgendaData, EventService, MiniTaskData, RtJson, TaskData, Member} from "./business/event.service";
 import {CycleType, IsWholeday, OverType, PlanItemType, PlanType, ToDoListStatus} from "../data.enum";
 import {MemoData, MemoService} from "./business/memo.service";
-import {CalendarService, PlanData, PlanItemData, PlanMember} from "./business/calendar.service";
+import {CalendarService, PlanData, PlanItemData} from "./business/calendar.service";
 import * as moment from "moment";
 import {SqliteExec} from "./util-service/sqlite.exec";
 import {UtilService} from "./util-service/util.service";
@@ -408,10 +408,10 @@ export class TestDataService {
     plan.jc = '#ababab';
     plan.jt = PlanType.PrivatePlan;
 
-    plan.members = new Array<PlanMember>();
+    plan.members = new Array<Member>();
 
     for (let contact of [this.xiaopangzi, this.xiaohaizi, this.xuezhenyang]) {
-      let member: PlanMember = {} as PlanMember;
+      let member: Member = {} as Member;
 
       member.pwi = contact.pwi;
       member.ui = contact.ui;

@@ -56,8 +56,8 @@ import {GTbl} from "../sqlite/tbl/g.tbl";
 import {BxTbl} from "../sqlite/tbl/bx.tbl";
 import {BhTbl} from "../sqlite/tbl/bh.tbl";
 
-import { CalendarService, PlanData, PlanItemData, PlanMember, ActivitySummaryData, MonthActivityData, MonthActivitySummaryData, DayActivityData, DayActivitySummaryData, PagedActivityData, FindActivityCondition } from "./calendar.service";
-import { EventService, AgendaData, TaskData, MiniTaskData, RtJson, TxJson } from "./event.service";
+import { CalendarService, PlanData, PlanItemData, ActivitySummaryData, MonthActivityData, MonthActivitySummaryData, DayActivityData, DayActivitySummaryData, PagedActivityData, FindActivityCondition } from "./calendar.service";
+import { EventService, AgendaData, TaskData, MiniTaskData, RtJson, TxJson, Member } from "./event.service";
 import { MemoService, MemoData } from "./memo.service";
 import { PlanType, PlanItemType, CycleType, OverType, RepeatFlag, PageDirection, SyncType, DelType, SyncDataStatus, IsWholeday, OperateType, EventType, RemindTime } from "../../data.enum";
 
@@ -626,10 +626,10 @@ describe('CalendarService test suite', () => {
       plan.jc = '#ababab';
       plan.jt = PlanType.PrivatePlan;
 
-      plan.members = new Array<PlanMember>();
+      plan.members = new Array<Member>();
 
       for (let contact of [xiaopangzi, xiaohaizi, xuezhenyang]) {
-        let member: PlanMember = {} as PlanMember;
+        let member: Member = {} as Member;
 
         member.pwi = contact.pwi;
         member.ui = contact.ui;
@@ -2279,7 +2279,7 @@ describe('CalendarService test suite', () => {
   });
 
   it(`Case 27 - 1 acceptSyncPrivatePlans 更新已同步日历标志 - 本地无数据(无报错)`, (done: DoneFn) => {
-    calendarService.acceptSyncPrivatePlans([["planid", moment().unix()]])
+    calendarService.acceptSyncPrivatePlans(["planid"])
     .then(() => {
       expect("success").toBe("success");
       done();
@@ -2460,10 +2460,10 @@ describe('CalendarService test suite', () => {
     plan.jc = '#f1f1f1';
     plan.jt = PlanType.PrivatePlan;
 
-    plan.members = new Array<PlanMember>();
+    plan.members = new Array<Member>();
 
     for (let contact of [xiaopangzi, xiaohaizi, xuezhenyang]) {
-      let member: PlanMember = {} as PlanMember;
+      let member: Member = {} as Member;
 
       member.pwi = contact.pwi;
       member.ui = contact.ui;
@@ -2495,10 +2495,10 @@ describe('CalendarService test suite', () => {
     plan.jc = '#f1f1f1';
     plan.jt = PlanType.PrivatePlan;
 
-    plan.members = new Array<PlanMember>();
+    plan.members = new Array<Member>();
 
     for (let contact of [xiaopangzi, xiaohaizi, xuezhenyang]) {
-      let member: PlanMember = {} as PlanMember;
+      let member: Member = {} as Member;
 
       member.pwi = contact.pwi;
       member.ui = contact.ui;
@@ -5807,10 +5807,10 @@ describe('CalendarService test suite', () => {
     plan.jc = '#f1f1f1';
     plan.jt = PlanType.PrivatePlan;
 
-    plan.members = new Array<PlanMember>();
+    plan.members = new Array<Member>();
 
     for (let contact of [xiaopangzi, xiaohaizi, xuezhenyang]) {
-      let member: PlanMember = {} as PlanMember;
+      let member: Member = {} as Member;
 
       member.pwi = contact.pwi;
       member.ui = contact.ui;
@@ -5820,7 +5820,7 @@ describe('CalendarService test suite', () => {
 
     let savedplan = await calendarService.savePlan(plan);
 
-    let newmember: PlanMember = {} as PlanMember;
+    let newmember: Member = {} as Member;
 
     newmember.pwi = xiaolenzi.pwi;
     newmember.ui = xiaolenzi.ui;
@@ -5872,10 +5872,10 @@ describe('CalendarService test suite', () => {
     plan.jc = '#f1f1f1';
     plan.jt = PlanType.PrivatePlan;
 
-    plan.members = new Array<PlanMember>();
+    plan.members = new Array<Member>();
 
     for (let contact of [xiaopangzi, xiaohaizi, xuezhenyang]) {
-      let member: PlanMember = {} as PlanMember;
+      let member: Member = {} as Member;
 
       member.pwi = contact.pwi;
       member.ui = contact.ui;
@@ -5904,9 +5904,9 @@ describe('CalendarService test suite', () => {
     plan.jc = '#f1f1f1';
     plan.jt = PlanType.PrivatePlan;
 
-    plan.members = new Array<PlanMember>();
+    plan.members = new Array<Member>();
 
-    let member: PlanMember = {} as PlanMember;
+    let member: Member = {} as Member;
 
     member.pwi = xiaohaizi.pwi;
     member.ui = xiaohaizi.ui;

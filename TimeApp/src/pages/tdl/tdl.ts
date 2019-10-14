@@ -14,7 +14,7 @@ import {EmitService} from "../../service/util-service/emit.service";
 import {ScdPageParamter} from "../../data.mapping";
 import {UtilService} from "../../service/util-service/util.service";
 import {FeedbackService} from "../../service/cordova/feedback.service";
-import {DayActivityData, MonthActivityData} from "../../service/business/calendar.service";
+import {CalendarService, DayActivityData, MonthActivityData} from "../../service/business/calendar.service";
 import {EventService} from "../../service/business/event.service";
 import {PageDirection, EventType, InviteState, SyncType, EventFinishStatus} from "../../data.enum";
 import {TdlGesture} from "./tdl-gestures";
@@ -92,7 +92,7 @@ BScroll.use(InfinityScroll);
                     </div>
                     <div class=" d-title-chr"><span>{{days.events.length}}</span> 活动</div>
                     <div class=" d-title-chr"><span>{{days.calendaritems.length}}</span> 纪念日</div>
-                    <div class=" d-title-chr mome " (click)="toMemo(days)" *ngIf="days.memos.length > 0" [class.item-no-display]="days.memos.length == 0"><span>{{days.events.length}}</span>备忘</div>
+                    <div class=" d-title-chr mome " (click)="toMemo(days)" *ngIf="days.memos.length > 0" [class.item-no-display]="days.memos.length == 0"><span>{{days.memos.length}}</span>备忘</div>
                   </div>
                 </div>
               </ion-row>
@@ -104,13 +104,12 @@ BScroll.use(InfinityScroll);
                   </div>
                   <div class="sn">{{jt.jtn}}</div>
                 </div>
-                <div class="line font-small">
+                <div class="line font-small" *ngIf="currentuser != jt.ui && jt.ui != ''" [ngStyle]="{'margin-left': jt.ji == ''? '0.6rem' : '0'}">
                   <div class="icon">
                     <ion-icon class = "fal fa-user-tag"></ion-icon>
                   </div>
-                  <div class="person ">--来自小仙女</div>
-                  <div class="invite" end><span>拒绝</span><span>接受</span></div>
-
+                  <div class="person ">--来自{{jt.ui | formatuser: currentuser: friends}}</div>
+                  <div class="invite" *ngIf="jt.invitestatus != inviteaccept && jt.invitestatus != invitereject" end><span (click)="rejectInvite($event, event)">拒绝</span><span (click)="acceptInvite($event, event)">接受</span></div>
                 </div>
               </ion-row>
               <!--<ion-row class="item-content dayagenda-content item-content-backgroud" *ngFor="let event of days.events;" [ngStyle]="{'background-color': event.tb == synch? '#00ff80' : '#ff80c0'}" (click)="toDetail(event.evi,event.evd,event.type,event.gs)">-->
@@ -201,6 +200,7 @@ export class TdlPage {
               private util: UtilService,
               private feedback: FeedbackService,
               private renderer2: Renderer2,
+              private calendarService: CalendarService,
               private eventService: EventService,
               private _plt: Platform,
               private _gestureCtrl: GestureController,
@@ -437,6 +437,9 @@ export class TdlPage {
     $event.stopPropagation();  // 阻止冒泡
     $event.preventDefault(); // 忽略事件传递
 
+    if (event && !event.type && event.jti) {
+      await this.calendarService.acceptReceivedPlanItem(event.jti);
+    }
     if (event && event.type == EventType.Agenda) {
       await this.eventService.acceptReceivedAgenda(event.evi);
     }
@@ -446,6 +449,9 @@ export class TdlPage {
     $event.stopPropagation();  // 阻止冒泡
     $event.preventDefault(); // 忽略事件传递
 
+    if (event && !event.type && event.jti) {
+      await this.calendarService.rejectReceivedPlanItem(event.jti);
+    }
     if (event && event.type == EventType.Agenda) {
       await this.eventService.rejectReceivedAgenda(event.evi);
     }

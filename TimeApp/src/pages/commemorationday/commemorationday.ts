@@ -9,8 +9,8 @@ import {EmitService} from "../../service/util-service/emit.service";
 import {DataConfig} from "../../service/config/data.config";
 import {FeedbackService} from "../../service/cordova/feedback.service";
 import {CalendarService, PlanItemData} from "../../service/business/calendar.service";
-import {EventService, RtJson,} from "../../service/business/event.service";
-import {OperateType, RepeatFlag, ConfirmType} from "../../data.enum";
+import {EventService, RtJson, TxJson, Member, generateRtJson, generateTxJson} from "../../service/business/event.service";
+import {OperateType, RepeatFlag, ConfirmType, IsWholeday, InviteState, ModiPower} from "../../data.enum";
 import {Keyboard} from "@ionic-native/keyboard";
 
 /**
@@ -34,7 +34,7 @@ import {Keyboard} from "@ionic-native/keyboard";
             <ion-textarea rows="8" [(ngModel)]="currentPlanItem.jtn" (ionChange)="changeTitle()" #bzRef></ion-textarea>
           </div>
         </ion-row>
-        
+
         <ion-row class="optionRow">
           <ion-grid>
             <!--附加属性操作-->
@@ -87,8 +87,8 @@ import {Keyboard} from "@ionic-native/keyboard";
               <div (click)="changeDatetime()">
                 <span class="content font-normal">
                   日期：{{currentPlanItem.evd | formatedate: "YYYY年M月D日"}}<br/>
-                
-                  时间：{{currentPlanItem.evd  + " " + currentPlanItem.evt | formatedate: "HH:mm"}} {{currentPlanItem.ct | transfromdate: "duration"}}
+
+                  时间：{{currentPlanItem.sd  + " " + currentPlanItem.st | formatedate: "HH:mm"}}
                 </span>
                 <ion-icon class="font-normal fal fa-calendar-check "></ion-icon>
               </div>
@@ -187,6 +187,56 @@ export class CommemorationDayPage {
     }
   }
 
+  changeDatetime() {
+    if (this.originPlanItem.ui != this.currentuser && (this.originPlanItem.md != ModiPower.enable || this.originPlanItem.invitestatus != InviteState.Accepted)) { // 受邀人修改权限检查
+      return;
+    }
+
+    let modal = this.modalCtrl.create(DataConfig.PAGE._DTSELECT_PAGE, {
+      sd: this.currentPlanItem.sd,
+      st: this.currentPlanItem.st,
+      ed: this.currentPlanItem.sd,
+      et: this.currentPlanItem.st,
+      al: IsWholeday.NonWhole,
+      ct: 0
+    });
+    modal.onDidDismiss(async (data) => {
+
+    });
+    modal.present();
+  }
+
+  changeInvites() {
+    let clonemembers;
+    if (this.currentPlanItem.members && this.currentPlanItem.members.length > 0) {
+      clonemembers = new Array<Member>(...this.currentPlanItem.members);
+    } else {
+      clonemembers = new Array<Member>();
+    }
+    let modal = this.modalCtrl.create(DataConfig.PAGE._INVITES_PAGE, {
+      ui: this.currentPlanItem.ui,
+      mine: this.currentPlanItem.ui == this.currentuser,
+      members: clonemembers,
+      md: this.currentPlanItem.md,
+      iv: this.currentPlanItem.iv
+    });
+    modal.onDidDismiss(async (data) => {
+      if (!data) return;
+
+      this.currentPlanItem.members = data.members;
+      this.currentPlanItem.pn = data.members.length;
+      this.currentPlanItem.md = data.md;
+      this.currentPlanItem.iv = data.iv;
+
+      if (!this.calendarService.isSamePlanItem(this.currentPlanItem, this.originPlanItem)) {
+        this.buttons.save = true;
+      } else {
+        this.buttons.save = false;
+      }
+    });
+    modal.present();
+  }
+
   changeRepeat() {
     if (!this.currentPlanItem.rtjson && this.currentPlanItem.rt) {
       this.currentPlanItem.rtjson = new RtJson();
@@ -205,6 +255,46 @@ export class CommemorationDayPage {
         Object.assign(this.currentPlanItem.rtjson, data.rtjson);
         this.currentPlanItem.rt = JSON.stringify(this.currentPlanItem.rtjson);
         this.currentPlanItem.rts = this.currentPlanItem.rtjson.text();
+
+        if (!this.calendarService.isSamePlanItem(this.currentPlanItem, this.originPlanItem)) {
+          this.buttons.save = true;
+        } else {
+          this.buttons.save = false;
+        }
+      }
+    });
+    modal.present();
+  }
+
+  changeRemind() {
+    if (this.currentPlanItem.ui != this.currentuser && this.originPlanItem.invitestatus != InviteState.Accepted) { // 受邀人接受状态检查
+      return;
+    }
+
+    if (!this.currentPlanItem.txjson && this.currentPlanItem.tx) {
+      this.currentPlanItem.txjson = new TxJson();
+      let txdata = JSON.parse(this.currentPlanItem.tx);
+      Object.assign(this.currentPlanItem.txjson, txdata);
+    } else if (!this.currentPlanItem.txjson && !this.currentPlanItem.tx) {
+      this.currentPlanItem.txjson = new TxJson();
+    }
+
+    let data = new TxJson();
+    Object.assign(data, this.currentPlanItem.txjson);
+    let modal = this.modalCtrl.create(DataConfig.PAGE._REMIND_PAGE, {
+      value: {
+        txjson: data,
+        evd: this.currentPlanItem.sd,
+        evt: this.currentPlanItem.st,
+        al: IsWholeday.NonWhole
+      }
+    });
+    modal.onDidDismiss(async (data) => {
+      if (data && data.txjson) {
+        this.currentPlanItem.txjson = new TxJson();
+        Object.assign(this.currentPlanItem.txjson, data.txjson);
+        this.currentPlanItem.tx = JSON.stringify(this.currentPlanItem.txjson);
+        this.currentPlanItem.txs = this.currentPlanItem.txjson.text();
 
         if (!this.calendarService.isSamePlanItem(this.currentPlanItem, this.originPlanItem)) {
           this.buttons.save = true;
