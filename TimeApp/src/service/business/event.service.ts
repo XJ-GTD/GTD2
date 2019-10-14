@@ -103,14 +103,20 @@ export class EventService extends BaseService {
         Object.assign(ev,agd);
         sqlparam.push(ev.rpTParam());
 
-
-        if (agd.rtevi == ""){
+        if ( agd.rfg == anyenum.RepeatFlag.RepeatToOnly){
           //相关日程更新
-          if (agd.sd && agd.sd != ''){
-            let ca = new CaTbl();
-            Object.assign(ca,agd);
-            sqlparam.push(ca.rpTParam());
-          }
+          let ca = new CaTbl();
+          Object.assign(ca,agd);
+          sqlparam.push(ca.rpTParam());
+
+        }
+
+        if (agd.rtevi == "" ){
+          //相关日程更新
+          let ca = new CaTbl();
+          Object.assign(ca,agd);
+          sqlparam.push(ca.rpTParam());
+
 
           //删除参与人
           let par = new ParTbl();
@@ -1706,6 +1712,12 @@ export class EventService extends BaseService {
       masterEvi = oriAgdata.rtevi;
     }
 
+    if (!oriAgdata.members ){
+      oriAgdata.members = new Array<Member>();
+    }
+    if (!newAgdata.members ){
+      newAgdata.members = new Array<Member>();
+    }
     if (oriAgdata.members.length != newAgdata.members.length){
       changed = true;
     }else {
@@ -1958,11 +1970,6 @@ export class EventService extends BaseService {
 
     let sq : string ;
     let params : Array<any>;
-
-    let ca = new CaTbl();
-    ca.evi = masterEvi;
-    let existca = await this.sqlExce.getOneByParam<CaTbl>(ca);
-    Object.assign(ca, existca);
 
     //标记为删除的记录放入返回事件中
     delcondi = ` evd >= ? and (evi = ? or rtevi =  ?) and del <> ? `;
