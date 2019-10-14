@@ -68,7 +68,7 @@ BScroll.use(InfinityScroll);
             </div>
           </ion-row>
           <ng-template ngFor let-days [ngForOf]="monthActivityData.arraydays">
-            <ion-row class="item-content dayagenda-week" *ngIf="(days.day | formatedate:'DWEEK') == '7'">
+            <ion-row class="item-content dayagenda-week" *ngIf="(days.day | formatedate:'DWEEK') == 0">
               <div class="line">
                 <p>
                   {{days.day | formatedate :"CYYYY/MM/DD"}}-{{days.day | formatedate :"ADD7CYYYY/MM/DD"}}
