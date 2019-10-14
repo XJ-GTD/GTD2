@@ -20,7 +20,7 @@ import {IonicPage, ModalController, NavController, NavParams, ViewController} fr
             <p>成功击败</p>
           </ion-row>
           <ion-row justify-content-center>
-            <h3>90%</h3>
+            <h1 class="large">90%</h1>
           </ion-row>
           <ion-row justify-content-center>
             <p>冥王星用户</p>
@@ -29,15 +29,15 @@ import {IonicPage, ModalController, NavController, NavParams, ViewController} fr
             <p></p>
           </ion-row>
           <ion-row justify-content-center>
-            <div>
+            <div class="ball">
               <h3>0</h3>
               <p>纪念日</p>
             </div>
-            <div>
+            <div class="ball">
               <h3>13</h3>
               <p>活动</p>
             </div>
-            <div>
+            <div class="ball">
               <h3>2</h3>
               <p>备忘</p>
             </div>

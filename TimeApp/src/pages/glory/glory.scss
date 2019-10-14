@@ -2,4 +2,18 @@ page-glory {
   .h100 {
     height: 100vmax;
   }
+
+  .h20 {
+    height: 20vmax;
+  }
+
+  h1.large {
+    font-size: 15vmin;
+    margin: 0;
+  }
+
+  .ball {
+    text-align: center;
+    width: 25vmin;
+  }
 }
