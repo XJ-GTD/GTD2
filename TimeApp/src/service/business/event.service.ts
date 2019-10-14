@@ -1547,6 +1547,11 @@ export class EventService extends BaseService {
       await this.sqlExce.batExecSqlByParam(sqlparam);
       newAgdata.tos = tos;
       outAgds.push(newAgdata);
+
+      //如果参与人改变，则获取活动的所有记录上传
+      await this.getAgendaForMembersChanged(oriAgdata,newAgdata,outAgds);
+
+
       return outAgds;
     }
 
@@ -1667,7 +1672,90 @@ export class EventService extends BaseService {
     console.log("**** updateAgenda batExecSqlByParam start :****" + moment().format("YYYY/MM/DD HH:mm:ss SSS"))
     await this.sqlExce.batExecSqlByParam(sqlparam);
     console.log("**** updateAgenda batExecSqlByParam end :****" + moment().format("YYYY/MM/DD HH:mm:ss SSS"))
+
+    if (!oriAgdata.rtevi && oriAgdata.rtevi =="" && oriAgdata.rfg == anyenum.RepeatFlag.Repeat){
+
+    }else{
+      //如果不是父点且参与人发生改变，取得活动所有数据
+      await this.getAgendaForMembersChanged(oriAgdata,newAgdata,outAgds);
+    }
+
     return outAgds;
+
+  }
+
+  /**
+   * 单独更新单条记录时，如果参与人改变则需要提交活动所有记录到服务器
+   * @param {AgendaData} oriAgdata
+   * @param {AgendaData} newAgdata
+   * @returns {Array<AgendaData>}
+   */
+  private async getAgendaForMembersChanged(oriAgdata :AgendaData, newAgdata : AgendaData,outAgds : Array<AgendaData>){
+    let retAgendas = new Array<AgendaData>();
+    let changed : boolean =  false;
+
+    let sq : string ;
+    let tos : string;//需要发送的参与人手机号
+    //主evi设定
+    let masterEvi : string;
+    if (oriAgdata.rtevi == ""){
+      //非重复数据或重复数据的父记录
+      masterEvi = oriAgdata.evi;
+    }else {
+      //重复数据（包含独立日数据）
+      masterEvi = oriAgdata.rtevi;
+    }
+
+    if (oriAgdata.members.length != newAgdata.members.length){
+      changed = true;
+    }else {
+      for (let oriMember of   oriAgdata.members){
+        let findm =  newAgdata.members.find((value, index,arr)=>{
+          return value.pari == oriMember.pari || value.ui == oriMember.ui || value.rc == oriMember.rc;
+        });
+        if (!findm){
+          changed = true;
+          break;
+        }
+      }
+    }
+
+    if (changed){
+
+      tos = this.getMemberPhone(newAgdata.members);
+      sq = `select ev.*, ca.sd, ca.ed, ca.st, ca.et, ca.al, ca.ct
+                        from (select *,
+                        case when rfg = '2' then evi
+                             when ifnull(rtevi, '') = '' then evi
+                             else rtevi end forcaevi
+                          from gtd_ev
+                          where evi = ?1 or rtevi = ?1) ev
+                        left join gtd_ca ca
+                        on ca.evi = ev.forcaevi ;`;
+      retAgendas = await this.sqlExce.getExtLstByParam<AgendaData>(sq, [masterEvi]) || retAgendas;
+
+
+      //取得相关的附件
+      let attachs = new Array<Attachment>();
+      sq = `select * from gtd_fj where obt = ?1 and  obi in (select evi
+      from gtd_ev  where evi = ?2 or rtevi = ?2 ); `;
+      attachs = await this.sqlExce.getExtLstByParam<Attachment>(sq,[anyenum.ObjectType.Event,masterEvi]);
+
+      //活动其他对象绑定
+      for (let agd of retAgendas){
+
+        agd.members = newAgdata.members;//参与人
+        agd.tos = tos;
+        //附件
+        if (attachs && attachs.length > 0){
+          agd.attachments = attachs.filter((value,index,arr)=>{
+            return agd.evi = value.obi;
+          })
+        }
+      }
+      outAgds.length = 0;
+      Object.assign(outAgds , ...retAgendas);
+    }
 
   }
 
