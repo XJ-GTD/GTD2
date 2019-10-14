@@ -70,7 +70,9 @@ ion-app.black-theme {
       }
     }
 
-  page-glory {}
+  page-glory {
+    background-color: $baseBackcolor_black;
+  }
 
   page-agenda, page-task, page-commemorationday {
     .grid {
