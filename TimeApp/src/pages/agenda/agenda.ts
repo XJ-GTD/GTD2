@@ -268,7 +268,18 @@ export class AgendaPage {
       ct: this.currentAgenda.ct
     });
     modal.onDidDismiss(async (data) => {
+      if (data) {
+        // this.currentAgenda.sd = data.sd;
+        // this.currentAgenda.st = data.st;
+        // this.currentAgenda.ed = data.ed;
+        // this.currentAgenda.et = data.et;
+      }
 
+      if (!this.eventService.isSameAgenda(this.currentAgenda, this.originAgenda)) {
+        this.buttons.save = true;
+      } else {
+        this.buttons.save = false;
+      }
     });
     modal.present();
   }
@@ -326,6 +337,7 @@ export class AgendaPage {
       //console.info("附件已经传递过来，data:"+JSON.stringify(data));
       //alert("附件已经传递过来，data:"+JSON.stringify(data));
       this.currentAgenda.attachments = data.attach;
+      this.currentAgenda.fj = data.attach.length;
 
       if (!this.eventService.isSameAgenda(this.currentAgenda, this.originAgenda)) {
         this.buttons.save = true;
