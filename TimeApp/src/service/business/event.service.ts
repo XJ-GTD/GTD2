@@ -1850,7 +1850,15 @@ export class EventService extends BaseService {
 
       //取得为修改的记录放入返回事件中
       upcondi = ` rtevi = ? `
-      sq = ` select * from gtd_ev where ${upcondi} order by evd ; `
+      sq = ` select ev.*, ca.sd, ca.ed, ca.st, ca.et, ca.al, ca.ct
+                        from (select *,
+                        case when rfg = '2' then evi
+                             when ifnull(rtevi, '') = '' then evi
+                             else rtevi end forcaevi
+                          from gtd_ev
+                          where ${upcondi} ) ev
+                        left join gtd_ca ca
+                        on ca.evi = ev.forcaevi  order by ev.evd ; `
       params = new Array<any>();
       params.push(oriAgdata.evi);
       upAgds = await this.sqlExce.getExtLstByParam<AgendaData>(sq,params);
@@ -1906,9 +1914,12 @@ export class EventService extends BaseService {
             //参与人
             upAgds[j].members = members;
             //ca数据
-            let tmpevi = upAgds[j].evi;
-            Object.assign(upAgds[j] , nwca);
-            upAgds[j].evi = tmpevi;
+            if (upAgds[j].rfg != anyenum.RepeatFlag.RepeatToOnly){
+              //新的日程赋给非独立日的记录
+              let tmpevi = upAgds[j].evi;
+              Object.assign(upAgds[j] , nwca);
+              upAgds[j].evi = tmpevi;
+            }
 
             //附件
             if (upAttaches && upAttaches.length > 0){
@@ -1969,7 +1980,15 @@ export class EventService extends BaseService {
 
 
     //取得所有要删除的事件
-    sq = ` select * from gtd_ev where ${delcondi} ; `;
+    sq = ` select ev.*, ca.sd, ca.ed, ca.st, ca.et, ca.al, ca.ct
+                        from (select *,
+                        case when rfg = '2' then evi
+                             when ifnull(rtevi, '') = '' then evi
+                             else rtevi end forcaevi
+                          from gtd_ev
+                          where ${delcondi} ) ev
+                        left join gtd_ca ca
+                        on ca.evi = ev.forcaevi ; `;
     params = new Array<any>();
     params.push(oriAgdata.evd);
     params.push(masterEvi);
@@ -1984,11 +2003,6 @@ export class EventService extends BaseService {
 
         delAgds[j].tos = tos;//需要发送的参与人
         delAgds[j].members = oriAgdata.members;//参与人
-
-        //ca数据
-        let tmpevi = delAgds[j].evi;
-        Object.assign(delAgds[j],ca);
-        delAgds[j].evi = tmpevi;
 
         //附件
         if (delAttachs && delAttachs.length > 0){
