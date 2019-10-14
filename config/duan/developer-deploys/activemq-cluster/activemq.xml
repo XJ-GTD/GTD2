@@ -80,7 +80,7 @@
             http://activemq.apache.org/persistence.html
         -->
         <persistenceAdapter>
-            <kahaDB directory="${activemq.data}/kahadb"/>
+            <kahaDB directory="${activemq.data}/kahadb" journalMaxFileLength="64mb"/>
         </persistenceAdapter>
 
 

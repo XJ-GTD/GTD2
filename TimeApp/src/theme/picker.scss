@@ -15,9 +15,13 @@
 
   .picker-above-highlight, .picker-below-highlight {
     background: rgba(239, 239, 239, 1);
-    z-index: -1;
+    z-index: 1;
     font-size: 14px;
     border-width: 0;
+    transform:none
+  }
+  .picker-col{
+    z-index: 2;
   }
 
   .picker-opt {

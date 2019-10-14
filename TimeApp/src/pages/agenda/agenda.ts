@@ -268,7 +268,18 @@ export class AgendaPage {
       ct: this.currentAgenda.ct
     });
     modal.onDidDismiss(async (data) => {
+      if (data) {
+        // this.currentAgenda.sd = data.sd;
+        // this.currentAgenda.st = data.st;
+        // this.currentAgenda.ed = data.ed;
+        // this.currentAgenda.et = data.et;
+      }
 
+      if (!this.eventService.isSameAgenda(this.currentAgenda, this.originAgenda)) {
+        this.buttons.save = true;
+      } else {
+        this.buttons.save = false;
+      }
     });
     modal.present();
   }
@@ -316,16 +327,24 @@ export class AgendaPage {
       return;
     }
 
+    let cloneattachments;
+    if (this.currentAgenda.attachments && this.currentAgenda.attachments.length > 0) {
+      cloneattachments = new Array<Attachment>(...this.currentAgenda.attachments);
+    } else {
+      cloneattachments = new Array<Attachment>();
+    }
+
     let modal = this.modalCtrl.create(DataConfig.PAGE._ATTACH_PAGE, {
       obt: ObjectType.Event,
       obi: this.currentAgenda.evi,
-      attach:this.currentAgenda.attachments
+      attach: cloneattachments
     });
     modal.onDidDismiss(async (data) => {
       if (!data) return;
       //console.info("附件已经传递过来，data:"+JSON.stringify(data));
       //alert("附件已经传递过来，data:"+JSON.stringify(data));
       this.currentAgenda.attachments = data.attach;
+      this.currentAgenda.fj = data.attach.length;
 
       if (!this.eventService.isSameAgenda(this.currentAgenda, this.originAgenda)) {
         this.buttons.save = true;
