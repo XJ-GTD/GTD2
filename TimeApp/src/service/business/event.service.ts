@@ -128,14 +128,19 @@ export class EventService extends BaseService {
           nwpar = this.sqlparamAddPar(agd.evi , agd.members) ;
 
           sqlparam = [...sqlparam,...nwpar];
-          /*for (let addsql of nwpar) {
-            sqlparam.push(addsql);
-          }*/
+
         }
 
         //相关附件更新
         if (agd.attachments && agd.attachments != null && agd.attachments.length > 0) {
+          //删除附件
+          let fj = new FjTbl();
+          fj.obt = anyenum.ObjectType.Event;
+          fj.obi = agd.evi;
+          sqlparam.push(fj.dTParam());
+
           let upfjparams = this.sqlparamAddFj(agd.evi, agd.attachments) ;
+
 
           nwfj = [...nwfj,...upfjparams];
         }
