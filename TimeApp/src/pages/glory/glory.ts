@@ -13,7 +13,7 @@ import {IonicPage, ModalController, NavController, NavParams, ViewController} fr
   template: `<ion-content padding>
     <ion-grid>
       <!--垂直居中-->
-      <ion-row align-items-center>
+      <ion-row class="h100" align-items-center>
         <ion-grid>
           <!--水平居中-->
           <ion-row justify-content-center>
@@ -23,7 +23,7 @@ import {IonicPage, ModalController, NavController, NavParams, ViewController} fr
             <h3>90%</h3>
           </ion-row>
           <ion-row justify-content-center>
-            <p>网友</p>
+            <p>冥王星用户</p>
           </ion-row>
         </ion-grid>
       </ion-row>
