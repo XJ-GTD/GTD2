@@ -142,12 +142,20 @@ export class MemoService extends BaseService {
 	 * 接收备忘数据同步
 	 * @author ying<343253410@qq.com>
 	 */
-	async receivedMemo(moi: string) {
+	async receivedMemo(moi: any) {
 		this.assertEmpty(moi);   // 入参不能为空
 		let pull: PullInData = new PullInData();
-		pull.type = "Memo";
-		pull.d.push(moi);
+
+		if (moi instanceof Array) {
+      pull.type = "Memo";
+      pull.d.splice(0, 0, ...moi);
+	  } else {
+			pull.type = "Memo";
+			pull.d.push(moi);
+		}
+
 		await this.dataRestful.pull(pull);
+
 		return;
 	}
 
