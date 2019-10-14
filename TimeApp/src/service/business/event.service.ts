@@ -119,20 +119,19 @@ export class EventService extends BaseService {
           sqlparam.push(par.dTParam());
           //参与人更新
           let nwpar = new Array<any>();
-          nwpar = this.sqlparamAddPar(agd.evi , agd.members) || new Array<any>();
+          nwpar = this.sqlparamAddPar(agd.evi , agd.members) ;
 
-          for (let addsql of nwpar) {
+          sqlparam = [...sqlparam,...nwpar];
+          /*for (let addsql of nwpar) {
             sqlparam.push(addsql);
-          }
+          }*/
         }
 
         //相关附件更新
         if (agd.attachments && agd.attachments != null && agd.attachments.length > 0) {
-          let upfjparams = this.sqlparamAddFj(agd.evi, agd.attachments) || new Array<any>();
+          let upfjparams = this.sqlparamAddFj(agd.evi, agd.attachments) ;
 
-          for (let fjadd of upfjparams) {
-            nwfj.push(fjadd);
-          }
+          nwfj = [...nwfj,...upfjparams];
         }
 
         saved.push(agd);
@@ -144,11 +143,9 @@ export class EventService extends BaseService {
         fjparams = this.sqlExce.getFastSaveSqlByParam(nwfj) || new Array<any>();
       }
 
-      for (let fjadd of fjparams) {
-        sqlparam.push(fjadd);
-      }
+      sqlparam = [...sqlparam, ...fjparams];
 
-      this.sqlExce.batExecSqlByParam(sqlparam);
+      await this.sqlExce.batExecSqlByParam(sqlparam);
       this.emitService.emit("mwxing.calendar.activities.changed", saved);
     }
 
@@ -1469,7 +1466,7 @@ export class EventService extends BaseService {
         params.push(masterEvi);
       }
       sqlparam.push([sq,params]);
-      this.sqlExce.batExecSqlByParam(sqlparam);
+      await this.sqlExce.batExecSqlByParam(sqlparam);
 
       sq = ` select * from gtd_ev  where evi = ?1 or rtevi = ?1 ; `;
       params = new Array<any>();
@@ -1547,7 +1544,7 @@ export class EventService extends BaseService {
         sqlparam.push([sq,params]);
       }
 
-      this.sqlExce.batExecSqlByParam(sqlparam);
+      await this.sqlExce.batExecSqlByParam(sqlparam);
       newAgdata.tos = tos;
       outAgds.push(newAgdata);
       return outAgds;
