@@ -6,7 +6,7 @@ import {Injectable} from "@angular/core";
 import {ProcesRs} from "../model/proces.rs";
 import {CalendarService, PlanData, PlanItemData} from "../../service/business/calendar.service";
 import {EventService, AgendaData, TaskData, MiniTaskData, Member} from "../../service/business/event.service";
-import {MemoService} from "../../service/business/memo.service";
+import {MemoService, MemoData} from "../../service/business/memo.service";
 import {DataSyncPara} from "../model/datasync.para";
 import {SyncDataStatus, MemberShareState, EventFinishStatus, DelType, InviteState, CompleteState} from "../../data.enum";
 import {FsData} from "../../data.mapping";
@@ -62,6 +62,9 @@ export class DataSyncProcess implements MQProcess {
       if (dsPara.type == "Agenda") {
         this.eventService.acceptSyncAgendas([dsPara.id]);
       }
+      if (dsPara.type == "Memo") {
+        this.memoService.acceptSyncMemos([dsPara.id]);
+      }
     }
 
     //本帐号他设备请求,云端同步成功,本地下载完成同步
@@ -77,6 +80,9 @@ export class DataSyncProcess implements MQProcess {
       }
       if (dsPara.type == "Agenda") {
         this.eventService.receivedAgenda(dsPara.id);
+      }
+      if (dsPara.type == "Memo") {
+        this.memoService.receivedMemo(dsPara.id);
       }
     }
 
@@ -94,6 +100,9 @@ export class DataSyncProcess implements MQProcess {
       if (dsPara.type == "Agenda") {
         this.eventService.receivedAgenda(dsPara.id);
       }
+      if (dsPara.type == "Memo") {
+        this.memoService.receivedMemo(dsPara.id);
+      }
     }
 
     //本设备拉取请求,本地下载
@@ -109,6 +118,9 @@ export class DataSyncProcess implements MQProcess {
       }
       if (dsPara.type == "Agenda") {
         this.eventService.receivedAgenda(dsPara.id);
+      }
+      if (dsPara.type == "Memo") {
+        this.memoService.receivedMemo(dsPara.id);
       }
     }
 
@@ -383,6 +395,14 @@ export class DataSyncProcess implements MQProcess {
 
         this.eventService.receivedAgendaData([agenda], this.convertSyncStatus(dsPara.status));
       }
+
+      if (dsPara.type == "Memo") {
+        let memo: MemoData = {} as MemoData;
+        Object.assign(memo, dsPara.data);
+
+        this.memoService.receivedMemoData(memo, this.convertSyncStatus(dsPara.status));
+      }
+
     }
 
     return contextRetMap

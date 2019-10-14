@@ -119,25 +119,34 @@ export class EventService extends BaseService {
           sqlparam.push(par.dTParam());
           //参与人更新
           let nwpar = new Array<any>();
-          nwpar = this.sqlparamAddPar(agd.evi , agd.members);
+          nwpar = this.sqlparamAddPar(agd.evi , agd.members) || new Array<any>();
 
-          sqlparam = [...sqlparam, ...nwpar];
+          for (let addsql of nwpar) {
+            sqlparam.push(addsql);
+          }
         }
 
-
         //相关附件更新
-        if (agd.attachments && agd.attachments !=null && agd.attachments.length > 0){
-          nwfj = [...nwfj,...this.sqlparamAddFj(agd.evi, agd.attachments)];
+        if (agd.attachments && agd.attachments != null && agd.attachments.length > 0) {
+          let upfjparams = this.sqlparamAddFj(agd.evi, agd.attachments) || new Array<any>();
+
+          for (let fjadd of upfjparams) {
+            nwfj.push(fjadd);
+          }
         }
 
         saved.push(agd);
       }
 
       let fjparams = new Array<any>();
+
       if (nwfj && nwfj.length > 0){
-        fjparams = this.sqlExce.getFastSaveSqlByParam(nwfj);
+        fjparams = this.sqlExce.getFastSaveSqlByParam(nwfj) || new Array<any>();
       }
-      sqlparam = [...sqlparam, ...fjparams];
+
+      for (let fjadd of fjparams) {
+        sqlparam.push(fjadd);
+      }
 
       this.sqlExce.batExecSqlByParam(sqlparam);
       this.emitService.emit("mwxing.calendar.activities.changed", saved);
@@ -1470,7 +1479,7 @@ export class EventService extends BaseService {
 
       //取得相关的附件
       let attachs = new Array<Attachment>();
-      sq = `select * from gtd_fj where obt = ?1 and  obi in (select evi 
+      sq = `select * from gtd_fj where obt = ?1 and  obi in (select evi
       from gtd_ev  where evi = ?2 or rtevi = ?2 ); `;
       params = new Array<any>();
       params.push(anyenum.ObjectType.Event);
@@ -2812,6 +2821,9 @@ export class EventService extends BaseService {
           }
         }
         sync.to = (!agenda.tos || agenda.tos == "" || agenda.tos == null) ? [] : agenda.tos.split(",") ;
+
+        this.assertNotEqual(agenda.pn, sync.to.length); // 参与人数量和参与人数组必须相同
+
         sync.payload = this.cleanAgendaPayload(agenda);
         push.d.push(sync);
 

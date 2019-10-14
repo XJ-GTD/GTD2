@@ -7,10 +7,12 @@ import { UtilService } from "../util-service/util.service";
 import { UserConfig } from "../config/user.config";
 import { EventData, TaskData, AgendaData, MiniTaskData, EventService, RtJson, TxJson, generateRtJson, generateTxJson } from "./event.service";
 import { CalendarService } from "./calendar.service";
+import { MemoService } from "./memo.service";
 
 @Injectable()
 export class EffectService extends BaseService {
   constructor(private eventService: EventService,
+              private memoService: MemoService,
               private emitService: EmitService,
               private calendarService: CalendarService) {
     super();
@@ -19,7 +21,9 @@ export class EffectService extends BaseService {
   async syncStart() {
 
     await this.calendarService.syncPrivatePlans();
+    await this.calendarService.syncPlanItems();
     await this.eventService.syncAgendas();
+    await this.memoService.syncMemos();
 
     return ;
   }

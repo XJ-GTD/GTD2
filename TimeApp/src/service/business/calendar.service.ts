@@ -8,7 +8,7 @@ import { SyncData, PushInData, PullInData, DataRestful } from "../restful/datase
 import { BackupPro, BacRestful, OutRecoverPro, RecoverPro } from "../restful/bacsev";
 import { EventData, TaskData, AgendaData, MiniTaskData, EventService, RtJson, TxJson, Member, generateRtJson, generateTxJson } from "./event.service";
 import { MemoData, MemoService } from "./memo.service";
-import { EventType, PlanType, PlanItemType, PlanDownloadType, ConfirmType, OperateType, ObjectType, PageDirection, CycleType, SyncType, RepeatFlag, DelType, SyncDataSecurity, SyncDataStatus, InviteState, ModiPower, InvitePowr } from "../../data.enum";
+import { EventType, PlanType, PlanItemType, PlanDownloadType, MemberShareState, ConfirmType, OperateType, ObjectType, PageDirection, CycleType, SyncType, RepeatFlag, DelType, SyncDataSecurity, SyncDataStatus, InviteState, ModiPower, InvitePowr } from "../../data.enum";
 import { UserConfig } from "../config/user.config";
 import * as async from "async/dist/async.js"
 import * as moment from "moment";
@@ -22,6 +22,7 @@ import {
   assertEmpty,
   assertFail
 } from "../../util/util";
+import {FsData} from "../../data.mapping";
 
 @Injectable()
 export class CalendarService extends BaseService {
@@ -901,9 +902,38 @@ export class CalendarService extends BaseService {
 
     planitemdb = await this.sqlExce.getExtOneByParam<JtaTbl>(sql, [jti, DelType.undel]);
 
+    if (!planitemdb) return null;
+
     let planitem: PlanItemData = {} as PlanItemData;
 
     Object.assign(planitem, planitemdb);
+
+    planitem.rtjson = generateRtJson(planitem.rtjson, planitem.rt);
+    planitem.txjson = generateTxJson(planitem.txjson, planitem.tx);
+
+    // 获取参与人
+    let members: Array<Member> = new Array<Member>();
+
+    let querymemberdb: ParTbl = new ParTbl();
+    querymemberdb.obi = jti;
+    querymemberdb.obt = ObjectType.Calendar;
+
+    let memberdbs: Array<ParTbl> = await this.sqlExce.getLstByParam<ParTbl>(querymemberdb) || new Array<ParTbl>();
+
+    for (let memberdb of memberdbs) {
+      let member = {} as Member;
+      Object.assign(member, memberdb);
+
+      let fs: FsData = this.userConfig.GetOneBTbl(memberdb.pwi);
+
+      this.assertEmpty(fs);   // 联系人不能为空
+
+      Object.assign(member, fs);
+
+      members.push(member);
+    }
+
+    planitem.members = members;
 
     return planitem;
   }
@@ -1421,12 +1451,42 @@ export class CalendarService extends BaseService {
             item.tx = JSON.stringify(txjson);
             item.txs = txjson.text();
 
+            let members: Array<Member>= item.members || new Array<Member>();
+            let memberdbs: Array<ParTbl> = new Array<ParTbl>();
+
+            // 保存参与人
+            for (let member of members) {
+              if (!member.pari) { // 新增参与人
+                member.pari = this.util.getUuid();
+                member.obt = ObjectType.Calendar;
+                member.obi = item.jti;
+
+                member.sdt = MemberShareState.SendWait;
+                member.tb = SyncType.unsynch;
+                member.del = DelType.undel;
+              }
+
+              let memberdb: ParTbl = new ParTbl();
+              Object.assign(memberdb, member);
+
+              memberdbs.push(memberdb);
+            }
+
+            let sqls: Array<any> = new Array<any>();
+
+            if (memberdbs.length > 0) {
+              sqls = this.sqlExce.getFastSaveSqlByParam(memberdbs) || new Array<any>();
+            }
+
+            item.members = members;
+
             let planitemdb: JtaTbl = new JtaTbl();
             Object.assign(planitemdb, item);
 
             planitemdb.tb = SyncType.unsynch;
+            sqls.push(planitemdb.rpTParam());
 
-            await this.sqlExce.updateByParam(planitemdb);
+            await this.sqlExce.batExecSqlByParam(sqls);
 
             Object.assign(item, planitemdb);
 
@@ -1789,6 +1849,8 @@ export class CalendarService extends BaseService {
 
     let items: Array<PlanItemData> = new Array<PlanItemData>();
     let itemdbs: Array<JtaTbl> = new Array<JtaTbl>();
+    let members: Array<Member> = item.members || new Array<Member>();
+    let memberdbs: Array<ParTbl> = new Array<ParTbl>();
 
     let rtjson: RtJson = generateRtJson(item.rtjson, item.rt);
     let txjson: TxJson = generateTxJson(item.txjson, item.tx);
@@ -1813,6 +1875,26 @@ export class CalendarService extends BaseService {
       } else {
         // 非重复标志
         newitem.rfg = RepeatFlag.NonRepeat;
+      }
+
+      if (!rtjti || rtjti == "") {
+        // 保存参与人
+        for (let member of members) {
+          member.pari = this.util.getUuid();
+          member.obt = ObjectType.Calendar;
+          member.obi = newitem.jti;
+
+          member.sdt = MemberShareState.SendWait;
+          member.tb = SyncType.unsynch;
+          member.del = DelType.undel;
+
+          let memberdb: ParTbl = new ParTbl();
+          Object.assign(memberdb, member);
+
+          memberdbs.push(memberdb);
+        }
+
+        newitem.members = members;
       }
 
       newitem.rtjson = rtjson;
@@ -1843,6 +1925,11 @@ export class CalendarService extends BaseService {
     });
 
     let sqls: Array<any> = this.sqlExce.getFastSaveSqlByParam(itemdbs) || new Array<any>();
+    let membersqls: Array<any> = this.sqlExce.getFastSaveSqlByParam(memberdbs) || new Array<any>();
+
+    for (let membersql of membersqls) {
+      sqls.push(membersql);
+    }
 
     callback(items, sqls);
 
@@ -3132,6 +3219,11 @@ export class CalendarService extends BaseService {
     return;
   }
 
+  /**
+   * 同步指定/所有未同步日历项
+   *
+   * @author leon_xi@163.com
+   **/
   async syncPlanItems(planitems: Array<PlanItemData> = new Array<PlanItemData>()) {
     this.assertEmpty(planitems);    // 入参不能为空
 
@@ -3158,7 +3250,7 @@ export class CalendarService extends BaseService {
                                     from gtd_jta
                                     where ui <> '' and ui is not null and tb = ?2) jta
                               inner join gtd_par par
-                              on jta.forceevi = par.obi and par.obt = ?3
+                              on jta.forcejti = par.obi and par.obt = ?3
                               inner join gtd_b b
                               on par.pwi = b.pwi `;
       members =  await this.sqlExce.getExtLstByParam<Member>(sqlmember,
@@ -3548,7 +3640,7 @@ export class CalendarService extends BaseService {
    *
    * @author leon_xi@163.com
    **/
-  async acceptSyncPrivatePlans(syncids: Array<Array<any>>) {
+  async acceptSyncPrivatePlans(syncids: Array<string>) {
 
     this.assertEmpty(syncids);    // 入参不能为空
 

@@ -2279,7 +2279,7 @@ describe('CalendarService test suite', () => {
   });
 
   it(`Case 27 - 1 acceptSyncPrivatePlans 更新已同步日历标志 - 本地无数据(无报错)`, (done: DoneFn) => {
-    calendarService.acceptSyncPrivatePlans([["planid", moment().unix()]])
+    calendarService.acceptSyncPrivatePlans(["planid"])
     .then(() => {
       expect("success").toBe("success");
       done();
