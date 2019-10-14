@@ -27,8 +27,8 @@ export class MomTbl implements ITblParam {
     params.push(this.fj);
     params.push(this.tb);
     params.push(this.del);
-    params.push(this.wtt || moment().unix());
-    params.push(moment().unix());
+    params.push(this.wtt || moment().valueOf());
+    params.push(moment().valueOf());
 
     return [`replace into gtd_mom
        (  moi ,ji ,sd,mon ,mk ,fj ,tb,del ,wtt ,utt)`,
@@ -68,7 +68,7 @@ export class MomTbl implements ITblParam {
 
 
     sq =`update gtd_mom set sd = ${moment().format('YYYY/MM/DD')},
-     utt =${moment().unix()}  ${sq} where moi = ? ;`;
+     utt =${moment().valueOf()}  ${sq} where moi = ? ;`;
     params.push(this.moi);
 
     let ret = new Array<any>();
@@ -141,8 +141,8 @@ export class MomTbl implements ITblParam {
     params.push(this.fj);
     params.push(this.tb);
     params.push(this.del);
-    params.push(moment().unix());
-    params.push(moment().unix());
+    params.push(moment().valueOf());
+    params.push(moment().valueOf());
 
     let ret = new Array<any>();
     ret.push(sq);
@@ -163,8 +163,8 @@ export class MomTbl implements ITblParam {
     params.push(this.fj);
     params.push(this.tb);
     params.push(this.del);
-    params.push(this.wtt || moment().unix());
-    params.push(moment().unix());
+    params.push(this.wtt || moment().valueOf());
+    params.push(moment().valueOf());
 
     let ret = new Array<any>();
     ret.push(sq);
