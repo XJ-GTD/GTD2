@@ -88,7 +88,23 @@ export class PlPage {
   }
 
   newPlan(){
-    this.modalController.create(DataConfig.PAGE._PC_PAGE).present();
+    let modal = this.modalController.create(DataConfig.PAGE._PC_PAGE);
+    modal.onDidDismiss((data) => {
+      this.plService.getPlan().then(data=>{
+        this.xtJhs = data.xtJh;
+        this.zdyJhs = data.zdyJh;
+
+        if(this.zdyJhs.length == 0){
+          this.zdyDisplay = 'block';
+          this.picture = 'xlr.png';
+        }else {
+          this.zdyDisplay = 'none';
+        }
+      }).catch(error=>{
+        this.util.toastStart('获取计划失败',1500);
+      });
+    });
+    modal.present();
   }
 
   toPd(jh:PagePDPro){

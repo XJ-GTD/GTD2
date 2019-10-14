@@ -54,7 +54,7 @@ BScroll.use(InfinityScroll);
 
     <ion-content #contentD class="monthActivityWapper" >
       <ion-grid #grid4Hight class = "list-grid-content">
-        <ng-template ngFor let-monthActivityData [ngForOf]="monthActivityDatas" >
+        <ng-template ngFor let-monthActivityData [ngForOf]="monthActivityDatas"> 
           <ion-row class="item-content dayagenda-month {{monthActivityData.month  | transfromdate :'CSSMM'}}" id="month{{monthActivityData.month | formatedate:'YYYYMM'}}">
             <div class="line first-line">
                 <p class="month-a font-large">
@@ -163,10 +163,12 @@ export class TdlPage {
   @ViewChild('grid4Hight') grid: ElementRef;
 
 
+  option = {
+    isgetData : false,
+    loopmonth : false,
+    canscroll: false,
+  };
 
-   isgetData: boolean = false;
-   loopmonth = false;
-   canscroll:boolean = false;
 
   listmonth:moment.Moment = moment(moment().format("YYYYMM") + "01");
 
@@ -208,13 +210,38 @@ export class TdlPage {
               public changeDetectorRef:ChangeDetectorRef
   ) {
   }
+
   getNativeElement(): any {
     return this.contentD._scrollContent.nativeElement;
   }
 
+  ngAfterViewChecked() {
+  console.log("downdowndowndownngAfterViewChecked");
+  }
+
+  ngOnChanges() {
+    console.log("downdowndowndownngOnChanges" );
+  }
+
+  ngOnInit() {
+    console.log("downdowndowndownngOnInit");
+  }
+
+  ngDoCheck() {
+    console.log("downdowndowndownngDoCheck"  );
+  }
+
+  ngAfterContentChecked() {
+    console.log("downdowndowndownngAfterContentChecked");
+  }
+
+
+
+
+
 
   setScroll(scroll: boolean) {
-    this.canscroll = scroll;
+    this.option.canscroll = scroll;
     if (scroll) {
       this.renderer2.setStyle(this.contentD._scrollContent.nativeElement, "overflow-y", "auto");
       this._gesture.unlisten();
@@ -257,8 +284,8 @@ export class TdlPage {
           if (!$event) return;
 
           //显示当前顶部滑动日期
-          if (!this.loopmonth){
-            this.loopmonth = !this.loopmonth;
+          if (!this.option.loopmonth){
+            this.option.loopmonth = !this.option.loopmonth;
             setTimeout(()=>{
               for (let i = this.monthActivityDatas.length -1; i >= 0; i-- ) {
                 //let monthActivityData = this.monthActivityDatas[0];
@@ -270,10 +297,10 @@ export class TdlPage {
                   //this.headerDate = moment(scdlData.d).format("YYYY/MM/DD");
                   //this.headerMoment = moment(scdlData.d);
                   //this.feedback.audioTrans();
-                  this.loopmonth = !this.loopmonth;
+                  this.option.loopmonth = !this.option.loopmonth;
 
                   //准备发出emit
-                  if (this.canscroll){
+                  if (this.option.canscroll){
                     if (this.listmonth.isBefore(monobj)){
                       this.emitService.emit("list.change.month","next");
                     }
@@ -291,34 +318,18 @@ export class TdlPage {
 
           }
 
-          if (this.isgetData) return;
+          if (this.option.isgetData) return;
 
           if ($event.directionY == 'up') {
             if ($event.scrollTop < 1000) {
-              this.isgetData  = !this.isgetData;
-              //this.setScroll(false);
-              // let monthActivityData = this.monthActivityDatas[0];
-              // let scdId = monthActivityData.month;
-              //  scdId = "#month" + moment(scdId+"/01").format("YYYYMM");
-              //  this.gotoEl4month(scdId);
-              // this.renderer2.setStyle(this.contentD._scrollContent.nativeElement, "overflow-y", "hidden");
+              this.option.isgetData  = true;
 
-              // this.tdlServ.throughData(PageDirection.PageDown).then(data => {
-              //   //this.gotoEl4month(scdId);
-              //   this.changeDetectorRef.markForCheck();
-              //   this.changeDetectorRef.detectChanges();
-              //   // setTimeout(()=>{
-              //
-              //   // this.setScroll(false);
-              //   // this.isgetData  = !this.isgetData;
-              //   // },200);
-              // })
               this.tdlServ.throughData(PageDirection.PageDown).then(data => {
                 // this.gotoEl4month(scdId);
 
-                this.isgetData  = !this.isgetData;
                 this.changeDetectorRef.markForCheck();
                 this.changeDetectorRef.detectChanges();
+                this.option.isgetData  = false;
                 // setTimeout(()=>{
 
                 // this.setScroll(false);
@@ -329,14 +340,14 @@ export class TdlPage {
           }
 
           if ($event.directionY == 'down') {
-            if ($event.scrollTop + 300 > this.grid.nativeElement.clientHeight - $event.scrollElement.clientHeight) {
-              this.isgetData  = !this.isgetData;
+            if ($event.scrollTop + 1000 > this.grid.nativeElement.clientHeight - $event.scrollElement.clientHeight) {
+              this.option.isgetData  = true;
 
               this.tdlServ.throughData(PageDirection.PageUp).then(data=>{
 
                 this.changeDetectorRef.markForCheck();
                 this.changeDetectorRef.detectChanges();
-                this.isgetData  = !this.isgetData;
+                this.option.isgetData  = false;
               })
             }
           }

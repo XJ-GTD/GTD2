@@ -78,6 +78,7 @@ import {HlPageModule} from "../pages/hl/hl.module";
 import {LpPageModule} from "../pages/lp/lp.module";
 import {LsPageModule} from "../pages/ls/ls.module";
 import {MPageModule} from "../pages/m/m.module";
+import {GloryPageModule} from "../pages/glory/glory.module";
 import {PPageModule} from "../pages/p/p.module";
 import {PcPageModule} from "../pages/pc/pc.module";
 import {PdPageModule} from "../pages/pd/pd.module";
@@ -157,6 +158,7 @@ import {MemberPageModule} from "../pages/member/member.module";
     LpPageModule,
     LsPageModule,
     MPageModule,
+    GloryPageModule,
     PPageModule,
     PcPageModule,
     PdPageModule,

@@ -21,7 +21,7 @@ import * as moment from "moment";
             <div class="icon font-small" >
               <ion-icon class="{{(task.evd + ' ' + task.evt) | transfromdate :'withNowcss'}}"></ion-icon>
             </div>
-              <div class="st font-small">  {{(task.evd + ' ' + task.evt) | formatedate:'withNow'}}</div>
+              <div class="st font-small">  {{(task.evd + ' ' + task.evt) | transfromdate:'withNow'}}</div>
 
               <div *ngIf="currentuser != task.ui && task.ui != ''" class="person font-small" end>---来自{{task.ui | formatuser: currentuser: friends}}</div>
           </div>
