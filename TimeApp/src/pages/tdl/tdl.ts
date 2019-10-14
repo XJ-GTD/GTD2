@@ -322,14 +322,19 @@ export class TdlPage {
 
           if ($event.directionY == 'up') {
             if ($event.scrollTop < 1000) {
+              // this.contentD._scroll.stop();
+              // this.setScroll(false);
               this.option.isgetData  = true;
 
               this.tdlServ.throughData(PageDirection.PageDown).then(data => {
                 // this.gotoEl4month(scdId);
+                // console.log($event.directionY + "11111down");
 
                 this.changeDetectorRef.markForCheck();
                 this.changeDetectorRef.detectChanges();
-                this.option.isgetData  = false;
+                  this.option.isgetData  = false;
+
+                  // this.setScroll(true);
                 // setTimeout(()=>{
 
                 // this.setScroll(false);
@@ -341,6 +346,7 @@ export class TdlPage {
 
           if ($event.directionY == 'down') {
             if ($event.scrollTop + 1000 > this.grid.nativeElement.clientHeight - $event.scrollElement.clientHeight) {
+
               this.option.isgetData  = true;
 
               this.tdlServ.throughData(PageDirection.PageUp).then(data=>{
