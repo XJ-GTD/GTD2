@@ -33,7 +33,11 @@ export class PlService {
   async delete(jh:PagePDPro){
     let plan: PlanData = await this.calendarService.getPlan(jh.ji);
 
-    return this.calendarService.removePlan(plan);
+    if (plan.jt == PlanType.PrivatePlan) {
+      return this.calendarService.removePlan(plan, false);
+    } else {
+      return this.calendarService.removePlan(plan);
+    }
   }
 
   //获取计划
