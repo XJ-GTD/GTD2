@@ -206,11 +206,15 @@ export class AgendaPage {
     if (this.navParams) {
       let paramter: ScdPageParamter = this.navParams.data;
       if (paramter.si) {
-        this.eventService.getAgenda(paramter.si).then((agenda) => {
-          this.currentAgenda = agenda;
-          Object.assign(this.originAgenda, agenda);
+        this.util.loadingStart().then(() => {
+          this.eventService.getAgenda(paramter.si).then((agenda) => {
+            this.currentAgenda = agenda;
+            Object.assign(this.originAgenda, agenda);
 
-          this.buttons.remove = true;
+            this.buttons.remove = true;
+
+            this.util.loadingEnd();
+          });
         });
       } else {
         this.currentAgenda.sd = paramter.d.format("YYYY/MM/DD");
