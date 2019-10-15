@@ -602,7 +602,7 @@ export class RepeatPage {
             case "tosomeday":
               rtjson.over.type = OverType.limitdate;
               if (this.cfMonthOptions.toSomeDay == ""){
-                this.cfMonthOptions.toSomeDay =  moment().add(12,'m').format("YYYY-MM-DD");
+                this.cfMonthOptions.toSomeDay =  moment().add(12,'M').format("YYYY-MM-DD");
               }
               rtjson.over.value = moment(this.cfMonthOptions.toSomeDay, "YYYY-MM-DD").format("YYYY/MM/DD");
 
