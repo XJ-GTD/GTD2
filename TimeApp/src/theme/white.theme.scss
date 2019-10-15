@@ -68,6 +68,10 @@ ion-app.white-theme {
       }
     }
 
+  page-glory {
+    background-color: $baseBackcolor_white;
+  }
+
   page-agenda, page-task, page-commemorationday {
     .grid {
       .snRow {

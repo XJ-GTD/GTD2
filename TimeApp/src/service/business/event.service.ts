@@ -103,14 +103,20 @@ export class EventService extends BaseService {
         Object.assign(ev,agd);
         sqlparam.push(ev.rpTParam());
 
-
-        if (agd.rtevi == ""){
+        if ( agd.rfg == anyenum.RepeatFlag.RepeatToOnly){
           //相关日程更新
-          if (agd.sd && agd.sd != ''){
-            let ca = new CaTbl();
-            Object.assign(ca,agd);
-            sqlparam.push(ca.rpTParam());
-          }
+          let ca = new CaTbl();
+          Object.assign(ca,agd);
+          sqlparam.push(ca.rpTParam());
+
+        }
+
+        if (agd.rtevi == "" ){
+          //相关日程更新
+          let ca = new CaTbl();
+          Object.assign(ca,agd);
+          sqlparam.push(ca.rpTParam());
+
 
           //删除参与人
           let par = new ParTbl();
@@ -122,14 +128,19 @@ export class EventService extends BaseService {
           nwpar = this.sqlparamAddPar(agd.evi , agd.members) ;
 
           sqlparam = [...sqlparam,...nwpar];
-          /*for (let addsql of nwpar) {
-            sqlparam.push(addsql);
-          }*/
+
         }
 
         //相关附件更新
         if (agd.attachments && agd.attachments != null && agd.attachments.length > 0) {
+          //删除附件
+          let fj = new FjTbl();
+          fj.obt = anyenum.ObjectType.Event;
+          fj.obi = agd.evi;
+          sqlparam.push(fj.dTParam());
+
           let upfjparams = this.sqlparamAddFj(agd.evi, agd.attachments) ;
+
 
           nwfj = [...nwfj,...upfjparams];
         }
@@ -1012,14 +1023,14 @@ export class EventService extends BaseService {
       //重复事件中的某一日程to独立日程
       if (oriAgd.rfg == anyenum.RepeatFlag.Repeat && modiType == anyenum.OperateType.OnlySel) {
         doType = DoType.Current;
-      }
-      //重复事件to重复事件或非重复
-      if (oriAgd.rfg == anyenum.RepeatFlag.Repeat && modiType == anyenum.OperateType.FromSel) {
-        doType = DoType.FutureAll;
         //如果是修改重复选项
         if (changed.length == 1 && changed[0] == "rt"){
           doType = DoType.All;
         }
+      }
+      //重复事件to重复事件或非重复
+      if (oriAgd.rfg == anyenum.RepeatFlag.Repeat && modiType == anyenum.OperateType.FromSel) {
+        doType = DoType.FutureAll;
       }
     }else if( newAgd.invitestatus != oriAgd.invitestatus ) {
       doType = DoType.Invite;
@@ -1706,6 +1717,12 @@ export class EventService extends BaseService {
       masterEvi = oriAgdata.rtevi;
     }
 
+    if (!oriAgdata.members ){
+      oriAgdata.members = new Array<Member>();
+    }
+    if (!newAgdata.members ){
+      newAgdata.members = new Array<Member>();
+    }
     if (oriAgdata.members.length != newAgdata.members.length){
       changed = true;
     }else {
@@ -1754,7 +1771,7 @@ export class EventService extends BaseService {
         }
       }
       outAgds.length = 0;
-      Object.assign(outAgds , ...retAgendas);
+      Object.assign(outAgds , retAgendas);
     }
 
   }
@@ -1958,11 +1975,6 @@ export class EventService extends BaseService {
 
     let sq : string ;
     let params : Array<any>;
-
-    let ca = new CaTbl();
-    ca.evi = masterEvi;
-    let existca = await this.sqlExce.getOneByParam<CaTbl>(ca);
-    Object.assign(ca, existca);
 
     //标记为删除的记录放入返回事件中
     delcondi = ` evd >= ? and (evi = ? or rtevi =  ?) and del <> ? `;

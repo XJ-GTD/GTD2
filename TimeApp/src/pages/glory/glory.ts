@@ -13,12 +13,34 @@ import {IonicPage, ModalController, NavController, NavParams, ViewController} fr
   template: `<ion-content padding>
     <ion-grid>
       <!--垂直居中-->
-      <ion-row align-items-center>
+      <ion-row class="h100" align-items-center>
         <ion-grid>
           <!--水平居中-->
           <ion-row justify-content-center>
             <p>成功击败</p>
-            <h3>90%</h3>
+          </ion-row>
+          <ion-row justify-content-center>
+            <h1 class="large">90%</h1>
+          </ion-row>
+          <ion-row justify-content-center>
+            <p>冥王星用户</p>
+          </ion-row>
+          <ion-row class="h20" justify-content-center>
+            <p></p>
+          </ion-row>
+          <ion-row justify-content-center>
+            <div class="ball">
+              <h3>0</h3>
+              <p>纪念日</p>
+            </div>
+            <div class="ball">
+              <h3>13</h3>
+              <p>活动</p>
+            </div>
+            <div class="ball">
+              <h3>2</h3>
+              <p>备忘</p>
+            </div>
           </ion-row>
         </ion-grid>
       </ion-row>
