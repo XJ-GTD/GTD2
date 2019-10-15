@@ -17,7 +17,7 @@ import {PagePDPro} from "../../data.mapping";
   selector: 'page-pl',
   template:
     `
-    <page-box title="归类日历" [buttons]="buttons" (onBack)="goBack()" (onCreate)="newPlan()"  nobackgroud nobottom>
+    <page-box title="归类日历" [buttons]="buttons" (onBack)="goBack()"   nobottom>
       <ion-scroll scrollY="true" scrollheightAuto>
         <ion-list>
           <ion-list-header>
@@ -25,8 +25,15 @@ import {PagePDPro} from "../../data.mapping";
           </ion-list-header>
           <ion-item   *ngFor="let option of zdyJhs" (press)="delPlan(option)" (click)="toPd(option)" >
             <ion-label >
-              <ion-icon class="fal fa-circle font-small"   [ngStyle]="{'color': option.jc }"></ion-icon>
-              {{option.jn}}(<span class="font-small">{{option.js}}</span>)
+              {{option.jn}}<span class="font-small">({{option.js}})</span>
+            </ion-label>
+            <ion-icon class="fas fa-circle font-large-x"   [ngStyle]="{'color': option.jc }" item-end></ion-icon>
+          </ion-item>
+          
+          <ion-item  (click)="newPlan()" [class.noplan]="!hasplan" class="addplan">
+            <ion-label class="font-large">
+              <ion-icon class="fas fa-plus-circle" ></ion-icon>
+              添加自定义日历
             </ion-label>
           </ion-item>
         </ion-list>
@@ -38,11 +45,10 @@ import {PagePDPro} from "../../data.mapping";
           </ion-list-header>
           <ion-item   *ngFor="let option of xtJhs" (press)="delPlan(option)" >
             <ion-label>
-              <ion-icon class="fal fa-circle font-small"   [ngStyle]="{'color': option.jc }"></ion-icon>
-              {{option.jn}}(<span class="font-small">{{option.js}}</span>)
+              {{option.jn}}<span class="font-small">({{option.js}})</span>
             </ion-label>
-            <ion-icon class="fal fa-download" *ngIf="option.jtd == '0'" (click)="download(option)" item-end ></ion-icon>
-            <ion-icon class="fal fa-sync" *ngIf="option.jtd =='1'"(click)="download(option)" item-end ></ion-icon>
+            <ion-icon class="fal fa-download" *ngIf="option.jtd == '0'" (click)="download(option)" item-end [ngStyle]="{'color': option.jc }"></ion-icon>
+            <ion-icon class="fal fa-sync" *ngIf="option.jtd =='1'"(click)="download(option)" item-end [ngStyle]="{'color': option.jc }"></ion-icon>
           </ion-item>
         </ion-list>
       </ion-scroll>
@@ -52,14 +58,12 @@ import {PagePDPro} from "../../data.mapping";
 export class PlPage {
 
   buttons: any = {
-    create:true,
     cancel: true
   };
+
+  hasplan:boolean =false;
   xtJhs:Array<PagePDPro> = new Array<PagePDPro>();
   zdyJhs:Array<PagePDPro> = new Array<PagePDPro>();
-  picture:any = 'xl.png' ;
-  zdyDisplay:any = 'none';
-  show:any = 'block';
 
   constructor(private navCtrl: NavController,
               private plService:PlService,
@@ -70,10 +74,9 @@ export class PlPage {
       this.zdyJhs = data.zdyJh;
 
       if(this.zdyJhs.length == 0){
-        this.zdyDisplay = 'block';
-        this.picture = 'xlr.png';
+        this.hasplan = false;
       }else {
-        this.zdyDisplay = 'none';
+        this.hasplan = true;
       }
     }).catch(error=>{
       this.util.toastStart('获取计划失败',1500);
@@ -95,10 +98,9 @@ export class PlPage {
         this.zdyJhs = data.zdyJh;
 
         if(this.zdyJhs.length == 0){
-          this.zdyDisplay = 'block';
-          this.picture = 'xlr.png';
+          this.hasplan = false;
         }else {
-          this.zdyDisplay = 'none';
+          this.hasplan = true;
         }
       }).catch(error=>{
         this.util.toastStart('获取计划失败',1500);
@@ -121,15 +123,6 @@ export class PlPage {
     }
   }
 
-  change(){
-    if(this.show == 'block'){
-      this.show = 'none';
-      this.picture = 'xlr.png';
-    }else{
-      this.show = 'block';
-      this.picture = 'xl.png';
-    }
-  }
 
   delPlan(jh:PagePDPro){
     if(jh.jtd == '0') { //下载
@@ -148,6 +141,12 @@ export class PlPage {
         });
 
         this.zdyJhs.splice(index, 1);
+
+        if(this.zdyJhs.length == 0){
+          this.hasplan = false;
+        }else {
+          this.hasplan = true;
+        }
       } else {
         jh.jtd = '0';//系统计划 jtd 变更
         jh.js = '?';
