@@ -15,7 +15,7 @@ import {DataConfig} from "../../service/config/data.config";
 import {NotificationsService} from "../../service/cordova/notifications.service";
 import {AlData, ScdPageParamter} from "../../data.mapping";
 import {CalendarService} from "../../service/business/calendar.service";
-import {EventType} from "../../service/business/event.service";
+import {EventType} from "../../data.enum";
 import {EmitService} from "../../service/util-service/emit.service";
 import {SettingsProvider} from "../../providers/settings/settings";
 import {NetworkService} from "../../service/cordova/network.service";
