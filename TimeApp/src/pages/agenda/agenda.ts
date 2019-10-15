@@ -206,15 +206,21 @@ export class AgendaPage {
     if (this.navParams) {
       let paramter: ScdPageParamter = this.navParams.data;
       if (paramter.si) {
-        this.util.loadingStart().then(() => {
-          this.eventService.getAgenda(paramter.si).then((agenda) => {
-            this.currentAgenda = agenda;
-            Object.assign(this.originAgenda, agenda);
+        this.util.loadingStart().then(async () => {
+          // 通过通知打开需要等待日程接收下来之后显示
+          while (true) {
+            let agenda = await this.eventService.getAgenda(paramter.si);
 
-            this.buttons.remove = true;
+            if (agenda) {
+              this.currentAgenda = agenda;
+              Object.assign(this.originAgenda, agenda);
 
-            this.util.loadingEnd();
-          });
+              this.buttons.remove = true;
+
+              this.util.loadingEnd();
+              break;
+            }
+          }
         });
       } else {
         this.currentAgenda.sd = paramter.d.format("YYYY/MM/DD");
