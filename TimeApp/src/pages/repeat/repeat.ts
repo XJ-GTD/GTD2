@@ -1,4 +1,4 @@
-import { Component, ElementRef, QueryList, Renderer2, ViewChild, ViewChildren } from '@angular/core';
+import {ChangeDetectorRef, Component, ElementRef, QueryList, Renderer2, ViewChild, ViewChildren} from '@angular/core';
 import { IonicPage, NavController, NavParams, ModalController, ViewController, Scroll } from 'ionic-angular';
 import {Keyboard} from "@ionic-native/keyboard";
 import { RadioSelectComponent } from "../../components/radio-select/radio-select";
@@ -51,8 +51,10 @@ import {CycleType, OverType} from "../../data.enum";
                 </ion-label>
               </ion-item>
               <ion-item>
-                <ion-radio item-start value="tosomeday"></ion-radio>
-                <ion-label>直到某一天</ion-label>
+                <ion-radio (ionSelect)="openUntilEndDate('d')"  item-start value="tosomeday">
+                  
+                </ion-radio>
+                <ion-label>直到{{cfDayOptions.toSomeDay | formatedate : 'CYYYY/MM/DD'}}</ion-label>
               </ion-item>
             </ion-list>
           </ion-row>
@@ -98,8 +100,8 @@ import {CycleType, OverType} from "../../data.enum";
                 </ion-label>
               </ion-item>
               <ion-item>
-                <ion-radio item-start value="tosomeday"></ion-radio>
-                <ion-label>直到某一天</ion-label>
+                <ion-radio (ionSelect)="openUntilEndDate('w')" item-start value="tosomeday" ></ion-radio>
+                <ion-label>直到{{cfWeekOptions.toSomeDay | formatedate : 'CYYYY/MM/DD'}}</ion-label>
               </ion-item>
             </ion-list>
           </ion-row>
@@ -145,8 +147,8 @@ import {CycleType, OverType} from "../../data.enum";
                 </ion-label>
               </ion-item>
               <ion-item>
-                <ion-radio item-start value="tosomeday"></ion-radio>
-                <ion-label>直到某一天</ion-label>
+                <ion-radio (ionSelect)="openUntilEndDate('m')" item-start value="tosomeday"></ion-radio>
+                <ion-label>直到{{cfMonthOptions.toSomeDay | formatedate : 'CYYYY/MM/DD'}}</ion-label>
               </ion-item>
             </ion-list>
           </ion-row>
@@ -182,22 +184,55 @@ import {CycleType, OverType} from "../../data.enum";
                 </ion-label>
               </ion-item>
               <ion-item>
-                <ion-radio item-start value="tosomeday"></ion-radio>
-                <ion-label>直到某一天</ion-label>
+                <ion-radio (ionSelect)="openUntilEndDate('y')" item-start value="tosomeday"></ion-radio>
+                <ion-label>直到{{cfYearOptions.toSomeDay | formatedate : 'CYYYY/MM/DD'}}</ion-label>
               </ion-item>
             </ion-list>
-          </ion-row>
-          <ion-row justify-content-start *ngIf="cfYearOptions.endType == 'tosomeday'">
-            <date-picker min="2019/7/9" max="2020/12/31"></date-picker>
           </ion-row>
         </ion-grid>
       </ion-row>
     </ion-grid>
   </modal-box>
+
+  <div style="display: none">
+    <date-picker  #utilEndDateD [(ngModel)]="cfDayOptions.toSomeDay"
+                  pickerFormat="YYYY ,MM DD"
+                  cancelText="取消" doneText="选择" (ngModelChange)="dtselect('d')"
+                  min="1989-01-01" max="2059-01-01"
+    ></date-picker>
+    <date-picker  #utilEndDateW [(ngModel)]="cfWeekOptions.toSomeDay"
+                  pickerFormat="YYYY ,MM DD"
+                  cancelText="取消" doneText="选择" (ngModelChange)="dtselect('w')"
+                  min="1989-01-01" max="2059-01-01"
+    ></date-picker>
+    <date-picker  #utilEndDateM [(ngModel)]="cfMonthOptions.toSomeDay"
+                  pickerFormat="YYYY ,MM DD"
+                  cancelText="取消" doneText="选择" (ngModelChange)="dtselect('m')"
+                  min="1989-01-01" max="2059-01-01"
+    ></date-picker>
+    <date-picker  #utilEndDateY [(ngModel)]="cfYearOptions.toSomeDay"
+                  pickerFormat="YYYY ,MM DD"
+                  cancelText="取消" doneText="选择" (ngModelChange)="dtselect('y')"
+                  min="1989-01-01" max="2059-01-01"
+    ></date-picker>
+  </div>
   `
 })
 export class RepeatPage {
+
+  @ViewChild("utilEndDateD")
+  utilEndDateD: DatePickerComponent;
+  @ViewChild("utilEndDateW")
+  utilEndDateW: DatePickerComponent;
+  @ViewChild("utilEndDateM")
+  utilEndDateM: DatePickerComponent;
+  @ViewChild("utilEndDateY")
+  utilEndDateY: DatePickerComponent;
+
   statusBarColor: string = "#3c4d55";
+
+  dttype : number = 0;
+  datevalue : string ;
 
   buttons: any = {
     remove: false,
@@ -222,7 +257,7 @@ export class RepeatPage {
     freqOption: "",
     endType: "never",
     afterTimes: 1,
-    toSomeDay: moment().format("YYYY年M月D日")
+    toSomeDay: ""
   };
   //每周选择参数
   cfWeekOptions: any = {
@@ -230,7 +265,7 @@ export class RepeatPage {
     freqOption: "",
     endType: "never",
     afterTimes: 1,
-    toSomeDay: moment().format("YYYY年M月D日")
+    toSomeDay: ""
   };
   //每月选择参数
   cfMonthOptions: any = {
@@ -238,7 +273,7 @@ export class RepeatPage {
     freqOption: "",
     endType: "never",
     afterTimes: 1,
-    toSomeDay: moment().format("YYYY年M月D日")
+    toSomeDay: ""
   };
   //每年选择参数
   cfYearOptions: any = {
@@ -246,7 +281,7 @@ export class RepeatPage {
     freqOption: "",
     endType: "never",
     afterTimes: 1,
-    toSomeDay: moment().format("YYYY年M月D日")
+    toSomeDay: ""
   };
 
   optionCaptions: any = {
@@ -298,6 +333,7 @@ export class RepeatPage {
   }
 
   ionViewDidEnter() {
+
   }
 
   save() {
@@ -380,7 +416,7 @@ export class RepeatPage {
             break;
           case OverType.limitdate:
             this.cfDayOptions.endType = "tosomeday";
-            this.cfDayOptions.toSomeDay = moment(this.currentRepeat.over.value, "YYYY/MM/DD").format("YYYY年M月D日");
+            this.cfDayOptions.toSomeDay = moment(this.currentRepeat.over.value, "YYYY/MM/DD").format("YYYY-MM-DD");
             break;
           default:
             break;
@@ -411,7 +447,7 @@ export class RepeatPage {
             break;
           case OverType.limitdate:
             this.cfWeekOptions.endType = "tosomeday";
-            this.cfWeekOptions.toSomeDay = moment(this.currentRepeat.over.value, "YYYY/MM/DD").format("YYYY年M月D日");
+            this.cfWeekOptions.toSomeDay = moment(this.currentRepeat.over.value, "YYYY/MM/DD").format("YYYY-MM-DD");
             break;
           default:
             break;
@@ -442,7 +478,7 @@ export class RepeatPage {
             break;
           case OverType.limitdate:
             this.cfMonthOptions.endType = "tosomeday";
-            this.cfMonthOptions.toSomeDay = moment(this.currentRepeat.over.value, "YYYY/MM/DD").format("YYYY年M月D日");
+            this.cfMonthOptions.toSomeDay = moment(this.currentRepeat.over.value, "YYYY/MM/DD").format("YYYY-MM-DD");
             break;
           default:
             break;
@@ -461,7 +497,7 @@ export class RepeatPage {
             break;
           case OverType.limitdate:
             this.cfYearOptions.endType = "tosomeday";
-            this.cfYearOptions.toSomeDay = moment(this.currentRepeat.over.value, "YYYY/MM/DD").format("YYYY年M月D日");
+            this.cfYearOptions.toSomeDay = moment(this.currentRepeat.over.value, "YYYY/MM/DD").format("YYYY-MM-DD");
             break;
           default:
             break;
@@ -489,7 +525,11 @@ export class RepeatPage {
               break;
             case "tosomeday":
               rtjson.over.type = OverType.limitdate;
-              rtjson.over.value = moment(this.cfDayOptions.toSomeDay, "YYYY年M月D日").format("YYYY/MM/DD");
+              if (this.cfDayOptions.toSomeDay == ""){
+                this.cfDayOptions.toSomeDay =  moment().add(7,'d').format("YYYY-MM-DD");
+              }
+              rtjson.over.value = moment(this.cfDayOptions.toSomeDay, "YYYY-MM-DD").format("YYYY/MM/DD");
+
               break;
             default:
               break;
@@ -523,7 +563,11 @@ export class RepeatPage {
               break;
             case "tosomeday":
               rtjson.over.type = OverType.limitdate;
-              rtjson.over.value = moment(this.cfWeekOptions.toSomeDay, "YYYY年M月D日").format("YYYY/MM/DD");
+              if (this.cfWeekOptions.toSomeDay == ""){
+                this.cfWeekOptions.toSomeDay =  moment().add(4,'w').format("YYYY-MM-DD");
+              }
+              rtjson.over.value = moment(this.cfWeekOptions.toSomeDay, "YYYY-MM-DD").format("YYYY/MM/DD");
+
               break;
             default:
               break;
@@ -557,7 +601,11 @@ export class RepeatPage {
               break;
             case "tosomeday":
               rtjson.over.type = OverType.limitdate;
-              rtjson.over.value = moment(this.cfMonthOptions.toSomeDay, "YYYY年M月D日").format("YYYY/MM/DD");
+              if (this.cfMonthOptions.toSomeDay == ""){
+                this.cfMonthOptions.toSomeDay =  moment().add(12,'m').format("YYYY-MM-DD");
+              }
+              rtjson.over.value = moment(this.cfMonthOptions.toSomeDay, "YYYY-MM-DD").format("YYYY/MM/DD");
+
               break;
             default:
               break;
@@ -578,7 +626,11 @@ export class RepeatPage {
               break;
             case "tosomeday":
               rtjson.over.type = OverType.limitdate;
-              rtjson.over.value = moment(this.cfYearOptions.toSomeDay, "YYYY年M月D日").format("YYYY/MM/DD");
+              if (this.cfYearOptions.toSomeDay == ""){
+                this.cfYearOptions.toSomeDay =  moment().add(5,'y').format("YYYY-MM-DD");
+              }
+              rtjson.over.value = moment(this.cfYearOptions.toSomeDay, "YYYY-MM-DD").format("YYYY/MM/DD");
+
               break;
             default:
               break;
@@ -616,5 +668,43 @@ export class RepeatPage {
   onEndAfterTimesChanged(value) {
     this.currentRepeat = this.resetValueWithType(this.currentRepeat, this.cfType, "over");
     this.title = this.currentRepeat.text();
+  }
+
+  openUntilEndDate(type){
+    switch (type) {
+      case 'd':
+        setTimeout(()=>{
+
+          this.utilEndDateD.open();
+        },100);
+
+        break;
+      case 'w':
+        setTimeout(()=>{
+
+          this.utilEndDateW.open();
+        },100);
+        break;
+      case 'm':
+        setTimeout(()=>{
+
+          this.utilEndDateM.open();
+        },100);
+        break;
+      case 'y':
+        setTimeout(()=>{
+
+          this.utilEndDateY.open();
+        },100);
+        break;
+      default:
+        break;
+    }
+
+  }
+
+  dtselect() {
+    this.onEndTypeChanged(null);
+
   }
 }

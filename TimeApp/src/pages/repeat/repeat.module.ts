@@ -6,6 +6,7 @@ import { RadioSelectComponentModule } from "../../components/radio-select/radio-
 import { RadioSpinnerComponentModule } from "../../components/radio-spinner/radio-spinner.module";
 import { DatePickerComponentModule } from "../../components/date-picker/date-picker.module";
 import {ModalBoxComponentModule} from "../../components/modal-box/modal-box.module";
+import {PipesModule} from "../../pipes/pipes.module";
 
 @NgModule({
   declarations: [
@@ -17,7 +18,8 @@ import {ModalBoxComponentModule} from "../../components/modal-box/modal-box.modu
     DirectivesModule,
     RadioSelectComponentModule,
     RadioSpinnerComponentModule,
-    DatePickerComponentModule
+    DatePickerComponentModule,
+    PipesModule,
   ],
   providers: [
   ],
