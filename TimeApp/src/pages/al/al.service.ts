@@ -15,6 +15,7 @@ import {DataConfig} from "../../service/config/data.config";
 import {NotificationsService} from "../../service/cordova/notifications.service";
 import {AlData, ScdPageParamter} from "../../data.mapping";
 import {CalendarService} from "../../service/business/calendar.service";
+import {EventType} from "../../data.enum";
 import {EmitService} from "../../service/util-service/emit.service";
 import {SettingsProvider} from "../../providers/settings/settings";
 import {NetworkService} from "../../service/cordova/network.service";
@@ -322,15 +323,16 @@ export class AlService {
         // });
 
         //极光推送跳转共享日程页面
-        // this.emitService.register('on.agendashare.message.click', (data) => {
-        //   console.log("Share agenda message to show " + JSON.stringify(data));
-        //
-        //   let p: ScdPageParamter = new ScdPageParamter();
-        //   p.si = data.si;
-        //   p.d = moment(data.sd);
-        //   p.gs = data.sr;
-        //   this.modalCtr.create(DataConfig.PAGE._AGENDA_PAGE, p).present();
-        // });
+        // {type: type, id: id}
+        this.emitService.register('on.agendashare.message.click', (data) => {
+          console.log("Share agenda message to show " + JSON.stringify(data));
+
+          if (data && data.type == "Agenda") {
+            let p: ScdPageParamter = new ScdPageParamter();
+            p.si = data.id;
+            this.modalCtr.create(DataConfig.PAGE._AGENDA_PAGE, p).present();
+          }
+        });
 
         // this.emitService.register('on.agenda.shareevents.message.click', (data) => {
         //   console.log("Agenda share events message to show " + JSON.stringify(data));

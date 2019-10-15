@@ -95,6 +95,8 @@ export class JPushService {
 
             if (eventdata && eventdata['id']) {
               local['sr'] = eventdata['id'];
+              local['type'] = eventdata['type'];
+              local['id'] = eventdata['id'];
 
               console.log("MWxing direct, trigger " + extras['eventhandler'] + " with local data.");
               emitted = this.emitService.emit(extras['eventhandler'], local);
