@@ -327,7 +327,7 @@ export class AlService {
         this.emitService.register('on.agendashare.message.click', (data) => {
           console.log("Share agenda message to show " + JSON.stringify(data));
 
-          if (data && data.type == EventType.Agenda) {
+          if (data && data.type == "Agenda") {
             let p: ScdPageParamter = new ScdPageParamter();
             p.si = data.id;
             this.modalCtr.create(DataConfig.PAGE._AGENDA_PAGE, p).present();
