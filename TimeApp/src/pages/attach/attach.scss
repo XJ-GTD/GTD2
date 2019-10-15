@@ -1,3 +1,68 @@
 page-attach {
+  .toolbar-ios{
+    margin: 1.5rem 1rem 0.8rem 1rem;
+    width: auto;
+    .toolbar-background-ios{
+     background: transparent;
+    }
+
+    button {
+      margin: 0px;
+      font-weight: 400;
+      height: 45px;
+      width: 45px;
+      border-radius: 100%;
+      border-width: 0px;
+      background:rgba(188,209,215,1);
+
+      .button-inner {
+        width: auto;
+        text-align: left;
+        ion-icon{
+          color:rgba(7,109,138,1);
+        }
+      }
+    }
+    ion-textarea{
+      background: 4px;
+      border:0.55px solid rgba(7,109,138,1);
+      textarea{
+        padding-left: 0.5rem;
+      }
+    }
+  }
   
+}
+.page-attach{
+    .action-sheet-title{
+      border-bottom:0;
+      text-align: left;
+      color:rgba(51,51,51,1);
+      font-size: 1.6rem;
+    }
+  .action-sheet-button{
+    width: 120px;
+    padding-top: 20px;
+    padding-bottom: 20px;
+
+    padding-left: 35px;
+    padding-right: 35px;
+    border-bottom:0;
+    font-size: 1.4rem;
+    color:rgba(7,109,138,1);
+    margin: 0 ;
+    span{
+      ion-icon{
+        width: 45px;
+        height: 45px;
+        line-height: 45px;
+        padding-right:0;
+        border-radius: 100%;
+        background:rgba(188,209,215,1);
+        font-size: 3rem;
+        margin-bottom: 5px;
+      }
+      display: block;
+    }
+  }
 }

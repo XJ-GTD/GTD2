@@ -18,7 +18,7 @@ import {PagePcPro} from "../../data.mapping";
     `    
     <modal-box title="添加日历" [buttons]="buttons" (onSave)="save()" (onCancel)="goBack()">
       <div class="plantitle font-large">
-        <ion-input #input type="text" placeholder="输入日历名称" [(ngModel)]="jhcData.jn" text-center></ion-input>
+        <ion-input #input type="text" placeholder="输入日历名称" [(ngModel)]="jhcData.jn"></ion-input>
       </div>
         <ion-scroll scrollY="true" scrollheightAuto>
           <ion-list radio-group [(ngModel)]="jhcData.jc" class="onlyone">
@@ -27,9 +27,9 @@ import {PagePcPro} from "../../data.mapping";
             </ion-list-header>
             <ion-item *ngFor="let color of colors">
               <ion-label>
-                <ion-icon class="fal fa-circle font-large-x"
+                <ion-icon class="fas fa-circle font-large-x"
                           [ngStyle]="{'color': color.color}" *ngIf="jhcData.jc !=  color.color"></ion-icon>
-                <ion-icon class="fal fa-dot-circle font-large-x"
+                <ion-icon class="fas fa-dot-circle font-large-x"
                           [ngStyle]="{'color':  color.color}" *ngIf="jhcData.jc ==  color.color"></ion-icon>
                 {{color.name}}
 

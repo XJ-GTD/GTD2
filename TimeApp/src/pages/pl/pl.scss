@@ -1,2 +1,52 @@
 page-pl {
+  ion-list.list-ios .noplan {
+    height: 200px;
+  }
+
+  ion-list.list-ios
+  {
+    span {
+      color: rgba(7, 109, 138, 1);
+    }
+    .addplan {
+      .item-inner ion-label {
+        text-align: center;
+        font-size: 1.6rem;
+      }
+    }
+
+  }
+}
+
+.white-theme {
+  page-pl {
+    ion-list.list-ios {
+      .addplan {
+        .item-inner ion-label {
+          color: rgba(7, 109, 138, 1);
+        }
+      }
+
+      span {
+        color: rgba(7, 109, 138, 1);
+      }
+    }
+  }
+}
+
+.black-theme {
+  page-pl {
+    ion-list.list-ios {
+
+      span {
+        color: rgba(255, 255, 255, 1);
+      }
+
+      .addplan {
+        .item-inner ion-label {
+          color: rgba(255, 255, 255, 1);
+        }
+      }
+    }
+  }
 }

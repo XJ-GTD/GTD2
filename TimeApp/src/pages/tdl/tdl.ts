@@ -53,6 +53,7 @@ BScroll.use(InfinityScroll);
     <!--</div>-->
 
     <ion-content #contentD class="monthActivityWapper" >
+      <div style="height: 10000px"></div>
       <ion-grid #grid4Hight class = "list-grid-content">
         <ng-template ngFor let-monthActivityData [ngForOf]="monthActivityDatas"> 
           <ion-row class="item-content dayagenda-month {{monthActivityData.month  | transfromdate :'CSSMM'}}" id="month{{monthActivityData.month | formatedate:'YYYYMM'}}">
@@ -215,25 +216,25 @@ export class TdlPage {
     return this.contentD._scrollContent.nativeElement;
   }
 
-  ngAfterViewChecked() {
-  console.log("downdowndowndownngAfterViewChecked");
-  }
-
-  ngOnChanges() {
-    console.log("downdowndowndownngOnChanges" );
-  }
-
-  ngOnInit() {
-    console.log("downdowndowndownngOnInit");
-  }
-
-  ngDoCheck() {
-    console.log("downdowndowndownngDoCheck"  );
-  }
-
-  ngAfterContentChecked() {
-    console.log("downdowndowndownngAfterContentChecked");
-  }
+  // ngAfterViewChecked() {
+  // console.log("downdowndowndownngAfterViewChecked");
+  // }
+  //
+  // ngOnChanges() {
+  //   console.log("downdowndowndownngOnChanges" );
+  // }
+  //
+  // ngOnInit() {
+  //   console.log("downdowndowndownngOnInit");
+  // }
+  //
+  // ngDoCheck() {
+  //   console.log("downdowndowndownngDoCheck"  );
+  // }
+  //
+  // ngAfterContentChecked() {
+  //   console.log("downdowndowndownngAfterContentChecked");
+  // }
 
 
 
@@ -281,12 +282,12 @@ export class TdlPage {
       this.contentD.ionScroll.subscribe(($event: ScrollEvent) => {
         try{
 
+
           if (!$event) return;
 
           //显示当前顶部滑动日期
           if (!this.option.loopmonth){
             this.option.loopmonth = !this.option.loopmonth;
-            setTimeout(()=>{
               for (let i = this.monthActivityDatas.length -1; i >= 0; i-- ) {
                 //let monthActivityData = this.monthActivityDatas[0];
                 let monobj = moment(this.monthActivityDatas[i].month +"/01");
@@ -314,14 +315,19 @@ export class TdlPage {
                 }
               }
 
-            },100);
 
           }
 
           if (this.option.isgetData) return;
 
           if ($event.directionY == 'up') {
-            if ($event.scrollTop < 1000) {
+
+            if ($event.scrollTop < 10000){
+              this.contentD.scrollTo(0,10100,100);
+              return;
+            }
+
+            if ($event.scrollTop < 11000) {
               // this.contentD._scroll.stop();
               // this.setScroll(false);
               this.option.isgetData  = true;
@@ -345,6 +351,7 @@ export class TdlPage {
           }
 
           if ($event.directionY == 'down') {
+            console.log("***********************" + $event.scrollTop)
             if ($event.scrollTop + 1000 > this.grid.nativeElement.clientHeight - $event.scrollElement.clientHeight) {
 
               this.option.isgetData  = true;
@@ -407,7 +414,6 @@ export class TdlPage {
           this.renderer2.addClass(this.currDayel, "item-no-display");
         }
         this.currDayel = this.el.nativeElement.querySelector(id);
-        console.log(this.currDayel.className);
         this.renderer2.removeClass(this.currDayel, "item-no-display");
         this.renderer2.addClass(this.currDayel, "item-display");
 
