@@ -3746,7 +3746,45 @@ export class EventService extends BaseService {
   	 */
   async todolist(): Promise<Array<AgendaData>> {
    	 let sql: string = `
-                        select eex.* , ca.sd,ca.ed,ca.st,ca.et,ca.al,ca.ct from (
+                        select
+                        eex.evi,
+                        eex.evn,
+                        eex.ui,
+                        eex.mi,
+                        eex.evd,
+                        eex.evt,
+                        eex.newrtevi as rtevi,
+                        eex.ji,
+                        eex.bz,
+                        eex.type,
+                        eex.tx,
+                        eex.txs,
+                        eex.rt,
+                        eex.rts,
+                        eex.fj,
+                        eex.pn,
+                        eex.md,
+                        eex.iv,
+                        eex.sr,
+                        eex.wtt,
+                        eex.utt,
+                        eex.gs,
+                        eex.tb,
+                        eex.wc,
+                        eex.todolist,
+                        eex.del,
+                        eex.rfg,
+                        eex.invitestatus,
+                        eex.adr,
+                        eex.adrx,
+                        eex.adry,
+                        ca.sd,
+                        ca.ed,
+                        ca.st,
+                        ca.et,
+                        ca.al,
+                        ca.ct
+                        from (
                          select * from (
                                 select * from (
                                       select evnext.* ,MIN(evnext.day) as minDay from (
@@ -3800,6 +3838,10 @@ export class EventService extends BaseService {
       this.assertEmpty(changed);
       let agendaArray: Array<AgendaData> = new Array<AgendaData>();
       let flag: boolean = true;
+      //当数据retevi为空的情况下
+      if(changed.rtevi == '') {
+          changed.rtevi = changed.evi;
+      }
       if (todolist.length == 0) {
           //当缓存时间为空的情况下，新加入todoList
           if ( ( changed.todolist == anyenum.ToDoListStatus.On ) && ( changed.del == anyenum.DelType.undel ) && (changed.wc == anyenum.EventFinishStatus.NonFinish) )
@@ -3886,12 +3928,13 @@ export class EventService extends BaseService {
                    bf = false;
                    console.info("时间与当前时间"+td.evd + ' ' + td.evt+"获取绝对值 1："+Math.abs(moment().diff(td.evd + ' ' + td.evt)));
                    console.info("时间与当前时间"+ changed.evd + ' ' + changed.evt+"获取绝对值 2："+Math.abs(moment().diff(changed.evd + ' ' + changed.evt)));
-                  if(Math.abs(moment().diff(td.evd + ' ' + td.evt))>Math.abs(moment().diff(changed.evd + ' ' + changed.evt))){
-                    //比之前的序列大，则先删除以前的，在数组后面追加一个
-                    todolist.splice(f, 1);
-                    todolist.push(changed);
-                    //todolist[todolist.length-1] = changed;
-                    break;
+                   let mmt  = new moment();
+                   if(Math.abs(mmt.diff(td.evd + ' ' + td.evt))>Math.abs(mmt.diff(changed.evd + ' ' + changed.evt))){
+                      //比之前的序列大，则先删除以前的，在数组后面追加一个
+                      todolist.splice(f, 1);
+                      todolist.push(changed);
+                      //todolist[todolist.length-1] = changed;
+                      break;
                   }
               }
               f++;
