@@ -216,25 +216,25 @@ export class TdlPage {
     return this.contentD._scrollContent.nativeElement;
   }
 
-  ngAfterViewChecked() {
-  console.log("downdowndowndownngAfterViewChecked");
-  }
-
-  ngOnChanges() {
-    console.log("downdowndowndownngOnChanges" );
-  }
-
-  ngOnInit() {
-    console.log("downdowndowndownngOnInit");
-  }
-
-  ngDoCheck() {
-    console.log("downdowndowndownngDoCheck"  );
-  }
-
-  ngAfterContentChecked() {
-    console.log("downdowndowndownngAfterContentChecked");
-  }
+  // ngAfterViewChecked() {
+  // console.log("downdowndowndownngAfterViewChecked");
+  // }
+  //
+  // ngOnChanges() {
+  //   console.log("downdowndowndownngOnChanges" );
+  // }
+  //
+  // ngOnInit() {
+  //   console.log("downdowndowndownngOnInit");
+  // }
+  //
+  // ngDoCheck() {
+  //   console.log("downdowndowndownngDoCheck"  );
+  // }
+  //
+  // ngAfterContentChecked() {
+  //   console.log("downdowndowndownngAfterContentChecked");
+  // }
 
 
 
