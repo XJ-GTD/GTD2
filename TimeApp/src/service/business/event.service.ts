@@ -1771,7 +1771,7 @@ export class EventService extends BaseService {
         }
       }
       outAgds.length = 0;
-      Object.assign(outAgds , ...retAgendas);
+      Object.assign(outAgds , retAgendas);
     }
 
   }
