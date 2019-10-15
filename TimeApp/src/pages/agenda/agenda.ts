@@ -207,6 +207,9 @@ export class AgendaPage {
       let paramter: ScdPageParamter = this.navParams.data;
       if (paramter.si) {
         this.util.loadingStart().then(async () => {
+          let count: number = 0;
+          let hasdata: boolean = false;
+
           // 通过通知打开需要等待日程接收下来之后显示
           while (true) {
             let agenda = await this.eventService.getAgenda(paramter.si);
@@ -218,8 +221,20 @@ export class AgendaPage {
               this.buttons.remove = true;
 
               this.util.loadingEnd();
+              this.hasdata = true;
               break;
             }
+
+            if (count >= 10) {
+              break;
+            }
+
+            count++;
+          }
+
+          // 没有查询到数据，画面退出
+          if (!hasdata) {
+            this.goBack();
           }
         });
       } else {
