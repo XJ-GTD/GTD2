@@ -3928,7 +3928,7 @@ export class EventService extends BaseService {
                    bf = false;
                    console.info("时间与当前时间"+td.evd + ' ' + td.evt+"获取绝对值 1："+Math.abs(moment().diff(td.evd + ' ' + td.evt)));
                    console.info("时间与当前时间"+ changed.evd + ' ' + changed.evt+"获取绝对值 2："+Math.abs(moment().diff(changed.evd + ' ' + changed.evt)));
-                   let mmt  = new moment();
+                   let mmt  =  moment();
                    if(Math.abs(mmt.diff(td.evd + ' ' + td.evt))>Math.abs(mmt.diff(changed.evd + ' ' + changed.evt))){
                       //比之前的序列大，则先删除以前的，在数组后面追加一个
                       todolist.splice(f, 1);
