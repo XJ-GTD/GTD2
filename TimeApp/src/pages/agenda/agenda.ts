@@ -221,7 +221,7 @@ export class AgendaPage {
               this.buttons.remove = true;
 
               this.util.loadingEnd();
-              this.hasdata = true;
+              hasdata = true;
               break;
             }
 
