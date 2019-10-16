@@ -411,6 +411,8 @@ export class AlService {
       let alData: AlData = new AlData();
 
       this.sqlExce.getList<ATbl>(aTbl).then(async (data) => {
+        UserConfig.publicplans = await this.calendarService.fetchPublicPlans();
+        
         UserConfig.privateplans = await this.calendarService.fetchPrivatePlans();
 
         this.emitService.destroy("mwxing.calendar.plans.changed");

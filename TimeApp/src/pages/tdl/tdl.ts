@@ -16,7 +16,7 @@ import {UtilService} from "../../service/util-service/util.service";
 import {FeedbackService} from "../../service/cordova/feedback.service";
 import {CalendarService, DayActivityData, MonthActivityData} from "../../service/business/calendar.service";
 import {EventService} from "../../service/business/event.service";
-import {PageDirection, EventType, InviteState, SyncType, EventFinishStatus} from "../../data.enum";
+import {PageDirection, EventType, InviteState, SyncType, SelfDefineType, EventFinishStatus} from "../../data.enum";
 import {TdlGesture} from "./tdl-gestures";
 import {CalendarComponent} from "../../components/ion2-calendar";
 import {UserConfig} from "../../service/config/user.config";
@@ -55,7 +55,7 @@ BScroll.use(InfinityScroll);
     <ion-content #contentD class="monthActivityWapper" >
       <div style="height: 10000px"></div>
       <ion-grid #grid4Hight class = "list-grid-content">
-        <ng-template ngFor let-monthActivityData [ngForOf]="monthActivityDatas"> 
+        <ng-template ngFor let-monthActivityData [ngForOf]="monthActivityDatas">
           <ion-row class="item-content dayagenda-month {{monthActivityData.month  | transfromdate :'CSSMM'}}" id="month{{monthActivityData.month | formatedate:'YYYYMM'}}">
             <div class="line first-line">
                 <p class="month-a font-large">
@@ -99,19 +99,32 @@ BScroll.use(InfinityScroll);
               </ion-row>
 
               <ion-row class="item-content  calendaritem-content item-content-backgroud" *ngFor="let jt of days.calendaritems;" (click)="toPlanItem(jt)">
-                <div class="line font-small first-line">
-                  <div class="icon">
-                    <ion-icon class = "fal fa-gift"></ion-icon>
+                <!-- 自定义日历项 -->
+                <ng-container *ngIf="jt.jtc == selfdefine">
+                  <div class="line font-small first-line">
+                    <div class="icon">
+                      <ion-icon class = "fal fa-gift"></ion-icon>
+                    </div>
+                    <div class="sn">{{jt.jtn}}</div>
                   </div>
-                  <div class="sn">{{jt.jtn}}</div>
-                </div>
-                <div class="line font-small" *ngIf="currentuser != jt.ui && jt.ui != ''" [ngStyle]="{'margin-left': jt.ji == ''? '0.6rem' : '0'}">
-                  <div class="icon">
-                    <ion-icon class = "fal fa-user-tag"></ion-icon>
+                  <div class="line font-small" *ngIf="currentuser != jt.ui && jt.ui != ''" [ngStyle]="{'margin-left': jt.ji == ''? '0.6rem' : '0'}">
+                    <div class="icon">
+                      <ion-icon class = "fal fa-user-tag"></ion-icon>
+                    </div>
+                    <div class="person ">--来自{{jt.ui | formatuser: currentuser: friends}}</div>
+                    <div class="invite" *ngIf="jt.invitestatus != inviteaccept && jt.invitestatus != invitereject" end><span (click)="rejectInvite($event, event)">拒绝</span><span (click)="acceptInvite($event, event)">接受</span></div>
                   </div>
-                  <div class="person ">--来自{{jt.ui | formatuser: currentuser: friends}}</div>
-                  <div class="invite" *ngIf="jt.invitestatus != inviteaccept && jt.invitestatus != invitereject" end><span (click)="rejectInvite($event, event)">拒绝</span><span (click)="acceptInvite($event, event)">接受</span></div>
-                </div>
+                </ng-container>
+
+                <!-- 下载日历项 -->
+                <ng-container *ngIf="jt.jtc == system">
+                  <div class="line font-small first-line">
+                    <div class="icon">
+                      <ion-icon class = "fal fa-gift"></ion-icon>
+                    </div>
+                    <div class="sn">{{jt.jtn}}</div>
+                  </div>
+                </ng-container>
               </ion-row>
               <!--<ion-row class="item-content dayagenda-content item-content-backgroud" *ngFor="let event of days.events;" [ngStyle]="{'background-color': event.tb == synch? '#00ff80' : '#ff80c0'}" (click)="toDetail(event.evi,event.evd,event.type,event.gs)">-->
               <ion-row class="item-content dayagenda-content item-content-backgroud" *ngFor="let event of days.events;" [ngStyle]="{'border-left': event.ji == ''? '0' : ('0.6rem solid ' + (event.ji | formatplan: 'color': privateplans))}" (click)="toDetail(event.evi,event.evd,event.type,event.gs)">
@@ -189,6 +202,9 @@ export class TdlPage {
 
   inviteaccept: InviteState = InviteState.Accepted;
   invitereject: InviteState = InviteState.Rejected;
+
+  system: SelfDefineType = SelfDefineType.System;
+  selfdefine: SelfDefineType = SelfDefineType.Define;
 
   synch: SyncType = SyncType.synch;
   unsynch: SyncType = SyncType.unsynch;

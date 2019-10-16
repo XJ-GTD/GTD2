@@ -54,16 +54,16 @@ export class DataSyncProcess implements MQProcess {
       let dsPara: DataSyncPara = content.parameters;
 
       if (dsPara.type == "Plan") {
-        this.calendarService.acceptSyncPrivatePlans([dsPara.id]);
+        await this.calendarService.acceptSyncPrivatePlans([dsPara.id]);
       }
       if (dsPara.type == "PlanItem") {
-        this.calendarService.acceptSyncPlanItems([dsPara.id]);
+        await this.calendarService.acceptSyncPlanItems([dsPara.id]);
       }
       if (dsPara.type == "Agenda") {
-        this.eventService.acceptSyncAgendas([dsPara.id]);
+        await this.eventService.acceptSyncAgendas([dsPara.id]);
       }
       if (dsPara.type == "Memo") {
-        this.memoService.acceptSyncMemos([dsPara.id]);
+        await this.memoService.acceptSyncMemos([dsPara.id]);
       }
     }
 
@@ -73,16 +73,16 @@ export class DataSyncProcess implements MQProcess {
       let dsPara: DataSyncPara = content.parameters;
 
       if (dsPara.type == "Plan") {
-        this.calendarService.receivedPlan(dsPara.id);
+        await this.calendarService.receivedPlan(dsPara.id);
       }
       if (dsPara.type == "PlanItem") {
-        this.calendarService.receivedPlanItem(dsPara.id);
+        await this.calendarService.receivedPlanItem(dsPara.id);
       }
       if (dsPara.type == "Agenda") {
-        this.eventService.receivedAgenda(dsPara.id);
+        await this.eventService.receivedAgenda(dsPara.id);
       }
       if (dsPara.type == "Memo") {
-        this.memoService.receivedMemo(dsPara.id);
+        await this.memoService.receivedMemo(dsPara.id);
       }
     }
 
@@ -92,16 +92,16 @@ export class DataSyncProcess implements MQProcess {
       let dsPara: DataSyncPara = content.parameters;
 
       if (dsPara.type == "Plan") {
-        this.calendarService.receivedPlan(dsPara.id);
+        await this.calendarService.receivedPlan(dsPara.id);
       }
       if (dsPara.type == "PlanItem") {
-        this.calendarService.receivedPlanItem(dsPara.id);
+        await this.calendarService.receivedPlanItem(dsPara.id);
       }
       if (dsPara.type == "Agenda") {
-        this.eventService.receivedAgenda(dsPara.id);
+        await this.eventService.receivedAgenda(dsPara.id);
       }
       if (dsPara.type == "Memo") {
-        this.memoService.receivedMemo(dsPara.id);
+        await this.memoService.receivedMemo(dsPara.id);
       }
     }
 
@@ -111,16 +111,16 @@ export class DataSyncProcess implements MQProcess {
       let dsPara: DataSyncPara = content.parameters;
 
       if (dsPara.type == "Plan") {
-        this.calendarService.receivedPlan(dsPara.id);
+        await this.calendarService.receivedPlan(dsPara.id);
       }
       if (dsPara.type == "PlanItem") {
-        this.calendarService.receivedPlanItem(dsPara.id);
+        await this.calendarService.receivedPlanItem(dsPara.id);
       }
       if (dsPara.type == "Agenda") {
-        this.eventService.receivedAgenda(dsPara.id);
+        await this.eventService.receivedAgenda(dsPara.id);
       }
       if (dsPara.type == "Memo") {
-        this.memoService.receivedMemo(dsPara.id);
+        await this.memoService.receivedMemo(dsPara.id);
       }
     }
 
@@ -133,7 +133,7 @@ export class DataSyncProcess implements MQProcess {
         let plan: PlanData = {} as PlanData;
         Object.assign(plan, dsPara.data);
 
-        this.calendarService.receivedPlanData(plan, this.convertSyncStatus(dsPara.status));
+        await this.calendarService.receivedPlanData(plan, this.convertSyncStatus(dsPara.status));
       }
 
       if (dsPara.type == "PlanItem") {
@@ -255,7 +255,7 @@ export class DataSyncProcess implements MQProcess {
           }
         }
 
-        this.calendarService.receivedPlanItemData([planitem], this.convertSyncStatus(dsPara.status));
+        await this.calendarService.receivedPlanItemData([planitem], this.convertSyncStatus(dsPara.status));
       }
 
       if (dsPara.type == "Agenda") {
@@ -393,14 +393,14 @@ export class DataSyncProcess implements MQProcess {
           }
         }
 
-        this.eventService.receivedAgendaData([agenda], this.convertSyncStatus(dsPara.status));
+        await this.eventService.receivedAgendaData([agenda], this.convertSyncStatus(dsPara.status));
       }
 
       if (dsPara.type == "Memo") {
         let memo: MemoData = {} as MemoData;
         Object.assign(memo, dsPara.data);
 
-        this.memoService.receivedMemoData(memo, this.convertSyncStatus(dsPara.status));
+        await this.memoService.receivedMemoData(memo, this.convertSyncStatus(dsPara.status));
       }
 
     }

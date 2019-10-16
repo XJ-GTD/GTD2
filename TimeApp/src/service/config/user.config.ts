@@ -65,6 +65,8 @@ export class UserConfig {
 
   //个人计划
   static privateplans: Array<PlanData> = new Array<PlanData>();
+  //内建计划
+  static publicplans: Array<PlanData> = new Array<PlanData>();
 
   //重复调用防止
   static troublestop: Map<string, any> = new Map<string, any>();
