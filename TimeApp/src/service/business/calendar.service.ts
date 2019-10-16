@@ -946,6 +946,57 @@ export class CalendarService extends BaseService {
   }
 
   /**
+   * 根据日历项ID取得日历项
+   *
+   * @author leon_xi@163.com
+   **/
+  async findPlanItem(cond: PlanItemData): Promise<PlanItemData> {
+    this.assertEmpty(cond);       // 入参不能为空
+
+    let planitemdb: JtaTbl = new JtaTbl();
+    Object.assign(planitemdb, cond);
+
+    let sql: any = planitemdb.slTParam();
+
+    planitemdb = await this.sqlExce.getExtOneByParam<JtaTbl>(...sql);
+
+    if (!planitemdb) return null;
+
+    let planitem: PlanItemData = {} as PlanItemData;
+
+    Object.assign(planitem, planitemdb);
+
+    planitem.rtjson = generateRtJson(planitem.rtjson, planitem.rt);
+    planitem.txjson = generateTxJson(planitem.txjson, planitem.tx);
+
+    // 获取参与人
+    let members: Array<Member> = new Array<Member>();
+
+    let querymemberdb: ParTbl = new ParTbl();
+    querymemberdb.obi = jti;
+    querymemberdb.obt = ObjectType.Calendar;
+
+    let memberdbs: Array<ParTbl> = await this.sqlExce.getLstByParam<ParTbl>(querymemberdb) || new Array<ParTbl>();
+
+    for (let memberdb of memberdbs) {
+      let member = {} as Member;
+      Object.assign(member, memberdb);
+
+      let fs: FsData = this.userConfig.GetOneBTbl(memberdb.pwi);
+
+      this.assertEmpty(fs);   // 联系人不能为空
+
+      Object.assign(member, fs);
+
+      members.push(member);
+    }
+
+    planitem.members = members;
+
+    return planitem;
+  }
+
+  /**
    * 取得两个日历项变化的字段名成数组
    *
    * @param {PlanItemData} one

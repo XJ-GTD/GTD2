@@ -69,7 +69,7 @@ export class SpecialDataProcess extends BaseProcess implements MQProcess {
         current.jtc = SelfDefineType.System;
         current.sd = data.fordate;
 
-        current = await this.calendarService.getPlanItem(current) || current;
+        current = await this.calendarService.findPlanItem(current) || current;
 
         if (current && current.jti) {
           let origin: PlanItemData = {} as PlanItemData;
