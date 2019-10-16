@@ -169,7 +169,14 @@ export class CalendarService extends BaseService {
             return;
           }
 
-          this.activitiesqueue.push({data: data});
+          this.activitiesqueue.push({data: data}, () => {
+            // 完成处理
+            if (this.calendaractivities.length > 0) {
+              for (let monthactivities of this.calendaractivities) {
+                this.emitService.emit("mwxing.calendar." + monthactivities.month + ".changed", monthactivities);
+              }
+            }
+          });
         });
 
         break;

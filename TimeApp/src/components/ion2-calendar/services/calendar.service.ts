@@ -12,6 +12,7 @@ import * as moment from 'moment';
 import {defaults, pickModes} from "../config";
 import {LocalcalendarService} from "../../../service/cordova/localcalendar.service";
 import {UtilService} from "../../../service/util-service/util.service";
+import {EmitService} from "../../../service/util-service/emit.service";
 import {CalendarService, MonthActivityData, MonthActivitySummaryData} from "../../../service/business/calendar.service";
 
 @Injectable()
@@ -19,9 +20,10 @@ export class IonCalendarService {
 
   public static selecttime:number;
 
-  constructor(private readlocal:LocalcalendarService,
-              private util:UtilService,
-              private calendarService:CalendarService) {
+  constructor(private readlocal: LocalcalendarService,
+              private util: UtilService,
+              private emitService: EmitService,
+              private calendarService: CalendarService) {
     IonCalendarService.selecttime =  moment().valueOf();
 
   }
@@ -282,13 +284,38 @@ export class IonCalendarService {
     }
   }
 
-
+  private currentMonthChangeEvent = null;
 
   async getMonthData(month:CalendarMonth){
-    console.log(moment(month.original.date).format("YYYY/MM"));
-    this.calendarService.refreshCalendarActivitiesToMonth(moment(month.original.date).format("YYYY/MM"));
-    console.log(moment(month.original.date).format("YYYY/MM"));
-    let data:MonthActivitySummaryData = await this.calendarService.fetchMonthActivitiesSummary(moment(month.original.date).format('YYYY/MM'));
+    let originmonth: string = moment(month.original.date).format("YYYY/MM");
+
+    console.log(originmonth);
+    this.calendarService.refreshCalendarActivitiesToMonth(originmonth);
+    console.log(originmonth);
+
+    let data:MonthActivitySummaryData = await this.calendarService.fetchMonthActivitiesSummary(originmonth);
+
+    // 订阅活动变动, 用于更新
+    if (currentMonthChangeEvent) currentMonthChangeEvent.unsubscribe();
+
+    currentMonthChangeEvent = this.emitService.register("mwxing.calendar." + originmonth + ".changed", (changed) => {
+      if (changed) {
+        this.calendarService.refreshMonthActivitiesSummary(data, changed);
+
+        data.days.forEach((v,k,m)=>{
+          let calendarDay:CalendarDay = month.days.find((n) => moment(v.day).isSame(moment(n.time), 'day'));
+
+          calendarDay.hasevent = v.eventscount - v.repeateventscount > 0;
+          calendarDay.hasrepeat = v.repeateventscount > 0;
+          // calendarDay.hasmessage = v.;
+          calendarDay.hasMemo = v.memoscount > 0;
+          calendarDay.subTitle = v.daycalendaritem?v.daycalendaritem:calendarDay.subTitle;
+          calendarDay.isToday = moment().isSame(calendarDay.time, 'days');
+
+        });
+      }
+    });
+
     data.days.forEach((v,k,m)=>{
       let calendarDay:CalendarDay = month.days.find((n) => moment(v.day).isSame(moment(n.time), 'day'));
 
