@@ -956,11 +956,11 @@ export class CalendarService extends BaseService {
     let planitemdb: JtaTbl = new JtaTbl();
     Object.assign(planitemdb, cond);
 
-    let sql: any = planitemdb.slTParam();
+    let planitems = await this.sqlExce.getLstByParam<JtaTbl>(planitemdb);
 
-    planitemdb = await this.sqlExce.getExtOneByParam<JtaTbl>(...sql);
+    if (!planitems || planitems.length <= 0) return null;
 
-    if (!planitemdb) return null;
+    planitemdb = planitems[0];    // 取第一条
 
     let planitem: PlanItemData = {} as PlanItemData;
 
@@ -973,7 +973,7 @@ export class CalendarService extends BaseService {
     let members: Array<Member> = new Array<Member>();
 
     let querymemberdb: ParTbl = new ParTbl();
-    querymemberdb.obi = jti;
+    querymemberdb.obi = planitem.jti;
     querymemberdb.obt = ObjectType.Calendar;
 
     let memberdbs: Array<ParTbl> = await this.sqlExce.getLstByParam<ParTbl>(querymemberdb) || new Array<ParTbl>();

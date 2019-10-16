@@ -3833,9 +3833,11 @@ export class EventService extends BaseService {
    * 当有新的数据加入时，则对原有的数据进行从新排列
    * @author ying<343253410@qq.com>
    */
-  async mergeTodolist(todolist: Array<AgendaData>, changed: AgendaData): Promise<Array<AgendaData>> {
+  async mergeTodolist(todolist: Array<AgendaData>, changedNew: AgendaData): Promise<Array<AgendaData>> {
       //传入数据不能为空
-      this.assertEmpty(changed);
+      this.assertEmpty(changedNew);
+      let changed: AgendaData = {} as AgendaData;
+      Object.assign(changed, changedNew);
       let agendaArray: Array<AgendaData> = new Array<AgendaData>();
       let flag: boolean = true;
       //当数据retevi为空的情况下
