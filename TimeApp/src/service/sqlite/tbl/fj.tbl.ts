@@ -11,6 +11,7 @@ export class FjTbl implements ITblParam {
   obi: string;
   fjn: string;
   ext: string;
+  ui: string;     // 2019/10/16 增加附件创建人字段
   fj: string;
   tb: string;
   del: string;
@@ -24,6 +25,7 @@ export class FjTbl implements ITblParam {
     params.push(this.obi);
     params.push(this.fjn);
     params.push(this.ext);
+    params.push(this.ui);
     params.push(this.fj);
     params.push(this.tb);
     params.push(this.del);
@@ -31,8 +33,8 @@ export class FjTbl implements ITblParam {
     params.push(moment().unix());
 
     return [`replace into gtd_fj
-       (    fji ,obt ,obi ,fjn ,ext ,fj ,tb,del,wtt ,utt )`,
-     `select ?,?,?,?,?,?,?,?,?,?`,
+       (    fji ,obt ,obi ,fjn ,ext ,ui ,fj ,tb,del,wtt ,utt )`,
+     `select ?,?,?,?,?,?,?,?,?,?,?`,
     params];
   }
 
@@ -44,6 +46,7 @@ export class FjTbl implements ITblParam {
      ,obi varchar(50)
      ,fjn varchar(50)
      ,ext varchar(50)
+     ,ui varchar(50)
      ,fj varchar(50)
       ,tb varchar(6)
       ,del varchar(6)
@@ -61,6 +64,7 @@ export class FjTbl implements ITblParam {
     if(this.obi!=null && this.obi!=''){      sq=sq+', obi= ? ';      params.push(this.obi);    }
     if(this.fjn!=null && this.fjn!=''){      sq=sq+', fjn= ? ';      params.push(this.fjn);    }
     if(this.ext!=null && this.ext!=''){      sq=sq+', ext= ? ';      params.push(this.ext);    }
+    if(this.ui!=null && this.ui!=''){      sq=sq+', ui= ? ';      params.push(this.ui);    }
     if(this.fj!=null && this.fj!=''){      sq=sq+', fj= ? ';      params.push(this.fj);    }
     if(this.tb!=null && this.tb!=''){      sq=sq+', tb= ? ';      params.push(this.tb);    }
     if(this.del!=null && this.del!=''){      sq=sq+', del= ? ';      params.push(this.del);    }
@@ -115,6 +119,7 @@ export class FjTbl implements ITblParam {
     if(this.obi!=null && this.obi!=''){      sq=sq+' and obi= ? ';      params.push(this.obi);    }
     if(this.fjn!=null && this.fjn!=''){      sq=sq+' and fjn= ? ';      params.push(this.fjn);    }
     if(this.ext!=null && this.ext!=''){      sq=sq+' and  ext= ? ';      params.push(this.ext);    }
+    if(this.ui!=null && this.ui!=''){      sq=sq+' and  ui= ? ';      params.push(this.ui);    }
     if(this.fj!=null && this.fj!=''){      sq=sq+' and fj= ? ';      params.push(this.fj);    }
     if(this.tb!=null && this.tb!=''){      sq=sq+' and tb= ? ';      params.push(this.tb);    }
     if(this.del!=null && this.del!=''){      sq=sq+' and del= ? ';      params.push(this.del);    }
@@ -136,13 +141,14 @@ export class FjTbl implements ITblParam {
   inTParam():any {
     let params = new Array<any>();
     let sq =`insert into gtd_fj
-       (    fji ,obt ,obi ,fjn ,ext ,fj ,tb,del,wtt,utt)
+       (    fji ,obt ,obi ,fjn ,ext ,ui ,fj ,tb,del,wtt,utt)
        values(?,?,?,?,?,?,?,?,?,?);`;
     params.push(this.fji);
     params.push(this.obt);
     params.push(this.obi);
     params.push(this.fjn);
     params.push(this.ext);
+    params.push(this.ui);
     params.push(this.fj);
     params.push(this.tb);
     params.push(this.del);
@@ -158,13 +164,14 @@ export class FjTbl implements ITblParam {
   rpTParam():any {
     let params = new Array<any>();
     let sq =`replace into gtd_fj
-       (    fji ,obt ,obi ,fjn ,ext ,fj ,tb,del,wtt ,utt )
+       (    fji ,obt ,obi ,fjn ,ext ,ui ,fj ,tb,del,wtt ,utt )
        values(?,?,?,?,?,?,?,?,?,?);`;
     params.push(this.fji);
     params.push(this.obt);
     params.push(this.obi);
     params.push(this.fjn);
     params.push(this.ext);
+    params.push(this.ui);
     params.push(this.fj);
     params.push(this.tb);
     params.push(this.del);
