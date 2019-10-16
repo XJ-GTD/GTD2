@@ -16,6 +16,11 @@ export enum PlanItemType {
   Activity = '1'
 }
 
+export enum SelfDefineType {
+  System = "0",
+  Define = "1"
+}
+
 export enum PlanDownloadType {
   NO = '0',
   YES = '1'

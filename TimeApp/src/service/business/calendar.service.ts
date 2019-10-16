@@ -8,7 +8,7 @@ import { SyncData, PushInData, PullInData, DataRestful } from "../restful/datase
 import { BackupPro, BacRestful, OutRecoverPro, RecoverPro } from "../restful/bacsev";
 import { EventData, TaskData, AgendaData, MiniTaskData, EventService, RtJson, TxJson, Member, generateRtJson, generateTxJson } from "./event.service";
 import { MemoData, MemoService } from "./memo.service";
-import { EventType, PlanType, PlanItemType, PlanDownloadType, MemberShareState, ConfirmType, OperateType, ObjectType, PageDirection, CycleType, SyncType, RepeatFlag, DelType, SyncDataSecurity, SyncDataStatus, InviteState, ModiPower, InvitePowr } from "../../data.enum";
+import { EventType, PlanType, PlanItemType, PlanDownloadType, MemberShareState, SelfDefineType, ConfirmType, OperateType, ObjectType, PageDirection, CycleType, SyncType, RepeatFlag, DelType, SyncDataSecurity, SyncDataStatus, InviteState, ModiPower, InvitePowr } from "../../data.enum";
 import { UserConfig } from "../config/user.config";
 import * as async from "async/dist/async.js"
 import * as moment from "moment";
@@ -1854,6 +1854,11 @@ export class CalendarService extends BaseService {
       item.jtt = PlanItemType.Activity;
     }
 
+    // 自定义日历项
+    if (!item.jtc) {
+      item.jtc = SelfDefineType.Define;
+    }
+
     let items: Array<PlanItemData> = new Array<PlanItemData>();
     let itemdbs: Array<JtaTbl> = new Array<JtaTbl>();
     let members: Array<Member> = item.members || new Array<Member>();
@@ -2295,6 +2300,7 @@ export class CalendarService extends BaseService {
           planitemdb.jti = this.util.getUuid();
           planitemdb.ji = ji;         //计划ID
           planitemdb.jtt = itemType;  //日历项类型
+          planitemdb.jtc = SelfDefineType.System;  //日历项类型 下载
           planitemdb.jtn = pa.at;     //日程事件主题  必传
           planitemdb.sd = moment(pa.adt).format("YYYY/MM/DD");  //所属日期      必传
           planitemdb.st = pa.st;      //所属时间
