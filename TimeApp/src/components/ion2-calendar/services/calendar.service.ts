@@ -296,9 +296,9 @@ export class IonCalendarService {
     let data:MonthActivitySummaryData = await this.calendarService.fetchMonthActivitiesSummary(originmonth);
 
     // 订阅活动变动, 用于更新
-    if (currentMonthChangeEvent) currentMonthChangeEvent.unsubscribe();
+    if (this.currentMonthChangeEvent) this.currentMonthChangeEvent.unsubscribe();
 
-    currentMonthChangeEvent = this.emitService.register("mwxing.calendar." + originmonth + ".changed", (changed) => {
+    this.currentMonthChangeEvent = this.emitService.register("mwxing.calendar." + originmonth + ".changed", (changed) => {
       if (changed) {
         this.calendarService.refreshMonthActivitiesSummary(data, changed);
 
