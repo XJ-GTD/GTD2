@@ -1,221 +1,168 @@
-import {ChangeDetectorRef, Component, ElementRef, QueryList, Renderer2, ViewChild, ViewChildren} from '@angular/core';
+import { Component, ViewChild} from '@angular/core';
 import { IonicPage, NavController, NavParams, ModalController, ViewController, Scroll } from 'ionic-angular';
 import {Keyboard} from "@ionic-native/keyboard";
-import { RadioSelectComponent } from "../../components/radio-select/radio-select";
-import { RadioSpinnerComponent } from "../../components/radio-spinner/radio-spinner";
 import { DatePickerComponent } from "../../components/date-picker/date-picker";
 import * as moment from "moment";
-import {ModalBoxComponent} from "../../components/modal-box/modal-box";
-import {RtOver, RtJson} from "../../service/business/event.service";
+import {RtJson} from "../../service/business/event.service";
 import {CycleType, OverType} from "../../data.enum";
 
 @IonicPage()
 @Component({
   selector: 'page-repeat',
   template: `
-  <modal-box title="重复" [buttons]="buttons" (onSave)="save()" (onCancel)="cancel()">
-    <ion-grid class="h100">
-      <ion-row justify-content-center>
-        <p class="title">{{title}}</p>
-      </ion-row>
-      <ion-row justify-content-center>
-        <radio-select [options]="items" center="true" [(ngModel)]="cfType" (onChanged)="onTypeChanged($event)"></radio-select>
-      </ion-row>
-      <!-- 每日 -->
-      <ion-row justify-content-center *ngIf="cfType == 'day'">
-        <ion-grid class="ph15">
-          <ion-row justify-content-start>
-            <p>重复周期</p>
-          </ion-row>
-          <ion-row justify-content-start>
-            <radio-spinner label="天" [options]="itemRanges" [(ngModel)]="cfDayOptions.frequency" (onChanged)="onFreqChanged($event)"></radio-spinner>
-          </ion-row>
-        </ion-grid>
-      </ion-row>
-      <ion-row justify-content-center *ngIf="cfType == 'day'">
-        <ion-grid class="ph15">
-          <ion-row justify-content-start>
-            <p>结束</p>
-          </ion-row>
-          <ion-row justify-content-start>
-            <ion-list class="endwith" radio-group no-lines [(ngModel)]="cfDayOptions.endType" (ionChange)="onEndTypeChanged($event)">
-              <ion-item>
-                <ion-radio item-start value="never"></ion-radio>
-                <ion-label>永远不</ion-label>
-              </ion-item>
-              <ion-item>
-                <ion-radio item-start value="aftertimes"></ion-radio>
-                <ion-label class="inline">
-                  <div *ngIf="cfDayOptions.endType != 'aftertimes'" class="inlabel">一定次数后</div>
-                  <radio-spinner label="次后" *ngIf="cfDayOptions.endType == 'aftertimes'" [options]="itemRanges" [(ngModel)]="cfDayOptions.afterTimes" (onChanged)="onEndAfterTimesChanged($event)"></radio-spinner>
-                </ion-label>
-              </ion-item>
-              <ion-item>
-                <ion-radio (ionSelect)="openUntilEndDate('d')"  item-start value="tosomeday">
-                  
-                </ion-radio>
-                <ion-label>直到{{cfDayOptions.toSomeDay | formatedate : 'CYYYY/MM/DD'}}</ion-label>
-              </ion-item>
-            </ion-list>
-          </ion-row>
-        </ion-grid>
-      </ion-row>
-      <!-- 每周 -->
-      <ion-row justify-content-center *ngIf="cfType == 'week'">
-        <ion-grid class="ph15">
-          <ion-row justify-content-start>
-            <p>重复周期</p>
-          </ion-row>
-          <ion-row justify-content-start>
-            <radio-spinner label="周" [options]="itemRanges" [(ngModel)]="cfWeekOptions.frequency" (onChanged)="onFreqChanged($event)"></radio-spinner>
-          </ion-row>
-        </ion-grid>
-      </ion-row>
-      <ion-row justify-content-center *ngIf="cfType == 'week'">
-        <ion-grid class="ph15">
-          <ion-row justify-content-start>
-            <p>重复开启</p>
-          </ion-row>
-          <ion-row justify-content-start>
-            <radio-select [options]="itemRangeOptions"  multiple="true" [(ngModel)]="cfWeekOptions.freqOption" (onChanged)="onFreqOptionChanged($event)"></radio-select>
-          </ion-row>
-        </ion-grid>
-      </ion-row>
-      <ion-row justify-content-center *ngIf="cfType == 'week'">
-        <ion-grid class="ph15">
-          <ion-row justify-content-start>
-            <p>结束</p>
-          </ion-row>
-          <ion-row justify-content-start>
-            <ion-list class="endwith" radio-group no-lines [(ngModel)]="cfWeekOptions.endType" (ionChange)="onEndTypeChanged($event)">
-              <ion-item>
-                <ion-radio item-start value="never"></ion-radio>
-                <ion-label>永远不</ion-label>
-              </ion-item>
-              <ion-item>
-                <ion-radio item-start value="aftertimes"></ion-radio>
-                <ion-label class="inline">
-                  <div *ngIf="cfWeekOptions.endType != 'aftertimes'" class="inlabel">一定次数后</div>
-                  <radio-spinner label="次后" *ngIf="cfWeekOptions.endType == 'aftertimes'" [options]="itemRanges" [(ngModel)]="cfWeekOptions.afterTimes" (onChanged)="onEndAfterTimesChanged($event)"></radio-spinner>
-                </ion-label>
-              </ion-item>
-              <ion-item>
-                <ion-radio (ionSelect)="openUntilEndDate('w')" item-start value="tosomeday" ></ion-radio>
-                <ion-label>直到{{cfWeekOptions.toSomeDay | formatedate : 'CYYYY/MM/DD'}}</ion-label>
-              </ion-item>
-            </ion-list>
-          </ion-row>
-        </ion-grid>
-      </ion-row>
-      <!-- 每月 -->
-      <ion-row justify-content-center *ngIf="cfType == 'month'">
-        <ion-grid class="ph15">
-          <ion-row justify-content-start>
-            <p>重复周期</p>
-          </ion-row>
-          <ion-row justify-content-start>
-            <radio-spinner label="月" [options]="itemRanges" [(ngModel)]="cfMonthOptions.frequency" (onChanged)="onFreqChanged($event)"></radio-spinner>
-          </ion-row>
-        </ion-grid>
-      </ion-row>
-      <ion-row justify-content-center *ngIf="cfType == 'month'">
-        <ion-grid class="ph15">
-          <ion-row justify-content-start>
-            <p>重复开启</p>
-          </ion-row>
-          <ion-row justify-content-start>
-            <radio-select [options]="itemMonthDayRangeOptions" multiple="true" [(ngModel)]="cfMonthOptions.freqOption" (onChanged)="onFreqOptionChanged($event)"></radio-select>
-          </ion-row>
-        </ion-grid>
-      </ion-row>
-      <ion-row justify-content-center *ngIf="cfType == 'month'">
-        <ion-grid class="ph15">
-          <ion-row justify-content-start>
-            <p>结束</p>
-          </ion-row>
-          <ion-row justify-content-start>
-            <ion-list class="endwith" radio-group no-lines [(ngModel)]="cfMonthOptions.endType" (ionChange)="onEndTypeChanged($event)">
-              <ion-item>
-                <ion-radio item-start value="never"></ion-radio>
-                <ion-label>永远不</ion-label>
-              </ion-item>
-              <ion-item>
-                <ion-radio item-start value="aftertimes"></ion-radio>
-                <ion-label class="inline">
-                  <div *ngIf="cfMonthOptions.endType != 'aftertimes'" class="inlabel">一定次数后</div>
-                  <radio-spinner label="次后" *ngIf="cfMonthOptions.endType == 'aftertimes'" [options]="itemRanges" [(ngModel)]="cfMonthOptions.afterTimes" (onChanged)="onEndAfterTimesChanged($event)"></radio-spinner>
-                </ion-label>
-              </ion-item>
-              <ion-item>
-                <ion-radio (ionSelect)="openUntilEndDate('m')" item-start value="tosomeday"></ion-radio>
-                <ion-label>直到{{cfMonthOptions.toSomeDay | formatedate : 'CYYYY/MM/DD'}}</ion-label>
-              </ion-item>
-            </ion-list>
-          </ion-row>
-        </ion-grid>
-      </ion-row>
-      <!-- 每年 -->
-      <ion-row justify-content-center *ngIf="cfType == 'year'">
-        <ion-grid class="ph15">
-          <ion-row justify-content-start>
-            <p>重复周期</p>
-          </ion-row>
-          <ion-row justify-content-start>
-            <radio-spinner label="年" [options]="itemRanges" [(ngModel)]="cfYearOptions.frequency" (onChanged)="onFreqChanged($event)"></radio-spinner>
-          </ion-row>
-        </ion-grid>
-      </ion-row>
-      <ion-row justify-content-center *ngIf="cfType == 'year'">
-        <ion-grid class="ph15">
-          <ion-row justify-content-start>
-            <p>结束</p>
-          </ion-row>
-          <ion-row justify-content-start>
-            <ion-list class="endwith" radio-group no-lines [(ngModel)]="cfYearOptions.endType" (ionChange)="onEndTypeChanged($event)">
-              <ion-item>
-                <ion-radio item-start value="never"></ion-radio>
-                <ion-label>永远不</ion-label>
-              </ion-item>
-              <ion-item>
-                <ion-radio item-start value="aftertimes"></ion-radio>
-                <ion-label class="inline">
-                  <div *ngIf="cfYearOptions.endType != 'aftertimes'" class="inlabel">一定次数后</div>
-                  <radio-spinner label="次后" *ngIf="cfYearOptions.endType == 'aftertimes'" [options]="itemRanges" [(ngModel)]="cfYearOptions.afterTimes" (onChanged)="onEndAfterTimesChanged($event)"></radio-spinner>
-                </ion-label>
-              </ion-item>
-              <ion-item>
-                <ion-radio (ionSelect)="openUntilEndDate('y')" item-start value="tosomeday"></ion-radio>
-                <ion-label>直到{{cfYearOptions.toSomeDay | formatedate : 'CYYYY/MM/DD'}}</ion-label>
-              </ion-item>
-            </ion-list>
-          </ion-row>
-        </ion-grid>
-      </ion-row>
-    </ion-grid>
-  </modal-box>
+    <modal-box title="重复" [buttons]="buttons" (onSave)="save()" (onCancel)="cancel()">
+      <div class="itemwarp font-normal">
+        <radio-select [options]="items" full="true" center =  "true" [(ngModel)]="cfType" (onChanged)="onTypeChanged($event)" button5></radio-select>
+      </div>
 
-  <div style="display: none">
-    <date-picker  #utilEndDateD [(ngModel)]="cfDayOptions.toSomeDay"
-                  pickerFormat="YYYY ,MM DD"
-                  cancelText="取消" doneText="选择" (ngModelChange)="dtselect('d')"
-                  min="{{minDate}}" max="2059-01-01"
-    ></date-picker>
-    <date-picker  #utilEndDateW [(ngModel)]="cfWeekOptions.toSomeDay"
-                  pickerFormat="YYYY ,MM DD"
-                  cancelText="取消" doneText="选择" (ngModelChange)="dtselect('w')"
-                  min="{{minDate}}" max="2059-01-01"
-    ></date-picker>
-    <date-picker  #utilEndDateM [(ngModel)]="cfMonthOptions.toSomeDay"
-                  pickerFormat="YYYY ,MM DD"
-                  cancelText="取消" doneText="选择" (ngModelChange)="dtselect('m')"
-                  min="{{minDate}}" max="2059-01-01"
-    ></date-picker>
-    <date-picker  #utilEndDateY [(ngModel)]="cfYearOptions.toSomeDay"
-                  pickerFormat="YYYY ,MM DD"
-                  cancelText="取消" doneText="选择" (ngModelChange)="dtselect('y')"
-                  min="{{minDate}}" max="2059-01-01"
-    ></date-picker>
-  </div>
+      <ng-template  [ngIf]="cfType == 'day'">
+
+        <div class="itemwarp font-normal">
+          <p>重复周期</p>
+          <radio-spinner label="天" [options]="itemRanges" [(ngModel)]="cfDayOptions.frequency" (onChanged)="onFreqChanged($event)"></radio-spinner>
+        </div>
+        <div class="itemwarp font-normal">
+          <p>结束</p>
+          <ion-list class="endwith" radio-group no-lines [(ngModel)]="cfDayOptions.endType" (ionChange)="onEndTypeChanged($event)">
+            <ion-item >
+              <ion-radio value="never" item-start></ion-radio>
+              <ion-label>默认(1年)</ion-label>
+            </ion-item>
+            <ion-item>
+              <ion-radio value="aftertimes" item-start></ion-radio>
+              <ion-label class="inline">
+                <div *ngIf="cfDayOptions.endType != 'aftertimes'" class="inlabel">一定次数后</div>
+                <radio-spinner label="次后" *ngIf="cfDayOptions.endType == 'aftertimes'" [options]="itemRanges" [(ngModel)]="cfDayOptions.afterTimes" (onChanged)="onEndAfterTimesChanged($event)"></radio-spinner>
+              </ion-label>
+            </ion-item>
+            <ion-item>
+              <ion-radio (ionSelect)="openUntilEndDate('d')" value="tosomeday" item-start>
+
+              </ion-radio>
+              <ion-label>直到{{cfDayOptions.toSomeDay | formatedate : 'CYYYY/MM/DD'}}</ion-label>
+            </ion-item>
+          </ion-list>
+        </div>
+      </ng-template>
+
+      <ng-template  [ngIf]="cfType == 'week'">
+
+        <div class="itemwarp font-normal">
+          <p>重复周期</p>
+          <radio-spinner label="周" [options]="itemRanges" [(ngModel)]="cfWeekOptions.frequency" (onChanged)="onFreqChanged($event)"></radio-spinner>
+        </div>
+        <div class="itemwarp font-normal">
+          <p>重复开启</p>
+          <radio-select [options]="itemRangeOptions"  multiple="true" [(ngModel)]="cfWeekOptions.freqOption" (onChanged)="onFreqOptionChanged($event)" button7></radio-select>
+        </div>
+
+        <div class="itemwarp font-normal">
+          <p>结束</p>
+          <ion-list class="endwith" radio-group no-lines [(ngModel)]="cfWeekOptions.endType" (ionChange)="onEndTypeChanged($event)">
+            <ion-item>
+              <ion-radio  value="never"  item-start></ion-radio>
+              <ion-label>默认(2年)</ion-label>
+            </ion-item>
+            <ion-item>
+              <ion-radio  value="aftertimes"  item-start></ion-radio>
+              <ion-label class="inline">
+                <div *ngIf="cfWeekOptions.endType != 'aftertimes'" class="inlabel">一定次数后</div>
+                <radio-spinner label="次后" *ngIf="cfWeekOptions.endType == 'aftertimes'" [options]="itemRanges" [(ngModel)]="cfWeekOptions.afterTimes" (onChanged)="onEndAfterTimesChanged($event)"></radio-spinner>
+              </ion-label>
+            </ion-item>
+            <ion-item>
+              <ion-radio (ionSelect)="openUntilEndDate('w')"  value="tosomeday"  item-start></ion-radio>
+              <ion-label>直到{{cfWeekOptions.toSomeDay | formatedate : 'CYYYY/MM/DD'}}</ion-label>
+            </ion-item>
+          </ion-list>
+        </div>
+      </ng-template>
+
+      <ng-template  [ngIf]="cfType == 'month'">
+
+        <div class="itemwarp font-normal">
+          <p>重复周期</p>
+          <radio-spinner label="月" [options]="itemRanges" [(ngModel)]="cfMonthOptions.frequency" (onChanged)="onFreqChanged($event)" ></radio-spinner>
+        </div>
+        <div class="itemwarp font-normal">
+          <p>重复开启</p>
+          <radio-select [options]="itemMonthDayRangeOptions" multiple="true" [(ngModel)]="cfMonthOptions.freqOption" (onChanged)="onFreqOptionChanged($event)" button7></radio-select>
+        </div>
+
+        <div class="itemwarp font-normal">
+          <p>结束</p>
+          <ion-list class="endwith" radio-group no-lines [(ngModel)]="cfMonthOptions.endType" (ionChange)="onEndTypeChanged($event)">
+            <ion-item>
+              <ion-radio item-start value="never"></ion-radio>
+              <ion-label>默认(3年)</ion-label>
+            </ion-item>
+            <ion-item>
+              <ion-radio item-start value="aftertimes"></ion-radio>
+              <ion-label class="inline">
+                <div *ngIf="cfMonthOptions.endType != 'aftertimes'" class="inlabel">一定次数后</div>
+                <radio-spinner label="次后" *ngIf="cfMonthOptions.endType == 'aftertimes'" [options]="itemRanges" [(ngModel)]="cfMonthOptions.afterTimes" (onChanged)="onEndAfterTimesChanged($event)"></radio-spinner>
+              </ion-label>
+            </ion-item>
+            <ion-item>
+              <ion-radio (ionSelect)="openUntilEndDate('m')" item-start value="tosomeday"></ion-radio>
+              <ion-label>直到{{cfMonthOptions.toSomeDay | formatedate : 'CYYYY/MM/DD'}}</ion-label>
+            </ion-item>
+          </ion-list>
+        </div>
+      </ng-template>
+
+      <ng-template  [ngIf]="cfType == 'year'">
+
+        <div class="itemwarp font-normal">
+          <p>重复周期</p>
+          <radio-spinner label="年" [options]="itemRanges" [(ngModel)]="cfYearOptions.frequency" (onChanged)="onFreqChanged($event)"></radio-spinner>
+        </div>
+        <div class="itemwarp font-normal">
+          <p>结束</p>          
+          <ion-list class="endwith" radio-group no-lines [(ngModel)]="cfYearOptions.endType" (ionChange)="onEndTypeChanged($event)">
+            <ion-item>
+              <ion-radio item-start value="never"></ion-radio>
+              <ion-label>默认(20年)</ion-label>
+            </ion-item>
+            <ion-item>
+              <ion-radio item-start value="aftertimes"></ion-radio>
+              <ion-label class="inline">
+                <div *ngIf="cfYearOptions.endType != 'aftertimes'" class="inlabel">一定次数后</div>
+                <radio-spinner label="次后" *ngIf="cfYearOptions.endType == 'aftertimes'" [options]="itemRanges" [(ngModel)]="cfYearOptions.afterTimes" (onChanged)="onEndAfterTimesChanged($event)"></radio-spinner>
+              </ion-label>
+            </ion-item>
+            <ion-item>
+              <ion-radio (ionSelect)="openUntilEndDate('y')" item-start value="tosomeday"></ion-radio>
+              <ion-label>直到{{cfYearOptions.toSomeDay | formatedate : 'CYYYY/MM/DD'}}</ion-label>
+            </ion-item>
+          </ion-list>
+        </div>
+      </ng-template>
+
+    </modal-box>
+
+    <div style="display: none">
+      <date-picker  #utilEndDateD [(ngModel)]="cfDayOptions.toSomeDay"
+                    pickerFormat="YYYY ,MM DD"
+                    cancelText="取消" doneText="选择" (ngModelChange)="dtselect('d')"
+                    min="{{minDate}}" max="2059-01-01"
+      ></date-picker>
+      <date-picker  #utilEndDateW [(ngModel)]="cfWeekOptions.toSomeDay"
+                    pickerFormat="YYYY ,MM DD"
+                    cancelText="取消" doneText="选择" (ngModelChange)="dtselect('w')"
+                    min="{{minDate}}" max="2059-01-01"
+      ></date-picker>
+      <date-picker  #utilEndDateM [(ngModel)]="cfMonthOptions.toSomeDay"
+                    pickerFormat="YYYY ,MM DD"
+                    cancelText="取消" doneText="选择" (ngModelChange)="dtselect('m')"
+                    min="{{minDate}}" max="2059-01-01"
+      ></date-picker>
+      <date-picker  #utilEndDateY [(ngModel)]="cfYearOptions.toSomeDay"
+                    pickerFormat="YYYY ,MM DD"
+                    cancelText="取消" doneText="选择" (ngModelChange)="dtselect('y')"
+                    min="{{minDate}}" max="2059-01-01"
+      ></date-picker>
+    </div>
   `
 })
 export class RepeatPage {
@@ -228,11 +175,6 @@ export class RepeatPage {
   utilEndDateM: DatePickerComponent;
   @ViewChild("utilEndDateY")
   utilEndDateY: DatePickerComponent;
-
-  statusBarColor: string = "#3c4d55";
-
-  dttype : number = 0;
-  datevalue : string ;
 
   buttons: any = {
     remove: false,
@@ -309,14 +251,14 @@ export class RepeatPage {
         Object.assign(this.currentRepeat, this.originRepeat);
       }
     }
-    this.items.push({value: "", caption: "关"});
+    this.items.push({value: "", caption: "关闭"});
     this.items.push({value: "day", caption: "每日"});
     this.items.push({value: "week", caption: "每周"});
     this.items.push({value: "month", caption: "每月"});
     this.items.push({value: "year", caption: "每年"});
 
-    this.itemRanges.push({value: "subtract", icon: "remove"});
-    this.itemRanges.push({value: "add", icon: "add"});
+    this.itemRanges.push({value: "remove", icon: "fa-minus-square"});
+    this.itemRanges.push({value: "add", icon: "fa-plus-square"});
 
     this.itemRangeOptions.push({value: "sunday", caption: "日"});
     this.itemRangeOptions.push({value: "monday", caption: "一"});
@@ -514,8 +456,8 @@ export class RepeatPage {
     switch (cfType) {
       case "day":
         if (target == "cycletype") rtjson.cycletype = CycleType.day;
-        if (target == "cyclenum") rtjson.cyclenum = this.cfDayOptions.frequency;
-        if (target == "over") {
+        if (target == "cyclenum" || target == "cycletype") rtjson.cyclenum = this.cfDayOptions.frequency;
+        if (target == "over" || target == "cycletype") {
           switch (this.cfDayOptions.endType) {
             case "never":
               rtjson.over.type = OverType.fornever;
@@ -539,8 +481,8 @@ export class RepeatPage {
         break;
       case "week":
         if (target == "cycletype") rtjson.cycletype = CycleType.week;
-        if (target == "cyclenum") rtjson.cyclenum = this.cfWeekOptions.frequency;
-        if (target == "openway") {
+        if (target == "cyclenum" || target == "cycletype") rtjson.cyclenum = this.cfWeekOptions.frequency;
+        if (target == "openway" || target == "cycletype") {
           rtjson.openway.length = 0;
 
           if (this.cfWeekOptions.freqOption && this.cfWeekOptions.freqOption instanceof Array) {
@@ -553,7 +495,7 @@ export class RepeatPage {
             }, rtjson.openway);
           }
         }
-        if (target == "over") {
+        if (target == "over" || target == "cycletype") {
           switch (this.cfWeekOptions.endType) {
             case "never":
               rtjson.over.type = OverType.fornever;
@@ -577,8 +519,8 @@ export class RepeatPage {
         break;
       case "month":
         if (target == "cycletype") rtjson.cycletype = CycleType.month;
-        if (target == "cyclenum") rtjson.cyclenum = this.cfMonthOptions.frequency;
-        if (target == "openway") {
+        if (target == "cyclenum" || target == "cycletype") rtjson.cyclenum = this.cfMonthOptions.frequency;
+        if (target == "openway" || target == "cycletype") {
           rtjson.openway.length = 0;
 
           if (this.cfMonthOptions.freqOption && this.cfMonthOptions.freqOption instanceof Array) {
@@ -591,7 +533,7 @@ export class RepeatPage {
             }, rtjson.openway);
           }
         }
-        if (target == "over") {
+        if (target == "over" || target == "cycletype") {
           switch (this.cfMonthOptions.endType) {
             case "never":
               rtjson.over.type = OverType.fornever;
@@ -615,8 +557,8 @@ export class RepeatPage {
         break;
       case "year":
         if (target == "cycletype") rtjson.cycletype = CycleType.year;
-        if (target == "cyclenum") rtjson.cyclenum = this.cfYearOptions.frequency;
-        if (target == "over") {
+        if (target == "cyclenum" || target == "cycletype") rtjson.cyclenum = this.cfYearOptions.frequency;
+        if (target == "over" || target == "cycletype") {
           switch (this.cfYearOptions.endType) {
             case "never":
               rtjson.over.type = OverType.fornever;
