@@ -1,4 +1,19 @@
 page-attach {
+  .list-grid-content{
+    .topheader{
+    }
+    .sn{
+      -webkit-line-clamp: inherit;
+
+    }
+
+    ion-thumbnail{
+      img{
+        max-height: 15rem;
+      }
+    }
+  }
+
   .toolbar-ios{
     margin: 1.5rem 1rem 0.8rem 1rem;
     width: auto;
@@ -66,3 +81,4 @@ page-attach {
     }
   }
 }
+

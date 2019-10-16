@@ -121,6 +121,7 @@ import {LocationSearchService} from "../service/restful/LocationSearchService";
 import {EffectService} from "../service/business/effect.service";
 import {DtSelectPageModule} from "../pages/dtselect/dtselect.module";
 import {MemberPageModule} from "../pages/member/member.module";
+import * as ionicGalleryModal from 'ionic-gallery-modal';
 
 @NgModule({
   declarations: [
@@ -129,6 +130,7 @@ import {MemberPageModule} from "../pages/member/member.module";
   imports: [
     BrowserModule,
     BaiduMapModule.forRoot({ ak: 'zD6zCIA9w7ItoXwxQ8IRPD4rk5E9GEew' }),
+    ionicGalleryModal.GalleryModalModule,
     IonicModule.forRoot(MyApp, {
       tabsHideOnSubPages: 'true',
       //强制使用IOS风格
@@ -259,8 +261,10 @@ import {MemberPageModule} from "../pages/member/member.module";
     EffectService,
     LocationSearchService,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
-    {provide: HAMMER_GESTURE_CONFIG, useClass: HammerDIRECTIONALLConfig}
+    {provide: HAMMER_GESTURE_CONFIG, useClass: HammerDIRECTIONALLConfig},
+    {provide: HAMMER_GESTURE_CONFIG, useClass: ionicGalleryModal.GalleryModalHammerConfig}
   ]
+
 })
 export class AppModule {
 }
