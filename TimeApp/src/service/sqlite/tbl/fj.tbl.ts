@@ -11,7 +11,7 @@ export class FjTbl implements ITblParam {
   obi: string;
   fjn: string;
   ext: string;
-  ui: string;     // 2019/10/16 增加附件创建人字段
+  ui: string;     // 2019/10/16 增加所属帐号
   fj: string;
   tb: string;
   del: string;
