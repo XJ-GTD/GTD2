@@ -43,7 +43,11 @@ import {Keyboard} from "@ionic-native/keyboard";
                 <ion-icon class="fal fa-comment-edit font-normal"></ion-icon>
                 <span class="font-normal">备注</span>
               </div>
-              <div (click)="changePlan()" end>
+              <div *ngIf="currentPlanItem.jtc == system" end>
+                <ion-icon class="fal fa-line-columns "></ion-icon>
+                <span class="font-normal">{{currentPlanItem.ji | formatplan: 'name' : '加入日历': publicplans}}</span>
+              </div>
+              <div *ngIf="currentPlanItem.jtc == selfdefine" (click)="changePlan()" end>
                 <ion-icon class="fal fa-line-columns "></ion-icon>
                 <span class="font-normal">{{currentPlanItem.ji | formatplan: 'name' : '加入日历': privateplans}}</span>
               </div>
@@ -127,6 +131,7 @@ export class CommemorationDayPage {
   currentuser: string = UserConfig.account.id;
   friends: Array<any> = UserConfig.friends;
   privateplans: Array<any> = UserConfig.privateplans;
+  publicplans: Array<any> = UserConfig.publicplans;
 
   repeattonon = RepeatFlag.RepeatToOnly;
 
