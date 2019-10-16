@@ -956,9 +956,7 @@ export class CalendarService extends BaseService {
     let planitemdb: JtaTbl = new JtaTbl();
     Object.assign(planitemdb, cond);
 
-    let sql: any = planitemdb.slTParam();
-
-    planitemdb = await this.sqlExce.getExtOneByParam<JtaTbl>(...sql);
+    planitemdb = await this.sqlExce.getOneByParam<JtaTbl>(planitemdb);
 
     if (!planitemdb) return null;
 
@@ -973,7 +971,7 @@ export class CalendarService extends BaseService {
     let members: Array<Member> = new Array<Member>();
 
     let querymemberdb: ParTbl = new ParTbl();
-    querymemberdb.obi = jti;
+    querymemberdb.obi = planitem.jti;
     querymemberdb.obt = ObjectType.Calendar;
 
     let memberdbs: Array<ParTbl> = await this.sqlExce.getLstByParam<ParTbl>(querymemberdb) || new Array<ParTbl>();
