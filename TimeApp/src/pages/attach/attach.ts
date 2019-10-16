@@ -47,23 +47,46 @@ import {UtilService} from "../../service/util-service/util.service";
               </div>
             </div>
           </ion-row>
-          <ion-row class="item-content item-content-backgroud" leftmargin toppaddingsamll bottompaddingsamll rightmargin
-                   *ngFor="let fj of fjArray">
+          <ion-row class="item-content item-content-backgroud" leftmargin toppaddingsamll bottompaddingsamll rightmargin>
 
             <div class="line font-normal topheader" leftmargin rightmargin>
               <div class="st font-small"> 12:00</div>
               <div class="person font-small" end>---来自谷子地</div>
             </div>
             <div class="line font-normal" leftmargin rightmargin>
+              <div class="sn towline">官网的其中一个图片.png</div>
+            </div>
+            <div class="line font-normal" leftmargin rightmargin>
               <div><ion-thumbnail  (click)="openimg('https://pluto.guobaa.com/cal/img/5.png')">
-                <img src="https://pluto.guobaa.com/cal/img/5.png">
-
+                <img src="https://pluto.guobaa.com/cal/img/5.png" />
               </ion-thumbnail></div>
               <div class="icon" end>
                 <ion-icon class="fal fa-minus-circle"></ion-icon>
               </div>
             </div>
           </ion-row>
+
+
+          <ion-row class="item-content item-content-backgroud" leftmargin toppaddingsamll bottompaddingsamll rightmargin>
+
+            <div class="line font-normal topheader" leftmargin rightmargin>
+              <div class="st font-small"> 12:00</div>
+              <div class="person font-small" end>---来自谷子地</div>
+            </div>
+            <div class="line font-normal" leftmargin rightmargin>
+              <div class="sn towline">B2008_WindEDITLiteUsersCS.pdf</div>
+            </div>
+            <div class="line font-normal" leftmargin rightmargin>
+              <div>
+
+                <ion-icon class="fas fa-file-pdf" (click)="window.open('www.idec.com/language/chinese_s/AO/B2008_WindEDITLiteUsersCS.pdf')"></ion-icon>
+              </div>
+              <div class="icon" end>
+                <ion-icon class="fal fa-minus-circle font-large-x"></ion-icon>
+              </div>
+            </div>
+          </ion-row>
+          
         </ion-grid>
       </ion-scroll>
     </modal-box>
