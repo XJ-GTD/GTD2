@@ -8,7 +8,7 @@ import {RcInParam} from "../../data.mapping";
 import {BaseProcess} from "./base.process";
 import {EmitService} from "../../service/util-service/emit.service";
 import * as moment from "moment";
-import { PlanItemType, SelfDefineType } from "../../data.enum";
+import { PlanItemType, SelfDefineType, DelType } from "../../data.enum";
 
 /**
  * 特殊数据接收
@@ -41,7 +41,6 @@ export class SpecialDataProcess extends BaseProcess implements MQProcess {
     let specialDataPara: SpecialDataPara = content.parameters;
 
     if (specialDataPara.datas && specialDataPara.datas.length > 0) {
-      // let rcArray: Array<RcInParam> = new Array<RcInParam>();
 
       let hasWeather: boolean = false;
 
@@ -50,24 +49,12 @@ export class SpecialDataProcess extends BaseProcess implements MQProcess {
           hasWeather = true;
         }
 
-        // let rc:RcInParam = new RcInParam();
-        //
-        // rc.sn = data.title;//日程事件主题  必传
-        // rc.sd = data.fordate;//开始日期      必传
-        // rc.st = "99:99";//开始时间
-        // rc.ji = "";//计划ID
-        // rc.bz = data.desc;//备注
-        // rc.fjt = data.type;
-        // rc.fjn = data.fordate;
-        // rc.fj = JSON.stringify(data.ext).replace(/\"/g, `""`);
-        // rc.gs = (data.type == "weather"? "6" : "6");
-
-        // rcArray.push(rc);
         let current: PlanItemData = {} as PlanItemData;
 
         current.jtt = PlanItemType.Weather;
         current.jtc = SelfDefineType.System;
         current.sd = data.fordate;
+        current.del = DelType.undel;
 
         current = await this.calendarService.findPlanItem(current) || current;
 
@@ -92,8 +79,6 @@ export class SpecialDataProcess extends BaseProcess implements MQProcess {
           await this.calendarService.savePlanItem(current);
         }
       }
-
-      // await this.busiService.saveBatch(rcArray);
 
       if (hasWeather) this.emitService.emit("mwxing.weather.received");
     }
