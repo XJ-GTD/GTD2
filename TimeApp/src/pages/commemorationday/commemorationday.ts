@@ -10,7 +10,7 @@ import {DataConfig} from "../../service/config/data.config";
 import {FeedbackService} from "../../service/cordova/feedback.service";
 import {CalendarService, PlanItemData} from "../../service/business/calendar.service";
 import {EventService, RtJson, TxJson, Member, generateRtJson, generateTxJson} from "../../service/business/event.service";
-import {OperateType, RepeatFlag, ConfirmType, IsWholeday, InviteState, ModiPower} from "../../data.enum";
+import {OperateType, RepeatFlag, ConfirmType, IsWholeday, InviteState, SelfDefineType, ModiPower} from "../../data.enum";
 import {Keyboard} from "@ionic-native/keyboard";
 
 /**
