@@ -12,42 +12,36 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms'
   template: `<div class="grid">
     <div class="row" *ngIf="isFull && isCenter" align-items-center justify-content-between>
       <label *ngIf="label">{{_value + label}}</label>
-      <div>
-        <button ion-button *ngFor="let option of options;" [ngClass]="{'checked': option.value == _value}" clear (click)="change($event, option.value)" small>
+        <button ion-button *ngFor="let option of options;" [ngClass]="{'checked': option.value == _value}" clear (click)="change($event, option.value)" >
         <ng-container *ngIf="option.icon">
-          <ion-icon [name]="option.icon"></ion-icon>
+          <ion-icon class="fad" [ngClass] = "option.icon"></ion-icon>
         </ng-container>
         <ng-container *ngIf="!option.icon">
           {{option.caption}}
         </ng-container>
         </button>
-      </div>
     </div>
     <div class="row" *ngIf="!isFull && isCenter" align-items-center justify-content-center>
       <label *ngIf="label">{{_value + label}}</label>
-      <div>
-        <button ion-button *ngFor="let option of options;" [ngClass]="{'checked': option.value == _value}" clear (click)="change($event, option.value)" small>
+        <button ion-button *ngFor="let option of options;" [ngClass]="{'checked': option.value == _value}" clear (click)="change($event, option.value)" >
         <ng-container *ngIf="option.icon">
-          <ion-icon [name]="option.icon"></ion-icon>
+          <ion-icon class="fad" [ngClass] = "option.icon"></ion-icon>
         </ng-container>
         <ng-container *ngIf="!option.icon">
           {{option.caption}}
         </ng-container>
         </button>
       </div>
-    </div>
     <div class="row" *ngIf="!isFull && !isCenter" align-items-center justify-content-start>
       <label *ngIf="label">{{_value + label}}</label>
-      <div>
-        <button ion-button *ngFor="let option of options;" [ngClass]="{'checked': option.value == _value}" clear (click)="change($event, option.value)" small>
+        <button ion-button *ngFor="let option of options;" [ngClass]="{'checked': option.value == _value}" clear (click)="change($event, option.value)" >
         <ng-container *ngIf="option.icon">
-          <ion-icon [name]="option.icon"></ion-icon>
+          <ion-icon class="fad" [ngClass] = "option.icon"></ion-icon>
         </ng-container>
         <ng-container *ngIf="!option.icon">
           {{option.caption}}
         </ng-container>
         </button>
-      </div>
     </div>
   </div>`,
   providers: [{

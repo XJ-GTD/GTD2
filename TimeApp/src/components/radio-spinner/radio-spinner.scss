@@ -2,54 +2,81 @@ radio-spinner {
   width: 100vmin;
 
   label {
-    margin-right: 12px;
+    margin-right: 1rem;
+    font-size: 1.6rem;
+    color:rgba(7,109,138,1);
+    letter-spacing: 0.2rem;
+    font-weight: bold;
   }
-
   button, .button-ios, .button-clear-ios {
-    background-color: #111;
-    color: #fff;
-    border: 1.5px solid #fff;
-    border-right: 0px;
-    margin-right: 0px;
-    margin-left: 0px;
-    border-radius: 0px;
+    //background: rgba(239, 239, 239, 1);
+    color: rgba(51, 51, 51, 1);
+    font-size: 1.6rem;
+    //margin-right: 0.9rem;
+    //border-radius: 50%;
+    //min-height: 32px;
+    height: auto;
+    //min-width: 32px;
+    margin: 0.1rem 1rem;
+    padding: 0;
+    .icon{
+      margin-right: 0px !important;
+      font-size: 3rem !important;
+      line-height: 3rem !important;
+      color:rgba(7,109,138,1) !important;
+    }
   }
 
   button.checked, .button-ios.checked, .button-clear-ios.checked {
-    background-color: #111;
-    color: $masterColor;
+    background: rgba(217, 233, 238, 1);
+    color: rgba(7, 109, 138, 1);
   }
 
-  button.checked:first-child, .button-ios.checked:first-child, .button-clear-ios.checked:first-child {
-    background-color: #111;
-    color: $masterColor;
-  }
-
-  button.checked:last-child, .button-ios.checked:last-child, .button-clear-ios.checked:last-child {
-    background-color: #111;
-    color: $masterColor;
-  }
-
-  button:first-child, .button-ios:first-child, .button-clear-ios:first-child {
-    border: 1.5px solid #fff;
-    border-right: 0px;
-    border-top-left-radius: 10vmin;
-    border-bottom-left-radius: 10vmin;
-    border-top-right-radius: 0px;
-    border-bottom-right-radius: 0px;
-    margin-right: 0px;
-    margin-left: 0px;
-    color: #fff;
-  }
-
-  button:last-child, .button-ios:last-child, .button-clear-ios:last-child {
-    border: 1.5px solid #fff;
-    border-top-left-radius: 0px;
-    border-bottom-left-radius: 0px;
-    border-top-right-radius: 10vmin;
-    border-bottom-right-radius: 10vmin;
-    margin-right: 0px;
-    margin-left: 0px;
-    color: #fff;
-  }
+  //button, .button-ios, .button-clear-ios {
+  //  background-color: #111;
+  //  color: #fff;
+  //  border: 1.5px solid #fff;
+  //  border-right: 0px;
+  //  margin-right: 0px;
+  //  margin-left: 0px;
+  //  border-radius: 0px;
+  //}
+  //
+  //button.checked, .button-ios.checked, .button-clear-ios.checked {
+  //  background-color: #111;
+  //  color: $masterColor;
+  //}
+  //
+  //button.checked:first-child, .button-ios.checked:first-child, .button-clear-ios.checked:first-child {
+  //  background-color: #111;
+  //  color: $masterColor;
+  //}
+  //
+  //button.checked:last-child, .button-ios.checked:last-child, .button-clear-ios.checked:last-child {
+  //  background-color: #111;
+  //  color: $masterColor;
+  //}
+  //
+  //button:first-child, .button-ios:first-child, .button-clear-ios:first-child {
+  //  border: 1.5px solid #fff;
+  //  border-right: 0px;
+  //  border-top-left-radius: 10vmin;
+  //  border-bottom-left-radius: 10vmin;
+  //  border-top-right-radius: 0px;
+  //  border-bottom-right-radius: 0px;
+  //  margin-right: 0px;
+  //  margin-left: 0px;
+  //  color: #fff;
+  //}
+  //
+  //button:last-child, .button-ios:last-child, .button-clear-ios:last-child {
+  //  border: 1.5px solid #fff;
+  //  border-top-left-radius: 0px;
+  //  border-bottom-left-radius: 0px;
+  //  border-top-right-radius: 10vmin;
+  //  border-bottom-right-radius: 10vmin;
+  //  margin-right: 0px;
+  //  margin-left: 0px;
+  //  color: #fff;
+  //}
 }
