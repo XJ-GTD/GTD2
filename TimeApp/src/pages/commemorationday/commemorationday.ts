@@ -31,7 +31,7 @@ import {Keyboard} from "@ionic-native/keyboard";
         <ion-row class="snRow">
           <div class="sn font-large-x">
             <!--主题-->
-            <ion-textarea rows="8" [(ngModel)]="currentPlanItem.jtn" (ionChange)="changeTitle()" #bzRef></ion-textarea>
+            <ion-textarea rows="8" [(ngModel)]="currentPlanItem.jtn" (ionChange)="changeTitle()" [readonly]="currentPlanItem.jtc == system" #bzRef></ion-textarea>
           </div>
         </ion-row>
 
@@ -50,7 +50,7 @@ import {Keyboard} from "@ionic-native/keyboard";
             </ion-row>
 
             <ion-row *ngIf="currentPlanItem.jti">
-              <div>
+              <div *ngIf="currentPlanItem.jtc == selfdefine">
                 <button ion-button clear (click)="changeInvites()" class="font-normal">
                   <ion-icon class="fal fa-user-friends font-normal"
                             *ngIf="currentPlanItem.pn <= 0"></ion-icon>
@@ -94,7 +94,7 @@ import {Keyboard} from "@ionic-native/keyboard";
               </div>
               <div (click)="changeDatetime()">
               </div>
-              <div end *ngIf="currentPlanItem.ui != currentuser">
+              <div end *ngIf="currentPlanItem.jtc == selfdefine && currentPlanItem.ui != currentuser">
                 <span class="content  font-normal">
                    ---来自{{currentPlanItem.ui | formatuser: currentPlanItem: friends}}
                   </span>
@@ -129,6 +129,9 @@ export class CommemorationDayPage {
   privateplans: Array<any> = UserConfig.privateplans;
 
   repeattonon = RepeatFlag.RepeatToOnly;
+
+  system: SelfDefineType = SelfDefineType.System;
+  selfdefine: SelfDefineType = SelfDefineType.Define;
 
   modifyConfirm;
 
@@ -172,6 +175,8 @@ export class CommemorationDayPage {
   }
 
   changeTitle() {
+    if (this.currentPlanItem.jtc == SelfDefineType.System) return;    // 下载日历项不能修改
+
     if (this.currentPlanItem.jti) {
       if (this.currentPlanItem.jtn != "" && !this.calendarService.isSamePlanItem(this.currentPlanItem, this.originPlanItem)) {
         this.buttons.save = true;
@@ -188,6 +193,8 @@ export class CommemorationDayPage {
   }
 
   changeDatetime() {
+    if (this.currentPlanItem.jtc == SelfDefineType.System) return;    // 下载日历项不能修改
+
     if (this.originPlanItem.ui != this.currentuser && (this.originPlanItem.md != ModiPower.enable || this.originPlanItem.invitestatus != InviteState.Accepted)) { // 受邀人修改权限检查
       return;
     }
@@ -207,6 +214,8 @@ export class CommemorationDayPage {
   }
 
   changeInvites() {
+    if (this.currentPlanItem.jtc == SelfDefineType.System) return;    // 下载日历项不能修改
+
     let clonemembers;
     if (this.currentPlanItem.members && this.currentPlanItem.members.length > 0) {
       clonemembers = new Array<Member>(...this.currentPlanItem.members);
@@ -307,6 +316,8 @@ export class CommemorationDayPage {
   }
 
   changeComment() {
+    if (this.currentPlanItem.jtc == SelfDefineType.System) return;    // 下载日历项不能修改
+
     let modal = this.modalCtrl.create(DataConfig.PAGE._COMMENT_PAGE, {value: this.currentPlanItem.bz});
     modal.onDidDismiss(async (data) => {
       if (!data) return;
@@ -323,6 +334,8 @@ export class CommemorationDayPage {
   }
 
   changePlan() {
+    if (this.currentPlanItem.jtc == SelfDefineType.System) return;    // 下载日历项不能修改
+
     let modal = this.modalCtrl.create(DataConfig.PAGE._PLAN_PAGE, {ji: this.currentPlanItem.ji});
     modal.onDidDismiss(async (data) => {
       if (!data) return;
