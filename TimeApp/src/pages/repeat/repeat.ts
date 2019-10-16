@@ -198,22 +198,22 @@ import {CycleType, OverType} from "../../data.enum";
     <date-picker  #utilEndDateD [(ngModel)]="cfDayOptions.toSomeDay"
                   pickerFormat="YYYY ,MM DD"
                   cancelText="取消" doneText="选择" (ngModelChange)="dtselect('d')"
-                  min="1989-01-01" max="2059-01-01"
+                  min="{{minDate}}" max="2059-01-01"
     ></date-picker>
     <date-picker  #utilEndDateW [(ngModel)]="cfWeekOptions.toSomeDay"
                   pickerFormat="YYYY ,MM DD"
                   cancelText="取消" doneText="选择" (ngModelChange)="dtselect('w')"
-                  min="1989-01-01" max="2059-01-01"
+                  min="{{minDate}}" max="2059-01-01"
     ></date-picker>
     <date-picker  #utilEndDateM [(ngModel)]="cfMonthOptions.toSomeDay"
                   pickerFormat="YYYY ,MM DD"
                   cancelText="取消" doneText="选择" (ngModelChange)="dtselect('m')"
-                  min="1989-01-01" max="2059-01-01"
+                  min="{{minDate}}" max="2059-01-01"
     ></date-picker>
     <date-picker  #utilEndDateY [(ngModel)]="cfYearOptions.toSomeDay"
                   pickerFormat="YYYY ,MM DD"
                   cancelText="取消" doneText="选择" (ngModelChange)="dtselect('y')"
-                  min="1989-01-01" max="2059-01-01"
+                  min="{{minDate}}" max="2059-01-01"
     ></date-picker>
   </div>
   `
@@ -251,6 +251,7 @@ export class RepeatPage {
 
   title: string = "重复关闭。";
   cfType: string = "";
+  minDate : string = moment().format("YYYY-MM-DD");
   //每日选择参数
   cfDayOptions: any = {
     frequency: "",
