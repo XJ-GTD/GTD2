@@ -63,18 +63,34 @@ export class SpecialDataProcess extends BaseProcess implements MQProcess {
         // rc.gs = (data.type == "weather"? "6" : "6");
 
         // rcArray.push(rc);
-        let item: PlanItemData = {} as PlanItemData;
+        let current: PlanItemData = {} as PlanItemData;
 
-        item.jtt = PlanItemType.Weather;
-        item.jtc = SelfDefineType.System;
-        item.jtn = data.title;
-        item.sd = data.fordate;
-        item.st = moment().format("HH:mm");
-        item.ji = "";
-        item.bz = data.desc;
-        item.ext = JSON.stringify(data.ext).replace(/\"/g, `""`);
+        current.jtt = PlanItemType.Weather;
+        current.jtc = SelfDefineType.System;
+        current.sd = data.fordate;
 
-        await this.calendarService.savePlanItem(item);
+        current = await this.calendarService.getPlanItem(current) || current;
+
+        if (current && current.jti) {
+          let origin: PlanItemData = {} as PlanItemData;
+          Object.assign(origin, current);
+
+          current.jtn = data.title;
+          current.st = moment().format("HH:mm");
+          current.ji = "";
+          current.bz = data.desc;
+          current.ext = JSON.stringify(data.ext).replace(/\"/g, `""`);
+
+          await this.calendarService.savePlanItem(current, origin);
+        } else {
+          current.jtn = data.title;
+          current.st = moment().format("HH:mm");
+          current.ji = "";
+          current.bz = data.desc;
+          current.ext = JSON.stringify(data.ext).replace(/\"/g, `""`);
+
+          await this.calendarService.savePlanItem(current);
+        }
       }
 
       // await this.busiService.saveBatch(rcArray);
