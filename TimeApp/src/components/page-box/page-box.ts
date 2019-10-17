@@ -56,8 +56,8 @@ import {StatusType} from "../../data.enum";
           </div>
         </ion-toolbar>
       </ion-header>
-      <div class="plansbar" *ngIf="data && data.length == 2" [ngStyle]="{
-        'background': (data[0] | formatplan: 'summary': '#fff': data[1])
+      <div class="plansbar" *ngIf="data && plans" [ngStyle]="{
+        'background': (data | formatplan: 'summary': '#fff': plans)
       }"></div>
       <ion-content class="page-content" #pagecontent>
         <ng-content></ng-content>
@@ -77,6 +77,9 @@ export class PageBoxComponent{
 
   @Input()
   data: any;
+
+  @Input()
+  plans: any;
 
   @Input()
   speakData:string;
