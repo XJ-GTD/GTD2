@@ -26,14 +26,14 @@ import * as anyenum from "../../data.enum";
 
       <div ion-item no-border no-padding no-lines no-margin class="itemwarp font-normal" *ngIf="settype=='0'">
         <date-picker  #startDate item-content [(ngModel)]="this.pagedata.sd"
-                      pickerFormat="YYYY ,MM DD" displayFormat="YYYY 年 MM 月 DD 日"
-                      cancelText="取消" doneText="选择" 
+                      pickerFormat="YYYY ,MM DD" displayFormat="YYYY 年 MM 月 DD 日"  
+                      cancelText="取消" doneText="选择"  (ionChange) = "seteddate()"
         ></date-picker>
         <ion-label><ion-icon class="fal fa-calendar-alt"></ion-icon>开始日期</ion-label>
       </div>
       <div ion-item no-border no-padding no-lines no-margin class="itemwarp font-normal" *ngIf="settype=='0'">
         <date-picker #startTime  [(ngModel)]="this.pagedata.st" item-content pickerFormat="A hh mm  " displayFormat="A hh 点 mm 分" 
-                     doneText="选择"
+                     doneText="选择" (ionChange) = "seteddate()"
         ></date-picker>
         <ion-label><ion-icon class="fal fa-clock"></ion-icon>开始时间</ion-label>
       </div>
@@ -151,6 +151,12 @@ export class DtSelectPage {
       this.pagedata.st = moment().format("HH:mm");
     }
     this.pagedata.ct = 60;
+    this.pagedata.ed = moment(this.pagedata.sd).add(this.pagedata.ct, 'm').format("YYYY-MM-DD");
+    this.pagedata.et = moment(this.pagedata.sd + " " + this.pagedata.st).
+    add(this.pagedata.ct, 'm').format("HH:mm");
+  }
+
+  private seteddate(){
     this.pagedata.ed = moment(this.pagedata.sd).add(this.pagedata.ct, 'm').format("YYYY-MM-DD");
     this.pagedata.et = moment(this.pagedata.sd + " " + this.pagedata.st).
     add(this.pagedata.ct, 'm').format("HH:mm");
