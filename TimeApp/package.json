@@ -112,6 +112,7 @@
     "ion-multi-picker": "^2.1.2",
     "ionic": "^4.3.0",
     "ionic-angular": "3.9.2",
+    "ionic-gallery-modal": "^0.2.7",
     "ionic-plugin-keyboard": "~2.2.1",
     "ionic2-auto-complete": "^1.6.2-alpha",
     "ionicons": "3.0.0",

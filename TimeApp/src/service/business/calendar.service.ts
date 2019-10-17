@@ -8,7 +8,7 @@ import { SyncData, PushInData, PullInData, DataRestful } from "../restful/datase
 import { BackupPro, BacRestful, OutRecoverPro, RecoverPro } from "../restful/bacsev";
 import { EventData, TaskData, AgendaData, MiniTaskData, EventService, RtJson, TxJson, Member, generateRtJson, generateTxJson } from "./event.service";
 import { MemoData, MemoService } from "./memo.service";
-import { EventType, PlanType, PlanItemType, PlanDownloadType, MemberShareState, ConfirmType, OperateType, ObjectType, PageDirection, CycleType, SyncType, RepeatFlag, DelType, SyncDataSecurity, SyncDataStatus, InviteState, ModiPower, InvitePowr } from "../../data.enum";
+import { EventType, PlanType, PlanItemType, PlanDownloadType, MemberShareState, SelfDefineType, ConfirmType, OperateType, ObjectType, PageDirection, CycleType, SyncType, RepeatFlag, DelType, SyncDataSecurity, SyncDataStatus, InviteState, ModiPower, InvitePowr } from "../../data.enum";
 import { UserConfig } from "../config/user.config";
 import * as async from "async/dist/async.js"
 import * as moment from "moment";
@@ -169,7 +169,14 @@ export class CalendarService extends BaseService {
             return;
           }
 
-          this.activitiesqueue.push({data: data});
+          this.activitiesqueue.push({data: data}, () => {
+            // 完成处理
+            if (this.calendaractivities.length > 0) {
+              for (let monthactivities of this.calendaractivities) {
+                this.emitService.emit("mwxing.calendar." + monthactivities.month + ".changed", monthactivities);
+              }
+            }
+          });
         });
 
         break;
@@ -916,6 +923,57 @@ export class CalendarService extends BaseService {
 
     let querymemberdb: ParTbl = new ParTbl();
     querymemberdb.obi = jti;
+    querymemberdb.obt = ObjectType.Calendar;
+
+    let memberdbs: Array<ParTbl> = await this.sqlExce.getLstByParam<ParTbl>(querymemberdb) || new Array<ParTbl>();
+
+    for (let memberdb of memberdbs) {
+      let member = {} as Member;
+      Object.assign(member, memberdb);
+
+      let fs: FsData = this.userConfig.GetOneBTbl(memberdb.pwi);
+
+      this.assertEmpty(fs);   // 联系人不能为空
+
+      Object.assign(member, fs);
+
+      members.push(member);
+    }
+
+    planitem.members = members;
+
+    return planitem;
+  }
+
+  /**
+   * 根据日历项ID取得日历项
+   *
+   * @author leon_xi@163.com
+   **/
+  async findPlanItem(cond: PlanItemData): Promise<PlanItemData> {
+    this.assertEmpty(cond);       // 入参不能为空
+
+    let planitemdb: JtaTbl = new JtaTbl();
+    Object.assign(planitemdb, cond);
+
+    let planitems = await this.sqlExce.getLstByParam<JtaTbl>(planitemdb);
+
+    if (!planitems || planitems.length <= 0) return null;
+
+    planitemdb = planitems[0];    // 取第一条
+
+    let planitem: PlanItemData = {} as PlanItemData;
+
+    Object.assign(planitem, planitemdb);
+
+    planitem.rtjson = generateRtJson(planitem.rtjson, planitem.rt);
+    planitem.txjson = generateTxJson(planitem.txjson, planitem.tx);
+
+    // 获取参与人
+    let members: Array<Member> = new Array<Member>();
+
+    let querymemberdb: ParTbl = new ParTbl();
+    querymemberdb.obi = planitem.jti;
     querymemberdb.obt = ObjectType.Calendar;
 
     let memberdbs: Array<ParTbl> = await this.sqlExce.getLstByParam<ParTbl>(querymemberdb) || new Array<ParTbl>();
@@ -1847,6 +1905,11 @@ export class CalendarService extends BaseService {
       item.jtt = PlanItemType.Activity;
     }
 
+    // 自定义日历项
+    if (!item.jtc) {
+      item.jtc = SelfDefineType.Define;
+    }
+
     let items: Array<PlanItemData> = new Array<PlanItemData>();
     let itemdbs: Array<JtaTbl> = new Array<JtaTbl>();
     let members: Array<Member> = item.members || new Array<Member>();
@@ -2288,6 +2351,7 @@ export class CalendarService extends BaseService {
           planitemdb.jti = this.util.getUuid();
           planitemdb.ji = ji;         //计划ID
           planitemdb.jtt = itemType;  //日历项类型
+          planitemdb.jtc = SelfDefineType.System;  //日历项类型 下载
           planitemdb.jtn = pa.at;     //日程事件主题  必传
           planitemdb.sd = moment(pa.adt).format("YYYY/MM/DD");  //所属日期      必传
           planitemdb.st = pa.st;      //所属时间
@@ -3263,6 +3327,9 @@ export class CalendarService extends BaseService {
       let push: PushInData = new PushInData();
 
       for (let planitem of planitems) {
+        // 忽略内建日历项
+        if (planitem.jtc == SelfDefineType.System) continue;
+
         let sync: SyncData = new SyncData();
 
         sync.fields.unshared.push("del");             // 删除状态为个人数据不共享给他人
@@ -3330,7 +3397,9 @@ export class CalendarService extends BaseService {
         push.d.push(sync);
       }
 
-      await this.dataRestful.push(push);
+      if (push.d.length > 0) {
+        await this.dataRestful.push(push);
+      }
     }
 
     return;

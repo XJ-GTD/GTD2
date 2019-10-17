@@ -137,7 +137,7 @@ import {ModiPower} from "../../data.enum";
               </div>
               <div (click)="changeDatetime()">
               </div>
-              <div end *ngIf="currentAgenda.evi && currentAgenda.ui != currentuser">
+              <div end *ngIf="currentAgenda.evi && currentAgenda.ui != currentuser" (click)="openfriend(currentAgenda.ui)">
                 <span class="content  font-normal">
                    ---来自{{currentAgenda.ui | formatuser: currentuser: friends}}
                   </span>
@@ -710,5 +710,16 @@ export class AgendaPage {
   }
 
   speaker(){
+  }
+
+  openfriend(ui){
+    let friend = this.friends.find((val) => {
+      return ui == val.ui;
+    });
+
+    if (friend){
+      this.modalCtrl.create(DataConfig.PAGE._FD_PAGE,{fsData:friend}).present();
+    }
+
   }
 }

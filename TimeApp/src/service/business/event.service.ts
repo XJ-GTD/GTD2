@@ -3811,9 +3811,11 @@ export class EventService extends BaseService {
    * 当有新的数据加入时，则对原有的数据进行从新排列
    * @author ying<343253410@qq.com>
    */
-  async mergeTodolist(todolist: Array<AgendaData>, changed: AgendaData): Promise<Array<AgendaData>> {
+  async mergeTodolist(todolist: Array<AgendaData>, changedNew: AgendaData): Promise<Array<AgendaData>> {
       //传入数据不能为空
-      this.assertEmpty(changed);
+      this.assertEmpty(changedNew);
+      let changed: AgendaData = {} as AgendaData;
+      Object.assign(changed, changedNew);
       let agendaArray: Array<AgendaData> = new Array<AgendaData>();
       let flag: boolean = true;
       //当数据retevi为空的情况下
@@ -3937,34 +3939,49 @@ export class EventService extends BaseService {
           //3. 当事件的日期，在todolist中间时
           if ((moment(changed.evd + ' ' + changed.evt).diff(todolist[todolist.length-1].evd + ' ' + todolist[todolist.length-1].evt)<0)
               || (moment(changed.evd + ' ' + changed.evt).diff(todolist[0].evd + ' ' + todolist[0].evt)>0)) {
-                let flag = true;
+                let by: boolean = false;
                 let i=0;
                 let agendaArrayNew2: Array<AgendaData> = new Array<AgendaData>();
+                let j=-1;
                 for (let td of todolist) {
                   //todolist 已经是按照日期顺序排列好的，然后根据日期大小进行排序，当change的日期比todolist的小的时候插入进去
-                  if(((moment(changed.evd + ' ' + changed.evt).diff(td.evd + ' ' + td.evt)<=0)&&flag))
+                  if(((moment(changed.evd + ' ' + changed.evt).diff(td.evd + ' ' + td.evt)<=0)))
                   {
                     //验证当前的数据是否重复，如果重复，则替换，如果不重复则插入
-                    flag = false;
+                    //flag = false;
                     if((changed.evi == td.evi)) {
-                        todolist[i] = changed;
+                        //todolist[i] = changed;
+                        //break;
+                        j=i;
+                        by = true;
                         break;
                     }
                     else {
                       //将数据数据先截取出来
-                      agendaArrayNew2 = todolist.slice(i,todolist.length-1);
+                      //agendaArrayNew2 = todolist.slice(i,todolist.length-1);
                       //新加数据
-                      todolist[i] = changed;
-                      break;
+                      //todolist[i] = changed;
+                      //break;
+                      j=i;
                     }
                   }
                   i++;
                 }
-                if(agendaArrayNew2 && agendaArrayNew2.length>0)
-                {
-                  for(let td1 of agendaArrayNew2)
+
+                //当是重复数据的情况下
+                if(by) {
+                    todolist[j] = changed;
+                }
+                else {
+                  //当不是重复数据的情况下，插入中间位置
+                  agendaArrayNew2 = todolist.slice(j,todolist.length-1);
+                  todolist[j] = changed;
+                  if(agendaArrayNew2 && agendaArrayNew2.length>0)
                   {
-                        todolist.push(td1);
+                    for(let td1 of agendaArrayNew2)
+                    {
+                          todolist.push(td1);
+                    }
                   }
                 }
            }

@@ -13,6 +13,7 @@ import {Camera, CameraOptions} from '@ionic-native/camera';
 import {Chooser} from '@ionic-native/chooser';
 import {FilePath} from '@ionic-native/file-path';
 import {FjData, Attachment} from "../../service/business/event.service";
+import {UtilService} from "../../service/util-service/util.service";
 
 @IonicPage()
 @Component({
@@ -31,23 +32,61 @@ import {FjData, Attachment} from "../../service/business/event.service";
         <ion-textarea row="2" [(ngModel)]="bw" placeholder="输入补充信息" class="font-normal"></ion-textarea>
       </ion-toolbar>
       <ion-scroll scrollY="true" scrollheightAuto>
-        
+
         <ion-grid class="list-grid-content">
           <ion-row class="item-content item-content-backgroud" leftmargin toppaddingsamll bottompaddingsamll rightmargin
                    *ngFor="let fj of fjArray">
+            <div class="line font-normal topheader" leftmargin rightmargin>
+              <div class="person font-small">谷子地</div>
+              <div class="st font-small" end> 12:00</div>
+            </div>
             <div class="line font-normal" leftmargin rightmargin>
               <div class="sn towline">{{fj.fjn}}</div>
               <div class="icon" end>
                 <ion-icon class="fal fa-minus-circle"></ion-icon>
               </div>
             </div>
-            <div class="line font-normal" leftmargin rightmargin>
+          </ion-row>
+          <ion-row class="item-content item-content-backgroud" leftmargin toppaddingsamll bottompaddingsamll rightmargin>
 
+            <div class="line font-normal topheader" leftmargin rightmargin>
               <div class="st font-small"> 12:00</div>
-
               <div class="person font-small" end>---来自谷子地</div>
             </div>
+            <div class="line font-normal" leftmargin rightmargin>
+              <div class="sn towline">官网的其中一个图片.png</div>
+            </div>
+            <div class="line font-normal" leftmargin rightmargin>
+              <div><ion-thumbnail  (click)="openimg('https://pluto.guobaa.com/cal/img/5.png')">
+                <img src="https://pluto.guobaa.com/cal/img/5.png" />
+              </ion-thumbnail></div>
+              <div class="icon" end>
+                <ion-icon class="fal fa-minus-circle"></ion-icon>
+              </div>
+            </div>
           </ion-row>
+
+
+          <ion-row class="item-content item-content-backgroud" leftmargin toppaddingsamll bottompaddingsamll rightmargin>
+
+            <div class="line font-normal topheader" leftmargin rightmargin>
+              <div class="st font-small"> 12:00</div>
+              <div class="person font-small" end>---来自谷子地</div>
+            </div>
+            <div class="line font-normal" leftmargin rightmargin>
+              <div class="sn towline">B2008_WindEDITLiteUsersCS.pdf</div>
+            </div>
+            <div class="line font-normal" leftmargin rightmargin>
+              <div>
+
+                <ion-icon class="fas fa-file-pdf" (click)="window.open('www.idec.com/language/chinese_s/AO/B2008_WindEDITLiteUsersCS.pdf')"></ion-icon>
+              </div>
+              <div class="icon" end>
+                <ion-icon class="fal fa-minus-circle font-large-x"></ion-icon>
+              </div>
+            </div>
+          </ion-row>
+
         </ion-grid>
       </ion-scroll>
     </modal-box>
@@ -77,7 +116,8 @@ export class AttachPage {
               private transfer: FileTransfer,
               private filePath: FilePath,
               private keyboard: Keyboard,
-              private actionSheetCtrl: ActionSheetController,) {
+              private actionSheetCtrl: ActionSheetController,
+              private uitl:UtilService) {
     if (this.navParams && this.navParams.data) {
       this.obt = this.navParams.data.obt;
       this.obi = this.navParams.data.obi;
@@ -98,6 +138,10 @@ export class AttachPage {
 
   ionViewDidEnter() {
 
+  }
+
+  openimg(url){
+    this.uitl.photoViews(url);
   }
 
 

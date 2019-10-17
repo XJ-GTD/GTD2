@@ -28,7 +28,7 @@ import {StatusType} from "../../data.enum";
             <div (click)="goRecord()" *ngIf="buttons.record">
               <ion-icon class="fad fa-microphone"></ion-icon>
             </div>
-            
+
             <div (click)="goRemove()" *ngIf="buttons.remove">
               <ion-icon class="fad fa-trash"></ion-icon>
             </div>
@@ -49,13 +49,16 @@ import {StatusType} from "../../data.enum";
             <div  (click)="goSpeaker()" *ngIf="buttons.speaker">
               <ion-icon class="fad fa-ear"></ion-icon>
             </div>
-            
+
             <div (click)="goBack()" *ngIf="buttons.cancel">
               <ion-icon class="fad fa-undo"></ion-icon>
             </div>
           </div>
         </ion-toolbar>
       </ion-header>
+      <div class="plansbar" *ngIf="data && data instanceof Array && data.length == 2" [ngStyle]="{
+        'background': (data[0] | formatplan: 'summary': '#fff': data[1])
+      }"></div>
       <ion-content class="page-content" #pagecontent>
         <ng-content></ng-content>
       </ion-content>

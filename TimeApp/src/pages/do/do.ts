@@ -29,9 +29,9 @@ import { PageDirection, IsSuccess, OperateType, EventFinishStatus } from "../../
   selector: 'page-do',
   template:
     `
-      <page-box title="重要事项" [buttons]="buttons" (onCreate)="goCreate()" (onBack)="goBack()">
+      <page-box title="重要事项" [buttons]="buttons" [data]="[cachedtasks, privateplans]" (onCreate)="goCreate()" (onBack)="goBack()">
       <ng-container *ngFor="let day of days">
-        <task-list [currentuser]="currentuser" [friends]="friends" (onStartLoad)="getData($event, day)" (onCreateNew)="goCreate()" (onCardClick)="gotoDetail($event)" (onErease)="goErease($event)" (onComplete)="complete($event)" #tasklist></task-list>
+        <task-list [currentuser]="currentuser" [friends]="friends" [plans]="privateplans" (onStartLoad)="getData($event, day)" (onCreateNew)="goCreate()" (onCardClick)="gotoDetail($event)" (onErease)="goErease($event)" (onComplete)="complete($event)" #tasklist></task-list>
       </ng-container>
       </page-box>
     `
@@ -48,6 +48,8 @@ export class DoPage {
 
   currentuser: string = UserConfig.account.id;
   friends: Array<any> = UserConfig.friends;
+
+  privateplans: Array<any> = UserConfig.privateplans;
 
   tasklist: TaskListComponent;
   @ViewChildren("tasklist") tasklists: QueryList<TaskListComponent>;

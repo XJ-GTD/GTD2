@@ -13,7 +13,13 @@ export enum PlanType {
 
 export enum PlanItemType {
   Holiday = '0',
-  Activity = '1'
+  Activity = '1',
+  Weather = '2'
+}
+
+export enum SelfDefineType {
+  System = "0",
+  Define = "1"
 }
 
 export enum PlanDownloadType {

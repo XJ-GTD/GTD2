@@ -124,7 +124,7 @@
 //  url('https://www.guobaa.com/mif/static/xiaoji/fonts/L2ZkZC90aHltZWxlYWYvOTc0MC9qc29uLzk3NDE/PingFang-Regular.woff') format('woff'),
 //  url('https://www.guobaa.com/mif/static/xiaoji/fonts/L2ZkZC90aHltZWxlYWYvOTc0MC9qc29uLzk3NDE/PingFang-Regular.svg') format('svg');
 //}
-html{
+html {
 
   //默认值16px
   //font-size: 100%;
@@ -168,53 +168,60 @@ body {
     border-width: 0;
   }
 
-  .font-small-x{
-    font-size: 1rem;
+  .font-small-x {
+      font-size: 1rem;
+    line-height: 1rem;
+    }
+
+    .font-small {
+      font-size: 1.2rem;
+      line-height: 1.2rem;
+    }
+
+    .font-normal {
+      font-size: 1.4rem;
+      line-height: 1.4rem;
+    }
+
+    .font-large {
+      font-size: 1.6rem;
+      line-height: 1.6rem;
+    }
+
+    .font-large-x {
+      font-size: 1.8rem;
+      line-height: 1.8rem;
+    }
+
+    .towline {
+      min-height: 2.4rem;
+    }
+
+
+    //.scroll-y[scrollY] {
+    //  //--top: window.off;
+    //  height: calc(100% - 4px);
+    //
+    //  .scroll-content {
+    //    overflow-y: auto;
+    //  }
+    //}
   }
 
-  .font-small{
-    font-size: 1.2rem;
-  }
-  .font-normal{
-    font-size: 1.4rem;
-  }
-  .font-large{
-    font-size: 1.6rem;
-  }
+  // 主题
 
-  .font-large-x{
-    font-size: 1.8rem;
-  }
-
-  .towline {
-    min-height: 2.4rem;
-  }
-
-
-  //.scroll-y[scrollY] {
-  //  //--top: window.off;
-  //  height: calc(100% - 4px);
-  //
-  //  .scroll-content {
-  //    overflow-y: auto;
-  //  }
-  //}
-}
-
-// 主题
-
-@import "../../node_modules/ionic2-auto-complete/auto-complete";
-@import "../theme/autocomplete";
-//@import "../assets/css/weather-icons.min.css";
-@import "../theme/entrysystem";
-@import "../theme/black.theme";
-@import "../theme/white.theme";
-@import "../theme/list-grid-content";
-@import "../theme/list-content";
-@import "../theme/pagebox";
-@import "../theme/modalbox";
-@import "../theme/picker";
-@import "../theme/toggle";
-@import "../theme/icon";
-@import "../theme/prompt";
+  @import "../../node_modules/ionic2-auto-complete/auto-complete";
+  @import "../theme/autocomplete";
+  //@import "../assets/css/weather-icons.min.css";
+  @import "../theme/entrysystem";
+  @import "../theme/black.theme";
+  @import "../theme/white.theme";
+  @import "../theme/list-grid-content";
+  @import "../theme/list-content";
+  @import "../theme/pagebox";
+  @import "../theme/modalbox";
+  @import "../theme/picker";
+  @import "../theme/toggle";
+  @import "../theme/icon";
+  @import "../theme/prompt";
 

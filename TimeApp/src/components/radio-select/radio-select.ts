@@ -12,8 +12,7 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms'
   template: `<div class="grid">
     <div class="row" *ngIf="isFull && isCenter && !isMultiSelect" align-items-center justify-content-between>
       <label *ngIf="label">{{label}}</label>
-      <div>
-        <button ion-button *ngFor="let option of options;" [ngClass]="{'checked': option.value == _value}" clear (click)="change($event, option.value)" small>
+        <button ion-button *ngFor="let option of options;" [ngClass]="{'checked': option.value == _value}"  (click)="change($event, option.value)">
         <ng-container *ngIf="option.icon">
           <ion-icon [name]="option.icon"></ion-icon>
         </ng-container>
@@ -22,11 +21,9 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms'
         </ng-container>
         </button>
       </div>
-    </div>
     <div class="row" *ngIf="!isFull && isCenter && !isMultiSelect" align-items-center justify-content-center>
       <label *ngIf="label">{{label}}</label>
-      <div>
-        <button ion-button *ngFor="let option of options;" [ngClass]="{'checked': option.value == _value}" clear (click)="change($event, option.value)" small>
+        <button ion-button *ngFor="let option of options;" [ngClass]="{'checked': option.value == _value}"  (click)="change($event, option.value)" >
         <ng-container *ngIf="option.icon">
           <ion-icon [name]="option.icon"></ion-icon>
         </ng-container>
@@ -34,12 +31,10 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms'
           {{option.caption}}
         </ng-container>
         </button>
-      </div>
     </div>
     <div class="row" *ngIf="!isFull && !isCenter && !isMultiSelect" align-items-center justify-content-start>
       <label *ngIf="label">{{label}}</label>
-      <div>
-        <button ion-button *ngFor="let option of options;" [ngClass]="{'checked': option.value == _value}" clear (click)="change($event, option.value)" small>
+        <button ion-button *ngFor="let option of options;" [ngClass]="{'checked': option.value == _value}"  (click)="change($event, option.value)" >
         <ng-container *ngIf="option.icon">
           <ion-icon [name]="option.icon"></ion-icon>
         </ng-container>
@@ -47,12 +42,10 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms'
           {{option.caption}}
         </ng-container>
         </button>
-      </div>
     </div>
     <div class="row" *ngIf="!isFull && !isCenter && isMultiSelect" align-items-center justify-content-start>
       <label *ngIf="label">{{label}}</label>
-      <div>
-        <button ion-button *ngFor="let option of options; let i = index;" [ngClass]="{'checked': option.value == _values[i]}" clear (click)="change($event, option.value, i)" small>
+        <button ion-button *ngFor="let option of options; let i = index;" [ngClass]="{'checked': option.value == _values[i]}" (click)="change($event, option.value, i)" >
         <ng-container *ngIf="option.icon">
           <ion-icon [name]="option.icon"></ion-icon>
         </ng-container>
@@ -60,7 +53,6 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms'
           {{option.caption}}
         </ng-container>
         </button>
-      </div>
     </div>
   </div>`,
   providers: [{
