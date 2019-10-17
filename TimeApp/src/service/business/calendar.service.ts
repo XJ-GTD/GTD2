@@ -3327,6 +3327,9 @@ export class CalendarService extends BaseService {
       let push: PushInData = new PushInData();
 
       for (let planitem of planitems) {
+        // 忽略内建日历项
+        if (planitem.jtc == SelfDefineType.System) continue;
+
         let sync: SyncData = new SyncData();
 
         sync.fields.unshared.push("del");             // 删除状态为个人数据不共享给他人
@@ -3394,7 +3397,9 @@ export class CalendarService extends BaseService {
         push.d.push(sync);
       }
 
-      await this.dataRestful.push(push);
+      if (push.d.length > 0) {
+        await this.dataRestful.push(push);
+      }
     }
 
     return;
