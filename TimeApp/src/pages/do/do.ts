@@ -29,7 +29,7 @@ import { PageDirection, IsSuccess, OperateType, EventFinishStatus } from "../../
   selector: 'page-do',
   template:
     `
-      <page-box title="重要事项" [buttons]="buttons" [data]="cachedtasks" [plans]="privateplans" (onCreate)="goCreate()" (onBack)="goBack()">
+      <page-box title="重要事项" [buttons]="buttons" [data]="summarytasks" [plans]="privateplans" (onCreate)="goCreate()" (onBack)="goBack()">
       <ng-container *ngFor="let day of days">
         <task-list [currentuser]="currentuser" [friends]="friends" [plans]="privateplans" (onStartLoad)="getData($event, day)" (onCreateNew)="goCreate()" (onCardClick)="gotoDetail($event)" (onErease)="goErease($event)" (onComplete)="complete($event)" #tasklist></task-list>
       </ng-container>
@@ -54,6 +54,7 @@ export class DoPage {
   tasklist: TaskListComponent;
   @ViewChildren("tasklist") tasklists: QueryList<TaskListComponent>;
   cachedtasks: Array<AgendaData>;
+  summarytasks: Array<AgendaData>;
 
   days: Array<string> = new Array<string>();
   topday: string = moment().format("YYYY/MM/DD");
@@ -156,13 +157,16 @@ export class DoPage {
             }
 
             this.todosqueue.push({data: data}, () => {
-              this.changedetector.markForCheck();
-              this.changedetector.detectChanges();
+              this.summarytasks = this.cachedtasks.reduce((target, element) => {
+                target.push(element);
+                return target;
+              }, new Array<AgendaData>());
             });
           });
         }
 
         this.cachedtasks = d;
+        this.summarytasks = this.cachedtasks;
 
         if (d.length > 0) {
           this.topday = d[0].evd;
