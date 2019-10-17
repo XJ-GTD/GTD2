@@ -78,7 +78,7 @@ export class FormatPlanPipe implements PipeTransform {
               return ji == val.ji;
             });
 
-            if (plan) {
+            if (plan && plan.jc) {
               key = plan.jc;
             }
           }
