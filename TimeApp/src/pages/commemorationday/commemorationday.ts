@@ -209,7 +209,7 @@ export class CommemorationDayPage {
       st: this.currentPlanItem.st,
       ed: this.currentPlanItem.sd,
       et: this.currentPlanItem.st,
-      al: IsWholeday.NonWhole,
+      al: IsWholeday.StartSet,
       ct: 0
     });
     modal.onDidDismiss(async (data) => {
@@ -300,7 +300,7 @@ export class CommemorationDayPage {
         txjson: data,
         evd: this.currentPlanItem.sd,
         evt: this.currentPlanItem.st,
-        al: IsWholeday.NonWhole
+        al: IsWholeday.StartSet
       }
     });
     modal.onDidDismiss(async (data) => {
