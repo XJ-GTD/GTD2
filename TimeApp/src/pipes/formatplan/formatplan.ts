@@ -97,7 +97,7 @@ export class FormatPlanPipe implements PipeTransform {
         let sum: number = 0;
         summary.forEach((value, key) => {
           sum += value;   // 累计数量
-          let percent: number = (Math.round((sum / total) * 10000)/100).toFixed(0); // 百分比
+          let percent: string = (Math.round((sum / total) * 10000)/100).toFixed(0); // 百分比
 
           if (pre == "0%") {
             gradient += ", ";
