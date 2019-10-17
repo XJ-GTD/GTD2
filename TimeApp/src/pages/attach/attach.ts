@@ -32,7 +32,7 @@ import {UtilService} from "../../service/util-service/util.service";
         <ion-textarea row="2" [(ngModel)]="bw" placeholder="输入补充信息" class="font-normal"></ion-textarea>
       </ion-toolbar>
       <ion-scroll scrollY="true" scrollheightAuto>
-        
+
         <ion-grid class="list-grid-content">
           <ion-row class="item-content item-content-backgroud" leftmargin toppaddingsamll bottompaddingsamll rightmargin
                    *ngFor="let fj of fjArray">
@@ -86,7 +86,7 @@ import {UtilService} from "../../service/util-service/util.service";
               </div>
             </div>
           </ion-row>
-          
+
         </ion-grid>
       </ion-scroll>
     </modal-box>
