@@ -89,6 +89,7 @@ export class FormatPlanPipe implements PipeTransform {
 
           target.set(key, count);
 
+          return target;
         }, new Map<string, number>());
 
         // linear-gradient(to right,red 10% 40%, blue 40%);
