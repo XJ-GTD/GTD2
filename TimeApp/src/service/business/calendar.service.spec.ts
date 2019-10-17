@@ -652,7 +652,7 @@ describe('CalendarService test suite', () => {
 
       math1.ji = plan.ji;
       math1.sd = day;
-      math1.al = IsWholeday.NonWhole;
+      math1.al = IsWholeday.StartSet;
       math1.st = timeranges[0][0];
       //math1.et = timeranges[0][1];
       math1.ct = 40;  // 持续40分钟
@@ -674,7 +674,7 @@ describe('CalendarService test suite', () => {
 
       chinese1.ji = plan.ji;
       chinese1.sd = day;
-      chinese1.al = IsWholeday.NonWhole;
+      chinese1.al = IsWholeday.StartSet;
       chinese1.st = timeranges[0][0];
       chinese1.et = timeranges[0][1];
       chinese1.evn = "语文";
@@ -695,7 +695,7 @@ describe('CalendarService test suite', () => {
 
       math2.ji = plan.ji;
       math2.sd = day;
-      math2.al = IsWholeday.NonWhole;
+      math2.al = IsWholeday.StartSet;
       math2.st = timeranges[1][0];
       math2.et = timeranges[1][1];
       math2.evn = "数学";
@@ -716,7 +716,7 @@ describe('CalendarService test suite', () => {
 
       chinese2.ji = plan.ji;
       chinese2.sd = day;
-      chinese2.al = IsWholeday.NonWhole;
+      chinese2.al = IsWholeday.StartSet;
       chinese2.st = timeranges[1][0];
       chinese2.et = timeranges[1][1];
       chinese2.evn = "语文";
@@ -736,7 +736,7 @@ describe('CalendarService test suite', () => {
 
       character3.ji = plan.ji;
       character3.sd = day;
-      character3.al = IsWholeday.NonWhole;
+      character3.al = IsWholeday.StartSet;
       character3.st = timeranges[2][0];
       character3.et = timeranges[2][1];
       character3.evn = "品生";
@@ -756,7 +756,7 @@ describe('CalendarService test suite', () => {
 
       pe3.ji = plan.ji;
       pe3.sd = day;
-      pe3.al = IsWholeday.NonWhole;
+      pe3.al = IsWholeday.StartSet;
       pe3.st = timeranges[2][0];
       pe3.et = timeranges[2][1];
       pe3.evn = "体育";
@@ -776,7 +776,7 @@ describe('CalendarService test suite', () => {
 
       chinese3.ji = plan.ji;
       chinese3.sd = day;
-      chinese3.al = IsWholeday.NonWhole;
+      chinese3.al = IsWholeday.StartSet;
       chinese3.st = timeranges[2][0];
       chinese3.et = timeranges[2][1];
       chinese3.evn = "语文";
@@ -797,7 +797,7 @@ describe('CalendarService test suite', () => {
 
       art4.ji = plan.ji;
       art4.sd = day;
-      art4.al = IsWholeday.NonWhole;
+      art4.al = IsWholeday.StartSet;
       art4.st = timeranges[3][0];
       art4.et = timeranges[3][1];
       art4.evn = "美术";
@@ -816,7 +816,7 @@ describe('CalendarService test suite', () => {
 
       character4.ji = plan.ji;
       character4.sd = day;
-      character4.al = IsWholeday.NonWhole;
+      character4.al = IsWholeday.StartSet;
       character4.st = timeranges[3][0];
       character4.et = timeranges[3][1];
       character4.evn = "品生";
@@ -835,7 +835,7 @@ describe('CalendarService test suite', () => {
 
       writing4.ji = plan.ji;
       writing4.sd = day;
-      writing4.al = IsWholeday.NonWhole;
+      writing4.al = IsWholeday.StartSet;
       writing4.st = timeranges[3][0];
       writing4.et = timeranges[3][1];
       writing4.evn = "写字";
@@ -854,7 +854,7 @@ describe('CalendarService test suite', () => {
 
       pe4.ji = plan.ji;
       pe4.sd = day;
-      pe4.al = IsWholeday.NonWhole;
+      pe4.al = IsWholeday.StartSet;
       pe4.st = timeranges[3][0];
       pe4.et = timeranges[3][1];
       pe4.evn = "体育";
@@ -875,7 +875,7 @@ describe('CalendarService test suite', () => {
 
       music5.ji = plan.ji;
       music5.sd = day;
-      music5.al = IsWholeday.NonWhole;
+      music5.al = IsWholeday.StartSet;
       music5.st = timeranges[4][0];
       music5.et = timeranges[4][1];
       music5.evn = "音乐";
@@ -894,7 +894,7 @@ describe('CalendarService test suite', () => {
 
       pe5.ji = plan.ji;
       pe5.sd = day;
-      pe5.al = IsWholeday.NonWhole;
+      pe5.al = IsWholeday.StartSet;
       pe5.st = timeranges[4][0];
       pe5.et = timeranges[4][1];
       pe5.evn = "体育";
@@ -913,7 +913,7 @@ describe('CalendarService test suite', () => {
 
       activity5.ji = plan.ji;
       activity5.sd = day;
-      activity5.al = IsWholeday.NonWhole;
+      activity5.al = IsWholeday.StartSet;
       activity5.st = timeranges[4][0];
       activity5.et = timeranges[4][1];
       activity5.evn = "班队";
@@ -932,7 +932,7 @@ describe('CalendarService test suite', () => {
 
       character5.ji = plan.ji;
       character5.sd = day;
-      character5.al = IsWholeday.NonWhole;
+      character5.al = IsWholeday.StartSet;
       character5.st = timeranges[4][0];
       character5.et = timeranges[4][1];
       character5.evn = "品生";
@@ -952,7 +952,7 @@ describe('CalendarService test suite', () => {
 
       interest5.ji = plan.ji;
       interest5.sd = day;
-      interest5.al = IsWholeday.NonWhole;
+      interest5.al = IsWholeday.StartSet;
       interest5.st = timeranges[5][0];
       interest5.et = timeranges[5][1];
       interest5.evn = "兴趣";
@@ -1166,7 +1166,7 @@ describe('CalendarService test suite', () => {
         let math1: AgendaData = {} as AgendaData;
 
         math1.sd = day29;
-        math1.al = IsWholeday.NonWhole;
+        math1.al = IsWholeday.StartSet;
         math1.st = timeranges[0][0];
         math1.et = timeranges[0][1];
         math1.evn = "数学";
@@ -1177,7 +1177,7 @@ describe('CalendarService test suite', () => {
         let chinese1: AgendaData = {} as AgendaData;
 
         chinese1.sd = day30;
-        chinese1.al = IsWholeday.NonWhole;
+        chinese1.al = IsWholeday.StartSet;
         chinese1.st = timeranges[0][0];
         chinese1.et = timeranges[0][1];
         chinese1.evn = "语文";
@@ -1189,7 +1189,7 @@ describe('CalendarService test suite', () => {
         let math2: AgendaData = {} as AgendaData;
 
         math2.sd = day30;
-        math2.al = IsWholeday.NonWhole;
+        math2.al = IsWholeday.StartSet;
         math2.st = timeranges[1][0];
         math2.et = timeranges[1][1];
         math2.evn = "数学";
@@ -1200,7 +1200,7 @@ describe('CalendarService test suite', () => {
         let chinese2: AgendaData = {} as AgendaData;
 
         chinese2.sd = day29;
-        chinese2.al = IsWholeday.NonWhole;
+        chinese2.al = IsWholeday.StartSet;
         chinese2.st = timeranges[1][0];
         chinese2.et = timeranges[1][1];
         chinese2.evn = "语文";
@@ -1212,7 +1212,7 @@ describe('CalendarService test suite', () => {
         let character3: AgendaData = {} as AgendaData;
 
         character3.sd = day29;
-        character3.al = IsWholeday.NonWhole;
+        character3.al = IsWholeday.StartSet;
         character3.st = timeranges[2][0];
         character3.et = timeranges[2][1];
         character3.evn = "品生";
@@ -1223,7 +1223,7 @@ describe('CalendarService test suite', () => {
         let chinese3: AgendaData = {} as AgendaData;
 
         chinese3.sd = day30;
-        chinese3.al = IsWholeday.NonWhole;
+        chinese3.al = IsWholeday.StartSet;
         chinese3.st = timeranges[2][0];
         chinese3.et = timeranges[2][1];
         chinese3.evn = "语文";
@@ -1235,7 +1235,7 @@ describe('CalendarService test suite', () => {
         let art4: AgendaData = {} as AgendaData;
 
         art4.sd = day29;
-        art4.al = IsWholeday.NonWhole;
+        art4.al = IsWholeday.StartSet;
         art4.st = timeranges[3][0];
         art4.et = timeranges[3][1];
         art4.evn = "美术";
@@ -1246,7 +1246,7 @@ describe('CalendarService test suite', () => {
         let character4: AgendaData = {} as AgendaData;
 
         character4.sd = day30;
-        character4.al = IsWholeday.NonWhole;
+        character4.al = IsWholeday.StartSet;
         character4.st = timeranges[3][0];
         character4.et = timeranges[3][1];
         character4.evn = "品生";
@@ -1258,7 +1258,7 @@ describe('CalendarService test suite', () => {
         let music5: AgendaData = {} as AgendaData;
 
         music5.sd = day29;
-        music5.al = IsWholeday.NonWhole;
+        music5.al = IsWholeday.StartSet;
         music5.st = timeranges[4][0];
         music5.et = timeranges[4][1];
         music5.evn = "音乐";
@@ -1269,7 +1269,7 @@ describe('CalendarService test suite', () => {
         let pe5: AgendaData = {} as AgendaData;
 
         pe5.sd = day30;
-        pe5.al = IsWholeday.NonWhole;
+        pe5.al = IsWholeday.StartSet;
         pe5.st = timeranges[4][0];
         pe5.et = timeranges[4][1];
         pe5.evn = "体育";

@@ -434,7 +434,7 @@ export class TestDataService {
 
     math1.ji = plan.ji;
     math1.sd = day;
-    math1.al = IsWholeday.NonWhole;
+    math1.al = IsWholeday.StartSet;
     math1.st = timeranges[0][0];
 //math1.et = timeranges[0][1];
     math1.ct = 40;  // 持续40分钟
@@ -602,7 +602,7 @@ export class TestDataService {
       agendaData.ji = jh_id;
       agendaData.sd = d.format('YYYY/MM/DD');
       ;
-      agendaData.al = IsWholeday.NonWhole;
+      agendaData.al = IsWholeday.StartSet;
       agendaData.st = d.format('HH:mm');
       agendaData.ct = 40;  // 持续40分钟
       agendaData.evn = ss[r_i];

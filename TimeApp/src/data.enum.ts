@@ -165,9 +165,8 @@ export enum IsCreate {
 
 //是否全天
 export enum IsWholeday {
-  Whole = "1",
-  NonWhole = "0"
-
+  StartSet = "0",
+  EndSet = "2"
 }
 
 //错误代码
