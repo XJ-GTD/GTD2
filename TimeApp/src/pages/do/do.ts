@@ -31,7 +31,7 @@ import { PageDirection, IsSuccess, OperateType, EventFinishStatus } from "../../
     `
       <page-box title="重要事项" [buttons]="buttons" (onCreate)="goCreate()" (onBack)="goBack()">
       <div class="plansbar" [ngStyle]="{
-        'background': (cachedtasks | formatplan: "summary": "#fff": privateplans)
+        'background': (cachedtasks | formatplan: 'summary': '#fff': privateplans)
       }"></div>
       <ng-container *ngFor="let day of days">
         <task-list [currentuser]="currentuser" [friends]="friends" [plans]="privateplans" (onStartLoad)="getData($event, day)" (onCreateNew)="goCreate()" (onCardClick)="gotoDetail($event)" (onErease)="goErease($event)" (onComplete)="complete($event)" #tasklist></task-list>
