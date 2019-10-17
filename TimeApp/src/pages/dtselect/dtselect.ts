@@ -157,8 +157,9 @@ export class DtSelectPage {
   }
 
   private seteddate(){
-    this.pagedata.ed = moment(this.pagedata.sd).add(this.pagedata.ct, 'm').format("YYYY-MM-DD");
-    this.pagedata.et = moment(this.pagedata.sd + " " + this.pagedata.st).
-    add(this.pagedata.ct, 'm').format("HH:mm");
+    this.pagedata.ed = moment(this.pagedata.sd + "T" + this.pagedata.st).
+      add(this.pagedata.ct, 'm').format("YYYY-MM-DD");
+    this.pagedata.et = moment(this.pagedata.sd + "T" + this.pagedata.st).
+      add(this.pagedata.ct, 'm').format("HH:mm");
   }
 }
