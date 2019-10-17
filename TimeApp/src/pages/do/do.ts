@@ -1,4 +1,4 @@
-import {Component, ElementRef, Renderer2, ViewChild, EventEmitter, ViewChildren, QueryList } from '@angular/core';
+import {Component, ElementRef, Renderer2, ViewChild, EventEmitter, ViewChildren, QueryList, ChangeDetectorRef } from '@angular/core';
 import {IonicPage, NavController, ModalController, NavParams, Slides} from 'ionic-angular';
 import {UtilService} from "../../service/util-service/util.service";
 import {UserConfig} from "../../service/config/user.config";
@@ -65,6 +65,7 @@ export class DoPage {
 
   constructor(public navCtrl: NavController,
               public navParams: NavParams,
+              public changedetector: ChangeDetectorRef,
               private modalCtr: ModalController,
               private emitService: EmitService,
               private doService: DoService,
@@ -154,7 +155,10 @@ export class DoPage {
               return;
             }
 
-            this.todosqueue.push({data: data});
+            this.todosqueue.push({data: data}, () => {
+              this.changedetector.markForCheck();
+              this.changedetector.detectChanges();
+            });
           });
         }
 
