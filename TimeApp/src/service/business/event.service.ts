@@ -3910,25 +3910,14 @@ export class EventService extends BaseService {
           }
 
           //3. 当事件的日期，在todolist中间时
-          if ((moment(changed.evd + ' ' + changed.evt).diff(todolist[todolist.length-1].evd + ' ' + todolist[todolist.length-1].evt)<0)
-              || (moment(changed.evd + ' ' + changed.evt).diff(todolist[0].evd + ' ' + todolist[0].evt)>0)) {
-                let i=0;
-                let j=-1;
-                for (let td of todolist) {
-                  //todolist 已经是按照日期顺序排列好的，然后根据日期大小进行排序，当change的日期比todolist的小的时候插入进去
-                  if(((moment(changed.evd + ' ' + changed.evt).diff(td.evd + ' ' + td.evt)<=0)))
-                  {
-                    j=i;
-                  }
-                  i++;
-                }
-                //当是重复数据的情况下
-                if(j>=0) {
-                  //当不是重复数据的情况下，插入中间位置
-                  todolist.splice(j+1,0,changed);
-                  return todolist;
-                }
-           }
+          for (let td of todolist) {
+            //todolist 已经是按照日期顺序排列好的，然后根据日期大小进行排序，当change的日期比todolist的小的时候插入进去
+            if(((moment(changed.evd + ' ' + changed.evt).diff(td.evd + ' ' + td.evt) <=0 ))) {
+              todolist.splice(i,0,changed);
+              return todolist;
+            }
+            i++;
+          }
         }
       }
       //更新相关实体数据内容
