@@ -3923,7 +3923,7 @@ export class EventService extends BaseService {
                   i++;
                 }
                 //当是重复数据的情况下
-                if(j>0) {
+                if(j>=0) {
                   //当不是重复数据的情况下，插入中间位置
                   todolist.splice(j+1,0,changed);
                   return todolist;
