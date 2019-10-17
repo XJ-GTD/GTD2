@@ -172,8 +172,6 @@ export class AgendaPage {
   todoliston = ToDoListStatus.On;
   todolistoff = ToDoListStatus.Off;
 
-  wholeday = IsWholeday.Whole;
-
   enablechange = ModiPower.enable;
 
   repeatflag = RepeatFlag.Repeat;
@@ -285,19 +283,18 @@ export class AgendaPage {
     }
 
     let modal = this.modalCtrl.create(DataConfig.PAGE._DTSELECT_PAGE, {
-      sd: this.currentAgenda.evd,
+      evd: this.currentAgenda.evd,
       st: this.currentAgenda.st,
-      ed: this.currentAgenda.ed,
-      et: this.currentAgenda.et,
+      ct: this.currentAgenda.ct,
       al: this.currentAgenda.al,
-      ct: this.currentAgenda.ct
     });
     modal.onDidDismiss(async (data) => {
       if (data) {
-        // this.currentAgenda.sd = data.sd;
-        // this.currentAgenda.st = data.st;
-        // this.currentAgenda.ed = data.ed;
-        // this.currentAgenda.et = data.et;
+        this.currentAgenda.evd = data.evd;
+        this.currentAgenda.al = data.al;
+        this.currentAgenda.st = data.st;
+        this.currentAgenda.evt = data.st;
+        this.currentAgenda.ct = data.ct;
       }
 
       if (!this.eventService.isSameAgenda(this.currentAgenda, this.originAgenda)) {

@@ -394,7 +394,7 @@ export class TaskPage {
         txjson: data,
         evd: this.currentTask.evd,
         evt: this.currentTask.evt,
-        al: IsWholeday.NonWhole
+        al: IsWholeday.StartSet
       }
     });
     modal.onDidDismiss(async (data) => {

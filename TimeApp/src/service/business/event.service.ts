@@ -797,6 +797,9 @@ export class EventService extends BaseService {
     if (newAgd.sd != oriAgd.sd){
       ret.push("sd");
     }
+    if (newAgd.evd != oriAgd.evd){
+      ret.push("evd");
+    }
     //开始时间发生变化
     if (newAgd.st != oriAgd.st){
       ret.push("st");
@@ -831,7 +834,7 @@ export class EventService extends BaseService {
     if (before.rfg != RepeatFlag.Repeat) return confirm;
 
     for (let key of Object.keys(before)) {
-      if (["sd", "st", "al", "ct", "evn", "rt", "rtjson"].indexOf(key) >= 0) {   // 比较字段
+      if (["sd","evd", "st", "al", "ct", "evn", "rt", "rtjson"].indexOf(key) >= 0) {   // 比较字段
         let value = before[key];
 
         // 如果两个值都为空, 继续
@@ -1356,9 +1359,12 @@ export class EventService extends BaseService {
 
 
     //日程表sqlparam
+
     let caparam = new CaTbl();
-    caparam = this.sqlparamAddCa(retParamEv.rtevi,agdata.sd,retParamEv.ed,agdata);
-    sqlparam.push(caparam.rpTParam());
+    if (retParamEv.rtevi != ""){
+      caparam = this.sqlparamAddCa(retParamEv.rtevi,agdata.sd,retParamEv.ed,agdata);
+      sqlparam.push(caparam.rpTParam());
+    }
 
     let tos : string;//需要发送的参与人手机号
     tos = this.getMemberPhone(agdata.members);
@@ -1626,11 +1632,9 @@ export class EventService extends BaseService {
       let was = new Array<WaTbl>();
 
       //字段evt 设定
-      if (newAgdata.al == anyenum.IsWholeday.Whole){
-        newAgdata.evt = this.EVT_ST;//全天开始时间默认为8:00
-      }else{
-        newAgdata.evt = newAgdata.st;
-      }
+
+      newAgdata.evt = newAgdata.st;
+
 
       let rtjon = new RtJson();
       rtjon.cycletype = anyenum.CycleType.close;
@@ -2168,10 +2172,12 @@ export class EventService extends BaseService {
 
     agdata.sd = agdata.sd || agdata.evd || moment().format("YYYY/MM/DD");
     agdata.ed = agdata.ed || agdata.sd;
-    agdata.al = !agdata.al ? anyenum.IsWholeday.Whole :agdata.al;
+    agdata.al = !agdata.al ? anyenum.IsWholeday.StartSet :agdata.al;
     agdata.st = !agdata.st ? this.EVT_ST : agdata.st;
-    agdata.et = !agdata.et ? "23:59" : agdata.et;
-    agdata.ct = !agdata.ct ? 0 :agdata.ct;
+    agdata.ct = !agdata.ct ? 60 :agdata.ct;
+    agdata.et = !agdata.et ? moment(agdata.sd + " " + agdata.st).
+    add(agdata.ct, 'm').format("HH:mm") : agdata.et;
+
   }
 
   private sqlparamAddEv2(agdata: AgendaData): RetParamEv {
@@ -2183,11 +2189,9 @@ export class EventService extends BaseService {
     let fjs = new Array<FjTbl>();
 
     //字段evt 设定
-    if (agdata.al == anyenum.IsWholeday.Whole){
-      agdata.evt = this.EVT_ST;//全天开始时间默认为8:00
-    }else{
-      agdata.evt = agdata.st;
-    }
+
+    agdata.evt = agdata.st;
+
 
     let rtjson: RtJson = new RtJson();
     Object.assign(rtjson, agdata.rtjson);
@@ -2277,34 +2281,8 @@ export class EventService extends BaseService {
 
     agdata.sd = sd;
     agdata.ed = ed;
-    if (agdata.al == anyenum.IsWholeday.Whole){
-      agdata.st = this.EVT_ST;//全天开始时间默认为8:00
-      agdata.et = "23:59";
-    }else{
-      //不是全天，结束时间通过时长计算
-      if (agdata.et == ""){
-        if (agdata.ct == 0 ){
-          agdata.et = agdata.st;
-        }else{
-          let tmpdatetime1 = moment(agdata.ed + " " + agdata.st).add(agdata.ct, 'm');
-          //时长相加后，如果超出一天，则使用当天的23:59
-          if (moment(tmpdatetime1).isBefore(moment(agdata.ed + " " + "00:00").add(1,'d'))){
-            agdata.et = moment(tmpdatetime1).format("HH:mm");
-          }else{
-            agdata.et = "23:59";
-          }
-        }
-      }else{
-        //结束时间不为空，则算时长
-        let ct = moment(agdata.ed + " " + agdata.et).diff(agdata.ed + " " + agdata.st, 'm');
-        agdata.ct = ct;
-      }
-    }
-
-    if(agdata.ed==''){
-      agdata.ed = agdata.sd;
-    }
-    if(agdata.et==''){
+    if (agdata.al == anyenum.IsWholeday.EndSet){
+      agdata.ed = sd;
       agdata.et = agdata.st;
     }
 
@@ -2555,7 +2533,7 @@ export class EventService extends BaseService {
         wa.st = ev.evn;
         let time = remind;
         let date;
-        if (al == anyenum.IsWholeday.NonWhole) {
+        if (al == anyenum.IsWholeday.StartSet) {
           date = moment(ev.evd + " " + st).subtract(time, 'm').format("YYYY/MM/DD HH:mm");
 
         } else {

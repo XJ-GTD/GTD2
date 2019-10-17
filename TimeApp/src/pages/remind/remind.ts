@@ -161,13 +161,8 @@ export class RemindPage {
         Object.assign(this.currentTx, value.txjson);
         if (this.currentTx.reminds.length > 0) {
 
-          if (value.al == anyenum.IsWholeday.NonWhole) {
-            this.evdatetime = moment(value.evd + " " + value.evt).format("YYYY/MM/DD HH:mm");
+          this.evdatetime = moment(value.evd + " " + value.evt).format("YYYY/MM/DD HH:mm");
 
-          } else {
-            this.evdatetime = moment(value.evd + " " + "08:00").format("YYYY/MM/DD HH:mm");
-
-          }
           for (let j = 0, len = this.currentTx.reminds.length; j < len; j++) {
             this.reminds.push(
               {
