@@ -166,6 +166,7 @@ export enum IsCreate {
 //是否全天
 export enum IsWholeday {
   StartSet = "0",
+  WholeDay = "1",
   EndSet = "2"
 }
 

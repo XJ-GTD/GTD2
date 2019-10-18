@@ -280,6 +280,7 @@ export class AgendaPage {
   }
 
   changeDatetime() {
+    // 受邀人没有接受或者没有修改权限不能修改
     if (this.originAgenda.ui != this.currentuser && (this.originAgenda.md != ModiPower.enable || this.originAgenda.invitestatus != InviteState.Accepted)) { // 受邀人修改权限检查
       return;
     }
@@ -313,6 +314,7 @@ export class AgendaPage {
   }
 
   changeTitle() {
+    // 受邀人没有接受或者没有修改权限不能修改
     if (this.originAgenda.evi && this.originAgenda.ui != this.currentuser && (this.originAgenda.md != ModiPower.enable || this.originAgenda.invitestatus != InviteState.Accepted)) { // 受邀人修改权限检查
       return;
     }
@@ -333,6 +335,7 @@ export class AgendaPage {
   }
 
   changeTodolist() {
+    // 受邀人没有接受不能修改
     if (this.originAgenda.ui != this.currentuser && this.originAgenda.invitestatus != InviteState.Accepted) { // 受邀人接受状态检查
       return;
     }
@@ -351,6 +354,7 @@ export class AgendaPage {
   }
 
   changeAttach() {
+    // 受邀人没有接受不能修改
     if (this.originAgenda.ui != this.currentuser && this.originAgenda.invitestatus != InviteState.Accepted) { // 受邀人接受状态检查
       return;
     }
@@ -419,6 +423,7 @@ export class AgendaPage {
   }
 
   changePlan() {
+    // 受邀人没有接受不能修改
     if (this.originAgenda.ui != this.currentuser && this.originAgenda.invitestatus != InviteState.Accepted) { // 受邀人接受状态检查
       return;
     }
@@ -439,6 +444,7 @@ export class AgendaPage {
   }
 
   changeLocation() {
+    // 受邀人没有接受不能修改
     if (this.originAgenda.ui != this.currentuser && this.originAgenda.invitestatus != InviteState.Accepted) { // 受邀人接受状态检查
       return;
     }
@@ -466,6 +472,7 @@ export class AgendaPage {
   }
 
   changeComment() {
+    // 受邀人没有接受不能修改
     if (this.originAgenda.ui != this.currentuser && this.originAgenda.invitestatus != InviteState.Accepted) { // 受邀人接受状态检查
       return;
     }
@@ -486,7 +493,13 @@ export class AgendaPage {
   }
 
   changeRepeat() {
+    // 受邀人没有接受或者没有修改权限不能修改
     if (this.originAgenda.ui != this.currentuser && (this.originAgenda.md != ModiPower.enable || this.originAgenda.invitestatus != InviteState.Accepted)) { // 受邀人修改权限检查
+      return;
+    }
+
+    // 时间设置为结束时间，不能修改重复
+    if (this.currentAgenda.al == IsWholeday.EndSet) {
       return;
     }
 
@@ -519,6 +532,7 @@ export class AgendaPage {
   }
 
   changeRemind() {
+    // 受邀人没有接受不能修改
     if (this.originAgenda.ui != this.currentuser && this.originAgenda.invitestatus != InviteState.Accepted) { // 受邀人接受状态检查
       return;
     }
