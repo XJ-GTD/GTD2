@@ -521,6 +521,7 @@ export class AgendaPage {
         this.currentAgenda.rt = JSON.stringify(this.currentAgenda.rtjson);
         this.currentAgenda.rts = this.currentAgenda.rtjson.text();
 
+        // 根据重复返回重新设置重复标志
         if (this.currentAgenda.rtjson.cycletype == CycleType.close) {
           this.currentAgenda.rfg = RepeatFlag.NonRepeat;
         } else {
