@@ -1,4 +1,4 @@
-import {Component, ElementRef, Renderer2, ViewChild, EventEmitter, ViewChildren, QueryList } from '@angular/core';
+import {Component, ElementRef, Renderer2, ViewChild, EventEmitter, ViewChildren, QueryList, ChangeDetectorRef } from '@angular/core';
 import {IonicPage, NavController, ModalController, NavParams, Slides} from 'ionic-angular';
 import {UtilService} from "../../service/util-service/util.service";
 import {UserConfig} from "../../service/config/user.config";
@@ -29,9 +29,9 @@ import { PageDirection, IsSuccess, OperateType, EventFinishStatus } from "../../
   selector: 'page-do',
   template:
     `
-      <page-box title="重要事项" [buttons]="buttons" (onCreate)="goCreate()" (onBack)="goBack()">
+      <page-box title="重要事项" [buttons]="buttons" [data]="summarytasks" [plans]="privateplans" (onCreate)="goCreate()" (onBack)="goBack()">
       <ng-container *ngFor="let day of days">
-        <task-list [currentuser]="currentuser" [friends]="friends" (onStartLoad)="getData($event, day)" (onCreateNew)="goCreate()" (onCardClick)="gotoDetail($event)" (onErease)="goErease($event)" (onComplete)="complete($event)" #tasklist></task-list>
+        <task-list [currentuser]="currentuser" [friends]="friends" [plans]="privateplans" (onStartLoad)="getData($event, day)" (onCreateNew)="goCreate()" (onCardClick)="gotoDetail($event)" (onErease)="goErease($event)" (onComplete)="complete($event)" #tasklist></task-list>
       </ng-container>
       </page-box>
     `
@@ -49,9 +49,12 @@ export class DoPage {
   currentuser: string = UserConfig.account.id;
   friends: Array<any> = UserConfig.friends;
 
+  privateplans: Array<any> = UserConfig.privateplans;
+
   tasklist: TaskListComponent;
   @ViewChildren("tasklist") tasklists: QueryList<TaskListComponent>;
   cachedtasks: Array<AgendaData>;
+  summarytasks: Array<AgendaData>;
 
   days: Array<string> = new Array<string>();
   topday: string = moment().format("YYYY/MM/DD");
@@ -63,6 +66,7 @@ export class DoPage {
 
   constructor(public navCtrl: NavController,
               public navParams: NavParams,
+              public changedetector: ChangeDetectorRef,
               private modalCtr: ModalController,
               private emitService: EmitService,
               private doService: DoService,
@@ -77,17 +81,21 @@ export class DoPage {
       // 多条数据同时更新/单条数据更新
       if (data instanceof Array) {
         for (let single of data) {
-          let activityType: string = this.eventService.getEventType(single);
+          if (single.evi) {
+            let activityType: string = this.eventService.getEventType(single);
 
-          if (activityType == "AgendaData") {
-            this.cachedtasks = await this.eventService.mergeTodolist(this.cachedtasks, single);
+            if (activityType == "AgendaData") {
+              this.cachedtasks = await this.eventService.mergeTodolist(this.cachedtasks, single);
+            }
           }
         }
       } else {
-        let activityType: string = this.eventService.getEventType(data);
+        if (data.evi) {
+          let activityType: string = this.eventService.getEventType(data);
 
-        if (activityType == "AgendaData") {
-          this.cachedtasks = await this.eventService.mergeTodolist(this.cachedtasks, data);
+          if (activityType == "AgendaData") {
+            this.cachedtasks = await this.eventService.mergeTodolist(this.cachedtasks, data);
+          }
         }
       }
 
@@ -148,11 +156,18 @@ export class DoPage {
               return;
             }
 
-            this.todosqueue.push({data: data});
+            this.todosqueue.push({data: data}, () => {
+              // 用于更新日历下待处理任务的汇总显示
+              this.summarytasks = this.cachedtasks.reduce((target, element) => {
+                target.push(element);
+                return target;
+              }, new Array<AgendaData>());
+            });
           });
         }
 
         this.cachedtasks = d;
+        this.summarytasks = this.cachedtasks;
 
         if (d.length > 0) {
           this.topday = d[0].evd;

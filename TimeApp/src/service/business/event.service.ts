@@ -797,6 +797,9 @@ export class EventService extends BaseService {
     if (newAgd.sd != oriAgd.sd){
       ret.push("sd");
     }
+    if (newAgd.evd != oriAgd.evd){
+      ret.push("evd");
+    }
     //开始时间发生变化
     if (newAgd.st != oriAgd.st){
       ret.push("st");
@@ -831,7 +834,7 @@ export class EventService extends BaseService {
     if (before.rfg != RepeatFlag.Repeat) return confirm;
 
     for (let key of Object.keys(before)) {
-      if (["sd", "st", "al", "ct", "evn", "rt", "rtjson"].indexOf(key) >= 0) {   // 比较字段
+      if (["sd","evd", "st", "al", "ct", "evn", "rt", "rtjson"].indexOf(key) >= 0) {   // 比较字段
         let value = before[key];
 
         // 如果两个值都为空, 继续
@@ -1358,9 +1361,12 @@ export class EventService extends BaseService {
 
 
     //日程表sqlparam
+
     let caparam = new CaTbl();
-    caparam = this.sqlparamAddCa(retParamEv.rtevi,agdata.sd,retParamEv.ed,agdata);
-    sqlparam.push(caparam.rpTParam());
+    if (retParamEv.rtevi != ""){
+      caparam = this.sqlparamAddCa(retParamEv.rtevi,agdata.sd,retParamEv.ed,agdata);
+      sqlparam.push(caparam.rpTParam());
+    }
 
     let tos : string;//需要发送的参与人手机号
     tos = this.getMemberPhone(agdata.members);
@@ -1628,11 +1634,9 @@ export class EventService extends BaseService {
       let was = new Array<WaTbl>();
 
       //字段evt 设定
-      if (newAgdata.al == anyenum.IsWholeday.Whole){
-        newAgdata.evt = this.EVT_ST;//全天开始时间默认为8:00
-      }else{
-        newAgdata.evt = newAgdata.st;
-      }
+
+      newAgdata.evt = newAgdata.st;
+
 
       let rtjon = new RtJson();
       rtjon.cycletype = anyenum.CycleType.close;
@@ -2170,10 +2174,12 @@ export class EventService extends BaseService {
 
     agdata.sd = agdata.sd || agdata.evd || moment().format("YYYY/MM/DD");
     agdata.ed = agdata.ed || agdata.sd;
-    agdata.al = !agdata.al ? anyenum.IsWholeday.Whole :agdata.al;
+    agdata.al = !agdata.al ? anyenum.IsWholeday.StartSet :agdata.al;
     agdata.st = !agdata.st ? this.EVT_ST : agdata.st;
-    agdata.et = !agdata.et ? "23:59" : agdata.et;
-    agdata.ct = !agdata.ct ? 0 :agdata.ct;
+    agdata.ct = !agdata.ct ? 60 :agdata.ct;
+    agdata.et = !agdata.et ? moment(agdata.sd + " " + agdata.st).
+    add(agdata.ct, 'm').format("HH:mm") : agdata.et;
+
   }
 
   private sqlparamAddEv2(agdata: AgendaData): RetParamEv {
@@ -2185,11 +2191,9 @@ export class EventService extends BaseService {
     let fjs = new Array<FjTbl>();
 
     //字段evt 设定
-    if (agdata.al == anyenum.IsWholeday.Whole){
-      agdata.evt = this.EVT_ST;//全天开始时间默认为8:00
-    }else{
-      agdata.evt = agdata.st;
-    }
+
+    agdata.evt = agdata.st;
+
 
     let rtjson: RtJson = new RtJson();
     Object.assign(rtjson, agdata.rtjson);
@@ -2279,34 +2283,8 @@ export class EventService extends BaseService {
 
     agdata.sd = sd;
     agdata.ed = ed;
-    if (agdata.al == anyenum.IsWholeday.Whole){
-      agdata.st = this.EVT_ST;//全天开始时间默认为8:00
-      agdata.et = "23:59";
-    }else{
-      //不是全天，结束时间通过时长计算
-      if (agdata.et == ""){
-        if (agdata.ct == 0 ){
-          agdata.et = agdata.st;
-        }else{
-          let tmpdatetime1 = moment(agdata.ed + " " + agdata.st).add(agdata.ct, 'm');
-          //时长相加后，如果超出一天，则使用当天的23:59
-          if (moment(tmpdatetime1).isBefore(moment(agdata.ed + " " + "00:00").add(1,'d'))){
-            agdata.et = moment(tmpdatetime1).format("HH:mm");
-          }else{
-            agdata.et = "23:59";
-          }
-        }
-      }else{
-        //结束时间不为空，则算时长
-        let ct = moment(agdata.ed + " " + agdata.et).diff(agdata.ed + " " + agdata.st, 'm');
-        agdata.ct = ct;
-      }
-    }
-
-    if(agdata.ed==''){
-      agdata.ed = agdata.sd;
-    }
-    if(agdata.et==''){
+    if (agdata.al == anyenum.IsWholeday.EndSet){
+      agdata.ed = sd;
       agdata.et = agdata.st;
     }
 
@@ -2557,7 +2535,7 @@ export class EventService extends BaseService {
         wa.st = ev.evn;
         let time = remind;
         let date;
-        if (al == anyenum.IsWholeday.NonWhole) {
+        if (al == anyenum.IsWholeday.StartSet) {
           date = moment(ev.evd + " " + st).subtract(time, 'm').format("YYYY/MM/DD HH:mm");
 
         } else {
@@ -3843,7 +3821,7 @@ export class EventService extends BaseService {
       let agendaArray: Array<AgendaData> = new Array<AgendaData>();
       let flag: boolean = true;
       //当数据retevi为空的情况下
-      if(changed.rtevi == '') {
+      if(!changed.rtevi) {
           changed.rtevi = changed.evi;
       }
       if (todolist.length == 0) {
@@ -3852,8 +3830,9 @@ export class EventService extends BaseService {
           {
                 //将数据加入到todolist缓存
                 todolist.push(changed);
-                flag = false;
           }
+          flag = false;
+
       }
       else {
         if ( (  changed.todolist == anyenum.ToDoListStatus.Off ) || ( changed.del == anyenum.DelType.del ) || (changed.wc == anyenum.EventFinishStatus.Finished) ) {
@@ -3866,7 +3845,8 @@ export class EventService extends BaseService {
                   j++;
                 }
                 //当前事件已完成，验证当前事件是否为重复事件，如果为重复事件，则删除当前的，重新插入下一个
-                if ((changed.rfg == RepeatFlag.Repeat) && (changed.wc == anyenum.EventFinishStatus.Finished) ) {
+                //当是重复性事件的情况下，已完成或者已删除的状态下，都需要检索出下一条临近的数据
+                if ((changed.todolist != anyenum.ToDoListStatus.Off) && ((changed.rfg == RepeatFlag.Repeat)||(changed.rfg == RepeatFlag.RepeatToOnly))) {
                   let newsql : string  =  ` select ev.*,
                   ca.sd,ca.st,ca.ed,ca.et,ca.ct
                    from
@@ -3878,20 +3858,20 @@ export class EventService extends BaseService {
                         and ev.wc = ?4
                         and (julianday(datetime(replace(ev.evd, '/', '-'),ev.evt)) > julianday(datetime(replace(?5, '/', '-'),?6)))
                         order by ev.evd asc `;
-                  let rtevi: string ="";
-                  if (changed.rtevi == '') {
-                      rtevi = changed.evi;
-                  }
-                  else {
-                      rtevi = changed.rtevi;
-                  }
+                  let rtevi: string = changed.rtevi;
+                  // if (changed.rtevi == '') {
+                  //     rtevi = changed.evi;
+                  // }
+                  // else {
+                  //     rtevi = changed.rtevi;
+                  // }
                   let ag1: Array<AgendaData> = await this.sqlExce.getExtLstByParam<AgendaData>(newsql,
                      [rtevi,anyenum.DelType.undel,anyenum.EventType.Agenda,anyenum.EventFinishStatus.NonFinish,changed.evd,changed.evt]) || new Array<AgendaData>();
                   if (ag1&&ag1.length>0){
                         changed = ag1[0];
                         if(todolist.length==0)
                         {
-                          todolist.push(changed);
+                           todolist.push(changed);
                            flag = false;
                         }
                   }
@@ -3905,110 +3885,40 @@ export class EventService extends BaseService {
         }
         if (flag) {
 
+          //验证当前todolist是否已存在相同的evi数据，如果存在，删除，然后在进行重新排序
+          let jfk: number = 0;
+          for(let td of todolist) {
+              if((changed.evi == td.evi)||(changed.rtevi == td.rtevi)||(changed.rtevi == td.evi)) {
+                  todolist.splice(jfk, 1);
+                  break;
+              }
+              jfk++;
+          }
+
           //将数据加到新的排序中去
           //todolist已经进行过排序，按照日期排列 ,快速排序算法，还是太慢，
           //1.新加入的事件的日期，比todolist第一个日期还小,缩短循环排序时间
           if ((moment(changed.evd + ' ' + changed.evt).diff(todolist[0].evd + ' ' + todolist[0].evt)<=0)) {
-              //验证是否为同一个事件
-              if(changed.evi == todolist[0].evi ) {
-                  todolist[0] = changed;
-                  return todolist;
-               }
-               else {
-                 todolist.unshift(changed);
-                 return todolist;
-               }
+              todolist.unshift(changed);
+              return todolist;
           }
-
-
 
           //2.新加入的事件的日期，比todolist的最后一个日期还小
           if (moment(changed.evd + ' ' + changed.evt).diff(todolist[todolist.length-1].evd + ' ' + todolist[todolist.length-1].evt)>=0) {
-            //当同一事件的情况下 、 重复事件的情况下
-            let bf: boolean = true;
-            let f: number = 0;
-            for(let td of todolist){
-              if((changed.evi == td.evi)||(changed.rtevi == td.rtevi)||(changed.rtevi == td.evi)){
-                   bf = false;
-                   console.info("时间与当前时间"+td.evd + ' ' + td.evt+"获取绝对值 1："+Math.abs(moment().diff(td.evd + ' ' + td.evt)));
-                   console.info("时间与当前时间"+ changed.evd + ' ' + changed.evt+"获取绝对值 2："+Math.abs(moment().diff(changed.evd + ' ' + changed.evt)));
-                   let mmt  =  moment();
-                   if(Math.abs(mmt.diff(td.evd + ' ' + td.evt))>Math.abs(mmt.diff(changed.evd + ' ' + changed.evt))){
-                      //比之前的序列大，则先删除以前的，在数组后面追加一个
-                      todolist.splice(f, 1);
-                      todolist.push(changed);
-                      //todolist[todolist.length-1] = changed;
-                      break;
-                  }
-              }
-              f++;
-            }
-            if(bf){
-                 todolist.push(changed);
-            }
-            return todolist;
-
-
-
-            // if((changed.evi == todolist[todolist.length-1].evi)||(changed.rtevi == todolist[todolist.length-1].rtevi)||(changed.rtevi == todolist[todolist.length-1].evi)) {
-            //     todolist[todolist.length-1] = changed;
-            //     return todolist;
-            //  }
-            //  else {
-            //    todolist.push(changed);
-            //    return todolist;
-            //  }
+              todolist.push(changed);
+              return todolist;
           }
 
           //3. 当事件的日期，在todolist中间时
-          if ((moment(changed.evd + ' ' + changed.evt).diff(todolist[todolist.length-1].evd + ' ' + todolist[todolist.length-1].evt)<0)
-              || (moment(changed.evd + ' ' + changed.evt).diff(todolist[0].evd + ' ' + todolist[0].evt)>0)) {
-                let by: boolean = false;
-                let i=0;
-                let agendaArrayNew2: Array<AgendaData> = new Array<AgendaData>();
-                let j=-1;
-                for (let td of todolist) {
-                  //todolist 已经是按照日期顺序排列好的，然后根据日期大小进行排序，当change的日期比todolist的小的时候插入进去
-                  if(((moment(changed.evd + ' ' + changed.evt).diff(td.evd + ' ' + td.evt)<=0)))
-                  {
-                    //验证当前的数据是否重复，如果重复，则替换，如果不重复则插入
-                    //flag = false;
-                    if((changed.evi == td.evi)) {
-                        //todolist[i] = changed;
-                        //break;
-                        j=i;
-                        by = true;
-                        break;
-                    }
-                    else {
-                      //将数据数据先截取出来
-                      //agendaArrayNew2 = todolist.slice(i,todolist.length-1);
-                      //新加数据
-                      //todolist[i] = changed;
-                      //break;
-                      j=i;
-                    }
-                  }
-                  i++;
-                }
-
-                //当是重复数据的情况下
-                if(by) {
-                    todolist[j] = changed;
-                }
-                else {
-                  //当不是重复数据的情况下，插入中间位置
-                  agendaArrayNew2 = todolist.slice(j,todolist.length-1);
-                  todolist[j] = changed;
-                  if(agendaArrayNew2 && agendaArrayNew2.length>0)
-                  {
-                    for(let td1 of agendaArrayNew2)
-                    {
-                          todolist.push(td1);
-                    }
-                  }
-                }
-           }
+          let i: number = 0;
+          for (let td of todolist) {
+            //todolist 已经是按照日期顺序排列好的，然后根据日期大小进行排序，当change的日期比todolist的小的时候插入进去
+            if(((moment(changed.evd + ' ' + changed.evt).diff(td.evd + ' ' + td.evt) <0 ))) {
+              todolist.splice(i,0,changed);
+              return todolist;
+            }
+            i++;
+          }
         }
       }
       //更新相关实体数据内容

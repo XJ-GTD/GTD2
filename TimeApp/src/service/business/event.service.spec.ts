@@ -168,7 +168,7 @@ describe('EventService test suite', () => {
     txjson.reminds.push(60); // 提前1小时提醒
     agdata.txjson = txjson;
 
-    agdata.al = anyenum.IsWholeday.NonWhole;
+    agdata.al = anyenum.IsWholeday.StartSet;
     agdata.st = "11:20";
     agdata.ct = 20;
     let outagds = new Array<AgendaData>();

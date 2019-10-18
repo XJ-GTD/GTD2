@@ -56,5 +56,73 @@ export class FormatPlanPipe implements PipeTransform {
         }
       }
     }
+
+    if (args[0] == "summary") {
+      if (args.length == 3) {
+        let defaultcolor = args[1];
+        let plans = args[2];
+
+        // 数据不存在或者数据不是数组或者数组长度为0，返回默认颜色
+        if (!value || !(value instanceof Array) || (value instanceof Array && value.length <= 0)) {
+          return defaultcolor;
+        }
+
+        let total: number = 0;
+
+        let summary: Map<string, number> = value.reduce((target, element) => {
+          let ji: string = element.ji;
+          let key: string = defaultcolor;
+
+          if (ji && ji != "") {
+            let plan = plans.find((val) => {
+              return ji == val.ji;
+            });
+
+            if (plan && plan.jc) {
+              key = plan.jc;
+            }
+          }
+          let count: number = target.get(key) || 0;
+
+          count++;
+          total++;
+
+          target.set(key, count);
+
+          return target;
+        }, new Map<string, number>());
+
+        // linear-gradient(to right,red 10% 40%, blue 40%);
+        let gradient: string = "linear-gradient(to right";
+        let pre: string = "0%";
+        let sum: number = 0;
+        summary.forEach((value, key) => {
+          sum += value;   // 累计数量
+          let percent: string = (Math.round((sum / total) * 10000)/100).toFixed(0); // 百分比
+
+          if (pre == "0%") {
+            gradient += ", ";
+            gradient += key;
+            gradient += " ";
+            gradient += pre;
+          } else {
+            gradient += " ";
+            gradient += pre;
+            gradient += ", ";
+            gradient += key;
+            gradient += " ";
+            gradient += pre;
+          }
+
+          pre = percent + "%";
+        });
+
+        gradient += ")";
+
+        return gradient;
+      } else {
+        return "#fff";
+      }
+    }
   }
 }
