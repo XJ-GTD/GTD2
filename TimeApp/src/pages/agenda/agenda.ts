@@ -286,16 +286,20 @@ export class AgendaPage {
 
     let modal = this.modalCtrl.create(DataConfig.PAGE._DTSELECT_PAGE, {
       evd: this.currentAgenda.evd,
-      st: this.currentAgenda.st,
+      evt: this.currentAgenda.evt,
       ct: this.currentAgenda.ct,
       al: this.currentAgenda.al,
+      rfg: this.currentAgenda.rfg
     });
     modal.onDidDismiss(async (data) => {
       if (data) {
-        this.currentAgenda.evd = data.evd;
         this.currentAgenda.al = data.al;
+        this.currentAgenda.evd = data.evd;
+        this.currentAgenda.evt = data.evt;
+        this.currentAgenda.sd = data.sd;
         this.currentAgenda.st = data.st;
-        this.currentAgenda.evt = data.st;
+        this.currentAgenda.ed = data.ed;
+        this.currentAgenda.et = data.et;
         this.currentAgenda.ct = data.ct;
       }
 
