@@ -1086,12 +1086,14 @@ export class EventService extends BaseService {
     let ca = new CaTbl();
     ca.evi = masterEvi;
     ca = await  this.sqlExce.getOneByParam<CaTbl>(ca);
-    agdata.sd = ca.sd ;
-    agdata.st = ca.st ;
-    agdata.ed = ca.ed ;
-    agdata.et = ca.et ;
-    agdata.al = ca.al ;
-    agdata.ct = ca.ct ;
+    if (ca){
+      agdata.sd = ca.sd ;
+      agdata.st = ca.st ;
+      agdata.ed = ca.ed ;
+      agdata.et = ca.et ;
+      agdata.al = ca.al ;
+      agdata.ct = ca.ct ;
+    }
 
     //取得计划详情
     let jha = new JhaTbl();
