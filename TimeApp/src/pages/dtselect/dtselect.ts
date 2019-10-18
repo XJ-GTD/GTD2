@@ -15,7 +15,7 @@ import * as anyenum from "../../data.enum";
               <ion-icon class="fal fa-arrow-alt-from-left"></ion-icon>
               设置开始日期
             </button>
-            <button clear ion-button [class.noselect]="settype == '0'" (click)="changeType('1')" class="font-normal">
+            <button [disabled]="pagedata.rfg == '1'" clear ion-button [class.noselect]="settype == '0'" (click)="changeType('1')" class="font-normal">
               <ion-icon class="fal fa-arrow-alt-from-right"></ion-icon>
               设置截止日期
             </button>
@@ -25,35 +25,35 @@ import * as anyenum from "../../data.enum";
 
 
       <div ion-item no-border no-padding no-lines no-margin class="itemwarp font-normal" *ngIf="settype=='0'">
-        <date-picker  #startDate item-content [(ngModel)]="this.pagedata.sd"
-                      pickerFormat="YYYY ,MM DD" displayFormat="YYYY 年 MM 月 DD 日"  
-                      cancelText="取消" doneText="选择"  (ionChange) = "seteddate()"
+        <date-picker  #startDate item-content [(ngModel)]="pagedata.sd"
+                      pickerFormat="YYYY ,MM DD" displayFormat="YYYY 年 MM 月 DD 日"
+                      min="{{minDate}}" max="2059-01-01" cancelText="取消" doneText="选择"  (ionChange) = "seteddate()"
         ></date-picker>
         <ion-label><ion-icon class="fal fa-calendar-alt"></ion-icon>开始日期</ion-label>
       </div>
       <div ion-item no-border no-padding no-lines no-margin class="itemwarp font-normal" *ngIf="settype=='0'">
-        <date-picker #startTime  [(ngModel)]="this.pagedata.st" item-content pickerFormat="A hh mm  " displayFormat="A hh 点 mm 分" 
-                     doneText="选择" (ionChange) = "seteddate()"
+        <date-picker #startTime  [(ngModel)]="pagedata.st" item-content pickerFormat="A hh mm  " displayFormat="A hh 点 mm 分"
+                     cancelText="取消"  doneText="选择" (ionChange) = "seteddate()"
         ></date-picker>
         <ion-label><ion-icon class="fal fa-clock"></ion-icon>开始时间</ion-label>
       </div>
       <div ion-item no-border no-padding no-lines no-margin class="itemwarp font-normal" *ngIf="settype=='1'">
-        <date-picker  #endDate item-content [(ngModel)]="this.pagedata.ed"
-                      pickerFormat="YYYY ,MM DD" displayFormat="YYYY 年 MM 月 DD 日" 
-                      cancelText="取消" doneText="选择"
+        <date-picker  #endDate item-content [(ngModel)]="pagedata.ed"
+                      pickerFormat="YYYY ,MM DD" displayFormat="YYYY 年 MM 月 DD 日"
+                      min="{{minDate}}" max="2059-01-01" cancelText="取消" doneText="选择"
         ></date-picker>
         <ion-label><ion-icon class="fal fa-calendar-alt"></ion-icon>结束日期</ion-label>
       </div>
 
       <div ion-item no-border no-padding no-lines no-margin class="itemwarp font-normal" *ngIf="settype=='1'">
-        <date-picker #endTime [(ngModel)]="this.pagedata.et" item-content pickerFormat="A hh 点 mm 分" 
-                     doneText="选择"
+        <date-picker #endTime [(ngModel)]="pagedata.et" item-content pickerFormat="A hh 点 mm 分"
+                     cancelText="取消"   doneText="选择"
         ></date-picker>
         <ion-label><ion-icon class="fal fa-clock"></ion-icon>结束时间</ion-label>
       </div>
 
       <div ion-item no-border no-padding no-lines no-margin class="itemwarp font-normal" *ngIf="settype=='0'">
-        <ion-label>时长{{this.pagedata.ct | transfromdate:"duration"}}</ion-label>
+        <ion-label>时长{{pagedata.ct | transfromdate:"duration"}}</ion-label>
       </div>
      
     </modal-box>
@@ -61,7 +61,7 @@ import * as anyenum from "../../data.enum";
 })
 export class DtSelectPage {
 
-
+  minDate : string = moment().format("YYYY-MM-DD");
   pagedata = {
     evd:moment().format("YYYY/MM/DD"),
     ct: 0,
@@ -69,9 +69,13 @@ export class DtSelectPage {
     et: '',
     sd: moment().format("YYYY-MM-DD"),
     st: '',
+    rfg:''
   };
   retdata = {
+    sd:'',
+    ed:'',
     evd:'',
+    evt:'',
     al:'',
     ct: 0,
     et: '',
@@ -96,23 +100,23 @@ export class DtSelectPage {
 
       this.pagedata.ct = this.navParams.data.ct;
 
-
+      this.pagedata.rfg = this.navParams.data.rfg;
       this.pagedata.evd = this.navParams.data.evd;
       if ( this.navParams.data.al == anyenum.IsWholeday.StartSet ){
         this.settype = '0';
         this.pagedata.sd = moment(this.navParams.data.evd).format("YYYY-MM-DD");
-        this.pagedata.ed =  moment(this.navParams.data.evd + " " + this.navParams.data.st).
+        this.pagedata.ed =  moment(this.navParams.data.evd + " " + this.navParams.data.evt).
         add(this.navParams.data.ct,'m').format("YYYY-MM-DD");
-        this.pagedata.st = this.navParams.data.st;
-        this.pagedata.et = moment(this.navParams.data.evd + " " + this.navParams.data.st).
+        this.pagedata.st = this.navParams.data.evt;
+        this.pagedata.et = moment(this.navParams.data.evd + " " + this.navParams.data.evt).
         add(this.navParams.data.ct,'m').format("HH:mm");
 
       }else if(this.navParams.data.al == anyenum.IsWholeday.EndSet){
         this.settype = '1';
         this.pagedata.sd = moment(this.navParams.data.evd).format("YYYY-MM-DD");
         this.pagedata.ed =  moment(this.navParams.data.evd).format("YYYY-MM-DD");
-        this.pagedata.st = this.navParams.data.st;
-        this.pagedata.et = this.navParams.data.st;
+        this.pagedata.st = this.navParams.data.evt;
+        this.pagedata.et = this.navParams.data.evt;
       }else{
         this.iniTime();
       }
@@ -126,14 +130,27 @@ export class DtSelectPage {
   save() {
     if (this.settype == '0'){
       this.retdata.al = anyenum.IsWholeday.StartSet;
-      this.retdata.evd = moment(this.pagedata.sd).format("YYYY/MM/DD");
-      this.retdata.ct = this.pagedata.ct ;
+      this.retdata.sd = moment(this.pagedata.sd).format("YYYY/MM/DD");
       this.retdata.st = this.pagedata.st;
+      this.retdata.ct = this.pagedata.ct ;
+
+      this.retdata.evd = this.retdata.sd;
+      this.retdata.evt = this.retdata.st;
+      this.retdata.ed =  moment(this.retdata.sd + " " + this.retdata.st).
+        add(this.retdata.ct, 'm').format("YYYY/MM/DD");
+      this.retdata.et = moment(this.retdata.sd + " " + this.retdata.st).
+        add(this.retdata.ct, 'm').format("HH:mm");
     }else{
       this.retdata.al = anyenum.IsWholeday.EndSet;
-      this.retdata.evd = moment(this.pagedata.ed).format("YYYY/MM/DD");
+      this.retdata.ed = moment(this.pagedata.ed).format("YYYY/MM/DD");
+      this.retdata.et = this.pagedata.et;
       this.retdata.ct = 0;
-      this.retdata.st = this.pagedata.et;
+
+      this.retdata.evd = this.retdata.ed;
+      this.retdata.evt = this.retdata.et;
+      this.retdata.sd = this.retdata.ed;
+      this.retdata.st = this.retdata.et;
+
     }
     this.viewCtrl.dismiss(this.retdata);
   }

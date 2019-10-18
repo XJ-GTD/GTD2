@@ -1300,11 +1300,13 @@ export class EventService extends BaseService {
       }
     }
 
+    if (newAgdata.rtjson.cycletype != anyenum.CycleType.close && oriAgdata.rfg == anyenum.RepeatFlag.RepeatToOnly){
+      this.assertFail("独立日不允许设定重复");
+    }
+
     if (newAgdata.evi != null && newAgdata.evi != "") {
       /*修改*/
       this.assertNull(oriAgdata);   // 原始事件详情不能为空
-
-      this.assertNotEqual(oriAgdata.sd, newAgdata.sd);//原事件的开始日期与新事件的开始事件没有一致
 
       console.log("**** updateAgenda start :****" + moment().format("YYYY/MM/DD HH:mm:ss SSS"))
       let outAgdatas = await this.updateAgenda(newAgdata,oriAgdata,modiType);
@@ -1364,7 +1366,7 @@ export class EventService extends BaseService {
 
     let caparam = new CaTbl();
     if (retParamEv.rtevi != ""){
-      caparam = this.sqlparamAddCa(retParamEv.rtevi,agdata.sd,retParamEv.ed,agdata);
+      caparam = this.sqlparamAddCa(retParamEv.rtevi,agdata.sd,agdata.ed,agdata);
       sqlparam.push(caparam.rpTParam());
     }
 
@@ -1542,6 +1544,10 @@ export class EventService extends BaseService {
       ev.mi = newAgdata.mi;
       sqlparam.push(ev.upTParam());
 
+      let caparam = new CaTbl();
+      caparam = this.sqlparamAddCa(oriAgdata.evi ,newAgdata.evd,newAgdata.evd,newAgdata);//evi使用原evi
+      sqlparam.push(caparam.rpTParam());
+
       //其他表相关处理
       this.modifyOnlyoneForOther(sqlparam,oriAgdata,newAgdata);
 
@@ -1614,8 +1620,9 @@ export class EventService extends BaseService {
       oriAgdata.evd = oriAgdata.sd;
       await this.delFromsel(masterEvi ,oriAgdata ,sqlparam,outAgds);
 
-      //新建新事件日程
+      //重建事件日程
       let retParamEv = new RetParamEv();
+      newAgdata.sd = oriAgdata.sd;
       retParamEv = this.newAgenda(newAgdata);
 
       //添加新参与人到新事件
@@ -2172,13 +2179,30 @@ export class EventService extends BaseService {
     agdata.del = !agdata.del ? anyenum.DelType.undel : agdata.del ;
     agdata.rfg = !agdata.rfg ? anyenum.RepeatFlag.NonRepeat : agdata.rfg ;
 
-    agdata.sd = agdata.sd || agdata.evd || moment().format("YYYY/MM/DD");
-    agdata.ed = agdata.ed || agdata.sd;
     agdata.al = !agdata.al ? anyenum.IsWholeday.StartSet :agdata.al;
-    agdata.st = !agdata.st ? this.EVT_ST : agdata.st;
-    agdata.ct = !agdata.ct ? 60 :agdata.ct;
-    agdata.et = !agdata.et ? moment(agdata.sd + " " + agdata.st).
-    add(agdata.ct, 'm').format("HH:mm") : agdata.et;
+
+
+
+    if (agdata.al == anyenum.IsWholeday.StartSet){
+      agdata.ct = !agdata.ct ? 60 :agdata.ct;
+
+      agdata.sd = agdata.sd || agdata.evd || moment().format("YYYY/MM/DD");
+      agdata.st = !agdata.st ? this.EVT_ST : agdata.st;
+
+      agdata.ed = agdata.ed || moment(agdata.sd + " " + agdata.st).
+      add(agdata.ct, 'm').format("YYYY/MM/DD");
+      agdata.et = !agdata.et ? moment(agdata.sd + " " + agdata.st).
+      add(agdata.ct, 'm').format("HH:mm") : agdata.et;
+    }else{
+      agdata.ct = !agdata.ct ? 0 :agdata.ct;
+      agdata.ed = agdata.ed || moment().
+      add(7, 'd').format("YYYY/MM/DD");
+      agdata.et = !agdata.et ? moment().
+      add(7, 'd').format("HH:mm") : agdata.et;
+
+      agdata.sd = agdata.sd || agdata.evd || agdata.ed;
+      agdata.st = !agdata.st ? agdata.et : agdata.st;
+    }
 
   }
 
@@ -2236,7 +2260,6 @@ export class EventService extends BaseService {
       ev.tb = anyenum.SyncType.unsynch;
       ev.del = anyenum.DelType.undel;
 
-      ret.ed = ev.evd;
       evs.push(ev);
 
       if (txjson.reminds && txjson.reminds.length > 0) {
@@ -2284,8 +2307,9 @@ export class EventService extends BaseService {
     agdata.sd = sd;
     agdata.ed = ed;
     if (agdata.al == anyenum.IsWholeday.EndSet){
-      agdata.ed = sd;
-      agdata.et = agdata.st;
+      agdata.sd = ed;
+      agdata.st = agdata.et;
+      agdata.ct = 0;
     }
 
     let ca = new CaTbl();
@@ -4188,7 +4212,6 @@ export interface MiniTaskData extends EventData {
 
 export class RetParamEv{
   rtevi:string ="";
-  ed:string = "";
   sqlparam  = new  Array<any>();
   outAgdatas = new Array<AgendaData>();
 }

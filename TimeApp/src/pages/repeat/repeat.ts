@@ -461,10 +461,12 @@ export class RepeatPage {
           switch (this.cfDayOptions.endType) {
             case "never":
               rtjson.over.type = OverType.fornever;
+              this.cfDayOptions.toSomeDay = "";
               break;
             case "aftertimes":
               rtjson.over.type = OverType.times;
               rtjson.over.value = this.cfDayOptions.afterTimes;
+              this.cfDayOptions.toSomeDay = "";
               break;
             case "tosomeday":
               rtjson.over.type = OverType.limitdate;
@@ -499,10 +501,12 @@ export class RepeatPage {
           switch (this.cfWeekOptions.endType) {
             case "never":
               rtjson.over.type = OverType.fornever;
+              this.cfDayOptions.toSomeDay = "";
               break;
             case "aftertimes":
               rtjson.over.type = OverType.times;
               rtjson.over.value = this.cfWeekOptions.afterTimes;
+              this.cfDayOptions.toSomeDay = "";
               break;
             case "tosomeday":
               rtjson.over.type = OverType.limitdate;
@@ -537,10 +541,12 @@ export class RepeatPage {
           switch (this.cfMonthOptions.endType) {
             case "never":
               rtjson.over.type = OverType.fornever;
+              this.cfDayOptions.toSomeDay = "";
               break;
             case "aftertimes":
               rtjson.over.type = OverType.times;
               rtjson.over.value = this.cfMonthOptions.afterTimes;
+              this.cfDayOptions.toSomeDay = "";
               break;
             case "tosomeday":
               rtjson.over.type = OverType.limitdate;
@@ -562,10 +568,12 @@ export class RepeatPage {
           switch (this.cfYearOptions.endType) {
             case "never":
               rtjson.over.type = OverType.fornever;
+              this.cfDayOptions.toSomeDay = "";
               break;
             case "aftertimes":
               rtjson.over.type = OverType.times;
               rtjson.over.value = this.cfYearOptions.afterTimes;
+              this.cfDayOptions.toSomeDay = "";
               break;
             case "tosomeday":
               rtjson.over.type = OverType.limitdate;
