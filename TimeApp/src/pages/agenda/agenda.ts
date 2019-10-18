@@ -521,6 +521,16 @@ export class AgendaPage {
         this.currentAgenda.rt = JSON.stringify(this.currentAgenda.rtjson);
         this.currentAgenda.rts = this.currentAgenda.rtjson.text();
 
+        if (this.currentAgenda.rtjson.cycletype == CycleType.close) {
+          this.currentAgenda.rfg = RepeatFlag.NonRepeat;
+        } else {
+          if (this.originAgenda.rfg != RepeatFlag.NonRepeat) {
+            this.currentAgenda.rfg = this.originAgenda.rfg;
+          } else {
+            this.currentAgenda.rfg = RepeatFlag.Repeat;
+          }
+        }
+
         if (!this.eventService.isSameAgenda(this.currentAgenda, this.originAgenda)) {
           this.buttons.save = true;
         } else {
