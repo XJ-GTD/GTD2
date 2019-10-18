@@ -204,6 +204,8 @@ export class AgendaPage {
     if (this.navParams) {
       let paramter: ScdPageParamter = this.navParams.data;
       if (paramter.si) {
+        this.currentAgenda.evi = paramter.si;   // 预先赋值用于控制在加载日程的时候键盘不显示
+
         this.util.loadingStart().then(async () => {
           let count: number = 0;
           let hasdata: boolean = false;
