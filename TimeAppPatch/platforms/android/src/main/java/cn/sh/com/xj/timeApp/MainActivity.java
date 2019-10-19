@@ -21,7 +21,6 @@ package cn.sh.com.xj.timeApp;
 
 import android.os.Bundle;
 import org.apache.cordova.*;
-import com.facebook.stetho.*;
 
 public class MainActivity extends CordovaActivity
 {
@@ -29,8 +28,6 @@ public class MainActivity extends CordovaActivity
     public void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-		
-		Stetho.initializeWithDefaults(this);
 
         // enable Cordova apps to be started in the background
         Bundle extras = getIntent().getExtras();
