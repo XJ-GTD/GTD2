@@ -31,6 +31,7 @@ else
   ls $TRAVIS_BUILD_DIR/TimeApp/
   ionic cordova build android --verbose --stacktrace --buildConfig $TRAVIS_BUILD_DIR/travis/profiles/cordova/build.json
   cat $TRAVIS_BUILD_DIR/TimeApp/platforms/android/app/build.gradle
+  cat $TRAVIS_BUILD_DIR/TimeApp/platforms/android/CordovaLib/cordova.gradle
   ls $TRAVIS_BUILD_DIR/TimeApp/platforms/android/app/src/main/
   cat $TRAVIS_BUILD_DIR/TimeApp/platforms/android/app/src/main/AndroidManifest.xml
 fi
