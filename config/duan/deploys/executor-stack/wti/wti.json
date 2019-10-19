@@ -9,5 +9,7 @@
   "weather.uri.default": "http://www.weather.com.cn/data/sk/##locationid##.html",
   "weather.uri.zhishu": "http://www.weather.com.cn/data/zs/##locationid##.html",
   "weather.uri.cityinfo": "http://www.weather.com.cn/data/cityinfo/##locationid##.html",
-  "weather.uri.tianqiapi": "https://www.tianqiapi.com/api/?version=v1&cityid=##locationid##"
+  "weather.uri.tianqiapi": "https://www.tianqiapi.com/api/?version=v1&cityid=##locationid##&appid=##appid##&appsecret=##appsecret##",
+  "weather.uri.tianqiapi.appid":"21185323",
+  "weather.uri.tianqiapi.secret":"l5jHXM3t"
 }
