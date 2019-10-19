@@ -30,6 +30,7 @@ if [ $TRAVIS_OS_NAME = 'osx' ]; then
 else
   ls $TRAVIS_BUILD_DIR/TimeApp/
   ionic cordova build android --verbose --stacktrace --buildConfig $TRAVIS_BUILD_DIR/travis/profiles/cordova/build.json
+  cat $TRAVIS_BUILD_DIR/TimeApp/platforms/android/app/build.gradle
   ls $TRAVIS_BUILD_DIR/TimeApp/platforms/android/app/src/main/
   cat $TRAVIS_BUILD_DIR/TimeApp/platforms/android/app/src/main/AndroidManifest.xml
 fi
