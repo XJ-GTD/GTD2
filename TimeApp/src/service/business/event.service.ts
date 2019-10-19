@@ -1300,13 +1300,13 @@ export class EventService extends BaseService {
       }
     }
 
-    if (newAgdata.rtjson.cycletype != anyenum.CycleType.close && oriAgdata.rfg == anyenum.RepeatFlag.RepeatToOnly){
-      this.assertFail("独立日不允许设定重复");
-    }
-
     if (newAgdata.evi != null && newAgdata.evi != "") {
       /*修改*/
       this.assertNull(oriAgdata);   // 原始事件详情不能为空
+
+      if (newAgdata.rtjson.cycletype != anyenum.CycleType.close && oriAgdata.rfg == anyenum.RepeatFlag.RepeatToOnly){
+        this.assertFail("独立日不允许设定重复");
+      }
 
       console.log("**** updateAgenda start :****" + moment().format("YYYY/MM/DD HH:mm:ss SSS"))
       let outAgdatas = await this.updateAgenda(newAgdata,oriAgdata,modiType);
