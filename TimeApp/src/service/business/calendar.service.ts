@@ -362,6 +362,7 @@ export class CalendarService extends BaseService {
       let sqls: Array<any> = new Array<any>();
 
       plan.ji = this.util.getUuid();
+      plan.jt = plan.jt || PlanType.PrivatePlan;  // 默认创建自定义日历
       plan.del = DelType.undel;
       plan.tb = SyncType.unsynch;
 
@@ -3675,7 +3676,7 @@ export class CalendarService extends BaseService {
       let push: PushInData = new PushInData();
 
       for (let plan of plans) {
-        if (plan.jt == PlanType.PrivatePlan) continue;
+        if (plan.jt != PlanType.PrivatePlan) continue;
 
         let sync: SyncData = new SyncData();
 
