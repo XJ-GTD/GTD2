@@ -1610,7 +1610,12 @@ export class EventService extends BaseService {
       outAgds = [ ...retParamEv.outAgdatas,...outAgds];
       console.log("**** updateAgenda outAgds = [...outAgds, ...retParamEv.outAgdatas]; end :****" + moment().format("YYYY/MM/DD HH:mm:ss SSS"))
 
-    }else if(doType == DoType.All){
+      await this.sqlExce.batExecSqlByParam(sqlparam);
+
+      return outAgds;
+    }
+
+    if(doType == DoType.All){
 
 
       //删除原事件中从当前开始所有事件
@@ -1631,7 +1636,13 @@ export class EventService extends BaseService {
       //修改与新增记录合并成返回事件
       outAgds = [ ...retParamEv.outAgdatas,...outAgds];
 
-    }else if(doType == DoType.Current ) {
+
+      await this.sqlExce.batExecSqlByParam(sqlparam);
+
+      return outAgds;
+    }
+
+    if(doType == DoType.Current ) {
 
       //事件表更新
       let outAgd  = {} as AgendaData;
@@ -1687,22 +1698,20 @@ export class EventService extends BaseService {
       //变化或新增的日程放入事件对象
       Object.assign(outAgd,caparam);
 
+      await this.sqlExce.batExecSqlByParam(sqlparam);
 
+      if (!oriAgdata.rtevi && oriAgdata.rtevi =="" && oriAgdata.rfg == anyenum.RepeatFlag.Repeat){
 
-    }
-    console.log("**** updateAgenda batExecSqlByParam start :****" + moment().format("YYYY/MM/DD HH:mm:ss SSS"))
-    await this.sqlExce.batExecSqlByParam(sqlparam);
-    console.log("**** updateAgenda batExecSqlByParam end :****" + moment().format("YYYY/MM/DD HH:mm:ss SSS"))
+      }else{
+        //如果不是父点且参与人发生改变，取得活动所有数据
+        await this.getAllAgendaForFieldChanged(oriAgdata,newAgdata,FieldChanged.Member,outAgds);
+      }
 
-    if (!oriAgdata.rtevi && oriAgdata.rtevi =="" && oriAgdata.rfg == anyenum.RepeatFlag.Repeat){
+      return outAgds;
 
-    }else{
-      //如果不是父点且参与人发生改变，取得活动所有数据
-      await this.getAllAgendaForFieldChanged(oriAgdata,newAgdata,FieldChanged.Member,outAgds);
     }
 
     return outAgds;
-
   }
 
   /**
