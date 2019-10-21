@@ -39,8 +39,8 @@ import * as moment from "moment";
             <ion-row class="item-content item-content-backgroud" leftmargin toppaddingsamll bottompaddingsamll rightmargin
                      *ngIf="fja.del=='undel'" >
               <div class="line font-normal topheader" leftmargin rightmargin >
-                <div class="st font-small" end> {{fja.wtt | date: "yyyy-MM-dd HH:mm"}}</div>
-                <div class="person font-small">{{fja.ui}}</div>
+                <div class="st font-small"> {{fja.wtt | date: "yyyy-MM-dd HH:mm"}}</div>
+                <div class="person font-small" end>---{{fja.ui}}</div>
               </div>
               <div class="line font-normal" leftmargin rightmargin >
                 <div class="sn towline">{{fja.fjn}}</div>
