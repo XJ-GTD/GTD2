@@ -5,7 +5,7 @@ import {JhTbl} from "../../service/sqlite/tbl/jh.tbl";
 import {PagePDPro, PagePlData, RcInParam} from "../../data.mapping";
 import * as moment from "moment";
 import {EmitService} from "../../service/util-service/emit.service";
-import {CalendarService, PlanData} from "../../service/business/calendar.service";
+import {CalendarService, PlanSummaryData, PlanData} from "../../service/business/calendar.service";
 import {PlanType} from "../../data.enum";
 
 @Injectable()
@@ -45,7 +45,7 @@ export class PlService {
     console.log('---------- PlService getPlan 获取计划开始 ----------------');
     let pld = new PagePlData();
 
-    let plans: Array<PlanData> = await this.calendarService.fetchAllPlans([PlanType.PrivatePlan, PlanType.CalendarPlan, PlanType.ActivityPlan]);
+    let plans: Array<PlanSummaryData> = await this.calendarService.fetchAllPlansSummary([PlanType.PrivatePlan, PlanType.CalendarPlan, PlanType.ActivityPlan]);
 
     let xtJh: Array<PagePDPro> = new  Array<PagePDPro>();
     let zdyJh: Array<PagePDPro> = new  Array<PagePDPro>();
@@ -54,7 +54,7 @@ export class PlService {
       let jhc: PagePDPro = new PagePDPro();
 
       Object.assign(jhc, plan);
-      jhc.js = plan.items.length;
+      jhc.js = plan.itemscount + plan.eventscount + plan.memoscount;
 
       if (plan.jt == PlanType.PrivatePlan) {
         zdyJh.push(jhc);
