@@ -16,7 +16,7 @@ import {UtilService} from "../../service/util-service/util.service";
 import {FeedbackService} from "../../service/cordova/feedback.service";
 import {CalendarService, DayActivityData, MonthActivityData} from "../../service/business/calendar.service";
 import {EventService} from "../../service/business/event.service";
-import {PageDirection, EventType, InviteState, SyncType, SelfDefineType, EventFinishStatus} from "../../data.enum";
+import {PageDirection, EventType, InviteState, PlanItemType, SyncType, SelfDefineType, EventFinishStatus} from "../../data.enum";
 import {TdlGesture} from "./tdl-gestures";
 import {CalendarComponent} from "../../components/ion2-calendar";
 import {UserConfig} from "../../service/config/user.config";
@@ -122,7 +122,8 @@ BScroll.use(InfinityScroll);
                     <div class="icon">
                       <ion-icon class = "fal fa-gift"></ion-icon>
                     </div>
-                    <div class="sn">{{jt.jtn}}</div>
+                    <div class="sn" *ngIf="jt.jtt != weather">{{jt.jtn}}</div>
+                    <div class="sn" *ngIf="jt.jtt == weather">{{jt.jtn}}<br/>{{jt.bz}}</div>
                   </div>
                 </ng-container>
               </ion-row>
@@ -205,6 +206,10 @@ export class TdlPage {
 
   system: SelfDefineType = SelfDefineType.System;
   selfdefine: SelfDefineType = SelfDefineType.Define;
+
+  holiday: PlanItemType = PlanItemType.Holiday;
+  activity: PlanItemType = PlanItemType.Activity;
+  weather: PlanItemType = PlanItemType.Weather;
 
   synch: SyncType = SyncType.synch;
   unsynch: SyncType = SyncType.unsynch;
