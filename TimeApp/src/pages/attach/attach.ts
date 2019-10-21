@@ -39,7 +39,7 @@ import * as moment from "moment";
                    *ngFor="let fj of fjArray">
             <div class="line font-normal topheader" leftmargin rightmargin *ngIf="fj.del=='undel'">
               <div class="person font-small">{{fj.ui}}</div>
-              <div class="st font-small" end> {{fj.wtt | formatedate: "YYYY年M月D日"}}</div>
+              <div class="st font-small" end> {{fj.wtt | date: "YYYY-MM-dd"}}</div>
             </div>
             <div class="line font-normal" leftmargin rightmargin *ngIf="fj.del=='undel'">
               <div class="sn towline">{{fj.fjn}}</div>
