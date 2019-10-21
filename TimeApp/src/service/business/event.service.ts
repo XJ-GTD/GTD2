@@ -1207,23 +1207,23 @@ export class EventService extends BaseService {
     let params : Array<any>;
 
     //主evi设定
-    let masterEvi : string;
+    let delEvi : string;
     if (oriAgdata.rtevi == ""){
       //非重复数据或重复数据的父记录
-      masterEvi = oriAgdata.evi;
+      delEvi = oriAgdata.evi;
     }else if (oriAgdata.rfg == anyenum.RepeatFlag.RepeatToOnly){
       //重复中独立日只能删自己
-      masterEvi = oriAgdata.evi;
+      delEvi = oriAgdata.evi;
     }else{
       //重复数据
-      masterEvi = oriAgdata.rtevi;
+      delEvi = oriAgdata.rtevi;
     }
 
     if (delType == anyenum.OperateType.FromSel){
 
       //删除原事件中从当前开始所有事件
       console.log("**** removeAgenda start :****" + moment().format("YYYY/MM/DD HH:mm:ss SSS"))
-      await this.delFromsel(masterEvi ,oriAgdata ,sqlparam,outAgds);
+      await this.delFromsel(delEvi ,oriAgdata ,sqlparam,outAgds);
       console.log("**** removeAgenda end :****" + moment().format("YYYY/MM/DD HH:mm:ss SSS"))
     }else{
 
@@ -1453,15 +1453,21 @@ export class EventService extends BaseService {
 
     //主evi设定
     let masterEvi : string;
+    let delEvi : string;
     if (oriAgdata.rtevi == ""){
       //非重复数据或重复数据的父记录
       masterEvi = oriAgdata.evi;
+      delEvi = oriAgdata.evi;
     }else if (oriAgdata.rfg == anyenum.RepeatFlag.RepeatToOnly){
       //重复中独立日只能修改自己
-      masterEvi = oriAgdata.evi;
+      masterEvi = oriAgdata.rtevi;
+
+      delEvi = oriAgdata.evi;
     }else{
       //重复数据
       masterEvi = oriAgdata.rtevi;
+
+      delEvi = oriAgdata.rtevi;
     }
 
     //接收或拒绝邀请
@@ -1560,8 +1566,6 @@ export class EventService extends BaseService {
         await this.getAllAgendaForFieldChanged(oriAgdata,newAgdata,FieldChanged.Member, outAgds);
       }
 
-
-
       return outAgds;
     }
 
@@ -1575,7 +1579,7 @@ export class EventService extends BaseService {
 
       //删除原事件中从当前开始所有事件
       console.log("**** updateAgenda delFromsel start :****" + moment().format("YYYY/MM/DD HH:mm:ss SSS"))
-      await this.delFromsel(masterEvi ,oriAgdata ,sqlparam,outAgds);
+      await this.delFromsel(delEvi ,oriAgdata ,sqlparam,outAgds);
       console.log("**** updateAgenda delFromsel end :****" + moment().format("YYYY/MM/DD HH:mm:ss SSS"))
       //新建新事件日程
       let nwAgdata = {} as AgendaData;
@@ -1603,7 +1607,7 @@ export class EventService extends BaseService {
 
       //删除原事件中从当前开始所有事件
       oriAgdata.evd = oriAgdata.sd;
-      await this.delFromsel(masterEvi ,oriAgdata ,sqlparam,outAgds);
+      await this.delFromsel(delEvi ,oriAgdata ,sqlparam,outAgds);
 
       //重建事件日程
       let retParamEv = new RetParamEv();
@@ -2069,9 +2073,9 @@ export class EventService extends BaseService {
     params.push(anyenum.DelType.del);
     sqlparam.push([sq,params]);
 
-    console.log("**** updateAgenda delFromsel 结果数组合并 start :****" + moment().format("YYYY/MM/DD HH:mm:ss SSS"))
+    console.log("****  delFromsel 结果数组合并 start :****" + moment().format("YYYY/MM/DD HH:mm:ss SSS"))
     Object.assign(outAgds,[...outAgds, ...delAgds]);
-    console.log("**** updateAgenda delFromsel 结果数组合并 end :****" + moment().format("YYYY/MM/DD HH:mm:ss SSS"))
+    console.log("****  delFromsel 结果数组合并 end :****" + moment().format("YYYY/MM/DD HH:mm:ss SSS"))
 
   }
 
