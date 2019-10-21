@@ -1200,6 +1200,10 @@ export class EventService extends BaseService {
    */
   async removeAgenda(oriAgdata : AgendaData, delType : anyenum.OperateType):Promise<Array<AgendaData>>{
 
+    if (delType == anyenum.OperateType.FromSel && oriAgdata.rfg == anyenum.RepeatFlag.RepeatToOnly){
+      this.assertFail("独立日删除不可以选择删除将来所有");
+    }
+
     let outAgds = new Array<AgendaData>();
 
     //批量本地更新
@@ -1401,6 +1405,10 @@ export class EventService extends BaseService {
    * @returns {Promise<Array<AgendaData>>}
    */
   private async updateAgenda(newAgdata: AgendaData,oriAgdata : AgendaData, modiType : anyenum.OperateType):Promise<Array<AgendaData>> {
+
+    if (modiType == anyenum.OperateType.FromSel && oriAgdata.rfg == anyenum.RepeatFlag.RepeatToOnly){
+      this.assertFail("独立日修改不可以选择修改将来所有");
+    }
 
     //如果不使用页面对象，而直接使用更新后的返回数据对象作为参数，则rtjson，txjson为空
     if (!newAgdata.rtjson) {
