@@ -16,7 +16,7 @@ import {UtilService} from "../../service/util-service/util.service";
 import {FeedbackService} from "../../service/cordova/feedback.service";
 import {CalendarService, DayActivityData, MonthActivityData} from "../../service/business/calendar.service";
 import {EventService} from "../../service/business/event.service";
-import {PageDirection, EventType, InviteState, SyncType, SelfDefineType, EventFinishStatus} from "../../data.enum";
+import {PageDirection, EventType, InviteState, PlanItemType, SyncType, SelfDefineType, EventFinishStatus} from "../../data.enum";
 import {TdlGesture} from "./tdl-gestures";
 import {CalendarComponent} from "../../components/ion2-calendar";
 import {UserConfig} from "../../service/config/user.config";
