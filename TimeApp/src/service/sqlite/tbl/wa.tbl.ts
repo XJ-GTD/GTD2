@@ -63,6 +63,9 @@ export class WaTbl implements ITblParam {
     if(this.tb!=null && this.tb!=''){      sq=sq+', tb= ? ';      params.push(this.tb);    }
     if(this.del!=null && this.del!=''){      sq=sq+', del= ? ';      params.push(this.del);    }
 
+    if (sq != null && sq != ""){
+      sq = sq.substr(1);
+    }
     sq =`update gtd_wa set ${sq} where wai = ? ;`;
     params.push(this.wai);
 

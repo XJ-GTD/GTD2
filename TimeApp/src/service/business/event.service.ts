@@ -1259,12 +1259,13 @@ export class EventService extends BaseService {
 
 
       // 删除相关提醒
-      let wa = new WaTbl();
-      wa.obi = oriAgdata.evi;
-      wa.obt = anyenum.ObjectType.Event;
-      wa.tb = anyenum.SyncType.unsynch;
-      wa.del = anyenum.DelType.del;
-      sqlparam.push(wa.rpTParam());
+      sq = `update gtd_wa set tb = ? ,del = ?  where obt = ? and  obi = ? and obt = ?; `;
+      params = new Array<any>();
+      params.push(anyenum.SyncType.unsynch);
+      params.push(anyenum.DelType.del);
+      params.push(oriAgdata.evi);
+      params.push(anyenum.ObjectType.Event);
+      sqlparam.push([sq,params]);
 
     }
 
@@ -1826,6 +1827,8 @@ export class EventService extends BaseService {
    * @param {AgendaData} newAgdata
    */
   private modifyOnlyoneForOther(sqlparam : Array<any> ,oriAgdata :AgendaData, newAgdata : AgendaData){
+    let sq = "";
+    let params : Array<any>;
     //取参与人evi设定
     let parEvi : string;
     if (oriAgdata.rtevi == ""){
@@ -1837,12 +1840,13 @@ export class EventService extends BaseService {
     }
 
     // 删除相关提醒
-    let wa = new WaTbl();
-    wa.obi = oriAgdata.evi;
-    wa.obt = anyenum.ObjectType.Event;
-    wa.tb = anyenum.SyncType.unsynch;
-    wa.del = anyenum.DelType.del;
-    sqlparam.push(wa.rpTParam());
+    sq = `update gtd_wa set tb = ? ,del = ?  where obt = ? and  obi = ? and obt = ?; `;
+    params = new Array<any>();
+    params.push(anyenum.SyncType.unsynch);
+    params.push(anyenum.DelType.del);
+    params.push(oriAgdata.evi);
+    params.push(anyenum.ObjectType.Event);
+    sqlparam.push([sq,params]);
 
     let ev = new EvTbl();
     Object.assign(ev,newAgdata);
