@@ -36,15 +36,15 @@ import * as moment from "moment";
 
         <ion-grid class="list-grid-content">
           <ion-row class="item-content item-content-backgroud" leftmargin toppaddingsamll bottompaddingsamll rightmargin
-                   *ngFor="let fj of fjArray">
-            <div class="line font-normal topheader" leftmargin rightmargin *ngIf="fj.del=='undel'">
+                   *ngFor="let fj of fjArray" *ngIf="fj.del=='undel'">
+            <div class="line font-normal topheader" leftmargin rightmargin >
               <div class="person font-small">{{fj.ui}}</div>
               <div class="st font-small" end> {{fj.wtt | date: "yyyy-MM-dd HH:mm:ss"}}</div>
             </div>
-            <div class="line font-normal" leftmargin rightmargin *ngIf="fj.del=='undel'">
+            <div class="line font-normal" leftmargin rightmargin >
               <div class="sn towline">{{fj.fjn}}</div>
             </div>
-            <div class="line font-normal" leftmargin rightmargin *ngIf="fj.del=='undel'">
+            <div class="line font-normal" leftmargin rightmargin >
               <div>
                 <ion-icon class="fas fa-file-pdf" (click)="window.open('www.idec.com/language/chinese_s/AO/B2008_WindEDITLiteUsersCS.pdf')"></ion-icon>
               </div>
