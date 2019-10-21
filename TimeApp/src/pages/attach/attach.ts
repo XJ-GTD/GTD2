@@ -36,13 +36,18 @@ import {UtilService} from "../../service/util-service/util.service";
         <ion-grid class="list-grid-content">
           <ion-row class="item-content item-content-backgroud" leftmargin toppaddingsamll bottompaddingsamll rightmargin
                    *ngFor="let fj of fjArray">
-            <div class="line font-normal topheader" leftmargin rightmargin>
-              <div class="person font-small">谷子地</div>
-              <div class="st font-small" end> 12:00</div>
+            <div class="line font-normal topheader" leftmargin rightmargin *ngIf="fj.del=='undel'">
+              <div class="person font-small">{{fj.ui}}</div>
+              <div class="st font-small" end> {{fj.wtt | formatedate: "YYYY年M月D日"}}</div>
             </div>
-            <div class="line font-normal" leftmargin rightmargin>
+            <div class="line font-normal" leftmargin rightmargin *ngIf="fj.del=='undel'">
               <div class="sn towline">{{fj.fjn}}</div>
-              <div class="icon" end>
+            </div>
+            <div class="line font-normal" leftmargin rightmargin *ngIf="fj.del=='undel'">
+              <div>
+                <ion-icon class="fas fa-file-pdf" (click)="window.open('www.idec.com/language/chinese_s/AO/B2008_WindEDITLiteUsersCS.pdf')"></ion-icon>
+              </div>
+              <div class="icon" *ngIf="(fj.tb=='unsynch')&&(fj.ui==currentuser) " (click)="delAttach(fj)"  end >
                 <ion-icon class="fal fa-minus-circle"></ion-icon>
               </div>
             </div>
@@ -101,6 +106,7 @@ export class AttachPage {
   obt: string = "";
   obi: string = "";
   bw: string = "";
+  currentuser: string = "";
   buttons: any = {
     create: true,
     save: true,
@@ -122,6 +128,7 @@ export class AttachPage {
       this.obt = this.navParams.data.obt;
       this.obi = this.navParams.data.obi;
       this.fjArray = this.navParams.data.attach;
+      this.currentuser = this.navParams.data.userId
     }
     //验证缓存文件目录是否存在
     this.file.checkDir(this.file.externalDataDirectory, '/timeAppfile')
@@ -207,6 +214,10 @@ export class AttachPage {
         this.fjData.fjn = fileName;
         this.fjData.ext = ext;
         this.fjData.fj = this.file.externalDataDirectory + "/timeAppfile/" + fileName;
+        this.fjData.ui = this.currentuser;
+        this.fjData.del = 'undel';
+        this.fjData.tb = 'unsynch';
+        this.fjData.wtt = moment().unix();
         this.file.copyFile(imgFileDir, fileName, this.file.externalDataDirectory + "/timeAppfile", fileName);
 
       }
@@ -225,15 +236,6 @@ export class AttachPage {
    */
   select() {
 
-    //测试数据
-    // let fjData: FjData = {} as FjData;
-    // fjData.obt = this.obt;
-    // fjData.obi = this.obi;
-    // fjData.fjn = this.bw;
-    // fjData.ext = "jpg";
-    // fjData.fj = "/home/storage/ying/liqianna/123.jpg";
-    // this.fjArray.push(fjData);
-    //正式代码
     this.chooser.getFile('*/*').then((file) => {
         this.filePath.resolveNativePath(file.uri)
           .then((filePath) => {
@@ -246,6 +248,10 @@ export class AttachPage {
               this.fjData.obi = this.obi;
               this.fjData.fjn = fileName;
               this.fjData.ext = ext;
+              this.fjData.ui = this.currentuser;
+              this.fjData.del = 'undel';
+              this.fjData.tb = 'unsynch';
+              this.fjData.wtt = moment().unix();
               this.fjData.fj = this.file.externalDataDirectory + "/timeAppfile/" + fileName;
               //this.fjArray.push(fjData);
               this.file.copyFile(imgFileDir, fileName, this.file.externalDataDirectory + "/timeAppfile", fileName);
@@ -284,6 +290,20 @@ export class AttachPage {
       this.fjData.fjn = this.bw
       this.fjArray.push(this.fjData);
       this.fjData = {} as Attachment;
+    }
+  }
+
+  // 删除当前项
+  delAttach(at: Attachment) {
+    if (at) {
+        for (let fj of this.fjArray) {
+            if ((fj.fji == at.fji)&&(fj.obt == at.obt)
+              &&(fj.obi == at.obi)&&(fj.fjn == at.fjn)
+              &&(fj.ext == at.ext)&&(fj.fj == at.fj)
+              &&(fj.tb == at.tb)&&(fj.del == at.del)&&(fj.wtt == at.wtt)) {
+                  fj.del = 'del';
+            }
+        }
     }
   }
 

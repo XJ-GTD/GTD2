@@ -370,7 +370,8 @@ export class AgendaPage {
     let modal = this.modalCtrl.create(DataConfig.PAGE._ATTACH_PAGE, {
       obt: ObjectType.Event,
       obi: this.currentAgenda.evi,
-      attach: cloneattachments
+      attach: cloneattachments,
+      userId: this.currentuser
     });
     modal.onDidDismiss(async (data) => {
       if (!data) return;
