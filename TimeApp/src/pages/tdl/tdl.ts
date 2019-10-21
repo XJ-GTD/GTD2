@@ -122,7 +122,8 @@ BScroll.use(InfinityScroll);
                     <div class="icon">
                       <ion-icon class = "fal fa-gift"></ion-icon>
                     </div>
-                    <div class="sn">{{jt.jtn}}</div>
+                    <div class="sn" *ngIf="jt.jtt != weather">{{jt.jtn}}</div>
+                    <div class="sn" *ngIf="jt.jtt == weather">{{jt.jtn}}<br/>{{jt.bz}}</div>
                   </div>
                 </ng-container>
               </ion-row>
@@ -205,6 +206,10 @@ export class TdlPage {
 
   system: SelfDefineType = SelfDefineType.System;
   selfdefine: SelfDefineType = SelfDefineType.Define;
+
+  holiday: PlanItemType = PlanItemType.Holiday;
+  activity: PlanItemType = PlanItemType.Activity;
+  weather: PlanItemType = PlanItemType.Weather;
 
   synch: SyncType = SyncType.synch;
   unsynch: SyncType = SyncType.unsynch;
