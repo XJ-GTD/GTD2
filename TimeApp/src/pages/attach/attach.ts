@@ -47,7 +47,7 @@ import * as moment from "moment";
               </div>
               <div class="line font-normal" leftmargin rightmargin>
                 <div *ngIf="fj.ext=='PDF'||fj.ext=='pdf'">
-                  <ion-icon class="fas fa-file-pdf" (click)="window.open('{{fj.fj}}')"></ion-icon>
+                  <ion-icon class="fas fa-file-pdf" (click)="window.open({{fj.fj}})"></ion-icon>
                 </div>
                 <div *ngIf="fj.ext=='png'||fj.ext=='PNG'||fj.ext=='jpg'||fj.ext=='JPG'||fj.ext=='bmp'||fj.ext=='BMP'||fj.ext=='mp4'||fj.ext=='MP4'">
                       <img src="file:///{{fj.fj}}" />
