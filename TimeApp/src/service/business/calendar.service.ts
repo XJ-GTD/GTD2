@@ -2136,6 +2136,43 @@ export class CalendarService extends BaseService {
   }
 
   /**
+   * 取得所有日历概要
+   * 包括 自定义日历/冥王星预定义日历
+   * 结果根据类型正序 创建时间倒序
+   *
+   * @author leon_xi@163.com
+   **/
+  async fetchAllPlansSummary(jts:Array<PlanType> = []): Promise<Array<PlanSummaryData>> {
+
+    let sql: string = `select jha.*, ifnull(events.eventscount, 0) eventscount, ifnull(memos.memoscount, 0) memoscount, ifnull(items.itemscount, 0) itemscount
+                    from gtd_jha jha
+                    left join
+                    (select ev.ji ji, count(*) eventscount
+                      from gtd_ev ev
+                      where ev.del <> 'del' and ev.ji in (select ji from gtd_jha where del <> 'del')
+                      group by ev.ji) events
+                    on jha.ji = events.ji
+                    left join
+                    (select mom.ji ji, count(*) memoscount
+                      from gtd_mom mom
+                      where mom.del <> 'del' and mom.ji in (select ji from gtd_jha where del <> 'del')
+                      group by mom.ji) memos
+                    on jha.ji = memos.ji
+                    left join
+                    (select jta.ji ji, count(*) itemscount
+                      from gtd_jta jta
+                      where jta.del <> 'del' and jta.ji in (select ji from gtd_jha where del <> 'del')
+                      group by jta.ji) items
+                    on jha.ji = items.ji
+                    where ${(jts && jts.length > 0)? ('jha.jt in (' + jts.join(', ') + ') and') : ''} jha.del <> '${DelType.del}'
+                    order by jha.jt asc, jha.wtt desc`
+
+    let plansummarys: Array<PlanSummaryData> = await this.sqlExce.getExtList<PlanSummaryData>(sql) || new Array<PlanSummaryData>();
+
+    return plansummarys;
+  }
+
+  /**
    * 取得所有日历
    * 包括 自定义日历/冥王星预定义日历
    * 结果根据类型正序 创建时间倒序
@@ -4535,6 +4572,12 @@ export class FindActivityCondition {
 export interface PlanData extends JhaTbl {
   items: Array<PlanItemData | AgendaData | TaskData | MiniTaskData | MemoData>;
   members: Array<Member>;
+}
+
+export interface PlanSummaryData extends JhaTbl {
+  itemscount: number;
+  eventscount: number;
+  memoscount: number;
 }
 
 export interface PlanItemData extends JtaTbl {
