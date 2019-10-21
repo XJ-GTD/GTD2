@@ -1467,11 +1467,6 @@ export class EventService extends BaseService {
     //接收或拒绝邀请
     if (doType == DoType.Invite){
 
-      //取得日程表详情
-      let ca = new CaTbl();
-      ca.evi = masterEvi;
-      ca = await  this.sqlExce.getOneByParam<CaTbl>(ca);
-
       //邀请状态处理
       if (newAgdata.invitestatus == anyenum.InviteState.Rejected){
         sq = ` update gtd_ev set invitestatus = ?1 ,del = ?2  where evi = ?3 or rtevi = ?3 ; `;
@@ -1489,36 +1484,8 @@ export class EventService extends BaseService {
       sqlparam.push([sq,params]);
       await this.sqlExce.batExecSqlByParam(sqlparam);
 
-      sq = ` select * from gtd_ev  where evi = ?1 or rtevi = ?1 ; `;
-      params = new Array<any>();
-      params.push(masterEvi);
+      await this.getAllAgendaForFieldChanged(oriAgdata,newAgdata,FieldChanged.Invite, outAgds);
 
-      outAgds = await this.sqlExce.getExtLstByParam<AgendaData>(sq,params);
-
-      //取得相关的附件
-      let attachs = new Array<Attachment>();
-      sq = `select * from gtd_fj where obt = ?1 and  obi in (select evi
-      from gtd_ev  where evi = ?2 or rtevi = ?2 ); `;
-      params = new Array<any>();
-      params.push(anyenum.ObjectType.Event);
-      params.push(masterEvi);
-      attachs = await this.sqlExce.getExtLstByParam<Attachment>(sq,params);
-
-      //事件其他对象绑定
-      for (let agd of outAgds){
-        //ca数据
-        let tmpevi = agd.evi;
-        Object.assign(agd,ca);
-        agd.evi = tmpevi;
-        agd.members = newAgdata.members;//参与人
-        agd.tos = tos;
-        //附件
-        if (attachs && attachs.length > 0){
-          agd.attachments = attachs.filter((value,index,arr)=>{
-            return agd.evi = value.obi;
-          })
-        }
-      }
       return outAgds;
     }
 
@@ -1568,13 +1535,31 @@ export class EventService extends BaseService {
         sq = ` update gtd_ev set todolist = ?  ${tmpsq} where evi = ? or rtevi = ?  `;
         sqlparam.push([sq,params]);
       }
+      //计划处理
+      if (newAgdata.ji != oriAgdata.ji){
+
+        sq = ` update gtd_ev set ji = ?  where evi = ? or rtevi = ?  `;
+
+        params = new Array<any>();
+        params.push(newAgdata.ji);
+        params.push(masterEvi);
+        params.push(masterEvi);
+        sqlparam.push([sq,params]);
+      }
 
       await this.sqlExce.batExecSqlByParam(sqlparam);
       newAgdata.tos = tos;
       outAgds.push(newAgdata);
 
+      let getall : boolean = false;
+      getall = await this.getAllAgendaForFieldChanged(oriAgdata,newAgdata,FieldChanged.Ji, outAgds);
+
+      //取到所有记录只需要一次
       //如果参与人改变，则获取活动的所有记录上传
-      await this.getAgendaForMembersChanged(oriAgdata,newAgdata,outAgds);
+      if (!getall){
+        await this.getAllAgendaForFieldChanged(oriAgdata,newAgdata,FieldChanged.Member, outAgds);
+      }
+
 
 
       return outAgds;
@@ -1701,7 +1686,7 @@ export class EventService extends BaseService {
 
     }else{
       //如果不是父点且参与人发生改变，取得活动所有数据
-      await this.getAgendaForMembersChanged(oriAgdata,newAgdata,outAgds);
+      await this.getAllAgendaForFieldChanged(oriAgdata,newAgdata,FieldChanged.Member,outAgds);
     }
 
     return outAgds;
@@ -1709,13 +1694,18 @@ export class EventService extends BaseService {
   }
 
   /**
-   * 单独更新单条记录时，如果参与人改变则需要提交活动所有记录到服务器
+   * 单独更新单条记录时，如果指定字段改变则需要提交活动所有记录到服务器
    * @param {AgendaData} oriAgdata
    * @param {AgendaData} newAgdata
-   * @returns {Array<AgendaData>}
+   * @param {FieldChanged} fieldChanged
+   * @param {Array<AgendaData>} outAgds
+   * @returns {Promise<boolean>}
    */
-  private async getAgendaForMembersChanged(oriAgdata :AgendaData, newAgdata : AgendaData,outAgds : Array<AgendaData>){
+  private async getAllAgendaForFieldChanged(oriAgdata :AgendaData, newAgdata : AgendaData,
+                                            fieldChanged : FieldChanged ,outAgds : Array<AgendaData>):
+  Promise<boolean>{
     let retAgendas = new Array<AgendaData>();
+    let ret : boolean = false;
     let changed : boolean =  false;
 
     let sq : string ;
@@ -1730,28 +1720,45 @@ export class EventService extends BaseService {
       masterEvi = oriAgdata.rtevi;
     }
 
-    if (!oriAgdata.members ){
-      oriAgdata.members = new Array<Member>();
-    }
-    if (!newAgdata.members ){
-      newAgdata.members = new Array<Member>();
-    }
-    if (oriAgdata.members.length != newAgdata.members.length){
-      changed = true;
-    }else {
-      for (let oriMember of   oriAgdata.members){
-        let findm =  newAgdata.members.find((value, index,arr)=>{
-          return value.pari == oriMember.pari || value.ui == oriMember.ui || value.rc == oriMember.rc;
-        });
-        if (!findm){
+    switch (fieldChanged){
+      case FieldChanged.Invite:
+
+        changed = true;
+        break;
+      case FieldChanged.Ji :
+        if (oriAgdata.ji != newAgdata.ji){
           changed = true;
-          break;
         }
-      }
+        break;
+      case FieldChanged.Member:
+        if (!oriAgdata.members ){
+          oriAgdata.members = new Array<Member>();
+        }
+        if (!newAgdata.members ){
+          newAgdata.members = new Array<Member>();
+        }
+        if (oriAgdata.members.length != newAgdata.members.length){
+          changed = true;
+        }else {
+          for (let oriMember of   oriAgdata.members){
+            let findm =  newAgdata.members.find((value, index,arr)=>{
+              return value.pari == oriMember.pari || value.ui == oriMember.ui || value.rc == oriMember.rc;
+            });
+            if (!findm){
+              changed = true;
+              break;
+            }
+          }
+        }
+        break;
+      default:
+        break;
     }
 
-    if (changed){
 
+
+    if (changed ){
+      ret = true;
       tos = this.getMemberPhone(newAgdata.members);
       sq = `select ev.*, ca.sd, ca.ed, ca.st, ca.et, ca.al, ca.ct
                         from (select *,
@@ -1786,7 +1793,7 @@ export class EventService extends BaseService {
       outAgds.length = 0;
       Object.assign(outAgds , retAgendas);
     }
-
+    return ret;
   }
 
   /**
@@ -4608,13 +4615,10 @@ export enum DoType {
   Invite = "Invite",
 }
 
-enum ChangeState {
-  NonRepeatToNonRepeat = "NonRepeatToNonRepeat",//非重复事件to非重复事件
-  RepeatToOnly = "RepeatToOnly",//重复事件中的某一日程to独立日程
-  RepeatToNon = "RepeatToNon",//重复事件to非重复事件
-  RepeatToRepeat = "RepeatToRepeat",//修改重复事件to重复事件
-  NonRepeatToRepeat = "NonRepeatToRepeat", //非重复事件to重复事件
-  LocalUpdate = "LocalUpdate"
+enum FieldChanged{
+  Ji = "Ji",
+  Member = "Member",
+  Invite = "Invite"
 }
 enum DUflag {
   del = "del",
