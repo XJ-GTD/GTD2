@@ -2547,15 +2547,20 @@ export class EventService extends BaseService {
       for ( let j = 0, len = txjson.reminds.length ;j < len ; j++) {
         let wa = new WaTbl();//提醒表
         let remind : number;
-        wa.wai = this.util.getUuid();
+
         wa.obt = obtType;
         wa.obi = ev.evi;
         remind = txjson.reminds[j];
         wa.st = ev.evn;
+        wa.tb = anyenum.SyncType.unsynch;
+        wa.del = anyenum.DelType.undel;
+
         let time = remind;
         let date;
         date = moment(ev.evd + " " + ev.evt).subtract(time, 'm').format("YYYY/MM/DD HH:mm");
 
+        //使用ev表zhukey与提醒时间的组合，便于服务器更新及本地更新
+        wa.wai = ev.evi + moment(date).format("YYYYMMDDHHmm") ;
         wa.wd = moment(date).format("YYYY/MM/DD");
         wa.wt = moment(date).format("HH:mm");
         ret.push(wa);

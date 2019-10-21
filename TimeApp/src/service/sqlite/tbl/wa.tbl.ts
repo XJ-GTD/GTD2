@@ -13,7 +13,7 @@ export class WaTbl implements ITblParam {
   wd: string;
   wt: string;
   tb: string;
-  wc: string;
+  del: string;
   wtt: number;
 
   fastParam(): any {
@@ -25,11 +25,11 @@ export class WaTbl implements ITblParam {
     params.push(this.wd);
     params.push(this.wt);
     params.push(this.tb);
-    params.push(this.wc);
+    params.push(this.del);
     params.push(this.wtt || moment().unix());
 
     return [`replace into gtd_wa
-       (   wai ,obt ,obi ,st ,wd ,wt ,tb,wc,wtt)`,
+       (   wai ,obt ,obi ,st ,wd ,wt ,tb,del,wtt)`,
      `select ?,?,?,?,?,?,?`,
     params];
   }
@@ -44,7 +44,7 @@ export class WaTbl implements ITblParam {
      ,wd varchar(20)
      ,wt varchar(20)
      ,tb varchar(6) 
-     ,wc varchar(4) 
+     ,del varchar(6) 
      ,wtt integer
         );`;
 
@@ -61,7 +61,7 @@ export class WaTbl implements ITblParam {
     if(this.wd!=null && this.wd!=''){      sq=sq+', wd= ? ';      params.push(this.wd);    }
     if(this.wt!=null && this.wt!=''){      sq=sq+', wt= ? ';      params.push(this.wt);    }
     if(this.tb!=null && this.tb!=''){      sq=sq+', tb= ? ';      params.push(this.tb);    }
-    if(this.wc!=null && this.wc!=''){      sq=sq+', wc= ? ';      params.push(this.wc);    }
+    if(this.del!=null && this.del!=''){      sq=sq+', del= ? ';      params.push(this.del);    }
 
     sq =`update gtd_wa set ${sq} where wai = ? ;`;
     params.push(this.wai);
@@ -115,7 +115,7 @@ export class WaTbl implements ITblParam {
     if(this.wd!=null && this.wd!=''){      sq=sq+' and wd= ? ';      params.push(this.wd);    }
     if(this.wt!=null && this.wt!=''){      sq=sq+' and wt= ? ';      params.push(this.wt);    }
     if(this.tb!=null && this.tb!=''){      sq=sq+' and tb= ? ';      params.push(this.tb);    }
-    if(this.wc!=null && this.wc!=''){      sq=sq+' and wc= ? ';      params.push(this.wc);    }
+    if(this.del!=null && this.del!=''){      sq=sq+' and del= ? ';      params.push(this.del);    }
 
     sq = sq + ';';
 
@@ -134,7 +134,7 @@ export class WaTbl implements ITblParam {
   inTParam():any {
     let params = new Array<any>();
     let sq =`insert into gtd_wa
-       (   wai ,obt ,obi ,st ,wd ,wt ,tb,wc,wtt)
+       (   wai ,obt ,obi ,st ,wd ,wt ,tb,del,wtt)
        values(?,?,?,?,?,?,?);`;
     params.push(this.wai);
     params.push(this.obt);
@@ -143,7 +143,7 @@ export class WaTbl implements ITblParam {
     params.push(this.wd);
     params.push(this.wt);
     params.push(this.tb);
-    params.push(this.wc);
+    params.push(this.del);
     params.push(moment().unix());
 
     let ret = new Array<any>();
@@ -155,7 +155,7 @@ export class WaTbl implements ITblParam {
   rpTParam():any {
     let params = new Array<any>();
     let sq =`replace into gtd_wa
-       (   wai ,obt ,obi ,st ,wd ,wt ,tb,wc,wtt)
+       (   wai ,obt ,obi ,st ,wd ,wt ,tb,del,wtt)
        values(?,?,?,?,?,?,?);`;
     params.push(this.wai);
     params.push(this.obt);
@@ -164,7 +164,7 @@ export class WaTbl implements ITblParam {
     params.push(this.wd);
     params.push(this.wt);
     params.push(this.tb);
-    params.push(this.wc)
+    params.push(this.del)
     params.push(moment().unix());
 
     let ret = new Array<any>();
