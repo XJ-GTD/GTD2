@@ -1259,7 +1259,7 @@ export class EventService extends BaseService {
 
 
       // 删除相关提醒
-      sq = `update gtd_wa set tb = ? ,del = ?  where obt = ? and  obi = ? and obt = ?; `;
+      sq = `update gtd_wa set tb = ? ,del = ?  where obi = ? and obt = ?; `;
       params = new Array<any>();
       params.push(anyenum.SyncType.unsynch);
       params.push(anyenum.DelType.del);
@@ -1840,7 +1840,7 @@ export class EventService extends BaseService {
     }
 
     // 删除相关提醒
-    sq = `update gtd_wa set tb = ? ,del = ?  where obt = ? and  obi = ? and obt = ?; `;
+    sq = `update gtd_wa set tb = ? ,del = ?  where  obi = ? and obt = ?; `;
     params = new Array<any>();
     params.push(anyenum.SyncType.unsynch);
     params.push(anyenum.DelType.del);
