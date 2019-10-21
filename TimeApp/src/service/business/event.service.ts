@@ -1262,7 +1262,9 @@ export class EventService extends BaseService {
       let wa = new WaTbl();
       wa.obi = oriAgdata.evi;
       wa.obt = anyenum.ObjectType.Event;
-      sqlparam.push(wa.dTParam());
+      wa.tb = anyenum.SyncType.unsynch;
+      wa.del = anyenum.DelType.del;
+      sqlparam.push(wa.rpTParam());
 
     }
 
@@ -1836,9 +1838,11 @@ export class EventService extends BaseService {
 
     // 删除相关提醒
     let wa = new WaTbl();
-    wa.obi = oriAgdata.evi;//obi使用原evi
+    wa.obi = oriAgdata.evi;
     wa.obt = anyenum.ObjectType.Event;
-    sqlparam.push(wa.dTParam());
+    wa.tb = anyenum.SyncType.unsynch;
+    wa.del = anyenum.DelType.del;
+    sqlparam.push(wa.rpTParam());
 
     let ev = new EvTbl();
     Object.assign(ev,newAgdata);
@@ -2067,9 +2071,11 @@ export class EventService extends BaseService {
     }
 
     //删除原事件中从当前事件开始所有提醒 evd使用原事件evd
-    sq = `delete from gtd_wa where obt = ? and  obi in (select evi from gtd_ev
+    sq = `update gtd_wa set tb = ? ,del = ?  where obt = ? and  obi in (select evi from gtd_ev
           where ${delcondi} ); `;
     params = new Array<any>();
+    params.push(anyenum.SyncType.unsynch);
+    params.push(anyenum.DelType.del);
     params.push(anyenum.ObjectType.Event);
     params.push(oriAgdata.evd);
     params.push(masterEvi);
