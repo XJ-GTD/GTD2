@@ -35,25 +35,25 @@ import * as moment from "moment";
       <ion-scroll scrollY="true" scrollheightAuto>
 
         <ion-grid class="list-grid-content">
-          <ng-container  *ngFor="let fj of fjArray">
+          <ng-container  *ngFor="let fja of fjArray">
             <ion-row class="item-content item-content-backgroud" leftmargin toppaddingsamll bottompaddingsamll rightmargin
-                     *ngIf="fj.del=='undel'" >
+                     *ngIf="fja.del=='undel'" >
               <div class="line font-normal topheader" leftmargin rightmargin >
-                <div class="st font-small" end> {{fj.wtt | date: "yyyy-MM-dd HH:mm"}}</div>
-                <div class="person font-small">{{fj.ui}}</div>
+                <div class="st font-small" end> {{fja.wtt | date: "yyyy-MM-dd HH:mm"}}</div>
+                <div class="person font-small">{{fja.ui}}</div>
               </div>
               <div class="line font-normal" leftmargin rightmargin >
-                <div class="sn towline">{{fj.fjn}}</div>
+                <div class="sn towline">{{fja.fjn}}</div>
               </div>
               <div class="line font-normal" leftmargin rightmargin>
-                <div *ngIf="fj.ext=='PDF'||fj.ext=='pdf'">
-                  <ion-icon class="fas fa-file-pdf" (click)="window.open({{fj.fj}})"></ion-icon>
+                <div *ngIf="fja.ext=='PDF'||fja.ext=='pdf'">
+                  <ion-icon class="fas fa-file-pdf" (click)="window.open({{fja.fj}})"></ion-icon>
                 </div>
-                <div *ngIf="fj.ext=='png'||fj.ext=='PNG'||fj.ext=='jpg'||fj.ext=='JPG'||fj.ext=='bmp'||fj.ext=='BMP'||fj.ext=='mp4'||fj.ext=='MP4'">
-                      <img src="file:///{{fj.fj}}" />
+                <div *ngIf="fja.ext=='png'||fja.ext=='PNG'||fja.ext=='jpg'||fja.ext=='JPG'||fja.ext=='bmp'||fja.ext=='BMP'||fja.ext=='mp4'||fja.ext=='MP4'">
+                      <img src="file:///{{fja.fj}}" />
                 </div>
 
-                <div class="icon" *ngIf="(fj.tb=='unsynch')&&(fj.ui==currentuser) " (click)="delAttach(fj)"  end >
+                <div class="icon" *ngIf="(fja.tb=='unsynch')&&(fja.ui==currentuser) " (click)="delAttach(fja)"  end >
                   <ion-icon class="fal fa-minus-circle"></ion-icon>
                 </div>
               </div>
