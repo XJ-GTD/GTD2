@@ -45,11 +45,11 @@ import * as moment from "moment";
               <div class="line font-normal" leftmargin rightmargin >
                 <div class="sn towline">{{fja.fjn}}</div>
               </div>
-              <div class="line font-normal" leftmargin rightmargin>
-                <div *ngIf="fja.ext=='PDF'||fja.ext=='pdf'">
+              <div class="line font-normal" leftmargin rightmargin >
+                <div *ngIf="(fja.ext=='PDF'||fja.ext=='pdf')&& (fja.fj !='')" >
                   <ion-icon class="fas fa-file-pdf" (click)="window.open({{fja.fj}})"></ion-icon>
                 </div>
-                <div *ngIf="fja.ext=='png'||fja.ext=='PNG'||fja.ext=='jpg'||fja.ext=='JPG'||fja.ext=='bmp'||fja.ext=='BMP'||fja.ext=='mp4'||fja.ext=='MP4'">
+                <div *ngIf="(fja.ext=='png'||fja.ext=='PNG'||fja.ext=='jpg'||fja.ext=='JPG'||fja.ext=='bmp'||fja.ext=='BMP'||fja.ext=='mp4'||fja.ext=='MP4')&& (fja.fj !='')">
                       <img src="file:///{{fja.fj}}" />
                 </div>
 
