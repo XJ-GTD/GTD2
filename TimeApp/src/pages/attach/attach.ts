@@ -14,6 +14,7 @@ import {Chooser} from '@ionic-native/chooser';
 import {FilePath} from '@ionic-native/file-path';
 import {FjData, Attachment} from "../../service/business/event.service";
 import {UtilService} from "../../service/util-service/util.service";
+import * as moment from "moment";
 
 @IonicPage()
 @Component({
