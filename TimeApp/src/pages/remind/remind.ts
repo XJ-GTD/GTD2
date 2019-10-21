@@ -159,9 +159,9 @@ export class RemindPage {
       if (value) {
         this.currentTx = new TxJson();
         Object.assign(this.currentTx, value.txjson);
+        this.evdatetime = moment(value.evd + " " + value.evt).format("YYYY/MM/DD HH:mm");
         if (this.currentTx.reminds.length > 0) {
 
-          this.evdatetime = moment(value.evd + " " + value.evt).format("YYYY/MM/DD HH:mm");
 
           for (let j = 0, len = this.currentTx.reminds.length; j < len; j++) {
             this.reminds.push(
