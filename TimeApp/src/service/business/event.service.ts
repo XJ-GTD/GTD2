@@ -1259,10 +1259,13 @@ export class EventService extends BaseService {
 
 
       // 删除相关提醒
-      let wa = new WaTbl();
-      wa.obi = oriAgdata.evi;
-      wa.obt = anyenum.ObjectType.Event;
-      sqlparam.push(wa.dTParam());
+      sq = `update gtd_wa set tb = ? ,del = ?  where obi = ? and obt = ?; `;
+      params = new Array<any>();
+      params.push(anyenum.SyncType.unsynch);
+      params.push(anyenum.DelType.del);
+      params.push(oriAgdata.evi);
+      params.push(anyenum.ObjectType.Event);
+      sqlparam.push([sq,params]);
 
     }
 
@@ -1824,6 +1827,8 @@ export class EventService extends BaseService {
    * @param {AgendaData} newAgdata
    */
   private modifyOnlyoneForOther(sqlparam : Array<any> ,oriAgdata :AgendaData, newAgdata : AgendaData){
+    let sq = "";
+    let params : Array<any>;
     //取参与人evi设定
     let parEvi : string;
     if (oriAgdata.rtevi == ""){
@@ -1835,10 +1840,13 @@ export class EventService extends BaseService {
     }
 
     // 删除相关提醒
-    let wa = new WaTbl();
-    wa.obi = oriAgdata.evi;//obi使用原evi
-    wa.obt = anyenum.ObjectType.Event;
-    sqlparam.push(wa.dTParam());
+    sq = `update gtd_wa set tb = ? ,del = ?  where  obi = ? and obt = ?; `;
+    params = new Array<any>();
+    params.push(anyenum.SyncType.unsynch);
+    params.push(anyenum.DelType.del);
+    params.push(oriAgdata.evi);
+    params.push(anyenum.ObjectType.Event);
+    sqlparam.push([sq,params]);
 
     let ev = new EvTbl();
     Object.assign(ev,newAgdata);
@@ -2067,9 +2075,11 @@ export class EventService extends BaseService {
     }
 
     //删除原事件中从当前事件开始所有提醒 evd使用原事件evd
-    sq = `delete from gtd_wa where obt = ? and  obi in (select evi from gtd_ev
+    sq = `update gtd_wa set tb = ? ,del = ?  where obt = ? and  obi in (select evi from gtd_ev
           where ${delcondi} ); `;
     params = new Array<any>();
+    params.push(anyenum.SyncType.unsynch);
+    params.push(anyenum.DelType.del);
     params.push(anyenum.ObjectType.Event);
     params.push(oriAgdata.evd);
     params.push(masterEvi);
@@ -2547,15 +2557,20 @@ export class EventService extends BaseService {
       for ( let j = 0, len = txjson.reminds.length ;j < len ; j++) {
         let wa = new WaTbl();//提醒表
         let remind : number;
-        wa.wai = this.util.getUuid();
+
         wa.obt = obtType;
         wa.obi = ev.evi;
         remind = txjson.reminds[j];
         wa.st = ev.evn;
+        wa.tb = anyenum.SyncType.unsynch;
+        wa.del = anyenum.DelType.undel;
+
         let time = remind;
         let date;
         date = moment(ev.evd + " " + ev.evt).subtract(time, 'm').format("YYYY/MM/DD HH:mm");
 
+        //使用ev表zhukey与提醒时间的组合，便于服务器更新及本地更新
+        wa.wai = ev.evi + moment(date).format("YYYYMMDDHHmm") ;
         wa.wd = moment(date).format("YYYY/MM/DD");
         wa.wt = moment(date).format("HH:mm");
         ret.push(wa);
