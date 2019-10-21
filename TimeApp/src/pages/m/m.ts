@@ -107,11 +107,11 @@ export class MPage {
       }
     }
 
-    if (UserConfig.account.id == "13585820972") {
-      this.emitService.register("mwxing.weather.received", () => {
-        this.modalController.create(DataConfig.PAGE._GLORY_PAGE).present();
-      });
-    }
+    // if (UserConfig.account.id == "13585820972") {
+    //   this.emitService.register("mwxing.weather.received", () => {
+    //     this.modalController.create(DataConfig.PAGE._GLORY_PAGE).present();
+    //   });
+    // }
 
     settings.setStatusBarColor(StatusType.home);
   }
