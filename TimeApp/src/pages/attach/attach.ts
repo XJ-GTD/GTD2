@@ -35,24 +35,26 @@ import * as moment from "moment";
       <ion-scroll scrollY="true" scrollheightAuto>
 
         <ion-grid class="list-grid-content">
-          <ion-row class="item-content item-content-backgroud" leftmargin toppaddingsamll bottompaddingsamll rightmargin
-                   *ngFor="let fj of fjArray" *ngIf="fj.del=='undel'">
-            <div class="line font-normal topheader" leftmargin rightmargin >
-              <div class="person font-small">{{fj.ui}}</div>
-              <div class="st font-small" end> {{fj.wtt | date: "yyyy-MM-dd HH:mm:ss"}}</div>
-            </div>
-            <div class="line font-normal" leftmargin rightmargin >
-              <div class="sn towline">{{fj.fjn}}</div>
-            </div>
-            <div class="line font-normal" leftmargin rightmargin >
-              <div>
-                <ion-icon class="fas fa-file-pdf" (click)="window.open('www.idec.com/language/chinese_s/AO/B2008_WindEDITLiteUsersCS.pdf')"></ion-icon>
+          <ng-container  *ngFor="let fj of fjArray">
+            <ion-row class="item-content item-content-backgroud" leftmargin toppaddingsamll bottompaddingsamll rightmargin
+                     *ngIf="fj.del=='undel'" >
+              <div class="line font-normal topheader" leftmargin rightmargin >
+                <div class="person font-small">{{fj.ui}}</div>
+                <div class="st font-small" end> {{fj.wtt | date: "yyyy-MM-dd HH:mm:ss"}}</div>
               </div>
-              <div class="icon" *ngIf="(fj.tb=='unsynch')&&(fj.ui==currentuser) " (click)="delAttach(fj)"  end >
-                <ion-icon class="fal fa-minus-circle"></ion-icon>
+              <div class="line font-normal" leftmargin rightmargin >
+                <div class="sn towline">{{fj.fjn}}</div>
               </div>
-            </div>
-          </ion-row>
+              <div class="line font-normal" leftmargin rightmargin>
+                <div>
+                  <ion-icon class="fas fa-file-pdf" (click)="window.open('www.idec.com/language/chinese_s/AO/B2008_WindEDITLiteUsersCS.pdf')"></ion-icon>
+                </div>
+                <div class="icon" *ngIf="(fj.tb=='unsynch')&&(fj.ui==currentuser) " (click)="delAttach(fj)"  end >
+                  <ion-icon class="fal fa-minus-circle"></ion-icon>
+                </div>
+              </div>
+            </ion-row>
+          </ng-container>
           <ion-row class="item-content item-content-backgroud" leftmargin toppaddingsamll bottompaddingsamll rightmargin>
 
             <div class="line font-normal topheader" leftmargin rightmargin>
