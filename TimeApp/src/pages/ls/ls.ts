@@ -25,7 +25,7 @@ import {PageLoginData} from "../../data.mapping";
           <ion-input class="login-tel" type="tel" placeholder="开始输入手机号" [(ngModel)]="login.phoneno" (input)="format()"></ion-input>
         </div>
         <div>
-          <button ion-button  class="send-sms" (click)="sendSms()">{{timeText}}</button>
+          <button ion-button  class="send-sms" (click)="sendSms()" [disabled]="!enableSendSMS">{{timeText}}</button>
         </div>
       </ion-row>
       <ion-row justify-content-between align-items-center>
@@ -55,6 +55,8 @@ export class LsPage {
   timer:any;
   opa:any = "0.4";
 
+  enableSendSMS: boolean = true;
+
   constructor(public navCtrl: NavController,
               private util:UtilService,
               private effectService: EffectService,
@@ -79,6 +81,7 @@ export class LsPage {
 
   sendSms(){
     if(this.checkPhone()){
+      this.enableSendSMS = false;
 
       this.lsService.getSMSCode(this.login.phoneno).then(data => {
         console.log("短信发送成功" + JSON.stringify(data));
@@ -94,12 +97,14 @@ export class LsPage {
             clearTimeout(this.timer);
             console.log("清除定时器");
             this.timeText = "发送验证码"
+            this.enableSendSMS = true;
           }
         }, 1000)
 
       }).catch(error => {
         clearTimeout(this.timer);
         this.timeText = "发送验证码";
+        this.enableSendSMS = true;
         this.util.toastStart("短信发送失败",1500);
       });
 
