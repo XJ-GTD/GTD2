@@ -289,6 +289,10 @@ export class AttachPage {
   saveComment() {
     if (this.bw && this.bw.trim() != '') {
       this.fjData.fjn = this.bw
+      this.fjData.ui = this.currentuser;
+      this.fjData.del = 'undel';
+      this.fjData.tb = 'unsynch';
+      this.fjData.wtt = moment().unix();
       this.fjArray.push(this.fjData);
       this.fjData = {} as Attachment;
     }
