@@ -30,7 +30,7 @@ export class WaTbl implements ITblParam {
 
     return [`replace into gtd_wa
        (   wai ,obt ,obi ,st ,wd ,wt ,tb,del,wtt)`,
-     `select ?,?,?,?,?,?,?`,
+     `select ?,?,?,?,?,?,?,?,?`,
     params];
   }
 
@@ -135,7 +135,7 @@ export class WaTbl implements ITblParam {
     let params = new Array<any>();
     let sq =`insert into gtd_wa
        (   wai ,obt ,obi ,st ,wd ,wt ,tb,del,wtt)
-       values(?,?,?,?,?,?,?);`;
+       values(?,?,?,?,?,?,?,?,?);`;
     params.push(this.wai);
     params.push(this.obt);
     params.push(this.obi);
@@ -156,7 +156,7 @@ export class WaTbl implements ITblParam {
     let params = new Array<any>();
     let sq =`replace into gtd_wa
        (   wai ,obt ,obi ,st ,wd ,wt ,tb,del,wtt)
-       values(?,?,?,?,?,?,?);`;
+       values(?,?,?,?,?,?,?,?,?);`;
     params.push(this.wai);
     params.push(this.obt);
     params.push(this.obi);
