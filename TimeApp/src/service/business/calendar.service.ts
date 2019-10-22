@@ -42,7 +42,7 @@ export class CalendarService extends BaseService {
               private shareRestful: ShaeRestful,
               private dataRestful: DataRestful) {
     super();
-    this.activitiesqueue = async.queue(({data}, callback) => {
+    this.activitiesqueue = async.queue(async ({data}, callback) => {
 
       // 多条数据同时更新/单条数据更新
       if (data instanceof Array) {
@@ -76,12 +76,12 @@ export class CalendarService extends BaseService {
         }
 
         // 同步提醒，如果有的话
-        this.remindService.syncScheduledReminds(data);
+        await this.remindService.syncScheduledReminds(data);
       } else {
         this.mergeCalendarActivity(data);
 
         // 同步提醒，如果有的话
-        this.remindService.syncScheduledReminds([data]);
+        await this.remindService.syncScheduledReminds([data]);
       }
 
       callback();
