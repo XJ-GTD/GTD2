@@ -4,7 +4,7 @@ import { SqliteExec } from "../util-service/sqlite.exec";
 import { UtilService } from "../util-service/util.service";
 import { EmitService } from "../util-service/emit.service";
 import { UserConfig } from "../config/user.config";
-import { CalendarService, PlanItemData, generateDataType } from "./calendar.service";
+import { PlanItemData, generateDataType } from "./calendar.service";
 import { EventService, AgendaData, TaskData, MiniTaskData, EventData, TxJson, generateTxJson } from "./event.service";
 import { MemoData, MemoService } from "./memo.service";
 import {SyncType, DelType, ObjectType, IsSuccess, SyncDataStatus, OperateType, ToDoListStatus, RepeatFlag, ConfirmType, ModiPower, PageDirection, SyncDataSecurity, InviteState, CompleteState, EventFinishStatus} from "../../data.enum";
@@ -18,7 +18,6 @@ export class ScheduleRemindService extends BaseService {
   constructor(private sqlExce: SqliteExec,
               private util: UtilService,
               private emitService: EmitService,
-              private calendarService: CalendarService,
               private eventService: EventService,
               private syncRestful: SyncRestful,
               private userConfig: UserConfig) {
@@ -40,7 +39,7 @@ export class ScheduleRemindService extends BaseService {
 
     // 指定数据提醒上传服务器
     for (let data of datas) {
-      let activityType: string = this.calendarService.getActivityType(data);
+      let activityType: string = this.getActivityType(data);
       let txjson: TxJson;
 
       switch (activityType) {
@@ -173,6 +172,40 @@ export class ScheduleRemindService extends BaseService {
       );
     }
 
+  }
+
+  /**
+   * 取得活动类型
+   *
+   * @author leon_xi@163.com
+   **/
+  getActivityType(source: PlanItemData | AgendaData | TaskData | MiniTaskData | MemoData): string {
+
+    this.assertEmpty(source);
+
+    let src: any = source;
+
+    if (src.jti) {  // PlanItemData
+      return "PlanItemData";
+    }
+
+    if (src.evi && src.type == EventType.Agenda) {    // AgendaData
+      return "AgendaData";
+    }
+
+    if (src.evi && src.type == EventType.Task) {    // TaskData
+      return "TaskData";
+    }
+
+    if (src.evi && src.type == EventType.MiniTask) {    // MiniTaskData
+      return "MiniTaskData";
+    }
+
+    if (src.moi) {    // MemoData
+      return "MemoData";
+    }
+
+    this.assertFail();
   }
 }
 
