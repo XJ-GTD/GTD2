@@ -8,11 +8,13 @@ import { UserConfig } from "../config/user.config";
 import { EventData, TaskData, AgendaData, MiniTaskData, EventService, RtJson, TxJson, generateRtJson, generateTxJson } from "./event.service";
 import { CalendarService } from "./calendar.service";
 import { MemoService } from "./memo.service";
+import { RemindService } from "./remind.service";
 
 @Injectable()
 export class EffectService extends BaseService {
   constructor(private eventService: EventService,
               private memoService: MemoService,
+              private remindService: RemindService,
               private emitService: EmitService,
               private calendarService: CalendarService) {
     super();
@@ -24,6 +26,8 @@ export class EffectService extends BaseService {
     await this.calendarService.syncPlanItems();
     await this.eventService.syncAgendas();
     await this.memoService.syncMemos();
+
+    await this.remindService.syncScheduledReminds();
 
     return ;
   }
