@@ -33,7 +33,7 @@ export class EffectService extends BaseService {
   }
 
   async syncInitial() {
-    await this.calendarService.receiveInitialData();
+    await this.calendarService.requestInitialData();
   }
 
   /**

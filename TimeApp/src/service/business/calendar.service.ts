@@ -23,6 +23,7 @@ import {
   assertFail
 } from "../../util/util";
 import {FsData} from "../../data.mapping";
+import { ScheduleRemindService } from "./remind.service";
 
 @Injectable()
 export class CalendarService extends BaseService {
@@ -36,6 +37,7 @@ export class CalendarService extends BaseService {
               private userConfig: UserConfig,
               private eventService: EventService,
               private memoService: MemoService,
+              private remindService: ScheduleRemindService,
               private bacRestful: BacRestful,
               private shareRestful: ShaeRestful,
               private dataRestful: DataRestful) {
@@ -72,8 +74,14 @@ export class CalendarService extends BaseService {
           }
           index++;
         }
+
+        // 同步提醒，如果有的话
+        this.remindService.syncScheduledReminds(data);
       } else {
         this.mergeCalendarActivity(data);
+
+        // 同步提醒，如果有的话
+        this.remindService.syncScheduledReminds([data]);
       }
 
       callback();
@@ -3631,7 +3639,7 @@ export class CalendarService extends BaseService {
     return;
   }
 
-  async receiveInitialData() {
+  async requestInitialData() {
     let pull: PullInData = new PullInData();
     pull.type = "*";
     await this.dataRestful.pull(pull);

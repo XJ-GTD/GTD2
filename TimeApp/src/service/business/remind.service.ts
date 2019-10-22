@@ -6,6 +6,7 @@ import { EmitService } from "../util-service/emit.service";
 import { UserConfig } from "../config/user.config";
 import { CalendarService, PlanItemData, generateDataType } from "./calendar.service";
 import { EventService, AgendaData, TaskData, MiniTaskData, EventData, TxJson, generateTxJson } from "./event.service";
+import { MemoData, MemoService } from "./memo.service";
 import {SyncType, DelType, ObjectType, IsSuccess, SyncDataStatus, OperateType, ToDoListStatus, RepeatFlag, ConfirmType, ModiPower, PageDirection, SyncDataSecurity, InviteState, CompleteState, EventFinishStatus} from "../../data.enum";
 import {SyncRestful} from "../restful/syncsev";
 import {WaTbl} from "../sqlite/tbl/wa.tbl";
@@ -30,7 +31,7 @@ export class ScheduleRemindService extends BaseService {
    *
    * @author leon_xi@163.com
    */
-  async syncScheduledReminds(datas: Array<PlanItemData | AgendaData | TaskData | MiniTaskData> = new Array<PlanItemData | AgendaData | TaskData | MiniTaskData>(), limit: number = 48) {
+  async syncScheduledReminds(datas: Array<PlanItemData | AgendaData | TaskData | MiniTaskData | MemoData> = new Array<PlanItemData | AgendaData | TaskData | MiniTaskData | MemoData>(), limit: number = 48) {
     this.assertEmpty(datas);  // 入参不能为空
     this.assertEmpty(limit);  // 限制小时数不能为空
 
@@ -104,7 +105,7 @@ export class ScheduleRemindService extends BaseService {
 
           break;
         default:
-          this.assertFail("提醒只有在日历项、日程、任务和小任务中存在");
+          continue;   // 提醒只有在日历项、日程、任务和小任务中存在
       }
     }
 
