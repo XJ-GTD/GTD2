@@ -131,7 +131,7 @@ export class RemindService extends BaseService {
                     left join gtd_jta jta
                     on jta.jti = wa.obi`;
 
-      let reminds: Array<RemindData> = await this.sqlExce.getExtLstByParam(sql, [
+      let reminds: Array<RemindData> = await this.sqlExce.getExtLstByParam<RemindData>(sql, [
                                   SyncType.synch,
                                   start.format("YYYY/MM/DD"),
                                   start.format("HH:mm"),
