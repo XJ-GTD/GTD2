@@ -1,7 +1,9 @@
-import {Component} from '@angular/core';
+import {Component, ViewChild} from '@angular/core';
 import {IonicPage, NavController, NavParams, ViewController} from 'ionic-angular';
 import * as moment from "moment";
 import * as anyenum from "../../data.enum";
+import {MultiPicker} from "ion-multi-picker";
+import {TxJson} from "../../service/business/event.service";
 
 @IonicPage()
 @Component({
@@ -31,11 +33,12 @@ import * as anyenum from "../../data.enum";
         ></date-picker>
         <ion-label><ion-icon class="fal fa-calendar-alt"></ion-icon>开始日期</ion-label>
       </div>
-      <div ion-item no-border no-padding no-lines no-margin class="itemwarp font-normal" *ngIf="settype=='0'">
-        <date-picker #startTime  [(ngModel)]="pagedata.st" item-content pickerFormat="A hh mm  " displayFormat="A hh 点 mm 分"
-                     cancelText="取消"  doneText="选择" (ionChange) = "seteddate()"
-        ></date-picker>
+      <div ion-item no-border no-padding no-lines no-margin class="itemwarp font-normal" (click)="openStartime()"  *ngIf="settype=='0'">
+        <ion-multi-picker #startTime [(ngModel)]="stval.value"
+                          (ngModelChange)="stselect();seteddate();" [multiPickerColumns]="dependentColumns"
+                          cancelText="取消" doneText="设定"></ion-multi-picker>
         <ion-label><ion-icon class="fal fa-clock"></ion-icon>开始时间</ion-label>
+        <ion-label class = "timedisplay">{{stval.displayname}}</ion-label>
       </div>
       <div ion-item no-border no-padding no-lines no-margin class="itemwarp font-normal" *ngIf="settype=='1'">
         <date-picker  #endDate item-content [(ngModel)]="pagedata.ed"
@@ -44,14 +47,14 @@ import * as anyenum from "../../data.enum";
         ></date-picker>
         <ion-label><ion-icon class="fal fa-calendar-alt"></ion-icon>结束日期</ion-label>
       </div>
-
-      <div ion-item no-border no-padding no-lines no-margin class="itemwarp font-normal" *ngIf="settype=='1'">
-        <date-picker #endTime [(ngModel)]="pagedata.et" item-content pickerFormat="A hh 点 mm 分"
-                     cancelText="取消"   doneText="选择"
-        ></date-picker>
+      
+      <div ion-item no-border no-padding no-lines no-margin class="itemwarp font-normal" (click)="openEndtime()"  *ngIf="settype=='1'">
+        <ion-multi-picker #endTime [(ngModel)]="etval.value"
+                          (ngModelChange)="etselect();" [multiPickerColumns]="dependentColumns2"
+                          cancelText="取消" doneText="设定"></ion-multi-picker>
         <ion-label><ion-icon class="fal fa-clock"></ion-icon>结束时间</ion-label>
+        <ion-label class = "timedisplay">{{etval.displayname}}</ion-label>
       </div>
-
       <div ion-item no-border no-padding no-lines no-margin class="itemwarp font-normal" *ngIf="settype=='0'">
         <ion-label>时长{{pagedata.ct | transfromdate:"duration"}}</ion-label>
       </div>
@@ -60,6 +63,21 @@ import * as anyenum from "../../data.enum";
   `
 })
 export class DtSelectPage {
+
+  @ViewChild("startTime")
+  startTime: MultiPicker;
+  @ViewChild("endTime")
+  endTime: MultiPicker;
+
+  stval = {
+    displayname:"",
+    value:""
+  };
+
+  etval = {
+    displayname:"",
+    value:""
+  };
 
   minDate : string = moment().format("YYYY-MM-DD");
   pagedata = {
@@ -90,11 +108,93 @@ export class DtSelectPage {
     cancel: true
   };
 
+  dependentColumns: any[];
+
+  dependentColumns2: any[];
+
   constructor(public navCtrl: NavController,
               public viewCtrl: ViewController,
               public navParams: NavParams) {
 
+    let ampmArray = [
+      {text: '上午', value: '1'},
+      {text: '下午', value: '2'}
+    ];
+    let hourArray = [
+      {text: '00点', value: '100' ,parentVal:'1'},
+      {text: '01点', value: '101',parentVal:'1' },
+      {text: '02点', value: '102',parentVal:'1' },
+      {text: '03点', value: '103',parentVal:'1' },
+      {text: '04点', value: '104',parentVal:'1' },
+      {text: '05点', value: '105',parentVal:'1' },
+      {text: '06点', value: '106',parentVal:'1' },
+      {text: '07点', value: '107',parentVal:'1' },
+      {text: '08点', value: '108',parentVal:'1' },
+      {text: '09点', value: '109',parentVal:'1' },
+      {text: '10点', value: '110',parentVal:'1'},
+      {text: '11点', value: '111',parentVal:'1'},
+      {text: '12点', value: '112',parentVal:'1'},
+      {text: '01点', value: '01',parentVal:'2' },
+      {text: '02点', value: '02',parentVal:'2' },
+      {text: '03点', value: '03',parentVal:'2' },
+      {text: '04点', value: '04',parentVal:'2' },
+      {text: '05点', value: '05',parentVal:'2' },
+      {text: '06点', value: '06',parentVal:'2' },
+      {text: '07点', value: '07',parentVal:'2' },
+      {text: '08点', value: '08',parentVal:'2' },
+      {text: '09点', value: '09',parentVal:'2' },
+      {text: '10点', value: '10',parentVal:'2'},
+      {text: '11点', value: '11',parentVal:'2'},
+    ];
 
+    let minArray = [];
+    for ( let h of hourArray){
+      let loopmin = 0;
+      let loopnum = 0;
+      while (loopmin < 55){
+
+        loopmin = loopnum * 5;
+        let val = (loopmin + "").length == 1 ? "0"+loopmin : loopmin+ "";
+        let min ={
+          text: val + "分",
+          value:val,
+          parentVal:h.value
+        }
+        minArray.push(min);
+        loopnum = loopnum + 1;
+      }
+
+    }
+
+    this.dependentColumns = [
+      {
+        columnWidth: '100px',
+        options: ampmArray,
+      },
+      {
+        columnWidth: '100px',
+        options: hourArray,
+      },
+      {
+        columnWidth: '100px',
+        options: minArray,
+      }
+    ];
+
+    this.dependentColumns2 = [
+      {
+        columnWidth: '100px',
+        options:ampmArray,
+      },
+      {
+        columnWidth: '100px',
+        options: hourArray,
+      },
+      {
+        columnWidth: '100px',
+        options:minArray
+      }
+    ];
 
     if (this.navParams && this.navParams.data) {
 
@@ -108,8 +208,10 @@ export class DtSelectPage {
         this.pagedata.ed =  moment(this.navParams.data.evd + " " + this.navParams.data.evt).
         add(this.navParams.data.ct,'m').format("YYYY-MM-DD");
         this.pagedata.st = this.navParams.data.evt;
+
         this.pagedata.et = moment(this.navParams.data.evd + " " + this.navParams.data.evt).
         add(this.navParams.data.ct,'m').format("HH:mm");
+
 
       }else if(this.navParams.data.al == anyenum.IsWholeday.EndSet){
         this.settype = '1';
@@ -117,8 +219,37 @@ export class DtSelectPage {
         this.pagedata.ed =  moment(this.navParams.data.evd).format("YYYY-MM-DD");
         this.pagedata.st = this.navParams.data.evt;
         this.pagedata.et = this.navParams.data.evt;
+
       }else{
         this.iniTime();
+      }
+      this.setTimeValue(this.pagedata.st,this.pagedata.et);
+    }
+  }
+
+  private setTimeValue(st,et){
+    let tmpval  = new Array<any>();
+
+    tmpval = st.split(":");
+    if (tmpval && tmpval.length == 2){
+
+      if (parseInt(tmpval[0]) > 12){
+        this.stval.value = "2" + " " + (parseInt(tmpval[0])- 12) + " " + tmpval[1];
+        this.stval.displayname = "下午" + " " + (parseInt(tmpval[0]) - 12) + " 点 " + tmpval[1] + " 分";
+      }else{
+        this.stval.value = "1" + " 1" + tmpval[0] + " " + tmpval[1];
+        this.stval.displayname = "上午" + " " + tmpval[0] + " 点 " + tmpval[1] + " 分";
+      }
+    }
+    tmpval = et.split(":");
+    if (tmpval && tmpval.length == 2){
+
+      if (parseInt(tmpval[0]) > 12){
+        this.etval.value = "2" + " " + (parseInt(tmpval[0])- 12) + " " + tmpval[1];
+        this.etval.displayname = "下午" + " " + (parseInt(tmpval[0]) - 12) + " 点 " + tmpval[1] + " 分";
+      }else{
+        this.etval.value = "1" + " 1" + tmpval[0] + " " + tmpval[1];
+        this.etval.displayname = "上午" + " " + tmpval[0] + " 点 " + tmpval[1] + " 分";
       }
     }
   }
@@ -171,12 +302,74 @@ export class DtSelectPage {
     this.pagedata.ed = moment(this.pagedata.sd).add(this.pagedata.ct, 'm').format("YYYY-MM-DD");
     this.pagedata.et = moment(this.pagedata.sd + " " + this.pagedata.st).
     add(this.pagedata.ct, 'm').format("HH:mm");
+
   }
 
   private seteddate(){
-    this.pagedata.ed = moment(this.pagedata.sd + "T" + this.pagedata.st).
+    this.pagedata.ed = moment(this.pagedata.sd + " " + this.pagedata.st).
       add(this.pagedata.ct, 'm').format("YYYY-MM-DD");
-    this.pagedata.et = moment(this.pagedata.sd + "T" + this.pagedata.st).
+    this.pagedata.et = moment(this.pagedata.sd + " " + this.pagedata.st).
       add(this.pagedata.ct, 'm').format("HH:mm");
+    this.setTimeValue(this.pagedata.st,this.pagedata.et);
+  }
+
+  private openStartime(){
+    this.startTime.open();
+  }
+
+  private openEndtime(){
+    this.endTime.open();
+  }
+
+  stselect() {
+
+    if (!this.stval.value) {
+      return;
+    }
+    let dtsplit = new Array<string>();
+    let ampm;
+    dtsplit = this.stval.value.split(" ");
+    if (dtsplit.length < 3) {
+      return;
+    }
+    if (dtsplit[0] == "1"){
+      ampm = "上午";
+      dtsplit[1] = dtsplit[1].substring(1);
+    }else{
+      ampm = "下午";
+    }
+    this.stval.displayname = ampm + " " + dtsplit[1] + " 点 " + dtsplit[2] + " 分";
+    if (dtsplit[0] == "1"){
+      this.pagedata.st =  dtsplit[1] + ":" + dtsplit[2];
+    }else{
+      this.pagedata.st =  (parseInt(dtsplit[1])+ 12) + ":" + dtsplit[2];
+    }
+
+  }
+
+  etselect() {
+
+    if (!this.etval.value) {
+      return;
+    }
+    let dtsplit = new Array<string>();
+    let ampm;
+    dtsplit = this.etval.value.split(" ");
+    if (dtsplit.length < 3) {
+      return;
+    }
+    if (dtsplit[0] == "1"){
+      dtsplit[1] = dtsplit[1].substring(1);
+      ampm = "上午";
+    }else{
+      ampm = "下午";
+    }
+    this.etval.displayname = ampm + " " + dtsplit[1] + " 点 " + dtsplit[2] + " 分";
+    if (dtsplit[0] == "1"){
+      this.pagedata.et =  dtsplit[1] + ":" + dtsplit[2];
+    }else{
+      this.pagedata.et =  (parseInt(dtsplit[1])+ 12) + ":" + dtsplit[2];
+    }
+
   }
 }

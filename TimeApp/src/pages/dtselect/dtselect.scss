@@ -1,4 +1,8 @@
 page-dtselect, page-fd ,page-repeat{
+  .timedisplay {
+    text-align: end;
+    margin-right: 17px;
+  }
   modal-box .box-modal .box-content > .scroll-content {
     overflow-y: auto;
   }

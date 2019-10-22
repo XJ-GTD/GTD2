@@ -4,6 +4,7 @@ import { IonicModule } from "ionic-angular";
 import {ModalBoxComponentModule} from "../../components/modal-box/modal-box.module";
 import {DatePickerComponentModule} from "../../components/date-picker/date-picker.module";
 import {PipesModule} from "../../pipes/pipes.module";
+import {MultiPickerModule} from "ion-multi-picker";
 
 @NgModule({
   declarations: [
@@ -14,6 +15,7 @@ import {PipesModule} from "../../pipes/pipes.module";
     ModalBoxComponentModule,
     DatePickerComponentModule,
     PipesModule,
+    MultiPickerModule
   ],
   providers: [
   ],
