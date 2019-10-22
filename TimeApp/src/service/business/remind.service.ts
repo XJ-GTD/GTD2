@@ -60,7 +60,7 @@ export class ScheduleRemindService extends BaseService {
                 remindid: planitem.jti + moment(datetime).format("YYYYMMDDHHmm"),
                 wd: moment(datetime).format("YYYY/MM/DD"),
                 wt: moment(datetime).format("HH:mm"),
-                active: true,
+                active: (planitem.del != DelType.del),
                 data: {
                   datatype: generateDataType(activityType),
                   datas: [{
@@ -92,7 +92,7 @@ export class ScheduleRemindService extends BaseService {
                 remindid: event.evi + moment(datetime).format("YYYYMMDDHHmm"),
                 wd: moment(datetime).format("YYYY/MM/DD"),
                 wt: moment(datetime).format("HH:mm"),
-                active: true,
+                active: (event.del != DelType.del),
                 data: {
                   datatype: generateDataType(activityType),
                   datas: [{
