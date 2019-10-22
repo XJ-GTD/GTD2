@@ -12,7 +12,7 @@ import {WaTbl} from "../sqlite/tbl/wa.tbl";
 import * as moment from "moment";
 
 @Injectable()
-export class RemindService extends BaseService {
+export class ScheduleRemindService extends BaseService {
 
   constructor(private sqlExce: SqliteExec,
               private util: UtilService,
