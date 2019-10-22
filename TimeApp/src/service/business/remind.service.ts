@@ -141,7 +141,7 @@ export class RemindService extends BaseService {
           remindid: remind.wai,
           wd: remind.wd,
           wt: remind.wt,
-          active: (remind.del <> DelType.del),
+          active: (remind.del != DelType.del),
           data: {
             datatype: generateDataType(remind.type),
             datas: [{
