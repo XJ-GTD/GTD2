@@ -7,7 +7,7 @@ import { UserConfig } from "../config/user.config";
 import { PlanItemData, generateDataType } from "./calendar.service";
 import { EventService, AgendaData, TaskData, MiniTaskData, EventData, TxJson, generateTxJson } from "./event.service";
 import { MemoData, MemoService } from "./memo.service";
-import {SyncType, DelType, ObjectType, IsSuccess, SyncDataStatus, OperateType, ToDoListStatus, RepeatFlag, ConfirmType, ModiPower, PageDirection, SyncDataSecurity, InviteState, CompleteState, EventFinishStatus} from "../../data.enum";
+import {SyncType, DelType, EventType, ObjectType, IsSuccess, SyncDataStatus, OperateType, ToDoListStatus, RepeatFlag, ConfirmType, ModiPower, PageDirection, SyncDataSecurity, InviteState, CompleteState, EventFinishStatus} from "../../data.enum";
 import {SyncRestful} from "../restful/syncsev";
 import {WaTbl} from "../sqlite/tbl/wa.tbl";
 import * as moment from "moment";
