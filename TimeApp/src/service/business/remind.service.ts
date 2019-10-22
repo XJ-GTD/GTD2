@@ -48,7 +48,7 @@ export class ScheduleRemindService extends BaseService {
           let planitem: PlanItemData = {} as PlanItemData;
           Object.assign(planitem, data);
 
-          txjson = generateTxJson(data.txjson, data.tx);
+          txjson = generateTxJson(planitem.txjson, planitem.tx);
           let sd: string = planitem.sd;
           let st: string = planitem.st;
 
@@ -80,7 +80,7 @@ export class ScheduleRemindService extends BaseService {
           let event: EventData = {} as EventData;
           Object.assign(event, data);
 
-          txjson = generateTxJson(data.txjson, data.tx);
+          txjson = generateTxJson(event.txjson, event.tx);
           let evd: string = event.evd;
           let evt: string = event.evt;
 
