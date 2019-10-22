@@ -59,6 +59,7 @@ import {BhTbl} from "../sqlite/tbl/bh.tbl";
 import { CalendarService, PlanData, PlanItemData, ActivitySummaryData, MonthActivityData, MonthActivitySummaryData, DayActivityData, DayActivitySummaryData, PagedActivityData, FindActivityCondition } from "./calendar.service";
 import { EventService, AgendaData, TaskData, MiniTaskData, RtJson, TxJson, Member } from "./event.service";
 import { MemoService, MemoData } from "./memo.service";
+import { ScheduleRemindService } from "./remind.service";
 import { PlanType, PlanItemType, CycleType, OverType, RepeatFlag, PageDirection, SyncType, DelType, SyncDataStatus, IsWholeday, OperateType, EventType, RemindTime } from "../../data.enum";
 
 /**
@@ -417,6 +418,7 @@ describe('CalendarService test suite', () => {
         NetworkService,
         EventService,
         MemoService,
+        ScheduleRemindService,
         { provide: StatusBar, useClass: StatusBarMock },
         { provide: SplashScreen, useClass: SplashScreenMock },
         { provide: Platform, useClass: PlatformMock }
