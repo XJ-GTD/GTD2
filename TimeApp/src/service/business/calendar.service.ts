@@ -23,6 +23,7 @@ import {
   assertFail
 } from "../../util/util";
 import {FsData} from "../../data.mapping";
+import { ScheduleRemindService } from "./remind.service";
 
 @Injectable()
 export class CalendarService extends BaseService {
@@ -36,11 +37,12 @@ export class CalendarService extends BaseService {
               private userConfig: UserConfig,
               private eventService: EventService,
               private memoService: MemoService,
+              private remindService: ScheduleRemindService,
               private bacRestful: BacRestful,
               private shareRestful: ShaeRestful,
               private dataRestful: DataRestful) {
     super();
-    this.activitiesqueue = async.queue(({data}, callback) => {
+    this.activitiesqueue = async.queue(async ({data}, callback) => {
 
       // 多条数据同时更新/单条数据更新
       if (data instanceof Array) {
@@ -72,8 +74,14 @@ export class CalendarService extends BaseService {
           }
           index++;
         }
+
+        // 同步提醒，如果有的话
+        await this.remindService.syncScheduledReminds(data);
       } else {
         this.mergeCalendarActivity(data);
+
+        // 同步提醒，如果有的话
+        await this.remindService.syncScheduledReminds([data]);
       }
 
       callback();
@@ -3631,7 +3639,7 @@ export class CalendarService extends BaseService {
     return;
   }
 
-  async receiveInitialData() {
+  async requestInitialData() {
     let pull: PullInData = new PullInData();
     pull.type = "*";
     await this.dataRestful.pull(pull);
@@ -4649,4 +4657,33 @@ export class DayActivitySummaryData {
   memoscount: number;           // 备忘数量
   repeateventscount: number;    // 重复事件数量
   bookedtimesummary: number;    // 总预定时长
+}
+
+export function generateDataType(activityType: string) {
+  let datatype: string = "";
+
+  switch(activityType) {
+    case "PlanData":
+      datatype = "Plan";
+      break;
+    case "PlanItemData":
+      datatype = "PlanItem";
+      break;
+    case "AgendaData":
+      datatype = "Agenda";
+      break;
+    case "TaskData":
+      datatype = "Task";
+      break;
+    case "MiniTaskData":
+      datatype = "MiniTask";
+      break;
+    case "MemoData":
+      datatype = "Memo";
+      break;
+    default:
+      datatype = "Invalid Data Type";
+  }
+
+  return datatype;
 }

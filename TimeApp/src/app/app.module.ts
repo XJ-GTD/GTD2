@@ -114,6 +114,7 @@ import { DirectivesModule } from "../directives/directives.module";
 import { BaiduMapModule } from 'angular2-baidu-map';
 import {EventService} from "../service/business/event.service";
 import {MemoService} from "../service/business/memo.service";
+import {ScheduleRemindService} from "../service/business/remind.service";
 import {AipPageModule} from "../pages/aip/aip.module";
 import { SettingsProvider } from '../providers/settings/settings';
 import {CalendarService} from "../service/business/calendar.service";
@@ -253,9 +254,10 @@ import * as ionicGalleryModal from 'ionic-gallery-modal';
     JPushService,
     RabbitMQService,
     MIPushService,
-    RemindService,
+    ScheduleRemindService,
     EventService,
     MemoService,
+    RemindService,
     SettingsProvider,
     CalendarService,
     EffectService,

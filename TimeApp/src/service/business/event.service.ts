@@ -4172,16 +4172,15 @@ export class EventService extends BaseService {
 }
 
 export interface EventData extends EvTbl {
-
+  //重复设定
+  rtjson :RtJson;
+  //提醒设定
+  txjson :TxJson;
 }
 
 //画面传入事件service参数体
 export interface AgendaData extends EventData, CaTbl {
 
-  //重复设定
-  rtjson :RtJson;
-  //提醒设定
-  txjson :TxJson;
   //参与人
   members : Array<Member>;
   //计划
@@ -4585,6 +4584,7 @@ export class RtJson {
 }
 
 export class TxJson {
+  close: boolean = false;   // 2019/10/22 增加提醒关闭属性，用于保留提醒设置内容，但是不提醒
   reminds: Array<number> = new Array<number>();
 
   static caption(minutes: number): string {
@@ -4638,6 +4638,21 @@ export class TxJson {
       return true;
     } else {
       return false;
+    }
+  }
+
+  // 遍历计算每个提醒的实际时间
+  each(sd: string, st: string, callback: (datetime: number) => void) {
+    // 如果提醒关闭或者没有提醒数据，直接返回
+    if (this.close || !this.reminds || this.reminds.length <= 0) {
+      return;
+    }
+
+    for (let remind of this.reminds) {
+      let baseline = moment(sd + " " + st, "YYYY/MM/DD HH:mm");
+      baseline.subtract(remind, "m");
+
+      callback(baseline.valueOf());
     }
   }
 }
