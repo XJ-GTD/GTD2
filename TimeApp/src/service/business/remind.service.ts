@@ -20,7 +20,9 @@ export class RemindService extends BaseService {
               private calendarService: CalendarService,
               private eventService: EventService,
               private syncRestful: SyncRestful,
-              private userConfig: UserConfig) {}
+              private userConfig: UserConfig) {
+    super();
+  }
 
   /**
    * 同步指定数据或所有数据的计划提醒到服务器
