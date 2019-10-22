@@ -8,6 +8,8 @@ import { CalendarService, PlanItemData, generateDataType } from "./calendar.serv
 import { EventService, AgendaData, TaskData, MiniTaskData, TxJson, generateTxJson } from "./event.service";
 import {SyncType, DelType, ObjectType, IsSuccess, SyncDataStatus, OperateType, ToDoListStatus, RepeatFlag, ConfirmType, ModiPower, PageDirection, SyncDataSecurity, InviteState, CompleteState, EventFinishStatus} from "../../data.enum";
 import {SyncRestful} from "../restful/syncsev";
+import {WaTbl} from "../sqlite/tbl/wa.tbl";
+import * as moment from "moment";
 
 @Injectable()
 export class RemindService extends BaseService {
