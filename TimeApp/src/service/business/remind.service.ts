@@ -40,10 +40,10 @@ export class RemindService extends BaseService {
     // 指定数据提醒上传服务器
     for (let data of datas) {
       let activityType: string = this.calendarService.getActivityType(data);
+      let txjson: TxJson = generateTxJson(data.txjson, data.tx);
 
       switch (activityType) {
         case "PlanItemData" :
-          let txjson: TxJson = generateTxJson(data.txjson, data.tx);
           let sd: string = data.sd;
           let st: string = data.st;
 
@@ -72,7 +72,6 @@ export class RemindService extends BaseService {
         case "AgendaData" :
         case "TaskData" :
         case "MiniTaskData" :
-          let txjson: TxJson = generateTxJson(data.txjson, data.tx);
           let evd: string = data.evd;
           let evt: string = data.evt;
 
