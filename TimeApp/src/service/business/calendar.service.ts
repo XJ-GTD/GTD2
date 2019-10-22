@@ -4650,3 +4650,32 @@ export class DayActivitySummaryData {
   repeateventscount: number;    // 重复事件数量
   bookedtimesummary: number;    // 总预定时长
 }
+
+export function generateDataType(activityType: string) {
+  let datatype: string = "";
+
+  switch(activityType) {
+    case "PlanData":
+      datatype = "Plan";
+      break;
+    case "PlanItemData":
+      datatype = "PlanItem";
+      break;
+    case "AgendaData":
+      datatype = "Agenda";
+      break;
+    case "TaskData":
+      datatype = "Task";
+      break;
+    case "MiniTaskData":
+      datatype = "MiniTask";
+      break;
+    case "MemoData":
+      datatype = "Memo";
+      break;
+    default:
+      datatype = "Invalid Data Type";
+  }
+
+  return datatype;
+}
