@@ -5,7 +5,7 @@ import { UtilService } from "../util-service/util.service";
 import { EmitService } from "../util-service/emit.service";
 import { UserConfig } from "../config/user.config";
 import { CalendarService, PlanItemData, generateDataType } from "./calendar.service";
-import { EventService, AgendaData, TaskData, MiniTaskData, TxJson, generateTxJson } from "./event.service";
+import { EventService, AgendaData, TaskData, MiniTaskData, EventData, TxJson, generateTxJson } from "./event.service";
 import {SyncType, DelType, ObjectType, IsSuccess, SyncDataStatus, OperateType, ToDoListStatus, RepeatFlag, ConfirmType, ModiPower, PageDirection, SyncDataSecurity, InviteState, CompleteState, EventFinishStatus} from "../../data.enum";
 import {SyncRestful} from "../restful/syncsev";
 import {WaTbl} from "../sqlite/tbl/wa.tbl";
@@ -44,8 +44,11 @@ export class RemindService extends BaseService {
 
       switch (activityType) {
         case "PlanItemData" :
-          let sd: string = data.sd;
-          let st: string = data.st;
+          let planitem: PlanItemData = {} as PlanItemData;
+          Object.assign(planitem, data);
+
+          let sd: string = planitem.sd;
+          let st: string = planitem.st;
 
           txjson.each(sd, st, (datetime) => {
             let remindgap: number = moment().diff(datetime);
@@ -53,7 +56,7 @@ export class RemindService extends BaseService {
             // 将来提醒，且在将来48小时以内
             if (remindgap <= 0 && (limitminutes + remindgap) >= 0) {
               schedulereminds.push({
-                remindid: data.jti + moment(datetime).format("YYYYMMDDHHmm"),
+                remindid: planitem.jti + moment(datetime).format("YYYYMMDDHHmm"),
                 wd: moment(datetime).format("YYYY/MM/DD"),
                 wt: moment(datetime).format("HH:mm"),
                 active: true,
@@ -61,7 +64,7 @@ export class RemindService extends BaseService {
                   datatype: generateDataType(activityType),
                   datas: [{
                     phoneno: UserConfig.account.phone,
-                    id: data.jti
+                    id: planitem.jti
                   }]
                 }
               });
@@ -72,8 +75,11 @@ export class RemindService extends BaseService {
         case "AgendaData" :
         case "TaskData" :
         case "MiniTaskData" :
-          let evd: string = data.evd;
-          let evt: string = data.evt;
+          let event: EventData = {} as EventData;
+          Object.assign(event, data);
+
+          let evd: string = event.evd;
+          let evt: string = event.evt;
 
           txjson.each(evd, evt, (datetime) => {
             let remindgap: number = moment().diff(datetime);
@@ -81,7 +87,7 @@ export class RemindService extends BaseService {
             // 将来提醒，且在将来48小时以内
             if (remindgap <= 0 && (limitminutes + remindgap) >= 0) {
               schedulereminds.push({
-                remindid: data.evi + moment(datetime).format("YYYYMMDDHHmm"),
+                remindid: event.evi + moment(datetime).format("YYYYMMDDHHmm"),
                 wd: moment(datetime).format("YYYY/MM/DD"),
                 wt: moment(datetime).format("HH:mm"),
                 active: true,
@@ -89,7 +95,7 @@ export class RemindService extends BaseService {
                   datatype: generateDataType(activityType),
                   datas: [{
                     phoneno: UserConfig.account.phone,
-                    id: data.evi
+                    id: event.evi
                   }]
                 }
               });
