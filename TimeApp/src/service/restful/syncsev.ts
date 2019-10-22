@@ -87,9 +87,9 @@ export class SyncRestful {
       let taskRunAt = {
         eventId: "QUARTZ_CRON_5M",
         filters: [
-          {name: "YYYY", value: choosetime.format("YYYY")},
+          {name: "yyyy", value: choosetime.format("YYYY")},
           {name: "MM", value: choosetime.format("MM")},
-          {name: "DD", value: choosetime.format("DD")},
+          {name: "dd", value: choosetime.format("DD")},
           {name: "HH", value: choosetime.format("HH")},
           {name: "mm", value: choosetime.format("mm")}
         ]
