@@ -134,7 +134,7 @@ export class RemindService extends BaseService {
                                   end.format("HH:mm"),
                                   ObjectType.Event,
                                   ObjectType.Calendar
-                                ]) || new Array<WaTbl>;
+                                ]) || new Array<RemindData>();
 
       for (let remind of reminds) {
         schedulereminds.push({
