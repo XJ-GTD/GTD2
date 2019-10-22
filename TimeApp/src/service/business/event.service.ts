@@ -4172,16 +4172,15 @@ export class EventService extends BaseService {
 }
 
 export interface EventData extends EvTbl {
-
+  //重复设定
+  rtjson :RtJson;
+  //提醒设定
+  txjson :TxJson;
 }
 
 //画面传入事件service参数体
 export interface AgendaData extends EventData, CaTbl {
 
-  //重复设定
-  rtjson :RtJson;
-  //提醒设定
-  txjson :TxJson;
   //参与人
   members : Array<Member>;
   //计划
