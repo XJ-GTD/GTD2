@@ -1,0 +1,56 @@
+{
+  "_id": ObjectID("5dae6efe956dff0008e9ec6a"),
+  "name": "冥王星事件计划提醒触发处理流",
+  "trigger": "mwxing_scheduled_remind_start",
+  "parameters": [
+    "userId",
+    "remind"
+  ],
+  "follows": [
+    {
+      "name": "数据推送 - 拉取需要提醒的最新数据",
+      "trigger": "sas",
+      "parameters": [
+        "type;fetch",
+        "datatype;$.parent.parameters.remind.datatype",
+        "data;$.parent.parameters.remind.datas"
+      ],
+      "outputs": [
+          "datas"
+      ],
+      "next": [
+        {
+          "name": "生成提醒数据",
+          "trigger": "acj",
+          "parameters": [
+              "ruleid;MWXING_SCHEDULED_REMIND_V1_5",
+              "datasource;$.parent.outputs"
+          ],
+          "outputs": [
+              "cleaned"
+          ],
+          "next": [
+            {
+              "type": "loop",
+              "variable": "announce;$.parent.outputs.cleaned.announces[*]",
+              "start": "0",
+              "end": "size",
+              "task": {
+                  "name": "冥王星通知服务",
+                  "trigger": "ann",
+                  "parameters": [
+                      "announceTo;$.parent.outputs.cleaned.announces[##announce_value##].announceTo",
+                      "announceType;$.parent.outputs.cleaned.announces[##announce_value##].announceType",
+                      "announceContent;$.parent.outputs.cleaned.announces[##announce_value##].announceContent"
+                  ],
+                  "outputs": [
+                      "result"
+                  ]
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
