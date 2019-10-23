@@ -52,19 +52,19 @@ import {ModiPower} from "../../data.enum";
     <page-box title="活动" [buttons]="buttons" [data]="currentAgenda.evi" (onRemove)="goRemove()" (onSave)="save()"
               (onBack)="goBack()" (onRecord)="record($event)" (onSpeaker)="speaker($event)" [speakData] = "currentAgenda.evn">
 
-      <ion-grid [ngStyle]="{'border-left': (!currentAgenda.evi || currentAgenda.ji == '')? '0' : ('0.6rem solid ' + (currentAgenda.ji | formatplan: 'color': privateplans)), 'padding-left': (!currentAgenda.evi || currentAgenda.ji == '')? '1.2rem' : '0.6rem', 'border-radius': (!currentAgenda.evi || currentAgenda.ji == '')? '0' : '4px'}">
+      <ion-grid [ngStyle]="{'border-left': (!currentAgenda.evi || !currentAgenda.ji || currentAgenda.ji == '')? '0' : ('0.6rem solid ' + (currentAgenda.ji | formatplan: 'color': privateplans)), 'padding-left': (!currentAgenda.evi || !currentAgenda.ji || currentAgenda.ji == '')? '1.2rem' : '0.6rem', 'border-radius': (!currentAgenda.evi || !currentAgenda.ji || currentAgenda.ji == '')? '0' : '4px'}">
 
         <ion-row class="limitRow font-small-x">
           <span>{{snlength}} / 80 </span>
         </ion-row>
-        
+
         <ion-row class="snRow">
           <div class="sn font-large-x">
             <!--主题-->
             <ion-textarea rows="8" no-margin [(ngModel)]="currentAgenda.evn" (ionChange)="changeTitle()" [readonly]="originAgenda.evi && originAgenda.ui != currentuser && (originAgenda.md != enablechange || originAgenda.invitestatus != acceptedinvite)"
                           [maxlength]="80"></ion-textarea>
           </div>
-           
+
 
           <div class="agendatodo" *ngIf="currentAgenda.evi && currentAgenda.todolist">
             <ion-icon (click)="changeTodolist()" class="font-large-x  fa-star"
@@ -73,7 +73,7 @@ import {ModiPower} from "../../data.enum";
 
           </div>
         </ion-row>
-        
+
         <ion-row class="optionRow">
           <ion-grid>
             <!--附加属性操作-->
