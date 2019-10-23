@@ -12,6 +12,7 @@ import {CalendarService, PlanItemData} from "../../service/business/calendar.ser
 import {EventService, RtJson, TxJson, Member, generateRtJson, generateTxJson} from "../../service/business/event.service";
 import {OperateType, RepeatFlag, ConfirmType, IsWholeday, InviteState, SelfDefineType, ModiPower} from "../../data.enum";
 import {Keyboard} from "@ionic-native/keyboard";
+import {PageBoxComponent} from "../../components/page-box/page-box";
 
 /**
  * Generated class for the 纪念日创建/修改 page.
@@ -28,10 +29,15 @@ import {Keyboard} from "@ionic-native/keyboard";
               (onBack)="goBack()">
 
       <ion-grid>
+        
+        <ion-row class="limitRow font-small-x">
+          <span>{{snlength}} / 80 </span>
+        </ion-row>
+        
         <ion-row class="snRow">
           <div class="sn font-large-x">
             <!--主题-->
-            <ion-textarea rows="8" [(ngModel)]="currentPlanItem.jtn" (ionChange)="changeTitle()" [readonly]="currentPlanItem.jtc == system" #bzRef></ion-textarea>
+            <ion-textarea rows="8" [(ngModel)]="currentPlanItem.jtn" (ionChange)="changeTitle()" [readonly]="currentPlanItem.jtc == system" ></ion-textarea>
           </div>
         </ion-row>
 
@@ -125,8 +131,6 @@ export class CommemorationDayPage {
   currentPlanItem: PlanItemData = {} as PlanItemData;
   originPlanItem: PlanItemData = {} as PlanItemData;
 
-  @ViewChild("bzRef", {read: ElementRef})
-  _bzRef: ElementRef;
 
   currentuser: string = UserConfig.account.id;
   friends: Array<any> = UserConfig.friends;
@@ -139,6 +143,10 @@ export class CommemorationDayPage {
   selfdefine: SelfDefineType = SelfDefineType.Define;
 
   modifyConfirm;
+  @ViewChild(PageBoxComponent)
+  pageBoxComponent: PageBoxComponent
+
+  snlength:number = 0;
 
   constructor(public navCtrl: NavController,
               public navParams: NavParams,
@@ -159,6 +167,7 @@ export class CommemorationDayPage {
           this.currentPlanItem = commemorationday;
           Object.assign(this.originPlanItem, commemorationday);
 
+          this.snlength =  this.currentPlanItem.jtn.length;
           this.buttons.remove = true;
         });
       } else {
@@ -170,16 +179,11 @@ export class CommemorationDayPage {
   }
 
   ionViewDidEnter() {
-    setTimeout(() => {
-      if (!this.currentPlanItem.jti) {
-        let el = this._bzRef.nativeElement.querySelector('textarea');
-        el.focus();
-        this.keyboard.show();   //for android
-      }
-    }, 500);
+    this.pageBoxComponent.setBoxContent();
   }
 
   changeTitle() {
+    this.snlength =  this.currentPlanItem.jtn.length;
     if (this.currentPlanItem.jtc == SelfDefineType.System) return;    // 下载日历项不能修改
 
     if (this.currentPlanItem.jti) {

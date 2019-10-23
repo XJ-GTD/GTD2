@@ -1,13 +1,21 @@
 
-page-agenda,page-commemorationday {
+page-agenda, page-commemorationday {
   .grid {
     height: 100%;
     width: 100%;
     padding: 1.8rem 1.2rem;
 
+    .limitRow {
+      flex-direction: row-reverse;
+
+      span {
+        color: rgba(239, 239, 239, 0.3);
+      }
+    }
+
     .snRow {
       height: 50%;
-      flex-wrap:nowrap;
+      flex-wrap: nowrap;
 
       .sn {
         flex-grow: 1;

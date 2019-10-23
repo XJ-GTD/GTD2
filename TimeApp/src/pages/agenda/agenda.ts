@@ -1,5 +1,13 @@
 import {Component, ElementRef, Renderer2, ViewChild, ViewChildren, QueryList, ChangeDetectorRef} from '@angular/core';
-import {IonicPage, NavController, ModalController, ActionSheetController, NavParams, Slides} from 'ionic-angular';
+import {
+  IonicPage,
+  NavController,
+  ModalController,
+  ActionSheetController,
+  NavParams,
+  Slides,
+  TextInput
+} from 'ionic-angular';
 import {UtilService} from "../../service/util-service/util.service";
 import {UserConfig} from "../../service/config/user.config";
 import {RestFulHeader, RestFulConfig} from "../../service/config/restful.config";
@@ -45,12 +53,18 @@ import {ModiPower} from "../../data.enum";
               (onBack)="goBack()" (onRecord)="record($event)" (onSpeaker)="speaker($event)" [speakData] = "currentAgenda.evn">
 
       <ion-grid [ngStyle]="{'border-left': (!currentAgenda.evi || currentAgenda.ji == '')? '0' : ('0.6rem solid ' + (currentAgenda.ji | formatplan: 'color': privateplans)), 'padding-left': (!currentAgenda.evi || currentAgenda.ji == '')? '1.2rem' : '0.6rem', 'border-radius': (!currentAgenda.evi || currentAgenda.ji == '')? '0' : '4px'}">
+
+        <ion-row class="limitRow font-small-x">
+          <span>{{snlength}} / 80 </span>
+        </ion-row>
+        
         <ion-row class="snRow">
           <div class="sn font-large-x">
             <!--主题-->
             <ion-textarea rows="8" no-margin [(ngModel)]="currentAgenda.evn" (ionChange)="changeTitle()" [readonly]="originAgenda.evi && originAgenda.ui != currentuser && (originAgenda.md != enablechange || originAgenda.invitestatus != acceptedinvite)"
-                          #bzRef></ion-textarea>
+                          [maxlength]="80"></ion-textarea>
           </div>
+           
 
           <div class="agendatodo" *ngIf="currentAgenda.evi && currentAgenda.todolist">
             <ion-icon (click)="changeTodolist()" class="font-large-x  fa-star"
@@ -59,6 +73,7 @@ import {ModiPower} from "../../data.enum";
 
           </div>
         </ion-row>
+        
         <ion-row class="optionRow">
           <ion-grid>
             <!--附加属性操作-->
@@ -169,6 +184,7 @@ export class AgendaPage {
   privateplans: Array<any> = UserConfig.privateplans;
 
   modifyConfirm;
+  snlength:number = 0;
 
   todoliston = ToDoListStatus.On;
   todolistoff = ToDoListStatus.Off;
@@ -184,8 +200,6 @@ export class AgendaPage {
   @ViewChild(PageBoxComponent)
   pageBoxComponent: PageBoxComponent
 
-  @ViewChild("bzRef", {read: ElementRef})
-  _bzRef: ElementRef;
 
 
   constructor(public navCtrl: NavController,
@@ -219,6 +233,8 @@ export class AgendaPage {
               this.currentAgenda = agenda;
               Object.assign(this.originAgenda, agenda);
 
+
+              this.snlength =  this.currentAgenda.evn.length;
               this.buttons.remove = true;
 
               this.util.loadingEnd();
@@ -262,13 +278,6 @@ export class AgendaPage {
 
   ionViewDidEnter() {
     this.pageBoxComponent.setBoxContent();
-    setTimeout(() => {
-      if (!this.currentAgenda.evi) {
-        let el = this._bzRef.nativeElement.querySelector('textarea');
-        el.focus();
-        this.keyboard.show();   //for android
-      }
-    }, 500);
   }
 
   ionViewWillEnter() {
@@ -315,6 +324,7 @@ export class AgendaPage {
   }
 
   changeTitle() {
+    this.snlength =  this.currentAgenda.evn.length;
     // 受邀人没有接受或者没有修改权限不能修改
     if (this.originAgenda.evi && this.originAgenda.ui != this.currentuser && (this.originAgenda.md != ModiPower.enable || this.originAgenda.invitestatus != InviteState.Accepted)) { // 受邀人修改权限检查
       return;
