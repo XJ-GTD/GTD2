@@ -46,13 +46,17 @@ import * as anyenum from "../../data.enum";
                         cancelText="取消" doneText="设定"></ion-multi-picker>
       <date-picker #remindDt
                    pickerFormat="YYYY ,MM DD"
-                   [(ngModel)]="datevalue" (ngModelChange)="dtselect()"
+                   [(ngModel)]="datevalue" (ngModelChange)="timeOpen()"
                    cancelText="取消" doneText="选择时间"
       ></date-picker>
-      <date-picker #remindTime pickerFormat="A hh mm"
+      <date-picker #remindTime1 pickerFormat="A hh mm"
                    [(ngModel)]="timevalue" (ngModelChange)="timeselect()" (ionCancel)="openRemindDt()"
                    doneText="设定"
       ></date-picker>
+        <ion-multi-picker #remindTime [(ngModel)]="timevalue"
+                          (ngModelChange)="timeselect();" (ionCancel)="openRemindDt()" [multiPickerColumns]="timeColumns"
+                           doneText="设定"></ion-multi-picker>
+
     </div>
 
   `
@@ -66,9 +70,9 @@ export class RemindPage {
   remindDt: DateTime;
 
   @ViewChild("remindTime")
-  remindTime: DateTime;
+  remindTime: MultiPicker;
 
-
+  minDate : string = moment().format("YYYY-MM-DD");
   buttons: any = {
     remove: false,
     share: false,
@@ -86,11 +90,76 @@ export class RemindPage {
   reminds: Array<any> = new Array<any>();
   currentTx: TxJson;
   dependentColumns: any[];
-
+  timeColumns : any[]
   constructor(public navCtrl: NavController,
               public modalCtrl: ModalController,
               public viewCtrl: ViewController,
               public navParams: NavParams) {
+
+    let ampmArray = [
+      {text: '上午', value: '1'},
+      {text: '下午', value: '2'}
+    ];
+    let hourArray = [
+      {text: '00点', value: '100' ,parentVal:'1'},
+      {text: '01点', value: '101',parentVal:'1' },
+      {text: '02点', value: '102',parentVal:'1' },
+      {text: '03点', value: '103',parentVal:'1' },
+      {text: '04点', value: '104',parentVal:'1' },
+      {text: '05点', value: '105',parentVal:'1' },
+      {text: '06点', value: '106',parentVal:'1' },
+      {text: '07点', value: '107',parentVal:'1' },
+      {text: '08点', value: '108',parentVal:'1' },
+      {text: '09点', value: '109',parentVal:'1' },
+      {text: '10点', value: '110',parentVal:'1'},
+      {text: '11点', value: '111',parentVal:'1'},
+      {text: '12点', value: '112',parentVal:'1'},
+      {text: '01点', value: '01',parentVal:'2' },
+      {text: '02点', value: '02',parentVal:'2' },
+      {text: '03点', value: '03',parentVal:'2' },
+      {text: '04点', value: '04',parentVal:'2' },
+      {text: '05点', value: '05',parentVal:'2' },
+      {text: '06点', value: '06',parentVal:'2' },
+      {text: '07点', value: '07',parentVal:'2' },
+      {text: '08点', value: '08',parentVal:'2' },
+      {text: '09点', value: '09',parentVal:'2' },
+      {text: '10点', value: '10',parentVal:'2'},
+      {text: '11点', value: '11',parentVal:'2'},
+    ];
+
+    let minArray = [];
+    for ( let h of hourArray){
+      let loopmin = 0;
+      let loopnum = 0;
+      while (loopmin < 55){
+
+        loopmin = loopnum * 5;
+        let val = (loopmin + "").length == 1 ? "0"+loopmin : loopmin+ "";
+        let min ={
+          text: val + "分",
+          value:val,
+          parentVal:h.value
+        }
+        minArray.push(min);
+        loopnum = loopnum + 1;
+      }
+
+    }
+
+    this.timeColumns = [
+      {
+        columnWidth: '100px',
+        options: ampmArray,
+      },
+      {
+        columnWidth: '100px',
+        options: hourArray,
+      },
+      {
+        columnWidth: '100px',
+        options: minArray,
+      }
+    ];
 
     this.dependentColumns = [
       {
@@ -208,7 +277,7 @@ export class RemindPage {
 
   openRemindDt() {
     this.remindDt.min = moment().format("YYYY-MM-DD");
-    this.remindDt.max = moment(this.evdatetime).add(2, "M").format("YYYY-MM-DD");
+    this.remindDt.max = moment(this.evdatetime).add(1, "y").format("YYYY-MM-DD");
     this.remindDt.open();
 
   }
@@ -235,13 +304,30 @@ export class RemindPage {
       });
   }
 
-  dtselect() {
+  timeOpen() {
     this.remindTime.cancelText = "选择日期 " + moment(this.datevalue).format("YYYY年MM月DD日");
     this.remindTime.open();
   }
 
   timeselect() {
-    let dt = this.datevalue + " " + this.timevalue;
+
+    let tm = "";
+    if (!this.timevalue) {
+      return;
+    }
+    let dtsplit = new Array<string>();
+    let ampm;
+    dtsplit = this.timevalue.split(" ");
+    if (dtsplit.length < 3) {
+      return;
+    }
+    if (dtsplit[0] == "1"){
+      dtsplit[1] = dtsplit[1].substring(1);
+      tm =  dtsplit[1] + ":" + dtsplit[2];
+    }else{
+      tm =  (parseInt(dtsplit[1])+ 12) + ":" + dtsplit[2];
+    }
+    let dt = this.datevalue + " " + tm;
     let time = moment(this.evdatetime).diff(dt, 'm');
     this.reminds.push(
       {
