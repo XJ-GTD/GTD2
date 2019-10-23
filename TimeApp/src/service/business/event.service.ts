@@ -1373,7 +1373,7 @@ export class EventService extends BaseService {
 
     let caparam = new CaTbl();
     if (retParamEv.rtevi != ""){
-      caparam = this.sqlparamAddCa(retParamEv.rtevi,agdata.sd,agdata.ed,agdata);
+      caparam = this.sqlparamAddCa(retParamEv.rtevi,agdata);
       sqlparam.push(caparam.rpTParam());
     }
 
@@ -1529,7 +1529,7 @@ export class EventService extends BaseService {
       sqlparam.push(ev.upTParam());
 
       let caparam = new CaTbl();
-      caparam = this.sqlparamAddCa(oriAgdata.evi ,newAgdata.evd,newAgdata.evd,newAgdata);//evi使用原evi
+      caparam = this.sqlparamAddCa(oriAgdata.evi ,newAgdata);//evi使用原evi
       sqlparam.push(caparam.rpTParam());
 
       //其他表相关处理
@@ -1695,7 +1695,7 @@ export class EventService extends BaseService {
 
       //日程表新建或更新,修改为独立日的也需要为自己创建对应的日程
       let caparam = new CaTbl();
-      caparam = this.sqlparamAddCa(oriAgdata.evi ,newAgdata.evd,newAgdata.evd,newAgdata);//evi使用原evi
+      caparam = this.sqlparamAddCa(oriAgdata.evi ,newAgdata);//evi使用原evi
       sqlparam.push(caparam.rpTParam());
 
       //变化或新增的日程放入事件对象
@@ -1961,7 +1961,7 @@ export class EventService extends BaseService {
 
           //为新的父事件建立新的对应日程
           let nwca = new CaTbl();
-          nwca = this.sqlparamAddCa(nwEv.evi ,nwEv.evd,oriAgdata.ed,oriAgdata);
+          nwca = this.sqlparamAddCa(nwEv.evi ,oriAgdata);
           sqlparam.push(nwca.rpTParam());
 
           //复制原参与人到新的父事件
@@ -2335,17 +2335,13 @@ export class EventService extends BaseService {
   /**
    * 日程新增sql list
    * @param {string} rtevi
-   * @param {string} sd
-   * @param {string} ed
    * @param {AgendaData} agdata
    * @returns {Array<any>}
    */
-  private sqlparamAddCa(rtevi : string,sd : string ,ed :string, agdata : AgendaData): CaTbl {
+  private sqlparamAddCa(rtevi : string,agdata : AgendaData): CaTbl {
 
-    agdata.sd = sd;
-    agdata.ed = ed;
     if (agdata.al == anyenum.IsWholeday.EndSet){
-      agdata.sd = ed;
+      agdata.sd = agdata.ed;
       agdata.st = agdata.et;
       agdata.ct = 0;
     }
