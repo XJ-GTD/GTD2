@@ -34,7 +34,7 @@ export class ScheduleRemindService extends BaseService {
     this.assertEmpty(datas);  // 入参不能为空
     this.assertEmpty(limit);  // 限制小时数不能为空
 
-    let limitminutes: number = limit * 60;
+    let limitms: number = limit * 60 * 60 * 1000;
     let schedulereminds: Array<any> = new Array<any>();
 
     // 指定数据提醒上传服务器
@@ -55,12 +55,12 @@ export class ScheduleRemindService extends BaseService {
             let remindgap: number = moment().diff(datetime);
 
             // 将来提醒，且在将来48小时以内
-            if (remindgap <= 0 && (limitminutes + remindgap) >= 0) {
+            if (remindgap <= 0 && (limitms + remindgap) >= 0) {
               schedulereminds.push({
                 remindid: planitem.jti + moment(datetime).format("YYYYMMDDHHmm"),
                 wd: moment(datetime).format("YYYY/MM/DD"),
                 wt: moment(datetime).format("HH:mm"),
-                active: true,
+                active: (planitem.del != DelType.del),
                 data: {
                   datatype: generateDataType(activityType),
                   datas: [{
@@ -87,12 +87,12 @@ export class ScheduleRemindService extends BaseService {
             let remindgap: number = moment().diff(datetime);
 
             // 将来提醒，且在将来48小时以内
-            if (remindgap <= 0 && (limitminutes + remindgap) >= 0) {
+            if (remindgap <= 0 && (limitms + remindgap) >= 0) {
               schedulereminds.push({
                 remindid: event.evi + moment(datetime).format("YYYYMMDDHHmm"),
                 wd: moment(datetime).format("YYYY/MM/DD"),
                 wt: moment(datetime).format("HH:mm"),
-                active: true,
+                active: (event.del != DelType.del),
                 data: {
                   datatype: generateDataType(activityType),
                   datas: [{

@@ -49,6 +49,7 @@ import { CalendarService, PlanData } from "./calendar.service";
 import {EventService, AgendaData, TaskData, MiniTaskData, RtJson, TxJson} from "./event.service";
 import { MemoService } from "./memo.service";
 import { PlanType, IsCreate, IsSuccess, IsWholeday, PageDirection, SyncType, DelType, SyncDataStatus, EventType, OperateType, CycleType, OverType, ToDoListStatus, ConfirmType, EventFinishStatus } from "../../data.enum";
+import { ScheduleRemindService } from "./remind.service";
 
 /**
  * 事件Service 持续集成CI 自动测试Case
@@ -82,6 +83,7 @@ describe('EventService test suite', () => {
         EventService,
         CalendarService,
         MemoService,
+        ScheduleRemindService,
         Device,
         SQLite,
         SQLitePorter,

@@ -47,6 +47,7 @@ import {WaTbl} from "../sqlite/tbl/wa.tbl";
 import { CalendarService, PlanData } from "./calendar.service";
 import { EventService, AgendaData, TaskData, MiniTaskData, RtJson } from "./event.service";
 import { PlanType, IsCreate, IsSuccess, CycleType, OverType } from "../../data.enum";
+import { ScheduleRemindService } from "./remind.service";
 
 /**
  * 事件Service 日程 持续集成CI 自动测试Case
@@ -77,6 +78,7 @@ describe('EventService test suite for agenda', () => {
       providers: [
         EventService,
         CalendarService,
+        ScheduleRemindService,
         Device,
         SQLite,
         SQLitePorter,

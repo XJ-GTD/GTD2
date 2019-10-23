@@ -43,6 +43,7 @@ import { CalendarService, PlanData } from "./calendar.service";
 import { MemoService,MemoData } from "./memo.service";
 import { EventService } from "./event.service";
 import { PlanType,ObjectType , SyncType, DelType, SyncDataStatus} from "../../data.enum";
+import { ScheduleRemindService } from "./remind.service";
 
 /**
  * 备忘Service 持续集成CI 自动测试Case
@@ -76,6 +77,7 @@ describe('MemoService test suite', () => {
         MemoService,
         CalendarService,
         EventService,
+        ScheduleRemindService,
         Device,
         SQLite,
         SQLitePorter,
