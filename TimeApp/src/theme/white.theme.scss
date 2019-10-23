@@ -72,12 +72,12 @@ ion-app.white-theme {
     background-color: $baseBackcolor_white;
   }
 
-  page-agenda, page-task, page-commemorationday {
+  page-agenda, page-task, page-commemorationday,page-comment {
     .grid {
 
       .limitRow {
         span {
-          color: rgba(239, 239, 239, 0.3);
+          color: rgba(51, 51, 51, 0.5);
         }
       }
       .snRow {

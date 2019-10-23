@@ -1,16 +1,25 @@
-import {ChangeDetectorRef, Component, ElementRef, QueryList, Renderer2, ViewChild, ViewChildren} from '@angular/core';
-import {IonicPage, NavController, NavParams, ViewController, ModalController, Scroll, TextInput} from 'ionic-angular';
-import {Keyboard} from "@ionic-native/keyboard";
+import {ChangeDetectorRef, Component, ViewChild,} from '@angular/core';
+import {IonicPage, NavController, NavParams, ViewController, ModalController, } from 'ionic-angular';
 import {ModalBoxComponent} from "../../components/modal-box/modal-box";
-import {AssistantService} from "../../service/cordova/assistant.service";
-import {EmitService} from "../../service/util-service/emit.service";
 
 @IonicPage()
 @Component({
   selector: 'page-comment',
   template: `
   <modal-box title="备注" [buttons]="buttons" (onSave)="save()" (onCancel)="cancel()" (onRecord)="record($event)">
-    <ion-textarea  #textarea placeholder="备注"  class="memo-set" rows="8" [(ngModel)]="bz" class="font-large-x"></ion-textarea>
+
+    <ion-grid>
+
+      <ion-row class="limitRow font-small-x">
+        <span>{{snlength}} / 80 </span>
+      </ion-row>
+
+      <ion-row class="snRow">
+        <div class="sn font-large-x">
+          <ion-textarea   placeholder="备注"  class="memo-set" rows="8" [(ngModel)]="bz" class="font-large-x" [maxlength]="80"  (ionChange)="changeTitle()" ></ion-textarea>
+        </div>
+      </ion-row>
+    </ion-grid>
   </modal-box>
   `
 })
@@ -19,14 +28,14 @@ export class CommentPage {
   @ViewChild(ModalBoxComponent)
   modalBoxComponent:ModalBoxComponent;
 
-  @ViewChild("textarea")
-  textarea: TextInput;
 
   buttons: any = {
     record:true,
     save: true,
     cancel: true
   };
+
+  snlength:number = 0;
 
 
   bz: string = "";  //备注
@@ -41,6 +50,7 @@ export class CommentPage {
 
       if (value) {
         this.bz = value;
+        this.snlength = this.bz.length;
       }
     }
   }
@@ -54,7 +64,6 @@ export class CommentPage {
 
     this.modalBoxComponent.setBoxContent();
 
-    this.textarea.setFocus();
 
   }
 
@@ -71,5 +80,10 @@ export class CommentPage {
     this.bz = text;
     this.changeDetectorRef.markForCheck();
     this.changeDetectorRef.detectChanges();
+  }
+
+  changeTitle() {
+    this.snlength =  this.bz.length;
+
   }
 }

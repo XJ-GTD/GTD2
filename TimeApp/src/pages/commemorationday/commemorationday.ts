@@ -31,13 +31,13 @@ import {PageBoxComponent} from "../../components/page-box/page-box";
       <ion-grid>
         
         <ion-row class="limitRow font-small-x">
-          <span>{{snlength}} / 80 </span>
+          <span>{{snlength}} / 20 </span>
         </ion-row>
         
         <ion-row class="snRow">
           <div class="sn font-large-x">
             <!--主题-->
-            <ion-textarea rows="8" [(ngModel)]="currentPlanItem.jtn" (ionChange)="changeTitle()" [readonly]="currentPlanItem.jtc == system" ></ion-textarea>
+            <ion-textarea rows="8" [(ngModel)]="currentPlanItem.jtn" (ionChange)="changeTitle()" [readonly]="currentPlanItem.jtc == system" [maxlength]="20"></ion-textarea>
           </div>
         </ion-row>
 
