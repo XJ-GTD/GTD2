@@ -2883,7 +2883,7 @@ export class EventService extends BaseService {
         sync.id = attachment.fji;
         sync.type = "Attachment";
         sync.title = "补充 " + attachment.fjn;
-        sync.datetime = moment().unix(attachment.wtt).format("YYYY/MM/DD HH:mm");
+        sync.datetime = moment.unix(attachment.wtt).format("YYYY/MM/DD HH:mm");
 
         sync.main = true;
         sync.security = SyncDataSecurity.None;
@@ -2898,7 +2898,7 @@ export class EventService extends BaseService {
 
         sync.invitestate = InviteState.None;
 
-        let tos: Array<string> = new Array<string>();
+        let tos: string = "";
 
         if (members.length > 0) {
           let membersTos: Array<Member> = members.filter((value, index, arr) => {
