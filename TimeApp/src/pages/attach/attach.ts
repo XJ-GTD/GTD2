@@ -41,7 +41,7 @@ import {DelType} from "../../data.enum";
                      *ngIf="fja.del != deleted" >
               <div class="line font-normal topheader" leftmargin rightmargin >
                 <div class="st font-small"> {{fja.wtt | date: "yyyy-MM-dd HH:mm"}}</div>
-                <div class="person font-small" end>---{{fja.ui}}</div>
+                <div class="person font-small" end>---{{fja.ui | formatuser: currentuser: friends}}</div>
               </div>
               <div class="line font-normal" leftmargin rightmargin >
                 <div class="sn towline">{{fja.fjn}}</div>
@@ -116,12 +116,14 @@ export class AttachPage {
   obt: string = "";
   obi: string = "";
   bw: string = "";
-  currentuser: string = "";
   buttons: any = {
     create: true,
     save: true,
     cancel: true
   };
+
+  currentuser: string = UserConfig.account.id;
+  friends: Array<any> = UserConfig.friends;
 
   deleted: DelType = DelType.del;
 

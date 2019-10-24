@@ -8,12 +8,14 @@ import {FileTransfer, FileUploadOptions, FileTransferObject  } from '@ionic-nati
 import { Camera, CameraOptions } from '@ionic-native/camera';
 import { Chooser } from '@ionic-native/chooser';
 import { FilePath } from '@ionic-native/file-path';
+import {PipesModule} from "../../pipes/pipes.module";
 
 @NgModule({
   declarations: [
     AttachPage
   ],
   imports: [
+    PipesModule,
     IonicModule,
     ModalBoxComponentModule,
     DirectivesModule,
