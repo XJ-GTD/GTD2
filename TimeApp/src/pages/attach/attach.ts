@@ -16,6 +16,7 @@ import {FjData, Attachment} from "../../service/business/event.service";
 import {UtilService} from "../../service/util-service/util.service";
 import * as moment from "moment";
 import {DelType} from "../../data.enum";
+import {UserConfig} from "../../service/config/user.config";
 
 @IonicPage()
 @Component({
