@@ -15,6 +15,7 @@ import {FilePath} from '@ionic-native/file-path';
 import {FjData, Attachment} from "../../service/business/event.service";
 import {UtilService} from "../../service/util-service/util.service";
 import * as moment from "moment";
+import {DelType} from "../../data.enum";
 
 @IonicPage()
 @Component({
@@ -37,7 +38,7 @@ import * as moment from "moment";
         <ion-grid class="list-grid-content">
           <ng-container  *ngFor="let fja of fjArray">
             <ion-row class="item-content item-content-backgroud" leftmargin toppaddingsamll bottompaddingsamll rightmargin
-                     *ngIf="fja.del=='undel'" >
+                     *ngIf="fja.del != deleted" >
               <div class="line font-normal topheader" leftmargin rightmargin >
                 <div class="st font-small"> {{fja.wtt | date: "yyyy-MM-dd HH:mm"}}</div>
                 <div class="person font-small" end>---{{fja.ui}}</div>
@@ -121,6 +122,8 @@ export class AttachPage {
     save: true,
     cancel: true
   };
+
+  deleted: DelType = DelType.del;
 
   constructor(public navCtrl: NavController,
               public viewCtrl: ViewController,
