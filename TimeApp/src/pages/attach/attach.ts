@@ -15,6 +15,8 @@ import {FilePath} from '@ionic-native/file-path';
 import {FjData, Attachment} from "../../service/business/event.service";
 import {UtilService} from "../../service/util-service/util.service";
 import * as moment from "moment";
+import {DelType, SyncType} from "../../data.enum";
+import {UserConfig} from "../../service/config/user.config";
 
 @IonicPage()
 @Component({
@@ -37,10 +39,10 @@ import * as moment from "moment";
         <ion-grid class="list-grid-content">
           <ng-container  *ngFor="let fja of fjArray">
             <ion-row class="item-content item-content-backgroud" leftmargin toppaddingsamll bottompaddingsamll rightmargin
-                     *ngIf="fja.del=='undel'" >
+                     *ngIf="fja.del != deleted" >
               <div class="line font-normal topheader" leftmargin rightmargin >
-                <div class="st font-small"> {{fja.wtt | date: "yyyy-MM-dd HH:mm"}}</div>
-                <div class="person font-small" end>---{{fja.ui}}</div>
+                <div class="st font-small"> {{fja.wtt * 1000 | date: "yyyy-MM-dd HH:mm"}}</div>
+                <div class="person font-small" end>---{{fja.ui | formatuser: currentuser: friends}}</div>
               </div>
               <div class="line font-normal" leftmargin rightmargin >
                 <div class="sn towline">{{fja.fjn}}</div>
@@ -51,7 +53,7 @@ import * as moment from "moment";
                 </div>
                 <div *ngIf="(fja.ext=='png'||fja.ext=='PNG'||fja.ext=='jpg'||fja.ext=='JPG'||fja.ext=='bmp'||fja.ext=='BMP'||fja.ext=='mp4'||fja.ext=='MP4')&& (fja.fj !='')">
                       <ion-thumbnail>
-                      <img src=="{{fja.fj}}" />
+                      <img src="{{fja.fj}}" />
                       </ion-thumbnail>
                 </div>
 
@@ -115,12 +117,16 @@ export class AttachPage {
   obt: string = "";
   obi: string = "";
   bw: string = "";
-  currentuser: string = "";
   buttons: any = {
     create: true,
     save: true,
     cancel: true
   };
+
+  currentuser: string = UserConfig.account.id;
+  friends: Array<any> = UserConfig.friends;
+
+  deleted: DelType = DelType.del;
 
   constructor(public navCtrl: NavController,
               public viewCtrl: ViewController,
@@ -224,8 +230,8 @@ export class AttachPage {
         this.fjData.ext = ext;
         this.fjData.fj = this.file.externalDataDirectory + "/timeAppfile/" + fileName;
         this.fjData.ui = this.currentuser;
-        this.fjData.del = 'undel';
-        this.fjData.tb = 'unsynch';
+        this.fjData.del = DelType.undel;
+        this.fjData.tb = SyncType.unsynch;
         this.fjData.wtt = moment().unix();
         this.file.copyFile(imgFileDir, fileName, this.file.externalDataDirectory + "/timeAppfile", fileName);
 
@@ -258,8 +264,8 @@ export class AttachPage {
               this.fjData.fjn = fileName;
               this.fjData.ext = ext;
               this.fjData.ui = this.currentuser;
-              this.fjData.del = 'undel';
-              this.fjData.tb = 'unsynch';
+              this.fjData.del = DelType.undel;
+              this.fjData.tb = SyncType.unsynch;
               this.fjData.wtt = moment().unix();
               this.fjData.fj = this.file.externalDataDirectory + "/timeAppfile/" + fileName;
               //this.fjArray.push(fjData);
@@ -298,8 +304,8 @@ export class AttachPage {
     if (this.bw && this.bw.trim() != '') {
       this.fjData.fjn = this.bw
       this.fjData.ui = this.currentuser;
-      this.fjData.del = 'undel';
-      this.fjData.tb = 'unsynch';
+      this.fjData.del = DelType.undel;
+      this.fjData.tb = SyncType.unsynch;
       this.fjData.wtt = moment().unix();
       this.fjArray.push(this.fjData);
       this.fjData = {} as Attachment;
@@ -314,7 +320,7 @@ export class AttachPage {
               &&(fj.obi == at.obi)&&(fj.fjn == at.fjn)
               &&(fj.ext == at.ext)&&(fj.fj == at.fj)
               &&(fj.tb == at.tb)&&(fj.del == at.del)&&(fj.wtt == at.wtt)) {
-                  fj.del = 'del';
+                  fj.del = DelType.del;
             }
         }
     }
