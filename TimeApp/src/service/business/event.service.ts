@@ -1501,31 +1501,19 @@ export class EventService extends BaseService {
       sqlparam.push([sq,params]);
       await this.sqlExce.batExecSqlByParam(sqlparam);
 
-      await this.getAllAgendaForFieldChanged(oriAgdata,newAgdata,FieldChanged.Invite, outAgds);
+      await this.getAllAgendaForFieldChanged(oriAgdata,newAgdata,FieldChanged.Invite,"", outAgds);
 
       return outAgds;
     }
 
     //判断进行本地更新
     if (doType == DoType.Local){
-      let ev = new EvTbl();
-      ev.evi = oriAgdata.evi;
-      ev.ji  = newAgdata.ji;
-      ev.bz = newAgdata.bz;
+
       newAgdata.tx = JSON.stringify(newAgdata.txjson);
       newAgdata.txs = newAgdata.txjson.text();
-      ev.tx = newAgdata.tx;
-      ev.txs = newAgdata.txs
-      ev.fj =newAgdata.fj;
-      ev.pn = newAgdata.pn;
-      ev.wc = newAgdata.wc;
-      ev.adr = newAgdata.adr;
-      ev.adrx = newAgdata.adrx;
-      ev.adry = newAgdata.adry;
-      ev.tb = newAgdata.tb ;
-      ev.md = newAgdata.md ;
-      ev.iv = newAgdata.iv ;
-      ev.mi = newAgdata.mi;
+      let ev = new EvTbl();
+      Object.assign(ev,newAgdata);
+      ev.evi = oriAgdata.evi;
       sqlparam.push(ev.upTParam());
 
       let caparam = new CaTbl();
@@ -1569,12 +1557,12 @@ export class EventService extends BaseService {
       outAgds.push(newAgdata);
 
       let getall : boolean = false;
-      getall = await this.getAllAgendaForFieldChanged(oriAgdata,newAgdata,FieldChanged.Ji, outAgds);
+      getall = await this.getAllAgendaForFieldChanged(oriAgdata,newAgdata,FieldChanged.Ji,oriAgdata.evi, outAgds);
 
       //取到所有记录只需要一次
       //如果参与人改变，则获取活动的所有记录上传
       if (!getall){
-        await this.getAllAgendaForFieldChanged(oriAgdata,newAgdata,FieldChanged.Member, outAgds);
+        await this.getAllAgendaForFieldChanged(oriAgdata,newAgdata,FieldChanged.Member, oriAgdata.evi,outAgds);
       }
 
       return outAgds;
@@ -1690,7 +1678,8 @@ export class EventService extends BaseService {
 
       //如果当前更新对象是父节点，则为当前重复日程重建新的父记录，值为ev表里的第一条做为父记录
       console.log("**** updateAgenda changedParentAgdForOther start :****" + moment().format("YYYY/MM/DD HH:mm:ss SSS"))
-      await this.changedParentAgdForOther(oriAgdata,newAgdata.members,sqlparam,outAgds);
+      let isParent : boolean = false;
+      isParent = await this.changedParentAgdForOther(oriAgdata,newAgdata.members,sqlparam,outAgds);
       console.log("**** updateAgenda changedParentAgdForOther end :****" + moment().format("YYYY/MM/DD HH:mm:ss SSS"))
 
       //日程表新建或更新,修改为独立日的也需要为自己创建对应的日程
@@ -1703,11 +1692,13 @@ export class EventService extends BaseService {
 
       await this.sqlExce.batExecSqlByParam(sqlparam);
 
-      if (!oriAgdata.rtevi && oriAgdata.rtevi =="" && oriAgdata.rfg == anyenum.RepeatFlag.Repeat){
-
-      }else{
+      if (!isParent){
         //如果不是父点且参与人发生改变，取得活动所有数据
-        await this.getAllAgendaForFieldChanged(oriAgdata,newAgdata,FieldChanged.Member,outAgds);
+        let getall : boolean = false;
+        getall = await this.getAllAgendaForFieldChanged(oriAgdata,newAgdata,FieldChanged.Member,outAgd.evi,outAgds);
+        if (!getall){
+          await this.getAllAgendaForFieldChanged(oriAgdata,newAgdata,FieldChanged.Ji,outAgd.evi,outAgds);
+        }
       }
 
       return outAgds;
@@ -1722,15 +1713,26 @@ export class EventService extends BaseService {
    * @param {AgendaData} oriAgdata
    * @param {AgendaData} newAgdata
    * @param {FieldChanged} fieldChanged
+   * @param {string} ignoreEvi
    * @param {Array<AgendaData>} outAgds
    * @returns {Promise<boolean>}
    */
   private async getAllAgendaForFieldChanged(oriAgdata :AgendaData, newAgdata : AgendaData,
-                                            fieldChanged : FieldChanged ,outAgds : Array<AgendaData>):
+                                            fieldChanged : FieldChanged ,ignoreEvi : string ,
+                                            outAgds : Array<AgendaData>):
   Promise<boolean>{
     let retAgendas = new Array<AgendaData>();
     let ret : boolean = false;
     let changed : boolean =  false;
+    let tmpcondi = "";
+
+    if (oriAgdata.rfg == anyenum.RepeatFlag.NonRepeat){
+      return ret;
+    }
+
+    if (ignoreEvi != ""){
+      tmpcondi = ` and evi <> '${ignoreEvi}' `;
+    }
 
     let sq : string ;
     let tos : string;//需要发送的参与人手机号
@@ -1790,7 +1792,7 @@ export class EventService extends BaseService {
                              when ifnull(rtevi, '') = '' then evi
                              else rtevi end forcaevi
                           from gtd_ev
-                          where evi = ?1 or rtevi = ?1) ev
+                          where (evi = ?1 or rtevi = ?1) and del <> 'del'    ${tmpcondi}  ) ev
                         left join gtd_ca ca
                         on ca.evi = ev.forcaevi ;`;
       retAgendas = await this.sqlExce.getExtLstByParam<AgendaData>(sq, [masterEvi]) || retAgendas;
@@ -1799,7 +1801,7 @@ export class EventService extends BaseService {
       //取得相关的附件
       let attachs = new Array<Attachment>();
       sq = `select * from gtd_fj where obt = ?1 and  obi in (select evi
-      from gtd_ev  where evi = ?2 or rtevi = ?2 ); `;
+      from gtd_ev  where (evi = ?2 or rtevi = ?2) and del <> 'del'   ${tmpcondi}); `;
       attachs = await this.sqlExce.getExtLstByParam<Attachment>(sq,[anyenum.ObjectType.Event,masterEvi]);
 
       //活动其他对象绑定
@@ -1810,12 +1812,12 @@ export class EventService extends BaseService {
         //附件
         if (attachs && attachs.length > 0){
           agd.attachments = attachs.filter((value,index,arr)=>{
-            return agd.evi = value.obi;
+            return agd.evi == value.obi;
           })
         }
       }
-      outAgds.length = 0;
-      Object.assign(outAgds , retAgendas);
+
+      Object.assign(outAgds , [...outAgds, ...retAgendas]);
     }
     return ret;
   }
@@ -1898,7 +1900,8 @@ export class EventService extends BaseService {
   private async changedParentAgdForOther(oriAgdata : AgendaData,
                                       members : Array<Member>,
                                       sqlparam : Array<any>,
-                                      outAgds : Array<AgendaData>){
+                                      outAgds : Array<AgendaData>) : Promise<boolean>{
+    let ret : boolean = false;
     let sq : string ;
     let params : Array<any>;
 
@@ -1912,8 +1915,8 @@ export class EventService extends BaseService {
     let upAttaches = new Array<Attachment>();//保存修改的事件的附件用
     let upParent = {} as AgendaData;//新的父节点
 
-    if (!oriAgdata.rtevi && oriAgdata.rtevi =="" && oriAgdata.rfg == anyenum.RepeatFlag.Repeat){
-
+    if ((!oriAgdata.rtevi || oriAgdata.rtevi =="" ) && oriAgdata.rfg == anyenum.RepeatFlag.Repeat){
+      ret = true;
       //取得为修改的记录放入返回事件中
       upcondi = ` rtevi = ? `
       sq = ` select ev.*, ca.sd, ca.ed, ca.st, ca.et, ca.al, ca.ct
@@ -2001,6 +2004,8 @@ export class EventService extends BaseService {
         Object.assign(outAgds , [...outAgds ,...upAgds]);
       }
     }
+
+    return ret;
   }
 
   /**
@@ -2312,7 +2317,7 @@ export class EventService extends BaseService {
       let outAgd = {} as AgendaData;
       Object.assign(outAgd,ev);
       outAgds.push(outAgd);
-    });
+    } ,true);
 
     let evparams = new  Array<any>();
     if (evs && evs.length > 0) {
