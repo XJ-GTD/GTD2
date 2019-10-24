@@ -53,7 +53,7 @@ import {UserConfig} from "../../service/config/user.config";
                 </div>
                 <div *ngIf="(fja.ext=='png'||fja.ext=='PNG'||fja.ext=='jpg'||fja.ext=='JPG'||fja.ext=='bmp'||fja.ext=='BMP'||fja.ext=='mp4'||fja.ext=='MP4')&& (fja.fj !='')">
                       <ion-thumbnail>
-                      <img src=="{{fja.fj}}" />
+                      <img src="{{fja.fj}}" />
                       </ion-thumbnail>
                 </div>
 
