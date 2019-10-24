@@ -1944,6 +1944,7 @@ export class EventService extends BaseService {
         //找到满足条件的首条记录
         upParent = upAgds.find((value, index,arr)=>{
           return value.rtevi == oriAgdata.evi && value.rfg == anyenum.RepeatFlag.Repeat && value.del != anyenum.DelType.del;
+
         });
         if (upParent){
           //更新首条为父事件
