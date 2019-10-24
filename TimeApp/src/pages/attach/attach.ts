@@ -15,7 +15,7 @@ import {FilePath} from '@ionic-native/file-path';
 import {FjData, Attachment} from "../../service/business/event.service";
 import {UtilService} from "../../service/util-service/util.service";
 import * as moment from "moment";
-import {DelType} from "../../data.enum";
+import {DelType, SyncType} from "../../data.enum";
 import {UserConfig} from "../../service/config/user.config";
 
 @IonicPage()
@@ -230,8 +230,8 @@ export class AttachPage {
         this.fjData.ext = ext;
         this.fjData.fj = this.file.externalDataDirectory + "/timeAppfile/" + fileName;
         this.fjData.ui = this.currentuser;
-        this.fjData.del = 'undel';
-        this.fjData.tb = 'unsynch';
+        this.fjData.del = DelType.undel;
+        this.fjData.tb = SyncType.unsynch;
         this.fjData.wtt = moment().unix();
         this.file.copyFile(imgFileDir, fileName, this.file.externalDataDirectory + "/timeAppfile", fileName);
 
@@ -264,8 +264,8 @@ export class AttachPage {
               this.fjData.fjn = fileName;
               this.fjData.ext = ext;
               this.fjData.ui = this.currentuser;
-              this.fjData.del = 'undel';
-              this.fjData.tb = 'unsynch';
+              this.fjData.del = DelType.undel;
+              this.fjData.tb = SyncType.unsynch;
               this.fjData.wtt = moment().unix();
               this.fjData.fj = this.file.externalDataDirectory + "/timeAppfile/" + fileName;
               //this.fjArray.push(fjData);
@@ -304,8 +304,8 @@ export class AttachPage {
     if (this.bw && this.bw.trim() != '') {
       this.fjData.fjn = this.bw
       this.fjData.ui = this.currentuser;
-      this.fjData.del = 'undel';
-      this.fjData.tb = 'unsynch';
+      this.fjData.del = DelType.undel;
+      this.fjData.tb = SyncType.unsynch;
       this.fjData.wtt = moment().unix();
       this.fjArray.push(this.fjData);
       this.fjData = {} as Attachment;
@@ -320,7 +320,7 @@ export class AttachPage {
               &&(fj.obi == at.obi)&&(fj.fjn == at.fjn)
               &&(fj.ext == at.ext)&&(fj.fj == at.fj)
               &&(fj.tb == at.tb)&&(fj.del == at.del)&&(fj.wtt == at.wtt)) {
-                  fj.del = 'del';
+                  fj.del = DelType.del;
             }
         }
     }
