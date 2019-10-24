@@ -2834,6 +2834,162 @@ export class EventService extends BaseService {
 		return task2;
   }
 
+  async sendAttachment(attachments: Array<Attachment>) {
+    this.assertEmpty(attachments);  // 入参不能为空
+
+    await this.syncAttachments(attachments);
+
+    return;
+  }
+
+  async syncAttachments(attachments: Array<Attachment> = new Array<Attachment>()) {
+    this.assertEmpty(attachments);    // 入参不能为空
+
+    let members = new Array<Member>();
+
+    if (attachments.length <= 0) {
+      let sql: string = `select * from gtd_fj where tb <> ?1`;
+
+      attachments = await this.sqlExce.getExtLstByParam<Attachment>(sql, [SyncType.synch]) || attachments;
+
+      let sqlmember: string = `select par.*,
+                        b.ran,
+                        b.ranpy,
+                        '' hiu,
+                        b.rn,
+                        b.rnpy,
+                        b.rc,
+                        b.rel,
+                      b.src
+                      from
+                      (select * from gtd_par where obi in
+                      (select obi from gtd_fj where tb <> ?1 or tb is null)) par
+                      left join gtd_b b
+                      on b.pwi = par.pwi`;
+      members =  await this.sqlExce.getExtLstByParam<Member>(sqlmember,
+        [SyncType.synch]) || members;
+    }
+
+    let maxdata: number = 10;
+
+    if (attachments.length > 0) {
+      let push: PushInData = new PushInData();
+
+      let index: number = 0;
+      for (let attachment of attachments) {
+        let sync: SyncData = new SyncData();
+
+        sync.src = attachment.ui;
+        sync.id = attachment.fji;
+        sync.type = "Attachment";
+        sync.title = "补充 " + attachment.fjn;
+        sync.datetime = moment().unix(attachment.wtt).format("YYYY/MM/DD HH:mm");
+
+        sync.main = true;
+        sync.security = SyncDataSecurity.None;
+        sync.todostate = CompleteState.None;
+
+        // 设置删除状态
+        if (attachment.del == DelType.del) {
+          sync.status = SyncDataStatus.Deleted;
+        } else {
+          sync.status = SyncDataStatus.UnDeleted;
+        }
+
+        sync.invitestate = InviteState.None;
+
+        let tos: Array<string> = new Array<string>();
+
+        if (members.length > 0) {
+          let membersTos: Array<Member> = members.filter((value, index, arr) => {
+            return attachment.obi == value.obi;
+          });
+          tos = this.getMemberPhone(membersTos);
+        }
+
+        sync.to = (!tos || tos == "" || tos == null) ? [] : tos.split(",") ;
+
+        sync.payload = attachment;
+        push.d.push(sync);
+
+        index++;
+
+        if (index % maxdata == 0) {
+          await this.dataRestful.push(push);
+          push = new PushInData();
+        }
+      }
+    }
+
+    return ;
+  }
+
+  async acceptSyncAttachments(ids: Array<string>) {
+    let sqls: Array<any> = new Array<any>();
+
+    let sql: string = `update gtd_fj set tb = ? where obi in ('` + ids.join(', ') + `')`;
+
+    sqls.push([sql, [SyncType.synch]]);
+
+    await this.sqlExce.batExecSqlByParam(sqls);
+
+    // 同步完成后刷新缓存
+  }
+
+  async receivedAttachment(fji: any) {
+    this.assertEmpty(fji);   // 入参不能为空
+
+    let pull: PullInData = new PullInData();
+
+    if (fji instanceof Array) {
+      pull.type = "Attachment";
+      pull.d.splice(0, 0, ...fji);
+    } else {
+      pull.type = "Attachment";
+      pull.d.push(fji);
+    }
+
+    // 发送下载日程请求
+    await this.dataRestful.pull(pull);
+
+    return;
+  }
+
+  async receivedAttachmentData(attachments: Array<Attachment>, status: SyncDataStatus): Promise<Array<Attachment>> {
+    this.assertEmpty(attachments);    // 入参不能为空
+    this.assertEmpty(status);         // 入参不能为空
+
+    let sqlparam = new Array<any>();
+
+    let saved: Array<Attachment> = new Array<Attachment>();
+    let nwfj = new Array<FjTbl>();
+
+    for (let attachment of attachments) {
+      let single = {} as Attachment;
+      Object.assign(single, attachment);
+
+      // 删除参与人时，通过这个字段传递删除数据
+      if (status == SyncDataStatus.Deleted) {
+        single.del = DelType.del;
+      } else {
+        // 删除字段不共享, 如果不存在需要设置默认值
+        if (!single.del) single.del = DelType.undel;
+      }
+
+      single.tb = SyncType.synch;
+
+      let fj = new FjTbl();
+      Object.assign(fj, single);
+      sqlparam.push(fj.rpTParam());
+
+      saved.push(single);
+    }
+
+    await this.sqlExce.batExecSqlByParam(sqlparam);
+
+    return saved;
+  }
+
   /**
 	 * 发送日程进行共享
    *
