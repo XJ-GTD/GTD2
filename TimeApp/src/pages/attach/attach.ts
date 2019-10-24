@@ -41,7 +41,7 @@ import {UserConfig} from "../../service/config/user.config";
             <ion-row class="item-content item-content-backgroud" leftmargin toppaddingsamll bottompaddingsamll rightmargin
                      *ngIf="fja.del != deleted" >
               <div class="line font-normal topheader" leftmargin rightmargin >
-                <div class="st font-small"> {{fja.wtt | date: "yyyy-MM-dd HH:mm"}}</div>
+                <div class="st font-small"> {{fja.wtt * 1000 | date: "yyyy-MM-dd HH:mm"}}</div>
                 <div class="person font-small" end>---{{fja.ui | formatuser: currentuser: friends}}</div>
               </div>
               <div class="line font-normal" leftmargin rightmargin >
