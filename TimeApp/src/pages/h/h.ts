@@ -53,9 +53,6 @@ import {TestDataService} from "../../service/testData.service";
           <button ion-fab (click)="toMemo()">
             备忘
           </button>
-          <button ion-fab (click)="testDate()">
-            测试
-          </button>
         </ion-fab-list>
       </ion-fab>
       <ion-fab bottom right>

@@ -372,7 +372,7 @@ export class TdlPage {
           }
 
           if ($event.directionY == 'down') {
-            console.log("***********************" + $event.scrollTop)
+            // console.log("***********************" + $event.scrollTop)
             if ($event.scrollTop + 1000 > this.grid.nativeElement.clientHeight - $event.scrollElement.clientHeight) {
 
               this.option.isgetData  = true;
