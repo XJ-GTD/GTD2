@@ -1726,12 +1726,9 @@ export class EventService extends BaseService {
     let changed : boolean =  false;
     let tmpcondi = "";
 
-    if (oriAgdata.rfg == anyenum.RepeatFlag.NonRepeat){
+    //除了接受拒绝，其他非重复数(调用前已放入返回数组中)据不需要获取所有数据
+    if (fieldChanged != FieldChanged.Invite && oriAgdata.rfg == anyenum.RepeatFlag.NonRepeat){
       return ret;
-    }
-
-    if (ignoreEvi != ""){
-      tmpcondi = ` and evi <> '${ignoreEvi}' `;
     }
 
     let sq : string ;
@@ -1748,15 +1745,18 @@ export class EventService extends BaseService {
 
     switch (fieldChanged){
       case FieldChanged.Invite:
-
+        tmpcondi = ` `;
         changed = true;
         break;
       case FieldChanged.Ji :
         if (oriAgdata.ji != newAgdata.ji){
+          tmpcondi = ` and del <> 'del'   and evi <> '${ignoreEvi}' `;
           changed = true;
         }
         break;
       case FieldChanged.Member:
+        tmpcondi = ` and del <> 'del'   and evi <> '${ignoreEvi}' `;
+
         if (!oriAgdata.members ){
           oriAgdata.members = new Array<Member>();
         }
@@ -1792,7 +1792,7 @@ export class EventService extends BaseService {
                              when ifnull(rtevi, '') = '' then evi
                              else rtevi end forcaevi
                           from gtd_ev
-                          where (evi = ?1 or rtevi = ?1) and del <> 'del'    ${tmpcondi}  ) ev
+                          where (evi = ?1 or rtevi = ?1)   ${tmpcondi}  ) ev
                         left join gtd_ca ca
                         on ca.evi = ev.forcaevi ;`;
       retAgendas = await this.sqlExce.getExtLstByParam<AgendaData>(sq, [masterEvi]) || retAgendas;
@@ -1801,7 +1801,7 @@ export class EventService extends BaseService {
       //取得相关的附件
       let attachs = new Array<Attachment>();
       sq = `select * from gtd_fj where obt = ?1 and  obi in (select evi
-      from gtd_ev  where (evi = ?2 or rtevi = ?2) and del <> 'del'   ${tmpcondi}); `;
+      from gtd_ev  where (evi = ?2 or rtevi = ?2)    ${tmpcondi} ); `;
       attachs = await this.sqlExce.getExtLstByParam<Attachment>(sq,[anyenum.ObjectType.Event,masterEvi]);
 
       //活动其他对象绑定
