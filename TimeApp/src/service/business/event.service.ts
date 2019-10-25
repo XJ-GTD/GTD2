@@ -1726,12 +1726,9 @@ export class EventService extends BaseService {
     let changed : boolean =  false;
     let tmpcondi = "";
 
-    if (oriAgdata.rfg == anyenum.RepeatFlag.NonRepeat){
+    //除了接受拒绝，其他非重复数(调用前已放入返回数组中)据不需要获取所有数据
+    if (fieldChanged != FieldChanged.Invite && oriAgdata.rfg == anyenum.RepeatFlag.NonRepeat){
       return ret;
-    }
-
-    if (ignoreEvi != ""){
-      tmpcondi = ` and evi <> '${ignoreEvi}' `;
     }
 
     let sq : string ;
@@ -1748,15 +1745,18 @@ export class EventService extends BaseService {
 
     switch (fieldChanged){
       case FieldChanged.Invite:
-
+        tmpcondi = ` `;
         changed = true;
         break;
       case FieldChanged.Ji :
         if (oriAgdata.ji != newAgdata.ji){
+          tmpcondi = ` and del <> 'del'   and evi <> '${ignoreEvi}' `;
           changed = true;
         }
         break;
       case FieldChanged.Member:
+        tmpcondi = ` and del <> 'del'   and evi <> '${ignoreEvi}' `;
+
         if (!oriAgdata.members ){
           oriAgdata.members = new Array<Member>();
         }
@@ -1792,7 +1792,7 @@ export class EventService extends BaseService {
                              when ifnull(rtevi, '') = '' then evi
                              else rtevi end forcaevi
                           from gtd_ev
-                          where (evi = ?1 or rtevi = ?1) and del <> 'del'    ${tmpcondi}  ) ev
+                          where (evi = ?1 or rtevi = ?1)   ${tmpcondi}  ) ev
                         left join gtd_ca ca
                         on ca.evi = ev.forcaevi ;`;
       retAgendas = await this.sqlExce.getExtLstByParam<AgendaData>(sq, [masterEvi]) || retAgendas;
@@ -1801,13 +1801,14 @@ export class EventService extends BaseService {
       //取得相关的附件
       let attachs = new Array<Attachment>();
       sq = `select * from gtd_fj where obt = ?1 and  obi in (select evi
-      from gtd_ev  where (evi = ?2 or rtevi = ?2) and del <> 'del'   ${tmpcondi}); `;
+      from gtd_ev  where (evi = ?2 or rtevi = ?2)    ${tmpcondi} ); `;
       attachs = await this.sqlExce.getExtLstByParam<Attachment>(sq,[anyenum.ObjectType.Event,masterEvi]);
 
       //活动其他对象绑定
       for (let agd of retAgendas){
 
         agd.members = newAgdata.members;//参与人
+        agd.pn = agd.members.length;
         agd.tos = tos;
         //附件
         if (attachs && attachs.length > 0){
@@ -1872,6 +1873,14 @@ export class EventService extends BaseService {
     //添加参与人
     let nwpar = new Array<any>();
     nwpar = this.sqlparamAddPar(parEvi , newAgdata.members);
+
+    //更新相关ev表参与人数
+    sq = ` update gtd_ev set pn = ? where evi = ? or rtevi = ? ;`;
+    params = new Array<any>();
+    params.push(newAgdata.members.length);
+    params.push(parEvi);
+    params.push(parEvi);
+    sqlparam.push([sq,params]);
 
     //删除附件
     let fj = new FjTbl();
@@ -1944,21 +1953,24 @@ export class EventService extends BaseService {
         //找到满足条件的首条记录
         upParent = upAgds.find((value, index,arr)=>{
           return value.rtevi == oriAgdata.evi && value.rfg == anyenum.RepeatFlag.Repeat && value.del != anyenum.DelType.del;
+
         });
         if (upParent){
           //更新首条为父事件
           upParent.rtevi = "";
           upParent.tb = anyenum.SyncType.unsynch;
           upParent.mi = UserConfig.account.id;
+          upParent.pn = members.length;
           Object.assign(nwEv, upParent);
           sqlparam.push(nwEv.upTParam());
 
           //原子事件的父字段改为新的父事件
-          sq = `update gtd_ev set rtevi = ?,mi= ?,tb = ? where  ${upcondi}; `;
+          sq = `update gtd_ev set rtevi = ?,mi= ?,tb = ? ,pn = ? where  ${upcondi}; `;
           params = new Array<any>();
           params.push(nwEv.evi);
           params.push(UserConfig.account.id);
           params.push(anyenum.SyncType.unsynch);
+          params.push(members.length);
           params.push(oriAgdata.evi);
           sqlparam.push([sq,params]);
 
@@ -1971,6 +1983,8 @@ export class EventService extends BaseService {
           let nwpar = new Array<any>();
           nwpar = this.sqlparamAddPar(nwEv.evi , members);
 
+
+
           //新父节点记录以外数据对象内容设置
           for (let j = 0 ,len = upAgds.length; j < len ;j ++){
             if (upAgds[j].rtevi != ""){
@@ -1982,6 +1996,7 @@ export class EventService extends BaseService {
             upAgds[j].tos = tos;//需要发送的参与人
             //参与人
             upAgds[j].members = members;
+            upAgds[j].pn = members.length;
             //ca数据
             if (upAgds[j].rfg != anyenum.RepeatFlag.RepeatToOnly){
               //新的日程赋给非独立日的记录
@@ -2831,6 +2846,162 @@ export class EventService extends BaseService {
 			task2 = await this.saveTask(task3);
 		}
 		return task2;
+  }
+
+  async sendAttachment(attachments: Array<Attachment>) {
+    this.assertEmpty(attachments);  // 入参不能为空
+
+    await this.syncAttachments(attachments);
+
+    return;
+  }
+
+  async syncAttachments(attachments: Array<Attachment> = new Array<Attachment>()) {
+    this.assertEmpty(attachments);    // 入参不能为空
+
+    let members = new Array<Member>();
+
+    if (attachments.length <= 0) {
+      let sql: string = `select * from gtd_fj where tb <> ?1`;
+
+      attachments = await this.sqlExce.getExtLstByParam<Attachment>(sql, [SyncType.synch]) || attachments;
+
+      let sqlmember: string = `select par.*,
+                        b.ran,
+                        b.ranpy,
+                        '' hiu,
+                        b.rn,
+                        b.rnpy,
+                        b.rc,
+                        b.rel,
+                      b.src
+                      from
+                      (select * from gtd_par where obi in
+                      (select obi from gtd_fj where tb <> ?1 or tb is null)) par
+                      left join gtd_b b
+                      on b.pwi = par.pwi`;
+      members =  await this.sqlExce.getExtLstByParam<Member>(sqlmember,
+        [SyncType.synch]) || members;
+    }
+
+    let maxdata: number = 10;
+
+    if (attachments.length > 0) {
+      let push: PushInData = new PushInData();
+
+      let index: number = 0;
+      for (let attachment of attachments) {
+        let sync: SyncData = new SyncData();
+
+        sync.src = attachment.ui;
+        sync.id = attachment.fji;
+        sync.type = "Attachment";
+        sync.title = "补充 " + attachment.fjn;
+        sync.datetime = moment.unix(attachment.wtt).format("YYYY/MM/DD HH:mm");
+
+        sync.main = true;
+        sync.security = SyncDataSecurity.None;
+        sync.todostate = CompleteState.None;
+
+        // 设置删除状态
+        if (attachment.del == DelType.del) {
+          sync.status = SyncDataStatus.Deleted;
+        } else {
+          sync.status = SyncDataStatus.UnDeleted;
+        }
+
+        sync.invitestate = InviteState.None;
+
+        let tos: string = "";
+
+        if (members.length > 0) {
+          let membersTos: Array<Member> = members.filter((value, index, arr) => {
+            return attachment.obi == value.obi;
+          });
+          tos = this.getMemberPhone(membersTos);
+        }
+
+        sync.to = (!tos || tos == "" || tos == null) ? [] : tos.split(",") ;
+
+        sync.payload = attachment;
+        push.d.push(sync);
+
+        index++;
+
+        if (index % maxdata == 0) {
+          await this.dataRestful.push(push);
+          push = new PushInData();
+        }
+      }
+    }
+
+    return ;
+  }
+
+  async acceptSyncAttachments(ids: Array<string>) {
+    let sqls: Array<any> = new Array<any>();
+
+    let sql: string = `update gtd_fj set tb = ? where obi in ('` + ids.join(', ') + `')`;
+
+    sqls.push([sql, [SyncType.synch]]);
+
+    await this.sqlExce.batExecSqlByParam(sqls);
+
+    // 同步完成后刷新缓存
+  }
+
+  async receivedAttachment(fji: any) {
+    this.assertEmpty(fji);   // 入参不能为空
+
+    let pull: PullInData = new PullInData();
+
+    if (fji instanceof Array) {
+      pull.type = "Attachment";
+      pull.d.splice(0, 0, ...fji);
+    } else {
+      pull.type = "Attachment";
+      pull.d.push(fji);
+    }
+
+    // 发送下载日程请求
+    await this.dataRestful.pull(pull);
+
+    return;
+  }
+
+  async receivedAttachmentData(attachments: Array<Attachment>, status: SyncDataStatus): Promise<Array<Attachment>> {
+    this.assertEmpty(attachments);    // 入参不能为空
+    this.assertEmpty(status);         // 入参不能为空
+
+    let sqlparam = new Array<any>();
+
+    let saved: Array<Attachment> = new Array<Attachment>();
+    let nwfj = new Array<FjTbl>();
+
+    for (let attachment of attachments) {
+      let single = {} as Attachment;
+      Object.assign(single, attachment);
+
+      // 删除参与人时，通过这个字段传递删除数据
+      if (status == SyncDataStatus.Deleted) {
+        single.del = DelType.del;
+      } else {
+        // 删除字段不共享, 如果不存在需要设置默认值
+        if (!single.del) single.del = DelType.undel;
+      }
+
+      single.tb = SyncType.synch;
+
+      let fj = new FjTbl();
+      Object.assign(fj, single);
+      sqlparam.push(fj.rpTParam());
+
+      saved.push(single);
+    }
+
+    await this.sqlExce.batExecSqlByParam(sqlparam);
+
+    return saved;
   }
 
   /**

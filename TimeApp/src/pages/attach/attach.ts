@@ -63,7 +63,7 @@ import {UserConfig} from "../../service/config/user.config";
               </div>
             </ion-row>
           </ng-container>
-          <ion-row class="item-content item-content-backgroud" leftmargin toppaddingsamll bottompaddingsamll rightmargin>
+<!--          <ion-row class="item-content item-content-backgroud" leftmargin toppaddingsamll bottompaddingsamll rightmargin>
 
             <div class="line font-normal topheader" leftmargin rightmargin>
               <div class="st font-small"> 12:00</div>
@@ -81,8 +81,8 @@ import {UserConfig} from "../../service/config/user.config";
               </div>
             </div>
           </ion-row>
-
-
+-->
+<!--
           <ion-row class="item-content item-content-backgroud" leftmargin toppaddingsamll bottompaddingsamll rightmargin>
 
             <div class="line font-normal topheader" leftmargin rightmargin>
@@ -102,7 +102,7 @@ import {UserConfig} from "../../service/config/user.config";
               </div>
             </div>
           </ion-row>
-
+-->
         </ion-grid>
       </ion-scroll>
     </modal-box>
