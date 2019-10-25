@@ -1808,6 +1808,7 @@ export class EventService extends BaseService {
       for (let agd of retAgendas){
 
         agd.members = newAgdata.members;//参与人
+        agd.pn = agd.members.length;
         agd.tos = tos;
         //附件
         if (attachs && attachs.length > 0){
@@ -1872,6 +1873,14 @@ export class EventService extends BaseService {
     //添加参与人
     let nwpar = new Array<any>();
     nwpar = this.sqlparamAddPar(parEvi , newAgdata.members);
+
+    //更新相关ev表参与人数
+    sq = ` update gtd_ev set pn = ? where evi = ? or rtevi = ? ;`;
+    params = new Array<any>();
+    params.push(newAgdata.members.length);
+    params.push(parEvi);
+    params.push(parEvi);
+    sqlparam.push([sq,params]);
 
     //删除附件
     let fj = new FjTbl();
@@ -1951,15 +1960,17 @@ export class EventService extends BaseService {
           upParent.rtevi = "";
           upParent.tb = anyenum.SyncType.unsynch;
           upParent.mi = UserConfig.account.id;
+          upParent.pn = members.length;
           Object.assign(nwEv, upParent);
           sqlparam.push(nwEv.upTParam());
 
           //原子事件的父字段改为新的父事件
-          sq = `update gtd_ev set rtevi = ?,mi= ?,tb = ? where  ${upcondi}; `;
+          sq = `update gtd_ev set rtevi = ?,mi= ?,tb = ? ,pn = ? where  ${upcondi}; `;
           params = new Array<any>();
           params.push(nwEv.evi);
           params.push(UserConfig.account.id);
           params.push(anyenum.SyncType.unsynch);
+          params.push(members.length);
           params.push(oriAgdata.evi);
           sqlparam.push([sq,params]);
 
@@ -1972,6 +1983,8 @@ export class EventService extends BaseService {
           let nwpar = new Array<any>();
           nwpar = this.sqlparamAddPar(nwEv.evi , members);
 
+
+
           //新父节点记录以外数据对象内容设置
           for (let j = 0 ,len = upAgds.length; j < len ;j ++){
             if (upAgds[j].rtevi != ""){
@@ -1983,6 +1996,7 @@ export class EventService extends BaseService {
             upAgds[j].tos = tos;//需要发送的参与人
             //参与人
             upAgds[j].members = members;
+            upAgds[j].pn = members.length;
             //ca数据
             if (upAgds[j].rfg != anyenum.RepeatFlag.RepeatToOnly){
               //新的日程赋给非独立日的记录
