@@ -1061,14 +1061,25 @@ describe('CalendarService test suite', () => {
             }
           }
         } else {                                          // 周末
-          expect(daySummary.calendaritemscount).toBe(0);
-          expect(daySummary.activityitemscount).toBe(0);
-          expect(daySummary.eventscount).toBe(0);
-          expect(daySummary.agendascount).toBe(0);
-          expect(daySummary.taskscount).toBe(0);
-          expect(daySummary.memoscount).toBe(0);
-          expect(daySummary.repeateventscount).toBe(0);
-          expect(daySummary.bookedtimesummary).toBe(0);
+          if (dayOfWeek == 6) { // 2019/09/01 sd
+            expect(daySummary.calendaritemscount).toBe(0);
+            expect(daySummary.activityitemscount).toBe(0);
+            expect(daySummary.eventscount).toBe(16);
+            expect(daySummary.agendascount).toBe(16);
+            expect(daySummary.taskscount).toBe(0);
+            expect(daySummary.memoscount).toBe(0);
+            expect(daySummary.repeateventscount).toBe(0);
+            expect(daySummary.bookedtimesummary).toBe(0);
+          } else {
+            expect(daySummary.calendaritemscount).toBe(0);
+            expect(daySummary.activityitemscount).toBe(0);
+            expect(daySummary.eventscount).toBe(0);
+            expect(daySummary.agendascount).toBe(0);
+            expect(daySummary.taskscount).toBe(0);
+            expect(daySummary.memoscount).toBe(0);
+            expect(daySummary.repeateventscount).toBe(0);
+            expect(daySummary.bookedtimesummary).toBe(0);
+          }
         }
       }
     });
