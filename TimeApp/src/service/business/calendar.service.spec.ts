@@ -1061,7 +1061,7 @@ describe('CalendarService test suite', () => {
             }
           }
         } else {                                          // 周末
-          if (dayOfWeek == 6) { // 2019/09/01 sd
+          if (daySummary.day == "2018/09/01") { // 2019/09/01 sd
             expect(daySummary.calendaritemscount).toBe(0);
             expect(daySummary.activityitemscount).toBe(0);
             expect(daySummary.eventscount).toBe(16);
