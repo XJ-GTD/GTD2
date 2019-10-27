@@ -10,7 +10,7 @@ services:
     networks:
       - mwxing-network-overlay
     deploy:
-      replicas: 1
+      replicas: 2
       endpoint_mode: dnsrr
 
   sa-agd:
@@ -19,6 +19,19 @@ services:
     configs:
       - source: agd_config
         target: /usr/local/tomcat/webapps/agd/WEB-INF/classes/application.properties
+
+    networks:
+      - mwxing-network-overlay
+    deploy:
+      replicas: 1
+      endpoint_mode: dnsrr
+
+  sa-abl:
+    image: 192.168.0.158:5000/xiaoji-sa-abl
+    hostname: sa-abl
+    configs:
+      - source: abl_config
+        target: /usr/local/tomcat/webapps/abl/WEB-INF/classes/application.properties
 
     networks:
       - mwxing-network-overlay
@@ -123,6 +136,8 @@ configs:
     file: ./aup/aup.json
   agd_config:
     file: ./agd/application.properties
+  abl_config:
+    file: ./abl/application.properties
   sms_config:
     file: ./sms/application.properties
   bla_config:
