@@ -1637,6 +1637,24 @@ describe('CalendarService test suite', () => {
           }
         });
 
+        it(`Case 1 - 0 确认 2018/09/01 的 开放日日程为重复日程`, async () => {
+          let dayActivities = await calendarService.fetchDayActivities("2018/09/01");
+
+          let rtevi: string;
+          let evi: string;
+          let rfg: string;
+          for (let event of dayActivities.events) {
+            if (event.evn == "公布 当月家长开放日安排") {
+              rtevi = event.rtevi;
+              rfg = event.rfg;
+              evi = event.evi;
+            }
+          }
+
+          expect(rtevi).toBe("");
+          expect(rfg).toBe(RepeatFlag.Repeat);
+          expect(evi).not.toBe("");
+        });
         it(`Case 1 - 1 确认 2018/09/05 的 开放日日程为重复日程`, async () => {
           let dayActivities = await calendarService.fetchDayActivities("2018/09/05");
 
@@ -1651,7 +1669,7 @@ describe('CalendarService test suite', () => {
             }
           }
 
-          expect(rtevi).toBe("");
+          expect(rtevi).not.toBe("");
           expect(rfg).toBe(RepeatFlag.Repeat);
           expect(evi).not.toBe("");
         });
