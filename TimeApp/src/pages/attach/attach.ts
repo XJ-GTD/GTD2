@@ -11,6 +11,7 @@ import {File} from '@ionic-native/file';
 import {FileTransfer, FileUploadOptions, FileTransferObject} from '@ionic-native/file-transfer';
 import {Camera, CameraOptions} from '@ionic-native/camera';
 import {Chooser} from '@ionic-native/chooser';
+import {FileOpener} from '@ionic-native/file-opener';
 import {FilePath} from '@ionic-native/file-path';
 import {FjData, Attachment} from "../../service/business/event.service";
 import {UtilService} from "../../service/util-service/util.service";
@@ -137,6 +138,7 @@ export class AttachPage {
               private transfer: FileTransfer,
               private filePath: FilePath,
               private keyboard: Keyboard,
+              private fileOpener: FileOpener,
               private actionSheetCtrl: ActionSheetController,
               private uitl:UtilService) {
     if (this.navParams && this.navParams.data) {
@@ -252,6 +254,7 @@ export class AttachPage {
   select() {
 
     this.chooser.getFile('*/*').then((file) => {
+        alert("选择的PDF文件："+JSON.stringify(file));
         this.filePath.resolveNativePath(file.uri)
           .then((filePath) => {
             if (filePath != '') {
@@ -269,6 +272,7 @@ export class AttachPage {
               this.fjData.wtt = moment().unix();
               this.fjData.fj = this.file.externalDataDirectory + "/timeAppfile/" + fileName;
               //this.fjArray.push(fjData);
+              alert("存储值："+JSON.stringify(this.fjData));
               this.file.copyFile(imgFileDir, fileName, this.file.externalDataDirectory + "/timeAppfile", fileName);
             }
           })
