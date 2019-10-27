@@ -63,6 +63,7 @@
     <plugin name="cordova-plugin-console" spec="~1.1.0" />
     <plugin name="cordova-plugin-file" spec="~6.0.2" />
     <plugin name="cordova-plugin-filepath" spec="~1.5.6" />
+    <plugin name="cordova-plugin-file-opener2" spec="~2.2.1" />
     <plugin name="cordova-plugin-calendar" spec="~5.1.4" />
     <plugin name="cordova-plugin-advanced-http" spec="~2.2.0" />
     <plugin name="cordova-plugin-android-permissions" spec="~1.0.2" />
