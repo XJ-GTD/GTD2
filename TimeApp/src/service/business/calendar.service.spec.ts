@@ -1306,10 +1306,10 @@ describe('CalendarService test suite', () => {
                 expect(daySummary.calendaritemscount).toBe(0);
                 expect(daySummary.activityitemscount).toBe(0);
                 expect(daySummary.eventscount).toBe(6);
-                expect(daySummary.agendascount).toBe(2);
+                expect(daySummary.agendascount).toBe(0);
                 expect(daySummary.taskscount).toBe(0);
                 expect(daySummary.memoscount).toBe(0);
-                expect(daySummary.repeateventscount).toBe(4);
+                expect(daySummary.repeateventscount).toBe(6);
                 expect(daySummary.bookedtimesummary).toBe(0);
               } else {
                 expect(daySummary.calendaritemscount).toBe(0);
@@ -1326,19 +1326,19 @@ describe('CalendarService test suite', () => {
                 expect(daySummary.calendaritemscount).toBe(0);
                 expect(daySummary.activityitemscount).toBe(0);
                 expect(daySummary.eventscount).toBe(5);
-                expect(daySummary.agendascount).toBe(5);
+                expect(daySummary.agendascount).toBe(0);
                 expect(daySummary.taskscount).toBe(0);
                 expect(daySummary.memoscount).toBe(0);
-                expect(daySummary.repeateventscount).toBe(0);
+                expect(daySummary.repeateventscount).toBe(5);
                 expect(daySummary.bookedtimesummary).toBe(0);
               } else if (daySummary.day == "2018/09/04") {  // 第二天
                 expect(daySummary.calendaritemscount).toBe(0);
                 expect(daySummary.activityitemscount).toBe(0);
                 expect(daySummary.eventscount).toBe(5);
-                expect(daySummary.agendascount).toBe(5);
+                expect(daySummary.agendascount).toBe(0);
                 expect(daySummary.taskscount).toBe(0);
                 expect(daySummary.memoscount).toBe(0);
-                expect(daySummary.repeateventscount).toBe(0);
+                expect(daySummary.repeateventscount).toBe(5);
                 expect(daySummary.bookedtimesummary).toBe(0);
               } else if (daySummary.day == "2018/09/06") {  // 第四天
                 expect(daySummary.calendaritemscount).toBe(0);
