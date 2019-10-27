@@ -1370,7 +1370,16 @@ describe('CalendarService test suite', () => {
               }
             }
           } else {                                          // 周末
-            if (daySummary.day == "2018/09/29") {
+            if (daySummary.day == "2018/09/01") {
+              expect(daySummary.calendaritemscount).toBe(0);
+              expect(daySummary.activityitemscount).toBe(0);
+              expect(daySummary.eventscount).toBe(16);
+              expect(daySummary.agendascount).toBe(16);
+              expect(daySummary.taskscount).toBe(0);
+              expect(daySummary.memoscount).toBe(0);
+              expect(daySummary.repeateventscount).toBe(0);
+              expect(daySummary.bookedtimesummary).toBe(0);
+            } else if (daySummary.day == "2018/09/29") {
               expect(daySummary.calendaritemscount).toBe(0);
               expect(daySummary.activityitemscount).toBe(0);
               expect(daySummary.eventscount).toBe(5);
