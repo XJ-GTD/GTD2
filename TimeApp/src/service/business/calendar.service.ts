@@ -2513,6 +2513,7 @@ export class CalendarService extends BaseService {
       daysummary.activityitemscount = activityitemscount;
 
       // 计算活动
+      let acceptableeventscount: number = 0;
       let eventscount: number = 0;
       let agendascount: number = 0;
       let taskscount: number = 0;
@@ -2520,6 +2521,10 @@ export class CalendarService extends BaseService {
 
       for (let event of dayActivities.events) {
         eventscount++;
+
+        if (event.ui != UserConfig.account.id && event.invitestatus == InviteState.None) {
+          acceptableeventscount++;
+        }
 
         if (event.type == EventType.Agenda && (!event.rtevi && event.rtevi == "")) {
           agendascount++;
@@ -2534,6 +2539,7 @@ export class CalendarService extends BaseService {
         }
       }
 
+      daysummary.acceptableeventscount = acceptableeventscount;
       daysummary.eventscount = eventscount;
       daysummary.agendascount = agendascount;
       daysummary.taskscount = taskscount;
