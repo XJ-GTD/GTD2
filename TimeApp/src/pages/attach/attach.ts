@@ -203,7 +203,9 @@ export class AttachPage {
       return (element.tb != SyncType.synch);
     });
 
-    await this.eventService.syncAttachments(uploads);
+    if (uploads && uploads.length > 0) {
+      await this.eventService.syncAttachments(uploads);
+    }
 
     this.viewCtrl.dismiss(data);
   }
