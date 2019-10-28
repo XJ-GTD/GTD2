@@ -270,7 +270,7 @@ export class AttachPage {
           .then((filePath) => {
             if (filePath != '') {
               let fileName: string = filePath.substr(filePath.lastIndexOf("/") + 1, filePath.length);
-              let ext: string = fileName.split(".")[1];
+              let ext: string = fileName.substr(fileName.lastIndexOf(".") + 1);
               let imgFileDir: string = filePath.substr(0, filePath.lastIndexOf("/") + 1);
               // let fjData: FjData = {} as FjData;
               this.fjData.obt = this.obt;
