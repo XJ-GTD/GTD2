@@ -163,6 +163,13 @@
     height: auto;
     width: auto;
     margin: 0.4rem 1rem;
+    position: relative;
+
+    .syncing {
+      height: 100%;
+      width: 100%;
+      position: absolute;
+    }
 
     .line {
       position: relative;
@@ -293,16 +300,18 @@
         letter-spacing: 2px;
         font-size: 1.4rem;
         font-weight: 800;
-        p{
+
+        p {
           font-size: 1.4rem;
           line-height: 18px;
           margin: 0 auto;
-          margin-top:8px ;
+          margin-top: 8px;
         }
-        p:last-child{
+
+        p:last-child {
           font-size: 1.2rem;
           line-height: 15px;
-          margin-top:0px ;
+          margin-top: 0px;
         }
       }
 
@@ -373,6 +382,10 @@
     }
 
     .item-content {
+      .syncing {
+        background-color: rgba(0, 12, 31, .5);
+      }
+
       .line {
         color: rgba(51, 51, 51, 1);
       }
@@ -514,6 +527,9 @@
     }
 
     .item-content {
+      .syncing {
+        background-color: rgba(255,255,255,.8);
+    }
       .line {
         color: rgba(51, 51, 51, 1);
       }
@@ -591,6 +607,52 @@
   }
 }
 
+.hand {
+  width: 100%;
+  text-align: right;
+  margin: 2% auto;
+  padding: 0;
+}
 
+.finger {
+  display: inline-block;
+  width: 0.2rem;
+  height: 1.5rem;
+  background-color: rgba(42, 119, 138, 1);
+  margin: 0 .2rem;
+  border-radius: 15% 15% 25% 25%;
+  animation-name: tap;
+  animation-duration: 1s;
+  animation-iteration-count: infinite;
+}
 
+.finger:nth-child(2) {
+  animation-delay: .8s;
+}
 
+.finger:nth-child(3) {
+  animation-delay: .7s;
+}
+
+.finger:nth-child(4) {
+  animation-delay: .6s;
+}
+
+.finger:nth-child(5) {
+  animation-delay: .5s;
+}
+
+@keyframes tap {
+  0% {
+    transform: translateY(0);
+  }
+  60% {
+    transform: translateY(-1rem);
+  }
+  70% {
+    transform: translateY(0);
+  }
+  100% {
+    transform: translateY(0);
+  }
+}
