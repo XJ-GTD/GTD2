@@ -4868,7 +4868,22 @@ enum DUflag {
   update = "update"
 }
 
-export function generateFjJson() {}
+export function generateFjJson(fjjson: FileAttachmentPath, fj: string) {
+  if (!fjjson) {
+    if (fj) {
+      fjjson = new FileAttachmentPath();
+      Object.assign(fjjson, JSON.parse(fj));
+    } else {
+      return "";
+    }
+  } else {
+    let newfjjson: FileAttachmentPath = new FileAttachmentPath();
+    Object.assign(newfjjson, fjjson);
+    fjjson = newfjjson;
+  }
+
+  return fjjson;
+}
 
 export function generateRtJson(rtjson: RtJson, rt: string) {
   if (!rtjson) {
