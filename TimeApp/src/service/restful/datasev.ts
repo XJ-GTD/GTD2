@@ -120,7 +120,9 @@ export class PullOutData {
 }
 
 export class UploadInData {
-  username: string = "group";
+  saPrefix: string = "sas";
+  username: string = UserConfig.account.id;
+  group: string = "group";
   filepath: string;
   filename: string = "formData";
 }
