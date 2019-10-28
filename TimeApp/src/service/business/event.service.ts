@@ -4404,6 +4404,11 @@ export interface Attachment extends FjTbl {
 
 }
 
+export class FileAttachmentPath {
+  local: string;
+  remote: string;
+}
+
 export interface TaskData extends EventData,TTbl {
 	//重复设定
   rtjson :RtJson;
@@ -4862,6 +4867,8 @@ enum DUflag {
   del = "del",
   update = "update"
 }
+
+export function generateFjJson() {}
 
 export function generateRtJson(rtjson: RtJson, rt: string) {
   if (!rtjson) {
