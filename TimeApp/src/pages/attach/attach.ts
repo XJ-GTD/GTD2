@@ -234,7 +234,7 @@ export class AttachPage {
       if (imageData != '') {
 
         let fileName: string = imageData.substr(imageData.lastIndexOf("/") + 1, imageData.length);
-        let ext: string = fileName.split(".")[1];
+        let ext: string = fileName.substr(fileName.lastIndexOf(".") + 1);
         //将文件copy至缓存文件
         let imgFileDir: string = imageData.substr(0, imageData.lastIndexOf("/") + 1);
         this.fjData.obt = this.obt;
