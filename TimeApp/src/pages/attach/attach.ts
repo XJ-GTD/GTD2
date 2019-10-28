@@ -347,8 +347,8 @@ export class AttachPage {
   //打开本地PDF
   opnePdf(fj: string) {
     this.fileOpener.open(fj,'application/pdf')
-    .then(() => alert('File is opened'))
-    // .catch(e => alert('Error opening file', e));
+    .then(() => console.info('File is opened'))
+    .catch(e => console.info('Error opening file', e));
   }
 
 }
