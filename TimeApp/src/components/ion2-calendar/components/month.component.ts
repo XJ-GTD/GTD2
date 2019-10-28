@@ -48,6 +48,7 @@ export const MONTH_VALUE_ACCESSOR: any = {
                     <ion-icon class = "active fas fa-hexagon" *ngIf="!day.isLastMonth && !day.isNextMonth  && day.hasevent"></ion-icon>
                     <ion-icon class = "diary fas fa-heart-circle" *ngIf="!day.isLastMonth && !day.isNextMonth && day.hasMemo"></ion-icon>
                     <ion-icon class = "repeat fas fa-repeat" *ngIf="!day.isLastMonth && !day.isNextMonth && day.hasrepeat"></ion-icon>
+
                   </button>
                
                 </div>

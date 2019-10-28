@@ -109,10 +109,11 @@
 
   .icon {
     text-align: center;
-    margin: 0rem 0.5rem;
+    margin: 0rem 0.2rem;
 
     ion-icon {
-      padding-top: 0.1rem;
+      //padding-top: 0.1rem;
+      font-size: 1rem;
     }
 
   }
@@ -121,11 +122,12 @@
   .sn {
     font-weight: 500;
     display: -webkit-box;
-    white-space: pre-wrap;
+    white-space: normal;
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 2; /*显示几行*/
     overflow: hidden;
     margin: 0 0.5rem;
+    //line-height: 1.6rem;
   }
 
   .st {
@@ -146,7 +148,6 @@
   .person {
     font-weight: 300;
     margin: 0 0.5rem;
-
   }
 
   .item-no-display {
@@ -239,10 +240,11 @@
       padding-top: 0.5rem;
       padding-bottom: 0.5rem;
       padding-right: 1.4rem;
+      text-align: center;
 
       .ym-fsize {
         font-size: 2.3rem;
-        line-height: 1.8rem;
+        line-height: 2rem;
       }
 
       .ys-fsize {
@@ -251,9 +253,10 @@
       }
 
       .d-fsize {
-        font-size: 0.9rem;
+        font-size: 1rem;
         font-weight: 300;
         line-height: 10px;
+        letter-spacing: 2px;
         float: right;
         width: 10px;
         writing-mode: tb-rl;
@@ -271,8 +274,8 @@
         line-height: 50px;
         overflow: hidden;
         font-size: 1.2rem;
-        margin-left: 1rem;
-        margin-right: 1rem;
+        margin-left: 2rem;
+        //margin-right: 1.2rem;
         text-align: center;
 
         span {
@@ -292,7 +295,7 @@
         font-weight: 800;
         p{
           font-size: 1.4rem;
-          line-height: 20px;
+          line-height: 18px;
           margin: 0 auto;
           margin-top:8px ;
         }

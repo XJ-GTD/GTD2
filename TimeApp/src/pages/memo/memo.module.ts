@@ -1,9 +1,9 @@
 import { NgModule } from '@angular/core';
 import { IonicPageModule } from 'ionic-angular';
 import { MemoPage } from "./memo";
-import {ModalBoxComponentModule} from "../../components/modal-box/modal-box.module";
 import {CornerBadgeComponentModule} from "../../components/corner-badge/corner-badge.module";
 import {PipesModule} from "../../pipes/pipes.module";
+import {PageBoxComponentModule} from "../../components/page-box/page-box.module";
 
 @NgModule({
   declarations: [
@@ -12,7 +12,7 @@ import {PipesModule} from "../../pipes/pipes.module";
   imports: [
     PipesModule,
     IonicPageModule.forChild(MemoPage),
-    ModalBoxComponentModule,
+    PageBoxComponentModule,
     CornerBadgeComponentModule
   ],
   providers: [
