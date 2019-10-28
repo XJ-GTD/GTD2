@@ -199,6 +199,10 @@ export class AttachPage {
 
   save() {
     let data: Object = {attach: this.fjArray};
+
+    let uploads = this.fjArray.filter((element) => {
+      return (element.tb != SyncType.synch);
+    });
     if (uploads && uploads.length > 0) {
       await this.eventService.syncAttachments(uploads);
     }
