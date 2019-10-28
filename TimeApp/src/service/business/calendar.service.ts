@@ -2571,6 +2571,7 @@ export class CalendarService extends BaseService {
                           gdaymom.agendascount agendascount,
                           gdaymom.taskscount taskscount,
                           gdaymom.repeateventscount repeateventscount,
+                          gdaymom.acceptableeventscount acceptableeventscount,
                           gdaymom.memoscount memoscount,
                           gdaymom.bookedtimesummary bookedtimesummary
                       from (select gdayev.day day,
@@ -2580,6 +2581,7 @@ export class CalendarService extends BaseService {
                                 max(gdayev.agendascount) agendascount,
                                 max(gdayev.taskscount) taskscount,
                                 max(gdayev.repeateventscount) repeateventscount,
+                                max(gdayev.acceptableeventscount) acceptableeventscount,
                                 sum(CASE WHEN IFNULL(gmo.moi, '') = '' THEN 0 WHEN gmo.del = '${DelType.del}' THEN 0 ELSE 1 END) memoscount,
                                 0 bookedtimesummary
                         from (select gdayjta.day day,
@@ -2588,7 +2590,8 @@ export class CalendarService extends BaseService {
                                     sum(CASE WHEN IFNULL(gev.evi, '') = '' THEN 0 WHEN gev.del = '${DelType.del}' THEN 0 ELSE 1 END) eventscount,
                                     sum(CASE WHEN IFNULL(gev.evi, '') = '' THEN 0 WHEN IFNULL(gev.rtevi, '') <> '' THEN 0 WHEN gev.type <> '${EventType.Agenda}' THEN 0 WHEN gev.del = '${DelType.del}' THEN 0 ELSE 1 END) agendascount,
                                     sum(CASE WHEN IFNULL(gev.evi, '') = '' THEN 0 WHEN gev.type <> '${EventType.Task}' THEN 0 WHEN gev.del = '${DelType.del}' THEN 0 ELSE 1 END) taskscount,
-                                    sum(CASE WHEN IFNULL(gev.rtevi, '') = '' THEN 0 WHEN gev.del = '${DelType.del}' THEN 0 ELSE 1 END) repeateventscount
+                                    sum(CASE WHEN IFNULL(gev.rtevi, '') = '' THEN 0 WHEN gev.del = '${DelType.del}' THEN 0 ELSE 1 END) repeateventscount,
+                                    sum(CASE WHEN IFNULL(gev.ui, '') = '${UserConfig.account.id}' THEN 0 WHEN IFNULL(gev.invitestatus, '') = '' THEN 1 ELSE 0 END) acceptableeventscount
                               from (select gday.sd day,
                                       sum(CASE WHEN IFNULL(gjt.jti, '') = '' THEN 0 WHEN gjt.jtt <> '${PlanItemType.Holiday}' THEN 0 WHEN gjt.del = '${DelType.del}' THEN 0 ELSE 1 END) calendaritemscount,
                                       sum(CASE WHEN IFNULL(gjt.jti, '') = '' THEN 0 WHEN gjt.jtt <> '${PlanItemType.Activity}' THEN 0 WHEN gjt.del = '${DelType.del}' THEN 0 ELSE 1 END) activityitemscount
@@ -2926,6 +2929,7 @@ export class CalendarService extends BaseService {
                           gdaymom.agendascount agendascount,
                           gdaymom.taskscount taskscount,
                           gdaymom.repeateventscount repeateventscount,
+                          gdaymom.acceptableeventscount acceptableeventscount,
                           gdaymom.memoscount memoscount,
                           gdaymom.bookedtimesummary bookedtimesummary
                       from (select gdayev.day day,
@@ -2935,6 +2939,7 @@ export class CalendarService extends BaseService {
                             max(gdayev.agendascount) agendascount,
                             max(gdayev.taskscount) taskscount,
                             max(gdayev.repeateventscount) repeateventscount,
+                            max(gdayev.acceptableeventscount) acceptableeventscount,
                             sum(CASE WHEN IFNULL(gmo.moi, '') = '' THEN 0 WHEN gmo.del = '${DelType.del}' THEN 0 ELSE 1 END) memoscount,
                             0 bookedtimesummary
                         from (select gdayjta.day day,
@@ -2943,7 +2948,8 @@ export class CalendarService extends BaseService {
                                 sum(CASE WHEN IFNULL(gev.evi, '') = '' THEN 0 WHEN gev.del = '${DelType.del}' THEN 0 ELSE 1 END) eventscount,
                                 sum(CASE WHEN IFNULL(gev.evi, '') = '' THEN 0 WHEN IFNULL(gev.rtevi, '') <> '' THEN 0 WHEN gev.type <> '${EventType.Agenda}' THEN 0 WHEN gev.del = '${DelType.del}' THEN 0 ELSE 1 END) agendascount,
                                 sum(CASE WHEN IFNULL(gev.evi, '') = '' THEN 0 WHEN gev.type <> '${EventType.Task}' THEN 0 WHEN gev.del = '${DelType.del}' THEN 0 ELSE 1 END) taskscount,
-                                sum(CASE WHEN IFNULL(gev.rtevi, '') = '' THEN 0 WHEN gev.del = '${DelType.del}' THEN 0 ELSE 1 END) repeateventscount
+                                sum(CASE WHEN IFNULL(gev.rtevi, '') = '' THEN 0 WHEN gev.del = '${DelType.del}' THEN 0 ELSE 1 END) repeateventscount,
+                                sum(CASE WHEN IFNULL(gev.ui, '') = '${UserConfig.account.id}' THEN 0 WHEN IFNULL(gev.invitestatus, '') = '' THEN 1 ELSE 0 END) acceptableeventscount
                           from (select gday.sd day,
                                   sum(CASE WHEN IFNULL(gjt.jti, '') = '' THEN 0 WHEN gjt.jtt <> '${PlanItemType.Holiday}' THEN 0 WHEN gjt.del = '${DelType.del}' THEN 0 ELSE 1 END) calendaritemscount,
                                   sum(CASE WHEN IFNULL(gjt.jti, '') = '' THEN 0 WHEN gjt.jtt <> '${PlanItemType.Activity}' THEN 0 WHEN gjt.del = '${DelType.del}' THEN 0 ELSE 1 END) activityitemscount
@@ -4638,6 +4644,7 @@ export class ActivitySummaryData {
   taskscount: number;           // 任务数量
   memoscount: number;           // 备忘数量
   repeateventscount: number;    // 重复事件数量
+  acceptableeventscount: number;// 待接受事件数量
   bookedtimesummary: number;    // 总预定时长
 }
 
@@ -4656,6 +4663,7 @@ export class DayActivitySummaryData {
   taskscount: number;           // 任务数量
   memoscount: number;           // 备忘数量
   repeateventscount: number;    // 重复事件数量
+  acceptableeventscount: number;// 待接受事件数量
   bookedtimesummary: number;    // 总预定时长
 }
 
