@@ -58,8 +58,8 @@ import {UserConfig} from "../../service/config/user.config";
                       </ion-thumbnail>
                 </div>
 
-                <div class="icon" *ngIf="(fja.tb=='unsynch')&&(fja.ui==currentuser) " (click)="delAttach(fja)"  end >
-                  <ion-icon class="fal fa-minus-circle"></ion-icon>
+                <div class="icon" *ngIf="(fja.tb=='unsynch')&&(fja.ui==currentuser) " end >
+                  <ion-icon class="fal fa-minus-circle" (click)="delAttach(fja)"></ion-icon>
                 </div>
               </div>
             </ion-row>
@@ -146,7 +146,7 @@ export class AttachPage {
       this.obt = this.navParams.data.obt;
       this.obi = this.navParams.data.obi;
       this.fjArray = this.navParams.data.attach;
-      this.currentuser = this.navParams.data.userId
+      // this.currentuser = this.navParams.data.userId
     }
     //验证缓存文件目录是否存在
     this.file.checkDir(this.file.externalDataDirectory, '/timeAppfile')
