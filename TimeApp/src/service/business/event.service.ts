@@ -2944,6 +2944,10 @@ export class EventService extends BaseService {
           push = new PushInData();
         }
       }
+
+      if (index % maxdata != 0) {
+        await this.dataRestful.push(push);
+      }
     }
 
     return ;
