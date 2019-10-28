@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {HttpClient} from "@angular/common/http";
+import {HttpClient, HttpRequest, FormData} from "@angular/common/http";
 import {HTTP} from "@ionic-native/http";
 import {UrlEntity, RestFulConfig, RestFulHeader} from "../config/restful.config";
 import {UtilService} from "./util.service";
@@ -28,6 +28,40 @@ export class RestfulClient {
       this.http.setSSLCertMode("nocheck").then(data => {
       })
     }
+  }
+
+  upload(url: UrlEntity, body: any, filePath: string, name: string): Promise<any> {
+    return new Promise((resolve, reject) => {
+      // 没有网络的时候，直接返回
+      if (!this.networkService.isConnected()) {
+        resolve();
+        return;
+      }
+
+      let header = this.restConfig.createHeader();
+      if (this.util.hasCordova()) {
+        return this.http.uploadFile(url.url, body, header, filePath, name).then(data => {
+          resolve(data);
+        });
+      } else {
+        //浏览器测试使用
+        let warHeader: any = {};
+        warHeader.headers = header;
+        this.httpClient.post(url.url, body, warHeader).subscribe(data => {
+          resolve(data);
+        });
+      }
+    });
+  }
+
+  download(url: UrlEntity, body: any): Promise<any> {
+    return new Promise((resolve, reject) => {
+      // 没有网络的时候，直接返回
+      if (!this.networkService.isConnected()) {
+        resolve();
+        return;
+      }
+    });
   }
 
   post(url: UrlEntity, body: any): Promise<any> {
@@ -356,5 +390,3 @@ export class RestfulClient {
 
 
 }
-
-

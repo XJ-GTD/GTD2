@@ -196,8 +196,15 @@ export class AttachPage {
     actionSheet.present();
   }
 
-  save() {
+  async save() {
     let data: Object = {attach: this.fjArray};
+
+    let uploads = this.fjArray.filter((element) => {
+      return (element.tb != SyncType.synch);
+    });
+
+    await this.eventService.syncAttachments(uploads);
+
     this.viewCtrl.dismiss(data);
   }
 

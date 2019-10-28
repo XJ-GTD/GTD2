@@ -2926,6 +2926,15 @@ export class EventService extends BaseService {
         sync.to = (!tos || tos == "" || tos == null) ? [] : tos.split(",") ;
 
         sync.payload = attachment;
+
+        // 上传文件到服务器
+        if (attachment.ext && attachment.ext != "") {
+          let upload: UploadInData = new UploadInData();
+          upload.filepath = attachment.fj;
+
+          await this.dataRestful.upload(upload);
+        }
+
         push.d.push(sync);
 
         index++;

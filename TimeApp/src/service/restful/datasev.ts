@@ -13,6 +13,32 @@ export class DataRestful {
   }
 
   /**
+   * http://pluto.guobaa.com/abl/store/local/upload
+   * formData: binary
+   * username: group
+   *
+   * {"code":0,"msg":"success","data":9743}
+   **/
+  async upload(upload: UploadInData): Promise<UploadOutData> {
+    let url: UrlEntity = this.config.getRestFulUrl("SUP");
+
+    let data = await this.request.upload(url, upload, upload.filepath, upload.filename);
+
+    return new UploadOutData();
+  }
+
+  /**
+   * http://pluto.guobaa.com/abl/store/local/getContent/9743
+   **/
+  async download(download: DownloadInData): Promise<DownloadOutData> {
+    let url: UrlEntity = this.config.getRestFulUrl("SDL");
+
+    let data = await this.request.download(url, download);
+
+    return new DownloadOutData();
+  }
+
+  /**
    * 上传同步数据
    * 同步成功通过MQ返回
    *
@@ -92,3 +118,17 @@ export class PullInData {
 export class PullOutData {
   // 拉取的数据通过MQ发送给客户端
 }
+
+export class UploadInData {
+  username: string = "group";
+  filepath: string;
+  filename: string = "formData";
+}
+
+export class UploadOutData {
+
+}
+
+export class DownloadInData {}
+
+export class DownloadOutData {}
