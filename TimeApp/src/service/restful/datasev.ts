@@ -124,7 +124,7 @@ export class UploadInData {
   username: string = UserConfig.account.id;
   group: string = "group";
   filepath: string;
-  filename: string = "formData";
+  filename: string = "file";
 }
 
 export class UploadOutData {
