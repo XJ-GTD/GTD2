@@ -197,7 +197,7 @@ export class AttachPage {
     actionSheet.present();
   }
 
-  save() {
+  async save() {
     let data: Object = {attach: this.fjArray};
 
     let uploads = this.fjArray.filter((element) => {
