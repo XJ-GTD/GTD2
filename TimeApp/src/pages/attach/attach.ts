@@ -243,6 +243,9 @@ export class AttachPage {
         this.fjData.del = DelType.undel;
         this.fjData.tb = SyncType.unsynch;
         this.fjData.wtt = moment().unix();
+        if(!this.bw) {
+          this.bw = fileName;
+        }
         this.file.copyFile(imgFileDir, fileName, this.file.externalDataDirectory + "/timeAppfile", fileName);
 
       }
@@ -281,6 +284,9 @@ export class AttachPage {
               this.fjData.wtt = moment().unix();
               this.fjData.fj = this.file.externalDataDirectory + "/timeAppfile/" + fileName;
               //this.fjArray.push(fjData);
+              if(!this.bw) {
+                this.bw = fileName;
+              }
               alert("存储值："+JSON.stringify(this.fjData));
               this.file.copyFile(imgFileDir, fileName, this.file.externalDataDirectory + "/timeAppfile", fileName);
             }
