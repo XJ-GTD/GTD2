@@ -261,10 +261,11 @@ export class AttachPage {
    */
   select() {
 
-   alert("选择的PDF文件filePath："+JSON.stringify(filePath));
+
     this.chooser.getFile('*/*').then((file) => {
         this.filePath.resolveNativePath(file.uri)
           .then((filePath) => {
+            alert("选择的PDF文件filePath："+JSON.stringify(filePath));
             if (filePath != '') {
               let fileName: string = filePath.substr(filePath.lastIndexOf("/") + 1, filePath.length);
               let ext: string = fileName.substr(fileName.lastIndexOf(".") + 1);
