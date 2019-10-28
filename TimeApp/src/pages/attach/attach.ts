@@ -243,6 +243,9 @@ export class AttachPage {
         this.fjData.del = DelType.undel;
         this.fjData.tb = SyncType.unsynch;
         this.fjData.wtt = moment().unix();
+        if(!this.bw) {
+          this.bw = fileName;
+        }
         this.file.copyFile(imgFileDir, fileName, this.file.externalDataDirectory + "/timeAppfile", fileName);
 
       }
@@ -281,6 +284,9 @@ export class AttachPage {
               this.fjData.wtt = moment().unix();
               this.fjData.fj = this.file.externalDataDirectory + "/timeAppfile/" + fileName;
               //this.fjArray.push(fjData);
+              if(!this.bw) {
+                this.bw = fileName;
+              }
               alert("存储值："+JSON.stringify(this.fjData));
               this.file.copyFile(imgFileDir, fileName, this.file.externalDataDirectory + "/timeAppfile", fileName);
             }
@@ -341,8 +347,8 @@ export class AttachPage {
   //打开本地PDF
   opnePdf(fj: string) {
     this.fileOpener.open(fj,'application/pdf')
-    .then(() => alert('File is opened'))
-    .catch(e => alert('Error opening file', e));
+    .then(() => console.info('File is opened'))
+    .catch(e => console.info('Error opening file', e));
   }
 
 }
