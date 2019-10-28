@@ -13,7 +13,7 @@ import {Camera, CameraOptions} from '@ionic-native/camera';
 import {Chooser} from '@ionic-native/chooser';
 import {FileOpener} from '@ionic-native/file-opener';
 import {FilePath} from '@ionic-native/file-path';
-import {EventService, FjData, Attachment} from "../../service/business/event.service";
+import {FjData, Attachment} from "../../service/business/event.service";
 import {UtilService} from "../../service/util-service/util.service";
 import * as moment from "moment";
 import {DelType, SyncType} from "../../data.enum";
@@ -137,7 +137,6 @@ export class AttachPage {
               private chooser: Chooser,
               private transfer: FileTransfer,
               private filePath: FilePath,
-              private eventService: EventService,
               private keyboard: Keyboard,
               private fileOpener: FileOpener,
               private actionSheetCtrl: ActionSheetController,
@@ -197,18 +196,8 @@ export class AttachPage {
     actionSheet.present();
   }
 
-  async save() {
+  save() {
     let data: Object = {attach: this.fjArray};
-
-    // 测试代码不要删除
-    let uploads = this.fjArray.filter((element) => {
-      return (element.tb != SyncType.synch);
-    });
-
-    if (uploads && uploads.length > 0) {
-      await this.eventService.syncAttachments(uploads);
-    }
-
     this.viewCtrl.dismiss(data);
   }
 
@@ -234,7 +223,7 @@ export class AttachPage {
       if (imageData != '') {
 
         let fileName: string = imageData.substr(imageData.lastIndexOf("/") + 1, imageData.length);
-        let ext: string = fileName.substr(fileName.lastIndexOf(".") + 1);
+        let ext: string = fileName.split(".")[1];
         //将文件copy至缓存文件
         let imgFileDir: string = imageData.substr(0, imageData.lastIndexOf("/") + 1);
         this.fjData.obt = this.obt;
@@ -265,12 +254,13 @@ export class AttachPage {
   select() {
 
     this.chooser.getFile('*/*').then((file) => {
-        alert("选择的PDF文件："+JSON.stringify(file));
+        alert("选择的PDF文件："+JSON.stringify(file.uri));
         this.filePath.resolveNativePath(file.uri)
           .then((filePath) => {
+            alert("选择的PDF文件filePath："+JSON.stringify(filePath));
             if (filePath != '') {
               let fileName: string = filePath.substr(filePath.lastIndexOf("/") + 1, filePath.length);
-              let ext: string = fileName.substr(fileName.lastIndexOf(".") + 1);
+              let ext: string = fileName.split(".")[1];
               let imgFileDir: string = filePath.substr(0, filePath.lastIndexOf("/") + 1);
               // let fjData: FjData = {} as FjData;
               this.fjData.obt = this.obt;
