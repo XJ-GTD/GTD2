@@ -187,7 +187,9 @@
       "cordova-plugin-console": {},
       "cordova-plugin-file": {},
       "cordova-plugin-filepath": {},
-      "cordova-plugin-file-opener2": {},
+      "cordova-plugin-file-opener2": {
+        "ANDROID_SUPPORT_V4_VERSION": "27.+"
+      },
       "cordova-plugin-calendar": {},
       "cordova-plugin-advanced-http": {},
       "cordova-plugin-android-permissions": {},

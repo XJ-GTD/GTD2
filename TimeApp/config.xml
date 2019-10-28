@@ -63,7 +63,6 @@
     <plugin name="cordova-plugin-console" spec="~1.1.0" />
     <plugin name="cordova-plugin-file" spec="~6.0.2" />
     <plugin name="cordova-plugin-filepath" spec="~1.5.6" />
-    <plugin name="cordova-plugin-file-opener2" spec="~2.2.1" />
     <plugin name="cordova-plugin-calendar" spec="~5.1.4" />
     <plugin name="cordova-plugin-advanced-http" spec="~2.2.0" />
     <plugin name="cordova-plugin-android-permissions" spec="~1.0.2" />
@@ -83,4 +82,7 @@
     <engine name="ios" spec="^4.4.0" />
     <engine name="browser" spec="^5.0.4" />
     <engine name="android" spec="~7.1.4" />
+    <plugin name="cordova-plugin-file-opener2" spec="~2.2.1">
+        <variable name="ANDROID_SUPPORT_V4_VERSION" value="27.+" />
+    </plugin>
 </widget>
