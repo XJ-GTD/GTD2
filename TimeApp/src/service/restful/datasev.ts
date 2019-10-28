@@ -24,7 +24,10 @@ export class DataRestful {
 
     let data = await this.request.upload(url, upload, upload.filepath, upload.filename);
 
-    return new UploadOutData();
+    let result: UploadOutData = new UploadOutData();
+    Object.assign(result, data);
+
+    return result;
   }
 
   /**
@@ -128,7 +131,9 @@ export class UploadInData {
 }
 
 export class UploadOutData {
-
+  code: string;
+  message: string;
+  data: number;
 }
 
 export class DownloadInData {}
