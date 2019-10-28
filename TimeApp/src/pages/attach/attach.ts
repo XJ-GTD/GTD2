@@ -50,7 +50,7 @@ import {UserConfig} from "../../service/config/user.config";
               </div>
               <div class="line font-normal" leftmargin rightmargin >
                 <div *ngIf="(fja.ext=='PDF'||fja.ext=='pdf')&& (fja.fj !='')" >
-                  <ion-icon class="fas fa-file-pdf" (click)="window.open(fja.fj)"></ion-icon>
+                  <ion-icon class="fas fa-file-pdf" (click)="opnePdf(fja.fj)"></ion-icon>
                 </div>
                 <div *ngIf="(fja.ext=='png'||fja.ext=='PNG'||fja.ext=='jpg'||fja.ext=='JPG'||fja.ext=='bmp'||fja.ext=='BMP'||fja.ext=='mp4'||fja.ext=='MP4')&& (fja.fj !='')">
                       <ion-thumbnail>
@@ -261,11 +261,10 @@ export class AttachPage {
    */
   select() {
 
+   alert("选择的PDF文件filePath："+JSON.stringify(filePath));
     this.chooser.getFile('*/*').then((file) => {
-        alert("选择的PDF文件："+JSON.stringify(file.uri));
         this.filePath.resolveNativePath(file.uri)
           .then((filePath) => {
-            alert("选择的PDF文件filePath："+JSON.stringify(filePath));
             if (filePath != '') {
               let fileName: string = filePath.substr(filePath.lastIndexOf("/") + 1, filePath.length);
               let ext: string = fileName.substr(fileName.lastIndexOf(".") + 1);
@@ -337,6 +336,12 @@ export class AttachPage {
             }
         }
     }
+  }
+  //打开本地PDF
+  opnePdf(fj: string) {
+    this.fileOpener.open(fj,'application/pdf')
+    .then(() => alert('File is opened'))
+    .catch(e => alert('Error opening file', e));
   }
 
 }
