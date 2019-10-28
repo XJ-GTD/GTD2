@@ -321,7 +321,7 @@ export class IonCalendarService {
 
       calendarDay.hasevent = v.eventscount - v.repeateventscount > 0;
       calendarDay.hasrepeat = v.repeateventscount > 0;
-      // calendarDay.hasmessage = v.a
+      calendarDay.accept = v.acceptableeventscount;
       calendarDay.hasMemo = v.memoscount > 0;
       calendarDay.subTitle = v.daycalendaritem?v.daycalendaritem:calendarDay.subTitle;
       calendarDay.isToday = moment().isSame(calendarDay.time, 'days');
