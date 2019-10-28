@@ -200,6 +200,7 @@ export class AttachPage {
   async save() {
     let data: Object = {attach: this.fjArray};
 
+    // 测试代码不要删除
     let uploads = this.fjArray.filter((element) => {
       return (element.tb != SyncType.synch);
     });
