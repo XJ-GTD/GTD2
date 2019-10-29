@@ -153,12 +153,13 @@ import {ModiPower} from "../../data.enum";
                 <span class="content font-normal">
                   {{currentAgenda.evd | formatedate: "YYYY年M月D日"}}
                   <br/>
-                  {{currentAgenda.evd + " " + currentAgenda.evt | formatedate: "A HH:mm"}}({{currentAgenda.ct | transfromdate: "duration"}})
-                </span>
+                  {{currentAgenda.evd + " " + currentAgenda.evt | formatedate: "A HH:mm"}}
+                  ({{currentAgenda.ct | transfromdate: "duration"}})
+            </span>
               </div>
               <div end *ngIf="currentAgenda.evi && currentAgenda.ui != currentuser" (click)="openfriend(currentAgenda.ui)">
                 <span class="content  font-normal person">
-                   ---来自{{currentAgenda.ui | formatuser: currentuser: friends}}
+                   -{{currentAgenda.ui | formatuser: currentuser: friends}}
                   </span>
               </div>
             </ion-row>
