@@ -197,6 +197,33 @@ body {
       min-height: 2.4rem;
     }
 
+  .plan {
+    position: absolute;
+    height: 20px;
+    line-height: 20px;
+    text-align: center;
+    width: 74px;
+
+    span {
+      overflow: hidden;
+      white-space: nowrap;
+      font-size: .8rem;
+      margin-left: -10px;
+      font-weight: 100;
+    }
+  }
+  .plan-right{
+    transform: rotate(45deg);
+    right: -4rem;
+    top: 8px;
+  }
+
+  .plan-left{
+    transform: rotate(-45deg);
+    right: -4rem;
+    top: 8px;
+  }
+
 
     //.scroll-y[scrollY] {
     //  //--top: window.off;

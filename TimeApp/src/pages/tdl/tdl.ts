@@ -143,7 +143,7 @@ BScroll.use(InfinityScroll);
                       <span (click)="rejectInvite($event, event)">拒绝</span><span (click)="acceptInvite($event, event)">接受</span>
                     </div>
                   </div>
-                  <div class="plan" *ngIf="jt.invitestatus == inviteaccept || jt.invitestatus == invitereject"
+                  <div class="plan plan-right"
                        [ngStyle]="{'background-color': jt.ji == ''? 'transparent' : (jt.ji | formatplan: 'color': privateplans )}">
                     <span>{{jt.ji | formatplan: 'name': '': privateplans}}</span></div>
 
@@ -225,7 +225,7 @@ BScroll.use(InfinityScroll);
                        end><span (click)="rejectInvite($event, event)">拒绝</span><span
                     (click)="acceptInvite($event, event)">接受</span></div>
                 </div>
-                <div class="plan" *ngIf="event.invitestatus == inviteaccept || event.invitestatus == invitereject"
+                <div class="plan plan-right"
                      [ngStyle]="{'background-color': event.ji == ''? 'transparent' : (event.ji | formatplan: 'color': privateplans )}">
                   <span>{{event.ji | formatplan: 'name': '': privateplans}}</span></div>
 
