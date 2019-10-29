@@ -43,7 +43,6 @@ import {UserConfig} from "../../service/config/user.config";
                      *ngIf="fja.del != deleted" >
               <div class="line font-normal topheader" leftmargin rightmargin >
                 <div class="st font-small"> {{fja.wtt * 1000 | date: "yyyy-MM-dd HH:mm"}}</div>
-                <div class="person font-small" *ngIf="fja.ui==currentuser" end>---{{fja.ui}}</div>
                 <div class="person font-small" *ngIf="fja.ui!=currentuser" end>---{{fja.ui | formatuser: currentuser: friends}}</div>
               </div>
               <div class="line font-normal" leftmargin rightmargin >
