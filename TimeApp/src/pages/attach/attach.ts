@@ -68,7 +68,7 @@ import {UserConfig} from "../../service/config/user.config";
 
             <div class="line font-normal topheader" leftmargin rightmargin>
               <div class="st font-small"> 12:00</div>
-              <div class="person font-small" end>---来自谷子地</div>
+              <div class="person font-small" end>-谷子地</div>
             </div>
             <div class="line font-normal" leftmargin rightmargin>
               <div class="sn towline">官网的其中一个图片.png</div>
@@ -88,7 +88,7 @@ import {UserConfig} from "../../service/config/user.config";
 
             <div class="line font-normal topheader" leftmargin rightmargin>
               <div class="st font-small"> 12:00</div>
-              <div class="person font-small" end>---来自谷子地</div>
+              <div class="person font-small" end>--谷子地</div>
             </div>
             <div class="line font-normal" leftmargin rightmargin>
               <div class="sn towline">B2008_WindEDITLiteUsersCS.pdf</div>

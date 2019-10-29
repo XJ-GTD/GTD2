@@ -133,6 +133,10 @@
   .st {
     margin: 0 0.5rem;
   }
+  .wc{
+    text-decoration: line-through;
+
+  }
 
   .invite {
     margin: 0 0.5rem;
@@ -278,6 +282,7 @@
       border-radius: 4px;
       width: 75%;
       display: inline-flex;
+      position: relative;
 
       .d-title-chr {
         height: 50px;
@@ -287,6 +292,7 @@
         margin-left: 2rem;
         //margin-right: 1.2rem;
         text-align: center;
+        z-index: 10;
 
         span {
           font-size: 1.6rem;
@@ -324,6 +330,32 @@
         span {
         }
       }
+    }
+    .weather{
+      position: absolute;
+      height: 100%;
+      width: 100%;
+      z-index: 9;
+      text-align: right;
+      opacity: .3;
+      color: white;
+      padding-right: 0.2rem;
+      padding-top: .1rem;
+      max-width: 200px;
+      right: 0px;
+      //margin-left: 1rem;
+      .icon{
+        font-size: 1.8rem;
+        color: yellow;
+      }
+      span{
+        font-size: 1rem;
+        color: rgba(153,152,152,1);
+        overflow: hidden;
+        max-width: 150px;
+        display: inline-block;
+      }
+
     }
   }
 
