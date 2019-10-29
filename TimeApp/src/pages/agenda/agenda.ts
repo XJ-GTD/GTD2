@@ -52,13 +52,14 @@ import {ModiPower} from "../../data.enum";
     <page-box title="活动" [buttons]="buttons" [data]="currentAgenda.evi" (onRemove)="goRemove()" (onSave)="save()"
               (onBack)="goBack()" (onRecord)="record($event)" (onSpeaker)="speaker($event)" [speakData] = "currentAgenda.evn">
 
-      <ion-grid [ngStyle]="{'border-left': (!currentAgenda.evi || !currentAgenda.ji || currentAgenda.ji == '')? '0' : ('0.6rem solid ' + (currentAgenda.ji | formatplan: 'color': privateplans)), 'padding-left': (!currentAgenda.evi || !currentAgenda.ji || currentAgenda.ji == '')? '1.2rem' : '0.6rem', 'border-radius': (!currentAgenda.evi || !currentAgenda.ji || currentAgenda.ji == '')? '0' : '4px'}">
+      <!--<ion-grid [ngStyle]="{'border-left': (!currentAgenda.evi || !currentAgenda.ji || currentAgenda.ji == '')? '0' : ('0.6rem solid ' + (currentAgenda.ji | formatplan: 'color': privateplans)), 'padding-left': (!currentAgenda.evi || !currentAgenda.ji || currentAgenda.ji == '')? '1.2rem' : '0.6rem', 'border-radius': (!currentAgenda.evi || !currentAgenda.ji || currentAgenda.ji == '')? '0' : '4px'}">-->
+      <ion-grid >
 
         <ion-row class="limitRow font-small-x">
           <span>{{snlength}} / 80 </span>
         </ion-row>
 
-        <ion-row class="snRow">
+        <ion-row class="snRow" [ngStyle]="{'border-left': (!currentAgenda.evi || !currentAgenda.ji || currentAgenda.ji == '')? '0' : ('0.6rem solid ' + (currentAgenda.ji | formatplan: 'color': privateplans)), 'padding-left': (!currentAgenda.evi || !currentAgenda.ji || currentAgenda.ji == '')? '1.2rem' : '0.6rem', 'border-radius': (!currentAgenda.evi || !currentAgenda.ji || currentAgenda.ji == '')? '0' : '4px'}">
           <div class="sn font-large-x">
             <!--主题-->
             <ion-textarea rows="8" no-margin [(ngModel)]="currentAgenda.evn" (ionChange)="changeTitle()" [readonly]="originAgenda.evi && originAgenda.ui != currentuser && (originAgenda.md != enablechange || originAgenda.invitestatus != acceptedinvite)"
@@ -143,18 +144,16 @@ import {ModiPower} from "../../data.enum";
               <ion-icon class="fal fa-map-marker-alt font-normal"></ion-icon>
             </ion-row>
             <ion-row *ngIf="currentAgenda.evd">
-              <div (click)="changeDatetime()">
-                <span class="content font-normal">
-                  日期：{{currentAgenda.evd | formatedate: "YYYY年M月D日"}}<br/>
-
-                  时间：{{currentAgenda.evd + " " + currentAgenda.evt | formatedate: "A HH:mm"}}({{currentAgenda.ct | transfromdate: "duration"}})
-                </span>
+              <div (click)="changeDatetime()" class="pickDate">
                 <ion-icon class="font-normal fal fa-calendar-check "></ion-icon>
-              </div>
-              <div (click)="changeDatetime()">
+                <span class="content font-normal">
+                  {{currentAgenda.evd | formatedate: "YYYY年M月D日"}}
+                  <br/>
+                  {{currentAgenda.evd + " " + currentAgenda.evt | formatedate: "A HH:mm"}}({{currentAgenda.ct | transfromdate: "duration"}})
+                </span>
               </div>
               <div end *ngIf="currentAgenda.evi && currentAgenda.ui != currentuser" (click)="openfriend(currentAgenda.ui)">
-                <span class="content  font-normal">
+                <span class="content  font-normal person">
                    ---来自{{currentAgenda.ui | formatuser: currentuser: friends}}
                   </span>
               </div>

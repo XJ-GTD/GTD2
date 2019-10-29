@@ -23,7 +23,7 @@ import {PagePDPro} from "../../data.mapping";
           <ion-list-header>
             定义了<span class="count"> {{zdyJhs.length}} </span>个日历
           </ion-list-header>
-          <ion-item   *ngFor="let option of zdyJhs" (press)="delPlan(option)" (click)="toPd(option)" >
+          <ion-item   *ngFor="let option of zdyJhs" (press)="delPlan(option)" (click)="toPd(option)" [style.touch-action]="'pan-y'">
             <ion-label >
               {{option.jn}}<span class="font-small">({{option.js}})</span>
             </ion-label>
@@ -43,7 +43,7 @@ import {PagePDPro} from "../../data.mapping";
           <ion-list-header>
             系统日历<span class="count"> {{xtJhs.length}} </span>个 <small>（长按日历名称可清除）</small>
           </ion-list-header>
-          <ion-item   *ngFor="let option of xtJhs" (press)="delPlan(option)" >
+          <ion-item   *ngFor="let option of xtJhs" (press)="delPlan(option)" [style.touch-action]="'pan-y'" >
             <ion-label>
               {{option.jn}}<span class="font-small">({{option.js}})</span>
             </ion-label>

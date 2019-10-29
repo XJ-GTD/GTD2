@@ -57,7 +57,7 @@
 ##ionic cordova plugin add jpush-phonegap-plugin --variable APP_KEY=e8b1f201b4e0cc102f665238 --variable CHANNEL=cn.sh.com.xj.timeApp
 ##ionic cordova plugin add https://github.com/xiaoji-duan/cordova-plugin-rabbitmq.git
 ##ionic cordova plugin add cordova-plugin-geolocation --variable GEOLOCATION_USAGE_DESCRIPTION="使用定位以获得更准确的天气预报"
-##ionic cordova plugin add cordova-plugin-file-opener2
+##ionic cordova plugin add cordova-plugin-file-opener2 cordova-plugin-filechooser
 
 
 
