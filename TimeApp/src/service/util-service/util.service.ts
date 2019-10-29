@@ -860,4 +860,9 @@ export class UtilService {
     modal.present();
   }
 
+  cloneObj<T,U>(target : T , source : U) {
+
+    Object.assign(target ,JSON.parse(JSON.stringify(source)));
+
+  }
 }

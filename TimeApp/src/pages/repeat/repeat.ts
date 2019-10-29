@@ -5,14 +5,15 @@ import { DatePickerComponent } from "../../components/date-picker/date-picker";
 import * as moment from "moment";
 import {RtJson} from "../../service/business/event.service";
 import {CycleType, OverType} from "../../data.enum";
+import {UtilService} from "../../service/util-service/util.service";
 
 @IonicPage()
 @Component({
   selector: 'page-repeat',
   template: `
     <modal-box title="重复" [buttons]="buttons" (onSave)="save()" (onCancel)="cancel()">
-      <div class="itemwarp font-normal">
-        <radio-select [options]="items" full="true" center =  "true" [(ngModel)]="cfType" (onChanged)="onTypeChanged($event)" button5></radio-select>
+      <div class="itemwarp font-normal" >
+        <radio-select  [options]="items" full="true" center =  "true" [(ngModel)]="cfType" (onChanged)="onTypeChanged($event)" button5></radio-select>
       </div>
 
       <ng-template  [ngIf]="cfType == 'day'">
@@ -237,18 +238,26 @@ export class RepeatPage {
     saturday: "星期六",
   };
 
+  validRepeat : boolean = false;
+
   constructor(public navCtrl: NavController,
               private keyboard: Keyboard,
               public modalCtrl: ModalController,
               public viewCtrl: ViewController,
-              public navParams: NavParams) {
+              public navParams: NavParams,private util : UtilService) {
     if (this.navParams && this.navParams.data) {
       let value = this.navParams.data.value;
 
       if (value) {
+
         this.originRepeat = value;
+        this.validRepeat = this.navParams.data.validRepeat;
+        if (!this.validRepeat){
+          this.buttons.save = false;
+        }
         this.currentRepeat = new RtJson();
         Object.assign(this.currentRepeat, this.originRepeat);
+
       }
     }
     this.items.push({value: "", caption: "关闭"});
