@@ -235,7 +235,7 @@ export class AgendaPage {
 
             if (agenda) {
               this.currentAgenda = agenda;
-              Object.assign(this.originAgenda, agenda);
+              this.util.cloneObj(this.originAgenda, agenda);
 
 
               this.snlength =  this.currentAgenda.evn.length;
@@ -509,10 +509,6 @@ export class AgendaPage {
   }
 
   changeRepeat() {
-    // 受邀人没有接受或者没有修改权限不能修改
-    if (this.originAgenda.ui != this.currentuser && (this.originAgenda.md != ModiPower.enable || this.originAgenda.invitestatus != InviteState.Accepted)) { // 受邀人修改权限检查
-      return;
-    }
 
     // 时间设置为结束时间，不能修改重复
     if (this.currentAgenda.al == IsWholeday.EndSet) {
@@ -529,7 +525,16 @@ export class AgendaPage {
 
     let data = new RtJson();
     Object.assign(data, this.currentAgenda.rtjson);
-    let modal = this.modalCtrl.create(DataConfig.PAGE._REPEAT_PAGE, {value: data});
+
+    // 受邀人没有接受或者没有修改权限不能修改
+    let enableRepeat : boolean = false;
+    if (this.originAgenda.ui != this.currentuser && (this.originAgenda.md != ModiPower.enable || this.originAgenda.invitestatus != InviteState.Accepted)) { // 受邀人修改权限检查
+      enableRepeat = false;
+    }else{
+      enableRepeat = true;
+    }
+    let modal = this.modalCtrl.create(DataConfig.PAGE._REPEAT_PAGE, {value: data,enableRepeat : enableRepeat});
+
     modal.onDidDismiss(async (data) => {
       if (data && data.rtjson) {
         this.currentAgenda.rtjson = new RtJson();

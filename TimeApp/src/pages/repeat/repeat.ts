@@ -5,21 +5,22 @@ import { DatePickerComponent } from "../../components/date-picker/date-picker";
 import * as moment from "moment";
 import {RtJson} from "../../service/business/event.service";
 import {CycleType, OverType} from "../../data.enum";
+import {UtilService} from "../../service/util-service/util.service";
 
 @IonicPage()
 @Component({
   selector: 'page-repeat',
   template: `
-    <modal-box title="重复" [buttons]="buttons" (onSave)="save()" (onCancel)="cancel()">
-      <div class="itemwarp font-normal">
-        <radio-select [options]="items" full="true" center =  "true" [(ngModel)]="cfType" (onChanged)="onTypeChanged($event)" button5></radio-select>
+    <modal-box title="重复" [buttons]="buttons" (onSave)="save()" (onCancel)="cancel()" [enableEdit]="enableRepeat">
+      <div class="itemwarp font-normal" >
+        <radio-select   [options]="items" full="true" center =  "true" [(ngModel)]="cfType" (onChanged)="onTypeChanged($event)" button5></radio-select>
       </div>
 
       <ng-template  [ngIf]="cfType == 'day'">
 
         <div class="itemwarp font-normal">
           <p>重复周期</p>
-          <radio-spinner label="天" [options]="itemRanges" [(ngModel)]="cfDayOptions.frequency" (onChanged)="onFreqChanged($event)"></radio-spinner>
+          <radio-spinner  label="天" [options]="itemRanges" [(ngModel)]="cfDayOptions.frequency" (onChanged)="onFreqChanged($event)"></radio-spinner>
         </div>
         <div class="itemwarp font-normal">
           <p>结束</p>
@@ -36,7 +37,7 @@ import {CycleType, OverType} from "../../data.enum";
               </ion-label>
             </ion-item>
             <ion-item>
-              <ion-radio (ionSelect)="openUntilEndDate('d')" value="tosomeday" item-start>
+              <ion-radio  (ionSelect)="openUntilEndDate('d')" value="tosomeday" item-start>
 
               </ion-radio>
               <ion-label>直到{{cfDayOptions.toSomeDay | formatedate : 'CYYYY/MM/DD'}}</ion-label>
@@ -237,18 +238,26 @@ export class RepeatPage {
     saturday: "星期六",
   };
 
+  enableRepeat : boolean = false;
+
   constructor(public navCtrl: NavController,
               private keyboard: Keyboard,
               public modalCtrl: ModalController,
               public viewCtrl: ViewController,
-              public navParams: NavParams) {
+              public navParams: NavParams,private util : UtilService) {
     if (this.navParams && this.navParams.data) {
       let value = this.navParams.data.value;
 
       if (value) {
+
         this.originRepeat = value;
+        this.enableRepeat = this.navParams.data.enableRepeat;
+        if (!this.enableRepeat){
+          this.buttons.save = false;
+        }
         this.currentRepeat = new RtJson();
         Object.assign(this.currentRepeat, this.originRepeat);
+
       }
     }
     this.items.push({value: "", caption: "关闭"});

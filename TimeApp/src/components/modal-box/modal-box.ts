@@ -21,7 +21,7 @@ import {SettingsProvider} from "../../providers/settings/settings";
   selector: 'modal-box',
   template:
       `
-    <div class="box-modal">
+    <div class="box-modal" >
 
       <ion-header class="box-header">
         <ion-toolbar>
@@ -54,7 +54,8 @@ import {SettingsProvider} from "../../providers/settings/settings";
         </ion-toolbar>
       </ion-header>
       <ion-content class="box-content" #modalcontent>
-        <ng-content></ng-content>
+        <div class = "disdiv" [hidden]="enableEdit" ></div>
+        <ng-content ></ng-content>
       </ion-content>
     </div>
   `
@@ -65,6 +66,9 @@ export class ModalBoxComponent {
 
   @Input()
   speakData:string;
+
+  @Input()
+  enableEdit:boolean = true;
 
   @ViewChild('modalcontent') modalcontent: Content;
 
@@ -101,6 +105,7 @@ export class ModalBoxComponent {
   }
 
   setBoxContent() {
+
     let height = this.modalcontent._scrollContent.nativeElement.clientHeight;
     this.renderer2.setStyle(this.modalcontent._scrollContent.nativeElement, "height", height + "px");
     this.renderer2.setStyle(this.modalcontent._scrollContent.nativeElement, "overflow-y", height + "hidden");
