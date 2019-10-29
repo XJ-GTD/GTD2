@@ -2658,7 +2658,12 @@ export class CalendarService extends BaseService {
 
       this.assertNull(dayActivity);
 
-      dayActivity.calendaritems.push(value);
+      // 天气设置到天气字段
+      if (value.jtt == PlanItemType.Weather) {
+        dayActivity.weather = value.ext;
+      } else {
+        dayActivity.calendaritems.push(value);
+      }
       days.set(day, dayActivity);
 
       return days;
@@ -2882,7 +2887,12 @@ export class CalendarService extends BaseService {
 
         this.assertNull(dayActivity);
 
-        dayActivity.calendaritems.push(value);
+        // 天气设置到天气字段
+        if (value.jtt == PlanItemType.Weather) {
+          dayActivity.weather = value.ext;
+        } else {
+          dayActivity.calendaritems.push(value);
+        }
         days.set(day, dayActivity);
 
         return days;
@@ -2991,7 +3001,19 @@ export class CalendarService extends BaseService {
 
     let sqlcalitems: string = `select * from gtd_jta where sd = '${day}' and del <> '${DelType.del}' order by st asc`;
 
-    dayActivity.calendaritems = await this.sqlExce.getExtList<PlanItemData>(sqlcalitems) || new Array<PlanItemData>();
+    let items = await this.sqlExce.getExtList<PlanItemData>(sqlcalitems) || new Array<PlanItemData>();
+
+    dayActivity.calendaritems = items.reduce((dayitems, value) => {
+
+      // 天气设置到天气字段
+      if (value.jtt == PlanItemType.Weather) {
+        dayActivity.weather = value.ext;
+      } else {
+        dayitems.push(value);
+      }
+
+      return dayitems;
+    }, new Array<PlanItemData>());
 
     let sqlevents: string = `select * from gtd_ev where evd = '${day}' and del <> '${DelType.del}'`;
 
@@ -3086,30 +3108,36 @@ export class CalendarService extends BaseService {
           let item: PlanItemData = {} as PlanItemData;
           Object.assign(item, activity);
 
-          if (index >= 0) {
-            // 更新/删除
-            if (item.del == DelType.del) {
-              // 删除
-              if (index == 0) {
-                dayActivities.calendaritems = dayActivities.calendaritems.slice(1);
+          // 天气设置到天气字段
+          if (item.jtt == PlanItemType.Weather) {
+            dayActivities.weather = item.ext;
+          } else {
+            if (index >= 0) {
+              // 更新/删除
+              if (item.del == DelType.del) {
+                // 删除
+                if (index == 0) {
+                  dayActivities.calendaritems = dayActivities.calendaritems.slice(1);
+                } else {
+                  dayActivities.calendaritems = dayActivities.calendaritems.slice(0, index).concat(dayActivities.calendaritems.slice(index + 1));
+                }
               } else {
-                dayActivities.calendaritems = dayActivities.calendaritems.slice(0, index).concat(dayActivities.calendaritems.slice(index + 1));
+                // 更新
+                if (index == 0) {
+                  dayActivities.calendaritems = dayActivities.calendaritems.slice(1);
+                  dayActivities.calendaritems.unshift(item);
+                } else {
+                  let tail = dayActivities.calendaritems.slice(index + 1);
+                  tail.unshift(item);
+                  dayActivities.calendaritems = dayActivities.calendaritems.slice(0, index).concat(tail);
+                }
               }
             } else {
-              // 更新
-              if (index == 0) {
-                dayActivities.calendaritems = dayActivities.calendaritems.slice(1);
-                dayActivities.calendaritems.unshift(item);
-              } else {
-                let tail = dayActivities.calendaritems.slice(index + 1);
-                tail.unshift(item);
-                dayActivities.calendaritems = dayActivities.calendaritems.slice(0, index).concat(tail);
-              }
+              // 插入
+              dayActivities.calendaritems.push(item);
             }
-          } else {
-            // 插入
-            dayActivities.calendaritems.push(item);
           }
+
           break;
         case "AgendaData" :
         case "TaskData" :
@@ -4629,6 +4657,7 @@ export class DayActivityData {
   calendaritems: Array<PlanItemData> = new Array<PlanItemData>();   // 日历项
   events: Array<EventData> = new Array<EventData>();                // 事件
   memos: Array<MemoData> = new Array<MemoData>();                   // 备忘
+  weather: string;                                                  // 天气JSON字符串
 
   constructor(day: string = "") {
     this.day = day;
