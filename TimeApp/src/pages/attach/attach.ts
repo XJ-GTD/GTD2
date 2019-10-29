@@ -288,6 +288,7 @@ export class AttachPage {
       this.fjData.wtt = moment().unix();
       this.fjArray.push(this.fjData);
       this.fjData = {} as Attachment;
+      this.bw = "";
     }
   }
 
