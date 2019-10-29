@@ -3084,7 +3084,7 @@ export class EventService extends BaseService {
 
     }
 
-    let maxdata: number = 10;
+    let maxdata: number = 5;
 
     if (agendas.length > 0) {
       let push: PushInData = new PushInData();
