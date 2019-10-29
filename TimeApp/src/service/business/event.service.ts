@@ -2932,7 +2932,7 @@ export class EventService extends BaseService {
           let upload: UploadInData = new UploadInData();
           upload.filepath = attachment.fj;
 
-          await this.dataRestful.upload(upload);
+          let data = await this.dataRestful.upload(upload);
         }
 
         push.d.push(sync);
@@ -4404,9 +4404,18 @@ export interface Attachment extends FjTbl {
 
 }
 
-export class FileAttachmentPath {
+export class CacheFilePathJson {
+  cachedir: string = "/cached";
   local: string;
   remote: string;
+
+  getLocalFilePath(datadir: string): string {
+    return datadir + this.cachedir + this.local;
+  }
+
+  getCacheDir(): string {
+    return this.cachedir;
+  }
 }
 
 export interface TaskData extends EventData,TTbl {
@@ -4868,21 +4877,21 @@ enum DUflag {
   update = "update"
 }
 
-export function generateFjJson(fjjson: FileAttachmentPath, fj: string) {
-  if (!fjjson) {
+export function generateCacheFilePathJson(fpjson: CacheFilePathJson, fj: string) {
+  if (!fpjson) {
     if (fj) {
-      fjjson = new FileAttachmentPath();
-      Object.assign(fjjson, JSON.parse(fj));
+      fpjson = new CacheFilePathJson();
+      Object.assign(fpjson, JSON.parse(fj));
     } else {
       return "";
     }
   } else {
-    let newfjjson: FileAttachmentPath = new FileAttachmentPath();
-    Object.assign(newfjjson, fjjson);
-    fjjson = newfjjson;
+    let newfpjson: CacheFilePathJson = new CacheFilePathJson();
+    Object.assign(newfpjson, fpjson);
+    fpjson = newfpjson;
   }
 
-  return fjjson;
+  return fpjson;
 }
 
 export function generateRtJson(rtjson: RtJson, rt: string) {
