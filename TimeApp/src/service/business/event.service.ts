@@ -1048,14 +1048,22 @@ export class EventService extends BaseService {
   * @param {string} evi
    * @returns {Promise<Array<AgendaData>>}
    */
-  async getAgenda(evi : string):Promise<AgendaData>{
+  async getAgenda(evi : string , getdel : boolean = false):Promise<AgendaData>{
 
     this.assertEmpty(evi);    // 入参不能为空
 
     let agdata = {} as AgendaData;
+    let delcondi = "";
+    let params = new Array<any>();
     //获取事件详情
-    let sql: string = `select * from gtd_ev where evi = ? and del = ?`;
-    let ev: EvTbl = await this.sqlExce.getExtOneByParam<EvTbl>(sql, [evi, DelType.undel]);
+
+    let sql: string = ` select * from gtd_ev where evi = ?  `;
+    params.push(evi);
+    if (!getdel){
+      sql = sql + ` and del = ? `;
+      params.push(DelType.undel);
+    }
+    let ev: EvTbl = await this.sqlExce.getExtOneByParam<EvTbl>(sql, params);
 
     // 如果事件不存在
     if (!ev) {
