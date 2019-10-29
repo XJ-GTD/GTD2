@@ -163,6 +163,41 @@ export class FormatWeatherPipe implements PipeTransform {
     }
 
     if (args.length == 1) {
+      if (args[0] == "centigrade-with-json") {
+        if (!value) return "";
+
+        let weather = JSON.parse(value);
+
+        if (!(weather.temp.indexOf("℃") > 0)) {
+          return weather.temp + "℃";
+        } else {
+          return weather.temp;
+        }
+      }
+
+      if (args[0] == "winame-with-json") {
+        if (!value) return "";
+
+        let weather = JSON.parse(value);
+
+        //晴转多云
+        if (weather.weather.indexOf("转") > 0) {
+          let first: string = weather.weather.split("转")[0];
+
+          let wiKey = this.WEATHER_FONT_MAP.get(first);
+
+          if (wiKey) {
+            return wiKey;
+          }
+        } else {
+          let wiKey = this.WEATHER_FONT_MAP.get(weather.weather);
+
+          if (wiKey) {
+            return wiKey;
+          }
+        }
+      }
+
       if (args[0] == "centigrade") {
         if (!(value.indexOf("℃") > 0)) {
           return value + "℃";
