@@ -4657,7 +4657,7 @@ export class DayActivityData {
   calendaritems: Array<PlanItemData> = new Array<PlanItemData>();   // 日历项
   events: Array<EventData> = new Array<EventData>();                // 事件
   memos: Array<MemoData> = new Array<MemoData>();                   // 备忘
-  weather: string;                                                  // 天气JSON字符串
+  weather: string = "";                                             // 天气JSON字符串
 
   constructor(day: string = "") {
     this.day = day;
