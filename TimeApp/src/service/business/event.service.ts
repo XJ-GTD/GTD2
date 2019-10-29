@@ -4400,8 +4400,7 @@ export interface  Member extends ParTbl{
 
 //附件对象
 export interface Attachment extends FjTbl {
-
-
+  fpjson: CacheFilePathJson;
 }
 
 export class CacheFilePathJson {
