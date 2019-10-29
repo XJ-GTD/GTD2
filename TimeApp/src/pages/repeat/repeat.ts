@@ -11,16 +11,16 @@ import {UtilService} from "../../service/util-service/util.service";
 @Component({
   selector: 'page-repeat',
   template: `
-    <modal-box title="重复" [buttons]="buttons" (onSave)="save()" (onCancel)="cancel()">
+    <modal-box title="重复" [buttons]="buttons" (onSave)="save()" (onCancel)="cancel()" [enableEdit]="enableRepeat">
       <div class="itemwarp font-normal" >
-        <radio-select  [options]="items" full="true" center =  "true" [(ngModel)]="cfType" (onChanged)="onTypeChanged($event)" button5></radio-select>
+        <radio-select   [options]="items" full="true" center =  "true" [(ngModel)]="cfType" (onChanged)="onTypeChanged($event)" button5></radio-select>
       </div>
 
       <ng-template  [ngIf]="cfType == 'day'">
 
         <div class="itemwarp font-normal">
           <p>重复周期</p>
-          <radio-spinner label="天" [options]="itemRanges" [(ngModel)]="cfDayOptions.frequency" (onChanged)="onFreqChanged($event)"></radio-spinner>
+          <radio-spinner  label="天" [options]="itemRanges" [(ngModel)]="cfDayOptions.frequency" (onChanged)="onFreqChanged($event)"></radio-spinner>
         </div>
         <div class="itemwarp font-normal">
           <p>结束</p>
@@ -37,7 +37,7 @@ import {UtilService} from "../../service/util-service/util.service";
               </ion-label>
             </ion-item>
             <ion-item>
-              <ion-radio (ionSelect)="openUntilEndDate('d')" value="tosomeday" item-start>
+              <ion-radio  (ionSelect)="openUntilEndDate('d')" value="tosomeday" item-start>
 
               </ion-radio>
               <ion-label>直到{{cfDayOptions.toSomeDay | formatedate : 'CYYYY/MM/DD'}}</ion-label>
@@ -238,7 +238,7 @@ export class RepeatPage {
     saturday: "星期六",
   };
 
-  validRepeat : boolean = false;
+  enableRepeat : boolean = false;
 
   constructor(public navCtrl: NavController,
               private keyboard: Keyboard,
@@ -251,8 +251,8 @@ export class RepeatPage {
       if (value) {
 
         this.originRepeat = value;
-        this.validRepeat = this.navParams.data.validRepeat;
-        if (!this.validRepeat){
+        this.enableRepeat = this.navParams.data.enableRepeat;
+        if (!this.enableRepeat){
           this.buttons.save = false;
         }
         this.currentRepeat = new RtJson();
