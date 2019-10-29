@@ -2932,7 +2932,7 @@ export class EventService extends BaseService {
           let upload: UploadInData = new UploadInData();
           upload.filepath = attachment.fj;
 
-          await this.dataRestful.upload(upload);
+          let data = await this.dataRestful.upload(upload);
         }
 
         push.d.push(sync);
@@ -4400,8 +4400,21 @@ export interface  Member extends ParTbl{
 
 //附件对象
 export interface Attachment extends FjTbl {
+  fpjson: CacheFilePathJson;
+}
 
+export class CacheFilePathJson {
+  cachedir: string = "/cached";
+  local: string;
+  remote: string;
 
+  getLocalFilePath(datadir: string): string {
+    return datadir + this.cachedir + this.local;
+  }
+
+  getCacheDir(): string {
+    return this.cachedir;
+  }
 }
 
 export interface TaskData extends EventData,TTbl {
@@ -4861,6 +4874,23 @@ enum FieldChanged{
 enum DUflag {
   del = "del",
   update = "update"
+}
+
+export function generateCacheFilePathJson(fpjson: CacheFilePathJson, fj: string) {
+  if (!fpjson) {
+    if (fj) {
+      fpjson = new CacheFilePathJson();
+      Object.assign(fpjson, JSON.parse(fj));
+    } else {
+      return "";
+    }
+  } else {
+    let newfpjson: CacheFilePathJson = new CacheFilePathJson();
+    Object.assign(newfpjson, fpjson);
+    fpjson = newfpjson;
+  }
+
+  return fpjson;
 }
 
 export function generateRtJson(rtjson: RtJson, rt: string) {

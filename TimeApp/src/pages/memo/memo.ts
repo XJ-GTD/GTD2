@@ -20,9 +20,9 @@ import * as moment from "moment";
 @Component({
   selector: 'page-memo',
   template: `  
-    <modal-box title="添加备忘" [buttons]="buttons" (onSave)="save()" (onCancel)="cancel()">
+    <page-box title="添加备忘" [buttons]="buttons" (onSave)="save()" (onBack)="cancel()">
       <ion-textarea placeholder="你想记录什么。。。。"  rows="8" [(ngModel)]="memo" class="memo-set"  #bzRef></ion-textarea>
-      </modal-box>`
+      </page-box>`
 })
 export class MemoPage {
   buttons: any = {

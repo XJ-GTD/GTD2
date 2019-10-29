@@ -29,6 +29,7 @@ export interface CalendarDay {
   hasrepeat?: boolean;
   hasmessage?: boolean;
   hasMemo?:boolean;
+  accept?:number;
 }
 
 export class CalendarMonth {

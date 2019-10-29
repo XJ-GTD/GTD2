@@ -54,7 +54,7 @@ ion-calendar-month {
 
 
   button.days-btn p {
-    font-size: 1rem;
+    font-size: 1.2rem;
     width: auto;
     height: auto;
     margin: -10px auto;
@@ -73,7 +73,7 @@ ion-calendar-month {
       position: absolute;
       z-index: 0;
       text-align: center;
-      font-size: 0.8rem;
+      font-size: 0.9rem;
       text-overflow: ellipsis;
       white-space: nowrap;
       //todo
@@ -99,7 +99,7 @@ ion-calendar-month {
       .icon{
         font-size: 0.6rem;
         position: absolute;
-        bottom: -7px;
+        bottom: -4px;
 
         //todo
         //-webkit-transform:scale(0.5);
@@ -112,13 +112,13 @@ ion-calendar-month {
       }
 
       .diary {
-        left:0px;
+        left:4px;
         color:rgba(44,150,129,1);
 
       }
       .message {
-        top:0.3rem;
-        right:0.3rem;
+        top:0.2rem;
+        right:0.2rem;
         color: rgba(221,90,90,1);
       }
 
@@ -128,7 +128,7 @@ ion-calendar-month {
       //}
 
       .repeat {
-        right: 0px;
+        right: 4px;
         color:rgba(219,153,121,1);
       }
     }

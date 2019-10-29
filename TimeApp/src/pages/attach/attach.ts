@@ -13,7 +13,7 @@ import {Camera, CameraOptions} from '@ionic-native/camera';
 import {Chooser} from '@ionic-native/chooser';
 import {FileOpener} from '@ionic-native/file-opener';
 import {FilePath} from '@ionic-native/file-path';
-import {EventService, FjData, Attachment} from "../../service/business/event.service";
+import {EventService,FjData, Attachment} from "../../service/business/event.service";
 import {UtilService} from "../../service/util-service/util.service";
 import * as moment from "moment";
 import {DelType, SyncType} from "../../data.enum";
@@ -50,7 +50,7 @@ import {UserConfig} from "../../service/config/user.config";
               </div>
               <div class="line font-normal" leftmargin rightmargin >
                 <div *ngIf="(fja.ext=='PDF'||fja.ext=='pdf')&& (fja.fj !='')" >
-                  <ion-icon class="fas fa-file-pdf" (click)="window.open(fja.fj)"></ion-icon>
+                  <ion-icon class="fas fa-file-pdf" (click)="opnePdf(fja.fj)"></ion-icon>
                 </div>
                 <div *ngIf="(fja.ext=='png'||fja.ext=='PNG'||fja.ext=='jpg'||fja.ext=='JPG'||fja.ext=='bmp'||fja.ext=='BMP'||fja.ext=='mp4'||fja.ext=='MP4')&& (fja.fj !='')">
                       <ion-thumbnail>
@@ -58,8 +58,8 @@ import {UserConfig} from "../../service/config/user.config";
                       </ion-thumbnail>
                 </div>
 
-                <div class="icon" *ngIf="(fja.tb=='unsynch')&&(fja.ui==currentuser) " (click)="delAttach(fja)"  end >
-                  <ion-icon class="fal fa-minus-circle"></ion-icon>
+                <div class="icon" *ngIf="(fja.tb=='unsynch')&&(fja.ui==currentuser) " end >
+                  <ion-icon class="fal fa-minus-circle" (click)="delAttach(fja)"></ion-icon>
                 </div>
               </div>
             </ion-row>
@@ -146,7 +146,7 @@ export class AttachPage {
       this.obt = this.navParams.data.obt;
       this.obi = this.navParams.data.obi;
       this.fjArray = this.navParams.data.attach;
-      this.currentuser = this.navParams.data.userId
+      // this.currentuser = this.navParams.data.userId
     }
     //验证缓存文件目录是否存在
     this.file.checkDir(this.file.externalDataDirectory, '/timeAppfile')
@@ -200,15 +200,12 @@ export class AttachPage {
   async save() {
     let data: Object = {attach: this.fjArray};
 
-    // 测试代码不要删除
     let uploads = this.fjArray.filter((element) => {
       return (element.tb != SyncType.synch);
     });
-
     if (uploads && uploads.length > 0) {
       await this.eventService.syncAttachments(uploads);
     }
-
     this.viewCtrl.dismiss(data);
   }
 
@@ -246,6 +243,9 @@ export class AttachPage {
         this.fjData.del = DelType.undel;
         this.fjData.tb = SyncType.unsynch;
         this.fjData.wtt = moment().unix();
+        if(!this.bw) {
+          this.bw = fileName;
+        }
         this.file.copyFile(imgFileDir, fileName, this.file.externalDataDirectory + "/timeAppfile", fileName);
 
       }
@@ -264,13 +264,14 @@ export class AttachPage {
    */
   select() {
 
+
     this.chooser.getFile('*/*').then((file) => {
-        alert("选择的PDF文件："+JSON.stringify(file));
         this.filePath.resolveNativePath(file.uri)
           .then((filePath) => {
+            alert("选择的PDF文件filePath："+JSON.stringify(filePath));
             if (filePath != '') {
               let fileName: string = filePath.substr(filePath.lastIndexOf("/") + 1, filePath.length);
-              let ext: string = fileName.split(".")[1];
+              let ext: string = fileName.substr(fileName.lastIndexOf(".") + 1);
               let imgFileDir: string = filePath.substr(0, filePath.lastIndexOf("/") + 1);
               // let fjData: FjData = {} as FjData;
               this.fjData.obt = this.obt;
@@ -283,6 +284,9 @@ export class AttachPage {
               this.fjData.wtt = moment().unix();
               this.fjData.fj = this.file.externalDataDirectory + "/timeAppfile/" + fileName;
               //this.fjArray.push(fjData);
+              if(!this.bw) {
+                this.bw = fileName;
+              }
               alert("存储值："+JSON.stringify(this.fjData));
               this.file.copyFile(imgFileDir, fileName, this.file.externalDataDirectory + "/timeAppfile", fileName);
             }
@@ -339,6 +343,12 @@ export class AttachPage {
             }
         }
     }
+  }
+  //打开本地PDF
+  opnePdf(fj: string) {
+    this.fileOpener.open(fj,'application/pdf')
+    .then(() => console.info('File is opened'))
+    .catch(e => console.info('Error opening file', e));
   }
 
 }

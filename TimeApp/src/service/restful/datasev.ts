@@ -24,7 +24,10 @@ export class DataRestful {
 
     let data = await this.request.upload(url, upload, upload.filepath, upload.filename);
 
-    return new UploadOutData();
+    let result: UploadOutData = new UploadOutData();
+    Object.assign(result, data);
+
+    return result;
   }
 
   /**
@@ -120,13 +123,17 @@ export class PullOutData {
 }
 
 export class UploadInData {
-  username: string = "group";
+  saPrefix: string = "sas";
+  username: string = UserConfig.account.id;
+  group: string = "group";
   filepath: string;
-  filename: string = "formData";
+  filename: string = "file";
 }
 
 export class UploadOutData {
-
+  code: string;
+  message: string;
+  data: number;
 }
 
 export class DownloadInData {}
