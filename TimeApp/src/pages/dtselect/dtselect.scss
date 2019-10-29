@@ -3,6 +3,10 @@ page-dtselect, page-fd ,page-repeat{
     text-align: end;
     margin-right: 17px;
   }
+  .duradisplay {
+    margin-right: 17px;
+    text-align: end;
+  }
   modal-box .box-modal .box-content > .scroll-content {
     overflow-y: auto;
   }
@@ -38,7 +42,7 @@ page-dtselect, page-fd ,page-repeat{
   .itemwarp {
     min-height: 50px;
     border-radius: 4px;
-    margin: 12px 14px;
+    margin: 12px 13px;
     width: auto;
 
     date-picker {
