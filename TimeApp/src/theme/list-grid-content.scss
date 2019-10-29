@@ -164,11 +164,32 @@
     width: auto;
     margin: 0.4rem 1rem;
     position: relative;
+    overflow: hidden;
 
     .syncing {
       height: 100%;
       width: 100%;
       position: absolute;
+    }
+
+    .plan {
+      position: absolute;
+      -webkit-transform: rotate(45deg);
+      transform: rotate(45deg);
+      right: -4rem;
+      top: 8px;
+      height: 20px;
+      line-height: 20px;
+      text-align: center;
+      width: 74px;
+
+      span {
+        overflow: hidden;
+        white-space: nowrap;
+        font-size: .8rem;
+        margin-left: -10px;
+        font-weight: 100;
+      }
     }
 
     .line {
@@ -382,6 +403,12 @@
     }
 
     .item-content {
+      .plan {
+        span {
+          color: rgba(206, 206, 206, 1);
+        }
+      }
+
       .syncing {
         background-color: rgba(0, 12, 31, .5);
       }
@@ -527,9 +554,15 @@
     }
 
     .item-content {
+      .plan {
+        span {
+          color: rgba(57, 70, 93, 1);
+        }
+      }
       .syncing {
-        background-color: rgba(255,255,255,.8);
-    }
+        background-color: rgba(255, 255, 255, .8);
+      }
+
       .line {
         color: rgba(51, 51, 51, 1);
       }

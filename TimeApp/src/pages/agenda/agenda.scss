@@ -16,7 +16,6 @@ page-agenda, page-commemorationday,page-comment {
     .snRow {
       height: 50%;
       flex-wrap: nowrap;
-
       .sn {
         flex-grow: 1;
       }
@@ -56,10 +55,21 @@ page-agenda, page-commemorationday,page-comment {
             text-align: right;
           }
 
+          .pickDate{
+            padding-right: 5px;
+          }
+
           .content {
             overflow: hidden;
             text-overflow: ellipsis;
             white-space: nowrap;
+          }
+          .person{
+            display: -webkit-box;
+            white-space: normal;
+            -webkit-box-orient: vertical;
+            -webkit-line-clamp: 2;
+            overflow: hidden;
           }
 
           button {
@@ -68,8 +78,7 @@ page-agenda, page-commemorationday,page-comment {
             padding: 0.5rem 1.8rem;
 
             .button-inner {
-              width: auto;
-              text-align: left;
+              padding: 1rem;
             }
           }
         }

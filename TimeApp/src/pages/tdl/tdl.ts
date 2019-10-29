@@ -16,12 +16,21 @@ import {UtilService} from "../../service/util-service/util.service";
 import {FeedbackService} from "../../service/cordova/feedback.service";
 import {CalendarService, DayActivityData, MonthActivityData} from "../../service/business/calendar.service";
 import {EventService} from "../../service/business/event.service";
-import {PageDirection, EventType, InviteState, PlanItemType, SyncType, SelfDefineType, EventFinishStatus} from "../../data.enum";
+import {
+  PageDirection,
+  EventType,
+  InviteState,
+  PlanItemType,
+  SyncType,
+  SelfDefineType,
+  EventFinishStatus
+} from "../../data.enum";
 import {TdlGesture} from "./tdl-gestures";
 import {CalendarComponent} from "../../components/ion2-calendar";
 import {UserConfig} from "../../service/config/user.config";
 import BScroll from '@better-scroll/core'
 import InfinityScroll from '@better-scroll/infinity'
+
 BScroll.use(InfinityScroll);
 
 /**
@@ -52,15 +61,16 @@ BScroll.use(InfinityScroll);
     <!--</div>-->
     <!--</div>-->
 
-    <ion-content #contentD class="monthActivityWapper" >
+    <ion-content #contentD class="monthActivityWapper">
       <div style="height: 10000px"></div>
-      <ion-grid #grid4Hight class = "list-grid-content">
+      <ion-grid #grid4Hight class="list-grid-content">
         <ng-template ngFor let-monthActivityData [ngForOf]="monthActivityDatas">
-          <ion-row class="item-content dayagenda-month {{monthActivityData.month  | transfromdate :'CSSMM'}}" id="month{{monthActivityData.month | formatedate:'YYYYMM'}}">
+          <ion-row class="item-content dayagenda-month {{monthActivityData.month  | transfromdate :'CSSMM'}}"
+                   id="month{{monthActivityData.month | formatedate:'YYYYMM'}}">
             <div class="line first-line">
-                <p class="month-a font-large">
-                  {{monthActivityData.month  | formatedate :"CYYYY/MM/ND"}}
-                </p>
+              <p class="month-a font-large">
+                {{monthActivityData.month  | formatedate :"CYYYY/MM/ND"}}
+              </p>
             </div>
             <div class="line font-normal">
               <p class="month-b">
@@ -86,56 +96,64 @@ BScroll.use(InfinityScroll);
                     <div class="ys-fsize">{{days.day | formatedate:"CMM"}}</div>
                   </div>
                   <div class="d-title  ">
-                    <div class="d-title-chr" >
-                      <p>{{this.util.lunar4str(days.day,"d")}}
+                    <div class="d-title-chr">
+                      <p>{{this.util.lunar4str(days.day, "d")}}
                       </p>
-                      <p>{{this.util.lunar4str(days.day,"M")}}</p>
+                      <p>{{this.util.lunar4str(days.day, "M")}}</p>
                     </div>
                     <div class=" d-title-chr"><span>{{days.events.length}}</span> 活动</div>
                     <div class=" d-title-chr"><span>{{days.calendaritems.length}}</span> 纪念日</div>
-                    <div class=" d-title-chr mome " (click)="toMemo(days)" *ngIf="days.memos.length > 0" [class.item-no-display]="days.memos.length == 0"><span>{{days.memos.length}}</span>备忘</div>
+                    <div class=" d-title-chr mome " (click)="toMemo(days)" *ngIf="days.memos.length > 0"
+                         [class.item-no-display]="days.memos.length == 0"><span>{{days.memos.length}}</span>备忘
+                    </div>
                   </div>
                 </div>
               </ion-row>
 
-              <ion-row class="item-content  calendaritem-content item-content-backgroud" *ngFor="let jt of days.calendaritems;" (click)="toPlanItem(jt)">
+              <ion-row class="item-content  calendaritem-content item-content-backgroud"
+                       *ngFor="let jt of days.calendaritems;" (click)="toPlanItem(jt)">
                 <!-- 自定义日历项 -->
                 <ng-container *ngIf="jt.jtc == selfdefine">
                   <!--<div class="line font-small first-line">-->
-                    <!--<div class="icon">-->
-                      <!--<ion-icon class = "fal fa-gift"></ion-icon>-->
-                    <!--</div>-->
-                    <!--<div class="sn">{{jt.jtn}}</div>-->
+                  <!--<div class="icon">-->
+                  <!--<ion-icon class = "fal fa-gift"></ion-icon>-->
+                  <!--</div>-->
+                  <!--<div class="sn">{{jt.jtn}}</div>-->
                   <!--</div>-->
                   <!--<div class="line font-small" *ngIf="currentuser != jt.ui && jt.ui != ''" [ngStyle]="{'margin-left': jt.ji == ''? '0.6rem' : '0'}">-->
-                    <!--<div class="icon">-->
-                      <!--<ion-icon class = "fal fa-user-tag"></ion-icon>-->
-                    <!--</div>-->
-                    <!--<div class="person ">&#45;&#45;来自{{jt.ui | formatuser: currentuser: friends}}</div>-->
-                    <!--<div class="invite" *ngIf="jt.invitestatus != inviteaccept && jt.invitestatus != invitereject" end><span (click)="rejectInvite($event, event)">拒绝</span><span (click)="acceptInvite($event, event)">接受</span></div>-->
-                    <!--<div class="plan" end><span [ngStyle]="{'color': event.ji == ''? 'transparent' : (event.ji | formatplan: 'color': privateplans )}"  >{{event.ji | formatplan: 'name': '': privateplans}}</span></div>-->
+                  <!--<div class="icon">-->
+                  <!--<ion-icon class = "fal fa-user-tag"></ion-icon>-->
+                  <!--</div>-->
+                  <!--<div class="person ">&#45;&#45;来自{{jt.ui | formatuser: currentuser: friends}}</div>-->
+                  <!--<div class="invite" *ngIf="jt.invitestatus != inviteaccept && jt.invitestatus != invitereject" end><span (click)="rejectInvite($event, event)">拒绝</span><span (click)="acceptInvite($event, event)">接受</span></div>-->
+                  <!--<div class="plan" end><span [ngStyle]="{'color': event.ji == ''? 'transparent' : (event.ji | formatplan: 'color': privateplans )}"  >{{event.ji | formatplan: 'name': '': privateplans}}</span></div>-->
                   <!--</div>-->
                   <div class="line font-small first-line">
                     <div class="icon">
-                      <ion-icon class = "fal fa-gift"></ion-icon>
+                      <ion-icon class="fal fa-gift"></ion-icon>
                     </div>
                     <div class="sn">{{jt.jtn}}</div>
                   </div>
                   <div class="line font-small" *ngIf="currentuser != jt.ui && jt.ui != ''">
                     <div class="icon">
-                      <ion-icon class = "fal fa-user-tag"></ion-icon>
+                      <ion-icon class="fal fa-user-tag"></ion-icon>
                     </div>
                     <div class="person ">--来自{{jt.ui | formatuser: currentuser: friends}}</div>
-                    <div class="invite" *ngIf="jt.invitestatus != inviteaccept && jt.invitestatus != invitereject" end><span (click)="rejectInvite($event, event)">拒绝</span><span (click)="acceptInvite($event, event)">接受</span></div>
-                    <div class="plan" end><span [ngStyle]="{'color': event.ji == ''? 'transparent' : (event.ji | formatplan: 'color': privateplans )}"  >{{event.ji | formatplan: 'name': '': privateplans}}</span></div>
+                    <div class="invite" *ngIf="jt.invitestatus != inviteaccept && jt.invitestatus != invitereject" end>
+                      <span (click)="rejectInvite($event, event)">拒绝</span><span (click)="acceptInvite($event, event)">接受</span>
+                    </div>
                   </div>
+                  <div class="plan" *ngIf="jt.invitestatus == inviteaccept || jt.invitestatus == invitereject"
+                       [ngStyle]="{'background-color': jt.ji == ''? 'transparent' : (jt.ji | formatplan: 'color': privateplans )}">
+                    <span>{{jt.ji | formatplan: 'name': '': privateplans}}</span></div>
+
                 </ng-container>
 
                 <!-- 下载日历项 -->
                 <ng-container *ngIf="jt.jtc == system">
                   <div class="line font-small first-line">
                     <div class="icon">
-                      <ion-icon class = "fal fa-gift"></ion-icon>
+                      <ion-icon class="fal fa-gift"></ion-icon>
                     </div>
                     <div class="sn" *ngIf="jt.jtt != weather">{{jt.jtn}}</div>
                     <div class="sn" *ngIf="jt.jtt == weather">{{jt.jtn}}<br/>{{jt.bz}}</div>
@@ -144,67 +162,73 @@ BScroll.use(InfinityScroll);
               </ion-row>
               <!--<ion-row class="item-content dayagenda-content item-content-backgroud" *ngFor="let event of days.events;" [ngStyle]="{'background-color': event.tb == synch? '#00ff80' : '#ff80c0'}" (click)="toDetail(event.evi,event.evd,event.type,event.gs)">-->
               <!--<ion-row class="item-content dayagenda-content item-content-backgroud" *ngFor="let event of days.events;" [ngStyle]="{'border-left': event.ji == ''? '0' : ('0.6rem solid ' + (event.ji | formatplan: 'color': privateplans))}" (click)="toDetail(event.evi,event.evd,event.type,event.gs)">-->
-                  <!--<div class="line font-small first-line" [ngStyle]="{'margin-left': event.ji == ''? '0.6rem' : '0'}">-->
-                    <!--<div class="icon">-->
-                      <!--<ion-icon class = "fal fa-calendar-star"></ion-icon>-->
-                    <!--</div>-->
-                    <!--<div class="sn" *ngIf="event.wc == finished"><s>{{event.evn}}</s></div>-->
-                    <!--<div class="sn" *ngIf="event.wc != finished">{{event.evn}}</div>-->
-                  <!--</div>-->
-                  <!--<div class="line font-small" [ngStyle]="{'margin-left': event.ji == ''? '0.6rem' : '0'}">-->
-                    <!--<div class="icon">-->
-                      <!--<ion-icon class = "fal fa-alarm-exclamation "></ion-icon>-->
-                    <!--</div>-->
-                    <!--<div class="st">{{event.evt}}</div>-->
+              <!--<div class="line font-small first-line" [ngStyle]="{'margin-left': event.ji == ''? '0.6rem' : '0'}">-->
+              <!--<div class="icon">-->
+              <!--<ion-icon class = "fal fa-calendar-star"></ion-icon>-->
+              <!--</div>-->
+              <!--<div class="sn" *ngIf="event.wc == finished"><s>{{event.evn}}</s></div>-->
+              <!--<div class="sn" *ngIf="event.wc != finished">{{event.evn}}</div>-->
+              <!--</div>-->
+              <!--<div class="line font-small" [ngStyle]="{'margin-left': event.ji == ''? '0.6rem' : '0'}">-->
+              <!--<div class="icon">-->
+              <!--<ion-icon class = "fal fa-alarm-exclamation "></ion-icon>-->
+              <!--</div>-->
+              <!--<div class="st">{{event.evt}}</div>-->
 
-                    <!--<div class="icon" end>-->
-                      <!--<ion-icon class = "fal fa-sync" *ngIf = "event.tb == synch"></ion-icon>-->
-                    <!--</div>-->
-                  <!--</div>-->
-                  <!--<div class="line font-small" *ngIf="currentuser != event.ui && event.ui != ''" [ngStyle]="{'margin-left': event.ji == ''? '0.6rem' : '0'}">-->
-                    <!--<div class="icon ">-->
-                      <!--<ion-icon class = "user-o fal fa-user-tag"></ion-icon>-->
-                    <!--</div>-->
-                    <!--<div class="person">&#45;&#45;来自{{event.ui | formatuser: currentuser: friends}}</div>-->
-                    <!--<div class="invite" *ngIf="event.invitestatus != inviteaccept && event.invitestatus != invitereject" end><span (click)="rejectInvite($event, event)">拒绝</span><span (click)="acceptInvite($event, event)">接受</span></div>-->
-                    <!--<div class="plan" end><span [ngStyle]="{'color': event.ji == ''? 'transparent' : (event.ji | formatplan: 'color': privateplans )}"  >{{event.ji | formatplan: 'name': '': privateplans}}</span></div>-->
-                  <!--</div>-->
-                <!--&lt;!&ndash;<div class="syncing">&ndash;&gt;-->
-                  <!--&lt;!&ndash;<div class="hand">&ndash;&gt;-->
-                    <!--&lt;!&ndash;<div class="finger"></div>&ndash;&gt;-->
-                    <!--&lt;!&ndash;<div class="finger"></div>&ndash;&gt;-->
-                    <!--&lt;!&ndash;<div class="finger"></div>&ndash;&gt;-->
-                    <!--&lt;!&ndash;<div class="finger"></div>&ndash;&gt;-->
-                  <!--&lt;!&ndash;</div>&ndash;&gt;-->
-                <!--&lt;!&ndash;</div>&ndash;&gt;-->
+              <!--<div class="icon" end>-->
+              <!--<ion-icon class = "fal fa-sync" *ngIf = "event.tb == synch"></ion-icon>-->
+              <!--</div>-->
+              <!--</div>-->
+              <!--<div class="line font-small" *ngIf="currentuser != event.ui && event.ui != ''" [ngStyle]="{'margin-left': event.ji == ''? '0.6rem' : '0'}">-->
+              <!--<div class="icon ">-->
+              <!--<ion-icon class = "user-o fal fa-user-tag"></ion-icon>-->
+              <!--</div>-->
+              <!--<div class="person">&#45;&#45;来自{{event.ui | formatuser: currentuser: friends}}</div>-->
+              <!--<div class="invite" *ngIf="event.invitestatus != inviteaccept && event.invitestatus != invitereject" end><span (click)="rejectInvite($event, event)">拒绝</span><span (click)="acceptInvite($event, event)">接受</span></div>-->
+              <!--<div class="plan" end><span [ngStyle]="{'color': event.ji == ''? 'transparent' : (event.ji | formatplan: 'color': privateplans )}"  >{{event.ji | formatplan: 'name': '': privateplans}}</span></div>-->
+              <!--</div>-->
+              <!--&lt;!&ndash;<div class="syncing">&ndash;&gt;-->
+              <!--&lt;!&ndash;<div class="hand">&ndash;&gt;-->
+              <!--&lt;!&ndash;<div class="finger"></div>&ndash;&gt;-->
+              <!--&lt;!&ndash;<div class="finger"></div>&ndash;&gt;-->
+              <!--&lt;!&ndash;<div class="finger"></div>&ndash;&gt;-->
+              <!--&lt;!&ndash;<div class="finger"></div>&ndash;&gt;-->
+              <!--&lt;!&ndash;</div>&ndash;&gt;-->
+              <!--&lt;!&ndash;</div>&ndash;&gt;-->
               <!--</ion-row>-->
 
-              <ion-row class="item-content dayagenda-content item-content-backgroud" *ngFor="let event of days.events;"  (click)="toDetail(event.evi,event.evd,event.type,event.gs)">
-                <div class="line font-small first-line" >
+              <ion-row class="item-content dayagenda-content item-content-backgroud" *ngFor="let event of days.events;"
+                       (click)="toDetail(event.evi,event.evd,event.type,event.gs)">
+                <div class="line font-small first-line">
                   <div class="icon">
-                    <ion-icon class = "fal fa-calendar-star"></ion-icon>
+                    <ion-icon class="fal fa-calendar-star"></ion-icon>
                   </div>
                   <div class="sn" *ngIf="event.wc == finished"><s>{{event.evn}}</s></div>
                   <div class="sn" *ngIf="event.wc != finished">{{event.evn}}</div>
                 </div>
                 <div class="line font-small">
                   <div class="icon">
-                    <ion-icon class = "fal fa-alarm-exclamation "></ion-icon>
+                    <ion-icon class="fal fa-alarm-exclamation "></ion-icon>
                   </div>
                   <div class="st">{{event.evt}}</div>
 
                   <div class="icon" end>
-                    <ion-icon class = "fal fa-sync" *ngIf = "event.tb == synch"></ion-icon>
+                    <ion-icon class="fal fa-sync" *ngIf="event.tb == synch"></ion-icon>
                   </div>
                 </div>
                 <div class="line font-small" *ngIf="currentuser != event.ui && event.ui != ''">
                   <div class="icon ">
-                    <ion-icon class = "user-o fal fa-user-tag"></ion-icon>
+                    <ion-icon class="user-o fal fa-user-tag"></ion-icon>
                   </div>
                   <div class="person">--来自{{event.ui | formatuser: currentuser: friends}}</div>
-                  <div class="invite" *ngIf="event.invitestatus != inviteaccept && event.invitestatus != invitereject" end><span (click)="rejectInvite($event, event)">拒绝</span><span (click)="acceptInvite($event, event)">接受</span></div>
-                  <div class="plan" end><span [ngStyle]="{'color': event.ji == ''? 'transparent' : (event.ji | formatplan: 'color': privateplans )}"  >{{event.ji | formatplan: 'name': '': privateplans}}</span></div>
+                  <div class="invite" *ngIf="event.invitestatus != inviteaccept && event.invitestatus != invitereject"
+                       end><span (click)="rejectInvite($event, event)">拒绝</span><span
+                    (click)="acceptInvite($event, event)">接受</span></div>
                 </div>
+                <div class="plan" *ngIf="event.invitestatus == inviteaccept || event.invitestatus == invitereject"
+                     [ngStyle]="{'background-color': event.ji == ''? 'transparent' : (event.ji | formatplan: 'color': privateplans )}">
+                  <span>{{event.ji | formatplan: 'name': '': privateplans}}</span></div>
+
                 <!--<div class="syncing">-->
                 <!--<div class="hand">-->
                 <!--<div class="finger"></div>-->
@@ -239,13 +263,13 @@ export class TdlPage {
 
 
   option = {
-    isgetData : false,
-    loopmonth : false,
+    isgetData: false,
+    loopmonth: false,
     canscroll: false,
   };
 
 
-  listmonth:moment.Moment = moment(moment().format("YYYYMM") + "01");
+  listmonth: moment.Moment = moment(moment().format("YYYYMM") + "01");
 
   _gesture: TdlGesture;
 
@@ -289,7 +313,7 @@ export class TdlPage {
               private _plt: Platform,
               private _gestureCtrl: GestureController,
               private _domCtrl: DomController,
-              public changeDetectorRef:ChangeDetectorRef
+              public changeDetectorRef: ChangeDetectorRef
   ) {
   }
 
@@ -316,10 +340,6 @@ export class TdlPage {
   // ngAfterContentChecked() {
   //   console.log("downdowndowndownngAfterContentChecked");
   // }
-
-
-
-
 
 
   setScroll(scroll: boolean) {
@@ -354,47 +374,47 @@ export class TdlPage {
 
     });
 
-    this.emitService.register("calendar.change.month",($data)=>{
+    this.emitService.register("calendar.change.month", ($data) => {
       this.gotoEl4month("#month" + $data);
       this.listmonth = moment($data + "01");
     });
-    setTimeout(()=>{
+    setTimeout(() => {
 
       this.contentD.ionScroll.subscribe(($event: ScrollEvent) => {
-        try{
+        try {
 
 
           if (!$event) return;
 
           //显示当前顶部滑动日期
-          if (!this.option.loopmonth){
+          if (!this.option.loopmonth) {
             this.option.loopmonth = !this.option.loopmonth;
-              for (let i = this.monthActivityDatas.length -1; i >= 0; i-- ) {
-                //let monthActivityData = this.monthActivityDatas[0];
-                let monobj = moment(this.monthActivityDatas[i].month +"/01");
-                let key = "#month" + monobj.format("YYYYMM");
-                let el = this.el.nativeElement.querySelector(key);
-                // if (el && $event.scrollTop - el.offsetTop < el.clientHeight && $event.scrollTop - el.offsetTop > 0) {
-                if (el && $event.scrollTop - el.offsetTop > 0) {
-                  //this.headerDate = moment(scdlData.d).format("YYYY/MM/DD");
-                  //this.headerMoment = moment(scdlData.d);
-                  //this.feedback.audioTrans();
-                  this.option.loopmonth = !this.option.loopmonth;
+            for (let i = this.monthActivityDatas.length - 1; i >= 0; i--) {
+              //let monthActivityData = this.monthActivityDatas[0];
+              let monobj = moment(this.monthActivityDatas[i].month + "/01");
+              let key = "#month" + monobj.format("YYYYMM");
+              let el = this.el.nativeElement.querySelector(key);
+              // if (el && $event.scrollTop - el.offsetTop < el.clientHeight && $event.scrollTop - el.offsetTop > 0) {
+              if (el && $event.scrollTop - el.offsetTop > 0) {
+                //this.headerDate = moment(scdlData.d).format("YYYY/MM/DD");
+                //this.headerMoment = moment(scdlData.d);
+                //this.feedback.audioTrans();
+                this.option.loopmonth = !this.option.loopmonth;
 
-                  //准备发出emit
-                  if (this.option.canscroll){
-                    if (this.listmonth.isBefore(monobj)){
-                      this.emitService.emit("list.change.month","next");
-                    }
-                    if (this.listmonth.isAfter(monobj)){
-                      this.emitService.emit("list.change.month","prev");
-                    }
-
+                //准备发出emit
+                if (this.option.canscroll) {
+                  if (this.listmonth.isBefore(monobj)) {
+                    this.emitService.emit("list.change.month", "next");
                   }
-                  this.listmonth = monobj;
-                  break;
+                  if (this.listmonth.isAfter(monobj)) {
+                    this.emitService.emit("list.change.month", "prev");
+                  }
+
                 }
+                this.listmonth = monobj;
+                break;
               }
+            }
 
 
           }
@@ -403,15 +423,15 @@ export class TdlPage {
 
           if ($event.directionY == 'up') {
 
-            if ($event.scrollTop < 10000){
-              this.contentD.scrollTo(0,10100,100);
+            if ($event.scrollTop < 10000) {
+              this.contentD.scrollTo(0, 10100, 100);
               return;
             }
 
             if ($event.scrollTop < 11000) {
               // this.contentD._scroll.stop();
               // this.setScroll(false);
-              this.option.isgetData  = true;
+              this.option.isgetData = true;
 
               this.tdlServ.throughData(PageDirection.PageDown).then(data => {
                 // this.gotoEl4month(scdId);
@@ -419,9 +439,9 @@ export class TdlPage {
 
                 this.changeDetectorRef.markForCheck();
                 this.changeDetectorRef.detectChanges();
-                  this.option.isgetData  = false;
+                this.option.isgetData = false;
 
-                  // this.setScroll(true);
+                // this.setScroll(true);
                 // setTimeout(()=>{
 
                 // this.setScroll(false);
@@ -435,18 +455,18 @@ export class TdlPage {
             // console.log("***********************" + $event.scrollTop)
             if ($event.scrollTop + 1000 > this.grid.nativeElement.clientHeight - $event.scrollElement.clientHeight) {
 
-              this.option.isgetData  = true;
+              this.option.isgetData = true;
 
-              this.tdlServ.throughData(PageDirection.PageUp).then(data=>{
+              this.tdlServ.throughData(PageDirection.PageUp).then(data => {
 
                 this.changeDetectorRef.markForCheck();
                 this.changeDetectorRef.detectChanges();
-                this.option.isgetData  = false;
+                this.option.isgetData = false;
               })
             }
           }
 
-        }catch (e) {
+        } catch (e) {
           console.log(e);
 
         }
@@ -463,7 +483,7 @@ export class TdlPage {
         // }
 
       });
-    },2000);
+    }, 2000);
 
     new BScroll('.monthActivityWapper', {
       scrollY: true,
@@ -510,8 +530,8 @@ export class TdlPage {
   }
 
   gotoEl4month(id) {
-      setTimeout(()=>{
-        try{
+    setTimeout(() => {
+      try {
         let currmonthel = this.el.nativeElement.querySelector(id);
 
         if (currmonthel) {
@@ -520,9 +540,9 @@ export class TdlPage {
           this.gotoEl4month(id);
         }
       } catch (e) {
-      console.log(e)
-    }
-      },200);
+        console.log(e)
+      }
+    }, 200);
 
   }
 
