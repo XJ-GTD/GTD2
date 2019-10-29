@@ -40,6 +40,13 @@ import {TxJson} from "../../service/business/event.service";
         <ion-label><ion-icon class="fal fa-clock"></ion-icon>开始时间</ion-label>
         <ion-label class = "timedisplay">{{stval.displayname}}</ion-label>
       </div>
+      <div ion-item no-border no-padding no-lines no-margin class="itemwarp font-normal" (click)="openDura()"  *ngIf="settype=='0'">
+        <ion-multi-picker #dura [(ngModel)]="duraval.value"
+                          (ngModelChange)="duraselect();seteddate();" [multiPickerColumns]="dependentColumns3"
+                          cancelText="取消" doneText="设定"></ion-multi-picker>
+        <ion-label><ion-icon class="fal fa-clock"></ion-icon>时长</ion-label>
+        <ion-label class = "duradisplay">{{duraval.displayname}}</ion-label>
+      </div>
       <div ion-item no-border no-padding no-lines no-margin class="itemwarp font-normal" *ngIf="settype=='1'">
         <date-picker  #endDate item-content [(ngModel)]="pagedata.ed"
                       pickerFormat="YYYY ,MM DD" displayFormat="YYYY 年 MM 月 DD 日"
@@ -55,9 +62,6 @@ import {TxJson} from "../../service/business/event.service";
         <ion-label><ion-icon class="fal fa-clock"></ion-icon>结束时间</ion-label>
         <ion-label class = "timedisplay">{{etval.displayname}}</ion-label>
       </div>
-      <div ion-item no-border no-padding no-lines no-margin class="itemwarp font-normal" *ngIf="settype=='0'">
-        <ion-label>时长{{pagedata.ct | transfromdate:"duration"}}</ion-label>
-      </div>
      
     </modal-box>
   `
@@ -68,6 +72,13 @@ export class DtSelectPage {
   startTime: MultiPicker;
   @ViewChild("endTime")
   endTime: MultiPicker;
+  @ViewChild("dura")
+  dura: MultiPicker;
+
+  duraval = {
+    displayname:"",
+    value:""
+  }
 
   stval = {
     displayname:"",
@@ -111,6 +122,8 @@ export class DtSelectPage {
   dependentColumns: any[];
 
   dependentColumns2: any[];
+
+  dependentColumns3: any[];
 
   constructor(public navCtrl: NavController,
               public viewCtrl: ViewController,
@@ -196,14 +209,79 @@ export class DtSelectPage {
       }
     ];
 
+    this.dependentColumns3 = [
+      {
+        columnWidth: '100px',
+        options: [
+          {text: '时长', value: '1'}],
+      },
+      {
+        columnWidth: '100px',
+        options: [
+          {text: '', value: this.day2min(0)},
+          {text: '1天', value: this.day2min(1)},
+          {text: '2天', value: this.day2min(2)},
+          {text: '3天', value: this.day2min(3)},
+          {text: '4天', value: this.day2min(4)},
+          {text: '5天', value: this.day2min(5)},
+          {text: '6天', value: this.day2min(6)},
+          {text: '7天', value: this.day2min(7)},
+          {text: '8天', value: this.day2min(8)},
+          {text: '9天', value: this.day2min(9)},
+          {text: '10天', value: this.day2min(10)}],
+      },
+      {
+        columnWidth: '100px',
+        options: [
+          {text: '', value: this.h2min(0)},
+          {text: '1小时', value: this.h2min(1)},
+          {text: '2小时', value: this.h2min(2)},
+          {text: '3小时', value: this.h2min(3)},
+          {text: '4小时', value: this.h2min(4)},
+          {text: '5小时', value: this.h2min(5)},
+          {text: '6小时', value: this.h2min(6)},
+          {text: '7小时', value: this.h2min(7)},
+          {text: '8小时', value: this.h2min(8)},
+          {text: '9小时', value: this.h2min(9)},
+          {text: '10小时', value: this.h2min(10)},
+          {text: '11小时', value: this.h2min(11)},
+          {text: '12小时', value: this.h2min(12)},
+          {text: '13小时', value: this.h2min(13)},
+          {text: '14小时', value: this.h2min(14)},
+          {text: '15小时', value: this.h2min(15)},
+          {text: '16小时', value: this.h2min(16)}],
+      },
+      {
+        columnWidth: '100px',
+        options:
+          [
+            {text: '', value: 0},
+            {text: '5分钟', value: 5},
+            {text: '10分钟', value: 10},
+            {text: '15分钟', value: 15},
+            {text: '20分钟', value: 20},
+            {text: '25分钟', value: 25},
+            {text: '30分钟', value: 30},
+            {text: '35分钟', value: 35},
+            {text: '40分钟', value: 40},
+            {text: '45分钟', value: 45},
+            {text: '50分钟', value: 50},
+            {text: '55分钟', value: 55}
+          ]
+      }
+    ];
+
     if (this.navParams && this.navParams.data) {
 
-      this.pagedata.ct = this.navParams.data.ct;
+
 
       this.pagedata.rfg = this.navParams.data.rfg;
       this.pagedata.evd = this.navParams.data.evd;
       if ( this.navParams.data.al == anyenum.IsWholeday.StartSet ){
         this.settype = '0';
+        this.pagedata.ct = this.navParams.data.ct;
+
+
         this.pagedata.sd = moment(this.navParams.data.evd).format("YYYY-MM-DD");
         this.pagedata.ed =  moment(this.navParams.data.evd + " " + this.navParams.data.evt).
         add(this.navParams.data.ct,'m').format("YYYY-MM-DD");
@@ -219,15 +297,17 @@ export class DtSelectPage {
         this.pagedata.ed =  moment(this.navParams.data.evd).format("YYYY-MM-DD");
         this.pagedata.st = this.navParams.data.evt;
         this.pagedata.et = this.navParams.data.evt;
+        this.pagedata.ct = 0;
+
 
       }else{
         this.iniTime();
       }
-      this.setTimeValue(this.pagedata.st,this.pagedata.et);
+      this.setTimeValue(this.pagedata.st,this.pagedata.et,this.pagedata.ct);
     }
   }
 
-  private setTimeValue(st,et){
+  private setTimeValue(st,et,ct){
     let tmpval  = new Array<any>();
 
     tmpval = st.split(":");
@@ -252,7 +332,28 @@ export class DtSelectPage {
         this.etval.displayname = "上午" + " " + tmpval[0] + " 点 " + tmpval[1] + " 分";
       }
     }
+
+    let d = moment.duration(ct,'m').days();
+    let h = moment.duration(ct,'m').hours();
+    let m = moment.duration(ct,'m').minutes();
+
+    this.duraval.value = "1" + " " + d*24*60 + " " + h*60 + " " + m;
+    this.duraval.displayname = "";
+    if ( d+"" != "0" ){
+      this.duraval.displayname += d + " 天 ";
+    }
+    if (h+"" != "0" ){
+      this.duraval.displayname += h + " 小时 ";
+    }
+    if (m+"" != "0" ){
+      this.duraval.displayname +=  m + " 分钟";
+    }
+
+    if (d+h+m == 0){
+      this.duraval.displayname = 0 + " 分钟";
+    }
   }
+
 
   close() {
     this.navCtrl.pop();
@@ -310,7 +411,7 @@ export class DtSelectPage {
       add(this.pagedata.ct, 'm').format("YYYY-MM-DD");
     this.pagedata.et = moment(this.pagedata.sd + " " + this.pagedata.st).
       add(this.pagedata.ct, 'm').format("HH:mm");
-    this.setTimeValue(this.pagedata.st,this.pagedata.et);
+    this.setTimeValue(this.pagedata.st,this.pagedata.et,this.pagedata.ct);
   }
 
   private openStartime(){
@@ -319,6 +420,42 @@ export class DtSelectPage {
 
   private openEndtime(){
     this.endTime.open();
+  }
+
+  private openDura(){
+    this.dura.open();
+  }
+
+  duraselect() {
+
+    if (!this.duraval.value) {
+      return;
+    }
+    let dtsplit = new Array<string>();
+    let time;
+    dtsplit = this.duraval.value.split(" ");
+    if (dtsplit.length < 4) {
+      return;
+    }
+
+    time = parseInt(dtsplit[1]) + parseInt(dtsplit[2]) + parseInt(dtsplit[3]);
+    this.pagedata.ct = time;
+
+    this.duraval.displayname = "";
+    if (dtsplit[1] != "0" ){
+      this.duraval.displayname += parseInt(dtsplit[1])/24/60 + " 天 ";
+    }
+    if (dtsplit[2] != "0" ){
+      this.duraval.displayname += parseInt(dtsplit[2])/60 + " 小时 ";
+    }
+    if (dtsplit[3] != "0" ){
+      this.duraval.displayname +=  dtsplit[3] + " 分钟";
+    }
+
+    if (time == 0){
+      this.duraval.displayname = 0 + " 分钟";
+    }
+
   }
 
   stselect() {
@@ -371,5 +508,13 @@ export class DtSelectPage {
       this.pagedata.et =  (parseInt(dtsplit[1])+ 12) + ":" + dtsplit[2];
     }
 
+  }
+
+  day2min(d) {
+    return d * 24 * 60;
+  }
+
+  h2min(h) {
+    return h * 60;
   }
 }
