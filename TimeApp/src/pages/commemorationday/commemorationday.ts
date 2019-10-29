@@ -106,7 +106,7 @@ import {PageBoxComponent} from "../../components/page-box/page-box";
               </div>
               <div end *ngIf="currentPlanItem.jtc == selfdefine && currentPlanItem.ui != currentuser">
                 <span class="content  font-normal">
-                   ---来自{{currentPlanItem.ui | formatuser: currentPlanItem: friends}}
+                   -{{currentPlanItem.ui | formatuser: currentPlanItem: friends}}
                   </span>
               </div>
             </ion-row>

@@ -3,7 +3,11 @@ page-agenda, page-commemorationday,page-comment {
   .grid {
     height: 100%;
     width: 100%;
-    padding: 1.8rem 1.2rem;
+    padding: 1.8rem 0.9rem;
+    .row{
+      padding-left: .3rem;
+      padding-right: .3rem;
+    }
 
     .limitRow {
       flex-direction: row-reverse;

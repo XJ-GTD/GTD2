@@ -96,6 +96,8 @@ BScroll.use(InfinityScroll);
                     <div class="ys-fsize">{{days.day | formatedate:"CMM"}}</div>
                   </div>
                   <div class="d-title  ">
+
+                    
                     <div class="d-title-chr">
                       <p>{{this.util.lunar4str(days.day, "d")}}
                       </p>
@@ -105,6 +107,16 @@ BScroll.use(InfinityScroll);
                     <div class=" d-title-chr"><span>{{days.calendaritems.length}}</span> 纪念日</div>
                     <div class=" d-title-chr mome " (click)="toMemo(days)" *ngIf="days.memos.length > 0"
                          [class.item-no-display]="days.memos.length == 0"><span>{{days.memos.length}}</span>备忘
+                    </div>
+
+                    <div class="weather">
+                      <span>
+                        上海 西南风<3级 15℃ 20℃ 多云
+                        上海 西南风<3级 15℃ 20℃ 多云
+                        上海 西南风<3级 15℃ 20℃ 多云
+                        上海 西南风<3级 15℃ 20℃ 多云
+                      </span>
+                      <ion-icon class="fas fa-cloud"></ion-icon>
                     </div>
                   </div>
                 </div>
@@ -138,12 +150,12 @@ BScroll.use(InfinityScroll);
                     <div class="icon">
                       <ion-icon class="fal fa-user-tag"></ion-icon>
                     </div>
-                    <div class="person ">--来自{{jt.ui | formatuser: currentuser: friends}}</div>
+                    <div class="person ">-{{jt.ui | formatuser: currentuser: friends}}</div>
                     <div class="invite" *ngIf="jt.invitestatus != inviteaccept && jt.invitestatus != invitereject" end>
                       <span (click)="rejectInvite($event, event)">拒绝</span><span (click)="acceptInvite($event, event)">接受</span>
                     </div>
                   </div>
-                  <div class="plan" *ngIf="jt.invitestatus == inviteaccept || jt.invitestatus == invitereject"
+                  <div class="plan plan-right"
                        [ngStyle]="{'background-color': jt.ji == ''? 'transparent' : (jt.ji | formatplan: 'color': privateplans )}">
                     <span>{{jt.ji | formatplan: 'name': '': privateplans}}</span></div>
 
@@ -155,8 +167,7 @@ BScroll.use(InfinityScroll);
                     <div class="icon">
                       <ion-icon class="fal fa-gift"></ion-icon>
                     </div>
-                    <div class="sn" *ngIf="jt.jtt != weather">{{jt.jtn}}</div>
-                    <div class="sn" *ngIf="jt.jtt == weather">{{jt.jtn}}<br/>{{jt.bz}}</div>
+                    <div class="sn">{{jt.jtn}}</div>
                   </div>
                 </ng-container>
               </ion-row>
@@ -203,8 +214,7 @@ BScroll.use(InfinityScroll);
                   <div class="icon">
                     <ion-icon class="fal fa-calendar-star"></ion-icon>
                   </div>
-                  <div class="sn" *ngIf="event.wc == finished"><s>{{event.evn}}</s></div>
-                  <div class="sn" *ngIf="event.wc != finished">{{event.evn}}</div>
+                  <div class="sn" [class.wc]="event.wc == finished">{{event.evn}}</div>
                 </div>
                 <div class="line font-small">
                   <div class="icon">
@@ -220,12 +230,12 @@ BScroll.use(InfinityScroll);
                   <div class="icon ">
                     <ion-icon class="user-o fal fa-user-tag"></ion-icon>
                   </div>
-                  <div class="person">--来自{{event.ui | formatuser: currentuser: friends}}</div>
+                  <div class="person">-{{event.ui | formatuser: currentuser: friends}}</div>
                   <div class="invite" *ngIf="event.invitestatus != inviteaccept && event.invitestatus != invitereject"
                        end><span (click)="rejectInvite($event, event)">拒绝</span><span
                     (click)="acceptInvite($event, event)">接受</span></div>
                 </div>
-                <div class="plan" *ngIf="event.invitestatus == inviteaccept || event.invitestatus == invitereject"
+                <div class="plan plan-right"
                      [ngStyle]="{'background-color': event.ji == ''? 'transparent' : (event.ji | formatplan: 'color': privateplans )}">
                   <span>{{event.ji | formatplan: 'name': '': privateplans}}</span></div>
 

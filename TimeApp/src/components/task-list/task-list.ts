@@ -32,7 +32,7 @@ import * as moment from "moment";
             </div>
               <div class="st font-small">  {{(task.evd + ' ' + task.evt) | transfromdate:'withNow'}}</div>
 
-              <div *ngIf="currentuser != task.ui && task.ui != ''" class="person font-small" end>---来自{{task.ui | formatuser: currentuser: friends}}</div>
+              <div *ngIf="currentuser != task.ui && task.ui != ''" class="person font-small" end>-{{task.ui | formatuser: currentuser: friends}}</div>
           </div>
       </ion-row>
     </ion-grid>
