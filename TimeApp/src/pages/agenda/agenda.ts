@@ -50,7 +50,7 @@ import {ModiPower} from "../../data.enum";
   template:
       `
     <page-box title="活动" [buttons]="buttons" [data]="currentAgenda.evi" (onRemove)="goRemove()" (onSave)="save()"
-              (onBack)="goBack()" (onRecord)="record($event)" (onSpeaker)="speaker($event)" [speakData] = "currentAgenda.evn">
+              (onBack)="goBack()" (onRecord)="record($event)" (onSpeaker)="speaker($event)" (onAccept)="acceptInvite(currentAgenda)" (onReject)="rejectInvite(currentAgenda)"  [speakData] = "currentAgenda.evn">
 
       <ion-grid [ngStyle]="{'border-left': (!currentAgenda.evi || !currentAgenda.ji || currentAgenda.ji == '')? '0' : ('0.6rem solid ' + (currentAgenda.ji | formatplan: 'color': privateplans)), 'padding-left': (!currentAgenda.evi || !currentAgenda.ji || currentAgenda.ji == '')? '1.2rem' : '0.6rem', 'border-radius': (!currentAgenda.evi || !currentAgenda.ji || currentAgenda.ji == '')? '0' : '4px'}">
       <!--<ion-grid>-->
@@ -177,6 +177,8 @@ export class AgendaPage {
     save: false,
     record:true,
     speaker:true,
+    accept:false,
+    reject:false,
     cancel: true
   };
 
@@ -200,6 +202,7 @@ export class AgendaPage {
   repeattonon = RepeatFlag.RepeatToOnly;
 
   acceptedinvite: InviteState = InviteState.Accepted;
+  rejectedinvite: InviteState = InviteState.Rejected;
 
   @ViewChild(PageBoxComponent)
   pageBoxComponent: PageBoxComponent
@@ -239,7 +242,13 @@ export class AgendaPage {
 
 
               this.snlength =  this.currentAgenda.evn.length;
-              this.buttons.remove = true;
+              if (this.currentAgenda.ui != currentuser && this.currentAgenda.invitestatus != InviteState.Accepted && this.currentAgenda.invitestatus != InviteState.Rejected) {
+                this.buttons.record = false;
+                this.buttons.accept = true;
+                this.buttons.reject = true;
+              } else {
+                this.buttons.remove = true;
+              }
 
               this.util.loadingEnd();
               hasdata = true;
@@ -611,6 +620,32 @@ export class AgendaPage {
       }
     });
     modal.present();
+  }
+
+  acceptInvite(event) {
+    this.util.loadingStart().then(() => {
+      event.invitestatus = InviteState.Accepted;
+
+      this.eventService.acceptReceivedAgenda(event.evi)
+        .then(() => {
+          this.buttons.record = true;
+          this.buttons.accept = false;
+          this.buttons.reject = false;
+          this.util.loadingEnd();
+        });
+    });
+  }
+
+  rejectInvite(event) {
+    this.util.loadingStart().then(() => {
+      event.invitestatus = InviteState.Rejected;
+
+      this.eventService.rejectReceivedAgenda(event.evi)
+        .then(() => {
+          this.util.loadingEnd();
+          this.goBack();
+        });
+    });
   }
 
   doOptionRemove(op: OperateType) {
