@@ -338,7 +338,7 @@ export class AttachPage {
   }
 
   // 删除当前项
-  delAttach(at: Attachment) {
+  async delAttach(at: Attachment) {
     if (at) {
         for (let fj of this.fjArray) {
             if ((fj.fji == at.fji)&&(fj.obt == at.obt)
