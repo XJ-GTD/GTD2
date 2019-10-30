@@ -97,7 +97,7 @@ BScroll.use(InfinityScroll);
                   </div>
                   <div class="d-title  ">
 
-                    
+
                     <div class="d-title-chr">
                       <p>{{this.util.lunar4str(days.day, "d")}}
                       </p>
@@ -204,47 +204,48 @@ BScroll.use(InfinityScroll);
               <!--&lt;!&ndash;</div>&ndash;&gt;-->
               <!--&lt;!&ndash;</div>&ndash;&gt;-->
               <!--</ion-row>-->
+              <ng-container *ngFor="let event of days.events;">
+                <ion-row class="item-content dayagenda-content item-content-backgroud" *ngIf="!(event.ui != currentuser && event.rtevi && event.invitestatus != inviteaccept && event.invitestatus != invitereject)"
+                         (click)="toDetail(event.evi,event.evd,event.type,event.gs)">
+                  <div class="line font-small first-line">
+                    <div class="icon">
+                      <ion-icon class="fal fa-calendar-star"></ion-icon>
+                    </div>
+                    <div class="sn" [class.wc]="event.wc == finished">{{event.evn}}</div>
+                  </div>
+                  <div class="line font-small">
+                    <div class="icon">
+                      <ion-icon class="fal fa-alarm-exclamation "></ion-icon>
+                    </div>
+                    <div class="st">{{event.evt}}</div>
 
-              <ion-row class="item-content dayagenda-content item-content-backgroud" *ngFor="let event of days.events;"
-                       (click)="toDetail(event.evi,event.evd,event.type,event.gs)">
-                <div class="line font-small first-line">
-                  <div class="icon">
-                    <ion-icon class="fal fa-calendar-star"></ion-icon>
+                    <div class="icon" end>
+                      <ion-icon class="fal fa-sync" *ngIf="event.tb == synch"></ion-icon>
+                    </div>
                   </div>
-                  <div class="sn" [class.wc]="event.wc == finished">{{event.evn}}</div>
-                </div>
-                <div class="line font-small">
-                  <div class="icon">
-                    <ion-icon class="fal fa-alarm-exclamation "></ion-icon>
+                  <div class="line font-small" *ngIf="currentuser != event.ui && event.ui != ''">
+                    <div class="icon ">
+                      <ion-icon class="user-o fal fa-user-tag"></ion-icon>
+                    </div>
+                    <div class="person">-{{event.ui | formatuser: currentuser: friends}}</div>
+                    <div class="invite" *ngIf="event.invitestatus != inviteaccept && event.invitestatus != invitereject"
+                         end><span (click)="rejectInvite($event, event)">拒绝</span><span
+                      (click)="acceptInvite($event, event)">接受</span></div>
                   </div>
-                  <div class="st">{{event.evt}}</div>
+                  <div class="plan plan-right"
+                       [ngStyle]="{'background-color': event.ji == ''? 'transparent' : (event.ji | formatplan: 'color': privateplans )}">
+                    <span>{{event.ji | formatplan: 'name': '': privateplans}}</span></div>
 
-                  <div class="icon" end>
-                    <ion-icon class="fal fa-sync" *ngIf="event.tb == synch"></ion-icon>
-                  </div>
-                </div>
-                <div class="line font-small" *ngIf="currentuser != event.ui && event.ui != ''">
-                  <div class="icon ">
-                    <ion-icon class="user-o fal fa-user-tag"></ion-icon>
-                  </div>
-                  <div class="person">-{{event.ui | formatuser: currentuser: friends}}</div>
-                  <div class="invite" *ngIf="event.invitestatus != inviteaccept && event.invitestatus != invitereject"
-                       end><span (click)="rejectInvite($event, event)">拒绝</span><span
-                    (click)="acceptInvite($event, event)">接受</span></div>
-                </div>
-                <div class="plan plan-right"
-                     [ngStyle]="{'background-color': event.ji == ''? 'transparent' : (event.ji | formatplan: 'color': privateplans )}">
-                  <span>{{event.ji | formatplan: 'name': '': privateplans}}</span></div>
-
-                <!--<div class="syncing">-->
-                <!--<div class="hand">-->
-                <!--<div class="finger"></div>-->
-                <!--<div class="finger"></div>-->
-                <!--<div class="finger"></div>-->
-                <!--<div class="finger"></div>-->
-                <!--</div>-->
-                <!--</div>-->
-              </ion-row>
+                  <!--<div class="syncing">-->
+                  <!--<div class="hand">-->
+                  <!--<div class="finger"></div>-->
+                  <!--<div class="finger"></div>-->
+                  <!--<div class="finger"></div>-->
+                  <!--<div class="finger"></div>-->
+                  <!--</div>-->
+                  <!--</div>-->
+                </ion-row>
+              </ng-container>
 
             </ng-template>
 

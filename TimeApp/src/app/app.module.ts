@@ -5,6 +5,9 @@ import {StatusBar} from '@ionic-native/status-bar';
 import {SplashScreen} from '@ionic-native/splash-screen';
 import {IonicStorageModule} from "@ionic/storage";
 import {File} from "@ionic-native/file";
+import {FileOpener} from '@ionic-native/file-opener';
+import {FilePath} from '@ionic-native/file-path';
+import {FileTransfer} from '@ionic-native/file-transfer';
 import {LocalNotifications} from "@ionic-native/local-notifications";
 import {SQLite} from '@ionic-native/sqlite';
 import {Calendar} from "@ionic-native/calendar";
@@ -206,6 +209,9 @@ import * as ionicGalleryModal from 'ionic-gallery-modal';
     StatusBar,
     SplashScreen,
     File,
+    FileOpener,
+    FilePath,
+    FileTransfer,
     Device,
     Vibration,
     Geolocation,

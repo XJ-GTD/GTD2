@@ -50,6 +50,14 @@ import {StatusType} from "../../data.enum";
               <ion-icon class="fad fa-ear"></ion-icon>
             </div>
 
+            <div  (click)="goAccept()" *ngIf="buttons.accept">
+              <ion-icon class="fad fa-eye"></ion-icon>
+            </div>
+
+            <div  (click)="goReject()" *ngIf="buttons.reject">
+              <ion-icon class="fad fa-eye"></ion-icon>
+            </div>
+
             <div (click)="goBack()" *ngIf="buttons.cancel">
               <ion-icon class="fad fa-undo"></ion-icon>
             </div>
@@ -92,6 +100,8 @@ export class PageBoxComponent{
     record: false,
     create: false,
     speaker: false,
+    accept: false,
+    reject: false,
     cancel: true
   };
 
@@ -115,6 +125,12 @@ export class PageBoxComponent{
 
   @Output()
   private onSpeaker: EventEmitter<any> = new EventEmitter<any>();
+
+  @Output()
+  private onAccept: EventEmitter<any> = new EventEmitter<any>();
+
+  @Output()
+  private onReject: EventEmitter<any> = new EventEmitter<any>();
 
   constructor(private events: Events,
               private renderer2: Renderer2,
@@ -168,6 +184,14 @@ export class PageBoxComponent{
       this.onRecord.emit("语音不可用");
       this.buttons.record = true;
     });
+  }
+
+  goAccept() {
+    this.onAccept.emit(this);
+  }
+
+  goReject() {
+    this.onReject.emit(this);
   }
 
   goSpeaker(){
