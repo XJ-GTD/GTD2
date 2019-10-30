@@ -208,7 +208,7 @@ BScroll.use(InfinityScroll);
               <!--&lt;!&ndash;</div>&ndash;&gt;-->
               <!--</ion-row>-->
               <ng-container *ngFor="let event of days.events;">
-                <ion-row class="item-content dayagenda-content item-content-backgroud" *ngIf="!(event.ui != currentuser && event.rtevi && (event.invitestatus != inviteaccept || event.invitestatus != invitereject))"
+                <ion-row class="item-content dayagenda-content item-content-backgroud" *ngIf="!(event.ui != currentuser && event.rtevi && event.invitestatus != inviteaccept && event.invitestatus != invitereject)"
                          (click)="toDetail(event.evi,event.evd,event.type,event.gs)">
                   <div class="line font-small first-line">
                     <div class="icon">
