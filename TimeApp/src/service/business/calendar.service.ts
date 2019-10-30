@@ -2660,7 +2660,7 @@ export class CalendarService extends BaseService {
 
       // 天气设置到天气字段
       if (value.jtt == PlanItemType.Weather) {
-        dayActivity.weather = value.ext;
+        dayActivity.weather = value;
       } else {
         dayActivity.calendaritems.push(value);
       }
@@ -2889,7 +2889,7 @@ export class CalendarService extends BaseService {
 
         // 天气设置到天气字段
         if (value.jtt == PlanItemType.Weather) {
-          dayActivity.weather = value.ext;
+          dayActivity.weather = value;
         } else {
           dayActivity.calendaritems.push(value);
         }
@@ -3007,7 +3007,7 @@ export class CalendarService extends BaseService {
 
       // 天气设置到天气字段
       if (value.jtt == PlanItemType.Weather) {
-        dayActivity.weather = value.ext;
+        dayActivity.weather = value;
       } else {
         dayitems.push(value);
       }
@@ -3110,7 +3110,7 @@ export class CalendarService extends BaseService {
 
           // 天气设置到天气字段
           if (item.jtt == PlanItemType.Weather) {
-            dayActivities.weather = item.ext;
+            dayActivities.weather = item;
           } else {
             if (index >= 0) {
               // 更新/删除
@@ -4657,7 +4657,7 @@ export class DayActivityData {
   calendaritems: Array<PlanItemData> = new Array<PlanItemData>();   // 日历项
   events: Array<EventData> = new Array<EventData>();                // 事件
   memos: Array<MemoData> = new Array<MemoData>();                   // 备忘
-  weather: string = "";                                             // 天气JSON字符串
+  weather: PlanItemData;                       // 天气JSON字符串
 
   constructor(day: string = "") {
     this.day = day;

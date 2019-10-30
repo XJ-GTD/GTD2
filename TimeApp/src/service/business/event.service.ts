@@ -1398,7 +1398,9 @@ export class EventService extends BaseService {
       outAgd.evi = tmpevi;
 
       outAgd.members = agdata.members;
-      outAgd.attachments = agdata.attachments;
+      if (j == 0){
+        outAgd.attachments = agdata.attachments;
+      }
       outAgd.tos = tos;
 
     }
