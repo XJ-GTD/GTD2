@@ -2868,7 +2868,7 @@ export class EventService extends BaseService {
     return;
   }
 
-  async syncAttachments(attachments: Array<Attachment> = new Array<Attachment>(), callback: (updated: any) => void) {
+  async syncAttachments(attachments: Array<Attachment> = new Array<Attachment>(), callback: (updated: any) => void = null) {
     this.assertEmpty(attachments);    // 入参不能为空
 
     let members = new Array<Member>();
@@ -2949,7 +2949,7 @@ export class EventService extends BaseService {
           if (data && data.data) {
             attachment.fpjson.remote = data.data;
             attachment.fj = JSON.stringify(attachment.fpjson);
-            callback(attachment);
+            if (callback) callback(attachment);
           }
         }
 
