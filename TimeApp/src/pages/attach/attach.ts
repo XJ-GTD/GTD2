@@ -83,7 +83,7 @@ export class AttachPage {
   members: Array<Member>  = new Array<Member>();
   buttons: any = {
     create: true,
-    save: true,
+    save: false,
     cancel: true
   };
   defaultimg: string = DataConfig.HUIBASE64_LARGE;
