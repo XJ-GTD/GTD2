@@ -4928,7 +4928,7 @@ export function generateCacheFilePathJson(fpjson: CacheFilePathJson, fj: string)
       fpjson = new CacheFilePathJson();
       Object.assign(fpjson, JSON.parse(fj));
     } else {
-      return "";
+      return null;
     }
   } else {
     let newfpjson: CacheFilePathJson = new CacheFilePathJson();

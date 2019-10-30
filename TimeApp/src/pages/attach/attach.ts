@@ -13,7 +13,7 @@ import {Camera, CameraOptions} from '@ionic-native/camera';
 import {Chooser} from '@ionic-native/chooser';
 import {FileOpener} from '@ionic-native/file-opener';
 import {FilePath} from '@ionic-native/file-path';
-import {EventService,FjData, Attachment} from "../../service/business/event.service";
+import {EventService, FjData, CacheFilePathJson, Attachment, generateCacheFilePathJson} from "../../service/business/event.service";
 import {UtilService} from "../../service/util-service/util.service";
 import * as moment from "moment";
 import {DelType, SyncType} from "../../data.enum";
@@ -118,24 +118,24 @@ export class AttachPage {
     //       console.log("err:" + JSON.stringify(err))
     //     })
     //   });
-    //1.验证是否有原有的值传的过来
-    if (this.fjArray) {
+    // //1.验证是否有原有的值传的过来
+    // if (this.fjArray) {
       //2.当有值传递过来的情况下，将fj的值转换给fpjson
-      for(let i=0; i<this.fjArray.length;i++) {
-        if (this.fjArray[i].fj && this.fjArray[i].ext) {
+      for(let attachment of this.fjArray) {
+        if (attachment.fj && attachment.ext) {
           //处理历史遗留数据，按照原来的显示
-          if (this.uitl.isJsonString(this.fjArray[i].fj)) {
+          if (this.uitl.isJsonString(attachment.fj)) {
             //获取新赋值
             let cacheFilePathJson: CacheFilePathJson = new CacheFilePathJson();
-            this.fjArray[i].fpjson = this.eventService.generateCacheFilePathJson(cacheFilePathJson,this.fjArray[i].fj);
+            attachment.fpjson = generateCacheFilePathJson(attachment.fpjson, attachment.fj);
             //目前直接在该页面直接存储附件，则直接将文件位置赋值给
-            this.fjArray[i].fj = this.fjArray[i].fpjson.getLocalFilePath(this.file.cacheDirectory);
+            attachment.fj = attachment.fpjson.getLocalFilePath(this.file.cacheDirectory);
             //检查该文件夹下是否存在该文件，如果不存在，则根据remote下载同步该文件
-            this.file.checkFile(this.file.cacheDirectory+this.fjArray[i].fpjson.getCacheDir(), this.fjArray[i].fpjson.local)
+            this.file.checkFile(this.file.cacheDirectory+attachment.fpjson.getCacheDir(), attachment.fpjson.local)
             .then(_ => console.log('Directory exists'))
             .catch(err => {
                   //根据remote 拉取文件
-                  if (this.fjArray[i].fpjson.remote) {
+                  if (attachment.fpjson.remote) {
                     //根据地址拉取文件
                   }
             });
@@ -143,7 +143,7 @@ export class AttachPage {
 
         }
       }
-    }
+    // }
 
   }
 
@@ -185,7 +185,7 @@ export class AttachPage {
   }
 
   async save() {
-    // let data: Object = {attach: this.fjArray};
+    let data: Object = {attach: this.fjArray};
     //
     // let uploads = this.fjArray.filter((element) => {
     //   return (element.tb != SyncType.synch);
@@ -338,7 +338,7 @@ export class AttachPage {
   }
 
   // 删除当前项
-  delAttach(at: Attachment) {
+  async delAttach(at: Attachment) {
     if (at) {
         for (let fj of this.fjArray) {
             if ((fj.fji == at.fji)&&(fj.obt == at.obt)
