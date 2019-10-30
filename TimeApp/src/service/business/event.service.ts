@@ -2868,7 +2868,7 @@ export class EventService extends BaseService {
     return;
   }
 
-  async syncAttachments(attachments: Array<Attachment> = new Array<Attachment>()) {
+  async syncAttachments(attachments: Array<Attachment> = new Array<Attachment>(), callback: (updated: any) => void) {
     this.assertEmpty(attachments);    // 入参不能为空
 
     let members = new Array<Member>();
@@ -2937,12 +2937,20 @@ export class EventService extends BaseService {
 
         sync.payload = attachment;
 
+        attachment.fpjson = generateCacheFilePathJson(attachment.fpjson, attachment.fj);
+
         // 上传文件到服务器
-        if (attachment.ext && attachment.ext != "") {
+        if (!attachment.fpjson.remote && attachment.ext && attachment.ext != "") {
           let upload: UploadInData = new UploadInData();
           upload.filepath = attachment.fj;
 
           let data = await this.dataRestful.upload(upload);
+
+          if (data && data.data) {
+            attachment.fpjson.remote = data.data;
+            attachment.fj = JSON.stringify(attachment.fpjson);
+            callback(attachment);
+          }
         }
 
         push.d.push(sync);
@@ -3462,7 +3470,7 @@ export class EventService extends BaseService {
   **@author ying<343253410@qq.com>
   */
 
-  async saveAttachment(att: Attachment) {
+  async saveAttachment(att: Attachment): Promise<Attachment> {
     this.assertEmpty(att);       // 入参不能为空
     this.assertEmpty(att.fjn);    // 附件名称
     this.assertEmpty(att.obt);
@@ -3478,7 +3486,15 @@ export class EventService extends BaseService {
 
     //同步数据
     this.emitService.emit("mwxing.event.fj.add", att);
-    this.syncAttachments([att]);
+    await this.syncAttachments([att], async (updated) => {
+      let fjdb: FjTbl = new FjTbl();
+      Object.assign(fjdb, updated);
+
+      //更新数据
+      await this.sqlExce.saveByParam(fjdb);
+
+      att = updated;
+    });
 
     return att;
   }
@@ -3487,7 +3503,7 @@ export class EventService extends BaseService {
   * 删除附件
   **@author ying<343253410@qq.com>
   */
-  async removeAttachment(att: Attachment) {
+  async removeAttachment(att: Attachment): Promise<Attachment> {
     this.assertEmpty(att);
     this.assertEmpty(att.fji);
 
@@ -3502,6 +3518,8 @@ export class EventService extends BaseService {
     //同步数据
     this.emitService.emit("mwxing.event.fj.changed", att);
     this.syncAttachments([att]);
+
+    return att;
   }
 
   /**
