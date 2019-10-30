@@ -110,13 +110,10 @@ BScroll.use(InfinityScroll);
                     </div>
 
                     <div class="weather" *ngIf="days.weather">
-                      <!--<span>-->
-                        <!--{{days.weather.jtn}} {{days.weather.bz}}-->
-                      <!--</span>-->
                       <span>
-                        {{days.weather.ext}}
+                       11111 {{days.weather.jtn}} {{days.weather.bz}}
                       </span>
-                      <ion-icon class='fas {{days.weather.ext | formatweather:"winame-with-json"}}'></ion-icon>
+                      <ion-icon class='fas {{days.jtn | formatweather:"winame-with-json"}}'></ion-icon>
                     </div>
                   </div>
                 </div>

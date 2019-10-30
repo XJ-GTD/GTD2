@@ -177,12 +177,12 @@ export class FormatWeatherPipe implements PipeTransform {
       if (args[0] == "winame-with-json") {
         if (!value) return "";
 
-        console.log(value);
-        let weather = JSON.parse(value);
+        // value = value.replace('""','"');
+        // let weather = JSON.parse(value);
 
         //晴转多云
-        if (weather.weather.indexOf("转") > 0) {
-          let first: string = weather.weather.split("转")[0];
+        if (value.indexOf("转") > 0) {
+          let first: string = value.split("转")[0];
 
           let wiKey = this.WEATHER_FONT_MAP.get(first);
 
@@ -190,7 +190,7 @@ export class FormatWeatherPipe implements PipeTransform {
             return wiKey;
           }
         } else {
-          let wiKey = this.WEATHER_FONT_MAP.get(weather.weather);
+          let wiKey = this.WEATHER_FONT_MAP.get(value);
 
           if (wiKey) {
             return wiKey;
