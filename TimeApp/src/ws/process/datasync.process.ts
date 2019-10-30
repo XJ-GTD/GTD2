@@ -419,7 +419,7 @@ export class DataSyncProcess implements MQProcess {
         let attachment: Attachment = {} as Attachment;
         Object.assign(attachment, dsPara.data);
 
-        await this.eventService.receivedAttachmentData(attachment, this.convertSyncStatus(dsPara.status));
+        await this.eventService.receivedAttachmentData([attachment], this.convertSyncStatus(dsPara.status));
       }
 
     }
