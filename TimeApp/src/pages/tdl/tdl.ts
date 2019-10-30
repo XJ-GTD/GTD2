@@ -109,14 +109,14 @@ BScroll.use(InfinityScroll);
                          [class.item-no-display]="days.memos.length == 0"><span>{{days.memos.length}}</span>备忘
                     </div>
 
-                    <div class="weather">
+                    <div class="weather" *ngIf="days.weather">
+                      <!--<span>-->
+                        <!--{{days.weather.jtn}} {{days.weather.bz}}-->
+                      <!--</span>-->
                       <span>
-                        上海 西南风<3级 15℃ 20℃ 多云
-                        上海 西南风<3级 15℃ 20℃ 多云
-                        上海 西南风<3级 15℃ 20℃ 多云
-                        上海 西南风<3级 15℃ 20℃ 多云
+                        {{days.weather.ext}}
                       </span>
-                      <ion-icon class="fas fa-cloud"></ion-icon>
+                      <ion-icon class='fas {{days.weather.ext | formatweather:"winame-with-json"}}'></ion-icon>
                     </div>
                   </div>
                 </div>
