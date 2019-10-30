@@ -2940,7 +2940,7 @@ export class EventService extends BaseService {
         attachment.fpjson = generateCacheFilePathJson(attachment.fpjson, attachment.fj);
 
         // 上传文件到服务器
-        if (!attachment.fpjson.remote && attachment.ext && attachment.ext != "") {
+        if (attachment.fpjson && !attachment.fpjson.remote && attachment.ext && attachment.ext != "") {
           let upload: UploadInData = new UploadInData();
           upload.filepath = attachment.fj;
 
