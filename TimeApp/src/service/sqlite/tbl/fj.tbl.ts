@@ -142,7 +142,7 @@ export class FjTbl implements ITblParam {
     let params = new Array<any>();
     let sq =`insert into gtd_fj
        (    fji ,obt ,obi ,fjn ,ext ,ui ,fj ,tb,del,wtt,utt)
-       values(?,?,?,?,?,?,?,?,?,?);`;
+       values(?,?,?,?,?,?,?,?,?,?,?);`;
     params.push(this.fji);
     params.push(this.obt);
     params.push(this.obi);
@@ -165,7 +165,7 @@ export class FjTbl implements ITblParam {
     let params = new Array<any>();
     let sq =`replace into gtd_fj
        (    fji ,obt ,obi ,fjn ,ext ,ui ,fj ,tb,del,wtt ,utt )
-       values(?,?,?,?,?,?,?,?,?,?);`;
+       values(?,?,?,?,?,?,?,?,?,?,?);`;
     params.push(this.fji);
     params.push(this.obt);
     params.push(this.obi);
