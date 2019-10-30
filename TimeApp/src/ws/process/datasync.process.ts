@@ -5,7 +5,7 @@ import {EmitService} from "../../service/util-service/emit.service";
 import {Injectable} from "@angular/core";
 import {ProcesRs} from "../model/proces.rs";
 import {CalendarService, PlanData, PlanItemData} from "../../service/business/calendar.service";
-import {EventService, AgendaData, TaskData, MiniTaskData, Member} from "../../service/business/event.service";
+import {EventService, AgendaData, TaskData, MiniTaskData, Member, Attachment} from "../../service/business/event.service";
 import {MemoService, MemoData} from "../../service/business/memo.service";
 import {DataSyncPara} from "../model/datasync.para";
 import {SyncDataStatus, MemberShareState, EventFinishStatus, DelType, InviteState, CompleteState} from "../../data.enum";
@@ -66,7 +66,7 @@ export class DataSyncProcess implements MQProcess {
         await this.memoService.acceptSyncMemos([dsPara.id]);
       }
       if (dsPara.type == "Attachment") {
-        await this.memoService.acceptSyncAttachments([dsPara.id]);
+        await this.eventService.acceptSyncAttachments([dsPara.id]);
       }
     }
 
@@ -88,7 +88,7 @@ export class DataSyncProcess implements MQProcess {
         await this.memoService.receivedMemo(dsPara.id);
       }
       if (dsPara.type == "Attachment") {
-        await this.memoService.receivedAttachment(dsPara.id);
+        await this.eventService.receivedAttachment(dsPara.id);
       }
     }
 
@@ -110,7 +110,7 @@ export class DataSyncProcess implements MQProcess {
         await this.memoService.receivedMemo(dsPara.id);
       }
       if (dsPara.type == "Attachment") {
-        await this.memoService.receivedAttachment(dsPara.id);
+        await this.eventService.receivedAttachment(dsPara.id);
       }
     }
 
@@ -132,7 +132,7 @@ export class DataSyncProcess implements MQProcess {
         await this.memoService.receivedMemo(dsPara.id);
       }
       if (dsPara.type == "Attachment") {
-        await this.memoService.receivedAttachment(dsPara.id);
+        await this.eventService.receivedAttachment(dsPara.id);
       }
     }
 
