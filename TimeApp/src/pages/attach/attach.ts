@@ -109,15 +109,42 @@ export class AttachPage {
       // this.currentuser = this.navParams.data.userId
     }
     //验证缓存文件目录是否存在
-    this.file.checkDir(this.file.externalDataDirectory, '/timeAppfile')
-      .then(_ => console.log('Directory exists'))
-      .catch(err => {
-        this.file.createDir(this.file.externalDataDirectory, "timeAppfile", true).then(result => {
-          console.log("success")
-        }).catch(err => {
-          console.log("err:" + JSON.stringify(err))
-        })
-      });
+    // this.file.checkDir(this.file.externalDataDirectory, '/timeAppfile')
+    //   .then(_ => console.log('Directory exists'))
+    //   .catch(err => {
+    //     this.file.createDir(this.file.externalDataDirectory, "timeAppfile", true).then(result => {
+    //       console.log("success")
+    //     }).catch(err => {
+    //       console.log("err:" + JSON.stringify(err))
+    //     })
+    //   });
+    //1.验证是否有原有的值传的过来
+    if (this.fjArray) {
+      //2.当有值传递过来的情况下，将fj的值转换给fpjson
+      for(let i=0; i<this.fjArray.length;i++) {
+        if (this.fjArray[i].fj && this.fjArray[i].ext) {
+          //处理历史遗留数据，按照原来的显示
+          if (this.uitl.isJsonString(this.fjArray[i].fj)) {
+            //获取新赋值
+            let cacheFilePathJson: CacheFilePathJson = new CacheFilePathJson();
+            this.fjArray[i].fpjson = this.eventService.generateCacheFilePathJson(cacheFilePathJson,this.fjArray[i].fj);
+            //目前直接在该页面直接存储附件，则直接将文件位置赋值给
+            this.fjArray[i].fj = this.fjArray[i].fpjson.getLocalFilePath(this.file.cacheDirectory);
+            //检查该文件夹下是否存在该文件，如果不存在，则根据remote下载同步该文件
+            this.file.checkFile(this.file.cacheDirectory+this.fjArray[i].fpjson.getCacheDir(), this.fjArray[i].fpjson.local)
+            .then(_ => console.log('Directory exists'))
+            .catch(err => {
+                  //根据remote 拉取文件
+                  if (this.fjArray[i].fpjson.remote) {
+                    //根据地址拉取文件
+                  }
+            });
+          }
+
+        }
+      }
+    }
+
   }
 
 
@@ -158,14 +185,14 @@ export class AttachPage {
   }
 
   async save() {
-    let data: Object = {attach: this.fjArray};
-
-    let uploads = this.fjArray.filter((element) => {
-      return (element.tb != SyncType.synch);
-    });
-    if (uploads && uploads.length > 0) {
-      await this.eventService.syncAttachments(uploads);
-    }
+    // let data: Object = {attach: this.fjArray};
+    //
+    // let uploads = this.fjArray.filter((element) => {
+    //   return (element.tb != SyncType.synch);
+    // });
+    // if (uploads && uploads.length > 0) {
+    //   await this.eventService.syncAttachments(uploads);
+    // }
     this.viewCtrl.dismiss(data);
   }
 
@@ -198,7 +225,11 @@ export class AttachPage {
         this.fjData.obi = this.obi;
         this.fjData.fjn = fileName;
         this.fjData.ext = ext;
-        this.fjData.fj = this.file.externalDataDirectory + "/timeAppfile/" + fileName;
+        //构造地址文件
+        let cacheFilePathJson: CacheFilePathJson = new CacheFilePathJson();
+        cacheFilePathJson.local = fileName;
+        //this.fjData.fj = this.file.externalDataDirectory + "/timeAppfile/" + fileName;
+        this.fjData.fj = JSON.stringify(cacheFilePathJson);
         this.fjData.ui = this.currentuser;
         this.fjData.del = DelType.undel;
         this.fjData.tb = SyncType.unsynch;
@@ -206,7 +237,7 @@ export class AttachPage {
         if(!this.bw) {
           this.bw = fileName;
         }
-        this.file.copyFile(imgFileDir, fileName, this.file.externalDataDirectory + "/timeAppfile", fileName);
+        this.file.copyFile(imgFileDir, fileName, this.file.cacheDirectory + cacheFilePathJson.getCacheDir(), fileName);
 
       }
       // let base64Image = 'data:image/jpeg;base64,' + imageData;
@@ -242,13 +273,17 @@ export class AttachPage {
               this.fjData.del = DelType.undel;
               this.fjData.tb = SyncType.unsynch;
               this.fjData.wtt = moment().unix();
-              this.fjData.fj = this.file.externalDataDirectory + "/timeAppfile/" + fileName;
+              let cacheFilePathJson: CacheFilePathJson = new CacheFilePathJson();
+              cacheFilePathJson.local = fileName;
+              this.fjData.fj = JSON.stringify(cacheFilePathJson);
+              this.fjData.fpjson = cacheFilePathJson;
+              //this.fjData.fj = this.file.externalDataDirectory + "/timeAppfile/" + fileName;
               //this.fjArray.push(fjData);
               if(!this.bw) {
                 this.bw = fileName;
               }
               alert("存储值："+JSON.stringify(this.fjData));
-              this.file.copyFile(imgFileDir, fileName, this.file.externalDataDirectory + "/timeAppfile", fileName);
+              this.file.copyFile(imgFileDir, fileName, this.file.cacheDirectory + cacheFilePathJson.getCacheDir(), fileName);
             }
           })
           .catch(err => console.log(err));
@@ -279,16 +314,26 @@ export class AttachPage {
   }
 
   // 点击确认，保存文件
-  saveComment() {
+ async saveComment() {
     if (this.bw && this.bw.trim() != '') {
       this.fjData.fjn = this.bw
       this.fjData.ui = this.currentuser;
       this.fjData.del = DelType.undel;
       this.fjData.tb = SyncType.unsynch;
       this.fjData.wtt = moment().unix();
+      //1.对当前数据进行存储
+      let retAt: Attachment = {}  as Attachment;
+      retAt = await this.eventService.syncSaveAttachment(this.fjData);
+      //2.上传文件
+      let attachArray: Array<Attachment> = new Array<Attachment>();
+      attachArray.push(retAt);
+      await this.eventService.syncAttachments(attachArray);
+      //3.将当前数据存的到fjArray中去
+      this.fjData.fj = this.fjData.fpjson.getLocalFilePath(this.file.cacheDirectory);
       this.fjArray.push(this.fjData);
       this.fjData = {} as Attachment;
       this.bw = "";
+      //4. TODO 同步通知参与人，新增数据
     }
   }
 
@@ -301,6 +346,11 @@ export class AttachPage {
               &&(fj.ext == at.ext)&&(fj.fj == at.fj)
               &&(fj.tb == at.tb)&&(fj.del == at.del)&&(fj.wtt == at.wtt)) {
                   fj.del = DelType.del;
+                  //当存在数据库中的情况下，更新数据中的删除状态位
+                  if(fj.fji) {
+                     await this.eventService.syncUpdateAttachment(fj.fji);
+                     //同步通知参与删除相关内容
+                  }
             }
         }
     }
