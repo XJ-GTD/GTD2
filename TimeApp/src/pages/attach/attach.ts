@@ -127,7 +127,7 @@ export class AttachPage {
           if (this.uitl.isJsonString(attachment.fj)) {
             //获取新赋值
             let cacheFilePathJson: CacheFilePathJson = new CacheFilePathJson();
-            attachment.fpjson = generateCacheFilePathJson(attachment.fpjson, this.fjArray[i].fj);
+            attachment.fpjson = generateCacheFilePathJson(attachment.fpjson, attachment.fj);
             //目前直接在该页面直接存储附件，则直接将文件位置赋值给
             attachment.fj = attachment.fpjson.getLocalFilePath(this.file.cacheDirectory);
             //检查该文件夹下是否存在该文件，如果不存在，则根据remote下载同步该文件
