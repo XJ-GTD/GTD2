@@ -66,7 +66,7 @@ export class SpecialDataProcess extends BaseProcess implements MQProcess {
           current.st = moment().format("HH:mm");
           current.ji = "";
           current.bz = data.desc;
-          current.ext = JSON.stringify(data.ext).replace(/\"/g, `""`);
+          current.ext = JSON.stringify(data.ext);//.replace(/\"/g, `""`);
 
           await this.calendarService.savePlanItem(current, origin);
         } else {
@@ -74,7 +74,7 @@ export class SpecialDataProcess extends BaseProcess implements MQProcess {
           current.st = moment().format("HH:mm");
           current.ji = "";
           current.bz = data.desc;
-          current.ext = JSON.stringify(data.ext).replace(/\"/g, `""`);
+          current.ext = JSON.stringify(data.ext);//.replace(/\"/g, `""`);
 
           await this.calendarService.savePlanItem(current);
         }
