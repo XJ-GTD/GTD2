@@ -56,7 +56,7 @@ import {DataConfig} from "../../service/config/data.config";
                 <div *ngIf="(fja.ext=='png'||fja.ext=='PNG'||fja.ext=='jpg'||fja.ext=='JPG'||fja.ext=='bmp'||fja.ext=='BMP'||fja.ext=='mp4'||fja.ext=='MP4')&& (fja.fj !='')">
                       <ion-thumbnail>
                       <img  *ngIf="fja.fjurl!=''" src="{{fja.fjurl}}" />
-                      <img  *ngIf="fja.fjurl ==''" src="{{dataConfig.HUIBASE64_LARGE}}" />
+                      <img  *ngIf="fja.fjurl ==''" src="{{defaultimg}}" />
                       </ion-thumbnail>
                 </div>
 
@@ -86,6 +86,7 @@ export class AttachPage {
     save: true,
     cancel: true
   };
+  defaultimg: string = DataConfig.HUIBASE64_LARGE;
 
   currentuser: string = UserConfig.account.id;
   friends: Array<any> = UserConfig.friends;
@@ -104,7 +105,6 @@ export class AttachPage {
               private keyboard: Keyboard,
               private fileOpener: FileOpener,
               private actionSheetCtrl: ActionSheetController,
-              private dataConfig: DataConfig,
               private uitl:UtilService) {
     if (this.navParams && this.navParams.data) {
       this.obt = this.navParams.data.obt;
