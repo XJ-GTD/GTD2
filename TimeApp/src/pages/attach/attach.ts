@@ -13,7 +13,7 @@ import {Camera, CameraOptions} from '@ionic-native/camera';
 import {Chooser} from '@ionic-native/chooser';
 import {FileOpener} from '@ionic-native/file-opener';
 import {FilePath} from '@ionic-native/file-path';
-import {EventService, FjData, CacheFilePathJson, Attachment, generateCacheFilePathJson} from "../../service/business/event.service";
+import {EventService, FjData, CacheFilePathJson, Attachment, Member,generateCacheFilePathJson} from "../../service/business/event.service";
 import {UtilService} from "../../service/util-service/util.service";
 import * as moment from "moment";
 import {DelType, SyncType} from "../../data.enum";

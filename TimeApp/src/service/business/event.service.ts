@@ -3480,7 +3480,7 @@ export class EventService extends BaseService {
     this.emitService.emit("mwxing.event.fj.add", att);
     let attachArray: Array<Attachment> = new Array<Attachment>();
     attachArray.push(att);
-    syncAttachments(attachArray);
+    this.syncAttachments(attachArray);
 
     return att;
   }
@@ -3505,7 +3505,7 @@ export class EventService extends BaseService {
     this.emitService.emit("mwxing.event.fj.changed", att);
     let attachArray: Array<Attachment> = new Array<Attachment>();
     attachArray.push(att);
-    syncAttachments(attachArray);
+    this.syncAttachments(attachArray);
   }
 
   /**
