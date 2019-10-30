@@ -22,7 +22,7 @@ import * as anyenum from "../../data.enum";
           </button>
         </ion-buttons>
         <ion-buttons end>
-          <button clear (click)="openRemindTiqian()" ion-button>设定提醒</button>
+          <button clear (click)="openRemindTiqian()" [disabled]="disTiqian" ion-button>设定提醒</button>
           <button clear (click)="openRemindDt()" ion-button>指定日期</button>
         </ion-buttons>
       </ion-toolbar>
@@ -31,9 +31,9 @@ import * as anyenum from "../../data.enum";
           <ion-list-header>
             剩余 <span class="count">{{reminds.length}}</span> 条提醒
           </ion-list-header>
-          <ion-item *ngFor="let remind of reminds">
-            <ion-label>{{remind.datename}}</ion-label>
-            <button ion-button (click)="delRemind(idx)" clear item-end>
+          <ion-item *ngFor="let remind of reminds" >
+            <ion-label [ngStyle]="{'color':remind.disTixin ? 'gray':'#333333'}" >{{remind.datename}}</ion-label>
+            <button [disabled]="remind.disTixin" ion-button (click)="delRemind(idx)" clear item-end>
               <ion-icon class="fal fa-minus-circle"></ion-icon>
             </button>
           </ion-item>
@@ -83,9 +83,9 @@ export class RemindPage {
   datevalue: string;
   timevalue: string;
   tiqianvalue: string;
+  evdatetime: string;
 
-  evdatetime;
-  string;
+  disTiqian : boolean = false;
 
   reminds: Array<any> = new Array<any>();
   currentTx: TxJson;
@@ -229,6 +229,13 @@ export class RemindPage {
         this.currentTx = new TxJson();
         Object.assign(this.currentTx, value.txjson);
         this.evdatetime = moment(value.evd + " " + value.evt).format("YYYY/MM/DD HH:mm");
+
+        if (moment().isAfter(this.evdatetime)){
+          this.disTiqian = true;
+        }else{
+          this.disTiqian = false;
+        }
+
         if (this.currentTx.reminds.length > 0) {
 
 
@@ -236,7 +243,8 @@ export class RemindPage {
             this.reminds.push(
               {
                 datename: this.getShowDateName(this.currentTx.reminds[j]),
-                value: this.currentTx.reminds[j]
+                value: this.currentTx.reminds[j],
+                disTixin : this.getDisTixin(this.currentTx.reminds[j])
               });
           }
         }
@@ -300,7 +308,8 @@ export class RemindPage {
     this.reminds.push(
       {
         datename: "" + TxJson.caption(time) + "- -" + moment(this.evdatetime).subtract(time, 'm').format("MM月DD HH:mm"),
-        value: time
+        value: time,
+        disTixin : false
       });
   }
 
@@ -332,7 +341,8 @@ export class RemindPage {
     this.reminds.push(
       {
         datename: "" + TxJson.caption(time) + " -- " + moment(dt).format("MM月DD HH:mm"),
-        value: time
+        value: time,
+        disTixin : false
       });
   }
 
@@ -346,5 +356,19 @@ export class RemindPage {
 
   delRemind(index) {
     this.reminds.splice(index, 1);
+  }
+
+  getDisTixin(time) : boolean{
+    let ret : boolean = true;
+    if (!time){
+      return true;
+    }
+    let txdt = moment(this.evdatetime).subtract(time, 'm');
+    if ( moment().isAfter(txdt)){
+      ret = true;
+    }else{
+      ret = false;
+    }
+    return ret ;
   }
 }

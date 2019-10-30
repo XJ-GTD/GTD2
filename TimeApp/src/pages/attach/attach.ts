@@ -18,6 +18,7 @@ import {UtilService} from "../../service/util-service/util.service";
 import * as moment from "moment";
 import {DelType, SyncType} from "../../data.enum";
 import {UserConfig} from "../../service/config/user.config";
+import {DataConfig} from "../../service/config/data.config";
 
 @IonicPage()
 @Component({
@@ -50,11 +51,12 @@ import {UserConfig} from "../../service/config/user.config";
               </div>
               <div class="line font-normal" leftmargin rightmargin >
                 <div *ngIf="(fja.ext=='PDF'||fja.ext=='pdf')&& (fja.fj !='')" >
-                  <ion-icon class="fas fa-file-pdf" (click)="opnePdf(fja.fj)"></ion-icon>
+                  <ion-icon class="fas fa-file-pdf" (click)="opnePdf(fja.fjurl)"></ion-icon>
                 </div>
                 <div *ngIf="(fja.ext=='png'||fja.ext=='PNG'||fja.ext=='jpg'||fja.ext=='JPG'||fja.ext=='bmp'||fja.ext=='BMP'||fja.ext=='mp4'||fja.ext=='MP4')&& (fja.fj !='')">
                       <ion-thumbnail>
-                      <img src="{{fja.fj}}" />
+                      <img  *ngIf="fja.fjurl!=''" src="{{fja.fjurl}}" />
+                      <img  *ngIf="fja.fjurl ==''" src="{{dataConfig.HUIBASE64_LARGE}}" />
                       </ion-thumbnail>
                 </div>
 
@@ -78,6 +80,7 @@ export class AttachPage {
   obt: string = "";
   obi: string = "";
   bw: string = "";
+  members: Array<Member>  = new Array<Member>();
   buttons: any = {
     create: true,
     save: true,
@@ -101,46 +104,53 @@ export class AttachPage {
               private keyboard: Keyboard,
               private fileOpener: FileOpener,
               private actionSheetCtrl: ActionSheetController,
+              private dataConfig: DataConfig,
               private uitl:UtilService) {
     if (this.navParams && this.navParams.data) {
       this.obt = this.navParams.data.obt;
       this.obi = this.navParams.data.obi;
       this.fjArray = this.navParams.data.attach;
+      this.members  = this.navParams.data.members;
       // this.currentuser = this.navParams.data.userId
     }
     //验证缓存文件目录是否存在
-    // this.file.checkDir(this.file.externalDataDirectory, '/timeAppfile')
-    //   .then(_ => console.log('Directory exists'))
-    //   .catch(err => {
-    //     this.file.createDir(this.file.externalDataDirectory, "timeAppfile", true).then(result => {
-    //       console.log("success")
-    //     }).catch(err => {
-    //       console.log("err:" + JSON.stringify(err))
-    //     })
-    //   });
+    this.file.checkDir(this.file.cacheDirectory, '/cached')
+      .then(_ => console.log('Directory exists'))
+      .catch(err => {
+        this.file.createDir(this.file.cacheDirectory, "cached", true).then(result => {
+          console.log("success")
+        }).catch(err => {
+          console.log("err:" + JSON.stringify(err))
+        })
+      });
     // //1.验证是否有原有的值传的过来
     // if (this.fjArray) {
       //2.当有值传递过来的情况下，将fj的值转换给fpjson
-      for(let attachment of this.fjArray) {
-        if (attachment.fj && attachment.ext) {
+      for(let i: number =0; i<this.fjArray.length; i++) {
+        if (this.fjArray[i].fj && this.fjArray[i].ext) {
           //处理历史遗留数据，按照原来的显示
-          if (this.uitl.isJsonString(attachment.fj)) {
+          if (this.uitl.isJsonString(this.fjArray[i].fj)) {
             //获取新赋值
             let cacheFilePathJson: CacheFilePathJson = new CacheFilePathJson();
-            attachment.fpjson = generateCacheFilePathJson(attachment.fpjson, attachment.fj);
+            this.fjArray[i].fpjson = generateCacheFilePathJson(this.fjArray[i].fpjson, this.fjArray[i].fj);
             //目前直接在该页面直接存储附件，则直接将文件位置赋值给
-            attachment.fj = attachment.fpjson.getLocalFilePath(this.file.cacheDirectory);
+            this.fjArray[i].fjurl = this.fjArray[i].fpjson.getLocalFilePath(this.file.cacheDirectory);
+            this.fjArray[i].members = this.members;
             //检查该文件夹下是否存在该文件，如果不存在，则根据remote下载同步该文件
-            this.file.checkFile(this.file.cacheDirectory+attachment.fpjson.getCacheDir(), attachment.fpjson.local)
+            this.file.checkFile(this.file.cacheDirectory+this.fjArray[i].fpjson.getCacheDir(), this.fjArray[i].fpjson.local)
             .then(_ => console.log('Directory exists'))
             .catch(err => {
                   //根据remote 拉取文件
-                  if (attachment.fpjson.remote) {
+                  if (this.fjArray[i].fpjson.remote) {
                     //根据地址拉取文件
                   }
             });
           }
-
+          else {
+            //历史遗留数据构造
+            this.fjArray[i].fjurl = this.fjArray[i].fj;
+            this.fjArray[i].members = this.members;
+          }
         }
       }
     // }
@@ -230,10 +240,13 @@ export class AttachPage {
         cacheFilePathJson.local = fileName;
         //this.fjData.fj = this.file.externalDataDirectory + "/timeAppfile/" + fileName;
         this.fjData.fj = JSON.stringify(cacheFilePathJson);
+        this.fjData.fpjson = cacheFilePathJson;
+        this.fjData.fjurl = this.fjData.fpjson.getLocalFilePath(this.file.cacheDirectory);
         this.fjData.ui = this.currentuser;
         this.fjData.del = DelType.undel;
         this.fjData.tb = SyncType.unsynch;
         this.fjData.wtt = moment().unix();
+        this.fjData.members = this.members;
         if(!this.bw) {
           this.bw = fileName;
         }
@@ -277,6 +290,8 @@ export class AttachPage {
               cacheFilePathJson.local = fileName;
               this.fjData.fj = JSON.stringify(cacheFilePathJson);
               this.fjData.fpjson = cacheFilePathJson;
+              this.fjData.fjurl = this.fjData.fpjson.getLocalFilePath(this.file.cacheDirectory);
+              this.fjData.members = this.members;
               //this.fjData.fj = this.file.externalDataDirectory + "/timeAppfile/" + fileName;
               //this.fjArray.push(fjData);
               if(!this.bw) {
@@ -321,38 +336,20 @@ export class AttachPage {
       this.fjData.del = DelType.undel;
       this.fjData.tb = SyncType.unsynch;
       this.fjData.wtt = moment().unix();
+      this.fjData.members = this.members;
       //1.对当前数据进行存储
       let retAt: Attachment = {}  as Attachment;
-      retAt = await this.eventService.syncSaveAttachment(this.fjData);
-      //2.上传文件
-      let attachArray: Array<Attachment> = new Array<Attachment>();
-      attachArray.push(retAt);
-      await this.eventService.syncAttachments(attachArray);
-      //3.将当前数据存的到fjArray中去
-      this.fjData.fj = this.fjData.fpjson.getLocalFilePath(this.file.cacheDirectory);
-      this.fjArray.push(this.fjData);
+      retAt = await this.eventService.saveAttachment(this.fjData);
+      this.fjArray.push(retAt);
       this.fjData = {} as Attachment;
       this.bw = "";
-      //4. TODO 同步通知参与人，新增数据
     }
   }
 
   // 删除当前项
   async delAttach(at: Attachment) {
     if (at) {
-        for (let fj of this.fjArray) {
-            if ((fj.fji == at.fji)&&(fj.obt == at.obt)
-              &&(fj.obi == at.obi)&&(fj.fjn == at.fjn)
-              &&(fj.ext == at.ext)&&(fj.fj == at.fj)
-              &&(fj.tb == at.tb)&&(fj.del == at.del)&&(fj.wtt == at.wtt)) {
-                  fj.del = DelType.del;
-                  //当存在数据库中的情况下，更新数据中的删除状态位
-                  if(fj.fji) {
-                     await this.eventService.syncUpdateAttachment(fj.fji);
-                     //同步通知参与删除相关内容
-                  }
-            }
-        }
+      await this.eventService.removeAttachment(at);
     }
   }
   //打开本地PDF
