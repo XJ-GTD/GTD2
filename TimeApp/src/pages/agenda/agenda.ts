@@ -58,7 +58,7 @@ import {ModiPower} from "../../data.enum";
         <!--<div class="plan plan-right"-->
              <!--[ngStyle]="{'background-color': currentAgenda.ji == ''? 'transparent' : (currentAgenda.ji | formatplan: 'color': privateplans )}">-->
           <!--<span>{{currentAgenda.ji | formatplan: 'name': '': privateplans}}</span></div>-->
-  
+
         <ion-row class="limitRow font-small-x">
           <span>{{snlength}} / 80 </span>
         </ion-row>
@@ -381,11 +381,20 @@ export class AgendaPage {
       cloneattachments = new Array<Attachment>();
     }
 
+    //参与人
+    let clonemembers;
+    if (this.currentAgenda.members && this.currentAgenda.members.length > 0) {
+      clonemembers = new Array<Member>(...this.currentAgenda.members);
+    } else {
+      clonemembers = new Array<Member>();
+    }
+
     let modal = this.modalCtrl.create(DataConfig.PAGE._ATTACH_PAGE, {
       obt: ObjectType.Event,
       obi: this.currentAgenda.evi,
       attach: cloneattachments,
-      userId: this.currentuser
+      userId: this.currentuser,
+      members: clonemembers
     });
     modal.onDidDismiss(async (data) => {
       if (!data) return;

@@ -3462,7 +3462,7 @@ export class EventService extends BaseService {
   **@author ying<343253410@qq.com>
   */
 
-  async syncSaveAttachment(att: Attachment) {
+  async saveAttachment(att: Attachment) {
     this.assertEmpty(att);       // 入参不能为空
     this.assertEmpty(att.fjn);    // 附件名称
     this.assertEmpty(att.obt);
@@ -3472,7 +3472,16 @@ export class EventService extends BaseService {
     att.fji = this.util.getUuid();
     let fjdb: FjTbl = new FjTbl();
     Object.assign(fjdb, att);
+
+    //新增数据
     await this.sqlExce.saveByParam(fjdb);
+
+    //同步数据
+    this.emitService.emit("mwxing.event.fj.add", att);
+    let attachArray: Array<Attachment> = new Array<Attachment>();
+    attachArray.push(att);
+    syncAttachments(attachArray);
+
     return att;
   }
 
@@ -3480,12 +3489,23 @@ export class EventService extends BaseService {
   * 删除附件
   **@author ying<343253410@qq.com>
   */
-  async syncUpdateAttachment(fji: string) {
-    this.assertEmpty(fji);
+  async removeAttachment(att: Attachment) {
+    this.assertEmpty(att);
+    this.assertEmpty(att.fji);
+
+    att.del = DelType.del;
+    att.tb = SyncType.unsynch;
     let fjdb: FjTbl = new FjTbl();
-    fjdb.fji = fji;
-    fjdb.del = DelType.del;
+    Object.assign(fjdb, att);
+
+    //更新本地数据库
     await this.sqlExce.updateByParam(fjdb);
+
+    //同步数据
+    this.emitService.emit("mwxing.event.fj.changed", att);
+    let attachArray: Array<Attachment> = new Array<Attachment>();
+    attachArray.push(att);
+    syncAttachments(attachArray);
   }
 
   /**
@@ -4444,6 +4464,8 @@ export interface Attachment extends FjTbl {
   fpjson: CacheFilePathJson;
   //参与人
   members: Array<Member>;
+  //附件地址
+  fjurl: string;
 }
 
 export class CacheFilePathJson {
