@@ -316,7 +316,7 @@ export class AttachPage {
   // 点击确认，保存文件
  async saveComment() {
     if (this.bw && this.bw.trim() != '') {
-      this.fjData.fjn = this.bw
+      this.fjData.fjn = this.bw;
       this.fjData.ui = this.currentuser;
       this.fjData.del = DelType.undel;
       this.fjData.tb = SyncType.unsynch;
