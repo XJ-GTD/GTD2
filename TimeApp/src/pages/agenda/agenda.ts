@@ -242,7 +242,7 @@ export class AgendaPage {
 
 
               this.snlength =  this.currentAgenda.evn.length;
-              if (this.currentAgenda.ui != currentuser && this.currentAgenda.invitestatus != InviteState.Accepted && this.currentAgenda.invitestatus != InviteState.Rejected) {
+              if (this.currentAgenda.ui != this.currentuser && this.currentAgenda.invitestatus != InviteState.Accepted && this.currentAgenda.invitestatus != InviteState.Rejected) {
                 this.buttons.record = false;
                 this.buttons.accept = true;
                 this.buttons.reject = true;
