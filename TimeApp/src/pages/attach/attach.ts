@@ -13,7 +13,7 @@ import {Camera, CameraOptions} from '@ionic-native/camera';
 import {Chooser} from '@ionic-native/chooser';
 import {FileOpener} from '@ionic-native/file-opener';
 import {FilePath} from '@ionic-native/file-path';
-import {EventService,FjData, Attachment} from "../../service/business/event.service";
+import {EventService, FjData, CacheFilePathJson, Attachment, generateCacheFilePathJson} from "../../service/business/event.service";
 import {UtilService} from "../../service/util-service/util.service";
 import * as moment from "moment";
 import {DelType, SyncType} from "../../data.enum";
@@ -127,7 +127,7 @@ export class AttachPage {
           if (this.uitl.isJsonString(this.fjArray[i].fj)) {
             //获取新赋值
             let cacheFilePathJson: CacheFilePathJson = new CacheFilePathJson();
-            this.fjArray[i].fpjson = this.eventService.generateCacheFilePathJson(cacheFilePathJson,this.fjArray[i].fj);
+            this.fjArray[i].fpjson = generateCacheFilePathJson(cacheFilePathJson,this.fjArray[i].fj);
             //目前直接在该页面直接存储附件，则直接将文件位置赋值给
             this.fjArray[i].fj = this.fjArray[i].fpjson.getLocalFilePath(this.file.cacheDirectory);
             //检查该文件夹下是否存在该文件，如果不存在，则根据remote下载同步该文件
