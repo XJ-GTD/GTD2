@@ -65,6 +65,9 @@ export class DataSyncProcess implements MQProcess {
       if (dsPara.type == "Memo") {
         await this.memoService.acceptSyncMemos([dsPara.id]);
       }
+      if (dsPara.type == "Attachment") {
+        await this.memoService.acceptSyncAttachments([dsPara.id]);
+      }
     }
 
     //本帐号他设备请求,云端同步成功,本地下载完成同步
@@ -83,6 +86,9 @@ export class DataSyncProcess implements MQProcess {
       }
       if (dsPara.type == "Memo") {
         await this.memoService.receivedMemo(dsPara.id);
+      }
+      if (dsPara.type == "Attachment") {
+        await this.memoService.receivedAttachment(dsPara.id);
       }
     }
 
@@ -103,6 +109,9 @@ export class DataSyncProcess implements MQProcess {
       if (dsPara.type == "Memo") {
         await this.memoService.receivedMemo(dsPara.id);
       }
+      if (dsPara.type == "Attachment") {
+        await this.memoService.receivedAttachment(dsPara.id);
+      }
     }
 
     //本设备拉取请求,本地下载
@@ -121,6 +130,9 @@ export class DataSyncProcess implements MQProcess {
       }
       if (dsPara.type == "Memo") {
         await this.memoService.receivedMemo(dsPara.id);
+      }
+      if (dsPara.type == "Attachment") {
+        await this.memoService.receivedAttachment(dsPara.id);
       }
     }
 
@@ -401,6 +413,13 @@ export class DataSyncProcess implements MQProcess {
         Object.assign(memo, dsPara.data);
 
         await this.memoService.receivedMemoData(memo, this.convertSyncStatus(dsPara.status));
+      }
+
+      if (dsPara.type == "Attachment") {
+        let attachment: Attachment = {} as Attachment;
+        Object.assign(attachment, dsPara.data);
+
+        await this.eventService.receivedAttachmentData(attachment, this.convertSyncStatus(dsPara.status));
       }
 
     }
