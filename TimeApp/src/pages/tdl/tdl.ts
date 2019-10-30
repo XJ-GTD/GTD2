@@ -106,21 +106,24 @@ BScroll.use(InfinityScroll);
                     <div class=" d-title-chr"><span>{{days.events.length}}</span> 活动</div>
                     <div class=" d-title-chr"><span>{{days.calendaritems.length}}</span> 纪念日</div>
                     <div class=" d-title-chr mome " (click)="toMemo(days)" *ngIf="days.memos.length > 0"
-                         [class.item-no-display]="days.memos.length == 0"><span>{{days.memos.length}}</span>备忘
+                         [class.item-no-display]="days.memos.length == 0">
+                      <ion-icon class="fad fa-money-check-edit"></ion-icon>
+                      <!--<span>{{days.memos.length}}</span>-->
                     </div>
 
-                    <div class="weather" *ngIf="days.weather">
-                      <span>
-                       {{days.weather.bz}} - {{days.weather.jtn}}
-                      </span>
-                      <ion-icon class='fas {{days.weather.jtn | formatweather:"winame-with-json"}}'></ion-icon>
-                    </div>
+                    <!--<div class="weather" *ngIf="days.weather">-->
+                      <!--<span>-->
+                       <!--{{days.weather.bz}} - {{days.weather.jtn}}-->
+                      <!--</span>-->
+                      <!--<ion-icon class='fas {{days.weather.jtn | formatweather:"winame-with-json"}}'></ion-icon>-->
+                    <!--</div>-->
                   </div>
                 </div>
               </ion-row>
 
               <ion-row class="item-content  calendaritem-content item-content-backgroud"
-                       *ngFor="let jt of days.calendaritems;" (click)="toPlanItem(jt)">
+                       *ngFor="let jt of days.calendaritems;" (click)="toPlanItem(jt)"
+                       [class.noinvite]="currentuser != jt.ui && jt.ui != '' && jt.invitestatus != inviteaccept && jt.invitestatus != invitereject">
                 <!-- 自定义日历项 -->
                 <ng-container *ngIf="jt.jtc == selfdefine">
                   <!--<div class="line font-small first-line">-->
@@ -141,17 +144,31 @@ BScroll.use(InfinityScroll);
                     <!--<div class="icon">-->
                       <!--<ion-icon class="fal fa-gift"></ion-icon>-->
                     <!--</div>-->
+                    
                     <div class="sn">{{jt.jtn}}</div>
                   </div>
-                  <div class="line font-small" *ngIf="currentuser != jt.ui && jt.ui != ''">
-                    <div class="icon">
-                      <ion-icon class="fal fa-user-tag"></ion-icon>
-                    </div>
-                    <div class="person ">-{{jt.ui | formatuser: currentuser: friends}}</div>
-                    <div class="invite" *ngIf="jt.invitestatus != inviteaccept && jt.invitestatus != invitereject" end>
-                      <span (click)="rejectInvite($event, event)">拒绝</span><span (click)="acceptInvite($event, event)">接受</span>
+                  <!--<div class="line font-small" *ngIf="currentuser != jt.ui && jt.ui != ''">-->
+                    <!--&lt;!&ndash;<div class="icon">&ndash;&gt;-->
+                      <!--&lt;!&ndash;<ion-icon class="fal fa-user-tag"></ion-icon>&ndash;&gt;-->
+                    <!--&lt;!&ndash;</div>&ndash;&gt;-->
+                    <!--<div class="person ">-{{jt.ui | formatuser: currentuser: friends}}</div>-->
+                    <!--<div class="invite" *ngIf="jt.invitestatus != inviteaccept && jt.invitestatus != invitereject" end>-->
+                      <!--<span (click)="rejectInvite($event, event)">拒绝</span><span (click)="acceptInvite($event, event)">接受</span>-->
+                    <!--</div>-->
+                  <!--</div>-->
+                  <div class="line font-small" >
+                    <div class="person" *ngIf="currentuser != event.ui && event.ui != ''" >-{{event.ui | formatuser: currentuser: friends}}</div>
+                    <!--<div class="invite" *ngIf="event.invitestatus != inviteaccept && event.invitestatus != invitereject"-->
+                    <!--end><span (click)="rejectInvite($event, event)">拒绝</span><span-->
+                    <!--(click)="acceptInvite($event, event)">接受</span></div>-->
+                    <div class="icon font-small" end>
+                      <ion-icon class="fad fa-lock"  *ngIf="jt.todolist == '0'"></ion-icon>
+                      <ion-icon class="fad fa-user-tag"  *ngIf="currentuser != jt.ui && jt.ui != ''"></ion-icon>
+                      <ion-icon class="fad fa-check-double" *ngIf="jt.wc == finished"></ion-icon>
+                      <ion-icon class="fad fa-sync" *ngIf="jt.tb == synch"></ion-icon>
                     </div>
                   </div>
+                  
                   <div class="plan plan-right"
                        [ngStyle]="{'background-color': jt.ji == ''? 'transparent' : (jt.ji | formatplan: 'color': privateplans )}">
                     <span>{{jt.ji | formatplan: 'name': '': privateplans}}</span></div>
@@ -161,9 +178,9 @@ BScroll.use(InfinityScroll);
                 <!-- 下载日历项 -->
                 <ng-container *ngIf="jt.jtc == system">
                   <div class="line font-small first-line">
-                    <div class="icon">
-                      <ion-icon class="fal fa-gift"></ion-icon>
-                    </div>
+                    <!--<div class="icon">-->
+                      <!--<ion-icon class="fal fa-gift"></ion-icon>-->
+                    <!--</div>-->
                     <div class="sn">{{jt.jtn}}</div>
                   </div>
                 </ng-container>
@@ -206,32 +223,27 @@ BScroll.use(InfinityScroll);
               <!--</ion-row>-->
               <ng-container *ngFor="let event of days.events;">
                 <ion-row class="item-content dayagenda-content item-content-backgroud" *ngIf="!(event.ui != currentuser && event.rtevi && event.invitestatus != inviteaccept && event.invitestatus != invitereject)"
-                         (click)="toDetail(event.evi,event.evd,event.type,event.gs)">
+                         (click)="toDetail(event.evi,event.evd,event.type,event.gs)" [class.noinvite]="currentuser != event.ui && event.ui != '' && event.invitestatus != inviteaccept && event.invitestatus != invitereject">
                   <div class="line font-small first-line">
-                    <div class="icon">
-                      <ion-icon class="fal fa-calendar-star"></ion-icon>
-                    </div>
-                    <div class="sn" [class.wc]="event.wc == finished">{{event.evn}}</div>
+                    <div class="sn">{{event.evn}}</div>
                   </div>
                   <div class="line font-small">
-                    <div class="icon">
-                      <ion-icon class="fal fa-alarm-exclamation "></ion-icon>
-                    </div>
                     <div class="st">{{event.evt}}</div>
-
-                    <div class="icon" end>
-                      <ion-icon class="fal fa-sync" *ngIf="event.tb == synch"></ion-icon>
+                  </div>
+                  <div class="line font-small" >
+                    <div class="person" *ngIf="currentuser != event.ui && event.ui != ''" >-{{event.ui | formatuser: currentuser: friends}}</div>
+                    <!--<div class="invite" *ngIf="event.invitestatus != inviteaccept && event.invitestatus != invitereject"-->
+                         <!--end><span (click)="rejectInvite($event, event)">拒绝</span><span-->
+                      <!--(click)="acceptInvite($event, event)">接受</span></div>-->
+                    
+                    <div class="icon font-small" end>
+                      <ion-icon class="fad fa-lock"  *ngIf="event.todolist == '0'"></ion-icon>
+                      <ion-icon class="fad fa-user-tag"  *ngIf="currentuser != event.ui && event.ui != ''"></ion-icon>
+                      <ion-icon class="fad fa-check-double" *ngIf="event.wc == finished"></ion-icon>
+                      <ion-icon class="fad fa-sync" *ngIf="event.tb == synch"></ion-icon>
                     </div>
                   </div>
-                  <div class="line font-small" *ngIf="currentuser != event.ui && event.ui != ''">
-                    <div class="icon ">
-                      <ion-icon class="user-o fal fa-user-tag"></ion-icon>
-                    </div>
-                    <div class="person">-{{event.ui | formatuser: currentuser: friends}}</div>
-                    <div class="invite" *ngIf="event.invitestatus != inviteaccept && event.invitestatus != invitereject"
-                         end><span (click)="rejectInvite($event, event)">拒绝</span><span
-                      (click)="acceptInvite($event, event)">接受</span></div>
-                  </div>
+                  
                   <div class="plan plan-right"
                        [ngStyle]="{'background-color': event.ji == ''? 'transparent' : (event.ji | formatplan: 'color': privateplans )}">
                     <span>{{event.ji | formatplan: 'name': '': privateplans}}</span></div>
@@ -518,13 +530,19 @@ export class TdlPage {
   gotoEl(id) {
     setTimeout(() => {
       try {
-        if (this.currDayel && this.currDayel.className.indexOf("ayagenda-no-content") > -1) {
+        if (this.currDayel){
           this.renderer2.removeClass(this.currDayel, "item-display");
+        }
+        if(this.currDayel && this.currDayel.className.indexOf("ayagenda-no-content") > -1){
           this.renderer2.addClass(this.currDayel, "item-no-display");
         }
         this.currDayel = this.el.nativeElement.querySelector(id);
-        this.renderer2.removeClass(this.currDayel, "item-no-display");
-        this.renderer2.addClass(this.currDayel, "item-display");
+
+        if (this.currDayel && this.currDayel.className.indexOf("ayagenda-no-content") > -1) {
+          this.renderer2.removeClass(this.currDayel, "item-no-display");
+          this.renderer2.addClass(this.currDayel, "item-display");
+        }
+
 
         if (this.currDayel) {
           this.contentD.scrollTo(0, this.currDayel.offsetTop + 2, 300);

@@ -113,7 +113,7 @@
 
     ion-icon {
       //padding-top: 0.1rem;
-      font-size: 1rem;
+      //font-size: 1rem;
     }
 
   }
@@ -127,6 +127,7 @@
     -webkit-line-clamp: 2; /*显示几行*/
     overflow: hidden;
     margin: 0 0.5rem;
+    font-size: 1.4rem;
     //line-height: 1.6rem;
   }
 
@@ -247,13 +248,14 @@
   .dayagenda-nav {
     background: transparent;
     box-shadow: none;
+    width: calc(70% + 72px);
 
     .dayheader {
-      width: 60px;
+      width: 75px;
       float: left;
       padding-top: 0.5rem;
       padding-bottom: 0.5rem;
-      padding-right: 1.4rem;
+      padding-right: 2rem;
       text-align: center;
 
       .ym-fsize {
@@ -280,9 +282,10 @@
 
     .d-title {
       border-radius: 4px;
-      width: 74%;
+      width: 100%;
       display: inline-flex;
       position: relative;
+      margin-left: -5px;
 
       .d-title-chr {
         height: 50px;
@@ -325,6 +328,7 @@
 
       .mome {
         flex-grow: 1;
+        font-size: 1.6rem;
 
         span {
         }
@@ -416,6 +420,9 @@
       background: rgba(255, 255, 255, 1);
       box-shadow: 0px 0px 5px 0px rgba(153, 153, 153, 0.28);
     }
+    .noinvite{
+      background: rgba(255, 255, 255, .2);
+    }
 
     .item-content {
       .syncing {
@@ -430,11 +437,11 @@
 
     //列表一周
     .dayagenda-week, .no-content {
-      background: rgba(217, 233, 238, 1);
+      background:rgba(42,119,138,1);
       box-shadow: 0px 0px 5px 0px rgba(3, 0, 0, 0.2);
 
       p {
-        color: rgba(7, 109, 138, 1);
+        color:rgba(229,250,255,1);
       }
     }
 
@@ -561,10 +568,13 @@
       background: rgba(237, 241, 254, 0.05);
       box-shadow: 0px 0px 5px 0px rgba(3, 0, 0, 0.2);
     }
+    .noinvite{
+      background: rgba(255, 255, 255, .2);
+    }
 
     .item-content {
       .syncing {
-        background-color: rgba(255, 255, 255, .8);
+        background-color: rgba(255, 255, 255, .2);
       }
 
       .line {

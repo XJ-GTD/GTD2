@@ -51,11 +51,11 @@ import {StatusType} from "../../data.enum";
             </div>
 
             <div  (click)="goAccept()" *ngIf="buttons.accept">
-              <ion-icon class="fad fa-eye"></ion-icon>
+              <ion-icon class="fad fa-hands-helping"></ion-icon>
             </div>
 
             <div  (click)="goReject()" *ngIf="buttons.reject">
-              <ion-icon class="fad fa-eye"></ion-icon>
+              <ion-icon class="fad fa-recycle"></ion-icon>
             </div>
 
             <div (click)="goBack()" *ngIf="buttons.cancel">
