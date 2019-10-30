@@ -17,13 +17,13 @@ export class FormatWeatherPipe implements PipeTransform {
 
   constructor() {
     //白天
-    this.WEATHER_FONT_MAP_DAY.set("晴", "day-sunny");            //晴
-    this.WEATHER_FONT_MAP_DAY.set("阴", "day-cloudy");             //阴天
+    this.WEATHER_FONT_MAP_DAY.set("晴", "sun");            //晴
+    this.WEATHER_FONT_MAP_DAY.set("阴", "cloud");             //阴天
     this.WEATHER_FONT_MAP_DAY.set("", "day-cloudy-gusts");       //多云阵风
     this.WEATHER_FONT_MAP_DAY.set("", "day-cloudy-windy");       //阴天刮风
-    this.WEATHER_FONT_MAP_DAY.set("雾", "day-fog");                //雾
-    this.WEATHER_FONT_MAP_DAY.set("冰雹", "day-hail");               //冰雹
-    this.WEATHER_FONT_MAP_DAY.set("霾", "day-haze");               //霾
+    this.WEATHER_FONT_MAP_DAY.set("雾", "fog");                //雾
+    this.WEATHER_FONT_MAP_DAY.set("冰雹", "cloud-hail-mixed");               //冰雹
+    this.WEATHER_FONT_MAP_DAY.set("霾", "smog");               //霾
     this.WEATHER_FONT_MAP_DAY.set("", "day-lightning");          //雷击
     this.WEATHER_FONT_MAP_DAY.set("", "day-rain");               //雨
     this.WEATHER_FONT_MAP_DAY.set("", "day-rain-mix");           //雨水混合
@@ -35,8 +35,8 @@ export class FormatWeatherPipe implements PipeTransform {
     this.WEATHER_FONT_MAP_DAY.set("", "day-snow-thunderstorm");  //雪雷暴
     this.WEATHER_FONT_MAP_DAY.set("", "day-snow-wind");          //雪风
     this.WEATHER_FONT_MAP_DAY.set("", "day-sprinkle");           //洒
-    this.WEATHER_FONT_MAP_DAY.set("", "day-storm-showers");      //风暴雨
-    this.WEATHER_FONT_MAP_DAY.set("", "day-sunny-overcast");     //晴天阴天
+    this.WEATHER_FONT_MAP_DAY.set("", "cloud-showers-heavy");      //风暴雨
+    this.WEATHER_FONT_MAP_DAY.set("", "clouds-sun");     //晴天阴天
     this.WEATHER_FONT_MAP_DAY.set("", "day-thunderstorm");       //雷暴
     this.WEATHER_FONT_MAP_DAY.set("", "day-windy");              //刮风
     this.WEATHER_FONT_MAP_DAY.set("", "solar-eclipse");          //日食
@@ -63,11 +63,11 @@ export class FormatWeatherPipe implements PipeTransform {
     this.WEATHER_FONT_MAP_NIGHT.set("", "night-alt-sprinkle");      //洒
     this.WEATHER_FONT_MAP_NIGHT.set("", "night-alt-storm-showers"); //风暴雨
     this.WEATHER_FONT_MAP_NIGHT.set("", "night-alt-thunderstorm");  //雷暴
-    this.WEATHER_FONT_MAP_NIGHT.set("阴", "night-cloudy");            //阴天
+    this.WEATHER_FONT_MAP_NIGHT.set("阴", "clouds-moon");            //阴天
     this.WEATHER_FONT_MAP_NIGHT.set("", "night-cloudy-gusts");      //多云，阵风
     this.WEATHER_FONT_MAP_NIGHT.set("", "night-cloudy-windy");      //阴天，刮风
-    this.WEATHER_FONT_MAP_NIGHT.set("雾", "night-fog");               //雾
-    this.WEATHER_FONT_MAP_NIGHT.set("冰雹", "night-hail");              //冰雹
+    this.WEATHER_FONT_MAP_NIGHT.set("雾", "fog");               //雾
+    this.WEATHER_FONT_MAP_NIGHT.set("冰雹", "cloud-hail-mixed");              //冰雹
     this.WEATHER_FONT_MAP_NIGHT.set("", "night-lightning");         //闪电
     this.WEATHER_FONT_MAP_NIGHT.set("", "night-partly-cloudy");     //部分浑浊
     this.WEATHER_FONT_MAP_NIGHT.set("", "night-rain");              //雨
@@ -91,53 +91,52 @@ export class FormatWeatherPipe implements PipeTransform {
     this.WEATHER_FONT_MAP_NIGHT.set("", "night-alt-partly-cloudy"); //部分浑浊
 
     //正常
-    this.WEATHER_FONT_MAP.set("多云", "cloud");           //云
-    this.WEATHER_FONT_MAP.set("阴", "cloudy");          //阴天
+    this.WEATHER_FONT_MAP.set("多云", "clouds");           //云
+    this.WEATHER_FONT_MAP.set("阴", "clouds");          //阴天
     this.WEATHER_FONT_MAP.set("", "cloudy-gusts");    //阴天阵风
     this.WEATHER_FONT_MAP.set("", "cloudy-windy");    //阴天刮风
-    this.WEATHER_FONT_MAP.set("雾", "fog");            //雾
-    this.WEATHER_FONT_MAP.set("雷阵雨伴有冰雹", "hail");            //冰雹
-    this.WEATHER_FONT_MAP.set("小到中雨", "rain");            //雨
-    this.WEATHER_FONT_MAP.set("中到大雨", "rain");            //雨
-    this.WEATHER_FONT_MAP.set("小到中雨", "rain");            //雨
-    this.WEATHER_FONT_MAP.set("小雨", "rain");            //雨
-    this.WEATHER_FONT_MAP.set("中雨", "rain");            //雨
-    this.WEATHER_FONT_MAP.set("大雨", "rain");            //雨
+    this.WEATHER_FONT_MAP.set("雾", "smoke");            //雾
+    this.WEATHER_FONT_MAP.set("雷阵雨伴有冰雹", "cloud-hail-mixed");            //冰雹
+    this.WEATHER_FONT_MAP.set("小到中雨", "cloud-rain");            //雨
+    this.WEATHER_FONT_MAP.set("中到大雨", "cloud-showers-heavy");            //雨
+    this.WEATHER_FONT_MAP.set("小雨", "raindrops");            //雨
+    this.WEATHER_FONT_MAP.set("中雨", "cloud-rain");            //雨
+    this.WEATHER_FONT_MAP.set("大雨", "cloud-showers-heavy");            //雨
     this.WEATHER_FONT_MAP.set("", "rain-mix");        //雨水混合
     this.WEATHER_FONT_MAP.set("", "rain-wind");       //风雨
-    this.WEATHER_FONT_MAP.set("阵雨", "showers");         //阵雨
-    this.WEATHER_FONT_MAP.set("冻雨", "sleet");           //雨夹雪
-    this.WEATHER_FONT_MAP.set("雨夹雪", "sleet");           //雨夹雪
-    this.WEATHER_FONT_MAP.set("", "snow");            //雪
+    this.WEATHER_FONT_MAP.set("阵雨", "thunderstorm-sun");         //阵雨
+    this.WEATHER_FONT_MAP.set("冻雨", "cloud-sleet");           //雨夹雪
+    this.WEATHER_FONT_MAP.set("雨夹雪", "cloud-sleet");           //雨夹雪
+    this.WEATHER_FONT_MAP.set("", "snow");            //雪19.026
     this.WEATHER_FONT_MAP.set("", "sprinkle");        //洒
-    this.WEATHER_FONT_MAP.set("大到暴雨", "storm-showers");   //风暴雨
-    this.WEATHER_FONT_MAP.set("暴雨到大暴雨", "storm-showers");   //风暴雨
-    this.WEATHER_FONT_MAP.set("大暴雨到特大暴雨", "storm-showers");   //风暴雨
-    this.WEATHER_FONT_MAP.set("暴雨", "storm-showers");   //风暴雨
-    this.WEATHER_FONT_MAP.set("大暴雨", "storm-showers");   //风暴雨
-    this.WEATHER_FONT_MAP.set("特大暴雨", "storm-showers");   //风暴雨
+    this.WEATHER_FONT_MAP.set("大到暴雨", "cloud-showers-heavy");   //风暴雨
+    this.WEATHER_FONT_MAP.set("暴雨到大暴雨", "cloud-showers-heavy");   //风暴雨
+    this.WEATHER_FONT_MAP.set("大暴雨到特大暴雨", "cloud-showers-heavy");   //风暴雨
+    this.WEATHER_FONT_MAP.set("暴雨", "cloud-showers-heavy");   //风暴雨
+    this.WEATHER_FONT_MAP.set("大暴雨", "cloud-showers-heavy");   //风暴雨
+    this.WEATHER_FONT_MAP.set("特大暴雨", "cloud-showers-heavy");   //风暴雨
     this.WEATHER_FONT_MAP.set("雷阵雨", "thunderstorm");    //雷暴
     this.WEATHER_FONT_MAP.set("", "snow-wind");       //雪风
-    this.WEATHER_FONT_MAP.set("阵雪", "snow");
-    this.WEATHER_FONT_MAP.set("小雪", "snow");
-    this.WEATHER_FONT_MAP.set("中雪", "snow");
-    this.WEATHER_FONT_MAP.set("大雪", "snow");
-    this.WEATHER_FONT_MAP.set("暴雪", "snow");
-    this.WEATHER_FONT_MAP.set("小到中雪", "snow");
-    this.WEATHER_FONT_MAP.set("中到大雪", "snow");
-    this.WEATHER_FONT_MAP.set("大到暴雪", "snow");
+    this.WEATHER_FONT_MAP.set("阵雪", "snowflake");
+    this.WEATHER_FONT_MAP.set("小雪", "snowflakes");
+    this.WEATHER_FONT_MAP.set("中雪", "snowflakes");
+    this.WEATHER_FONT_MAP.set("大雪", "snowflakes");
+    this.WEATHER_FONT_MAP.set("暴雪", "snowflakes");
+    this.WEATHER_FONT_MAP.set("小到中雪", "snowflakes");
+    this.WEATHER_FONT_MAP.set("中到大雪", "snowflakes");
+    this.WEATHER_FONT_MAP.set("大到暴雪", "snowflakes");
     this.WEATHER_FONT_MAP.set("霾", "smog");            //烟雾
     this.WEATHER_FONT_MAP.set("", "smoke");           //烟雾
     this.WEATHER_FONT_MAP.set("", "lightning");       //闪电
     this.WEATHER_FONT_MAP.set("", "raindrops");       //雨滴
     this.WEATHER_FONT_MAP.set("", "raindrop");        //雨滴
-    this.WEATHER_FONT_MAP.set("浮尘", "dust");            //尘
+    this.WEATHER_FONT_MAP.set("浮尘", "sun-dust");            //尘
     this.WEATHER_FONT_MAP.set("", "snowflake-cold");  //雪花冷
     this.WEATHER_FONT_MAP.set("", "windy");           //多风
     this.WEATHER_FONT_MAP.set("", "strong-wind");     //强风
-    this.WEATHER_FONT_MAP.set("沙尘暴", "sandstorm");       //沙尘暴
-    this.WEATHER_FONT_MAP.set("强沙尘暴", "sandstorm");       //沙尘暴
-    this.WEATHER_FONT_MAP.set("扬沙", "sandstorm");       //沙尘暴
+    this.WEATHER_FONT_MAP.set("沙尘暴", "tornado");       //沙尘暴
+    this.WEATHER_FONT_MAP.set("强沙尘暴", "tornado");       //沙尘暴
+    this.WEATHER_FONT_MAP.set("扬沙", "tornado");       //沙尘暴
     this.WEATHER_FONT_MAP.set("", "earthquake");      //地震
     this.WEATHER_FONT_MAP.set("", "fire");            //火灾
     this.WEATHER_FONT_MAP.set("", "flood");           //洪水
