@@ -3457,6 +3457,37 @@ export class EventService extends BaseService {
     return;
   }
 
+  /***
+  * 新增附件
+  **@author ying<343253410@qq.com>
+  */
+
+  async syncSaveAttachment(att: Attachment) {
+    this.assertEmpty(att);       // 入参不能为空
+    this.assertEmpty(att.fjn);    // 附件名称
+    this.assertEmpty(att.obt);
+    this.assertEmpty(att.obi);
+
+    //创建主键
+    att.fji = this.util.getUuid();
+    let fjdb: FjTbl = new FjTbl();
+    Object.assign(fjdb, att);
+    await this.sqlExce.saveByParam(fjdb);
+    return att;
+  }
+
+  /***
+  * 删除附件
+  **@author ying<343253410@qq.com>
+  */
+  async syncUpdateAttachment(fji: string) {
+    this.assertEmpty(fji);
+    let fjdb: FjTbl = new FjTbl();
+    fjdb.fji = fji;
+    fjdb.del = DelType.del;
+    await this.sqlExce.updateByParam(fjdb);
+  }
+
   /**
    * 同步全部的未同步的任务到服务器
    * @author ying<343253410@qq.com>
@@ -4897,7 +4928,7 @@ export function generateCacheFilePathJson(fpjson: CacheFilePathJson, fj: string)
       fpjson = new CacheFilePathJson();
       Object.assign(fpjson, JSON.parse(fj));
     } else {
-      return "";
+      return null;
     }
   } else {
     let newfpjson: CacheFilePathJson = new CacheFilePathJson();

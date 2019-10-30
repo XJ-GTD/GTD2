@@ -865,4 +865,14 @@ export class UtilService {
     Object.assign(target ,JSON.parse(JSON.stringify(source)));
 
   }
+
+  //检查对象类型
+  public  isJsonString(str: string) {
+    try {
+      JSON.parse(str)
+    } catch(e) {
+      return false;
+    }
+    return true;
+  }
 }
