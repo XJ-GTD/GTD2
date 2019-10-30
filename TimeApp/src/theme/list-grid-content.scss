@@ -280,7 +280,7 @@
 
     .d-title {
       border-radius: 4px;
-      width: 75%;
+      width: 74%;
       display: inline-flex;
       position: relative;
 
@@ -337,23 +337,24 @@
       width: 100%;
       z-index: 9;
       text-align: right;
-      opacity: .3;
       color: white;
-      padding-right: 0.2rem;
-      padding-top: .1rem;
+      padding-right: 0.5rem;
+      padding-top: .2rem;
       max-width: 200px;
       right: 0px;
       //margin-left: 1rem;
-      .icon{
-        font-size: 1.8rem;
-        color: yellow;
+      ion-icon{
+        font-size: 2.2rem;
+        color: rgba(138,119,42, .8);
       }
       span{
         font-size: 1rem;
         color: rgba(153,152,152,1);
         overflow: hidden;
         max-width: 150px;
-        display: inline-block;
+        display: block;
+        position: absolute;
+        right: 2.7rem;
       }
 
     }

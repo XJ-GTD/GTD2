@@ -187,12 +187,14 @@ export class FormatWeatherPipe implements PipeTransform {
           let wiKey = this.WEATHER_FONT_MAP.get(first);
 
           if (wiKey) {
+            console.log("********************" + wiKey)
             return wiKey;
           }
         } else {
           let wiKey = this.WEATHER_FONT_MAP.get(value);
 
           if (wiKey) {
+            console.log("********************" + wiKey)
             return wiKey;
           }
         }
