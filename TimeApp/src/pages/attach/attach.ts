@@ -111,6 +111,9 @@ export class AttachPage {
       this.obi = this.navParams.data.obi;
       this.fjArray = this.navParams.data.attach;
       this.members  = this.navParams.data.members;
+
+      this.fjData.obt = this.obt;
+      this.fjData.obi = this.obi;
       // this.currentuser = this.navParams.data.userId
     }
     //验证缓存文件目录是否存在
@@ -342,6 +345,8 @@ export class AttachPage {
       retAt = await this.eventService.saveAttachment(this.fjData);
       this.fjArray.push(retAt);
       this.fjData = {} as Attachment;
+      this.fjData.obt = this.obt;
+      this.fjData.obi = this.obi;
       this.bw = "";
     }
   }
