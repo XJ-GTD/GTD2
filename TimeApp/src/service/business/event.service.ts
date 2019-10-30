@@ -2947,9 +2947,14 @@ export class EventService extends BaseService {
           let data = await this.dataRestful.upload(upload);
 
           if (data && data.data) {
-            attachment.fpjson.remote = data.data;
-            attachment.fj = JSON.stringify(attachment.fpjson);
-            if (callback) callback(attachment);
+            let remoteid: number = Number(data.data);
+
+            if (!isNan(remoteid)) {
+              attachment.fpjson.remote = remoteid;
+              attachment.fj = JSON.stringify(attachment.fpjson);
+
+              if (callback) callback(attachment);
+            }
           }
         }
 
