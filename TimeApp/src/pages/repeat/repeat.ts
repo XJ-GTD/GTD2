@@ -27,7 +27,7 @@ import {UtilService} from "../../service/util-service/util.service";
           <ion-list class="endwith" radio-group no-lines [(ngModel)]="cfDayOptions.endType" (ionChange)="onEndTypeChanged($event)">
             <ion-item >
               <ion-radio value="never" item-start></ion-radio>
-              <ion-label>默认(1年)</ion-label>
+              <ion-label>默认(7天)</ion-label>
             </ion-item>
             <ion-item>
               <ion-radio value="aftertimes" item-start></ion-radio>
@@ -62,7 +62,7 @@ import {UtilService} from "../../service/util-service/util.service";
           <ion-list class="endwith" radio-group no-lines [(ngModel)]="cfWeekOptions.endType" (ionChange)="onEndTypeChanged($event)">
             <ion-item>
               <ion-radio  value="never"  item-start></ion-radio>
-              <ion-label>默认(2年)</ion-label>
+              <ion-label>默认(4周)</ion-label>
             </ion-item>
             <ion-item>
               <ion-radio  value="aftertimes"  item-start></ion-radio>
@@ -95,7 +95,7 @@ import {UtilService} from "../../service/util-service/util.service";
           <ion-list class="endwith" radio-group no-lines [(ngModel)]="cfMonthOptions.endType" (ionChange)="onEndTypeChanged($event)">
             <ion-item>
               <ion-radio item-start value="never"></ion-radio>
-              <ion-label>默认(3年)</ion-label>
+              <ion-label>默认(12月)</ion-label>
             </ion-item>
             <ion-item>
               <ion-radio item-start value="aftertimes"></ion-radio>
@@ -123,7 +123,7 @@ import {UtilService} from "../../service/util-service/util.service";
           <ion-list class="endwith" radio-group no-lines [(ngModel)]="cfYearOptions.endType" (ionChange)="onEndTypeChanged($event)">
             <ion-item>
               <ion-radio item-start value="never"></ion-radio>
-              <ion-label>默认(20年)</ion-label>
+              <ion-label>默认(5年)</ion-label>
             </ion-item>
             <ion-item>
               <ion-radio item-start value="aftertimes"></ion-radio>
@@ -510,12 +510,12 @@ export class RepeatPage {
           switch (this.cfWeekOptions.endType) {
             case "never":
               rtjson.over.type = OverType.fornever;
-              this.cfDayOptions.toSomeDay = "";
+              this.cfWeekOptions.toSomeDay = "";
               break;
             case "aftertimes":
               rtjson.over.type = OverType.times;
               rtjson.over.value = this.cfWeekOptions.afterTimes;
-              this.cfDayOptions.toSomeDay = "";
+              this.cfWeekOptions.toSomeDay = "";
               break;
             case "tosomeday":
               rtjson.over.type = OverType.limitdate;
@@ -550,12 +550,12 @@ export class RepeatPage {
           switch (this.cfMonthOptions.endType) {
             case "never":
               rtjson.over.type = OverType.fornever;
-              this.cfDayOptions.toSomeDay = "";
+              this.cfMonthOptions.toSomeDay = "";
               break;
             case "aftertimes":
               rtjson.over.type = OverType.times;
               rtjson.over.value = this.cfMonthOptions.afterTimes;
-              this.cfDayOptions.toSomeDay = "";
+              this.cfMonthOptions.toSomeDay = "";
               break;
             case "tosomeday":
               rtjson.over.type = OverType.limitdate;
@@ -577,12 +577,12 @@ export class RepeatPage {
           switch (this.cfYearOptions.endType) {
             case "never":
               rtjson.over.type = OverType.fornever;
-              this.cfDayOptions.toSomeDay = "";
+              this.cfYearOptions.toSomeDay = "";
               break;
             case "aftertimes":
               rtjson.over.type = OverType.times;
               rtjson.over.value = this.cfYearOptions.afterTimes;
-              this.cfDayOptions.toSomeDay = "";
+              this.cfYearOptions.toSomeDay = "";
               break;
             case "tosomeday":
               rtjson.over.type = OverType.limitdate;
