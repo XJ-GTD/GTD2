@@ -3478,9 +3478,7 @@ export class EventService extends BaseService {
 
     //同步数据
     this.emitService.emit("mwxing.event.fj.add", att);
-    let attachArray: Array<Attachment> = new Array<Attachment>();
-    attachArray.push(att);
-    this.syncAttachments(attachArray);
+    this.syncAttachments([att]);
 
     return att;
   }
@@ -3503,9 +3501,7 @@ export class EventService extends BaseService {
 
     //同步数据
     this.emitService.emit("mwxing.event.fj.changed", att);
-    let attachArray: Array<Attachment> = new Array<Attachment>();
-    attachArray.push(att);
-    this.syncAttachments(attachArray);
+    this.syncAttachments([att]);
   }
 
   /**
