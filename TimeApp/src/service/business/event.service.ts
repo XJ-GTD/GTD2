@@ -2949,7 +2949,7 @@ export class EventService extends BaseService {
           if (data && data.data) {
             let remoteid: number = Number(data.data);
 
-            if (!isNan(remoteid)) {
+            if (!isNaN(remoteid)) {
               attachment.fpjson.remote = remoteid;
               attachment.fj = JSON.stringify(attachment.fpjson);
 
