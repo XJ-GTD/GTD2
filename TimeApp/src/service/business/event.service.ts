@@ -4684,24 +4684,24 @@ export class RtJson {
     switch(this.cycletype) {
       case anyenum.CycleType.day :
         repeatType = "days";
-        repeatTimes = repeatTimes || moment(repeatStartDay).add(7, "d").diff(repeatStartDay, "days");
+        repeatTimes = repeatTimes || moment(repeatStartDay).add(1, "years").diff(repeatStartDay, "days");
         repeatEndDay = repeatEndDay || moment(repeatStartDay).add(repeatTimes * repeatStep, "days").format("YYYY/MM/DD");
         break;
       case anyenum.CycleType.week :
         repeatType = "weeks";
         options = this.openway || options;
-        repeatTimes = repeatTimes || moment(repeatStartDay).add(4, "w").diff(repeatStartDay, "weeks");
+        repeatTimes = repeatTimes || moment(repeatStartDay).add(2, "years").diff(repeatStartDay, "weeks");
         repeatEndDay = repeatEndDay || moment(repeatStartDay).add(repeatTimes * repeatStep, "weeks").format("YYYY/MM/DD");
         break;
       case anyenum.CycleType.month :
         repeatType = "months";
         options = this.openway || options;
-        repeatTimes = repeatTimes || moment(repeatStartDay).add(12, "M").diff(repeatStartDay, "months");
+        repeatTimes = repeatTimes || moment(repeatStartDay).add(3, "years").diff(repeatStartDay, "months");
         repeatEndDay = repeatEndDay || moment(repeatStartDay).add(repeatTimes * repeatStep, "months").format("YYYY/MM/DD");
         break;
       case anyenum.CycleType.year :
         repeatType = "years";
-        repeatTimes = repeatTimes || 5;
+        repeatTimes = repeatTimes || 20;
         repeatEndDay = repeatEndDay || moment(repeatStartDay).add(repeatTimes * repeatStep, "years").format("YYYY/MM/DD");
         break;
       case anyenum.CycleType.close :    // 不重复日程
