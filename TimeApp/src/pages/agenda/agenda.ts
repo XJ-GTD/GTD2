@@ -629,6 +629,7 @@ export class AgendaPage {
       this.eventService.acceptReceivedAgenda(event.evi)
         .then(() => {
           this.buttons.record = true;
+          this.buttons.remove = true;
           this.buttons.accept = false;
           this.buttons.reject = false;
           this.util.loadingEnd();
