@@ -138,9 +138,9 @@ BScroll.use(InfinityScroll);
                   <!--<div class="plan" end><span [ngStyle]="{'color': event.ji == ''? 'transparent' : (event.ji | formatplan: 'color': privateplans )}"  >{{event.ji | formatplan: 'name': '': privateplans}}</span></div>-->
                   <!--</div>-->
                   <div class="line font-small first-line">
-                    <div class="icon">
-                      <ion-icon class="fal fa-gift"></ion-icon>
-                    </div>
+                    <!--<div class="icon">-->
+                      <!--<ion-icon class="fal fa-gift"></ion-icon>-->
+                    <!--</div>-->
                     <div class="sn">{{jt.jtn}}</div>
                   </div>
                   <div class="line font-small" *ngIf="currentuser != jt.ui && jt.ui != ''">
