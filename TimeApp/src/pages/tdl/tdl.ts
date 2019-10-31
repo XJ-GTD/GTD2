@@ -157,7 +157,7 @@ BScroll.use(InfinityScroll);
                     <!--</div>-->
                   <!--</div>-->
                   <div class="line font-small" >
-                    <div class="person" *ngIf="currentuser != event.ui && event.ui != ''" >-{{event.ui | formatuser: currentuser: friends}}</div>
+                    <div class="person" *ngIf="currentuser != jt.ui && jt.ui != ''" >-{{jt.ui | formatuser: currentuser: friends}}</div>
                     <!--<div class="invite" *ngIf="event.invitestatus != inviteaccept && event.invitestatus != invitereject"-->
                     <!--end><span (click)="rejectInvite($event, event)">拒绝</span><span-->
                     <!--(click)="acceptInvite($event, event)">接受</span></div>-->
