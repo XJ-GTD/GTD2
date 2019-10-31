@@ -8,7 +8,7 @@ import { SyncData, PushInData, PullInData, DataRestful } from "../restful/datase
 import { BackupPro, BacRestful, OutRecoverPro, RecoverPro } from "../restful/bacsev";
 import { UserConfig } from "../config/user.config";
 import * as moment from "moment";
-import { SyncType, DelType, SyncDataSecurity, SyncDataStatus } from "../../data.enum";
+import { SyncType, DelType, SyncDataSecurity, SyncDataStatus, CompleteState, InviteState } from "../../data.enum";
 import {EmitService} from "../util-service/emit.service";
 
 @Injectable()
@@ -205,6 +205,11 @@ export class MemoService extends BaseService {
 		     sync.type = "Memo";
 				 sync.title = memo.mon;
 		     sync.security = SyncDataSecurity.None;
+				 sync.datetime = moment().format("YYYY/MM/DD HH:mm");
+
+				 sync.todostate = CompleteState.None;
+				 sync.invitestate = InviteState.None;
+				 sync.to = [];
 
 				 // 设置删除状态
          if (memo.del == DelType.del) {
