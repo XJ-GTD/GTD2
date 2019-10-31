@@ -3043,11 +3043,15 @@ export class EventService extends BaseService {
       if (attachment.fpjson && attachment.fpjson.remote && attachment.ext && attachment.ext != "") {
         let download: DownloadInData = new DownloadInData();
 
-        download.id = attachment.fpjson.remote;
-        download.filepath = attachment.fpjson.getLocalFilePath(this.file.dataDirectory);
+        let remote = Number(attachment.fpjson.remote);
 
-        let data = await this.dataRestful.download(download);
-        console.log("download <=> " + JSON.stringify(data));
+        if (!isNaN(remote)) {
+          download.id = remote;
+          download.filepath = attachment.fpjson.getLocalFilePath(this.file.dataDirectory);
+
+          let data = await this.dataRestful.download(download);
+          console.log("download <=> " + JSON.stringify(data));
+        }
       }
 
       saved.push(single);
