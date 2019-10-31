@@ -2952,7 +2952,7 @@ export class EventService extends BaseService {
           upload.filepath = attachment.fpjson.getLocalFilePath(this.file.dataDirectory);
 
           let data = await this.dataRestful.upload(upload);
-
+          console.log("upload <=> " + JSON.stringify(data));
           if (data && data.data) {
             attachment.fpjson.remote = String(data.data);
             attachment.fj = JSON.stringify(attachment.fpjson);
