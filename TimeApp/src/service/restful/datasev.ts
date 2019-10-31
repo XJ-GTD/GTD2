@@ -25,7 +25,10 @@ export class DataRestful {
     let data = await this.request.upload(url, upload, upload.filepath, upload.filename);
 
     let result: UploadOutData = new UploadOutData();
-    Object.assign(result, data);
+
+    if (data && data.data) {
+      Object.assign(result, data);
+    }
 
     return result;
   }
