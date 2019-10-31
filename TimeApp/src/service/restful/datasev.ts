@@ -26,7 +26,7 @@ export class DataRestful {
 
     let result: UploadOutData = new UploadOutData();
 
-    if (data && data.data) {
+    if (data) {
       Object.assign(result, data);
     }
 
