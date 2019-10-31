@@ -135,7 +135,7 @@ export class UploadInData {
 
 export class UploadOutData {
   code: string;
-  message: string;
+  msg: string;
   data: number;
 }
 
