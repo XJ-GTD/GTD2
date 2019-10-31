@@ -4964,9 +4964,18 @@ enum DUflag {
   update = "update"
 }
 
+export function isJsonString(str: string) {
+  try {
+    JSON.parse(str)
+  } catch(e) {
+    return false;
+  }
+  return true;
+}
+
 export function generateCacheFilePathJson(fpjson: CacheFilePathJson, fj: string) {
   if (!fpjson) {
-    if (fj) {
+    if (fj && isJsonString(fj)) {
       fpjson = new CacheFilePathJson();
       Object.assign(fpjson, JSON.parse(fj));
     } else {
