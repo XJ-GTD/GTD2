@@ -51,8 +51,7 @@ export class RestfulClient {
         warHeader.headers = header;
         this.httpClient.post(url.url, body, warHeader).subscribe(data => {
           console.log("upload >=< " + JSON.stringify(data));
-          let jsonData = JSON.parse(data.data);
-          resolve(jsonData);
+          resolve(data);
         });
       }
     });
