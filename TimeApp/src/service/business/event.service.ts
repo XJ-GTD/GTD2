@@ -3037,6 +3037,19 @@ export class EventService extends BaseService {
       Object.assign(fj, single);
       sqlparam.push(fj.rpTParam());
 
+      attachment.fpjson = generateCacheFilePathJson(attachment.fpjson, attachment.fj);
+
+      // 下载文件到本地
+      if (attachment.fpjson && attachment.fpjson.remote && attachment.ext && attachment.ext != "") {
+        let download: DownloadInData = new DownloadInData();
+
+        download.id = attachment.fpjson.remote;
+        download.filepath = attachment.fpjson.getLocalFilePath(this.file.dataDirectory);
+
+        let data = await this.dataRestful.download(download);
+        console.log("download <=> " + JSON.stringify(data));
+      }
+
       saved.push(single);
     }
 
