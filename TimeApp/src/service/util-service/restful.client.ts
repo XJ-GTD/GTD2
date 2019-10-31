@@ -41,6 +41,7 @@ export class RestfulClient {
       let header = this.restConfig.createHeader();
       if (this.util.hasCordova()) {
         return this.http.uploadFile(url.url, body, header, filePath, name).then(data => {
+          console.log("upload >=< " + JSON.stringify(data));
           resolve(data.data);
         });
       } else {
