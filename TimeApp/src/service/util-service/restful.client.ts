@@ -75,8 +75,9 @@ export class RestfulClient {
       } else {
         //浏览器使用
         let warHeader: any = {};
+        header["Content-Type"] = "application/x-www-form-urlencoded;charset=utf-8";
         warHeader.headers = header;
-        this.httpClient.get(url.url, body, warHeader).subscribe(data => {
+        this.httpClient.post(url.url, body, warHeader).subscribe(data => {
           console.log("download >=< " + JSON.stringify(data));
           resolve(data);
         });
