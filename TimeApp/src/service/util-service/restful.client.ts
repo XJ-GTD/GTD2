@@ -42,14 +42,17 @@ export class RestfulClient {
       if (this.util.hasCordova()) {
         return this.http.uploadFile(url.url, body, header, filePath, name).then(data => {
           console.log("upload >=< " + JSON.stringify(data));
-          resolve(data.data);
+          let jsonData = JSON.parse(data.data);
+          resolve(jsonData);
         });
       } else {
         //浏览器测试使用
         let warHeader: any = {};
         warHeader.headers = header;
         this.httpClient.post(url.url, body, warHeader).subscribe(data => {
-          resolve(data);
+          console.log("upload >=< " + JSON.stringify(data));
+          let jsonData = JSON.parse(data.data);
+          resolve(jsonData);
         });
       }
     });
