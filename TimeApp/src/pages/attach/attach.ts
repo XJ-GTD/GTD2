@@ -140,15 +140,24 @@ export class AttachPage {
             this.fjArray[i].fjurl = this.fjArray[i].fpjson.getLocalFilePath(this.file.dataDirectory);
             this.fjArray[i].members = this.members;
             //检查该文件夹下是否存在该文件，如果不存在，则根据remote下载同步该文件
-            let fileName: string  = this.fjArray[i].fpjson.local.substr(1,this.fjArray[i].fpjson.local.length);
-            this.file.checkFile(this.file.dataDirectory+this.fjArray[i].fpjson.getCacheDir(),fileName);
-            .then(_ => console.log('Directory exists'))
-            .catch(err => {
-                  //根据remote 拉取文件
-                  if (this.fjArray[i].fpjson.remote) {
-                    //根据地址拉取文件
-                  }
-            });
+            if (this.fjArray[i].fpjson.local) {
+              let fileName: string  = this.fjArray[i].fpjson.local.substr(1,this.fjArray[i].fpjson.local.length);
+              this.file.checkFile(this.file.dataDirectory+this.fjArray[i].fpjson.getCacheDir(),fileName)
+              .then(_ => console.log('Directory exists'))
+              .catch(err => {
+                    //根据remote 拉取文件
+                    if (this.fjArray[i].fpjson.remote) {
+                      //根据地址拉取文件
+                    }
+              });
+            }
+            else
+            {
+              if (this.fjArray[i].fpjson.remote) {
+                //根据地址拉取文件
+              }
+            }
+
           }
           else {
             //历史遗留数据构造
