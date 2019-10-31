@@ -117,10 +117,10 @@ export class AttachPage {
       // this.currentuser = this.navParams.data.userId
     }
     //验证缓存文件目录是否存在
-    this.file.checkDir(this.file.cacheDirectory, '/cached')
+    this.file.checkDir(this.file.dataDirectory, '/cached')
       .then(_ => console.log('Directory exists'))
       .catch(err => {
-        this.file.createDir(this.file.cacheDirectory, "cached", true).then(result => {
+        this.file.createDir(this.file.dataDirectory, "cached", true).then(result => {
           console.log("success")
         }).catch(err => {
           console.log("err:" + JSON.stringify(err))
@@ -137,17 +137,27 @@ export class AttachPage {
             let cacheFilePathJson: CacheFilePathJson = new CacheFilePathJson();
             this.fjArray[i].fpjson = generateCacheFilePathJson(this.fjArray[i].fpjson, this.fjArray[i].fj);
             //目前直接在该页面直接存储附件，则直接将文件位置赋值给
-            this.fjArray[i].fjurl = this.fjArray[i].fpjson.getLocalFilePath(this.file.cacheDirectory);
+            this.fjArray[i].fjurl = this.fjArray[i].fpjson.getLocalFilePath(this.file.dataDirectory);
             this.fjArray[i].members = this.members;
             //检查该文件夹下是否存在该文件，如果不存在，则根据remote下载同步该文件
-            this.file.checkFile(this.file.cacheDirectory+this.fjArray[i].fpjson.getCacheDir(), this.fjArray[i].fpjson.local)
-            .then(_ => console.log('Directory exists'))
-            .catch(err => {
-                  //根据remote 拉取文件
-                  if (this.fjArray[i].fpjson.remote) {
-                    //根据地址拉取文件
-                  }
-            });
+            if (this.fjArray[i].fpjson.local) {
+              let fileName: string  = this.fjArray[i].fpjson.local.substr(1,this.fjArray[i].fpjson.local.length);
+              this.file.checkFile(this.file.dataDirectory+this.fjArray[i].fpjson.getCacheDir(),fileName)
+              .then(_ => console.log('Directory exists'))
+              .catch(err => {
+                    //根据remote 拉取文件
+                    if (this.fjArray[i].fpjson.remote) {
+                      //根据地址拉取文件
+                    }
+              });
+            }
+            else
+            {
+              if (this.fjArray[i].fpjson.remote) {
+                //根据地址拉取文件
+              }
+            }
+
           }
           else {
             //历史遗留数据构造
@@ -240,11 +250,11 @@ export class AttachPage {
         this.fjData.ext = ext;
         //构造地址文件
         let cacheFilePathJson: CacheFilePathJson = new CacheFilePathJson();
-        cacheFilePathJson.local = fileName;
+        cacheFilePathJson.local = "/"+fileName;
         //this.fjData.fj = this.file.externalDataDirectory + "/timeAppfile/" + fileName;
         this.fjData.fj = JSON.stringify(cacheFilePathJson);
         this.fjData.fpjson = cacheFilePathJson;
-        this.fjData.fjurl = this.fjData.fpjson.getLocalFilePath(this.file.cacheDirectory);
+        this.fjData.fjurl = this.fjData.fpjson.getLocalFilePath(this.file.dataDirectory);
         this.fjData.ui = this.currentuser;
         this.fjData.del = DelType.undel;
         this.fjData.tb = SyncType.unsynch;
@@ -253,7 +263,7 @@ export class AttachPage {
         if(!this.bw) {
           this.bw = fileName;
         }
-        this.file.copyFile(imgFileDir, fileName, this.file.cacheDirectory + cacheFilePathJson.getCacheDir(), fileName);
+        this.file.copyFile(imgFileDir, fileName, this.file.dataDirectory + cacheFilePathJson.getCacheDir(), fileName);
 
       }
       // let base64Image = 'data:image/jpeg;base64,' + imageData;
@@ -290,10 +300,10 @@ export class AttachPage {
               this.fjData.tb = SyncType.unsynch;
               this.fjData.wtt = moment().unix();
               let cacheFilePathJson: CacheFilePathJson = new CacheFilePathJson();
-              cacheFilePathJson.local = fileName;
+              cacheFilePathJson.local = "/"+fileName;;
               this.fjData.fj = JSON.stringify(cacheFilePathJson);
               this.fjData.fpjson = cacheFilePathJson;
-              this.fjData.fjurl = this.fjData.fpjson.getLocalFilePath(this.file.cacheDirectory);
+              this.fjData.fjurl = this.fjData.fpjson.getLocalFilePath(this.file.dataDirectory);
               this.fjData.members = this.members;
               //this.fjData.fj = this.file.externalDataDirectory + "/timeAppfile/" + fileName;
               //this.fjArray.push(fjData);
@@ -301,7 +311,7 @@ export class AttachPage {
                 this.bw = fileName;
               }
               alert("存储值："+JSON.stringify(this.fjData));
-              this.file.copyFile(imgFileDir, fileName, this.file.cacheDirectory + cacheFilePathJson.getCacheDir(), fileName);
+              this.file.copyFile(imgFileDir, fileName, this.file.dataDirectory + cacheFilePathJson.getCacheDir(), fileName);
             }
           })
           .catch(err => console.log(err));
