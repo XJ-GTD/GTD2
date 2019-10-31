@@ -4966,7 +4966,7 @@ enum DUflag {
 
 export function generateCacheFilePathJson(fpjson: CacheFilePathJson, fj: string) {
   if (!fpjson) {
-    if (fj) {
+    if (fj && this.util.isJsonString(fj)) {
       fpjson = new CacheFilePathJson();
       Object.assign(fpjson, JSON.parse(fj));
     } else {
