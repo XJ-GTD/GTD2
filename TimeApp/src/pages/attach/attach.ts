@@ -19,6 +19,7 @@ import * as moment from "moment";
 import {DelType, SyncType} from "../../data.enum";
 import {UserConfig} from "../../service/config/user.config";
 import {DataConfig} from "../../service/config/data.config";
+import {DataRestful,DownloadInData} from "../../service/restful/datasev";
 
 @IonicPage()
 @Component({
@@ -43,7 +44,7 @@ import {DataConfig} from "../../service/config/data.config";
             <ion-row class="item-content item-content-backgroud" leftmargin toppaddingsamll bottompaddingsamll rightmargin
                      *ngIf="fja.del != deleted" >
               <div class="line font-normal topheader" leftmargin rightmargin >
-                <div class="st font-small"> {{fja.wtt * 1000 | date: "yyyy-MM-dd HH:mm"}}</div>
+                <div class="st font-small"> {{fja.wtt * 1000 | transfromdate:'withNow'}}</div>
                 <div class="person font-small" *ngIf="fja.ui!=currentuser" end>---{{fja.ui | formatuser: currentuser: friends}}</div>
               </div>
               <div class="line font-normal" leftmargin rightmargin >
@@ -80,6 +81,7 @@ export class AttachPage {
   obt: string = "";
   obi: string = "";
   bw: string = "";
+  browserurl: string ="http://pluto.guobaa.com/abl/store/local/getContent/";
   members: Array<Member>  = new Array<Member>();
   buttons: any = {
     create: true,
@@ -105,6 +107,7 @@ export class AttachPage {
               private keyboard: Keyboard,
               private fileOpener: FileOpener,
               private actionSheetCtrl: ActionSheetController,
+              private dataRestful: DataRestful,
               private uitl:UtilService) {
     if (this.navParams && this.navParams.data) {
       this.obt = this.navParams.data.obt;
@@ -148,6 +151,18 @@ export class AttachPage {
                     //根据remote 拉取文件
                     if (this.fjArray[i].fpjson.remote) {
                       //根据地址拉取文件
+                      //验证是否为浏览器
+                      if(this.uitl.isMobile()) {
+                          this.fjArray[i].fjurl =this.browserurl+this.fjArray[i].fpjson.remote;
+                      }
+                      else {
+                        //拉取数据
+                        let downloadInData : DownloadInData = new DownloadInData();
+                        downloadInData.id = this.fjArray[i].fpjson.remote;
+                        downloadInData.filepath = this.file.dataDirectory+this.fjArray[i].fpjson.getCacheDir();
+                        this.dataRestful.download(downloadInData);
+                      }
+
                     }
               });
             }
@@ -155,6 +170,16 @@ export class AttachPage {
             {
               if (this.fjArray[i].fpjson.remote) {
                 //根据地址拉取文件
+                if(this.uitl.isMobile()) {
+                    this.fjArray[i].fjurl =this.browserurl+this.fjArray[i].fpjson.remote;
+                }
+                else {
+                  //拉取数据
+                  let downloadInData : DownloadInData = new DownloadInData();
+                  downloadInData.id = this.fjArray[i].fpjson.remote;
+                  downloadInData.filepath = this.file.dataDirectory+this.fjArray[i].fpjson.getCacheDir();
+                  this.dataRestful.download(downloadInData);
+                }
               }
             }
 
@@ -220,7 +245,9 @@ export class AttachPage {
   }
 
   cancel() {
-    this.navCtrl.pop();
+    //this.navCtrl.pop();
+    let data: Object = {attach: this.fjArray};
+    this.viewCtrl.dismiss(data);
   }
 
   /**
