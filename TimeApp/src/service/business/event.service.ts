@@ -2933,6 +2933,10 @@ export class EventService extends BaseService {
 
         let tos: string = "";
 
+        if (attachment.members && attachment.members.length > 0) {
+          tos = this.getMemberPhone(attachment.members);
+        }
+
         if (members.length > 0) {
           let membersTos: Array<Member> = members.filter((value, index, arr) => {
             return attachment.obi == value.obi;
