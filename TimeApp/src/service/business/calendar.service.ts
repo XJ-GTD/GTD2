@@ -2680,7 +2680,7 @@ export class CalendarService extends BaseService {
       this.assertNull(dayActivity);
 
       // 受邀人未接受的重复子日程不显示
-      if (value.ui != UserConfig.account.id && !value.rtevi && value.invitestatus != InviteState.Accepted && value.invitestatus != InviteState.Rejected) {
+      if (value.ui != UserConfig.account.id && value.rtevi && value.invitestatus != InviteState.Accepted && value.invitestatus != InviteState.Rejected) {
         // 不加入日程一览
       } else {
         dayActivity.events.push(value);
@@ -2910,7 +2910,7 @@ export class CalendarService extends BaseService {
         this.assertNull(dayActivity);
 
         // 受邀人未接受的重复子日程不显示
-        if (value.ui != UserConfig.account.id && !value.rtevi && value.invitestatus != InviteState.Accepted && value.invitestatus != InviteState.Rejected) {
+        if (value.ui != UserConfig.account.id && value.rtevi && value.invitestatus != InviteState.Accepted && value.invitestatus != InviteState.Rejected) {
           // 不加入日程一览
         } else {
           dayActivity.events.push(value);
