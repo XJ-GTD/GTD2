@@ -3046,7 +3046,7 @@ export class EventService extends BaseService {
         let remote = Number(attachment.fpjson.remote);
 
         if (!isNaN(remote)) {
-          download.id = remote;
+          download.id = attachment.fpjson.remote;
           download.filepath = attachment.fpjson.getLocalFilePath(this.file.dataDirectory);
 
           let data = await this.dataRestful.download(download);
