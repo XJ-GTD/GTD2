@@ -77,7 +77,8 @@ export class RestfulClient {
         let warHeader: any = {};
         header["Content-Type"] = "application/x-www-form-urlencoded;charset=utf-8";
         warHeader.headers = header;
-        this.httpClient.post(url.url, body, warHeader).subscribe(data => {
+        warHeader.params = body;
+        this.httpClient.post(url.url, {}, warHeader).subscribe(data => {
           console.log("download >=< " + JSON.stringify(data));
           resolve(data);
         });
