@@ -80,7 +80,7 @@ export class RestfulClient {
         warHeader.params = body;
         this.httpClient.post(url.url, {}, warHeader).subscribe(data => {
           //console.log("download >=< " + JSON.stringify(data));
-          resolve(data);
+          resolve({});
         });
       }
     });
