@@ -23,6 +23,7 @@ export class EffectService extends BaseService {
   async syncStart() {
 
     await this.calendarService.syncPrivatePlans();
+    await this.eventService.syncAttachments();
     await this.calendarService.syncPlanItems();
     await this.eventService.syncAgendas();
     await this.memoService.syncMemos();
