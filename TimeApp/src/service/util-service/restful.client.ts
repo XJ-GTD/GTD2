@@ -76,7 +76,7 @@ export class RestfulClient {
         //浏览器使用
         let warHeader: any = {};
         warHeader.headers = header;
-        this.httpClient.post(url.url, body, warHeader).subscribe(data => {
+        this.httpClient.get(url.url, body, warHeader).subscribe(data => {
           console.log("download >=< " + JSON.stringify(data));
           resolve(data);
         });
