@@ -133,30 +133,30 @@ export class EventService extends BaseService {
 
         }
 
-        //相关附件更新 2019/10/31 附件跟随日程入库取消
-        // if (agd.attachments && agd.attachments != null && agd.attachments.length > 0) {
-        //   //删除附件
-        //   let fj = new FjTbl();
-        //   fj.obt = anyenum.ObjectType.Event;
-        //   fj.obi = agd.evi;
-        //   sqlparam.push(fj.dTParam());
-        //
-        //   let upfjparams = this.sqlparamAddFj(agd.evi, agd.attachments) ;
-        //
-        //
-        //   nwfj = [...nwfj,...upfjparams];
-        // }
+        /*//相关附件更新
+        if (agd.attachments && agd.attachments != null && agd.attachments.length > 0) {
+          //删除附件
+          let fj = new FjTbl();
+          fj.obt = anyenum.ObjectType.Event;
+          fj.obi = agd.evi;
+          sqlparam.push(fj.dTParam());
+
+          let upfjparams = this.sqlparamAddFj(agd.evi, agd.attachments) ;
+
+
+          nwfj = [...nwfj,...upfjparams];
+        }*/
 
         saved.push(agd);
       }
 
-      let fjparams = new Array<any>();
+      /*let fjparams = new Array<any>();
 
       if (nwfj && nwfj.length > 0){
         fjparams = this.sqlExce.getFastSaveSqlByParam(nwfj) || new Array<any>();
       }
 
-      sqlparam = [...sqlparam, ...fjparams];
+      sqlparam = [...sqlparam, ...fjparams];*/
 
       await this.sqlExce.batExecSqlByParam(sqlparam);
       this.emitService.emit("mwxing.calendar.activities.changed", saved);
@@ -1894,7 +1894,7 @@ export class EventService extends BaseService {
     params.push(parEvi);
     sqlparam.push([sq,params]);
 
-    //删除附件
+    /*//删除附件
     let fj = new FjTbl();
     fj.obt = anyenum.ObjectType.Event;
     fj.obi = oriAgdata.evi;
@@ -1905,8 +1905,8 @@ export class EventService extends BaseService {
     let fjparams = new Array<any>();
     if (nwfj && nwfj.length > 0){
       fjparams = this.sqlExce.getFastSaveSqlByParam(nwfj);
-    }
-    sqlparam =Object.assign(sqlparam, [...sqlparam,  ...nwpar,...waparams, ...fjparams]);
+    }*/
+    sqlparam =Object.assign(sqlparam, [...sqlparam,  ...nwpar,...waparams]);
   }
 
   /**
@@ -2338,9 +2338,9 @@ export class EventService extends BaseService {
         was = [...was,...this.sqlparamAddTxWa2(ev,anyenum.ObjectType.Event,txjson)];
       }
 
-      if (agdata.attachments && agdata.attachments.length > 0){
+      /*if (agdata.attachments && agdata.attachments.length > 0){
         fjs = [...fjs,...this.sqlparamAddFj(ev.evi,agdata.attachments)];
-      }
+      }附件由附件页面保存*/
 
       //新增数据需要返回出去
       let outAgd = {} as AgendaData;
@@ -2356,11 +2356,11 @@ export class EventService extends BaseService {
     if (was && was.length > 0) {
       waparams = this.sqlExce.getFastSaveSqlByParam(was);
     }
-    let fjparams = new  Array<any>();
+    /*let fjparams = new  Array<any>();
     if (fjs && fjs.length > 0) {
       fjparams = this.sqlExce.getFastSaveSqlByParam(fjs);
-    }
-    ret.sqlparam = [...evparams,...waparams,...fjparams,...ret.sqlparam];
+    }*/
+    ret.sqlparam = [...evparams,...waparams,...ret.sqlparam];
 
     ret.outAgdatas = outAgds;
     return ret;
