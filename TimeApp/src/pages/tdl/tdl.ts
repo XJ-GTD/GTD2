@@ -144,7 +144,7 @@ BScroll.use(InfinityScroll);
                     <!--<div class="icon">-->
                       <!--<ion-icon class="fal fa-gift"></ion-icon>-->
                     <!--</div>-->
-                    
+
                     <div class="sn">{{jt.jtn}}</div>
                   </div>
                   <!--<div class="line font-small" *ngIf="currentuser != jt.ui && jt.ui != ''">-->
@@ -157,7 +157,7 @@ BScroll.use(InfinityScroll);
                     <!--</div>-->
                   <!--</div>-->
                   <div class="line font-small" >
-                    <div class="person" *ngIf="currentuser != event.ui && event.ui != ''" >-{{event.ui | formatuser: currentuser: friends}}</div>
+                    <div class="person" *ngIf="currentuser != jt.ui && jt.ui != ''" >-{{jt.ui | formatuser: currentuser: friends}}</div>
                     <!--<div class="invite" *ngIf="event.invitestatus != inviteaccept && event.invitestatus != invitereject"-->
                     <!--end><span (click)="rejectInvite($event, event)">拒绝</span><span-->
                     <!--(click)="acceptInvite($event, event)">接受</span></div>-->
@@ -168,7 +168,7 @@ BScroll.use(InfinityScroll);
                       <ion-icon class="fad fa-sync" *ngIf="jt.tb == synch"></ion-icon>
                     </div>
                   </div>
-                  
+
                   <div class="plan plan-right"
                        [ngStyle]="{'background-color': jt.ji == ''? 'transparent' : (jt.ji | formatplan: 'color': privateplans )}">
                     <span>{{jt.ji | formatplan: 'name': '': privateplans}}</span></div>
@@ -235,7 +235,7 @@ BScroll.use(InfinityScroll);
                     <!--<div class="invite" *ngIf="event.invitestatus != inviteaccept && event.invitestatus != invitereject"-->
                          <!--end><span (click)="rejectInvite($event, event)">拒绝</span><span-->
                       <!--(click)="acceptInvite($event, event)">接受</span></div>-->
-                    
+
                     <div class="icon font-small" end>
                       <ion-icon class="fad fa-lock"  *ngIf="event.todolist == '0'"></ion-icon>
                       <ion-icon class="fad fa-user-tag"  *ngIf="currentuser != event.ui && event.ui != ''"></ion-icon>
@@ -243,7 +243,7 @@ BScroll.use(InfinityScroll);
                       <ion-icon class="fad fa-sync" *ngIf="event.tb == synch"></ion-icon>
                     </div>
                   </div>
-                  
+
                   <div class="plan plan-right"
                        [ngStyle]="{'background-color': event.ji == ''? 'transparent' : (event.ji | formatplan: 'color': privateplans )}">
                     <span>{{event.ji | formatplan: 'name': '': privateplans}}</span></div>
