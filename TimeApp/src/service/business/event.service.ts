@@ -2905,6 +2905,11 @@ export class EventService extends BaseService {
       for (let attachment of attachments) {
         let sync: SyncData = new SyncData();
 
+        // 处理历史创建的附件数据 2019/10/31
+        if (!attachment.ui) {
+          attachment.ui = UserConfig.account.id;
+        }
+
         sync.src = attachment.ui;
         sync.id = attachment.fji;
         sync.type = "Attachment";
