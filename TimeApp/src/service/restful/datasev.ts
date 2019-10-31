@@ -140,6 +140,8 @@ export class UploadOutData {
 }
 
 export class DownloadInData {
+  group: string = "group";
+  username: string = UserConfig.account.id;
   id: string;
   filepath: string;
 }
