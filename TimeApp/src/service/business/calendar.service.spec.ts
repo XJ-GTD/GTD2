@@ -61,6 +61,7 @@ import { EventService, AgendaData, TaskData, MiniTaskData, RtJson, TxJson, Membe
 import { MemoService, MemoData } from "./memo.service";
 import { ScheduleRemindService } from "./remind.service";
 import { PlanType, PlanItemType, CycleType, OverType, RepeatFlag, PageDirection, SyncType, DelType, SyncDataStatus, IsWholeday, OperateType, EventType, RemindTime } from "../../data.enum";
+import {File} from '@ionic-native/file';
 
 /**
  * 日历Service 持续集成CI 自动测试Case
@@ -401,6 +402,7 @@ describe('CalendarService test suite', () => {
         SqliteConfig,
         SqliteExec,
         SqliteInit,
+        File,
         UserConfig,
         DataConfig,
         UtilService,
