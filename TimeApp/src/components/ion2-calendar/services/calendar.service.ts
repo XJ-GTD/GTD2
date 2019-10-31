@@ -305,7 +305,7 @@ export class IonCalendarService {
         data.days.forEach((v,k,m)=>{
           let calendarDay:CalendarDay = month.days.find((n) => moment(v.day).isSame(moment(n.time), 'day'));
 
-          calendarDay.hasevent = v.eventscount - v.repeateventscount > 0;
+          calendarDay.hasevent = v.agendascount > 0 || v.taskscount > 0;
           calendarDay.hasrepeat = v.repeateventscount > 0;
           calendarDay.accept = v.acceptableeventscount;
           calendarDay.hasMemo = v.memoscount > 0;
@@ -319,7 +319,7 @@ export class IonCalendarService {
     data.days.forEach((v,k,m)=>{
       let calendarDay:CalendarDay = month.days.find((n) => moment(v.day).isSame(moment(n.time), 'day'));
 
-      calendarDay.hasevent = v.eventscount - v.repeateventscount > 0;
+      calendarDay.hasevent = v.agendascount > 0 || v.taskscount > 0;
       calendarDay.hasrepeat = v.repeateventscount > 0;
       calendarDay.accept = v.acceptableeventscount;
       calendarDay.hasMemo = v.memoscount > 0;
