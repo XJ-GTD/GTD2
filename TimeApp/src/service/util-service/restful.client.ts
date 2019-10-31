@@ -73,15 +73,17 @@ export class RestfulClient {
           resolve(jsonData);
         });
       } else {
-        //浏览器使用
-        let warHeader: any = {};
-        header["Content-Type"] = "application/x-www-form-urlencoded;charset=utf-8";
-        warHeader.headers = header;
-        warHeader.params = body;
-        this.httpClient.post(url.url, {}, warHeader).subscribe(data => {
-          //console.log("download >=< " + JSON.stringify(data));
-          resolve({});
-        });
+        resolve({});
+
+        //浏览器使用 测试通过，暂时不用
+        // let warHeader: any = {};
+        // header["Content-Type"] = "application/x-www-form-urlencoded;charset=utf-8";
+        // warHeader.headers = header;
+        // warHeader.params = body;
+        // this.httpClient.post(url.url, {}, warHeader).subscribe(data => {
+        //   //console.log("download >=< " + JSON.stringify(data));
+        //   resolve({});
+        // });
       }
     });
   }
