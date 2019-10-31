@@ -2953,7 +2953,7 @@ export class EventService extends BaseService {
 
           let data = await this.dataRestful.upload(upload);
 
-          if (data && data.data) {
+          if (data && data.data && data.code == 0) {
             attachment.fpjson.remote = String(data.data);
             attachment.fj = JSON.stringify(attachment.fpjson);
 
