@@ -131,19 +131,19 @@ export class EventService extends BaseService {
 
         }
 
-        //相关附件更新
-        if (agd.attachments && agd.attachments != null && agd.attachments.length > 0) {
-          //删除附件
-          let fj = new FjTbl();
-          fj.obt = anyenum.ObjectType.Event;
-          fj.obi = agd.evi;
-          sqlparam.push(fj.dTParam());
-
-          let upfjparams = this.sqlparamAddFj(agd.evi, agd.attachments) ;
-
-
-          nwfj = [...nwfj,...upfjparams];
-        }
+        //相关附件更新 2019/10/31 附件跟随日程入库取消
+        // if (agd.attachments && agd.attachments != null && agd.attachments.length > 0) {
+        //   //删除附件
+        //   let fj = new FjTbl();
+        //   fj.obt = anyenum.ObjectType.Event;
+        //   fj.obi = agd.evi;
+        //   sqlparam.push(fj.dTParam());
+        //
+        //   let upfjparams = this.sqlparamAddFj(agd.evi, agd.attachments) ;
+        //
+        //
+        //   nwfj = [...nwfj,...upfjparams];
+        // }
 
         saved.push(agd);
       }
