@@ -79,7 +79,7 @@ export class RestfulClient {
         warHeader.headers = header;
         warHeader.params = body;
         this.httpClient.post(url.url, {}, warHeader).subscribe(data => {
-          console.log("download >=< " + JSON.stringify(data));
+          //console.log("download >=< " + JSON.stringify(data));
           resolve(data);
         });
       }
