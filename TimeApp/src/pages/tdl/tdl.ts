@@ -530,15 +530,13 @@ export class TdlPage {
   gotoEl(id) {
     setTimeout(() => {
       try {
-        if (this.currDayel){
+        if(this.currDayel && this.currDayel.className.indexOf("no-content") > -1){
           this.renderer2.removeClass(this.currDayel, "item-display");
-        }
-        if(this.currDayel && this.currDayel.className.indexOf("ayagenda-no-content") > -1){
           this.renderer2.addClass(this.currDayel, "item-no-display");
         }
-        this.currDayel = this.el.nativeElement.querySelector(id);
-
-        if (this.currDayel && this.currDayel.className.indexOf("ayagenda-no-content") > -1) {
+         this.currDayel = this.el.nativeElement.querySelector(id);
+        //
+        if (this.currDayel && this.currDayel.className.indexOf("no-content") > -1) {
           this.renderer2.removeClass(this.currDayel, "item-no-display");
           this.renderer2.addClass(this.currDayel, "item-display");
         }
