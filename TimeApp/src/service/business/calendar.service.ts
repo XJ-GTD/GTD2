@@ -2679,7 +2679,12 @@ export class CalendarService extends BaseService {
 
       this.assertNull(dayActivity);
 
-      dayActivity.events.push(value);
+      // 受邀人未接受的重复子日程不显示
+      if (value.ui != UserConfig.account.id && value.rtevi && value.invitestatus != InviteState.Accepted && value.invitestatus != InviteState.Rejected) {
+        // 不加入日程一览
+      } else {
+        dayActivity.events.push(value);
+      }
       days.set(day, dayActivity);
 
       return days;
@@ -2904,7 +2909,12 @@ export class CalendarService extends BaseService {
 
         this.assertNull(dayActivity);
 
-        dayActivity.events.push(value);
+        // 受邀人未接受的重复子日程不显示
+        if (value.ui != UserConfig.account.id && value.rtevi && value.invitestatus != InviteState.Accepted && value.invitestatus != InviteState.Rejected) {
+          // 不加入日程一览
+        } else {
+          dayActivity.events.push(value);
+        }
         days.set(day, dayActivity);
 
         return days;
@@ -3015,7 +3025,7 @@ export class CalendarService extends BaseService {
       return dayitems;
     }, new Array<PlanItemData>());
 
-    let sqlevents: string = `select * from gtd_ev where evd = '${day}' and del <> '${DelType.del}'`;
+    let sqlevents: string = `select * from gtd_ev where evd = '${day}' and del <> '${DelType.del}' and (ui = '${UserConfig.account.id}' or (ui <> '${UserConfig.account.id}' and not (ifnull(rtevi, '') <> '' and invitestatus <> '${InviteState.Accepted}')))`;
 
     dayActivity.events = await this.sqlExce.getExtList<EventData>(sqlevents) || new Array<EventData>();
 

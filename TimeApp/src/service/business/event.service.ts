@@ -26,11 +26,13 @@ import {
   assertFail
 } from "../../util/util";
 import {FsData} from "../../data.mapping";
+import {File} from '@ionic-native/file';
 
 @Injectable()
 export class EventService extends BaseService {
   constructor(private sqlExce: SqliteExec, private util: UtilService,
               private agdRest: AgdRestful,private emitService:EmitService,
+              private file: File,
               private bacRestful: BacRestful,private userConfig: UserConfig,
               private dataRestful: DataRestful) {
     super();
@@ -2947,7 +2949,7 @@ export class EventService extends BaseService {
         // 上传文件到服务器
         if (attachment.fpjson && !attachment.fpjson.remote && attachment.ext && attachment.ext != "") {
           let upload: UploadInData = new UploadInData();
-          upload.filepath = attachment.fj;
+          upload.filepath = attachment.fpjson.getLocalFilePath(this.file.dataDirectory);
 
           let data = await this.dataRestful.upload(upload);
 

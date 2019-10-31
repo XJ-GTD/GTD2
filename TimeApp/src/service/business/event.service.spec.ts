@@ -50,6 +50,7 @@ import {EventService, AgendaData, TaskData, MiniTaskData, RtJson, TxJson} from "
 import { MemoService } from "./memo.service";
 import { PlanType, IsCreate, IsSuccess, IsWholeday, PageDirection, SyncType, DelType, SyncDataStatus, EventType, OperateType, CycleType, OverType, ToDoListStatus, ConfirmType, EventFinishStatus } from "../../data.enum";
 import { ScheduleRemindService } from "./remind.service";
+import {File} from '@ionic-native/file';
 
 /**
  * 事件Service 持续集成CI 自动测试Case
@@ -93,6 +94,7 @@ describe('EventService test suite', () => {
         UserConfig,
         UtilService,
         EmitService,
+        File,
         ShaeRestful,
         AgdRestful,
         BacRestful,
