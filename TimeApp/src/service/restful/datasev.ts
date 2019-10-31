@@ -39,7 +39,7 @@ export class DataRestful {
   async download(download: DownloadInData): Promise<DownloadOutData> {
     let url: UrlEntity = this.config.getRestFulUrl("SDL");
 
-    let data = await this.request.download(url, download);
+    let data = await this.request.download(url, download, download.filepath);
 
     return new DownloadOutData();
   }
@@ -139,6 +139,8 @@ export class UploadOutData {
   data: number;
 }
 
-export class DownloadInData {}
+export class DownloadInData {
+  filepath: string;
+}
 
 export class DownloadOutData {}
