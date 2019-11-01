@@ -152,14 +152,14 @@ export class AttachPage {
                   if (this.fjArray[i].fpjson.remote) {
                     //根据地址拉取文件
                     //验证是否为浏览器
-                    if(this.uitl.isMobile()) {
-                        this.fjArray[i].fjurl =this.browserurl+this.fjArray[i].fpjson.remote;
-                    } else {
+                    if (this.util.hasCordova()) {
                       //拉取数据
                       let downloadInData : DownloadInData = new DownloadInData();
                       downloadInData.id = this.fjArray[i].fpjson.remote;
                       downloadInData.filepath = this.file.dataDirectory+this.fjArray[i].fpjson.getCacheDir();
                       this.dataRestful.download(downloadInData);
+                    } else {
+                      this.fjArray[i].fjurl =this.browserurl+this.fjArray[i].fpjson.remote;
                     }
                   }
               });
