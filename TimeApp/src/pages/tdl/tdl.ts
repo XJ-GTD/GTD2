@@ -96,8 +96,6 @@ BScroll.use(InfinityScroll);
                     <div class="ys-fsize">{{days.day | formatedate:"CMM"}}</div>
                   </div>
                   <div class="d-title  ">
-
-
                     <div class="d-title-chr">
                       <p>{{this.util.lunar4str(days.day, "d")}}
                       </p>
@@ -110,13 +108,12 @@ BScroll.use(InfinityScroll);
                       <ion-icon class="fad fa-money-check-edit"></ion-icon>
                       <!--<span>{{days.memos.length}}</span>-->
                     </div>
-
-                    <!--<div class="weather" *ngIf="days.weather">-->
-                      <!--<span>-->
-                       <!--{{days.weather.bz}} - {{days.weather.jtn}}-->
-                      <!--</span>-->
-                      <!--<ion-icon class='fas {{days.weather.jtn | formatweather:"winame-with-json"}}'></ion-icon>-->
-                    <!--</div>-->
+                  </div>
+                  <div class="weather" *ngIf="days.weather">
+                      <span>
+                       {{days.weather.bz}} - {{days.weather.jtn}}
+                      </span>
+                    <ion-icon class='fas {{days.weather.jtn | formatweather:"winame-with-json"}}'></ion-icon>
                   </div>
                 </div>
               </ion-row>
