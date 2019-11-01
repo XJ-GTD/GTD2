@@ -2915,7 +2915,7 @@ export class EventService extends BaseService {
         sync.src = attachment.ui;
         sync.id = attachment.fji;
         sync.type = "Attachment";
-        sync.title = "补充 " + attachment.fjn;
+        sync.title = "[" + UserConfig.account.name + "] 补充 " + attachment.fjn;
         sync.datetime = moment.unix(attachment.wtt).format("YYYY/MM/DD HH:mm");
 
         sync.main = true;
