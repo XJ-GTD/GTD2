@@ -170,7 +170,7 @@ export class AttachPage {
             {
               if (this.fjArray[i].fpjson.remote) {
                 //根据地址拉取文件
-                if(this.uitl.isMobile()) {
+                if(!this.uitl.isMobile()) {
                     this.fjArray[i].fjurl =this.browserurl+this.fjArray[i].fpjson.remote;
                 }
                 else {
