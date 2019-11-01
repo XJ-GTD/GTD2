@@ -135,7 +135,7 @@ export class AttachPage {
       for(let i: number =0; i<this.fjArray.length; i++) {
         if (this.fjArray[i].fj && this.fjArray[i].ext) {
           //处理历史遗留数据，按照原来的显示
-          if (this.uitl.isJsonString(this.fjArray[i].fj)) {
+          if (this.util.isJsonString(this.fjArray[i].fj)) {
             //获取新赋值
             let cacheFilePathJson: CacheFilePathJson = new CacheFilePathJson();
             this.fjArray[i].fpjson = generateCacheFilePathJson(this.fjArray[i].fpjson, this.fjArray[i].fj);
@@ -198,7 +198,7 @@ export class AttachPage {
   }
 
   openimg(url){
-    this.uitl.photoViews(url);
+    this.util.photoViews(url);
   }
 
 
