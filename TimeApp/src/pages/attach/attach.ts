@@ -120,7 +120,8 @@ export class AttachPage {
       // this.currentuser = this.navParams.data.userId
     }
     //验证缓存文件目录是否存在
-    this.file.checkDir(this.file.dataDirectory, '/cached')
+    if (this.util.hasCordova()) {
+      this.file.checkDir(this.file.dataDirectory, '/cached')
       .then(_ => console.log('Directory exists'))
       .catch(err => {
         this.file.createDir(this.file.dataDirectory, "cached", true).then(result => {
@@ -129,6 +130,7 @@ export class AttachPage {
           console.log("err:" + JSON.stringify(err))
         })
       });
+    }
     // //1.验证是否有原有的值传的过来
     // if (this.fjArray) {
       //2.当有值传递过来的情况下，将fj的值转换给fpjson
@@ -144,28 +146,30 @@ export class AttachPage {
             this.fjArray[i].members = this.members;
             //检查该文件夹下是否存在该文件，如果不存在，则根据remote下载同步该文件
             if (this.fjArray[i].fpjson.local) {
-              let fileName: string  = this.fjArray[i].fpjson.local.substr(1,this.fjArray[i].fpjson.local.length);
-              this.file.checkFile(this.file.dataDirectory+this.fjArray[i].fpjson.getCacheDir(),fileName)
-              .then(_ => console.log('Directory exists'))
-              .catch(err => {
-                  //根据remote 拉取文件
-                  if (this.fjArray[i].fpjson.remote) {
-                    //根据地址拉取文件
-                    //验证是否为浏览器
-                    if (this.util.hasCordova()) {
-                      //拉取数据
-                      let downloadInData : DownloadInData = new DownloadInData();
-                      downloadInData.id = this.fjArray[i].fpjson.remote;
-                      downloadInData.filepath = this.file.dataDirectory+this.fjArray[i].fpjson.getCacheDir();
-                      this.dataRestful.download(downloadInData);
-                    } else {
-                      this.fjArray[i].fjurl =this.browserurl+this.fjArray[i].fpjson.remote;
+              if (this.util.hasCordova()) {
+                let fileName: string  = this.fjArray[i].fpjson.local.substr(1,this.fjArray[i].fpjson.local.length);
+                this.file.checkFile(this.file.dataDirectory+this.fjArray[i].fpjson.getCacheDir(),fileName)
+                .then(_ => console.log('Directory exists'))
+                .catch(err => {
+                    //根据remote 拉取文件
+                    if (this.fjArray[i].fpjson.remote) {
+                      //根据地址拉取文件
+                      //验证是否为浏览器
+                      if (this.util.hasCordova()) {
+                        //拉取数据
+                        let downloadInData : DownloadInData = new DownloadInData();
+                        downloadInData.id = this.fjArray[i].fpjson.remote;
+                        downloadInData.filepath = this.file.dataDirectory+this.fjArray[i].fpjson.getCacheDir();
+                        this.dataRestful.download(downloadInData);
+                      } else {
+                        this.fjArray[i].fjurl =this.browserurl+this.fjArray[i].fpjson.remote;
+                      }
                     }
-                  }
-              });
-            }
-            else
-            {
+                });
+              } else {
+                this.fjArray[i].fjurl =this.browserurl+this.fjArray[i].fpjson.remote;
+              }
+            } else {
               if (this.fjArray[i].fpjson.remote) {
                 //根据地址拉取文件
                 if (this.util.hasCordova()) {
