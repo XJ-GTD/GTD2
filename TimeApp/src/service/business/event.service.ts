@@ -2898,7 +2898,7 @@ export class EventService extends BaseService {
         [SyncType.synch, UserConfig.account.id]) || members;
     }
 
-    let maxdata: number = 10;
+    let maxdata: number = 5;
 
     if (attachments.length > 0) {
       let push: PushInData = new PushInData();
