@@ -2876,9 +2876,9 @@ export class EventService extends BaseService {
     let members = new Array<Member>();
 
     if (attachments.length <= 0) {
-      let sql: string = `select * from gtd_fj where tb <> ?1`;
+      let sql: string = `select * from gtd_fj where tb <> ?1 and ui = ?2`;
 
-      attachments = await this.sqlExce.getExtLstByParam<Attachment>(sql, [SyncType.synch]) || attachments;
+      attachments = await this.sqlExce.getExtLstByParam<Attachment>(sql, [SyncType.synch, UserConfig.account.id]) || attachments;
 
       let sqlmember: string = `select par.*,
                         b.ran,
@@ -2891,11 +2891,11 @@ export class EventService extends BaseService {
                       b.src
                       from
                       (select * from gtd_par where obi in
-                      (select obi from gtd_fj where tb <> ?1 or tb is null)) par
+                      (select obi from gtd_fj where ui = ?2 and (tb <> ?1 or tb is null))) par
                       left join gtd_b b
                       on b.pwi = par.pwi`;
       members =  await this.sqlExce.getExtLstByParam<Member>(sqlmember,
-        [SyncType.synch]) || members;
+        [SyncType.synch, UserConfig.account.id]) || members;
     }
 
     let maxdata: number = 10;
