@@ -206,7 +206,7 @@ export class EventService extends BaseService {
     let changed: Array<string> = new Array<string>();
 
     for (let key of Object.keys(one)) {
-      if (["wtt", "utt", "rts", "txs", "fj", "pn", "originator", "tos"].indexOf(key) >= 0) continue;   // 忽略字段
+      if (["wtt", "utt", "rts", "txs", "fj", "pn", "originator", "tos", "attachments"].indexOf(key) >= 0) continue;   // 忽略字段
 
       if (one.hasOwnProperty(key)) {
         let value = one[key];
@@ -405,7 +405,7 @@ export class EventService extends BaseService {
     if (!one || !another) return false;
 
     for (let key of Object.keys(one)) {
-      if (["wtt", "utt", "rts", "txs", "fj", "pn", "originator", "tos"].indexOf(key) >= 0) continue;   // 忽略字段
+      if (["wtt", "utt", "rts", "txs", "fj", "pn", "originator", "tos", "attachments"].indexOf(key) >= 0) continue;   // 忽略字段
 
       if (one.hasOwnProperty(key)) {
         let value = one[key];
@@ -3043,16 +3043,19 @@ export class EventService extends BaseService {
 
       // 下载文件到本地
       if (attachment.fpjson && attachment.fpjson.remote && attachment.ext && attachment.ext != "") {
-        let download: DownloadInData = new DownloadInData();
+        // 仅限手机设备上下载
+        if (this.util.hasCordova()) {
+          let download: DownloadInData = new DownloadInData();
 
-        let remote = Number(attachment.fpjson.remote);
+          let remote = Number(attachment.fpjson.remote);
 
-        if (!isNaN(remote)) {
-          download.id = attachment.fpjson.remote;
-          download.filepath = attachment.fpjson.getLocalFilePath(this.file.dataDirectory);
+          if (!isNaN(remote)) {
+            download.id = attachment.fpjson.remote;
+            download.filepath = attachment.fpjson.getLocalFilePath(this.file.dataDirectory);
 
-          let data = await this.dataRestful.download(download);
-          console.log("download <=> " + JSON.stringify(data));
+            let data = await this.dataRestful.download(download);
+            console.log("download <=> " + JSON.stringify(data));
+          }
         }
       }
 
