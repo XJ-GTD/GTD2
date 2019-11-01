@@ -3256,6 +3256,8 @@ export class EventService extends BaseService {
     // 提醒临时属性置空
     cleaned.txjson = null;
 
+    cleaned.attachments = [];
+
     // 清除参与人设备关联字段
     if (cleaned.members) {
       let members: Array<Member> = new Array<Member>();
