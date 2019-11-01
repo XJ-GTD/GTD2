@@ -108,7 +108,7 @@ export class AttachPage {
               private fileOpener: FileOpener,
               private actionSheetCtrl: ActionSheetController,
               private dataRestful: DataRestful,
-              private uitl:UtilService) {
+              private util:UtilService) {
     if (this.navParams && this.navParams.data) {
       this.obt = this.navParams.data.obt;
       this.obi = this.navParams.data.obi;
