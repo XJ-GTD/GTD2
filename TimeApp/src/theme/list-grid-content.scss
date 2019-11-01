@@ -169,7 +169,7 @@
     width: auto;
     margin: 0.4rem 1rem;
     position: relative;
-    overflow: hidden;
+    //overflow: hidden;
 
     .syncing {
       height: 100%;
@@ -252,29 +252,29 @@
 
     .dayheader {
       width: 75px;
-      float: left;
       padding-top: 0.5rem;
       padding-bottom: 0.5rem;
-      padding-right: 2rem;
+      padding-right: 1rem;
       text-align: center;
 
       .ym-fsize {
         font-size: 2.3rem;
         line-height: 2rem;
+        text-align: center;
       }
 
       .ys-fsize {
         font-size: 1rem;
         font-weight: 300;
+        text-align: center;
       }
 
       .d-fsize {
-        font-size: 1rem;
+        font-size: .9rem;
         font-weight: 300;
-        line-height: 10px;
-        letter-spacing: 2px;
+        line-height: 30px;
+        letter-spacing: 3px;
         float: right;
-        width: 10px;
         writing-mode: tb-rl;
       }
 
@@ -328,7 +328,10 @@
 
       .mome {
         //flex-grow: 1;
-        font-size: 1.6rem;
+        icon{
+          font-size: 1.6rem;
+
+        }
 
         span {
         }
@@ -336,28 +339,21 @@
     }
     .weather{
       position: absolute;
-      height: 100%;
-      width: 100%;
-      z-index: 9;
-      text-align: right;
       color: white;
-      padding-right: 0.5rem;
-      padding-top: .2rem;
-      max-width: 200px;
-      right: 0px;
+      left: 1rem;
+      top: 5rem;
+      text-align: center;
+      color:rgba(56,160,185,.8);
+
       //margin-left: 1rem;
       ion-icon{
         font-size: 2.2rem;
-        color: rgba(138,119,42, .8);
       }
       span{
-        font-size: 1rem;
-        color: rgba(153,152,152,1);
+        font-size: .9rem;
         overflow: hidden;
-        max-width: 150px;
+        max-width: 50px;
         display: block;
-        position: absolute;
-        right: 2.7rem;
       }
 
     }
