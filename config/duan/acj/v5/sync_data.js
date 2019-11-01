@@ -60,7 +60,7 @@ function clean(datasource)
   var convertPushMessage = function(id, type, title, datetime) {
     var push = {};
 
-    push['title'] = '[冥王星] ' + title;
+    push['title'] = title;
     push['content'] = formatDateTimeShow(datetime);
     push['extras'] = {
       event: "MWXING_SHAREAGENDA_EVENT",
@@ -149,6 +149,8 @@ function clean(datasource)
       var title = data['title'];
       var datetime = data['datetime'];
       var main = data['main'];
+
+      print("DEBUG [" + type + "][" + src + "][" + id + "] " + from + ":" + requestdevice + " => " + to + ":" + todevice);
 
       // 本帐户同步
       if (from == to) {
