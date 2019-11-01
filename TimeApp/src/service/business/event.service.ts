@@ -3009,7 +3009,7 @@ export class EventService extends BaseService {
       pull.d.push(fji);
     }
 
-    // 发送下载日程请求
+    // 发送下载附件请求
     await this.dataRestful.pull(pull);
 
     return;
