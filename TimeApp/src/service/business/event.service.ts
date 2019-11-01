@@ -18,7 +18,7 @@ import {JhaTbl} from "../sqlite/tbl/jha.tbl";
 import {DataConfig} from "../config/data.config";
 import {BTbl} from "../sqlite/tbl/b.tbl";
 import {FjTbl} from "../sqlite/tbl/fj.tbl";
-import {DataRestful, PullInData, PushInData, SyncData, SyncDataFields, UploadInData} from "../restful/datasev";
+import {DataRestful, PullInData, PushInData, SyncData, SyncDataFields, UploadInData, DownloadInData} from "../restful/datasev";
 import {SyncType, DelType, ObjectType, IsSuccess, SyncDataStatus, OperateType, ToDoListStatus, RepeatFlag, ConfirmType, ModiPower, PageDirection, SyncDataSecurity, InviteState, CompleteState, EventFinishStatus} from "../../data.enum";
 import {
   assertNotNumber,
@@ -26,11 +26,13 @@ import {
   assertFail
 } from "../../util/util";
 import {FsData} from "../../data.mapping";
+import {File} from '@ionic-native/file';
 
 @Injectable()
 export class EventService extends BaseService {
   constructor(private sqlExce: SqliteExec, private util: UtilService,
               private agdRest: AgdRestful,private emitService:EmitService,
+              private file: File,
               private bacRestful: BacRestful,private userConfig: UserConfig,
               private dataRestful: DataRestful) {
     super();
@@ -131,30 +133,30 @@ export class EventService extends BaseService {
 
         }
 
-        //相关附件更新 2019/10/31 附件跟随日程入库取消
-        // if (agd.attachments && agd.attachments != null && agd.attachments.length > 0) {
-        //   //删除附件
-        //   let fj = new FjTbl();
-        //   fj.obt = anyenum.ObjectType.Event;
-        //   fj.obi = agd.evi;
-        //   sqlparam.push(fj.dTParam());
-        //
-        //   let upfjparams = this.sqlparamAddFj(agd.evi, agd.attachments) ;
-        //
-        //
-        //   nwfj = [...nwfj,...upfjparams];
-        // }
+        /*//相关附件更新
+        if (agd.attachments && agd.attachments != null && agd.attachments.length > 0) {
+          //删除附件
+          let fj = new FjTbl();
+          fj.obt = anyenum.ObjectType.Event;
+          fj.obi = agd.evi;
+          sqlparam.push(fj.dTParam());
+
+          let upfjparams = this.sqlparamAddFj(agd.evi, agd.attachments) ;
+
+
+          nwfj = [...nwfj,...upfjparams];
+        }*/
 
         saved.push(agd);
       }
 
-      let fjparams = new Array<any>();
+      /*let fjparams = new Array<any>();
 
       if (nwfj && nwfj.length > 0){
         fjparams = this.sqlExce.getFastSaveSqlByParam(nwfj) || new Array<any>();
       }
 
-      sqlparam = [...sqlparam, ...fjparams];
+      sqlparam = [...sqlparam, ...fjparams];*/
 
       await this.sqlExce.batExecSqlByParam(sqlparam);
       this.emitService.emit("mwxing.calendar.activities.changed", saved);
@@ -204,7 +206,7 @@ export class EventService extends BaseService {
     let changed: Array<string> = new Array<string>();
 
     for (let key of Object.keys(one)) {
-      if (["wtt", "utt", "rts", "txs", "fj", "pn", "originator", "tos"].indexOf(key) >= 0) continue;   // 忽略字段
+      if (["wtt", "utt", "rts", "txs", "fj", "pn", "originator", "tos", "attachments"].indexOf(key) >= 0) continue;   // 忽略字段
 
       if (one.hasOwnProperty(key)) {
         let value = one[key];
@@ -403,7 +405,7 @@ export class EventService extends BaseService {
     if (!one || !another) return false;
 
     for (let key of Object.keys(one)) {
-      if (["wtt", "utt", "rts", "txs", "fj", "pn", "originator", "tos"].indexOf(key) >= 0) continue;   // 忽略字段
+      if (["wtt", "utt", "rts", "txs", "fj", "pn", "originator", "tos", "attachments"].indexOf(key) >= 0) continue;   // 忽略字段
 
       if (one.hasOwnProperty(key)) {
         let value = one[key];
@@ -1892,7 +1894,7 @@ export class EventService extends BaseService {
     params.push(parEvi);
     sqlparam.push([sq,params]);
 
-    //删除附件
+    /*//删除附件
     let fj = new FjTbl();
     fj.obt = anyenum.ObjectType.Event;
     fj.obi = oriAgdata.evi;
@@ -1903,8 +1905,8 @@ export class EventService extends BaseService {
     let fjparams = new Array<any>();
     if (nwfj && nwfj.length > 0){
       fjparams = this.sqlExce.getFastSaveSqlByParam(nwfj);
-    }
-    sqlparam =Object.assign(sqlparam, [...sqlparam,  ...nwpar,...waparams, ...fjparams]);
+    }*/
+    sqlparam =Object.assign(sqlparam, [...sqlparam,  ...nwpar,...waparams]);
   }
 
   /**
@@ -2336,9 +2338,9 @@ export class EventService extends BaseService {
         was = [...was,...this.sqlparamAddTxWa2(ev,anyenum.ObjectType.Event,txjson)];
       }
 
-      if (agdata.attachments && agdata.attachments.length > 0){
+      /*if (agdata.attachments && agdata.attachments.length > 0){
         fjs = [...fjs,...this.sqlparamAddFj(ev.evi,agdata.attachments)];
-      }
+      }附件由附件页面保存*/
 
       //新增数据需要返回出去
       let outAgd = {} as AgendaData;
@@ -2354,11 +2356,11 @@ export class EventService extends BaseService {
     if (was && was.length > 0) {
       waparams = this.sqlExce.getFastSaveSqlByParam(was);
     }
-    let fjparams = new  Array<any>();
+    /*let fjparams = new  Array<any>();
     if (fjs && fjs.length > 0) {
       fjparams = this.sqlExce.getFastSaveSqlByParam(fjs);
-    }
-    ret.sqlparam = [...evparams,...waparams,...fjparams,...ret.sqlparam];
+    }*/
+    ret.sqlparam = [...evparams,...waparams,...ret.sqlparam];
 
     ret.outAgdatas = outAgds;
     return ret;
@@ -2874,9 +2876,9 @@ export class EventService extends BaseService {
     let members = new Array<Member>();
 
     if (attachments.length <= 0) {
-      let sql: string = `select * from gtd_fj where tb <> ?1`;
+      let sql: string = `select * from gtd_fj where tb <> ?1 and ui = ?2`;
 
-      attachments = await this.sqlExce.getExtLstByParam<Attachment>(sql, [SyncType.synch]) || attachments;
+      attachments = await this.sqlExce.getExtLstByParam<Attachment>(sql, [SyncType.synch, UserConfig.account.id]) || attachments;
 
       let sqlmember: string = `select par.*,
                         b.ran,
@@ -2889,14 +2891,14 @@ export class EventService extends BaseService {
                       b.src
                       from
                       (select * from gtd_par where obi in
-                      (select obi from gtd_fj where tb <> ?1 or tb is null)) par
+                      (select obi from gtd_fj where ui = ?2 and (tb <> ?1 or tb is null))) par
                       left join gtd_b b
                       on b.pwi = par.pwi`;
       members =  await this.sqlExce.getExtLstByParam<Member>(sqlmember,
-        [SyncType.synch]) || members;
+        [SyncType.synch, UserConfig.account.id]) || members;
     }
 
-    let maxdata: number = 10;
+    let maxdata: number = 5;
 
     if (attachments.length > 0) {
       let push: PushInData = new PushInData();
@@ -2913,7 +2915,7 @@ export class EventService extends BaseService {
         sync.src = attachment.ui;
         sync.id = attachment.fji;
         sync.type = "Attachment";
-        sync.title = "补充 " + attachment.fjn;
+        sync.title = "[" + UserConfig.account.name + "] 补充 " + attachment.fjn;
         sync.datetime = moment.unix(attachment.wtt).format("YYYY/MM/DD HH:mm");
 
         sync.main = true;
@@ -2931,7 +2933,9 @@ export class EventService extends BaseService {
 
         let tos: string = "";
 
-        if (members.length > 0) {
+        if (attachment.members && attachment.members.length > 0) {
+          tos = this.getMemberPhone(attachment.members);
+        } else if (members.length > 0) {
           let membersTos: Array<Member> = members.filter((value, index, arr) => {
             return attachment.obi == value.obi;
           });
@@ -2940,24 +2944,27 @@ export class EventService extends BaseService {
 
         sync.to = (!tos || tos == "" || tos == null) ? [] : tos.split(",") ;
 
-        sync.payload = attachment;
-
         attachment.fpjson = generateCacheFilePathJson(attachment.fpjson, attachment.fj);
 
         // 上传文件到服务器
         if (attachment.fpjson && !attachment.fpjson.remote && attachment.ext && attachment.ext != "") {
-          let upload: UploadInData = new UploadInData();
-          upload.filepath = attachment.fj;
+          // 仅限手机设备上上传文件附件
+          if (this.util.hasCordova()) {
+            let upload: UploadInData = new UploadInData();
+            upload.filepath = attachment.fpjson.getLocalFilePath(this.file.dataDirectory);
 
-          let data = await this.dataRestful.upload(upload);
+            let data = await this.dataRestful.upload(upload);
+            console.log("upload <=> " + JSON.stringify(data));
+            if (data && data.data) {
+              attachment.fpjson.remote = String(data.data);
+              attachment.fj = JSON.stringify(attachment.fpjson);
 
-          if (data && data.data) {
-            attachment.fpjson.remote = String(data.data);
-            attachment.fj = JSON.stringify(attachment.fpjson);
-
-            if (callback) callback(attachment);
+              if (callback) callback(attachment);
+            }
           }
         }
+
+        sync.payload = attachment;
 
         push.d.push(sync);
 
@@ -3002,7 +3009,7 @@ export class EventService extends BaseService {
       pull.d.push(fji);
     }
 
-    // 发送下载日程请求
+    // 发送下载附件请求
     await this.dataRestful.pull(pull);
 
     return;
@@ -3034,6 +3041,26 @@ export class EventService extends BaseService {
       let fj = new FjTbl();
       Object.assign(fj, single);
       sqlparam.push(fj.rpTParam());
+
+      attachment.fpjson = generateCacheFilePathJson(attachment.fpjson, attachment.fj);
+
+      // 下载文件到本地
+      if (attachment.fpjson && attachment.fpjson.remote && attachment.ext && attachment.ext != "") {
+        // 仅限手机设备上下载
+        if (this.util.hasCordova()) {
+          let download: DownloadInData = new DownloadInData();
+
+          let remote = Number(attachment.fpjson.remote);
+
+          if (!isNaN(remote)) {
+            download.id = attachment.fpjson.remote;
+            download.filepath = attachment.fpjson.getLocalFilePath(this.file.dataDirectory);
+
+            let data = await this.dataRestful.download(download);
+            console.log("download <=> " + JSON.stringify(data));
+          }
+        }
+      }
 
       saved.push(single);
     }
@@ -3228,6 +3255,8 @@ export class EventService extends BaseService {
 
     // 提醒临时属性置空
     cleaned.txjson = null;
+
+    cleaned.attachments = [];
 
     // 清除参与人设备关联字段
     if (cleaned.members) {

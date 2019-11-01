@@ -41,25 +41,49 @@ export class RestfulClient {
       let header = this.restConfig.createHeader();
       if (this.util.hasCordova()) {
         return this.http.uploadFile(url.url, body, header, filePath, name).then(data => {
-          resolve(data);
+          console.log("upload >=< " + JSON.stringify(data));
+          let jsonData = JSON.parse(data.data);
+          resolve(jsonData);
         });
       } else {
         //浏览器测试使用
         let warHeader: any = {};
         warHeader.headers = header;
         this.httpClient.post(url.url, body, warHeader).subscribe(data => {
+          console.log("upload >=< " + JSON.stringify(data));
           resolve(data);
         });
       }
     });
   }
 
-  download(url: UrlEntity, body: any): Promise<any> {
+  download(url: UrlEntity, body: any, filePath: string): Promise<any> {
     return new Promise((resolve, reject) => {
       // 没有网络的时候，直接返回
       if (!this.networkService.isConnected()) {
         resolve();
         return;
+      }
+
+      let header = this.restConfig.createHeader();
+      if (this.util.hasCordova()) {
+        return this.http.downloadFile(url.url, body, header, filePath).then(data => {
+          console.log("download >=< " + JSON.stringify(data));
+          let jsonData = JSON.parse(data.data);
+          resolve(jsonData);
+        });
+      } else {
+        resolve({});
+
+        //浏览器使用 测试通过，暂时不用
+        // let warHeader: any = {};
+        // header["Content-Type"] = "application/x-www-form-urlencoded;charset=utf-8";
+        // warHeader.headers = header;
+        // warHeader.params = body;
+        // this.httpClient.post(url.url, {}, warHeader).subscribe(data => {
+        //   //console.log("download >=< " + JSON.stringify(data));
+        //   resolve({});
+        // });
       }
     });
   }

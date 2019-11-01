@@ -627,11 +627,20 @@ export class AgendaPage {
       event.invitestatus = InviteState.Accepted;
 
       this.eventService.acceptReceivedAgenda(event.evi)
-        .then(() => {
+        .then((agenda) => {
+
+          if (agenda) {
+            this.currentAgenda = agenda;
+            Object.assign(this.originAgenda, agenda);
+
+            this.buttons.save = false;
+          }
+
           this.buttons.record = true;
           this.buttons.remove = true;
           this.buttons.accept = false;
           this.buttons.reject = false;
+          
           this.util.loadingEnd();
         });
     });

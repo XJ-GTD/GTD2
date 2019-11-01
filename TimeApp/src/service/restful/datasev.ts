@@ -25,18 +25,21 @@ export class DataRestful {
     let data = await this.request.upload(url, upload, upload.filepath, upload.filename);
 
     let result: UploadOutData = new UploadOutData();
-    Object.assign(result, data);
+
+    if (data) {
+      Object.assign(result, data);
+    }
 
     return result;
   }
 
   /**
-   * http://pluto.guobaa.com/abl/store/local/getContent/9743
+   * https://pluto.guobaa.com/abl/store/remote/download
    **/
   async download(download: DownloadInData): Promise<DownloadOutData> {
     let url: UrlEntity = this.config.getRestFulUrl("SDL");
 
-    let data = await this.request.download(url, download);
+    let data = await this.request.download(url, download, download.filepath);
 
     return new DownloadOutData();
   }
@@ -132,10 +135,15 @@ export class UploadInData {
 
 export class UploadOutData {
   code: string;
-  message: string;
+  msg: string;
   data: number;
 }
 
-export class DownloadInData {}
+export class DownloadInData {
+  group: string = "group";
+  username: string = UserConfig.account.id;
+  id: string;
+  filepath: string;
+}
 
 export class DownloadOutData {}

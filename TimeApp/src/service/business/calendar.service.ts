@@ -2596,8 +2596,8 @@ export class CalendarService extends BaseService {
                                     sum(CASE WHEN IFNULL(gev.evi, '') = '' THEN 0 WHEN gev.del = '${DelType.del}' THEN 0 ELSE 1 END) eventscount,
                                     sum(CASE WHEN IFNULL(gev.evi, '') = '' THEN 0 WHEN IFNULL(gev.rtevi, '') <> '' THEN 0 WHEN gev.type <> '${EventType.Agenda}' THEN 0 WHEN gev.del = '${DelType.del}' THEN 0 ELSE 1 END) agendascount,
                                     sum(CASE WHEN IFNULL(gev.evi, '') = '' THEN 0 WHEN gev.type <> '${EventType.Task}' THEN 0 WHEN gev.del = '${DelType.del}' THEN 0 ELSE 1 END) taskscount,
-                                    sum(CASE WHEN IFNULL(gev.rtevi, '') = '' THEN 0 WHEN gev.del = '${DelType.del}' THEN 0 ELSE 1 END) repeateventscount,
-                                    sum(CASE WHEN IFNULL(gev.evi, '') = '' THEN 0 WHEN IFNULL(gev.ui, '') = '${UserConfig.account.id}' THEN 0 WHEN IFNULL(gev.del, '') = '${DelType.del}' THEN 0 WHEN IFNULL(gev.invitestatus, '${InviteState.None}') = '${InviteState.None}' THEN 1 ELSE 0 END) acceptableeventscount
+                                    sum(CASE WHEN IFNULL(gev.rtevi, '') = '' THEN 0 WHEN gev.del = '${DelType.del}' THEN 0 WHEN gev.invitestatus = '${InviteState.Accepted}' THEN 1 WHEN gev.ui = '${UserConfig.account.id}' THEN 1 ELSE 0 END) repeateventscount,
+                                    sum(CASE WHEN IFNULL(gev.evi, '') = '' THEN 0 WHEN IFNULL(gev.rtevi, '') <> '' THEN 0 WHEN IFNULL(gev.ui, '') = '${UserConfig.account.id}' THEN 0 WHEN IFNULL(gev.del, '') = '${DelType.del}' THEN 0 WHEN IFNULL(gev.invitestatus, '${InviteState.None}') = '${InviteState.None}' THEN 1 ELSE 0 END) acceptableeventscount
                               from (select gday.sd day,
                                       sum(CASE WHEN IFNULL(gjt.jti, '') = '' THEN 0 WHEN gjt.jtt <> '${PlanItemType.Holiday}' THEN 0 WHEN gjt.del = '${DelType.del}' THEN 0 ELSE 1 END) calendaritemscount,
                                       sum(CASE WHEN IFNULL(gjt.jti, '') = '' THEN 0 WHEN gjt.jtt <> '${PlanItemType.Activity}' THEN 0 WHEN gjt.del = '${DelType.del}' THEN 0 ELSE 1 END) activityitemscount
@@ -2679,7 +2679,12 @@ export class CalendarService extends BaseService {
 
       this.assertNull(dayActivity);
 
-      dayActivity.events.push(value);
+      // 受邀人未接受的重复子日程不显示
+      if (value.ui != UserConfig.account.id && value.rtevi && value.invitestatus != InviteState.Accepted && value.invitestatus != InviteState.Rejected) {
+        // 不加入日程一览
+      } else {
+        dayActivity.events.push(value);
+      }
       days.set(day, dayActivity);
 
       return days;
@@ -2904,7 +2909,12 @@ export class CalendarService extends BaseService {
 
         this.assertNull(dayActivity);
 
-        dayActivity.events.push(value);
+        // 受邀人未接受的重复子日程不显示
+        if (value.ui != UserConfig.account.id && value.rtevi && value.invitestatus != InviteState.Accepted && value.invitestatus != InviteState.Rejected) {
+          // 不加入日程一览
+        } else {
+          dayActivity.events.push(value);
+        }
         days.set(day, dayActivity);
 
         return days;
@@ -2964,8 +2974,8 @@ export class CalendarService extends BaseService {
                                 sum(CASE WHEN IFNULL(gev.evi, '') = '' THEN 0 WHEN gev.del = '${DelType.del}' THEN 0 ELSE 1 END) eventscount,
                                 sum(CASE WHEN IFNULL(gev.evi, '') = '' THEN 0 WHEN IFNULL(gev.rtevi, '') <> '' THEN 0 WHEN gev.type <> '${EventType.Agenda}' THEN 0 WHEN gev.del = '${DelType.del}' THEN 0 ELSE 1 END) agendascount,
                                 sum(CASE WHEN IFNULL(gev.evi, '') = '' THEN 0 WHEN gev.type <> '${EventType.Task}' THEN 0 WHEN gev.del = '${DelType.del}' THEN 0 ELSE 1 END) taskscount,
-                                sum(CASE WHEN IFNULL(gev.rtevi, '') = '' THEN 0 WHEN gev.del = '${DelType.del}' THEN 0 ELSE 1 END) repeateventscount,
-                                sum(CASE WHEN IFNULL(gev.evi, '') = '' THEN 0 WHEN IFNULL(gev.ui, '') = '${UserConfig.account.id}' THEN 0 WHEN IFNULL(gev.del, '') = '${DelType.del}' THEN 0 WHEN IFNULL(gev.invitestatus, '${InviteState.None}') = '${InviteState.None}' THEN 1 ELSE 0 END) acceptableeventscount
+                                sum(CASE WHEN IFNULL(gev.rtevi, '') = '' THEN 0 WHEN gev.del = '${DelType.del}' THEN 0 WHEN gev.invitestatus = '${InviteState.Accepted}' THEN 1 WHEN gev.ui = '${UserConfig.account.id}' THEN 1 ELSE 0 END) repeateventscount,
+                                sum(CASE WHEN IFNULL(gev.evi, '') = '' THEN 0 WHEN IFNULL(gev.rtevi, '') <> '' THEN 0 WHEN IFNULL(gev.ui, '') = '${UserConfig.account.id}' THEN 0 WHEN IFNULL(gev.del, '') = '${DelType.del}' THEN 0 WHEN IFNULL(gev.invitestatus, '${InviteState.None}') = '${InviteState.None}' THEN 1 ELSE 0 END) acceptableeventscount
                           from (select gday.sd day,
                                   sum(CASE WHEN IFNULL(gjt.jti, '') = '' THEN 0 WHEN gjt.jtt <> '${PlanItemType.Holiday}' THEN 0 WHEN gjt.del = '${DelType.del}' THEN 0 ELSE 1 END) calendaritemscount,
                                   sum(CASE WHEN IFNULL(gjt.jti, '') = '' THEN 0 WHEN gjt.jtt <> '${PlanItemType.Activity}' THEN 0 WHEN gjt.del = '${DelType.del}' THEN 0 ELSE 1 END) activityitemscount
@@ -3015,7 +3025,7 @@ export class CalendarService extends BaseService {
       return dayitems;
     }, new Array<PlanItemData>());
 
-    let sqlevents: string = `select * from gtd_ev where evd = '${day}' and del <> '${DelType.del}'`;
+    let sqlevents: string = `select * from gtd_ev where evd = '${day}' and del <> '${DelType.del}' and (ui = '${UserConfig.account.id}' or (ui <> '${UserConfig.account.id}' and not (ifnull(rtevi, '') <> '' and invitestatus <> '${InviteState.Accepted}')))`;
 
     dayActivity.events = await this.sqlExce.getExtList<EventData>(sqlevents) || new Array<EventData>();
 

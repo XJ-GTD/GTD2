@@ -19,6 +19,7 @@ import * as moment from "moment";
 import {DelType, SyncType} from "../../data.enum";
 import {UserConfig} from "../../service/config/user.config";
 import {DataConfig} from "../../service/config/data.config";
+import {DataRestful,DownloadInData} from "../../service/restful/datasev";
 
 @IonicPage()
 @Component({
@@ -43,11 +44,11 @@ import {DataConfig} from "../../service/config/data.config";
             <ion-row class="item-content item-content-backgroud" leftmargin toppaddingsamll bottompaddingsamll rightmargin
                      *ngIf="fja.del != deleted" >
               <div class="line font-normal topheader" leftmargin rightmargin >
-                <div class="st font-small"> {{fja.wtt * 1000 | date: "yyyy-MM-dd HH:mm"}}</div>
+                <div class="st font-small"> {{fja.wtt * 1000 | transfromdate:'withNow'}}</div>
                 <div class="person font-small" *ngIf="fja.ui!=currentuser" end>---{{fja.ui | formatuser: currentuser: friends}}</div>
               </div>
               <div class="line font-normal" leftmargin rightmargin >
-                <div class="sn towline">{{fja.fjn}}</div>
+                <div class="sn towline">{{(fja.tb == synch? "" : "[*] ") + fja.fjn}}</div>
               </div>
               <div class="line font-normal" leftmargin rightmargin >
                 <div *ngIf="(fja.ext=='PDF'||fja.ext=='pdf')&& (fja.fj !='')" >
@@ -80,6 +81,7 @@ export class AttachPage {
   obt: string = "";
   obi: string = "";
   bw: string = "";
+  browserurl: string ="http://pluto.guobaa.com/abl/store/local/getContent/";
   members: Array<Member>  = new Array<Member>();
   buttons: any = {
     create: true,
@@ -93,6 +95,8 @@ export class AttachPage {
 
   deleted: DelType = DelType.del;
 
+  synch: SyncType = SyncType.synch;
+
   constructor(public navCtrl: NavController,
               public viewCtrl: ViewController,
               public navParams: NavParams,
@@ -105,7 +109,8 @@ export class AttachPage {
               private keyboard: Keyboard,
               private fileOpener: FileOpener,
               private actionSheetCtrl: ActionSheetController,
-              private uitl:UtilService) {
+              private dataRestful: DataRestful,
+              private util:UtilService) {
     if (this.navParams && this.navParams.data) {
       this.obt = this.navParams.data.obt;
       this.obi = this.navParams.data.obi;
@@ -117,7 +122,8 @@ export class AttachPage {
       // this.currentuser = this.navParams.data.userId
     }
     //验证缓存文件目录是否存在
-    this.file.checkDir(this.file.dataDirectory, '/cached')
+    if (this.util.hasCordova()) {
+      this.file.checkDir(this.file.dataDirectory, '/cached')
       .then(_ => console.log('Directory exists'))
       .catch(err => {
         this.file.createDir(this.file.dataDirectory, "cached", true).then(result => {
@@ -126,13 +132,14 @@ export class AttachPage {
           console.log("err:" + JSON.stringify(err))
         })
       });
+    }
     // //1.验证是否有原有的值传的过来
     // if (this.fjArray) {
       //2.当有值传递过来的情况下，将fj的值转换给fpjson
       for(let i: number =0; i<this.fjArray.length; i++) {
         if (this.fjArray[i].fj && this.fjArray[i].ext) {
           //处理历史遗留数据，按照原来的显示
-          if (this.uitl.isJsonString(this.fjArray[i].fj)) {
+          if (this.util.isJsonString(this.fjArray[i].fj)) {
             //获取新赋值
             let cacheFilePathJson: CacheFilePathJson = new CacheFilePathJson();
             this.fjArray[i].fpjson = generateCacheFilePathJson(this.fjArray[i].fpjson, this.fjArray[i].fj);
@@ -141,20 +148,41 @@ export class AttachPage {
             this.fjArray[i].members = this.members;
             //检查该文件夹下是否存在该文件，如果不存在，则根据remote下载同步该文件
             if (this.fjArray[i].fpjson.local) {
-              let fileName: string  = this.fjArray[i].fpjson.local.substr(1,this.fjArray[i].fpjson.local.length);
-              this.file.checkFile(this.file.dataDirectory+this.fjArray[i].fpjson.getCacheDir(),fileName)
-              .then(_ => console.log('Directory exists'))
-              .catch(err => {
+              if (this.util.hasCordova()) {
+                let fileName: string  = this.fjArray[i].fpjson.local.substr(1,this.fjArray[i].fpjson.local.length);
+                this.file.checkFile(this.file.dataDirectory+this.fjArray[i].fpjson.getCacheDir(),fileName)
+                .then(_ => console.log('Directory exists'))
+                .catch(err => {
                     //根据remote 拉取文件
                     if (this.fjArray[i].fpjson.remote) {
                       //根据地址拉取文件
+                      //验证是否为浏览器
+                      if (this.util.hasCordova()) {
+                        //拉取数据
+                        let downloadInData : DownloadInData = new DownloadInData();
+                        downloadInData.id = this.fjArray[i].fpjson.remote;
+                        downloadInData.filepath = this.file.dataDirectory+this.fjArray[i].fpjson.getCacheDir();
+                        this.dataRestful.download(downloadInData);
+                      } else {
+                        this.fjArray[i].fjurl =this.browserurl+this.fjArray[i].fpjson.remote;
+                      }
                     }
-              });
-            }
-            else
-            {
+                });
+              } else {
+                this.fjArray[i].fjurl =this.browserurl+this.fjArray[i].fpjson.remote;
+              }
+            } else {
               if (this.fjArray[i].fpjson.remote) {
                 //根据地址拉取文件
+                if (this.util.hasCordova()) {
+                  //拉取数据
+                  let downloadInData : DownloadInData = new DownloadInData();
+                  downloadInData.id = this.fjArray[i].fpjson.remote;
+                  downloadInData.filepath = this.file.dataDirectory+this.fjArray[i].fpjson.getCacheDir();
+                  this.dataRestful.download(downloadInData);
+                } else {
+                  this.fjArray[i].fjurl =this.browserurl+this.fjArray[i].fpjson.remote;
+                }
               }
             }
 
@@ -176,7 +204,7 @@ export class AttachPage {
   }
 
   openimg(url){
-    this.uitl.photoViews(url);
+    this.util.photoViews(url);
   }
 
 
@@ -220,7 +248,9 @@ export class AttachPage {
   }
 
   cancel() {
-    this.navCtrl.pop();
+    //this.navCtrl.pop();
+    let data: Object = {attach: this.fjArray};
+    this.viewCtrl.dismiss(data);
   }
 
   /**

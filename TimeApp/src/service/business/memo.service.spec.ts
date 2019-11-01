@@ -44,6 +44,7 @@ import { MemoService,MemoData } from "./memo.service";
 import { EventService } from "./event.service";
 import { PlanType,ObjectType , SyncType, DelType, SyncDataStatus} from "../../data.enum";
 import { ScheduleRemindService } from "./remind.service";
+import {File} from '@ionic-native/file';
 
 /**
  * 备忘Service 持续集成CI 自动测试Case
@@ -81,6 +82,7 @@ describe('MemoService test suite', () => {
         Device,
         SQLite,
         SQLitePorter,
+        File,
         SqliteConfig,
         UserConfig,
         SqliteExec,

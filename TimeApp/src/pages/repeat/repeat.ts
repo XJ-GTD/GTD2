@@ -256,7 +256,7 @@ export class RepeatPage {
           this.buttons.save = false;
         }
         this.currentRepeat = new RtJson();
-        Object.assign(this.currentRepeat, this.originRepeat);
+        this.util.cloneObj(this.currentRepeat, this.originRepeat);
 
       }
     }
@@ -289,7 +289,7 @@ export class RepeatPage {
   }
 
   save() {
-    Object.assign(this.originRepeat, this.currentRepeat);
+    this.util.cloneObj(this.originRepeat, this.currentRepeat);
     let data: Object = {rtjson: this.originRepeat};
     this.viewCtrl.dismiss(data);
   }

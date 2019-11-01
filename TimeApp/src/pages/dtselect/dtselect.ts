@@ -256,17 +256,9 @@ export class DtSelectPage {
         options:
           [
             {text: '', value: 0},
-            {text: '5分钟', value: 5},
-            {text: '10分钟', value: 10},
             {text: '15分钟', value: 15},
-            {text: '20分钟', value: 20},
-            {text: '25分钟', value: 25},
             {text: '30分钟', value: 30},
-            {text: '35分钟', value: 35},
-            {text: '40分钟', value: 40},
             {text: '45分钟', value: 45},
-            {text: '50分钟', value: 50},
-            {text: '55分钟', value: 55}
           ]
       }
     ];

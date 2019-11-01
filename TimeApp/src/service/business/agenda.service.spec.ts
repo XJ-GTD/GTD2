@@ -48,6 +48,7 @@ import { CalendarService, PlanData } from "./calendar.service";
 import { EventService, AgendaData, TaskData, MiniTaskData, RtJson } from "./event.service";
 import { PlanType, IsCreate, IsSuccess, CycleType, OverType } from "../../data.enum";
 import { ScheduleRemindService } from "./remind.service";
+import {File} from '@ionic-native/file';
 
 /**
  * 事件Service 日程 持续集成CI 自动测试Case
@@ -81,6 +82,7 @@ describe('EventService test suite for agenda', () => {
         ScheduleRemindService,
         Device,
         SQLite,
+        File,
         SQLitePorter,
         SqliteConfig,
         SqliteInit,
