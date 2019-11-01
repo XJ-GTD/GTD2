@@ -2950,16 +2950,19 @@ export class EventService extends BaseService {
 
         // 上传文件到服务器
         if (attachment.fpjson && !attachment.fpjson.remote && attachment.ext && attachment.ext != "") {
-          let upload: UploadInData = new UploadInData();
-          upload.filepath = attachment.fpjson.getLocalFilePath(this.file.dataDirectory);
+          // 仅限手机设备上上传文件附件
+          if (this.util.hasCordova()) {
+            let upload: UploadInData = new UploadInData();
+            upload.filepath = attachment.fpjson.getLocalFilePath(this.file.dataDirectory);
 
-          let data = await this.dataRestful.upload(upload);
-          console.log("upload <=> " + JSON.stringify(data));
-          if (data && data.data) {
-            attachment.fpjson.remote = String(data.data);
-            attachment.fj = JSON.stringify(attachment.fpjson);
+            let data = await this.dataRestful.upload(upload);
+            console.log("upload <=> " + JSON.stringify(data));
+            if (data && data.data) {
+              attachment.fpjson.remote = String(data.data);
+              attachment.fj = JSON.stringify(attachment.fpjson);
 
-            if (callback) callback(attachment);
+              if (callback) callback(attachment);
+            }
           }
         }
 
