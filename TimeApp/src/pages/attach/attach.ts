@@ -48,7 +48,7 @@ import {DataRestful,DownloadInData} from "../../service/restful/datasev";
                 <div class="person font-small" *ngIf="fja.ui!=currentuser" end>---{{fja.ui | formatuser: currentuser: friends}}</div>
               </div>
               <div class="line font-normal" leftmargin rightmargin >
-                <div class="sn towline">{{fja.fjn}}</div>
+                <div class="sn towline">{{(fja.tb == synch? "" : "[*] ") + fja.fjn}}</div>
               </div>
               <div class="line font-normal" leftmargin rightmargin >
                 <div *ngIf="(fja.ext=='PDF'||fja.ext=='pdf')&& (fja.fj !='')" >
@@ -94,6 +94,8 @@ export class AttachPage {
   friends: Array<any> = UserConfig.friends;
 
   deleted: DelType = DelType.del;
+
+  synch: SyncType = SyncType.synch;
 
   constructor(public navCtrl: NavController,
               public viewCtrl: ViewController,
