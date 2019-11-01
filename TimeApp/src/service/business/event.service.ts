@@ -2944,8 +2944,6 @@ export class EventService extends BaseService {
 
         sync.to = (!tos || tos == "" || tos == null) ? [] : tos.split(",") ;
 
-        sync.payload = attachment;
-
         attachment.fpjson = generateCacheFilePathJson(attachment.fpjson, attachment.fj);
 
         // 上传文件到服务器
@@ -2965,6 +2963,8 @@ export class EventService extends BaseService {
             }
           }
         }
+
+        sync.payload = attachment;
 
         push.d.push(sync);
 
