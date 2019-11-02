@@ -139,23 +139,29 @@ export class AttachPage {
       attachment.members = this.members;
 
       // 判断是否是残留数据或文字附件
-      if (this.util.isJsonString(attachment.fj)) {
-        attachment.fpjson = generateCacheFilePathJson(attachment.fpjson, attachment.fj);
-        attachment.fjurl = this.browserurl + attachment.fpjson.remote;
+      if (attachment.ext) {
+        if (this.util.isJsonString(attachment.fj)) {
+            attachment.fpjson = generateCacheFilePathJson(attachment.fpjson, attachment.fj);
 
-        // 判断是否是手机
-        if (this.util.hasCordova()) {
-          let fileName: string  = attachment.fpjson.local.substr(1, attachment.fpjson.local.length);
+            // 附件存储JSON是否存在
+            if (attachment.fpjson) {
+              attachment.fjurl = this.browserurl + attachment.fpjson.remote;
 
-          // 本地文件存在，页面上显示本地文件
-          this.file.checkFile(this.file.dataDirectory + attachment.fpjson.getCacheDir(), fileName)
-          .then(_ => {
-            attachment.fjurl = attachment.fpjson.getLocalFilePath(this.file.dataDirectory);
-          });
+              // 判断是否是手机
+              if (this.util.hasCordova()) {
+                let fileName: string  = attachment.fpjson.local.substr(1, attachment.fpjson.local.length);
+
+                // 本地文件存在，页面上显示本地文件
+                this.file.checkFile(this.file.dataDirectory + attachment.fpjson.getCacheDir(), fileName)
+                .then(_ => {
+                  attachment.fjurl = attachment.fpjson.getLocalFilePath(this.file.dataDirectory);
+                });
+              }
+            }
+        } else {
+          //历史遗留数据构造
+          attachment.fjurl = attachment.fj;
         }
-      } else {
-        //历史遗留数据构造
-        attachment.fjurl = attachment.fj;
       }
     }
 
