@@ -3150,7 +3150,7 @@ export class EventService extends BaseService {
       // 增加附件同步
       let sqlattachments: string = `select *
                                     from gtd_fj
-                                    where fj.obi in ('` + ids.join(', ') + `') and obt = ?1`;
+                                    where fj.obi in ('` + evis.join(', ') + `') and obt = ?1`;
       attachments =  await this.sqlExce.getExtLstByParam<Attachment>(sqlattachments,
         [anyenum.ObjectType.Event]) || attachments;
     }
