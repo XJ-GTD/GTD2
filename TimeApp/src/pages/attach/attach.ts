@@ -268,7 +268,9 @@ export class AttachPage {
   }
 
   async save() {
-    let data: Object = {attach: this.fjArray};
+    let data: Object = {attach: this.fjArray.filter((ele) => {
+      return ele.del != DelType.del;
+    })};
     //
     // let uploads = this.fjArray.filter((element) => {
     //   return (element.tb != SyncType.synch);
