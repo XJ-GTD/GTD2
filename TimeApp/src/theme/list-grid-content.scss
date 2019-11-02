@@ -169,7 +169,7 @@
     width: auto;
     margin: 0.4rem 1rem;
     position: relative;
-    //overflow: hidden;
+    overflow: hidden;
 
     .syncing {
       height: 100%;
@@ -249,6 +249,7 @@
     background: transparent;
     box-shadow: none;
     width: calc(70% + 72px);
+    overflow: inherit;
 
     .dayheader {
       width: 75px;

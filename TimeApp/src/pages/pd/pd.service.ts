@@ -1,62 +1,83 @@
 import {Injectable} from "@angular/core";
-import {SqliteExec} from "../../service/util-service/sqlite.exec";
-import {PlanPa, ShaeRestful, ShareData} from "../../service/restful/shaesev";
-import {CTbl} from "../../service/sqlite/tbl/c.tbl";
+import {ShaeRestful, ShareData} from "../../service/restful/shaesev";
 import {PagePDPro} from "../../data.mapping";
-import {PgBusiService} from "../../service/pagecom/pgbusi.service";
-
+import {CalendarService, PlanData} from "../../service/business/calendar.service";
+import {PdItem} from "./pd";
+import * as moment from "moment";
 @Injectable()
 export class PdService {
-  constructor(private sqlExec: SqliteExec,
-              private shareRestful: ShaeRestful,private pgService: PgBusiService) {}
+  constructor(private shareRestful: ShaeRestful,private calendarService: CalendarService) {}
 
   //获取计划 计划详情
   async getPlan(pid: string,jt:string) {
-    console.log('---------- PdService getPlan 获取计划开始 ----------------');
-    // 获取计划管理日程（重复日程处理等）
-    let  sql = "";
-    if(jt == "0"){
-      sql = 'select gc.si,gc.sn,gc.bz,gc.ji,gc.rt,gc.sr,jt.sd,jt.st,jt.et,jt.ed from gtd_c gc left join gtd_jt jt on gc.si = jt.si where gc.ji = "' + pid + '"  order by jt.sd';
-    }else {
-      //最新日程和日程特殊表保存规则修改
-      //计划修改只修改日程特殊表的计划ID,计划所属日程数量统计需要调整 4/28 席理加
-      //sql = 'select gc.si,gc.sn,gc.bz,gc.ji,gc.rt,gc.sr,sp.sd,sp.st,sp.et,sp.ed from gtd_c gc left join gtd_sp sp on gc.si = sp.si where gc.ji = "' + pid + '"  order by sp.sd';
-      //修改后
-      sql = 'select gc.si,gc.sn,sp.bz,sp.ji ji,gc.rt,gc.sr,sp.sd,sp.st,sp.et,sp.ed from gtd_c gc left join gtd_sp sp on gc.si = sp.si where sp.ji = "' + pid + '"  order by sp.sd';
-      //修改结束 4/28 席理加
-    }
+    let pdItems:Array<PdItem> = new Array<PdItem>();
+    let paList: PlanData = await this.calendarService.getPlan(pid,true);
+    let tmpyear:number = -1;
 
-    let  cs = await this.sqlExec.getExtList<CTbl>(sql);
-
-    let paList: Array<PlanPa> = Array<PlanPa>();
-    if (cs.length > 0) {
-      console.log('---------- PdService getPlan 获取计划日程开始 ----------------');
-      //获取计划日程
-      for (let jhc of cs) {
-        let pa: PlanPa = new PlanPa();
-
-        pa.ai = jhc.si;//日程ID
-        pa.at = jhc.sn;//主题
-        pa.adt = jhc.sd + " " + jhc.st;//时间(YYYY/MM/DD HH:mm)
-        pa.st = jhc.st;
-        pa.et = jhc.et;//结束日期
-        pa.ed = jhc.ed;//结束时间
-        pa.ap = jhc.ji;//计划
-        pa.ar = jhc.rt;//重复
-        pa.aa = jhc.sr;//提醒
-        pa.am = jhc.bz;//备注
-        paList.push(pa);
+    paList.items.forEach((v,i,a)=>{
+      let activityType: string =  this.calendarService.getActivityType(v);
+      // 取得活动日期
+      let pdItem:PdItem = new PdItem();
+      pdItem.type = activityType;
+      let tmp:moment.Moment;
+      switch (activityType) {
+        case "PlanItemData" :
+          pdItem.planItemData = v;
+           tmp = moment(pdItem.planItemData.sd);
+          pdItem.yearitem = tmp.get("year");
+          pdItem.date = tmp.format("YYYY/MM/DD");
+          pdItem.time = pdItem.planItemData.st;
+          break;
+        case "AgendaData" :
+          pdItem.agendaData = v;
+           tmp = moment(pdItem.agendaData.evd);
+          pdItem.yearitem = tmp.get("year");
+          pdItem.date = tmp.format("YYYY/MM/DD");
+          pdItem.time = pdItem.agendaData.evt;
+          break;
+        case "TaskData" :
+          pdItem.taskData = v;
+          tmp = moment(pdItem.taskData.evd);
+          pdItem.yearitem = tmp.get("year");
+          pdItem.date = tmp.format("YYYY/MM/DD");
+          pdItem.time = pdItem.taskData.evt;
+          break;
+        case "MiniTaskData" :
+          pdItem.miniTaskData = v;
+          tmp = moment(pdItem.miniTaskData.evd);
+          pdItem.yearitem = tmp.get("year");
+          pdItem.date = tmp.format("YYYY/MM/DD");
+          pdItem.time = pdItem.miniTaskData.evt;
+          break;
+        case "MemoData" :
+          pdItem.memoData = v;
+          tmp = moment(pdItem.memoData.sd);
+          pdItem.yearitem = tmp.get("year");
+          pdItem.date = tmp.format("YYYY/MM/DD");
+          pdItem.time = pdItem.memoData.st;
+          break;
+        default:
+          break;
       }
-      console.log('---------- PlService getPlan 获取计划日程结束 ----------------');
-    }
-    //显示处理
-    console.log('---------- PdService getPlan 获取计划结束 ----------------');
+
+      if (tmpyear != pdItem.yearitem){
+        tmpyear = pdItem.yearitem;
+        let pdyearItem:PdItem = new PdItem();
+        pdyearItem.yearitem = tmpyear;
+        pdyearItem.type = "YearData";
+        pdItems.push(pdyearItem);
+      }
+
+      pdItems.push(pdItem);
+
+    });
+
     // 返出参
-    return paList;
+    return pdItems;
   }
 
   //分享计划
-  sharePlan(plan: any): Promise<any> {
+  sharePlan(plan: PagePDPro): Promise<any> {
 
     return new Promise((resolve, reject) => {
       console.log('---------- PdService sharePlan 分享计划开始 ----------------');
@@ -64,9 +85,9 @@ export class PdService {
       let shareData: ShareData = new ShareData();
       shareData.ompn = "";
       shareData.oai = "";
-      plan.pn.pt = plan.pn.jn; // pt 计划分享使用
-      shareData.d.p.pn = plan.pn;
-      shareData.d.p.pa = plan.pa;
+      // plan.pn.pt = plan.pn.jn; // pt 计划分享使用
+      // shareData.d.p.pn = plan.pn;
+      // shareData.d.p.pa = plan.pa;
 
       //restful上传计划
       this.shareRestful.share(shareData).then(data => {
@@ -81,6 +102,6 @@ export class PdService {
 
   //删除计划
   async delete(jh:PagePDPro){
-    return this.pgService.delRcByJiAndJt(jh.ji,jh.jt);
+    // return this.calendarService.removePlan().delRcByJiAndJt(jh.ji,jh.jt);
   }
 }

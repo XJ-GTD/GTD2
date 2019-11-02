@@ -49,6 +49,8 @@ export class FormatedatePipe implements PipeTransform {
         return m.format("MM月");
       case "CMM/DD":
         return m.format("MM月DD");
+      case "MM-DD":
+        return m.format("MM-DD");
       case "CWEEK":
         return m.locale("cn").localeData().weekdays(m);
       case "DWEEK":

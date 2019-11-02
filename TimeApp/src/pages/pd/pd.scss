@@ -1,216 +1,206 @@
 page-pd {
 
-  background-color: $baseBackColor;
-
-  .w-auto {
-    flex: 1;
-  }
-
-  .grid {
-    padding: 0;
-  }
-
-  .grid .row {
-    height: 100%;
-  }
-
-  .list {
-    width: 100%;
-  }
-
-  .list-header, .list-header-md, .list-header-ios {
-    border: 0;
-  }
-
-  ion-header ion-toolbar .toolbar-background,.toolbar-background-md,.toolbar-background-ios {
-    background-color: $baseBackColor;
-  }
-
-  ion-content.content {
-    background-color: $baseBackColor;
-    color: #fff;
-  }
-
-  ion-content .plan-list-item {
-    background-color: $baseBackColor;
-    color: #fff;
-  }
-
-  ion-header{
-    padding: 4px 20px;
-  }
-
-  .img-header-left{
-    width: 4vmin;
-    height: 4vmin;
-  }
-
-  .img-header-right {
-    width: 4.5vmin;
-    height: 1vmin;
-  }
-
-  //
-
-
-  ion-content .card{
-    border-radius: 10px;
-    background: $adornColor;
-  }
-
-
-  ion-content ion-card-content {
-    height: 20vmin;
-  }
-
-  ion-content ion-card-content div{
-    margin-top: 3vmin;
-    font-size: 1.7rem;
-  }
-
-
-  ion-content .plan-year {
-    font-size: 1.8rem;
-  }
-
-  .agenda-content::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    width: 0.5vmin;
-    background: $adornColor;
-    margin-left: -3.4vmin;
-    margin-top: 3vmin;
-    margin-bottom: -4vmin;
-   }
-
   .agenda-card-past {
     opacity:0.6;
   }
 
-  .agenda-card {
-  }
-
-  .agenda-col-date {
+  .timeline {
+    list-style: none;
+    padding: 2rem 1rem 2rem 0;
     position: relative;
-    width: 100%;
-    min-height: 1px;
-    max-width: calc(16.667vmin - 13px);
-    padding-right: 15px;
-    padding-left: 15px;
   }
 
-  .agenda-col-time {
+  .timeline:before {
+    top: 0;
+    bottom: 0;
+    position: absolute;
+    content: " ";
+    width: 3px;
+    background-color: #eeeeee;
+    left: 50%;
+    margin-left: -1.5px;
+  }
+
+  .timeline > li {
+    margin-bottom: 20px;
     position: relative;
-    width: 100%;
-    min-height: 1px;
-    max-width: calc(18.667vmin - 13px);
-    padding-right: 15px;
-    padding-left: 15px;
+  }
+  .timeline > li[yearitem] {
+    margin-bottom: 80px;
+    .timeline-badge{
+      //color:rgba(17,117,141,1);
+    }
   }
 
-  .agenda-col-content {
+  .timeline > li:before,
+  .timeline > li:after {
+    content: " ";
+    display: table;
+  }
+
+  .timeline > li:after {
+    clear: both;
+  }
+
+  .timeline > li:before,
+  .timeline > li:after {
+    content: " ";
+    display: table;
+  }
+
+  .timeline > li:after {
+    clear: both;
+  }
+
+  .timeline > li > .timeline-panel {
+    width: 46%;
+    float: left;
+    border: 1px solid #d4d4d4;
+    border-radius: 2px;
+    padding: 20px;
     position: relative;
-    width: 100%;
-    min-height: 1px;
-    max-width: calc(64.666vmin - 6px);
-    padding-right: 15px;
-    padding-left: 15px;
+    -webkit-box-shadow: 0 1px 6px rgba(0, 0, 0, 0.175);
+    box-shadow: 0 1px 6px rgba(0, 0, 0, 0.175);
   }
 
-  .app-user-avatar {
-    height: 12vmin;
-    margin: auto;
-    display: block;
-    max-height: 45px;
-    min-height: 22px;
-    border-radius: 50%;
+  .timeline > li > .timeline-panel:before {
+    position: absolute;
+    top: 26px;
+    right: -15px;
+    display: inline-block;
+    border-top: 15px solid transparent;
+    border-left: 15px solid #ccc;
+    border-right: 0 solid #ccc;
+    border-bottom: 15px solid transparent;
+    content: " ";
   }
 
-
-  .app-agenda-day {
-    white-space: nowrap;
-    overflow: hidden;
-    font-size: 3.5vmin;
-    margin-top: 0.85vmin;
-    margin-bottom: 0;
+  .timeline > li > .timeline-panel:after {
+    position: absolute;
+    top: 27px;
+    right: -14px;
+    display: inline-block;
+    border-top: 14px solid transparent;
+    border-left: 14px solid #fff;
+    border-right: 0 solid #fff;
+    border-bottom: 14px solid transparent;
+    content: " ";
   }
 
-  .app-agenda-time {
-    white-space: nowrap;
-    overflow: hidden;
-    font-size: 3.2vmin;
-    margin-top: 0.85vmin;
-    margin-bottom: 0;
+  .timeline > li > .timeline-badge {
+    color: #fff;
+    width: 50px;
+    height: 50px;
+    line-height: 50px;
+    font-size: 1.4rem;
+    text-align: center;
+    position: absolute;
+    top: 16px;
+    left: 50%;
+    margin-left: -25px;
+    background-color: #999999;
+    z-index: 100;
+    border-top-right-radius: 50%;
+    border-top-left-radius: 50%;
+    border-bottom-right-radius: 50%;
+    border-bottom-left-radius: 50%;
   }
 
-  .app-user-text {
-    font-weight: 200;
-    display: block;
-    font-size: 2.8vmin;
-    color:  $fontSecondColor;
-    margin-top: 0.85vmin;
+  .timeline > li.timeline-inverted > .timeline-panel {
+    float: right;
   }
 
-  .app-agenda-title {
-    white-space: nowrap;
-    text-overflow: ellipsis;
-    overflow: hidden;
-    font-size: 3.8vmin;
+  .timeline > li.timeline-inverted > .timeline-panel:before {
+    border-left-width: 0;
+    border-right-width: 15px;
+    left: -15px;
+    right: auto;
+  }
+
+  .timeline > li.timeline-inverted > .timeline-panel:after {
+    border-left-width: 0;
+    border-right-width: 14px;
+    left: -14px;
+    right: auto;
+  }
+
+  .timeline-badge.primary {
+    background-color: #2e6da4 !important;
+  }
+
+  .timeline-badge.success {
+    background-color: #3f903f !important;
+  }
+
+  .timeline-badge.warning {
+    background-color: #f0ad4e !important;
+  }
+
+  .timeline-badge.danger {
+    background-color: #d9534f !important;
+  }
+
+  .timeline-badge.info {
+    background-color: #5bc0de !important;
+  }
+
+  .timeline-title {
     margin-top: 0;
+    color: inherit;
+  }
+  .timeline-person{
+    float: right;
+  }
+
+  .timeline-body > p,
+  .timeline-body > ul {
     margin-bottom: 0;
   }
 
-  .app-download-text {
-    font-weight: 200;
-    margin: auto;
-    display: block;
-    font-size: 2.2vmin;
-    width: 60vw;
-    padding: 2vmin;
+  .timeline-body > p + p {
+    margin-top: 5px;
   }
 
-  .right-off {
-    padding-right: 0;
+  .timeline-foot{
+    .icon{
+      float: right;
+      margin-left: 1rem;
+    }
   }
 
-  .left-off {
-    padding-left: 0;
-  }
+  @media (max-width: 767px) {
+    ul.timeline:before {
+      left: 40px;
+    }
 
-  .app-store-button {
-    width: 20vmin;
-    margin: auto;
-    display: block;
-    max-width: 250px;
-    min-width: 200px;
-  }
+    ul.timeline > li > .timeline-panel {
+      width: calc(100% - 90px);
+      width: -moz-calc(100% - 90px);
+      width: -webkit-calc(100% - 90px);
+    }
 
-  .time-slot {
-    margin: auto;
-  }
+    ul.timeline > li > .timeline-badge {
+      left: 15px;
+      margin-left: 0;
+      top: 16px;
+    }
 
-  .pointer-slot {
-    width: 4vmin;
-    margin: auto;
-    margin-top: -3vmin;
-    margin-right: 0;
-  }
+    ul.timeline > li > .timeline-panel {
+      float: right;
+    }
 
-  .color-dot {
-    width: 1.7vmin;
-    height: 1.7vmin;
-    background-color: $adornColor;
-    border-radius: 50%;
-  }
+    ul.timeline > li > .timeline-panel:before {
+      border-left-width: 0;
+      border-right-width: 15px;
+      left: -15px;
+      right: auto;
+    }
 
-  .scroll-content{
-    overflow-x: auto;
-    overflow-y: auto;
-  }
-
-  .row[justify-content-start]{
-    height: inherit;
+    ul.timeline > li > .timeline-panel:after {
+      border-left-width: 0;
+      border-right-width: 14px;
+      left: -14px;
+      right: auto;
+    }
   }
 }
