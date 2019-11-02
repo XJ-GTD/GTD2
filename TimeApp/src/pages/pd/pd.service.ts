@@ -19,7 +19,7 @@ export class PdService {
     let getDatetime = (element) => {
       let datetime: string = moment().format("YYYY/MM/DD HH:mm");
 
-      let activityType: string =  this.calendarService.getActivityType(first);
+      let activityType: string =  this.calendarService.getActivityType(element);
 
       switch (activityType) {
         case "PlanItemData" :
