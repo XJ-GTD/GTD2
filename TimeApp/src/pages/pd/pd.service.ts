@@ -73,8 +73,8 @@ export class PdService {
     });
 
     pdItems.sort((first, second) => {
-      let firstdt: string = first.date + " " + first.time;
-      let seconddt: string = second.date + " " + second.time;
+      let firstdt: string = first.date? (first.date + " " + first.time) : moment(first.yearitem + "/01/01 00:00", "YYYY/MM/DD HH:mm");
+      let seconddt: string = second.date? (second.date + " " + second.time) : moment(second.yearitem + "/01/01 00:00", "YYYY/MM/DD HH:mm");
       return moment(firstdt, "YYYY/MM/DD HH:mm").diff(seconddt);
     });
 
