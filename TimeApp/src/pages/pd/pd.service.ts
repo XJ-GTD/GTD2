@@ -72,6 +72,12 @@ export class PdService {
 
     });
 
+    pdItems.sort((first, second) => {
+      let firstdt: string = first.date + " " + first.time;
+      let seconddt: string = second.date + " " + second.time;
+      return moment(firstdt, "YYYY/MM/DD HH:mm").diff(seconddt);
+    });
+
     // 返出参
     return pdItems;
   }
