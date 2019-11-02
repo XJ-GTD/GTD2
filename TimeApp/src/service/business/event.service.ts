@@ -56,6 +56,7 @@ export class EventService extends BaseService {
 
     let saved: Array<AgendaData> = new Array<AgendaData>();
     let nwfj = new Array<FjTbl>();
+    let was = new Array<WaTbl>();
 
     if (pullAgdatas && pullAgdatas !=null ){
 
@@ -95,6 +96,9 @@ export class EventService extends BaseService {
 
           agd.tx = JSON.stringify(txjson);
           agd.txs = txjson.text();
+          agd.txjson = txjson;
+        }else{
+          Object.assign(agd.txjson,JSON.parse(agd.tx));
         }
 
         if (!agd.invitestatus) {
@@ -133,6 +137,25 @@ export class EventService extends BaseService {
 
         }
 
+        // 删除相关提醒
+        let sq : string;
+        let params : Array<any>;
+        sq = `update gtd_wa set tb = ? ,del = ?  where  obi = ? and obt = ?; `;
+        params = new Array<any>();
+        params.push(anyenum.SyncType.unsynch);
+        params.push(anyenum.DelType.del);
+        params.push(agd.evi);
+        params.push(anyenum.ObjectType.Event);
+        sqlparam.push([sq,params]);
+
+        if (agd.del != DelType.del){
+          //提醒新建
+          if (agd.txjson.reminds && agd.txjson.reminds.length > 0) {
+            was = [...was,...this.sqlparamAddTxWa2(ev, anyenum.ObjectType.Event,  agd.txjson)];
+          }
+        }
+
+
         /*//相关附件更新
         if (agd.attachments && agd.attachments != null && agd.attachments.length > 0) {
           //删除附件
@@ -150,6 +173,12 @@ export class EventService extends BaseService {
         saved.push(agd);
       }
 
+      let waparams = new Array<any>();
+      if (was && was.length > 0){
+        waparams = this.sqlExce.getFastSaveSqlByParam(was);
+      }
+      sqlparam = [...sqlparam, ...waparams];
+
       /*let fjparams = new Array<any>();
 
       if (nwfj && nwfj.length > 0){
@@ -157,6 +186,8 @@ export class EventService extends BaseService {
       }
 
       sqlparam = [...sqlparam, ...fjparams];*/
+
+
 
       await this.sqlExce.batExecSqlByParam(sqlparam);
       this.emitService.emit("mwxing.calendar.activities.changed", saved);
