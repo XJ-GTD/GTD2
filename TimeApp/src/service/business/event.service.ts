@@ -148,10 +148,13 @@ export class EventService extends BaseService {
         params.push(anyenum.ObjectType.Event);
         sqlparam.push([sq,params]);
 
-        //提醒新建
-        if (agd.txjson.reminds && agd.txjson.reminds.length > 0) {
-          was = [...was,...this.sqlparamAddTxWa2(ev, anyenum.ObjectType.Event,  agd.txjson)];
+        if (agd.del != DelType.del){
+          //提醒新建
+          if (agd.txjson.reminds && agd.txjson.reminds.length > 0) {
+            was = [...was,...this.sqlparamAddTxWa2(ev, anyenum.ObjectType.Event,  agd.txjson)];
+          }
         }
+
 
         /*//相关附件更新
         if (agd.attachments && agd.attachments != null && agd.attachments.length > 0) {
