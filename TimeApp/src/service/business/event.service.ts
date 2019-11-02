@@ -3045,23 +3045,23 @@ export class EventService extends BaseService {
 
       attachment.fpjson = generateCacheFilePathJson(attachment.fpjson, attachment.fj);
 
-      // 下载文件到本地
-      if (attachment.fpjson && attachment.fpjson.remote && attachment.ext && attachment.ext != "") {
-        // 仅限手机设备上下载
-        if (this.util.hasCordova()) {
-          let download: DownloadInData = new DownloadInData();
-
-          let remote = Number(attachment.fpjson.remote);
-
-          if (!isNaN(remote)) {
-            download.id = attachment.fpjson.remote;
-            download.filepath = attachment.fpjson.getLocalFilePath(this.file.dataDirectory);
-
-            let data = await this.dataRestful.download(download);
-            console.log("download <=> " + JSON.stringify(data));
-          }
-        }
-      }
+      // 下载文件到本地 默认不下载 用户手动下载
+      // if (attachment.fpjson && attachment.fpjson.remote && attachment.ext && attachment.ext != "") {
+      //   // 仅限手机设备上下载
+      //   if (this.util.hasCordova()) {
+      //     let download: DownloadInData = new DownloadInData();
+      //
+      //     let remote = Number(attachment.fpjson.remote);
+      //
+      //     if (!isNaN(remote)) {
+      //       download.id = attachment.fpjson.remote;
+      //       download.filepath = attachment.fpjson.getLocalFilePath(this.file.dataDirectory);
+      //
+      //       let data = await this.dataRestful.download(download);
+      //       console.log("download <=> " + JSON.stringify(data));
+      //     }
+      //   }
+      // }
 
       saved.push(single);
     }
