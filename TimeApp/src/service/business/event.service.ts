@@ -1118,6 +1118,7 @@ export class EventService extends BaseService {
     let fj = new FjTbl();
     fj.obi = agdata.evi;
     fj.obt = anyenum.ObjectType.Event;
+    fj.del = anyenum.DelType.undel;
     let attachments = new Array<Attachment>();
     attachments = await this.sqlExce.getLstByParam<Attachment>(fj);
     agdata.attachments = attachments;
