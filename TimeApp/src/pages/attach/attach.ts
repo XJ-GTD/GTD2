@@ -61,7 +61,7 @@ import {DataRestful,DownloadInData} from "../../service/restful/datasev";
                       </ion-thumbnail>
                 </div>
 
-                <div class="icon" *ngIf="(fja.tb=='unsynch')&&(fja.ui==currentuser) " end >
+                <div class="icon" *ngIf="fja.ui == currentuser" end>
                   <ion-icon class="fal fa-minus-circle" (click)="delAttach(fja)"></ion-icon>
                 </div>
               </div>
