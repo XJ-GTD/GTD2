@@ -40,7 +40,7 @@ export class PdService {
           let memo: MemoData = {} as MemoData;
           Object.assign(memo, element);
 
-          datetime = memo.sd + " " + memo.st;
+          datetime = moment(memo.wtt).format("YYYY/MM/DD HH:mm");
           break;
       }
 
