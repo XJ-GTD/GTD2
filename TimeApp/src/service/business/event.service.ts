@@ -131,9 +131,12 @@ export class EventService extends BaseService {
           sqlparam.push(par.dTParam());
           //参与人更新
           let nwpar = new Array<any>();
-          nwpar = this.sqlparamAddPar(agd.evi , agd.members) ;
+          if (agd.del != anyenum.DelType.del){
+            nwpar = this.sqlparamAddPar(agd.evi , agd.members) ;
 
-          sqlparam = [...sqlparam,...nwpar];
+            sqlparam = [...sqlparam,...nwpar];
+          }
+
 
         }
 
