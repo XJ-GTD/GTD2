@@ -112,7 +112,7 @@ export class ScheduleRemindService extends BaseService {
 
     // 没有指定数据则查询48小时内所有未同步提醒
     if (datas.length <= 0) {
-      let start = moment();
+      let start = moment().subtract(10, "minutes");
       let end = moment().add(limit, "hours");
 
       let sql: string = `select case ev.type when '0' then 'AgendaData' when '1' then 'TaskData' else 'MiniTaskData' end type, wa.*

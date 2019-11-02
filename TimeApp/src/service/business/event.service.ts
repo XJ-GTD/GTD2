@@ -1118,6 +1118,7 @@ export class EventService extends BaseService {
     let fj = new FjTbl();
     fj.obi = agdata.evi;
     fj.obt = anyenum.ObjectType.Event;
+    fj.del = anyenum.DelType.undel;
     let attachments = new Array<Attachment>();
     attachments = await this.sqlExce.getLstByParam<Attachment>(fj);
     agdata.attachments = attachments;
@@ -3044,23 +3045,23 @@ export class EventService extends BaseService {
 
       attachment.fpjson = generateCacheFilePathJson(attachment.fpjson, attachment.fj);
 
-      // 下载文件到本地
-      if (attachment.fpjson && attachment.fpjson.remote && attachment.ext && attachment.ext != "") {
-        // 仅限手机设备上下载
-        if (this.util.hasCordova()) {
-          let download: DownloadInData = new DownloadInData();
-
-          let remote = Number(attachment.fpjson.remote);
-
-          if (!isNaN(remote)) {
-            download.id = attachment.fpjson.remote;
-            download.filepath = attachment.fpjson.getLocalFilePath(this.file.dataDirectory);
-
-            let data = await this.dataRestful.download(download);
-            console.log("download <=> " + JSON.stringify(data));
-          }
-        }
-      }
+      // 下载文件到本地 默认不下载 用户手动下载
+      // if (attachment.fpjson && attachment.fpjson.remote && attachment.ext && attachment.ext != "") {
+      //   // 仅限手机设备上下载
+      //   if (this.util.hasCordova()) {
+      //     let download: DownloadInData = new DownloadInData();
+      //
+      //     let remote = Number(attachment.fpjson.remote);
+      //
+      //     if (!isNaN(remote)) {
+      //       download.id = attachment.fpjson.remote;
+      //       download.filepath = attachment.fpjson.getLocalFilePath(this.file.dataDirectory);
+      //
+      //       let data = await this.dataRestful.download(download);
+      //       console.log("download <=> " + JSON.stringify(data));
+      //     }
+      //   }
+      // }
 
       saved.push(single);
     }
@@ -3090,6 +3091,7 @@ export class EventService extends BaseService {
     this.assertEmpty(agendas);  // 入参不能为空
 
     let members = new Array<Member>();
+    let attachments = new Array<Attachment>();
 
     if (agendas.length <= 0) {
       let sql: string = `select ev.*, ca.sd, ca.ed, ca.st, ca.et, ca.al, ca.ct
@@ -3102,6 +3104,20 @@ export class EventService extends BaseService {
                         left join gtd_ca ca
                         on ca.evi = ev.forceevi`;
   		agendas = await this.sqlExce.getExtLstByParam<AgendaData>(sql, [anyenum.EventType.Agenda, SyncType.unsynch]) || agendas;
+
+      // 增加附件同步
+      let sqlattachments: string = `select distinct fj.* from (
+                                    select
+                                          case when rfg = '2' then evi
+                                             when ifnull(rtevi, '') = '' then evi
+                                             else rtevi end forceevi
+                                          from gtd_ev
+                                          where ui <> '' and ui is not null and type = ?1 and tb = ?2
+                                  ) ev
+                                  inner join gtd_fj fj
+                                  on ev.forceevi = fj.obi and fj.obt = ?3`;
+      attachments =  await this.sqlExce.getExtLstByParam<Attachment>(sqlattachments,
+        [anyenum.EventType.Agenda, SyncType.unsynch, anyenum.ObjectType.Event]) || attachments;
 
   		let sqlmember: string = ` select distinct par.*  ,
   		                              b.ran,
@@ -3123,8 +3139,20 @@ export class EventService extends BaseService {
                               inner join gtd_b b
                               on par.pwi = b.pwi `;
       members =  await this.sqlExce.getExtLstByParam<Member>(sqlmember,
-        [anyenum.EventType.Agenda, SyncType.unsynch,anyenum.ObjectType.Event]) || members;
+        [anyenum.EventType.Agenda, SyncType.unsynch, anyenum.ObjectType.Event]) || members;
 
+    } else {
+      let evis: Array<string> = agendas.reduce((target, ele) => {
+        target.push(ele.evi);
+        return target;
+      }, new Array<string>());
+
+      // 增加附件同步
+      let sqlattachments: string = `select *
+                                    from gtd_fj
+                                    where obi in ('` + evis.join(', ') + `') and obt = ?1`;
+      attachments =  await this.sqlExce.getExtLstByParam<Attachment>(sqlattachments,
+        [anyenum.ObjectType.Event]) || attachments;
     }
 
     let maxdata: number = 5;
@@ -3134,6 +3162,10 @@ export class EventService extends BaseService {
 
       let index: number = 0;
       for (let agenda of agendas) {
+        let currentAttachments: Array<Attachment> = attachments.filter((ele) => {
+          return ele.obi == agenda.evi;
+        }) || new Array<Attachment>();
+
         let sync: SyncData = new SyncData();
 
         sync.fields.unshared.push("del");             // 删除状态为个人数据不共享给他人
@@ -3205,6 +3237,14 @@ export class EventService extends BaseService {
             return parEvi == value.obi;
           });
           agenda.tos = this.getMemberPhone(membersTos);
+
+          // 把参与人添加到附件数据上
+          currentAttachments = currentAttachments.reduce((target, ele) => {
+            ele.members = membersTos;
+            target.push(ele);
+
+            return target;
+          }, new Array<Attachment>());
         } else {
           let singlemembers: Array<Member> = new Array<Member>();
           //取得相关参与人
@@ -3214,6 +3254,14 @@ export class EventService extends BaseService {
 
           if (singlemembers.length > 0) {
             agenda.tos = this.getMemberPhone(singlemembers);
+
+            // 把参与人添加到附件数据上
+            currentAttachments = currentAttachments.reduce((target, ele) => {
+              ele.members = singlemembers;
+              target.push(ele);
+
+              return target;
+            }, new Array<Attachment>());
           }
         }
         sync.to = (!agenda.tos || agenda.tos == "" || agenda.tos == null) ? [] : agenda.tos.split(",") ;
@@ -3222,6 +3270,11 @@ export class EventService extends BaseService {
 
         sync.payload = this.cleanAgendaPayload(agenda);
         push.d.push(sync);
+
+        // 先把附件数据进行同步
+        if (currentAttachments && currentAttachments.length > 0) {
+          await this.syncAttachments(currentAttachments);
+        }
 
         index++;
 
