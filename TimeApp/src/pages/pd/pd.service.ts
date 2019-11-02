@@ -1,7 +1,9 @@
 import {Injectable} from "@angular/core";
 import {ShaeRestful, ShareData} from "../../service/restful/shaesev";
 import {PagePDPro} from "../../data.mapping";
-import {CalendarService, PlanData} from "../../service/business/calendar.service";
+import {CalendarService, PlanData, PlanItemData} from "../../service/business/calendar.service";
+import {EventData} from "../../service/business/event.service";
+import {MemoData} from "../../service/business/memo.service";
 import {PdItem} from "./pd";
 import * as moment from "moment";
 @Injectable()
@@ -13,6 +15,44 @@ export class PdService {
     let pdItems:Array<PdItem> = new Array<PdItem>();
     let paList: PlanData = await this.calendarService.getPlan(pid,true);
     let tmpyear:number = -1;
+
+    let getDatetime = (element) => {
+      let datetime: string = moment().format("YYYY/MM/DD HH:mm");
+
+      let activityType: string =  this.calendarService.getActivityType(element);
+
+      switch (activityType) {
+        case "PlanItemData" :
+          let item: PlanItemData = {} as PlanItemData;
+          Object.assign(item, element);
+
+          datetime = item.sd + " " + item.st;
+          break;
+        case "AgendaData" :
+        case "TaskData" :
+        case "MiniTaskData" :
+          let event: EventData = {} as EventData;
+          Object.assign(event, element);
+
+          datetime = event.evd + " " + event.evt;
+          break;
+        case "MemoData" :
+          let memo: MemoData = {} as MemoData;
+          Object.assign(memo, element);
+
+          datetime = moment(memo.wtt).format("YYYY/MM/DD HH:mm");
+          break;
+      }
+
+      return datetime;
+    };
+
+    paList.items.sort((first, second) => {
+      let firstdt: string = getDatetime(first);
+      let seconddt: string = getDatetime(second);
+
+      return moment(firstdt, "YYYY/MM/DD HH:mm").diff(seconddt);
+    });
 
     paList.items.forEach((v,i,a)=>{
       let activityType: string =  this.calendarService.getActivityType(v);
@@ -72,11 +112,11 @@ export class PdService {
 
     });
 
-    pdItems.sort((first, second) => {
-      let firstdt: string = first.date? (first.date + " " + first.time) : moment(first.yearitem + "/01/01 00:00", "YYYY/MM/DD HH:mm");
-      let seconddt: string = second.date? (second.date + " " + second.time) : moment(second.yearitem + "/01/01 00:00", "YYYY/MM/DD HH:mm");
-      return moment(firstdt, "YYYY/MM/DD HH:mm").diff(seconddt);
-    });
+    // pdItems.sort((first, second) => {
+    //   let firstdt: string = first.date? (first.date + " " + first.time) : (first.yearitem + "/01/01 00:00");
+    //   let seconddt: string = second.date? (second.date + " " + second.time) : (second.yearitem + "/01/01 00:00");
+    //   return moment(firstdt, "YYYY/MM/DD HH:mm").diff(seconddt);
+    // });
 
     // 返出参
     return pdItems;
