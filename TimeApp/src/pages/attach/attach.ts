@@ -26,7 +26,7 @@ import {DataRestful,DownloadInData} from "../../service/restful/datasev";
   selector: 'page-attach',
   template: `
 
-    <modal-box title="补充信息" [buttons]="buttons" (onSave)="save()" (onCancel)="cancel()" (onCreate)="openselect()">
+    <modal-box title="补充信息" [buttons]="buttons" (onCancel)="cancel()" (onCreate)="openselect()">
 
       <ion-toolbar>
         <ion-buttons end>
@@ -241,7 +241,6 @@ export class AttachPage {
 
 
   openselect() {
-
     const actionSheet = this.actionSheetCtrl.create({
       title: "选择补充文件",
       cssClass: "page-attach",
@@ -267,23 +266,10 @@ export class AttachPage {
     actionSheet.present();
   }
 
-  async save() {
+  cancel() {
     let data: Object = {attach: this.fjArray.filter((ele) => {
       return ele.del != DelType.del;
     })};
-    //
-    // let uploads = this.fjArray.filter((element) => {
-    //   return (element.tb != SyncType.synch);
-    // });
-    // if (uploads && uploads.length > 0) {
-    //   await this.eventService.syncAttachments(uploads);
-    // }
-    this.viewCtrl.dismiss(data);
-  }
-
-  cancel() {
-    //this.navCtrl.pop();
-    let data: Object = {attach: this.fjArray};
     this.viewCtrl.dismiss(data);
   }
 
