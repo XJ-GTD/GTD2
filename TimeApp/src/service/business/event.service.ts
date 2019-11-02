@@ -92,13 +92,10 @@ export class EventService extends BaseService {
         }
 
         if (!agd.tx) {
-          let txjson: TxJson = new TxJson();
-
-          agd.tx = JSON.stringify(txjson);
-          agd.txs = txjson.text();
-          agd.txjson = txjson;
+          agd.txjson = generateTxJson(agd.txjson, agd.tx);
+          agd.txs = agd.txjson.text();
         }else{
-          Object.assign(agd.txjson,JSON.parse(agd.tx));
+          agd.txjson = generateTxJson(agd.txjson, agd.tx);
         }
 
         if (!agd.invitestatus) {
