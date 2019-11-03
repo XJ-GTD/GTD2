@@ -54,6 +54,7 @@ export class DataRestful {
     let url: UrlEntity = this.config.getRestFulUrl("SPH");
 
     params.mpn = UserConfig.account.phone;
+    params.name = UserConfig.account.name;
 
     let data = await this.request.post(url, params);
 
@@ -108,6 +109,7 @@ export class SyncData {
 
 export class PushInData {
   mpn: string;  // 手机号码
+  name: string; // 用户名称
   d: Array<SyncData> = new Array<SyncData>();   // 需要同步的数据负载
 }
 
