@@ -165,7 +165,13 @@ export class FormatWeatherPipe implements PipeTransform {
       if (args[0] == "centigrade-with-json") {
         if (!value) return "";
 
-        let weather = JSON.parse(value);
+        let weather = {};
+
+        try {
+          weather = JSON.parse(value);
+        } catch (error) {
+          weather.temp = value;
+        }
 
         if (!(weather.temp.indexOf("℃") > 0)) {
           return weather.temp + "℃";
