@@ -152,6 +152,7 @@ function clean(datasource)
       var status = data['status'];
       var main = data['main'];
       var operation = data['operation'];
+      var sharestate = data['sharestate'];
 
       print("DEBUG [" + type + "][" + src + "][" + id + "] " + from + ":" + requestdevice + " => " + to + ":" + todevice);
 
@@ -206,11 +207,15 @@ function clean(datasource)
               }
               // 发起人删除,通知所有人
               if (status == "del") {
-                push = convertPushMessage(id, type, name, (name + " - 取消活动"), title, datetime) || {};
+                if (!sharestate || !sharestate[to] || sharestate[to]["datastate"] != "del") {
+                  push = convertPushMessage(id, type, name, (name + " - 取消活动"), title, datetime) || {};
+                }
               }
               // 移除受邀人,通知受邀人
               if (operation == "remove") {
-                push = convertPushMessage(id, type, name, (name + " - 取消活动"), title, datetime) || {};
+                if (!sharestate || !sharestate[to] || sharestate[to]["datastate"] != "del") {
+                  push = convertPushMessage(id, type, name, (name + " - 取消活动"), title, datetime) || {};
+                }
               }
             } else {
               // 任何人新增邀请,通知受邀人
@@ -221,7 +226,9 @@ function clean(datasource)
               }
               // 移除受邀人,通知受邀人
               if (operation == "remove") {
-                push = convertPushMessage(id, type, name, (name + " - 取消活动"), title, datetime) || {};
+                if (!sharestate || !sharestate[to] || sharestate[to]["datastate"] != "del") {
+                  push = convertPushMessage(id, type, name, (name + " - 取消活动"), title, datetime) || {};
+                }
               }
             }
           }
