@@ -27,6 +27,7 @@ function clean(datasource)
   var input = JSON.parse(datasource);
 
   var from = input['from'];
+  var name = input['name'];
   var to = input['to'];
   var copyto = input['copyto'];
   var header = input['header'];
@@ -44,24 +45,24 @@ function clean(datasource)
     }
   }
 
-  var convertSMS = function(title) {
+  var convertSMS = function(name, title) {
     var sms;
 
     // 设置未注册用户短信通知模板
     sms = {template: {
       newuser: '11lnk',
-      name: '冥王星用户',
+      name: name || '冥王星用户',
       title: title,
       url: 'http://u3v.cn/4sUKl3'
     }};
 
   }
 
-  var convertPushMessage = function(id, type, title, datetime) {
+  var convertPushMessage = function(id, type, name, title, content, datetime) {
     var push = {};
 
     push['title'] = title;
-    push['content'] = formatDateTimeShow(datetime);
+    push['content'] = content || formatDateTimeShow(datetime);
     push['extras'] = {
       event: "MWXING_SHAREAGENDA_EVENT",
       dependson: "on.homepage.init",
@@ -148,6 +149,7 @@ function clean(datasource)
       var todevice = data['todevice'];
       var title = data['title'];
       var datetime = data['datetime'];
+      var status = data['status'];
       var main = data['main'];
 
       print("DEBUG [" + type + "][" + src + "][" + id + "] " + from + ":" + requestdevice + " => " + to + ":" + todevice);
@@ -188,11 +190,19 @@ function clean(datasource)
         standardnext.announceTo = [to];
         standardnext.announceDevice = todevice;
         standardnext.announceType = 'data_sync';
-        standardnext.announceContent = {
-          mwxing: convertMessage(id, type, 'OTHER_ACCOUNT'),
-          sms: main? convertSMS(title) : {},
-          push: main? convertPushMessage(id, type, title, datetime) : {}
-        };
+        if (type == "Agenda" && name) {
+          standardnext.announceContent = {
+            mwxing: convertMessage(id, type, 'OTHER_ACCOUNT'),
+            sms: main? convertSMS(name, title) : {},
+            push: main? convertPushMessage(id, type, name, (name + (status == "del"? " - 取消活动" : " - 邀请活动")), title, datetime) : {}
+          };
+        } else {
+          standardnext.announceContent = {
+            mwxing: convertMessage(id, type, 'OTHER_ACCOUNT'),
+            sms: main? convertSMS(name, title) : {},
+            push: main? convertPushMessage(id, type, name, title, "", datetime) : {}
+          };
+        }
 
         outputs.push(standardnext);
       }
