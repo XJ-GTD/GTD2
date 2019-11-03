@@ -151,6 +151,7 @@ function clean(datasource)
       var datetime = data['datetime'];
       var status = data['status'];
       var main = data['main'];
+      var operation = data['operation'];
 
       print("DEBUG [" + type + "][" + src + "][" + id + "] " + from + ":" + requestdevice + " => " + to + ":" + todevice);
 
@@ -190,11 +191,51 @@ function clean(datasource)
         standardnext.announceTo = [to];
         standardnext.announceDevice = todevice;
         standardnext.announceType = 'data_sync';
+
+        // 判断日程数据通知处理逻辑
         if (type == "Agenda" && name) {
+          var push = {};
+
+          if (main) {
+            if (from == src) {
+              // 发起人新增邀请,通知受邀人
+              if (operation == "add") {
+                if (status != "del") {
+                  push = convertPushMessage(id, type, name, (name + " - 邀请活动"), title, datetime) || {};
+                }
+              }
+              // 发起人删除,通知所有人
+              if (status == "del") {
+                push = convertPushMessage(id, type, name, (name + " - 取消活动"), title, datetime) || {};
+              }
+              // 移除受邀人,通知受邀人
+              if (operation == "remove") {
+                push = convertPushMessage(id, type, name, (name + " - 取消活动"), title, datetime) || {};
+              }
+            } else {
+              // 任何人新增邀请,通知受邀人
+              if (operation == "add") {
+                if (status != "del") {
+                  push = convertPushMessage(id, type, name, (name + " - 邀请活动"), title, datetime) || {};
+                }
+              }
+              // 移除受邀人,通知受邀人
+              if (operation == "remove") {
+                push = convertPushMessage(id, type, name, (name + " - 取消活动"), title, datetime) || {};
+              }
+            }
+          }
+
           standardnext.announceContent = {
             mwxing: convertMessage(id, type, 'OTHER_ACCOUNT'),
             sms: main? convertSMS(name, title) : {},
-            push: main? convertPushMessage(id, type, name, (name + (status == "del"? " - 取消活动" : " - 邀请活动")), title, datetime) : {}
+            push: push
+          };
+        } else if (type == "Attachment") {  // 附件不产生通知消息
+          standardnext.announceContent = {
+            mwxing: convertMessage(id, type, 'OTHER_ACCOUNT'),
+            sms: main? convertSMS(name, title) : {},
+            push: {}
           };
         } else {
           standardnext.announceContent = {
