@@ -44,7 +44,7 @@ function clean(datasource)
   var convertPushMessage = function(id, type, title, datetime) {
     var push = {};
 
-    push['title'] = '[提醒] ' + formatDateTimeShow(datetime);
+    push['title'] = '活动提醒';
     push['content'] = title;
     push['extras'] = {
       event: "MWXING_SHAREAGENDA_EVENT",
