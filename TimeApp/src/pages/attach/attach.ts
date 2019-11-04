@@ -55,7 +55,7 @@ import {DataRestful,DownloadInData} from "../../service/restful/datasev";
                   <ion-icon class="fas fa-file-pdf" (click)="opnePdf(fja.fjurl)"></ion-icon>
                 </div>
                 <div *ngIf="(fja.ext=='png'||fja.ext=='PNG'||fja.ext=='jpg'||fja.ext=='JPG'||fja.ext=='bmp'||fja.ext=='BMP'||fja.ext=='mp4'||fja.ext=='MP4')&& (fja.fj !='')">
-                      <ion-thumbnail>
+                      <ion-thumbnail (click)="photoViews(fja.fjurl)">
                       <img  *ngIf="fja.fjurl!=''" src="{{fja.fjurl}}" />
                       <img  *ngIf="fja.fjurl ==''" src="{{defaultimg}}" />
                       </ion-thumbnail>
