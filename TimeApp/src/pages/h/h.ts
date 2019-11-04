@@ -147,9 +147,7 @@ export class HPage {
   }
 
 //查询当天日程
-  onSelect(selectDay
-             :
-             CalendarDay
+  onSelect(selectDay:CalendarDay
   ) {
     this.feedback.audioClick();
     if (selectDay) this.emitService.emitSelectDate(moment(selectDay.time));

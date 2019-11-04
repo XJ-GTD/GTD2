@@ -50,7 +50,8 @@ export const ION_CAL_VALUE_ACCESSOR: Provider = {
             </div>
           </div>
           <div float-right (click)="gotoToday()">
-            <img src="./assets/imgs/fhby.png"/>
+            <ion-icon class="fad fa-calendar-alt"></ion-icon>
+            <!--<img src="./assets/imgs/fhby.png"/>-->
           </div>
         </div>
       </ion-card-header>
