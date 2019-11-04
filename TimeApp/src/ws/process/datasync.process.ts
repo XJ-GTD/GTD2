@@ -219,6 +219,8 @@ export class DataSyncProcess implements MQProcess {
 
           // 参与人可能存在没有注册的情况，目前没有考虑
           for (let unknown of unknowncontacts) {
+            if (!originmembers) continue;   // 存在历史错误的数据,没有参与人数据
+
             let origins = originmembers.filter((element) => {
               return element.rc == unknown;
             });
@@ -349,6 +351,8 @@ export class DataSyncProcess implements MQProcess {
 
           // 参与人可能存在没有注册的情况，目前没有考虑
           for (let unknown of unknowncontacts) {
+            if (!originmembers) continue;   // 存在历史错误数据，忽略处理
+
             let origins = originmembers.filter((element) => {
               return element.rc == unknown;
             });

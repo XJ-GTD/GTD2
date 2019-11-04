@@ -5,6 +5,7 @@
     "parameters": [
       "mwxing",
       "mpn",
+      "name",
       "d"
     ],
     "follows": [
@@ -64,7 +65,8 @@
                             "trigger": "acj",
                             "parameters": [
                                 "ruleid;MWXING_DATASYNC_V1_5",
-                                "datasource;$.parent.outputs"
+                                "datasource;$.parent.outputs",
+                                "merge_name;$.root.parameters.name"
                             ],
                             "outputs": [
                                 "cleaned"
