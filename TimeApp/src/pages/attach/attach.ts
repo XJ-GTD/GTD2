@@ -402,7 +402,9 @@ export class AttachPage {
       this.fjData.members = this.members;
       //1.对当前数据进行存储
       let retAt: Attachment = {}  as Attachment;
+      this.util.loadingStart();
       retAt = await this.eventService.saveAttachment(this.fjData);
+      this.util.loadingEnd();
       this.fjArray.push(retAt);
       this.fjData = {} as Attachment;
       this.fjData.obt = this.obt;
