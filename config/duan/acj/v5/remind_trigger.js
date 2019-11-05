@@ -77,7 +77,7 @@ function clean(datasource)
     task["taskType"] = "QUARTZ";
     task["taskName"] = "计划事件持续提醒";
 
-    var d = Date.parse(wd + " " + wt);
+    var d = new Date(Date.parse(wd + " " + wt));
 
     var taskRunAt = {};
     taskRunAt["eventId"] = "QUARTZ_CRON_5M",
@@ -145,7 +145,7 @@ function clean(datasource)
       var next = new Date(cd + 1000 * 60 * 60 * 4);
 
       var wd = next.getFullYear() + "/" + fillzero(next.getMonth() + 1, 2) + "/" + fillzero(next.getDate(), 2);
-      var wt = fillzero(next.getHours(), 2) + ":" + fillzero(d.getMinutes(), 2);
+      var wt = fillzero(next.getHours(), 2) + ":" + fillzero(next.getMinutes(), 2);
 
       var nextremind = {
         datatype: type,
