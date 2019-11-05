@@ -3757,7 +3757,7 @@ export class EventService extends BaseService {
       let fjs = await this.sqlExce.getExtLstByParam<TaskData>(sql, [DelType.undel]);
       if(fjs && fjs.length>0) {
         for (let fj of fjs) {
-          Attachment at = {} as Attachment;
+          let at: Attachment = {} as Attachment;
           Object.assign(at, fj);
           let cacheFilePathJson: CacheFilePathJson = new CacheFilePathJson();
           cacheFilePathJson.local = "/"+fj.fjn;
