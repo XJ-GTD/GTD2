@@ -630,7 +630,7 @@ export class UtilService {
         this.loading = null;
       }
 
-    },500);
+    },800);
   }
 
   toastStart(msg: string, long: number) {
