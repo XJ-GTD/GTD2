@@ -104,7 +104,7 @@ export class ScheduleRemindService extends BaseService {
                     accountid: UserConfig.account.id,
                     phoneno: UserConfig.account.phone,
                     id: event.evi,
-                    continue: false,
+                    continue: true,
                     wd: evd,
                     wt: evt,
                   }]
