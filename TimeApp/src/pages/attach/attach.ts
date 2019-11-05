@@ -55,7 +55,7 @@ import {DataRestful,DownloadInData} from "../../service/restful/datasev";
                   <ion-icon class="fas fa-file-pdf" (click)="opnePdf(fja.fjurl)"></ion-icon>
                 </div>
                 <div *ngIf="(fja.ext=='png'||fja.ext=='PNG'||fja.ext=='jpg'||fja.ext=='JPG'||fja.ext=='bmp'||fja.ext=='BMP'||fja.ext=='mp4'||fja.ext=='MP4')&& (fja.fj !='')">
-                      <ion-thumbnail>
+                      <ion-thumbnail (click)="photoShow(fja.fjurl)">
                       <img  *ngIf="fja.fjurl!=''" src="{{fja.fjurl}}" />
                       <img  *ngIf="fja.fjurl ==''" src="{{defaultimg}}" />
                       </ion-thumbnail>
@@ -424,6 +424,10 @@ export class AttachPage {
     this.fileOpener.open(fj,'application/pdf')
     .then(() => console.info('File is opened'))
     .catch(e => console.info('Error opening file', e));
+  }
+
+  photoShow(fj: string) {
+      this.util.photoViews(fj);
   }
 
 }
