@@ -64,8 +64,12 @@ export class ScheduleRemindService extends BaseService {
                 data: {
                   datatype: generateDataType(activityType),
                   datas: [{
+                    accountid: UserConfig.account.id,
                     phoneno: UserConfig.account.phone,
-                    id: planitem.jti
+                    id: planitem.jti,
+                    continue: false,
+                    wd: moment(datetime).format("YYYY/MM/DD"),
+                    wt: moment(datetime).format("HH:mm"),
                   }]
                 }
               });
@@ -96,8 +100,12 @@ export class ScheduleRemindService extends BaseService {
                 data: {
                   datatype: generateDataType(activityType),
                   datas: [{
+                    accountid: UserConfig.account.id,
                     phoneno: UserConfig.account.phone,
-                    id: event.evi
+                    id: event.evi,
+                    continue: false,
+                    wd: moment(datetime).format("YYYY/MM/DD"),
+                    wt: moment(datetime).format("HH:mm"),
                   }]
                 }
               });
@@ -152,8 +160,12 @@ export class ScheduleRemindService extends BaseService {
           data: {
             datatype: generateDataType(remind.type),
             datas: [{
+              accountid: UserConfig.account.id,
               phoneno: UserConfig.account.phone,
-              id: remind.obi
+              id: remind.obi,
+              continue: (remind.wai == remind.obi),
+              wd: remind.wd,
+              wt: remind.wt
             }]
           }
         });

@@ -24,7 +24,8 @@
           "trigger": "acj",
           "parameters": [
               "ruleid;MWXING_SCHEDULED_REMIND_V1_5",
-              "datasource;$.parent.outputs"
+              "datasource;$.parent.outputs",
+              "merge_remind;$.root.remind"
           ],
           "outputs": [
               "cleaned"
