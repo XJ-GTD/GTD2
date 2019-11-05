@@ -92,7 +92,7 @@ BScroll.use(InfinityScroll);
                 <div class="line">
                   <div class="dayheader">
                     <div class="d-fsize">{{days.day | formatedate :"CWEEK"}}</div>
-                    <div class="ym-fsize">{{days.day | formatedate:"DD"}}</div>
+                    <div class="ym-fsize">{{days.day | formatedate:"CDD"}}</div>
                     <div class="ys-fsize">{{days.day | formatedate:"CMM"}}</div>
                   </div>
                   <div class="d-title  ">

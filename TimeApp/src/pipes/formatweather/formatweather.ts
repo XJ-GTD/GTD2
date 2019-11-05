@@ -91,6 +91,10 @@ export class FormatWeatherPipe implements PipeTransform {
     this.WEATHER_FONT_MAP_NIGHT.set("", "night-alt-partly-cloudy"); //部分浑浊
 
     //正常
+    this.WEATHER_FONT_MAP.set("晴", "fa-sun");            //晴
+    // this.WEATHER_FONT_MAP.set("阴", "fa-cloud");             //阴天
+    this.WEATHER_FONT_MAP.set("雾", "fa-fog");                //雾
+    this.WEATHER_FONT_MAP.set("冰雹", "fa-cloud-hail-mixed");               //冰雹
     this.WEATHER_FONT_MAP.set("多云", "fa-clouds");           //云
     this.WEATHER_FONT_MAP.set("阴", "fa-clouds");          //阴天
     this.WEATHER_FONT_MAP.set("", "cloudy-gusts");    //阴天阵风

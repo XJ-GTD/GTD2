@@ -55,3 +55,18 @@
     color: $fontSecondColor
   }
 }
+
+.raindrop {
+  position: absolute;
+  width: 150px;
+  height: 150px;
+  left: -40px;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  margin: auto;
+  border: 35px solid rgba(255,255,255,1);
+  border-radius: 50%;
+  box-sizing: border-box;
+  transform: scale(0);
+}

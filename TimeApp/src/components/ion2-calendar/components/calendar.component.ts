@@ -357,7 +357,7 @@ export class CalendarComponent implements OnInit {
   }
 
 
-  swiperover4data(index:number){
+  swiperover4data(index:number,gototoday:boolean = false){
 
        // this.swiper.update()
       // this.swiper.updateSlidesClasses();
@@ -370,8 +370,11 @@ export class CalendarComponent implements OnInit {
       this._thisMonth = monthOpt.original.month == moment().month() && monthOpt.original.year == moment().year();
       this.calSvc.getMonthData(monthOpt);
 
-      if (this.change4emit)
+      if (this.change4emit && !gototoday)
         this.emitService.emit("calendar.change.month",moment(monthOpt.original.time).format("YYYYMM"));
+
+      if (gototoday)
+        this.emitService.emitSelectDate(moment());
 
       this.change4emit = true;
 
@@ -394,7 +397,6 @@ export class CalendarComponent implements OnInit {
   //   return this.monthOpt.original.time > moment(this._d.from).valueOf();
   // }
 
-
   private initOpt(): void {
     this._d = this.calSvc.safeOpt(this._options || {});
   }
@@ -416,7 +418,7 @@ export class CalendarComponent implements OnInit {
     // this.swiper.setTransition(10);
     // this.swiper.setTranslate(this.swiper.translate + window.innerWidth);
 
-    this.swiperover4data(1);
+    this.swiperover4data(1,true);
     IonCalendarService.selecttime =  moment(moment().format("YYYY-MM-DD")).valueOf();
   }
 }
