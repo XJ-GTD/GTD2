@@ -35,7 +35,6 @@ corner-badge[fa-calendar-check] {
 
 .fa-map-marker-alt {
   color: #CEA75D;
-
 }
 
 corner-badge[fa-map-marker-alt] {
@@ -102,4 +101,8 @@ corner-badge[icon-readonly] {
 
 .icon-readonly {
   color: rgba(153, 153, 153, 1);
+}
+
+.fa, .fab, .fad, .fal, .far, .fas{
+  line-height: normal;
 }

@@ -50,14 +50,17 @@ import {ModiPower} from "../../data.enum";
   template:
       `
     <page-box title="活动" [buttons]="buttons" [data]="currentAgenda.evi" (onRemove)="goRemove()" (onSave)="save()"
-              (onBack)="goBack()" (onRecord)="record($event)" (onSpeaker)="speaker($event)" (onAccept)="acceptInvite(currentAgenda)" (onReject)="rejectInvite(currentAgenda)"  [speakData] = "currentAgenda.evn">
+              (onBack)="goBack()" (onRecord)="record($event)" (onSpeaker)="speaker($event)"
+              (onAccept)="acceptInvite(currentAgenda)" (onReject)="rejectInvite(currentAgenda)"
+              [speakData]="currentAgenda.evn">
 
-      <ion-grid [ngStyle]="{'border-left': (!currentAgenda.evi || !currentAgenda.ji || currentAgenda.ji == '')? '0' : ('0.6rem solid ' + (currentAgenda.ji | formatplan: 'color': privateplans)), 'padding-left': (!currentAgenda.evi || !currentAgenda.ji || currentAgenda.ji == '')? '1.2rem' : '0.6rem', 'border-radius': (!currentAgenda.evi || !currentAgenda.ji || currentAgenda.ji == '')? '0' : '4px'}">
-      <!--<ion-grid>-->
+      <ion-grid
+        [ngStyle]="{'border-left': (!currentAgenda.evi || !currentAgenda.ji || currentAgenda.ji == '')? '0' : ('0.6rem solid ' + (currentAgenda.ji | formatplan: 'color': privateplans)), 'padding-left': (!currentAgenda.evi || !currentAgenda.ji || currentAgenda.ji == '')? '1.2rem' : '0.6rem', 'border-radius': (!currentAgenda.evi || !currentAgenda.ji || currentAgenda.ji == '')? '0' : '4px'}">
+        <!--<ion-grid>-->
 
         <!--<div class="plan plan-right"-->
-             <!--[ngStyle]="{'background-color': currentAgenda.ji == ''? 'transparent' : (currentAgenda.ji | formatplan: 'color': privateplans )}">-->
-          <!--<span>{{currentAgenda.ji | formatplan: 'name': '': privateplans}}</span></div>-->
+        <!--[ngStyle]="{'background-color': currentAgenda.ji == ''? 'transparent' : (currentAgenda.ji | formatplan: 'color': privateplans )}">-->
+        <!--<span>{{currentAgenda.ji | formatplan: 'name': '': privateplans}}</span></div>-->
 
         <ion-row class="limitRow font-small-x">
           <span>{{snlength}} / 80 </span>
@@ -66,7 +69,8 @@ import {ModiPower} from "../../data.enum";
         <ion-row class="snRow">
           <div class="sn font-large-x">
             <!--主题-->
-            <ion-textarea rows="8" no-margin [(ngModel)]="currentAgenda.evn" (ionChange)="changeTitle()" [readonly]="originAgenda.evi && originAgenda.ui != currentuser && (originAgenda.md != enablechange || originAgenda.invitestatus != acceptedinvite)"
+            <ion-textarea rows="8" no-margin [(ngModel)]="currentAgenda.evn" (ionChange)="changeTitle()"
+                          [readonly]="originAgenda.evi && originAgenda.ui != currentuser && (originAgenda.md != enablechange || originAgenda.invitestatus != acceptedinvite)"
                           [maxlength]="80"></ion-textarea>
           </div>
 
@@ -127,39 +131,41 @@ import {ModiPower} from "../../data.enum";
             </ion-row>
 
             <ion-row *ngIf="currentAgenda.evi">
-              <button ion-button clear (click)="changeRepeat()" class="font-normal" [disabled]="originAgenda.evi && originAgenda.ui != currentuser && originAgenda.md != enablechange">
+              <button ion-button clear (click)="changeRepeat()" class="font-normal"
+                      [disabled]="originAgenda.evi && originAgenda.ui != currentuser && originAgenda.md != enablechange">
                 <ion-icon class="fal fa-copy font-normal" *ngIf="!currentAgenda.rts"></ion-icon>
                 {{currentAgenda.rts || "重复"}}
                 <!--<corner-badge *ngIf="currentAgenda.rts" fa-copy><p><i class="fa fa-copy "></i></p></corner-badge>-->
               </button>
             </ion-row>
-
-            <ion-row *ngIf="currentAgenda.bz" (click)="changeComment()">
+            <ion-row *ngIf="currentAgenda.bz" (click)="changeComment()" class="contentdata">
               <span class="content font-normal">
                   备注：{{currentAgenda.bz}}
                 </span>
               <ion-icon class="fal fa-comment-edit font-normal"></ion-icon>
             </ion-row>
 
-            <ion-row *ngIf="currentAgenda.adr " (click)="changeLocation()">
+            <ion-row *ngIf="currentAgenda.adr " (click)="changeLocation()" class="contentdata">
               <span class="content font-normal">
                 地址：{{currentAgenda.adr}}
                 </span>
               <ion-icon class="fal fa-map-marker-alt font-normal"></ion-icon>
             </ion-row>
-            <ion-row *ngIf="currentAgenda.evd">
+            <ion-row *ngIf="currentAgenda.evd"  class="contentdata">
               <div (click)="changeDatetime()" class="pickDate">
-                <ion-icon class="font-normal fal fa-calendar-check "></ion-icon>
-                <span class="content font-normal">
-                  {{currentAgenda.evd | formatedate: "YYYY年M月D日"}}
-                  <br/>
-                  {{currentAgenda.evd + " " + currentAgenda.evt | formatedate: "A HH:mm"}}
+                <span class="content font-normal agendaDate">
+                  日期：{{currentAgenda.evd | formatedate: "YYYY年M月D日"}}
+                  <ion-icon class="fal fa-calendar-check "></ion-icon>
+                </span>
+                <span class="content font-normal agendaDate">
+                  时间：{{currentAgenda.evd + " " + currentAgenda.evt | formatedate: "A HH:mm"}}
                   ({{currentAgenda.ct | transfromdate: "duration"}})
-            </span>
+                </span>
               </div>
-              <div end *ngIf="currentAgenda.evi && currentAgenda.ui != currentuser" (click)="openfriend(currentAgenda.ui)">
+              <div end *ngIf="currentAgenda.evi && currentAgenda.ui != currentuser"
+                   (click)="openfriend(currentAgenda.ui)">
                 <span class="content  font-normal person">
-                   -{{currentAgenda.ui | formatuser: currentuser: friends}}
+                   发起人：{{currentAgenda.ui | formatuser: currentuser: friends}}
                   </span>
               </div>
             </ion-row>
@@ -175,10 +181,10 @@ export class AgendaPage {
     remove: false,
     share: false,
     save: false,
-    record:true,
-    speaker:true,
-    accept:false,
-    reject:false,
+    record: true,
+    speaker: true,
+    accept: false,
+    reject: false,
     cancel: true
   };
 
@@ -190,7 +196,7 @@ export class AgendaPage {
   privateplans: Array<any> = UserConfig.privateplans;
 
   modifyConfirm;
-  snlength:number = 0;
+  snlength: number = 0;
 
   todoliston = ToDoListStatus.On;
   todolistoff = ToDoListStatus.Off;
@@ -208,7 +214,6 @@ export class AgendaPage {
   pageBoxComponent: PageBoxComponent
 
 
-
   constructor(public navCtrl: NavController,
               public navParams: NavParams,
               public modalCtrl: ModalController,
@@ -221,7 +226,7 @@ export class AgendaPage {
               private eventService: EventService,
               private sqlite: SqliteExec,
               private keyboard: Keyboard,
-              private changeDetectorRef:ChangeDetectorRef) {
+              private changeDetectorRef: ChangeDetectorRef) {
     moment.locale('zh-cn');
     if (this.navParams) {
       let paramter: ScdPageParamter = this.navParams.data;
@@ -241,7 +246,7 @@ export class AgendaPage {
               this.util.cloneObj(this.originAgenda, agenda);
 
 
-              this.snlength =  this.currentAgenda.evn.length;
+              this.snlength = this.currentAgenda.evn.length;
               if (this.currentAgenda.ui != this.currentuser && this.currentAgenda.invitestatus != InviteState.Accepted && this.currentAgenda.invitestatus != InviteState.Rejected) {
                 this.buttons.record = false;
                 this.buttons.accept = true;
@@ -337,7 +342,7 @@ export class AgendaPage {
   }
 
   changeTitle() {
-    this.snlength =  this.currentAgenda.evn.length;
+    this.snlength = this.currentAgenda.evn.length;
     // 受邀人没有接受或者没有修改权限不能修改
     if (this.originAgenda.evi && this.originAgenda.ui != this.currentuser && (this.originAgenda.md != ModiPower.enable || this.originAgenda.invitestatus != InviteState.Accepted)) { // 受邀人修改权限检查
       return;
@@ -545,13 +550,13 @@ export class AgendaPage {
     Object.assign(data, this.currentAgenda.rtjson);
 
     // 受邀人没有接受或者没有修改权限不能修改
-    let enableRepeat : boolean = false;
+    let enableRepeat: boolean = false;
     if (this.originAgenda.ui != this.currentuser && (this.originAgenda.md != ModiPower.enable || this.originAgenda.invitestatus != InviteState.Accepted)) { // 受邀人修改权限检查
       enableRepeat = false;
-    }else{
+    } else {
       enableRepeat = true;
     }
-    let modal = this.modalCtrl.create(DataConfig.PAGE._REPEAT_PAGE, {value: data,enableRepeat : enableRepeat});
+    let modal = this.modalCtrl.create(DataConfig.PAGE._REPEAT_PAGE, {value: data, enableRepeat: enableRepeat});
 
     modal.onDidDismiss(async (data) => {
       if (data && data.rtjson) {
@@ -640,7 +645,7 @@ export class AgendaPage {
           this.buttons.remove = true;
           this.buttons.accept = false;
           this.buttons.reject = false;
-          
+
           this.util.loadingEnd();
         });
     });
@@ -809,22 +814,22 @@ export class AgendaPage {
   }
 
 
-  record(text){
+  record(text) {
     this.currentAgenda.evn = text;
     this.changeDetectorRef.markForCheck();
     this.changeDetectorRef.detectChanges();
   }
 
-  speaker(){
+  speaker() {
   }
 
-  openfriend(ui){
+  openfriend(ui) {
     let friend = this.friends.find((val) => {
       return ui == val.ui;
     });
 
-    if (friend){
-      this.modalCtrl.create(DataConfig.PAGE._FD_PAGE,{fsData:friend}).present();
+    if (friend) {
+      this.modalCtrl.create(DataConfig.PAGE._FD_PAGE, {fsData: friend}).present();
     }
 
   }

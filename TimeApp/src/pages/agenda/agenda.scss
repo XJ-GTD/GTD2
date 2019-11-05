@@ -68,6 +68,9 @@ page-agenda, page-commemorationday,page-comment {
             text-overflow: ellipsis;
             white-space: nowrap;
           }
+          .agendaDate{
+            display: -webkit-box;
+          }
           .person{
             display: -webkit-box;
             white-space: normal;
@@ -85,6 +88,10 @@ page-agenda, page-commemorationday,page-comment {
               padding: 1rem;
             }
           }
+        }
+
+        .contentdata{
+          margin: 0;
         }
 
       }

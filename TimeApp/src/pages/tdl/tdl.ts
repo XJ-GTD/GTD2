@@ -113,7 +113,10 @@ BScroll.use(InfinityScroll);
                 <div class="weather" *ngIf="days.weather">
                   <ion-icon class='fas {{days.weather.jtn | formatweather:"winame-with-json"}}'></ion-icon>
                       <span>
-                       {{days.weather.ext | formatweather:  'centigrade-with-json'}} - {{days.weather.jtn}}
+                       {{days.weather.ext | formatweather:  'centigrade-with-json'}}
+                      </span>
+                        <span>
+                      {{days.weather.jtn}}
                       </span>
                 </div>
               </ion-row>
@@ -238,6 +241,7 @@ BScroll.use(InfinityScroll);
                       <ion-icon class="fad fa-user-tag"  *ngIf="currentuser != event.ui && event.ui != ''"></ion-icon>
                       <ion-icon class="fad fa-check-double" *ngIf="event.wc == finished"></ion-icon>
                       <ion-icon class="fad fa-sync" *ngIf="event.tb == synch"></ion-icon>
+                      <ion-icon class="fad fa-lock"  *ngIf="event == '0'"></ion-icon>
                     </div>
                   </div>
 
