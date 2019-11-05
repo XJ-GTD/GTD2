@@ -432,7 +432,7 @@ export class AttachPage {
       this.util.photoViews(fj);
   }
   //刷新数据
-  flushData() {
+  async flushData() {
     //清空数据
     this.fjArray = new Array<Attachment>();
     this.fjArray = await this.eventService.selectAttachments();

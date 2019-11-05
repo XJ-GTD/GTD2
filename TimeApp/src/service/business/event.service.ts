@@ -3754,7 +3754,7 @@ export class EventService extends BaseService {
     async selectAttachments() {
       let attachments: Array<Attachment> = new Array<Attachment>();
       let sql: string = `select * from gtd_fj  where del = ? order by wtt asc`;
-      let fjs = await this.sqlExce.getExtLstByParam<TaskData>(sql, [DelType.undel]);
+      let fjs = await this.sqlExce.getExtLstByParam<Attachment>(sql, [DelType.undel]);
       if(fjs && fjs.length>0) {
         for (let fj of fjs) {
           let at: Attachment = {} as Attachment;
