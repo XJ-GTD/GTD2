@@ -27,7 +27,7 @@ import {PagePDPro} from "../../data.mapping";
             <ion-label >
               {{option.jn}}<span class="font-small">({{option.js}})</span>
             </ion-label>
-            <ion-icon class="fas fa-circle font-large-x"   [ngStyle]="{'color': option.jc }" item-end></ion-icon>
+            <ion-icon class="fas fa-circle fontgit-large-x"   [ngStyle]="{'color': option.jc }" item-end></ion-icon>
           </ion-item>
           
           <ion-item  (click)="newPlan()" [class.noplan]="!hasplan" class="addplan">
