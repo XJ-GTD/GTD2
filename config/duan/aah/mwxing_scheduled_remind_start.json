@@ -48,6 +48,21 @@
                       "result"
                   ]
               }
+            },
+            {
+              "type": "loop",
+              "variable": "continue;$.parent.outputs.cleaned.continues[*]",
+              "start": "0",
+              "end": "size",
+              "task": {
+                "name": "设置持续提醒",
+                "trigger": "exc",
+                "parameters": [
+                  "method;post",
+                  "urlabs;http://sa-aag:8080/register/tasks",
+                  "params;$.parent.outputs.cleaned.continues[##continue_value##]"
+                ]
+              }
             }
           ]
         }
