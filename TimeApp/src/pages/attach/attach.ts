@@ -26,7 +26,7 @@ import {DataRestful,DownloadInData} from "../../service/restful/datasev";
   selector: 'page-attach',
   template: `
 
-    <modal-box title="补充信息" [buttons]="buttons" (onCancel)="cancel()" (onCreate)="openselect()">
+    <modal-box title="补充信息" [buttons]="buttons" (onCancel)="cancel()" (onCreate)="openselect()"  (onRecord)="flushData()">
 
       <ion-toolbar>
         <ion-buttons end>
@@ -294,13 +294,14 @@ export class AttachPage {
         let ext: string = fileName.substr(fileName.lastIndexOf(".") + 1);
         //将文件copy至缓存文件
         let imgFileDir: string = imageData.substr(0, imageData.lastIndexOf("/") + 1);
+        let newFileName = this.util.getUuid()+"."+ext;
         this.fjData.obt = this.obt;
         this.fjData.obi = this.obi;
-        this.fjData.fjn = fileName;
+        this.fjData.fjn = newFileName;
         this.fjData.ext = ext;
         //构造地址文件
         let cacheFilePathJson: CacheFilePathJson = new CacheFilePathJson();
-        cacheFilePathJson.local = "/"+fileName;
+        cacheFilePathJson.local = "/"+newFileName;
         //this.fjData.fj = this.file.externalDataDirectory + "/timeAppfile/" + fileName;
         this.fjData.fj = JSON.stringify(cacheFilePathJson);
         this.fjData.fpjson = cacheFilePathJson;
@@ -313,7 +314,7 @@ export class AttachPage {
         if(!this.bw) {
           this.bw = fileName;
         }
-        this.file.copyFile(imgFileDir, fileName, this.file.dataDirectory + cacheFilePathJson.getCacheDir(), fileName);
+        this.file.copyFile(imgFileDir, fileName, this.file.dataDirectory + cacheFilePathJson.getCacheDir(), newFileName);
 
       }
       // let base64Image = 'data:image/jpeg;base64,' + imageData;
@@ -340,17 +341,18 @@ export class AttachPage {
               let fileName: string = filePath.substr(filePath.lastIndexOf("/") + 1, filePath.length);
               let ext: string = fileName.substr(fileName.lastIndexOf(".") + 1);
               let imgFileDir: string = filePath.substr(0, filePath.lastIndexOf("/") + 1);
+              let newFileName = this.util.getUuid()+"."+ext;
               // let fjData: FjData = {} as FjData;
               this.fjData.obt = this.obt;
               this.fjData.obi = this.obi;
-              this.fjData.fjn = fileName;
+              this.fjData.fjn = newFileName;
               this.fjData.ext = ext;
               this.fjData.ui = this.currentuser;
               this.fjData.del = DelType.undel;
               this.fjData.tb = SyncType.unsynch;
               this.fjData.wtt = moment().unix();
               let cacheFilePathJson: CacheFilePathJson = new CacheFilePathJson();
-              cacheFilePathJson.local = "/"+fileName;;
+              cacheFilePathJson.local = "/"+newFileName;
               this.fjData.fj = JSON.stringify(cacheFilePathJson);
               this.fjData.fpjson = cacheFilePathJson;
               this.fjData.fjurl = this.fjData.fpjson.getLocalFilePath(this.file.dataDirectory);
@@ -361,7 +363,7 @@ export class AttachPage {
                 this.bw = fileName;
               }
               alert("存储值："+JSON.stringify(this.fjData));
-              this.file.copyFile(imgFileDir, fileName, this.file.dataDirectory + cacheFilePathJson.getCacheDir(), fileName);
+              this.file.copyFile(imgFileDir, fileName, this.file.dataDirectory + cacheFilePathJson.getCacheDir(), newFileName);
             }
           })
           .catch(err => console.log(err));
@@ -425,9 +427,35 @@ export class AttachPage {
     .then(() => console.info('File is opened'))
     .catch(e => console.info('Error opening file', e));
   }
-
+  //放大图片
   photoShow(fj: string) {
       this.util.photoViews(fj);
+  }
+  //刷新数据
+  flushData() {
+    //清空数据
+    this.fjArray = new Array<Attachment>();
+    this.fjArray = await this.eventService.selectAttachments();
+    for (let attachment of this.fjArray) {
+      attachment.members = this.members;
+      // 判断是否是残留数据或文字附件
+      if (attachment.ext) {
+        if (this.util.isJsonString(attachment.fj)) {
+            attachment.fpjson = generateCacheFilePathJson(attachment.fpjson, attachment.fj);
+            // 附件存储JSON是否存在
+            if (attachment.fpjson) {
+              attachment.fjurl = this.browserurl + attachment.fpjson.remote;
+              // 判断是否是手机
+              if (this.util.hasCordova()) {
+                let fileName: string  = attachment.fpjson.local.substr(1, attachment.fpjson.local.length);
+              }
+            }
+        } else {
+          //历史遗留数据构造
+          attachment.fjurl = attachment.fj;
+        }
+      }
+    }
   }
 
 }
