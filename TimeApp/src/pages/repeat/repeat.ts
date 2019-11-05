@@ -16,6 +16,11 @@ import {UtilService} from "../../service/util-service/util.service";
         <radio-select   [options]="items" full="true" center =  "true" [(ngModel)]="cfType" (onChanged)="onTypeChanged($event)" button5></radio-select>
       </div>
 
+      <div class="itemwarp font-normal">
+        <p>从{{startDate | formatedate :"CYYYY/MM/DD"}}开始</p>
+      </div>
+      
+
       <ng-template  [ngIf]="cfType == 'day'">
 
         <div class="itemwarp font-normal">
@@ -177,6 +182,8 @@ export class RepeatPage {
   @ViewChild("utilEndDateY")
   utilEndDateY: DatePickerComponent;
 
+  startDate:string;
+
   buttons: any = {
     remove: false,
     share: false,
@@ -247,6 +254,7 @@ export class RepeatPage {
               public navParams: NavParams,private util : UtilService) {
     if (this.navParams && this.navParams.data) {
       let value = this.navParams.data.value;
+      this.startDate =  this.navParams.data.sd;
 
       if (value) {
 

@@ -52,6 +52,7 @@ page-agenda, page-commemorationday,page-comment {
 
           .icon {
             margin: 0 4px;
+            line-height: .67;
           }
 
           div[end] {
@@ -80,12 +81,17 @@ page-agenda, page-commemorationday,page-comment {
           }
 
           button {
-            height: 28px;
+            height: auto;
             min-width: 80px;
             padding: 0.5rem 0.5rem;
 
             .button-inner {
-              padding: 1rem;
+              padding: .3rem;
+            }
+          }
+          .repeatButton{
+            span{
+              white-space: normal;
             }
           }
         }
