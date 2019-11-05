@@ -1640,7 +1640,7 @@ export class EventService extends BaseService {
           }
 
         }else{
-          sq = `update gtd_wa set tb = ? ,del = ?  where obt = ? and  obi in (select evi from gtd_ev
+          sq = `update gtd_wa set tb = ? ,del = ?  where obt = ? and  evi in (select evi from gtd_ev
           where  evi = ? or rtevi =  ? ); `;
 
           params = new Array<any>();
