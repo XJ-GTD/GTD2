@@ -55,6 +55,8 @@ export class FormatedatePipe implements PipeTransform {
         return m.locale("cn").localeData().weekdays(m);
       case "DWEEK":
         return m.weekday();
+      case "CDD":
+        return m.isSame(moment(),"date")? "今" :m.format("DD");
       default:
         return m.format(formart);
     }
