@@ -72,6 +72,7 @@
     "ajv": "^6.5.4",
     "angular2-baidu-map": "^4.7.0",
     "animate.css": "^3.7.0",
+    "scenejs": "^1.1.5",
     "async": "^2.6.2",
     "buffer": "^5.2.1",
     "cordova": "^8.1.2",
