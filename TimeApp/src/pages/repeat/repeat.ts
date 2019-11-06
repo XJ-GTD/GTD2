@@ -28,6 +28,11 @@ import {UtilService} from "../../service/util-service/util.service";
           <radio-spinner  label="天" [options]="itemRanges" [(ngModel)]="cfDayOptions.frequency" (onChanged)="onFreqChanged($event)"></radio-spinner>
         </div>
         <div class="itemwarp font-normal">
+          
+          
+          
+          
+          
           <p>结束</p>
           <ion-list class="endwith" radio-group no-lines [(ngModel)]="cfDayOptions.endType" (ionChange)="onEndTypeChanged($event)">
             <ion-item >
