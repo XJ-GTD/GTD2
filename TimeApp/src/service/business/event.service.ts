@@ -19,7 +19,7 @@ import {DataConfig} from "../config/data.config";
 import {BTbl} from "../sqlite/tbl/b.tbl";
 import {FjTbl} from "../sqlite/tbl/fj.tbl";
 import {DataRestful, PullInData, PushInData, SyncData, SyncDataFields, UploadInData, DownloadInData} from "../restful/datasev";
-import {SyncType, DelType, ObjectType, IsSuccess, SyncDataStatus, OperateType, ToDoListStatus, RepeatFlag, ConfirmType, ModiPower, PageDirection, SyncDataSecurity, InviteState, CompleteState, EventFinishStatus} from "../../data.enum";
+import {SyncType, DelType, ObjectType, IsSuccess, CycleType, SyncDataStatus, OperateType, ToDoListStatus, RepeatFlag, ConfirmType, ModiPower, PageDirection, SyncDataSecurity, InviteState, CompleteState, EventFinishStatus} from "../../data.enum";
 import {
   assertNotNumber,
   assertEmpty,
@@ -906,9 +906,17 @@ export class EventService extends BaseService {
 
             if (!(onert.sameWith(anotherrt))) {
               if (confirm == ConfirmType.None) {
-                confirm = ConfirmType.All;
+                // 如果修改为不重复,提示当前或将来所有
+                if (anotherrt.cycletype == CycleType.close) {
+                  confirm = ConfirmType.CurrentOrFutureAll;
+                } else {  // 否则不提示
+                  confirm = ConfirmType.All;
+                }
               } else if (confirm == ConfirmType.CurrentOrFutureAll) {
-                confirm = ConfirmType.FutureAll;
+                if (anotherrt.cycletype != CycleType.close) {
+                  confirm = ConfirmType.FutureAll;
+                }
+                // 如果修改为不重复,提示当前或将来所有
               }
             }
 
@@ -935,9 +943,17 @@ export class EventService extends BaseService {
 
           if (!(onert.sameWith(anotherrt))) {
             if (confirm == ConfirmType.None) {
-              confirm = ConfirmType.All;
+              // 如果修改为不重复,提示当前或将来所有
+              if (anotherrt.cycletype == CycleType.close) {
+                confirm = ConfirmType.CurrentOrFutureAll;
+              } else {  // 否则不提示
+                confirm = ConfirmType.All;
+              }
             } else if (confirm == ConfirmType.CurrentOrFutureAll) {
-              confirm = ConfirmType.FutureAll;
+              if (anotherrt.cycletype != CycleType.close) {
+                confirm = ConfirmType.FutureAll;
+              }
+              // 如果修改为不重复,提示当前或将来所有
             }
           }
 
@@ -1640,7 +1656,7 @@ export class EventService extends BaseService {
           }
 
         }else{
-          sq = `update gtd_wa set tb = ? ,del = ?  where obt = ? and  evi in (select evi from gtd_ev
+          sq = `update gtd_wa set tb = ? ,del = ?  where obt = ? and  wai in (select evi from gtd_ev
           where  evi = ? or rtevi =  ? ); `;
 
           params = new Array<any>();
@@ -2729,15 +2745,16 @@ export class EventService extends BaseService {
     let date;
     date = moment(ev.evd + " " + ev.evt);
 
-    if (date.isBefore(moment())){
-      let loop = true;
-      while(loop){
-        date = moment(date).add(4,'hours');
-        if (date.diff(moment(),'hours',true) > 1){
-          loop = false;
-        }
+
+    let loop = true;
+    while(loop){
+      if (date.diff(moment(),'hours',true) > 1){
+        loop = false;
+        break;
       }
+      date = moment(date).add(4,'hours');
     }
+
 
     //每个ev对应的系统提醒主key使用evi
     wa.wai = ev.evi ;
