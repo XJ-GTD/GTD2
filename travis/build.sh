@@ -21,7 +21,7 @@ if [ $TRAVIS_OS_NAME = 'osx' ]; then
   ionic cordova build ios
   cat $TRAVIS_BUILD_DIR/TimeApp/platforms/ios/$IOS_APP_NAME/Images.xcassets/AppIcon.appiconset/Contents.json
   cd $TRAVIS_BUILD_DIR/TimeApp/platforms/ios
-  github "rabbitmq/rabbitmq-objc-client" "v0.11.0-rc1"
+  github "rabbitmq/rabbitmq-objc-client" "v0.10.0"
   # CODE_SIGN_RESOURCE_RULES_PATH='$(PROJECT_DIR)/$(PROJECT_NAME)/Entitlements-$(CONFIGURATION).plist' OBJROOT=$PWD/build SYMROOT=$PWD/build ONLY_ACTIVE_ARCH=NO
   ls -la
   mkdir -p $TRAVIS_BUILD_DIR/build/debug

@@ -45,6 +45,7 @@ matrix:
         packages:
         - dos2unix
         - carthage
+        - github
       chrome: beta
   allow_failures:
     - os: osx
