@@ -6,7 +6,7 @@
 #import "BDSASRParameters.h"
 
 @interface XjBaiduSpeech : CDVPlugin<BDSClientASRDelegate> {
-  // Member variables go here.
+    // Member variables go here.
 }
 
 @property (nonatomic, strong) NSString* callbackId;
@@ -33,7 +33,7 @@ NSString* SECRET_KEY_1 = @"9oHZPMLgc0BM9a4m3DhpHUhGSqYvsrAF";
 
 - (void) pluginInitialize {
     self.asrEventManager = [BDSEventManager createEventManagerWithName:BDS_ASR_NAME];
-   [self configVoiceRecognitionClient];
+    [self configVoiceRecognitionClient];
 }
 
 
@@ -42,10 +42,10 @@ NSString* SECRET_KEY_1 = @"9oHZPMLgc0BM9a4m3DhpHUhGSqYvsrAF";
 {
     // 设置语音识别代理
     [self.asrEventManager setDelegate:self];
-    
+
     // 发送指令：启动识别
     self.callbackId = command.callbackId;
-    
+
     [self configFileHandler];
 
     [self.asrEventManager sendCommand:BDS_ASR_CMD_START];
@@ -105,10 +105,10 @@ NSString* SECRET_KEY_1 = @"9oHZPMLgc0BM9a4m3DhpHUhGSqYvsrAF";
     // ------------------------
 
     //离线配置
-   //[self configOfflineClient];
+    //[self configOfflineClient];
 
-   //开启声音
-  [self.asrEventManager setParameter:@(EVRPlayToneAll) forKey:BDS_ASR_PLAY_TONE];
+    //开启声音
+    [self.asrEventManager setParameter:@(EVRPlayToneAll) forKey:BDS_ASR_PLAY_TONE];
 
 }
 
@@ -131,11 +131,11 @@ NSString* SECRET_KEY_1 = @"9oHZPMLgc0BM9a4m3DhpHUhGSqYvsrAF";
 
 
 - (void)configModelVAD {
-   NSString *modelVAD_filepath = [[NSBundle mainBundle] pathForResource:@"bds_easr_basic_model" ofType:@"dat"];
+    NSString *modelVAD_filepath = [[NSBundle mainBundle] pathForResource:@"bds_easr_basic_model" ofType:@"dat"];
 
     [self.asrEventManager setParameter:modelVAD_filepath forKey:BDS_ASR_MODEL_VAD_DAT_FILE];
 
-   [self.asrEventManager setParameter:@(YES) forKey:BDS_ASR_ENABLE_MODEL_VAD];
+    [self.asrEventManager setParameter:@(YES) forKey:BDS_ASR_ENABLE_MODEL_VAD];
     // 服务端VAD
     [self.asrEventManager setParameter:@(YES) forKey:BDS_ASR_ENABLE_EARLY_RETURN];
     // 本地VAD
@@ -219,24 +219,24 @@ NSString* SECRET_KEY_1 = @"9oHZPMLgc0BM9a4m3DhpHUhGSqYvsrAF";
         }
         case EVoiceRecognitionClientWorkStatusFinish: {
             if (aObj) {
-             if (self.callbackId) {
+                if (self.callbackId) {
 
-                 NSDictionary *finishDic;
-                 finishDic = [NSDictionary dictionaryWithObjectsAndKeys:
-                           [self getDescriptionForDic:aObj], @"text",
-                           @YES, @"finish",
-                           @NO, @"error",nil];
+                    NSDictionary *finishDic;
+                    finishDic = [NSDictionary dictionaryWithObjectsAndKeys:
+                                 [self getDescriptionForDic:aObj], @"text",
+                                 @YES, @"finish",
+                                 @NO, @"error",nil];
 
 
-                 // NSString json = [self getDescriptionForDic:aObj];
-                 CDVPluginResult* result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary: finishDic];
-                // NSString json = [self getDescriptionForDic:aObj];
-//                CDVPluginResult* result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:[self getDescriptionForDic:aObj]];
-                [result setKeepCallbackAsBool:NO];
-                 //json =[json substringWithRange:NSMakeRange(1,[json length] - 2 )];
-//
-                [self.commandDelegate sendPluginResult:result callbackId:self.callbackId];
-               }
+                    // NSString json = [self getDescriptionForDic:aObj];
+                    CDVPluginResult* result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary: finishDic];
+                    // NSString json = [self getDescriptionForDic:aObj];
+                    //                CDVPluginResult* result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:[self getDescriptionForDic:aObj]];
+                    [result setKeepCallbackAsBool:NO];
+                    //json =[json substringWithRange:NSMakeRange(1,[json length] - 2 )];
+                    //
+                    [self.commandDelegate sendPluginResult:result callbackId:self.callbackId];
+                }
             }
             break;
         }
@@ -334,9 +334,9 @@ NSString* SECRET_KEY_1 = @"9oHZPMLgc0BM9a4m3DhpHUhGSqYvsrAF";
 
 - (NSString *)getDescriptionForDic:(NSDictionary *)dic {
     if (dic) {
-//        return [[NSString alloc] initWithData:[NSJSONSerialization dataWithJSONObject:dic
-//                                                                              options:NSJSONWritingPrettyPrinted
-//                                                                                error:nil] encoding:NSUTF8StringEncoding];
+        //        return [[NSString alloc] initWithData:[NSJSONSerialization dataWithJSONObject:dic
+        //                                                                              options:NSJSONWritingPrettyPrinted
+        //                                                                                error:nil] encoding:NSUTF8StringEncoding];
 
         NSLog(@"*************** %@" , [(NSArray *)[dic objectForKey: @"results_recognition"] objectAtIndex:0]);
         return [(NSArray *)[dic objectForKey: @"results_recognition"] objectAtIndex:0];
