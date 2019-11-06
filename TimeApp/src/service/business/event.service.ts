@@ -19,7 +19,7 @@ import {DataConfig} from "../config/data.config";
 import {BTbl} from "../sqlite/tbl/b.tbl";
 import {FjTbl} from "../sqlite/tbl/fj.tbl";
 import {DataRestful, PullInData, PushInData, SyncData, SyncDataFields, UploadInData, DownloadInData} from "../restful/datasev";
-import {SyncType, DelType, ObjectType, IsSuccess, SyncDataStatus, OperateType, ToDoListStatus, RepeatFlag, ConfirmType, ModiPower, PageDirection, SyncDataSecurity, InviteState, CompleteState, EventFinishStatus} from "../../data.enum";
+import {SyncType, DelType, ObjectType, IsSuccess, CycleType, SyncDataStatus, OperateType, ToDoListStatus, RepeatFlag, ConfirmType, ModiPower, PageDirection, SyncDataSecurity, InviteState, CompleteState, EventFinishStatus} from "../../data.enum";
 import {
   assertNotNumber,
   assertEmpty,
@@ -906,9 +906,17 @@ export class EventService extends BaseService {
 
             if (!(onert.sameWith(anotherrt))) {
               if (confirm == ConfirmType.None) {
-                confirm = ConfirmType.All;
+                // 如果修改为不重复,提示当前或将来所有
+                if (anotherrt.cycletype == CycleType.close) {
+                  confirm = ConfirmType.CurrentOrFutureAll;
+                } else {  // 否则不提示
+                  confirm = ConfirmType.All;
+                }
               } else if (confirm == ConfirmType.CurrentOrFutureAll) {
-                confirm = ConfirmType.FutureAll;
+                if (anotherrt.cycletype != CycleType.close) {
+                  confirm = ConfirmType.FutureAll;
+                }
+                // 如果修改为不重复,提示当前或将来所有
               }
             }
 
@@ -935,9 +943,17 @@ export class EventService extends BaseService {
 
           if (!(onert.sameWith(anotherrt))) {
             if (confirm == ConfirmType.None) {
-              confirm = ConfirmType.All;
+              // 如果修改为不重复,提示当前或将来所有
+              if (anotherrt.cycletype == CycleType.close) {
+                confirm = ConfirmType.CurrentOrFutureAll;
+              } else {  // 否则不提示
+                confirm = ConfirmType.All;
+              }
             } else if (confirm == ConfirmType.CurrentOrFutureAll) {
-              confirm = ConfirmType.FutureAll;
+              if (anotherrt.cycletype != CycleType.close) {
+                confirm = ConfirmType.FutureAll;
+              }
+              // 如果修改为不重复,提示当前或将来所有
             }
           }
 
@@ -3747,6 +3763,30 @@ export class EventService extends BaseService {
 
     return att;
   }
+
+  /**
+   * 查询全部的附件信息
+   * @author ying<343253410@qq.com>
+   */
+    async selectAttachments() {
+      let attachments: Array<Attachment> = new Array<Attachment>();
+      let sql: string = `select * from gtd_fj  where del = ? order by wtt asc`;
+      let fjs = await this.sqlExce.getExtLstByParam<Attachment>(sql, [DelType.undel]);
+      if(fjs && fjs.length>0) {
+        for (let fj of fjs) {
+          let at: Attachment = {} as Attachment;
+          Object.assign(at, fj);
+          let cacheFilePathJson: CacheFilePathJson = new CacheFilePathJson();
+          cacheFilePathJson.local = "/"+fj.fjn;
+          at.fpjson = cacheFilePathJson;
+          attachments.push(at);
+        }
+      }
+      return attachments;
+    }
+
+
+
 
   /**
    * 同步全部的未同步的任务到服务器

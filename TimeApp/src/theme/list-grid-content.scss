@@ -28,83 +28,108 @@
   .dayagenda-month.month1 {
 
     background-image: url("../assets/imgs/listicon/1@3x.png");
-    color: rgba(69, 60, 133, 1);
+    .month-a,.month-b{
+      color: rgba(69, 60, 133, 1);
+    }
   }
 
   .dayagenda-month.month2 {
 
     background-image: url("../assets/imgs/listicon/2@3x.png");
-    color: rgba(143, 37, 101, 1);
+    .month-a,.month-b{
+      color: rgba(143, 37, 101, 1);
+    }
 
   }
 
   .dayagenda-month.month3 {
 
     background-image: url("../assets/imgs/listicon/3@3x.png");
-    color: rgba(141, 107, 34, 1);
+    .month-a,.month-b{
+      color: rgba(141, 107, 34, 1);
+    }
 
   }
 
   .dayagenda-month.month4 {
 
     background-image: url("../assets/imgs/listicon/4@3x.png");
-    color: rgba(153, 13, 70, 1);
+    .month-a,.month-b{
+      color: rgba(153, 13, 70, 1);
+    }
 
   }
 
   .dayagenda-month.month5 {
 
     background-image: url("../assets/imgs/listicon/5@3x.png");
-    color: rgba(254, 240, 246, 1);
+    .month-a,.month-b{
+      color: rgba(254, 240, 246, 1);
+    }
 
   }
 
   .dayagenda-month.month6 {
 
     background-image: url("../assets/imgs/listicon/6@3x.png");
-    color: rgba(45, 101, 105, 1);
+    .month-a,.month-b{
+      color: rgba(45, 101, 105, 1);
+    }
 
   }
 
   .dayagenda-month.month7 {
 
     background-image: url("../assets/imgs/listicon/7@3x.png");
-    color: rgba(157, 20, 40, 1);
+    .month-a,.month-b{
+      color: rgba(157, 20, 40, 1);
+    }
+
 
   }
 
   .dayagenda-month.month8 {
 
     background-image: url("../assets/imgs/listicon/8@3x.png");
-    color: rgba(20, 88, 98, 1);
+    .month-a,.month-b{
+      color: rgba(20, 88, 98, 1);
+    }
 
   }
 
   .dayagenda-month.month9 {
 
     background-image: url("../assets/imgs/listicon/9@3x.png");
-    color: rgba(255, 252, 245, 1);
+    .month-a,.month-b{
+      color: rgba(255, 252, 245, 1);
+    }
 
   }
 
   .dayagenda-month.month10 {
 
     background-image: url("../assets/imgs/listicon/10@3x.png");
-    color: rgba(93, 90, 19, 1);
+    .month-a,.month-b{
+      color: rgba(93, 90, 19, 1);
+    }
 
   }
 
   .dayagenda-month.month11 {
 
     background-image: url("../assets/imgs/listicon/11@3x.png");
-    color: rgba(119, 92, 72, 1);
+    .month-a,.month-b{
+      color: rgba(119, 92, 72, 1);
+    }
 
   }
 
   .dayagenda-month.month12 {
 
     background-image: url("../assets/imgs/listicon/12@3x.png");
-    color: rgba(78, 70, 119, 1);
+    .month-a,.month-b{
+      color: rgba(78, 70, 119, 1);
+    }
   }
 
   .icon {
@@ -220,8 +245,11 @@
     }
 
     .month-b {
-      font-size: 0.875rem;
-      margin-top: 0.4rem;
+      font-size: 1rem;
+      margin-top: 0.3rem;
+      line-height: 1;
+      white-space: normal;
+      font-weight:bold;
     }
 
 
@@ -417,6 +445,10 @@
       background: rgba(255, 255, 255, 1);
       box-shadow: 0px 0px 5px 0px rgba(153, 153, 153, 0.28);
     }
+
+    .item-content-hasmessage {
+      box-shadow: 0px 0px 5px 0px #dd5a5a;
+    }
     .noinvite{
       background: rgba(255, 255, 255, .2);
     }
@@ -564,6 +596,9 @@
     .item-content-backgroud {
       background: rgba(237, 241, 254, 0.05);
       box-shadow: 0px 0px 5px 0px rgba(3, 0, 0, 0.2);
+    }
+    .item-content-hasmessage {
+      box-shadow: 0px 0px 5px 0px #dd5a5a;
     }
     .noinvite{
       background: rgba(255, 255, 255, .2);

@@ -112,7 +112,7 @@ import {ModiPower} from "../../data.enum";
               </div>
               <div>
                 <button ion-button clear (click)="changeRemind()" class="font-normal">
-                  <ion-icon class="fal fa-bells " *ngIf="!currentAgenda.txs"></ion-icon>
+                  <ion-icon class="fal fa-bells font-normal" *ngIf="!currentAgenda.txs"></ion-icon>
                   {{currentAgenda.txs || "提醒"}}
                   <corner-badge fa-bells *ngIf="currentAgenda.txs"><p>{{currentAgenda.txjson.reminds.length}}</p>
                   </corner-badge>
@@ -131,7 +131,7 @@ import {ModiPower} from "../../data.enum";
             </ion-row>
 
             <ion-row *ngIf="currentAgenda.evi">
-              <button ion-button clear (click)="changeRepeat()" class="font-normal"
+              <button ion-button clear (click)="changeRepeat()" class="font-normal repeatButton"
                       [disabled]="originAgenda.evi && originAgenda.ui != currentuser && originAgenda.md != enablechange">
                 <ion-icon class="fal fa-copy font-normal" *ngIf="!currentAgenda.rts"></ion-icon>
                 {{currentAgenda.rts || "重复"}}
@@ -556,7 +556,7 @@ export class AgendaPage {
     } else {
       enableRepeat = true;
     }
-    let modal = this.modalCtrl.create(DataConfig.PAGE._REPEAT_PAGE, {value: data, enableRepeat: enableRepeat});
+    let modal = this.modalCtrl.create(DataConfig.PAGE._REPEAT_PAGE, {value: data, enableRepeat: enableRepeat,sd:this.currentAgenda.sd});
 
     modal.onDidDismiss(async (data) => {
       if (data && data.rtjson) {
