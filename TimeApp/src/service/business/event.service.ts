@@ -913,7 +913,10 @@ export class EventService extends BaseService {
                   confirm = ConfirmType.All;
                 }
               } else if (confirm == ConfirmType.CurrentOrFutureAll) {
-                confirm = ConfirmType.FutureAll;
+                if (anotherrt.cycletype != CycleType.close) {
+                  confirm = ConfirmType.FutureAll;
+                }
+                // 如果修改为不重复,提示当前或将来所有
               }
             }
 
@@ -947,7 +950,10 @@ export class EventService extends BaseService {
                 confirm = ConfirmType.All;
               }
             } else if (confirm == ConfirmType.CurrentOrFutureAll) {
-              confirm = ConfirmType.FutureAll;
+              if (anotherrt.cycletype != CycleType.close) {
+                confirm = ConfirmType.FutureAll;
+              }
+              // 如果修改为不重复,提示当前或将来所有
             }
           }
 
