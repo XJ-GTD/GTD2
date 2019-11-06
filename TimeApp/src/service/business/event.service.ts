@@ -1640,7 +1640,7 @@ export class EventService extends BaseService {
           }
 
         }else{
-          sq = `update gtd_wa set tb = ? ,del = ?  where obt = ? and  evi in (select evi from gtd_ev
+          sq = `update gtd_wa set tb = ? ,del = ?  where obt = ? and  wai in (select evi from gtd_ev
           where  evi = ? or rtevi =  ? ); `;
 
           params = new Array<any>();
@@ -2729,15 +2729,16 @@ export class EventService extends BaseService {
     let date;
     date = moment(ev.evd + " " + ev.evt);
 
-    if (date.isBefore(moment())){
-      let loop = true;
-      while(loop){
-        date = moment(date).add(4,'hours');
-        if (date.diff(moment(),'hours',true) > 1){
-          loop = false;
-        }
+
+    let loop = true;
+    while(loop){
+      if (date.diff(moment(),'hours',true) > 1){
+        loop = false;
+        break;
       }
+      date = moment(date).add(4,'hours');
     }
+
 
     //每个ev对应的系统提醒主key使用evi
     wa.wai = ev.evi ;
