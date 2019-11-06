@@ -906,7 +906,12 @@ export class EventService extends BaseService {
 
             if (!(onert.sameWith(anotherrt))) {
               if (confirm == ConfirmType.None) {
-                confirm = ConfirmType.All;
+                // 如果修改为不重复,提示当前或将来所有
+                if (anotherrt.cycletype == CycleType.close) {
+                  confirm = ConfirmType.CurrentOrFutureAll;
+                } else {  // 否则不提示
+                  confirm = ConfirmType.All;
+                }
               } else if (confirm == ConfirmType.CurrentOrFutureAll) {
                 confirm = ConfirmType.FutureAll;
               }
@@ -935,7 +940,12 @@ export class EventService extends BaseService {
 
           if (!(onert.sameWith(anotherrt))) {
             if (confirm == ConfirmType.None) {
-              confirm = ConfirmType.All;
+              // 如果修改为不重复,提示当前或将来所有
+              if (anotherrt.cycletype == CycleType.close) {
+                confirm = ConfirmType.CurrentOrFutureAll;
+              } else {  // 否则不提示
+                confirm = ConfirmType.All;
+              }
             } else if (confirm == ConfirmType.CurrentOrFutureAll) {
               confirm = ConfirmType.FutureAll;
             }
