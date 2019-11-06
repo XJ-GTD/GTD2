@@ -44,6 +44,7 @@ matrix:
       homebrew:
         packages:
         - dos2unix
+        - carthage
       chrome: beta
   allow_failures:
     - os: osx
