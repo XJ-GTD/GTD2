@@ -28,6 +28,7 @@ function clean(datasource)
 
   var userId = input['userId'];
   var datas = input['datas'];
+  var remind = input['remind'];
 
   var formatDateTime = function(date) {
       return date.getFullYear() + '/' + (date.getMonth()+1) + '/' + date.getDate() + ' ' + date.getHours() + ':' + date.getMinutes();
@@ -57,7 +58,63 @@ function clean(datasource)
     return push;
   }
 
+  var fillzero = function(value, length) {
+    var changed = value + "";
+
+    if (changed.length >= length) {
+      return changed;
+    } else {
+      return new Array(length - changed.length).join("0") + changed;
+    }
+  }
+
+  var generateScheduledRemind = function(userId, id, wd, wt, data) {
+    var task = {};
+
+    task["saName"] = "任务调度触发器";
+    task["saPrefix"] = "cdc";
+    task["taskId"] = "pluto_" + userId + "_remind_" + id;
+    task["taskType"] = "QUARTZ";
+    task["taskName"] = "计划事件持续提醒";
+
+    var d = new Date(Date.parse(wd + " " + wt));
+
+    var taskRunAt = {};
+    taskRunAt["eventId"] = "QUARTZ_CRON_5M",
+    taskRunAt["filters"] = [
+      {name: "yyyy", value: d.getFullYear()},
+      {name: "MM", value: fillzero(d.getMonth() + 1, 2)},
+      {name: "dd", value: fillzero(d.getDate(), 2)},
+      {name: "HH", value: fillzero(d.getHours(), 2)},
+      {name: "mm", value: fillzero(d.getMinutes(), 2)}
+    ];
+
+    task["taskRunAt"] = JSON.stringify(taskRunAt);
+
+    var taskRunWith = {};
+    taskRunWith["url"] = "https://pluto.guobaa.com/cdc/mwxing_scheduled_remind_start/json/trigger";
+    taskRunWith["payload"] = {
+      userId: userId,
+      remind: data
+    };
+
+    task["taskRunWith"] = JSON.stringify(taskRunWith);
+
+    return task;
+  }
+
+  var remindprop = {};
+
+  if (remind && remind.datas) {
+    for (var index in remind.datas) {
+      var one = remind.datas[index];
+
+      remindprop[one.id] = one;
+    }
+  }
+
   var outputs = [];
+  var continues = [];
 
   for (var index in datas) {
     var data = datas[index];
@@ -80,10 +137,34 @@ function clean(datasource)
 
     outputs.push(standardnext);
 
+    // 存在持续提醒的数据
+    if (remind && remindprop[id] && remindprop[id]["continue"]) {
+      var currentremind = remindprop[id];
+
+      var cd = Date.parse(currentremind["wd"] + " " + currentremind["wt"]);
+      var next = new Date(cd + 1000 * 60 * 60 * 4);
+
+      var wd = next.getFullYear() + "/" + fillzero(next.getMonth() + 1, 2) + "/" + fillzero(next.getDate(), 2);
+      var wt = fillzero(next.getHours(), 2) + ":" + fillzero(next.getMinutes(), 2);
+
+      var nextremind = {
+        datatype: type,
+        datas: [{
+          accountid: currentremind["accountid"],
+          phoneno: currentremind["phoneno"],
+          id: id,
+          continue: true,
+          wd: wd,
+          wt: wt
+        }]
+      };
+      continues.push(generateScheduledRemind(currentremind["accountid"], id, wd, wt, nextremind));
+    }
+
   }
 
-  print({announces: outputs});
+  print({announces: outputs, continues: continues});
 
   // filter source code here end
-  return JSON.stringify({announces: outputs});
+  return JSON.stringify({announces: outputs, continues: continues});
 }

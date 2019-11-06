@@ -24,7 +24,8 @@
           "trigger": "acj",
           "parameters": [
               "ruleid;MWXING_SCHEDULED_REMIND_V1_5",
-              "datasource;$.parent.outputs"
+              "datasource;$.parent.outputs",
+              "merge_remind;$.root.parameters.remind"
           ],
           "outputs": [
               "cleaned"
@@ -46,6 +47,21 @@
                   "outputs": [
                       "result"
                   ]
+              }
+            },
+            {
+              "type": "loop",
+              "variable": "continue;$.parent.outputs.cleaned.continues[*]",
+              "start": "0",
+              "end": "size",
+              "task": {
+                "name": "设置持续提醒",
+                "trigger": "exc",
+                "parameters": [
+                  "method;post",
+                  "urlabs;http://sa-aag:8080/aag/register/tasks",
+                  "data;$.parent.outputs.cleaned.continues[##continue_value##]"
+                ]
               }
             }
           ]

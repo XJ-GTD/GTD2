@@ -551,7 +551,7 @@ export class AgendaPage {
 
     // 受邀人没有接受或者没有修改权限不能修改
     let enableRepeat: boolean = false;
-    if (this.originAgenda.ui != this.currentuser && (this.originAgenda.md != ModiPower.enable || this.originAgenda.invitestatus != InviteState.Accepted)) { // 受邀人修改权限检查
+    if (this.originAgenda.ui != this.currentuser ) { // 受邀人修改权限检查
       enableRepeat = false;
     } else {
       enableRepeat = true;

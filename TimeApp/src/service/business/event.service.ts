@@ -149,6 +149,16 @@ export class EventService extends BaseService {
         sqlparam.push([sq,params]);
 
         if (agd.del != DelType.del){
+          if (ev.todolist == anyenum.ToDoListStatus.On ) {
+            //如果在todolist中，则加系统提醒
+            was.push(this.sqlparamAddSysTx2(ev,anyenum.ObjectType.Event));
+          }else{
+            let wa = new WaTbl();
+            wa.wai = ev.evi;
+            wa.tb = anyenum.SyncType.unsynch;
+            wa.del = anyenum.DelType.del;
+            sqlparam.push(wa.upTParam());
+          }
           //提醒新建
           if (agd.txjson.reminds && agd.txjson.reminds.length > 0) {
             was = [...was,...this.sqlparamAddTxWa2(ev, anyenum.ObjectType.Event,  agd.txjson)];
@@ -1606,9 +1616,43 @@ export class EventService extends BaseService {
       //取到所有记录只需要一次
       //如果参与人改变，则获取活动的所有记录上传
       if (!getall){
-        await this.getAllAgendaForFieldChanged(oriAgdata,newAgdata,FieldChanged.Member, oriAgdata.evi,outAgds);
+        getall = await this.getAllAgendaForFieldChanged(oriAgdata,newAgdata,FieldChanged.Member, oriAgdata.evi,outAgds);
+      }
+      if (!getall){
+        await this.getAllAgendaForFieldChanged(oriAgdata,newAgdata,FieldChanged.Todolist,oriAgdata.evi,outAgds);
       }
 
+      //todolist 修改，修改系统提醒
+      let was = new Array<WaTbl>();
+      let waparams = new Array<any>();
+      if (newAgdata.todolist != oriAgdata.todolist){
+        if (ev.todolist == anyenum.ToDoListStatus.On ) {
+          for ( let agd of outAgds ){
+            let ev = new EvTbl();
+
+            Object.assign(ev, agd);
+            //如果在todolist中，则加系统提醒
+            was.push(this.sqlparamAddSysTx2(ev,anyenum.ObjectType.Event));
+
+          }
+          if (was && was.length > 0){
+            waparams = this.sqlExce.getFastSaveSqlByParam(was);
+          }
+
+        }else{
+          sq = `update gtd_wa set tb = ? ,del = ?  where obt = ? and  evi in (select evi from gtd_ev
+          where  evi = ? or rtevi =  ? ); `;
+
+          params = new Array<any>();
+          params.push(anyenum.SyncType.unsynch);
+          params.push(anyenum.DelType.del);
+          params.push(anyenum.ObjectType.Event);
+          params.push(masterEvi);
+          params.push(masterEvi);
+          waparams.push([sq,params]);
+        }
+        await this.sqlExce.batExecSqlByParam(waparams);
+      }
       return outAgds;
     }
 
@@ -1741,7 +1785,10 @@ export class EventService extends BaseService {
         let getall : boolean = false;
         getall = await this.getAllAgendaForFieldChanged(oriAgdata,newAgdata,FieldChanged.Member,outAgd.evi,outAgds);
         if (!getall){
-          await this.getAllAgendaForFieldChanged(oriAgdata,newAgdata,FieldChanged.Ji,outAgd.evi,outAgds);
+          getall = await this.getAllAgendaForFieldChanged(oriAgdata,newAgdata,FieldChanged.Ji,outAgd.evi,outAgds);
+        }
+        if (!getall){
+          await this.getAllAgendaForFieldChanged(oriAgdata,newAgdata,FieldChanged.Todolist,outAgd.evi,outAgds);
         }
       }
 
@@ -1794,6 +1841,12 @@ export class EventService extends BaseService {
         break;
       case FieldChanged.Ji :
         if (oriAgdata.ji != newAgdata.ji){
+          tmpcondi = ` and del <> 'del'   and evi <> '${ignoreEvi}' `;
+          changed = true;
+        }
+        break;
+      case FieldChanged.Todolist:
+        if (oriAgdata.todolist != newAgdata.todolist){
           tmpcondi = ` and del <> 'del'   and evi <> '${ignoreEvi}' `;
           changed = true;
         }
@@ -1900,12 +1953,24 @@ export class EventService extends BaseService {
     //提醒新建
     let was = new Array<WaTbl>();
     let waparams = new Array<any>();
+
+    if (ev.todolist == anyenum.ToDoListStatus.On ) {
+      //如果在todolist中，则加系统提醒
+      was.push(this.sqlparamAddSysTx2(ev,anyenum.ObjectType.Event));
+    }else{
+      let wa = new WaTbl();
+      wa.wai = ev.evi;
+      wa.tb = anyenum.SyncType.unsynch;
+      wa.del = anyenum.DelType.del;
+      sqlparam.push(wa.upTParam());
+    }
+
     if (newAgdata.txjson.reminds && newAgdata.txjson.reminds.length > 0) {
       ev.evi = oriAgdata.evi;
-      was = this.sqlparamAddTxWa2(ev, anyenum.ObjectType.Event,  newAgdata.txjson);
-      if (was && was.length > 0){
-        waparams = this.sqlExce.getFastSaveSqlByParam(was);
-      }
+      was =[...was,...this.sqlparamAddTxWa2(ev, anyenum.ObjectType.Event,  newAgdata.txjson)];
+    }
+    if (was && was.length > 0){
+      waparams = this.sqlExce.getFastSaveSqlByParam(was);
     }
 
     //删除参与人
@@ -2366,6 +2431,11 @@ export class EventService extends BaseService {
 
       evs.push(ev);
 
+      if (ev.todolist == anyenum.ToDoListStatus.On ) {
+        //如果在todolist中，则加系统提醒
+        was.push(this.sqlparamAddSysTx2(ev,anyenum.ObjectType.Event));
+      }
+
       if (txjson.reminds && txjson.reminds.length > 0) {
         was = [...was,...this.sqlparamAddTxWa2(ev,anyenum.ObjectType.Event,txjson)];
       }
@@ -2609,12 +2679,11 @@ export class EventService extends BaseService {
    * @param {EvTbl} ev
    * @param {string} obtType
    * @param {TxJson} txjson
-   * @param {string} al
-   * @param {string} st
    * @returns {Array<any>}
    */
   private sqlparamAddTxWa2(ev: EvTbl,obtType: string, txjson :TxJson): Array<WaTbl> {
     let ret = new Array<WaTbl>();
+
     if (txjson.reminds && txjson.reminds.length > 0) {
       for ( let j = 0, len = txjson.reminds.length ;j < len ; j++) {
         let wa = new WaTbl();//提醒表
@@ -2641,7 +2710,44 @@ export class EventService extends BaseService {
     }
     return ret;
   }
+  /**
+   * 获取提醒表sql
+   * @param {EvTbl} ev
+   * @param {string} obtType
+   * @returns {WaTbl}
+   */
+  private sqlparamAddSysTx2(ev: EvTbl,obtType: string): WaTbl {
+    let wa = new WaTbl();//提醒表
 
+    wa.obt = obtType;
+    wa.obi = ev.evi;
+
+    wa.st = ev.evn;
+    wa.tb = anyenum.SyncType.unsynch;
+    wa.del = anyenum.DelType.undel;
+
+    let date;
+    date = moment(ev.evd + " " + ev.evt);
+
+    if (date.isBefore(moment())){
+      let loop = true;
+      while(loop){
+        date = moment(date).add(4,'hours');
+        if (date.diff(moment(),'hours',true) > 1){
+          loop = false;
+        }
+      }
+    }
+
+    //每个ev对应的系统提醒主key使用evi
+    wa.wai = ev.evi ;
+    wa.wd = date.format("YYYY/MM/DD");
+    wa.wt = date.format("HH:mm");
+
+    //console.log('-------- 插入提醒表 --------');
+
+    return wa;
+  }
   /**
    * 获取提醒表sql
    * @param {EvTbl} ev
@@ -3640,6 +3746,30 @@ export class EventService extends BaseService {
 
     return att;
   }
+
+  /**
+   * 查询全部的附件信息
+   * @author ying<343253410@qq.com>
+   */
+    async selectAttachments() {
+      let attachments: Array<Attachment> = new Array<Attachment>();
+      let sql: string = `select * from gtd_fj  where del = ? order by wtt asc`;
+      let fjs = await this.sqlExce.getExtLstByParam<Attachment>(sql, [DelType.undel]);
+      if(fjs && fjs.length>0) {
+        for (let fj of fjs) {
+          let at: Attachment = {} as Attachment;
+          Object.assign(at, fj);
+          let cacheFilePathJson: CacheFilePathJson = new CacheFilePathJson();
+          cacheFilePathJson.local = "/"+fj.fjn;
+          at.fpjson = cacheFilePathJson;
+          attachments.push(at);
+        }
+      }
+      return attachments;
+    }
+
+
+
 
   /**
    * 同步全部的未同步的任务到服务器
@@ -5070,7 +5200,8 @@ export enum DoType {
 enum FieldChanged{
   Ji = "Ji",
   Member = "Member",
-  Invite = "Invite"
+  Invite = "Invite",
+  Todolist = 'Todolist'
 }
 enum DUflag {
   del = "del",

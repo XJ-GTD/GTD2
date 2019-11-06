@@ -64,8 +64,12 @@ export class ScheduleRemindService extends BaseService {
                 data: {
                   datatype: generateDataType(activityType),
                   datas: [{
+                    accountid: UserConfig.account.id,
                     phoneno: UserConfig.account.phone,
-                    id: planitem.jti
+                    id: planitem.jti,
+                    continue: false,
+                    wd: moment(datetime).format("YYYY/MM/DD"),
+                    wt: moment(datetime).format("HH:mm"),
                   }]
                 }
               });
@@ -83,6 +87,32 @@ export class ScheduleRemindService extends BaseService {
           let evd: string = event.evd;
           let evt: string = event.evt;
 
+          // 针对加入重要事项,且没有完成的日程,增加默认提醒
+          if (event.todolist == ToDoListStatus.On && event.wc != EventFinishStatus.Finished) {
+            let remindgap: number = moment().diff(evd + " " + evt);
+
+            // 将来提醒，且在将来48小时以内
+            if (remindgap <= 0 && (limitms + remindgap) >= 0) {
+              schedulereminds.push({
+                remindid: event.evi,
+                wd: evd,
+                wt: evt,
+                active: (event.del != DelType.del),
+                data: {
+                  datatype: generateDataType(activityType),
+                  datas: [{
+                    accountid: UserConfig.account.id,
+                    phoneno: UserConfig.account.phone,
+                    id: event.evi,
+                    continue: true,
+                    wd: evd,
+                    wt: evt,
+                  }]
+                }
+              });
+            }
+          }
+
           txjson.each(evd, evt, (datetime) => {
             let remindgap: number = moment().diff(datetime);
 
@@ -96,8 +126,12 @@ export class ScheduleRemindService extends BaseService {
                 data: {
                   datatype: generateDataType(activityType),
                   datas: [{
+                    accountid: UserConfig.account.id,
                     phoneno: UserConfig.account.phone,
-                    id: event.evi
+                    id: event.evi,
+                    continue: false,
+                    wd: moment(datetime).format("YYYY/MM/DD"),
+                    wt: moment(datetime).format("HH:mm"),
                   }]
                 }
               });
@@ -152,8 +186,12 @@ export class ScheduleRemindService extends BaseService {
           data: {
             datatype: generateDataType(remind.type),
             datas: [{
+              accountid: UserConfig.account.id,
               phoneno: UserConfig.account.phone,
-              id: remind.obi
+              id: remind.obi,
+              continue: (remind.wai == remind.obi),
+              wd: remind.wd,
+              wt: remind.wt
             }]
           }
         });
