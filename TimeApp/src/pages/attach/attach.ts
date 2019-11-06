@@ -26,7 +26,7 @@ import {DataRestful,DownloadInData} from "../../service/restful/datasev";
   selector: 'page-attach',
   template: `
 
-    <modal-box title="补充信息" [buttons]="buttons" (onCancel)="cancel()" (onCreate)="openselect()"  (onRecord)="flushData()">
+    <modal-box title="补充信息" [buttons]="buttons" (onCancel)="cancel()" (onCreate)="openselect()"  (onRefresh)="flushData()">
 
       <ion-toolbar>
         <ion-buttons end>
