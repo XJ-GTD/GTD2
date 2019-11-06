@@ -4,7 +4,7 @@ import {
   Alert, AlertButton,
   AlertController,
   Loading,
-  LoadingController, ModalController,
+  LoadingController, Modal, ModalController,
   Popover,
   PopoverController,
   Toast,
@@ -15,6 +15,14 @@ import {ChineseLunar} from "./chinese.lunar";
 import * as moment from "moment";
 import {GalleryModal} from "ionic-gallery-modal";
 import Scene from "scenejs";
+import {DataConfig} from "../config/data.config";
+import {ModalTranType} from "../../data.enum";
+import {
+  ModalFromLeftEnter,
+  ModalFromLeftLeave,
+  ModalFromRightEnter,
+  ModalFromRightLeave, ModalFromTopEnter, ModalFromTopLeave, ModalScaleEnter, ModalScaleLeave
+} from "../../app/AppTransition";
 
 /**
  * 公共方法
@@ -24,14 +32,15 @@ import Scene from "scenejs";
 @Injectable()
 export class UtilService {
   wins: any = window;//window对象
-  private chineseLunar:ChineseLunar;
-  private aday :string;
+  private chineseLunar: ChineseLunar;
+  private aday: string;
+
   constructor(public device: Device,
               private toastCtrl: ToastController,
               private loadingCtrl: LoadingController,
               private popoverCtrl: PopoverController,
               private alertCtrl: AlertController,
-              private modalCtrl:ModalController) {
+              private modalCtrl: ModalController) {
     console.log("UtilService initialized.")
     this.chineseLunar = new ChineseLunar();
     this.aday = "99:99";
@@ -602,7 +611,7 @@ export class UtilService {
     this.loading = this.loadingCtrl.create({
       spinner: 'hide',
       content:
-          `
+        `
           <div class="raindrop raindrop1"></div>
           <div class="raindrop raindrop2"></div>
           <div class="raindrop raindrop3"></div>
@@ -612,9 +621,9 @@ export class UtilService {
     await this.loading.present();
     const scene = new Scene({
       ".raindrop": i => ({
-        0: { "border-width": "35px", opacity: 1, transform: "scale(0)" ,"border-color":"rgba(149, 58, 139,1)"},
-        1.5: { "border-width": "0px", opacity: 0.3, transform: "scale(0.7)","border-color":"rgba(86, 82, 222,1)" },
-        options: { delay: i * 0.4 },
+        0: {"border-width": "35px", opacity: 1, transform: "scale(0)", "border-color": "rgba(149, 58, 139,1)"},
+        1.5: {"border-width": "0px", opacity: 0.3, transform: "scale(0.7)", "border-color": "rgba(86, 82, 222,1)"},
+        options: {delay: i * 0.4},
       }),
     }, {
       easing: "ease-in-out",
@@ -624,13 +633,13 @@ export class UtilService {
   }
 
   loadingEnd() {
-    setTimeout(()=>{
+    setTimeout(() => {
       if (this.loading) {
         this.loading.dismissAll();
         this.loading = null;
       }
 
-    },800);
+    }, 800);
   }
 
   toastStart(msg: string, long: number) {
@@ -638,7 +647,7 @@ export class UtilService {
       message: msg,
       duration: long,
       position: 'bottom',
-      cssClass:'toast'
+      cssClass: 'toast'
     });
     this.toast.present();
   }
@@ -674,20 +683,20 @@ export class UtilService {
    * @param msg:1,是否保存，2，是否删除，3，是否分享。其他为自定义
    * @param okdo
    */
-  alterStart(msg:string, okdo:Function) {
-    let b1:AlertButton = new class implements AlertButton {
+  alterStart(msg: string, okdo: Function) {
+    let b1: AlertButton = new class implements AlertButton {
       cssClass: string;
       handler: (value: any) => (boolean | void);
       role: string;
       text: string = "否";
     };
-    let b2:AlertButton = new class implements AlertButton {
+    let b2: AlertButton = new class implements AlertButton {
       cssClass: string;
       handler: (value: any) => (boolean | void);
       role: string;
       text: string = "是";
     };
-    b2.handler = (value)=>{
+    b2.handler = (value) => {
       okdo();
     };
     //1,是否保存，2，是否删除，3，是否分享。其他为自定义
@@ -709,44 +718,46 @@ export class UtilService {
     }
   }
 
-  public lunar(d:moment.Moment,format?:string):string{
-    return this.chineseLunar.solarToLunar(moment(d.format("YYYY/MM/DD")).toDate(),format);
+  public lunar(d: moment.Moment, format?: string): string {
+    return this.chineseLunar.solarToLunar(moment(d.format("YYYY/MM/DD")).toDate(), format);
   }
-  public lunar4str(date:string,format?:string):string{
-    return this.lunar(moment(date),format);
+
+  public lunar4str(date: string, format?: string): string {
+    return this.lunar(moment(date), format);
   }
 
 
-  isAday(t:string) : boolean{
-    if (t ==null || t =="" || t == this.aday ){
+  isAday(t: string): boolean {
+    if (t == null || t == "" || t == this.aday) {
       return true;
     }
     return false;
   }
 
-  adStrShow(t:string ):string{
-    if (t ==null || t =="" || t == this.aday){
+  adStrShow(t: string): string {
+    if (t == null || t == "" || t == this.aday) {
       return "全天";
-    }else{
-      return t;
-    }
-  }
-  adCtrlShow(t:string ):string{
-    if (t ==null || t =="" || t == this.aday){
-      return "00:00";
-    }else{
+    } else {
       return t;
     }
   }
 
-  adToDb(t:string) :string{
-    if (t ==null || t ==""  ){
+  adCtrlShow(t: string): string {
+    if (t == null || t == "" || t == this.aday) {
+      return "00:00";
+    } else {
+      return t;
+    }
+  }
+
+  adToDb(t: string): string {
+    if (t == null || t == "") {
       return this.aday;
     }
     return t;
   }
 
-  compareTwoStrings(first:string, second:string) {
+  compareTwoStrings(first: string, second: string) {
     first = first.replace(/\s+/g, '')
     second = second.replace(/\s+/g, '')
 
@@ -764,7 +775,8 @@ export class UtilService {
         : 1;
 
       firstBigrams.set(bigram, count);
-    };
+    }
+    ;
 
     let intersectionSize = 0;
     for (let i = 0; i < second.length - 1; i++) {
@@ -782,7 +794,7 @@ export class UtilService {
     return (2.0 * intersectionSize) / (first.length + second.length - 2);
   }
 
-   findBestMatch(mainString:string, targetStrings:Array<string>) {
+  findBestMatch(mainString: string, targetStrings: Array<string>) {
     if (!this.areArgsValid(mainString, targetStrings)) throw new Error('Bad arguments: First argument should be a string, second should be an array of strings');
 
     const ratings = [];
@@ -800,14 +812,14 @@ export class UtilService {
 
     const bestMatch = ratings[bestMatchIndex]
 
-    return { ratings, bestMatch, bestMatchIndex };
+    return {ratings, bestMatch, bestMatchIndex};
   }
 
-  private flattenDeep(arr:any) {
+  private flattenDeep(arr: any) {
     return Array.isArray(arr) ? arr.reduce((a, b) => a.concat(this.flattenDeep(b)), []) : [arr];
   }
 
-  private areArgsValid(mainString:string, targetStrings:Array<string>) {
+  private areArgsValid(mainString: string, targetStrings: Array<string>) {
     if (typeof mainString !== 'string') return false;
     if (!Array.isArray(targetStrings)) return false;
     if (!targetStrings.length) return false;
@@ -815,13 +827,13 @@ export class UtilService {
     return true;
   }
 
-  private letterPairs(str:string) {
+  private letterPairs(str: string) {
     const pairs = [];
     for (let i = 0, max = str.length - 1; i < max; i++) pairs[i] = str.substring(i, i + 2);
     return pairs;
   }
 
-  private wordLetterPairs(str:String) {
+  private wordLetterPairs(str: String) {
     const pairs = str.toUpperCase().split(' ').map(this.letterPairs);
     return this.flattenDeep(pairs);
   }
@@ -840,16 +852,17 @@ export class UtilService {
       return day.format("dddd");
     }
   }
+
   /**
    * (单图)多图预览model组件封装
    * @param photoData 输入图片地址
    * @param {string} key 对象图片url对应的属性名程
    */
-  public photoViews(photoData,key = ''){
-    let photos:Array<object> = [];
+  public photoViews(photoData, key = '') {
+    let photos: Array<object> = [];
     let obj = {};
     // 单张图片时（photoData为一个图片地址字符串且不为空）
-    if(photoData && typeof(photoData) == "string"){
+    if (photoData && typeof (photoData) == "string") {
       obj = {};
       obj['url'] = photoData;
       photos.push(obj);
@@ -857,18 +870,18 @@ export class UtilService {
     console.log(photoData)
 
     // 多张图片时（photoData为图片地址字符串数组）
-    if(photoData instanceof Array){
+    if (photoData instanceof Array) {
       console.log(photoData)
-      photoData.forEach(function(item,index,array){
+      photoData.forEach(function (item, index, array) {
         obj = {};
         // photoData 为字符串数组时（即key不存在时）
-        if(key == '' && item){
+        if (key == '' && item) {
           obj['url'] = item;
           photos.push(obj);
         }
         // photoData 为对象数组时（即key存在时）
         console.log(item[key])
-        if(key != '' && item[key]){
+        if (key != '' && item[key]) {
           obj['url'] = item[key];
           photos.push(obj);
         }
@@ -881,19 +894,47 @@ export class UtilService {
     modal.present();
   }
 
-  cloneObj<T,U>(target : T , source : U) {
+  cloneObj<T, U>(target: T, source: U) {
 
-    Object.assign(target ,JSON.parse(JSON.stringify(source)));
+    Object.assign(target, JSON.parse(JSON.stringify(source)));
 
   }
 
   //检查对象类型
-  public  isJsonString(str: string) {
+  public isJsonString(str: string) {
     try {
       JSON.parse(str)
-    } catch(e) {
+    } catch (e) {
       return false;
     }
     return true;
+  }
+
+  public createModal(modalPage: any, para: any,type?:ModalTranType): Modal {
+    let opts = {
+
+    };
+    if (type == ModalTranType.scale){
+      opts = {
+        enterAnimation: 'modal-scale-enter',
+        leaveAnimation: 'modal-scale-leave'
+      }
+    }else if (type == ModalTranType.left){
+      opts = {
+        enterAnimation: 'modal-from-left-enter',
+        leaveAnimation: 'modal-from-left-leave'
+      }
+    }else if (type == ModalTranType.right){
+      opts = {
+        enterAnimation: 'modal-from-right-enter',
+        leaveAnimation: 'modal-from-right-leave'
+      }
+    }else if (type == ModalTranType.top){
+      opts = {
+        enterAnimation: 'modal-from-top-enter',
+        leaveAnimation: 'modal-from-top-leave'
+      }
+    }
+    return this.modalCtrl.create(modalPage, para, opts);
   }
 }
