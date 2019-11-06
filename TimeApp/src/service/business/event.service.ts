@@ -1086,7 +1086,8 @@ export class EventService extends BaseService {
       if (oriAgd.rfg == anyenum.RepeatFlag.Repeat && modiType == anyenum.OperateType.OnlySel) {
         doType = DoType.Current;
         //如果是修改重复选项
-        if (changed.length == 1 && changed[0] == "rt"){
+        if (changed.length == 1 && changed[0] == "rt" && newAgd.rtjson.cycletype != anyenum.CycleType.close){
+          //重复选项变为关闭的不执行all
           doType = DoType.All;
         }
       }
@@ -1696,6 +1697,23 @@ export class EventService extends BaseService {
       //添加新参与人到新事件
       let nwpar = new Array<any>();
       nwpar = this.sqlparamAddPar(retParamEv.rtevi , newAgdata.members);
+
+
+      //把当前选中记录的附件信息更新到新的信息的第一条中
+      if (newAgdata.attachments && retParamEv.outAgdatas.length > 0){
+        retParamEv.outAgdatas[0].attachments = new Array<Attachment>();
+        for (let attach of newAgdata.attachments ){
+          let fj = new FjTbl();
+          fj.fji = attach.fji;
+          fj.obi = retParamEv.outAgdatas[0].evi;
+          sqlparam.push(fj.upTParam());
+
+          let newattach = {} as Attachment;
+          this.util.cloneObj(newattach,attach);
+          newattach.obi = retParamEv.outAgdatas[0].evi;
+          retParamEv.outAgdatas[0].attachments.push(newattach);
+        }
+      }
 
       sqlparam = [...sqlparam, ...retParamEv.sqlparam, ...nwpar];
 
@@ -3355,7 +3373,7 @@ export class EventService extends BaseService {
         // 完成状态
         if (agenda.wc == EventFinishStatus.Finished) {
           sync.todostate = CompleteState.Completed;
-        } else if (agenda.wc == EventFinishStatus.NonFinish) {
+        } else if (agenda.todolist == ToDoListStatus.On && agenda.wc == EventFinishStatus.NonFinish) {
           sync.todostate = CompleteState.UnComplete;
         } else {
           sync.todostate = CompleteState.None;

@@ -297,20 +297,25 @@ export class RemindPage {
     }
     let dtsplit = new Array<string>();
     let time;
-    let dt;
     dtsplit = this.tiqianvalue.split(" ");
     if (dtsplit.length < 4) {
       return;
     }
 
     time = parseInt(dtsplit[1]) + parseInt(dtsplit[2]) + parseInt(dtsplit[3]);
-    dt = moment(this.evdatetime).subtract(time, 'm');
+    let hav = this.reminds.findIndex((value, index, arr) => {
+      return value.value == time;
+    })
+    if (hav != -1) {
+      this.reminds.splice(hav,1);
+    }
     this.reminds.push(
       {
         datename: "" + TxJson.caption(time) + "- -" + moment(this.evdatetime).subtract(time, 'm').format("MM月DD HH:mm"),
         value: time,
         disTixin : false
       });
+
   }
 
   timeOpen() {
@@ -338,11 +343,18 @@ export class RemindPage {
     }
     let dt = this.datevalue + " " + tm;
     let time = moment(this.evdatetime).diff(dt, 'm');
+    let hav = this.reminds.findIndex((value, index, arr) => {
+      return value.value == time;
+    })
+    if (hav != -1) {
+      this.reminds.splice(hav,1);
+    }
+
     this.reminds.push(
       {
         datename: "" + TxJson.caption(time) + " -- " + moment(dt).format("MM月DD HH:mm"),
         value: time,
-        disTixin : false
+        disTixin: false
       });
   }
 

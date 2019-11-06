@@ -138,7 +138,7 @@ function clean(datasource)
     outputs.push(standardnext);
 
     // 存在持续提醒的数据
-    if (remind && remindprop[id] && remindprop[id]["continue"]) {
+    if (remind && remindprop[id] && remindprop[id]["continue"] && data['todostate'] == "uncomplete") {
       var currentremind = remindprop[id];
 
       var cd = Date.parse(currentremind["wd"] + " " + currentremind["wt"]);
