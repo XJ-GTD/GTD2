@@ -91,6 +91,24 @@ export class ScheduleRemindService extends BaseService {
           if (event.todolist == ToDoListStatus.On && event.wc != EventFinishStatus.Finished) {
             let remindgap: number = moment().diff(evd + " " + evt);
 
+            // 预定完成时间比现在小，需要设置未来48小时内，不小于当前+1小时的默认提醒
+            if (remindgap > 0) {
+              while (remindgap > 0) {
+                // 往后推迟4小时
+                let after4hours = moment(evd + " " + evt, "YYYY/MM/DD HH:mm").add(4, "hours");
+
+                evd = after4hours.format("YYYY/MM/DD");
+                evt = after4hours.format("HH:mm");
+
+                // 判断不小于当前+1小时
+                let plus1hours = moment().add(1, "hours");
+
+                if (plus1hours.diff(evd + " " + evt) <= 0) {
+                  remindgap = moment().diff(evd + " " + evt);
+                }
+              }
+            }
+
             // 将来提醒，且在将来48小时以内
             if (remindgap <= 0 && (limitms + remindgap) >= 0) {
               schedulereminds.push({

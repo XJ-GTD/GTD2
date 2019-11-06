@@ -92,6 +92,7 @@ script:
   - ionic cordova plugin ls
   - yarn install
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then rm -f $TRAVIS_BUILD_DIR/TimeApp/node_modules/swiper/js/swiper.esm.* ; fi
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then ls $TRAVIS_BUILD_DIR/TimeApp/node_modules/swiper/js/ ; fi
   - npm run clean
   - npm run build
   - npm run test-coverage
