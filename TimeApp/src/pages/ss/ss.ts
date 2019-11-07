@@ -50,7 +50,7 @@ import {SettingsProvider} from "../../providers/settings/settings";
           <ion-label>震动音效</ion-label>
           <ion-toggle [(ngModel)]="bz" (ionChange)="save(z, bz)"></ion-toggle>
         </ion-item>
-      </ion-list>
+      </ion-list>      
       <ion-list>
         <ion-list-header>
           <ion-label>联系人</ion-label>
@@ -63,6 +63,8 @@ import {SettingsProvider} from "../../providers/settings/settings";
           <ion-spinner *ngIf="lfsloading" icon="circles" item-end></ion-spinner>
         </ion-item>
       </ion-list>
+
+      
       <!--<ion-list>-->
         <!--<ion-list-header>-->
           <!--<ion-label>智能提醒</ion-label>-->
@@ -106,12 +108,17 @@ import {SettingsProvider} from "../../providers/settings/settings";
 
       <ion-list>
         <ion-list-header>
-          <ion-label>日历</ion-label>
+          <ion-label>活动设置</ion-label>
         </ion-list-header>
 
         <ion-item no-lines no-padding no-margin no-border detail-push (click)="gotodjhsetting()">
           <ion-label>默认日历</ion-label>
           <ion-note item-end>{{sdjhn}}</ion-note>
+        </ion-item>
+
+        <ion-item no-lines no-padding no-margin no-border (click)="gotodjhsetting()">
+          <ion-label>自动加到重要</ion-label>
+          <ion-toggle [(ngModel)]="bautotodo" (ionChange)="save(autotodo, bautotodo)"></ion-toggle>
         </ion-item>
 
       </ion-list>
@@ -132,6 +139,9 @@ export class SsPage {
   t: Setting;        //新消息提醒
   b: Setting;        //语音播报
   z: Setting;        //振动
+
+  autotodo: Setting;        //自动加入todo
+
   dr: Setting;       //每日简报 智能提醒
   drp1: Setting;     //每日简报 提醒时间
   djh: Setting;      //日历 缺省日历
@@ -145,6 +155,8 @@ export class SsPage {
   bb: boolean;       //语音播报 页面显示和修改
   bz: boolean;       //振动 页面显示和修改
   bdr: boolean;      //每日简报 页面显示和修改
+  bautotodo: boolean;        //自动加入todo
+
   github: boolean = false;   //项目跟进 GitHub
   travisci: boolean = false;   //项目跟进 Travis CI
   firim: boolean = false;   //项目跟进 Fir.IM
@@ -283,12 +295,14 @@ export class SsPage {
     this.drp1 = UserConfig.settins.get(DataConfig.SYS_DRP1);
     this.djh = UserConfig.settins.get(DataConfig.SYS_DJH);
     this.theme = UserConfig.settins.get(DataConfig.SYS_THEME);
+    this.autotodo = UserConfig.settins.get(DataConfig.SYS_AUTOTODO);
 
     this.bh = (this.h.value == "1") ? true : false;
     this.bt = (this.t.value == "1") ? true : false;
     this.bb = (this.b.value == "1") ? true : false;
     this.bz = (this.z.value == "1") ? true : false;
     this.bdr = (this.dr.value == "1") ? true : false;
+    this.bautotodo = (this.autotodo.value == "1") ? true : false;
     this.sdrp1 = (this.drp1 && this.drp1.value) ? this.drp1.value : "08:30";
     this.sdjh = this.djh.value;
     this.sdjho = await this.plService.getJh(this.sdjh);
