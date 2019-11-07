@@ -179,7 +179,7 @@ export enum Err {
 export enum OperateType  {
   OnlySel = "OnlySel",
   FromSel = "FromSel",
-
+  Non = "Non"
 }
 
 //成员共享状态
