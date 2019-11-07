@@ -86,7 +86,8 @@ export class AttachPage {
   buttons: any = {
     create: true,
     save: false,
-    cancel: true
+    cancel: true,
+    refresh:true
   };
   defaultimg: string = DataConfig.HUIBASE64_LARGE;
 

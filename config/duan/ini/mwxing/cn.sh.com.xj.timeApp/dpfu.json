@@ -9,5 +9,6 @@
 {"name":"FOGH", "value":"", "desc":"项目跟进 GitHub 关闭"},
 {"name":"FOFIR", "value":"", "desc":"项目跟进 Fir.IM 关闭"},
 {"name":"FOTRACI", "value":"", "desc":"项目跟进 Travis-CI 关闭"},
-{"name":"THEME", "value":"white-theme", "desc":"主题"}
+{"name":"THEME", "value":"white-theme", "desc":"主题"},
+{"name":"AUTOTODO", "value":"true", "desc":"自动加入重要事项"}
 ]
