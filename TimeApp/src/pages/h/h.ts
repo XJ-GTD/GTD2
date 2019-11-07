@@ -29,32 +29,16 @@ import {TestDataService} from "../../service/testData.service";
                     [options]="options"
                     (onSelect)="onSelect($event)"
                     (onPress)="onPress($event)"
-                    (viewShow)="viewShow($event)">
+                    (viewShow)="viewShow($event)"
+                    (onGotoToday)="gototoday($event)"
+                    (onATDay)="aTday($event)"
+                    (onTodoList)="todoList($event)"
+                    (onNewAgenda)="newAgenda($event)"
+                    (onNewDay)="newDay($event)"
+                    (onNewMome)="newMome($event)">
       </ion-calendar>
 
-      <page-tdl #tdl></page-tdl>
-      <ion-fab bottom right class="shortcut">
-        <button ion-fab mini>
-          <ion-icon name="add"></ion-icon>
-        </button>
-        <ion-fab-list side="top">
-          <button ion-fab (click)="todoList()">
-            重要
-          </button>
-          <!--<button ion-fab (click)="todoscrumList()">-->
-          <!--<ion-icon name="clock" color="danger"></ion-icon>-->
-          <!--</button>-->
-          <button ion-fab (click)="newcd()">
-            活动
-          </button>
-          <button ion-fab (click)="newpi()">
-            日历项
-          </button>
-          <button ion-fab (click)="toMemo()">
-            备忘
-          </button>
-        </ion-fab-list>
-      </ion-fab>
+      <page-tdl #tdl></page-tdl>     
       <ion-fab bottom right>
         <button ion-fab mini (click)="openAi()">
           <ion-icon name="chatbubbles"></ion-icon>
@@ -64,6 +48,8 @@ import {TestDataService} from "../../service/testData.service";
   `,
 })
 export class HPage {
+
+
   @ViewChild('aiDiv')
   aiDiv: AiComponent;
   @ViewChild('calendar')
@@ -71,7 +57,6 @@ export class HPage {
   @ViewChild('tdl')
   tdl: TdlPage;
 
-  hdata: HData;
   options: CalendarComponentOptions = {
     pickMode: 'single',
     from: new Date(1900, 0, 1),
@@ -88,7 +73,6 @@ export class HPage {
               private  momserv: MemoService,
               private testDataService: TestDataService,
               private emitService: EmitService,) {
-    this.hdata = new HData();
 
   }
 
@@ -112,19 +96,56 @@ export class HPage {
 
   onPress(pressDay) {
     this.hService.centerShow(pressDay).then(d => {
-      this.hdata = d;
-      this.newcd();
+      this.newAgenda(pressDay);
     })
 
   }
 
 
-  newcd() {
+//查询当天日程
+  onSelect(selectDay: CalendarDay
+  ) {
+    this.feedback.audioClick();
+    if (selectDay) this.emitService.emitSelectDate(moment(selectDay.time));
+    this.hService.centerShow(selectDay).then(d => {
+      //双机进入列表
+      // this.hdata = d;
+    })
+  }
+
+
+  // todoscrumList(day ?: CalendarDay) {
+  //   let selectDay: CalendarDay = day ? day : this.hdata.selectDay;
+  //
+  //   // this.modalCtr.create(DataConfig.PAGE._DOSCRUM_PAGE, selectDay).present();
+  // }
+
+  //创建测试数据
+  //
+  // testDate() {
+  //   this.testDataService.createcal();
+  // }
+
+
+  gototoday() {
+
+  }
+
+  todoList(day ?: CalendarDay) {
+    this.modalCtr.create(DataConfig.PAGE._DO_PAGE).present();
+  }
+
+  aTday(day ?: CalendarDay) {
+    this.modalCtr.create(DataConfig.PAGE._DO_PAGE).present();
+  }
+
+
+  newAgenda(day ?: CalendarDay) {
 
     let p: ScdPageParamter = new ScdPageParamter();
 
-    if (this.hdata.selectDay) {
-      p.d = moment(this.hdata.selectDay.time);
+    if (day) {
+      p.d = moment(day.time);
     } else {
       p.d = moment();
     }
@@ -133,11 +154,12 @@ export class HPage {
     this.modalCtr.create(DataConfig.PAGE._AGENDA_PAGE, p).present();
   }
 
-  newpi() {
+
+  newDay(day ?: CalendarDay) {
     let p: ScdPageParamter = new ScdPageParamter();
 
-    if (this.hdata.selectDay) {
-      p.d = moment(this.hdata.selectDay.time);
+    if (day) {
+      p.d = moment(day.time);
     } else {
       p.d = moment();
     }
@@ -146,37 +168,10 @@ export class HPage {
     this.modalCtr.create(DataConfig.PAGE._COMMEMORATIONDAY_PAGE, p).present();
   }
 
-//查询当天日程
-  onSelect(selectDay:CalendarDay
-  ) {
-    this.feedback.audioClick();
-    if (selectDay) this.emitService.emitSelectDate(moment(selectDay.time));
-    this.hService.centerShow(selectDay).then(d => {
-      //双机进入列表
-      this.hdata = d;
-    })
-  }
+  newMome(day ?: CalendarDay) {
 
-  todoList(day ?: CalendarDay) {
-    this.modalCtr.create(DataConfig.PAGE._DO_PAGE).present();
-  }
-
-  // todoscrumList(day ?: CalendarDay) {
-  //   let selectDay: CalendarDay = day ? day : this.hdata.selectDay;
-  //
-  //   // this.modalCtr.create(DataConfig.PAGE._DOSCRUM_PAGE, selectDay).present();
-  // }
-
-
-  testDate() {
-    this.testDataService.createcal();
-  }
-
-  toMemo() {
-
-
-    let day: string = moment().format("YYYY/MM/DD");
-    let modal = this.modalCtr.create(DataConfig.PAGE._MEMO_PAGE, {day: day});
+    let todayday: string = moment().format("YYYY/MM/DD");
+    let modal = this.modalCtr.create(DataConfig.PAGE._MEMO_PAGE, {day: todayday});
     modal.onDidDismiss(async (data) => {
       if (data && data.memo && typeof data.memo === 'string') { // 创建新备忘
         let memo: MemoData = {} as MemoData;
@@ -189,5 +184,6 @@ export class HPage {
     });
     modal.present();
   }
+
 
 }

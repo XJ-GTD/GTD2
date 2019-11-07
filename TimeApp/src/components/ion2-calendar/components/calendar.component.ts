@@ -24,6 +24,7 @@ import {CalendarController} from "../calendar.controller";
 import set = Reflect.set;
 import Swiper, {SwiperEvent} from "swiper";
 import {EmitService} from "../../../service/util-service/emit.service";
+import {CommemorationDayPage} from "../../../pages/commemorationday/commemorationday";
 
 export const ION_CAL_VALUE_ACCESSOR: Provider = {
   provide: NG_VALUE_ACCESSOR,
@@ -49,26 +50,43 @@ export const ION_CAL_VALUE_ACCESSOR: Provider = {
 
             </div>
           </div>
-          <div float-right (click)="gotoToday()">
-            <ion-icon class="fad fa-calendar-alt"></ion-icon>
-            <!--<img src="./assets/imgs/fhby.png"/>-->
+          <div class="tool">
+            <div float-right (click)="gotoToday()">
+              <ion-icon class="fad fa-calendar-alt"></ion-icon>
+            </div>
+            <div float-right (click)="newAgenda()">
+              <ion-icon class="fad fa-calendar-edit"></ion-icon>
+            </div>
+            <div float-right (click)="newMome()">
+              <ion-icon class="fad fa-money-check-edit"></ion-icon>
+            </div>
+            <div float-right (click)="newDay()">
+              <ion-icon class="fad fa-calendar-day"></ion-icon>
+            </div>
+            <div float-right (click)="todoList()">
+              <ion-icon class="fad fa-list"></ion-icon>
+            </div>
+            <div float-right (click)="aTDay()">
+              <ion-icon class="fad fa-receipt">@</ion-icon>
+            </div>
+
           </div>
         </div>
       </ion-card-header>
       <ion-card-content>
         <!--<ion-slides (ionSlideWillChange)="slideChanged($event)" (ionSlidePrevStart)="ionSlidePrevStart()" (ionSlidePrevEnd)="ionSlidePrevEnd()" (ionSlideProgress)="ionSlideProgress()">-->
-          <!--<ion-slide *ngFor="let monthOpt of monthOpts">-->
-            <!--<div class="yearshow">{{monthOpt.original.year}}</div>-->
-            <!--<ion-calendar-week color="transparent">-->
-            <!--</ion-calendar-week>-->
-            <!--<ion-calendar-month class="component-mode"-->
-                                <!--[month]="monthOpt"-->
-                                <!--[readonly]="readonly"-->
-                                <!--(onSelect)="select($event)"-->
-                                <!--(onPress)="onPress.emit($event)">-->
+        <!--<ion-slide *ngFor="let monthOpt of monthOpts">-->
+        <!--<div class="yearshow">{{monthOpt.original.year}}</div>-->
+        <!--<ion-calendar-week color="transparent">-->
+        <!--</ion-calendar-week>-->
+        <!--<ion-calendar-month class="component-mode"-->
+        <!--[month]="monthOpt"-->
+        <!--[readonly]="readonly"-->
+        <!--(onSelect)="select($event)"-->
+        <!--(onPress)="onPress.emit($event)">-->
 
-            <!--</ion-calendar-month>-->
-          <!--</ion-slide>-->
+        <!--</ion-calendar-month>-->
+        <!--</ion-slide>-->
         <!--</ion-slides>-->
         <div class="swiper-container">
 
@@ -98,20 +116,19 @@ export const ION_CAL_VALUE_ACCESSOR: Provider = {
 export class CalendarComponent implements OnInit {
 
 
-
-
-
   _d: CalendarModalOptions;
   _options: CalendarComponentOptions;
   _view: boolean = true
   _showMonth;
   _thisMonth: boolean;
-  swiper:Swiper;
+  swiper: Swiper;
   //swiper:any;
 
-  change4emit:boolean = true;
+  change4emit: boolean = true;
 
   calendarAnimation: CalendarAnimation;
+
+  selectedCalendarDay: CalendarDay;
 
   monthOptsWarp: Array<any> = new Array<any>();
 
@@ -134,9 +151,17 @@ export class CalendarComponent implements OnInit {
   @Output() onPress: EventEmitter<CalendarDay> = new EventEmitter();
   @Output() viewShow: EventEmitter<boolean> = new EventEmitter();
 
+  //功能
+  @Output() onNewAgenda: EventEmitter<CalendarDay> = new EventEmitter();
+  @Output() onNewMome: EventEmitter<CalendarDay> = new EventEmitter();
+  @Output() onTodoList: EventEmitter<CalendarDay> = new EventEmitter();
+  @Output() onNewDay: EventEmitter<CalendarDay> = new EventEmitter();
+  @Output() onATDay: EventEmitter<CalendarDay> = new EventEmitter();
+  @Output() onGotoToday: EventEmitter<CalendarDay> = new EventEmitter();
+
 
   constructor(public calSvc: IonCalendarService, public feekback: FeedbackService, private plt: Platform,
-    public changeDetectorRef:ChangeDetectorRef,private emitService:EmitService) {
+              public changeDetectorRef: ChangeDetectorRef, private emitService: EmitService) {
 
   }
 
@@ -147,9 +172,9 @@ export class CalendarComponent implements OnInit {
   }
 
   select($event: CalendarDay) {
+    this.selectedCalendarDay = $event;
     this.onSelect.emit($event)
   }
-
 
 
   // slideChanged($event: Slides) {
@@ -224,12 +249,12 @@ export class CalendarComponent implements OnInit {
     this.initOpt();
 
 
-    let time =  moment().subtract( 1,"months").valueOf();
+    let time = moment().subtract(1, "months").valueOf();
 
-    let months:Array<CalendarMonth> = this.calSvc.createMonthsByPeriod(time,  3, this._d);
-    months.forEach((v)=>{
+    let months: Array<CalendarMonth> = this.calSvc.createMonthsByPeriod(time, 3, this._d);
+    months.forEach((v) => {
 
-      let warp:any = {};
+      let warp: any = {};
       warp.opts = v;
       this.monthOptsWarp.push(warp)
       // this.monthOpts.push(v);
@@ -239,14 +264,14 @@ export class CalendarComponent implements OnInit {
 
   ngAfterViewInit() {
 
-    setTimeout(()=>{
+    setTimeout(() => {
       if (!this.calendarAnimation) {
         this.calendarAnimation = CalendarController.create(this, this.plt);
       }
 
-    },1000);
+    }, 1000);
 
-    this.swiper  = new Swiper('.swiper-container', {
+    this.swiper = new Swiper('.swiper-container', {
       autoHeight: true, //高度随内容变化
       // initialSlide:1,
     });
@@ -255,13 +280,12 @@ export class CalendarComponent implements OnInit {
     this.swiperover4data(1);
 
 
-    this.swiper.on("slideNextTransitionEnd", ()=>{
+    this.swiper.on("slideNextTransitionEnd", () => {
 
       this.slideNextEnd();
 
       // setTimeout(()=>{
       // },1000);
-
 
 
       // this.changeDetectorRef.markForCheck();
@@ -275,11 +299,10 @@ export class CalendarComponent implements OnInit {
     //
     // });
 
-    this.swiper.on("slidePrevTransitionEnd", ()=> {
+    this.swiper.on("slidePrevTransitionEnd", () => {
 
       this.slidePrevEnd();
     });
-
 
 
     //
@@ -291,17 +314,16 @@ export class CalendarComponent implements OnInit {
     //
 
 
-
     // this.swiper.slideTo(2 ,500,false);
 
 
-    this.emitService.register("list.change.month",($data)=>{
-      if ($data =="next"){
+    this.emitService.register("list.change.month", ($data) => {
+      if ($data == "next") {
         this.change4emit = false;
         this.slideNextEnd();
 
       }
-      if ($data =="prev"){
+      if ($data == "prev") {
         this.change4emit = false;
         this.slidePrevEnd();
       }
@@ -309,16 +331,15 @@ export class CalendarComponent implements OnInit {
     });
 
 
-
   }
 
-  slidePrevEnd(){
+  slidePrevEnd() {
 
     this.feekback.audioTrans();
 
-    let firstmonth:CalendarMonth = this.monthOptsWarp[0].opts;
+    let firstmonth: CalendarMonth = this.monthOptsWarp[0].opts;
 
-    let time  = moment(firstmonth.original.time).subtract(1, 'months').valueOf();
+    let time = moment(firstmonth.original.time).subtract(1, 'months').valueOf();
     let months = this.calSvc.createMonthsByPeriod(time, 1, this._d);
     this.monthOptsWarp[2].opts = this.monthOptsWarp[1].opts;
     this.monthOptsWarp[1].opts = this.monthOptsWarp[0].opts;
@@ -332,18 +353,18 @@ export class CalendarComponent implements OnInit {
   }
 
 
-  slideNextEnd(){
+  slideNextEnd() {
 
 
     this.feekback.audioTrans();
 
-    let lastmonth:CalendarMonth = this.monthOptsWarp[2].opts;
-    let time  = moment(lastmonth.original.time).add(1, 'months').valueOf();
+    let lastmonth: CalendarMonth = this.monthOptsWarp[2].opts;
+    let time = moment(lastmonth.original.time).add(1, 'months').valueOf();
     let months = this.calSvc.createMonthsByPeriod(time, 1, this._d);
-   // this.monthOpts.shift();
-    this.monthOptsWarp[0].opts  = this.monthOptsWarp[1].opts;
-    this.monthOptsWarp[1].opts  = this.monthOptsWarp[2].opts;
-    this.monthOptsWarp[2].opts  = months[0];
+    // this.monthOpts.shift();
+    this.monthOptsWarp[0].opts = this.monthOptsWarp[1].opts;
+    this.monthOptsWarp[1].opts = this.monthOptsWarp[2].opts;
+    this.monthOptsWarp[2].opts = months[0];
     // this.swiper.activeIndex = this.swiper.activeIndex -1;
 
     // this.monthOpts.push(months[0]);
@@ -353,39 +374,37 @@ export class CalendarComponent implements OnInit {
     this.swiperover4data(1);
 
 
-
   }
 
 
-  swiperover4data(index:number,gototoday:boolean = false){
+  swiperover4data(index: number, gototoday: boolean = false) {
 
-       // this.swiper.update()
-      // this.swiper.updateSlidesClasses();
-     //
+    // this.swiper.update()
+    // this.swiper.updateSlidesClasses();
+    //
 
-      let monthOpt = this.monthOptsWarp[index].opts ;
+    let monthOpt = this.monthOptsWarp[index].opts;
 
-      if (!monthOpt) return;
-      this._showMonth = defaults.MONTH_FORMAT[monthOpt.original.month];
-      this._thisMonth = monthOpt.original.month == moment().month() && monthOpt.original.year == moment().year();
-      this.calSvc.getMonthData(monthOpt);
+    if (!monthOpt) return;
+    this._showMonth = defaults.MONTH_FORMAT[monthOpt.original.month];
+    this._thisMonth = monthOpt.original.month == moment().month() && monthOpt.original.year == moment().year();
+    this.calSvc.getMonthData(monthOpt);
 
-      if (this.change4emit && !gototoday)
-        this.emitService.emit("calendar.change.month",moment(monthOpt.original.time).format("YYYYMM"));
+    if (this.change4emit && !gototoday)
+      this.emitService.emit("calendar.change.month", moment(monthOpt.original.time).format("YYYYMM"));
 
-      if (gototoday)
-        this.emitService.emitSelectDate(moment());
+    if (gototoday)
+      this.emitService.emitSelectDate(moment());
 
-      this.change4emit = true;
+    this.change4emit = true;
 
-        if (this.swiper){
-          this.swiper.slideTo(index,0,false);
-        }
+    if (this.swiper) {
+      this.swiper.slideTo(index, 0, false);
+    }
 
     this.changeDetectorRef.markForCheck();
     this.changeDetectorRef.detectChanges();
   }
-
 
 
   // canNext(): boolean {
@@ -405,20 +424,42 @@ export class CalendarComponent implements OnInit {
   gotoToday() {
     this.feekback.audioTrans();
 
-    let time =  moment().subtract( 1,"months").valueOf();
+    let time = moment().subtract(1, "months").valueOf();
 
-    let months:Array<CalendarMonth> = this.calSvc.createMonthsByPeriod(time,  3, this._d);
+    let months: Array<CalendarMonth> = this.calSvc.createMonthsByPeriod(time, 3, this._d);
     // this.monthOpts.shift();
-    this.monthOptsWarp[0].opts  = months[0];
-    this.monthOptsWarp[1].opts  = months[1];
-    this.monthOptsWarp[2].opts  = months[2];
+    this.monthOptsWarp[0].opts = months[0];
+    this.monthOptsWarp[1].opts = months[1];
+    this.monthOptsWarp[2].opts = months[2];
     // this.swiper.activeIndex = this.swiper.activeIndex -1;
 
     // this.monthOpts.push(months[0]);
     // this.swiper.setTransition(10);
     // this.swiper.setTranslate(this.swiper.translate + window.innerWidth);
 
-    this.swiperover4data(1,true);
-    IonCalendarService.selecttime =  moment(moment().format("YYYY-MM-DD")).valueOf();
+    this.swiperover4data(1, true);
+    IonCalendarService.selecttime = moment(moment().format("YYYY-MM-DD")).valueOf();
+    this.onGotoToday.emit(this.selectedCalendarDay);
   }
+
+  newAgenda() {
+    this.onNewAgenda.emit(this.selectedCalendarDay);
+  }
+
+  newMome() {
+    this.onNewMome.emit(this.selectedCalendarDay);
+  }
+
+  todoList() {
+    this.onTodoList.emit(this.selectedCalendarDay);
+  }
+
+  newDay() {
+    this.onNewDay.emit(this.selectedCalendarDay);
+  }
+
+  aTDay() {
+    this.onATDay.emit(this.selectedCalendarDay);
+  }
+
 }

@@ -19,8 +19,7 @@ export class FormatmonthstringPipe implements PipeTransform {
     }
     let formart = args[0];
     if (formart !="string") return value;
-    let m = moment(value, "YYYY/MM").get('M') + 1
-    console.log("**************************" + m)
+    let m = moment(value, "YYYY/MM").get('M') + 1;
     switch (m) {
       case 1:
         return "每一个成功者都有一个开始。勇于开始，才能找到成功的路。";
