@@ -86,19 +86,19 @@ NSString* SECRET_KEY = @"9oHZPMLgc0BM9a4m3DhpHUhGSqYvsrAF";
 
 #pragma mark - implement BDSSpeechSynthesizerDelegate
 - (void)synthesizerStartWorkingSentence:(NSInteger)SynthesizeSentence{
-    NSLog(@"Did synthesizerStartWorkingSentence synth %ld", SynthesizeSentence);
+    NSLog(@"Did synthesizerStartWorkingSentence synth %d", SynthesizeSentence);
 }
 
 - (void)synthesizerFinishWorkingSentence:(NSInteger)SynthesizeSentence{
-    NSLog(@"Did synthesizerFinishWorkingSentence synth, %ld", SynthesizeSentence);
+    NSLog(@"Did synthesizerFinishWorkingSentence synth, %d", SynthesizeSentence);
 }
 
 - (void)synthesizerSpeechStartSentence:(NSInteger)SpeakSentence{
-    NSLog(@"Did synthesizerSpeechStartSentence speak %ld", SpeakSentence);
+    NSLog(@"Did synthesizerSpeechStartSentence speak %d", SpeakSentence);
 }
 
 - (void)synthesizerSpeechEndSentence:(NSInteger)SpeakSentence{
-    NSLog(@"Did synthesizerSpeechEndSentence speak %ld", SpeakSentence);
+    NSLog(@"Did synthesizerSpeechEndSentence speak %d", SpeakSentence);
     if (self.callbackId) {
         CDVPluginResult* result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
         [result setKeepCallbackAsBool:YES];
@@ -110,13 +110,13 @@ NSString* SECRET_KEY = @"9oHZPMLgc0BM9a4m3DhpHUhGSqYvsrAF";
                        DataFormat:(BDSAudioFormat)fmt
                    characterCount:(int)newLength
                    sentenceNumber:(NSInteger)SynthesizeSentence{
-    NSLog(@"Did synthesizerNewDataArrived speak %ld", SynthesizeSentence);
+    NSLog(@"Did synthesizerNewDataArrived speak %d", SynthesizeSentence);
 }
 
 - (void)synthesizerTextSpeakLengthChanged:(int)newLength
                            sentenceNumber:(NSInteger)SpeakSentence{
 
-    NSLog(@"Did synthesizerTextSpeakLengthChanged speak %ld", SpeakSentence);
+    NSLog(@"Did synthesizerTextSpeakLengthChanged speak %d", SpeakSentence);
 }
 
 - (void)synthesizerdidPause{
@@ -135,7 +135,7 @@ NSString* SECRET_KEY = @"9oHZPMLgc0BM9a4m3DhpHUhGSqYvsrAF";
 - (void)synthesizerErrorOccurred:(NSError *)error
                         speaking:(NSInteger)SpeakSentence
                     synthesizing:(NSInteger)SynthesizeSentence{
-    NSLog(@"Did synthesizerErrorOccurred %ld, %ld", SpeakSentence, SynthesizeSentence);
+    NSLog(@"Did synthesizerErrorOccurred %d, %d", SpeakSentence, SynthesizeSentence);
 }
 
 

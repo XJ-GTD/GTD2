@@ -38,6 +38,9 @@ import {SettingsProvider} from "../../providers/settings/settings";
             <div (click)="goRemove()" *ngIf="buttons.share">
               <ion-icon class="far fa-share"></ion-icon>
             </div>
+            <div (click)="goRefresh()" *ngIf="buttons.refresh">
+              <ion-icon class="far fa-sync"></ion-icon>
+            </div>
             <div (click)="create()" *ngIf="buttons.create">
               <ion-icon class="far fa-plus-square"></ion-icon>
             </div>
@@ -78,6 +81,7 @@ export class ModalBoxComponent {
     share: false,
     save: false,
     record: false,
+    refresh: false,
     create: false,
     speaker: false,
     cancel: true
@@ -85,17 +89,16 @@ export class ModalBoxComponent {
 
   @Output()
   private onSave: EventEmitter<any> = new EventEmitter<any>();
-
   @Output()
   private onCancel: EventEmitter<any> = new EventEmitter<any>();
-
-
   @Output()
   private onCreate: EventEmitter<any> = new EventEmitter<any>();
   @Output()
   private onRecord: EventEmitter<any> = new EventEmitter<any>();
   @Output()
   private onSpeaker: EventEmitter<any> = new EventEmitter<any>();
+  @Output()
+  private onRefresh: EventEmitter<any> = new EventEmitter<any>();
 
 
   constructor(public events: Events, private renderer2: Renderer2,
@@ -124,6 +127,10 @@ export class ModalBoxComponent {
 
   create() {
     this.onCreate.emit(this);
+  }
+
+  goRefresh() {
+    this.onRefresh.emit(this);
   }
 
   record() {
