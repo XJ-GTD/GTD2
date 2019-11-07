@@ -3140,7 +3140,7 @@ export class EventService extends BaseService {
               attachment.fpjson.remote = String(data.data);
               attachment.fj = JSON.stringify(attachment.fpjson);
 
-              if (callback) callback(attachment);
+              if (callback) await callback(attachment);
             }
           }
         }
