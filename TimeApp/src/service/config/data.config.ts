@@ -172,6 +172,9 @@ export class DataConfig {
 
   //主题
   public static SYS_THEME: string = "THEME";
+  //自动加入TODO
+  public static SYS_AUTOTODO: string = "AUTOTODO";
+
   //项目跟进
   public static SYS_FOGH: string = "FOGH";
   public static SYS_FOGHSECRET: string = "FOGHSECRET";
