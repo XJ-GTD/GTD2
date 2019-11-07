@@ -1082,7 +1082,7 @@ export class EventService extends BaseService {
       if (oriAgd.rfg == anyenum.RepeatFlag.NonRepeat && newAgd.rtjson.cycletype != anyenum.CycleType.close) {
         doType = DoType.FutureAll;
       }
-      //重复事件中的某一日程to独立日程
+      //重复事件中的某一日程to独立日程或关闭重复
       if (oriAgd.rfg == anyenum.RepeatFlag.Repeat && modiType == anyenum.OperateType.OnlySel) {
         doType = DoType.Current;
         //如果是修改重复选项
@@ -1091,7 +1091,7 @@ export class EventService extends BaseService {
           doType = DoType.All;
         }
       }
-      //重复事件to重复事件或非重复
+      //重复事件to重复事件或关闭重复
       if (oriAgd.rfg == anyenum.RepeatFlag.Repeat && modiType == anyenum.OperateType.FromSel) {
         doType = DoType.FutureAll;
       }
@@ -1352,11 +1352,10 @@ export class EventService extends BaseService {
    * @param {AgendaData} oriAgdata 原事件详情 修改场合必须传入
    * @param {OperateType} modiType
    * 重复事件修改，选仅修改当前事件使用OperateType.OnlySel，选从当前日程开始修改使用OperateType.FromSel，
-   * 其他事件修改使用OperateType.FromSel，
-   * 新建事件使用 OperateType.Non
+   * 其他事件修改使用OperateType.FromSel
    * @returns {Promise<Array<AgendaData>>}
    */
-  async saveAgenda(newAgdata : AgendaData, oriAgdata:AgendaData = null, modiType : anyenum.OperateType = anyenum.OperateType.Non): Promise<Array<AgendaData>> {
+  async saveAgenda(newAgdata : AgendaData, oriAgdata:AgendaData = null, modiType : anyenum.OperateType = anyenum.OperateType.OnlySel): Promise<Array<AgendaData>> {
     // 入参不能为空
     this.assertEmpty(newAgdata);
     this.assertEmpty(newAgdata.sd);    // 事件开始日期不能为空

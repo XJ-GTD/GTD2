@@ -179,7 +179,6 @@ export enum Err {
 export enum OperateType  {
   OnlySel = "OnlySel",
   FromSel = "FromSel",
-  Non ="Non"
 
 }
 
