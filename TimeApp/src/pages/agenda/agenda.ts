@@ -683,23 +683,16 @@ export class AgendaPage {
   }
 
   goRemove() {
-    if (this.originAgenda.rfg == RepeatFlag.Repeat) { // 重复
-      if (this.modifyConfirm) {
-        this.modifyConfirm.dismiss();
-      }
-      this.modifyConfirm = this.createConfirm(true);
-
-      this.modifyConfirm.present();
-
-    } else {
-      this.util.loadingStart().then(() => {
-        this.eventService.removeAgenda(this.originAgenda, OperateType.OnlySel)
-          .then(() => {
-            this.util.loadingEnd();
-            this.goBack();
-          });
-      });
+    if (this.modifyConfirm) {
+      this.modifyConfirm.dismiss();
     }
+    if (this.originAgenda.rfg == RepeatFlag.Repeat) { // 重复
+      this.modifyConfirm = this.createConfirm(ConfirmText.Remove);
+    }else{
+      this.modifyConfirm = this.createConfirm(ConfirmText.RemoveSimple);
+    }
+    this.modifyConfirm.present();
+
   }
 
   goBack() {
@@ -712,10 +705,13 @@ export class AgendaPage {
     }
   }
 
-  createConfirm(remove: boolean = false, confirm: ConfirmType = ConfirmType.CurrentOrFutureAll) {
+  createConfirm(confirmText: ConfirmText, confirm: ConfirmType = ConfirmType.CurrentOrFutureAll) {
     let buttons: Array<any> = new Array<any>();
+    let title : string = "";
+    if (confirmText == ConfirmText.Remove) {
 
-    if (remove) {
+      title = "此为重复日程";
+
       buttons.push({
         text: '仅删除此日程',
         role: 'remove',
@@ -730,8 +726,21 @@ export class AgendaPage {
           this.doOptionRemove(OperateType.FromSel);
         }
       });
+    }else if (confirmText == ConfirmText.RemoveSimple){
+      title = "是否删除";
+      buttons.push({
+        text: '确定',
+        role: 'ok',
+        handler: () => {
+          this.doOptionRemove(OperateType.OnlySel);
+        }
+      });
+
     } else {
       if (confirm == ConfirmType.CurrentOrFutureAll) {
+
+        title = "此为重复日程";
+
         buttons.push({
           text: '仅针对此日程存储',
           role: 'modify',
@@ -758,7 +767,7 @@ export class AgendaPage {
     });
 
     return this.actionSheetCtrl.create({
-      title: "此为重复日程。",
+      title: title,
       buttons: buttons
     });
   }
@@ -789,7 +798,7 @@ export class AgendaPage {
           if (this.modifyConfirm) {
             this.modifyConfirm.dismiss();
           }
-          this.modifyConfirm = this.createConfirm(false, confirm);
+          this.modifyConfirm = this.createConfirm(ConfirmText.Update, confirm);
 
           this.modifyConfirm.present();
         } else {                          // 非重复/重复已经修改为非重复
@@ -844,4 +853,10 @@ export class AgendaPage {
     }
 
   }
+}
+
+enum ConfirmText{
+  Update = "Update",
+  Remove = "Remove",
+  RemoveSimple="RemoveSimple"
 }
