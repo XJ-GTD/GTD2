@@ -436,7 +436,7 @@ export class AttachPage {
   async flushData() {
     //清空数据
     this.fjArray = new Array<Attachment>();
-    this.fjArray = await this.eventService.selectAttachments();
+    this.fjArray = await this.eventService.selectAttachments(this.obt,this.obi);
     for (let attachment of this.fjArray) {
       attachment.members = this.members;
       // 判断是否是残留数据或文字附件
