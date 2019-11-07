@@ -1,5 +1,5 @@
 import {Component, ViewChild} from '@angular/core';
-import {Platform, Nav, MenuController, IonicApp, App} from 'ionic-angular';
+import {Platform, Nav, MenuController, IonicApp, App, Config} from 'ionic-angular';
 import {MenuScalePushType} from "../components/menuType/customType";
 import {BackgroundMode} from '@ionic-native/background-mode';
 import {DataConfig} from "../service/config/data.config";
@@ -7,6 +7,13 @@ import {UtilService} from "../service/util-service/util.service";
 import {ScreenOrientation} from "@ionic-native/screen-orientation";
 import {LsPushType} from "../components/menuType/LsPushType";
 import {StatusBar} from "@ionic-native/status-bar";
+import {
+  ModalFromLeftEnter,
+  ModalFromLeftLeave,
+  ModalFromRightEnter,
+  ModalFromRightLeave, ModalFromTopEnter,
+  ModalFromTopLeave, ModalScaleEnter, ModalScaleLeave
+} from "./AppTransition";
 
 @Component({
   template: `
@@ -20,10 +27,12 @@ export class MyApp {
               private backgroundMode: BackgroundMode,
               private util: UtilService,
               private screenOrientation: ScreenOrientation,
+              public config: Config
             ) {
     //特殊菜单设置
     MenuController.registerType('scalePush', MenuScalePushType);
     MenuController.registerType('lsPush', LsPushType);
+    this.setCustomTransitions();
 
     this.platform.ready().then(() => {
       //this.util.loadingEnd();
@@ -68,4 +77,16 @@ export class MyApp {
 
     }, 1);
   }
+
+  private setCustomTransitions() {
+    this.config.setTransition('modal-from-right-enter', ModalFromRightEnter);
+    this.config.setTransition('modal-from-right-leave', ModalFromRightLeave);
+    this.config.setTransition('modal-from-left-enter', ModalFromLeftEnter);
+    this.config.setTransition('modal-from-left-leave', ModalFromLeftLeave);
+    this.config.setTransition('modal-from-top-enter', ModalFromTopEnter);
+    this.config.setTransition('modal-from-top-leave', ModalFromTopLeave);
+    this.config.setTransition('modal-scale-enter', ModalScaleEnter);
+    this.config.setTransition('modal-scale-leave', ModalScaleLeave);
+  }
+
 }

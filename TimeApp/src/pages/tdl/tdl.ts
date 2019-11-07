@@ -1,9 +1,10 @@
-import {ChangeDetectorRef, Component, ElementRef, Renderer, Renderer2, ViewChild} from '@angular/core';
+import {ChangeDetectorRef, Component, ElementRef, Renderer2, ViewChild} from '@angular/core';
 import {
-  Content, DomController,
-  GestureController, IonicPage,
+  Content,
+  DomController,
+  GestureController,
+  IonicPage,
   MenuController,
-  ModalController,
   Platform,
   ScrollEvent,
 } from 'ionic-angular';
@@ -14,16 +15,17 @@ import {EmitService} from "../../service/util-service/emit.service";
 import {ScdPageParamter} from "../../data.mapping";
 import {UtilService} from "../../service/util-service/util.service";
 import {FeedbackService} from "../../service/cordova/feedback.service";
-import {CalendarService, DayActivityData, MonthActivityData} from "../../service/business/calendar.service";
+import {CalendarService, MonthActivityData} from "../../service/business/calendar.service";
 import {EventService} from "../../service/business/event.service";
 import {
-  PageDirection,
+  EventFinishStatus,
   EventType,
   InviteState,
+  ModalTranType,
+  PageDirection,
   PlanItemType,
-  SyncType,
   SelfDefineType,
-  EventFinishStatus
+  SyncType
 } from "../../data.enum";
 import {TdlGesture} from "./tdl-gestures";
 import {CalendarComponent} from "../../components/ion2-calendar";
@@ -330,7 +332,6 @@ export class TdlPage {
   finished: EventFinishStatus = EventFinishStatus.Finished;
 
   constructor(private tdlServ: TdlService,
-              private modalCtr: ModalController,
               private menuController: MenuController,
               private emitService: EmitService,
               private el: ElementRef,
@@ -580,14 +581,16 @@ export class TdlPage {
   }
 
   toMemo(day) {
-    this.modalCtr.create(DataConfig.PAGE._DAILYMEMOS_PAGE, day).present();
+
+    this.util.createModal(DataConfig.PAGE._DAILYMEMOS_PAGE, day,ModalTranType.scale).present();
   }
 
   toPlanItem(item) {
     let p: ScdPageParamter = new ScdPageParamter();
     p.si = item.jti;
 
-    this.modalCtr.create(DataConfig.PAGE._COMMEMORATIONDAY_PAGE, p).present();
+
+    this.util.createModal(DataConfig.PAGE._COMMEMORATIONDAY_PAGE, p,ModalTranType.scale).present();
   }
 
   async acceptInvite($event, event) {
@@ -627,14 +630,15 @@ export class TdlPage {
     if (gs == "0") {
       //本人画面
       if (type == EventType.Agenda) {
-        this.modalCtr.create(DataConfig.PAGE._AGENDA_PAGE, p).present();
+
+        this.util.createModal(DataConfig.PAGE._AGENDA_PAGE, p,ModalTranType.scale).present();
       }
       if (type == EventType.Task) {
         // this.modalCtr.create(DataConfig.PAGE._TASK_PAGE, p).present();
       }
     } else if (gs == "1") {
       //受邀人画面
-      this.modalCtr.create(DataConfig.PAGE._AGENDA_PAGE, p).present();
+      this.util.createModal(DataConfig.PAGE._AGENDA_PAGE, p,ModalTranType.scale).present();
     } else {
       //系统画面
       // this.modalCtr.create(DataConfig.PAGE._TDDS_PAGE, p).present();
@@ -646,7 +650,7 @@ export class TdlPage {
     let p: ScdPageParamter = new ScdPageParamter();
     p.d = moment(d);
     this.feedback.audioClick();
-    this.modalCtr.create(DataConfig.PAGE._AGENDA_PAGE, p).present();
+    this.util.createModal(DataConfig.PAGE._AGENDA_PAGE, p,ModalTranType.scale).present();
   }
 
 }

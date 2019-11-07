@@ -223,3 +223,11 @@ export enum  StatusType{
   page = 4,
   model = 5
 }
+
+export enum ModalTranType {
+  def = "def",
+  right = "right",
+  left = "left",
+  top = "top",
+  scale = "scale",
+}

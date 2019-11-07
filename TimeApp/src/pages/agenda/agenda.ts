@@ -141,15 +141,20 @@ import {ModiPower} from "../../data.enum";
             <ion-row *ngIf="currentAgenda.bz" (click)="changeComment()" class="contentdata">
               <span class="content font-normal">
                   备注：{{currentAgenda.bz}}
-                </span>
-              <ion-icon class="fal fa-comment-edit font-normal"></ion-icon>
+              </span>
+              <span class="content font-normal">
+                <ion-icon class="fal fa-comment-edit font-normal"></ion-icon>  
+              </span>
+                
             </ion-row>
 
             <ion-row *ngIf="currentAgenda.adr " (click)="changeLocation()" class="contentdata">
               <span class="content font-normal">
                 地址：{{currentAgenda.adr}}
                 </span>
-              <ion-icon class="fal fa-map-marker-alt font-normal"></ion-icon>
+              <span class="content font-normal">
+                <ion-icon class="fal fa-map-marker-alt font-normal"></ion-icon>
+              </span>
             </ion-row>
             <ion-row *ngIf="currentAgenda.evd"  class="contentdata">
               <div (click)="changeDatetime()" class="pickDate">
