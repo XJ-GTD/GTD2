@@ -3794,10 +3794,13 @@ export class EventService extends BaseService {
    * 查询全部的附件信息
    * @author ying<343253410@qq.com>
    */
-    async selectAttachments() {
+    async selectAttachments(obt: string, obi: string) {
+      this.assertEmpty(obt);
+      this.assertEmpty(obi);
+
       let attachments: Array<Attachment> = new Array<Attachment>();
-      let sql: string = `select * from gtd_fj  where del = ? order by wtt asc`;
-      let fjs = await this.sqlExce.getExtLstByParam<Attachment>(sql, [DelType.undel]);
+      let sql: string = `select * from gtd_fj  where del = ? and obt =? and obi = ? order by wtt asc`;
+      let fjs = await this.sqlExce.getExtLstByParam<Attachment>(sql, [DelType.undel,obt,obi]);
       if(fjs && fjs.length>0) {
         for (let fj of fjs) {
           let at: Attachment = {} as Attachment;
