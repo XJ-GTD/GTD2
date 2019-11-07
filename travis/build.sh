@@ -23,8 +23,7 @@ if [ $TRAVIS_OS_NAME = 'osx' ]; then
   ionic cordova build ios --prod --release
   cat $TRAVIS_BUILD_DIR/TimeApp/platforms/ios/$IOS_APP_NAME/Images.xcassets/AppIcon.appiconset/Contents.json
   cd $TRAVIS_BUILD_DIR/TimeApp/platforms/ios
-  echo "github rabbitmq/rabbitmq-objc-client"
-  github "rabbitmq/rabbitmq-objc-client" "v0.10.0"
+  echo 'github "rabbitmq/rabbitmq-objc-client" "v0.10.0"' > Cartfile
   echo "carthage bootstrap"
   carthage bootstrap
   # CODE_SIGN_RESOURCE_RULES_PATH='$(PROJECT_DIR)/$(PROJECT_NAME)/Entitlements-$(CONFIGURATION).plist' OBJROOT=$PWD/build SYMROOT=$PWD/build ONLY_ACTIVE_ARCH=NO
