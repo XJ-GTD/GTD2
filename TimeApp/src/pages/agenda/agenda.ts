@@ -80,6 +80,10 @@ import {ModiPower} from "../../data.enum";
                       [class.fad]="currentAgenda.todolist == todoliston"
                       [class.fal]="currentAgenda.todolist != todoliston"></ion-icon>
 
+            <ion-icon class="fad fa-ear font-large-x "></ion-icon>
+
+            <ion-icon class="fad fa-microphone font-large-x"></ion-icon>
+
           </div>
         </ion-row>
 
@@ -826,6 +830,8 @@ export class AgendaPage {
   }
 
   speaker() {
+
+
   }
 
   openfriend(ui) {
