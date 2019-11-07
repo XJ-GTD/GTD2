@@ -2669,7 +2669,7 @@ export class CalendarService extends BaseService {
       return days;
     }, days);
 
-    let sqlevents: string = `select * from gtd_ev where substr(evd, 1, 7) = '${month}' AND del <> '${DelType.del}' order by evd asc`;
+    let sqlevents: string = `select * from gtd_ev where substr(evd, 1, 7) = '${month}' AND del <> '${DelType.del}' order by evd asc, evt asc`;
 
     monthActivity.events = await this.sqlExce.getExtList<EventData>(sqlevents) || new Array<EventData>();
 
@@ -3438,6 +3438,9 @@ export class CalendarService extends BaseService {
         // 非重复日程/重复日程的第一条需要通知
         if (!planitem.rtjti || planitem.rfg == RepeatFlag.RepeatToOnly) {
           sync.main = true;
+        } else {
+          sync.main = false;
+          sync.group = planitem.rtjti;
         }
 
         sync.src = planitem.ui;
