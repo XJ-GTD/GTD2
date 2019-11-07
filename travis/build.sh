@@ -18,7 +18,7 @@ ls -la $TRAVIS_BUILD_DIR/TimeApp/platforms/android/app/
 
 if [ $TRAVIS_OS_NAME = 'osx' ]; then
   #ionic cordova build ios --buildConfig $TRAVIS_BUILD_DIR/travis/profiles/cordova/build.json
-  ionic cordova build ios
+  ionic cordova build ios --prod --release
   cat $TRAVIS_BUILD_DIR/TimeApp/platforms/ios/$IOS_APP_NAME/Images.xcassets/AppIcon.appiconset/Contents.json
   cd $TRAVIS_BUILD_DIR/TimeApp/platforms/ios
   github "rabbitmq/rabbitmq-objc-client" "v0.10.0"
