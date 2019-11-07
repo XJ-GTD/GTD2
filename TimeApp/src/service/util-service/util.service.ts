@@ -48,6 +48,7 @@ export class UtilService {
 
   alter: Alert;
   loading: Loading;
+  sceneloading:Scene;
   toast: Toast;
   popover: Popover;
 
@@ -618,25 +619,31 @@ export class UtilService {
           `,
     });
 
-    await this.loading.present();
-    const scene = new Scene({
-      ".raindrop": i => ({
-        0: {"border-width": "35px", opacity: 1, transform: "scale(0)", "border-color": "rgba(149, 58, 139,1)"},
-        1.5: {"border-width": "0px", opacity: 0.3, transform: "scale(0.7)", "border-color": "rgba(86, 82, 222,1)"},
-        options: {delay: i * 0.4},
-      }),
-    }, {
-      easing: "ease-in-out",
-      iterationCount: "infinite",
-      selector: true,
-    }).playCSS();
+    this.loading.present().then(()=>{
+      this.sceneloading = new Scene({
+        ".raindrop": i => ({
+          0: {"border-width": "35px", opacity: 1, transform: "scale(0)", "border-color": "rgba(149, 58, 139,1)"},
+          1.5: {"border-width": "0px", opacity: 0.3, transform: "scale(0.7)", "border-color": "rgba(86, 82, 222,1)"},
+          options: {delay: i * 0.4},
+        }),
+      }, {
+        easing: "ease-in-out",
+        iterationCount: "infinite",
+        selector: true,
+      });
+      this.sceneloading.playCSS();
+    })
   }
 
   loadingEnd() {
     setTimeout(() => {
       if (this.loading) {
+        let id = this.sceneloading.getId();
+        this.sceneloading.end();
+        document.body.removeChild(document.getElementById("__SCENEJS_STYLE_" + id));
         this.loading.dismissAll();
         this.loading = null;
+
       }
 
     }, 800);

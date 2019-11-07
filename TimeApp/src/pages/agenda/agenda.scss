@@ -51,7 +51,7 @@ page-agenda, page-commemorationday,page-comment {
           }
 
           .icon {
-            margin: 0 4px;
+            margin: 0 .4rem;
             line-height: .67;
           }
 
@@ -98,6 +98,9 @@ page-agenda, page-commemorationday,page-comment {
 
         .contentdata{
           margin: 0;
+          span:last-child{
+            min-width: 2.5rem;
+          }
         }
 
       }
