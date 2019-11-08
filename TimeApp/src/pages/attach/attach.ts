@@ -54,11 +54,21 @@ import {DataRestful,DownloadInData} from "../../service/restful/datasev";
                 <div *ngIf="(fja.ext=='PDF'||fja.ext=='pdf')&& (fja.fj !='')" >
                   <ion-icon class="fas fa-file-pdf" (click)="opnePdf(fja.fjurl)"></ion-icon>
                 </div>
-                <div *ngIf="(fja.ext=='png'||fja.ext=='PNG'||fja.ext=='jpg'||fja.ext=='JPG'||fja.ext=='bmp'||fja.ext=='BMP'||fja.ext=='mp4'||fja.ext=='MP4')&& (fja.fj !='')">
+                <div *ngIf="(fja.ext=='png'||fja.ext=='PNG'||fja.ext=='jpg'||fja.ext=='JPG'||fja.ext=='bmp'||fja.ext=='BMP')&& (fja.fj !='')">
                       <ion-thumbnail (click)="photoShow(fja.fjurl)">
-                      <img  *ngIf="fja.fjurl!=''" src="{{fja.fjurl}}" />
-                      <img  *ngIf="fja.fjurl ==''" src="{{defaultimg}}" />
+                        <img  *ngIf="fja.fjurl!=''" src="{{fja.fjurl}}" />
+                        <img  *ngIf="fja.fjurl ==''" src="{{defaultimg}}" />
                       </ion-thumbnail>
+                </div>
+                <div *ngIf="(fja.ext=='mp4'||fja.ext=='MP4')&& (fja.fj !='')">
+                    <ion-icon class="fas fa-file-pdf" (click)="opnePdf(fja.fjurl)"></ion-icon>
+                </div>
+                <div *ngIf="(fja.ext=='doc'||fja.ext=='DOC'||fja.ext=='xls'||fja.ext=='XLS'||fja.ext=='ppt'||fja.ext=='PPT'||fja.ext=='DOCX'||fja.ext=='docx'
+                  ||fja.ext=='xlsx'||fja.ext=='XLSX'||fja.ext=='PPTX'||fja.ext=='pptx')&& (fja.fj !='')">
+                    <ion-icon class="fas fa-file-pdf" (click)="opnePdf(fja.fjurl)"></ion-icon>
+                </div>
+                <div *ngIf="(fja.ext=='txt'||fja.ext=='TXT')&& (fja.fj !='')">
+                    <ion-icon class="fas fa-file-pdf" (click)="opnePdf(fja.fjurl)"></ion-icon>
                 </div>
 
                 <div class="icon" *ngIf="fja.ui == currentuser" end>
@@ -449,6 +459,12 @@ export class AttachPage {
               // 判断是否是手机
               if (this.util.hasCordova()) {
                 let fileName: string  = attachment.fpjson.local.substr(1, attachment.fpjson.local.length);
+
+                // 本地文件存在，页面上显示本地文件
+                this.file.checkFile(this.file.dataDirectory + attachment.fpjson.getCacheDir(), fileName)
+                .then(_ => {
+                  attachment.fjurl = attachment.fpjson.getLocalFilePath(this.file.dataDirectory);
+                });
               }
             }
         } else {
