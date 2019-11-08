@@ -52,7 +52,7 @@ import {DataRestful,DownloadInData} from "../../service/restful/datasev";
               </div>
               <div class="line font-normal" leftmargin rightmargin >
                 <div *ngIf="(fja.ext=='PDF'||fja.ext=='pdf')&& (fja.fj !='')" >
-                  <ion-icon class="fas fa-file-pdf" (click)="opnePdf(fja.fjurl)"></ion-icon>
+                  <ion-icon class="fas fa-file-pdf" (click)="opnePdf(fja.fjurl,fja.ext)"></ion-icon>
                 </div>
                 <div *ngIf="(fja.ext=='png'||fja.ext=='PNG'||fja.ext=='jpg'||fja.ext=='JPG'||fja.ext=='bmp'||fja.ext=='BMP')&& (fja.fj !='')">
                       <ion-thumbnail (click)="photoShow(fja.fjurl)">
@@ -61,17 +61,17 @@ import {DataRestful,DownloadInData} from "../../service/restful/datasev";
                       </ion-thumbnail>
                 </div>
                 <div *ngIf="(fja.ext=='mp4'||fja.ext=='MP4')&& (fja.fj !='')">
-                    <ion-icon class="fas fa-file-pdf" (click)="opnePdf(fja.fjurl)"></ion-icon>
+                    <ion-icon class="fas fa-file-pdf" (click)="opnePdf(fja.fjurl,fja.ext)"></ion-icon>
                 </div>
                 <div *ngIf="(fja.ext=='mp3'||fja.ext=='MP3')&& (fja.fj !='')">
-                    <ion-icon class="fas fa-file-pdf" (click)="opnePdf(fja.fjurl)"></ion-icon>
+                    <ion-icon class="fas fa-file-pdf" (click)="opnePdf(fja.fjurl,fja.ext)"></ion-icon>
                 </div>
                 <div *ngIf="(fja.ext=='doc'||fja.ext=='DOC'||fja.ext=='xls'||fja.ext=='XLS'||fja.ext=='ppt'||fja.ext=='PPT'||fja.ext=='DOCX'||fja.ext=='docx'
                   ||fja.ext=='xlsx'||fja.ext=='XLSX'||fja.ext=='PPTX'||fja.ext=='pptx')&& (fja.fj !='')">
-                    <ion-icon class="fas fa-file-pdf" (click)="opnePdf(fja.fjurl)"></ion-icon>
+                    <ion-icon class="fas fa-file-pdf" (click)="opnePdf(fja.fjurl,fja.ext)"></ion-icon>
                 </div>
                 <div *ngIf="(fja.ext=='txt'||fja.ext=='TXT')&& (fja.fj !='')">
-                    <ion-icon class="fas fa-file-pdf" (click)="opnePdf(fja.fjurl)"></ion-icon>
+                    <ion-icon class="fas fa-file-pdf" (click)="opnePdf(fja.fjurl,fja.ext)"></ion-icon>
                 </div>
 
                 <div class="icon" *ngIf="fja.ui == currentuser" end>
@@ -436,8 +436,8 @@ export class AttachPage {
     }
   }
   //打开本地PDF
-  opnePdf(fj: string) {
-    this.fileOpener.open(fj,'application/pdf')
+  opnePdf(fj: string, fileType: string) {
+    this.fileOpener.open(fj,getFileMimeType(fileType))
     .then(() => console.info('File is opened'))
     .catch(e => console.info('Error opening file', e));
   }
@@ -478,4 +478,53 @@ export class AttachPage {
     }
   }
 
+  //获取打开的文件类型
+  getFileMimeType(fileType: string): string {
+    let mimeType: string = '';
+    switch (fileType) {
+      case 'txt':
+        mimeType = 'text/plain';
+        break;
+      case 'docx':
+        mimeType = 'application/vnd.openxmlformats-officedocument.wordprocessingml.document';
+        break;
+      case 'doc':
+        mimeType = 'application/msword';
+        break;
+      case 'pptx':
+        mimeType = 'application/vnd.openxmlformats-officedocument.presentationml.presentation';
+        break;
+      case 'ppt':
+        mimeType = 'application/vnd.ms-powerpoint';
+        break;
+      case 'xlsx':
+        mimeType = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
+        break;
+      case 'xls':
+        mimeType = 'application/vnd.ms-excel';
+        break;
+      case 'zip':
+        mimeType = 'application/x-zip-compressed';
+        break;
+      case 'rar':
+        mimeType = 'application/octet-stream';
+        break;
+      case 'pdf':
+        mimeType = 'application/pdf';
+        break;
+      case 'jpg':
+        mimeType = 'image/jpeg';
+        break;
+      case 'png':
+        mimeType = 'image/png';
+        break;
+      // case 'mp4':
+      //     mimeType = 'video/mp4';
+      //     break;
+      default:
+        mimeType = 'application/' + fileType;
+        break;
+    }
+    return mimeType;
+  }
 }
