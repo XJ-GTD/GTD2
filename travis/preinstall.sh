@@ -8,9 +8,10 @@ if [ $TRAVIS_OS_NAME = 'osx' ]; then
   pwd
   ls -la $HOME/build/leonxi/largefiles/cordova/plugins/baidutts/ios/
   cd $HOME/build/leonxi/largefiles
-  git lfs install
-  cd $HOME/build/leonxi/largefiles/cordova/plugins/baidutts/ios/
-  git lfs pull
+  sshpass -e scp  -o stricthostkeychecking=no root@www.guobaa.com:/opt/dev/largefiles/cordova/plugins/baidutts/ios/*.a $HOME/build/leonxi/largefiles/cordova/plugins/baidutts/ios/
+  #git lfs install
+  #cd $HOME/build/leonxi/largefiles/cordova/plugins/baidutts/ios/
+  #git lfs pull
   ls -la $HOME/build/leonxi/largefiles/cordova/plugins/baidutts/ios/
   cd $TRAVIS_BUILD_DIR
   npm install -g ionic@4.1.2 phonegap plugman cordova@6.5.0
