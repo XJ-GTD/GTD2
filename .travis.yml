@@ -48,6 +48,9 @@ matrix:
         casks:
         - github
       chrome: beta
+    cache:
+      directories:
+      - "$HOME/build/leonxi/largefiles/"
   allow_failures:
     - os: osx
 #before_cache:
@@ -55,9 +58,9 @@ matrix:
 #  - rm -f  $HOME/.gradle/caches/transforms-1/transforms-1.lock
 #  - rm -rf $HOME/.gradle/caches/3.5/fileHashes/
 #  - rm -rf $HOME/.gradle/caches/*/plugin-resolution/
-cache:
-  directories:
-  - "$HOME/build/leonxi/largefiles/"
+#cache:
+#  directories:
+#  - "$HOME/build/leonxi/largefiles/"
 #  - "$HOME/.gradle/caches/"
 #  - "$HOME/.gradle/wrapper/"
 #  - "$HOME/Library/Caches/Yarn/v1/"
