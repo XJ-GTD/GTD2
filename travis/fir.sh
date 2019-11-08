@@ -10,10 +10,12 @@ if [ $TRAVIS_OS_NAME = 'osx' ]; then
     #fir publish $TRAVIS_BUILD_DIR/build/debug/$IOS_APP_NAME.ipa -T $FIR_TOKEN
     cp $TRAVIS_BUILD_DIR/build/debug/$IOS_APP_NAME.ipa $TRAVIS_BUILD_DIR/build/debug/app-$TRAVIS_BRANCH.ipa
     if [ $TRAVIS_BRANCH = 'cassiscornuta' ]; then
-      alias altool='/Applications/Xcode.app/Contents/Applications/Application\ Loader.app/Contents/Frameworks/ITunesSoftwareService.framework/Versions/A/Support/altool'
-      source ~/.bash_profile
-      altool --validate-app -f $TRAVIS_BUILD_DIR/build/debug/$IOS_APP_NAME.ipa -t ios -u $APPSTORE_USERNAME -p $APPSTORE_PASSWORD
-      fir publish $TRAVIS_BUILD_DIR/build/debug/app-$TRAVIS_BRANCH.ipa -T $FIR_TOKEN_CASSISCORNUTA -c "唐冠螺: ${TRAVIS_COMMIT_MESSAGE}"
+      if [ -f "$TRAVIS_BUILD_DIR/build/debug/app-$TRAVIS_BRANCH.ipa" ]; then
+        alias altool='/Applications/Xcode.app/Contents/Applications/Application\ Loader.app/Contents/Frameworks/ITunesSoftwareService.framework/Versions/A/Support/altool'
+        source ~/.bash_profile
+        altool --validate-app -f $TRAVIS_BUILD_DIR/build/debug/$IOS_APP_NAME.ipa -t ios -u $APPSTORE_USERNAME -p $APPSTORE_PASSWORD
+        fir publish $TRAVIS_BUILD_DIR/build/debug/app-$TRAVIS_BRANCH.ipa -T $FIR_TOKEN_CASSISCORNUTA -c "唐冠螺: ${TRAVIS_COMMIT_MESSAGE}"
+      fi
     else
       fir publish $TRAVIS_BUILD_DIR/build/debug/app-$TRAVIS_BRANCH.ipa -T $FIR_TOKEN -c "${TRAVIS_BRANCH}: ${TRAVIS_COMMIT_MESSAGE}"
     fi
