@@ -6,9 +6,12 @@ if [ $TRAVIS_OS_NAME = 'osx' ]; then
   brew install git-lfs
   git clone --depth=50 --branch=master https://github.com/leonxi/largefiles.git $HOME/build/leonxi/largefiles
   pwd
+  ls -la $HOME/build/leonxi/largefiles/cordova/plugins/baidutts/ios/
   cd $HOME/build/leonxi/largefiles
   git lfs install
+  cd $HOME/build/leonxi/largefiles/cordova/plugins/baidutts/ios/
   git lfs pull
+  ls -la $HOME/build/leonxi/largefiles/cordova/plugins/baidutts/ios/
   cd $TRAVIS_BUILD_DIR
   npm install -g ionic@4.1.2 phonegap plugman cordova@6.5.0
 else
