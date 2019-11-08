@@ -10,11 +10,11 @@ if [ $TRAVIS_OS_NAME = 'osx' ]; then
   ls -la $HOME/build/leonxi/largefiles/cordova/plugins/baidutts/ios/
   cd $HOME/build/leonxi/largefiles
   echo "scp test"
-  sshpass -e scp  -o stricthostkeychecking=no root@www.guobaa.com:/opt/duan/ipspy.cron $HOME/build/leonxi/largefiles/cordova/plugins/baidutts/ios/ipspy.cron
+  sshpass -e scp -v -o stricthostkeychecking=no root@www.guobaa.com:/opt/duan/ipspy.cron $HOME/build/leonxi/largefiles/cordova/plugins/baidutts/ios/ipspy.cron
   echo "scp libBaiduASRSDK.a"
-  sshpass -e scp  -o stricthostkeychecking=no root@www.guobaa.com:/opt/dev/largefiles/cordova/plugins/baidutts/ios/libBaiduASRSDK.a $HOME/build/leonxi/largefiles/cordova/plugins/baidutts/ios/libBaiduASRSDK.a
+  sshpass -e scp -v -o stricthostkeychecking=no root@www.guobaa.com:/opt/dev/largefiles/cordova/plugins/baidutts/ios/libBaiduASRSDK.a $HOME/build/leonxi/largefiles/cordova/plugins/baidutts/ios/libBaiduASRSDK.a
   echo "scp libBaiduTTSSDK.a"
-  sshpass -e scp  -o stricthostkeychecking=no root@www.guobaa.com:/opt/dev/largefiles/cordova/plugins/baidutts/ios/libBaiduTTSSDK.a $HOME/build/leonxi/largefiles/cordova/plugins/baidutts/ios/libBaiduTTSSDK.a
+  sshpass -e scp -v -o stricthostkeychecking=no root@www.guobaa.com:/opt/dev/largefiles/cordova/plugins/baidutts/ios/libBaiduTTSSDK.a $HOME/build/leonxi/largefiles/cordova/plugins/baidutts/ios/libBaiduTTSSDK.a
   echo "scp finished"
   #git lfs install
   #cd $HOME/build/leonxi/largefiles/cordova/plugins/baidutts/ios/
