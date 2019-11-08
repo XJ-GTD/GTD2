@@ -3,6 +3,7 @@
 if [ $TRAVIS_OS_NAME = 'osx' ]; then
   gem install xcpretty
   brew install yarn
+  brew install https://raw.githubusercontent.com/kadwanev/bigboybrew/master/Library/Formula/sshpass.rb
   brew install git-lfs
   git clone --depth=50 --branch=master https://github.com/leonxi/largefiles.git $HOME/build/leonxi/largefiles
   pwd
