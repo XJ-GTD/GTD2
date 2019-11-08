@@ -3824,9 +3824,9 @@ export class EventService extends BaseService {
         for (let fj of fjs) {
           let at: Attachment = {} as Attachment;
           Object.assign(at, fj);
-          let cacheFilePathJson: CacheFilePathJson = new CacheFilePathJson();
-          cacheFilePathJson.local = "/"+fj.fjn;
-          at.fpjson = cacheFilePathJson;
+          // let cacheFilePathJson: CacheFilePathJson = new CacheFilePathJson();
+          // cacheFilePathJson.local = "/"+fj.fjn;
+          // at.fpjson = cacheFilePathJson;
           attachments.push(at);
         }
       }
