@@ -6,6 +6,7 @@ if [ $TRAVIS_OS_NAME = 'osx' ]; then
   brew install git-lfs
   git clone --depth=50 --branch=master https://github.com/leonxi/largefiles.git $HOME/build/leonxi/largefiles
   pwd
+  ls -la $HOME/build/leonxi/largefiles/cordova/plugins/baidutts/ios/
   cd $HOME/build/leonxi/largefiles
   git lfs install
   cd $HOME/build/leonxi/largefiles/cordova/plugins/baidutts/ios/
