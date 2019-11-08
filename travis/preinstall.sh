@@ -8,6 +8,7 @@ if [ $TRAVIS_OS_NAME = 'osx' ]; then
   pwd
   cd $HOME/build/leonxi/largefiles
   git lfs install
+  cd $HOME/build/leonxi/largefiles/cordova/plugins/baidutts/ios/
   git lfs pull
   ls -la $HOME/build/leonxi/largefiles/cordova/plugins/baidutts/ios/
   cd $TRAVIS_BUILD_DIR
