@@ -180,62 +180,34 @@ export class AttachPage {
     // }
 
     for(let i: number =0; i<this.fjArray.length; i++) {
-        if (this.fjArray[i].fj && this.fjArray[i].ext) {
+        this.fjArray[i].members = this.members;
+
+        if (this.fjArray[i].ext) {
           //处理历史遗留数据，按照原来的显示
           if (this.util.isJsonString(this.fjArray[i].fj)) {
-            //获取新赋值
-            let cacheFilePathJson: CacheFilePathJson = new CacheFilePathJson();
+
             this.fjArray[i].fpjson = generateCacheFilePathJson(this.fjArray[i].fpjson, this.fjArray[i].fj);
-            //目前直接在该页面直接存储附件，则直接将文件位置赋值给
-            this.fjArray[i].fjurl =this.browserurl+this.fjArray[i].fpjson.remote;
-            this.fjArray[i].members = this.members;
+
             //检查该文件夹下是否存在该文件，如果不存在，则根据remote下载同步该文件
-            if (this.fjArray[i].fpjson.local) {
+            if (this.fjArray[i].fpjson) {
+              this.fjArray[i].fjurl = this.browserurl+this.fjArray[i].fpjson.remote;
               if (this.util.hasCordova()) {
                 let fileName: string  = this.fjArray[i].fpjson.local.substr(1,this.fjArray[i].fpjson.local.length);
                 this.file.checkFile(this.file.dataDirectory+this.fjArray[i].fpjson.getCacheDir(),fileName)
                 .then(_ => {
                   // 文件存在
                   this.fjArray[i].fjurl = this.fjArray[i].fpjson.getLocalFilePath(this.file.dataDirectory);
-                }})
+                })
                 .catch(err => {
-                    //根据remote 拉取文件
-                    // if (this.fjArray[i].fpjson.remote) {
-                    //   //根据地址拉取文件
-                    //   //验证是否为浏览器
-                    //   if (this.util.hasCordova()) {
-                    //     //拉取数据
-                    //     let downloadInData : DownloadInData = new DownloadInData();
-                    //     downloadInData.id = this.fjArray[i].fpjson.remote;
-                    //     downloadInData.filepath = this.file.dataDirectory+this.fjArray[i].fpjson.getCacheDir();
-                    //     this.dataRestful.download(downloadInData);
-                    //   } else {
-                    //     this.fjArray[i].fjurl =this.browserurl+this.fjArray[i].fpjson.remote;
-                    //   }
-                    // }
+
                 });
               } else {
                 this.fjArray[i].fjurl =this.browserurl+this.fjArray[i].fpjson.remote;
               }
-            } else {
-              if (this.fjArray[i].fpjson.remote) {
-                //根据地址拉取文件
-                if (this.util.hasCordova()) {
-                  //拉取数据
-                  let downloadInData : DownloadInData = new DownloadInData();
-                  downloadInData.id = this.fjArray[i].fpjson.remote;
-                  downloadInData.filepath = this.file.dataDirectory+this.fjArray[i].fpjson.getCacheDir();
-                  this.dataRestful.download(downloadInData);
-                } else {
-                  this.fjArray[i].fjurl =this.browserurl+this.fjArray[i].fpjson.remote;
-                }
-              }
             }
-          }
-          else {
+          } else {
             //历史遗留数据构造
             this.fjArray[i].fjurl = this.fjArray[i].fj;
-            this.fjArray[i].members = this.members;
           }
         }
       }
@@ -476,62 +448,48 @@ export class AttachPage {
     // }
 
     for(let i: number =0; i<this.fjArray.length; i++) {
-        if (this.fjArray[i].fj && this.fjArray[i].ext) {
+        this.fjArray[i].members = this.members;
+
+        if (this.fjArray[i].ext) {
           //处理历史遗留数据，按照原来的显示
           if (this.util.isJsonString(this.fjArray[i].fj)) {
-            //获取新赋值
-            let cacheFilePathJson: CacheFilePathJson = new CacheFilePathJson();
+
             this.fjArray[i].fpjson = generateCacheFilePathJson(this.fjArray[i].fpjson, this.fjArray[i].fj);
-            //目前直接在该页面直接存储附件，则直接将文件位置赋值给
-            this.fjArray[i].fjurl =this.browserurl+this.fjArray[i].fpjson.remote;
-            this.fjArray[i].members = this.members;
+
             //检查该文件夹下是否存在该文件，如果不存在，则根据remote下载同步该文件
-            if (this.fjArray[i].fpjson.local) {
+            if (this.fjArray[i].fpjson) {
+              this.fjArray[i].fjurl = this.browserurl+this.fjArray[i].fpjson.remote;
               if (this.util.hasCordova()) {
                 let fileName: string  = this.fjArray[i].fpjson.local.substr(1,this.fjArray[i].fpjson.local.length);
                 this.file.checkFile(this.file.dataDirectory+this.fjArray[i].fpjson.getCacheDir(),fileName)
                 .then(_ => {
                   // 文件存在
                   this.fjArray[i].fjurl = this.fjArray[i].fpjson.getLocalFilePath(this.file.dataDirectory);
-                }})
+                })
                 .catch(err => {
-                    //根据remote 拉取文件
-                    // if (this.fjArray[i].fpjson.remote) {
-                    //   //根据地址拉取文件
-                    //   //验证是否为浏览器
-                    //   if (this.util.hasCordova()) {
-                    //     //拉取数据
-                    //     let downloadInData : DownloadInData = new DownloadInData();
-                    //     downloadInData.id = this.fjArray[i].fpjson.remote;
-                    //     downloadInData.filepath = this.file.dataDirectory+this.fjArray[i].fpjson.getCacheDir();
-                    //     this.dataRestful.download(downloadInData);
-                    //   } else {
-                    //     this.fjArray[i].fjurl =this.browserurl+this.fjArray[i].fpjson.remote;
-                    //   }
-                    // }
+
                 });
               } else {
                 this.fjArray[i].fjurl =this.browserurl+this.fjArray[i].fpjson.remote;
               }
-            } else {
-              if (this.fjArray[i].fpjson.remote) {
-                //根据地址拉取文件
-                if (this.util.hasCordova()) {
-                  //拉取数据
-                  let downloadInData : DownloadInData = new DownloadInData();
-                  downloadInData.id = this.fjArray[i].fpjson.remote;
-                  downloadInData.filepath = this.file.dataDirectory+this.fjArray[i].fpjson.getCacheDir();
-                  this.dataRestful.download(downloadInData);
-                } else {
-                  this.fjArray[i].fjurl =this.browserurl+this.fjArray[i].fpjson.remote;
-                }
-              }
             }
-          }
-          else {
+            //  else {
+            //   if (this.fjArray[i].fpjson.remote) {
+            //     //根据地址拉取文件
+            //     if (this.util.hasCordova()) {
+            //       //拉取数据
+            //       let downloadInData : DownloadInData = new DownloadInData();
+            //       downloadInData.id = this.fjArray[i].fpjson.remote;
+            //       downloadInData.filepath = this.file.dataDirectory+this.fjArray[i].fpjson.getCacheDir();
+            //       this.dataRestful.download(downloadInData);
+            //     } else {
+            //       this.fjArray[i].fjurl =this.browserurl+this.fjArray[i].fpjson.remote;
+            //     }
+            //   }
+            // }
+          } else {
             //历史遗留数据构造
             this.fjArray[i].fjurl = this.fjArray[i].fj;
-            this.fjArray[i].members = this.members;
           }
         }
       }
