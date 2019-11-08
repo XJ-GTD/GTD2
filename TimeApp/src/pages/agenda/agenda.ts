@@ -321,13 +321,19 @@ export class AgendaPage {
     if (this.originAgenda.ui != this.currentuser && (this.originAgenda.md != ModiPower.enable || this.originAgenda.invitestatus != InviteState.Accepted)) { // 受邀人修改权限检查
       return;
     }
-
+    let enableEdit: boolean = false;
+    if (this.originAgenda.ui != this.currentuser ) { // 受邀人修改权限检查
+      enableEdit = false;
+    } else {
+      enableEdit = true;
+    }
     let modal = this.modalCtrl.create(DataConfig.PAGE._DTSELECT_PAGE, {
       evd: this.currentAgenda.evd,
       evt: this.currentAgenda.evt,
       ct: this.currentAgenda.ct,
       al: this.currentAgenda.al,
-      rfg: this.currentAgenda.rfg
+      rfg: this.currentAgenda.rfg,
+      enableEdit:enableEdit
     });
     modal.onDidDismiss(async (data) => {
       if (data) {
@@ -541,7 +547,10 @@ export class AgendaPage {
   }
 
   changeRepeat() {
-
+    // 受邀人没有接受不能修改
+    if (this.originAgenda.ui != this.currentuser && this.originAgenda.invitestatus != InviteState.Accepted) { // 受邀人接受状态检查
+      return;
+    }
     // 时间设置为结束时间，不能修改重复
     if (this.currentAgenda.al == IsWholeday.EndSet) {
       return;
@@ -559,13 +568,13 @@ export class AgendaPage {
     Object.assign(data, this.currentAgenda.rtjson);
 
     // 受邀人没有接受或者没有修改权限不能修改
-    let enableRepeat: boolean = false;
+    let enableEdit: boolean = false;
     if (this.originAgenda.ui != this.currentuser ) { // 受邀人修改权限检查
-      enableRepeat = false;
+      enableEdit = false;
     } else {
-      enableRepeat = true;
+      enableEdit = true;
     }
-    let modal = this.modalCtrl.create(DataConfig.PAGE._REPEAT_PAGE, {value: data, enableRepeat: enableRepeat,sd:this.currentAgenda.sd});
+    let modal = this.modalCtrl.create(DataConfig.PAGE._REPEAT_PAGE, {value: data, enableEdit: enableEdit,sd:this.currentAgenda.sd});
 
     modal.onDidDismiss(async (data) => {
       if (data && data.rtjson) {
@@ -611,13 +620,14 @@ export class AgendaPage {
 
     let data = new TxJson();
     Object.assign(data, this.currentAgenda.txjson);
+
     let modal = this.modalCtrl.create(DataConfig.PAGE._REMIND_PAGE, {
       value: {
         txjson: data,
         evd: this.currentAgenda.evd,
         evt: this.currentAgenda.evt,
-        al: this.currentAgenda.al
-      }
+        al: this.currentAgenda.al,
+      },
     });
     modal.onDidDismiss(async (data) => {
       if (data && data.txjson) {

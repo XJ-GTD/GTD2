@@ -11,7 +11,7 @@ import {UtilService} from "../../service/util-service/util.service";
 @Component({
   selector: 'page-repeat',
   template: `
-    <modal-box title="重复" [buttons]="buttons" (onSave)="save()" (onCancel)="cancel()" [enableEdit]="enableRepeat">
+    <modal-box title="重复" [buttons]="buttons" (onSave)="save()" (onCancel)="cancel()" [enableEdit]="enableEdit">
       <div class="itemwarp font-normal" >
         <radio-select   [options]="items" full="true" center =  "true" [(ngModel)]="cfType" (onChanged)="onTypeChanged($event)" button5></radio-select>
       </div>
@@ -250,7 +250,7 @@ export class RepeatPage {
     saturday: "星期六",
   };
 
-  enableRepeat : boolean = false;
+  enableEdit : boolean = false;
 
   constructor(public navCtrl: NavController,
               private keyboard: Keyboard,
@@ -260,14 +260,13 @@ export class RepeatPage {
     if (this.navParams && this.navParams.data) {
       let value = this.navParams.data.value;
       this.startDate =  this.navParams.data.sd;
-
+      this.enableEdit = this.navParams.data.enableEdit;
+      if (!this.enableEdit){
+        this.buttons.save = false;
+      }
       if (value) {
 
         this.originRepeat = value;
-        this.enableRepeat = this.navParams.data.enableRepeat;
-        if (!this.enableRepeat){
-          this.buttons.save = false;
-        }
         this.currentRepeat = new RtJson();
         this.util.cloneObj(this.currentRepeat, this.originRepeat);
 
