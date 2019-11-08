@@ -104,7 +104,8 @@ script:
   - dos2unix -k $TRAVIS_BUILD_DIR/travis/build.sh
   - sh $TRAVIS_BUILD_DIR/travis/build.sh
 after_script:
-  - dos2unix -k sh $TRAVIS_BUILD_DIR/travis/fir.sh $TRAVIS_BUILD_DIR/travis/remove-keys.sh
+  - dos2unix -k sh $TRAVIS_BUILD_DIR/travis/fir.sh
+  - dos2unix -k sh $TRAVIS_BUILD_DIR/travis/remove-keys.sh
   - sh $TRAVIS_BUILD_DIR/travis/fir.sh
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then sh $TRAVIS_BUILD_DIR/travis/remove-keys.sh ; fi
 env:
