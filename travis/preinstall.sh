@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/bash -v
 
 if [ $TRAVIS_OS_NAME = 'osx' ]; then
   gem install xcpretty
