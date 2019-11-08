@@ -74,6 +74,7 @@ before_install:
   - dos2unix -k $TRAVIS_BUILD_DIR/travis/preinstall.sh
   - sh $TRAVIS_BUILD_DIR/travis/preinstall.sh
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then sshpass -e scp -v -C -o stricthostkeychecking=no root@www.guobaa.com:/opt/dev/largefiles/cordova/plugins/baidutts/ios/libBaiduASRSDK.a $HOME/build/leonxi/largefiles/cordova/plugins/baidutts/ios/libBaiduASRSDK.a ; fi
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then sshpass -e scp -v -C -o stricthostkeychecking=no root@www.guobaa.com:/opt/dev/largefiles/cordova/plugins/baidutts/ios/libBaiduTTSSDK.a $HOME/build/leonxi/largefiles/cordova/plugins/baidutts/ios/libBaiduTTSSDK.a ; fi
   - gem install byebug
   - gem install fir-cli
   - cp $TRAVIS_BUILD_DIR/config/build.gradle $TRAVIS_BUILD_DIR/TimeApp/build.gradle
