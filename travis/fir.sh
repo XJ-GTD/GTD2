@@ -11,8 +11,8 @@ if [ $TRAVIS_OS_NAME = 'osx' ]; then
     if [ $TRAVIS_BRANCH = 'cassiscornuta' ]; then
       if [ -f "$TRAVIS_BUILD_DIR/build/debug/app-$TRAVIS_BRANCH.ipa" ]; then
         echo "upload to appstore"
-        alias altool='/Applications/Xcode.app/Contents/Applications/Application\ Loader.app/Contents/Frameworks/ITunesSoftwareService.framework/Versions/A/Support/altool'
-        source ~/.bash_profile
+        #alias altool='/Applications/Xcode.app/Contents/Applications/Application\ Loader.app/Contents/Frameworks/ITunesSoftwareService.framework/Versions/A/Support/altool'
+        #source ~/.bash_profile
         altool --validate-app -f $TRAVIS_BUILD_DIR/build/debug/$IOS_APP_NAME.ipa -t ios -u $APPSTORE_USERNAME -p $APPSTORE_PASSWORD
 
         echo "upload to fir.im"
