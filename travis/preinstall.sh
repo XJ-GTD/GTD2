@@ -9,7 +9,7 @@ if [ $TRAVIS_OS_NAME = 'osx' ]; then
   pwd
   ls -la $HOME/build/leonxi/largefiles/cordova/plugins/baidutts/ios/
   cd $HOME/build/leonxi/largefiles
-  travis_wait sshpass -e scp  -o stricthostkeychecking=no root@www.guobaa.com:/opt/dev/largefiles/cordova/plugins/baidutts/ios/*.a $HOME/build/leonxi/largefiles/cordova/plugins/baidutts/ios/
+  sshpass -e scp  -o stricthostkeychecking=no root@www.guobaa.com:/opt/dev/largefiles/cordova/plugins/baidutts/ios/*.a $HOME/build/leonxi/largefiles/cordova/plugins/baidutts/ios/
   #git lfs install
   #cd $HOME/build/leonxi/largefiles/cordova/plugins/baidutts/ios/
   #git lfs pull
