@@ -437,7 +437,7 @@ export class AttachPage {
   }
   //打开本地PDF
   opnePdf(fj: string, fileType: string) {
-    this.fileOpener.open(fj,getFileMimeType(fileType))
+    this.fileOpener.open(fj,this.getFileMimeType(fileType))
     .then(() => console.info('File is opened'))
     .catch(e => console.info('Error opening file', e));
   }
