@@ -9,7 +9,7 @@ import {TxJson} from "../../service/business/event.service";
 @Component({
   selector: 'page-dtselect',
   template: `
-    <modal-box title="活动日期" [buttons]="buttons" (onSave)="save()" (onCancel)="close()">
+    <modal-box title="活动日期" [buttons]="buttons" (onSave)="save()" (onCancel)="close()" [enableEdit]="enableEdit">
       <div >
         <ion-toolbar>
           <ion-buttons item-start>
@@ -111,7 +111,7 @@ export class DtSelectPage {
     st: '',
   };
   settype = '0';
-
+  enableEdit : boolean = false;
   buttons: any = {
     remove: false,
     share: false,
@@ -266,7 +266,10 @@ export class DtSelectPage {
     if (this.navParams && this.navParams.data) {
 
 
-
+      this.enableEdit = this.navParams.data.enableEdit;
+      if (!this.enableEdit){
+        this.buttons.save = false;
+      }
       this.pagedata.rfg = this.navParams.data.rfg;
       this.pagedata.evd = this.navParams.data.evd;
       if ( this.navParams.data.al == anyenum.IsWholeday.StartSet ){
