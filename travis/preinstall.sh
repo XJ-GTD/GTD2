@@ -4,20 +4,18 @@ if [ $TRAVIS_OS_NAME = 'osx' ]; then
   gem install xcpretty
   brew install yarn
   brew install https://raw.githubusercontent.com/kadwanev/bigboybrew/master/Library/Formula/sshpass.rb
-  brew install git-lfs
-  git clone --depth=50 --branch=master https://github.com/leonxi/largefiles.git $HOME/build/leonxi/largefiles
+  #brew install git-lfs
+  #git clone --depth=50 --branch=master https://github.com/leonxi/largefiles.git $HOME/build/leonxi/largefiles
   pwd
-  ls -la $HOME/build/leonxi/largefiles/cordova/plugins/baidutts/ios/
+  mkdir -p $HOME/build/leonxi/largefiles/cordova/plugins/baidutts/ios/
   cd $HOME/build/leonxi/largefiles
-  echo "scp test"
-  sshpass -e scp -v -o stricthostkeychecking=no root@www.guobaa.com:/opt/duan/ipspy.cron $HOME/build/leonxi/largefiles/cordova/plugins/baidutts/ios/ipspy.cron
   echo "scp libBaiduASRSDK.a"
   sshpass -e scp -v -C -o stricthostkeychecking=no root@www.guobaa.com:/opt/dev/largefiles/cordova/plugins/baidutts/ios/libBaiduASRSDK.tar.gz $HOME/build/leonxi/largefiles/cordova/plugins/baidutts/ios/libBaiduASRSDK.tar.gz
-  tar -zxvf $HOME/build/leonxi/largefiles/cordova/plugins/baidutts/ios/libBaiduASRSDK.tar.gz $HOME/build/leonxi/largefiles/cordova/plugins/baidutts/ios
+  tar -zxvf $HOME/build/leonxi/largefiles/cordova/plugins/baidutts/ios/libBaiduASRSDK.tar.gz -C $HOME/build/leonxi/largefiles/cordova/plugins/baidutts/ios
   #sshpass -e scp -v -C -o stricthostkeychecking=no root@www.guobaa.com:/opt/dev/largefiles/cordova/plugins/baidutts/ios/libBaiduASRSDK.a $HOME/build/leonxi/largefiles/cordova/plugins/baidutts/ios/libBaiduASRSDK.a
   echo "scp libBaiduTTSSDK.a"
   sshpass -e scp -v -C -o stricthostkeychecking=no root@www.guobaa.com:/opt/dev/largefiles/cordova/plugins/baidutts/ios/libBaiduTTSSDK.tar.gz $HOME/build/leonxi/largefiles/cordova/plugins/baidutts/ios/libBaiduTTSSDK.tar.gz
-  tar -zxvf $HOME/build/leonxi/largefiles/cordova/plugins/baidutts/ios/libBaiduTTSSDK.tar.gz $HOME/build/leonxi/largefiles/cordova/plugins/baidutts/ios
+  tar -zxvf $HOME/build/leonxi/largefiles/cordova/plugins/baidutts/ios/libBaiduTTSSDK.tar.gz -C $HOME/build/leonxi/largefiles/cordova/plugins/baidutts/ios
   #sshpass -e scp -v -C -o stricthostkeychecking=no root@www.guobaa.com:/opt/dev/largefiles/cordova/plugins/baidutts/ios/libBaiduTTSSDK.a $HOME/build/leonxi/largefiles/cordova/plugins/baidutts/ios/libBaiduTTSSDK.a
   echo "scp finished"
   #git lfs install
