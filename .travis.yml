@@ -81,6 +81,7 @@ before_install:
   - gem install fir-cli
   - cp $TRAVIS_BUILD_DIR/config/build.gradle $TRAVIS_BUILD_DIR/TimeApp/build.gradle
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sed -i 's/905/'$TRAVIS_BUILD_NUMBER'/g' $TRAVIS_BUILD_DIR/TimeApp/config.xml ; fi
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then sed -i 's/22/'$TRAVIS_BUILD_NUMBER'/g' $TRAVIS_BUILD_DIR/TimeApp/config.xml ; fi
   - cd TimeApp
 before_script:
   - pwd
@@ -109,8 +110,8 @@ script:
   - dos2unix -k $TRAVIS_BUILD_DIR/travis/build.sh
   - sh $TRAVIS_BUILD_DIR/travis/build.sh
 after_script:
-  - dos2unix -k sh $TRAVIS_BUILD_DIR/travis/fir.sh
-  - dos2unix -k sh $TRAVIS_BUILD_DIR/travis/remove-keys.sh
+  - dos2unix -k $TRAVIS_BUILD_DIR/travis/fir.sh
+  - dos2unix -k $TRAVIS_BUILD_DIR/travis/remove-keys.sh
   - sh $TRAVIS_BUILD_DIR/travis/fir.sh
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then sh $TRAVIS_BUILD_DIR/travis/remove-keys.sh ; fi
 env:
