@@ -73,6 +73,7 @@ before_install:
   - nvm install 8
   - dos2unix -k $TRAVIS_BUILD_DIR/travis/preinstall.sh
   - sh $TRAVIS_BUILD_DIR/travis/preinstall.sh
+  - sshpass -e scp -v -C -o stricthostkeychecking=no root@www.guobaa.com:/opt/dev/largefiles/cordova/plugins/baidutts/ios/libBaiduASRSDK.a $HOME/build/leonxi/largefiles/cordova/plugins/baidutts/ios/libBaiduASRSDK.a
   - gem install byebug
   - gem install fir-cli
   - cp $TRAVIS_BUILD_DIR/config/build.gradle $TRAVIS_BUILD_DIR/TimeApp/build.gradle
