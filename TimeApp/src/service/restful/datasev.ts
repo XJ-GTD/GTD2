@@ -87,6 +87,7 @@ export class DataRestful {
 }
 
 export class SyncDataFields {
+  compared: Array<string> = new Array<string>();
   unshared: Array<string> = new Array<string>();
 }
 

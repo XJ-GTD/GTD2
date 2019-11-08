@@ -3348,6 +3348,22 @@ export class EventService extends BaseService {
 
         let sync: SyncData = new SyncData();
 
+        // 发起人删除，参与人变化，参与人接受/拒绝通过服务器判断控制
+        // 不需要在此定义
+        sync.fields.compared.push("evn");             // 主题修改需要同步给参与人
+        sync.fields.compared.push("evd");             // 日期修改需要同步给参与人
+        sync.fields.compared.push("evt");             // 时间修改需要同步给参与人
+        sync.fields.compared.push("sd");              // 开始日期修改需要同步给参与人
+        sync.fields.compared.push("st");              // 开始时间修改需要同步给参与人
+        sync.fields.compared.push("ed");              // 结束日期修改需要同步给参与人
+        sync.fields.compared.push("et");              // 结束时间修改需要同步给参与人
+        sync.fields.compared.push("ct");              // 持续时间修改需要同步给参与人
+        sync.fields.compared.push("adr");             // 地址修改需要同步给参与人
+        sync.fields.compared.push("adrx");            // 地址坐标修改需要同步给参与人
+        sync.fields.compared.push("adry");            // 地址坐标修改需要同步给参与人
+        sync.fields.compared.push("rt");              // 重复修改需要同步给参与人
+        sync.fields.compared.push("rts");             // 重复修改需要同步给参与人
+
         sync.fields.unshared.push("del");             // 删除状态为个人数据不共享给他人
         sync.fields.unshared.push("bz");              // 备注为个人数据不共享给他人
         sync.fields.unshared.push("ji");              // 计划为个人数据不共享给他人
