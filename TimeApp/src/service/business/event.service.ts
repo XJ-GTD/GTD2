@@ -3382,6 +3382,10 @@ export class EventService extends BaseService {
         // 非重复日程/重复日程的第一条需要通知
         if (!agenda.rtevi || agenda.rfg == RepeatFlag.RepeatToOnly) {
           sync.main = true;
+
+          if (agenda.rfg == RepeatFlag.Repeat) {
+            sync.parent = true;
+          }
         } else {
           sync.main = false;
           sync.group = agenda.rtevi;
@@ -3620,16 +3624,16 @@ export class EventService extends BaseService {
 
     // 判断是否为他人共享的重复主日程
     // 接受当时无法发出拉取子日程请求的时候,如何处理,需要设计方案
-    if (current.ui && current.ui != UserConfig.account.id && !current.rtevi && current.rfg == RepeatFlag.Repeat) {
-      // 拉取子日程
-      let pull: PullInData = new PullInData();
-
-      pull.type = "Agenda#Group";
-      pull.d.push(evi);
-
-      // 发送下载日程请求
-      await this.dataRestful.pull(pull);
-    }
+    // if (current.ui && current.ui != UserConfig.account.id && !current.rtevi && current.rfg == RepeatFlag.Repeat) {
+    //   // 拉取子日程
+    //   let pull: PullInData = new PullInData();
+    //
+    //   pull.type = "Agenda#Group";
+    //   pull.d.push(evi);
+    //
+    //   // 发送下载日程请求
+    //   await this.dataRestful.pull(pull);
+    // }
 
     return current;
   }

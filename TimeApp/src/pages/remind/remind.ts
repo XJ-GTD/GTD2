@@ -207,6 +207,7 @@ export class RemindPage {
         columnWidth: '100px',
         options:
           [
+            {text: '', value: 0},
             {text: '5分钟', value: 5},
             {text: '10分钟', value: 10},
             {text: '15分钟', value: 15},
@@ -221,6 +222,8 @@ export class RemindPage {
           ]
       }
     ];
+
+    this.tiqianvalue = "1 0 0 5";
 
     if (this.navParams && this.navParams.data) {
       let value = this.navParams.data.value;
@@ -297,6 +300,10 @@ export class RemindPage {
     }
     let dtsplit = new Array<string>();
     let time;
+    if (this.tiqianvalue == "1 0 0 0"){
+      return;
+    }
+
     dtsplit = this.tiqianvalue.split(" ");
     if (dtsplit.length < 4) {
       return;
