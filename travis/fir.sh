@@ -15,8 +15,8 @@ if [ $TRAVIS_OS_NAME = 'osx' ]; then
         #ls "/Applications/Xcode.app/Contents/Applications"
         #ls "/Applications/Xcode.app/Contents/Applications/Application Loader.app/Contents/Frameworks"
         #ls "/Applications/Xcode.app/Contents/Applications/Application Loader.app/Contents/Frameworks/ITunesSoftwareService.framework/Versions/A/Support"
-        alias altool='/Applications/Xcode.app/Contents/Applications/Application Loader.app/Contents/Frameworks/ITunesSoftwareService.framework/Versions/A/Support/altool'
-        source ~/.bash_profile
+        cd '/Applications/Xcode.app/Contents/Applications/Application Loader.app/Contents/Frameworks/ITunesSoftwareService.framework/Versions/A/Support/'
+
         altool --validate-app -f $TRAVIS_BUILD_DIR/build/debug/$IOS_APP_NAME.ipa -t ios -u $APPSTORE_USERNAME -p $APPSTORE_PASSWORD
 
         echo "upload to fir.im"
