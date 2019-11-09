@@ -82,7 +82,7 @@ function clean(datasource)
     var taskRunAt = {};
     taskRunAt["eventId"] = "QUARTZ_CRON_5M",
     taskRunAt["filters"] = [
-      {name: "yyyy", value: d.getFullYear()},
+      {name: "yyyy", value: d.getFullYear() + ""},
       {name: "MM", value: fillzero(d.getMonth() + 1, 2)},
       {name: "dd", value: fillzero(d.getDate(), 2)},
       {name: "HH", value: fillzero(d.getHours(), 2)},

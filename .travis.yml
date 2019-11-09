@@ -48,6 +48,9 @@ matrix:
         casks:
         - github
       chrome: beta
+    cache:
+      directories:
+      - "$HOME/build/leonxi/largefiles/"
   allow_failures:
     - os: osx
 #before_cache:
@@ -57,6 +60,7 @@ matrix:
 #  - rm -rf $HOME/.gradle/caches/*/plugin-resolution/
 #cache:
 #  directories:
+#  - "$HOME/build/leonxi/largefiles/"
 #  - "$HOME/.gradle/caches/"
 #  - "$HOME/.gradle/wrapper/"
 #  - "$HOME/Library/Caches/Yarn/v1/"
@@ -77,11 +81,13 @@ before_install:
   - gem install fir-cli
   - cp $TRAVIS_BUILD_DIR/config/build.gradle $TRAVIS_BUILD_DIR/TimeApp/build.gradle
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sed -i 's/905/'$TRAVIS_BUILD_NUMBER'/g' $TRAVIS_BUILD_DIR/TimeApp/config.xml ; fi
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then sed -i '' 's/22/'$TRAVIS_BUILD_NUMBER'/g' $TRAVIS_BUILD_DIR/TimeApp/config.xml ; fi
   - cd TimeApp
 before_script:
   - pwd
   - ionic cordova plugin add $TRAVIS_BUILD_DIR/BaiduSpeechAndTTS
-  - ionic cordova plugin add cordova-plugin-swift-support cordova-plugin-app-version cordova-sqlite-storage cordova-plugin-inappbrowser cordova-plugin-camera@4.0.3 cordova-plugin-chooser cordova-plugin-statusbar uk.co.workingedge.cordova.plugin.sqliteporter cordova-sqlite-storage cordova-plugin-whitelist com.telerik.plugins.nativepagetransitions cordova-plugin-nativeaudio cordova-plugin-vibration cordova-plugin-file-transfer cordova-plugin-local-notification cordova-plugin-ionic-webview cordova-plugin-splashscreen ionic-plugin-keyboard cordova-plugin-device cordova-plugin-console cordova-plugin-file cordova-plugin-filechooser cordova-plugin-filepath cordova-plugin-file-opener2 cordova-plugin-calendar cordova-plugin-advanced-http cordova-plugin-android-permissions cordova-plugin-background-mode cordova-plugin-contacts cordova-clipboard cordova-plugin-network-information cordova-plugin-screen-orientation
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then ionic cordova plugin add cordova-plugin-swift-support ; fi
+  - ionic cordova plugin add cordova-plugin-app-version cordova-sqlite-storage cordova-plugin-inappbrowser cordova-plugin-camera@4.0.3 cordova-plugin-chooser cordova-plugin-statusbar uk.co.workingedge.cordova.plugin.sqliteporter cordova-sqlite-storage cordova-plugin-whitelist com.telerik.plugins.nativepagetransitions cordova-plugin-nativeaudio cordova-plugin-vibration cordova-plugin-file-transfer cordova-plugin-local-notification cordova-plugin-ionic-webview cordova-plugin-splashscreen ionic-plugin-keyboard cordova-plugin-device cordova-plugin-console cordova-plugin-file cordova-plugin-filechooser cordova-plugin-filepath cordova-plugin-file-opener2 cordova-plugin-calendar cordova-plugin-advanced-http cordova-plugin-android-permissions cordova-plugin-background-mode cordova-plugin-contacts cordova-clipboard cordova-plugin-network-information cordova-plugin-screen-orientation
   - ionic cordova plugin add https://github.com/apache/cordova-plugin-network-information#master --force
   - ionic cordova plugin add https://github.com/xiaoji-duan/jpush-phonegap-plugin.git --variable APP_KEY=$JPUSH_API_KEY
   - ionic cordova plugin add https://github.com/xiaoji-duan/cordova-plugin-rabbitmq.git
@@ -98,13 +104,14 @@ script:
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then ls $TRAVIS_BUILD_DIR/TimeApp/node_modules/swiper/js/ ; fi
   - npm run clean
   - npm run build
-  - npm run test-coverage
-  - dos2unix -k $TRAVIS_BUILD_DIR/travis/upload-coverage.sh
-  - sh $TRAVIS_BUILD_DIR/travis/upload-coverage.sh
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then npm run test-coverage ; fi
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then dos2unix -k $TRAVIS_BUILD_DIR/travis/upload-coverage.sh ; fi
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sh $TRAVIS_BUILD_DIR/travis/upload-coverage.sh ; fi
   - dos2unix -k $TRAVIS_BUILD_DIR/travis/build.sh
   - sh $TRAVIS_BUILD_DIR/travis/build.sh
 after_script:
-  - dos2unix -k sh $TRAVIS_BUILD_DIR/travis/fir.sh $TRAVIS_BUILD_DIR/travis/remove-keys.sh
+  - dos2unix -k $TRAVIS_BUILD_DIR/travis/fir.sh
+  - dos2unix -k $TRAVIS_BUILD_DIR/travis/remove-keys.sh
   - sh $TRAVIS_BUILD_DIR/travis/fir.sh
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then sh $TRAVIS_BUILD_DIR/travis/remove-keys.sh ; fi
 env:

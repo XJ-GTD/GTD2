@@ -240,8 +240,8 @@ BScroll.use(InfinityScroll);
                   </div>
                   <div class="line font-small">
                     <div class="person" *ngIf="currentuser != event.ui && event.ui != ''">
-                      来自：{{event.ui | formatuser: currentuser: friends}}</div>
-                    <div class="person" *ngIf="currentuser == event.ui">自己</div>
+                      来自：{{event.ui | formatuser: currentuser: friends}} ({{event.apn}} / {{event.pn}}, {{event.fj}})</div>
+                    <div class="person" *ngIf="currentuser == event.ui">自己 ({{event.apn}} / {{event.pn}}, {{event.fj}})</div>
                     <!--<div class="invite" *ngIf="event.invitestatus != inviteaccept && event.invitestatus != invitereject"-->
                     <!--end><span (click)="rejectInvite($event, event)">拒绝</span><span-->
                     <!--(click)="acceptInvite($event, event)">接受</span></div>-->

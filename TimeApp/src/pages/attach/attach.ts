@@ -52,13 +52,26 @@ import {DataRestful,DownloadInData} from "../../service/restful/datasev";
               </div>
               <div class="line font-normal" leftmargin rightmargin >
                 <div *ngIf="(fja.ext=='PDF'||fja.ext=='pdf')&& (fja.fj !='')" >
-                  <ion-icon class="fas fa-file-pdf" (click)="opnePdf(fja.fjurl)"></ion-icon>
+                  <ion-icon class="fas fa-file-pdf" (click)="opnePdf(fja.fjurl,fja.ext)"></ion-icon>
                 </div>
-                <div *ngIf="(fja.ext=='png'||fja.ext=='PNG'||fja.ext=='jpg'||fja.ext=='JPG'||fja.ext=='bmp'||fja.ext=='BMP'||fja.ext=='mp4'||fja.ext=='MP4')&& (fja.fj !='')">
+                <div *ngIf="(fja.ext=='png'||fja.ext=='PNG'||fja.ext=='jpg'||fja.ext=='JPG'||fja.ext=='bmp'||fja.ext=='BMP')&& (fja.fj !='')">
                       <ion-thumbnail (click)="photoShow(fja.fjurl)">
-                      <img  *ngIf="fja.fjurl!=''" src="{{fja.fjurl}}" />
-                      <img  *ngIf="fja.fjurl ==''" src="{{defaultimg}}" />
+                        <img  *ngIf="fja.fjurl!=''" src="{{fja.fjurl}}" />
+                        <img  *ngIf="fja.fjurl ==''" src="{{defaultimg}}" />
                       </ion-thumbnail>
+                </div>
+                <div *ngIf="(fja.ext=='mp4'||fja.ext=='MP4')&& (fja.fj !='')">
+                    <ion-icon class="fas fa-file-pdf" (click)="opnePdf(fja.fjurl,fja.ext)"></ion-icon>
+                </div>
+                <div *ngIf="(fja.ext=='mp3'||fja.ext=='MP3')&& (fja.fj !='')">
+                    <ion-icon class="fas fa-file-pdf" (click)="opnePdf(fja.fjurl,fja.ext)"></ion-icon>
+                </div>
+                <div *ngIf="(fja.ext=='doc'||fja.ext=='DOC'||fja.ext=='xls'||fja.ext=='XLS'||fja.ext=='ppt'||fja.ext=='PPT'||fja.ext=='DOCX'||fja.ext=='docx'
+                  ||fja.ext=='xlsx'||fja.ext=='XLSX'||fja.ext=='PPTX'||fja.ext=='pptx')&& (fja.fj !='')">
+                    <ion-icon class="fas fa-file-pdf" (click)="opnePdf(fja.fjurl,fja.ext)"></ion-icon>
+                </div>
+                <div *ngIf="(fja.ext=='txt'||fja.ext=='TXT')&& (fja.fj !='')">
+                    <ion-icon class="fas fa-file-pdf" (click)="opnePdf(fja.fjurl,fja.ext)"></ion-icon>
                 </div>
 
                 <div class="icon" *ngIf="fja.ui == currentuser" end>
@@ -166,68 +179,68 @@ export class AttachPage {
       }
     }
 
-      // for(let i: number =0; i<this.fjArray.length; i++) {
-      //   if (this.fjArray[i].fj && this.fjArray[i].ext) {
-      //     //处理历史遗留数据，按照原来的显示
-      //     if (this.util.isJsonString(this.fjArray[i].fj)) {
-      //       //获取新赋值
-      //       let cacheFilePathJson: CacheFilePathJson = new CacheFilePathJson();
-      //       this.fjArray[i].fpjson = generateCacheFilePathJson(this.fjArray[i].fpjson, this.fjArray[i].fj);
-      //       //目前直接在该页面直接存储附件，则直接将文件位置赋值给
-      //       this.fjArray[i].fjurl =this.browserurl+this.fjArray[i].fpjson.remote;
-      //       this.fjArray[i].members = this.members;
-      //       //检查该文件夹下是否存在该文件，如果不存在，则根据remote下载同步该文件
-      //       if (this.fjArray[i].fpjson.local) {
-      //         if (this.util.hasCordova()) {
-      //           let fileName: string  = this.fjArray[i].fpjson.local.substr(1,this.fjArray[i].fpjson.local.length);
-      //           this.file.checkFile(this.file.dataDirectory+this.fjArray[i].fpjson.getCacheDir(),fileName)
-      //           .then(_ => {
-      //             // 文件存在
-      //             this.fjArray[i].fjurl = this.fjArray[i].fpjson.getLocalFilePath(this.file.dataDirectory);
-      //           }})
-      //           .catch(err => {
-      //               //根据remote 拉取文件
-      //               // if (this.fjArray[i].fpjson.remote) {
-      //               //   //根据地址拉取文件
-      //               //   //验证是否为浏览器
-      //               //   if (this.util.hasCordova()) {
-      //               //     //拉取数据
-      //               //     let downloadInData : DownloadInData = new DownloadInData();
-      //               //     downloadInData.id = this.fjArray[i].fpjson.remote;
-      //               //     downloadInData.filepath = this.file.dataDirectory+this.fjArray[i].fpjson.getCacheDir();
-      //               //     this.dataRestful.download(downloadInData);
-      //               //   } else {
-      //               //     this.fjArray[i].fjurl =this.browserurl+this.fjArray[i].fpjson.remote;
-      //               //   }
-      //               // }
-      //           });
-      //         } else {
-      //           this.fjArray[i].fjurl =this.browserurl+this.fjArray[i].fpjson.remote;
-      //         }
-      //       } else {
-      //         if (this.fjArray[i].fpjson.remote) {
-      //           //根据地址拉取文件
-      //           if (this.util.hasCordova()) {
-      //             //拉取数据
-      //             let downloadInData : DownloadInData = new DownloadInData();
-      //             downloadInData.id = this.fjArray[i].fpjson.remote;
-      //             downloadInData.filepath = this.file.dataDirectory+this.fjArray[i].fpjson.getCacheDir();
-      //             this.dataRestful.download(downloadInData);
-      //           } else {
-      //             this.fjArray[i].fjurl =this.browserurl+this.fjArray[i].fpjson.remote;
-      //           }
-      //         }
-      //       }
-      //
-      //     }
-      //     else {
-      //       //历史遗留数据构造
-      //       this.fjArray[i].fjurl = this.fjArray[i].fj;
-      //       this.fjArray[i].members = this.members;
-      //     }
-      //   }
-      // }
-    // }
+    // for(let i: number =0; i<this.fjArray.length; i++) {
+    //     this.fjArray[i].members = this.members;
+    //
+    //     if (this.fjArray[i].ext) {
+    //       //处理历史遗留数据，按照原来的显示
+    //       if (this.util.isJsonString(this.fjArray[i].fj)) {
+    //         //获取新赋值
+    //         let cacheFilePathJson: CacheFilePathJson = new CacheFilePathJson();
+    //         this.fjArray[i].fpjson = generateCacheFilePathJson(this.fjArray[i].fpjson, this.fjArray[i].fj);
+    //         //目前直接在该页面直接存储附件，则直接将文件位置赋值给
+    //         this.fjArray[i].fjurl =this.browserurl+this.fjArray[i].fpjson.remote;
+    //
+    //         //检查该文件夹下是否存在该文件，如果不存在，则根据remote下载同步该文件
+    //         if (this.fjArray[i].fpjson) {
+    //           if (this.util.hasCordova()) {
+    //             let fileName: string  = this.fjArray[i].fpjson.local.substr(1,this.fjArray[i].fpjson.local.length);
+    //             this.file.checkFile(this.file.dataDirectory+this.fjArray[i].fpjson.getCacheDir(),fileName)
+    //             .then(_ => {
+    //               // 文件存在
+    //               this.fjArray[i].fjurl = this.fjArray[i].fpjson.getLocalFilePath(this.file.dataDirectory);
+    //             })
+    //             .catch(err => {
+    //                 //根据remote 拉取文件
+    //                 // if (this.fjArray[i].fpjson.remote) {
+    //                 //   //根据地址拉取文件
+    //                 //   //验证是否为浏览器
+    //                 //   if (this.util.hasCordova()) {
+    //                 //     //拉取数据
+    //                 //     let downloadInData : DownloadInData = new DownloadInData();
+    //                 //     downloadInData.id = this.fjArray[i].fpjson.remote;
+    //                 //     downloadInData.filepath = this.file.dataDirectory+this.fjArray[i].fpjson.getCacheDir();
+    //                 //     this.dataRestful.download(downloadInData);
+    //                 //   } else {
+    //                 //     this.fjArray[i].fjurl =this.browserurl+this.fjArray[i].fpjson.remote;
+    //                 //   }
+    //                 // }
+    //             });
+    //           } else {
+    //             this.fjArray[i].fjurl =this.browserurl+this.fjArray[i].fpjson.remote;
+    //           }
+    //         } else {
+    //           if (this.fjArray[i].fpjson.remote) {
+    //             //根据地址拉取文件
+    //             if (this.util.hasCordova()) {
+    //               //拉取数据
+    //               let downloadInData : DownloadInData = new DownloadInData();
+    //               downloadInData.id = this.fjArray[i].fpjson.remote;
+    //               downloadInData.filepath = this.file.dataDirectory+this.fjArray[i].fpjson.getCacheDir();
+    //               this.dataRestful.download(downloadInData);
+    //             } else {
+    //               this.fjArray[i].fjurl =this.browserurl+this.fjArray[i].fpjson.remote;
+    //             }
+    //           }
+    //         }
+    //       }
+    //       else {
+    //         //历史遗留数据构造
+    //         this.fjArray[i].fjurl = this.fjArray[i].fj;
+    //         this.fjArray[i].members = this.members;
+    //       }
+    //     }
+    //   }
 
   }
 
@@ -337,7 +350,7 @@ export class AttachPage {
     this.chooser.getFile('*/*').then((file) => {
         this.filePath.resolveNativePath(file.uri)
           .then((filePath) => {
-            alert("选择的PDF文件filePath："+JSON.stringify(filePath));
+            //alert("选择的PDF文件filePath："+JSON.stringify(filePath));
             if (filePath != '') {
               let fileName: string = filePath.substr(filePath.lastIndexOf("/") + 1, filePath.length);
               let ext: string = fileName.substr(fileName.lastIndexOf(".") + 1);
@@ -363,7 +376,7 @@ export class AttachPage {
               if(!this.bw) {
                 this.bw = fileName;
               }
-              alert("存储值："+JSON.stringify(this.fjData));
+              //alert("存储值："+JSON.stringify(this.fjData));
               this.file.copyFile(imgFileDir, fileName, this.file.dataDirectory + cacheFilePathJson.getCacheDir(), newFileName);
             }
           })
@@ -423,8 +436,8 @@ export class AttachPage {
     }
   }
   //打开本地PDF
-  opnePdf(fj: string) {
-    this.fileOpener.open(fj,'application/pdf')
+  opnePdf(fj: string, fileType: string) {
+    this.fileOpener.open(fj,this.getFileMimeType(fileType))
     .then(() => console.info('File is opened'))
     .catch(e => console.info('Error opening file', e));
   }
@@ -449,6 +462,13 @@ export class AttachPage {
               // 判断是否是手机
               if (this.util.hasCordova()) {
                 let fileName: string  = attachment.fpjson.local.substr(1, attachment.fpjson.local.length);
+
+                // 本地文件存在，页面上显示本地文件
+                this.file.checkFile(this.file.dataDirectory + attachment.fpjson.getCacheDir(), fileName)
+                .then(_ => {
+                  attachment.fjurl = attachment.fpjson.getLocalFilePath(this.file.dataDirectory);
+                  alert("获取的路径:"+attachment.fjurl);
+                });
               }
             }
         } else {
@@ -459,4 +479,53 @@ export class AttachPage {
     }
   }
 
+  //获取打开的文件类型
+  getFileMimeType(fileType: string): string {
+    let mimeType: string = '';
+    switch (fileType) {
+      case 'txt':
+        mimeType = 'text/plain';
+        break;
+      case 'docx':
+        mimeType = 'application/vnd.openxmlformats-officedocument.wordprocessingml.document';
+        break;
+      case 'doc':
+        mimeType = 'application/msword';
+        break;
+      case 'pptx':
+        mimeType = 'application/vnd.openxmlformats-officedocument.presentationml.presentation';
+        break;
+      case 'ppt':
+        mimeType = 'application/vnd.ms-powerpoint';
+        break;
+      case 'xlsx':
+        mimeType = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
+        break;
+      case 'xls':
+        mimeType = 'application/vnd.ms-excel';
+        break;
+      case 'zip':
+        mimeType = 'application/x-zip-compressed';
+        break;
+      case 'rar':
+        mimeType = 'application/octet-stream';
+        break;
+      case 'pdf':
+        mimeType = 'application/pdf';
+        break;
+      case 'jpg':
+        mimeType = 'image/jpeg';
+        break;
+      case 'png':
+        mimeType = 'image/png';
+        break;
+      // case 'mp4':
+      //     mimeType = 'video/mp4';
+      //     break;
+      default:
+        mimeType = 'application/' + fileType;
+        break;
+    }
+    return mimeType;
+  }
 }

@@ -3348,6 +3348,22 @@ export class EventService extends BaseService {
 
         let sync: SyncData = new SyncData();
 
+        // 发起人删除，参与人变化，参与人接受/拒绝通过服务器判断控制
+        // 不需要在此定义
+        sync.fields.compared.push("evn");             // 主题修改需要同步给参与人
+        sync.fields.compared.push("evd");             // 日期修改需要同步给参与人
+        sync.fields.compared.push("evt");             // 时间修改需要同步给参与人
+        sync.fields.compared.push("sd");              // 开始日期修改需要同步给参与人
+        sync.fields.compared.push("st");              // 开始时间修改需要同步给参与人
+        sync.fields.compared.push("ed");              // 结束日期修改需要同步给参与人
+        sync.fields.compared.push("et");              // 结束时间修改需要同步给参与人
+        sync.fields.compared.push("ct");              // 持续时间修改需要同步给参与人
+        sync.fields.compared.push("adr");             // 地址修改需要同步给参与人
+        sync.fields.compared.push("adrx");            // 地址坐标修改需要同步给参与人
+        sync.fields.compared.push("adry");            // 地址坐标修改需要同步给参与人
+        sync.fields.compared.push("rt");              // 重复修改需要同步给参与人
+        sync.fields.compared.push("rts");             // 重复修改需要同步给参与人
+
         sync.fields.unshared.push("del");             // 删除状态为个人数据不共享给他人
         sync.fields.unshared.push("bz");              // 备注为个人数据不共享给他人
         sync.fields.unshared.push("ji");              // 计划为个人数据不共享给他人
@@ -3602,6 +3618,19 @@ export class EventService extends BaseService {
 
     let saved = await this.saveAgenda(current, origin);
 
+    // 判断是否为他人共享的重复主日程
+    // 接受当时无法发出拉取子日程请求的时候,如何处理,需要设计方案
+    if (current.ui && current.ui != UserConfig.account.id && !current.rtevi && current.rfg == RepeatFlag.Repeat) {
+      // 拉取子日程
+      let pull: PullInData = new PullInData();
+
+      pull.type = "Agenda#Group";
+      pull.d.push(evi);
+
+      // 发送下载日程请求
+      await this.dataRestful.pull(pull);
+    }
+
     return current;
   }
 
@@ -3802,18 +3831,23 @@ export class EventService extends BaseService {
       this.assertEmpty(obi);
 
       let attachments: Array<Attachment> = new Array<Attachment>();
-      let sql: string = `select * from gtd_fj  where del = ? and obt =? and obi = ? order by wtt asc`;
-      let fjs = await this.sqlExce.getExtLstByParam<Attachment>(sql, [DelType.undel,obt,obi]);
-      if(fjs && fjs.length>0) {
-        for (let fj of fjs) {
-          let at: Attachment = {} as Attachment;
-          Object.assign(at, fj);
-          let cacheFilePathJson: CacheFilePathJson = new CacheFilePathJson();
-          cacheFilePathJson.local = "/"+fj.fjn;
-          at.fpjson = cacheFilePathJson;
-          attachments.push(at);
-        }
-      }
+      // let sql: string = `select * from gtd_fj  where del = ? and obt =? and obi = ? order by wtt asc`;
+      // attachments = await this.sqlExce.getLstByParam<Attachment>(sql, [DelType.undel,obt,obi]);
+      // if(fjs && fjs.length>0) {
+      //   for (let fj of fjs) {
+      //     let at: Attachment = {} as Attachment;
+      //     Object.assign(at, fj);
+      //     // let cacheFilePathJson: CacheFilePathJson = new CacheFilePathJson();
+      //     // cacheFilePathJson.local = "/"+fj.fjn;
+      //     // at.fpjson = cacheFilePathJson;
+      //     attachments.push(at);
+      //   }
+      // }
+      let fj = new FjTbl();
+      fj.obi = obi;
+      fj.obt = obt;
+      fj.del = anyenum.DelType.undel;
+      attachments = await this.sqlExce.getLstByParam<Attachment>(fj);
       return attachments;
     }
 
@@ -4733,9 +4767,11 @@ export class EventService extends BaseService {
 
 export interface EventData extends EvTbl {
   //重复设定
-  rtjson :RtJson;
+  rtjson: RtJson;
   //提醒设定
-  txjson :TxJson;
+  txjson: TxJson;
+  //接受人员数
+  apn: number;
 }
 
 //画面传入事件service参数体
