@@ -77,16 +77,16 @@ import {ModiPower} from "../../data.enum";
           
 
           <div class="agendaai" *ngIf="currentAgenda.evi && currentAgenda.todolist">
-            <!--<ion-icon (click)="changeTodolist()" class="font-large-x  fa-star"-->
-                      <!--[class.fad]="currentAgenda.todolist == todoliston"-->
-                      <!--[class.fal]="currentAgenda.todolist != todoliston"></ion-icon>-->
+            <ion-icon (click)="changeTodolist()" class="font-large-x  fa-star"
+                      [class.fad]="currentAgenda.todolist == todoliston"
+                      [class.fal]="currentAgenda.todolist != todoliston"></ion-icon>
 
             <ion-icon class="fal fa-ear font-large-x "></ion-icon>
 
             <ion-icon class="fal fa-microphone font-large-x"></ion-icon>
 
           </div>
-          <span>{{snlength}} / 80 </span>
+          <!--<span>{{snlength}} / 80 </span>-->
           
         </ion-row>
 
