@@ -40,7 +40,7 @@ export class FormatmonthstringPipe implements PipeTransform {
       case 10:
         return "当你感到悲哀痛苦时，最好是去学些什么东西。学习会使你永远立于不败之地。";
       case 11:
-        return "一个能从别人的观念来看事情，能了解别人心灵活动的人，永远不必为自己的前途担心。 ";
+        return "所有的甜蜜都是过滤掉了苦涩的结果。 ";
       case 12:
         return "积极者相信只有推动自己才能推动世界，只要推动自己就能推动世界。";
       default:

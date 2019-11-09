@@ -30,28 +30,28 @@ import {SettingsProvider} from "../../providers/settings/settings";
           </ion-title>
           <div class="toolbar">
             <div (click)="record()" *ngIf="buttons.record">
-              <ion-icon class="fad fa-microphone"></ion-icon>
+              <ion-icon class="fal fa-microphone"></ion-icon>
             </div>
             <div (click)="goRemove()" *ngIf="buttons.remove">
-              <ion-icon class="far fa-eraser"></ion-icon>
+              <ion-icon class="fal fa-eraser"></ion-icon>
             </div>
             <div (click)="goRemove()" *ngIf="buttons.share">
-              <ion-icon class="far fa-share"></ion-icon>
+              <ion-icon class="fal fa-share"></ion-icon>
             </div>
             <div (click)="goRefresh()" *ngIf="buttons.refresh">
-              <ion-icon class="far fa-sync"></ion-icon>
+              <ion-icon class="fal fa-sync"></ion-icon>
             </div>
             <div (click)="create()" *ngIf="buttons.create">
-              <ion-icon class="far fa-plus-square"></ion-icon>
+              <ion-icon class="fal fa-plus-square"></ion-icon>
             </div>
             <div (click)="save()" *ngIf="buttons.save">
-              <ion-icon class="far fa-check"></ion-icon>
+              <ion-icon class="fal fa-check"></ion-icon>
             </div>
             <div  (click)="goSpeaker()" *ngIf="buttons.speaker">
-              <ion-icon class="far fa-ear"></ion-icon>
+              <ion-icon class="fal fa-ear"></ion-icon>
             </div>
             <div (click)="cancel()" *ngIf="buttons.cancel">
-              <ion-icon class="far fa-times"></ion-icon>
+              <ion-icon class="fal fa-times"></ion-icon>
             </div>
           </div>
         </ion-toolbar>

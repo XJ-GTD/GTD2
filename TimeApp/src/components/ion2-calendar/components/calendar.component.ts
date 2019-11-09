@@ -52,22 +52,22 @@ export const ION_CAL_VALUE_ACCESSOR: Provider = {
           </div>
           <div class="tool">
             <div float-right (click)="gotoToday()">
-              <ion-icon class="fad fa-calendar-alt"></ion-icon>
-            </div>
-            <div float-right (click)="newAgenda()">
-              <ion-icon class="fad fa-calendar-edit"></ion-icon>
-            </div>
-            <div float-right (click)="newMome()">
-              <ion-icon class="fad fa-money-check-edit"></ion-icon>
-            </div>
-            <div float-right (click)="newDay()">
               <ion-icon class="fad fa-calendar-day"></ion-icon>
             </div>
+            <div float-right (click)="newAgenda()">
+              <ion-icon class="fal fa-calendar-edit"></ion-icon>
+            </div>
+            <div float-right (click)="newMome()">
+              <ion-icon class="fal fa-file-signature"></ion-icon>
+            </div>
+            <div float-right (click)="newDay()">
+              <ion-icon class="fal fa-calendar-exclamation"></ion-icon>
+            </div>
             <div float-right (click)="todoList()">
-              <ion-icon class="fad fa-list"></ion-icon>
+              <ion-icon class="far fa-list"></ion-icon>
             </div>
             <div float-right (click)="aTDay()">
-              <ion-icon class="fad fa-receipt">@</ion-icon>
+              <ion-icon class="far fa-paperclip"></ion-icon>
             </div>
 
           </div>

@@ -26,40 +26,40 @@ import {StatusType} from "../../data.enum";
           </ion-title>
           <div class="toolbar">
             <div (click)="goRecord()" *ngIf="buttons.record">
-              <ion-icon class="fad fa-microphone"></ion-icon>
+              <ion-icon class="fal fa-microphone"></ion-icon>
             </div>
 
             <div (click)="goRemove()" *ngIf="buttons.remove">
-              <ion-icon class="fad fa-trash"></ion-icon>
+              <ion-icon class="fal fa-trash"></ion-icon>
             </div>
 
             <div  (click)="goShare()" *ngIf="buttons.share">
-              <ion-icon class="fad fa-share"></ion-icon>
+              <ion-icon class="fal fa-share"></ion-icon>
             </div>
 
 
             <div  (click)="goCreate()" *ngIf="buttons.create">
-              <ion-icon class="fad fa-plus-square"></ion-icon>
+              <ion-icon class="fal fa-plus-square"></ion-icon>
             </div>
 
             <div  (click)="goSave()" *ngIf="buttons.save">
-              <ion-icon class="fad fa-save"></ion-icon>
+              <ion-icon class="fal fa-save"></ion-icon>
             </div>
 
             <div  (click)="goSpeaker()" *ngIf="buttons.speaker">
-              <ion-icon class="fad fa-ear"></ion-icon>
+              <ion-icon class="fal fa-ear"></ion-icon>
             </div>
 
             <div  (click)="goAccept()" *ngIf="buttons.accept">
-              <ion-icon class="fad fa-hands-helping"></ion-icon>
+              <ion-icon class="fal fa-hands-helping"></ion-icon>
             </div>
 
             <div  (click)="goReject()" *ngIf="buttons.reject">
-              <ion-icon class="fad fa-recycle"></ion-icon>
+              <ion-icon class="fal fa-recycle"></ion-icon>
             </div>
 
             <div (click)="goBack()" *ngIf="buttons.cancel">
-              <ion-icon class="fad fa-undo"></ion-icon>
+              <ion-icon class="fal fa-undo"></ion-icon>
             </div>
           </div>
         </ion-toolbar>
