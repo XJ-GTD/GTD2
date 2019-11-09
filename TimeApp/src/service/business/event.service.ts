@@ -3382,6 +3382,10 @@ export class EventService extends BaseService {
         // 非重复日程/重复日程的第一条需要通知
         if (!agenda.rtevi || agenda.rfg == RepeatFlag.RepeatToOnly) {
           sync.main = true;
+
+          if (agenda.rfg == RepeatFlag.Repeat) {
+            sync.parent = true;
+          }
         } else {
           sync.main = false;
           sync.group = agenda.rtevi;

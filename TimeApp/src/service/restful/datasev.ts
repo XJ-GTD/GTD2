@@ -99,6 +99,7 @@ export class SyncData {
   title: string;          // 数据标题, 用于通知时使用
   datetime: string;       // 数据指定日时, 用于通知时使用
   main: boolean = false;  // 是否主数据, 用于判断是否需要通知(重复数据只需要第一条主数据进行通知)
+  parent: boolean = false;// 是否父数据, 用于判断是否需要拉取子数据
   group: string = "";     // 子日程属于哪个主日程，用于服务器对数据进行管理，主日程没有接受，子日程不同步给参与人
   to: Array<string> = new Array<string>();  // 被共享人手机号(可以为空, 表示非共享数据)
   security: SyncDataSecurity = SyncDataSecurity.None;   // None(非共享/多设备间同步), SelfModify(只有发起人可以修改), ShareModify(所有人都可以修改), ShareModifyWithoutSender(共享后发起人本地删除)
