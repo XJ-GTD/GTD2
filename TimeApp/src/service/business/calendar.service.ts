@@ -2669,9 +2669,23 @@ export class CalendarService extends BaseService {
       return days;
     }, days);
 
-    let sqlevents: string = `select * from gtd_ev where substr(evd, 1, 7) = '${month}' AND del <> '${DelType.del}' order by evd asc, evt asc`;
+    //let sqlevents: string = `select * from gtd_ev where substr(evd, 1, 7) = '${month}' AND del <> '${DelType.del}' order by evd asc, evt asc`;
 
-    monthActivity.events = await this.sqlExce.getExtList<EventData>(sqlevents) || new Array<EventData>();
+    let sqleventcounts: string = `select evp.*,
+                                   sum(case when ifnull(fj.fji, '') = '' then 0 else 1 end) fj
+                            from (select ev.*,
+                                         sum(case when ifnull(par.pari, '') = '' then 0 else 1 end) pn,
+                                         sum(case when ifnull(par.pari, '') = '' then 0 when ifnull(par.sdt, '') = ?4 then 1 else 0 end) apn
+                                    from (select * from gtd_ev where substr(evd, 1, 7) = ?1 AND del <> ?2) ev
+                                    left join gtd_par par
+                                    on par.obt = ?3 and par.del <> ?2 and par.obi = ev.evi
+                                    group by ev.evi) evp
+                            left join gtd_fj fj
+                            on fj.obt = ?3 and fj.del <> ?2 and fj.obi = evp.evi
+                            group by evp.evi`
+
+    //monthActivity.events = await this.sqlExce.getExtList<EventData>(sqlevents) || new Array<EventData>();
+    monthActivity.events = await this.sqlExce.getExtLstByParam<EventData>(sqleventcounts, [month, DelType.del, ObjectType.Event, MemberShareState.Accepted]) || new Array<EventData>();
 
     days = monthActivity.events.reduce((days, value) => {
       let day: string = value.evd;

@@ -4754,9 +4754,11 @@ export class EventService extends BaseService {
 
 export interface EventData extends EvTbl {
   //重复设定
-  rtjson :RtJson;
+  rtjson: RtJson;
   //提醒设定
-  txjson :TxJson;
+  txjson: TxJson;
+  //接受人员数
+  apn: number;
 }
 
 //画面传入事件service参数体
