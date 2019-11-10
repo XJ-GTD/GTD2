@@ -140,6 +140,7 @@ export class AttachPage {
       this.file.checkDir(this.file.dataDirectory, '/cached')
       .then(_ => console.log('Directory exists'))
       .catch(err => {
+        alert("检查文件夹不存在："+err);
         alert("开始创建文件，文件路径："+this.file.dataDirectory+"/cached");
         this.file.createDir(this.file.dataDirectory, "cached", true).then(result => {
           console.log("success");
