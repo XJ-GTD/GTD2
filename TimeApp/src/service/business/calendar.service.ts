@@ -2840,7 +2840,7 @@ export class CalendarService extends BaseService {
           // 增加接受参与人数量处理
           event.apn = event.apn || 0;
           event.pn = event.pn || 0;
-          event.fj = event.fj || 0;
+          event.fj = event.fj || "0";
 
           if (index >= 0) {
             // 更新/删除
