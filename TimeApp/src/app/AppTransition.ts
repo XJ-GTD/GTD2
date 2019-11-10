@@ -86,7 +86,7 @@ export class ModalFromTopEnter extends PageTransition {
     const wrapper = new Animation(this.plt, ele.querySelector('.modal-wrapper'));
     wrapper.fromTo('transform', 'translateY(-100%)', 'translateY(0)');
     const contentWrapper = new Animation(this.plt, ele.querySelector('ion-content.content'));
-    contentWrapper.beforeStyles({ 'height': '60%' });
+    contentWrapper.beforeStyles({ 'height': '100%' });
     this
       .element(this.enteringView.pageRef())
       .duration(300)

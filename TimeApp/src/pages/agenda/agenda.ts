@@ -54,37 +54,40 @@ import {ModiPower} from "../../data.enum";
               (onAccept)="acceptInvite(currentAgenda)" (onReject)="rejectInvite(currentAgenda)"
               [speakData]="currentAgenda.evn">
 
-      <ion-grid
-        [ngStyle]="{'border-left': (!currentAgenda.evi || !currentAgenda.ji || currentAgenda.ji == '')? '0' : ('0.6rem solid ' + (currentAgenda.ji | formatplan: 'color': privateplans)), 'padding-left': (!currentAgenda.evi || !currentAgenda.ji || currentAgenda.ji == '')? '1.2rem' : '0.6rem', 'border-radius': (!currentAgenda.evi || !currentAgenda.ji || currentAgenda.ji == '')? '0' : '4px'}">
+      <ion-grid>
+        <!-- [ngStyle]="{'border-left': (!currentAgenda.evi || !currentAgenda.ji || currentAgenda.ji == '')? '0' : ('0.6rem solid ' + (currentAgenda.ji | formatplan: 'color': privateplans)), 'padding-left': (!currentAgenda.evi || !currentAgenda.ji || currentAgenda.ji == '')? '1.2rem' : '0.6rem', 'border-radius': (!currentAgenda.evi || !currentAgenda.ji || currentAgenda.ji == '')? '0' : '4px'}" -->
         <!--<ion-grid>-->
 
         <!--<div class="plan plan-right"-->
         <!--[ngStyle]="{'background-color': currentAgenda.ji == ''? 'transparent' : (currentAgenda.ji | formatplan: 'color': privateplans )}">-->
         <!--<span>{{currentAgenda.ji | formatplan: 'name': '': privateplans}}</span></div>-->
 
-        <ion-row class="limitRow font-small-x">
-          <span>{{snlength}} / 80 </span>
-        </ion-row>
 
         <ion-row class="snRow">
           <div class="sn font-large-x">
             <!--主题-->
             <ion-textarea rows="8" no-margin [(ngModel)]="currentAgenda.evn" (ionChange)="changeTitle()"
                           [readonly]="originAgenda.evi && originAgenda.ui != currentuser && (originAgenda.md != enablechange || originAgenda.invitestatus != acceptedinvite)"
-                          [maxlength]="80"></ion-textarea>
+                          [maxlength]="80">wwwww</ion-textarea>
           </div>
+        </ion-row>
 
+        <ion-row class="limitRow font-small-x">
 
-          <div class="agendatodo" *ngIf="currentAgenda.evi && currentAgenda.todolist">
+          
+
+          <div class="agendaai" *ngIf="currentAgenda.evi && currentAgenda.todolist">
             <ion-icon (click)="changeTodolist()" class="font-large-x  fa-star"
                       [class.fad]="currentAgenda.todolist == todoliston"
                       [class.fal]="currentAgenda.todolist != todoliston"></ion-icon>
 
-            <ion-icon class="fad fa-ear font-large-x "></ion-icon>
+            <ion-icon class="fal fa-ear font-large-x "></ion-icon>
 
-            <ion-icon class="fad fa-microphone font-large-x"></ion-icon>
+            <ion-icon class="fal fa-microphone font-large-x"></ion-icon>
 
           </div>
+          <!--<span>{{snlength}} / 80 </span>-->
+          
         </ion-row>
 
         <ion-row class="optionRow">
@@ -167,7 +170,7 @@ import {ModiPower} from "../../data.enum";
                   <ion-icon class="fal fa-calendar-check "></ion-icon>
                 </span>
                 <span class="content font-normal agendaDate">
-                  时间：{{currentAgenda.evd + " " + currentAgenda.evt | formatedate: "A HH:mm"}}
+                  时间：{{currentAgenda.evd + " " + currentAgenda.evt | formatedate: "A hh:mm"}}
                   ({{currentAgenda.ct | transfromdate: "duration"}})
                 </span>
               </div>

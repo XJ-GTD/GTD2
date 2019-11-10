@@ -917,7 +917,7 @@ export class UtilService {
     return true;
   }
 
-  public createModal(modalPage: any, para: any,type?:ModalTranType): Modal {
+  public createModal(modalPage: any, para?: any,type?:ModalTranType): Modal {
     let opts = {
 
     };

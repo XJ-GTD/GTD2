@@ -12,6 +12,8 @@ import {MemoData, MemoService} from "../../service/business/memo.service";
 import {AipPage} from "../aip/aip";
 import {TdlPage} from "../tdl/tdl";
 import {TestDataService} from "../../service/testData.service";
+import {UtilService} from "../../service/util-service/util.service";
+import {ModalTranType} from "../../data.enum";
 
 /**
  * Generated class for the 首页 page.
@@ -72,7 +74,8 @@ export class HPage {
               private feedback: FeedbackService,
               private  momserv: MemoService,
               private testDataService: TestDataService,
-              private emitService: EmitService,) {
+              private emitService: EmitService,
+              private util:UtilService) {
 
   }
 
@@ -132,13 +135,12 @@ export class HPage {
   }
 
   todoList(day ?: CalendarDay) {
-    this.modalCtr.create(DataConfig.PAGE._DO_PAGE).present();
+    this.util.createModal(DataConfig.PAGE._DO_PAGE,null,ModalTranType.top).present();
   }
 
   aTday(day ?: CalendarDay) {
-    this.modalCtr.create(DataConfig.PAGE._DO_PAGE).present();
+    this.util.createModal(DataConfig.PAGE._DO_PAGE,null,ModalTranType.top).present();
   }
-
 
   newAgenda(day ?: CalendarDay) {
 
@@ -151,7 +153,7 @@ export class HPage {
     }
 
     this.feedback.audioPress();
-    this.modalCtr.create(DataConfig.PAGE._AGENDA_PAGE, p).present();
+    this.util.createModal(DataConfig.PAGE._AGENDA_PAGE,p,ModalTranType.scale).present();
   }
 
 
@@ -165,13 +167,13 @@ export class HPage {
     }
 
     this.feedback.audioPress();
-    this.modalCtr.create(DataConfig.PAGE._COMMEMORATIONDAY_PAGE, p).present();
+    this.util.createModal(DataConfig.PAGE._COMMEMORATIONDAY_PAGE,p,ModalTranType.scale).present();
   }
 
   newMome(day ?: CalendarDay) {
 
     let todayday: string = moment().format("YYYY/MM/DD");
-    let modal = this.modalCtr.create(DataConfig.PAGE._MEMO_PAGE, {day: todayday});
+    let modal = this.util.createModal(DataConfig.PAGE._MEMO_PAGE,{day: todayday},ModalTranType.scale);
     modal.onDidDismiss(async (data) => {
       if (data && data.memo && typeof data.memo === 'string') { // 创建新备忘
         let memo: MemoData = {} as MemoData;
@@ -184,6 +186,5 @@ export class HPage {
     });
     modal.present();
   }
-
 
 }
