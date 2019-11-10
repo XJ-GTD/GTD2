@@ -2672,6 +2672,7 @@ export class CalendarService extends BaseService {
     //let sqlevents: string = `select * from gtd_ev where substr(evd, 1, 7) = '${month}' AND del <> '${DelType.del}' order by evd asc, evt asc`;
 
     let sqleventcounts: string = `select evp.*,
+                                   case when evp.ui <> ?5 then evp.apn + 1 else evp.apn end apn,
                                    sum(case when ifnull(fj.fji, '') = '' then 0 else 1 end) fj
                             from (select ev.*,
                                          sum(case when ifnull(par.pari, '') = '' then 0 else 1 end) pn,
@@ -2685,7 +2686,7 @@ export class CalendarService extends BaseService {
                             group by evp.evi`
 
     //monthActivity.events = await this.sqlExce.getExtList<EventData>(sqlevents) || new Array<EventData>();
-    monthActivity.events = await this.sqlExce.getExtLstByParam<EventData>(sqleventcounts, [month, DelType.del, ObjectType.Event, MemberShareState.Accepted]) || new Array<EventData>();
+    monthActivity.events = await this.sqlExce.getExtLstByParam<EventData>(sqleventcounts, [month, DelType.del, ObjectType.Event, MemberShareState.Accepted, UserConfig.account.id]) || new Array<EventData>();
 
     days = monthActivity.events.reduce((days, value) => {
       let day: string = value.evd;
@@ -2838,7 +2839,7 @@ export class CalendarService extends BaseService {
           Object.assign(event, activity);
 
           // 增加接受参与人数量处理
-          event.apn = event.apn || 0;
+          event.apn = event.apn || (event.ui != UserConfig.account.id)? 1 : 0;
           event.pn = event.pn || 0;
           event.fj = event.fj || "0";
 
