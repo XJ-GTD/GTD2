@@ -450,6 +450,7 @@ export class AttachPage {
     //清空数据
     this.fjArray = new Array<Attachment>();
     this.fjArray = await this.eventService.selectAttachments(this.obt,this.obi);
+    alert("刷新获取的值:"+JSON.stringify(this.fjArray));
     for (let attachment of this.fjArray) {
       attachment.members = this.members;
       // 判断是否是残留数据或文字附件
@@ -467,7 +468,6 @@ export class AttachPage {
                 this.file.checkFile(this.file.dataDirectory + attachment.fpjson.getCacheDir(), fileName)
                 .then(_ => {
                   attachment.fjurl = attachment.fpjson.getLocalFilePath(this.file.dataDirectory);
-                  alert("获取的路径:"+attachment.fjurl);
                 });
               }
             }
