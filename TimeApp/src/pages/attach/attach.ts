@@ -140,10 +140,13 @@ export class AttachPage {
       this.file.checkDir(this.file.dataDirectory, '/cached')
       .then(_ => console.log('Directory exists'))
       .catch(err => {
+        alert("开始创建文件，文件路径："+this.file.dataDirectory+"/cached");
         this.file.createDir(this.file.dataDirectory, "cached", true).then(result => {
-          console.log("success")
+          console.log("success");
+          alert("文件路径创建成功");
         }).catch(err => {
-          console.log("err:" + JSON.stringify(err))
+          console.log("err:" + JSON.stringify(err));
+          alert("文件路径创建失败");
         })
       });
     }
@@ -350,7 +353,7 @@ export class AttachPage {
     this.chooser.getFile('*/*').then((file) => {
         this.filePath.resolveNativePath(file.uri)
           .then((filePath) => {
-            //alert("选择的PDF文件filePath："+JSON.stringify(filePath));
+            alert("选择的PDF文件filePath："+JSON.stringify(filePath));
             if (filePath != '') {
               let fileName: string = filePath.substr(filePath.lastIndexOf("/") + 1, filePath.length);
               let ext: string = fileName.substr(fileName.lastIndexOf(".") + 1);
