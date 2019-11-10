@@ -450,12 +450,11 @@ export class AttachPage {
     //清空数据
     this.fjArray = new Array<Attachment>();
     this.fjArray = await this.eventService.selectAttachments(this.obt,this.obi);
-    alert("刷新获取的值:"+JSON.stringify(this.fjArray));
     for (let attachment of this.fjArray) {
       attachment.members = this.members;
       // 判断是否是残留数据或文字附件
       if (attachment.ext) {
-        if (this.util.isJsonString(attachment.fj)) {
+        if (await this.util.isJsonString(attachment.fj)) {
             attachment.fpjson = generateCacheFilePathJson(attachment.fpjson, attachment.fj);
             // 附件存储JSON是否存在
             if (attachment.fpjson) {
