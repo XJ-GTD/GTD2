@@ -2837,6 +2837,11 @@ export class CalendarService extends BaseService {
           let event: EventData = {} as EventData;
           Object.assign(event, activity);
 
+          // 增加接受参与人数量处理
+          event.apn = event.apn || 0;
+          event.pn = event.pn || 0;
+          event.fj = event.fj || 0;
+
           if (index >= 0) {
             // 更新/删除
             if (event.del == DelType.del) {
