@@ -154,7 +154,7 @@ export class AttachPage {
 
       // 判断是否是残留数据或文字附件
       if (attachment.ext) {
-        if (this.util.isJsonString(attachment.fj)) {
+        if (attachment.fj.indexOf('/cached')>0) {
             attachment.fpjson = generateCacheFilePathJson(attachment.fpjson, attachment.fj);
 
             // 附件存储JSON是否存在
@@ -454,7 +454,7 @@ export class AttachPage {
       attachment.members = this.members;
       // 判断是否是残留数据或文字附件
       if (attachment.ext) {
-        if (await this.util.isJsonString(attachment.fj)) {
+        if (attachment.fj.indexOf('/cached')>0) {
             attachment.fpjson = generateCacheFilePathJson(attachment.fpjson, attachment.fj);
             // 附件存储JSON是否存在
             if (attachment.fpjson) {
