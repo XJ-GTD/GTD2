@@ -140,18 +140,18 @@ export class AttachPage {
       this.file.checkDir(this.file.externalDataDirectory, '/cached')
       .then(_ => console.log('Directory exists'))
       .catch(err => {
-        alert("检查文件夹不存在："+err);
-        alert("开始创建文件，文件路径："+this.file.externalDataDirectory+"/cached");
+        //alert("检查文件夹不存在："+err);
+        //alert("开始创建文件，文件路径："+this.file.externalDataDirectory+"/cached");
         this.file.createDir(this.file.externalDataDirectory, "cached", true).then(result => {
           console.log("success");
-          alert("文件路径创建成功");
+          //alert("文件路径创建成功");
         }).catch(err => {
           console.log("err:" + JSON.stringify(err));
-          alert("文件路径创建失败");
+          //alert("文件路径创建失败");
         })
       });
     }
-
+    alert("初始化数据："+JSON.stringify(this.fjArray));
     // 不进行自动下载
     for (let attachment of this.fjArray) {
       attachment.members = this.members;
@@ -425,6 +425,7 @@ export class AttachPage {
       this.util.loadingStart();
       retAt = await this.eventService.saveAttachment(this.fjData);
       this.util.loadingEnd();
+      alert("上传后的数据："+JSON.stringify(retAt));
       this.fjArray.push(retAt);
       this.fjData = {} as Attachment;
       this.fjData.obt = this.obt;
@@ -454,12 +455,14 @@ export class AttachPage {
     //清空数据
     this.fjArray = new Array<Attachment>();
     this.fjArray = await this.eventService.selectAttachments(this.obt,this.obi);
+    alert("刷新获取的数据："+JSON.stringify(this.fjArray));
     for (let attachment of this.fjArray) {
       attachment.members = this.members;
       // 判断是否是残留数据或文字附件
       if (attachment.ext) {
         if (attachment.fj.indexOf('/cached')>0) {
             attachment.fpjson = generateCacheFilePathJson(attachment.fpjson, attachment.fj);
+
             // 附件存储JSON是否存在
             if (attachment.fpjson) {
               attachment.fjurl = this.browserurl + attachment.fpjson.remote;
