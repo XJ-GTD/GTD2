@@ -23,7 +23,9 @@ if [ $TRAVIS_OS_NAME = 'osx' ]; then
   ionic cordova build ios
   cat $TRAVIS_BUILD_DIR/TimeApp/platforms/ios/$IOS_APP_NAME/Images.xcassets/AppIcon.appiconset/Contents.json
   rm -Rf $TRAVIS_BUILD_DIR/TimeApp/platforms/ios/$IOS_APP_NAME/Images.xcassets
-  tar -zxf $TRAVIS_BUILD_DIR/TimeAppPatch/images.tar.gz $TRAVIS_BUILD_DIR/TimeApp/platforms/ios/$IOS_APP_NAME/
+  cd $TRAVIS_BUILD_DIR/TimeApp/platforms/ios/$IOS_APP_NAME
+  tar -zxf $TRAVIS_BUILD_DIR/TimeAppPatch/images.tar.gz
+  ls -la
   cd $TRAVIS_BUILD_DIR/TimeApp/platforms/ios
   #echo 'github "rabbitmq/rabbitmq-objc-client" "v0.10.0"' > Cartfile
   #echo "carthage bootstrap"
