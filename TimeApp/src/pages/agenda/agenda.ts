@@ -68,111 +68,49 @@ import {ModiPower} from "../../data.enum";
             <!--主题-->
             <ion-textarea rows="8" no-margin [(ngModel)]="currentAgenda.evn" (ionChange)="changeTitle()"
                           [readonly]="originAgenda.evi && originAgenda.ui != currentuser && (originAgenda.md != enablechange || originAgenda.invitestatus != acceptedinvite)"
-                          [maxlength]="80">wwwww</ion-textarea>
+                          [maxlength]="80">
+            </ion-textarea>
           </div>
-        </ion-row>
 
-        <ion-row class="limitRow font-small-x">
-
-          
-
-          <div class="agendaai" *ngIf="currentAgenda.evi && currentAgenda.todolist">
-            <ion-icon (click)="changeTodolist()" class="font-large-x  fa-star"
-                      [class.fad]="currentAgenda.todolist == todoliston"
-                      [class.fal]="currentAgenda.todolist != todoliston"></ion-icon>
-
-            <ion-icon class="fal fa-ear font-large-x "></ion-icon>
-
-            <ion-icon class="fal fa-microphone font-large-x"></ion-icon>
-
-          </div>
           <!--<span>{{snlength}} / 80 </span>-->
-          
         </ion-row>
+
+        <ion-row class="dateRow">
+          <div class="agendaai">
+            <ion-icon class="fal fa-waveform" *ngIf="currentAgenda.evi"></ion-icon>
+            <ion-icon class="fal fa-microphone" *ngIf="!currentAgenda.evi"></ion-icon>
+          </div>
+
+          <div (click)="changeDatetime()" class="pickDate" *ngIf="currentAgenda.evi">
+            <ion-icon class="fad fa-clock "></ion-icon>
+            <span class="content  agendaDate">
+                  {{currentAgenda.evd | formatedate: "YYYY-M-D"}}
+                </span>
+            <span class="content  agendaDate">
+                      {{currentAgenda.evd + " " + currentAgenda.evt | formatedate: "A hh:mm"}}                 
+                 </span>
+            <span class="content  agendaDate">
+            {{currentAgenda.ct | transfromdate: "duration"}}              
+                 </span>
+            <!--<p class="content  agendaDate">-->
+              <!--<b>时长：</b>{{currentAgenda.ct | transfromdate: "duration"}}-->
+            <!--</p>-->
+          </div>
+
+        </ion-row>
+
 
         <ion-row class="optionRow">
           <ion-grid>
-            <!--附加属性操作-->
+
             <ion-row *ngIf="currentAgenda.evi">
-              <div (click)="changeLocation()" *ngIf="!currentAgenda.adr">
-                <ion-icon class="fal fa-map-marker-alt font-normal"></ion-icon>
-                <span class="font-normal">地址</span>
-              </div>
-              <div (click)="changeComment()" *ngIf="!currentAgenda.bz">
-                <ion-icon class="fal fa-comment-edit font-normal"></ion-icon>
-                <span class="font-normal">备注</span>
-              </div>
-              <div (click)="changePlan()" end>
+              <!--<div (click)="changeComment()" *ngIf="!currentAgenda.bz">-->
+              <!--<ion-icon class="fal fa-comment-edit font-normal"></ion-icon>-->
+              <!--<span class="font-normal">备注</span>-->
+              <!--</div>-->
+              <div (click)="changePlan()">
                 <ion-icon class="fal fa-line-columns  font-normal"></ion-icon>
                 <span class="font-normal">{{currentAgenda.ji | formatplan: 'name' :'加入日历': privateplans}}</span>
-              </div>
-            </ion-row>
-
-            <ion-row *ngIf="currentAgenda.evi">
-              <div>
-                <button ion-button clear (click)="changeInvites()" class="font-normal">
-                  <ion-icon class="fal fa-user-friends font-normal"
-                            *ngIf="currentAgenda.pn <= 0"></ion-icon>
-                  参与人
-                  <corner-badge fa-user-friends *ngIf="currentAgenda.pn > 0"><p>{{currentAgenda.pn}}</p></corner-badge>
-                </button>
-              </div>
-              <div>
-                <button ion-button clear (click)="changeRemind()" class="font-normal">
-                  <ion-icon class="fal fa-bells font-normal" *ngIf="!currentAgenda.txs"></ion-icon>
-                  {{currentAgenda.txs || "提醒"}}
-                  <corner-badge fa-bells *ngIf="currentAgenda.txs"><p>{{currentAgenda.txjson.reminds.length}}</p>
-                  </corner-badge>
-                </button>
-              </div>
-              <div>
-                <button ion-button clear icon-end (click)="changeAttach()" class="font-normal">
-                  <ion-icon class="fal fa-sparkles  font-normal"
-                            *ngIf="!currentAgenda.fj || currentAgenda.fj == '0'"></ion-icon>
-                  补充
-                  <corner-badge fa-sparkles *ngIf="currentAgenda.fj && currentAgenda.fj != '0'">
-                    <p>{{currentAgenda.fj}}</p>
-                  </corner-badge>
-                </button>
-              </div>
-            </ion-row>
-
-            <ion-row *ngIf="currentAgenda.evi">
-              <button ion-button clear (click)="changeRepeat()" class="font-normal repeatButton"
-                      [disabled]="originAgenda.evi && originAgenda.ui != currentuser && originAgenda.md != enablechange">
-                <ion-icon class="fal fa-copy font-normal" *ngIf="!currentAgenda.rts"></ion-icon>
-                {{currentAgenda.rts || "重复"}}
-                <!--<corner-badge *ngIf="currentAgenda.rts" fa-copy><p><i class="fa fa-copy "></i></p></corner-badge>-->
-              </button>
-            </ion-row>
-            <ion-row *ngIf="currentAgenda.bz" (click)="changeComment()" class="contentdata">
-              <span class="content font-normal">
-                  备注：{{currentAgenda.bz}}
-              </span>
-              <span class="content font-normal">
-                <ion-icon class="fal fa-comment-edit font-normal"></ion-icon>  
-              </span>
-                
-            </ion-row>
-
-            <ion-row *ngIf="currentAgenda.adr " (click)="changeLocation()" class="contentdata">
-              <span class="content font-normal">
-                地址：{{currentAgenda.adr}}
-                </span>
-              <span class="content font-normal">
-                <ion-icon class="fal fa-map-marker-alt font-normal"></ion-icon>
-              </span>
-            </ion-row>
-            <ion-row *ngIf="currentAgenda.evd"  class="contentdata">
-              <div (click)="changeDatetime()" class="pickDate">
-                <span class="content font-normal agendaDate">
-                  日期：{{currentAgenda.evd | formatedate: "YYYY年M月D日"}}
-                  <ion-icon class="fal fa-calendar-check "></ion-icon>
-                </span>
-                <span class="content font-normal agendaDate">
-                  时间：{{currentAgenda.evd + " " + currentAgenda.evt | formatedate: "A hh:mm"}}
-                  ({{currentAgenda.ct | transfromdate: "duration"}})
-                </span>
               </div>
               <div end *ngIf="currentAgenda.evi && currentAgenda.ui != currentuser"
                    (click)="openfriend(currentAgenda.ui)">
@@ -181,6 +119,123 @@ import {ModiPower} from "../../data.enum";
                   </span>
               </div>
             </ion-row>
+
+
+            <ion-row *ngIf="currentAgenda.evi" (click)="changeRemind()" >
+              <div class="button-b">
+                <button ion-button clear  >
+                  <ion-icon class="fas fa-bell"></ion-icon>
+                  <span class="content font-normal"  *ngIf="currentAgenda.txs" margin-left>
+                   {{currentAgenda.txs || "提醒"}}
+                </span>
+                  <span class="content font-normal" *ngIf="!currentAgenda.txs " margin-left>
+                    未设置
+                </span>
+                </button>
+              </div>
+            </ion-row>
+
+
+            <ion-row *ngIf="currentAgenda.evi" (click)="changeRepeat()" >
+              <div class="button-b">
+                <button ion-button clear  >
+                  <ion-icon class="fas fa-copy "></ion-icon>
+                  <span class="content font-normal"  *ngIf="currentAgenda.rts" margin-left>
+                  {{currentAgenda.rts || "重复"}}
+                </span>
+                  <span class="content font-normal" *ngIf="!currentAgenda.rts " margin-left>
+                    不重复
+                </span>
+                </button>
+              </div>
+
+              <!--<button ion-button clear class="font-normal repeatButton"-->
+              <!--[disabled]="originAgenda.evi && originAgenda.ui != currentuser && originAgenda.md != enablechange">-->
+              <!--<ion-icon class="fal fa-copy font-normal" *ngIf="!currentAgenda.rts"></ion-icon>-->
+              <!--<span class="content font-normal" *ngIf="currentAgenda.adr ">-->
+              <!--{{currentAgenda.adr}}-->
+              <!--</span>-->
+              <!--<span class="content font-normal" *ngIf="!currentAgenda.adr ">-->
+              <!--未设置-->
+              <!--</span>-->
+              <!---->
+              <!--&lt;!&ndash;<corner-badge *ngIf="currentAgenda.rts" fa-copy><p><i class="fa fa-copy "></i></p></corner-badge>&ndash;&gt;-->
+              <!--</button>-->
+            </ion-row>
+            
+
+            <ion-row  (click)="changeLocation()" *ngIf="currentAgenda.evi">
+              <div class="button-b">
+                <button ion-button clear  >
+                  <ion-icon  class="fas fa-map-marker-alt"></ion-icon>
+                  <span class="content font-normal" *ngIf="currentAgenda.adr " margin-left>
+                {{currentAgenda.adr}}
+              </span>
+                  <span class="content font-normal" *ngIf="!currentAgenda.adr " margin-left>
+                 未设置
+              </span>
+                </button>
+              </div>
+            </ion-row>
+
+
+            
+            <ion-row *ngIf="currentAgenda.evi">
+              <div class="button-b">
+                  <button ion-button clear (click)="changeInvites()" >
+                    <ion-icon class="fal fa-user-friends "></ion-icon>
+                    <corner-badge fa-user-friends *ngIf="currentAgenda.pn > 0"><p>{{currentAgenda.pn}}</p></corner-badge>
+                  </button>
+                  <button ion-button clear (click)="changeAttach()">
+                    <ion-icon class="fal fa-sparkles "></ion-icon>
+                    <corner-badge fa-sparkles *ngIf="currentAgenda.fj && currentAgenda.fj != '0'">
+                      <p>{{currentAgenda.fj}}</p>
+                    </corner-badge>
+                  </button>
+              </div>
+              <div class="button-m" end>
+                <button ion-button clear (click)="changeTodolist()" >
+                  <ion-icon  class="fa-star"
+                            [class.fad]="currentAgenda.todolist == todoliston"
+                            [class.fal]="currentAgenda.todolist != todoliston"></ion-icon>
+                  
+                </button>
+                <button ion-button clear  >
+                  <ion-icon  class="fad fa-at"></ion-icon>
+                </button>
+                <button ion-button clear  >
+                  <ion-icon  class="fad fa-share-alt"></ion-icon>
+                </button>
+
+              </div>
+            </ion-row>
+
+                
+              <!--<div>-->
+                <!--<button ion-button clear class="font-normal">-->
+                  <!--{{currentAgenda.txs || "提醒"}}-->
+                  <!--<corner-badge fa-bells *ngIf="currentAgenda.txs"><p>{{currentAgenda.txjson.reminds.length}}</p>-->
+                  <!--</corner-badge>-->
+                <!--</button>-->
+              <!--</div>-->
+            
+
+
+            <!--<ion-row *ngIf="currentAgenda.bz" (click)="changeComment()" class="contentdata">-->
+              <!--<span class="content font-normal">-->
+                  <!--备注：{{currentAgenda.bz}}-->
+              <!--</span>-->
+              <!--<span class="content font-normal">-->
+                <!--<ion-icon class="fal fa-comment-edit font-normal"></ion-icon>  -->
+              <!--</span>-->
+
+            <!--</ion-row>-->
+            <!--<ion-row *ngIf="currentAgenda.evd" class="contentdata">-->
+     <!---->
+
+
+            <!--</ion-row>-->
+
           </ion-grid>
         </ion-row>
       </ion-grid>
@@ -325,7 +380,7 @@ export class AgendaPage {
       return;
     }
     let enableEdit: boolean = false;
-    if (this.originAgenda.ui != this.currentuser ) { // 受邀人修改权限检查
+    if (this.originAgenda.ui != this.currentuser) { // 受邀人修改权限检查
       enableEdit = false;
     } else {
       enableEdit = true;
@@ -336,7 +391,7 @@ export class AgendaPage {
       ct: this.currentAgenda.ct,
       al: this.currentAgenda.al,
       rfg: this.currentAgenda.rfg,
-      enableEdit:enableEdit
+      enableEdit: enableEdit
     });
     modal.onDidDismiss(async (data) => {
       if (data) {
@@ -572,12 +627,16 @@ export class AgendaPage {
 
     // 受邀人没有接受或者没有修改权限不能修改
     let enableEdit: boolean = false;
-    if (this.originAgenda.ui != this.currentuser ) { // 受邀人修改权限检查
+    if (this.originAgenda.ui != this.currentuser) { // 受邀人修改权限检查
       enableEdit = false;
     } else {
       enableEdit = true;
     }
-    let modal = this.modalCtrl.create(DataConfig.PAGE._REPEAT_PAGE, {value: data, enableEdit: enableEdit,sd:this.currentAgenda.sd});
+    let modal = this.modalCtrl.create(DataConfig.PAGE._REPEAT_PAGE, {
+      value: data,
+      enableEdit: enableEdit,
+      sd: this.currentAgenda.sd
+    });
 
     modal.onDidDismiss(async (data) => {
       if (data && data.rtjson) {
@@ -701,7 +760,7 @@ export class AgendaPage {
     }
     if (this.originAgenda.rfg == RepeatFlag.Repeat) { // 重复
       this.modifyConfirm = this.createConfirm(ConfirmText.Remove);
-    }else{
+    } else {
       this.modifyConfirm = this.createConfirm(ConfirmText.RemoveSimple);
     }
     this.modifyConfirm.present();
@@ -720,7 +779,7 @@ export class AgendaPage {
 
   createConfirm(confirmText: ConfirmText, confirm: ConfirmType = ConfirmType.CurrentOrFutureAll) {
     let buttons: Array<any> = new Array<any>();
-    let title : string = "";
+    let title: string = "";
     if (confirmText == ConfirmText.Remove) {
 
       title = "此为重复日程";
@@ -739,7 +798,7 @@ export class AgendaPage {
           this.doOptionRemove(OperateType.FromSel);
         }
       });
-    }else if (confirmText == ConfirmText.RemoveSimple){
+    } else if (confirmText == ConfirmText.RemoveSimple) {
       title = "是否删除";
       buttons.push({
         text: '确定',
@@ -868,8 +927,8 @@ export class AgendaPage {
   }
 }
 
-enum ConfirmText{
+enum ConfirmText {
   Update = "Update",
   Remove = "Remove",
-  RemoveSimple="RemoveSimple"
+  RemoveSimple = "RemoveSimple"
 }

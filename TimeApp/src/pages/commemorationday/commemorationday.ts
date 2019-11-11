@@ -28,88 +28,201 @@ import {PageBoxComponent} from "../../components/page-box/page-box";
     <page-box title="纪念日" [buttons]="buttons" [data]="currentPlanItem.jti" (onRemove)="goRemove()" (onSave)="save()"
               (onBack)="goBack()">
 
+      <!--<ion-grid>-->
+        <!---->
+        <!--<ion-row class="limitRow font-small-x">-->
+          <!--<span>{{snlength}} / 20 </span>-->
+        <!--</ion-row>-->
+        <!---->
+        <!--<ion-row class="snRow">-->
+          <!--<div class="sn font-large-x">-->
+            <!--&lt;!&ndash;主题&ndash;&gt;-->
+            <!--<ion-textarea rows="8" [(ngModel)]="currentPlanItem.jtn" (ionChange)="changeTitle()" [readonly]="currentPlanItem.jtc == system" [maxlength]="20"></ion-textarea>-->
+          <!--</div>-->
+        <!--</ion-row>-->
+
+        <!--<ion-row class="optionRow">-->
+          <!--<ion-grid>-->
+            <!--&lt;!&ndash;附加属性操作&ndash;&gt;-->
+            <!--<ion-row *ngIf="currentPlanItem.jti">-->
+              <!--<div (click)="changeComment()" *ngIf="!currentPlanItem.bz">-->
+                <!--<ion-icon class="fal fa-comment-edit font-normal"></ion-icon>-->
+                <!--<span class="font-normal">备注</span>-->
+              <!--</div>-->
+              <!--<div *ngIf="currentPlanItem.jtc == system" end>-->
+                <!--<ion-icon class="fal fa-line-columns "></ion-icon>-->
+                <!--<span class="font-normal">{{currentPlanItem.ji | formatplan: 'name' : '加入日历': publicplans}}</span>-->
+              <!--</div>-->
+              <!--<div *ngIf="currentPlanItem.jtc == selfdefine" (click)="changePlan()" end>-->
+                <!--<ion-icon class="fal fa-line-columns "></ion-icon>-->
+                <!--<span class="font-normal">{{currentPlanItem.ji | formatplan: 'name' : '加入日历': privateplans}}</span>-->
+              <!--</div>-->
+            <!--</ion-row>-->
+
+            <!--<ion-row *ngIf="currentPlanItem.jti">-->
+              <!--<div *ngIf="currentPlanItem.jtc == selfdefine">-->
+                <!--<button ion-button clear (click)="changeInvites()" class="font-normal">-->
+                  <!--<ion-icon class="fal fa-user-friends font-normal"-->
+                            <!--*ngIf="currentPlanItem.pn <= 0"></ion-icon>-->
+                  <!--参与人-->
+                  <!--<corner-badge fa-user-friends *ngIf="currentPlanItem.pn > 0"><p>{{currentPlanItem.pn}}</p></corner-badge>-->
+                <!--</button>-->
+              <!--</div>-->
+              <!--<div>-->
+                <!--<button ion-button clear (click)="changeRemind()" class="font-normal">-->
+                  <!--<ion-icon class="fal fa-bells " *ngIf="!currentPlanItem.txs"></ion-icon>-->
+                  <!--{{currentPlanItem.txs || "提醒"}}-->
+                  <!--<corner-badge fa-bells *ngIf="currentPlanItem.txs"><p>{{currentPlanItem.txjson.reminds.length}}</p>-->
+                  <!--</corner-badge>-->
+                <!--</button>-->
+              <!--</div>-->
+            <!--</ion-row>-->
+
+            <!--<ion-row *ngIf="currentPlanItem.jti">-->
+              <!--<button ion-button clear (click)="changeRepeat()" class="font-normal">-->
+                <!--<ion-icon class="fal fa-copy font-normal" *ngIf="!currentPlanItem.rts"></ion-icon>-->
+                <!--{{currentPlanItem.rts || "重复"}}-->
+                <!--<corner-badge *ngIf="currentPlanItem.rts" fa-copy><p><i class="fa fa-copy "></i></p></corner-badge>-->
+              <!--</button>-->
+            <!--</ion-row>-->
+
+            <!--<ion-row *ngIf="currentPlanItem.bz" (click)="changeComment()">-->
+                <!--<span class="content font-normal">-->
+                  <!--备注：{{currentPlanItem.bz}}-->
+                <!--</span>-->
+              <!--<ion-icon class="fal fa-comment-edit font-normal"></ion-icon>-->
+            <!--</ion-row>-->
+
+            <!--<ion-row *ngIf="currentPlanItem.jti && currentPlanItem.sd">-->
+              <!--<div (click)="changeDatetime()">-->
+                <!--<span class="content font-normal">-->
+                  <!--日期：{{currentPlanItem.evd | formatedate: "YYYY年M月D日"}}<br/>-->
+
+                  <!--时间：{{currentPlanItem.sd  + " " + currentPlanItem.st | formatedate: "HH:mm"}}-->
+                <!--</span>-->
+                <!--<ion-icon class="font-normal fal fa-calendar-check "></ion-icon>-->
+              <!--</div>-->
+              <!--<div (click)="changeDatetime()">-->
+              <!--</div>-->
+              <!--<div end *ngIf="currentPlanItem.jtc == selfdefine && currentPlanItem.ui != currentuser">-->
+                <!--<span class="content  font-normal">-->
+                   <!-- -{{currentPlanItem.ui | formatuser: currentPlanItem: friends}}-->
+                  <!--</span>-->
+              <!--</div>-->
+            <!--</ion-row>-->
+          <!--</ion-grid>-->
+        <!--</ion-row>-->
+      <!--</ion-grid>-->
       <ion-grid>
-        
-        <ion-row class="limitRow font-small-x">
-          <span>{{snlength}} / 20 </span>
-        </ion-row>
-        
+
         <ion-row class="snRow">
           <div class="sn font-large-x">
             <!--主题-->
             <ion-textarea rows="8" [(ngModel)]="currentPlanItem.jtn" (ionChange)="changeTitle()" [readonly]="currentPlanItem.jtc == system" [maxlength]="20"></ion-textarea>
+     
           </div>
+
+          <!-- <span>{{snlength}} / 20 </span>-->
         </ion-row>
+
+
+        <ion-row class="dateRow">
+          <div class="agendaai">
+            <ion-icon class="fal fa-waveform" *ngIf="currentPlanItem.jti"></ion-icon>
+            <ion-icon class="fal fa-microphone" *ngIf="!currentPlanItem.jti"></ion-icon>
+          </div>
+
+          <div (click)="changeDatetime()" class="pickDate" *ngIf="currentPlanItem.jti && currentPlanItem.sd">
+            <ion-icon class="fad fa-clock "></ion-icon>
+            <span class="content  agendaDate">
+                  {{currentPlanItem.sd | formatedate: "YYYY-M-D"}}
+                </span>
+            <span class="content  agendaDate">
+                      {{currentPlanItem.sd + " " + currentPlanItem.st | formatedate: "A hh:mm"}}                 
+              </span>
+          </div>
+
+        </ion-row>
+
 
         <ion-row class="optionRow">
           <ion-grid>
-            <!--附加属性操作-->
+
             <ion-row *ngIf="currentPlanItem.jti">
-              <div (click)="changeComment()" *ngIf="!currentPlanItem.bz">
-                <ion-icon class="fal fa-comment-edit font-normal"></ion-icon>
-                <span class="font-normal">备注</span>
-              </div>
-              <div *ngIf="currentPlanItem.jtc == system" end>
+
+              <div *ngIf="currentPlanItem.jtc == system">
                 <ion-icon class="fal fa-line-columns "></ion-icon>
                 <span class="font-normal">{{currentPlanItem.ji | formatplan: 'name' : '加入日历': publicplans}}</span>
               </div>
-              <div *ngIf="currentPlanItem.jtc == selfdefine" (click)="changePlan()" end>
+              <div *ngIf="currentPlanItem.jtc == selfdefine" (click)="changePlan()" >
                 <ion-icon class="fal fa-line-columns "></ion-icon>
                 <span class="font-normal">{{currentPlanItem.ji | formatplan: 'name' : '加入日历': privateplans}}</span>
               </div>
-            </ion-row>
 
-            <ion-row *ngIf="currentPlanItem.jti">
-              <div *ngIf="currentPlanItem.jtc == selfdefine">
-                <button ion-button clear (click)="changeInvites()" class="font-normal">
-                  <ion-icon class="fal fa-user-friends font-normal"
-                            *ngIf="currentPlanItem.pn <= 0"></ion-icon>
-                  参与人
-                  <corner-badge fa-user-friends *ngIf="currentPlanItem.pn > 0"><p>{{currentPlanItem.pn}}</p></corner-badge>
-                </button>
-              </div>
-              <div>
-                <button ion-button clear (click)="changeRemind()" class="font-normal">
-                  <ion-icon class="fal fa-bells " *ngIf="!currentPlanItem.txs"></ion-icon>
-                  {{currentPlanItem.txs || "提醒"}}
-                  <corner-badge fa-bells *ngIf="currentPlanItem.txs"><p>{{currentPlanItem.txjson.reminds.length}}</p>
-                  </corner-badge>
-                </button>
-              </div>
-            </ion-row>
-
-            <ion-row *ngIf="currentPlanItem.jti">
-              <button ion-button clear (click)="changeRepeat()" class="font-normal">
-                <ion-icon class="fal fa-copy font-normal" *ngIf="!currentPlanItem.rts"></ion-icon>
-                {{currentPlanItem.rts || "重复"}}
-                <corner-badge *ngIf="currentPlanItem.rts" fa-copy><p><i class="fa fa-copy "></i></p></corner-badge>
-              </button>
-            </ion-row>
-
-            <ion-row *ngIf="currentPlanItem.bz" (click)="changeComment()">
-                <span class="content font-normal">
-                  备注：{{currentPlanItem.bz}}
-                </span>
-              <ion-icon class="fal fa-comment-edit font-normal"></ion-icon>
-            </ion-row>
-
-            <ion-row *ngIf="currentPlanItem.jti && currentPlanItem.sd">
-              <div (click)="changeDatetime()">
-                <span class="content font-normal">
-                  日期：{{currentPlanItem.evd | formatedate: "YYYY年M月D日"}}<br/>
-
-                  时间：{{currentPlanItem.sd  + " " + currentPlanItem.st | formatedate: "HH:mm"}}
-                </span>
-                <ion-icon class="font-normal fal fa-calendar-check "></ion-icon>
-              </div>
-              <div (click)="changeDatetime()">
-              </div>
-              <div end *ngIf="currentPlanItem.jtc == selfdefine && currentPlanItem.ui != currentuser">
-                <span class="content  font-normal">
-                   -{{currentPlanItem.ui | formatuser: currentPlanItem: friends}}
+              <div end *ngIf="currentPlanItem.jtc == selfdefine && currentPlanItem.ui != currentuser"
+                   (click)="openfriend(currentAgenda.ui)">
+                <span class="content  font-normal person">
+                   发起人：{{currentPlanItem.ui | formatuser: currentPlanItem: friends}}
                   </span>
               </div>
             </ion-row>
+
+            <ion-row  (click)="changeComment()" *ngIf="currentPlanItem.jti">
+              <div class="button-b">
+                <button ion-button clear  >
+                  <ion-icon  class="fas fa-comment-alt-edit"></ion-icon>
+                        <span class="content font-normal"  margin-left>
+                  {{currentPlanItem.bz}}
+                  </span>
+                </button>
+              </div>
+            </ion-row>
+
+            <ion-row *ngIf="currentPlanItem.jti" (click)="changeRemind()" >
+              <div class="button-b">
+                <button ion-button clear  >
+                  <ion-icon class="fas fa-bell"></ion-icon>
+                  <span class="content font-normal"  *ngIf="currentPlanItem.txs" margin-left>
+                   {{currentPlanItem.txs || "提醒"}}
+                </span>
+                  <span class="content font-normal" *ngIf="!currentPlanItem.txs " margin-left>
+                    未设置
+                </span>
+                </button>
+              </div>
+            </ion-row>
+
+
+            <ion-row *ngIf="currentPlanItem.jti" (click)="changeRepeat()" >
+              <div class="button-b">
+                <button ion-button clear  >
+                  <ion-icon class="fas fa-copy "></ion-icon>
+                  <span class="content font-normal"  *ngIf="currentPlanItem.rts" margin-left>
+                  {{currentPlanItem.rts || "重复"}}
+                </span>
+                  <span class="content font-normal" *ngIf="!currentPlanItem.rts " margin-left>
+                    不重复
+                </span>
+                </button>
+              </div>
+            </ion-row>
+
+       
+
+            <ion-row *ngIf="currentPlanItem.jti">
+              <div class="button-b">
+                <button ion-button clear (click)="changeInvites()" >
+                  <ion-icon class="fal fa-user-friends "></ion-icon>
+                  <corner-badge fa-user-friends *ngIf="currentPlanItem.pn > 0"><p>{{currentPlanItem.pn}}</p></corner-badge>
+                </button>
+              </div>
+              <div class="button-m" end>
+                <button ion-button clear  >
+                  <ion-icon  class="fad fa-share-alt"></ion-icon>
+                </button>
+              </div>
+            </ion-row>
+
           </ion-grid>
         </ion-row>
       </ion-grid>
