@@ -10,6 +10,8 @@
     <string>automatic</string>
     <key>stripSwiftSymbols</key>
     <true/>
+    <key>teamID</key>
+    <string>D5ABL43WBA</string>
     <key>uploadSymbols</key>
     <true/>
 </dict>
