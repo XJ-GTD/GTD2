@@ -137,12 +137,12 @@ export class AttachPage {
     }
     //验证缓存文件目录是否存在
     if (this.util.hasCordova()) {
-      this.file.checkDir(this.file.externalDataDirectory, '/cached')
+      this.file.checkDir(this.file.dataDirectory, '/cachefiles')
       .then(_ => console.log('Directory exists'))
       .catch(err => {
         //alert("检查文件夹不存在："+err);
         //alert("开始创建文件，文件路径："+this.file.externalDataDirectory+"/cached");
-        this.file.createDir(this.file.externalDataDirectory, "cached", true).then(result => {
+        this.file.createDir(this.file.dataDirectory, "cachefiles", true).then(result => {
           console.log("success");
           //alert("文件路径创建成功");
         }).catch(err => {
@@ -170,9 +170,9 @@ export class AttachPage {
                 let fileName: string  = attachment.fpjson.local.substr(1, attachment.fpjson.local.length);
 
                 // 本地文件存在，页面上显示本地文件
-                this.file.checkFile(this.file.externalDataDirectory + attachment.fpjson.getCacheDir(), fileName)
+                this.file.checkFile(this.file.dataDirectory + attachment.fpjson.getCacheDir(), fileName)
                 .then(_ => {
-                  attachment.fjurl = attachment.fpjson.getLocalFilePath(this.file.externalDataDirectory);
+                  attachment.fjurl = attachment.fpjson.getLocalFilePath(this.file.dataDirectory);
                 });
               }
             }
@@ -323,7 +323,7 @@ export class AttachPage {
         //this.fjData.fj = this.file.externalDataDirectory + "/timeAppfile/" + fileName;
         this.fjData.fj = JSON.stringify(cacheFilePathJson);
         this.fjData.fpjson = cacheFilePathJson;
-        this.fjData.fjurl = this.fjData.fpjson.getLocalFilePath(this.file.externalDataDirectory);
+        this.fjData.fjurl = this.fjData.fpjson.getLocalFilePath(this.file.dataDirectory);
         this.fjData.ui = this.currentuser;
         this.fjData.del = DelType.undel;
         this.fjData.tb = SyncType.unsynch;
@@ -332,7 +332,7 @@ export class AttachPage {
         if(!this.bw) {
           this.bw = fileName;
         }
-        this.file.copyFile(imgFileDir, fileName, this.file.externalDataDirectory + cacheFilePathJson.getCacheDir(), newFileName);
+        this.file.copyFile(imgFileDir, fileName, this.file.dataDirectory + cacheFilePathJson.getCacheDir(), newFileName);
 
       }
       // let base64Image = 'data:image/jpeg;base64,' + imageData;
@@ -373,7 +373,7 @@ export class AttachPage {
               cacheFilePathJson.local = "/"+newFileName;
               this.fjData.fj = JSON.stringify(cacheFilePathJson);
               this.fjData.fpjson = cacheFilePathJson;
-              this.fjData.fjurl = this.fjData.fpjson.getLocalFilePath(this.file.externalDataDirectory);
+              this.fjData.fjurl = this.fjData.fpjson.getLocalFilePath(this.file.dataDirectory);
               this.fjData.members = this.members;
               //this.fjData.fj = this.file.externalDataDirectory + "/timeAppfile/" + fileName;
               //this.fjArray.push(fjData);
@@ -381,7 +381,7 @@ export class AttachPage {
                 this.bw = fileName;
               }
               //alert("存储值："+JSON.stringify(this.fjData));
-              this.file.copyFile(imgFileDir, fileName, this.file.externalDataDirectory + cacheFilePathJson.getCacheDir(), newFileName);
+              this.file.copyFile(imgFileDir, fileName, this.file.dataDirectory + cacheFilePathJson.getCacheDir(), newFileName);
             }
           })
           .catch(err => console.log(err));
@@ -471,9 +471,9 @@ export class AttachPage {
                 let fileName: string  = attachment.fpjson.local.substr(1, attachment.fpjson.local.length);
 
                 // 本地文件存在，页面上显示本地文件
-                this.file.checkFile(this.file.externalDataDirectory + attachment.fpjson.getCacheDir(), fileName)
+                this.file.checkFile(this.file.dataDirectory + attachment.fpjson.getCacheDir(), fileName)
                 .then(_ => {
-                  attachment.fjurl = attachment.fpjson.getLocalFilePath(this.file.externalDataDirectory);
+                  attachment.fjurl = attachment.fpjson.getLocalFilePath(this.file.dataDirectory);
                 });
               }
             }
