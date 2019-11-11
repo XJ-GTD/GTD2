@@ -151,25 +151,24 @@ export class AttachPage {
         })
       });
     }
-    alert("初始化数据："+JSON.stringify(this.fjArray));
     // 不进行自动下载
     for (let attachment of this.fjArray) {
       attachment.members = this.members;
 
       // 判断是否是残留数据或文字附件
       if (attachment.ext) {
-        if (attachment.fj.indexOf('/cached')>0) {
+        if (this.util.isJsonString(attachment.fj)) {
             attachment.fpjson = generateCacheFilePathJson(attachment.fpjson, attachment.fj);
 
             // 附件存储JSON是否存在
-            if (attachment.fpjson) {
+            if (attachment.fpjson && attachment.fpjson.remote) {
               attachment.fjurl = this.browserurl + attachment.fpjson.remote;
 
               // 判断是否是手机
               if (this.util.hasCordova()) {
                 let fileName: string  = attachment.fpjson.local.substr(1, attachment.fpjson.local.length);
 
-                // 本地文件存在，页面上显示本地文件
+                // 本地文件存在，页面上显示本地文件, 无法形成同步，只能异步改变fjArray
                 this.file.checkFile(this.file.dataDirectory + attachment.fpjson.getCacheDir(), fileName)
                 .then(_ => {
                   attachment.fjurl = attachment.fpjson.getLocalFilePath(this.file.dataDirectory);
@@ -453,28 +452,28 @@ export class AttachPage {
   //刷新数据
   async flushData() {
     //清空数据
-    this.fjArray = new Array<Attachment>();
-    this.fjArray = await this.eventService.selectAttachments(this.obt,this.obi);
-    alert("刷新获取的数据："+JSON.stringify(this.fjArray));
-    for (let attachment of this.fjArray) {
+    let attachments: Array<Attachment> = new Array<Attachment>();
+    attachments = await this.eventService.selectAttachments(this.obt,this.obi);
+    for (let attachment of attachments) {
       attachment.members = this.members;
       // 判断是否是残留数据或文字附件
       if (attachment.ext) {
-        if (attachment.fj.indexOf('/cached')>0) {
+        if (this.util.isJsonString(attachment.fj)) {
             attachment.fpjson = generateCacheFilePathJson(attachment.fpjson, attachment.fj);
 
             // 附件存储JSON是否存在
-            if (attachment.fpjson) {
+            if (attachment.fpjson && attachment.fpjson.remote) {
               attachment.fjurl = this.browserurl + attachment.fpjson.remote;
               // 判断是否是手机
               if (this.util.hasCordova()) {
                 let fileName: string  = attachment.fpjson.local.substr(1, attachment.fpjson.local.length);
 
                 // 本地文件存在，页面上显示本地文件
-                this.file.checkFile(this.file.dataDirectory + attachment.fpjson.getCacheDir(), fileName)
-                .then(_ => {
+                let checked = await this.file.checkFile(this.file.dataDirectory + attachment.fpjson.getCacheDir(), fileName);
+
+                if (checked) {
                   attachment.fjurl = attachment.fpjson.getLocalFilePath(this.file.dataDirectory);
-                });
+                }
               }
             }
         } else {
@@ -483,6 +482,8 @@ export class AttachPage {
         }
       }
     }
+
+    this.fjArray = attachments;
   }
 
   //获取打开的文件类型
