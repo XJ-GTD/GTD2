@@ -17,7 +17,7 @@
     <key>provisioningProfiles</key>
     <dict>
         <key>cn.sh.com.xj.timeApp</key>
-        <string>mwxing-appstore</string>
+        <string>mwxingappstore</string>
     </dict>
 </dict>
 </plist>
