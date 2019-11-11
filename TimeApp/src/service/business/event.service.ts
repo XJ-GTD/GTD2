@@ -4821,7 +4821,7 @@ export interface Attachment extends FjTbl {
 }
 
 export class CacheFilePathJson {
-  cachedir: string = "/cached";
+  cachedir: string = "/cachefiles";
   local: string;
   remote: string;
 
@@ -5310,7 +5310,12 @@ export function generateCacheFilePathJson(fpjson: CacheFilePathJson, fj: string)
   if (!fpjson) {
     if (fj && isJsonString(fj)) {
       fpjson = new CacheFilePathJson();
-      Object.assign(fpjson, JSON.parse(fj));
+
+      // 忽略cachedir目录
+      let srcjson = JSON.parse(fj);
+      delete srcjson.cachedir;
+
+      Object.assign(fpjson, srcjson);
     } else {
       return null;
     }
