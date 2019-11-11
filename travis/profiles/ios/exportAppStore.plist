@@ -14,5 +14,10 @@
     <string>D5ABL43WBA</string>
     <key>uploadSymbols</key>
     <true/>
+    <key>provisioningProfiles</key>
+    <dict>
+        <key>cn.sh.com.xj.timeApp</key>
+        <string>mwxing-appstore</string>
+    </dict>
 </dict>
 </plist>
