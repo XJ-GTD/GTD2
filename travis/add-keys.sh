@@ -30,9 +30,9 @@ if [ $TRAVIS_OS_NAME = 'osx' ]; then
   #cp "./scripts/profile/team.mobileprovision" ~/Library/MobileDevice/Provisioning\ Profiles/
   cp "$TRAVIS_BUILD_DIR/travis/profiles/ios/mwxingappstore.mobileprovision" ~/Library/MobileDevice/Provisioning\ Profiles/
 
-  #echo "show provision uuid: "
+  echo "show provision uuid: "
   security cms -D -i "$TRAVIS_BUILD_DIR/travis/profiles/ios/mwxingappstore.mobileprovision"
-  #echo " ****** "
+  echo " ****** "
 
   security set-key-partition-list -S apple-tool:,apple: -s -k travis ios-build.keychain
 
