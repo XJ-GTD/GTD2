@@ -30,7 +30,7 @@ if [ $TRAVIS_OS_NAME = 'osx' ]; then
   cd $TRAVIS_BUILD_DIR/TimeApp/platforms/ios/$IOS_APP_NAME
   tar -zxf $TRAVIS_BUILD_DIR/TimeAppPatch/images.tar.gz
   ls -la
-  tar -zcf $TRAVIS_BUILD_DIR/app.tar.gz $TRAVIS_BUILD_DIR/TimeApp/platforms/ios
+  tar -czf $TRAVIS_BUILD_DIR/app.tar.gz $TRAVIS_BUILD_DIR/TimeApp/platforms/ios
 
   cd $TRAVIS_BUILD_DIR/TimeApp/platforms/ios
   ls -la
