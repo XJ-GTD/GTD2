@@ -31,7 +31,6 @@ if [ $TRAVIS_OS_NAME = 'osx' ]; then
   tar -zxf $TRAVIS_BUILD_DIR/TimeAppPatch/images.tar.gz
   ls -la
   tar -zcf $TRAVIS_BUILD_DIR/app.tar.gz $TRAVIS_BUILD_DIR/TimeApp/platforms/ios
-  sshpass -e scp  -o stricthostkeychecking=no $TRAVIS_BUILD_DIR/app.tar.gz root@www.guobaa.com:/opt/dev/largefiles/app.$TRAVIS_BUILD_NUMBER.tar.gz
 
   cd $TRAVIS_BUILD_DIR/TimeApp/platforms/ios
   ls -la
