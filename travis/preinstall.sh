@@ -27,7 +27,7 @@ if [ $TRAVIS_OS_NAME = 'osx' ]; then
   #git lfs pull
   ls -la $HOME/build/leonxi/largefiles/cordova/plugins/baidutts/ios/
   cd $TRAVIS_BUILD_DIR
-  npm install -g ionic@4.1.2 phonegap plugman cordova@6.5.0
+  npm install -g ionic@4.1.2 phonegap plugman cordova@6.5.0 xcode
 else
   yarn global add ionic@4.1.2 phonegap@^8.0.0 plugman cordova@6.5.0
   mkdir -p $ANDROID_HOME/licenses
