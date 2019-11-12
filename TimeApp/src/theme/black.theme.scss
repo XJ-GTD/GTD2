@@ -74,59 +74,6 @@ ion-app.black-theme {
     background-color: $baseBackcolor_black;
   }
 
-  page-agenda, page-task, page-commemorationday,page-comment {
-    .grid {
-      .limitRow {
-        span {
-          color: rgba(239, 239, 239, 0.3);
-        }
-      }
-      .snRow {
-        .sn {
-          color: rgba(235, 239, 250, 1);
-        }
-
-      }
-
-      .agendatodo {
-        .icon {
-          color: rgba(17, 117, 141, 1);
-        }
-      }
-      .agendaai{
-        .icon {
-          color: rgba(17, 117, 141, 1);
-        }
-
-      }
-
-      .optionRow {
-        .grid {
-
-          span {
-            color: rgba(239, 239, 239, 1);
-          }
-
-          .content {
-            color: rgba(121, 140, 170, 1);
-          }
-
-          button {
-            background: rgba(239, 239, 239, 0.1);
-            color: rgba(235, 239, 250, 1);
-          }
-
-          div[end] {
-            span {
-              color: rgba(17, 117, 141, 1);
-            }
-          }
-        }
-
-      }
-    }
-  }
-
   .notask {
     .icon {
       color: #C9C8C8;

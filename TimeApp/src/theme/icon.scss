@@ -28,20 +28,23 @@
 .fa-calendar-check{
   color: rgba(17, 117, 141, 1);
 }
+.fa-clock{
+  color: #EC8020;
+}
 
 corner-badge[fa-calendar-check] {
   background-color: rgba(17, 117, 141, 1);;
 }
 
 .fa-map-marker-alt {
-  color: #CEA75D;
+  color: #32A3BE;
 }
 
 corner-badge[fa-map-marker-alt] {
   background-color: #CEA75D;
 }
 
-.fa-comment-edit {
+.fa-comment-edit,.fa-comment-alt-edit {
   color: #3EA7C0;
 
 }
@@ -68,8 +71,8 @@ corner-badge[fa-user-friends] {
   background-color: #3EA7C0;
 }
 
-.fa-bells {
-  color: #4E70B6;
+.fa-bells,.fa-bell {
+  color: #32A3BE;
 
 }
 
@@ -87,7 +90,7 @@ corner-badge[fa-sparkles] {
 
 
 .fa-copy {
-  color: #EC8020;
+  color: #32A3BE;
 }
 
 corner-badge[fa-copy] {
