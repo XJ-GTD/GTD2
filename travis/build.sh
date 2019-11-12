@@ -25,7 +25,7 @@ if [ $TRAVIS_OS_NAME = 'osx' ]; then
   cat $TRAVIS_BUILD_DIR/TimeApp/platforms/ios/$IOS_APP_NAME/Images.xcassets/AppIcon.appiconset/Contents.json
   cat $TRAVIS_BUILD_DIR/TimeApp/platforms/ios/$IOS_APP_NAME/$IOS_APP_NAME-info.plist
   cp -f $TRAVIS_BUILD_DIR/TimeAppPatch/info.plist $TRAVIS_BUILD_DIR/TimeApp/platforms/ios/$IOS_APP_NAME/$IOS_APP_NAME-info.plist
-  echo "Recover ios Images.xcassets"
+  echo "Recover ios Images.xcassets sign"
   rm -Rf $TRAVIS_BUILD_DIR/TimeApp/platforms/ios/$IOS_APP_NAME/Images.xcassets
   cd $TRAVIS_BUILD_DIR/TimeApp/platforms/ios/$IOS_APP_NAME
   tar -zxf $TRAVIS_BUILD_DIR/TimeAppPatch/images.tar.gz
