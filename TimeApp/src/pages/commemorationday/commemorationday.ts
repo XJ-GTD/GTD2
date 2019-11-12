@@ -1,18 +1,15 @@
-import {Component, ElementRef, ViewChild} from '@angular/core';
+import {ChangeDetectorRef, Component, ViewChild} from '@angular/core';
 import {IonicPage, NavController, ModalController, ActionSheetController, NavParams,} from 'ionic-angular';
 import {UtilService} from "../../service/util-service/util.service";
 import {UserConfig} from "../../service/config/user.config";
-import {SqliteExec} from "../../service/util-service/sqlite.exec";
 import * as moment from "moment";
 import {ScdPageParamter} from "../../data.mapping";
-import {EmitService} from "../../service/util-service/emit.service";
 import {DataConfig} from "../../service/config/data.config";
-import {FeedbackService} from "../../service/cordova/feedback.service";
 import {CalendarService, PlanItemData} from "../../service/business/calendar.service";
-import {EventService, RtJson, TxJson, Member, generateRtJson, generateTxJson} from "../../service/business/event.service";
+import { RtJson, TxJson, Member} from "../../service/business/event.service";
 import {OperateType, RepeatFlag, ConfirmType, IsWholeday, InviteState, SelfDefineType, ModiPower} from "../../data.enum";
-import {Keyboard} from "@ionic-native/keyboard";
 import {PageBoxComponent} from "../../components/page-box/page-box";
+import {AssistantService} from "../../service/cordova/assistant.service";
 
 /**
  * Generated class for the 纪念日创建/修改 page.
@@ -128,12 +125,12 @@ import {PageBoxComponent} from "../../components/page-box/page-box";
 
         <ion-row class="dateRow">
           <div class="agendaai">
-            <ion-icon class="fal fa-waveform" *ngIf="currentPlanItem.jti"></ion-icon>
-            <ion-icon class="fal fa-microphone" *ngIf="!currentPlanItem.jti"></ion-icon>
+            <ion-icon class="fal fa-waveform" *ngIf="currentPlanItem.jti" (click)="speakPlanItem()"></ion-icon>
+            <ion-icon class="fal fa-microphone" *ngIf="!currentPlanItem.jti" (click)="recordPlanItem()"></ion-icon>
           </div>
 
           <div (click)="changeDatetime()" class="pickDate" *ngIf="currentPlanItem.jti && currentPlanItem.sd">
-            <ion-icon class="fad fa-clock "></ion-icon>
+            <ion-icon class="fal fa-alarm-clock "></ion-icon>
             <span class="content  agendaDate">
                   {{currentPlanItem.sd | formatedate: "YYYY-M-D"}}
                 </span>
@@ -149,13 +146,13 @@ import {PageBoxComponent} from "../../components/page-box/page-box";
           <ion-grid>
 
             <ion-row *ngIf="currentPlanItem.jti">
-
+              
               <div *ngIf="currentPlanItem.jtc == system">
-                <ion-icon class="fal fa-line-columns "></ion-icon>
+                <ion-icon class="fad fa-circle font-normal"  [ngStyle]="{'color': currentPlanItem.ji == ''? 'transparent' : (currentPlanItem.ji | formatplan: 'color': privateplans )}"></ion-icon>
                 <span class="font-normal">{{currentPlanItem.ji | formatplan: 'name' : '加入日历': publicplans}}</span>
               </div>
               <div *ngIf="currentPlanItem.jtc == selfdefine" (click)="changePlan()" >
-                <ion-icon class="fal fa-line-columns "></ion-icon>
+                <ion-icon class="fad fa-circle font-normal"  [ngStyle]="{'color': currentPlanItem.ji == ''? 'transparent' : (currentPlanItem.ji | formatplan: 'color': privateplans )}"></ion-icon>
                 <span class="font-normal">{{currentPlanItem.ji | formatplan: 'name' : '加入日历': privateplans}}</span>
               </div>
 
@@ -196,7 +193,7 @@ import {PageBoxComponent} from "../../components/page-box/page-box";
             <ion-row *ngIf="currentPlanItem.jti" (click)="changeRepeat()" >
               <div class="button-b">
                 <button ion-button clear  >
-                  <ion-icon class="fas fa-copy "></ion-icon>
+                  <ion-icon class="fas fa-repeat "></ion-icon>
                   <span class="content font-normal"  *ngIf="currentPlanItem.rts" margin-left>
                   {{currentPlanItem.rts || "重复"}}
                 </span>
@@ -212,7 +209,7 @@ import {PageBoxComponent} from "../../components/page-box/page-box";
             <ion-row *ngIf="currentPlanItem.jti">
               <div class="button-b">
                 <button ion-button clear (click)="changeInvites()" >
-                  <ion-icon class="fal fa-user-friends "></ion-icon>
+                  <ion-icon class="fad fa-user-friends "></ion-icon>
                   <corner-badge fa-user-friends *ngIf="currentPlanItem.pn > 0"><p>{{currentPlanItem.pn}}</p></corner-badge>
                 </button>
               </div>
@@ -221,8 +218,7 @@ import {PageBoxComponent} from "../../components/page-box/page-box";
                   <ion-icon  class="fad fa-share-alt"></ion-icon>
                 </button>
               </div>
-            </ion-row>
-
+            </ion-row>            
           </ion-grid>
         </ion-row>
       </ion-grid>
@@ -240,6 +236,9 @@ export class CommemorationDayPage {
     save: false,
     cancel: true
   };
+
+
+  speaking: boolean = false;
 
   currentPlanItem: PlanItemData = {} as PlanItemData;
   originPlanItem: PlanItemData = {} as PlanItemData;
@@ -265,13 +264,10 @@ export class CommemorationDayPage {
               public navParams: NavParams,
               public modalCtrl: ModalController,
               private actionSheetCtrl: ActionSheetController,
-              private emitService: EmitService,
               private util: UtilService,
-              private feedback: FeedbackService,
               private calendarService: CalendarService,
-              private eventService: EventService,
-              private sqlite: SqliteExec,
-              private keyboard: Keyboard) {
+              private assistantService: AssistantService,
+              private changeDetectorRef: ChangeDetectorRef,) {
     moment.locale('zh-cn');
     if (this.navParams) {
       let paramter: ScdPageParamter = this.navParams.data;
@@ -624,4 +620,48 @@ export class CommemorationDayPage {
   goBack() {
     this.navCtrl.pop();
   }
+
+
+  recordPlanItem() {
+    this.currentPlanItem.jtn = "";
+    this.assistantService.audio2Text((text) => {
+      this.currentPlanItem.jtn = text;
+      this.changeDetectorRef.markForCheck();
+      this.changeDetectorRef.detectChanges();
+
+    }, () => {
+      // this.buttons.record = true;
+    }, () => {
+      this.currentPlanItem.jtn = "语音不可用，请手动输入。";
+      // this.buttons.record = true;
+    });
+  }
+
+  speakPlanItem() {
+    if (!this.speaking) {
+      this.speaking = true;
+      let speakData = moment(this.currentPlanItem.sd + " " + this.currentPlanItem.st).format("YYYY年M月D日 HH点m分");
+      let speakData1 = this.currentPlanItem.jtn;
+      let speakData2 = "";
+      if (this.currentPlanItem.ui != this.currentuser){
+        let friend = this.friends.find((val) => {
+          return this.currentPlanItem.ui == val.ui;
+        });
+
+        if (friend){
+          speakData2 = "发起人" + friend.ran;
+        }
+      }
+
+      speakData = speakData + speakData1 + speakData2;
+
+      this.assistantService.speakText(speakData).then(() => {
+        this.speaking = false;
+      })
+    } else {
+      this.assistantService.stopSpeak(false);
+      this.speaking = false;
+    }
+  }
+
 }

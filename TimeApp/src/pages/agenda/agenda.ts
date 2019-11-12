@@ -1,31 +1,18 @@
-import {Component, ElementRef, Renderer2, ViewChild, ViewChildren, QueryList, ChangeDetectorRef} from '@angular/core';
+import {Component, ViewChild, ChangeDetectorRef} from '@angular/core';
 import {
-  IonicPage,
   NavController,
   ModalController,
   ActionSheetController,
   NavParams,
-  Slides,
-  TextInput
 } from 'ionic-angular';
 import {UtilService} from "../../service/util-service/util.service";
 import {UserConfig} from "../../service/config/user.config";
-import {RestFulHeader, RestFulConfig} from "../../service/config/restful.config";
-import {SqliteExec} from "../../service/util-service/sqlite.exec";
 import * as moment from "moment";
-import {CalendarDay} from "../../components/ion2-calendar";
-import {AgendaService} from "./agenda.service";
-import {ScdData, ScdPageParamter} from "../../data.mapping";
-import {EmitService} from "../../service/util-service/emit.service";
+import {ScdPageParamter} from "../../data.mapping";
 import {DataConfig} from "../../service/config/data.config";
-import {FeedbackService} from "../../service/cordova/feedback.service";
 import {PageBoxComponent} from "../../components/page-box/page-box";
-import {CornerBadgeComponent} from "../../components/corner-badge/corner-badge";
-import {CalendarService} from "../../service/business/calendar.service";
 import {EventService, AgendaData, Member, Attachment, RtJson, TxJson} from "../../service/business/event.service";
 import {
-  PageDirection,
-  IsSuccess,
   OperateType,
   RepeatFlag,
   ToDoListStatus,
@@ -35,8 +22,8 @@ import {
   ObjectType,
   InviteState
 } from "../../data.enum";
-import {Keyboard} from "@ionic-native/keyboard";
 import {ModiPower} from "../../data.enum";
+import {AssistantService} from "../../service/cordova/assistant.service";
 
 /**
  * Generated class for the 日程创建/修改 page.
@@ -44,15 +31,13 @@ import {ModiPower} from "../../data.enum";
  * See https://ionicframework.com/docs/components/#navigation for more info on
  * Ionic pages and navigation.
  */
-@IonicPage()
 @Component({
   selector: 'page-agenda',
   template:
       `
     <page-box title="活动" [buttons]="buttons" [data]="currentAgenda.evi" (onRemove)="goRemove()" (onSave)="save()"
-              (onBack)="goBack()" (onRecord)="record($event)" (onSpeaker)="speaker($event)"
-              (onAccept)="acceptInvite(currentAgenda)" (onReject)="rejectInvite(currentAgenda)"
-              [speakData]="currentAgenda.evn">
+              (onBack)="goBack()"
+              (onAccept)="acceptInvite(currentAgenda)" (onReject)="rejectInvite(currentAgenda)">
 
       <ion-grid>
         <!-- [ngStyle]="{'border-left': (!currentAgenda.evi || !currentAgenda.ji || currentAgenda.ji == '')? '0' : ('0.6rem solid ' + (currentAgenda.ji | formatplan: 'color': privateplans)), 'padding-left': (!currentAgenda.evi || !currentAgenda.ji || currentAgenda.ji == '')? '1.2rem' : '0.6rem', 'border-radius': (!currentAgenda.evi || !currentAgenda.ji || currentAgenda.ji == '')? '0' : '4px'}" -->
@@ -77,12 +62,12 @@ import {ModiPower} from "../../data.enum";
 
         <ion-row class="dateRow">
           <div class="agendaai">
-            <ion-icon class="fal fa-waveform" *ngIf="currentAgenda.evi"></ion-icon>
-            <ion-icon class="fal fa-microphone" *ngIf="!currentAgenda.evi"></ion-icon>
+            <ion-icon class="fal fa-waveform" *ngIf="currentAgenda.evi" (click)="speakAgenda()"></ion-icon>
+            <ion-icon class="fal fa-microphone" *ngIf="!currentAgenda.evi" (click)="recordAgenda()"></ion-icon>
           </div>
 
           <div (click)="changeDatetime()" class="pickDate" *ngIf="currentAgenda.evi">
-            <ion-icon class="fad fa-clock "></ion-icon>
+            <ion-icon class="fal fa-alarm-clock "></ion-icon>
             <span class="content  agendaDate">
                   {{currentAgenda.evd | formatedate: "YYYY-M-D"}}
                 </span>
@@ -93,7 +78,7 @@ import {ModiPower} from "../../data.enum";
             {{currentAgenda.ct | transfromdate: "duration"}}              
                  </span>
             <!--<p class="content  agendaDate">-->
-              <!--<b>时长：</b>{{currentAgenda.ct | transfromdate: "duration"}}-->
+            <!--<b>时长：</b>{{currentAgenda.ct | transfromdate: "duration"}}-->
             <!--</p>-->
           </div>
 
@@ -109,7 +94,8 @@ import {ModiPower} from "../../data.enum";
               <!--<span class="font-normal">备注</span>-->
               <!--</div>-->
               <div (click)="changePlan()">
-                <ion-icon class="fal fa-line-columns  font-normal"></ion-icon>
+                <ion-icon class="fad fa-circle  font-normal"
+                          [ngStyle]="{'color': currentAgenda.ji == ''? 'transparent' : (currentAgenda.ji | formatplan: 'color': privateplans )}"></ion-icon>
                 <span class="font-normal">{{currentAgenda.ji | formatplan: 'name' :'加入日历': privateplans}}</span>
               </div>
               <div end *ngIf="currentAgenda.evi && currentAgenda.ui != currentuser"
@@ -121,11 +107,11 @@ import {ModiPower} from "../../data.enum";
             </ion-row>
 
 
-            <ion-row *ngIf="currentAgenda.evi" (click)="changeRemind()" >
+            <ion-row *ngIf="currentAgenda.evi" (click)="changeRemind()">
               <div class="button-b">
-                <button ion-button clear  >
+                <button ion-button clear>
                   <ion-icon class="fas fa-bell"></ion-icon>
-                  <span class="content font-normal"  *ngIf="currentAgenda.txs" margin-left>
+                  <span class="content font-normal" *ngIf="currentAgenda.txs" margin-left>
                    {{currentAgenda.txs || "提醒"}}
                 </span>
                   <span class="content font-normal" *ngIf="!currentAgenda.txs " margin-left>
@@ -136,11 +122,11 @@ import {ModiPower} from "../../data.enum";
             </ion-row>
 
 
-            <ion-row *ngIf="currentAgenda.evi" (click)="changeRepeat()" >
+            <ion-row *ngIf="currentAgenda.evi" (click)="changeRepeat()">
               <div class="button-b">
-                <button ion-button clear  >
-                  <ion-icon class="fas fa-copy "></ion-icon>
-                  <span class="content font-normal"  *ngIf="currentAgenda.rts" margin-left>
+                <button ion-button clear>
+                  <ion-icon class="fas fa-repeat "></ion-icon>
+                  <span class="content font-normal" *ngIf="currentAgenda.rts" margin-left>
                   {{currentAgenda.rts || "重复"}}
                 </span>
                   <span class="content font-normal" *ngIf="!currentAgenda.rts " margin-left>
@@ -162,12 +148,12 @@ import {ModiPower} from "../../data.enum";
               <!--&lt;!&ndash;<corner-badge *ngIf="currentAgenda.rts" fa-copy><p><i class="fa fa-copy "></i></p></corner-badge>&ndash;&gt;-->
               <!--</button>-->
             </ion-row>
-            
 
-            <ion-row  (click)="changeLocation()" *ngIf="currentAgenda.evi">
+
+            <ion-row (click)="changeLocation()" *ngIf="currentAgenda.evi">
               <div class="button-b">
-                <button ion-button clear  >
-                  <ion-icon  class="fas fa-map-marker-alt"></ion-icon>
+                <button ion-button clear>
+                  <ion-icon class="fas fa-map-marker-alt"></ion-icon>
                   <span class="content font-normal" *ngIf="currentAgenda.adr " margin-left>
                 {{currentAgenda.adr}}
               </span>
@@ -179,59 +165,57 @@ import {ModiPower} from "../../data.enum";
             </ion-row>
 
 
-            
             <ion-row *ngIf="currentAgenda.evi">
               <div class="button-b">
-                  <button ion-button clear (click)="changeInvites()" >
-                    <ion-icon class="fal fa-user-friends "></ion-icon>
-                    <corner-badge fa-user-friends *ngIf="currentAgenda.pn > 0"><p>{{currentAgenda.pn}}</p></corner-badge>
-                  </button>
-                  <button ion-button clear (click)="changeAttach()">
-                    <ion-icon class="fal fa-sparkles "></ion-icon>
-                    <corner-badge fa-sparkles *ngIf="currentAgenda.fj && currentAgenda.fj != '0'">
-                      <p>{{currentAgenda.fj}}</p>
-                    </corner-badge>
-                  </button>
+                <button ion-button clear (click)="changeInvites()">
+                  <ion-icon class="fad fa-user-friends "></ion-icon>
+                  <corner-badge fa-user-friends *ngIf="currentAgenda.pn > 0"><p>{{currentAgenda.pn}}</p></corner-badge>
+                </button>
+                <button ion-button clear (click)="changeAttach()">
+                  <ion-icon class="fad fa-info-circle "></ion-icon>
+                  <corner-badge fa-info-circle *ngIf="currentAgenda.fj && currentAgenda.fj != '0'">
+                    <p>{{currentAgenda.fj}}</p>
+                  </corner-badge>
+                </button>
               </div>
               <div class="button-m" end>
-                <button ion-button clear (click)="changeTodolist()" >
-                  <ion-icon  class="fa-star"
+                <button ion-button clear (click)="changeTodolist()">
+                  <ion-icon class="fa-star"
                             [class.fad]="currentAgenda.todolist == todoliston"
                             [class.fal]="currentAgenda.todolist != todoliston"></ion-icon>
-                  
+
                 </button>
-                <button ion-button clear  >
-                  <ion-icon  class="fad fa-at"></ion-icon>
+                <button ion-button clear>
+                  <ion-icon class="fad fa-at"></ion-icon>
                 </button>
-                <button ion-button clear  >
-                  <ion-icon  class="fad fa-share-alt"></ion-icon>
+                <button ion-button clear>
+                  <ion-icon class="fad fa-share-alt"></ion-icon>
                 </button>
 
               </div>
             </ion-row>
 
-                
-              <!--<div>-->
-                <!--<button ion-button clear class="font-normal">-->
-                  <!--{{currentAgenda.txs || "提醒"}}-->
-                  <!--<corner-badge fa-bells *ngIf="currentAgenda.txs"><p>{{currentAgenda.txjson.reminds.length}}</p>-->
-                  <!--</corner-badge>-->
-                <!--</button>-->
-              <!--</div>-->
-            
+
+            <!--<div>-->
+            <!--<button ion-button clear class="font-normal">-->
+            <!--{{currentAgenda.txs || "提醒"}}-->
+            <!--<corner-badge fa-bells *ngIf="currentAgenda.txs"><p>{{currentAgenda.txjson.reminds.length}}</p>-->
+            <!--</corner-badge>-->
+            <!--</button>-->
+            <!--</div>-->
 
 
             <!--<ion-row *ngIf="currentAgenda.bz" (click)="changeComment()" class="contentdata">-->
-              <!--<span class="content font-normal">-->
-                  <!--备注：{{currentAgenda.bz}}-->
-              <!--</span>-->
-              <!--<span class="content font-normal">-->
-                <!--<ion-icon class="fal fa-comment-edit font-normal"></ion-icon>  -->
-              <!--</span>-->
+            <!--<span class="content font-normal">-->
+            <!--备注：{{currentAgenda.bz}}-->
+            <!--</span>-->
+            <!--<span class="content font-normal">-->
+            <!--<ion-icon class="fal fa-comment-edit font-normal"></ion-icon>  -->
+            <!--</span>-->
 
             <!--</ion-row>-->
             <!--<ion-row *ngIf="currentAgenda.evd" class="contentdata">-->
-     <!---->
+            <!---->
 
 
             <!--</ion-row>-->
@@ -244,17 +228,20 @@ import {ModiPower} from "../../data.enum";
 })
 export class AgendaPage {
 
+  ConfirmText: any = {
+    Update: "Update",
+    Remove: "Remove",
+    RemoveSimple: "RemoveSimple"
+  }
+
   buttons: any = {
     remove: false,
-    share: false,
     save: false,
-    record: true,
-    speaker: true,
     accept: false,
     reject: false,
     cancel: true
   };
-
+  speaking: boolean = false;
   currentuser: string = UserConfig.account.id;
   friends: Array<any> = UserConfig.friends;
   currentAgenda: AgendaData = {} as AgendaData;
@@ -266,16 +253,16 @@ export class AgendaPage {
   snlength: number = 0;
 
   todoliston = ToDoListStatus.On;
-  todolistoff = ToDoListStatus.Off;
+  // todolistoff = ToDoListStatus.Off;
 
   enablechange = ModiPower.enable;
 
   repeatflag = RepeatFlag.Repeat;
-  nonrepeatflag = RepeatFlag.NonRepeat;
-  repeattonon = RepeatFlag.RepeatToOnly;
+  // nonrepeatflag = RepeatFlag.NonRepeat;
+  // repeattonon = RepeatFlag.RepeatToOnly;
 
   acceptedinvite: InviteState = InviteState.Accepted;
-  rejectedinvite: InviteState = InviteState.Rejected;
+  // rejectedinvite: InviteState = InviteState.Rejected;
 
   @ViewChild(PageBoxComponent)
   pageBoxComponent: PageBoxComponent
@@ -285,15 +272,10 @@ export class AgendaPage {
               public navParams: NavParams,
               public modalCtrl: ModalController,
               private actionSheetCtrl: ActionSheetController,
-              private emitService: EmitService,
-              private agendaService: AgendaService,
               private util: UtilService,
-              private feedback: FeedbackService,
-              private calendarService: CalendarService,
               private eventService: EventService,
-              private sqlite: SqliteExec,
-              private keyboard: Keyboard,
-              private changeDetectorRef: ChangeDetectorRef) {
+              private changeDetectorRef: ChangeDetectorRef,
+              private assistantService: AssistantService,) {
     moment.locale('zh-cn');
     if (this.navParams) {
       let paramter: ScdPageParamter = this.navParams.data;
@@ -315,7 +297,7 @@ export class AgendaPage {
 
               this.snlength = this.currentAgenda.evn.length;
               if (this.currentAgenda.ui != this.currentuser && this.currentAgenda.invitestatus != InviteState.Accepted && this.currentAgenda.invitestatus != InviteState.Rejected) {
-                this.buttons.record = false;
+
                 this.buttons.accept = true;
                 this.buttons.reject = true;
               } else {
@@ -722,7 +704,6 @@ export class AgendaPage {
             this.buttons.save = false;
           }
 
-          this.buttons.record = true;
           this.buttons.remove = true;
           this.buttons.accept = false;
           this.buttons.reject = false;
@@ -759,9 +740,9 @@ export class AgendaPage {
       this.modifyConfirm.dismiss();
     }
     if (this.originAgenda.rfg == RepeatFlag.Repeat) { // 重复
-      this.modifyConfirm = this.createConfirm(ConfirmText.Remove);
+      this.modifyConfirm = this.createConfirm(this.ConfirmText.Remove);
     } else {
-      this.modifyConfirm = this.createConfirm(ConfirmText.RemoveSimple);
+      this.modifyConfirm = this.createConfirm(this.ConfirmText.RemoveSimple);
     }
     this.modifyConfirm.present();
 
@@ -777,10 +758,10 @@ export class AgendaPage {
     }
   }
 
-  createConfirm(confirmText: ConfirmText, confirm: ConfirmType = ConfirmType.CurrentOrFutureAll) {
+  createConfirm(confirmText: string, confirm: ConfirmType = ConfirmType.CurrentOrFutureAll) {
     let buttons: Array<any> = new Array<any>();
     let title: string = "";
-    if (confirmText == ConfirmText.Remove) {
+    if (confirmText == this.ConfirmText.Remove) {
 
       title = "此为重复日程";
 
@@ -798,7 +779,7 @@ export class AgendaPage {
           this.doOptionRemove(OperateType.FromSel);
         }
       });
-    } else if (confirmText == ConfirmText.RemoveSimple) {
+    } else if (confirmText == this.ConfirmText.RemoveSimple) {
       title = "是否删除";
       buttons.push({
         text: '确定',
@@ -870,7 +851,7 @@ export class AgendaPage {
           if (this.modifyConfirm) {
             this.modifyConfirm.dismiss();
           }
-          this.modifyConfirm = this.createConfirm(ConfirmText.Update, confirm);
+          this.modifyConfirm = this.createConfirm(this.ConfirmText.Update, confirm);
 
           this.modifyConfirm.present();
         } else {                          // 非重复/重复已经修改为非重复
@@ -904,15 +885,46 @@ export class AgendaPage {
   }
 
 
-  record(text) {
-    this.currentAgenda.evn = text;
-    this.changeDetectorRef.markForCheck();
-    this.changeDetectorRef.detectChanges();
+  recordAgenda() {
+    this.currentAgenda.evn = "";
+    this.assistantService.audio2Text((text) => {
+      this.currentAgenda.evn = text;
+      this.changeDetectorRef.markForCheck();
+      this.changeDetectorRef.detectChanges();
+
+    }, () => {
+      // this.buttons.record = true;
+    }, () => {
+      this.currentAgenda.evn = "语音不可用，请手动输入。";
+      // this.buttons.record = true;
+    });
   }
 
-  speaker() {
+  speakAgenda() {
+    if (!this.speaking) {
+      this.speaking = true;
+      let speakData = moment(this.currentAgenda.evd + " " + this.currentAgenda.evt).format("YYYY年M月D日 HH点m分");
+      let speakData1 = this.currentAgenda.evn;
+      let speakData2 = "";
+      if (this.currentAgenda.ui != this.currentuser){
+        let friend = this.friends.find((val) => {
+          return this.currentAgenda.ui == val.ui;
+        });
 
+        if (friend){
+          speakData2 = "发起人" + friend.ran;
+        }
+      }
 
+      speakData = speakData + speakData1 + speakData2;
+
+      this.assistantService.speakText(speakData).then(() => {
+        this.speaking = false;
+      })
+    } else {
+      this.assistantService.stopSpeak(false);
+      this.speaking = false;
+    }
   }
 
   openfriend(ui) {
@@ -927,8 +939,3 @@ export class AgendaPage {
   }
 }
 
-enum ConfirmText {
-  Update = "Update",
-  Remove = "Remove",
-  RemoveSimple = "RemoveSimple"
-}
