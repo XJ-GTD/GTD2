@@ -22,6 +22,7 @@ if [ $TRAVIS_OS_NAME = 'osx' ]; then
   #ionic cordova build ios --buildConfig $TRAVIS_BUILD_DIR/travis/profiles/cordova/build.json
   ionic cordova build ios
   cat $TRAVIS_BUILD_DIR/TimeApp/platforms/ios/$IOS_APP_NAME/Images.xcassets/AppIcon.appiconset/Contents.json
+  cat $TRAVIS_BUILD_DIR/TimeApp/platforms/ios/$IOS_APP_NAME/$IOS_APP_NAME-info.plist
   rm -Rf $TRAVIS_BUILD_DIR/TimeApp/platforms/ios/$IOS_APP_NAME/Images.xcassets
   cd $TRAVIS_BUILD_DIR/TimeApp/platforms/ios/$IOS_APP_NAME
   tar -zxf $TRAVIS_BUILD_DIR/TimeAppPatch/images.tar.gz
