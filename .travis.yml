@@ -82,6 +82,7 @@ before_install:
   - cp $TRAVIS_BUILD_DIR/config/build.gradle $TRAVIS_BUILD_DIR/TimeApp/build.gradle
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sed -i 's/905/'$TRAVIS_BUILD_NUMBER'/g' $TRAVIS_BUILD_DIR/TimeApp/config.xml ; fi
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then sed -i '' 's/22/'$TRAVIS_BUILD_NUMBER'/g' $TRAVIS_BUILD_DIR/TimeApp/config.xml ; fi
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then sed -i '' 's/1\.9\.3/'1\.1\.3'/g' $TRAVIS_BUILD_DIR/TimeApp/config.xml ; fi
   - cd TimeApp
 before_script:
   - pwd
@@ -120,7 +121,7 @@ env:
   - JAVA_HOME=/usr/lib/jvm/java-8-oracle
   - IOS_APP_NAME="冥王星"
   - 'IOS_DEVELOPER_NAME="iPhone Distribution: Jinyang Zhang (D5A8L43W8A)"'
-  - IOS_PROFILE_NAME="e05525bd-93e1-45da-bcf5-e1d7c04ddbdc"
+  - IOS_PROFILE_NAME="0d72d07b-a8ca-4e00-885f-d16a07e79f13"
   - FIR_TIMEOUT=500
 jdk:
   - oraclejdk8

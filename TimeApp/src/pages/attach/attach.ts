@@ -137,42 +137,41 @@ export class AttachPage {
     }
     //验证缓存文件目录是否存在
     if (this.util.hasCordova()) {
-      this.file.checkDir(this.file.externalDataDirectory, '/cached')
+      this.file.checkDir(this.file.dataDirectory, '/cachefiles')
       .then(_ => console.log('Directory exists'))
       .catch(err => {
-        alert("检查文件夹不存在："+err);
-        alert("开始创建文件，文件路径："+this.file.externalDataDirectory+"/cached");
-        this.file.createDir(this.file.externalDataDirectory, "cached", true).then(result => {
+        //alert("检查文件夹不存在："+err);
+        //alert("开始创建文件，文件路径："+this.file.externalDataDirectory+"/cached");
+        this.file.createDir(this.file.dataDirectory, "cachefiles", true).then(result => {
           console.log("success");
-          alert("文件路径创建成功");
+          //alert("文件路径创建成功");
         }).catch(err => {
           console.log("err:" + JSON.stringify(err));
-          alert("文件路径创建失败");
+          //alert("文件路径创建失败");
         })
       });
     }
-
     // 不进行自动下载
     for (let attachment of this.fjArray) {
       attachment.members = this.members;
 
       // 判断是否是残留数据或文字附件
       if (attachment.ext) {
-        if (attachment.fj.indexOf('/cached')>0) {
+        if (this.util.isJsonString(attachment.fj)) {
             attachment.fpjson = generateCacheFilePathJson(attachment.fpjson, attachment.fj);
 
             // 附件存储JSON是否存在
-            if (attachment.fpjson) {
+            if (attachment.fpjson && attachment.fpjson.remote) {
               attachment.fjurl = this.browserurl + attachment.fpjson.remote;
 
               // 判断是否是手机
               if (this.util.hasCordova()) {
                 let fileName: string  = attachment.fpjson.local.substr(1, attachment.fpjson.local.length);
 
-                // 本地文件存在，页面上显示本地文件
-                this.file.checkFile(this.file.externalDataDirectory + attachment.fpjson.getCacheDir(), fileName)
+                // 本地文件存在，页面上显示本地文件, 无法形成同步，只能异步改变fjArray
+                this.file.checkFile(this.file.dataDirectory + attachment.fpjson.getCacheDir(), fileName)
                 .then(_ => {
-                  attachment.fjurl = attachment.fpjson.getLocalFilePath(this.file.externalDataDirectory);
+                  attachment.fjurl = attachment.fpjson.getLocalFilePath(this.file.dataDirectory);
                 });
               }
             }
@@ -323,7 +322,7 @@ export class AttachPage {
         //this.fjData.fj = this.file.externalDataDirectory + "/timeAppfile/" + fileName;
         this.fjData.fj = JSON.stringify(cacheFilePathJson);
         this.fjData.fpjson = cacheFilePathJson;
-        this.fjData.fjurl = this.fjData.fpjson.getLocalFilePath(this.file.externalDataDirectory);
+        this.fjData.fjurl = this.fjData.fpjson.getLocalFilePath(this.file.dataDirectory);
         this.fjData.ui = this.currentuser;
         this.fjData.del = DelType.undel;
         this.fjData.tb = SyncType.unsynch;
@@ -332,7 +331,7 @@ export class AttachPage {
         if(!this.bw) {
           this.bw = fileName;
         }
-        this.file.copyFile(imgFileDir, fileName, this.file.externalDataDirectory + cacheFilePathJson.getCacheDir(), newFileName);
+        this.file.copyFile(imgFileDir, fileName, this.file.dataDirectory + cacheFilePathJson.getCacheDir(), newFileName);
 
       }
       // let base64Image = 'data:image/jpeg;base64,' + imageData;
@@ -373,7 +372,7 @@ export class AttachPage {
               cacheFilePathJson.local = "/"+newFileName;
               this.fjData.fj = JSON.stringify(cacheFilePathJson);
               this.fjData.fpjson = cacheFilePathJson;
-              this.fjData.fjurl = this.fjData.fpjson.getLocalFilePath(this.file.externalDataDirectory);
+              this.fjData.fjurl = this.fjData.fpjson.getLocalFilePath(this.file.dataDirectory);
               this.fjData.members = this.members;
               //this.fjData.fj = this.file.externalDataDirectory + "/timeAppfile/" + fileName;
               //this.fjArray.push(fjData);
@@ -381,7 +380,7 @@ export class AttachPage {
                 this.bw = fileName;
               }
               //alert("存储值："+JSON.stringify(this.fjData));
-              this.file.copyFile(imgFileDir, fileName, this.file.externalDataDirectory + cacheFilePathJson.getCacheDir(), newFileName);
+              this.file.copyFile(imgFileDir, fileName, this.file.dataDirectory + cacheFilePathJson.getCacheDir(), newFileName);
             }
           })
           .catch(err => console.log(err));
@@ -425,6 +424,7 @@ export class AttachPage {
       this.util.loadingStart();
       retAt = await this.eventService.saveAttachment(this.fjData);
       this.util.loadingEnd();
+      alert("上传后的数据："+JSON.stringify(retAt));
       this.fjArray.push(retAt);
       this.fjData = {} as Attachment;
       this.fjData.obt = this.obt;
@@ -452,26 +452,28 @@ export class AttachPage {
   //刷新数据
   async flushData() {
     //清空数据
-    this.fjArray = new Array<Attachment>();
-    this.fjArray = await this.eventService.selectAttachments(this.obt,this.obi);
-    for (let attachment of this.fjArray) {
+    let attachments: Array<Attachment> = new Array<Attachment>();
+    attachments = await this.eventService.selectAttachments(this.obt,this.obi);
+    for (let attachment of attachments) {
       attachment.members = this.members;
       // 判断是否是残留数据或文字附件
       if (attachment.ext) {
-        if (attachment.fj.indexOf('/cached')>0) {
+        if (this.util.isJsonString(attachment.fj)) {
             attachment.fpjson = generateCacheFilePathJson(attachment.fpjson, attachment.fj);
+
             // 附件存储JSON是否存在
-            if (attachment.fpjson) {
+            if (attachment.fpjson && attachment.fpjson.remote) {
               attachment.fjurl = this.browserurl + attachment.fpjson.remote;
               // 判断是否是手机
               if (this.util.hasCordova()) {
                 let fileName: string  = attachment.fpjson.local.substr(1, attachment.fpjson.local.length);
 
                 // 本地文件存在，页面上显示本地文件
-                this.file.checkFile(this.file.externalDataDirectory + attachment.fpjson.getCacheDir(), fileName)
-                .then(_ => {
-                  attachment.fjurl = attachment.fpjson.getLocalFilePath(this.file.externalDataDirectory);
-                });
+                let checked = await this.file.checkFile(this.file.dataDirectory + attachment.fpjson.getCacheDir(), fileName);
+
+                if (checked) {
+                  attachment.fjurl = attachment.fpjson.getLocalFilePath(this.file.dataDirectory);
+                }
               }
             }
         } else {
@@ -480,6 +482,8 @@ export class AttachPage {
         }
       }
     }
+
+    this.fjArray = attachments;
   }
 
   //获取打开的文件类型
