@@ -87,10 +87,10 @@ import {ModiPower} from "../../data.enum";
                   {{currentAgenda.evd | formatedate: "YYYY-M-D"}}
                 </span>
             <span class="content  agendaDate">
-                      {{currentAgenda.evd + " " + currentAgenda.evt | formatedate: "A hh:mm"}}                 
+                      {{currentAgenda.evd + " " + currentAgenda.evt | formatedate: "A hh:mm"}}
                  </span>
             <span class="content  agendaDate">
-            {{currentAgenda.ct | transfromdate: "duration"}}              
+            {{currentAgenda.ct | transfromdate: "duration"}}
                  </span>
             <!--<p class="content  agendaDate">-->
               <!--<b>时长：</b>{{currentAgenda.ct | transfromdate: "duration"}}-->
@@ -162,7 +162,7 @@ import {ModiPower} from "../../data.enum";
               <!--&lt;!&ndash;<corner-badge *ngIf="currentAgenda.rts" fa-copy><p><i class="fa fa-copy "></i></p></corner-badge>&ndash;&gt;-->
               <!--</button>-->
             </ion-row>
-            
+
 
             <ion-row  (click)="changeLocation()" *ngIf="currentAgenda.evi">
               <div class="button-b">
@@ -179,7 +179,7 @@ import {ModiPower} from "../../data.enum";
             </ion-row>
 
 
-            
+
             <ion-row *ngIf="currentAgenda.evi">
               <div class="button-b">
                   <button ion-button clear (click)="changeInvites()" >
@@ -198,7 +198,7 @@ import {ModiPower} from "../../data.enum";
                   <ion-icon  class="fa-star"
                             [class.fad]="currentAgenda.todolist == todoliston"
                             [class.fal]="currentAgenda.todolist != todoliston"></ion-icon>
-                  
+
                 </button>
                 <button ion-button clear  >
                   <ion-icon  class="fad fa-at"></ion-icon>
@@ -210,7 +210,7 @@ import {ModiPower} from "../../data.enum";
               </div>
             </ion-row>
 
-                
+
               <!--<div>-->
                 <!--<button ion-button clear class="font-normal">-->
                   <!--{{currentAgenda.txs || "提醒"}}-->
@@ -218,7 +218,7 @@ import {ModiPower} from "../../data.enum";
                   <!--</corner-badge>-->
                 <!--</button>-->
               <!--</div>-->
-            
+
 
 
             <!--<ion-row *ngIf="currentAgenda.bz" (click)="changeComment()" class="contentdata">-->
@@ -341,6 +341,12 @@ export class AgendaPage {
         });
       } else {
         this.currentAgenda.sd = paramter.d.format("YYYY/MM/DD");
+
+        // 指定今天以前的日期，全部使用今天创建
+        // 需求：今天以前的日期不能创建日程
+        if (moment(this.currentAgenda.sd, "YYYY/MM/DD").diff(moment().format("YYYY/MM/DD")) < 0) {
+          this.currentAgenda.sd = moment().format("YYYY/MM/DD");
+        }
 
         if (paramter.t) {
           this.currentAgenda.st = paramter.t;
