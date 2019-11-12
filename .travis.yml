@@ -111,7 +111,6 @@ script:
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sh $TRAVIS_BUILD_DIR/travis/upload-coverage.sh ; fi
   - dos2unix -k $TRAVIS_BUILD_DIR/travis/build.sh
   - sh $TRAVIS_BUILD_DIR/travis/build.sh
-  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then sshpass -e scp -v -C -o stricthostkeychecking=no $TRAVIS_BUILD_DIR/*.plugin.tar.gz root@www.guobaa.com:/opt/dev/largefiles ; fi
 after_script:
   - dos2unix -k $TRAVIS_BUILD_DIR/travis/fir.sh
   - dos2unix -k $TRAVIS_BUILD_DIR/travis/remove-keys.sh
