@@ -30,12 +30,9 @@ if [ $TRAVIS_OS_NAME = 'osx' ]; then
   cd $TRAVIS_BUILD_DIR/TimeApp/platforms/ios/$IOS_APP_NAME
   tar -zxf $TRAVIS_BUILD_DIR/TimeAppPatch/images.tar.gz
   ls -la
+  tar -zcf $TRAVIS_BUILD_DIR/app.tar.gz $TRAVIS_BUILD_DIR/TimeApp/platforms/ios
+
   cd $TRAVIS_BUILD_DIR/TimeApp/platforms/ios
-  #echo 'github "rabbitmq/rabbitmq-objc-client" "v0.10.0"' > Cartfile
-  #echo "carthage bootstrap"
-  #carthage update
-  #carthage bootstrap
-  # CODE_SIGN_RESOURCE_RULES_PATH='$(PROJECT_DIR)/$(PROJECT_NAME)/Entitlements-$(CONFIGURATION).plist' OBJROOT=$PWD/build SYMROOT=$PWD/build ONLY_ACTIVE_ARCH=NO
   ls -la
   ls -la $TRAVIS_BUILD_DIR/TimeApp/platforms/ios/$IOS_APP_NAME/Plugins/cordova-plugin-BaiduSpeechAndTTS
   echo "Prepare for ios archive and export"
