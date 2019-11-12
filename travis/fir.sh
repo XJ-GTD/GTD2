@@ -5,7 +5,7 @@ if [ $TRAVIS_OS_NAME = 'osx' ]; then
     ls -la $TRAVIS_BUILD_DIR/build/debug
     cat $TRAVIS_BUILD_DIR/build/debug/DistributionSummary.plist
     cat $TRAVIS_BUILD_DIR/build/debug/ExportOptions.plist
-    cat $TRAVIS_BUILD_DIR/build/debug/Packaging.log
+    #cat $TRAVIS_BUILD_DIR/build/debug/Packaging.log
     #fir publish $TRAVIS_BUILD_DIR/build/debug/$IOS_APP_NAME.ipa -T $FIR_TOKEN
     cp $TRAVIS_BUILD_DIR/build/debug/$IOS_APP_NAME.ipa $TRAVIS_BUILD_DIR/build/debug/app-$TRAVIS_BRANCH.ipa
     if [ $TRAVIS_BRANCH = 'cassiscornuta' ]; then
