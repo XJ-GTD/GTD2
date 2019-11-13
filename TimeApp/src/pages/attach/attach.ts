@@ -466,17 +466,18 @@ export class AttachPage {
       if (attachment.ext) {
         if (this.util.isJsonString(attachment.fj)) {
             attachment.fpjson = generateCacheFilePathJson(attachment.fpjson, attachment.fj);
-
+            alert("刷新attachment.fpjson:"+JSON.stringify(attachment.fpjson));
             // 附件存储JSON是否存在
             if (attachment.fpjson && attachment.fpjson.remote) {
               attachment.fjurl = this.browserurl + attachment.fpjson.remote;
+              alert("刷新attachment.fjurl:"+attachment.fjurl);
               // 判断是否是手机
               if (this.util.hasCordova()) {
                 let fileName: string  = attachment.fpjson.local.substr(1, attachment.fpjson.local.length);
 
                 // 本地文件存在，页面上显示本地文件
                 let checked = await this.file.checkFile(this.file.dataDirectory + attachment.fpjson.getCacheDir(), fileName);
-                alert("刷新验证市场存在本地文件:"+checked);
+                alert("刷新验证存在本地文件:"+checked);
                 if (checked) {
                   attachment.fjurl = attachment.fpjson.getLocalFilePath(this.file.dataDirectory);
                 }
