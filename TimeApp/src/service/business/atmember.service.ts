@@ -77,7 +77,7 @@ export class AtMemberService extends BaseService {
    *
    * @author leon_xi@163.com
    */
-  async syncAtMembers() {
+  async syncAtMembers(atMembers: Array<AtMember> = new Array<AtMember>()) {
 
 
   }
