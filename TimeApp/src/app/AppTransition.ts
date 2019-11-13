@@ -12,7 +12,7 @@ export class ModalFromLeftEnter extends PageTransition {
     const wrapper = new Animation(this.plt, ele.querySelector('.modal-wrapper'));
     wrapper.fromTo('transform', 'translateX(-100%)', 'translateX(0)');
     const contentWrapper = new Animation(this.plt, ele.querySelector('ion-content.content'));
-    contentWrapper.beforeStyles({ 'width': '80%' });
+    contentWrapper.beforeStyles({ 'width': '100%' });
     this
       .element(this.enteringView.pageRef())
       .duration(300)
@@ -49,7 +49,7 @@ export class ModalFromRightEnter extends PageTransition {
     const wrapper = new Animation(this.plt, ele.querySelector('.modal-wrapper'));
     wrapper.fromTo('transform', 'translateX(100%)', 'translateX(20%)');
     const contentWrapper = new Animation(this.plt, ele.querySelector('ion-content.content'));
-    contentWrapper.beforeStyles({ 'width': '80%' });
+    contentWrapper.beforeStyles({ 'width': '100%' });
     this
       .element(this.enteringView.pageRef())
       .duration(300)

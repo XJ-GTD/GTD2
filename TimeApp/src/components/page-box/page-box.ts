@@ -30,7 +30,7 @@ import {StatusType} from "../../data.enum";
             </div>
 
             <div (click)="goRemove()" *ngIf="buttons.remove">
-              <ion-icon class="fal fa-trash"></ion-icon>
+              <ion-icon class="fal fa-trash-alt"></ion-icon>
             </div>
 
             <div  (click)="goShare()" *ngIf="buttons.share">

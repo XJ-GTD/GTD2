@@ -16,7 +16,7 @@
   color: rgba(125, 85, 37, 1);
 }
 
-.fa-minus-circle {
+.fa-minus-circle ,.fa-trash-alt{
   color: rgba(153, 153, 153, 1);
 }
 
@@ -28,8 +28,8 @@
 .fa-calendar-check{
   color: rgba(17, 117, 141, 1);
 }
-.fa-clock{
-  color: #EC8020;
+.fa-alarm-clock{
+  color: rgba(243,183,77, 1);
 }
 
 corner-badge[fa-calendar-check] {
@@ -37,7 +37,7 @@ corner-badge[fa-calendar-check] {
 }
 
 .fa-map-marker-alt {
-  color: #32A3BE;
+  color: rgba(17,117,141,1);
 }
 
 corner-badge[fa-map-marker-alt] {
@@ -62,18 +62,33 @@ corner-badge[fa-line-columns] {
   background-color: #FF7474;
 }
 
-.fa-user-friends {
-  color: #3EA7C0;
+.fa-user-friends,.fa-info-circle {
+  color: rgba(17,117,141,1);
 
+}
+
+.fa-info-circle {
+  color: rgba(50,163,190,1);
 }
 
 corner-badge[fa-user-friends] {
-  background-color: #3EA7C0;
+  background-color: rgba(255,0,0,1);
+}
+
+corner-badge[fa-info-circle] {
+  background-color: rgba(255,0,0,1);
 }
 
 .fa-bells,.fa-bell {
-  color: #32A3BE;
+  color: rgba(17,117,141,1);
+}
 
+.fa-bell[noval],.fa-map-marker-alt[noval],.fa-repeat[noval]{
+  color: rgba(184,214,221,1);
+}
+
+.fa-bell,.fa-map-marker-alt,.fa-repeat{
+  color: rgba(50,163,190,1);
 }
 
 corner-badge[fa-bells] {
@@ -85,17 +100,27 @@ corner-badge[fa-bells] {
 }
 
 corner-badge[fa-sparkles] {
-  background-color: #FF7474;
+  background-color: rgba(255,0,0,1);
 }
 
 
-.fa-copy {
-  color: #32A3BE;
+.fa-copy{
+  color: rgba(17,117,141,1);
 }
+
+.fa-share-alt{
+  color: rgba(236,128,32,1);
+}
+.fa-at{
+   color: rgba(248,76,76,1);
+ }
 
 corner-badge[fa-copy] {
-  background-color: #EC8020;
+  background-color: rgba(255,0,0,1);
 }
+corner-badge[fa-repeat] {
+   background-color: rgba(255,0,0,1);
+ }
 
 corner-badge[icon-readonly] {
   background-color: rgba(153, 153, 153, 1);

@@ -126,6 +126,7 @@ import {EffectService} from "../service/business/effect.service";
 import {DtSelectPageModule} from "../pages/dtselect/dtselect.module";
 import {MemberPageModule} from "../pages/member/member.module";
 import * as ionicGalleryModal from 'ionic-gallery-modal';
+import {AtmePageModule} from "../pages/atme/atme.module";
 
 @NgModule({
   declarations: [
@@ -177,6 +178,7 @@ import * as ionicGalleryModal from 'ionic-gallery-modal';
     LogPageModule,
     AtPageModule,
     DoPageModule,
+    AtmePageModule,
     JhPageModule,
     AipPageModule,
     RepeatPageModule,

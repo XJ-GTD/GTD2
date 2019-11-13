@@ -1,5 +1,5 @@
 
-page-agenda, page-commemorationday, page-comment {
+page-agenda, page-commemorationday, page-comment,page-memo {
   .grid {
     height: 100%;
     width: 100%;
@@ -58,6 +58,9 @@ page-agenda, page-commemorationday, page-comment {
     .snRow {
       height: 45%;
       flex-wrap: nowrap;
+      .text-input-ios{
+        width: 100%;
+      }
 
       .sn {
         flex-grow: 1;
@@ -132,14 +135,14 @@ page-agenda, page-commemorationday, page-comment {
 
             button{
               margin: 0;
-              padding: 0.5rem;
-              margin-right: 3rem;
+              padding: 0.3rem;
+              margin-right: 2rem;
             }
             button:last-child{
                   margin-right: 0;
             }
             .icon{
-              font-size: 2rem;
+              font-size: 2.4rem;
             }
 
           }
@@ -191,7 +194,7 @@ page-agenda, page-commemorationday, page-comment {
 }
 
 ion-app.black-theme {
-  page-agenda, page-task, page-commemorationday, page-comment {
+  page-agenda, page-task, page-commemorationday, page-comment ,page-memo{
     .grid {
       .limitRow {
         span {
@@ -250,7 +253,7 @@ ion-app.black-theme {
 
 ion-app.white-theme {
 
-  page-agenda, page-task, page-commemorationday,page-comment {
+  page-agenda, page-task, page-commemorationday,page-comment ,page-memo{
     .grid {
 
       .limitRow {

@@ -42,40 +42,9 @@
         <allow-intent href="itms:*" />
         <allow-intent href="itms-apps:*" />
         <preference name="UseSwiftLanguageVersion" value="4" />
-      <config-file target="*-Info.plist" parent="NSCalendarsUsageDescription">
-        <string>[冥王星]需要您的同意,才能访问日历</string>
-      </config-file>
-      <config-file target="*-Info.plist" parent="NSCameraUsageDescription">
-        <string>[冥王星]需要您的同意,才能访问相机</string>
-      </config-file>
-      <config-file target="*-Info.plist" parent="NSContactsUsageDescription">
-        <string>[冥王星]需要您的同意,才能访问相册使用您的通讯录</string>
-      </config-file>
-      <config-file target="*-Info.plist" parent="NSLocationAlwaysUsageDescription">
-        <string>[冥王星]需要您的同意,才能始终访问位置</string>
-      </config-file>
-      <config-file target="*-Info.plist" parent="NSLocationUsageDescription">
-        <string>[冥王星]需要您的同意,才能访问位置</string>
-      </config-file>
-      <config-file target="*-Info.plist" parent="NSLocationWhenInUseUsageDescription">
-        <string>[冥王星]需要您的同意,才能在使用期间访问位置</string>
-      </config-file>
-      <config-file target="*-Info.plist" parent="NSPhotoLibraryUsageDescription">
-        <string>[冥王星]需要您的同意,才能访问相册</string>
-      </config-file>
-      <config-file target="*-Info.plist" parent="NSRemindersUsageDescription">
-        <string>[冥王星]需要您的同意,才能访问提醒事项</string>
-      </config-file>
-      <config-file target="*-Info.plist" parent="NSAppleMusicUsageDescription">
-        <string>[冥王星]需要您的同意,才能访问媒体资料库</string>
-      </config-file>
-      <config-file target="*-Info.plist" parent="NSMicrophoneUsageDescription">
-        <string>[冥王星]需要您的同意,才能访问麦克风</string>
-      </config-file>
     </platform>
     <plugin name="cordova-plugin-BaiduSpeechAndTTS" spec="../BaiduSpeechAndTTS" />
     <plugin name="cordova-plugin-app-version" spec="~0.1.9" />
-    <plugin name="cordova-plugin-inappbrowser" spec="~3.1.0" />
     <plugin name="cordova-plugin-camera" spec="~4.0.3" />
     <plugin name="cordova-plugin-chooser" spec="~1.2.5" />
     <plugin name="cordova-plugin-statusbar" spec="~2.4.3" />
