@@ -25,7 +25,6 @@ import {JPushService} from "../../service/cordova/jpush.service";
 import {RabbitMQService} from "../../service/cordova/rabbitmq.service";
 import {EffectService} from "../../service/business/effect.service";
 import {App, ModalController} from "ionic-angular";
-import {InAppBrowser} from "@ionic-native/in-app-browser";
 import {StatusBar} from "@ionic-native/status-bar";
 
 @Injectable()
@@ -412,7 +411,7 @@ export class AlService {
 
       this.sqlExce.getList<ATbl>(aTbl).then(async (data) => {
         UserConfig.publicplans = await this.calendarService.fetchPublicPlans();
-        
+
         UserConfig.privateplans = await this.calendarService.fetchPrivatePlans();
 
         this.emitService.destroy("mwxing.calendar.plans.changed");

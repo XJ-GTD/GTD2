@@ -3,7 +3,6 @@ import {IonicPage, NavController} from 'ionic-angular';
 import {AipService} from "./aip.service";
 import {DataConfig} from "../../service/config/data.config";
 import {AiComponent} from "../../components/ai/answer/ai";
-import {InAppBrowser} from "@ionic-native/in-app-browser";
 import {EmitService} from "../../service/util-service/emit.service";
 
 /**
@@ -23,7 +22,7 @@ import {EmitService} from "../../service/util-service/emit.service";
           <button ion-button icon-only (click)="goBack()" color="danger">
             <img class="img-header-left" src="./assets/imgs/back-white.png">
           </button>
-        </ion-buttons>        
+        </ion-buttons>
       </ion-toolbar>
     </ion-header>
     <ion-content>
@@ -38,7 +37,6 @@ export class AipPage {
   aiready: boolean = true;
 
   constructor(private aipService: AipService,
-              private iab: InAppBrowser,
               private navController: NavController,
               private emitService: EmitService,
   ) {
