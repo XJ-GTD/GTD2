@@ -428,7 +428,7 @@ export class AttachPage {
       this.util.loadingStart();
       retAt = await this.eventService.saveAttachment(this.fjData);
       this.util.loadingEnd();
-      alert("上传后的数据："+JSON.stringify(retAt));
+      //alert("上传后的数据："+JSON.stringify(retAt));
       this.fjArray.push(retAt);
       this.fjData = {} as Attachment;
       this.fjData.obt = this.obt;
@@ -456,8 +456,10 @@ export class AttachPage {
   //刷新数据
   async flushData() {
     //清空数据
+    this.fjArray = new Array<Attachment>();
     let attachments: Array<Attachment> = new Array<Attachment>();
     attachments = await this.eventService.selectAttachments(this.obt,this.obi);
+    alert("刷新后的数据:"+JSON.stringify(attachments));
     for (let attachment of attachments) {
       attachment.members = this.members;
       // 判断是否是残留数据或文字附件
@@ -474,7 +476,7 @@ export class AttachPage {
 
                 // 本地文件存在，页面上显示本地文件
                 let checked = await this.file.checkFile(this.file.dataDirectory + attachment.fpjson.getCacheDir(), fileName);
-
+                alert("刷新验证市场存在本地文件:"+checked);
                 if (checked) {
                   attachment.fjurl = attachment.fpjson.getLocalFilePath(this.file.dataDirectory);
                 }
@@ -486,7 +488,6 @@ export class AttachPage {
         }
       }
     }
-
     this.fjArray = attachments;
   }
 
