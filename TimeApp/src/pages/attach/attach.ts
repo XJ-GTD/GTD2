@@ -475,7 +475,7 @@ export class AttachPage {
                 //alert("fileName："+fileName);
                 // 本地文件存在，页面上显示本地文件
                 //let checked = await this.file.checkFile(this.file.dataDirectory + attachment.fpjson.getCacheDir(), fileName);
-                let checked =  this.isExistFile(attachment.fpjson.getCacheDir(), fileName);
+                let checked =  await this.isExistFile(attachment.fpjson.getCacheDir(), fileName);
                 alert("刷新验证存在本地文件:"+checked);
                 checked.then(function(value) {
                   alert("刷新验证存在value:"+value);
