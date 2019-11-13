@@ -203,6 +203,9 @@
       "cordova-plugin-rabbitmq": {},
       "cordova-plugin-geolocation": {
         "GEOLOCATION_USAGE_DESCRIPTION": "使用定位以获得更准确的天气预报"
+      },
+      "cordova-plugin-wechat": {
+        "WECHATAPPID": "gh_f6eeb1d268ed"
       }
     },
     "platforms": [
