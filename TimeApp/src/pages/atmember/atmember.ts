@@ -107,23 +107,22 @@ export class AtMemberPage {
 
   save() {
     let list = this.selMemberList;
-    let atmembers = new Array<AtMember>();
     if (list.length > 0) {
 
       let data: Object = {
         members : list
       };
 
-      for (let member of list){
+
         let atmember =  {} as AtMember;
         atmember.ui = this.ui;
         atmember.obt = anyenum.ObjectType.Event;
         atmember.obi = this.evi;
         atmember.dt = moment().format("YYYY/MM/DD HH:mm");
         atmember.content = this.evn;
-        atmembers.push(atmember);
-      }
-      this.atmemberService.saveAtMember(atmembers);
+        atmember.members = list;
+
+      this.atmemberService.saveAtMember(atmember);
       this.viewCtrl.dismiss(data);
     } else {
       this.util.popoverStart("请选择参与人");

@@ -8,13 +8,14 @@ import * as moment from "moment";
 import {EmitService} from "../util-service/emit.service";
 import { BackupPro, BacRestful, OutRecoverPro, RecoverPro } from "../restful/bacsev";
 import {DataRestful, PullInData, PushInData, SyncData, SyncDataFields, UploadInData, DownloadInData} from "../restful/datasev";
-import { SyncDataStatus} from "../../data.enum";
+import {CompleteState, InviteState, SyncDataSecurity, SyncDataStatus} from "../../data.enum";
 import {
   assertNotNumber,
   assertEmpty,
   assertFail
 } from "../../util/util";
 import {AtTbl} from "../sqlite/tbl/at.tbl";
+import {Member} from "./event.service";
 
 @Injectable()
 export class AtMemberService extends BaseService {
@@ -77,13 +78,36 @@ export class AtMemberService extends BaseService {
    *
    * @author leon_xi@163.com
    */
-  async syncAtMembers(atMembers: Array<AtMember> = new Array<AtMember>()) {
+  async syncAtMembers(atMember: AtMember) {
 
+      let push: PushInData = new PushInData();
+
+
+      let sync: SyncData = new SyncData();
+
+      sync.src = atMember.ui;
+      sync.id = atMember.obi;
+      sync.type = "AtMember";
+      sync.title = atMember.content;
+      sync.datetime = atMember.dt;
+      sync.main = true;
+      sync.security = SyncDataSecurity.None;
+      sync.todostate = CompleteState.None;
+      sync.status = SyncDataStatus.UnDeleted;
+      sync.invitestate = InviteState.None;
+
+      for (let member of atMember.members){
+        sync.to.push(member.rc);
+      }
+
+    sync.payload = atMember;
+    push.d.push(sync);
+    await this.dataRestful.push(push);
 
   }
 
-  saveAtMember(atMembers: Array<AtMember> = new Array<AtMember>()){
-    this.syncAtMembers();
+  saveAtMember(atMember: AtMember){
+    this.syncAtMembers(atMember);
   }
 
   //根据条件查询参与人
@@ -104,7 +128,7 @@ export class AtMemberService extends BaseService {
 }
 
 export class AtMember extends AtTbl{
-
+  members : Array<Member>;
 }
 
 
