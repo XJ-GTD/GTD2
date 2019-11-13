@@ -7,6 +7,7 @@ import {UtilService} from "../service/util-service/util.service";
 import {ScreenOrientation} from "@ionic-native/screen-orientation";
 import {LsPushType} from "../components/menuType/LsPushType";
 import {StatusBar} from "@ionic-native/status-bar";
+import {Device} from "@ionic-native/device";
 import {
   ModalFromLeftEnter,
   ModalFromLeftLeave,
@@ -26,6 +27,7 @@ export class MyApp {
               private appCtrl: IonicApp,
               private backgroundMode: BackgroundMode,
               private util: UtilService,
+              private device: Device,
               private screenOrientation: ScreenOrientation,
               public config: Config
             ) {
@@ -40,12 +42,14 @@ export class MyApp {
       //允许进入后台模式
       if (this.util.hasCordova()) {
 
-        this.backgroundMode.setDefaults({silent: true, hidden: true}).then(d => {
-          this.backgroundMode.enable();
-        })
+        if (this.device.platform == "Android") {
+          this.backgroundMode.setDefaults({silent: true, hidden: true}).then(d => {
+            this.backgroundMode.enable();
+          })
 
-        //设置返回键盘（android）
-        this.registerBackButtonAction();
+          //设置返回键盘（android）
+          this.registerBackButtonAction();
+        }
 
         // set to landscape
         this.screenOrientation.lock(this.screenOrientation.ORIENTATIONS.PORTRAIT);

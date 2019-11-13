@@ -41,8 +41,7 @@ export class AlPage {
   }
 
   ionViewDidEnter() {
-    //this.alinit();
-    this.nav.setRoot(DataConfig.PAGE._LP_PAGE);
+    this.alinit();
 
     this.app.setElementClass("white-theme",true);
   }
