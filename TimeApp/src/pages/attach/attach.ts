@@ -476,10 +476,13 @@ export class AttachPage {
                 // 本地文件存在，页面上显示本地文件
                 //let checked = await this.file.checkFile(this.file.dataDirectory + attachment.fpjson.getCacheDir(), fileName);
                 let checked =  this.isExistFile(attachment.fpjson.getCacheDir(), fileName);
-                //alert("刷新验证存在本地文件:"+checked);
-                if (checked) {
-                  attachment.fjurl = attachment.fpjson.getLocalFilePath(this.file.dataDirectory);
-                }
+                alert("刷新验证存在本地文件:"+checked);
+                checked.then(function(value) {
+                  alert("刷新验证存在value:"+value);
+                  if (value) {
+                    attachment.fjurl = attachment.fpjson.getLocalFilePath(this.file.dataDirectory);
+                  }
+                });
               }
             }
         } else {
