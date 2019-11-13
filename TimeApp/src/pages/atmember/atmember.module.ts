@@ -15,7 +15,7 @@ import {AtMemberService} from "../../service/business/atmember.service";
     DirectivesModule
 ],
   providers: [
-    AtMemberService,
+
   ],
 
   entryComponents:[

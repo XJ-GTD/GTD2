@@ -46,6 +46,7 @@ import {MemberPage} from "../../pages/member/member";
 import {GloryPage} from "../../pages/glory/glory";
 import {AtmePage} from "../../pages/atme/atme";
 import {PlusModal} from "../../pages/h/plusModal";
+import {AtMemberPage} from "../../pages/atmember/atmember";
 
 export class DataConfig {
   public static isdebug: boolean = true;
@@ -264,6 +265,7 @@ export class DataConfig {
     _PLAN_PAGE: PlanPage,   // 日程 - 计划
     _INVITES_PAGE: InvitesPage, // 日程 - 邀请人
     _MEMBER_PAGE: MemberPage, // 日程 - 邀请人-选择
+    _ATMEMBER_PAGE: AtMemberPage, // 日程 - @参与人
     _GLORY_PAGE: GloryPage, // 每日荣耀
     _LOCATION_PAGE: LocationPage, // 日程 - 地址
     _ATTACH_PAGE: AttachPage,     // 日程 - 附件

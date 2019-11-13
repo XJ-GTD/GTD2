@@ -76,6 +76,7 @@ export class AtMemberPage {
 
   evi:string;
   evn:string;
+  ui:string;
 
   tel: any;//手机号
   pageMemberList: Array<MemberPageData> = new Array<MemberPageData>();
@@ -91,6 +92,7 @@ export class AtMemberPage {
       this.pageMemberList.length = 0;
       this.evi = this.navParams.data.evi;
       this.evn = this.navParams.data.evn;
+      this.ui = this.navParams.data.ui;
       this.getMembers();
     }
   }
@@ -114,7 +116,7 @@ export class AtMemberPage {
 
       for (let member of list){
         let atmember =  {} as AtMember;
-        atmember.ui = member.ui;
+        atmember.ui = this.ui;
         atmember.obt = anyenum.ObjectType.Event;
         atmember.obi = this.evi;
         atmember.dt = moment().format("YYYY/MM/DD HH:mm");

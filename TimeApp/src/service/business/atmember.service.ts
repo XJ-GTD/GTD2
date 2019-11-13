@@ -8,7 +8,7 @@ import * as moment from "moment";
 import {EmitService} from "../util-service/emit.service";
 import { BackupPro, BacRestful, OutRecoverPro, RecoverPro } from "../restful/bacsev";
 import {DataRestful, PullInData, PushInData, SyncData, SyncDataFields, UploadInData, DownloadInData} from "../restful/datasev";
-import {SyncType, DelType, ObjectType, IsSuccess, CycleType, SyncDataStatus, OperateType, ToDoListStatus, RepeatFlag, ConfirmType, ModiPower, PageDirection, SyncDataSecurity, InviteState, CompleteState, EventFinishStatus} from "../../data.enum";
+import { SyncDataStatus} from "../../data.enum";
 import {
   assertNotNumber,
   assertEmpty,
@@ -20,7 +20,6 @@ import {AtTbl} from "../sqlite/tbl/at.tbl";
 export class AtMemberService extends BaseService {
   constructor(private sqlExce: SqliteExec, private util: UtilService,
               private agdRest: AgdRestful,private emitService:EmitService,
-              private file: File,
               private bacRestful: BacRestful,private userConfig: UserConfig,
               private dataRestful: DataRestful) {
     super();
