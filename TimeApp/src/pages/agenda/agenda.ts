@@ -192,7 +192,7 @@ import {AssistantService} from "../../service/cordova/assistant.service";
                             [class.fal]="currentAgenda.todolist != todoliston"></ion-icon>
 
                 </button>
-                <button ion-button clear>
+                <button ion-button clear (click)="atmembers()">
                   <ion-icon class="fad fa-at"></ion-icon>
                 </button>
                 <button ion-button clear>
@@ -700,6 +700,27 @@ export class AgendaPage {
           this.buttons.save = false;
         }
       }
+    });
+    modal.present();
+  }
+
+  atmembers(){
+    // 受邀人没有接受不能修改
+    if (this.originAgenda.ui != this.currentuser && this.originAgenda.invitestatus != InviteState.Accepted) { // 受邀人接受状态检查
+      return;
+    }
+
+
+    let modal = this.modalCtrl.create(DataConfig.PAGE._ATMEMBER_PAGE,
+      {
+        members: this.originAgenda.members,
+        evi:this.originAgenda.evi,
+        evn:this.originAgenda.evn,
+        ui : UserConfig.account.id,
+      });
+    modal.onDidDismiss(async (data) => {
+      if (!data) return;
+
     });
     modal.present();
   }

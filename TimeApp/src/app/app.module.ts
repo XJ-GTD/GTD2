@@ -127,6 +127,8 @@ import {DtSelectPageModule} from "../pages/dtselect/dtselect.module";
 import {MemberPageModule} from "../pages/member/member.module";
 import * as ionicGalleryModal from 'ionic-gallery-modal';
 import {AtmePageModule} from "../pages/atme/atme.module";
+import {AtMemberPageModule} from "../pages/atmember/atmember.module";
+import {AtMemberService} from "../service/business/atmember.service";
 
 @NgModule({
   declarations: [
@@ -186,6 +188,7 @@ import {AtmePageModule} from "../pages/atme/atme.module";
     CommentPageModule,
     PlanPageModule,
     InvitesPageModule,
+    AtMemberPageModule,
     MemberPageModule,
     LocationPageModule,
     AttachPageModule,
@@ -264,6 +267,7 @@ import {AtmePageModule} from "../pages/atme/atme.module";
     MIPushService,
     ScheduleRemindService,
     EventService,
+    AtMemberService,
     MemoService,
     RemindService,
     SettingsProvider,
