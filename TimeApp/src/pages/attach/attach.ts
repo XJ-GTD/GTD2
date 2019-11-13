@@ -474,7 +474,8 @@ export class AttachPage {
                 let fileName: string  = attachment.fpjson.local.substr(1, attachment.fpjson.local.length);
                 alert("fileName："+fileName);
                 // 本地文件存在，页面上显示本地文件
-                let checked = await this.file.checkFile(this.file.dataDirectory + attachment.fpjson.getCacheDir(), fileName);
+                //let checked = await this.file.checkFile(this.file.dataDirectory + attachment.fpjson.getCacheDir(), fileName);
+                let checked =  this.isExistFile(attachment.fpjson.getCacheDir(), fileName);
                 alert("刷新验证存在本地文件:"+checked);
                 if (checked) {
                   attachment.fjurl = attachment.fpjson.getLocalFilePath(this.file.dataDirectory);
@@ -541,4 +542,15 @@ export class AttachPage {
     }
     return mimeType;
   }
+
+  isExistFile(dir:string, fileName:string): Promise<any> {
+      return new Promise((resolve, reject) => {
+        this.file.checkFile(this.file.dataDirectory + dir, fileName).then(_=>{
+          resolve(true);
+        }).catch(err => {
+           reject(err);
+        });
+      });
+  }
+
 }
