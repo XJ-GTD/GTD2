@@ -105,22 +105,22 @@ BScroll.use(InfinityScroll);
                     </div>
                     <div class=" d-title-chr"><span>{{days.events.length}}</span> 活动</div>
                     <div class=" d-title-chr"><span>{{days.calendaritems.length}}</span> 纪念日</div>
-                    <div class=" d-title-chr mome " (click)="toMemo(days)" *ngIf="days.memos.length > 0"
-                         [class.item-no-display]="days.memos.length == 0">
-                      <ion-icon class="fad fa-money-check-edit"></ion-icon>
+                    <div class=" d-title-chr mome " (click)="toMemo(days)">
+                      <ion-icon class="fad fa-book-heart" [class.item-no-display]="days.memos.length == 0"></ion-icon>
                       <!--<span>{{days.memos.length}}</span>-->
+                      <div class="weather" *ngIf="days.weather">
+                        <ion-icon class='fal {{days.weather.jtn | formatweather:"winame-with-json"}}'></ion-icon>
+                        <span>
+                       {{days.weather.ext | formatweather:  'centigrade-with-json'}}
+                      </span>
+                        <!--<span>-->
+                      <!--{{days.weather.jtn}}-->
+                      <!--</span>-->
+                      </div>
                     </div>
                   </div>
                 </div>
-                <div class="weather" *ngIf="days.weather">
-                  <ion-icon class='fas {{days.weather.jtn | formatweather:"winame-with-json"}}'></ion-icon>
-                  <span>
-                       {{days.weather.ext | formatweather:  'centigrade-with-json'}}
-                      </span>
-                  <span>
-                      {{days.weather.jtn}}
-                      </span>
-                </div>
+               
               </ion-row>
 
               <ion-row class="item-content  calendaritem-content item-content-backgroud "
