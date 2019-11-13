@@ -151,36 +151,40 @@ export class AttachPage {
         })
       });
     }
+
+    //调用刷新
+    this.flushData();
+
     // 不进行自动下载
-    for (let attachment of this.fjArray) {
-      attachment.members = this.members;
-
-      // 判断是否是残留数据或文字附件
-      if (attachment.ext) {
-        if (this.util.isJsonString(attachment.fj)) {
-            attachment.fpjson = generateCacheFilePathJson(attachment.fpjson, attachment.fj);
-
-            // 附件存储JSON是否存在
-            if (attachment.fpjson && attachment.fpjson.remote) {
-              attachment.fjurl = this.browserurl + attachment.fpjson.remote;
-
-              // 判断是否是手机
-              if (this.util.hasCordova()) {
-                let fileName: string  = attachment.fpjson.local.substr(1, attachment.fpjson.local.length);
-
-                // 本地文件存在，页面上显示本地文件, 无法形成同步，只能异步改变fjArray
-                this.file.checkFile(this.file.dataDirectory + attachment.fpjson.getCacheDir(), fileName)
-                .then(_ => {
-                  attachment.fjurl = attachment.fpjson.getLocalFilePath(this.file.dataDirectory);
-                });
-              }
-            }
-        } else {
-          //历史遗留数据构造
-          attachment.fjurl = attachment.fj;
-        }
-      }
-    }
+    // for (let attachment of this.fjArray) {
+    //   attachment.members = this.members;
+    //
+    //   // 判断是否是残留数据或文字附件
+    //   if (attachment.ext) {
+    //     if (this.util.isJsonString(attachment.fj)) {
+    //         attachment.fpjson = generateCacheFilePathJson(attachment.fpjson, attachment.fj);
+    //
+    //         // 附件存储JSON是否存在
+    //         if (attachment.fpjson && attachment.fpjson.remote) {
+    //           attachment.fjurl = this.browserurl + attachment.fpjson.remote;
+    //
+    //           // 判断是否是手机
+    //           if (this.util.hasCordova()) {
+    //             let fileName: string  = attachment.fpjson.local.substr(1, attachment.fpjson.local.length);
+    //
+    //             // 本地文件存在，页面上显示本地文件, 无法形成同步，只能异步改变fjArray
+    //             this.file.checkFile(this.file.dataDirectory + attachment.fpjson.getCacheDir(), fileName)
+    //             .then(_ => {
+    //               attachment.fjurl = attachment.fpjson.getLocalFilePath(this.file.dataDirectory);
+    //             });
+    //           }
+    //         }
+    //     } else {
+    //       //历史遗留数据构造
+    //       attachment.fjurl = attachment.fj;
+    //     }
+    //   }
+    // }
 
     // for(let i: number =0; i<this.fjArray.length; i++) {
     //     this.fjArray[i].members = this.members;
@@ -424,7 +428,7 @@ export class AttachPage {
       this.util.loadingStart();
       retAt = await this.eventService.saveAttachment(this.fjData);
       this.util.loadingEnd();
-      alert("上传后的数据："+JSON.stringify(retAt));
+      //alert("上传后的数据："+JSON.stringify(retAt));
       this.fjArray.push(retAt);
       this.fjData = {} as Attachment;
       this.fjData.obt = this.obt;
@@ -452,8 +456,10 @@ export class AttachPage {
   //刷新数据
   async flushData() {
     //清空数据
+    this.fjArray = new Array<Attachment>();
     let attachments: Array<Attachment> = new Array<Attachment>();
     attachments = await this.eventService.selectAttachments(this.obt,this.obi);
+    alert("刷新后的数据:"+JSON.stringify(attachments));
     for (let attachment of attachments) {
       attachment.members = this.members;
       // 判断是否是残留数据或文字附件
@@ -470,7 +476,7 @@ export class AttachPage {
 
                 // 本地文件存在，页面上显示本地文件
                 let checked = await this.file.checkFile(this.file.dataDirectory + attachment.fpjson.getCacheDir(), fileName);
-
+                alert("刷新验证市场存在本地文件:"+checked);
                 if (checked) {
                   attachment.fjurl = attachment.fpjson.getLocalFilePath(this.file.dataDirectory);
                 }
@@ -482,7 +488,6 @@ export class AttachPage {
         }
       }
     }
-
     this.fjArray = attachments;
   }
 
