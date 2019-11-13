@@ -331,6 +331,13 @@ export class AgendaPage {
       } else {
         this.currentAgenda.sd = paramter.d.format("YYYY/MM/DD");
 
+        // 指定今天以前的日期，全部使用今天创建
+        // 需求：今天以前的日期不能创建日程
+        if (moment(this.currentAgenda.sd, "YYYY/MM/DD").diff(moment().format("YYYY/MM/DD")) < 0) {
+          this.currentAgenda.sd = moment().format("YYYY/MM/DD");
+        }
+
+
         if (paramter.t) {
           this.currentAgenda.st = paramter.t;
         } else {
