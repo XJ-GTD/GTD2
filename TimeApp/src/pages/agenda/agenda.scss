@@ -1,5 +1,5 @@
 
-page-agenda, page-commemorationday, page-comment {
+page-agenda, page-commemorationday, page-comment,page-memo {
   .grid {
     height: 100%;
     width: 100%;
@@ -194,7 +194,7 @@ page-agenda, page-commemorationday, page-comment {
 }
 
 ion-app.black-theme {
-  page-agenda, page-task, page-commemorationday, page-comment {
+  page-agenda, page-task, page-commemorationday, page-comment ,page-memo{
     .grid {
       .limitRow {
         span {
@@ -253,7 +253,7 @@ ion-app.black-theme {
 
 ion-app.white-theme {
 
-  page-agenda, page-task, page-commemorationday,page-comment {
+  page-agenda, page-task, page-commemorationday,page-comment ,page-memo{
     .grid {
 
       .limitRow {

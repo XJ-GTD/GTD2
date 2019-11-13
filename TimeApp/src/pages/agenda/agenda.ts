@@ -82,6 +82,13 @@ import {AssistantService} from "../../service/cordova/assistant.service";
             <!--</p>-->
           </div>
 
+          <div class="pickDate" *ngIf="!currentAgenda.evi">
+            <ion-icon class="fal fa-alarm-clock "></ion-icon>
+            <span class="content  agendaDate">
+                  {{currentAgenda.sd | formatedate: "YYYY-M-D"}}
+            </span>
+          </div>
+
         </ion-row>
 
 

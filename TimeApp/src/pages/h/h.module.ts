@@ -8,9 +8,11 @@ import { InAppBrowser } from '@ionic-native/in-app-browser';
 
 import { TdlPageModule } from '../tdl/tdl.module';
 import {TestDataService} from "../../service/testData.service";
+import {PlusModal} from "./plusModal";
 @NgModule({
   declarations: [
     HPage,
+    PlusModal
   ],
   imports: [
     IonicPageModule,
@@ -19,7 +21,8 @@ import {TestDataService} from "../../service/testData.service";
     TdlPageModule
   ],
   entryComponents: [
-    HPage
+    HPage,
+    PlusModal
   ],
   providers:[
     HService,

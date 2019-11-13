@@ -10,21 +10,19 @@ import {
 
 import {
   CalendarMonth, CalendarModalOptions, CalendarComponentOptions, CalendarDay,
-  CalendarComponentPayloadTypes, CalendarComponentMonthChange, CalendarComponentTypeProperty, DayConfig
+  CalendarComponentPayloadTypes, CalendarComponentMonthChange, CalendarComponentTypeProperty
 } from '../calendar.model'
 import {IonCalendarService} from "../services/calendar.service";
-import {ControlValueAccessor, NG_VALUE_ACCESSOR} from '@angular/forms';
+import { NG_VALUE_ACCESSOR} from '@angular/forms';
 
 import * as moment from 'moment';
-import {defaults, pickModes} from "../config";
+import {defaults} from "../config";
 import {FeedbackService} from "../../../service/cordova/feedback.service";
-import {Card, CardContent, Platform, Slides} from "ionic-angular";
+import {Card, CardContent, Platform,} from "ionic-angular";
 import {CalendarAnimation} from "../calendar-animation";
 import {CalendarController} from "../calendar.controller";
-import set = Reflect.set;
-import Swiper, {SwiperEvent} from "swiper";
+import Swiper from "swiper";
 import {EmitService} from "../../../service/util-service/emit.service";
-import {CommemorationDayPage} from "../../../pages/commemorationday/commemorationday";
 
 export const ION_CAL_VALUE_ACCESSOR: Provider = {
   provide: NG_VALUE_ACCESSOR,
@@ -54,21 +52,24 @@ export const ION_CAL_VALUE_ACCESSOR: Provider = {
             <div float-right (click)="gotoToday()">
               <ion-icon class="fad fa-calendar-day"></ion-icon>
             </div>
-            <div float-right (click)="newAgenda()">
-              <ion-icon class="fal fa-calendar-edit"></ion-icon>
+            <div float-right (click)="plus()">
+              <ion-icon class="fal fa-plus-circle"></ion-icon>
             </div>
-            <div float-right (click)="newMome()">
-              <ion-icon class="fal fa-file-signature"></ion-icon>
-            </div>
-            <div float-right (click)="newDay()">
-              <ion-icon class="fal fa-calendar-exclamation"></ion-icon>
-            </div>
-            <div float-right (click)="todoList()">
-              <ion-icon class="far fa-list"></ion-icon>
-            </div>
-            <div float-right (click)="aTDay()">
-              <ion-icon class="far fa-paperclip"></ion-icon>
-            </div>
+            <!--<div float-right (click)="newAgenda()">-->
+              <!--<ion-icon class="fal fa-calendar-edit"></ion-icon>-->
+            <!--</div>-->
+            <!--<div float-right (click)="newMome()">-->
+              <!--<ion-icon class="fal fa-file-signature"></ion-icon>-->
+            <!--</div>-->
+            <!--<div float-right (click)="newDay()">-->
+              <!--<ion-icon class="fal fa-calendar-exclamation"></ion-icon>-->
+            <!--</div>-->
+            <!--<div float-right (click)="todoList()">-->
+              <!--<ion-icon class="far fa-list"></ion-icon>-->
+            <!--</div>-->
+            <!--<div float-right (click)="aTDay()">-->
+              <!--<ion-icon class="far fa-paperclip"></ion-icon>-->
+            <!--</div>-->
 
           </div>
         </div>
@@ -158,6 +159,7 @@ export class CalendarComponent implements OnInit {
   @Output() onNewDay: EventEmitter<CalendarDay> = new EventEmitter();
   @Output() onATDay: EventEmitter<CalendarDay> = new EventEmitter();
   @Output() onGotoToday: EventEmitter<CalendarDay> = new EventEmitter();
+  @Output() onPlus: EventEmitter<CalendarDay> = new EventEmitter();
 
 
   constructor(public calSvc: IonCalendarService, public feekback: FeedbackService, private plt: Platform,
@@ -461,5 +463,10 @@ export class CalendarComponent implements OnInit {
   aTDay() {
     this.onATDay.emit(this.selectedCalendarDay);
   }
+
+  plus() {
+    this.onPlus.emit(this.selectedCalendarDay);
+  }
+
 
 }

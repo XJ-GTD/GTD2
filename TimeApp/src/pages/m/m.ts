@@ -1,5 +1,5 @@
 import {Component} from '@angular/core';
-import {IonicPage, ModalController, Platform} from 'ionic-angular';
+import {IonicPage, Modal, ModalController, Platform} from 'ionic-angular';
 import {DataConfig} from "../../service/config/data.config";
 import {UserConfig} from "../../service/config/user.config";
 import {UtilService} from "../../service/util-service/util.service";
@@ -7,8 +7,9 @@ import {EmitService} from "../../service/util-service/emit.service";
 import {JPushService} from "../../service/cordova/jpush.service";
 import {PsService} from "../ps/ps.service";
 import {RabbitMQService} from "../../service/cordova/rabbitmq.service";
-import {StatusType} from "../../data.enum";
+import {ModalTranType, StatusType} from "../../data.enum";
 import {SettingsProvider} from "../../providers/settings/settings";
+import {CalendarDay} from "../../components/ion2-calendar";
 
 /**
  * Generated class for the 菜单 page.
@@ -35,8 +36,13 @@ import {SettingsProvider} from "../../providers/settings/settings";
                   <!--<p>{{phone}}</p>-->
             <!--</span>-->
           </ion-row>
-          <ion-row >
+          <ion-row (click)="todoList()">
+            <h3>重要事项</h3>
           </ion-row>
+          <ion-row  (click)="aTday()">
+            <h3>@ 我的</h3>
+          </ion-row>
+          
           <ion-row (click)="goPsPage()">
             <h3>个人设置</h3>
           </ion-row>
@@ -55,9 +61,9 @@ import {SettingsProvider} from "../../providers/settings/settings";
             <ion-row (click)="goBrPage()">
               <h3>备份与恢复</h3>
             </ion-row>
-          <ion-row *ngIf="isdebug" (click)="gologPage()">
-            <h3>日志</h3>
-          </ion-row>
+          <!--<ion-row *ngIf="isdebug" (click)="gologPage()">-->
+            <!--<h3>日志</h3>-->
+          <!--</ion-row>-->
           <ion-row (click)="goatPage()">
             <h3>关于</h3>
           </ion-row>
@@ -71,12 +77,10 @@ export class MPage {
   hPage: any = DataConfig.PAGE._H_PAGE;
   name:any;
   phone:any;
-  avatar:any = DataConfig.HUIBASE64;
   isdebug:boolean;
   maxEdgeStart:any = 150;
 
-  constructor(public modalController: ModalController,
-              public plt: Platform,
+  constructor(public plt: Platform,
               public jpush: JPushService,
               private psService: PsService,
               private util: UtilService,
@@ -131,36 +135,38 @@ export class MPage {
     this.phone = this.util.mask(UserConfig.account.phone, 3, 4);
     this.name = UserConfig.user.name;
 
-    if (UserConfig.user.avatar != undefined && UserConfig.user.avatar != '') {
-      this.avatar = UserConfig.user.avatar;
-    }
+    // if (UserConfig.user.avatar != undefined && UserConfig.user.avatar != '') {
+    //   this.avatar = UserConfig.user.avatar;
+    // }
   }
 
   //计划
   goPlPage() {
-     this.modalController.create(DataConfig.PAGE._PL_PAGE).present();
+    this.util.createModal(DataConfig.PAGE._PL_PAGE,null,ModalTranType.left).present();
   }
 
   //系统设置
   goSsPage() {
-    this.modalController.create(DataConfig.PAGE._SS_PAGE).present();
+    this.util.createModal(DataConfig.PAGE._SS_PAGE,null,ModalTranType.left).present();
   }
 
   //备份
   goBrPage() {
-    this.modalController.create(DataConfig.PAGE._BR_PAGE).present();
+    this.util.createModal(DataConfig.PAGE._BR_PAGE,null,ModalTranType.left).present();
   }
 
 
   // 群组列表
   goGlPage() {
-    this.modalController.create(DataConfig.PAGE._GL_PAGE).present();
+    this.util.createModal(DataConfig.PAGE._GL_PAGE,null,ModalTranType.left).present();
   }
 
   // 个人设置
   goPsPage() {
     //this.modalController.create(DataConfig.PAGE._PS_PAGE).present();
-    let modal = this.modalController.create(DataConfig.PAGE._PS_PAGE);
+
+    let modal:Modal = this.util.createModal(DataConfig.PAGE._PS_PAGE,null,ModalTranType.left);
+
     modal.onDidDismiss((data)=>{
       this.getData();
     });
@@ -170,19 +176,28 @@ export class MPage {
 
   // 黑名单
   goBlPage() {
-    this.modalController.create(DataConfig.PAGE._BL_PAGE).present();
+    this.util.createModal(DataConfig.PAGE._BL_PAGE,null,ModalTranType.left).present();
   }
 
 
   //日志
   gologPage() {
-    this.modalController.create(DataConfig.PAGE._LOG_PAGE).present();
+    this.util.createModal(DataConfig.PAGE._LOG_PAGE,null,ModalTranType.left).present();
   }
 
-  //日志
+  //关于
   goatPage() {
-    this.modalController.create(DataConfig.PAGE._AT_PAGE).present();
+    this.util.createModal(DataConfig.PAGE._AT_PAGE,null,ModalTranType.left).present();
   }
+
+  todoList() {
+    this.util.createModal(DataConfig.PAGE._DO_PAGE,null,ModalTranType.left).present();
+  }
+
+  aTday() {
+    this.util.createModal(DataConfig.PAGE._ATME_PAGE,null,ModalTranType.left).present();
+  }
+
   ionClose($evnet){
     this.settings.popStatusBarColor();
   }

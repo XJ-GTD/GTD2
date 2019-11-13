@@ -129,7 +129,7 @@ import {AssistantService} from "../../service/cordova/assistant.service";
             <ion-icon class="fal fa-microphone" *ngIf="!currentPlanItem.jti" (click)="recordPlanItem()"></ion-icon>
           </div>
 
-          <div (click)="changeDatetime()" class="pickDate" *ngIf="currentPlanItem.jti && currentPlanItem.sd">
+          <div (click)="changeDatetime()" class="pickDate" *ngIf="currentPlanItem.jti">
             <ion-icon class="fal fa-alarm-clock "></ion-icon>
             <span class="content  agendaDate">
                   {{currentPlanItem.sd | formatedate: "YYYY-M-D"}}
@@ -137,6 +137,13 @@ import {AssistantService} from "../../service/cordova/assistant.service";
             <span class="content  agendaDate">
                       {{currentPlanItem.sd + " " + currentPlanItem.st | formatedate: "A hh:mm"}}                 
               </span>
+          </div>
+
+          <div class="pickDate" *ngIf="!currentPlanItem.jti">
+            <ion-icon class="fal fa-alarm-clock "></ion-icon>
+            <span class="content  agendaDate">
+                  {{currentPlanItem.sd | formatedate: "YYYY-M-D"}}
+            </span>
           </div>
 
         </ion-row>

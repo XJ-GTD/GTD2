@@ -37,7 +37,8 @@ import {ModalTranType} from "../../data.enum";
                     (onTodoList)="todoList($event)"
                     (onNewAgenda)="newAgenda($event)"
                     (onNewDay)="newDay($event)"
-                    (onNewMome)="newMome($event)">
+                    (onNewMome)="newMome($event)"
+                    (onPlus)="newPlus($event)">
       </ion-calendar>
 
       <page-tdl #tdl></page-tdl>     
@@ -134,14 +135,6 @@ export class HPage {
 
   }
 
-  todoList(day ?: CalendarDay) {
-    this.util.createModal(DataConfig.PAGE._DO_PAGE,null,ModalTranType.top).present();
-  }
-
-  aTday(day ?: CalendarDay) {
-    this.util.createModal(DataConfig.PAGE._DO_PAGE,null,ModalTranType.top).present();
-  }
-
   newAgenda(day ?: CalendarDay) {
 
     let p: ScdPageParamter = new ScdPageParamter();
@@ -187,4 +180,7 @@ export class HPage {
     modal.present();
   }
 
+  newPlus(day ?: CalendarDay) {
+    this.util.createModal(DataConfig.PAGE._PLUS_MODAL,day,ModalTranType.top).present();
+  }
 }

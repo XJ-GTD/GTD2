@@ -44,6 +44,8 @@ import {CommemorationDayPage} from "../../pages/commemorationday/commemorationda
 import {DtSelectPage} from "../../pages/dtselect/dtselect";
 import {MemberPage} from "../../pages/member/member";
 import {GloryPage} from "../../pages/glory/glory";
+import {AtmePage} from "../../pages/atme/atme";
+import {PlusModal} from "../../pages/h/plusModal";
 
 export class DataConfig {
   public static isdebug: boolean = true;
@@ -253,6 +255,7 @@ export class DataConfig {
     _LOG_PAGE: LogPage,       // 辅助功能 - 备份
     _AT_PAGE: AtPage,       // 关于
     _DO_PAGE: DoPage,       // 任务 - 待处理/已处理任务一览
+    _ATME_PAGE: AtmePage,       //  让我关注画面
     _AGENDA_PAGE: AgendaPage,   // 日程 - 创建/修改
     _MEMO_PAGE: MemoPage,       // 备忘 - 创建/修改
     _COMMENT_PAGE: CommentPage, // 日程 - 备注
@@ -268,6 +271,8 @@ export class DataConfig {
     _COMMEMORATIONDAY_PAGE: CommemorationDayPage, // 纪念日 - 创建/修改
     _DTSELECT_PAGE: DtSelectPage, // 纪念日 - 创建/修改
     _JH_PAGE: JhPage,       // 设置计划/日历
+    _PLUS_MODAL: PlusModal,       // 活动 日历项选择
+
   }
   static PAGES = [
     HPage,        // 首页 - 首页
