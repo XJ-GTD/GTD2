@@ -459,22 +459,20 @@ export class AttachPage {
     this.fjArray = new Array<Attachment>();
     let attachments: Array<Attachment> = new Array<Attachment>();
     attachments = await this.eventService.selectAttachments(this.obt,this.obi);
-    alert("刷新后的数据:"+JSON.stringify(attachments));
     for (let attachment of attachments) {
       attachment.members = this.members;
       // 判断是否是残留数据或文字附件
       if (attachment.ext) {
         if (this.util.isJsonString(attachment.fj)) {
             attachment.fpjson = generateCacheFilePathJson(attachment.fpjson, attachment.fj);
-            alert("刷新attachment.fpjson:"+JSON.stringify(attachment.fpjson));
             // 附件存储JSON是否存在
             if (attachment.fpjson && attachment.fpjson.remote) {
               attachment.fjurl = this.browserurl + attachment.fpjson.remote;
-              alert("刷新attachment.fjurl:"+attachment.fjurl);
               // 判断是否是手机
               if (this.util.hasCordova()) {
+                alert("进入真机测试模式");
                 let fileName: string  = attachment.fpjson.local.substr(1, attachment.fpjson.local.length);
-
+                alert("fileName："+fileName);
                 // 本地文件存在，页面上显示本地文件
                 let checked = await this.file.checkFile(this.file.dataDirectory + attachment.fpjson.getCacheDir(), fileName);
                 alert("刷新验证存在本地文件:"+checked);
@@ -489,7 +487,9 @@ export class AttachPage {
         }
       }
     }
+    alert("循环结束attachments："+JSON.stringify(attachments));
     this.fjArray = attachments;
+    alert("循环结束this.fjArray："+JSON.stringify(this.fjArray));
   }
 
   //获取打开的文件类型
