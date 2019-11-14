@@ -196,7 +196,7 @@ import {AssistantService} from "../../service/cordova/assistant.service";
                 <button ion-button clear (click)="atmembers()">
                   <ion-icon class="fad fa-at"></ion-icon>
                 </button>
-                <button ion-button clear>
+                <button ion-button clear (click)="shareWeiXin()">
                   <ion-icon class="fad fa-share-alt"></ion-icon>
                 </button>
 
@@ -271,6 +271,8 @@ export class AgendaPage {
 
   acceptedinvite: InviteState = InviteState.Accepted;
   // rejectedinvite: InviteState = InviteState.Rejected;
+
+  declare var Wechat;
 
   @ViewChild(PageBoxComponent)
   pageBoxComponent: PageBoxComponent
@@ -979,4 +981,26 @@ export class AgendaPage {
     }
 
   }
+  //分享微信
+  shareWeiXin() {
+      //获取分享内容
+      let text = this.currentAgenda.evn;
+      //验证是否按照微信组件
+      Wechat.isInstalled(installed => {
+        if (installed) {
+          Wechat.share({
+            text:text,
+            scene:0   // 分享目标 0:分享到对话，1:分享到朋友圈，2:收藏
+          }, () => {
+              console.log('分享成功');
+          }, reason => {
+              console.log('分享失败' + reason);
+          });
+        } else {
+            alert('请安装微信');
+        }
+      })
+
+  }
+
 }
