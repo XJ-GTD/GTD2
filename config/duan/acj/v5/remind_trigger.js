@@ -42,6 +42,22 @@ function clean(datasource)
     }
   }
 
+  var convertPushContinueMessage = function(id, type, title, datetime) {
+    var push = {};
+
+    push['title'] = '活动延迟提醒';
+    push['content'] = title;
+    push['extras'] = {
+      event: "MWXING_SHAREAGENDA_EVENT",
+      dependson: "on.homepage.init",
+      eventhandler: "on.agendashare.message.click",
+      eventdatafrom: "local",
+      eventdata: JSON.stringify({type: type, id: id})
+    };
+
+    return push;
+  }
+
   var convertPushMessage = function(id, type, title, datetime) {
     var push = {};
 
@@ -127,18 +143,18 @@ function clean(datasource)
 
     var standardnext = {};
 
-    standardnext.announceTo = [to];
-    standardnext.announceType = 'data_sync';
-    standardnext.announceContent = {
-      mwxing: {},
-      sms: {},
-      push: convertPushMessage(id, type, title, datetime)
-    };
-
-    outputs.push(standardnext);
-
     // 存在持续提醒的数据
     if (remind && remindprop[id] && remindprop[id]["continue"] && data['todostate'] == "uncomplete") {
+      // 发送本次提醒
+      standardnext.announceTo = [to];
+      standardnext.announceType = 'data_sync';
+      standardnext.announceContent = {
+        mwxing: {},
+        sms: {},
+        push: convertPushContinueMessage(id, type, title, datetime)
+      };
+
+      // 设置下次提醒
       var currentremind = remindprop[id];
 
       var cd = Date.parse(currentremind["wd"] + " " + currentremind["wt"]);
@@ -159,8 +175,17 @@ function clean(datasource)
         }]
       };
       continues.push(generateScheduledRemind(currentremind["accountid"], id, wd, wt, nextremind));
+    } else {
+      standardnext.announceTo = [to];
+      standardnext.announceType = 'data_sync';
+      standardnext.announceContent = {
+        mwxing: {},
+        sms: {},
+        push: convertPushMessage(id, type, title, datetime)
+      };
     }
 
+    outputs.push(standardnext);
   }
 
   print({announces: outputs, continues: continues});
