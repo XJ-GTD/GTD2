@@ -19,6 +19,7 @@ import {
   ConfirmType,
   IsWholeday,
   CycleType,
+  DelType,
   ObjectType,
   InviteState
 } from "../../data.enum";
