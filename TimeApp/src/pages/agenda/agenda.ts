@@ -26,6 +26,8 @@ import {
 import {ModiPower} from "../../data.enum";
 import {AssistantService} from "../../service/cordova/assistant.service";
 
+declare var Wechat;
+
 /**
  * Generated class for the 日程创建/修改 page.
  *
@@ -271,8 +273,6 @@ export class AgendaPage {
 
   acceptedinvite: InviteState = InviteState.Accepted;
   // rejectedinvite: InviteState = InviteState.Rejected;
-
-  declare var Wechat;
 
   @ViewChild(PageBoxComponent)
   pageBoxComponent: PageBoxComponent
