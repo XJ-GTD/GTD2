@@ -194,8 +194,12 @@ body {
     }
 
     .towline {
-      min-height: 2.4rem;
+      min-height: 2.8rem;
     }
+    .threeline {
+       min-height: 3.8rem;
+     }
+
 
   .plan {
     position: absolute;
@@ -203,25 +207,26 @@ body {
     line-height: 20px;
     text-align: center;
     width: 74px;
+    opacity: .95;
 
     span {
       overflow: hidden;
       white-space: nowrap;
-      font-size: .8rem;
-      margin-left: -10px;
+      font-size: .9rem;
       font-weight: 100;
     }
   }
   .plan-right{
     transform: rotate(45deg);
-    right: -4rem;
-    top: 8px;
+    right: -3.2rem;
   }
 
   .plan-left{
     transform: rotate(-45deg);
-    right: -4rem;
-    top: 8px;
+    left: -3.2rem;
+    span {
+    margin-left: 1rem;
+  }
   }
 
 
