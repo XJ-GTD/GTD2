@@ -128,7 +128,7 @@ import {MemberPageModule} from "../pages/member/member.module";
 import * as ionicGalleryModal from 'ionic-gallery-modal';
 import {AtmePageModule} from "../pages/atme/atme.module";
 import {AtMemberPageModule} from "../pages/atmember/atmember.module";
-import {AtMemberService} from "../service/business/atmember.service";
+import {AnnotationService} from "../service/business/annotation.service";
 
 @NgModule({
   declarations: [
@@ -267,7 +267,7 @@ import {AtMemberService} from "../service/business/atmember.service";
     MIPushService,
     ScheduleRemindService,
     EventService,
-    AtMemberService,
+    AnnotationService,
     MemoService,
     RemindService,
     SettingsProvider,

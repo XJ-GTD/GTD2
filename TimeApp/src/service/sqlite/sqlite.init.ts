@@ -32,6 +32,7 @@ import {FjTbl} from "./tbl/fj.tbl";
 import {MrkTbl} from "./tbl/mrk.tbl";
 import {ParTbl} from "./tbl/par.tbl";
 import {DelType, SyncType} from "../../data.enum";
+import {AtTbl} from "./tbl/at.tbl";
 
 /**
  * create by on 2019/3/5
@@ -163,6 +164,9 @@ export class SqliteInit {
     await this.sqlexec.dropByParam(par);
     await this.sqlexec.createByParam(par);
 
+    let at: AtTbl = new AtTbl();
+    await this.sqlexec.dropByParam(at);
+    await this.sqlexec.createByParam(at);
   }
 
   /**

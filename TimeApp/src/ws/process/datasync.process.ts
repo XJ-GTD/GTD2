@@ -15,6 +15,7 @@ import {ContactsService} from "../../service/cordova/contacts.service";
 import {BTbl} from "../../service/sqlite/tbl/b.tbl";
 import {PersonRestful} from "../../service/restful/personsev";
 import {SqliteExec} from "../../service/util-service/sqlite.exec";
+import {Annotation, AnnotationService} from "../../service/business/annotation.service";
 
 /**
  * 数据同步
@@ -29,6 +30,7 @@ export class DataSyncProcess implements MQProcess {
               private eventService: EventService,
               private memoService: MemoService,
               private personRestful: PersonRestful,
+              private annotationService : AnnotationService,
               private sqlExce : SqliteExec) {
   }
 
@@ -68,6 +70,9 @@ export class DataSyncProcess implements MQProcess {
       if (dsPara.type == "Attachment") {
         await this.eventService.acceptSyncAttachments([dsPara.id]);
       }
+      if (dsPara.type == "Annotation") {
+        await this.annotationService.acceptSyncAnnotation([dsPara.id]);
+      }
     }
 
     //本帐号他设备请求,云端同步成功,本地下载完成同步
@@ -89,6 +94,9 @@ export class DataSyncProcess implements MQProcess {
       }
       if (dsPara.type == "Attachment") {
         await this.eventService.receivedAttachment(dsPara.id);
+      }
+      if (dsPara.type == "Annotation") {
+        await this.annotationService.receivedAnnotation(dsPara.id);
       }
     }
 
@@ -112,6 +120,9 @@ export class DataSyncProcess implements MQProcess {
       if (dsPara.type == "Attachment") {
         await this.eventService.receivedAttachment(dsPara.id);
       }
+      if (dsPara.type == "Annotation") {
+        await this.annotationService.receivedAnnotation(dsPara.id);
+      }
     }
 
     //本设备拉取请求,本地下载
@@ -133,6 +144,9 @@ export class DataSyncProcess implements MQProcess {
       }
       if (dsPara.type == "Attachment") {
         await this.eventService.receivedAttachment(dsPara.id);
+      }
+      if (dsPara.type == "Annotation") {
+        await this.annotationService.receivedAnnotation(dsPara.id);
       }
     }
 
@@ -424,6 +438,12 @@ export class DataSyncProcess implements MQProcess {
         Object.assign(attachment, dsPara.data);
 
         await this.eventService.receivedAttachmentData([attachment], this.convertSyncStatus(dsPara.status));
+      }
+      if (dsPara.type == "Annotation") {
+        let annotation: Annotation = {} as Annotation;
+        Object.assign(annotation, dsPara.data);
+
+        await this.annotationService.receivedAnnotationData([annotation], this.convertSyncStatus(dsPara.status));
       }
 
     }

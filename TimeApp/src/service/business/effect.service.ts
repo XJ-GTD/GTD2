@@ -9,6 +9,7 @@ import { EventData, TaskData, AgendaData, MiniTaskData, EventService, RtJson, Tx
 import { CalendarService } from "./calendar.service";
 import { MemoService } from "./memo.service";
 import { ScheduleRemindService } from "./remind.service";
+import {AnnotationService} from "./annotation.service";
 
 @Injectable()
 export class EffectService extends BaseService {
@@ -16,7 +17,8 @@ export class EffectService extends BaseService {
               private memoService: MemoService,
               private remindService: ScheduleRemindService,
               private emitService: EmitService,
-              private calendarService: CalendarService) {
+              private calendarService: CalendarService,
+              private annotationService : AnnotationService) {
     super();
   }
 
@@ -27,7 +29,7 @@ export class EffectService extends BaseService {
     await this.calendarService.syncPlanItems();       // 同步日历项
     await this.eventService.syncAgendas();            // 同步日程
     await this.memoService.syncMemos();               // 同步备忘
-
+    await this.annotationService.syncAnnotation();   // 同步@信息
     await this.remindService.syncScheduledReminds();  // 同步未来48小时的提醒
 
     return ;

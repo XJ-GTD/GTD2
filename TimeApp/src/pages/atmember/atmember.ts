@@ -4,7 +4,7 @@ import {UtilService} from "../../service/util-service/util.service";
 import { MemberPageData} from "../../data.mapping";
 import {Member} from "../../service/business/event.service";
 import {UserConfig} from "../../service/config/user.config";
-import {AtMember, AtMemberService} from "../../service/business/atmember.service";
+import {Annotation, AnnotationService} from "../../service/business/annotation.service";
 import * as anyenum from "../../data.enum";
 import * as moment from "moment";
 
@@ -85,7 +85,7 @@ export class AtMemberPage {
   constructor(public navCtrl: NavController,
               public viewCtrl: ViewController,
               public navParams: NavParams,
-              private atmemberService: AtMemberService,
+              private annotationService: AnnotationService,
               private util: UtilService,) {
 
     if (this.navParams && this.navParams.data ) {
@@ -106,23 +106,22 @@ export class AtMemberPage {
   }
 
   save() {
+
     let list = this.selMemberList;
     if (list.length > 0) {
 
       let data: Object = {
         members : list
       };
+      let annotation =  new Annotation();
+      annotation.ui = this.ui;
+      annotation.obi = this.evi;
+      annotation.content = this.evn;
+      for (let member of list){
+        annotation.rcs.push(member.rc);
+      }
 
-
-        let atmember =  {} as AtMember;
-        atmember.ui = this.ui;
-        atmember.obt = anyenum.ObjectType.Event;
-        atmember.obi = this.evi;
-        atmember.dt = moment().format("YYYY/MM/DD HH:mm");
-        atmember.content = this.evn;
-        atmember.members = list;
-
-      this.atmemberService.saveAtMember(atmember);
+      this.annotationService.saveAnnotation(annotation);
       this.viewCtrl.dismiss(data);
     } else {
       this.util.popoverStart("请选择参与人");
@@ -150,7 +149,7 @@ export class AtMemberPage {
 
   getMembers(){
     if (this.navParams.data.members ) {
-      let memberList = this.atmemberService.getMembers(this.navParams.data.members, this.tel);
+      let memberList = this.annotationService.getMembers(this.navParams.data.members, this.tel);
 
       memberList.forEach((value) => {
         let mp: MemberPageData = {} as MemberPageData;

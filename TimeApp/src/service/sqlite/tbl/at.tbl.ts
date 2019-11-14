@@ -7,47 +7,63 @@ import {ITblParam} from "./itblparam";
 export class AtTbl implements ITblParam {
 
   ati: string;
+  rc: string;
   ui: string;
   obt: string;
   obi: string;
+  tb: string;
   dt: string;
   content: string;
+  sdt: string;
+  gs: string;
   utt: number;
   wtt: number;
 
   fastParam(): any {
     let params: Array<any> = new Array<any>();
     params.push(this.ati);
+    params.push(this.rc);
     params.push(this.ui);
     params.push(this.obt);
     params.push(this.obi);
+    params.push(this.tb);
     params.push(this.dt);
     params.push(this.content);
+    params.push(this.sdt);
+    params.push(this.gs);
     params.push(this.wtt || moment().unix());
     params.push(moment().unix());
 
     return [`replace into gtd_at
-       (    ati
+       (     ati
+             ,rc
              ,ui
              ,obt
              ,obi
+             ,tb
              ,dt
              ,content
+             ,sdt
+             ,gs
              ,wtt
-             ,utt)`,
-     `select ?,?,?,?,?,?,?,?`,
+            ,utt)`,
+     `select ?,?,?,?,?,?,?,?,?,?,?,?`,
     params];
   }
 
   cTParam():string {
 
     let sq =`create table if not exists gtd_at(
-        ati varchar(50) PRIMARY KEY
-       ,ui varchar(50) 
-       ,obt varchar(50) 
-       ,obi varchar(50) 
-       ,dt varchar(20) 
-       ,content varchar(50) 
+         ati varchar(50) PRIMARY KEY
+         ,rc varchar(50) 
+         ,ui varchar(50) 
+         ,obt varchar(50) 
+         ,obi varchar(50) 
+         ,tb varchar(6) 
+         ,dt varchar(20) 
+         ,content varchar(50) 
+         ,sdt varchar(4) 
+         ,gs varchar(4) 
        ,wtt integer 
        ,utt integer 
      );`;
@@ -59,11 +75,17 @@ export class AtTbl implements ITblParam {
     let sq='';
     let params = new Array<any>();
 
+    if(this.ati!=null && this.ati!=''){      sq=sq+', ati= ? ';      params.push(this.ati);    }
+    if(this.rc!=null && this.rc!=''){      sq=sq+', rc= ? ';      params.push(this.rc);    }
     if(this.ui!=null && this.ui!=''){      sq=sq+', ui= ? ';      params.push(this.ui);    }
     if(this.obt!=null && this.obt!=''){      sq=sq+', obt= ? ';      params.push(this.obt);    }
     if(this.obi!=null && this.obi!=''){      sq=sq+', obi= ? ';      params.push(this.obi);    }
+    if(this.tb!=null && this.tb!=''){      sq=sq+', tb= ? ';      params.push(this.tb);    }
     if(this.dt!=null && this.dt!=''){      sq=sq+', dt= ? ';      params.push(this.dt);    }
     if(this.content!=null && this.content!=''){      sq=sq+', content= ? ';      params.push(this.content);    }
+    if(this.sdt!=null && this.sdt!=''){      sq=sq+', sdt= ? ';      params.push(this.sdt);    }
+    if(this.gs!=null && this.gs!=''){      sq=sq+', gs= ? ';      params.push(this.gs);    }
+
 
 
     sq =`update gtd_at set utt =${moment().unix()}  ${sq} where ati = ? ;`;
@@ -112,11 +134,17 @@ export class AtTbl implements ITblParam {
     let params = new Array<any>();
     let sq='select * from  gtd_at where  1=1 ';
 
+    if(this.ati!=null && this.ati!=''){      sq=sq+' and ati= ? ';      params.push(this.ati);    }
+    if(this.rc!=null && this.rc!=''){      sq=sq+' and rc= ? ';      params.push(this.rc);    }
     if(this.ui!=null && this.ui!=''){      sq=sq+' and ui= ? ';      params.push(this.ui);    }
     if(this.obt!=null && this.obt!=''){      sq=sq+' and obt= ? ';      params.push(this.obt);    }
     if(this.obi!=null && this.obi!=''){      sq=sq+' and obi= ? ';      params.push(this.obi);    }
+    if(this.tb!=null && this.tb!=''){      sq=sq+' and tb= ? ';      params.push(this.tb);    }
     if(this.dt!=null && this.dt!=''){      sq=sq+' and dt= ? ';      params.push(this.dt);    }
     if(this.content!=null && this.content!=''){      sq=sq+' and content= ? ';      params.push(this.content);    }
+    if(this.sdt!=null && this.sdt!=''){      sq=sq+' and sdt= ? ';      params.push(this.sdt);    }
+    if(this.gs!=null && this.gs!=''){      sq=sq+' and gs= ? ';      params.push(this.gs);    }
+
 
     sq = sq + ';';
 
@@ -136,20 +164,28 @@ export class AtTbl implements ITblParam {
     let params = new Array<any>();
     let sq =`insert into gtd_at
        (   ati
+             ,rc
              ,ui
              ,obt
              ,obi
+             ,tb
              ,dt
              ,content
+             ,sdt
+             ,gs
              ,wtt
-             ,utt)
-       values(?,?,?,?,?,?,?,?);`;
+              ,utt)
+       values(?,?,?,?,?,?,?,?,?,?,?,?);`;
     params.push(this.ati);
+    params.push(this.rc);
     params.push(this.ui);
     params.push(this.obt);
     params.push(this.obi);
+    params.push(this.tb);
     params.push(this.dt);
     params.push(this.content);
+    params.push(this.sdt);
+    params.push(this.gs);
     params.push(moment().unix());
     params.push(moment().unix());
     let ret = new Array<any>();
@@ -162,20 +198,28 @@ export class AtTbl implements ITblParam {
     let params = new Array<any>();
     let sq =`replace into gtd_at
        (   ati
+             ,rc
              ,ui
              ,obt
              ,obi
+             ,tb
              ,dt
              ,content
+             ,sdt
+             ,gs
              ,wtt
-             ,utt)
-       values(?,?,?,?,?,?,?,?);`;
+              ,utt)
+       values(?,?,?,?,?,?,?,?,?,?,?,?);`;
     params.push(this.ati);
+    params.push(this.rc);
     params.push(this.ui);
     params.push(this.obt);
     params.push(this.obi);
+    params.push(this.tb);
     params.push(this.dt);
     params.push(this.content);
+    params.push(this.sdt);
+    params.push(this.gs);
     params.push(moment().unix());
     params.push(moment().unix());
 
