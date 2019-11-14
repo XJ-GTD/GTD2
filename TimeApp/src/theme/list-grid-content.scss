@@ -135,6 +135,7 @@
   .icon {
     text-align: center;
     margin: 0rem 0.2rem;
+    font-size: 1.4rem;
 
     ion-icon {
       //padding-top: 0.1rem;
@@ -157,7 +158,8 @@
   }
 
   .st {
-    margin: 0 0.5rem;
+    padding: .2rem 1rem;
+    border-radius: 2px;
   }
   .wc{
     text-decoration: line-through;
@@ -433,7 +435,8 @@
     }
 
     .st {
-      color: rgba(153, 152, 152, 1);
+      color:rgba(51,51,51,1);
+      background:rgba(243,243,243,1);
     }
 
     .invite {

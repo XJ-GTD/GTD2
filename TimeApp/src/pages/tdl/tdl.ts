@@ -161,7 +161,7 @@ BScroll.use(InfinityScroll);
                   <!--</div>-->
                   <div class="line font-small">
                     <div class="person" *ngIf="currentuser != jt.ui && jt.ui != ''">
-                      来自：{{jt.ui | formatuser: currentuser: friends}}</div>
+                      -- {{jt.ui | formatuser: currentuser: friends}}</div>
                     <div class="person" *ngIf="currentuser == jt.ui">自己</div>
                     <!--<div class="invite" *ngIf="event.invitestatus != inviteaccept && event.invitestatus != invitereject"-->
                     <!--end><span (click)="rejectInvite($event, event)">拒绝</span><span-->
@@ -237,14 +237,21 @@ BScroll.use(InfinityScroll);
                   </div>
                   <div class="line font-small">
                     <div class="st">{{event.evt}}</div>
+                    <div class="person" *ngIf="currentuser != event.ui && event.ui != ''" end>
+                      -- {{event.ui | formatuser: currentuser: friends}} ({{event.apn}} / {{event.pn}}, {{event.fj}})</div>
+                    <div class="person" *ngIf="currentuser == event.ui" end>自己 ({{event.apn}} / {{event.pn}}, {{event.fj}})</div>
                   </div>
                   <div class="line font-small">
-                    <div class="person" *ngIf="currentuser != event.ui && event.ui != ''">
-                      来自：{{event.ui | formatuser: currentuser: friends}} ({{event.apn}} / {{event.pn}}, {{event.fj}})</div>
-                    <div class="person" *ngIf="currentuser == event.ui">自己 ({{event.apn}} / {{event.pn}}, {{event.fj}})</div>
+                    <!--<div class="person" *ngIf="currentuser != event.ui && event.ui != ''">-->
+                      <!--来自：{{event.ui | formatuser: currentuser: friends}} ({{event.apn}} / {{event.pn}}, {{event.fj}})</div>-->
+                    <!--<div class="person" *ngIf="currentuser == event.ui">自己 ({{event.apn}} / {{event.pn}}, {{event.fj}})</div>-->
                     <!--<div class="invite" *ngIf="event.invitestatus != inviteaccept && event.invitestatus != invitereject"-->
                     <!--end><span (click)="rejectInvite($event, event)">拒绝</span><span-->
                     <!--(click)="acceptInvite($event, event)">接受</span></div>-->
+                    <div class="font-small" >
+                      <ion-icon class="fal fa-cloud-upload" *ngIf="event.tb == synch"></ion-icon>
+                    </div>
+                    
 
                     <div class="icon font-small" end>
                       <ion-icon class="fad fa-lock" *ngIf="event.todolist == '0'"></ion-icon>
