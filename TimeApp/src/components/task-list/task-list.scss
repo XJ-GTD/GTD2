@@ -1,7 +1,13 @@
 task-list {
+
   .grid{
     width: 100%;
     padding: 1.4rem 0;
+  }
+  .list-grid-content {
+    .sn{
+      -webkit-line-clamp: 3;
+    }
   }
   .notask{
     margin: 10rem auto;

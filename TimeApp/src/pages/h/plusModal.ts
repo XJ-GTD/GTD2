@@ -49,7 +49,7 @@ import {ModalTranType} from "../../data.enum";
               <button ion-button clear (click)="newMome()">
                 <ion-icon class="fad fa-book-heart"></ion-icon>
               </button>
-              <p>备注</p>
+              <p>备忘</p>
             </div>
             <div col-4>
               <button ion-button clear (click)="newAgenda()">

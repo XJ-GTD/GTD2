@@ -25,7 +25,7 @@ import {
   PageDirection,
   PlanItemType,
   SelfDefineType,
-  SyncType
+  SyncType, ToDoListStatus
 } from "../../data.enum";
 import {TdlGesture} from "./tdl-gestures";
 import {CalendarComponent} from "../../components/ion2-calendar";
@@ -114,13 +114,13 @@ BScroll.use(InfinityScroll);
                        {{days.weather.ext | formatweather:  'centigrade-with-json'}}
                       </span>
                         <!--<span>-->
-                      <!--{{days.weather.jtn}}-->
-                      <!--</span>-->
+                        <!--{{days.weather.jtn}}-->
+                        <!--</span>-->
                       </div>
                     </div>
                   </div>
                 </div>
-               
+
               </ion-row>
 
               <ion-row class="item-content  calendaritem-content item-content-backgroud "
@@ -160,18 +160,18 @@ BScroll.use(InfinityScroll);
                   <!--</div>-->
                   <!--</div>-->
                   <div class="line font-small">
-                    <div class="person" *ngIf="currentuser != jt.ui && jt.ui != ''">
+                    <div class="person" *ngIf="currentuser != jt.ui && jt.ui != ''" end>
                       -- {{jt.ui | formatuser: currentuser: friends}}</div>
-                    <div class="person" *ngIf="currentuser == jt.ui">自己</div>
+                    <div class="person" *ngIf="currentuser == jt.ui" end>-- 自己</div>
                     <!--<div class="invite" *ngIf="event.invitestatus != inviteaccept && event.invitestatus != invitereject"-->
                     <!--end><span (click)="rejectInvite($event, event)">拒绝</span><span-->
                     <!--(click)="acceptInvite($event, event)">接受</span></div>-->
-                    <div class="icon font-small" end>
-                      <ion-icon class="fad fa-lock" *ngIf="jt.todolist == '0'"></ion-icon>
-                      <ion-icon class="fad fa-user-tag" *ngIf="currentuser != jt.ui && jt.ui != ''"></ion-icon>
-                      <ion-icon class="fad fa-check-double" *ngIf="jt.wc == finished"></ion-icon>
-                      <ion-icon class="fad fa-sync" *ngIf="jt.tb == synch"></ion-icon>
-                    </div>
+                    <!--<div class="icon font-small" end>-->
+                    <!--<ion-icon class="fad fa-lock" *ngIf="jt.todolist == '0'"></ion-icon>-->
+                    <!--<ion-icon class="fad fa-user-tag" *ngIf="currentuser != jt.ui && jt.ui != ''"></ion-icon>-->
+                    <!--<ion-icon class="fad fa-check-double" *ngIf="jt.wc == finished"></ion-icon>-->
+                    <!--<ion-icon class="fad fa-sync" *ngIf="jt.tb == synch"></ion-icon>-->
+                    <!--</div>-->
                   </div>
 
                   <div class="plan plan-right"
@@ -186,7 +186,7 @@ BScroll.use(InfinityScroll);
                     <!--<div class="icon">-->
                     <!--<ion-icon class="fal fa-gift"></ion-icon>-->
                     <!--</div>-->
-                    <div class="sn">{{jt.jtn}}</div>
+                    <div class="sn towline">{{jt.jtn}}</div>
                   </div>
                 </ng-container>
               </ion-row>
@@ -230,41 +230,46 @@ BScroll.use(InfinityScroll);
                 <ion-row class="item-content dayagenda-content item-content-backgroud "
                          [class.item-content-hasmessage]="false"
                          *ngIf="!(event.ui != currentuser && event.rtevi && event.invitestatus != inviteaccept && event.invitestatus != invitereject)"
-                         (click)="toDetail(event.evi,event.evd,event.type,event.gs)"
-                         [class.noinvite]="currentuser != event.ui && event.ui != '' && event.invitestatus != inviteaccept && event.invitestatus != invitereject">
+                         (click)="toDetail(event.evi,event.evd,event.type,event.gs)">
                   <div class="line font-small first-line">
-                    <div class="sn">{{event.evn}}</div>
+                    <div class="sn towline">{{event.evn}}</div>
                   </div>
                   <div class="line font-small">
                     <div class="st">{{event.evt}}</div>
                     <div class="person" *ngIf="currentuser != event.ui && event.ui != ''" end>
-                      -- {{event.ui | formatuser: currentuser: friends}} ({{event.apn}} / {{event.pn}}, {{event.fj}})</div>
-                    <div class="person" *ngIf="currentuser == event.ui" end>自己 ({{event.apn}} / {{event.pn}}, {{event.fj}})</div>
+                      -- {{event.ui | formatuser: currentuser: friends}}</div>
+                    <div class="person" *ngIf="currentuser == event.ui" end>-- 自己</div>
                   </div>
-                  <div class="line font-small">
+                  <div class="line font-small"
+                       *ngIf="!(currentuser != event.ui && event.ui != '' && event.invitestatus != inviteaccept && event.invitestatus != invitereject)">
                     <!--<div class="person" *ngIf="currentuser != event.ui && event.ui != ''">-->
-                      <!--来自：{{event.ui | formatuser: currentuser: friends}} ({{event.apn}} / {{event.pn}}, {{event.fj}})</div>-->
+                    <!--来自：{{event.ui | formatuser: currentuser: friends}} ({{event.apn}} / {{event.pn}}, {{event.fj}})</div>-->
                     <!--<div class="person" *ngIf="currentuser == event.ui">自己 ({{event.apn}} / {{event.pn}}, {{event.fj}})</div>-->
                     <!--<div class="invite" *ngIf="event.invitestatus != inviteaccept && event.invitestatus != invitereject"-->
                     <!--end><span (click)="rejectInvite($event, event)">拒绝</span><span-->
                     <!--(click)="acceptInvite($event, event)">接受</span></div>-->
-                    <div class="font-small" >
-                      <ion-icon class="fal fa-cloud-upload" *ngIf="event.tb == synch"></ion-icon>
+                    <div class="icon font-small">
+                      <ion-icon class="fal fa-cloud-upload" [class.over]="event.tb == synch"></ion-icon>
+                      <ion-icon class="fad fa-at"></ion-icon>
+                      <ion-icon class="fad fa-check-double" *ngIf="event.todolist == todoliston"
+                                [class.over]="event.wc == finished"></ion-icon>
                     </div>
-                    
-
                     <div class="icon font-small" end>
-                      <ion-icon class="fad fa-lock" *ngIf="event.todolist == '0'"></ion-icon>
-                      <ion-icon class="fad fa-user-tag" *ngIf="currentuser != event.ui && event.ui != ''"></ion-icon>
-                      <ion-icon class="fad fa-check-double" *ngIf="event.wc == finished"></ion-icon>
-                      <ion-icon class="fad fa-sync" *ngIf="event.tb == synch"></ion-icon>
-                      <ion-icon class="fad fa-lock" *ngIf="event == '0'"></ion-icon>
+                      <ion-icon class="fad fa-user-friends "></ion-icon>
+                      <b>{{event.apn}} / {{event.pn}}</b>
+                      <ion-icon class="fad fa-info-circle "></ion-icon>
+                      <b>{{event.fj}}</b>
                     </div>
                   </div>
 
-                  <div class="plan plan-right"
+                  <div class="plan plan-left "
                        [ngStyle]="{'background-color': event.ji == ''? 'transparent' : (event.ji | formatplan: 'color': privateplans )}">
                     <span>{{event.ji | formatplan: 'name': '': privateplans}}</span></div>
+
+                  <div class="plan plan-left noinvite"
+                       *ngIf="currentuser != event.ui && event.ui != '' && event.invitestatus != inviteaccept && event.invitestatus != invitereject">
+                    <span>未接受</span>
+                  </div>
 
                   <!--<div class="syncing">-->
                   <!--<div class="hand">-->
@@ -337,6 +342,7 @@ export class TdlPage {
   unsynch: SyncType = SyncType.unsynch;
 
   finished: EventFinishStatus = EventFinishStatus.Finished;
+  todoliston = ToDoListStatus.On;
 
   constructor(private tdlServ: TdlService,
               private menuController: MenuController,
@@ -589,7 +595,7 @@ export class TdlPage {
 
   toMemo(day) {
 
-    this.util.createModal(DataConfig.PAGE._DAILYMEMOS_PAGE, day,ModalTranType.scale).present();
+    this.util.createModal(DataConfig.PAGE._DAILYMEMOS_PAGE, day, ModalTranType.scale).present();
   }
 
   toPlanItem(item) {
@@ -597,7 +603,7 @@ export class TdlPage {
     p.si = item.jti;
 
 
-    this.util.createModal(DataConfig.PAGE._COMMEMORATIONDAY_PAGE, p,ModalTranType.scale).present();
+    this.util.createModal(DataConfig.PAGE._COMMEMORATIONDAY_PAGE, p, ModalTranType.scale).present();
   }
 
   async acceptInvite($event, event) {
@@ -638,14 +644,14 @@ export class TdlPage {
       //本人画面
       if (type == EventType.Agenda) {
 
-        this.util.createModal(DataConfig.PAGE._AGENDA_PAGE, p,ModalTranType.scale).present();
+        this.util.createModal(DataConfig.PAGE._AGENDA_PAGE, p, ModalTranType.scale).present();
       }
       if (type == EventType.Task) {
         // this.modalCtr.create(DataConfig.PAGE._TASK_PAGE, p).present();
       }
     } else if (gs == "1") {
       //受邀人画面
-      this.util.createModal(DataConfig.PAGE._AGENDA_PAGE, p,ModalTranType.scale).present();
+      this.util.createModal(DataConfig.PAGE._AGENDA_PAGE, p, ModalTranType.scale).present();
     } else {
       //系统画面
       // this.modalCtr.create(DataConfig.PAGE._TDDS_PAGE, p).present();
@@ -657,7 +663,7 @@ export class TdlPage {
     let p: ScdPageParamter = new ScdPageParamter();
     p.d = moment(d);
     this.feedback.audioClick();
-    this.util.createModal(DataConfig.PAGE._AGENDA_PAGE, p,ModalTranType.scale).present();
+    this.util.createModal(DataConfig.PAGE._AGENDA_PAGE, p, ModalTranType.scale).present();
   }
 
 }
