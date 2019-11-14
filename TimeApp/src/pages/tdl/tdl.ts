@@ -90,7 +90,7 @@ BScroll.use(InfinityScroll);
             </ion-row>
             <ng-template [ngIf]="days.events.length > 0 || days.calendaritems.length > 0 || days.memos.length > 0 "
                          [ngIfElse]="noscd">
-              <ion-row class="item-content dayagenda-nav" id="day{{days.day | formatedate:'YYYYMMDD'}}">
+              <ion-row class="item-content dayagenda-nav" id="day{{days.day | formatedate:'YYYYMMDD'}}" [class.today] = "istoday(days.day)">
                 <div class="line">
                   <div class="dayheader">
                     <div class="d-fsize">{{days.day | formatedate :"CWEEK"}}</div>
@@ -664,6 +664,11 @@ export class TdlPage {
     p.d = moment(d);
     this.feedback.audioClick();
     this.util.createModal(DataConfig.PAGE._AGENDA_PAGE, p, ModalTranType.scale).present();
+  }
+
+  istoday(val:any){
+    let m = moment(val);
+    return m.isSame(moment(),"date");
   }
 
 }
