@@ -20,10 +20,13 @@ fi
 
 if [ $TRAVIS_OS_NAME = 'osx' ]; then
   #ionic cordova build ios --buildConfig $TRAVIS_BUILD_DIR/travis/profiles/cordova/build.json
-  ionic cordova build ios
+  cp -f $TRAVIS_BUILD_DIR/travis/profiles/cordova/build.json $TRAVIS_BUILD_DIR/TimeApp/platforms/ios/build.json
+  ionic cordova build ios --buildConfig
   echo "Display ios information"
   cat $TRAVIS_BUILD_DIR/TimeApp/platforms/ios/$IOS_APP_NAME/Images.xcassets/AppIcon.appiconset/Contents.json
   cat $TRAVIS_BUILD_DIR/TimeApp/platforms/ios/$IOS_APP_NAME/$IOS_APP_NAME-info.plist
+  echo "Display CDVViewController.m"
+  cat $TRAVIS_BUILD_DIR/TimeApp/platforms/ios/CordovaLib/Classes/Public/CDVViewController.m
   cp -f $TRAVIS_BUILD_DIR/TimeAppPatch/info.plist $TRAVIS_BUILD_DIR/TimeApp/platforms/ios/$IOS_APP_NAME/$IOS_APP_NAME-info.plist
   echo "Recover ios Images.xcassets sign"
   rm -Rf $TRAVIS_BUILD_DIR/TimeApp/platforms/ios/$IOS_APP_NAME/Images.xcassets

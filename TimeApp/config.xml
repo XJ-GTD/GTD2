@@ -42,37 +42,9 @@
         <allow-intent href="itms:*" />
         <allow-intent href="itms-apps:*" />
         <preference name="UseSwiftLanguageVersion" value="4" />
-        <config-file target="*-Info.plist" parent="*">
-          <array>
-            <dict>
-              <key>NSAppleMusicUsageDescription</key>
-            	<string>[冥王星]需要您的同意,才能访问媒体资料库</string>
-            	<key>NSCalendarsUsageDescription</key>
-            	<string>[冥王星]需要您的同意,才能访问日历</string>
-            	<key>NSCameraUsageDescription</key>
-            	<string>[冥王星]需要您的同意,才能访问相机</string>
-            	<key>NSContactsUsageDescription</key>
-            	<string>[冥王星]需要您的同意,才能访问相册使用您的通讯录</string>
-            	<key>NSLocationAlwaysUsageDescription</key>
-            	<string>[冥王星]需要您的同意,才能始终访问位置</string>
-            	<key>NSLocationUsageDescription</key>
-            	<string>[冥王星]需要您的同意,才能访问位置</string>
-            	<key>NSLocationWhenInUseUsageDescription</key>
-            	<string>[冥王星]需要您的同意,才能在使用期间访问位置</string>
-            	<key>NSPhotoLibraryUsageDescription</key>
-            	<string>[冥王星]需要您的同意,才能访问相册</string>
-            	<key>NSRemindersUsageDescription</key>
-            	<string>[冥王星]需要您的同意,才能访问提醒事项</string>
-            </dict>
-        </array>
-      </config-file>
-      <config-file target="*-Info.plist" parent="NSMicrophoneUsageDescription">
-        <string>[冥王星]需要您的同意,才能访问麦克风</string>
-      </config-file>
     </platform>
     <plugin name="cordova-plugin-BaiduSpeechAndTTS" spec="../BaiduSpeechAndTTS" />
     <plugin name="cordova-plugin-app-version" spec="~0.1.9" />
-    <plugin name="cordova-plugin-inappbrowser" spec="~3.1.0" />
     <plugin name="cordova-plugin-camera" spec="~4.0.3" />
     <plugin name="cordova-plugin-chooser" spec="~1.2.5" />
     <plugin name="cordova-plugin-statusbar" spec="~2.4.3" />
@@ -98,6 +70,9 @@
     <plugin name="cordova-plugin-android-permissions" spec="~1.0.2" />
     <plugin name="cordova-plugin-background-mode" spec="~0.7.3" />
     <plugin name="cordova-plugin-contacts" spec="~3.0.1" />
+    <plugin name="cordova-plugin-wechat" spec="~2.9.0">
+        <variable name="WECHATAPPID" value="gh_f6eeb1d268ed" />
+    </plugin>
     <plugin name="cordova-clipboard" spec="~1.3.0" />
     <plugin name="cordova-plugin-network-information" spec="~2.0.2" />
     <plugin name="cordova-plugin-screen-orientation" spec="~3.0.2" />

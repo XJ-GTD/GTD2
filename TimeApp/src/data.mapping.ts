@@ -350,7 +350,9 @@ export class FsPageData extends  FsData{
 export class PageGroupData extends  PageDcData{
   checked:boolean = false;
 }
-
+export interface MemberPageData extends Member{
+  checked:boolean ;
+}
 
 export class AlData {
   text: string;
