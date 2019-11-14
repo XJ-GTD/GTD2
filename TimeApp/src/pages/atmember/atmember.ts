@@ -19,7 +19,7 @@ import * as moment from "moment";
   selector: 'page-atmember',
   template: `
 
-    <modal-box title="邀请人" [buttons]="buttons" (onSave)="save()" (onCancel)="goBack()">
+    <modal-box title="@谁" [buttons]="buttons" (onSave)="save()" (onCancel)="goBack()">
 
       <div class="searchbar">
         <ion-searchbar type="text" placeholder="手机号 姓名" (ionChange)="getMembers()" [(ngModel)]="tel"
