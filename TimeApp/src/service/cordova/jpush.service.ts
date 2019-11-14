@@ -41,17 +41,32 @@ export class JPushService {
           this.messageReceived(event);
         }, false);
       } else {
-        //this.wins.plugins.jPushPlugin.receiveMessageIniOSCallback = (event) => {
-        //  _this.messageReceived(_this, event);
-        //};
-        //this.wins.plugins.jPushPlugin.receiveNotificationIniOSCallback = (event) => {
-        //  _this.notificationReceived(_this, event);
-        //};
-        //this.wins.plugins.jPushPlugin.openNotificationIniOSCallback = (event) => {
-        //  _this.notificationOpened(_this, event);
-        //};
+        document.addEventListener("jpush.receiveNotification", (event) => {
+          console.log("JPush Received Notification with event listener.")
+          this.notificationReceivediOS(event);
+        }, false);
+
+        document.addEventListener("jpush.openNotification", (event) => {
+          console.log("JPush Open Notification with event listener.")
+          this.notificationOpened(event);
+        }, false);
+
+        document.addEventListener("jpush.receiveMessage", (event) => {
+          console.log("JPush Received Message with event listener.")
+          this.messageReceivediOS(event);
+        }, false);
       }
     }
+  }
+
+  //Native Call Function
+  notificationReceivediOS(event) {
+    console.log("JPush received notification: " + JSON.stringify(event));
+  }
+
+  //Native Call Function
+  messageReceivediOS(event) {
+    console.log("JPush received message: " + JSON.stringify(event));
   }
 
   //Native Call Function
