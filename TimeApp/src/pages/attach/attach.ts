@@ -476,13 +476,10 @@ export class AttachPage {
                 // 本地文件存在，页面上显示本地文件
                 //let checked = await this.file.checkFile(this.file.dataDirectory + attachment.fpjson.getCacheDir(), fileName);
                 let checked =  await this.isExistFile(attachment.fpjson.getCacheDir(), fileName);
-                alert("刷新验证存在本地文件:"+checked);
-                checked.then(function(value) {
-                  alert("刷新验证存在value:"+value);
-                  if (value) {
-                    attachment.fjurl = attachment.fpjson.getLocalFilePath(this.file.dataDirectory);
-                  }
-                });
+                //alert("刷新验证存在本地文件:"+checked);
+                if (checked == true) {
+                  attachment.fjurl = attachment.fpjson.getLocalFilePath(this.file.dataDirectory);
+                }
               }
             }
         } else {
@@ -491,9 +488,9 @@ export class AttachPage {
         }
       }
     }
-    alert("循环结束attachments："+JSON.stringify(attachments));
+    //alert("循环结束attachments："+JSON.stringify(attachments));
     this.fjArray = attachments;
-    alert("循环结束this.fjArray："+JSON.stringify(this.fjArray));
+    //alert("循环结束this.fjArray："+JSON.stringify(this.fjArray));
   }
 
   //获取打开的文件类型
@@ -546,12 +543,12 @@ export class AttachPage {
     return mimeType;
   }
 
-  isExistFile(dir:string, fileName:string): Promise<any> {
+  isExistFile(dir:string, fileName:string): Promise<boolean> {
       return new Promise((resolve, reject) => {
         this.file.checkFile(this.file.dataDirectory + dir, fileName).then(_=>{
           resolve(true);
         }).catch(err => {
-           reject(err);
+           resolve(false);
         });
       });
   }

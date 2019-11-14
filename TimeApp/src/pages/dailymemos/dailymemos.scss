@@ -4,6 +4,11 @@ page-dailymemos {
     width: 100%;
     padding: 1rem 0;
   }
+  .list-grid-content {
+    .sn{
+      -webkit-line-clamp: 4;
+    }
+  }
 
   .notask {
     margin: 90px auto;

@@ -46,7 +46,7 @@ export class FormatedatePipe implements PipeTransform {
       case "YYYY":
         return m.format("YYYY");
       case "CMM":
-        return m.format("MM月");
+        return m.format("M月");
       case "CMM/DD":
         return m.format("MM月DD");
       case "MM-DD":
@@ -56,7 +56,7 @@ export class FormatedatePipe implements PipeTransform {
       case "DWEEK":
         return m.weekday();
       case "CDD":
-        return m.isSame(moment(),"date")? "今" :m.format("DD");
+        return m.isSame(moment(),"date")? "今" :m.format("D");
       default:
         return m.format(formart);
     }

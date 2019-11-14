@@ -18,10 +18,6 @@ import * as moment from "moment";
               'margin-left': (!task.ji || task.ji == '')? '1rem' : '0.4rem'
             }">
             <div class="sn towline">{{task.evn}}</div>
-            <div class="icon" end >
-              <ion-icon class="fal fa-minus-circle" (click)="erease($event, task)"></ion-icon>
-              <ion-icon class="fal fa-check-circle"  (click)="complete($event, task)"></ion-icon>
-            </div>
           </div>
           <div class="line font-normal" leftmargin rightmargin
             [ngStyle]="{
@@ -32,7 +28,14 @@ import * as moment from "moment";
             </div>
               <div class="st font-small">  {{(task.evd + ' ' + task.evt) | transfromdate:'withNow'}}</div>
 
-              <div *ngIf="currentuser != task.ui && task.ui != ''" class="person font-small" end>-{{task.ui | formatuser: currentuser: friends}}</div>
+              <div *ngIf="currentuser != task.ui && task.ui != ''" class="person font-small">-- {{task.ui | formatuser: currentuser: friends}}</div>
+
+
+              <div class="icon" end >
+                <!--<ion-icon class="fal fa-minus-circle" (click)="erease($event, task)"></ion-icon>-->
+                <ion-icon class="fal fa-check-circle"  (click)="complete($event, task)"></ion-icon>
+                <b>完成</b>
+              </div>
           </div>
       </ion-row>
     </ion-grid>

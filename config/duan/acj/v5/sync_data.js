@@ -244,6 +244,12 @@ function clean(datasource)
             sms: main? convertSMS(name, title) : {},
             push: {}
           };
+        } else if (type == "Annotation") {  // @通知
+          standardnext.announceContent = {
+            mwxing: convertMessage(id, type, 'OTHER_ACCOUNT'),
+            sms: main? convertSMS(name, title) : {},
+            push: convertPushMessage(id, type, name, (name + " - @你"), title, datetime) || {}
+          };
         } else {
           standardnext.announceContent = {
             mwxing: convertMessage(id, type, 'OTHER_ACCOUNT'),

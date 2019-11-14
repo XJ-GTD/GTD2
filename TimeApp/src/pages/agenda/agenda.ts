@@ -19,11 +19,14 @@ import {
   ConfirmType,
   IsWholeday,
   CycleType,
+  DelType,
   ObjectType,
   InviteState
 } from "../../data.enum";
 import {ModiPower} from "../../data.enum";
 import {AssistantService} from "../../service/cordova/assistant.service";
+
+declare var Wechat;
 
 /**
  * Generated class for the 日程创建/修改 page.
@@ -72,10 +75,10 @@ import {AssistantService} from "../../service/cordova/assistant.service";
                   {{currentAgenda.evd | formatedate: "YYYY-M-D"}}
                 </span>
             <span class="content  agendaDate">
-                      {{currentAgenda.evd + " " + currentAgenda.evt | formatedate: "A hh:mm"}}                 
+                      {{currentAgenda.evd + " " + currentAgenda.evt | formatedate: "A hh:mm"}}
                  </span>
             <span class="content  agendaDate">
-            {{currentAgenda.ct | transfromdate: "duration"}}              
+            {{currentAgenda.ct | transfromdate: "duration"}}
                  </span>
             <!--<p class="content  agendaDate">-->
             <!--<b>时长：</b>{{currentAgenda.ct | transfromdate: "duration"}}-->
@@ -195,7 +198,7 @@ import {AssistantService} from "../../service/cordova/assistant.service";
                 <button ion-button clear (click)="atmembers()">
                   <ion-icon class="fad fa-at"></ion-icon>
                 </button>
-                <button ion-button clear>
+                <button ion-button clear (click)="shareWeiXin()">
                   <ion-icon class="fad fa-share-alt"></ion-icon>
                 </button>
 
@@ -291,13 +294,13 @@ export class AgendaPage {
 
         this.util.loadingStart().then(async () => {
           let count: number = 0;
-          let hasdata: boolean = false;
+          let hasremoved: boolean = true;
 
           // 通过通知打开需要等待日程接收下来之后显示
           while (true) {
-            let agenda = await this.eventService.getAgenda(paramter.si);
+            let agenda = await this.eventService.getAgenda(paramter.si, true);
 
-            if (agenda) {
+            if (agenda && agenda.del != DelType.del) {
               this.currentAgenda = agenda;
               this.util.cloneObj(this.originAgenda, agenda);
 
@@ -312,19 +315,25 @@ export class AgendaPage {
               }
 
               this.util.loadingEnd();
-              hasdata = true;
+              hasremoved = false;
+              break;
+            } else if (agenda && agenda.del == DelType.del) {
+              hasremoved = true;
+              this.util.toastStart("该日程已删除", 3000);
               break;
             }
 
             if (count >= 10) {
+              this.util.toastStart("该日程还在路上, 请稍候再试", 3000);
               break;
             }
 
             count++;
           }
 
-          // 没有查询到数据，画面退出
-          if (!hasdata) {
+          // 没有查询到数据/数据已经删除，画面退出
+          if (hasremoved) {
+            this.util.loadingEnd();
             this.goBack();
           }
         });
@@ -972,5 +981,26 @@ export class AgendaPage {
     }
 
   }
-}
+  //分享微信
+  shareWeiXin() {
+      //获取分享内容
+      let text = this.currentAgenda.evn;
+      //验证是否按照微信组件
+      Wechat.isInstalled(installed => {
+        if (installed) {
+          Wechat.share({
+            text:text,
+            scene:0   // 分享目标 0:分享到对话，1:分享到朋友圈，2:收藏
+          }, () => {
+              console.log('分享成功');
+          }, reason => {
+              console.log('分享失败' + reason);
+          });
+        } else {
+            alert('请安装微信');
+        }
+      })
 
+  }
+
+}
