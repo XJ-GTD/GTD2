@@ -1590,7 +1590,7 @@ export class CalendarService extends BaseService {
             });
 
             // 删除日历项放在返回日历项的最后
-            items.push(origin);
+            items.push(cloneObject<PlanItemData>(origin));
 
             await this.sqlExce.batExecSqlByParam(sqls);
           }
@@ -4762,4 +4762,11 @@ export function generateDataType(activityType: string) {
   }
 
   return datatype;
+}
+
+export function cloneObject<T>(origin: T) {
+  let cloned: T = {} as T;
+  Object.assign(cloned, origin);
+
+  return cloned;
 }
