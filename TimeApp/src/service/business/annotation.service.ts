@@ -3,7 +3,6 @@ import { BaseService } from "./base.service";
 import { SqliteExec } from "../util-service/sqlite.exec";
 import { UtilService } from "../util-service/util.service";
 import {UserConfig} from "../config/user.config";
-import {AgdRestful} from "../restful/agdsev";
 import * as moment from "moment";
 import {EmitService} from "../util-service/emit.service";
 import { BackupPro, BacRestful, OutRecoverPro, RecoverPro } from "../restful/bacsev";
@@ -15,14 +14,14 @@ import {
   assertFail
 } from "../../util/util";
 import {AtTbl} from "../sqlite/tbl/at.tbl";
-import {AgendaData, Member} from "./event.service";
+import {Member} from "./event.service";
 import * as anyenum from "../../data.enum";
 import {MemoData} from "./memo.service";
 
 @Injectable()
 export class AnnotationService extends BaseService {
   constructor(private sqlExce: SqliteExec, private util: UtilService,
-              private agdRest: AgdRestful,private emitService:EmitService,
+              private emitService:EmitService,
               private bacRestful: BacRestful,private userConfig: UserConfig,
               private dataRestful: DataRestful) {
     super();
@@ -31,9 +30,9 @@ export class AnnotationService extends BaseService {
   /**
    * 接收@参与人信息
    *
-   * @param {Array<AgendaData>} pullAgdatas
+   * @param {Array<Annotation>} pullAnnotations
    * @param {SyncDataStatus} status
-   * @returns {Promise<Array<AgendaData>>}
+   * @returns {Promise<Array<Annotation>>}
    */
   async receivedAnnotationData(pullAnnotations: Array<Annotation>, status: SyncDataStatus): Promise<Array<Annotation>> {
     this.assertEmpty(pullAnnotations);     // 入参不能为空
