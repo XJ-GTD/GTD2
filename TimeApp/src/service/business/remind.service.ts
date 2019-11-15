@@ -229,20 +229,32 @@ export class ScheduleRemindService extends BaseService {
       }
     }
 
+    let syncRemindIds: Array<string> = new Array<string>();
+
     // 提交服务器
     for (let schedule of schedulereminds) {
-      let result = await this.syncRestful.putScheduledRemind(
-        UserConfig.account.id,
-        schedule.remindid,
-        schedule.wd,
-        schedule.wt,
-        schedule.data,
-        schedule.active
-      );
+      try {
+        await this.syncRestful.putScheduledRemind(
+          UserConfig.account.id,
+          schedule.remindid,
+          schedule.wd,
+          schedule.wt,
+          schedule.data,
+          schedule.active
+        );
 
-      console.log(result);
+        syncRemindIds.push(schedule.remindid);
+      } catch (err) {
+        console.log("Push schedule error.")
+      }
     }
 
+    // 更新同步状态
+    if (syncRemindIds.length > 0) {
+      let updatesql: string = `update gtd_wa set tb = ?1 where wai in ('` + syncRemindIds.join(', ') + `')`;
+
+      await this.sqlExec.execSql(updatesql, [SyncType.synch]);
+    }
   }
 
   /**

@@ -93,7 +93,7 @@ export class RestfulClient {
 
       // 没有网络的时候，直接返回
       if (!this.networkService.isConnected()) {
-        resolve();
+        reject("no network");
         return;
       }
 
