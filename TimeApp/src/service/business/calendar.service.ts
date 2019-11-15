@@ -3532,7 +3532,7 @@ export class CalendarService extends BaseService {
   async acceptSyncPlanItems(ids: Array<string>) {
     let sqls: Array<any> = new Array<any>();
 
-    let sql: string = `update gtd_jta set tb = ? where jti in ('` + ids.join(', ') + `')`;
+    let sql: string = `update gtd_jta set tb = ? where jti in ('` + ids.join(`', '`) + `')`;
 
     sqls.push([sql, [SyncType.synch]]);
 
