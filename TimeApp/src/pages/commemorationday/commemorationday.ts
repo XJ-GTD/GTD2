@@ -221,6 +221,7 @@ import {AssistantService} from "../../service/cordova/assistant.service";
             </ion-row>
 
 
+
             <ion-row *ngIf="currentPlanItem.jti">
               <div class="button-b">
                 <button ion-button clear (click)="changeInvites()">
@@ -274,7 +275,7 @@ export class CommemorationDayPage {
   @ViewChild(PageBoxComponent)
   pageBoxComponent: PageBoxComponent
 
-  snlength: number = 0;
+  snlength:number = 0;
 
   constructor(public navCtrl: NavController,
               public navParams: NavParams,
@@ -292,7 +293,7 @@ export class CommemorationDayPage {
           this.currentPlanItem = commemorationday;
           Object.assign(this.originPlanItem, commemorationday);
 
-          this.snlength = this.currentPlanItem.jtn.length;
+          this.snlength =  this.currentPlanItem.jtn.length;
           this.buttons.remove = true;
         });
       } else {
@@ -308,7 +309,7 @@ export class CommemorationDayPage {
   }
 
   changeTitle() {
-    this.snlength = this.currentPlanItem.jtn.length;
+    this.snlength =  this.currentPlanItem.jtn.length;
     if (this.currentPlanItem.jtc == SelfDefineType.System) return;    // 下载日历项不能修改
 
     if (this.currentPlanItem.jti) {
@@ -391,7 +392,11 @@ export class CommemorationDayPage {
 
     let data = new RtJson();
     Object.assign(data, this.currentPlanItem.rtjson);
-    let modal = this.modalCtrl.create(DataConfig.PAGE._REPEAT_PAGE, {value: data});
+    let modal = this.modalCtrl.create(DataConfig.PAGE._REPEAT_PAGE, {
+      value: data,
+      enableEdit: true,
+      sd: this.currentPlanItem.sd
+    });
     modal.onDidDismiss(async (data) => {
       if (data && data.rtjson) {
         this.currentPlanItem.rtjson = new RtJson();
