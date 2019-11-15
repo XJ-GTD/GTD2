@@ -74,11 +74,12 @@ export class JPushService {
   //Native Call Function
   notificationReceived(event) {
     console.log("JPush received notification: " + JSON.stringify(event));
+    let speakData: string = `收到一个${event.title}, ${alert}`;
 
     // 停止播报，如果前面正在播报的话
     this.assistantService.stopSpeak(false);
     // 开始播报
-    this.assistantService.speakText("您有一条新消息").then(() => {
+    this.assistantService.speakText(speakData).then(() => {
       this.assistantService.stopSpeak(false);
     })
 
