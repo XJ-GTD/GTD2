@@ -3835,23 +3835,13 @@ export class EventService extends BaseService {
       this.assertEmpty(obi);
 
       let attachments: Array<Attachment> = new Array<Attachment>();
-      // let sql: string = `select * from gtd_fj  where del = ? and obt =? and obi = ? order by wtt asc`;
-      // attachments = await this.sqlExce.getLstByParam<Attachment>(sql, [DelType.undel,obt,obi]);
-      // if(fjs && fjs.length>0) {
-      //   for (let fj of fjs) {
-      //     let at: Attachment = {} as Attachment;
-      //     Object.assign(at, fj);
-      //     // let cacheFilePathJson: CacheFilePathJson = new CacheFilePathJson();
-      //     // cacheFilePathJson.local = "/"+fj.fjn;
-      //     // at.fpjson = cacheFilePathJson;
-      //     attachments.push(at);
-      //   }
-      // }
-      let fj = new FjTbl();
-      fj.obi = obi;
-      fj.obt = obt;
-      fj.del = anyenum.DelType.undel;
-      attachments = await this.sqlExce.getLstByParam<Attachment>(fj);
+      let sql: string = `select * from gtd_fj  where del = ? and obt =? and obi = ? order by wtt desc`;
+      attachments = await this.sqlExce.getExtLstByParam<Attachment>(sql, [DelType.undel,obt,obi]);
+      // let fj = new FjTbl();
+      // fj.obi = obi;
+      // fj.obt = obt;
+      // fj.del = anyenum.DelType.undel;
+      // attachments = await this.sqlExce.getLstByParam<Attachment>(fj);
       return attachments;
     }
 

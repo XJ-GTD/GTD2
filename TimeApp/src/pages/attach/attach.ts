@@ -357,7 +357,7 @@ export class AttachPage {
     this.chooser.getFile('*/*').then((file) => {
         this.filePath.resolveNativePath(file.uri)
           .then((filePath) => {
-            alert("选择的PDF文件filePath："+JSON.stringify(filePath));
+            //alert("选择的PDF文件filePath："+JSON.stringify(filePath));
             if (filePath != '') {
               let fileName: string = filePath.substr(filePath.lastIndexOf("/") + 1, filePath.length);
               let ext: string = fileName.substr(fileName.lastIndexOf(".") + 1);
@@ -429,7 +429,7 @@ export class AttachPage {
       retAt = await this.eventService.saveAttachment(this.fjData);
       this.util.loadingEnd();
       //alert("上传后的数据："+JSON.stringify(retAt));
-      this.fjArray.push(retAt);
+      this.fjArray.unshift(retAt);
       this.fjData = {} as Attachment;
       this.fjData.obt = this.obt;
       this.fjData.obi = this.obi;
@@ -459,6 +459,7 @@ export class AttachPage {
     this.fjArray = new Array<Attachment>();
     let attachments: Array<Attachment> = new Array<Attachment>();
     attachments = await this.eventService.selectAttachments(this.obt,this.obi);
+    alert("刷新查询数据："+JSON.stringify(attachments))
     for (let attachment of attachments) {
       attachment.members = this.members;
       // 判断是否是残留数据或文字附件
@@ -476,7 +477,7 @@ export class AttachPage {
                 // 本地文件存在，页面上显示本地文件
                 //let checked = await this.file.checkFile(this.file.dataDirectory + attachment.fpjson.getCacheDir(), fileName);
                 let checked =  await this.isExistFile(attachment.fpjson.getCacheDir(), fileName);
-                //alert("刷新验证存在本地文件:"+checked);
+                alert("刷新验证存在本地文件:"+checked);
                 if (checked == true) {
                   attachment.fjurl = attachment.fpjson.getLocalFilePath(this.file.dataDirectory);
                 }
