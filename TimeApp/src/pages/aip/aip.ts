@@ -26,7 +26,7 @@ import {EmitService} from "../../service/util-service/emit.service";
       </ion-toolbar>
     </ion-header>
     <ion-content>
-      <BackComponent></BackComponent>
+      <!--<BackComponent></BackComponent>-->
       <AiComponent [ready]="aiready" #aiDiv></AiComponent>
     </ion-content>
   `,

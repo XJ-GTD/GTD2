@@ -1,4 +1,4 @@
-import {Component, ElementRef, Renderer2, ViewChild} from '@angular/core';
+import {Component, ElementRef, Input, Output, Renderer2, ViewChild} from '@angular/core';
 import {IonicPage} from 'ionic-angular';
 import {UtilService} from "../../../service/util-service/util.service";
 import {AssistantService} from "../../../service/cordova/assistant.service";
@@ -15,7 +15,7 @@ import {EmitService} from "../../../service/util-service/emit.service";
 @Component({
   selector: 'PointComponent',
   template: `
-    <div class="jsai">{{immediately}}</div>
+    <div class="jsai"><span>{{immediately}}</span></div>
     <div class="aitool" #aitool>
       <b class=" speaking  danger" #light>
         <div class="spinner" (click)="listenStart()">
@@ -23,7 +23,7 @@ import {EmitService} from "../../../service/util-service/emit.service";
         </div>
       </b>
 
-      <div class="inputioc" (click)="inputstart()">
+      <div class="inputioc" (click)="inputstart()" *ngIf="showInput">
         <img src="./assets/imgs/h-input.png">
       </div>
       <InputComponent #inputComponent></InputComponent>
@@ -40,6 +40,9 @@ export class PointComponent {
 
   @ViewChild('inputComponent')
   inputComponent: InputComponent;
+
+  @Input()
+  showInput:boolean = true;
 
   ctx: any;
   width: number;

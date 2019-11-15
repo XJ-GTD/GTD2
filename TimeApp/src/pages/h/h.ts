@@ -41,24 +41,26 @@ import {ModalTranType} from "../../data.enum";
                     (onPlus)="newPlus($event)">
       </ion-calendar>
 
-      <page-tdl #tdl></page-tdl>     
-      <ion-fab bottom right>
-        <button ion-fab mini (click)="openAi()">
-          <ion-icon name="chatbubbles"></ion-icon>
-        </button>
-      </ion-fab>
+      <page-tdl #tdl></page-tdl>
+      <PointComponent  #aiDiv [showInput] = "false"></PointComponent>
+      <!--<ion-fab bottom right>-->
+        <!--<button ion-fab mini (click)="openAi()">-->
+          <!--<ion-icon name="chatbubbles"></ion-icon>-->
+        <!--</button>-->
+      <!--</ion-fab>-->
     </ion-content>
   `,
 })
 export class HPage {
 
 
-  @ViewChild('aiDiv')
-  aiDiv: AiComponent;
+  // @ViewChild('aiDiv')
+  // aiDiv: AiComponent;
   @ViewChild('calendar')
   calendar: CalendarComponent;
   @ViewChild('tdl')
   tdl: TdlPage;
+  aiready: boolean = true;
 
   options: CalendarComponentOptions = {
     pickMode: 'single',

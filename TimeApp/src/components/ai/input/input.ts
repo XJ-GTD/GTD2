@@ -22,7 +22,6 @@ import {UtilService} from "../../../service/util-service/util.service";
             {{help}}
           </ion-row>
         </ion-grid>
-        
       </div>
       <div class="waper" #waperInput>
         <ion-textarea class="text" #input></ion-textarea>

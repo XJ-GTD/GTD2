@@ -8,6 +8,7 @@ import {BackComponentModule} from "../../components/backComponent/back.module";
 import { TdlPageModule } from '../tdl/tdl.module';
 import {TestDataService} from "../../service/testData.service";
 import {PlusModal} from "./plusModal";
+import {PointComponentModule} from "../../components/ai/point/point.module";
 @NgModule({
   declarations: [
     HPage,
@@ -17,7 +18,8 @@ import {PlusModal} from "./plusModal";
     IonicPageModule,
     CalendarModule,
     BackComponentModule,
-    TdlPageModule
+    TdlPageModule,
+    PointComponentModule,
   ],
   entryComponents: [
     HPage,

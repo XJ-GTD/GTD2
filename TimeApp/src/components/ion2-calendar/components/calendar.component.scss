@@ -129,14 +129,14 @@ ion-calendar {
     -webkit-animation-duration: .2s;
   }
 
-  .fa-calendar-day{
+  .fa-calendar-day,.fa-plus-circle{
     line-height: 44px;
     color: rgba(255,255,255,1);
     width: 2rem;
     font-size:1.6rem;
   }
 
-  .fa-file-signature,.fa-calendar-edit,.fa-calendar-exclamation,.fa-plus-circle{
+  .fa-file-signature,.fa-calendar-edit,.fa-calendar-exclamation{
     line-height: 44px;
     color: rgba(248,76,76,1);
     width: 2rem;
