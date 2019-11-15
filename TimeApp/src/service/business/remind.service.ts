@@ -167,21 +167,33 @@ export class ScheduleRemindService extends BaseService {
       let start = moment().subtract(10, "minutes");
       let end = moment().add(limit, "hours");
 
+      // 把未来48小时以前所有未同步的提醒都同步到服务器上
+      // 包括当前时间以前已删除的提醒
       let sql: string = `select case ev.type when '0' then 'AgendaData' when '1' then 'TaskData' else 'MiniTaskData' end type, wa.*
                     from (select * from gtd_wa
-                    where tb <> ?1
-                      and obt = ?6
-                      and datetime(replace(wd, '/', '-'), wt) >= datetime(replace(?2, '/', '-'), ?3)
-                      and datetime(replace(wd, '/', '-'), wt) <= datetime(replace(?4, '/', '-'), ?5)) wa
+                    where (tb <> ?1
+                        and obt = ?6
+                        and datetime(replace(wd, '/', '-'), wt) >= datetime(replace(?2, '/', '-'), ?3)
+                        and datetime(replace(wd, '/', '-'), wt) <= datetime(replace(?4, '/', '-'), ?5))
+                      or (tb <> ?1
+                        and obt = ?6
+                        and del = ?8
+                        and datetime(replace(wd, '/', '-'), wt) < datetime(replace(?2, '/', '-'), ?3))
+                      ) wa
                     left join gtd_ev ev
                     on ev.evi = wa.obi
                   union all
                     select 'PlanItemData' type, wa.*
                     from (select * from gtd_wa
-                    where tb <> ?1
-                      and obt = ?7
-                      and datetime(replace(wd, '/', '-'), wt) >= datetime(replace(?2, '/', '-'), ?3)
-                      and datetime(replace(wd, '/', '-'), wt) <= datetime(replace(?4, '/', '-'), ?5)) wa
+                    where (tb <> ?1
+                        and obt = ?7
+                        and datetime(replace(wd, '/', '-'), wt) >= datetime(replace(?2, '/', '-'), ?3)
+                        and datetime(replace(wd, '/', '-'), wt) <= datetime(replace(?4, '/', '-'), ?5))
+                      or (tb <> ?1
+                        and obt = ?7
+                        and del = ?8
+                        and datetime(replace(wd, '/', '-'), wt) < datetime(replace(?2, '/', '-'), ?3))
+                      ) wa
                     left join gtd_jta jta
                     on jta.jti = wa.obi`;
 
@@ -192,7 +204,8 @@ export class ScheduleRemindService extends BaseService {
                                   end.format("YYYY/MM/DD"),
                                   end.format("HH:mm"),
                                   ObjectType.Event,
-                                  ObjectType.Calendar
+                                  ObjectType.Calendar,
+                                  DelType.del
                                 ]) || new Array<RemindData>();
 
       for (let remind of reminds) {
