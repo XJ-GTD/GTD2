@@ -74,7 +74,7 @@ export class JPushService {
   //Native Call Function
   notificationReceived(event) {
     console.log("JPush received notification: " + JSON.stringify(event));
-    let speakData: string = `收到${event.title}, ${alert}`;
+    let speakData: string = `收到${event.title}, ${event.alert}`;
 
     // 停止播报，如果前面正在播报的话
     this.assistantService.stopSpeak(false);
