@@ -231,7 +231,7 @@ export class ScheduleRemindService extends BaseService {
 
     // 提交服务器
     for (let schedule of schedulereminds) {
-      await this.syncRestful.putScheduledRemind(
+      let result = await this.syncRestful.putScheduledRemind(
         UserConfig.account.id,
         schedule.remindid,
         schedule.wd,
@@ -239,6 +239,8 @@ export class ScheduleRemindService extends BaseService {
         schedule.data,
         schedule.active
       );
+
+      console.log(result);
     }
 
   }
