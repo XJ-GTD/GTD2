@@ -251,7 +251,7 @@ export class ScheduleRemindService extends BaseService {
 
     // 更新同步状态
     if (syncRemindIds.length > 0) {
-      let updatesql: string = `update gtd_wa set tb = ?1 where wai in ('` + syncRemindIds.join(', ') + `')`;
+      let updatesql: string = `update gtd_wa set tb = ?1 where wai in ('` + syncRemindIds.join(`', '`) + `')`;
 
       await this.sqlExce.execSql(updatesql, [SyncType.synch]);
     }
