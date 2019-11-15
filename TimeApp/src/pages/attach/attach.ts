@@ -429,7 +429,7 @@ export class AttachPage {
       retAt = await this.eventService.saveAttachment(this.fjData);
       this.util.loadingEnd();
       //alert("上传后的数据："+JSON.stringify(retAt));
-      this.fjArray.push(retAt);
+      this.fjArray.unshift(retAt);
       this.fjData = {} as Attachment;
       this.fjData.obt = this.obt;
       this.fjData.obi = this.obi;
