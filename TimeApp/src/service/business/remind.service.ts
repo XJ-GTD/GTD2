@@ -253,7 +253,7 @@ export class ScheduleRemindService extends BaseService {
     if (syncRemindIds.length > 0) {
       let updatesql: string = `update gtd_wa set tb = ?1 where wai in ('` + syncRemindIds.join(', ') + `')`;
 
-      await this.sqlExec.execSql(updatesql, [SyncType.synch]);
+      await this.sqlExce.execSql(updatesql, [SyncType.synch]);
     }
   }
 
