@@ -3168,7 +3168,7 @@ export class EventService extends BaseService {
   async acceptSyncAttachments(ids: Array<string>) {
     let sqls: Array<any> = new Array<any>();
 
-    let sql: string = `update gtd_fj set tb = ? where fji in ('` + ids.join(', ') + `')`;
+    let sql: string = `update gtd_fj set tb = ? where fji in ('` + ids.join(`', '`) + `')`;
 
     sqls.push([sql, [SyncType.synch]]);
 
@@ -3330,7 +3330,7 @@ export class EventService extends BaseService {
       // 增加附件同步
       let sqlattachments: string = `select *
                                     from gtd_fj
-                                    where obi in ('` + evis.join(', ') + `') and obt = ?1`;
+                                    where obi in ('` + evis.join(`', '`) + `') and obt = ?1`;
       attachments =  await this.sqlExce.getExtLstByParam<Attachment>(sqlattachments,
         [anyenum.ObjectType.Event]) || attachments;
     }
@@ -3553,7 +3553,7 @@ export class EventService extends BaseService {
   async acceptSyncAgendas(ids: Array<string>) {
     let sqls: Array<any> = new Array<any>();
 
-    let sql: string = `update gtd_ev set tb = ? where evi in ('` + ids.join(', ') + `')`;
+    let sql: string = `update gtd_ev set tb = ? where evi in ('` + ids.join(`', '`) + `')`;
 
     sqls.push([sql, [SyncType.synch]]);
 
