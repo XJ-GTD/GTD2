@@ -72,7 +72,7 @@ export class AnnotationService extends BaseService {
   async acceptSyncAnnotation(ids: Array<string>) {
     let sqls: Array<any> = new Array<any>();
 
-    let sql: string = `update gtd_at set tb = ? where obt = ? and  obi || dt in ('` + ids.join(', ') + `')`;
+    let sql: string = `update gtd_at set tb = ? where obt = ? and  obi || dt in ('` + ids.join(`', '`) + `')`;
 
     sqls.push([sql, [SyncType.synch, anyenum.ObjectType.Event]]);
 
@@ -243,11 +243,3 @@ export class Annotation extends AtTbl{
   ran : string;
   rcs : Array<string > =new Array<string>();
 }
-
-
-
-
-
-
-
-
