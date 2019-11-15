@@ -116,7 +116,7 @@ import {AssistantService} from "../../service/cordova/assistant.service";
           <div class="sn font-large-x">
             <!--主题-->
             <ion-textarea rows="8" [(ngModel)]="currentPlanItem.jtn" (ionChange)="changeTitle()" [readonly]="currentPlanItem.jtc == system" [maxlength]="20"></ion-textarea>
-     
+
           </div>
 
           <!-- <span>{{snlength}} / 20 </span>-->
@@ -135,7 +135,7 @@ import {AssistantService} from "../../service/cordova/assistant.service";
                   {{currentPlanItem.sd | formatedate: "YYYY-M-D"}}
                 </span>
             <span class="content  agendaDate">
-                      {{currentPlanItem.sd + " " + currentPlanItem.st | formatedate: "A hh:mm"}}                 
+                      {{currentPlanItem.sd + " " + currentPlanItem.st | formatedate: "A hh:mm"}}
               </span>
           </div>
 
@@ -153,7 +153,7 @@ import {AssistantService} from "../../service/cordova/assistant.service";
           <ion-grid>
 
             <ion-row *ngIf="currentPlanItem.jti">
-              
+
               <div *ngIf="currentPlanItem.jtc == system">
                 <ion-icon class="fad fa-circle font-normal"  [ngStyle]="{'color': currentPlanItem.ji == ''? 'transparent' : (currentPlanItem.ji | formatplan: 'color': privateplans )}"></ion-icon>
                 <span class="font-normal">{{currentPlanItem.ji | formatplan: 'name' : '加入日历': publicplans}}</span>
@@ -211,7 +211,7 @@ import {AssistantService} from "../../service/cordova/assistant.service";
               </div>
             </ion-row>
 
-       
+
 
             <ion-row *ngIf="currentPlanItem.jti">
               <div class="button-b">
@@ -225,7 +225,7 @@ import {AssistantService} from "../../service/cordova/assistant.service";
                   <ion-icon  class="fad fa-share-alt"></ion-icon>
                 </button>
               </div>
-            </ion-row>            
+            </ion-row>
           </ion-grid>
         </ion-row>
       </ion-grid>
@@ -382,7 +382,11 @@ export class CommemorationDayPage {
 
     let data = new RtJson();
     Object.assign(data, this.currentPlanItem.rtjson);
-    let modal = this.modalCtrl.create(DataConfig.PAGE._REPEAT_PAGE, {value: data});
+    let modal = this.modalCtrl.create(DataConfig.PAGE._REPEAT_PAGE, {
+      value: data,
+      enableEdit: true,
+      sd: this.currentPlanItem.sd
+    });
     modal.onDidDismiss(async (data) => {
       if (data && data.rtjson) {
         this.currentPlanItem.rtjson = new RtJson();
