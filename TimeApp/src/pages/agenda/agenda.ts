@@ -989,8 +989,16 @@ export class AgendaPage {
       Wechat.isInstalled(installed => {
         if (installed) {
           Wechat.share({
-            text:text,
-            scene:0   // 分享目标 0:分享到对话，1:分享到朋友圈，2:收藏
+            message:{
+                title: text,
+                description: "冥王星",
+                thumb: "assets/imgs/logo.png",
+                media: {
+                  type: Wechat.Type.WEBPAGE,
+                  webpageUrl: "https://fir.im/d2z3"
+                }
+            },
+            scene:Wechat.Scene.TIMELINE   // 分享目标 0:分享到对话，1:分享到朋友圈，2:收藏
           }, () => {
               console.log('分享成功');
           }, reason => {
