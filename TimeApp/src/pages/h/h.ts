@@ -42,11 +42,11 @@ import {ModalTranType} from "../../data.enum";
       </ion-calendar>
 
       <page-tdl #tdl></page-tdl>     
-      <!--<ion-fab bottom right>-->
-        <!--<button ion-fab mini (click)="openAi()">-->
-          <!--<ion-icon name="chatbubbles"></ion-icon>-->
-        <!--</button>-->
-      <!--</ion-fab>-->
+      <ion-fab bottom right>
+        <button ion-fab mini (click)="openAi()">
+          <ion-icon name="chatbubbles"></ion-icon>
+        </button>
+      </ion-fab>
     </ion-content>
   `,
 })

@@ -133,6 +133,12 @@ ion-list.list-ios {
               color: rgba(15, 114, 142, 1);
 
             }
+            .selected{
+              color: rgba(248,76,76,1);
+            }
+            .selected::before{
+              content: "@";
+            }
           }
         }
 
@@ -193,6 +199,12 @@ ion-list.list-ios {
             span {
               color: rgba(15, 114, 142, 1);
 
+            }
+            .selected{
+              color: rgba(248,76,76,1);
+            }
+            .selected::before{
+              content: "@";
             }
           }
         }

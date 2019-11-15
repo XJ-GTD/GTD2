@@ -58,7 +58,7 @@ export class FormatedatePipe implements PipeTransform {
       case "CDD":
         return m.isSame(moment(),"date")? "今" :m.format("D");
       default:
-        return m.format(formart);
+        return m.format(formart)?m.format(formart):"" ;
     }
   }
 }

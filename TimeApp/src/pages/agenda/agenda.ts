@@ -55,6 +55,7 @@ declare var Wechat;
           <div class="sn font-large-x">
             <!--主题-->
             <ion-textarea rows="8" no-margin [(ngModel)]="currentAgenda.evn" (ionChange)="changeTitle()"
+                          placeholder="在80字符内描述你的活动主题"
                           [readonly]="originAgenda.evi && originAgenda.ui != currentuser && (originAgenda.md != enablechange || originAgenda.invitestatus != acceptedinvite)"
                           [maxlength]="80">
             </ion-textarea>
@@ -120,12 +121,10 @@ declare var Wechat;
             <ion-row *ngIf="currentAgenda.evi" (click)="changeRemind()">
               <div class="button-b">
                 <button ion-button clear>
-                  <ion-icon class="fas fa-bell"></ion-icon>
-                  <span class="content font-normal" *ngIf="currentAgenda.txs" margin-left>
-                   {{currentAgenda.txs || "提醒"}}
-                </span>
-                  <span class="content font-normal" *ngIf="!currentAgenda.txs " margin-left>
-                    未设置
+                  <ion-icon class="fas fa-bell" *ngIf="currentAgenda.txs"></ion-icon>
+                  <ion-icon class="fas fa-bell" *ngIf="!currentAgenda.txs" noval></ion-icon>
+                  <span class="content font-normal"  margin-left  [class.noval] = "!currentAgenda.txs">
+                   {{currentAgenda.txs || "未设置"}}
                 </span>
                 </button>
               </div>
@@ -135,12 +134,10 @@ declare var Wechat;
             <ion-row *ngIf="currentAgenda.evi" (click)="changeRepeat()">
               <div class="button-b">
                 <button ion-button clear>
-                  <ion-icon class="fas fa-repeat "></ion-icon>
-                  <span class="content font-normal" *ngIf="currentAgenda.rts" margin-left>
-                  {{currentAgenda.rts || "重复"}}
-                </span>
-                  <span class="content font-normal" *ngIf="!currentAgenda.rts " margin-left>
-                    不重复
+                  <ion-icon class="fas fa-copy " *ngIf="currentAgenda.rts"></ion-icon>
+                  <ion-icon class="fas fa-copy " noval *ngIf="!currentAgenda.rts "></ion-icon>
+                  <span class="content font-normal" margin-left  [class.noval] = "!currentAgenda.rts">
+                  {{currentAgenda.rts || "不重复"}}
                 </span>
                 </button>
               </div>
@@ -159,17 +156,15 @@ declare var Wechat;
               <!--</button>-->
             </ion-row>
 
-
             <ion-row (click)="changeLocation()" *ngIf="currentAgenda.evi">
               <div class="button-b">
                 <button ion-button clear>
-                  <ion-icon class="fas fa-map-marker-alt"></ion-icon>
-                  <span class="content font-normal" *ngIf="currentAgenda.adr " margin-left>
-                {{currentAgenda.adr}}
-              </span>
-                  <span class="content font-normal" *ngIf="!currentAgenda.adr " margin-left>
-                 未设置
-              </span>
+                  <ion-icon class="fas fa-map-marker-alt" *ngIf="currentAgenda.adr "></ion-icon>
+                  <ion-icon class="fas fa-map-marker-alt" *ngIf="!currentAgenda.adr " noval></ion-icon>
+                  <span class="content font-normal" margin-left [class.noval] = "!currentAgenda.adr">
+                  {{currentAgenda.adr || "未设置"}}
+                </span>                
+
                 </button>
               </div>
             </ion-row>

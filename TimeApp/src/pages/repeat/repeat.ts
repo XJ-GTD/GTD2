@@ -204,7 +204,7 @@ export class RepeatPage {
   itemRangeOptions: Array<any> = new Array<any>();
   itemMonthDayRangeOptions: Array<any> = new Array<any>();
 
-  title: string = "重复关闭。";
+  title: string = "";
   cfType: string = "";
   minDate : string = moment().format("YYYY-MM-DD");
   //每日选择参数
@@ -360,7 +360,7 @@ export class RepeatPage {
         this.title = "重复周期 " + this.getFreqTitle("年", this.cfYearOptions) + ", " + this.getEndTitle(this.cfYearOptions);
         break;
       default:
-        this.title = "重复关闭。";
+        this.title = "";
         break;
     }
   }

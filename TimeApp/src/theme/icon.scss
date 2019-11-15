@@ -44,10 +44,6 @@ corner-badge[fa-map-marker-alt] {
   background-color: #CEA75D;
 }
 
-.fa-comment-edit,.fa-comment-alt-edit {
-  color: #3EA7C0;
-
-}
 
 corner-badge[fa-comment-edit] {
   background-color: #3EA7C0;
@@ -83,11 +79,11 @@ corner-badge[fa-info-circle] {
   color: rgba(17,117,141,1);
 }
 
-.fa-bell[noval],.fa-map-marker-alt[noval],.fa-repeat[noval]{
+.fa-bell[noval],.fa-map-marker-alt[noval],.fa-repeat[noval],.fa-copy[noval],.fa-comment-edit[noval],.fa-comment-alt-edit[noval]{
   color: rgba(184,214,221,1);
 }
 
-.fa-bell,.fa-map-marker-alt,.fa-repeat{
+.fa-bell,.fa-map-marker-alt,.fa-repeat,.fa-copy,.fa-comment-edit,.fa-comment-alt-edit{
   color: rgba(50,163,190,1);
 }
 
@@ -104,9 +100,9 @@ corner-badge[fa-sparkles] {
 }
 
 
-.fa-copy{
-  color: rgba(17,117,141,1);
-}
+//.fa-copy{
+//  color: rgba(17,117,141,1);
+//}
 
 .fa-share-alt{
   color: rgba(236,128,32,1);

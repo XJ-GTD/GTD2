@@ -5046,7 +5046,7 @@ export class RtJson {
         text = "重复周期 " + freqtitle(this.cyclenum, "年") + ", " + overclass.text();
         break;
       case anyenum.CycleType.close :    // 不重复日程
-        text = "重复关闭。";
+        text = null;
         break;
       default:
         assertFail();    // 预期外值, 程序异常

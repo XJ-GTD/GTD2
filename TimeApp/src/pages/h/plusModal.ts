@@ -1,25 +1,14 @@
-import {Component, ViewChild} from '@angular/core';
+import {Component} from '@angular/core';
 import {
-  IonicPage,
-  MenuController,
-  ModalController,
   NavController,
   NavParams,
-  Platform,
   ViewController
 } from 'ionic-angular';
-import {CalendarComponent, CalendarComponentOptions, CalendarDay} from "../../components/ion2-calendar";
-import {HService} from "./h.service";
+import {CalendarDay} from "../../components/ion2-calendar";
 import * as moment from "moment";
-import {AiComponent} from "../../components/ai/answer/ai";
-import {EmitService} from "../../service/util-service/emit.service";
-import {HData, ScdPageParamter} from "../../data.mapping";
+import {ScdPageParamter} from "../../data.mapping";
 import {FeedbackService} from "../../service/cordova/feedback.service";
 import {DataConfig} from "../../service/config/data.config";
-import {MemoData, MemoService} from "../../service/business/memo.service";
-import {AipPage} from "../aip/aip";
-import {TdlPage} from "../tdl/tdl";
-import {TestDataService} from "../../service/testData.service";
 import {UtilService} from "../../service/util-service/util.service";
 import {ModalTranType} from "../../data.enum";
 
