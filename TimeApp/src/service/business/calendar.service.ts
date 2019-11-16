@@ -2856,6 +2856,11 @@ export class CalendarService extends BaseService {
             if (accepted) {
               apn = accepted.length;
             }
+
+            // 他人日程需要+1
+            if (event.ui != UserConfig.account.id) {
+              apn++;
+            }
           }
           event.apn = apn || event.apn || (event.ui != UserConfig.account.id)? 1 : 0;
           event.pn = event.pn || 0;
