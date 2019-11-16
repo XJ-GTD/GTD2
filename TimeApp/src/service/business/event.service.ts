@@ -3061,6 +3061,10 @@ export class EventService extends BaseService {
 
       attachments = await this.sqlExce.getExtLstByParam<Attachment>(sql, [SyncType.synch, UserConfig.account.id]) || attachments;
 
+      if (attachments && attachments.length > 0) {
+        this.util.toastStart(`发现${attachments.length}条未同步补充, 开始同步...`, 1000);
+      }
+
       let sqlmember: string = `select par.*,
                         b.ran,
                         b.ranpy,
@@ -3285,6 +3289,10 @@ export class EventService extends BaseService {
                         left join gtd_ca ca
                         on ca.evi = ev.forceevi`;
   		agendas = await this.sqlExce.getExtLstByParam<AgendaData>(sql, [anyenum.EventType.Agenda, SyncType.unsynch]) || agendas;
+
+      if (agendas && agendas.length > 0) {
+        this.util.toastStart(`发现${agendas.length}条未同步日程, 开始同步...`, 1000);
+      }
 
       // 增加附件同步
       let sqlattachments: string = `select distinct fj.* from (

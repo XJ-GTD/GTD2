@@ -3414,6 +3414,10 @@ export class CalendarService extends BaseService {
 
       planitems = await this.sqlExce.getExtLstByParam<PlanItemData>(sql, [SyncType.unsynch, DelType.del]) || planitems;
 
+      if (planitems && planitems.length > 0) {
+        this.util.toastStart(`发现${planitems.length}条未同步纪念日, 开始同步...`, 1000);
+      }
+
       let sqlmember: string = ` select par.*  ,
                                     b.ran,
                                    b.ranpy,
@@ -3786,6 +3790,10 @@ export class CalendarService extends BaseService {
       let sql: string = `select * from gtd_jha where jt = ? and tb = ?`;
 
       plans = await this.sqlExce.getExtLstByParam<PlanData>(sql, [PlanType.PrivatePlan, SyncType.unsynch]) || plans;
+
+      if (plans && plans.length > 0) {
+        this.util.toastStart(`发现${plans.length}条未同步日历, 开始同步...`, 1000);
+      }
     }
 
     // 存在未同步日历

@@ -133,6 +133,8 @@ export class AnnotationService extends BaseService {
       groupanno = await this.sqlExce.getExtLstByParam<Annotation>(sql2, [anyenum.ObjectType.Event, SyncType.unsynch]);
 
       if (listanno && listanno.length > 0){
+        this.util.toastStart(`发现${listanno.length}条未同步提醒关注@, 开始同步...`, 1000);
+
         for (let ganno of  groupanno){
 
           let ret2: Array<Annotation> = listanno.filter((value, index, arr) => {
