@@ -2683,11 +2683,18 @@ export class CalendarService extends BaseService {
                                     group by ev.evi) evp
                             left join gtd_fj fj
                             on fj.obt = ?3 and fj.del <> ?2 and fj.obi = evp.evi
-                            group by evp.evi
-                            order evp.evd asc, evp.evt asc`
+                            group by evp.evi`
 
     //monthActivity.events = await this.sqlExce.getExtList<EventData>(sqlevents) || new Array<EventData>();
     monthActivity.events = await this.sqlExce.getExtLstByParam<EventData>(sqleventcounts, [month, DelType.del, ObjectType.Event, MemberShareState.Accepted, UserConfig.account.id]) || new Array<EventData>();
+
+    // 手动排序, Group By中无法排序
+    monthActivity.events.sort((a, b) => {
+        let adt = moment(a.evd + " " + a.evt, "YYYY/MM/DD HH:mm");
+        let bdts = b.evd + " " + b.evt;
+
+        return adt.diff(bdts);
+    });
 
     days = monthActivity.events.reduce((days, value) => {
       let day: string = value.evd;
