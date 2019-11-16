@@ -3410,9 +3410,9 @@ export class CalendarService extends BaseService {
     let members = new Array<Member>();
 
     if (planitems.length <= 0) {
-      let sql: string = `select * from gtd_jta where tb = ? and del <> ?`;
+      let sql: string = `select * from gtd_jta where jtc <> ? and tb = ? and del <> ?`;
 
-      planitems = await this.sqlExce.getExtLstByParam<PlanItemData>(sql, [SyncType.unsynch, DelType.del]) || planitems;
+      planitems = await this.sqlExce.getExtLstByParam<PlanItemData>(sql, [SelfDefineType.System, SyncType.unsynch, DelType.del]) || planitems;
 
       if (planitems && planitems.length > 0) {
         this.util.toastStart(`发现${planitems.length}条未同步纪念日, 开始同步...`, 1000);
