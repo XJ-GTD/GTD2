@@ -3146,12 +3146,13 @@ export class EventService extends BaseService {
         }
 
         sync.payload = attachment;
+        //当是附件上传，返回remote为空的情况下，则停止push
+        if(!attachment.ext || (attachment.ext && attachment.fpjson && attachment.fpjson.remote)) {
+          push.d.push(sync);
+          index++;
+        }
 
-        push.d.push(sync);
-
-        index++;
-
-        if (index % maxdata == 0) {
+        if (index != 0 && index % maxdata == 0) {
           await this.dataRestful.push(push);
           push = new PushInData();
         }
@@ -3782,6 +3783,9 @@ export class EventService extends BaseService {
 
     //创建主键
     att.fji = this.util.getUuid();
+    att.del = DelType.undel;
+    att.tb = SyncType.unsynch;
+    att.wtt = moment().unix();
     let fjdb: FjTbl = new FjTbl();
     Object.assign(fjdb, att);
 

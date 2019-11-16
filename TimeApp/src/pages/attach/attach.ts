@@ -328,9 +328,9 @@ export class AttachPage {
         this.fjData.fpjson = cacheFilePathJson;
         this.fjData.fjurl = this.fjData.fpjson.getLocalFilePath(this.file.dataDirectory);
         this.fjData.ui = this.currentuser;
-        this.fjData.del = DelType.undel;
-        this.fjData.tb = SyncType.unsynch;
-        this.fjData.wtt = moment().unix();
+        //this.fjData.del = DelType.undel;
+        //this.fjData.tb = SyncType.unsynch;
+        //this.fjData.wtt = moment().unix();
         this.fjData.members = this.members;
         if(!this.bw) {
           this.bw = fileName;
@@ -369,9 +369,9 @@ export class AttachPage {
               this.fjData.fjn = newFileName;
               this.fjData.ext = ext;
               this.fjData.ui = this.currentuser;
-              this.fjData.del = DelType.undel;
-              this.fjData.tb = SyncType.unsynch;
-              this.fjData.wtt = moment().unix();
+              //this.fjData.del = DelType.undel;
+              //this.fjData.tb = SyncType.unsynch;
+              //this.fjData.wtt = moment().unix();
               let cacheFilePathJson: CacheFilePathJson = new CacheFilePathJson();
               cacheFilePathJson.local = "/"+newFileName;
               this.fjData.fj = JSON.stringify(cacheFilePathJson);
@@ -419,9 +419,9 @@ export class AttachPage {
     if (this.bw && this.bw.trim() != '') {
       this.fjData.fjn = this.bw;
       this.fjData.ui = this.currentuser;
-      this.fjData.del = DelType.undel;
-      this.fjData.tb = SyncType.unsynch;
-      this.fjData.wtt = moment().unix();
+      //this.fjData.del = DelType.undel;
+      //this.fjData.tb = SyncType.unsynch;
+      //this.fjData.wtt = moment().unix();
       this.fjData.members = this.members;
       //1.对当前数据进行存储
       let retAt: Attachment = {}  as Attachment;
