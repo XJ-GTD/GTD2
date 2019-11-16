@@ -2930,8 +2930,8 @@ export class CalendarService extends BaseService {
 
       // 排序
       monthActivities.calendaritems.sort((a, b) => {
-        let adt = moment(a.sd + " " + a.st, "YYYY/MM/DD HH:mm");
-        let bdts = b.sd + " " + b.st;
+        let adt = moment(a.sd + " " + a.st || "00:00", "YYYY/MM/DD HH:mm");
+        let bdts = b.sd + " " + b.st || "00:00";
 
         return adt.diff(bdts);
       });
