@@ -4780,6 +4780,8 @@ export interface EventData extends EvTbl {
   members : Array<Member>;
   //接受人员数
   apn: number;
+  //附件
+  attachments : Array<Attachment>;
 }
 
 //画面传入事件service参数体
@@ -4790,8 +4792,6 @@ export interface AgendaData extends EventData, CaTbl {
   //发起人
   originator: Member;
 
-  //附件
-  attachments : Array<Attachment>;
 
   //用于数据上传给服务器时，给哪些参与人，[]无参与人或参与人被全删
   tos : string;

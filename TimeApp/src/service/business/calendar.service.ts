@@ -2852,7 +2852,18 @@ export class CalendarService extends BaseService {
           }
           event.apn = apn || event.apn || (event.ui != UserConfig.account.id)? 1 : 0;
           event.pn = event.pn || 0;
-          event.fj = event.fj || "0";
+          // 增加补充数量处理
+          let fjn: number = 0;
+          if (event.attachments && event.attachments.length > 0) {
+            let accepted = event.attachments.filter((ele) => {
+              return ele.del != DelType.del;
+            });
+
+            if (accepted) {
+              fjn = accepted.length;
+            }
+          }
+          event.fj = event.fj || fjn + "";
 
           if (index >= 0) {
             // 更新/删除
