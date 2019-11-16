@@ -2839,7 +2839,17 @@ export class CalendarService extends BaseService {
           Object.assign(event, activity);
 
           // 增加接受参与人数量处理
-          event.apn = event.apn || (event.ui != UserConfig.account.id)? 1 : 0;
+          let apn: number = 0;
+          if (event.members && event.members.length > 0) {
+            let accepted = event.members.filter((ele) => {
+              return ele.sdt == MemberShareState.Accepted;
+            });
+
+            if (accepted) {
+              apn = accepted.length;
+            }
+          }
+          event.apn = apn || event.apn || (event.ui != UserConfig.account.id)? 1 : 0;
           event.pn = event.pn || 0;
           event.fj = event.fj || "0";
 

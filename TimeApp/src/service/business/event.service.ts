@@ -4776,6 +4776,8 @@ export interface EventData extends EvTbl {
   rtjson: RtJson;
   //提醒设定
   txjson: TxJson;
+  //参与人
+  members : Array<Member>;
   //接受人员数
   apn: number;
 }
@@ -4783,8 +4785,6 @@ export interface EventData extends EvTbl {
 //画面传入事件service参数体
 export interface AgendaData extends EventData, CaTbl {
 
-  //参与人
-  members : Array<Member>;
   //计划
   jha : JhaTbl;
   //发起人
@@ -4841,8 +4841,6 @@ export interface TaskData extends EventData,TTbl {
   rtjson :RtJson;
   //提醒设定
   txjson :TxJson;
-  //参与人
-  members : Array<Member>;
   //发起人
   originator: Member;
 
@@ -4859,8 +4857,6 @@ export interface MiniTaskData extends EventData {
   rtjson :RtJson;
   //提醒设定
   txjson :TxJson;
-  //参与人
-  members : Array<Member>;
   //发起人
   originator: Member;
 
