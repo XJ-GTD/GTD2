@@ -36,7 +36,7 @@ else
       fir p $TRAVIS_BUILD_DIR/TimeApp/platforms/android/app/build/outputs/apk/debug/app-$TRAVIS_BRANCH.apk -T $FIR_TOKEN_CASSISCORNUTA -c "唐冠螺 (Android): ${TRAVIS_COMMIT_MESSAGE}"
       echo "Uploading browser files"
       ls -la $TRAVIS_BUILD_DIR/TimeApp/platforms/browser/www
-      sshpass -e stricthostkeychecking=no scp -r $TRAVIS_BUILD_DIR/TimeApp/platforms/browser/www/* root@www.guobaa.com:/var/www/html/mwx
+      sshpass -e stricthostkeychecking=no scp -r $TRAVIS_BUILD_DIR/TimeApp/platforms/browser/www/* root@www.guobaa.com:/var/www/html/mwx/
     else
       fir p $TRAVIS_BUILD_DIR/TimeApp/platforms/android/app/build/outputs/apk/debug/app-$TRAVIS_BRANCH.apk -T $FIR_TOKEN -c "${TRAVIS_BRANCH}: ${TRAVIS_COMMIT_MESSAGE}"
     fi
