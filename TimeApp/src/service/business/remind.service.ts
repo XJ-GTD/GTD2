@@ -208,6 +208,10 @@ export class ScheduleRemindService extends BaseService {
                                   DelType.del
                                 ]) || new Array<RemindData>();
 
+      if (reminds && reminds.length > 0) {
+        this.util.toastStart(`发现${reminds.length}条未同步提醒, 开始同步...`, 1000);
+      }
+
       for (let remind of reminds) {
         schedulereminds.push({
           remindid: remind.wai,

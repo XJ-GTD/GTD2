@@ -226,7 +226,7 @@ describe('MemoService test suite', () => {
   });
 
 
-	it('Case 7 - 1   syncMemos 同步所有未同备忘 - 本地有数据(无报错)', async () => {
+	xit('Case 7 - 1   syncMemos 同步所有未同备忘 - 本地有数据(无报错)', async () => {
 
 		let mom: MemoData = {} as MemoData;
 	  mom.mon='你们都是大爷';

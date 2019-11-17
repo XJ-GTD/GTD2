@@ -2688,6 +2688,14 @@ export class CalendarService extends BaseService {
     //monthActivity.events = await this.sqlExce.getExtList<EventData>(sqlevents) || new Array<EventData>();
     monthActivity.events = await this.sqlExce.getExtLstByParam<EventData>(sqleventcounts, [month, DelType.del, ObjectType.Event, MemberShareState.Accepted, UserConfig.account.id]) || new Array<EventData>();
 
+    // 手动排序, Group By中无法排序
+    monthActivity.events.sort((a, b) => {
+        let adt = moment(a.evd + " " + a.evt, "YYYY/MM/DD HH:mm");
+        let bdts = b.evd + " " + b.evt;
+
+        return adt.diff(bdts);
+    });
+
     days = monthActivity.events.reduce((days, value) => {
       let day: string = value.evd;
       let dayActivity: DayActivityData = days.get(day);
@@ -2839,9 +2847,35 @@ export class CalendarService extends BaseService {
           Object.assign(event, activity);
 
           // 增加接受参与人数量处理
-          event.apn = event.apn || (event.ui != UserConfig.account.id)? 1 : 0;
+          let apn: number = 0;
+          if (event.members && event.members.length > 0) {
+            let accepted = event.members.filter((ele) => {
+              return ele.sdt == MemberShareState.Accepted;
+            });
+
+            if (accepted) {
+              apn = accepted.length;
+            }
+
+            // 他人日程需要+1
+            if (event.ui != UserConfig.account.id) {
+              apn++;
+            }
+          }
+          event.apn = apn || event.apn || (event.ui != UserConfig.account.id)? 1 : 0;
           event.pn = event.pn || 0;
-          event.fj = event.fj || "0";
+          // 增加补充数量处理
+          let fjn: number = 0;
+          if (event.attachments && event.attachments.length > 0) {
+            let accepted = event.attachments.filter((ele) => {
+              return ele.del != DelType.del;
+            });
+
+            if (accepted) {
+              fjn = accepted.length;
+            }
+          }
+          event.fj = event.fj || fjn + "";
 
           if (index >= 0) {
             // 更新/删除
@@ -2904,6 +2938,20 @@ export class CalendarService extends BaseService {
         dayActivity.calendaritems.length = 0;
         dayActivity.events.length = 0;
         dayActivity.memos.length = 0;
+      });
+
+      // 排序
+      monthActivities.calendaritems.sort((a, b) => {
+        let adt = moment(a.sd + " " + a.st || "00:00", "YYYY/MM/DD HH:mm");
+        let bdts = b.sd + " " + b.st || "00:00";
+
+        return adt.diff(bdts);
+      });
+      monthActivities.events.sort((a, b) => {
+        let adt = moment(a.evd + " " + a.evt, "YYYY/MM/DD HH:mm");
+        let bdts = b.evd + " " + b.evt;
+
+        return adt.diff(bdts);
       });
 
       days = monthActivities.calendaritems.reduce((days, value) => {
@@ -3410,9 +3458,13 @@ export class CalendarService extends BaseService {
     let members = new Array<Member>();
 
     if (planitems.length <= 0) {
-      let sql: string = `select * from gtd_jta where tb = ? and del <> ?`;
+      let sql: string = `select * from gtd_jta where jtc <> ? and tb = ? and del <> ?`;
 
-      planitems = await this.sqlExce.getExtLstByParam<PlanItemData>(sql, [SyncType.unsynch, DelType.del]) || planitems;
+      planitems = await this.sqlExce.getExtLstByParam<PlanItemData>(sql, [SelfDefineType.System, SyncType.unsynch, DelType.del]) || planitems;
+
+      if (planitems && planitems.length > 0) {
+        this.util.toastStart(`发现${planitems.length}条未同步纪念日, 开始同步...`, 1000);
+      }
 
       let sqlmember: string = ` select par.*  ,
                                     b.ran,
@@ -3532,7 +3584,7 @@ export class CalendarService extends BaseService {
   async acceptSyncPlanItems(ids: Array<string>) {
     let sqls: Array<any> = new Array<any>();
 
-    let sql: string = `update gtd_jta set tb = ? where jti in ('` + ids.join(', ') + `')`;
+    let sql: string = `update gtd_jta set tb = ? where jti in ('` + ids.join(`', '`) + `')`;
 
     sqls.push([sql, [SyncType.synch]]);
 
@@ -3786,6 +3838,10 @@ export class CalendarService extends BaseService {
       let sql: string = `select * from gtd_jha where jt = ? and tb = ?`;
 
       plans = await this.sqlExce.getExtLstByParam<PlanData>(sql, [PlanType.PrivatePlan, SyncType.unsynch]) || plans;
+
+      if (plans && plans.length > 0) {
+        this.util.toastStart(`发现${plans.length}条未同步日历, 开始同步...`, 1000);
+      }
     }
 
     // 存在未同步日历

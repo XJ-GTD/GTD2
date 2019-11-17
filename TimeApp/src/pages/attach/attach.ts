@@ -328,9 +328,9 @@ export class AttachPage {
         this.fjData.fpjson = cacheFilePathJson;
         this.fjData.fjurl = this.fjData.fpjson.getLocalFilePath(this.file.dataDirectory);
         this.fjData.ui = this.currentuser;
-        this.fjData.del = DelType.undel;
-        this.fjData.tb = SyncType.unsynch;
-        this.fjData.wtt = moment().unix();
+        //this.fjData.del = DelType.undel;
+        //this.fjData.tb = SyncType.unsynch;
+        //this.fjData.wtt = moment().unix();
         this.fjData.members = this.members;
         if(!this.bw) {
           this.bw = fileName;
@@ -369,9 +369,9 @@ export class AttachPage {
               this.fjData.fjn = newFileName;
               this.fjData.ext = ext;
               this.fjData.ui = this.currentuser;
-              this.fjData.del = DelType.undel;
-              this.fjData.tb = SyncType.unsynch;
-              this.fjData.wtt = moment().unix();
+              //this.fjData.del = DelType.undel;
+              //this.fjData.tb = SyncType.unsynch;
+              //this.fjData.wtt = moment().unix();
               let cacheFilePathJson: CacheFilePathJson = new CacheFilePathJson();
               cacheFilePathJson.local = "/"+newFileName;
               this.fjData.fj = JSON.stringify(cacheFilePathJson);
@@ -419,9 +419,9 @@ export class AttachPage {
     if (this.bw && this.bw.trim() != '') {
       this.fjData.fjn = this.bw;
       this.fjData.ui = this.currentuser;
-      this.fjData.del = DelType.undel;
-      this.fjData.tb = SyncType.unsynch;
-      this.fjData.wtt = moment().unix();
+      //this.fjData.del = DelType.undel;
+      //this.fjData.tb = SyncType.unsynch;
+      //this.fjData.wtt = moment().unix();
       this.fjData.members = this.members;
       //1.对当前数据进行存储
       let retAt: Attachment = {}  as Attachment;
@@ -459,7 +459,7 @@ export class AttachPage {
     this.fjArray = new Array<Attachment>();
     let attachments: Array<Attachment> = new Array<Attachment>();
     attachments = await this.eventService.selectAttachments(this.obt,this.obi);
-    alert("刷新查询数据："+JSON.stringify(attachments))
+    //alert("刷新查询数据："+JSON.stringify(attachments))
     for (let attachment of attachments) {
       attachment.members = this.members;
       // 判断是否是残留数据或文字附件
@@ -477,7 +477,7 @@ export class AttachPage {
                 // 本地文件存在，页面上显示本地文件
                 //let checked = await this.file.checkFile(this.file.dataDirectory + attachment.fpjson.getCacheDir(), fileName);
                 let checked =  await this.isExistFile(attachment.fpjson.getCacheDir(), fileName);
-                alert("刷新验证存在本地文件:"+checked);
+                //alert("刷新验证存在本地文件:"+checked);
                 if (checked == true) {
                   attachment.fjurl = attachment.fpjson.getLocalFilePath(this.file.dataDirectory);
                 }

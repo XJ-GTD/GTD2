@@ -192,6 +192,10 @@ export class MemoService extends BaseService {
 		if (memos.length <= 0) {
 			let sql: string = `select * from gtd_mom where  tb = ?`;
 			memos = await this.sqlExce.getExtLstByParam<MemoData>(sql, [SyncType.unsynch]) || memos;
+
+			if (memos && memos.length > 0) {
+        this.util.toastStart(`发现${memos.length}条未同步备忘, 开始同步...`, 1000);
+      }
 		}
 
 		//当存在未同步的情况下,进行同步

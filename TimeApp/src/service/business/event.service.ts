@@ -3061,6 +3061,10 @@ export class EventService extends BaseService {
 
       attachments = await this.sqlExce.getExtLstByParam<Attachment>(sql, [SyncType.synch, UserConfig.account.id]) || attachments;
 
+      if (attachments && attachments.length > 0) {
+        this.util.toastStart(`发现${attachments.length}条未同步补充, 开始同步...`, 1000);
+      }
+
       let sqlmember: string = `select par.*,
                         b.ran,
                         b.ranpy,
@@ -3146,12 +3150,13 @@ export class EventService extends BaseService {
         }
 
         sync.payload = attachment;
+        //当是附件上传，返回remote为空的情况下，则停止push
+        if(!attachment.ext || (attachment.ext && attachment.fpjson && attachment.fpjson.remote)) {
+          push.d.push(sync);
+          index++;
+        }
 
-        push.d.push(sync);
-
-        index++;
-
-        if (index % maxdata == 0) {
+        if (index != 0 && index % maxdata == 0) {
           await this.dataRestful.push(push);
           push = new PushInData();
         }
@@ -3168,7 +3173,7 @@ export class EventService extends BaseService {
   async acceptSyncAttachments(ids: Array<string>) {
     let sqls: Array<any> = new Array<any>();
 
-    let sql: string = `update gtd_fj set tb = ? where fji in ('` + ids.join(', ') + `')`;
+    let sql: string = `update gtd_fj set tb = ? where fji in ('` + ids.join(`', '`) + `')`;
 
     sqls.push([sql, [SyncType.synch]]);
 
@@ -3285,6 +3290,10 @@ export class EventService extends BaseService {
                         on ca.evi = ev.forceevi`;
   		agendas = await this.sqlExce.getExtLstByParam<AgendaData>(sql, [anyenum.EventType.Agenda, SyncType.unsynch]) || agendas;
 
+      if (agendas && agendas.length > 0) {
+        this.util.toastStart(`发现${agendas.length}条未同步日程, 开始同步...`, 1000);
+      }
+
       // 增加附件同步
       let sqlattachments: string = `select distinct fj.* from (
                                     select
@@ -3330,7 +3339,7 @@ export class EventService extends BaseService {
       // 增加附件同步
       let sqlattachments: string = `select *
                                     from gtd_fj
-                                    where obi in ('` + evis.join(', ') + `') and obt = ?1`;
+                                    where obi in ('` + evis.join(`', '`) + `') and obt = ?1`;
       attachments =  await this.sqlExce.getExtLstByParam<Attachment>(sqlattachments,
         [anyenum.ObjectType.Event]) || attachments;
     }
@@ -3553,7 +3562,7 @@ export class EventService extends BaseService {
   async acceptSyncAgendas(ids: Array<string>) {
     let sqls: Array<any> = new Array<any>();
 
-    let sql: string = `update gtd_ev set tb = ? where evi in ('` + ids.join(', ') + `')`;
+    let sql: string = `update gtd_ev set tb = ? where evi in ('` + ids.join(`', '`) + `')`;
 
     sqls.push([sql, [SyncType.synch]]);
 
@@ -3782,6 +3791,9 @@ export class EventService extends BaseService {
 
     //创建主键
     att.fji = this.util.getUuid();
+    att.del = DelType.undel;
+    att.tb = SyncType.unsynch;
+    att.wtt = moment().unix();
     let fjdb: FjTbl = new FjTbl();
     Object.assign(fjdb, att);
 
@@ -4764,22 +4776,22 @@ export interface EventData extends EvTbl {
   rtjson: RtJson;
   //提醒设定
   txjson: TxJson;
+  //参与人
+  members : Array<Member>;
   //接受人员数
   apn: number;
+  //附件
+  attachments : Array<Attachment>;
 }
 
 //画面传入事件service参数体
 export interface AgendaData extends EventData, CaTbl {
 
-  //参与人
-  members : Array<Member>;
   //计划
   jha : JhaTbl;
   //发起人
   originator: Member;
 
-  //附件
-  attachments : Array<Attachment>;
 
   //用于数据上传给服务器时，给哪些参与人，[]无参与人或参与人被全删
   tos : string;
@@ -4829,8 +4841,6 @@ export interface TaskData extends EventData,TTbl {
   rtjson :RtJson;
   //提醒设定
   txjson :TxJson;
-  //参与人
-  members : Array<Member>;
   //发起人
   originator: Member;
 
@@ -4847,8 +4857,6 @@ export interface MiniTaskData extends EventData {
   rtjson :RtJson;
   //提醒设定
   txjson :TxJson;
-  //参与人
-  members : Array<Member>;
   //发起人
   originator: Member;
 
