@@ -3137,13 +3137,18 @@ export class EventService extends BaseService {
           if (this.util.hasCordova()) {
             let upload: UploadInData = new UploadInData();
             upload.filepath = attachment.fpjson.getLocalFilePath(this.file.dataDirectory);
-
-            let data = await this.dataRestful.upload(upload);
-            console.log("upload <=> " + JSON.stringify(data));
-            if (data && data.data) {
-              attachment.fpjson.remote = String(data.data);
-              attachment.fj = JSON.stringify(attachment.fpjson);
-              if (callback) await callback(attachment);
+            try{
+              let data = await this.dataRestful.upload(upload);
+              console.log("upload <=> " + JSON.stringify(data));
+              alert("upload <=> "+JSON.stringify(data));
+              if (data && data.data) {
+                attachment.fpjson.remote = String(data.data);
+                attachment.fj = JSON.stringify(attachment.fpjson);
+                if (callback) await callback(attachment);
+              }
+            }
+            catch (err) {
+              alert("上传异常信息："+err);
             }
           }
         }
