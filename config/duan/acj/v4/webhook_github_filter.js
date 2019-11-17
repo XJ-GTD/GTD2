@@ -162,7 +162,9 @@ function clean(datasource)
 
   standardnext.announceTo = to;
   standardnext.announceType = 'agenda_from_share';
-  standardnext.announceContent = {mwxing:output,sms:{},push:push};
+  // 取消客户端消息推送，只推送通知
+  //standardnext.announceContent = {mwxing:output,sms:{},push:push};
+  standardnext.announceContent = {mwxing:{},sms:{},push:push};
 
   print(standardnext);
 
