@@ -43,7 +43,7 @@ if [ $TRAVIS_OS_NAME = 'osx' ]; then
   xcodebuild -exportArchive -archivePath $TRAVIS_BUILD_DIR/build/debug/$IOS_APP_NAME.xcarchive -configuration Release CODE_SIGN_RESOURCE_RULES_PATH='$(PROJECT_DIR)/$(PROJECT_NAME)/Entitlements-$(CONFIGURATION).plist' CODE_SIGN_IDENTITY="${IOS_DEVELOPER_NAME}" PROVISIONING_PROFILE="${IOS_PROFILE_NAME}" -exportPath $TRAVIS_BUILD_DIR/build/debug -exportOptionsPlist $TRAVIS_BUILD_DIR/travis/profiles/ios/exportAppStore.plist
 else
   ls $TRAVIS_BUILD_DIR/TimeApp/
-  ionic cordova build android --verbose --stacktrace --buildConfig $TRAVIS_BUILD_DIR/travis/profiles/cordova/build.json
+  ionic cordova build android --prod --verbose --stacktrace --buildConfig $TRAVIS_BUILD_DIR/travis/profiles/cordova/build.json
   cat $TRAVIS_BUILD_DIR/TimeApp/platforms/android/app/build.gradle
   cat $TRAVIS_BUILD_DIR/TimeApp/platforms/android/CordovaLib/cordova.gradle
   ls $TRAVIS_BUILD_DIR/TimeApp/platforms/android/app/src/main/
