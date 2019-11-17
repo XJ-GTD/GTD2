@@ -69,7 +69,7 @@ export class HPage {
     daysConfig: []
   };
 
-
+ i:number = 0;
   constructor(private hService: HService,
               private navController: NavController,
               private modalCtr: ModalController,
@@ -79,7 +79,15 @@ export class HPage {
               private testDataService: TestDataService,
               private emitService: EmitService,
               private util:UtilService) {
+    this.testTimeOut();
 
+  }
+
+  testTimeOut(){
+    // setTimeout(()=>{
+    //   console.log("setTimeout ====" + this.i ++);
+    //   this.testTimeOut();
+    // },1000)
   }
 
   viewShow($event: boolean) {
