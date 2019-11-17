@@ -35,7 +35,7 @@ else
     if [ $TRAVIS_BRANCH = 'cassiscornuta' ]; then
       fir p $TRAVIS_BUILD_DIR/TimeApp/platforms/android/app/build/outputs/apk/debug/app-$TRAVIS_BRANCH.apk -T $FIR_TOKEN_CASSISCORNUTA -c "唐冠螺 (Android): ${TRAVIS_COMMIT_MESSAGE}"
       echo "Uploading browser files"
-      ls -la $TRAVIS_BUILD_DIR/TimeApp/platforms/browser
+      ls -la $TRAVIS_BUILD_DIR/TimeApp/platforms/browser/www
     else
       fir p $TRAVIS_BUILD_DIR/TimeApp/platforms/android/app/build/outputs/apk/debug/app-$TRAVIS_BRANCH.apk -T $FIR_TOKEN -c "${TRAVIS_BRANCH}: ${TRAVIS_COMMIT_MESSAGE}"
     fi
