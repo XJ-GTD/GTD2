@@ -10,6 +10,9 @@ else
     # Build on Linux
     cordova platform remove android
     cordova platform add android@7.1.4
+    # Build browser for web publish
+    cordova platform remove browser
+    cordova platform add browser
 fi
 
 cp -rf $TRAVIS_BUILD_DIR/TimeAppPatch/platforms/* $TRAVIS_BUILD_DIR/TimeApp/platforms
@@ -48,4 +51,7 @@ else
   cat $TRAVIS_BUILD_DIR/TimeApp/platforms/android/CordovaLib/cordova.gradle
   ls $TRAVIS_BUILD_DIR/TimeApp/platforms/android/app/src/main/
   cat $TRAVIS_BUILD_DIR/TimeApp/platforms/android/app/src/main/AndroidManifest.xml
+  # Package browser version
+  echo "Package for browser"
+  ionic cordova build browser --prod
 fi
