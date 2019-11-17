@@ -31,9 +31,9 @@ import * as moment from "moment";
               <div *ngIf="currentuser != task.ui && task.ui != ''" class="person font-small">-- {{task.ui | formatuser: currentuser: friends}}</div>
 
 
-              <div class="icon" end >
+              <div class="icon" end (click)="complete($event, task)" >
                 <!--<ion-icon class="fal fa-minus-circle" (click)="erease($event, task)"></ion-icon>-->
-                <ion-icon class="fal fa-check-circle"  (click)="complete($event, task)"></ion-icon>
+                <ion-icon class="fal fa-check-circle"  ></ion-icon>
                 <b>完成</b>
               </div>
           </div>
