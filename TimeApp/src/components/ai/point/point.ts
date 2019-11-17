@@ -19,7 +19,7 @@ import {EmitService} from "../../../service/util-service/emit.service";
     <div class="aitool" #aitool>
       <b class=" speaking  danger" #light>
         <div class="spinner" (click)="listenStart()">
-          <canvas #canvas></canvas>
+          <!--<canvas #canvas></canvas>-->
         </div>
       </b>
 
@@ -31,8 +31,8 @@ import {EmitService} from "../../../service/util-service/emit.service";
   `,
 })
 export class PointComponent {
-  @ViewChild('canvas')
-  canvas: ElementRef;
+  // @ViewChild('canvas')
+  // canvas: ElementRef;
   @ViewChild('light')
   light: ElementRef;
   @ViewChild('aitool')
@@ -61,7 +61,7 @@ export class PointComponent {
               private assistantService: AssistantService,
               private _renderer: Renderer2,
               private emitService:EmitService) {
-
+    //
     this.assistantService.startWakeUp();
     this.emitService.registerListener((b)=>{
       this.statusListener = b;
@@ -109,19 +109,19 @@ export class PointComponent {
   ngOnInit(): void {
     //this._renderer.setStyle(this.aitool.nativeElement, "top", window.innerHeight);
 
-    this.ctx = this.canvas.nativeElement.getContext('2d');
-    this.dots= new Array<Dot>();
-
-    this.width = this.canvas.nativeElement.width ;
-    this.height = this.canvas.nativeElement.height;
-
-// Populate the dots array with random dots
-    this.createDots();
-
-// Render the scene
-    window.requestAnimationFrame((a) => {
-      this.render(a);
-    });
+//     this.ctx = this.canvas.nativeElement.getContext('2d');
+//     this.dots= new Array<Dot>();
+//
+//     this.width = this.canvas.nativeElement.width ;
+//     this.height = this.canvas.nativeElement.height;
+//
+// // Populate the dots array with random dots
+//     this.createDots();
+//
+// // Render the scene
+//     window.requestAnimationFrame((a) => {
+//       this.render(a);
+//     });
 
   }
 

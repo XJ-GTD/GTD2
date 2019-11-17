@@ -32,39 +32,41 @@ export class SettingsProvider {
 
   getStatusColor(val:StatusType):string{
     let ct:string = UserConfig.settins.get(DataConfig.SYS_THEME).value;
-    switch (val){
-      case StatusType.home:
-        if (ct == "white-theme"){
-          return "#003542";
-        }else {
-          return "#003542";
-        }
 
-      case StatusType.meun:
-        if (ct == "white-theme"){
-          return "#f8f8f8";
-        }else {
-          return "#0d182a";
-        }
-      case StatusType.page:
-        if (ct == "white-theme"){
-          return "#f8f8f8";
-        }else {
-          return "#000c1f";
-        }
-      case StatusType.model:
-        if (ct == "white-theme"){
-          return "#000000";
-        }else {
-          return "#000000";
-        }
-      case StatusType.other:
-        if (ct == "white-theme"){
-          return "#f8f8f8";
-        }else {
-          return "#f8f8f8";
-        }
-    }
+    // switch (val){
+    //   case StatusType.home:
+    //     if (ct == "white-theme"){
+    //       return "#003542";
+    //     }else {
+    //       return "#003542";
+    //     }
+    //
+    //   case StatusType.meun:
+    //     if (ct == "white-theme"){
+    //       return "#f8f8f8";
+    //     }else {
+    //       return "#0d182a";
+    //     }
+    //   case StatusType.page:
+    //     if (ct == "white-theme"){
+    //       return "#f8f8f8";
+    //     }else {
+    //       return "#000c1f";
+    //     }
+    //   case StatusType.model:
+    //     if (ct == "white-theme"){
+    //       return "#000000";
+    //     }else {
+    //       return "#000000";
+    //     }
+    //   case StatusType.other:
+    //     if (ct == "white-theme"){
+    //       return "#f8f8f8";
+    //     }else {
+    //       return "#f8f8f8";
+    //     }
+    // }
+    return "transparent";
   }
 
   popStatusBarColor(){
