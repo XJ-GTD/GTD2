@@ -765,13 +765,17 @@ export class AgendaPage {
   }
 
   doOptionRemove(op: OperateType) {
-    this.util.loadingStart().then(() => {
-      this.eventService.removeAgenda(this.originAgenda, op)
-        .then(() => {
-          this.util.loadingEnd();
+
+    this.eventService.removeAgenda(this.originAgenda, op)
+      .then(() => {
+        // this.util.loadingEnd();
+        setTimeout(()=>{
+
           this.goBack();
-        });
-    });
+        },200);
+      });
+    // this.util.loadingStart().then(() => {
+    // });
   }
 
   goRemove() {

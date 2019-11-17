@@ -481,15 +481,15 @@
         color: rgba(51, 51, 51, 1);
 
         .icon {
-          .over,.fa-check-circle,.fa-minus-circle{
-            color: rgba(53,152,176,1);
-          }
           .fa-check-double,.fa-alarm-exclamation,.fa-at {
             color:rgba(206,206,206,1);
           }
 
           b{
             color: rgba(51, 51, 51, 1);
+          }
+          .over {
+            color: rgba(125, 85, 37, 1);
           }
         }
 
@@ -652,15 +652,16 @@
       .line {
         color: rgba(51, 51, 51, 1);
         .icon {
-          .over,.fa-check-circle,.fa-minus-circle{
-            color: rgba(53,152,176,1);
-          }
           .fa-check-double,.fa-alarm-exclamation,.fa-at {
             color:rgba(206,206,206,1);
           }
           b{
             color: rgba(57, 70, 93, 1);
           }
+          //.fa-check-circle,.fa-minus-circle{
+          //  color: rgba(53,152,176,1);
+          //}
+
         }
       }
 

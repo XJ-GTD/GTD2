@@ -610,43 +610,41 @@ export class UtilService {
 
   async loadingStart() {
     this.loading = this.loadingCtrl.create({
-      spinner: 'hide',
-      content:
-        `
-          <div class="raindrop raindrop1"></div>
-          <div class="raindrop raindrop2"></div>
-          <div class="raindrop raindrop3"></div>
-          `,
+      // spinner: 'hide',
+      // content:
+      //   `
+      //     <div class="raindrop raindrop1"></div>
+      //     <div class="raindrop raindrop2"></div>
+      //     <div class="raindrop raindrop3"></div>
+      //     `,
     });
 
     this.loading.present().then(()=>{
-      this.sceneloading = new Scene({
-        ".raindrop": i => ({
-          0: {"border-width": "35px", opacity: 1, transform: "scale(0)", "border-color": "rgba(149, 58, 139,1)"},
-          1.5: {"border-width": "0px", opacity: 0.3, transform: "scale(0.7)", "border-color": "rgba(86, 82, 222,1)"},
-          options: {delay: i * 0.4},
-        }),
-      }, {
-        easing: "ease-in-out",
-        iterationCount: "infinite",
-        selector: true,
-      });
-      this.sceneloading.playCSS();
+      // this.sceneloading = new Scene({
+      //   ".raindrop": i => ({
+      //     0: {"border-width": "35px", opacity: 1, transform: "scale(0)", "border-color": "rgba(149, 58, 139,1)"},
+      //     1.5: {"border-width": "0px", opacity: 0.3, transform: "scale(0.7)", "border-color": "rgba(86, 82, 222,1)"},
+      //     options: {delay: i * 0.4},
+      //   }),
+      // }, {
+      //   easing: "ease-in-out",
+      //   iterationCount: "infinite",
+      //   selector: true,
+      // });
+      // this.sceneloading.playCSS();
+      return;
     })
   }
 
-  loadingEnd() {
-    setTimeout(() => {
+  async loadingEnd() {
       if (this.loading) {
-        let id = this.sceneloading.getId();
-        this.sceneloading.end();
-        document.body.removeChild(document.getElementById("__SCENEJS_STYLE_" + id));
-        this.loading.dismissAll();
-        this.loading = null;
+        // let id = this.sceneloading.getId();
+        // this.sceneloading.end();
+        // document.body.removeChild(document.getElementById("__SCENEJS_STYLE_" + id));
+        return await this.loading.dismiss();
+        // this.loading = null;
 
       }
-
-    }, 800);
   }
 
   toastStart(msg: string, long: number) {
