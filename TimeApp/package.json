@@ -89,7 +89,7 @@
     "ion-multi-picker": "^2.1.2",
     "ionic": "^4.3.0",
     "ionic-angular": "3.9.2",
-    "ionic-gallery-modal": "^0.2.7",
+    "ionic-gallery-modal": "git+https://github.com/xiaoji-duan/ionic-gallery-modal.git",
     "ionic2-auto-complete": "^1.6.2-alpha",
     "ionicons": "3.0.0",
     "moment": "^2.22.2",
