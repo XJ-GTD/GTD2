@@ -3143,7 +3143,7 @@ export class EventService extends BaseService {
             if (data && data.data) {
               attachment.fpjson.remote = String(data.data);
               attachment.fj = JSON.stringify(attachment.fpjson);
-
+              alert("异步上传后的数据:"+JSON.stringify(attachment));
               if (callback) await callback(attachment);
             }
           }
@@ -3803,6 +3803,7 @@ export class EventService extends BaseService {
     //同步数据
     this.emitService.emit("mwxing.event.fj.add", att);
     await this.syncAttachments([att], async (updated) => {
+      alert("获取异步返回后的数据:"+JSON.stringify(updated));
       let fjdb: FjTbl = new FjTbl();
       Object.assign(fjdb, updated);
 

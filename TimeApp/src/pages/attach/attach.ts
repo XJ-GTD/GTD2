@@ -133,15 +133,12 @@ export class AttachPage {
 
       this.fjData.obt = this.obt;
       this.fjData.obi = this.obi;
-      // this.currentuser = this.navParams.data.userId
     }
     //验证缓存文件目录是否存在
     if (this.util.hasCordova()) {
       this.file.checkDir(this.file.dataDirectory, '/cachefiles')
       .then(_ => console.log('Directory exists'))
       .catch(err => {
-        //alert("检查文件夹不存在："+err);
-        //alert("开始创建文件，文件路径："+this.file.externalDataDirectory+"/cached");
         this.file.createDir(this.file.dataDirectory, "cachefiles", true).then(result => {
           console.log("success");
           //alert("文件路径创建成功");
@@ -154,101 +151,6 @@ export class AttachPage {
 
     //调用刷新
     this.flushData();
-
-    // 不进行自动下载
-    // for (let attachment of this.fjArray) {
-    //   attachment.members = this.members;
-    //
-    //   // 判断是否是残留数据或文字附件
-    //   if (attachment.ext) {
-    //     if (this.util.isJsonString(attachment.fj)) {
-    //         attachment.fpjson = generateCacheFilePathJson(attachment.fpjson, attachment.fj);
-    //
-    //         // 附件存储JSON是否存在
-    //         if (attachment.fpjson && attachment.fpjson.remote) {
-    //           attachment.fjurl = this.browserurl + attachment.fpjson.remote;
-    //
-    //           // 判断是否是手机
-    //           if (this.util.hasCordova()) {
-    //             let fileName: string  = attachment.fpjson.local.substr(1, attachment.fpjson.local.length);
-    //
-    //             // 本地文件存在，页面上显示本地文件, 无法形成同步，只能异步改变fjArray
-    //             this.file.checkFile(this.file.dataDirectory + attachment.fpjson.getCacheDir(), fileName)
-    //             .then(_ => {
-    //               attachment.fjurl = attachment.fpjson.getLocalFilePath(this.file.dataDirectory);
-    //             });
-    //           }
-    //         }
-    //     } else {
-    //       //历史遗留数据构造
-    //       attachment.fjurl = attachment.fj;
-    //     }
-    //   }
-    // }
-
-    // for(let i: number =0; i<this.fjArray.length; i++) {
-    //     this.fjArray[i].members = this.members;
-    //
-    //     if (this.fjArray[i].ext) {
-    //       //处理历史遗留数据，按照原来的显示
-    //       if (this.util.isJsonString(this.fjArray[i].fj)) {
-    //         //获取新赋值
-    //         let cacheFilePathJson: CacheFilePathJson = new CacheFilePathJson();
-    //         this.fjArray[i].fpjson = generateCacheFilePathJson(this.fjArray[i].fpjson, this.fjArray[i].fj);
-    //         //目前直接在该页面直接存储附件，则直接将文件位置赋值给
-    //         this.fjArray[i].fjurl =this.browserurl+this.fjArray[i].fpjson.remote;
-    //
-    //         //检查该文件夹下是否存在该文件，如果不存在，则根据remote下载同步该文件
-    //         if (this.fjArray[i].fpjson) {
-    //           if (this.util.hasCordova()) {
-    //             let fileName: string  = this.fjArray[i].fpjson.local.substr(1,this.fjArray[i].fpjson.local.length);
-    //             this.file.checkFile(this.file.dataDirectory+this.fjArray[i].fpjson.getCacheDir(),fileName)
-    //             .then(_ => {
-    //               // 文件存在
-    //               this.fjArray[i].fjurl = this.fjArray[i].fpjson.getLocalFilePath(this.file.dataDirectory);
-    //             })
-    //             .catch(err => {
-    //                 //根据remote 拉取文件
-    //                 // if (this.fjArray[i].fpjson.remote) {
-    //                 //   //根据地址拉取文件
-    //                 //   //验证是否为浏览器
-    //                 //   if (this.util.hasCordova()) {
-    //                 //     //拉取数据
-    //                 //     let downloadInData : DownloadInData = new DownloadInData();
-    //                 //     downloadInData.id = this.fjArray[i].fpjson.remote;
-    //                 //     downloadInData.filepath = this.file.dataDirectory+this.fjArray[i].fpjson.getCacheDir();
-    //                 //     this.dataRestful.download(downloadInData);
-    //                 //   } else {
-    //                 //     this.fjArray[i].fjurl =this.browserurl+this.fjArray[i].fpjson.remote;
-    //                 //   }
-    //                 // }
-    //             });
-    //           } else {
-    //             this.fjArray[i].fjurl =this.browserurl+this.fjArray[i].fpjson.remote;
-    //           }
-    //         } else {
-    //           if (this.fjArray[i].fpjson.remote) {
-    //             //根据地址拉取文件
-    //             if (this.util.hasCordova()) {
-    //               //拉取数据
-    //               let downloadInData : DownloadInData = new DownloadInData();
-    //               downloadInData.id = this.fjArray[i].fpjson.remote;
-    //               downloadInData.filepath = this.file.dataDirectory+this.fjArray[i].fpjson.getCacheDir();
-    //               this.dataRestful.download(downloadInData);
-    //             } else {
-    //               this.fjArray[i].fjurl =this.browserurl+this.fjArray[i].fpjson.remote;
-    //             }
-    //           }
-    //         }
-    //       }
-    //       else {
-    //         //历史遗留数据构造
-    //         this.fjArray[i].fjurl = this.fjArray[i].fj;
-    //         this.fjArray[i].members = this.members;
-    //       }
-    //     }
-    //   }
-
   }
 
 
@@ -308,7 +210,6 @@ export class AttachPage {
     }
     this.camera.getPicture(options).then((imageData) => {
       console.info("开始拍照上传照片");
-      //let fjData: FjData = {} as FjData;
       if (imageData != '') {
 
         let fileName: string = imageData.substr(imageData.lastIndexOf("/") + 1, imageData.length);
@@ -323,14 +224,10 @@ export class AttachPage {
         //构造地址文件
         let cacheFilePathJson: CacheFilePathJson = new CacheFilePathJson();
         cacheFilePathJson.local = "/"+newFileName;
-        //this.fjData.fj = this.file.externalDataDirectory + "/timeAppfile/" + fileName;
         this.fjData.fj = JSON.stringify(cacheFilePathJson);
         this.fjData.fpjson = cacheFilePathJson;
         this.fjData.fjurl = this.fjData.fpjson.getLocalFilePath(this.file.dataDirectory);
         this.fjData.ui = this.currentuser;
-        //this.fjData.del = DelType.undel;
-        //this.fjData.tb = SyncType.unsynch;
-        //this.fjData.wtt = moment().unix();
         this.fjData.members = this.members;
         if(!this.bw) {
           this.bw = fileName;
@@ -357,33 +254,25 @@ export class AttachPage {
     this.chooser.getFile('*/*').then((file) => {
         this.filePath.resolveNativePath(file.uri)
           .then((filePath) => {
-            //alert("选择的PDF文件filePath："+JSON.stringify(filePath));
             if (filePath != '') {
               let fileName: string = filePath.substr(filePath.lastIndexOf("/") + 1, filePath.length);
               let ext: string = fileName.substr(fileName.lastIndexOf(".") + 1);
               let imgFileDir: string = filePath.substr(0, filePath.lastIndexOf("/") + 1);
               let newFileName = this.util.getUuid()+"."+ext;
-              // let fjData: FjData = {} as FjData;
               this.fjData.obt = this.obt;
               this.fjData.obi = this.obi;
               this.fjData.fjn = newFileName;
               this.fjData.ext = ext;
               this.fjData.ui = this.currentuser;
-              //this.fjData.del = DelType.undel;
-              //this.fjData.tb = SyncType.unsynch;
-              //this.fjData.wtt = moment().unix();
               let cacheFilePathJson: CacheFilePathJson = new CacheFilePathJson();
               cacheFilePathJson.local = "/"+newFileName;
               this.fjData.fj = JSON.stringify(cacheFilePathJson);
               this.fjData.fpjson = cacheFilePathJson;
               this.fjData.fjurl = this.fjData.fpjson.getLocalFilePath(this.file.dataDirectory);
               this.fjData.members = this.members;
-              //this.fjData.fj = this.file.externalDataDirectory + "/timeAppfile/" + fileName;
-              //this.fjArray.push(fjData);
               if(!this.bw) {
                 this.bw = fileName;
               }
-              //alert("存储值："+JSON.stringify(this.fjData));
               this.file.copyFile(imgFileDir, fileName, this.file.dataDirectory + cacheFilePathJson.getCacheDir(), newFileName);
             }
           })
@@ -419,16 +308,12 @@ export class AttachPage {
     if (this.bw && this.bw.trim() != '') {
       this.fjData.fjn = this.bw;
       this.fjData.ui = this.currentuser;
-      //this.fjData.del = DelType.undel;
-      //this.fjData.tb = SyncType.unsynch;
-      //this.fjData.wtt = moment().unix();
       this.fjData.members = this.members;
       //1.对当前数据进行存储
       let retAt: Attachment = {}  as Attachment;
       this.util.loadingStart();
       retAt = await this.eventService.saveAttachment(this.fjData);
       this.util.loadingEnd();
-      //alert("上传后的数据："+JSON.stringify(retAt));
       this.fjArray.unshift(retAt);
       this.fjData = {} as Attachment;
       this.fjData.obt = this.obt;
@@ -459,7 +344,6 @@ export class AttachPage {
     this.fjArray = new Array<Attachment>();
     let attachments: Array<Attachment> = new Array<Attachment>();
     attachments = await this.eventService.selectAttachments(this.obt,this.obi);
-    //alert("刷新查询数据："+JSON.stringify(attachments))
     for (let attachment of attachments) {
       attachment.members = this.members;
       // 判断是否是残留数据或文字附件
@@ -471,13 +355,9 @@ export class AttachPage {
               attachment.fjurl = this.browserurl + attachment.fpjson.remote;
               // 判断是否是手机
               if (this.util.hasCordova()) {
-                //alert("进入真机测试模式");
                 let fileName: string  = attachment.fpjson.local.substr(1, attachment.fpjson.local.length);
-                //alert("fileName："+fileName);
                 // 本地文件存在，页面上显示本地文件
-                //let checked = await this.file.checkFile(this.file.dataDirectory + attachment.fpjson.getCacheDir(), fileName);
                 let checked =  await this.isExistFile(attachment.fpjson.getCacheDir(), fileName);
-                //alert("刷新验证存在本地文件:"+checked);
                 if (checked == true) {
                   attachment.fjurl = attachment.fpjson.getLocalFilePath(this.file.dataDirectory);
                 }
