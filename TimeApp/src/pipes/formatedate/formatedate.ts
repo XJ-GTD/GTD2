@@ -23,7 +23,7 @@ export class FormatedatePipe implements PipeTransform {
       m = moment(value, "YYYYMM")
     }
     if (!m.isValid() || args.length < 1) {
-      return value;
+      return "";
     }
     let formart = args[0];
     switch (formart) {

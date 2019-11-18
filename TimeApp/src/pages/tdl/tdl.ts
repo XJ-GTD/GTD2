@@ -566,7 +566,7 @@ export class TdlPage {
 
 
         if (this.currDayel) {
-          this.contentD.scrollTo(0, this.currDayel.offsetTop + 2, 300);
+          this.contentD.scrollTo(0, this.currDayel.offsetTop -2 , 300);
         } else {
           this.gotoEl(id);
         }
@@ -582,7 +582,7 @@ export class TdlPage {
         let currmonthel = this.el.nativeElement.querySelector(id);
 
         if (currmonthel) {
-          this.contentD.scrollTo(0, currmonthel.offsetTop + 2, 300);
+          this.contentD.scrollTo(0, currmonthel.offsetTop -2 , 300);
         } else {
           this.gotoEl4month(id);
         }

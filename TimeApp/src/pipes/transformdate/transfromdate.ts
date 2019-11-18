@@ -21,7 +21,7 @@ export class TransFromDatePipe implements PipeTransform {
 
     let formart = args[0];
     if (formart == "duration") {
-      return moment.duration(value, "minutes").humanize();
+      return moment.duration(value, "minutes").humanize() ? moment.duration(value, "minutes").humanize() : "";
     }
     let m = moment(value);
     if (!m.isValid()) {
