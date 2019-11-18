@@ -184,7 +184,7 @@ export class MemoService extends BaseService {
 	async codecMemos(): Promise<Array<DayCountCodec>> {
     let sql: string = `select sd day, count(*) count
                       from gtd_mom
-                      where del <> ?2
+                      where del <> ?1
                       group by day`;
     let daycounts: Array<DayCountCodec> = await this.sqlExce.getExtLstByParam<DayCountCodec>(sql, [DelType.del]) || new Array<DayCountCodec>();
 
