@@ -515,7 +515,7 @@ export class EventService extends BaseService {
           if (value.length != another[key].length) return false;
 
           if (value.length > 0) {
-            if (value[0] && value[0].hasOwnProperty("members") && another[key][0] && another[key][0].hasOwnProperty("members")) {
+            if (value[0] && value[0].hasOwnProperty("pari") && another[key][0] && another[key][0].hasOwnProperty("pari")) {
               let compare = value.concat(another[key]);
 
               compare.sort((a, b) => {
