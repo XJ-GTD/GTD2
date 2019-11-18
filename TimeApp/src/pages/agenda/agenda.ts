@@ -163,7 +163,7 @@ declare var Wechat;
                   <ion-icon class="fas fa-map-marker-alt" *ngIf="!currentAgenda.adr " noval></ion-icon>
                   <span class="content font-normal" margin-left [class.noval] = "!currentAgenda.adr">
                   {{currentAgenda.adr || "未设置"}}
-                </span>                
+                </span>
 
                 </button>
               </div>
@@ -738,7 +738,7 @@ export class AgendaPage {
 
           if (agenda) {
             this.currentAgenda = agenda;
-            Object.assign(this.originAgenda, agenda);
+            this.util.cloneObj(this.originAgenda, agenda);
 
             this.buttons.save = false;
           }
@@ -873,7 +873,7 @@ export class AgendaPage {
       this.eventService.saveAgenda(this.currentAgenda, this.originAgenda, op).then((agenda) => {
         if (agenda && agenda.length > 0) {
           this.currentAgenda = agenda[0];
-          Object.assign(this.originAgenda, agenda[0]);
+          this.util.cloneObj(this.originAgenda, agenda[0]);
 
           this.buttons.save = false;
         }
@@ -902,7 +902,7 @@ export class AgendaPage {
             this.eventService.saveAgenda(this.currentAgenda, this.originAgenda, OperateType.OnlySel).then((agenda) => {
               if (agenda && agenda.length > 0) {
                 this.currentAgenda = agenda[0];
-                Object.assign(this.originAgenda, agenda[0]);
+                this.util.cloneObj(this.originAgenda, agenda[0]);
 
                 this.buttons.save = false;
               }
@@ -915,7 +915,7 @@ export class AgendaPage {
           this.eventService.saveAgenda(this.currentAgenda).then((agenda) => {
             if (agenda && agenda.length > 0) {
               this.currentAgenda = agenda[0];
-              Object.assign(this.originAgenda, agenda[0]);
+              this.util.cloneObj(this.originAgenda, agenda[0]);
 
               this.buttons.remove = true;
               this.buttons.save = false;
