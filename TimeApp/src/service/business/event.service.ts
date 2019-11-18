@@ -3248,9 +3248,9 @@ export class EventService extends BaseService {
   async codecAgendas(): Promise<Array<DayCountCodec>> {
     let sql: string = `select evd day, count(*) count
                       from gtd_ev
-                      where del <> ?1
+                      where type = ?1 and del <> ?2
                       group by day`;
-    let daycounts: Array<DayCountCodec> = await this.sqlExce.getExtLstByParam<DayCountCodec>(sql, [DelType.del]) || new Array<DayCountCodec>();
+    let daycounts: Array<DayCountCodec> = await this.sqlExce.getExtLstByParam<DayCountCodec>(sql, [EventType.Agenda, DelType.del]) || new Array<DayCountCodec>();
 
     return daycounts;
   }
