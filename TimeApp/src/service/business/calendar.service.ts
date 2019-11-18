@@ -3772,11 +3772,32 @@ export class CalendarService extends BaseService {
   }
 
   async requestDeviceDiffData() {
+    let sql: string = `select evd day, count(*) count
+                      from gtd_ev
+                      where del <> ?1
+                      group by day`;
+    let daycounts: Array<DayCountCodec> = await this.sqlExce.getExtLstByParam<DayCountCodec>(sql, [DelType.del]) || new Array<DayCountCodec>();
+
+    let code = daycounts.reduce((target, ele) => {
+      if (target) {
+        target += ",";
+        target += ele.day;
+        target += " ";
+        target += ele.count;
+      } else {
+        target += ele.day;
+        target += " ";
+        target += ele.count;
+      }
+
+      return target;
+    }, "");
+
     let pull: PullInData = new PullInData();
     pull.type = "Agenda#Diff";
 
-    pull.d.push("anything");
-    
+    pull.d.push(code);
+
     await this.dataRestful.pull(pull);
     return;
   }
@@ -4799,6 +4820,11 @@ export class DayActivitySummaryData {
   repeateventscount: number;    // 重复事件数量
   acceptableeventscount: number;// 待接受事件数量
   bookedtimesummary: number;    // 总预定时长
+}
+
+export class DayCountCodec {
+  day: string;
+  count: number;
 }
 
 export function generateDataType(activityType: string) {
