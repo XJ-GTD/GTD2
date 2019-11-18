@@ -51,16 +51,16 @@ import {CalendarDay} from "../../components/ion2-calendar";
           </ion-row>
           <ion-row (click)="goPlPage()">
             <h3>活动日历</h3>
-          </ion-row>
+          </ion-row>on
           <ion-row (click)="goBlPage()">
             <h3>黑名单</h3>
           </ion-row>
           <ion-row (click)="goSsPage()">
             <h3>设置</h3>
           </ion-row>
-            <ion-row (click)="goBrPage()">
-              <h3>备份与恢复</h3>
-            </ion-row>
+            <!--<ion-row (click)="goBrPage()">-->
+              <!--<h3>备份与恢复</h3>-->
+            <!--</ion-row>-->
           <!--<ion-row *ngIf="isdebug" (click)="gologPage()">-->
             <!--<h3>日志</h3>-->
           <!--</ion-row>-->

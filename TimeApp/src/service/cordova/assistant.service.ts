@@ -209,7 +209,7 @@ export class AssistantService {
     textPro.c.client.processor = DataConfig.wsWsProcessor;
     await this.aibutlerRestful.posttext(textPro)
       .then(data => {
-        console.log("data code：" + data.code);
+        // console.log("data code：" + data.code);
         //接收Object JSON数据
         return text;
 

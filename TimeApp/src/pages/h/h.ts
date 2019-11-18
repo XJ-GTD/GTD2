@@ -80,10 +80,16 @@ export class HPage {
               private emitService: EmitService,
               private util:UtilService) {
     this.testTimeOut();
-
   }
 
   testTimeOut(){
+    let work = new Worker("./worker.js");
+    work.postMessage("123456");
+
+    work.onmessage = function (e) {
+      console.log("!!!!!!!!!")
+        console.log(e.data)
+      };
     // setTimeout(()=>{
     //   console.log("setTimeout ====" + this.i ++);
     //   this.testTimeOut();

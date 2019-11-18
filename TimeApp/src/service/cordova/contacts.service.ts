@@ -69,12 +69,12 @@ export class ContactsService {
         multiple: true,
         desiredFields: ["displayName", "phoneNumbers", 'name']
       }).then(data => {
-        console.log("===== 获取本地联系人：" + JSON.stringify(data));
+        // console.log("===== 获取本地联系人：" + JSON.stringify(data));
         let contactPhones: Array<string> = new Array<string>();
         let contact:any;
 
         for (contact of data) {
-          console.log("===== 本地联系人：" + JSON.stringify(contact));
+          // console.log("===== 本地联系人：" + JSON.stringify(contact));
           // XiaoMI 6X补丁
           if (contact._objectInstance) contact = contact._objectInstance;
 
@@ -95,7 +95,7 @@ export class ContactsService {
               .replace('0086', '')
               .replace(/\s/g,"");
 
-            console.log("===== 电话号码：" + number);
+            // console.log("===== 电话号码：" + number);
 
             if (!this.utilService.checkPhone(number)) {
               continue;
@@ -114,12 +114,12 @@ export class ContactsService {
               btbl.rc = number;
               contactPhones.push(number);
               btbls.push(btbl);
-              console.log("===== 加入联系人清单：" + JSON.stringify(btbl));
+              // console.log("===== 加入联系人清单：" + JSON.stringify(btbl));
             }
           }
         }
 
-        console.log("===== 本地联系人处理结束 =====");
+        // console.log("===== 本地联系人处理结束 =====");
         resolve(btbls);
       }).catch(err=>{
         resolve(btbls);
@@ -143,23 +143,23 @@ export class ContactsService {
 
   asyncPhoneContacts(): Promise<boolean> {
     return new Promise<boolean>(async (resolve, reject) => {
-      console.log('异步获取联系人函数开始...');
+      // console.log('异步获取联系人函数开始...');
       let lastlaunch: number = UserConfig.getTroubleStop('contactsservice.asyncphonecontacts.lastlaunch');
       let thislaunch: number = moment().unix();
 
       if (lastlaunch && ((thislaunch - lastlaunch) > (60 * 30))) {
-        console.log('异步获取联系人30分钟以内调用, 忽略...');
+        // console.log('异步获取联系人30分钟以内调用, 忽略...');
         // 30分钟以内调用, 忽略
         resolve(true);
       } else {
-        console.log('异步获取联系人非30分钟以内调用, 开始...');
+        // console.log('异步获取联系人非30分钟以内调用, 开始...');
         UserConfig.setTroubleStop('contactsservice.asyncphonecontacts.lastlaunch', thislaunch);
 
         //异步获取联系人信息入库等操作
         this.getContacts4Btbl().then(async data => {
           let bsqls: Array<string> = new Array<string>();
           for (let b of data) {
-            console.log("===== 本地联系人入参：" + JSON.stringify(b));
+            // console.log("===== 本地联系人入参：" + JSON.stringify(b));
 
             if (!b.rn) continue;
             // TODO 效率低下
@@ -177,7 +177,7 @@ export class ContactsService {
               bt.rel = '0';
               bt.ui = '';
               bsqls.push(bt.inT());
-              console.log("===== 本地联系人入库：" + JSON.stringify(bt));
+              // console.log("===== 本地联系人入库：" + JSON.stringify(bt));
             }
           }
           return await this.sqlExce.batExecSql(bsqls);
@@ -505,9 +505,9 @@ export class ContactsService {
       let usersinforet = await this.personRestful.getMultis(phonenos);
 
       if (usersinforet && usersinforet.registusers) {
-        console.log(JSON.stringify(usersinforet));
+        // console.log(JSON.stringify(usersinforet));
         for (let userinfo of usersinforet.registusers) {
-          console.log('Get ' + userinfo.openid + "'s userinfo.");
+          // console.log('Get ' + userinfo.openid + "'s userinfo.");
           usersinfo.set(userinfo.openid, userinfo);
         }
       }
@@ -532,9 +532,9 @@ export class ContactsService {
       let userinfo = usersinfo.get(condid);
 
       if (userinfo) {
-        console.log('userinfo ' + userinfo.openid);
-        console.log('userinfo ' + userinfo.nickname);
-        console.log('userinfo ' + userinfo.phoneno);
+        // console.log('userinfo ' + userinfo.openid);
+        // console.log('userinfo ' + userinfo.nickname);
+        // console.log('userinfo ' + userinfo.phoneno);
 
         bt.ui = userinfo.openid;
 
