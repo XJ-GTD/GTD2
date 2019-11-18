@@ -3142,7 +3142,7 @@ export class EventService extends BaseService {
             try{
               let data = await this.dataRestful.upload(upload);
               console.log("upload <=> " + JSON.stringify(data));
-              alert("upload <=> "+JSON.stringify(data));
+              //alert("upload <=> "+JSON.stringify(data));
               if (data && data.data) {
                 attachment.fpjson.remote = String(data.data);
                 attachment.fj = JSON.stringify(attachment.fpjson);
@@ -3150,7 +3150,7 @@ export class EventService extends BaseService {
               }
             }
             catch (err) {
-              alert("上传异常信息："+err);
+              console.info("上传异常信息："+err);
             }
           }
         }
