@@ -1778,6 +1778,8 @@ export class EventService extends BaseService {
       newAgdata.rt = JSON.stringify(rtjon);
       newAgdata.rts = rtjon.text() ;
 
+      newAgdata.rts = newAgdata.rts == null ? "" : newAgdata.rts;
+
       if (oriAgdata.rfg == anyenum.RepeatFlag.Repeat){
         newAgdata.rfg = anyenum.RepeatFlag.RepeatToOnly;
       }
