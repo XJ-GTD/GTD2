@@ -31,6 +31,7 @@ export class EffectService extends BaseService {
     await this.memoService.syncMemos();               // 同步备忘
     await this.annotationService.syncAnnotation();   // 同步@信息
     await this.remindService.syncScheduledReminds();  // 同步未来48小时的提醒
+    await this.calendarService.requestDeviceDiffData();
 
     return ;
   }
