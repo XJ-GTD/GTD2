@@ -4,7 +4,7 @@ import { SqliteExec } from "../util-service/sqlite.exec";
 import { UtilService } from "../util-service/util.service";
 import { MomTbl } from "../sqlite/tbl/mom.tbl";
 import { BipdshaeData, Plan, PlanPa, ShareData, ShaeRestful } from "../restful/shaesev";
-import { SyncData, PushInData, PullInData, DataRestful } from "../restful/datasev";
+import { SyncData, PushInData, PullInData, DataRestful, DayCountCodec } from "../restful/datasev";
 import { BackupPro, BacRestful, OutRecoverPro, RecoverPro } from "../restful/bacsev";
 import { UserConfig } from "../config/user.config";
 import * as moment from "moment";
@@ -180,6 +180,16 @@ export class MemoService extends BaseService {
 
   	 return backMemo;
 	}
+
+	async codecMemos(): Promise<Array<DayCountCodec>> {
+    let sql: string = `select sd day, count(*) count
+                      from gtd_mom
+                      where del <> ?1
+                      group by day`;
+    let daycounts: Array<DayCountCodec> = await this.sqlExce.getExtLstByParam<DayCountCodec>(sql, [DelType.del]) || new Array<DayCountCodec>();
+
+    return daycounts;
+  }
 
 	/**
 	 * 把指定或所有未同步备忘, 同步到服务器

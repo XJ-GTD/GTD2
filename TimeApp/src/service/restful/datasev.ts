@@ -152,3 +152,8 @@ export class DownloadInData {
 }
 
 export class DownloadOutData {}
+
+export class DayCountCodec {
+  day: string;
+  count: number;
+}
