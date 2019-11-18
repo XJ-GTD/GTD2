@@ -3795,6 +3795,31 @@ export class CalendarService extends BaseService {
     pull.d.push(code);
 
     await this.dataRestful.pull(pull);
+
+    let memodaycounts: Array<DayCountCodec> = await this.memoService.codecMemos();
+
+    let memocode = memodaycounts.reduce((target, ele) => {
+      if (target) {
+        target += ",";
+        target += ele.day;
+        target += " ";
+        target += ele.count;
+      } else {
+        target += ele.day;
+        target += " ";
+        target += ele.count;
+      }
+
+      return target;
+    }, "");
+
+    let pullmemo: PullInData = new PullInData();
+    pullmemo.type = "Memo#Diff";
+
+    pullmemo.d.push(memocode);
+
+    await this.dataRestful.pull(pullmemo);
+
     return;
   }
 
