@@ -228,14 +228,16 @@ export class AnnotationService extends BaseService {
   }
 
   async delAnnotation(){
-    let sq = ` delete from gtd_at where dt < date('now', '-1 day') ;`;
-    await this.sqlExce.batExecSqlByParam([sq,[]]);
+    let d : string  = moment().add( -1 ,'days').format("YYYY/MM/DD HH:mm");
+    let sq = ` delete from gtd_at where dt <= ? ;`;
+    await this.sqlExce.batExecSqlByParam([sq,[d]]);
   }
 
   async getAnnotation(): Promise<Array<Annotation>>{
     let ret : Array<Annotation>;
-    let sq = ` select gtd_at.*,gtd_b.ran from gtd_at left join gtd_b on gtd_at.ui = gtd_b.ui where dt >= date('now', '-1 day') and gs = '1' ;`;
-    ret = await this.sqlExce.getExtLstByParam<Annotation>(sq,[]);
+    let d : string  = moment().add( -1 ,'days').format("YYYY/MM/DD HH:mm");
+    let sq = ` select gtd_at.*,gtd_b.ran from gtd_at left join gtd_b on gtd_at.ui = gtd_b.ui where dt > ? and gs = '1' order by dt desc;`;
+    ret = await this.sqlExce.getExtLstByParam<Annotation>(sq,[d]);
     return ret;
   }
 }
