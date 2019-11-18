@@ -51,7 +51,7 @@ import {CalendarDay} from "../../components/ion2-calendar";
           </ion-row>
           <ion-row (click)="goPlPage()">
             <h3>活动日历</h3>
-          </ion-row>on
+          </ion-row>
           <ion-row (click)="goBlPage()">
             <h3>黑名单</h3>
           </ion-row>
