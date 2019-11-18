@@ -164,9 +164,6 @@ export class SqliteInit {
     await this.sqlexec.dropByParam(par);
     await this.sqlexec.createByParam(par);
 
-    let at: AtTbl = new AtTbl();
-    await this.sqlexec.dropByParam(at);
-    await this.sqlexec.createByParam(at);
   }
 
   /**
@@ -273,6 +270,11 @@ export class SqliteInit {
       defaultjhs.push(jh.inT());
 
       await this.sqlexec.batExecSql(defaultjhs);
+    }else if(version == 7){
+      //新增AT表
+      let at: AtTbl = new AtTbl();
+      await this.sqlexec.dropByParam(at);
+      await this.sqlexec.createByParam(at);
     }
   }
 

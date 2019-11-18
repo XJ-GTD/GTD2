@@ -62,7 +62,9 @@ export class DataConfig {
   //2019/06/03 增加每日简报个性化参数
   //public static version:number = 5;
   //2019/06/17 增加JT表特殊数据保存字段
-  public static version: number = 6;
+  //public static version: number = 6;
+  //2019/11/18 增加at表
+  public static version: number = 7;
 
   public static RABBITMQ_STATUS: string = "";
 

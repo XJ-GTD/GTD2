@@ -1,19 +1,5 @@
 import {Component, EventEmitter, ViewChildren, QueryList, ChangeDetectorRef } from '@angular/core';
 import {IonicPage, NavController, ModalController, NavParams} from 'ionic-angular';
-import {UtilService} from "../../service/util-service/util.service";
-import {UserConfig} from "../../service/config/user.config";
-import {SqliteExec} from "../../service/util-service/sqlite.exec";
-import * as async from "async/dist/async.js"
-import * as moment from "moment";
-import { ScdPageParamter } from "../../data.mapping";
-import {EmitService} from "../../service/util-service/emit.service";
-import {DataConfig} from "../../service/config/data.config";
-import {FeedbackService} from "../../service/cordova/feedback.service";
-import {TaskListComponent} from "../../components/task-list/task-list";
-import {CalendarService} from "../../service/business/calendar.service";
-import {EventService, AgendaData} from "../../service/business/event.service";
-import { PageDirection, OperateType, EventFinishStatus } from "../../data.enum";
-import {AtmeService} from "./atme.service";
 import {Annotation, AnnotationService} from "../../service/business/annotation.service";
 
 /**

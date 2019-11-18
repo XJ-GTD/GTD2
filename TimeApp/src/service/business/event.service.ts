@@ -515,48 +515,20 @@ export class EventService extends BaseService {
           if (value.length != another[key].length) return false;
 
           if (value.length > 0) {
-            if (value[0] && value[0].hasOwnProperty("pari") && another[key][0] && another[key][0].hasOwnProperty("pari")) {
-              let compare = value.concat(another[key]);
+            if (value[0] && value[0].hasOwnProperty("pwi") && another[key][0] && another[key][0].hasOwnProperty("pwi")) {
 
-              compare.sort((a, b) => {
-                if (a.pari > b.pari) return -1;
-                if (a.pari < b.pari) return 1;
-                return 0;
-              });
-
-              let result = compare.reduce((target, val) => {
-                if (!target) {
-                  target = val;
-                } else {
-                  if (!val) {
-                    target = {};
-                  } else {
-                    let issame: boolean = true;
-
-                    for (let key of Object.keys(target)) {
-                      if (["wtt", "utt"].indexOf(key) >= 0) continue;   // 忽略字段
-
-                      if (target.hasOwnProperty(key)) {
-                        let value = target[key];
-
-                        if (typeof value === 'string' || typeof value === 'number' || typeof value === 'boolean') {
-                          if (value != val[key]) issame = false;
-                        }
-                      }
-                    }
-
-                    if (issame) {
-                      target = null;
-                    } else {
-                      target = {};
-                    }
-                  }
+              let memchanged : boolean = false;
+              for (let oriMember of   another[key]){
+                let findm =  value.find((value, index,arr)=>{
+                  return value.pari == oriMember.pari || value.ui == oriMember.ui || value.rc == oriMember.rc;
+                });
+                if (!findm){
+                  memchanged = true;
+                  break;
                 }
+              }
 
-                return target;
-              }, null);
-
-              if (result && result.isEmpty()) return false;
+              if (memchanged) return false;
 
             } else if (value[0] instanceof FjTbl && another[key][0] instanceof FjTbl) {
 
@@ -1777,6 +1749,8 @@ export class EventService extends BaseService {
       rtjon.openway = new Array<number>();
       newAgdata.rt = JSON.stringify(rtjon);
       newAgdata.rts = rtjon.text() ;
+
+      newAgdata.rts = newAgdata.rts == null ? "" : newAgdata.rts;
 
       if (oriAgdata.rfg == anyenum.RepeatFlag.Repeat){
         newAgdata.rfg = anyenum.RepeatFlag.RepeatToOnly;
@@ -3140,7 +3114,7 @@ export class EventService extends BaseService {
             try{
               let data = await this.dataRestful.upload(upload);
               console.log("upload <=> " + JSON.stringify(data));
-              alert("upload <=> "+JSON.stringify(data));
+              //alert("upload <=> "+JSON.stringify(data));
               if (data && data.data) {
                 attachment.fpjson.remote = String(data.data);
                 attachment.fj = JSON.stringify(attachment.fpjson);
@@ -3148,7 +3122,7 @@ export class EventService extends BaseService {
               }
             }
             catch (err) {
-              alert("上传异常信息："+err);
+              console.info("上传异常信息："+err);
             }
           }
         }

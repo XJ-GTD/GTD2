@@ -107,7 +107,7 @@ export class EvTbl implements ITblParam {
       sq=sq+', rt= ? ';
       params.push(this.rt);
     }
-    if(this.rts!=null && this.rts!=''){
+    if(this.rts!=null ){
       sq=sq+', rts= ? ';
       params.push(this.rts);
     }

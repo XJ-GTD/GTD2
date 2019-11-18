@@ -3771,6 +3771,16 @@ export class CalendarService extends BaseService {
     return;
   }
 
+  async requestDeviceDiffData() {
+    let pull: PullInData = new PullInData();
+    pull.type = "Agenda#Diff";
+
+    pull.d.push("anything");
+    
+    await this.dataRestful.pull(pull);
+    return;
+  }
+
   /**
    * 接收日历数据同步
    *
