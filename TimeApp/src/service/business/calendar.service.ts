@@ -3772,11 +3772,7 @@ export class CalendarService extends BaseService {
   }
 
   async requestDeviceDiffData() {
-    let sql: string = `select evd day, count(*) count
-                      from gtd_ev
-                      where del <> ?1
-                      group by day`;
-    let daycounts: Array<DayCountCodec> = await this.sqlExce.getExtLstByParam<DayCountCodec>(sql, [DelType.del]) || new Array<DayCountCodec>();
+    let daycounts: Array<DayCountCodec> = await this.eventService.codecAgendas();
 
     let code = daycounts.reduce((target, ele) => {
       if (target) {
