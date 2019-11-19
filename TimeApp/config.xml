@@ -43,7 +43,6 @@
         <allow-intent href="itms-apps:*" />
         <preference name="UseSwiftLanguageVersion" value="4" />
         <preference name="DisallowOverscroll" value="true" />
-        <splash height="2436" src="resources/ios/Default-2436h.png" width="1125" />
     </platform>
     <plugin name="cordova-plugin-BaiduSpeechAndTTS" spec="../BaiduSpeechAndTTS" />
     <plugin name="cordova-plugin-app-version" spec="~0.1.9" />
