@@ -18,8 +18,8 @@ import {JhaTbl} from "../sqlite/tbl/jha.tbl";
 import {DataConfig} from "../config/data.config";
 import {BTbl} from "../sqlite/tbl/b.tbl";
 import {FjTbl} from "../sqlite/tbl/fj.tbl";
-import {DataRestful, PullInData, PushInData, SyncData, SyncDataFields, UploadInData, DownloadInData} from "../restful/datasev";
-import {SyncType, DelType, ObjectType, IsSuccess, CycleType, SyncDataStatus, OperateType, ToDoListStatus, RepeatFlag, ConfirmType, ModiPower, PageDirection, SyncDataSecurity, InviteState, CompleteState, EventFinishStatus} from "../../data.enum";
+import {DataRestful, PullInData, PushInData, SyncData, SyncDataFields, UploadInData, DownloadInData, DayCountCodec} from "../restful/datasev";
+import {SyncType, DelType, ObjectType, IsSuccess, CycleType, SyncDataStatus, OperateType, ToDoListStatus, RepeatFlag, ConfirmType, ModiPower, PageDirection, SyncDataSecurity, InviteState, CompleteState, EventFinishStatus, EventType} from "../../data.enum";
 import {
   assertNotNumber,
   assertEmpty,
@@ -3243,6 +3243,16 @@ export class EventService extends BaseService {
     this.assertEmpty(agendas);  // 入参不能为空
     await this.syncAgendas(agendas);
   	return ;
+  }
+
+  async codecAgendas(): Promise<Array<DayCountCodec>> {
+    let sql: string = `select evd day, count(*) count
+                      from gtd_ev
+                      where type = ?1 and del <> ?2
+                      group by day`;
+    let daycounts: Array<DayCountCodec> = await this.sqlExce.getExtLstByParam<DayCountCodec>(sql, [EventType.Agenda, DelType.del]) || new Array<DayCountCodec>();
+
+    return daycounts;
   }
 
   /**

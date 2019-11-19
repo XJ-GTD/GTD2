@@ -4,7 +4,7 @@ import { SqliteExec } from "../util-service/sqlite.exec";
 import { UtilService } from "../util-service/util.service";
 import { EmitService } from "../util-service/emit.service";
 import { BipdshaeData, Plan, PlanPa, ShareData, ShaeRestful } from "../restful/shaesev";
-import { SyncData, PushInData, PullInData, DataRestful } from "../restful/datasev";
+import { SyncData, PushInData, PullInData, DataRestful, DayCountCodec } from "../restful/datasev";
 import { BackupPro, BacRestful, OutRecoverPro, RecoverPro } from "../restful/bacsev";
 import { EventData, TaskData, AgendaData, MiniTaskData, EventService, RtJson, TxJson, Member, generateRtJson, generateTxJson } from "./event.service";
 import { MemoData, MemoService } from "./memo.service";
@@ -3772,11 +3772,7 @@ export class CalendarService extends BaseService {
   }
 
   async requestDeviceDiffData() {
-    let sql: string = `select evd day, count(*) count
-                      from gtd_ev
-                      where del <> ?1
-                      group by day`;
-    let daycounts: Array<DayCountCodec> = await this.sqlExce.getExtLstByParam<DayCountCodec>(sql, [DelType.del]) || new Array<DayCountCodec>();
+    let daycounts: Array<DayCountCodec> = await this.eventService.codecAgendas();
 
     let code = daycounts.reduce((target, ele) => {
       if (target) {
@@ -3799,6 +3795,7 @@ export class CalendarService extends BaseService {
     pull.d.push(code);
 
     await this.dataRestful.pull(pull);
+
     return;
   }
 
@@ -4820,11 +4817,6 @@ export class DayActivitySummaryData {
   repeateventscount: number;    // 重复事件数量
   acceptableeventscount: number;// 待接受事件数量
   bookedtimesummary: number;    // 总预定时长
-}
-
-export class DayCountCodec {
-  day: string;
-  count: number;
 }
 
 export function generateDataType(activityType: string) {

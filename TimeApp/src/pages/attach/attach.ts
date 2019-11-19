@@ -313,6 +313,7 @@ export class AttachPage {
       let retAt: Attachment = {}  as Attachment;
       this.util.loadingStart();
       retAt = await this.eventService.saveAttachment(this.fjData);
+      alert("上传返回值："+JSON.stringify(retAt));
       this.util.loadingEnd();
       this.fjArray.unshift(retAt);
       this.fjData = {} as Attachment;
@@ -344,6 +345,7 @@ export class AttachPage {
     this.fjArray = new Array<Attachment>();
     let attachments: Array<Attachment> = new Array<Attachment>();
     attachments = await this.eventService.selectAttachments(this.obt,this.obi);
+    alert("刷新返回值："+JSON.stringify(attachments));
     for (let attachment of attachments) {
       attachment.members = this.members;
       // 判断是否是残留数据或文字附件

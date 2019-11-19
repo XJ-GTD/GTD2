@@ -236,13 +236,21 @@ export class AnnotationService extends BaseService {
   async getAnnotation(): Promise<Array<Annotation>>{
     let ret : Array<Annotation>;
     let d : string  = moment().add( -1 ,'days').format("YYYY/MM/DD HH:mm");
-    let sq = ` select gtd_at.*,gtd_b.ran from gtd_at left join gtd_b on gtd_at.ui = gtd_b.ui where dt > ? and gs = '1' order by dt desc;`;
+    let sq = ` select attbl.*, count(attbl.obi) atcount, max(attbl.dt) maxdt
+                from (select gtd_at.*, gtd_b.ran, substr(dt, 1, 11) d
+                        from gtd_at
+                        left join gtd_b on gtd_at.ui = gtd_b.ui
+                       where dt > ? 
+                         and gs = '1') attbl
+               group by attbl.ui, attbl.obi, attbl.d
+               order by attbl.dt desc `
     ret = await this.sqlExce.getExtLstByParam<Annotation>(sq,[d]);
     return ret;
   }
 }
 
 export class Annotation extends AtTbl{
+  atcount : number;
   ran : string;
   rcs : Array<string > =new Array<string>();
 }
