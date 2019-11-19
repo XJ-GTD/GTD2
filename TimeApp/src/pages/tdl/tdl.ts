@@ -255,8 +255,8 @@ BScroll.use(InfinityScroll);
                                 [class.over]="event.wc == finished"></ion-icon>
                     </div>
                     <div class="icon font-small" end>
-                      <ion-icon class="fad fa-user-friends "></ion-icon>
-                      <b>{{event.apn}} / {{event.pn}}</b>
+                      <ion-icon class="fad fa-user-friends " *ngIf="event.pn > 0 "></ion-icon>
+                      <b *ngIf="event.pn > 0 ">{{event.apn}} / {{event.pn}}</b>
                       <ion-icon class="fad fa-info-circle "></ion-icon>
                       <b>{{event.fj}}</b>
                     </div>
@@ -287,7 +287,7 @@ BScroll.use(InfinityScroll);
             <ng-template #noscd>
               <ion-row class="item-content no-content item-no-display" id="day{{days.day | formatedate:'YYYYMMDD'}}">
                 <div class="line" (click)="toAdd(days.day)">
-                  <p>{{days.day | formatedate :"CYYYY/MM/DD"}}</p>
+                  <p>{{days.day | formatedate :"CYYYY/MM/DD W"}}</p>
                 </div>
               </ion-row>
             </ng-template>

@@ -17,7 +17,7 @@ import {UtilService} from "../../service/util-service/util.service";
       </div>
 
       <div class="itemwarp font-normal">
-        <p>从{{startDate | formatedate :"CYYYY/MM/DD"}}开始</p>
+        <p>从{{startDate | formatedate :"CYYYY/MM/DD W"}}开始</p>
       </div>
       
 
@@ -50,7 +50,7 @@ import {UtilService} from "../../service/util-service/util.service";
               <ion-radio  (ionSelect)="openUntilEndDate('d')" value="tosomeday" item-start>
 
               </ion-radio>
-              <ion-label>直到{{cfDayOptions.toSomeDay | formatedate : 'CYYYY/MM/DD'}}</ion-label>
+              <ion-label>直到{{cfDayOptions.toSomeDay | formatedate : 'CYYYY/MM/DD W'}}</ion-label>
             </ion-item>
           </ion-list>
         </div>
@@ -83,7 +83,7 @@ import {UtilService} from "../../service/util-service/util.service";
             </ion-item>
             <ion-item>
               <ion-radio (ionSelect)="openUntilEndDate('w')"  value="tosomeday"  item-start></ion-radio>
-              <ion-label>直到{{cfWeekOptions.toSomeDay | formatedate : 'CYYYY/MM/DD'}}</ion-label>
+              <ion-label>直到{{cfWeekOptions.toSomeDay | formatedate : 'CYYYY/MM/DD W'}}</ion-label>
             </ion-item>
           </ion-list>
         </div>
@@ -116,7 +116,7 @@ import {UtilService} from "../../service/util-service/util.service";
             </ion-item>
             <ion-item>
               <ion-radio (ionSelect)="openUntilEndDate('m')" item-start value="tosomeday"></ion-radio>
-              <ion-label>直到{{cfMonthOptions.toSomeDay | formatedate : 'CYYYY/MM/DD'}}</ion-label>
+              <ion-label>直到{{cfMonthOptions.toSomeDay | formatedate : 'CYYYY/MM/DD W'}}</ion-label>
             </ion-item>
           </ion-list>
         </div>
@@ -144,7 +144,7 @@ import {UtilService} from "../../service/util-service/util.service";
             </ion-item>
             <ion-item>
               <ion-radio (ionSelect)="openUntilEndDate('y')" item-start value="tosomeday"></ion-radio>
-              <ion-label>直到{{cfYearOptions.toSomeDay | formatedate : 'CYYYY/MM/DD'}}</ion-label>
+              <ion-label>直到{{cfYearOptions.toSomeDay | formatedate : 'CYYYY/MM/DD W'}}</ion-label>
             </ion-item>
           </ion-list>
         </div>
