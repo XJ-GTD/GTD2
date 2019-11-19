@@ -3795,7 +3795,7 @@ export class EventService extends BaseService {
       Object.assign(fjdb, updated);
 
       //更新数据
-      await this.sqlExce.saveByParam(fjdb);
+      await this.sqlExce.updateByParam(fjdb);
 
       att = updated;
     });
