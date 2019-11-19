@@ -278,7 +278,7 @@ export class RepeatPage {
     this.items.push({value: "month", caption: "每月"});
     this.items.push({value: "year", caption: "每年"});
 
-    this.itemRanges.push({value: "remove", icon: "fa-minus-square"});
+    this.itemRanges.push({value: "subtract", icon: "fa-minus-square"});
     this.itemRanges.push({value: "add", icon: "fa-plus-square"});
 
     this.itemRangeOptions.push({value: "sunday", caption: "日"});

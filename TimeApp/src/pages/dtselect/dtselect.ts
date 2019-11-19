@@ -14,12 +14,12 @@ import {TxJson} from "../../service/business/event.service";
         <ion-toolbar>
           <ion-buttons item-start>
             <button clear ion-button [class.noselect]="settype == '1'" (click)="changeType('0')" class="font-normal">
-              <ion-icon class="fal fa-arrow-alt-from-left"></ion-icon>
-              设置开始日期
+              <!--<ion-icon class="fal fa-arrow-alt-from-left"></ion-icon>-->
+              开始
             </button>
             <button [disabled]="pagedata.rfg == '1'" clear ion-button [class.noselect]="settype == '0'" (click)="changeType('1')" class="font-normal">
-              <ion-icon class="fal fa-arrow-alt-from-right"></ion-icon>
-              设置截止日期
+              <!--<ion-icon class="fal fa-arrow-alt-from-right"></ion-icon>-->
+              截止
             </button>
           </ion-buttons>
         </ion-toolbar>
@@ -28,7 +28,7 @@ import {TxJson} from "../../service/business/event.service";
 
       <div ion-item no-border no-padding no-lines no-margin class="itemwarp font-normal" *ngIf="settype=='0'">
         <date-picker  #startDate item-content [(ngModel)]="pagedata.sd"
-                      pickerFormat="YYYY ,MM DD" displayFormat="YYYY 年 MM 月 DD 日"
+                      pickerFormat="YYYY MM DD" displayFormat="YYYY 年 MM 月 DD 日 DDD"
                       min="{{minDate}}" max="2059-01-01" cancelText="取消" doneText="选择"  (ionChange) = "seteddate()"
         ></date-picker>
         <ion-label><ion-icon class="fal fa-calendar-alt"></ion-icon>开始日期</ion-label>
@@ -49,7 +49,7 @@ import {TxJson} from "../../service/business/event.service";
       </div>
       <div ion-item no-border no-padding no-lines no-margin class="itemwarp font-normal" *ngIf="settype=='1'">
         <date-picker  #endDate item-content [(ngModel)]="pagedata.ed"
-                      pickerFormat="YYYY ,MM DD" displayFormat="YYYY 年 MM 月 DD 日"
+                      pickerFormat="YYYY ,MM DD" displayFormat="YYYY 年 MM 月 DD 日 DDD"
                       min="{{minDate}}" max="2059-01-01" cancelText="取消" doneText="选择"
         ></date-picker>
         <ion-label><ion-icon class="fal fa-calendar-alt"></ion-icon>结束日期</ion-label>
