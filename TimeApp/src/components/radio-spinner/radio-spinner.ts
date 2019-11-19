@@ -14,7 +14,7 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms'
       <label *ngIf="label">{{_value + label}}</label>
         <button ion-button *ngFor="let option of options;" [ngClass]="{'checked': option.value == _value}" clear (click)="change($event, option.value)" >
         <ng-container *ngIf="option.icon">
-          <ion-icon class="fad" [ngClass] = "option.icon"></ion-icon>
+          <ion-icon class="fal" [ngClass] = "option.icon"></ion-icon>
         </ng-container>
         <ng-container *ngIf="!option.icon">
           {{option.caption}}
@@ -25,7 +25,7 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms'
       <label *ngIf="label">{{_value + label}}</label>
         <button ion-button *ngFor="let option of options;" [ngClass]="{'checked': option.value == _value}" clear (click)="change($event, option.value)" >
         <ng-container *ngIf="option.icon">
-          <ion-icon class="fad" [ngClass] = "option.icon"></ion-icon>
+          <ion-icon class="fal" [ngClass] = "option.icon"></ion-icon>
         </ng-container>
         <ng-container *ngIf="!option.icon">
           {{option.caption}}
@@ -36,7 +36,7 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms'
       <label *ngIf="label">{{_value + label}}</label>
         <button ion-button *ngFor="let option of options;" [ngClass]="{'checked': option.value == _value}" clear (click)="change($event, option.value)" >
         <ng-container *ngIf="option.icon">
-          <ion-icon class="fad" [ngClass] = "option.icon"></ion-icon>
+          <ion-icon class="fal" [ngClass] = "option.icon"></ion-icon>
         </ng-container>
         <ng-container *ngIf="!option.icon">
           {{option.caption}}

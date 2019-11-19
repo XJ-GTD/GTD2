@@ -14,12 +14,12 @@ import {TxJson} from "../../service/business/event.service";
         <ion-toolbar>
           <ion-buttons item-start>
             <button clear ion-button [class.noselect]="settype == '1'" (click)="changeType('0')" class="font-normal">
-              <ion-icon class="fal fa-arrow-alt-from-left"></ion-icon>
-              设置开始日期
+              <!--<ion-icon class="fal fa-arrow-alt-from-left"></ion-icon>-->
+              开始
             </button>
             <button [disabled]="pagedata.rfg == '1'" clear ion-button [class.noselect]="settype == '0'" (click)="changeType('1')" class="font-normal">
-              <ion-icon class="fal fa-arrow-alt-from-right"></ion-icon>
-              设置截止日期
+              <!--<ion-icon class="fal fa-arrow-alt-from-right"></ion-icon>-->
+              截止
             </button>
           </ion-buttons>
         </ion-toolbar>
