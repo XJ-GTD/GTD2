@@ -29,20 +29,12 @@ export class FormatedatePipe implements PipeTransform {
     switch (formart) {
       case "ADD7CYYYY/MM/DD":
         return m.add(7, "days").format("YYYY年MM月DD日");
-      case "YYYYMMDD/MM/DD":
-        return m.format("YYYYMMDD");
-      case "YYYY年M月D日":
-        return m.format("YYYY年M月D日");
       case "CYYYY/MM/DD":
-        return m.format("YYYY年MM月DD日");
+        return m.format("YYYY年MM月DD日 ddd");
       case "CYYYY/MM/ND":
         return m.locale("en").format("MMM .YYYY");
-      case "CYYYY/M/DD":
-        return m.format("YYYY年M月DD日");
       case "YYYYMM":
         return m.format("YYYYMM");
-      case "CYYYY/MM":
-        return m.format("YYYY年MM月");
       case "YYYY":
         return m.format("YYYY");
       case "CMM":

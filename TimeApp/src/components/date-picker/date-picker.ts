@@ -1243,22 +1243,22 @@ const FORMAT_KEYS = [
   {f: FORMAT_a, k: 'ampm'},
 ];
 const DAY_NAMES = [
-  'Sunday',
-  'Monday',
-  'Tuesday',
-  'Wednesday',
-  'Thursday',
-  'Friday',
-  'Saturday',
+  '星期日',
+  '星期一',
+  '星期二',
+  '星期三',
+  '星期四',
+  '星期五',
+  '星期六',
 ];
 const DAY_SHORT_NAMES = [
-  'Sun',
-  'Mon',
-  'Tue',
-  'Wed',
-  'Thu',
-  'Fri',
-  'Sat',
+  '周日',
+  '周一',
+  '周二',
+  '周三',
+  '周四',
+  '周五',
+  '周六',
 ];
 const MONTH_NAMES = [
   'January',
