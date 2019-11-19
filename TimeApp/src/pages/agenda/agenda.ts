@@ -997,7 +997,7 @@ export class AgendaPage {
                   webpageUrl: "https://fir.im/d2z3"
                 }
             },
-            scene:Wechat.SCENE_SESSION  // 分享目标 0:分享到对话，1:分享到朋友圈，2:收藏
+            scene:0  // 分享目标 0:分享到对话，1:分享到朋友圈，2:收藏
           }, () => {
               console.log('分享成功');
           }, reason => {
