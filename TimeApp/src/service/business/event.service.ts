@@ -3791,15 +3791,15 @@ export class EventService extends BaseService {
     //同步数据
     this.emitService.emit("mwxing.event.fj.add", att);
     await this.syncAttachments([att], async (updated) => {
-      let fjdb: FjTbl = new FjTbl();
-      Object.assign(fjdb, updated);
-
-      //更新数据
-      await this.sqlExce.updateByParam(fjdb);
-
       att = updated;
     });
 
+    if (att.ext) {
+      let fjdbNew: FjTbl = new FjTbl();
+      Object.assign(fjdbNew, att);
+      //更新数据
+      await this.sqlExce.updateByParam(fjdbNew);
+    }
     return att;
   }
 
