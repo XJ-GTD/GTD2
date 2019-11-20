@@ -8,12 +8,12 @@ export class BxTbl implements ITbl{
 
   bi: string="";
   bmi: string="";
-
+  del: string ="";
 
 
   cT():string {
 
-    let sq ='create table if not exists gtd_b_x( bi varchar(50) ,bmi varchar(50));';
+    let sq ='create table if not exists gtd_b_x( bi varchar(50) ,bmi varchar(50) ,del varchar(4) );';
 
     return sq;
   }
@@ -22,6 +22,9 @@ export class BxTbl implements ITbl{
     let sq='';
     if(this.bmi!=null && this.bmi!=""){
       sq=sq+', bmi="' + this.bmi +'"';
+    }
+    if(this.del!=null && this.del!=""){
+      sq=sq+', del="' + this.del +'"';
     }
     if (sq != null && sq != ""){
       sq = sq.substr(1);
@@ -55,6 +58,9 @@ export class BxTbl implements ITbl{
     if(this.bi!=null && this.bi!=""){
       sq=sq+' and bi="' + this.bi +'"';
     }
+    if(this.del!=null && this.del!=""){
+      sq=sq+' and del="' + this.del +'"';
+    }
     sq = sq +';';
     return sq;
   }
@@ -67,21 +73,21 @@ export class BxTbl implements ITbl{
 
   inT():string {
     let sq ='insert into gtd_b_x ' +
-      '(  bi ,bmi) values("'+ this.bi+'","'+ this.bmi+'");';
+      '(  bi ,bmi,del) values("'+ this.bi+'","'+ this.bmi+'","'+ this.del+'");';
 
     return sq;
   }
 
   rpT():string {
     let sq ='replace into gtd_b_x ' +
-      '(  bi ,bmi) values("'+ this.bi+'","'+ this.bmi+'");';
+      '(  bi ,bmi,del) values("'+ this.bi+'","'+ this.bmi+'","'+ this.del+'");';
 
     return sq;
   }
 
   preT():string {
     let sq ='insert into gtd_b_x ' +
-      '(  bi ,bmi) values(?, ?);';
+      '(  bi ,bmi,del) values(?, ?,?);';
 
     return sq;
   }

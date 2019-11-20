@@ -11,12 +11,13 @@ export class GTbl implements ITbl {
   gm: string="";
   gnpy: string="";
   wtt :Number=0;
+  del:string="";
 
 
   cT():string{
 
     let sq ='create table if not exists gtd_g(  gi varchar(50) primary key ,gn varchar(50)  ,' +
-      'gm varchar(50),gnpy varchar(50),wtt integer);';
+      'gm varchar(50),gnpy varchar(50),wtt integer ,del varchar(4) );';
 
     return sq;
   }
@@ -31,6 +32,9 @@ export class GTbl implements ITbl {
     }
     if(this.gm!=null && this.gm!=""){
       sq=sq+', gm="' + this.gm +'"';
+    }
+    if(this.del!=null && this.del!=""){
+      sq=sq+', del="' + this.del +'"';
     }
     if (sq != null && sq != ""){
       sq = sq.substr(1);
@@ -64,6 +68,7 @@ export class GTbl implements ITbl {
     if(this.gnpy!=null && this.gnpy!=""){
       sq=sq+' and gnpy="' + this.gnpy +'"';
     }
+
     sq = sq +';';
     return sq;
   }
@@ -76,21 +81,21 @@ export class GTbl implements ITbl {
 
   inT():string{
     let sq ='insert into gtd_g ' +
-      '( gi ,gn ,gm,gnpy,wtt) values("'+ this.gi+'","'+ this.gn+'","'+this.gm+ '","'+this.gnpy+'",'+  moment().unix() +');';
+      '( gi ,gn ,gm,gnpy,wtt,del) values("'+ this.gi+'","'+ this.gn+'","'+this.gm+ '","'+this.gnpy+'",'+  moment().unix() +',"'+ this.del+'");';
 
     return sq;
   }
 
   rpT():string{
     let sq ='replace into gtd_g ' +
-      '( gi ,gn ,gm,gnpy,wtt) values("'+ this.gi+'","'+ this.gn+'","'+this.gm+'","'+this.gnpy+ '",'+  moment().unix() +');';
+      '( gi ,gn ,gm,gnpy,wtt,del) values("'+ this.gi+'","'+ this.gn+'","'+this.gm+'","'+this.gnpy+ '",'+  moment().unix() +',"'+ this.del+'");';
 
     return sq;
   }
 
   preT():string{
     let sq ='insert into gtd_g ' +
-      '( gi ,gn ,gm,gnpy,wtt) values(?, ?, ?, ?,'+  moment().unix() +');';
+      '( gi ,gn ,gm,gnpy,wtt,del) values(?, ?, ?, ?,'+  moment().unix() +',?);';
 
     return sq;
   }
