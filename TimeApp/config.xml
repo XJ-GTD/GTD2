@@ -41,7 +41,7 @@
     <platform name="ios">
         <allow-intent href="itms:*" />
         <allow-intent href="itms-apps:*" />
-        <!--<preference name="UseSwiftLanguageVersion" value="4" />-->
+        <preference name="UseSwiftLanguageVersion" value="4" />
     </platform>
     <plugin name="cordova-plugin-BaiduSpeechAndTTS" spec="../BaiduSpeechAndTTS" />
     <plugin name="cordova-plugin-app-version" spec="~0.1.9" />
