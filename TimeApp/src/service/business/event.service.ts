@@ -3588,7 +3588,6 @@ export class EventService extends BaseService {
         }
       }
 
-
       for (let pullid of pullids) {
         await this.receivedAgenda(pullid);
       }
