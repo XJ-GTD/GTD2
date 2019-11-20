@@ -31,13 +31,16 @@ export class EffectService extends BaseService {
     await this.memoService.syncMemos();               // 同步备忘
     await this.annotationService.syncAnnotation();   // 同步@信息
     await this.remindService.syncScheduledReminds();  // 同步未来48小时的提醒
-    await this.calendarService.requestDeviceDiffData();
 
     return ;
   }
 
   async syncInitial() {
     await this.calendarService.requestInitialData();  // 请求拉取服务器最新日历相关数据
+  }
+
+  async syncCompareInitial() {
+    await this.calendarService.requestDeviceDiffData(); // 请求拉取客户端不一致数据
   }
 
   /**

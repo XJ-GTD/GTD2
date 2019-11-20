@@ -79,17 +79,19 @@ export class HPage {
               private testDataService: TestDataService,
               private emitService: EmitService,
               private util:UtilService) {
-    this.testTimeOut();
+    // console.log("start===========================");
+    // this.testTimeOut();
+    // console.log("end===========================");
   }
 
   testTimeOut(){
-    let work = new Worker("./worker.js");
-    work.postMessage("123456");
-
-    work.onmessage = function (e) {
-      console.log("!!!!!!!!!")
-        console.log(e.data)
-      };
+    // let work = new Worker("./worker.js");
+    // work.postMessage("123456");
+    //
+    // work.onmessage = function (e) {
+    //   console.log("!!!!!!!!!")
+    //     console.log(e.data)
+    //   };
     // setTimeout(()=>{
     //   console.log("setTimeout ====" + this.i ++);
     //   this.testTimeOut();

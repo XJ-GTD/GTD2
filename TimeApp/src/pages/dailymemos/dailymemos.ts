@@ -20,7 +20,7 @@ import {unitOfTime} from "moment";
   selector: 'page-dailymemos',
   template:
       `    
-    <page-box title="备忘" [subtitle]="day | formatedate:'CYYYY/MM/DD'" [buttons]="buttons"  (onBack)="goBack()" (onCreate)="addMemo()" >
+    <page-box title="备忘" [subtitle]="day | formatedate:'CYYYY/MM/DD W'" [buttons]="buttons"  (onBack)="goBack()" (onCreate)="addMemo()" >
       <ng-template [ngIf]="memos.length > 0"
                    [ngIfElse]="notask">       
         <ion-grid class="list-grid-content">
