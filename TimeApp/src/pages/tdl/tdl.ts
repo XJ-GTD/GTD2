@@ -417,21 +417,21 @@ export class TdlPage {
 
     });
 
-    let monthname = moment().format("YYYY/MM");
-    this.emitService.destroy("mwxing.calendar." + monthname + ".chagned");
-    this.emitService.register("mwxing.calendar." + monthname + ".chagned", _ => {
-      this.changeDetectorRef.detectChanges();
-    })
+    // let monthname = moment().format("YYYY/MM");
+    // this.emitService.destroy("mwxing.calendar." + monthname + ".chagned");
+    // this.emitService.register("mwxing.calendar." + monthname + ".chagned", _ => {
+    //   this.changeDetectorRef.detectChanges();
+    // })
 
     this.emitService.register("calendar.change.month", ($data) => {
       this.gotoEl4month("#month" + $data);
       this.listmonth = moment($data + "01");
 
-      let monthname = moment($data, "YYYYMM").format("YYYY/MM");
-      this.emitService.destroy("mwxing.calendar." + monthname + ".chagned");
-      this.emitService.register("mwxing.calendar." + monthname + ".chagned", _ => {
-        this.changeDetectorRef.detectChanges();
-      })
+      // let monthname = moment($data, "YYYYMM").format("YYYY/MM");
+      // this.emitService.destroy("mwxing.calendar." + monthname + ".chagned");
+      // this.emitService.register("mwxing.calendar." + monthname + ".chagned", _ => {
+      //   this.changeDetectorRef.detectChanges();
+      // })
     });
     setTimeout(() => {
 

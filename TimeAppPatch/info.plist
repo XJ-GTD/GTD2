@@ -87,5 +87,21 @@
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>
 	</array>
+	<key>LSApplicationQueriesSchemes</key>
+    <array>
+      <string>weixin</string>
+      <string>wechat</string>
+    </array>
+    <key>CFBundleURLTypes</key>
+    <array>
+      <dict>
+        <key>CFBundleURLName</key>
+        <string>weixin</string>
+        <key>CFBundleURLSchemes</key>
+        <array>
+          <string>wx697676c0b8dd65f6</string>
+        </array>
+      </dict>
+    </array>
 </dict>
 </plist>
