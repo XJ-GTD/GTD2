@@ -281,7 +281,7 @@ BScroll.use(InfinityScroll);
                   <!--</div>-->
                 </ion-row>
               </ng-container>
-
+              
             </ng-template>
 
             <ng-template #noscd>
