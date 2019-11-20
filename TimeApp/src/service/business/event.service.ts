@@ -3552,6 +3552,7 @@ export class EventService extends BaseService {
    * @author leon_xi@163.com
    */
   async acceptSyncAgendas(ids: Array<string>) {
+    // 保存同步日程状态
     let sqls: Array<any> = new Array<any>();
 
     let sql: string = `update gtd_ev set tb = ? where evi in ('` + ids.join(`', '`) + `')`;
@@ -3567,6 +3568,30 @@ export class EventService extends BaseService {
           this.emitService.emit("mwxing.calendar.activities.changed", agenda);
         }
       });
+    }
+
+    // 接受重复日程主日程的时候,存在子日程数据ID,需要从拉取子数据
+    let pullsql: string = `select * from gtd_ev where evi in ('` + ids.join(`', '`) + `')`;
+
+    let existAgendas: Array<EventData> = await this.sqlExce.getExtList<EventData>(pullsql) || new Array<EventData>();
+
+    let pullids: Array<string> = new Array<string>();
+    Object.assign(pullids, ids);
+
+    if (existAgendas && existAgendas.length < ids.length) {
+      for (let existone of existAgendas) {
+        let evi: string = existone.evi;
+
+        let existindex: number = pullids.indexOf(evi);
+        if (existindex >= 0) {
+          pullids.slice(existindex, 1);
+        }
+      }
+
+
+      for (let pullid of pullids) {
+        await this.receivedAgenda(pullid);
+      }
     }
   }
 
