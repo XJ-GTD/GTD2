@@ -336,8 +336,16 @@ export class AttachPage {
     if(fj && fj.indexOf("http") > 0) {
          //当时mp3的情况下
         if (fileType && (fileType =='mp3' || fileType =='MP3')) {
-            this.nativeAudio.preloadSimple(fji, fj).then(onSuccess, onError);
-            this.nativeAudio.play(fji).then(onSuccess, onError);
+            this.nativeAudio.preloadSimple(fji, fj).then((data) =>{
+
+            }, (error) =>{
+
+            });
+            this.nativeAudio.play(fji).then((data) =>{
+
+            }, (error) =>{
+
+            });
         }
     }
     else {
