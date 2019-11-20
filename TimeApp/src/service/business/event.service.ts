@@ -101,6 +101,10 @@ export class EventService extends BaseService {
         if (!agd.invitestatus) {
           agd.invitestatus = InviteState.None;
         }
+        //设定了截止日期，则自动加入todolist
+        if(UserConfig.getSetting(DataConfig.SYS_AUTOTODO) && agd.al == anyenum.IsWholeday.EndSet){
+          agd.todolist = anyenum.ToDoListStatus.On;
+        }
 
         let ev = new EvTbl();
         Object.assign(ev,agd);

@@ -44,7 +44,7 @@ export class AnnotationService extends BaseService {
 
     if (pullAnnotations && pullAnnotations !=null ){
       for (let j = 0 , len = pullAnnotations.length; j < len ; j++){
-        let annotation = {} as Annotation;
+        let annotation = new  Annotation();
         Object.assign(annotation, pullAnnotations[j]);
         annotation.ati = this.util.getUuid();
         annotation.tb = SyncType.synch;

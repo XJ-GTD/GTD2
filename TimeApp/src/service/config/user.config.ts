@@ -545,7 +545,7 @@ export class UserConfig {
   //群组
   private async RefreshGTbl() {
     //获取本地群列表
-    let sql = 'select * from gtd_g;';
+    let sql = `select * from gtd_g where del <> 'del';`;
 
     UserConfig.groups.splice(0, UserConfig.groups.length);
     let dcl: Array<PageDcData> = await this.sqlliteExec.getExtList<PageDcData>(sql)

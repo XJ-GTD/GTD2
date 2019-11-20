@@ -175,7 +175,10 @@ export class SqliteExec {
       this.execSql(sql).then(data => {
         if (data && data.rows && data.rows.length > 0 ){
           for (let j = 0, len = data.rows.length; j < len; j++) {
-            arr.push(data.rows.item(j))
+            let tmpT = {} as T;
+            Object.assign(tmpT,data.rows.item(j));
+            arr.push(tmpT);
+            //arr.push(data.rows.item(j))
           }
         }
         resolve(arr);
@@ -195,7 +198,9 @@ export class SqliteExec {
     return new Promise((resolve, reject) => {
       return this.execSql(itbl.sloT()).then(data=>{
         if (data.rows && data.rows.length > 0 ){
-          resolve(data.rows.item(0));
+          let tmpT = {} as T;
+          Object.assign(tmpT,data.rows.item(0));
+          resolve(tmpT);
         }else{
           resolve(null);
         }

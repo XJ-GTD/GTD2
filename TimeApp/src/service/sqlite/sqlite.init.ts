@@ -275,6 +275,15 @@ export class SqliteInit {
       let at: AtTbl = new AtTbl();
       await this.sqlexec.dropByParam(at);
       await this.sqlexec.createByParam(at);
+    }else if(version == 8) {
+      //群组表加新删除状态字段
+      let sqlparam = new Array<any>();
+      let sq = ` ALTER TABLE gtd_g ADD COLUMN del varchar(4) DEFAULT 'undel' ;`;
+      sqlparam.push([sq ,[]]);
+      sq = ` ALTER TABLE gtd_b_x ADD COLUMN del varchar(4) DEFAULT 'undel' ;`;
+      sqlparam.push([sq ,[]]);
+      await this.sqlexec.batExecSqlByParam(sqlparam);
+
     }
   }
 

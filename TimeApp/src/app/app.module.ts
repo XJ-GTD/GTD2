@@ -129,6 +129,7 @@ import * as ionicGalleryModal from 'ionic-gallery-modal';
 import {AtmePageModule} from "../pages/atme/atme.module";
 import {AtMemberPageModule} from "../pages/atmember/atmember.module";
 import {AnnotationService} from "../service/business/annotation.service";
+import {GrouperService} from "../service/business/grouper.service";
 
 @NgModule({
   declarations: [
@@ -268,6 +269,7 @@ import {AnnotationService} from "../service/business/annotation.service";
     ScheduleRemindService,
     EventService,
     AnnotationService,
+    GrouperService,
     MemoService,
     RemindService,
     SettingsProvider,
