@@ -207,8 +207,8 @@ export class AlService {
 
         await this.restfulConfig.init();
 
-        //提醒定时
-        this.notificationsService.schedule();
+        // //提醒定时
+        // this.notificationsService.schedule();
         //保持后台运行
         //this.notificationsService.keeplive();
 

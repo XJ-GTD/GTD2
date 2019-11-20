@@ -7,6 +7,8 @@ import {LogTbl} from "../sqlite/tbl/log.tbl";
 import * as moment from "moment";
 import {DataConfig} from "../config/data.config";
 import {ITblParam} from "../sqlite/tbl/itblparam";
+import {RestFulConfig} from "../config/restful.config";
+import {EmitService} from "./emit.service";
 
 /**
  * create by on 2019/3/5
@@ -17,7 +19,7 @@ export class SqliteExec {
 
 
   constructor(private sqlliteConfig: SqliteConfig, private sqlitePorter: SQLitePorter,
-              private util: UtilService) {
+              private util: UtilService,private emitService:EmitService) {
   }
 
   /**
@@ -41,8 +43,12 @@ export class SqliteExec {
           }
         }
       }
+
+      //TODO
+      this.emitService.emit("on.websocket.workqueue.init","SqliteExec.sql");
       this.sqlliteConfig.database.transaction( (tx)=> {
         tx.executeSql(sql, params, (tx, res) => {
+          this.emitService.emit("on.websocket.workqueue.init","SqliteExec.sql结束");
           if (!nolog){
             log.ss = new Date().valueOf() - log.ss;
             log.st = true;

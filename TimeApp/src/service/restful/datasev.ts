@@ -3,13 +3,14 @@ import {RestfulClient} from "../util-service/restful.client";
 import {RestFulConfig, UrlEntity} from "../config/restful.config";
 import {UserConfig} from "../config/user.config";
 import {SyncDataSecurity, SyncDataStatus, InviteState, CompleteState} from "../../data.enum";
+import {EmitService} from "../util-service/emit.service";
 
 /**
  * 数据同步操作
  */
 @Injectable()
 export class DataRestful {
-  constructor(private request: RestfulClient, private config: RestFulConfig) {
+  constructor(private request: RestfulClient, private config: RestFulConfig,private emitService:EmitService) {
   }
 
   /**
@@ -76,7 +77,10 @@ export class DataRestful {
 
     params.mpn = UserConfig.account.phone;
 
+    //TODO
+    this.emitService.emit("on.websocket.workqueue.init","datasev.pull");
     let data = await this.request.post(url, params);
+    this.emitService.emit("on.websocket.workqueue.init","datasev.pull 结束");
 
     if (data) {
       return data.d;

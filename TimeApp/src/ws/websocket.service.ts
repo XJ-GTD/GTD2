@@ -37,7 +37,7 @@ export class WebsocketService {
 
     this.workqueue = async.queue( ({message,index},callback) =>{
       console.log("******************ws  queue:");
-      this.util.toastStart("有一条消息, 处理中", 1000);
+      // this.util.toastStart("有一条消息, 处理中", 1000);
       this.dispatchService.dispatch(message).then(data=>{
         callback();
       }).catch(data=>{

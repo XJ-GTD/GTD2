@@ -17,6 +17,7 @@ export class RabbitMQService {
               private device: Device,
               private emitService: EmitService) {
     if (this.util.isMobile()) {
+      //TODO
       console.log("RabbitMQ service created@" + this.device.platform + ".");
 
       if (this.device.platform == "Android") {
@@ -38,7 +39,6 @@ export class RabbitMQService {
 
   //Native Call Function
   messageReceived(event) {
-    console.log("RabbitMQ received message: " + JSON.stringify(event));
     this.emitService.emit('rabbitmq.message.received', event);
   }
 
