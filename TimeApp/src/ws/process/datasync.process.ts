@@ -16,6 +16,7 @@ import {BTbl} from "../../service/sqlite/tbl/b.tbl";
 import {PersonRestful} from "../../service/restful/personsev";
 import {SqliteExec} from "../../service/util-service/sqlite.exec";
 import {Annotation, AnnotationService} from "../../service/business/annotation.service";
+import {Grouper, GrouperService} from "../../service/business/grouper.service";
 
 /**
  * 数据同步
@@ -31,6 +32,7 @@ export class DataSyncProcess implements MQProcess {
               private memoService: MemoService,
               private personRestful: PersonRestful,
               private annotationService : AnnotationService,
+              private grouperService : GrouperService,
               private sqlExce : SqliteExec) {
   }
 
@@ -98,6 +100,9 @@ export class DataSyncProcess implements MQProcess {
       if (dsPara.type == "Annotation") {
         await this.annotationService.receivedAnnotation(dsPara.id);
       }
+      if (dsPara.type == "Grouper") {
+        await this.grouperService.receivedGrouper(dsPara.id);
+      }
     }
 
     //他帐号请求,云端同步成功,本地下载完成同步
@@ -123,6 +128,9 @@ export class DataSyncProcess implements MQProcess {
       if (dsPara.type == "Annotation") {
         await this.annotationService.receivedAnnotation(dsPara.id);
       }
+      if (dsPara.type == "Grouper") {
+        await this.grouperService.receivedGrouper(dsPara.id);
+      }
     }
 
     //本设备拉取请求,本地下载
@@ -147,6 +155,9 @@ export class DataSyncProcess implements MQProcess {
       }
       if (dsPara.type == "Annotation") {
         await this.annotationService.receivedAnnotation(dsPara.id);
+      }
+      if (dsPara.type == "Grouper") {
+        await this.grouperService.receivedGrouper(dsPara.id);
       }
     }
 
@@ -444,6 +455,12 @@ export class DataSyncProcess implements MQProcess {
         Object.assign(annotation, dsPara.data);
 
         await this.annotationService.receivedAnnotationData([annotation], this.convertSyncStatus(dsPara.status));
+      }
+      if (dsPara.type == "Grouper") {
+        let grouper: Grouper = new Grouper();
+        Object.assign(grouper, dsPara.data);
+
+        await this.grouperService.receivedGrouperData([grouper], this.convertSyncStatus(dsPara.status));
       }
 
     }
