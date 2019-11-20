@@ -20,6 +20,7 @@ import {DelType, SyncType} from "../../data.enum";
 import {UserConfig} from "../../service/config/user.config";
 import {DataConfig} from "../../service/config/data.config";
 import {DataRestful,DownloadInData} from "../../service/restful/datasev";
+import {NativeAudio } from "@ionic-native/native-audio";
 
 @IonicPage()
 @Component({
@@ -52,7 +53,7 @@ import {DataRestful,DownloadInData} from "../../service/restful/datasev";
               </div>
               <div class="line font-normal" leftmargin rightmargin >
                 <div *ngIf="(fja.ext=='PDF'||fja.ext=='pdf')&& (fja.fj !='')" >
-                  <ion-icon class="fas fa-file-pdf" (click)="opnePdf(fja.fjurl,fja.ext)"></ion-icon>
+                  <ion-icon class="fas fa-file-pdf" (click)="openPdf(fja.fjurl,fja.ext,fja.fji)"></ion-icon>
                 </div>
                 <div *ngIf="(fja.ext=='png'||fja.ext=='PNG'||fja.ext=='jpg'||fja.ext=='JPG'||fja.ext=='bmp'||fja.ext=='BMP')&& (fja.fj !='')">
                       <ion-thumbnail (click)="photoShow(fja.fjurl)">
@@ -61,17 +62,17 @@ import {DataRestful,DownloadInData} from "../../service/restful/datasev";
                       </ion-thumbnail>
                 </div>
                 <div *ngIf="(fja.ext=='mp4'||fja.ext=='MP4')&& (fja.fj !='')">
-                    <ion-icon class="fas fa-file-pdf" (click)="opnePdf(fja.fjurl,fja.ext)"></ion-icon>
+                    <ion-icon class="fas fa-file-pdf" (click)="openPdf(fja.fjurl,fja.ext,fja.fji)"></ion-icon>
                 </div>
                 <div *ngIf="(fja.ext=='mp3'||fja.ext=='MP3')&& (fja.fj !='')">
-                    <ion-icon class="fas fa-file-pdf" (click)="opnePdf(fja.fjurl,fja.ext)"></ion-icon>
+                    <ion-icon class="fas fa-file-pdf" (click)="openPdf(fja.fjurl,fja.ext,fja.fji)"></ion-icon>
                 </div>
                 <div *ngIf="(fja.ext=='doc'||fja.ext=='DOC'||fja.ext=='xls'||fja.ext=='XLS'||fja.ext=='ppt'||fja.ext=='PPT'||fja.ext=='DOCX'||fja.ext=='docx'
                   ||fja.ext=='xlsx'||fja.ext=='XLSX'||fja.ext=='PPTX'||fja.ext=='pptx')&& (fja.fj !='')">
-                    <ion-icon class="fas fa-file-pdf" (click)="opnePdf(fja.fjurl,fja.ext)"></ion-icon>
+                    <ion-icon class="fas fa-file-pdf" (click)="openPdf(fja.fjurl,fja.ext,fja.fji)"></ion-icon>
                 </div>
                 <div *ngIf="(fja.ext=='txt'||fja.ext=='TXT')&& (fja.fj !='')">
-                    <ion-icon class="fas fa-file-pdf" (click)="opnePdf(fja.fjurl,fja.ext)"></ion-icon>
+                    <ion-icon class="fas fa-file-pdf" (click)="openPdf(fja.fjurl,fja.ext,fja.fji)"></ion-icon>
                 </div>
 
                 <div class="icon" *ngIf="fja.ui == currentuser" end>
@@ -124,6 +125,7 @@ export class AttachPage {
               private fileOpener: FileOpener,
               private actionSheetCtrl: ActionSheetController,
               private dataRestful: DataRestful,
+              private nativeAudio: NativeAudio,
               private util:UtilService) {
     if (this.navParams && this.navParams.data) {
       this.obt = this.navParams.data.obt;
@@ -330,11 +332,22 @@ export class AttachPage {
     }
   }
   //打开本地PDF
-  opnePdf(fj: string, fileType: string) {
-    this.fileOpener.open(fj,this.getFileMimeType(fileType))
-    .then(() => console.info('File is opened'))
-    .catch(e => console.info('Error opening file', e));
+  openPdf(fj: string, fileType: string, fji: string) {
+    if(fj && fj.indexOf("http") > 0) {
+         //当时mp3的情况下
+        if (fileType && (fileType =='mp3' || fileType =='MP3')) {
+            this.nativeAudio.preloadSimple(fji, fj).then(onSuccess, onError);
+            this.nativeAudio.play(fji).then(onSuccess, onError);
+        }
+    }
+    else {
+      this.fileOpener.open(fj,this.getFileMimeType(fileType))
+      .then(() => console.info('File is opened'))
+      .catch(e => console.info('Error opening file', e));
+    }
+
   }
+
   //放大图片
   photoShow(fj: string) {
       this.util.photoViews(fj);
