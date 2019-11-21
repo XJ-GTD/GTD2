@@ -104,40 +104,40 @@ export class WebsocketService {
 
       // 延迟重连动作,防止重连死循环
       if (this.util.isMobile()) {
-        this.emitService.register('rabbitmq.message.received', (event) => {
-          try {
-            if (event && event.body) {
-              let preload = JSON.parse(event.body);
-              let header = preload.header || {};
-              let sender = header.sender || "";
-
-              if (sender == "xunfei/aiui") {
-                this.speechqueue.push({message:event.body,index:this.speeches++},(err)=>{
-                  if (err) {
-                    console.log("speech queue process error happenned. ", err, '\r\n', err.stack);
-                    this.workqueue.kill();
-                    this.speeches = 0;
-                  } else {
-                    if (this.speeches >9999) this.speeches = 0;
-                  }
-                });
-              } else {
-                this.workqueue.push({message:event.body,index:this.messages++},(err)=>{
-                  if (err) {
-                    console.log("work queue process error happenned. ", err, '\r\n', err.stack);
-                    this.workqueue.kill();
-                    this.messages = 0;
-                  } else {
-                    if (this.messages >9999) this.messages = 0;
-                  }
-                });
-              }
-            }
-          } catch (e) {
-            // message异常时捕获并不让程序崩溃
-            console.log("work queue push error : ", e, '\r\n', e.stack);
-          }
-        });
+        // this.emitService.register('rabbitmq.message.received', (event) => {
+        //   try {
+        //     if (event && event.body) {
+        //       let preload = JSON.parse(event.body);
+        //       let header = preload.header || {};
+        //       let sender = header.sender || "";
+        //
+        //       if (sender == "xunfei/aiui") {
+        //         this.speechqueue.push({message:event.body,index:this.speeches++},(err)=>{
+        //           if (err) {
+        //             console.log("speech queue process error happenned. ", err, '\r\n', err.stack);
+        //             this.workqueue.kill();
+        //             this.speeches = 0;
+        //           } else {
+        //             if (this.speeches >9999) this.speeches = 0;
+        //           }
+        //         });
+        //       } else {
+        //         this.workqueue.push({message:event.body,index:this.messages++},(err)=>{
+        //           if (err) {
+        //             console.log("work queue process error happenned. ", err, '\r\n', err.stack);
+        //             this.workqueue.kill();
+        //             this.messages = 0;
+        //           } else {
+        //             if (this.messages >9999) this.messages = 0;
+        //           }
+        //         });
+        //       }
+        //     }
+        //   } catch (e) {
+        //     // message异常时捕获并不让程序崩溃
+        //     console.log("work queue push error : ", e, '\r\n', e.stack);
+        //   }
+        // });
 
         setTimeout(() => {
           this.emitService.emit("on.websocket.connected");
