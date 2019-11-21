@@ -19,10 +19,10 @@ import {unitOfTime} from "moment";
 @Component({
   selector: 'page-dailymemos',
   template:
-      `    
+      `
     <page-box title="备忘" [subtitle]="day | formatedate:'CYYYY/MM/DD W'" [buttons]="buttons"  (onBack)="goBack()" (onCreate)="addMemo()" >
       <ng-template [ngIf]="memos.length > 0"
-                   [ngIfElse]="notask">       
+                   [ngIfElse]="notask">
         <ion-grid class="list-grid-content">
           <ion-row class="item-content item-content-backgroud" leftmargin toppadding bottompadding rightmargin *ngFor="let memo of memos" (click)="goDetail(memo)">
             <div class="line font-normal">
@@ -76,7 +76,7 @@ export class DailyMemosPage {
       this.dayActivities = this.navParams.data;
       this.day = this.dayActivities.day;
       this.memos = this.dayActivities.memos;
-      this.istoday = moment(this.day).isSame(moment(),"days");
+      this.istoday = moment(this.day, "YYYY/MM/DD").isSame(moment(),"days");
       this.buttons.create = this.istoday;
     }
   }
