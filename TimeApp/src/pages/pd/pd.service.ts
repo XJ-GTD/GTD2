@@ -63,35 +63,35 @@ export class PdService {
       switch (activityType) {
         case "PlanItemData" :
           pdItem.planItemData = v;
-           tmp = moment(pdItem.planItemData.sd);
+           tmp = moment(pdItem.planItemData.sd, "YYYY/MM/DD");
           pdItem.yearitem = tmp.get("year");
           pdItem.date = tmp.format("YYYY/MM/DD");
           pdItem.time = pdItem.planItemData.st;
           break;
         case "AgendaData" :
           pdItem.agendaData = v;
-           tmp = moment(pdItem.agendaData.evd);
+           tmp = moment(pdItem.agendaData.evd, "YYYY/MM/DD");
           pdItem.yearitem = tmp.get("year");
           pdItem.date = tmp.format("YYYY/MM/DD");
           pdItem.time = pdItem.agendaData.evt;
           break;
         case "TaskData" :
           pdItem.taskData = v;
-          tmp = moment(pdItem.taskData.evd);
+          tmp = moment(pdItem.taskData.evd, "YYYY/MM/DD");
           pdItem.yearitem = tmp.get("year");
           pdItem.date = tmp.format("YYYY/MM/DD");
           pdItem.time = pdItem.taskData.evt;
           break;
         case "MiniTaskData" :
           pdItem.miniTaskData = v;
-          tmp = moment(pdItem.miniTaskData.evd);
+          tmp = moment(pdItem.miniTaskData.evd, "YYYY/MM/DD");
           pdItem.yearitem = tmp.get("year");
           pdItem.date = tmp.format("YYYY/MM/DD");
           pdItem.time = pdItem.miniTaskData.evt;
           break;
         case "MemoData" :
           pdItem.memoData = v;
-          tmp = moment(pdItem.memoData.sd);
+          tmp = moment(pdItem.memoData.sd, "YYYY/MM/DD");
           pdItem.yearitem = tmp.get("year");
           pdItem.date = tmp.format("YYYY/MM/DD");
           pdItem.time = pdItem.memoData.st;
