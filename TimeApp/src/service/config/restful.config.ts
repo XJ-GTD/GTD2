@@ -61,8 +61,15 @@ export class RestFulConfig {
   }
 
   //获取url
-  getRestFulUrl(key: string): UrlEntity {
-    return this.urlLs.get(key);
+  getRestFulUrl(key: string, ...params: Array<any> = new Array<any>()): UrlEntity {
+    if (params && params.length > 0) {
+      let url = params.reduce((url, ele) => {
+        url = url.replace(`{${ele.name}}`, ele.value);
+      }, this.urlLs.get(key));
+      return url;
+    } else {
+      return this.urlLs.get(key);
+    }
   }
 
 

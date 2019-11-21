@@ -982,6 +982,7 @@ export class AgendaPage {
   }
   //分享微信
   shareWeiXin() {
+    this.eventService.shareAgenda(this.currentAgenda).then((url) => {
       //获取分享内容
       let text = this.currentAgenda.evn;
       //验证是否按照微信组件
@@ -994,7 +995,7 @@ export class AgendaPage {
                 thumb: "assets/imgs/logo.png",
                 media: {
                   type: Wechat.Type.WEBPAGE,
-                  webpageUrl: "https://fir.im/d2z3"
+                  webpageUrl: url || "https://fir.im/d2z3"
                 }
             },
             scene:0  // 分享目标 0:分享到对话，1:分享到朋友圈，2:收藏
@@ -1006,8 +1007,8 @@ export class AgendaPage {
         } else {
             alert('请安装微信');
         }
-      })
-
+      });
+    });
   }
 
 }

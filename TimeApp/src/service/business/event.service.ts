@@ -18,7 +18,7 @@ import {JhaTbl} from "../sqlite/tbl/jha.tbl";
 import {DataConfig} from "../config/data.config";
 import {BTbl} from "../sqlite/tbl/b.tbl";
 import {FjTbl} from "../sqlite/tbl/fj.tbl";
-import {DataRestful, PullInData, PushInData, SyncData, SyncDataFields, UploadInData, DownloadInData, DayCountCodec} from "../restful/datasev";
+import {DataRestful, PullInData, PushInData, SyncData, SyncDataFields, UploadInData, DownloadInData, DayCountCodec, ShareInData} from "../restful/datasev";
 import {SyncType, DelType, ObjectType, IsSuccess, CycleType, SyncDataStatus, OperateType, ToDoListStatus, RepeatFlag, ConfirmType, ModiPower, PageDirection, SyncDataSecurity, InviteState, CompleteState, EventFinishStatus, EventType} from "../../data.enum";
 import {
   assertNotNumber,
@@ -39,6 +39,17 @@ export class EventService extends BaseService {
   }
 
   EVT_ST = "08:00";//全天开始时间默认为8:00
+
+  /**
+   * 分享日程
+   *
+   **/
+  async shareAgenda(agenda: AgendaData): Promise<string> {
+    let share: ShareInData = new ShareInData();
+    share.payload = agenda;
+
+    return await this.dataRestful.share("agenda", share);
+  }
 
   /**
    * 接收事件日程保存到本地
