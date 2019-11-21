@@ -231,3 +231,8 @@ export enum ModalTranType {
   top = "top",
   scale = "scale",
 }
+export enum UpdState {
+  self = "self",
+  updtodel = "updtodel",
+  updtoadd = "updtoadd",
+}

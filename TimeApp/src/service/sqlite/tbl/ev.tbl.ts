@@ -37,6 +37,9 @@ export class EvTbl implements ITblParam {
   adry:number;
   utt: number;
   wtt: number;
+  updstate: string;
+  evrelate: string;
+
 
   cTParam():string {
 
@@ -49,6 +52,8 @@ export class EvTbl implements ITblParam {
           del varchar(6),rfg varchar(6),adr varchar(6)
           ,adrx integer
           ,adry integer
+           ,updstate varchar(10) 
+           ,evrelate varchar(50) 
         );`;
 
     return sq;
@@ -146,6 +151,8 @@ export class EvTbl implements ITblParam {
     if(this.adr!=null && this.adr!=''){      sq=sq+', adr= ? ';      params.push(this.adr);    }
     if(this.adrx!=null ){      sq=sq+', adrx= ? ';      params.push(this.adrx);    }
     if(this.adry!=null ){      sq=sq+', adry= ? ';      params.push(this.adry);    }
+    if(this.updstate!=null && this.updstate!=''){      sq=sq+', updstate= ? ';      params.push(this.updstate);    }
+    if(this.evrelate!=null && this.evrelate!=''){      sq=sq+', evrelate= ? ';      params.push(this.evrelate);    }
 
     sq =`update gtd_ev set wtt = ${moment().unix()}  ${sq} where evi = ? ;`;
     params.push(this.evi);
@@ -267,6 +274,8 @@ export class EvTbl implements ITblParam {
     if(this.adr!=null && this.adr!=''){      sq=sq+' and adr= ? ';      params.push(this.adr);    }
     if(this.adrx!=null ){      sq=sq+' and adrx= ? ';      params.push(this.adrx);    }
     if(this.adry!=null ){      sq=sq+' and adry= ? ';      params.push(this.adry);    }
+    if(this.updstate!=null && this.updstate!=''){      sq=sq+', and updstate= ? ';      params.push(this.updstate);    }
+    if(this.evrelate!=null && this.evrelate!=''){      sq=sq+', and evrelate= ? ';      params.push(this.evrelate);    }
 
     sq = sq + ';';
 
@@ -287,8 +296,12 @@ export class EvTbl implements ITblParam {
     let sq =`insert into gtd_ev
        ( evi ,evn ,ui ,mi ,evd ,evt ,rtevi ,ji ,bz ,
        type ,tx ,txs ,rt ,rts ,fj ,pn ,md ,iv ,
-       sr ,wtt ,utt ,gs,tb,wc,todolist,invitestatus,del,rfg,adr,adrx,adry)
-       values( ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);`;
+       sr ,wtt ,utt ,gs,tb,wc,todolist,invitestatus,del,rfg,adr,adrx,adry
+        ,updstate
+        ,evrelate)
+       values( ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?
+       ,?
+       ,?);`;
     params.push(this.evi);
     params.push(this.evn);
     params.push(this.ui);
@@ -320,6 +333,8 @@ export class EvTbl implements ITblParam {
     params.push(this.adr);
     params.push(this.adrx);
     params.push(this.adry);
+    params.push(this.updstate);
+    params.push(this.evrelate);
 
     let ret = new Array<any>();
     ret.push(sq);
@@ -332,8 +347,12 @@ export class EvTbl implements ITblParam {
     let sq =`replace into gtd_ev
        ( evi ,evn ,ui ,mi ,evd ,evt ,rtevi ,ji ,bz ,
        type ,tx ,txs ,rt ,rts ,fj ,pn ,md ,iv ,
-       sr ,wtt ,utt ,gs,tb,wc,todolist,invitestatus,del,rfg,adr,adrx,adry)
-       values( ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);`;
+       sr ,wtt ,utt ,gs,tb,wc,todolist,invitestatus,del,rfg,adr,adrx,adry
+       ,updstate
+       ,evrelate)
+       values( ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?
+       ,?
+       ,?);`;
     params.push(this.evi);
     params.push(this.evn);
     params.push(this.ui);
@@ -365,6 +384,9 @@ export class EvTbl implements ITblParam {
     params.push(this.adr);
     params.push(this.adrx);
     params.push(this.adry);
+    params.push(this.updstate);
+    params.push(this.evrelate);
+
     let ret = new Array<any>();
     ret.push(sq);
     ret.push(params);
@@ -406,6 +428,8 @@ export class EvTbl implements ITblParam {
     params.push(this.adr);
     params.push(this.adrx);
     params.push(this.adry);
+    params.push(this.updstate);
+    params.push(this.evrelate);
 
     return [`replace into gtd_ev (
         evi,
@@ -439,8 +463,10 @@ export class EvTbl implements ITblParam {
         adr,
         adrx,
         adry
+        ,updstate
+        ,evrelate
       )`,
-      `select ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?`,
+      `select ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?`,
       params
      ]
   }
