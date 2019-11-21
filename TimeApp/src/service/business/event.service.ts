@@ -1283,7 +1283,7 @@ export class EventService extends BaseService {
 
       //删除原事件中从当前开始所有事件
       console.log("**** removeAgenda start :****" + moment().format("YYYY/MM/DD HH:mm:ss SSS"))
-      await this.delFromsel(delEvi ,oriAgdata ,sqlparam,outAgds);
+      await this.delFromsel(delEvi ,anyenum.UpdState.self,oriAgdata ,sqlparam,outAgds);
       console.log("**** removeAgenda end :****" + moment().format("YYYY/MM/DD HH:mm:ss SSS"))
     }else{
 
@@ -1296,6 +1296,7 @@ export class EventService extends BaseService {
       Object.assign(outAgd,oriAgdata);
       outAgd.del = anyenum.DelType.del;
       outAgd.tb = anyenum.SyncType.unsynch;
+      outAgd.updstate = anyenum.UpdState.self;
       outAgd.mi = UserConfig.account.id;
       outAgd.tos = tos;//需要发送的参与人
 
@@ -1384,6 +1385,8 @@ export class EventService extends BaseService {
       /*新增*/
       let retParamEv = new RetParamEv();
       console.log("**** newAgenda start :****" + moment().format("YYYY/MM/DD HH:mm:ss SSS"))
+      newAgdata.updstate = anyenum.UpdState.self;
+      newAgdata.evrelate = this.util.getUuid();
       retParamEv = this.newAgenda(newAgdata);
       console.log("**** newAgenda end :****" + moment().format("YYYY/MM/DD HH:mm:ss SSS"))
 
@@ -1547,11 +1550,12 @@ export class EventService extends BaseService {
 
       //邀请状态处理
       if (newAgdata.invitestatus == anyenum.InviteState.Rejected){
-        sq = ` update gtd_ev set invitestatus = ?1 ,del = ?2  where evi = ?3 or rtevi = ?3 ; `;
+        sq = ` update gtd_ev set invitestatus = ?1 ,del = ?2 ,updstate = ?4  where evi = ?3 or rtevi = ?3 ; `;
         params = new Array<any>();
         params.push(newAgdata.invitestatus);
         params.push(anyenum.DelType.del);
         params.push(masterEvi);
+        params.push(anyenum.UpdState.self);
 
       }else{
         sq = ` update gtd_ev set invitestatus = ?1  where evi = ?2 or rtevi = ?2 ; `;
@@ -1647,12 +1651,13 @@ export class EventService extends BaseService {
           }
 
         }else{
-          sq = `update gtd_wa set tb = ? ,del = ?  where obt = ? and  wai in (select evi from gtd_ev
+          sq = `update gtd_wa set tb = ? ,del = ? ,updstate = ? where obt = ? and  wai in (select evi from gtd_ev
           where  evi = ? or rtevi =  ? ); `;
 
           params = new Array<any>();
           params.push(anyenum.SyncType.unsynch);
           params.push(anyenum.DelType.del);
+          params.push(anyenum.UpdState.self);
           params.push(anyenum.ObjectType.Event);
           params.push(masterEvi);
           params.push(masterEvi);
@@ -1673,12 +1678,14 @@ export class EventService extends BaseService {
 
       //删除原事件中从当前开始所有事件
       console.log("**** updateAgenda delFromsel start :****" + moment().format("YYYY/MM/DD HH:mm:ss SSS"))
-      await this.delFromsel(delEvi ,oriAgdata ,sqlparam,outAgds);
+      await this.delFromsel(delEvi ,anyenum.UpdState.updtodel,oriAgdata ,sqlparam,outAgds);
       console.log("**** updateAgenda delFromsel end :****" + moment().format("YYYY/MM/DD HH:mm:ss SSS"))
       //新建新事件日程
       let nwAgdata = {} as AgendaData;
       Object.assign(nwAgdata ,newAgdata );
       nwAgdata.sd = nwAgdata.evd;
+      nwAgdata.updstate = anyenum.UpdState.updtoadd;
+      nwAgdata.evrelate = oriAgdata.evrelate;
 
       let retParamEv = new RetParamEv();
       console.log("**** updateAgenda newAgenda start :****" + moment().format("YYYY/MM/DD HH:mm:ss SSS"))
@@ -1723,11 +1730,14 @@ export class EventService extends BaseService {
 
       //删除原事件中从当前开始所有事件
       oriAgdata.evd = oriAgdata.sd;
-      await this.delFromsel(delEvi ,oriAgdata ,sqlparam,outAgds);
+      await this.delFromsel(delEvi ,anyenum.UpdState.updtoadd,oriAgdata ,sqlparam,outAgds);
 
       //重建事件日程
       let retParamEv = new RetParamEv();
       newAgdata.sd = oriAgdata.sd;
+      newAgdata.updstate = anyenum.UpdState.updtoadd;
+      newAgdata.evrelate = oriAgdata.evrelate;
+
       retParamEv = this.newAgenda(newAgdata);
 
       //添加新参与人到新事件
@@ -2161,12 +2171,14 @@ export class EventService extends BaseService {
   /**
    * 删除原事件中从当前开始所有事件
    * @param {string} masterEvi
+   * @param {anyenum.UpdStat} updstate
    * @param {AgendaData} oriAgdata
    * @param {Array<any>} sqlparam
    * @param {Array<AgendaData>} outAgds
    * @returns {Promise<void>}
    */
   private async delFromsel(masterEvi : string ,
+                           updstate : anyenum.UpdState,
                            oriAgdata : AgendaData ,
                            sqlparam : Array<any>,
                            outAgds : Array<AgendaData>){
@@ -2216,6 +2228,7 @@ export class EventService extends BaseService {
         delAgds[j].del = anyenum.DelType.del;
         delAgds[j].mi = UserConfig.account.id;
         delAgds[j].tb = anyenum.SyncType.unsynch;
+        delAgds[j].updstate = updstate;
 
         delAgds[j].tos = tos;//需要发送的参与人
         delAgds[j].members = oriAgdata.members;//参与人
@@ -2244,11 +2257,12 @@ export class EventService extends BaseService {
 
 
     //删除原事件中从当前开始所有事件 evd使用原事件evd
-    sq = `update  gtd_ev set del = ? , mi =?,tb = ?  where ${delcondi} ;`;
+    sq = `update  gtd_ev set del = ? , mi =?,tb = ? ,updstate = ?  where ${delcondi} ;`;
     params = new Array<any>();
     params.push(anyenum.DelType.del);
     params.push(UserConfig.account.id);
     params.push(anyenum.SyncType.unsynch);
+    params.push(updstate);
     params.push(oriAgdata.evd);
     params.push(masterEvi);
     params.push(masterEvi);
@@ -2374,6 +2388,9 @@ export class EventService extends BaseService {
     agdata.del = !agdata.del ? anyenum.DelType.undel : agdata.del ;
     agdata.rfg = !agdata.rfg ? anyenum.RepeatFlag.NonRepeat : agdata.rfg ;
 
+    agdata.updstate = !agdata.updstate ? anyenum.UpdState.self : agdata.updstate ;
+    agdata.evrelate = !agdata.evrelate ? "" : agdata.evrelate ;
+
     agdata.al = !agdata.al ? anyenum.IsWholeday.StartSet :agdata.al;
 
 
@@ -2412,7 +2429,6 @@ export class EventService extends BaseService {
     //字段evt 设定
 
     agdata.evt = agdata.st;
-
 
     let rtjson: RtJson = new RtJson();
     Object.assign(rtjson, agdata.rtjson);

@@ -284,6 +284,15 @@ export class SqliteInit {
       sqlparam.push([sq ,[]]);
       await this.sqlexec.batExecSqlByParam(sqlparam);
 
+    }else if(version == 9) {
+      //事件表加关联，事件变更类型字段
+      let sqlparam = new Array<any>();
+      let sq = ` ALTER TABLE gtd_ev ADD COLUMN updstate varchar(10) DEFAULT 'self' ;`;
+      sqlparam.push([sq ,[]]);
+      sq = ` ALTER TABLE gtd_ev ADD COLUMN evrelate varchar(50) DEFAULT '' ;`;
+      sqlparam.push([sq ,[]]);
+      await this.sqlexec.batExecSqlByParam(sqlparam);
+
     }
   }
 
