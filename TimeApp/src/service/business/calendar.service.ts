@@ -3946,21 +3946,10 @@ export class CalendarService extends BaseService {
       plan = await this.getPlan(plan.ji, true);   // 重新获取计划和计划子项目
     }
 
-    let shareplan: Plan = this.convertPlanData2Plan(plan);
+    let share: ShareInData = new ShareInData();
+    share.payload = plan;
 
-    let upplan: ShareData = new ShareData();
-
-    upplan.oai = "";
-    upplan.ompn = "";
-    upplan.c = "";
-    upplan.d.p = shareplan;
-
-    let shared = await this.shareRestful.share(upplan);
-
-    if (shared)
-      return shared.psurl;
-    else
-      return "";
+    return await this.dataRestful.share("plan", share);
   }
 
   private convertPlanData2Plan(src: PlanData): Plan {

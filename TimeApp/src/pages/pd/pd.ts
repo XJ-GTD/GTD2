@@ -7,11 +7,12 @@ import {PagePDPro} from "../../data.mapping";
 import {PlanPa} from "../../service/restful/shaesev";
 import * as moment from "moment";
 import {UserConfig} from "../../service/config/user.config";
-import {PlanData, PlanItemData} from "../../service/business/calendar.service";
+import {PlanData, PlanItemData, CalendarService} from "../../service/business/calendar.service";
 import {AgendaData, MiniTaskData, TaskData} from "../../service/business/event.service";
 import {MemoData} from "../../service/business/memo.service";
 import {forEach} from "@angular/router/src/utils/collection";
 import {EventFinishStatus, SyncType} from "../../data.enum";
+declare var Wechat;
 
 /**
  * Generated class for the 计划展示 page.
@@ -24,11 +25,11 @@ import {EventFinishStatus, SyncType} from "../../data.enum";
 @Component({
   selector: 'page-pd',
   template:
-  `    
+  `
     <modal-box title="{{planName}}" [buttons]="buttons" (onSave)="more()" (onCancel)="goBack()">
       <ion-scroll scrollY="true" scrollheightAuto>
         <ul class="timeline" >
-          <ng-template ngFor let-item [ngForOf]="plans">            
+          <ng-template ngFor let-item [ngForOf]="plans">
             <ng-template [ngIf]="item.type == 'AgendaData'">
               <!--<li [ngClass]="{'agenda-card-past': today > item.agendaData.evd, 'agenda-card': today <= item.agendaData.evd}">-->
               <li>
@@ -60,7 +61,7 @@ import {EventFinishStatus, SyncType} from "../../data.enum";
                 <div class="timeline-badge">{{item.planItemData.sd | formatedate: "MM-DD"}}</div>
                 <div class="timeline-panel">
                   <div class="timeline-heading">
-                    <span class="timeline-title">{{item.planItemData.jtn}}</span>    
+                    <span class="timeline-title">{{item.planItemData.jtn}}</span>
                     <span class="timeline-person" *ngIf="currentuser != item.planItemData.ui && item.planItemData.ui != ''">-{{item.planItemData.ui | formatuser: currentuser: friends}}</span>
 
                   </div>
@@ -106,11 +107,11 @@ import {EventFinishStatus, SyncType} from "../../data.enum";
             <!--</li>-->
             <!--</ng-template>-->
           </ng-template>
-          
+
         </ul>
       </ion-scroll>
     </modal-box>
-        
+
         <!---->
         <!--<ion-row  justify-content-center>-->
           <!--<ion-grid>-->
@@ -166,6 +167,7 @@ export class PdPage {
               private navParams: NavParams,
               private actionSheetCtrl: ActionSheetController,
               private util: UtilService,
+              private calendarService: CalendarService,
               private pdService:PdService,
               private clipboard: Clipboard,) {
     this.jh = this.navParams.get('jh');
@@ -202,11 +204,37 @@ export class PdPage {
           text: '分享',
           role: 'share',
           handler: () => {
-            this.pdService.sharePlan(this.jh).then(data=>{
-              console.log("分享地址是："+JSON.stringify(data.psurl));
-              let sharecontent = "【冥王星】" + UserConfig.user.name + "分享了" + this.planName + "\n\r" + data.psurl;
-              this.clipboard.copy(sharecontent);
-              this.util.popoverStart("分享地址已复制到剪贴板,粘贴到手机浏览器查看,或直接粘贴到微信、QQ与朋友分享。");
+            let plan: PlanData = {} as PlanData;
+            plan.ji = this.jh;
+
+            this.calendarService.sharePlan(plan, true).then(url => {
+              console.log("分享地址是："+JSON.stringify(url));
+              let sharecontent: string = `【冥王星】${UserConfig.user.name}分享了
+                                          日历 ${this.planName}`;
+
+              //验证是否按照微信组件
+              Wechat.isInstalled(installed => {
+                if (installed) {
+                  Wechat.share({
+                    message:{
+                        title: sharecontent,
+                        description: "冥王星",
+                        thumb: "assets/imgs/logo.png",
+                        media: {
+                          type: Wechat.Type.WEBPAGE,
+                          webpageUrl: url || "https://fir.im/d2z3"
+                        }
+                    },
+                    scene:0  // 分享目标 0:分享到对话，1:分享到朋友圈，2:收藏
+                  }, () => {
+                      console.log('分享成功');
+                  }, reason => {
+                      console.log('分享失败' + reason);
+                  });
+                } else {
+                    alert('请安装微信');
+                }
+              });
             }).catch(res=>{
               this.util.popoverStart('分享失败');
             });
