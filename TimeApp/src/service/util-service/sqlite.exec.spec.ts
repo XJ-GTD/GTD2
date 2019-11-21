@@ -16,6 +16,7 @@ import {SQLitePorter} from "@ionic-native/sqlite-porter";
 import {SqliteConfig} from "../config/sqlite.config";
 
 import {UtilService} from "../util-service/util.service";
+import { EmitService } from "./emit.service";
 import { SqliteExec } from "./sqlite.exec";
 
 import {MyApp} from '../../app/app.component';
@@ -53,6 +54,7 @@ describe('SqliteExec test suite', () => {
         SQLite,
         SQLitePorter,
         SqliteConfig,
+        EmitService,
         SqliteExec
       ]
     });

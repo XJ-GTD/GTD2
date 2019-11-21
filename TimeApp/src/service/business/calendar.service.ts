@@ -241,8 +241,8 @@ export class CalendarService extends BaseService {
         // 判断数据是否属于当前缓存日期范围
         currentmonth = moment(item.sd).format("YYYY/MM");
 
-        if (moment(firstmonth,"YYYY/MM").diff(currentmonth, "months") <= 0 && moment(currentmonth).diff(lastmonth, "months") <= 0) {
-          let diff = moment(currentmonth,"YYYY/MM").diff(firstmonth, "months");
+        if (moment(firstmonth,"YYYY/MM").diff(moment(currentmonth, "YYYY/MM"), "months") <= 0 && moment(currentmonth, "YYYY/MM").diff(moment(lastmonth, "YYYY/MM"), "months") <= 0) {
+          let diff = moment(currentmonth,"YYYY/MM").diff(moment(firstmonth,"YYYY/MM"), "months");
 
           let currentmonthactivities = this.calendaractivities[diff];
           this.mergeMonthActivities(currentmonthactivities, [item], update);
@@ -257,8 +257,8 @@ export class CalendarService extends BaseService {
         // 判断数据是否属于当前缓存日期范围
         currentmonth = moment(agenda.evd).format("YYYY/MM");
 
-        if (moment(firstmonth,"YYYY/MM").diff(currentmonth, "months") <= 0 && moment(currentmonth).diff(lastmonth, "months") <= 0) {
-          let diff = moment(currentmonth,"YYYY/MM").diff(firstmonth, "months");
+        if (moment(firstmonth,"YYYY/MM").diff(moment(currentmonth, "YYYY/MM"), "months") <= 0 && moment(currentmonth, "YYYY/MM").diff(moment(lastmonth, "YYYY/MM"), "months") <= 0) {
+          let diff = moment(currentmonth,"YYYY/MM").diff(moment(firstmonth,"YYYY/MM"), "months");
 
           let currentmonthactivities = this.calendaractivities[diff];
           this.mergeMonthActivities(currentmonthactivities, [agenda], update);
@@ -273,8 +273,8 @@ export class CalendarService extends BaseService {
         // 判断数据是否属于当前缓存日期范围
         currentmonth = moment(task.evd).format("YYYY/MM");
 
-        if (moment(firstmonth,"YYYY/MM").diff(currentmonth, "months") <= 0 && moment(currentmonth,"YYYY/MM").diff(lastmonth, "months") <= 0) {
-          let diff = moment(currentmonth,"YYYY/MM").diff(firstmonth, "months");
+        if (moment(firstmonth,"YYYY/MM").diff(moment(currentmonth, "YYYY/MM"), "months") <= 0 && moment(currentmonth,"YYYY/MM").diff(moment(lastmonth, "YYYY/MM"), "months") <= 0) {
+          let diff = moment(currentmonth,"YYYY/MM").diff(moment(firstmonth,"YYYY/MM"), "months");
 
           let currentmonthactivities = this.calendaractivities[diff];
           this.mergeMonthActivities(currentmonthactivities, [task], update);
@@ -289,8 +289,8 @@ export class CalendarService extends BaseService {
         // 判断数据是否属于当前缓存日期范围
         currentmonth = moment(minitask.evd).format("YYYY/MM");
 
-        if (moment(firstmonth,"YYYY/MM").diff(currentmonth, "months") <= 0 && moment(currentmonth,"YYYY/MM").diff(lastmonth, "months") <= 0) {
-          let diff = moment(currentmonth).diff(firstmonth, "months");
+        if (moment(firstmonth,"YYYY/MM").diff(moment(currentmonth, "YYYY/MM"), "months") <= 0 && moment(currentmonth,"YYYY/MM").diff(moment(lastmonth, "YYYY/MM"), "months") <= 0) {
+          let diff = moment(currentmonth).diff(moment(firstmonth,"YYYY/MM"), "months");
 
           let currentmonthactivities = this.calendaractivities[diff];
           this.mergeMonthActivities(currentmonthactivities, [minitask], update);
@@ -305,8 +305,8 @@ export class CalendarService extends BaseService {
         // 判断数据是否属于当前缓存日期范围
         currentmonth = moment(memo.sd).format("YYYY/MM");
 
-        if (moment(firstmonth,"YYYY/MM").diff(currentmonth, "months") <= 0 && moment(currentmonth,"YYYY/MM").diff(lastmonth, "months") <= 0) {
-          let diff = moment(currentmonth,"YYYY/MM").diff(firstmonth, "months");
+        if (moment(firstmonth,"YYYY/MM").diff(moment(currentmonth, "YYYY/MM"), "months") <= 0 && moment(currentmonth,"YYYY/MM").diff(moment(lastmonth, "YYYY/MM"), "months") <= 0) {
+          let diff = moment(currentmonth,"YYYY/MM").diff(moment(firstmonth,"YYYY/MM"), "months");
 
           let currentmonthactivities = this.calendaractivities[diff];
           this.mergeMonthActivities(currentmonthactivities, [memo], update);
@@ -2693,7 +2693,7 @@ export class CalendarService extends BaseService {
         let adt = moment(a.evd + " " + a.evt, "YYYY/MM/DD HH:mm");
         let bdts = b.evd + " " + b.evt;
 
-        return adt.diff(bdts);
+        return adt.diff(moment(bdts, "YYYY/MM/DD HH:mm"));
     });
 
     days = monthActivity.events.reduce((days, value) => {
@@ -2943,13 +2943,13 @@ export class CalendarService extends BaseService {
       // 排序
       monthActivities.calendaritems.sort((a, b) => {
         let adt = moment(a.sd + " " + a.st || "00:00", "YYYY/MM/DD HH:mm");
-        let bdts = b.sd + " " + b.st || "00:00";
+        let bdts = moment(b.sd + " " + b.st || "00:00", "YYYY/MM/DD HH:mm");
 
         return adt.diff(bdts);
       });
       monthActivities.events.sort((a, b) => {
         let adt = moment(a.evd + " " + a.evt, "YYYY/MM/DD HH:mm");
-        let bdts = b.evd + " " + b.evt;
+        let bdts = moment(b.evd + " " + b.evt, "YYYY/MM/DD HH:mm");
 
         return adt.diff(bdts);
       });
