@@ -51,7 +51,7 @@ export class PdService {
       let firstdt: string = getDatetime(first);
       let seconddt: string = getDatetime(second);
 
-      return moment(firstdt, "YYYY/MM/DD HH:mm").diff(seconddt);
+      return moment(firstdt, "YYYY/MM/DD HH:mm").diff(moment(seconddt, "YYYY/MM/DD HH:mm"));
     });
 
     paList.items.forEach((v,i,a)=>{

@@ -337,7 +337,7 @@ export class AgendaPage {
 
         // 指定今天以前的日期，全部使用今天创建
         // 需求：今天以前的日期不能创建日程
-        if (moment(this.currentAgenda.sd, "YYYY/MM/DD").diff(moment().format("YYYY/MM/DD")) < 0) {
+        if (moment(this.currentAgenda.sd, "YYYY/MM/DD").diff(moment(moment().format("YYYY/MM/DD"), "YYYY/MM/DD")) < 0) {
           this.currentAgenda.sd = moment().format("YYYY/MM/DD");
         }
 
