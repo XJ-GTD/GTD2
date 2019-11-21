@@ -2384,9 +2384,9 @@ export class EventService extends BaseService {
       agdata.sd = agdata.sd || agdata.evd || moment().format("YYYY/MM/DD");
       agdata.st = !agdata.st ? this.EVT_ST : agdata.st;
 
-      agdata.ed = agdata.ed || moment(agdata.sd + " " + agdata.st).
+      agdata.ed = agdata.ed || moment(agdata.sd + " " + agdata.st, "YYYY/MM/DD HH:mm").
       add(agdata.ct, 'm').format("YYYY/MM/DD");
-      agdata.et = !agdata.et ? moment(agdata.sd + " " + agdata.st).
+      agdata.et = !agdata.et ? moment(agdata.sd + " " + agdata.st, "YYYY/MM/DD HH:mm").
       add(agdata.ct, 'm').format("HH:mm") : agdata.et;
     }else{
       agdata.ct = !agdata.ct ? 0 :agdata.ct;
@@ -2729,12 +2729,12 @@ export class EventService extends BaseService {
 
         let time = remind;
         let date;
-        date = moment(ev.evd + " " + ev.evt).subtract(time, 'm').format("YYYY/MM/DD HH:mm");
+        date = moment(ev.evd + " " + ev.evt, "YYYY/MM/DD HH:mm").subtract(time, 'm').format("YYYY/MM/DD HH:mm");
 
         //使用ev表zhukey与提醒时间的组合，便于服务器更新及本地更新
-        wa.wai = ev.evi + moment(date).format("YYYYMMDDHHmm") ;
-        wa.wd = moment(date).format("YYYY/MM/DD");
-        wa.wt = moment(date).format("HH:mm");
+        wa.wai = ev.evi + moment(date, "YYYY/MM/DD HH:mm").format("YYYYMMDDHHmm") ;
+        wa.wd = moment(date, "YYYY/MM/DD HH:mm").format("YYYY/MM/DD");
+        wa.wt = moment(date, "YYYY/MM/DD HH:mm").format("HH:mm");
         ret.push(wa);
         //console.log('-------- 插入提醒表 --------');
       }
@@ -2758,7 +2758,7 @@ export class EventService extends BaseService {
     wa.del = anyenum.DelType.undel;
 
     let date;
-    date = moment(ev.evd + " " + ev.evt);
+    date = moment(ev.evd + " " + ev.evt, "YYYY/MM/DD HH:mm");
 
 
     let loop = true;
@@ -2803,14 +2803,14 @@ export class EventService extends BaseService {
         let time = remind;
         let date;
         if (al == anyenum.IsWholeday.StartSet) {
-          date = moment(ev.evd + " " + st).subtract(time, 'm').format("YYYY/MM/DD HH:mm");
+          date = moment(ev.evd + " " + st, "YYYY/MM/DD HH:mm").subtract(time, 'm').format("YYYY/MM/DD HH:mm");
 
         } else {
-          date = moment(ev.evd + " " + this.EVT_ST).subtract(time, 'm').format("YYYY/MM/DD HH:mm");
+          date = moment(ev.evd + " " + this.EVT_ST, "YYYY/MM/DD HH:mm").subtract(time, 'm').format("YYYY/MM/DD HH:mm");
 
         }
-        wa.wd = moment(date).format("YYYY/MM/DD");
-        wa.wt = moment(date).format("HH:mm");
+        wa.wd = moment(date, "YYYY/MM/DD HH:mm").format("YYYY/MM/DD");
+        wa.wt = moment(date, "YYYY/MM/DD HH:mm").format("HH:mm");
         ret.push(wa.rpTParam());
         //console.log('-------- 插入提醒表 --------');
       }
@@ -3946,11 +3946,11 @@ export class EventService extends BaseService {
     let pagetasks: Array<TaskData> = new Array<TaskData>();
     let today: string = moment().format('YYYY/MM/DD');
     let top: string = day;
-    let bottom: string = moment(day).add(1, "days").format('YYYY/MM/DD');
+    let bottom: string = moment(day, "YYYY/MM/DD").add(1, "days").format('YYYY/MM/DD');
 
     // 下拉刷新时需要减一天
     if (direction == PageDirection.PageDown) {
-      top = moment(day).subtract(1, "days").format('YYYY/MM/DD');
+      top = moment(day, "YYYY/MM/DD").subtract(1, "days").format('YYYY/MM/DD');
     }
 
     if (direction == PageDirection.PageInit || direction == PageDirection.PageDown) {
@@ -4096,11 +4096,11 @@ export class EventService extends BaseService {
 
     let pagetasks: Array<TaskData> = new Array<TaskData>();
     let top: string = day;
-    let bottom: string = moment(day).add(1, "days").format('YYYY/MM/DD');
+    let bottom: string = moment(day, "YYYY/MM/DD").add(1, "days").format('YYYY/MM/DD');
 
     // 下拉刷新时需要减一天
     if (direction == PageDirection.PageDown) {
-      top = moment(day).subtract(1, "days").format('YYYY/MM/DD');
+      top = moment(day, "YYYY/MM/DD").subtract(1, "days").format('YYYY/MM/DD');
     }
 
     if (direction == PageDirection.PageInit || direction == PageDirection.PageDown) {
@@ -4207,11 +4207,11 @@ export class EventService extends BaseService {
     let pagetasks: Array<TaskData> = new Array<TaskData>();
     let today: string = moment().format('YYYY/MM/DD');
     let top: string = day;
-    let bottom: string = moment(day).add(1, "days").format('YYYY/MM/DD');
+    let bottom: string = moment(day, "YYYY/MM/DD").add(1, "days").format('YYYY/MM/DD');
 
     // 下拉刷新时需要减一天
     if (direction == PageDirection.PageDown) {
-      top = moment(day).subtract(1, "days").format('YYYY/MM/DD');
+      top = moment(day, "YYYY/MM/DD").subtract(1, "days").format('YYYY/MM/DD');
     }
 
     if (direction == PageDirection.PageInit || direction == PageDirection.PageDown) {
@@ -4936,7 +4936,7 @@ export class RtOver {
         break;
       case anyenum.OverType.limitdate :
         assertEmpty(this.value);    // 结束条件不能为空
-        text = moment(this.value).format("YYYY年M月D日");
+        text = moment(this.value, "YYYY/MM/DD").format("YYYY年M月D日");
         break;
       case anyenum.OverType.fornever :
         text = "永远"
@@ -5104,7 +5104,7 @@ export class RtJson {
         break;
       case anyenum.OverType.limitdate :
         assertEmpty(this.over.value);    // 结束条件不能为空
-        repeatEndDay = moment(this.over.value).add(1,'days').format("YYYY/MM/DD");
+        repeatEndDay = moment(this.over.value, "YYYY/MM/DD").add(1,'days').format("YYYY/MM/DD");
         break;
       case anyenum.OverType.fornever :
         break;
@@ -5116,30 +5116,30 @@ export class RtJson {
     switch(this.cycletype) {
       case anyenum.CycleType.day :
         repeatType = "days";
-        repeatTimes = repeatTimes || moment(repeatStartDay).add(1, "years").diff(moment(repeatStartDay, "YYYY/MM/DD"), "days");
-        repeatEndDay = repeatEndDay || moment(repeatStartDay).add(repeatTimes * repeatStep, "days").format("YYYY/MM/DD");
+        repeatTimes = repeatTimes || moment(repeatStartDay, "YYYY/MM/DD").add(1, "years").diff(moment(repeatStartDay, "YYYY/MM/DD"), "days");
+        repeatEndDay = repeatEndDay || moment(repeatStartDay, "YYYY/MM/DD").add(repeatTimes * repeatStep, "days").format("YYYY/MM/DD");
         break;
       case anyenum.CycleType.week :
         repeatType = "weeks";
         options = this.openway || options;
-        repeatTimes = repeatTimes || moment(repeatStartDay).add(2, "years").diff(moment(repeatStartDay, "YYYY/MM/DD"), "weeks");
-        repeatEndDay = repeatEndDay || moment(repeatStartDay).add(repeatTimes * repeatStep, "weeks").format("YYYY/MM/DD");
+        repeatTimes = repeatTimes || moment(repeatStartDay, "YYYY/MM/DD").add(2, "years").diff(moment(repeatStartDay, "YYYY/MM/DD"), "weeks");
+        repeatEndDay = repeatEndDay || moment(repeatStartDay, "YYYY/MM/DD").add(repeatTimes * repeatStep, "weeks").format("YYYY/MM/DD");
         break;
       case anyenum.CycleType.month :
         repeatType = "months";
         options = this.openway || options;
-        repeatTimes = repeatTimes || moment(repeatStartDay).add(3, "years").diff(moment(repeatStartDay, "YYYY/MM/DD"), "months");
-        repeatEndDay = repeatEndDay || moment(repeatStartDay).add(repeatTimes * repeatStep, "months").format("YYYY/MM/DD");
+        repeatTimes = repeatTimes || moment(repeatStartDay, "YYYY/MM/DD").add(3, "years").diff(moment(repeatStartDay, "YYYY/MM/DD"), "months");
+        repeatEndDay = repeatEndDay || moment(repeatStartDay, "YYYY/MM/DD").add(repeatTimes * repeatStep, "months").format("YYYY/MM/DD");
         break;
       case anyenum.CycleType.year :
         repeatType = "years";
         repeatTimes = repeatTimes || 20;
-        repeatEndDay = repeatEndDay || moment(repeatStartDay).add(repeatTimes * repeatStep, "years").format("YYYY/MM/DD");
+        repeatEndDay = repeatEndDay || moment(repeatStartDay, "YYYY/MM/DD").add(repeatTimes * repeatStep, "years").format("YYYY/MM/DD");
         break;
       case anyenum.CycleType.close :    // 不重复日程
         repeatType = "days";
         repeatTimes = 1;
-        repeatEndDay = moment(repeatStartDay).add(1, "days").format("YYYY/MM/DD");
+        repeatEndDay = moment(repeatStartDay, "YYYY/MM/DD").add(1, "days").format("YYYY/MM/DD");
         break;
       default:
         assertFail();    // 预期外值, 程序异常
@@ -5148,14 +5148,14 @@ export class RtJson {
     let stepDay: string = repeatStartDay;
 
     // 循环开始日期 ~ 结束日期
-    while (moment(stepDay).isBefore(repeatEndDay)) {
+    while (moment(stepDay, "YYYY/MM/DD").isBefore(moment(repeatEndDay, "YYYY/MM/DD"))) {
 
       let days: Array<string> = new Array<string>();
 
       if (options.length > 0) {
         // 星期多选/每月日期多选
         if (repeatType == "weeks") {
-          let dayOfWeek: number = Number(moment(stepDay).format("d"));
+          let dayOfWeek: number = Number(moment(stepDay, "YYYY/MM/DD").format("d"));
 
           for (let option of options) {
             let duration: number = option - dayOfWeek;
@@ -5164,15 +5164,15 @@ export class RtJson {
               days.push(stepDay);     // 当前日期为重复日期
             } else if (duration > 0) {
               //当周日期
-              days.push(moment(stepDay).add(duration, "days").format("YYYY/MM/DD"));
+              days.push(moment(stepDay, "YYYY/MM/DD").add(duration, "days").format("YYYY/MM/DD"));
             } else {
               //下周日期（跨周）
-              days.push(moment(stepDay).add(7, "days").subtract(Math.abs(duration), "days").format("YYYY/MM/DD"));
+              days.push(moment(stepDay, "YYYY/MM/DD").add(7, "days").subtract(Math.abs(duration), "days").format("YYYY/MM/DD"));
             }
           }
 
         } else if (repeatType == "months") {
-          let dayOfMonth: number = Number(moment(stepDay).format("D")) - 1;   // 0 - 30 和options设置日期匹配
+          let dayOfMonth: number = Number(moment(stepDay, "YYYY/MM/DD").format("D")) - 1;   // 0 - 30 和options设置日期匹配
           let maxDayOfMonth: number = moment().daysInMonth();
 
           for (let option of options) {
@@ -5188,10 +5188,10 @@ export class RtJson {
               days.push(stepDay);     // 当前日期为重复日期
             } else if (duration > 0) {
               //当月日期
-              days.push(moment(stepDay).add(duration, "days").format("YYYY/MM/DD"));
+              days.push(moment(stepDay, "YYYY/MM/DD").add(duration, "days").format("YYYY/MM/DD"));
             } else {
               //下月日期（跨月）
-              days.push(moment(stepDay).add(1, "months").dates(option + 1).format("YYYY/MM/DD"));
+              days.push(moment(stepDay, "YYYY/MM/DD").add(1, "months").dates(option + 1).format("YYYY/MM/DD"));
             }
           }
 
@@ -5211,16 +5211,16 @@ export class RtJson {
       }
 
       days.sort((a, b) => {
-        return moment(a).valueOf() - moment(b).valueOf();
+        return moment(a, "YYYY/MM/DD").valueOf() - moment(b, "YYYY/MM/DD").valueOf();
       });
 
       for (let day of days) {
-        if (moment(day).isBefore(repeatEndDay)) {
+        if (moment(day, "YYYY/MM/DD").isBefore(moment(repeatEndDay, "YYYY/MM/DD"))) {
           callback(day);
         }
       }
 
-      stepDay = moment(stepDay).add(repeatStep, repeatType).format("YYYY/MM/DD");
+      stepDay = moment(stepDay, "YYYY/MM/DD").add(repeatStep, repeatType).format("YYYY/MM/DD");
     }
   }
 }
