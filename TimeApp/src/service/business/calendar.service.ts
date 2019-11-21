@@ -49,10 +49,10 @@ export class CalendarService extends BaseService {
         // 获取每月最后一条数据的索引位置
         let monthlyLastDataIndex: Map<string, number> = data.reduce((target, val, index) => {
           if (val.evd) {
-            let month: string = moment(val.evd).format("YYYY/MM");
+            let month: string = moment(val.evd, "YYYY/MM/DD").format("YYYY/MM");
             target.set(month, index);
           } else if (!val.evd && val.sd) {
-            let month: string = moment(val.sd).format("YYYY/MM");
+            let month: string = moment(val.sd, "YYYY/MM/DD").format("YYYY/MM");
             target.set(month, index);
           }
 
