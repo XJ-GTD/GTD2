@@ -89,7 +89,7 @@ export class ScheduleRemindService extends BaseService {
 
           // 针对加入重要事项,且没有完成的日程,增加默认提醒
           if (event.todolist == ToDoListStatus.On && event.wc != EventFinishStatus.Finished) {
-            let remindgap: number = moment().diff(evd + " " + evt);
+            let remindgap: number = moment().diff(moment(evd + " " + evt, "YYYY/MM/DD HH:mm"));
 
             // 预定完成时间比现在小，需要设置未来48小时内，不小于当前+1小时的默认提醒
             if (remindgap > 0) {
@@ -103,8 +103,8 @@ export class ScheduleRemindService extends BaseService {
                 // 判断不小于当前+1小时
                 let plus1hours = moment().add(1, "hours");
 
-                if (plus1hours.diff(evd + " " + evt) <= 0) {
-                  remindgap = moment().diff(evd + " " + evt);
+                if (plus1hours.diff(moment(evd + " " + evt, "YYYY/MM/DD HH:mm")) <= 0) {
+                  remindgap = moment().diff(moment(evd + " " + evt, "YYYY/MM/DD HH:mm"));
                 }
               }
             }

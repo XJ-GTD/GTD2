@@ -15,7 +15,7 @@ export class FormatedatePipe implements PipeTransform {
    * Takes a value and makes it lowercase.
    */
   transform(value: any, ...args) {
-    let m = moment(value);
+    let m = moment(value,"YYYY/MM/DD");
     if (!m.isValid()) {
       m = moment(value, "YYYY/MM")
     }

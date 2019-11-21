@@ -61,8 +61,16 @@ export class RestFulConfig {
   }
 
   //获取url
-  getRestFulUrl(key: string): UrlEntity {
-    return this.urlLs.get(key);
+  getRestFulUrl(key: string, ...params: Array<any>): UrlEntity {
+    if (params && params.length > 0) {
+      let url = this.urlLs.get(key);
+      if (url) {
+        url.params = params;
+      }
+      return url;
+    } else {
+      return this.urlLs.get(key);
+    }
   }
 
 
@@ -219,10 +227,23 @@ export class UrlEntity {
   private _url: string;
   private _key: string;
   private _desc: string;
+  private _params: Array<any>;
 
+  set params(values: Array<any>) {
+    this._params = values;
+  }
 
   get url(): string {
-    return this._url;
+    if (this._params && this._params.length > 0) {
+      let url = this._params.reduce((url, ele) => {
+        url = url.replace(`{${ele.name}}`, ele.value);
+        return url;
+      }, this._url);
+
+      return url;
+    } else {
+      return this._url;
+    }
   }
 
   set url(value: string) {

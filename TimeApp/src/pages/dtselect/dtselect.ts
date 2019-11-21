@@ -54,7 +54,7 @@ import {TxJson} from "../../service/business/event.service";
         ></date-picker>
         <ion-label><ion-icon class="fal fa-calendar-alt"></ion-icon>结束日期</ion-label>
       </div>
-      
+
       <div ion-item no-border no-padding no-lines no-margin class="itemwarp font-normal" (click)="openEndtime()"  *ngIf="settype=='1'">
         <ion-multi-picker #endTime [(ngModel)]="etval.value"
                           (ngModelChange)="etselect();" [multiPickerColumns]="dependentColumns2"
@@ -62,7 +62,7 @@ import {TxJson} from "../../service/business/event.service";
         <ion-label><ion-icon class="fal fa-clock"></ion-icon>结束时间</ion-label>
         <ion-label class = "timedisplay">{{etval.displayname}}</ion-label>
       </div>
-     
+
     </modal-box>
   `
 })
@@ -277,19 +277,19 @@ export class DtSelectPage {
         this.pagedata.ct = this.navParams.data.ct;
 
 
-        this.pagedata.sd = moment(this.navParams.data.evd).format("YYYY-MM-DD");
-        this.pagedata.ed =  moment(this.navParams.data.evd + " " + this.navParams.data.evt).
+        this.pagedata.sd = moment(this.navParams.data.evd, "YYYY/MM/DD").format("YYYY-MM-DD");
+        this.pagedata.ed =  moment(this.navParams.data.evd + " " + this.navParams.data.evt, "YYYY/MM/DD HH:mm").
         add(this.navParams.data.ct,'m').format("YYYY-MM-DD");
         this.pagedata.st = this.navParams.data.evt;
 
-        this.pagedata.et = moment(this.navParams.data.evd + " " + this.navParams.data.evt).
+        this.pagedata.et = moment(this.navParams.data.evd + " " + this.navParams.data.evt, "YYYY/MM/DD HH:mm").
         add(this.navParams.data.ct,'m').format("HH:mm");
 
 
       }else if(this.navParams.data.al == anyenum.IsWholeday.EndSet){
         this.settype = '1';
-        this.pagedata.sd = moment(this.navParams.data.evd).format("YYYY-MM-DD");
-        this.pagedata.ed =  moment(this.navParams.data.evd).format("YYYY-MM-DD");
+        this.pagedata.sd = moment(this.navParams.data.evd, "YYYY/MM/DD").format("YYYY-MM-DD");
+        this.pagedata.ed =  moment(this.navParams.data.evd, "YYYY/MM/DD").format("YYYY-MM-DD");
         this.pagedata.st = this.navParams.data.evt;
         this.pagedata.et = this.navParams.data.evt;
         this.pagedata.ct = 0;
@@ -357,19 +357,19 @@ export class DtSelectPage {
   save() {
     if (this.settype == '0'){
       this.retdata.al = anyenum.IsWholeday.StartSet;
-      this.retdata.sd = moment(this.pagedata.sd).format("YYYY/MM/DD");
+      this.retdata.sd = moment(this.pagedata.sd, "YYYY-MM-DD").format("YYYY/MM/DD");
       this.retdata.st = this.pagedata.st;
       this.retdata.ct = this.pagedata.ct ;
 
       this.retdata.evd = this.retdata.sd;
       this.retdata.evt = this.retdata.st;
-      this.retdata.ed =  moment(this.retdata.sd + " " + this.retdata.st).
+      this.retdata.ed =  moment(this.retdata.sd + " " + this.retdata.st, "YYYY-MM-DD HH:mm").
         add(this.retdata.ct, 'm').format("YYYY/MM/DD");
-      this.retdata.et = moment(this.retdata.sd + " " + this.retdata.st).
+      this.retdata.et = moment(this.retdata.sd + " " + this.retdata.st, "YYYY-MM-DD HH:mm").
         add(this.retdata.ct, 'm').format("HH:mm");
     }else{
       this.retdata.al = anyenum.IsWholeday.EndSet;
-      this.retdata.ed = moment(this.pagedata.ed).format("YYYY/MM/DD");
+      this.retdata.ed = moment(this.pagedata.ed, "YYYY-MM-DD").format("YYYY/MM/DD");
       this.retdata.et = this.pagedata.et;
       this.retdata.ct = 0;
 
@@ -388,23 +388,23 @@ export class DtSelectPage {
 
   private iniTime() {
     this.settype = "0";
-    this.pagedata.sd = moment(this.navParams.data.evd).format("YYYY-MM-DD");
-    if (moment().isBefore(moment(moment().format("YYYY/MM/DD") + " " + "08:00"))) {
+    this.pagedata.sd = moment(this.navParams.data.evd, "YYYY/MM/DD").format("YYYY-MM-DD");
+    if (moment().isBefore(moment(moment().format("YYYY/MM/DD") + " " + "08:00", "YYYY/MM/DD HH:mm"))) {
       this.pagedata.st = "08:00";
     } else {
       this.pagedata.st = moment().format("HH:mm");
     }
     this.pagedata.ct = 60;
-    this.pagedata.ed = moment(this.pagedata.sd).add(this.pagedata.ct, 'm').format("YYYY-MM-DD");
-    this.pagedata.et = moment(this.pagedata.sd + " " + this.pagedata.st).
+    this.pagedata.ed = moment(this.pagedata.sd, "YYYY-MM-DD").add(this.pagedata.ct, 'm').format("YYYY-MM-DD");
+    this.pagedata.et = moment(this.pagedata.sd + " " + this.pagedata.st, "YYYY-MM-DD HH:mm").
     add(this.pagedata.ct, 'm').format("HH:mm");
 
   }
 
   private seteddate(){
-    this.pagedata.ed = moment(this.pagedata.sd + " " + this.pagedata.st).
+    this.pagedata.ed = moment(this.pagedata.sd + " " + this.pagedata.st, "YYYY-MM-DD HH:mm").
       add(this.pagedata.ct, 'm').format("YYYY-MM-DD");
-    this.pagedata.et = moment(this.pagedata.sd + " " + this.pagedata.st).
+    this.pagedata.et = moment(this.pagedata.sd + " " + this.pagedata.st, "YYYY-MM-DD HH:mm").
       add(this.pagedata.ct, 'm').format("HH:mm");
     this.setTimeValue(this.pagedata.st,this.pagedata.et,this.pagedata.ct);
   }

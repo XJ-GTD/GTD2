@@ -724,11 +724,11 @@ export class UtilService {
   }
 
   public lunar(d: moment.Moment, format?: string): string {
-    return this.chineseLunar.solarToLunar(moment(d.format("YYYY/MM/DD")).toDate(), format);
+    return this.chineseLunar.solarToLunar(d.toDate(), format);
   }
 
   public lunar4str(date: string, format?: string): string {
-    return this.lunar(moment(date), format);
+    return this.lunar(moment(date,"YYYY/MM/DD"), format);
   }
 
 

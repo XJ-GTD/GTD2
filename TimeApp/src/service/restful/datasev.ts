@@ -14,6 +14,26 @@ export class DataRestful {
   }
 
   /**
+   * http://pluto.guobaa.com/shs/{datatype}/share
+   **/
+  async share(type: string, share: ShareInData): Promise<string> {
+    let url: UrlEntity = this.config.getRestFulUrl("SHD", {name: "datatype", value: type});
+
+    try {
+      let data = await this.request.post(url, share);
+
+      if (data) {
+        return data.shsurl;
+      } else {
+        return null;
+      }
+    } catch (err) {
+      return null;
+    }
+
+  }
+
+  /**
    * http://pluto.guobaa.com/abl/store/local/upload
    * formData: binary
    * username: group
@@ -160,4 +180,8 @@ export class DownloadOutData {}
 export class DayCountCodec {
   day: string;
   count: number;
+}
+
+export class ShareInData {
+  payload: any;   // 共享数据载荷
 }

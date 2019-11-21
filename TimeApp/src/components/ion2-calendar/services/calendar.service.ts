@@ -289,9 +289,7 @@ export class IonCalendarService {
   async getMonthData(month:CalendarMonth){
     let originmonth: string = moment(month.original.date).format("YYYY/MM");
 
-    console.log(originmonth);
     this.calendarService.refreshCalendarActivitiesToMonth(originmonth);
-    console.log(originmonth);
 
     let data:MonthActivitySummaryData = await this.calendarService.fetchMonthActivitiesSummary(originmonth);
 
@@ -303,7 +301,8 @@ export class IonCalendarService {
         this.calendarService.refreshMonthActivitiesSummary(data, changed);
 
         data.days.forEach((v,k,m)=>{
-          let calendarDay:CalendarDay = month.days.find((n) => moment(v.day).isSame(moment(n.time), 'day'));
+
+          let calendarDay:CalendarDay = month.days.find((n) => moment(v.day,"YYYY/MM/DD").isSame(moment(n.time), 'day'));
 
           calendarDay.hasevent = v.agendascount > 0 || v.taskscount > 0;
           calendarDay.hasrepeat = v.repeateventscount > 0;
@@ -317,7 +316,7 @@ export class IonCalendarService {
     });
 
     data.days.forEach((v,k,m)=>{
-      let calendarDay:CalendarDay = month.days.find((n) => moment(v.day).isSame(moment(n.time), 'day'));
+      let calendarDay:CalendarDay = month.days.find((n) => moment(v.day,"YYYY/MM/DD").isSame(moment(n.time), 'day'));
 
       calendarDay.hasevent = v.agendascount > 0 || v.taskscount > 0;
       calendarDay.hasrepeat = v.repeateventscount > 0;

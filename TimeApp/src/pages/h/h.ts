@@ -100,7 +100,7 @@ export class HPage {
     // },1000)
 
     this.emitService.register("on.websocket.workqueue.init",($event)=>{
-      this.process = "正在处理" + $event;
+      this.process = "正在处理" + $event + moment().format("HH:mm:ss");
     });
   }
 

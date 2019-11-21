@@ -281,7 +281,7 @@ BScroll.use(InfinityScroll);
                   <!--</div>-->
                 </ion-row>
               </ng-container>
-              
+
             </ng-template>
 
             <ng-template #noscd>
@@ -312,7 +312,7 @@ export class TdlPage {
   };
 
 
-  listmonth: moment.Moment = moment(moment().format("YYYYMM") + "01");
+  listmonth: moment.Moment = moment(moment().format("YYYYMM") + "01", "YYYYMMDD");
 
   _gesture: TdlGesture;
 
@@ -425,7 +425,7 @@ export class TdlPage {
 
     this.emitService.register("calendar.change.month", ($data) => {
       this.gotoEl4month("#month" + $data);
-      this.listmonth = moment($data + "01");
+      this.listmonth = moment($data + "01", "YYYYMMDD");
 
       // let monthname = moment($data, "YYYYMM").format("YYYY/MM");
       // this.emitService.destroy("mwxing.calendar." + monthname + ".chagned");
@@ -446,7 +446,7 @@ export class TdlPage {
             this.option.loopmonth = !this.option.loopmonth;
             for (let i = this.monthActivityDatas.length - 1; i >= 0; i--) {
               //let monthActivityData = this.monthActivityDatas[0];
-              let monobj = moment(this.monthActivityDatas[i].month + "/01");
+              let monobj = moment(this.monthActivityDatas[i].month + "/01", "YYYY/MM/DD");
               let key = "#month" + monobj.format("YYYYMM");
               let el = this.el.nativeElement.querySelector(key);
               // if (el && $event.scrollTop - el.offsetTop < el.clientHeight && $event.scrollTop - el.offsetTop > 0) {
@@ -648,7 +648,7 @@ export class TdlPage {
 
     let p: ScdPageParamter = new ScdPageParamter();
     p.si = si;
-    p.d = moment(d);
+    p.d = moment(d, "YYYY/MM/DD");
     p.gs = gs;
 
     this.feedback.audioClick();
@@ -673,13 +673,13 @@ export class TdlPage {
 
   toAdd(d) {
     let p: ScdPageParamter = new ScdPageParamter();
-    p.d = moment(d);
+    p.d = moment(d, "YYYY/MM/DD");
     this.feedback.audioClick();
     this.util.createModal(DataConfig.PAGE._AGENDA_PAGE, p, ModalTranType.scale).present();
   }
 
   istoday(val:any){
-    let m = moment(val);
+    let m = moment(val,"YYYY/MM/DD");
     return m.isSame(moment(),"date");
   }
 

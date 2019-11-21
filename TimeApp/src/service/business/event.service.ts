@@ -18,7 +18,7 @@ import {JhaTbl} from "../sqlite/tbl/jha.tbl";
 import {DataConfig} from "../config/data.config";
 import {BTbl} from "../sqlite/tbl/b.tbl";
 import {FjTbl} from "../sqlite/tbl/fj.tbl";
-import {DataRestful, PullInData, PushInData, SyncData, SyncDataFields, UploadInData, DownloadInData, DayCountCodec} from "../restful/datasev";
+import {DataRestful, PullInData, PushInData, SyncData, SyncDataFields, UploadInData, DownloadInData, DayCountCodec, ShareInData} from "../restful/datasev";
 import {SyncType, DelType, ObjectType, IsSuccess, CycleType, SyncDataStatus, OperateType, ToDoListStatus, RepeatFlag, ConfirmType, ModiPower, PageDirection, SyncDataSecurity, InviteState, CompleteState, EventFinishStatus, EventType} from "../../data.enum";
 import {
   assertNotNumber,
@@ -39,6 +39,17 @@ export class EventService extends BaseService {
   }
 
   EVT_ST = "08:00";//全天开始时间默认为8:00
+
+  /**
+   * 分享日程
+   *
+   **/
+  async shareAgenda(agenda: AgendaData): Promise<string> {
+    let share: ShareInData = new ShareInData();
+    share.payload = agenda;
+
+    return await this.dataRestful.share("agenda", share);
+  }
 
   /**
    * 接收事件日程保存到本地
@@ -2390,9 +2401,9 @@ export class EventService extends BaseService {
       agdata.sd = agdata.sd || agdata.evd || moment().format("YYYY/MM/DD");
       agdata.st = !agdata.st ? this.EVT_ST : agdata.st;
 
-      agdata.ed = agdata.ed || moment(agdata.sd + " " + agdata.st).
+      agdata.ed = agdata.ed || moment(agdata.sd + " " + agdata.st, "YYYY/MM/DD HH:mm").
       add(agdata.ct, 'm').format("YYYY/MM/DD");
-      agdata.et = !agdata.et ? moment(agdata.sd + " " + agdata.st).
+      agdata.et = !agdata.et ? moment(agdata.sd + " " + agdata.st, "YYYY/MM/DD HH:mm").
       add(agdata.ct, 'm').format("HH:mm") : agdata.et;
     }else{
       agdata.ct = !agdata.ct ? 0 :agdata.ct;
@@ -2734,12 +2745,12 @@ export class EventService extends BaseService {
 
         let time = remind;
         let date;
-        date = moment(ev.evd + " " + ev.evt).subtract(time, 'm').format("YYYY/MM/DD HH:mm");
+        date = moment(ev.evd + " " + ev.evt, "YYYY/MM/DD HH:mm").subtract(time, 'm').format("YYYY/MM/DD HH:mm");
 
         //使用ev表zhukey与提醒时间的组合，便于服务器更新及本地更新
-        wa.wai = ev.evi + moment(date).format("YYYYMMDDHHmm") ;
-        wa.wd = moment(date).format("YYYY/MM/DD");
-        wa.wt = moment(date).format("HH:mm");
+        wa.wai = ev.evi + moment(date, "YYYY/MM/DD HH:mm").format("YYYYMMDDHHmm") ;
+        wa.wd = moment(date, "YYYY/MM/DD HH:mm").format("YYYY/MM/DD");
+        wa.wt = moment(date, "YYYY/MM/DD HH:mm").format("HH:mm");
         ret.push(wa);
         //console.log('-------- 插入提醒表 --------');
       }
@@ -2763,7 +2774,7 @@ export class EventService extends BaseService {
     wa.del = anyenum.DelType.undel;
 
     let date;
-    date = moment(ev.evd + " " + ev.evt);
+    date = moment(ev.evd + " " + ev.evt, "YYYY/MM/DD HH:mm");
 
 
     let loop = true;
@@ -2808,14 +2819,14 @@ export class EventService extends BaseService {
         let time = remind;
         let date;
         if (al == anyenum.IsWholeday.StartSet) {
-          date = moment(ev.evd + " " + st).subtract(time, 'm').format("YYYY/MM/DD HH:mm");
+          date = moment(ev.evd + " " + st, "YYYY/MM/DD HH:mm").subtract(time, 'm').format("YYYY/MM/DD HH:mm");
 
         } else {
-          date = moment(ev.evd + " " + this.EVT_ST).subtract(time, 'm').format("YYYY/MM/DD HH:mm");
+          date = moment(ev.evd + " " + this.EVT_ST, "YYYY/MM/DD HH:mm").subtract(time, 'm').format("YYYY/MM/DD HH:mm");
 
         }
-        wa.wd = moment(date).format("YYYY/MM/DD");
-        wa.wt = moment(date).format("HH:mm");
+        wa.wd = moment(date, "YYYY/MM/DD HH:mm").format("YYYY/MM/DD");
+        wa.wt = moment(date, "YYYY/MM/DD HH:mm").format("HH:mm");
         ret.push(wa.rpTParam());
         //console.log('-------- 插入提醒表 --------');
       }
@@ -3951,11 +3962,11 @@ export class EventService extends BaseService {
     let pagetasks: Array<TaskData> = new Array<TaskData>();
     let today: string = moment().format('YYYY/MM/DD');
     let top: string = day;
-    let bottom: string = moment(day).add(1, "days").format('YYYY/MM/DD');
+    let bottom: string = moment(day, "YYYY/MM/DD").add(1, "days").format('YYYY/MM/DD');
 
     // 下拉刷新时需要减一天
     if (direction == PageDirection.PageDown) {
-      top = moment(day).subtract(1, "days").format('YYYY/MM/DD');
+      top = moment(day, "YYYY/MM/DD").subtract(1, "days").format('YYYY/MM/DD');
     }
 
     if (direction == PageDirection.PageInit || direction == PageDirection.PageDown) {
@@ -4101,11 +4112,11 @@ export class EventService extends BaseService {
 
     let pagetasks: Array<TaskData> = new Array<TaskData>();
     let top: string = day;
-    let bottom: string = moment(day).add(1, "days").format('YYYY/MM/DD');
+    let bottom: string = moment(day, "YYYY/MM/DD").add(1, "days").format('YYYY/MM/DD');
 
     // 下拉刷新时需要减一天
     if (direction == PageDirection.PageDown) {
-      top = moment(day).subtract(1, "days").format('YYYY/MM/DD');
+      top = moment(day, "YYYY/MM/DD").subtract(1, "days").format('YYYY/MM/DD');
     }
 
     if (direction == PageDirection.PageInit || direction == PageDirection.PageDown) {
@@ -4212,11 +4223,11 @@ export class EventService extends BaseService {
     let pagetasks: Array<TaskData> = new Array<TaskData>();
     let today: string = moment().format('YYYY/MM/DD');
     let top: string = day;
-    let bottom: string = moment(day).add(1, "days").format('YYYY/MM/DD');
+    let bottom: string = moment(day, "YYYY/MM/DD").add(1, "days").format('YYYY/MM/DD');
 
     // 下拉刷新时需要减一天
     if (direction == PageDirection.PageDown) {
-      top = moment(day).subtract(1, "days").format('YYYY/MM/DD');
+      top = moment(day, "YYYY/MM/DD").subtract(1, "days").format('YYYY/MM/DD');
     }
 
     if (direction == PageDirection.PageInit || direction == PageDirection.PageDown) {
@@ -4402,7 +4413,7 @@ export class EventService extends BaseService {
     } else {
       if (changed.cs != IsSuccess.success) {
         let newIndex: number = tasks.findIndex((val, index, arr) => {
-          return moment(val.evd + ' ' + val.evt).diff(changed.evd + ' ' + changed.evt) >= 0;
+          return moment(val.evd + ' ' + val.evt, "YYYY/MM/DD HH:mm").diff(moment(changed.evd + ' ' + changed.evt, "YYYY/MM/DD HH:mm")) >= 0;
         });
 
         if (newIndex > 0) {
@@ -4597,13 +4608,13 @@ export class EventService extends BaseService {
           //将数据加到新的排序中去
           //todolist已经进行过排序，按照日期排列 ,快速排序算法，还是太慢，
           //1.新加入的事件的日期，比todolist第一个日期还小,缩短循环排序时间
-          if ((moment(changed.evd + ' ' + changed.evt).diff(todolist[0].evd + ' ' + todolist[0].evt)<=0)) {
+          if ((moment(changed.evd + ' ' + changed.evt, "YYYY/MM/DD HH:mm").diff(moment(todolist[0].evd + ' ' + todolist[0].evt, "YYYY/MM/DD HH:mm"))<=0)) {
               todolist.unshift(changed);
               return todolist;
           }
 
           //2.新加入的事件的日期，比todolist的最后一个日期还小
-          if (moment(changed.evd + ' ' + changed.evt).diff(todolist[todolist.length-1].evd + ' ' + todolist[todolist.length-1].evt)>=0) {
+          if (moment(changed.evd + ' ' + changed.evt, "YYYY/MM/DD HH:mm").diff(moment(todolist[todolist.length-1].evd + ' ' + todolist[todolist.length-1].evt, "YYYY/MM/DD HH:mm"))>=0) {
               todolist.push(changed);
               return todolist;
           }
@@ -4612,7 +4623,7 @@ export class EventService extends BaseService {
           let i: number = 0;
           for (let td of todolist) {
             //todolist 已经是按照日期顺序排列好的，然后根据日期大小进行排序，当change的日期比todolist的小的时候插入进去
-            if(((moment(changed.evd + ' ' + changed.evt).diff(td.evd + ' ' + td.evt) <0 ))) {
+            if(((moment(changed.evd + ' ' + changed.evt, "YYYY/MM/DD HH:mm").diff(moment(td.evd + ' ' + td.evt, "YYYY/MM/DD HH:mm")) <0 ))) {
               todolist.splice(i,0,changed);
               return todolist;
             }
@@ -4941,7 +4952,7 @@ export class RtOver {
         break;
       case anyenum.OverType.limitdate :
         assertEmpty(this.value);    // 结束条件不能为空
-        text = moment(this.value).format("YYYY年M月D日");
+        text = moment(this.value, "YYYY/MM/DD").format("YYYY年M月D日");
         break;
       case anyenum.OverType.fornever :
         text = "永远"
@@ -5109,7 +5120,7 @@ export class RtJson {
         break;
       case anyenum.OverType.limitdate :
         assertEmpty(this.over.value);    // 结束条件不能为空
-        repeatEndDay = moment(this.over.value).add(1,'days').format("YYYY/MM/DD");
+        repeatEndDay = moment(this.over.value, "YYYY/MM/DD").add(1,'days').format("YYYY/MM/DD");
         break;
       case anyenum.OverType.fornever :
         break;
@@ -5121,30 +5132,30 @@ export class RtJson {
     switch(this.cycletype) {
       case anyenum.CycleType.day :
         repeatType = "days";
-        repeatTimes = repeatTimes || moment(repeatStartDay).add(1, "years").diff(repeatStartDay, "days");
-        repeatEndDay = repeatEndDay || moment(repeatStartDay).add(repeatTimes * repeatStep, "days").format("YYYY/MM/DD");
+        repeatTimes = repeatTimes || moment(repeatStartDay, "YYYY/MM/DD").add(1, "years").diff(moment(repeatStartDay, "YYYY/MM/DD"), "days");
+        repeatEndDay = repeatEndDay || moment(repeatStartDay, "YYYY/MM/DD").add(repeatTimes * repeatStep, "days").format("YYYY/MM/DD");
         break;
       case anyenum.CycleType.week :
         repeatType = "weeks";
         options = this.openway || options;
-        repeatTimes = repeatTimes || moment(repeatStartDay).add(2, "years").diff(repeatStartDay, "weeks");
-        repeatEndDay = repeatEndDay || moment(repeatStartDay).add(repeatTimes * repeatStep, "weeks").format("YYYY/MM/DD");
+        repeatTimes = repeatTimes || moment(repeatStartDay, "YYYY/MM/DD").add(2, "years").diff(moment(repeatStartDay, "YYYY/MM/DD"), "weeks");
+        repeatEndDay = repeatEndDay || moment(repeatStartDay, "YYYY/MM/DD").add(repeatTimes * repeatStep, "weeks").format("YYYY/MM/DD");
         break;
       case anyenum.CycleType.month :
         repeatType = "months";
         options = this.openway || options;
-        repeatTimes = repeatTimes || moment(repeatStartDay).add(3, "years").diff(repeatStartDay, "months");
-        repeatEndDay = repeatEndDay || moment(repeatStartDay).add(repeatTimes * repeatStep, "months").format("YYYY/MM/DD");
+        repeatTimes = repeatTimes || moment(repeatStartDay, "YYYY/MM/DD").add(3, "years").diff(moment(repeatStartDay, "YYYY/MM/DD"), "months");
+        repeatEndDay = repeatEndDay || moment(repeatStartDay, "YYYY/MM/DD").add(repeatTimes * repeatStep, "months").format("YYYY/MM/DD");
         break;
       case anyenum.CycleType.year :
         repeatType = "years";
         repeatTimes = repeatTimes || 20;
-        repeatEndDay = repeatEndDay || moment(repeatStartDay).add(repeatTimes * repeatStep, "years").format("YYYY/MM/DD");
+        repeatEndDay = repeatEndDay || moment(repeatStartDay, "YYYY/MM/DD").add(repeatTimes * repeatStep, "years").format("YYYY/MM/DD");
         break;
       case anyenum.CycleType.close :    // 不重复日程
         repeatType = "days";
         repeatTimes = 1;
-        repeatEndDay = moment(repeatStartDay).add(1, "days").format("YYYY/MM/DD");
+        repeatEndDay = moment(repeatStartDay, "YYYY/MM/DD").add(1, "days").format("YYYY/MM/DD");
         break;
       default:
         assertFail();    // 预期外值, 程序异常
@@ -5153,14 +5164,14 @@ export class RtJson {
     let stepDay: string = repeatStartDay;
 
     // 循环开始日期 ~ 结束日期
-    while (moment(stepDay).isBefore(repeatEndDay)) {
+    while (moment(stepDay, "YYYY/MM/DD").isBefore(moment(repeatEndDay, "YYYY/MM/DD"))) {
 
       let days: Array<string> = new Array<string>();
 
       if (options.length > 0) {
         // 星期多选/每月日期多选
         if (repeatType == "weeks") {
-          let dayOfWeek: number = Number(moment(stepDay).format("d"));
+          let dayOfWeek: number = Number(moment(stepDay, "YYYY/MM/DD").format("d"));
 
           for (let option of options) {
             let duration: number = option - dayOfWeek;
@@ -5169,15 +5180,15 @@ export class RtJson {
               days.push(stepDay);     // 当前日期为重复日期
             } else if (duration > 0) {
               //当周日期
-              days.push(moment(stepDay).add(duration, "days").format("YYYY/MM/DD"));
+              days.push(moment(stepDay, "YYYY/MM/DD").add(duration, "days").format("YYYY/MM/DD"));
             } else {
               //下周日期（跨周）
-              days.push(moment(stepDay).add(7, "days").subtract(Math.abs(duration), "days").format("YYYY/MM/DD"));
+              days.push(moment(stepDay, "YYYY/MM/DD").add(7, "days").subtract(Math.abs(duration), "days").format("YYYY/MM/DD"));
             }
           }
 
         } else if (repeatType == "months") {
-          let dayOfMonth: number = Number(moment(stepDay).format("D")) - 1;   // 0 - 30 和options设置日期匹配
+          let dayOfMonth: number = Number(moment(stepDay, "YYYY/MM/DD").format("D")) - 1;   // 0 - 30 和options设置日期匹配
           let maxDayOfMonth: number = moment().daysInMonth();
 
           for (let option of options) {
@@ -5193,10 +5204,10 @@ export class RtJson {
               days.push(stepDay);     // 当前日期为重复日期
             } else if (duration > 0) {
               //当月日期
-              days.push(moment(stepDay).add(duration, "days").format("YYYY/MM/DD"));
+              days.push(moment(stepDay, "YYYY/MM/DD").add(duration, "days").format("YYYY/MM/DD"));
             } else {
               //下月日期（跨月）
-              days.push(moment(stepDay).add(1, "months").dates(option + 1).format("YYYY/MM/DD"));
+              days.push(moment(stepDay, "YYYY/MM/DD").add(1, "months").dates(option + 1).format("YYYY/MM/DD"));
             }
           }
 
@@ -5216,16 +5227,16 @@ export class RtJson {
       }
 
       days.sort((a, b) => {
-        return moment(a).valueOf() - moment(b).valueOf();
+        return moment(a, "YYYY/MM/DD").valueOf() - moment(b, "YYYY/MM/DD").valueOf();
       });
 
       for (let day of days) {
-        if (moment(day).isBefore(repeatEndDay)) {
+        if (moment(day, "YYYY/MM/DD").isBefore(moment(repeatEndDay, "YYYY/MM/DD"))) {
           callback(day);
         }
       }
 
-      stepDay = moment(stepDay).add(repeatStep, repeatType).format("YYYY/MM/DD");
+      stepDay = moment(stepDay, "YYYY/MM/DD").add(repeatStep, repeatType).format("YYYY/MM/DD");
     }
   }
 }

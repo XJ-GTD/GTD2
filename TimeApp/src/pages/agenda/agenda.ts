@@ -337,7 +337,7 @@ export class AgendaPage {
 
         // 指定今天以前的日期，全部使用今天创建
         // 需求：今天以前的日期不能创建日程
-        if (moment(this.currentAgenda.sd, "YYYY/MM/DD").diff(moment().format("YYYY/MM/DD")) < 0) {
+        if (moment(this.currentAgenda.sd, "YYYY/MM/DD").diff(moment(moment().format("YYYY/MM/DD"), "YYYY/MM/DD")) < 0) {
           this.currentAgenda.sd = moment().format("YYYY/MM/DD");
         }
 
@@ -982,6 +982,7 @@ export class AgendaPage {
   }
   //分享微信
   shareWeiXin() {
+    this.eventService.shareAgenda(this.currentAgenda).then((url) => {
       //获取分享内容
       let text = this.currentAgenda.evn;
       //验证是否按照微信组件
@@ -994,7 +995,7 @@ export class AgendaPage {
                 thumb: "assets/imgs/logo.png",
                 media: {
                   type: Wechat.Type.WEBPAGE,
-                  webpageUrl: "https://fir.im/d2z3"
+                  webpageUrl: url || "https://fir.im/d2z3"
                 }
             },
             scene:0  // 分享目标 0:分享到对话，1:分享到朋友圈，2:收藏
@@ -1006,8 +1007,8 @@ export class AgendaPage {
         } else {
             alert('请安装微信');
         }
-      })
-
+      });
+    });
   }
 
 }
