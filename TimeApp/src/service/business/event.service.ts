@@ -4386,7 +4386,7 @@ export class EventService extends BaseService {
     } else {
       if (changed.cs != IsSuccess.success) {
         let newIndex: number = tasks.findIndex((val, index, arr) => {
-          return moment(val.evd + ' ' + val.evt).diff(changed.evd + ' ' + changed.evt) >= 0;
+          return moment(val.evd + ' ' + val.evt, "YYYY/MM/DD HH:mm").diff(moment(changed.evd + ' ' + changed.evt, "YYYY/MM/DD HH:mm")) >= 0;
         });
 
         if (newIndex > 0) {
@@ -4581,13 +4581,13 @@ export class EventService extends BaseService {
           //将数据加到新的排序中去
           //todolist已经进行过排序，按照日期排列 ,快速排序算法，还是太慢，
           //1.新加入的事件的日期，比todolist第一个日期还小,缩短循环排序时间
-          if ((moment(changed.evd + ' ' + changed.evt).diff(todolist[0].evd + ' ' + todolist[0].evt)<=0)) {
+          if ((moment(changed.evd + ' ' + changed.evt, "YYYY/MM/DD HH:mm").diff(moment(todolist[0].evd + ' ' + todolist[0].evt, "YYYY/MM/DD HH:mm"))<=0)) {
               todolist.unshift(changed);
               return todolist;
           }
 
           //2.新加入的事件的日期，比todolist的最后一个日期还小
-          if (moment(changed.evd + ' ' + changed.evt).diff(todolist[todolist.length-1].evd + ' ' + todolist[todolist.length-1].evt)>=0) {
+          if (moment(changed.evd + ' ' + changed.evt, "YYYY/MM/DD HH:mm").diff(moment(todolist[todolist.length-1].evd + ' ' + todolist[todolist.length-1].evt, "YYYY/MM/DD HH:mm"))>=0) {
               todolist.push(changed);
               return todolist;
           }
@@ -4596,7 +4596,7 @@ export class EventService extends BaseService {
           let i: number = 0;
           for (let td of todolist) {
             //todolist 已经是按照日期顺序排列好的，然后根据日期大小进行排序，当change的日期比todolist的小的时候插入进去
-            if(((moment(changed.evd + ' ' + changed.evt).diff(td.evd + ' ' + td.evt) <0 ))) {
+            if(((moment(changed.evd + ' ' + changed.evt, "YYYY/MM/DD HH:mm").diff(moment(td.evd + ' ' + td.evt, "YYYY/MM/DD HH:mm")) <0 ))) {
               todolist.splice(i,0,changed);
               return todolist;
             }
@@ -5105,19 +5105,19 @@ export class RtJson {
     switch(this.cycletype) {
       case anyenum.CycleType.day :
         repeatType = "days";
-        repeatTimes = repeatTimes || moment(repeatStartDay).add(1, "years").diff(repeatStartDay, "days");
+        repeatTimes = repeatTimes || moment(repeatStartDay).add(1, "years").diff(moment(repeatStartDay, "YYYY/MM/DD"), "days");
         repeatEndDay = repeatEndDay || moment(repeatStartDay).add(repeatTimes * repeatStep, "days").format("YYYY/MM/DD");
         break;
       case anyenum.CycleType.week :
         repeatType = "weeks";
         options = this.openway || options;
-        repeatTimes = repeatTimes || moment(repeatStartDay).add(2, "years").diff(repeatStartDay, "weeks");
+        repeatTimes = repeatTimes || moment(repeatStartDay).add(2, "years").diff(moment(repeatStartDay, "YYYY/MM/DD"), "weeks");
         repeatEndDay = repeatEndDay || moment(repeatStartDay).add(repeatTimes * repeatStep, "weeks").format("YYYY/MM/DD");
         break;
       case anyenum.CycleType.month :
         repeatType = "months";
         options = this.openway || options;
-        repeatTimes = repeatTimes || moment(repeatStartDay).add(3, "years").diff(repeatStartDay, "months");
+        repeatTimes = repeatTimes || moment(repeatStartDay).add(3, "years").diff(moment(repeatStartDay, "YYYY/MM/DD"), "months");
         repeatEndDay = repeatEndDay || moment(repeatStartDay).add(repeatTimes * repeatStep, "months").format("YYYY/MM/DD");
         break;
       case anyenum.CycleType.year :

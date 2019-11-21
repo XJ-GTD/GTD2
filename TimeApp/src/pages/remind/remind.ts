@@ -349,7 +349,7 @@ export class RemindPage {
       tm =  (parseInt(dtsplit[1])+ 12) + ":" + dtsplit[2];
     }
     let dt = this.datevalue + " " + tm;
-    let time = moment(this.evdatetime).diff(dt, 'm');
+    let time = moment(this.evdatetime).diff(moment(dt, "YYYY/MM/DD HH:mm"), 'm');
     let hav = this.reminds.findIndex((value, index, arr) => {
       return value.value == time;
     })

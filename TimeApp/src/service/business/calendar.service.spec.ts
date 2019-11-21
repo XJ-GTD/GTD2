@@ -5160,7 +5160,7 @@ describe('CalendarService test suite', () => {
     let startday: string = moment("2019/08").startOf('month').format("YYYY/MM/DD");
     let endday: string = moment("2019/08").endOf('month').format("YYYY/MM/DD");
 
-    let betweenMonthEndDays: number = moment("2019/08").endOf('month').diff(day, "days") + 1;
+    let betweenMonthEndDays: number = moment("2019/08", "YYYY/MM").endOf('month').diff(moment(day, "YYYY/MM/DD"), "days") + 1;
 
     expect(monthActivity.month).toBe("2019/08");
     expect(monthActivity.calendaritems).toBeDefined();
