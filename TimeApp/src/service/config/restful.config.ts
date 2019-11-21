@@ -65,7 +65,7 @@ export class RestFulConfig {
     if (params && params.length > 0) {
       let url = this.urlLs.get(key);
       if (url) {
-        url.params(params);
+        url.params = params;
       }
       return url;
     } else {
