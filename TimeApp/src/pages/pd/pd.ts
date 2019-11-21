@@ -205,7 +205,7 @@ export class PdPage {
           role: 'share',
           handler: () => {
             let plan: PlanData = {} as PlanData;
-            plan.ji = this.jh;
+            plan.ji = this.jh.ji;
 
             this.calendarService.sharePlan(plan, true).then(url => {
               console.log("分享地址是："+JSON.stringify(url));
