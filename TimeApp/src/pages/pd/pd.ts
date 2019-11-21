@@ -210,7 +210,7 @@ export class PdPage {
             this.calendarService.sharePlan(plan, true).then(url => {
               console.log("分享地址是："+JSON.stringify(url));
               let sharecontent: string = `【冥王星】${UserConfig.user.name}分享了
-                                          日历 ${this.planName}`;
+日历 ${this.planName}`;
 
               //验证是否按照微信组件
               Wechat.isInstalled(installed => {
