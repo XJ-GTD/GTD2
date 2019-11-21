@@ -290,7 +290,7 @@ export class CalendarService extends BaseService {
         currentmonth = moment(minitask.evd, "YYYY/MM/DD").format("YYYY/MM");
 
         if (moment(firstmonth,"YYYY/MM").diff(moment(currentmonth, "YYYY/MM"), "months") <= 0 && moment(currentmonth,"YYYY/MM").diff(moment(lastmonth, "YYYY/MM"), "months") <= 0) {
-          let diff = moment(currentmonth).diff(moment(firstmonth,"YYYY/MM"), "months");
+          let diff = moment(currentmonth, "YYYY/MM").diff(moment(firstmonth,"YYYY/MM"), "months");
 
           let currentmonthactivities = this.calendaractivities[diff];
           this.mergeMonthActivities(currentmonthactivities, [minitask], update);
@@ -2399,7 +2399,7 @@ export class CalendarService extends BaseService {
           planitemdb.jtt = itemType;  //日历项类型
           planitemdb.jtc = SelfDefineType.System;  //日历项类型 下载
           planitemdb.jtn = pa.at;     //日程事件主题  必传
-          planitemdb.sd = moment(pa.adt).format("YYYY/MM/DD");  //所属日期      必传
+          planitemdb.sd = moment(pa.adt, "YYYY/MM/DD HH:mm").format("YYYY/MM/DD");  //所属日期      必传
           planitemdb.st = pa.st;      //所属时间
           planitemdb.bz = pa.am;      //备注
           planitemdb.px = plan.pn.px; //排序
@@ -4158,16 +4158,16 @@ export class CalendarService extends BaseService {
 
     switch(direction) {
       case PageDirection.PageInit :
-        startday = moment(day).subtract(Math.floor(daysPerPage / 2), "days").format("YYYY/MM/DD");
-        endday = moment(day).add(Math.floor(daysPerPage / 2), "days").format("YYYY/MM/DD");
+        startday = moment(day, "YYYY/MM/DD").subtract(Math.floor(daysPerPage / 2), "days").format("YYYY/MM/DD");
+        endday = moment(day, "YYYY/MM/DD").add(Math.floor(daysPerPage / 2), "days").format("YYYY/MM/DD");
         break;
       case PageDirection.PageDown :
-        endday = moment(day).subtract(1, "days").format("YYYY/MM/DD");
-        startday = moment(day).subtract(daysPerPage, "days").format("YYYY/MM/DD");
+        endday = moment(day, "YYYY/MM/DD").subtract(1, "days").format("YYYY/MM/DD");
+        startday = moment(day, "YYYY/MM/DD").subtract(daysPerPage, "days").format("YYYY/MM/DD");
         break;
       case PageDirection.PageUp :
-        startday = moment(day).add(1, "days").format("YYYY/MM/DD");
-        endday = moment(day).add(daysPerPage, "days").format("YYYY/MM/DD");
+        startday = moment(day, "YYYY/MM/DD").add(1, "days").format("YYYY/MM/DD");
+        endday = moment(day, "YYYY/MM/DD").add(daysPerPage, "days").format("YYYY/MM/DD");
         break;
       default:
         this.assertFail();
@@ -4182,7 +4182,7 @@ export class CalendarService extends BaseService {
     days.set(startday, new DayActivityData(startday));
     let stepday: string = startday;
     while (stepday != endday) {
-      stepday = moment(stepday).add(1, "days").format("YYYY/MM/DD");
+      stepday = moment(stepday, "YYYY/MM/DD").add(1, "days").format("YYYY/MM/DD");
 
       let day: string = stepday;
       days.set(day, new DayActivityData(day));
@@ -4427,7 +4427,7 @@ export class CalendarService extends BaseService {
     days.set(startday, new DayActivityData(startday));
     let stepday: string = startday;
     while (stepday != endday) {
-      stepday = moment(stepday).add(1, "days").format("YYYY/MM/DD");
+      stepday = moment(stepday, "YYYY/MM/DD").add(1, "days").format("YYYY/MM/DD");
 
       let day: string = stepday;
       days.set(day, new DayActivityData(day));
