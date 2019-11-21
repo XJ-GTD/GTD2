@@ -229,7 +229,7 @@ export class UrlEntity {
   private _desc: string;
   private _params: Array<any>;
 
-  set params(...values: Array<any>) {
+  set params(values: Array<any>) {
     this._params = values;
   }
 
