@@ -18,12 +18,11 @@ export class TransFromDatePipe implements PipeTransform {
    * Takes a value and makes it lowercase.
    */
   transform(value: any, ...args) {
-
     let formart = args[0];
     if (formart == "duration") {
       return moment.duration(value, "minutes").humanize() ? moment.duration(value, "minutes").humanize() : "";
     }
-    let m = moment(value);
+    let m = moment(value,"YYYY/MM/DD");
     if (!m.isValid()) {
       m = moment(value, "YYYY/MM")
     }

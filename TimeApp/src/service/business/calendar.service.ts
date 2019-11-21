@@ -2642,7 +2642,7 @@ export class CalendarService extends BaseService {
     days.set(startday, new DayActivityData(startday));
     let stepday: string = startday;
     while (stepday != endday) {
-      stepday = moment(stepday).add(1, "days").format("YYYY/MM/DD");
+      stepday = moment(stepday,"YYYY/MM/DD").add(1, "days").format("YYYY/MM/DD");
 
       let day: string = stepday;
       days.set(day, new DayActivityData(day));
