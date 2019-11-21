@@ -679,7 +679,7 @@ export class TdlPage {
   }
 
   istoday(val:any){
-    let m = moment(val);
+    let m = moment(val,"YYYY/MM/DD");
     return m.isSame(moment(),"date");
   }
 
