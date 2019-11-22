@@ -87,6 +87,7 @@ export class DataRestful {
       assertEmpty(syncdata.datetime);   // 入参不能为空
       assertEmpty(syncdata.payload);    // 入参不能为空
       assertEmpty(syncdata.status);     // 入参不能为空
+      assertEmpty(syncdata.invitestate);// 入参不能为空
     }
 
     let url: UrlEntity = this.config.getRestFulUrl("SPH");
