@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import {RestfulClient} from "../util-service/restful.client";
 import {RestFulConfig, UrlEntity} from "../config/restful.config";
 import {UserConfig} from "../config/user.config";
-import {SyncDataSecurity, SyncDataStatus, InviteState, CompleteState} from "../../data.enum";
+import {SyncDataSecurity, SyncDataStatus, InviteState, CompleteState, UpdState} from "../../data.enum";
 import {EmitService} from "../util-service/emit.service";
 
 /**
@@ -131,6 +131,8 @@ export class SyncData {
   invitestate: InviteState; // 受邀状态
   todostate: CompleteState = CompleteState.None; // 完成状态
   fields: SyncDataFields = new SyncDataFields();
+  topushed :Array<boolean> = new Array<boolean>();//与to数组一致，设置共享人是否共享过
+  updstate : string = UpdState.inherent;
   payload: any;           // 数据
 }
 

@@ -1283,7 +1283,7 @@ export class EventService extends BaseService {
 
       //删除原事件中从当前开始所有事件
       console.log("**** removeAgenda start :****" + moment().format("YYYY/MM/DD HH:mm:ss SSS"))
-      await this.delFromsel(delEvi ,anyenum.UpdState.self,oriAgdata ,sqlparam,outAgds);
+      await this.delFromsel(delEvi ,anyenum.UpdState.inherent,oriAgdata ,sqlparam,outAgds);
       console.log("**** removeAgenda end :****" + moment().format("YYYY/MM/DD HH:mm:ss SSS"))
     }else{
 
@@ -1296,7 +1296,7 @@ export class EventService extends BaseService {
       Object.assign(outAgd,oriAgdata);
       outAgd.del = anyenum.DelType.del;
       outAgd.tb = anyenum.SyncType.unsynch;
-      outAgd.updstate = anyenum.UpdState.self;
+      outAgd.updstate = anyenum.UpdState.inherent;
       outAgd.mi = UserConfig.account.id;
       outAgd.tos = tos;//需要发送的参与人
 
@@ -1385,7 +1385,7 @@ export class EventService extends BaseService {
       /*新增*/
       let retParamEv = new RetParamEv();
       console.log("**** newAgenda start :****" + moment().format("YYYY/MM/DD HH:mm:ss SSS"))
-      newAgdata.updstate = anyenum.UpdState.self;
+      newAgdata.updstate = anyenum.UpdState.inherent;
       newAgdata.evrelate = this.util.getUuid();
       retParamEv = this.newAgenda(newAgdata);
       console.log("**** newAgenda end :****" + moment().format("YYYY/MM/DD HH:mm:ss SSS"))
@@ -1452,7 +1452,7 @@ export class EventService extends BaseService {
         outAgd.attachments = agdata.attachments;
       }
       outAgd.tos = tos;
-
+      outAgd.topushed = agdata.topushed;
     }
 
     //批量本地入库
@@ -1555,7 +1555,7 @@ export class EventService extends BaseService {
         params.push(newAgdata.invitestatus);
         params.push(anyenum.DelType.del);
         params.push(masterEvi);
-        params.push(anyenum.UpdState.self);
+        params.push(anyenum.UpdState.inherent);
 
       }else{
         sq = ` update gtd_ev set invitestatus = ?1  where evi = ?2 or rtevi = ?2 ; `;
@@ -1657,7 +1657,7 @@ export class EventService extends BaseService {
           params = new Array<any>();
           params.push(anyenum.SyncType.unsynch);
           params.push(anyenum.DelType.del);
-          params.push(anyenum.UpdState.self);
+          params.push(anyenum.UpdState.inherent);
           params.push(anyenum.ObjectType.Event);
           params.push(masterEvi);
           params.push(masterEvi);
@@ -1686,6 +1686,8 @@ export class EventService extends BaseService {
       nwAgdata.sd = nwAgdata.evd;
       nwAgdata.updstate = anyenum.UpdState.updtoadd;
       nwAgdata.evrelate = oriAgdata.evrelate;
+      //设定共享人发送状态
+      nwAgdata.topushed = await this.validAlreadyPushed(nwAgdata.members,oriAgdata.evrelate);
 
       let retParamEv = new RetParamEv();
       console.log("**** updateAgenda newAgenda start :****" + moment().format("YYYY/MM/DD HH:mm:ss SSS"))
@@ -1737,6 +1739,8 @@ export class EventService extends BaseService {
       newAgdata.sd = oriAgdata.sd;
       newAgdata.updstate = anyenum.UpdState.updtoadd;
       newAgdata.evrelate = oriAgdata.evrelate;
+      //添加新参与人到新事件
+      newAgdata.topushed = await this.validAlreadyPushed(newAgdata.members,oriAgdata.evrelate);
 
       retParamEv = this.newAgenda(newAgdata);
 
@@ -2388,7 +2392,7 @@ export class EventService extends BaseService {
     agdata.del = !agdata.del ? anyenum.DelType.undel : agdata.del ;
     agdata.rfg = !agdata.rfg ? anyenum.RepeatFlag.NonRepeat : agdata.rfg ;
 
-    agdata.updstate = !agdata.updstate ? anyenum.UpdState.self : agdata.updstate ;
+    agdata.updstate = !agdata.updstate ? anyenum.UpdState.inherent : agdata.updstate ;
     agdata.evrelate = !agdata.evrelate ? "" : agdata.evrelate ;
 
     agdata.al = !agdata.al ? anyenum.IsWholeday.StartSet :agdata.al;
@@ -3303,11 +3307,12 @@ export class EventService extends BaseService {
    */
   async syncAgendas(agendas: Array<AgendaData> = new Array<AgendaData>()) {
     this.assertEmpty(agendas);  // 入参不能为空
-
+    let isbatch : boolean =false;
     let members = new Array<Member>();
     let attachments = new Array<Attachment>();
-
+    let  pre : any;
     if (agendas.length <= 0) {
+      isbatch = true;
       let sql: string = `select ev.*, ca.sd, ca.ed, ca.st, ca.et, ca.al, ca.ct
                         from (select *,
                         case when rfg = '2' then evi
@@ -3358,6 +3363,21 @@ export class EventService extends BaseService {
                               on par.pwi = b.pwi `;
       members =  await this.sqlExce.getExtLstByParam<Member>(sqlmember,
         [anyenum.EventType.Agenda, SyncType.unsynch, anyenum.ObjectType.Event]) || members;
+
+      let params = new Array<any>();
+      let sqpushed = `select ev.evrelate,par.pari, b.rc, b.ui 
+        from (select evi,evn,rtevi,evrelate,max(wtt)
+                from gtd_ev
+               where rtevi = ''
+                 and del <> ?1  group by evrelate ) ev
+       inner join (select * from gtd_par where del <> ?1) par on ev.evi =
+                                                                    par.obi
+                                                                and par.obt =
+                                                                    ?2
+       inner join gtd_b b on par.pwi = b.pwi  `;
+      params.push(anyenum.DelType.del);
+      params.push(anyenum.ObjectType.Event);
+      pre = await this.sqlExce.getExtLstByParam(sqpushed,params);
 
     } else {
       let evis: Array<string> = agendas.reduce((target, ele) => {
@@ -3506,6 +3526,26 @@ export class EventService extends BaseService {
           }
         }
         sync.to = (!agenda.tos || agenda.tos == "" || agenda.tos == null) ? [] : agenda.tos.split(",") ;
+        sync.updstate = agenda.updstate;
+        if (!isbatch){
+          sync.topushed = agenda.topushed;
+
+        }else{
+          //批量同步时
+          for (let member of agenda.members){
+            let alreadypushed = false;
+            if (pre && pre.length > 0){
+              let findm =  pre.find((value, index,arr)=>{
+                return value.evrelate == agenda.evrelate &&( value.pari == member.pari || value.ui == member.ui || value.rc == member.rc);
+              });
+              if (findm){
+                alreadypushed = true;
+              }
+            }
+            agenda.topushed.push(alreadypushed);
+          }
+        }
+
 
         this.assertNotEqual(agenda.pn, sync.to.length); // 参与人数量和参与人数组必须相同
 
@@ -3531,6 +3571,46 @@ export class EventService extends BaseService {
     }
 
 		return ;
+  }
+
+
+  /**
+   * 检查上传数据的分享人员是否已分享过
+   * @param {Array<Member>} to
+   * @returns {Promise<Array<any>>}
+   */
+  private async validAlreadyPushed(to : Array<Member>,evrelate : string) : Promise<Array<any>>   {
+    let ret  = new Array<any>();
+    let params = new Array<any>();
+    let sq = `select ev.evrelate,par.pari, b.rc, b.ui 
+        from (select evi,evn,rtevi,evrelate,max(wtt)
+                from gtd_ev
+               where rtevi = ''
+                 and del <> ?1 and evrelate =?2 group by evrelate ) ev
+       inner join (select * from gtd_par where del <> ?1) par on ev.evi =
+                                                                    par.obi
+                                                                and par.obt =
+                                                                    ?3
+       inner join gtd_b b on par.pwi = b.pwi  `;
+    params.push(anyenum.DelType.del);
+    params.push(evrelate);
+    params.push(anyenum.ObjectType.Event);
+    let  pre : any = await this.sqlExce.getExtLstByParam(sq,params);
+
+    for (let member of to){
+      let alreadypushed = false;
+      if (pre && pre.length > 0){
+        let findm =  pre.find((value, index,arr)=>{
+          return value.pari == member.pari || value.ui == member.ui || value.rc == member.rc;
+        });
+        if (findm){
+          alreadypushed = true;
+        }
+      }
+      ret.push(alreadypushed);
+    }
+
+    return ret;
   }
 
   /**
@@ -4849,6 +4929,7 @@ export interface AgendaData extends EventData, CaTbl {
   //用于数据上传给服务器时，给哪些参与人，[]无参与人或参与人被全删
   tos : string;
 
+  topushed: Array<boolean> ;
 }
 
 export interface  Member extends ParTbl{

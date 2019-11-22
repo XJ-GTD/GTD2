@@ -232,7 +232,7 @@ export enum ModalTranType {
   scale = "scale",
 }
 export enum UpdState {
-  self = "self",
+  inherent = "inherent",
   updtodel = "updtodel",
   updtoadd = "updtoadd",
 }
