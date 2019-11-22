@@ -5,7 +5,7 @@ import {
   Output,
   EventEmitter,
   forwardRef,
-  Provider, ViewChild, ChangeDetectorRef
+  Provider, ViewChild, ChangeDetectorRef, ChangeDetectionStrategy
 } from '@angular/core';
 
 import {
@@ -112,7 +112,9 @@ export const ION_CAL_VALUE_ACCESSOR: Provider = {
     </ion-card>
 
 
-  `
+  `,
+
+  changeDetection:ChangeDetectionStrategy.OnPush
 })
 export class CalendarComponent implements OnInit {
 
@@ -390,7 +392,10 @@ export class CalendarComponent implements OnInit {
     if (!monthOpt) return;
     this._showMonth = defaults.MONTH_FORMAT[monthOpt.original.month];
     this._thisMonth = monthOpt.original.month == moment().month() && monthOpt.original.year == moment().year();
-    this.calSvc.getMonthData(monthOpt);
+    this.calSvc.getMonthData(monthOpt).then(()=>{
+      this.changeDetectorRef.markForCheck();
+      this.changeDetectorRef.detectChanges();
+    })
 
     if (this.change4emit && !gototoday)
       this.emitService.emit("calendar.change.month", moment(monthOpt.original.time).format("YYYYMM"));
@@ -404,8 +409,6 @@ export class CalendarComponent implements OnInit {
       this.swiper.slideTo(index, 0, false);
     }
 
-    this.changeDetectorRef.markForCheck();
-    this.changeDetectorRef.detectChanges();
   }
 
 

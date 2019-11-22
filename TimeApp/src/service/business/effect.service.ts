@@ -24,23 +24,23 @@ export class EffectService extends BaseService {
 
   async syncStart() {
 
-    await this.calendarService.syncPrivatePlans();    // 同步自定义日历
-    await this.eventService.syncAttachments();        // 同步附件
-    await this.calendarService.syncPlanItems();       // 同步日历项
-    await this.eventService.syncAgendas();            // 同步日程
-    await this.memoService.syncMemos();               // 同步备忘
-    await this.annotationService.syncAnnotation();   // 同步@信息
-    await this.remindService.syncScheduledReminds();  // 同步未来48小时的提醒
+    // await this.calendarService.syncPrivatePlans();    // 同步自定义日历
+    // await this.eventService.syncAttachments();        // 同步附件
+    // await this.calendarService.syncPlanItems();       // 同步日历项
+    // await this.eventService.syncAgendas();            // 同步日程
+    // await this.memoService.syncMemos();               // 同步备忘
+    // await this.annotationService.syncAnnotation();   // 同步@信息
+    // await this.remindService.syncScheduledReminds();  // 同步未来48小时的提醒
 
     return ;
   }
 
   async syncInitial() {
-    await this.calendarService.requestInitialData();  // 请求拉取服务器最新日历相关数据
+    // await this.calendarService.requestInitialData();  // 请求拉取服务器最新日历相关数据
   }
 
   async syncCompareInitial() {
-    await this.calendarService.requestDeviceDiffData(); // 请求拉取客户端不一致数据
+    // await this.calendarService.requestDeviceDiffData(); // 请求拉取客户端不一致数据
   }
 
   /**

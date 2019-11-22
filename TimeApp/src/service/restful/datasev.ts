@@ -4,6 +4,10 @@ import {RestFulConfig, UrlEntity} from "../config/restful.config";
 import {UserConfig} from "../config/user.config";
 import {SyncDataSecurity, SyncDataStatus, InviteState, CompleteState, UpdState} from "../../data.enum";
 import {EmitService} from "../util-service/emit.service";
+import {
+  assertEmpty,
+  assertFail
+} from "../../util/util";
 
 /**
  * 数据同步操作
@@ -72,6 +76,19 @@ export class DataRestful {
    * @author leon_xi@163.com
    **/
   async push(params: PushInData): Promise<PushOutData> {
+    assertEmpty(params);      // 入参不能为空
+    assertEmpty(params.d);    // 入参不能为空
+
+    for (let syncdata of params.d) {
+      assertEmpty(syncdata.id);         // 入参不能为空
+      assertEmpty(syncdata.src);        // 入参不能为空
+      assertEmpty(syncdata.type);       // 入参不能为空
+      assertEmpty(syncdata.datetime);   // 入参不能为空
+      assertEmpty(syncdata.payload);    // 入参不能为空
+      assertEmpty(syncdata.status);     // 入参不能为空
+      assertEmpty(syncdata.invitestate);// 入参不能为空
+    }
+
     let url: UrlEntity = this.config.getRestFulUrl("SPH");
 
     params.mpn = UserConfig.account.phone;

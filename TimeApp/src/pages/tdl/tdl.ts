@@ -1,4 +1,4 @@
-import {ChangeDetectorRef, Component, ElementRef, Renderer2, ViewChild} from '@angular/core';
+import {ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, Renderer2, ViewChild} from '@angular/core';
 import {
   Content,
   DomController,
@@ -295,9 +295,8 @@ BScroll.use(InfinityScroll);
         </ng-template>
       </ion-grid>
     </ion-content>
-  `
-
-
+  `,
+  changeDetection:ChangeDetectionStrategy.OnPush
 })
 export class TdlPage {
 
@@ -407,6 +406,10 @@ export class TdlPage {
   ngAfterViewInit() {
     this.tdlServ.initLsData().then(data => {
       this.monthActivityDatas = data;
+
+      this.changeDetectorRef.markForCheck();
+      this.changeDetectorRef.detectChanges();
+
       this.gotoEl("#day" + moment().format("YYYYMMDD"));
     });
 
