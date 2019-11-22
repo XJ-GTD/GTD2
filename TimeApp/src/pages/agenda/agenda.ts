@@ -984,15 +984,26 @@ export class AgendaPage {
   shareWeiXin() {
     this.eventService.shareAgenda(this.currentAgenda).then((url) => {
       //获取分享内容
-      let text = this.currentAgenda.evn;
+      let text: string = this.currentAgenda.evn;
+      let type: string = "";
+      if(this.currentAgenda.type == ObjectType.Calendar) {
+            type ="日历";
+      }
+      else if(this.currentAgenda.type == ObjectType.Memo) {
+            type ="备忘";
+      }
+      else {
+            type ="日程";
+      }
+      let title = this.currentuser +"分享了" +type+"，请及时查看！";
       //验证是否按照微信组件
       Wechat.isInstalled(installed => {
         if (installed) {
           Wechat.share({
             message:{
-                title: text,
-                description: "冥王星",
-                thumb: "assets/imgs/logo.png",
+                title: title,
+                description: text,
+                thumb: "https://pluto.guobaa.com/cal/img/4.png",
                 media: {
                   type: Wechat.Type.WEBPAGE,
                   webpageUrl: url || "https://fir.im/d2z3"
