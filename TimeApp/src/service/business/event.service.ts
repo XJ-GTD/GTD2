@@ -3840,10 +3840,12 @@ export class EventService extends BaseService {
 	  let sync: SyncData = new SyncData();
 
 	  sync.id = tt.evi;
+    sync.src = tt.ui;
     sync.type = "MiniTask";
     sync.security = SyncDataSecurity.None;
     sync.todostate = CompleteState.None;
     sync.main = true;
+    sync.datetime = tt.evd + " " + tt.evt;
 
     // 设置删除状态
     if (tt.del == DelType.del) {
