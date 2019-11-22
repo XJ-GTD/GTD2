@@ -499,14 +499,14 @@ describe('CalendarService test suite', () => {
 
     expect(calendarholdings).toBeDefined();
     expect(calendarholdings.length).toBe(3);
-    expect(calendarholdings[0].month).toBe(moment(month).subtract(1, "months").format("YYYY/MM"));
+    expect(calendarholdings[0].month).toBe(moment(month,"YYYY/MM").subtract(1, "months").format("YYYY/MM"));
     expect(calendarholdings[1].month).toBe(month);
-    expect(calendarholdings[2].month).toBe(moment(month).add(1, "months").format("YYYY/MM"));
+    expect(calendarholdings[2].month).toBe(moment(month,"YYYY/MM").add(1, "months").format("YYYY/MM"));
   });
 
   it(`Case 29 - 1 - 1 refreshCalendarActivitiesToMonth 刷新日历显示列表到指定月份 - 已存在初始化数据(刷新到往后5个月)`, async () => {
     let month: string = moment().format("YYYY/MM");
-    let after5month: string = moment(month).add(5, "months").format("YYYY/MM");
+    let after5month: string = moment(month,"YYYY/MM").add(5, "months").format("YYYY/MM");
 
     calendarService.clearCalendarActivities();
     let calendarholdings = await calendarService.getCalendarActivities();
@@ -515,18 +515,18 @@ describe('CalendarService test suite', () => {
 
     expect(calendarholdings).toBeDefined();
     expect(calendarholdings.length).toBe(7);
-    expect(calendarholdings[0].month).toBe(moment(month).subtract(1, "months").format("YYYY/MM"));
+    expect(calendarholdings[0].month).toBe(moment(month,"YYYY/MM").subtract(1, "months").format("YYYY/MM"));
     expect(calendarholdings[1].month).toBe(month);
-    expect(calendarholdings[2].month).toBe(moment(month).add(1, "months").format("YYYY/MM"));
-    expect(calendarholdings[3].month).toBe(moment(month).add(2, "months").format("YYYY/MM"));
-    expect(calendarholdings[4].month).toBe(moment(month).add(3, "months").format("YYYY/MM"));
-    expect(calendarholdings[5].month).toBe(moment(month).add(4, "months").format("YYYY/MM"));
-    expect(calendarholdings[6].month).toBe(moment(month).add(5, "months").format("YYYY/MM"));
+    expect(calendarholdings[2].month).toBe(moment(month,"YYYY/MM").add(1, "months").format("YYYY/MM"));
+    expect(calendarholdings[3].month).toBe(moment(month,"YYYY/MM").add(2, "months").format("YYYY/MM"));
+    expect(calendarholdings[4].month).toBe(moment(month,"YYYY/MM").add(3, "months").format("YYYY/MM"));
+    expect(calendarholdings[5].month).toBe(moment(month,"YYYY/MM").add(4, "months").format("YYYY/MM"));
+    expect(calendarholdings[6].month).toBe(moment(month,"YYYY/MM").add(5, "months").format("YYYY/MM"));
   });
 
   it(`Case 29 - 1 refreshCalendarActivitiesToMonth 刷新日历显示列表到指定月份 - 已存在初始化数据(刷新到往前5个月)`, async () => {
     let month: string = moment().format("YYYY/MM");
-    let before5month: string = moment(month).subtract(5, "months").format("YYYY/MM");
+    let before5month: string = moment(month,"YYYY/MM").subtract(5, "months").format("YYYY/MM");
 
     calendarService.clearCalendarActivities();
     let calendarholdings = await calendarService.getCalendarActivities();
@@ -535,13 +535,13 @@ describe('CalendarService test suite', () => {
 
     expect(calendarholdings).toBeDefined();
     expect(calendarholdings.length).toBe(7);
-    expect(calendarholdings[0].month).toBe(moment(month).subtract(5, "months").format("YYYY/MM"));
-    expect(calendarholdings[1].month).toBe(moment(month).subtract(4, "months").format("YYYY/MM"));
-    expect(calendarholdings[2].month).toBe(moment(month).subtract(3, "months").format("YYYY/MM"));
-    expect(calendarholdings[3].month).toBe(moment(month).subtract(2, "months").format("YYYY/MM"));
-    expect(calendarholdings[4].month).toBe(moment(month).subtract(1, "months").format("YYYY/MM"));
+    expect(calendarholdings[0].month).toBe(moment(month,"YYYY/MM").subtract(5, "months").format("YYYY/MM"));
+    expect(calendarholdings[1].month).toBe(moment(month,"YYYY/MM").subtract(4, "months").format("YYYY/MM"));
+    expect(calendarholdings[2].month).toBe(moment(month,"YYYY/MM").subtract(3, "months").format("YYYY/MM"));
+    expect(calendarholdings[3].month).toBe(moment(month,"YYYY/MM").subtract(2, "months").format("YYYY/MM"));
+    expect(calendarholdings[4].month).toBe(moment(month,"YYYY/MM").subtract(1, "months").format("YYYY/MM"));
     expect(calendarholdings[5].month).toBe(month);
-    expect(calendarholdings[6].month).toBe(moment(month).add(1, "months").format("YYYY/MM"));
+    expect(calendarholdings[6].month).toBe(moment(month,"YYYY/MM").add(1, "months").format("YYYY/MM"));
   });
 
   // 创建课程表
@@ -992,7 +992,7 @@ describe('CalendarService test suite', () => {
       for (let daySummary of month1809Summary.days) {
         expect(daySummary.day).toBeDefined();
 
-        let dayOfWeek = Number(moment(daySummary.day).format("d"));
+        let dayOfWeek = Number(moment(daySummary.day,"d").format("d"));
         if (dayOfWeek > 0 && dayOfWeek < 6) {             // 非周末
           if (dayOfWeek == 3) {                           // 星期三
             if (daySummary.day == "2018/09/05") {  // 第三天
@@ -1301,7 +1301,7 @@ describe('CalendarService test suite', () => {
         for (let daySummary of month1809Summary.days) {
           expect(daySummary.day).toBeDefined();
 
-          let dayOfWeek = Number(moment(daySummary.day).format("d"));
+          let dayOfWeek = Number(moment(daySummary.day,"d").format("d"));
           if (dayOfWeek > 0 && dayOfWeek < 6) {             // 非周末
             if (dayOfWeek == 3) {                           // 星期三
               if (daySummary.day == "2018/09/05") {  // 第三天
@@ -1430,7 +1430,7 @@ describe('CalendarService test suite', () => {
             expect(daySummary.repeateventscount).toBe(0);
             expect(daySummary.bookedtimesummary).toBe(0);
           } else {
-            let dayOfWeek = Number(moment(daySummary.day).format("d"));
+            let dayOfWeek = Number(moment(daySummary.day,"d").format("d"));
             if (dayOfWeek > 0 && dayOfWeek < 6) {             // 非周末
               if (dayOfWeek == 3) {
                 expect(daySummary.calendaritemscount).toBe(0);
@@ -2943,11 +2943,11 @@ describe('CalendarService test suite', () => {
 
     expect(calendarholdings).toBeDefined();
     expect(calendarholdings.length).toBe(5);
-    expect(calendarholdings[0].month).toBe(moment(month).subtract(2, "months").format("YYYY/MM"));
-    expect(calendarholdings[1].month).toBe(moment(month).subtract(1, "months").format("YYYY/MM"));
+    expect(calendarholdings[0].month).toBe(moment(month,"YYYY/MM").subtract(2, "months").format("YYYY/MM"));
+    expect(calendarholdings[1].month).toBe(moment(month,"YYYY/MM").subtract(1, "months").format("YYYY/MM"));
     expect(calendarholdings[2].month).toBe(month);
-    expect(calendarholdings[3].month).toBe(moment(month).add(1, "months").format("YYYY/MM"));
-    expect(calendarholdings[4].month).toBe(moment(month).add(2, "months").format("YYYY/MM"));
+    expect(calendarholdings[3].month).toBe(moment(month,"YYYY/MM").add(1, "months").format("YYYY/MM"));
+    expect(calendarholdings[4].month).toBe(moment(month,"YYYY/MM").add(2, "months").format("YYYY/MM"));
   });
 
   it(`Case 17 - 2 - 1 getCalendarActivities 取得日历画面显示活动一览 - 向上拉加载(未初始化报错)`, (done: DoneFn) => {
@@ -2972,10 +2972,10 @@ describe('CalendarService test suite', () => {
 
     expect(calendarholdings).toBeDefined();
     expect(calendarholdings.length).toBe(4);
-    expect(calendarholdings[0].month).toBe(moment(month).subtract(1, "months").format("YYYY/MM"));
+    expect(calendarholdings[0].month).toBe(moment(month,"YYYY/MM").subtract(1, "months").format("YYYY/MM"));
     expect(calendarholdings[1].month).toBe(month);
-    expect(calendarholdings[2].month).toBe(moment(month).add(1, "months").format("YYYY/MM"));
-    expect(calendarholdings[3].month).toBe(moment(month).add(2, "months").format("YYYY/MM"));
+    expect(calendarholdings[2].month).toBe(moment(month,"YYYY/MM").add(1, "months").format("YYYY/MM"));
+    expect(calendarholdings[3].month).toBe(moment(month,"YYYY/MM").add(2, "months").format("YYYY/MM"));
   });
 
   it(`Case 17 - 1 getCalendarActivities 取得日历画面显示活动一览 - 默认当前月份以及前后各一个月`, async () => {
@@ -2985,9 +2985,9 @@ describe('CalendarService test suite', () => {
 
     expect(calendarholdings).toBeDefined();
     expect(calendarholdings.length).toBe(3);
-    expect(calendarholdings[0].month).toBe(moment(month).subtract(1, "months").format("YYYY/MM"));
+    expect(calendarholdings[0].month).toBe(moment(month,"YYYY/MM").subtract(1, "months").format("YYYY/MM"));
     expect(calendarholdings[1].month).toBe(month);
-    expect(calendarholdings[2].month).toBe(moment(month).add(1, "months").format("YYYY/MM"));
+    expect(calendarholdings[2].month).toBe(moment(month,"YYYY/MM").add(1, "months").format("YYYY/MM"));
   });
 
   it(`Case 16 - 1 - 1 sharePlan 分享日历/计划 - 公共日历(没有日历项)`, async () => {
@@ -3164,7 +3164,7 @@ describe('CalendarService test suite', () => {
     await eventService.saveMiniTask(minitask);
 
     let month: string = moment().format("YYYY/MM");
-    let days: number = moment(month).daysInMonth();
+    let days: number = moment(month,"YYYY/MM").daysInMonth();
 
     let monthSummary: MonthActivitySummaryData = await calendarService.fetchMonthActivitiesSummary(month);
 
@@ -3227,7 +3227,7 @@ describe('CalendarService test suite', () => {
     await memoService.saveMemo(memo);
 
     let month: string = moment().format("YYYY/MM");
-    let days: number = moment(month).daysInMonth();
+    let days: number = moment(month,"YYYY/MM").daysInMonth();
 
     let monthSummary: MonthActivitySummaryData = await calendarService.fetchMonthActivitiesSummary(month);
 
@@ -3263,7 +3263,7 @@ describe('CalendarService test suite', () => {
 
   it(`Case 10 - 1 fetchMonthActivitiesSummary 取得指定月概要 - 空值(没有任何活动)`, async () => {
     let month: string = moment().format("YYYY/MM");
-    let days: number = moment(month).daysInMonth();
+    let days: number = moment(month,"YYYY/MM").daysInMonth();
 
     let monthSummary: MonthActivitySummaryData = await calendarService.fetchMonthActivitiesSummary(month);
 
@@ -3744,8 +3744,8 @@ describe('CalendarService test suite', () => {
 
     let pagedActivities: PagedActivityData = await calendarService.fetchPagedActivities(day, PageDirection.PageDown);
 
-    let endday: string = moment(day).subtract(1, "days").format("YYYY/MM/DD");
-    let startday: string = moment(day).subtract(7, "days").format("YYYY/MM/DD");
+    let endday: string = moment(day,"YYYY/MM/DD").subtract(1, "days").format("YYYY/MM/DD");
+    let startday: string = moment(day,"YYYY/MM/DD").subtract(7, "days").format("YYYY/MM/DD");
 
     expect(pagedActivities.startday).toBe(startday);
     expect(pagedActivities.endday).toBe(endday);
@@ -3803,8 +3803,8 @@ describe('CalendarService test suite', () => {
 
     let pagedActivities: PagedActivityData = await calendarService.fetchPagedActivities(day, PageDirection.PageDown);
 
-    let endday: string = moment(day).subtract(1, "days").format("YYYY/MM/DD");
-    let startday: string = moment(day).subtract(7, "days").format("YYYY/MM/DD");
+    let endday: string = moment(day,"YYYY/MM/DD").subtract(1, "days").format("YYYY/MM/DD");
+    let startday: string = moment(day,"YYYY/MM/DD").subtract(7, "days").format("YYYY/MM/DD");
 
     expect(pagedActivities.startday).toBe(startday);
     expect(pagedActivities.endday).toBe(endday);
@@ -3839,8 +3839,8 @@ describe('CalendarService test suite', () => {
 
     let pagedActivities: PagedActivityData = await calendarService.fetchPagedActivities(day, PageDirection.PageDown);
 
-    let endday: string = moment(day).subtract(1, "days").format("YYYY/MM/DD");
-    let startday: string = moment(day).subtract(7, "days").format("YYYY/MM/DD");
+    let endday: string = moment(day,"YYYY/MM/DD").subtract(1, "days").format("YYYY/MM/DD");
+    let startday: string = moment(day,"YYYY/MM/DD").subtract(7, "days").format("YYYY/MM/DD");
 
     expect(pagedActivities.startday).toBe(startday);
     expect(pagedActivities.endday).toBe(endday);
@@ -3907,8 +3907,8 @@ describe('CalendarService test suite', () => {
 
     let pagedActivities: PagedActivityData = await calendarService.fetchPagedActivities(day, PageDirection.PageUp);
 
-    let startday: string = moment(day).add(1, "days").format("YYYY/MM/DD");
-    let endday: string = moment(day).add(7, "days").format("YYYY/MM/DD");
+    let startday: string = moment(day,"YYYY/MM/DD").add(1, "days").format("YYYY/MM/DD");
+    let endday: string = moment(day,"YYYY/MM/DD").add(7, "days").format("YYYY/MM/DD");
 
     expect(pagedActivities.startday).toBe(startday);
     expect(pagedActivities.endday).toBe(endday);
@@ -3966,8 +3966,8 @@ describe('CalendarService test suite', () => {
 
     let pagedActivities: PagedActivityData = await calendarService.fetchPagedActivities(day, PageDirection.PageUp);
 
-    let startday: string = moment(day).add(1, "days").format("YYYY/MM/DD");
-    let endday: string = moment(day).add(7, "days").format("YYYY/MM/DD");
+    let startday: string = moment(day,"YYYY/MM/DD").add(1, "days").format("YYYY/MM/DD");
+    let endday: string = moment(day,"YYYY/MM/DD").add(7, "days").format("YYYY/MM/DD");
 
     expect(pagedActivities.startday).toBe(startday);
     expect(pagedActivities.endday).toBe(endday);
@@ -4002,8 +4002,8 @@ describe('CalendarService test suite', () => {
 
     let pagedActivities: PagedActivityData = await calendarService.fetchPagedActivities(day, PageDirection.PageUp);
 
-    let startday: string = moment(day).add(1, "days").format("YYYY/MM/DD");
-    let endday: string = moment(day).add(7, "days").format("YYYY/MM/DD");
+    let startday: string = moment(day,"YYYY/MM/DD").add(1, "days").format("YYYY/MM/DD");
+    let endday: string = moment(day,"YYYY/MM/DD").add(7, "days").format("YYYY/MM/DD");
 
     expect(pagedActivities.startday).toBe(startday);
     expect(pagedActivities.endday).toBe(endday);
@@ -5001,8 +5001,8 @@ describe('CalendarService test suite', () => {
     // 不增加数据
     monthActivity = calendarService.mergeMonthActivities(monthActivity, []);
 
-    let startday: string = moment("2019/08").startOf('month').format("YYYY/MM/DD");
-    let endday: string = moment("2019/08").endOf('month').format("YYYY/MM/DD");
+    let startday: string = moment("2019/08","YYYY/MM").startOf('month').format("YYYY/MM/DD");
+    let endday: string = moment("2019/08","YYYY/MM").endOf('month').format("YYYY/MM/DD");
 
     expect(monthActivity.month).toBe("2019/08");
     expect(monthActivity.calendaritems).toBeDefined();
@@ -5093,8 +5093,8 @@ describe('CalendarService test suite', () => {
     // 增加1个日历项、1个日程(不重复)、1个任务、1个备忘
     monthActivity = calendarService.mergeMonthActivities(monthActivity, activities);
 
-    let startday: string = moment("2019/08").startOf('month').format("YYYY/MM/DD");
-    let endday: string = moment("2019/08").endOf('month').format("YYYY/MM/DD");
+    let startday: string = moment("2019/08","YYYY/MM").startOf('month').format("YYYY/MM/DD");
+    let endday: string = moment("2019/08","YYYY/MM").endOf('month').format("YYYY/MM/DD");
 
     expect(monthActivity.month).toBe("2019/08");
     expect(monthActivity.calendaritems).toBeDefined();
@@ -5157,8 +5157,8 @@ describe('CalendarService test suite', () => {
     // 增加1个日程(每日重复)
     monthActivity = calendarService.mergeMonthActivities(monthActivity, savedagenda);
 
-    let startday: string = moment("2019/08").startOf('month').format("YYYY/MM/DD");
-    let endday: string = moment("2019/08").endOf('month').format("YYYY/MM/DD");
+    let startday: string = moment("2019/08","YYYY/MM").startOf('month').format("YYYY/MM/DD");
+    let endday: string = moment("2019/08","YYYY/MM").endOf('month').format("YYYY/MM/DD");
 
     let betweenMonthEndDays: number = moment("2019/08", "YYYY/MM").endOf('month').diff(moment(day, "YYYY/MM/DD"), "days") + 1;
 
@@ -5216,8 +5216,8 @@ describe('CalendarService test suite', () => {
     // 增加1个日程(不重复)
     monthActivity = calendarService.mergeMonthActivities(monthActivity, savedagenda);
 
-    let startday: string = moment("2019/08").startOf('month').format("YYYY/MM/DD");
-    let endday: string = moment("2019/08").endOf('month').format("YYYY/MM/DD");
+    let startday: string = moment("2019/08","YYYY/MM").startOf('month').format("YYYY/MM/DD");
+    let endday: string = moment("2019/08","YYYY/MM").endOf('month').format("YYYY/MM/DD");
 
     expect(monthActivity.month).toBe("2019/08");
     expect(monthActivity.calendaritems).toBeDefined();
@@ -5278,8 +5278,8 @@ describe('CalendarService test suite', () => {
     // 增加1个日历项
     monthActivity = calendarService.mergeMonthActivities(monthActivity, [planitem1]);
 
-    let startday: string = moment("2019/08").startOf('month').format("YYYY/MM/DD");
-    let endday: string = moment("2019/08").endOf('month').format("YYYY/MM/DD");
+    let startday: string = moment("2019/08","YYYY/MM").startOf('month').format("YYYY/MM/DD");
+    let endday: string = moment("2019/08","YYYY/MM").endOf('month').format("YYYY/MM/DD");
 
     expect(monthActivity.month).toBe("2019/08");
     expect(monthActivity.calendaritems).toBeDefined();
@@ -5335,8 +5335,8 @@ describe('CalendarService test suite', () => {
     // 增加1个备忘
     monthActivity = calendarService.mergeMonthActivities(monthActivity, [memo]);
 
-    let startday: string = moment("2019/08").startOf('month').format("YYYY/MM/DD");
-    let endday: string = moment("2019/08").endOf('month').format("YYYY/MM/DD");
+    let startday: string = moment("2019/08","YYYY/MM").startOf('month').format("YYYY/MM/DD");
+    let endday: string = moment("2019/08","YYYY/MM").endOf('month').format("YYYY/MM/DD");
 
     expect(monthActivity.month).toBe("2019/08");
     expect(monthActivity.calendaritems).toBeDefined();
@@ -5392,8 +5392,8 @@ describe('CalendarService test suite', () => {
     // 增加1个任务
     monthActivity = calendarService.mergeMonthActivities(monthActivity, [task]);
 
-    let startday: string = moment("2019/08").startOf('month').format("YYYY/MM/DD");
-    let endday: string = moment("2019/08").endOf('month').format("YYYY/MM/DD");
+    let startday: string = moment("2019/08","YYYY/MM").startOf('month').format("YYYY/MM/DD");
+    let endday: string = moment("2019/08","YYYY/MM").endOf('month').format("YYYY/MM/DD");
 
     expect(monthActivity.month).toBe("2019/08");
     expect(monthActivity.calendaritems).toBeDefined();
