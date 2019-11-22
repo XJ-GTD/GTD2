@@ -3802,6 +3802,7 @@ export class EventService extends BaseService {
     sync.type = "Task";
     sync.todostate = CompleteState.None;
     sync.main = true;
+    sync.datetime = task.evd + " " + task.evt;
 
     //修改权限设定
     if (task.md == anyenum.ModiPower.disable){
