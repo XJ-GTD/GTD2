@@ -46,6 +46,17 @@ export class EventService extends BaseService {
    **/
   async shareAgenda(agenda: AgendaData): Promise<string> {
     let share: ShareInData = new ShareInData();
+
+    // 文件附件访问地址转换
+    for (let attachment of agenda.attachments) {
+      let fpjson = generateCacheFilePathJson(attachment.fpjson, attachment.fj);
+      if (fpjson && fpjson.remote) {
+        attachment.fjurl = `http://pluto.guobaa.com/abl/store/local/getContent/${fpjson.remote}`;
+      } else {
+        attachment.fjurl = "";
+      }
+    }
+
     share.payload = agenda;
 
     return await this.dataRestful.share("agenda", share);
