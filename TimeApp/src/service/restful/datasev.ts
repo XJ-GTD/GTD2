@@ -83,7 +83,6 @@ export class DataRestful {
       assertEmpty(syncdata.id);         // 入参不能为空
       assertEmpty(syncdata.src);        // 入参不能为空
       assertEmpty(syncdata.type);       // 入参不能为空
-      assertEmpty(syncdata.main);       // 入参不能为空
       assertEmpty(syncdata.datetime);   // 入参不能为空
       assertEmpty(syncdata.payload);    // 入参不能为空
       assertEmpty(syncdata.status);     // 入参不能为空
