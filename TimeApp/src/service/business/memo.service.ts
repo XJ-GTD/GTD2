@@ -220,6 +220,7 @@ export class MemoService extends BaseService {
 				 sync.title = memo.mon;
 		     sync.security = SyncDataSecurity.None;
 				 sync.datetime = moment(memo.sd, "YYYY/MM/DD").format("YYYY/MM/DD HH:mm");
+				 sync.main = true;
 
 				 sync.todostate = CompleteState.None;
 				 sync.invitestate = InviteState.None;

@@ -2,6 +2,46 @@ import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import * as moment from "moment";
 
+export class UserConfigMock {
+  static user = {
+    //用户ID
+    id: "13900009004",
+    //账户ID
+    aid: "",
+    //用户名
+    name: "测试帐户",
+    //用户头像
+    avatar: "",
+    //出生日期
+    bothday: "",
+    //真实姓名
+    realname: "测试帐户",
+    //身份证
+    No: "",
+    //性别
+    sex: "",
+    //联系方式
+    contact: "13900009004",
+  };
+
+  static account = {
+    // 账户ID
+    id: "13900009004",
+    // 账户名
+    name: "测试帐户",
+    // 手机号
+    phone: "13900009004",
+    // 设备号
+    device: "browser",
+    // token
+    token: "",
+    // 账户消息队列
+    mq: "",
+  };
+
+  async init() {}
+}
+
 export class RestfulClientMock {
   private backup: Map<number, any> = new Map<number, any>();
 
