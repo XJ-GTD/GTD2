@@ -3447,6 +3447,26 @@ export class CalendarService extends BaseService {
     return;
   }
 
+  async codecPlanItems(): Promise<Array<DayCountCodec>> {
+    let sql: string = `select sd day, count(*) count
+                      from gtd_jta
+                      where jtc = ?1 and del <> ?2
+                      group by day`;
+    let daycounts: Array<DayCountCodec> = await this.sqlExce.getExtLstByParam<DayCountCodec>(sql, [SelfDefineType.System, DelType.del]) || new Array<DayCountCodec>();
+
+    return daycounts;
+  }
+
+  async codecPlans(): Promise<Array<DayCountCodec>> {
+    let sql: string = `select sd day, count(*) count
+                      from gtd_jha
+                      where jtc = ?1 and del <> ?2
+                      group by day`;
+    let daycounts: Array<DayCountCodec> = await this.sqlExce.getExtLstByParam<DayCountCodec>(sql, [SelfDefineType.System, DelType.del]) || new Array<DayCountCodec>();
+
+    return daycounts;
+  }
+
   /**
    * 同步指定/所有未同步日历项
    *
@@ -3520,6 +3540,7 @@ export class CalendarService extends BaseService {
         sync.type = "PlanItem";
         sync.title = planitem.jtn;
         sync.security = SyncDataSecurity.None;
+        sync.datetime = planitem.sd + " " + planitem.st;
 
         // 设置删除状态
         if (planitem.del == DelType.del) {
@@ -3771,30 +3792,50 @@ export class CalendarService extends BaseService {
     return;
   }
 
-  async requestDeviceDiffData() {
-    let daycounts: Array<DayCountCodec> = await this.eventService.codecAgendas();
+  async requestDeviceDiffData(types: Array<string> = ["Agenda", "Attachment", "Memo"]) {
+    assertEmpty(types);   // 入参不能为空
 
-    let code = daycounts.reduce((target, ele) => {
-      if (target) {
-        target += ",";
-        target += ele.day;
-        target += " ";
-        target += ele.count;
-      } else {
-        target += ele.day;
-        target += " ";
-        target += ele.count;
+    for (let type of types) {
+      let daycounts: Array<DayCountCodec>;
+
+      if (type == "Agenda") {
+        daycounts: Array<DayCountCodec> = await this.eventService.codecAgendas() || new Array<DayCountCodec>();
       }
 
-      return target;
-    }, "");
+      if (type == "Attachment") {
+        daycounts: Array<DayCountCodec> = await this.eventService.codecAttachments() || new Array<DayCountCodec>();
+      }
 
-    let pull: PullInData = new PullInData();
-    pull.type = "Agenda#Diff";
+      if (type == "PlanItem") {
+        daycounts: Array<DayCountCodec> = await this.codecPlanItems() || new Array<DayCountCodec>();
+      }
 
-    pull.d.push(code);
+      if (type == "Memo") {
+        daycounts: Array<DayCountCodec> = await this.memoService.codecMemos() || new Array<DayCountCodec>();
+      }
 
-    await this.dataRestful.pull(pull);
+      let code = daycounts.reduce((target, ele) => {
+        if (target) {
+          target += ",";
+          target += ele.day;
+          target += " ";
+          target += ele.count;
+        } else {
+          target += ele.day;
+          target += " ";
+          target += ele.count;
+        }
+
+        return target;
+      }, "");
+
+      let pull: PullInData = new PullInData();
+      pull.type = `${type}#Diff`;
+
+      pull.d.push(code);
+
+      await this.dataRestful.pull(pull);
+    }
 
     return;
   }

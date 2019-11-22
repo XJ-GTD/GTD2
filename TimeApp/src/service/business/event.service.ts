@@ -3286,6 +3286,16 @@ export class EventService extends BaseService {
     return daycounts;
   }
 
+  async codecAttachments(): Promise<Array<DayCountCodec>> {
+    let sql: string = `select strftime('%Y/%m/%d', wtt, 'unixepoch') day, count(*) count
+                      from gtd_fj
+                      where del <> ?1
+                      group by day`;
+    let daycounts: Array<DayCountCodec> = await this.sqlExce.getExtLstByParam<DayCountCodec>(sql, [DelType.del]) || new Array<DayCountCodec>();
+
+    return daycounts;
+  }
+
   /**
    * 同步全部的未同步的日程/指定日程到服务器
    *
