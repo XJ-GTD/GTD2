@@ -39,24 +39,6 @@ export class UserConfigMock {
     mq: "",
   };
 
-  //系统设置
-  static settins: Map<string, Setting> = new Map<string, Setting>();
-  static allsettins: Map<string, Setting> = new Map<string, Setting>();
-
-  //参与人
-  static friends: Array<FsData> = new Array<FsData>();
-
-  //个人计划
-  static privateplans: Array<PlanData> = new Array<PlanData>();
-  //内建计划
-  static publicplans: Array<PlanData> = new Array<PlanData>();
-
-  //重复调用防止
-  static troublestop: Map<string, any> = new Map<string, any>();
-
-  //群组
-  static groups: Array<PageDcData> = new Array<PageDcData>();
-
   async init() {}
 }
 
