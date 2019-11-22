@@ -43,6 +43,7 @@ export class EventService extends BaseService {
   /**
    * 分享日程
    *
+   * @author leon_xi@163.com
    **/
   async shareAgenda(agenda: AgendaData): Promise<string> {
     let share: ShareInData = new ShareInData();
@@ -3796,8 +3797,11 @@ export class EventService extends BaseService {
 
 	  let push: PushInData = new PushInData();
 	  let sync: SyncData = new SyncData();
-	  sync.id = task.evi;
+    sync.id = task.evi;
+    sync.src = task.ui;
     sync.type = "Task";
+    sync.todostate = CompleteState.None;
+    sync.main = true;
 
     //修改权限设定
     if (task.md == anyenum.ModiPower.disable){
@@ -3832,10 +3836,22 @@ export class EventService extends BaseService {
 
 	  let push: PushInData = new PushInData();
 	  let sync: SyncData = new SyncData();
+
 	  sync.id = tt.evi;
     sync.type = "MiniTask";
     sync.security = SyncDataSecurity.None;
-    sync.status = SyncDataStatus[tt.del];
+    sync.todostate = CompleteState.None;
+    sync.main = true;
+
+    // 设置删除状态
+    if (tt.del == DelType.del) {
+      sync.status = SyncDataStatus.Deleted;
+    } else {
+      sync.status = SyncDataStatus.UnDeleted;
+    }
+
+    sync.invitestate = InviteState.None;
+
     sync.payload = tt;
     push.d.push(sync);
     await this.dataRestful.push(push);
@@ -3936,10 +3952,24 @@ export class EventService extends BaseService {
 			 let push: PushInData = new PushInData();
 			 for (let tt of unsyncedtasks) {
 			 	 	let sync: SyncData = new SyncData();
-			 	 	sync.id = tt.evi;
+
+          sync.id = tt.evi;
+          sync.src = tt.ui;
 			    sync.type = "Task";
 			    sync.security = SyncDataSecurity.None;
-			    sync.status = SyncDataStatus[tt.del];
+          sync.todostate = CompleteState.None;
+          sync.datetime = tt.evd + " " + tt.evt;
+          sync.main = true;
+
+          // 设置删除状态
+          if (tt.del == DelType.del) {
+            sync.status = SyncDataStatus.Deleted;
+          } else {
+            sync.status = SyncDataStatus.UnDeleted;
+          }
+
+          sync.invitestate = InviteState.None;
+
 			    sync.payload = tt;
 			    push.d.push(sync);
 			 }
@@ -3960,10 +3990,23 @@ export class EventService extends BaseService {
 			 let push: PushInData = new PushInData();
 			 for (let tt of unsyncedminitasks) {
 			 	 	let sync: SyncData = new SyncData();
-			 	 	sync.id = tt.evi;
+          sync.id = tt.evi;
+          sync.src = tt.ui;
 			    sync.type = "MiniTask";
 			    sync.security = SyncDataSecurity.None;
-			    sync.status = SyncDataStatus[tt.del];
+          sync.todostate = CompleteState.None;
+          sync.datetime = tt.evd + " " + tt.evt;
+          sync.main = true;
+
+          // 设置删除状态
+          if (tt.del == DelType.del) {
+            sync.status = SyncDataStatus.Deleted;
+          } else {
+            sync.status = SyncDataStatus.UnDeleted;
+          }
+
+          sync.invitestate = InviteState.None;
+
 			    sync.payload = tt;
 			    push.d.push(sync);
 			 }
