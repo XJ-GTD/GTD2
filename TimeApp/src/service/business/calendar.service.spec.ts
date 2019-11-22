@@ -21,7 +21,8 @@ import {
   StatusBarMock,
   SplashScreenMock,
   RestFulConfigMock,
-  RestfulClientMock
+  RestfulClientMock,
+  UserConfigMock
 } from '../../../test-config/mocks-ionic';
 
 import {MyApp} from '../../app/app.component';
@@ -403,7 +404,7 @@ describe('CalendarService test suite', () => {
         SqliteExec,
         SqliteInit,
         File,
-        UserConfig,
+        { provide: UserConfig, useClass: UserConfigMock },
         DataConfig,
         UtilService,
         EmitService,
