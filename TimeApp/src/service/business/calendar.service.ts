@@ -3799,19 +3799,19 @@ export class CalendarService extends BaseService {
       let daycounts: Array<DayCountCodec>;
 
       if (type == "Agenda") {
-        daycounts: Array<DayCountCodec> = await this.eventService.codecAgendas() || new Array<DayCountCodec>();
+        daycounts = await this.eventService.codecAgendas() || new Array<DayCountCodec>();
       }
 
       if (type == "Attachment") {
-        daycounts: Array<DayCountCodec> = await this.eventService.codecAttachments() || new Array<DayCountCodec>();
+        daycounts = await this.eventService.codecAttachments() || new Array<DayCountCodec>();
       }
 
       if (type == "PlanItem") {
-        daycounts: Array<DayCountCodec> = await this.codecPlanItems() || new Array<DayCountCodec>();
+        daycounts = await this.codecPlanItems() || new Array<DayCountCodec>();
       }
 
       if (type == "Memo") {
-        daycounts: Array<DayCountCodec> = await this.memoService.codecMemos() || new Array<DayCountCodec>();
+        daycounts = await this.memoService.codecMemos() || new Array<DayCountCodec>();
       }
 
       let code = daycounts.reduce((target, ele) => {
