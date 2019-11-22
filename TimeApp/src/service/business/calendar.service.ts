@@ -3478,7 +3478,7 @@ export class CalendarService extends BaseService {
     let members = new Array<Member>();
 
     if (planitems.length <= 0) {
-      let sql: string = `select * from gtd_jta where jtc <> ? and tb = ? and del <> ?`;
+      let sql: string = `select * from gtd_jta where jtc <> ? and (tb = ? or julianday(strftime('%Y-%m-%d', wtt, 'unixepoch')) <= julianday('2019-11-22')) and del <> ?`;
 
       planitems = await this.sqlExce.getExtLstByParam<PlanItemData>(sql, [SelfDefineType.System, SyncType.unsynch, DelType.del]) || planitems;
 
@@ -3500,7 +3500,7 @@ export class CalendarService extends BaseService {
                                        when ifnull(rtjti, '') = '' then jti
                                        else rtjti end forcejti
                                     from gtd_jta
-                                    where ui <> '' and ui is not null and tb = ?2) jta
+                                    where ui <> '' and ui is not null and (tb = ?2 or julianday(strftime('%Y-%m-%d', wtt, 'unixepoch')) <= julianday('2019-11-22'))) jta
                               inner join gtd_par par
                               on jta.forcejti = par.obi and par.obt = ?3
                               inner join gtd_b b
@@ -3904,7 +3904,7 @@ export class CalendarService extends BaseService {
     this.assertEmpty(plans);    // 入参不能为空
 
     if (plans.length <= 0) {
-      let sql: string = `select * from gtd_jha where jt = ? and tb = ?`;
+      let sql: string = `select * from gtd_jha where jt = ? and (tb = ? or julianday(strftime('%Y-%m-%d', wtt, 'unixepoch')) <= julianday('2019-11-22'))`;
 
       plans = await this.sqlExce.getExtLstByParam<PlanData>(sql, [PlanType.PrivatePlan, SyncType.unsynch]) || plans;
 
@@ -3928,6 +3928,7 @@ export class CalendarService extends BaseService {
         sync.type = "Plan";
         sync.title = plan.jn;
         sync.security = SyncDataSecurity.None;
+        sync.datetime = moment().format("YYYY/MM/DD HH:mm");
 
         // 设置删除状态
         if (plan.del == DelType.del) {
