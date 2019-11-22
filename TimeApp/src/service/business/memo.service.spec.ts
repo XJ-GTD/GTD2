@@ -108,6 +108,7 @@ describe('MemoService test suite', () => {
     });
     config = TestBed.get(SqliteConfig);
     init = TestBed.get(SqliteInit);
+    userConfig = TestBed.get(UserConfig);
     restConfig = TestBed.get(RestFulConfig);
 		sqlExce = TestBed.get(SqliteExec);
     memoService = TestBed.get(MemoService);
@@ -118,6 +119,7 @@ describe('MemoService test suite', () => {
     await init.createTables();
     await init.initData();
     restConfig.init();
+    userConfig.init();
 
     jasmine.DEFAULT_TIMEOUT_INTERVAL = 60 * 1000;  // 每个Case超时时间
   });
