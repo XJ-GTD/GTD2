@@ -3818,6 +3818,7 @@ export class EventService extends BaseService {
     } else {
       sync.status = SyncDataStatus.UnDeleted;
     }
+    sync.invitestate = InviteState.None;
 
     sync.payload = task;
     push.d.push(sync);
