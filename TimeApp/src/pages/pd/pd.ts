@@ -218,7 +218,7 @@ export class PdPage {
                   Wechat.share({
                     message:{
                         title: sharecontent,
-                        description: "冥王星",
+                        description: this.planName,
                         thumb: "https://pluto.guobaa.com/cal/img/4.png",
                         media: {
                           type: Wechat.Type.WEBPAGE,
