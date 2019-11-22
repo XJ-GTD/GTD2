@@ -122,6 +122,9 @@ describe('MemoService test suite', () => {
     restConfig.init();
     userConfig.init();
 
+    UserConfig.account.id = "13900009004";
+    UserConfig.account.name = "测试帐户";
+
     jasmine.DEFAULT_TIMEOUT_INTERVAL = 60 * 1000;  // 每个Case超时时间
   });
 
