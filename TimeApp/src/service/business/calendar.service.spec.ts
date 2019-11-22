@@ -996,7 +996,7 @@ describe('CalendarService test suite', () => {
       for (let daySummary of month1809Summary.days) {
         expect(daySummary.day).toBeDefined();
 
-        let dayOfWeek = Number(moment(daySummary.day,"d").format("d"));
+        let dayOfWeek = Number(moment(daySummary.day,"YYYY/MM/DD").format("d"));
         if (dayOfWeek > 0 && dayOfWeek < 6) {             // 非周末
           if (dayOfWeek == 3) {                           // 星期三
             if (daySummary.day == "2018/09/05") {  // 第三天
@@ -1305,7 +1305,7 @@ describe('CalendarService test suite', () => {
         for (let daySummary of month1809Summary.days) {
           expect(daySummary.day).toBeDefined();
 
-          let dayOfWeek = Number(moment(daySummary.day,"d").format("d"));
+          let dayOfWeek = Number(moment(daySummary.day,"YYYY/MM/DD").format("d"));
           if (dayOfWeek > 0 && dayOfWeek < 6) {             // 非周末
             if (dayOfWeek == 3) {                           // 星期三
               if (daySummary.day == "2018/09/05") {  // 第三天
@@ -1434,7 +1434,7 @@ describe('CalendarService test suite', () => {
             expect(daySummary.repeateventscount).toBe(0);
             expect(daySummary.bookedtimesummary).toBe(0);
           } else {
-            let dayOfWeek = Number(moment(daySummary.day,"d").format("d"));
+            let dayOfWeek = Number(moment(daySummary.day,"YYYY/MM/DD").format("d"));
             if (dayOfWeek > 0 && dayOfWeek < 6) {             // 非周末
               if (dayOfWeek == 3) {
                 expect(daySummary.calendaritemscount).toBe(0);
