@@ -136,11 +136,11 @@ export class GrouperService extends BaseService {
       let push: PushInData = new PushInData();
       for (let group of groupers){
         let sync: SyncData = new SyncData();
-        sync.src = "";
+        sync.src = UserConfig.account.id;
         sync.id = group.gi;
         sync.type = "Grouper";
         sync.title = "";
-        sync.datetime = "";
+        sync.datetime = moment.unix(group.wtt).format("YYYY/MM/DD HH:mm");
         sync.main = false;
         sync.security = SyncDataSecurity.None;
         sync.todostate = CompleteState.None;

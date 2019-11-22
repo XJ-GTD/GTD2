@@ -278,9 +278,9 @@ export class SqliteInit {
     }else if(version == 8) {
       //群组表加新删除状态字段
       let sqlparam = new Array<any>();
-      let sq = ` ALTER TABLE gtd_g ADD COLUMN del varchar(4) DEFAULT 'undel' ;`;
+      let sq = ` ALTER TABLE gtd_g ADD COLUMN del varchar(6) DEFAULT 'undel' ;`;
       sqlparam.push([sq ,[]]);
-      sq = ` ALTER TABLE gtd_b_x ADD COLUMN del varchar(4) DEFAULT 'undel' ;`;
+      sq = ` ALTER TABLE gtd_b_x ADD COLUMN del varchar(6) DEFAULT 'undel' ;`;
       sqlparam.push([sq ,[]]);
       await this.sqlexec.batExecSqlByParam(sqlparam);
 

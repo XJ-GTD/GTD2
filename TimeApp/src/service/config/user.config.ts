@@ -553,7 +553,8 @@ export class UserConfig {
       //和单群人数
       for (let dc of dcl) {
         dc.fsl = new Array<FsData>();
-        let sqlbx = 'select gb.* from gtd_b_x gbx inner join gtd_b gb on gb.pwi = gbx.bmi where gbx.bi="' + dc.gi + '";';
+        let sqlbx = `select gb.* from gtd_b_x gbx inner join gtd_b gb on gb.pwi = gbx.bmi 
+        where gbx.bi='${dc.gi}' and gbx.del <> 'del';`;
         let fsl: Array<FsData> = await this.sqlliteExec.getExtList<FsData>(sqlbx);
         for (let fs of fsl) {
           let fsd: FsData = this.GetOneBTbl(fs.pwi);

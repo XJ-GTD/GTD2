@@ -274,8 +274,8 @@ export class EvTbl implements ITblParam {
     if(this.adr!=null && this.adr!=''){      sq=sq+' and adr= ? ';      params.push(this.adr);    }
     if(this.adrx!=null ){      sq=sq+' and adrx= ? ';      params.push(this.adrx);    }
     if(this.adry!=null ){      sq=sq+' and adry= ? ';      params.push(this.adry);    }
-    if(this.updstate!=null && this.updstate!=''){      sq=sq+', and updstate= ? ';      params.push(this.updstate);    }
-    if(this.evrelate!=null && this.evrelate!=''){      sq=sq+', and evrelate= ? ';      params.push(this.evrelate);    }
+    if(this.updstate!=null && this.updstate!=''){      sq=sq+' and updstate= ? ';      params.push(this.updstate);    }
+    if(this.evrelate!=null && this.evrelate!=''){      sq=sq+' and evrelate= ? ';      params.push(this.evrelate);    }
 
     sq = sq + ';';
 
