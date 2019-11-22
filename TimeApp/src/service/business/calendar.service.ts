@@ -3928,7 +3928,7 @@ export class CalendarService extends BaseService {
         sync.type = "Plan";
         sync.title = plan.jn;
         sync.security = SyncDataSecurity.None;
-        sync.datetime = moment().format("YYYY/MM/DD HH:mm");
+        sync.datetime = moment.unix(plan.wtt).format("YYYY/MM/DD HH:mm");
 
         // 设置删除状态
         if (plan.del == DelType.del) {
