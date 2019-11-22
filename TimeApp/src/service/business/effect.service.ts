@@ -36,11 +36,11 @@ export class EffectService extends BaseService {
   }
 
   async syncInitial() {
-    await this.calendarService.requestInitialData();  // 请求拉取服务器最新日历相关数据
+    // await this.calendarService.requestInitialData();  // 请求拉取服务器最新日历相关数据
   }
 
   async syncCompareInitial() {
-    await this.calendarService.requestDeviceDiffData(); // 请求拉取客户端不一致数据
+    // await this.calendarService.requestDeviceDiffData(); // 请求拉取客户端不一致数据
   }
 
   /**
