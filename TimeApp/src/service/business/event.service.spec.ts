@@ -799,7 +799,7 @@ describe('EventService test suite', () => {
     it(`Case 20 - 1 - 8 changedAgendaFields 取得两个日程变化的字段名成数组 - 修改开始日期后比较`, async () => {
       let agenda: AgendaData = await eventService.getAgenda(beforechange.evi);
 
-      agenda.sd = moment(agenda.sd).add(1, "days").format("YYYY/MM/DD");
+      agenda.sd = moment(agenda.sd,"YYYY/MM/DD").add(1, "days").format("YYYY/MM/DD");
 
       let changed: Array<string> = eventService.changedAgendaFields(agenda, beforechange);
 
@@ -1220,8 +1220,8 @@ describe('EventService test suite', () => {
           continue;
         }
 
-        let pre: number = moment(preday).valueOf();
-        let cur: number = moment(agenda.evd).valueOf();
+        let pre: number = moment(preday,"YYYY/MM/DD").valueOf();
+        let cur: number = moment(agenda.evd,"YYYY/MM/DD").valueOf();
         expect(cur).toBeGreaterThanOrEqual(pre);  //当前日期必须大于等于前一个日期
 
         preday = agenda.evd;
