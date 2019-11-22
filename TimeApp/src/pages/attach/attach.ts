@@ -62,17 +62,17 @@ import {NativeAudio } from "@ionic-native/native-audio";
                       </ion-thumbnail>
                 </div>
                 <div *ngIf="(fja.ext=='mp4'||fja.ext=='MP4')&& (fja.fj !='')">
-                    <ion-icon class="fas fa-file-pdf" (click)="openPdf(fja.fjurl,fja.ext,fja.fji)"></ion-icon>
+                    <ion-icon class="fas fa-file-audio" (click)="openPdf(fja.fjurl,fja.ext,fja.fji)"></ion-icon>
                 </div>
                 <div *ngIf="(fja.ext=='mp3'||fja.ext=='MP3')&& (fja.fj !='')">
-                    <ion-icon class="fas fa-file-pdf" (click)="openPdf(fja.fjurl,fja.ext,fja.fji)"></ion-icon>
+                    <ion-icon class="fas fa-file-music" (click)="openPdf(fja.fjurl,fja.ext,fja.fji)"></ion-icon>
                 </div>
                 <div *ngIf="(fja.ext=='doc'||fja.ext=='DOC'||fja.ext=='xls'||fja.ext=='XLS'||fja.ext=='ppt'||fja.ext=='PPT'||fja.ext=='DOCX'||fja.ext=='docx'
                   ||fja.ext=='xlsx'||fja.ext=='XLSX'||fja.ext=='PPTX'||fja.ext=='pptx')&& (fja.fj !='')">
-                    <ion-icon class="fas fa-file-pdf" (click)="openPdf(fja.fjurl,fja.ext,fja.fji)"></ion-icon>
+                    <ion-icon class="fas fa-file-powerpoint" (click)="openPdf(fja.fjurl,fja.ext,fja.fji)"></ion-icon>
                 </div>
                 <div *ngIf="(fja.ext=='txt'||fja.ext=='TXT')&& (fja.fj !='')">
-                    <ion-icon class="fas fa-file-pdf" (click)="openPdf(fja.fjurl,fja.ext,fja.fji)"></ion-icon>
+                    <ion-icon class="fas fa-file-plus" (click)="openPdf(fja.fjurl,fja.ext,fja.fji)"></ion-icon>
                 </div>
 
                 <div class="icon" *ngIf="fja.ui == currentuser" end>
