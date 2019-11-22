@@ -22,7 +22,8 @@ import {
   StatusBarMock,
   SplashScreenMock,
   RestFulConfigMock,
-  RestfulClientMock
+  RestfulClientMock,
+  UserConfigMock
 } from '../../../test-config/mocks-ionic';
 
 import {MyApp} from '../../app/app.component';
@@ -91,7 +92,7 @@ describe('EventService test suite', () => {
         SqliteConfig,
         SqliteInit,
         SqliteExec,
-        UserConfig,
+        { provide: UserConfig, useClass: UserConfigMock },
         UtilService,
         EmitService,
         File,
