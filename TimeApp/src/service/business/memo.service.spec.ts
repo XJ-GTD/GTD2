@@ -60,6 +60,7 @@ describe('MemoService test suite', () => {
   let config: SqliteConfig;
   let init: SqliteInit;
   let restConfig: RestFulConfig;
+  let userConfig: UserConfig;
   let memoService: MemoService;
   let calendarService: CalendarService;
   let planforUpdate: PlanData;
