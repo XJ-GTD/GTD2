@@ -5275,7 +5275,7 @@ export class RtJson {
               days.push(moment(stepDay, "YYYY/MM/DD").add(duration, "days").format("YYYY/MM/DD"));
             } else {
               //下月日期（跨月）
-              days.push(moment(stepDay, "YYYY/MM/DD").add(1, "months").dates(option + 1).format("YYYY/MM/DD"));
+              days.push(moment(stepDay, "YYYY/MM/DD").add(1, "months").date(option + 1).format("YYYY/MM/DD"));
             }
           }
 
