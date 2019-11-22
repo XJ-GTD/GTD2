@@ -3447,6 +3447,26 @@ export class CalendarService extends BaseService {
     return;
   }
 
+  async codecPlanItems(): Promise<Array<DayCountCodec>> {
+    let sql: string = `select sd day, count(*) count
+                      from gtd_jta
+                      where jtc = ?1 and del <> ?2
+                      group by day`;
+    let daycounts: Array<DayCountCodec> = await this.sqlExce.getExtLstByParam<DayCountCodec>(sql, [SelfDefineType.System, DelType.del]) || new Array<DayCountCodec>();
+
+    return daycounts;
+  }
+
+  async codecPlans(): Promise<Array<DayCountCodec>> {
+    let sql: string = `select sd day, count(*) count
+                      from gtd_jha
+                      where jtc = ?1 and del <> ?2
+                      group by day`;
+    let daycounts: Array<DayCountCodec> = await this.sqlExce.getExtLstByParam<DayCountCodec>(sql, [SelfDefineType.System, DelType.del]) || new Array<DayCountCodec>();
+
+    return daycounts;
+  }
+
   /**
    * 同步指定/所有未同步日历项
    *
@@ -3458,7 +3478,7 @@ export class CalendarService extends BaseService {
     let members = new Array<Member>();
 
     if (planitems.length <= 0) {
-      let sql: string = `select * from gtd_jta where jtc <> ? and tb = ? and del <> ?`;
+      let sql: string = `select * from gtd_jta where jtc <> ? and (tb = ? or julianday(strftime('%Y-%m-%d', wtt, 'unixepoch')) <= julianday('2019-11-22')) and del <> ?`;
 
       planitems = await this.sqlExce.getExtLstByParam<PlanItemData>(sql, [SelfDefineType.System, SyncType.unsynch, DelType.del]) || planitems;
 
@@ -3480,7 +3500,7 @@ export class CalendarService extends BaseService {
                                        when ifnull(rtjti, '') = '' then jti
                                        else rtjti end forcejti
                                     from gtd_jta
-                                    where ui <> '' and ui is not null and tb = ?2) jta
+                                    where ui <> '' and ui is not null and (tb = ?2 or julianday(strftime('%Y-%m-%d', wtt, 'unixepoch')) <= julianday('2019-11-22'))) jta
                               inner join gtd_par par
                               on jta.forcejti = par.obi and par.obt = ?3
                               inner join gtd_b b
@@ -3520,6 +3540,7 @@ export class CalendarService extends BaseService {
         sync.type = "PlanItem";
         sync.title = planitem.jtn;
         sync.security = SyncDataSecurity.None;
+        sync.datetime = planitem.sd + " " + planitem.st;
 
         // 设置删除状态
         if (planitem.del == DelType.del) {
@@ -3771,30 +3792,50 @@ export class CalendarService extends BaseService {
     return;
   }
 
-  async requestDeviceDiffData() {
-    let daycounts: Array<DayCountCodec> = await this.eventService.codecAgendas();
+  async requestDeviceDiffData(types: Array<string> = ["Agenda", "Attachment", "Memo"]) {
+    assertEmpty(types);   // 入参不能为空
 
-    let code = daycounts.reduce((target, ele) => {
-      if (target) {
-        target += ",";
-        target += ele.day;
-        target += " ";
-        target += ele.count;
-      } else {
-        target += ele.day;
-        target += " ";
-        target += ele.count;
+    for (let type of types) {
+      let daycounts: Array<DayCountCodec>;
+
+      if (type == "Agenda") {
+        daycounts = await this.eventService.codecAgendas() || new Array<DayCountCodec>();
       }
 
-      return target;
-    }, "");
+      if (type == "Attachment") {
+        daycounts = await this.eventService.codecAttachments() || new Array<DayCountCodec>();
+      }
 
-    let pull: PullInData = new PullInData();
-    pull.type = "Agenda#Diff";
+      if (type == "PlanItem") {
+        daycounts = await this.codecPlanItems() || new Array<DayCountCodec>();
+      }
 
-    pull.d.push(code);
+      if (type == "Memo") {
+        daycounts = await this.memoService.codecMemos() || new Array<DayCountCodec>();
+      }
 
-    await this.dataRestful.pull(pull);
+      let code = daycounts.reduce((target, ele) => {
+        if (target) {
+          target += ",";
+          target += ele.day;
+          target += " ";
+          target += ele.count;
+        } else {
+          target += ele.day;
+          target += " ";
+          target += ele.count;
+        }
+
+        return target;
+      }, "");
+
+      let pull: PullInData = new PullInData();
+      pull.type = `${type}#Diff`;
+
+      pull.d.push(code);
+
+      await this.dataRestful.pull(pull);
+    }
 
     return;
   }
@@ -3863,7 +3904,7 @@ export class CalendarService extends BaseService {
     this.assertEmpty(plans);    // 入参不能为空
 
     if (plans.length <= 0) {
-      let sql: string = `select * from gtd_jha where jt = ? and tb = ?`;
+      let sql: string = `select * from gtd_jha where jt = ? and (tb = ? or julianday(strftime('%Y-%m-%d', wtt, 'unixepoch')) <= julianday('2019-11-22'))`;
 
       plans = await this.sqlExce.getExtLstByParam<PlanData>(sql, [PlanType.PrivatePlan, SyncType.unsynch]) || plans;
 
@@ -3887,6 +3928,7 @@ export class CalendarService extends BaseService {
         sync.type = "Plan";
         sync.title = plan.jn;
         sync.security = SyncDataSecurity.None;
+        sync.datetime = moment.unix(plan.wtt).format("YYYY/MM/DD HH:mm");
 
         // 设置删除状态
         if (plan.del == DelType.del) {
