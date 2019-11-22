@@ -24,13 +24,13 @@ export class EffectService extends BaseService {
 
   async syncStart() {
 
-    await this.calendarService.syncPrivatePlans();    // 同步自定义日历
-    await this.eventService.syncAttachments();        // 同步附件
-    await this.calendarService.syncPlanItems();       // 同步日历项
-    await this.eventService.syncAgendas();            // 同步日程
-    await this.memoService.syncMemos();               // 同步备忘
-    await this.annotationService.syncAnnotation();   // 同步@信息
-    await this.remindService.syncScheduledReminds();  // 同步未来48小时的提醒
+    // await this.calendarService.syncPrivatePlans();    // 同步自定义日历
+    // await this.eventService.syncAttachments();        // 同步附件
+    // await this.calendarService.syncPlanItems();       // 同步日历项
+    // await this.eventService.syncAgendas();            // 同步日程
+    // await this.memoService.syncMemos();               // 同步备忘
+    // await this.annotationService.syncAnnotation();   // 同步@信息
+    // await this.remindService.syncScheduledReminds();  // 同步未来48小时的提醒
 
     return ;
   }
