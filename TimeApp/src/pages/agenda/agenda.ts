@@ -248,6 +248,7 @@ export class AgendaPage {
   };
   speaking: boolean = false;
   currentuser: string = UserConfig.account.id;
+  currentusername: string = UserConfig.account.name;
   friends: Array<any> = UserConfig.friends;
   currentAgenda: AgendaData = {} as AgendaData;
   originAgenda: AgendaData = {} as AgendaData;
@@ -995,7 +996,7 @@ export class AgendaPage {
       else {
             type ="日程";
       }
-      let title = this.currentuser +"分享了" +type+"，请及时查看！";
+      let title = this.currentusername +" 分享了 一个" +type+"。";
       //验证是否按照微信组件
       Wechat.isInstalled(installed => {
         if (installed) {
