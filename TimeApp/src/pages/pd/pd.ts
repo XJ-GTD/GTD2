@@ -210,7 +210,7 @@ export class PdPage {
 
             this.calendarService.sharePlan(plan, true).then(url => {
               console.log("分享地址是："+JSON.stringify(url));
-              let sharecontent: string = this.currentusername +" 分享了 一个日历。";
+              let sharecontent: string = `${this.currentusername} 分享了 一个日历`;
 
               //验证是否按照微信组件
               Wechat.isInstalled(installed => {
@@ -219,7 +219,7 @@ export class PdPage {
                     message:{
                         title: sharecontent,
                         description: this.planName,
-                        thumb: "https://pluto.guobaa.com/cal/img/4.png",
+                        thumb: "https://pluto.guobaa.com/cal/img/2.png",
                         media: {
                           type: Wechat.Type.WEBPAGE,
                           webpageUrl: url || "https://fir.im/d2z3"
