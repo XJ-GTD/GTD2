@@ -46,10 +46,18 @@ export class EventService extends BaseService {
    * @author leon_xi@163.com
    **/
   async shareAgenda(agenda: AgendaData): Promise<string> {
+    // 复制对象, 防止影响原数据对象
+    let shareAgenda: AgendaData = {} as AgendaData;
+    this.util.cloneObj(shareAgenda, agenda);
+
     let share: ShareInData = new ShareInData();
 
     // 文件附件访问地址转换
+    // 附件创建人名
     for (let attachment of agenda.attachments) {
+      // 补充创建人名
+
+      // 文件访问地址转换
       let fpjson = generateCacheFilePathJson(attachment.fpjson, attachment.fj);
       if (fpjson && fpjson.remote) {
         attachment.fjurl = `http://pluto.guobaa.com/abl/store/local/getContent/${fpjson.remote}`;
@@ -3386,7 +3394,7 @@ export class EventService extends BaseService {
         [anyenum.EventType.Agenda, SyncType.unsynch, anyenum.ObjectType.Event]) || members;
 
       let params = new Array<any>();
-      let sqpushed = `select ev.evrelate,par.pari, b.rc, b.ui 
+      let sqpushed = `select ev.evrelate,par.pari, b.rc, b.ui
         from (select evi,evn,rtevi,evrelate,max(wtt)
                 from gtd_ev
                where rtevi = ''
@@ -3603,7 +3611,7 @@ export class EventService extends BaseService {
   private async validAlreadyPushed(to : Array<Member>,evrelate : string) : Promise<Array<any>>   {
     let ret  = new Array<any>();
     let params = new Array<any>();
-    let sq = `select ev.evrelate,par.pari, b.rc, b.ui 
+    let sq = `select ev.evrelate,par.pari, b.rc, b.ui
         from (select evi,evn,rtevi,evrelate,max(wtt)
                 from gtd_ev
                where rtevi = ''
