@@ -55,7 +55,7 @@ export class NetworkService {
   public monitorNetwork() {
 
     // watch network for a disconnection
-    let disconnectSubscription = this.network.onDisconnect().subscribe(() => {
+    this.network.onDisconnect().subscribe(() => {
       console.log('network was disconnected :-(');
       console.log('没有连接网络');
 
@@ -66,7 +66,7 @@ export class NetworkService {
     });
 
     // watch network for a connection
-    let connectSubscription = this.network.onConnect().subscribe(() => {
+    this.network.onConnect().subscribe(() => {
       console.log('network connected!');
       console.log('网络成功连接');
 

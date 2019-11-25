@@ -3,7 +3,7 @@ import { BaseService, SortType } from "./base.service";
 import { SqliteExec } from "../util-service/sqlite.exec";
 import { UtilService } from "../util-service/util.service";
 import { EmitService } from "../util-service/emit.service";
-import { BipdshaeData, Plan, PlanPa, ShareData, ShaeRestful } from "../restful/shaesev";
+import { BipdshaeData, Plan, PlanPa} from "../restful/shaesev";
 import { SyncData, PushInData, PullInData, DataRestful, DayCountCodec, ShareInData } from "../restful/datasev";
 import { BackupPro, BacRestful, OutRecoverPro, RecoverPro } from "../restful/bacsev";
 import { EventData, TaskData, AgendaData, MiniTaskData, EventService, RtJson, TxJson, Member, generateRtJson, generateTxJson } from "./event.service";
@@ -39,7 +39,6 @@ export class CalendarService extends BaseService {
               private memoService: MemoService,
               private remindService: ScheduleRemindService,
               private bacRestful: BacRestful,
-              private shareRestful: ShaeRestful,
               private dataRestful: DataRestful) {
     super();
     this.activitiesqueue = async.queue(async ({data}, callback) => {
@@ -3745,7 +3744,7 @@ export class CalendarService extends BaseService {
 
     current.invitestatus = InviteState.Accepted;
 
-    let saved = await this.savePlanItem(current, origin);
+    await this.savePlanItem(current, origin);
 
     return current;
   }
@@ -3766,7 +3765,7 @@ export class CalendarService extends BaseService {
     current.invitestatus = InviteState.Rejected;
     current.del = DelType.del;                     // 拒绝的日程设置为删除, 从用户日历显示中删除
 
-    let saved = await this.savePlanItem(current, origin);
+    await this.savePlanItem(current, origin);
 
     return current;
   }

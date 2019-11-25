@@ -9,7 +9,6 @@ import {UtilService} from "../util-service/util.service";
 import {EmitService} from "../util-service/emit.service";
 import {DataConfig} from "./data.config";
 import {FsData, PageDcData} from "../../data.mapping";
-import {Member} from "../business/event.service";
 import {PlanData} from "../business/calendar.service";
 
 /**
@@ -553,7 +552,7 @@ export class UserConfig {
       //和单群人数
       for (let dc of dcl) {
         dc.fsl = new Array<FsData>();
-        let sqlbx = `select gb.* from gtd_b_x gbx inner join gtd_b gb on gb.pwi = gbx.bmi 
+        let sqlbx = `select gb.* from gtd_b_x gbx inner join gtd_b gb on gb.pwi = gbx.bmi
         where gbx.bi='${dc.gi}' and gbx.del <> 'del';`;
         let fsl: Array<FsData> = await this.sqlliteExec.getExtList<FsData>(sqlbx);
         for (let fs of fsl) {

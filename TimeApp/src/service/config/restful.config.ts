@@ -1,5 +1,4 @@
 import {STbl} from "../sqlite/tbl/s.tbl";
-import {ATbl} from "../sqlite/tbl/a.tbl";
 import {SqliteExec} from "../util-service/sqlite.exec";
 import {Injectable} from "@angular/core";
 import {UserConfig} from "./user.config";
