@@ -1,20 +1,13 @@
 import {Injectable} from "@angular/core";
-import {SqliteExec} from "../../service/util-service/sqlite.exec";
-import {BipdshaeData, Plan, ShaeRestful} from "../../service/restful/shaesev";
 import {JhTbl} from "../../service/sqlite/tbl/jh.tbl";
 import {PagePDPro, PagePlData, RcInParam} from "../../data.mapping";
-import * as moment from "moment";
-import {EmitService} from "../../service/util-service/emit.service";
 import {CalendarService, PlanSummaryData, PlanData} from "../../service/business/calendar.service";
 import {PlanType} from "../../data.enum";
 
 @Injectable()
 export class PlService {
 
-  constructor(private sqlExec: SqliteExec,
-              private shareRestful:ShaeRestful,
-              private calendarService: CalendarService,
-              private emitService:EmitService) {}
+  constructor(private calendarService: CalendarService) {}
 
   //下载系统计划
   async downloadPlan(jh:PagePDPro){

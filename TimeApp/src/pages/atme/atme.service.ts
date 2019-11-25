@@ -1,13 +1,9 @@
 import {Injectable} from "@angular/core";
 import * as moment from "moment";
-import { EventService, TaskData } from "../../service/business/event.service";
-import { IsSuccess, SyncDataStatus } from "../../data.enum";
-import {UtilService} from "../../service/util-service/util.service";
 
 @Injectable()
 export class AtmeService {
-  constructor(private util: UtilService,
-              private eventService: EventService) {
+  constructor() {
     moment.locale('zh-cn');
   }
 

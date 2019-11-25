@@ -446,9 +446,9 @@ export class ChineseLunar {
   }
 
   //_solarAdd(date, '5d-6m');
-  private solarAdd (date, expr){
-
-  };
+  // private solarAdd (date, expr){
+  //
+  // };
 
   //格式化农历日期，date是农历的日期
   format(lunar, expr) {
