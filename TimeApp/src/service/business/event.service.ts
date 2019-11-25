@@ -1131,7 +1131,7 @@ export class EventService extends BaseService {
     this.assertEmpty(evi);    // 入参不能为空
 
     let agdata = {} as AgendaData;
-    let delcondi = "";
+    // let delcondi = "";
     let params = new Array<any>();
     //获取事件详情
 
@@ -1794,7 +1794,7 @@ export class EventService extends BaseService {
 
       //事件表更新
       let outAgd  = {} as AgendaData;
-      let was = new Array<WaTbl>();
+      // let was = new Array<WaTbl>();
 
       //字段evt 设定
 
@@ -2333,20 +2333,20 @@ export class EventService extends BaseService {
    * @param {Array<FjTbl>} fjs
    * @returns {Array<any>}
    */
-  private sqlparamAddFj(evi : string ,attachments : Array<Attachment>):Array<FjTbl>{
-    let ret = new Array<FjTbl>();
-    if (attachments && attachments.length > 0){
-      for (let j = 0 ,len = attachments.length;j < len ; j++){
-        let fj = new FjTbl();
-        Object.assign(fj, attachments[j]);
-        fj.fji = this.util.getUuid();
-        fj.obt = anyenum.ObjectType.Event;
-        fj.obi = evi;
-        ret.push(fj);
-      }
-    }
-    return ret;
-  }
+  // private sqlparamAddFj(evi : string ,attachments : Array<Attachment>):Array<FjTbl>{
+  //   let ret = new Array<FjTbl>();
+  //   if (attachments && attachments.length > 0){
+  //     for (let j = 0 ,len = attachments.length;j < len ; j++){
+  //       let fj = new FjTbl();
+  //       Object.assign(fj, attachments[j]);
+  //       fj.fji = this.util.getUuid();
+  //       fj.obt = anyenum.ObjectType.Event;
+  //       fj.obi = evi;
+  //       ret.push(fj);
+  //     }
+  //   }
+  //   return ret;
+  // }
 
   /**
    * 创建参与人
