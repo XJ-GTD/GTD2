@@ -277,13 +277,13 @@ export class EventService extends BaseService {
 
       let title: string = "";
       if (agenda.del == DelType.del) {
-        let localAgenda: AgendaData = await this.getAgenda(agenda.evi);
+        let localAgenda: AgendaData = await this.getAgenda(agenda.evi, true);
 
         if (localAgenda && localAgenda.del == DelType.del) continue;
 
         title = `${owner.rn} - 取消活动`;
       } else {
-        let localAgenda: AgendaData = await this.getAgenda(agenda.evi);
+        let localAgenda: AgendaData = await this.getAgenda(agenda.evi, true);
 
         if (localAgenda && localAgenda.del != DelType.del) continue;
 
