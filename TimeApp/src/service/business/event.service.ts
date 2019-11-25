@@ -25,13 +25,16 @@ import {
 } from "../../util/util";
 import {FsData} from "../../data.mapping";
 import {File} from '@ionic-native/file';
+import {AssistantService} from "../cordova/assistant.service";
 
 @Injectable()
 export class EventService extends BaseService {
   constructor(private sqlExce: SqliteExec, private util: UtilService,
               private emitService:EmitService,
               private file: File,
-              private bacRestful: BacRestful,private userConfig: UserConfig,
+              private bacRestful: BacRestful,
+              private assistantService: AssistantService,
+              private userConfig: UserConfig,
               private dataRestful: DataRestful) {
     super();
   }
@@ -243,12 +246,60 @@ export class EventService extends BaseService {
       sqlparam = [...sqlparam, ...fjparams];*/
 
 
-
+      await this.receivedAgendaSpeaker(saved);
       await this.sqlExce.batExecSqlByParam(sqlparam);
       this.emitService.emit("mwxing.calendar.activities.changed", saved);
     }
 
     return saved;
+  }
+
+  /**
+   * 收到日程进行语音播报
+   **/
+  async receivedAgendaSpeaker(agendas: Array<AgendaData>) {
+    if (!agendas || agendas.length <= 0) {
+      return;
+    }
+
+    for (let agenda of agendas) {
+      if (agenda.ui == UserConfig.account.id) continue;
+
+      if (!agenda.members || agenda.members.length <= 0) continue;
+
+      let owners = agenda.members.filter((ele) => {
+        return ele.ui && ele.ui == agenda.ui;
+      });
+
+      if (!owners || owners.length <= 0) continue;
+
+      let owner = owners[0];
+
+      let title: string = "";
+      if (agenda.del == DelType.del) {
+        let localAgenda: AgendaData = await this.getAgenda(agenda.evi);
+
+        if (localAgenda && localAgenda.del == DelType.del) continue;
+
+        title = `${owner.rn} - 取消活动`;
+      } else {
+        let localAgenda: AgendaData = await this.getAgenda(agenda.evi);
+
+        if (localAgenda && localAgenda.del != DelType.del) continue;
+
+        title = `${owner.rn} - 邀请活动`;
+      }
+
+      let speakData: string = `冥王星通知。
+                               收到${title}, ${agenda.evn}`;
+
+      // 停止播报，如果前面正在播报的话
+      this.assistantService.stopSpeak(false);
+      // 开始播报
+      this.assistantService.speakText(speakData).then(() => {
+        this.assistantService.stopSpeak(false);
+      })
+    }
   }
 
   /**
