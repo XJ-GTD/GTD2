@@ -135,6 +135,12 @@ export class EventService extends BaseService {
         let evraltes : Array<AgendaData>  = await this.sqlExce.getLstByParam<AgendaData>(eviv);
         if (evraltes && evraltes.length > 0){
           agd.invitestatus = InviteState.Accepted;
+
+          //设定了截止日期，则自动加入todolist
+          if(UserConfig.getSetting(DataConfig.SYS_AUTOTODO) && agd.al == anyenum.IsWholeday.EndSet){
+            agd.todolist = anyenum.ToDoListStatus.On;
+          }
+          agd.tb = anyenum.SyncType.unsynch;
         }else{
           if (!agd.invitestatus) {
             agd.invitestatus = InviteState.None;
