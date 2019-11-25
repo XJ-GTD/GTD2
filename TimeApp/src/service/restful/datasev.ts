@@ -61,7 +61,7 @@ export class DataRestful {
    * https://pluto.guobaa.com/abl/store/remote/download
    **/
   async download(download: DownloadInData): Promise<DownloadOutData> {
-    let url: UrlEntity = this.config.getRestFulUrl("SDL");
+    // let url: UrlEntity = this.config.getRestFulUrl("SDL");
 
     // let data = await this.request.download(url, download, download.filepath);
 

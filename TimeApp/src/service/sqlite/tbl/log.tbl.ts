@@ -1,6 +1,5 @@
 import {ITbl} from "./itbl";
 import * as moment from "moment";
-import {Data} from "@angular/router";
 
 /**
  * create by on 2019/4/29

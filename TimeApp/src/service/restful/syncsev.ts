@@ -189,7 +189,7 @@ export class SyncRestful {
       task.taskType = "WEBHOOK";
       task.taskName = "github webhook";
 
-      let choosetime = moment(timestamp);
+      // let choosetime = moment(timestamp);
 
       let taskRunAt = {
         eventId: "WEBHOOK_GITHUB",
@@ -245,7 +245,7 @@ export class SyncRestful {
       task.taskType = "WEBHOOK_FORWARD";
       task.taskName = "github webhook";
 
-      let choosetime = moment(timestamp);
+      // let choosetime = moment(timestamp);
 
       let taskRunAt = {
         eventId: "WEBHOOK_GITHUB",
