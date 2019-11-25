@@ -132,18 +132,21 @@ export class EventService extends BaseService {
         eviv.evrelate = agd.evrelate;
         eviv.invitestatus = anyenum.InviteState.Accepted;
         let evraltes : Array<AgendaData>  = await this.sqlExce.getLstByParam<AgendaData>(eviv);
-        if (evraltes && evraltes.length > 0){
+        if (evraltes && evraltes.length > 0 && agd.invitestatus != InviteState.Accepted){
           agd.invitestatus = InviteState.Accepted;
+
+          //设定了截止日期，则自动加入todolist
+          if(UserConfig.getSetting(DataConfig.SYS_AUTOTODO) && agd.al == anyenum.IsWholeday.EndSet){
+            agd.todolist = anyenum.ToDoListStatus.On;
+          }
+          agd.tb = anyenum.SyncType.unsynch;
         }else{
           if (!agd.invitestatus) {
             agd.invitestatus = InviteState.None;
           }
         }
 
-        //设定了截止日期，则自动加入todolist
-        if(UserConfig.getSetting(DataConfig.SYS_AUTOTODO) && agd.al == anyenum.IsWholeday.EndSet){
-          agd.todolist = anyenum.ToDoListStatus.On;
-        }
+
 
         let ev = new EvTbl();
         Object.assign(ev,agd);
@@ -3787,7 +3790,10 @@ export class EventService extends BaseService {
 
     let current: AgendaData = {} as AgendaData;
     Object.assign(current, origin);
-
+    //设定了截止日期，则自动加入todolist
+    if(UserConfig.getSetting(DataConfig.SYS_AUTOTODO) && current.al == anyenum.IsWholeday.EndSet){
+      current.todolist = anyenum.ToDoListStatus.On;
+    }
     current.invitestatus = InviteState.Accepted;
 
     let saved = await this.saveAgenda(current, origin);
