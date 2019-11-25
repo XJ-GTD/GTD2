@@ -85,7 +85,7 @@ export class EventService extends BaseService {
     let sqlparam = new Array<any>();
 
     let saved: Array<AgendaData> = new Array<AgendaData>();
-    let nwfj = new Array<FjTbl>();
+    // let nwfj = new Array<FjTbl>();
     let was = new Array<WaTbl>();
 
     if (pullAgdatas && pullAgdatas !=null ){
@@ -2083,7 +2083,6 @@ export class EventService extends BaseService {
    * @param {AgendaData} oriAgdata
    * @param {Array<Member>} members
    * @param {Array<any>} sqlparam
-   * @param {DUflag} doflag
    * @returns {Promise<void>}
    */
   private async changedParentAgdForOther(oriAgdata : AgendaData,
@@ -2459,7 +2458,7 @@ export class EventService extends BaseService {
     let outAgds = new Array<AgendaData>();
     let evs = new Array<EvTbl>();
     let was = new Array<WaTbl>();
-    let fjs = new Array<FjTbl>();
+    // let fjs = new Array<FjTbl>();
 
     //字段evt 设定
 
@@ -3796,7 +3795,7 @@ export class EventService extends BaseService {
     }
     current.invitestatus = InviteState.Accepted;
 
-    let saved = await this.saveAgenda(current, origin);
+    await this.saveAgenda(current, origin);
 
     // 判断是否为他人共享的重复主日程
     // 接受当时无法发出拉取子日程请求的时候,如何处理,需要设计方案
@@ -3830,7 +3829,7 @@ export class EventService extends BaseService {
     current.invitestatus = InviteState.Rejected;
     current.del = DelType.del;                     // 拒绝的日程设置为删除, 从用户日历显示中删除
 
-    let saved = await this.saveAgenda(current, origin);
+    await this.saveAgenda(current, origin);
 
     return current;
   }
@@ -4698,7 +4697,7 @@ export class EventService extends BaseService {
       this.assertEmpty(changedNew);
       let changed: AgendaData = {} as AgendaData;
       Object.assign(changed, changedNew);
-      let agendaArray: Array<AgendaData> = new Array<AgendaData>();
+      // let agendaArray: Array<AgendaData> = new Array<AgendaData>();
       let flag: boolean = true;
       //当数据retevi为空的情况下
       if(!changed.rtevi) {
@@ -5503,10 +5502,6 @@ enum FieldChanged{
   Member = "Member",
   Invite = "Invite",
   Todolist = 'Todolist'
-}
-enum DUflag {
-  del = "del",
-  update = "update"
 }
 
 export function isJsonString(str: string) {

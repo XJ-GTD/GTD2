@@ -2,10 +2,9 @@ import { Injectable } from "@angular/core";
 import { BaseService, SortType } from "./base.service";
 import { SqliteExec } from "../util-service/sqlite.exec";
 import { UtilService } from "../util-service/util.service";
-import { EmitService } from "../util-service/emit.service";
 import { UserConfig } from "../config/user.config";
 import { PlanItemData, generateDataType } from "./calendar.service";
-import { EventService, AgendaData, TaskData, MiniTaskData, EventData, TxJson, generateTxJson } from "./event.service";
+import { AgendaData, TaskData, MiniTaskData, EventData, TxJson, generateTxJson } from "./event.service";
 import { MemoData, MemoService } from "./memo.service";
 import {SyncType, DelType, EventType, ObjectType, ToDoListStatus, EventFinishStatus} from "../../data.enum";
 import {SyncRestful} from "../restful/syncsev";
@@ -17,8 +16,6 @@ export class ScheduleRemindService extends BaseService {
 
   constructor(private sqlExce: SqliteExec,
               private util: UtilService,
-              private emitService: EmitService,
-              private eventService: EventService,
               private syncRestful: SyncRestful,
               private userConfig: UserConfig) {
     super();
