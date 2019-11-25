@@ -22,7 +22,10 @@ export class TransFromDatePipe implements PipeTransform {
     if (formart == "duration") {
       return moment.duration(value, "minutes").humanize() ? moment.duration(value, "minutes").humanize() : "";
     }
-    let m = typeof value == 'number'? moment(value) : moment(value, "YYYY/MM/DD");
+    let m = typeof value == 'number'? moment(value) : moment(value, "YYYY/MM/DD HH:mm");
+    if (!m.isValid()) {
+      m = moment(value, "YYYY/MM/DD")
+    }
     if (!m.isValid()) {
       m = moment(value, "YYYY/MM")
     }
