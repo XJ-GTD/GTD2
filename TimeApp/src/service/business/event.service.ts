@@ -256,6 +256,8 @@ export class EventService extends BaseService {
 
   /**
    * 收到日程进行语音播报
+   *
+   * @author leon_xi@163.com
    **/
   async receivedAgendaSpeaker(agendas: Array<AgendaData>) {
     if (!agendas || agendas.length <= 0) {
