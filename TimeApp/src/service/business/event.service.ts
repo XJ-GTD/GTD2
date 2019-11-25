@@ -7,17 +7,16 @@ import { TTbl } from "../sqlite/tbl/t.tbl";
 import { CaTbl } from "../sqlite/tbl/ca.tbl";
 import {UserConfig} from "../config/user.config";
 import * as moment from "moment";
-import {ETbl} from "../sqlite/tbl/e.tbl";
 import {EmitService} from "../util-service/emit.service";
 import {WaTbl} from "../sqlite/tbl/wa.tbl";
 import * as anyenum from "../../data.enum";
-import { BackupPro, BacRestful, OutRecoverPro, RecoverPro } from "../restful/bacsev";
+import { BackupPro, BacRestful, OutRecoverPro } from "../restful/bacsev";
 import {ParTbl} from "../sqlite/tbl/par.tbl";
 import {JhaTbl} from "../sqlite/tbl/jha.tbl";
 import {DataConfig} from "../config/data.config";
 import {BTbl} from "../sqlite/tbl/b.tbl";
 import {FjTbl} from "../sqlite/tbl/fj.tbl";
-import {DataRestful, PullInData, PushInData, SyncData, SyncDataFields, UploadInData, DownloadInData, DayCountCodec, ShareInData} from "../restful/datasev";
+import {DataRestful, PullInData, PushInData, SyncData, UploadInData, DayCountCodec, ShareInData} from "../restful/datasev";
 import {SyncType, DelType, ObjectType, IsSuccess, CycleType, SyncDataStatus, OperateType, ToDoListStatus, RepeatFlag, ConfirmType, ModiPower, PageDirection, SyncDataSecurity, InviteState, CompleteState, EventFinishStatus, EventType} from "../../data.enum";
 import {
   assertNotNumber,
@@ -169,7 +168,7 @@ export class EventService extends BaseService {
 
           //删除参与人
           let par = new ParTbl();
-          par.obt = anyenum.ObjectType.Event;
+          par.obt = ObjectType.Event;
           par.obi = agd.evi;
           sqlparam.push(par.dTParam());
           //参与人更新
@@ -191,13 +190,13 @@ export class EventService extends BaseService {
         params.push(anyenum.SyncType.unsynch);
         params.push(anyenum.DelType.del);
         params.push(agd.evi);
-        params.push(anyenum.ObjectType.Event);
+        params.push(ObjectType.Event);
         sqlparam.push([sq,params]);
 
         if (agd.del != DelType.del){
           if (ev.todolist == anyenum.ToDoListStatus.On ) {
             //如果在todolist中，则加系统提醒
-            was.push(this.sqlparamAddSysTx2(ev,anyenum.ObjectType.Event));
+            was.push(this.sqlparamAddSysTx2(ev,ObjectType.Event));
           }else{
             let wa = new WaTbl();
             wa.wai = ev.evi;
@@ -207,7 +206,7 @@ export class EventService extends BaseService {
           }
           //提醒新建
           if (agd.txjson.reminds && agd.txjson.reminds.length > 0) {
-            was = [...was,...this.sqlparamAddTxWa2(ev, anyenum.ObjectType.Event,  agd.txjson)];
+            was = [...was,...this.sqlparamAddTxWa2(ev, ObjectType.Event,  agd.txjson)];
           }
         }
 
@@ -216,7 +215,7 @@ export class EventService extends BaseService {
         if (agd.attachments && agd.attachments != null && agd.attachments.length > 0) {
           //删除附件
           let fj = new FjTbl();
-          fj.obt = anyenum.ObjectType.Event;
+          fj.obt = ObjectType.Event;
           fj.obi = agd.evi;
           sqlparam.push(fj.dTParam());
 
@@ -1193,7 +1192,7 @@ export class EventService extends BaseService {
     //附件数据
     let fj = new FjTbl();
     fj.obi = agdata.evi;
-    fj.obt = anyenum.ObjectType.Event;
+    fj.obt = ObjectType.Event;
     fj.del = anyenum.DelType.undel;
     let attachments = new Array<Attachment>();
     attachments = await this.sqlExce.getLstByParam<Attachment>(fj);
@@ -1235,7 +1234,7 @@ export class EventService extends BaseService {
     let pars: Array<ParTbl> = new Array<ParTbl>();
     let par = new ParTbl();
     par.obi = evi;
-    par.obt = anyenum.ObjectType.Event;
+    par.obt = ObjectType.Event;
     pars = await this.sqlExce.getLstByParam<ParTbl>(par);
     for (let j = 0, len = pars.length; j < len; j++) {
       let member = {} as Member;
@@ -1352,7 +1351,7 @@ export class EventService extends BaseService {
       params.push(anyenum.SyncType.unsynch);
       params.push(anyenum.DelType.del);
       params.push(oriAgdata.evi);
-      params.push(anyenum.ObjectType.Event);
+      params.push(ObjectType.Event);
       sqlparam.push([sq,params]);
 
     }
@@ -1674,7 +1673,7 @@ export class EventService extends BaseService {
 
             Object.assign(ev, agd);
             //如果在todolist中，则加系统提醒
-            was.push(this.sqlparamAddSysTx2(ev,anyenum.ObjectType.Event));
+            was.push(this.sqlparamAddSysTx2(ev,ObjectType.Event));
 
           }
           if (was && was.length > 0){
@@ -1689,7 +1688,7 @@ export class EventService extends BaseService {
           params.push(anyenum.SyncType.unsynch);
           params.push(anyenum.DelType.del);
           params.push(anyenum.UpdState.inherent);
-          params.push(anyenum.ObjectType.Event);
+          params.push(ObjectType.Event);
           params.push(masterEvi);
           params.push(masterEvi);
           waparams.push([sq,params]);
@@ -1970,7 +1969,7 @@ export class EventService extends BaseService {
       let attachs = new Array<Attachment>();
       sq = `select * from gtd_fj where obt = ?1 and  obi in (select evi
       from gtd_ev  where (evi = ?2 or rtevi = ?2)    ${tmpcondi} ); `;
-      attachs = await this.sqlExce.getExtLstByParam<Attachment>(sq,[anyenum.ObjectType.Event,masterEvi]);
+      attachs = await this.sqlExce.getExtLstByParam<Attachment>(sq,[ObjectType.Event,masterEvi]);
 
       //活动其他对象绑定
       for (let agd of retAgendas){
@@ -2016,7 +2015,7 @@ export class EventService extends BaseService {
     params.push(anyenum.SyncType.unsynch);
     params.push(anyenum.DelType.del);
     params.push(oriAgdata.evi);
-    params.push(anyenum.ObjectType.Event);
+    params.push(ObjectType.Event);
     sqlparam.push([sq,params]);
 
     let ev = new EvTbl();
@@ -2027,7 +2026,7 @@ export class EventService extends BaseService {
 
     if (ev.todolist == anyenum.ToDoListStatus.On ) {
       //如果在todolist中，则加系统提醒
-      was.push(this.sqlparamAddSysTx2(ev,anyenum.ObjectType.Event));
+      was.push(this.sqlparamAddSysTx2(ev,ObjectType.Event));
     }else{
       let wa = new WaTbl();
       wa.wai = ev.evi;
@@ -2038,7 +2037,7 @@ export class EventService extends BaseService {
 
     if (newAgdata.txjson.reminds && newAgdata.txjson.reminds.length > 0) {
       ev.evi = oriAgdata.evi;
-      was =[...was,...this.sqlparamAddTxWa2(ev, anyenum.ObjectType.Event,  newAgdata.txjson)];
+      was =[...was,...this.sqlparamAddTxWa2(ev, ObjectType.Event,  newAgdata.txjson)];
     }
     if (was && was.length > 0){
       waparams = this.sqlExce.getFastSaveSqlByParam(was);
@@ -2046,7 +2045,7 @@ export class EventService extends BaseService {
 
     //删除参与人
     let par = new ParTbl();
-    par.obt = anyenum.ObjectType.Event;
+    par.obt = ObjectType.Event;
     par.obi = parEvi;
     sqlparam.push(par.dTParam());
 
@@ -2064,7 +2063,7 @@ export class EventService extends BaseService {
 
     /*//删除附件
     let fj = new FjTbl();
-    fj.obt = anyenum.ObjectType.Event;
+    fj.obt = ObjectType.Event;
     fj.obi = oriAgdata.evi;
     sqlparam.push(fj.dTParam());
     //附件更新
@@ -2124,7 +2123,7 @@ export class EventService extends BaseService {
       sq = `select * from gtd_fj where obt = ? and  obi in (select evi from gtd_ev
           where ${upcondi} ); `;
       params = new Array<any>();
-      params.push(anyenum.ObjectType.Event);
+      params.push(ObjectType.Event);
       params.push(oriAgdata.evi);
       upAttaches = await this.sqlExce.getExtLstByParam<Attachment>(sq,params);
 
@@ -2233,7 +2232,7 @@ export class EventService extends BaseService {
     sq = `select * from gtd_fj where obt = ? and  obi in (select evi from gtd_ev
           where ${delcondi} ); `;
     params = new Array<any>();
-    params.push(anyenum.ObjectType.Event);
+    params.push(ObjectType.Event);
     params.push(oriAgdata.evd);
     params.push(masterEvi);
     params.push(masterEvi);
@@ -2282,7 +2281,7 @@ export class EventService extends BaseService {
     params = new Array<any>();
     params.push(anyenum.SyncType.unsynch);
     params.push(anyenum.DelType.del);
-    params.push(anyenum.ObjectType.Event);
+    params.push(ObjectType.Event);
     params.push(oriAgdata.evd);
     params.push(masterEvi);
     params.push(masterEvi);
@@ -2339,7 +2338,7 @@ export class EventService extends BaseService {
   //       let fj = new FjTbl();
   //       Object.assign(fj, attachments[j]);
   //       fj.fji = this.util.getUuid();
-  //       fj.obt = anyenum.ObjectType.Event;
+  //       fj.obt = ObjectType.Event;
   //       fj.obi = evi;
   //       ret.push(fj);
   //     }
@@ -2361,7 +2360,7 @@ export class EventService extends BaseService {
         par.pari = this.util.getUuid();
         par.pwi = pars[j].pwi;
         par.ui = pars[j].ui;
-        par.obt = anyenum.ObjectType.Event;
+        par.obt = ObjectType.Event;
         par.obi = evi;
         par.sa = pars[j].sa;
         par.sdt = pars[j].sdt;
@@ -2514,11 +2513,11 @@ export class EventService extends BaseService {
 
       if (ev.todolist == anyenum.ToDoListStatus.On ) {
         //如果在todolist中，则加系统提醒
-        was.push(this.sqlparamAddSysTx2(ev,anyenum.ObjectType.Event));
+        was.push(this.sqlparamAddSysTx2(ev,ObjectType.Event));
       }
 
       if (txjson.reminds && txjson.reminds.length > 0) {
-        was = [...was,...this.sqlparamAddTxWa2(ev,anyenum.ObjectType.Event,txjson)];
+        was = [...was,...this.sqlparamAddTxWa2(ev,ObjectType.Event,txjson)];
       }
 
       /*if (agdata.attachments && agdata.attachments.length > 0){
@@ -2711,7 +2710,7 @@ export class EventService extends BaseService {
 	    ret.sqlparam.push(ev.rpTParam());
 	    //添加提醒的SQL
       if (txjson.reminds && txjson.reminds.length > 0) {
-		  	ret.sqlparam = [...ret.sqlparam ,...this.sqlparamAddTxWa(ev,anyenum.ObjectType.Event,txjson)];
+		  	ret.sqlparam = [...ret.sqlparam ,...this.sqlparamAddTxWa(ev,ObjectType.Event,txjson)];
 	  	}
 	    //创建任务SQL
 	     ret.sqlparam.push(this.sqlparamAddTaskTt(ev,taskData.cs, taskData.isrt))
@@ -2742,7 +2741,7 @@ export class EventService extends BaseService {
 	  //   ret.sqlparam.push(ev.rpTParam());
 	  //   //添加提醒的SQL
     //   if (txjson.reminds && txjson.reminds.length > 0) {
-		//   	ret.sqlparam = [...ret.sqlparam ,...this.sqlparamAddTxWa(ev,anyenum.ObjectType.Event,txjson)];
+		//   	ret.sqlparam = [...ret.sqlparam ,...this.sqlparamAddTxWa(ev,ObjectType.Event,txjson)];
 	  // 	}
 	  //   //创建任务SQL
 	  //    ret.sqlparam.push(this.sqlparamAddTaskTt(ev,taskData.cs, taskData.isrt))
@@ -2873,7 +2872,6 @@ export class EventService extends BaseService {
    *  获取任务SQL
    * @param {EvTbl}
    * @param {ev: EvTbl,st:string ,sd:string,txjson :TxJson }
-   * @returns {ETbl}
    */
   private sqlparamAddTaskTt(ev: EvTbl,cs: string, isrt : string ): any {
     //创建任务
@@ -2988,7 +2986,7 @@ export class EventService extends BaseService {
       ret.sqlparam.push(ev.rpTParam());
       //添加提醒的SQL
       if (txjson.reminds && txjson.reminds.length > 0) {
-        ret.sqlparam = [...ret.sqlparam ,...this.sqlparamAddTxWa(ev,anyenum.ObjectType.Event,txjson)];
+        ret.sqlparam = [...ret.sqlparam ,...this.sqlparamAddTxWa(ev,ObjectType.Event,txjson)];
       }
       //新增数据需要返回出去
       let task2 = {} as MiniTaskData;
@@ -3370,7 +3368,7 @@ export class EventService extends BaseService {
                                   inner join gtd_fj fj
                                   on ev.forceevi = fj.obi and fj.obt = ?3`;
       attachments =  await this.sqlExce.getExtLstByParam<Attachment>(sqlattachments,
-        [anyenum.EventType.Agenda, SyncType.unsynch, anyenum.ObjectType.Event]) || attachments;
+        [anyenum.EventType.Agenda, SyncType.unsynch, ObjectType.Event]) || attachments;
 
   		let sqlmember: string = ` select distinct par.*  ,
   		                              b.ran,
@@ -3392,7 +3390,7 @@ export class EventService extends BaseService {
                               inner join gtd_b b
                               on par.pwi = b.pwi `;
       members =  await this.sqlExce.getExtLstByParam<Member>(sqlmember,
-        [anyenum.EventType.Agenda, SyncType.unsynch, anyenum.ObjectType.Event]) || members;
+        [anyenum.EventType.Agenda, SyncType.unsynch, ObjectType.Event]) || members;
 
       let params = new Array<any>();
       let sqpushed = `select ev.evrelate,par.pari, b.rc, b.ui
@@ -3406,7 +3404,7 @@ export class EventService extends BaseService {
                                                                     ?2
        inner join gtd_b b on par.pwi = b.pwi  `;
       params.push(anyenum.DelType.del);
-      params.push(anyenum.ObjectType.Event);
+      params.push(ObjectType.Event);
       pre = await this.sqlExce.getExtLstByParam(sqpushed,params);
 
     } else {
@@ -3420,7 +3418,7 @@ export class EventService extends BaseService {
                                     from gtd_fj
                                     where obi in ('` + evis.join(`', '`) + `') and obt = ?1`;
       attachments =  await this.sqlExce.getExtLstByParam<Attachment>(sqlattachments,
-        [anyenum.ObjectType.Event]) || attachments;
+        [ObjectType.Event]) || attachments;
     }
 
     let maxdata: number = 5;
@@ -3624,7 +3622,7 @@ export class EventService extends BaseService {
        inner join gtd_b b on par.pwi = b.pwi  `;
     params.push(anyenum.DelType.del);
     params.push(evrelate);
-    params.push(anyenum.ObjectType.Event);
+    params.push(ObjectType.Event);
     let  pre : any = await this.sqlExce.getExtLstByParam(sq,params);
 
     for (let member of to){
