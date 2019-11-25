@@ -1078,7 +1078,7 @@ export class EventService extends BaseService {
    * @param {AgendaData} oldAgd
    * @returns {boolean}
    */
-  hasAgendaModifyDo(newAgd : AgendaData ,oriAgd : AgendaData ,modiType : anyenum.OperateType):DoType {
+  hasAgendaModifyDo(newAgd : AgendaData ,oriAgd : AgendaData ,modiType : OperateType):DoType {
 
     let changed : Array<string> = this.isAgendaRepeatChanged(newAgd,oriAgd);
 
@@ -1100,7 +1100,7 @@ export class EventService extends BaseService {
         doType = DoType.FutureAll;
       }
       //重复事件中的某一日程to独立日程或关闭重复
-      if (oriAgd.rfg == anyenum.RepeatFlag.Repeat && modiType == anyenum.OperateType.OnlySel) {
+      if (oriAgd.rfg == anyenum.RepeatFlag.Repeat && modiType == OperateType.OnlySel) {
         doType = DoType.Current;
         //如果是修改重复选项
         if (changed.length == 1 && changed[0] == "rt" && newAgd.rtjson.cycletype != anyenum.CycleType.close){
@@ -1109,7 +1109,7 @@ export class EventService extends BaseService {
         }
       }
       //重复事件to重复事件或关闭重复
-      if (oriAgd.rfg == anyenum.RepeatFlag.Repeat && modiType == anyenum.OperateType.FromSel) {
+      if (oriAgd.rfg == anyenum.RepeatFlag.Repeat && modiType == OperateType.FromSel) {
         doType = DoType.FutureAll;
       }
     }else if( newAgd.invitestatus != oriAgd.invitestatus ) {
@@ -1284,9 +1284,9 @@ export class EventService extends BaseService {
    * 其他事件删除使用OperateType.FromSel，
    * @returns {Promise<Array<AgendaData>>}
    */
-  async removeAgenda(oriAgdata : AgendaData, delType : anyenum.OperateType):Promise<Array<AgendaData>>{
+  async removeAgenda(oriAgdata : AgendaData, delType : OperateType):Promise<Array<AgendaData>>{
 
-    if (delType == anyenum.OperateType.FromSel && oriAgdata.rfg == anyenum.RepeatFlag.RepeatToOnly){
+    if (delType == OperateType.FromSel && oriAgdata.rfg == anyenum.RepeatFlag.RepeatToOnly){
       this.assertFail("独立日删除不可以选择删除将来所有");
     }
 
@@ -1309,7 +1309,7 @@ export class EventService extends BaseService {
       delEvi = oriAgdata.rtevi;
     }
 
-    if (delType == anyenum.OperateType.FromSel){
+    if (delType == OperateType.FromSel){
 
       //删除原事件中从当前开始所有事件
       console.log("**** removeAgenda start :****" + moment().format("YYYY/MM/DD HH:mm:ss SSS"))
@@ -1373,7 +1373,7 @@ export class EventService extends BaseService {
    * 其他事件修改使用OperateType.FromSel
    * @returns {Promise<Array<AgendaData>>}
    */
-  async saveAgenda(newAgdata : AgendaData, oriAgdata:AgendaData = null, modiType : anyenum.OperateType = anyenum.OperateType.OnlySel): Promise<Array<AgendaData>> {
+  async saveAgenda(newAgdata : AgendaData, oriAgdata:AgendaData = null, modiType : OperateType = OperateType.OnlySel): Promise<Array<AgendaData>> {
     // 入参不能为空
     this.assertEmpty(newAgdata);
     this.assertEmpty(newAgdata.sd);    // 事件开始日期不能为空
@@ -1497,9 +1497,9 @@ export class EventService extends BaseService {
    * @param {OperateType} modiType
    * @returns {Promise<Array<AgendaData>>}
    */
-  private async updateAgenda(newAgdata: AgendaData,oriAgdata : AgendaData, modiType : anyenum.OperateType):Promise<Array<AgendaData>> {
+  private async updateAgenda(newAgdata: AgendaData,oriAgdata : AgendaData, modiType : OperateType):Promise<Array<AgendaData>> {
 
-    if (modiType == anyenum.OperateType.FromSel && oriAgdata.rfg == anyenum.RepeatFlag.RepeatToOnly){
+    if (modiType == OperateType.FromSel && oriAgdata.rfg == anyenum.RepeatFlag.RepeatToOnly){
       this.assertFail("独立日修改不可以选择修改将来所有");
     }
 

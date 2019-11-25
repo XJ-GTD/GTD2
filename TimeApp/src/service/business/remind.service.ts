@@ -1,11 +1,11 @@
 import { Injectable } from "@angular/core";
-import { BaseService, SortType } from "./base.service";
+import { BaseService } from "./base.service";
 import { SqliteExec } from "../util-service/sqlite.exec";
 import { UtilService } from "../util-service/util.service";
 import { UserConfig } from "../config/user.config";
 import { PlanItemData, generateDataType } from "./calendar.service";
 import { AgendaData, TaskData, MiniTaskData, EventData, TxJson, generateTxJson } from "./event.service";
-import { MemoData, MemoService } from "./memo.service";
+import { MemoData } from "./memo.service";
 import {SyncType, DelType, EventType, ObjectType, ToDoListStatus, EventFinishStatus} from "../../data.enum";
 import {SyncRestful} from "../restful/syncsev";
 import {WaTbl} from "../sqlite/tbl/wa.tbl";
@@ -16,8 +16,7 @@ export class ScheduleRemindService extends BaseService {
 
   constructor(private sqlExce: SqliteExec,
               private util: UtilService,
-              private syncRestful: SyncRestful,
-              private userConfig: UserConfig) {
+              private syncRestful: SyncRestful) {
     super();
   }
 
