@@ -3,7 +3,7 @@ import { BaseService, SortType } from "./base.service";
 import { SqliteExec } from "../util-service/sqlite.exec";
 import { UtilService } from "../util-service/util.service";
 import { EmitService } from "../util-service/emit.service";
-import { BipdshaeData, Plan, PlanPa} from "../restful/shaesev";
+import { BipdshaeData, Plan, PlanPa, ShaeRestful} from "../restful/shaesev";
 import { SyncData, PushInData, PullInData, DataRestful, DayCountCodec, ShareInData } from "../restful/datasev";
 import { BackupPro, BacRestful, OutRecoverPro, RecoverPro } from "../restful/bacsev";
 import { EventData, TaskData, AgendaData, MiniTaskData, EventService, RtJson, TxJson, Member, generateRtJson, generateTxJson } from "./event.service";
@@ -39,6 +39,7 @@ export class CalendarService extends BaseService {
               private memoService: MemoService,
               private remindService: ScheduleRemindService,
               private bacRestful: BacRestful,
+              private shareRestful: ShaeRestful,
               private dataRestful: DataRestful) {
     super();
     this.activitiesqueue = async.queue(async ({data}, callback) => {
