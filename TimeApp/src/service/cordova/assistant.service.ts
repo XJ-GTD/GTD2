@@ -155,7 +155,16 @@ export class AssistantService {
       this.stopListenAudio();
       this.emitService.emitSpeak(true);
 
-      setTimeout(() => {
+      // setTimeout(() => {
+      //   cordova.plugins.XjBaiduTts.startSpeak(result => {
+      //     this.stopSpeak(true);
+      //     resolve();
+      //   }, error => {
+      //     this.stopSpeak(true);
+      //     resolve(error);
+      //   }, speechText);
+      //
+      // }, 100);
         cordova.plugins.XjBaiduTts.startSpeak(result => {
           this.stopSpeak(true);
           resolve();
@@ -163,8 +172,6 @@ export class AssistantService {
           this.stopSpeak(true);
           resolve(error);
         }, speechText);
-
-      }, 100);
     });
   }
 
