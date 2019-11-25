@@ -5,8 +5,7 @@ import {UserConfig} from "../config/user.config";
 import {SyncDataSecurity, SyncDataStatus, InviteState, CompleteState, UpdState} from "../../data.enum";
 import {EmitService} from "../util-service/emit.service";
 import {
-  assertEmpty,
-  assertFail
+  assertEmpty
 } from "../../util/util";
 
 /**
@@ -64,7 +63,7 @@ export class DataRestful {
   async download(download: DownloadInData): Promise<DownloadOutData> {
     let url: UrlEntity = this.config.getRestFulUrl("SDL");
 
-    let data = await this.request.download(url, download, download.filepath);
+    // let data = await this.request.download(url, download, download.filepath);
 
     return new DownloadOutData();
   }

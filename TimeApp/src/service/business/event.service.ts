@@ -6,7 +6,6 @@ import { EvTbl } from "../sqlite/tbl/ev.tbl";
 import { TTbl } from "../sqlite/tbl/t.tbl";
 import { CaTbl } from "../sqlite/tbl/ca.tbl";
 import {UserConfig} from "../config/user.config";
-import {AgdRestful} from "../restful/agdsev";
 import * as moment from "moment";
 import {ETbl} from "../sqlite/tbl/e.tbl";
 import {EmitService} from "../util-service/emit.service";
@@ -31,7 +30,7 @@ import {File} from '@ionic-native/file';
 @Injectable()
 export class EventService extends BaseService {
   constructor(private sqlExce: SqliteExec, private util: UtilService,
-              private agdRest: AgdRestful,private emitService:EmitService,
+              private emitService:EmitService,
               private file: File,
               private bacRestful: BacRestful,private userConfig: UserConfig,
               private dataRestful: DataRestful) {
@@ -3250,7 +3249,7 @@ export class EventService extends BaseService {
     let sqlparam = new Array<any>();
 
     let saved: Array<Attachment> = new Array<Attachment>();
-    let nwfj = new Array<FjTbl>();
+    // let nwfj = new Array<FjTbl>();
 
     for (let attachment of attachments) {
       let single = {} as Attachment;

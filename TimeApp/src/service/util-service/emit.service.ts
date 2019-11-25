@@ -1,5 +1,4 @@
 import {EventEmitter, Injectable} from "@angular/core";
-import {Moment} from "moment";
 import * as moment from "moment";
 
 /**

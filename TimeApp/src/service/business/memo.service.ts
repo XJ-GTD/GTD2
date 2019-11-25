@@ -3,9 +3,8 @@ import { BaseService } from "./base.service";
 import { SqliteExec } from "../util-service/sqlite.exec";
 import { UtilService } from "../util-service/util.service";
 import { MomTbl } from "../sqlite/tbl/mom.tbl";
-import { BipdshaeData, Plan, PlanPa, ShareData, ShaeRestful } from "../restful/shaesev";
 import { SyncData, PushInData, PullInData, DataRestful, DayCountCodec } from "../restful/datasev";
-import { BackupPro, BacRestful, OutRecoverPro, RecoverPro } from "../restful/bacsev";
+import { BackupPro, BacRestful, OutRecoverPro } from "../restful/bacsev";
 import { UserConfig } from "../config/user.config";
 import * as moment from "moment";
 import { SyncType, DelType, SyncDataSecurity, SyncDataStatus, CompleteState, InviteState } from "../../data.enum";
@@ -17,8 +16,7 @@ export class MemoService extends BaseService {
 		private bacRestful: BacRestful,
 		private emitService: EmitService,
 		private util: UtilService,
-		private dataRestful: DataRestful,
-		private shareRestful: ShaeRestful) {
+		private dataRestful: DataRestful) {
 		super();
 	}
 
@@ -285,16 +283,6 @@ export class MemoService extends BaseService {
 		this.assertEmpty(memo);     // 入参不能为空
     	this.assertEmpty(memo.moi);  // 备忘ID不能为空
 
-//  	let upplan: ShareData = new ShareData();
-//  	upplan.oai = "";
-//  	upplan.ompn = "";
-//  	upplan.c = "";
-//  	//upplan.d.p = memo;
-//  	let shared = await this.shareRestful.share(upplan);
-//  	if (shared)
-//	      return shared.psurl;
-//	    else
-//	      return "";
 		return ;
 	}
 

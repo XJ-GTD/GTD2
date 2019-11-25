@@ -3,7 +3,6 @@
  *
  * create by zhangjy on 2019/03/12.
  */
-import {CTbl} from "../../service/sqlite/tbl/c.tbl";
 import {FsData, ScdData} from "../../data.mapping";
 
 

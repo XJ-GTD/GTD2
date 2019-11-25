@@ -11,7 +11,7 @@ import { getSha1SafeforBrowser } from '../../util/crypto-util';
 @Injectable()
 export class SyncRestful {
   // 预览版
-  private initDataUrl: string = "https://www.guobaa.com/ini/parameters";
+  // private initDataUrl: string = "https://www.guobaa.com/ini/parameters";
   // 内网测试版
   //private initDataUrl: string = "https://www.guobaa.com/ini/parameters?debug=true";
   // 开发版
@@ -303,7 +303,7 @@ export class SyncRestful {
       task.taskType = "WEBHOOK";
       task.taskName = "travis-ci webhook";
 
-      let choosetime = moment(timestamp);
+      // let choosetime = moment(timestamp);
 
       let taskRunAt = {
         eventId: "WEBHOOK_TRAVIS-CI",
@@ -357,7 +357,7 @@ export class SyncRestful {
       task.taskType = "WEBHOOK";
       task.taskName = "fir.im webhook";
 
-      let choosetime = moment(timestamp);
+      // let choosetime = moment(timestamp);
 
       let taskRunAt = {
         eventId: "WEBHOOK_FIR.IM",
@@ -411,7 +411,7 @@ export class SyncRestful {
       task.taskType = "WEBHOOK_FORWARD";
       task.taskName = "fir.im webhook";
 
-      let choosetime = moment(timestamp);
+      // let choosetime = moment(timestamp);
 
       let taskRunAt = {
         eventId: "WEBHOOK_FIR.IM",

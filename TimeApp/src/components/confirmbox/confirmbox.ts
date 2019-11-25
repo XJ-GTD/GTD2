@@ -1,6 +1,5 @@
-import {Component, OnInit} from '@angular/core';
-import {IonicPage, PopoverController, NavParams, ViewController} from 'ionic-angular';
-import {CTbl} from "../../service/sqlite/tbl/c.tbl";
+import {Component} from '@angular/core';
+import {IonicPage, NavParams} from 'ionic-angular';
 
 /**
  * Generated class for the BackComponent page.
