@@ -133,10 +133,7 @@ export class EventService extends BaseService {
           }
         }
 
-        //设定了截止日期，则自动加入todolist
-        if(UserConfig.getSetting(DataConfig.SYS_AUTOTODO) && agd.al == anyenum.IsWholeday.EndSet){
-          agd.todolist = anyenum.ToDoListStatus.On;
-        }
+
 
         let ev = new EvTbl();
         Object.assign(ev,agd);
@@ -3780,7 +3777,10 @@ export class EventService extends BaseService {
 
     let current: AgendaData = {} as AgendaData;
     Object.assign(current, origin);
-
+    //设定了截止日期，则自动加入todolist
+    if(UserConfig.getSetting(DataConfig.SYS_AUTOTODO) && current.al == anyenum.IsWholeday.EndSet){
+      current.todolist = anyenum.ToDoListStatus.On;
+    }
     current.invitestatus = InviteState.Accepted;
 
     let saved = await this.saveAgenda(current, origin);
