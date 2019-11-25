@@ -47,9 +47,9 @@ import {CaTbl} from "../sqlite/tbl/ca.tbl";
 import {TTbl} from "../sqlite/tbl/t.tbl";
 import {WaTbl} from "../sqlite/tbl/wa.tbl";
 import { CalendarService, PlanData } from "./calendar.service";
-import {EventService, AgendaData, TaskData, MiniTaskData, RtJson, TxJson} from "./event.service";
+import {EventService, AgendaData, TaskData, MiniTaskData, RtJson, TxJson,CacheFilePathJson} from "./event.service";
 import { MemoService } from "./memo.service";
-import { PlanType, IsCreate, IsSuccess, IsWholeday, PageDirection, SyncType, DelType, SyncDataStatus, EventType, OperateType, CycleType, OverType, ToDoListStatus, ConfirmType, EventFinishStatus } from "../../data.enum";
+import { PlanType, IsCreate, IsSuccess, IsWholeday, PageDirection, SyncType, DelType, SyncDataStatus, EventType, OperateType, CycleType, OverType, ToDoListStatus, ConfirmType, EventFinishStatus,ObjectType } from "../../data.enum";
 import { ScheduleRemindService } from "./remind.service";
 import {File} from '@ionic-native/file';
 
@@ -120,6 +120,7 @@ describe('EventService test suite', () => {
 
     calendarService = TestBed.get(CalendarService);
     eventService = TestBed.get(EventService);
+
     await config.generateDb();
     await init.createTables();
     await init.initData();
@@ -847,6 +848,35 @@ describe('EventService test suite', () => {
       expect(changed.length).toBeDefined(1);
       expect(changed[0]).toBe("adr");
     });
+
+    it('Case 21 - 1 - 1   saveAttachment 保存文件附件 ', async () => {
+
+      let at: Attachment = {} as Attachment;
+      at.obt = ObjectType.Event;
+      at.obi ='12345' ;
+      at.fjn ='测试附件内容';
+      at.ui ='13900009004';
+      at = await eventService.saveAttachment(at);
+      expect(at).toBeDefined();
+      expect(at.fji).toBeDefined();
+    });
+
+    it('Case 21 - 1 - 2   saveAttachment 保存图片附件 ', async () => {
+
+      let at: Attachment = {} as Attachment;
+      at.obt = ObjectType.Event;
+      at.obi = '12345' ;
+      at.fjn = '测试附件内容';
+      at.ui = '13900009004';
+      at.ext = 'jpg';
+      let cacheFilePathJson: CacheFilePathJson = new CacheFilePathJson();
+      cacheFilePathJson.local = "/1234.jpg";
+      at.fj = JSON.stringify(cacheFilePathJson);
+      at = await eventService.saveAttachment(at);
+      expect(at).toBeDefined();
+      expect(at.fji).toBeDefined();
+    });
+
   });
 
   describe(`创建不重复与重复（每天、每周、每月、每年）日程`, () => {
