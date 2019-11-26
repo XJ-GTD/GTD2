@@ -61,7 +61,7 @@ export class EventService extends BaseService {
       // 文件访问地址转换
       let fpjson = generateCacheFilePathJson(attachment.fpjson, attachment.fj);
       if (fpjson && fpjson.remote) {
-        attachment.fjurl = `http://pluto.guobaa.com/abl/store/local/getContent/${fpjson.remote}`;
+        attachment.fjurl = `http://pluto.guobaa.com/abl/store/local/getSnapshot/${fpjson.remote}`;
       } else {
         attachment.fjurl = "";
       }
