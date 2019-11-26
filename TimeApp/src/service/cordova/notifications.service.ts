@@ -87,19 +87,26 @@ export class NotificationsService {
       });
 
       this.localNotifications.on('trigger').subscribe((next: ILocalNotification) => {
-        if (next.data.type == "schedule") {
-          this.schedule();
-          this.remindService.getRemindLs().then(data => {
-            if (data.length == 0) return;
-            this.remind(data);
-            this.remindService.delRemin(data);
-          })
-        }
+        // if (next.data.type == "schedule") {
+        //   this.schedule();
+        //   this.remindService.getRemindLs().then(data => {
+        //     if (data.length == 0) return;
+        //     this.remind(data);
+        //     this.remindService.delRemin(data);
+        //   })
+        // }
 
         //自定定时启动防止后台js不执行
         if (next.data.type == "keeplive") {
           this.keeplive();
         }
+
+        if (next.data.type == "systimeout") {
+          console.log("当前任务=====Notifiy======timeout====")
+          this.emitService.emit(next.data.emitkey);
+        }
+
+
         if (this.index > 99999) this.index = 0;
       });
     }
@@ -182,8 +189,17 @@ export class NotificationsService {
   public keeplive() {
     let notif: MwxSchedule = new MwxSchedule();
     notif.id = this.index++;
-    notif.trigger = {in: 60, unit: ELocalNotificationTriggerUnit.SECOND};
+    notif.trigger = {in: 1, unit: ELocalNotificationTriggerUnit.SECOND};
     notif.data = {type: "keeplive"};
+
+    this.localNotifications.schedule(notif);
+  }
+
+  public systimeout(key:string,mi:number) {
+    let notif: MwxSchedule = new MwxSchedule();
+    notif.id = this.index++;
+    notif.trigger = {in: mi, unit: ELocalNotificationTriggerUnit.SECOND};
+    notif.data = {type: "systimeout",emitkey:key};
 
     this.localNotifications.schedule(notif);
   }

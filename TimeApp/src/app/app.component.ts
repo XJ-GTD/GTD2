@@ -45,6 +45,7 @@ export class MyApp {
         if (this.device.platform == "Android") {
           this.backgroundMode.setDefaults({silent: true, hidden: true}).then(d => {
             this.backgroundMode.enable();
+            this.backgroundMode.isActive()
           })
 
           //设置返回键盘（android）

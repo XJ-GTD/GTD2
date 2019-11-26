@@ -8,6 +8,8 @@ import {RestFulConfig} from "../service/config/restful.config";
 import {EmitService} from "../service/util-service/emit.service";
 import {UtilService} from "../service/util-service/util.service";
 import {AsyncQueue} from "../util/asyncQueue";
+import {NotificationsService} from "../service/cordova/notifications.service";
+import {TimeOutService} from "../util/TimeOutService";
 
 /**
  * WebSocket连接Rabbitmq服务器
@@ -34,7 +36,8 @@ export class WebsocketService {
   speeches:number = 0;
   private disconnecttime: number = 0;
 
-  constructor(private dispatchService: DispatchService, private util: UtilService, private emitService: EmitService, private config: RestFulConfig) {
+  constructor(private dispatchService: DispatchService, private util: UtilService, private emitService: EmitService, private config: RestFulConfig,
+              private timeOutService: TimeOutService,) {
 
     this.workqueue = new AsyncQueue(({message,index,err},callback) =>{
       console.log("当前任务=====workqueue  process queue:" + this.workqueue.length());
@@ -45,7 +48,10 @@ export class WebsocketService {
         console.log(data);
         callback(message);
       })
-    },1,1);
+    },1,1,"worker.queue");
+
+    this.workqueue.setTimeOutService(timeOutService);
+
 
     this.speechqueue =  new AsyncQueue( ({message,index,err},callback) =>{
       console.log("当前任务=====speechqueue  process queue:" + this.workqueue.length());
@@ -54,7 +60,8 @@ export class WebsocketService {
       }).catch(data=>{
         callback(data);
       })
-    },1,1);
+    },1,1,"speech.queue");
+    this.speechqueue.setTimeOutService(timeOutService);
   }
 
   pushMessage(event:any){

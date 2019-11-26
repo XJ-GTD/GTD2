@@ -4,6 +4,9 @@ import * as wrapAsync from "async/internal/wrapAsync.js"
 import * as onlyOnce from "async/internal/onlyOnce.js"
 import * as isArray from "lodash/isArray.js"
 import * as baseIndexOf from "lodash/_baseIndexOf.js"
+import {EmitService} from "../service/util-service/emit.service";
+import {NotificationsService} from "../service/cordova/notifications.service";
+import {TimeOutService} from "./TimeOutService";
 
 
 
@@ -25,9 +28,15 @@ export class AsyncQueue {
   started: boolean = false;
   paused: boolean = false;
   isProcessing: boolean = false;
-   timeoutWork:Worker;
+  timeoutService:TimeOutService;
+  emitKey:string;
 
-  constructor(worker, concurrency, payload) {
+  setTimeOutService(timeoutService:TimeOutService){
+    this.timeoutService = timeoutService;
+  }
+
+
+  constructor(worker, concurrency, payload,emitKey) {
     if (concurrency == null) {
       concurrency = 1;
     } else if (concurrency === 0) {
@@ -41,39 +50,36 @@ export class AsyncQueue {
     this.concurrency = concurrency;
     this.payload = payload;
     this.buffer = this.concurrency / 4;
-    this.timeoutWork = new Worker("./workerTimeout.js");
-
-
-    this.timeoutWork.onmessage = (e)=> {
-      while (!this.paused && this.numRunning < this.concurrency && this._tasks.length) {
-        var tasks = [], data = [];
-        var l = this._tasks.length;
-        if (this.payload) l = Math.min(l, this.payload);
-        for (var i = 0; i < l; i++) {
-          var node = this._tasks.shift();
-          tasks.push(node);
-          this.workersList.push(node);
-          data.push(node.data);
-        }
-
-        this.numRunning += 1;
-
-        if (this._tasks.length === 0) {
-          this.empty();
-        }
-
-        if (this.numRunning === this.concurrency) {
-          this.saturated();
-        }
-
-        let cb = onlyOnce(this._next(tasks));
-        this._worker(data[0], cb);
-      }
-      this.isProcessing = false;
-    };
-
+    this.emitKey = emitKey;
   }
 
+  private working(){
+    while (!this.paused && this.numRunning < this.concurrency && this._tasks.length) {
+      var tasks = [], data = [];
+      var l = this._tasks.length;
+      if (this.payload) l = Math.min(l, this.payload);
+      for (var i = 0; i < l; i++) {
+        var node = this._tasks.shift();
+        tasks.push(node);
+        this.workersList.push(node);
+        data.push(node.data);
+      }
+
+      this.numRunning += 1;
+
+      if (this._tasks.length === 0) {
+        this.empty();
+      }
+
+      if (this.numRunning === this.concurrency) {
+        this.saturated();
+      }
+
+      let cb = onlyOnce(this._next(tasks));
+      this._worker(data[0], cb);
+    }
+    this.isProcessing = false;
+  }
   private _insert(data, insertAtFront, callback) {
     if (callback != null && typeof callback !== 'function') {
       throw new Error('task callback must be a function');
@@ -166,7 +172,9 @@ export class AsyncQueue {
       return;
     }
     this.isProcessing = true;
-    this.timeoutWork.postMessage(300);
+    this.timeoutService.timeout(300,()=>{
+      this.working();
+    },this.emitKey);
   }
 
   public length() {

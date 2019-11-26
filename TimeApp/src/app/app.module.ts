@@ -130,6 +130,7 @@ import {AtmePageModule} from "../pages/atme/atme.module";
 import {AtMemberPageModule} from "../pages/atmember/atmember.module";
 import {AnnotationService} from "../service/business/annotation.service";
 import {GrouperService} from "../service/business/grouper.service";
+import {TimeOutService} from "../util/TimeOutService";
 
 @NgModule({
   declarations: [
@@ -276,6 +277,7 @@ import {GrouperService} from "../service/business/grouper.service";
     CalendarService,
     EffectService,
     LocationSearchService,
+    TimeOutService,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     {provide: HAMMER_GESTURE_CONFIG, useClass: HammerDIRECTIONALLConfig},
     {provide: HAMMER_GESTURE_CONFIG, useClass: ionicGalleryModal.GalleryModalHammerConfig}
