@@ -32,6 +32,7 @@ import {SqliteConfig} from "../config/sqlite.config";
 import {SqliteInit} from "../sqlite/sqlite.init";
 import {RestFulConfig} from "../config/restful.config";
 import {UserConfig} from "../config/user.config";
+import {DataConfig} from "../config/data.config";
 
 import {EmitService} from "../util-service/emit.service";
 import {UtilService} from "../util-service/util.service";
@@ -126,6 +127,7 @@ describe('EventService test suite', () => {
 
     await config.generateDb();
     await init.createTables();
+    await init.createTablespath(DataConfig.version, DataConfig.version);
     await init.initData();
     restConfig.init();
 
