@@ -22,7 +22,8 @@ import {
   SplashScreenMock,
   RestFulConfigMock,
   RestfulClientMock,
-  UserConfigMock
+  UserConfigMock,
+  AssistantServiceMock
 } from '../../../test-config/mocks-ionic';
 
 import {MyApp} from '../../app/app.component';
@@ -63,6 +64,7 @@ import { MemoService, MemoData } from "./memo.service";
 import { ScheduleRemindService } from "./remind.service";
 import { PlanType, PlanItemType, CycleType, OverType, RepeatFlag, PageDirection, SyncType, DelType, SyncDataStatus, IsWholeday, OperateType, EventType, RemindTime } from "../../data.enum";
 import {File} from '@ionic-native/file';
+import {AssistantService} from "../cordova/assistant.service";
 
 /**
  * 日历Service 持续集成CI 自动测试Case
@@ -83,6 +85,7 @@ describe('CalendarService test suite', () => {
   let httpMock: HttpTestingController;
   let sqlExce: SqliteExec;
   let util: UtilService;
+  let assistantService: AssistantService;
 
   // 联系人用于测试
   let xiaopangzi: BTbl;
@@ -404,6 +407,7 @@ describe('CalendarService test suite', () => {
         SqliteExec,
         SqliteInit,
         File,
+        { provide: AssistantService, useClass: AssistantServiceMock },
         { provide: UserConfig, useClass: UserConfigMock },
         DataConfig,
         UtilService,
@@ -437,9 +441,15 @@ describe('CalendarService test suite', () => {
     restConfig = TestBed.get(RestFulConfig);
     sqlExce = TestBed.get(SqliteExec);
     util = TestBed.get(UtilService);
+    assistantService = TestBed.get(AssistantService);
 
     await config.generateDb();
     await init.createTables();
+    let version = -1;
+    while (DataConfig.version > version) {
+      await init.createTablespath(version + 1, -1);
+      version++;
+    }
     await init.initData();
     restConfig.init();
 

@@ -29,6 +29,7 @@ import {SqliteConfig} from "../config/sqlite.config";
 import {SqliteInit} from "../sqlite/sqlite.init";
 import {RestFulConfig} from "../config/restful.config";
 import {UserConfig} from "../config/user.config";
+import {DataConfig} from "../config/data.config";
 
 import {EmitService} from "../util-service/emit.service";
 import {UtilService} from "../util-service/util.service";
@@ -114,6 +115,10 @@ describe('EventService test suite for agenda', () => {
     eventService = TestBed.get(EventService);
     await config.generateDb();
     await init.createTables();
+    let version = 0;
+    while (DataConfig.version > version) {
+      await init.createTablespath(++version, 0);
+    }
     await init.initData();
     restConfig.init();
 
