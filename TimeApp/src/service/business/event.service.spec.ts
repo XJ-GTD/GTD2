@@ -48,7 +48,7 @@ import {CaTbl} from "../sqlite/tbl/ca.tbl";
 import {TTbl} from "../sqlite/tbl/t.tbl";
 import {WaTbl} from "../sqlite/tbl/wa.tbl";
 import { CalendarService, PlanData } from "./calendar.service";
-import {EventService, AgendaData, TaskData, MiniTaskData, RtJson, TxJson,CacheFilePathJson} from "./event.service";
+import {EventService, AgendaData, TaskData, Attachment, MiniTaskData, RtJson, TxJson,CacheFilePathJson} from "./event.service";
 import { MemoService } from "./memo.service";
 import { PlanType, IsCreate, IsSuccess, IsWholeday, PageDirection, SyncType, DelType, SyncDataStatus, EventType, OperateType, CycleType, OverType, ToDoListStatus, ConfirmType, EventFinishStatus,ObjectType } from "../../data.enum";
 import { ScheduleRemindService } from "./remind.service";
