@@ -23,7 +23,8 @@ import {
   SplashScreenMock,
   RestFulConfigMock,
   RestfulClientMock,
-  UserConfigMock
+  UserConfigMock,
+  AssistantServiceMock
 } from '../../../test-config/mocks-ionic';
 
 import {MyApp} from '../../app/app.component';
@@ -31,6 +32,7 @@ import {SqliteConfig} from "../config/sqlite.config";
 import {SqliteInit} from "../sqlite/sqlite.init";
 import {RestFulConfig} from "../config/restful.config";
 import {UserConfig} from "../config/user.config";
+import {DataConfig} from "../config/data.config";
 
 import {EmitService} from "../util-service/emit.service";
 import {UtilService} from "../util-service/util.service";
@@ -47,11 +49,12 @@ import {CaTbl} from "../sqlite/tbl/ca.tbl";
 import {TTbl} from "../sqlite/tbl/t.tbl";
 import {WaTbl} from "../sqlite/tbl/wa.tbl";
 import { CalendarService, PlanData } from "./calendar.service";
-import {EventService, AgendaData, TaskData, MiniTaskData, RtJson, TxJson,CacheFilePathJson} from "./event.service";
+import {EventService, AgendaData, TaskData, Attachment, MiniTaskData, RtJson, TxJson,CacheFilePathJson} from "./event.service";
 import { MemoService } from "./memo.service";
 import { PlanType, IsCreate, IsSuccess, IsWholeday, PageDirection, SyncType, DelType, SyncDataStatus, EventType, OperateType, CycleType, OverType, ToDoListStatus, ConfirmType, EventFinishStatus,ObjectType } from "../../data.enum";
 import { ScheduleRemindService } from "./remind.service";
 import {File} from '@ionic-native/file';
+import {AssistantService} from "../cordova/assistant.service";
 
 /**
  * 事件Service 持续集成CI 自动测试Case
@@ -92,6 +95,7 @@ describe('EventService test suite', () => {
         SqliteConfig,
         SqliteInit,
         SqliteExec,
+        { provide: AssistantService, useClass: AssistantServiceMock },
         { provide: UserConfig, useClass: UserConfigMock },
         UtilService,
         EmitService,
@@ -123,6 +127,7 @@ describe('EventService test suite', () => {
 
     await config.generateDb();
     await init.createTables();
+    await init.createTablespath(DataConfig.version, DataConfig.version);
     await init.initData();
     restConfig.init();
 

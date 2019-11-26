@@ -17,7 +17,7 @@ export class GTbl implements ITbl {
   cT():string{
 
     let sq ='create table if not exists gtd_g(  gi varchar(50) primary key ,gn varchar(50)  ,' +
-      'gm varchar(50),gnpy varchar(50),wtt integer ,del varchar(6) );';
+      'gm varchar(50),gnpy varchar(50),wtt integer);';
 
     return sq;
   }
