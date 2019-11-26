@@ -84,6 +84,7 @@ describe('CalendarService test suite', () => {
   let httpMock: HttpTestingController;
   let sqlExce: SqliteExec;
   let util: UtilService;
+  let assistantService: AssistantService;
 
   // 联系人用于测试
   let xiaopangzi: BTbl;
@@ -439,6 +440,7 @@ describe('CalendarService test suite', () => {
     restConfig = TestBed.get(RestFulConfig);
     sqlExce = TestBed.get(SqliteExec);
     util = TestBed.get(UtilService);
+    assistantService = TestBed.get(AssistantService);
 
     await config.generateDb();
     await init.createTables();
