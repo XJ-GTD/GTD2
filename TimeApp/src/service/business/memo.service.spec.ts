@@ -24,6 +24,7 @@ import {
   UserConfigMock
 } from '../../../test-config/mocks-ionic';
 import {UserConfig} from "../config/user.config";
+import {DataConfig} from "../config/data.config";
 
 import {MyApp} from '../../app/app.component';
 import {SqliteConfig} from "../config/sqlite.config";
@@ -118,6 +119,10 @@ describe('MemoService test suite', () => {
 
     await config.generateDb();
     await init.createTables();
+    let version = 0;
+    while (DataConfig.version > version) {
+      await init.createTablespath(++version, 0);
+    }
     await init.initData();
     restConfig.init();
     userConfig.init();
