@@ -63,6 +63,7 @@ import { MemoService, MemoData } from "./memo.service";
 import { ScheduleRemindService } from "./remind.service";
 import { PlanType, PlanItemType, CycleType, OverType, RepeatFlag, PageDirection, SyncType, DelType, SyncDataStatus, IsWholeday, OperateType, EventType, RemindTime } from "../../data.enum";
 import {File} from '@ionic-native/file';
+import {AssistantService} from "../cordova/assistant.service";
 
 /**
  * 日历Service 持续集成CI 自动测试Case
@@ -404,6 +405,7 @@ describe('CalendarService test suite', () => {
         SqliteExec,
         SqliteInit,
         File,
+        { provide: AssistantService, useClass: AssistantServiceMock },
         { provide: UserConfig, useClass: UserConfigMock },
         DataConfig,
         UtilService,
