@@ -37,18 +37,18 @@ export class WebsocketService {
   constructor(private dispatchService: DispatchService, private util: UtilService, private emitService: EmitService, private config: RestFulConfig) {
 
     this.workqueue = new AsyncQueue(({message,index,err},callback) =>{
-      console.log("******************ws  process queue:" + message);
+      console.log("当前任务=====workqueue  process queue:" + this.workqueue.length());
       // this.util.toastStart("有一条消息, 处理中", 1000);
       this.dispatchService.dispatch(message).then(data=>{
-        callback(message);
+        callback();
       }).catch(data=>{
         console.log(data);
-        callback();
+        callback(message);
       })
     },1,1);
 
     this.speechqueue =  new AsyncQueue( ({message,index,err},callback) =>{
-      console.log("******************ws  process queue:" + message);
+      console.log("当前任务=====speechqueue  process queue:" + this.workqueue.length());
       this.dispatchService.dispatch(message).then(data=>{
         callback();
       }).catch(data=>{
@@ -147,7 +147,7 @@ export class WebsocketService {
               this.failedtimes = 0;
               resolve();
               this.subscription = this.client.subscribe("/queue/" + this.queue, (message: Message) => {
-                this.pushMessage(event);
+                this.pushMessage(message);
               });
 
               //解决RabbitMQ同一个Queue队列在前一个断开的连接没有检测到断开信号时仍然保持着连接，

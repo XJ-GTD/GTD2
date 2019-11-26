@@ -87,13 +87,13 @@ export class HPage {
   }
 
   testTimeOut(){
-    // let work = new Worker("./worker.js");
-    // work.postMessage("123456");
-    //
-    // work.onmessage = function (e) {
-    //   console.log("!!!!!!!!!")
-    //     console.log(e.data)
-    //   };
+    console.log("当前任务=====timeout====开始");
+    let work = new Worker("./worker.js");
+    work.postMessage("123456");
+
+    work.onmessage = function (e) {
+        console.log("当前任务=====timeout=====出去")
+      };
     // setTimeout(()=>{
     //   console.log("RabbitMytestTimeOut" + this.i ++);
     //   this.testTimeOut();

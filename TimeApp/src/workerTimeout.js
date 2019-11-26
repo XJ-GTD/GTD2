@@ -1,10 +1,7 @@
-// importScripts("cordova.js")
-// importScripts("./build/polyfills.js")
-// importScripts("./build/vendor.js")
-// importScripts("./build/main.js")
 onmessage = function (e) {
-  // var speaker = new AssistantService();
-  // speaker.speakText(e.data);
-  // console.log(e.data);
-  postMessage("22221111");
+  let time = e.data ? e.data : 0;
+  setTimeout(() => {
+    console.log("当前任务=====测试timeout是否存活");
+    postMessage("");
+  }, time);
 };
