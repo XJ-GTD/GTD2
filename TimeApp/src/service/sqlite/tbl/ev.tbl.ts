@@ -52,6 +52,8 @@ export class EvTbl implements ITblParam {
           del varchar(6),rfg varchar(6),adr varchar(6)
           ,adrx integer
           ,adry integer
+           ,updstate varchar(10) 
+           ,evrelate varchar(50) 
         );`;
 
     return sq;

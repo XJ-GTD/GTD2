@@ -13,7 +13,7 @@ export class BxTbl implements ITbl{
 
   cT():string {
 
-    let sq ='create table if not exists gtd_b_x( bi varchar(50) ,bmi varchar(50)  );';
+    let sq ='create table if not exists gtd_b_x( bi varchar(50) ,bmi varchar(50) ,del varchar(6) );';
 
     return sq;
   }
