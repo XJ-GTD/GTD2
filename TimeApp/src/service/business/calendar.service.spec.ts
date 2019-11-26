@@ -447,7 +447,8 @@ describe('CalendarService test suite', () => {
     await init.createTables();
     let version = 0;
     while (DataConfig.version > version) {
-      await init.createTablespath(++version, 0);
+      await init.createTablespath(version + 1, version);
+      version++;
     }
     await init.initData();
     restConfig.init();
