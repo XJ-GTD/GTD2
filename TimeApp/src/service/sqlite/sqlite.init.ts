@@ -276,22 +276,26 @@ export class SqliteInit {
       await this.sqlexec.dropByParam(at);
       await this.sqlexec.createByParam(at);
     }else if(version == 8) {
-      //群组表加新删除状态字段
-      let sqlparam = new Array<any>();
-      let sq = ` ALTER TABLE gtd_g ADD COLUMN del varchar(6) DEFAULT 'undel' ;`;
-      sqlparam.push([sq ,[]]);
-      sq = ` ALTER TABLE gtd_b_x ADD COLUMN del varchar(6) DEFAULT 'undel' ;`;
-      sqlparam.push([sq ,[]]);
-      await this.sqlexec.batExecSqlByParam(sqlparam);
-
+      if (from > 0 && from < 8 ) {
+        //群组表加新删除状态字段
+        let sqlparam = new Array<any>();
+        let sq = ` ALTER TABLE gtd_g ADD COLUMN del varchar(6) DEFAULT 'undel' ;`;
+        sqlparam.push([sq, []]);
+        sq = ` ALTER TABLE gtd_b_x ADD COLUMN del varchar(6) DEFAULT 'undel' ;`;
+        sqlparam.push([sq, []]);
+        await this.sqlexec.batExecSqlByParam(sqlparam);
+      }
     }else if(version == 9) {
-      //事件表加关联，事件变更类型字段
-      let sqlparam = new Array<any>();
-      let sq = ` ALTER TABLE gtd_ev ADD COLUMN updstate varchar(10) DEFAULT 'self' ;`;
-      sqlparam.push([sq ,[]]);
-      sq = ` ALTER TABLE gtd_ev ADD COLUMN evrelate varchar(50) DEFAULT '' ;`;
-      sqlparam.push([sq ,[]]);
-      await this.sqlexec.batExecSqlByParam(sqlparam);
+      if (from > 0 && from < 9 ){
+        //事件表加关联，事件变更类型字段
+        let sqlparam = new Array<any>();
+        let sq = ` ALTER TABLE gtd_ev ADD COLUMN updstate varchar(10) DEFAULT 'self' ;`;
+        sqlparam.push([sq ,[]]);
+        sq = ` ALTER TABLE gtd_ev ADD COLUMN evrelate varchar(50) DEFAULT '' ;`;
+        sqlparam.push([sq ,[]]);
+        await this.sqlexec.batExecSqlByParam(sqlparam);
+      }
+
 
     }
   }
