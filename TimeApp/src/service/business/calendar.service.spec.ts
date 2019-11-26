@@ -22,7 +22,8 @@ import {
   SplashScreenMock,
   RestFulConfigMock,
   RestfulClientMock,
-  UserConfigMock
+  UserConfigMock,
+  AssistantServiceMock
 } from '../../../test-config/mocks-ionic';
 
 import {MyApp} from '../../app/app.component';
