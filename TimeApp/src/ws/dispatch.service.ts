@@ -60,10 +60,7 @@ export class DispatchService {
       console.log("******************dispatch  process: "+opt);
       // 当处理异常时，跳出循环
       try {
-        //TODO
-        this.emitService.emit("on.websocket.workqueue.init",opt);
         contextRetMap = await this.factory.getProcess(opt).gowhen(wsContent, contextRetMap);
-        this.emitService.emit("on.websocket.workqueue.init",opt + "处理结束");
       } catch (e) {
         console.log('\r\n', e, '\r\n', e.stack);
         break;
