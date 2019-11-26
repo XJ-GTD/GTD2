@@ -96,7 +96,7 @@ export class AttachPage {
   obi: string = "";
   bw: string = "";
   //原图
-  //browserurl: string ="http://pluto.guobaa.com/abl/store/local/getContent/";
+  browserurlBig: string ="http://pluto.guobaa.com/abl/store/local/getContent/";
   //缩略图
   browserurl: string ="http://pluto.guobaa.com/abl/store/local/getSnapshot/";
   members: Array<Member>  = new Array<Member>();
@@ -361,6 +361,10 @@ export class AttachPage {
 
   //放大图片
   photoShow(fj: string) {
+      if(fj && fj.indexOf("http") > 0) {
+        let remoteId: string = fj.substr(fj.lastIndexOf("/") + 1, imageData.length);
+        fj = this.browserurlBig+remoteId
+      }
       this.util.photoViews(fj);
   }
   //刷新数据
