@@ -6,6 +6,32 @@ matrix:
   include:
   - os: linux
     sudo: true
+    name: unittest
+    language: node_js
+    dist: trusty
+    node_js:
+      - 8
+    addons:
+      apt:
+        update: true
+        sources:
+        - sourceline: deb https://dl.yarnpkg.com/debian/ stable main
+          key_url: https://dl.yarnpkg.com/debian/pubkey.gpg
+        - sourceline: deb https://dl.google.com/linux/deb/ stable main
+          key_url: https://dl.google.com/linux/linux_signing_key.pub
+        - google-chrome
+        - rabbitmq-trusty
+        packages:
+          - yarn
+          - jq
+          - gradle
+          - sshpass
+          - dos2unix
+    licenses:
+      - google-gdk-license-.+
+  - os: linux
+    sudo: true
+    name: androidpackage
     language: android
     dist: trusty
     android:
@@ -38,6 +64,7 @@ matrix:
       - android-sdk-license-.+
       - google-gdk-license-.+
   - os: osx
+    name: iospackage
     language: objective-c
     osx_image: xcode10.2
     addons:
@@ -74,11 +101,11 @@ before_install:
   - export GRADLE_HOME=/usr/local/gradle
   - export PATH=$GRADLE_HOME/bin:$PATH
   - export SSHPASS=$ALIYUN_PASS
-  - nvm install 8
+  - if [[ "$TRAVIS_JOB_NAME" != "unittest" ]]; then nvm install 8 ; fi
   - dos2unix -k $TRAVIS_BUILD_DIR/travis/preinstall.sh
   - sh $TRAVIS_BUILD_DIR/travis/preinstall.sh
   - gem install byebug
-  - gem install fir-cli
+  - if [[ "$TRAVIS_JOB_NAME" != "unittest" ]]; then gem install fir-cli ; fi
   - cp $TRAVIS_BUILD_DIR/config/build.gradle $TRAVIS_BUILD_DIR/TimeApp/build.gradle
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sed -i 's/905/'$TRAVIS_BUILD_NUMBER'/g' $TRAVIS_BUILD_DIR/TimeApp/config.xml ; fi
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then sed -i '' 's/22/'$TRAVIS_BUILD_NUMBER'/g' $TRAVIS_BUILD_DIR/TimeApp/config.xml ; fi
@@ -108,11 +135,11 @@ script:
   - ls $TRAVIS_BUILD_DIR/TimeApp/node_modules/swiper/js/
   - npm run clean
   - npm run build
-  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then npm run test-coverage ; fi
-  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then dos2unix -k $TRAVIS_BUILD_DIR/travis/upload-coverage.sh ; fi
-  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sh $TRAVIS_BUILD_DIR/travis/upload-coverage.sh ; fi
-  - dos2unix -k $TRAVIS_BUILD_DIR/travis/build.sh
-  - sh $TRAVIS_BUILD_DIR/travis/build.sh
+  - if [[ "$TRAVIS_JOB_NAME" == "unittest" ]]; then npm run test-coverage ; fi
+  - if [[ "$TRAVIS_JOB_NAME" == "unittest" ]]; then dos2unix -k $TRAVIS_BUILD_DIR/travis/upload-coverage.sh ; fi
+  - if [[ "$TRAVIS_JOB_NAME" == "unittest" ]]; then sh $TRAVIS_BUILD_DIR/travis/upload-coverage.sh ; fi
+  - if [[ "$TRAVIS_JOB_NAME" != "unittest" ]]; then dos2unix -k $TRAVIS_BUILD_DIR/travis/build.sh ; fi
+  - if [[ "$TRAVIS_JOB_NAME" != "unittest" ]]; then sh $TRAVIS_BUILD_DIR/travis/build.sh ; fi
 after_script:
   - dos2unix -k $TRAVIS_BUILD_DIR/travis/fir.sh
   - dos2unix -k $TRAVIS_BUILD_DIR/travis/remove-keys.sh
