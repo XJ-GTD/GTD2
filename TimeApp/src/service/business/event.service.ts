@@ -61,7 +61,7 @@ export class EventService extends BaseService {
       // 文件访问地址转换
       let fpjson = generateCacheFilePathJson(attachment.fpjson, attachment.fj);
       if (fpjson && fpjson.remote) {
-        attachment.fjurl = `http://pluto.guobaa.com/abl/store/local/getContent/${fpjson.remote}`;
+        attachment.fjurl = `http://pluto.guobaa.com/abl/store/local/getSnapshot/${fpjson.remote}`;
       } else {
         attachment.fjurl = "";
       }
@@ -130,25 +130,10 @@ export class EventService extends BaseService {
           agd.txjson = generateTxJson(agd.txjson, agd.tx);
         }
 
-        let eviv = new EvTbl();
-        eviv.evrelate = agd.evrelate;
-        eviv.invitestatus = anyenum.InviteState.Accepted;
-        let evraltes : Array<AgendaData>  = await this.sqlExce.getLstByParam<AgendaData>(eviv);
-        if (evraltes && evraltes.length > 0 && agd.invitestatus != InviteState.Accepted){
-          agd.invitestatus = InviteState.Accepted;
 
-          //设定了截止日期，则自动加入todolist
-          if(UserConfig.getSetting(DataConfig.SYS_AUTOTODO) && agd.al == anyenum.IsWholeday.EndSet){
-            agd.todolist = anyenum.ToDoListStatus.On;
-          }
-          agd.tb = anyenum.SyncType.unsynch;
-        }else{
-          if (!agd.invitestatus) {
-            agd.invitestatus = InviteState.None;
-          }
+        if (!agd.invitestatus) {
+          agd.invitestatus = InviteState.None;
         }
-
-
 
         let ev = new EvTbl();
         Object.assign(ev,agd);
@@ -1535,7 +1520,7 @@ export class EventService extends BaseService {
         outAgd.attachments = agdata.attachments;
       }
       outAgd.tos = tos;
-      outAgd.topushed = agdata.topushed;
+      //outAgd.topushed = agdata.topushed;
     }
 
     //批量本地入库
@@ -1770,7 +1755,7 @@ export class EventService extends BaseService {
       nwAgdata.updstate = anyenum.UpdState.updtoadd;
       nwAgdata.evrelate = oriAgdata.evrelate;
       //设定共享人发送状态
-      nwAgdata.topushed = await this.validAlreadyPushed(nwAgdata.members,oriAgdata.evrelate);
+      //nwAgdata.topushed = await this.validAlreadyPushed(nwAgdata.members,oriAgdata.evrelate);
 
       let retParamEv = new RetParamEv();
       console.log("**** updateAgenda newAgenda start :****" + moment().format("YYYY/MM/DD HH:mm:ss SSS"))
@@ -1823,7 +1808,7 @@ export class EventService extends BaseService {
       newAgdata.updstate = anyenum.UpdState.updtoadd;
       newAgdata.evrelate = oriAgdata.evrelate;
       //添加新参与人到新事件
-      newAgdata.topushed = await this.validAlreadyPushed(newAgdata.members,oriAgdata.evrelate);
+      //newAgdata.topushed = await this.validAlreadyPushed(newAgdata.members,oriAgdata.evrelate);
 
       retParamEv = this.newAgenda(newAgdata);
 
@@ -3388,12 +3373,9 @@ export class EventService extends BaseService {
    */
   async syncAgendas(agendas: Array<AgendaData> = new Array<AgendaData>()) {
     this.assertEmpty(agendas);  // 入参不能为空
-    let isbatch : boolean =false;
     let members = new Array<Member>();
     let attachments = new Array<Attachment>();
-    let  pre : any;
     if (agendas.length <= 0) {
-      isbatch = true;
       let sql: string = `select ev.*, ca.sd, ca.ed, ca.st, ca.et, ca.al, ca.ct
                         from (select *,
                         case when rfg = '2' then evi
@@ -3444,21 +3426,6 @@ export class EventService extends BaseService {
                               on par.pwi = b.pwi `;
       members =  await this.sqlExce.getExtLstByParam<Member>(sqlmember,
         [anyenum.EventType.Agenda, SyncType.unsynch, ObjectType.Event]) || members;
-
-      let params = new Array<any>();
-      let sqpushed = `select ev.evrelate,par.pari, b.rc, b.ui
-        from (select evi,evn,rtevi,evrelate,max(wtt)
-                from gtd_ev
-               where rtevi = ''
-                 and del <> ?1  group by evrelate ) ev
-       inner join (select * from gtd_par where del <> ?1) par on ev.evi =
-                                                                    par.obi
-                                                                and par.obt =
-                                                                    ?2
-       inner join gtd_b b on par.pwi = b.pwi  `;
-      params.push(anyenum.DelType.del);
-      params.push(ObjectType.Event);
-      pre = await this.sqlExce.getExtLstByParam(sqpushed,params);
 
     } else {
       let evis: Array<string> = agendas.reduce((target, ele) => {
@@ -3608,24 +3575,6 @@ export class EventService extends BaseService {
         }
         sync.to = (!agenda.tos || agenda.tos == "" || agenda.tos == null) ? [] : agenda.tos.split(",") ;
         sync.updstate = agenda.updstate;
-        if (!isbatch){
-          sync.topushed = agenda.topushed;
-
-        }else{
-          //批量同步时
-          for (let member of agenda.members){
-            let alreadypushed = false;
-            if (pre && pre.length > 0){
-              let findm =  pre.find((value, index,arr)=>{
-                return value.evrelate == agenda.evrelate &&( value.pari == member.pari || value.ui == member.ui || value.rc == member.rc);
-              });
-              if (findm){
-                alreadypushed = true;
-              }
-            }
-            agenda.topushed.push(alreadypushed);
-          }
-        }
 
 
         this.assertNotEqual(agenda.pn, sync.to.length); // 参与人数量和参与人数组必须相同
