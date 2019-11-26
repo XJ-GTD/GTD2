@@ -127,7 +127,10 @@ describe('EventService test suite', () => {
 
     await config.generateDb();
     await init.createTables();
-    await init.createTablespath(DataConfig.version, DataConfig.version);
+    let version = 0;
+    while (DataConfig.version > version) {
+      await init.createTablespath(++version, 0);
+    }
     await init.initData();
     restConfig.init();
 
