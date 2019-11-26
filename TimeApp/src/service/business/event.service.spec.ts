@@ -121,17 +121,13 @@ describe('EventService test suite', () => {
     restConfig = TestBed.get(RestFulConfig);  // 别删除
 		sqlExce = TestBed.get(SqliteExec);
 		util = TestBed.get(UtilService);
-    assistantService = TestBed.get(AssistantService);
 
     calendarService = TestBed.get(CalendarService);
     eventService = TestBed.get(EventService);
 
     await config.generateDb();
     await init.createTables();
-    let version = 0;
-    while (DataConfig.version > version) {
-      await init.createTablespath(++version, 0);
-    }
+    await init.createTablespath(DataConfig.version, DataConfig.version);
     await init.initData();
     restConfig.init();
 
@@ -928,8 +924,7 @@ describe('EventService test suite', () => {
       at2.fjn = '测试附件内容';
       at2.ui = '13900009004';
       at2.ext = 'jpg';
-      let cacheFilePathJson: CacheFilePathJson = new CacheFilePathJson();
-      cacheFilePathJson.local = "/1234.jpg";
+      cacheFilePathJson.local = "/12345.jpg";
       at2.fj = JSON.stringify(cacheFilePathJson);
       at2 = await eventService.saveAttachment(at2);
       expect(at2).toBeDefined();
@@ -952,8 +947,8 @@ describe('EventService test suite', () => {
         let results = await eventService.saveAgenda(agenda);
 
         todolist = await eventService.mergeTodolist(todolist,results);
-        expect(attachments).toBeDefined();
-        expect(attachments.length).toBeGreaterThan(0);
+        expect(todolist).toBeDefined();
+        expect(todolist.length).toBeGreaterThan(0);
 
     });
 
