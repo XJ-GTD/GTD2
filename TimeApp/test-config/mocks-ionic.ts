@@ -2,6 +2,11 @@ import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import * as moment from "moment";
 
+export class AssistantServiceMock {
+  public stopSpeak(emit:boolean, open:boolean = false) {}
+  async speakText(speechText: string):Promise<any> {}
+}
+
 export class UserConfigMock {
   static user = {
     //用户ID

@@ -23,7 +23,8 @@ import {
   SplashScreenMock,
   RestFulConfigMock,
   RestfulClientMock,
-  UserConfigMock
+  UserConfigMock,
+  AssistantServiceMock
 } from '../../../test-config/mocks-ionic';
 
 import {MyApp} from '../../app/app.component';
@@ -52,6 +53,7 @@ import { MemoService } from "./memo.service";
 import { PlanType, IsCreate, IsSuccess, IsWholeday, PageDirection, SyncType, DelType, SyncDataStatus, EventType, OperateType, CycleType, OverType, ToDoListStatus, ConfirmType, EventFinishStatus,ObjectType } from "../../data.enum";
 import { ScheduleRemindService } from "./remind.service";
 import {File} from '@ionic-native/file';
+import {AssistantService} from "../cordova/assistant.service";
 
 /**
  * 事件Service 持续集成CI 自动测试Case
@@ -92,6 +94,7 @@ describe('EventService test suite', () => {
         SqliteConfig,
         SqliteInit,
         SqliteExec,
+        { provide: AssistantService, useClass: AssistantServiceMock },
         { provide: UserConfig, useClass: UserConfigMock },
         UtilService,
         EmitService,
