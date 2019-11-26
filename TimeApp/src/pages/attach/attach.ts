@@ -95,7 +95,10 @@ export class AttachPage {
   obt: string = "";
   obi: string = "";
   bw: string = "";
-  browserurl: string ="http://pluto.guobaa.com/abl/store/local/getContent/";
+  //原图
+  //browserurl: string ="http://pluto.guobaa.com/abl/store/local/getContent/";
+  //缩略图
+  browserurl: string ="http://pluto.guobaa.com/abl/store/local/getSnapshot/";
   members: Array<Member>  = new Array<Member>();
   buttons: any = {
     create: true,
