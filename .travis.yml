@@ -114,6 +114,7 @@ before_install:
   - cd TimeApp
 before_script:
   - pwd
+  - if [[ "$TRAVIS_JOB_NAME" = "unittest" ]]; then yarn ; fi
   - ionic cordova plugin add $TRAVIS_BUILD_DIR/BaiduSpeechAndTTS
   - if [[ "$TRAVIS_OS_NAME" == "none" ]]; then ionic cordova plugin add cordova-plugin-crosswalk-webview ; fi
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then ionic cordova plugin add cordova-plugin-swift-support ; fi
