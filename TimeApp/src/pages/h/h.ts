@@ -44,7 +44,7 @@ import {ModalTranType} from "../../data.enum";
       <page-tdl #tdl></page-tdl>
 
       <PointComponent  #aiDiv [showInput] = "false"></PointComponent>
-      <div style="background: red;position: fixed;z-index: 999;top:0px;height: 30px;width: 100%">{{process}}</div>
+      <!--<div style="background: red;position: fixed;z-index: 999;top:0px;height: 30px;width: 100%">{{process}}</div>-->
       <!--<ion-fab bottom right>-->
         <!--<button ion-fab mini (click)="openAi()">-->
           <!--<ion-icon name="chatbubbles"></ion-icon>-->
@@ -54,7 +54,7 @@ import {ModalTranType} from "../../data.enum";
   `,
 })
 export class HPage {
-  process:string;
+  // process:string;
 
   // @ViewChild('aiDiv')
   // aiDiv: AiComponent;
@@ -99,9 +99,7 @@ export class HPage {
     //   this.testTimeOut();
     // },1000)
 
-    this.emitService.register("on.websocket.workqueue.init",($event)=>{
-      this.process = "正在处理" + $event + moment().format("HH:mm:ss");
-    });
+
   }
 
   viewShow($event: boolean) {

@@ -112,11 +112,7 @@ export class DataRestful {
     let url: UrlEntity = this.config.getRestFulUrl("SPL");
 
     params.mpn = UserConfig.account.phone;
-
-    //TODO
-    this.emitService.emit("on.websocket.workqueue.init","datasev.pull");
     let data = await this.request.post(url, params);
-    this.emitService.emit("on.websocket.workqueue.init","datasev.pull 结束");
 
     if (data) {
       return data.d;

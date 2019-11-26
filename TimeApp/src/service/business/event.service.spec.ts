@@ -74,6 +74,7 @@ describe('EventService test suite', () => {
   let planforUpdate: PlanData;
   let sqlExce: SqliteExec;
   let util: UtilService;
+  let assistantService: AssistantService;
 
   beforeAll(async () => {
     TestBed.configureTestingModule({
@@ -121,16 +122,14 @@ describe('EventService test suite', () => {
     restConfig = TestBed.get(RestFulConfig);  // 别删除
 		sqlExce = TestBed.get(SqliteExec);
 		util = TestBed.get(UtilService);
+    assistantService = TestBed.get(AssistantService);
 
     calendarService = TestBed.get(CalendarService);
     eventService = TestBed.get(EventService);
 
     await config.generateDb();
     await init.createTables();
-    let version = 0;
-    while (DataConfig.version > version) {
-      await init.createTablespath(++version, 0);
-    }
+    await init.createTablespath(DataConfig.version, DataConfig.version);
     await init.initData();
     restConfig.init();
 
@@ -902,7 +901,7 @@ describe('EventService test suite', () => {
 
       let delAt:Attachment =  {} as Attachment;
       delAt =  await eventService.removeAttachment(at);
-      expect(delAt).toBeNull();
+      expect(delAt.del).toEqual('del');
     });
 
     it('Case 23 - 1 - 1   selectAttachments 查询附件 ', async () => {
@@ -927,8 +926,7 @@ describe('EventService test suite', () => {
       at2.fjn = '测试附件内容';
       at2.ui = '13900009004';
       at2.ext = 'jpg';
-      let cacheFilePathJson: CacheFilePathJson = new CacheFilePathJson();
-      cacheFilePathJson.local = "/1234.jpg";
+      cacheFilePathJson.local = "/12345.jpg";
       at2.fj = JSON.stringify(cacheFilePathJson);
       at2 = await eventService.saveAttachment(at2);
       expect(at2).toBeDefined();
@@ -949,10 +947,57 @@ describe('EventService test suite', () => {
         agenda.evn = "有数据更新或者新增，自动刷新页面 当重要为空的情况下";
         agenda.todolist == ToDoListStatus.On;
         let results = await eventService.saveAgenda(agenda);
+        expect(results).toBeDefined();
+        expect(results.length).toBeGreaterThan(0);
 
-        todolist = await eventService.mergeTodolist(todolist,results);
-        expect(attachments).toBeDefined();
-        expect(attachments.length).toBeGreaterThan(0);
+        todolist = await eventService.mergeTodolist(todolist,results[0]);
+        expect(todolist).toBeDefined();
+        expect(todolist.length).toBeGreaterThan(0);
+
+    });
+
+    t('Case 24 - 1 - 2   mergeTodolist 有数据更新或者新增，自动刷新页面 当重要不为空的的情况下 ', async () => {
+
+        let todolist: Array<AgendaData> = new Array<AgendaData>();
+
+        let agenda: AgendaData = {} as AgendaData;
+        agenda.sd = moment('2019/11/23','YYYY/MM/DD').format("YYYY/MM/DD");
+        agenda.evn = "有数据更新或者新增，自动刷新页面 当重要不为空2019/11/25";
+        agenda.todolist == ToDoListStatus.On;
+        let results = await eventService.saveAgenda(agenda);
+        expect(results).toBeDefined();
+        expect(results.length).toBeGreaterThan(0);
+        todolist.push(results[0]);
+
+        let agenda1: AgendaData = {} as AgendaData;
+        agenda1.sd = moment('2019/11/24','YYYY/MM/DD').format("YYYY/MM/DD");
+        agenda1.evn = "有数据更新或者新增，自动刷新页面 当重要不为空2019/11/24";
+        agenda1.todolist == ToDoListStatus.On;
+        let results1 = await eventService.saveAgenda(agenda1);
+        expect(results1).toBeDefined();
+        expect(results1.length).toBeGreaterThan(0);
+        todolist.push(results1[0]);
+
+        let agenda2: AgendaData = {} as AgendaData;
+        agenda2.sd = moment('2019/11/26','YYYY/MM/DD').format("YYYY/MM/DD");
+        agenda2.evn = "有数据更新或者新增，自动刷新页面 当重要不为空2019/11/25";
+        agenda2.todolist == ToDoListStatus.On;
+        let results2 = await eventService.saveAgenda(agenda2);
+        expect(results2).toBeDefined();
+        expect(results2.length).toBeGreaterThan(0);
+        todolist.push(results2[0]);
+
+        let agenda4: AgendaData = {} as AgendaData;
+        agenda4.sd = moment('2019/11/25','YYYY/MM/DD').format("YYYY/MM/DD");
+        agenda4.evn = "有数据更新或者新增，自动刷新页面 当重要不为空2019/11/25";
+        agenda4.todolist == ToDoListStatus.On;
+        let results4 = await eventService.saveAgenda(agenda4);
+        expect(results4).toBeDefined();
+        expect(results4.length).toBeGreaterThan(0);
+
+        todolist = await eventService.mergeTodolist(todolist,results4[0]);
+        expect(todolist).toBeDefined();
+        expect(todolist.length).toBeGreaterThan(0);
 
     });
 

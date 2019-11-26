@@ -21,7 +21,8 @@ import {
   StatusBarMock,
   SplashScreenMock,
   RestFulConfigMock,
-  RestfulClientMock
+  RestfulClientMock,
+  AssistantServiceMock
 } from '../../../test-config/mocks-ionic';
 
 import {MyApp} from '../../app/app.component';
@@ -50,6 +51,7 @@ import { EventService, AgendaData, TaskData, MiniTaskData, RtJson } from "./even
 import { PlanType, IsCreate, IsSuccess, CycleType, OverType } from "../../data.enum";
 import { ScheduleRemindService } from "./remind.service";
 import {File} from '@ionic-native/file';
+import {AssistantService} from "../cordova/assistant.service";
 
 /**
  * 事件Service 日程 持续集成CI 自动测试Case
@@ -67,6 +69,7 @@ describe('EventService test suite for agenda', () => {
   let eventService: EventService;
   let planforUpdate: PlanData;
   let sqlExce: SqliteExec;
+  let assistantService: AssistantService;
 
   beforeAll(async () => {
     TestBed.configureTestingModule({
@@ -88,6 +91,7 @@ describe('EventService test suite for agenda', () => {
         SqliteConfig,
         SqliteInit,
         SqliteExec,
+        { provide: AssistantService, useClass: AssistantServiceMock },
         UserConfig,
         UtilService,
         EmitService,
@@ -111,6 +115,7 @@ describe('EventService test suite for agenda', () => {
     init = TestBed.get(SqliteInit);
     restConfig = TestBed.get(RestFulConfig);  // 别删除
 		sqlExce = TestBed.get(SqliteExec);
+    assistantService = TestBed.get(AssistantService);
 
     eventService = TestBed.get(EventService);
     await config.generateDb();

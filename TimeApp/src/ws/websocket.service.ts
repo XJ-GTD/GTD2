@@ -3,11 +3,11 @@ import Stomp, {Message, StompSubscription} from "@stomp/stompjs";
 import {DispatchService} from "./dispatch.service";
 import {Injectable, NgModule} from "@angular/core";
 import {UserConfig} from "../service/config/user.config";
-import * as async from "async/dist/async.js"
 import * as moment from "moment";
 import {RestFulConfig} from "../service/config/restful.config";
 import {EmitService} from "../service/util-service/emit.service";
 import {UtilService} from "../service/util-service/util.service";
+import {AsyncQueue} from "../util/asyncQueue";
 
 /**
  * WebSocket连接Rabbitmq服务器
@@ -28,43 +28,64 @@ export class WebsocketService {
   private failedtimes: number = 0;
   private timer: any;
   private connections: number = 0;
-  workqueue:any;
-  speechqueue:any;
-  message:number;
+  workqueue:AsyncQueue;
+  speechqueue:AsyncQueue;
+  works:number = 0;
+  speeches:number = 0;
   private disconnecttime: number = 0;
 
   constructor(private dispatchService: DispatchService, private util: UtilService, private emitService: EmitService, private config: RestFulConfig) {
 
-    this.workqueue = async.queue( ({message,index},callback) =>{
-      console.log("******************ws  queue:");
+    this.workqueue = new AsyncQueue(({message,index,err},callback) =>{
+      console.log("******************ws  process queue:" + message);
       // this.util.toastStart("有一条消息, 处理中", 1000);
       this.dispatchService.dispatch(message).then(data=>{
-        callback();
+        callback(message);
       }).catch(data=>{
         console.log(data);
         callback();
       })
-    });
-    this.messages = 0;
+    },1,1);
 
-    this.emitService.emit("on.websocket.workqueue.init");
-
-    this.speechqueue = async.queue( ({message,index},callback) =>{
-      console.log("******************speech  queue:");
+    this.speechqueue =  new AsyncQueue( ({message,index,err},callback) =>{
+      console.log("******************ws  process queue:" + message);
       this.dispatchService.dispatch(message).then(data=>{
         callback();
       }).catch(data=>{
-        console.log(data);
-        callback();
+        callback(data);
       })
-    });
-    this.speeches = 0;
-
-    this.emitService.emit("on.websocket.speechqueue.init");
+    },1,1);
   }
 
-  messages:number = 0;
-  speeches:number = 0;
+  pushMessage(event:any){
+    try {
+      if (event && event.body) {
+        let message:string = event.body;
+        let preload = JSON.parse(message);
+        let header = preload.header || {};
+        let sender = header.sender || "";
+        console.log("******************ws  recv queue:" + message);
+
+        if (sender == "xunfei/aiui") {
+          this.speechqueue.push({message:message,index:this.speeches++},(err)=>{
+            if (err) {
+              console.log("speech queue process error happenned. ", err, '\r\n', err.stack);
+            }
+          });
+        } else {
+          this.workqueue.push({message:event.body,index:this.works++},(err)=>{
+            if (err) {
+              console.log("work queue process error happenned. ", err, '\r\n', err.stack);
+            }
+          });
+        }
+      }
+    } catch (e) {
+      // message异常时捕获并不让程序崩溃
+      console.log("work queue push error : ", e, '\r\n', e.stack);
+    }
+  }
+
 
 
 
@@ -105,38 +126,7 @@ export class WebsocketService {
       // 延迟重连动作,防止重连死循环
       if (this.util.isMobile()) {
         this.emitService.register('rabbitmq.message.received', (event) => {
-          try {
-            if (event && event.body) {
-              let preload = JSON.parse(event.body);
-              let header = preload.header || {};
-              let sender = header.sender || "";
-
-              if (sender == "xunfei/aiui") {
-                this.speechqueue.push({message:event.body,index:this.speeches++},(err)=>{
-                  if (err) {
-                    console.log("speech queue process error happenned. ", err, '\r\n', err.stack);
-                    this.workqueue.kill();
-                    this.speeches = 0;
-                  } else {
-                    if (this.speeches >9999) this.speeches = 0;
-                  }
-                });
-              } else {
-                this.workqueue.push({message:event.body,index:this.messages++},(err)=>{
-                  if (err) {
-                    console.log("work queue process error happenned. ", err, '\r\n', err.stack);
-                    this.workqueue.kill();
-                    this.messages = 0;
-                  } else {
-                    if (this.messages >9999) this.messages = 0;
-                  }
-                });
-              }
-            }
-          } catch (e) {
-            // message异常时捕获并不让程序崩溃
-            console.log("work queue push error : ", e, '\r\n', e.stack);
-          }
+         this.pushMessage(event);
         });
 
         setTimeout(() => {
@@ -157,40 +147,7 @@ export class WebsocketService {
               this.failedtimes = 0;
               resolve();
               this.subscription = this.client.subscribe("/queue/" + this.queue, (message: Message) => {
-                //message.ack(message.headers);
-                console.log('Received a message from ' + this.queue);
-                try {
-                  if (message && message.body) {
-                    let preload = JSON.parse(message.body);
-                    let header = preload.header || {};
-                    let sender = header.sender || "";
-
-                    if (sender == "xunfei/aiui") {
-                      this.speechqueue.push({message:message.body,index:this.speeches++},(err)=>{
-                        if (err) {
-                          console.log("speech queue process error happenned. ", err, '\r\n', err.stack);
-                          this.speechqueue.kill();
-                          this.speeches = 0;
-                        } else {
-                          if (this.speeches >9999) this.speeches = 0;
-                        }
-                      });
-                    } else {
-                      this.workqueue.push({message:message.body,index:this.messages++},(err)=>{
-                        if (err) {
-                          console.log("work queue process error happenned. ", err, '\r\n', err.stack);
-                          this.workqueue.kill();
-                          this.messages = 0;
-                        } else {
-                          if (this.messages >9999) this.messages = 0;
-                        }
-                      });
-                    }
-                  }
-                } catch (e) {
-                  // message异常时捕获并不让程序崩溃
-                  console.log("work queue push error : ", e, '\r\n', e.stack);
-                }
+                this.pushMessage(event);
               });
 
               //解决RabbitMQ同一个Queue队列在前一个断开的连接没有检测到断开信号时仍然保持着连接，

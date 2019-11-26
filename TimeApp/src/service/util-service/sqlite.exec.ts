@@ -42,11 +42,8 @@ export class SqliteExec {
         }
       }
 
-      //TODO
-      this.emitService.emit("on.websocket.workqueue.init","SqliteExec.sql");
-      this.sqlliteConfig.database.transaction( (tx)=> {
+    this.sqlliteConfig.database.transaction( (tx)=> {
         tx.executeSql(sql, params, (tx, res) => {
-          this.emitService.emit("on.websocket.workqueue.init","SqliteExec.sql结束");
           if (!nolog){
             log.ss = new Date().valueOf() - log.ss;
             log.st = true;
