@@ -948,7 +948,7 @@ describe('EventService test suite', () => {
         agenda.todolist == ToDoListStatus.On;
         let results = await eventService.saveAgenda(agenda);
 
-        todolist = await eventService.mergeTodolist(todolist,results);
+        todolist = await eventService.mergeTodolist(todolist,results[0]);
         expect(todolist).toBeDefined();
         expect(todolist.length).toBeGreaterThan(0);
 
