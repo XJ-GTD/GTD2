@@ -74,6 +74,7 @@ describe('EventService test suite', () => {
   let planforUpdate: PlanData;
   let sqlExce: SqliteExec;
   let util: UtilService;
+  let assistantService: AssistantService;
 
   beforeAll(async () => {
     TestBed.configureTestingModule({
