@@ -362,7 +362,7 @@ export class AttachPage {
   //放大图片
   photoShow(fj: string) {
       if(fj && fj.indexOf("http") > 0) {
-        let remoteId: string = fj.substr(fj.lastIndexOf("/") + 1, imageData.length);
+        let remoteId: string = fj.substr(fj.lastIndexOf("/") + 1, fj.length);
         fj = this.browserurlBig+remoteId
       }
       this.util.photoViews(fj);
