@@ -23,7 +23,8 @@ import {
   SplashScreenMock,
   RestFulConfigMock,
   RestfulClientMock,
-  UserConfigMock
+  UserConfigMock,
+  AssistantServiceMock
 } from '../../../test-config/mocks-ionic';
 
 import {MyApp} from '../../app/app.component';
@@ -31,6 +32,7 @@ import {SqliteConfig} from "../config/sqlite.config";
 import {SqliteInit} from "../sqlite/sqlite.init";
 import {RestFulConfig} from "../config/restful.config";
 import {UserConfig} from "../config/user.config";
+import {DataConfig} from "../config/data.config";
 
 import {EmitService} from "../util-service/emit.service";
 import {UtilService} from "../util-service/util.service";
@@ -47,11 +49,12 @@ import {CaTbl} from "../sqlite/tbl/ca.tbl";
 import {TTbl} from "../sqlite/tbl/t.tbl";
 import {WaTbl} from "../sqlite/tbl/wa.tbl";
 import { CalendarService, PlanData } from "./calendar.service";
-import {EventService, AgendaData, TaskData, MiniTaskData, RtJson, TxJson,CacheFilePathJson} from "./event.service";
+import {EventService, AgendaData, TaskData, Attachment, MiniTaskData, RtJson, TxJson,CacheFilePathJson} from "./event.service";
 import { MemoService } from "./memo.service";
 import { PlanType, IsCreate, IsSuccess, IsWholeday, PageDirection, SyncType, DelType, SyncDataStatus, EventType, OperateType, CycleType, OverType, ToDoListStatus, ConfirmType, EventFinishStatus,ObjectType } from "../../data.enum";
 import { ScheduleRemindService } from "./remind.service";
 import {File} from '@ionic-native/file';
+import {AssistantService} from "../cordova/assistant.service";
 
 /**
  * 事件Service 持续集成CI 自动测试Case
@@ -71,6 +74,7 @@ describe('EventService test suite', () => {
   let planforUpdate: PlanData;
   let sqlExce: SqliteExec;
   let util: UtilService;
+  let assistantService: AssistantService;
 
   beforeAll(async () => {
     TestBed.configureTestingModule({
@@ -92,6 +96,7 @@ describe('EventService test suite', () => {
         SqliteConfig,
         SqliteInit,
         SqliteExec,
+        { provide: AssistantService, useClass: AssistantServiceMock },
         { provide: UserConfig, useClass: UserConfigMock },
         UtilService,
         EmitService,
@@ -123,6 +128,7 @@ describe('EventService test suite', () => {
 
     await config.generateDb();
     await init.createTables();
+    await init.createTablespath(DataConfig.version, DataConfig.version);
     await init.initData();
     restConfig.init();
 
@@ -875,6 +881,76 @@ describe('EventService test suite', () => {
       at = await eventService.saveAttachment(at);
       expect(at).toBeDefined();
       expect(at.fji).toBeDefined();
+    });
+
+    it('Case 22 - 1 - 1   removeAttachment 删除附件 ', async () => {
+
+      let at: Attachment = {} as Attachment;
+      at.obt = ObjectType.Event;
+      at.obi = '12345' ;
+      at.fjn = '测试附件内容';
+      at.ui = '13900009004';
+      at.ext = 'jpg';
+      let cacheFilePathJson: CacheFilePathJson = new CacheFilePathJson();
+      cacheFilePathJson.local = "/1234.jpg";
+      at.fj = JSON.stringify(cacheFilePathJson);
+      at = await eventService.saveAttachment(at);
+      expect(at).toBeDefined();
+      expect(at.fji).toBeDefined();
+
+      let delAt:Attachment =  {} as Attachment;
+      delAt =  await eventService.removeAttachment(at);
+      expect(delAt).toBeNull();
+    });
+
+    it('Case 23 - 1 - 1   selectAttachments 查询附件 ', async () => {
+
+      let at: Attachment = {} as Attachment;
+      at.obt = ObjectType.Event;
+      at.obi = '12345' ;
+      at.fjn = '测试附件内容';
+      at.ui = '13900009004';
+      at.ext = 'jpg';
+      let cacheFilePathJson: CacheFilePathJson = new CacheFilePathJson();
+      cacheFilePathJson.local = "/1234.jpg";
+      at.fj = JSON.stringify(cacheFilePathJson);
+      at = await eventService.saveAttachment(at);
+      expect(at).toBeDefined();
+      expect(at.fji).toBeDefined();
+
+
+      let at2: Attachment = {} as Attachment;
+      at2.obt = ObjectType.Event;
+      at2.obi = '12345' ;
+      at2.fjn = '测试附件内容';
+      at2.ui = '13900009004';
+      at2.ext = 'jpg';
+      cacheFilePathJson.local = "/12345.jpg";
+      at2.fj = JSON.stringify(cacheFilePathJson);
+      at2 = await eventService.saveAttachment(at2);
+      expect(at2).toBeDefined();
+      expect(at2.fji).toBeDefined();
+
+      let attachments: Array<Attachment> = new Array<Attachment>();
+      attachments =  await eventService.selectAttachments(ObjectType.Event,'12345');
+      expect(attachments).toBeDefined();
+      expect(attachments.length).toBeGreaterThan(0);
+    });
+
+
+    it('Case 24 - 1 - 1   mergeTodolist 有数据更新或者新增，自动刷新页面 当重要为空的情况下 ', async () => {
+
+        let todolist: Array<AgendaData> = new Array<AgendaData>();
+        let agenda: AgendaData = {} as AgendaData;
+        agenda.sd = moment().format("YYYY/MM/DD");
+        agenda.evn = "有数据更新或者新增，自动刷新页面 当重要为空的情况下";
+        agenda.todolist == ToDoListStatus.On;
+        let results = await eventService.saveAgenda(agenda);
+
+        todolist = await eventService.mergeTodolist(todolist,results);
+        expect(todolist).toBeDefined();
+        expect(todolist.length).toBeGreaterThan(0);
+
     });
 
   });
