@@ -21,7 +21,8 @@ import {
   SplashScreenMock,
   RestFulConfigMock,
   RestfulClientMock,
-  UserConfigMock
+  UserConfigMock,
+  AssistantServiceMock
 } from '../../../test-config/mocks-ionic';
 import {UserConfig} from "../config/user.config";
 import {DataConfig} from "../config/data.config";
@@ -47,6 +48,7 @@ import { EventService } from "./event.service";
 import { PlanType,ObjectType , SyncType, DelType, SyncDataStatus} from "../../data.enum";
 import { ScheduleRemindService } from "./remind.service";
 import {File} from '@ionic-native/file';
+import {AssistantService} from "../cordova/assistant.service";
 
 /**
  * 备忘Service 持续集成CI 自动测试Case
@@ -67,6 +69,7 @@ describe('MemoService test suite', () => {
   let planforUpdate: PlanData;
   let sqlExce: SqliteExec;
   let util: UtilService;
+  let assistantService: AssistantService;
 
   beforeAll(async () => {
     TestBed.configureTestingModule({
@@ -87,6 +90,7 @@ describe('MemoService test suite', () => {
         SQLitePorter,
         File,
         SqliteConfig,
+        { provide: AssistantService, useClass: AssistantServiceMock },
         { provide: UserConfig, useClass: UserConfigMock },
         SqliteExec,
         SqliteInit,
@@ -116,6 +120,7 @@ describe('MemoService test suite', () => {
     memoService = TestBed.get(MemoService);
     calendarService = TestBed.get(CalendarService);
     util = TestBed.get(UtilService);
+    assistantService = TestBed.get(AssistantService);
 
     await config.generateDb();
     await init.createTables();

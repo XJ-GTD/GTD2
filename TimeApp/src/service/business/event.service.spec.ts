@@ -122,6 +122,7 @@ describe('EventService test suite', () => {
     restConfig = TestBed.get(RestFulConfig);  // 别删除
 		sqlExce = TestBed.get(SqliteExec);
 		util = TestBed.get(UtilService);
+    assistantService = TestBed.get(AssistantService);
 
     calendarService = TestBed.get(CalendarService);
     eventService = TestBed.get(EventService);
