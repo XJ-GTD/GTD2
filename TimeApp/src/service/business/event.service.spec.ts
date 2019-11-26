@@ -885,6 +885,77 @@ describe('EventService test suite', () => {
       expect(at.fji).toBeDefined();
     });
 
+    it('Case 22 - 1 - 1   removeAttachment 删除附件 ', async () => {
+
+      let at: Attachment = {} as Attachment;
+      at.obt = ObjectType.Event;
+      at.obi = '12345' ;
+      at.fjn = '测试附件内容';
+      at.ui = '13900009004';
+      at.ext = 'jpg';
+      let cacheFilePathJson: CacheFilePathJson = new CacheFilePathJson();
+      cacheFilePathJson.local = "/1234.jpg";
+      at.fj = JSON.stringify(cacheFilePathJson);
+      at = await eventService.saveAttachment(at);
+      expect(at).toBeDefined();
+      expect(at.fji).toBeDefined();
+
+      let delAt:Attachment =  {} as Attachment;
+      delAt =  await eventService.removeAttachment(at);
+      expect(delAt).toBeNull();
+    });
+
+    it('Case 23 - 1 - 1   selectAttachments 查询附件 ', async () => {
+
+      let at: Attachment = {} as Attachment;
+      at.obt = ObjectType.Event;
+      at.obi = '12345' ;
+      at.fjn = '测试附件内容';
+      at.ui = '13900009004';
+      at.ext = 'jpg';
+      let cacheFilePathJson: CacheFilePathJson = new CacheFilePathJson();
+      cacheFilePathJson.local = "/1234.jpg";
+      at.fj = JSON.stringify(cacheFilePathJson);
+      at = await eventService.saveAttachment(at);
+      expect(at).toBeDefined();
+      expect(at.fji).toBeDefined();
+
+
+      let at2: Attachment = {} as Attachment;
+      at2.obt = ObjectType.Event;
+      at2.obi = '12345' ;
+      at2.fjn = '测试附件内容';
+      at2.ui = '13900009004';
+      at2.ext = 'jpg';
+      let cacheFilePathJson: CacheFilePathJson = new CacheFilePathJson();
+      cacheFilePathJson.local = "/1234.jpg";
+      at2.fj = JSON.stringify(cacheFilePathJson);
+      at2 = await eventService.saveAttachment(at2);
+      expect(at2).toBeDefined();
+      expect(at2.fji).toBeDefined();
+
+      let attachments: Array<Attachment> = new Array<Attachment>();
+      attachments =  await eventService.selectAttachments(ObjectType.Event,'12345');
+      expect(attachments).toBeDefined();
+      expect(attachments.length).toBeGreaterThan(0);
+    });
+
+
+    it('Case 24 - 1 - 1   mergeTodolist 有数据更新或者新增，自动刷新页面 当重要为空的情况下 ', async () => {
+
+        let todolist: Array<AgendaData> = new Array<AgendaData>();
+        let agenda: AgendaData = {} as AgendaData;
+        agenda.sd = moment().format("YYYY/MM/DD");
+        agenda.evn = "有数据更新或者新增，自动刷新页面 当重要为空的情况下";
+        agenda.todolist == ToDoListStatus.On;
+        let results = await eventService.saveAgenda(agenda);
+
+        todolist = await eventService.mergeTodolist(todolist,results);
+        expect(attachments).toBeDefined();
+        expect(attachments.length).toBeGreaterThan(0);
+
+    });
+
   });
 
   describe(`创建不重复与重复（每天、每周、每月、每年）日程`, () => {
