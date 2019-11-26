@@ -1,7 +1,7 @@
 import * as DLL from "async/internal/DoublyLinkedList.js"
 import * as noopF from "lodash/noop.js"
 import * as wrapAsync from "async/internal/wrapAsync.js"
-import * as setImmediate from "async/internal/setImmediate.js"
+// import * as setImmediate from "async/internal/setImmediate.js"
 import * as onlyOnce from "async/internal/onlyOnce.js"
 import * as isArray from "lodash/isArray.js"
 import * as baseIndexOf from "lodash/_baseIndexOf.js"
@@ -12,7 +12,7 @@ export class AsyncQueue {
   _worker: any;
   numRunning: number;
   workersList = [];
-  processingScheduled: boolean;
+  // processingScheduled: boolean;
 
   _tasks: DLL = new DLL();
   concurrency: number;
@@ -37,7 +37,7 @@ export class AsyncQueue {
     this._worker = wrapAsync.default(worker);
     this.numRunning = 0;
     this.workersList = [];
-    this.processingScheduled = false;
+    // this.processingScheduled = false;
     this.concurrency = concurrency;
     this.payload = payload;
     this.buffer = this.concurrency / 4;
@@ -53,9 +53,7 @@ export class AsyncQueue {
     }
     if (data.length === 0 && this.idle()) {
       // call drain immediately if there are no tasks
-      return setImmediate.default( ()=> {
-        this.drain();
-      });
+      return  this.drain();
     }
 
     for (var i = 0, l = data.length; i < l; i++) {
@@ -71,13 +69,14 @@ export class AsyncQueue {
       }
     }
 
-    if (!this.processingScheduled) {
-      this.processingScheduled = true;
-      setImmediate.default(()=> {
-        this.processingScheduled = false;
         this.process();
-      });
-    }
+    // if (!this.processingScheduled) {
+    //   this.processingScheduled = true;
+    //   setImmediate.default(()=> {
+    //     this.processingScheduled = false;
+    //     this.process();
+    //   });
+    // }
   }
 
   private _next(tasks) {
@@ -188,8 +187,9 @@ export class AsyncQueue {
       return;
     }
     this.paused = false;
-    setImmediate.default(()=>{
-      this.process()
-    });
+    this.process();
+    // setImmediate.default(()=>{
+    //   this.process()
+    // });
   }
 }
