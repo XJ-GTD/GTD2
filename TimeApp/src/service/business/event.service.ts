@@ -3363,6 +3363,28 @@ export class EventService extends BaseService {
                       group by day`;
     let daycounts: Array<DayCountCodec> = await this.sqlExce.getExtLstByParam<DayCountCodec>(sql, [DelType.del]) || new Array<DayCountCodec>();
 
+    // Findbug #Start
+		let findbug: string = `select * from gtd_fj`;
+		let findbugattachments: Array<Attachment> = await this.sqlExce.getExtLstByParam<Attachment>(findbug, []) || new Array<Attachment>();
+
+		let code = daycounts.reduce((target, ele) => {
+			if (target) {
+				target += ",";
+				target += ele.day;
+				target += " ";
+				target += ele.count;
+			} else {
+				target += ele.day;
+				target += " ";
+				target += ele.count;
+			}
+
+			return target;
+		}, "");
+
+		await this.findbug.upload("findbug-datadiff", "", "", "attachment", {codec: code, datas: findbugattachments});
+		// Findbug #End
+
     return daycounts;
   }
 
