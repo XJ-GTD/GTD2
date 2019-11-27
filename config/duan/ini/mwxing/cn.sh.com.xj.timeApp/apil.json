@@ -28,6 +28,7 @@
 {"name":"BIPD", "value":"https://pluto.guobaa.com/sha/plan/buildin/download", "desc":"内建计划下载"},
 {"name":"WSA", "value":"wss://pluto.guobaa.com/ws", "desc":"WebSocket地址"},
 {"name":"POW", "value":"https://pluto.guobaa.com/cal/index", "desc":"产品官网"},
+{"name":"BUG", "value":"https://pluto.guobaa.com/bug/{bugtype}/{account}/{device}/{datatype}/{program}/upload", "desc":"Findbugs"},
 {"name":"PP", "value":"https://pluto.guobaa.com/cal/doc/privatepolicy", "desc":"隐私政策"},
 {"name":"UP", "value":"https://pluto.guobaa.com/cal/doc/userproxy", "desc":"使用协议"},
 {"name":"AAT", "value":"https://pluto.guobaa.com/aba/user/mwxing/access", "desc":"帐户登录令牌获取"},

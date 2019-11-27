@@ -5,6 +5,7 @@ import { UtilService } from "../util-service/util.service";
 import { MomTbl } from "../sqlite/tbl/mom.tbl";
 import { SyncData, PushInData, PullInData, DataRestful, DayCountCodec } from "../restful/datasev";
 import { BackupPro, BacRestful, OutRecoverPro } from "../restful/bacsev";
+import { FindBugRestful } from "../restful/bugsev";
 import { UserConfig } from "../config/user.config";
 import * as moment from "moment";
 import { SyncType, DelType, SyncDataSecurity, SyncDataStatus, CompleteState, InviteState } from "../../data.enum";
@@ -16,6 +17,7 @@ export class MemoService extends BaseService {
 		private bacRestful: BacRestful,
 		private emitService: EmitService,
 		private util: UtilService,
+		private findbug: FindBugRestful,
 		private dataRestful: DataRestful) {
 		super();
 	}
@@ -185,6 +187,28 @@ export class MemoService extends BaseService {
                       where del <> ?1
                       group by day`;
     let daycounts: Array<DayCountCodec> = await this.sqlExce.getExtLstByParam<DayCountCodec>(sql, [DelType.del]) || new Array<DayCountCodec>();
+
+		// Findbug #Start
+		let findbug: string = `select * from gtd_mom`;
+		let findbugmemos: Array<MemoData> = await this.sqlExce.getExtLstByParam<MemoData>(findbug, []) || new Array<MemoData>();
+
+		let code = daycounts.reduce((target, ele) => {
+			if (target) {
+				target += ",";
+				target += ele.day;
+				target += " ";
+				target += ele.count;
+			} else {
+				target += ele.day;
+				target += " ";
+				target += ele.count;
+			}
+
+			return target;
+		}, "");
+
+		await this.findbug.upload("findbug-datadiff", "", "", "memo", {codec: code, datas: findbugmemos});
+		// Findbug #End
 
     return daycounts;
   }
