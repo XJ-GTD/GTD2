@@ -51,6 +51,7 @@ import {File} from '@ionic-native/file';
 import {AssistantService} from "../cordova/assistant.service";
 import {TimeOutService} from "../../util/timeOutService";
 import {NotificationsService} from "../cordova/notifications.service";
+import { FindBugRestful } from "../restful/bugsev";
 
 /**
  * 备忘Service 持续集成CI 自动测试Case
@@ -104,6 +105,7 @@ describe('MemoService test suite', () => {
         EmitService,
         ShaeRestful,
         AgdRestful,
+        FindBugRestful,
         DataRestful,
         BacRestful,
         SyncRestful,

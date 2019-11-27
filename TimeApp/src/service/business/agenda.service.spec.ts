@@ -54,6 +54,7 @@ import {File} from '@ionic-native/file';
 import {AssistantService} from "../cordova/assistant.service";
 import {TimeOutService} from "../../util/timeOutService";
 import {NotificationsService} from "../cordova/notifications.service";
+import { FindBugRestful } from "../restful/bugsev";
 
 /**
  * 事件Service 日程 持续集成CI 自动测试Case
@@ -102,6 +103,7 @@ describe('EventService test suite for agenda', () => {
         EmitService,
         TimeOutService,
         ShaeRestful,
+        FindBugRestful,
         AgdRestful,
         BacRestful,
         DataRestful,
