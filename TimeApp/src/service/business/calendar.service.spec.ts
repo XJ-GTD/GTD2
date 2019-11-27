@@ -68,6 +68,7 @@ import {AssistantService} from "../cordova/assistant.service";
 import {TimeOutService} from "../../util/timeOutService";
 import {NotificationsService} from "../cordova/notifications.service";
 import { FindBugRestful } from "../restful/bugsev";
+import {DetectorService} from "../util-service/detector.service";
 
 /**
  * 日历Service 持续集成CI 自动测试Case
@@ -419,6 +420,7 @@ describe('CalendarService test suite', () => {
         EmitService,
         ShaeRestful,
         SyncRestful,
+        DetectorService,
         FindBugRestful,
         NotificationsService,
         TimeOutService,
