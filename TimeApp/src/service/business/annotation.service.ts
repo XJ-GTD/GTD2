@@ -240,7 +240,7 @@ export class AnnotationService extends BaseService {
                 from (select gtd_at.*, gtd_b.ran, substr(dt, 1, 11) d
                         from gtd_at
                         left join gtd_b on gtd_at.ui = gtd_b.ui
-                       where dt > ? 
+                       where dt > ?
                          and gs = '1') attbl
                group by attbl.ui, attbl.obi, attbl.d
                order by attbl.dt desc `
