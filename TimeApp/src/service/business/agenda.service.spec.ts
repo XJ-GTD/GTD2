@@ -57,6 +57,7 @@ import {NotificationsService} from "../cordova/notifications.service";
 import { FindBugRestful } from "../restful/bugsev";
 import {DetectorService} from "../util-service/detector.service";
 import {LocalNotifications} from "@ionic-native/local-notifications";
+import {Badge} from "@ionic-native/badge";
 
 /**
  * 事件Service 日程 持续集成CI 自动测试Case
@@ -98,6 +99,7 @@ describe('EventService test suite for agenda', () => {
         SQLitePorter,
         SqliteConfig,
         SqliteInit,
+        Badge,
         SqliteExec,
         { provide: AssistantService, useClass: AssistantServiceMock },
         UserConfig,

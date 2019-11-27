@@ -54,6 +54,7 @@ import {NotificationsService} from "../cordova/notifications.service";
 import { FindBugRestful } from "../restful/bugsev";
 import {DetectorService} from "../util-service/detector.service";
 import {LocalNotifications} from "@ionic-native/local-notifications";
+import {Badge} from "@ionic-native/badge";
 
 /**
  * 备忘Service 持续集成CI 自动测试Case
@@ -97,6 +98,7 @@ describe('MemoService test suite', () => {
         SQLitePorter,
         LocalNotifications,
         File,
+        Badge,
         SqliteConfig,
         { provide: AssistantService, useClass: AssistantServiceMock },
         { provide: UserConfig, useClass: UserConfigMock },
