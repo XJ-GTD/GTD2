@@ -56,6 +56,7 @@ import { ScheduleRemindService } from "./remind.service";
 import {File} from '@ionic-native/file';
 import {AssistantService} from "../cordova/assistant.service";
 import {TimeOutService} from "../../util/timeOutService";
+import {NotificationsService} from "../cordova/notifications.service";
 
 /**
  * 事件Service 持续集成CI 自动测试Case
@@ -77,6 +78,7 @@ describe('EventService test suite', () => {
   let util: UtilService;
   let assistantService: AssistantService;
   let timeOutService: TimeOutService;
+  let notificationsService: NotificationsService;
 
   beforeAll(async () => {
     TestBed.configureTestingModule({
@@ -102,6 +104,7 @@ describe('EventService test suite', () => {
         { provide: UserConfig, useClass: UserConfigMock },
         UtilService,
         EmitService,
+        NotificationsService,
         File,
         ShaeRestful,
         TimeOutService,
@@ -126,6 +129,7 @@ describe('EventService test suite', () => {
 		sqlExce = TestBed.get(SqliteExec);
 		util = TestBed.get(UtilService);
     assistantService = TestBed.get(AssistantService);
+    notificationsService = TestBed.get(NotificationsService);
     timeOutService = TestBed.get(TimeOutService);
 
     calendarService = TestBed.get(CalendarService);

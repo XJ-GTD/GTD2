@@ -66,6 +66,7 @@ import { PlanType, PlanItemType, CycleType, OverType, RepeatFlag, PageDirection,
 import {File} from '@ionic-native/file';
 import {AssistantService} from "../cordova/assistant.service";
 import {TimeOutService} from "../../util/timeOutService";
+import {NotificationsService} from "../cordova/notifications.service";
 
 /**
  * 日历Service 持续集成CI 自动测试Case
@@ -88,6 +89,7 @@ describe('CalendarService test suite', () => {
   let util: UtilService;
   let assistantService: AssistantService;
   let timeOutService: TimeOutService;
+  let notificationsService: NotificationsService;
 
   // 联系人用于测试
   let xiaopangzi: BTbl;
@@ -416,6 +418,7 @@ describe('CalendarService test suite', () => {
         EmitService,
         ShaeRestful,
         SyncRestful,
+        NotificationsService,
         TimeOutService,
         AgdRestful,
         BacRestful,
@@ -445,6 +448,7 @@ describe('CalendarService test suite', () => {
     sqlExce = TestBed.get(SqliteExec);
     util = TestBed.get(UtilService);
     assistantService = TestBed.get(AssistantService);
+    notificationsService = TestBed.get(NotificationsService);
     timeOutService = TestBed.get(TimeOutService);
 
     await config.generateDb();
