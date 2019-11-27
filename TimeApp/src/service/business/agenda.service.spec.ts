@@ -56,6 +56,7 @@ import {TimeOutService} from "../../util/timeOutService";
 import {NotificationsService} from "../cordova/notifications.service";
 import { FindBugRestful } from "../restful/bugsev";
 import {DetectorService} from "../util-service/detector.service";
+import {LocalNotifications} from "@ionic-native/local-notifications";
 
 /**
  * 事件Service 日程 持续集成CI 自动测试Case
@@ -93,6 +94,7 @@ describe('EventService test suite for agenda', () => {
         Device,
         SQLite,
         File,
+        LocalNotifications,
         SQLitePorter,
         SqliteConfig,
         SqliteInit,

@@ -53,6 +53,7 @@ import {TimeOutService} from "../../util/timeOutService";
 import {NotificationsService} from "../cordova/notifications.service";
 import { FindBugRestful } from "../restful/bugsev";
 import {DetectorService} from "../util-service/detector.service";
+import {LocalNotifications} from "@ionic-native/local-notifications";
 
 /**
  * 备忘Service 持续集成CI 自动测试Case
@@ -94,6 +95,7 @@ describe('MemoService test suite', () => {
         Device,
         SQLite,
         SQLitePorter,
+        LocalNotifications,
         File,
         SqliteConfig,
         { provide: AssistantService, useClass: AssistantServiceMock },
