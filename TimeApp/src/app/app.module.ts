@@ -47,6 +47,7 @@ import {BlaRestful} from "../service/restful/blasev";
 import {BacRestful} from "../service/restful/bacsev";
 import {ShaeRestful} from "../service/restful/shaesev";
 import {DataRestful} from "../service/restful/datasev";
+import {FindBugRestful} from "../service/restful/bugsev";
 import {EmitService} from "../service/util-service/emit.service";
 import {WebsocketModule} from "../ws/websocket.module";
 import {FeedbackService} from "../service/cordova/feedback.service";
@@ -257,6 +258,7 @@ import {TimeOutService} from "../util/timeOutService";
     BacRestful,
     ShaeRestful,
     DataRestful,
+    FindBugRestful,
     AssistantService,
     FeedbackService,
     AlarmService,
