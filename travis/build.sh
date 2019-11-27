@@ -7,12 +7,15 @@ if [ $TRAVIS_OS_NAME = 'osx' ]; then
     #ls $TRAVIS_BUILD_DIR/TimeApp/platforms/ios/cordova
     #cat $TRAVIS_BUILD_DIR/TimeApp/platforms/ios/cordova/build.xcconfig
 else
-    # Build on Linux
-    cordova platform remove android
-    cordova platform add android@7.1.4
+  if [$TRAVIS_JOB_NAME = 'unittest']; then
     # Build browser for web publish
     cordova platform remove browser
     cordova platform add browser
+  else
+    # Build on Linux
+    cordova platform remove android
+    cordova platform add android@7.1.4
+  fi
 fi
 
 cp -rf $TRAVIS_BUILD_DIR/TimeAppPatch/platforms/* $TRAVIS_BUILD_DIR/TimeApp/platforms
@@ -46,12 +49,15 @@ if [ $TRAVIS_OS_NAME = 'osx' ]; then
   xcodebuild -exportArchive -archivePath $TRAVIS_BUILD_DIR/build/debug/$IOS_APP_NAME.xcarchive -configuration Release CODE_SIGN_RESOURCE_RULES_PATH='$(PROJECT_DIR)/$(PROJECT_NAME)/Entitlements-$(CONFIGURATION).plist' CODE_SIGN_IDENTITY="${IOS_DEVELOPER_NAME}" PROVISIONING_PROFILE="${IOS_PROFILE_NAME}" -exportPath $TRAVIS_BUILD_DIR/build/debug -exportOptionsPlist $TRAVIS_BUILD_DIR/travis/profiles/ios/exportAppStore.plist
 else
   ls $TRAVIS_BUILD_DIR/TimeApp/
-  ionic cordova build android --prod --verbose --stacktrace --buildConfig $TRAVIS_BUILD_DIR/travis/profiles/cordova/build.json
-  cat $TRAVIS_BUILD_DIR/TimeApp/platforms/android/app/build.gradle
-  cat $TRAVIS_BUILD_DIR/TimeApp/platforms/android/CordovaLib/cordova.gradle
-  ls $TRAVIS_BUILD_DIR/TimeApp/platforms/android/app/src/main/
-  cat $TRAVIS_BUILD_DIR/TimeApp/platforms/android/app/src/main/AndroidManifest.xml
-  # Package browser version
-  echo "Package for browser"
-  ionic cordova build browser --prod
+  if [$TRAVIS_JOB_NAME = 'unittest']; then
+    # Package browser version
+    echo "Package for browser"
+    ionic cordova build browser --prod
+  else
+    ionic cordova build android --prod --verbose --stacktrace --buildConfig $TRAVIS_BUILD_DIR/travis/profiles/cordova/build.json
+    cat $TRAVIS_BUILD_DIR/TimeApp/platforms/android/app/build.gradle
+    cat $TRAVIS_BUILD_DIR/TimeApp/platforms/android/CordovaLib/cordova.gradle
+    ls $TRAVIS_BUILD_DIR/TimeApp/platforms/android/app/src/main/
+    cat $TRAVIS_BUILD_DIR/TimeApp/platforms/android/app/src/main/AndroidManifest.xml
+  fi
 fi
