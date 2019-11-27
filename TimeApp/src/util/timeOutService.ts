@@ -28,7 +28,8 @@ export class TimeOutService {
   }
 
   timeout(mi: number, fn: Function, emitKey: string) {
-    if (this.isAppback && this.util.isMobile()) {
+    this.util.isIOS()
+    if (this.isAppback && this.util.isMobile() && !this.util.isIOS()) {
       this.emitService.register(emitKey, () => {
         fn();
         this.emitService.destroy(emitKey);

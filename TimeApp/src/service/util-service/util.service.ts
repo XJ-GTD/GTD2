@@ -125,6 +125,12 @@ export class UtilService {
     return deviceId;
   }
 
+  public isIOS():boolean{
+    return this.device.platform == "iOS";
+  }
+  public isAndroid():boolean{
+    return this.device.platform == "Android";
+  }
   /**
    * 手机号校验
    * @param str
