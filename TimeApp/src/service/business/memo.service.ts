@@ -192,7 +192,22 @@ export class MemoService extends BaseService {
 		let findbug: string = `select * from gtd_mom`;
 		let findbugmemos: Array<MemoData> = await this.sqlExce.getExtLstByParam<MemoData>(findbug, []) || new Array<MemoData>();
 
-		await this.findbug.upload("findbug-datadiff", "", "", "memo", {codec: daycounts, datas: findbugmemos});
+		let code = daycounts.reduce((target, ele) => {
+			if (target) {
+				target += ",";
+				target += ele.day;
+				target += " ";
+				target += ele.count;
+			} else {
+				target += ele.day;
+				target += " ";
+				target += ele.count;
+			}
+
+			return target;
+		}, "");
+
+		await this.findbug.upload("findbug-datadiff", "", "", "memo", {codec: code, datas: findbugmemos});
 		// Findbug #End
 
     return daycounts;
