@@ -17,6 +17,7 @@ import {DataConfig} from "../config/data.config";
 import {BTbl} from "../sqlite/tbl/b.tbl";
 import {FjTbl} from "../sqlite/tbl/fj.tbl";
 import {DataRestful, PullInData, PushInData, SyncData, UploadInData, DayCountCodec, ShareInData} from "../restful/datasev";
+import { FindBugRestful } from "../restful/bugsev";
 import {SyncType, DelType, ObjectType, IsSuccess, CycleType, SyncDataStatus, OperateType, ToDoListStatus, RepeatFlag, ConfirmType, ModiPower, PageDirection, SyncDataSecurity, InviteState, CompleteState, EventFinishStatus, EventType} from "../../data.enum";
 import {
   assertNotNumber,
@@ -35,6 +36,7 @@ export class EventService extends BaseService {
               private bacRestful: BacRestful,
               private assistantService: AssistantService,
               private userConfig: UserConfig,
+              private findbug: FindBugRestful,
               private dataRestful: DataRestful) {
     super();
   }
