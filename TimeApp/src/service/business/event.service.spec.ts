@@ -956,7 +956,7 @@ describe('EventService test suite', () => {
 
     });
 
-    t('Case 24 - 1 - 2   mergeTodolist 有数据更新或者新增，自动刷新页面 当重要不为空的的情况下 ', async () => {
+    it('Case 24 - 1 - 2   mergeTodolist 有数据更新或者新增，自动刷新页面 当重要不为空的的情况下 ', async () => {
 
         let todolist: Array<AgendaData> = new Array<AgendaData>();
 
