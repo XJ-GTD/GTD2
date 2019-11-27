@@ -114,7 +114,7 @@ export const ION_CAL_VALUE_ACCESSOR: Provider = {
 
   `,
 
-  changeDetection:ChangeDetectionStrategy.OnPush
+  // changeDetection:ChangeDetectionStrategy.OnPush
 })
 export class CalendarComponent implements OnInit {
 

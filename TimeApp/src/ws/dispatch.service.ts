@@ -22,7 +22,6 @@ export class DispatchService {
 
   async dispatch(message: string) {
     //消息格式化
-    console.log("******************dispatch  message:"+message);
     let log:LogTbl = new LogTbl();
     log.id = this.util.getUuid();
     log.su = message
@@ -57,12 +56,10 @@ export class DispatchService {
       let wsContent: WsContent = model.content[i];
       //保存上下文
       wsContent.thisContext = model;
-      console.log("******************dispatch  process: "+opt);
       // 当处理异常时，跳出循环
       try {
         contextRetMap = await this.factory.getProcess(opt).gowhen(wsContent, contextRetMap);
       } catch (e) {
-        console.log('\r\n', e, '\r\n', e.stack);
         break;
       } finally {
         //存在客户端上下文的情况下

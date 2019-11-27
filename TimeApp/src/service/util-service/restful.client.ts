@@ -41,7 +41,7 @@ export class RestfulClient {
       let header = this.restConfig.createHeader();
       if (this.util.hasCordova()) {
         return this.http.uploadFile(url.url, body, header, filePath, name).then(data => {
-          console.log("upload >=< " + JSON.stringify(data));
+
           let jsonData = JSON.parse(data.data);
           resolve(jsonData);
         });
@@ -50,7 +50,6 @@ export class RestfulClient {
         let warHeader: any = {};
         warHeader.headers = header;
         this.httpClient.post(url.url, body, warHeader).subscribe(data => {
-          console.log("upload >=< " + JSON.stringify(data));
           resolve(data);
         });
       }
@@ -68,7 +67,6 @@ export class RestfulClient {
       let header = this.restConfig.createHeader();
       if (this.util.hasCordova()) {
         return this.http.downloadFile(url.url, body, header, filePath).then(data => {
-          console.log("download >=< " + JSON.stringify(data));
           let jsonData = JSON.parse(data.data);
           resolve(jsonData);
         });

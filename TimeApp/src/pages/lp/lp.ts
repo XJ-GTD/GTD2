@@ -57,7 +57,6 @@ export class LpPage {
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad LpPage');
   }
 
   goBack() {
@@ -105,10 +104,10 @@ export class LpPage {
         }).catch(error=>{
           this.util.loadingEnd();
           if(error && error.code && error.message != undefined && error.message != null && error.message != ""){
-            console.log(error.message);
+
             this.util.toastStart(error.message,1500);
           }else{
-            console.log("手机密码登录失败");
+
             this.util.toastStart("网络异常",1500);
           }
         });

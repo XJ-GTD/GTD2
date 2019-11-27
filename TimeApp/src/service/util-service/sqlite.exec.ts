@@ -57,7 +57,7 @@ export class SqliteExec {
             this.noteLog(log);
           }
 
-          console.log("sql [" + sql + "] params [" + (params? params.join(",") : "") + "] log error :" + err.message);
+          // console.log("sql [" + sql + "] params [" + (params? params.join(",") : "") + "] log error :" + err.message);
           resolve(err);
         });
       });
@@ -178,7 +178,7 @@ export class SqliteExec {
         }
         resolve(arr);
       }).catch(e=>{
-        console.log("getExtList [" + sql + "] without params log error :" + JSON.stringify(e));
+        // console.log("getExtList [" + sql + "] without params log error :" + JSON.stringify(e));
         resolve(arr);
       })
     })
@@ -244,7 +244,7 @@ export class SqliteExec {
           sql = sql + sqlist[j];
         }
         return this.sqlitePorter.importSqlToDb(this.sqlliteConfig.database, sql).catch(error=>{
-          console.log("batExecSql [" + sql + "] without params log error :" + JSON.stringify(error));
+          // console.log("batExecSql [" + sql + "] without params log error :" + JSON.stringify(error));
         })
 
       } else {
@@ -493,7 +493,7 @@ export class SqliteExec {
         }
         resolve(arr);
       }).catch(e=>{
-        console.log("getExtLstByParam [" + sql + "] params [" + (params? params.join(",") : "") + "] log error :" + JSON.stringify(e));
+        // console.log("getExtLstByParam [" + sql + "] params [" + (params? params.join(",") : "") + "] log error :" + JSON.stringify(e));
         resolve(arr);
       })
     })

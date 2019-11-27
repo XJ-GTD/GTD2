@@ -22,7 +22,6 @@ export class ContextProcess extends BaseProcess implements MQProcess{
 
   async gowhen(content: WsContent, contextRetMap: Map<string,any>) {
 
-    console.log("******************sc gowhen start")
     DataConfig.wsContext = content.thisContext.context.client.cxt;
     let prv :ProcesRs = new ProcesRs();
     if (DataConfig.wsContext && DataConfig.wsContext.length >0 ){
@@ -32,7 +31,6 @@ export class ContextProcess extends BaseProcess implements MQProcess{
 
     //process处理符合条件则执行
     if (content.when && content.when !=""){
-      console.log("******************sc gowhen content.when" +content.when)
       let rf :boolean = false;
       try {
         let fun = eval("("+content.when+")");
@@ -66,7 +64,7 @@ export class ContextProcess extends BaseProcess implements MQProcess{
 
     //服务器要求上下文内放置日程人员信息
     this.output(content, contextRetMap, 'contacts', WsDataConfig.FS, prv.fs);
-    console.log("******************sc gowhen end" )
+
     return contextRetMap
   }
 }

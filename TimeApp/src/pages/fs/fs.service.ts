@@ -48,7 +48,6 @@ export class FsService {
     return new Promise<Array<FsData>>((resolve, reject) => {
       let sql = 'select gd.pi,gd.si,gb.*,bh.hiu bhiu from gtd_d gd inner join gtd_b gb on gb.pwi = gd.ai left join gtd_bh bh on gb.pwi = bh.pwi where si="' + calId + '"';
       let fsList = new Array<FsData>();
-      console.log('---------- getCalfriend 获取分享日程的参与人 sql:' + sql);
       this.sqlite.execSql(sql).then(data => {
         if (data && data.rows && data.rows.length > 0) {
           for (let i = 0, len = data.rows.length; i < len; i++) {
@@ -60,11 +59,9 @@ export class FsService {
             fsList.push(fs);
           }
         }
-        console.log('---------- getCalfriend 获取分享日程的参与人结果:' + fsList.length/*JSON.stringify(fsList)*/);
         resolve(fsList);
       }).catch(e => {
-        console.error('---------- getCalfriend 获取分享日程的参与人出错:' + e.message);
-        resolve(fsList);
+         resolve(fsList);
       })
     })
   }
@@ -96,10 +93,8 @@ export class FsService {
         resolve(true);
         return ;
       }
-      console.log('---------- sharefriend 分享给参与人操作 参数:' + JSON.stringify(adgPro));
-      this.agdRest.contactssave(adgPro).then(data => {
-        console.log('---------- sharefriend 分享给参与人操作 结果:' + JSON.stringify(data));
-        return this.getCalfriend(si);
+         this.agdRest.contactssave(adgPro).then(data => {
+          return this.getCalfriend(si);
       }).then(data => {
         let dtList = new Array<string>();
         for (let fs of fsList) {
@@ -119,14 +114,11 @@ export class FsService {
             dtList.push(dt.inT());
           }
         }
-        console.log('---------- sharefriend 分享给参与人操作 保存参与人 ---------' + JSON.stringify(data));
-        return this.sqlite.batExecSql(dtList);
+             return this.sqlite.batExecSql(dtList);
       }).then(data => {
-        console.log('---------- sharefriend 分享给参与人操作 保存参与人结束 ---------' + JSON.stringify(data));
-        resolve(true);
+          resolve(true);
       }).catch(e => {
-        console.error('---------- sharefriend 分享给参与人操作 保存参与人错误 ---------' + e.message);
-        resolve(false);
+          resolve(false);
       })
     })
   }

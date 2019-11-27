@@ -37,18 +37,15 @@ export class GaPage {
   }
   @ViewChild('nameInput') nameInput ;
   ionViewDidLoad() {
-    console.log('ionViewDidLoad GaPage');
   }
 
   ionViewDidEnter(){
-    console.log("3.0 ionViewDidEnter 当进入页面时触发");
     setTimeout(() => {
       this.nameInput.setFocus();//为输入框设置焦点
     },150);
   }
 
   goBack(){
-    console.log('GaPage跳转GlPage');
     this.viewCtrl.dismiss();
   }
   //保存群名称

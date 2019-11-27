@@ -84,18 +84,16 @@ export class LsPage {
       this.enableSendSMS = false;
 
       this.lsService.getSMSCode(this.login.phoneno).then(data => {
-        console.log("短信发送成功" + JSON.stringify(data));
+
         //短信验证码KEY 赋值给验证码登录信息
         this.login.verifykey = data.verifykey;
         this.util.toastStart("短信发送成功",1500);
 
         this.timeText = 60;
-        console.log("开始" + this.timeText + "定时器");
         this.timer = setInterval(() => {
           this.timeText--;
           if (this.timeText <= 0) {
             clearTimeout(this.timer);
-            console.log("清除定时器");
             this.timeText = "发送验证码"
             this.enableSendSMS = true;
           }
@@ -138,7 +136,7 @@ export class LsPage {
         }).catch(error=>{
           this.util.loadingEnd();
           if(error && error.code && error.message != undefined && error.message != null && error.message != ""){
-            console.log(error.message);
+
             this.util.toastStart(error.message,1500);
           }else{
             console.log("手机验证码登录失败");

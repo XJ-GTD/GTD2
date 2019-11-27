@@ -10,7 +10,6 @@ import { EventData, TaskData, AgendaData, MiniTaskData, EventService, RtJson, Tx
 import { MemoData, MemoService } from "./memo.service";
 import { EventType, PlanType, PlanItemType, PlanDownloadType, MemberShareState, SelfDefineType, ConfirmType, OperateType, ObjectType, PageDirection, CycleType, SyncType, RepeatFlag, DelType, SyncDataSecurity, SyncDataStatus, InviteState, ModiPower, InvitePowr } from "../../data.enum";
 import { UserConfig } from "../config/user.config";
-import * as async from "async/dist/async.js"
 import * as moment from "moment";
 import { JhaTbl } from "../sqlite/tbl/jha.tbl";
 import { JtaTbl } from "../sqlite/tbl/jta.tbl";
@@ -24,12 +23,15 @@ import {
 } from "../../util/util";
 import {FsData} from "../../data.mapping";
 import { ScheduleRemindService } from "./remind.service";
+import {AsyncQueue} from "../../util/asyncQueue";
+import {DetectorService} from "../util-service/detector.service";
+import {TimeOutService} from "../../util/timeOutService";
 
 @Injectable()
 export class CalendarService extends BaseService {
 
   private calendaractivities: Array<MonthActivityData> = new Array<MonthActivityData>();
-  private activitiesqueue: any;
+  private activitiesqueue: AsyncQueue;
 
   constructor(private sqlExce: SqliteExec,
               private util: UtilService,
@@ -40,9 +42,11 @@ export class CalendarService extends BaseService {
               private remindService: ScheduleRemindService,
               private bacRestful: BacRestful,
               private shareRestful: ShaeRestful,
-              private dataRestful: DataRestful) {
+              private dataRestful: DataRestful,
+              private detectorService:DetectorService,
+              private timeOutService:TimeOutService) {
     super();
-    this.activitiesqueue = async.queue(async ({data}, callback) => {
+    this.activitiesqueue = new AsyncQueue( async ({data}, callback) => {
 
       // 多条数据同时更新/单条数据更新
       if (data instanceof Array) {
@@ -85,7 +89,9 @@ export class CalendarService extends BaseService {
       }
 
       callback();
-    });
+    },1,1,"home.list.modifiy");
+
+    this.activitiesqueue.setTimeOutService(this.timeOutService);
   }
 
   clearCalendarActivities() {
@@ -179,6 +185,7 @@ export class CalendarService extends BaseService {
 
           this.activitiesqueue.push({data: data}, () => {
             // 完成处理
+            this.detectorService.detector();
             if (this.calendaractivities.length > 0) {
               for (let monthactivities of this.calendaractivities) {
                 this.emitService.emit("mwxing.calendar." + monthactivities.month + ".changed", monthactivities);

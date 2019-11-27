@@ -102,7 +102,6 @@ export class NotificationsService {
         }
 
         if (next.data.type == "systimeout") {
-          console.log("当前任务=====Notifiy======timeout====")
           this.emitService.emit(next.data.emitkey);
         }
 

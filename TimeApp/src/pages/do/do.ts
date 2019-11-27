@@ -1,22 +1,29 @@
-import {Component, ElementRef, Renderer2, ViewChild, EventEmitter, ViewChildren, QueryList, ChangeDetectorRef } from '@angular/core';
-import {IonicPage, NavController, ModalController, NavParams, Slides} from 'ionic-angular';
+import {
+  Component,
+  EventEmitter,
+  ViewChildren,
+  QueryList,
+  ChangeDetectorRef,
+  ChangeDetectionStrategy
+} from '@angular/core';
+import {IonicPage, NavController, ModalController, NavParams} from 'ionic-angular';
 import {UtilService} from "../../service/util-service/util.service";
 import {UserConfig} from "../../service/config/user.config";
-import {RestFulHeader, RestFulConfig} from "../../service/config/restful.config";
 import {SqliteExec} from "../../service/util-service/sqlite.exec";
 import * as async from "async/dist/async.js"
 import * as moment from "moment";
-import { CalendarDay } from "../../components/ion2-calendar";
 import { DoService } from "./do.service";
-import { ScdData, ScdPageParamter } from "../../data.mapping";
+import {ScdPageParamter } from "../../data.mapping";
 import {EmitService} from "../../service/util-service/emit.service";
 import {DataConfig} from "../../service/config/data.config";
 import {FeedbackService} from "../../service/cordova/feedback.service";
-import {PageBoxComponent} from "../../components/page-box/page-box";
 import {TaskListComponent} from "../../components/task-list/task-list";
 import {CalendarService} from "../../service/business/calendar.service";
 import {EventService, AgendaData} from "../../service/business/event.service";
 import { PageDirection, IsSuccess, OperateType, EventFinishStatus } from "../../data.enum";
+import {DetectorService} from "../../service/util-service/detector.service";
+import {AsyncQueue} from "../../util/asyncQueue";
+import {TimeOutService} from "../../util/timeOutService";
 
 /**
  * Generated class for the 待处理/已处理任务一览 page.
@@ -34,7 +41,8 @@ import { PageDirection, IsSuccess, OperateType, EventFinishStatus } from "../../
         <task-list [currentuser]="currentuser" [friends]="friends" [plans]="privateplans" (onStartLoad)="getData($event, day)" (onCreateNew)="goCreate()" (onCardClick)="gotoDetail($event)" (onErease)="goErease($event)" (onComplete)="complete($event)" #tasklist></task-list>
       </ng-container>
       </page-box>
-    `
+  `,
+  // changeDetection:ChangeDetectionStrategy.OnPush
 })
 export class DoPage {
 
@@ -62,11 +70,10 @@ export class DoPage {
 
   onrefresh: EventEmitter<any>;
 
-  private todosqueue: any;
+  private todosqueue: AsyncQueue;
 
   constructor(public navCtrl: NavController,
               public navParams: NavParams,
-              public changedetector: ChangeDetectorRef,
               private modalCtr: ModalController,
               private emitService: EmitService,
               private doService: DoService,
@@ -74,10 +81,14 @@ export class DoPage {
               private feedback: FeedbackService,
               private calendarService: CalendarService,
               private eventService: EventService,
-              private sqlite:SqliteExec) {
+              private sqlite:SqliteExec,
+              // public changeDetectorRef: ChangeDetectorRef,
+              // private detectorService:DetectorService,
+              private timeOutService:TimeOutService) {
     moment.locale('zh-cn');
+     // this.detectorService.registerDetector(changeDetectorRef);
 
-    this.todosqueue = async.queue(async ({data}, callback) => {
+    this.todosqueue = new AsyncQueue(async ({data}, callback) => {
       // 多条数据同时更新/单条数据更新
       if (data instanceof Array) {
         for (let single of data) {
@@ -100,7 +111,8 @@ export class DoPage {
       }
 
       callback();
-    });
+    },1,1,"todo.changed");
+    this.todosqueue.setTimeOutService(this.timeOutService);
   }
 
   ionViewDidLoad() {
@@ -147,8 +159,7 @@ export class DoPage {
       direction = PageDirection.PageDown;
     }
 
-    this.eventService.todolist()
-    .then((d) => {
+    this.eventService.todolist().then((d) => {
       if (d) {
         if (!this.onrefresh) {
           this.onrefresh = this.emitService.register("mwxing.calendar.activities.changed", async (data) => {
@@ -158,6 +169,7 @@ export class DoPage {
 
             this.todosqueue.push({data: data}, () => {
               // 用于更新日历下待处理任务的汇总显示
+              // this.detectorService.detector();
               this.summarytasks = this.cachedtasks.reduce((target, element) => {
                 target.push(element);
                 return target;

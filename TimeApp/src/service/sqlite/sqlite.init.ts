@@ -308,8 +308,6 @@ export class SqliteInit {
   initDataSub(): Promise<any> {
     return new Promise((resolve, reject) => {
 
-      console.log("-------------------系统 ------------------");
-
       this.syncRestful.initData().then(async data => {
         let s: STbl = new STbl();
         await this.sqlexec.drop(s);
@@ -373,9 +371,7 @@ export class SqliteInit {
   initData(): Promise<any> {
     return new Promise((resolve, reject) => {
 
-      console.log("-------------------BaseSqlite initData table  data to start ------------------");
-
-      this.syncRestful.initData().then(async data => {
+        this.syncRestful.initData().then(async data => {
         let s: STbl = new STbl();
         await this.sqlexec.drop(s);
         await this.sqlexec.create(s);

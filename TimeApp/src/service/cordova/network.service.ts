@@ -32,11 +32,9 @@ export class NetworkService {
    */
   public getNetworkType() {
     if(this.network.type === 'unknown') {
-      console.log('这是一个未知的网络连接，可能不安全，请小心！');
     } else if(this.network.type === 'none') {
       console.log('没有连接网络');
     } else {
-      console.log('we got a ' + this.network.type + ' connection, woohoo!');
     }
     return this.network.type;
   }
@@ -56,8 +54,6 @@ export class NetworkService {
 
     // watch network for a disconnection
     this.network.onDisconnect().subscribe(() => {
-      console.log('network was disconnected :-(');
-      console.log('没有连接网络');
 
       this.emitService.emit("on.network.disconnected");
       this.util.toastEnd(); //后台期间重复提示去除
@@ -67,9 +63,6 @@ export class NetworkService {
 
     // watch network for a connection
     this.network.onConnect().subscribe(() => {
-      console.log('network connected!');
-      console.log('网络成功连接');
-
       this.emitService.emit("on.network.connected");
       //this.util.toastStart("网络成功连接",1500);
     });

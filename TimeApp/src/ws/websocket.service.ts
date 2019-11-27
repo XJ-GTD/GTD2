@@ -40,12 +40,12 @@ export class WebsocketService {
               private timeOutService: TimeOutService,) {
 
     this.workqueue = new AsyncQueue(({message,index,err},callback) =>{
-      console.log("当前任务=====workqueue  process queue:" + this.workqueue.length());
+      // console.log("当前任务=====workqueue  process queue:" + this.workqueue.length());
       // this.util.toastStart("有一条消息, 处理中", 1000);
       this.dispatchService.dispatch(message).then(data=>{
         callback();
       }).catch(data=>{
-        console.log(data);
+        // console.log(data);
         callback(message);
       })
     },1,1,"worker.queue");
@@ -54,7 +54,7 @@ export class WebsocketService {
 
 
     this.speechqueue =  new AsyncQueue( ({message,index,err},callback) =>{
-      console.log("当前任务=====speechqueue  process queue:" + this.workqueue.length());
+      // console.log("当前任务=====speechqueue  process queue:" + this.workqueue.length());
       this.dispatchService.dispatch(message).then(data=>{
         callback();
       }).catch(data=>{
@@ -71,25 +71,25 @@ export class WebsocketService {
         let preload = JSON.parse(message);
         let header = preload.header || {};
         let sender = header.sender || "";
-        console.log("******************ws  recv queue:" + message);
+        // console.log("******************ws  recv queue:" + message);
 
         if (sender == "xunfei/aiui") {
           this.speechqueue.push({message:message,index:this.speeches++},(err)=>{
             if (err) {
-              console.log("speech queue process error happenned. ", err, '\r\n', err.stack);
+              // console.log("speech queue process error happenned. ", err, '\r\n', err.stack);
             }
           });
         } else {
           this.workqueue.push({message:event.body,index:this.works++},(err)=>{
             if (err) {
-              console.log("work queue process error happenned. ", err, '\r\n', err.stack);
+              // console.log("work queue process error happenned. ", err, '\r\n', err.stack);
             }
           });
         }
       }
     } catch (e) {
       // message异常时捕获并不让程序崩溃
-      console.log("work queue push error : ", e, '\r\n', e.stack);
+      // console.log("work queue push error : ", e, '\r\n', e.stack);
     }
   }
 
@@ -180,7 +180,7 @@ export class WebsocketService {
               this.disconnecttime = moment().unix();
               this.close();
             }, event => {
-              console.log('Stomp websocket closed with code ' + event.code + ', reason ' + event.reason);
+              // console.log('Stomp websocket closed with code ' + event.code + ', reason ' + event.reason);
               this.connections--;
               this.disconnecttime = moment().unix();
               this.close();

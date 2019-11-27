@@ -4,8 +4,6 @@ import * as wrapAsync from "async/internal/wrapAsync.js"
 import * as onlyOnce from "async/internal/onlyOnce.js"
 import * as isArray from "lodash/isArray.js"
 import * as baseIndexOf from "lodash/_baseIndexOf.js"
-import {EmitService} from "../service/util-service/emit.service";
-import {NotificationsService} from "../service/cordova/notifications.service";
 import {TimeOutService} from "./timeOutService";
 
 

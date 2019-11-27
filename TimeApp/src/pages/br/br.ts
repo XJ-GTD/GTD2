@@ -76,9 +76,7 @@ export class BrPage {
       if(this.bts && this.bts!=''){
         this.isRecover = true;
       }
-      console.log('获取最后更新时间：'+this.bts);
     }).catch(error=>{
-      console.log('获取最后更新时间失败' + JSON.stringify(error));
     });
   }
 

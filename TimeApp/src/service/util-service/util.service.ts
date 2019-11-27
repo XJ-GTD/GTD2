@@ -34,6 +34,7 @@ export class UtilService {
   wins: any = window;//window对象
   private chineseLunar: ChineseLunar;
   private aday: string;
+  private appback:boolean = false;
 
   constructor(public device: Device,
               private toastCtrl: ToastController,
@@ -44,6 +45,15 @@ export class UtilService {
     console.log("UtilService initialized.")
     this.chineseLunar = new ChineseLunar();
     this.aday = "99:99";
+
+    document.addEventListener("resume", () => {
+      this.appback = false;
+    }, false);
+
+    document.addEventListener("pause", () => {
+      this.appback = true;
+
+    }, false);
   }
 
   alter: Alert;
@@ -143,6 +153,10 @@ export class UtilService {
     return regex.test(str);
   }
 
+
+  public isAppBack():boolean{
+    return this.appback;
+  }
   /**
    * 是否真机环境
    * @return {boolean}

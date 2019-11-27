@@ -187,7 +187,6 @@ export class FindProcess extends BaseProcess implements MQProcess {
       //首先查找群组
       for (let g of gs) {
         let simulary = this.util.compareTwoStrings(piny, g.gnpy);
-        console.log(piny + ' <=> ' + g.gnpy + ' distance ' + simulary);
         if (simulary > 0.8) {
           //piny = piny.replace(g.gnpy, "");
           for (let b1 of g.fsl) {
@@ -234,8 +233,7 @@ export class FindProcess extends BaseProcess implements MQProcess {
           let index = 0;
           for (let rating of simularyranrs.ratings) {
             if (rating.rating > 0.8) {
-              console.log(piny + ' <=> ' + b3ran[index] + ' distance ' + rating.rating);
-              rsbs.set(b3ran[index], bs[index]);
+               rsbs.set(b3ran[index], bs[index]);
             }
             index++;
           }
@@ -245,8 +243,7 @@ export class FindProcess extends BaseProcess implements MQProcess {
           let index = 0;
           for (let rating of simularyrnrs.ratings) {
             if (rating.rating > 0.8) {
-              console.log(piny + ' <=> ' + b3rn[index] + ' distance ' + rating.rating);
-              rsbs.set(b3ran[index], bs[index]);
+                 rsbs.set(b3ran[index], bs[index]);
             }
             index++;
           }
@@ -275,7 +272,6 @@ export class FindProcess extends BaseProcess implements MQProcess {
   //ying 20190901 add 注释:获取日程事件
   private findScd(scd: any): Promise<Array<CTbl>> {
     return new Promise<Array<CTbl>>(async resolve => {
-      console.log("============ mq查询日程scd："+ JSON.stringify(scd));
       let res: Array<CTbl> = new Array<CTbl>();
       if (scd.de ||
         scd.ds ||
@@ -343,7 +339,6 @@ export class FindProcess extends BaseProcess implements MQProcess {
           }
           sql = sql + ` )`;
         }
-        console.log("============ mq查询日程："+ sql);
         res = await this.sqliteExec.getExtList<CTbl>(sql);
       }
       resolve(res);

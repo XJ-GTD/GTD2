@@ -32,6 +32,7 @@ import {CalendarComponent} from "../../components/ion2-calendar";
 import {UserConfig} from "../../service/config/user.config";
 import BScroll from '@better-scroll/core'
 import InfinityScroll from '@better-scroll/infinity'
+import {DetectorService} from "../../service/util-service/detector.service";
 
 BScroll.use(InfinityScroll);
 
@@ -355,8 +356,11 @@ export class TdlPage {
               private _plt: Platform,
               private _gestureCtrl: GestureController,
               private _domCtrl: DomController,
-              public changeDetectorRef: ChangeDetectorRef
+              private changeDetectorRef: ChangeDetectorRef,
+              private detectorService:DetectorService
   ) {
+    //当changeDetection:ChangeDetectionStrategy.OnPush 请注册
+    this.detectorService.registerDetector(changeDetectorRef);
   }
 
   getNativeElement(): any {
@@ -406,10 +410,7 @@ export class TdlPage {
   ngAfterViewInit() {
     this.tdlServ.initLsData().then(data => {
       this.monthActivityDatas = data;
-
-      this.changeDetectorRef.markForCheck();
-      this.changeDetectorRef.detectChanges();
-
+      this.detectorService.detector();
       this.gotoEl("#day" + moment().format("YYYYMMDD"));
     });
 
@@ -420,21 +421,10 @@ export class TdlPage {
 
     });
 
-    // let monthname = moment().format("YYYY/MM");
-    // this.emitService.destroy("mwxing.calendar." + monthname + ".chagned");
-    // this.emitService.register("mwxing.calendar." + monthname + ".chagned", _ => {
-    //   this.changeDetectorRef.detectChanges();
-    // })
-
     this.emitService.register("calendar.change.month", ($data) => {
       this.gotoEl4month("#month" + $data);
       this.listmonth = moment($data + "01", "YYYYMMDD");
 
-      // let monthname = moment($data, "YYYYMM").format("YYYY/MM");
-      // this.emitService.destroy("mwxing.calendar." + monthname + ".chagned");
-      // this.emitService.register("mwxing.calendar." + monthname + ".chagned", _ => {
-      //   this.changeDetectorRef.detectChanges();
-      // })
     });
     setTimeout(() => {
 
@@ -492,19 +482,9 @@ export class TdlPage {
               this.option.isgetData = true;
 
               this.tdlServ.throughData(PageDirection.PageDown).then(data => {
-                // this.gotoEl4month(scdId);
-                // console.log($event.directionY + "11111down");
+                this.detectorService.detector();
 
-                this.changeDetectorRef.markForCheck();
-                this.changeDetectorRef.detectChanges();
                 this.option.isgetData = false;
-
-                // this.setScroll(true);
-                // setTimeout(()=>{
-
-                // this.setScroll(false);
-                // this.isgetData  = !this.isgetData;
-                // },200);
               })
             }
           }
@@ -516,9 +496,7 @@ export class TdlPage {
               this.option.isgetData = true;
 
               this.tdlServ.throughData(PageDirection.PageUp).then(data => {
-
-                this.changeDetectorRef.markForCheck();
-                this.changeDetectorRef.detectChanges();
+                this.detectorService.detector();
                 this.option.isgetData = false;
               })
             }

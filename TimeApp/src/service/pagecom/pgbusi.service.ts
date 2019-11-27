@@ -280,7 +280,7 @@ export class PgBusiService {
    */
   getList(rc : RcInParam): Promise<Array<ScdData>> {
     return new Promise<Array<ScdData>>(async resolve => {
-      console.log("============ mq查询日程scd："+ JSON.stringify(rc));
+      // console.log("============ mq查询日程scd："+ JSON.stringify(rc));
       let res: Array<ScdData> = new Array<ScdData>();
       if (rc.ed ||rc.et ||rc.sd ||rc.st || rc.sn || rc.fss.length>0) {
         let sql: string = `select * from (
@@ -335,7 +335,7 @@ export class PgBusiService {
         if (rc.et) {
           sql = sql + ` and st <= "${rc.et}"`;
         }
-        console.log("============ mq查询日程："+ sql);
+        // console.log("============ mq查询日程："+ sql);
         res = await this.sqlExce.getExtList<ScdData>(sql);
 
         if (res && res.length > 0) {
@@ -579,7 +579,7 @@ export class PgBusiService {
     let sqls:Array<string> = new Array<string>();
     if(jt == '2'){
       //删除自定义计划
-      console.log('---------- PdService delete 删除计划开始 ----------------');
+
       // 本地计划日程关联
       //修改日程表 计划 ji 去除
       //TODO: 这个地方删除计划有问题,重复日程SP表可以定义多个归属计划，SP不会被干净的删除
@@ -589,10 +589,10 @@ export class PgBusiService {
       // 删除计划
       sqls.push('delete from gtd_j_h where ji = "' + ji + '";');
       await this.sqlExce.batExecSql(sqls);
-      console.log('---------- PdService delete 删除计划结束 ----------------');
+
     }else{
       //删除系统计划
-      console.log('---------- PlService delete 删除系统计划开始 ----------------');
+
       if(jt == "1"){
         // 删除日程附件表
         sqls.push('delete from gtd_sp where ji = "' + ji + '";');
@@ -607,7 +607,6 @@ export class PgBusiService {
       sqls.push('update gtd_j_h set jtd = null where ji = "' + ji + '";');
 
       await this.sqlExce.batExecSql(sqls);
-      console.log('---------- PlService delete 删除系统计划结束 ----------------');
     }
     return true;
   }
@@ -725,8 +724,6 @@ export class PgBusiService {
       if(b != null){
         Object.assign(fs, b);
         fs.bhiu = DataConfig.HUIBASE64;
-      }else{
-        console.error("=======PgbusiService 获取发起人失败 =======")
       }
     }
     return fs;
@@ -862,7 +859,6 @@ export class PgBusiService {
         }
       }
 
-      console.log('-------- 插入重复表 --------');
       //保存特殊表
       await this.sqlExce.batExecSql(sql);
       resolve(ed);
@@ -903,7 +899,6 @@ export class PgBusiService {
       }
       et.wd = moment(date).format("YYYY/MM/DD");
       et.wt = moment(date).format("HH:mm");
-      console.log('-------- 插入提醒表 --------');
 
     }
 
@@ -1214,7 +1209,6 @@ export class PgBusiService {
     return new Promise<Array<FsData>>((resolve, reject) => {
       let sql = 'select gd.pi,gd.si,gb.*,bh.hiu bhiu from gtd_d gd inner join gtd_b gb on gb.pwi = gd.ai left join gtd_bh bh on gb.pwi = bh.pwi where si="' + calId + '"';
       let fsList = new Array<FsData>();
-      console.log('---------- getCalfriend 获取分享日程的参与人 sql:' + sql);
       this.sqlExce.execSql(sql).then(data => {
         if (data && data.rows && data.rows.length > 0) {
           for (let i = 0, len = data.rows.length; i < len; i++) {
@@ -1226,11 +1220,9 @@ export class PgBusiService {
             fsList.push(fs);
           }
         }
-        console.log('---------- getCalfriend 获取分享日程的参与人结果:' + fsList.length/*JSON.stringify(fsList)*/);
-        resolve(fsList);
+         resolve(fsList);
       }).catch(e => {
-        console.error('---------- getCalfriend 获取分享日程的参与人出错:' + e.message);
-        resolve(fsList);
+          resolve(fsList);
       })
     })
   }

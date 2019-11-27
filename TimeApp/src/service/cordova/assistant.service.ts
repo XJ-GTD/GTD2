@@ -50,7 +50,7 @@ export class AssistantService {
     cordova.plugins.XjBaiduWakeUp.wakeUpStart(async (result) => {
       this.listenAudio();
     }, error => {
-      console.log("问题：" + error)
+      // console.log("问题：" + error)
     });
   }
 
@@ -119,7 +119,7 @@ export class AssistantService {
     let datas = await this.sqliteExec.getList<SuTbl>(sutbl);
     //回答语音list
     let len = datas.length;
-    console.log("播报内容参数*******************t=" +sutbl.subt +";type="+sutbl.sust);
+    // console.log("播报内容参数*******************t=" +sutbl.subt +";type="+sutbl.sust);
     if (len == 0){
       let an: SuTbl = new SuTbl();
       an.suc= "您交代的事情已经办好了, 我正在学习怎么更准确的告诉您";

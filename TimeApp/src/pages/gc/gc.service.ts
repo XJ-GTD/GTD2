@@ -21,7 +21,6 @@ export class GcService {
   async save(dc: PageDcData) {
     let ret:boolean = false;
     let gi :string;
-    console.log('---------- GcService save 添加/编辑群名称(添加群成员) ');
     if (dc.gi != null && dc.gi != '' && dc.fsl.length > 0) {
       gi = dc.gi;
       let bxL = new Array<string>();
@@ -53,7 +52,6 @@ export class GcService {
       gc.gi = this.util.getUuid();
       gc.gnpy = this.util.chineseToPinYin(gc.gn);
       //gc.gm = DataConfig.QZ_HUIBASE64;
-      console.log('---------- GcService save 添加群名称(新建群)');
       gi = gc.gi;
       let data = await this.sqlExce.save(gc);
       ret = true;
@@ -94,7 +92,6 @@ export class GcService {
     let bx = new BxTbl();
     bx.bi = gId;
     bx.del = anyenum.DelType.del;
-    console.log('---------- GcService delete 删除群开始 ----------------');
     await this.sqlExce.update(bx);
     //删除本地群
     let gtbl: GTbl = new GTbl();

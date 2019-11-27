@@ -18,15 +18,11 @@ export class LocalcalendarService {
    */
   findEvent():Promise<any>{
     return new Promise((resolve, reject) => {
-      console.log("执行查询本地日历")
       this.calendar.findEvent("", "", "", new Date("2000-01-01"), new Date()).then(
         (msg) => {
-          console.log("执行查询本地日历结束 data :: " + JSON.stringify(msg));
-          console.log("getCalendarOptions::"+ JSON.stringify(this.calendar.getCalendarOptions()));
           resolve(msg);
         },
         (err) => {
-          console.log("执行查询本地日历结束 err ::" + JSON.stringify(err));
           reject(err);
         }
       );

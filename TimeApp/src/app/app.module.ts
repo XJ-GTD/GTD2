@@ -50,7 +50,6 @@ import {DataRestful} from "../service/restful/datasev";
 import {EmitService} from "../service/util-service/emit.service";
 import {WebsocketModule} from "../ws/websocket.module";
 import {FeedbackService} from "../service/cordova/feedback.service";
-import {AlarmService} from "../service/cordova/alarm.service";
 import {UserConfig} from "../service/config/user.config";
 import {HammerDIRECTIONALLConfig} from "./my-hammer.config";
 import {Keyboard} from "@ionic-native/keyboard";
@@ -131,6 +130,7 @@ import {AtMemberPageModule} from "../pages/atmember/atmember.module";
 import {AnnotationService} from "../service/business/annotation.service";
 import {GrouperService} from "../service/business/grouper.service";
 import {TimeOutService} from "../util/timeOutService";
+import {DetectorService} from "../service/util-service/detector.service";
 
 @NgModule({
   declarations: [
@@ -259,7 +259,6 @@ import {TimeOutService} from "../util/timeOutService";
     DataRestful,
     AssistantService,
     FeedbackService,
-    AlarmService,
     UserConfig,
     PgBusiService,
     LocalcalendarService,
@@ -278,6 +277,7 @@ import {TimeOutService} from "../util/timeOutService";
     EffectService,
     LocationSearchService,
     TimeOutService,
+    DetectorService,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     {provide: HAMMER_GESTURE_CONFIG, useClass: HammerDIRECTIONALLConfig},
     {provide: HAMMER_GESTURE_CONFIG, useClass: ionicGalleryModal.GalleryModalHammerConfig}

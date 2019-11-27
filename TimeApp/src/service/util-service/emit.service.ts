@@ -57,7 +57,6 @@ export class EmitService {
   private static buildinEvents: Map<string, Array<EventEmitter<any>>> = new Map<string, Array<EventEmitter<any>>>();
 
   constructor() {
-    console.log("EmitService initialized.")
   }
 
   //冥王星内建事件订阅

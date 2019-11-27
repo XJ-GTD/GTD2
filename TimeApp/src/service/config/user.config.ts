@@ -596,7 +596,6 @@ export class UserConfig {
   }
 
   GetOneBTbl(id: string): FsData {
-    console.log('GetOneBTbl with id ' + id);
     let fs : FsData = new FsData();
     fs =  UserConfig.friends.find(value => {
       return value.pwi == id || value.ui == id;
@@ -612,8 +611,6 @@ export class UserConfig {
   }
 
   GetMultiBTbls(ids: Array<string>): Array<FsData> {
-    console.log('GetMultiBTbls with ids ' + ids.join(","));
-
     let matches: string = ids.join(",");
 
     let fss : Array<FsData> = new Array<FsData>();
