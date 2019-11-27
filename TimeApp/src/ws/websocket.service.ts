@@ -9,7 +9,7 @@ import {EmitService} from "../service/util-service/emit.service";
 import {UtilService} from "../service/util-service/util.service";
 import {AsyncQueue} from "../util/asyncQueue";
 import {NotificationsService} from "../service/cordova/notifications.service";
-import {TimeOutService} from "../util/TimeOutService";
+import {TimeOutService} from "../util/timeOutService";
 
 /**
  * WebSocket连接Rabbitmq服务器

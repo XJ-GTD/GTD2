@@ -130,7 +130,7 @@ import {AtmePageModule} from "../pages/atme/atme.module";
 import {AtMemberPageModule} from "../pages/atmember/atmember.module";
 import {AnnotationService} from "../service/business/annotation.service";
 import {GrouperService} from "../service/business/grouper.service";
-import {TimeOutService} from "../util/TimeOutService";
+import {TimeOutService} from "../util/timeOutService";
 
 @NgModule({
   declarations: [

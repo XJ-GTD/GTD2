@@ -6,7 +6,7 @@ import * as isArray from "lodash/isArray.js"
 import * as baseIndexOf from "lodash/_baseIndexOf.js"
 import {EmitService} from "../service/util-service/emit.service";
 import {NotificationsService} from "../service/cordova/notifications.service";
-import {TimeOutService} from "./TimeOutService";
+import {TimeOutService} from "./timeOutService";
 
 
 

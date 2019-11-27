@@ -152,7 +152,7 @@ export class FjTbl implements ITblParam {
     params.push(this.fj);
     params.push(this.tb);
     params.push(this.del);
-    params.push(moment().unix());
+    params.push(this.wtt || moment().unix());
     params.push(moment().unix());
 
     let ret = new Array<any>();
