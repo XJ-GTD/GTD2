@@ -55,6 +55,7 @@ import { PlanType, IsCreate, IsSuccess, IsWholeday, PageDirection, SyncType, Del
 import { ScheduleRemindService } from "./remind.service";
 import {File} from '@ionic-native/file';
 import {AssistantService} from "../cordova/assistant.service";
+import {TimeOutService} from "../../util/timeOutService";
 
 /**
  * 事件Service 持续集成CI 自动测试Case
@@ -75,6 +76,7 @@ describe('EventService test suite', () => {
   let sqlExce: SqliteExec;
   let util: UtilService;
   let assistantService: AssistantService;
+  let timeOutService: TimeOutService;
 
   beforeAll(async () => {
     TestBed.configureTestingModule({
@@ -102,6 +104,7 @@ describe('EventService test suite', () => {
         EmitService,
         File,
         ShaeRestful,
+        TimeOutService,
         AgdRestful,
         BacRestful,
         DataRestful,
@@ -123,6 +126,7 @@ describe('EventService test suite', () => {
 		sqlExce = TestBed.get(SqliteExec);
 		util = TestBed.get(UtilService);
     assistantService = TestBed.get(AssistantService);
+    timeOutService = TestBed.get(TimeOutService);
 
     calendarService = TestBed.get(CalendarService);
     eventService = TestBed.get(EventService);

@@ -65,6 +65,7 @@ import { ScheduleRemindService } from "./remind.service";
 import { PlanType, PlanItemType, CycleType, OverType, RepeatFlag, PageDirection, SyncType, DelType, SyncDataStatus, IsWholeday, OperateType, EventType, RemindTime } from "../../data.enum";
 import {File} from '@ionic-native/file';
 import {AssistantService} from "../cordova/assistant.service";
+import {TimeOutService} from "../../util/timeOutService";
 
 /**
  * 日历Service 持续集成CI 自动测试Case
@@ -86,6 +87,7 @@ describe('CalendarService test suite', () => {
   let sqlExce: SqliteExec;
   let util: UtilService;
   let assistantService: AssistantService;
+  let timeOutService: TimeOutService;
 
   // 联系人用于测试
   let xiaopangzi: BTbl;
@@ -414,6 +416,7 @@ describe('CalendarService test suite', () => {
         EmitService,
         ShaeRestful,
         SyncRestful,
+        TimeOutService,
         AgdRestful,
         BacRestful,
         DataRestful,
@@ -442,6 +445,7 @@ describe('CalendarService test suite', () => {
     sqlExce = TestBed.get(SqliteExec);
     util = TestBed.get(UtilService);
     assistantService = TestBed.get(AssistantService);
+    timeOutService = TestBed.get(TimeOutService);
 
     await config.generateDb();
     await init.createTables();

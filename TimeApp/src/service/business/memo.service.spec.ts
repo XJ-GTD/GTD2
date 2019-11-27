@@ -49,6 +49,7 @@ import { PlanType,ObjectType , SyncType, DelType, SyncDataStatus} from "../../da
 import { ScheduleRemindService } from "./remind.service";
 import {File} from '@ionic-native/file';
 import {AssistantService} from "../cordova/assistant.service";
+import {TimeOutService} from "../../util/timeOutService";
 
 /**
  * 备忘Service 持续集成CI 自动测试Case
@@ -70,6 +71,7 @@ describe('MemoService test suite', () => {
   let sqlExce: SqliteExec;
   let util: UtilService;
   let assistantService: AssistantService;
+  let timeOutService: TimeOutService;
 
   beforeAll(async () => {
     TestBed.configureTestingModule({
@@ -95,6 +97,7 @@ describe('MemoService test suite', () => {
         SqliteExec,
         SqliteInit,
         UtilService,
+        TimeOutService,
         EmitService,
         ShaeRestful,
         AgdRestful,
@@ -121,6 +124,7 @@ describe('MemoService test suite', () => {
     calendarService = TestBed.get(CalendarService);
     util = TestBed.get(UtilService);
     assistantService = TestBed.get(AssistantService);
+    timeOutService = TestBed.get(TimeOutService);
 
     await config.generateDb();
     await init.createTables();
