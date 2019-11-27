@@ -2573,7 +2573,6 @@ export class CalendarService extends BaseService {
     arrDays = arrDays.map((value, index) => {
       return (month + "/" + ("0" + (index + 1)).slice(-2));
     });
-    console.log(arrDays.join(","));
     let daysql: string = `select '${arrDays.join(`' sd union all select '`)}' sd`;
 
     let sql: string = `select gdaymom.day day,
