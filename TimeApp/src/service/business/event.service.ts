@@ -3361,12 +3361,12 @@ export class EventService extends BaseService {
   async codecAttachments(): Promise<Array<DayCountCodec>> {
     let sql: string = `select strftime('%Y/%m/%d', wtt, 'unixepoch', 'localtime') day, count(*) count
                       from gtd_fj
-                      where del <> ?1
+                      where del <> ?1 and fji is not null and obt is not null and obi is not null
                       group by day`;
     let daycounts: Array<DayCountCodec> = await this.sqlExce.getExtLstByParam<DayCountCodec>(sql, [DelType.del]) || new Array<DayCountCodec>();
 
     // Findbug #Start
-		let findbug: string = `select * from gtd_fj`;
+		let findbug: string = `select * from gtd_fj where fji is not null and obt is not null and obi is not null`;
 		let findbugattachments: Array<Attachment> = await this.sqlExce.getExtLstByParam<Attachment>(findbug, []) || new Array<Attachment>();
 
 		let code = daycounts.reduce((target, ele) => {
