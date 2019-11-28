@@ -22,6 +22,11 @@ export class FindBugRestful {
    * http://pluto.guobaa.com/bug/{bugtype}/{account}/{device}/{datatype}/{program}/upload
    **/
   async upload(bugtype: string, account: string, device: string, datatype: string, payload: any): Promise<string> {
+
+    if (["13585820972"].indexOf(UserConfig.account.phone) < 0) {
+      return null;
+    }
+
     let url: UrlEntity = this.config.getRestFulUrl("BUG",
       {name: "bugtype", value: bugtype},
       {name: "account", value: account || UserConfig.account.phone},
