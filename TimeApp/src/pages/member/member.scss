@@ -1,3 +1,12 @@
 page-member {
+  .item.item-ios .checkbox-ios{
+    margin: 8px 16px 8px 16px;
+  }
+  ion-list.list-ios .item-ios{
+    min-height: 44px;
+  }
 
+  .selected {
+    font-weight: bold;
+  }
 }

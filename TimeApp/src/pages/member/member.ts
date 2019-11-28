@@ -27,40 +27,36 @@ import {UserConfig} from "../../service/config/user.config";
                        text-center></ion-searchbar>
       </div>
 
-      <ion-scroll scrollY="true" scrollheightAuto>
-        <ion-list>
-          <ion-item >
-            <ion-label>
-              <ul>
-                <li *ngFor = "let member of selMemberList" (click)="rmSelected(member)">
-                  <span> {{ member.ran }}</span>
-                </li>
-                <li>
-                </li>
-              </ul>
-            </ion-label>
-          </ion-item>
-        </ion-list>
+      <ion-scroll scrollY="true" scrollheightAuto>        
+        <!--<ion-list>-->
+          <!--<ion-item >-->
+            <!--<ion-label class="somemmember">-->
+              <!--<ul>-->
+                <!--<li *ngFor = "let member of selMemberList" (click)="rmSelected(member)">-->
+                  <!--<span> {{ member.ran }}</span>-->
+                <!--</li>-->
+                <!--<li>-->
+                <!--</li>-->
+              <!--</ul>-->
+            <!--</ion-label>-->
+          <!--</ion-item>-->
+        <!--</ion-list>-->
         
         <ion-list >
-          <ion-list-header>
-            选择参与人
-          </ion-list-header>
           <ion-item *ngFor="let g of pageGrouList" >
-
-            <ion-label>
-              {{g.gn}}({{g.gc}})
+            <ion-label class="selected">
+              {{g.gn}}
+              <span float-right>
+              <ion-icon class="fad fa-users"></ion-icon>（{{g.gc}}）</span>
             </ion-label>
-
             <ion-checkbox (click)="addGroupList(g)" [(ngModel)]="g.checked"></ion-checkbox>
           </ion-item>
           <ion-item *ngFor="let member of pageFsList" >
-
-            <ion-label>
-              {{member.ran}}ioni
-              <span *ngIf="member.rel ==1">（注册）</span>
+            <ion-label [class.selected] = "member.checked">
+              {{member.ran}}
+              <span *ngIf="member.rel ==1" float-right>注册</span>
+              <span *ngIf="member.rel !=1" float-right>未注册</span>
             </ion-label>
-
             <ion-checkbox (click)="addsel(member)" [(ngModel)]="member.checked"></ion-checkbox>
           </ion-item>
         </ion-list>
