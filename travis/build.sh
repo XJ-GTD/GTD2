@@ -16,6 +16,7 @@ else
     cordova platform remove android
     #cordova platform add android@7.1.4
     cordova platform add https://github.com/xiaoji-duan/cordova-android.git  --no-resources
+    echo "android platform added"
   fi
 fi
 
@@ -55,6 +56,7 @@ else
     echo "Package for browser"
     ionic cordova build browser --prod
   else
+    echo "start build android production"
     ionic cordova build android --prod --verbose --stacktrace --buildConfig $TRAVIS_BUILD_DIR/travis/profiles/cordova/build.json
     cat $TRAVIS_BUILD_DIR/TimeApp/platforms/android/app/build.gradle
     cat $TRAVIS_BUILD_DIR/TimeApp/platforms/android/CordovaLib/cordova.gradle
