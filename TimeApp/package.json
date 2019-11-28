@@ -215,8 +215,7 @@
     },
     "platforms": [
       "ios",
-      "browser",
-      "android"
+      "browser"
     ]
   }
 }
