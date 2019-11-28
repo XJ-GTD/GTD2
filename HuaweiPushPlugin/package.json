@@ -1,0 +1,11 @@
+{
+  "name": "cordova-plugin-huaweipush",
+  "version": "0.0.1",
+  "description": "",
+  "cordova": {
+    "id": "cordova-plugin-huaweipush",
+    "platforms": [
+      "android"
+    ]
+  }
+}
