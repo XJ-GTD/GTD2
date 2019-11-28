@@ -226,7 +226,7 @@ declare var Wechat;
 
           </ion-grid>
           <div class="inviteChoose animated bounceInUp"
-               *ngIf="currentAgenda.evi && currentAgenda.invitestatus != acceptedinvite && currentAgenda.ui != this.currentuser && currentAgenda.invitestatus != rejectedinvite">
+               *ngIf="showinvite">
             <div ion-item>
               <ion-buttons>
                 <button (click)="rejectInvite(currentAgenda)">拒绝</button>
@@ -249,6 +249,7 @@ export class AgendaPage {
     RemoveSimple: "RemoveSimple"
   }
 
+  showinvite:boolean = false;
   buttons: any = {
     remove: false,
     save: false,
@@ -311,7 +312,7 @@ export class AgendaPage {
 
               this.snlength = this.currentAgenda.evn.length;
               if (this.currentAgenda.ui != this.currentuser && this.currentAgenda.invitestatus != InviteState.Accepted && this.currentAgenda.invitestatus != InviteState.Rejected) {
-
+                this.showinvite = true;
                 // this.buttons.accept = true;
                 // this.buttons.reject = true;
               } else {
@@ -753,6 +754,7 @@ export class AgendaPage {
           }
 
           this.buttons.remove = true;
+          this.showinvite = false;
           // this.buttons.accept = false;
           // this.buttons.reject = false;
 
