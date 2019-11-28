@@ -41,7 +41,7 @@ import {ModalTranType} from "../../data.enum";
         <ng-template #noat>
           <div class="notask">
             <ion-icon class="fal fa-grin-beam"></ion-icon>
-            <span>没有重要事项了哟～</span>
+            <span>没有人给你@哦～</span>
           </div>
         </ng-template>
       </page-box>

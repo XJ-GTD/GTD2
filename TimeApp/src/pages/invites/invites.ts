@@ -18,7 +18,7 @@ import {MemberShareState} from "../../data.enum";
 @Component({
   selector: 'page-invites',
   template: `
-    <modal-box title="邀请人" [buttons]="buttons" (onSave)="save()" (onCancel)="cancel()" (onCreate) = "openMemberSelect()">
+    <modal-box title="邀请人" [buttons]="buttons" (onSave)="save()" (onCancel)="cancel()">
 
       <ion-list>
         <ion-list-header>
@@ -30,6 +30,9 @@ import {MemberShareState} from "../../data.enum";
                 <li *ngFor = "let member of memberSet.members; let i = index" (click)="removeMember(i)">
                   <span [ngStyle]="{'color':memberAcceptColor(member) }"> {{ member.ran  }}</span>
                 </li>
+              <li (click)="openMemberSelect()" *ngIf="canCreate">
+                <span class="addMember"><ion-icon class="fal fa-plus-square"></ion-icon></span>
+              </li>
               <li></li>
             </ul>
           </ion-label>
@@ -62,10 +65,9 @@ export class InvitesPage {
   inviteEnable: boolean = false;
   pubui : string;
 
+  canCreate:boolean = false;
+
   buttons: any = {
-    remove: false,
-    share: false,
-    create:true,
     save: true,
     cancel: true
   };
@@ -108,7 +110,7 @@ export class InvitesPage {
       }else{
         this.powerEnable = false;
         this.inviteEnable = this.memberSet.iv;
-        this.buttons.create = this.memberSet.iv;
+        this.canCreate = this.memberSet.iv;
         this.buttons.save = this.memberSet.iv;
       }
 

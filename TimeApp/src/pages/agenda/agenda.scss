@@ -21,9 +21,9 @@ page-agenda, page-commemorationday, page-comment,page-memo {
         //text-align: right;
         .icon {
           //line-height: 1.8rem;
-          margin-right: 1rem;
           text-align: center;
           font-size: 2rem;
+          width: 45px;
         }
 
       }
@@ -140,12 +140,14 @@ page-agenda, page-commemorationday, page-comment,page-memo {
               margin: 0;
               padding: 0.3rem;
               margin-right: 2rem;
+              overflow: hidden;
             }
             button:last-child{
                   margin-right: 0;
             }
             .icon{
               font-size: 2.4rem;
+              width: 22px;
             }
 
           }

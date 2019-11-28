@@ -23,15 +23,12 @@ import {UserConfig} from "../../service/config/user.config";
     <modal-box title="邀请人" [buttons]="buttons" (onSave)="save()" (onCancel)="goBack()">
 
       <div class="searchbar">
-        <ion-searchbar type="text" placeholder="手机号 姓名" (ionChange)="getContacts()" [(ngModel)]="tel"
+        <ion-searchbar type="text" placeholder="输入手机号或者姓名" (ionChange)="getContacts()" [(ngModel)]="tel"
                        text-center></ion-searchbar>
       </div>
 
       <ion-scroll scrollY="true" scrollheightAuto>
         <ion-list>
-          <ion-list-header>
-            选择(<span class="count">{{selMemberList.length}}</span>)人
-          </ion-list-header>
           <ion-item >
             <ion-label>
               <ul>
@@ -60,7 +57,7 @@ import {UserConfig} from "../../service/config/user.config";
           <ion-item *ngFor="let member of pageFsList" >
 
             <ion-label>
-              {{member.ran}}
+              {{member.ran}}ioni
               <span *ngIf="member.rel ==1">（注册）</span>
             </ion-label>
 

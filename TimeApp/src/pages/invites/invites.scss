@@ -10,6 +10,12 @@ page-invites {
       margin: 1rem;
 
     }
+
+    .addMember{
+      width: 34px;
+      height: 34px;
+      margin: 0 auto;
+    }
   }
 }
 .white-theme {
@@ -17,6 +23,9 @@ page-invites {
     modal-box .box-modal .box-content > .scroll-content {
       .showMember{
         color:rgba(51,51,51,1);
+      }
+      .addMember{
+          border: 0.55px dashed rgba(217,233,238,1);
       }
     }
   }
@@ -27,6 +36,9 @@ page-invites {
     modal-box .box-modal .box-content > .scroll-content {
       .showMember{
         color:rgba(255,255,255,1);
+      }
+      .addMember{
+        border: 0.55px dashed rgba(217,233,238,1);
       }
     }
   }
