@@ -14,8 +14,8 @@ else
   else
     # Build on Linux
     cordova platform remove android
-    #cordova platform add android@7.1.4
-    cordova platform add https://github.com/xiaoji-duan/cordova-android.git  --no-resources
+    cordova platform add android@7.1.4
+    #cordova platform add https://github.com/xiaoji-duan/cordova-android.git  --no-resources
     echo "android platform added"
   fi
 fi
