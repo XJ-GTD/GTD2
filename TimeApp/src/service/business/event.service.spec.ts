@@ -61,6 +61,7 @@ import { FindBugRestful } from "../restful/bugsev";
 import {DetectorService} from "../util-service/detector.service";
 import {LocalNotifications} from "@ionic-native/local-notifications";
 import {Badge} from "@ionic-native/badge";
+import { RemindService } from "../util-service/remind.service";
 
 /**
  * 事件Service 持续集成CI 自动测试Case
@@ -104,6 +105,7 @@ describe('EventService test suite', () => {
         SqliteConfig,
         SqliteInit,
         Badge,
+        RemindService,
         SqliteExec,
         LocalNotifications,
         { provide: AssistantService, useClass: AssistantServiceMock },

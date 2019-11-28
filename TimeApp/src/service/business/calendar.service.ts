@@ -249,10 +249,15 @@ export class CalendarService extends BaseService {
         currentmonth = moment(item.sd, "YYYY/MM/DD").format("YYYY/MM");
 
         if (moment(firstmonth,"YYYY/MM").diff(moment(currentmonth, "YYYY/MM"), "months") <= 0 && moment(currentmonth, "YYYY/MM").diff(moment(lastmonth, "YYYY/MM"), "months") <= 0) {
-          let diff = moment(currentmonth,"YYYY/MM").diff(moment(firstmonth,"YYYY/MM"), "months");
+          // let diff = moment(currentmonth,"YYYY/MM").diff(moment(firstmonth,"YYYY/MM"), "months");
+          //
+          // let currentmonthactivities = this.calendaractivities[diff];
+          // this.mergeMonthActivities(currentmonthactivities, [item], update);
 
-          let currentmonthactivities = this.calendaractivities[diff];
-          this.mergeMonthActivities(currentmonthactivities, [item], update);
+          // 解决数据所属日期跨月修改，原数据所属月对象不能被正常移除
+          for (let monthactivities of this.calendaractivities) {
+            this.mergeMonthActivities(monthactivities, [item], update);
+          }
         }
 
         break;
@@ -265,10 +270,15 @@ export class CalendarService extends BaseService {
         currentmonth = moment(agenda.evd, "YYYY/MM/DD").format("YYYY/MM");
 
         if (moment(firstmonth,"YYYY/MM").diff(moment(currentmonth, "YYYY/MM"), "months") <= 0 && moment(currentmonth, "YYYY/MM").diff(moment(lastmonth, "YYYY/MM"), "months") <= 0) {
-          let diff = moment(currentmonth,"YYYY/MM").diff(moment(firstmonth,"YYYY/MM"), "months");
+          // let diff = moment(currentmonth,"YYYY/MM").diff(moment(firstmonth,"YYYY/MM"), "months");
+          //
+          // let currentmonthactivities = this.calendaractivities[diff];
+          // this.mergeMonthActivities(currentmonthactivities, [agenda], update);
 
-          let currentmonthactivities = this.calendaractivities[diff];
-          this.mergeMonthActivities(currentmonthactivities, [agenda], update);
+          // 解决数据所属日期跨月修改，原数据所属月对象不能被正常移除
+          for (let monthactivities of this.calendaractivities) {
+            this.mergeMonthActivities(monthactivities, [agenda], update);
+          }
         }
 
         break;
@@ -281,10 +291,15 @@ export class CalendarService extends BaseService {
         currentmonth = moment(task.evd, "YYYY/MM/DD").format("YYYY/MM");
 
         if (moment(firstmonth,"YYYY/MM").diff(moment(currentmonth, "YYYY/MM"), "months") <= 0 && moment(currentmonth,"YYYY/MM").diff(moment(lastmonth, "YYYY/MM"), "months") <= 0) {
-          let diff = moment(currentmonth,"YYYY/MM").diff(moment(firstmonth,"YYYY/MM"), "months");
+          // let diff = moment(currentmonth,"YYYY/MM").diff(moment(firstmonth,"YYYY/MM"), "months");
+          //
+          // let currentmonthactivities = this.calendaractivities[diff];
+          // this.mergeMonthActivities(currentmonthactivities, [task], update);
 
-          let currentmonthactivities = this.calendaractivities[diff];
-          this.mergeMonthActivities(currentmonthactivities, [task], update);
+          // 解决数据所属日期跨月修改，原数据所属月对象不能被正常移除
+          for (let monthactivities of this.calendaractivities) {
+            this.mergeMonthActivities(monthactivities, [task], update);
+          }
         }
 
         break;
@@ -297,10 +312,15 @@ export class CalendarService extends BaseService {
         currentmonth = moment(minitask.evd, "YYYY/MM/DD").format("YYYY/MM");
 
         if (moment(firstmonth,"YYYY/MM").diff(moment(currentmonth, "YYYY/MM"), "months") <= 0 && moment(currentmonth,"YYYY/MM").diff(moment(lastmonth, "YYYY/MM"), "months") <= 0) {
-          let diff = moment(currentmonth, "YYYY/MM").diff(moment(firstmonth,"YYYY/MM"), "months");
+          // let diff = moment(currentmonth, "YYYY/MM").diff(moment(firstmonth,"YYYY/MM"), "months");
+          //
+          // let currentmonthactivities = this.calendaractivities[diff];
+          // this.mergeMonthActivities(currentmonthactivities, [minitask], update);
 
-          let currentmonthactivities = this.calendaractivities[diff];
-          this.mergeMonthActivities(currentmonthactivities, [minitask], update);
+          // 解决数据所属日期跨月修改，原数据所属月对象不能被正常移除
+          for (let monthactivities of this.calendaractivities) {
+            this.mergeMonthActivities(monthactivities, [minitask], update);
+          }
         }
 
         break;
@@ -313,10 +333,15 @@ export class CalendarService extends BaseService {
         currentmonth = moment(memo.sd, "YYYY/MM/DD").format("YYYY/MM");
 
         if (moment(firstmonth,"YYYY/MM").diff(moment(currentmonth, "YYYY/MM"), "months") <= 0 && moment(currentmonth,"YYYY/MM").diff(moment(lastmonth, "YYYY/MM"), "months") <= 0) {
-          let diff = moment(currentmonth,"YYYY/MM").diff(moment(firstmonth,"YYYY/MM"), "months");
+          // let diff = moment(currentmonth,"YYYY/MM").diff(moment(firstmonth,"YYYY/MM"), "months");
+          //
+          // let currentmonthactivities = this.calendaractivities[diff];
+          // this.mergeMonthActivities(currentmonthactivities, [memo], update);
 
-          let currentmonthactivities = this.calendaractivities[diff];
-          this.mergeMonthActivities(currentmonthactivities, [memo], update);
+          // 解决数据所属日期跨月修改，原数据所属月对象不能被正常移除
+          for (let monthactivities of this.calendaractivities) {
+            this.mergeMonthActivities(monthactivities, [memo], update);
+          }
         }
 
         break;
@@ -2795,11 +2820,6 @@ export class CalendarService extends BaseService {
           this.assertFail();  // 不能有上述以外的活动
       }
 
-      // 不属于当页日期范围内的活动忽略
-      if (startday > day || day > endday) {
-        continue;
-      }
-
       // 获取既存活动ID, 用于判断更新/插入/删除
       let calendaritemids: Array<string> = new Array<string>();
       let eventids: Array<string> = new Array<string>();
@@ -2820,6 +2840,44 @@ export class CalendarService extends BaseService {
 
       // 更新/插入/删除活动数据
       let index: number = -1;
+
+      // 不属于当页日期范围内的活动
+      // 如果id存在当页内则从此页删除 (解决数据所属日期跨月修改，原数据所属月对象不能被正常移除)
+      // 否则忽略
+      if (startday > day || day > endday) {
+        switch (activityType) {
+          case "PlanItemData" :
+            index = calendaritemids.indexOf(activity.jti);
+
+            // 发现存在此数据, 需要移除
+            if (index >= 0) {
+              monthActivities.calendaritems.splice(index, 1);
+            }
+            break;
+          case "AgendaData" :
+          case "TaskData" :
+          case "MiniTaskData" :
+            index = eventids.indexOf(activity.evi);
+
+            // 发现存在此数据, 需要移除
+            if (index >= 0) {
+              monthActivities.events.splice(index, 1);
+            }
+            break;
+          case "MemoData" :
+            index = memoids.indexOf(activity.moi);
+
+            // 发现存在此数据, 需要移除
+            if (index >= 0) {
+              monthActivities.memos.splice(index, 1);
+            }
+            break;
+          default:
+            this.assertFail();  // 不能有上述以外的活动
+        }
+
+        continue;
+      }
 
       switch (activityType) {
         case "PlanItemData" :

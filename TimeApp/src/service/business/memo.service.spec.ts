@@ -55,6 +55,7 @@ import { FindBugRestful } from "../restful/bugsev";
 import {DetectorService} from "../util-service/detector.service";
 import {LocalNotifications} from "@ionic-native/local-notifications";
 import {Badge} from "@ionic-native/badge";
+import { RemindService } from "../util-service/remind.service";
 
 /**
  * 备忘Service 持续集成CI 自动测试Case
@@ -99,6 +100,7 @@ describe('MemoService test suite', () => {
         LocalNotifications,
         File,
         Badge,
+        RemindService,
         SqliteConfig,
         { provide: AssistantService, useClass: AssistantServiceMock },
         { provide: UserConfig, useClass: UserConfigMock },
