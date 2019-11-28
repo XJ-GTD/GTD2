@@ -406,7 +406,7 @@ export class AgendaPage {
         this.currentAgenda.ct = data.ct;
       }
 
-      if (!this.eventService.isSameAgenda(this.currentAgenda, this.originAgenda)) {
+      if (this.currentAgenda.evn != "" && !this.eventService.isSameAgenda(this.currentAgenda, this.originAgenda)) {
         this.buttons.save = true;
       } else {
         this.buttons.save = false;
@@ -449,7 +449,7 @@ export class AgendaPage {
       this.currentAgenda.todolist = ToDoListStatus.On;
     }
 
-    if (!this.eventService.isSameAgenda(this.currentAgenda, this.originAgenda)) {
+    if (this.currentAgenda.evn != "" && !this.eventService.isSameAgenda(this.currentAgenda, this.originAgenda)) {
       this.buttons.save = true;
     } else {
       this.buttons.save = false;
@@ -491,7 +491,7 @@ export class AgendaPage {
       this.currentAgenda.attachments = data.attach;
       this.currentAgenda.fj = data.attach.length;
 
-      if (!this.eventService.isSameAgenda(this.currentAgenda, this.originAgenda)) {
+      if (this.currentAgenda.evn != "" && !this.eventService.isSameAgenda(this.currentAgenda, this.originAgenda)) {
         this.buttons.save = true;
       } else {
         this.buttons.save = false;
@@ -526,7 +526,7 @@ export class AgendaPage {
       this.currentAgenda.md = data.md;
       this.currentAgenda.iv = data.iv;
 
-      if (!this.eventService.isSameAgenda(this.currentAgenda, this.originAgenda)) {
+      if (this.currentAgenda.evn != "" && !this.eventService.isSameAgenda(this.currentAgenda, this.originAgenda)) {
         this.buttons.save = true;
       } else {
         this.buttons.save = false;
@@ -547,7 +547,7 @@ export class AgendaPage {
 
       this.currentAgenda.ji = data;
 
-      if (!this.eventService.isSameAgenda(this.currentAgenda, this.originAgenda)) {
+      if (this.currentAgenda.evn != "" && !this.eventService.isSameAgenda(this.currentAgenda, this.originAgenda)) {
         this.buttons.save = true;
       } else {
         this.buttons.save = false;
@@ -574,7 +574,7 @@ export class AgendaPage {
       this.currentAgenda.adrx = data.adrx || 0;
       this.currentAgenda.adry = data.adry || 0;
 
-      if (!this.eventService.isSameAgenda(this.currentAgenda, this.originAgenda)) {
+      if (this.currentAgenda.evn != "" && !this.eventService.isSameAgenda(this.currentAgenda, this.originAgenda)) {
         this.buttons.save = true;
       } else {
         this.buttons.save = false;
@@ -596,7 +596,7 @@ export class AgendaPage {
 
       this.currentAgenda.bz = data.bz;
 
-      if (!this.eventService.isSameAgenda(this.currentAgenda, this.originAgenda)) {
+      if (this.currentAgenda.evn != "" && !this.eventService.isSameAgenda(this.currentAgenda, this.originAgenda)) {
         this.buttons.save = true;
       } else {
         this.buttons.save = false;
@@ -657,7 +657,7 @@ export class AgendaPage {
           }
         }
 
-        if (!this.eventService.isSameAgenda(this.currentAgenda, this.originAgenda)) {
+        if (this.currentAgenda.evn != "" && !this.eventService.isSameAgenda(this.currentAgenda, this.originAgenda)) {
           this.buttons.save = true;
         } else {
           this.buttons.save = false;
@@ -699,7 +699,7 @@ export class AgendaPage {
         this.currentAgenda.tx = JSON.stringify(this.currentAgenda.txjson);
         this.currentAgenda.txs = this.currentAgenda.txjson.text();
 
-        if (!this.eventService.isSameAgenda(this.currentAgenda, this.originAgenda)) {
+        if (this.currentAgenda.evn != "" && !this.eventService.isSameAgenda(this.currentAgenda, this.originAgenda)) {
           this.buttons.save = true;
         } else {
           this.buttons.save = false;
