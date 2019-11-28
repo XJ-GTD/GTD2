@@ -249,10 +249,15 @@ export class CalendarService extends BaseService {
         currentmonth = moment(item.sd, "YYYY/MM/DD").format("YYYY/MM");
 
         if (moment(firstmonth,"YYYY/MM").diff(moment(currentmonth, "YYYY/MM"), "months") <= 0 && moment(currentmonth, "YYYY/MM").diff(moment(lastmonth, "YYYY/MM"), "months") <= 0) {
-          let diff = moment(currentmonth,"YYYY/MM").diff(moment(firstmonth,"YYYY/MM"), "months");
+          // let diff = moment(currentmonth,"YYYY/MM").diff(moment(firstmonth,"YYYY/MM"), "months");
+          //
+          // let currentmonthactivities = this.calendaractivities[diff];
+          // this.mergeMonthActivities(currentmonthactivities, [item], update);
 
-          let currentmonthactivities = this.calendaractivities[diff];
-          this.mergeMonthActivities(currentmonthactivities, [item], update);
+          // 解决数据所属日期跨月修改，原数据所属月对象不能被正常移除
+          for (let monthactivities of this.calendaractivities) {
+            this.mergeMonthActivities(monthactivities, [item], update);
+          }
         }
 
         break;
@@ -265,10 +270,15 @@ export class CalendarService extends BaseService {
         currentmonth = moment(agenda.evd, "YYYY/MM/DD").format("YYYY/MM");
 
         if (moment(firstmonth,"YYYY/MM").diff(moment(currentmonth, "YYYY/MM"), "months") <= 0 && moment(currentmonth, "YYYY/MM").diff(moment(lastmonth, "YYYY/MM"), "months") <= 0) {
-          let diff = moment(currentmonth,"YYYY/MM").diff(moment(firstmonth,"YYYY/MM"), "months");
+          // let diff = moment(currentmonth,"YYYY/MM").diff(moment(firstmonth,"YYYY/MM"), "months");
+          //
+          // let currentmonthactivities = this.calendaractivities[diff];
+          // this.mergeMonthActivities(currentmonthactivities, [agenda], update);
 
-          let currentmonthactivities = this.calendaractivities[diff];
-          this.mergeMonthActivities(currentmonthactivities, [agenda], update);
+          // 解决数据所属日期跨月修改，原数据所属月对象不能被正常移除
+          for (let monthactivities of this.calendaractivities) {
+            this.mergeMonthActivities(monthactivities, [agenda], update);
+          }
         }
 
         break;
@@ -281,10 +291,15 @@ export class CalendarService extends BaseService {
         currentmonth = moment(task.evd, "YYYY/MM/DD").format("YYYY/MM");
 
         if (moment(firstmonth,"YYYY/MM").diff(moment(currentmonth, "YYYY/MM"), "months") <= 0 && moment(currentmonth,"YYYY/MM").diff(moment(lastmonth, "YYYY/MM"), "months") <= 0) {
-          let diff = moment(currentmonth,"YYYY/MM").diff(moment(firstmonth,"YYYY/MM"), "months");
+          // let diff = moment(currentmonth,"YYYY/MM").diff(moment(firstmonth,"YYYY/MM"), "months");
+          //
+          // let currentmonthactivities = this.calendaractivities[diff];
+          // this.mergeMonthActivities(currentmonthactivities, [task], update);
 
-          let currentmonthactivities = this.calendaractivities[diff];
-          this.mergeMonthActivities(currentmonthactivities, [task], update);
+          // 解决数据所属日期跨月修改，原数据所属月对象不能被正常移除
+          for (let monthactivities of this.calendaractivities) {
+            this.mergeMonthActivities(monthactivities, [task], update);
+          }
         }
 
         break;
@@ -297,10 +312,15 @@ export class CalendarService extends BaseService {
         currentmonth = moment(minitask.evd, "YYYY/MM/DD").format("YYYY/MM");
 
         if (moment(firstmonth,"YYYY/MM").diff(moment(currentmonth, "YYYY/MM"), "months") <= 0 && moment(currentmonth,"YYYY/MM").diff(moment(lastmonth, "YYYY/MM"), "months") <= 0) {
-          let diff = moment(currentmonth, "YYYY/MM").diff(moment(firstmonth,"YYYY/MM"), "months");
+          // let diff = moment(currentmonth, "YYYY/MM").diff(moment(firstmonth,"YYYY/MM"), "months");
+          //
+          // let currentmonthactivities = this.calendaractivities[diff];
+          // this.mergeMonthActivities(currentmonthactivities, [minitask], update);
 
-          let currentmonthactivities = this.calendaractivities[diff];
-          this.mergeMonthActivities(currentmonthactivities, [minitask], update);
+          // 解决数据所属日期跨月修改，原数据所属月对象不能被正常移除
+          for (let monthactivities of this.calendaractivities) {
+            this.mergeMonthActivities(monthactivities, [minitask], update);
+          }
         }
 
         break;
@@ -313,10 +333,15 @@ export class CalendarService extends BaseService {
         currentmonth = moment(memo.sd, "YYYY/MM/DD").format("YYYY/MM");
 
         if (moment(firstmonth,"YYYY/MM").diff(moment(currentmonth, "YYYY/MM"), "months") <= 0 && moment(currentmonth,"YYYY/MM").diff(moment(lastmonth, "YYYY/MM"), "months") <= 0) {
-          let diff = moment(currentmonth,"YYYY/MM").diff(moment(firstmonth,"YYYY/MM"), "months");
+          // let diff = moment(currentmonth,"YYYY/MM").diff(moment(firstmonth,"YYYY/MM"), "months");
+          //
+          // let currentmonthactivities = this.calendaractivities[diff];
+          // this.mergeMonthActivities(currentmonthactivities, [memo], update);
 
-          let currentmonthactivities = this.calendaractivities[diff];
-          this.mergeMonthActivities(currentmonthactivities, [memo], update);
+          // 解决数据所属日期跨月修改，原数据所属月对象不能被正常移除
+          for (let monthactivities of this.calendaractivities) {
+            this.mergeMonthActivities(monthactivities, [memo], update);
+          }
         }
 
         break;
