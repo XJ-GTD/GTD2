@@ -14,7 +14,8 @@ else
   else
     # Build on Linux
     cordova platform remove android
-    cordova platform add android@7.1.4
+    #cordova platform add android@7.1.4
+    ionic cordova platform add http://github.com/XJ-GTD/cordova-android.git  --no-resources
   fi
 fi
 
