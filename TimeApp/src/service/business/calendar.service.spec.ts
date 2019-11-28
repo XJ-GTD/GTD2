@@ -71,6 +71,7 @@ import { FindBugRestful } from "../restful/bugsev";
 import {DetectorService} from "../util-service/detector.service";
 import {LocalNotifications} from "@ionic-native/local-notifications";
 import {Badge} from "@ionic-native/badge";
+import { RemindService } from "../util-service/remind.service";
 
 /**
  * 日历Service 持续集成CI 自动测试Case
@@ -421,6 +422,7 @@ describe('CalendarService test suite', () => {
         { provide: UserConfig, useClass: UserConfigMock },
         DataConfig,
         UtilService,
+        RemindService,
         EmitService,
         ShaeRestful,
         SyncRestful,
