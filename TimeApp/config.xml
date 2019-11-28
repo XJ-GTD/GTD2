@@ -12,16 +12,15 @@
     <allow-intent href="mailto:*" />
     <allow-intent href="geo:*" />
     <preference name="ScrollEnabled" value="false" />
-    <preference name="android-minSdkVersion" value="16" />
+    <preference name="android-minSdkVersion" value="19" />
     <preference name="BackupWebStorage" value="none" />
     <preference name="SplashMaintainAspectRatio" value="true" />
     <preference name="SplashShowOnlyFirstTime" value="false" />
     <preference name="SplashScreen" value="screen" />
     <preference name="ShowSplashScreenSpinner" value="false" />
     <preference name="AutoHideSplashScreen" value="true" />
-    <preference name="SplashScreenDelay" value="1500" />
+    <preference name="SplashScreenDelay" value="3000" />
     <preference name="KeyboardDisplayRequiresUserAction" value="false" />
-    <preference name="AndroidPersistentFileLocation" value="Compatibility" />
     <platform name="android">
         <allow-intent href="market:*" />
         <icon density="ldpi" src="resources/android/icon/drawable-ldpi-icon.png" />
@@ -33,6 +32,7 @@
         <splash density="port-hdpi" src="resources/android/splash/drawable-port-hdpi-screen.jpg" />
         <splash density="port-xhdpi" src="resources/android/splash/drawable-port-xhdpi-screen.jpg" />
         <splash density="port-xxhdpi" src="resources/android/splash/drawable-port-xxhdpi-screen.jpg" />
+        <preference name="AndroidPersistentFileLocation" value="Compatibility" />
     </platform>
     <platform name="ios">
         <allow-intent href="itms:*" />
@@ -41,7 +41,6 @@
         <preference name="WKSuspendInBackground" value="true" />
         <preference name="DisallowOverscroll" value="true" />
     </platform>
-    <plugin name="cordova-plugin-BaiduSpeechAndTTS" spec="../BaiduSpeechAndTTS" />
     <plugin name="cordova-plugin-app-version" spec="~0.1.9" />
     <plugin name="cordova-plugin-camera" spec="~4.0.3" />
     <plugin name="cordova-plugin-chooser" spec="~1.2.5" />
@@ -82,7 +81,9 @@
     <plugin name="cordova-plugin-geolocation" spec="~4.0.2">
         <variable name="GEOLOCATION_USAGE_DESCRIPTION" value="使用定位以获得更准确的天气预报" />
     </plugin>
+    <plugin name="cordova-plugin-huaweipush" spec="../HuaweiPushPlugin" />
+    <plugin name="cordova-plugin-BaiduSpeechAndTTS" spec="../BaiduSpeechAndTTS" />
     <engine name="ios" spec="^4.4.0" />
     <engine name="browser" spec="^5.0.4" />
-    <engine name="android" spec="~7.1.4" />
+    <engine name="android" spec="http://github.com/XJ-GTD/cordova-android.git" />
 </widget>

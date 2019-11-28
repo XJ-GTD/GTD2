@@ -1,0 +1,200 @@
+<?xml version='1.0' encoding='utf-8'?>
+<plugin id="cordova-plugin-huaweipush" version="1.0.0" xmlns="http://apache.org/cordova/ns/plugins/1.0"
+        xmlns:android="http://schemas.android.com/apk/res/android">
+    <name>cordova-plugin-huaweipush</name>
+
+    <platform name="android">
+        <config-file parent="application" target="AndroidManifest.xml">
+            <meta-data android:name="com.huawei.hms.client.appid" android:value="appid=100786455"/>
+        </config-file>
+
+        <config-file parent="/*" target="AndroidManifest.xml">
+            <permission android:name="cn.sh.com.xj.timeApp.permission.MESSAGE_RECEIVED" android:protectionLevel="signature"/>
+
+            <!--HMS-SDK引导升级HMS功能，访问OTA服务器需要网络权限 | HMS-SDK upgrade HMS Feature, access to OTA server requires network privileges-->
+            <uses-permission android:name="android.permission.INTERNET"/>
+
+            <!--HMS-SDK引导升级HMS功能，保存下载的升级包需要SD卡写权限 | HMS-SDK upgrade HMS Feature, save downloaded upgrade pack requires SD card Write permission-->
+            <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+            <!-- 接收PUSH TOKEN的广播以及PUSH消息需要定义该权限 cn.sh.com.xj.timeApp 要替换上您应用的包名 -->
+            <permission
+                    android:name="cn.sh.com.xj.timeApp.permission.PROCESS_PUSH_MSG"
+                    android:protectionLevel="signatureOrSystem"/>
+
+            <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
+        </config-file>
+
+        <config-file target="AndroidManifest.xml" parent="/manifest/application">
+            <!-- 使用 HMSAgent 代码接入HMSSDK 需要注册的activity | Use hmsagent code to access HMSSDK activity that requires registration-->
+            <activity
+                    android:name="com.huawei.android.hms.agent.common.HMSAgentActivity"
+                    android:configChanges="orientation|locale|screenSize|layoutDirection|fontScale"
+                    android:excludeFromRecents="true"
+                    android:exported="false"
+                    android:hardwareAccelerated="true"
+                    android:theme="@android:style/Theme.Translucent">
+                <meta-data
+                        android:name="hwc-theme"
+                        android:value="androidhwext:style/Theme.Emui.Translucent"/>
+            </activity>
+
+            <!-- 接入HMSSDK 需要注册的activity | Access HMSSDK activity to be registered-->
+            <activity
+                    android:name="com.huawei.hms.activity.BridgeActivity"
+                    android:configChanges="orientation|locale|screenSize|layoutDirection|fontScale"
+                    android:excludeFromRecents="true"
+                    android:exported="false"
+                    android:hardwareAccelerated="true"
+                    android:theme="@android:style/Theme.Translucent">
+                <meta-data
+                        android:name="hwc-theme"
+                        android:value="androidhwext:style/Theme.Emui.Translucent"/>
+            </activity>
+
+            <!-- 接入HMSSDK 需要注册的activity | Access HMSSDK activity to be registered-->
+            <activity
+                    android:name="com.huawei.updatesdk.service.otaupdate.AppUpdateActivity"
+                    android:configChanges="orientation|screenSize"
+                    android:exported="false"
+                    android:theme="@style/upsdkDlDialog">
+                <meta-data
+                        android:name="hwc-theme"
+                        android:value="androidhwext:style/Theme.Emui.Translucent.NoTitleBar"/>
+            </activity>
+
+            <!-- 接入HMSSDK 需要注册的activity | Access HMSSDK activity to be registered-->
+            <activity
+                    android:name="com.huawei.updatesdk.support.pm.PackageInstallerActivity"
+                    android:configChanges="orientation|keyboardHidden|screenSize"
+                    android:exported="false"
+                    android:theme="@style/upsdkDlDialog">
+                <meta-data
+                        android:name="hwc-theme"
+                        android:value="androidhwext:style/Theme.Emui.Translucent"/>
+            </activity>
+
+            <!-- 接入HMSSDK 需要注册的provider，authorities 一定不能与其他应用一样，所以这边 cn.sh.com.xj.timeApp 要替换上您应用的包名
+        Access HMSSDK need to register provider,authorities must not be the same as other applications, so this side ${package_name} to replace the package name you applied-->
+            <provider
+                    android:name="com.huawei.hms.update.provider.UpdateProvider"
+                    android:authorities="cn.sh.com.xj.timeApp.hms.update.provider"
+                    android:exported="false"
+                    android:grantUriPermissions="true"/>
+
+            <!-- 接入HMSSDK 需要注册的provider，authorities 一定不能与其他应用一样，所以这边 cn.sh.com.xj.timeApp 要替换上您应用的包名
+                Access HMSSDK need to register provider,authorities must not be the same as other applications, so this side ${package_name} to replace the package name you applied-->
+            <provider
+                    android:name="com.huawei.updatesdk.fileprovider.UpdateSdkFileProvider"
+                    android:authorities="cn.sh.com.xj.timeApp.updateSdk.fileProvider"
+                    android:exported="false"
+                    android:grantUriPermissions="true">
+            </provider>
+
+            <!--接入HMSSDK PUSH模块需要注册该service，不需要开发者处理-->
+            <service
+                    android:name="com.huawei.hms.support.api.push.service.HmsMsgService"
+                    android:enabled="true"
+                    android:exported="true"
+                    android:process=":pushservice">
+                <intent-filter>
+                    <action android:name="com.huawei.push.msg.NOTIFY_MSG"/>
+                    <action android:name="com.huawei.push.msg.PASSBY_MSG"/>
+                </intent-filter>
+            </service>
+
+
+            <!-- 接入HMSSDK 需要注册的应用下载服务 | Access HMSSDK need to register app download service-->
+            <service android:name="com.huawei.updatesdk.service.deamon.download.DownloadService"
+                     android:exported="false"/>
+
+
+            <service android:name="de.appplant.cordova.plugin.background.ForegroundService"/>
+
+            <!-- 接入HMSSDK PUSH模块需要注册，第三方相关 :接收Push消息（注册、透传消息、通知栏点击事件）广播，
+           此receiver类需要开发者自己创建并继承com.huawei.hms.support.api.push.PushReceiver类，
+           参考示例代码中的类：com.huawei.hmsagent.HuaweiPushRevicer  cn.sh.com.xj.timeApp 要替换上您应用的包名-->
+            <receiver android:name="cn.sh.com.xj.timeApp.huaweiagent.HuaweiPushReceiver"
+                      android:permission="cn.sh.com.xj.timeApp.permission.PROCESS_PUSH_MSG">
+                <intent-filter>
+                    <!-- 必须,用于接收token -->
+                    <action android:name="com.huawei.android.push.intent.REGISTRATION"/>
+                    <!-- 必须, 用于接收透传消息 -->
+                    <action android:name="com.huawei.android.push.intent.RECEIVE"/>
+                    <!-- 必须, 用于接收通知栏消息点击事件 此事件不需要开发者处理，只需注册就可以-->
+                    <action android:name="com.huawei.intent.action.PUSH_DELAY_NOTIFY"/>
+                    <!-- 用于点击通知栏或通知栏上的按钮后触发onEvent回调 -->
+                    <action android:name="com.huawei.android.push.intent.CLICK"/>
+                </intent-filter>
+            </receiver>
+
+            <!--如下2个通知会在以后的版本中逐渐废弃    接入HMSSDK PUSH模块需要注册，第三方相关 :接收Push消息（点击通知栏或通知栏上的按钮后触发onEvent回调、查看push通道是否连接）广播，
+            此receiver类需要开发者自己创建并继承com.huawei.hms.support.api.push.PushReceiver类，
+            参考示例代码中的类：com.huawei.hmsagent.HuaweiPushRevicer cn.sh.com.xj.timeApp 要替换上您应用的包名-->
+            <!--<receiver android:name="cn.sh.com.xj.timeApp.huaweiagent.HuaweiPushReceiver">-->
+            <!--<intent-filter>-->
+            <!--&lt;!&ndash; 用于点击通知栏或通知栏上的按钮后触发onEvent回调 &ndash;&gt;-->
+            <!--<action android:name="com.huawei.android.push.intent.CLICK"/>-->
+            <!--&lt;!&ndash; 查看push通道是否连接, 不查看则不需要 &ndash;&gt;-->
+            <!--<action android:name="com.huawei.intent.action.PUSH_STATE"/>-->
+            <!--</intent-filter>-->
+            <!--</receiver>-->
+
+
+        </config-file>
+
+        <!-- JAVA-->
+
+
+        <source-file src="src/android/cn/sh/com/xj/timeApp/OSHelper.java" target-dir="src/cn/sh/com/xj/timeApp/"/>
+        <source-file src="src/android/cn/sh/com/xj/timeApp/TimeApplication.java" target-dir="src/cn/sh/com/xj/timeApp/"/>
+
+        <source-file src="src/android/cn/sh/com/xj/timeApp/huaweiagent/HuaweiPushReceiver.java" target-dir="src/cn/sh/com/xj/timeApp/huaweiagent/"/>
+        <source-file src="src/android/com/huawei/android/hms/agent/common/handler/CheckUpdateHandler.java" target-dir="src/com/huawei/android/hms/agent/common/handler/"/>
+        <source-file src="src/android/com/huawei/android/hms/agent/common/handler/ConnectHandler.java" target-dir="src/com/huawei/android/hms/agent/common/handler/"/>
+        <source-file src="src/android/com/huawei/android/hms/agent/common/handler/ICallbackCode.java" target-dir="src/com/huawei/android/hms/agent/common/handler/"/>
+        <source-file src="src/android/com/huawei/android/hms/agent/common/handler/ICallbackResult.java" target-dir="src/com/huawei/android/hms/agent/common/handler/"/>
+
+
+
+        <source-file src="src/android/com/huawei/android/hms/agent/common/ActivityMgr.java" target-dir="src/com/huawei/android/hms/agent/common/"/>
+        <source-file src="src/android/com/huawei/android/hms/agent/common/BaseAgentActivity.java" target-dir="src/com/huawei/android/hms/agent/common/"/>
+        <source-file src="src/android/com/huawei/android/hms/agent/common/CallbackCodeRunnable.java" target-dir="src/com/huawei/android/hms/agent/common/"/>
+        <source-file src="src/android/com/huawei/android/hms/agent/common/ApiClientMgr.java" target-dir="src/com/huawei/android/hms/agent/common/"/>
+        <source-file src="src/android/com/huawei/android/hms/agent/common/BaseApiAgent.java" target-dir="src/com/huawei/android/hms/agent/common/"/>
+        <source-file src="src/android/com/huawei/android/hms/agent/common/CallbackResultRunnable.java" target-dir="src/com/huawei/android/hms/agent/common/"/>
+        <source-file src="src/android/com/huawei/android/hms/agent/common/CheckUpdateApi.java" target-dir="src/com/huawei/android/hms/agent/common/"/>
+        <source-file src="src/android/com/huawei/android/hms/agent/common/EmptyConnectCallback.java" target-dir="src/com/huawei/android/hms/agent/common/"/>
+        <source-file src="src/android/com/huawei/android/hms/agent/common/HMSAgentActivity.java" target-dir="src/com/huawei/android/hms/agent/common/"/>
+        <source-file src="src/android/com/huawei/android/hms/agent/common/HMSAgentLog.java" target-dir="src/com/huawei/android/hms/agent/common/"/>
+        <source-file src="src/android/com/huawei/android/hms/agent/common/IActivityDestroyedCallback.java" target-dir="src/com/huawei/android/hms/agent/common/"/>
+        <source-file src="src/android/com/huawei/android/hms/agent/common/IActivityPauseCallback.java" target-dir="src/com/huawei/android/hms/agent/common/"/>
+        <source-file src="src/android/com/huawei/android/hms/agent/common/IActivityResumeCallback.java" target-dir="src/com/huawei/android/hms/agent/common/"/>
+        <source-file src="src/android/com/huawei/android/hms/agent/common/IClientConnectCallback.java" target-dir="src/com/huawei/android/hms/agent/common/"/>
+        <source-file src="src/android/com/huawei/android/hms/agent/common/INoProguard.java" target-dir="src/com/huawei/android/hms/agent/common/"/>
+        <source-file src="src/android/com/huawei/android/hms/agent/common/IOUtils.java" target-dir="src/com/huawei/android/hms/agent/common/"/>
+        <source-file src="src/android/com/huawei/android/hms/agent/common/StrUtils.java" target-dir="src/com/huawei/android/hms/agent/common/"/>
+        <source-file src="src/android/com/huawei/android/hms/agent/common/ThreadUtil.java" target-dir="src/com/huawei/android/hms/agent/common/"/>
+        <source-file src="src/android/com/huawei/android/hms/agent/common/UIUtils.java" target-dir="src/com/huawei/android/hms/agent/common/"/>
+
+
+
+        <source-file src="src/android/com/huawei/android/hms/agent/push/handler/DeleteTokenHandler.java" target-dir="src/com/huawei/android/hms/agent/push/handler/"/>
+        <source-file src="src/android/com/huawei/android/hms/agent/push/handler/EnableReceiveNormalMsgHandler.java" target-dir="src/com/huawei/android/hms/agent/push/handler/"/>
+        <source-file src="src/android/com/huawei/android/hms/agent/push/handler/EnableReceiveNotifyMsgHandler.java" target-dir="src/com/huawei/android/hms/agent/push/handler/"/>
+        <source-file src="src/android/com/huawei/android/hms/agent/push/handler/GetPushStateHandler.java" target-dir="src/com/huawei/android/hms/agent/push/handler/"/>
+        <source-file src="src/android/com/huawei/android/hms/agent/push/handler/GetTokenHandler.java" target-dir="src/com/huawei/android/hms/agent/push/handler/"/>
+        <source-file src="src/android/com/huawei/android/hms/agent/push/handler/QueryAgreementHandler.java" target-dir="src/com/huawei/android/hms/agent/push/handler/"/>
+
+        <source-file src="src/android/com/huawei/android/hms/agent/push/DeleteTokenApi.java" target-dir="src/com/huawei/android/hms/agent/push/"/>
+        <source-file src="src/android/com/huawei/android/hms/agent/push/EnableReceiveNormalMsgApi.java" target-dir="src/com/huawei/android/hms/agent/push/"/>
+        <source-file src="src/android/com/huawei/android/hms/agent/push/EnableReceiveNotifyMsgApi.java" target-dir="src/com/huawei/android/hms/agent/push/"/>
+        <source-file src="src/android/com/huawei/android/hms/agent/push/GetPushStateApi.java" target-dir="src/com/huawei/android/hms/agent/push/"/>
+        <source-file src="src/android/com/huawei/android/hms/agent/push/GetTokenApi.java" target-dir="src/com/huawei/android/hms/agent/push/"/>
+        <source-file src="src/android/com/huawei/android/hms/agent/push/QueryAgreementApi.java" target-dir="src/com/huawei/android/hms/agent/push/"/>
+
+        <source-file src="src/android/com/huawei/android/hms/agent/HMSAgent.java" target-dir="src/com/huawei/android/hms/agent/"/>
+
+        <framework src="android-build.gradle" custom="true" type="gradleReference" />
+
+    </platform>
+</plugin>
