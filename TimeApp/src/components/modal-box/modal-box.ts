@@ -7,7 +7,6 @@ import {
   Renderer2
 } from '@angular/core';
 import {Content, Events} from 'ionic-angular';
-import {AssistantService} from "../../service/cordova/assistant.service";
 import {StatusType} from "../../data.enum";
 import {SettingsProvider} from "../../providers/settings/settings";
 
@@ -29,15 +28,6 @@ import {SettingsProvider} from "../../providers/settings/settings";
             {{title}}
           </ion-title>
           <div class="toolbar">
-            <div (click)="record()" *ngIf="buttons.record">
-              <ion-icon class="fal fa-microphone"></ion-icon>
-            </div>
-            <div (click)="goRemove()" *ngIf="buttons.remove">
-              <ion-icon class="fal fa-eraser"></ion-icon>
-            </div>
-            <div (click)="goRemove()" *ngIf="buttons.share">
-              <ion-icon class="fal fa-share"></ion-icon>
-            </div>
             <div (click)="goRefresh()" *ngIf="buttons.refresh">
               <ion-icon class="fal fa-sync"></ion-icon>
             </div>
@@ -46,9 +36,6 @@ import {SettingsProvider} from "../../providers/settings/settings";
             </div>
             <div (click)="save()" *ngIf="buttons.save">
               <ion-icon class="fal fa-check"></ion-icon>
-            </div>
-            <div  (click)="goSpeaker()" *ngIf="buttons.speaker">
-              <ion-icon class="fal fa-ear"></ion-icon>
             </div>
             <div (click)="cancel()" *ngIf="buttons.cancel">
               <ion-icon class="fal fa-times"></ion-icon>
@@ -77,13 +64,13 @@ export class ModalBoxComponent {
 
   @Input()
   buttons: any = {
-    remove: false,
-    share: false,
     save: false,
-    record: false,
     refresh: false,
     create: false,
-    speaker: false,
+    // remove: false,
+    // share: false,
+    // record: false,
+    // speaker: false,
     cancel: true
   };
 
@@ -93,16 +80,15 @@ export class ModalBoxComponent {
   private onCancel: EventEmitter<any> = new EventEmitter<any>();
   @Output()
   private onCreate: EventEmitter<any> = new EventEmitter<any>();
-  @Output()
-  private onRecord: EventEmitter<any> = new EventEmitter<any>();
-  @Output()
-  private onSpeaker: EventEmitter<any> = new EventEmitter<any>();
+  // @Output()
+  // private onRecord: EventEmitter<any> = new EventEmitter<any>();
+  // @Output()
+  // private onSpeaker: EventEmitter<any> = new EventEmitter<any>();
   @Output()
   private onRefresh: EventEmitter<any> = new EventEmitter<any>();
 
 
   constructor(public events: Events, private renderer2: Renderer2,
-              private assistantService: AssistantService,
               private settings:SettingsProvider) {
     settings.setStatusBarColor(StatusType.page);
   }
@@ -133,23 +119,4 @@ export class ModalBoxComponent {
     this.onRefresh.emit(this);
   }
 
-  record() {
-    this.buttons.record = false;
-    this.onRecord.emit("开始说话");
-    this.assistantService.audio2Text((text) => {
-      this.onRecord.emit(text);
-
-    }, () => {
-      this.buttons.record = true;
-    }, () => {
-      this.onRecord.emit("语音不可用");
-      this.buttons.record = true;
-    });
-  }
-
-  goSpeaker(){
-    this.assistantService.speakText(this.speakData).then(()=>{
-      this.onSpeaker.emit(this);
-    })
-  }
 }

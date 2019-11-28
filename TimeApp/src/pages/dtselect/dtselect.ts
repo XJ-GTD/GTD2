@@ -15,13 +15,15 @@ import {TxJson} from "../../service/business/event.service";
           <ion-buttons item-start>
             <button clear ion-button [class.noselect]="settype == '1'" (click)="changeType('0')" class="font-normal">
               <!--<ion-icon class="fal fa-arrow-alt-from-left"></ion-icon>-->
-              开始
+             知道何时开始
             </button>
             <button [disabled]="pagedata.rfg == '1'" clear ion-button [class.noselect]="settype == '0'" (click)="changeType('1')" class="font-normal">
               <!--<ion-icon class="fal fa-arrow-alt-from-right"></ion-icon>-->
-              截止
+              知道何时完成
             </button>
           </ion-buttons>
+          <p class="help-inline" *ngIf="settype == '0'">* 默认活动时间设置1小时</p>
+          <p class="help-inline" *ngIf="settype == '1'">* 活动会自动加入【重要事项】，即使不设置提醒也会智能提醒</p>
         </ion-toolbar>
       </div>
 
@@ -44,7 +46,7 @@ import {TxJson} from "../../service/business/event.service";
         <ion-multi-picker #dura [(ngModel)]="duraval.value"
                           (ngModelChange)="duraselect();seteddate();" [multiPickerColumns]="dependentColumns3"
                           cancelText="取消" doneText="设定"></ion-multi-picker>
-        <ion-label><ion-icon class="fal fa-clock"></ion-icon>时长</ion-label>
+        <ion-label><ion-icon class="fal fa-long-arrow-up"></ion-icon>活动需要</ion-label>
         <ion-label class = "duradisplay">{{duraval.displayname}}</ion-label>
       </div>
       <div ion-item no-border no-padding no-lines no-margin class="itemwarp font-normal" *ngIf="settype=='1'">

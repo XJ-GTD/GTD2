@@ -169,36 +169,37 @@ body {
   }
 
   .font-small-x {
-      font-size: 1rem;
-      //line-height: 1rem;
-    }
+    font-size: 1rem;
+    //line-height: 1rem;
+  }
 
-    .font-small {
-      font-size: 1.2rem;
-      //line-height: 1.2rem;
-    }
+  .font-small {
+    font-size: 1.2rem;
+    //line-height: 1.2rem;
+  }
 
-    .font-normal {
-      font-size: 1.4rem;
-      //line-height: 1.4rem;
-    }
+  .font-normal {
+    font-size: 1.4rem;
+    //line-height: 1.4rem;
+  }
 
-    .font-large {
-      font-size: 1.6rem;
-      //line-height: 1.6rem;
-    }
+  .font-large {
+    font-size: 1.6rem;
+    //line-height: 1.6rem;
+  }
 
-    .font-large-x {
-      font-size: 1.8rem;
-      //line-height: 1.8rem;
-    }
+  .font-large-x {
+    font-size: 1.8rem;
+    //line-height: 1.8rem;
+  }
 
-    .towline {
-      min-height: 2.8rem;
-    }
-    .threeline {
-       min-height: 3.8rem;
-     }
+  .towline {
+    min-height: 2.8rem;
+  }
+
+  .threeline {
+    min-height: 3.8rem;
+  }
 
 
   .plan {
@@ -216,44 +217,54 @@ body {
       font-weight: 100;
     }
   }
-  .plan-right{
+
+  .plan-right {
     transform: rotate(45deg);
     right: -3.2rem;
   }
 
-  .plan-left{
+  .plan-left {
     transform: rotate(-45deg);
     left: -3.2rem;
+
     span {
-    margin-left: 1rem;
-  }
-  }
-
-
-    //.scroll-y[scrollY] {
-    //  //--top: window.off;
-    //  height: calc(100% - 4px);
-    //
-    //  .scroll-content {
-    //    overflow-y: auto;
-    //  }
-    //}
+      margin-left: 1rem;
+    }
   }
 
-  // 主题
+  .help-inline{
+    zoom: 1;
+    margin-bottom: 9px;
+    vertical-align: middle;
+    color: #999999;
+    font-size: 1rem;
+  }
 
-  @import "../../node_modules/ionic2-auto-complete/auto-complete";
-  @import "../theme/autocomplete";
-  //@import "../assets/css/weather-icons.min.css";
-  @import "../theme/entrysystem";
-  @import "../theme/black.theme";
-  @import "../theme/white.theme";
-  @import "../theme/list-grid-content";
-  @import "../theme/list-content";
-  @import "../theme/pagebox";
-  @import "../theme/modalbox";
-  @import "../theme/picker";
-  @import "../theme/toggle";
-  @import "../theme/icon";
-  @import "../theme/prompt";
+
+  //.scroll-y[scrollY] {
+  //  //--top: window.off;
+  //  height: calc(100% - 4px);
+  //
+  //  .scroll-content {
+  //    overflow-y: auto;
+  //  }
+  //}
+}
+
+// 主题
+
+@import "../../node_modules/ionic2-auto-complete/auto-complete";
+@import "../theme/autocomplete";
+//@import "../assets/css/weather-icons.min.css";
+@import "../theme/entrysystem";
+@import "../theme/black.theme";
+@import "../theme/white.theme";
+@import "../theme/list-grid-content";
+@import "../theme/list-content";
+@import "../theme/pagebox";
+@import "../theme/modalbox";
+@import "../theme/picker";
+@import "../theme/toggle";
+@import "../theme/icon";
+@import "../theme/prompt";
 

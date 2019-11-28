@@ -87,6 +87,36 @@ page-agenda, page-commemorationday, page-comment,page-memo {
 
     .optionRow {
       height: 45%;
+      .inviteChoose{
+        background:rgba(248,248,248,.8);;
+        height: 45%;
+        width: calc(100% - 24px);
+        position: fixed;
+        .item-ios{
+         background-color: transparent;
+          padding-left:0px;
+          height: 100%;
+          .label-ios{
+           margin: 0;
+          }
+        }
+        .bar-buttons-ios{
+          margin: 10rem auto;
+          margin-bottom: 0;
+          text-align: center;
+        }
+        button {
+          font-size: 1.8rem;
+          background: rgba(70, 159, 175, 1);
+          border-radius: 10px;
+          font-weight: 400;
+          color: rgba(255, 255, 255, 1);
+          padding: 12px 30px;
+          border-radius: 4px;
+          margin: 4rem;
+
+        }
+      }
 
       .grid {
         flex-direction: column-reverse;
@@ -147,7 +177,7 @@ page-agenda, page-commemorationday, page-comment,page-memo {
             }
             .icon{
               font-size: 2.4rem;
-              width: 22px;
+              width: 30px;
             }
 
           }

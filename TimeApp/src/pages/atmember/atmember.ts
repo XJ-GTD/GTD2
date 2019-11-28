@@ -47,10 +47,13 @@ import * as moment from "moment";
             选择 ( <span class="count">{{selMemberList.length}}</span> ) 人
           </ion-list-header>
           <ion-item>
-            <ion-label>
+            <ion-label [class.somemmember]="pageMemberList.length / 4 < 7">
               <ul>
                 <li *ngFor="let member of pageMemberList" (click)="rmOrAdd(member)">
-                  <span [class.selected]="member.checked"> {{ member.ran }}</span>
+                  <span [class.accepted] = "member.ui == this.pubui || member.sdt == accepted" [class.selected]="member.checked"> {{ member.ran }}</span>
+                </li>
+                <li *ngIf="pageMemberList.length < 1">
+                  <p> 这个活动没有参与人</p>
                 </li>
                 <li>
                 </li>
@@ -91,6 +94,7 @@ export class AtMemberPage {
   tel: any;//手机号
   pageMemberList: Array<MemberPageData> = new Array<MemberPageData>();
   selMemberList: Array<Member> = new Array<Member>();
+  accepted:anyenum.MemberShareState = anyenum.MemberShareState.Accepted
 
   constructor(public navCtrl: NavController,
               public viewCtrl: ViewController,

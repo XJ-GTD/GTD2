@@ -39,8 +39,7 @@ declare var Wechat;
   template:
       `
     <page-box title="活动" [buttons]="buttons" [data]="currentAgenda.evi" (onRemove)="goRemove()" (onSave)="save()"
-              (onBack)="goBack()"
-              (onAccept)="acceptInvite(currentAgenda)" (onReject)="rejectInvite(currentAgenda)">
+              (onBack)="goBack()">
 
       <ion-grid>
         <!-- [ngStyle]="{'border-left': (!currentAgenda.evi || !currentAgenda.ji || currentAgenda.ji == '')? '0' : ('0.6rem solid ' + (currentAgenda.ji | formatplan: 'color': privateplans)), 'padding-left': (!currentAgenda.evi || !currentAgenda.ji || currentAgenda.ji == '')? '1.2rem' : '0.6rem', 'border-radius': (!currentAgenda.evi || !currentAgenda.ji || currentAgenda.ji == '')? '0' : '4px'}" -->
@@ -226,6 +225,17 @@ declare var Wechat;
             <!--</ion-row>-->
 
           </ion-grid>
+          <div class="inviteChoose animated bounceInUp"
+               *ngIf="currentAgenda.evi && currentAgenda.invitestatus != acceptedinvite && currentAgenda.ui != this.currentuser && currentAgenda.invitestatus != rejectedinvite">
+            <div ion-item>
+              <ion-buttons>
+                <button (click)="rejectInvite(currentAgenda)">拒绝</button>
+                <button (click)="acceptInvite(currentAgenda)">接受</button>
+              </ion-buttons>
+              
+            </div>
+          </div>
+          
         </ion-row>
       </ion-grid>
     </page-box>
@@ -242,8 +252,6 @@ export class AgendaPage {
   buttons: any = {
     remove: false,
     save: false,
-    accept: false,
-    reject: false,
     cancel: true
   };
   speaking: boolean = false;
@@ -268,7 +276,7 @@ export class AgendaPage {
   // repeattonon = RepeatFlag.RepeatToOnly;
 
   acceptedinvite: InviteState = InviteState.Accepted;
-  // rejectedinvite: InviteState = InviteState.Rejected;
+  rejectedinvite: InviteState = InviteState.Rejected;
 
   @ViewChild(PageBoxComponent)
   pageBoxComponent: PageBoxComponent
@@ -304,8 +312,8 @@ export class AgendaPage {
               this.snlength = this.currentAgenda.evn.length;
               if (this.currentAgenda.ui != this.currentuser && this.currentAgenda.invitestatus != InviteState.Accepted && this.currentAgenda.invitestatus != InviteState.Rejected) {
 
-                this.buttons.accept = true;
-                this.buttons.reject = true;
+                // this.buttons.accept = true;
+                // this.buttons.reject = true;
               } else {
                 this.buttons.remove = true;
               }
@@ -745,8 +753,8 @@ export class AgendaPage {
           }
 
           this.buttons.remove = true;
-          this.buttons.accept = false;
-          this.buttons.reject = false;
+          // this.buttons.accept = false;
+          // this.buttons.reject = false;
 
           this.util.loadingEnd();
         });

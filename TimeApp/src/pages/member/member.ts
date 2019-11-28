@@ -52,7 +52,7 @@ import {UserConfig} from "../../service/config/user.config";
             <ion-checkbox (click)="addGroupList(g)" [(ngModel)]="g.checked"></ion-checkbox>
           </ion-item>
           <ion-item *ngFor="let member of pageFsList" >
-            <ion-label [class.selected] = "member.checked">
+            <ion-label [class.chooseed] = "member.checked">
               {{member.ran}}
               <span *ngIf="member.rel ==1" float-right>注册</span>
               <span *ngIf="member.rel !=1" float-right>未注册</span>

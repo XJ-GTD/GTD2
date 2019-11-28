@@ -1,13 +1,10 @@
 import {Component, Renderer2, ViewChild} from '@angular/core';
 import {Label, ModalController, NavController, NavParams, ViewController} from 'ionic-angular';
 import {UtilService} from "../../service/util-service/util.service";
-import {FsData, FsPageData, PageGroupData} from "../../data.mapping";
 import {DataConfig} from "../../service/config/data.config";
 import {ModalBoxComponent} from "../../components/modal-box/modal-box";
 import {Member} from "../../service/business/event.service";
 import * as anyenum from "../../data.enum";
-import {FeedbackService} from "../../service/cordova/feedback.service";
-import {MemberShareState} from "../../data.enum";
 /**
  * Generated class for the 参与人选择 page.
  *
@@ -18,7 +15,7 @@ import {MemberShareState} from "../../data.enum";
 @Component({
   selector: 'page-invites',
   template: `
-    <modal-box title="邀请人" [buttons]="buttons" (onSave)="save()" (onCancel)="cancel()">
+    <modal-box title="参与人" [buttons]="buttons" (onSave)="save()" (onCancel)="cancel()">
 
       <ion-list>
         <ion-list-header>
@@ -28,7 +25,9 @@ import {MemberShareState} from "../../data.enum";
           <ion-label #membercom class="somemmember">
             <ul>
                 <li *ngFor = "let member of memberSet.members; let i = index" (click)="removeMember(i)">
-                  <span [ngStyle]="{'color':memberAcceptColor(member) }"> {{ member.ran  }}</span>
+                  <span [class.accepted] = "member.ui == this.pubui || member.sdt == accepted"> {{ member.ran  }}
+                    <!--<ion-icon class="fal fa-hands-helping accepted font-small-x" *ngIf="member.ui == this.pubui || member.sdt == accepted"></ion-icon>-->
+                  </span>
                 </li>
               <li (click)="openMemberSelect()" *ngIf="canCreate">
                 <span class="addMember"><ion-icon class="fal fa-plus-square"></ion-icon></span>
@@ -37,16 +36,19 @@ import {MemberShareState} from "../../data.enum";
             </ul>
           </ion-label>
         </ion-item>
-        <span *ngIf="memberSet.members.length / 4 > 4 && showall" (click) ="showMember()" class="showMember">查看全部参与人</span>
-        <span *ngIf="memberSet.members.length / 4 > 4 && !showall" (click) ="showMember()"class="showMember">收起</span>
+        <span *ngIf="memberSet.members.length / 4 > 7 && showall" (click) ="showMember()" class="showMember">查看全部参与人</span>
+        <span *ngIf="memberSet.members.length / 4 > 7 && !showall" (click) ="showMember()"class="showMember">收起</span>
       </ion-list>
       <ion-list>
+        <ion-list-header>
+          参与人权限设置<p class="help-inline">仅发起人可设置</p>
+        </ion-list-header>
         <ion-item>
-          <ion-label>转发</ion-label>
+          <ion-label>转发<p class="help-inline">参与人<span *ngIf="!memberSet.iv">不</span>可以邀请他人</p></ion-label>
           <ion-toggle [(ngModel)]="memberSet.iv"  [disabled]="!powerEnable" ></ion-toggle>
         </ion-item>
         <ion-item>
-          <ion-label>编辑</ion-label>
+          <ion-label>编辑<p class="help-inline">参与人<span *ngIf="!memberSet.md">不</span>可以修改</p></ion-label>
           <ion-toggle [(ngModel)]="memberSet.md" [disabled]="!powerEnable"></ion-toggle>
         </ion-item>
       </ion-list>
@@ -64,6 +66,8 @@ export class InvitesPage {
   powerEnable : boolean = false; //设定控制
   inviteEnable: boolean = false;
   pubui : string;
+
+  accepted:anyenum.MemberShareState = anyenum.MemberShareState.Accepted
 
   canCreate:boolean = false;
 
