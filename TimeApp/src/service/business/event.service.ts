@@ -3341,7 +3341,7 @@ export class EventService extends BaseService {
     let sqlparam = new Array<any>();
 
     let saved: Array<Attachment> = new Array<Attachment>();
-    // let nwfj = new Array<FjTbl>();
+    let fjs = new Array<FjTbl>();
 
     for (let attachment of attachments) {
       let single = {} as Attachment;
@@ -3359,7 +3359,8 @@ export class EventService extends BaseService {
 
       let fj = new FjTbl();
       Object.assign(fj, single);
-      sqlparam.push(fj.rpTParam());
+      fjs.push(fj);
+      //sqlparam.push(fj.rpTParam());
 
       attachment.fpjson = generateCacheFilePathJson(attachment.fpjson, attachment.fj);
 
@@ -3384,6 +3385,11 @@ export class EventService extends BaseService {
       saved.push(single);
     }
 
+    let fjparams = new Array<any>();
+    if (fjs && fjs.length > 0){
+      fjparams = this.sqlExce.getFastSaveSqlByParam(fjs);
+    }
+    sqlparam = [...sqlparam,...fjparams];
     await this.sqlExce.batExecSqlByParam(sqlparam);
 
     return saved;
