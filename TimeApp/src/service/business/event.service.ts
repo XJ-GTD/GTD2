@@ -91,6 +91,9 @@ export class EventService extends BaseService {
     let saved: Array<AgendaData> = new Array<AgendaData>();
     // let nwfj = new Array<FjTbl>();
     let was = new Array<WaTbl>();
+    let evs = new Array<EvTbl>();
+    let cas = new Array<CaTbl>();
+    let pars = new Array<ParTbl>();
 
     if (pullAgdatas && pullAgdatas !=null ){
 
@@ -159,13 +162,17 @@ export class EventService extends BaseService {
 
         let ev = new EvTbl();
         Object.assign(ev,agd);
-        sqlparam.push(ev.rpTParam());
+        evs.push(ev);
+
+        //sqlparam.push(ev.rpTParam());
 
         if ( agd.rfg == anyenum.RepeatFlag.RepeatToOnly){
           //相关日程更新
           let ca = new CaTbl();
           Object.assign(ca,agd);
-          sqlparam.push(ca.rpTParam());
+          cas.push(ca);
+
+          //sqlparam.push(ca.rpTParam());
 
         }
 
@@ -173,7 +180,8 @@ export class EventService extends BaseService {
           //相关日程更新
           let ca = new CaTbl();
           Object.assign(ca,agd);
-          sqlparam.push(ca.rpTParam());
+          cas.push(ca);
+          //sqlparam.push(ca.rpTParam());
 
 
           //删除参与人
@@ -182,13 +190,9 @@ export class EventService extends BaseService {
           par.obi = agd.evi;
           sqlparam.push(par.dTParam());
           //参与人更新
-          let nwpar = new Array<any>();
           if (agd.del != anyenum.DelType.del){
-            nwpar = this.sqlparamAddPar(agd.evi , agd.members) ;
-
-            sqlparam = [...sqlparam,...nwpar];
+            pars = [...pars ,...this.sqlparamAddPar(agd.evi , agd.members)] ;
           }
-
 
         }
 
@@ -242,7 +246,19 @@ export class EventService extends BaseService {
       if (was && was.length > 0){
         waparams = this.sqlExce.getFastSaveSqlByParam(was);
       }
-      sqlparam = [...sqlparam, ...waparams];
+      let evparams = new Array<any>();
+      if (evs && evs.length > 0){
+        evparams = this.sqlExce.getFastSaveSqlByParam(evs);
+      }
+      let caparams = new Array<any>();
+      if (cas && cas.length > 0){
+        caparams = this.sqlExce.getFastSaveSqlByParam(cas);
+      }
+      let parparams = new Array<any>();
+      if (pars && pars.length > 0){
+        parparams = this.sqlExce.getFastSaveSqlByParam(pars);
+      }
+      sqlparam = [...sqlparam,...evparams,...caparams, ...parparams, ...waparams];
 
       /*let fjparams = new Array<any>();
 
@@ -1784,8 +1800,8 @@ export class EventService extends BaseService {
       retParamEv = this.newAgenda(nwAgdata);
       console.log("**** updateAgenda newAgenda end :****" + moment().format("YYYY/MM/DD HH:mm:ss SSS"))
       //添加新参与人到新事件
-      let nwpar = new Array<any>();
-      nwpar = this.sqlparamAddPar(retParamEv.rtevi , newAgdata.members);
+      let pars = new Array<ParTbl>();
+      pars = this.sqlparamAddPar(retParamEv.rtevi , newAgdata.members);
 
 
       //把当前选中记录的附件信息更新到新的信息的第一条中
@@ -1804,7 +1820,11 @@ export class EventService extends BaseService {
         }
       }
 
-      sqlparam = [...sqlparam, ...retParamEv.sqlparam, ...nwpar];
+      let parparams = new Array<any>();
+      if (pars && pars.length > 0){
+        parparams = this.sqlExce.getFastSaveSqlByParam(pars);
+      }
+      sqlparam = [...sqlparam, ...retParamEv.sqlparam, ...parparams];
 
       //修改与新增记录合并成返回事件
 
@@ -1835,10 +1855,14 @@ export class EventService extends BaseService {
       retParamEv = this.newAgenda(newAgdata);
 
       //添加新参与人到新事件
-      let nwpar = new Array<any>();
-      nwpar = this.sqlparamAddPar(retParamEv.rtevi , newAgdata.members);
+      let pars = new Array<ParTbl>();
+      pars = this.sqlparamAddPar(retParamEv.rtevi , newAgdata.members);
 
-      sqlparam = [...sqlparam, ...retParamEv.sqlparam, ...nwpar];
+      let parparams = new Array<any>();
+      if (pars && pars.length > 0){
+        parparams = this.sqlExce.getFastSaveSqlByParam(pars);
+      }
+      sqlparam = [...sqlparam, ...retParamEv.sqlparam, ...parparams];
 
       //修改与新增记录合并成返回事件
       outAgds = [ ...retParamEv.outAgdatas,...outAgds];
@@ -2110,8 +2134,12 @@ export class EventService extends BaseService {
     sqlparam.push(par.dTParam());
 
     //添加参与人
-    let nwpar = new Array<any>();
-    nwpar = this.sqlparamAddPar(parEvi , newAgdata.members);
+    let pars = new Array<ParTbl>();
+    pars = this.sqlparamAddPar(parEvi , newAgdata.members);
+    let parparams = Array<any>();
+    if (pars && pars.length > 0){
+      parparams = this.sqlExce.getFastSaveSqlByParam(pars);
+    }
 
     //更新相关ev表参与人数
     sq = ` update gtd_ev set pn = ? where evi = ? or rtevi = ? ;`;
@@ -2133,7 +2161,7 @@ export class EventService extends BaseService {
     if (nwfj && nwfj.length > 0){
       fjparams = this.sqlExce.getFastSaveSqlByParam(nwfj);
     }*/
-    sqlparam =Object.assign(sqlparam, [...sqlparam,  ...nwpar,...waparams]);
+    sqlparam =Object.assign(sqlparam, [...sqlparam,  ...parparams,...waparams]);
   }
 
   /**
@@ -2218,8 +2246,8 @@ export class EventService extends BaseService {
           sqlparam.push(nwca.rpTParam());
 
           //复制原参与人到新的父事件
-          let nwpar = new Array<any>();
-          nwpar = this.sqlparamAddPar(nwEv.evi , members);
+          let pars = new Array<ParTbl>();
+          pars = this.sqlparamAddPar(nwEv.evi , members);
 
 
 
@@ -2251,7 +2279,11 @@ export class EventService extends BaseService {
             }
           }
 
-          Object.assign(sqlparam , [...sqlparam, ...nwpar]);
+          let parparams = new Array<any>();
+          if (pars && pars.length > 0){
+            parparams = this.sqlExce.getFastSaveSqlByParam(pars);
+          }
+          Object.assign(sqlparam , [...sqlparam, ...parparams]);
         }
 
         Object.assign(outAgds , [...outAgds ,...upAgds]);
@@ -2412,8 +2444,8 @@ export class EventService extends BaseService {
    * @param {Array<Member>} pars
    * @returns {Array<any>}
    */
-  private sqlparamAddPar(evi : string ,pars : Array<Member>):Array<any>{
-    let ret = new Array<any>();
+  private sqlparamAddPar(evi : string ,pars : Array<Member>):Array<ParTbl>{
+    let ret = new Array<ParTbl>();
     if (pars && pars.length > 0){
       for (let j = 0 ,len = pars.length;j < len ; j++){
         let par = new ParTbl();
@@ -2426,7 +2458,7 @@ export class EventService extends BaseService {
         par.sdt = pars[j].sdt;
         par.tb = anyenum.SyncType.unsynch;
         par.del = anyenum.DelType.undel;
-        ret.push(par.rpTParam());
+        ret.push(par);
       }
     }
     return ret;
