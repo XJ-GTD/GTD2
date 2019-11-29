@@ -48,6 +48,7 @@ import {TTbl} from "../sqlite/tbl/t.tbl";
 import {WaTbl} from "../sqlite/tbl/wa.tbl";
 import { CalendarService, PlanData } from "./calendar.service";
 import { EventService, AgendaData, TaskData, MiniTaskData, RtJson } from "./event.service";
+import { GrouperService } from "./grouper.service";
 import { PlanType, IsCreate, IsSuccess, CycleType, OverType } from "../../data.enum";
 import { ScheduleRemindService } from "./remind.service";
 import {File} from '@ionic-native/file';
@@ -79,6 +80,7 @@ describe('EventService test suite for agenda', () => {
   let assistantService: AssistantService;
   let timeOutService: TimeOutService;
   let notificationsService: NotificationsService;
+  let grouperService: GrouperService;
 
   beforeAll(async () => {
     TestBed.configureTestingModule({
@@ -115,6 +117,7 @@ describe('EventService test suite for agenda', () => {
         AgdRestful,
         BacRestful,
         DataRestful,
+        GrouperService,
         SyncRestful,
         Network,
         HTTP,
@@ -134,6 +137,7 @@ describe('EventService test suite for agenda', () => {
     assistantService = TestBed.get(AssistantService);
     notificationsService = TestBed.get(NotificationsService);
     timeOutService = TestBed.get(TimeOutService);
+    grouperService = TestBed.get(GrouperService);
 
     eventService = TestBed.get(EventService);
     await config.generateDb();

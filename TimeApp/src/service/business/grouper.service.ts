@@ -6,7 +6,7 @@ import {UserConfig} from "../config/user.config";
 import * as moment from "moment";
 import {EmitService} from "../util-service/emit.service";
 import { BackupPro, BacRestful, OutRecoverPro, RecoverPro } from "../restful/bacsev";
-import {DataRestful, PullInData, PushInData, SyncData, SyncDataFields, UploadInData, DownloadInData} from "../restful/datasev";
+import {DataRestful, PullInData, PushInData, SyncData, SyncDataFields, UploadInData, DayCountCodec, DownloadInData} from "../restful/datasev";
 import {CompleteState, DelType, InviteState, SyncDataSecurity, SyncDataStatus, SyncType} from "../../data.enum";
 import {
   assertNotNumber,
@@ -125,6 +125,16 @@ export class GrouperService extends BaseService {
     this.assertEmpty(grouper);  // 入参不能为空
     await this.syncGrouper([grouper]);
     return ;
+  }
+
+  async codecGrouper(): Promise<Array<DayCountCodec>> {
+    let sql: string = `select strftime('%Y/%m/%d', wtt, 'unixepoch', 'localtime') day, count(*) count
+                      from gtd_g
+                      where del <> ?1
+                      group by day`;
+    let daycounts: Array<DayCountCodec> = await this.sqlExce.getExtLstByParam<DayCountCodec>(sql, [DelType.del]) || new Array<DayCountCodec>();
+
+    return daycounts;
   }
 
   /**
