@@ -3851,7 +3851,7 @@ export class CalendarService extends BaseService {
 
   async requestInitialData() {
     let pull: PullInData = new PullInData();
-    pull.type = "*";
+    pull.type = "Plan|Attachment|Grouper|Memo|PlanItem|Agenda|Task|MiniTask";
     await this.dataRestful.pull(pull);
     return;
   }
