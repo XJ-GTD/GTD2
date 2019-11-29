@@ -81,7 +81,7 @@ export class EventService extends BaseService {
    * @param {SyncDataStatus} status
    * @returns {Promise<Array<AgendaData>>}
    */
-  async receivedAgendaData(pullAgdatas: Array<AgendaData>, status: SyncDataStatus): Promise<Array<AgendaData>> {
+  async receivedAgendaData(pullAgdatas: Array<AgendaData>, status: SyncDataStatus, needPush: boolean = false): Promise<Array<AgendaData>> {
 
     this.assertEmpty(pullAgdatas);     // 入参不能为空
     this.assertEmpty(status);   // 入参不能为空
@@ -106,7 +106,11 @@ export class EventService extends BaseService {
           if (!agd.del) agd.del = DelType.undel;
         }
 
-        agd.tb = SyncType.synch;
+        if (needPush) {
+          agd.tb = SyncType.unsynch;
+        } else {
+          agd.tb = SyncType.synch;
+        }
 
         // 非共享字段，第一次接收需要付初值
         if (!agd.todolist) {

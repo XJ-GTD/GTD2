@@ -434,7 +434,18 @@ export class DataSyncProcess implements MQProcess {
           }
         }
 
-        await this.eventService.receivedAgendaData([agenda], this.convertSyncStatus(dsPara.status));
+        // 接受状态赋值, 用于重复日程主日程接受后, 拉取的子日程自动接受
+        let needPush: boolean = false;
+
+        if (dsPara.invitestate == InviteState.Accepted) {
+          if (agenda.invitestatus != InviteState.Accepted) {
+            needPush = true;
+          }
+
+          agenda.invitestatus = InviteState.Accepted;
+        }
+
+        await this.eventService.receivedAgendaData([agenda], this.convertSyncStatus(dsPara.status), needPush);
       }
 
       if (dsPara.type == "Memo") {
