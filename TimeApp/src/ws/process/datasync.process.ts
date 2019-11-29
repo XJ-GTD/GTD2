@@ -305,9 +305,9 @@ export class DataSyncProcess implements MQProcess {
             } else if (datatype == "Attachment") {
               await this.eventService.receivedAttachmentData(typeclassdel, SyncDataStatus.Deleted);
             } else if (datatype == "Annotation") {
-              await this.eventService.receivedAnnotationData(typeclassdel, SyncDataStatus.Deleted);
+              await this.annotationService.receivedAnnotationData(typeclassdel, SyncDataStatus.Deleted);
             } else if (datatype == "Grouper") {
-              await this.eventService.receivedGrouperData(typeclassdel, SyncDataStatus.Deleted);
+              await this.grouperService.receivedGrouperData(typeclassdel, SyncDataStatus.Deleted);
             }
           }
 
@@ -329,9 +329,9 @@ export class DataSyncProcess implements MQProcess {
             } else if (datatype == "Attachment") {
               await this.eventService.receivedAttachmentData(typeclassundel, SyncDataStatus.UnDeleted);
             } else if (datatype == "Annotation") {
-              await this.eventService.receivedAnnotationData(typeclassundel, SyncDataStatus.UnDeleted);
+              await this.annotationService.receivedAnnotationData(typeclassundel, SyncDataStatus.UnDeleted);
             } else if (datatype == "Grouper") {
-              await this.eventService.receivedGrouperData(typeclassundel, SyncDataStatus.UnDeleted);
+              await this.grouperService.receivedGrouperData(typeclassundel, SyncDataStatus.UnDeleted);
             }
           }
         }
@@ -656,7 +656,7 @@ export class DataSyncProcess implements MQProcess {
     let annotation: Annotation = {} as Annotation;
     Object.assign(annotation, dsPara.data);
 
-    return attachment;
+    return annotation;
   }
 
   private async preProcessAttachment(dsPara: DataSyncPara): Promise<Attachment> {
