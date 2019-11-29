@@ -132,10 +132,30 @@ export class EventService extends BaseService {
           agd.txjson = generateTxJson(agd.txjson, agd.tx);
         }
 
+        //子日程且是未接受状态，查看主日程实际否接受，接受则子日程自动接受
+        if (agd.rtevi == "" || agd.invitestatus == InviteState.Accepted){
+          if (!agd.invitestatus) {
+            agd.invitestatus = InviteState.None;
+          }
+        }else{
+          let eviv = new EvTbl();
+          eviv.evi = agd.rtevi;
+          let masterAgd : AgendaData  = await this.sqlExce.getOneByParam<AgendaData>(eviv);
+          if (masterAgd !=null && masterAgd.invitestatus == InviteState.Accepted ){
+            agd.invitestatus = InviteState.Accepted;
 
-        if (!agd.invitestatus) {
-          agd.invitestatus = InviteState.None;
+            //设定了截止日期，则自动加入todolist
+            if(UserConfig.getSetting(DataConfig.SYS_AUTOTODO) && agd.al == anyenum.IsWholeday.EndSet){
+              agd.todolist = anyenum.ToDoListStatus.On;
+            }
+            agd.tb = anyenum.SyncType.unsynch;
+          }else{
+            if (!agd.invitestatus) {
+              agd.invitestatus = InviteState.None;
+            }
+          }
         }
+
 
         let ev = new EvTbl();
         Object.assign(ev,agd);
