@@ -26,6 +26,8 @@ import {Grouper, GrouperService} from "../../service/business/grouper.service";
  */
 @Injectable()
 export class DataSyncProcess implements MQProcess {
+  cachedpersons: any = {};
+
   constructor(private emitService: EmitService,
               private contactsServ: ContactsService,
               private calendarService: CalendarService,
@@ -706,8 +708,11 @@ export class DataSyncProcess implements MQProcess {
 
         //更新参与人ui
         if (fsdata.ui == ""){
-          let userinfo = await this.personRestful.get(fsdata.rc);
+          let userinfo = cachedpersons[fsdata.rc] || await this.personRestful.get(fsdata.rc);
           if (userinfo && userinfo.openid){
+            // 缓存用户数据防止多次访问
+            cachedpersons[fsdata.rc] = userinfo;
+
             fsdata.ui = userinfo.openid;
 
             let bt = new BTbl();
@@ -830,8 +835,12 @@ export class DataSyncProcess implements MQProcess {
 
         //更新参与人ui
         if (fsdata.ui == ""){
-          let userinfo = await this.personRestful.get(fsdata.rc);
+          let userinfo = cachedpersons[fsdata.rc] || await this.personRestful.get(fsdata.rc);
+
           if (userinfo && userinfo.openid){
+            // 缓存用户数据防止多次访问
+            cachedpersons[fsdata.rc] = userinfo;
+
             fsdata.ui = userinfo.openid;
 
             let bt = new BTbl();
