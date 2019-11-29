@@ -53,7 +53,7 @@ export class GrouperService extends BaseService {
         if (grouper.fss ){
           for (let fs of grouper.fss ){
             let b = new BTbl();
-            let fssql = ` select * from gtd_b where (pwi='${fs.pwi}' or ui ='${fs.ui}' or rc='${fs.rc}') and del<>'del' ;`;
+            let fssql = ` select * from gtd_b where pwi='${fs.pwi}' or ui ='${fs.ui}' or rc='${fs.rc}' ;`;
             b = await this.sqlExce.getExtOne<BTbl>(fssql);
             //本地存在就使用本地pwi，否则新建插入人员
             if (b){
@@ -65,7 +65,7 @@ export class GrouperService extends BaseService {
               let pwi = this.util.getUuid();
               let bx = new BxTbl();
               bx.bi = grouper.gi;
-              bx.bmi = b.pwi;
+              bx.bmi = pwi;
               sqlparam.push([bx.rpT(),[]]);
 
               let bfs = new BTbl();
