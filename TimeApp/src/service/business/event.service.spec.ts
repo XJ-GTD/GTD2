@@ -62,6 +62,7 @@ import {DetectorService} from "../util-service/detector.service";
 import {LocalNotifications} from "@ionic-native/local-notifications";
 import {Badge} from "@ionic-native/badge";
 import { RemindService } from "../util-service/remind.service";
+import { GrouperService } from "./grouper.service";
 
 /**
  * 事件Service 持续集成CI 自动测试Case
@@ -84,6 +85,7 @@ describe('EventService test suite', () => {
   let assistantService: AssistantService;
   let timeOutService: TimeOutService;
   let notificationsService: NotificationsService;
+  let grouperService: GrouperService;
 
   beforeAll(async () => {
     TestBed.configureTestingModule({
@@ -120,6 +122,7 @@ describe('EventService test suite', () => {
         TimeOutService,
         AgdRestful,
         BacRestful,
+        GrouperService,
         DataRestful,
         SyncRestful,
         Network,
@@ -141,6 +144,7 @@ describe('EventService test suite', () => {
     assistantService = TestBed.get(AssistantService);
     notificationsService = TestBed.get(NotificationsService);
     timeOutService = TestBed.get(TimeOutService);
+    grouperService = TestBed.get(GrouperService);
 
     calendarService = TestBed.get(CalendarService);
     eventService = TestBed.get(EventService);
