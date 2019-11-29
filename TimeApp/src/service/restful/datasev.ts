@@ -69,6 +69,17 @@ export class DataRestful {
   }
 
   /**
+   * https://pluto.guobaa.com/abl/local/getContent/{id}
+   **/
+  async pullfile(file: string): Promise<Array<any>> {
+    let url: UrlEntity = this.config.getRestFulUrl("SDJ", {name: "id", value: file});
+
+    let data = await this.request.get(url);
+
+    return data;
+  }
+
+  /**
    * 上传同步数据
    * 同步成功通过MQ返回
    *

@@ -42,5 +42,6 @@
 {"name":"SPL", "value":"https://pluto.guobaa.com/cdc/mwxing_data_sync_pull_start/json/trigger", "desc":"数据同步pull"},
 {"name":"SUP", "value":"https://pluto.guobaa.com/abl/store/remote/upload", "desc":"文件数据上传upload"},
 {"name":"SDL", "value":"https://pluto.guobaa.com/abl/store/remote/download", "desc":"文件数据下载download"},
+{"name":"SDJ", "value":"https://pluto.guobaa.com/abl/store/local/getContent/{id}", "desc":"JSON文件数据下载download"},
 {"name":"SRT", "value":"https://pluto.guobaa.com/cdc/mwxing_scheduled_remind_start/json/trigger", "desc":"计划提醒提交"}
 ]

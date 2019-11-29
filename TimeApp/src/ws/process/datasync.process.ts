@@ -14,6 +14,7 @@ import {UserConfig} from "../../service/config/user.config";
 import {ContactsService} from "../../service/cordova/contacts.service";
 import {BTbl} from "../../service/sqlite/tbl/b.tbl";
 import {PersonRestful} from "../../service/restful/personsev";
+import {DataRestful} from "../../service/restful/datasev";
 import {SqliteExec} from "../../service/util-service/sqlite.exec";
 import {Annotation, AnnotationService} from "../../service/business/annotation.service";
 import {Grouper, GrouperService} from "../../service/business/grouper.service";
@@ -31,6 +32,7 @@ export class DataSyncProcess implements MQProcess {
               private eventService: EventService,
               private memoService: MemoService,
               private personRestful: PersonRestful,
+              private dataRestful: DataRestful,
               private annotationService : AnnotationService,
               private grouperService : GrouperService,
               private sqlExce : SqliteExec) {
@@ -158,6 +160,22 @@ export class DataSyncProcess implements MQProcess {
       }
       if (dsPara.type == "Grouper") {
         await this.grouperService.receivedGrouper(dsPara.id);
+      }
+    }
+
+    //拉取数据文件直接保存
+    if (content.option == DS.FS) {
+      let file: string = content.parameters.file;
+
+      let filedatas = await this.dataRestful.pullfile(file);
+
+      if (filedatas && filedatas.length > 0) {
+        for (let filedata of filedatas) {
+          let dsPara: DataSyncPara = filedata;
+
+          console.log(JSON.stringify(dsPara));
+
+        }
       }
     }
 
