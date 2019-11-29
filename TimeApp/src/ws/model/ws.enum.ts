@@ -22,6 +22,7 @@ export enum DS {
   SA = "DS.SA",  //本帐号他设备数据同步
   OA = "DS.OA",  //他帐号数据同步
   SP = "DS.SP",  //本设备云端数据拉取
+  FS = "DS.FS",  //拉取文件数据保存
   DS = "DS.DS",  //拉取数据保存
 }
 
