@@ -825,14 +825,20 @@ export class AgendaPage {
         text: '仅删除此日程',
         role: 'remove',
         handler: () => {
-          this.doOptionRemove(OperateType.OnlySel);
+          setTimeout(()=>{
+
+            this.doOptionRemove(OperateType.OnlySel);
+          },300);
         }
       });
       buttons.push({
         text: '删除所有将来日程',
         role: 'remove',
         handler: () => {
-          this.doOptionRemove(OperateType.FromSel);
+          setTimeout(()=>{
+
+            this.doOptionRemove(OperateType.FromSel);
+          },300);
         }
       });
     } else if (confirmText == this.ConfirmText.RemoveSimple) {
@@ -841,7 +847,11 @@ export class AgendaPage {
         text: '确定',
         role: 'ok',
         handler: () => {
-          this.doOptionRemove(OperateType.OnlySel);
+          setTimeout(()=>{
+
+            this.doOptionRemove(OperateType.OnlySel);
+          },300);
+
         }
       });
 
