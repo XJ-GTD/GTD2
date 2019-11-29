@@ -195,20 +195,40 @@ export class DataSyncProcess implements MQProcess {
             if (!typeclass) {
               typeclass = {del: [], undel: []};
 
-              if (dsPara.type == "PlanItem") {
+              if (dsPara.type == "Plan") {
+                typeclass['del'].push(await this.preProcessPlanData(dsPara));
+              } else if (dsPara.type == "PlanItem") {
                 typeclass['del'].push(await this.preProcessPlanItemData(dsPara));
               } else if (dsPara.type == "Agenda") {
                 typeclass['del'].push(await this.preProcessAgendaData(dsPara));
+              } else if (dsPara.type == "Memo") {
+                typeclass['del'].push(await this.preProcessMemoData(dsPara));
+              } else if (dsPara.type == "Attachment") {
+                typeclass['del'].push(await this.preProcessAttachment(dsPara));
+              } else if (dsPara.type == "Annotation") {
+                typeclass['del'].push(await this.preProcessAnnotation(dsPara));
+              } else if (dsPara.type == "Grouper") {
+                typeclass['del'].push(await this.preProcessGrouper(dsPara));
               } else {
                 typeclass['del'].push(dsPara.data);
               }
 
               classified[dsPara.type] = typeclass;
             } else {
-              if (dsPara.type == "PlanItem") {
+              if (dsPara.type == "Plan") {
+                typeclass['del'].push(await this.preProcessPlanData(dsPara));
+              } else if (dsPara.type == "PlanItem") {
                 typeclass['del'].push(await this.preProcessPlanItemData(dsPara));
               } else if (dsPara.type == "Agenda") {
                 typeclass['del'].push(await this.preProcessAgendaData(dsPara));
+              } else if (dsPara.type == "Memo") {
+                typeclass['del'].push(await this.preProcessMemoData(dsPara));
+              } else if (dsPara.type == "Attachment") {
+                typeclass['del'].push(await this.preProcessAttachment(dsPara));
+              } else if (dsPara.type == "Annotation") {
+                typeclass['del'].push(await this.preProcessAnnotation(dsPara));
+              } else if (dsPara.type == "Grouper") {
+                typeclass['del'].push(await this.preProcessGrouper(dsPara));
               } else {
                 typeclass['del'].push(dsPara.data);
               }
@@ -219,10 +239,20 @@ export class DataSyncProcess implements MQProcess {
             if (!typeclass) {
               typeclass = {del: [], undel: []};
 
-              if (dsPara.type == "PlanItem") {
+              if (dsPara.type == "Plan") {
+                typeclass['undel'].push(await this.preProcessPlanData(dsPara));
+              } else if (dsPara.type == "PlanItem") {
                 typeclass['undel'].push(await this.preProcessPlanItemData(dsPara));
               } else if (dsPara.type == "Agenda") {
                 typeclass['undel'].push(await this.preProcessAgendaData(dsPara));
+              } else if (dsPara.type == "Memo") {
+                typeclass['undel'].push(await this.preProcessMemoData(dsPara));
+              } else if (dsPara.type == "Attachment") {
+                typeclass['undel'].push(await this.preProcessAttachment(dsPara));
+              } else if (dsPara.type == "Annotation") {
+                typeclass['undel'].push(await this.preProcessAnnotation(dsPara));
+              } else if (dsPara.type == "Grouper") {
+                typeclass['undel'].push(await this.preProcessGrouper(dsPara));
               } else {
                 typeclass['undel'].push(dsPara.data);
               }
@@ -230,10 +260,20 @@ export class DataSyncProcess implements MQProcess {
               classified[dsPara.type] = typeclass;
             } else {
 
-              if (dsPara.type == "PlanItem") {
+              if (dsPara.type == "Plan") {
+                typeclass['undel'].push(await this.preProcessPlanData(dsPara));
+              } else if (dsPara.type == "PlanItem") {
                 typeclass['undel'].push(await this.preProcessPlanItemData(dsPara));
               } else if (dsPara.type == "Agenda") {
                 typeclass['undel'].push(await this.preProcessAgendaData(dsPara));
+              } else if (dsPara.type == "Memo") {
+                typeclass['undel'].push(await this.preProcessMemoData(dsPara));
+              } else if (dsPara.type == "Attachment") {
+                typeclass['undel'].push(await this.preProcessAttachment(dsPara));
+              } else if (dsPara.type == "Annotation") {
+                typeclass['undel'].push(await this.preProcessAnnotation(dsPara));
+              } else if (dsPara.type == "Grouper") {
+                typeclass['undel'].push(await this.preProcessGrouper(dsPara));
               } else {
                 typeclass['undel'].push(dsPara.data);
               }
@@ -250,20 +290,48 @@ export class DataSyncProcess implements MQProcess {
           let typeclassdel = typeclass['del'];
 
           if (typeclassdel && typeclassdel.length > 0) {
-            if (datatype == "PlanItem") {
+            if (datatype == "Plan") {
+              for (let plan of typeclassdel) {
+                await this.calendarService.receivedPlanData(plan, SyncDataStatus.Deleted);
+              }
+            } else if (datatype == "PlanItem") {
               await this.calendarService.receivedPlanItemData(typeclassdel, SyncDataStatus.Deleted);
             } else if (datatype == "Agenda") {
               await this.eventService.receivedAgendaData(typeclassdel, SyncDataStatus.Deleted);
+            } else if (datatype == "Memo") {
+              for (let memo of typeclassdel) {
+                await this.memoService.receivedMemoData(memo, SyncDataStatus.Deleted);
+              }
+            } else if (datatype == "Attachment") {
+              await this.eventService.receivedAttachmentData(typeclassdel, SyncDataStatus.Deleted);
+            } else if (datatype == "Annotation") {
+              await this.eventService.receivedAnnotationData(typeclassdel, SyncDataStatus.Deleted);
+            } else if (datatype == "Grouper") {
+              await this.eventService.receivedGrouperData(typeclassdel, SyncDataStatus.Deleted);
             }
           }
 
           let typeclassundel = typeclass['undel'];
 
           if (typeclassundel && typeclassundel.length > 0) {
-            if (datatype == "PlanItem") {
-              await this.calendarService.receivedPlanItemData(typeclassundel, SyncDataStatus.UnDeleted);
+            if (datatype == "Plan") {
+              for (let plan of typeclassundel) {
+                await this.calendarService.receivedPlanData(plan, SyncDataStatus.UnDeleted);
+              }
+            } else if (datatype == "PlanItem") {
+                await this.calendarService.receivedPlanItemData(typeclassundel, SyncDataStatus.UnDeleted);
             } else if (datatype == "Agenda") {
               await this.eventService.receivedAgendaData(typeclassundel, SyncDataStatus.UnDeleted);
+            } else if (datatype == "Memo") {
+              for (let memo of typeclassundel) {
+                await this.memoService.receivedMemoData(memo, SyncDataStatus.UnDeleted);
+              }
+            } else if (datatype == "Attachment") {
+              await this.eventService.receivedAttachmentData(typeclassundel, SyncDataStatus.UnDeleted);
+            } else if (datatype == "Annotation") {
+              await this.eventService.receivedAnnotationData(typeclassundel, SyncDataStatus.UnDeleted);
+            } else if (datatype == "Grouper") {
+              await this.eventService.receivedGrouperData(typeclassundel, SyncDataStatus.UnDeleted);
             }
           }
         }
@@ -575,6 +643,41 @@ export class DataSyncProcess implements MQProcess {
     }
 
     return contextRetMap
+  }
+
+  private async preProcessGrouper(dsPara: DataSyncPara): Promise<Grouper> {
+    let grouper: Grouper = new Grouper();
+    Object.assign(grouper, dsPara.data);
+
+    return grouper;
+  }
+
+  private async preProcessAnnotation(dsPara: DataSyncPara): Promise<Annotation> {
+    let annotation: Annotation = {} as Annotation;
+    Object.assign(annotation, dsPara.data);
+
+    return attachment;
+  }
+
+  private async preProcessAttachment(dsPara: DataSyncPara): Promise<Attachment> {
+    let attachment: Attachment = {} as Attachment;
+    Object.assign(attachment, dsPara.data);
+
+    return attachment;
+  }
+
+  private async preProcessMemoData(dsPara: DataSyncPara): Promise<MemoData> {
+    let memo: MemoData = {} as MemoData;
+    Object.assign(memo, dsPara.data);
+
+    return memo;
+  }
+
+  private async preProcessPlanData(dsPara: DataSyncPara): Promise<PlanData> {
+    let plan: PlanData = {} as PlanData;
+    Object.assign(plan, dsPara.data);
+
+    return plan;
   }
 
   private async preProcessPlanItemData(dsPara: DataSyncPara): Promise<PlanItemData> {
