@@ -3856,7 +3856,7 @@ export class CalendarService extends BaseService {
     return;
   }
 
-  async requestDeviceDiffData(types: Array<string> = ["Agenda", "Attachment", "Memo"]) {
+  async requestDeviceDiffData(types: Array<string> = ["Attachment", "Agenda", "PlanItem", "Memo"]) {
     assertEmpty(types);   // 入参不能为空
 
     for (let type of types) {
