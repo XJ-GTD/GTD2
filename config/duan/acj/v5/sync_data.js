@@ -122,6 +122,7 @@ function clean(datasource)
     // 日程共享操作类型设置
     output.content['0'] = {
       processor: 'FS',
+      option: 'DS.FS',
       parameters: {
         type: type,
         file: file
