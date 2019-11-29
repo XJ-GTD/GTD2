@@ -708,10 +708,10 @@ export class DataSyncProcess implements MQProcess {
 
         //更新参与人ui
         if (fsdata.ui == ""){
-          let userinfo = cachedpersons[fsdata.rc] || await this.personRestful.get(fsdata.rc);
+          let userinfo = this.cachedpersons[fsdata.rc] || await this.personRestful.get(fsdata.rc);
           if (userinfo && userinfo.openid){
             // 缓存用户数据防止多次访问
-            cachedpersons[fsdata.rc] = userinfo;
+            this.cachedpersons[fsdata.rc] = userinfo;
 
             fsdata.ui = userinfo.openid;
 
@@ -835,11 +835,11 @@ export class DataSyncProcess implements MQProcess {
 
         //更新参与人ui
         if (fsdata.ui == ""){
-          let userinfo = cachedpersons[fsdata.rc] || await this.personRestful.get(fsdata.rc);
+          let userinfo = this.cachedpersons[fsdata.rc] || await this.personRestful.get(fsdata.rc);
 
           if (userinfo && userinfo.openid){
             // 缓存用户数据防止多次访问
-            cachedpersons[fsdata.rc] = userinfo;
+            this.cachedpersons[fsdata.rc] = userinfo;
 
             fsdata.ui = userinfo.openid;
 
