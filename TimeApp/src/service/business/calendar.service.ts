@@ -26,6 +26,7 @@ import { ScheduleRemindService } from "./remind.service";
 import {AsyncQueue} from "../../util/asyncQueue";
 import {DetectorService} from "../util-service/detector.service";
 import {TimeOutService} from "../../util/timeOutService";
+import {GrouperService} from "./grouper.service";
 
 @Injectable()
 export class CalendarService extends BaseService {
@@ -39,12 +40,13 @@ export class CalendarService extends BaseService {
               private userConfig: UserConfig,
               private eventService: EventService,
               private memoService: MemoService,
+              private grouperService: GrouperService,
               private remindService: ScheduleRemindService,
               private bacRestful: BacRestful,
               private shareRestful: ShaeRestful,
               private dataRestful: DataRestful,
-              private detectorService:DetectorService,
-              private timeOutService:TimeOutService) {
+              private detectorService: DetectorService,
+              private timeOutService: TimeOutService) {
     super();
     this.activitiesqueue = new AsyncQueue( async ({data}, callback) => {
 
@@ -3856,11 +3858,15 @@ export class CalendarService extends BaseService {
     return;
   }
 
-  async requestDeviceDiffData(types: Array<string> = ["Attachment", "Agenda", "PlanItem", "Memo"]) {
+  async requestDeviceDiffData(types: Array<string> = ["Grouper", "Attachment", "Agenda", "PlanItem", "Memo"]) {
     assertEmpty(types);   // 入参不能为空
 
     for (let type of types) {
       let daycounts: Array<DayCountCodec>;
+
+      if (type == "Grouper") {
+        daycounts = await this.grouperService.codecGrouper() || new Array<DayCountCodec>();
+      }
 
       if (type == "Agenda") {
         daycounts = await this.eventService.codecAgendas() || new Array<DayCountCodec>();
