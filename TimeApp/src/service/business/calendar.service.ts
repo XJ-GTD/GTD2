@@ -19,6 +19,7 @@ import { ParTbl } from "../sqlite/tbl/par.tbl";
 import { FjTbl } from "../sqlite/tbl/fj.tbl";
 import {
   assertEmpty,
+  assertNotEqual,
   assertFail
 } from "../../util/util";
 import {FsData} from "../../data.mapping";

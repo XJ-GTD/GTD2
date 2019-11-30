@@ -3,6 +3,7 @@ import {IonicPage, NavController, NavParams, ViewController} from 'ionic-angular
 import { FdService} from "./fd.service";
 import {UtilService} from "../../service/util-service/util.service";
 import {FsData} from "../../data.mapping";
+import {ExchangeSummaryData} from "../../service/business/calendar.service";
 
 /**
  * Generated class for the 参与人详情 page.
