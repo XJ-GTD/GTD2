@@ -5,7 +5,10 @@ module.exports = {
   devtool: 'inline-source-map',
 
   resolve: {
-    extensions: ['.ts', '.js']
+    extensions: ['.ts', '.js'],
+    alias: {
+      'workerTimeout.js': 'src/workerTimeout.js'
+    }
   },
 
   module: {
