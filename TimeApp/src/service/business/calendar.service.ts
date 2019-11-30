@@ -19,7 +19,7 @@ import { ParTbl } from "../sqlite/tbl/par.tbl";
 import { FjTbl } from "../sqlite/tbl/fj.tbl";
 import {
   assertEmpty,
-  assertNotEqual,
+  assertEqual,
   assertFail
 } from "../../util/util";
 import {FsData} from "../../data.mapping";
@@ -2198,7 +2198,7 @@ export class CalendarService extends BaseService {
    **/
   async fetchExchangeActivitySummary(friends: Array<string> = new Array<string>()): Promise<Array<ExchangeSummaryData>> {
     assertEmpty(friends);               // 入参不能为空
-    assertNotEqual(friends.length, 0);  // 入参不能为空数组
+    assertEqual(friends.length, 0);  // 入参不能为空数组
 
     let exchangesummarysql: string = `select activitycount.phone,
                                              activitycount.sendactivities,
