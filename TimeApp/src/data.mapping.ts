@@ -168,6 +168,7 @@ export class FsData {
   pi: string=""; //日程参与人表ID
   si: string=""; //日程事件ID
   isbla:boolean=false; //默认非黑名单
+  bi :string ="";//组id
 }
 
 

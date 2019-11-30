@@ -5,7 +5,10 @@ module.exports = {
   devtool: 'inline-source-map',
 
   resolve: {
-    extensions: ['.ts', '.js']
+    extensions: ['.ts', '.js'],
+    alias: {
+      'workerTimeout.js': 'src/workerTimeout.js'
+    }
   },
 
   module: {
@@ -31,6 +34,11 @@ module.exports = {
       {
         test: /\.(png|jpe?g|gif|svg|woff|woff2|ttf|eot|ico)$/,
         loader: 'null-loader'
+      },
+      {
+        test: /workerTimeout\.js$/,
+        include: /src/,
+        loader: 'worker-loader'
       }
     ]
   },

@@ -62,6 +62,7 @@ import {DetectorService} from "../util-service/detector.service";
 import {LocalNotifications} from "@ionic-native/local-notifications";
 import {Badge} from "@ionic-native/badge";
 import { RemindService } from "../util-service/remind.service";
+import { GrouperService } from "./grouper.service";
 
 /**
  * 事件Service 持续集成CI 自动测试Case
@@ -84,6 +85,7 @@ describe('EventService test suite', () => {
   let assistantService: AssistantService;
   let timeOutService: TimeOutService;
   let notificationsService: NotificationsService;
+  let grouperService: GrouperService;
 
   beforeAll(async () => {
     TestBed.configureTestingModule({
@@ -120,6 +122,7 @@ describe('EventService test suite', () => {
         TimeOutService,
         AgdRestful,
         BacRestful,
+        GrouperService,
         DataRestful,
         SyncRestful,
         Network,
@@ -141,6 +144,7 @@ describe('EventService test suite', () => {
     assistantService = TestBed.get(AssistantService);
     notificationsService = TestBed.get(NotificationsService);
     timeOutService = TestBed.get(TimeOutService);
+    grouperService = TestBed.get(GrouperService);
 
     calendarService = TestBed.get(CalendarService);
     eventService = TestBed.get(EventService);
@@ -963,7 +967,7 @@ describe('EventService test suite', () => {
         let agenda: AgendaData = {} as AgendaData;
         agenda.sd = moment().format("YYYY/MM/DD");
         agenda.evn = "有数据更新或者新增，自动刷新页面 当重要为空的情况下";
-        agenda.todolist == ToDoListStatus.On;
+        agenda.todolist = ToDoListStatus.On;
         let results = await eventService.saveAgenda(agenda);
         expect(results).toBeDefined();
 
@@ -980,7 +984,7 @@ describe('EventService test suite', () => {
         let agenda: AgendaData = {} as AgendaData;
         agenda.sd = moment('2019/11/23','YYYY/MM/DD').format("YYYY/MM/DD");
         agenda.evn = "有数据更新或者新增，自动刷新页面 当重要不为空2019/11/25";
-        agenda.todolist == ToDoListStatus.On;
+        agenda.todolist = ToDoListStatus.On;
         let results = await eventService.saveAgenda(agenda);
         expect(results).toBeDefined();
         expect(results.length).toBeGreaterThan(0);
@@ -989,7 +993,7 @@ describe('EventService test suite', () => {
         let agenda1: AgendaData = {} as AgendaData;
         agenda1.sd = moment('2019/11/24','YYYY/MM/DD').format("YYYY/MM/DD");
         agenda1.evn = "有数据更新或者新增，自动刷新页面 当重要不为空2019/11/24";
-        agenda1.todolist == ToDoListStatus.On;
+        agenda1.todolist = ToDoListStatus.On;
         let results1 = await eventService.saveAgenda(agenda1);
         expect(results1).toBeDefined();
         expect(results1.length).toBeGreaterThan(0);
@@ -998,7 +1002,7 @@ describe('EventService test suite', () => {
         let agenda2: AgendaData = {} as AgendaData;
         agenda2.sd = moment('2019/11/26','YYYY/MM/DD').format("YYYY/MM/DD");
         agenda2.evn = "有数据更新或者新增，自动刷新页面 当重要不为空2019/11/25";
-        agenda2.todolist == ToDoListStatus.On;
+        agenda2.todolist = ToDoListStatus.On;
         let results2 = await eventService.saveAgenda(agenda2);
         expect(results2).toBeDefined();
         expect(results2.length).toBeGreaterThan(0);
@@ -1007,7 +1011,7 @@ describe('EventService test suite', () => {
         let agenda4: AgendaData = {} as AgendaData;
         agenda4.sd = moment('2019/11/25','YYYY/MM/DD').format("YYYY/MM/DD");
         agenda4.evn = "有数据更新或者新增，自动刷新页面 当重要不为空2019/11/25";
-        agenda4.todolist == ToDoListStatus.On;
+        agenda4.todolist = ToDoListStatus.On;
         let results4 = await eventService.saveAgenda(agenda4);
         expect(results4).toBeDefined();
         expect(results4.length).toBeGreaterThan(0);
@@ -1026,7 +1030,7 @@ describe('EventService test suite', () => {
         let agenda: AgendaData = {} as AgendaData;
         agenda.sd = moment('2019/11/23','YYYY/MM/DD').format("YYYY/MM/DD");
         agenda.evn = "有数据更新或者新增，自动刷新页面 当重要不为空2019/11/25";
-        agenda.todolist == ToDoListStatus.On;
+        agenda.todolist = ToDoListStatus.On;
         let results = await eventService.saveAgenda(agenda);
         expect(results).toBeDefined();
         expect(results.length).toBeGreaterThan(0);
@@ -1035,7 +1039,7 @@ describe('EventService test suite', () => {
         let agenda1: AgendaData = {} as AgendaData;
         agenda1.sd = moment('2019/11/24','YYYY/MM/DD').format("YYYY/MM/DD");
         agenda1.evn = "有数据更新或者新增，自动刷新页面 当重要不为空2019/11/24";
-        agenda1.todolist == ToDoListStatus.On;
+        agenda1.todolist = ToDoListStatus.On;
         let results1 = await eventService.saveAgenda(agenda1);
         expect(results1).toBeDefined();
         expect(results1.length).toBeGreaterThan(0);
@@ -1044,7 +1048,7 @@ describe('EventService test suite', () => {
         let agenda2: AgendaData = {} as AgendaData;
         agenda2.sd = moment('2019/11/26','YYYY/MM/DD').format("YYYY/MM/DD");
         agenda2.evn = "有数据更新或者新增，自动刷新页面 当重要不为空2019/11/25";
-        agenda2.todolist == ToDoListStatus.On;
+        agenda2.todolist = ToDoListStatus.On;
         let results2 = await eventService.saveAgenda(agenda2);
         expect(results2).toBeDefined();
         expect(results2.length).toBeGreaterThan(0);
@@ -1053,7 +1057,7 @@ describe('EventService test suite', () => {
         let agenda4: AgendaData = {} as AgendaData;
         agenda4.sd = moment('2019/11/21','YYYY/MM/DD').format("YYYY/MM/DD");
         agenda4.evn = "有数据更新或者新增，自动刷新页面 当重要不为空2019/11/25";
-        agenda4.todolist == ToDoListStatus.On;
+        agenda4.todolist = ToDoListStatus.On;
         let results4 = await eventService.saveAgenda(agenda4);
         expect(results4).toBeDefined();
         expect(results4.length).toBeGreaterThan(0);
@@ -1072,7 +1076,7 @@ describe('EventService test suite', () => {
         let agenda: AgendaData = {} as AgendaData;
         agenda.sd = moment('2019/11/23','YYYY/MM/DD').format("YYYY/MM/DD");
         agenda.evn = "有数据更新或者新增，自动刷新页面 当重要不为空2019/11/25";
-        agenda.todolist == ToDoListStatus.On;
+        agenda.todolist = ToDoListStatus.On;
         let results = await eventService.saveAgenda(agenda);
         expect(results).toBeDefined();
         expect(results.length).toBeGreaterThan(0);
@@ -1081,7 +1085,7 @@ describe('EventService test suite', () => {
         let agenda1: AgendaData = {} as AgendaData;
         agenda1.sd = moment('2019/11/24','YYYY/MM/DD').format("YYYY/MM/DD");
         agenda1.evn = "有数据更新或者新增，自动刷新页面 当重要不为空2019/11/24";
-        agenda1.todolist == ToDoListStatus.On;
+        agenda1.todolist = ToDoListStatus.On;
         let results1 = await eventService.saveAgenda(agenda1);
         expect(results1).toBeDefined();
         expect(results1.length).toBeGreaterThan(0);
@@ -1090,7 +1094,7 @@ describe('EventService test suite', () => {
         let agenda2: AgendaData = {} as AgendaData;
         agenda2.sd = moment('2019/11/26','YYYY/MM/DD').format("YYYY/MM/DD");
         agenda2.evn = "有数据更新或者新增，自动刷新页面 当重要不为空2019/11/25";
-        agenda2.todolist == ToDoListStatus.On;
+        agenda2.todolist = ToDoListStatus.On;
         let results2 = await eventService.saveAgenda(agenda2);
         expect(results2).toBeDefined();
         expect(results2.length).toBeGreaterThan(0);
@@ -1099,7 +1103,7 @@ describe('EventService test suite', () => {
         let agenda4: AgendaData = {} as AgendaData;
         agenda4.sd = moment('2019/11/27','YYYY/MM/DD').format("YYYY/MM/DD");
         agenda4.evn = "有数据更新或者新增，自动刷新页面 当重要不为空2019/11/25";
-        agenda4.todolist == ToDoListStatus.On;
+        agenda4.todolist = ToDoListStatus.On;
         let results4 = await eventService.saveAgenda(agenda4);
         expect(results4).toBeDefined();
         expect(results4.length).toBeGreaterThan(0);
@@ -1118,7 +1122,7 @@ describe('EventService test suite', () => {
         let agenda: AgendaData = {} as AgendaData;
         agenda.sd = moment('2019/11/23','YYYY/MM/DD').format("YYYY/MM/DD");
         agenda.evn = "有数据更新或者新增，自动刷新页面 当重要不为空2019/11/25";
-        agenda.todolist == ToDoListStatus.On;
+        agenda.todolist = ToDoListStatus.On;
         let results = await eventService.saveAgenda(agenda);
         expect(results).toBeDefined();
         expect(results.length).toBeGreaterThan(0);
@@ -1127,7 +1131,7 @@ describe('EventService test suite', () => {
         let agenda1: AgendaData = {} as AgendaData;
         agenda1.sd = moment('2019/11/24','YYYY/MM/DD').format("YYYY/MM/DD");
         agenda1.evn = "有数据更新或者新增，自动刷新页面 当重要不为空2019/11/24";
-        agenda1.todolist == ToDoListStatus.On;
+        agenda1.todolist = ToDoListStatus.On;
         let results1 = await eventService.saveAgenda(agenda1);
         expect(results1).toBeDefined();
         expect(results1.length).toBeGreaterThan(0);
@@ -1136,7 +1140,7 @@ describe('EventService test suite', () => {
         let agenda2: AgendaData = {} as AgendaData;
         agenda2.sd = moment('2019/11/26','YYYY/MM/DD').format("YYYY/MM/DD");
         agenda2.evn = "有数据更新或者新增，自动刷新页面 当重要不为空2019/11/25";
-        agenda2.todolist == ToDoListStatus.On;
+        agenda2.todolist = ToDoListStatus.On;
         let results2 = await eventService.saveAgenda(agenda2);
         expect(results2).toBeDefined();
         expect(results2.length).toBeGreaterThan(0);

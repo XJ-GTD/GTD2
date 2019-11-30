@@ -105,6 +105,33 @@ function clean(datasource)
     return output;
   }
 
+  // 使用文件传输数据
+  var convertDataFileMessage = function(type, file) {
+    var output = {};
+
+    // 返回消息头部
+    output.header = {
+    	version: 'V1.1',
+      sender: 'xunfei',
+      datetime: formatDateTime(new Date()),
+      describe: ['DS']
+    };
+
+    output.content = {};
+
+    // 日程共享操作类型设置
+    output.content['0'] = {
+      processor: 'FS',
+      option: 'DS.FS',
+      parameters: {
+        type: type,
+        file: file
+      }
+    };
+
+    return output;
+  }
+
   var convertDataMessage = function(id, type, status, share, members, payload) {
     var output = {};
 
@@ -268,51 +295,69 @@ function clean(datasource)
     for (var index in datas) {
       var data = datas[index];
 
-      var id = data['id'];
       var type = data['type'];
-      var title = data['title'];
-      var status = data['status'];
-      var share = data['sharestate'] || {};
-      var payload = data['payload'];
-      var members = data['to'];
 
-      if (payload) {
+      if (type == 'pullfromfile') {
+        var file = data['file'];
+
         var standardnext = {};
 
         standardnext.announceTo = [from];
         standardnext.announceDevice = requestdevice;
         standardnext.announceType = 'data_sync';
         standardnext.announceContent = {
-          mwxing: convertDataMessage(id, type, status, share, members, payload),
+          mwxing: convertDataFileMessage(type, file),
           sms: {},
           push: {}
         };
 
         outputs.push(standardnext);
       } else {
-        var typeid = cached[type];
+        var id = data['id'];
+        var title = data['title'];
+        var status = data['status'];
+        var share = data['sharestate'] || {};
+        var payload = data['payload'];
+        var members = data['to'];
 
-        if (typeid) {
-          cached[type].push(id);
+        if (payload) {
+          var standardnext = {};
 
-          if (cached[type].length == 10) {
-            var standardnext = {};
+          standardnext.announceTo = [from];
+          standardnext.announceDevice = requestdevice;
+          standardnext.announceType = 'data_sync';
+          standardnext.announceContent = {
+            mwxing: convertDataMessage(id, type, status, share, members, payload),
+            sms: {},
+            push: {}
+          };
 
-            standardnext.announceTo = [from];
-            standardnext.announceDevice = requestdevice;
-            standardnext.announceType = 'data_sync';
-            standardnext.announceContent = {
-              mwxing: convertMessage(cached[type], type, 'SELF_PULL'),
-              sms: {},
-              push: {}
-            };
-
-            outputs.push(standardnext);
-
-            cached[type] = [];
-          }
+          outputs.push(standardnext);
         } else {
-          cached[type] = [id];
+          var typeid = cached[type];
+
+          if (typeid) {
+            cached[type].push(id);
+
+            if (cached[type].length == 10) {
+              var standardnext = {};
+
+              standardnext.announceTo = [from];
+              standardnext.announceDevice = requestdevice;
+              standardnext.announceType = 'data_sync';
+              standardnext.announceContent = {
+                mwxing: convertMessage(cached[type], type, 'SELF_PULL'),
+                sms: {},
+                push: {}
+              };
+
+              outputs.push(standardnext);
+
+              cached[type] = [];
+            }
+          } else {
+            cached[type] = [id];
+          }
         }
       }
     }

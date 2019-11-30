@@ -8,6 +8,11 @@ module.exports = function(config) {
 
     files: [
       {
+        pattern: './src/workerTimeout.js',
+        watched: true,
+        served: true
+      },
+      {
         pattern: './test-config/karma-test-shim.js',
         watched: true
       },
@@ -21,7 +26,8 @@ module.exports = function(config) {
     ],
 
     proxies: {
-      '/assets/': '/base/src/assets/'
+      '/assets/': '/base/src/assets/',
+      '/workerTimeout.js': '/base/src/workerTimeout.js'
     },
 
     preprocessors: {

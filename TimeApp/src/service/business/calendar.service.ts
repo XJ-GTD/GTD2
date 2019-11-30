@@ -19,6 +19,7 @@ import { ParTbl } from "../sqlite/tbl/par.tbl";
 import { FjTbl } from "../sqlite/tbl/fj.tbl";
 import {
   assertEmpty,
+  assertEqual,
   assertFail
 } from "../../util/util";
 import {FsData} from "../../data.mapping";
@@ -26,6 +27,7 @@ import { ScheduleRemindService } from "./remind.service";
 import {AsyncQueue} from "../../util/asyncQueue";
 import {DetectorService} from "../util-service/detector.service";
 import {TimeOutService} from "../../util/timeOutService";
+import {GrouperService} from "./grouper.service";
 
 @Injectable()
 export class CalendarService extends BaseService {
@@ -39,12 +41,13 @@ export class CalendarService extends BaseService {
               private userConfig: UserConfig,
               private eventService: EventService,
               private memoService: MemoService,
+              private grouperService: GrouperService,
               private remindService: ScheduleRemindService,
               private bacRestful: BacRestful,
               private shareRestful: ShaeRestful,
               private dataRestful: DataRestful,
-              private detectorService:DetectorService,
-              private timeOutService:TimeOutService) {
+              private detectorService: DetectorService,
+              private timeOutService: TimeOutService) {
     super();
     this.activitiesqueue = new AsyncQueue( async ({data}, callback) => {
 
@@ -2179,6 +2182,91 @@ export class CalendarService extends BaseService {
     return items;
   }
 
+  async getExchangeActivitySummary(phoneno: string): Promise<ExchangeSummaryData> {
+    assertEmpty(phoneno);   // 入参不能为空
+
+    let exchanges = await this.fetchExchangeActivitySummary([phoneno]);
+
+    if (!exchanges || exchanges.length <= 0) {
+      return new ExchangeSummaryData(phoneno);
+    } else {
+      return exchanges[0];
+    }
+  }
+
+  /**
+   * 取得指定手机号交换数据概要
+   * 包括 活动和日历项
+   *
+   * @author leon_xi@163.com
+   **/
+  async fetchExchangeActivitySummary(friends: Array<string> = new Array<string>()): Promise<Array<ExchangeSummaryData>> {
+    assertEmpty(friends);               // 入参不能为空
+    assertEqual(friends.length, 0);  // 入参不能为空数组
+
+    let exchangesummarysql: string = `select activitycount.phone,
+                                             activitycount.sendactivities,
+                                             activitycount.receivedactivities,
+                                             planitemcount.sendplanitems,
+                                             planitemcount.receivedplanitems
+                                      from
+                                      (select send.phone, ifnull(send.sendactivities, 0) sendactivities, ifnull(receive.receivedactivities, 0) receivedactivities
+                                      from
+                                      (select parbev.phone, count(parbev.evi) sendactivities
+                                        from
+                                        (select distinct parb.phone phone, ev.evi evi, ev.del del
+                                        from
+                                        (select par.pwi pwi, par.del del, par.obt obt, par.obi obi, b.rc phone
+                                        from gtd_par par
+                                        left join gtd_b b
+                                        on b.pwi = par.pwi) parb
+                                        left join gtd_ev ev
+                                        on (ifnull(ev.ui, '') = ?1 or ifnull(ev.ui, '') = '') and parb.del <> ?2 and parb.obt = ?3 and parb.obi = ev.evi) parbev
+                                        where parbev.phone in ('${friends.join(`', '`)}')
+                                      group by parbev.phone) send
+                                      left join
+                                      (select evb.phone, count(evb.evi) receivedactivities
+                                        from
+                                        (select b.rc phone, ev.ui ui, ev.evi evi, ev.del del
+                                        from gtd_ev ev
+                                        left join gtd_b b
+                                        on ev.del <> ?2 and b.ui = ev.ui) evb
+                                        where evb.phone in ('${friends.join(`', '`)}')
+                                      group by evb.phone) receive
+                                      on receive.phone = send.phone) activitycount
+                                      left join
+                                      (select send.phone, ifnull(send.sendplanitems, 0) sendplanitems, ifnull(receive.receivedplanitems, 0) receivedplanitems
+                                      from
+                                      (select parbjta.phone, count(parbjta.jti) sendplanitems
+                                        from
+                                        (select distinct parb.phone phone, jta.jti jti, jta.del del
+                                        from
+                                        (select par.pwi pwi, par.del del, par.obt obt, par.obi obi, b.rc phone
+                                        from gtd_par par
+                                        left join gtd_b b
+                                        on b.pwi = par.pwi) parb
+                                        left join gtd_jta jta
+                                        on (ifnull(jta.ui, '') = ?1 or ifnull(jta.ui, '') = '') and parb.del <> ?2 and parb.obt = ?4 and parb.obi = jta.jti) parbjta
+                                        where parbjta.phone in ('${friends.join(`', '`)}')
+                                      group by parbjta.phone) send
+                                      left join
+                                      (select jtab.phone, count(jtab.jti) receivedplanitems
+                                        from
+                                        (select b.rc phone, jta.ui ui, jta.jti jti, jta.del del
+                                        from gtd_jta jta
+                                        left join gtd_b b
+                                        on jta.del <> ?2 and b.ui = jta.ui) jtab
+                                        where jtab.phone in ('${friends.join(`', '`)}')
+                                      group by jtab.phone) receive
+                                      on receive.phone = send.phone) planitemcount
+                                      on planitemcount.phone = activitycount.phone`;
+
+    let exchangesummarys: Array<ExchangeSummaryData> = await this.sqlExce.getExtLstByParam<ExchangeSummaryData>(exchangesummarysql,
+        [UserConfig.account.id, DelType.del, ObjectType.Event, ObjectType.Calendar]) || new Array<ExchangeSummaryData>();
+
+    return exchangesummarys;
+  }
+
   /**
    * 取得所有日历概要
    * 包括 自定义日历/冥王星预定义日历
@@ -3855,16 +3943,20 @@ export class CalendarService extends BaseService {
 
   async requestInitialData() {
     let pull: PullInData = new PullInData();
-    pull.type = "*";
+    pull.type = "Plan|Attachment|Grouper|Memo|PlanItem|Agenda|Task|MiniTask";
     await this.dataRestful.pull(pull);
     return;
   }
 
-  async requestDeviceDiffData(types: Array<string> = ["Agenda", "Attachment", "Memo"]) {
+  async requestDeviceDiffData(types: Array<string> = ["Grouper", "Attachment", "Agenda", "PlanItem", "Memo"]) {
     assertEmpty(types);   // 入参不能为空
 
     for (let type of types) {
       let daycounts: Array<DayCountCodec>;
+
+      if (type == "Grouper") {
+        daycounts = await this.grouperService.codecGrouper() || new Array<DayCountCodec>();
+      }
 
       if (type == "Agenda") {
         daycounts = await this.eventService.codecAgendas() || new Array<DayCountCodec>();
@@ -4898,6 +4990,18 @@ export class ActivitySummaryData {
   repeateventscount: number;    // 重复事件数量
   acceptableeventscount: number;// 待接受事件数量
   bookedtimesummary: number;    // 总预定时长
+}
+
+export class ExchangeSummaryData {
+  phone: string;                // 手机号码
+  sendactivities: number = 0;       // 发出活动数量
+  receivedactivities: number = 0;   // 接收活动数量
+  sendplanitems: number = 0;        // 发出日历项数量
+  receivedplanitems: number = 0;    // 接收日历项数量
+
+  constructor(phone: string = "") {
+    this.phone = phone;
+  }
 }
 
 export class MonthActivitySummaryData {

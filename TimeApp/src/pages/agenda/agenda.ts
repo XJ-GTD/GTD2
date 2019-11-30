@@ -792,9 +792,9 @@ export class AgendaPage {
   }
 
   goRemove() {
-    if (this.modifyConfirm) {
+ /*   if (this.modifyConfirm) {
       this.modifyConfirm.dismiss();
-    }
+    }*/
     if (this.originAgenda.rfg == RepeatFlag.Repeat) { // 重复
       this.modifyConfirm = this.createConfirm(this.ConfirmText.Remove);
     } else {
@@ -815,6 +815,7 @@ export class AgendaPage {
   }
 
   createConfirm(confirmText: string, confirm: ConfirmType = ConfirmType.CurrentOrFutureAll) {
+    let actionSheet : any;
     let buttons: Array<any> = new Array<any>();
     let title: string = "";
     if (confirmText == this.ConfirmText.Remove) {
@@ -825,14 +826,22 @@ export class AgendaPage {
         text: '仅删除此日程',
         role: 'remove',
         handler: () => {
-          this.doOptionRemove(OperateType.OnlySel);
+          let navTransition = actionSheet.dismiss();
+          navTransition.then(() => {
+            this.doOptionRemove(OperateType.OnlySel);
+          });
+          return false;
         }
       });
       buttons.push({
         text: '删除所有将来日程',
         role: 'remove',
         handler: () => {
-          this.doOptionRemove(OperateType.FromSel);
+          let navTransition = actionSheet.dismiss();
+          navTransition.then(() => {
+            this.doOptionRemove(OperateType.FromSel);
+          });
+          return false;
         }
       });
     } else if (confirmText == this.ConfirmText.RemoveSimple) {
@@ -841,7 +850,11 @@ export class AgendaPage {
         text: '确定',
         role: 'ok',
         handler: () => {
-          this.doOptionRemove(OperateType.OnlySel);
+          let navTransition = actionSheet.dismiss();
+          navTransition.then(() => {
+            this.doOptionRemove(OperateType.OnlySel);
+          });
+          return false;
         }
       });
 
@@ -875,10 +888,11 @@ export class AgendaPage {
       }
     });
 
-    return this.actionSheetCtrl.create({
+    actionSheet =  this.actionSheetCtrl.create({
       title: title,
       buttons: buttons
     });
+    return actionSheet;
   }
 
   doOptionSave(op: OperateType) {

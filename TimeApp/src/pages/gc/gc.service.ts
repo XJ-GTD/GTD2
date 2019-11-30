@@ -5,7 +5,7 @@ import {BxTbl} from "../../service/sqlite/tbl/bx.tbl";
 import {UtilService} from "../../service/util-service/util.service";
 import {BTbl} from "../../service/sqlite/tbl/b.tbl";
 import {UserConfig} from "../../service/config/user.config";
-import {PageDcData} from "../../data.mapping";
+import {FsData, PageDcData} from "../../data.mapping";
 import {Grouper, GrouperRelation, GrouperService} from "../../service/business/grouper.service";
 import * as anyenum from "../../data.enum";
 
@@ -111,12 +111,11 @@ export class GcService {
     gtbl.gi = gi;
     let gp : Grouper = await this.sqlExce.getOne<Grouper>(gtbl);
 
-    let bx = new BxTbl();
-    bx.bi = gi;
-    let grouperRelations :Array<GrouperRelation> = await await this.sqlExce.getList<GrouperRelation>(bx);
+    let sql = 'select gb.* from gtd_b gb inner join gtd_b_x bx on bx.bmi = gb.pwi where bx.bi = "' + gi + '"';
+    let fss: Array<FsData> = await this.sqlExce.getExtList<FsData>(sql);
 
     if (gp != null){
-      gp.grouperRelations = grouperRelations;
+      gp.fss = fss;
       groupers.push(gp);
       await this.grouperService.syncGrouper(groupers);
     }
