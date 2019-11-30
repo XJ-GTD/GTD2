@@ -15,7 +15,7 @@ import {FsData} from "../../data.mapping";
 @Component({
   selector: 'page-fd',
   template:  `
-    <modal-box title="{{fd.ran}}" [buttons]="buttons" (onSave)="save()" (onCancel)="dismiss()">      
+    <modal-box title="{{fd.ran}}" [buttons]="buttons" (onSave)="save()" (onCancel)="dismiss()">
 
       <div ion-item no-border no-padding no-lines no-margin class="itemwarp font-normal">
         <ion-label>联系人别称</ion-label>
@@ -36,26 +36,26 @@ import {FsData} from "../../data.mapping";
       </div>
       <div ion-item no-border no-padding no-lines no-margin class="itemwarp font-normal">
         <ion-label>活动接收</ion-label>
-        <ion-label item-end text-end >150个</ion-label>
+        <ion-label item-end text-end >{{exchangesummary? exchangesummary.receivedactivities: "-"}}</ion-label>
       </div>
       <div ion-item no-border no-padding no-lines no-margin class="itemwarp font-normal">
         <ion-label>日历项接收</ion-label>
-        <ion-label item-end text-end >250个</ion-label>
+        <ion-label item-end text-end >{{exchangesummary? exchangesummary.receivedplanitems: "-"}}</ion-label>
       </div>
       <div ion-item no-border no-padding no-lines no-margin class="itemwarp font-normal">
         <ion-label>活动共享</ion-label>
-        <ion-label item-end text-end >30个</ion-label>
+        <ion-label item-end text-end >{{exchangesummary? exchangesummary.sendactivities: "-"}}</ion-label>
       </div>
       <div ion-item no-border no-padding no-lines no-margin class="itemwarp font-normal">
         <ion-label>日历项共享</ion-label>
-        <ion-label item-end text-end >2个</ion-label>
+        <ion-label item-end text-end >{{exchangesummary? exchangesummary.sendplanitems: "-"}}</ion-label>
       </div>
-      
+
       <div ion-item no-border no-padding no-lines no-margin class="itemwarp font-normal">
         <ion-label>来源</ion-label>
         <ion-label item-end text-end >{{fd.src}}</ion-label>
       </div>
-      
+
       <div ion-item no-border no-padding no-lines no-margin class="itemwarp font-normal">
         <ion-label>黑名单</ion-label>
         <ion-toggle [(ngModel)]="fd.isbla" (ionChange)="black(fd.isbla)"></ion-toggle>
@@ -70,6 +70,7 @@ export class FdPage {
     cancel: true
   };
 
+  exchangesummary: ExchangeSummaryData;
   fd:FsData = new FsData();
   pwi:string;
   buttonText:string = '';
@@ -100,8 +101,11 @@ export class FdPage {
       return this.fdService.getBlack(this.fd.rc);
     }).then( data=>{
       this.fd.isbla = data;
+      return this.fdService.getExchangeSummary(this.fd);
+    }).then( data=>{
+      this.exchangesummary = data;
 
-    })
+    });
   }
 
   dismiss() {

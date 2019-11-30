@@ -4,6 +4,7 @@ import {SqliteExec} from "../../service/util-service/sqlite.exec";
 import {UtilService} from "../../service/util-service/util.service";
 import {BlaReq, BlaRestful} from "../../service/restful/blasev";
 import {UserConfig} from "../../service/config/user.config";
+import {CalendarService, ExchangeSummaryData} from "../../service/business/calendar.service";
 import {ContactsService} from "../../service/cordova/contacts.service";
 import {FsData} from "../../data.mapping";
 
@@ -12,6 +13,7 @@ export class FdService {
   constructor(private personRes:PersonRestful,
               private blasev:BlaRestful,
               private util:UtilService,
+              private calendarService:CalendarService,
               private sqlite:SqliteExec,
               private userConfig:UserConfig,
               private contact:ContactsService) {
@@ -28,6 +30,10 @@ export class FdService {
         resolve(data);
       })
     })
+  }
+
+  async getExchangeSummary(fd:FsData): Promise<ExchangeSummaryData> {
+    return await this.calendarService.getExchangeActivitySummary(fd.rc);
   }
 
   getBlack(phoneno:string):Promise<boolean> {
@@ -89,6 +95,3 @@ export class FdService {
 
   }
 }
-
-
-
