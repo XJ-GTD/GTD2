@@ -11,6 +11,7 @@ module.exports = function(config) {
         pattern: './workerTimeout.js',
         watched: true
       },
+      {
         pattern: './test-config/karma-test-shim.js',
         watched: true
       },
