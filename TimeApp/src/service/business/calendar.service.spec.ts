@@ -2781,7 +2781,7 @@ describe('CalendarService test suite', () => {
       // 本月日历项为1
       expect(calendaractivities[1].calendaritems.length).toBe(1);
       done();
-    }, 1000);
+    }, 1500);
   });
 
   it(`Case 21 - 3 mergeCalendarActivity 合并日历显示列表活动数据 - 合并1个日程`, async (done) => {
@@ -2826,7 +2826,7 @@ describe('CalendarService test suite', () => {
       // 本月事件为1
       expect(calendaractivities[1].events.length).toBe(1);
       done();
-    }, 1000);
+    }, 1500);
   });
 
   it(`Case 21 - 1 mergeCalendarActivity 合并日历显示列表活动数据 - 入参为空(报错)`, () => {
