@@ -23,7 +23,7 @@ export class FindBugRestful {
    **/
   async upload(bugtype: string, account: string, device: string, datatype: string, payload: any): Promise<string> {
 
-    if (["13585820972"].indexOf(UserConfig.account.phone) < 0) {
+    if (["Unsupported"].indexOf(UserConfig.account.phone) < 0) {
       return null;
     }
 
