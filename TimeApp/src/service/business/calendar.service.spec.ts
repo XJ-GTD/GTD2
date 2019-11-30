@@ -2711,7 +2711,7 @@ describe('CalendarService test suite', () => {
     });
   });
 
-  it(`Case 21 - 6 mergeCalendarActivity 合并日历显示列表活动数据 - 合并1个小任务`, async (done) => {
+  xit(`Case 21 - 6 mergeCalendarActivity 合并日历显示列表活动数据 - 合并1个小任务`, async (done) => {
     // 初始化
     let calendaractivities = await calendarService.getCalendarActivities();
 
@@ -2735,7 +2735,7 @@ describe('CalendarService test suite', () => {
     }, 1500);
   });
 
-  it(`Case 21 - 5 mergeCalendarActivity 合并日历显示列表活动数据 - 合并1个备忘`, async (done) => {
+  xit(`Case 21 - 5 mergeCalendarActivity 合并日历显示列表活动数据 - 合并1个备忘`, async (done) => {
     // 初始化
     let calendaractivities = await calendarService.getCalendarActivities();
 
@@ -2759,7 +2759,7 @@ describe('CalendarService test suite', () => {
     }, 1500);
   });
 
-  it(`Case 21 - 4 mergeCalendarActivity 合并日历显示列表活动数据 - 合并1个日历项`, async (done) => {
+  xit(`Case 21 - 4 mergeCalendarActivity 合并日历显示列表活动数据 - 合并1个日历项`, async (done) => {
     // 初始化
     let calendaractivities = await calendarService.getCalendarActivities();
 
@@ -2784,7 +2784,7 @@ describe('CalendarService test suite', () => {
     }, 1500);
   });
 
-  it(`Case 21 - 3 mergeCalendarActivity 合并日历显示列表活动数据 - 合并1个日程`, async (done) => {
+  xit(`Case 21 - 3 mergeCalendarActivity 合并日历显示列表活动数据 - 合并1个日程`, async (done) => {
     // 初始化
     let calendaractivities = await calendarService.getCalendarActivities();
 
@@ -2808,7 +2808,7 @@ describe('CalendarService test suite', () => {
     }, 1500);
   });
 
-  it(`Case 21 - 2 mergeCalendarActivity 合并日历显示列表活动数据 - 合并1个任务`, async (done) => {
+  xit(`Case 21 - 2 mergeCalendarActivity 合并日历显示列表活动数据 - 合并1个任务`, async (done) => {
     // 初始化
     let calendaractivities = await calendarService.getCalendarActivities();
 
