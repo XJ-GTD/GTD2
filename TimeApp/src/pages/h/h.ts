@@ -115,10 +115,8 @@ export class HPage {
   }
 
   ionViewDidLoad() {
-
     this.tdl.regeditCalendar(this.calendar);
   }
-
 
   onPress(pressDay) {
     this.hService.centerShow(pressDay).then(d => {

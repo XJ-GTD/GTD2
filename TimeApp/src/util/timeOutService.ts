@@ -16,7 +16,7 @@ export class TimeOutService {
         fn();
         this.emitService.destroy(emitKey);
       })
-      this.notificationsService.systimeout(emitKey, mi / 1000 < 1 ? 1 : mi / 1000);
+      this.notificationsService.systimeout(emitKey, mi  < 1000 ? 1 : mi / 1000);
     } else {
       let timeoutWork = new Worker("./workerTimeout.js");
       timeoutWork.onmessage = (message) => {

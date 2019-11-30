@@ -6,7 +6,7 @@ import {
   IonicPage,
   MenuController,
   Platform,
-  ScrollEvent,
+  ScrollEvent
 } from 'ionic-angular';
 import {TdlService} from "./tdl.service";
 import {DataConfig} from "../../service/config/data.config";
@@ -25,16 +25,17 @@ import {
   PageDirection,
   PlanItemType,
   SelfDefineType,
-  SyncType, ToDoListStatus
+  SyncType,
+  ToDoListStatus
 } from "../../data.enum";
 import {TdlGesture} from "./tdl-gestures";
 import {CalendarComponent} from "../../components/ion2-calendar";
 import {UserConfig} from "../../service/config/user.config";
-import BScroll from '@better-scroll/core'
-import InfinityScroll from '@better-scroll/infinity'
 import {DetectorService} from "../../service/util-service/detector.service";
+import BScroll from "better-scroll";
+import {TimeOutService} from "../../util/timeOutService";
 
-BScroll.use(InfinityScroll);
+// BScroll.use(InfinityScroll);
 
 /**
  * Generated class for the 日程列表 page.
@@ -46,27 +47,9 @@ BScroll.use(InfinityScroll);
 @Component({
   selector: 'page-tdl',
   template:
-      `
-    <!--<div class="header-set">-->
-    <!--<div class="daynav">-->
-    <!--<div class="dayheader">-->
-
-    <!--<div class="d-fsize ">{{headerDate | formatedate :"CWEEK"}}</div>-->
-    <!--<div class="ym-fsize  ">{{headerDate | formatedate:"DD"}}</div>-->
-    <!--&lt;!&ndash;<div class="ys-fsize  " *ngFor="let jt of headerData.jtl" (click)="toDetail(jt.si,jt.sd,'3')">{{jt.spn}}</div>&ndash;&gt;-->
-    <!--</div>-->
-    <!--<div class="d-title  ">-->
-    <!--<div class="first d-title-chr">日记</div>-->
-    <!--<div class=" d-title-chr">10条日程</div>-->
-    <!--<div class=" d-title-chr">10条任务</div>-->
-    <!--<div class=" d-title-chr">10条任务</div>-->
-    <!--</div>-->
-    <!--</div>-->
-    <!--</div>-->
-
-    <ion-content #contentD class="monthActivityWapper">
-      <div style="height: 10000px"></div>
-      <ion-grid #grid4Hight class="list-grid-content">
+      `    
+    <div #monthActivityWapper class="monthActivityWapper">
+      <ion-grid #grid4Hight class="list-grid-content content">
         <ng-template ngFor let-monthActivityData [ngForOf]="monthActivityDatas">
           <ion-row class="item-content dayagenda-month {{monthActivityData.month  | transfromdate :'CSSMM'}}"
                    id="month{{monthActivityData.month | formatedate:'YYYYMM'}}">
@@ -91,7 +74,8 @@ BScroll.use(InfinityScroll);
             </ion-row>
             <ng-template [ngIf]="days.events.length > 0 || days.calendaritems.length > 0 || days.memos.length > 0 "
                          [ngIfElse]="noscd">
-              <ion-row class="item-content dayagenda-nav" id="day{{days.day | formatedate:'YYYYMMDD'}}" [class.today] = "istoday(days.day)">
+              <ion-row class="item-content dayagenda-nav" id="day{{days.day | formatedate:'YYYYMMDD'}}"
+                       [class.today]="istoday(days.day)">
                 <div class="line">
                   <div class="dayheader">
                     <div class="d-fsize">{{days.day | formatedate :"CWEEK"}}</div>
@@ -295,34 +279,32 @@ BScroll.use(InfinityScroll);
           </ng-template>
         </ng-template>
       </ion-grid>
-    </ion-content>
+    </div>
   `,
-  changeDetection:ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class TdlPage {
-
-  @ViewChild('contentD') contentD: Content;
+  // @ViewChild('contentD') contentD: Content;
   @ViewChild('grid4Hight') grid: ElementRef;
-
-
   option = {
     isgetData: false,
     loopmonth: false,
     canscroll: false,
+    isrefresh:false,
+    maxScrollY:0,
+    currentY:0,
+    direction:0,//-1 表示从上往下滑，1 表示从下往上滑，0 表示没有滑动。
   };
 
-
-  listmonth: moment.Moment = moment(moment().format("YYYYMM") + "01", "YYYYMMDD");
-
+  // @ElementRef("monthActivityWapper")
+  // monthActivityWapper:HTMLElement = null;
+  // listmonth: moment.Moment = moment(moment().format("YYYYMM") + "01", "YYYYMMDD");
   _gesture: TdlGesture;
-
-
+  @ViewChild('monthActivityWapper')
+  monthActivityWapper: ElementRef;
   currDayel: any;
-
-
   //画面数据List
   monthActivityDatas: Array<MonthActivityData> = new Array<MonthActivityData>();
-
   currentuser: string = UserConfig.account.id;
   friends: Array<any> = UserConfig.friends;
 
@@ -343,11 +325,13 @@ export class TdlPage {
 
   finished: EventFinishStatus = EventFinishStatus.Finished;
   todoliston = ToDoListStatus.On;
+  bScroll: BScroll|any;
+  cacheindexmap:Map<string,number> = new Map<string,number>();
 
   constructor(private tdlServ: TdlService,
               private menuController: MenuController,
               private emitService: EmitService,
-              private el: ElementRef,
+              private elementRef: ElementRef,
               private util: UtilService,
               private feedback: FeedbackService,
               private renderer2: Renderer2,
@@ -357,64 +341,237 @@ export class TdlPage {
               private _gestureCtrl: GestureController,
               private _domCtrl: DomController,
               private changeDetectorRef: ChangeDetectorRef,
-              private detectorService:DetectorService
+              private detectorService: DetectorService,
+              private timeOutService: TimeOutService
   ) {
     //当changeDetection:ChangeDetectionStrategy.OnPush 请注册
     this.detectorService.registerDetector(changeDetectorRef);
+    // setTimeout(()=>{
+    //   this.tdlServ.throughData(PageDirection.PageDown).then(data => {
+    //     this.detectorService.detector(()=>{
+    //       this.bScroll.finishPullDown();
+    //       this.tdlServ.throughData(PageDirection.PageDown).then(data => {
+    //         this.detectorService.detector(()=>{
+    //           this.bScroll.finishPullDown();
+    //         });
+    //       });
+    //     });
+    //   });
+    // },2000)
   }
-
-  getNativeElement(): any {
-    return this.contentD._scrollContent.nativeElement;
-  }
-
-  // ngAfterViewChecked() {
-  // console.log("downdowndowndownngAfterViewChecked");
-  // }
-  //
-  // ngOnChanges() {
-  //   console.log("downdowndowndownngOnChanges" );
-  // }
-  //
-  // ngOnInit() {
-  //   console.log("downdowndowndownngOnInit");
-  // }
-  //
-  // ngDoCheck() {
-  //   console.log("downdowndowndownngDoCheck"  );
-  // }
-  //
-  // ngAfterContentChecked() {
-  //   console.log("downdowndowndownngAfterContentChecked");
-  // }
-
 
   setScroll(scroll: boolean) {
     this.option.canscroll = scroll;
     if (scroll) {
-      this.renderer2.setStyle(this.contentD._scrollContent.nativeElement, "overflow-y", "auto");
+      this.renderer2.setStyle(this.monthActivityWapper.nativeElement, "overflow-y", "auto");
       this._gesture.unlisten();
-
     } else {
-      this.renderer2.setStyle(this.contentD._scrollContent.nativeElement, "overflow-y", "hidden");
+      this.renderer2.setStyle(this.monthActivityWapper.nativeElement, "overflow-y", "hidden");
       this._gesture.listen();
     }
-
   }
 
   regeditCalendar(calda: CalendarComponent) {
-    this._gesture = new TdlGesture(this._plt, this, this._gestureCtrl, this._domCtrl, calda);
+    this._gesture = new TdlGesture(this._plt,  this.monthActivityWapper.nativeElement,this._gestureCtrl, this._domCtrl, calda);
     this._gesture.listen();
   }
 
 
   ngAfterViewInit() {
-    this.tdlServ.initLsData().then(data => {
-      this.monthActivityDatas = data;
-      this.detectorService.detector();
-      this.gotoEl("#day" + moment().format("YYYYMMDD"));
+    this.bScroll = new BScroll('.monthActivityWapper', {
+      probeType:3,
+      pullDownRefresh:{
+        threshold: 90,
+        stop: 40
+      },
+      pullUpLoad:{
+        threshold: 90
+      }
+
+      // probeType:3
+      // infinity: {
+      //   fetch(count){
+      //     // 获取大于 count 数量的数据，该函数是异步的，它需要返回一个 Promise。
+      //     // 成功获取数据后，你需要 resolve 数据数组（也可以 resolve 一个 Promise）。
+      //     // 数组的每一个元素是列表数据，在 render 方法执行的时候会传递这个数据渲染。
+      //     // 如果没有数据的时候，你可以 resolve(false)，来告诉无限滚动列表已经没有更多数据了。
+      //     return new Promise((resolve)=>{
+      //       return this.tdlServ.initLsData();
+      //     });
+      //   },
+      //   render(item, div) {
+      //     // 渲染每一个元素节点，item 是数据，div 是包裹元素节点的容器。
+      //     // 该函数需要返回渲染后的 DOM 节点。
+      //     return `<div>我在测试</div>`
+      //   },
+      //   createTombstone() {
+      //     // 返回一个墓碑 DOM 节点。
+      //     return tome;
+      //   }
+      // }
     });
 
-    // this.contentD.enableJsScroll();
+    this.bScroll.on("pullingDown",()=>{
+
+
+      this.util.loadingStart().then(()=>{
+        this.tdlServ.throughData(PageDirection.PageDown).then(data => {
+          this.detectorService.detector(() => {
+            this.bScroll.finishPullDown();
+            this.util.loadingEnd();
+          });
+        });
+      });
+    });
+    this.bScroll.on("pullingUp",()=>{
+      this.util.loadingStart().then(()=>{
+        this.tdlServ.throughData(PageDirection.PageUp).then(data => {
+          this.detectorService.detector(()=>{
+            this.bScroll.finishPullUp();
+            this.util.loadingEnd();
+          });
+        });
+      });
+    });
+
+    this.bScroll.on("refresh",()=>{
+      this.option.isrefresh = true;
+      for (let i = this.monthActivityDatas.length - 1; i >= 0; i--) {
+        let month = moment(this.monthActivityDatas[i].month , "YYYY/MM").format("YYYYMM");
+        let key = "#month" + month;
+        let monthEl = this.monthActivityWapper.nativeElement.querySelector(key);
+        if (monthEl){
+          // console.log(month + "====" + monthEl.offsetTop);
+          this.cacheindexmap.set(month,monthEl.offsetTop);
+        }
+      }
+      let arrayObj=Array.from(this.cacheindexmap);
+      arrayObj = arrayObj.sort(function(a,b){return b[0].localeCompare(a[0])})
+      this.cacheindexmap = new Map<string, number>(arrayObj);
+      this.option.isrefresh = false;
+    });
+
+    this.bScroll.on("scrollEnd",()=>{
+
+      if (this.option.direction == 1){
+        this.bScroll.scrollBy(0,this.option.maxScrollY - this.bScroll.maxScrollY,0);
+        this.option.maxScrollY = this.bScroll.maxScrollY;
+      }
+
+      if (!this.option.isgetData){
+        this.option.maxScrollY = this.bScroll.maxScrollY * -1;
+        this.option.currentY = this.bScroll.y * -1;
+        if ((this.option.maxScrollY - this.option.currentY) < 100){
+          this.option.isgetData = true;
+          this.util.loadingStart().then(()=>{
+            this.tdlServ.throughData(PageDirection.PageUp).then(data => {
+              this.detectorService.detector(()=>{
+                this.bScroll.finishPullUp();
+                this.option.isgetData = false;
+                this.util.loadingEnd();
+                console.log("pageup ok")
+              });
+            });
+          });
+        }
+
+        if (this.option.currentY < 100){
+          this.option.isgetData = true;
+          this.util.loadingStart().then(()=>{
+            this.tdlServ.throughData(PageDirection.PageDown).then(data => {
+              this.detectorService.detector(()=>{
+                this.bScroll.finishPullDown();
+                this.option.isgetData = false;
+                this.util.loadingEnd();
+                console.log("pagedown ok")
+              });
+            });
+          })
+        }
+      }
+    });
+    this.bScroll.on("scroll",()=>{
+      this.option.direction = this.bScroll.maxScrollY;
+      if (this.option.canscroll && !this.option.isrefresh){
+        try{
+          //1 表示从上往下滑，1 表示从下往上滑，0 表示没有滑动。
+          let movingDirectionY = this.bScroll.movingDirectionY;
+          this.cacheindexmap.forEach((val,key,map)=>{
+
+            // console.log("key==" + key + "======" + (this.bScroll.y + val) + "===y ===" + this.bScroll.y + "===val ====" +val);
+            if (this.bScroll.y + val < -50){
+              // console.log("this.bScroll.y==" + this.bScroll.y);
+              // console.log("key==" + val);
+              this.emitService.emit("list.change.month", {month:key,direction: movingDirectionY});
+              throw new Error("");
+            }
+          })
+        }catch(e) {
+          return ;
+        }
+      }
+
+            // if (!this.option.loopmonth) {
+            //   this.option.loopmonth = !this.option.loopmonth;
+            //   for (let i = this.monthActivityDatas.length - 1; i >= 0; i--) {
+            //     let monobj = moment(this.monthActivityDatas[i].month + "/01", "YYYY/MM/DD");
+            //     let key = "#month" + monobj.format("YYYYMM");
+            //     let monthEl = this.elementRef.nativeElement.querySelector(key);
+            //     console.log(key + "====" + monthEl.offsetTop)
+            //     console.log("moun" + "====" + this.bScroll.y)
+            //     if (monthEl && this.bScroll.y + monthEl.offsetTop > 0) {
+            //       this.option.loopmonth = !this.option.loopmonth;
+            //
+            //       //准备发出emit
+            //       if (this.listmonth.isBefore(monobj)) {
+            //         this.emitService.emit("list.change.month", "next");
+            //       }
+            //       if (this.listmonth.isAfter(monobj)) {
+            //         this.emitService.emit("list.change.month", "prev");
+            //       }
+            //       this.listmonth = monobj;
+            //       break;
+            //     }
+            //   }
+            // }
+
+
+            // }
+      // if (this.option.isgetData) return;
+      // console.log(this.bScroll.scroller.scrollBehaviorY.maxScrollPos.valueOf() - this.bScroll.scroller.scrollBehaviorY.getCurrentPos());
+      // if(this.bScroll.scroller.scrollBehaviorY.maxScrollPos.valueOf() - this.bScroll.scroller.scrollBehaviorY.getCurrentPos() > -500
+      //   && this.bScroll.scroller.scrollBehaviorY.direction == 1){
+      //   this.option.isgetData = true;
+      //   this.tdlServ.throughData(PageDirection.PageUp).then(data => {
+      //     this.detectorService.detector(()=>{
+      //       this.bScroll.refresh();
+      //     });
+      //   })
+      //
+      // }
+      // if(this.bScroll.scroller.scrollBehaviorY.getCurrentPos() > -1000 && this.bScroll.scroller.scrollBehaviorY.direction == -1){
+      //   this.option.isgetData = true;
+      //   this.bScroll.stop();
+      //   this.tdlServ.throughData(PageDirection.PageDown).then(data => {
+      //     this.detectorService.detector(()=>{
+      //       this.bScroll.refresh();
+      //     });
+      //   })
+      //
+      // }
+    });
+
+
+
+    this.tdlServ.initLsData().then(data => {
+      this.monthActivityDatas = data;
+      this.detectorService.detector(()=>{
+        this.bScroll.refresh();
+        this.gotoEl("#day" + moment().format("YYYYMMDD"));
+      });
+
+    });
+
 
     this.emitService.registerSelectDate((selectDate: moment.Moment) => {
       this.gotoEl("#day" + selectDate.format("YYYYMMDD"));
@@ -423,166 +580,150 @@ export class TdlPage {
 
     this.emitService.register("calendar.change.month", ($data) => {
       this.gotoEl4month("#month" + $data);
-      this.listmonth = moment($data + "01", "YYYYMMDD");
+      // this.listmonth = moment($data + "01", "YYYYMMDD");
 
     });
-    setTimeout(() => {
 
-      this.contentD.ionScroll.subscribe(($event: ScrollEvent) => {
-        try {
+    // setTimeout(() => {
+    //
+    //   this.contentD.ionScroll.subscribe(($event: ScrollEvent) => {
+    //     try {
+    //
+    //
+    //       if (!$event) return;
+    //
+    //       //显示当前顶部滑动日期
+    //       if (!this.option.loopmonth) {
+    //         this.option.loopmonth = !this.option.loopmonth;
+    //         for (let i = this.monthActivityDatas.length - 1; i >= 0; i--) {
+    //           //let monthActivityData = this.monthActivityDatas[0];
+    //           let monobj = moment(this.monthActivityDatas[i].month + "/01", "YYYY/MM/DD");
+    //           let key = "#month" + monobj.format("YYYYMM");
+    //           let el = this.el.nativeElement.querySelector(key);
+    //           // if (el && $event.scrollTop - el.offsetTop < el.clientHeight && $event.scrollTop - el.offsetTop > 0) {
+    //           if (el && $event.scrollTop - el.offsetTop > 0) {
+    //             //this.headerDate = moment(scdlData.d).format("YYYY/MM/DD");
+    //             //this.headerMoment = moment(scdlData.d);
+    //             //this.feedback.audioTrans();
+    //             this.option.loopmonth = !this.option.loopmonth;
+    //
+    //             //准备发出emit
+    //             if (this.option.canscroll) {
+    //               if (this.listmonth.isBefore(monobj)) {
+    //                 this.emitService.emit("list.change.month", "next");
+    //               }
+    //               if (this.listmonth.isAfter(monobj)) {
+    //                 this.emitService.emit("list.change.month", "prev");
+    //               }
+    //
+    //             }
+    //             this.listmonth = monobj;
+    //             break;
+    //           }
+    //         }
+    //
+    //
+    //       }
+    //
+    //       if (this.option.isgetData) return;
+    //
+    //       if ($event.directionY == 'up') {
+    //
+    //         if ($event.scrollTop < 10000) {
+    //           this.contentD.scrollTo(0, 10100, 100);
+    //           return;
+    //         }
+    //
+    //         if ($event.scrollTop < 11000) {
+    //           // this.contentD._scroll.stop();
+    //           // this.setScroll(false);
+    //           this.option.isgetData = true;
+    //
+    //           this.tdlServ.throughData(PageDirection.PageDown).then(data => {
+    //             this.detectorService.detector();
+    //
+    //             this.option.isgetData = false;
+    //           })
+    //         }
+    //       }
+    //
+    //       if ($event.directionY == 'down') {
+    //         // console.log("***********************" + $event.scrollTop)
+    //         if ($event.scrollTop + 1000 > this.grid.nativeElement.clientHeight - $event.scrollElement.clientHeight) {
+    //
+    //           this.option.isgetData = true;
+    //
+    //           this.tdlServ.throughData(PageDirection.PageUp).then(data => {
+    //             this.detectorService.detector();
+    //             this.option.isgetData = false;
+    //           })
+    //         }
+    //       }
+    //
+    //     } catch (e) {
+    //       console.log(e);
+    //
+    //     }
+    //
+    //     // //显示当前顶部滑动日期
+    //     // for (let scdlData of this.monthActivityDatas) {
+    //     //   let el = this.el.nativeElement.querySelector("#day" + scdlData.id);
+    //     //   if (el && $event.scrollTop - el.offsetTop < el.clientHeight && $event.scrollTop - el.offsetTop > 0) {
+    //     //     this.headerDate = moment(scdlData.d).format("YYYY/MM/DD");
+    //     //     this.headerMoment = moment(scdlData.d);
+    //     //     //this.feedback.audioTrans();
+    //     //     break;
+    //     //   }
+    //     // }
+    //
+    //   });
+    // }, 2000);
 
-
-          if (!$event) return;
-
-          //显示当前顶部滑动日期
-          if (!this.option.loopmonth) {
-            this.option.loopmonth = !this.option.loopmonth;
-            for (let i = this.monthActivityDatas.length - 1; i >= 0; i--) {
-              //let monthActivityData = this.monthActivityDatas[0];
-              let monobj = moment(this.monthActivityDatas[i].month + "/01", "YYYY/MM/DD");
-              let key = "#month" + monobj.format("YYYYMM");
-              let el = this.el.nativeElement.querySelector(key);
-              // if (el && $event.scrollTop - el.offsetTop < el.clientHeight && $event.scrollTop - el.offsetTop > 0) {
-              if (el && $event.scrollTop - el.offsetTop > 0) {
-                //this.headerDate = moment(scdlData.d).format("YYYY/MM/DD");
-                //this.headerMoment = moment(scdlData.d);
-                //this.feedback.audioTrans();
-                this.option.loopmonth = !this.option.loopmonth;
-
-                //准备发出emit
-                if (this.option.canscroll) {
-                  if (this.listmonth.isBefore(monobj)) {
-                    this.emitService.emit("list.change.month", "next");
-                  }
-                  if (this.listmonth.isAfter(monobj)) {
-                    this.emitService.emit("list.change.month", "prev");
-                  }
-
-                }
-                this.listmonth = monobj;
-                break;
-              }
-            }
-
-
-          }
-
-          if (this.option.isgetData) return;
-
-          if ($event.directionY == 'up') {
-
-            if ($event.scrollTop < 10000) {
-              this.contentD.scrollTo(0, 10100, 100);
-              return;
-            }
-
-            if ($event.scrollTop < 11000) {
-              // this.contentD._scroll.stop();
-              // this.setScroll(false);
-              this.option.isgetData = true;
-
-              this.tdlServ.throughData(PageDirection.PageDown).then(data => {
-                this.detectorService.detector();
-
-                this.option.isgetData = false;
-              })
-            }
-          }
-
-          if ($event.directionY == 'down') {
-            // console.log("***********************" + $event.scrollTop)
-            if ($event.scrollTop + 1000 > this.grid.nativeElement.clientHeight - $event.scrollElement.clientHeight) {
-
-              this.option.isgetData = true;
-
-              this.tdlServ.throughData(PageDirection.PageUp).then(data => {
-                this.detectorService.detector();
-                this.option.isgetData = false;
-              })
-            }
-          }
-
-        } catch (e) {
-          console.log(e);
-
-        }
-
-        // //显示当前顶部滑动日期
-        // for (let scdlData of this.monthActivityDatas) {
-        //   let el = this.el.nativeElement.querySelector("#day" + scdlData.id);
-        //   if (el && $event.scrollTop - el.offsetTop < el.clientHeight && $event.scrollTop - el.offsetTop > 0) {
-        //     this.headerDate = moment(scdlData.d).format("YYYY/MM/DD");
-        //     this.headerMoment = moment(scdlData.d);
-        //     //this.feedback.audioTrans();
-        //     break;
-        //   }
-        // }
-
-      });
-    }, 2000);
-
-    new BScroll('.monthActivityWapper', {
-      scrollY: true,
-      disableMouse: false,
-      disableTouch: true
-      // infinity: {
-      //   fetch(count) {
-      //     // 获取大于 count 数量的数据，该函数是异步的，它需要返回一个 Promise。
-      //     // 成功获取数据后，你需要 resolve 数据数组（也可以 resolve 一个 Promise）。
-      //     // 数组的每一个元素是列表数据，在 render 方法执行的时候会传递这个数据渲染。
-      //     // 如果没有数据的时候，你可以 resolve(false)，来告诉无限滚动列表已经没有更多数据了。
-      //   }
-      //   render(item, div) {
-      //     // 渲染每一个元素节点，item 是数据，div 是包裹元素节点的容器。
-      //     // 该函数需要返回渲染后的 DOM 节点。
-      //   },
-      //   createTombstone() {
-      //     // 返回一个墓碑 DOM 节点。
-      //   }
-      // }
-    })
   }
-
   gotoEl(id) {
-    setTimeout(() => {
-      try {
-        if (this.currDayel && this.currDayel.className.indexOf("no-content") > -1) {
-          this.renderer2.removeClass(this.currDayel, "item-display");
-          this.renderer2.addClass(this.currDayel, "item-no-display");
-        }
-        this.currDayel = this.el.nativeElement.querySelector(id);
-        //
-        if (this.currDayel && this.currDayel.className.indexOf("no-content") > -1) {
-          this.renderer2.removeClass(this.currDayel, "item-no-display");
-          this.renderer2.addClass(this.currDayel, "item-display");
-        }
 
-
-        if (this.currDayel) {
-          this.contentD.scrollTo(0, this.currDayel.offsetTop -2 , 300);
-        } else {
-          this.gotoEl(id);
-        }
-      } catch (e) {
+    try {
+      if (this.currDayel && this.currDayel.className.indexOf("no-content") > -1) {
+        this.renderer2.removeClass(this.currDayel, "item-display");
+        this.renderer2.addClass(this.currDayel, "item-no-display");
+      }
+      this.currDayel = this.elementRef.nativeElement.querySelector(id);
+      //
+      if (this.currDayel && this.currDayel.className.indexOf("no-content") > -1) {
+        this.renderer2.removeClass(this.currDayel, "item-no-display");
+        this.renderer2.addClass(this.currDayel, "item-display");
       }
 
-    }, 200);
+      if (this.currDayel) {
+        this.bScroll.scrollToElement(this.currDayel, 300, 0, -2);
+      } else {
+        setTimeout(()=>{
+          // this.bScroll.openPullDown();
+          this.gotoEl(id);
+        },500);
+
+      }
+    } catch (e) {
+    }
+
   }
 
   gotoEl4month(id) {
-    setTimeout(() => {
-      try {
-        let currmonthel = this.el.nativeElement.querySelector(id);
-
-        if (currmonthel) {
-          this.contentD.scrollTo(0, currmonthel.offsetTop -2 , 300);
-        } else {
-          this.gotoEl4month(id);
-        }
-      } catch (e) {
-        console.log(e)
+    try {
+      let currmonthel = this.elementRef.nativeElement.querySelector(id);
+      if (currmonthel) {
+        this.bScroll.scrollToElement(currmonthel, 300, 0, -2);
+      } else {
+        // this.bScroll.trigger("pullingDown");
+        // // this.bScroll.autoPullDownRefresh();
+        // setTimeout(()=>{
+        //   // this.bScroll.openPullDown();
+        //   this.gotoEl4month(id);
+        // },2000);
       }
-    }, 200);
+
+    } catch (e) {
+    }
 
   }
 
@@ -659,9 +800,9 @@ export class TdlPage {
     this.util.createModal(DataConfig.PAGE._AGENDA_PAGE, p, ModalTranType.scale).present();
   }
 
-  istoday(val:any){
-    let m = moment(val,"YYYY/MM/DD");
-    return m.isSame(moment(),"date");
+  istoday(val: any) {
+    let m = moment(val, "YYYY/MM/DD");
+    return m.isSame(moment(), "date");
   }
 
 }

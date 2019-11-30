@@ -8,9 +8,10 @@ export class DetectorService {
   constructor(private timeOutService:TimeOutService) {
   }
 
-  detector(){
+  detector(callback?:Function){
     this.timeOutService.timeout(1000,()=>{
       this.detectorRef();
+      if (callback) callback();
     },"onpush.detector.ref");
   }
 

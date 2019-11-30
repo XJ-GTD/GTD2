@@ -16,10 +16,20 @@ export class TdlService {
   }
 
   public initLsData():Promise<Array<MonthActivityData>>{
-    return this.calendarService.getCalendarActivities();
+    return new Promise<any>(async resolve => {
+      let calendaractivities  =  await this.calendarService.getCalendarActivities();
+      // for (let i = 0 ; i <4 ;i ++){
+      //   let calendaractivities:Array<MonthActivityData> = new Array<MonthActivityData>();
+      //   calendaractivities = await this.calendarService.getCalendarActivities();
+      //   calendaractivities_1 = calendaractivities_1.concat(calendaractivities);
+      //
+      // }
+      resolve(calendaractivities);
+    });
   }
 
   public throughData(direction: PageDirection):Promise<any>{
+
     return this.calendarService.getCalendarActivities(direction);
   }
 

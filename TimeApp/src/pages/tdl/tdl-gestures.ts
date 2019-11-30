@@ -3,18 +3,16 @@ import {
   DomController,
   GestureController, GESTURE_ITEM_SWIPE, SlideGesture, SlideData
 } from "ionic-angular";
-import {TdlPage} from "./tdl";
 import {GESTURE_PRIORITY_SLIDING_ITEM} from "ionic-angular/gestures/gesture-controller";
-import {CalendarAnimation} from "../../components/ion2-calendar/calendar-animation";
 import {CalendarComponent} from "../../components/ion2-calendar";
 import {pointerCoord} from "ionic-angular/util/dom";
 import {clamp} from "ionic-angular/util/util";
 
 export class TdlGesture extends SlideGesture {
 
-  constructor(plt: Platform, tdl: TdlPage, gestureCtrl: GestureController, domCtrl: DomController,private calendarComponent:CalendarComponent)
+  constructor(plt: Platform, wapperHtmlEle:HTMLElement, gestureCtrl: GestureController, domCtrl: DomController,private calendarComponent:CalendarComponent)
   {
-    super(plt, tdl.getNativeElement(), {
+    super(plt, wapperHtmlEle, {
       direction: 'y',
       threshold: 5,
       zone: false,

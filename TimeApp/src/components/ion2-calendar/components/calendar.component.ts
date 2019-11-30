@@ -40,10 +40,10 @@ export const ION_CAL_VALUE_ACCESSOR: Provider = {
         <div class="title">
           <div float-left>
             <div float-left (click)="switchView()">
-              <p><b [class.thisM]="_thisMonth">{{_showMonth}}</b>
+              <p><b [class.thisM]="false">{{_showMonth}}</b>
                 <ion-icon class="arrow-dropdown"
                           [name]="_view ? 'md-arrow-dropdown' : 'md-arrow-dropright'"
-                          [class.thisM]="_thisMonth"></ion-icon>
+                          [class.thisM]="false"></ion-icon>
               </p>
 
             </div>
@@ -123,7 +123,7 @@ export class CalendarComponent implements OnInit {
   _options: CalendarComponentOptions;
   _view: boolean = true
   _showMonth;
-  _thisMonth: boolean;
+  // _thisMonth: boolean;
   swiper: Swiper;
   //swiper:any;
 
@@ -230,6 +230,25 @@ export class CalendarComponent implements OnInit {
   }
 
   openMonth() {
+
+    let currentMonth: CalendarMonth = this.monthOptsWarp[1].opts;
+
+    let time = moment(currentMonth.original.time).subtract(1, 'months').valueOf();
+    let months: Array<CalendarMonth> = this.calSvc.createMonthsByPeriod(time, 3, this._d);
+
+    this.monthOptsWarp[2].opts = months[2];
+    this.monthOptsWarp[1].opts = months[1];
+    this.monthOptsWarp[0].opts = months[0];
+    this.swiperover4data(1);
+
+    // months.forEach((v) => {
+    //
+    //   let warp: any = {};
+    //   warp.opts = v;
+    //   this.monthOptsWarp.push(warp)
+    //   // this.monthOpts.push(v);
+    // });
+
     this.calendarAnimation.openView(() => {
       this.changestat();
     }, true);
@@ -322,15 +341,44 @@ export class CalendarComponent implements OnInit {
 
 
     this.emitService.register("list.change.month", ($data) => {
-      if ($data == "next") {
-        this.change4emit = false;
-        this.slideNextEnd();
+      // console.log($data.month);
+      // console.log($data.direction);
 
-      }
-      if ($data == "prev") {
-        this.change4emit = false;
-        this.slidePrevEnd();
-      }
+      this.change4emit = false;
+      let time = moment($data.month,'YYYYMM').valueOf();
+      let months: Array<CalendarMonth> = this.calSvc.createMonthsByPeriod(time, 1, this._d);
+       this.monthOptsWarp[1].opts = months[0];
+      this._showMonth = defaults.MONTH_FORMAT[months[0].original.month];
+      // months.forEach((v) => {
+      //
+      //   let warp: any = {};
+      //   warp.opts = v;
+      //   this.monthOptsWarp.push(warp)
+      //   // this.monthOpts.push(v);
+      // });
+      // this.swiperover4data(1);
+
+
+      // let time = moment().subtract(1, "months").valueOf();
+      //
+      // let months: Array<CalendarMonth> = this.calSvc.createMonthsByPeriod(time, 3, this._d);
+      // months.forEach((v) => {
+      //
+      //   let warp: any = {};
+      //   warp.opts = v;
+      //   this.monthOptsWarp.push(warp)
+      //   // this.monthOpts.push(v);
+      // });
+      //
+      // if ($data == "next") {
+      //   this.change4emit = false;
+      //   this.slideNextEnd();
+      //
+      // }
+      // if ($data == "prev") {
+      //   this.change4emit = false;
+      //   this.slidePrevEnd();
+      // }
 
     });
 
@@ -391,7 +439,7 @@ export class CalendarComponent implements OnInit {
 
     if (!monthOpt) return;
     this._showMonth = defaults.MONTH_FORMAT[monthOpt.original.month];
-    this._thisMonth = monthOpt.original.month == moment().month() && monthOpt.original.year == moment().year();
+    // this._thisMonth = monthOpt.original.month == moment().month() && monthOpt.original.year == moment().year();
     this.calSvc.getMonthData(monthOpt).then(()=>{
       this.changeDetectorRef.markForCheck();
       this.changeDetectorRef.detectChanges();

@@ -3,4 +3,8 @@ page-tdl {
   position: relative;
   display: block;
   margin-top: 4px;
+  .monthActivityWapper{
+    height: 100%;
+    overflow: hidden;
+  }
 }

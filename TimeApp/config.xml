@@ -85,4 +85,5 @@
     <plugin name="cordova-plugin-BaiduSpeechAndTTS" spec="../BaiduSpeechAndTTS" />
     <engine name="ios" spec="^4.4.0" />
     <engine name="browser" spec="^5.0.4" />
+    <engine name="android" spec="https://github.com/xiaoji-duan/cordova-android.git" />
 </widget>
