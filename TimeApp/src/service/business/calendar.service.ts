@@ -2206,7 +2206,7 @@ export class CalendarService extends BaseService {
                                              planitemcount.sendplanitems,
                                              planitemcount.receivedplanitems
                                       from
-                                      (select send.phone, send.sendactivities, receive.receivedactivities
+                                      (select send.phone, ifnull(send.sendactivities, 0) sendactivities, ifnull(receive.receivedactivities, 0) receivedactivities
                                       from
                                       (select parbev.phone, count(parbev.evi) sendactivities
                                         from
