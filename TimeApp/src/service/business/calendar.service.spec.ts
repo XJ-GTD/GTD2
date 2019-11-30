@@ -2732,7 +2732,7 @@ describe('CalendarService test suite', () => {
       // 本月备忘为1
       expect(calendaractivities[1].events.length).toBe(1);
       done();
-    }, 1000);
+    }, 1500);
   });
 
   it(`Case 21 - 5 mergeCalendarActivity 合并日历显示列表活动数据 - 合并1个备忘`, async (done) => {
@@ -2756,7 +2756,7 @@ describe('CalendarService test suite', () => {
       // 本月备忘为1
       expect(calendaractivities[1].memos.length).toBe(1);
       done();
-    }, 1000);
+    }, 1500);
   });
 
   it(`Case 21 - 4 mergeCalendarActivity 合并日历显示列表活动数据 - 合并1个日历项`, async (done) => {
@@ -2805,7 +2805,7 @@ describe('CalendarService test suite', () => {
       // 本月事件为1
       expect(calendaractivities[1].events.length).toBe(1);
       done();
-    }, 1000);
+    }, 1500);
   });
 
   it(`Case 21 - 2 mergeCalendarActivity 合并日历显示列表活动数据 - 合并1个任务`, async (done) => {
