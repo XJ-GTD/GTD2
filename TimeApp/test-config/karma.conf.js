@@ -26,7 +26,8 @@ module.exports = function(config) {
     ],
 
     proxies: {
-      '/assets/': '/base/src/assets/'
+      '/assets/': '/base/src/assets/',
+      '/workerTimeout.js': '/base/src/workerTimeout.js'
     },
 
     preprocessors: {
