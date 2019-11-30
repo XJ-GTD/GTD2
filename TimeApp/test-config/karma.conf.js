@@ -8,7 +8,7 @@ module.exports = function(config) {
 
     files: [
       {
-        pattern: './workerTimeout.js',
+        pattern: './src/workerTimeout.js',
         watched: true
       },
       {
