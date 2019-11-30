@@ -46,21 +46,37 @@ export class GrouperService extends BaseService {
     let saved: Array<Grouper> = new Array<Grouper>();
 
     if (pullGroupers && pullGroupers !=null ){
+
       for (let j = 0 , len = pullGroupers.length; j < len ; j++){
         let grouper = new  Grouper();
         Object.assign(grouper, pullGroupers[j]);
 
         if (grouper.fss ){
           for (let fs of grouper.fss ){
-            let b = new BTbl();
-            let fssql = ` select * from gtd_b where pwi='${fs.pwi}' or ui ='${fs.ui}' or rc='${fs.rc}' ;`;
-            b = await this.sqlExce.getExtOne<BTbl>(fssql);
-            //本地存在就使用本地pwi，否则新建插入人员
-            if (b){
-              let bx = new BxTbl();
-              bx.bi = grouper.gi;
-              bx.bmi = b.pwi;
-              sqlparam.push([bx.rpT(),[]]);
+
+            if (UserConfig.friends){
+              let findm =  UserConfig.friends.find((value, index,arr)=>{
+                return value.pwi == fs.pwi || value.ui == fs.ui || value.rc == fs.rc;
+              });
+
+              //本地存在就使用本地pwi，否则新建插入人员
+              if (findm){
+                let bx = new BxTbl();
+                bx.bi = grouper.gi;
+                bx.bmi = findm.pwi;
+                sqlparam.push([bx.rpT(),[]]);
+              }else{
+                let pwi = this.util.getUuid();
+                let bx = new BxTbl();
+                bx.bi = grouper.gi;
+                bx.bmi = pwi;
+                sqlparam.push([bx.rpT(),[]]);
+
+                let bfs = new BTbl();
+                Object.assign(bfs,fs);
+                bfs.pwi = pwi;
+                sqlparam.push([bfs.rpT(),[]]);
+              }
             }else{
               let pwi = this.util.getUuid();
               let bx = new BxTbl();
@@ -73,6 +89,7 @@ export class GrouperService extends BaseService {
               bfs.pwi = pwi;
               sqlparam.push([bfs.rpT(),[]]);
             }
+
           }
         }
 
