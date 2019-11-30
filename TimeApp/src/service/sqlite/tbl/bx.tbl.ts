@@ -8,12 +8,12 @@ export class BxTbl implements ITbl{
 
   bi: string="";
   bmi: string="";
-  del: string ="";
+  del: string = "undel";
 
 
   cT():string {
 
-    let sq ='create table if not exists gtd_b_x( bi varchar(50) ,bmi varchar(50) ,del varchar(6) );';
+    let sq ='create table if not exists gtd_b_x( bi varchar(50) ,bmi varchar(50) ,del varchar(6), primary key (bi, bmi) );';
 
     return sq;
   }
@@ -72,14 +72,14 @@ export class BxTbl implements ITbl{
   }
 
   inT():string {
-    let sq =`insert into gtd_b_x 
+    let sq =`insert into gtd_b_x
       (  bi ,bmi,del) values('${this.bi}','${this.bmi}','${this.del}');`;
 
     return sq;
   }
 
   rpT():string {
-    let sq =`replace into gtd_b_x 
+    let sq =`replace into gtd_b_x
       (  bi ,bmi,del) values('${this.bi}','${this.bmi}','${this.del}');`;
 
     return sq;
