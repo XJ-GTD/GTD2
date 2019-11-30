@@ -33,9 +33,9 @@ module.exports = {
         loader: 'null-loader'
       },
       {
-        test: /\.js$/,
+        test: /workerTimeout\.js$/,
         include: /src/,
-        loader: 'null-loader'
+        loader: 'worker-loader'
       }
     ]
   },

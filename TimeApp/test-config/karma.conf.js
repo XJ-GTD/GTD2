@@ -8,6 +8,9 @@ module.exports = function(config) {
 
     files: [
       {
+        pattern: './workerTimeout.js',
+        watched: true
+      },
         pattern: './test-config/karma-test-shim.js',
         watched: true
       },
