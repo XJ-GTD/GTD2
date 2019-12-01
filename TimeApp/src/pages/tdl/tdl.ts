@@ -213,7 +213,7 @@ import {TimeOutService} from "../../util/timeOutService";
               <!--</ion-row>-->
               <ng-container *ngFor="let event of days.events;">
                 <ng-container *ngIf="!(event.ui != currentuser && event.rtevi && event.invitestatus != inviteaccept && event.invitestatus != invitereject)">
-                  <ion-row class="item-content dayagenda-content item-content-backgroud "
+                  <ion-row class="item-content dayagenda-content item-content-backgroud needsclick"
                            [class.item-content-hasmessage]="false"
                            (click)="toDetail(event.evi,event.evd,event.type,event.gs)">
                     <div class="line font-small first-line">
@@ -387,6 +387,10 @@ export class TdlPage {
       },
       pullUpLoad:{
         threshold: 90
+      },
+      click: {
+        type: Boolean,
+        default: true
       }
 
       // probeType:3
