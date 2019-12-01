@@ -47,7 +47,7 @@ import {TimeOutService} from "../../util/timeOutService";
 @Component({
   selector: 'page-tdl',
   template:
-      `    
+      `
     <div #monthActivityWapper class="monthActivityWapper">
       <ion-grid #grid4Hight class="list-grid-content content">
         <ng-template ngFor let-monthActivityData [ngForOf]="monthActivityDatas">
@@ -212,59 +212,60 @@ import {TimeOutService} from "../../util/timeOutService";
               <!--&lt;!&ndash;</div>&ndash;&gt;-->
               <!--</ion-row>-->
               <ng-container *ngFor="let event of days.events;">
-                <ion-row class="item-content dayagenda-content item-content-backgroud "
-                         [class.item-content-hasmessage]="false"
-                         *ngIf="!(event.ui != currentuser && event.rtevi && event.invitestatus != inviteaccept && event.invitestatus != invitereject)"
-                         (click)="toDetail(event.evi,event.evd,event.type,event.gs)">
-                  <div class="line font-small first-line">
-                    <div class="sn towline">{{event.evn}}</div>
-                  </div>
-                  <div class="line font-small">
-                    <div class="st">{{event.evt}}</div>
-                    <div class="person" *ngIf="currentuser != event.ui && event.ui != ''" end>
-                      -- {{event.ui | formatuser: currentuser: friends}}</div>
-                    <div class="person" *ngIf="currentuser == event.ui" end>-- 自己</div>
-                  </div>
-                  <div class="line font-small"
-                       *ngIf="!(currentuser != event.ui && event.ui != '' && event.invitestatus != inviteaccept && event.invitestatus != invitereject)">
-                    <!--<div class="person" *ngIf="currentuser != event.ui && event.ui != ''">-->
-                    <!--来自：{{event.ui | formatuser: currentuser: friends}} ({{event.apn}} / {{event.pn}}, {{event.fj}})</div>-->
-                    <!--<div class="person" *ngIf="currentuser == event.ui">自己 ({{event.apn}} / {{event.pn}}, {{event.fj}})</div>-->
-                    <!--<div class="invite" *ngIf="event.invitestatus != inviteaccept && event.invitestatus != invitereject"-->
-                    <!--end><span (click)="rejectInvite($event, event)">拒绝</span><span-->
-                    <!--(click)="acceptInvite($event, event)">接受</span></div>-->
-                    <div class="icon font-small">
-                      <ion-icon class="fal fa-cloud-upload" [class.over]="event.tb == synch"></ion-icon>
-                      <ion-icon class="fad fa-at"></ion-icon>
-                      <ion-icon class="fad fa-check-double" *ngIf="event.todolist == todoliston"
-                                [class.over]="event.wc == finished"></ion-icon>
+                <ng-container *ngIf="!(event.ui != currentuser && event.rtevi && event.invitestatus != inviteaccept && event.invitestatus != invitereject)">
+                  <ion-row class="item-content dayagenda-content item-content-backgroud "
+                           [class.item-content-hasmessage]="false"
+                           (click)="toDetail(event.evi,event.evd,event.type,event.gs)">
+                    <div class="line font-small first-line">
+                      <div class="sn towline">{{event.evn}}</div>
                     </div>
-                    <div class="icon font-small" end>
-                      <ion-icon class="fad fa-user-friends " *ngIf="event.pn > 0 "></ion-icon>
-                      <b *ngIf="event.pn > 0 ">{{event.apn}} / {{event.pn}}</b>
-                      <ion-icon class="fad fa-info-circle "></ion-icon>
-                      <b>{{event.fj}}</b>
+                    <div class="line font-small">
+                      <div class="st">{{event.evt}}</div>
+                      <div class="person" *ngIf="currentuser != event.ui && event.ui != ''" end>
+                        -- {{event.ui | formatuser: currentuser: friends}}</div>
+                      <div class="person" *ngIf="currentuser == event.ui" end>-- 自己</div>
                     </div>
-                  </div>
+                    <div class="line font-small"
+                         *ngIf="!(currentuser != event.ui && event.ui != '' && event.invitestatus != inviteaccept && event.invitestatus != invitereject)">
+                      <!--<div class="person" *ngIf="currentuser != event.ui && event.ui != ''">-->
+                      <!--来自：{{event.ui | formatuser: currentuser: friends}} ({{event.apn}} / {{event.pn}}, {{event.fj}})</div>-->
+                      <!--<div class="person" *ngIf="currentuser == event.ui">自己 ({{event.apn}} / {{event.pn}}, {{event.fj}})</div>-->
+                      <!--<div class="invite" *ngIf="event.invitestatus != inviteaccept && event.invitestatus != invitereject"-->
+                      <!--end><span (click)="rejectInvite($event, event)">拒绝</span><span-->
+                      <!--(click)="acceptInvite($event, event)">接受</span></div>-->
+                      <div class="icon font-small">
+                        <ion-icon class="fal fa-cloud-upload" [class.over]="event.tb == synch"></ion-icon>
+                        <ion-icon class="fad fa-at"></ion-icon>
+                        <ion-icon class="fad fa-check-double" *ngIf="event.todolist == todoliston"
+                                  [class.over]="event.wc == finished"></ion-icon>
+                      </div>
+                      <div class="icon font-small" end>
+                        <ion-icon class="fad fa-user-friends " *ngIf="event.pn > 0 "></ion-icon>
+                        <b *ngIf="event.pn > 0 ">{{event.apn}} / {{event.pn}}</b>
+                        <ion-icon class="fad fa-info-circle "></ion-icon>
+                        <b>{{event.fj}}</b>
+                      </div>
+                    </div>
 
-                  <div class="plan plan-left "
-                       [ngStyle]="{'background-color': event.ji == ''? 'transparent' : (event.ji | formatplan: 'color': privateplans )}">
-                    <span>{{event.ji | formatplan: 'name': '': privateplans}}</span></div>
+                    <div class="plan plan-left "
+                         [ngStyle]="{'background-color': event.ji == ''? 'transparent' : (event.ji | formatplan: 'color': privateplans )}">
+                      <span>{{event.ji | formatplan: 'name': '': privateplans}}</span></div>
 
-                  <div class="plan plan-left noinvite"
-                       *ngIf="currentuser != event.ui && event.ui != '' && event.invitestatus != inviteaccept && event.invitestatus != invitereject">
-                    <span>未接受</span>
-                  </div>
+                    <div class="plan plan-left noinvite"
+                         *ngIf="currentuser != event.ui && event.ui != '' && event.invitestatus != inviteaccept && event.invitestatus != invitereject">
+                      <span>未接受</span>
+                    </div>
 
-                  <!--<div class="syncing">-->
-                  <!--<div class="hand">-->
-                  <!--<div class="finger"></div>-->
-                  <!--<div class="finger"></div>-->
-                  <!--<div class="finger"></div>-->
-                  <!--<div class="finger"></div>-->
-                  <!--</div>-->
-                  <!--</div>-->
-                </ion-row>
+                    <!--<div class="syncing">-->
+                    <!--<div class="hand">-->
+                    <!--<div class="finger"></div>-->
+                    <!--<div class="finger"></div>-->
+                    <!--<div class="finger"></div>-->
+                    <!--<div class="finger"></div>-->
+                    <!--</div>-->
+                    <!--</div>-->
+                  </ion-row>
+                </ng-container>
               </ng-container>
 
             </ng-template>
