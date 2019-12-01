@@ -2715,7 +2715,7 @@ describe('CalendarService test suite', () => {
     // 初始化
     let calendaractivities = await calendarService.getCalendarActivities();
 
-    const mergeSpy = spyOn(calendarService, 'mergeCalendarActivity').and.callThrough();
+    let mergeSpy = spyOn(calendarService, 'mergeCalendarActivity').and.callThrough();
 
     let day: string = moment().format("YYYY/MM/DD");
 
@@ -2739,7 +2739,7 @@ describe('CalendarService test suite', () => {
     // 初始化
     let calendaractivities = await calendarService.getCalendarActivities();
 
-    const mergeSpy = spyOn(calendarService, 'mergeCalendarActivity').and.callThrough();
+    let mergeSpy = spyOn(calendarService, 'mergeCalendarActivity').and.callThrough();
 
     let day: string = moment().format("YYYY/MM/DD");
 
@@ -2763,7 +2763,7 @@ describe('CalendarService test suite', () => {
     // 初始化
     let calendaractivities = await calendarService.getCalendarActivities();
 
-    const mergeSpy = spyOn(calendarService, 'mergeCalendarActivity').and.callThrough();
+    let mergeSpy = spyOn(calendarService, 'mergeCalendarActivity').and.callThrough();
 
     let day: string = moment().format("YYYY/MM/DD");
 
@@ -2788,7 +2788,7 @@ describe('CalendarService test suite', () => {
     // 初始化
     let calendaractivities = await calendarService.getCalendarActivities();
 
-    const mergeSpy = spyOn(calendarService, 'mergeCalendarActivity').and.callThrough();
+    let mergeSpy = spyOn(calendarService, 'mergeCalendarActivity').and.callThrough();
 
     let day: string = moment().format("YYYY/MM/DD");
 
@@ -2812,7 +2812,7 @@ describe('CalendarService test suite', () => {
     // 初始化
     let calendaractivities = await calendarService.getCalendarActivities();
 
-    const mergeSpy = spyOn(calendarService, 'mergeCalendarActivity').and.callThrough();
+    let mergeSpy = spyOn(calendarService, 'mergeCalendarActivity').and.callThrough();
 
     // 任务
     let task: TaskData = {} as TaskData;
