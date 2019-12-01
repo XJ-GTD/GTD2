@@ -135,12 +135,12 @@ export class EventService extends BaseService {
           agd.txjson = generateTxJson(agd.txjson, agd.tx);
         }
 
-        //子日程且是未接受状态，查看主日程实际否接受，接受则子日程自动接受
-        if (agd.rtevi == "" || agd.invitestatus == InviteState.Accepted){
-          if (!agd.invitestatus) {
-            agd.invitestatus = InviteState.None;
-          }
-        }else{
+        if (!agd.invitestatus) {
+          agd.invitestatus = InviteState.None;
+        }
+
+        // 受邀人子日程且是未接受状态，查看主日程实际否接受，接受则子日程自动接受
+        if (agd.rtevi && agd.ui != UserConfig.account.id && agd.invitestatus != InviteState.Accepted) {
           let eviv = new EvTbl();
           eviv.evi = agd.rtevi;
           let masterAgd : AgendaData  = await this.sqlExce.getOneByParam<AgendaData>(eviv);
