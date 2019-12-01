@@ -534,10 +534,10 @@ describe('CalendarService test suite', () => {
     await calendarService.refreshCalendarActivitiesToMonth(month);
 
     expect(calendarholdings).toBeDefined();
-    expect(calendarholdings.length).toBe(3);
-    expect(calendarholdings[0].month).toBe(moment(month,"YYYY/MM").subtract(1, "months").format("YYYY/MM"));
-    expect(calendarholdings[1].month).toBe(month);
-    expect(calendarholdings[2].month).toBe(moment(month,"YYYY/MM").add(1, "months").format("YYYY/MM"));
+    expect(calendarholdings.length).toBe(7);
+    expect(calendarholdings[2].month).toBe(moment(month,"YYYY/MM").subtract(1, "months").format("YYYY/MM"));
+    expect(calendarholdings[3].month).toBe(month);
+    expect(calendarholdings[4].month).toBe(moment(month,"YYYY/MM").add(1, "months").format("YYYY/MM"));
   });
 
   it(`Case 29 - 1 - 1 refreshCalendarActivitiesToMonth 刷新日历显示列表到指定月份 - 已存在初始化数据(刷新到往后5个月)`, async () => {
@@ -550,14 +550,14 @@ describe('CalendarService test suite', () => {
     await calendarService.refreshCalendarActivitiesToMonth(after5month);
 
     expect(calendarholdings).toBeDefined();
-    expect(calendarholdings.length).toBe(7);
-    expect(calendarholdings[0].month).toBe(moment(month,"YYYY/MM").subtract(1, "months").format("YYYY/MM"));
-    expect(calendarholdings[1].month).toBe(month);
-    expect(calendarholdings[2].month).toBe(moment(month,"YYYY/MM").add(1, "months").format("YYYY/MM"));
-    expect(calendarholdings[3].month).toBe(moment(month,"YYYY/MM").add(2, "months").format("YYYY/MM"));
-    expect(calendarholdings[4].month).toBe(moment(month,"YYYY/MM").add(3, "months").format("YYYY/MM"));
-    expect(calendarholdings[5].month).toBe(moment(month,"YYYY/MM").add(4, "months").format("YYYY/MM"));
-    expect(calendarholdings[6].month).toBe(moment(month,"YYYY/MM").add(5, "months").format("YYYY/MM"));
+    expect(calendarholdings.length).toBe(9);
+    expect(calendarholdings[2].month).toBe(moment(month,"YYYY/MM").subtract(1, "months").format("YYYY/MM"));
+    expect(calendarholdings[3].month).toBe(month);
+    expect(calendarholdings[4].month).toBe(moment(month,"YYYY/MM").add(1, "months").format("YYYY/MM"));
+    expect(calendarholdings[5].month).toBe(moment(month,"YYYY/MM").add(2, "months").format("YYYY/MM"));
+    expect(calendarholdings[6].month).toBe(moment(month,"YYYY/MM").add(3, "months").format("YYYY/MM"));
+    expect(calendarholdings[7].month).toBe(moment(month,"YYYY/MM").add(4, "months").format("YYYY/MM"));
+    expect(calendarholdings[8].month).toBe(moment(month,"YYYY/MM").add(5, "months").format("YYYY/MM"));
   });
 
   it(`Case 29 - 1 refreshCalendarActivitiesToMonth 刷新日历显示列表到指定月份 - 已存在初始化数据(刷新到往前5个月)`, async () => {
@@ -570,7 +570,7 @@ describe('CalendarService test suite', () => {
     await calendarService.refreshCalendarActivitiesToMonth(before5month);
 
     expect(calendarholdings).toBeDefined();
-    expect(calendarholdings.length).toBe(7);
+    expect(calendarholdings.length).toBe(9);
     expect(calendarholdings[0].month).toBe(moment(month,"YYYY/MM").subtract(5, "months").format("YYYY/MM"));
     expect(calendarholdings[1].month).toBe(moment(month,"YYYY/MM").subtract(4, "months").format("YYYY/MM"));
     expect(calendarholdings[2].month).toBe(moment(month,"YYYY/MM").subtract(3, "months").format("YYYY/MM"));
@@ -2711,7 +2711,7 @@ describe('CalendarService test suite', () => {
     });
   });
 
-  xit(`Case 21 - 6 mergeCalendarActivity 合并日历显示列表活动数据 - 合并1个小任务`, async (done) => {
+  it(`Case 21 - 6 mergeCalendarActivity 合并日历显示列表活动数据 - 合并1个小任务`, async (done) => {
     // 初始化
     let calendaractivities = await calendarService.getCalendarActivities();
 
@@ -2730,12 +2730,12 @@ describe('CalendarService test suite', () => {
     setTimeout(() => {
       expect(mergeSpy.calls.any()).toBe(true, 'calendarService.mergeCalendarActivity called');
       // 本月备忘为1
-      expect(calendaractivities[1].events.length).toBe(1);
+      expect(calendaractivities[3].events.length).toBe(1);
       done();
     }, 1500);
   });
 
-  xit(`Case 21 - 5 mergeCalendarActivity 合并日历显示列表活动数据 - 合并1个备忘`, async (done) => {
+  it(`Case 21 - 5 mergeCalendarActivity 合并日历显示列表活动数据 - 合并1个备忘`, async (done) => {
     // 初始化
     let calendaractivities = await calendarService.getCalendarActivities();
 
@@ -2754,12 +2754,12 @@ describe('CalendarService test suite', () => {
     setTimeout(() => {
       expect(mergeSpy.calls.any()).toBe(true, 'calendarService.mergeCalendarActivity called');
       // 本月备忘为1
-      expect(calendaractivities[1].memos.length).toBe(1);
+      expect(calendaractivities[3].memos.length).toBe(1);
       done();
     }, 1500);
   });
 
-  xit(`Case 21 - 4 mergeCalendarActivity 合并日历显示列表活动数据 - 合并1个日历项`, async (done) => {
+  it(`Case 21 - 4 mergeCalendarActivity 合并日历显示列表活动数据 - 合并1个日历项`, async (done) => {
     // 初始化
     let calendaractivities = await calendarService.getCalendarActivities();
 
@@ -2779,12 +2779,12 @@ describe('CalendarService test suite', () => {
     setTimeout(() => {
       expect(mergeSpy.calls.any()).toBe(true, 'calendarService.mergeCalendarActivity called');
       // 本月日历项为1
-      expect(calendaractivities[1].calendaritems.length).toBe(1);
+      expect(calendaractivities[3].calendaritems.length).toBe(1);
       done();
     }, 1500);
   });
 
-  xit(`Case 21 - 3 mergeCalendarActivity 合并日历显示列表活动数据 - 合并1个日程`, async (done) => {
+  it(`Case 21 - 3 mergeCalendarActivity 合并日历显示列表活动数据 - 合并1个日程`, async (done) => {
     // 初始化
     let calendaractivities = await calendarService.getCalendarActivities();
 
@@ -2803,12 +2803,12 @@ describe('CalendarService test suite', () => {
     setTimeout(() => {
       expect(mergeSpy.calls.any()).toBe(true, 'calendarService.mergeCalendarActivity called');
       // 本月事件为1
-      expect(calendaractivities[1].events.length).toBe(1);
+      expect(calendaractivities[3].events.length).toBe(1);
       done();
     }, 1500);
   });
 
-  xit(`Case 21 - 2 mergeCalendarActivity 合并日历显示列表活动数据 - 合并1个任务`, async (done) => {
+  it(`Case 21 - 2 mergeCalendarActivity 合并日历显示列表活动数据 - 合并1个任务`, async (done) => {
     // 初始化
     let calendaractivities = await calendarService.getCalendarActivities();
 
@@ -2824,7 +2824,7 @@ describe('CalendarService test suite', () => {
     setTimeout(() => {
       expect(mergeSpy.calls.any()).toBe(true, 'calendarService.mergeCalendarActivity called');
       // 本月事件为1
-      expect(calendaractivities[1].events.length).toBe(1);
+      expect(calendaractivities[3].events.length).toBe(1);
       done();
     }, 1500);
   });
@@ -2978,12 +2978,12 @@ describe('CalendarService test suite', () => {
     await calendarService.getCalendarActivities(PageDirection.PageDown);
 
     expect(calendarholdings).toBeDefined();
-    expect(calendarholdings.length).toBe(5);
-    expect(calendarholdings[0].month).toBe(moment(month,"YYYY/MM").subtract(2, "months").format("YYYY/MM"));
-    expect(calendarholdings[1].month).toBe(moment(month,"YYYY/MM").subtract(1, "months").format("YYYY/MM"));
-    expect(calendarholdings[2].month).toBe(month);
-    expect(calendarholdings[3].month).toBe(moment(month,"YYYY/MM").add(1, "months").format("YYYY/MM"));
-    expect(calendarholdings[4].month).toBe(moment(month,"YYYY/MM").add(2, "months").format("YYYY/MM"));
+    expect(calendarholdings.length).toBe(9);
+    expect(calendarholdings[2].month).toBe(moment(month,"YYYY/MM").subtract(2, "months").format("YYYY/MM"));
+    expect(calendarholdings[3].month).toBe(moment(month,"YYYY/MM").subtract(1, "months").format("YYYY/MM"));
+    expect(calendarholdings[4].month).toBe(month);
+    expect(calendarholdings[5].month).toBe(moment(month,"YYYY/MM").add(1, "months").format("YYYY/MM"));
+    expect(calendarholdings[6].month).toBe(moment(month,"YYYY/MM").add(2, "months").format("YYYY/MM"));
   });
 
   it(`Case 17 - 2 - 1 getCalendarActivities 取得日历画面显示活动一览 - 向上拉加载(未初始化报错)`, (done: DoneFn) => {
@@ -3007,11 +3007,13 @@ describe('CalendarService test suite', () => {
     await calendarService.getCalendarActivities(PageDirection.PageUp);
 
     expect(calendarholdings).toBeDefined();
-    expect(calendarholdings.length).toBe(4);
-    expect(calendarholdings[0].month).toBe(moment(month,"YYYY/MM").subtract(1, "months").format("YYYY/MM"));
-    expect(calendarholdings[1].month).toBe(month);
-    expect(calendarholdings[2].month).toBe(moment(month,"YYYY/MM").add(1, "months").format("YYYY/MM"));
-    expect(calendarholdings[3].month).toBe(moment(month,"YYYY/MM").add(2, "months").format("YYYY/MM"));
+    expect(calendarholdings.length).toBe(8);
+    expect(calendarholdings[2].month).toBe(moment(month,"YYYY/MM").subtract(1, "months").format("YYYY/MM"));
+    expect(calendarholdings[3].month).toBe(month);
+    expect(calendarholdings[4].month).toBe(moment(month,"YYYY/MM").add(1, "months").format("YYYY/MM"));
+    expect(calendarholdings[5].month).toBe(moment(month,"YYYY/MM").add(2, "months").format("YYYY/MM"));
+    expect(calendarholdings[6].month).toBe(moment(month,"YYYY/MM").add(3, "months").format("YYYY/MM"));
+    expect(calendarholdings[7].month).toBe(moment(month,"YYYY/MM").add(4, "months").format("YYYY/MM"));
   });
 
   it(`Case 17 - 1 getCalendarActivities 取得日历画面显示活动一览 - 默认当前月份以及前后各一个月`, async () => {
@@ -3020,10 +3022,10 @@ describe('CalendarService test suite', () => {
     let calendarholdings = await calendarService.getCalendarActivities();
 
     expect(calendarholdings).toBeDefined();
-    expect(calendarholdings.length).toBe(3);
-    expect(calendarholdings[0].month).toBe(moment(month,"YYYY/MM").subtract(1, "months").format("YYYY/MM"));
-    expect(calendarholdings[1].month).toBe(month);
-    expect(calendarholdings[2].month).toBe(moment(month,"YYYY/MM").add(1, "months").format("YYYY/MM"));
+    expect(calendarholdings.length).toBe(7);
+    expect(calendarholdings[2].month).toBe(moment(month,"YYYY/MM").subtract(1, "months").format("YYYY/MM"));
+    expect(calendarholdings[3].month).toBe(month);
+    expect(calendarholdings[4].month).toBe(moment(month,"YYYY/MM").add(1, "months").format("YYYY/MM"));
   });
 
   it(`Case 16 - 1 - 1 sharePlan 分享日历/计划 - 公共日历(没有日历项)`, async () => {
