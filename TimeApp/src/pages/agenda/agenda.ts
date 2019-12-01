@@ -232,10 +232,10 @@ declare var Wechat;
                 <button (click)="rejectInvite(currentAgenda)">拒绝</button>
                 <button (click)="acceptInvite(currentAgenda)">接受</button>
               </ion-buttons>
-              
+
             </div>
           </div>
-          
+
         </ion-row>
       </ion-grid>
     </page-box>
@@ -1020,7 +1020,7 @@ export class AgendaPage {
             type ="备忘";
       }
       else {
-            type ="日程";
+            type ="活动";
       }
       let title: string = `${this.currentusername} 分享了 一个${type}`;
       //验证是否按照微信组件
