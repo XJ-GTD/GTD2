@@ -2776,12 +2776,13 @@ describe('CalendarService test suite', () => {
 
     await calendarService.savePlanItem(planitem1);
 
-    setTimeout(() => {
+    // setTimeout(() => {
+    tick();
       expect(mergeSpy.calls.any()).toBe(true, 'calendarService.mergeCalendarActivity called');
       // 本月日历项为1
       expect(calendaractivities[3].calendaritems.length).toBe(1);
       done();
-    }, 1500);
+    // }, 1500);
   });
 
   it(`Case 21 - 3 mergeCalendarActivity 合并日历显示列表活动数据 - 合并1个日程`, async (done) => {
