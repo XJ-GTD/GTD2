@@ -111,6 +111,7 @@ export class InvitesPage {
       if (this.memberSet.mine){
         this.powerEnable = true;
         this.inviteEnable = true;
+        this.canCreate = true;
       }else{
         this.powerEnable = false;
         this.inviteEnable = this.memberSet.iv;
