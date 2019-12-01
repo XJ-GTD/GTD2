@@ -12,6 +12,23 @@ export function getSha1SafeforBrowser(userid: string) {
   return hash.update(userid).digest("hex");
 }
 
+export function checksum(value, options) {
+  options || (options = {});
+
+  if (!options.algorithm) options.algorithm = 'md5';
+  if (!options.encoding) options.encoding = 'hex';
+
+  var hash = createHash(options.algorithm);
+
+  if (!hash.write) {
+    hash.update(value);
+  } else {
+    hash.write(value);
+  }
+
+  return hash.digest(options.encoding);
+}
+
 /** @hidden */
 export function randomBytes(n: number) {
   for (var bytes = []; n > 0; n--)
