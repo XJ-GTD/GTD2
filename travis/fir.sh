@@ -32,7 +32,7 @@ if [ $TRAVIS_OS_NAME = 'osx' ]; then
 fi
 
 if [ $TRAVIS_OS_NAME = 'linux' ]; then
-  if [$TRAVIS_JOB_NAME = 'unittest']; then
+  if [ $TRAVIS_JOB_NAME = 'unittest' ]; then
     if [ $TRAVIS_BRANCH = 'cassiscornuta' ]; then
       echo "Uploading browser files"
       ls -la $TRAVIS_BUILD_DIR/TimeApp/platforms/browser/www
