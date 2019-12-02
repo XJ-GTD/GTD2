@@ -97,6 +97,29 @@ export class EventService extends BaseService {
 
     if (pullAgdatas && pullAgdatas !=null ){
 
+      let rteviArray = new Array<string>();
+      for (let stragd of pullAgdatas){
+        if (stragd.rtevi != ""){
+          let findm =  rteviArray.find((value, index,arr)=>{
+            return value ==  "'"+stragd.rtevi+"'" ;
+          });
+          if (!findm){
+            rteviArray.push("'"+stragd.rtevi+"'");
+          }
+        }
+      }
+
+      let masterAgds : Array<AgendaData>;
+      if (rteviArray.length > 0 ){
+        let evistring = rteviArray.join(",");
+        let sq = ` select * from gtd_ev where evi in (${evistring}) ;`;
+        masterAgds  = await this.sqlExce.getExtLstByParam<AgendaData>(sq,[]);
+      }else{
+        masterAgds = new Array<AgendaData>();
+      }
+
+
+
       for (let j = 0 , len = pullAgdatas.length; j < len ; j++){
         let agd = {} as AgendaData;
         Object.assign(agd, pullAgdatas[j]);
@@ -141,10 +164,10 @@ export class EventService extends BaseService {
 
         // 受邀人子日程且是未接受状态，查看主日程实际否接受，接受则子日程自动接受
         if (agd.rtevi && agd.ui != UserConfig.account.id && agd.invitestatus != InviteState.Accepted) {
-          let eviv = new EvTbl();
-          eviv.evi = agd.rtevi;
-          let masterAgd : AgendaData  = await this.sqlExce.getOneByParam<AgendaData>(eviv);
-          if (masterAgd !=null && masterAgd.invitestatus == InviteState.Accepted ){
+          let findm =  masterAgds.find((value, index,arr)=>{
+            return value.evi == agd.rtevi ;
+          });
+          if (findm && findm.invitestatus == InviteState.Accepted ){
             agd.invitestatus = InviteState.Accepted;
 
             //设定了截止日期，则自动加入todolist
@@ -1283,21 +1306,15 @@ export class EventService extends BaseService {
     }
 
 
-    if(agdata.gs == '0'){
-      //共享人信息
-      agdata.members = await this.getMemberByEvi(parEvi);
-      //参与人数量
-      if (agdata.members !=null){
-        agdata.pn = agdata.members.length ;
-      }else{
-        agdata.pn = 0 ;
-      }
+    //共享人信息
+    agdata.members = await this.getMemberByEvi(parEvi);
+    //参与人数量
+    if (agdata.members !=null){
+      agdata.pn = agdata.members.length ;
+    }else{
+      agdata.pn = 0 ;
     }
 
-    if(agdata.gs == '1'){
-      //发起人信息
-      agdata.originator = await this.getMemberByUi(agdata.ui);
-    }
     return agdata;
 
   }
