@@ -239,6 +239,8 @@ export class CalendarService extends BaseService {
               this.calendarsubjects.set(ele.evi, subject);
               this.calendarobservables[ele.evi] = subject.asObservable();
             }
+
+            subject.next(false);
             // Observable
           }
         });
