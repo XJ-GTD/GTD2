@@ -1184,7 +1184,7 @@ describe('EventService test suite', () => {
       expect(result).not.toBe(true);
     });
 
-    it('Case 26 - 1 - 1   hasTaskModifyConfirm 判断任务是否需要确认', async () => {
+    it('Case 26 - 1 - 1   hasTaskModifyConfirm 判断任务是否需要确认Repeat', async () => {
       let tx: TaskData = {} as TaskData;
       tx.evn ="今天老席和老张，一起出去吸烟去了";
       tx.rtjson = new RtJson();
@@ -1194,9 +1194,25 @@ describe('EventService test suite', () => {
       expect(tx.evi).toBeDefined();
 
       let confirm: ConfirmType = await eventService.hasTaskModifyConfirm(tx,tx);
-      expect(tx).toBeDefined();
+      expect(confirm).toBeDefined();
     });
 
+    it('Case 26 - 1 - 2   hasTaskModifyConfirm 判断任务是否需要确认NonRepeat', async () => {
+      let tx: TaskData = {} as TaskData;
+      tx.evn ="今天老席和老张，一起出去吸烟去了";
+      tx.rtjson = new RtJson();
+      tx.rfg =  RepeatFlag.RepeatToOnly;
+      tx = await eventService.saveTask(tx);
+      expect(tx).toBeDefined();
+      expect(tx.evi).toBeDefined();
+
+      let tx1: TaskData = {} as TaskData;
+    	Object.assign(tx1, tx);
+      tx1.rfg = RepeatFlag.NonRepeat;
+
+      let confirm: ConfirmType = await eventService.hasTaskModifyConfirm(tx,tx1);
+      expect(tx).toBeDefined();
+    });
 
   });
 
