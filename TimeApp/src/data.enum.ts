@@ -236,3 +236,7 @@ export enum UpdState {
   updtodel = "updtodel",
   updtoadd = "updtoadd",
 }
+
+export enum PullType {
+  Full = "Plan|Attachment|Grouper|Memo|PlanItem|Agenda|Task|MiniTask"
+}
