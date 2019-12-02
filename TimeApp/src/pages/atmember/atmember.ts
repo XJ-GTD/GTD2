@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {ChangeDetectorRef, Component} from '@angular/core';
 import {ModalController, NavController, NavParams, ViewController} from 'ionic-angular';
 import {UtilService} from "../../service/util-service/util.service";
 import {MemberPageData} from "../../data.mapping";
@@ -100,7 +100,8 @@ export class AtMemberPage {
               public viewCtrl: ViewController,
               public navParams: NavParams,
               private annotationService: AnnotationService,
-              private util: UtilService,) {
+              private util: UtilService,
+              private changeDetectorRef: ChangeDetectorRef,) {
 
     if (this.navParams && this.navParams.data) {
       this.pageMemberList.length = 0;
@@ -122,6 +123,7 @@ export class AtMemberPage {
       this.selMemberList.push(member);
     }
     this.checkedSet();
+    this.changeDetectorRef.detectChanges();
   }
 
   save() {
