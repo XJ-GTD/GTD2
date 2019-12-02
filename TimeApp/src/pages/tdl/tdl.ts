@@ -215,14 +215,13 @@ import { Observable } from 'rxjs';
               <ng-container *ngFor="let event of days.events;">
                 <ng-container *ngIf="!(event.ui != currentuser && event.rtevi && event.invitestatus != inviteaccept && event.invitestatus != invitereject)">
                   <ion-row class="item-content dayagenda-content item-content-backgroud"
-                           [class.item-content-hasmessage]="true"
+                           [class.item-content-hasmessage]="calendarobservables.get(event.evi) | async"
                            (click)="toDetail(event.evi,event.evd,event.type,event.gs)">
                     <div class="line font-small first-line">
                       <div class="sn towline">{{event.evn}}</div>
                     </div>
                     <div class="line font-small">
                       <div class="st">{{event.evt}}</div>
-                      <div class="st">{{calendarobservables.get(event.evi) | async}}</div>
                       <div class="person" *ngIf="currentuser != event.ui && event.ui != ''" end>
                         -- {{event.ui | formatuser: currentuser: friends}}</div>
                       <div class="person" *ngIf="currentuser == event.ui" end>-- 自己</div>
