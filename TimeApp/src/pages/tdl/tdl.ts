@@ -34,6 +34,7 @@ import {UserConfig} from "../../service/config/user.config";
 import {DetectorService} from "../../service/util-service/detector.service";
 import BScroll from "better-scroll";
 import {TimeOutService} from "../../util/timeOutService";
+import { Observable } from 'rxjs';
 
 // BScroll.use(InfinityScroll);
 
@@ -242,7 +243,7 @@ import {TimeOutService} from "../../util/timeOutService";
                       <div class="icon font-small" end>
                         <ion-icon class="fad fa-user-friends " *ngIf="event.pn > 0 "></ion-icon>
                         <b *ngIf="event.pn > 0 ">{{event.apn}} / {{event.pn}}</b>
-                        <ion-icon class="fad fa-info-circle "></ion-icon>
+                        <ion-icon class="fad fa-info-circle " [class.over]="calendarobservables[event.evi] | async"></ion-icon>
                         <b>{{event.fj}}</b>
                       </div>
                     </div>
@@ -306,6 +307,7 @@ export class TdlPage {
   currDayel: any;
   //画面数据List
   monthActivityDatas: Array<MonthActivityData> = new Array<MonthActivityData>();
+  calendarobservables: Map<string, Observable>;
   currentuser: string = UserConfig.account.id;
   friends: Array<any> = UserConfig.friends;
 
@@ -347,6 +349,7 @@ export class TdlPage {
   ) {
     //当changeDetection:ChangeDetectionStrategy.OnPush 请注册
     this.detectorService.registerDetector(changeDetectorRef);
+    this.calendarobservables = this.calendarService.getCalendarObservables();
     // setTimeout(()=>{
     //   this.tdlServ.throughData(PageDirection.PageDown).then(data => {
     //     this.detectorService.detector(()=>{
