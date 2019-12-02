@@ -32,6 +32,7 @@ function clean(datasource)
   var copyto = input['copyto'];
   var header = input['header'];
   var datas = input['datas'];
+  var extension = input['extension'];
 
   var formatDateTime = function(date) {
       return date.getFullYear() + '/' + (date.getMonth()+1) + '/' + date.getDate() + ' ' + date.getHours() + ':' + date.getMinutes() + ':' + date.getSeconds();
@@ -106,7 +107,7 @@ function clean(datasource)
   }
 
   // 使用文件传输数据
-  var convertDataFileMessage = function(type, file) {
+  var convertDataFileMessage = function(type, extension, file) {
     var output = {};
 
     // 返回消息头部
@@ -129,10 +130,12 @@ function clean(datasource)
       }
     };
 
+    if (extension) output.content['0']['parameters']['extension'] = extension;
+
     return output;
   }
 
-  var convertDataMessage = function(id, type, status, share, members, payload) {
+  var convertDataMessage = function(id, type, extension, status, share, members, payload) {
     var output = {};
 
     // 返回消息头部
@@ -158,6 +161,8 @@ function clean(datasource)
         data: payload
       }
     };
+
+    if (extension) output.content['0']['parameters']['extension'] = extension;
 
     return output;
   }
@@ -306,7 +311,7 @@ function clean(datasource)
         standardnext.announceDevice = requestdevice;
         standardnext.announceType = 'data_sync';
         standardnext.announceContent = {
-          mwxing: convertDataFileMessage(type, file),
+          mwxing: convertDataFileMessage(type, extension, file),
           sms: {},
           push: {}
         };
@@ -327,7 +332,7 @@ function clean(datasource)
           standardnext.announceDevice = requestdevice;
           standardnext.announceType = 'data_sync';
           standardnext.announceContent = {
-            mwxing: convertDataMessage(id, type, status, share, members, payload),
+            mwxing: convertDataMessage(id, type, extension, status, share, members, payload),
             sms: {},
             push: {}
           };

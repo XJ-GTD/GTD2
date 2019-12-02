@@ -168,6 +168,7 @@ export class DataSyncProcess implements MQProcess {
     //拉取数据文件直接保存
     if (content.option == DS.FS) {
       let file: string = content.parameters.file;
+      let extension: string = content.parameters.extension;
 
       let filedatas = await this.dataRestful.pullfile(file);
 
@@ -299,7 +300,7 @@ export class DataSyncProcess implements MQProcess {
             } else if (datatype == "PlanItem") {
               await this.calendarService.receivedPlanItemData(typeclassdel, SyncDataStatus.Deleted);
             } else if (datatype == "Agenda") {
-              await this.eventService.receivedAgendaData(typeclassdel, SyncDataStatus.Deleted);
+              await this.eventService.receivedAgendaData(typeclassdel, SyncDataStatus.Deleted, extension);
             } else if (datatype == "Memo") {
               for (let memo of typeclassdel) {
                 await this.memoService.receivedMemoData(memo, SyncDataStatus.Deleted);
@@ -323,7 +324,7 @@ export class DataSyncProcess implements MQProcess {
             } else if (datatype == "PlanItem") {
                 await this.calendarService.receivedPlanItemData(typeclassundel, SyncDataStatus.UnDeleted);
             } else if (datatype == "Agenda") {
-              await this.eventService.receivedAgendaData(typeclassundel, SyncDataStatus.UnDeleted);
+              await this.eventService.receivedAgendaData(typeclassundel, SyncDataStatus.UnDeleted, extension);
             } else if (datatype == "Memo") {
               for (let memo of typeclassundel) {
                 await this.memoService.receivedMemoData(memo, SyncDataStatus.UnDeleted);
@@ -613,7 +614,7 @@ export class DataSyncProcess implements MQProcess {
           }
         }
 
-        await this.eventService.receivedAgendaData([agenda], this.convertSyncStatus(dsPara.status));
+        await this.eventService.receivedAgendaData([agenda], this.convertSyncStatus(dsPara.status), dsPara.extension);
       }
 
       if (dsPara.type == "Memo") {
