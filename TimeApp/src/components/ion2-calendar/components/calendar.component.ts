@@ -239,7 +239,7 @@ export class CalendarComponent implements OnInit {
     this.monthOptsWarp[2].opts = months[2];
     this.monthOptsWarp[1].opts = months[1];
     this.monthOptsWarp[0].opts = months[0];
-    this.swiperover4data(1);
+    this.swiperover4data(1,"current");
 
     // months.forEach((v) => {
     //
@@ -300,7 +300,7 @@ export class CalendarComponent implements OnInit {
     });
 
 
-    this.swiperover4data(1);
+    this.swiperover4data(1,"current");
 
 
     this.swiper.on("slideNextTransitionEnd", () => {
@@ -400,7 +400,7 @@ export class CalendarComponent implements OnInit {
     //不影响编译
     // this.swiper.setTransition(10);
     // this.swiper.setTranslate(this.swiper.translate - window.innerWidth);
-    this.swiperover4data(1);
+    this.swiperover4data(1,"prev");
 
   }
 
@@ -423,13 +423,13 @@ export class CalendarComponent implements OnInit {
     // this.swiper.setTransition(10);
     // this.swiper.setTranslate(this.swiper.translate + window.innerWidth);
 
-    this.swiperover4data(1);
+    this.swiperover4data(1,"next");
 
 
   }
 
 
-  swiperover4data(index: number, gototoday: boolean = false) {
+  swiperover4data(index: number,option:string, gototoday: boolean = false) {
 
     // this.swiper.update()
     // this.swiper.updateSlidesClasses();
@@ -446,7 +446,7 @@ export class CalendarComponent implements OnInit {
     })
 
     if (this.change4emit && !gototoday)
-      this.emitService.emit("calendar.change.month", moment(monthOpt.original.time).format("YYYYMM"));
+      this.emitService.emit("calendar.change.month",{month:moment(monthOpt.original.time).format("YYYYMM"),option:option});
 
     if (gototoday)
       this.emitService.emitSelectDate(moment());
@@ -490,7 +490,7 @@ export class CalendarComponent implements OnInit {
     // this.swiper.setTransition(10);
     // this.swiper.setTranslate(this.swiper.translate + window.innerWidth);
 
-    this.swiperover4data(1, true);
+    this.swiperover4data(1, "current",true);
     IonCalendarService.selecttime = moment(moment().format("YYYY-MM-DD")).valueOf();
     this.onGotoToday.emit(this.selectedCalendarDay);
   }
