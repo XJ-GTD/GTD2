@@ -237,7 +237,7 @@ export class CalendarService extends BaseService {
             if (!subject) {
               subject = new Subject<boolean>();
               this.calendarsubjects.set(ele.evi, subject);
-              this.calendarobservables[ele.evi] = subject.asObservable());
+              this.calendarobservables[ele.evi] = subject.asObservable();
             }
             // Observable
           }
@@ -3073,7 +3073,7 @@ export class CalendarService extends BaseService {
               if (!subject) {
                 subject = new Subject<boolean>();
                 this.calendarsubjects.set(event.evi, subject);
-                this.calendarobservables[event.evi] = subject.asObservable());
+                this.calendarobservables[event.evi] = subject.asObservable();
               }
 
               subject.next(true);
@@ -3089,7 +3089,7 @@ export class CalendarService extends BaseService {
               if (!subject) {
                 subject = new Subject<boolean>();
                 this.calendarsubjects.set(event.evi, subject);
-                this.calendarobservables[event.evi] = subject.asObservable());
+                this.calendarobservables[event.evi] = subject.asObservable();
               }
 
               subject.next(true);
