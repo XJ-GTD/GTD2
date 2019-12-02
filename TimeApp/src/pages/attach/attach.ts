@@ -242,7 +242,6 @@ export class AttachPage {
         // if(!this.bw) {
         //   this.bw = fileName;
         // }
-        this.fjArray.unshift(this.fjData);
         this.file.copyFile(imgFileDir, fileName, this.file.dataDirectory + cacheFilePathJson.getCacheDir(), newFileName).then(_=>{
           this.saveFile();
         });
@@ -285,7 +284,6 @@ export class AttachPage {
               // if(!this.bw) {
               //   this.bw = fileName;
               // }
-              this.fjArray.unshift(this.fjData);
               this.file.copyFile(imgFileDir, fileName, this.file.dataDirectory + cacheFilePathJson.getCacheDir(), newFileName).then(_=>{
                 this.saveFile();
               });
@@ -341,6 +339,7 @@ export class AttachPage {
  async saveFile() {
    let retAt: Attachment = {}  as Attachment;
    retAt = await this.eventService.saveAttachment(this.fjData);
+   this.fjArray.unshift(retAt);
  }
 
 
