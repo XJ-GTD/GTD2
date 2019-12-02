@@ -307,7 +307,7 @@ export class TdlPage {
   currDayel: any;
   //画面数据List
   monthActivityDatas: Array<MonthActivityData> = new Array<MonthActivityData>();
-  calendarobservables: Map<string, Observable<boolean>> = new Map<string, Observable<boolean>>();
+  calendarobservables: any = {};
   currentuser: string = UserConfig.account.id;
   friends: Array<any> = UserConfig.friends;
 
