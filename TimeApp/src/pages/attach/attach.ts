@@ -243,7 +243,7 @@ export class AttachPage {
           this.bw = fileName;
         }
         this.file.copyFile(imgFileDir, fileName, this.file.dataDirectory + cacheFilePathJson.getCacheDir(), newFileName);
-
+        this.saveComment();
       }
       // let base64Image = 'data:image/jpeg;base64,' + imageData;
       // this.imgUrl = base64Image;
@@ -284,6 +284,7 @@ export class AttachPage {
                 this.bw = fileName;
               }
               this.file.copyFile(imgFileDir, fileName, this.file.dataDirectory + cacheFilePathJson.getCacheDir(), newFileName);
+              this.saveComment();
             }
           })
           .catch(err => console.log(err));
