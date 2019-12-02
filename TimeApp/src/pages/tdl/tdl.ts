@@ -215,7 +215,7 @@ import { Observable } from 'rxjs';
               <ng-container *ngFor="let event of days.events;">
                 <ng-container *ngIf="!(event.ui != currentuser && event.rtevi && event.invitestatus != inviteaccept && event.invitestatus != invitereject)">
                   <ion-row class="item-content dayagenda-content item-content-backgroud"
-                           [class.item-content-hasmessage]="false"
+                           [class.item-content-hasmessage]="calendarobservables[event.evi] | async"
                            (click)="toDetail(event.evi,event.evd,event.type,event.gs)">
                     <div class="line font-small first-line">
                       <div class="sn towline">{{event.evn}}</div>
@@ -243,7 +243,7 @@ import { Observable } from 'rxjs';
                       <div class="icon font-small" end>
                         <ion-icon class="fad fa-user-friends " *ngIf="event.pn > 0 "></ion-icon>
                         <b *ngIf="event.pn > 0 ">{{event.apn}} / {{event.pn}}</b>
-                        <ion-icon class="fad fa-info-circle " [class.over]="calendarobservables[event.evi] | async"></ion-icon>
+                        <ion-icon class="fad fa-info-circle "></ion-icon>
                         <b>{{event.fj}}</b>
                       </div>
                     </div>
