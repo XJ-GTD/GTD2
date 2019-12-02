@@ -34,7 +34,7 @@ import { Observable, Subject } from 'rxjs';
 export class CalendarService extends BaseService {
 
   private calendarsubjects: Map<string, Subject<boolean>> = new Map<string, Subject<boolean>>();
-  private calendarobservables: any = {};
+  private calendarobservables: Map<string, Observable<boolean>> = new Map<string, Observable<boolean>>();
   private calendaractivities: Array<MonthActivityData> = new Array<MonthActivityData>();
   private activitiesqueue: AsyncQueue;
 
@@ -159,7 +159,7 @@ export class CalendarService extends BaseService {
     return this.calendaractivities;
   }
 
-  getCalendarObservables(): any {
+  getCalendarObservables(): Map<string, Observable<boolean>> {
     return this.calendarobservables;
   }
 
@@ -237,7 +237,7 @@ export class CalendarService extends BaseService {
             if (!subject) {
               subject = new Subject<boolean>();
               this.calendarsubjects.set(ele.evi, subject);
-              this.calendarobservables[ele.evi] = subject.asObservable();
+              this.calendarobservables.set(ele.evi, subject.asObservable());
             }
 
             subject.next(false);
@@ -3075,7 +3075,7 @@ export class CalendarService extends BaseService {
               if (!subject) {
                 subject = new Subject<boolean>();
                 this.calendarsubjects.set(event.evi, subject);
-                this.calendarobservables[event.evi] = subject.asObservable();
+                this.calendarobservables.set(event.evi, subject.asObservable());
               }
 
               subject.next(true);
@@ -3091,7 +3091,7 @@ export class CalendarService extends BaseService {
               if (!subject) {
                 subject = new Subject<boolean>();
                 this.calendarsubjects.set(event.evi, subject);
-                this.calendarobservables[event.evi] = subject.asObservable();
+                this.calendarobservables.set(event.evi, subject.asObservable());
               }
 
               subject.next(true);

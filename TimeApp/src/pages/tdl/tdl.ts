@@ -222,7 +222,7 @@ import { Observable } from 'rxjs';
                     </div>
                     <div class="line font-small">
                       <div class="st">{{event.evt}}</div>
-                      <div class="st">{{calendarobservables[event.evi] | async}}</div>
+                      <div class="st">{{calendarobservables.get(event.evi) | async}}</div>
                       <div class="person" *ngIf="currentuser != event.ui && event.ui != ''" end>
                         -- {{event.ui | formatuser: currentuser: friends}}</div>
                       <div class="person" *ngIf="currentuser == event.ui" end>-- 自己</div>
@@ -308,7 +308,7 @@ export class TdlPage {
   currDayel: any;
   //画面数据List
   monthActivityDatas: Array<MonthActivityData> = new Array<MonthActivityData>();
-  calendarobservables: any = {};
+  calendarobservables: Map<string, Observable<boolean>> = new Map<string, Observable<boolean>>();
   currentuser: string = UserConfig.account.id;
   friends: Array<any> = UserConfig.friends;
 
