@@ -239,11 +239,13 @@ export class AttachPage {
         this.fjData.fjurl = this.fjData.fpjson.getLocalFilePath(this.file.dataDirectory);
         this.fjData.ui = this.currentuser;
         this.fjData.members = this.members;
-        if(!this.bw) {
-          this.bw = fileName;
-        }
-        this.file.copyFile(imgFileDir, fileName, this.file.dataDirectory + cacheFilePathJson.getCacheDir(), newFileName);
-        this.saveComment();
+        // if(!this.bw) {
+        //   this.bw = fileName;
+        // }
+        this.fjArray.unshift(this.fjData);
+        this.file.copyFile(imgFileDir, fileName, this.file.dataDirectory + cacheFilePathJson.getCacheDir(), newFileName).then(_=>{
+          this.saveFile();
+        });
       }
       // let base64Image = 'data:image/jpeg;base64,' + imageData;
       // this.imgUrl = base64Image;
@@ -280,11 +282,13 @@ export class AttachPage {
               this.fjData.fpjson = cacheFilePathJson;
               this.fjData.fjurl = this.fjData.fpjson.getLocalFilePath(this.file.dataDirectory);
               this.fjData.members = this.members;
-              if(!this.bw) {
-                this.bw = fileName;
-              }
-              this.file.copyFile(imgFileDir, fileName, this.file.dataDirectory + cacheFilePathJson.getCacheDir(), newFileName);
-              this.saveComment();
+              // if(!this.bw) {
+              //   this.bw = fileName;
+              // }
+              this.fjArray.unshift(this.fjData);
+              this.file.copyFile(imgFileDir, fileName, this.file.dataDirectory + cacheFilePathJson.getCacheDir(), newFileName).then(_=>{
+                this.saveFile();
+              });
             }
           })
           .catch(err => console.log(err));
@@ -333,6 +337,12 @@ export class AttachPage {
       this.bw = "";
     }
   }
+ //保存文件
+ async saveFile() {
+   let retAt: Attachment = {}  as Attachment;
+   retAt = await this.eventService.saveAttachment(this.fjData);
+ }
+
 
   // 删除当前项
   async delAttach(at: Attachment) {
