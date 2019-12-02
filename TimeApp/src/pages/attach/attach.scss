@@ -1,4 +1,7 @@
 page-attach {
+  ion-scroll{
+    height: calc((100% - 0px) - 54px);
+  }
   .list-grid-content{
     .topheader{
     }
@@ -8,46 +11,44 @@ page-attach {
     }
 
     ion-thumbnail{
-      img{
         max-height: 15rem;
-      }
     }
     .fa-file-pdf{
       font-size: 10rem;
     }
   }
 
-  .toolbar-ios{
-    margin: 1.5rem 1rem 0.8rem 1rem;
-    width: auto;
-    .toolbar-background-ios{
-     background: transparent;
-    }
+  .inputwarp{
+    .toolbar-ios{
+      position: fixed;
+      width: 100%;
+      bottom: 0px;
+      button {
+        margin: 0px;
+        font-weight: 400;
+        height: 35px;
+        width: 35px;
+        border-radius: 100%;
+        border-width: 0px;
+        background:rgba(188,209,215,1);
 
-    button {
-      margin: 0px;
-      font-weight: 400;
-      height: 45px;
-      width: 45px;
-      border-radius: 100%;
-      border-width: 0px;
-      background:rgba(188,209,215,1);
-
-      .button-inner {
-        width: auto;
-        text-align: left;
-        ion-icon{
+        .button-inner {
+          width: auto;
+          text-align: left;
           color:rgba(7,109,138,1);
         }
       }
-    }
-    ion-textarea{
-      background: 4px;
-      border:0.55px solid rgba(7,109,138,1);
-      textarea{
-        padding-left: 0.5rem;
+      ion-input{
+        background-color: white;
+        margin-left: 1rem;
+        margin-right: 1rem;
+        .text-input-ios {
+          margin: 5px 8px;
+          padding: 0;
+        }
       }
     }
+
   }
   
 }

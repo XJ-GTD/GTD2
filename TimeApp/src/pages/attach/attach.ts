@@ -15,7 +15,6 @@ import {FileOpener} from '@ionic-native/file-opener';
 import {FilePath} from '@ionic-native/file-path';
 import {EventService, FjData, CacheFilePathJson, Attachment, Member,generateCacheFilePathJson} from "../../service/business/event.service";
 import {UtilService} from "../../service/util-service/util.service";
-import * as moment from "moment";
 import {DelType, SyncType} from "../../data.enum";
 import {UserConfig} from "../../service/config/user.config";
 import {DataConfig} from "../../service/config/data.config";
@@ -27,17 +26,8 @@ import {NativeAudio } from "@ionic-native/native-audio";
   selector: 'page-attach',
   template: `
 
-    <modal-box title="补充信息" [buttons]="buttons" (onCancel)="cancel()" (onCreate)="openselect()"  (onRefresh)="flushData()">
+    <modal-box title="补充信息" [buttons]="buttons" (onCancel)="cancel()" (onRefresh)="flushData()">
 
-      <ion-toolbar>
-        <ion-buttons end>
-          <button ion-button outline (click)="saveComment()" class="font-normal">
-            <ion-icon class="fad fa-comments"></ion-icon>
-          </button>
-
-        </ion-buttons>
-        <ion-textarea row="2" [(ngModel)]="bw" placeholder="输入补充信息" class="font-normal"></ion-textarea>
-      </ion-toolbar>
       <ion-scroll scrollY="true" scrollheightAuto>
 
         <ion-grid class="list-grid-content">
@@ -83,7 +73,23 @@ import {NativeAudio } from "@ionic-native/native-audio";
           </ng-container>
         </ion-grid>
       </ion-scroll>
+      <div class="inputwarp">
+        <ion-toolbar>
+          <ion-buttons start>
+            <button ion-button outline (click)="openselect()" class="font-normal">
+              <ion-icon class="fad fa-plus-square"></ion-icon>
+            </button>
+          </ion-buttons>
+          <ion-buttons end>
+            <button ion-button outline (click)="saveComment()" class="font-normal">
+              发送
+            </button>
+          </ion-buttons>
+          <ion-input [(ngModel)]="bw" class="font-normal"></ion-input>
+        </ion-toolbar>
+      </div>
     </modal-box>
+
   `
 })
 
@@ -101,7 +107,6 @@ export class AttachPage {
   browserurl: string ="http://pluto.guobaa.com/abl/store/local/getSnapshot/";
   members: Array<Member>  = new Array<Member>();
   buttons: any = {
-    create: true,
     save: false,
     cancel: true,
     refresh:true
