@@ -235,7 +235,7 @@ export class CalendarService extends BaseService {
             let subject: BehaviorSubject<boolean> = this.calendarsubjects.get(ele.evi);
 
             if (!subject) {
-              subject = new BehaviorSubject<boolean>();
+              subject = new BehaviorSubject<boolean>(false);
               this.calendarsubjects.set(ele.evi, subject);
               this.calendarobservables.set(ele.evi, subject.asObservable());
             }
@@ -3073,7 +3073,7 @@ export class CalendarService extends BaseService {
               let subject: BehaviorSubject<boolean> = this.calendarsubjects.get(event.evi);
 
               if (!subject) {
-                subject = new BehaviorSubject<boolean>();
+                subject = new BehaviorSubject<boolean>(true);
                 this.calendarsubjects.set(event.evi, subject);
                 this.calendarobservables.set(event.evi, subject.asObservable());
               }
@@ -3091,7 +3091,7 @@ export class CalendarService extends BaseService {
               let subject: BehaviorSubject<boolean> = this.calendarsubjects.get(event.evi);
 
               if (!subject) {
-                subject = new BehaviorSubject<boolean>();
+                subject = new BehaviorSubject<boolean>(true);
                 this.calendarsubjects.set(event.evi, subject);
                 this.calendarobservables.set(event.evi, subject.asObservable());
               }
