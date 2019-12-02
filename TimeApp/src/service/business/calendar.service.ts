@@ -227,17 +227,21 @@ export class CalendarService extends BaseService {
         this.assertFail();    // 非法参数
     }
 
-    this.calendaractivities.forEach((ele) => {
-      if (ele.evi) {
-        // Observable
-        let subject: Subject<boolean> = this.calendarsubjects.get(ele.evi);
+    this.calendaractivities.forEach((val) => {
+      if (val) {
+        val.events.forEach((ele) => {
+          if (ele.evi) {
+            // Observable
+            let subject: Subject<boolean> = this.calendarsubjects.get(ele.evi);
 
-        if (!subject) {
-          subject = new Subject<boolean>();
-          this.calendarsubjects.set(ele.evi, subject);
-          this.calendarobservables.set(ele.evi, subject.asObservable());
-        }
-        // Observable
+            if (!subject) {
+              subject = new Subject<boolean>();
+              this.calendarsubjects.set(ele.evi, subject);
+              this.calendarobservables.set(ele.evi, subject.asObservable());
+            }
+            // Observable
+          }
+        });
       }
     });
 
