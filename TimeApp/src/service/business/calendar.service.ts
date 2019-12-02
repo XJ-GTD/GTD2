@@ -28,10 +28,13 @@ import {AsyncQueue} from "../../util/asyncQueue";
 import {DetectorService} from "../util-service/detector.service";
 import {TimeOutService} from "../../util/timeOutService";
 import {GrouperService} from "./grouper.service";
+import { Observable, Subject } from 'rxjs';
 
 @Injectable()
 export class CalendarService extends BaseService {
 
+  private calendarsubjects: Map<string, Subject> = new Map<string, Subject>();
+  private calendarobservables: Map<string, Observable> = new Map<string, Observable>();
   private calendaractivities: Array<MonthActivityData> = new Array<MonthActivityData>();
   private activitiesqueue: AsyncQueue;
 
@@ -154,6 +157,10 @@ export class CalendarService extends BaseService {
     }
 
     return this.calendaractivities;
+  }
+
+  getCalendarObservables(): Map<string, Observable> {
+    return this.calendarobservables;
   }
 
   /**
@@ -3041,10 +3048,34 @@ export class CalendarService extends BaseService {
             } else {
               // 更新
               monthActivities.events.splice(index, 1, event);
+
+              // Observable
+              let subject: Subject = this.calendarsubjects.get(event.evi);
+
+              if (!subject) {
+                subject = new Subject<boolean>();
+                this.calendarsubjects.set(event.evi, subject);
+                this.calendarobservables.set(event.evi, subject.asObservable());
+              }
+
+              subject.next(true);
+              // Observable
             }
           } else {
             if (event.del != DelType.del) {
               monthActivities.events.push(event);
+
+              // Observable
+              let subject: Subject = this.calendarsubjects.get(event.evi);
+
+              if (!subject) {
+                subject = new Subject<boolean>();
+                this.calendarsubjects.set(event.evi, subject);
+                this.calendarobservables.set(event.evi, subject.asObservable());
+              }
+
+              subject.next(true);
+              // Observable
             }
           }
           break;
