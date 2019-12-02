@@ -349,7 +349,6 @@ export class TdlPage {
   ) {
     //当changeDetection:ChangeDetectionStrategy.OnPush 请注册
     this.detectorService.registerDetector(changeDetectorRef);
-    this.calendarobservables = this.calendarService.getCalendarObservables();
     // setTimeout(()=>{
     //   this.tdlServ.throughData(PageDirection.PageDown).then(data => {
     //     this.detectorService.detector(()=>{
@@ -565,6 +564,8 @@ export class TdlPage {
 
     this.tdlServ.initLsData().then(data => {
       this.monthActivityDatas = data;
+      this.calendarobservables = this.calendarService.getCalendarObservables();
+
       this.detectorService.detector(()=>{
         this.bScroll.refresh();
         this.gotoEl("#day" + moment().format("YYYYMMDD"));
