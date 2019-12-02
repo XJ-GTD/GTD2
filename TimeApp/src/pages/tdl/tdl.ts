@@ -224,7 +224,7 @@ import { Observable } from 'rxjs';
                       <div class="st">{{event.evt}}</div>
                       <div class="person" *ngIf="currentuser != event.ui && event.ui != ''" end>
                         -- {{event.ui | formatuser: currentuser: friends}}</div>
-                      <div class="person" *ngIf="currentuser == event.ui" end>-- 自己{{calendarobservables[event.evi] | async}}</div>
+                      <div class="person" *ngIf="currentuser == event.ui" end>-- 自己{{calendarobservables[event.evi]}}</div>
                     </div>
                     <div class="line font-small"
                          *ngIf="!(currentuser != event.ui && event.ui != '' && event.invitestatus != inviteaccept && event.invitestatus != invitereject)">
