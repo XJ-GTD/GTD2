@@ -159,7 +159,7 @@ export class CalendarService extends BaseService {
     return this.calendaractivities;
   }
 
-  getCalendarObservables(): Map<string, Observable> {
+  getCalendarObservables(): Map<string, Observable<boolean>> {
     return this.calendarobservables;
   }
 
