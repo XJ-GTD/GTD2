@@ -33,8 +33,8 @@ import { Observable, Subject } from 'rxjs';
 @Injectable()
 export class CalendarService extends BaseService {
 
-  private calendarsubjects: Map<string, Subject> = new Map<string, Subject>();
-  private calendarobservables: Map<string, Observable> = new Map<string, Observable>();
+  private calendarsubjects: Map<string, Subject<boolean>> = new Map<string, Subject<boolean>>();
+  private calendarobservables: Map<string, Observable<boolean>> = new Map<string, Observable<boolean>>();
   private calendaractivities: Array<MonthActivityData> = new Array<MonthActivityData>();
   private activitiesqueue: AsyncQueue;
 
@@ -3050,7 +3050,7 @@ export class CalendarService extends BaseService {
               monthActivities.events.splice(index, 1, event);
 
               // Observable
-              let subject: Subject = this.calendarsubjects.get(event.evi);
+              let subject: Subject<boolean> = this.calendarsubjects.get(event.evi);
 
               if (!subject) {
                 subject = new Subject<boolean>();
@@ -3066,7 +3066,7 @@ export class CalendarService extends BaseService {
               monthActivities.events.push(event);
 
               // Observable
-              let subject: Subject = this.calendarsubjects.get(event.evi);
+              let subject: Subject<boolean> = this.calendarsubjects.get(event.evi);
 
               if (!subject) {
                 subject = new Subject<boolean>();
