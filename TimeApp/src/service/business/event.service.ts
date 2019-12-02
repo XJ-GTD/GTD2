@@ -81,7 +81,7 @@ export class EventService extends BaseService {
    * @param {SyncDataStatus} status
    * @returns {Promise<Array<AgendaData>>}
    */
-  async receivedAgendaData(pullAgdatas: Array<AgendaData>, status: SyncDataStatus): Promise<Array<AgendaData>> {
+  async receivedAgendaData(pullAgdatas: Array<AgendaData>, status: SyncDataStatus, extension: string): Promise<Array<AgendaData>> {
 
     this.assertEmpty(pullAgdatas);     // 入参不能为空
     this.assertEmpty(status);   // 入参不能为空

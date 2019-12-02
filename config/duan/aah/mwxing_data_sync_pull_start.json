@@ -30,7 +30,8 @@
                 "trigger": "acj",
                 "parameters": [
                     "ruleid;MWXING_DATASYNC_V1_5",
-                    "datasource;$.parent.outputs"
+                    "datasource;$.parent.outputs",
+                    "merge_extension;$.root.parameters.type"
                 ],
                 "outputs": [
                     "cleaned"

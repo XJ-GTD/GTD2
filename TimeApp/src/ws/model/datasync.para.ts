@@ -18,4 +18,6 @@ export class DataSyncPara {
   to:Array<string> = new Array<string>();
   //数据
   data:any;
+  //扩展(用于拉取数据时返回拉取请求类型, 全量拉取、差分拉取、单个拉取，返回值由拉取请求时设置的值决定)
+  extension:string;
 }
