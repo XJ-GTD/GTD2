@@ -28,12 +28,12 @@ import {AsyncQueue} from "../../util/asyncQueue";
 import {DetectorService} from "../util-service/detector.service";
 import {TimeOutService} from "../../util/timeOutService";
 import {GrouperService} from "./grouper.service";
-import { Observable, Subject } from 'rxjs';
+import { Observable, BehaviorSubject } from 'rxjs';
 
 @Injectable()
 export class CalendarService extends BaseService {
 
-  private calendarsubjects: Map<string, Subject<boolean>> = new Map<string, Subject<boolean>>();
+  private calendarsubjects: Map<string, BehaviorSubject<boolean>> = new Map<string, BehaviorSubject<boolean>>();
   private calendarobservables: Map<string, Observable<boolean>> = new Map<string, Observable<boolean>>();
   private calendaractivities: Array<MonthActivityData> = new Array<MonthActivityData>();
   private activitiesqueue: AsyncQueue;
@@ -232,10 +232,10 @@ export class CalendarService extends BaseService {
         val.events.forEach((ele) => {
           if (ele.evi) {
             // Observable
-            let subject: Subject<boolean> = this.calendarsubjects.get(ele.evi);
+            let subject: BehaviorSubject<boolean> = this.calendarsubjects.get(ele.evi);
 
             if (!subject) {
-              subject = new Subject<boolean>();
+              subject = new BehaviorSubject<boolean>();
               this.calendarsubjects.set(ele.evi, subject);
               this.calendarobservables.set(ele.evi, subject.asObservable());
             }
@@ -3070,10 +3070,10 @@ export class CalendarService extends BaseService {
               monthActivities.events.splice(index, 1, event);
 
               // Observable
-              let subject: Subject<boolean> = this.calendarsubjects.get(event.evi);
+              let subject: BehaviorSubject<boolean> = this.calendarsubjects.get(event.evi);
 
               if (!subject) {
-                subject = new Subject<boolean>();
+                subject = new BehaviorSubject<boolean>();
                 this.calendarsubjects.set(event.evi, subject);
                 this.calendarobservables.set(event.evi, subject.asObservable());
               }
@@ -3088,10 +3088,10 @@ export class CalendarService extends BaseService {
               monthActivities.events.push(event);
 
               // Observable
-              let subject: Subject<boolean> = this.calendarsubjects.get(event.evi);
+              let subject: BehaviorSubject<boolean> = this.calendarsubjects.get(event.evi);
 
               if (!subject) {
-                subject = new Subject<boolean>();
+                subject = new BehaviorSubject<boolean>();
                 this.calendarsubjects.set(event.evi, subject);
                 this.calendarobservables.set(event.evi, subject.asObservable());
               }
