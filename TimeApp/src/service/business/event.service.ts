@@ -290,6 +290,8 @@ export class EventService extends BaseService {
     for (let agenda of agendas) {
       if (agenda.ui == UserConfig.account.id) continue;
 
+      if (agenda.rtevi) continue; // 重复日程子日程不播报
+
       if (!agenda.members || agenda.members.length <= 0) continue;
 
       let owners = agenda.members.filter((ele) => {
