@@ -215,7 +215,7 @@ import { Observable } from 'rxjs';
               <ng-container *ngFor="let event of days.events;">
                 <ng-container *ngIf="!(event.ui != currentuser && event.rtevi && event.invitestatus != inviteaccept && event.invitestatus != invitereject)">
                   <ion-row class="item-content dayagenda-content item-content-backgroud"
-                           [class.item-content-hasmessage]="calendarobservables[event.evi] | async"
+                           [class.item-content-hasmessage]="true"
                            (click)="toDetail(event.evi,event.evd,event.type,event.gs)">
                     <div class="line font-small first-line">
                       <div class="sn towline">{{event.evn}}</div>
