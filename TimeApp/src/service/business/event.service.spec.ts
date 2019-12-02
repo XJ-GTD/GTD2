@@ -51,7 +51,7 @@ import {WaTbl} from "../sqlite/tbl/wa.tbl";
 import { CalendarService, PlanData } from "./calendar.service";
 import {EventService, AgendaData, TaskData, Attachment, MiniTaskData, RtJson, TxJson,CacheFilePathJson} from "./event.service";
 import { MemoService } from "./memo.service";
-import { PlanType, IsCreate, IsSuccess, IsWholeday, PageDirection, SyncType, DelType, SyncDataStatus, EventType, OperateType, CycleType, OverType, ToDoListStatus, ConfirmType, EventFinishStatus,ObjectType } from "../../data.enum";
+import { PlanType, IsCreate, IsSuccess, IsWholeday, PageDirection, SyncType, DelType, SyncDataStatus, EventType, OperateType, CycleType, OverType, ToDoListStatus, ConfirmType, EventFinishStatus,ObjectType,RepeatFlag } from "../../data.enum";
 import { ScheduleRemindService } from "./remind.service";
 import {File} from '@ionic-native/file';
 import {AssistantService} from "../cordova/assistant.service";
@@ -1150,6 +1150,68 @@ describe('EventService test suite', () => {
         todolist = await eventService.mergeTodolist(todolist,results2[0]);
         expect(todolist).toBeDefined();
         expect(todolist.length).toBe(3);
+    });
+
+    it('Case 25 - 1 - 1   isSameTask 判断两个人任务是否相同，任务相同的情况', async () => {
+      let tx: TaskData = {} as TaskData;
+      tx.evn ="今天老席和老张，一起出去吸烟去了";
+      tx.rtjson = new RtJson();
+      tx = await eventService.saveTask(tx);
+      expect(tx).toBeDefined();
+      expect(tx.evi).toBeDefined();
+
+      let result: boolean = await eventService.isSameTask(tx,tx);
+      expect(result).toBe(true);
+    });
+
+    it('Case 25 - 1 -2   isSameTask 判断两个人任务是否相同，任务不相同的情况', async () => {
+      let tx: TaskData = {} as TaskData;
+      tx.evn ="今天老席和老张，一起出去吸烟去了";
+      tx.rtjson = new RtJson();
+      tx = await eventService.saveTask(tx);
+      expect(tx).toBeDefined();
+      expect(tx.evi).toBeDefined();
+
+
+      let tx2: TaskData = {} as TaskData;
+      tx2.evn ="今天老席和老张，一起出去喝酒了";
+      tx2.rtjson = new RtJson();
+      tx2 = await eventService.saveTask(tx2);
+      expect(tx2).toBeDefined();
+      expect(tx2.evi).toBeDefined();
+
+      let result: boolean = await eventService.isSameTask(tx,tx2);
+      expect(result).not.toBe(true);
+    });
+
+    it('Case 26 - 1 - 1   hasTaskModifyConfirm 判断任务是否需要确认Repeat', async () => {
+      let tx: TaskData = {} as TaskData;
+      tx.evn ="今天老席和老张，一起出去吸烟去了";
+      tx.rtjson = new RtJson();
+      tx.rfg =  RepeatFlag.Repeat;
+      tx = await eventService.saveTask(tx);
+      expect(tx).toBeDefined();
+      expect(tx.evi).toBeDefined();
+
+      let confirm: ConfirmType = await eventService.hasTaskModifyConfirm(tx,tx);
+      expect(confirm).toBeDefined();
+    });
+
+    it('Case 26 - 1 - 2   hasTaskModifyConfirm 判断任务是否需要确认NonRepeat', async () => {
+      let tx: TaskData = {} as TaskData;
+      tx.evn ="今天老席和老张，一起出去吸烟去了";
+      tx.rtjson = new RtJson();
+      tx.rfg =  RepeatFlag.RepeatToOnly;
+      tx = await eventService.saveTask(tx);
+      expect(tx).toBeDefined();
+      expect(tx.evi).toBeDefined();
+
+      let tx1: TaskData = {} as TaskData;
+    	Object.assign(tx1, tx);
+      tx1.rfg = RepeatFlag.NonRepeat;
+
+      let confirm: ConfirmType = await eventService.hasTaskModifyConfirm(tx,tx1);
+      expect(confirm).toBeDefined();
     });
 
   });

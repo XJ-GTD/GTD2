@@ -380,14 +380,9 @@ export class TdlPage {
 
   ngAfterViewInit() {
     this.bScroll = new BScroll('.monthActivityWapper', {
-      probeType:3,
-      pullDownRefresh:{
-        threshold: 90,
-        stop: 40
-      },
-      pullUpLoad:{
-        threshold: 90
-      },
+      probeType:2,
+      pullDownRefresh:true,
+      pullUpLoad:true,
       click: true
 
       // probeType:3
@@ -455,42 +450,42 @@ export class TdlPage {
 
     this.bScroll.on("scrollEnd",()=>{
 
-      if (this.option.direction == 1){
-        this.bScroll.scrollBy(0,this.option.maxScrollY - this.bScroll.maxScrollY,0);
-        this.option.maxScrollY = this.bScroll.maxScrollY;
-      }
-
-      if (!this.option.isgetData){
-        this.option.maxScrollY = this.bScroll.maxScrollY * -1;
-        this.option.currentY = this.bScroll.y * -1;
-        if ((this.option.maxScrollY - this.option.currentY) < 100){
-          this.option.isgetData = true;
-          this.util.loadingStart().then(()=>{
-            this.tdlServ.throughData(PageDirection.PageUp).then(data => {
-              this.detectorService.detector(()=>{
-                this.bScroll.finishPullUp();
-                this.option.isgetData = false;
-                this.util.loadingEnd();
-                console.log("pageup ok")
-              });
-            });
-          });
-        }
-
-        if (this.option.currentY < 100){
-          this.option.isgetData = true;
-          this.util.loadingStart().then(()=>{
-            this.tdlServ.throughData(PageDirection.PageDown).then(data => {
-              this.detectorService.detector(()=>{
-                this.bScroll.finishPullDown();
-                this.option.isgetData = false;
-                this.util.loadingEnd();
-                console.log("pagedown ok")
-              });
-            });
-          })
-        }
-      }
+      // if (this.option.direction == 1){
+      //   this.bScroll.scrollBy(0,this.option.maxScrollY - this.bScroll.maxScrollY,0);
+      //   this.option.maxScrollY = this.bScroll.maxScrollY;
+      // }
+      //
+      // if (!this.option.isgetData){
+      //   this.option.maxScrollY = this.bScroll.maxScrollY * -1;
+      //   this.option.currentY = this.bScroll.y * -1;
+      //   if ((this.option.maxScrollY - this.option.currentY) < 100){
+      //     this.option.isgetData = true;
+      //     this.util.loadingStart().then(()=>{
+      //       this.tdlServ.throughData(PageDirection.PageUp).then(data => {
+      //         this.detectorService.detector(()=>{
+      //           this.bScroll.finishPullUp();
+      //           this.option.isgetData = false;
+      //           this.util.loadingEnd();
+      //           console.log("pageup ok")
+      //         });
+      //       });
+      //     });
+      //   }
+      //
+      //   if (this.option.currentY < 100){
+      //     this.option.isgetData = true;
+      //     this.util.loadingStart().then(()=>{
+      //       this.tdlServ.throughData(PageDirection.PageDown).then(data => {
+      //         this.detectorService.detector(()=>{
+      //           this.bScroll.finishPullDown();
+      //           this.option.isgetData = false;
+      //           this.util.loadingEnd();
+      //           console.log("pagedown ok")
+      //         });
+      //       });
+      //     })
+      //   }
+      // }
     });
     this.bScroll.on("scroll",()=>{
       this.option.direction = this.bScroll.maxScrollY;
@@ -581,7 +576,7 @@ export class TdlPage {
     });
 
     this.emitService.register("calendar.change.month", ($data) => {
-      this.gotoEl4month("#month" + $data);
+      this.gotoEl4month($data);
       // this.listmonth = moment($data + "01", "YYYYMMDD");
 
     });
@@ -710,18 +705,26 @@ export class TdlPage {
 
   }
 
-  gotoEl4month(id) {
+  gotoEl4month(month:any) {
     try {
-      let currmonthel = this.elementRef.nativeElement.querySelector(id);
+      let key = "#month" + month.month;
+      let currmonthel = this.elementRef.nativeElement.querySelector(key);
       if (currmonthel) {
         this.bScroll.scrollToElement(currmonthel, 300, 0, -2);
       } else {
+        if (month.option =="next"){
+          this.bScroll.trigger("pullingUp");
+        }else if(month.option =="prev"){
+          this.bScroll.trigger("pullingDown");
+        } else{
+
+        }
         // this.bScroll.trigger("pullingDown");
         // // this.bScroll.autoPullDownRefresh();
-        // setTimeout(()=>{
-        //   // this.bScroll.openPullDown();
-        //   this.gotoEl4month(id);
-        // },2000);
+        setTimeout(()=>{
+          // this.bScroll.openPullDown();
+          this.gotoEl4month(month);
+        },2000);
       }
 
     } catch (e) {
