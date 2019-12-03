@@ -3078,9 +3078,7 @@ export class CalendarService extends BaseService {
                 this.calendarobservables.set(event.evi, subject.asObservable());
               }
 
-              setTimeout(() => {
-                subject.next(true);
-              }, 5000);
+              subject.next(true);
               // Observable
             }
           } else {
