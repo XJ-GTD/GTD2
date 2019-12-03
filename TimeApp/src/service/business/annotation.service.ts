@@ -7,7 +7,7 @@ import * as moment from "moment";
 import {EmitService} from "../util-service/emit.service";
 import { BackupPro, BacRestful, OutRecoverPro, RecoverPro } from "../restful/bacsev";
 import {DataRestful, PullInData, PushInData, SyncData, SyncDataFields, UploadInData, DownloadInData} from "../restful/datasev";
-import {CompleteState, InviteState, SyncDataSecurity, SyncDataStatus, SyncType} from "../../data.enum";
+import {CompleteState, InviteState, SyncDataSecurity, PullType, SyncDataStatus, SyncType} from "../../data.enum";
 import {
   assertNotNumber,
   assertEmpty,
@@ -34,7 +34,7 @@ export class AnnotationService extends BaseService {
    * @param {SyncDataStatus} status
    * @returns {Promise<Array<Annotation>>}
    */
-  async receivedAnnotationData(pullAnnotations: Array<Annotation>, status: SyncDataStatus): Promise<Array<Annotation>> {
+  async receivedAnnotationData(pullAnnotations: Array<Annotation>, status: SyncDataStatus, extension: string): Promise<Array<Annotation>> {
     this.assertEmpty(pullAnnotations);     // 入参不能为空
     this.assertEmpty(status);   // 入参不能为空
 
@@ -54,9 +54,14 @@ export class AnnotationService extends BaseService {
         let at = new AtTbl();
         Object.assign(at,annotation);
         sqlparam.push(at.rpTParam());
+        saved.push(annotation);
       }
 
       await this.sqlExce.batExecSqlByParam(sqlparam);
+    }
+
+    if (extension != PullType.Full) {
+      this.emitService.emit("mwxing.calendar.datas.readwrite", {rw: "write", payload: saved});
     }
 
     return saved;

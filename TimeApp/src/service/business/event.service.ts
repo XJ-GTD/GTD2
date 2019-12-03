@@ -3358,7 +3358,7 @@ export class EventService extends BaseService {
     return;
   }
 
-  async receivedAttachmentData(attachments: Array<Attachment>, status: SyncDataStatus): Promise<Array<Attachment>> {
+  async receivedAttachmentData(attachments: Array<Attachment>, status: SyncDataStatus, extension: string): Promise<Array<Attachment>> {
     this.assertEmpty(attachments);    // 入参不能为空
     this.assertEmpty(status);         // 入参不能为空
 
@@ -3415,6 +3415,10 @@ export class EventService extends BaseService {
     }
     sqlparam = [...sqlparam,...fjparams];
     await this.sqlExce.batExecSqlByParam(sqlparam);
+
+    if (extension != PullType.Full) {
+      this.emitService.emit("mwxing.calendar.datas.readwrite", {rw: "write", payload: saved});
+    }
 
     return saved;
   }

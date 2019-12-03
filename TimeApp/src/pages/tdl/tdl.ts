@@ -236,7 +236,7 @@ import { Observable } from 'rxjs';
                       <!--(click)="acceptInvite($event, event)">接受</span></div>-->
                       <div class="icon font-small">
                         <ion-icon class="fal fa-cloud-upload" [class.over]="event.tb == synch"></ion-icon>
-                        <ion-icon class="fad fa-at"></ion-icon>
+                        <ion-icon class="fad fa-at" [class.over]="annotationobservables.get(event.evi) | async"></ion-icon>
                         <ion-icon class="fad fa-check-double" *ngIf="event.todolist == todoliston"
                                   [class.over]="event.wc == finished"></ion-icon>
                       </div>
@@ -244,7 +244,7 @@ import { Observable } from 'rxjs';
                         <ion-icon class="fad fa-user-friends " *ngIf="event.pn > 0 "></ion-icon>
                         <b *ngIf="event.pn > 0 ">{{event.apn}} / {{event.pn}}</b>
                         <ion-icon class="fad fa-info-circle "></ion-icon>
-                        <b>{{event.fj}}</b>
+                        <b>{{attachmentobservables.get(event.evi) | async}}</b>
                       </div>
                     </div>
 
@@ -307,7 +307,11 @@ export class TdlPage {
   currDayel: any;
   //画面数据List
   monthActivityDatas: Array<MonthActivityData> = new Array<MonthActivityData>();
+
   calendarobservables: Map<string, Observable<boolean>> = new Map<string, Observable<boolean>>();
+  annotationobservables: Map<string, Observable<boolean>> = new Map<string, Observable<boolean>>();
+  attachmentobservables: Map<string, Observable<number>> = new Map<string, Observable<number>>();
+
   currentuser: string = UserConfig.account.id;
   friends: Array<any> = UserConfig.friends;
 
@@ -565,6 +569,8 @@ export class TdlPage {
     this.tdlServ.initLsData().then(data => {
       this.monthActivityDatas = data;
       this.calendarobservables = this.calendarService.getCalendarObservables();
+      this.annotationobservables = this.calendarService.getAnnotationObservables();
+      this.attachmentobservables = this.calendarService.getAttachmentObservables();
 
       this.detectorService.detector(()=>{
         this.bScroll.refresh();

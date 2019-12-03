@@ -310,9 +310,9 @@ export class DataSyncProcess implements MQProcess {
                 await this.memoService.receivedMemoData(memo, SyncDataStatus.Deleted);
               }
             } else if (datatype == "Attachment") {
-              await this.eventService.receivedAttachmentData(typeclassdel, SyncDataStatus.Deleted);
+              await this.eventService.receivedAttachmentData(typeclassdel, SyncDataStatus.Deleted, extension);
             } else if (datatype == "Annotation") {
-              await this.annotationService.receivedAnnotationData(typeclassdel, SyncDataStatus.Deleted);
+              await this.annotationService.receivedAnnotationData(typeclassdel, SyncDataStatus.Deleted, extension);
             } else if (datatype == "Grouper") {
               await this.grouperService.receivedGrouperData(typeclassdel, SyncDataStatus.Deleted);
             }
@@ -334,9 +334,9 @@ export class DataSyncProcess implements MQProcess {
                 await this.memoService.receivedMemoData(memo, SyncDataStatus.UnDeleted);
               }
             } else if (datatype == "Attachment") {
-              await this.eventService.receivedAttachmentData(typeclassundel, SyncDataStatus.UnDeleted);
+              await this.eventService.receivedAttachmentData(typeclassundel, SyncDataStatus.UnDeleted, extension);
             } else if (datatype == "Annotation") {
-              await this.annotationService.receivedAnnotationData(typeclassundel, SyncDataStatus.UnDeleted);
+              await this.annotationService.receivedAnnotationData(typeclassundel, SyncDataStatus.UnDeleted, extension);
             } else if (datatype == "Grouper") {
               await this.grouperService.receivedGrouperData(typeclassundel, SyncDataStatus.UnDeleted);
             }
@@ -632,13 +632,13 @@ export class DataSyncProcess implements MQProcess {
         let attachment: Attachment = {} as Attachment;
         Object.assign(attachment, dsPara.data);
 
-        await this.eventService.receivedAttachmentData([attachment], this.convertSyncStatus(dsPara.status));
+        await this.eventService.receivedAttachmentData([attachment], this.convertSyncStatus(dsPara.status), dsPara.extension);
       }
       if (dsPara.type == "Annotation") {
         let annotation: Annotation = {} as Annotation;
         Object.assign(annotation, dsPara.data);
 
-        await this.annotationService.receivedAnnotationData([annotation], this.convertSyncStatus(dsPara.status));
+        await this.annotationService.receivedAnnotationData([annotation], this.convertSyncStatus(dsPara.status), dsPara.extension);
       }
       if (dsPara.type == "Grouper") {
         let grouper: Grouper = new Grouper();

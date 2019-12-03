@@ -15,6 +15,7 @@ import {DataConfig} from "../../service/config/data.config";
 import {DataRestful, DownloadInData} from "../../service/restful/datasev";
 import {NativeAudio} from "@ionic-native/native-audio";
 import BScroll from "better-scroll";
+import {EmitService} from "../../service/util-service/emit.service";
 
 @IonicPage()
 @Component({
@@ -135,6 +136,7 @@ export class AttachPage {
               private transfer: FileTransfer,
               private filePath: FilePath,
               private eventService: EventService,
+              private emitService: EmitService,
               private keyboard: Keyboard,
               private fileOpener: FileOpener,
               private actionSheetCtrl: ActionSheetController,
@@ -350,6 +352,7 @@ export class AttachPage {
       let retAt: Attachment = {} as Attachment;
       this.util.loadingStart();
       retAt = await this.eventService.saveAttachment(this.fjData);
+      this.emitService.emit("mwxing.calendar.datas.readwrite", {rw: "writeandread", payload: retAt});
       //alert("上传返回值："+JSON.stringify(retAt));
       this.util.loadingEnd();
       this.fjArray.unshift(retAt);
@@ -365,6 +368,7 @@ export class AttachPage {
     this.util.loadingStart();
     let retAt: Attachment = {} as Attachment;
     retAt = await this.eventService.saveAttachment(this.fjData);
+    this.emitService.emit("mwxing.calendar.datas.readwrite", {rw: "writeandread", payload: retAt});
     this.fjArray.unshift(retAt);
     this.util.loadingEnd();
     this.fjData = {} as Attachment;
@@ -420,6 +424,11 @@ export class AttachPage {
     this.fjArray = new Array<Attachment>();
     let attachments: Array<Attachment> = new Array<Attachment>();
     attachments = await this.eventService.selectAttachments(this.obt, this.obi);
+
+    if (attachments && attachments.length > 0) {
+      this.emitService.emit("mwxing.calendar.datas.readwrite", {rw: "read", payload: attachments});
+    }
+
     //alert("刷新返回值："+JSON.stringify(attachments));
     for (let attachment of attachments) {
       attachment.members = this.members;

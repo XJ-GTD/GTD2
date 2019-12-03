@@ -19,6 +19,7 @@ import { EvTbl } from "../sqlite/tbl/ev.tbl";
 import { MomTbl } from "../sqlite/tbl/mom.tbl";
 import { ParTbl } from "../sqlite/tbl/par.tbl";
 import { FjTbl } from "../sqlite/tbl/fj.tbl";
+import { RwTbl } from "../sqlite/tbl/rw.tbl";
 import {
   assertEmpty,
   assertEqual,
@@ -38,6 +39,11 @@ export class CalendarService extends BaseService {
 
   private calendarsubjects: Map<string, BehaviorSubject<boolean>> = new Map<string, BehaviorSubject<boolean>>();
   private calendarobservables: Map<string, Observable<boolean>> = new Map<string, Observable<boolean>>();
+  private annotationsubjects: Map<string, BehaviorSubject<boolean>> = new Map<string, BehaviorSubject<boolean>>();
+  private annotationobservables: Map<string, Observable<boolean>> = new Map<string, Observable<boolean>>();
+  private attachmentsubjects: Map<string, BehaviorSubject<number>> = new Map<string, BehaviorSubject<number>>();
+  private attachmentobservables: Map<string, Observable<number>> = new Map<string, Observable<number>>();
+
   private calendaractivities: Array<MonthActivityData> = new Array<MonthActivityData>();
   private activitiesqueue: AsyncQueue;
   private calendardatarws: Map<string, ReadWriteData> = new Map<string, ReadWriteData>();
@@ -187,6 +193,14 @@ export class CalendarService extends BaseService {
     return this.calendarobservables;
   }
 
+  getAnnotationObservables(): Map<string, Observable<boolean>> {
+    return this.annotationobservables;
+  }
+
+  getAttachmentObservables(): Map<string, Observable<number>> {
+    return this.attachmentobservables;
+  }
+
   /**
    * 取得日历显示列表
    *
@@ -275,10 +289,33 @@ export class CalendarService extends BaseService {
               subject = new BehaviorSubject<boolean>(false);
               this.calendarsubjects.set(ele.evi, subject);
               this.calendarobservables.set(ele.evi, subject.asObservable());
+            } else {
+              subject.next(false);
             }
 
-            subject.next(false);
+            let annotationsubject: BehaviorSubject<boolean> = this.annotationsubjects.get(ele.evi);
+
+            if (!annotationsubject) {
+              annotationsubject = new BehaviorSubject<boolean>(false);
+              this.annotationsubjects.set(ele.evi, annotationsubject);
+              this.annotationobservables.set(ele.evi, annotationsubject.asObservable());
+            } else {
+              subject.next(false);
+            }
+
+            let attachmentsubject: BehaviorSubject<number> = this.attachmentsubjects.get(ele.evi);
+
+            let fjn: number = Number(ele.fj);
+
+            if (!attachmentsubject) {
+              attachmentsubject = new BehaviorSubject<number>(isNaN(fjn)? fjn : 0);
+              this.attachmentsubjects.set(ele.evi, attachmentsubject);
+              this.attachmentobservables.set(ele.evi, attachmentsubject.asObservable());
+            } else {
+              attachmentsubject.next(isNaN(fjn)? fjn : 0);
+            }
             // Observable
+
           }
         });
       }
@@ -2925,6 +2962,20 @@ export class CalendarService extends BaseService {
     return monthActivity;
   }
 
+  annotation(id: string, value: boolean) {
+    // Observable
+    let subject: BehaviorSubject<boolean> = this.annotationsubjects.get(id);
+
+    if (!subject) {
+      subject = new BehaviorSubject<boolean>(value);
+      this.annotationsubjects.set(id, subject);
+      this.annotationobservables.set(id, subject.asObservable());
+    } else {
+      subject.next(value);
+    }
+    // Observable
+  }
+
   commit(id: string, value: boolean) {
     // Observable
     let subject: BehaviorSubject<boolean> = this.calendarsubjects.get(id);
@@ -3039,7 +3090,37 @@ export class CalendarService extends BaseService {
       case "MiniTask":
       case "Memo":
       case "Grouper":
+        break;
       case "Annotation":
+        let annotation: Annotation = {} as Annotation;
+        Object.assign(annotation, data);
+
+        readKey = new ReadWriteKey(annotation.obt, annotation.obi, "annotation", "read");
+        writeKey = new ReadWriteKey(annotation.obt, annotation.obi, "annotation", "write");
+
+        writeOriginData = this.calendardatarws.get(writeKey.encode());
+
+        Object.assign(readNewData, readKey);
+
+        readNewData.bval = true;
+        readNewData.utt = moment().unix();
+
+        // 读取数据访问缓存
+        this.calendardatarws.set(readKey.encode(), readNewData);
+
+        if (!writeOriginData) {
+          // 不存在写入数据, 直接设置已读
+          this.annotation(annotation.obi, false);
+        } else {
+          if ((writeOriginData.nval || writeOriginData.cval || writeOriginData.bval || writeOriginData.checksum) == (readNewData.nval || readNewData.cval || readNewData.bval || readNewData.checksum)) {
+            // 读取数据和写入数据一致
+            this.annotation(annotation.obi, false);
+          } else {
+            // 读取数据和写入数据不一致
+            this.annotation(annotation.obi, true);
+          }
+        }
+
         break;
       default:
         assertFail("Read error for unknown type " + datatype);
@@ -3155,7 +3236,45 @@ export class CalendarService extends BaseService {
       case "MiniTask":
       case "Memo":
       case "Grouper":
+        break;
       case "Annotation":
+        let annotation: Annotation = {} as Annotation;
+        Object.assign(annotation, data);
+
+        readKey = new ReadWriteKey(annotation.obt, annotation.obi, `annotation`, "read");
+        writeKey = new ReadWriteKey(annotation.obt, annotation.obi, `annotation`, "write");
+
+        Object.assign(writeNewData, writeKey);
+
+        writeNewData.bval = true;
+        writeNewData.utt = moment().unix();
+
+        // 读取数据访问缓存
+        this.calendardatarws.set(writeKey.encode(), writeNewData);
+        if (readed) {
+          this.calendardatarws.set(readKey.encode(), writeNewData);
+        }
+
+        // 读取数据访问缓存
+        this.calendardatarws.set(writeKey.encode(), writeNewData);
+        if (readed) {
+          this.calendardatarws.set(readKey.encode(), writeNewData);
+          readOriginData = writeNewData;
+        }
+
+        if (!readOriginData) {
+          // 不存在读取数据, 直接设置未读
+          this.annotation(annotation.obi, true);
+        } else {
+          if ((readOriginData.nval || readOriginData.cval || readOriginData.bval || readOriginData.checksum) == (writeNewData.nval || writeNewData.cval || writeNewData.bval || writeNewData.checksum)) {
+            // 读取数据和写入数据一致
+            this.annotation(annotation.obi, false);
+          } else {
+            // 读取数据和写入数据不一致
+            this.annotation(annotation.obi, true);
+          }
+        }
+
         break;
       default:
         assertFail("Write error for unknown type " + datatype);
@@ -5318,16 +5437,7 @@ export class ReadWriteKey {
   }
 }
 
-export interface ReadWriteData {
-  type: string;
-  id: string;
-  mark: string;
-  rw: string;
-  nval: number;
-  cval: string;
-  bval: boolean;
-  checksum: string;
-  utt: number;
+export interface ReadWriteData extends RwTbl {
 }
 
 export class PagedActivityData {
