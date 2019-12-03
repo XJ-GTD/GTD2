@@ -308,7 +308,7 @@ export class CalendarService extends BaseService {
             let fjn: number = Number(ele.fj);
 
             if (!attachmentsubject) {
-              attachmentsubject = new BehaviorSubject<boolean>(isNaN(fjn)? fjn : 0);
+              attachmentsubject = new BehaviorSubject<number>(isNaN(fjn)? fjn : 0);
               this.attachmentsubjects.set(ele.evi, attachmentsubject);
               this.attachmentobservables.set(ele.evi, attachmentsubject.asObservable());
             } else {
