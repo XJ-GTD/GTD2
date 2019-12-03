@@ -70,6 +70,8 @@ export class CalendarService extends BaseService {
       }
     },1,1,"home.list.modifiy1");
 
+    this.datasrwqueue.setTimeOutService(this.timeOutService);
+
     this.activitiesqueue = new AsyncQueue( async ({data}, callback) => {
 
       // 多条数据同时更新/单条数据更新
