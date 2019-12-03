@@ -61,13 +61,15 @@ export class CalendarService extends BaseService {
       let rw: string = data.rw;
       let payload: any = data.payload;
 
-      if (payload instanceof Array) {
-        for (let single of payload) {
-          (rw == "read")? this.read(single) : this.write(single);
+      try {
+        if (payload instanceof Array) {
+          for (let single of payload) {
+            (rw == "read")? this.read(single) : this.write(single);
+          }
+        } else {
+          (rw == "read")? this.read(payload) : this.write(payload);
         }
-      } else {
-        (rw == "read")? this.read(payload) : this.write(payload);
-      }
+      } catch(err) {}
     },1,1,"home.list.modifiy1");
 
     this.datasrwqueue.setTimeOutService(this.timeOutService);
