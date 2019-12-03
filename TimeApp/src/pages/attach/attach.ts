@@ -362,9 +362,11 @@ export class AttachPage {
 
   //保存文件
   async saveFile() {
+    this.util.loadingStart();
     let retAt: Attachment = {} as Attachment;
     retAt = await this.eventService.saveAttachment(this.fjData);
     this.fjArray.unshift(retAt);
+    this.util.loadingEnd();
   }
 
 
