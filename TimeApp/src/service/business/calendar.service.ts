@@ -64,10 +64,10 @@ export class CalendarService extends BaseService {
       try {
         if (payload instanceof Array) {
           for (let single of payload) {
-            (rw == "read")? this.read(single) : this.write(single);
+            (rw == "read")? this.read(single) : ((rw == "writeandread")? this.write(single, true) : this.write(single));
           }
         } else {
-          (rw == "read")? this.read(payload) : this.write(payload);
+          (rw == "read")? this.read(payload) : ((rw == "writeandread")? this.write(payload, true) : this.write(payload));
         }
 
         callback();
@@ -3051,7 +3051,7 @@ export class CalendarService extends BaseService {
    *
    * @author leon_xi@163.com
    **/
-  write(write: PlanItemData | AgendaData | TaskData | MiniTaskData | MemoData | Attachment | Grouper | Annotation) {
+  write(write: PlanItemData | AgendaData | TaskData | MiniTaskData | MemoData | Attachment | Grouper | Annotation, readed: booolean = false) {
     assertEmpty(write);  // 入参不能为空
 
     let data: any = write;
@@ -3080,17 +3080,24 @@ export class CalendarService extends BaseService {
 
         // 读取数据访问缓存
         this.calendardatarws.set(writeKey.encode(), writeNewData);
+        if (readed) {
+          this.calendardatarws.set(readKey.encode(), writeNewData);
+        }
 
-        if (!readOriginData) {
+        if (!readed && !readOriginData) {
           // 不存在读取数据, 直接设置未读
           this.commit(agenda.evi, true);
         } else {
-          if ((readOriginData.nval || readOriginData.cval || readOriginData.bval || readOriginData.checksum) == (writeNewData.nval || writeNewData.cval || writeNewData.bval || writeNewData.checksum)) {
-            // 读取数据和写入数据一致
+          if (readed) {
             this.commit(agenda.evi, false);
           } else {
-            // 读取数据和写入数据不一致
-            this.commit(agenda.evi, true);
+            if ((readOriginData.nval || readOriginData.cval || readOriginData.bval || readOriginData.checksum) == (writeNewData.nval || writeNewData.cval || writeNewData.bval || writeNewData.checksum)) {
+              // 读取数据和写入数据一致
+              this.commit(agenda.evi, false);
+            } else {
+              // 读取数据和写入数据不一致
+              this.commit(agenda.evi, true);
+            }
           }
         }
 
