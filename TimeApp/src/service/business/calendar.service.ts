@@ -6,8 +6,10 @@ import { EmitService } from "../util-service/emit.service";
 import { BipdshaeData, Plan, PlanPa, ShaeRestful} from "../restful/shaesev";
 import { SyncData, PushInData, PullInData, DataRestful, DayCountCodec, ShareInData } from "../restful/datasev";
 import { BackupPro, BacRestful, OutRecoverPro, RecoverPro } from "../restful/bacsev";
-import { EventData, TaskData, AgendaData, MiniTaskData, EventService, RtJson, TxJson, Member, generateRtJson, generateTxJson } from "./event.service";
+import { EventData, TaskData, AgendaData, MiniTaskData, EventService, Attachment, RtJson, TxJson, Member, generateRtJson, generateTxJson } from "./event.service";
 import { MemoData, MemoService } from "./memo.service";
+import { Grouper } from "./grouper.service";
+import { Annotation } from "./annotation.service";
 import { EventType, PlanType, PlanItemType, PlanDownloadType, MemberShareState, SelfDefineType, ConfirmType, OperateType, ObjectType, PageDirection, CycleType, SyncType, RepeatFlag, DelType, SyncDataSecurity, SyncDataStatus, InviteState, ModiPower, InvitePowr } from "../../data.enum";
 import { UserConfig } from "../config/user.config";
 import * as moment from "moment";
@@ -3064,7 +3066,7 @@ export class CalendarService extends BaseService {
 
         readOriginData = this.calendardatarws.get(readKey);
 
-        Object.assign(readNewData, writeKey);
+        Object.assign(writeNewData, writeKey);
 
         writeNewData.checksum = checksum(`${agenda.evn}${agenda.evd}${agenda.evt}`);
         writeNewData.utt = moment().unix();
