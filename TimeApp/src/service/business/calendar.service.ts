@@ -2962,6 +2962,20 @@ export class CalendarService extends BaseService {
     return monthActivity;
   }
 
+  annotation(id: string, value: boolean) {
+    // Observable
+    let subject: BehaviorSubject<boolean> = this.annotationsubjects.get(id);
+
+    if (!subject) {
+      subject = new BehaviorSubject<boolean>(value);
+      this.annotationsubjects.set(id, subject);
+      this.annotationobservables.set(id, subject.asObservable());
+    } else {
+      subject.next(value);
+    }
+    // Observable
+  }
+
   commit(id: string, value: boolean) {
     // Observable
     let subject: BehaviorSubject<boolean> = this.calendarsubjects.get(id);
@@ -3096,14 +3110,14 @@ export class CalendarService extends BaseService {
 
         if (!writeOriginData) {
           // 不存在写入数据, 直接设置已读
-          this.commit(annotation.obi, false);
+          this.annotation(annotation.obi, false);
         } else {
           if ((writeOriginData.nval || writeOriginData.cval || writeOriginData.bval || writeOriginData.checksum) == (readNewData.nval || readNewData.cval || readNewData.bval || readNewData.checksum)) {
             // 读取数据和写入数据一致
-            this.commit(annotation.obi, false);
+            this.annotation(annotation.obi, false);
           } else {
             // 读取数据和写入数据不一致
-            this.commit(annotation.obi, true);
+            this.annotation(annotation.obi, true);
           }
         }
 
@@ -3250,14 +3264,14 @@ export class CalendarService extends BaseService {
 
         if (!readOriginData) {
           // 不存在读取数据, 直接设置未读
-          this.commit(annotation.obi, true);
+          this.annotation(annotation.obi, true);
         } else {
           if ((readOriginData.nval || readOriginData.cval || readOriginData.bval || readOriginData.checksum) == (writeNewData.nval || writeNewData.cval || writeNewData.bval || writeNewData.checksum)) {
             // 读取数据和写入数据一致
-            this.commit(annotation.obi, false);
+            this.annotation(annotation.obi, false);
           } else {
             // 读取数据和写入数据不一致
-            this.commit(annotation.obi, true);
+            this.annotation(annotation.obi, true);
           }
         }
 
