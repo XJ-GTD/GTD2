@@ -367,6 +367,10 @@ export class AttachPage {
     retAt = await this.eventService.saveAttachment(this.fjData);
     this.fjArray.unshift(retAt);
     this.util.loadingEnd();
+    this.fjData = {} as Attachment;
+    this.fjData.obt = this.obt;
+    this.fjData.obi = this.obi;
+    this.bw = "";
   }
 
 
