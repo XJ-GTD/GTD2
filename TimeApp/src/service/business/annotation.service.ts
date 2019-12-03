@@ -54,6 +54,7 @@ export class AnnotationService extends BaseService {
         let at = new AtTbl();
         Object.assign(at,annotation);
         sqlparam.push(at.rpTParam());
+        saved.push(annotation);
       }
 
       await this.sqlExce.batExecSqlByParam(sqlparam);

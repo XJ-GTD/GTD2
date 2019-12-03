@@ -73,8 +73,8 @@ export class GrouperService extends BaseService {
                 sqlparam.push([bx.rpT(),[]]);
 
                 let bfs = new BTbl();
+                fs.pwi = pwi;
                 Object.assign(bfs,fs);
-                bfs.pwi = pwi;
                 sqlparam.push([bfs.rpT(),[]]);
               }
             }else{
@@ -85,8 +85,8 @@ export class GrouperService extends BaseService {
               sqlparam.push([bx.rpT(),[]]);
 
               let bfs = new BTbl();
+              fs.pwi = pwi;
               Object.assign(bfs,fs);
-              bfs.pwi = pwi;
               sqlparam.push([bfs.rpT(),[]]);
             }
 
@@ -97,6 +97,7 @@ export class GrouperService extends BaseService {
         let g = new GTbl();
         Object.assign(g,grouper);
         sqlparam.push([g.rpT(),[]]);
+        saved.push(grouper);
       }
 
       await this.sqlExce.batExecSqlByParam(sqlparam);
