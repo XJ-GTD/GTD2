@@ -305,7 +305,7 @@ export class CalendarService extends BaseService {
 
             let attachmentsubject: BehaviorSubject<number> = this.attachmentsubjects.get(ele.evi);
 
-            let fjn: number = Number(event.fj);
+            let fjn: number = Number(ele.fj);
 
             if (!attachmentsubject) {
               attachmentsubject = new BehaviorSubject<boolean>(isNaN(fjn)? fjn : 0);
