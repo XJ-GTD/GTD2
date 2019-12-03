@@ -1,7 +1,7 @@
 import { ElementRef, Directive, OnInit} from '@angular/core';
 
 @Directive({
-  selector: 'ion-scroll[scrollheightAuto]'
+  selector: 'ion-scroll[scrollheightAuto],div[scrollheightAuto]'
 })
 export class ScrollheightDirective {
 

@@ -1,28 +1,123 @@
 page-attach {
-  ion-scroll{
-    height: calc((100% - 0px) - 54px);
+  .grid{
+    min-height: 110%;
   }
-  .list-grid-content{
-    .topheader{
+  .pulldown-wrapper {
+    position: absolute;
+    width: 100%;
+    left: 0;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-pack: center;
+    -webkit-justify-content: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    -webkit-box-align: center;
+    -webkit-align-items: center;
+    -ms-flex-align: center;
+    align-items: center;
+    -webkit-transition: all;
+    transition: all;
+  }
+  .list-grid-content {
+    .self {
+      display: inline-flex;
+      flex: 1;
+      //text-align: right;
+      flex-flow: row-reverse;
     }
-    .sn{
-      -webkit-line-clamp: inherit;
 
+    .other {
+      float: left;
+      display: inline-flex;
+      flex: 1;
+      //text-align: left;
+      //flex-flow: row-reverse;
     }
 
-    ion-thumbnail{
-        max-height: 15rem;
+    .st {
+      flex: 1;
+      text-align: center;
     }
-    .fa-file-pdf{
+
+    .fa-file-pdf {
       font-size: 10rem;
     }
+
+    .item-content {
+      .borderback {
+        background: #eeeeee;
+        padding: 1rem;
+        border-radius: 10px;
+      }
+
+      .attcomment {
+        flex: 1;
+        width: 100%;
+      }
+
+      .sn {
+        display: -webkit-box;
+        max-width: 80%;
+        -webkit-line-clamp: inherit;
+      }
+
+      ion-thumbnail {
+        text-align: center;
+
+        img {
+          display: inline-block;
+          width: 90px;
+          height: 120px;
+        }
+      }
+
+      .selfattcomment {
+        float: right;
+        flex-flow: row-reverse;
+
+        .sn {
+          float: right;
+        }
+
+        ion-thumbnail {
+          text-align: right;
+        }
+
+        .borderback {
+          background: rgba(217, 233, 238, 1);
+        }
+
+      }
+
+      .otherwarpattcomment {
+        float: left;
+
+        .sn {
+          float: left;
+        }
+
+        ion-thumbnail {
+          text-align: left;
+        }
+
+        .borderback {
+          background: rgba(248, 248, 248, 1);
+        }
+      }
+
+
+    }
   }
 
-  .inputwarp{
-    .toolbar-ios{
+  .inputwarp {
+    .toolbar-ios {
       position: fixed;
       width: 100%;
       bottom: 0px;
+
       button {
         margin: 0px;
         font-weight: 400;
@@ -30,18 +125,20 @@ page-attach {
         width: 35px;
         border-radius: 100%;
         border-width: 0px;
-        background:rgba(188,209,215,1);
+        background: rgba(188, 209, 215, 1);
 
         .button-inner {
           width: auto;
           text-align: left;
-          color:rgba(7,109,138,1);
+          color: rgba(7, 109, 138, 1);
         }
       }
-      ion-input{
+
+      ion-input {
         background-color: white;
         margin-left: 1rem;
         margin-right: 1rem;
+
         .text-input-ios {
           margin: 5px 8px;
           padding: 0;
@@ -50,38 +147,71 @@ page-attach {
     }
 
   }
-  
+
 }
-.page-attach{
-    .action-sheet-title{
-      border-bottom:0;
-      text-align: left;
-      color:rgba(51,51,51,1);
-      font-size: 1.6rem;
-    }
-  .action-sheet-button{
+
+.page-attach {
+  .action-sheet-title {
+    border-bottom: 0;
+    text-align: left;
+    color: rgba(51, 51, 51, 1);
+    font-size: 1.6rem;
+  }
+
+  .action-sheet-button {
     width: 120px;
     padding-top: 20px;
     padding-bottom: 20px;
 
     padding-left: 35px;
     padding-right: 35px;
-    border-bottom:0;
+    border-bottom: 0;
     font-size: 1.4rem;
-    color:rgba(7,109,138,1);
-    margin: 0 ;
-    span{
-      ion-icon{
+    color: rgba(7, 109, 138, 1);
+    margin: 0;
+
+    span {
+      ion-icon {
         width: 45px;
         height: 45px;
         line-height: 45px;
-        padding-right:0;
+        padding-right: 0;
         border-radius: 100%;
-        background:rgba(188,209,215,1);
+        background: rgba(188, 209, 215, 1);
         font-size: 3rem;
         margin-bottom: 5px;
       }
+
       display: block;
+    }
+  }
+}
+
+.white-theme {
+  page-attach {
+    .list-grid-content {
+      .item-content-backgroud {
+        box-shadow: none
+      }
+
+      .st {
+        background: transparent;
+        color: #eeeeee;
+      }
+    }
+  }
+}
+
+.black-theme {
+  page-attach {
+    .list-grid-content {
+      .item-content-backgroud {
+        box-shadow: none
+      }
+
+      .st {
+        background: transparent;
+      }
     }
   }
 }

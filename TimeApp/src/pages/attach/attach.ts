@@ -1,11 +1,5 @@
-import {Component} from '@angular/core';
-import {
-  IonicPage,
-  NavController,
-  NavParams,
-  ViewController,
-  ActionSheetController,
-} from 'ionic-angular';
+import {ChangeDetectorRef, Component} from '@angular/core';
+import {IonicPage, NavController, NavParams,ViewController, ActionSheetController} from 'ionic-angular';
 import {Keyboard} from "@ionic-native/keyboard";
 import {File} from '@ionic-native/file';
 import {FileTransfer, FileUploadOptions, FileTransferObject} from '@ionic-native/file-transfer';
@@ -13,66 +7,81 @@ import {Camera, CameraOptions} from '@ionic-native/camera';
 import {Chooser} from '@ionic-native/chooser';
 import {FileOpener} from '@ionic-native/file-opener';
 import {FilePath} from '@ionic-native/file-path';
-import {EventService, FjData, CacheFilePathJson, Attachment, Member,generateCacheFilePathJson} from "../../service/business/event.service";
+import { EventService, FjData, CacheFilePathJson,Attachment, Member,generateCacheFilePathJson} from "../../service/business/event.service";
 import {UtilService} from "../../service/util-service/util.service";
-import {DelType, SyncType} from "../../data.enum";
+import {DelType, PageDirection, SyncType} from "../../data.enum";
 import {UserConfig} from "../../service/config/user.config";
 import {DataConfig} from "../../service/config/data.config";
-import {DataRestful,DownloadInData} from "../../service/restful/datasev";
-import {NativeAudio } from "@ionic-native/native-audio";
+import {DataRestful, DownloadInData} from "../../service/restful/datasev";
+import {NativeAudio} from "@ionic-native/native-audio";
+import BScroll from "better-scroll";
 
 @IonicPage()
 @Component({
   selector: 'page-attach',
   template: `
 
-    <modal-box title="补充信息" [buttons]="buttons" (onCancel)="cancel()" (onRefresh)="flushData()">
+    <modal-box title="补充信息" [buttons]="buttons" (onCancel)="cancel()">
 
-      <ion-scroll scrollY="true" scrollheightAuto>
+      <div scrollheightAuto class="dataWapper">
+          <ion-grid class="list-grid-content">
+            <ng-container *ngFor="let fja of fjArray">
+              <ion-row class="item-content item-content-backgroud" leftmargin toppaddingsamll bottompaddingsamll
+                       rightmargin
+                       *ngIf="fja.del != deleted">
 
-        <ion-grid class="list-grid-content">
-          <ng-container  *ngFor="let fja of fjArray">
-            <ion-row class="item-content item-content-backgroud" leftmargin toppaddingsamll bottompaddingsamll rightmargin
-                     *ngIf="fja.del != deleted" >
-              <div class="line font-normal topheader" leftmargin rightmargin >
-                <div class="st font-small"> {{fja.wtt * 1000 | transfromdate:'withNow'}}</div>
-                <div class="person font-small" *ngIf="fja.ui!=currentuser" end>---{{fja.ui | formatuser: currentuser: friends}}</div>
-              </div>
-              <div class="line font-normal" leftmargin rightmargin >
-                <div class="sn towline">{{(fja.tb == synch? "" : "[*] ") + fja.fjn}}</div>
-              </div>
-              <div class="line font-normal" leftmargin rightmargin >
-                <div *ngIf="(fja.ext=='PDF'||fja.ext=='pdf')&& (fja.fj !='')" >
-                  <ion-icon class="fas fa-file-pdf" (click)="openPdf(fja.fjurl,fja.ext,fja.fji)"></ion-icon>
+                <div class="line font-normal topheader" leftmargin rightmargin>
+                  <div class="other">
+                    <div class="person  font-normal" class="person font-small"
+                         *ngIf="fja.ui!=currentuser">{{fja.ui | formatuser: currentuser: friends}}</div>
+                  </div>
+                  <div class="st font-small"> {{fja.wtt * 1000 | transfromdate:'withNow'}}</div>
+                  <div class="self" (click)="delAttach(fja)">
+                    <ion-icon class="fal fa-minus-circle" *ngIf="fja.ui==currentuser"></ion-icon>
+                    <div class="{{fja.fji}}" class="person font-normal" *ngIf="fja.ui==currentuser">自己</div>
+                  </div>
                 </div>
-                <div *ngIf="(fja.ext=='png'||fja.ext=='PNG'||fja.ext=='jpg'||fja.ext=='JPG'||fja.ext=='bmp'||fja.ext=='BMP')&& (fja.fj !='')">
-                      <ion-thumbnail (click)="photoShow(fja.fjurl)">
-                        <img  *ngIf="fja.fjurl!=''" src="{{fja.fjurl}}" />
-                        <img  *ngIf="fja.fjurl ==''" src="{{defaultimg}}" />
+                <div class="line font-normal" leftmargin rightmargin>
+                  <div class="attcomment" [class.selfattcomment]="fja.ui==currentuser"
+                       [class.otherwarpattcomment]="fja.ui!=currentuser">
+                    <div class="sn borderback">
+                      <span>{{fja.fjn}}</span>
+                      <ion-thumbnail (click)="photoShow(fja.fjurl)"
+                                     *ngIf="(fja.ext=='png'||fja.ext=='PNG'||fja.ext=='jpg'||fja.ext=='JPG'||fja.ext=='bmp'||fja.ext=='BMP')&& (fja.fj !='')">
+                        <img *ngIf="fja.fjurl!=''" src="{{fja.fjurl}}"/>
+                        <img *ngIf="fja.fjurl ==''" src="{{defaultimg}}"/>
                       </ion-thumbnail>
-                </div>
-                <div *ngIf="(fja.ext=='mp4'||fja.ext=='MP4')&& (fja.fj !='')">
-                    <ion-icon class="fas fa-file-audio" (click)="openPdf(fja.fjurl,fja.ext,fja.fji)"></ion-icon>
-                </div>
-                <div *ngIf="(fja.ext=='mp3'||fja.ext=='MP3')&& (fja.fj !='')">
-                    <ion-icon class="fas fa-file-music" (click)="openPdf(fja.fjurl,fja.ext,fja.fji)"></ion-icon>
-                </div>
-                <div *ngIf="(fja.ext=='doc'||fja.ext=='DOC'||fja.ext=='xls'||fja.ext=='XLS'||fja.ext=='ppt'||fja.ext=='PPT'||fja.ext=='DOCX'||fja.ext=='docx'
-                  ||fja.ext=='xlsx'||fja.ext=='XLSX'||fja.ext=='PPTX'||fja.ext=='pptx')&& (fja.fj !='')">
-                    <ion-icon class="fas fa-file-powerpoint" (click)="openPdf(fja.fjurl,fja.ext,fja.fji)"></ion-icon>
-                </div>
-                <div *ngIf="(fja.ext=='txt'||fja.ext=='TXT')&& (fja.fj !='')">
-                    <ion-icon class="fas fa-file-plus" (click)="openPdf(fja.fjurl,fja.ext,fja.fji)"></ion-icon>
-                </div>
+                      <div *ngIf="(fja.ext=='PDF'||fja.ext=='pdf')&& (fja.fj !='')"
+                           (click)="openPdf(fja.fjurl,fja.ext,fja.fji)">
+                        <ion-icon class="fas fa-file-pdf"></ion-icon>
+                      </div>
+                      <div *ngIf="(fja.ext=='mp4'||fja.ext=='MP4')&& (fja.fj !='')"
+                           (click)="openPdf(fja.fjurl,fja.ext,fja.fji)">
+                        <ion-icon class="fas fa-file-audio"></ion-icon>
+                      </div>
+                      <div *ngIf="(fja.ext=='mp3'||fja.ext=='MP3')&& (fja.fj !='')"
+                           (click)="openPdf(fja.fjurl,fja.ext,fja.fji)">
+                        <ion-icon class="fas fa-file-music"></ion-icon>
+                      </div>
+                      <div *ngIf="(fja.ext=='doc'||fja.ext=='DOC'||fja.ext=='xls'||fja.ext=='XLS'||fja.ext=='ppt'||fja.ext=='PPT'||fja.ext=='DOCX'||fja.ext=='docx'
+                  ||fja.ext=='xlsx'||fja.ext=='XLSX'||fja.ext=='PPTX'||fja.ext=='pptx')&& (fja.fj !='')"
+                           (click)="openPdf(fja.fjurl,fja.ext,fja.fji)">
+                        <ion-icon class="fas fa-file-powerpoint"></ion-icon>
+                      </div>
+                      <div *ngIf="(fja.ext=='txt'||fja.ext=='TXT')&& (fja.fj !='')"
+                           (click)="openPdf(fja.fjurl,fja.ext,fja.fji)">
+                        <ion-icon class="fas fa-file-plus"></ion-icon>
+                      </div>
+                    </div>
 
-                <div class="icon" *ngIf="fja.ui == currentuser" end>
-                  <ion-icon class="fal fa-minus-circle" (click)="delAttach(fja)"></ion-icon>
+                  </div>
+
                 </div>
-              </div>
-            </ion-row>
-          </ng-container>
-        </ion-grid>
-      </ion-scroll>
+              </ion-row>
+            </ng-container>
+          </ion-grid>
+        <div class="pulldown-wrapper" style="top: -50px;"><div class="before-trigger">刷新中</div></div>
+      </div>
       <div class="inputwarp">
         <ion-toolbar>
           <ion-buttons start>
@@ -94,7 +103,6 @@ import {NativeAudio } from "@ionic-native/native-audio";
 })
 
 export class AttachPage {
-  statusBarColor: string = "#3c4d55";
   imgUrl: string = "";
   fjArray: Array<Attachment> = new Array<Attachment>();
   fjData: Attachment = {} as Attachment;
@@ -102,14 +110,12 @@ export class AttachPage {
   obi: string = "";
   bw: string = "";
   //原图
-  browserurlBig: string ="http://pluto.guobaa.com/abl/store/local/getContent/";
+  browserurlBig: string = "http://pluto.guobaa.com/abl/store/local/getContent/";
   //缩略图
-  browserurl: string ="http://pluto.guobaa.com/abl/store/local/getSnapshot/";
-  members: Array<Member>  = new Array<Member>();
+  browserurl: string = "http://pluto.guobaa.com/abl/store/local/getSnapshot/";
+  members: Array<Member> = new Array<Member>();
   buttons: any = {
-    save: false,
     cancel: true,
-    refresh:true
   };
   defaultimg: string = DataConfig.HUIBASE64_LARGE;
 
@@ -134,12 +140,13 @@ export class AttachPage {
               private actionSheetCtrl: ActionSheetController,
               private dataRestful: DataRestful,
               private nativeAudio: NativeAudio,
-              private util:UtilService) {
+              private changeDetectorRef: ChangeDetectorRef,
+              private util: UtilService) {
     if (this.navParams && this.navParams.data) {
       this.obt = this.navParams.data.obt;
       this.obi = this.navParams.data.obi;
       this.fjArray = this.navParams.data.attach;
-      this.members  = this.navParams.data.members;
+      this.members = this.navParams.data.members;
 
       this.fjData.obt = this.obt;
       this.fjData.obi = this.obi;
@@ -147,28 +154,43 @@ export class AttachPage {
     //验证缓存文件目录是否存在
     if (this.util.hasCordova()) {
       this.file.checkDir(this.file.dataDirectory, '/cachefiles')
-      .then(_ => console.log('Directory exists'))
-      .catch(err => {
-        this.file.createDir(this.file.dataDirectory, "cachefiles", true).then(result => {
-          console.log("success");
-          //alert("文件路径创建成功");
-        }).catch(err => {
-          console.log("err:" + JSON.stringify(err));
-          //alert("文件路径创建失败");
-        })
-      });
+        .then(_ => console.log('Directory exists'))
+        .catch(err => {
+          this.file.createDir(this.file.dataDirectory, "cachefiles", true).then(result => {
+            console.log("success");
+            //alert("文件路径创建成功");
+          }).catch(err => {
+            console.log("err:" + JSON.stringify(err));
+            //alert("文件路径创建失败");
+          })
+        });
     }
 
-    //调用刷新
-    this.flushData();
   }
 
-
+  bscroll:BScroll;
   ionViewDidEnter() {
-
+    this.flushData().then(()=>{
+      this.bscroll = new BScroll('.dataWapper', {
+        click: true,
+        pullDownRefresh: {
+          threshold: 50,
+          stop: 20
+        },
+        scrollY:true
+      });
+      this.bscroll.on("pullingDown",()=>{
+        //调用刷新
+        this.flushData().then(()=>{
+          this.changeDetectorRef.detectChanges();
+          this.bscroll.refresh();
+          this.bscroll.finishPullDown();
+        })
+      });
+    });
   }
 
-  openimg(url){
+  openimg(url) {
     this.util.photoViews(url);
   }
 
@@ -200,9 +222,11 @@ export class AttachPage {
   }
 
   cancel() {
-    let data: Object = {attach: this.fjArray.filter((ele) => {
-      return ele.del != DelType.del;
-    })};
+    let data: Object = {
+      attach: this.fjArray.filter((ele) => {
+        return ele.del != DelType.del;
+      })
+    };
     this.viewCtrl.dismiss(data);
   }
 
@@ -226,14 +250,14 @@ export class AttachPage {
         let ext: string = fileName.substr(fileName.lastIndexOf(".") + 1);
         //将文件copy至缓存文件
         let imgFileDir: string = imageData.substr(0, imageData.lastIndexOf("/") + 1);
-        let newFileName = this.util.getUuid()+"."+ext;
+        let newFileName = this.util.getUuid() + "." + ext;
         this.fjData.obt = this.obt;
         this.fjData.obi = this.obi;
         this.fjData.fjn = newFileName;
         this.fjData.ext = ext;
         //构造地址文件
         let cacheFilePathJson: CacheFilePathJson = new CacheFilePathJson();
-        cacheFilePathJson.local = "/"+newFileName;
+        cacheFilePathJson.local = "/" + newFileName;
         this.fjData.fj = JSON.stringify(cacheFilePathJson);
         this.fjData.fpjson = cacheFilePathJson;
         this.fjData.fjurl = this.fjData.fpjson.getLocalFilePath(this.file.dataDirectory);
@@ -242,7 +266,7 @@ export class AttachPage {
         // if(!this.bw) {
         //   this.bw = fileName;
         // }
-        this.file.copyFile(imgFileDir, fileName, this.file.dataDirectory + cacheFilePathJson.getCacheDir(), newFileName).then(_=>{
+        this.file.copyFile(imgFileDir, fileName, this.file.dataDirectory + cacheFilePathJson.getCacheDir(), newFileName).then(_ => {
           this.saveFile();
         });
       }
@@ -269,14 +293,14 @@ export class AttachPage {
               let fileName: string = filePath.substr(filePath.lastIndexOf("/") + 1, filePath.length);
               let ext: string = fileName.substr(fileName.lastIndexOf(".") + 1);
               let imgFileDir: string = filePath.substr(0, filePath.lastIndexOf("/") + 1);
-              let newFileName = this.util.getUuid()+"."+ext;
+              let newFileName = this.util.getUuid() + "." + ext;
               this.fjData.obt = this.obt;
               this.fjData.obi = this.obi;
               this.fjData.fjn = newFileName;
               this.fjData.ext = ext;
               this.fjData.ui = this.currentuser;
               let cacheFilePathJson: CacheFilePathJson = new CacheFilePathJson();
-              cacheFilePathJson.local = "/"+newFileName;
+              cacheFilePathJson.local = "/" + newFileName;
               this.fjData.fj = JSON.stringify(cacheFilePathJson);
               this.fjData.fpjson = cacheFilePathJson;
               this.fjData.fjurl = this.fjData.fpjson.getLocalFilePath(this.file.dataDirectory);
@@ -284,7 +308,7 @@ export class AttachPage {
               // if(!this.bw) {
               //   this.bw = fileName;
               // }
-              this.file.copyFile(imgFileDir, fileName, this.file.dataDirectory + cacheFilePathJson.getCacheDir(), newFileName).then(_=>{
+              this.file.copyFile(imgFileDir, fileName, this.file.dataDirectory + cacheFilePathJson.getCacheDir(), newFileName).then(_ => {
                 this.saveFile();
               });
             }
@@ -317,13 +341,13 @@ export class AttachPage {
   }
 
   // 点击确认，保存文件
- async saveComment() {
+  async saveComment() {
     if (this.bw && this.bw.trim() != '') {
       this.fjData.fjn = this.bw;
       this.fjData.ui = this.currentuser;
       this.fjData.members = this.members;
       //1.对当前数据进行存储
-      let retAt: Attachment = {}  as Attachment;
+      let retAt: Attachment = {} as Attachment;
       this.util.loadingStart();
       retAt = await this.eventService.saveAttachment(this.fjData);
       //alert("上传返回值："+JSON.stringify(retAt));
@@ -335,12 +359,13 @@ export class AttachPage {
       this.bw = "";
     }
   }
- //保存文件
- async saveFile() {
-   let retAt: Attachment = {}  as Attachment;
-   retAt = await this.eventService.saveAttachment(this.fjData);
-   this.fjArray.unshift(retAt);
- }
+
+  //保存文件
+  async saveFile() {
+    let retAt: Attachment = {} as Attachment;
+    retAt = await this.eventService.saveAttachment(this.fjData);
+    this.fjArray.unshift(retAt);
+  }
 
 
   // 删除当前项
@@ -349,65 +374,66 @@ export class AttachPage {
       await this.eventService.removeAttachment(at);
     }
   }
+
   //打开本地PDF
   openPdf(fj: string, fileType: string, fji: string) {
-    if(fj && fj.indexOf("http") > 0) {
-         //当时mp3的情况下
-        if (fileType && (fileType =='mp3' || fileType =='MP3')) {
-            this.nativeAudio.preloadSimple(fji, fj).then((data) =>{
+    if (fj && fj.indexOf("http") > 0) {
+      //当时mp3的情况下
+      if (fileType && (fileType == 'mp3' || fileType == 'MP3')) {
+        this.nativeAudio.preloadSimple(fji, fj).then((data) => {
 
-            }, (error) =>{
+        }, (error) => {
 
-            });
-            this.nativeAudio.play(fji).then((data) =>{
+        });
+        this.nativeAudio.play(fji).then((data) => {
 
-            }, (error) =>{
+        }, (error) => {
 
-            });
-        }
-    }
-    else {
-      this.fileOpener.open(fj,this.getFileMimeType(fileType))
-      .then(() => console.info('File is opened'))
-      .catch(e => console.info('Error opening file', e));
+        });
+      }
+    } else {
+      this.fileOpener.open(fj, this.getFileMimeType(fileType))
+        .then(() => console.info('File is opened'))
+        .catch(e => console.info('Error opening file', e));
     }
 
   }
 
   //放大图片
   photoShow(fj: string) {
-      if(fj && fj.indexOf("http") > 0) {
-        let remoteId: string = fj.substr(fj.lastIndexOf("/") + 1, fj.length);
-        fj = this.browserurlBig+remoteId
-      }
-      this.util.photoViews(fj);
+    if (fj && fj.indexOf("http") > 0) {
+      let remoteId: string = fj.substr(fj.lastIndexOf("/") + 1, fj.length);
+      fj = this.browserurlBig + remoteId
+    }
+    this.util.photoViews(fj);
   }
+
   //刷新数据
   async flushData() {
     //清空数据
     this.fjArray = new Array<Attachment>();
     let attachments: Array<Attachment> = new Array<Attachment>();
-    attachments = await this.eventService.selectAttachments(this.obt,this.obi);
+    attachments = await this.eventService.selectAttachments(this.obt, this.obi);
     //alert("刷新返回值："+JSON.stringify(attachments));
     for (let attachment of attachments) {
       attachment.members = this.members;
       // 判断是否是残留数据或文字附件
       if (attachment.ext) {
         if (this.util.isJsonString(attachment.fj)) {
-            attachment.fpjson = generateCacheFilePathJson(attachment.fpjson, attachment.fj);
-            // 附件存储JSON是否存在
-            if (attachment.fpjson && attachment.fpjson.remote) {
-              attachment.fjurl = this.browserurl + attachment.fpjson.remote;
-              // 判断是否是手机
-              if (this.util.hasCordova()) {
-                let fileName: string  = attachment.fpjson.local.substr(1, attachment.fpjson.local.length);
-                // 本地文件存在，页面上显示本地文件
-                let checked =  await this.isExistFile(attachment.fpjson.getCacheDir(), fileName);
-                if (checked == true) {
-                  attachment.fjurl = attachment.fpjson.getLocalFilePath(this.file.dataDirectory);
-                }
+          attachment.fpjson = generateCacheFilePathJson(attachment.fpjson, attachment.fj);
+          // 附件存储JSON是否存在
+          if (attachment.fpjson && attachment.fpjson.remote) {
+            attachment.fjurl = this.browserurl + attachment.fpjson.remote;
+            // 判断是否是手机
+            if (this.util.hasCordova()) {
+              let fileName: string = attachment.fpjson.local.substr(1, attachment.fpjson.local.length);
+              // 本地文件存在，页面上显示本地文件
+              let checked = await this.isExistFile(attachment.fpjson.getCacheDir(), fileName);
+              if (checked == true) {
+                attachment.fjurl = attachment.fpjson.getLocalFilePath(this.file.dataDirectory);
               }
             }
+          }
         } else {
           //历史遗留数据构造
           attachment.fjurl = attachment.fj;
@@ -469,14 +495,14 @@ export class AttachPage {
     return mimeType;
   }
 
-  isExistFile(dir:string, fileName:string): Promise<boolean> {
-      return new Promise((resolve, reject) => {
-        this.file.checkFile(this.file.dataDirectory + dir, fileName).then(_=>{
-          resolve(true);
-        }).catch(err => {
-           resolve(false);
-        });
+  isExistFile(dir: string, fileName: string): Promise<boolean> {
+    return new Promise((resolve, reject) => {
+      this.file.checkFile(this.file.dataDirectory + dir, fileName).then(_ => {
+        resolve(true);
+      }).catch(err => {
+        resolve(false);
       });
+    });
   }
 
 }
