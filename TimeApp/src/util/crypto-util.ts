@@ -12,7 +12,7 @@ export function getSha1SafeforBrowser(userid: string) {
   return hash.update(userid).digest("hex");
 }
 
-export function checksum(value, options) {
+export function checksum(value, options = {algorithm: "md5", encoding: "hex"}) {
   options || (options = {});
 
   if (!options.algorithm) options.algorithm = 'md5';

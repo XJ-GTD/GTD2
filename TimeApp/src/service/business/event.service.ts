@@ -295,6 +295,10 @@ export class EventService extends BaseService {
       await this.receivedAgendaSpeaker(saved);
       await this.sqlExce.batExecSqlByParam(sqlparam);
       this.emitService.emit("mwxing.calendar.activities.changed", saved);
+
+      if (extension != PullType.Full) {
+        this.emitService.emit("mwxing.calendar.datas.readwrite", {rw: "write", payload: saved});
+      }
     }
 
     return saved;
