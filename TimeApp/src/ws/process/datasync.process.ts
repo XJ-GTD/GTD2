@@ -306,7 +306,7 @@ export class DataSyncProcess implements MQProcess {
                 await this.memoService.receivedMemoData(memo, SyncDataStatus.Deleted);
               }
             } else if (datatype == "Attachment") {
-              await this.eventService.receivedAttachmentData(typeclassdel, SyncDataStatus.Deleted);
+              await this.eventService.receivedAttachmentData(typeclassdel, SyncDataStatus.Deleted, extension);
             } else if (datatype == "Annotation") {
               await this.annotationService.receivedAnnotationData(typeclassdel, SyncDataStatus.Deleted);
             } else if (datatype == "Grouper") {
@@ -330,7 +330,7 @@ export class DataSyncProcess implements MQProcess {
                 await this.memoService.receivedMemoData(memo, SyncDataStatus.UnDeleted);
               }
             } else if (datatype == "Attachment") {
-              await this.eventService.receivedAttachmentData(typeclassundel, SyncDataStatus.UnDeleted);
+              await this.eventService.receivedAttachmentData(typeclassundel, SyncDataStatus.UnDeleted, extension);
             } else if (datatype == "Annotation") {
               await this.annotationService.receivedAnnotationData(typeclassundel, SyncDataStatus.UnDeleted);
             } else if (datatype == "Grouper") {
@@ -628,7 +628,7 @@ export class DataSyncProcess implements MQProcess {
         let attachment: Attachment = {} as Attachment;
         Object.assign(attachment, dsPara.data);
 
-        await this.eventService.receivedAttachmentData([attachment], this.convertSyncStatus(dsPara.status));
+        await this.eventService.receivedAttachmentData([attachment], this.convertSyncStatus(dsPara.status), dsPara.extension);
       }
       if (dsPara.type == "Annotation") {
         let annotation: Annotation = {} as Annotation;
