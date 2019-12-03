@@ -3051,7 +3051,7 @@ export class CalendarService extends BaseService {
    *
    * @author leon_xi@163.com
    **/
-  write(write: PlanItemData | AgendaData | TaskData | MiniTaskData | MemoData | Attachment | Grouper | Annotation, readed: booolean = false) {
+  write(write: PlanItemData | AgendaData | TaskData | MiniTaskData | MemoData | Attachment | Grouper | Annotation, readed: boolean = false) {
     assertEmpty(write);  // 入参不能为空
 
     let data: any = write;
