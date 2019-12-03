@@ -19,6 +19,7 @@ import { EvTbl } from "../sqlite/tbl/ev.tbl";
 import { MomTbl } from "../sqlite/tbl/mom.tbl";
 import { ParTbl } from "../sqlite/tbl/par.tbl";
 import { FjTbl } from "../sqlite/tbl/fj.tbl";
+import { RwTbl } from "../sqlite/tbl/rw.tbl";
 import {
   assertEmpty,
   assertEqual,
@@ -38,6 +39,11 @@ export class CalendarService extends BaseService {
 
   private calendarsubjects: Map<string, BehaviorSubject<boolean>> = new Map<string, BehaviorSubject<boolean>>();
   private calendarobservables: Map<string, Observable<boolean>> = new Map<string, Observable<boolean>>();
+  private annotationsubjects: Map<string, BehaviorSubject<boolean>> = new Map<string, BehaviorSubject<boolean>>();
+  private annotationobservables: Map<string, Observable<boolean>> = new Map<string, Observable<boolean>>();
+  private attachmentsubjects: Map<string, BehaviorSubject<number>> = new Map<string, BehaviorSubject<number>>();
+  private attachmentobservables: Map<string, Observable<number>> = new Map<string, Observable<number>>();
+
   private calendaractivities: Array<MonthActivityData> = new Array<MonthActivityData>();
   private activitiesqueue: AsyncQueue;
   private calendardatarws: Map<string, ReadWriteData> = new Map<string, ReadWriteData>();
@@ -187,6 +193,14 @@ export class CalendarService extends BaseService {
     return this.calendarobservables;
   }
 
+  getAnnotationObservables(): Map<string, Observable<boolean>> {
+    return this.annotationobservables;
+  }
+
+  getAttachmentObservables(): Map<string, Observable<number>> {
+    return this.attachmentobservables;
+  }
+
   /**
    * 取得日历显示列表
    *
@@ -270,15 +284,25 @@ export class CalendarService extends BaseService {
           if (ele.evi) {
             // Observable
             let subject: BehaviorSubject<boolean> = this.calendarsubjects.get(ele.evi);
+            let annotationsubject: BehaviorSubject<boolean> = this.annotationsubjects.get(ele.evi);
 
             if (!subject) {
               subject = new BehaviorSubject<boolean>(false);
               this.calendarsubjects.set(ele.evi, subject);
               this.calendarobservables.set(ele.evi, subject.asObservable());
+            } else {
+              subject.next(false);
             }
 
-            subject.next(false);
+            if (!annotationsubject) {
+              annotationsubject = new BehaviorSubject<boolean>(false);
+              this.annotationsubjects.set(ele.evi, annotationsubject);
+              this.annotationobservables.set(ele.evi, annotationsubject.asObservable());
+            } else {
+              subject.next(false);
+            }
             // Observable
+
           }
         });
       }
@@ -5382,16 +5406,7 @@ export class ReadWriteKey {
   }
 }
 
-export interface ReadWriteData {
-  type: string;
-  id: string;
-  mark: string;
-  rw: string;
-  nval: number;
-  cval: string;
-  bval: boolean;
-  checksum: string;
-  utt: number;
+export interface ReadWriteData extends RwTbl {
 }
 
 export class PagedActivityData {
