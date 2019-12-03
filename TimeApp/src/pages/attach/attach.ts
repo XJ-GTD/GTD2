@@ -21,7 +21,7 @@ import BScroll from "better-scroll";
   selector: 'page-attach',
   template: `
 
-    <modal-box title="补充信息" [buttons]="buttons" (onCancel)="cancel()" (onRefresh)="flushData()">
+    <modal-box title="补充信息" [buttons]="buttons" (onCancel)="cancel()">
 
       <div scrollheightAuto class="dataWapper">
           <ion-grid class="list-grid-content">
@@ -115,9 +115,7 @@ export class AttachPage {
   browserurl: string = "http://pluto.guobaa.com/abl/store/local/getSnapshot/";
   members: Array<Member> = new Array<Member>();
   buttons: any = {
-    save: false,
     cancel: true,
-    refresh: true
   };
   defaultimg: string = DataConfig.HUIBASE64_LARGE;
 
@@ -167,29 +165,29 @@ export class AttachPage {
           })
         });
     }
-    this.flushData();
 
   }
 
   bscroll:BScroll;
   ionViewDidEnter() {
-
-    this.bscroll = new BScroll('.dataWapper', {
-      click: true,
-      pullDownRefresh: {
-        threshold: 50,
-        stop: 20
-      },
-      scrollY:true
-    });
-    this.bscroll.on("pullingDown",()=>{
+    this.flushData().then(()=>{
+      this.bscroll = new BScroll('.dataWapper', {
+        click: true,
+        pullDownRefresh: {
+          threshold: 50,
+          stop: 20
+        },
+        scrollY:true
+      });
+      this.bscroll.on("pullingDown",()=>{
         //调用刷新
-      this.flushData().then(()=>{
+        this.flushData().then(()=>{
           this.changeDetectorRef.detectChanges();
           this.bscroll.refresh();
           this.bscroll.finishPullDown();
         })
       });
+    });
   }
 
   openimg(url) {
