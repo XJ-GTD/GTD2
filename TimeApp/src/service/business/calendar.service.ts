@@ -312,7 +312,7 @@ export class CalendarService extends BaseService {
               this.attachmentsubjects.set(ele.evi, attachmentsubject);
               this.attachmentobservables.set(ele.evi, attachmentsubject.asObservable());
             } else {
-              subject.next(isNaN(fjn)? fjn : 0);
+              attachmentsubject.next(isNaN(fjn)? fjn : 0);
             }
             // Observable
 
