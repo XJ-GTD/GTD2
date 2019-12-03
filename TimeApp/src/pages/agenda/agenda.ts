@@ -25,7 +25,7 @@ import {
 } from "../../data.enum";
 import {ModiPower} from "../../data.enum";
 import {AssistantService} from "../../service/cordova/assistant.service";
-import {EmitService} from "../../util-service/emit.service";
+import {EmitService} from "../../service/util-service/emit.service";
 
 declare var Wechat;
 

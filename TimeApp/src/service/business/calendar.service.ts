@@ -68,7 +68,7 @@ export class CalendarService extends BaseService {
       } else {
         (rw == "read")? this.read(payload) : this.write(payload);
       }
-    });
+    },1,1,"home.list.modifiy1");
 
     this.activitiesqueue = new AsyncQueue( async ({data}, callback) => {
 
@@ -3105,7 +3105,7 @@ export class CalendarService extends BaseService {
         let compares: Map<string, any> = new Map<string, any>();
 
         this.calendardatarws.forEach((value, key) => {
-          if (key.type == this.obt && key.id == this.obi) {
+          if (key.type == attachment.obt && key.id == attachment.obi) {
             if (key.mark.startsWith("attachment_")) {
               let compare: any = compares.get(key.mark) || {};
 
@@ -3118,7 +3118,7 @@ export class CalendarService extends BaseService {
               compares.set(key.mark, compare);
             }
           }
-        }, attachment);
+        });
 
         let readOrWrite: boolean = true;
 
