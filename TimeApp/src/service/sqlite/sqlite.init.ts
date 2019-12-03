@@ -33,6 +33,7 @@ import {MrkTbl} from "./tbl/mrk.tbl";
 import {ParTbl} from "./tbl/par.tbl";
 import {DelType, SyncType} from "../../data.enum";
 import {AtTbl} from "./tbl/at.tbl";
+import {RwTbl} from "./tbl/rw.tbl";
 
 /**
  * create by on 2019/3/5
@@ -297,6 +298,13 @@ export class SqliteInit {
       }
 
 
+    }else if (version == 10){
+      //新增rw表
+      if (from > 0 && from < 10 ) {
+        let rw: RwTbl = new RwTbl();
+        await this.sqlexec.dropByParam(rw);
+        await this.sqlexec.createByParam(rw);
+      }
     }
   }
 

@@ -68,7 +68,9 @@ export class DataConfig {
   //2019/11/20 群组表增加字段
   //public static version: number = 8;
   //2019/11/21 事件表加关联，事件变更类型字段
-  public static version: number = 9;
+  //public static version: number = 9;
+  //2019/12/23 增加读写表
+  public static version: number = 10;
 
   public static RABBITMQ_STATUS: string = "";
 
