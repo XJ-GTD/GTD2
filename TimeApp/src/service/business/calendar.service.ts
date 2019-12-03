@@ -69,6 +69,8 @@ export class CalendarService extends BaseService {
         } else {
           (rw == "read")? this.read(payload) : this.write(payload);
         }
+
+        callback();
       } catch(err) {}
     },1,1,"home.list.modifiy1");
 
