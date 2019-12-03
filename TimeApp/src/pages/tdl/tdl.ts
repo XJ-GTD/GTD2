@@ -244,7 +244,7 @@ import { Observable } from 'rxjs';
                         <ion-icon class="fad fa-user-friends " *ngIf="event.pn > 0 "></ion-icon>
                         <b *ngIf="event.pn > 0 ">{{event.apn}} / {{event.pn}}</b>
                         <ion-icon class="fad fa-info-circle "></ion-icon>
-                        <b>{{event.fj}}</b>
+                        <b>{{attachmentobservables.get(event.evi) | async}}</b>
                       </div>
                     </div>
 
@@ -570,6 +570,7 @@ export class TdlPage {
       this.monthActivityDatas = data;
       this.calendarobservables = this.calendarService.getCalendarObservables();
       this.annotationobservables = this.calendarService.getAnnotationObservables();
+      this.attachmentobservables = this.calendarService.getAttachmentObservables();
 
       this.detectorService.detector(()=>{
         this.bScroll.refresh();

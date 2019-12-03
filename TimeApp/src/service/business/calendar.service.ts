@@ -284,7 +284,6 @@ export class CalendarService extends BaseService {
           if (ele.evi) {
             // Observable
             let subject: BehaviorSubject<boolean> = this.calendarsubjects.get(ele.evi);
-            let annotationsubject: BehaviorSubject<boolean> = this.annotationsubjects.get(ele.evi);
 
             if (!subject) {
               subject = new BehaviorSubject<boolean>(false);
@@ -294,12 +293,26 @@ export class CalendarService extends BaseService {
               subject.next(false);
             }
 
+            let annotationsubject: BehaviorSubject<boolean> = this.annotationsubjects.get(ele.evi);
+
             if (!annotationsubject) {
               annotationsubject = new BehaviorSubject<boolean>(false);
               this.annotationsubjects.set(ele.evi, annotationsubject);
               this.annotationobservables.set(ele.evi, annotationsubject.asObservable());
             } else {
               subject.next(false);
+            }
+
+            let attachmentsubject: BehaviorSubject<number> = this.attachmentsubjects.get(ele.evi);
+
+            let fjn: number = Number(event.fj);
+
+            if (!attachmentsubject) {
+              attachmentsubject = new BehaviorSubject<boolean>(isNaN(fjn)? fjn : 0);
+              this.attachmentsubjects.set(ele.evi, attachmentsubject);
+              this.attachmentobservables.set(ele.evi, attachmentsubject.asObservable());
+            } else {
+              subject.next(isNaN(fjn)? fjn : 0);
             }
             // Observable
 
