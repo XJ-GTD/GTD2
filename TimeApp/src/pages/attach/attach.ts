@@ -45,7 +45,7 @@ import BScroll from "better-scroll";
                   <div class="attcomment" [class.selfattcomment]="fja.ui==currentuser"
                        [class.otherwarpattcomment]="fja.ui!=currentuser">
                     <div class="sn borderback">
-                      <span>{{fja.fjn}}</span>
+                      <span *ngIf="fja.ext==''">{{fja.fjn}}</span>
                       <ion-thumbnail (click)="photoShow(fja.fjurl)"
                                      *ngIf="(fja.ext=='png'||fja.ext=='PNG'||fja.ext=='jpg'||fja.ext=='JPG'||fja.ext=='bmp'||fja.ext=='BMP')&& (fja.fj !='')">
                         <img *ngIf="fja.fjurl!=''" src="{{fja.fjurl}}"/>
