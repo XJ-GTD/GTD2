@@ -28,10 +28,13 @@ import {AsyncQueue} from "../../util/asyncQueue";
 import {DetectorService} from "../util-service/detector.service";
 import {TimeOutService} from "../../util/timeOutService";
 import {GrouperService} from "./grouper.service";
+import { Observable, BehaviorSubject } from 'rxjs';
 
 @Injectable()
 export class CalendarService extends BaseService {
 
+  private calendarsubjects: Map<string, BehaviorSubject<boolean>> = new Map<string, BehaviorSubject<boolean>>();
+  private calendarobservables: Map<string, Observable<boolean>> = new Map<string, Observable<boolean>>();
   private calendaractivities: Array<MonthActivityData> = new Array<MonthActivityData>();
   private activitiesqueue: AsyncQueue;
 
@@ -156,6 +159,10 @@ export class CalendarService extends BaseService {
     return this.calendaractivities;
   }
 
+  getCalendarObservables(): Map<string, Observable<boolean>> {
+    return this.calendarobservables;
+  }
+
   /**
    * 取得日历显示列表
    *
@@ -219,6 +226,26 @@ export class CalendarService extends BaseService {
       default:
         this.assertFail();    // 非法参数
     }
+
+    this.calendaractivities.forEach((val) => {
+      if (val) {
+        val.events.forEach((ele) => {
+          if (ele.evi) {
+            // Observable
+            let subject: BehaviorSubject<boolean> = this.calendarsubjects.get(ele.evi);
+
+            if (!subject) {
+              subject = new BehaviorSubject<boolean>(false);
+              this.calendarsubjects.set(ele.evi, subject);
+              this.calendarobservables.set(ele.evi, subject.asObservable());
+            }
+
+            subject.next(false);
+            // Observable
+          }
+        });
+      }
+    });
 
     return this.calendaractivities;
   }
@@ -3041,10 +3068,34 @@ export class CalendarService extends BaseService {
             } else {
               // 更新
               monthActivities.events.splice(index, 1, event);
+
+              // Observable
+              let subject: BehaviorSubject<boolean> = this.calendarsubjects.get(event.evi);
+
+              if (!subject) {
+                subject = new BehaviorSubject<boolean>(true);
+                this.calendarsubjects.set(event.evi, subject);
+                this.calendarobservables.set(event.evi, subject.asObservable());
+              }
+
+              subject.next(true);
+              // Observable
             }
           } else {
             if (event.del != DelType.del) {
               monthActivities.events.push(event);
+
+              // Observable
+              let subject: BehaviorSubject<boolean> = this.calendarsubjects.get(event.evi);
+
+              if (!subject) {
+                subject = new BehaviorSubject<boolean>(true);
+                this.calendarsubjects.set(event.evi, subject);
+                this.calendarobservables.set(event.evi, subject.asObservable());
+              }
+
+              subject.next(true);
+              // Observable
             }
           }
           break;

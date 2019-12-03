@@ -34,6 +34,7 @@ import {UserConfig} from "../../service/config/user.config";
 import {DetectorService} from "../../service/util-service/detector.service";
 import BScroll from "better-scroll";
 import {TimeOutService} from "../../util/timeOutService";
+import { Observable } from 'rxjs';
 
 // BScroll.use(InfinityScroll);
 
@@ -214,7 +215,7 @@ import {TimeOutService} from "../../util/timeOutService";
               <ng-container *ngFor="let event of days.events;">
                 <ng-container *ngIf="!(event.ui != currentuser && event.rtevi && event.invitestatus != inviteaccept && event.invitestatus != invitereject)">
                   <ion-row class="item-content dayagenda-content item-content-backgroud"
-                           [class.item-content-hasmessage]="false"
+                           [class.item-content-hasmessage]="calendarobservables.get(event.evi) | async"
                            (click)="toDetail(event.evi,event.evd,event.type,event.gs)">
                     <div class="line font-small first-line">
                       <div class="sn towline">{{event.evn}}</div>
@@ -306,6 +307,7 @@ export class TdlPage {
   currDayel: any;
   //画面数据List
   monthActivityDatas: Array<MonthActivityData> = new Array<MonthActivityData>();
+  calendarobservables: Map<string, Observable<boolean>> = new Map<string, Observable<boolean>>();
   currentuser: string = UserConfig.account.id;
   friends: Array<any> = UserConfig.friends;
 
@@ -562,6 +564,8 @@ export class TdlPage {
 
     this.tdlServ.initLsData().then(data => {
       this.monthActivityDatas = data;
+      this.calendarobservables = this.calendarService.getCalendarObservables();
+
       this.detectorService.detector(()=>{
         this.bScroll.refresh();
         this.gotoEl("#day" + moment().format("YYYYMMDD"));

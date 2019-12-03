@@ -1211,7 +1211,7 @@ describe('EventService test suite', () => {
       tx1.rfg = RepeatFlag.NonRepeat;
 
       let confirm: ConfirmType = await eventService.hasTaskModifyConfirm(tx,tx1);
-      expect(tx).toBeDefined();
+      expect(confirm).toBeDefined();
     });
 
   });
