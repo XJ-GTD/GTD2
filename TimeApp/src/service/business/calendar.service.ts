@@ -223,7 +223,7 @@ export class CalendarService extends BaseService {
 
           this.activitiesqueue.push({data: data}, () => {
             // 完成处理
-            //this.detectorService.detector();
+            this.detectorService.detector();
             if (this.calendaractivities.length > 0) {
               for (let monthactivities of this.calendaractivities) {
                 this.emitService.emit("mwxing.calendar." + monthactivities.month + ".changed", monthactivities);
@@ -241,7 +241,7 @@ export class CalendarService extends BaseService {
           }
 
           this.datasrwqueue.push({data: data}, () => {
-
+            this.detectorService.detector();
           });
         });
 
