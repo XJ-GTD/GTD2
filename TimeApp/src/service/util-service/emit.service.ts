@@ -32,6 +32,24 @@ export class EmitService {
   //新日程增加修改删除信息消息刷新
   private immediatelyEm: EventEmitter<string> = new EventEmitter<string>();
 
+  private aiTellYouEm: EventEmitter<string> = new EventEmitter<string>();
+
+
+  registerAiTellYou(callback) :any{
+    if (this.aiTellYouEm.closed) {
+      this.aiTellYouEm = new EventEmitter<string>();
+    }
+    return this.aiTellYouEm.subscribe(($data: string) => {
+      callback($data);
+    });
+  };
+
+  emitAiTellYou($data: any) {
+    if (!this.aiTellYouEm.isStopped) {
+      this.aiTellYouEm.emit($data);
+    }
+  }
+
 
   registerImmediately(callback) :any{
     if (this.immediatelyEm.closed) {

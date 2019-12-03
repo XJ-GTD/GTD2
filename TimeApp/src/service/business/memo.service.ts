@@ -227,6 +227,9 @@ export class MemoService extends BaseService {
 
 			if (memos && memos.length > 0) {
         this.util.toastStart(`发现${memos.length}条未同步备忘, 开始同步...`, 1000);
+        this.util.tellyou(`发现${memos.length}条未同步日程, 开始同步...`);
+
+
       }
 		}
 

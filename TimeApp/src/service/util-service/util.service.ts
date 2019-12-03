@@ -23,6 +23,7 @@ import {
   ModalFromRightEnter,
   ModalFromRightLeave, ModalFromTopEnter, ModalFromTopLeave, ModalScaleEnter, ModalScaleLeave
 } from "../../app/AppTransition";
+import {EmitService} from "./emit.service";
 
 /**
  * 公共方法
@@ -41,7 +42,8 @@ export class UtilService {
               private loadingCtrl: LoadingController,
               private popoverCtrl: PopoverController,
               private alertCtrl: AlertController,
-              private modalCtrl: ModalController) {
+              private modalCtrl: ModalController,
+              private emitService:EmitService) {
     console.log("UtilService initialized.")
     this.chineseLunar = new ChineseLunar();
     this.aday = "99:99";
@@ -669,6 +671,14 @@ export class UtilService {
       this.toast.dismissAll();
       this.toast = null;
     }
+  }
+
+  tellyou(msg: string) {
+    this.emitService.emitAiTellYou({close:false,message:msg});
+  }
+
+  tellyouEnd() {
+    this.emitService.emitAiTellYou({close:true});
   }
 
   /**

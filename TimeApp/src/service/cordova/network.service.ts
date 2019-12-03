@@ -56,8 +56,11 @@ export class NetworkService {
     this.network.onDisconnect().subscribe(() => {
 
       this.emitService.emit("on.network.disconnected");
-      this.util.toastEnd(); //后台期间重复提示去除
-      this.util.toastStart("当前无网络，请检查网络连接",1500);
+      // this.util.toastEnd(); //后台期间重复提示去除
+      // this.util.toastStart("当前无网络，请检查网络连接",1500);
+      // this.util.toastStart("冥王星" + url.desc + "服务访问失败", 2000);
+      this.util.tellyou("当前无网络，请检查网络连接");
+
 
     });
 

@@ -3940,7 +3940,10 @@ export class CalendarService extends BaseService {
       planitems = await this.sqlExce.getExtLstByParam<PlanItemData>(sql, [SelfDefineType.System, SyncType.unsynch, DelType.del]) || planitems;
 
       if (planitems && planitems.length > 0) {
-        this.util.toastStart(`发现${planitems.length}条未同步纪念日, 开始同步...`, 1000);
+        // this.util.toastStart(`发现${planitems.length}条未同步纪念日, 开始同步...`, 1000);
+        this.util.tellyou(`发现${planitems.length}条未同步纪念日, 开始同步...`);
+
+
       }
 
       let sqlmember: string = ` select par.*  ,
@@ -4370,7 +4373,8 @@ export class CalendarService extends BaseService {
       plans = await this.sqlExce.getExtLstByParam<PlanData>(sql, [PlanType.PrivatePlan, SyncType.unsynch]) || plans;
 
       if (plans && plans.length > 0) {
-        this.util.toastStart(`发现${plans.length}条未同步日历, 开始同步...`, 1000);
+        // this.util.toastStart(`发现${plans.length}条未同步日历, 开始同步...`, 1000);
+        this.util.tellyou(`发现${plans.length}条未同步日历, 开始同步...`);
       }
     }
 

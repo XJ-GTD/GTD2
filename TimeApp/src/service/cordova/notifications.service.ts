@@ -194,13 +194,19 @@ export class NotificationsService {
     this.localNotifications.schedule(notif);
   }
 
-  public systimeout(key:string,mi:number) {
+  public sysTimeout(key:string,mi:number):number {
     let notif: MwxSchedule = new MwxSchedule();
     notif.id = this.index++;
     notif.trigger = {in: mi, unit: ELocalNotificationTriggerUnit.SECOND};
     notif.data = {type: "systimeout",emitkey:key};
 
     this.localNotifications.schedule(notif);
+    return notif.id;
+  }
+
+  public cancel(id:number) {
+
+    this.localNotifications.cancel(id);
   }
 
 

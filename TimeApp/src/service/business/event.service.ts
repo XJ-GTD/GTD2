@@ -3214,7 +3214,8 @@ export class EventService extends BaseService {
       attachments = await this.sqlExce.getExtLstByParam<Attachment>(sql, [SyncType.synch, UserConfig.account.id]) || attachments;
 
       if (attachments && attachments.length > 0) {
-        this.util.toastStart(`发现${attachments.length}条未同步补充, 开始同步...`, 1000);
+        // this.util.toastStart(`发现${attachments.length}条未同步补充, 开始同步...`, 1000);
+        this.util.tellyou(`发现${attachments.length}条未同步补充, 开始同步...`);
       }
 
       let sqlmember: string = `select par.*,
@@ -3493,7 +3494,9 @@ export class EventService extends BaseService {
   		agendas = await this.sqlExce.getExtLstByParam<AgendaData>(sql, [anyenum.EventType.Agenda, SyncType.unsynch]) || agendas;
 
       if (agendas && agendas.length > 0) {
-        this.util.toastStart(`发现${agendas.length}条未同步日程, 开始同步...`, 1000);
+        // this.util.toastStart(`发现${agendas.length}条未同步日程, 开始同步...`, 1000);
+        this.util.tellyou(`发现${agendas.length}条未同步日程, 开始同步...`);
+
       }
 
       // 增加附件同步

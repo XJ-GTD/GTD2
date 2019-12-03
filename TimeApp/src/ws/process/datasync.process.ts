@@ -18,6 +18,7 @@ import {DataRestful} from "../../service/restful/datasev";
 import {SqliteExec} from "../../service/util-service/sqlite.exec";
 import {Annotation, AnnotationService} from "../../service/business/annotation.service";
 import {Grouper, GrouperService} from "../../service/business/grouper.service";
+import {UtilService} from "../../service/util-service/util.service";
 
 /**
  * 数据同步
@@ -37,7 +38,8 @@ export class DataSyncProcess implements MQProcess {
               private dataRestful: DataRestful,
               private annotationService : AnnotationService,
               private grouperService : GrouperService,
-              private sqlExce : SqliteExec) {
+              private sqlExce : SqliteExec,
+              private utilService :UtilService) {
   }
 
   async gowhen(content: WsContent, contextRetMap: Map<string,any>) {
@@ -187,6 +189,8 @@ export class DataSyncProcess implements MQProcess {
         let classified = {};
 
         for (let filedata of filedatas) {
+
+          this.utilService.tellyou("当前在DataSyncProcess.filedatas中还有" + filedatas.length + "个任务没有完成");
           let dsPara: DataSyncPara = filedata;
 
           let status: string = dsPara.status;

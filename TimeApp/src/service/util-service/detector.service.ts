@@ -9,7 +9,7 @@ export class DetectorService {
   }
 
   detector(callback?:Function){
-    this.timeOutService.timeout(1000,()=>{
+    this.timeOutService.timeOutOnlyOne(1000,()=>{
       this.detectorRef();
       if (callback) callback();
     },"onpush.detector.ref");

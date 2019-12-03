@@ -113,7 +113,9 @@ export class RestfulClient {
           this.sqlitExc.noteLog(log);
           resolve(jsonData);
         }).catch(err => {
-          this.util.toastStart("冥王星" + url.desc + "服务访问失败", 2000);
+          // this.util.toastStart("冥王星" + url.desc + "服务访问失败", 2000);
+          this.util.tellyou("冥王星" + url.desc + "服务访问失败");
+
           log.ss = new Date().valueOf() - log.ss;
           log.st = false;
           log.er = err;
@@ -136,7 +138,8 @@ export class RestfulClient {
           log.st = false;
           log.er = err;
           this.sqlitExc.noteLog(log);
-          this.util.toastStart("冥王星" + url.desc + "服务访问失败", 2000);
+          // this.util.toastStart("冥王星" + url.desc + "服务访问失败", 2000);
+          this.util.tellyou("冥王星" + url.desc + "服务访问失败");
           reject(err)
         })
       }
@@ -170,7 +173,8 @@ export class RestfulClient {
           log.st = false;
           log.er = err;
           this.sqlitExc.noteLog(log);
-          this.util.toastStart("冥王星" + url.desc + "服务访问失败", 2000);
+          // this.util.toastStart("冥王星" + url.desc + "服务访问失败", 2000);
+          this.util.tellyou("冥王星" + url.desc + "服务访问失败");
           reject(err);
         })
       } else {
@@ -189,7 +193,8 @@ export class RestfulClient {
           log.st = false;
           log.er = err;
           this.sqlitExc.noteLog(log);
-          this.util.toastStart("冥王星" + url.desc + "服务访问失败", 2000);
+          // this.util.toastStart("冥王星" + url.desc + "服务访问失败", 2000);
+          this.util.tellyou("冥王星" + url.desc + "服务访问失败");
           reject(err)
         })
       }
@@ -224,7 +229,8 @@ export class RestfulClient {
           log.st = false;
           log.er = err;
           this.sqlitExc.noteLog(log);
-          this.util.toastStart("冥王星" + url.desc + "服务访问失败", 2000);
+          // this.util.toastStart("冥王星" + url.desc + "服务访问失败", 2000);
+          this.util.tellyou("冥王星" + url.desc + "服务访问失败");
           reject(err);
         })
       } else {
@@ -242,7 +248,8 @@ export class RestfulClient {
           log.st = false;
           log.er = err;
           this.sqlitExc.noteLog(log);
-          this.util.toastStart("冥王星" + url.desc + "服务访问失败", 2000);
+          // this.util.toastStart("冥王星" + url.desc + "服务访问失败", 2000);
+          this.util.tellyou("冥王星" + url.desc + "服务访问失败");
           reject(err)
         })
       }

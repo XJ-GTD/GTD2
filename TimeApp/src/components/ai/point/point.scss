@@ -1,5 +1,13 @@
 
 pointcomponent {
+  .list-grid-content {
+    .sn{
+      -webkit-line-clamp: inherit;
+      font-size: 1.2rem;
+      text-align: left;
+      border-bottom: 0.55px solid #ffc107;
+    }
+}
   position: fixed;
   //top: $speakertop;
   //left: $speakerleft;

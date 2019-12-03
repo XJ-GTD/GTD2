@@ -16,6 +16,7 @@ import {EmitService} from "../../../service/util-service/emit.service";
 import {CalendarDay} from "../../ion2-calendar";
 import {PopperComponent} from "angular-popper";
 import {Subscriber} from "rxjs";
+import {TimeOutService} from "../../../util/timeOutService";
 
 /**
  * Generated class for the Hb01Page page.
@@ -41,20 +42,19 @@ import {Subscriber} from "rxjs";
       </b>
     </div>
     <angular-popper  target=".aitool"  placement="left-end" #popper [class.showNot] = "popperShow">
-      <div content><span>
-        {{immediately}}
-    这里有一些事情要你处理，你有空看一下吗？哈哈哈
-      这里有一些事情要你处理，你有空看一下吗？哈哈哈
-      这里有一些事情要你处理，你有空看一下吗？哈哈哈 这里有一些事情要你处理，你有空看一下吗？哈哈哈
-      这里有一些事情要你处理，你有空看一下吗？哈哈哈
-      这里有一些事情要你处理，你有空看一下吗？哈哈哈 这里有一些事情要你处理，你有空看一下吗？哈哈哈
-      这里有一些事情要你处理，你有空看一下吗？哈哈哈
-      这里有一些事情要你处理，你有空看一下吗？哈哈哈 这里有一些事情要你处理，你有空看一下吗？哈哈哈
-      这里有一些事情要你处理，你有空看一下吗？哈哈哈
-      这里有一些事情要你处理，你有空看一下吗？哈哈哈</span>
+      <div content>
+        <ion-grid class="list-grid-content content">
+          <ng-template ngFor let-tellyou [ngForOf]="tellYouData">
+            <ion-row class="item-content">
+              <div class="line font-small first-line">
+
+                <div class="sn">
+                  {{tellyou}}</div>
+              </div>              
+            </ion-row>
+          </ng-template>
+        </ion-grid>
       </div>
-      
-      
     </angular-popper>
 
   `,
@@ -77,34 +77,39 @@ export class PointComponent {
 
   @Input()
   showInput:boolean = true;
-  test:string;
-  immediately:any = 0;
+  immediately:string;
+  immediatelyemit:Subscriber<any>;
 
   @Output() onPonintClick: EventEmitter<any> = new EventEmitter();
 
-  immediatelyemit:Subscriber<any>;
+  aiTellYou:Subscriber<any>;
+  tellYouData:Array<string> = new Array<string>();
 
   constructor(private utilService: UtilService,
               private assistantService: AssistantService,
               private _renderer: Renderer2,
               private emitService:EmitService,
-              private changeDetectorRef: ChangeDetectorRef,) {
+              private changeDetectorRef: ChangeDetectorRef,
+              private timeoutService:TimeOutService) {
 
-    this.immediatelyemit = this.emitService.registerImmediately((immediately)=>{
-      console.log(immediately);
-        this.test = immediately;
-        console.log(immediately + this.showInput);
-        if (this.immediately != 1){
-          this.popperShow = false;
-        }else{
-          this.popperShow = true;
-        }
-        this.immediately = immediately;
+    this.aiTellYou = this.emitService.registerAiTellYou(($data)=>{
+
+      if ($data.close){
+        this.popperShow = true;
+      }else{
+        this.popperShow = false;
+        this.tellYouData.push($data.message);
         if (!this.changeDetectorRef['destroyed']) {
           this.changeDetectorRef.detectChanges();
           this.popper.create();
-
         }
+        this.timeoutService.timeOutOnlyOne(5000,()=>{
+          this.popperShow = true;
+          this.tellYouData.length = 0;
+          this.changeDetectorRef.detectChanges();
+        },"colose.home.ai.talk");
+      }
+
     });
     // this.emitService.registerSpeak((b)=>{
     //   if (b){
@@ -116,6 +121,7 @@ export class PointComponent {
   }
   ngOnDestroy(){
     this.immediatelyemit.unsubscribe();
+    this.aiTellYou.unsubscribe();
   }
 
 

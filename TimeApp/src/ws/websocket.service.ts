@@ -40,8 +40,9 @@ export class WebsocketService {
               private timeOutService: TimeOutService,) {
 
     this.workqueue = new AsyncQueue(({message,index,err},callback) =>{
-      // console.log("当前任务=====workqueue  process queue:" + this.workqueue.length());
+      console.log("当前任务=====workqueue  process queue:" + this.workqueue.length());
       // this.util.toastStart("有一条消息, 处理中", 1000);
+      this.util.tellyou("当前在workqueue中还有" + this.workqueue.length() + "个任务没有完成");
       this.dispatchService.dispatch(message).then(data=>{
         callback();
       }).catch(data=>{
