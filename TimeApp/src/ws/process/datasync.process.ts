@@ -308,7 +308,7 @@ export class DataSyncProcess implements MQProcess {
             } else if (datatype == "Attachment") {
               await this.eventService.receivedAttachmentData(typeclassdel, SyncDataStatus.Deleted, extension);
             } else if (datatype == "Annotation") {
-              await this.annotationService.receivedAnnotationData(typeclassdel, SyncDataStatus.Deleted);
+              await this.annotationService.receivedAnnotationData(typeclassdel, SyncDataStatus.Deleted, extension);
             } else if (datatype == "Grouper") {
               await this.grouperService.receivedGrouperData(typeclassdel, SyncDataStatus.Deleted);
             }
@@ -332,7 +332,7 @@ export class DataSyncProcess implements MQProcess {
             } else if (datatype == "Attachment") {
               await this.eventService.receivedAttachmentData(typeclassundel, SyncDataStatus.UnDeleted, extension);
             } else if (datatype == "Annotation") {
-              await this.annotationService.receivedAnnotationData(typeclassundel, SyncDataStatus.UnDeleted);
+              await this.annotationService.receivedAnnotationData(typeclassundel, SyncDataStatus.UnDeleted, extension);
             } else if (datatype == "Grouper") {
               await this.grouperService.receivedGrouperData(typeclassundel, SyncDataStatus.UnDeleted);
             }
@@ -634,7 +634,7 @@ export class DataSyncProcess implements MQProcess {
         let annotation: Annotation = {} as Annotation;
         Object.assign(annotation, dsPara.data);
 
-        await this.annotationService.receivedAnnotationData([annotation], this.convertSyncStatus(dsPara.status));
+        await this.annotationService.receivedAnnotationData([annotation], this.convertSyncStatus(dsPara.status), dsPara.extension);
       }
       if (dsPara.type == "Grouper") {
         let grouper: Grouper = new Grouper();

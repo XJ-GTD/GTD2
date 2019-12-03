@@ -3039,7 +3039,37 @@ export class CalendarService extends BaseService {
       case "MiniTask":
       case "Memo":
       case "Grouper":
+        break;
       case "Annotation":
+        let annotation: Annotation = {} as Annotation;
+        Object.assign(annotation, data);
+
+        readKey = new ReadWriteKey(annotation.obt, annotation.obi, "annotation", "read");
+        writeKey = new ReadWriteKey(annotation.obt, annotation.obi, "annotation", "write");
+
+        writeOriginData = this.calendardatarws.get(writeKey.encode());
+
+        Object.assign(readNewData, readKey);
+
+        readNewData.bval = true;
+        readNewData.utt = moment().unix();
+
+        // 读取数据访问缓存
+        this.calendardatarws.set(readKey.encode(), readNewData);
+
+        if (!writeOriginData) {
+          // 不存在写入数据, 直接设置已读
+          this.commit(annotation.obi, false);
+        } else {
+          if ((writeOriginData.nval || writeOriginData.cval || writeOriginData.bval || writeOriginData.checksum) == (readNewData.nval || readNewData.cval || readNewData.bval || readNewData.checksum)) {
+            // 读取数据和写入数据一致
+            this.commit(annotation.obi, false);
+          } else {
+            // 读取数据和写入数据不一致
+            this.commit(annotation.obi, true);
+          }
+        }
+
         break;
       default:
         assertFail("Read error for unknown type " + datatype);
@@ -3155,7 +3185,45 @@ export class CalendarService extends BaseService {
       case "MiniTask":
       case "Memo":
       case "Grouper":
+        break;
       case "Annotation":
+        let annotation: Annotation = {} as Annotation;
+        Object.assign(annotation, data);
+
+        readKey = new ReadWriteKey(annotation.obt, annotation.obi, `annotation`, "read");
+        writeKey = new ReadWriteKey(annotation.obt, annotation.obi, `annotation`, "write");
+
+        Object.assign(writeNewData, writeKey);
+
+        writeNewData.bval = true;
+        writeNewData.utt = moment().unix();
+
+        // 读取数据访问缓存
+        this.calendardatarws.set(writeKey.encode(), writeNewData);
+        if (readed) {
+          this.calendardatarws.set(readKey.encode(), writeNewData);
+        }
+
+        // 读取数据访问缓存
+        this.calendardatarws.set(writeKey.encode(), writeNewData);
+        if (readed) {
+          this.calendardatarws.set(readKey.encode(), writeNewData);
+          readOriginData = writeNewData;
+        }
+
+        if (!readOriginData) {
+          // 不存在读取数据, 直接设置未读
+          this.commit(annotation.obi, true);
+        } else {
+          if ((readOriginData.nval || readOriginData.cval || readOriginData.bval || readOriginData.checksum) == (writeNewData.nval || writeNewData.cval || writeNewData.bval || writeNewData.checksum)) {
+            // 读取数据和写入数据一致
+            this.commit(annotation.obi, false);
+          } else {
+            // 读取数据和写入数据不一致
+            this.commit(annotation.obi, true);
+          }
+        }
+
         break;
       default:
         assertFail("Write error for unknown type " + datatype);

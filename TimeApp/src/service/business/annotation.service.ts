@@ -34,7 +34,7 @@ export class AnnotationService extends BaseService {
    * @param {SyncDataStatus} status
    * @returns {Promise<Array<Annotation>>}
    */
-  async receivedAnnotationData(pullAnnotations: Array<Annotation>, status: SyncDataStatus): Promise<Array<Annotation>> {
+  async receivedAnnotationData(pullAnnotations: Array<Annotation>, status: SyncDataStatus, extension: string): Promise<Array<Annotation>> {
     this.assertEmpty(pullAnnotations);     // 入参不能为空
     this.assertEmpty(status);   // 入参不能为空
 
@@ -57,6 +57,10 @@ export class AnnotationService extends BaseService {
       }
 
       await this.sqlExce.batExecSqlByParam(sqlparam);
+    }
+
+    if (extension != PullType.Full) {
+      this.emitService.emit("mwxing.calendar.datas.readwrite", {rw: "write", payload: saved});
     }
 
     return saved;
