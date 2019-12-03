@@ -63,10 +63,10 @@ export class CalendarService extends BaseService {
 
       if (payload instanceof Array) {
         for (let single of payload) {
-          (rw == "read")? read(single) : write(single);
+          (rw == "read")? this.read(single) : this.write(single);
         }
       } else {
-        (rw == "read")? read(payload) : write(payload);
+        (rw == "read")? this.read(payload) : this.write(payload);
       }
     });
 
