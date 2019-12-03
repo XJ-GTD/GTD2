@@ -40,7 +40,7 @@ export class CalendarService extends BaseService {
   private calendarobservables: Map<string, Observable<boolean>> = new Map<string, Observable<boolean>>();
   private calendaractivities: Array<MonthActivityData> = new Array<MonthActivityData>();
   private activitiesqueue: AsyncQueue;
-  private calendardatarws: Map<ReadWriteKey, ReadWriteData> = new Map<ReadWriteKey, ReadWriteData>();
+  private calendardatarws: Map<string, ReadWriteData> = new Map<string, ReadWriteData>();
   private datasrwqueue: AsyncQueue;
 
   constructor(private sqlExce: SqliteExec,
@@ -2964,7 +2964,7 @@ export class CalendarService extends BaseService {
         readKey = new ReadWriteKey(ObjectType.Event, agenda.evi, "content", "read");
         writeKey = new ReadWriteKey(ObjectType.Event, agenda.evi, "content", "write");
 
-        writeOriginData = this.calendardatarws.get(writeKey);
+        writeOriginData = this.calendardatarws.get(writeKey.encode());
 
         Object.assign(readNewData, readKey);
 
@@ -2972,7 +2972,7 @@ export class CalendarService extends BaseService {
         readNewData.utt = moment().unix();
 
         // 读取数据访问缓存
-        this.calendardatarws.set(readKey, readNewData);
+        this.calendardatarws.set(readKey.encode(), readNewData);
 
         if (!writeOriginData) {
           // 不存在写入数据, 直接设置已读
@@ -3000,11 +3000,12 @@ export class CalendarService extends BaseService {
         readNewData.utt = moment().unix();
 
         // 读取数据访问缓存
-        this.calendardatarws.set(readKey, readNewData);
+        this.calendardatarws.set(readKey.encode(), readNewData);
 
         let compares: Map<string, any> = new Map<string, any>();
 
-        this.calendardatarws.forEach((value, key) => {
+        this.calendardatarws.forEach((value, k) => {
+          let key = ReadWriteKey.decode(k);
           if (key.type == attachment.obt && key.id == attachment.obi) {
             if (key.mark.startsWith("attachment_")) {
               let compare: any = compares.get(key.mark) || {};
@@ -3070,7 +3071,7 @@ export class CalendarService extends BaseService {
         readKey = new ReadWriteKey(ObjectType.Event, agenda.evi, "content", "read");
         writeKey = new ReadWriteKey(ObjectType.Event, agenda.evi, "content", "write");
 
-        readOriginData = this.calendardatarws.get(readKey);
+        readOriginData = this.calendardatarws.get(readKey.encode());
 
         Object.assign(writeNewData, writeKey);
 
@@ -3078,7 +3079,7 @@ export class CalendarService extends BaseService {
         writeNewData.utt = moment().unix();
 
         // 读取数据访问缓存
-        this.calendardatarws.set(writeKey, writeNewData);
+        this.calendardatarws.set(writeKey.encode(), writeNewData);
 
         if (!readOriginData) {
           // 不存在读取数据, 直接设置未读
@@ -3106,11 +3107,13 @@ export class CalendarService extends BaseService {
         writeNewData.utt = moment().unix();
 
         // 读取数据访问缓存
-        this.calendardatarws.set(writeKey, writeNewData);
+        this.calendardatarws.set(writeKey.encode(), writeNewData);
 
         let compares: Map<string, any> = new Map<string, any>();
 
-        this.calendardatarws.forEach((value, key) => {
+        this.calendardatarws.forEach((value, k) => {
+          let key = ReadWriteKey.decode(k);
+
           if (key.type == attachment.obt && key.id == attachment.obi) {
             if (key.mark.startsWith("attachment_")) {
               let compare: any = compares.get(key.mark) || {};
@@ -5290,6 +5293,16 @@ export class ReadWriteKey {
     this.id = id;
     this.mark = mark;
     this.rw = rw;
+  }
+
+  encode(): string {
+    return JSON.stringify(this);
+  }
+
+  static decode(code: string): ReadWriteKey {
+    let coder = JSON.parse(code);
+
+    return new ReadWriteKey(coder.type, coder.id, coder.mark, coder.rw);
   }
 }
 
