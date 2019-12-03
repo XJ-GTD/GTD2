@@ -2999,7 +2999,7 @@ export class CalendarService extends BaseService {
         let compares: Map<string, any> = new Map<string, any>();
 
         this.calendardatarws.forEach((value, key) => {
-          if (key.type == this.obt && key.id == this.obi) {
+          if (key.type == attachment.obt && key.id == attachment.obi) {
             if (key.mark.startsWith("attachment_")) {
               let compare: any = compares.get(key.mark) || {};
 
@@ -3012,7 +3012,7 @@ export class CalendarService extends BaseService {
               compares.set(key.mark, compare);
             }
           }
-        }, attachment);
+        });
 
         let readOrWrite: boolean = true;
 
@@ -3035,7 +3035,7 @@ export class CalendarService extends BaseService {
       case "Annotation":
         break;
       default:
-        assertFail("Read error for unknown type " + type);
+        assertFail("Read error for unknown type " + datatype);
     }
   }
 
@@ -3141,7 +3141,7 @@ export class CalendarService extends BaseService {
       case "Annotation":
         break;
       default:
-        assertFail("Write error for unknown type " + type);
+        assertFail("Write error for unknown type " + datatype);
     }
   }
 
