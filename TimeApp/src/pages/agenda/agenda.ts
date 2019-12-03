@@ -25,6 +25,7 @@ import {
 } from "../../data.enum";
 import {ModiPower} from "../../data.enum";
 import {AssistantService} from "../../service/cordova/assistant.service";
+import {EmitService} from "../../util-service/emit.service";
 
 declare var Wechat;
 
@@ -286,6 +287,7 @@ export class AgendaPage {
   constructor(public navCtrl: NavController,
               public navParams: NavParams,
               public modalCtrl: ModalController,
+              private emitService: EmitService,
               private actionSheetCtrl: ActionSheetController,
               private util: UtilService,
               private eventService: EventService,
@@ -306,6 +308,8 @@ export class AgendaPage {
             let agenda = await this.eventService.getAgenda(paramter.si, true);
 
             if (agenda && agenda.del != DelType.del) {
+              this.emitService.emit("mwxing.calendar.datas.readwrite", {rw: "read", payload: agenda});
+
               this.currentAgenda = agenda;
               this.util.cloneObj(this.originAgenda, agenda);
 
@@ -928,6 +932,8 @@ export class AgendaPage {
           this.util.loadingStart().then(() => {
             this.eventService.saveAgenda(this.currentAgenda, this.originAgenda, OperateType.OnlySel).then((agenda) => {
               if (agenda && agenda.length > 0) {
+                this.emitService.emit("mwxing.calendar.datas.readwrite", {rw: "read", payload: agenda});
+
                 this.currentAgenda = agenda[0];
                 this.util.cloneObj(this.originAgenda, agenda[0]);
 

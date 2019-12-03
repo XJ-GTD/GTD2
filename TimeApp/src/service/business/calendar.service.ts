@@ -29,6 +29,7 @@ import {DetectorService} from "../util-service/detector.service";
 import {TimeOutService} from "../../util/timeOutService";
 import {GrouperService} from "./grouper.service";
 import { Observable, BehaviorSubject } from 'rxjs';
+import { checksum } from "../../util/crypto-util";
 
 @Injectable()
 export class CalendarService extends BaseService {
@@ -37,6 +38,8 @@ export class CalendarService extends BaseService {
   private calendarobservables: Map<string, Observable<boolean>> = new Map<string, Observable<boolean>>();
   private calendaractivities: Array<MonthActivityData> = new Array<MonthActivityData>();
   private activitiesqueue: AsyncQueue;
+  private calendardatarws: Map<ReadWriteKey, ReadWriteData> = new Map<ReadWriteKey, ReadWriteData>();
+  private datasrwqueue: AsyncQueue;
 
   constructor(private sqlExce: SqliteExec,
               private util: UtilService,
@@ -52,6 +55,19 @@ export class CalendarService extends BaseService {
               private detectorService: DetectorService,
               private timeOutService: TimeOutService) {
     super();
+    this.datasrwqueue = new AsyncQueue(async ({data}, callback) => {
+      let rw: string = data.rw;
+      let payload: any = data.payload;
+
+      if (payload instanceof Array) {
+        for (let single of payload) {
+          (rw == "read")? read(single) : write(single);
+        }
+      } else {
+        (rw == "read")? read(payload) : write(payload);
+      }
+    });
+
     this.activitiesqueue = new AsyncQueue( async ({data}, callback) => {
 
       // 多条数据同时更新/单条数据更新
@@ -205,6 +221,19 @@ export class CalendarService extends BaseService {
                 this.emitService.emit("mwxing.calendar." + monthactivities.month + ".changed", monthactivities);
               }
             }
+          });
+        });
+
+        // 活动读写状态变更时自动发送状态到画面
+        this.emitService.destroy("mwxing.calendar.datas.readwrite");
+        this.emitService.register("mwxing.calendar.datas.readwrite", (data) => {
+          if (!data) {
+            this.assertFail("事件mwxing.calendar.datas.readwrite无扩展数据");
+            return;
+          }
+
+          this.datasrwqueue.push({data: data}, () => {
+
           });
         });
 
@@ -2888,6 +2917,232 @@ export class CalendarService extends BaseService {
     return monthActivity;
   }
 
+  commit(id: string, value: boolean) {
+    // Observable
+    let subject: BehaviorSubject<boolean> = this.calendarsubjects.get(id);
+
+    if (!subject) {
+      subject = new BehaviorSubject<boolean>(value);
+      this.calendarsubjects.set(id, subject);
+      this.calendarobservables.set(id, subject.asObservable());
+    } else {
+      subject.next(value);
+    }
+    // Observable
+  }
+
+  /**
+   * 数据对象已读
+   *
+   * @author leon_xi@163.com
+   **/
+  read(read: PlanItemData | AgendaData | TaskData | MiniTaskData | MemoData | Attachment | Grouper | Annotation) {
+    assertEmpty(read);  // 入参不能为空
+
+    let data: any = read;
+
+    let datatype: string = this.getDataType(data);
+
+    let readKey: ReadWriteKey;
+    let writeKey: ReadWriteKey;
+    let writeOriginData: ReadWriteData;
+    let readNewData: ReadWriteData = {} as ReadWriteData;
+
+    switch (datatype) {
+      case "Agenda":
+        let agenda: AgendaData = {} as AgendaData;
+        Object.assign(agenda, data);
+
+        readKey = new ReadWriteKey(ObjectType.Event, agenda.evi, "content", "read");
+        writeKey = new ReadWriteKey(ObjectType.Event, agenda.evi, "content", "write");
+
+        writeOriginData = this.calendardatarws.get(writeKey);
+
+        Object.assign(readNewData, readKey);
+
+        readNewData.checksum = checksum(`${agenda.evn}${agenda.evd}${agenda.evt}`);
+        readNewData.utt = moment().unix();
+
+        // 读取数据访问缓存
+        this.calendardatarws.set(readKey, readNewData);
+
+        if (!writeOriginData) {
+          // 不存在写入数据, 直接设置已读
+          this.commit(agenda.evi, false);
+        } else {
+          if ((writeOriginData.nval || writeOriginData.cval || writeOriginData.bval || writeOriginData.checksum) == (readNewData.nval || readNewData.cval || readNewData.bval || readNewData.checksum)) {
+            // 读取数据和写入数据一致
+            this.commit(agenda.evi, false);
+          } else {
+            // 读取数据和写入数据不一致
+            this.commit(agenda.evi, true);
+          }
+        }
+
+        break;
+      case "Attachment":
+        let attachment: Attachment = {} as Attachment;
+        Object.assign(attachment, data);
+
+        readKey = new ReadWriteKey(attachment.obt, attachment.obi, `attachment_${attachment.fji}`, "read");
+
+        Object.assign(readNewData, readKey);
+
+        readNewData.bval = true;
+        readNewData.utt = moment().unix();
+
+        // 读取数据访问缓存
+        this.calendardatarws.set(readKey, readNewData);
+
+        let compares: Map<string, any> = new Map<string, any>();
+
+        this.calendardatarws.forEach((value, key) => {
+          if (key.type == this.obt && key.id == this.obi) {
+            if (key.mark.startsWith("attachment_")) {
+              let compare: any = compares.get(key.mark) || {};
+
+              if (key.rw == "read") {
+                compare.read = value.nval || value.cval || value.bval || value.checksum;
+              } else {
+                compare.write = value.nval || value.cval || value.bval || value.checksum;
+              }
+
+              compares.set(key.mark, compare);
+            }
+          }
+        }, attachment);
+
+        let readOrWrite: boolean = true;
+
+        compares.forEach((value, key) => {
+          if (value.read != value.write) readOrWrite = false;
+        });
+
+        if (readOrWrite) {
+          this.commit(attachment.obi, false);
+        } else {
+          this.commit(attachment.obi, true);
+        }
+
+        break;
+      case "PlanItem":
+      case "Task":
+      case "MiniTask":
+      case "Memo":
+      case "Grouper":
+      case "Annotation":
+        break;
+      default:
+        assertFail("Read error for unknown type " + type);
+    }
+  }
+
+  /**
+   * 数据对象未读
+   *
+   * @author leon_xi@163.com
+   **/
+  write(write: PlanItemData | AgendaData | TaskData | MiniTaskData | MemoData | Attachment | Grouper | Annotation) {
+    assertEmpty(write);  // 入参不能为空
+
+    let data: any = write;
+
+    let datatype: string = this.getDataType(data);
+
+    let readKey: ReadWriteKey;
+    let writeKey: ReadWriteKey;
+    let readOriginData: ReadWriteData;
+    let writeNewData: ReadWriteData = {} as ReadWriteData;
+
+    switch (datatype) {
+      case "Agenda":
+        let agenda: AgendaData = {} as AgendaData;
+        Object.assign(agenda, data);
+
+        readKey = new ReadWriteKey(ObjectType.Event, agenda.evi, "content", "read");
+        writeKey = new ReadWriteKey(ObjectType.Event, agenda.evi, "content", "write");
+
+        readOriginData = this.calendardatarws.get(readKey);
+
+        Object.assign(readNewData, writeKey);
+
+        writeNewData.checksum = checksum(`${agenda.evn}${agenda.evd}${agenda.evt}`);
+        writeNewData.utt = moment().unix();
+
+        // 读取数据访问缓存
+        this.calendardatarws.set(writeKey, writeNewData);
+
+        if (!readOriginData) {
+          // 不存在读取数据, 直接设置未读
+          this.commit(agenda.evi, true);
+        } else {
+          if ((readOriginData.nval || readOriginData.cval || readOriginData.bval || readOriginData.checksum) == (writeNewData.nval || writeNewData.cval || writeNewData.bval || writeNewData.checksum)) {
+            // 读取数据和写入数据一致
+            this.commit(agenda.evi, false);
+          } else {
+            // 读取数据和写入数据不一致
+            this.commit(agenda.evi, true);
+          }
+        }
+
+        break;
+      case "Attachment":
+        let attachment: Attachment = {} as Attachment;
+        Object.assign(attachment, data);
+
+        writeKey = new ReadWriteKey(attachment.obt, attachment.obi, `attachment_${attachment.fji}`, "write");
+
+        Object.assign(writeNewData, writeKey);
+
+        writeNewData.bval = true;
+        writeNewData.utt = moment().unix();
+
+        // 读取数据访问缓存
+        this.calendardatarws.set(writeKey, writeNewData);
+
+        let compares: Map<string, any> = new Map<string, any>();
+
+        this.calendardatarws.forEach((value, key) => {
+          if (key.type == this.obt && key.id == this.obi) {
+            if (key.mark.startsWith("attachment_")) {
+              let compare: any = compares.get(key.mark) || {};
+
+              if (key.rw == "read") {
+                compare.read = value.nval || value.cval || value.bval || value.checksum;
+              } else {
+                compare.write = value.nval || value.cval || value.bval || value.checksum;
+              }
+
+              compares.set(key.mark, compare);
+            }
+          }
+        }, attachment);
+
+        let readOrWrite: boolean = true;
+
+        compares.forEach((value, key) => {
+          if (value.read != value.write) readOrWrite = false;
+        });
+
+        if (readOrWrite) {
+          this.commit(attachment.obi, false);
+        } else {
+          this.commit(attachment.obi, true);
+        }
+
+        break;
+      case "PlanItem":
+      case "Task":
+      case "MiniTask":
+      case "Memo":
+      case "Grouper":
+      case "Annotation":
+        break;
+      default:
+        assertFail("Write error for unknown type " + type);
+    }
+  }
+
   /**
    * 合并(更新/插入/删除)月活动数据（用于日历页月度活动一览）
    *
@@ -3068,34 +3323,10 @@ export class CalendarService extends BaseService {
             } else {
               // 更新
               monthActivities.events.splice(index, 1, event);
-
-              // Observable
-              let subject: BehaviorSubject<boolean> = this.calendarsubjects.get(event.evi);
-
-              if (!subject) {
-                subject = new BehaviorSubject<boolean>(true);
-                this.calendarsubjects.set(event.evi, subject);
-                this.calendarobservables.set(event.evi, subject.asObservable());
-              }
-
-              subject.next(true);
-              // Observable
             }
           } else {
             if (event.del != DelType.del) {
               monthActivities.events.push(event);
-
-              // Observable
-              let subject: BehaviorSubject<boolean> = this.calendarsubjects.get(event.evi);
-
-              if (!subject) {
-                subject = new BehaviorSubject<boolean>(true);
-                this.calendarsubjects.set(event.evi, subject);
-                this.calendarobservables.set(event.evi, subject.asObservable());
-              }
-
-              subject.next(true);
-              // Observable
             }
           }
           break;
@@ -4718,6 +4949,52 @@ export class CalendarService extends BaseService {
   }
 
   /**
+   * 取得数据类型
+   *
+   * @author leon_xi@163.com
+   **/
+  getDataType(source: PlanItemData | AgendaData | TaskData | MiniTaskData | MemoData | Attachment | Grouper | Annotation): string {
+    this.assertEmpty(source);
+
+    let src: any = source;
+
+    if (src.jti) {  // PlanItemData
+      return "PlanItem";
+    }
+
+    if (src.evi && src.type == EventType.Agenda) {    // AgendaData
+      return "Agenda";
+    }
+
+    if (src.evi && src.type == EventType.Task) {    // TaskData
+      return "Task";
+    }
+
+    if (src.evi && src.type == EventType.MiniTask) {    // MiniTaskData
+      return "MiniTask";
+    }
+
+    if (src.moi) {    // MemoData
+      return "Memo";
+    }
+
+    if (src.fji) {    // Attachment
+      return "Attachment";
+    }
+
+    if (src.gi) {    // Grouper
+      return "Grouper";
+    }
+
+    if (src.ati) {    // Annotation
+      return "Annotation";
+    }
+
+    this.assertFail();
+
+  }
+
+  /**
    * 取得活动类型
    *
    * @author leon_xi@163.com
@@ -4992,6 +5269,32 @@ export interface PlanItemData extends JtaTbl {
   rtjson: RtJson;
   txjson: TxJson;
   members: Array<Member>;
+}
+
+export class ReadWriteKey {
+  type: string;
+  id: string;
+  mark: string;
+  rw: string;
+
+  constructor(type: string, id: string, mark: string, rw: string) {
+    this.type = type;
+    this.id = id;
+    this.mark = mark;
+    this.rw = rw;
+  }
+}
+
+export interface ReadWriteData {
+  type: string;
+  id: string;
+  mark: string;
+  rw: string;
+  nval: number;
+  cval: string;
+  bval: boolean;
+  checksum: string;
+  utt: number;
 }
 
 export class PagedActivityData {
