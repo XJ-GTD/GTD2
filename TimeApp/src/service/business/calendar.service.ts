@@ -3082,22 +3082,19 @@ export class CalendarService extends BaseService {
         this.calendardatarws.set(writeKey.encode(), writeNewData);
         if (readed) {
           this.calendardatarws.set(readKey.encode(), writeNewData);
+          readOriginData = writeNewData;
         }
 
-        if (!readed && !readOriginData) {
+        if (!readOriginData) {
           // 不存在读取数据, 直接设置未读
           this.commit(agenda.evi, true);
         } else {
-          if (readed) {
+          if ((readOriginData.nval || readOriginData.cval || readOriginData.bval || readOriginData.checksum) == (writeNewData.nval || writeNewData.cval || writeNewData.bval || writeNewData.checksum)) {
+            // 读取数据和写入数据一致
             this.commit(agenda.evi, false);
           } else {
-            if ((readOriginData.nval || readOriginData.cval || readOriginData.bval || readOriginData.checksum) == (writeNewData.nval || writeNewData.cval || writeNewData.bval || writeNewData.checksum)) {
-              // 读取数据和写入数据一致
-              this.commit(agenda.evi, false);
-            } else {
-              // 读取数据和写入数据不一致
-              this.commit(agenda.evi, true);
-            }
+            // 读取数据和写入数据不一致
+            this.commit(agenda.evi, true);
           }
         }
 
@@ -3106,6 +3103,7 @@ export class CalendarService extends BaseService {
         let attachment: Attachment = {} as Attachment;
         Object.assign(attachment, data);
 
+        readKey = new ReadWriteKey(attachment.obt, attachment.obi, `attachment_${attachment.fji}`, "read");
         writeKey = new ReadWriteKey(attachment.obt, attachment.obi, `attachment_${attachment.fji}`, "write");
 
         Object.assign(writeNewData, writeKey);
@@ -3115,6 +3113,9 @@ export class CalendarService extends BaseService {
 
         // 读取数据访问缓存
         this.calendardatarws.set(writeKey.encode(), writeNewData);
+        if (readed) {
+          this.calendardatarws.set(readKey.encode(), writeNewData);
+        }
 
         let compares: Map<string, any> = new Map<string, any>();
 
