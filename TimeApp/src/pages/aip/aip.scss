@@ -1,11 +1,17 @@
 page-aip {
-  background-color: $baseBackColor;
-
-  ion-header ion-toolbar .toolbar-background,.toolbar-background-md,.toolbar-background-ios {
-    background-color: $lsback1;
+  background-color: $aiBackColor;
+  .scroll-content{
+    overflow-y:hidden;
   }
-  .img-header-left, .img-header-right {
-    width: 4vmin;
-    height: 4vmin;
+
+  ion-header ion-toolbar {
+    .toolbar-background {
+      background-color: $aiBackColor;
+      opacity: .5;
+    }
+      .bar-button-ios[icon-only] ion-icon{
+        font-size: 2.4rem;
+        color: rgba(255,255,255,1);
+      }
   }
 }

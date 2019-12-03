@@ -54,9 +54,9 @@ $spinnerleft: calc(100% - #{$speakerLeft} - 3px );
 
 $canvastop:calc((#{$spinnerSize} - #{$speakerSize}) / 2);
 
-$inputiocsize: 25px;
-$inputioctop: calc(100% - 75px);
-$inputiocleft:calc(25% - 30px);
+$inputiocsize: 33px;
+$inputioctop: calc(100% - 66px);
+$inputiocright:calc(100% - 66px);
 
 
 //thisMonth

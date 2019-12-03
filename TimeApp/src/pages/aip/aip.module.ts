@@ -4,6 +4,7 @@ import {AipPage} from './aip';
 import {AipService} from "./aip.service";
 import {AiComponentModule} from "../../components/ai/answer/ai.module";
 import {BackComponentModule} from "../../components/backComponent/back.module";
+import {PointComponentModule} from "../../components/ai/point/point.module";
 
 @NgModule({
   declarations: [
@@ -12,7 +13,8 @@ import {BackComponentModule} from "../../components/backComponent/back.module";
   imports: [
     IonicPageModule.forChild(AipPage),
     AiComponentModule,
-    BackComponentModule
+    BackComponentModule,
+    PointComponentModule
   ],
   providers: [
     AipService,

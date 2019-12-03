@@ -1,16 +1,25 @@
 
 pointcomponent {
+  position: fixed;
+  //top: $speakertop;
+  //left: $speakerleft;
+  width: 100%;
+  height: 60px;
+  top: 100%;
+  z-index:999;
+
   .aitool {
     position: relative;
-    display: block;
+    float: right;
+    margin: -70px 20px;
   }
 
 
   .speaking {
     cursor: pointer;
-    width: $speakerSize;
-    height: $speakerSize;
-    position: fixed;
+    width: $spinnerSize;
+    height: $spinnerSize;
+    //position: fixed;
     top: $speakertop;
     left: $speakerleft;
     border-radius: 100%;
@@ -18,6 +27,7 @@ pointcomponent {
     -webkit-transition: all 0.3s ease;
     transition: all 0.3s ease;
     z-index: 999;
+    display: -webkit-box;
   }
 
   .speaking:before {
@@ -26,31 +36,31 @@ pointcomponent {
     border-radius: 100%;
     animation: rotate 0.45s linear infinite;
     transition: opacity 1s ease 0.6s, border 0.4s ease 0s, width 0.4s ease 0.2s, height 0.4s ease 0.2s, margin 0.4s ease 0.2s;
-    position: absolute;
-    left: 50%;
-    top: 50%;
+    //position: absolute;
+    //left: 50%;
+    //top: 50%;
     width: $speakerSize / 2;
     height: $speakerSize / 2;
-    margin-left: $speakerSize * -1 / 4;
-    margin-top: $speakerSize * -1 / 4;
+    //margin-left: $speakerSize * -1 / 4;
+    //margin-top: $speakerSize * -1 / 4;
     border-top: 1px solid #3583d7;
     border-bottom: 1px solid #3583d7;
   }
 
-  .speaking.danger {
+  .speaking.moving {
     border-color: #3583d7;
     box-shadow: 0 0 23px 7px #3583d7;
     animation: none;
     opacity: 0.8;
   }
 
-  .speaking.danger:before {
+  .speaking.moving:before {
     border-color: #3583d7;
     opacity: 0;
     width: $speakerSize * 1.5;
     height: $speakerSize * 1.5;
-    margin-left: $speakerSize / -2 * 1.5 ;
-    margin-top: $speakerSize / -2 * 1.5;
+    //margin-left: $speakerSize / -2 * 1.5 ;
+    //margin-top: $speakerSize / -2 * 1.5;
     z-index: -1;
   }
 
@@ -94,7 +104,7 @@ pointcomponent {
 
 
   .spinner{
-    position: fixed;
+    //position: fixed;
     width: $spinnerSize;
     height: $spinnerSize;
     top: $spinnertop;
@@ -124,15 +134,20 @@ pointcomponent {
   }
 
   .inputioc {
-    position: fixed;
+    //position: fixed;
+    margin: -57px 20px;
+    border-radius: 50%;
+    text-align: center;
+    background:rgba(53,152,176,1);
+    box-shadow:0px 0px 10px 0px rgba(3,0,0,0.2);
     width: $inputiocsize;
     height: $inputiocsize;
-    top: $inputioctop;
-    left: $inputiocleft;
-    border-radius: 50%;
-
-    img {
-      width: $inputiocsize;
+    text-align: center;
+    float: left;
+    ion-icon{
+      font-size: 2rem;
+      line-height: $inputiocsize;
+      color: white;
     }
   }
 
@@ -144,7 +159,6 @@ pointcomponent {
 
 
   .jsai{
-    position: absolute;
     bottom: $speakerTop;
     display: block;
     color: $adornColor;
@@ -152,7 +166,18 @@ pointcomponent {
     font-weight: bold;
     left: 75px;
     right: 80px;
-    background-color: rgba(51,51,51,.2)
+    background-color: rgba(248,248,248,1);
+  }
+  .angular-popper{
+    width: 250px;
+    background-color: rgba(248,248,248,1);
+    color: #843094;
+     .angular-popper__arrow{
+       border-color: rgba(248,248,248,1)
+     }
+  }
+  .showNot{
+    display: none;
   }
 }
 

@@ -35,7 +35,6 @@ import {
       <!--</div>-->
       <!--<ion-icon name="backspace" (click)="rad()" class="backspace"></ion-icon>-->
       <!--<ion-icon name="close" (click)="closePage()" class="close" #close></ion-icon>-->
-    <PointComponent *ngIf="ready"></PointComponent>
   `,
 })
 export class AiComponent {
@@ -49,9 +48,6 @@ export class AiComponent {
   @ViewChild("card3") card3: ElementRef;
 
   @ViewChild("close") close: ElementRef;
-
-  @Input("ready")
-  ready: boolean = false;
 
   aiData1: AiData = new AiData();
   aiData2: AiData = new AiData();

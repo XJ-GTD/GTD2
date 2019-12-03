@@ -1,9 +1,11 @@
-import {Component, ViewChild} from '@angular/core';
+import {ChangeDetectorRef, Component, Renderer2, ViewChild} from '@angular/core';
 import {IonicPage, NavController} from 'ionic-angular';
 import {AipService} from "./aip.service";
 import {DataConfig} from "../../service/config/data.config";
 import {AiComponent} from "../../components/ai/answer/ai";
 import {EmitService} from "../../service/util-service/emit.service";
+import {UtilService} from "../../service/util-service/util.service";
+import {AssistantService} from "../../service/cordova/assistant.service";
 
 /**
  * Generated class for the AlPage page.
@@ -16,30 +18,46 @@ import {EmitService} from "../../service/util-service/emit.service";
 @Component({
   selector: 'page-aip',
   template: `
+    
     <ion-header no-border>
       <ion-toolbar>
         <ion-buttons left>
-          <button ion-button icon-only (click)="goBack()" color="danger">
-            <img class="img-header-left" src="./assets/imgs/back-white.png">
+          <button ion-button icon-only (click)="goBack()">
+            <ion-icon class="fal fa-angle-left"></ion-icon>
+            <ion-icon class="fal fa-home"></ion-icon>
           </button>
         </ion-buttons>
       </ion-toolbar>
     </ion-header>
     <ion-content>
       <!--<BackComponent></BackComponent>-->
-      <AiComponent [ready]="aiready" #aiDiv></AiComponent>
+      <AiComponent></AiComponent>
+      <PointComponent [showInput] = "true" (onPonintClick)="listenStart()"></PointComponent>
     </ion-content>
   `,
 })
-export class AipPage {
-  @ViewChild('aiDiv')
-  aiDiv: AiComponent;
-  aiready: boolean = true;
 
+export class AipPage {
+
+  statusListener:boolean = false;
   constructor(private aipService: AipService,
               private navController: NavController,
               private emitService: EmitService,
+              private utilService: UtilService,
+              private assistantService: AssistantService,
   ) {
+    //
+    this.assistantService.startWakeUp();
+    this.emitService.registerListener((b)=>{
+      this.statusListener = b;
+    });
+
+  }
+
+
+  listenStart() {
+    if (!this.statusListener) this.assistantService.listenAudio();
+    else this.assistantService.stopListenAudio();
   }
 
   goBack() {

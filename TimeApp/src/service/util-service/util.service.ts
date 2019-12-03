@@ -56,11 +56,11 @@ export class UtilService {
     }, false);
   }
 
-  alter: Alert;
-  loading: Loading;
-  sceneloading:Scene;
-  toast: Toast;
-  popover: Popover;
+   alter: Alert;
+   loading: Loading;
+   sceneloading:Scene;
+   toast: Toast;
+   popover: Popover;
 
   public rand(min, max): number {
     return Math.random() * (max - min) + min;

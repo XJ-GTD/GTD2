@@ -42,14 +42,14 @@ import {ModalTranType} from "../../data.enum";
       </ion-calendar>
 
       <page-tdl #tdl></page-tdl>
-
-      <PointComponent  #aiDiv [showInput] = "false"></PointComponent>
+        <PointComponent  #aiDiv [showInput] = "false" (onPonintClick)="openAi()"></PointComponent>
       <!--<div style="background: red;position: fixed;z-index: 999;top:0px;height: 30px;width: 100%">{{process}}</div>-->
       <!--<ion-fab bottom right>-->
         <!--<button ion-fab mini (click)="openAi()">-->
           <!--<ion-icon name="chatbubbles"></ion-icon>-->
         <!--</button>-->
       <!--</ion-fab>-->
+      
     </ion-content>
   `,
 })
@@ -82,22 +82,18 @@ export class HPage {
               private emitService: EmitService,
               private util:UtilService) {
     // console.log("start===========================");
+    // this.util.loadingStart()
        this.testTimeOut();
     // console.log("end===========================");
   }
-
+ lo = 0;
+  s = "你好"
   testTimeOut(){
-    // console.log("当前任务=====timeout====开始");
-    // let work = new Worker("./worker.js");
-    // work.postMessage("123456");
-    //
-    // work.onmessage = function (e) {
-    //     // console.log("当前任务=====timeout=====出去")
-    //   };
     // setTimeout(()=>{
-    //   console.log("RabbitMytestTimeOut" + this.i ++);
+    //
+    //   this.emitService.emitImmediately((this.lo++ % 2));
     //   this.testTimeOut();
-    // },1000)
+    // },2000)
 
 
   }

@@ -33,16 +33,16 @@ export class EmitService {
   private immediatelyEm: EventEmitter<string> = new EventEmitter<string>();
 
 
-  registerImmediately(callback) {
+  registerImmediately(callback) :any{
     if (this.immediatelyEm.closed) {
       this.immediatelyEm = new EventEmitter<string>();
     }
-    this.immediatelyEm.subscribe(($data: string) => {
+    return this.immediatelyEm.subscribe(($data: string) => {
       callback($data);
     });
   };
 
-  emitImmediately($data: string) {
+  emitImmediately($data: any) {
     if (!this.immediatelyEm.isStopped) {
       this.immediatelyEm.emit($data);
     }
