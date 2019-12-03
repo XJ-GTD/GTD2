@@ -7,7 +7,7 @@ import * as moment from "moment";
 import {EmitService} from "../util-service/emit.service";
 import { BackupPro, BacRestful, OutRecoverPro, RecoverPro } from "../restful/bacsev";
 import {DataRestful, PullInData, PushInData, SyncData, SyncDataFields, UploadInData, DownloadInData} from "../restful/datasev";
-import {CompleteState, InviteState, SyncDataSecurity, SyncDataStatus, SyncType} from "../../data.enum";
+import {CompleteState, InviteState, SyncDataSecurity, PullType, SyncDataStatus, SyncType} from "../../data.enum";
 import {
   assertNotNumber,
   assertEmpty,
