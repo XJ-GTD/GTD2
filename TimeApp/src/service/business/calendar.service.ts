@@ -64,10 +64,10 @@ export class CalendarService extends BaseService {
       try {
         if (payload instanceof Array) {
           for (let single of payload) {
-            (rw == "read")? this.read(single) : this.write(single);
+            (rw == "read")? this.read(single) : ((rw == "writeandread")? this.write(single, true) : this.write(single));
           }
         } else {
-          (rw == "read")? this.read(payload) : this.write(payload);
+          (rw == "read")? this.read(payload) : ((rw == "writeandread")? this.write(payload, true) : this.write(payload));
         }
 
         callback();
@@ -3051,7 +3051,7 @@ export class CalendarService extends BaseService {
    *
    * @author leon_xi@163.com
    **/
-  write(write: PlanItemData | AgendaData | TaskData | MiniTaskData | MemoData | Attachment | Grouper | Annotation) {
+  write(write: PlanItemData | AgendaData | TaskData | MiniTaskData | MemoData | Attachment | Grouper | Annotation, readed: boolean = false) {
     assertEmpty(write);  // 入参不能为空
 
     let data: any = write;
@@ -3080,6 +3080,10 @@ export class CalendarService extends BaseService {
 
         // 读取数据访问缓存
         this.calendardatarws.set(writeKey.encode(), writeNewData);
+        if (readed) {
+          this.calendardatarws.set(readKey.encode(), writeNewData);
+          readOriginData = writeNewData;
+        }
 
         if (!readOriginData) {
           // 不存在读取数据, 直接设置未读
@@ -3099,6 +3103,7 @@ export class CalendarService extends BaseService {
         let attachment: Attachment = {} as Attachment;
         Object.assign(attachment, data);
 
+        readKey = new ReadWriteKey(attachment.obt, attachment.obi, `attachment_${attachment.fji}`, "read");
         writeKey = new ReadWriteKey(attachment.obt, attachment.obi, `attachment_${attachment.fji}`, "write");
 
         Object.assign(writeNewData, writeKey);
@@ -3108,6 +3113,9 @@ export class CalendarService extends BaseService {
 
         // 读取数据访问缓存
         this.calendardatarws.set(writeKey.encode(), writeNewData);
+        if (readed) {
+          this.calendardatarws.set(readKey.encode(), writeNewData);
+        }
 
         let compares: Map<string, any> = new Map<string, any>();
 

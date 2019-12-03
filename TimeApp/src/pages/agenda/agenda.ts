@@ -932,7 +932,7 @@ export class AgendaPage {
           this.util.loadingStart().then(() => {
             this.eventService.saveAgenda(this.currentAgenda, this.originAgenda, OperateType.OnlySel).then((agenda) => {
               if (agenda && agenda.length > 0) {
-                this.emitService.emit("mwxing.calendar.datas.readwrite", {rw: "read", payload: agenda});
+                this.emitService.emit("mwxing.calendar.datas.readwrite", {rw: "writeandread", payload: agenda});
 
                 this.currentAgenda = agenda[0];
                 this.util.cloneObj(this.originAgenda, agenda[0]);
