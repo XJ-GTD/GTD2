@@ -107,7 +107,7 @@ export class PointComponent {
           this.popperShow = true;
           this.tellYouData.length = 0;
           this.changeDetectorRef.detectChanges();
-        },"colose.home.ai.talk");
+        },"close.home.ai.talk");
       }
 
     });
