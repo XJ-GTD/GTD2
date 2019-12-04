@@ -39,6 +39,7 @@ export class EventService extends BaseService {
               private findbug: FindBugRestful,
               private dataRestful: DataRestful) {
     super();
+    moment.locale('zh-cn');
   }
 
   EVT_ST = "08:00";//全天开始时间默认为8:00

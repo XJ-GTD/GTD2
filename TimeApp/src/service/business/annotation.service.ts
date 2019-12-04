@@ -25,6 +25,7 @@ export class AnnotationService extends BaseService {
               private bacRestful: BacRestful,private userConfig: UserConfig,
               private dataRestful: DataRestful) {
     super();
+    moment.locale('zh-cn');
   }
 
   /**

@@ -14,6 +14,7 @@ import {
 import {MyApp} from '../../app/app.component';
 
 import { UtilService } from "./util.service";
+import {EmitService} from "./emit.service";
 
 /**
  * 通用工具Service父类 持续集成CI 自动测试Case
@@ -40,6 +41,7 @@ describe('UtilService test suite', () => {
         LoadingController,
         PopoverController,
         ToastController,
+        EmitService,
         UtilService
       ]
     });
