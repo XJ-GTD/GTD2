@@ -189,7 +189,52 @@ export class CalendarService extends BaseService {
     return this.calendaractivities;
   }
 
+  async fetchReadWriteDatas(): Promise<Array<ReadWriteData>> {
+    let sql: string = `select * from gtd_rw order by type, id, mark, rw, utt asc`;
+
+    let rwdatas: Array<ReadWriteData> = this.sqlExce.getExtLstByParam<ReadWriteData>(sql, []) || new Array<ReadWriteData>();
+
+    return rwdatas;
+  }
+
+  async saveReadWriteDatas(datas: Array<ReadWriteData>, callback = () => void) {
+    if (!datas || datas.length <= 0) {
+      callback();
+      return;
+    }
+
+    let rwTbls: Array<RwTbl> = new Array<RwTbl>();
+    Object.assign(rwTbls, datas);
+
+    let sqls: Array<any> = this.sqlExce.getFastSaveSqlByParam(rwTbls);
+
+    if (sqls && sqls.length > 0) {
+      await this.sqlExce.batExecSqlByParam(sqls);
+    }
+
+    callback();
+    return;
+  }
+
   getCalendarObservables(): Map<string, Observable<boolean>> {
+    this.fetchReadWriteDatas().then((datas) => {
+      for (let data of datas) {
+        let rwdata: ReadWriteData = {} as ReadWriteData;
+        Object.assign(readwrite, data);
+
+        let rwkey: ReadWriteKey = new ReadWriteKey(rwdata.type, rwdata.id, rwdata.mark, rwdata.rw);
+        this.calendardatarws.set(rwkey.encode(), rwdata);
+      }
+
+      let callback = () => {
+        setTimeout(() => {
+          this.saveReadWriteDatas(this.calendardatarws, callback);
+        }, 60 * 1000);
+      };
+
+      this.saveReadWriteDatas(null, callback);
+    });
+
     return this.calendarobservables;
   }
 
