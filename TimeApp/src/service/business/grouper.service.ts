@@ -56,7 +56,7 @@ export class GrouperService extends BaseService {
 
             if (UserConfig.friends){
               let findm =  UserConfig.friends.find((value, index,arr)=>{
-                return value.pwi == fs.pwi || value.ui == fs.ui || value.rc == fs.rc;
+                return value.ui == fs.ui || value.rc == fs.rc;
               });
 
               //本地存在就使用本地pwi，否则新建插入人员
