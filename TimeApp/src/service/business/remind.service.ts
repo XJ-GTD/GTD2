@@ -54,9 +54,9 @@ export class ScheduleRemindService extends BaseService {
             // 将来提醒，且在将来48小时以内
             if (remindgap <= 0 && (limitms + remindgap) >= 0) {
               schedulereminds.push({
-                remindid: planitem.jti + moment(datetime).format("YYYYMMDDHHmm"),
-                wd: moment(datetime).format("YYYY/MM/DD"),
-                wt: moment(datetime).format("HH:mm"),
+                remindid: planitem.jti + datetime.format("YYYYMMDDHHmm"),
+                wd: datetime.format("YYYY/MM/DD"),
+                wt: datetime.format("HH:mm"),
                 active: (planitem.del != DelType.del),
                 data: {
                   datatype: generateDataType(activityType),
@@ -65,8 +65,8 @@ export class ScheduleRemindService extends BaseService {
                     phoneno: UserConfig.account.phone,
                     id: planitem.jti,
                     continue: false,
-                    wd: moment(datetime).format("YYYY/MM/DD"),
-                    wt: moment(datetime).format("HH:mm"),
+                    wd: datetime.format("YYYY/MM/DD"),
+                    wt: datetime.format("HH:mm"),
                   }]
                 }
               });
@@ -134,9 +134,9 @@ export class ScheduleRemindService extends BaseService {
             // 将来提醒，且在将来48小时以内
             if (remindgap <= 0 && (limitms + remindgap) >= 0) {
               schedulereminds.push({
-                remindid: event.evi + moment(datetime).format("YYYYMMDDHHmm"),
-                wd: moment(datetime).format("YYYY/MM/DD"),
-                wt: moment(datetime).format("HH:mm"),
+                remindid: event.evi + datetime.format("YYYYMMDDHHmm"),
+                wd: datetime.format("YYYY/MM/DD"),
+                wt: datetime.format("HH:mm"),
                 active: (event.del != DelType.del),
                 data: {
                   datatype: generateDataType(activityType),
@@ -145,8 +145,8 @@ export class ScheduleRemindService extends BaseService {
                     phoneno: UserConfig.account.phone,
                     id: event.evi,
                     continue: false,
-                    wd: moment(datetime).format("YYYY/MM/DD"),
-                    wt: moment(datetime).format("HH:mm"),
+                    wd: datetime.format("YYYY/MM/DD"),
+                    wt: datetime.format("HH:mm"),
                   }]
                 }
               });
