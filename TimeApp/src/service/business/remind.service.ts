@@ -130,9 +130,10 @@ export class ScheduleRemindService extends BaseService {
 
           txjson.each(evd, evt, (datetime) => {
             let remindgap: number = moment().diff(datetime);
-
+            console.log("单个日程提醒更新=============：evd ="+evd +";evt="+evt +";datetime= " + datetime +";remindgap="+remindgap);
             // 将来提醒，且在将来48小时以内
             if (remindgap <= 0 && (limitms + remindgap) >= 0) {
+              console.log("提交服务器======+"+datetime);
               schedulereminds.push({
                 remindid: event.evi + datetime.format("YYYYMMDDHHmm"),
                 wd: datetime.format("YYYY/MM/DD"),
@@ -235,6 +236,7 @@ export class ScheduleRemindService extends BaseService {
     // 提交服务器
     for (let schedule of schedulereminds) {
       try {
+        console.log("提交服务器schedulereminds======+"+JSON.stringify(schedule));
         await this.syncRestful.putScheduledRemind(
           UserConfig.account.id,
           schedule.remindid,
