@@ -5594,7 +5594,7 @@ export class TxJson {
     }
 
     for (let remind of this.reminds) {
-      let baseline = moment(sd + " " + st, "YYYY/MM/DD HH:mm");
+      let baseline = moment(sd + " " + st, "YYYY/MM/DD HH:mm", true);
       baseline.subtract(remind, "m");
 
       callback(baseline.valueOf());
