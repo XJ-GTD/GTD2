@@ -147,7 +147,16 @@ export class AttachPage {
     if (this.navParams && this.navParams.data) {
       this.obt = this.navParams.data.obt;
       this.obi = this.navParams.data.obi;
-      this.fjArray = this.navParams.data.attach;
+      let attachs = this.navParams.data.attach;
+
+      if (attachs && attachs.length > 0) {
+        attachs.sort((a, b) => {
+          return a.wtt - b.wtt;
+        });
+
+        // 排序完成后显示页面
+        this.fjArray = attachs;
+      }
       this.members = this.navParams.data.members;
 
       this.fjData.obt = this.obt;
