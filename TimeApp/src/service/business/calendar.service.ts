@@ -197,14 +197,19 @@ export class CalendarService extends BaseService {
     return rwdatas;
   }
 
-  async saveReadWriteDatas(datas: Array<ReadWriteData>, callback = () => void) {
+  async saveReadWriteDatas(datas: Map<string, ReadWriteData>, callback = () => void) {
     if (!datas || datas.length <= 0) {
       callback();
       return;
     }
 
     let rwTbls: Array<RwTbl> = new Array<RwTbl>();
-    Object.assign(rwTbls, datas);
+    datas.forEach((val) => {
+      let rwtbl: RwTbl = new RwTbl();
+      Object.assign(rwtbl, val);
+
+      rwTbls.push(rwtbl);
+    });
 
     let sqls: Array<any> = this.sqlExce.getFastSaveSqlByParam(rwTbls);
 
@@ -220,7 +225,7 @@ export class CalendarService extends BaseService {
     this.fetchReadWriteDatas().then((datas) => {
       for (let data of datas) {
         let rwdata: ReadWriteData = {} as ReadWriteData;
-        Object.assign(readwrite, data);
+        Object.assign(rwdata, data);
 
         let rwkey: ReadWriteKey = new ReadWriteKey(rwdata.type, rwdata.id, rwdata.mark, rwdata.rw);
         this.calendardatarws.set(rwkey.encode(), rwdata);
