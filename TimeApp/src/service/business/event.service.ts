@@ -163,7 +163,8 @@ export class EventService extends BaseService {
         }
 
         // 受邀人子日程且是未接受状态，查看主日程实际否接受，接受则子日程自动接受
-        if (agd.rtevi && agd.ui != UserConfig.account.id && agd.invitestatus != InviteState.Accepted) {
+        if (agd.rtevi && agd.ui != UserConfig.account.id && agd.invitestatus != InviteState.Accepted
+          && agd.del != anyenum.DelType.del) {
           let findm =  masterAgds.find((value, index,arr)=>{
             return value.evi == agd.rtevi ;
           });
