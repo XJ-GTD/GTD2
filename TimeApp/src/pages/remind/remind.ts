@@ -31,7 +31,7 @@ import * as anyenum from "../../data.enum";
           <ion-list-header>
             剩余 <span class="count">{{reminds.length}}</span> 条提醒
           </ion-list-header>
-          <ion-item *ngFor="let remind of reminds" >
+          <ion-item *ngFor="let remind of reminds; let idx = index;" >
             <ion-label [ngStyle]="{'color':remind.disTixin ? 'gray':'#333333'}" >{{remind.datename}}</ion-label>
             <button [disabled]="remind.disTixin" ion-button (click)="delRemind(idx)" clear item-end>
               <ion-icon class="fal fa-minus-circle"></ion-icon>
