@@ -231,9 +231,9 @@ export class RemindPage {
       if (value) {
         this.currentTx = new TxJson();
         Object.assign(this.currentTx, value.txjson);
-        this.evdatetime = moment(value.evd + " " + value.evt).format("YYYY/MM/DD HH:mm");
+        this.evdatetime = value.evd + " " + value.evt;
 
-        if (moment().isAfter(this.evdatetime)){
+        if (moment().isAfter(moment(this.evdatetime, "YYYY/MM/DD HH:mm", true)){
           this.disTiqian = true;
         }else{
           this.disTiqian = false;
@@ -270,7 +270,7 @@ export class RemindPage {
 
   getShowDateName(time) {
     let ret: string;
-    ret = moment(this.evdatetime).subtract(time, 'm').format("MM月DD HH:mm");
+    ret = moment(this.evdatetime, "YYYY/MM/DD HH:mm", true).subtract(time, 'm').format("MM月DD HH:mm");
 
     ret = "" + TxJson.caption(time) + "- -" + ret;
 
@@ -288,7 +288,7 @@ export class RemindPage {
 
   openRemindDt() {
     this.remindDt.min = moment().format("YYYY-MM-DD");
-    this.remindDt.max = moment(this.evdatetime).add(1, "y").format("YYYY-MM-DD");
+    this.remindDt.max = moment(this.evdatetime, "YYYY/MM/DD HH:mm", true).add(1, "y").format("YYYY-MM-DD");
     this.remindDt.open();
 
   }
@@ -318,7 +318,7 @@ export class RemindPage {
     }
     this.reminds.push(
       {
-        datename: "" + TxJson.caption(time) + "- -" + moment(this.evdatetime).subtract(time, 'm').format("MM月DD HH:mm"),
+        datename: "" + TxJson.caption(time) + "- -" + moment(this.evdatetime, "YYYY/MM/DD HH:mm", true).subtract(time, 'm').format("MM月DD HH:mm"),
         value: time,
         disTixin : false
       });
@@ -326,7 +326,7 @@ export class RemindPage {
   }
 
   timeOpen() {
-    this.remindTime.cancelText = "选择日期 " + moment(this.datevalue).format("YYYY年MM月DD日");
+    this.remindTime.cancelText = "选择日期 " + moment(this.datevalue, "YYYY/MM/DD", true).format("YYYY年MM月DD日");
     this.remindTime.open();
   }
 
@@ -349,7 +349,7 @@ export class RemindPage {
       tm =  (parseInt(dtsplit[1])+ 12) + ":" + dtsplit[2];
     }
     let dt = this.datevalue + " " + tm;
-    let time = moment(this.evdatetime).diff(moment(dt, "YYYY/MM/DD HH:mm"), 'm');
+    let time = moment(this.evdatetime, "YYYY/MM/DD HH:mm", true).diff(moment(dt, "YYYY/MM/DD HH:mm"), 'm');
     let hav = this.reminds.findIndex((value, index, arr) => {
       return value.value == time;
     })
@@ -359,7 +359,7 @@ export class RemindPage {
 
     this.reminds.push(
       {
-        datename: "" + TxJson.caption(time) + " -- " + moment(dt).format("MM月DD HH:mm"),
+        datename: "" + TxJson.caption(time) + " -- " + moment(dt, "YYYY/MM/DD HH:mm", true).format("MM月DD HH:mm"),
         value: time,
         disTixin: false
       });
@@ -382,7 +382,7 @@ export class RemindPage {
     if (!time){
       return true;
     }
-    let txdt = moment(this.evdatetime).subtract(time, 'm');
+    let txdt = moment(this.evdatetime, "YYYY/MM/DD HH:mm", true).subtract(time, 'm');
     if ( moment().isAfter(txdt)){
       ret = true;
     }else{
