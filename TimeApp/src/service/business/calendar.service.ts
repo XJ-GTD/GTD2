@@ -197,7 +197,7 @@ export class CalendarService extends BaseService {
     return rwdatas;
   }
 
-  async saveReadWriteDatas(datas: Map<string, ReadWriteData>, callback = () => void) {
+  async saveReadWriteDatas(datas: Map<string, ReadWriteData>, callback: () => void) {
     if (!datas || datas.length <= 0) {
       callback();
       return;
