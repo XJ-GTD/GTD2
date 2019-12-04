@@ -326,7 +326,7 @@ export class RemindPage {
   }
 
   timeOpen() {
-    this.remindTime.cancelText = "选择日期 " + moment(this.datevalue, "YYYY/MM/DD", true).format("YYYY年MM月DD日");
+    this.remindTime.cancelText = "选择日期 " + moment(this.datevalue, "YYYY-MM-DD", true).format("YYYY年MM月DD日");
     this.remindTime.open();
   }
 
@@ -349,7 +349,7 @@ export class RemindPage {
       tm =  (parseInt(dtsplit[1])+ 12) + ":" + dtsplit[2];
     }
     let dt = this.datevalue + " " + tm;
-    let time = moment(this.evdatetime, "YYYY/MM/DD HH:mm", true).diff(moment(dt, "YYYY/MM/DD HH:mm"), 'm');
+    let time = moment(this.evdatetime, "YYYY/MM/DD HH:mm", true).diff(moment(dt, "YYYY-MM-DD HH:mm",true), 'm');
     let hav = this.reminds.findIndex((value, index, arr) => {
       return value.value == time;
     })
@@ -359,7 +359,7 @@ export class RemindPage {
 
     this.reminds.push(
       {
-        datename: "" + TxJson.caption(time) + " -- " + moment(dt, "YYYY/MM/DD HH:mm", true).format("MM月DD HH:mm"),
+        datename: "" + TxJson.caption(time) + " -- " + moment(dt, "YYYY-MM-DD HH:mm", true).format("MM月DD HH:mm"),
         value: time,
         disTixin: false
       });
