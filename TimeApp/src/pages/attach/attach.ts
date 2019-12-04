@@ -369,7 +369,7 @@ export class AttachPage {
     let retAt: Attachment = {} as Attachment;
     retAt = await this.eventService.saveAttachment(this.fjData);
     this.emitService.emit("mwxing.calendar.datas.readwrite", {rw: "writeandread", payload: retAt});
-    this.fjArray.unshift(retAt);
+    this.fjArray.push(retAt);
     this.util.loadingEnd();
     this.fjData = {} as Attachment;
     this.fjData.obt = this.obt;
