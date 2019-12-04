@@ -233,7 +233,7 @@ export class RemindPage {
         Object.assign(this.currentTx, value.txjson);
         this.evdatetime = value.evd + " " + value.evt;
 
-        if (moment().isAfter(moment(this.evdatetime, "YYYY/MM/DD HH:mm", true)){
+        if (moment().isAfter(moment(this.evdatetime, "YYYY/MM/DD HH:mm", true))) {
           this.disTiqian = true;
         }else{
           this.disTiqian = false;
