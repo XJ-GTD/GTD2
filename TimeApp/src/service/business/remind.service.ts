@@ -19,6 +19,7 @@ export class ScheduleRemindService extends BaseService {
               private syncRestful: SyncRestful) {
     super();
     moment.locale('zh-cn');
+    moment().utcOffset(0);
     console.log("utcoffset : " + moment().utcOffset());
   }
 
@@ -87,13 +88,13 @@ export class ScheduleRemindService extends BaseService {
 
           // 针对加入重要事项,且没有完成的日程,增加默认提醒
           if (event.todolist == ToDoListStatus.On && event.wc != EventFinishStatus.Finished) {
-            let remindgap: number = moment().diff(moment(evd + " " + evt, "YYYY/MM/DD HH:mm"));
+            let remindgap: number = moment().diff(moment(evd + " " + evt, "YYYY/MM/DD HH:mm", true));
 
             // 预定完成时间比现在小，需要设置未来48小时内，不小于当前+1小时的默认提醒
             if (remindgap > 0) {
               while (remindgap > 0) {
                 // 往后推迟4小时
-                let after4hours = moment(evd + " " + evt, "YYYY/MM/DD HH:mm").add(4, "hours");
+                let after4hours = moment(evd + " " + evt, "YYYY/MM/DD HH:mm", true).add(4, "hours");
 
                 evd = after4hours.format("YYYY/MM/DD");
                 evt = after4hours.format("HH:mm");
@@ -101,8 +102,8 @@ export class ScheduleRemindService extends BaseService {
                 // 判断不小于当前+1小时
                 let plus1hours = moment().add(1, "hours");
 
-                if (plus1hours.diff(moment(evd + " " + evt, "YYYY/MM/DD HH:mm")) <= 0) {
-                  remindgap = moment().diff(moment(evd + " " + evt, "YYYY/MM/DD HH:mm"));
+                if (plus1hours.diff(moment(evd + " " + evt, "YYYY/MM/DD HH:mm", true)) <= 0) {
+                  remindgap = moment().diff(moment(evd + " " + evt, "YYYY/MM/DD HH:mm", true));
                 }
               }
             }
