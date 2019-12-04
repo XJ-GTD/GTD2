@@ -5587,7 +5587,7 @@ export class TxJson {
   }
 
   // 遍历计算每个提醒的实际时间
-  each(sd: string, st: string, callback: (datetime: Moment) => void) {
+  each(sd: string, st: string, callback: (datetime: moment.Moment) => void) {
     // 如果提醒关闭或者没有提醒数据，直接返回
     if (this.close || !this.reminds || this.reminds.length <= 0) {
       return;
