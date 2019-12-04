@@ -18,6 +18,7 @@ export class ScheduleRemindService extends BaseService {
               private util: UtilService,
               private syncRestful: SyncRestful) {
     super();
+    moment.locale('zh-cn');
   }
 
   /**

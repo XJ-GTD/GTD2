@@ -63,6 +63,8 @@ export class CalendarService extends BaseService {
               private detectorService: DetectorService,
               private timeOutService: TimeOutService) {
     super();
+    moment.locale('zh-cn');
+
     this.datasrwqueue = new AsyncQueue(async ({data}, callback) => {
       let rw: string = data.rw;
       let payload: any = data.payload;
