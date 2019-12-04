@@ -241,7 +241,7 @@ export class CalendarService extends BaseService {
 
             if (readData) {
               switch(rwdata.type) {
-                case EventType.Event:
+                case "event":
                   if ((readData.nval || readData.cval || readData.bval || readData.checksum) != (rwdata.nval || rwdata.cval || rwdata.bval || rwdata.checksum)) {
 
                     // 首页标记未读
