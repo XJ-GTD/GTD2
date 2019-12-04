@@ -20,6 +20,7 @@ export class MemoService extends BaseService {
 		private findbug: FindBugRestful,
 		private dataRestful: DataRestful) {
 		super();
+		moment.locale('zh-cn');
 	}
 
 	/**
