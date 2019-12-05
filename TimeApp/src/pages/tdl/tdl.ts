@@ -403,12 +403,13 @@ export class TdlPage {
 
         this.tdlServ.assignData(this.showMonth).then(data => {
           this.monthActivityDatas = data;
+
+          this.calendarService.refreshCalendarObservables();
+          this.calendarService.refreshAttachmentObservables();
+
           this.detectorService.detector(() => {
                     this.bScroll.refresh();
             this.util.loadingEnd();
-
-            this.calendarService.refreshCalendarObservables();
-            this.calendarService.refreshAttachmentObservables();
 
             setTimeout(()=>{
               // this.bScroll.openPullDown();
