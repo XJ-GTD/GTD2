@@ -77,8 +77,8 @@ export class FindProcess extends BaseProcess implements MQProcess {
 
       let activities: ActivityData = await this.calendarService.findActivities(condition);
 
-      if (activityies.events && activityies.events.length > 0) {
-        for (let event of activityies.events) {
+      if (activities.events && activities.events.length > 0) {
+        for (let event of activities.events) {
           let escd: ScdData = new ScdData();
 
           escd.si = event.evi;
