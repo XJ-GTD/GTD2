@@ -87,6 +87,10 @@ export class FindProcess extends BaseProcess implements MQProcess {
           escd.et = event.evt;
 
           scd.push(escd);
+
+          if (scd.length >= 5) {
+            break;
+          }
         }
       }
     }
