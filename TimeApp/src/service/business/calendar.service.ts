@@ -212,20 +212,61 @@ export class CalendarService extends BaseService {
    *
    * @author leon_xi@163.com
    **/
-  async getCalendarActivities(direction: PageDirection = PageDirection.PageInit): Promise<Array<MonthActivityData>> {
+  async getCalendarActivities(direction: PageDirection = PageDirection.PageInit,month:moment.Moment = moment()): Promise<Array<MonthActivityData>> {
     this.assertEmpty(direction);    // 入参不能为空
 
     switch(direction) {
+      case PageDirection.PageAssign :
+
+
+        this.calendaractivities = new Array<MonthActivityData>();   // 强制重新初始化
+
+        this.calendaractivities.push(await this.fetchMonthActivities(month.format("YYYY/MM")));
+
+        // 活动变化时自动更新日历显示列表数据
+        this.emitService.destroy("mwxing.calendar.activities.changed");
+        this.emitService.register("mwxing.calendar.activities.changed", (data) => {
+          if (!data) {
+            this.assertFail("事件mwxing.calendar.activities.changed无扩展数据");
+            return;
+          }
+
+          this.activitiesqueue.push({data: data}, () => {
+            // 完成处理
+            // this.detectorService.detector();
+            if (this.calendaractivities.length > 0) {
+              for (let monthactivities of this.calendaractivities) {
+                this.emitService.emit("mwxing.calendar." + monthactivities.month + ".changed", monthactivities);
+              }
+            }
+          });
+        });
+
+        // 活动读写状态变更时自动发送状态到画面
+        this.emitService.destroy("mwxing.calendar.datas.readwrite");
+        this.emitService.register("mwxing.calendar.datas.readwrite", (data) => {
+          if (!data) {
+            this.assertFail("事件mwxing.calendar.datas.readwrite无扩展数据");
+            return;
+          }
+
+          this.datasrwqueue.push({data: data}, () => {
+            this.detectorService.detector();
+          });
+        });
+
+        break;
+
       case PageDirection.PageInit :
         this.calendaractivities = new Array<MonthActivityData>();   // 强制重新初始化
 
-        this.calendaractivities.push(await this.fetchMonthActivities(moment().subtract(3, "months").format("YYYY/MM")));
-        this.calendaractivities.push(await this.fetchMonthActivities(moment().subtract(2, "months").format("YYYY/MM")));
-        this.calendaractivities.push(await this.fetchMonthActivities(moment().subtract(1, "months").format("YYYY/MM")));
+        //this.calendaractivities.push(await this.fetchMonthActivities(moment().subtract(3, "months").format("YYYY/MM")));
+        //this.calendaractivities.push(await this.fetchMonthActivities(moment().subtract(2, "months").format("YYYY/MM")));
+        //this.calendaractivities.push(await this.fetchMonthActivities(moment().subtract(1, "months").format("YYYY/MM")));
         this.calendaractivities.push(await this.fetchMonthActivities(moment().format("YYYY/MM")));
-        this.calendaractivities.push(await this.fetchMonthActivities(moment().add(1, "months").format("YYYY/MM")));
-        this.calendaractivities.push(await this.fetchMonthActivities(moment().add(2, "months").format("YYYY/MM")));
-        this.calendaractivities.push(await this.fetchMonthActivities(moment().add(3, "months").format("YYYY/MM")));
+        //this.calendaractivities.push(await this.fetchMonthActivities(moment().add(1, "months").format("YYYY/MM")));
+        //this.calendaractivities.push(await this.fetchMonthActivities(moment().add(2, "months").format("YYYY/MM")));
+        //this.calendaractivities.push(await this.fetchMonthActivities(moment().add(3, "months").format("YYYY/MM")));
 
         // 活动变化时自动更新日历显示列表数据
         this.emitService.destroy("mwxing.calendar.activities.changed");

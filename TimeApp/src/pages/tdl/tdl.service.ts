@@ -33,6 +33,13 @@ export class TdlService {
     return this.calendarService.getCalendarActivities(direction);
   }
 
+
+
+  public assignData(month:moment.Moment):Promise<any>{
+
+    return this.calendarService.getCalendarActivities(PageDirection.PageAssign,month);
+  }
+
   // /**
   //  * 获取日程 （每次返回30条数据，下拉返回日期之前，上推返回日期之后）
   //  * @param {string} today 点击日期

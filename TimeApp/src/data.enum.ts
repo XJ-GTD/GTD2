@@ -31,7 +31,8 @@ export enum PlanDownloadType {
 export enum PageDirection {
   PageUp = 'up',
   PageInit = 'init',
-  PageDown = 'down'
+  PageDown = 'down',
+  PageAssign = 'assign'
 }
 
 export enum ObjectType {
