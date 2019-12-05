@@ -230,8 +230,8 @@ declare var Wechat;
                *ngIf="showinvite">
             <div ion-item>
               <ion-buttons>
-                <button (click)="rejectInvite(currentAgenda)">拒绝</button>
-                <button (click)="acceptInvite(currentAgenda)">接受</button>
+                <button ion-button (click)="rejectInvite(currentAgenda)" justify-content-center>拒绝</button>
+                <button ion-button (click)="acceptInvite(currentAgenda)" justify-content-center>接受</button>
               </ion-buttons>
 
             </div>

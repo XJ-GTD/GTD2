@@ -9,6 +9,7 @@ import {TimeOutService} from "./timeOutService";
 
 
 export class AsyncQueue {
+  currentL:number = 10;
   _worker: any;
   numRunning: number;
   workersList = [];
@@ -170,7 +171,21 @@ export class AsyncQueue {
       return;
     }
     this.isProcessing = true;
-    this.timeoutService.timeout(300,()=>{
+
+    let timeout = 300;
+    this.currentL --;
+    if (this.currentL == 0){
+      this.currentL = 10;
+      timeout = this.length() / 100
+      if (timeout < 300){
+        timeout = 300;
+      }else if (timeout > 1000){
+        timeout = 1000;
+      }
+    }else {
+      timeout = 10;
+    }
+    this.timeoutService.timeout(timeout,()=>{
       this.working();
     },this.emitKey);
   }
