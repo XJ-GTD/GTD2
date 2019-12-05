@@ -4165,7 +4165,7 @@ export class EventService extends BaseService {
   async fetchAttachments(): Promise<Array<Attachment>> {
     let sql: string = `select * from gtd_fj order by obt, obi`;
 
-    let attachments: Array<Attachment> = this.sqlExce.getExtLstByParam<Attachment>(sql, []) || new Array<Attachment>();
+    let attachments: Array<Attachment> = await this.sqlExce.getExtLstByParam<Attachment>(sql, []) || new Array<Attachment>();
 
     return attachments;
   }
