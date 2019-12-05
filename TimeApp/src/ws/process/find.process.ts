@@ -52,11 +52,8 @@ export class FindProcess extends BaseProcess implements MQProcess {
     let findData: FindPara = content.parameters;
     //查找联系人
     let fs :Array<FsData> = new Array<FsData>();
-    //let fs :Array<Parter> = new Array<Parter>();
-    //fs = await this.findsimilarityfs(findData.fs);
-    //console.log("============ mq返回内容："+ JSON.stringify(content));
+
     //处理区分
-    //let ctbls:Array<CTbl> = new Array<CTbl>();
     let scd: Array<ScdData> = new Array<ScdData>();
 
     if (content.option == F.C) {
@@ -92,29 +89,6 @@ export class FindProcess extends BaseProcess implements MQProcess {
           scd.push(escd);
         }
       }
-
-      //let ctbls = await this.findScd(findData.scd);
-//    for (let j = 0, len = ctbls.length; j < len; j++) {
-//      let fss : Array<FsData> = new Array<FsData>();
-//      fss = await this.findScdFss(ctbls[j].si);
-
-
-        //let cfs :FsData = new FsData();
-        //cfs = this.userConfig.GetOneBTbl(ctbls[j].ui);
-
-        //防止在服务器与客户端交互时，因图像太大而出错
-//      if (cfs){
-//        cfs.bhiu = "";
-//      }else{
-//        cfs  = {} as Parter;
-//      }
-//
-//      let c :ScdData = new ScdData();
-//      Object.assign(c,ctbls[j]);
-//      c.fs = cfs;
-//      c.fss = fss;
-//      scd.push(c);
-//    }
     }
 
     //增加排序处理
@@ -131,7 +105,6 @@ export class FindProcess extends BaseProcess implements MQProcess {
 
     //服务器要求上下文内放置日程查询结果
     this.output(content, contextRetMap, 'agendas', WsDataConfig.SCD, scd);
-
 
     //服务器要求上下文内放置日程的创建人员信息或查询条件用的人员信息
     this.output(content, contextRetMap, 'contacts', WsDataConfig.FS, fs);
