@@ -407,6 +407,9 @@ export class TdlPage {
                     this.bScroll.refresh();
             this.util.loadingEnd();
 
+            this.calendarService.refreshCalendarObservables();
+            this.calendarService.refreshAttachmentObservables();
+
             setTimeout(()=>{
               // this.bScroll.openPullDown();
               this.gotoEl4month(this.showMonth.format("YYYYMM"));
