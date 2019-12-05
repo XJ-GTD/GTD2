@@ -66,7 +66,7 @@ import {EmitService} from "../../service/util-service/emit.service";
                       </div>
                       <div *ngIf="(fja.ext=='doc'||fja.ext=='DOC'||fja.ext=='xls'||fja.ext=='XLS'||fja.ext=='ppt'||fja.ext=='PPT'||fja.ext=='DOCX'||fja.ext=='docx'
                   ||fja.ext=='xlsx'||fja.ext=='XLSX'||fja.ext=='PPTX'||fja.ext=='pptx')&& (fja.fj !='')"
-                           (click)="openPdf(fja.fjurl,fja.ext,fja.fji)">
+                           (click)="window.open(this.officeOnlie+fja.fjurl)">
                         <ion-icon class="fas fa-file-powerpoint"></ion-icon>
                       </div>
                       <div *ngIf="(fja.ext=='txt'||fja.ext=='TXT')&& (fja.fj !='')"
@@ -114,6 +114,8 @@ export class AttachPage {
   browserurlBig: string = "http://pluto.guobaa.com/abl/store/local/getContent/";
   //缩略图
   browserurl: string = "http://pluto.guobaa.com/abl/store/local/getSnapshot/";
+  //微软在线打开word
+  officeOnlie: string = "https://view.officeapps.live.com/op/view.aspx?src=";
   members: Array<Member> = new Array<Member>();
   buttons: any = {
     cancel: true,
@@ -400,12 +402,11 @@ export class AttachPage {
       //当时mp3的情况下
       if (fileType && (fileType == 'mp3' || fileType == 'MP3')) {
         this.nativeAudio.preloadSimple(fji, fj).then((data) => {
+            this.nativeAudio.play(fji).then((data) => {
 
-        }, (error) => {
+            }, (error) => {
 
-        });
-        this.nativeAudio.play(fji).then((data) => {
-
+            });
         }, (error) => {
 
         });
