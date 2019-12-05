@@ -4257,7 +4257,7 @@ export class CalendarService extends BaseService {
   async codecPlanItems(): Promise<Array<DayCountCodec>> {
     let sql: string = `select sd day, count(*) count
                       from gtd_jta
-                      where jtc = ?1 and del <> ?2
+                      where jtc <> ?1 and del <> ?2
                       group by day`;
     let daycounts: Array<DayCountCodec> = await this.sqlExce.getExtLstByParam<DayCountCodec>(sql, [SelfDefineType.System, DelType.del]) || new Array<DayCountCodec>();
 
