@@ -304,10 +304,12 @@ export class AttachPage {
         //文件和图片 路径不一致
         //图片： content://media/...
         //其他路径： file:///storage/
-        alert("访问路径："+(file.uri));
-        if (file.uri.startsWith("content")) {
+        //alert("访问路径："+(file.uri));
+        //if (file.uri.startsWith("content")) {
+        //TODO filePath 该插件只支持android
           this.filePath.resolveNativePath(file.uri)
             .then((filePath) => {
+              alert("转换后的路径："+(filePath));
               if (filePath != '') {
                 let fileName: string = filePath.substr(filePath.lastIndexOf("/") + 1, filePath.length);
                 let ext: string = fileName.substr(fileName.lastIndexOf(".") + 1);
@@ -327,34 +329,35 @@ export class AttachPage {
                 // if(!this.bw) {
                 //   this.bw = fileName;
                 // }
+                this.fjArray.unshift(this.fjData);
                 this.file.copyFile(imgFileDir, fileName, this.file.dataDirectory + cacheFilePathJson.getCacheDir(), newFileName).then(_ => {
                   this.saveFile();
                 });
               }
             })
             .catch(err => console.log(err));
-        }
-        else {
-          let filePath: string  = file.uri;
-          let fileName: string = filePath.substr(filePath.lastIndexOf("/") + 1, filePath.length);
-          let ext: string = fileName.substr(fileName.lastIndexOf(".") + 1);
-          let imgFileDir: string = filePath.substr(0, filePath.lastIndexOf("/") + 1);
-          let newFileName = this.util.getUuid() + "." + ext;
-          this.fjData.obt = this.obt;
-          this.fjData.obi = this.obi;
-          //this.fjData.fjn = newFileName;
-          this.fjData.ext = ext;
-          this.fjData.ui = this.currentuser;
-          let cacheFilePathJson: CacheFilePathJson = new CacheFilePathJson();
-          cacheFilePathJson.local = "/" + newFileName;
-          this.fjData.fj = JSON.stringify(cacheFilePathJson);
-          this.fjData.fpjson = cacheFilePathJson;
-          this.fjData.fjurl = this.fjData.fpjson.getLocalFilePath(this.file.dataDirectory);
-          this.fjData.members = this.members;
-          this.file.copyFile(imgFileDir, fileName, this.file.dataDirectory + cacheFilePathJson.getCacheDir(), newFileName).then(_ => {
-            this.saveFile();
-          });
-        }
+        // }
+        // else {
+        //   let filePath: string  = file.uri;
+        //   let fileName: string = filePath.substr(filePath.lastIndexOf("/") + 1, filePath.length);
+        //   let ext: string = fileName.substr(fileName.lastIndexOf(".") + 1);
+        //   let imgFileDir: string = filePath.substr(0, filePath.lastIndexOf("/") + 1);
+        //   let newFileName = this.util.getUuid() + "." + ext;
+        //   this.fjData.obt = this.obt;
+        //   this.fjData.obi = this.obi;
+        //   //this.fjData.fjn = newFileName;
+        //   this.fjData.ext = ext;
+        //   this.fjData.ui = this.currentuser;
+        //   let cacheFilePathJson: CacheFilePathJson = new CacheFilePathJson();
+        //   cacheFilePathJson.local = "/" + newFileName;
+        //   this.fjData.fj = JSON.stringify(cacheFilePathJson);
+        //   this.fjData.fpjson = cacheFilePathJson;
+        //   this.fjData.fjurl = this.fjData.fpjson.getLocalFilePath(this.file.dataDirectory);
+        //   this.fjData.members = this.members;
+        //   this.file.copyFile(imgFileDir, fileName, this.file.dataDirectory + cacheFilePathJson.getCacheDir(), newFileName).then(_ => {
+        //     this.saveFile();
+        //   });
+        // }
       }
     )
       .catch((error: any) => console.error(error));
@@ -394,11 +397,13 @@ export class AttachPage {
       this.emitService.emit("mwxing.calendar.datas.readwrite", {rw: "writeandread", payload: retAt});
       //alert("上传返回值："+JSON.stringify(retAt));
       this.util.loadingEnd();
-      this.fjArray.unshift(retAt);
+      //this.fjArray.unshift(retAt);
       this.fjData = {} as Attachment;
       this.fjData.obt = this.obt;
       this.fjData.obi = this.obi;
       this.bw = "";
+      this.flushData();
+
     }
   }
 
@@ -408,12 +413,13 @@ export class AttachPage {
     let retAt: Attachment = {} as Attachment;
     retAt = await this.eventService.saveAttachment(this.fjData);
     this.emitService.emit("mwxing.calendar.datas.readwrite", {rw: "writeandread", payload: retAt});
-    this.fjArray.push(retAt);
+    //this.fjArray.push(retAt);
     this.util.loadingEnd();
     this.fjData = {} as Attachment;
     this.fjData.obt = this.obt;
     this.fjData.obi = this.obi;
     this.bw = "";
+    this.flushData();
   }
 
 
