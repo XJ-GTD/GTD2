@@ -373,6 +373,8 @@ export class CalendarService extends BaseService {
         } else {
           subject.next(count);
         }
+
+        this.detectorService.detector();  // 刷新页面
       });
     });
 
