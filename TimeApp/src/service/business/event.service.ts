@@ -4138,25 +4138,37 @@ export class EventService extends BaseService {
   }
 
   /**
-   * 查询全部的附件信息
+   * 查询指定对象的全部的附件信息
+   *
    * @author ying<343253410@qq.com>
    */
-    async selectAttachments(obt: string, obi: string) {
-      this.assertEmpty(obt);
-      this.assertEmpty(obi);
+  async selectAttachments(obt: string, obi: string) {
+    this.assertEmpty(obt);
+    this.assertEmpty(obi);
 
-      let attachments: Array<Attachment> = new Array<Attachment>();
-      let sql: string = `select * from gtd_fj  where del = ? and obt =? and obi = ? order by wtt asc`;
-      attachments = await this.sqlExce.getExtLstByParam<Attachment>(sql, [DelType.undel,obt,obi]);
-      // let fj = new FjTbl();
-      // fj.obi = obi;
-      // fj.obt = obt;
-      // fj.del = anyenum.DelType.undel;
-      // attachments = await this.sqlExce.getLstByParam<Attachment>(fj);
-      return attachments;
-    }
+    let attachments: Array<Attachment> = new Array<Attachment>();
+    let sql: string = `select * from gtd_fj  where del = ? and obt =? and obi = ? order by wtt asc`;
+    attachments = await this.sqlExce.getExtLstByParam<Attachment>(sql, [DelType.undel,obt,obi]);
+    // let fj = new FjTbl();
+    // fj.obi = obi;
+    // fj.obt = obt;
+    // fj.del = anyenum.DelType.undel;
+    // attachments = await this.sqlExce.getLstByParam<Attachment>(fj);
+    return attachments;
+  }
 
+  /**
+   * 查询全部的附件信息
+   *
+   * @author leon_xi@163.com
+   */
+  async fetchAttachments(): Promise<Array<Attachment>> {
+    let sql: string = `select * from gtd_fj order by obt, obi`;
 
+    let attachments: Array<Attachment> = this.selExce.getExtLstByParam<Attachment>(sql, []) || new Array<Attachment>();
+
+    return attachments;
+  }
 
 
   /**
