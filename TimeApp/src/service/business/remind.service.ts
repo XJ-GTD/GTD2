@@ -128,9 +128,9 @@ export class ScheduleRemindService extends BaseService {
             }
           }
 
-          txjson.each(evd, evt, (datetime) => {
+          txjson.each(event.evd, event.evt, (datetime) => {
             let remindgap: number = moment().diff(datetime);
-            console.log("单个日程提醒更新=============：evd ="+evd +";evt="+evt +";datetime= " + datetime +";remindgap="+remindgap);
+            console.log("单个日程提醒更新=============：evd ="+event.evd +";evt="+event.evt +";datetime= " + datetime +";remindgap="+remindgap);
             // 将来提醒，且在将来48小时以内
             if (remindgap <= 0 && (limitms + remindgap) >= 0) {
               console.log("提交服务器======+"+datetime);
