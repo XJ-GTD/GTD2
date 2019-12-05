@@ -57,7 +57,7 @@ export class FindProcess extends BaseProcess implements MQProcess {
     //console.log("============ mq返回内容："+ JSON.stringify(content));
     //处理区分
     //let ctbls:Array<CTbl> = new Array<CTbl>();
-    let scd: ActivityData = new ActivityData();
+    let scd: Array<ScdData> = new Array<ScdData>();
 
     if (content.option == F.C) {
       // TODO 增加根据人查询日程
@@ -75,7 +75,23 @@ export class FindProcess extends BaseProcess implements MQProcess {
       if (finds.ti)  condition.text = finds.ti;
       if (finds.marks)  condition.mark = finds.marks;
 
-      scd = await this.calendarService.findActivities(condition);
+      let activities: ActivityData = await this.calendarService.findActivities(condition);
+
+      if (activityies.events && activityies.events.length > 0) {
+        for (let event of activityies.events) {
+          let escd: ScdData = new ScdData();
+
+          escd.si = event.evi;
+          escd.sn = event.evn;
+          escd.ui = event.ui;
+          escd.sd = event.evd || event.sd;
+          escd.st = event.evt || event.st;
+          escd.ed = event.evd || event.sd;
+          escd.et = event.evt || event.st;
+
+          scd.push(escd);
+        }
+      }
 
       //let ctbls = await this.findScd(findData.scd);
 //    for (let j = 0, len = ctbls.length; j < len; j++) {
@@ -102,16 +118,16 @@ export class FindProcess extends BaseProcess implements MQProcess {
     }
 
     //增加排序处理
-    // if (scd && scd.length > 0) {
-    //   scd.sort((a, b) => {
-    //     let evda: string = a.evd? a.evd : a.sd;
-    //     let evta: string = a.evt? a.evt : a.st;
-    //     let evdb: string = b.evd? b.evd : b.sd;
-    //     let evtb: string = b.evt? b.evt : b.st;
-    //
-    //     return moment(evda + " " + evta, "YYYY/MM/DD HH:mm", true).diff(moment(evdb + " " + evtb, "YYYY/MM/DD HH:mm", true));
-    //   });
-    // }
+    if (scd && scd.length > 0) {
+      scd.sort((a, b) => {
+        let evda: string = a.sd;
+        let evta: string = a.st;
+        let evdb: string = b.sd;
+        let evtb: string = b.st;
+
+        return moment(evda + " " + evta, "YYYY/MM/DD HH:mm", true).diff(moment(evdb + " " + evtb, "YYYY/MM/DD HH:mm", true));
+      });
+    }
 
     //服务器要求上下文内放置日程查询结果
     this.output(content, contextRetMap, 'agendas', WsDataConfig.SCD, scd);
