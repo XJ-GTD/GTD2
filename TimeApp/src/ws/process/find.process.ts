@@ -16,7 +16,7 @@ import {BaseProcess} from "./base.process";
 import {BTbl} from "../../service/sqlite/tbl/b.tbl";
 import {UserConfig} from "../../service/config/user.config";
 import {EventService,Member} from "../../service/business/event.service";
-import {CalendarService} from "../../service/business/calendar.service";
+import {CalendarService, FindActivityCondition, ActivityData} from "../../service/business/calendar.service";
 
 /**
  * 查询联系人和日历
@@ -52,12 +52,9 @@ export class FindProcess extends BaseProcess implements MQProcess {
     let findData: FindPara = content.parameters;
     //查找联系人
     let fs :Array<FsData> = new Array<FsData>();
-    //let fs :Array<Parter> = new Array<Parter>();
-    //fs = await this.findsimilarityfs(findData.fs);
-    //console.log("============ mq返回内容："+ JSON.stringify(content));
+
     //处理区分
-    //let ctbls:Array<CTbl> = new Array<CTbl>();
-    let scd:Array<ScdData> = new Array<ScdData>();
+    let scd: Array<ScdData> = new Array<ScdData>();
 
     if (content.option == F.C) {
       // TODO 增加根据人查询日程
@@ -65,57 +62,53 @@ export class FindProcess extends BaseProcess implements MQProcess {
         findData.scd.fs = fs;
       }
       //TODO 使用findActivities ,该方法联系人尚未完善
-      //let ctbls = await this.findScd(findData.scd);
-//    for (let j = 0, len = ctbls.length; j < len; j++) {
-//      let fss : Array<FsData> = new Array<FsData>();
-//      fss = await this.findScdFss(ctbls[j].si);
+      let condition: FindActivityCondition = new FindActivityCondition();
 
+      let finds = findData.scd;
+      if (finds.ds)  condition.sd = finds.ds;
+      if (finds.ts)  condition.st = finds.ts;
+      if (finds.de)  condition.ed = finds.de;
+      if (finds.te)  condition.et = finds.te;
+      if (finds.ti)  condition.text = finds.ti;
+      if (finds.marks)  condition.mark = finds.marks;
 
-        //let cfs :FsData = new FsData();
-        //cfs = this.userConfig.GetOneBTbl(ctbls[j].ui);
+      let activities: ActivityData = await this.calendarService.findActivities(condition);
 
-        //防止在服务器与客户端交互时，因图像太大而出错
-//      if (cfs){
-//        cfs.bhiu = "";
-//      }else{
-//        cfs  = {} as Parter;
-//      }
-//
-//      let c :ScdData = new ScdData();
-//      Object.assign(c,ctbls[j]);
-//      c.fs = cfs;
-//      c.fss = fss;
-//      scd.push(c);
-//    }
+      if (activities.events && activities.events.length > 0) {
+        for (let event of activities.events) {
+          let escd: ScdData = new ScdData();
+
+          escd.si = event.evi;
+          escd.sn = event.evn;
+          escd.ui = event.ui;
+          escd.sd = event.evd;
+          escd.st = event.evt;
+          escd.ed = event.evd;
+          escd.et = event.evt;
+
+          scd.push(escd);
+
+          if (scd.length >= 5) {
+            break;
+          }
+        }
+      }
     }
 
     //增加排序处理
-    if (scd && scd.length > 1) {
-      let sortedData = scd.sort((a, b) => {
+    if (scd && scd.length > 0) {
+      scd.sort((a, b) => {
+        let evda: string = a.sd;
+        let evta: string = a.st;
+        let evdb: string = b.sd;
+        let evtb: string = b.st;
 
-        if (a.st != '99:99' && b.st == '99:99') {
-          return 1;
-        }
-
-        if (a.st == '99:99' && b.st != '99:99') {
-          return -1;
-        }
-
-        if (a.st > b.st) {
-          return 1;
-        }
-
-        if (a.st < b.st) {
-          return -1;
-        }
-
-        return 0;
+        return moment(evda + " " + evta, "YYYY/MM/DD HH:mm", true).diff(moment(evdb + " " + evtb, "YYYY/MM/DD HH:mm", true));
       });
     }
 
     //服务器要求上下文内放置日程查询结果
     this.output(content, contextRetMap, 'agendas', WsDataConfig.SCD, scd);
-
 
     //服务器要求上下文内放置日程的创建人员信息或查询条件用的人员信息
     this.output(content, contextRetMap, 'contacts', WsDataConfig.FS, fs);
@@ -267,82 +260,5 @@ export class FindProcess extends BaseProcess implements MQProcess {
     fss = await this.sqliteExec.getExtList<BTbl>(sql);
     Object.assign(res,fss);
     return res;
-  }
-
-  //ying 20190901 add 注释:获取日程事件
-  private findScd(scd: any): Promise<Array<CTbl>> {
-    return new Promise<Array<CTbl>>(async resolve => {
-      let res: Array<CTbl> = new Array<CTbl>();
-      if (scd.de ||
-        scd.ds ||
-        scd.te ||
-        scd.ti ||
-        scd.ts ||
-        (scd.fs && scd.fs.length > 0)) {
-        let sql: string = `select distinct c.si,
-                                           c.sn,
-                                           c.ui,
-                                           sp.sd     sd,
-                                           c.st,
-                                           c.ed,
-                                           c.et,
-                                           c.rt,
-                                           c.ji,
-                                           c.sr,
-                                           c.bz,
-                                           sp.wtt    wtt,
-                                           c.tx,
-                                           c.pni,
-                                           c.du,
-                                           c.gs
-                           from gtd_sp sp
-                                  inner join gtd_c c on sp.si = c.si
-                                  left join gtd_d d on d.si = c.si
-                           where 1 = 1 and (c.gs = '0' or c.gs = '1' or c.gs = '2')`
-
-        if (scd.ti) {
-          // 增加标签查找
-          if (scd.marks && scd.marks.length > 0) {
-            sql = sql + ` and (c.sn like "%${scd.ti}%" or c.si in (select mk.si from gtd_mk mk where 1=1`;
-
-            for (let mark of scd.marks) {
-              sql = sql + ` and mk.mkl like "%${mark}%"`;
-            }
-
-            sql = sql + `))`;
-          } else {
-            sql = sql + ` and c.sn like "%${scd.ti}%"`;
-          }
-        }
-        if (scd.ds) {
-          sql = sql + ` and sp.sd >= "${scd.ds}"`;
-        } else {
-          sql = sql + ` and sp.sd >= "${moment().subtract(30, 'd').format('YYYY/MM/DD')}"`;
-        }
-        if (scd.de) {
-          sql = sql + ` and sp.sd <= "${scd.de}"`;
-        } else {
-          sql = sql + ` and sp.sd <= "${moment().add(30, 'd').format('YYYY/MM/DD')}"`;
-        }
-        if (scd.ts) {
-          sql = sql + ` and (sp.st >= "${scd.ts}" or sp.st = '99:99')`;
-        }
-        if (scd.te) {
-          sql = sql + ` and (sp.st <= "${scd.te}" or sp.st = '99:99')`;
-        }
-        // 根据人物查询
-        if (scd.fs && scd.fs.length > 0) {
-          sql = sql + ` and ( 1 > 1 `;
-          for (let onefs of scd.fs) {
-            sql = sql + ` or c.ui = "${onefs.ui}"`;
-            sql = sql + ` or d.ai = "${onefs.pwi}"`;
-          }
-          sql = sql + ` )`;
-        }
-        res = await this.sqliteExec.getExtList<CTbl>(sql);
-      }
-      resolve(res);
-      return res;
-    })
   }
 }

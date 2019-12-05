@@ -81,6 +81,9 @@ export class DataConfig {
 
   public static putWsContext(_wsContext: ProcesRs) {
     this.wsContext.push(_wsContext);
+    if (this.wsContext.length > 5) {
+      this.wsContext.shift();
+    }
   }
 
   public static getWsContext(): ProcesRs {

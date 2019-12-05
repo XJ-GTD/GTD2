@@ -222,7 +222,7 @@ export class AttachPage {
             this.shot();
           }
         }, {
-          text: '相册',
+          text: '文件',
           role: 'albums',
           icon: "ios-albums",
           handler: () => {
@@ -300,36 +300,45 @@ export class AttachPage {
 
 
     this.chooser.getFile('*/*').then((file) => {
-        this.filePath.resolveNativePath(file.uri)
-          .then((filePath) => {
-            if (filePath != '') {
-              let fileName: string = filePath.substr(filePath.lastIndexOf("/") + 1, filePath.length);
-              let ext: string = fileName.substr(fileName.lastIndexOf(".") + 1);
-              let imgFileDir: string = filePath.substr(0, filePath.lastIndexOf("/") + 1);
-              let newFileName = this.util.getUuid() + "." + ext;
-              this.fjData.obt = this.obt;
-              this.fjData.obi = this.obi;
-              //this.fjData.fjn = newFileName;
-              this.fjData.ext = ext;
-              this.fjData.ui = this.currentuser;
-              let cacheFilePathJson: CacheFilePathJson = new CacheFilePathJson();
-              cacheFilePathJson.local = "/" + newFileName;
-              this.fjData.fj = JSON.stringify(cacheFilePathJson);
-              this.fjData.fpjson = cacheFilePathJson;
-              this.fjData.fjurl = this.fjData.fpjson.getLocalFilePath(this.file.dataDirectory);
-              this.fjData.members = this.members;
-              // if(!this.bw) {
-              //   this.bw = fileName;
-              // }
-              this.file.copyFile(imgFileDir, fileName, this.file.dataDirectory + cacheFilePathJson.getCacheDir(), newFileName).then(_ => {
-                this.saveFile();
-              });
-            }
-          })
-          .catch(err => console.log(err));
+
+        //文件和图片 路径不一致
+        //图片： content://media/...
+        //其他路径： file:///storage/
+        //alert("访问路径："+(file.uri));
+        //TODO filePath 该插件只支持android
+          this.filePath.resolveNativePath(file.uri)
+            .then((filePath) => {
+              alert("转换后的路径："+(filePath));
+              if (filePath != '') {
+                let fileName: string = filePath.substr(filePath.lastIndexOf("/") + 1, filePath.length);
+                let ext: string = fileName.substr(fileName.lastIndexOf(".") + 1);
+                let imgFileDir: string = filePath.substr(0, filePath.lastIndexOf("/") + 1);
+                let newFileName = this.util.getUuid() + "." + ext;
+                this.fjData.obt = this.obt;
+                this.fjData.obi = this.obi;
+                //this.fjData.fjn = newFileName;
+                this.fjData.ext = ext;
+                this.fjData.ui = this.currentuser;
+                let cacheFilePathJson: CacheFilePathJson = new CacheFilePathJson();
+                cacheFilePathJson.local = "/" + newFileName;
+                this.fjData.fj = JSON.stringify(cacheFilePathJson);
+                this.fjData.fpjson = cacheFilePathJson;
+                this.fjData.fjurl = this.fjData.fpjson.getLocalFilePath(this.file.dataDirectory);
+                this.fjData.members = this.members;
+                // if(!this.bw) {
+                //   this.bw = fileName;
+                // }
+                this.file.copyFile(imgFileDir, fileName, this.file.dataDirectory + cacheFilePathJson.getCacheDir(), newFileName).then(_ => {
+                  this.saveFile();
+                });
+              }
+            })
+            .catch(err => {
+              alert("选择文件异常信息:"+err);
+              console.log(err)
+            });
       }
-    )
-      .catch((error: any) => console.error(error));
+    ).catch((error: any) => console.error(error));
   }
 
   /**
@@ -366,7 +375,8 @@ export class AttachPage {
       this.emitService.emit("mwxing.calendar.datas.readwrite", {rw: "writeandread", payload: retAt});
       //alert("上传返回值："+JSON.stringify(retAt));
       this.util.loadingEnd();
-      this.fjArray.unshift(retAt);
+      //this.fjArray.unshift(retAt);
+      this.fjArray.push(retAt);
       this.fjData = {} as Attachment;
       this.fjData.obt = this.obt;
       this.fjData.obi = this.obi;
@@ -398,7 +408,7 @@ export class AttachPage {
 
   //打开本地PDF
   openPdf(fj: string, fileType: string, fji: string) {
-    if (fj && fj.indexOf("http") > 0) {
+    if (fj && fj.startsWith("http")) {
       //当时mp3的情况下
       if (fileType && (fileType == 'mp3' || fileType == 'MP3')) {
         this.nativeAudio.preloadSimple(fji, fj).then((data) => {
@@ -421,7 +431,7 @@ export class AttachPage {
 
   //放大图片
   photoShow(fj: string) {
-    if (fj && fj.indexOf("http") > 0) {
+    if (fj && fj.startsWith("http")) {
       let remoteId: string = fj.substr(fj.lastIndexOf("/") + 1, fj.length);
       fj = this.browserurlBig + remoteId
     }

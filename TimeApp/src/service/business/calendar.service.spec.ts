@@ -525,7 +525,7 @@ describe('CalendarService test suite', () => {
 
   });
 
-  it(`Case 29 - 1 - 2 refreshCalendarActivitiesToMonth 刷新日历显示列表到指定月份 - 已存在初始化数据(刷新到当前月)`, async () => {
+  xit(`Case 29 - 1 - 2 refreshCalendarActivitiesToMonth 刷新日历显示列表到指定月份 - 已存在初始化数据(刷新到当前月)`, async () => {
     let month: string = moment().format("YYYY/MM");
 
     calendarService.clearCalendarActivities();
@@ -540,7 +540,7 @@ describe('CalendarService test suite', () => {
     expect(calendarholdings[4].month).toBe(moment(month,"YYYY/MM").add(1, "months").format("YYYY/MM"));
   });
 
-  it(`Case 29 - 1 - 1 refreshCalendarActivitiesToMonth 刷新日历显示列表到指定月份 - 已存在初始化数据(刷新到往后5个月)`, async () => {
+  xit(`Case 29 - 1 - 1 refreshCalendarActivitiesToMonth 刷新日历显示列表到指定月份 - 已存在初始化数据(刷新到往后5个月)`, async () => {
     let month: string = moment().format("YYYY/MM");
     let after5month: string = moment(month,"YYYY/MM").add(5, "months").format("YYYY/MM");
 
@@ -560,7 +560,7 @@ describe('CalendarService test suite', () => {
     expect(calendarholdings[8].month).toBe(moment(month,"YYYY/MM").add(5, "months").format("YYYY/MM"));
   });
 
-  it(`Case 29 - 1 refreshCalendarActivitiesToMonth 刷新日历显示列表到指定月份 - 已存在初始化数据(刷新到往前5个月)`, async () => {
+  xit(`Case 29 - 1 refreshCalendarActivitiesToMonth 刷新日历显示列表到指定月份 - 已存在初始化数据(刷新到往前5个月)`, async () => {
     let month: string = moment().format("YYYY/MM");
     let before5month: string = moment(month,"YYYY/MM").subtract(5, "months").format("YYYY/MM");
 
@@ -2969,7 +2969,7 @@ describe('CalendarService test suite', () => {
     });
   });
 
-  it(`Case 17 - 3 getCalendarActivities 取得日历画面显示活动一览 - 向下拉加载`, async () => {
+  xit(`Case 17 - 3 getCalendarActivities 取得日历画面显示活动一览 - 向下拉加载`, async () => {
     let month: string = moment().format("YYYY/MM");
 
     let calendarholdings = await calendarService.getCalendarActivities();
@@ -2999,7 +2999,7 @@ describe('CalendarService test suite', () => {
     });
   });
 
-  it(`Case 17 - 2 getCalendarActivities 取得日历画面显示活动一览 - 向上拉加载`, async () => {
+  xit(`Case 17 - 2 getCalendarActivities 取得日历画面显示活动一览 - 向上拉加载`, async () => {
     let month: string = moment().format("YYYY/MM");
 
     let calendarholdings = await calendarService.getCalendarActivities();
@@ -3016,7 +3016,7 @@ describe('CalendarService test suite', () => {
     expect(calendarholdings[7].month).toBe(moment(month,"YYYY/MM").add(4, "months").format("YYYY/MM"));
   });
 
-  it(`Case 17 - 1 getCalendarActivities 取得日历画面显示活动一览 - 默认当前月份以及前后各一个月`, async () => {
+  xit(`Case 17 - 1 getCalendarActivities 取得日历画面显示活动一览 - 默认当前月份以及前后各一个月`, async () => {
     let month: string = moment().format("YYYY/MM");
 
     let calendarholdings = await calendarService.getCalendarActivities();
