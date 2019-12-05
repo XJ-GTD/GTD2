@@ -32,30 +32,32 @@ import {TimeOutService} from "../../../util/timeOutService";
     <div class="inputioc" (click)="inputstart()" *ngIf="showInput">
       <ion-icon class="fal fa-keyboard"></ion-icon>
     </div>
-      <InputComponent #inputComponent></InputComponent>
-  
       <div class="aitool" #aitool (click)="ponintClick()">
         <b class=" speaking  moving" #light>
           <div class="spinner" >
             <!--<canvas #canvas></canvas>-->
         </div>
-      </b>
+        </b>
     </div>
     <angular-popper  target=".aitool"  placement="left-end" #popper [class.showNot] = "popperShow">
       <div content>
+        <button icon-only (click)="closepopper() "><ion-icon class="fal fa-times-circle"></ion-icon></button>
         <ion-grid class="list-grid-content content">
           <ng-template ngFor let-tellyou [ngForOf]="tellYouData">
             <ion-row class="item-content">
               <div class="line font-small first-line">
 
                 <div class="sn">
-                  {{tellyou}}</div>
+                  {{tellyou}}
+                </div>
               </div>              
             </ion-row>
           </ng-template>
         </ion-grid>
       </div>
     </angular-popper>
+
+    <InputComponent #inputComponent></InputComponent>
 
   `,
 })
@@ -74,11 +76,12 @@ export class PointComponent {
   @ViewChild('popper')
   popper: PopperComponent;
   popperShow:boolean = true;
+  @Input()
+  hasPopper:boolean = true;
 
   @Input()
   showInput:boolean = true;
-  immediately:string;
-  immediatelyemit:Subscriber<any>;
+
 
   @Output() onPonintClick: EventEmitter<any> = new EventEmitter();
 
@@ -94,23 +97,25 @@ export class PointComponent {
 
     this.aiTellYou = this.emitService.registerAiTellYou(($data)=>{
 
-      if ($data.close){
-        this.popperShow = true;
-      }else{
-        this.popperShow = false;
-        this.tellYouData.push($data.message);
-        if (!this.changeDetectorRef['destroyed']) {
-          this.changeDetectorRef.detectChanges();
-          this.popper.create();
-        }
-        this.timeoutService.timeOutOnlyOne(5000,()=>{
+      if (this.hasPopper){
+        if ($data.close){
           this.popperShow = true;
-          this.tellYouData.length = 0;
-          this.changeDetectorRef.detectChanges();
-        },"close.home.ai.talk");
+        }else{
+          this.popperShow = false;
+          this.tellYouData.push($data.message);
+          if (!this.changeDetectorRef['destroyed']) {
+            this.changeDetectorRef.detectChanges();
+            this.popper.create();
+          }
+          this.timeoutService.timeOutOnlyOne(30000,()=>{
+            this.popperShow = true;
+            this.tellYouData.length = 0;
+            this.changeDetectorRef.detectChanges();
+          },"close.home.ai.talk");
+        }
       }
-
     });
+
     // this.emitService.registerSpeak((b)=>{
     //   if (b){
     //     this.assistantService.stopWakeUp();
@@ -120,11 +125,12 @@ export class PointComponent {
     // })
   }
   ngOnDestroy(){
-    this.immediatelyemit.unsubscribe();
     this.aiTellYou.unsubscribe();
   }
 
-
+  closepopper(){
+    this.popperShow = true;
+  }
 
   ponintClick(){
     this.onPonintClick.emit(this);

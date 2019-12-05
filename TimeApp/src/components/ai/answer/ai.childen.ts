@@ -21,44 +21,41 @@ import {UserConfig} from "../../../service/config/user.config";
   template: `
 
     <ng-template [ngIf]="aiData.speechAi">
-      <div ion-item class="self">{{aiData.speechAi.org}}</div>
-      <div ion-item class="aiAn">{{aiData.speechAi.an}}</div>
+      <div  class="self">{{selfName}} : {{aiData.speechAi.org}}</div>
+      <div  class="aiAn">小冥 : {{aiData.speechAi.an}}</div>
     </ng-template>
     <ng-template [ngIf]="aiData.scd">
       <div class="scd">
-        <ion-list no-lines>
-          <ion-item><p class="ti">{{aiData.scd.ti}}</p></ion-item>
-          <ion-item><span class="date">{{aiData.scd.d | formatedate:"CYYYY/MM/DD W"}}</span> <span class="date">{{aiData.scd.t=='99:99'?'全天':aiData.scd.t}}</span></ion-item>
-          <ion-item>
+        <div no-lines>
+          <div><p class="ti">{{aiData.scd.ti}}</p></div>
+          <div><span class="date">{{aiData.scd.d | formatedate:"CYYYY/MM/DD W"}}</span> <span class="date">{{aiData.scd.t=='99:99'?'全天':aiData.scd.t}}</span></div>
+          <div>
             <div class="friend">
               <ion-chip *ngFor="let fs of aiData.scd.friends">
-                <ion-avatar>
-                  <img [src]="GetOneBhiu(fs.uid)"/>
-                </ion-avatar>
                 <span>{{fs.n}}</span>
               </ion-chip>
             </div>
-          </ion-item>
-          <ion-item >
+          </div>
+          <div>
             <p class="scdTip">{{aiData.scd.scdTip}}</p>
-          </ion-item>
-        </ion-list>
+          </div>
+        </div>
       </div>
     </ng-template>
     <ng-template [ngIf]="aiData.scdList">
-      <ion-list no-lines class="scdList">
-        <ion-item on-hold="speakScd(aiData.scdList)" class="aiAn">
+      <div no-lines class="scdList">
+        <div on-hold="speakScd(aiData.scdList)" class="aiAn">
           {{aiData.scdList.desc}}
           <ion-icon name="volume-up" item-end class="volume" (click)="speakScd(aiData.scdList)"></ion-icon>
-        </ion-item>
-        <ion-item *ngFor="let scd of aiData.scdList.datas" (click)="showScdInList(scd)">
+        </div>
+        <div *ngFor="let scd of aiData.scdList.datas" (click)="showScdInList(scd)">
           <p class="date">{{countDay(scd.d) | formatedate :"CYYYY/MM/DD W"}} {{scd.t=='99:99'?'全天':scd.t}}</p>
           <p class="ti">{{scd.ti}}</p>
-        </ion-item>
-        <ion-item >
+        </div>
+        <div>
           <p class="scdTip">{{aiData.scdList.scdTip}}</p>
-        </ion-item>
-      </ion-list>
+        </div>
+      </div>
     </ng-template>
   `,
 })
@@ -67,7 +64,12 @@ export class AiChildenComponent {
 
   @Input("aiData") aiData: AiData;
 
+  selfName:string="";
+
+
   constructor(public aiService: AiService,private userConfig :UserConfig) {
+
+    this.selfName = UserConfig.user.realname;
   }
 
   speakScd(scds: ScdLsAiData) {

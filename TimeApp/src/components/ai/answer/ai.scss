@@ -3,12 +3,25 @@ aicomponent {
   width: 100%;
   height: 100%;
 
+  .jsai {
+    position: fixed;
+    bottom: $speakerTop + 30px;
+    color: rgba(60,144,155,1);
+    font-size: 1.8rem;
+    font-weight: bold;
+    left: 1.5rem;
+    right: 3rem;
+    text-align: center;
+  }
+
   .card {
-    background: $aiBackColor;
+    background: transparent;
+    box-shadow:none;
     position: relative;
-    margin: 8px 0px 8px 15px;
-    width: 85%;
-    border-radius: 12px 12px 12px 0px;
+    margin: 1rem 2.5rem;
+    width: 90%;
+    //border: 0.55px solid red;
+    padding: 1rem;
 
     .self {
       color: $fontSecondColor;
@@ -160,7 +173,7 @@ aicomponent {
     opacity: 1;
     padding: 5px;
     width: 100%;
-    height: 100%;
+    height: calc(100% - 145px);
   }
   .aiWarpBack {
     position: absolute;

@@ -164,25 +164,24 @@ pointcomponent {
       transform: rotate(1turn);
     }
   }
-
-
-  .jsai{
-    bottom: $speakerTop;
-    display: block;
-    color: $adornColor;
-    font-size: 1.8rem;
-    font-weight: bold;
-    left: 75px;
-    right: 80px;
-    background-color: rgba(248,248,248,1);
-  }
   .angular-popper{
     width: 250px;
     background-color: rgba(248,248,248,1);
     color: #843094;
+    div[content]{
+      max-height: 400px;
+      overflow-y: auto;
+    }
      .angular-popper__arrow{
        border-color: rgba(248,248,248,1)
      }
+    button{
+      position: fixed;
+      top: -1rem;
+      right: -3rem;
+      width: auto;
+      background: transparent;
+    }
   }
   .showNot{
     display: none;

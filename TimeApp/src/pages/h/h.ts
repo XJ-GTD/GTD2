@@ -49,7 +49,6 @@ import {ModalTranType} from "../../data.enum";
           <!--<ion-icon name="chatbubbles"></ion-icon>-->
         <!--</button>-->
       <!--</ion-fab>-->
-      
     </ion-content>
   `,
 })

@@ -8,6 +8,7 @@ import {
   ScdLsEmData,
   SpeechEmData
 } from "../../../service/util-service/emit.service";
+import {Subscriber} from "rxjs";
 
 /**
  * Generated class for the HbPage page.
@@ -20,6 +21,9 @@ import {
 @Component({
   selector: 'AiComponent',
   template: `
+    <div class="jsai">
+      <span>{{immediately}}</span></div>
+    
       <div class="aiWarp" #aiWarp>
         <ion-card class="card" #card3 *ngIf="aiData3">
           <AiChildenComponent [aiData] = "aiData3"></AiChildenComponent>
@@ -41,17 +45,16 @@ export class AiComponent {
   @ViewChild("aiWarp") aiWarp: ElementRef;
   @ViewChild("aiWarpback") aiWarpback: ElementRef;
 
-  @ViewChild("card1") card1: ElementRef;
-
-  @ViewChild("card2") card2: ElementRef;
-
-  @ViewChild("card3") card3: ElementRef;
-
-  @ViewChild("close") close: ElementRef;
 
   aiData1: AiData = new AiData();
   aiData2: AiData = new AiData();
   aiData3: AiData = new AiData();
+
+  immediately:string;
+  immediatelyemit:Subscriber<any>;
+  scdLsemit:Subscriber<any>;
+  speechemit:Subscriber<any>;
+  scdemit:Subscriber<any>;
   //语音界面数据传递
   b: boolean;
 
@@ -65,17 +68,28 @@ export class AiComponent {
 
 
   ngAfterViewInit() {
-
-    this.emitService.registerScdLs(data => {
+    this.scdLsemit = this.emitService.registerScdLs(data => {
       this.callbackScdLs(data);
     });
-    this.emitService.registerSpeech(data => {
+    this.speechemit = this.emitService.registerSpeech(data => {
       this.callbackSpeech(data);
     });
-    this.emitService.registerScd(data => {
+    this.scdemit =   this.emitService.registerScd(data => {
       this.callbackScd(data);
     });
+    this.immediatelyemit = this.emitService.registerImmediately(($data)=>{
+      this.immediately = $data;
+    })
   }
+
+
+  ngOnDestroy(){
+    this.scdLsemit.unsubscribe();
+    this.speechemit.unsubscribe();
+    this.scdemit.unsubscribe();
+    this.immediatelyemit.unsubscribe();
+  }
+
 
   callbackScdLs(datas: ScdLsEmData) {
 
@@ -97,14 +111,8 @@ export class AiComponent {
       aiData.id = scdEmData.id;
       aiData.gs = scdEmData.gs;
       this.aiData1.scdList.datas.push(aiData);
-
     }
 
-
-    setTimeout(() => {
-      this.calcheight();
-
-    }, 200);
   }
 
   callbackSpeech(datas: SpeechEmData) {
@@ -115,10 +123,6 @@ export class AiComponent {
     this.aiData1.speechAi.org = datas.org;
     this.aiData1.speechAi.an = datas.an;
 
-    setTimeout(() => {
-      this.calcheight();
-
-    }, 200);
   }
 
   callbackScd(data: ScdEmData) {
@@ -146,56 +150,13 @@ export class AiComponent {
     }
 
     this.aiData1.scd = scd1;
-
-    setTimeout(() => {
-      this.calcheight();
-
-    }, 200);
   }
 
   closePage() {
-    // this._renderer.setStyle(this.aiWarp.nativeElement, "transform", "translateY(-9999px)");
-    // this._renderer.setStyle(this.aiWarpback.nativeElement, "transform", "translateY(-9999px)");
-
     this.aiData1 = new AiData();
     this.aiData2 = new AiData();
     this.aiData3 = new AiData();
-    // this._renderer.setStyle(this.close.nativeElement, "transform", "translateY(-9999px)");
 
 
-  }
-
-  private calcheight() {
-
-    // this._renderer.setStyle(this.aiWarp.nativeElement, "transform", "translateY(0px)");
-    // this._renderer.setStyle(this.aiWarpback.nativeElement, "transform", "translateY(0px)");
-    // this._renderer.setStyle(this.close.nativeElement, "transform", "translateY(-0px)");
-    let winhi = window.innerHeight;
-    let aiWarpHi = winhi - 125;
-    let top = -125 - aiWarpHi;
-    // this._renderer.setStyle(this.aiWarp.nativeElement, "top", top + "px");
-    // this._renderer.setStyle(this.aiWarpback.nativeElement, "top", top + "px");
-    // this._renderer.setStyle(this.aiWarp.nativeElement, "height", aiWarpHi + "px");
-    // this._renderer.setStyle(this.aiWarpback.nativeElement, "height", aiWarpHi + "px");
-    //this._renderer.
-    // console.log("card1" + this.card1.nativeElement.clientHeight)
-    // console.log("card2" +this.card2.nativeElement.clientHeight)
-    // console.log("card3" +this.card3.nativeElement.clientHeight)
-    let card1h = this.card1 ? this.card1.nativeElement.clientHeight : 0;
-    let card2h = this.card2 ? this.card2.nativeElement.clientHeight : 0;
-    let card3h = this.card3 ? this.card3.nativeElement.clientHeight : 0;
-    let cardTop: number = card1h + card2h + card3h;
-    top = aiWarpHi - cardTop - 45;
-    if (card1h > aiWarpHi || card2h > aiWarpHi || card3h > aiWarpHi) {
-      top = 0;
-    }
-
-    //
-    if (this.card1)
-      this._renderer.setStyle(this.card1.nativeElement, "top", top + "px");
-    if (this.card2)
-      this._renderer.setStyle(this.card2.nativeElement, "top", top + "px");
-    if (this.card3)
-      this._renderer.setStyle(this.card3.nativeElement, "top", top + "px");
   }
 }

@@ -32,7 +32,7 @@ import {AssistantService} from "../../service/cordova/assistant.service";
     <ion-content>
       <!--<BackComponent></BackComponent>-->
       <AiComponent></AiComponent>
-      <PointComponent [showInput] = "true" (onPonintClick)="listenStart()"></PointComponent>
+      <PointComponent [showInput] = "true" (onPonintClick)="listenStart()" [hasPopper]="false"></PointComponent>
     </ion-content>
   `,
 })
@@ -56,7 +56,9 @@ export class AipPage {
 
 
   listenStart() {
-    if (!this.statusListener) this.assistantService.listenAudio();
+    if (!this.statusListener) this.assistantService.listenAudio().then(data=>{
+      this.emitService.emitImmediately("");
+    })
     else this.assistantService.stopListenAudio();
   }
 

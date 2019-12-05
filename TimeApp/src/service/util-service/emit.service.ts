@@ -139,11 +139,11 @@ export class EmitService {
     EmitService.buildinEvents.delete(handler);
   }
 
-  registerListener(callback) {
+  registerListener(callback) :any{
     if (this.listenerEm.closed) {
       this.listenerEm = new EventEmitter<boolean>();
     }
-    this.listenerEm.subscribe(($data: boolean) => {
+    return  this.listenerEm.subscribe(($data: boolean) => {
       callback($data);
     });
   };
@@ -159,11 +159,11 @@ export class EmitService {
   }
 
 
-  registerSpeak(callback) {
+  registerSpeak(callback):any {
     if (this.speakEm.closed) {
       this.speakEm = new EventEmitter<boolean>();
     }
-    this.speakEm.subscribe(($data: boolean) => {
+    return  this.speakEm.subscribe(($data: boolean) => {
       callback($data);
     });
   };
@@ -178,11 +178,11 @@ export class EmitService {
     this.speakEm.unsubscribe();
   }
 
-  registerRef(callback) {
+  registerRef(callback) :any{
     if (this.refEm.closed) {
       this.refEm = new EventEmitter<string>();
     }
-    this.refEm.subscribe(($data: string) => {
+    return  this.refEm.subscribe(($data: string) => {
       callback($data);
     });
   };
@@ -197,11 +197,11 @@ export class EmitService {
     this.refEm.unsubscribe();
   }
 
-  registerNewMessageClick(callback) {
+  registerNewMessageClick(callback) :any{
     if (this.newMessageClickEm.closed) {
       this.newMessageClickEm = new EventEmitter<ScdEmData>();
     }
-    this.newMessageClickEm.subscribe(($data:ScdEmData) => {
+    return  this.newMessageClickEm.subscribe(($data:ScdEmData) => {
       callback($data);
     });
   };
@@ -218,11 +218,11 @@ export class EmitService {
 
 
 
-  registerSelectDate(callback) {
+  registerSelectDate(callback):any {
     if (this.selectDateEm.closed) {
       this.selectDateEm = new EventEmitter<moment.Moment>();
     }
-    this.selectDateEm.subscribe(($data: moment.Moment) => {
+    return  this.selectDateEm.subscribe(($data: moment.Moment) => {
       callback($data);
     });
   };
@@ -238,11 +238,11 @@ export class EmitService {
   }
 
 
-  registerScded(callback) {
+  registerScded(callback):any {
     if (this.scdedEm.closed) {
       this.scdedEm = new EventEmitter<ScdEmData>();
     }
-    this.scdedEm.subscribe(($data: ScdEmData) => {
+    return  this.scdedEm.subscribe(($data: ScdEmData) => {
       callback($data);
     });
   };
@@ -257,11 +257,11 @@ export class EmitService {
     this.scdedEm.unsubscribe();
   }
 
-  registerScdLs(callback) {
+  registerScdLs(callback):any {
     if (this.scdLsEm.closed) {
       this.scdLsEm = new EventEmitter<ScdLsEmData>();
     }
-    this.scdLsEm.subscribe(($data: ScdLsEmData) => {
+    return this.scdLsEm.subscribe(($data: ScdLsEmData) => {
       callback($data);
     });
   };
@@ -276,11 +276,11 @@ export class EmitService {
     this.scdLsEm.unsubscribe();
   }
 
-  registerSpeech(callback) {
+  registerSpeech(callback) :any{
     if (this.speechEm.closed) {
       this.speechEm = new EventEmitter<SpeechEmData>();
     }
-    this.speechEm.subscribe(($data: SpeechEmData) => {
+    return  this.speechEm.subscribe(($data: SpeechEmData) => {
       callback($data);
     });
   };
@@ -296,11 +296,11 @@ export class EmitService {
   }
 
 
-  registerScd(callback) {
+  registerScd(callback) :any{
     if (this.scdEm.closed) {
       this.scdEm = new EventEmitter<ScdEmData>();
     }
-    this.scdEm.subscribe(($data: ScdEmData) => {
+    return this.scdEm.subscribe(($data: ScdEmData) => {
       callback($data);
     });
   };
