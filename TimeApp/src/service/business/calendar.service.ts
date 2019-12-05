@@ -25,7 +25,7 @@ import {
   assertEqual,
   assertFail
 } from "../../util/util";
-import {FsData} from "../../data.mapping";
+import {FsData, PageDcData} from "../../data.mapping";
 import { ScheduleRemindService } from "./remind.service";
 import {AsyncQueue} from "../../util/asyncQueue";
 import {DetectorService} from "../util-service/detector.service";
@@ -4093,6 +4093,107 @@ export class CalendarService extends BaseService {
     }
 
     return dayActivities;
+  }
+
+  /**
+   * 查询群组/联系人（拼音/手机号/用户帐号）
+   * 完全匹配或者模糊匹配
+   *
+   * @author leon_xi@163.com
+   **/
+  findFriends(ns: Array<any>): Array<FsData> {
+    let res: Array<FsData> = new Array<FsData>();
+    let rsbs: Map<string, FsData> = new Map<string, FsData>();
+    if (!ns || ns.length == 0) {
+      return new Array<FsData>();
+    }
+
+    //TODO 联系人和群组是否要放入环境中，每次取性能有影响
+
+    //获取群组列表
+    let gs: Array<PageDcData> = new Array<PageDcData>();
+    Object.assign(gs, UserConfig.groups);
+
+    //循环参数中的pingy数组
+    for (let n of ns) {
+      //根据帐户id或者手机号查询时，不查询群组
+      if (!n.n && (n.ai || n.mpn)) continue;
+
+      let piny = n.n;
+      //首先查找群组
+      for (let g of gs) {
+        let simulary = this.util.compareTwoStrings(piny, g.gnpy);
+        if (simulary > 0.8) {
+          //piny = piny.replace(g.gnpy, "");
+          for (let b1 of g.fsl) {
+            rsbs.set(b1.ranpy, b1);
+          }
+        }
+      }
+    }
+
+    //获取联系人列表
+    let bs: Array<FsData> = new Array<FsData>();
+    Object.assign(bs, UserConfig.friends);
+
+    let b3ran: Array<string> = new Array();
+    let b3rn: Array<string> = new Array();
+
+    for (let b3 of bs) {
+      b3ran.push(b3.ranpy);
+      b3rn.push(b3.rnpy);
+    }
+
+    for (let n of ns) {
+      //根据帐户id或者手机号查询时，不查询群组
+      if (!n.n && (n.ai || n.mpn)) {
+        for (let b1 of bs) {
+          //注册用户存在用户ID
+          if (n.ai && b1.ui && n.ai == b1.ui) {
+            res.push(b1);
+            continue;
+          }
+
+          //非注册用户不存在用户ID
+          if (n.mpn && b1.rc && n.mpn == b1.rc) {
+            res.push(b1);
+          }
+        }
+      }
+
+      if (n.n) {
+        let piny = n.n;
+        //查找联系人
+        let simularyranrs = this.util.findBestMatch(piny, b3ran);
+        let simularyrnrs = this.util.findBestMatch(piny, b3rn);
+
+        if (simularyranrs.bestMatch.rating > 0.5) {
+          let index = 0;
+          for (let rating of simularyranrs.ratings) {
+            if (rating.rating > 0.8) {
+               rsbs.set(b3ran[index], bs[index]);
+            }
+            index++;
+          }
+        }
+
+        if (simularyrnrs.bestMatch.rating > 0.5) {
+          let index = 0;
+          for (let rating of simularyrnrs.ratings) {
+            if (rating.rating > 0.8) {
+                 rsbs.set(b3ran[index], bs[index]);
+            }
+            index++;
+          }
+        }
+      }
+    }
+
+    rsbs.forEach((value, key, map) => {
+      res.push(value);
+    })
+
+    return res;
   }
 
   /**
