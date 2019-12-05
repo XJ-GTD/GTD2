@@ -37,6 +37,8 @@ import { checksum } from "../../util/crypto-util";
 @Injectable()
 export class CalendarService extends BaseService {
 
+  private attachmentcached: Map<string, Array<Attachment>> = new Map<string, Array<Attachment>>();
+
   private calendarsubjects: Map<string, BehaviorSubject<boolean>> = new Map<string, BehaviorSubject<boolean>>();
   private calendarobservables: Map<string, Observable<boolean>> = new Map<string, Observable<boolean>>();
   private annotationsubjects: Map<string, BehaviorSubject<boolean>> = new Map<string, BehaviorSubject<boolean>>();
@@ -63,6 +65,8 @@ export class CalendarService extends BaseService {
               private detectorService: DetectorService,
               private timeOutService: TimeOutService) {
     super();
+    moment.locale('zh-cn');
+
     this.datasrwqueue = new AsyncQueue(async ({data}, callback) => {
       let rw: string = data.rw;
       let payload: any = data.payload;
@@ -189,7 +193,88 @@ export class CalendarService extends BaseService {
     return this.calendaractivities;
   }
 
+  async fetchReadWriteDatas(): Promise<Array<ReadWriteData>> {
+    let sql: string = `select * from gtd_rw order by type, id, mark, rw, utt asc`;
+
+    let rwdatas: Array<ReadWriteData> = await this.sqlExce.getExtLstByParam<ReadWriteData>(sql, []) || new Array<ReadWriteData>();
+
+    return rwdatas;
+  }
+
+  async saveReadWriteDatas(datas: Map<string, ReadWriteData>, callback: () => void) {
+    if (!datas || datas.size <= 0) {
+      callback();
+      return;
+    }
+
+    let rwTbls: Array<RwTbl> = new Array<RwTbl>();
+    datas.forEach((val) => {
+      let rwtbl: RwTbl = new RwTbl();
+      Object.assign(rwtbl, val);
+
+      rwTbls.push(rwtbl);
+    });
+
+    let sqls: Array<any> = this.sqlExce.getFastSaveSqlByParam(rwTbls);
+
+    if (sqls && sqls.length > 0) {
+      await this.sqlExce.batExecSqlByParam(sqls);
+    }
+
+    callback();
+    return;
+  }
+
   getCalendarObservables(): Map<string, Observable<boolean>> {
+    this.fetchReadWriteDatas().then((datas) => {
+      for (let data of datas) {
+        let rwdata: ReadWriteData = {} as ReadWriteData;
+        Object.assign(rwdata, data);
+
+        let rwkey: ReadWriteKey = new ReadWriteKey(rwdata.type, rwdata.id, rwdata.mark, rwdata.rw);
+        this.calendardatarws.set(rwkey.encode(), rwdata);
+
+        // 刷新首页未读状态
+        this.calendardatarws.forEach((rwdata) => {
+          let rwkey: ReadWriteKey = new ReadWriteKey(rwdata.type, rwdata.id, rwdata.mark, rwdata.rw);
+
+          if (rwdata.rw == "write" && (rwdata.mark == "content" || rwdata.mark == "annotation")) {
+            let readData: ReadWriteData = this.calendardatarws.get(rwkey.encode());
+
+            if (readData) {
+              switch(rwdata.type) {
+                case "event":
+                  if ((readData.nval || readData.cval || readData.bval || readData.checksum) != (rwdata.nval || rwdata.cval || rwdata.bval || rwdata.checksum)) {
+
+                    // 首页标记未读
+                    if (rwdata.mark == "content") {
+                      this.commit(rwdata.id, true);
+                    }
+
+                    // 首页标记Annotation
+                    if (rwdata.mark == "annotation") {
+                      this.annotation(rwdata.id, true);
+                    }
+                  }
+
+                  break;
+                default:
+                  break;
+              }
+            }
+          }
+        });
+      }
+
+      let callback = () => {
+        setTimeout(() => {
+          this.saveReadWriteDatas(this.calendardatarws, callback);
+        }, 60 * 1000);
+      };
+
+      this.saveReadWriteDatas(null, callback);
+    });
+
     return this.calendarobservables;
   }
 
@@ -198,6 +283,34 @@ export class CalendarService extends BaseService {
   }
 
   getAttachmentObservables(): Map<string, Observable<number>> {
+    this.eventService.fetchAttachments().then((attachments) => {
+      for (let attachment of attachments) {
+        let objectattaments: Array<Attachment> = this.attachmentcached.get(attachment.obi) || new Array<Attachment>();
+
+        objectattaments.push(attachment);
+
+        this.attachmentcached.set(attachment.obi, objectattaments);
+      }
+
+      this.attachmentcached.forEach((value, key) => {
+        let subject: BehaviorSubject<number> = this.attachmentsubjects.get(key);
+
+        let count = value.reduce((target, ele) => {
+          if (ele.del != DelType.del) target++;
+
+          return target;
+        }, 0);
+
+        if (!subject) {
+          subject = new BehaviorSubject<number>(count);
+          this.attachmentsubjects.set(key, subject);
+          this.attachmentobservables.set(key, subject.asObservable());
+        } else {
+          subject.next(count);
+        }
+      });
+    });
+
     return this.attachmentobservables;
   }
 
@@ -3017,6 +3130,20 @@ export class CalendarService extends BaseService {
     // Observable
   }
 
+  attachment(id: string, value: number) {
+    // Observable
+    let subject: BehaviorSubject<number> = this.attachmentsubjects.get(id);
+
+    if (!subject) {
+      subject = new BehaviorSubject<number>(value);
+      this.attachmentsubjects.set(id, subject);
+      this.attachmentobservables.set(id, subject.asObservable());
+    } else {
+      subject.next(value);
+    }
+    // Observable
+  }
+
   commit(id: string, value: boolean) {
     // Observable
     let subject: BehaviorSubject<boolean> = this.calendarsubjects.get(id);
@@ -3085,6 +3212,9 @@ export class CalendarService extends BaseService {
         Object.assign(attachment, data);
 
         readKey = new ReadWriteKey(attachment.obt, attachment.obi, `attachment_${attachment.fji}`, "read");
+        writeKey = new ReadWriteKey(attachment.obt, attachment.obi, `attachment_${attachment.fji}`, "write");
+
+        writeOriginData = this.calendardatarws.get(writeKey.encode());
 
         Object.assign(readNewData, readKey);
 
@@ -3094,36 +3224,50 @@ export class CalendarService extends BaseService {
         // 读取数据访问缓存
         this.calendardatarws.set(readKey.encode(), readNewData);
 
-        let compares: Map<string, any> = new Map<string, any>();
-
-        this.calendardatarws.forEach((value, k) => {
-          let key = ReadWriteKey.decode(k);
-          if (key.type == attachment.obt && key.id == attachment.obi) {
-            if (key.mark.startsWith("attachment_")) {
-              let compare: any = compares.get(key.mark) || {};
-
-              if (key.rw == "read") {
-                compare.read = value.nval || value.cval || value.bval || value.checksum;
-              } else {
-                compare.write = value.nval || value.cval || value.bval || value.checksum;
-              }
-
-              compares.set(key.mark, compare);
-            }
-          }
-        });
-
-        let readOrWrite: boolean = true;
-
-        compares.forEach((value, key) => {
-          if (value.read != value.write) readOrWrite = false;
-        });
-
-        if (readOrWrite) {
-          this.commit(attachment.obi, false);
+        if (!writeOriginData) {
+          // 不存在写入数据, 直接设置已读
+          this.commit(agenda.evi, false);
         } else {
-          this.commit(attachment.obi, true);
+          if ((writeOriginData.nval || writeOriginData.cval || writeOriginData.bval || writeOriginData.checksum) == (readNewData.nval || readNewData.cval || readNewData.bval || readNewData.checksum)) {
+            // 读取数据和写入数据一致
+            this.commit(agenda.evi, false);
+          } else {
+            // 读取数据和写入数据不一致
+            this.commit(agenda.evi, true);
+          }
         }
+
+        // 每个附件单独比较, 不需要循环比较
+        // let compares: Map<string, any> = new Map<string, any>();
+        //
+        // this.calendardatarws.forEach((value, k) => {
+        //   let key = ReadWriteKey.decode(k);
+        //   if (key.type == attachment.obt && key.id == attachment.obi) {
+        //     if (key.mark.startsWith("attachment_")) {
+        //       let compare: any = compares.get(key.mark) || {};
+        //
+        //       if (key.rw == "read") {
+        //         compare.read = value.nval || value.cval || value.bval || value.checksum;
+        //       } else {
+        //         compare.write = value.nval || value.cval || value.bval || value.checksum;
+        //       }
+        //
+        //       compares.set(key.mark, compare);
+        //     }
+        //   }
+        // });
+        //
+        // let readOrWrite: boolean = true;
+        //
+        // compares.forEach((value, key) => {
+        //   if (value.read != value.write) readOrWrite = false;
+        // });
+        //
+        // if (readOrWrite) {
+        //   this.commit(attachment.obi, false);
+        // } else {
+        //   this.commit(attachment.obi, true);
+        // }
 
         break;
       case "PlanItem":
@@ -3225,6 +3369,7 @@ export class CalendarService extends BaseService {
         let attachment: Attachment = {} as Attachment;
         Object.assign(attachment, data);
 
+        // 控制附件所述对象已读未读逻辑
         readKey = new ReadWriteKey(attachment.obt, attachment.obi, `attachment_${attachment.fji}`, "read");
         writeKey = new ReadWriteKey(attachment.obt, attachment.obi, `attachment_${attachment.fji}`, "write");
 
@@ -3271,6 +3416,28 @@ export class CalendarService extends BaseService {
           this.commit(attachment.obi, true);
         }
 
+        // 控制附件数量显示逻辑
+        let cached: Array<Attachment> = this.attachmentcached.get(attachment.obi) || new Array<Attachment>();
+
+        let index: number = cached.findIndex((val) => {
+          return val.fji == attachment.fji;
+        });
+
+        if (index >= 0) {
+          cached.splice(index, 1, attachment);
+        } else {
+          cached.push(attachment);
+        }
+
+        let count = cached.reduce((target, ele) => {
+          if (ele.del != DelType.del) target++;
+
+          return target;
+        }, 0);
+
+        this.attachment(attachment.obi, count);
+
+        this.attachmentcached.set(attachment.obi, cached);
         break;
       case "PlanItem":
       case "Task":

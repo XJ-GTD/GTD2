@@ -18,6 +18,7 @@ export class ScheduleRemindService extends BaseService {
               private util: UtilService,
               private syncRestful: SyncRestful) {
     super();
+    moment.locale('zh-cn');
   }
 
   /**
@@ -53,9 +54,9 @@ export class ScheduleRemindService extends BaseService {
             // 将来提醒，且在将来48小时以内
             if (remindgap <= 0 && (limitms + remindgap) >= 0) {
               schedulereminds.push({
-                remindid: planitem.jti + moment(datetime).format("YYYYMMDDHHmm"),
-                wd: moment(datetime).format("YYYY/MM/DD"),
-                wt: moment(datetime).format("HH:mm"),
+                remindid: planitem.jti + datetime.format("YYYYMMDDHHmm"),
+                wd: datetime.format("YYYY/MM/DD"),
+                wt: datetime.format("HH:mm"),
                 active: (planitem.del != DelType.del),
                 data: {
                   datatype: generateDataType(activityType),
@@ -64,8 +65,8 @@ export class ScheduleRemindService extends BaseService {
                     phoneno: UserConfig.account.phone,
                     id: planitem.jti,
                     continue: false,
-                    wd: moment(datetime).format("YYYY/MM/DD"),
-                    wt: moment(datetime).format("HH:mm"),
+                    wd: datetime.format("YYYY/MM/DD"),
+                    wt: datetime.format("HH:mm"),
                   }]
                 }
               });
@@ -85,13 +86,13 @@ export class ScheduleRemindService extends BaseService {
 
           // 针对加入重要事项,且没有完成的日程,增加默认提醒
           if (event.todolist == ToDoListStatus.On && event.wc != EventFinishStatus.Finished) {
-            let remindgap: number = moment().diff(moment(evd + " " + evt, "YYYY/MM/DD HH:mm"));
+            let remindgap: number = moment().diff(moment(evd + " " + evt, "YYYY/MM/DD HH:mm", true));
 
             // 预定完成时间比现在小，需要设置未来48小时内，不小于当前+1小时的默认提醒
             if (remindgap > 0) {
               while (remindgap > 0) {
                 // 往后推迟4小时
-                let after4hours = moment(evd + " " + evt, "YYYY/MM/DD HH:mm").add(4, "hours");
+                let after4hours = moment(evd + " " + evt, "YYYY/MM/DD HH:mm", true).add(4, "hours");
 
                 evd = after4hours.format("YYYY/MM/DD");
                 evt = after4hours.format("HH:mm");
@@ -99,8 +100,8 @@ export class ScheduleRemindService extends BaseService {
                 // 判断不小于当前+1小时
                 let plus1hours = moment().add(1, "hours");
 
-                if (plus1hours.diff(moment(evd + " " + evt, "YYYY/MM/DD HH:mm")) <= 0) {
-                  remindgap = moment().diff(moment(evd + " " + evt, "YYYY/MM/DD HH:mm"));
+                if (plus1hours.diff(moment(evd + " " + evt, "YYYY/MM/DD HH:mm", true)) <= 0) {
+                  remindgap = moment().diff(moment(evd + " " + evt, "YYYY/MM/DD HH:mm", true));
                 }
               }
             }
@@ -129,13 +130,14 @@ export class ScheduleRemindService extends BaseService {
 
           txjson.each(evd, evt, (datetime) => {
             let remindgap: number = moment().diff(datetime);
-
+            console.log("单个日程提醒更新=============：evd ="+evd +";evt="+evt +";datetime= " + datetime +";remindgap="+remindgap);
             // 将来提醒，且在将来48小时以内
             if (remindgap <= 0 && (limitms + remindgap) >= 0) {
+              console.log("提交服务器======+"+datetime);
               schedulereminds.push({
-                remindid: event.evi + moment(datetime).format("YYYYMMDDHHmm"),
-                wd: moment(datetime).format("YYYY/MM/DD"),
-                wt: moment(datetime).format("HH:mm"),
+                remindid: event.evi + datetime.format("YYYYMMDDHHmm"),
+                wd: datetime.format("YYYY/MM/DD"),
+                wt: datetime.format("HH:mm"),
                 active: (event.del != DelType.del),
                 data: {
                   datatype: generateDataType(activityType),
@@ -144,8 +146,8 @@ export class ScheduleRemindService extends BaseService {
                     phoneno: UserConfig.account.phone,
                     id: event.evi,
                     continue: false,
-                    wd: moment(datetime).format("YYYY/MM/DD"),
-                    wt: moment(datetime).format("HH:mm"),
+                    wd: datetime.format("YYYY/MM/DD"),
+                    wt: datetime.format("HH:mm"),
                   }]
                 }
               });
@@ -234,6 +236,7 @@ export class ScheduleRemindService extends BaseService {
     // 提交服务器
     for (let schedule of schedulereminds) {
       try {
+        console.log("提交服务器schedulereminds======+"+JSON.stringify(schedule));
         await this.syncRestful.putScheduledRemind(
           UserConfig.account.id,
           schedule.remindid,

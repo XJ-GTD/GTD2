@@ -39,6 +39,7 @@ export class EventService extends BaseService {
               private findbug: FindBugRestful,
               private dataRestful: DataRestful) {
     super();
+    moment.locale('zh-cn');
   }
 
   EVT_ST = "08:00";//全天开始时间默认为8:00
@@ -4083,7 +4084,7 @@ export class EventService extends BaseService {
 
   async saveAttachment(att: Attachment): Promise<Attachment> {
     this.assertEmpty(att);       // 入参不能为空
-    this.assertEmpty(att.fjn);    // 附件名称
+    //this.assertEmpty(att.fjn);    // 附件名称
     this.assertEmpty(att.obt);
     this.assertEmpty(att.obi);
 
@@ -4137,25 +4138,37 @@ export class EventService extends BaseService {
   }
 
   /**
-   * 查询全部的附件信息
+   * 查询指定对象的全部的附件信息
+   *
    * @author ying<343253410@qq.com>
    */
-    async selectAttachments(obt: string, obi: string) {
-      this.assertEmpty(obt);
-      this.assertEmpty(obi);
+  async selectAttachments(obt: string, obi: string) {
+    this.assertEmpty(obt);
+    this.assertEmpty(obi);
 
-      let attachments: Array<Attachment> = new Array<Attachment>();
-      let sql: string = `select * from gtd_fj  where del = ? and obt =? and obi = ? order by wtt desc`;
-      attachments = await this.sqlExce.getExtLstByParam<Attachment>(sql, [DelType.undel,obt,obi]);
-      // let fj = new FjTbl();
-      // fj.obi = obi;
-      // fj.obt = obt;
-      // fj.del = anyenum.DelType.undel;
-      // attachments = await this.sqlExce.getLstByParam<Attachment>(fj);
-      return attachments;
-    }
+    let attachments: Array<Attachment> = new Array<Attachment>();
+    let sql: string = `select * from gtd_fj  where del = ? and obt =? and obi = ? order by wtt asc`;
+    attachments = await this.sqlExce.getExtLstByParam<Attachment>(sql, [DelType.undel,obt,obi]);
+    // let fj = new FjTbl();
+    // fj.obi = obi;
+    // fj.obt = obt;
+    // fj.del = anyenum.DelType.undel;
+    // attachments = await this.sqlExce.getLstByParam<Attachment>(fj);
+    return attachments;
+  }
 
+  /**
+   * 查询全部的附件信息
+   *
+   * @author leon_xi@163.com
+   */
+  async fetchAttachments(): Promise<Array<Attachment>> {
+    let sql: string = `select * from gtd_fj order by obt, obi`;
 
+    let attachments: Array<Attachment> = await this.sqlExce.getExtLstByParam<Attachment>(sql, []) || new Array<Attachment>();
+
+    return attachments;
+  }
 
 
   /**
@@ -5586,17 +5599,17 @@ export class TxJson {
   }
 
   // 遍历计算每个提醒的实际时间
-  each(sd: string, st: string, callback: (datetime: number) => void) {
+  each(sd: string, st: string, callback: (datetime: moment.Moment) => void) {
     // 如果提醒关闭或者没有提醒数据，直接返回
     if (this.close || !this.reminds || this.reminds.length <= 0) {
       return;
     }
 
     for (let remind of this.reminds) {
-      let baseline = moment(sd + " " + st, "YYYY/MM/DD HH:mm");
+      let baseline = moment(sd + " " + st, "YYYY/MM/DD HH:mm", true);
       baseline.subtract(remind, "m");
 
-      callback(baseline.valueOf());
+      callback(baseline);
     }
   }
 }

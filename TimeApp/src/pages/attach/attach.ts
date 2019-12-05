@@ -147,7 +147,16 @@ export class AttachPage {
     if (this.navParams && this.navParams.data) {
       this.obt = this.navParams.data.obt;
       this.obi = this.navParams.data.obi;
-      this.fjArray = this.navParams.data.attach;
+      let attachs = this.navParams.data.attach;
+
+      if (attachs && attachs.length > 0) {
+        attachs.sort((a, b) => {
+          return a.wtt - b.wtt;
+        });
+
+        // 排序完成后显示页面
+        this.fjArray = attachs;
+      }
       this.members = this.navParams.data.members;
 
       this.fjData.obt = this.obt;
@@ -255,7 +264,7 @@ export class AttachPage {
         let newFileName = this.util.getUuid() + "." + ext;
         this.fjData.obt = this.obt;
         this.fjData.obi = this.obi;
-        this.fjData.fjn = newFileName;
+        //this.fjData.fjn = newFileName;
         this.fjData.ext = ext;
         //构造地址文件
         let cacheFilePathJson: CacheFilePathJson = new CacheFilePathJson();
@@ -298,7 +307,7 @@ export class AttachPage {
               let newFileName = this.util.getUuid() + "." + ext;
               this.fjData.obt = this.obt;
               this.fjData.obi = this.obi;
-              this.fjData.fjn = newFileName;
+              //this.fjData.fjn = newFileName;
               this.fjData.ext = ext;
               this.fjData.ui = this.currentuser;
               let cacheFilePathJson: CacheFilePathJson = new CacheFilePathJson();
@@ -369,7 +378,7 @@ export class AttachPage {
     let retAt: Attachment = {} as Attachment;
     retAt = await this.eventService.saveAttachment(this.fjData);
     this.emitService.emit("mwxing.calendar.datas.readwrite", {rw: "writeandread", payload: retAt});
-    this.fjArray.unshift(retAt);
+    this.fjArray.push(retAt);
     this.util.loadingEnd();
     this.fjData = {} as Attachment;
     this.fjData.obt = this.obt;
