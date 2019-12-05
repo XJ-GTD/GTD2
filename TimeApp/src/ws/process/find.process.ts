@@ -67,12 +67,13 @@ export class FindProcess extends BaseProcess implements MQProcess {
       //TODO 使用findActivities ,该方法联系人尚未完善
       let condition: FindActivityCondition = new FindActivityCondition();
 
-      if (findData.ds)  condition.sd = findData.ds;
-      if (findData.ts)  condition.st = findData.ts;
-      if (findData.de)  condition.ed = findData.de;
-      if (findData.te)  condition.et = findData.te;
-      if (findData.ti)  condition.text = findData.ti;
-      if (findData.marks)  condition.mark = findData.marks;
+      let finds = findData.scd;
+      if (finds.ds)  condition.sd = finds.ds;
+      if (finds.ts)  condition.st = finds.ts;
+      if (finds.de)  condition.ed = finds.de;
+      if (finds.te)  condition.et = finds.te;
+      if (finds.ti)  condition.text = finds.ti;
+      if (finds.marks)  condition.mark = finds.marks;
 
       scd = await this.calendarService.findActivities(condition);
       //let ctbls = await this.findScd(findData.scd);
