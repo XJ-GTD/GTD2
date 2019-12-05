@@ -3127,6 +3127,9 @@ export class CalendarService extends BaseService {
         Object.assign(attachment, data);
 
         readKey = new ReadWriteKey(attachment.obt, attachment.obi, `attachment_${attachment.fji}`, "read");
+        writeKey = new ReadWriteKey(attachment.obt, attachment.obi, `attachment_${attachment.fji}`, "write");
+
+        writeOriginData = this.calendardatarws.get(writeKey.encode());
 
         Object.assign(readNewData, readKey);
 
@@ -3136,36 +3139,50 @@ export class CalendarService extends BaseService {
         // 读取数据访问缓存
         this.calendardatarws.set(readKey.encode(), readNewData);
 
-        let compares: Map<string, any> = new Map<string, any>();
-
-        this.calendardatarws.forEach((value, k) => {
-          let key = ReadWriteKey.decode(k);
-          if (key.type == attachment.obt && key.id == attachment.obi) {
-            if (key.mark.startsWith("attachment_")) {
-              let compare: any = compares.get(key.mark) || {};
-
-              if (key.rw == "read") {
-                compare.read = value.nval || value.cval || value.bval || value.checksum;
-              } else {
-                compare.write = value.nval || value.cval || value.bval || value.checksum;
-              }
-
-              compares.set(key.mark, compare);
-            }
-          }
-        });
-
-        let readOrWrite: boolean = true;
-
-        compares.forEach((value, key) => {
-          if (value.read != value.write) readOrWrite = false;
-        });
-
-        if (readOrWrite) {
-          this.commit(attachment.obi, false);
+        if (!writeOriginData) {
+          // 不存在写入数据, 直接设置已读
+          this.commit(agenda.evi, false);
         } else {
-          this.commit(attachment.obi, true);
+          if ((writeOriginData.nval || writeOriginData.cval || writeOriginData.bval || writeOriginData.checksum) == (readNewData.nval || readNewData.cval || readNewData.bval || readNewData.checksum)) {
+            // 读取数据和写入数据一致
+            this.commit(agenda.evi, false);
+          } else {
+            // 读取数据和写入数据不一致
+            this.commit(agenda.evi, true);
+          }
         }
+
+        // 每个附件单独比较, 不需要循环比较
+        // let compares: Map<string, any> = new Map<string, any>();
+        //
+        // this.calendardatarws.forEach((value, k) => {
+        //   let key = ReadWriteKey.decode(k);
+        //   if (key.type == attachment.obt && key.id == attachment.obi) {
+        //     if (key.mark.startsWith("attachment_")) {
+        //       let compare: any = compares.get(key.mark) || {};
+        //
+        //       if (key.rw == "read") {
+        //         compare.read = value.nval || value.cval || value.bval || value.checksum;
+        //       } else {
+        //         compare.write = value.nval || value.cval || value.bval || value.checksum;
+        //       }
+        //
+        //       compares.set(key.mark, compare);
+        //     }
+        //   }
+        // });
+        //
+        // let readOrWrite: boolean = true;
+        //
+        // compares.forEach((value, key) => {
+        //   if (value.read != value.write) readOrWrite = false;
+        // });
+        //
+        // if (readOrWrite) {
+        //   this.commit(attachment.obi, false);
+        // } else {
+        //   this.commit(attachment.obi, true);
+        // }
 
         break;
       case "PlanItem":
