@@ -448,7 +448,7 @@ export class AttachPage {
 
   //放大图片
   photoShow(fj: string) {
-    if (fj && fj.indexOf("http") > 0) {
+    if (fj && fj.startsWith("http")) {
       let remoteId: string = fj.substr(fj.lastIndexOf("/") + 1, fj.length);
       fj = this.browserurlBig + remoteId
     }
