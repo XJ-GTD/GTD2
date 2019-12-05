@@ -164,7 +164,7 @@ export class CalendarComponent implements OnInit {
   @Output() onPlus: EventEmitter<CalendarDay> = new EventEmitter();
 
 
-  constructor(public calSvc: IonCalendarService, public feekback: FeedbackService, private plt: Platform,
+  constructor(public calSvc: IonCalendarService, private plt: Platform,
               public changeDetectorRef: ChangeDetectorRef, private emitService: EmitService) {
 
   }
@@ -295,7 +295,7 @@ export class CalendarComponent implements OnInit {
 
   slidePrevEnd() {
 
-    this.feekback.audioTrans();
+    // this.feekback.audioTrans();
 
     let firstmonth: CalendarMonth = this.monthOptsWarp[0].opts;
 
@@ -312,7 +312,7 @@ export class CalendarComponent implements OnInit {
   slideNextEnd() {
 
 
-    this.feekback.audioTrans();
+    // this.feekback.audioTrans();
 
     let lastmonth: CalendarMonth = this.monthOptsWarp[2].opts;
     let time = moment(lastmonth.original.time).add(1, 'months').valueOf();
@@ -360,7 +360,7 @@ export class CalendarComponent implements OnInit {
 
 
   gotoToday() {
-    this.feekback.audioTrans();
+    // this.feekback.audioTrans();
 
     let time = moment().subtract(1, "months").valueOf();
 

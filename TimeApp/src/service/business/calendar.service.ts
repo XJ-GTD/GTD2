@@ -364,7 +364,7 @@ export class CalendarService extends BaseService {
       case PageDirection.PageAssign :
 
 
-        this.calendaractivities.length = 0;
+        this.calendaractivities = new Array<MonthActivityData>();
 
         this.calendaractivities.push(await this.fetchMonthActivities(month.format("YYYY/MM")));
 

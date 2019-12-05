@@ -323,7 +323,6 @@ export class TdlPage {
               private emitService: EmitService,
               private elementRef: ElementRef,
               private util: UtilService,
-              private feedback: FeedbackService,
               private renderer2: Renderer2,
               private calendarService: CalendarService,
               private eventService: EventService,
@@ -332,7 +331,8 @@ export class TdlPage {
               private _domCtrl: DomController,
               private changeDetectorRef: ChangeDetectorRef,
               private detectorService: DetectorService,
-              private timeOutService: TimeOutService
+              private timeOutService: TimeOutService,
+              private feekback: FeedbackService,
   ) {
     //当changeDetection:ChangeDetectionStrategy.OnPush 请注册
     this.detectorService.registerDetector(changeDetectorRef);
@@ -450,6 +450,7 @@ export class TdlPage {
       let currmonthel = this.elementRef.nativeElement.querySelector(key);
       if (currmonthel) {
         this.bScroll.scrollToElement(currmonthel, 300, 0, -2);
+        this.feekback.audioTrans();
       } else {
       //   if (month.option =="next"){
       //     this.bScroll.trigger("pullingUp");
@@ -517,7 +518,7 @@ export class TdlPage {
     p.d = moment(d, "YYYY/MM/DD");
     p.gs = gs;
 
-    this.feedback.audioClick();
+    this.feekback.audioClick();
     if (gs == "0") {
       //本人画面
       if (type == EventType.Agenda) {
@@ -540,7 +541,7 @@ export class TdlPage {
   toAdd(d) {
     let p: ScdPageParamter = new ScdPageParamter();
     p.d = moment(d, "YYYY/MM/DD");
-    this.feedback.audioClick();
+    this.feekback.audioClick();
     this.util.createModal(DataConfig.PAGE._AGENDA_PAGE, p, ModalTranType.scale).present();
   }
 
