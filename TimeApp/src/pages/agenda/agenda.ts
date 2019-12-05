@@ -72,13 +72,13 @@ declare var Wechat;
 
           <div (click)="changeDatetime()" class="pickDate" *ngIf="currentAgenda.evi">
             <ion-icon class="fal fa-alarm-clock "></ion-icon>
-            <span class="content  agendaDate">
+            <span class="content  agendaDate font-large-x">
                   {{currentAgenda.evd | formatedate: "YYYY-M-D"}}
                 </span>
-            <span class="content  agendaDate">
+            <span class="content  agendaDate font-small">
                       {{currentAgenda.evd + " " + currentAgenda.evt | formatedate: "A hh:mm"}}
                  </span>
-            <span class="content  agendaDate">
+            <span class="content  agendaDate font-small">
             {{currentAgenda.ct | transfromdate: "duration"}}
                  </span>
             <!--<p class="content  agendaDate">-->
