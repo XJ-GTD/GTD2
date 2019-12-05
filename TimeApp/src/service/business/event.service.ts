@@ -30,6 +30,10 @@ import {AssistantService} from "../cordova/assistant.service";
 
 @Injectable()
 export class EventService extends BaseService {
+
+  private agendaPullInData: PullInData = new PullInData();  // 用于缓存拉取请求, 防止并发多次拉取请求
+  private agendaPullTimeout;
+
   constructor(private sqlExce: SqliteExec, private util: UtilService,
               private emitService:EmitService,
               private file: File,
@@ -363,25 +367,32 @@ export class EventService extends BaseService {
    *
    * @author leon_xi@163.com
    **/
-  async receivedAgenda(evi: any) {
+   async receivedAgenda(evi: any) {
 
-    this.assertEmpty(evi);   // 入参不能为空
+     this.assertEmpty(evi);   // 入参不能为空
 
-    let pull: PullInData = new PullInData();
+     // let pull: PullInData = new PullInData();
 
-    if (evi instanceof Array) {
-      pull.type = "Agenda";
-      pull.d.splice(0, 0, ...evi);
-    } else {
-      pull.type = "Agenda";
-      pull.d.push(evi);
-    }
+     this.agendaPullInData.type = "Agenda";
 
-    // 发送下载日程请求
-    await this.dataRestful.pull(pull);
+     if (evi instanceof Array) {
+       this.agendaPullInData.d.splice(0, 0, ...evi);
+     } else {
+       this.agendaPullInData.d.push(evi);
+     }
 
-    return;
-  }
+     // 发送下载日程请求
+     if (this.agendaPullTimeout) {
+       clearTimeout(this.agendaPullTimeout);
+     }
+
+     this.agendaPullTimeout = setTimeout(async () => {
+       await this.dataRestful.pull(this.agendaPullInData);
+       this.agendaPullInData = new PullInData();
+     }, 10000);
+
+     return;
+   }
 
   /**
    * 取得两个日程变化的字段名成数组
