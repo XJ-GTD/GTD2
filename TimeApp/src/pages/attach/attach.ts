@@ -304,7 +304,7 @@ export class AttachPage {
         //文件和图片 路径不一致
         //图片： content://media/...
         //其他路径： file:///storage/
-        alert("访问路径："+(file.uri);
+        alert("访问路径："+(file.uri));
         if (file.uri.startsWith("content")) {
           this.filePath.resolveNativePath(file.uri)
             .then((filePath) => {
