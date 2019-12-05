@@ -389,7 +389,7 @@ export class EventService extends BaseService {
      this.agendaPullTimeout = setTimeout(async () => {
        await this.dataRestful.pull(this.agendaPullInData);
        this.agendaPullInData = new PullInData();
-     }, 10000);
+     }, 1000);
 
      return;
    }
