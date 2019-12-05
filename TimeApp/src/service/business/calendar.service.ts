@@ -37,7 +37,7 @@ import { checksum } from "../../util/crypto-util";
 @Injectable()
 export class CalendarService extends BaseService {
 
-  private attachmentcached: Map<string, Array<Attachment>> = Map<string, Array<Attachment>>();
+  private attachmentcached: Map<string, Array<Attachment>> = new Map<string, Array<Attachment>>();
 
   private calendarsubjects: Map<string, BehaviorSubject<boolean>> = new Map<string, BehaviorSubject<boolean>>();
   private calendarobservables: Map<string, Observable<boolean>> = new Map<string, Observable<boolean>>();
@@ -285,7 +285,7 @@ export class CalendarService extends BaseService {
   getAttachmentObservables(): Map<string, Observable<number>> {
     this.eventService.fetchAttachments().then((attachments) => {
       for (let attachment of attachments) {
-        let objectattaments: Array<Attachment> = this.attachmentcached.get(attachment.obi) || new Array<>(Attachment);
+        let objectattaments: Array<Attachment> = this.attachmentcached.get(attachment.obi) || new Array<Attachment>();
 
         objectattaments.push(attachment);
 
