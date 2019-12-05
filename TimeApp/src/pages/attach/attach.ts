@@ -264,7 +264,7 @@ export class AttachPage {
         let newFileName = this.util.getUuid() + "." + ext;
         this.fjData.obt = this.obt;
         this.fjData.obi = this.obi;
-        this.fjData.fjn = newFileName;
+        //this.fjData.fjn = newFileName;
         this.fjData.ext = ext;
         //构造地址文件
         let cacheFilePathJson: CacheFilePathJson = new CacheFilePathJson();
@@ -307,7 +307,7 @@ export class AttachPage {
               let newFileName = this.util.getUuid() + "." + ext;
               this.fjData.obt = this.obt;
               this.fjData.obi = this.obi;
-              this.fjData.fjn = newFileName;
+              //this.fjData.fjn = newFileName;
               this.fjData.ext = ext;
               this.fjData.ui = this.currentuser;
               let cacheFilePathJson: CacheFilePathJson = new CacheFilePathJson();

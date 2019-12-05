@@ -4084,7 +4084,7 @@ export class EventService extends BaseService {
 
   async saveAttachment(att: Attachment): Promise<Attachment> {
     this.assertEmpty(att);       // 入参不能为空
-    this.assertEmpty(att.fjn);    // 附件名称
+    //this.assertEmpty(att.fjn);    // 附件名称
     this.assertEmpty(att.obt);
     this.assertEmpty(att.obi);
 
