@@ -3089,6 +3089,20 @@ export class CalendarService extends BaseService {
     // Observable
   }
 
+  attachment(id: string, value: number) {
+    // Observable
+    let subject: BehaviorSubject<number> = this.attachmentsubjects.get(id);
+
+    if (!subject) {
+      subject = new BehaviorSubject<number>(value);
+      this.attachmentsubjects.set(id, subject);
+      this.attachmentobservables.set(id, subject.asObservable());
+    } else {
+      subject.next(value);
+    }
+    // Observable
+  }
+
   commit(id: string, value: boolean) {
     // Observable
     let subject: BehaviorSubject<boolean> = this.calendarsubjects.get(id);
@@ -3314,6 +3328,7 @@ export class CalendarService extends BaseService {
         let attachment: Attachment = {} as Attachment;
         Object.assign(attachment, data);
 
+        // 控制附件所述对象已读未读逻辑
         readKey = new ReadWriteKey(attachment.obt, attachment.obi, `attachment_${attachment.fji}`, "read");
         writeKey = new ReadWriteKey(attachment.obt, attachment.obi, `attachment_${attachment.fji}`, "write");
 
@@ -3360,6 +3375,28 @@ export class CalendarService extends BaseService {
           this.commit(attachment.obi, true);
         }
 
+        // 控制附件数量显示逻辑
+        let cached: Array<Attachment> = this.attachmentcached.get(attachment.obi) || new Array<Attachment>();
+
+        let index: number = cached.findIndex((val) => {
+          return val.fji == attachment.fji;
+        });
+
+        if (index >= 0) {
+          cached.splice(index, 1, attachment);
+        } else {
+          cached.push(attachment);
+        }
+
+        let count = cached.reduce((target, ele) => {
+          if (ele.del != DelType.del) target++;
+
+          return target;
+        }, 0);
+
+        this.attachment(attachment.obi, count);
+
+        this.attachmentcached.set(attachment.obi, cached);
         break;
       case "PlanItem":
       case "Task":
