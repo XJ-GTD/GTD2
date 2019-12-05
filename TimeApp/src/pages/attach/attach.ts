@@ -304,7 +304,8 @@ export class AttachPage {
         //文件和图片 路径不一致
         //图片： content://media/...
         //其他路径： file:///storage/
-        if (file.uri.indexOf("content") > 0) {
+        alert("访问路径："+(file.uri);
+        if (file.uri.startsWith("content") > 0) {
           this.filePath.resolveNativePath(file.uri)
             .then((filePath) => {
               if (filePath != '') {
@@ -425,7 +426,7 @@ export class AttachPage {
 
   //打开本地PDF
   openPdf(fj: string, fileType: string, fji: string) {
-    if (fj && fj.indexOf("http") > 0) {
+    if (fj && fj.startsWith("http") > 0) {
       //当时mp3的情况下
       if (fileType && (fileType == 'mp3' || fileType == 'MP3')) {
         this.nativeAudio.preloadSimple(fji, fj).then((data) => {
