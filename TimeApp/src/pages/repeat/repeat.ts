@@ -12,27 +12,22 @@ import {UtilService} from "../../service/util-service/util.service";
   selector: 'page-repeat',
   template: `
     <modal-box title="重复" [buttons]="buttons" (onSave)="save()" (onCancel)="cancel()" [enableEdit]="enableEdit">
-      <div class="itemwarp font-normal" >
+      <div class="itemwarp" >
         <radio-select   [options]="items" full="true" center =  "true" [(ngModel)]="cfType" (onChanged)="onTypeChanged($event)" button5></radio-select>
       </div>
 
-      <div class="itemwarp font-normal">
+      <div class="repeattitle ">
         <p>从{{startDate | formatedate :"CYYYY/MM/DD W"}}开始</p>
       </div>
       
 
       <ng-template  [ngIf]="cfType == 'day'">
 
-        <div class="itemwarp font-normal">
+        <div class="itemwarp">
           <p>重复周期</p>
           <radio-spinner  label="天" [options]="itemRanges" [(ngModel)]="cfDayOptions.frequency" (onChanged)="onFreqChanged($event)"></radio-spinner>
         </div>
-        <div class="itemwarp font-normal">
-          
-          
-          
-          
-          
+        <div class="itemwarp">
           <p>结束</p>
           <ion-list class="endwith" radio-group no-lines [(ngModel)]="cfDayOptions.endType" (ionChange)="onEndTypeChanged($event)">
             <!--<ion-item >
@@ -58,7 +53,7 @@ import {UtilService} from "../../service/util-service/util.service";
 
       <ng-template  [ngIf]="cfType == 'week'">
 
-        <div class="itemwarp font-normal">
+        <div class="itemwarp">
           <p>重复周期</p>
           <radio-spinner label="周" [options]="itemRanges" [(ngModel)]="cfWeekOptions.frequency" (onChanged)="onFreqChanged($event)"></radio-spinner>
         </div>
@@ -67,7 +62,7 @@ import {UtilService} from "../../service/util-service/util.service";
           <radio-select [options]="itemRangeOptions"  multiple="true" [(ngModel)]="cfWeekOptions.freqOption" (onChanged)="onFreqOptionChanged($event)" button7></radio-select>
         </div>
 
-        <div class="itemwarp font-normal">
+        <div class="itemwarp">
           <p>结束</p>
           <ion-list class="endwith" radio-group no-lines [(ngModel)]="cfWeekOptions.endType" (ionChange)="onEndTypeChanged($event)">
             <!--<ion-item>
@@ -91,16 +86,16 @@ import {UtilService} from "../../service/util-service/util.service";
 
       <ng-template  [ngIf]="cfType == 'month'">
 
-        <div class="itemwarp font-normal">
+        <div class="itemwarp">
           <p>重复周期</p>
           <radio-spinner label="月" [options]="itemRanges" [(ngModel)]="cfMonthOptions.frequency" (onChanged)="onFreqChanged($event)" ></radio-spinner>
         </div>
-        <div class="itemwarp font-normal">
+        <div class="itemwarp">
           <p>重复开启</p>
           <radio-select [options]="itemMonthDayRangeOptions" multiple="true" [(ngModel)]="cfMonthOptions.freqOption" (onChanged)="onFreqOptionChanged($event)" button7></radio-select>
         </div>
 
-        <div class="itemwarp font-normal">
+        <div class="itemwarp">
           <p>结束</p>
           <ion-list class="endwith" radio-group no-lines [(ngModel)]="cfMonthOptions.endType" (ionChange)="onEndTypeChanged($event)">
             <!--<ion-item>
@@ -124,11 +119,11 @@ import {UtilService} from "../../service/util-service/util.service";
 
       <ng-template  [ngIf]="cfType == 'year'">
 
-        <div class="itemwarp font-normal">
+        <div class="itemwarp">
           <p>重复周期</p>
           <radio-spinner label="年" [options]="itemRanges" [(ngModel)]="cfYearOptions.frequency" (onChanged)="onFreqChanged($event)"></radio-spinner>
         </div>
-        <div class="itemwarp font-normal">
+        <div class="itemwarp">
           <p>结束</p>          
           <ion-list class="endwith" radio-group no-lines [(ngModel)]="cfYearOptions.endType" (ionChange)="onEndTypeChanged($event)">
             <!--<ion-item>
@@ -278,8 +273,8 @@ export class RepeatPage {
     this.items.push({value: "month", caption: "每月"});
     this.items.push({value: "year", caption: "每年"});
 
-    this.itemRanges.push({value: "subtract", icon: "fa-minus-square"});
-    this.itemRanges.push({value: "add", icon: "fa-plus-square"});
+    this.itemRanges.push({value: "subtract", icon: "fa-minus"});
+    this.itemRanges.push({value: "add", icon: "fa-plus"});
 
     this.itemRangeOptions.push({value: "sunday", caption: "日"});
     this.itemRangeOptions.push({value: "monday", caption: "一"});

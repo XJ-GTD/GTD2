@@ -1,6 +1,10 @@
 page-attach {
+  .dataWapper{
+    height: calc((100% - 0px) - 50px) !important;
+  }
   .grid{
     min-height: 110%;
+    flex-direction: column-reverse;
   }
   .pulldown-wrapper {
     position: absolute;

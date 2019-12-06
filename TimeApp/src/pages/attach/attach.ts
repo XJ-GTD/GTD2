@@ -149,20 +149,20 @@ export class AttachPage {
     if (this.navParams && this.navParams.data) {
       this.obt = this.navParams.data.obt;
       this.obi = this.navParams.data.obi;
-      let attachs = this.navParams.data.attach;
-
-      if (attachs && attachs.length > 0) {
-        attachs.sort((a, b) => {
-          return a.wtt - b.wtt;
-        });
-
-        // 排序完成后显示页面
-        this.fjArray = attachs;
-      }
+      // let attachs = this.navParams.data.attach;
+      //
+      // if (attachs && attachs.length > 0) {
+      //   attachs.sort((a, b) => {
+      //     return a.wtt - b.wtt;
+      //   });
+      //
+      //   // 排序完成后显示页面
+      //   this.fjArray = attachs;
+      // }
       this.members = this.navParams.data.members;
-
       this.fjData.obt = this.obt;
       this.fjData.obi = this.obi;
+
     }
     //验证缓存文件目录是否存在
     if (this.util.hasCordova()) {
@@ -183,24 +183,20 @@ export class AttachPage {
 
   bscroll:BScroll;
   ionViewDidEnter() {
-    this.flushData().then(()=>{
-      this.bscroll = new BScroll('.dataWapper', {
-        click: true,
-        pullDownRefresh: {
-          threshold: 50,
-          stop: 20
-        },
-        scrollY:true
-      });
-      this.bscroll.on("pullingDown",()=>{
-        //调用刷新
-        this.flushData().then(()=>{
-          this.changeDetectorRef.detectChanges();
-          this.bscroll.refresh();
-          this.bscroll.finishPullDown();
-        })
-      });
+    this.bscroll = new BScroll('.dataWapper', {
+      click: true,
+      pullUpLoad: {
+        threshold:0
+      },
+      scrollY:true
     });
+    this.bscroll.on("pullingUp",()=>{
+      //调用刷新
+      this.flushData().then(()=>{
+        this.bscroll.finishPullUp();
+      })
+    });
+    this.flushData();
   }
 
   openimg(url) {
@@ -370,32 +366,34 @@ export class AttachPage {
       this.fjData.members = this.members;
       //1.对当前数据进行存储
       let retAt: Attachment = {} as Attachment;
-      this.util.loadingStart();
+      // this.util.loadingStart();
       retAt = await this.eventService.saveAttachment(this.fjData);
       this.emitService.emit("mwxing.calendar.datas.readwrite", {rw: "writeandread", payload: retAt});
       //alert("上传返回值："+JSON.stringify(retAt));
-      this.util.loadingEnd();
+      // this.util.loadingEnd();
       //this.fjArray.unshift(retAt);
-      this.fjArray.push(retAt);
-      this.fjData = {} as Attachment;
-      this.fjData.obt = this.obt;
-      this.fjData.obi = this.obi;
-      this.bw = "";
+      // this.fjArray.push(retAt);
+      // this.fjData = {} as Attachment;
+      // this.fjData.obt = this.obt;
+      // this.fjData.obi = this.obi;
+      // this.bw = "";
+      this.flushData();
     }
   }
 
   //保存文件
   async saveFile() {
-    this.util.loadingStart();
+    // this.util.loadingStart();
     let retAt: Attachment = {} as Attachment;
     retAt = await this.eventService.saveAttachment(this.fjData);
     this.emitService.emit("mwxing.calendar.datas.readwrite", {rw: "writeandread", payload: retAt});
-    this.fjArray.push(retAt);
-    this.util.loadingEnd();
-    this.fjData = {} as Attachment;
-    this.fjData.obt = this.obt;
-    this.fjData.obi = this.obi;
-    this.bw = "";
+    this.flushData();
+    // this.fjArray.push(retAt);
+    // this.util.loadingEnd();
+    // this.fjData = {} as Attachment;
+    // this.fjData.obt = this.obt;
+    // this.fjData.obi = this.obi;
+    // this.bw = "";
   }
 
 
@@ -403,6 +401,7 @@ export class AttachPage {
   async delAttach(at: Attachment) {
     if (at) {
       await this.eventService.removeAttachment(at);
+      this.flushData();
     }
   }
 
@@ -477,6 +476,9 @@ export class AttachPage {
     }
     //alert("循环结束attachments："+JSON.stringify(attachments));
     this.fjArray = attachments;
+    this.changeDetectorRef.detectChanges();
+    this.bscroll.refresh();
+    this.bscroll.scrollTo(0,this.bscroll.maxScrollY,800);
     //alert("循环结束this.fjArray："+JSON.stringify(this.fjArray));
   }
 

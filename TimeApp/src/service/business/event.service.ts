@@ -4158,7 +4158,7 @@ export class EventService extends BaseService {
     this.assertEmpty(obi);
 
     let attachments: Array<Attachment> = new Array<Attachment>();
-    let sql: string = `select * from gtd_fj  where del = ? and obt =? and obi = ? order by wtt asc`;
+    let sql: string = `select * from gtd_fj  where del = ? and obt =? and obi = ? order by wtt desc`;
     attachments = await this.sqlExce.getExtLstByParam<Attachment>(sql, [DelType.undel,obt,obi]);
     // let fj = new FjTbl();
     // fj.obi = obi;
