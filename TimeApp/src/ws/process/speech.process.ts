@@ -60,7 +60,7 @@ export class SpeechProcess extends BaseProcess implements MQProcess {
         ratios = currentratio['operation'] + ": " + currentratio['ratio'];
       }
 
-      let ti = moment().valueOf() - content.thisContext.context.client? content.thisContext.context.client.time : 0;
+      let ti = moment().valueOf() - (content.thisContext.context.client? content.thisContext.context.client.time : 0);
       let spData: SpeechPara = content.parameters;
       let prvOpt:string =  "";
       let openListener: boolean = false;
