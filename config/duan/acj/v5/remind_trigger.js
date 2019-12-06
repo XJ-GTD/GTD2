@@ -66,7 +66,7 @@ function clean(datasource)
     	version: 'V1.1',
       sender: 'xunfei',
       datetime: formatDateTime(new Date()),
-      describe: ['PN']
+      describe: ['PN', 'S']
     };
 
     output.content = {};
@@ -79,6 +79,14 @@ function clean(datasource)
         id: id,
         title: title,
         content: content
+      }
+    };
+
+    output.content['1'] = {
+      processor: 'S',
+      option: 'S.AN',
+      parameters: {
+        an: title + ", " + content
       }
     };
 
