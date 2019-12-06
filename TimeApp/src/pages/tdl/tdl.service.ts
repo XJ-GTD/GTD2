@@ -42,6 +42,8 @@ export class TdlService {
       for(let monthActivityData of calendaractivities){
         if (monthActivityData.month == month.format("YYYY/MM")){
           resolve(monthActivityData);
+          this.calendarService.refreshCalendarObservables();
+          this.calendarService.refreshAttachmentObservables();
           return;
         }
       }
@@ -49,6 +51,8 @@ export class TdlService {
       for(let monthActivityData of calendaractivities){
         if (monthActivityData.month == month.format("YYYY/MM")){
           resolve(monthActivityData);
+          this.calendarService.refreshCalendarObservables();
+          this.calendarService.refreshAttachmentObservables();
           return;
         }
       }
