@@ -106,6 +106,47 @@ function clean(datasource)
     return output;
   }
 
+  var convertMessageWithNotify = function(id, type, title, content, messagetype) {
+    var output = {};
+
+    // 返回消息头部
+    output.header = {
+    	version: 'V1.1',
+      sender: 'xunfei',
+      datetime: formatDateTime(new Date()),
+      describe: ['DS', 'PN']
+    };
+
+    output.content = {};
+
+    // 日程共享操作类型设置
+    output.content['0'] = {
+      processor: 'DS',
+      parameters: {
+        type: type,
+        id: id
+      }
+    };
+
+    output.content['1'] = {
+      processor: 'PN',
+      option: 'PN.EX',
+      parameters: {
+        type: type,
+        id: id,
+        title: title,
+        content: content
+      }
+    };
+
+    if (messagetype == 'SELF_DEVICE') output.content['0']['option'] = 'DS.SD';
+    if (messagetype == 'SELF_ACCOUNT') output.content['0']['option'] = 'DS.SA';
+    if (messagetype == 'OTHER_ACCOUNT') output.content['0']['option'] = 'DS.OA';
+    if (messagetype == 'SELF_PULL') output.content['0']['option'] = 'DS.SP';
+
+    return output;
+  }
+
   // 使用文件传输数据
   var convertDataFileMessage = function(type, extension, file) {
     var output = {};
@@ -228,6 +269,7 @@ function clean(datasource)
         // 判断日程数据通知处理逻辑
         if (type == "Agenda" && name) {
           var push = {};
+          var mwxing = convertMessage(id, type, 'OTHER_ACCOUNT');;
 
           if (main) {
             if (from == src) {
@@ -235,18 +277,21 @@ function clean(datasource)
               if (operation == "add") {
                 if (status != "del") {
                   push = convertPushMessage(id, type, name, (name + " - 邀请活动"), title, datetime) || {};
+                  mwxing = convertMessageWithNotify(id, type, (name + " - 邀请活动"), title, 'OTHER_ACCOUNT');
                 }
               }
               // 发起人删除,通知所有人
               if (status == "del") {
                 if (!sharestate || !sharestate[to] || sharestate[to]["datastate"] != "del") {
                   push = convertPushMessage(id, type, name, (name + " - 取消活动"), title, datetime) || {};
+                  mwxing = convertMessageWithNotify(id, type, (name + " - 取消活动"), title, 'OTHER_ACCOUNT');
                 }
               }
               // 移除受邀人,通知受邀人
               if (operation == "remove") {
                 if (!sharestate || !sharestate[to] || sharestate[to]["datastate"] != "del") {
                   push = convertPushMessage(id, type, name, (name + " - 取消活动"), title, datetime) || {};
+                  mwxing = convertMessageWithNotify(id, type, (name + " - 取消活动"), title, 'OTHER_ACCOUNT');
                 }
               }
             } else {
@@ -254,19 +299,21 @@ function clean(datasource)
               if (operation == "add") {
                 if (status != "del") {
                   push = convertPushMessage(id, type, name, (name + " - 邀请活动"), title, datetime) || {};
+                  mwxing = convertMessageWithNotify(id, type, (name + " - 邀请活动"), title, 'OTHER_ACCOUNT');
                 }
               }
               // 移除受邀人,通知受邀人
               if (operation == "remove") {
                 if (!sharestate || !sharestate[to] || sharestate[to]["datastate"] != "del") {
                   push = convertPushMessage(id, type, name, (name + " - 取消活动"), title, datetime) || {};
+                  mwxing = convertMessageWithNotify(id, type, (name + " - 取消活动"), title, 'OTHER_ACCOUNT');
                 }
               }
             }
           }
 
           standardnext.announceContent = {
-            mwxing: convertMessage(id, type, 'OTHER_ACCOUNT'),
+            mwxing: mwxing,
             sms: main? convertSMS(name, title) : {},
             push: push
           };
@@ -278,7 +325,7 @@ function clean(datasource)
           };
         } else if (type == "Annotation") {  // @通知
           standardnext.announceContent = {
-            mwxing: convertMessage(id, type, 'OTHER_ACCOUNT'),
+            mwxing: convertMessageWithNotify(id, type, (name + " - @你"), title, 'OTHER_ACCOUNT'),
             sms: main? convertSMS(name, title) : {},
             push: convertPushMessage(id, type, name, (name + " - @你"), title, datetime) || {}
           };

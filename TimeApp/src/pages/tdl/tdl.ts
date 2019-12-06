@@ -401,11 +401,6 @@ export class TdlPage {
 
         this.tdlServ.assignData(this.showMonth).then(data => {
           this.monthActivityData = data;
-
-          this.calendarobservables = this.calendarService.getCalendarObservables();
-          this.annotationobservables = this.calendarService.getAnnotationObservables();
-          this.attachmentobservables = this.calendarService.getAttachmentObservables();
-
           this.changeDetectorRef.detectChanges();
           this.bScroll.refresh();
 
