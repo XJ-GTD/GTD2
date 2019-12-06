@@ -33,7 +33,7 @@ import { Observable } from 'rxjs';
       `
     <div #monthActivityWapper class="monthActivityWapper">
       <ion-grid #grid4Hight class="list-grid-content content">
-        <ng-template ngFor let-monthActivityData [ngForOf]="monthActivityDatas">
+        <!--<ng-template ngFor let-monthActivityData [ngForOf]="monthActivityDatas">-->
           <ion-row class="item-content dayagenda-month {{monthActivityData.month  | transfromdate :'CSSMM'}}"
                    id="month{{monthActivityData.month | formatedate:'YYYYMM'}}">
             <div class="line first-line">
@@ -261,7 +261,7 @@ import { Observable } from 'rxjs';
               </ion-row>
             </ng-template>
           </ng-template>
-        </ng-template>
+        <!--</ng-template>-->
       </ion-grid>
     </div>
   `,
@@ -288,7 +288,8 @@ export class TdlPage {
   monthActivityWapper: ElementRef;
   currDayel: any;
   //画面数据List
-  monthActivityDatas: Array<MonthActivityData> = new Array<MonthActivityData>();
+  // monthActivityDatas: Array<MonthActivityData> = new Array<MonthActivityData>();
+  monthActivityData:MonthActivityData;
 
   calendarobservables: Map<string, Observable<boolean>> = new Map<string, Observable<boolean>>();
   annotationobservables: Map<string, Observable<boolean>> = new Map<string, Observable<boolean>>();
@@ -372,16 +373,14 @@ export class TdlPage {
       click: true
     });
     this.tdlServ.initLsData().then(data => {
-      this.monthActivityDatas = data;
+      this.monthActivityData = data;
       this.showMonth = moment();
       this.calendarobservables = this.calendarService.getCalendarObservables();
       this.annotationobservables = this.calendarService.getAnnotationObservables();
       this.attachmentobservables = this.calendarService.getAttachmentObservables();
-
-      this.detectorService.detector(()=>{
-        this.bScroll.refresh();
-        this.gotoEl("#day" + moment().format("YYYYMMDD"));
-      });
+      this.changeDetectorRef.detectChanges();
+      this.bScroll.refresh();
+      this.gotoEl("#day" + moment().format("YYYYMMDD"));
 
     });
 
@@ -392,7 +391,6 @@ export class TdlPage {
     });
 
     this.emitService.register("calendar.change.month", ($data) => {
-      this.util.loadingStart().then(()=>{
         if ($data.option =="next"){
            this.showMonth = this.showMonth.add(1,"month");
         }else if($data.option =="prev"){
@@ -402,22 +400,24 @@ export class TdlPage {
         }
 
         this.tdlServ.assignData(this.showMonth).then(data => {
-          this.monthActivityDatas = data;
+          this.monthActivityData = data;
 
-          this.calendarService.refreshCalendarObservables();
-          this.calendarService.refreshAttachmentObservables();
+          this.calendarobservables = this.calendarService.getCalendarObservables();
+          this.annotationobservables = this.calendarService.getAnnotationObservables();
+          this.attachmentobservables = this.calendarService.getAttachmentObservables();
 
-          this.detectorService.detector(() => {
-                    this.bScroll.refresh();
-            this.util.loadingEnd();
+          this.changeDetectorRef.detectChanges();
+          this.bScroll.refresh();
 
-            setTimeout(()=>{
-              // this.bScroll.openPullDown();
+          setTimeout(()=>{
+            // this.bScroll.openPullDown();
+            if ($data.option =="today"){
+              this.gotoEl("#day" + moment().format("YYYYMMDD"));
+            }else{
               this.gotoEl4month(this.showMonth.format("YYYYMM"));
-            },500);
-          });
+            }
+          },500);
         });
-      });
 
     });
 
@@ -545,8 +545,13 @@ export class TdlPage {
   toAdd(d) {
     let p: ScdPageParamter = new ScdPageParamter();
     p.d = moment(d, "YYYY/MM/DD");
-    this.feekback.audioClick();
-    this.util.createModal(DataConfig.PAGE._AGENDA_PAGE, p, ModalTranType.scale).present();
+
+    if (p.d.isBefore(moment())){
+      this.util.tellyou(DataConfig.NOTCREATEAGENDABEOORE);
+    }else{
+      this.feekback.audioClick();
+      this.util.createModal(DataConfig.PAGE._AGENDA_PAGE, p, ModalTranType.scale).present();
+    }
   }
 
   istoday(val: any) {

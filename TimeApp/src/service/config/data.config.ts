@@ -370,6 +370,8 @@ export class DataConfig {
   public static NOT_PARA_CODE: number = 6;
   public static NOT_PARA_MESSAGE: string = '参数不能为空！';
 
+  public static NOTCREATEAGENDABEOORE:string = '时间已经逝去何必再去打扰它(不能创建今天以前的活动，但是你可以接收这个日期的被邀请活动，换个日期创建吧)';
+
   public static RETURN_MSG: Map<string, any> = new Map<string, any>();
 
 

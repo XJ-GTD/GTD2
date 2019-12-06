@@ -40,10 +40,11 @@ export const ION_CAL_VALUE_ACCESSOR: Provider = {
         <div class="title">
           <div float-left>
             <div float-left (click)="switchView()">
-              <p><b [class.thisM]="false">{{_showMonth}}</b>
+              <p><b [class.thisM]="_thisMonth">{{_showMonth}}</b>
+              <b [class.thisM]="_thisMonth" class="font-normal animated flash" *ngIf = "_showYear">{{_showYear}}</b>
                 <ion-icon class="arrow-dropdown"
                           [name]="_view ? 'md-arrow-dropdown' : 'md-arrow-dropright'"
-                          [class.thisM]="false"></ion-icon>
+                          [class.thisM]="_thisMonth"></ion-icon>
               </p>
 
             </div>
@@ -123,7 +124,8 @@ export class CalendarComponent implements OnInit {
   _options: CalendarComponentOptions;
   _view: boolean = true
   _showMonth;
-  // _thisMonth: boolean;
+  _showYear;
+   _thisMonth: boolean;
   swiper: Swiper;
   //swiper:any;
 
@@ -220,6 +222,7 @@ export class CalendarComponent implements OnInit {
 
   closeMonth() {
     this.calendarAnimation.closeView(() => {
+      this._showYear = "2019";
       this.changestat();
     }, true);
   }
@@ -227,10 +230,13 @@ export class CalendarComponent implements OnInit {
   changestat() {
     this._view = !this._view;
     this.viewShow.emit(this._view);
+    this.changeDetectorRef.markForCheck();
+    this.changeDetectorRef.detectChanges();
   }
 
   openMonth() {
     this.calendarAnimation.openView(() => {
+      this._showYear = "";
       this.changestat();
     }, true);
   }
@@ -351,7 +357,7 @@ export class CalendarComponent implements OnInit {
     if (this.swiper) {
       this.swiper.slideTo(index, 0, false);
     }
-
+    this._thisMonth = monthOpt.original.month == moment().month() && monthOpt.original.year == moment().year();
   }
 
   private initOpt(): void {

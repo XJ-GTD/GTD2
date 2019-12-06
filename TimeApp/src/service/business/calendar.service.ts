@@ -416,26 +416,21 @@ export class CalendarService extends BaseService {
     this.assertEmpty(direction);    // 入参不能为空
 
     switch(direction) {
+      case PageDirection.NoOption : //单纯获取当前缓存数据
+        return this.calendaractivities;
       case PageDirection.PageAssign :
-
-
-        this.calendaractivities = new Array<MonthActivityData>();
-
         this.calendaractivities.push(await this.fetchMonthActivities(month.format("YYYY/MM")));
-
-
         break;
-
       case PageDirection.PageInit :
         this.calendaractivities = new Array<MonthActivityData>();   // 强制重新初始化
 
-        //this.calendaractivities.push(await this.fetchMonthActivities(moment().subtract(3, "months").format("YYYY/MM")));
-        //this.calendaractivities.push(await this.fetchMonthActivities(moment().subtract(2, "months").format("YYYY/MM")));
-        //this.calendaractivities.push(await this.fetchMonthActivities(moment().subtract(1, "months").format("YYYY/MM")));
+        this.calendaractivities.push(await this.fetchMonthActivities(moment().subtract(3, "months").format("YYYY/MM")));
+        this.calendaractivities.push(await this.fetchMonthActivities(moment().subtract(2, "months").format("YYYY/MM")));
+        this.calendaractivities.push(await this.fetchMonthActivities(moment().subtract(1, "months").format("YYYY/MM")));
         this.calendaractivities.push(await this.fetchMonthActivities(moment().format("YYYY/MM")));
-        //this.calendaractivities.push(await this.fetchMonthActivities(moment().add(1, "months").format("YYYY/MM")));
-        //this.calendaractivities.push(await this.fetchMonthActivities(moment().add(2, "months").format("YYYY/MM")));
-        //this.calendaractivities.push(await this.fetchMonthActivities(moment().add(3, "months").format("YYYY/MM")));
+        this.calendaractivities.push(await this.fetchMonthActivities(moment().add(1, "months").format("YYYY/MM")));
+        this.calendaractivities.push(await this.fetchMonthActivities(moment().add(2, "months").format("YYYY/MM")));
+        this.calendaractivities.push(await this.fetchMonthActivities(moment().add(3, "months").format("YYYY/MM")));
 
 
         break;

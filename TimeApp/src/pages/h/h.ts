@@ -156,6 +156,10 @@ export class HPage {
 
     if (day) {
       p.d = moment(day.time);
+      if (p.d.isBefore(moment())){
+        this.util.tellyou(DataConfig.NOTCREATEAGENDABEOORE);
+        return;
+      }
     } else {
       p.d = moment();
     }

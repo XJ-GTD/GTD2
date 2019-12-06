@@ -15,29 +15,45 @@ export class TdlService {
     private calendarService:CalendarService) {
   }
 
-  public initLsData():Promise<Array<MonthActivityData>>{
+  public initLsData():Promise<MonthActivityData>{
     return new Promise<any>(async resolve => {
-      let calendaractivities  =  await this.calendarService.getCalendarActivities();
-      // for (let i = 0 ; i <4 ;i ++){
-      //   let calendaractivities:Array<MonthActivityData> = new Array<MonthActivityData>();
-      //   calendaractivities = await this.calendarService.getCalendarActivities();
-      //   calendaractivities_1 = calendaractivities_1.concat(calendaractivities);
-      //
-      // }
-      resolve(calendaractivities);
+      let calendaractivities:Array<MonthActivityData>  =  await this.calendarService.getCalendarActivities();
+      for(let monthActivityData of calendaractivities){
+        if (monthActivityData.month == moment().format("YYYY/MM")){
+          resolve(monthActivityData);
+          return;
+        }
+      }
+      resolve(calendaractivities[0]);
     });
   }
 
-  public throughData(direction: PageDirection):Promise<any>{
+  // public throughData(direction: PageDirection):Promise<MonthActivityData>{
+  //
+  //   return this.calendarService.getCalendarActivities(direction);
+  // }
 
-    return this.calendarService.getCalendarActivities(direction);
-  }
 
 
+  public assignData(month:moment.Moment):Promise<MonthActivityData>{
+    return new Promise<any>(async resolve => {
+      let calendaractivities:Array<MonthActivityData>  =  await this.calendarService.getCalendarActivities(PageDirection.NoOption);
 
-  public assignData(month:moment.Moment):Promise<any>{
+      for(let monthActivityData of calendaractivities){
+        if (monthActivityData.month == month.format("YYYY/MM")){
+          resolve(monthActivityData);
+          return;
+        }
+      }
+      calendaractivities = await this.calendarService.getCalendarActivities(PageDirection.PageAssign,month);
+      for(let monthActivityData of calendaractivities){
+        if (monthActivityData.month == month.format("YYYY/MM")){
+          resolve(monthActivityData);
+          return;
+        }
+      }
+    });
 
-    return this.calendarService.getCalendarActivities(PageDirection.PageAssign,month);
   }
 
   // /**

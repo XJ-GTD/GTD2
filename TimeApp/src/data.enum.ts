@@ -32,7 +32,8 @@ export enum PageDirection {
   PageUp = 'up',
   PageInit = 'init',
   PageDown = 'down',
-  PageAssign = 'assign'
+  PageAssign = 'assign',
+  NoOption = 'nooption'
 }
 
 export enum ObjectType {
