@@ -90,7 +90,7 @@ export class GTbl implements ITbl {
   rpT():string{
     let sq =` replace into gtd_g  
     ( gi ,gn ,gm,gnpy,wtt,del)
-    values('${this.gi}','${this.gn}','${this.gm}','${this.gnpy}',${moment().unix()},'${this.del}');`;
+    values('${this.gi}','${this.gn}','${this.gm}','${this.gnpy}',${this.wtt || moment().unix()},'${this.del}');`;
 
     return sq;
   }

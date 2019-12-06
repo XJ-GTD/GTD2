@@ -298,7 +298,7 @@ export class EventService extends BaseService {
       sqlparam = [...sqlparam, ...fjparams];*/
 
 
-      await this.receivedAgendaSpeaker(saved);
+      // await this.receivedAgendaSpeaker(saved);
       await this.sqlExce.batExecSqlByParam(sqlparam);
       this.emitService.emit("mwxing.calendar.activities.changed", saved);
 

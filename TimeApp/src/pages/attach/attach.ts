@@ -304,7 +304,7 @@ export class AttachPage {
         //TODO filePath 该插件只支持android
           this.filePath.resolveNativePath(file.uri)
             .then((filePath) => {
-              alert("转换后的路径："+(filePath));
+              //alert("转换后的路径："+(filePath));
               if (filePath != '') {
                 let fileName: string = filePath.substr(filePath.lastIndexOf("/") + 1, filePath.length);
                 let ext: string = fileName.substr(fileName.lastIndexOf(".") + 1);
