@@ -1217,13 +1217,13 @@ export class EventService extends BaseService {
       if (oriAgd.rfg == anyenum.RepeatFlag.NonRepeat && newAgd.rtjson.cycletype != anyenum.CycleType.close) {
         doType = DoType.FutureAll;
       }
-      //重复事件中的某一日程to独立日程或关闭重复
+      //重复事件中的某一日程to独立日程或关闭重复或只改重复
       if (oriAgd.rfg == anyenum.RepeatFlag.Repeat && modiType == OperateType.OnlySel) {
         doType = DoType.Current;
         //如果是修改重复选项
         if (changed.length == 1 && changed[0] == "rt" && newAgd.rtjson.cycletype != anyenum.CycleType.close){
           //重复选项变为关闭的不执行all
-          doType = DoType.All;
+          doType = DoType.FutureAll;
         }
       }
       //重复事件to重复事件或关闭重复

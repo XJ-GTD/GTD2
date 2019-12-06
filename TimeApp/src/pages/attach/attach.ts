@@ -402,6 +402,7 @@ export class AttachPage {
     if (at) {
       await this.eventService.removeAttachment(at);
       this.flushData();
+      this.emitService.emit("mwxing.calendar.datas.readwrite", {rw: "writeandread", payload: at});
     }
   }
 
