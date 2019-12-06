@@ -403,6 +403,7 @@ export class AttachPage {
   async delAttach(at: Attachment) {
     if (at) {
       await this.eventService.removeAttachment(at);
+      this.emitService.emit("mwxing.calendar.datas.readwrite", {rw: "writeandread", payload: at});
     }
   }
 
