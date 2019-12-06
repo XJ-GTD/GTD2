@@ -58,6 +58,33 @@ function clean(datasource)
     return push;
   }
 
+  var convertNotifyMessage = function(id, type, title, content) {
+    var output = {};
+
+    // 返回消息头部
+    output.header = {
+    	version: 'V1.1',
+      sender: 'xunfei',
+      datetime: formatDateTime(new Date()),
+      describe: ['PN']
+    };
+
+    output.content = {};
+
+    output.content['0'] = {
+      processor: 'PN',
+      option: 'PN.AM',
+      parameters: {
+        type: type,
+        id: id,
+        title: title,
+        content: content
+      }
+    };
+
+    return output;
+  }
+
   var convertPushMessage = function(id, type, title, datetime) {
     var push = {};
 
@@ -149,7 +176,7 @@ function clean(datasource)
       standardnext.announceTo = [to];
       standardnext.announceType = 'data_sync';
       standardnext.announceContent = {
-        mwxing: {},
+        mwxing: convertNotifyMessage(id, type, "活动延迟提醒", title),
         sms: {},
         push: convertPushContinueMessage(id, type, title, datetime)
       };
@@ -179,7 +206,7 @@ function clean(datasource)
       standardnext.announceTo = [to];
       standardnext.announceType = 'data_sync';
       standardnext.announceContent = {
-        mwxing: {},
+        mwxing: convertNotifyMessage(id, type, "活动提醒", title),
         sms: {},
         push: convertPushMessage(id, type, title, datetime)
       };
