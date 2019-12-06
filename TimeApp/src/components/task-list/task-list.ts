@@ -9,33 +9,21 @@ import * as moment from "moment";
 
     <ion-grid class = "list-grid-content">
       <ion-row class="item-content item-content-backgroud" leftmargin toppaddingsamll bottompaddingsamll rightmargin *ngFor="let task of tasklist"
-        [ngClass]="{'complete': task.cs == '1'}" (click)="gotoDetail(task)"
-        [ngStyle]="{
-          'border-left': (!task.ji || task.ji == '')? '0' : ('0.6rem solid ' + (task.ji | formatplan: 'color': plans))
-        }">
-          <div class="line font-normal" leftmargin rightmargin
-            [ngStyle]="{
-              'margin-left': (!task.ji || task.ji == '')? '1rem' : '0.4rem'
-            }">
-            <div class="sn towline">{{task.evn}}</div>
-          </div>
-          <div class="line font-normal" leftmargin rightmargin
-            [ngStyle]="{
-              'margin-left': (!task.ji || task.ji == '')? '1rem' : '0.4rem'
-            }">
-            <div class="icon font-small" >
-              <ion-icon class="{{(task.evd + ' ' + task.evt) | transfromdate :'withNowcss'}}"></ion-icon>
+      (click)="gotoDetail(task)">
+          <div class="line" leftmargin rightmargin>
+            <div class="sn font-large">{{task.evn}}</div>
+
+            <div class="icon" end (click)="complete($event, task)" >
+              <!--<ion-icon class="fal fa-minus-circle" (click)="erease($event, task)"></ion-icon>-->
+              <button>
+                <i class="fal fa-check"></i>
+              </button>
             </div>
+          </div>
+          <div class="line font-normal" leftmargin rightmargin>
               <div class="st font-small">  {{(task.evd + ' ' + task.evt) | transfromdate:'withNow'}}</div>
-
-              <div *ngIf="currentuser != task.ui && task.ui != ''" class="person font-small">-- {{task.ui | formatuser: currentuser: friends}}</div>
-
-
-              <div class="icon" end (click)="complete($event, task)" >
-                <!--<ion-icon class="fal fa-minus-circle" (click)="erease($event, task)"></ion-icon>-->
-                <ion-icon class="fal fa-check-circle"  ></ion-icon>
-                <b>完成</b>
-              </div>
+              <div *ngIf="currentuser != task.ui && task.ui != ''" class="person font-small" end>-- {{task.ui | formatuser: currentuser: friends}}</div>
+            <div *ngIf="currentuser == task.ui" class="person font-small" end>-- 我自己</div>
           </div>
       </ion-row>
     </ion-grid>
@@ -68,6 +56,7 @@ export class TaskListComponent {
   @Output()
   private onComplete: EventEmitter<any> = new EventEmitter<any>();
 
+  @Input()
   tasklist: Array<any> = new Array<any>();
 
   @Input()

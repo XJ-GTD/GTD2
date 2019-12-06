@@ -10,7 +10,6 @@ import {IonicPage, NavController, ModalController, NavParams} from 'ionic-angula
 import {UtilService} from "../../service/util-service/util.service";
 import {UserConfig} from "../../service/config/user.config";
 import {SqliteExec} from "../../service/util-service/sqlite.exec";
-import * as async from "async/dist/async.js"
 import * as moment from "moment";
 import { DoService } from "./do.service";
 import {ScdPageParamter } from "../../data.mapping";
@@ -20,8 +19,7 @@ import {FeedbackService} from "../../service/cordova/feedback.service";
 import {TaskListComponent} from "../../components/task-list/task-list";
 import {CalendarService} from "../../service/business/calendar.service";
 import {EventService, AgendaData} from "../../service/business/event.service";
-import { PageDirection, IsSuccess, OperateType, EventFinishStatus } from "../../data.enum";
-import {DetectorService} from "../../service/util-service/detector.service";
+import { PageDirection, OperateType, EventFinishStatus } from "../../data.enum";
 import {AsyncQueue} from "../../util/asyncQueue";
 import {TimeOutService} from "../../util/timeOutService";
 
@@ -38,7 +36,7 @@ import {TimeOutService} from "../../util/timeOutService";
     `
       <page-box title="重要事项" [buttons]="buttons" [data]="summarytasks" [plans]="privateplans" (onCreate)="goCreate()" (onBack)="goBack()">
       <ng-container *ngFor="let day of days">
-        <task-list [currentuser]="currentuser" [friends]="friends" [plans]="privateplans" (onStartLoad)="getData($event, day)" (onCreateNew)="goCreate()" (onCardClick)="gotoDetail($event)" (onErease)="goErease($event)" (onComplete)="complete($event)" #tasklist></task-list>
+        <task-list [tasklist]="" [currentuser]="currentuser" [friends]="friends" [plans]="privateplans" (onStartLoad)="getData($event, day)" (onCreateNew)="goCreate()" (onCardClick)="gotoDetail($event)" (onErease)="goErease($event)" (onComplete)="complete($event)"></task-list>
       </ng-container>
       </page-box>
   `,
@@ -50,7 +48,7 @@ export class DoPage {
     remove: false,
     share: false,
     save: false,
-    create: true,
+    create: false,
     cancel: true
   };
 
@@ -59,8 +57,6 @@ export class DoPage {
 
   privateplans: Array<any> = UserConfig.privateplans;
 
-  tasklist: TaskListComponent;
-  @ViewChildren("tasklist") tasklists: QueryList<TaskListComponent>;
   cachedtasks: Array<AgendaData>;
   summarytasks: Array<AgendaData>;
 
@@ -185,6 +181,22 @@ export class DoPage {
           this.topday = d[0].evd;
           this.bottomday = d[d.length - 1].evd;
         }
+
+        let startsort = moment().subtract(3,"day");
+        let endsort = moment().add(3,"day");
+        this.cachedtasks.sort((a,b)=>{
+          let amo = moment((a.evd + a.evt),"YYYY/MM/DD HH:ss");
+          let bmo = moment((b.evd + b.evt),"YYYY/MM/DD HH:ss");
+          if (amo.isBefore(endsort) &&  amo.isAfter(startsort) && bmo.isBefore(endsort) &&  bmo.isAfter(startsort)){
+            return amo.diff(bmo);
+          }else if (amo.isBefore(endsort) &&  amo.isAfter(startsort)){
+            return -1;
+          }else if (bmo.isBefore(endsort) &&  bmo.isAfter(startsort)) {
+            return 1;
+          }else{
+            return amo.diff(bmo);
+          }
+        });
 
         target.tasklist = this.cachedtasks;
       }
