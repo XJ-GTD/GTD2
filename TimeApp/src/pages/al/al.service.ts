@@ -26,7 +26,9 @@ import {RabbitMQService} from "../../service/cordova/rabbitmq.service";
 import {EffectService} from "../../service/business/effect.service";
 import {App, ModalController} from "ionic-angular";
 import {StatusBar} from "@ionic-native/status-bar";
+import {BackgroundMode} from "@ionic-native/background-mode";
 
+declare var cordova: any;
 @Injectable()
 export class AlService {
 
@@ -50,7 +52,8 @@ export class AlService {
               private effectService: EffectService,
               private modalCtr: ModalController,
               private app: App,
-              private statusBar: StatusBar,) {
+              private statusBar: StatusBar,
+              private backgroundMode:BackgroundMode) {
 
     this.statusBar.overlaysWebView(true);
     this.statusBar.hide();
@@ -66,6 +69,20 @@ export class AlService {
       this.permissionsService.checkAllPermissions().then(data => {
 
         alData.text = "权限申请完成"
+        if (this.util.isMobile()){
+          if (this.util.isAndroid()) {
+            this.backgroundMode.setDefaults({silent: true, hidden: true});
+            //设置返回键盘（android）
+            // backgroundModein.overrideBackButton();
+            //Enable GPS-tracking in background (Android).
+            this.backgroundMode.disableWebViewOptimizations();
+            //忽略电源的优化管理
+            cordova.plugins.backgroundMode.disableBatteryOptimizations();
+          }
+
+          this.backgroundMode.enable();
+
+        }
         resolve(alData);
       }).catch(err => {
         alData.text = "权限申请失败"
