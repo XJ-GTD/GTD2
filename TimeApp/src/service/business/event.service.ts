@@ -3433,6 +3433,8 @@ export class EventService extends BaseService {
 
     if (extension != PullType.Full) {
       this.emitService.emit("mwxing.calendar.datas.readwrite", {rw: "write", payload: saved});
+    } else {
+      this.emitService.emit("mwxing.calendar.datas.readwrite", {rw: "write", payload: saved});
     }
 
     return saved;
