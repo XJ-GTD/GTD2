@@ -135,13 +135,18 @@ export class CalendarService extends BaseService {
 
     // 活动变化时自动更新日历显示列表数据
     this.emitService.destroy("mwxing.calendar.activities.changed");
-    this.emitService.register("mwxing.calendar.activities.changed", (data) => {
+    this.emitService.register("mwxing.calendar.activities.changed", (data, refresh: boolean = false) => {
       if (!data) {
         this.assertFail("事件mwxing.calendar.activities.changed无扩展数据");
         return;
       }
 
       this.activitiesqueue.push({data: data}, () => {
+        if (refresh) {
+          // 用于接收第一次登录，接收完日程后，刷新首页的附件数量
+          this.refreshAttachmentObservables();
+        }
+
         // 完成处理
         this.detectorService.detector();
         if (this.calendaractivities.length > 0) {
@@ -163,13 +168,6 @@ export class CalendarService extends BaseService {
       this.datasrwqueue.push({data: data}, () => {
         this.detectorService.detector();
       });
-    });
-
-    // 用于接收第一次登录，接收完日程后，刷新首页的附件数量
-    this.emitService.destroy("mwxing.calendar.refresh.attachments");
-    this.emitService.register("mwxing.calendar.refresh.attachments", () => {
-      this.refreshAttachmentObservables();
-      this.detectorService.detector();
     });
   }
 
