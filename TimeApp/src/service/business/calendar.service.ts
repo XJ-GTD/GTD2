@@ -169,6 +169,7 @@ export class CalendarService extends BaseService {
     this.emitService.destroy("mwxing.calendar.refresh.attachments");
     this.emitService.register("mwxing.calendar.refresh.attachments", () => {
       this.refreshAttachmentObservables();
+      this.detectorService.detector();
     });
   }
 
