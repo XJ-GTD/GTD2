@@ -305,7 +305,7 @@ export class EventService extends BaseService {
         this.emitService.emit("mwxing.calendar.activities.changed", saved);
         this.emitService.emit("mwxing.calendar.datas.readwrite", {rw: "write", payload: saved});
       } else {
-        this.emitService.emit("mwxing.calendar.activities.changed", saved, true);
+        this.emitService.emit("mwxing.calendar.activities.changed", {data: saved, refresh: true});
       }
     }
 

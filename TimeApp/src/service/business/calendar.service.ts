@@ -135,10 +135,16 @@ export class CalendarService extends BaseService {
 
     // 活动变化时自动更新日历显示列表数据
     this.emitService.destroy("mwxing.calendar.activities.changed");
-    this.emitService.register("mwxing.calendar.activities.changed", (data, refresh: boolean = false) => {
+    this.emitService.register("mwxing.calendar.activities.changed", (data) => {
       if (!data) {
         this.assertFail("事件mwxing.calendar.activities.changed无扩展数据");
         return;
+      }
+
+      let refresh: boolean = false;
+      if (data.refresh != undefined) {
+        refresh = data.refresh;
+        data = data.data;
       }
 
       this.activitiesqueue.push({data: data}, () => {
