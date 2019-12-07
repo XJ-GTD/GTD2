@@ -67,7 +67,7 @@ export class CalendarService extends BaseService {
     super();
     moment.locale('zh-cn');
 
-    this.datasrwqueue = new AsyncQueue(async ({data}, callback) => {
+    this.datasrwqueue = new AsyncQueue(({data}, callback) => {
       let rw: string = data.rw;
       let payload: any = data.payload;
 
