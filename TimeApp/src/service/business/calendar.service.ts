@@ -164,6 +164,12 @@ export class CalendarService extends BaseService {
         this.detectorService.detector();
       });
     });
+
+    // 用于接收第一次登录，接收完日程后，刷新首页的附件数量
+    this.emitService.destroy("mwxing.calendar.refresh.attachments");
+    this.emitService.register("mwxing.calendar.refresh.attachments", () => {
+      this.refreshAttachmentObservables();
+    });
   }
 
   clearCalendarActivities() {
