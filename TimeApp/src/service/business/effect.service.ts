@@ -40,7 +40,8 @@ export class EffectService extends BaseService {
   }
 
   async syncCompareInitial() {
-     await this.calendarService.requestDeviceDiffData(); // 请求拉取客户端不一致数据
+     await this.calendarService.requestDeviceDiffData();    // 请求拉取客户端不一致数据
+     this.calendarService.refreshAttachmentObservables();   // 刷新页面附件数量显示
   }
 
   /**
