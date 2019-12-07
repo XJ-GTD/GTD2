@@ -3246,14 +3246,14 @@ export class CalendarService extends BaseService {
 
         if (!writeOriginData) {
           // 不存在写入数据, 直接设置已读
-          this.commit(agenda.evi, false);
+          this.commit(attachment.obi, false);
         } else {
           if ((writeOriginData.nval || writeOriginData.cval || writeOriginData.bval || writeOriginData.checksum) == (readNewData.nval || readNewData.cval || readNewData.bval || readNewData.checksum)) {
             // 读取数据和写入数据一致
-            this.commit(agenda.evi, false);
+            this.commit(attachment.obi, false);
           } else {
             // 读取数据和写入数据不一致
-            this.commit(agenda.evi, true);
+            this.commit(attachment.obi, true);
           }
         }
 
