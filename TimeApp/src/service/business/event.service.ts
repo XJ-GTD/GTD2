@@ -304,6 +304,8 @@ export class EventService extends BaseService {
 
       if (extension != PullType.Full) {
         this.emitService.emit("mwxing.calendar.datas.readwrite", {rw: "write", payload: saved});
+      } else {
+        this.calendarService.refreshAttachmentObservables();   // 初始化登录的时候刷新页面附件数量显示
       }
     }
 
