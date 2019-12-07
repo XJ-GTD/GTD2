@@ -368,6 +368,7 @@ export class AttachPage {
       let retAt: Attachment = {} as Attachment;
       // this.util.loadingStart();
       retAt = await this.eventService.saveAttachment(this.fjData);
+      this.bw = "";
       this.emitService.emit("mwxing.calendar.datas.readwrite", {rw: "writeandread", payload: retAt});
       //alert("上传返回值："+JSON.stringify(retAt));
       // this.util.loadingEnd();
