@@ -3454,7 +3454,7 @@ export class CalendarService extends BaseService {
 
           return target;
         }, 0);
-
+        console.log("update attachment " + count + " for " + attachment.obi);
         this.attachment(attachment.obi, count);
 
         this.attachmentcached.set(attachment.obi, cached);
