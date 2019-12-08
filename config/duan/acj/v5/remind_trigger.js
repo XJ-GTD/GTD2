@@ -178,6 +178,11 @@ function clean(datasource)
 
     var standardnext = {};
 
+    // 如果是持续提醒, 已完成或者已不需要持续提醒, 则不处理
+    if (remind && remindprop[id] && ((remindprop[id]["continue"] != undefined && remindprop[id]["continue"] == false) || data['todostate'] != "uncomplete")) {
+      continue;
+    }
+
     // 存在持续提醒的数据
     if (remind && remindprop[id] && remindprop[id]["continue"] && data['todostate'] == "uncomplete") {
       // 发送本次提醒
