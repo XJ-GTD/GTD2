@@ -178,8 +178,10 @@ function clean(datasource)
 
     var standardnext = {};
 
+    var todolist = (data['sharestate'] && data['sharestate'][to] && data['sharestate'][to]['todostate'])? data['sharestate'][to]['todostate'] : data['todostate'];
+
     // 如果是持续提醒, 已完成或者已不需要持续提醒, 则不处理
-    if (remind && remindprop[id] && ((remindprop[id]["continue"] != undefined && remindprop[id]["continue"] == false) || data['todostate'] != "uncomplete")) {
+    if (remind && remindprop[id] && remindprop[id]["continue"] && data['todostate'] != "uncomplete") {
       continue;
     }
 
