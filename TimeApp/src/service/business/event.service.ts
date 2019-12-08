@@ -1708,6 +1708,7 @@ export class EventService extends BaseService {
         params.push(masterEvi);
       }
       sqlparam.push([sq,params]);
+      console.log(`debug log ${sqlparam.join(",")}`);
       await this.sqlExce.batExecSqlByParam(sqlparam);
 
       await this.getAllAgendaForFieldChanged(oriAgdata,newAgdata,FieldChanged.Invite,"", outAgds);
