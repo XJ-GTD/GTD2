@@ -1708,7 +1708,6 @@ export class EventService extends BaseService {
         params.push(masterEvi);
       }
       sqlparam.push([sq,params]);
-      console.log(`debug log ${sqlparam.join(",")}`);
       await this.sqlExce.batExecSqlByParam(sqlparam);
 
       await this.getAllAgendaForFieldChanged(oriAgdata,newAgdata,FieldChanged.Invite,"", outAgds);
@@ -1796,13 +1795,13 @@ export class EventService extends BaseService {
           }
 
         }else{
-          sq = `update gtd_wa set tb = ? ,del = ? ,updstate = ? where obt = ? and  wai in (select evi from gtd_ev
+          sq = `update gtd_wa set tb = ? ,del = ? where obt = ? and  wai in (select evi from gtd_ev
           where  evi = ? or rtevi =  ? ); `;
 
           params = new Array<any>();
           params.push(anyenum.SyncType.unsynch);
           params.push(anyenum.DelType.del);
-          params.push(anyenum.UpdState.inherent);
+          //params.push(anyenum.UpdState.inherent);
           params.push(ObjectType.Event);
           params.push(masterEvi);
           params.push(masterEvi);
