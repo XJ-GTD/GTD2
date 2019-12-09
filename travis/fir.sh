@@ -23,8 +23,11 @@ if [ $TRAVIS_OS_NAME = 'osx' ]; then
           echo "AppStore validate-app passed."
           ./altool --upload-app -f $TRAVIS_BUILD_DIR/build/debug/$IOS_APP_NAME.ipa -t ios -u $APPSTORE_USERNAME -p $APPSTORE_PASSWORD
         fi
+      fi
+
+      if [ -f "$TRAVIS_BUILD_DIR/build/fir/$IOS_APP_NAME.ipa" ]; then
         echo "upload to fir.im"
-        fir publish $TRAVIS_BUILD_DIR/build/debug/app-$TRAVIS_BRANCH.ipa -T $FIR_TOKEN_CASSISCORNUTA -c "唐冠螺 (iOS): ${TRAVIS_COMMIT_MESSAGE}"
+        fir publish $TRAVIS_BUILD_DIR/build/fir/$IOS_APP_NAME.ipa -T $FIR_TOKEN_CASSISCORNUTA -c "唐冠螺 (iOS): ${TRAVIS_COMMIT_MESSAGE}"
       fi
     else
       fir publish $TRAVIS_BUILD_DIR/build/debug/app-$TRAVIS_BRANCH.ipa -T $FIR_TOKEN -c "${TRAVIS_BRANCH}: ${TRAVIS_COMMIT_MESSAGE}"

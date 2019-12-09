@@ -1,9 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-    <key>compileBitcode</key>
-    <false/>
+    <key>destination</key>
+    <string>export</string>
     <key>method</key>
     <string>ad-hoc</string>
+    <key>signingStyle</key>
+    <string>automatic</string>
+    <key>stripSwiftSymbols</key>
+    <true/>
+    <key>teamID</key>
+    <string>D5A8L43W8A</string>
+    <key>uploadSymbols</key>
+    <true/>
+    <key>provisioningProfiles</key>
+    <dict>
+        <key>cn.sh.com.xj.timeApp</key>
+        <string>0d72d07b-a8ca-4e00-885f-d16a07e79f13</string>
+    </dict>
 </dict>
 </plist>
