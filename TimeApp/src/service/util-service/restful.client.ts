@@ -271,7 +271,7 @@ export class RestfulClient {
     return new Promise((resolve, reject) => {
       // 没有网络的时候，直接返回
       if (!this.networkService.isConnected()) {
-        reject();
+        reject("没有网络的时候，直接返回");
         return;
       }
 
@@ -287,7 +287,7 @@ export class RestfulClient {
           // log.er = err;
           // this.sqlitExc.noteLog(log);
           // this.util.toastStart("初始化数据获取失败", 2000);
-          reject();
+          reject("服务器数据未获取");
           //reject(e);
         })
       } else {
@@ -305,7 +305,7 @@ export class RestfulClient {
           // log.er = err;
           // this.sqlitExc.noteLog(log);
           // this.util.toastStart("初始化数据获取失败", 2000);
-          reject();
+          reject("服务器数据未获取");
         })
       }
     });
