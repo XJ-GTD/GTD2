@@ -27,6 +27,7 @@ import {
 import {FsData} from "../../data.mapping";
 import {File} from '@ionic-native/file';
 import {AssistantService} from "../cordova/assistant.service";
+import {generateDataType} from "./calendar.service";
 
 @Injectable()
 export class EventService extends BaseService {
@@ -2893,28 +2894,22 @@ export class EventService extends BaseService {
     let ret = new Array<WaTbl>();
 
     if (txjson.reminds && txjson.reminds.length > 0) {
-      for ( let j = 0, len = txjson.reminds.length ;j < len ; j++) {
+      txjson.each(ev.evd, ev.evt, (datetime) => {
         let wa = new WaTbl();//提醒表
-        let remind : number;
 
         wa.obt = obtType;
         wa.obi = ev.evi;
-        remind = txjson.reminds[j];
         wa.st = ev.evn;
         wa.tb = anyenum.SyncType.unsynch;
         wa.del = anyenum.DelType.undel;
 
-        let time = remind;
-        let date;
-        date = moment(ev.evd + " " + ev.evt, "YYYY/MM/DD HH:mm").subtract(time, 'm').format("YYYY/MM/DD HH:mm");
-
         //使用ev表zhukey与提醒时间的组合，便于服务器更新及本地更新
-        wa.wai = ev.evi + moment(date, "YYYY/MM/DD HH:mm").format("YYYYMMDDHHmm") ;
-        wa.wd = moment(date, "YYYY/MM/DD HH:mm").format("YYYY/MM/DD");
-        wa.wt = moment(date, "YYYY/MM/DD HH:mm").format("HH:mm");
+        wa.wai = ev.evi + datetime.format("YYYYMMDDHHmm") ;
+        wa.wd = datetime.format("YYYY/MM/DD");
+        wa.wt = datetime.format("HH:mm");
         ret.push(wa);
-        //console.log('-------- 插入提醒表 --------');
-      }
+
+      });
     }
     return ret;
   }
@@ -5553,7 +5548,15 @@ export class TxJson {
   reminds: Array<number> = new Array<number>();
 
   static caption(minutes: number): string {
-    let humanremind: string = moment.duration(minutes, "minutes").humanize();
+    let humanremind: string;
+    if (minutes >=0){
+      humanremind = moment.duration(minutes, "minutes").humanize();
+    }else{
+      //指定日期从传入的YYYYMMDDHHmm格式日期
+      minutes = moment().diff(moment(-1 * minutes,'YYYYMMDDHHmm',true),'m');
+      humanremind = moment.duration(minutes, "minutes").humanize();
+    }
+
 
     if (minutes > 0) {
       return `提前${humanremind}提醒`;
@@ -5572,10 +5575,19 @@ export class TxJson {
     });
 
     if (this.reminds && this.reminds.length > 0) {
-      let humanremind: string = moment.duration(this.reminds[0], "minutes").humanize();
-      if (first && this.reminds[0] > 0) return `提前${humanremind}提醒`;
-      if (first && this.reminds[0] < 0) return `延后${humanremind}提醒`;
-      if (first && this.reminds[0] == 0) return `事件开始时提醒`;
+      let humanremind: string;
+      let minutes : number = this.reminds[0];
+      if (minutes >=0){
+        humanremind = moment.duration(minutes, "minutes").humanize();
+      }else{
+        //指定日期从传入的YYYYMMDDHHmm格式日期
+        minutes = moment().diff(moment(-1 * minutes,'YYYYMMDDHHmm',true),'m');
+        humanremind = moment.duration(minutes, "minutes").humanize();
+      }
+
+      if (first && minutes > 0) return `提前${humanremind}提醒`;
+      if (first && minutes < 0) return `延后${humanremind}提醒`;
+      if (first && minutes == 0) return `事件开始时提醒`;
     } else {
       return "";
     }
@@ -5617,9 +5629,13 @@ export class TxJson {
     }
 
     for (let remind of this.reminds) {
-      let baseline = moment(sd + " " + st, "YYYY/MM/DD HH:mm", true);
-      baseline.subtract(remind, "m");
 
+      let baseline = moment(sd + " " + st, "YYYY/MM/DD HH:mm", true);
+      if (remind >= 0){
+        baseline.subtract(remind, "m");
+      }else{
+        baseline = moment(-1 * remind,"YYYYMMMDDHHmm",true);
+      }
       callback(baseline);
     }
   }

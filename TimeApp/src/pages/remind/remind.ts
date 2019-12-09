@@ -4,6 +4,7 @@ import {TxJson} from "../../service/business/event.service";
 import {MultiPicker} from "ion-multi-picker";
 import * as moment from "moment";
 import * as anyenum from "../../data.enum";
+import {Moment} from "moment";
 
 @IonicPage()
 @Component({
@@ -48,10 +49,6 @@ import * as anyenum from "../../data.enum";
                    pickerFormat="YYYY ,MM DD"
                    [(ngModel)]="datevalue" (ngModelChange)="timeOpen()"
                    cancelText="取消" doneText="选择时间"
-      ></date-picker>
-      <date-picker #remindTime1 pickerFormat="A hh mm"
-                   [(ngModel)]="timevalue" (ngModelChange)="timeselect()" (ionCancel)="openRemindDt()"
-                   doneText="设定"
       ></date-picker>
         <ion-multi-picker #remindTime [(ngModel)]="timevalue"
                           (ngModelChange)="timeselect();" (ionCancel)="openRemindDt()" [multiPickerColumns]="timeColumns"
@@ -241,7 +238,6 @@ export class RemindPage {
 
         if (this.currentTx.reminds.length > 0) {
 
-
           for (let j = 0, len = this.currentTx.reminds.length; j < len; j++) {
             this.reminds.push(
               {
@@ -270,7 +266,12 @@ export class RemindPage {
 
   getShowDateName(time) {
     let ret: string;
-    ret = moment(this.evdatetime, "YYYY/MM/DD HH:mm", true).subtract(time, 'm').format("MM月DD HH:mm");
+    if (time >= 0){
+      ret = moment(this.evdatetime, "YYYY/MM/DD HH:mm", true).subtract(time, 'm').format("MM月DD HH:mm");
+    }else{
+      ret = moment(-1 * time, "YYYYMMDDHHmm",true).format("MM月DD HH:mm");
+    }
+
 
     ret = "" + TxJson.caption(time) + "- -" + ret;
 
@@ -318,7 +319,7 @@ export class RemindPage {
     }
     this.reminds.push(
       {
-        datename: "" + TxJson.caption(time) + "- -" + moment(this.evdatetime, "YYYY/MM/DD HH:mm", true).subtract(time, 'm').format("MM月DD HH:mm"),
+        datename: this.getShowDateName(time),
         value: time,
         disTixin : false
       });
@@ -349,7 +350,7 @@ export class RemindPage {
       tm =  (parseInt(dtsplit[1])+ 12) + ":" + dtsplit[2];
     }
     let dt = this.datevalue + " " + tm;
-    let time = moment(this.evdatetime, "YYYY/MM/DD HH:mm", true).diff(moment(dt, "YYYY-MM-DD HH:mm",true), 'm');
+    let time = -1 * parseInt(moment(dt, "YYYY-MM-DD HH:mm",true).format("YYYYMMMDDHHmm"));
     let hav = this.reminds.findIndex((value, index, arr) => {
       return value.value == time;
     })
@@ -359,7 +360,7 @@ export class RemindPage {
 
     this.reminds.push(
       {
-        datename: "" + TxJson.caption(time) + " -- " + moment(dt, "YYYY-MM-DD HH:mm", true).format("MM月DD HH:mm"),
+        datename: this.getShowDateName(time),
         value: time,
         disTixin: false
       });
@@ -382,7 +383,13 @@ export class RemindPage {
     if (!time){
       return true;
     }
-    let txdt = moment(this.evdatetime, "YYYY/MM/DD HH:mm", true).subtract(time, 'm');
+    let txdt : Moment;
+    if (time >= 0 ){
+      txdt = moment(this.evdatetime, "YYYY/MM/DD HH:mm", true).subtract(time, 'm');
+    }else{
+      txdt = moment(-1 * time, 'YYYYMMDDHHmm',true);
+    }
+
     if ( moment().isAfter(txdt)){
       ret = true;
     }else{
