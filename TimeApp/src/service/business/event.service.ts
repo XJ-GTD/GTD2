@@ -5638,7 +5638,7 @@ export class TxJson {
       if (remind >= 0){
         baseline.subtract(remind, "m");
       }else{
-        baseline = moment(-1 * remind,"YYYYMMMDDHHmm",true);
+        baseline = moment(-1 * remind,"YYYYMMDDHHmm",true);
       }
       callback(baseline);
     }
