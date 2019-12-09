@@ -28,6 +28,7 @@ import {FsData} from "../../data.mapping";
 import {File} from '@ionic-native/file';
 import {AssistantService} from "../cordova/assistant.service";
 import {generateDataType} from "./calendar.service";
+import {Moment} from "moment";
 
 @Injectable()
 export class EventService extends BaseService {
@@ -1273,6 +1274,27 @@ export class EventService extends BaseService {
     Object.assign(agdata.rtjson , JSON.parse(agdata.rt));
     agdata.txjson = new TxJson();
     Object.assign(agdata.txjson , JSON.parse(agdata.tx));
+    //新老数据格式更替
+    let reminds  = new  Array<number>() ;
+    Object.assign(reminds , agdata.txjson.reminds);
+    let baseline = moment(agdata.evd + " " + agdata.evt, "YYYY/MM/DD HH:mm", true);
+    for (let remind of reminds) {
+      if (remind < 0){
+        let postpone :Moment = moment(-1 * remind,'YYYYMMDDHHmm',true);
+        if (!postpone.isValid()){
+
+          let idx: number = agdata.txjson.reminds.findIndex((val, index, arr) => {
+            return val == remind;
+          });
+          if (idx >= 0) {
+            agdata.txjson.reminds[idx] =-1 * parseInt(baseline.subtract(remind, "m").format("YYYYMMDDHHmm"));
+
+          }
+        }
+      }
+    }
+    agdata.tx = JSON.stringify(agdata.txjson);
+    agdata.txs = agdata.txjson.text();
 
     //主evi设定
     let masterEvi : string;
@@ -5547,24 +5569,33 @@ export class TxJson {
 
   static caption(minutes: number): string {
     let humanremind: string;
+    let ret : string;
     if (minutes >=0){
       humanremind = moment.duration(minutes, "minutes").humanize();
+      if (minutes ==0){
+        ret = `事件开始时提醒`;
+      }else{
+        ret = `提前${humanremind}提醒`;
+      }
+
     }else{
       //指定日期从传入的YYYYMMDDHHmm格式日期
-      humanremind = moment(-1 * minutes,'YYYYMMDDHHmm',true).format("MM月DD HH:mm");
+      let postpone :Moment = moment(-1 * minutes,'YYYYMMDDHHmm',true);
+      if (postpone.isValid()){
+        humanremind = postpone.format("MM月DD HH:mm");
+        ret = `延后至${humanremind}提醒`;
+      }else{
+        humanremind = moment.duration(minutes, "minutes").humanize();
+        ret = `延后${humanremind}提醒`;
+      }
+
     }
 
-
-    if (minutes > 0) {
-      return `提前${humanremind}提醒`;
-    } else if (minutes < 0) {
-      return `延后至${humanremind}提醒`;
-    } else {
-      return `事件开始时提醒`;
-    }
+    return ret;
   }
 
   text(first: boolean = true): string {
+    let ret : string;
     this.reminds.sort((a, b) => {
       if (a > b) return -1;
       if (a < b) return 1;
@@ -5576,14 +5607,25 @@ export class TxJson {
       let minutes : number = this.reminds[0];
       if (minutes >=0){
         humanremind = moment.duration(minutes, "minutes").humanize();
+        if (minutes ==0){
+          ret = `事件开始时提醒`;
+        }else{
+          ret = `提前${humanremind}提醒`;
+        }
       }else{
         //指定日期从传入的YYYYMMDDHHmm格式日期
-        humanremind = moment(-1 * minutes,'YYYYMMDDHHmm',true).format("MM月DD HH:mm");
+        let postpone :Moment = moment(-1 * minutes,'YYYYMMDDHHmm',true);
+        if (postpone.isValid()){
+          humanremind = postpone.format("MM月DD HH:mm");
+          ret = `延后至${humanremind}提醒`;
+        }else{
+          humanremind = moment.duration(minutes, "minutes").humanize();
+          ret = `延后${humanremind}提醒`;
+        }
+
       }
 
-      if (first && minutes > 0) return `提前${humanremind}提醒`;
-      if (first && minutes < 0) return `延后至${humanremind}提醒`;
-      if (first && minutes == 0) return `事件开始时提醒`;
+      if (first ) return ret;
     } else {
       return "";
     }
@@ -5623,14 +5665,17 @@ export class TxJson {
     if (this.close || !this.reminds || this.reminds.length <= 0) {
       return;
     }
-
+    let baseline = moment(sd + " " + st, "YYYY/MM/DD HH:mm", true);
     for (let remind of this.reminds) {
-
-      let baseline = moment(sd + " " + st, "YYYY/MM/DD HH:mm", true);
       if (remind >= 0){
         baseline.subtract(remind, "m");
       }else{
-        baseline = moment(-1 * remind,"YYYYMMDDHHmm",true);
+        let postpone :Moment = moment(-1 * remind,'YYYYMMDDHHmm',true);
+        if (postpone.isValid()){
+          baseline = moment(-1 * remind,"YYYYMMDDHHmm",true);
+        }else{
+          baseline.subtract(remind, "m");
+        }
       }
       callback(baseline);
     }
