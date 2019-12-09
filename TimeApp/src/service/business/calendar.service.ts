@@ -3263,7 +3263,9 @@ export class CalendarService extends BaseService {
           // 不存在写入数据, 直接设置已读
           this.commit(attachment.obi, false);
         } else {
-          if ((writeOriginData.nval || writeOriginData.cval || writeOriginData.bval || writeOriginData.checksum) == (readNewData.nval || readNewData.cval || readNewData.bval || readNewData.checksum)) {
+          let comparewrite = writeOriginData.nval || writeOriginData.cval || writeOriginData.bval || writeOriginData.checksum;
+          let compareread = readNewData.nval || readNewData.cval || readNewData.bval || readNewData.checksum;
+          if (comparewrite && compareread) {
             // 读取数据和写入数据一致
             this.commit(attachment.obi, false);
           } else {
@@ -3332,7 +3334,7 @@ export class CalendarService extends BaseService {
           // 不存在写入数据, 直接设置已读
           this.annotation(annotation.obi, false);
         } else {
-          if ((writeOriginData.nval || writeOriginData.cval || writeOriginData.bval || writeOriginData.checksum) == (readNewData.nval || readNewData.cval || readNewData.bval || readNewData.checksum)) {
+          if ((writeOriginData.nval || writeOriginData.cval || writeOriginData.bval || writeOriginData.checksum) && (readNewData.nval || readNewData.cval || readNewData.bval || readNewData.checksum)) {
             // 读取数据和写入数据一致
             this.annotation(annotation.obi, false);
           } else {
@@ -3442,7 +3444,7 @@ export class CalendarService extends BaseService {
         let readOrWrite: boolean = true;
 
         compares.forEach((value, key) => {
-          if (value.read != value.write) readOrWrite = false;
+          if (!(value.read && value.write)) readOrWrite = false;
         });
 
         if (readOrWrite) {
@@ -3509,7 +3511,7 @@ export class CalendarService extends BaseService {
           // 不存在读取数据, 直接设置未读
           this.annotation(annotation.obi, true);
         } else {
-          if ((readOriginData.nval || readOriginData.cval || readOriginData.bval || readOriginData.checksum) == (writeNewData.nval || writeNewData.cval || writeNewData.bval || writeNewData.checksum)) {
+          if ((readOriginData.nval || readOriginData.cval || readOriginData.bval || readOriginData.checksum) && (writeNewData.nval || writeNewData.cval || writeNewData.bval || writeNewData.checksum)) {
             // 读取数据和写入数据一致
             this.annotation(annotation.obi, false);
           } else {
