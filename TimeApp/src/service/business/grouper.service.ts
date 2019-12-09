@@ -32,6 +32,8 @@ export class GrouperService extends BaseService {
     moment.locale('zh-cn');
   }
 
+  checksumGrouper(grouper: Grouper): string {}
+
   /**
    * 接收群组信息
    * @param {Array<Grouper>} pullGroupers

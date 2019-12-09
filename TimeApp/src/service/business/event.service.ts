@@ -1478,6 +1478,8 @@ export class EventService extends BaseService {
     return outAgds;
   }
 
+  checksumAgenda(agenda: AgendaData): string {}
+
   /**
    * 保存或修改事件
    * @param {AgendaData} newAgdata 新事件详情
@@ -2735,6 +2737,8 @@ export class EventService extends BaseService {
     return task;
   }
 
+  checksumTask(task: TaskData): string {}
+
 	/**
 	 * 创建更新任务
    *
@@ -3026,6 +3030,8 @@ export class EventService extends BaseService {
 			task = await this.sqlExce.getExtOneByParam<TaskData>(sqlparam,params);
   		return task;
 	}
+
+  checksumMiniTask(minitask: MiniTaskData): string {}
 
   /**
 	 * 创建更新小任务

@@ -1806,6 +1806,8 @@ export class CalendarService extends BaseService {
     return confirm;
   }
 
+  checksumPlanItem(item: PlanItemData): string {}
+
   /**
    * 创建/更新日历项
    *
