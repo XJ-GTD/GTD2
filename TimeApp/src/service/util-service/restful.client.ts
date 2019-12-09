@@ -95,11 +95,11 @@ export class RestfulClient {
         return;
       }
 
-      let log: LogTbl = new LogTbl();
-      log.id = this.util.getUuid();
-      log.su = url.key;
-      log.ss = new Date().valueOf();
-      log.t = 1;
+      // let log: LogTbl = new LogTbl();
+      // log.id = this.util.getUuid();
+      // log.su = url.key;
+      // log.ss = new Date().valueOf();
+      // log.t = 1;
       let header = this.restConfig.createHeader();
       if (this.util.hasCordova()) {
         return this.http.post(url.url, body, header).then(data => {
@@ -108,18 +108,18 @@ export class RestfulClient {
           // console.log(data.headers);
           let jsonData = JSON.parse(data.data);
 
-          log.ss = new Date().valueOf() - log.ss;
-          log.st = true;
-          this.sqlitExc.noteLog(log);
+          // log.ss = new Date().valueOf() - log.ss;
+          // log.st = true;
+          // this.sqlitExc.noteLog(log);
           resolve(jsonData);
         }).catch(err => {
           // this.util.toastStart("冥王星" + url.desc + "服务访问失败", 2000);
           this.util.tellyou("冥王星" + url.desc + "服务访问失败");
 
-          log.ss = new Date().valueOf() - log.ss;
-          log.st = false;
-          log.er = err;
-          this.sqlitExc.noteLog(log);
+          // log.ss = new Date().valueOf() - log.ss;
+          // log.st = false;
+          // log.er = err;
+          // this.sqlitExc.noteLog(log);
           reject(err);
         })
       } else {
@@ -127,17 +127,17 @@ export class RestfulClient {
         let warHeader: any = {};
         warHeader.headers = header;
         this.httpClient.post(url.url, body, warHeader).subscribe(data => {
-
-          log.ss = new Date().valueOf() - log.ss;
-          log.st = true;
-          this.sqlitExc.noteLog(log);
+          //
+          // log.ss = new Date().valueOf() - log.ss;
+          // log.st = true;
+          // this.sqlitExc.noteLog(log);
           resolve(data);
         }, err => {
 
-          log.ss = new Date().valueOf() - log.ss;
-          log.st = false;
-          log.er = err;
-          this.sqlitExc.noteLog(log);
+          // log.ss = new Date().valueOf() - log.ss;
+          // log.st = false;
+          // log.er = err;
+          // this.sqlitExc.noteLog(log);
           // this.util.toastStart("冥王星" + url.desc + "服务访问失败", 2000);
           this.util.tellyou("冥王星" + url.desc + "服务访问失败");
           reject(err)
@@ -154,25 +154,25 @@ export class RestfulClient {
         return;
       }
 
-      let log: LogTbl = new LogTbl();
-      log.id = this.util.getUuid();
-      log.su = url.key;
-      log.ss = new Date().valueOf();
-      log.t = 1;
+      // let log: LogTbl = new LogTbl();
+      // log.id = this.util.getUuid();
+      // log.su = url.key;
+      // log.ss = new Date().valueOf();
+      // log.t = 1;
       let header = this.restConfig.createHeader();
       if (this.util.hasCordova()) {
         return this.http.get(url.url, {}, header).then(data => {
           let jsonData = JSON.parse(data.data);
-          log.ss = new Date().valueOf() - log.ss;
-          log.st = true;
-          this.sqlitExc.noteLog(log);
+          // log.ss = new Date().valueOf() - log.ss;
+          // log.st = true;
+          // this.sqlitExc.noteLog(log);
           resolve(jsonData);
         }).catch(err => {
-
-          log.ss = new Date().valueOf() - log.ss;
-          log.st = false;
-          log.er = err;
-          this.sqlitExc.noteLog(log);
+          //
+          // log.ss = new Date().valueOf() - log.ss;
+          // log.st = false;
+          // log.er = err;
+          // this.sqlitExc.noteLog(log);
           // this.util.toastStart("冥王星" + url.desc + "服务访问失败", 2000);
           this.util.tellyou("冥王星" + url.desc + "服务访问失败");
           reject(err);
@@ -182,17 +182,17 @@ export class RestfulClient {
         let warHeader: any = {};
         warHeader.headers = header;
         this.httpClient.get(url.url, warHeader).subscribe(data => {
-
-          log.ss = new Date().valueOf() - log.ss;
-          log.st = true;
-          this.sqlitExc.noteLog(log);
+          //
+          // log.ss = new Date().valueOf() - log.ss;
+          // log.st = true;
+          // this.sqlitExc.noteLog(log);
           resolve(data);
         }, err => {
-
-          log.ss = new Date().valueOf() - log.ss;
-          log.st = false;
-          log.er = err;
-          this.sqlitExc.noteLog(log);
+          //
+          // log.ss = new Date().valueOf() - log.ss;
+          // log.st = false;
+          // log.er = err;
+          // this.sqlitExc.noteLog(log);
           // this.util.toastStart("冥王星" + url.desc + "服务访问失败", 2000);
           this.util.tellyou("冥王星" + url.desc + "服务访问失败");
           reject(err)
@@ -209,26 +209,26 @@ export class RestfulClient {
         return;
       }
 
-      let log: LogTbl = new LogTbl();
-      log.id = this.util.getUuid();
-      log.su = url.key;
-      log.ss = new Date().valueOf();
-      log.t = 1;
+      // let log: LogTbl = new LogTbl();
+      // log.id = this.util.getUuid();
+      // log.su = url.key;
+      // log.ss = new Date().valueOf();
+      // log.t = 1;
       let header = this.restConfig.createHeader();
       if (this.util.hasCordova()) {
         return this.http.put(url.url, body, header).then(data => {
           let jsonData = JSON.parse(data.data);
-
-          log.ss = new Date().valueOf() - log.ss;
-          log.st = true;
-          this.sqlitExc.noteLog(log);
+          //
+          // log.ss = new Date().valueOf() - log.ss;
+          // log.st = true;
+          // this.sqlitExc.noteLog(log);
           resolve(jsonData);
         }).catch(err => {
-
-          log.ss = new Date().valueOf() - log.ss;
-          log.st = false;
-          log.er = err;
-          this.sqlitExc.noteLog(log);
+          //
+          // log.ss = new Date().valueOf() - log.ss;
+          // log.st = false;
+          // log.er = err;
+          // this.sqlitExc.noteLog(log);
           // this.util.toastStart("冥王星" + url.desc + "服务访问失败", 2000);
           this.util.tellyou("冥王星" + url.desc + "服务访问失败");
           reject(err);
@@ -238,16 +238,16 @@ export class RestfulClient {
         let warHeader: any = {};
         warHeader.headers = header;
         this.httpClient.put(url.url, body, warHeader).subscribe(data => {
-          log.ss = new Date().valueOf() - log.ss;
-          log.st = true;
-          this.sqlitExc.noteLog(log);
-          log.t = 1;
+          // log.ss = new Date().valueOf() - log.ss;
+          // log.st = true;
+          // this.sqlitExc.noteLog(log);
+          // log.t = 1;
           resolve(data);
         }, err => {
-          log.ss = new Date().valueOf() - log.ss;
-          log.st = false;
-          log.er = err;
-          this.sqlitExc.noteLog(log);
+          // log.ss = new Date().valueOf() - log.ss;
+          // log.st = false;
+          // log.er = err;
+          // this.sqlitExc.noteLog(log);
           // this.util.toastStart("冥王星" + url.desc + "服务访问失败", 2000);
           this.util.tellyou("冥王星" + url.desc + "服务访问失败");
           reject(err)
@@ -263,31 +263,31 @@ export class RestfulClient {
    * @param body
    */
   specPost(url: string, header: RestFulHeader, body: any): Promise<any> {
-    let log: LogTbl = new LogTbl();
-    log.id = this.util.getUuid();
-    log.su = url;
-    log.ss = new Date().valueOf();
-    log.t = 1;
+    // let log: LogTbl = new LogTbl();
+    // log.id = this.util.getUuid();
+    // log.su = url;
+    // log.ss = new Date().valueOf();
+    // log.t = 1;
     return new Promise((resolve, reject) => {
       // 没有网络的时候，直接返回
       if (!this.networkService.isConnected()) {
-        resolve();
+        reject("没有网络的时候，直接返回");
         return;
       }
 
       if (this.util.hasCordova()) {
         return this.http.post(url, body, header).then(data => {
-          log.ss = new Date().valueOf() - log.ss;
-          log.st = true;
-          this.sqlitExc.noteLog(log);
+          // log.ss = new Date().valueOf() - log.ss;
+          // log.st = true;
+          // this.sqlitExc.noteLog(log);
           resolve(JSON.parse(data.data));
         }).catch(err => {
-          log.ss = new Date().valueOf() - log.ss;
-          log.st = false;
-          log.er = err;
-          this.sqlitExc.noteLog(log);
-          this.util.toastStart("初始化数据获取失败", 2000);
-          resolve();
+          // log.ss = new Date().valueOf() - log.ss;
+          // log.st = false;
+          // log.er = err;
+          // this.sqlitExc.noteLog(log);
+          // this.util.toastStart("初始化数据获取失败", 2000);
+          reject("服务器数据未获取");
           //reject(e);
         })
       } else {
@@ -295,17 +295,17 @@ export class RestfulClient {
         let warHeader: any = {};
         warHeader.headers = header;
         this.httpClient.post(url, body, warHeader).subscribe(data => {
-          log.ss = new Date().valueOf() - log.ss;
-          log.st = true;
-          this.sqlitExc.noteLog(log);
+          // log.ss = new Date().valueOf() - log.ss;
+          // log.st = true;
+          // this.sqlitExc.noteLog(log);
           resolve(data);
         }, err => {
-          log.ss = new Date().valueOf() - log.ss;
-          log.st = false;
-          log.er = err;
-          this.sqlitExc.noteLog(log);
-          this.util.toastStart("初始化数据获取失败", 2000);
-          resolve();
+          // log.ss = new Date().valueOf() - log.ss;
+          // log.st = false;
+          // log.er = err;
+          // this.sqlitExc.noteLog(log);
+          // this.util.toastStart("初始化数据获取失败", 2000);
+          reject("服务器数据未获取");
         })
       }
     });
@@ -318,11 +318,11 @@ export class RestfulClient {
    * @param body
    */
   get4Text(url: string, header: RestFulHeader, body: any): Promise<any> {
-    let log: LogTbl = new LogTbl();
-    log.id = this.util.getUuid();
-    log.su = url;
-    log.ss = new Date().valueOf();
-    log.t = 1;
+    // let log: LogTbl = new LogTbl();
+    // log.id = this.util.getUuid();
+    // log.su = url;
+    // log.ss = new Date().valueOf();
+    // log.t = 1;
     return new Promise((resolve, reject) => {
       // 没有网络的时候，直接返回
       if (!this.networkService.isConnected()) {
@@ -333,15 +333,15 @@ export class RestfulClient {
       header["Content-Type"] = "text/plain"
       if (this.util.hasCordova()) {
         return this.http.get(url, body, header).then(data => {
-          log.ss = new Date().valueOf() - log.ss;
-          log.st = true;
-          this.sqlitExc.noteLog(log);
+          // log.ss = new Date().valueOf() - log.ss;
+          // log.st = true;
+          // this.sqlitExc.noteLog(log);
           resolve(data.data);
         }).catch(err => {
-          log.ss = new Date().valueOf() - log.ss;
-          log.st = false;
-          log.er = err;
-          this.sqlitExc.noteLog(log);
+          // log.ss = new Date().valueOf() - log.ss;
+          // log.st = false;
+          // log.er = err;
+          // this.sqlitExc.noteLog(log);
           this.util.toastStart("初始化数据获取失败", 2000);
           reject(err);
         })
@@ -350,15 +350,15 @@ export class RestfulClient {
         let warHeader: any = {};
         warHeader.headers = header;
         this.httpClient.get(url, warHeader).subscribe(data => {
-          log.ss = new Date().valueOf() - log.ss;
-          log.st = true;
-          this.sqlitExc.noteLog(log);
+          // log.ss = new Date().valueOf() - log.ss;
+          // log.st = true;
+          // this.sqlitExc.noteLog(log);
           resolve(data);
         }, err => {
-          log.ss = new Date().valueOf() - log.ss;
-          log.st = false;
-          log.er = err;
-          this.sqlitExc.noteLog(log);
+          // log.ss = new Date().valueOf() - log.ss;
+          // log.st = false;
+          // log.er = err;
+          // this.sqlitExc.noteLog(log);
           this.util.toastStart("初始化数据获取失败", 2000);
           reject(err)
         })

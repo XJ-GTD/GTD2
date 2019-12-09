@@ -97,21 +97,21 @@ export class LogPage {
 
   list() {
 
-    this.sqlite.getLogs(this.search).then(data => {
-      this.logs = new Array<LogPageData>();
-
-      for (let log of data) {
-        let logPage: LogPageData = new LogPageData();
-        logPage.date = moment(log.wtt).format("YYYY-MM-DD HH:ss:mm");
-
-        logPage.url = log.su;
-        logPage.sub = log.ss;
-        logPage.status = log.st ? "成功" : "失败";
-        logPage.err = log.er;
-        this.logs.push(logPage);
-      }
-
-    })
+    // this.sqlite.getLogs(this.search).then(data => {
+    //   this.logs = new Array<LogPageData>();
+    //
+    //   for (let log of data) {
+    //     let logPage: LogPageData = new LogPageData();
+    //     logPage.date = moment(log.wtt).format("YYYY-MM-DD HH:ss:mm");
+    //
+    //     logPage.url = log.su;
+    //     logPage.sub = log.ss;
+    //     logPage.status = log.st ? "成功" : "失败";
+    //     logPage.err = log.er;
+    //     this.logs.push(logPage);
+    //   }
+    //
+    // })
   }
 
   clear() {

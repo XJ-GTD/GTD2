@@ -22,11 +22,11 @@ export class DispatchService {
 
   async dispatch(message: string) {
     //消息格式化
-    let log:LogTbl = new LogTbl();
-    log.id = this.util.getUuid();
-    log.su = message
-    log.ss = new Date().valueOf();
-    log.t = 2;
+    // let log:LogTbl = new LogTbl();
+    // log.id = this.util.getUuid();
+    // log.su = message
+    // log.ss = new Date().valueOf();
+    // log.t = 2;
 
     let model: WsModel = JSON.parse(message);
 
@@ -70,10 +70,10 @@ export class DispatchService {
         }
       }
     }
-
-    log.ss = new Date().valueOf() - log.ss;
-    log.st = true;
-    this.sqlite.noteLog(log);
+    //
+    // log.ss = new Date().valueOf() - log.ss;
+    // log.st = true;
+    // this.sqlite.noteLog(log);
     return;
   }
 }

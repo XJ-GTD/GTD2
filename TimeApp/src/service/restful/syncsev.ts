@@ -4,6 +4,7 @@ import {RestFulHeader, UrlEntity, RestFulConfig} from "../config/restful.config"
 import {UtilService} from "../util-service/util.service";
 import * as moment from "moment";
 import { getSha1SafeforBrowser } from '../../util/crypto-util';
+import {DataConfig} from "../config/data.config";
 
 /**
  * 系统
@@ -463,8 +464,17 @@ export class SyncRestful {
       header.di = this.uitl.deviceId();
       header.dt = this.uitl.deviceType();
       //设别类型
+      let data: SybcData;
       this.request.specPost(RestFulConfig.INIT_DATA_URL, header, {}).then(reps => {
-        let data: SybcData = reps.d;
+        data = reps.d;
+        resolve(data);
+      }).catch(e=>{
+        data = new SybcData();
+        data.apil = DataConfig.asyncData.apil;
+        data.dpfu = DataConfig.asyncData.dpfu;
+        data.bipl = DataConfig.asyncData.bipl;
+        data.vrs = DataConfig.asyncData.vrs;
+
         resolve(data);
       });
     });
@@ -508,10 +518,11 @@ export class Dpfu {
 }
 
 export class Vrs {
-  type:string;
-  needAnswer:string;
-  desc: string;
-  name: string;
-  value: string;
-  tips:string;
+  version?:string;
+  type?:string;
+  desc?: string;
+  name?: string;
+  value?: string;
+  needAnswer?:string;
+  tips?:string;
 }
