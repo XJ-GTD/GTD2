@@ -203,7 +203,8 @@ export class AnnotationService extends BaseService {
     let sqlparam = new Array<any>();
     for (let rc of condition.rcs ){
       let at =  new AtTbl();
-      at.ati = this.util.getUuid();
+      condition.ati = this.util.getUuid();
+      at.ati = condition.ati;
       at.ui = condition.ui;
       at.obt = condition.obt;
       at.obi = condition.obi;
