@@ -47,13 +47,6 @@ export class AlPage {
   }
 
   async alinit() {
-    // let scd:ScdData= new ScdData();
-    // scd.sn ="ddddddd";
-    // let reData: Array<ETbl> = new Array<ETbl>();
-    // let t:ETbl = new ETbl();
-    // t.st = "拉拉拉拉";
-    // reData.push(t);
-    // this.dd.remind(reData);
     this.alData = await this.alService.checkAllPermissions();
     this.alData = await this.alService.createDB();
     this.alData = await this.alService.checkSystem();

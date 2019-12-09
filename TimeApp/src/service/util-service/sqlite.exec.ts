@@ -23,53 +23,73 @@ export class SqliteExec {
   /**
    * 执行语句
    */
-  private execSqllog(sql: string,nolog:boolean, params: Array<any> = []): Promise<any> {
-    return new Promise((resolve, reject) => {
-
-      let log:LogTbl = new LogTbl();
-      log.id = this.util.getUuid();
-      log.su = sql;
-      log.ss = new Date().valueOf();
-      log.t = 0;
-
-      if (params && params.length > 0){
-        for (let j = 0 ,len = params.length; j < len ; j++ ){
-          if (params[j] != "") {
-            if (!params[j] || params[j] == 'undefined') {
-              params[j] = null;
-            }
-          }
-        }
-      }
-
-    this.sqlliteConfig.database.transaction( (tx)=> {
-        tx.executeSql(sql, params, (tx, res) => {
-          if (!nolog){
-            log.ss = new Date().valueOf() - log.ss;
-            log.st = true;
-            this.noteLog(log);
-          }
-          resolve(res);
-        }, (tx, err) => {
-          if (!nolog){
-            log.ss = new Date().valueOf() - log.ss;
-            log.st = true;
-            this.noteLog(log);
-          }
-
-          // console.log("sql [" + sql + "] params [" + (params? params.join(",") : "") + "] log error :" + err.message);
-          resolve(err);
-        });
-      });
-
-    });
-  }
+  // private execSqllog(sql: string,nolog:boolean, params: Array<any> = []): Promise<any> {
+  //   return new Promise((resolve, reject) => {
+  //
+  //     let log:LogTbl = new LogTbl();
+  //     log.id = this.util.getUuid();
+  //     log.su = sql;
+  //     log.ss = new Date().valueOf();
+  //     log.t = 0;
+  //
+  //     if (params && params.length > 0){
+  //       for (let j = 0 ,len = params.length; j < len ; j++ ){
+  //         if (params[j] != "") {
+  //           if (!params[j] || params[j] == 'undefined') {
+  //             params[j] = null;
+  //           }
+  //         }
+  //       }
+  //     }
+  //
+  //   this.sqlliteConfig.database.transaction( (tx)=> {
+  //       tx.executeSql(sql, params, (tx, res) => {
+  //         if (!nolog){
+  //           log.ss = new Date().valueOf() - log.ss;
+  //           log.st = true;
+  //           this.noteLog(log);
+  //         }
+  //         resolve(res);
+  //       }, (tx, err) => {
+  //         if (!nolog){
+  //           log.ss = new Date().valueOf() - log.ss;
+  //           log.st = true;
+  //           this.noteLog(log);
+  //         }
+  //
+  //         // console.log("sql [" + sql + "] params [" + (params? params.join(",") : "") + "] log error :" + err.message);
+  //         resolve(err);
+  //       });
+  //     });
+  //
+  //   });
+  // }
 
   /**
    * 执行语句
    */
   execSql(sql: string, params: Array<any> = []): Promise<any> {
-    return this.execSqllog(sql,true,params);
+
+      return new Promise((resolve, reject) => {
+
+        if (params && params.length > 0){
+          for (let j = 0 ,len = params.length; j < len ; j++ ){
+            if (params[j] != "") {
+              if (!params[j] || params[j] == 'undefined') {
+                params[j] = null;
+              }
+            }
+          }
+        }
+
+      this.sqlliteConfig.database.transaction( (tx)=> {
+          tx.executeSql(sql, params, (tx, res) => {
+            resolve(res);
+          }, (tx, err) => {
+            resolve(err);
+          });
+        });
+      });
   }
 
   /**
@@ -292,52 +312,52 @@ export class SqliteExec {
 
 
   //插入日志
-   noteLog(log:LogTbl){
-    if (DataConfig.isdebug && DataConfig.islog){
-      this.execSqllog(log.inT(),true);
-    }
-  }
+  //  noteLog(log:LogTbl){
+  //   if (DataConfig.isdebug && DataConfig.islog){
+  //     this.execSqllog(log.inT(),true);
+  //   }
+  // }
 
   //查看日志
-
-  getLogs(log:LogTbl):Promise<Array<LogTbl>>{
-    return new Promise<Array<LogTbl>>((resolve, reject) => {
-
-      let sql:string = `select id,su,ss,t,st,er,wtt from gtd_log where 1 = 1 `;
-      if (log.su){
-        sql = sql + ` and su = "${log.su}"`;
-      }
-      if (log.ss){
-        sql = sql + ` and ss > ${log.ss}`;
-      }
-
-      if (log.t){
-        sql = sql + ` and t >= ${log.t}`;
-      }
-      sql = sql + ` and st = ${log.st?1:0}`;
-
-      if (log.searchs){
-        sql = sql + ` and wtt >= ${log.searchs}`;
-      }
-
-      if (log.searche){
-        sql = sql + ` and wtt <= ${log.searchs}`;
-      }
-
-      sql = sql + ` order by wtt desc`;
-
-      this.execSqllog(sql,true).then(data=>{
-        let arr : Array<LogTbl> = new Array<LogTbl>();
-        if (data.rows && data.rows.length > 0 ){
-          for (let j = 0, len = data.rows.length; j < len; j++) {
-            arr.push(data.rows.item(j))
-          }
-        }
-        resolve(arr);
-      })
-    })
-
-  }
+  //
+  // getLogs(log:LogTbl):Promise<Array<LogTbl>>{
+  //   return new Promise<Array<LogTbl>>((resolve, reject) => {
+  //
+  //     let sql:string = `select id,su,ss,t,st,er,wtt from gtd_log where 1 = 1 `;
+  //     if (log.su){
+  //       sql = sql + ` and su = "${log.su}"`;
+  //     }
+  //     if (log.ss){
+  //       sql = sql + ` and ss > ${log.ss}`;
+  //     }
+  //
+  //     if (log.t){
+  //       sql = sql + ` and t >= ${log.t}`;
+  //     }
+  //     sql = sql + ` and st = ${log.st?1:0}`;
+  //
+  //     if (log.searchs){
+  //       sql = sql + ` and wtt >= ${log.searchs}`;
+  //     }
+  //
+  //     if (log.searche){
+  //       sql = sql + ` and wtt <= ${log.searchs}`;
+  //     }
+  //
+  //     sql = sql + ` order by wtt desc`;
+  //
+  //     this.execSqllog(sql,true).then(data=>{
+  //       let arr : Array<LogTbl> = new Array<LogTbl>();
+  //       if (data.rows && data.rows.length > 0 ){
+  //         for (let j = 0, len = data.rows.length; j < len; j++) {
+  //           arr.push(data.rows.item(j))
+  //         }
+  //       }
+  //       resolve(arr);
+  //     })
+  //   })
+  //
+  // }
 
   sqliteEscape(keyword: string) {
     return keyword.replace(/\//g, '//');
