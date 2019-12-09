@@ -3265,7 +3265,7 @@ export class CalendarService extends BaseService {
         } else {
           let comparewrite = writeOriginData.nval || writeOriginData.cval || writeOriginData.bval || writeOriginData.checksum;
           let compareread = readNewData.nval || readNewData.cval || readNewData.bval || readNewData.checksum;
-          if (comparewrite == compareread) {
+          if (comparewrite && compareread) {
             // 读取数据和写入数据一致
             this.commit(attachment.obi, false);
           } else {
