@@ -3263,12 +3263,14 @@ export class CalendarService extends BaseService {
           // 不存在写入数据, 直接设置已读
           this.commit(attachment.obi, false);
         } else {
-          if ((writeOriginData.nval || writeOriginData.cval || writeOriginData.bval || writeOriginData.checksum) == (readNewData.nval || readNewData.cval || readNewData.bval || readNewData.checksum)) {
+          let comparewrite = writeOriginData.nval || writeOriginData.cval || writeOriginData.bval || writeOriginData.checksum;
+          let compareread = readNewData.nval || readNewData.cval || readNewData.bval || readNewData.checksum;
+          if (comparewrite == compareread) {
             // 读取数据和写入数据一致
             this.commit(attachment.obi, false);
           } else {
-            console.log(`read ${readNewData.nval || readNewData.cval || readNewData.bval || readNewData.checksum}`);
-            console.log(`write ${writeOriginData.nval || writeOriginData.cval || writeOriginData.bval || writeOriginData.checksum}`);
+            console.log(`read ${compareread}`);
+            console.log(`write ${comparewrite}`);
             // 读取数据和写入数据不一致
             this.commit(attachment.obi, true);
           }
