@@ -300,10 +300,12 @@ export class EventService extends BaseService {
 
       // await this.receivedAgendaSpeaker(saved);
       await this.sqlExce.batExecSqlByParam(sqlparam);
-      this.emitService.emit("mwxing.calendar.activities.changed", saved);
 
       if (extension != PullType.Full) {
+        this.emitService.emit("mwxing.calendar.activities.changed", saved);
         this.emitService.emit("mwxing.calendar.datas.readwrite", {rw: "write", payload: saved});
+      } else {
+        this.emitService.emit("mwxing.calendar.activities.changed", {data: saved, refresh: true});
       }
     }
 
@@ -1793,13 +1795,13 @@ export class EventService extends BaseService {
           }
 
         }else{
-          sq = `update gtd_wa set tb = ? ,del = ? ,updstate = ? where obt = ? and  wai in (select evi from gtd_ev
+          sq = `update gtd_wa set tb = ? ,del = ? where obt = ? and  wai in (select evi from gtd_ev
           where  evi = ? or rtevi =  ? ); `;
 
           params = new Array<any>();
           params.push(anyenum.SyncType.unsynch);
           params.push(anyenum.DelType.del);
-          params.push(anyenum.UpdState.inherent);
+          //params.push(anyenum.UpdState.inherent);
           params.push(ObjectType.Event);
           params.push(masterEvi);
           params.push(masterEvi);
@@ -3431,6 +3433,8 @@ export class EventService extends BaseService {
 
     if (extension != PullType.Full) {
       this.emitService.emit("mwxing.calendar.datas.readwrite", {rw: "write", payload: saved});
+    } else {
+      this.emitService.emit("mwxing.calendar.datas.readwrite", {rw: "writeandread", payload: saved});
     }
 
     return saved;

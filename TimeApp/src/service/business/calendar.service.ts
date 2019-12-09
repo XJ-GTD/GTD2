@@ -67,7 +67,7 @@ export class CalendarService extends BaseService {
     super();
     moment.locale('zh-cn');
 
-    this.datasrwqueue = new AsyncQueue(async ({data}, callback) => {
+    this.datasrwqueue = new AsyncQueue(({data}, callback) => {
       let rw: string = data.rw;
       let payload: any = data.payload;
 
@@ -141,7 +141,18 @@ export class CalendarService extends BaseService {
         return;
       }
 
+      let refresh: boolean = false;
+      if (data.refresh != undefined) {
+        refresh = data.refresh;
+        data = data.data;
+      }
+
       this.activitiesqueue.push({data: data}, () => {
+        if (refresh) {
+          // 用于接收第一次登录，接收完日程后，刷新首页的附件数量
+          this.refreshAttachmentObservables();
+        }
+
         // 完成处理
         this.detectorService.detector();
         if (this.calendaractivities.length > 0) {
@@ -3246,14 +3257,14 @@ export class CalendarService extends BaseService {
 
         if (!writeOriginData) {
           // 不存在写入数据, 直接设置已读
-          this.commit(agenda.evi, false);
+          this.commit(attachment.obi, false);
         } else {
           if ((writeOriginData.nval || writeOriginData.cval || writeOriginData.bval || writeOriginData.checksum) == (readNewData.nval || readNewData.cval || readNewData.bval || readNewData.checksum)) {
             // 读取数据和写入数据一致
-            this.commit(agenda.evi, false);
+            this.commit(attachment.obi, false);
           } else {
             // 读取数据和写入数据不一致
-            this.commit(agenda.evi, true);
+            this.commit(attachment.obi, true);
           }
         }
 
@@ -3454,7 +3465,7 @@ export class CalendarService extends BaseService {
 
           return target;
         }, 0);
-
+        console.log("update attachment " + count + " for " + attachment.obi);
         this.attachment(attachment.obi, count);
 
         this.attachmentcached.set(attachment.obi, cached);
