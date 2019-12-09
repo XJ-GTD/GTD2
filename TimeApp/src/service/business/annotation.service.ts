@@ -204,16 +204,19 @@ export class AnnotationService extends BaseService {
     for (let rc of condition.rcs ){
       let at =  new AtTbl();
       condition.ati = this.util.getUuid();
+      condition.rc = rc;
+      condition.tb = anyenum.SyncType.unsynch;
+      condition.gs = anyenum.GsType.self;
       at.ati = condition.ati;
       at.ui = condition.ui;
       at.obt = condition.obt;
       at.obi = condition.obi;
-      at.rc = rc;
-      at.tb = anyenum.SyncType.unsynch;
+      at.rc = condition.rc;
+      at.tb = condition.tb;
       at.dt = condition.dt;
       at.content = condition.content;
       at.sdt = condition.sdt;
-      at.gs = anyenum.GsType.self;
+      at.gs = condition.gs;
       sqlparam.push(at.rpTParam());
     }
 
