@@ -268,12 +268,10 @@ export class RemindPage {
     let ret: string;
     if (time >= 0){
       ret = moment(this.evdatetime, "YYYY/MM/DD HH:mm", true).subtract(time, 'm').format("MM月DD HH:mm");
+      ret = "" + TxJson.caption(time) + "- -" + ret;
     }else{
-      ret = moment(-1 * time, "YYYYMMDDHHmm",true).format("MM月DD HH:mm");
+      ret = "" + TxJson.caption(time);
     }
-
-
-    ret = "" + TxJson.caption(time) + "- -" + ret;
 
     return ret;
   }

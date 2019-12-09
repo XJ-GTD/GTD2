@@ -5569,15 +5569,14 @@ export class TxJson {
       humanremind = moment.duration(minutes, "minutes").humanize();
     }else{
       //指定日期从传入的YYYYMMDDHHmm格式日期
-      minutes = moment().diff(moment(-1 * minutes,'YYYYMMDDHHmm',true),'m');
-      humanremind = moment.duration(minutes, "minutes").humanize();
+      humanremind = moment(-1 * minutes,'YYYYMMDDHHmm',true).format("MM月DD HH:mm");
     }
 
 
     if (minutes > 0) {
       return `提前${humanremind}提醒`;
     } else if (minutes < 0) {
-      return `延后${humanremind}提醒`;
+      return `延后至${humanremind}提醒`;
     } else {
       return `事件开始时提醒`;
     }
@@ -5597,12 +5596,11 @@ export class TxJson {
         humanremind = moment.duration(minutes, "minutes").humanize();
       }else{
         //指定日期从传入的YYYYMMDDHHmm格式日期
-        minutes = moment().diff(moment(-1 * minutes,'YYYYMMDDHHmm',true),'m');
-        humanremind = moment.duration(minutes, "minutes").humanize();
+        humanremind = moment(-1 * minutes,'YYYYMMDDHHmm',true).format("MM月DD HH:mm");
       }
 
       if (first && minutes > 0) return `提前${humanremind}提醒`;
-      if (first && minutes < 0) return `延后${humanremind}提醒`;
+      if (first && minutes < 0) return `延后至${humanremind}提醒`;
       if (first && minutes == 0) return `事件开始时提醒`;
     } else {
       return "";
