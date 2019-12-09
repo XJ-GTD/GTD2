@@ -366,35 +366,35 @@ export class AttachPage {
       this.fjData.members = this.members;
       //1.对当前数据进行存储
       let retAt: Attachment = {} as Attachment;
-      // this.util.loadingStart();
+      this.util.loadingStart();
       retAt = await this.eventService.saveAttachment(this.fjData);
       this.bw = "";
       this.emitService.emit("mwxing.calendar.datas.readwrite", {rw: "writeandread", payload: retAt});
       //alert("上传返回值："+JSON.stringify(retAt));
-      // this.util.loadingEnd();
-      //this.fjArray.unshift(retAt);
-      // this.fjArray.push(retAt);
-      // this.fjData = {} as Attachment;
-      // this.fjData.obt = this.obt;
-      // this.fjData.obi = this.obi;
-      // this.bw = "";
-      this.flushData();
+      this.util.loadingEnd();
+      this.fjArray.unshift(retAt);
+      this.fjArray.push(retAt);
+      this.fjData = {} as Attachment;
+      this.fjData.obt = this.obt;
+      this.fjData.obi = this.obi;
+      this.bw = "";
+      //this.flushData();
     }
   }
 
   //保存文件
   async saveFile() {
-    // this.util.loadingStart();
+     this.util.loadingStart();
     let retAt: Attachment = {} as Attachment;
     retAt = await this.eventService.saveAttachment(this.fjData);
     this.emitService.emit("mwxing.calendar.datas.readwrite", {rw: "writeandread", payload: retAt});
-    this.flushData();
-    // this.fjArray.push(retAt);
-    // this.util.loadingEnd();
-    // this.fjData = {} as Attachment;
-    // this.fjData.obt = this.obt;
-    // this.fjData.obi = this.obi;
-    // this.bw = "";
+    //this.flushData();
+    this.fjArray.push(retAt);
+    this.util.loadingEnd();
+    this.fjData = {} as Attachment;
+    this.fjData.obt = this.obt;
+    this.fjData.obi = this.obi;
+    this.bw = "";
   }
 
 
