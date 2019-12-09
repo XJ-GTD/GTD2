@@ -1478,7 +1478,9 @@ export class EventService extends BaseService {
     return outAgds;
   }
 
-  checksumAgenda(agenda: AgendaData): string {}
+  checksumAgenda(agenda: AgendaData): string {
+    return "";
+  }
 
   /**
    * 保存或修改事件
@@ -2737,7 +2739,9 @@ export class EventService extends BaseService {
     return task;
   }
 
-  checksumTask(task: TaskData): string {}
+  checksumTask(task: TaskData): string {
+    return "";
+  }
 
 	/**
 	 * 创建更新任务
@@ -3031,7 +3035,9 @@ export class EventService extends BaseService {
   		return task;
 	}
 
-  checksumMiniTask(minitask: MiniTaskData): string {}
+  checksumMiniTask(minitask: MiniTaskData): string {
+    return "";
+  }
 
   /**
 	 * 创建更新小任务
