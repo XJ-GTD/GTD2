@@ -19,6 +19,7 @@ import {SqliteExec} from "../../service/util-service/sqlite.exec";
 import {Annotation, AnnotationService} from "../../service/business/annotation.service";
 import {Grouper, GrouperService} from "../../service/business/grouper.service";
 import {UtilService} from "../../service/util-service/util.service";
+import * as moment from "moment";
 
 /**
  * 数据同步
@@ -187,10 +188,11 @@ export class DataSyncProcess implements MQProcess {
         //   },
         // }
         let classified = {};
-
+        this.utilService.tellyou( "当前在DataSyncProcess.filedatas中还有" + filedatas.length + "个任务没有完成");
+        console.log(moment().format("YYYY/MM/DD HH:mm:ss SSS") + ":==当前在DataSyncProcess.filedatas中按照数据类型以及删除状态分类start");
         for (let filedata of filedatas) {
 
-          this.utilService.tellyou("当前在DataSyncProcess.filedatas中还有" + filedatas.length + "个任务没有完成");
+
           let dsPara: DataSyncPara = filedata;
 
           let status: string = dsPara.status;
@@ -287,7 +289,8 @@ export class DataSyncProcess implements MQProcess {
             }
           }
         }
-
+        console.log(moment().format("YYYY/MM/DD HH:mm:ss SSS") + ":==当前在DataSyncProcess.filedatas中按照数据类型以及删除状态分类end");
+        console.log(moment().format("YYYY/MM/DD HH:mm:ss SSS") + ":==当前在DataSyncProcess.filedatas中分类数据处理start");
         // 对分类后数据进行批量处理
         for (let datatype of ["Plan", "PlanItem", "Agenda", "Task", "MiniTask", "Memo", "Attachment", "Annotation", "Grouper"]) {
           let typeclass = classified[datatype];
@@ -297,6 +300,8 @@ export class DataSyncProcess implements MQProcess {
           let typeclassdel = typeclass['del'];
 
           if (typeclassdel && typeclassdel.length > 0) {
+            console.log(moment().format("YYYY/MM/DD HH:mm:ss SSS") + ":===当前在DataSyncProcess.filedatas中对 "
+                                          +"received"+datatype+"Data同步删除数据("+ typeclassdel.length +")条start " );
             if (datatype == "Plan") {
               for (let plan of typeclassdel) {
                 await this.calendarService.receivedPlanData(plan, SyncDataStatus.Deleted);
@@ -316,11 +321,15 @@ export class DataSyncProcess implements MQProcess {
             } else if (datatype == "Grouper") {
               await this.grouperService.receivedGrouperData(typeclassdel, SyncDataStatus.Deleted);
             }
+            console.log(moment().format("YYYY/MM/DD HH:mm:ss SSS") + ":===当前在DataSyncProcess.filedatas中对 "
+              +"received"+datatype+"Data同步删除数据("+ typeclassdel.length +")条end " );
           }
 
           let typeclassundel = typeclass['undel'];
 
           if (typeclassundel && typeclassundel.length > 0) {
+            console.log(moment().format("YYYY/MM/DD HH:mm:ss SSS") + ":===当前在DataSyncProcess.filedatas中对 "
+              +"received"+datatype+"Data同步未删除数据("+ typeclassundel.length +")条start " );
             if (datatype == "Plan") {
               for (let plan of typeclassundel) {
                 await this.calendarService.receivedPlanData(plan, SyncDataStatus.UnDeleted);
@@ -341,7 +350,10 @@ export class DataSyncProcess implements MQProcess {
               await this.grouperService.receivedGrouperData(typeclassundel, SyncDataStatus.UnDeleted);
             }
           }
+          console.log(moment().format("YYYY/MM/DD HH:mm:ss SSS") + ":===当前在DataSyncProcess.filedatas中对 "
+            +"received"+datatype+"Data同步未删除数据("+ typeclassundel.length +")条end " );
         }
+        console.log(moment().format("YYYY/MM/DD HH:mm:ss SSS") + ":==当前在DataSyncProcess.filedatas中分类数据处理end");
       }
     }
 

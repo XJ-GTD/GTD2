@@ -1427,9 +1427,7 @@ export class EventService extends BaseService {
     if (delType == OperateType.FromSel){
 
       //删除原事件中从当前开始所有事件
-      console.log("**** removeAgenda start :****" + moment().format("YYYY/MM/DD HH:mm:ss SSS"))
       await this.delFromsel(delEvi ,anyenum.UpdState.inherent,oriAgdata ,sqlparam,outAgds);
-      console.log("**** removeAgenda end :****" + moment().format("YYYY/MM/DD HH:mm:ss SSS"))
     }else{
 
       let sq : string;
@@ -1520,9 +1518,7 @@ export class EventService extends BaseService {
         this.assertFail("独立日不允许设定重复");
       }
 
-      console.log("**** updateAgenda start :****" + moment().format("YYYY/MM/DD HH:mm:ss SSS"))
       let outAgdatas = await this.updateAgenda(newAgdata,oriAgdata,modiType);
-      console.log("**** updateAgenda end :****" + moment().format("YYYY/MM/DD HH:mm:ss SSS"))
 
       this.emitService.emit("mwxing.calendar.activities.changed", outAgdatas);
       this.syncAgendas(outAgdatas);
@@ -1533,11 +1529,9 @@ export class EventService extends BaseService {
 
       /*新增*/
       let retParamEv = new RetParamEv();
-      console.log("**** newAgenda start :****" + moment().format("YYYY/MM/DD HH:mm:ss SSS"))
       newAgdata.updstate = anyenum.UpdState.inherent;
       newAgdata.evrelate = this.util.getUuid();
       retParamEv = this.newAgenda(newAgdata);
-      console.log("**** newAgenda end :****" + moment().format("YYYY/MM/DD HH:mm:ss SSS"))
 
       await this.sqlExce.batExecSqlByParam(retParamEv.sqlparam);
       //提交服务器
@@ -1570,9 +1564,7 @@ export class EventService extends BaseService {
     //事件sqlparam 及提醒sqlparam及附件
     let retParamEv = new RetParamEv();
 
-    console.log("**** newAgenda sqlparamAddEv2 start :****" + moment().format("YYYY/MM/DD HH:mm:ss SSS"))
     retParamEv = this.sqlparamAddEv2(agdata);
-    console.log("**** newAgenda sqlparamAddEv2 end :****" + moment().format("YYYY/MM/DD HH:mm:ss SSS"))
     //console.log(JSON.stringify(retParamEv));
 
 
@@ -1826,9 +1818,7 @@ export class EventService extends BaseService {
     if (doType == DoType.FutureAll){
 
       //删除原事件中从当前开始所有事件
-      console.log("**** updateAgenda delFromsel start :****" + moment().format("YYYY/MM/DD HH:mm:ss SSS"))
       await this.delFromsel(delEvi ,anyenum.UpdState.updtodel,oriAgdata ,sqlparam,outAgds);
-      console.log("**** updateAgenda delFromsel end :****" + moment().format("YYYY/MM/DD HH:mm:ss SSS"))
       //新建新事件日程
       let nwAgdata = {} as AgendaData;
       Object.assign(nwAgdata ,newAgdata );
@@ -1839,9 +1829,7 @@ export class EventService extends BaseService {
       //nwAgdata.topushed = await this.validAlreadyPushed(nwAgdata.members,oriAgdata.evrelate);
 
       let retParamEv = new RetParamEv();
-      console.log("**** updateAgenda newAgenda start :****" + moment().format("YYYY/MM/DD HH:mm:ss SSS"))
       retParamEv = this.newAgenda(nwAgdata);
-      console.log("**** updateAgenda newAgenda end :****" + moment().format("YYYY/MM/DD HH:mm:ss SSS"))
       //添加新参与人到新事件
       let pars = new Array<ParTbl>();
       pars = this.sqlparamAddPar(retParamEv.rtevi , newAgdata.members);
@@ -1871,9 +1859,7 @@ export class EventService extends BaseService {
 
       //修改与新增记录合并成返回事件
 
-      console.log("**** updateAgenda outAgds = [...outAgds, ...retParamEv.outAgdatas]; start :****" + moment().format("YYYY/MM/DD HH:mm:ss SSS"))
       outAgds = [ ...retParamEv.outAgdatas,...outAgds];
-      console.log("**** updateAgenda outAgds = [...outAgds, ...retParamEv.outAgdatas]; end :****" + moment().format("YYYY/MM/DD HH:mm:ss SSS"))
 
       await this.sqlExce.batExecSqlByParam(sqlparam);
 
@@ -1962,10 +1948,8 @@ export class EventService extends BaseService {
       this.modifyOnlyoneForOther(sqlparam,oriAgdata,newAgdata);
 
       //如果当前更新对象是父节点，则为当前重复日程重建新的父记录，值为ev表里的第一条做为父记录
-      console.log("**** updateAgenda changedParentAgdForOther start :****" + moment().format("YYYY/MM/DD HH:mm:ss SSS"))
       let isParent : boolean = false;
       isParent = await this.changedParentAgdForOther(oriAgdata,newAgdata.members,sqlparam,outAgds);
-      console.log("**** updateAgenda changedParentAgdForOther end :****" + moment().format("YYYY/MM/DD HH:mm:ss SSS"))
 
       //日程表新建或更新,修改为独立日的也需要为自己创建对应的日程
       let caparam = new CaTbl();
@@ -2437,9 +2421,7 @@ export class EventService extends BaseService {
     params.push(anyenum.DelType.del);
     sqlparam.push([sq,params]);
 
-    console.log("****  delFromsel 结果数组合并 start :****" + moment().format("YYYY/MM/DD HH:mm:ss SSS"))
     Object.assign(outAgds,[...outAgds, ...delAgds]);
-    console.log("****  delFromsel 结果数组合并 end :****" + moment().format("YYYY/MM/DD HH:mm:ss SSS"))
 
   }
 
