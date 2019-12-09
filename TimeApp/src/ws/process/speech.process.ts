@@ -40,11 +40,11 @@ export class SpeechProcess extends BaseProcess implements MQProcess {
       let user = UserConfig.user;
 
       //处理所需要参数
-      let serverratio = content.thisContext.context.client.serverratio;
+      let serverratio = (content.thisContext.context && content.thisContext.context.client)? content.thisContext.context.client.serverratio : 0;
 
       let ratios = "";
 
-      if (content.thisContext.context.client.ratios && content.thisContext.context.client.ratios.length > 1) {
+      if (content.thisContext.context && content.thisContext.context.client && content.thisContext.context.client.ratios && content.thisContext.context.client.ratios.length > 1) {
         ratios = content.thisContext.context.client.ratios.reduce((accumulator, currentValue) => {
 
           if (accumulator && typeof accumulator != "object") {
@@ -55,12 +55,12 @@ export class SpeechProcess extends BaseProcess implements MQProcess {
         });
       }
 
-      if (content.thisContext.context.client.ratios && content.thisContext.context.client.ratios.length == 1) {
+      if (content.thisContext.context && content.thisContext.context.client && content.thisContext.context.client.ratios && content.thisContext.context.client.ratios.length == 1) {
         let currentratio = content.thisContext.context.client.ratios[0];
         ratios = currentratio['operation'] + ": " + currentratio['ratio'];
       }
 
-      let ti = moment().valueOf() - content.thisContext.context.client.time;
+      let ti = moment().valueOf() - ((content.thisContext.context && content.thisContext.context.client)? content.thisContext.context.client.time : 0);
       let spData: SpeechPara = content.parameters;
       let prvOpt:string =  "";
       let openListener: boolean = false;

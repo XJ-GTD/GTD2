@@ -69,29 +69,29 @@ export class JPushService {
   //Native Call Function
   messageReceivediOS(event) {
     console.log("JPush received message: " + JSON.stringify(event));
-    let speakData: string = `收到${event.aps.alert}, ${event.eventdata}`;
-
-    // 停止播报，如果前面正在播报的话
-    this.assistantService.stopSpeak(false);
-    // 开始播报
-    this.assistantService.speakText(speakData).then(() => {
-      this.assistantService.stopSpeak(false);
-    })
+    // let speakData: string = `收到${event.aps.alert}, ${event.eventdata}`;
+    //
+    // // 停止播报，如果前面正在播报的话
+    // this.assistantService.stopSpeak(false);
+    // // 开始播报
+    // this.assistantService.speakText(speakData).then(() => {
+    //   this.assistantService.stopSpeak(false);
+    // })
 
   }
 
   //Native Call Function
   notificationReceived(event) {
     console.log("JPush received notification: " + JSON.stringify(event));
-    let speakData: string = `冥王星通知。
-                             收到${event.title}, ${event.alert}`;
-
-    // 停止播报，如果前面正在播报的话
-    this.assistantService.stopSpeak(false);
-    // 开始播报
-    this.assistantService.speakText(speakData).then(() => {
-      this.assistantService.stopSpeak(false);
-    })
+    // let speakData: string = `冥王星通知。
+    //                          收到${event.title}, ${event.alert}`;
+    //
+    // // 停止播报，如果前面正在播报的话
+    // this.assistantService.stopSpeak(false);
+    // // 开始播报
+    // this.assistantService.speakText(speakData).then(() => {
+    //   this.assistantService.stopSpeak(false);
+    // })
 
   }
 

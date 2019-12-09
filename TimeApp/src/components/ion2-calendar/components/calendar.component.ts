@@ -222,7 +222,7 @@ export class CalendarComponent implements OnInit {
 
   closeMonth() {
     this.calendarAnimation.closeView(() => {
-      this._showYear = "2019";
+      this._showYear = "";
       this.changestat();
     }, true);
   }

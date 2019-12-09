@@ -42,18 +42,29 @@ export class MyApp {
       //允许进入后台模式
       if (this.util.hasCordova()) {
 
-        if (this.device.platform == "Android") {
-          this.backgroundMode.setDefaults({silent: true, hidden: true}).then(d => {
-            this.backgroundMode.enable();
-            this.backgroundMode.isActive()
-          })
-
-          //设置返回键盘（android）
+        if (this.util.isAndroid()) {
           this.registerBackButtonAction();
         }
 
+        //Enable the background mode. Once called, prevents the app from being paused while in background.
+        //disable()
+        // Disable the background mode. Once the background mode has been disabled, the app will be paused when in background.
+
         // set to landscape
         this.screenOrientation.lock(this.screenOrientation.ORIENTATIONS.PORTRAIT);
+
+        //
+        // document.addEventListener("resume", () => {
+        //   console.log("resume====>moveToForeground")
+        //   this.backgroundMode.moveToForeground();
+        // }, false);
+        //
+        // document.addEventListener("pause", () => {
+        //   console.log("pause====>moveToBackground")
+        //   this.backgroundMode.moveToBackground();
+        //
+        // }, false);
+
       }
 
 
@@ -76,7 +87,6 @@ export class MyApp {
         } else {
           this.backgroundMode.moveToBackground();
         }
-
       }
 
 

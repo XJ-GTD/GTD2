@@ -165,6 +165,10 @@ export class SqliteInit {
     await this.sqlexec.dropByParam(par);
     await this.sqlexec.createByParam(par);
 
+    let rw: RwTbl = new RwTbl();
+    await this.sqlexec.dropByParam(rw);
+    await this.sqlexec.createByParam(rw);
+
   }
 
   /**

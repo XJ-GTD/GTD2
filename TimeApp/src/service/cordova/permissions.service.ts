@@ -29,6 +29,7 @@ export class PermissionsService {
     this.androidPermissions.PERMISSION.ACCESS_FINE_LOCATION,
     this.androidPermissions.PERMISSION.CAMERA,
     this.androidPermissions.PERMISSION.MOUNT_UNMOUNT_FILESYSTEMS,
+    this.androidPermissions.PERMISSION.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS,
   ];
 
   constructor(
