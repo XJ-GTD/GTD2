@@ -5,6 +5,7 @@ import {MultiPicker} from "ion-multi-picker";
 import * as moment from "moment";
 import * as anyenum from "../../data.enum";
 import {Moment} from "moment";
+import {UtilService} from "../../service/util-service/util.service";
 
 @IonicPage()
 @Component({
@@ -91,7 +92,8 @@ export class RemindPage {
   constructor(public navCtrl: NavController,
               public modalCtrl: ModalController,
               public viewCtrl: ViewController,
-              public navParams: NavParams) {
+              public navParams: NavParams,
+              private util : UtilService) {
 
     let ampmArray = [
       {text: '上午', value: '1'},
@@ -309,6 +311,11 @@ export class RemindPage {
     }
 
     time = parseInt(dtsplit[1]) + parseInt(dtsplit[2]) + parseInt(dtsplit[3]);
+    if (moment().isAfter(moment(this.evdatetime, "YYYY/MM/DD HH:mm", true).subtract(time, 'm'))){
+      this.util.toastStart("请选择今日以后提醒", 3000);
+      return;
+    }
+
     let hav = this.reminds.findIndex((value, index, arr) => {
       return value.value == time;
     })
@@ -348,6 +355,12 @@ export class RemindPage {
       tm =  (parseInt(dtsplit[1])+ 12) + ":" + dtsplit[2];
     }
     let dt = this.datevalue + " " + tm;
+
+    if (moment().isAfter(moment(dt, "YYYY-MM-DD HH:mm",true))){
+      this.util.toastStart("请选择今日以后提醒", 3000);
+      return;
+    }
+
     let time = -1 * parseInt(moment(dt, "YYYY-MM-DD HH:mm",true).format("YYYYMMDDHHmm"));
     let hav = this.reminds.findIndex((value, index, arr) => {
       return value.value == time;
@@ -355,6 +368,7 @@ export class RemindPage {
     if (hav != -1) {
       this.reminds.splice(hav,1);
     }
+
 
     this.reminds.push(
       {
