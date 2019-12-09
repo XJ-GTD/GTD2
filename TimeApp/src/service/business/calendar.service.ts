@@ -3269,8 +3269,6 @@ export class CalendarService extends BaseService {
             // 读取数据和写入数据一致
             this.commit(attachment.obi, false);
           } else {
-            console.log(`read ${compareread}`);
-            console.log(`write ${comparewrite}`);
             // 读取数据和写入数据不一致
             this.commit(attachment.obi, true);
           }
@@ -3446,7 +3444,7 @@ export class CalendarService extends BaseService {
         let readOrWrite: boolean = true;
 
         compares.forEach((value, key) => {
-          if (value.read != value.write) readOrWrite = false;
+          if (!(value.read && value.write)) readOrWrite = false;
         });
 
         if (readOrWrite) {
