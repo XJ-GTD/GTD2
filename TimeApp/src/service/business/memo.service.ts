@@ -23,6 +23,10 @@ export class MemoService extends BaseService {
 		moment.locale('zh-cn');
 	}
 
+	checksumMemo(memo: MemoData): string {
+		return "";
+	}
+
 	/**
 	 * 保存或者更新备忘
 	 * @author ying<343253410@qq.com>

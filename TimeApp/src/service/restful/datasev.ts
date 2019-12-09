@@ -156,6 +156,7 @@ export class SyncData {
   fields: SyncDataFields = new SyncDataFields();
   topushed :Array<boolean> = new Array<boolean>();//与to数组一致，设置共享人是否共享过
   updstate : string = UpdState.inherent;
+  checksum: string;       // 当前数据checksum值，用于快速比较数据和本地数据比较是否改变
   payload: any;           // 数据
 }
 
