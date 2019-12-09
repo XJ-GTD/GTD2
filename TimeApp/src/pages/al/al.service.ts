@@ -71,7 +71,7 @@ export class AlService {
         alData.text = "权限申请完成"
         if (this.util.isMobile()){
           if (this.util.isAndroid()) {
-            this.backgroundMode.setDefaults({silent: true, hidden: true});
+            this.backgroundMode.setDefaults({silent: true, hidden: true, title:"冥王星在你的后台",text: "为了保证你的信息能实时更新，需要在手机后台运行"});
             //设置返回键盘（android）
             // backgroundModein.overrideBackButton();
             //Enable GPS-tracking in background (Android).
