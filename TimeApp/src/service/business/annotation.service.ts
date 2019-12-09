@@ -47,10 +47,15 @@ export class AnnotationService extends BaseService {
       for (let j = 0 , len = pullAnnotations.length; j < len ; j++){
         let annotation = new  Annotation();
         Object.assign(annotation, pullAnnotations[j]);
-        annotation.ati = this.util.getUuid();
+
         annotation.tb = SyncType.synch;
-        annotation.gs = anyenum.GsType.him;
-        annotation.rc = "";
+        if (UserConfig.account.id == annotation.ui){
+          annotation.gs = anyenum.GsType.self;
+        }else{
+          annotation.ati = this.util.getUuid();
+          annotation.gs = anyenum.GsType.him;
+          annotation.rc = "";
+        }
 
         let at = new AtTbl();
         Object.assign(at,annotation);
