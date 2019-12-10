@@ -1720,11 +1720,13 @@ export class EventService extends BaseService {
         params.push(masterEvi);
         params.push(anyenum.UpdState.inherent);
 
+
       }else{
-        sq = ` update gtd_ev set invitestatus = ?1  where evi = ?2 or rtevi = ?2 ; `;
+        sq = ` update gtd_ev set invitestatus = ?1 ,todolist=?3  where evi = ?2 or rtevi = ?2 ; `;
         params = new Array<any>();
         params.push(newAgdata.invitestatus);
         params.push(masterEvi);
+        params.push(newAgdata.todolist);
       }
       sqlparam.push([sq,params]);
       await this.sqlExce.batExecSqlByParam(sqlparam);
