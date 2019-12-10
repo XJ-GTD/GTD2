@@ -37,7 +37,7 @@ import {AssistantService} from "../../service/cordova/assistant.service";
   `,
 })
 
-export class AipPage {
+export class AipPage{
 
   statusListener:boolean = false;
   constructor(private aipService: AipService,
@@ -45,6 +45,7 @@ export class AipPage {
               private emitService: EmitService,
               private utilService: UtilService,
               private assistantService: AssistantService,
+              private changeDetectorRef: ChangeDetectorRef,
   ) {
     //
     this.assistantService.startWakeUp();
@@ -58,6 +59,7 @@ export class AipPage {
   listenStart() {
     if (!this.statusListener) this.assistantService.listenAudio().then(data=>{
       this.emitService.emitImmediately("");
+      this.changeDetectorRef.detectChanges();
     })
     else this.assistantService.stopListenAudio();
   }

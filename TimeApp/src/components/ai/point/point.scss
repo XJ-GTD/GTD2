@@ -1,20 +1,50 @@
 
 pointcomponent {
-  .list-grid-content {
-    .sn{
-      -webkit-line-clamp: inherit;
-      font-size: 1.2rem;
-      text-align: left;
-      border-bottom: 0.55px solid #ffc107;
-    }
-}
+
   position: fixed;
   //top: $speakertop;
   //left: $speakerleft;
   width: 100%;
   height: 60px;
   top: 100%;
-  z-index:999;
+  z-index: 999;
+
+  ListeningComponent{
+    margin-top: -70px;
+    width: 50%;
+    position: fixed;
+    right: 80px;
+    canvas {
+      display: block;
+      margin: 0 auto;
+      width: 100%;
+      height: 50px;
+    }
+
+    canvas1 {
+
+      background: -webkit-linear-gradient(right top, #843094 0%, #25134f 30%, #1b1148 60%, #1f2857 90%, #2b657b 100%); /* Safari 5.1 - 6.0 */
+      background: -o-linear-gradient(right top, #843094 0%, #25134f 30%, #1b1148 60%, #1f2857 90%, #2b657b 100%); /* Opera 11.1 - 12.0 */
+      background: -moz-linear-gradient(right top, #843094 0%, #25134f 30%, #1b1148 60%, #1f2857 90%, #2b657b 100%); /* Firefox 3.6 - 15 */
+      background: linear-gradient(right top, #843094 0%, #25134f 30%, #1b1148 60%, #1f2857 90%, #2b657b 100%);
+      //#
+
+      display: block;
+      width: $canvasSize;
+      height: $canvasSize;
+      border-radius: 50%;
+      margin: $canvastop auto;
+    }
+  }
+
+  .list-grid-content {
+    .sn {
+      -webkit-line-clamp: inherit;
+      font-size: 1.2rem;
+      text-align: left;
+      border-bottom: 0.55px solid #ffc107;
+    }
+  }
 
   .aitool {
     position: relative;
@@ -95,23 +125,10 @@ pointcomponent {
     }
   }
 
-  canvas {
-
-    background: -webkit-linear-gradient(right top, #843094 0%, #25134f 30%, #1b1148 60%, #1f2857 90%, #2b657b 100%); /* Safari 5.1 - 6.0 */
-    background: -o-linear-gradient(right top, #843094 0%, #25134f 30%, #1b1148 60%, #1f2857 90%, #2b657b 100%); /* Opera 11.1 - 12.0 */
-    background: -moz-linear-gradient(right top,#843094 0%, #25134f 30%, #1b1148 60%, #1f2857 90%, #2b657b 100%); /* Firefox 3.6 - 15 */
-    background: linear-gradient(right top, #843094 0%, #25134f 30%, #1b1148 60%, #1f2857 90%, #2b657b 100%);
-    //#
-
-    display: block;
-    width: $canvasSize;
-    height: $canvasSize;
-    border-radius: 50%;
-    margin: $canvastop auto;
-  }
 
 
-  .spinner{
+
+  .spinner {
     //position: fixed;
     width: $spinnerSize;
     height: $spinnerSize;
@@ -120,9 +137,9 @@ pointcomponent {
     border-radius: 50%;
     //z-index: -1;
     background-image: url('../assets/imgs/logo2.png');
-    background-repeat:no-repeat;
-    background-size:100% 100%;
-    -moz-background-size:100% 100%;
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+    -moz-background-size: 100% 100%;
   }
 
   .spinner:before {
@@ -146,13 +163,14 @@ pointcomponent {
     margin: -57px 20px;
     border-radius: 50%;
     text-align: center;
-    background:rgba(53,152,176,1);
-    box-shadow:0px 0px 10px 0px rgba(3,0,0,0.2);
+    background: rgba(53, 152, 176, 1);
+    box-shadow: 0px 0px 10px 0px rgba(3, 0, 0, 0.2);
     width: $inputiocsize;
     height: $inputiocsize;
     text-align: center;
     float: left;
-    ion-icon{
+
+    ion-icon {
       font-size: 2rem;
       line-height: $inputiocsize;
       color: white;
@@ -164,18 +182,22 @@ pointcomponent {
       transform: rotate(1turn);
     }
   }
-  .angular-popper{
+
+  .angular-popper {
     width: 250px;
-    background-color: rgba(248,248,248,1);
+    background-color: rgba(248, 248, 248, 1);
     color: #843094;
-    div[content]{
+
+    div[content] {
       max-height: 400px;
       overflow-y: auto;
     }
-     .angular-popper__arrow{
-       border-color: rgba(248,248,248,1)
-     }
-    button{
+
+    .angular-popper__arrow {
+      border-color: rgba(248, 248, 248, 1)
+    }
+
+    button {
       position: fixed;
       top: -1rem;
       right: -3rem;
@@ -183,7 +205,8 @@ pointcomponent {
       background: transparent;
     }
   }
-  .showNot{
+
+  .showNot {
     display: none;
   }
 }

@@ -281,7 +281,7 @@ import {DetectorService} from "../service/util-service/detector.service";
     TimeOutService,
     DetectorService,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
-    {provide: HAMMER_GESTURE_CONFIG, useClass: HammerDIRECTIONALLConfig},
+    // {provide: HAMMER_GESTURE_CONFIG, useClass: HammerDIRECTIONALLConfig},
     {provide: HAMMER_GESTURE_CONFIG, useClass: ionicGalleryModal.GalleryModalHammerConfig}
   ]
 

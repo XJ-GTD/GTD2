@@ -1,4 +1,4 @@
-import {Component, ElementRef, Input, Output, Renderer2, ViewChild} from '@angular/core';
+import {ChangeDetectorRef, Component, ElementRef, Input, Output, Renderer2, ViewChild} from '@angular/core';
 import {IonicPage} from 'ionic-angular';
 import {AiData, AiService, FriendAiData, ScdAiData, ScdLsAiData, SpeechAiData} from "./ai.service";
 import {UtilService} from "../../../service/util-service/util.service";
@@ -58,11 +58,11 @@ export class AiComponent {
   //语音界面数据传递
   b: boolean;
 
-  constructor(public aiService: AiService,
+  constructor(private aiService: AiService,
               private _renderer: Renderer2,
               private util: UtilService,
               private emitService: EmitService,
-              public elementRef: ElementRef) {
+              private changeDetectorRef:ChangeDetectorRef) {
 
   }
 
@@ -70,15 +70,19 @@ export class AiComponent {
   ngAfterViewInit() {
     this.scdLsemit = this.emitService.registerScdLs(data => {
       this.callbackScdLs(data);
+      this.changeDetectorRef.detectChanges();
     });
     this.speechemit = this.emitService.registerSpeech(data => {
       this.callbackSpeech(data);
+      this.changeDetectorRef.detectChanges();
     });
     this.scdemit =   this.emitService.registerScd(data => {
       this.callbackScd(data);
+      this.changeDetectorRef.detectChanges();
     });
     this.immediatelyemit = this.emitService.registerImmediately(($data)=>{
       this.immediately = $data;
+      this.changeDetectorRef.detectChanges();
     })
   }
 
@@ -156,7 +160,6 @@ export class AiComponent {
     this.aiData1 = new AiData();
     this.aiData2 = new AiData();
     this.aiData3 = new AiData();
-
-
+    this.changeDetectorRef.detectChanges();
   }
 }
