@@ -179,7 +179,13 @@ function clean(datasource)
       }
     };
 
-    if (extension) output.content['0']['parameters']['extension'] = extension;
+    if (extension) {
+      output.content['0']['parameters']['extension'] = extension;
+
+      if (extension.endsWith('#Diff')) {
+        output.header['sender'] = "mwxing/datadiff";
+      }
+    }
 
     return output;
   }

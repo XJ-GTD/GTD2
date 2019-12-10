@@ -30,14 +30,25 @@ export class WebsocketService {
   private failedtimes: number = 0;
   private timer: any;
   private connections: number = 0;
+  backgroundqueue:AsyncQueue;
   workqueue:AsyncQueue;
   speechqueue:AsyncQueue;
+  backgrounds:number = 0;
   works:number = 0;
   speeches:number = 0;
   private disconnecttime: number = 0;
 
   constructor(private dispatchService: DispatchService, private util: UtilService, private emitService: EmitService, private config: RestFulConfig,
               private timeOutService: TimeOutService,) {
+
+    this.backgroundqueue = new AsyncQueue(({message,index,err},callback) =>{
+      console.log("当前任务=====backgroundqueue  process queue:" + this.workqueue.length());
+      this.dispatchService.dispatch(message).then(data=>{
+        callback();
+      }).catch(data=>{
+        callback(message);
+      })
+    },1,1,"background.queue");
 
     this.workqueue = new AsyncQueue(({message,index,err},callback) =>{
       console.log("当前任务=====workqueue  process queue:" + this.workqueue.length());
@@ -78,6 +89,12 @@ export class WebsocketService {
           this.speechqueue.push({message:message,index:this.speeches++},(err)=>{
             if (err) {
               // console.log("speech queue process error happenned. ", err, '\r\n', err.stack);
+            }
+          });
+        } else if (sender == "mwxing/datadiff") {
+          this.backgroundqueue.push({message:message,index:this.backgrounds++},(err)=>{
+            if (err) {
+              // console.log("background queue process error happenned. ", err, '\r\n', err.stack);
             }
           });
         } else {
