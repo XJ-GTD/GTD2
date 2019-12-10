@@ -51,38 +51,50 @@ export class GrouperService extends BaseService {
     let saved: Array<Grouper> = new Array<Grouper>();
 
     if (pullGroupers && pullGroupers !=null ){
-
+      console.log("==receivedGrouperData:pullGroupers="+ JSON.stringify(pullGroupers));
       for (let j = 0 , len = pullGroupers.length; j < len ; j++){
+
         let grouper = new  Grouper();
         Object.assign(grouper, pullGroupers[j]);
-
+        console.log("====receivedGrouperData:grouper="+ JSON.stringify(grouper));
+        let bxtbl = new BxTbl();
+        bxtbl.bi = grouper.gi;
+        sqlparam.push([bxtbl.dT(),[]]);
         if (grouper.fss ){
           for (let fs of grouper.fss ){
 
+            console.log("======receivedGrouperData:fs.ui,fs.rc,fs.ran="+fs.ui +","+fs.rc+","+fs.ran);
             if (UserConfig.friends){
               let findm =  UserConfig.friends.find((value, index,arr)=>{
-                return value.ui == fs.ui || value.rc == fs.rc;
+
+                return value.rc == fs.rc;
               });
 
               //本地存在就使用本地pwi，否则新建插入人员
+
               if (findm){
+                console.log("======receivedGrouperData:findm=true=>rpt,findm.pwi="+findm.pwi);
+
                 let bx = new BxTbl();
                 bx.bi = grouper.gi;
                 bx.bmi = findm.pwi;
                 sqlparam.push([bx.rpT(),[]]);
               }else{
+                console.log("======receivedGrouperData:findm=false=>rpt");
                 let pwi = this.util.getUuid();
                 let bx = new BxTbl();
                 bx.bi = grouper.gi;
                 bx.bmi = pwi;
                 sqlparam.push([bx.rpT(),[]]);
-
+                console.log("======receivedGrouperData:findm=false=>bxsql:"+bx.rpT());
                 let bfs = new BTbl();
                 fs.pwi = pwi;
                 Object.assign(bfs,fs);
                 sqlparam.push([bfs.rpT(),[]]);
+                console.log("======receivedGrouperData:findm=false=>bfssql:"+bfs.rpT());
               }
             }else{
+              console.log("======receivedGrouperData:UserConfig.friends=false=>rpt");
               let pwi = this.util.getUuid();
               let bx = new BxTbl();
               bx.bi = grouper.gi;
@@ -169,10 +181,10 @@ export class GrouperService extends BaseService {
 
 
     if (groupers.length <= 0 ){
-      let gtbl: GTbl = new GTbl();
-      groupers = await this.sqlExce.getList<Grouper>(gtbl);
+      let gsql = `select * from gtd_g where del ; `;
+      groupers = await this.sqlExce.getExtList<Grouper>(gsql);
 
-      let sql = 'select gb.*,bx.bi from gtd_b gb inner join gtd_b_x bx on bx.bmi = gb.pwi ';
+      let sql = `select gb.*,bx.bi from gtd_b gb inner join gtd_b_x bx on bx.bmi = gb.pwi where bx.del <>'del'; `;
       let fss: Array<FsData> = await this.sqlExce.getExtList<FsData>(sql);
 
       if (fss && fss.length > 0){
@@ -276,8 +288,7 @@ export class GrouperService extends BaseService {
 
       bx.bi = gi;
       bx.bmi = pwi;
-      bx.del = anyenum.DelType.del;
-      await this.sqlExce.update(bx);
+      await this.sqlExce.delete(bx);
 
     }
 
@@ -313,7 +324,7 @@ export class GrouperService extends BaseService {
     gtbl.gi = gi;
     let gp : Grouper = await this.sqlExce.getOne<Grouper>(gtbl);
 
-    let sql = 'select gb.* from gtd_b gb inner join gtd_b_x bx on bx.bmi = gb.pwi where bx.bi = "' + gi + '"';
+    let sql = `select gb.* from gtd_b gb inner join gtd_b_x bx on bx.bmi = gb.pwi where bx.bi = '${gi}' and bx.del<>'del'; `;
     let fss: Array<FsData> = await this.sqlExce.getExtList<FsData>(sql);
 
     if (gp != null){
