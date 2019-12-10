@@ -1,8 +1,8 @@
 import {Component, ViewChild} from '@angular/core';
 import {IonicPage, NavController, NavParams, ViewController} from 'ionic-angular';
-import {GcService} from "../gc/gc.service";
 import {UtilService} from "../../service/util-service/util.service";
 import {PageDcData} from "../../data.mapping";
+import {GrouperService} from "../../service/business/grouper.service";
 
 
 /**
@@ -33,7 +33,7 @@ export class GaPage {
               public navParams: NavParams,
               public viewCtrl: ViewController,
               private util:UtilService,
-              private gcService:GcService,) {
+              private gcService:GrouperService,) {
   }
   @ViewChild('nameInput') nameInput ;
   ionViewDidLoad() {

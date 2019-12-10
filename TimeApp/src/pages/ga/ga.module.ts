@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import { IonicPageModule } from 'ionic-angular';
 import { GaPage } from './ga';
-import {GcService} from "../gc/gc.service";
 import {ModalBoxComponentModule} from "../../components/modal-box/modal-box.module";
 
 @NgModule({
@@ -13,7 +12,7 @@ import {ModalBoxComponentModule} from "../../components/modal-box/modal-box.modu
 
     ModalBoxComponentModule
   ],
-  providers:[GcService
+  providers:[
   ],
 })
 export class GaPageModule {}
