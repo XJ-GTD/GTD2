@@ -5,6 +5,7 @@
   "parameters": [
     "userinfo",
     "deviceId",
+    "from",
     "data"
   ],
   "follows": [
@@ -26,7 +27,8 @@
           "parameters": [
               "ruleid;MWXING_JOIN_AGENDA_V1_5",
               "datasource;$.parent.outputs",
-              "merge_joiner;$.root.parameters.userinfo",
+              "merge_from;$.root.parameters.from",
+              "merge_userinfo;$.root.parameters.userinfo",
               "merge_deviceId;$.root.parameters.deviceId"
           ],
           "outputs": [

@@ -209,5 +209,9 @@ export class DayCountCodec {
 }
 
 export class ShareInData {
+  from: any = {
+    phoneno: "",
+    name: ""
+  };
   payload: any;   // 共享数据载荷
 }

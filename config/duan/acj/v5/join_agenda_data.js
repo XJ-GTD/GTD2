@@ -4,7 +4,7 @@ function shouldclean(datasource) {
   // filter source code here start
   var input = JSON.parse(datasource);
 
-  if (input !== undefined && input['userinfo'] && input['deviceId'] && input['deviceId'].startsWith('web_') && input['datas']) {
+  if (input !== undefined && input['userinfo'] && input['from'] && input['from']['phoneno'] && input['from']['name'] && input['deviceId'] && input['deviceId'].startsWith('web_') && input['datas']) {
 
     return true;
   }
@@ -25,6 +25,7 @@ function clean(datasource) {
 
   var userinfo = input['userinfo'];
   var deviceId = input['deviceId'];
+  var from = input['from'];
   var datas = input['datas'];
 
   // 转换成mwxing_data_sync_push_start处理流输入参数格式
@@ -34,11 +35,11 @@ function clean(datasource) {
       pi: '',
       pv: '',
       dt: 'thirdparty',
-      ai: userinfo.openid,
+      ai: from.phoneno,
       di: deviceId
     },
-    mpn: userinfo.phoneno,
-    name: userinfo.nickname,
+    mpn: from.phoneno,
+    name: from.name,
     d: []
   };
 

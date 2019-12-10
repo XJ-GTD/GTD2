@@ -230,7 +230,7 @@ describe('EventService test suite', () => {
         }
       }
     }
-    await eventService.receivedAgendaData(outagds,anyenum.SyncDataStatus.Deleted);
+    await eventService.receivedAgendaData(outagds,anyenum.SyncDataStatus.Deleted,"pull");
 
   });
 

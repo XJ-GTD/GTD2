@@ -76,6 +76,8 @@ export class EventService extends BaseService {
       }
     }
 
+    share.from.phoneno = UserConfig.account.phone;
+    share.from.name = UserConfig.account.name;
     share.payload = agenda;
 
     return await this.dataRestful.share("agenda", share);
