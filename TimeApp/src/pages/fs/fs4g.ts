@@ -1,10 +1,10 @@
 import {Component} from '@angular/core';
 import {ModalController, NavController, NavParams, ViewController} from 'ionic-angular';
 import {FsService} from "./fs.service";
-import {GcService} from "../gc/gc.service";
 import {UtilService} from "../../service/util-service/util.service";
 import {FsData, FsPageData, PageDcData} from "../../data.mapping";
 import {DataConfig} from "../../service/config/data.config";
+import {GrouperService} from "../../service/business/grouper.service";
 
 /**
  * Generated class for the 群组参与人选择 page.
@@ -77,7 +77,7 @@ export class Fs4gPage {
               private fsService: FsService,
               public viewCtrl: ViewController,
               private util: UtilService,
-              private gsService: GcService,
+              private gsService: GrouperService,
               private  modalCtrl:ModalController) {
 
     this.dc = this.navParams.get('tpara');

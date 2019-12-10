@@ -1,11 +1,11 @@
 import {Component} from '@angular/core';
 import {IonicPage, ModalController, NavController, NavParams} from 'ionic-angular';
 
-import {GcService} from "./gc.service";
 import {FsService} from "../fs/fs.service";
 import {DataConfig} from "../../service/config/data.config";
 import {UtilService} from "../../service/util-service/util.service";
 import {FsData, PageDcData} from "../../data.mapping";
+import {GrouperService} from "../../service/business/grouper.service";
 /**
  * Generated class for the 群组编辑 page.
  *
@@ -45,7 +45,7 @@ export class GcPage {
   fsl:Array<FsData> = new Array<FsData>();
   constructor(public navCtrl: NavController,
               public navParams: NavParams,
-              private gcService: GcService,
+              private gcService: GrouperService,
               private fsService:FsService,
               private util:UtilService,
               private modalCtrl: ModalController) {

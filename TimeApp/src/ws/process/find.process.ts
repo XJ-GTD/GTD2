@@ -8,7 +8,6 @@ import {SqliteExec} from "../../service/util-service/sqlite.exec";
 import * as moment from "moment";
 import {CTbl} from "../../service/sqlite/tbl/c.tbl";
 import {FsService} from "../../pages/fs/fs.service";
-import {GlService} from "../../pages/gl/gl.service";
 import {FsData, PageDcData, ScdData} from "../../data.mapping";
 import {UtilService} from "../../service/util-service/util.service";
 import {WsDataConfig} from "../wsdata.config";
@@ -26,7 +25,7 @@ import {CalendarService, FindActivityCondition, ActivityData} from "../../servic
 @Injectable()
 export class FindProcess extends BaseProcess implements MQProcess {
   constructor(private sqliteExec: SqliteExec, private fsService: FsService,private calendarService:CalendarService,
-              private glService: GlService, private util:UtilService,private eventService:EventService,
+               private util:UtilService,private eventService:EventService,
               private userConfig: UserConfig) {
     super();
   }

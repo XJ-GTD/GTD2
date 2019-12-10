@@ -19,7 +19,7 @@ import * as anyenum from "../../data.enum";
 import {MemoData} from "./memo.service";
 import {GTbl} from "../sqlite/tbl/g.tbl";
 import {BxTbl} from "../sqlite/tbl/bx.tbl";
-import {FsData} from "../../data.mapping";
+import {FsData, PageDcData} from "../../data.mapping";
 import {BTbl} from "../sqlite/tbl/b.tbl";
 
 @Injectable()
@@ -217,6 +217,122 @@ export class GrouperService extends BaseService {
 
   }
 
+  //编辑群名称(添加群成员)
+  async save(dc: PageDcData) {
+    let ret:boolean = false;
+    let gi :string;
+    if (dc.gi != null && dc.gi != '' && dc.fsl.length > 0) {
+      gi = dc.gi;
+      let bxL = new Array<string>();
+      let sql = `select gb.* from gtd_b gb inner join gtd_b_x bx on bx.bmi = gb.pwi  
+              where bx.bi = '${dc.gi}'and bx.del <>'del' `;
+      let data: Array<BTbl> = await this.sqlExce.getExtList<BTbl>(sql);
+      for (let fs of dc.fsl) {
+        let bx = new BxTbl();
+        bx.bi = dc.gi;
+        bx.bmi = fs.pwi;
+        let ie = false;
+        for (let bt of data) {
+          if (bt.pwi == fs.pwi) {
+            ie = true;
+            break;
+          }
+        }
+        if (!ie) {
+          let bx = new BxTbl();
+          bx.bi = dc.gi;
+          bx.bmi = fs.pwi;
+          bx.del = DelType.undel;
+          bxL.push(bx.rpT());
+        }
+      }
+      await this.sqlExce.batExecSql(bxL);
+      ret = true;
+    } else if (dc.gi == null || dc.gi == '') { // 新建群
+      let gc = new GTbl();
+      Object.assign(gc, dc);
+      gc.gi = this.util.getUuid();
+      gc.gnpy = this.util.chineseToPinYin(gc.gn);
+      //gc.gm = DataConfig.QZ_HUIBASE64;
+      gi = gc.gi;
+      let data = await this.sqlExce.save(gc);
+      ret = true;
+    }
+
+    await this.setGrouperFss(gi);
+    await this.userConfig.RefreshFriend();
+    return ret;
+  }
+
+  /**
+   * 删除群成员
+   * @param {string} gi 群组ID
+   * @param {string} pwi 联系人ID
+   * @returns {Promise<BsModel<any>>}
+   */
+  async deleteBx(gi: string, pwi: string) {
+    let bx = new BxTbl();
+    if (gi != null && gi != '' && pwi != null && pwi != '') {
+
+      bx.bi = gi;
+      bx.bmi = pwi;
+      bx.del = anyenum.DelType.del;
+      await this.sqlExce.update(bx);
+
+    }
+
+    await this.setGrouperFss(gi);
+
+    //刷新群组表
+    await this.userConfig.RefreshFriend();
+    return;
+  }
+
+//删除群
+  async delete(gId: string) {
+    //删除本地群成员
+    let bx = new BxTbl();
+    bx.bi = gId;
+    bx.del = anyenum.DelType.del;
+    await this.sqlExce.update(bx);
+    //删除本地群
+    let gtbl: GTbl = new GTbl();
+    gtbl.gi = gId;
+    gtbl.del = anyenum.DelType.del;
+    await this.sqlExce.update(gtbl);
+
+    await this.setGrouperFss(gId);
+
+    //刷新群组表
+    await this.userConfig.RefreshFriend();
+  }
+
+  private async setGrouperFss(gi : string){
+    let groupers = new Array<Grouper>();
+    let gtbl: GTbl = new GTbl();
+    gtbl.gi = gi;
+    let gp : Grouper = await this.sqlExce.getOne<Grouper>(gtbl);
+
+    let sql = 'select gb.* from gtd_b gb inner join gtd_b_x bx on bx.bmi = gb.pwi where bx.bi = "' + gi + '"';
+    let fss: Array<FsData> = await this.sqlExce.getExtList<FsData>(sql);
+
+    if (gp != null){
+      gp.fss = fss;
+      groupers.push(gp);
+      await this.syncGrouper(groupers);
+    }
+  }
+
+  //获取本地群列表
+  getGroups(name:string):Array<PageDcData> {
+    if (name)
+      return UserConfig.groups.filter((value)=>{
+        return value.gn.indexOf(name) > -1 || value.gnpy.indexOf(name) > -1
+      });
+    else
+      return UserConfig.groups;
+  }
+
 }
 
 export class Grouper extends GTbl{
@@ -225,5 +341,10 @@ export class Grouper extends GTbl{
 }
 
 export class GrouperRelation extends BxTbl{
+
+}
+export class PageGlData {
+
+  gl:Array<PageDcData> = new Array<PageDcData>(); //群组成员
 
 }

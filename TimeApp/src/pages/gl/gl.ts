@@ -1,10 +1,10 @@
 import {Component} from '@angular/core';
 import {IonicPage, ModalController, NavController, NavParams, ViewController} from 'ionic-angular';
-import {GcService} from "../gc/gc.service";
 import {DataConfig} from "../../service/config/data.config";
 import {UserConfig} from "../../service/config/user.config";
 import {UtilService} from "../../service/util-service/util.service";
 import {PageDcData} from "../../data.mapping";
+import {GrouperService} from "../../service/business/grouper.service";
 
 /**
  * Generated class for the 群组列表 page.
@@ -46,7 +46,7 @@ export class GlPage {
   constructor(public navCtrl: NavController,
               public navParams: NavParams,
               public view: ViewController,
-              private gcService:GcService,
+              private gcService:GrouperService,
               public modalCtrl: ModalController,
               public util: UtilService) {
     this.getGroups();

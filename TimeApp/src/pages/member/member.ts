@@ -2,12 +2,12 @@ import {Component, Renderer2} from '@angular/core';
 import {ModalController, NavController, NavParams, ViewController} from 'ionic-angular';
 import {MemberService} from "./member.service";
 import {UtilService} from "../../service/util-service/util.service";
-import {GlService} from "../gl/gl.service";
 import {FsData, FsPageData, PageGroupData} from "../../data.mapping";
 import {DataConfig} from "../../service/config/data.config";
 import {FeedbackService} from "../../service/cordova/feedback.service";
 import {Member} from "../../service/business/event.service";
 import {UserConfig} from "../../service/config/user.config";
+import {GrouperService} from "../../service/business/grouper.service";
 
 /**
  * Generated class for the 参与人选择 page.
@@ -86,7 +86,7 @@ export class MemberPage {
               public navParams: NavParams,
               private memberService: MemberService,
               private util: UtilService,
-              private glService: GlService,
+              private glService: GrouperService,
               private  modalCtrl: ModalController,private feedback:FeedbackService) {
   }
 
