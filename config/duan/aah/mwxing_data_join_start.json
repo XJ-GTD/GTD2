@@ -1,0 +1,68 @@
+{
+  "_id": ObjectID("5def29da956dff0008e9ec6e"),
+  "name": "冥王星第三方数据加入参与人请求处理流",
+  "trigger": "mwxing_data_join_start",
+  "parameters": [
+    "userinfo",
+    "deviceId",
+    "data"
+  ],
+  "follows": [
+    {
+      "name": "数据推送 - 拉取需要加入的最新数据",
+      "trigger": "sas",
+      "parameters": [
+        "type;fetch",
+        "datatype;$.parent.parameters.data.datatype",
+        "data;$.parent.parameters.data.datas"
+      ],
+      "outputs": [
+          "datas"
+      ],
+      "next": [
+        {
+          "name": "生成加入日程数据",
+          "trigger": "acj",
+          "parameters": [
+              "ruleid;MWXING_JOIN_AGENDA_V1_5",
+              "datasource;$.parent.outputs",
+              "merge_joiner;$.root.parameters.userinfo",
+              "merge_deviceId;$.root.parameters.deviceId"
+          ],
+          "outputs": [
+              "cleaned"
+          ],
+          "next": [
+            {
+              "when": {
+                "d$and": [
+                  {
+                      "d$.parent.outputs.cleaned": {
+                          "d": {
+                              "d$exists": true
+                          }
+                      }
+                  },
+                  {
+                      "d$.parent.outputs.cleaned.d": {
+                          "d$length": {
+                              "d$gt": 0
+                          }
+                      }
+                  }
+                ]
+              },
+              "name": "推送数据更新",
+              "trigger": "exc",
+              "parameters": [
+                "method;post",
+                "urlabs;http://sa-cdc:8080/cdc/mwxing_data_sync_push_start/json/trigger",
+                "data;$.parent.outputs.cleaned"
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
