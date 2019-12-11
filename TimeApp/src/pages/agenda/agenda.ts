@@ -26,6 +26,7 @@ import {
 import {ModiPower} from "../../data.enum";
 import {AssistantService} from "../../service/cordova/assistant.service";
 import {EmitService} from "../../service/util-service/emit.service";
+import * as anyenum from "../../data.enum";
 
 declare var Wechat;
 
@@ -409,6 +410,20 @@ export class AgendaPage {
     });
     modal.onDidDismiss(async (data) => {
       if (data) {
+
+        if (data.al == anyenum.IsWholeday.EndSet){
+          if (this.currentAgenda.al != data.al
+            || this.currentAgenda.evd != data.evd
+            || this.currentAgenda.evt != data.evt
+            || this.currentAgenda.sd != data.sd
+            || this.currentAgenda.st != data.st
+            || this.currentAgenda.ed != data.ed
+            || this.currentAgenda.et != data.et
+            || this.currentAgenda.ct != data.ct){
+            this.currentAgenda.todolist = anyenum.ToDoListStatus.On;
+          }
+        }
+
         this.currentAgenda.al = data.al;
         this.currentAgenda.evd = data.evd;
         this.currentAgenda.evt = data.evt;
@@ -417,6 +432,8 @@ export class AgendaPage {
         this.currentAgenda.ed = data.ed;
         this.currentAgenda.et = data.et;
         this.currentAgenda.ct = data.ct;
+
+        this.currentAgenda.txs = this.currentAgenda.txjson.text(this.currentAgenda.evd,this.currentAgenda.evt);
       }
 
       if (this.currentAgenda.evn != "" && !this.eventService.isSameAgenda(this.currentAgenda, this.originAgenda)) {
@@ -710,7 +727,7 @@ export class AgendaPage {
         this.currentAgenda.txjson = new TxJson();
         Object.assign(this.currentAgenda.txjson, data.txjson);
         this.currentAgenda.tx = JSON.stringify(this.currentAgenda.txjson);
-        this.currentAgenda.txs = this.currentAgenda.txjson.text();
+        this.currentAgenda.txs = this.currentAgenda.txjson.text(this.currentAgenda.evd,this.currentAgenda.evt);
 
         if (this.currentAgenda.evn != "" && !this.eventService.isSameAgenda(this.currentAgenda, this.originAgenda)) {
           this.buttons.save = true;

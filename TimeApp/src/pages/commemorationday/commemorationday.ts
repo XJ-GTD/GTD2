@@ -442,7 +442,7 @@ export class CommemorationDayPage {
         this.currentPlanItem.txjson = new TxJson();
         Object.assign(this.currentPlanItem.txjson, data.txjson);
         this.currentPlanItem.tx = JSON.stringify(this.currentPlanItem.txjson);
-        this.currentPlanItem.txs = this.currentPlanItem.txjson.text();
+        this.currentPlanItem.txs = this.currentPlanItem.txjson.text(this.currentPlanItem.sd,this.currentPlanItem.st);
 
         if (!this.calendarService.isSamePlanItem(this.currentPlanItem, this.originPlanItem)) {
           this.buttons.save = true;

@@ -157,6 +157,7 @@ env:
   - IOS_APP_NAME="冥王星"
   - 'IOS_DEVELOPER_NAME="iPhone Distribution: Jinyang Zhang (D5A8L43W8A)"'
   - IOS_PROFILE_NAME="0d72d07b-a8ca-4e00-885f-d16a07e79f13"
+  - IOS_PROFILE_NAME_FIR="0aeae61c-fb24-4614-a18b-63cb9d620cd5"
   - FIR_TIMEOUT=500
 jdk:
   - oraclejdk8

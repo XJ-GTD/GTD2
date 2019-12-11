@@ -31,10 +31,10 @@ import {UtilService} from "../../service/util-service/util.service";
       <ion-scroll scrollY="true" scrollheightAuto>
         <ion-list>
           <ion-list-header>
-            剩余 <span class="count">{{reminds.length}}</span> 条提醒
+            剩余 <span class="count">{{tixinnum}}</span> 条提醒
           </ion-list-header>
-          <ion-item *ngFor="let remind of reminds; let idx = index;" >
-            <ion-label [ngStyle]="{'color':remind.disTixin ? 'gray':'#333333'}" >{{remind.datename}}</ion-label>
+          <ion-item *ngFor="let remind of reminds; let idx = index;" [hidden]="remind.disTixin"  >
+            <ion-label>{{remind.datename}}</ion-label>
             <button [disabled]="remind.disTixin" ion-button (click)="delRemind(idx)" clear item-end>
               <ion-icon class="fal fa-minus-circle"></ion-icon>
             </button>
@@ -84,6 +84,7 @@ export class RemindPage {
   evdatetime: string;
 
   disTiqian : boolean = false;
+  tixinnum : number = 0;
 
   reminds: Array<any> = new Array<any>();
   currentTx: TxJson;
@@ -93,7 +94,7 @@ export class RemindPage {
               public modalCtrl: ModalController,
               public viewCtrl: ViewController,
               public navParams: NavParams,
-              private util : UtilService) {
+              private util : UtilService,) {
 
     let ampmArray = [
       {text: '上午', value: '1'},
@@ -245,11 +246,11 @@ export class RemindPage {
               {
                 datename: this.getShowDateName(this.currentTx.reminds[j]),
                 value: this.currentTx.reminds[j],
-                disTixin : this.getDisTixin(this.currentTx.reminds[j])
+                disTixin : TxJson.getDisTixin(this.evdatetime,this.currentTx.reminds[j])
               });
           }
         }
-
+        this.setTixinnum();
       }
 
     }
@@ -328,6 +329,7 @@ export class RemindPage {
         value: time,
         disTixin : false
       });
+    this.setTixinnum();
 
   }
 
@@ -376,6 +378,7 @@ export class RemindPage {
         value: time,
         disTixin: false
       });
+    this.setTixinnum();
   }
 
   day2min(d) {
@@ -390,23 +393,12 @@ export class RemindPage {
     this.reminds.splice(index, 1);
   }
 
-  getDisTixin(time) : boolean{
-    let ret : boolean = true;
-    if (!time){
-      return true;
+  setTixinnum() {
+    this.tixinnum = 0;
+    for (let j = 0, len = this.reminds.length; j < len; j++) {
+      if (!TxJson.getDisTixin(this.evdatetime,this.reminds[j].value)){
+        this.tixinnum = this.tixinnum + 1;
+      }
     }
-    let txdt : Moment;
-    if (time >= 0 ){
-      txdt = moment(this.evdatetime, "YYYY/MM/DD HH:mm", true).subtract(time, 'm');
-    }else{
-      txdt = moment(-1 * time, 'YYYYMMDDHHmm',true);
-    }
-
-    if ( moment().isAfter(txdt)){
-      ret = true;
-    }else{
-      ret = false;
-    }
-    return ret ;
   }
 }
