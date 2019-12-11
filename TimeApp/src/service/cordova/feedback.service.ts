@@ -46,6 +46,12 @@ export class FeedbackService {
   //     this.vibration.vibrate(200);
   //   });
   // }
+
+  public vibrate() {
+    this.vibration.vibrate(200);
+    return;
+  }
+
   public audioWarning() {
 
     if (UserConfig.getSetting(DataConfig.SYS_Z)) {

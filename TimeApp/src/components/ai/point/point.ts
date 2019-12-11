@@ -13,10 +13,10 @@ import {UtilService} from "../../../service/util-service/util.service";
 import {AssistantService} from "../../../service/cordova/assistant.service";
 import {InputComponent} from "../input/input";
 import {EmitService} from "../../../service/util-service/emit.service";
-import {CalendarDay} from "../../ion2-calendar";
 import {PopperComponent} from "angular-popper";
 import {Subscriber} from "rxjs";
 import {TimeOutService} from "../../../util/timeOutService";
+import {ListeningComponent} from "./listening";
 
 /**
  * Generated class for the Hb01Page page.
@@ -46,7 +46,6 @@ import {TimeOutService} from "../../../util/timeOutService";
           <ng-template ngFor let-tellyou [ngForOf]="tellYouData">
             <ion-row class="item-content">
               <div class="line font-small first-line">
-
                 <div class="sn">
                   {{tellyou}}
                 </div>
@@ -57,13 +56,14 @@ import {TimeOutService} from "../../../util/timeOutService";
       </div>
     </angular-popper>
 
+    <ListeningComponent #listening  *ngIf="showInput"></ListeningComponent>
     <InputComponent #inputComponent></InputComponent>
 
   `,
 })
 export class PointComponent {
-  // @ViewChild('canvas')
-  // canvas: ElementRef;
+  @ViewChild('listening')
+  listening: ListeningComponent;
   @ViewChild('light')
   light: ElementRef;
   @ViewChild('aitool')
@@ -134,6 +134,7 @@ export class PointComponent {
 
   ponintClick(){
     this.onPonintClick.emit(this);
+    // this.listening.start();
   }
   inputstart() {
     this.inputComponent.inputStart();

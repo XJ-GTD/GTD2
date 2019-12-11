@@ -142,7 +142,7 @@ export class BTbl implements ITbl{
 
   rpT():string {
     let sq ='replace into gtd_b ' +
-      '(  pwi ,ran ,ranpy  ,hiu ,rn ,rnpy ,rc   ,rel ,ui,wtt) values("'+ this.pwi+'",' +
+      '(  pwi ,ran ,ranpy  ,hiu ,rn ,rnpy ,rc   ,rel ,ui,src,wtt) values("'+ this.pwi+'",' +
       '"'+ this.ran+'","'+this.ranpy+ '"' +
       ',"'+this.hiu+ '","'+this.rn+ '","'+this.rnpy+ '","'+this.rc+ '",' +
       '"'+this.rel+ '","'+this.ui+ '","'+this.src+ '",'+  moment().unix() + ');';

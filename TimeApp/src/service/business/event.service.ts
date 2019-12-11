@@ -2072,7 +2072,7 @@ export class EventService extends BaseService {
         }else {
           for (let oriMember of   oriAgdata.members){
             let findm =  newAgdata.members.find((value, index,arr)=>{
-              return value.pari == oriMember.pari || value.ui == oriMember.ui || value.rc == oriMember.rc;
+              return value.pari == oriMember.pari || value.rc == oriMember.rc;
             });
             if (!findm){
               changed = true;

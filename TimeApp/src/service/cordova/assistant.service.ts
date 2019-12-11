@@ -10,6 +10,7 @@ import {UtilService} from "../util-service/util.service";
 import {SsService} from "../../pages/ss/ss.service";
 import {UserConfig} from "../config/user.config";
 import {EmitService} from "../util-service/emit.service";
+import {FeedbackService} from "./feedback.service";
 
 declare var cordova: any;
 
@@ -30,7 +31,8 @@ export class AssistantService {
               private aibutlerRestful: AibutlerRestful,
               private sqliteExec: SqliteExec,
               private utilService: UtilService,
-              private emitService: EmitService) {
+              private emitService: EmitService,
+              private feedbackService:FeedbackService) {
 
     this.mp3Path = this.file.cacheDirectory;
     this.mp3Name = "iat.pcm";
@@ -228,14 +230,16 @@ export class AssistantService {
    * 停止监听
    */
   public stopListenAudio() {
-    this.listening = false;
     if (!this.utilService.isMobile()) return;
-    cordova.plugins.XjBaiduSpeech.stopListen();
-    this.startWakeUp();
-    this.emitService.emitListener(false);
-    setTimeout( () => {
-      this.emitService.emitImmediately("");
-    }, 2000);
+    if (this.listening){
+      cordova.plugins.XjBaiduSpeech.stopListen();
+      this.startWakeUp();
+      this.emitService.emitListener(false);
+      this.listening = false;
+      setTimeout( () => {
+        this.emitService.emitImmediately("");
+      }, 2000);
+    }
   }
 
 
@@ -247,16 +251,18 @@ export class AssistantService {
     if (!this.utilService.isMobile()) {
       return;
     }
-    this.listening = true;
     this.stopSpeak(false);
     this.stopWakeUp();
     this.emitService.emitListener(true);
+    this.feedbackService.vibrate();
+    this.listening = true;
     await cordova.plugins.XjBaiduSpeech.startListen(async result => {
       this.emitService.emitImmediately(result.text);
       if (!result.finish) {
         return ;
       }
-      this.stopListenAudio();
+      // this.stopListenAudio();
+      this.emitService.emitListener(false);
       // 读取录音进行base64转码
       let base64File: string = await this.file.readAsDataURL(this.mp3Path, this.mp3Name);
       let audioPro = new AudioPro();
@@ -269,7 +275,7 @@ export class AssistantService {
       await this.aibutlerRestful.postaudio(audioPro);
       return result;
     }, async error => {
-      this.stopListenAudio();
+      this.emitService.emitListener(false);
       setTimeout(async () => {
         let text = await this.getSpeakText(DataConfig.FF);
         this.speakText(text);
