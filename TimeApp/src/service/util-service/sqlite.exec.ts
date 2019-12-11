@@ -86,6 +86,7 @@ export class SqliteExec {
           tx.executeSql(sql, params, (tx, res) => {
             resolve(res);
           }, (tx, err) => {
+            console.log("sql [" + sql + "] params [" + (params? params.join(",") : "") + "] log error :" + err.message);
             resolve(err);
           });
         });
