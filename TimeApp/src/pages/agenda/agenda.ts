@@ -123,7 +123,7 @@ declare var Wechat;
                 <button ion-button clear>
                   <ion-icon class="fas fa-bell" *ngIf="currentAgenda.txs"></ion-icon>
                   <ion-icon class="fas fa-bell" *ngIf="!currentAgenda.txs" noval></ion-icon>
-                  <span class="content font-normal"  margin-left  [class.noval] = "!currentAgenda.txs">
+                  <span class="content font-normal"    [class.noval] = "!currentAgenda.txs">
                    {{currentAgenda.txs || "未设置"}}
                 </span>
                 </button>
@@ -136,7 +136,7 @@ declare var Wechat;
                 <button ion-button clear>
                   <ion-icon class="fas fa-copy " *ngIf="currentAgenda.rts"></ion-icon>
                   <ion-icon class="fas fa-copy " noval *ngIf="!currentAgenda.rts "></ion-icon>
-                  <span class="content font-normal" margin-left  [class.noval] = "!currentAgenda.rts">
+                  <span class="content font-normal"   [class.noval] = "!currentAgenda.rts">
                   {{currentAgenda.rts || "不重复"}}
                 </span>
                 </button>
@@ -161,7 +161,7 @@ declare var Wechat;
                 <button ion-button clear>
                   <ion-icon class="fas fa-map-marker-alt" *ngIf="currentAgenda.adr "></ion-icon>
                   <ion-icon class="fas fa-map-marker-alt" *ngIf="!currentAgenda.adr " noval></ion-icon>
-                  <span class="content font-normal" margin-left [class.noval] = "!currentAgenda.adr">
+                  <span class="content font-normal"  [class.noval] = "!currentAgenda.adr">
                   {{currentAgenda.adr || "未设置"}}
                 </span>
 
@@ -174,12 +174,12 @@ declare var Wechat;
               <div class="button-b">
                 <button ion-button clear (click)="changeInvites()">
                   <ion-icon class="fad fa-user-friends "></ion-icon>
-                  <corner-badge fa-user-friends *ngIf="currentAgenda.pn > 0"><p>{{currentAgenda.pn}}</p></corner-badge>
+                  <corner-badge fa-user-friends *ngIf="currentAgenda.pn > 0">{{currentAgenda.pn}}</corner-badge>
                 </button>
                 <button ion-button clear (click)="changeAttach()">
                   <ion-icon class="fad fa-info-circle "></ion-icon>
                   <corner-badge fa-info-circle *ngIf="currentAgenda.fj && currentAgenda.fj != '0'">
-                    <p>{{currentAgenda.fj}}</p>
+                    {{currentAgenda.fj}}
                   </corner-badge>
                 </button>
               </div>

@@ -14,9 +14,9 @@ import * as moment from "moment";
             <div class="sn font-large">{{task.evn}}</div>
 
             <div class="icon" end (click)="complete($event, task)" >
-              <!--<ion-icon class="fal fa-minus-circle" (click)="erease($event, task)"></ion-icon>-->
+              <!--<ion-icon class="fal fa-minus-circle" (click)="erease($event, task)"></ion-icon>-->              
               <button>
-                <i class="fal fa-check"></i>
+                <b>OK</b>
               </button>
             </div>
           </div>

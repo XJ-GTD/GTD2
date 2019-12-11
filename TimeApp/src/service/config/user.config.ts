@@ -28,11 +28,11 @@ export class UserConfig {
     //用户头像
     avatar: "",
     //出生日期
-    bothday: "",
+    birthday: "",
     //真实姓名
     realname: "",
     //身份证
-    No: "",
+    ic: "",
     //性别
     sex: "",
     //联系方式
@@ -167,8 +167,8 @@ export class UserConfig {
       UserConfig.user.aid = rows[0].ai;
       UserConfig.user.name = rows[0].un;
       UserConfig.user.avatar = rows[0].hiu;
-      UserConfig.user.bothday = rows[0].biy;
-      UserConfig.user.No = rows[0].ic;
+      UserConfig.user.birthday = rows[0].biy;
+      UserConfig.user.ic = rows[0].ic;
       UserConfig.user.realname = rows[0].rn;
       UserConfig.user.sex = rows[0].us;
       UserConfig.user.contact = rows[0].uct;

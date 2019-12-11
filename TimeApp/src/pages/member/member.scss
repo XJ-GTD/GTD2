@@ -1,12 +1,30 @@
-page-member {
+page-member,page-gc,page-fs4g {
+  ion-label{
+    font-weight: bold;
+  }
   .item.item-ios .checkbox-ios{
-    margin: 8px 16px 8px 16px;
+    margin: 8px 6px 8px 6px;
   }
   ion-list.list-ios .item-ios{
     min-height: 44px;
   }
+  ion-list.list-ios .item-ios .item-inner ion-icon[item-end]{
+    margin: 8px 6px 8px 6px;
+  }
 
   .chooseed {
     font-weight: bold;
+  }
+  .reg{
+    width: 45px;
+    text-align: center;
+    font-weight: normal;
+  }
+  .tel{
+    width: 100px;
+    text-align: center;
+    overflow: hidden;
+    margin-right:1rem;
+    font-weight: normal;
   }
 }

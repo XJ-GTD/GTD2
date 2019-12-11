@@ -26,8 +26,9 @@ import {GrouperService} from "../../service/business/grouper.service";
              <ion-label (click)="toMemberInfo(g)" >
                {{g.ran}}
 
-               <span *ngIf="g.rel ==1">（注册）</span>
-               <span *ngIf="g.rel !=1">（未注册）</span>
+               <span *ngIf="g.rel ==1" float-right class="reg">注册</span>
+               <span *ngIf="g.rel !=1" float-right class="reg">未注册</span>
+               <span float-right class="tel">{{g.rc | formatstring: "maskphone":3:5}}</span>
              </ion-label>
              <ion-icon class="fal fa-minus-circle font-large-x" (click)="delete(g)"  item-end></ion-icon>
            </ion-item>

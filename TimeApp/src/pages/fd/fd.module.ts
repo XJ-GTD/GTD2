@@ -3,6 +3,7 @@ import { IonicPageModule } from 'ionic-angular';
 import { FdPage } from './fd';
 import {FdService} from "./fd.service";
 import {ModalBoxComponentModule} from "../../components/modal-box/modal-box.module";
+import {PipesModule} from "../../pipes/pipes.module";
 
 @NgModule({
   declarations: [
@@ -10,7 +11,8 @@ import {ModalBoxComponentModule} from "../../components/modal-box/modal-box.modu
   ],
   imports: [
     IonicPageModule.forChild(FdPage),
-    ModalBoxComponentModule
+    ModalBoxComponentModule,
+    PipesModule
   ],
   providers: [
     FdService,

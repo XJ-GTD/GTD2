@@ -76,7 +76,7 @@ ion-list.list-ios {
       }
 
 
-      ion-label, input, select, ion-icon, ion-note, ion-toggle {
+      ion-label, input, select, ion-icon, ion-note, ion-toggle,.datetime-text {
         font-size: 14px;
         letter-spacing: 1px;
         margin: 0.1rem 0.1rem;
@@ -146,7 +146,7 @@ ion-list.list-ios {
           }
         }
 
-        ion-label, input, select, ion-icon, ion-note, ion-toggle {
+        ion-label, input, select, ion-icon, ion-note, ion-toggle,.datetime-text {
           color:rgba(59,59,59,1);
 
         }
@@ -213,7 +213,7 @@ ion-list.list-ios {
             }
           }
         }
-        ion-label, input, select, ion-icon, ion-note, ion-toggle {
+        ion-label, input, select, ion-icon, ion-note, ion-toggle,.datetime-text {
           color:rgba(235,239,250,1)
 
         }

@@ -54,8 +54,9 @@ import {GrouperService} from "../../service/business/grouper.service";
           <ion-item *ngFor="let member of pageFsList" >
             <ion-label [class.chooseed] = "member.checked">
               {{member.ran}}
-              <span *ngIf="member.rel ==1" float-right>注册</span>
-              <span *ngIf="member.rel !=1" float-right>未注册</span>
+              <span *ngIf="member.rel ==1" float-right class="reg">注册</span>
+              <span *ngIf="member.rel !=1" float-right class="reg">未注册</span>
+              <span float-right class="tel">{{member.rc | formatstring: "maskphone":3:5}}</span>
             </ion-label>
             <ion-checkbox (click)="addsel(member)" [(ngModel)]="member.checked"></ion-checkbox>
           </ion-item>

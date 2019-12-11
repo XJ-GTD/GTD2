@@ -23,17 +23,21 @@ import * as moment from "moment";
   template: `
     <page-box title="个人信息" [buttons]="buttons" (onSave)="save()" (onBack)="goBack()" nobackgroud nobottom>
       <ion-list>
-        <ion-item no-lines no-padding no-margin no-border>
-          <ion-label>用户名</ion-label>
-          <ion-input type="text" [(ngModel)]="uo.user.name" item-end text-end readonly="true"></ion-input>
-        </ion-item>
+        <!--<ion-item no-lines no-padding no-margin no-border>-->
+          <!--<ion-label>用户名</ion-label>-->
+          <!--<ion-input type="text" [(ngModel)]="uo.user.name" item-end text-end readonly="true"></ion-input>-->
+        <!--</ion-item>-->
         <ion-item no-lines no-padding no-margin no-border>
           <ion-label>注册手机</ion-label>
           <ion-input type="text" [(ngModel)]="uo.user.aid" item-end text-end readonly="true"></ion-input>
         </ion-item>
         <ion-item no-lines no-padding no-margin no-border>
           <ion-label>姓名</ion-label>
-          <ion-input type="text" [(ngModel)]="uo.user.realname" item-end text-end></ion-input>
+          <ion-input type="text" [(ngModel)]="uo.user.name" item-end text-end  (ionBlur)="check()"></ion-input>
+        </ion-item>
+        <ion-item no-lines no-padding no-margin no-border>
+          <ion-label>身份证</ion-label>
+          <ion-input type="number" item-end text-end [(ngModel)]="uo.user.ic"  (ionBlur)="check()"></ion-input>
         </ion-item>
       </ion-list>
       <ion-list>
@@ -44,16 +48,12 @@ import * as moment from "moment";
         </ion-item>
         <ion-item no-lines no-padding no-margin no-border>
           <ion-label>生日</ion-label>
-          <date-picker #birthdaypicker item-content displayFormat="YYYY年MM月DD日" [(ngModel)]="birthday"
-                       min="1919-01-01" cancelText="取消" doneText="确认"></date-picker>
-        </ion-item>
-        <ion-item no-lines no-padding no-margin no-border>
-          <ion-label>身份证</ion-label>
-          <ion-input type="tel" item-end text-end [(ngModel)]="uo.user.No"></ion-input>
+          <date-picker #birthdaypicker item-content displayFormat="YYYY-MM-DD" [(ngModel)]="uo.user.birthday"
+                       min="1919-01-01" cancelText="取消" doneText="确认" (ionBlur)="check()"></date-picker>
         </ion-item>
         <ion-item no-lines no-padding no-margin no-border>
           <ion-label>联系方式</ion-label>
-          <ion-input type="tel" text-end [(ngModel)]="uo.user.contact"></ion-input>
+          <ion-input type="tel" text-end [(ngModel)]="uo.user.contact"  (ionBlur)="check()"></ion-input>
         </ion-item>
       </ion-list>
     </page-box>
@@ -62,9 +62,7 @@ import * as moment from "moment";
 export class PsPage {
 
   buttons: any = {
-    remove: false,
-    share: false,
-    save: true,
+    save: false,
     cancel: true
   };
 
@@ -79,9 +77,7 @@ export class PsPage {
   grid: ElementRef;
 
   today: any = new Date();
-  sex: string = '';
-  birthday: string = '';
-  avatar: any = DataConfig.HUIBASE64;
+  // avatar: any = DataConfig.HUIBASE64;
   uo: PageUData = new PageUData();
   olduo: PageUData = new PageUData();
 
@@ -104,24 +100,23 @@ export class PsPage {
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad UcPage');
     Object.assign(this.uo.user, UserConfig.user);
     Object.assign(this.uo.account, UserConfig.account);
 
-    Object.assign(this.olduo.user, UserConfig.user);
-    Object.assign(this.olduo.account, UserConfig.account);
+    Object.assign(this.uo.user, UserConfig.user);
+    Object.assign(this.uo.account, UserConfig.account);
 
-    this.avatar = UserConfig.user.avatar;
-
-    if (UserConfig.user.sex != undefined && UserConfig.user.sex != '') {
-      if (UserConfig.user.sex == "0") {
-        this.sex = "未知";
-      } else {
-        this.sex = UserConfig.user.sex == "1" ? "男" : "女";
-      }
-    }
-
-    this.birthday = UserConfig.user.bothday.replace(new RegExp('/', 'g'), '-');
+    // this.avatar = UserConfig.user.avatar;
+    //
+    // if (UserConfig.user.sex != undefined && UserConfig.user.sex != '') {
+    //   if (UserConfig.user.sex == "0") {
+    //     this.sex = "未知";
+    //   } else {
+    //     this.sex = UserConfig.user.sex == "1" ? "男" : "女";
+    //   }
+    // }
+    //
+    // this.uo.user.bothday  = UserConfig.user.bothday.replace(new RegExp('/', 'g'), '-');
 
     this.birthdaypicker.max = moment().format("YYYY-MM-DD");
   }
@@ -132,17 +127,27 @@ export class PsPage {
 
   getData() {
     this.psService.findPerson(UserConfig.user.id).then(data => {
-      this.uo.user = UserConfig.user;
+      this.uo.user.id = UserConfig.user.id;
+      this.uo.user.aid = UserConfig.user.aid;
+      this.uo.user.name = UserConfig.user.name;
+      this.uo.user.birthday = UserConfig.user.birthday;
+      this.uo.user.realname = UserConfig.user.realname;
+      this.uo.user.ic = UserConfig.user.ic;
+      this.uo.user.sex = UserConfig.user.sex;
+      this.uo.user.contact = UserConfig.user.contact;
+      this.uo.user.birthday = this.uo.user.birthday.replace(new RegExp('/', 'g'), '-');
+      this.olduo.user.id = UserConfig.user.id;
+      this.olduo.user.aid = UserConfig.user.aid;
+      this.olduo.user.name = UserConfig.user.name;
+      this.olduo.user.birthday = UserConfig.user.birthday;
+      this.olduo.user.realname = UserConfig.user.realname;
+      this.olduo.user.ic = UserConfig.user.ic;
+      this.olduo.user.sex = UserConfig.user.sex;
+      this.olduo.user.contact = UserConfig.user.contact;
+      this.olduo.user.birthday = this.olduo.user.birthday.replace(new RegExp('/', 'g'), '-');
 
-      this.avatar = this.uo.user.avatar;
-      if (this.uo.user.sex != undefined && this.uo.user.sex != '') {
-        if (this.uo.user.sex == "0") {
-          this.sex = "未知";
-        } else {
-          this.sex = this.uo.user.sex == "1" ? "男" : "女";
-        }
-      }
-      this.birthday = this.uo.user.bothday.replace(new RegExp('/', 'g'), '-');
+      // this.avatar = this.uo.user.avatar;
+      // this.uo.user.bothday = this.uo.user.bothday.replace(new RegExp('/', 'g'), '-');
     });
   }
 
@@ -162,50 +167,32 @@ export class PsPage {
     }
   }
 
-  save() {
-    let inData: any;
-    let isUpd = false;
-    if (this.olduo.user.sex != this.uo.user.sex) {
-      isUpd = true;
-      inData = {sex: this.uo.user.sex};
-    }
-    if (this.olduo.user.bothday != this.uo.user.bothday) {
-      isUpd = true;
-      inData = {birthday: this.uo.user.bothday};
-    }
-    if (this.olduo.user.contact != this.uo.user.contact) {
-      isUpd = true;
-      inData = {contact: this.uo.user.contact};
-    }
-    if (this.olduo.user.realname != this.uo.user.realname) {
-      isUpd = true;
-      inData = {realname: this.uo.user.realname};
-    }
-    if (this.olduo.user.No != this.uo.user.No) {
-      isUpd = true;
-      inData = {ic: this.uo.user.No};
-    }
+  check(){
+    if (this.olduo.user.sex != this.uo.user.sex || this.olduo.user.birthday != this.uo.user.birthday ||
+      this.olduo.user.contact != this.uo.user.contact || this.uo.user.ic != this.uo.user.ic ||
+      this.olduo.user.name != this.uo.user.name){
+      this.buttons.save = true;
+    }else{
 
-    if (isUpd) {
-      this.psService.saveUser(this.uo.user.id, inData).then(data => {
-        this.getData();
-        Object.assign(this.olduo.user, this.uo.user);  //替换旧数据
-      }).catch(error => {
-        this.util.popoverStart(error);
-      })
+      this.buttons.save = false;
     }
-
   }
 
-  getDtPickerSel(evt) {
+  save() {
+      let inData: any = {};
+      inData.sex = this.uo.user.sex;
+      inData.birthday = this.uo.user.birthday.replace(new RegExp('/', 'g'), '-');
+      inData.contact = this.uo.user.contact;
+      inData.ic = this.uo.user.ic;
+      inData.name = this.uo.user.name;
 
-    let el = document.getElementsByClassName("picker-opt-selected")
-
-    if (el && el.length == 3) {
-      this.birthday = el[0].textContent + "-" + el[1].textContent + "-" + el[2].textContent;
-      this.uo.user.bothday = this.birthday.replace(new RegExp('-', 'g'), '/');
-      this.save();
-    }
+      this.psService.saveUser(this.uo.user.id, inData).then(data => {
+        this.goBack();
+        this.util.toastStart("修改成功",2000);
+        // Object.assign(this.olduo.user, this.uo.user);  //替换旧数据
+      }).catch(error => {
+        this.util.toastStart(error,2000);
+      })
 
   }
 
@@ -215,17 +202,13 @@ export class PsPage {
         text: '男',
         handler: () => {
           this.uo.user.sex = '1';
-          console.log("男:" + this.uo.user.sex);
-          this.sex = this.uo.user.sex == "1" ? "男" : "女";
-          this.save();
+          this.check();
         }
       }, {
         text: '女',
         handler: () => {
           this.uo.user.sex = '2';
-          console.log("女:" + this.uo.user.sex);
-          this.sex = this.uo.user.sex == "1" ? "男" : "女";
-          this.save();
+          this.check();
         }
       }]
     });

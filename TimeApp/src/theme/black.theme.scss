@@ -3,6 +3,7 @@ ion-app.black-theme {
   background: $baseBackcolor_black;
 
   ion-calendar {
+    opacity: 0.8;
     box-shadow: 0px 0px 5px 0px rgba(3, 0, 0, 0.2);
 
     ion-card-header {
@@ -44,8 +45,8 @@ ion-app.black-theme {
           color: rgba(235, 239, 250, 1);
         }
 
-        .last-month-day p, .next-month-day p {
-          color: rgba(47, 78, 86, 1);
+        .last-month-day p, .next-month-day p , .next-month-day samll{
+          color:rgba(64,106,117,1);
         }
 
         small {
@@ -86,24 +87,6 @@ ion-app.black-theme {
     button {
       background: rgba(70, 159, 175, 1);
       color: rgba(255, 255, 255, 1);
-    }
-  }
-
-  page-m {
-    .menu {
-      background: rgba(13, 24, 42, 1);
-
-      .grid {
-        .row {
-          color: rgba(235, 239, 250, 1);
-
-          h1, h4 {
-            color: rgba(73, 152, 188, 1);
-          }
-
-
-        }
-      }
     }
   }
 

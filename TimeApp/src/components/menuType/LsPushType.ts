@@ -27,7 +27,9 @@ export class LsPushType extends MenuType {
     this.ani.add(menuAni);
     const contentApi = new Animation(plt, menu.getContentElement());
     contentApi.fromTo('translateX', '0px', contentOpenedX);
-    contentApi.fromTo('scale',1,.9);
+
+    contentApi.fromTo('scale',1,.8);
+    contentApi.fromTo('opacity',0,.5);
     this.ani.add(contentApi);
   }
 }

@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {Component, ElementRef, Renderer2} from '@angular/core';
 import {IonicPage, Modal, ModalController, Platform} from 'ionic-angular';
 import {DataConfig} from "../../service/config/data.config";
 import {UserConfig} from "../../service/config/user.config";
@@ -27,14 +27,15 @@ import {CalendarDay} from "../../components/ion2-calendar";
     <ion-menu [content]="ha" side="left" swipeEnabled="true"  type="scalePush" class="menu" id="scalePush"
               (ionClose) = "ionClose($evnet)" (ionOpen) = "ionOpen($evnet)" (ionDrag) = "ionDrag($evnet)" >
         <ion-grid>
-          <ion-row (click)="goPsPage()">
-
-                  <h1>冥王星</h1>
-                  <h4>{{phone}}</h4>
+          <ion-row>
+            <h1>冥王星</h1>
             <!--<span>-->
                   <!--<h2>{{name}}</h2>-->
                   <!--<p>{{phone}}</p>-->
             <!--</span>-->
+          </ion-row>
+          <ion-row>
+            <h4>{{name}}</h4>
           </ion-row>
           <ion-row (click)="todoList()">
             <h3>重要事项</h3>
@@ -76,9 +77,6 @@ import {CalendarDay} from "../../components/ion2-calendar";
 export class MPage {
   hPage: any = DataConfig.PAGE._H_PAGE;
   name:any;
-  phone:any;
-  isdebug:boolean;
-  maxEdgeStart:any = 150;
 
   constructor(public plt: Platform,
               public jpush: JPushService,
@@ -86,7 +84,9 @@ export class MPage {
               private util: UtilService,
               private emitService: EmitService,
               private rabbitmq: RabbitMQService,
-              private settings:SettingsProvider) {
+              private settings:SettingsProvider,
+              private renderer2:Renderer2,
+              private elementRef:ElementRef) {
     //真机的时候获取JPush注册ID，并保存到服务器注册用户信息
     if (this.util.isMobile()) {
       this.emitService.register("on.jpush.registerid.loaded", () => {
@@ -116,13 +116,23 @@ export class MPage {
     //     this.modalController.create(DataConfig.PAGE._GLORY_PAGE).present();
     //   });
     // }
+    this.settings.getActiveTheme().subscribe(val => {
+      let pix = this.util.randInt(1,5);
+      let white = " url('../assets/imgs/m-backgroud-white-" + pix + ".jpg')";
+      let black = " url('../assets/imgs/m-backgroud-black-" + pix + ".jpg')";
+
+      if (val == "white-theme"){
+        this.renderer2.setStyle(this.elementRef.nativeElement,"background-image",white);
+      }else{
+        this.renderer2.setStyle(this.elementRef.nativeElement,"background-image",black);
+      }
+    });
 
     settings.setStatusBarColor(StatusType.home);
   }
 
   ionViewDidLoad() {
-    this.isdebug = DataConfig.isdebug;
-    this.maxEdgeStart = this.plt.width() / 2;
+
 
     console.log('ionViewDidLoad MPage');
   }
@@ -132,7 +142,7 @@ export class MPage {
   }
 
   getData(){
-    this.phone = this.util.mask(UserConfig.account.phone, 3, 4);
+    // this.phone = this.util.mask(UserConfig.account.phone, 3, 4);
     this.name = UserConfig.user.name;
 
     // if (UserConfig.user.avatar != undefined && UserConfig.user.avatar != '') {

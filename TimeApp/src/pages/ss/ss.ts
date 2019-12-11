@@ -148,7 +148,7 @@ export class SsPage {
   sfirim: Setting;
   sgithub: Setting;
   stravisci: Setting;
-  theme: Setting;
+  theme: Setting = UserConfig.settins.get(DataConfig.SYS_THEME);
 
   bh: boolean;       //唤醒 页面显示和修改
   bt: boolean;       //新消息提醒 页面显示和修改

@@ -28,7 +28,7 @@ import {ExchangeSummaryData} from "../../service/business/calendar.service";
       </div>
       <div ion-item no-border no-padding no-lines no-margin class="itemwarp font-normal">
         <ion-label>联系方式</ion-label>
-        <ion-label item-end text-end >{{fd.rc}}</ion-label>
+        <ion-label item-end text-end >{{fd.rc | formatstring: "maskphone":3:5}}</ion-label>
       </div>
       <div ion-item no-border no-padding no-lines no-margin class="itemwarp font-normal">
         <ion-label>注册状态</ion-label>

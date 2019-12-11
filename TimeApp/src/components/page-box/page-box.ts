@@ -38,7 +38,7 @@ import {StatusType} from "../../data.enum";
 
 
             <div  (click)="goCreate()" *ngIf="buttons.create">
-              <ion-icon class="fal fa-plus-square"></ion-icon>
+              <ion-icon class="fal fa-plus"></ion-icon>
             </div>
 
             <div  (click)="goSave()" *ngIf="buttons.save">
@@ -58,7 +58,7 @@ import {StatusType} from "../../data.enum";
             <!--</div>-->
 
             <div (click)="goBack()" *ngIf="buttons.cancel">
-              <ion-icon class="fal fa-undo"></ion-icon>
+              <ion-icon class="fal fa-times"></ion-icon>
             </div>
           </div>
         </ion-toolbar>

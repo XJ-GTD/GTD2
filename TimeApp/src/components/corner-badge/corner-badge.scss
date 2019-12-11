@@ -1,44 +1,22 @@
 corner-badge {
   position: absolute;
-  width: 45px;
-  height: 25px;
-  top: -12px;
-  right: -20px;
-  border-radius: 100%;
-  background-color: white;
+  width: 1.5rem;
+  height: 1.5rem;
+  border-radius: 50%;
+  background:rgba(255,0,0,1);
   font-size: 0.9rem;
-  text-align: left;
-  p{
-    width: 22px;
-    text-align: center;
-    color:rgba(255,255,255,1);
-    margin-block-start:15px;
-    margin-block-end: 0px;
-    margin-inline-start: 0px;
-    margin-inline-end: 0px;
-    margin-left: 2px;
-  }
-}
-
-corner-badge {
-  position: absolute;
-  width: 45px;
-  height: 25px;
-  top: -12px;
-  right: -20px;
-  border-radius: 100%;
-  background-color: white;
-  font-size: 0.9rem;
-  text-align: left;
-  p{
-    width: 22px;
-    text-align: center;
-    color:rgba(255,255,255,1);
-    margin-block-start:15px;
-    margin-block-end: 0px;
-    margin-inline-start: 0px;
-    margin-inline-end: 0px;
-    margin-left: 2px;
-  }
+  text-align: center;
+  color:rgba(255,255,255,1);
+  line-height: 1.5rem;
+  right: 8px;
+  top: 2px;
+  //p{
+  //  width: 22px;
+  //  margin-block-start:15px;
+  //  margin-block-end: 0px;
+  //  margin-inline-start: 0px;
+  //  margin-inline-end: 0px;
+  //  margin-left: 2px;
+  //}
 }
 

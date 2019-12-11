@@ -204,11 +204,11 @@ export class PageUData{
     //用户头像
     avatar: "",
     //出生日期
-    bothday: "",
+    birthday: "",
     //真实姓名
     realname: "",
     //身份证
-    No: "",
+    ic: "",
     //性别
     sex: "",
     //联系方式

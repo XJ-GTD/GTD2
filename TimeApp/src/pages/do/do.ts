@@ -18,8 +18,8 @@ import {DataConfig} from "../../service/config/data.config";
 import {FeedbackService} from "../../service/cordova/feedback.service";
 import {TaskListComponent} from "../../components/task-list/task-list";
 import {CalendarService} from "../../service/business/calendar.service";
-import {EventService, AgendaData} from "../../service/business/event.service";
-import { PageDirection, OperateType, EventFinishStatus } from "../../data.enum";
+import {EventService, AgendaData, Attachment} from "../../service/business/event.service";
+import {PageDirection, OperateType, EventFinishStatus, ObjectType} from "../../data.enum";
 import {AsyncQueue} from "../../util/asyncQueue";
 import {TimeOutService} from "../../util/timeOutService";
 
@@ -246,5 +246,16 @@ export class DoPage {
     complete.wc = EventFinishStatus.Finished;
 
     await this.eventService.saveAgenda(complete, origin, OperateType.OnlySel);
+
+    let attachment:Attachment = {} as Attachment;
+
+    attachment.fjn ="已完成(在【重要事项】中点击了完成)！";
+    attachment.ui = this.currentuser;
+    attachment.members = origin.members;
+    attachment.obi = origin.evi;
+    attachment.obt = ObjectType.Event;
+
+    this.eventService.saveAttachment(attachment);
+
   }
 }

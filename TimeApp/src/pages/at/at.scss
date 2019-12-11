@@ -1,7 +1,7 @@
 page-at {
 
   ion-content.content {
-    background-color: $baseBackColor;
+    background-color: $baseBackcolor_black;
     color: #fff;
   }
 
@@ -21,7 +21,7 @@ page-at {
   }
 
   ion-footer ion-toolbar .toolbar-background,.toolbar-background-md,.toolbar-background-ios {
-    background-color: $baseBackColor;
+    background-color: $baseBackcolor_black;
   }
 
   ion-footer {

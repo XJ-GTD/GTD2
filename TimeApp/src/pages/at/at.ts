@@ -22,12 +22,11 @@ import { AppVersion } from '@ionic-native/app-version';
   template: `
     <ion-header no-border>
       <ion-toolbar>
-        <ion-buttons left>
-          <button ion-button icon-only (click)="goBack()">
-            <ion-icon class="fal fa-undo"></ion-icon>
+        <ion-buttons right>
+          <button ion-button icon-only (click)="goBack()">            
+            <ion-icon class="fal fa-times"></ion-icon>
           </button>
         </ion-buttons>
-        <ion-title>关于</ion-title>
       </ion-toolbar>
     </ion-header>
 
@@ -81,21 +80,22 @@ import { AppVersion } from '@ionic-native/app-version';
     </ion-grid>
     </ion-content>
 
-    <ion-footer>
-      <ion-toolbar>
-        <ion-buttons left>
-          <button ion-button icon-only (click)="userAgreement()" color="danger">
-            服务条款
-          </button>
-        </ion-buttons>
+    <!--<ion-footer>-->
+      <!--<ion-toolbar>-->
+        <!--<ion-buttons left>-->
+          <!--<button ion-button icon-only (click)="userAgreement()" color="danger">-->
+            <!--服务条款-->
+          <!--</button>-->
+        <!--</ion-buttons>-->
 
-        <ion-buttons right>
-          <button ion-button icon-only (click)="userAgreement()" color="danger">
-            隐私政策
-          </button>
-        </ion-buttons>
-      </ion-toolbar>
-  </ion-footer>`
+        <!--<ion-buttons right>-->
+          <!--<button ion-button icon-only (click)="userAgreement()" color="danger">-->
+            <!--隐私政策-->
+          <!--</button>-->
+        <!--</ion-buttons>-->
+      <!--</ion-toolbar>-->
+  <!--</ion-footer>-->
+  `
 })
 export class AtPage {
 

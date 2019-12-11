@@ -226,7 +226,7 @@ import {AssistantService} from "../../service/cordova/assistant.service";
               <div class="button-b">
                 <button ion-button clear (click)="changeInvites()">
                   <ion-icon class="fad fa-user-friends "></ion-icon>
-                  <corner-badge fa-user-friends *ngIf="currentPlanItem.pn > 0"><p>{{currentPlanItem.pn}}</p>
+                  <corner-badge fa-user-friends *ngIf="currentPlanItem.pn > 0">{{currentPlanItem.pn}}
                   </corner-badge>
                 </button>
               </div>

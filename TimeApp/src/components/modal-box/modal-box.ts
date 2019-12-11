@@ -32,7 +32,7 @@ import {SettingsProvider} from "../../providers/settings/settings";
               <ion-icon class="fal fa-sync"></ion-icon>
             </div>
             <div (click)="create()" *ngIf="buttons.create">
-              <ion-icon class="fal fa-plus-square"></ion-icon>
+              <ion-icon class="fal fa-plus"></ion-icon>
             </div>
             <div (click)="save()" *ngIf="buttons.save">
               <ion-icon class="fal fa-check"></ion-icon>

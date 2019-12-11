@@ -25,35 +25,32 @@ import {GrouperService} from "../../service/business/grouper.service";
       </div>
 
       <ion-scroll scrollY="true" scrollheightAuto>
-        <ion-list>
-          <ion-list-header>
-            选择(<span class="count">{{selFsl.length}}</span>)人
-          </ion-list-header>
-          <ion-item >
-            <ion-label>
-              <ul>
-                <li *ngFor="let g of selFsl" (click)="rmSelected(g)">
-                  <span> {{ g.ran }}</span>
-                </li>
-                <li>
-                </li>
-              </ul>
+        <!--<ion-list>-->
+          <!--<ion-list-header>-->
+            <!--选择(<span class="count">{{selFsl.length}}</span>)人-->
+          <!--</ion-list-header>-->
+          <!--<ion-item >-->
+            <!--<ion-label>-->
+              <!--<ul>-->
+                <!--<li *ngFor="let g of selFsl" (click)="rmSelected(g)">-->
+                  <!--<span> {{ g.ran }}</span>-->
+                <!--</li>-->
+                <!--<li>-->
+                <!--</li>-->
+              <!--</ul>-->
+            <!--</ion-label>-->
+          <!--</ion-item>-->
+        <!--</ion-list>-->
+
+        <ion-list >        
+          <ion-item *ngFor="let member of pageFsl" >
+            <ion-label [class.chooseed] = "member.checked">
+              {{member.ran}}
+              <span *ngIf="member.rel ==1" float-right class="reg">注册</span>
+              <span *ngIf="member.rel !=1" float-right class="reg">未注册</span>
+              <span float-right class="tel">{{member.rc | formatstring: "maskphone":3:5}}</span>
             </ion-label>
-          </ion-item>
-        </ion-list>
-
-        <ion-list >
-          <ion-list-header>
-            选择参与人
-          </ion-list-header>
-          <ion-item *ngFor="let g of pageFsl" >
-
-            <ion-label>
-              {{g.ran}}
-              <span *ngIf="g.rel ==1">（注册）</span>
-            </ion-label>
-
-            <ion-checkbox (click)="addsel(g)" [(ngModel)]="g.checked"></ion-checkbox>
+            <ion-checkbox (click)="addsel(member)" [(ngModel)]="member.checked"></ion-checkbox>
           </ion-item>
         </ion-list>
       </ion-scroll>

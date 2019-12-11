@@ -1,15 +1,16 @@
 page-m {
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+
   .menu {
     .grid {
       padding-top: 65px;
 
       .row {
-        opacity: 0.8;
-        margin-left: 15%;
+        margin-left: 10%;
 
         h1 {
           font-size: 26px;
-          opacity: 0.5;
           display: block;
         }
 
@@ -19,9 +20,9 @@ page-m {
           letter-spacing: 1px
         }
         h4{
-
           font-size: 16px;
-          opacity: 0.5;
+          display: block;
+          clear: both;
         }
 
       }
@@ -29,3 +30,44 @@ page-m {
   }
 
 }
+.black-theme{
+  page-m {
+    //background-image: url('../assets/imgs/m-backgroud-black.jpg');
+    .menu {
+      background: rgba(13, 24, 42,.4);
+
+      .grid {
+        .row {
+          color: rgba(235, 239, 250, 1);
+
+          h1, h4 {
+            color: rgba(73, 152, 188, 1);
+          }
+
+
+        }
+      }
+    }
+  }
+}
+
+.white-theme{
+  page-m {
+    //background-image: url('../assets/imgs/m-backgroud-white.jpg');
+    .menu {
+      background: rgba(248, 248, 248, .4);
+
+      .grid {
+        .row {
+          color: rgba(51, 51, 51, 1);
+
+        }
+
+        h1, h4 {
+          color: rgba(73, 152, 188, 1);
+        }
+      }
+    }
+  }
+}
+

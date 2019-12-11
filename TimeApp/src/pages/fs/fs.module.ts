@@ -6,6 +6,7 @@ import {Fs4foPage} from "./fs4fo";
 import {IonicModule} from "ionic-angular";
 import {ModalBoxComponentModule} from "../../components/modal-box/modal-box.module";
 import {DirectivesModule} from "../../directives/directives.module";
+import {PipesModule} from "../../pipes/pipes.module";
 
 @NgModule({
   declarations: [
@@ -15,7 +16,8 @@ import {DirectivesModule} from "../../directives/directives.module";
   imports: [
     IonicModule,
     ModalBoxComponentModule,
-    DirectivesModule
+    DirectivesModule,
+    PipesModule
   ],
   providers: [
     FsService, FdService
