@@ -4865,7 +4865,7 @@ export class EventService extends BaseService {
     if (changed.rfg != RepeatFlag.NonRepeat) {
       let rtevi: string = changed.rtevi || changed.evi;
 
-      existrepeatindex = totolist.findIndex((ele) => {
+      existrepeatindex = todolist.findIndex((ele) => {
         let elertevi: string = ele.rtevi || ele.evi;
         return elertevi == rtevi;
       });
@@ -4899,7 +4899,7 @@ export class EventService extends BaseService {
           if (Math.abs(origindiff) < Math.abs(changeddiff)) {
             // 原有日程距离现在更近
             // 移除原有日程
-            totolist.splice(existrepeatindex, 1);
+            todolist.splice(existrepeatindex, 1);
 
             // 加入新日程
             // 判断新重要事项插入位置
