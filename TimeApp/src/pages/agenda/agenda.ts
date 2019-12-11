@@ -26,6 +26,7 @@ import {
 import {ModiPower} from "../../data.enum";
 import {AssistantService} from "../../service/cordova/assistant.service";
 import {EmitService} from "../../service/util-service/emit.service";
+import * as anyenum from "../../data.enum";
 
 declare var Wechat;
 
@@ -409,6 +410,20 @@ export class AgendaPage {
     });
     modal.onDidDismiss(async (data) => {
       if (data) {
+
+        if (data.al == anyenum.IsWholeday.EndSet){
+          if (this.currentAgenda.al != data.al
+            || this.currentAgenda.evd != data.evd
+            || this.currentAgenda.evt != data.evt
+            || this.currentAgenda.sd != data.sd
+            || this.currentAgenda.st != data.st
+            || this.currentAgenda.ed != data.ed
+            || this.currentAgenda.et != data.et
+            || this.currentAgenda.ct != data.ct){
+            this.currentAgenda.todolist = anyenum.ToDoListStatus.On;
+          }
+        }
+
         this.currentAgenda.al = data.al;
         this.currentAgenda.evd = data.evd;
         this.currentAgenda.evt = data.evt;

@@ -1687,10 +1687,7 @@ export class EventService extends BaseService {
 
     newAgdata.mi = UserConfig.account.id;
 
-    //设定了截止日期，则自动加入todolist
-    if(UserConfig.getSetting(DataConfig.SYS_AUTOTODO) && newAgdata.al == anyenum.IsWholeday.EndSet){
-      newAgdata.todolist = anyenum.ToDoListStatus.On;
-    }
+
     //主evi设定
     let masterEvi : string;
     let delEvi : string;
@@ -1724,6 +1721,10 @@ export class EventService extends BaseService {
 
 
       }else{
+        //设定了截止日期，则自动加入todolist
+        if(UserConfig.getSetting(DataConfig.SYS_AUTOTODO) && newAgdata.al == anyenum.IsWholeday.EndSet){
+          newAgdata.todolist = anyenum.ToDoListStatus.On;
+        }
         sq = ` update gtd_ev set invitestatus = ?1 ,todolist=?3  where evi = ?2 or rtevi = ?2 ; `;
         params = new Array<any>();
         params.push(newAgdata.invitestatus);
@@ -2623,10 +2624,6 @@ export class EventService extends BaseService {
     agdata.tx = JSON.stringify(agdata.txjson);
     agdata.txs = agdata.txjson.text();
 
-    //设定了截止日期，则自动加入todolist
-    if(UserConfig.getSetting(DataConfig.SYS_AUTOTODO) && agdata.al == anyenum.IsWholeday.EndSet){
-      agdata.todolist = anyenum.ToDoListStatus.On;
-    }
 
     //获取重复日期
     rtjson.each(agdata.sd, (day) => {
