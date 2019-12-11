@@ -1845,7 +1845,7 @@ export class CalendarService extends BaseService {
 
             item.txjson = txjson;
             item.tx = JSON.stringify(txjson);
-            item.txs = txjson.text();
+            item.txs = txjson.text(item.sd,item.st);
 
             let members: Array<Member>= item.members || new Array<Member>();
             let memberdbs: Array<ParTbl> = new Array<ParTbl>();
@@ -1940,7 +1940,7 @@ export class CalendarService extends BaseService {
 
               item.txjson = txjson;
               item.tx = JSON.stringify(txjson);
-              item.txs = txjson.text();
+              item.txs = txjson.text(item.sd,item.st);
 
               let planitemdb: JtaTbl = new JtaTbl();
               Object.assign(planitemdb, item);
@@ -1970,7 +1970,7 @@ export class CalendarService extends BaseService {
 
                 item.txjson = txjson;
                 item.tx = JSON.stringify(txjson);
-                item.txs = txjson.text();
+                item.txs = txjson.text(item.sd,item.st);
 
                 item.tb = SyncType.unsynch;
 
@@ -2304,9 +2304,11 @@ export class CalendarService extends BaseService {
 
       newitem.txjson = txjson;
       newitem.tx = JSON.stringify(txjson);
-      newitem.txs = txjson.text();
+
 
       newitem.st = !newitem.st ? moment().format('HH:mm') : newitem.st;
+      newitem.txs = txjson.text(newitem.sd,newitem.st);
+
       newitem.pn = !newitem.pn ? 0 : newitem.pn;
       newitem.md = !newitem.md ? ModiPower.enable : newitem.md;
       newitem.iv = !newitem.iv ? InvitePowr.enable : newitem.iv;
@@ -4612,7 +4614,7 @@ export class CalendarService extends BaseService {
         let txjson: TxJson = new TxJson();
 
         current.tx = JSON.stringify(txjson);
-        current.txs = txjson.text();
+        current.txs = txjson.text(planitem.sd,planitem.st);
       }
 
       if (!current.invitestatus) {

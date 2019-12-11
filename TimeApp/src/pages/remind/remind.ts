@@ -94,7 +94,7 @@ export class RemindPage {
               public modalCtrl: ModalController,
               public viewCtrl: ViewController,
               public navParams: NavParams,
-              private util : UtilService) {
+              private util : UtilService,) {
 
     let ampmArray = [
       {text: '上午', value: '1'},
@@ -246,7 +246,7 @@ export class RemindPage {
               {
                 datename: this.getShowDateName(this.currentTx.reminds[j]),
                 value: this.currentTx.reminds[j],
-                disTixin : this.getDisTixin(this.currentTx.reminds[j])
+                disTixin : TxJson.getDisTixin(this.evdatetime,this.currentTx.reminds[j])
               });
           }
         }
@@ -393,31 +393,10 @@ export class RemindPage {
     this.reminds.splice(index, 1);
   }
 
-  getDisTixin(time) : boolean{
-    let ret : boolean = true;
-    if (!time){
-      return true;
-    }
-    let txdt : Moment;
-    if (time >= 0 ){
-      txdt = moment(this.evdatetime, "YYYY/MM/DD HH:mm", true).subtract(time, 'm');
-    }else{
-      txdt = moment(-1 * time, 'YYYYMMDDHHmm',true);
-    }
-
-    if ( moment().isAfter(txdt)){
-      ret = true;
-    }else{
-      ret = false;
-    }
-    return ret ;
-  }
-
-
   setTixinnum() {
     this.tixinnum = 0;
     for (let j = 0, len = this.reminds.length; j < len; j++) {
-      if (!this.getDisTixin(this.reminds[j].value)){
+      if (!TxJson.getDisTixin(this.evdatetime,this.reminds[j].value)){
         this.tixinnum = this.tixinnum + 1;
       }
     }

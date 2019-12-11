@@ -43,7 +43,7 @@ export class EventService extends BaseService {
               private assistantService: AssistantService,
               private userConfig: UserConfig,
               private findbug: FindBugRestful,
-              private dataRestful: DataRestful) {
+              private dataRestful: DataRestful,) {
     super();
     moment.locale('zh-cn');
   }
@@ -162,7 +162,7 @@ export class EventService extends BaseService {
 
         if (!agd.tx) {
           agd.txjson = generateTxJson(agd.txjson, agd.tx);
-          agd.txs = agd.txjson.text();
+          agd.txs = agd.txjson.text(agd.evd,agd.evt);
         }else{
           agd.txjson = generateTxJson(agd.txjson, agd.tx);
         }
@@ -1296,7 +1296,7 @@ export class EventService extends BaseService {
       }
     }
     agdata.tx = JSON.stringify(agdata.txjson);
-    agdata.txs = agdata.txjson.text();
+    agdata.txs = agdata.txjson.text(agdata.evd,agdata.evt);
 
     //主evi设定
     let masterEvi : string;
@@ -1743,7 +1743,7 @@ export class EventService extends BaseService {
     if (doType == DoType.Local){
 
       newAgdata.tx = JSON.stringify(newAgdata.txjson);
-      newAgdata.txs = newAgdata.txjson.text();
+      newAgdata.txs = newAgdata.txjson.text(newAgdata.evd,newAgdata.evt);
       let ev = new EvTbl();
       Object.assign(ev,newAgdata);
       ev.evi = oriAgdata.evi;
@@ -1956,7 +1956,7 @@ export class EventService extends BaseService {
       }
 
       newAgdata.tx = JSON.stringify(newAgdata.txjson);
-      newAgdata.txs = newAgdata.txjson.text();
+      newAgdata.txs = newAgdata.txjson.text(newAgdata.evd,newAgdata.evt);
       newAgdata.tb = anyenum.SyncType.unsynch;
       let ev = new EvTbl();
       Object.assign(ev,newAgdata);
@@ -2622,14 +2622,14 @@ export class EventService extends BaseService {
 
     let txjson : TxJson  = agdata.txjson;
     agdata.tx = JSON.stringify(agdata.txjson);
-    agdata.txs = agdata.txjson.text();
+
 
 
     //获取重复日期
     rtjson.each(agdata.sd, (day) => {
 
       let ev = new EvTbl();
-
+      agdata.txs = agdata.txjson.text(day,agdata.evt);
       Object.assign(ev, agdata);
 
       ev.evi = this.util.getUuid();
@@ -5585,23 +5585,54 @@ export class TxJson {
     return ret;
   }
 
-  text(first: boolean = true): string {
+  //提醒过期判断
+  static getDisTixin(evdatetime:string , time:number ) : boolean{
+    let ret : boolean = true;
+    if (!time){
+      return true;
+    }
+    let txdt : Moment;
+    if (time >= 0 ){
+      txdt = moment(evdatetime, "YYYY/MM/DD HH:mm", true).subtract(time, 'm');
+    }else{
+      txdt = moment(-1 * time, 'YYYYMMDDHHmm',true);
+    }
+
+    if ( moment().isAfter(txdt)){
+      ret = true;
+    }else{
+      ret = false;
+    }
+    return ret ;
+  }
+
+  text(evd:string ,evt : string,first: boolean = true): string {
     let ret : string;
-    this.reminds.sort((a, b) => {
+    let evdatetime = evd + " " + evt;
+    let validReminds: Array<number> = new Array<number>();
+    for (let j = 0, len = this.reminds.length; j < len; j++) {
+
+      if (!TxJson.getDisTixin(evdatetime,this.reminds[j])){
+        validReminds.push(this.reminds[j]);
+      }
+
+    }
+    validReminds.sort((a, b) => {
       if (a > b) return -1;
       if (a < b) return 1;
       return 0;
     });
 
-    if (this.reminds && this.reminds.length > 0) {
+    if (validReminds && validReminds.length > 0) {
       let humanremind: string;
-      let minutes : number = this.reminds[0];
+      let minutes : number = validReminds[0];
       if (minutes >=0){
         humanremind = moment.duration(minutes, "minutes").humanize();
         if (minutes ==0){
           ret = `事件开始时提醒`;
         }else{
-          ret = `提前${humanremind}提醒`;
+          let dt = moment(evdatetime, "YYYY/MM/DD HH:mm", true).subtract(minutes, 'm').format("MM月DD HH:mm")
+          ret = `提前${humanremind}提醒 ` + dt;
         }
       }else{
         //指定日期从传入的YYYYMMDDHHmm格式日期
