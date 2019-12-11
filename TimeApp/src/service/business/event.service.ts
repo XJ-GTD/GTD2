@@ -4844,121 +4844,111 @@ export class EventService extends BaseService {
   		return agendaArray;
    }
    /**
-   *有数据更新或者新增，自动刷新页面
+   * 有数据更新或者新增，自动刷新页面
    * 当有新的数据加入时，则对原有的数据进行从新排列
+   *
    * @author ying<343253410@qq.com>
    */
-  async mergeTodolist(todolist: Array<AgendaData>, changedNew: AgendaData): Promise<Array<AgendaData>> {
-      //传入数据不能为空
-      this.assertEmpty(changedNew);
-      let changed: AgendaData = {} as AgendaData;
-      Object.assign(changed, changedNew);
-      // let agendaArray: Array<AgendaData> = new Array<AgendaData>();
-      let flag: boolean = true;
-      //当数据retevi为空的情况下
-      if(!changed.rtevi) {
-          changed.rtevi = changed.evi;
+  async mergeTodolist(todolist: Array<AgendaData>, changed: AgendaData): Promise<Array<AgendaData>> {
+    assertEmpty(todolist);    // 入参不能为空
+    assertEmpty(changed);     // 入参不能为空
+
+    let existids: Array<string> = todolist.reduce((target, ele) => {
+      target.push(ele.evi);
+      return target;
+    }, new Array<string>());
+
+    let existindex: number = existids.indexOf(changed.evi);   // 当前日程索引
+    let existrepeatindex: number = -1;                        // 当前日程所属同一重复日程索引
+
+    // 如果是更新重复日程, 查找出已存在的同一重复日程位置
+    if (changed.rfg != RepeatFlag.NonRepeat) {
+      let rtevi: string = changed.rtevi || changed.evi;
+
+      existrepeatindex = todolist.findIndex((ele) => {
+        let elertevi: string = ele.rtevi || ele.evi;
+        return elertevi == rtevi;
+      });
+    }
+
+    if (existindex >= 0) {
+      // 已存在
+      if (changed.del == DelType.del || changed.todolist == ToDoListStatus.Off || changed.wc == EventFinishStatus.Finished) {
+        // 已删除/已移出重要事项/已完成
+        // 移出重要事项
+        todolist.splice(existindex, 1);
+      } else {
+        // 未删除而且在重要事项中，且未完成
+        // 更新重要事项
+        todolist.splice(existindex, 1, changed);
       }
-      if (todolist.length == 0) {
-          //当缓存时间为空的情况下，新加入todoList
-          if ( ( changed.todolist == anyenum.ToDoListStatus.On ) && ( changed.del == anyenum.DelType.undel ) && (changed.wc == anyenum.EventFinishStatus.NonFinish) )
-          {
-                //将数据加入到todolist缓存
-                todolist.push(changed);
-          }
-          flag = false;
+    } else {
+      // 不存在
+      if (changed.del == DelType.del || changed.todolist == ToDoListStatus.Off || changed.wc == EventFinishStatus.Finished) {
+        // 已删除/未加入重要事项/已完成
+        // 不处理
+      } else {
+        if (existrepeatindex >= 0) {
+          // 如果存在同一重复日程
 
-      }
-      else {
-        if ( (  changed.todolist == anyenum.ToDoListStatus.Off ) || ( changed.del == anyenum.DelType.del ) || (changed.wc == anyenum.EventFinishStatus.Finished) ) {
-                //移除数据 取消todolist、删除 、 事件完成
-                let j: number = 0;
-                for (let td of todolist) {
-                  if ( (td.evi == changed.evi) || (td.rtevi == changed.evi ) ) {
-                      todolist.splice(j, 1);
-                  }
-                  j++;
-                }
-                //当前事件已完成，验证当前事件是否为重复事件，如果为重复事件，则删除当前的，重新插入下一个
-                //当是重复性事件的情况下，已完成或者已删除的状态下，都需要检索出下一条临近的数据
-                if ((changed.todolist != anyenum.ToDoListStatus.Off) && ((changed.rfg == RepeatFlag.Repeat)||(changed.rfg == RepeatFlag.RepeatToOnly))) {
-                  let newsql : string  =  ` select ev.*,
-                  ca.sd,ca.st,ca.ed,ca.et,ca.ct
-                   from
-                      gtd_ev ev left join gtd_ca ca on ca.evi = ev.rtevi
-                        where
-                        ev.rtevi =?1
-                        and ev.del = ?2
-                        and ev.type = ?3
-                        and ev.wc = ?4
-                        and (julianday(datetime(replace(ev.evd, '/', '-'),ev.evt)) > julianday(datetime(replace(?5, '/', '-'),?6)))
-                        order by ev.evd asc `;
-                  let rtevi: string = changed.rtevi;
-                  // if (changed.rtevi == '') {
-                  //     rtevi = changed.evi;
-                  // }
-                  // else {
-                  //     rtevi = changed.rtevi;
-                  // }
-                  let ag1: Array<AgendaData> = await this.sqlExce.getExtLstByParam<AgendaData>(newsql,
-                     [rtevi,anyenum.DelType.undel,anyenum.EventType.Agenda,anyenum.EventFinishStatus.NonFinish,changed.evd,changed.evt]) || new Array<AgendaData>();
-                  if (ag1&&ag1.length>0){
-                        changed = ag1[0];
-                        if(todolist.length==0)
-                        {
-                           todolist.push(changed);
-                           flag = false;
-                        }
-                  }
-                  else {
-                     flag = false;
-                  }
-                }
-                else {
-                   flag = false;
-                }
-        }
-        if (flag) {
+          // 比较既存日程 和 新日程 距离当前时间 哪个最近，画面就显示哪个
+          let origin: AgendaData = todolist[existrepeatindex];
+          let origindiff = moment().diff(moment(origin.evd + " " + origin.evt, "YYYY/MM/DD HH:mm"));
+          let changeddiff = moment().diff(moment(changed.evd + " " + changed.evt, "YYYY/MM/DD HH:mm"));
 
-          //验证当前todolist是否已存在相同的evi数据，如果存在，删除，然后在进行重新排序
-          let jfk: number = 0;
-          for(let td of todolist) {
-              if((changed.evi == td.evi)||(changed.rtevi == td.rtevi)||(changed.rtevi == td.evi)) {
-                  todolist.splice(jfk, 1);
-                  break;
-              }
-              jfk++;
-          }
+          if (Math.abs(origindiff) < Math.abs(changeddiff)) {
+            // 原有日程距离现在更近
+            // 移除原有日程
+            todolist.splice(existrepeatindex, 1);
 
-          //将数据加到新的排序中去
-          //todolist已经进行过排序，按照日期排列 ,快速排序算法，还是太慢，
-          //1.新加入的事件的日期，比todolist第一个日期还小,缩短循环排序时间
-          if ((moment(changed.evd + ' ' + changed.evt, "YYYY/MM/DD HH:mm").diff(moment(todolist[0].evd + ' ' + todolist[0].evt, "YYYY/MM/DD HH:mm"))<=0)) {
-              todolist.unshift(changed);
-              return todolist;
-          }
+            // 加入新日程
+            // 判断新重要事项插入位置
+            let changedmoment = moment(changed.evd + " " + changed.evt, "YYYY/MM/DD HH:mm");
+            let addindex: number = todolist.findIndex((ele) => {
+              let currentmoment = moment(ele.evd + " " + ele.evt, "YYYY/MM/DD HH:mm");
 
-          //2.新加入的事件的日期，比todolist的最后一个日期还小
-          if (moment(changed.evd + ' ' + changed.evt, "YYYY/MM/DD HH:mm").diff(moment(todolist[todolist.length-1].evd + ' ' + todolist[todolist.length-1].evt, "YYYY/MM/DD HH:mm"))>=0) {
+              return currentmoment.diff(changedmoment) > 0;
+            });
+
+            // 根据位置插入重要事项
+            if (addindex >= 0) {
+              // 需要在列表中插入
+              todolist.splice(addindex, 0, changed);
+            } else {
+              // 加在最后
               todolist.push(changed);
-              return todolist;
-          }
-
-          //3. 当事件的日期，在todolist中间时
-          let i: number = 0;
-          for (let td of todolist) {
-            //todolist 已经是按照日期顺序排列好的，然后根据日期大小进行排序，当change的日期比todolist的小的时候插入进去
-            if(((moment(changed.evd + ' ' + changed.evt, "YYYY/MM/DD HH:mm").diff(moment(td.evd + ' ' + td.evt, "YYYY/MM/DD HH:mm")) <0 ))) {
-              todolist.splice(i,0,changed);
-              return todolist;
             }
-            i++;
+          } else {
+            // 原有日程距离现在更远
+            // 不处理
+          }
+        } else {
+          // 不存在同一重复日程 或者 是非重复日程
+
+          // 未删除而且在重要事项中，且未完成
+          // 加入重要事项
+
+          // 判断新重要事项插入位置
+          let changedmoment = moment(changed.evd + " " + changed.evt, "YYYY/MM/DD HH:mm");
+          let addindex: number = todolist.findIndex((ele) => {
+            let currentmoment = moment(ele.evd + " " + ele.evt, "YYYY/MM/DD HH:mm");
+
+            return currentmoment.diff(changedmoment) > 0;
+          });
+
+          // 根据位置插入重要事项
+          if (addindex >= 0) {
+            // 需要在列表中插入
+            todolist.splice(addindex, 0, changed);
+          } else {
+            // 加在最后
+            todolist.push(changed);
           }
         }
       }
-      //更新相关实体数据内容
-      //this.saveAgenda(changed);
-      return todolist;
+    }
+
+    return todolist;
   }
 
   /**

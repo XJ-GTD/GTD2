@@ -210,7 +210,7 @@ export class DoPage {
       let p: ScdPageParamter = new ScdPageParamter();
 
       p.si = target.evi;
-      p.d = moment(target.evd);
+      p.d = moment(target.evd, "YYYY/MM/DD");
 
       this.feedback.audioClick();
       this.modalCtr.create(DataConfig.PAGE._AGENDA_PAGE, p).present();
