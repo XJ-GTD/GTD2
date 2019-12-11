@@ -31,10 +31,10 @@ import {UtilService} from "../../service/util-service/util.service";
       <ion-scroll scrollY="true" scrollheightAuto>
         <ion-list>
           <ion-list-header>
-            剩余 <span class="count">{{reminds.length}}</span> 条提醒
+            剩余 <span class="count">{{tixinnum}}</span> 条提醒
           </ion-list-header>
-          <ion-item *ngFor="let remind of reminds; let idx = index;" >
-            <ion-label [ngStyle]="{'color':remind.disTixin ? 'gray':'#333333'}" >{{remind.datename}}</ion-label>
+          <ion-item *ngFor="let remind of reminds; let idx = index;" [hidden]="remind.disTixin"  >
+            <ion-label>{{remind.datename}}</ion-label>
             <button [disabled]="remind.disTixin" ion-button (click)="delRemind(idx)" clear item-end>
               <ion-icon class="fal fa-minus-circle"></ion-icon>
             </button>
@@ -84,6 +84,7 @@ export class RemindPage {
   evdatetime: string;
 
   disTiqian : boolean = false;
+  tixinnum : number = 0;
 
   reminds: Array<any> = new Array<any>();
   currentTx: TxJson;
@@ -249,7 +250,7 @@ export class RemindPage {
               });
           }
         }
-
+        this.setTixinnum();
       }
 
     }
@@ -328,6 +329,7 @@ export class RemindPage {
         value: time,
         disTixin : false
       });
+    this.setTixinnum();
 
   }
 
@@ -376,6 +378,7 @@ export class RemindPage {
         value: time,
         disTixin: false
       });
+    this.setTixinnum();
   }
 
   day2min(d) {
@@ -408,5 +411,15 @@ export class RemindPage {
       ret = false;
     }
     return ret ;
+  }
+
+
+  setTixinnum() {
+    this.tixinnum = 0;
+    for (let j = 0, len = this.reminds.length; j < len; j++) {
+      if (!this.getDisTixin(this.reminds[j].value)){
+        this.tixinnum = this.tixinnum + 1;
+      }
+    }
   }
 }
