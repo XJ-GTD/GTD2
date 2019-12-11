@@ -5602,6 +5602,13 @@ export class TxJson {
       ret = true;
     }else{
       ret = false;
+      if (time < 0 ){
+        if (moment(-1 * time, 'YYYYMMDDHHmm',true).isAfter(moment(evdatetime, "YYYY/MM/DD HH:mm", true))){
+          ret = false;
+        }else{
+          ret = true;
+        }
+      }
     }
     return ret ;
   }

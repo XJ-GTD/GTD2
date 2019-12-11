@@ -432,6 +432,8 @@ export class AgendaPage {
         this.currentAgenda.ed = data.ed;
         this.currentAgenda.et = data.et;
         this.currentAgenda.ct = data.ct;
+
+        this.currentAgenda.txs = this.currentAgenda.txjson.text(this.currentAgenda.evd,this.currentAgenda.evt);
       }
 
       if (this.currentAgenda.evn != "" && !this.eventService.isSameAgenda(this.currentAgenda, this.originAgenda)) {
