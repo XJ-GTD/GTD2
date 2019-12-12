@@ -176,7 +176,7 @@ export class AgendasProcess extends BaseProcess implements MQProcess,OptProcess{
     if (content.option == AG.U) {
 
       if (scd.length == 1) {
-        if (scd[0].gs != "0" && (scd[0].sd != cudPara.d || scd[0].sn != cudPara.ti ||
+        if (scd[0].ui != UserConfig.account.id && (scd[0].sd != cudPara.d || scd[0].sn != cudPara.ti ||
             scd[0].st != cudPara.t  )) {
           //出错记录
           this.output(content, contextRetMap, 'branchcode', WsDataConfig.BRANCHCODE, WsDataConfig.BRANCHCODE_E0001);
