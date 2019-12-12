@@ -20,11 +20,7 @@ import {FjTbl} from "../sqlite/tbl/fj.tbl";
 import {DataRestful, PullInData, PushInData, SyncData, UploadInData, DayCountCodec, ShareInData} from "../restful/datasev";
 import { FindBugRestful } from "../restful/bugsev";
 import {SyncType, DelType, ObjectType, PullType, IsSuccess, CycleType, SyncDataStatus, OperateType, ToDoListStatus, RepeatFlag, ConfirmType, ModiPower, PageDirection, SyncDataSecurity, InviteState, CompleteState, EventFinishStatus, EventType} from "../../data.enum";
-import {
-  assertNotNumber,
-  assertEmpty,
-  assertFail
-} from "../../util/util";
+import {assertNotNumber, assertEmpty, assertFail} from "../../util/util";
 import {FsData} from "../../data.mapping";
 import {File} from '@ionic-native/file';
 import {AssistantService} from "../cordova/assistant.service";
@@ -2957,16 +2953,16 @@ export class EventService extends BaseService {
     wa.del = anyenum.DelType.undel;
 
     let date;
-    date = moment(ev.evd + " " + ev.evt, "YYYY/MM/DD HH:mm");
+    date = moment(ev.evd + " " + ev.evt, "YYYY/MM/DD HH:mm",true);
 
 
     let loop = true;
     while(loop){
-      if (date.diff(moment(),'hours',true) > 1){
+      if (date.diff(moment(),'hours',true) >= 1){
         loop = false;
         break;
       }
-      date = moment(date, "YYYY/MM/DD HH:mm").add(4,'hours');
+      date = moment(date, "YYYY/MM/DD HH:mm",true).add(4,'hours');
     }
 
 
