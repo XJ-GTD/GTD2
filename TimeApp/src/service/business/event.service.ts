@@ -20,16 +20,13 @@ import {FjTbl} from "../sqlite/tbl/fj.tbl";
 import {DataRestful, PullInData, PushInData, SyncData, UploadInData, DayCountCodec, ShareInData} from "../restful/datasev";
 import { FindBugRestful } from "../restful/bugsev";
 import {SyncType, DelType, ObjectType, PullType, IsSuccess, CycleType, SyncDataStatus, OperateType, ToDoListStatus, RepeatFlag, ConfirmType, ModiPower, PageDirection, SyncDataSecurity, InviteState, CompleteState, EventFinishStatus, EventType} from "../../data.enum";
-import {
-  assertNotNumber,
-  assertEmpty,
-  assertFail
-} from "../../util/util";
+import { assertNotNumber, assertEmpty, assertFail } from "../../util/util";
 import {FsData} from "../../data.mapping";
 import {File} from '@ionic-native/file';
 import {AssistantService} from "../cordova/assistant.service";
 import {generateDataType} from "./calendar.service";
 import {Moment} from "moment";
+import { checksum } from "../../util/crypto-util";
 
 @Injectable()
 export class EventService extends BaseService {
@@ -4124,7 +4121,7 @@ export class EventService extends BaseService {
   async saveMarkup(markup: MarkupData): Promise<MarkupData> {
     this.assertEmpty(markup);       // 入参不能为空
 
-    markup.mki = markup.mki || this.util.getUuid();
+    markup.mki = markup.mki || checksum(`${markup.obi}_${markup.mkl}`); // 根据标签生成唯一主键
     markup.obt = markup.obt || ObjectType.Event;  // 默认设置事件相关标签
 
     let mrktbl: MrkTbl = new MrkTbl();
