@@ -4344,14 +4344,17 @@ export class CalendarService extends BaseService {
 
     // 执行查询
     if (sqlcalitems && seachCalendar) {
+      console.log(sqlcalitems);
       resultActivity.calendaritems = await this.sqlExce.getExtLstByParam<PlanItemData>(sqlcalitems, ciargs) || new Array<PlanItemData>();
     }
 
     if (sqlevents && seachEvent) {
+      console.log(sqlevents);
       resultActivity.events = await this.sqlExce.getExtLstByParam<EventData>(sqlevents, evargs) || new Array<EventData>();
     }
 
     if (sqlmemos && seachMemo) {
+      console.log(sqlmemos);
       resultActivity.memos = await this.sqlExce.getExtLstByParam<MemoData>(sqlmemos, moargs) || new Array<MemoData>();
     }
 
