@@ -259,7 +259,9 @@ export class RemindPage {
   save() {
     this.currentTx.reminds.length = 0;
     for (let j = 0, len = this.reminds.length; j < len; j++) {
-      this.currentTx.reminds.push(this.reminds[j].value);
+      if (!TxJson.getDisTixin(this.evdatetime,this.reminds[j].value)){
+        this.currentTx.reminds.push(this.reminds[j].value);
+      }
     }
 
     let data: Object = {txjson: this.currentTx};
@@ -358,8 +360,9 @@ export class RemindPage {
     }
     let dt = this.datevalue + " " + tm;
 
-    if (moment().isAfter(moment(dt, "YYYY-MM-DD HH:mm",true))){
-      this.util.toastStart("请选择今日以后提醒", 3000);
+    if (moment().isAfter(moment(dt, "YYYY-MM-DD HH:mm",true)) ||
+          moment(this.evdatetime ,"YYYY/MM/DD HH:mm",true).isAfter(moment(dt, "YYYY-MM-DD HH:mm",true))){
+      this.util.toastStart("请选择今日以及开始日以后提醒", 3000);
       return;
     }
 
