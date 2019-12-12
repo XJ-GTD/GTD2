@@ -5181,7 +5181,7 @@ export interface AgendaData extends EventData, CaTbl {
   topushed: Array<boolean> ;
 }
 
-export interface  Member extends ParTbl{
+export interface Member extends ParTbl {
 
   ran: string ; //联系人别称
   ranpy: string; //联系人别称拼音
