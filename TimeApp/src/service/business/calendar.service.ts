@@ -4261,30 +4261,30 @@ export class CalendarService extends BaseService {
     // 开始日期
     if (condition.sd) {
       ciwhere += (ciwhere? '' : 'where ');
-      ciwhere += `sd >= ? `;
+      ciwhere += `date(replace(sd, '/', '-')) >= date(replace(?, '/', '-')) `;
       ciargs.push(condition.sd);
 
       evwhere += (evwhere? '' : 'where ');
-      evwhere += `evd >= ? `;
+      evwhere += `date(replace(evd, '/', '-')) >= date(replace(?, '/', '-')) `;
       evargs.push(condition.sd);
 
       mowhere += (mowhere? '' : 'where ');
-      mowhere += `sd >= ? `;
+      mowhere += `date(replace(sd, '/', '-')) >= date(replace(?, '/', '-')) `;
       moargs.push(condition.sd);
     }
 
     // 结束日期
     if (condition.ed) {
       ciwhere += (ciwhere? 'and ' : 'where ');
-      ciwhere += `sd <= ? `;
+      ciwhere += `date(replace(sd, '/', '-')) <= date(replace(?, '/', '-')) `;
       ciargs.push(condition.ed);
 
       evwhere += (evwhere? 'and ' : 'where ');
-      evwhere += `evd <= ? `;
+      evwhere += `date(replace(evd, '/', '-')) <= date(replace(?, '/', '-')) `;
       evargs.push(condition.ed);
 
       mowhere += (mowhere? 'and ' : 'where ');
-      mowhere += `sd <= ? `;
+      mowhere += `date(replace(sd, '/', '-')) <= date(replace(?, '/', '-')) `;
       moargs.push(condition.ed);
     }
 
