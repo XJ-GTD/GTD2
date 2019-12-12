@@ -184,25 +184,14 @@ pointcomponent {
   }
 
   .angular-popper {
-    width: 250px;
+    width: 300px;
     background-color: rgba(248, 248, 248, 1);
-    color: #843094;
-
     div[content] {
       max-height: 400px;
       overflow-y: auto;
     }
-
     .angular-popper__arrow {
       border-color: rgba(248, 248, 248, 1)
-    }
-
-    button {
-      position: fixed;
-      top: -1rem;
-      right: -3rem;
-      width: auto;
-      background: transparent;
     }
   }
 

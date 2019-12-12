@@ -41,18 +41,40 @@ import {ListeningComponent} from "./listening";
     </div>
     <angular-popper  target=".aitool"  placement="left-end" #popper [class.showNot] = "popperShow">
       <div content>
-        <button icon-only (click)="closepopper() "><ion-icon class="fal fa-times-circle"></ion-icon></button>
-        <ion-grid class="list-grid-content content">
-          <ng-template ngFor let-tellyou [ngForOf]="tellYouData">
-            <ion-row class="item-content">
-              <div class="line font-small first-line">
-                <div class="sn">
-                  {{tellyou}}
-                </div>
-              </div>              
-            </ion-row>
-          </ng-template>
-        </ion-grid>
+        <ion-card>
+        <img src="../assets/advance-card-map-madison.png">
+        <ion-item>
+          <ion-icon class="fal fa-bell" item-start large></ion-icon>
+          <h2>2019年5月31日的活动</h2>
+          <span>【bug】修正好了吗？你说这个太长会怎么样呢</span>
+        </ion-item>
+
+        <ion-item>
+          <ion-icon name="wine" item-start large ></ion-icon>
+          <h2>Institute of Fine Cocktails</h2>
+          <span>14 S. Hop Avenue, Madison, WI 53703</span>
+        </ion-item>
+
+        <ion-item>
+          <span item-start>18 min</span>
+          <span item-start>(2.6 mi)</span>
+          <button ion-button icon-start clear item-end (click)="closepopper() ">
+            <ion-icon class="fal fa-times-circle"></ion-icon>关闭
+          </button>
+        </ion-item>
+        </ion-card>
+        
+        <!--<ion-grid class="list-grid-content content">-->
+          <!--<ng-template ngFor let-tellyou [ngForOf]="tellYouData">-->
+            <!--<ion-row class="item-content">-->
+              <!--<div class="line font-small first-line">-->
+                <!--<div class="sn">-->
+                  <!--{{tellyou}}-->
+                <!--</div>-->
+              <!--</div>              -->
+            <!--</ion-row>-->
+          <!--</ng-template>-->
+        <!--</ion-grid>-->
       </div>
     </angular-popper>
 
@@ -95,9 +117,8 @@ export class PointComponent {
               private changeDetectorRef: ChangeDetectorRef,
               private timeoutService:TimeOutService) {
 
-    this.aiTellYou = this.emitService.registerAiTellYou(($data)=>{
-
-      if (this.hasPopper){
+    if (this.hasPopper) {
+      this.aiTellYou = this.emitService.registerAiTellYou(($data)=>{
         if ($data.close){
           this.popperShow = true;
         }else{
@@ -107,14 +128,14 @@ export class PointComponent {
             this.changeDetectorRef.detectChanges();
             this.popper.create();
           }
-          this.timeoutService.timeOutOnlyOne(30000,()=>{
-            this.popperShow = true;
-            this.tellYouData.length = 0;
-            this.changeDetectorRef.detectChanges();
-          },"close.home.ai.talk");
+          // this.timeoutService.timeOutOnlyOne(30000,()=>{
+          //   this.popperShow = true;
+          //   this.tellYouData.length = 0;
+          //   this.changeDetectorRef.detectChanges();
+          // },"close.home.ai.talk");
         }
-      }
-    });
+      });
+    }
 
     // this.emitService.registerSpeak((b)=>{
     //   if (b){
@@ -125,7 +146,8 @@ export class PointComponent {
     // })
   }
   ngOnDestroy(){
-    this.aiTellYou.unsubscribe();
+    if (this.aiTellYou)
+      this.aiTellYou.unsubscribe();
   }
 
   closepopper(){
