@@ -40,7 +40,7 @@ export class AiService {
   go2tdc(scd: ScdAiData) {
     let paramter: ScdPageParamter = new ScdPageParamter();
     paramter.t = scd.t;
-    paramter.d = moment(scd.d);
+    paramter.d = moment(scd.d, "YYYY/MM/DD");
     paramter.sn = scd.ti;
     // this.modalController.create(DataConfig.PAGE._TDC_PAGE, paramter).present();
   }
@@ -88,7 +88,7 @@ export class AiService {
   }
 
   countDay(day: string): string {
-    let date = moment(day);
+    let date = moment(day, "YYYY/MM/DD");
     let str = '今天';
     let nowDate = moment(moment(new Date()).format("YYYY/MM/DD"));
     let days = date.diff(nowDate, 'days');
@@ -158,4 +158,3 @@ export class SpeechAiData {
   an: string = "";
   org: string = "";
 }
-

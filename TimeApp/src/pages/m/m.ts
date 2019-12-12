@@ -43,7 +43,7 @@ import {CalendarDay} from "../../components/ion2-calendar";
           <ion-row  (click)="aTday()">
             <h3>@ 我的</h3>
           </ion-row>
-          
+
           <ion-row (click)="goPsPage()">
             <h3>个人设置</h3>
           </ion-row>
@@ -118,8 +118,8 @@ export class MPage {
     // }
     this.settings.getActiveTheme().subscribe(val => {
       let pix = this.util.randInt(1,5);
-      let white = " url('../assets/imgs/m-backgroud-white-" + pix + ".jpg')";
-      let black = " url('../assets/imgs/m-backgroud-black-" + pix + ".jpg')";
+      let white = " url('assets/imgs/m-backgroud-white-" + pix + ".jpg')";
+      let black = " url('assets/imgs/m-backgroud-black-" + pix + ".jpg')";
 
       if (val == "white-theme"){
         this.renderer2.setStyle(this.elementRef.nativeElement,"background-image",white);

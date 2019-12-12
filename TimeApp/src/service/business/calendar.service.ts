@@ -4261,35 +4261,38 @@ export class CalendarService extends BaseService {
     // 开始日期
     if (condition.sd) {
       ciwhere += (ciwhere? '' : 'where ');
-      ciwhere += `sd >= ? `;
+      ciwhere += `date(replace(sd, '/', '-')) >= date(replace(?, '/', '-')) `;
       ciargs.push(condition.sd);
 
       evwhere += (evwhere? '' : 'where ');
-      evwhere += `evd >= ? `;
+      evwhere += `date(replace(evd, '/', '-')) >= date(replace(?, '/', '-')) `;
       evargs.push(condition.sd);
 
       mowhere += (mowhere? '' : 'where ');
-      mowhere += `sd >= ? `;
+      mowhere += `date(replace(sd, '/', '-')) >= date(replace(?, '/', '-')) `;
       moargs.push(condition.sd);
     }
 
     // 结束日期
     if (condition.ed) {
       ciwhere += (ciwhere? 'and ' : 'where ');
-      ciwhere += `sd <= ? `;
+      ciwhere += `date(replace(sd, '/', '-')) <= date(replace(?, '/', '-')) `;
       ciargs.push(condition.ed);
 
       evwhere += (evwhere? 'and ' : 'where ');
-      evwhere += `evd <= ? `;
+      evwhere += `date(replace(evd, '/', '-')) <= date(replace(?, '/', '-')) `;
       evargs.push(condition.ed);
 
       mowhere += (mowhere? 'and ' : 'where ');
-      mowhere += `sd <= ? `;
+      mowhere += `date(replace(sd, '/', '-')) <= date(replace(?, '/', '-')) `;
       moargs.push(condition.ed);
     }
 
-    // 内容查询
-    if (condition.text) {
+    let hasText: boolean = condition.text? true : false;
+    let hasMarkup: boolean = (condition.mark && condition.mark.length > 0)? true : false;
+
+    // 内容查询 标签查询优先
+    if (hasText && !hasMarkup) {
       ciwhere += (ciwhere? 'and ' : 'where ');
       ciwhere += `jtn like ? `;
       ciargs.push("%" + condition.text + "%");
@@ -4305,22 +4308,22 @@ export class CalendarService extends BaseService {
     }
 
     // 标签查询
-    if (condition.mark && condition.mark.length > 0) {
+    if (hasMarkup) {
       let likes: string = new Array<string>(condition.mark.length).fill('?', 0, condition.mark.length).join(' or mkl like ');
       let querymarks: Array<string> = condition.mark.map(value => { return "%" + value + "%";});
 
       ciwhere += (ciwhere? 'and ' : 'where ');
-      ciwhere += `jti in (select obi from gtd_mrk where obt = ? and (mkl like ${likes})) `;
+      ciwhere += `jti in (select obi as jti from gtd_mrk where obt = ? and (mkl like ${likes})) `;
       ciargs.push(ObjectType.Calendar);
       ciargs = ciargs.concat(querymarks);
 
       evwhere += (evwhere? 'and ' : 'where ');
-      evwhere += `evi in (select obi from gtd_mrk where obt = ? and (mkl like ${likes})) `;
+      evwhere += `evi in (select obi as evi from gtd_mrk where obt = ? and (mkl like ${likes})) `;
       evargs.push(ObjectType.Event);
       evargs = evargs.concat(querymarks);
 
       mowhere += (mowhere? 'and ' : 'where ');
-      mowhere += `moi in (select obi from gtd_mrk where obt = ? and (mkl like ${likes})) `;
+      mowhere += `moi in (select obi as moi from gtd_mrk where obt = ? and (mkl like ${likes})) `;
       moargs.push(ObjectType.Memo);
       moargs = moargs.concat(querymarks);
     }
@@ -4344,14 +4347,17 @@ export class CalendarService extends BaseService {
 
     // 执行查询
     if (sqlcalitems && seachCalendar) {
+      console.log(sqlcalitems);
       resultActivity.calendaritems = await this.sqlExce.getExtLstByParam<PlanItemData>(sqlcalitems, ciargs) || new Array<PlanItemData>();
     }
 
     if (sqlevents && seachEvent) {
+      console.log(sqlevents);
       resultActivity.events = await this.sqlExce.getExtLstByParam<EventData>(sqlevents, evargs) || new Array<EventData>();
     }
 
     if (sqlmemos && seachMemo) {
+      console.log(sqlmemos);
       resultActivity.memos = await this.sqlExce.getExtLstByParam<MemoData>(sqlmemos, moargs) || new Array<MemoData>();
     }
 

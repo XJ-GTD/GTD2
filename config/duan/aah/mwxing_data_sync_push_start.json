@@ -116,38 +116,26 @@
                     ],
                     "next": [
                       {
-                        "when": {
-                          "d$and": [
-                            {
-                              "d$.parent.outputs.cleaned": {
-                                  "owner": {
-                                      "d$exists": true
-                                  }
-                              }
-                            },
-                            {
-                              "d$.parent.outputs.cleaned": {
-                                  "agenda": {
-                                      "d$exists": true
-                                  }
-                              }
-                            }
-                          ]
-                        },
-                        "name": "对push上来的活动进行分类标注",
-                        "trigger": "exc",
-                        "parameters": [
+                        "type": "loop",
+          							"variable": "requests;$.parent.outputs.cleaned.requests[*]",
+          							"start": "0",
+          							"end": "size",
+          							"task": {
+                          "name": "发送活动分类标注请求",
+                          "trigger": "exc",
+                          "parameters": [
                             "method;post",
                             "urlabs;http://sa-cdc:8080/cdc/mwxing_agenda_classify_start/json/trigger",
-                            "data;$.parent.outputs.cleaned"
-                        ],
-                        "outputs": [
-                            "executed"
-                        ]
+                            "data;$.parent.outputs.cleaned.requests[##requests_value##]"
+                          ],
+                          "outputs": [
+                              "executed"
+                          ]
+                        }
                       }
                     ]
+                  }
                 }
-              }
             ]
         }
     ]
