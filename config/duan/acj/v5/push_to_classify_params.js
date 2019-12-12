@@ -4,7 +4,7 @@ function shouldclean(datasource) {
   // filter source code here start
   var input = JSON.parse(datasource);
 
-  if (input !== undefined && input['pushfrom'] && input['_exchangephoneno'] && input['_datatitle']) {
+  if (input !== undefined && input['pushfrom'] && input['_exchangephoneno'] && input['datas']) {
     return true;
   }
 
@@ -24,17 +24,25 @@ function clean(datasource) {
 
   var pushfrom = input['pushfrom'];
   var exchangephoneno = input['_exchangephoneno'];
-  var title = input['_datatitle'];
-  var payload = input['payload'];
+  var datas = input['datas'];
 
   // 转换成mwxing_data_sync_push_start处理流输入参数格式
-  var output = {
-  };
+  var output = [];
 
-  if (pushfrom == exchangephoneno && payload) {
-    output["owner"] = pushfrom;
-    output["agenda"] = payload;
+  if (pushfrom == exchangephoneno) {
+    for (var index in datas) {
+      var data = datas[index];
+      var payload = data["payload"];
+
+      if (!payload) continue;
+
+      var classify = {};
+      classify["owner"] = pushfrom;
+      classify["agenda"] = payload;
+
+      output.push(classify);
+    }
   }
 
-  return JSON.stringify(output);
+  return JSON.stringify({requests: output});
 }
