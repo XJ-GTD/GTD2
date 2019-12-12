@@ -4288,8 +4288,11 @@ export class CalendarService extends BaseService {
       moargs.push(condition.ed);
     }
 
-    // 内容查询
-    if (condition.text) {
+    let hasText: boolean = condition.text? true : false;
+    let hasMarkup: boolean = (condition.mark && condition.mark.length > 0)? true : false;
+
+    // 内容查询 标签查询优先
+    if (hasText && !hasMarkup) {
       ciwhere += (ciwhere? 'and ' : 'where ');
       ciwhere += `jtn like ? `;
       ciargs.push("%" + condition.text + "%");
@@ -4305,7 +4308,7 @@ export class CalendarService extends BaseService {
     }
 
     // 标签查询
-    if (condition.mark && condition.mark.length > 0) {
+    if (hasMarkup) {
       let likes: string = new Array<string>(condition.mark.length).fill('?', 0, condition.mark.length).join(' or mkl like ');
       let querymarks: Array<string> = condition.mark.map(value => { return "%" + value + "%";});
 
