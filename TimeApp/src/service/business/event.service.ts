@@ -1277,27 +1277,9 @@ export class EventService extends BaseService {
     Object.assign(agdata.rtjson , JSON.parse(agdata.rt));
     agdata.txjson = new TxJson();
     Object.assign(agdata.txjson , JSON.parse(agdata.tx));
-    //新老数据格式更替
-    let reminds  = new  Array<number>() ;
-    Object.assign(reminds , agdata.txjson.reminds);
-    let baseline = moment(agdata.evd + " " + agdata.evt, "YYYY/MM/DD HH:mm", true);
-    for (let remind of reminds) {
-      if (remind < 0){
-        let postpone :Moment = moment(-1 * remind,'YYYYMMDDHHmm',true);
-        if (!postpone.isValid()){
 
-          let idx: number = agdata.txjson.reminds.findIndex((val, index, arr) => {
-            return val == remind;
-          });
-          if (idx >= 0) {
-            agdata.txjson.reminds[idx] =-1 * parseInt(baseline.subtract(remind, "m").format("YYYYMMDDHHmm"));
-
-          }
-        }
-      }
-    }
-    agdata.tx = JSON.stringify(agdata.txjson);
-    agdata.txs = agdata.txjson.text(agdata.evd,agdata.evt);
+    //新老数据格式更替，并且过期提醒从txjson中删除（gtd_wa中过期数据将在当前记录提醒同步时删除）
+    this.setValidTixin(agdata);
 
     //主evi设定
     let masterEvi : string;
@@ -1362,6 +1344,32 @@ export class EventService extends BaseService {
 
     return agdata;
 
+  }
+
+  private setValidTixin(agdata : AgendaData){
+    let edtm = moment(agdata.evd + " " + agdata.evt, "YYYY/MM/DD HH:mm", true);
+    let validReminds = new Array<number>();
+
+    if (agdata.txjson &&  agdata.txjson.reminds) {
+      for (let remind of agdata.txjson.reminds) {
+        if (remind < 0) {
+          let postpone: Moment = moment(-1 * remind, 'YYYYMMDDHHmm', true);
+          if (!postpone.isValid()) {
+            remind = -1 * parseInt(edtm.subtract(remind, "m").format("YYYYMMDDHHmm"));
+          }
+        }
+        //
+        if (!TxJson.getDisTixin(edtm.format("YYYY/MM/DD HH:mm"), remind)) {
+          validReminds.push(remind);
+        }
+      }
+    }else{
+      agdata.txjson = new TxJson();
+    }
+    agdata.txjson.reminds.length = 0;
+    agdata.txjson.reminds = validReminds;
+    agdata.tx = JSON.stringify(agdata.txjson);
+    agdata.txs = agdata.txjson.text(agdata.evd,agdata.evt);
   }
 
   /**
@@ -1534,6 +1542,8 @@ export class EventService extends BaseService {
         newAgdata.txjson = new TxJson();
       }
     }
+    //过期提醒从txjson中删除（gtd_wa中过期数据将在当前记录提醒同步时删除）
+    this.setValidTixin(newAgdata);
 
     if (newAgdata.evi != null && newAgdata.evi != "") {
       /*修改*/
@@ -2908,9 +2918,10 @@ export class EventService extends BaseService {
    */
   private sqlparamAddTxWa2(ev: EvTbl,obtType: string, txjson :TxJson): Array<WaTbl> {
     let ret = new Array<WaTbl>();
-
+    let evdatetime = ev.evd + " " + ev.evt;
     if (txjson.reminds && txjson.reminds.length > 0) {
       txjson.each(ev.evd, ev.evt, (datetime) => {
+
         let wa = new WaTbl();//提醒表
 
         wa.obt = obtType;
@@ -5612,14 +5623,20 @@ export class TxJson {
   //提醒过期判断
   static getDisTixin(evdatetime:string , time:number ) : boolean{
     let ret : boolean = true;
+    let edtm = moment(evdatetime, "YYYY/MM/DD HH:mm", true);
     if (!time){
       return true;
     }
     let txdt : Moment;
     if (time >= 0 ){
-      txdt = moment(evdatetime, "YYYY/MM/DD HH:mm", true).subtract(time, 'm');
+      txdt = edtm.subtract(time, 'm');
     }else{
-      txdt = moment(-1 * time, 'YYYYMMDDHHmm',true);
+      let postpone :Moment = moment(-1 * time,'YYYYMMDDHHmm',true);
+      if (postpone.isValid()){
+        txdt = moment(-1 * time,"YYYYMMDDHHmm",true);
+      }else{
+        txdt = edtm.subtract(time, "m");
+      }
     }
 
     if ( moment().isAfter(txdt)){
@@ -5627,7 +5644,7 @@ export class TxJson {
     }else{
       ret = false;
       if (time < 0 ){
-        if (moment(-1 * time, 'YYYYMMDDHHmm',true).isAfter(moment(evdatetime, "YYYY/MM/DD HH:mm", true))){
+        if (moment(-1 * time, 'YYYYMMDDHHmm',true).isAfter(edtm)){
           ret = false;
         }else{
           ret = true;
@@ -5713,7 +5730,7 @@ export class TxJson {
   }
 
   // 遍历计算每个提醒的实际时间
-  each(sd: string, st: string, callback: (datetime: moment.Moment) => void) {
+  each(sd: string, st: string, callback: (datetime: moment.Moment,remind) => void) {
     // 如果提醒关闭或者没有提醒数据，直接返回
     if (this.close || !this.reminds || this.reminds.length <= 0) {
       return;
@@ -5730,7 +5747,7 @@ export class TxJson {
           baseline.subtract(remind, "m");
         }
       }
-      callback(baseline);
+      callback(baseline,remind);
     }
   }
 }
