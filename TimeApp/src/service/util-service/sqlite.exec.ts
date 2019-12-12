@@ -84,6 +84,9 @@ export class SqliteExec {
 
       this.sqlliteConfig.database.transaction( (tx)=> {
           tx.executeSql(sql, params, (tx, res) => {
+
+            let ln = sql.indexOf("from") || sql.indexOf("where") || sql.indexOf("values") || sql.indexOf("union all") || sql.indexOf("select");
+            this.util.tellyou("正在执行sql：" + sql.substring(0,ln+30) + "...");
             resolve(res);
           }, (tx, err) => {
             console.log("sql [" + sql + "] params [" + (params? params.join(",") : "") + "] log error :" + err.message);
