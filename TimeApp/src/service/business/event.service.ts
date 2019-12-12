@@ -12,6 +12,7 @@ import {WaTbl} from "../sqlite/tbl/wa.tbl";
 import * as anyenum from "../../data.enum";
 import { BackupPro, BacRestful, OutRecoverPro } from "../restful/bacsev";
 import {ParTbl} from "../sqlite/tbl/par.tbl";
+import {MrkTbl} from "../sqlite/tbl/mrk.tbl";
 import {JhaTbl} from "../sqlite/tbl/jha.tbl";
 import {DataConfig} from "../config/data.config";
 import {BTbl} from "../sqlite/tbl/b.tbl";
@@ -4104,11 +4105,29 @@ export class EventService extends BaseService {
     return;
   }
 
-  /***
-  * 新增附件
-  **@author ying<343253410@qq.com>
-  */
+  /**
+   * 保存标签
+   *
+   * @author leonxi<leon_xi@163.com>
+   **/
+  async saveMarkup(markup: MarkupData): Promise<MarkupData> {
+    this.assertEmpty(markup);       // 入参不能为空
 
+    markup.mki = markup.mki || this.util.getUuid();
+    markup.obt = markup.obt || ObjectType.Event;  // 默认设置事件相关标签
+
+    let mrktbl: MrkTbl = new MrkTbl();
+    Object.assign(mrktbl, markup);
+
+    await this.sqlExce.repTByParam(mrktbl);
+
+    return markup;
+  }
+
+  /**
+   * 新增附件
+   * @author ying<343253410@qq.com>
+   **/
   async saveAttachment(att: Attachment): Promise<Attachment> {
     this.assertEmpty(att);       // 入参不能为空
     //this.assertEmpty(att.fjn);    // 附件名称
@@ -5166,6 +5185,11 @@ export interface  Member extends ParTbl{
   src : string;//联系人来源
   bhi: string ; //头像表ID 用于判断是否有头像记录
   bhiu:string ;//base64图片
+
+}
+
+//标签对象
+export interface MarkupData extends MrkTbl {
 
 }
 
