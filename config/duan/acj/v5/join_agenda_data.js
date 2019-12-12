@@ -50,6 +50,9 @@ function clean(datasource) {
     // 参与人不存在本次加入用户，则加入
     if (data.to.indexOf(userinfo.phoneno) < 0) {
       data.to.push(userinfo.phoneno);
+      var pn = data.payload['pn'] || 0;
+      pn++; // 参与人数+1
+      data.payload['pn'] = pn + '';
     } else {
       continue;
     }
