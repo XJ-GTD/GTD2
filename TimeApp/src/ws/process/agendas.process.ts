@@ -93,7 +93,7 @@ export class AgendasProcess extends BaseProcess implements MQProcess,OptProcess{
         let member: Member = {} as Member;
         Object.assign(member, f);
 
-        rcIn.members.push(f);
+        rcIn.members.push(member);
       }
 
       if (prvOpt == AG.C){
