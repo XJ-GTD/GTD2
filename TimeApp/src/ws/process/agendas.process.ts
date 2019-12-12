@@ -5,10 +5,11 @@ import {Injectable} from "@angular/core";
 import {CudscdPara} from "../model/cudscd.para";
 import {ProcesRs} from "../model/proces.rs";
 import {DataConfig} from "../../service/config/data.config";
+import {UserConfig} from "../../service/config/user.config";
 import {CTbl} from "../../service/sqlite/tbl/c.tbl";
 import {AG, O, SS} from "../model/ws.enum";
 import {FsData, RcInParam, ScdData} from "../../data.mapping";
-import {EventService,AgendaData} from "../../service/business/event.service";
+import {EventService,AgendaData,Member} from "../../service/business/event.service";
 import {WsDataConfig} from "../wsdata.config";
 import {BaseProcess} from "./base.process";
 import * as anyenum from "../../data.enum";
@@ -85,13 +86,16 @@ export class AgendasProcess extends BaseProcess implements MQProcess,OptProcess{
       rcIn.evn = c.sn;
       rcIn.st = c.st;
       rcIn.sd = c.sd;
-      if(c.si && c.si != null && c.si != ''){
+      if (c.si && c.si != null && c.si != '') {
         rcIn.evi = c.si;
       }
 
-      //for (let f of  fs){
-      //  rcIn.parters.push(f);
-      //}
+      for (let f of  fs) {
+        let member: Member = {} as Member;
+        Object.assign(member, f);
+
+        rcIn.members.push(member);
+      }
 
       if (prvOpt == AG.C){
         await this.eventService.saveAgenda(rcIn);
@@ -173,7 +177,7 @@ export class AgendasProcess extends BaseProcess implements MQProcess,OptProcess{
     if (content.option == AG.U) {
 
       if (scd.length == 1) {
-        if (scd[0].gs != "0" && (scd[0].sd != cudPara.d || scd[0].sn != cudPara.ti ||
+        if (scd[0].ui != UserConfig.account.id && (scd[0].sd != cudPara.d || scd[0].sn != cudPara.ti ||
             scd[0].st != cudPara.t  )) {
           //出错记录
           this.output(content, contextRetMap, 'branchcode', WsDataConfig.BRANCHCODE, WsDataConfig.BRANCHCODE_E0001);

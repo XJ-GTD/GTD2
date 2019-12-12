@@ -90,7 +90,7 @@ export class AiService {
   countDay(day: string): string {
     let date = moment(day, "YYYY/MM/DD");
     let str = '今天';
-    let nowDate = moment(moment(new Date()).format("YYYY/MM/DD"));
+    let nowDate = moment(moment(new Date()).format("YYYY/MM/DD"), "YYYY/MM/DD");
     let days = date.diff(nowDate, 'days');
     if (days == 0) {
       str = '今天';
