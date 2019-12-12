@@ -2,7 +2,7 @@ import {MQProcess} from "../interface.process";
 import {WsContent} from "../model/content.model";
 import {MK} from "../model/ws.enum";
 import {Injectable} from "@angular/core";
-import {PgBusiService} from "../../service/pagecom/pgbusi.service";
+import {EventService, MarkupData} from "../../service/business/event.service";
 import {MarkupPara} from "../model/markup.para";
 
 /**
@@ -12,7 +12,7 @@ import {MarkupPara} from "../model/markup.para";
  */
 @Injectable()
 export class MarkupProcess implements MQProcess {
-  constructor(private busiService: PgBusiService) {
+  constructor(private eventService: EventService) {
   }
 
   async gowhen(content: WsContent, contextRetMap: Map<string,any>) {
@@ -35,7 +35,12 @@ export class MarkupProcess implements MQProcess {
 
     if (markupPara.mks && markupPara.mks.length > 0) {
       for (let mk of markupPara.mks) {
-        await this.busiService.markup(mk.id, mk.mkl, mk.mkt);
+        let markup: MarkupData = {} as MarkupData;
+        markup.obi = mk.id;
+        markup.mkl = mk.mkl;
+        markup.mkt = mk.mkt;
+
+        await this.eventService.saveMarkup(markup);
       }
     }
 

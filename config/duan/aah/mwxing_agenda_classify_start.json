@@ -45,7 +45,7 @@
             "trigger": "nlp",
             "parameters": [
               "function;MarkupAnalysis",
-              "text;$.parent.parameters.agenda.title"
+              "text;$.parent.parameters.agenda.evn"
             ],
             "outputs": [
               "function",
@@ -65,7 +65,7 @@
           "name": "日程信息获取",
           "trigger": "acj",
           "parameters": [
-            "ruleid;MWXING_CLASSIFY_F0001_V1_2",
+            "ruleid;MWXING_CLASSIFY_F0001_V1_5",
             "datasource;$.parent.parameters"
           ],
           "outputs": [
