@@ -92,7 +92,6 @@ import { Observable } from 'rxjs';
               </ion-row>
 
               <ion-row class="item-content  calendaritem-content item-content-backgroud "
-                       [class.item-content-hasmessage]="false"
                        *ngFor="let jt of days.calendaritems;" (click)="toPlanItem(jt)"
                        [class.noinvite]="currentuser != jt.ui && jt.ui != '' && jt.invitestatus != inviteaccept && jt.invitestatus != invitereject">
                 <!-- 自定义日历项 -->
@@ -216,6 +215,7 @@ import { Observable } from 'rxjs';
                       <!--<div class="invite" *ngIf="event.invitestatus != inviteaccept && event.invitestatus != invitereject"-->
                       <!--end><span (click)="rejectInvite($event, event)">拒绝</span><span-->
                       <!--(click)="acceptInvite($event, event)">接受</span></div>-->
+                      <div class="update">更新</div>
                       <div class="icon font-small">
                         <ion-icon class="fal fa-cloud-upload" [class.over]="event.tb == synch"></ion-icon>
                         <ion-icon class="fad fa-at" [class.over]="annotationobservables.get(event.evi) | async"></ion-icon>
