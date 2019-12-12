@@ -132,10 +132,10 @@ export class ScheduleRemindService extends BaseService {
 
           txjson.each(event.evd, event.evt, (datetime) => {
             let remindgap: number = moment().diff(datetime);
-            console.log("单个日程提醒更新=============：evd ="+event.evd +";evt="+event.evt +";datetime= " + datetime +";remindgap="+remindgap);
+
             // 将来提醒，且在将来48小时以内
             if (remindgap <= 0 && (limitms + remindgap) >= 0) {
-              console.log("提交服务器======+"+datetime);
+              console.log("单个日程提醒将来48小时内提交fwq=============：evd ="+event.evd +";evt="+event.evt +";datetime= " + datetime.format("YYYY/MM/DD HH:mm") +";remindgap="+remindgap);
               schedulereminds.push({
                 remindid: event.evi + datetime.format("YYYYMMDDHHmm"),
                 wd: datetime.format("YYYY/MM/DD"),
@@ -169,6 +169,7 @@ export class ScheduleRemindService extends BaseService {
             and (wd|| ' ' ||wt < '${moment().format("YYYY/MM/DD HH:mm")}' or del ='del' ) ; `;
       let ppReminds: Array<RemindData> = await this.sqlExce.getExtLstByParam<RemindData>(ppsql, []);
       for (let remind of ppReminds) {
+        console.log("单个日程提醒过期提醒提交fwq=============：evi="+remind.obi +";datetime= " + remind.wd +":"+remind.wt);
         schedulereminds.push({
           remindid: remind.wai,
           wd: remind.wd,
@@ -272,7 +273,7 @@ export class ScheduleRemindService extends BaseService {
     // 提交服务器
     for (let schedule of schedulereminds) {
       try {
-        console.log("提交服务器schedulereminds======+"+JSON.stringify(schedule));
+        console.log("批量提交fwq schedulereminds======+"+JSON.stringify(schedule));
         await this.syncRestful.putScheduledRemind(
           UserConfig.account.id,
           schedule.remindid,
