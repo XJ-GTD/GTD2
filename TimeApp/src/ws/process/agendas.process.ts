@@ -95,6 +95,8 @@ export class AgendasProcess extends BaseProcess implements MQProcess,OptProcess{
         let member: Member = {} as Member;
         Object.assign(member, f);
 
+        rcIn.members = rcIn.members || new Array<Member>();
+
         rcIn.members.push(member);
       }
 
@@ -109,7 +111,8 @@ export class AgendasProcess extends BaseProcess implements MQProcess,OptProcess{
         updated.evn = rcIn.evn;
         updated.st = rcIn.st;
         updated.sd = rcIn.sd;
-        if (rcIn.members.length > 0) {
+        if (rcIn.members && rcIn.members.length > 0) {
+          updated.members = updated.members || new Array<Member>();
           updated.members.splice(0, 0, ...rcIn.members);
         }
 
