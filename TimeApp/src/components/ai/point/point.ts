@@ -27,36 +27,50 @@ import {ListeningComponent} from "./listening";
 @IonicPage()
 @Component({
   selector: 'PointComponent',
-  template: `    
-    
+  template: `
+
     <div class="inputioc" (click)="inputstart()" *ngIf="showInput">
       <ion-icon class="fal fa-keyboard"></ion-icon>
     </div>
-      <div class="aitool" #aitool (click)="ponintClick()">
-        <b class=" speaking  moving" #light>
-          <div class="spinner" >
-            <!--<canvas #canvas></canvas>-->
+    <div class="aitool" #aitool (click)="ponintClick()">
+      <b class=" speaking  moving" #light>
+        <div class="spinner">
+          <!--<canvas #canvas></canvas>-->
         </div>
-        </b>
+      </b>
     </div>
-    <angular-popper  target=".aitool"  placement="left-end" #popper [class.showNot] = "popperShow">
+    <angular-popper target=".aitool" placement="left-end" #popper [class.showNot]="popperShow">
       <div content>
-        <button icon-only (click)="closepopper() "><ion-icon class="fal fa-times-circle"></ion-icon></button>
-        <ion-grid class="list-grid-content content">
-          <ng-template ngFor let-tellyou [ngForOf]="tellYouData">
-            <ion-row class="item-content">
-              <div class="line font-small first-line">
-                <div class="sn">
-                  {{tellyou}}
-                </div>
-              </div>              
-            </ion-row>
-          </ng-template>
-        </ion-grid>
+        <ion-card>
+          <ion-item>
+            <button ion-button icon-start clear item-end (click)="closepopper() ">
+              <ion-icon class="fal fa-times-circle"></ion-icon>
+              关闭
+            </button>
+          </ion-item>
+          <ion-card-header>
+            <ion-card-title>席理加的邀请</ion-card-title>
+          </ion-card-header>
+          <ion-card-content>
+
+            <ng-template ngFor let-tellyou [ngForOf]="tellYouData">
+            <ion-item>
+              <h2 class="sn">
+                {{tellyou}}
+              </h2>
+            </ion-item>
+            </ng-template>
+
+            <!--<ion-item>-->
+              <!--<h4 text-right>2019年12月31日</h4>-->
+              <!--<h5 text-right>5点30分</h5>-->
+            <!--</ion-item>-->
+          </ion-card-content>
+        </ion-card>
       </div>
     </angular-popper>
 
-    <ListeningComponent #listening  *ngIf="showInput"></ListeningComponent>
+    <ListeningComponent #listening *ngIf="showInput"></ListeningComponent>
     <InputComponent #inputComponent></InputComponent>
 
   `,
@@ -75,32 +89,31 @@ export class PointComponent {
 
   @ViewChild('popper')
   popper: PopperComponent;
-  popperShow:boolean = true;
+  popperShow: boolean = true;
   @Input()
-  hasPopper:boolean = true;
+  hasPopper: boolean = true;
 
   @Input()
-  showInput:boolean = true;
+  showInput: boolean = true;
 
 
   @Output() onPonintClick: EventEmitter<any> = new EventEmitter();
 
-  aiTellYou:Subscriber<any>;
-  tellYouData:Array<string> = new Array<string>();
+  aiTellYou: Subscriber<any>;
+  tellYouData: Array<string> = new Array<string>();
 
   constructor(private utilService: UtilService,
               private assistantService: AssistantService,
               private _renderer: Renderer2,
-              private emitService:EmitService,
+              private emitService: EmitService,
               private changeDetectorRef: ChangeDetectorRef,
-              private timeoutService:TimeOutService) {
+              private timeoutService: TimeOutService) {
 
-    this.aiTellYou = this.emitService.registerAiTellYou(($data)=>{
-
-      if (this.hasPopper){
-        if ($data.close){
+    if (this.hasPopper) {
+      this.aiTellYou = this.emitService.registerAiTellYou(($data) => {
+        if ($data.close) {
           this.popperShow = true;
-        }else{
+        } else {
           this.popperShow = false;
           this.tellYouData.push($data.message);
           if (!this.changeDetectorRef['destroyed']) {
@@ -108,13 +121,11 @@ export class PointComponent {
             this.popper.create();
           }
           this.timeoutService.timeOutOnlyOne(30000,()=>{
-            this.popperShow = true;
-            this.tellYouData.length = 0;
-            this.changeDetectorRef.detectChanges();
+            this.closepopper();
           },"close.home.ai.talk");
         }
-      }
-    });
+      });
+    }
 
     // this.emitService.registerSpeak((b)=>{
     //   if (b){
@@ -124,18 +135,23 @@ export class PointComponent {
     //   }
     // })
   }
-  ngOnDestroy(){
-    this.aiTellYou.unsubscribe();
+
+  ngOnDestroy() {
+    if (this.aiTellYou)
+      this.aiTellYou.unsubscribe();
   }
 
-  closepopper(){
+  closepopper() {
     this.popperShow = true;
+    this.tellYouData.length = 0;
+    this.changeDetectorRef.detectChanges();
   }
 
-  ponintClick(){
+  ponintClick() {
     this.onPonintClick.emit(this);
     // this.listening.start();
   }
+
   inputstart() {
     this.inputComponent.inputStart();
   }

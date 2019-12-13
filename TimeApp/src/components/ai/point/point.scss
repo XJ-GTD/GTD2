@@ -8,7 +8,6 @@ pointcomponent {
   height: 60px;
   top: 100%;
   z-index: 999;
-
   ListeningComponent{
     margin-top: -70px;
     width: 50%;
@@ -184,25 +183,27 @@ pointcomponent {
   }
 
   .angular-popper {
-    width: 250px;
-    background-color: rgba(248, 248, 248, 1);
-    color: #843094;
+    width: 300px;
+    background-color: rgba(248, 248, 248, .8);
+    padding: 2px;
+    border-radius: 10% 10% 0 10%;
+
+    .card-ios{
+      margin: .5rem;
+      width: calc(100% - 1rem);
+      border-radius: 10% 10% 0 10%;
+      .sn{
+        white-space: normal;
+        max-height: 160px;
+      }
+    }
 
     div[content] {
       max-height: 400px;
       overflow-y: auto;
     }
-
     .angular-popper__arrow {
-      border-color: rgba(248, 248, 248, 1)
-    }
-
-    button {
-      position: fixed;
-      top: -1rem;
-      right: -3rem;
-      width: auto;
-      background: transparent;
+      border-color: rgba(248, 248, 248, .8)
     }
   }
 

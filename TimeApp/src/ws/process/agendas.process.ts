@@ -84,7 +84,7 @@ export class AgendasProcess extends BaseProcess implements MQProcess,OptProcess{
 	  //2019-08-30   ying 改版
 	 let rcIn: AgendaData = {} as AgendaData;
       rcIn.evn = c.sn;
-      rcIn.st = c.st;
+      rcIn.st = (c.st == '99:99')? undefined : c.st;  // 不指定时间输入为99:99
       rcIn.sd = c.sd;
       if (c.si && c.si != null && c.si != '') {
         rcIn.evi = c.si;

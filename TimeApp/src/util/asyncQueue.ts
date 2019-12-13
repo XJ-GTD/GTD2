@@ -5,6 +5,7 @@ import * as onlyOnce from "async/internal/onlyOnce.js"
 import * as isArray from "lodash/isArray.js"
 import * as baseIndexOf from "lodash/_baseIndexOf.js"
 import {TimeOutService} from "./timeOutService";
+import {UtilService} from "../service/util-service/util.service";
 
 
 
@@ -29,18 +30,17 @@ export class AsyncQueue {
   isProcessing: boolean = false;
   timeoutService:TimeOutService;
   emitKey:string;
-
-  setTimeOutService(timeoutService:TimeOutService){
-    this.timeoutService = timeoutService;
-  }
+  utilService:UtilService;
 
 
-  constructor(worker, concurrency, payload,emitKey) {
+  constructor(worker, concurrency, payload,emitKey,utilService:UtilService,timeoutService:TimeOutService) {
     if (concurrency == null) {
       concurrency = 1;
     } else if (concurrency === 0) {
       throw new Error('Concurrency must not be zero');
     }
+    this.timeoutService = timeoutService;
+    this.utilService = utilService;
 
     this._worker = wrapAsync.default(worker);
     this.numRunning = 0;
@@ -185,9 +185,13 @@ export class AsyncQueue {
     }else {
       timeout = 10;
     }
-    this.timeoutService.timeout(timeout,()=>{
+    if (this.utilService.isMobile()){
+      this.timeoutService.timeout(timeout,()=>{
+        this.working();
+      },this.emitKey);
+    }else{
       this.working();
-    },this.emitKey);
+    }
   }
 
   public length() {

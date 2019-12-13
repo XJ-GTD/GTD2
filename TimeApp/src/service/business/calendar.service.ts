@@ -82,9 +82,9 @@ export class CalendarService extends BaseService {
 
         callback();
       } catch(err) {}
-    },1,1,"home.list.modifiy1");
+    },1,1,"home.list.modifiy1",this.util,this.timeOutService);
 
-    this.datasrwqueue.setTimeOutService(this.timeOutService);
+
 
     this.activitiesqueue = new AsyncQueue( async ({data}, callback) => {
 
@@ -129,9 +129,9 @@ export class CalendarService extends BaseService {
       }
 
       callback();
-    },1,1,"home.list.modifiy");
+    },1,1,"home.list.modifiy",this.util,this.timeOutService);
 
-    this.activitiesqueue.setTimeOutService(this.timeOutService);
+
 
     // 活动变化时自动更新日历显示列表数据
     this.emitService.destroy("mwxing.calendar.activities.changed");

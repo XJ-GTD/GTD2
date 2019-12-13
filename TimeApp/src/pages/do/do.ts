@@ -107,8 +107,8 @@ export class DoPage {
       }
 
       callback();
-    },1,1,"todo.changed");
-    this.todosqueue.setTimeOutService(this.timeOutService);
+    },1,1,"todo.changed",this.util,this.timeOutService);
+
   }
 
   ionViewDidLoad() {

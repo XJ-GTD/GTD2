@@ -48,7 +48,7 @@ export class WebsocketService {
       }).catch(data=>{
         callback(message);
       })
-    },1,1,"background.queue");
+    },1,1,"background.queue",this.util,this.timeOutService);
 
     this.workqueue = new AsyncQueue(({message,index,err},callback) =>{
       console.log("当前任务=====workqueue  process queue:" + this.workqueue.length());
@@ -60,9 +60,8 @@ export class WebsocketService {
         // console.log(data);
         callback(message);
       })
-    },1,1,"worker.queue");
+    },1,1,"worker.queue",this.util,this.timeOutService);
 
-    this.workqueue.setTimeOutService(timeOutService);
 
 
     this.speechqueue =  new AsyncQueue( ({message,index,err},callback) =>{
@@ -72,8 +71,8 @@ export class WebsocketService {
       }).catch(data=>{
         callback(data);
       })
-    },1,1,"speech.queue");
-    this.speechqueue.setTimeOutService(timeOutService);
+    },1,1,"speech.queue",this.util,this.timeOutService);
+
   }
 
   pushMessage(event:any){
