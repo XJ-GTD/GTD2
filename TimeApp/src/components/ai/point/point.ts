@@ -17,6 +17,7 @@ import {PopperComponent} from "angular-popper";
 import {Subscriber} from "rxjs";
 import {TimeOutService} from "../../../util/timeOutService";
 import {ListeningComponent} from "./listening";
+import {PointService} from "./point.service";
 
 /**
  * Generated class for the Hb01Page page.
@@ -53,18 +54,26 @@ import {ListeningComponent} from "./listening";
           </ion-card-header>
           <ion-card-content>
 
-            <ng-template ngFor let-tellyou [ngForOf]="tellYouData">
+            <!--<ng-template ngFor let-tellyou [ngForOf]="tellYouData">-->
             <ion-item>
               <h2 class="sn">
-                {{tellyou}}
+               今天我要甘胺干嘛的，等哈哈电话发士大夫
+                今天我要甘胺干嘛的，等哈哈电话发士大夫
+                今天我要甘胺干嘛的，等哈哈电话发士大夫
+                今天我要甘胺干嘛的，等哈哈电话发士大夫
               </h2>
             </ion-item>
-            </ng-template>
+            <!--</ng-template>-->
 
-            <!--<ion-item>-->
-              <!--<h4 text-right>2019年12月31日</h4>-->
-              <!--<h5 text-right>5点30分</h5>-->
-            <!--</ion-item>-->
+            <ion-item>
+              <h4 text-right>2019年12月31日</h4>
+              <h5 text-right>5点30分</h5>
+            </ion-item>
+
+            <ion-item>
+              <h4 text-right>播放</h4>
+              <h5 text-right>查看</h5>
+            </ion-item>
           </ion-card-content>
         </ion-card>
       </div>
@@ -107,7 +116,8 @@ export class PointComponent {
               private _renderer: Renderer2,
               private emitService: EmitService,
               private changeDetectorRef: ChangeDetectorRef,
-              private timeoutService: TimeOutService) {
+              private timeoutService: TimeOutService,
+              private pointService:PointService) {
 
     if (this.hasPopper) {
       this.aiTellYou = this.emitService.registerAiTellYou(($data) => {
@@ -120,9 +130,9 @@ export class PointComponent {
             this.changeDetectorRef.detectChanges();
             this.popper.create();
           }
-          this.timeoutService.timeOutOnlyOne(30000,()=>{
-            this.closepopper();
-          },"close.home.ai.talk");
+          // this.timeoutService.timeOutOnlyOne(30000,()=>{
+          //   this.closepopper();
+          // },"close.home.ai.talk");
         }
       });
     }
