@@ -16,6 +16,7 @@ export class JhaTbl implements ITblParam {
   del: string;
   utt: number;
   wtt: number;
+  checksum: string;
 
   fastParam(): any {
     let params: Array<any> = new Array<any>();
@@ -29,10 +30,11 @@ export class JhaTbl implements ITblParam {
     params.push(moment().unix());
     params.push(this.tb);
     params.push(this.del);
+    params.push(this.checksum);
 
     return [`replace into gtd_jha
-       (     ji ,jn ,jg ,jc ,jt ,jtd ,wtt ,utt,tb,del)`,
-     `select ?,?,?,?,?,?,?,?,?,?`,
+       (     ji ,jn ,jg ,jc ,jt ,jtd ,wtt ,utt,tb,del,checksum)`,
+     `select ?,?,?,?,?,?,?,?,?,?,?`,
     params];
   }
 
@@ -49,6 +51,8 @@ export class JhaTbl implements ITblParam {
        ,utt integer
        ,tb varchar(6)
        ,del varchar(6)
+        ,checksum varchar(50) 
+
      );`;
 
     return sq;
@@ -65,6 +69,7 @@ export class JhaTbl implements ITblParam {
     if(this.jtd!=null && this.jtd!=''){      sq=sq+', jtd= ? ';      params.push(this.jtd);    }
     if(this.tb!=null && this.tb!=''){      sq=sq+', tb= ? ';      params.push(this.tb);    }
     if(this.del!=null && this.del!=''){      sq=sq+', del= ? ';      params.push(this.del);    }
+    if(this.checksum!=null && this.checksum!=''){      sq=sq+', checksum= ? ';      params.push(this.checksum);    }
 
     sq =`update gtd_jha set utt =${moment().unix()}  ${sq} where ji = ? ;`;
     params.push(this.ji);
@@ -111,6 +116,7 @@ export class JhaTbl implements ITblParam {
     if(this.jtd!=null && this.jtd!=''){      sq=sq+' and jtd= ? ';      params.push(this.jtd);    }
     if(this.tb!=null && this.tb!=''){      sq=sq+' and tb= ? ';      params.push(this.tb);    }
     if(this.del!=null && this.del!=''){      sq=sq+' and del= ? ';      params.push(this.del);    }
+    if(this.checksum!=null && this.checksum!=''){      sq=sq+' and checksum= ? ';      params.push(this.checksum);    }
 
     sq = sq + ';';
 
@@ -129,8 +135,8 @@ export class JhaTbl implements ITblParam {
   inTParam():any {
     let params = new Array<any>();
     let sq =`insert into gtd_jha
-       (     ji ,jn ,jg ,jc ,jt ,jtd ,wtt ,utt,tb,del)
-       values(?,?,?,?,?,?,${moment().unix()},${moment().unix()},?,?);`;
+       (     ji ,jn ,jg ,jc ,jt ,jtd ,wtt ,utt,tb,del,checksum)
+       values(?,?,?,?,?,?,${moment().unix()},${moment().unix()},?,?,?);`;
     params.push(this.ji);
     params.push(this.jn);
     params.push(this.jg);
@@ -139,6 +145,7 @@ export class JhaTbl implements ITblParam {
     params.push(this.jtd);
     params.push(this.tb);
     params.push(this.del);
+    params.push(this.checksum);
 
     let ret = new Array<any>();
     ret.push(sq);
@@ -149,8 +156,8 @@ export class JhaTbl implements ITblParam {
   rpTParam():any {
     let params = new Array<any>();
     let sq =`replace into gtd_jha
-       (     ji ,jn ,jg ,jc ,jt ,jtd ,wtt ,utt,tb,del)
-       values(?,?,?,?,?,?,${moment().unix()},${moment().unix()},?,?);`;
+       (     ji ,jn ,jg ,jc ,jt ,jtd ,wtt ,utt,tb,del,checksum)
+       values(?,?,?,?,?,?,${moment().unix()},${moment().unix()},?,?,?);`;
     params.push(this.ji);
     params.push(this.jn);
     params.push(this.jg);
@@ -159,6 +166,7 @@ export class JhaTbl implements ITblParam {
     params.push(this.jtd);
     params.push(this.tb);
     params.push(this.del);
+    params.push(this.checksum);
 
     let ret = new Array<any>();
     ret.push(sq);

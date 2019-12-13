@@ -119,7 +119,7 @@ export class EventService extends BaseService {
       let masterAgds : Array<AgendaData>;
       if (rteviArray.length > 0 ){
         let evistring = rteviArray.join(",");
-        let sq = ` select * from gtd_ev where evi in (${evistring}) ;`;
+        let sq = ` select * from gtd_ev where evi in (${evistring}) and del <> 'del' ;`;
         masterAgds  = await this.sqlExce.getExtLstByParam<AgendaData>(sq,[]);
       }else{
         masterAgds = new Array<AgendaData>();
@@ -170,26 +170,32 @@ export class EventService extends BaseService {
         }
 
         // 受邀人子日程且是未接受状态，查看主日程实际否接受，接受则子日程自动接受
-        if (agd.rtevi && agd.ui != UserConfig.account.id && agd.invitestatus != InviteState.Accepted
-          && agd.del != anyenum.DelType.del) {
+        if (agd.rtevi ){
           let findm =  masterAgds.find((value, index,arr)=>{
             return value.evi == agd.rtevi ;
           });
-          if (findm && findm.invitestatus == InviteState.Accepted ){
-            agd.invitestatus = InviteState.Accepted;
+          if (findm){
+            if (findm.invitestatus == InviteState.Accepted ){
+              if (agd.ui != UserConfig.account.id && agd.invitestatus != InviteState.Accepted
+                && agd.del != anyenum.DelType.del) {
+                agd.invitestatus = InviteState.Accepted;
 
-            //设定了截止日期，则自动加入todolist
-            if(UserConfig.getSetting(DataConfig.SYS_AUTOTODO) && agd.al == anyenum.IsWholeday.EndSet){
-              agd.todolist = anyenum.ToDoListStatus.On;
+                //设定了截止日期，则自动加入todolist
+                if (UserConfig.getSetting(DataConfig.SYS_AUTOTODO) && agd.al == anyenum.IsWholeday.EndSet) {
+                  agd.todolist = anyenum.ToDoListStatus.On;
+                }
+                agd.tb = anyenum.SyncType.unsynch;
+              }
+            }else{
+              if (!agd.invitestatus) {
+                agd.invitestatus = InviteState.None;
+              }
             }
-            agd.tb = anyenum.SyncType.unsynch;
           }else{
-            if (!agd.invitestatus) {
-              agd.invitestatus = InviteState.None;
-            }
+            agd.tb = anyenum.SyncType.unsynch;
+            agd.del = anyenum.DelType.del;
           }
         }
-
 
         let ev = new EvTbl();
         Object.assign(ev,agd);
@@ -1526,19 +1532,14 @@ export class EventService extends BaseService {
     this.assertEmpty(newAgdata.sd);    // 事件开始日期不能为空
     this.assertEmpty(newAgdata.evn);   // 事件标题不能为空
 
-    if (!newAgdata.evi || newAgdata.evi == "") {
-      if (newAgdata.rtjson || newAgdata.rt || newAgdata.rts) {
-        this.assertEmpty(newAgdata.rtjson);  // 新建事件重复设置不能为空
-      } else {
-        newAgdata.rtjson = new RtJson();
-      }
+    newAgdata.rtjson = generateRtJson(newAgdata.rtjson, newAgdata.rt);
+    newAgdata.txjson = generateTxJson(newAgdata.txjson, newAgdata.tx);
 
-      if (newAgdata.txjson || newAgdata.tx || newAgdata.txs) {
-        this.assertEmpty(newAgdata.txjson);  // 新建事件提醒不能为空
-      } else {
-        newAgdata.txjson = new TxJson();
-      }
+    if (oriAgdata) {
+      oriAgdata.rtjson = generateRtJson(oriAgdata.rtjson, oriAgdata.rt);
+      oriAgdata.txjson = generateTxJson(oriAgdata.txjson, oriAgdata.tx);
     }
+
     //过期提醒从txjson中删除（gtd_wa中过期数据将在当前记录提醒同步时删除）
     this.setValidTixin(newAgdata);
 
@@ -1564,10 +1565,17 @@ export class EventService extends BaseService {
       newAgdata.updstate = anyenum.UpdState.inherent;
       newAgdata.evrelate = this.util.getUuid();
       retParamEv = this.newAgenda(newAgdata);
+      //添加新参与人到新事件
+      let pars = new Array<ParTbl>();
+      pars = this.sqlparamAddPar(retParamEv.rtevi , newAgdata.members);
 
-      await this.sqlExce.batExecSqlByParam(retParamEv.sqlparam);
-      //提交服务器
-
+      let parparams = new Array<any>();
+      if (pars && pars.length > 0){
+        parparams = this.sqlExce.getFastSaveSqlByParam(pars);
+      }
+      let sqlparam = new Array<any>();
+      sqlparam = [ ...retParamEv.sqlparam, ...parparams];
+      await this.sqlExce.batExecSqlByParam(sqlparam);
 
       //如果网络正常提交到服务器，则更新同步标志同步通过websocket来通知
 
@@ -1644,38 +1652,6 @@ export class EventService extends BaseService {
 
     if (modiType == OperateType.FromSel && oriAgdata.rfg == anyenum.RepeatFlag.RepeatToOnly){
       this.assertFail("独立日修改不可以选择修改将来所有");
-    }
-
-    //如果不使用页面对象，而直接使用更新后的返回数据对象作为参数，则rtjson，txjson为空
-    if (!newAgdata.rtjson) {
-      if (newAgdata.rt) {
-        newAgdata.rtjson = new RtJson();
-        Object.assign(newAgdata.rtjson, JSON.parse(newAgdata.rt));
-      } else {
-        newAgdata.rtjson = new RtJson();
-      }
-    }
-
-    if (!oriAgdata.rtjson) {
-      if (oriAgdata.rt) {
-        oriAgdata.rtjson = new RtJson();
-        Object.assign(oriAgdata.rtjson, JSON.parse(oriAgdata.rt));
-      } else {
-        oriAgdata.rtjson = new RtJson();
-      }
-    }
-
-    if (!newAgdata.txjson) {
-      if (newAgdata.tx) {
-        newAgdata.txjson = new TxJson();
-        Object.assign(newAgdata.txjson, JSON.parse(newAgdata.tx));
-      } else {
-        newAgdata.txjson = new TxJson();
-      }
-    } else {
-      let txjson: TxJson = new TxJson();
-      Object.assign(txjson, newAgdata.txjson);
-      newAgdata.txjson = txjson;
     }
 
     //批量本地更新

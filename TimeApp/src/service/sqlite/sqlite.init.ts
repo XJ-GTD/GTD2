@@ -309,6 +309,28 @@ export class SqliteInit {
         await this.sqlexec.dropByParam(rw);
         await this.sqlexec.createByParam(rw);
       }
+    }else if (version == 11){
+      //新增checksum字段
+      if (from > 0 && from < 11 ) {
+        let sqlparam = new Array<any>();
+        let sq = ` ALTER TABLE gtd_ev ADD COLUMN checksum varchar(50) DEFAULT '' ;`;
+        sqlparam.push([sq, []]);
+        sq = ` ALTER TABLE gtd_fj ADD COLUMN checksum varchar(50) DEFAULT '' ;`;
+        sqlparam.push([sq, []]);
+        sq = ` ALTER TABLE gtd_mom ADD COLUMN checksum varchar(50) DEFAULT '' ;`;
+        sqlparam.push([sq, []]);
+        sq = ` ALTER TABLE gtd_jta ADD COLUMN checksum varchar(50) DEFAULT '' ;`;
+        sqlparam.push([sq, []]);
+        sq = ` ALTER TABLE gtd_par ADD COLUMN checksum varchar(50) DEFAULT '' ;`;
+        sqlparam.push([sq, []]);
+        sq = ` ALTER TABLE gtd_at ADD COLUMN checksum varchar(50) DEFAULT '' ;`;
+        sqlparam.push([sq, []]);
+        sq = ` ALTER TABLE gtd_jha ADD COLUMN checksum varchar(50) DEFAULT '' ;`;
+        sqlparam.push([sq, []]);
+        sq = ` ALTER TABLE gtd_wa ADD COLUMN checksum varchar(50) DEFAULT '' ;`;
+        sqlparam.push([sq, []]);
+        await this.sqlexec.batExecSqlByParam(sqlparam);
+      }
     }
   }
 

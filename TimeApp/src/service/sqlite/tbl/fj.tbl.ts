@@ -17,6 +17,7 @@ export class FjTbl implements ITblParam {
   del: string;
   wtt: number;
   utt: number;
+  checksum: string;
 
   fastParam(): any {
     let params: Array<any> = new Array<any>();
@@ -31,10 +32,11 @@ export class FjTbl implements ITblParam {
     params.push(this.del);
     params.push(this.wtt || moment().unix());
     params.push(moment().unix());
+    params.push(this.checksum);
 
     return [`replace into gtd_fj
-       (    fji ,obt ,obi ,fjn ,ext ,ui ,fj ,tb,del,wtt ,utt )`,
-     `select ?,?,?,?,?,?,?,?,?,?,?`,
+       (    fji ,obt ,obi ,fjn ,ext ,ui ,fj ,tb,del,wtt ,utt,checksum )`,
+     `select ?,?,?,?,?,?,?,?,?,?,?,?`,
     params];
   }
 
@@ -51,6 +53,7 @@ export class FjTbl implements ITblParam {
       ,tb varchar(6)
       ,del varchar(6)
      ,wtt integer  ,utt integer
+      ,checksum varchar(50) 
      );`;
 
     return sq;
@@ -68,6 +71,7 @@ export class FjTbl implements ITblParam {
     if(this.fj!=null && this.fj!=''){      sq=sq+', fj= ? ';      params.push(this.fj);    }
     if(this.tb!=null && this.tb!=''){      sq=sq+', tb= ? ';      params.push(this.tb);    }
     if(this.del!=null && this.del!=''){      sq=sq+', del= ? ';      params.push(this.del);    }
+    if(this.checksum!=null && this.checksum!=''){      sq=sq+', checksum= ? ';      params.push(this.checksum);    }
 
     sq =`update gtd_fj set utt =${moment().unix()}  ${sq} where fji = ? ;`;
     params.push(this.fji);
@@ -123,6 +127,7 @@ export class FjTbl implements ITblParam {
     if(this.fj!=null && this.fj!=''){      sq=sq+' and fj= ? ';      params.push(this.fj);    }
     if(this.tb!=null && this.tb!=''){      sq=sq+' and tb= ? ';      params.push(this.tb);    }
     if(this.del!=null && this.del!=''){      sq=sq+' and del= ? ';      params.push(this.del);    }
+    if(this.checksum!=null && this.checksum!=''){      sq=sq+' and checksum= ? ';      params.push(this.checksum);    }
 
     sq = sq + ';';
 
@@ -141,8 +146,8 @@ export class FjTbl implements ITblParam {
   inTParam():any {
     let params = new Array<any>();
     let sq =`insert into gtd_fj
-       (    fji ,obt ,obi ,fjn ,ext ,ui ,fj ,tb,del,wtt,utt)
-       values(?,?,?,?,?,?,?,?,?,?,?);`;
+       (    fji ,obt ,obi ,fjn ,ext ,ui ,fj ,tb,del,wtt,utt,checksum)
+       values(?,?,?,?,?,?,?,?,?,?,?,?);`;
     params.push(this.fji);
     params.push(this.obt);
     params.push(this.obi);
@@ -154,6 +159,7 @@ export class FjTbl implements ITblParam {
     params.push(this.del);
     params.push(this.wtt || moment().unix());
     params.push(moment().unix());
+    params.push(this.checksum);
 
     let ret = new Array<any>();
     ret.push(sq);
@@ -164,8 +170,8 @@ export class FjTbl implements ITblParam {
   rpTParam():any {
     let params = new Array<any>();
     let sq =`replace into gtd_fj
-       (    fji ,obt ,obi ,fjn ,ext ,ui ,fj ,tb,del,wtt ,utt )
-       values(?,?,?,?,?,?,?,?,?,?,?);`;
+       (    fji ,obt ,obi ,fjn ,ext ,ui ,fj ,tb,del,wtt ,utt,checksum )
+       values(?,?,?,?,?,?,?,?,?,?,?,?);`;
     params.push(this.fji);
     params.push(this.obt);
     params.push(this.obi);
@@ -177,6 +183,7 @@ export class FjTbl implements ITblParam {
     params.push(this.del);
     params.push(this.wtt || moment().unix());
     params.push(moment().unix());
+    params.push(this.checksum);
 
     let ret = new Array<any>();
     ret.push(sq);

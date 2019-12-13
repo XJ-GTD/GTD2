@@ -13,6 +13,7 @@ import {EventService,AgendaData,Member} from "../../service/business/event.servi
 import {WsDataConfig} from "../wsdata.config";
 import {BaseProcess} from "./base.process";
 import * as anyenum from "../../data.enum";
+import { UtilService } from "../../service/util-service/util.service";
 
 /**
  * 日程处理
@@ -21,7 +22,7 @@ import * as anyenum from "../../data.enum";
  */
 @Injectable()
 export class AgendasProcess extends BaseProcess implements MQProcess,OptProcess{
-  constructor(private eventService: EventService) {
+  constructor(private eventService: EventService, private util: UtilService) {
     super();
   }
 
@@ -84,7 +85,7 @@ export class AgendasProcess extends BaseProcess implements MQProcess,OptProcess{
 	  //2019-08-30   ying 改版
 	 let rcIn: AgendaData = {} as AgendaData;
       rcIn.evn = c.sn;
-      rcIn.st = c.st;
+      rcIn.st = (c.st == '99:99')? undefined : c.st;  // 不指定时间输入为99:99
       rcIn.sd = c.sd;
       if (c.si && c.si != null && c.si != '') {
         rcIn.evi = c.si;
@@ -94,6 +95,8 @@ export class AgendasProcess extends BaseProcess implements MQProcess,OptProcess{
         let member: Member = {} as Member;
         Object.assign(member, f);
 
+        rcIn.members = rcIn.members || new Array<Member>();
+
         rcIn.members.push(member);
       }
 
@@ -101,7 +104,30 @@ export class AgendasProcess extends BaseProcess implements MQProcess,OptProcess{
         await this.eventService.saveAgenda(rcIn);
       }else if (prvOpt == AG.U){
         console.log("******************agendas do AG.U")
-        await this.eventService.saveAgenda(rcIn);
+        let origin: AgendaData = await this.eventService.getAgenda(rcIn.evi, true);
+        let updated: AgendaData = {} as AgendaData;
+        this.util.cloneObj(updated, origin);
+
+        updated.evn = rcIn.evn;
+        updated.st = rcIn.st;
+        updated.sd = rcIn.sd;
+        if (rcIn.members && rcIn.members.length > 0) {
+          updated.members = updated.members || new Array<Member>();
+
+          for (let member of rcIn.members){
+            let existindex: number = updated.members.findIndex((ele) => {
+              return ele.rc == member.rc;
+            });
+
+            if (existindex < 0) {
+              updated.members.push(member);
+            }
+          }
+
+          updated.pn = updated.members.length;
+        }
+
+        await this.eventService.saveAgenda(updated, origin, anyenum.OperateType.OnlySel);
       }else{
       	let oldAgendaData: AgendaData = {} as AgendaData;
       	oldAgendaData = await this.eventService.getAgenda(rcIn.evi);

@@ -57,8 +57,8 @@ export class FindProcess extends BaseProcess implements MQProcess {
 
     if (content.option == F.C) {
       // TODO 增加根据人查询日程
-      if (findData.scd.fs && findData.scd.fs.length > 0) {
-        fs = this.calendarService.findFriends(findData.scd.fs);
+      if (findData.fs && findData.fs.length > 0) {
+        fs = this.calendarService.findFriends(findData.fs);
       }
       //TODO 使用findActivities ,该方法联系人尚未完善
       let condition: FindActivityCondition = new FindActivityCondition();
