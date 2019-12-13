@@ -18,6 +18,7 @@ export class AtTbl implements ITblParam {
   gs: string;
   utt: number;
   wtt: number;
+  checksum: string;
 
   fastParam(): any {
     let params: Array<any> = new Array<any>();
@@ -33,6 +34,7 @@ export class AtTbl implements ITblParam {
     params.push(this.gs);
     params.push(this.wtt || moment().unix());
     params.push(moment().unix());
+    params.push(this.checksum);
 
     return [`replace into gtd_at
        (     ati
@@ -46,8 +48,10 @@ export class AtTbl implements ITblParam {
              ,sdt
              ,gs
              ,wtt
-            ,utt)`,
-     `select ?,?,?,?,?,?,?,?,?,?,?,?`,
+            ,utt
+             ,checksum
+          )`,
+     `select ?,?,?,?,?,?,?,?,?,?,?,?,?`,
     params];
   }
 
@@ -66,6 +70,8 @@ export class AtTbl implements ITblParam {
          ,gs varchar(4) 
        ,wtt integer 
        ,utt integer 
+        ,checksum varchar(50) 
+
      );`;
 
     return sq;
@@ -85,6 +91,7 @@ export class AtTbl implements ITblParam {
     if(this.content!=null && this.content!=''){      sq=sq+', content= ? ';      params.push(this.content);    }
     if(this.sdt!=null && this.sdt!=''){      sq=sq+', sdt= ? ';      params.push(this.sdt);    }
     if(this.gs!=null && this.gs!=''){      sq=sq+', gs= ? ';      params.push(this.gs);    }
+    if(this.checksum!=null && this.checksum!=''){      sq=sq+', checksum= ? ';      params.push(this.checksum);    }
 
 
 
@@ -144,6 +151,7 @@ export class AtTbl implements ITblParam {
     if(this.content!=null && this.content!=''){      sq=sq+' and content= ? ';      params.push(this.content);    }
     if(this.sdt!=null && this.sdt!=''){      sq=sq+' and sdt= ? ';      params.push(this.sdt);    }
     if(this.gs!=null && this.gs!=''){      sq=sq+' and gs= ? ';      params.push(this.gs);    }
+    if(this.checksum!=null && this.checksum!=''){      sq=sq+' and checksum= ? ';      params.push(this.checksum);    }
 
 
     sq = sq + ';';
@@ -174,8 +182,8 @@ export class AtTbl implements ITblParam {
              ,sdt
              ,gs
              ,wtt
-              ,utt)
-       values(?,?,?,?,?,?,?,?,?,?,?,?);`;
+              ,utt,checksum)
+       values(?,?,?,?,?,?,?,?,?,?,?,?,?);`;
     params.push(this.ati);
     params.push(this.rc);
     params.push(this.ui);
@@ -188,6 +196,9 @@ export class AtTbl implements ITblParam {
     params.push(this.gs);
     params.push(moment().unix());
     params.push(moment().unix());
+    params.push(this.checksum);
+
+
     let ret = new Array<any>();
     ret.push(sq);
     ret.push(params);
@@ -208,8 +219,8 @@ export class AtTbl implements ITblParam {
              ,sdt
              ,gs
              ,wtt
-              ,utt)
-       values(?,?,?,?,?,?,?,?,?,?,?,?);`;
+              ,utt,checksum)
+       values(?,?,?,?,?,?,?,?,?,?,?,?,?);`;
     params.push(this.ati);
     params.push(this.rc);
     params.push(this.ui);
@@ -222,6 +233,7 @@ export class AtTbl implements ITblParam {
     params.push(this.gs);
     params.push(moment().unix());
     params.push(moment().unix());
+    params.push(this.checksum);
 
     let ret = new Array<any>();
     ret.push(sq);
