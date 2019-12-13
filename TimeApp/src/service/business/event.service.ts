@@ -1564,10 +1564,17 @@ export class EventService extends BaseService {
       newAgdata.updstate = anyenum.UpdState.inherent;
       newAgdata.evrelate = this.util.getUuid();
       retParamEv = this.newAgenda(newAgdata);
+      //添加新参与人到新事件
+      let pars = new Array<ParTbl>();
+      pars = this.sqlparamAddPar(retParamEv.rtevi , newAgdata.members);
 
-      await this.sqlExce.batExecSqlByParam(retParamEv.sqlparam);
-      //提交服务器
-
+      let parparams = new Array<any>();
+      if (pars && pars.length > 0){
+        parparams = this.sqlExce.getFastSaveSqlByParam(pars);
+      }
+      let sqlparam = new Array<any>();
+      sqlparam = [ ...retParamEv.sqlparam, ...parparams];
+      await this.sqlExce.batExecSqlByParam(sqlparam);
 
       //如果网络正常提交到服务器，则更新同步标志同步通过websocket来通知
 
