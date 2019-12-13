@@ -13,6 +13,7 @@ import {EventService,AgendaData,Member} from "../../service/business/event.servi
 import {WsDataConfig} from "../wsdata.config";
 import {BaseProcess} from "./base.process";
 import * as anyenum from "../../data.enum";
+import { UtilService } from "../../service/util-service/util.service";
 
 /**
  * 日程处理
@@ -21,7 +22,7 @@ import * as anyenum from "../../data.enum";
  */
 @Injectable()
 export class AgendasProcess extends BaseProcess implements MQProcess,OptProcess{
-  constructor(private eventService: EventService) {
+  constructor(private eventService: EventService, private util: UtilService) {
     super();
   }
 
@@ -94,6 +95,8 @@ export class AgendasProcess extends BaseProcess implements MQProcess,OptProcess{
         let member: Member = {} as Member;
         Object.assign(member, f);
 
+        rcIn.members = rcIn.members || new Array<Member>();
+
         rcIn.members.push(member);
       }
 
@@ -101,7 +104,19 @@ export class AgendasProcess extends BaseProcess implements MQProcess,OptProcess{
         await this.eventService.saveAgenda(rcIn);
       }else if (prvOpt == AG.U){
         console.log("******************agendas do AG.U")
-        await this.eventService.saveAgenda(rcIn);
+        let origin: AgendaData = await this.eventService.getAgenda(rcIn.evi, true);
+        let updated: AgendaData = {} as AgendaData;
+        this.util.cloneObj(updated, origin);
+
+        updated.evn = rcIn.evn;
+        updated.st = rcIn.st;
+        updated.sd = rcIn.sd;
+        if (rcIn.members && rcIn.members.length > 0) {
+          updated.members = updated.members || new Array<Member>();
+          updated.members.splice(0, 0, ...rcIn.members);
+        }
+
+        await this.eventService.saveAgenda(updated, origin, anyenum.OperateType.OnlySel);
       }else{
       	let oldAgendaData: AgendaData = {} as AgendaData;
       	oldAgendaData = await this.eventService.getAgenda(rcIn.evi);
