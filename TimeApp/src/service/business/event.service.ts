@@ -1648,38 +1648,6 @@ export class EventService extends BaseService {
       this.assertFail("独立日修改不可以选择修改将来所有");
     }
 
-    //如果不使用页面对象，而直接使用更新后的返回数据对象作为参数，则rtjson，txjson为空
-    if (!newAgdata.rtjson) {
-      if (newAgdata.rt) {
-        newAgdata.rtjson = new RtJson();
-        Object.assign(newAgdata.rtjson, JSON.parse(newAgdata.rt));
-      } else {
-        newAgdata.rtjson = new RtJson();
-      }
-    }
-
-    if (!oriAgdata.rtjson) {
-      if (oriAgdata.rt) {
-        oriAgdata.rtjson = new RtJson();
-        Object.assign(oriAgdata.rtjson, JSON.parse(oriAgdata.rt));
-      } else {
-        oriAgdata.rtjson = new RtJson();
-      }
-    }
-
-    if (!newAgdata.txjson) {
-      if (newAgdata.tx) {
-        newAgdata.txjson = new TxJson();
-        Object.assign(newAgdata.txjson, JSON.parse(newAgdata.tx));
-      } else {
-        newAgdata.txjson = new TxJson();
-      }
-    } else {
-      let txjson: TxJson = new TxJson();
-      Object.assign(txjson, newAgdata.txjson);
-      newAgdata.txjson = txjson;
-    }
-
     //批量本地更新
     let sqlparam = new Array<any>();
 
