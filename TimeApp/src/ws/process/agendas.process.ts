@@ -13,7 +13,7 @@ import {EventService,AgendaData,Member} from "../../service/business/event.servi
 import {WsDataConfig} from "../wsdata.config";
 import {BaseProcess} from "./base.process";
 import * as anyenum from "../../data.enum";
-import { UtilService } from "../util-service/util.service";
+import { UtilService } from "../../util-service/util.service";
 
 /**
  * 日程处理
