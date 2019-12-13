@@ -1526,19 +1526,14 @@ export class EventService extends BaseService {
     this.assertEmpty(newAgdata.sd);    // 事件开始日期不能为空
     this.assertEmpty(newAgdata.evn);   // 事件标题不能为空
 
-    if (!newAgdata.evi || newAgdata.evi == "") {
-      if (newAgdata.rtjson || newAgdata.rt || newAgdata.rts) {
-        this.assertEmpty(newAgdata.rtjson);  // 新建事件重复设置不能为空
-      } else {
-        newAgdata.rtjson = new RtJson();
-      }
+    newAgdata.rtjson = generateRtJson(newAgdata.rtjson, newAgdata.rt);
+    newAgdata.txjson = generateTxJson(newAgdata.txjson, newAgdata.tx);
 
-      if (newAgdata.txjson || newAgdata.tx || newAgdata.txs) {
-        this.assertEmpty(newAgdata.txjson);  // 新建事件提醒不能为空
-      } else {
-        newAgdata.txjson = new TxJson();
-      }
+    if (oriAgdata) {
+      oriAgdata.rtjson = generateRtJson(oriAgdata.rtjson, oriAgdata.rt);
+      oriAgdata.txjson = generateTxJson(oriAgdata.txjson, oriAgdata.tx);
     }
+
     //过期提醒从txjson中删除（gtd_wa中过期数据将在当前记录提醒同步时删除）
     this.setValidTixin(newAgdata);
 
