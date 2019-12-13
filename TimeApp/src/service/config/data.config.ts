@@ -69,8 +69,10 @@ export class DataConfig {
   //public static version: number = 8;
   //2019/11/21 事件表加关联，事件变更类型字段
   //public static version: number = 9;
-  //2019/12/23 增加读写表
-  public static version: number = 10;
+  //2019/11/23 增加读写表
+  //public static version: number = 10;
+  //2019/12/13 增加checksum字段
+  public static version: number = 11;
 
   public static RABBITMQ_STATUS: string = "";
 
