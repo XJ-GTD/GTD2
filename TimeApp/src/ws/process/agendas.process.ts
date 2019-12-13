@@ -114,6 +114,8 @@ export class AgendasProcess extends BaseProcess implements MQProcess,OptProcess{
         if (rcIn.members && rcIn.members.length > 0) {
           updated.members = updated.members || new Array<Member>();
           updated.members.splice(0, 0, ...rcIn.members);
+
+          updated.pn = updated.members.length;
         }
 
         await this.eventService.saveAgenda(updated, origin, anyenum.OperateType.OnlySel);
