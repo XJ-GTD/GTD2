@@ -113,7 +113,16 @@ export class AgendasProcess extends BaseProcess implements MQProcess,OptProcess{
         updated.sd = rcIn.sd;
         if (rcIn.members && rcIn.members.length > 0) {
           updated.members = updated.members || new Array<Member>();
-          updated.members.splice(0, 0, ...rcIn.members);
+
+          for (let member of rcIn.members){
+            let existindex: number = updated.members.findIndex((ele) => {
+              return ele.rc == member.rc;
+            });
+
+            if (existindex < 0) {
+              updated.members.push(member);
+            }
+          }
 
           updated.pn = updated.members.length;
         }
