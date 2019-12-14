@@ -5211,10 +5211,6 @@ export interface TaskData extends EventData,TTbl {
 
 
 export interface MiniTaskData extends EventData {
-	//重复设定
-  rtjson :RtJson;
-  //提醒设定
-  txjson :TxJson;
   //发起人
   originator: Member;
 
