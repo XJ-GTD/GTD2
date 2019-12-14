@@ -86,7 +86,7 @@ export class SyncRestful {
       let choosetime = moment(wd + " " + wt, "YYYY/MM/DD HH:mm");
 
       let taskRunAt = {
-        eventId: "QUARTZ_CRON_5M",
+        eventId: (wt.endsWith("0") || wt.endsWith("5"))? "QUARTZ_CRON_5M" : "QUARTZ_CRON_1M",
         filters: [
           {name: "yyyy", value: choosetime.format("YYYY")},
           {name: "MM", value: choosetime.format("MM")},

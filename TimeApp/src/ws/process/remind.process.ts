@@ -15,6 +15,7 @@ import {WsDataConfig} from "../wsdata.config";
 import {BaseProcess} from "./base.process";
 import {ScdAiData} from "../../components/ai/answer/ai.service";
 import {ScdData} from "../../data.mapping";
+import {EventService, MiniTaskData, TxJson} from "../../service/business/event.service";
 
 /**
  * 提醒设置
@@ -23,7 +24,7 @@ import {ScdData} from "../../data.mapping";
  */
 @Injectable()
 export class RemindProcess extends BaseProcess implements MQProcess {
-  constructor(private utitl: UtilService,
+  constructor(private utitl: UtilService, private eventService: EventService,
               private sqliteExec: SqliteExec) {
     super();
   }
@@ -54,7 +55,19 @@ export class RemindProcess extends BaseProcess implements MQProcess {
     //处理区分
     //闹铃设置无日程
     if (content.option == R.N) {
-      await this.saveETbl1(rdData);
+      // await this.saveETbl1(rdData);
+      let minitask: MiniTaskData = {} as MiniTaskData;
+
+      minitask.evn = "闹钟";
+      minitask.evd = rdData.d;
+      minitask.evt = rdData.t;
+
+      let txjson: TxJson = new TxJson();
+      txjson.reminds.push(Number(moment(minitask.evd + " " + minitask.evt, "YYYY/MM/DD HH:mm").format("YYYYMMDDHHmm")) * -1);
+
+      minitask.txjson = txjson;
+
+      await this.eventService.saveMiniTask(minitask);
 
     } else if (content.option == R.T) {
       let rightnow = moment();
@@ -74,7 +87,18 @@ export class RemindProcess extends BaseProcess implements MQProcess {
       rdData.d = rightnow.format("YYYY/MM/DD");
       rdData.t = rightnow.format("HH:mm:ss")
 
-      await this.saveETbl1(rdData);
+      let minitask: MiniTaskData = {} as MiniTaskData;
+
+      minitask.evn = "倒计时";
+      minitask.evd = moment().format("YYYY/MM/DD");
+      minitask.evt = moment().format("HH:mm");
+
+      let txjson: TxJson = new TxJson();
+      txjson.reminds.push(Number(rightnow.format("YYYYMMDDHHmm")) * -1);
+
+      minitask.txjson = txjson;
+
+      await this.eventService.saveMiniTask(minitask);
 
     } else if (content.option == R.C) {
       // 设置日程提醒
