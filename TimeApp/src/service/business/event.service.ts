@@ -119,7 +119,7 @@ export class EventService extends BaseService {
       let masterAgds : Array<AgendaData>;
       if (rteviArray.length > 0 ){
         let evistring = rteviArray.join(",");
-        let sq = ` select * from gtd_ev where evi in (${evistring}) and del <> 'del' ;`;
+        let sq = ` select * from gtd_ev where evi in (${evistring}) ;`;
         masterAgds  = await this.sqlExce.getExtLstByParam<AgendaData>(sq,[]);
       }else{
         masterAgds = new Array<AgendaData>();
@@ -170,32 +170,26 @@ export class EventService extends BaseService {
         }
 
         // 受邀人子日程且是未接受状态，查看主日程实际否接受，接受则子日程自动接受
-        if (agd.rtevi ){
+        if (agd.rtevi && agd.ui != UserConfig.account.id && agd.invitestatus != InviteState.Accepted
+          && agd.del != anyenum.DelType.del) {
           let findm =  masterAgds.find((value, index,arr)=>{
             return value.evi == agd.rtevi ;
           });
-          if (findm){
-            if (findm.invitestatus == InviteState.Accepted ){
-              if (agd.ui != UserConfig.account.id && agd.invitestatus != InviteState.Accepted
-                && agd.del != anyenum.DelType.del) {
-                agd.invitestatus = InviteState.Accepted;
+          if (findm && findm.invitestatus == InviteState.Accepted ){
+            agd.invitestatus = InviteState.Accepted;
 
-                //设定了截止日期，则自动加入todolist
-                if (UserConfig.getSetting(DataConfig.SYS_AUTOTODO) && agd.al == anyenum.IsWholeday.EndSet) {
-                  agd.todolist = anyenum.ToDoListStatus.On;
-                }
-                agd.tb = anyenum.SyncType.unsynch;
-              }
-            }else{
-              if (!agd.invitestatus) {
-                agd.invitestatus = InviteState.None;
-              }
+            //设定了截止日期，则自动加入todolist
+            if(UserConfig.getSetting(DataConfig.SYS_AUTOTODO) && agd.al == anyenum.IsWholeday.EndSet){
+              agd.todolist = anyenum.ToDoListStatus.On;
             }
-          }else{
             agd.tb = anyenum.SyncType.unsynch;
-            agd.del = anyenum.DelType.del;
+          }else{
+            if (!agd.invitestatus) {
+              agd.invitestatus = InviteState.None;
+            }
           }
         }
+
 
         let ev = new EvTbl();
         Object.assign(ev,agd);
