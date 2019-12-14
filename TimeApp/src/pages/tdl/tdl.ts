@@ -289,7 +289,7 @@ export class TdlPage {
   currDayel: any;
   //画面数据List
   // monthActivityDatas: Array<MonthActivityData> = new Array<MonthActivityData>();
-  monthActivityData:MonthActivityData;
+  monthActivityData: MonthActivityData = new MonthActivityData();
 
   calendarobservables: Map<string, Observable<boolean>> = new Map<string, Observable<boolean>>();
   annotationobservables: Map<string, Observable<boolean>> = new Map<string, Observable<boolean>>();
