@@ -96,7 +96,12 @@ function clean(datasource)
   var convertPushMessage = function(id, type, title, datetime) {
     var push = {};
 
-    push['title'] = '活动提醒';
+    var pushTitle = '活动提醒';
+
+    if (type == 'Task') pushTitle = '任务提醒';
+    if (type == 'MiniTask') pushTitle = '小任务提醒';
+
+    push['title'] = pushTitle;
     push['content'] = title;
     push['extras'] = {
       event: "MWXING_SHAREAGENDA_EVENT",
