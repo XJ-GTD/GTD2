@@ -15,7 +15,7 @@ import {WsDataConfig} from "../wsdata.config";
 import {BaseProcess} from "./base.process";
 import {ScdAiData} from "../../components/ai/answer/ai.service";
 import {ScdData} from "../../data.mapping";
-import {EventService, MiniTaskData} from "../../service/business/event.service";
+import {EventService, MiniTaskData, TxJson} from "../../service/business/event.service";
 
 /**
  * 提醒设置
