@@ -148,9 +148,9 @@ export class TellYouComponent {
       if (!this.changeDetectorRef['destroyed']) {
         this.changeDetectorRef.detectChanges();
         this.onShow.emit(true);
-        // this.timeoutService.timeOutOnlyOne(10000, () => {
-        //   this.close();
-        // }, "close.home.ai.talk");
+        this.timeoutService.timeOutOnlyOne(10000, () => {
+          this.close();
+        }, "close.home.ai.talk");
       }
     }, "open.home.ai.talk");
 
