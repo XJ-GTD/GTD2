@@ -63,7 +63,7 @@ export class RemindProcess extends BaseProcess implements MQProcess {
       minitask.evt = rdData.t;
 
       let txjson: TxJson = new TxJson();
-      txjson.reminds.push(Number(moment(minitask.evd + " " + minitask.evt, "YYYY/MM/DD HH:mm").format("YYYYMMDDHHmm")));
+      txjson.reminds.push(Number(moment(minitask.evd + " " + minitask.evt, "YYYY/MM/DD HH:mm").format("YYYYMMDDHHmm")) * -1);
 
       minitask.txjson = txjson;
 
@@ -94,7 +94,7 @@ export class RemindProcess extends BaseProcess implements MQProcess {
       minitask.evt = moment().format("HH:mm");
 
       let txjson: TxJson = new TxJson();
-      txjson.reminds.push(Number(rightnow.format("YYYYMMDDHHmm")));
+      txjson.reminds.push(Number(rightnow.format("YYYYMMDDHHmm")) * -1);
 
       minitask.txjson = txjson;
 
