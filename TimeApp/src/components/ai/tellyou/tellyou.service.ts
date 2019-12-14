@@ -7,7 +7,7 @@ import {TimeOutService} from "../../../util/timeOutService";
 import {AsyncQueue} from "../../../util/asyncQueue";
 
 @Injectable()
-export class PointService {
+export class TellyouService {
 
   tellYouQueue:AsyncQueue;
 
@@ -26,7 +26,7 @@ export class PointService {
 
   pushTellYouData($data:any,fun:Function){
     this.tellYouQueue.push({message: $data},(message)=>{
-      //fun(message);
+      fun(message);
     })
   }
 
@@ -36,5 +36,11 @@ export class PointService {
 
   resumeTellYou(){
     this.tellYouQueue.resume();
+  }
+  ignoreAll(){
+    this.tellYouQueue.kill();
+    this.reminds.length = 0;
+    this.systems.length = 0;
+    this.invites.length = 0;
   }
 }

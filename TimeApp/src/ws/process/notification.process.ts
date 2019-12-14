@@ -105,14 +105,14 @@ export class NotificationProcess extends BaseProcess implements MQProcess {
     if (content.option == PN.EX) {
       let exchange: any = content.parameters;
 
-      this.emitService.emitAiTellYou({close: false, message: `${exchange.title}, ${exchange.content}`});
+      this.emitService.emitAiTellYou({close: false, message: {title:exchange.title,text:exchange.content}});
     }
 
     //提醒消息
     if (content.option == PN.AM) {
       let remind: any = content.parameters;
 
-      this.emitService.emitAiTellYou({close: false, message: `${remind.title}, ${remind.content}`});
+      this.emitService.emitAiTellYou({close: false, message: {title:remind.title,text:remind.content}});
     }
 
     return contextRetMap
