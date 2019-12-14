@@ -2977,6 +2977,9 @@ export class EventService extends BaseService {
         }
         wa.wd = moment(date, "YYYY/MM/DD HH:mm").format("YYYY/MM/DD");
         wa.wt = moment(date, "YYYY/MM/DD HH:mm").format("HH:mm");
+        wa.tb = anyenum.SyncType.unsynch;
+        wa.del = anyenum.DelType.undel;
+
         ret.push(wa.rpTParam());
         //console.log('-------- 插入提醒表 --------');
       }
