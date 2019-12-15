@@ -2832,7 +2832,7 @@ export class EventService extends BaseService {
 	    ret.sqlparam.push(ev.rpTParam());
 	    //添加提醒的SQL
       if (txjson.reminds && txjson.reminds.length > 0) {
-		  	ret.sqlparam = [...ret.sqlparam ,...this.sqlparamAddTxWa(ev,ObjectType.Event,txjson)];
+		  	ret.sqlparam = [...ret.sqlparam ,...this.sqlparamAddTxWa2(ev,ObjectType.Event,txjson)];
 	  	}
 	    //创建任务SQL
 	     ret.sqlparam.push(this.sqlparamAddTaskTt(ev,taskData.cs, taskData.isrt))
@@ -3042,16 +3042,11 @@ export class EventService extends BaseService {
 			minitask.del = anyenum.DelType.undel;
 			minitask.evt = minitask.evt || "23:59";
 
-			let txjson = new TxJson();
-    	minitask.txjson = minitask.txjson ||  txjson;
-      minitask.txs = minitask.txs || "";
-	    let rtjon = new RtJson();
-	    rtjon.cycletype = anyenum.CycleType.close;
-	    rtjon.over.value = "";
-	    rtjon.over.type = anyenum.OverType.fornever;
-	    rtjon.cyclenum = 1;
-	    rtjon.openway = new Array<number>();
-	    minitask.rtjson = minitask.rtjson || rtjon;
+    	minitask.txjson = generateTxJson(minitask.txjson, minitask.tx);
+      minitask.txs = minitask.txjson.text();
+
+	    minitask.rtjson = generateRtJson(minitask.rtjson, rt);
+      minitask.rts = minitask.rtjson.text();
 
 			let sqlparam = new Array<any>();
 			let retParamMiniTaskData = new RetParamMiniTaskData();
@@ -3110,7 +3105,7 @@ export class EventService extends BaseService {
       ret.sqlparam.push(ev.rpTParam());
       //添加提醒的SQL
       if (txjson.reminds && txjson.reminds.length > 0) {
-        ret.sqlparam = [...ret.sqlparam ,...this.sqlparamAddTxWa(ev,ObjectType.Event,txjson)];
+        ret.sqlparam = [...ret.sqlparam ,...this.sqlparamAddTxWa2(ev,ObjectType.Event,txjson)];
       }
       //新增数据需要返回出去
       let task2 = {} as MiniTaskData;
@@ -5706,7 +5701,7 @@ export class TxJson {
       if (remind >= 0){
         baseline.subtract(remind, "m");
       }else{
-        let postpone :Moment = moment(-1 * remind,'YYYYMMDDHHmm',true);
+        let postpone: Moment = moment(-1 * remind,'YYYYMMDDHHmm',true);
         if (postpone.isValid()){
           baseline = moment(-1 * remind,"YYYYMMDDHHmm",true);
         }else{
