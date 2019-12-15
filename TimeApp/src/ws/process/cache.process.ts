@@ -60,7 +60,7 @@ export class CacheProcess extends BaseProcess implements MQProcess {
         agendadata.et = cacheData.scd.te || agendadata.et;
 
         agendadata.sn = cacheData.scd.ti || agendadata.sn;
-        agendadata.adr = cacheData.scd.adr || agendadata.adr;
+        // agendadata.adr = cacheData.scd.adr || agendadata.adr;
 
         scd.push(agendadata);
       }
