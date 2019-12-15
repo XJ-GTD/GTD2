@@ -4068,6 +4068,7 @@ export class EventService extends BaseService {
 	  sync.id = minitask.evi;
     sync.src = minitask.ui;
     sync.type = "MiniTask";
+    sync.title = minitask.evn;
     sync.security = SyncDataSecurity.None;
     sync.todostate = CompleteState.None;
     sync.main = true;

@@ -58,7 +58,7 @@ export class RemindProcess extends BaseProcess implements MQProcess {
       // await this.saveETbl1(rdData);
       let minitask: MiniTaskData = {} as MiniTaskData;
 
-      minitask.evn = "闹钟";
+      minitask.evn = content.thisContext.original || "闹钟";
       minitask.evd = rdData.d;
       minitask.evt = rdData.t;
 
@@ -89,7 +89,7 @@ export class RemindProcess extends BaseProcess implements MQProcess {
 
       let minitask: MiniTaskData = {} as MiniTaskData;
 
-      minitask.evn = "倒计时";
+      minitask.evn = content.thisContext.original || "倒计时";
       minitask.evd = moment().format("YYYY/MM/DD");
       minitask.evt = moment().format("HH:mm");
 
