@@ -3094,7 +3094,7 @@ export class CalendarService extends BaseService {
                             from (select ev.*,
                                          sum(case when ifnull(par.pari, '') = '' then 0 else 1 end) pn,
                                          sum(case when ifnull(par.pari, '') = '' then 0 when ifnull(par.sdt, '') = ?4 then 1 else 0 end) apn
-                                    from (select * from gtd_ev where substr(evd, 1, 7) = ?1 AND del <> ?2) ev
+                                    from (select * from gtd_ev where type <> ?6 AND substr(evd, 1, 7) = ?1 AND del <> ?2) ev
                                     left join gtd_par par
                                     on par.obt = ?3 and par.del <> ?2 and par.obi = ev.evi
                                     group by ev.evi) evp
@@ -3103,7 +3103,7 @@ export class CalendarService extends BaseService {
                             group by evp.evi`
 
     //monthActivity.events = await this.sqlExce.getExtList<EventData>(sqlevents) || new Array<EventData>();
-    monthActivity.events = await this.sqlExce.getExtLstByParam<EventData>(sqleventcounts, [month, DelType.del, ObjectType.Event, MemberShareState.Accepted, UserConfig.account.id]) || new Array<EventData>();
+    monthActivity.events = await this.sqlExce.getExtLstByParam<EventData>(sqleventcounts, [month, DelType.del, ObjectType.Event, MemberShareState.Accepted, UserConfig.account.id, EventType.MiniTask]) || new Array<EventData>();
 
     // 手动排序, Group By中无法排序
     monthActivity.events.sort((a, b) => {
