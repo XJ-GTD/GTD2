@@ -5484,7 +5484,7 @@ describe('CalendarService test suite', () => {
     expect(monthActivity).toBeDefined();
     expect(monthActivity.month).toBe(moment().format("YYYY/MM"));
     expect(monthActivity.events).toBeDefined();
-    expect(monthActivity.events.length).toBeGreaterThan(0);
+    expect(monthActivity.events.length).toBe(0);  // 式样要求小任务不显示在画面
 
   });
 
