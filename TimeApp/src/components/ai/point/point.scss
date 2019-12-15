@@ -1,5 +1,4 @@
-
-pointcomponent {
+PointComponent {
 
   position: fixed;
   //top: $speakertop;
@@ -184,33 +183,37 @@ pointcomponent {
 
   .angular-popper {
     width: calc(100% - 120px);
-    background-color: rgba(248, 248, 248, .8);
-    padding: 2px;
-    border-radius: 5% 5% 5% 5%;
-
+    transition: background-color 200ms linear;
+    padding: 0;
+    border-radius: 14px;
+    .angular-popper__arrow {
+      border-color: rgba(50,163,190,.5);
+    }
 
     div[content] {
-      max-height: 400px;
-      .card-ios{
-        margin: .5rem;
-        width: calc(100% - 1rem);
-        border-radius: 5% 5% 5% 5%;
-        .card-content{
-          //max-height: 200px;
-        }
-        .sn{
-          white-space: normal;
-          max-height: 160px;
-        }
-      }
-    }
-    .angular-popper__arrow {
-      border-color: rgba(248, 248, 248, .8)
+      //max-height: 400px;
     }
   }
-
   .showNot {
     display: none;
   }
 }
+.black-theme {
+  PointComponent {
+    .angular-popper {
+      background:rgba(14,29,52,.95);
+      box-shadow:0px 0px 10px 0px rgba(255,255,255,0.2);
+    }
+  }
+
+}
+.white-theme{
+  PointComponent {
+    .angular-popper {
+      background-color: rgba(248, 248, 248, .95);
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+    }
+  }
+}
+
 
