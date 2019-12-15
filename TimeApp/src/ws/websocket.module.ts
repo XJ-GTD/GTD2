@@ -23,6 +23,7 @@ import {MarkupProcess} from "./process/markup.process";
 import {NotificationProcess} from "./process/notification.process";
 import {SpecialDataProcess} from "./process/specialdata.process";
 import {DataSyncProcess} from "./process/datasync.process";
+import {CacheProcess} from "./process/cache.process";
 
 /**
  * WebSocket组件
@@ -41,7 +42,7 @@ import {DataSyncProcess} from "./process/datasync.process";
     OptionProcess, ContextProcess,
     ReceiveProcess, SettingProcess,
     AgendasProcess, MarkupProcess,
-    NotificationProcess, SpecialDataProcess,
+    NotificationProcess, SpecialDataProcess, CacheProcess,
     SsService, FdService, FsService
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
