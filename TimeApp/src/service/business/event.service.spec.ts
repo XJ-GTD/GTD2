@@ -717,7 +717,7 @@ describe('EventService test suite', () => {
 
     newAgenda.txjson = tx;
     newAgenda.tx = JSON.stringify(tx);
-    newAgenda.txs = tx.text();
+    newAgenda.txs = tx.text(newAgenda.evd, newAgenda.evt);
 
     let confirm: ConfirmType = eventService.hasAgendaModifyConfirm(agenda, newAgenda);
 
