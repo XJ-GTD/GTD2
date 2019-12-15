@@ -16,6 +16,11 @@ export enum F {
   C = "F.C"       // 查询日程
 }
 
+//语音输入缓存
+export enum CA {
+  AD = "CA.AD"   //日程缓存
+}
+
 //数据同步
 export enum DS {
   SD = "DS.SD",  //本设备同步成功

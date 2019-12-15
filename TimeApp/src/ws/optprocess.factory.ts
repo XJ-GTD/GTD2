@@ -15,6 +15,7 @@ import {MarkupProcess} from "./process/markup.process";
 import {NotificationProcess} from "./process/notification.process";
 import {SpecialDataProcess} from "./process/specialdata.process";
 import {DataSyncProcess} from "./process/datasync.process";
+import {CacheProcess} from "./process/cache.process";
 
 /**
  * webSocket公用处理方法

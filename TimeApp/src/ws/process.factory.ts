@@ -15,6 +15,7 @@ import {MarkupProcess} from "./process/markup.process";
 import {NotificationProcess} from "./process/notification.process";
 import {SpecialDataProcess} from "./process/specialdata.process";
 import {DataSyncProcess} from "./process/datasync.process";
+import {CacheProcess} from "./process/cache.process";
 
 /**
  * webSocket公用处理方法
@@ -39,7 +40,8 @@ export class ProcessFactory {
               private markupProcess:MarkupProcess,
               private datasyncProcess:DataSyncProcess,
               private specialDataProcess:SpecialDataProcess,
-              private notificationProcess:NotificationProcess
+              private notificationProcess:NotificationProcess,
+              private cacheProcess:CacheProcess
   ) {
 
     this.factory.set("S", this.speechProcess);
@@ -56,6 +58,7 @@ export class ProcessFactory {
     this.factory.set("SD", this.specialDataProcess);
     this.factory.set("PN", this.notificationProcess);
     this.factory.set("DS", this.datasyncProcess);
+    this.factory.set("CA", this.cacheProcess);
   }
 
   getProcess(processKey: string): MQProcess {
