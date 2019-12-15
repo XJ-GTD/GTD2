@@ -2832,7 +2832,10 @@ export class EventService extends BaseService {
 	    ret.sqlparam.push(ev.rpTParam());
 	    //添加提醒的SQL
       if (txjson.reminds && txjson.reminds.length > 0) {
-		  	ret.sqlparam = [...ret.sqlparam ,...this.sqlparamAddTxWa2(ev,ObjectType.Event,txjson)];
+        let was: Array<WaTbl> = this.sqlparamAddTxWa2(ev,ObjectType.Event,txjson);
+        let wasqls: Array<any> = this.sqlExce.getFastSaveSqlByParam(was);
+
+		  	ret.sqlparam = [...ret.sqlparam, ...wasqls];
 	  	}
 	    //创建任务SQL
 	     ret.sqlparam.push(this.sqlparamAddTaskTt(ev,taskData.cs, taskData.isrt))
@@ -3105,7 +3108,10 @@ export class EventService extends BaseService {
       ret.sqlparam.push(ev.rpTParam());
       //添加提醒的SQL
       if (txjson.reminds && txjson.reminds.length > 0) {
-        ret.sqlparam = [...ret.sqlparam ,...this.sqlparamAddTxWa2(ev,ObjectType.Event,txjson)];
+        let was: Array<WaTbl> = this.sqlparamAddTxWa2(ev,ObjectType.Event,txjson);
+        let wasqls: Array<any> = this.sqlExce.getFastSaveSqlByParam(was);
+
+        ret.sqlparam = [...ret.sqlparam, ...wasqls];
       }
       //新增数据需要返回出去
       let task2 = {} as MiniTaskData;
