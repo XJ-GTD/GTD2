@@ -598,23 +598,25 @@ export class CalendarService extends BaseService {
         break;
       case "MiniTaskData" :
         // 转换成匹配对象类型
-        let minitask: MiniTaskData = {} as MiniTaskData;
-        Object.assign(minitask, activity);
+        // let minitask: MiniTaskData = {} as MiniTaskData;
+        // Object.assign(minitask, activity);
+        //
+        // // 判断数据是否属于当前缓存日期范围
+        // currentmonth = moment(minitask.evd, "YYYY/MM/DD").format("YYYY/MM");
+        //
+        // if (moment(firstmonth,"YYYY/MM").diff(moment(currentmonth, "YYYY/MM"), "months") <= 0 && moment(currentmonth,"YYYY/MM").diff(moment(lastmonth, "YYYY/MM"), "months") <= 0) {
+        //   // let diff = moment(currentmonth, "YYYY/MM").diff(moment(firstmonth,"YYYY/MM"), "months");
+        //   //
+        //   // let currentmonthactivities = this.calendaractivities[diff];
+        //   // this.mergeMonthActivities(currentmonthactivities, [minitask], update);
+        //
+        //   // 解决数据所属日期跨月修改，原数据所属月对象不能被正常移除
+        //   for (let monthactivities of this.calendaractivities) {
+        //     this.mergeMonthActivities(monthactivities, [minitask], update);
+        //   }
+        // }
 
-        // 判断数据是否属于当前缓存日期范围
-        currentmonth = moment(minitask.evd, "YYYY/MM/DD").format("YYYY/MM");
-
-        if (moment(firstmonth,"YYYY/MM").diff(moment(currentmonth, "YYYY/MM"), "months") <= 0 && moment(currentmonth,"YYYY/MM").diff(moment(lastmonth, "YYYY/MM"), "months") <= 0) {
-          // let diff = moment(currentmonth, "YYYY/MM").diff(moment(firstmonth,"YYYY/MM"), "months");
-          //
-          // let currentmonthactivities = this.calendaractivities[diff];
-          // this.mergeMonthActivities(currentmonthactivities, [minitask], update);
-
-          // 解决数据所属日期跨月修改，原数据所属月对象不能被正常移除
-          for (let monthactivities of this.calendaractivities) {
-            this.mergeMonthActivities(monthactivities, [minitask], update);
-          }
-        }
+        // 小任务不显示在首页
 
         break;
       case "MemoData" :
