@@ -3058,6 +3058,7 @@ export class EventService extends BaseService {
       await this.sqlExce.batExecSqlByParam(sqlparam);
 		}
 
+    this.syncMiniTask(minitask);
     this.emitService.emit("mwxing.calendar.activities.changed", minitask);
 
 		return minitask;
@@ -4056,24 +4057,26 @@ export class EventService extends BaseService {
    * 同步小任务到服务器
    * @author ying<343253410@qq.com>
    */
-  async syncMiniTask(tt: MiniTaskData) {
-  	this.assertEmpty(tt);       // 入参不能为空
-	  this.assertEmpty(tt.evi);    // ID不能为空
-	  this.assertEmpty(tt.del);   // 删除标记不能为空
+  async syncMiniTask(minitask: MiniTaskData) {
+  	this.assertEmpty(minitask);        // 入参不能为空
+	  this.assertEmpty(minitask.evi);    // ID不能为空
+	  this.assertEmpty(minitask.del);    // 删除标记不能为空
 
 	  let push: PushInData = new PushInData();
 	  let sync: SyncData = new SyncData();
 
-	  sync.id = tt.evi;
-    sync.src = tt.ui;
+	  sync.id = minitask.evi;
+    sync.src = minitask.ui;
     sync.type = "MiniTask";
     sync.security = SyncDataSecurity.None;
     sync.todostate = CompleteState.None;
     sync.main = true;
-    sync.datetime = tt.evd + " " + tt.evt;
+    sync.datetime = minitask.evd + " " + minitask.evt;
+
+    sync.to = [];
 
     // 设置删除状态
-    if (tt.del == DelType.del) {
+    if (minitask.del == DelType.del) {
       sync.status = SyncDataStatus.Deleted;
     } else {
       sync.status = SyncDataStatus.UnDeleted;
@@ -4081,7 +4084,7 @@ export class EventService extends BaseService {
 
     sync.invitestate = InviteState.None;
 
-    sync.payload = tt;
+    sync.payload = minitask;
     push.d.push(sync);
     await this.dataRestful.push(push);
     return;
