@@ -69,9 +69,6 @@ export class CacheProcess extends BaseProcess implements MQProcess {
     //服务器要求上下文内放置日程查询结果
     this.output(content, contextRetMap, 'agendas', WsDataConfig.SCD, scd);
 
-    //服务器要求上下文内放置日程的创建人员信息或查询条件用的人员信息
-    this.output(content, contextRetMap, 'contacts', WsDataConfig.FS, fs);
-
     return contextRetMap;
   }
 
