@@ -223,10 +223,15 @@ function clean(datasource)
       };
       continues.push(generateScheduledRemind(currentremind["accountid"], id, wd, wt, nextremind));
     } else {
+      var pushTitle = '活动提醒';
+
+      if (type == 'Task') pushTitle = '任务提醒';
+      if (type == 'MiniTask') pushTitle = '小任务提醒';
+
       standardnext.announceTo = [to];
       standardnext.announceType = 'data_sync';
       standardnext.announceContent = {
-        mwxing: convertNotifyMessage(id, type, "活动提醒", title),
+        mwxing: convertNotifyMessage(id, type, pushTitle, title),
         sms: {},
         push: convertPushMessage(id, type, title, datetime)
       };
