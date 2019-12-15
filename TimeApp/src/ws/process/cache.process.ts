@@ -41,25 +41,26 @@ export class CacheProcess extends BaseProcess implements MQProcess {
     let cacheData: CachePara = content.parameters;
 
     //上下文内获取日程语音输入缓存数据
-    let scd: Array<ScdData> = this.input(content, contextRetMap, "agendas", WsDataConfig.SCD, scd) || new Array<ScdData>();
+    let scd: Array<ScdData> = new Array<ScdData>();
+    scd = this.input(content, contextRetMap, "agendas", WsDataConfig.SCD, scd) || new Array<ScdData>();
 
     //处理区分
     if (content.option == CA.AD) {
       if (scd.length <= 0) {
         let agendadata: ScdData = new ScdData();
-        Object.assign(agendadata, cacheData);
+        Object.assign(agendadata, cacheData.scd);
 
         scd.push(agendadata);
       } else {
         let agendadata: ScdData = scd.pop();
 
-        agendadata.sd = cacheData.ds || agendadata.sd;
-        agendadata.st = cacheData.ts || agendadata.st;
-        agendadata.ed = cacheData.de || agendadata.ed;
-        agendadata.et = cacheData.te || agendadata.et;
+        agendadata.sd = cacheData.scd.ds || agendadata.sd;
+        agendadata.st = cacheData.scd.ts || agendadata.st;
+        agendadata.ed = cacheData.scd.de || agendadata.ed;
+        agendadata.et = cacheData.scd.te || agendadata.et;
 
-        agendadata.sn = cacheData.ti || agendadata.sn;
-        agendadata.adr = cacheData.adr || agendadata.adr;
+        agendadata.sn = cacheData.scd.ti || agendadata.sn;
+        agendadata.adr = cacheData.scd.adr || agendadata.adr;
 
         scd.push(agendadata);
       }
