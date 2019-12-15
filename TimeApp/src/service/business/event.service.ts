@@ -3043,9 +3043,9 @@ export class EventService extends BaseService {
 			minitask.evt = minitask.evt || "23:59";
 
     	minitask.txjson = generateTxJson(minitask.txjson, minitask.tx);
-      minitask.txs = minitask.txjson.text();
+      minitask.txs = minitask.txjson.text(minitask.evd, minitask.evt);
 
-	    minitask.rtjson = generateRtJson(minitask.rtjson, rt);
+	    minitask.rtjson = generateRtJson(minitask.rtjson, minitask.rt);
       minitask.rts = minitask.rtjson.text();
 
 			let sqlparam = new Array<any>();
