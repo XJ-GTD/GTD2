@@ -194,6 +194,80 @@ describe('AnnotationService test suite', () => {
         expect(ats.length).toBeDefined(1);
    });
 
+   it('Case 3 - 1  delAnnotation 删除参与人信息 - 删除信息', async () => {
+
+       let at: Annotation = new Annotation();
+       at.obi = this.util.getUuid();
+       at.ui = UserConfig.account.id;
+       at.dt = moment().add( -1 ,'days').format("YYYY/MM/DD HH:mm");
+       let rcs : Array<string > =new Array<string>();
+       rcs.push("18569990239");
+       at.rcs = rcs;
+       at.content =  "写了一下午case ,没有保存，手误给删了，我想哭啊，嗷嗷嗷";
+       let save: string = await annotationService.saveAnnotation(at);
+
+       //删除
+       await annotationService.delAnnotation();
+       //查询
+       let ats: Array<Annotation> = new Array<Annotation>();
+       ats =  await annotationService.getAnnotation();
+       expect(ats).toBeDefined();
+       expect(ats.length).toBeDefined(0);
+  });
+
+
+  it('Case 3 - 2  delAnnotation 删除参与人信息 - 删除条件不成立的情况下', async () => {
+
+      let at: Annotation = new Annotation();
+      at.obi = this.util.getUuid();
+      at.ui = UserConfig.account.id;
+      at.dt = moment().format("YYYY/MM/DD HH:mm");
+      let rcs : Array<string > = new Array<string>();
+      rcs.push("18569990239");
+      at.rcs = rcs;
+      at.content =  "写了一下午case ,没有保存，手误给删了，我想哭啊，嗷嗷嗷";
+      let save: string = await annotationService.saveAnnotation(at);
+
+      //删除
+      await annotationService.delAnnotation();
+      //查询
+      let ats: Array<Annotation> = new Array<Annotation>();
+      ats =  await annotationService.getAnnotation();
+      expect(ats).toBeDefined();
+      expect(ats.length).toBeDefined(1);
+    });
+
+
+    it('Case 4 - 1  getAnnotation 查询参与人信息 - 查询条件', async () => {
+
+        let at: Annotation = new Annotation();
+        at.obi = this.util.getUuid();
+        at.ui = UserConfig.account.id;
+        at.dt = moment().format("YYYY/MM/DD HH:mm");
+        let rcs : Array<string > = new Array<string>();
+        rcs.push("18569990239");
+        at.rcs = rcs;
+        at.content =  "写了一下午case ,没有保存，手误给删了，我想哭啊，嗷嗷嗷";
+        let save: string = await annotationService.saveAnnotation(at);
+
+
+        let at1: Annotation = new Annotation();
+        at1.obi = this.util.getUuid();
+        at1.ui = UserConfig.account.id;
+        at1.dt = moment().format("YYYY/MM/DD HH:mm");
+        let rcs1 : Array<string > = new Array<string>();
+        rcs1.push("18569990239");
+        at1.rcs = rcs1;
+        at1.content =  "写了一下午case ,没有保存，手误给删了，我想哭啊，嗷嗷嗷";
+        let save1: string = await annotationService.saveAnnotation(at1);
+
+        //查询
+        let ats: Array<Annotation> = new Array<Annotation>();
+        ats =  await annotationService.getAnnotation();
+        expect(ats).toBeDefined();
+        expect(ats.length).toBeDefined(2);
+      });
+
    afterAll(() => {
      TestBed.resetTestingModule();
    });
