@@ -76,6 +76,9 @@ export class DataConfig {
 
   public static RABBITMQ_STATUS: string = "";
 
+  // 清楚讯飞上下文
+  public static clearAIContext: boolean = false;
+
   /*----===== WS上下文环境使用 =====----- */
   public static clearWsContext() {
     this.wsContext.splice(0, this.wsContext.length);

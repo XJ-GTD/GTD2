@@ -157,7 +157,7 @@ function clean(datasource)
       processor: 'S',
       option: 'S.AN',
       parameters: {
-        an: '正在创建活动, 活动内容是'
+        an: '你要安排的这个活动主题是什么？'
       }
     };
 
@@ -209,7 +209,7 @@ function clean(datasource)
         processor: 'S',
         option: 'S.AN',
         parameters: {
-          an: '正在创建活动, 活动内容是'
+          an: '你要安排的这个活动内容是什么？'
         }
       };
     } else if (!activity['d'] && !activity['t']) {
@@ -217,7 +217,7 @@ function clean(datasource)
         processor: 'S',
         option: 'S.AN',
         parameters: {
-          an: '活动开始时间是'
+          an: '这个活动安排在什么时候？'
         }
       };
     } else if (!activity['ti']) {
@@ -225,7 +225,7 @@ function clean(datasource)
         processor: 'S',
         option: 'S.AN',
         parameters: {
-          an: '正在创建活动, 活动内容是'
+          an: '你要安排的这个活动内容是什么？'
         }
       };
     } else if (!activity['adr']) {
@@ -233,7 +233,7 @@ function clean(datasource)
         processor: 'S',
         option: 'S.AN',
         parameters: {
-          an: '活动地址是'
+          an: '这个活动在什么地方举行？'
         }
       };
     } else {
@@ -290,7 +290,7 @@ function clean(datasource)
         processor: 'S',
         option: 'S.AN',
         parameters: {
-          an: '活动内容是'
+          an: '这个活动主题是什么？'
         }
       };
     } else if (!activity['d'] && !activity['t']) {
@@ -305,7 +305,7 @@ function clean(datasource)
         processor: 'S',
         option: 'S.AN',
         parameters: {
-          an: '活动开始时间是'
+          an: '这个活动安排在什么时候？'
         }
       };
     } else if (!activity['ti']) {
@@ -320,7 +320,7 @@ function clean(datasource)
         processor: 'S',
         option: 'S.AN',
         parameters: {
-          an: '活动内容是'
+          an: '这个活动主题是什么？'
         }
       };
     } else {

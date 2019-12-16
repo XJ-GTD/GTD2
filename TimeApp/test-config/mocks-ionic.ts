@@ -45,6 +45,7 @@ export class UserConfigMock {
   };
 
   async init() {}
+  async RefreshFriend() {}
 }
 
 export class RestfulClientMock {

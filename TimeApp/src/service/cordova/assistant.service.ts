@@ -211,6 +211,10 @@ export class AssistantService {
 
     let textPro = new TextPro();
     textPro.d.text = text;
+    if (DataConfig.clearAIContext) {
+      textPro.d.clean = "user";  // 清除对话历史
+      DataConfig.clearAIContext = false;
+    }
     textPro.c.client.time = moment().valueOf();
     textPro.c.client.cxt = DataConfig.wsContext;
     textPro.c.server = DataConfig.wsServerContext;
@@ -267,6 +271,10 @@ export class AssistantService {
       let base64File: string = await this.file.readAsDataURL(this.mp3Path, this.mp3Name);
       let audioPro = new AudioPro();
       audioPro.d.vb64 = base64File;
+      if (DataConfig.clearAIContext) {
+        audioPro.d.clean = "user";  // 清除对话历史
+        DataConfig.clearAIContext = false;
+      }
       audioPro.c.client.time = moment().valueOf();
       audioPro.c.client.cxt = DataConfig.wsContext;
       audioPro.c.client.option = DataConfig.wsWsOpt;

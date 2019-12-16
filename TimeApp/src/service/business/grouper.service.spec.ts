@@ -69,7 +69,7 @@ import {FsData, PageDcData} from "../../data.mapping";
  *
  * @author 343253410@qq.com
  **/
- describe('AnnotationService test suite', () => {
+ describe('GrouperService test suite', () => {
 
      let config: SqliteConfig;
      let init: SqliteInit;
@@ -168,15 +168,15 @@ import {FsData, PageDcData} from "../../data.mapping";
      beforeEach(async () => {
        //await config.generateDb();
        let gt: GTbl = new GTbl();
-       await sqlExce.dropByParam(gt);
-       await sqlExce.createByParam(gt);
+       await sqlExce.drop(gt);
+       await sqlExce.create(gt);
      });
 
      it('Case 1 - 1 service should be created', () => {
        expect(grouperService).toBeTruthy();
      });
 
-     it('Case 2 - 1 save 创建群组 - 无群组的名称', () => {
+     it('Case 2 - 1 save 创建群组 - 无群组的名称', async () => {
        let pd: PageDcData = new PageDcData();
        await grouperService.save(pd);
 
@@ -186,7 +186,7 @@ import {FsData, PageDcData} from "../../data.mapping";
 
      });
 
-     it('Case 2 - 2 save 创建群组 - 有群组的名称', () => {
+     it('Case 2 - 2 save 创建群组 - 有群组的名称', async () => {
        let pd: PageDcData = new PageDcData();
        pd.gn ="组团打怪群";
        await grouperService.save(pd);
@@ -197,7 +197,7 @@ import {FsData, PageDcData} from "../../data.mapping";
 
      });
 
-     it('Case 2 - 3 save 群组新增成员 - 添加成员', () => {
+     it('Case 2 - 3 save 群组新增成员 - 添加成员', async () => {
        let pd: PageDcData = new PageDcData();
        pd.gn ="组团打怪群";
        await grouperService.save(pd);
@@ -220,7 +220,7 @@ import {FsData, PageDcData} from "../../data.mapping";
      });
 
 
-     it('Case 3 - 1 delete 删除会员 - 删除数据', () => {
+     it('Case 3 - 1 delete 删除会员 - 删除数据', async () => {
        let pd: PageDcData = new PageDcData();
        pd.gn ="组团打怪群";
        await grouperService.save(pd);
@@ -237,20 +237,20 @@ import {FsData, PageDcData} from "../../data.mapping";
        expect(pg).toBeDefined();
        expect(pg.length).toBeDefined(3);
 
-       let gi：string = pg[0].gi;
+       let gi: string = pg[0].gi;
        let gn: string = pg[0].gn;
-       let del: string = pg[0].del;
+       // let del: string = pg[0].del;
 
        await grouperService.delete(gi);
 
        let pg1: Array<PageDcData> = await grouperService.getGroups(gn);
        expect(pg1).toBeDefined();
        expect(pg1.length).toBeDefined(1);
-       expect(pg1[0].del).toBe(DelType.del);
+       // expect(pg1[0].del).toBe(DelType.del);
 
      });
 
-     it('Case 3 - 2 delete 删除会员 - 删除数据', () => {
+     it('Case 3 - 2 delete 删除会员 - 删除数据', async () => {
        let pd: PageDcData = new PageDcData();
        pd.gn ="组团打怪群";
        await grouperService.save(pd);

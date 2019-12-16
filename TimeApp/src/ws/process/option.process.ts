@@ -74,6 +74,7 @@ export class OptionProcess extends BaseProcess implements MQProcess{
       DataConfig.clearWsOpts();
       DataConfig.clearWsContext();
       DataConfig.clearWsProcessor();
+      DataConfig.clearAIContext = true;
 
     }else if(opt == O.S){
       //追问操作
