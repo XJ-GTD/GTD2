@@ -239,7 +239,7 @@ describe('AnnotationService test suite', () => {
     });
 
 
-    it('Case 4 - 1  getAnnotation 查询参与人信息 - 查询条件', async () => {
+   it('Case 4 - 1  getAnnotation 查询参与人信息 - 查询条件', async () => {
 
         let at: Annotation = new Annotation();
         at.obi = this.util.getUuid();
@@ -267,7 +267,118 @@ describe('AnnotationService test suite', () => {
         ats =  await annotationService.getAnnotation();
         expect(ats).toBeDefined();
         expect(ats.length).toBeDefined(2);
+    });
+
+
+    it('Case 5 - 1  receivedAnnotationData 同步信息 - 同步自己的信息', async () => {
+
+        // 先创建一个
+        let at: Annotation = new Annotation();
+        at.obi = this.util.getUuid();
+        at.ui = UserConfig.account.id;
+        at.dt = moment().format("YYYY/MM/DD HH:mm");
+        let rcs : Array<string > = new Array<string>();
+        rcs.push("18569990239");
+        at.rcs = rcs;
+        at.content =  "写了一下午case ,没有保存，手误给删了，我想哭啊，嗷嗷嗷";
+        let save: string = await annotationService.saveAnnotation(at);
+
+        //同步一个
+        let pullAnnotations: Array<Annotation> = new Array<Annotation>();
+        let at1: Annotation = new Annotation();
+        at1.obi = this.util.getUuid();
+        at1.ui = UserConfig.account.id;
+        at1.dt = moment().format("YYYY/MM/DD HH:mm");
+        let rcs1 : Array<string > = new Array<string>();
+        rcs1.push("18569990239");
+        at1.rcs = rcs1;
+        at1.content =  "同步个自己的是好事";
+        pullAnnotations.push(at1);
+
+        let pullAnnotations2: Array<Annotation>  = await annotationService.receivedAnnotationData(pullAnnotations,SyncType.unsynch,"Agenda");
+        expect(pullAnnotations2).toBeDefined();
+        expect(pullAnnotations2.length).toBeDefined(1);
+        //查询
+        let ats: Array<Annotation> = new Array<Annotation>();
+        ats =  await annotationService.getAnnotation();
+        expect(ats).toBeDefined();
+        expect(ats.length).toBeDefined(2);
       });
+
+
+    it('Case 5 - 2  receivedAnnotationData 同步信息 - 同步非自己的信息', async () => {
+
+        // 先创建一个
+        let at: Annotation = new Annotation();
+        at.obi = this.util.getUuid();
+        at.ui = UserConfig.account.id;
+        at.dt = moment().format("YYYY/MM/DD HH:mm");
+        let rcs : Array<string > = new Array<string>();
+        rcs.push("18569990239");
+        at.rcs = rcs;
+        at.content =  "写了一下午case ,没有保存，手误给删了，我想哭啊，嗷嗷嗷";
+        let save: string = await annotationService.saveAnnotation(at);
+
+        //同步一个
+        let pullAnnotations: Array<Annotation> = new Array<Annotation>();
+        let at1: Annotation = new Annotation();
+        at1.dt = moment().format("YYYY/MM/DD HH:mm");
+        at1.content =  "同步别人的事情";
+        pullAnnotations.push(at1);
+
+        let pullAnnotations2: Array<Annotation>  =  await annotationService.receivedAnnotationData(pullAnnotations,SyncType.unsynch,"Agenda");
+        expect(pullAnnotations2).toBeDefined();
+        expect(pullAnnotations2.length).toBeDefined(1);
+        //查询
+        let ats: Array<Annotation> = new Array<Annotation>();
+        ats =  await annotationService.getAnnotation();
+        expect(ats).toBeDefined();
+        expect(ats.length).toBeDefined(2);
+      });
+
+      it('Case 6 - 1  acceptSyncAnnotation 更新同步状态 - 同步非自己的信息', async () => {
+
+          // 先创建一个
+          let at: Annotation = new Annotation();
+          at.obi = this.util.getUuid();
+          at.ui = UserConfig.account.id;
+          at.dt = moment().format("YYYY/MM/DD HH:mm");
+          let rcs : Array<string > = new Array<string>();
+          rcs.push("18569990239");
+          at.rcs = rcs;
+          at.content =  "写了一下午case ,没有保存，手误给删了，我想哭啊，嗷嗷嗷";
+          let save: string = await annotationService.saveAnnotation(at);
+
+          //同步一个
+          let pullAnnotations: Array<Annotation> = new Array<Annotation>();
+          let at1: Annotation = new Annotation();
+          at1.dt = moment().format("YYYY/MM/DD HH:mm");
+          at1.content =  "同步别人的事情";
+          pullAnnotations.push(at1);
+
+          let pullAnnotations2: Array<Annotation>  =   await annotationService.receivedAnnotationData(pullAnnotations,SyncType.unsynch,"Agenda");
+          expect(pullAnnotations2).toBeDefined();
+          expect(pullAnnotations2.length).toBeDefined(1);
+
+
+          let ids: Array<string> = new Array<string>();
+          ids.push(pullAnnotations2[0].obi);
+          await annotationService.acceptSyncAnnotation(ids);
+        });
+
+      it('Case 7 - 1  sendAnnotation 发送消息 - 发送', async () => {
+
+          // 先创建一个
+          let at: Annotation = new Annotation();
+          at.obi = this.util.getUuid();
+          at.ui = UserConfig.account.id;
+          at.dt = moment().format("YYYY/MM/DD HH:mm");
+          let rcs : Array<string > = new Array<string>();
+          rcs.push("18569990239");
+          at.rcs = rcs;
+          at.content =  "写了一下午case ,没有保存，手误给删了，我想哭啊，嗷嗷嗷";
+          await annotationService.sendAnnotation(at);
+        });
 
    afterAll(() => {
      TestBed.resetTestingModule();
