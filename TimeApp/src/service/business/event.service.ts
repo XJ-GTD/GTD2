@@ -1508,7 +1508,27 @@ export class EventService extends BaseService {
   }
 
   checksumAgenda(agenda: AgendaData): string {
-    return "";
+    let str = agenda.evn + agenda.evd + agenda.evt +agenda.rtevi + agenda.rt
+      + agenda.rts + agenda.md + agenda.iv + agenda.rfg
+      + agenda.adr + agenda.adrx + agenda.adry
+      + agenda.sd + agenda.ed + agenda.st +agenda.et +agenda.al +agenda.ct;
+    //本人
+    let memberstr = UserConfig.account.id +  agenda.invitestatus;
+    let memberother : string;
+    //共享人
+    if (agenda.members){
+      agenda.members.sort((a,b)=>{
+          return parseInt(a.rc) - parseInt(b.rc);
+        });
+      memberother = agenda.members.reduce((target,value)=>{
+        target += value.rc + value.sdt;
+        return target;
+      },"");
+
+    }
+
+    str = str + memberstr + memberother;
+    return checksum(str);
   }
 
   /**
@@ -3700,7 +3720,7 @@ export class EventService extends BaseService {
         }
         sync.to = (!agenda.tos || agenda.tos == "" || agenda.tos == null) ? [] : agenda.tos.split(",") ;
         sync.updstate = agenda.updstate;
-
+        sync.checksum = agenda.checksum;
 
         this.assertNotEqual(agenda.pn, sync.to.length); // 参与人数量和参与人数组必须相同
 
