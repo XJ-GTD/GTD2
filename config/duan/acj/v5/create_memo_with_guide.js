@@ -1,4 +1,4 @@
-// CREATE_AGENDA_WITH_GUIDE_V1_5
+// CREATE_MEMO_WITH_GUIDE_V1_5
 function shouldclean(datasource)
 {
   var result = {};
@@ -30,7 +30,7 @@ function shouldclean(datasource)
         for (var sei in semantics) {
           var semantic = semantics[sei];
 
-          if (semantic['intent'] === 'ActivityGuide' || (input['_context'] && input['_context']['server'] && input['_context']['server']['activity'] && (semantic['intent'] === 'InputDatetime' || semantic['intent'] === 'InputSomething' || semantic['intent'] === 'InputAddress' || semantic['intent'] === 'InputMember' || semantic['intent'] === 'EndGuide'))) {
+          if (semantic['intent'] === 'MemoGuide' || (input['_context'] && input['_context']['server'] && input['_context']['server']['memo'] && (semantic['intent'] === 'InputDatetime' || semantic['intent'] === 'InputSomething' || semantic['intent'] === 'InputAddress' || semantic['intent'] === 'InputMember' || semantic['intent'] === 'EndGuide'))) {
             return true;
           }
         }
@@ -79,7 +79,7 @@ function clean(datasource)
   var address = '';
 
   var semantics = data['intent']['semantic'];
-  var intent = 'ActivityGuide';
+  var intent = 'MemoGuide';
 
   for (var sei in semantics) {
     var semantic = semantics[sei];
@@ -144,7 +144,7 @@ function clean(datasource)
   output.content = {};
 
   // 返回消息头部
-  if (intent == 'ActivityGuide') {
+  if (intent == 'MemoGuide') {
     // 启动创建活动向导
     output.header = {
       version: 'V1.1',
@@ -157,44 +157,42 @@ function clean(datasource)
       processor: 'S',
       option: 'S.AN',
       parameters: {
-        an: '你要安排的这个活动主题是什么？'
+        an: '开始记录您的备忘,结束记录请说:"结束备忘"'
       }
     };
 
     // 初始化创建活动向导服务器端上下文
-    servercontext['activity'] = {};
+    servercontext['memo'] = {};
   }
 
   if (intent == 'InputDatetime' || intent == 'InputSomething' || intent == 'InputAddress') {
-    var activity = servercontext['activity'] || {};
+    var memo = servercontext['memo'] || {};
 
     if (date && date !== '') {
-      activity['d'] = date;
-      activity['scd'] = activity['scd'] || {};
-      activity['scd']['ds'] = date;
-      activity['scd']['de'] = date;
+      memo['d'] = date;
+      memo['scd'] = memo['scd'] || {};
+      memo['scd']['ds'] = date;
+      memo['scd']['de'] = date;
     }
 
     if (time && time !== '') {
-      activity['t'] = time;
-      activity['scd'] = activity['scd'] || {};
-      activity['scd']['ts'] = time;
-      activity['scd']['te'] = time;
-    }
-
-    if (title && title !== '') {
-      activity['ti'] = title;
-      activity['scd'] = activity['scd'] || {};
-      activity['scd']['ti'] = title;
+      memo['t'] = time;
+      memo['scd'] = memo['scd'] || {};
+      memo['scd']['ts'] = time;
+      memo['scd']['te'] = time;
     }
 
     if (address && address !== '') {
-      activity['adr'] = address;
-      activity['scd'] = activity['scd'] || {};
-      activity['scd']['adr'] = address;
+      memo['adr'] = address;
+      memo['scd'] = memo['scd'] || {};
+      memo['scd']['adr'] = address;
     }
 
-    servercontext['activity'] = activity;
+    memo['ti'] = (memo['ti'] || "") + text;
+    memo['scd'] = memo['scd'] || {};
+    memo['scd']['ti'] = memo['ti'];
+
+    servercontext['memo'] = memo;
 
     // 输入活动时间/活动内容/活动地址
     output.header = {
@@ -204,81 +202,29 @@ function clean(datasource)
       describe: ['S']
     };
 
-    if (!activity['d'] && !activity['t'] && !activity['ti'] && !activity['adr']) {
+    if (!memo['ti']) {
       output.content['0'] = {
         processor: 'S',
         option: 'S.AN',
         parameters: {
-          an: '你要安排的这个活动内容是什么？'
-        }
-      };
-    } else if (!activity['d'] && !activity['t']) {
-      output.content['0'] = {
-        processor: 'S',
-        option: 'S.AN',
-        parameters: {
-          an: '这个活动安排在什么时候？'
-        }
-      };
-    } else if (!activity['ti']) {
-      output.content['0'] = {
-        processor: 'S',
-        option: 'S.AN',
-        parameters: {
-          an: '你要安排的这个活动内容是什么？'
-        }
-      };
-    } else if (!activity['adr']) {
-      output.content['0'] = {
-        processor: 'S',
-        option: 'S.AN',
-        parameters: {
-          an: '这个活动在什么地方举行？'
+          an: '您需要备忘的内容是什么？'
         }
       };
     } else {
-      // 输入内容满足创建条件
-      output.header = {
-        version: 'V1.1',
-        sender: 'xunfei',
-        datetime: formatDateTime(new Date()),
-        describe: ['CA', 'AG', 'SS', 'S']
-      };
-
       output.content['0'] = {
-        processor: 'CA',
-        option: 'CA.AD',
-        parameters: {
-          scd: activity['scd']
-        }
-      };
-
-      output.content['1'] = {
-        processor: 'AG',
-        option: 'AG.C',
-        parameters: {}
-      };
-
-      output.content['2'] = {
-        processor: 'SS',
-        option: 'SS.C',
-        parameters: {}
-      };
-
-      output.content['3'] = {
         processor: 'S',
         option: 'S.AN',
         parameters: {
-          an: '是否创建, 请确认'
+          an: '继续备忘，或者说:"结束备忘"结束记录'
         }
       };
     }
   }
 
   if (intent == 'EndGuide') {
-    var activity = servercontext['activity'] || {};
+    var memo = servercontext['memo'] || {};
 
-    if (!activity['d'] && !activity['t'] && !activity['ti']) {
+    if (!memo['ti']) {
       output.header = {
         version: 'V1.1',
         sender: 'xunfei',
@@ -290,37 +236,7 @@ function clean(datasource)
         processor: 'S',
         option: 'S.AN',
         parameters: {
-          an: '这个活动主题是什么？'
-        }
-      };
-    } else if (!activity['d'] && !activity['t']) {
-      output.header = {
-        version: 'V1.1',
-        sender: 'xunfei',
-        datetime: formatDateTime(new Date()),
-        describe: ['S']
-      };
-
-      output.content['0'] = {
-        processor: 'S',
-        option: 'S.AN',
-        parameters: {
-          an: '这个活动安排在什么时候？'
-        }
-      };
-    } else if (!activity['ti']) {
-      output.header = {
-        version: 'V1.1',
-        sender: 'xunfei',
-        datetime: formatDateTime(new Date()),
-        describe: ['S']
-      };
-
-      output.content['0'] = {
-        processor: 'S',
-        option: 'S.AN',
-        parameters: {
-          an: '这个活动主题是什么？'
+          an: '取消备忘'
         }
       };
     } else {
@@ -329,19 +245,19 @@ function clean(datasource)
         version: 'V1.1',
         sender: 'xunfei',
         datetime: formatDateTime(new Date()),
-        describe: ['CA', 'AG', 'SS', 'S']
+        describe: ['CA', 'MO', 'SS', 'S']
       };
       output.content['0'] = {
         processor: 'CA',
-        option: 'CA.AD',
+        option: 'CA.MO',
         parameters: {
-          scd: activity['scd']
+          scd: memo['scd']
         }
       };
 
       output.content['1'] = {
-        processor: 'AG',
-        option: 'AG.C',
+        processor: 'MO',
+        option: 'MO.C',
         parameters: {}
       };
 
@@ -355,11 +271,9 @@ function clean(datasource)
         processor: 'S',
         option: 'S.AN',
         parameters: {
-          an: '是否创建, 请确认'
+          an: '是否保存, 请确认'
         }
       };
-
-      delete servercontext['activity'];
     }
   }
 

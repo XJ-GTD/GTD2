@@ -47,6 +47,8 @@ export class OptionProcess extends BaseProcess implements MQProcess{
     let scd:Array<ScdData> = new Array<ScdData>();
     scd = this.input(content,contextRetMap,"agendas",WsDataConfig.SCD,scd);
 
+    let memos:Array<ScdData> = new Array<ScdData>();
+    memos = this.input(content,contextRetMap,"memos",WsDataConfig.MOD,memos);
 
     //上下文内获取日程人员信息
     let fs :Array<FsData> = new Array<FsData>();
