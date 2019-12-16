@@ -18,7 +18,9 @@ export enum F {
 
 //语音输入缓存
 export enum CA {
-  AD = "CA.AD"   //日程缓存
+  AD = "CA.AD",   //日程缓存
+  MO = "CA.MO",   //备忘缓存
+  PI = "CA.PI",   //日历项缓存
 }
 
 //数据同步
@@ -47,7 +49,8 @@ export enum AG {
 
 //备忘处理（保存上下文）
 export enum MO {
-  C = "MO.C",  //新建备忘
+  C = "MO.C",   //新建备忘
+  D = "MO.D",   //删除备忘
 }
 
 //日程修改（获取上下文中）

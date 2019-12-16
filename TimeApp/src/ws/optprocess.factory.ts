@@ -16,6 +16,7 @@ import {NotificationProcess} from "./process/notification.process";
 import {SpecialDataProcess} from "./process/specialdata.process";
 import {DataSyncProcess} from "./process/datasync.process";
 import {CacheProcess} from "./process/cache.process";
+import {MemosProcess} from "./process/memos.process";
 
 /**
  * webSocket公用处理方法

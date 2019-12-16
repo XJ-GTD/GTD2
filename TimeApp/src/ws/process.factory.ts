@@ -16,6 +16,7 @@ import {NotificationProcess} from "./process/notification.process";
 import {SpecialDataProcess} from "./process/specialdata.process";
 import {DataSyncProcess} from "./process/datasync.process";
 import {CacheProcess} from "./process/cache.process";
+import {MemosProcess} from "./process/memos.process";
 
 /**
  * webSocket公用处理方法
@@ -37,6 +38,7 @@ export class ProcessFactory {
               private receiveProcess:ReceiveProcess,
               private settingProcess:SettingProcess,
               private agendasProcess:AgendasProcess,
+              private memosProcess:MemosProcess,
               private markupProcess:MarkupProcess,
               private datasyncProcess:DataSyncProcess,
               private specialDataProcess:SpecialDataProcess,
@@ -54,6 +56,7 @@ export class ProcessFactory {
     this.factory.set("SH", this.receiveProcess);
     this.factory.set("SY", this.settingProcess);
     this.factory.set("AG", this.agendasProcess);
+    this.factory.set("MO", this.memosProcess);
     this.factory.set("MK", this.markupProcess);
     this.factory.set("SD", this.specialDataProcess);
     this.factory.set("PN", this.notificationProcess);

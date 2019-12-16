@@ -41,12 +41,15 @@ export class CacheProcess extends BaseProcess implements MQProcess {
     let cacheData: CachePara = content.parameters;
 
     //上下文内获取日程语音输入缓存数据
-    let scd: Array<ScdData> = new Array<ScdData>();
-    scd = this.input(content, contextRetMap, "agendas", WsDataConfig.SCD, scd) || new Array<ScdData>();
+    let agendas: Array<ScdData> = new Array<ScdData>();
+    agendas = this.input(content, contextRetMap, "agendas", WsDataConfig.SCD, agendas) || new Array<ScdData>();
+
+    let memos: Array<ScdData> = new Array<ScdData>();
+    memos = this.input(content, contextRetMap, "memos", WsDataConfig.SCD, memos) || new Array<ScdData>();
 
     //处理区分
     if (content.option == CA.AD) {
-      if (scd.length <= 0) {
+      if (agendas.length <= 0) {
         let agendadata: ScdData = new ScdData();
 
         agendadata.sd = cacheData.scd.ds || agendadata.sd;
@@ -57,7 +60,13 @@ export class CacheProcess extends BaseProcess implements MQProcess {
         agendadata.sn = cacheData.scd.ti || agendadata.sn;
         // agendadata.adr = cacheData.scd.adr || agendadata.adr;
 
-        scd.push(agendadata);
+        agendas.push(agendadata);
+      } else if (content.option == CA.MO) {
+        let memodata: ScdData = new ScdData();
+
+        memodata.sn = cacheData.scd.ti || memodata.sn;
+
+        memos.push(memodata);
       } else {
         let agendadata: ScdData = scd.pop();
 
@@ -69,12 +78,13 @@ export class CacheProcess extends BaseProcess implements MQProcess {
         agendadata.sn = cacheData.scd.ti || agendadata.sn;
         // agendadata.adr = cacheData.scd.adr || agendadata.adr;
 
-        scd.push(agendadata);
+        agendas.push(agendadata);
       }
     }
 
     //服务器要求上下文内放置日程查询结果
-    this.output(content, contextRetMap, 'agendas', WsDataConfig.SCD, scd);
+    this.output(content, contextRetMap, 'agendas', WsDataConfig.SCD, agendas);
+    this.output(content, contextRetMap, 'memos', WsDataConfig.SCD, memos);
 
     return contextRetMap;
   }

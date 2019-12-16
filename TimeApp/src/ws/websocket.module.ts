@@ -24,6 +24,7 @@ import {NotificationProcess} from "./process/notification.process";
 import {SpecialDataProcess} from "./process/specialdata.process";
 import {DataSyncProcess} from "./process/datasync.process";
 import {CacheProcess} from "./process/cache.process";
+import {MemosProcess} from "./process/memos.process";
 
 /**
  * WebSocket组件
@@ -41,7 +42,7 @@ import {CacheProcess} from "./process/cache.process";
     DefaultProcess, FindProcess,
     OptionProcess, ContextProcess,
     ReceiveProcess, SettingProcess,
-    AgendasProcess, MarkupProcess,
+    AgendasProcess, MarkupProcess, MemosProcess,
     NotificationProcess, SpecialDataProcess, CacheProcess,
     SsService, FdService, FsService
   ],
