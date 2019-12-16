@@ -6,6 +6,8 @@ export class WsDataConfig {
   public static SCD: string = "scd";
   //人员信息
   public static FS:string = "fs";
+  //备忘信息
+  public static MOD:string = "mod";
   //前动作option服务器交互
   public static PRVOPTION:string = "prvoption";
   //前动作prvprocessor服务器交互

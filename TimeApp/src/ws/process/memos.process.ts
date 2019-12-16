@@ -32,7 +32,7 @@ export class MemosProcess extends BaseProcess implements MQProcess,OptProcess{
 
     //上下文内获取日程查询结果
     let scd:Array<ScdData> = new Array<ScdData>();
-    scd = this.input(content, contextRetMap, "memos", WsDataConfig.SCD, scd);
+    scd = this.input(content, contextRetMap, "memos", WsDataConfig.MOD, scd);
 
     //上下文内获取日程人员信息
     let fs :Array<FsData> = new Array<FsData>();
@@ -92,7 +92,7 @@ export class MemosProcess extends BaseProcess implements MQProcess,OptProcess{
 
     //上下文内获取日程查询结果
     let scd:Array<ScdData> = new Array<ScdData>();
-    scd = this.input(content, contextRetMap, "memos", WsDataConfig.SCD, scd);
+    scd = this.input(content, contextRetMap, "memos", WsDataConfig.MOD, scd);
 
     //上下文内获取日程人员信息
     let fs :Array<FsData> = new Array<FsData>();
@@ -141,7 +141,7 @@ export class MemosProcess extends BaseProcess implements MQProcess,OptProcess{
     }
 
     //上下文内放置创建的或修改的日程更新内容
-    this.output(content, contextRetMap, 'memos', WsDataConfig.SCD, scd);
+    this.output(content, contextRetMap, 'memos', WsDataConfig.MOD, scd);
 
     //上下文内放置创建的或修改的日程联系人
     this.output(content, contextRetMap, 'contacts', WsDataConfig.FS, fs);

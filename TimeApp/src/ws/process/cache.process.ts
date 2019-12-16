@@ -45,7 +45,7 @@ export class CacheProcess extends BaseProcess implements MQProcess {
     agendas = this.input(content, contextRetMap, "agendas", WsDataConfig.SCD, agendas) || new Array<ScdData>();
 
     let memos: Array<ScdData> = new Array<ScdData>();
-    memos = this.input(content, contextRetMap, "memos", WsDataConfig.SCD, memos) || new Array<ScdData>();
+    memos = this.input(content, contextRetMap, "memos", WsDataConfig.MOD, memos) || new Array<ScdData>();
 
     //处理区分
     if (content.option == CA.AD) {
@@ -84,7 +84,7 @@ export class CacheProcess extends BaseProcess implements MQProcess {
 
     //服务器要求上下文内放置日程查询结果
     this.output(content, contextRetMap, 'agendas', WsDataConfig.SCD, agendas);
-    this.output(content, contextRetMap, 'memos', WsDataConfig.SCD, memos);
+    this.output(content, contextRetMap, 'memos', WsDataConfig.MOD, memos);
 
     return contextRetMap;
   }
