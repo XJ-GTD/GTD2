@@ -55,6 +55,8 @@ export class AudioPro{
 export class AudioProSub{
   //Base64编码语音
   vb64 : string="";
+  //控制讯飞是否清空对话历史,auto不清除
+  clean: string = "auto";
 }
 
 //文本入参
@@ -66,5 +68,6 @@ export class TextPro{
 export class TextProSub{
   //文本文字
   text : string="";
-
+  //控制讯飞是否清空对话历史,auto不清除
+  clean: string = "auto";
 }
