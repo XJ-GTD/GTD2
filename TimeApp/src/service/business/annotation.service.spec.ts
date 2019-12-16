@@ -295,7 +295,7 @@ describe('AnnotationService test suite', () => {
         at1.content =  "同步个自己的是好事";
         pullAnnotations.push(at1);
 
-        let pullAnnotations2: Array<Annotation>  = await annotationService.receivedAnnotationData(pullAnnotations,SyncType.unsynch,"Agenda");
+        let pullAnnotations2: Array<Annotation>  = await annotationService.receivedAnnotationData(pullAnnotations,SyncDataStatus.UnDeleted,"Agenda");
         expect(pullAnnotations2).toBeDefined();
         expect(pullAnnotations2.length).toBeDefined(1);
         //查询
@@ -326,7 +326,7 @@ describe('AnnotationService test suite', () => {
         at1.content =  "同步别人的事情";
         pullAnnotations.push(at1);
 
-        let pullAnnotations2: Array<Annotation>  =  await annotationService.receivedAnnotationData(pullAnnotations,SyncType.unsynch,"Agenda");
+        let pullAnnotations2: Array<Annotation>  =  await annotationService.receivedAnnotationData(pullAnnotations,SyncDataStatus.UnDeleted,"Agenda");
         expect(pullAnnotations2).toBeDefined();
         expect(pullAnnotations2.length).toBeDefined(1);
         //查询
@@ -356,7 +356,7 @@ describe('AnnotationService test suite', () => {
           at1.content =  "同步别人的事情";
           pullAnnotations.push(at1);
 
-          let pullAnnotations2: Array<Annotation>  =   await annotationService.receivedAnnotationData(pullAnnotations,SyncType.unsynch,"Agenda");
+          let pullAnnotations2: Array<Annotation>  =   await annotationService.receivedAnnotationData(pullAnnotations,SyncDataStatus.UnDeleted,"Agenda");
           expect(pullAnnotations2).toBeDefined();
           expect(pullAnnotations2.length).toBeDefined(1);
 
