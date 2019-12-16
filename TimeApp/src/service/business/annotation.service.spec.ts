@@ -58,7 +58,8 @@ import {LocalNotifications} from "@ionic-native/local-notifications";
 import {Badge} from "@ionic-native/badge";
 import { RemindService } from "../util-service/remind.service";
 import { GrouperService } from "./grouper.service";
-
+import {UserConfig} from "../config/user.config";
+import {DataConfig} from "../config/data.config";
 
 /**
  *
