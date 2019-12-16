@@ -61,12 +61,6 @@ export class CacheProcess extends BaseProcess implements MQProcess {
         // agendadata.adr = cacheData.scd.adr || agendadata.adr;
 
         agendas.push(agendadata);
-      } else if (content.option == CA.MO) {
-        let memodata: ScdData = new ScdData();
-
-        memodata.sn = cacheData.scd.ti || memodata.sn;
-
-        memos.push(memodata);
       } else {
         let agendadata: ScdData = scd.pop();
 
@@ -80,6 +74,12 @@ export class CacheProcess extends BaseProcess implements MQProcess {
 
         agendas.push(agendadata);
       }
+    } else if (content.option == CA.MO) {
+      let memodata: ScdData = new ScdData();
+
+      memodata.sn = cacheData.scd.ti || memodata.sn;
+
+      memos.push(memodata);
     }
 
     //服务器要求上下文内放置日程查询结果

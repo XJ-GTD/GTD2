@@ -34,6 +34,10 @@ export class MemosProcess extends BaseProcess implements MQProcess,OptProcess{
     let scd:Array<ScdData> = new Array<ScdData>();
     scd = this.input(content, contextRetMap, "memos", WsDataConfig.SCD, scd);
 
+    //上下文内获取日程人员信息
+    let fs :Array<FsData> = new Array<FsData>();
+    fs = this.input(content,contextRetMap,"contacts",WsDataConfig.FS,fs);
+
     //process处理符合条件则执行
     console.log("******************memos do when")
     if (content.when && content.when !=""){
@@ -64,9 +68,9 @@ export class MemosProcess extends BaseProcess implements MQProcess,OptProcess{
       if (prvOpt == MO.C) {
         await this.memoService.saveMemo(rcIn);
       } else {
-      	let originMemo: MemoData = {} as MemoData;
-      	originMemo = await this.memoService.getMemo(rcIn.moi);
-        await this.memoService.removeMemo(originMemo);
+      	// let originMemo: MemoData = {} as MemoData;
+      	// originMemo = await this.memoService.getMemo(rcIn.moi);
+        await this.memoService.removeMemo(rcIn.moi);
       }
     }
 
@@ -89,6 +93,10 @@ export class MemosProcess extends BaseProcess implements MQProcess,OptProcess{
     //上下文内获取日程查询结果
     let scd:Array<ScdData> = new Array<ScdData>();
     scd = this.input(content, contextRetMap, "memos", WsDataConfig.SCD, scd);
+
+    //上下文内获取日程人员信息
+    let fs :Array<FsData> = new Array<FsData>();
+    fs = this.input(content,contextRetMap,"contacts",WsDataConfig.FS,fs);
 
     //process处理符合条件则执行
     if (content.when && content.when !=""){
