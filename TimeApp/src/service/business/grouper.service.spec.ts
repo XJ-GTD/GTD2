@@ -168,8 +168,8 @@ import {FsData, PageDcData} from "../../data.mapping";
      beforeEach(async () => {
        //await config.generateDb();
        let gt: GTbl = new GTbl();
-       await sqlExce.dropByParam(gt);
-       await sqlExce.createByParam(gt);
+       await sqlExce.drop(gt);
+       await sqlExce.create(gt);
      });
 
      it('Case 1 - 1 service should be created', () => {
@@ -237,16 +237,16 @@ import {FsData, PageDcData} from "../../data.mapping";
        expect(pg).toBeDefined();
        expect(pg.length).toBeDefined(3);
 
-       let gi：string = pg[0].gi;
+       let gi: string = pg[0].gi;
        let gn: string = pg[0].gn;
-       let del: string = pg[0].del;
+       // let del: string = pg[0].del;
 
        await grouperService.delete(gi);
 
        let pg1: Array<PageDcData> = await grouperService.getGroups(gn);
        expect(pg1).toBeDefined();
        expect(pg1.length).toBeDefined(1);
-       expect(pg1[0].del).toBe(DelType.del);
+       // expect(pg1[0].del).toBe(DelType.del);
 
      });
 
