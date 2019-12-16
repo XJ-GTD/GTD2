@@ -10,6 +10,7 @@ import {SyncType, DelType, EventType, ObjectType, ToDoListStatus, EventFinishSta
 import {SyncRestful} from "../restful/syncsev";
 import {WaTbl} from "../sqlite/tbl/wa.tbl";
 import * as moment from "moment";
+import {T} from "../../ws/model/ws.enum";
 
 @Injectable()
 export class ScheduleRemindService extends BaseService {
@@ -34,6 +35,7 @@ export class ScheduleRemindService extends BaseService {
     let limitms: number = limit * 60 * 60 * 1000;
     let schedulereminds: Array<any> = new Array<any>();
     let eviArray = new Array<string>();
+    let jtiArray = new Array<string>();
     // 指定数据提醒上传服务器
     for (let data of datas) {
 
@@ -44,6 +46,8 @@ export class ScheduleRemindService extends BaseService {
         case "PlanItemData" :
           let planitem: PlanItemData = {} as PlanItemData;
           Object.assign(planitem, data);
+
+          jtiArray.push("'"+planitem.jti+"'");
 
           txjson = generateTxJson(planitem.txjson, planitem.tx);
           let sd: string = planitem.sd;
@@ -58,7 +62,7 @@ export class ScheduleRemindService extends BaseService {
                 remindid: planitem.jti + datetime.format("YYYYMMDDHHmm"),
                 wd: datetime.format("YYYY/MM/DD"),
                 wt: datetime.format("HH:mm"),
-                active: (planitem.del != DelType.del),
+                active: (!txjson.close && planitem.del != DelType.del),
                 data: {
                   datatype: generateDataType(activityType),
                   datas: [{
@@ -113,7 +117,7 @@ export class ScheduleRemindService extends BaseService {
                 remindid: event.evi,
                 wd: evd,
                 wt: evt,
-                active: (event.del != DelType.del),
+                active: (!txjson.close && event.del != DelType.del),
                 data: {
                   datatype: generateDataType(activityType),
                   datas: [{
@@ -140,7 +144,7 @@ export class ScheduleRemindService extends BaseService {
                 remindid: event.evi + datetime.format("YYYYMMDDHHmm"),
                 wd: datetime.format("YYYY/MM/DD"),
                 wt: datetime.format("HH:mm"),
-                active: (event.del != DelType.del),
+                active: (!txjson.close && event.del != DelType.del),
                 data: {
                   datatype: generateDataType(activityType),
                   datas: [{
@@ -163,12 +167,27 @@ export class ScheduleRemindService extends BaseService {
     }
 
     //提交删除过期提醒
-    if (eviArray.length > 0) {
+    if (eviArray.length > 0 || jtiArray.length > 0) {
       let evistring = eviArray.join(",");
-      let ppsql = ` select * from gtd_wa where obi in ( ${evistring} ) and obt ='event' and tb = 'unsynch'
-            and (wd|| ' ' ||wt < '${moment().format("YYYY/MM/DD HH:mm")}' or del ='del' ) ; `;
+      let jtistring = eviArray.join(",");
+      let obistring = [...eviArray,...jtiArray].join(",");
+      let ppsql = "select '-1' type ,'-1' pki ";
+      if (eviArray.length > 0 ){
+        ppsql = ppsql  + ` union all select case type when '0' then 'AgendaData' when '1' then 'TaskData' else 'MiniTaskData' end type ,
+                evi pki from gtd_ev where evi in (${evistring}) `;
+      }
+      if (jtiArray.length > 0){
+        ppsql = ppsql + ` union all select 'PlanItemData' type,jti pki from gtd_jta where jti in (${jtistring}) `;
+      }
+
+      ppsql = ` select evpl.*,wa.* from 
+              (select * from gtd_wa where tb = 'unsynch' and obi in (${obistring}) 
+              and (wd|| ' ' ||wt < '${moment().format("YYYY/MM/DD HH:mm")}' or del ='del' )
+            ) wa inner join (${ppsql}) evpl 
+            on wa.obi = evpl.pki  ; `;
       let ppReminds: Array<RemindData> = await this.sqlExce.getExtLstByParam<RemindData>(ppsql, []);
       for (let remind of ppReminds) {
+
         console.log("单个日程提醒过期提醒提交fwq=============：evi="+remind.obi +";datetime= " + remind.wd +":"+remind.wt);
         schedulereminds.push({
           remindid: remind.wai,
@@ -176,7 +195,7 @@ export class ScheduleRemindService extends BaseService {
           wt: remind.wt,
           active: false,
           data: {
-            datatype: 'Agenda',
+            datatype: generateDataType(remind.type),
             datas: [{
               accountid: UserConfig.account.id,
               phoneno: UserConfig.account.phone,
@@ -189,8 +208,8 @@ export class ScheduleRemindService extends BaseService {
         });
       }
       // 更新同步状态
-      let updateppsql: string = `update gtd_wa set tb = 'synch' where obi in ( ${evistring} ) and 
-          obt ='event' and tb = 'unsynch'
+      let updateppsql: string = `update gtd_wa set tb = 'synch' where obi in ( ${obistring} ) 
+       and tb = 'unsynch'
           and (wd|| ' ' ||wt < '${moment().format("YYYY/MM/DD HH:mm")}' or del ='del' ) ;`;
 
       await this.sqlExce.execSql(updateppsql, []);
@@ -204,7 +223,8 @@ export class ScheduleRemindService extends BaseService {
 
       // 把未来48小时以前所有未同步的提醒都同步到服务器上
       // 包括当前时间以前已删除的提醒
-      let sql: string = `select case ev.type when '0' then 'AgendaData' when '1' then 'TaskData' else 'MiniTaskData' end type, wa.*
+      let sql: string = `select case ev.type when '0' then 'AgendaData' when '1' then 'TaskData' else 'MiniTaskData' end type,
+                    ev.evi pki,ev.rtevi rtpki,ev.tx tx, wa.* 
                     from (select * from gtd_wa
                     where (tb <> ?1
                         and obt = ?6
@@ -218,7 +238,8 @@ export class ScheduleRemindService extends BaseService {
                     left join gtd_ev ev
                     on ev.evi = wa.obi
                   union all
-                    select 'PlanItemData' type, wa.*
+                    select 'PlanItemData' type, 
+                    jta.jti pki ,'' rtpki,jta.tx tx, wa.*
                     from (select * from gtd_wa
                     where (tb <> ?1
                         and obt = ?7
@@ -248,11 +269,17 @@ export class ScheduleRemindService extends BaseService {
       }
 
       for (let remind of reminds) {
+        let txjson = new TxJson();
+
+        if (remind.tx){
+          Object.assign(txjson, JSON.parse(remind.tx));
+        }
+
         schedulereminds.push({
           remindid: remind.wai,
           wd: remind.wd,
           wt: remind.wt,
-          active: (remind.del != DelType.del),
+          active: (!txjson.close && remind.del != DelType.del),
           data: {
             datatype: generateDataType(remind.type),
             datas: [{
@@ -261,7 +288,8 @@ export class ScheduleRemindService extends BaseService {
               id: remind.obi,
               continue: (remind.wai == remind.obi),
               wd: remind.wd,
-              wt: remind.wt
+              wt: remind.wt,
+              groupid:remind.wai == remind.obi? (remind.rtpki || remind.pki) : ""
             }]
           }
         });
@@ -333,5 +361,8 @@ export class ScheduleRemindService extends BaseService {
 }
 
 export interface RemindData extends WaTbl {
+  tx:string,
+  pki:string,
+  rtpki:string,
   type: string;
 }

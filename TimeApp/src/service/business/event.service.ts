@@ -5673,7 +5673,12 @@ export class TxJson {
   }
 
   sameWith(another: TxJson): boolean {
+
     if (!another) return false;
+
+    if (this.close != another.close){
+      return false;
+    }
 
     let compare: Array<number> = this.reminds.concat(another.reminds);
     compare.sort((a, b) => a - b);
@@ -5703,7 +5708,7 @@ export class TxJson {
   // 遍历计算每个提醒的实际时间
   each(sd: string, st: string, callback: (datetime: moment.Moment,remind) => void) {
     // 如果提醒关闭或者没有提醒数据，直接返回
-    if (this.close || !this.reminds || this.reminds.length <= 0) {
+    if (!this.reminds || this.reminds.length <= 0) {
       return;
     }
     let baseline = moment(sd + " " + st, "YYYY/MM/DD HH:mm", true);

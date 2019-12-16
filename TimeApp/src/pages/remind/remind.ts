@@ -14,13 +14,13 @@ import {UtilService} from "../../service/util-service/util.service";
     <modal-box title="提醒" [buttons]="buttons" (onSave)="save()" (onCancel)="cancel()">
       <ion-toolbar>
         <ion-buttons item-start>
-          <button clear ion-button *ngIf="true">
+          <button clear ion-button *ngIf="currentTx.close" (click)="closeTixin()">
             <ion-icon class="fal fa-bell-slash"></ion-icon>
-            开启
-          </button>
-          <button clear ion-button *ngIf="false">
-            <ion-icon class="fal fa-bell"></ion-icon>
             关闭
+          </button>
+          <button clear ion-button *ngIf="!currentTx.close" (click)="closeTixin()">
+            <ion-icon class="fal fa-bell"></ion-icon>
+            开启
           </button>
         </ion-buttons>
         <ion-buttons end>
@@ -69,7 +69,6 @@ export class RemindPage {
 
   @ViewChild("remindTime")
   remindTime: MultiPicker;
-
   minDate : string = moment().format("YYYY-MM-DD");
   buttons: any = {
     remove: false,
@@ -87,7 +86,7 @@ export class RemindPage {
   tixinnum : number = 0;
 
   reminds: Array<any> = new Array<any>();
-  currentTx: TxJson;
+  currentTx= new TxJson();
   dependentColumns: any[];
   timeColumns : any[]
   constructor(public navCtrl: NavController,
@@ -231,6 +230,7 @@ export class RemindPage {
       if (value) {
         this.currentTx = new TxJson();
         Object.assign(this.currentTx, value.txjson);
+
         this.evdatetime = value.evd + " " + value.evt;
 
         if (moment().isAfter(moment(this.evdatetime, "YYYY/MM/DD HH:mm", true))) {
@@ -402,6 +402,14 @@ export class RemindPage {
       if (!TxJson.getDisTixin(this.evdatetime,this.reminds[j].value)){
         this.tixinnum = this.tixinnum + 1;
       }
+    }
+  }
+
+  private closeTixin(){
+    if (this.currentTx.close){
+      this.currentTx.close = false;
+    }else{
+      this.currentTx.close = true;
     }
   }
 }
