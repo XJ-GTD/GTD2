@@ -14,6 +14,17 @@ function shouldclean(datasource)
         // 存在意图确认, 意图确认结果返回
         return true;
       } else if (data['sub'] === 'nlp' && data['intent']['service'] === 'OS6981162467.CreateGuide' && data['intent']['intentType'] === 'custom' && data['intent']['semantic']) {
+        var moreResults = data['intent']['moreResults'];
+
+        // 排除 确认和取消指令
+        for (var more in moreResults) {
+          var moreresult = moreResults[more];
+
+          if (moreresult['category'] == 'OS6981162467.Confirm') {
+            return false;
+          }
+        }
+
         var semantics = data['intent']['semantic'];
 
         for (var sei in semantics) {
@@ -160,15 +171,15 @@ function clean(datasource)
     if (date && date !== '') {
       activity['d'] = date;
       activity['scd'] = activity['scd'] || {};
-      activity['scd']['sd'] = date;
-      activity['scd']['ed'] = date;
+      activity['scd']['ds'] = date;
+      activity['scd']['de'] = date;
     }
 
     if (time && time !== '') {
       activity['t'] = time;
       activity['scd'] = activity['scd'] || {};
-      activity['scd']['st'] = time;
-      activity['scd']['et'] = time;
+      activity['scd']['ts'] = time;
+      activity['scd']['te'] = time;
     }
 
     if (title && title !== '') {
