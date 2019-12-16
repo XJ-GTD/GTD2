@@ -62,7 +62,7 @@ export class CacheProcess extends BaseProcess implements MQProcess {
 
         agendas.push(agendadata);
       } else {
-        let agendadata: ScdData = scd.pop();
+        let agendadata: ScdData = agendas.pop();
 
         agendadata.sd = cacheData.scd.ds || agendadata.sd;
         agendadata.st = cacheData.scd.ts || agendadata.st;
