@@ -151,11 +151,11 @@ export class AgendasProcess extends BaseProcess implements MQProcess,OptProcess{
 
     //上下文内获取日程查询结果
     let scd:Array<ScdData> = new Array<ScdData>();
-    scd = this.input(content,contextRetMap,"agendas",WsDataConfig.SCD,scd);
+    scd = this.input(content, contextRetMap, "agendas", WsDataConfig.SCD, scd);
 
     //上下文内获取查询条件用日程人员或创建的日程人员
-    let fs :Array<FsData> = new Array<FsData>();
-    fs = this.input(content,contextRetMap,"contacts",WsDataConfig.FS,fs);
+    let fs: Array<FsData> = new Array<FsData>();
+    fs = this.input(content, contextRetMap, "contacts", WsDataConfig.FS, fs) || new Array<FsData>();
 
     //process处理符合条件则执行
     if (content.when && content.when !=""){
