@@ -69,7 +69,7 @@ import {FsData, PageDcData} from "../../data.mapping";
  *
  * @author 343253410@qq.com
  **/
- describe('AnnotationService test suite', () => {
+ describe('GrouperService test suite', () => {
 
      let config: SqliteConfig;
      let init: SqliteInit;
