@@ -180,23 +180,24 @@ export class AgendasProcess extends BaseProcess implements MQProcess,OptProcess{
 
       // F处理返回的结果
       if (scd.length > 0){
+        // 上下文有日程
+      } else {
+        // 查询没有日程
+        let c:ScdData = new ScdData();
+        let scdlist : Array<ScdData> = new Array<ScdData>();
+        scdlist.push(c);
+
+        for (let c of scdlist){
+          c.sd = cudPara.d == null?c.sd:cudPara.d;
+          c.sn = cudPara.ti == null?c.sn:cudPara.ti;
+          c.st = cudPara.t == null?c.st:cudPara.t;
+          //显示本次创建的人
+          c.fss = fs;
+        }
+
+        scd = scdlist;
       }
 
-      // 查询没有日程
-      // 查询有日程
-      let c:ScdData = new ScdData();
-      let scdlist : Array<ScdData> = new Array<ScdData>();
-      scdlist.push(c);
-
-      for (let c of scdlist){
-        c.sd = cudPara.d == null?c.sd:cudPara.d;
-        c.sn = cudPara.ti == null?c.sn:cudPara.ti;
-        c.st = cudPara.t == null?c.st:cudPara.t;
-        //显示本次创建的人
-        c.fss = fs;
-      }
-
-      scd = scdlist;
     }
 
     // 修改日程
