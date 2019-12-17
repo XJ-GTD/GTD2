@@ -86,6 +86,12 @@ export class AgendasProcess extends BaseProcess implements MQProcess,OptProcess{
 
         if (saved && saved.length > 0) {
           c.si = saved[0].evi;   // 用于上下文输出
+          c.sn = saved[0].evn;
+          c.ui = saved[0].ui;
+          c.sd = saved[0].evd;
+          c.st = saved[0].evt;
+          c.ed = saved[0].evd;
+          c.et = saved[0].evt;
         }
       } else if (prvOpt == AG.U) {
         console.log("******************agendas do AG.U")
