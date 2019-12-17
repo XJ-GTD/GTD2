@@ -32,7 +32,7 @@ export class OptProcessFactory {
               private memosProcess:MemosProcess
   ) {
     this.factoryOpt.set("AG", this.agendasProcess);
-    this.factoryOpt.set("MO", this.agendasProcess);
+    this.factoryOpt.set("MO", this.memosProcess);
   }
 
   getOptProcess(processKey: string): OptProcess {
