@@ -13,6 +13,9 @@ export class ProcesRs{
   //日程
   scd:Array<ScdData>=[];
 
+  //备忘
+  mod:Array<ScdData>=[];
+
   option4Speech = "";
 
   sucess:boolean;

@@ -12,7 +12,7 @@ import {WsDataConfig} from "../wsdata.config";
 import {BaseProcess} from "./base.process";
 
 /**
- * 日历修改处理
+ * 日历修改处理 SS
  *
  * create by zhangjy on 2019/03/28.
  */
@@ -31,6 +31,9 @@ export class CudscdProcess extends BaseProcess implements MQProcess{
     let scd:Array<ScdData> = new Array<ScdData>();
     scd = this.input(content,contextRetMap,"agendas",WsDataConfig.SCD,scd);
 
+    //上下文内获取日程查询结果
+    let memos:Array<ScdData> = new Array<ScdData>();
+    memos = this.input(content,contextRetMap,"memos",WsDataConfig.MOD,memos);
 
     //上下文内获取查询条件用日程人员或创建的日程人员
     let fs :Array<FsData> = new Array<FsData>();
@@ -56,6 +59,7 @@ export class CudscdProcess extends BaseProcess implements MQProcess{
 
     //保存上下文
     prv.scd = scd;
+    prv.mod = memos;
     prv.fs = fs;
 
     DataConfig.putWsContext(prv);
@@ -64,6 +68,9 @@ export class CudscdProcess extends BaseProcess implements MQProcess{
 
     //上下文内放置创建的或修改的日程
     this.output(content, contextRetMap, 'agendas', WsDataConfig.SCD, prv.scd);
+
+    //上下文内放置创建的或修改的日程
+    this.output(content, contextRetMap, 'memos', WsDataConfig.MOD, prv.mod);
 
     //上下文内放置创建的或修改的日程联系人
     this.output(content, contextRetMap, 'contacts', WsDataConfig.FS, prv.fs);
