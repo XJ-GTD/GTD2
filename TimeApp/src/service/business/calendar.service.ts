@@ -841,6 +841,33 @@ export class CalendarService extends BaseService {
       merged = merged.concat(minitasks);
       merged = merged.concat(memos);
 
+      merged.sort((a, b) => {
+        let ad: any = {};
+        let bd: any = {};
+        Object.assign(ad, a);
+        Object.assign(bd, b);
+
+        let at;
+        if (ad.evi) {
+          at = moment(`${ad.evd} ${ad.evt}`, "YYYY/MM/DD HH:mm");
+        } else if (ad.jti) {
+          at = moment(`${ad.sd} ${ad.st}`, "YYYY/MM/DD");
+        } else {
+          at = moment(`${ad.sd}`, "YYYY/MM/DD");
+        }
+
+        let bt;
+        if (bd.evi) {
+          bt = moment(`${bd.evd} ${bd.evt}`, "YYYY/MM/DD HH:mm");
+        } else if (bd.jti) {
+          bt = moment(`${bd.sd} ${ad.st}`, "YYYY/MM/DD");
+        } else {
+          bt = moment(`${bd.sd}`, "YYYY/MM/DD");
+        }
+
+        return at.diff(bt);
+      });
+
       plan.items = merged;
     }
 
