@@ -356,8 +356,3 @@ export class Grouper extends GTbl{
 export class GrouperRelation extends BxTbl{
 
 }
-export class PageGlData {
-
-  gl:Array<PageDcData> = new Array<PageDcData>(); //群组成员
-
-}
