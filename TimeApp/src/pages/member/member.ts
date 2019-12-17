@@ -27,7 +27,7 @@ import {GrouperService} from "../../service/business/grouper.service";
                        text-center></ion-searchbar>
       </div>
 
-      <ion-scroll scrollY="true" scrollheightAuto>        
+      <ion-scroll scrollY="true" scrollheightAuto>
         <!--<ion-list>-->
           <!--<ion-item >-->
             <!--<ion-label class="somemmember">-->
@@ -41,7 +41,7 @@ import {GrouperService} from "../../service/business/grouper.service";
             <!--</ion-label>-->
           <!--</ion-item>-->
         <!--</ion-list>-->
-        
+
         <ion-list >
           <ion-item *ngFor="let g of pageGrouList" >
             <ion-label class="selected">
@@ -62,7 +62,7 @@ import {GrouperService} from "../../service/business/grouper.service";
           </ion-item>
         </ion-list>
       </ion-scroll>
-       
+
     </modal-box>
   `,
 })
@@ -87,7 +87,7 @@ export class MemberPage {
               public navParams: NavParams,
               private memberService: MemberService,
               private util: UtilService,
-              private glService: GrouperService,
+              private grouperService: GrouperService,
               private  modalCtrl: ModalController,private feedback:FeedbackService) {
   }
 
@@ -162,7 +162,7 @@ export class MemberPage {
   getContacts() {
     this.pageGrouList.length = 0;
     this.pageFsList.length = 0;
-    let groupList = this.glService.getGroups(this.tel);
+    let groupList = this.grouperService.getGroups(this.tel);
     let fsList = this.memberService.getfriend(this.tel);
     groupList.forEach((value) => {
       let group: PageGroupData = new PageGroupData();
