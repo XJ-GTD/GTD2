@@ -230,7 +230,7 @@ export class GrouperService extends BaseService {
   }
 
   //编辑群名称(添加群成员)
-  async save(dc: PageDcData) {
+  async saveGrouper(dc: PageDcData) {
     assertEmpty(dc);      // 入参不能为空
     assertEmpty(dc.gn);   // 入参群组名称不能为空
 

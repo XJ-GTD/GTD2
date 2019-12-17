@@ -33,7 +33,7 @@ export class GaPage {
               public navParams: NavParams,
               public viewCtrl: ViewController,
               private util:UtilService,
-              private gcService:GrouperService,) {
+              private grouperService:GrouperService,) {
   }
   @ViewChild('nameInput') nameInput ;
   ionViewDidLoad() {
@@ -57,7 +57,7 @@ export class GaPage {
       return;
     }
     // this.util.popMsgbox("1",()=>{
-      this.gcService.save(dc).then(data=> {
+      this.grouperService.saveGrouper(dc).then(data=> {
         if (data) {
           this.viewCtrl.dismiss();
         }else{
