@@ -180,7 +180,7 @@ describe('AnnotationService test suite', () => {
     it('Case 2 - 1  saveAnnotation 保存参与人信息- 保存', async () => {
 
         let at: Annotation = new Annotation();
-        at.obi = this.util.getUuid();
+        at.obi = util.getUuid();
         at.ui = UserConfig.account.id;
         let rcs : Array<string > =new Array<string>();
         rcs.push("18569990239");
@@ -198,7 +198,7 @@ describe('AnnotationService test suite', () => {
    it('Case 3 - 1  delAnnotation 删除参与人信息 - 删除信息', async () => {
 
        let at: Annotation = new Annotation();
-       at.obi = this.util.getUuid();
+       at.obi = util.getUuid();
        at.ui = UserConfig.account.id;
        at.dt = moment().add( -1 ,'days').format("YYYY/MM/DD HH:mm");
        let rcs : Array<string > =new Array<string>();
@@ -220,7 +220,7 @@ describe('AnnotationService test suite', () => {
   it('Case 3 - 2  delAnnotation 删除参与人信息 - 删除条件不成立的情况下', async () => {
 
       let at: Annotation = new Annotation();
-      at.obi = this.util.getUuid();
+      at.obi = util.getUuid();
       at.ui = UserConfig.account.id;
       at.dt = moment().format("YYYY/MM/DD HH:mm");
       let rcs : Array<string > = new Array<string>();
@@ -242,7 +242,7 @@ describe('AnnotationService test suite', () => {
    it('Case 4 - 1  getAnnotation 查询参与人信息 - 查询条件', async () => {
 
         let at: Annotation = new Annotation();
-        at.obi = this.util.getUuid();
+        at.obi = util.getUuid();
         at.ui = UserConfig.account.id;
         at.dt = moment().format("YYYY/MM/DD HH:mm");
         let rcs : Array<string > = new Array<string>();
@@ -253,7 +253,7 @@ describe('AnnotationService test suite', () => {
 
 
         let at1: Annotation = new Annotation();
-        at1.obi = this.util.getUuid();
+        at1.obi = util.getUuid();
         at1.ui = UserConfig.account.id;
         at1.dt = moment().format("YYYY/MM/DD HH:mm");
         let rcs1 : Array<string > = new Array<string>();
@@ -274,7 +274,7 @@ describe('AnnotationService test suite', () => {
 
         // 先创建一个
         let at: Annotation = new Annotation();
-        at.obi = this.util.getUuid();
+        at.obi = util.getUuid();
         at.ui = UserConfig.account.id;
         at.dt = moment().format("YYYY/MM/DD HH:mm");
         let rcs : Array<string > = new Array<string>();
@@ -286,7 +286,7 @@ describe('AnnotationService test suite', () => {
         //同步一个
         let pullAnnotations: Array<Annotation> = new Array<Annotation>();
         let at1: Annotation = new Annotation();
-        at1.obi = this.util.getUuid();
+        at1.obi = util.getUuid();
         at1.ui = UserConfig.account.id;
         at1.dt = moment().format("YYYY/MM/DD HH:mm");
         let rcs1 : Array<string > = new Array<string>();
@@ -310,7 +310,7 @@ describe('AnnotationService test suite', () => {
 
         // 先创建一个
         let at: Annotation = new Annotation();
-        at.obi = this.util.getUuid();
+        at.obi = util.getUuid();
         at.ui = UserConfig.account.id;
         at.dt = moment().format("YYYY/MM/DD HH:mm");
         let rcs : Array<string > = new Array<string>();
@@ -340,7 +340,7 @@ describe('AnnotationService test suite', () => {
 
           // 先创建一个
           let at: Annotation = new Annotation();
-          at.obi = this.util.getUuid();
+          at.obi = util.getUuid();
           at.ui = UserConfig.account.id;
           at.dt = moment().format("YYYY/MM/DD HH:mm");
           let rcs : Array<string > = new Array<string>();
@@ -370,7 +370,7 @@ describe('AnnotationService test suite', () => {
 
           // 先创建一个
           let at: Annotation = new Annotation();
-          at.obi = this.util.getUuid();
+          at.obi = util.getUuid();
           at.ui = UserConfig.account.id;
           at.dt = moment().format("YYYY/MM/DD HH:mm");
           let rcs : Array<string > = new Array<string>();
