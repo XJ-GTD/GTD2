@@ -241,7 +241,7 @@ import {FsData, PageDcData} from "../../data.mapping";
        let gn: string = pg[0].gn;
        // let del: string = pg[0].del;
 
-       await grouperService.delete(gi);
+       await grouperService.removeGrouper(gi);
 
        let pg1: Array<PageDcData> = await grouperService.getGroups(gn);
        expect(pg1).toBeDefined();
@@ -266,7 +266,7 @@ import {FsData, PageDcData} from "../../data.mapping";
        let pg: Array<PageDcData> = await grouperService.getGroups("");
        expect(pg).toBeDefined();
        expect(pg.length).toBeDefined(3);
-       await grouperService.delete(pg[0].gi);
+       await grouperService.removeGrouper(pg[0].gi);
      });
 
      afterAll(() => {

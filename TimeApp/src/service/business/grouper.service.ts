@@ -285,7 +285,7 @@ export class GrouperService extends BaseService {
    * @param {string} pwi 联系人ID
    * @returns {Promise<BsModel<any>>}
    */
-  async deleteBx(gi: string, pwi: string) {
+  async removeGrouperMember(gi: string, pwi: string) {
     let bx = new BxTbl();
     if (gi != null && gi != '' && pwi != null && pwi != '') {
 
@@ -303,7 +303,7 @@ export class GrouperService extends BaseService {
   }
 
 //删除群
-  async delete(gId: string) {
+  async removeGrouper(gId: string) {
     //删除本地群成员
     let bx = new BxTbl();
     bx.bi = gId;

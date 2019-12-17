@@ -24,7 +24,7 @@ import {GrouperService} from "../../service/business/grouper.service";
         <ion-list-header>
           <span class="count">{{gl.length}}</span> 个群
         </ion-list-header>
-        <ion-item  *ngFor="let g of gl">          
+        <ion-item  *ngFor="let g of gl">
           <ion-label (click)="toGroupMember(g)" >
             {{g.gn}}({{g.gc}})
           </ion-label>
@@ -32,7 +32,7 @@ import {GrouperService} from "../../service/business/grouper.service";
         </ion-item>
       </ion-list>
     </ion-scroll>
-  </page-box>    
+  </page-box>
 `,
 })
 export class GlPage {
@@ -46,7 +46,7 @@ export class GlPage {
   constructor(public navCtrl: NavController,
               public navParams: NavParams,
               public view: ViewController,
-              private gcService:GrouperService,
+              private grouperService:GrouperService,
               public modalCtrl: ModalController,
               public util: UtilService) {
     this.getGroups();
@@ -77,7 +77,7 @@ export class GlPage {
   delGroup(g:PageDcData){
     //删除群
     this.util.alterStart("2",()=>{
-      this.gcService.delete(g.gi).then( data=>{
+      this.grouperService.removeGrouper(g.gi).then( data=>{
         this.getGroups();
       }).catch(error=>{
       })
@@ -85,4 +85,3 @@ export class GlPage {
 
   }
 }
-
