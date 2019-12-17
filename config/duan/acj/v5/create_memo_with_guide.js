@@ -188,7 +188,7 @@ function clean(datasource)
       memo['scd']['adr'] = address;
     }
 
-    memo['ti'] = (memo['ti'] || "") + text;
+    memo['ti'] = (memo['ti']? (memo['ti'] + '\n') : "") + text;
     memo['scd'] = memo['scd'] || {};
     memo['scd']['ti'] = memo['ti'];
 
