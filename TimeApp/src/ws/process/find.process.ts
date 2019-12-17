@@ -101,7 +101,6 @@ export class FindProcess extends BaseProcess implements MQProcess {
 
           escd.si = memo.moi;
           escd.sn = memo.mon;
-          escd.ui = memo.ui;
           escd.sd = memo.sd;
 
           memos.push(escd);
