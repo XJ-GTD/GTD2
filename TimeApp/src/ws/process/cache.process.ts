@@ -84,7 +84,7 @@ export class CacheProcess extends BaseProcess implements MQProcess {
 
       memos.push(memodata);
     } else if (content.option == CA.PI) {
-      if (agendas.length <= 0) {
+      if (planitems.length <= 0) {
         let planitemdata: ScdData = new ScdData();
 
         planitemdata.sn = cacheData.scd.ti || planitemdata.sn;

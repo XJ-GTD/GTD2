@@ -138,7 +138,7 @@ function clean(datasource)
         t: 'AA'
       },
       input: {
-        type: "function(agds, showagds, prvopt, user, memos) { if (agds && agds.length <= 0 && memos && memos.length <= 0) return 'NONE'; else return prvopt; }",
+        type: "function(agds, showagds, prvopt, user, memos, planitems) { if (agds && agds.length <= 0 && memos && memos.length <= 0 && planitems && planitems.length <= 0) return 'NONE'; else return prvopt; }",
         showagendas: ""
       }
     };
@@ -158,7 +158,7 @@ function clean(datasource)
         t: 'BB'
       },
       input: {
-        type: "function(agds, showagds, prvopt, user, memos) { if (agds && agds.length <= 0 && memos && memos.length <= 0) return 'NONE'; else return prvopt; }",
+        type: "function(agds, showagds, prvopt, user, memos, planitems) { if (agds && agds.length <= 0 && memos && memos.length <= 0 && planitems && planitems.length <= 0) return 'NONE'; else return prvopt; }",
         showagendas: ""
       }
     };
