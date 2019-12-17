@@ -28,9 +28,11 @@ export class OptProcessFactory {
   private factoryOpt: Map<string, OptProcess> = new Map<string, OptProcess>();
 
   constructor(private defaultProcess: DefaultProcess,
-              private agendasProcess:AgendasProcess
+              private agendasProcess:AgendasProcess,
+              private memosProcess:MemosProcess
   ) {
     this.factoryOpt.set("AG", this.agendasProcess);
+    this.factoryOpt.set("MO", this.agendasProcess);
   }
 
   getOptProcess(processKey: string): OptProcess {
