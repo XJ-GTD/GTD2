@@ -1622,36 +1622,6 @@ export class EventService extends BaseService {
     let retParamEv = new RetParamEv();
 
     retParamEv = this.sqlparamAddEv2(agdata);
-    //console.log(JSON.stringify(retParamEv));
-
-
-    //日程表sqlparam
-
-    let caparam = new CaTbl();
-    if (retParamEv.rtevi != ""){
-      caparam = this.sqlparamAddCa(retParamEv.rtevi,agdata);
-      sqlparam.push(caparam.rpTParam());
-    }
-
-    let tos : string;//需要发送的参与人手机号
-    tos = this.getMemberPhone(agdata.members);
-
-    //日程表信息，参与人及附件信息放入返回事件的每条记录信息中
-    for (let j = 0, len = retParamEv.outAgdatas.length; j < len ; j++){
-      let outAgd = {} as AgendaData;
-      outAgd = retParamEv.outAgdatas[j];
-
-      let tmpevi = outAgd.evi;
-      Object.assign(outAgd,caparam);
-      outAgd.evi = tmpevi;
-
-      outAgd.members = agdata.members;
-      if (j == 0){
-        outAgd.attachments = agdata.attachments;
-      }
-      outAgd.tos = tos;
-      //outAgd.topushed = agdata.topushed;
-    }
 
     //批量本地入库
     retParamEv.sqlparam = [...sqlparam, ...retParamEv.sqlparam];
@@ -1862,6 +1832,11 @@ export class EventService extends BaseService {
       let pars = new Array<ParTbl>();
       pars = this.sqlparamAddPar(retParamEv.rtevi , newAgdata.members);
 
+      let parparams = new Array<any>();
+      if (pars && pars.length > 0){
+        parparams = this.sqlExce.getFastSaveSqlByParam(pars);
+      }
+      sqlparam = [...sqlparam, ...retParamEv.sqlparam, ...parparams];
 
       //把当前选中记录的附件信息更新到新的信息的第一条中
       if (newAgdata.attachments && retParamEv.outAgdatas.length > 0){
@@ -1878,12 +1853,6 @@ export class EventService extends BaseService {
           retParamEv.outAgdatas[0].attachments.push(newattach);
         }
       }
-
-      let parparams = new Array<any>();
-      if (pars && pars.length > 0){
-        parparams = this.sqlExce.getFastSaveSqlByParam(pars);
-      }
-      sqlparam = [...sqlparam, ...retParamEv.sqlparam, ...parparams];
 
       //修改与新增记录合并成返回事件
 
@@ -2627,11 +2596,12 @@ export class EventService extends BaseService {
 
 
     //获取重复日期
+    let caparam = new CaTbl();
     rtjson.each(agdata.sd, (day) => {
 
       let ev = new EvTbl();
       agdata.txs = agdata.txjson.text(day,agdata.evt);
-      Object.assign(ev, agdata);
+      this.util.cloneObj(ev, agdata);
 
       ev.evi = this.util.getUuid();
 
@@ -2639,8 +2609,12 @@ export class EventService extends BaseService {
       // 父记录的父节点字段rtevi设为空，子记录的父节点字段rtevi设为父记录的evi
       if (evs.length < 1) {
         ret.rtevi = ev.evi;
-        agdata.evi = ev.evi;
         ev.rtevi = "";
+
+        //日程表sqlparam
+        caparam = this.sqlparamAddCa(ret.rtevi,agdata);
+        ret.sqlparam.push(caparam.rpTParam());
+
       }else{
         ev.rtevi = ret.rtevi;
       }
@@ -2650,7 +2624,6 @@ export class EventService extends BaseService {
       ev.tb = anyenum.SyncType.unsynch;
       ev.del = anyenum.DelType.undel;
 
-      evs.push(ev);
 
       if (ev.todolist == anyenum.ToDoListStatus.On ) {
         //如果在todolist中，则加系统提醒
@@ -2661,14 +2634,29 @@ export class EventService extends BaseService {
         was = [...was,...this.sqlparamAddTxWa2(ev,ObjectType.Event,txjson)];
       }
 
-      /*if (agdata.attachments && agdata.attachments.length > 0){
-        fjs = [...fjs,...this.sqlparamAddFj(ev.evi,agdata.attachments)];
-      }附件由附件页面保存*/
-
       //新增数据需要返回出去
       let outAgd = {} as AgendaData;
       Object.assign(outAgd,ev);
+
+      //日程表信息，参与人及附件信息放入返回事件的每条记录信息中
+      let tos : string;//需要发送的参与人手机号
+      tos = this.getMemberPhone(agdata.members);
+
+      let tmpevi = outAgd.evi;
+      Object.assign(outAgd,caparam);
+      outAgd.evi = tmpevi;
+      //人员与附件已通过clone获取
+      //outAgd.members = agdata.members;
+      if (outAgd.rtevi != ""){
+        outAgd.attachments.length = 0;
+      }
+      outAgd.tos = tos;
+      outAgd.checksum = this.checksumAgenda(outAgd);
+      ev.checksum = outAgd.checksum;
+
       outAgds.push(outAgd);
+      evs.push(ev);
+
     } ,true);
 
     let evparams = new  Array<any>();
@@ -2679,10 +2667,7 @@ export class EventService extends BaseService {
     if (was && was.length > 0) {
       waparams = this.sqlExce.getFastSaveSqlByParam(was);
     }
-    /*let fjparams = new  Array<any>();
-    if (fjs && fjs.length > 0) {
-      fjparams = this.sqlExce.getFastSaveSqlByParam(fjs);
-    }*/
+
     ret.sqlparam = [...evparams,...waparams,...ret.sqlparam];
 
     ret.outAgdatas = outAgds;
