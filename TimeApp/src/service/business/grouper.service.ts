@@ -231,12 +231,15 @@ export class GrouperService extends BaseService {
 
   //编辑群名称(添加群成员)
   async save(dc: PageDcData) {
+    assertEmpty(dc);      // 入参不能为空
+    assertEmpty(dc.gn);   // 入参群组名称不能为空
+
     let ret:boolean = false;
     let gi :string;
     if (dc.gi != null && dc.gi != '' && dc.fsl.length > 0) {
       gi = dc.gi;
       let bxL = new Array<string>();
-      let sql = `select gb.* from gtd_b gb inner join gtd_b_x bx on bx.bmi = gb.pwi  
+      let sql = `select gb.* from gtd_b gb inner join gtd_b_x bx on bx.bmi = gb.pwi
               where bx.bi = '${dc.gi}'and bx.del <>'del' `;
       let data: Array<BTbl> = await this.sqlExce.getExtList<BTbl>(sql);
       for (let fs of dc.fsl) {
