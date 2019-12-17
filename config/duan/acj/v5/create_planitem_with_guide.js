@@ -239,7 +239,7 @@ function clean(datasource)
 
       output.content['0'] = {
         processor: 'CA',
-        option: 'CA.AD',
+        option: 'CA.PI',
         parameters: {
           scd: planitem['scd']
         }
