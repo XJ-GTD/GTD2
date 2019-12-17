@@ -17,6 +17,7 @@ import {SpecialDataProcess} from "./process/specialdata.process";
 import {DataSyncProcess} from "./process/datasync.process";
 import {CacheProcess} from "./process/cache.process";
 import {MemosProcess} from "./process/memos.process";
+import {PlanItemsProcess} from "./process/planitems.process";
 
 /**
  * webSocket公用处理方法
@@ -28,11 +29,13 @@ export class OptProcessFactory {
   private factoryOpt: Map<string, OptProcess> = new Map<string, OptProcess>();
 
   constructor(private defaultProcess: DefaultProcess,
-              private agendasProcess:AgendasProcess,
-              private memosProcess:MemosProcess
+              private agendasProcess: AgendasProcess,
+              private memosProcess: MemosProcess,
+              private planitemsProcess: PlanItemsProcess
   ) {
     this.factoryOpt.set("AG", this.agendasProcess);
     this.factoryOpt.set("MO", this.memosProcess);
+    this.factoryOpt.set("PI", this.planitemsProcess);
   }
 
   getOptProcess(processKey: string): OptProcess {

@@ -65,6 +65,9 @@ export class ContextProcess extends BaseProcess implements MQProcess{
     //服务器要求上下文内放置语音上下文日程
     this.output(content, contextRetMap, 'memos', WsDataConfig.MOD, prv.mod);
 
+    //服务器要求上下文内放置语音上下文日程
+    this.output(content, contextRetMap, 'planitems', WsDataConfig.PID, prv.pid);
+
     //服务器要求上下文内放置日程人员信息
     this.output(content, contextRetMap, 'contacts', WsDataConfig.FS, prv.fs);
 

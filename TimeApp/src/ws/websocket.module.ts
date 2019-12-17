@@ -25,6 +25,7 @@ import {SpecialDataProcess} from "./process/specialdata.process";
 import {DataSyncProcess} from "./process/datasync.process";
 import {CacheProcess} from "./process/cache.process";
 import {MemosProcess} from "./process/memos.process";
+import {PlanItemsProcess} from "./process/planitems.process";
 
 /**
  * WebSocket组件
@@ -42,9 +43,11 @@ import {MemosProcess} from "./process/memos.process";
     DefaultProcess, FindProcess,
     OptionProcess, ContextProcess,
     ReceiveProcess, SettingProcess,
-    AgendasProcess, MarkupProcess, MemosProcess,
-    NotificationProcess, SpecialDataProcess, CacheProcess,
-    SsService, FdService, FsService
+    AgendasProcess, MarkupProcess,
+    MemosProcess, PlanItemsProcess,
+    NotificationProcess, SpecialDataProcess,
+    CacheProcess, SsService,
+    FdService, FsService
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })

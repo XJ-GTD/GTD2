@@ -274,6 +274,8 @@ function clean(datasource)
           an: '是否保存, 请确认'
         }
       };
+
+      delete servercontext['memo'];
     }
   }
 

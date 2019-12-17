@@ -1,4 +1,4 @@
-// CREATE_AGENDA_WITH_GUIDE_V1_5
+// CREATE_PLANITEM_WITH_GUIDE_V1_5
 function shouldclean(datasource)
 {
   var result = {};
@@ -30,7 +30,7 @@ function shouldclean(datasource)
         for (var sei in semantics) {
           var semantic = semantics[sei];
 
-          if (semantic['intent'] === 'ActivityGuide' || (input['_context'] && input['_context']['server'] && input['_context']['server']['activity'] && (semantic['intent'] === 'InputDatetime' || semantic['intent'] === 'InputSomething' || semantic['intent'] === 'InputAddress' || semantic['intent'] === 'InputMember' || semantic['intent'] === 'EndGuide'))) {
+          if (semantic['intent'] === 'PlanItemGuide' || (input['_context'] && input['_context']['server'] && input['_context']['server']['planitem'] && (semantic['intent'] === 'InputDatetime' || semantic['intent'] === 'InputSomething' || semantic['intent'] === 'InputAddress' || semantic['intent'] === 'InputMember' || semantic['intent'] === 'EndGuide'))) {
             return true;
           }
         }
@@ -79,7 +79,7 @@ function clean(datasource)
   var address = '';
 
   var semantics = data['intent']['semantic'];
-  var intent = 'ActivityGuide';
+  var intent = 'PlanItemGuide';
 
   for (var sei in semantics) {
     var semantic = semantics[sei];
@@ -144,7 +144,7 @@ function clean(datasource)
   output.content = {};
 
   // 返回消息头部
-  if (intent == 'ActivityGuide') {
+  if (intent == 'PlanItemGuide') {
     // 启动创建活动向导
     output.header = {
       version: 'V1.1',
@@ -157,44 +157,44 @@ function clean(datasource)
       processor: 'S',
       option: 'S.AN',
       parameters: {
-        an: '你要安排的这个活动主题是什么？'
+        an: '您要创建的日历项名称是什么？'
       }
     };
 
     // 初始化创建活动向导服务器端上下文
-    servercontext['activity'] = {};
+    servercontext['planitem'] = {};
   }
 
   if (intent == 'InputDatetime' || intent == 'InputSomething' || intent == 'InputAddress') {
-    var activity = servercontext['activity'] || {};
+    var planitem = servercontext['planitem'] || {};
 
     if (date && date !== '') {
-      activity['d'] = date;
-      activity['scd'] = activity['scd'] || {};
-      activity['scd']['ds'] = date;
-      activity['scd']['de'] = date;
+      planitem['d'] = date;
+      planitem['scd'] = planitem['scd'] || {};
+      planitem['scd']['ds'] = date;
+      planitem['scd']['de'] = date;
     }
 
     if (time && time !== '') {
-      activity['t'] = time;
-      activity['scd'] = activity['scd'] || {};
-      activity['scd']['ts'] = time;
-      activity['scd']['te'] = time;
+      planitem['t'] = time;
+      planitem['scd'] = planitem['scd'] || {};
+      planitem['scd']['ts'] = time;
+      planitem['scd']['te'] = time;
     }
 
     if (title && title !== '') {
-      activity['ti'] = title;
-      activity['scd'] = activity['scd'] || {};
-      activity['scd']['ti'] = title;
+      planitem['ti'] = title;
+      planitem['scd'] = planitem['scd'] || {};
+      planitem['scd']['ti'] = title;
     }
 
     if (address && address !== '') {
-      activity['adr'] = address;
-      activity['scd'] = activity['scd'] || {};
-      activity['scd']['adr'] = address;
+      planitem['adr'] = address;
+      planitem['scd'] = planitem['scd'] || {};
+      planitem['scd']['adr'] = address;
     }
 
-    servercontext['activity'] = activity;
+    servercontext['planitem'] = planitem;
 
     // 输入活动时间/活动内容/活动地址
     output.header = {
@@ -204,36 +204,28 @@ function clean(datasource)
       describe: ['S']
     };
 
-    if (!activity['d'] && !activity['t'] && !activity['ti'] && !activity['adr']) {
+    if (!planitem['d'] && !planitem['t'] && !planitem['ti'] && !planitem['adr']) {
       output.content['0'] = {
         processor: 'S',
         option: 'S.AN',
         parameters: {
-          an: '你要安排的这个活动内容是什么？'
+          an: '日历项名称是什么？'
         }
       };
-    } else if (!activity['d'] && !activity['t']) {
+    } else if (!planitem['d'] && !planitem['t']) {
       output.content['0'] = {
         processor: 'S',
         option: 'S.AN',
         parameters: {
-          an: '这个活动安排在什么时候？'
+          an: '这个日历项在哪天？'
         }
       };
-    } else if (!activity['ti']) {
+    } else if (!planitem['ti']) {
       output.content['0'] = {
         processor: 'S',
         option: 'S.AN',
         parameters: {
-          an: '你要安排的这个活动内容是什么？'
-        }
-      };
-    } else if (!activity['adr']) {
-      output.content['0'] = {
-        processor: 'S',
-        option: 'S.AN',
-        parameters: {
-          an: '这个活动在什么地方举行？'
+          an: '这个日历项叫什么？'
         }
       };
     } else {
@@ -242,20 +234,20 @@ function clean(datasource)
         version: 'V1.1',
         sender: 'xunfei',
         datetime: formatDateTime(new Date()),
-        describe: ['CA', 'AG', 'SS', 'S']
+        describe: ['CA', 'PI', 'SS', 'S']
       };
 
       output.content['0'] = {
         processor: 'CA',
-        option: 'CA.AD',
+        option: 'CA.PI',
         parameters: {
-          scd: activity['scd']
+          scd: planitem['scd']
         }
       };
 
       output.content['1'] = {
-        processor: 'AG',
-        option: 'AG.C',
+        processor: 'PI',
+        option: 'PI.C',
         parameters: {}
       };
 
@@ -273,14 +265,14 @@ function clean(datasource)
         }
       };
 
-      delete servercontext['activity'];
+      delete servercontext['planitem'];
     }
   }
 
   if (intent == 'EndGuide') {
-    var activity = servercontext['activity'] || {};
+    var planitem = servercontext['planitem'] || {};
 
-    if (!activity['d'] && !activity['t'] && !activity['ti']) {
+    if (!planitem['d'] && !planitem['t'] && !planitem['ti']) {
       output.header = {
         version: 'V1.1',
         sender: 'xunfei',
@@ -292,10 +284,10 @@ function clean(datasource)
         processor: 'S',
         option: 'S.AN',
         parameters: {
-          an: '这个活动主题是什么？'
+          an: '这个日历项叫什么？'
         }
       };
-    } else if (!activity['d'] && !activity['t']) {
+    } else if (!planitem['d'] && !planitem['t']) {
       output.header = {
         version: 'V1.1',
         sender: 'xunfei',
@@ -307,10 +299,10 @@ function clean(datasource)
         processor: 'S',
         option: 'S.AN',
         parameters: {
-          an: '这个活动安排在什么时候？'
+          an: '这个日历项在哪天？'
         }
       };
-    } else if (!activity['ti']) {
+    } else if (!planitem['ti']) {
       output.header = {
         version: 'V1.1',
         sender: 'xunfei',
@@ -322,7 +314,7 @@ function clean(datasource)
         processor: 'S',
         option: 'S.AN',
         parameters: {
-          an: '这个活动主题是什么？'
+          an: '日历项名称是什么？'
         }
       };
     } else {
@@ -331,19 +323,19 @@ function clean(datasource)
         version: 'V1.1',
         sender: 'xunfei',
         datetime: formatDateTime(new Date()),
-        describe: ['CA', 'AG', 'SS', 'S']
+        describe: ['CA', 'PI', 'SS', 'S']
       };
       output.content['0'] = {
         processor: 'CA',
-        option: 'CA.AD',
+        option: 'CA.PI',
         parameters: {
-          scd: activity['scd']
+          scd: planitem['scd']
         }
       };
 
       output.content['1'] = {
-        processor: 'AG',
-        option: 'AG.C',
+        processor: 'PI',
+        option: 'PI.C',
         parameters: {}
       };
 
@@ -361,7 +353,7 @@ function clean(datasource)
         }
       };
 
-      delete servercontext['activity'];
+      delete servercontext['planitem'];
     }
   }
 

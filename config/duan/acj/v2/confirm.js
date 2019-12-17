@@ -131,14 +131,21 @@ function clean(datasource)
       parameters: {}
     };
 
+    output.header['describe'].splice(2, 0, "SS"); // 插入缓存描述
     output.content['2'] = {
+      processor: 'SS',
+      option: 'SS.F',
+      parameters: {}
+    };
+
+    output.content['3'] = {
       processor: 'S',
       option: 'S.P',
       parameters: {
         t: 'AA'
       },
       input: {
-        type: "function(agds, showagds, prvopt, user, memos) { if (agds && agds.length <= 0 && memos && memos.length <= 0) return 'NONE'; else return prvopt; }",
+        type: "function(agds, showagds, prvopt, user, memos, planitems) { if (agds && agds.length <= 0 && memos && memos.length <= 0 && planitems && planitems.length <= 0) return 'NONE'; else return prvopt; }",
         showagendas: ""
       }
     };
@@ -158,7 +165,7 @@ function clean(datasource)
         t: 'BB'
       },
       input: {
-        type: "function(agds, showagds, prvopt, user, memos) { if (agds && agds.length <= 0 && memos && memos.length <= 0) return 'NONE'; else return prvopt; }",
+        type: "function(agds, showagds, prvopt, user, memos, planitems) { if (agds && agds.length <= 0 && memos && memos.length <= 0 && planitems && planitems.length <= 0) return 'NONE'; else return prvopt; }",
         showagendas: ""
       }
     };
