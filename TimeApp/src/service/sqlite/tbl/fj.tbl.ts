@@ -53,7 +53,7 @@ export class FjTbl implements ITblParam {
       ,tb varchar(6)
       ,del varchar(6)
      ,wtt integer  ,utt integer
-      ,checksum varchar(50) 
+      ,checksum varchar(50)
      );`;
 
     return sq;
@@ -129,7 +129,7 @@ export class FjTbl implements ITblParam {
     if(this.del!=null && this.del!=''){      sq=sq+' and del= ? ';      params.push(this.del);    }
     if(this.checksum!=null && this.checksum!=''){      sq=sq+' and checksum= ? ';      params.push(this.checksum);    }
 
-    sq = sq + ';';
+    sq = sq + ' order by wtt asc;';
 
     let ret = new Array<any>();
     ret.push(sq);
