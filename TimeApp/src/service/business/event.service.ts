@@ -58,6 +58,9 @@ export class EventService extends BaseService {
     let shareAgenda: AgendaData = {} as AgendaData;
     this.util.cloneObj(shareAgenda, agenda);
 
+    // 发起人
+    shareAgenda.creator = await this.getMemberByUi(shareAgenda.ui);
+
     let share: ShareInData = new ShareInData();
 
     // 文件附件访问地址转换
@@ -414,7 +417,7 @@ export class EventService extends BaseService {
     let changed: Array<string> = new Array<string>();
 
     for (let key of Object.keys(one)) {
-      if (["wtt", "utt", "rts", "txs", "fj", "pn", "originator", "tos", "attachments"].indexOf(key) >= 0) continue;   // 忽略字段
+      if (["wtt", "utt", "rts", "txs", "fj", "pn", "creator", "tos", "attachments"].indexOf(key) >= 0) continue;   // 忽略字段
 
       if (one.hasOwnProperty(key)) {
         let value = one[key];
@@ -613,7 +616,7 @@ export class EventService extends BaseService {
     if (!one || !another) return false;
 
     for (let key of Object.keys(one)) {
-      if (["wtt", "utt", "rts", "txs", "fj", "pn", "originator", "tos", "attachments"].indexOf(key) >= 0) continue;   // 忽略字段
+      if (["wtt", "utt", "rts", "txs", "fj", "pn", "creator", "tos", "attachments"].indexOf(key) >= 0) continue;   // 忽略字段
 
       if (one.hasOwnProperty(key)) {
         let value = one[key];
@@ -766,7 +769,7 @@ export class EventService extends BaseService {
     if (!one || !another) return false;
 
     for (let key of Object.keys(one)) {
-      if (["wtt", "utt", "rts", "txs", "fj", "pn", "originator", "tos"].indexOf(key) >= 0) continue;   // 忽略字段
+      if (["wtt", "utt", "rts", "txs", "fj", "pn", "creator", "tos"].indexOf(key) >= 0) continue;   // 忽略字段
 
       if (one.hasOwnProperty(key)) {
         let value = one[key];
@@ -1247,7 +1250,7 @@ export class EventService extends BaseService {
   * @param {string} evi
    * @returns {Promise<Array<AgendaData>>}
    */
-  async getAgenda(evi : string , getdel : boolean = false):Promise<AgendaData>{
+  async getAgenda(evi: string, getdel: boolean = false):Promise<AgendaData>{
 
     this.assertEmpty(evi);    // 入参不能为空
 
@@ -5170,8 +5173,7 @@ export interface AgendaData extends EventData, CaTbl {
   //计划
   jha : JhaTbl;
   //发起人
-  originator: Member;
-
+  creator: Member;
 
   //用于数据上传给服务器时，给哪些参与人，[]无参与人或参与人被全删
   tos : string;
@@ -5228,7 +5230,7 @@ export interface TaskData extends EventData,TTbl {
   //提醒设定
   txjson :TxJson;
   //发起人
-  originator: Member;
+  creator: Member;
 
   //附件
   fjs : Array<FjTbl>;
@@ -5240,7 +5242,7 @@ export interface TaskData extends EventData,TTbl {
 
 export interface MiniTaskData extends EventData {
   //发起人
-  originator: Member;
+  creator: Member;
 
   //附件
   fjs : Array<FjTbl>;
