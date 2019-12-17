@@ -179,7 +179,6 @@ export class GrouperService extends BaseService {
    */
   async syncGrouper(groupers: Array<Grouper>= new Array<Grouper>()) {
 
-
     if (groupers.length <= 0 ){
       let gsql = `select * from gtd_g where del ; `;
       groupers = await this.sqlExce.getExtList<Grouper>(gsql);
@@ -302,7 +301,7 @@ export class GrouperService extends BaseService {
     return;
   }
 
-//删除群
+  //删除群
   async removeGrouper(gId: string) {
     //删除本地群成员
     let bx = new BxTbl();
