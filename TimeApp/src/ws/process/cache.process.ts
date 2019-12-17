@@ -47,6 +47,9 @@ export class CacheProcess extends BaseProcess implements MQProcess {
     let memos: Array<ScdData> = new Array<ScdData>();
     memos = this.input(content, contextRetMap, "memos", WsDataConfig.MOD, memos) || new Array<ScdData>();
 
+    let planitems: Array<ScdData> = new Array<ScdData>();
+    planitems = this.input(content, contextRetMap, "planitems", WsDataConfig.PID, planitems) || new Array<ScdData>();
+
     //处理区分
     if (content.option == CA.AD) {
       if (agendas.length <= 0) {
@@ -80,11 +83,37 @@ export class CacheProcess extends BaseProcess implements MQProcess {
       memodata.sn = cacheData.scd.ti || memodata.sn;
 
       memos.push(memodata);
+    } else if (content.option == CA.PI) {
+      if (agendas.length <= 0) {
+        let planitemdata: ScdData = new ScdData();
+
+        planitemdata.sn = cacheData.scd.ti || planitemdata.sn;
+
+        planitemdata.sd = cacheData.scd.ds || planitemdata.sd;
+        planitemdata.st = cacheData.scd.ts || planitemdata.st;
+        planitemdata.ed = cacheData.scd.de || planitemdata.ed;
+        planitemdata.et = cacheData.scd.te || planitemdata.et;
+
+        planitems.push(planitemdata);
+      } else {
+        let planitemdata: ScdData = planitems.pop();
+
+        planitemdata.sd = cacheData.scd.ds || planitemdata.sd;
+        planitemdata.st = cacheData.scd.ts || planitemdata.st;
+        planitemdata.ed = cacheData.scd.de || planitemdata.ed;
+        planitemdata.et = cacheData.scd.te || planitemdata.et;
+
+        planitemdata.sn = cacheData.scd.ti || planitemdata.sn;
+        // planitemdata.adr = cacheData.scd.adr || planitemdata.adr;
+
+        planitems.push(planitemdata);
+      }
     }
 
     //服务器要求上下文内放置日程查询结果
     this.output(content, contextRetMap, 'agendas', WsDataConfig.SCD, agendas);
     this.output(content, contextRetMap, 'memos', WsDataConfig.MOD, memos);
+    this.output(content, contextRetMap, 'planitems', WsDataConfig.PID, planitems);
 
     return contextRetMap;
   }

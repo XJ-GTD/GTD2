@@ -53,6 +53,12 @@ export enum MO {
   D = "MO.D",   //删除备忘
 }
 
+//备忘处理（保存上下文）
+export enum PI {
+  C = "PI.C",   //新建备忘
+  D = "PI.D",   //删除备忘
+}
+
 //日程修改（获取上下文中）
 export enum SC {
   T = "SC.T",  //

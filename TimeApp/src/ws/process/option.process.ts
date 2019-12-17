@@ -50,6 +50,9 @@ export class OptionProcess extends BaseProcess implements MQProcess{
     let memos:Array<ScdData> = new Array<ScdData>();
     memos = this.input(content,contextRetMap,"memos",WsDataConfig.MOD,memos);
 
+    let planitems:Array<ScdData> = new Array<ScdData>();
+    planitems = this.input(content,contextRetMap,"planitems",WsDataConfig.PID,planitems);
+
     //上下文内获取日程人员信息
     let fs :Array<FsData> = new Array<FsData>();
     fs = this.input(content,contextRetMap,"contacts",WsDataConfig.FS,fs);
@@ -61,7 +64,7 @@ export class OptionProcess extends BaseProcess implements MQProcess{
       let rf :boolean = false;
       try {
         let fun = eval("("+content.when+")");
-        rf = fun(content,scd,fs,memos);
+        rf = fun(content,scd,fs,memos,planitems);
       }catch (e){
         rf = false;
       };

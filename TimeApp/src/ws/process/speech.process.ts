@@ -72,6 +72,7 @@ export class SpeechProcess extends BaseProcess implements MQProcess {
       let branchtype: string = '';
       let agendas: Array<ScdData> = new Array<ScdData>();
       let memos: Array<ScdData> = new Array<ScdData>();
+      let planitems: Array<ScdData> = new Array<ScdData>();
       let showagendas: Array<ScdData> = new Array<ScdData>();
       let contacts: Array<FsData> = new Array<FsData>();
 
@@ -92,6 +93,9 @@ export class SpeechProcess extends BaseProcess implements MQProcess {
         //获取上下文内日程创建结果
         memos = this.input(content,contextRetMap,"memos",WsDataConfig.MOD,memos);
 
+        //获取上下文内日程创建结果
+        planitems = this.input(content,contextRetMap,"planitems",WsDataConfig.PID,planitems);
+
         //获取上下文内日程查询结果
         showagendas = this.input(content,contextRetMap,"showagendas",WsDataConfig.SCD,showagendas);
 
@@ -109,7 +113,7 @@ export class SpeechProcess extends BaseProcess implements MQProcess {
 
               try {
                 let tfun = eval("(" + content.input.type + ")");
-                type = tfun(agendas, showagendas, prvOpt, user, branchtype, branchcode, memos);
+                type = tfun(agendas, showagendas, prvOpt, user, branchtype, branchcode, memos, planitems);
               }catch (e){
                 type = WsDataConfig.TYPE_EMPTY;
               };
@@ -176,7 +180,7 @@ export class SpeechProcess extends BaseProcess implements MQProcess {
         let rf :boolean = false;
         try {
           let fun = eval("("+content.when+")");
-          rf = fun(agendas, showagendas, contacts, branchtype, branchcode);
+          rf = fun(agendas, showagendas, contacts, branchtype, branchcode, memos, planitems);
         }catch (e){
           rf = false;
         };
