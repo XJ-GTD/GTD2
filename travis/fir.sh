@@ -27,7 +27,7 @@ if [ $TRAVIS_OS_NAME = 'osx' ]; then
 
       if [ -f "$TRAVIS_BUILD_DIR/build/fir/$IOS_APP_NAME.ipa" ]; then
         echo "upload to fir.im"
-        fir publish $TRAVIS_BUILD_DIR/build/fir/$IOS_APP_NAME.ipa -T $FIR_TOKEN_CASSISCORNUTA -c "唐冠螺 (iOS): ${TRAVIS_COMMIT_MESSAGE}" -V
+        fir --switch_to_qiniu publish $TRAVIS_BUILD_DIR/build/fir/$IOS_APP_NAME.ipa -T $FIR_TOKEN_CASSISCORNUTA -c "唐冠螺 (iOS): ${TRAVIS_COMMIT_MESSAGE}" -V
       fi
     else
       fir publish $TRAVIS_BUILD_DIR/build/debug/app-$TRAVIS_BRANCH.ipa -T $FIR_TOKEN -c "${TRAVIS_BRANCH}: ${TRAVIS_COMMIT_MESSAGE}"
