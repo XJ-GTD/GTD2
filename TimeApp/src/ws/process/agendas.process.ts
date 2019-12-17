@@ -84,8 +84,8 @@ export class AgendasProcess extends BaseProcess implements MQProcess,OptProcess{
       if (prvOpt == AG.C) {
         let saved = await this.eventService.saveAgenda(rcIn);
 
-        if (saved) {
-          c.si = saved.evi;   // 用于上下文输出
+        if (saved && saved.length > 0) {
+          c.si = saved[0].evi;   // 用于上下文输出
         }
       } else if (prvOpt == AG.U) {
         console.log("******************agendas do AG.U")
