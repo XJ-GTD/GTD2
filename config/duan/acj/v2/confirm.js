@@ -131,7 +131,14 @@ function clean(datasource)
       parameters: {}
     };
 
+    output.header['describe'].splice(2, 0, "SS"); // 插入缓存描述
     output.content['2'] = {
+      processor: 'SS',
+      option: 'SS.F',
+      parameters: {}
+    };
+
+    output.content['3'] = {
       processor: 'S',
       option: 'S.P',
       parameters: {

@@ -61,32 +61,13 @@ export class AgendasProcess extends BaseProcess implements MQProcess,OptProcess{
 
     //确认操作
     for (let c of scd){
-      //tx rt
-//    let rcIn:RcInParam = new RcInParam();
-//    rcIn.sn = c.sn;
-//    rcIn.st = c.st;
-//    rcIn.sd = c.sd;
-//    if(c.si && c.si != null && c.si != ''){
-//      rcIn.si = c.si;
-//    }
-//
-//    for (let f of  fs){
-//      rcIn.fss.push(f);
-//    }
-//
-//    if (prvOpt == AG.C){
-//      await this.busiService.saveOrUpdate(rcIn);
-//    }else if (prvOpt == AG.U){
-//      console.log("******************agendas do AG.U")
-//      await this.busiService.saveOrUpdate(rcIn);
-//    }else{
-//      await this.busiService.YuYinDelRc( rcIn.si, rcIn.sd);
-//    }
-	  //2019-08-30   ying 改版
-	 let rcIn: AgendaData = {} as AgendaData;
+	    //2019-08-30   ying 改版
+	    let rcIn: AgendaData = {} as AgendaData;
+
       rcIn.evn = c.sn;
       rcIn.st = (c.st == '99:99')? undefined : c.st;  // 不指定时间输入为99:99
       rcIn.sd = c.sd;
+
       if (c.si && c.si != null && c.si != '') {
         rcIn.evi = c.si;
       }
@@ -100,9 +81,13 @@ export class AgendasProcess extends BaseProcess implements MQProcess,OptProcess{
         rcIn.members.push(member);
       }
 
-      if (prvOpt == AG.C){
-        await this.eventService.saveAgenda(rcIn);
-      }else if (prvOpt == AG.U){
+      if (prvOpt == AG.C) {
+        let saved = await this.eventService.saveAgenda(rcIn);
+
+        if (saved) {
+          c.si = saved.evi;   // 用于上下文输出
+        }
+      } else if (prvOpt == AG.U) {
         console.log("******************agendas do AG.U")
         let origin: AgendaData = await this.eventService.getAgenda(rcIn.evi, true);
         let updated: AgendaData = {} as AgendaData;
@@ -128,13 +113,18 @@ export class AgendasProcess extends BaseProcess implements MQProcess,OptProcess{
         }
 
         await this.eventService.saveAgenda(updated, origin, anyenum.OperateType.OnlySel);
-      }else{
+      } else {
       	let oldAgendaData: AgendaData = {} as AgendaData;
       	oldAgendaData = await this.eventService.getAgenda(rcIn.evi);
         await this.eventService.removeAgenda(oldAgendaData,anyenum.OperateType.OnlySel);
       }
     }
+
     console.log("******************agendas do end")
+
+    //上下文内放置创建的或修改的日程更新内容
+    this.output(content, contextRetMap, 'agendas', WsDataConfig.SCD, scd);
+
     return contextRetMap;
   }
 
