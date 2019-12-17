@@ -65,7 +65,7 @@ export class EventService extends BaseService {
 
     // 文件附件访问地址转换
     // 附件创建人名
-    for (let attachment of agenda.attachments) {
+    for (let attachment of shareAgenda.attachments) {
       // 补充创建人名
 
       // 文件访问地址转换
@@ -79,7 +79,7 @@ export class EventService extends BaseService {
 
     share.from.phoneno = UserConfig.account.phone;
     share.from.name = UserConfig.account.name;
-    share.payload = agenda;
+    share.payload = shareAgenda;
 
     return await this.dataRestful.share("agenda", share);
   }
