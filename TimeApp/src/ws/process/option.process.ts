@@ -61,7 +61,7 @@ export class OptionProcess extends BaseProcess implements MQProcess{
       let rf :boolean = false;
       try {
         let fun = eval("("+content.when+")");
-        rf = fun(content,scd,fs);
+        rf = fun(content,scd,fs,memos);
       }catch (e){
         rf = false;
       };
