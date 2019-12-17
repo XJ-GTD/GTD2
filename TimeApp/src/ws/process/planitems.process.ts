@@ -68,10 +68,10 @@ export class PlanItemsProcess extends BaseProcess implements MQProcess,OptProces
       if (prvOpt == PI.C) {
         await this.calendarService.savePlanItem(rcIn);
       } else {
-      	let originMemo: MemoData = {} as MemoData;
-      	originMemo = await this.memoService.getMemo(rcIn.jti);
+      	let originPlanItem: PlanItemData = {} as PlanItemData;
+      	originPlanItem = await this.calendarService.getPlanItem(rcIn.jti);
 
-        await this.calendarService.removePlanItem(originMemo);
+        await this.calendarService.removePlanItem(originPlanItem);
       }
     }
 
@@ -116,7 +116,7 @@ export class PlanItemsProcess extends BaseProcess implements MQProcess,OptProces
 
     //处理区分
     // 创建日程
-    if (content.option == MO.C) {
+    if (content.option == PI.C) {
       // F处理返回的结果
       if (scd.length > 0){
         // 上下文有日程
@@ -138,7 +138,7 @@ export class PlanItemsProcess extends BaseProcess implements MQProcess,OptProces
     }
 
     // 删除日程
-    if (content.option == MO.D) {
+    if (content.option == PI.D) {
     }
 
     //上下文内放置创建的或修改的日程更新内容
