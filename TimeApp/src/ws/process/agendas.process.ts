@@ -287,8 +287,8 @@ export class AgendasProcess extends BaseProcess implements MQProcess,OptProcess{
           c.st = (cudPara.t == null || cudPara.t == '')?c.st:cudPara.t;
 
           // 修改重要事项
-          if (cudPara.scd.todolist) {
-            c.todolist = cudPara.scd.todolist;
+          if (cudPara.todolist) {
+            c.todolist = cudPara.todolist;
           }
           //显示本次添加的人
           c.fss = fs;

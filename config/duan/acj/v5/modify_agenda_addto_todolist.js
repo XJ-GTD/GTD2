@@ -306,6 +306,7 @@ function clean(datasource)
       processor: 'AG',
       option: 'AG.U',
       parameters: {
+        todolist: 'On',
         scd: {
           todolist: 'On'
         }
