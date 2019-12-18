@@ -35,6 +35,10 @@ export class AgendasProcess extends BaseProcess implements MQProcess,OptProcess{
     //获取上下文前动作信息
     prvOpt = this.input(content,contextRetMap,"prvoption",WsDataConfig.PRVOPTION,prvOpt);
 
+    //上下文内获取暂停缓存
+    let paused: Array<any> = new Array<any>();
+    paused = this.input(content, contextRetMap, "paused", WsDataConfig.PAUSED, paused) || paused;
+
     //上下文内获取日程查询结果
     let scd:Array<ScdData> = new Array<ScdData>();
     scd = this.input(content,contextRetMap,"agendas",WsDataConfig.SCD,scd);
@@ -42,6 +46,33 @@ export class AgendasProcess extends BaseProcess implements MQProcess,OptProcess{
     //上下文内获取日程人员信息
     let fs :Array<FsData> = new Array<FsData>();
     fs = this.input(content,contextRetMap,"contacts",WsDataConfig.FS,fs);
+
+    //process处理符合条件则暂停
+    console.log("******************agendas do pause");
+    if (content.pause && content.pause != "") {
+      console.log("******************agendas do pause in " + content.pause);
+      let pause: boolean = false;
+
+      try {
+        let isPause = eval("("+content.pause+")");
+        pause = isPause(content, scd, fs);
+      } catch (e) {
+        pause = false;
+      }
+
+      if (pause) {
+        let pausedContent: any = {};
+        Object.assign(pausedContent, content);
+        delete pausedContent.thisContext;
+
+        paused.push(pausedContent);
+
+        //设置上下文暂停处理缓存
+        this.output(content, contextRetMap, 'paused', WsDataConfig.PAUSED, paused);
+
+        return contextRetMap;
+      }
+    }
 
     //process处理符合条件则执行
     console.log("******************agendas do when")
