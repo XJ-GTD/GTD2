@@ -31,7 +31,7 @@ export class MenuScalePushType extends MenuType {
     contentApi.fromTo('opacity',1,.5);
     this.ani.add(contentApi);
     const backdropAni = new Animation(plt, menu.getBackdropElement());
-    backdropAni.fromTo('opacity',0,.5);
+    backdropAni.fromTo('opacity',0,.2);
     this.ani.add(backdropAni);
   }
 }

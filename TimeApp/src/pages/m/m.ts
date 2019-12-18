@@ -29,13 +29,14 @@ import {CalendarDay} from "../../components/ion2-calendar";
         <ion-grid>
           <ion-row>
             <h1>冥王星</h1>
+            <h4>{{name}}</h4>
+            
             <!--<span>-->
                   <!--<h2>{{name}}</h2>-->
                   <!--<p>{{phone}}</p>-->
             <!--</span>-->
           </ion-row>
           <ion-row>
-            <h4>{{name}}</h4>
           </ion-row>
           <ion-row (click)="todoList()">
             <h3>重要事项</h3>
