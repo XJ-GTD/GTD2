@@ -2175,7 +2175,7 @@ export class EventService extends BaseService {
     if ((!oriAgdata.rtevi || oriAgdata.rtevi =="" ) && oriAgdata.rfg == anyenum.RepeatFlag.Repeat){
       ret = true;
       //取得为修改的记录放入返回事件中
-      upcondi = ` rtevi = ? `
+      upcondi = ` rtevi = ? and del <>'del' `
       sq = ` select ev.*, ca.sd, ca.ed, ca.st, ca.et, ca.al, ca.ct
                         from (select *,
                         case when rfg = '2' then evi
@@ -2200,7 +2200,7 @@ export class EventService extends BaseService {
       if (upAgds.length > 0){
         //找到满足条件的首条记录
         upParent = upAgds.find((value, index,arr)=>{
-          return value.rtevi == oriAgdata.evi && value.rfg == anyenum.RepeatFlag.Repeat && value.del != anyenum.DelType.del;
+          return value.rtevi == oriAgdata.evi && value.rfg == anyenum.RepeatFlag.Repeat ;
 
         });
         if (upParent){
