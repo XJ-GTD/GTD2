@@ -9,7 +9,7 @@ import {UserConfig} from "../../service/config/user.config";
 import {CTbl} from "../../service/sqlite/tbl/c.tbl";
 import {AG, O, SS} from "../model/ws.enum";
 import {FsData, RcInParam, ScdData} from "../../data.mapping";
-import {EventService,AgendaData,Member} from "../../service/business/event.service";
+import {EventService, AgendaData, Member, multipleoffive} from "../../service/business/event.service";
 import {WsDataConfig} from "../wsdata.config";
 import {BaseProcess} from "./base.process";
 import * as anyenum from "../../data.enum";
@@ -215,9 +215,18 @@ export class AgendasProcess extends BaseProcess implements MQProcess,OptProcess{
         scdlist.push(c);
 
         for (let c of scdlist){
-          c.sd = cudPara.d == null?c.sd:cudPara.d;
           c.sn = cudPara.ti == null?c.sn:cudPara.ti;
+          c.sd = cudPara.d == null?c.sd:cudPara.d;
           c.st = cudPara.t == null?c.st:cudPara.t;
+
+          // 日程时间必须是5分钟的倍数
+          if (c.st && c.st != "99:99") {
+            let datetime = multipleoffive(c.sd, c.st);
+
+            c.sd = datetime.format("YYYY/MM/DD");
+            c.st = datetime.format("HH:mm");
+          }
+
           //显示本次创建的人
           c.fss = fs;
         }

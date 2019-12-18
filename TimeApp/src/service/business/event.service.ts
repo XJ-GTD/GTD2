@@ -5859,3 +5859,53 @@ export function generateTxJson(txjson: TxJson, tx: string) {
 export interface FjData extends FjTbl {
 
 }
+
+export function multipleoffive(day: string, time: string) {
+  // 没有入参, 取得当前最近5分钟倍数的时间
+  if (!day && !time) {
+    let now = moment();
+    let gap = now.unix() % 300;  // 300秒 = 5分钟
+
+    if (gap > 0) {
+      now.add(300 - gap, "seconds");
+    }
+
+    return now;
+  }
+
+  // 没有日期
+  if (!day && time) {
+    let current = moment(moment().format("YYYY/MM/DD") + " " + time, "YYYY/MM/DD HH:mm");
+    let gap = current.unix() % 300;  // 300秒 = 5分钟
+
+    if (gap > 0) {
+      current.add(300 - gap, "seconds");
+    }
+
+    return current;
+  }
+
+  // 没有时间
+  if (day && !time) {
+    let current = moment(day + " " + moment().format("HH:mm"), "YYYY/MM/DD HH:mm");
+    let gap = current.unix() % 300;  // 300秒 = 5分钟
+
+    if (gap > 0) {
+      current.add(300 - gap, "seconds");
+    }
+
+    return current;
+  }
+
+  // 有日期和时间
+  if (day && time) {
+    let current = moment(day + " " + time, "YYYY/MM/DD HH:mm");
+    let gap = current.unix() % 300;  // 300秒 = 5分钟
+
+    if (gap > 0) {
+      current.add(300 - gap, "seconds");
+    }
+
+    return current;
+  }
+}
