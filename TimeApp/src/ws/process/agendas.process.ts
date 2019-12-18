@@ -99,6 +99,10 @@ export class AgendasProcess extends BaseProcess implements MQProcess,OptProcess{
       rcIn.st = (c.st == '99:99')? undefined : c.st;  // 不指定时间输入为99:99
       rcIn.sd = c.sd;
 
+      if (c.todolist) {
+        rcIn.todolist = c.todolist == "On"? anyenum.ToDoListStatus.On : anyenum.ToDoListStatus.Off;
+      }
+
       if (c.si && c.si != null && c.si != '') {
         rcIn.evi = c.si;
       }
@@ -123,6 +127,7 @@ export class AgendasProcess extends BaseProcess implements MQProcess,OptProcess{
           c.st = saved[0].evt;
           c.ed = saved[0].evd;
           c.et = saved[0].evt;
+          c.todolist = saved[0].todolist == anyenum.ToDoListStatus.On? "On" : "Off";
         }
       } else if (prvOpt == AG.U) {
         console.log("******************agendas do AG.U")
@@ -133,6 +138,11 @@ export class AgendasProcess extends BaseProcess implements MQProcess,OptProcess{
         updated.evn = rcIn.evn;
         updated.st = rcIn.st;
         updated.sd = rcIn.sd;
+
+        if (c.todolist) {
+          updated.todolist = rcIn.todolist;
+        }
+
         if (rcIn.members && rcIn.members.length > 0) {
           updated.members = updated.members || new Array<Member>();
 
@@ -272,9 +282,14 @@ export class AgendasProcess extends BaseProcess implements MQProcess,OptProcess{
       if (scd.length == 1){
         // 设置修改后内容
         for (let c of scd){
-          c.sd = (cudPara.d == null || cudPara.d == '')? c.sd:cudPara.d;
           c.sn = (cudPara.ti == null || cudPara.ti == '')?c.sn:cudPara.ti;
+          c.sd = (cudPara.d == null || cudPara.d == '')? c.sd:cudPara.d;
           c.st = (cudPara.t == null || cudPara.t == '')?c.st:cudPara.t;
+
+          // 修改重要事项
+          if (cudPara.todolist) {
+            c.todolist = cudPara.todolist;
+          }
           //显示本次添加的人
           c.fss = fs;
         }
