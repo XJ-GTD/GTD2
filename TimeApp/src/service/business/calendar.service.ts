@@ -841,6 +841,33 @@ export class CalendarService extends BaseService {
       merged = merged.concat(minitasks);
       merged = merged.concat(memos);
 
+      merged.sort((a, b) => {
+        let ad: any = {};
+        let bd: any = {};
+        Object.assign(ad, a);
+        Object.assign(bd, b);
+
+        let at;
+        if (ad.evi) {
+          at = moment(`${ad.evd} ${ad.evt}`, "YYYY/MM/DD HH:mm");
+        } else if (ad.jti) {
+          at = moment(`${ad.sd} ${ad.st}`, "YYYY/MM/DD");
+        } else {
+          at = moment(`${ad.sd}`, "YYYY/MM/DD");
+        }
+
+        let bt;
+        if (bd.evi) {
+          bt = moment(`${bd.evd} ${bd.evt}`, "YYYY/MM/DD HH:mm");
+        } else if (bd.jti) {
+          bt = moment(`${bd.sd} ${ad.st}`, "YYYY/MM/DD");
+        } else {
+          bt = moment(`${bd.sd}`, "YYYY/MM/DD");
+        }
+
+        return at.diff(bt);
+      });
+
       plan.items = merged;
     }
 
@@ -4260,6 +4287,8 @@ export class CalendarService extends BaseService {
     let evwhere: string = '';
     let mowhere: string = '';
 
+    let hasStartDay: boolean = true;
+
     // 开始日期
     if (condition.sd) {
       ciwhere += (ciwhere? '' : 'where ');
@@ -4273,7 +4302,11 @@ export class CalendarService extends BaseService {
       mowhere += (mowhere? '' : 'where ');
       mowhere += `date(replace(sd, '/', '-')) >= date(replace(?, '/', '-')) `;
       moargs.push(condition.sd);
+    } else {
+      hasStartDay = false;
     }
+
+    let hasEndDay: boolean = true;
 
     // 结束日期
     if (condition.ed) {
@@ -4288,10 +4321,17 @@ export class CalendarService extends BaseService {
       mowhere += (mowhere? 'and ' : 'where ');
       mowhere += `date(replace(sd, '/', '-')) <= date(replace(?, '/', '-')) `;
       moargs.push(condition.ed);
+    } else {
+      hasEndDay = false;
     }
 
     let hasText: boolean = condition.text? true : false;
     let hasMarkup: boolean = (condition.mark && condition.mark.length > 0)? true : false;
+
+    // 当没有输入条件的时候, 无返回结果
+    if (!hasStartDay && !hasEndDay && !hasText && !hasMarkup) {
+      return resultActivity;
+    }
 
     // 内容查询 标签查询优先
     if (hasText && !hasMarkup) {

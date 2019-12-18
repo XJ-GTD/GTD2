@@ -1,3 +1,4 @@
+
 import {MQProcess} from "../interface.process";
 import {WsContent} from "../model/content.model";
 import {FriendEmData, ScdEmData} from "../../service/util-service/emit.service";
@@ -28,6 +29,10 @@ export class CudscdProcess extends BaseProcess implements MQProcess{
     let processor = contextRetMap.get(WsDataConfig.PROCESSOR4SPEECH);
 
     //上下文内获取日程查询结果
+    let paused: Array<any> = new Array<any>();
+    paused = this.input(content, contextRetMap, "paused", WsDataConfig.PAUSED, paused);
+
+    //上下文内获取日程查询结果
     let scd:Array<ScdData> = new Array<ScdData>();
     scd = this.input(content,contextRetMap,"agendas",WsDataConfig.SCD,scd);
 
@@ -43,6 +48,30 @@ export class CudscdProcess extends BaseProcess implements MQProcess{
     let fs :Array<FsData> = new Array<FsData>();
     fs = this.input(content,contextRetMap,"contacts",WsDataConfig.FS,fs);
 
+    //process处理符合条件则暂停
+    if (content.pause && content.pause != "") {
+      let pause: boolean = false;
+
+      try {
+        let isPause = eval("("+content.pause+")");
+        pause = isPause(content, scd, fs);
+      } catch (e) {
+        pause = false;
+      }
+
+      if (pause) {
+        let pausedContent: any = {};
+        Object.assign(pausedContent, content);
+        delete pausedContent.thisContext;
+
+        paused.push(pausedContent);
+
+        //设置上下文暂停处理缓存
+        this.output(content, contextRetMap, 'paused', WsDataConfig.PAUSED, paused);
+
+        return contextRetMap;
+      }
+    }
 
     //process处理符合条件则执行
     if (content.when && content.when !=""){
@@ -59,17 +88,21 @@ export class CudscdProcess extends BaseProcess implements MQProcess{
       }
     }
 
-    let prv:ProcesRs = new ProcesRs();
+    let prv: ProcesRs = new ProcesRs();
 
     //保存上下文
     prv.scd = scd;
     prv.mod = memos;
     prv.pid = planitems;
     prv.fs = fs;
+    prv.paused = paused;
 
     DataConfig.putWsContext(prv);
     DataConfig.putWsOpt(option?option:"");
     DataConfig.putWsProcessor(processor?processor:"");
+
+    //上下文内放置创建的或修改的日程
+    this.output(content, contextRetMap, 'paused', WsDataConfig.PAUSED, prv.paused);
 
     //上下文内放置创建的或修改的日程
     this.output(content, contextRetMap, 'agendas', WsDataConfig.SCD, prv.scd);

@@ -194,7 +194,7 @@ export class AttachPage {
       //调用刷新
       this.flushData().then(()=>{
         this.bscroll.finishPullUp();
-      })
+      });
     });
     this.flushData();
   }
@@ -445,7 +445,7 @@ export class AttachPage {
     //清空数据
     this.fjArray = new Array<Attachment>();
     let attachments: Array<Attachment> = new Array<Attachment>();
-    attachments = await this.eventService.selectAttachments(this.obt, this.obi);
+    attachments = await this.eventService.fetchObjectAttachments(this.obt, this.obi);
 
     if (attachments && attachments.length > 0) {
       this.emitService.emit("mwxing.calendar.datas.readwrite", {rw: "read", payload: attachments});

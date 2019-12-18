@@ -16,6 +16,7 @@ export class MarkupProcess implements MQProcess {
   }
 
   async gowhen(content: WsContent, contextRetMap: Map<string,any>) {
+
     //process处理符合条件则执行
     if (content.when && content.when !=""){
       let rf :boolean = false;

@@ -65,7 +65,7 @@ export class EventService extends BaseService {
 
     // 文件附件访问地址转换
     // 附件创建人名
-    for (let attachment of agenda.attachments) {
+    for (let attachment of shareAgenda.attachments) {
       // 补充创建人名
 
       // 文件访问地址转换
@@ -79,7 +79,7 @@ export class EventService extends BaseService {
 
     share.from.phoneno = UserConfig.account.phone;
     share.from.name = UserConfig.account.name;
-    share.payload = agenda;
+    share.payload = shareAgenda;
 
     return await this.dataRestful.share("agenda", share);
   }
@@ -4134,18 +4134,56 @@ export class EventService extends BaseService {
    *
    * @author ying<343253410@qq.com>
    */
-  async selectAttachments(obt: string, obi: string) {
+  async fetchObjectAttachments(obt: string, obi: string): Promise<Array<Attachment>> {
     this.assertEmpty(obt);
     this.assertEmpty(obi);
 
     let attachments: Array<Attachment> = new Array<Attachment>();
     let sql: string = `select * from gtd_fj  where del = ? and obt =? and obi = ? order by wtt desc`;
-    attachments = await this.sqlExce.getExtLstByParam<Attachment>(sql, [DelType.undel,obt,obi]);
+    attachments = await this.sqlExce.getExtLstByParam<Attachment>(sql, [DelType.undel,obt,obi]) || attachments;
     // let fj = new FjTbl();
     // fj.obi = obi;
     // fj.obt = obt;
     // fj.del = anyenum.DelType.undel;
     // attachments = await this.sqlExce.getLstByParam<Attachment>(fj);
+    return attachments;
+  }
+
+  mergeObjectAttachments(attachments: Array<Attachment>, attachment: Attachment): Array<Attachment> {
+    assertEmpty(attachments);   // 入参不能为空
+    assertEmpty(attachment);    // 入参不能为空
+    assertEmpty(attachment.fji);// 主键不能为空
+    assertEmpty(attachment.wtt);// 创建时间不能为空
+
+    let posmix: any = attachments.reduce((target, element, index) => {
+
+      if (element.fji == attachment.fji)  target.index = index;
+      if (element.wtt > attachment.wtt) target.insert = index;
+
+      return target;
+    }, {index: -1, insert: -1});
+
+    if (attachment.del == DelType.del) {
+      if (posmix.index >= 0) {
+        attachments.splice(posmix.index, 1);
+      } else {
+        // 不存在，什么都不做
+      }
+    } else {
+      if (posmix.index >= 0) {
+        // 已存在，直接更新（wtt不会变化）
+        attachments.splice(posmix.index, 1, attachment);
+      } else {
+        if (posmix.insert >= 0) {
+          // 插入到中间位置
+          attachments.splice(posmix.insert, 0, attachment);
+        } else {
+          // 插入到最后
+          attachments.push(attachment);
+        }
+      }
+    }
+
     return attachments;
   }
 
@@ -5772,4 +5810,54 @@ export function generateTxJson(txjson: TxJson, tx: string) {
 */
 export interface FjData extends FjTbl {
 
+}
+
+export function multipleoffive(day: string, time: string) {
+  // 没有入参, 取得当前最近5分钟倍数的时间
+  if (!day && !time) {
+    let now = moment();
+    let gap = now.unix() % 300;  // 300秒 = 5分钟
+
+    if (gap > 0) {
+      now.add(300 - gap, "seconds");
+    }
+
+    return now;
+  }
+
+  // 没有日期
+  if (!day && time) {
+    let current = moment(moment().format("YYYY/MM/DD") + " " + time, "YYYY/MM/DD HH:mm");
+    let gap = current.unix() % 300;  // 300秒 = 5分钟
+
+    if (gap > 0) {
+      current.add(300 - gap, "seconds");
+    }
+
+    return current;
+  }
+
+  // 没有时间
+  if (day && !time) {
+    let current = moment(day + " " + moment().format("HH:mm"), "YYYY/MM/DD HH:mm");
+    let gap = current.unix() % 300;  // 300秒 = 5分钟
+
+    if (gap > 0) {
+      current.add(300 - gap, "seconds");
+    }
+
+    return current;
+  }
+
+  // 有日期和时间
+  if (day && time) {
+    let current = moment(day + " " + time, "YYYY/MM/DD HH:mm");
+    let gap = current.unix() % 300;  // 300秒 = 5分钟
+
+    if (gap > 0) {
+      current.add(300 - gap, "seconds");
+    }
+
+    return current;
+  }
 }

@@ -926,7 +926,7 @@ describe('EventService test suite', () => {
       expect(delAt.del).toEqual('del');
     });
 
-    it('Case 23 - 1 - 1   selectAttachments 查询附件 ', async () => {
+    it('Case 23 - 1 - 1   fetchObjectAttachments 查询附件 ', async () => {
 
       let at: Attachment = {} as Attachment;
       at.obt = ObjectType.Event;
@@ -955,7 +955,7 @@ describe('EventService test suite', () => {
       expect(at2.fji).toBeDefined();
 
       let attachments: Array<Attachment> = new Array<Attachment>();
-      attachments =  await eventService.selectAttachments(ObjectType.Event,'12345');
+      attachments =  await eventService.fetchObjectAttachments(ObjectType.Event,'12345');
       expect(attachments).toBeDefined();
       expect(attachments.length).toBeGreaterThan(0);
     });

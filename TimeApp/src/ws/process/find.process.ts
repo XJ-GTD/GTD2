@@ -54,6 +54,8 @@ export class FindProcess extends BaseProcess implements MQProcess {
 
     //处理区分
     let scd: Array<ScdData> = new Array<ScdData>();
+    let memos: Array<ScdData> = new Array<ScdData>();
+    let planitems: Array<ScdData> = new Array<ScdData>();
 
     if (content.option == F.C) {
       // TODO 增加根据人查询日程
@@ -92,6 +94,40 @@ export class FindProcess extends BaseProcess implements MQProcess {
           }
         }
       }
+
+      if (activities.memos && activities.memos.length > 0) {
+        for (let memo of activities.memos) {
+          let escd: ScdData = new ScdData();
+
+          escd.si = memo.moi;
+          escd.sn = memo.mon;
+          escd.sd = memo.sd;
+
+          memos.push(escd);
+
+          if (memos.length >= 5) {
+            break;
+          }
+        }
+      }
+
+      if (activities.calendaritems && activities.calendaritems.length > 0) {
+        for (let calendaritem of activities.calendaritems) {
+          let escd: ScdData = new ScdData();
+
+          escd.si = calendaritem.jti;
+          escd.sn = calendaritem.jtn;
+          escd.ui = calendaritem.ui;
+          escd.sd = calendaritem.sd;
+          escd.st = calendaritem.st;
+
+          planitems.push(escd);
+
+          if (planitems.length >= 5) {
+            break;
+          }
+        }
+      }
     }
 
     //增加排序处理
@@ -108,6 +144,12 @@ export class FindProcess extends BaseProcess implements MQProcess {
 
     //服务器要求上下文内放置日程查询结果
     this.output(content, contextRetMap, 'agendas', WsDataConfig.SCD, scd);
+
+    //服务器要求上下文内放置日程查询结果
+    this.output(content, contextRetMap, 'memos', WsDataConfig.MOD, memos);
+
+    //服务器要求上下文内放置日程查询结果
+    this.output(content, contextRetMap, 'planitems', WsDataConfig.PID, planitems);
 
     //服务器要求上下文内放置日程的创建人员信息或查询条件用的人员信息
     this.output(content, contextRetMap, 'contacts', WsDataConfig.FS, fs);

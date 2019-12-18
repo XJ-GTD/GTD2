@@ -42,7 +42,7 @@ import {GrouperService} from "../../service/business/grouper.service";
           <!--</ion-item>-->
         <!--</ion-list>-->
 
-        <ion-list >        
+        <ion-list >
           <ion-item *ngFor="let member of pageFsl" >
             <ion-label [class.chooseed] = "member.checked">
               {{member.ran}}
@@ -74,7 +74,7 @@ export class Fs4gPage {
               private fsService: FsService,
               public viewCtrl: ViewController,
               private util: UtilService,
-              private gsService: GrouperService,
+              private grouperService: GrouperService,
               private  modalCtrl:ModalController) {
 
     this.dc = this.navParams.get('tpara');
@@ -97,7 +97,7 @@ export class Fs4gPage {
     let list = this.selFsl;
     if (list.length > 0) {
       this.dc.fsl = list;
-      this.gsService.save(this.dc).then(data => {
+      this.grouperService.saveGrouper(this.dc).then(data => {
           this.goBack();
           //TODO 错误提示
       });

@@ -24,6 +24,11 @@ export class NotificationProcess extends BaseProcess implements MQProcess {
   }
 
   async gowhen(content: WsContent, contextRetMap: Map<string,any>) {
+
+    //上下文内获取暂停缓存
+    let paused: Array<any> = new Array<any>();
+    paused = this.input(content, contextRetMap, "paused", WsDataConfig.PAUSED, paused) || paused;
+
     //上下文内获取日程查询结果
     let agendas:Array<ScdData> = new Array<ScdData>();
     agendas = this.input(content,contextRetMap, "agendas", WsDataConfig.SCD, agendas);
@@ -31,6 +36,31 @@ export class NotificationProcess extends BaseProcess implements MQProcess {
     //上下文内获取日程人员信息
     let contacts :Array<FsData> = new Array<FsData>();
     contacts = this.input(content,contextRetMap, "contacts", WsDataConfig.FS, contacts);
+
+    //process处理符合条件则暂停
+    if (content.pause && content.pause != "") {
+      let pause: boolean = false;
+
+      try {
+        let isPause = eval("("+content.pause+")");
+        pause = isPause(content, agendas, contacts);
+      } catch (e) {
+        pause = false;
+      }
+
+      if (pause) {
+        let pausedContent: any = {};
+        Object.assign(pausedContent, content);
+        delete pausedContent.thisContext;
+
+        paused.push(pausedContent);
+
+        //设置上下文暂停处理缓存
+        this.output(content, contextRetMap, 'paused', WsDataConfig.PAUSED, paused);
+
+        return contextRetMap;
+      }
+    }
 
     //process处理符合条件则执行
     if (content.when && content.when !=""){

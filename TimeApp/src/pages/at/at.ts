@@ -69,11 +69,83 @@ import { AppVersion } from '@ionic-native/app-version';
           <ion-row justify-content-center>
             <p></p>
           </ion-row>
+          <!--<ion-row justify-content-center>-->
+            <!--<span class="app-profiles">网络</span>-->
+          <!--</ion-row>-->
+          <!--<ion-row justify-content-center>-->
+            <!--<span class="app-profiles">{{network.type}} {{network.connected? "已连接" : "已断开"}}</span>-->
+          <!--</ion-row>-->
+
           <ion-row justify-content-center>
-            <span class="app-profiles">网络</span>
+            <p></p>
+          </ion-row>
+          
+          
+          <ion-row justify-content-center>
+            <h3 class="app-profiles">团队信息</h3>
+          </ion-row>
+
+          <ion-row justify-content-center>
+            <span></span>
           </ion-row>
           <ion-row justify-content-center>
-            <span class="app-profiles">{{network.type}} {{network.connected? "已连接" : "已断开"}}</span>
+            <span class="app-description">构思：胖子</span>
+          </ion-row>
+
+          <ion-row justify-content-center>
+            <span></span>
+          </ion-row>
+          <ion-row justify-content-center>
+            <span class="app-description">技术：楞子</span>
+          </ion-row>
+
+          <ion-row justify-content-center>
+            <span></span>
+          </ion-row>
+          <ion-row justify-content-center>
+            <span class="app-description">开发：孩子</span>
+          </ion-row>
+
+          <ion-row justify-content-center>
+            <span></span>
+          </ion-row>
+          <ion-row justify-content-center>
+            <span class="app-description">开发：没想法</span>
+          </ion-row>
+
+          <ion-row justify-content-center>
+            <span></span>
+          </ion-row>
+          <ion-row justify-content-center>
+            <span class="app-description">设计：仙女</span>
+          </ion-row>
+
+          <ion-row justify-content-center>
+            <span></span>
+          </ion-row>
+          <ion-row justify-content-center>
+            <span class="app-description">测试：胡子</span>
+          </ion-row>
+
+          <ion-row justify-content-center>
+            <span></span>
+          </ion-row>
+          <ion-row justify-content-center>
+            <span class="app-description">赞助：牛牛</span>
+          </ion-row>
+
+          <ion-row justify-content-center>
+            <p></p>
+          </ion-row>
+
+          <ion-row justify-content-center>
+            <span class="app-description">联系方式：18602150145</span>
+          </ion-row>
+          <ion-row justify-content-center>
+            <span class="app-description">邮箱：jy-zhang@zakj.info</span>
+          </ion-row>
+          <ion-row justify-content-center>
+            <span class="app-description">上海效吉软件有限公司</span>
           </ion-row>
         </ion-grid>
       </ion-row>

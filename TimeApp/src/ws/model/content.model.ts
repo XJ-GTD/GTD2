@@ -6,12 +6,12 @@
 import {WsModel} from "./ws.model";
 
 export class WsContent {
-  processor:string ="";
+  processor: string = "";
   option: string = "";
   parameters: any;
-  thisContext:WsModel;
-  when:string ="";
-  input:any;
-  output:any;
+  thisContext: WsModel;
+  when: string = "";    // 判断该处理是否执行
+  pause: string = "";   // 判断该处理是否暂停
+  input: any;
+  output: any;
 }
-

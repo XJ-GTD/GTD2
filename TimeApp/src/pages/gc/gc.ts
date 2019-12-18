@@ -46,7 +46,7 @@ export class GcPage {
   fsl:Array<FsData> = new Array<FsData>();
   constructor(public navCtrl: NavController,
               public navParams: NavParams,
-              private gcService: GrouperService,
+              private grouperService: GrouperService,
               private fsService:FsService,
               private util:UtilService,
               private modalCtrl: ModalController) {
@@ -78,7 +78,7 @@ export class GcPage {
   delete(g:FsData) {
     //删除群成员
     this.util.alterStart("2",()=>{
-      this.gcService.deleteBx(this.dc.gi,g.pwi).then(data=>{
+      this.grouperService.removeGrouperMember(this.dc.gi,g.pwi).then(data=>{
         this.getData();
       })
     });

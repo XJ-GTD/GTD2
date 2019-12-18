@@ -27,7 +27,7 @@ if [ $TRAVIS_OS_NAME = 'osx' ]; then
 
       if [ -f "$TRAVIS_BUILD_DIR/build/fir/$IOS_APP_NAME.ipa" ]; then
         echo "upload to fir.im"
-        fir publish $TRAVIS_BUILD_DIR/build/fir/$IOS_APP_NAME.ipa -T $FIR_TOKEN_CASSISCORNUTA -c "唐冠螺 (iOS): ${TRAVIS_COMMIT_MESSAGE}" -V
+        fir publish $TRAVIS_BUILD_DIR/build/fir/$IOS_APP_NAME.ipa -T $FIR_TOKEN_CASSISCORNUTA -c "唐冠螺 (iOS): ${TRAVIS_COMMIT_MESSAGE}" -V --switch_to_qiniu
       fi
     else
       fir publish $TRAVIS_BUILD_DIR/build/debug/app-$TRAVIS_BRANCH.ipa -T $FIR_TOKEN -c "${TRAVIS_BRANCH}: ${TRAVIS_COMMIT_MESSAGE}"
@@ -45,7 +45,7 @@ if [ $TRAVIS_OS_NAME = 'linux' ]; then
     # fir on Linux
     cp $TRAVIS_BUILD_DIR/TimeApp/platforms/android/app/build/outputs/apk/debug/app-debug.apk $TRAVIS_BUILD_DIR/TimeApp/platforms/android/app/build/outputs/apk/debug/app-$TRAVIS_BRANCH.apk
     if [ $TRAVIS_BRANCH = 'cassiscornuta' ]; then
-      fir p $TRAVIS_BUILD_DIR/TimeApp/platforms/android/app/build/outputs/apk/debug/app-$TRAVIS_BRANCH.apk -T $FIR_TOKEN_CASSISCORNUTA -c "唐冠螺 (Android): ${TRAVIS_COMMIT_MESSAGE}"
+      fir p $TRAVIS_BUILD_DIR/TimeApp/platforms/android/app/build/outputs/apk/debug/app-$TRAVIS_BRANCH.apk -T $FIR_TOKEN_CASSISCORNUTA -c "唐冠螺 (Android): ${TRAVIS_COMMIT_MESSAGE}" --switch_to_qiniu
     else
       fir p $TRAVIS_BUILD_DIR/TimeApp/platforms/android/app/build/outputs/apk/debug/app-$TRAVIS_BRANCH.apk -T $FIR_TOKEN -c "${TRAVIS_BRANCH}: ${TRAVIS_COMMIT_MESSAGE}"
     fi
