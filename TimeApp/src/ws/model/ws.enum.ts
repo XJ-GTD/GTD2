@@ -110,6 +110,12 @@ export enum O {
   S = "O.S",  //追问(时间，主题)
 }
 
+//选择
+export enum SE {
+  DO = "SE.DO", //选择
+  UN = "SE.UN", //放弃
+}
+
 //第三方接口或技能
 export enum T {
 }

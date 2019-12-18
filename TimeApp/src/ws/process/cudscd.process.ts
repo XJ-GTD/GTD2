@@ -1,3 +1,4 @@
+
 import {MQProcess} from "../interface.process";
 import {WsContent} from "../model/content.model";
 import {FriendEmData, ScdEmData} from "../../service/util-service/emit.service";
@@ -26,6 +27,10 @@ export class CudscdProcess extends BaseProcess implements MQProcess{
 
     let option = contextRetMap.get(WsDataConfig.OPTION4SPEECH);
     let processor = contextRetMap.get(WsDataConfig.PROCESSOR4SPEECH);
+
+    //上下文内获取日程查询结果
+    let paused: Array<any> = new Array<any>();
+    paused = this.input(content, contextRetMap, "paused", WsDataConfig.PAUSED, paused);
 
     //上下文内获取日程查询结果
     let scd:Array<ScdData> = new Array<ScdData>();
@@ -59,17 +64,21 @@ export class CudscdProcess extends BaseProcess implements MQProcess{
       }
     }
 
-    let prv:ProcesRs = new ProcesRs();
+    let prv: ProcesRs = new ProcesRs();
 
     //保存上下文
     prv.scd = scd;
     prv.mod = memos;
     prv.pid = planitems;
     prv.fs = fs;
+    prv.paused = paused;
 
     DataConfig.putWsContext(prv);
     DataConfig.putWsOpt(option?option:"");
     DataConfig.putWsProcessor(processor?processor:"");
+
+    //上下文内放置创建的或修改的日程
+    this.output(content, contextRetMap, 'paused', WsDataConfig.PAUSED, prv.paused);
 
     //上下文内放置创建的或修改的日程
     this.output(content, contextRetMap, 'agendas', WsDataConfig.SCD, prv.scd);

@@ -3,6 +3,7 @@ import {IonicModule} from "ionic-angular";
 import {WebsocketService} from "./websocket.service";
 import {ProcessFactory} from "./process.factory";
 import {DispatchService} from "./dispatch.service";
+import {DispatchSubService} from "./dispatchsub.service";
 import {CudscdProcess} from "./process/cudscd.process";
 import {RemindProcess} from "./process/remind.process";
 import {SpeechProcess} from "./process/speech.process";
@@ -26,6 +27,7 @@ import {DataSyncProcess} from "./process/datasync.process";
 import {CacheProcess} from "./process/cache.process";
 import {MemosProcess} from "./process/memos.process";
 import {PlanItemsProcess} from "./process/planitems.process";
+import {ChooseProcess} from "./process/choose.process";
 
 /**
  * WebSocket组件
@@ -34,8 +36,8 @@ import {PlanItemsProcess} from "./process/planitems.process";
  */
 @NgModule({
   imports: [IonicModule],
-  providers: [WebsocketService,
-    OptProcessFactory,
+  providers: [WebsocketService, ChooseProcess,
+    OptProcessFactory, DispatchSubService,
     ProcessFactory, DispatchService,
     BaseProcess, DataSyncProcess,
     CudscdProcess, RemindProcess,
