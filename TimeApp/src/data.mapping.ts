@@ -70,6 +70,7 @@ export class ScdData {
   st: string = "";//开始时间
   ed: string = "";//结束日期
   et: string = "";//结束时间
+  todolist: string = "";//重要事项 On/Off
   rt: string = "";//重复类型
   ji: string = "";//计划ID
   sr: string = "";//日程关联ID

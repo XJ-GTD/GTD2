@@ -9,7 +9,7 @@ import {UserConfig} from "../../service/config/user.config";
 import {CTbl} from "../../service/sqlite/tbl/c.tbl";
 import {AG, O, SS} from "../model/ws.enum";
 import {FsData, RcInParam, ScdData} from "../../data.mapping";
-import {EventService,AgendaData,Member} from "../../service/business/event.service";
+import {EventService, AgendaData, Member, multipleoffive} from "../../service/business/event.service";
 import {WsDataConfig} from "../wsdata.config";
 import {BaseProcess} from "./base.process";
 import * as anyenum from "../../data.enum";
@@ -35,6 +35,10 @@ export class AgendasProcess extends BaseProcess implements MQProcess,OptProcess{
     //获取上下文前动作信息
     prvOpt = this.input(content,contextRetMap,"prvoption",WsDataConfig.PRVOPTION,prvOpt);
 
+    //上下文内获取暂停缓存
+    let paused: Array<any> = new Array<any>();
+    paused = this.input(content, contextRetMap, "paused", WsDataConfig.PAUSED, paused) || paused;
+
     //上下文内获取日程查询结果
     let scd:Array<ScdData> = new Array<ScdData>();
     scd = this.input(content,contextRetMap,"agendas",WsDataConfig.SCD,scd);
@@ -42,6 +46,33 @@ export class AgendasProcess extends BaseProcess implements MQProcess,OptProcess{
     //上下文内获取日程人员信息
     let fs :Array<FsData> = new Array<FsData>();
     fs = this.input(content,contextRetMap,"contacts",WsDataConfig.FS,fs);
+
+    //process处理符合条件则暂停
+    console.log("******************agendas do pause");
+    if (content.pause && content.pause != "") {
+      console.log("******************agendas do pause in " + content.pause);
+      let pause: boolean = false;
+
+      try {
+        let isPause = eval("("+content.pause+")");
+        pause = isPause(content, scd, fs);
+      } catch (e) {
+        pause = false;
+      }
+
+      if (pause) {
+        let pausedContent: any = {};
+        Object.assign(pausedContent, content);
+        delete pausedContent.thisContext;
+
+        paused.push(pausedContent);
+
+        //设置上下文暂停处理缓存
+        this.output(content, contextRetMap, 'paused', WsDataConfig.PAUSED, paused);
+
+        return contextRetMap;
+      }
+    }
 
     //process处理符合条件则执行
     console.log("******************agendas do when")
@@ -68,6 +99,10 @@ export class AgendasProcess extends BaseProcess implements MQProcess,OptProcess{
       rcIn.st = (c.st == '99:99')? undefined : c.st;  // 不指定时间输入为99:99
       rcIn.sd = c.sd;
 
+      if (c.todolist) {
+        rcIn.todolist = c.todolist == "On"? anyenum.ToDoListStatus.On : anyenum.ToDoListStatus.Off;
+      }
+
       if (c.si && c.si != null && c.si != '') {
         rcIn.evi = c.si;
       }
@@ -92,6 +127,7 @@ export class AgendasProcess extends BaseProcess implements MQProcess,OptProcess{
           c.st = saved[0].evt;
           c.ed = saved[0].evd;
           c.et = saved[0].evt;
+          c.todolist = saved[0].todolist == anyenum.ToDoListStatus.On? "On" : "Off";
         }
       } else if (prvOpt == AG.U) {
         console.log("******************agendas do AG.U")
@@ -102,6 +138,11 @@ export class AgendasProcess extends BaseProcess implements MQProcess,OptProcess{
         updated.evn = rcIn.evn;
         updated.st = rcIn.st;
         updated.sd = rcIn.sd;
+
+        if (c.todolist) {
+          updated.todolist = rcIn.todolist;
+        }
+
         if (rcIn.members && rcIn.members.length > 0) {
           updated.members = updated.members || new Array<Member>();
 
@@ -184,9 +225,18 @@ export class AgendasProcess extends BaseProcess implements MQProcess,OptProcess{
         scdlist.push(c);
 
         for (let c of scdlist){
-          c.sd = cudPara.d == null?c.sd:cudPara.d;
           c.sn = cudPara.ti == null?c.sn:cudPara.ti;
+          c.sd = cudPara.d == null?c.sd:cudPara.d;
           c.st = cudPara.t == null?c.st:cudPara.t;
+
+          // 日程时间必须是5分钟的倍数
+          if (c.st && c.st != "99:99") {
+            let datetime = multipleoffive(c.sd, c.st);
+
+            c.sd = datetime.format("YYYY/MM/DD");
+            c.st = datetime.format("HH:mm");
+          }
+
           //显示本次创建的人
           c.fss = fs;
         }
@@ -232,9 +282,14 @@ export class AgendasProcess extends BaseProcess implements MQProcess,OptProcess{
       if (scd.length == 1){
         // 设置修改后内容
         for (let c of scd){
-          c.sd = (cudPara.d == null || cudPara.d == '')? c.sd:cudPara.d;
           c.sn = (cudPara.ti == null || cudPara.ti == '')?c.sn:cudPara.ti;
+          c.sd = (cudPara.d == null || cudPara.d == '')? c.sd:cudPara.d;
           c.st = (cudPara.t == null || cudPara.t == '')?c.st:cudPara.t;
+
+          // 修改重要事项
+          if (cudPara.todolist) {
+            c.todolist = cudPara.todolist;
+          }
           //显示本次添加的人
           c.fss = fs;
         }

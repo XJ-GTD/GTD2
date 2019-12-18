@@ -19,6 +19,9 @@ export class ProcesRs{
   //日历项
   pid:Array<ScdData>=[];
 
+  //暂停处理
+  paused: Array<any> = [];
+
   option4Speech = "";
 
   sucess:boolean;

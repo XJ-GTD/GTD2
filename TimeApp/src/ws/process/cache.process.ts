@@ -8,6 +8,7 @@ import * as moment from "moment";
 import {ScdData} from "../../data.mapping";
 import {WsDataConfig} from "../wsdata.config";
 import {BaseProcess} from "./base.process";
+import {multipleoffive} from "../../service/business/event.service";
 
 /**
  * 语音数据缓存
@@ -20,7 +21,49 @@ export class CacheProcess extends BaseProcess implements MQProcess {
     super();
   }
 
-  async gowhen(content: WsContent, contextRetMap: Map<string,any>) {
+  async gowhen(content: WsContent, contextRetMap: Map<string, any>) {
+
+    //处理所需要参数
+    let cacheData: CachePara = content.parameters;
+
+    //上下文内获取暂停缓存
+    let paused: Array<any> = new Array<any>();
+    paused = this.input(content, contextRetMap, "paused", WsDataConfig.PAUSED, paused) || paused;
+
+    //上下文内获取日程语音输入缓存数据
+    let agendas: Array<ScdData> = new Array<ScdData>();
+    agendas = this.input(content, contextRetMap, "agendas", WsDataConfig.SCD, agendas) || new Array<ScdData>();
+
+    let memos: Array<ScdData> = new Array<ScdData>();
+    memos = this.input(content, contextRetMap, "memos", WsDataConfig.MOD, memos) || new Array<ScdData>();
+
+    let planitems: Array<ScdData> = new Array<ScdData>();
+    planitems = this.input(content, contextRetMap, "planitems", WsDataConfig.PID, planitems) || new Array<ScdData>();
+
+    //process处理符合条件则暂停
+    if (content.pause && content.pause != "") {
+      let pause: boolean = false;
+
+      try {
+        let isPause = eval("("+content.pause+")");
+        pause = isPause(content, agendas, memos, planitems);
+      } catch (e) {
+        pause = false;
+      }
+
+      if (pause) {
+        let pausedContent: any = {};
+        Object.assign(pausedContent, content);
+        delete pausedContent.thisContext;
+
+        paused.push(pausedContent);
+
+        //设置上下文暂停处理缓存
+        this.output(content, contextRetMap, 'paused', WsDataConfig.PAUSED, paused);
+
+        return contextRetMap;
+      }
+    }
 
     //process处理符合条件则执行
     if (content.when && content.when !=""){
@@ -37,19 +80,6 @@ export class CacheProcess extends BaseProcess implements MQProcess {
       }
     }
 
-    //处理所需要参数
-    let cacheData: CachePara = content.parameters;
-
-    //上下文内获取日程语音输入缓存数据
-    let agendas: Array<ScdData> = new Array<ScdData>();
-    agendas = this.input(content, contextRetMap, "agendas", WsDataConfig.SCD, agendas) || new Array<ScdData>();
-
-    let memos: Array<ScdData> = new Array<ScdData>();
-    memos = this.input(content, contextRetMap, "memos", WsDataConfig.MOD, memos) || new Array<ScdData>();
-
-    let planitems: Array<ScdData> = new Array<ScdData>();
-    planitems = this.input(content, contextRetMap, "planitems", WsDataConfig.PID, planitems) || new Array<ScdData>();
-
     //处理区分
     if (content.option == CA.AD) {
       if (agendas.length <= 0) {
@@ -59,6 +89,32 @@ export class CacheProcess extends BaseProcess implements MQProcess {
         agendadata.st = cacheData.scd.ts || agendadata.st;
         agendadata.ed = cacheData.scd.de || agendadata.ed;
         agendadata.et = cacheData.scd.te || agendadata.et;
+
+        let datetime = multipleoffive(agendadata.sd, agendadata.st);
+
+        agendadata.sd = datetime.format("YYYY/MM/DD");
+        agendadata.st = datetime.format("HH:mm");
+
+        datetime = multipleoffive(agendadata.ed, agendadata.et);
+
+        agendadata.ed = datetime.format("YYYY/MM/DD");
+        agendadata.et = datetime.format("HH:mm");
+
+        // 将日程的时间设置为5的整数倍
+        if (agendadata.st) {
+          let datetime = multipleoffive(agendadata.sd, agendadata.st);
+
+          if (agendadata.sd) agendadata.sd = datetime.format("YYYY/MM/DD");
+          agendadata.st = datetime.format("HH:mm");
+        }
+
+        // 将日程的时间设置为5的整数倍
+        if (agendadata.et) {
+          let datetime = multipleoffive(agendadata.ed, agendadata.et);
+
+          if (agendadata.ed) agendadata.ed = datetime.format("YYYY/MM/DD");
+          agendadata.et = datetime.format("HH:mm");
+        }
 
         agendadata.sn = cacheData.scd.ti || agendadata.sn;
         // agendadata.adr = cacheData.scd.adr || agendadata.adr;
@@ -71,6 +127,22 @@ export class CacheProcess extends BaseProcess implements MQProcess {
         agendadata.st = cacheData.scd.ts || agendadata.st;
         agendadata.ed = cacheData.scd.de || agendadata.ed;
         agendadata.et = cacheData.scd.te || agendadata.et;
+
+        // 将日程的时间设置为5的整数倍
+        if (agendadata.st) {
+          let datetime = multipleoffive(agendadata.sd, agendadata.st);
+
+          if (agendadata.sd) agendadata.sd = datetime.format("YYYY/MM/DD");
+          agendadata.st = datetime.format("HH:mm");
+        }
+
+        // 将日程的时间设置为5的整数倍
+        if (agendadata.et) {
+          let datetime = multipleoffive(agendadata.ed, agendadata.et);
+
+          if (agendadata.ed) agendadata.ed = datetime.format("YYYY/MM/DD");
+          agendadata.et = datetime.format("HH:mm");
+        }
 
         agendadata.sn = cacheData.scd.ti || agendadata.sn;
         // agendadata.adr = cacheData.scd.adr || agendadata.adr;

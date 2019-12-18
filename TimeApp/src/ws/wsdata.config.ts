@@ -18,6 +18,8 @@ export class WsDataConfig {
   public static OPTION4SPEECH:string = "option4Speech";
   //前动作process本地
   public static PROCESSOR4SPEECH:string = "processor4Speech";
+  //前暂停操作
+  public static PAUSED: string = "paused";
 
   public static BRANCHCODE:string = "branchcode";
 
