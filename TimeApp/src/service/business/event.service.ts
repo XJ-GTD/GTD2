@@ -4182,13 +4182,13 @@ export class EventService extends BaseService {
    *
    * @author ying<343253410@qq.com>
    */
-  async selectAttachments(obt: string, obi: string) {
+  async fetchObjectAttachments(obt: string, obi: string): Promise<Array<Attachment>> {
     this.assertEmpty(obt);
     this.assertEmpty(obi);
 
     let attachments: Array<Attachment> = new Array<Attachment>();
     let sql: string = `select * from gtd_fj  where del = ? and obt =? and obi = ? order by wtt desc`;
-    attachments = await this.sqlExce.getExtLstByParam<Attachment>(sql, [DelType.undel,obt,obi]);
+    attachments = await this.sqlExce.getExtLstByParam<Attachment>(sql, [DelType.undel,obt,obi]) || attachments;
     // let fj = new FjTbl();
     // fj.obi = obi;
     // fj.obt = obt;
