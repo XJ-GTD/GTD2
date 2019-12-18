@@ -3,6 +3,10 @@ page-m {
   background-size: 100% 100%;
 
   .menu {
+    ion-backdrop{
+      display: block;
+      background-color: rgba(248, 248, 248,1);
+    }
     .grid {
       padding-top: 65px;
 
@@ -55,7 +59,6 @@ page-m {
   page-m {
     //background-image: url('../assets/imgs/m-backgroud-white.jpg');
     .menu {
-      background: rgba(248, 248, 248, .4);
 
       .grid {
         .row {

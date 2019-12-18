@@ -24,13 +24,15 @@ export class MenuScalePushType extends MenuType {
     }
     const menuAni = new Animation(plt, menu.getMenuElement());
     menuAni.fromTo('translateX', menuClosedX, menuOpenedX);
-    // menuAni.fromTo('opacity',0.5,1);
     this.ani.add(menuAni);
     const contentApi = new Animation(plt, menu.getContentElement());
     contentApi.fromTo('translateX', '0px', contentOpenedX);
     contentApi.fromTo('scale',1,.9);
-    // contentApi.fromTo('opacity',1,0.5);
+    contentApi.fromTo('opacity',1,.5);
     this.ani.add(contentApi);
+    const backdropAni = new Animation(plt, menu.getBackdropElement());
+    backdropAni.fromTo('opacity',0,.5);
+    this.ani.add(backdropAni);
   }
 }
 
