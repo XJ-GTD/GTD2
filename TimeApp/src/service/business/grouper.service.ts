@@ -339,11 +339,11 @@ export class GrouperService extends BaseService {
   //获取本地群列表
   filterGroups(groups: Array<PageDcData>, name: string):Array<PageDcData> {
     if (name)
-      return UserConfig.groups.filter((value)=>{
+      return groups.filter((value)=>{
         return value.gn.indexOf(name) > -1 || value.gnpy.indexOf(name) > -1
       });
     else
-      return UserConfig.groups;
+      return groups;
   }
 
   mergeFriends(friends: Array<FsData>, friend: FsData): Array<FsData> {
