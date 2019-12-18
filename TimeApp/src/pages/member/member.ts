@@ -162,7 +162,7 @@ export class MemberPage {
   getContacts() {
     this.pageGrouList.length = 0;
     this.pageFsList.length = 0;
-    let groupList = this.grouperService.getGroups(this.tel);
+    let groupList = this.grouperService.filterGroups(UserConfig.groups, this.tel);
     let fsList = this.memberService.getfriend(this.tel);
     groupList.forEach((value) => {
       let group: PageGroupData = new PageGroupData();

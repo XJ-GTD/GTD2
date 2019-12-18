@@ -337,7 +337,7 @@ export class GrouperService extends BaseService {
   }
 
   //获取本地群列表
-  getGroups(name:string):Array<PageDcData> {
+  filterGroups(groups: Array<PageDcData>, name: string):Array<PageDcData> {
     if (name)
       return UserConfig.groups.filter((value)=>{
         return value.gn.indexOf(name) > -1 || value.gnpy.indexOf(name) > -1
@@ -346,6 +346,62 @@ export class GrouperService extends BaseService {
       return UserConfig.groups;
   }
 
+  mergeFriends(friends: Array<FsData>, friend: FsData): Array<FsData> {
+    assertEmpty(friends);   // 入参不能为空
+    assertEmpty(friend);    // 合并对象不能为空
+    assertEmpty(friend.rc); // 合并对象手机号不能为空
+
+    let pos = friends.findIndex((element) => {
+      return (element.rc == friend.rc);
+    });
+
+    if (pos >= 0) {
+      friends.splice(pos, 1, friend);
+    } else {
+      friends.unshift(friend);
+    }
+
+    //增加内部事件通知
+    // this.emitService.emit("mwxing.config.user.btbl.refreshed");
+
+    return friends;
+  }
+
+  async fetchFriends(friends: Array<FsData> = new Array<FsData>()): Promise<Array<FsData>> {
+    let exists = friends.reduce((target, val) => {
+      if (target.indexOf(val.rc) < 0) {
+        target.push(val.rc);
+      }
+      return target;
+    }, new Array<string>());
+
+    //获取本地参与人
+    let sql = `select gb.*,bh.hiu bhiu
+               from gtd_b gb
+                      left join gtd_bh bh on bh.pwi = gb.pwi;`;
+
+    let fss: Array<FsData> = await this.sqlExce.getExtList<FsData>(sql);
+
+    for (let fs of fss) {
+      fs.bhiu = '';
+      let index = exists.indexOf(fs.rc);
+
+      if (index < 0) {
+        friends.push(fs);
+      } else {
+        let pos = friends.findIndex((element) => {
+          return (element.rc == fs.rc);
+        });
+
+        friends.splice(pos, 1, fs);
+      }
+    }
+
+    //增加内部事件通知
+    // this.emitService.emit("mwxing.config.user.btbl.refreshed");
+
+    return friends;
+  }
 }
 
 export class Grouper extends GTbl{

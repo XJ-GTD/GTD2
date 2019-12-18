@@ -180,7 +180,7 @@ import {FsData, PageDcData} from "../../data.mapping";
        let pd: PageDcData = new PageDcData();
        await grouperService.saveGrouper(pd);
 
-       let pg: Array<PageDcData> = await grouperService.getGroups("");
+       let pg: Array<PageDcData> = await grouperService.filterGroups(UserConfig.groups, "");
        expect(pg).toBeDefined();
        expect(pg.length).toBeDefined(0);
 
@@ -191,7 +191,7 @@ import {FsData, PageDcData} from "../../data.mapping";
        pd.gn ="组团打怪群";
        await grouperService.saveGrouper(pd);
 
-       let pg: Array<PageDcData> = await grouperService.getGroups("组团打怪群");
+       let pg: Array<PageDcData> = await grouperService.filterGroups(UserConfig.groups, "组团打怪群");
        expect(pg).toBeDefined();
        expect(pg.length).toBeDefined(1);
 
@@ -202,7 +202,7 @@ import {FsData, PageDcData} from "../../data.mapping";
        pd.gn ="组团打怪群";
        await grouperService.saveGrouper(pd);
 
-       let pg: Array<PageDcData> = await grouperService.getGroups("组团打怪群");
+       let pg: Array<PageDcData> = await grouperService.filterGroups(UserConfig.groups, "组团打怪群");
        expect(pg).toBeDefined();
        expect(pg.length).toBeDefined(1);
 
@@ -214,7 +214,7 @@ import {FsData, PageDcData} from "../../data.mapping";
        pd2.fsl.push(fs);
        await grouperService.saveGrouper(pd2);
 
-       let pg2: Array<PageDcData> = await grouperService.getGroups("组团打怪群3");
+       let pg2: Array<PageDcData> = await grouperService.filterGroups(UserConfig.groups, "组团打怪群3");
        expect(pg2).toBeDefined();
        expect(pg2.length).toBeDefined(1);
      });
@@ -233,7 +233,7 @@ import {FsData, PageDcData} from "../../data.mapping";
        pd3.gn ="组团打怪群3";
        await grouperService.saveGrouper(pd3);
 
-       let pg: Array<PageDcData> = await grouperService.getGroups("");
+       let pg: Array<PageDcData> = await grouperService.filterGroups(UserConfig.groups, "");
        expect(pg).toBeDefined();
        expect(pg.length).toBeDefined(3);
 
@@ -243,7 +243,7 @@ import {FsData, PageDcData} from "../../data.mapping";
 
        await grouperService.removeGrouper(gi);
 
-       let pg1: Array<PageDcData> = await grouperService.getGroups(gn);
+       let pg1: Array<PageDcData> = await grouperService.filterGroups(UserConfig.groups, gn);
        expect(pg1).toBeDefined();
        expect(pg1.length).toBeDefined(1);
        // expect(pg1[0].del).toBe(DelType.del);
@@ -263,7 +263,7 @@ import {FsData, PageDcData} from "../../data.mapping";
        pd3.gn ="组团打怪群3";
        await grouperService.saveGrouper(pd3);
 
-       let pg: Array<PageDcData> = await grouperService.getGroups("");
+       let pg: Array<PageDcData> = await grouperService.filterGroups(UserConfig.groups, "");
        expect(pg).toBeDefined();
        expect(pg.length).toBeDefined(3);
        await grouperService.removeGrouper(pg[0].gi);
