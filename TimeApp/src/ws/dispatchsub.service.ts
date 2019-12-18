@@ -20,7 +20,7 @@ export class DispatchSubService {
   constructor(private factory: ProcessFactory) {
   }
 
-  async subprocess(processes: Array<any> = new Array<any>(), contextRetMap: Map<string, any> = new Map<string, any>(), model: WsModel): Promise<contextRetMap: Map<string,any>> {
+  async subprocess(processes: Array<any> = new Array<any>(), contextRetMap: Map<string, any> = new Map<string, any>(), model: WsModel): Promise<Map<string, any>> {
 
     //循环处理子处理
     for (let process of processes) {
