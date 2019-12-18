@@ -8,6 +8,7 @@ import * as moment from "moment";
 import {ScdData} from "../../data.mapping";
 import {WsDataConfig} from "../wsdata.config";
 import {BaseProcess} from "./base.process";
+import {multipleoffive} from "../../service/business/event.service";
 
 /**
  * 语音数据缓存
@@ -89,6 +90,32 @@ export class CacheProcess extends BaseProcess implements MQProcess {
         agendadata.ed = cacheData.scd.de || agendadata.ed;
         agendadata.et = cacheData.scd.te || agendadata.et;
 
+        let datetime = multipleoffive(agendadata.sd, agendadata.st);
+
+        agendadata.sd = datetime.format("YYYY/MM/DD");
+        agendadata.st = datetime.format("HH:mm");
+
+        datetime = multipleoffive(agendadata.ed, agendadata.et);
+
+        agendadata.ed = datetime.format("YYYY/MM/DD");
+        agendadata.et = datetime.format("HH:mm");
+
+        // 将日程的时间设置为5的整数倍
+        if (agendadata.st) {
+          let datetime = multipleoffive(agendadata.sd, agendadata.st);
+
+          if (agendadata.sd) agendadata.sd = datetime.format("YYYY/MM/DD");
+          agendadata.st = datetime.format("HH:mm");
+        }
+
+        // 将日程的时间设置为5的整数倍
+        if (agendadata.et) {
+          let datetime = multipleoffive(agendadata.ed, agendadata.et);
+
+          if (agendadata.ed) agendadata.ed = datetime.format("YYYY/MM/DD");
+          agendadata.et = datetime.format("HH:mm");
+        }
+
         agendadata.sn = cacheData.scd.ti || agendadata.sn;
         // agendadata.adr = cacheData.scd.adr || agendadata.adr;
 
@@ -100,6 +127,22 @@ export class CacheProcess extends BaseProcess implements MQProcess {
         agendadata.st = cacheData.scd.ts || agendadata.st;
         agendadata.ed = cacheData.scd.de || agendadata.ed;
         agendadata.et = cacheData.scd.te || agendadata.et;
+
+        // 将日程的时间设置为5的整数倍
+        if (agendadata.st) {
+          let datetime = multipleoffive(agendadata.sd, agendadata.st);
+
+          if (agendadata.sd) agendadata.sd = datetime.format("YYYY/MM/DD");
+          agendadata.st = datetime.format("HH:mm");
+        }
+
+        // 将日程的时间设置为5的整数倍
+        if (agendadata.et) {
+          let datetime = multipleoffive(agendadata.ed, agendadata.et);
+
+          if (agendadata.ed) agendadata.ed = datetime.format("YYYY/MM/DD");
+          agendadata.et = datetime.format("HH:mm");
+        }
 
         agendadata.sn = cacheData.scd.ti || agendadata.sn;
         // agendadata.adr = cacheData.scd.adr || agendadata.adr;
