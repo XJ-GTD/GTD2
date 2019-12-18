@@ -24,6 +24,11 @@ export class NotificationProcess extends BaseProcess implements MQProcess {
   }
 
   async gowhen(content: WsContent, contextRetMap: Map<string,any>) {
+
+    //上下文内获取暂停缓存
+    let paused: Array<any> = new Array<any>();
+    paused = this.input(content, contextRetMap, "paused", WsDataConfig.PAUSED, paused) || paused;
+
     //上下文内获取日程查询结果
     let agendas:Array<ScdData> = new Array<ScdData>();
     agendas = this.input(content,contextRetMap, "agendas", WsDataConfig.SCD, agendas);

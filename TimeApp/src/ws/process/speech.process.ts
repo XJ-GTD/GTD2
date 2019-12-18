@@ -175,6 +175,10 @@ export class SpeechProcess extends BaseProcess implements MQProcess {
         }
       }
 
+      //上下文内获取暂停缓存
+      let paused: Array<any> = new Array<any>();
+      paused = this.input(content, contextRetMap, "paused", WsDataConfig.PAUSED, paused) || paused;
+
       //process处理符合条件则暂停
       if (content.pause && content.pause != "") {
         let pause: boolean = false;

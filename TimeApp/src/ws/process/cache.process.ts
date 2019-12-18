@@ -25,6 +25,10 @@ export class CacheProcess extends BaseProcess implements MQProcess {
     //处理所需要参数
     let cacheData: CachePara = content.parameters;
 
+    //上下文内获取暂停缓存
+    let paused: Array<any> = new Array<any>();
+    paused = this.input(content, contextRetMap, "paused", WsDataConfig.PAUSED, paused) || paused;
+
     //上下文内获取日程语音输入缓存数据
     let agendas: Array<ScdData> = new Array<ScdData>();
     agendas = this.input(content, contextRetMap, "agendas", WsDataConfig.SCD, agendas) || new Array<ScdData>();
