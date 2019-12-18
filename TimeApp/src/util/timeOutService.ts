@@ -14,33 +14,37 @@ export class TimeOutService {
   notifworks:Map<string,number> = new Map<string, number>();
 
   timeout(mi: number, fn: Function, emitKey: string) {
-    // if (this.util.isAppBack() && this.util.isMobile() && !this.util.isIOS()) {
-    //   this.emitService.register(emitKey, () => {
-    //     fn();
-    //     this.emitService.destroy(emitKey);
-    //   });
-    //   //提醒间隔最小单位是秒，所以/1000
-    //   this.notificationsService.sysTimeout(emitKey, mi  < 1000 ? 1 : mi / 1000);
-    // }
-    if (this.util.isAppBack() && this.util.isMobile()) {
-      //直接返回，不要要timeout设置
+    if (this.util.isAppBack() && this.util.isAndroid()) {
+      this.emitService.register(emitKey, () => {
         fn();
+        this.emitService.destroy(emitKey);
+      });
+      //提醒间隔最小单位是秒，所以/1000
+      this.notificationsService.sysTimeout(emitKey, mi  < 1000 ? 1 : mi / 1000);
+      return;
+    }
+    else if (this.util.isAppBack() && this.util.isIOS()) {
+      //直接返回，不要要timeout设置
+      fn();
+      return;
       //提醒间隔最小单位是秒，所以/1000
       // this.notificationsService.sysTimeout(emitKey, mi  < 1000 ? 1 : mi / 1000);
     }
-    else {
+    else if (!this.util.isAppBack() && this.util.isMobile()){
       let timeoutWork = new Worker("./workerTimeout.js");
       timeoutWork.onmessage = (message) => {
         fn();
         timeoutWork.terminate();
       }
       timeoutWork.postMessage(mi);
+    }else{
+      fn();
     }
   }
 
   timeOutOnlyOne(mi: number, fn: Function, emitKey: string){
 
-    if (this.util.isAppBack() && this.util.isMobile() && !this.util.isIOS()) {
+    if (this.util.isAppBack() && this.util.isAndroid()) {
       this.emitService.register(emitKey, () => {
          fn();
         this.emitService.destroy(emitKey);

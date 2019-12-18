@@ -69,7 +69,7 @@ export class PointComponent {
 
   @ViewChild('popper')
   popper: PopperComponent;
-  popperShow: boolean = true;
+  popperShow: boolean = false;
 
   @Input()
   showInput: boolean = true;

@@ -1,7 +1,6 @@
 
 let timeObj;
 onmessage = function (e) {
-  if (!timeObj){
     let time = e.data ? e.data : 0;
     clearTimeout(timeObj);
     timeObj = setTimeout(() => {
@@ -10,5 +9,4 @@ onmessage = function (e) {
       postMessage("");
       self.close();
     }, time);
-  }
 };

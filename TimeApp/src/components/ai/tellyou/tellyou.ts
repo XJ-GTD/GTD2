@@ -13,9 +13,9 @@ import {AssistantService} from "../../../service/cordova/assistant.service";
 import {EmitService} from "../../../service/util-service/emit.service";
 import {Subscriber} from "rxjs";
 import {TimeOutService} from "../../../util/timeOutService";
-import {TellyouService} from "./tellyou.service";
+import {TellYou, TellyouService} from "./tellyou.service";
 import {DataConfig} from "../../../service/config/data.config";
-import {EventType, InviteState, ModalTranType} from "../../../data.enum";
+import {EventType, InviteState, ModalTranType, TellyouIdType, TellyouType} from "../../../data.enum";
 import {ScdPageParamter} from "../../../data.mapping";
 import * as moment from "moment";
 
@@ -29,7 +29,7 @@ import * as moment from "moment";
 @Component({
   selector: 'TellyouComponent',
   template: `
-    <button ion-button icon-start clear item-end (click)="close()" class="closebutton">
+    <button ion-button icon-start clear item-end (click)="closePopper()" class="closebutton">
       <ion-icon class="fal fa-times"></ion-icon>
     </button>
     <ion-card>
@@ -37,16 +37,16 @@ import * as moment from "moment";
         <ion-card-title no-padding no-margin>
           <ion-item>
             <button ion-button item-end clear class="show" (click)="open(tellYouData)">
-              查看Tellyou数据类型
+              查看
             </button>
             <p class="tellType">
-              tellType{{tellYouData.tellType}}
+              {{tellYouData.tellType}}
             </p>
             <p class="formperson">
-              formperson{{tellYouData.formperson}}
+              {{tellYouData.formperson}}
             </p>
             <p class="fromdate">
-              fromdate{{tellYouData.fromdate}}
+              {{tellYouData.fromdate}}
             </p>
           </ion-item>
         </ion-card-title>
@@ -77,7 +77,7 @@ import * as moment from "moment";
             拒绝
           </button>
           <button ion-button item-end class="accept" (click)="accept()">
-            接受 活动消息出现
+            接受
           </button>
         </ion-item>
         <ion-item>
@@ -85,7 +85,7 @@ import * as moment from "moment";
             <ion-icon class="fal fa-stop"></ion-icon>
           </button>
           <button ion-button item-end class="again" (click)="again()">
-            10分钟后再提醒(提醒消息时候出现)
+            10分钟后再提醒
           </button>
         </ion-item>
       </ion-card-content>
@@ -102,8 +102,8 @@ import * as moment from "moment";
     </ion-item>
   `,
 })
-export class TellYouComponent {
-  aiTellYou: Subscriber<any>;
+export class TellYouComponent{
+  // aiTellYou: Subscriber<any>;
 
   tellYouData: TellYou = new TellYou();
 
@@ -126,48 +126,43 @@ export class TellYouComponent {
   @Output()
   private onShow: EventEmitter<any> = new EventEmitter<any>();
 
-  constructor(private utilService: UtilService,
-              private assistantService: AssistantService,
-              private _renderer: Renderer2,
-              private emitService: EmitService,
-              private changeDetectorRef: ChangeDetectorRef,
-              private timeoutService: TimeOutService,
+  constructor(private changeDetectorRef: ChangeDetectorRef,
               private tellyouService: TellyouService) {
-    this.aiTellYou = this.emitService.registerAiTellYou(($data) => {
-      this.tellyouService.pushTellYouData($data, (showData: any) => {
-        this.showPopper(showData);
-      })
-    });
+
+      this.tellyouService.regeditTellYou((tellYou:TellYou)=>{
+        this.showPopper(tellYou);
+      }, () => {
+        this.closePopper();
+      });
   }
-
-  showPopper(data: any) {
-    this.tellyouService.pauseTellYou();
-
-    this.timeoutService.timeOutOnlyOne(5000, () => {
-      this.tellYouData = data.message;
-      if (!this.changeDetectorRef['destroyed']) {
-        this.changeDetectorRef.detectChanges();
-        this.onShow.emit(true);
-        this.timeoutService.timeOutOnlyOne(10000, () => {
-          this.close();
-        }, "close.home.ai.talk");
-      }
-    }, "open.home.ai.talk");
-
-
-  }
-
-  ngOnDestroy() {
-    if (this.aiTellYou)
-      this.aiTellYou.unsubscribe();
-  }
-
-  close() {
+  closePopper() {
     this.tellYouData = new TellYou();
     this.changeDetectorRef.detectChanges();
     this.onClose.emit(true);
     this.tellyouService.resumeTellYou();
   }
+
+  showPopper(data: TellYou) {
+    this.tellYouData = data;
+    if (!this.changeDetectorRef['destroyed']) {
+      this.changeDetectorRef.detectChanges();
+      this.onShow.emit(true);
+    }
+
+  }
+
+
+  ignoreAll() {
+    this.tellyouService.ignoreAll();
+    this.closePopper();
+  }
+
+  ngOnDestroy() {
+    this.tellyouService.unRegeditTellYou();
+    // if (this.aiTellYou)
+    //   this.aiTellYou.unsubscribe();
+  }
+
 
   open() {
 
@@ -192,10 +187,6 @@ export class TellYouComponent {
   stop() {
   }
 
-  ignoreAll() {
-    this.tellyouService.ignoreAll();
-    this.close();
-  }
 
   //
   // toMemo(day) {
@@ -265,21 +256,5 @@ export class TellYouComponent {
   // }
 }
 
-export class TellYou {
-  tellType: string;//1活动邀请 2日历项邀请 3活动提醒 4小任务提醒 5日历项提醒 6重要事项系统 7和并提醒 10系统消息
-  id: string; //活动，日历项，小任务
-  contenttype: string;
-  formperson: string; //发起人
-  fromdate: string; //日期 时间 时长
-  datetype: string //1 开始时间 2 截至到
-  sn: string;  //内容主题
-  repeat: string; //重复文字
-  invites;
-  number //邀请人数
-  bells: number; //剩余提醒个数
-  handshake: number;//剩余邀请个数
-  systems: number;//剩余系统消息个数
-  spearktext: string;//播报格式
-}
 
 
