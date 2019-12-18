@@ -32,11 +32,11 @@ export class PlanItemsProcess extends BaseProcess implements MQProcess,OptProces
 
     //上下文内获取日程查询结果
     let scd:Array<ScdData> = new Array<ScdData>();
-    scd = this.input(content, contextRetMap, "planitems", WsDataConfig.PID, scd);
+    scd = this.input(content, contextRetMap, "planitems", WsDataConfig.PID, scd) || scd;
 
     //上下文内获取日程人员信息
     let fs :Array<FsData> = new Array<FsData>();
-    fs = this.input(content,contextRetMap,"contacts",WsDataConfig.FS,fs);
+    fs = this.input(content,contextRetMap,"contacts",WsDataConfig.FS,fs) || fs;
 
     //process处理符合条件则执行
     console.log("******************planitems do when")
