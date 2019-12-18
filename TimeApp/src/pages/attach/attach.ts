@@ -194,7 +194,7 @@ export class AttachPage {
       //调用刷新
       this.flushData().then(()=>{
         this.bscroll.finishPullUp();
-      })
+      });
     });
     this.flushData();
   }

@@ -4197,6 +4197,44 @@ export class EventService extends BaseService {
     return attachments;
   }
 
+  mergeObjectAttachments(attachments: Array<Attachment>, attachment: Attachment): Array<Attachment> {
+    assertEmpty(attachments);   // 入参不能为空
+    assertEmpty(attachment);    // 入参不能为空
+    assertEmpty(attachment.fji);// 主键不能为空
+    assertEmpty(attachment.wtt);// 创建时间不能为空
+
+    let posmix: any = attachments.reduce((target, element, index) => {
+
+      if (element.fji == attachment.fji)  target.index = index;
+      if (element.wtt > attachment.wtt) target.insert = index;
+
+      return target;
+    }, {index: -1, insert: -1});
+
+    if (attachment.del == DelType.del) {
+      if (posmix.index >= 0) {
+        attachments.splice(posmix.index, 1);
+      } else {
+        // 不存在，什么都不做
+      }
+    } else {
+      if (posmix.index >= 0) {
+        // 已存在，直接更新（wtt不会变化）
+        attachments.splice(posmix.index, 1, attachment);
+      } else {
+        if (posmix.insert >= 0) {
+          // 插入到中间位置
+          attachments.splice(posmix.insert, 0, attachment);
+        } else {
+          // 插入到最后
+          attachments.push(attachment);
+        }
+      }
+    }
+
+    return attachments;
+  }
+
   /**
    * 查询全部的附件信息
    *
