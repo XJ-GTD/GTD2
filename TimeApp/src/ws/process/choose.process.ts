@@ -18,8 +18,8 @@ import {BaseProcess} from "./base.process";
  * create by xilj on 2019/12/18.
  */
 @Injectable()
-export class ChooseProcess extends BaseProcess implements MQProcess{
-  constructor(dispatchsub: DispatchSubService) {
+export class ChooseProcess extends BaseProcess implements MQProcess {
+  constructor(private dispatchsub: DispatchSubService) {
     super();
   }
 
