@@ -46,7 +46,7 @@ export class WebsocketService {
       this.dispatchService.dispatch(message).then(data=>{
         callback();
       }).catch(data=>{
-        callback(message);
+        callback(data);
       })
     },1,1,"background.queue",this.util,this.timeOutService);
 
@@ -58,7 +58,7 @@ export class WebsocketService {
         callback();
       }).catch(data=>{
         // console.log(data);
-        callback(message);
+        callback(data);
       })
     },1,1,"worker.queue",this.util,this.timeOutService);
 
@@ -69,7 +69,7 @@ export class WebsocketService {
       this.dispatchService.dispatch(message).then(data=>{
         callback();
       }).catch(data=>{
-        callback(data);
+        callback([data]);
       })
     },1,1,"speech.queue",this.util,this.timeOutService);
 
