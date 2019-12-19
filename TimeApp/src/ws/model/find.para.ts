@@ -27,5 +27,7 @@ export class FindPara{
     fs:Array<any>;
     //标签查询
     marks:Array<string>;
+    //查询对象
+    targets:Array<string>;
   }
 }

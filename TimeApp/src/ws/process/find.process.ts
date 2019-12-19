@@ -72,6 +72,7 @@ export class FindProcess extends BaseProcess implements MQProcess {
       if (finds.te)  condition.et = finds.te;
       if (finds.ti)  condition.text = finds.ti;
       if (finds.marks)  condition.mark = finds.marks;
+      if (finds.targets)  condition.target = finds.targets;
 
       let activities: ActivityData = await this.calendarService.findActivities(condition);
 
