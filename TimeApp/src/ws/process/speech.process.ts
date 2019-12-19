@@ -74,6 +74,8 @@ export class SpeechProcess extends BaseProcess implements MQProcess {
       let memos: Array<ScdData> = new Array<ScdData>();
       let planitems: Array<ScdData> = new Array<ScdData>();
       let showagendas: Array<ScdData> = new Array<ScdData>();
+      let showplanitems: Array<ScdData> = new Array<ScdData>();
+      let showmemos: Array<ScdData> = new Array<ScdData>();
       let contacts: Array<FsData> = new Array<FsData>();
 
       let sutbl: SuTbl = new SuTbl();
@@ -98,6 +100,12 @@ export class SpeechProcess extends BaseProcess implements MQProcess {
 
         //获取上下文内日程查询结果
         showagendas = this.input(content,contextRetMap,"showagendas",WsDataConfig.SCD,showagendas);
+
+        //获取上下文内日程查询结果
+        showplanitems = this.input(content,contextRetMap,"showplanitems",WsDataConfig.PID,showplanitems);
+
+        //获取上下文内日程查询结果
+        showmemos = this.input(content, contextRetMap, "showmemos", WsDataConfig.MOD, showmemos);
 
         //获取上下文内人员信息
         contacts = this.input(content,contextRetMap,"contacts",WsDataConfig.FS,contacts);
@@ -260,8 +268,8 @@ export class SpeechProcess extends BaseProcess implements MQProcess {
 
       // 数据操作显示
       this.showdatas(showagendas, speakText, sutbl.sut);
-      this.showdatas(memos, speakText, sutbl.sut);
-      this.showdatas(planitems, speakText, sutbl.sut);
+      this.showdatas(showmemos, speakText, sutbl.sut);
+      this.showdatas(showplanitems, speakText, sutbl.sut);
     })
   }
 
