@@ -162,7 +162,7 @@ export class NotificationProcess extends BaseProcess implements MQProcess {
 
       remind['id'] = remind.id;
       remind['idtype'] = remind.type;
-      remind['remindtime'] = remind.wd + " " remind.wt;
+      remind['remindtime'] = remind.wd + " " + remind.wt;
 
       this.tellyouService.tellyou(remind);
     }
