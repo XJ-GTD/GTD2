@@ -79,7 +79,7 @@ export class MemoPage {
               private emitService: EmitService,
               private util: UtilService,
               private feedback: FeedbackService,
-              private  momserv: MemoService,
+              private  memoService: MemoService,
               private changeDetectorRef: ChangeDetectorRef,
               private assistantService: AssistantService,) {
     moment.locale('zh-cn');
@@ -109,16 +109,17 @@ export class MemoPage {
   }
 
   save() {
-    if (this.origin) {
-      this.origin.mon = this.memo;
-    }
-
     let memo: MemoData = {} as MemoData;
 
-    memo.sd = this.day;
-    memo.mon = this.memo;
+    if (this.origin) {
+      Object.assign(memo, this.origin);
+      memo.mon = this.memo;
+    } else {
+      memo.sd = this.day;
+      memo.mon = this.memo;
+    }
 
-    this.momserv.saveMemo(memo).then(() => {
+    this.memoService.saveMemo(memo).then(() => {
       this.navCtrl.pop();
     })
   }
