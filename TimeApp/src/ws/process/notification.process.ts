@@ -4,7 +4,6 @@ import {PN} from "../model/ws.enum";
 import {EmitService} from "../../service/util-service/emit.service";
 import {Injectable} from "@angular/core";
 import {ProcesRs} from "../model/proces.rs";
-import {PgBusiService} from "../../service/pagecom/pgbusi.service";
 import {ScudscdPara} from "../model/scudscd.para";
 import {NotificationsService} from "../../service/cordova/notifications.service";
 import {FsData, ScdData} from "../../data.mapping";
@@ -21,7 +20,7 @@ import {TellyouService} from "../../components/ai/tellyou/tellyou.service";
  */
 @Injectable()
 export class NotificationProcess extends BaseProcess implements MQProcess {
-  constructor(private emitService: EmitService, private tellyouService: TellyouService, private busiService: PgBusiService,private notificationsService:NotificationsService) {
+  constructor(private emitService: EmitService, private tellyouService: TellyouService, private notificationsService:NotificationsService) {
     super();
   }
 
@@ -136,6 +135,45 @@ export class NotificationProcess extends BaseProcess implements MQProcess {
     //数据交换消息
     if (content.option == PN.EX) {
       let exchange: any = content.parameters;
+
+      if (exchange.action == "invite") {
+        switch (exchange.type) {
+          case "Agenda":
+            exchange['tellType'] = TellyouType.invite_agenda;
+            break;
+          case "PlanItem":
+            exchange['tellType'] = TellyouType.invite_planitem;
+            break;
+          default:
+            break;
+        }
+      }
+
+      if (exchange.action == "cancel") {
+        switch (exchange.type) {
+          case "Agenda":
+            exchange['tellType'] = TellyouType.cancel_agenda;
+            break;
+          case "PlanItem":
+            exchange['tellType'] = TellyouType.cancel_planitem;
+            break;
+          default:
+            break;
+        }
+      }
+
+      if (exchange.action == "annotation") {
+        switch (exchange.type) {
+          case "Agenda":
+            exchange['tellType'] = TellyouType.at_agenda;
+            break;
+          default:
+            break;
+        }
+      }
+
+      exchange['id'] = exchange.id;
+      exchange['idtype'] = exchange.type;
 
       this.tellyouService.prepare(exchange);
     }
