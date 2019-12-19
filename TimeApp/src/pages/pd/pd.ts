@@ -33,7 +33,7 @@ declare var Wechat;
             <ng-template [ngIf]="item.type == 'AgendaData'">
               <!--<li [ngClass]="{'agenda-card-past': today > item.agendaData.evd, 'agenda-card': today <= item.agendaData.evd}">-->
               <li>
-                <div class="timeline-badge">{{item.agendaData.evd | formatedate: "MM-DD"}}</div>
+                <div class="timeline-badge" *ngIf="item.agendaData.evd  != ''">{{item.agendaData.evd | formatedate: "MM-DD"}}</div>
                 <div class="timeline-panel">
                   <div class="timeline-heading">
                     <span class="timeline-title">{{item.agendaData.evt}}</span>
@@ -43,14 +43,14 @@ declare var Wechat;
                     <p>{{item.agendaData.evn}}</p>
                     <p>{{item.agendaData.bz}}</p>
                   </div>
-                  <!--<div class="timeline-foot">-->
-                    <!--<span class="icon font-small">-->
-                      <!--<ion-icon class="fad fa-lock"  *ngIf="item.agendaData.todolist == '0'"></ion-icon>-->
-                      <!--<ion-icon class="fad fa-user-tag"  *ngIf="currentuser != item.agendaData.ui && item.agendaData.ui != ''"></ion-icon>-->
-                      <!--<ion-icon class="fad fa-check-double" *ngIf="item.agendaData.wc == finished"></ion-icon>-->
-                      <!--<ion-icon class="fad fa-sync" *ngIf="item.agendaData.tb == synch"></ion-icon>-->
-                    <!--</span>-->
-                  <!--</div>-->
+                  <div class="timeline-foot">
+                    <span class="icon font-small">
+                      <ion-icon class="fad fa-lock"  *ngIf="item.agendaData.todolist == '0'"></ion-icon>
+                      <ion-icon class="fad fa-user-tag"  *ngIf="currentuser != item.agendaData.ui && item.agendaData.ui != ''"></ion-icon>
+                      <ion-icon class="fad fa-check-double" *ngIf="item.agendaData.wc == finished"></ion-icon>
+                      <ion-icon class="fad fa-sync" *ngIf="item.agendaData.tb == synch"></ion-icon>
+                    </span>
+                  </div>
                 </div>
               </li>
             </ng-template>
@@ -58,7 +58,7 @@ declare var Wechat;
               <!--<li [ngClass]="{'agenda-card-past': today > item.planItemData.sd, 'agenda-card': today <= item.planItemData.sd}">-->
 
               <li>
-                <div class="timeline-badge">{{item.planItemData.sd | formatedate: "MM-DD"}}</div>
+                <div class="timeline-badge" *ngIf="item.planItemData.sd  != ''">{{item.planItemData.sd | formatedate: "MM-DD"}}</div>
                 <div class="timeline-panel">
                   <div class="timeline-heading">
                     <span class="timeline-title">{{item.planItemData.jtn}}</span>
@@ -75,7 +75,7 @@ declare var Wechat;
             </ng-template>
             <ng-template [ngIf]="item.type == 'YearData'">
               <li yearitem>
-                <div class="timeline-badge">{{item.yearitem}}年</div>
+                <div class="timeline-badge">{{item.yearitem}}</div>
               </li>
             </ng-template>
             <!--<ng-template [ngIf]="item.type == 'TaskData'">-->
@@ -182,6 +182,23 @@ export class PdPage {
   ionViewDidEnter(){
     this.pdService.getPlan(this.jh.ji,this.jh.jt).then(data=>{
       this.plans = data;
+      let cur ="";
+      for (let plan of this.plans){
+        if (plan.type =="AgendaData"){
+          if (plan.agendaData.evd != cur){
+            cur = plan.agendaData.evd;
+          }else{
+            plan.agendaData.evd = "";
+          }
+        }else if (plan.type =="PlanItemData"){
+          if (plan.planItemData.sd != cur){
+            cur = plan.planItemData.sd;
+          }else{
+            plan.planItemData.sd = "";
+          }
+        }
+      }
+
     }).catch(res=>{
       console.log("获取计划列表失败" + JSON.stringify(res));
     });

@@ -31,15 +31,15 @@ import {EmitService} from "../../service/util-service/emit.service";
                        rightmargin
                        *ngIf="fja.del != deleted">
 
-                <div class="line font-normal topheader" leftmargin rightmargin>
+                <div class="line topheader" leftmargin rightmargin>
                   <div class="other">
-                    <div class="person  font-normal" class="person font-small"
+                    <div  class="person font-small"
                          *ngIf="fja.ui!=currentuser">{{fja.ui | formatuser: currentuser: friends}}</div>
                   </div>
                   <div class="st font-small"> {{fja.wtt * 1000 | transfromdate:'withNow'}}</div>
                   <div class="self" (click)="delAttach(fja)">
                     <ion-icon class="fal fa-minus-circle" *ngIf="fja.ui==currentuser"></ion-icon>
-                    <div class="{{fja.fji}}" class="person font-normal" *ngIf="fja.ui==currentuser">自己</div>
+                    <div class="person font-small" *ngIf="fja.ui==currentuser">自己</div>
                   </div>
                 </div>
                 <div class="line font-normal" leftmargin rightmargin>
