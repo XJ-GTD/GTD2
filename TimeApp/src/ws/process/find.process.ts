@@ -15,6 +15,7 @@ import {BaseProcess} from "./base.process";
 import {BTbl} from "../../service/sqlite/tbl/b.tbl";
 import {UserConfig} from "../../service/config/user.config";
 import {EventService,Member} from "../../service/business/event.service";
+import {ObjectType} from "../../data.enum";
 import {CalendarService, FindActivityCondition, ActivityData} from "../../service/business/calendar.service";
 
 /**
@@ -72,7 +73,10 @@ export class FindProcess extends BaseProcess implements MQProcess {
       if (finds.te)  condition.et = finds.te;
       if (finds.ti)  condition.text = finds.ti;
       if (finds.marks)  condition.mark = finds.marks;
-      if (finds.targets)  condition.target = finds.targets;
+      if (finds.targets && finds.targets.length > 0)  condition.target = finds.targets.reduce((target, ele) => {
+        if (ele == ObjectType.Event) target.push(ObjectType.Event);
+        return target;
+      }, new Array<ObjectType>());
 
       let activities: ActivityData = await this.calendarService.findActivities(condition);
 
