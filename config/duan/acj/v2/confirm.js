@@ -146,7 +146,9 @@ function clean(datasource)
       },
       input: {
         type: "function(agds, showagds, prvopt, user, memos, planitems) { if (agds && agds.length <= 0 && memos && memos.length <= 0 && planitems && planitems.length <= 0) return 'NONE'; else return prvopt; }",
-        showagendas: ""
+        showagendas: "",
+        showplanitems: "",
+        showmemos: ""
       }
     };
   }
@@ -166,7 +168,9 @@ function clean(datasource)
       },
       input: {
         type: "function(agds, showagds, prvopt, user, memos, planitems) { if (agds && agds.length <= 0 && memos && memos.length <= 0 && planitems && planitems.length <= 0) return 'NONE'; else return prvopt; }",
-        showagendas: ""
+        showagendas: "",
+        showplanitems: "",
+        showmemos: ""
       }
     };
   }
