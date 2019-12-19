@@ -77,7 +77,7 @@ export class PlanItemsProcess extends BaseProcess implements MQProcess,OptProces
       }
 
       if (prvOpt == PI.C) {
-        let saved: PlanItemData = await this.calendarService.savePlanItem(rcIn);
+        let saved: Array<PlanItemData> = await this.calendarService.savePlanItem(rcIn);
 
         if (saved && saved.length > 0) {
           c.si = saved[0].jti;
