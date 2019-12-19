@@ -297,7 +297,7 @@ function clean(datasource)
         fs: contacts
       },
       output: {
-        agendas: ""
+        planitems: ""
       }
     };
 
