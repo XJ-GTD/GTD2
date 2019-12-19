@@ -382,7 +382,14 @@ import {FsData, PageDcData} from "../../data.mapping";
        //删除
        await grouperService.removeGrouperMember(pg2[0].gi,pg2[0].pwi);
 
+       let pg3: Array<PageDcData> = await grouperService.filterGroups(UserConfig.groups, "组团打怪群3");
+       expect(pg3).toBeDefined();
+       expect(pg3.length).toBeDefined(1);
+       expect(pg3[0].fsl.length).toBeDefined(0);
      });
+
+
+
 
      afterAll(() => {
        TestBed.resetTestingModule();
