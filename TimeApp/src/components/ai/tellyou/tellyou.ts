@@ -1,24 +1,14 @@
-import {
-  ChangeDetectorRef,
-  Component,
-  ElementRef,
-  EventEmitter,
-  Input,
-  Output,
-  Renderer2,
-} from '@angular/core';
+import {ChangeDetectorRef, Component, EventEmitter, Output,} from '@angular/core';
 import {IonicPage} from 'ionic-angular';
 import {UtilService} from "../../../service/util-service/util.service";
 import {AssistantService} from "../../../service/cordova/assistant.service";
 import {EmitService} from "../../../service/util-service/emit.service";
-import {Subscriber} from "rxjs";
-import {TimeOutService} from "../../../util/timeOutService";
 import {TellYou, TellyouService} from "./tellyou.service";
 import {DataConfig} from "../../../service/config/data.config";
-import {EventType, InviteState, ModalTranType, TellyouIdType, TellyouType} from "../../../data.enum";
+import {ModalTranType, TellyouIdType, TellyouType} from "../../../data.enum";
 import {ScdPageParamter} from "../../../data.mapping";
-import * as moment from "moment";
 import {UserConfig} from "../../../service/config/user.config";
+import * as moment from "moment";
 
 /**
  * Generated class for the Hb01Page page.
@@ -37,57 +27,72 @@ import {UserConfig} from "../../../service/config/user.config";
       <ion-card-header no-padding>
         <ion-card-title no-padding no-margin>
           <ion-item>
-            <button ion-button item-end clear class="show" (click)="open(tellYouData)">
-              查看
-            </button>
-            <p class="tellType">
-              {{tellYouData.tellType}}
+            <p class="tellType">              
+              <ng-template [ngIf]="tellYouData.tellType ==  tellyouType.system">系统</ng-template>
+              <ng-template [ngIf]="tellYouData.tellType ==  tellyouType.invite_agenda 
+              || tellYouData.tellType ==  tellyouType.invite_planitem">邀请</ng-template>
+              <ng-template [ngIf]="tellYouData.tellType ==  tellyouType.remind_agenda
+              ||tellYouData.tellType ==  tellyouType.remind_planitem 
+              ||tellYouData.tellType ==  tellyouType.remind_minitask 
+              || tellYouData.tellType ==  tellyouType.remind_todo
+              || tellYouData.tellType ==  tellyouType.remind_merge">提醒</ng-template>
+              <ng-template [ngIf]="tellYouData.tellType ==  tellyouType.at_agenda">@信息</ng-template>
+              <ng-template [ngIf]="tellYouData.tellType ==  tellyouType.cancel_agenda
+                || tellYouData.tellType ==  tellyouType.cancel_planitem">取消</ng-template>
             </p>
-            <p class="formperson">
+            <p class="formperson" *ngIf="tellYouData.tellType ==  tellyouType.invite_agenda 
+              || tellYouData.tellType ==  tellyouType.invite_planitem">
               {{tellYouData.formperson}}
             </p>
-            <p class="fromdate">
-              {{tellYouData.fromdate}}
+            <p class="fromdate" *ngIf="tellYouData.tellType ==  tellyouType.invite_agenda 
+              || tellYouData.tellType ==  tellyouType.invite_planitem">
+              <ng-template [ngIf]="tellYouData.datetype != 2">开始于:</ng-template>
+              <ng-template [ngIf]="tellYouData.datetype == 2">截至到:</ng-template>
+              {{tellYouData.fromdate | formatedate: 'YYYY-MM-DD hh:ss'}}
+            </p>
+            <p class="fromdate" *ngIf="tellYouData.tellType ==  tellyouType.invite_agenda 
+              || tellYouData.tellType ==  tellyouType.invite_planitem">
+              参与{{tellYouData.invites + 1}}人
+            </p>
+            <p item-end class="repeat" *ngIf="tellYouData.tellType ==  tellyouType.invite_agenda 
+              || tellYouData.tellType ==  tellyouType.invite_planitem">
+              {{tellYouData.repeat}}
             </p>
           </ion-item>
         </ion-card-title>
       </ion-card-header>
       <ion-card-content no-padding>
         <ion-item>
-              <span class="sn">{{tellYouData.sn}} [tellType;//1活动邀请 2日历项邀请 3活动提醒 4小任务提醒 5日历项提醒 6重要事项系统 7和并提醒 10系统消息]
-                [id; //活动，日历项，小任务]
-                [contenttype;]
-                [formperson; //发起人]
-                [fromdate; //日期 时间 时长]
-                [datetype //1 开始时间 2 截至到]
-                [sn;  //内容主题]
-                [repeat; //重复文字]
-                [invites //邀请人数]
-                [bells; //剩余提醒个数]
-                [handshake;//剩余邀请个数]
-                [systems;//剩余系统消息个数]
-                [spearktext;//播报格式]
+              <span class="sn" *ngIf="tellYouData.tellType !=  tellyouType.remind_merge ">{{tellYouData.sn}}
               </span>
-
+          <ng-template [ngIf]="tellYouData.tellType ==  tellyouType.remind_merge">
+            <ng-template  ngFor let-rem  [ngForOf]="tellYouData.reminds">
+              <p>{{rem.sn}}</p>
+            </ng-template>
+          </ng-template>
         </ion-item>
         <ion-item>
-          <button ion-button icon-start clear item-start class="aispeech" (click)="play()">
+          <button ion-button icon-start clear item-start class="aispeech" (click)="play(tellYouData)" *ngIf="!tellYouData.speakering">
             <ion-icon class="fal fa-play"></ion-icon>
           </button>
-          <button ion-button item-end class="reject" (click)="reject()">
-            拒绝
-          </button>
-          <button ion-button item-end class="accept" (click)="accept()">
-            接受
-          </button>
-        </ion-item>
-        <ion-item>
-          <button ion-button icon-start clear item-start class="aispeech" (click)="stop()">
+          <button ion-button icon-start clear item-start class="aispeech" (click)="stop(tellYouData)"  *ngIf="tellYouData.speakering">
             <ion-icon class="fal fa-stop"></ion-icon>
           </button>
-          <button ion-button item-end class="again" (click)="again()">
-            10分钟后再提醒
+          
+          <button ion-button item-end clear class="show" (click)="open(tellYouData)" *ngIf="(tellYouData.idtype ==  tellyouIdType.Agenda
+              || tellYouData.idtype ==  tellyouIdType.PlanItem) 
+              && tellYouData.tellType !=  tellyouType.remind_merge ">
+            查看
           </button>
+          
+          <!--<button ion-button item-end class="reject" (click)="reject(tellYouData)" *ngIf="tellYouData.tellType ==  tellyouType.invite_agenda -->
+              <!--|| tellYouData.tellType ==  tellyouType.invite_planitem">-->
+            <!--拒绝-->
+          <!--</button>-->
+          <!--<button ion-button item-end class="accept" (click)="accept(tellYouData)" *ngIf="tellYouData.tellType ==  tellyouType.invite_agenda -->
+              <!--|| tellYouData.tellType ==  tellyouType.invite_planitem">-->
+            <!--接受-->
+          <!--</button>-->
         </ion-item>
       </ion-card-content>
     </ion-card>
@@ -105,6 +110,9 @@ import {UserConfig} from "../../../service/config/user.config";
 })
 export class TellYouComponent{
   // aiTellYou: Subscriber<any>;
+  tellyouType: any = TellyouType;
+  tellyouIdType: any = TellyouIdType;
+
 
   tellYouData: TellYou = new TellYou();
 
@@ -130,7 +138,8 @@ export class TellYouComponent{
   constructor(private changeDetectorRef: ChangeDetectorRef,
               private tellyouService: TellyouService,
               private assistantService: AssistantService,
-              private emitService: EmitService,) {
+              private emitService: EmitService,
+              private utilService: UtilService,) {
 
       this.tellyouService.regeditTellYou((tellYou:TellYou)=>{
         this.showPopper(tellYou);
@@ -165,11 +174,18 @@ export class TellYouComponent{
       this.tellYouData.formperson = "";
     }
 
-    // pageData.spearktext = pageData.formperson + "邀请你一个活动。主题" + pageData.sn + "时间：" + pageData.fromdate;//播报格式
+
     // pageData.remindtime = "111111";//提醒时间，提醒的情况下有
     this.tellYouData.bells= this.tellyouService.getRemindlen(); //剩余提醒个数
     this.tellYouData.handshake=this.tellyouService.getInvitelen();//剩余邀请个数
     this.tellYouData.systems= this.tellyouService.getSystemslen();//剩余系统消息个数
+
+    // this.createSpeakText(this.tellYouData);
+    //语音播报
+
+    this.assistantService.stopSpeak(false);
+    this.assistantService.speakText(`${UserConfig.user.name} 你好。${this.tellYouData.spearktext} `);
+    this.tellYouData.speakering = true;
 
     if (!this.changeDetectorRef['destroyed']) {
       this.changeDetectorRef.detectChanges();
@@ -177,6 +193,8 @@ export class TellYouComponent{
     }
 
   }
+
+
 
 
   ignoreAll() {
@@ -191,43 +209,68 @@ export class TellYouComponent{
   }
 
 
-  open() {
+  //查看
+  open(data:TellYou) {
+    if (data.idtype == TellyouIdType.Agenda){
+      this.toAgenda(data.id);
 
-  }
-
-  again() {
-
-  }
-
-  reject() {
-
-  }
-
-  accept() {
-
-  }
-
-  play() {
-
-  }
-
-  stop() {
+    }else if (data.idtype == TellyouIdType.PlanItem){
+      this.toPlanItem(data.id);
+    }
   }
 
 
-  //
-  // toMemo(day) {
-  //
-  //   this.util.createModal(DataConfig.PAGE._DAILYMEMOS_PAGE, day, ModalTranType.scale).present();
-  // }
-  //
-  // toPlanItem(item) {
-  //   let p: ScdPageParamter = new ScdPageParamter();
-  //   p.si = item.jti;
-  //
-  //
-  //   this.util.createModal(DataConfig.PAGE._COMMEMORATIONDAY_PAGE, p, ModalTranType.scale).present();
-  // }
+  toAgenda(id) {
+
+    let p: ScdPageParamter = new ScdPageParamter();
+    p.si = id;
+    this.utilService.createModal(DataConfig.PAGE._AGENDA_PAGE, p, ModalTranType.scale).present();
+  }
+
+  toPlanItem(id) {
+    let p: ScdPageParamter = new ScdPageParamter();
+    p.si = id;
+    this.utilService.createModal(DataConfig.PAGE._COMMEMORATIONDAY_PAGE, p, ModalTranType.scale).present();
+  }
+
+  again(data:TellYou) {
+
+  }
+
+  reject(data:TellYou) {
+
+  }
+
+  accept(data:TellYou) {
+
+  }
+
+  play(data:TellYou) {
+
+    //语音播报
+    this.assistantService.speakText(`${this.tellYouData.spearktext} `).then(()=>{
+      this.tellYouData.speakering = false;
+      if (!this.changeDetectorRef['destroyed']) {
+        this.changeDetectorRef.detectChanges();
+      }
+    });
+    this.tellYouData.speakering = true;
+    if (!this.changeDetectorRef['destroyed']) {
+      this.changeDetectorRef.detectChanges();
+    }
+
+  }
+
+  stop(data:TellYou) {
+    //语音播报
+    this.assistantService.stopSpeak(false);
+    this.tellYouData.speakering = false;
+    if (!this.changeDetectorRef['destroyed']) {
+      this.changeDetectorRef.detectChanges();
+    }
+  }
+
+
   //
   // async acceptInvite($event, event) {
   //   $event.stopPropagation();  // 阻止冒泡

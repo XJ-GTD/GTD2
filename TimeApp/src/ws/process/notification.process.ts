@@ -175,7 +175,7 @@ export class NotificationProcess extends BaseProcess implements MQProcess {
       exchange['id'] = exchange.id;
       exchange['idtype'] = exchange.type;
 
-      this.tellyouService.prepare(exchange);
+      this.tellyouService.prepare4wating(exchange);
     }
 
     //提醒消息
@@ -202,7 +202,7 @@ export class NotificationProcess extends BaseProcess implements MQProcess {
       remind['idtype'] = remind.type;
       remind['remindtime'] = remind.wd + " " + remind.wt;
 
-      this.tellyouService.tellyou(remind);
+      this.tellyouService.tellyou4remind(remind);
     }
 
     return contextRetMap

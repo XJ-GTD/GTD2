@@ -2,6 +2,7 @@ import { NgModule} from '@angular/core';
 import { IonicPageModule } from 'ionic-angular';
 import {TellYouComponent} from "./tellyou";
 import {TellyouService} from "./tellyou.service";
+import {PipesModule} from "../../../pipes/pipes.module";
 
 
 @NgModule({
@@ -9,6 +10,7 @@ import {TellyouService} from "./tellyou.service";
     TellYouComponent
   ],
   imports: [
+    PipesModule,
     IonicPageModule.forChild(TellYouComponent),
   ],
   exports: [

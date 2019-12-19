@@ -13,7 +13,8 @@ import {AipPage} from "../aip/aip";
 import {TdlPage} from "../tdl/tdl";
 import {TestDataService} from "../../service/testData.service";
 import {UtilService} from "../../service/util-service/util.service";
-import {ModalTranType} from "../../data.enum";
+import {ModalTranType, TellyouIdType, TellyouType} from "../../data.enum";
+import {TellYouBase, TellyouService} from "../../components/ai/tellyou/tellyou.service";
 
 /**
  * Generated class for the 首页 page.
@@ -79,7 +80,8 @@ export class HPage {
               private  momserv: MemoService,
               private testDataService: TestDataService,
               private emitService: EmitService,
-              private util:UtilService) {
+              private util:UtilService,
+              private tellyouService:TellyouService) {
     // console.log("start===========================");
     // this.util.loadingStart()
        this.testTimeOut();
@@ -124,6 +126,16 @@ export class HPage {
 //查询当天日程
   onSelect(selectDay: CalendarDay
   ) {
+    // let tel:TellYouBase = new TellYouBase();
+    // tel.id = '255aef9cdc9b42a510a154d80292d026';
+    // tel.idtype = TellyouIdType.Agenda
+    // tel.tellType = TellyouType.remind_planitem;
+    // this.tellyouService.tellyou4remind(tel);
+    // let tel2:TellYouBase = new TellYouBase();
+    // tel2.id = 'ce856d34844eabc6de200376c55b77bf';
+    // tel2.idtype = TellyouIdType.PlanItem
+    // tel2.tellType = TellyouType.remind_planitem;
+    // this.tellyouService.tellyou4remind(tel2);
     this.feedback.audioClick();
     if (selectDay) this.emitService.emitSelectDate(moment(selectDay.time));
     this.hService.centerShow(selectDay).then(d => {

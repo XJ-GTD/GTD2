@@ -32,6 +32,9 @@ TellyouComponent {
     min-height: 20px;
     padding: 5px 11px 5px 16px;
     align-items: flex-end;
+     p{
+      margin: 0px;
+    }
     .item-button{
       padding: 0.5rem 1rem;
       font-size: 1.2rem;
@@ -56,23 +59,23 @@ TellyouComponent {
       .card-title-ios {
         .tellType {
           font-size: 18px;
-          margin-bottom: 14px;
+          margin-bottom: 1rem;
         }
 
         .formperson {
           font-size: 1.2rem;
         }
 
-        .fromdate {
+        .fromdate,.repeat {
           font-size: 1rem;
         }
-
-        .show {
-          font-size: 1.2rem;
-          //border-bottom: 0.55px solid rgba(113,173,188,1);
-          border-radius: 0px;
-          padding: 0.3rem 0.3rem;
-
+        .repeat{
+          max-width: 40%;
+          -webkit-line-clamp: 2;
+          white-space: normal;
+          display: -webkit-box;
+          -webkit-box-orient: vertical;
+          overflow: hidden;
         }
 
       }
@@ -80,15 +83,16 @@ TellyouComponent {
 
     .card-content {
       .sn {
-        //white-space: normal;
-        //display: -webkit-box;
-        //-webkit-box-orient: vertical;
-        //-webkit-line-clamp: 15;
-        //overflow: hidden;
-        //font-size: 1.4rem;
-        //line-height: 1.8rem;
-        white-space: pre-line;
-        font-size: 1.2rem;
+        white-space: normal;
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 5;
+        overflow: hidden;
+        font-size: 1.4rem;
+        line-height: 1.8rem;
+        min-height:120px;
+        //white-space: pre-line;
+        //font-size: 1.2rem;
       }
 
       .accept {
@@ -99,14 +103,23 @@ TellyouComponent {
 
       .aispeech {
         border-radius: 50%;
-        height: 25px;
-        width: 25px;
+        height: 20px;
+        width: 20px;
         padding: 0px;
       }
 
       .fa-play,.fa-stop {
-        font-size: 1.2rem;
+        font-size: 1rem;
         padding-right: 0px;
+
+      }
+
+
+      .show {
+        font-size: 1.2rem;
+        //border-bottom: 0.55px solid rgba(113,173,188,1);
+        border-radius: 0px;
+        padding: 0.3rem 0.3rem;
 
       }
     }
@@ -142,13 +155,8 @@ TellyouComponent {
             color: rgba(113, 174, 188, 1);
           }
 
-          .fromdate {
-            font-size: 1rem;
+          .fromdate,.repeat  {
             color: rgba(188, 188, 188, 1);
-          }
-
-          .show {
-            color: rgba(113, 173, 188, 1);
           }
 
         }
@@ -176,6 +184,10 @@ TellyouComponent {
         .fa-play,.fa-stop {
           color: rgba(255, 255, 255, 1);
         }
+        .show {
+          color: rgba(113, 173, 188, 1);
+        }
+
       }
     }
   }
@@ -211,13 +223,8 @@ TellyouComponent {
               color: rgba(113, 174, 188, 1);
             }
 
-            .fromdate {
-              font-size: 1rem;
+            .fromdate,.repeat  {
               color: rgba(188, 188, 188, 1);
-            }
-
-            .show {
-              color: rgba(113, 173, 188, 1);
             }
 
           }
@@ -244,6 +251,10 @@ TellyouComponent {
 
           .fa-play,.fa-stop {
             color: rgba(255, 255, 255, 1);
+          }
+
+          .show {
+            color: rgba(113, 173, 188, 1);
           }
         }
       }

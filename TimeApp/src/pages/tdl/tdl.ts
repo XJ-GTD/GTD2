@@ -197,7 +197,7 @@ import { Observable } from 'rxjs';
                 <ng-container *ngIf="!(event.ui != currentuser && event.rtevi && event.invitestatus != inviteaccept && event.invitestatus != invitereject)">
                   <ion-row class="item-content dayagenda-content item-content-backgroud"
                            [class.item-content-hasmessage]="calendarobservables.get(event.evi) | async"
-                           (click)="toDetail(event.evi,event.evd,event.type,event.gs)">
+                           (click)="toDetail(event.evi)">
                     <div class="line font-small first-line">
                       <div class="sn towline">{{event.evn}}</div>
                     </div>
@@ -337,18 +337,6 @@ export class TdlPage {
   ) {
     //当changeDetection:ChangeDetectionStrategy.OnPush 请注册
     this.detectorService.registerDetector(changeDetectorRef);
-    // setTimeout(()=>{
-    //   this.tdlServ.throughData(PageDirection.PageDown).then(data => {
-    //     this.detectorService.detector(()=>{
-    //       this.bScroll.finishPullDown();
-    //       this.tdlServ.throughData(PageDirection.PageDown).then(data => {
-    //         this.detectorService.detector(()=>{
-    //           this.bScroll.finishPullDown();
-    //         });
-    //       });
-    //     });
-    //   });
-    // },2000)
   }
 
   setScroll(scroll: boolean) {
@@ -451,17 +439,7 @@ export class TdlPage {
         this.bScroll.scrollToElement(currmonthel, 300, 0, -2);
         this.feekback.audioTrans();
       } else {
-      //   if (month.option =="next"){
-      //     this.bScroll.trigger("pullingUp");
-      //   }else if(month.option =="prev"){
-      //     this.bScroll.trigger("pullingDown");
-      //   } else{
-      //
-      //   }
-        // this.bScroll.trigger("pullingDown");
-        // // this.bScroll.autoPullDownRefresh();
         setTimeout(()=>{
-          // this.bScroll.openPullDown();
           this.gotoEl4month(month);
         },500);
       }
@@ -510,31 +488,14 @@ export class TdlPage {
     }
   }
 
-  toDetail(si, d, type, gs) {
+  toDetail(si) {
 
     let p: ScdPageParamter = new ScdPageParamter();
     p.si = si;
-    p.d = moment(d, "YYYY/MM/DD");
-    p.gs = gs;
 
     this.feekback.audioClick();
-    if (gs == "0") {
-      //本人画面
-      if (type == EventType.Agenda) {
 
-        this.util.createModal(DataConfig.PAGE._AGENDA_PAGE, p, ModalTranType.scale).present();
-      }
-      if (type == EventType.Task) {
-        // this.modalCtr.create(DataConfig.PAGE._TASK_PAGE, p).present();
-      }
-    } else if (gs == "1") {
-      //受邀人画面
-      this.util.createModal(DataConfig.PAGE._AGENDA_PAGE, p, ModalTranType.scale).present();
-    } else {
-      //系统画面
-      // this.modalCtr.create(DataConfig.PAGE._TDDS_PAGE, p).present();
-    }
-
+    this.util.createModal(DataConfig.PAGE._AGENDA_PAGE, p, ModalTranType.scale).present();
   }
 
   toAdd(d) {
