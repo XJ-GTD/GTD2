@@ -37,6 +37,7 @@ export class SpeechProcess extends BaseProcess implements MQProcess {
 
       // 只有在语音界面对话时才播报语音
       if (mutable(content)) {
+        resolve(contextRetMap);
         return contextRetMap;
       }
 
@@ -225,6 +226,7 @@ export class SpeechProcess extends BaseProcess implements MQProcess {
           //设置上下文暂停处理缓存
           this.output(content, contextRetMap, 'paused', WsDataConfig.PAUSED, paused);
 
+          resolve(contextRetMap);
           return contextRetMap;
         }
       }
