@@ -258,54 +258,62 @@ export class SpeechProcess extends BaseProcess implements MQProcess {
         }
       });
 
-      // 多个日程操作显示
-      if  (showagendas && showagendas.length > 1){
-        let cscdLS:ScdLsEmData = new ScdLsEmData();
-        cscdLS.desc = speakText;
-        for (let scd of showagendas){
-          let scdEm:ScdEmData = new ScdEmData();
-          scdEm.id = scd.si;
-          scdEm.d = scd.sd;
-          scdEm.t = scd.st;
-          scdEm.ti = scd.sn;
-          scdEm.gs = scd.gs;
-          cscdLS.datas.push(scdEm);
-        }
-        cscdLS.scdTip = sutbl.sut;
-        this.emitService.emitScdLs(cscdLS);
-      }
-
-
-      // 单个日程操作显示
-
-
-      if  (showagendas && showagendas.length == 1){
-        let scdEm:ScdEmData = new ScdEmData();
-        scdEm.id = showagendas[0].si;
-        scdEm.d = showagendas[0].sd;
-        scdEm.t = showagendas[0].st;
-        scdEm.ti = showagendas[0].sn;
-        scdEm.gs = showagendas[0].gs;
-
-        scdEm.scdTip = sutbl.sut;
-
-
-        for (let btbl of showagendas[0].fss){
-          let fri:FriendEmData = new FriendEmData();
-          fri.id = btbl.pwi;
-          fri.p = btbl.ranpy;
-          fri.m = btbl.rc;
-          fri.a = btbl.bhiu;
-          fri.n = btbl.ran;
-          fri.uid = btbl.ui;
-
-          scdEm.datas.push(fri);
-        }
-        this.emitService.emitScd(scdEm);
-      }
-
-
+      // 数据操作显示
+      showdatas(showagendas, speakText, sutbl.sut);
+      showdatas(memos, speakText, sutbl.sut);
+      showdatas(planitems, speakText, sutbl.sut);
     })
+  }
+
+  showdatas(datas: Array<ScdData>, speakText: string = "", tips: string = "") {
+    if (datas && datas.length == 1) {
+      let scdEm: ScdEmData = new ScdEmData();
+
+      scdEm.id = datas[0].si;
+      scdEm.d = datas[0].sd;
+      scdEm.t = datas[0].st;
+      scdEm.ti = datas[0].sn;
+      scdEm.gs = datas[0].gs;
+
+      scdEm.scdTip = tips;
+
+      for (let btbl of datas[0].fss){
+        let fri: FriendEmData = new FriendEmData();
+
+        fri.id = btbl.pwi;
+        fri.p = btbl.ranpy;
+        fri.m = btbl.rc;
+        fri.a = btbl.bhiu;
+        fri.n = btbl.ran;
+        fri.uid = btbl.ui;
+
+        scdEm.datas.push(fri);
+      }
+
+      this.emitService.emitScd(scdEm);
+    }
+
+    if (datas && datas.length == 1) {
+      let cscdLS: ScdLsEmData = new ScdLsEmData();
+
+      cscdLS.desc = speakText;
+
+      for (let scd of datas){
+        let scdEm: ScdEmData = new ScdEmData();
+
+        scdEm.id = scd.si;
+        scdEm.d = scd.sd;
+        scdEm.t = scd.st;
+        scdEm.ti = scd.sn;
+        scdEm.gs = scd.gs;
+
+        cscdLS.datas.push(scdEm);
+      }
+
+      cscdLS.scdTip = tips;
+
+      this.emitService.emitScdLs(cscdLS);
+    }
   }
 }
 
