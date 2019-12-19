@@ -1702,9 +1702,12 @@ export class EventService extends BaseService {
       newAgdata.tos = tos;
       newAgdata.pn = newAgdata.members.length;
 
-      let caparam = new CaTbl();
-      caparam = this.sqlparamAddCa(oriAgdata.evi ,newAgdata);//evi使用原evi
-      sqlparam.push(caparam.rpTParam());
+      if (oriAgdata.rfg != anyenum.RepeatFlag.Repeat) {
+
+        let caparam = new CaTbl();
+        caparam = this.sqlparamAddCa(oriAgdata.evi, newAgdata);//evi使用原evi
+        sqlparam.push(caparam.rpTParam());
+      }
 
       //其他表相关处理
       this.modifyOnlyoneForOther(sqlparam,oriAgdata,newAgdata);
@@ -2057,7 +2060,6 @@ export class EventService extends BaseService {
           })
         }
 
-        retAgendas.push(agd);
         let ev = new EvTbl();
         Object.assign(ev,agd);
         evs.push(ev);
