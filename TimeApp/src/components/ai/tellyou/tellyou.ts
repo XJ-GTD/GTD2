@@ -180,7 +180,6 @@ export class TellYouComponent{
     this.tellYouData.handshake=this.tellyouService.getInvitelen();//剩余邀请个数
     this.tellYouData.systems= this.tellyouService.getSystemslen();//剩余系统消息个数
 
-    // this.createSpeakText(this.tellYouData);
     //语音播报
 
     this.assistantService.stopSpeak(false);
