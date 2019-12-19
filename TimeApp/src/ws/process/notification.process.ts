@@ -145,13 +145,13 @@ export class NotificationProcess extends BaseProcess implements MQProcess {
       let remind: any = content.parameters;
 
       switch (remind.type) {
-        "Agenda":
+        case "Agenda":
           remind['tellType'] = TellyouType.remind_agenda;
           break;
-        "MiniTask":
+        case "MiniTask":
           remind['tellType'] = TellyouType.remind_minitask;
           break;
-        "PlanItem":
+        case "PlanItem":
           remind['tellType'] = TellyouType.remind_planitem;
           break;
         default:
