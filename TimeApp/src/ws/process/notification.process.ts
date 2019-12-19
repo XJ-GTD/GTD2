@@ -8,9 +8,11 @@ import {PgBusiService} from "../../service/pagecom/pgbusi.service";
 import {ScudscdPara} from "../model/scudscd.para";
 import {NotificationsService} from "../../service/cordova/notifications.service";
 import {FsData, ScdData} from "../../data.mapping";
+import {TellyouType} from "../../data.enum";
 import {WsDataConfig} from "../wsdata.config";
 import {BaseProcess} from "./base.process";
 import * as moment from "moment";
+import {TellyouService} from "../../components/ai/tellyou/tellyou.service";
 
 /**
  * 通知
@@ -19,7 +21,7 @@ import * as moment from "moment";
  */
 @Injectable()
 export class NotificationProcess extends BaseProcess implements MQProcess {
-  constructor(private emitService: EmitService, private busiService: PgBusiService,private notificationsService:NotificationsService) {
+  constructor(private emitService: EmitService, private tellyouService: TellyouService, private busiService: PgBusiService,private notificationsService:NotificationsService) {
     super();
   }
 
@@ -135,14 +137,34 @@ export class NotificationProcess extends BaseProcess implements MQProcess {
     if (content.option == PN.EX) {
       let exchange: any = content.parameters;
 
-      this.emitService.emitAiTellYou({close: false, message: {title:exchange.title,text:exchange.content}});
+      this.tellyouService.prepare(exchange);
     }
 
     //提醒消息
     if (content.option == PN.AM) {
       let remind: any = content.parameters;
 
-      this.emitService.emitAiTellYou({close: false, message: {title:remind.title,text:remind.content}});
+      switch (remind.type) {
+        case "Agenda":
+          remind['tellType'] = TellyouType.remind_agenda;
+          break;
+        case "MiniTask":
+          remind['tellType'] = TellyouType.remind_minitask;
+          break;
+        case "PlanItem":
+          remind['tellType'] = TellyouType.remind_planitem;
+          break;
+        default:
+          break;
+      }
+
+      if (remind.continue) remind['tellType'] = TellyouType.remind_todo;
+
+      remind['id'] = remind.id;
+      remind['idtype'] = remind.type;
+      remind['remindtime'] = remind.wd + " " + remind.wt;
+
+      this.tellyouService.tellyou(remind);
     }
 
     return contextRetMap
