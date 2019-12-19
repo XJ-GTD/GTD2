@@ -9,6 +9,7 @@ import {TellyouIdType, TellyouType} from "../../../data.enum";
 import {EventService, MiniTaskData} from "../../../service/business/event.service";
 import {CalendarService} from "../../../service/business/calendar.service";
 import * as moment from "moment";
+import {UserConfig} from "../../../service/config/user.config";
 
 @Injectable()
 export class TellyouService {
@@ -20,6 +21,8 @@ export class TellyouService {
   private invites: Array<TellYouBase> = new Array<TellYouBase>();
   private showfn:Function = noop;
   private closefn:Function = noop;
+
+  friends: Array<any> = UserConfig.friends;
 
   constructor(private utilService: UtilService,
               private timeoutService: TimeOutService,
@@ -186,15 +189,15 @@ export class TellyouService {
   }
 
   //把播报的数据放缓存中
-  public prepare4wating(base: TellYouBase) {
-    if (base.tellType == TellyouType.invite_agenda || base.tellType == TellyouType.invite_planitem) {
-      this.invites.push(base);
-    } else if(base.tellType == TellyouType.remind_agenda || base.tellType == TellyouType.remind_minitask ||
-      base.tellType == TellyouType.remind_planitem || base.tellType == TellyouType.remind_todo ||
-      base.tellType == TellyouType.remind_merge) {
-        this.reminds.push(base);
+  public prepare4wating(tellYouData: TellYouBase) {
+    if (tellYouData.tellType == TellyouType.invite_agenda || tellYouData.tellType == TellyouType.invite_planitem) {
+      this.invites.push(tellYouData);
+    } else if(tellYouData.tellType == TellyouType.remind_agenda || tellYouData.tellType == TellyouType.remind_minitask ||
+      tellYouData.tellType == TellyouType.remind_planitem || tellYouData.tellType == TellyouType.remind_todo ||
+      tellYouData.tellType == TellyouType.remind_merge) {
+        this.reminds.push(tellYouData);
     } else{
-      this.systems.push(base);
+      this.systems.push(tellYouData);
     }
   }
 
@@ -306,7 +309,14 @@ export class TellyouService {
 
   createSpeakText(pageData:TellYou){
     let time =  pageData.fromdate ? moment(pageData.fromdate,"YYYY/MM/DD hh:ss").format("YYYY年M月D日 A h点s分"):"";
+
     let person = pageData.formperson;
+    let friend = this.friends.find((val) => {
+      return person == val.ui;
+    })
+    if (friend){
+      person = friend.ran;
+    }
     let text = pageData.sn;
     let repeat = pageData.repeat;
     let timeype = pageData.datetype != '2'? '开始于':'截至到';

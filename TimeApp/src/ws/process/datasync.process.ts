@@ -313,14 +313,14 @@ export class DataSyncProcess implements MQProcess {
 
               // 发送语音通知用数据
               typeclassdel.forEach((planitem) => {
-                this.tellyouService.tellyou(generateTellYouBase({id: planitem.jti, idtype: TellyouIdType.PlanItem, tellType: TellyouType.default}));
+                this.tellyouService.tellyou4invsited(generateTellYouBase({id: planitem.jti, idtype: TellyouIdType.PlanItem, tellType: TellyouType.default}));
               });
             } else if (datatype == "Agenda") {
               await this.eventService.receivedAgendaData(typeclassdel, SyncDataStatus.Deleted, extension);
 
               // 发送语音通知用数据
               typeclassdel.forEach((agenda) => {
-                this.tellyouService.tellyou(generateTellYouBase({id: agenda.evi, idtype: TellyouIdType.Agenda, tellType: TellyouType.default}));
+                this.tellyouService.tellyou4invsited(generateTellYouBase({id: agenda.evi, idtype: TellyouIdType.Agenda, tellType: TellyouType.default}));
               });
             } else if (datatype == "Memo") {
               for (let memo of typeclassdel) {
@@ -371,7 +371,7 @@ export class DataSyncProcess implements MQProcess {
 
               // 发送语音通知用数据
               typeclassundel.forEach((annotation) => {
-                this.tellyouService.tellyou(generateTellYouBase({id: annotation.obi, idtype: TellyouIdType.Agenda, tellType: TellyouType.default}));
+                this.tellyouService.tellyou4invsited(generateTellYouBase({id: annotation.obi, idtype: TellyouIdType.Agenda, tellType: TellyouType.default}));
               });
             } else if (datatype == "Grouper") {
               await this.grouperService.receivedGrouperData(typeclassundel, SyncDataStatus.UnDeleted);
@@ -686,7 +686,7 @@ export class DataSyncProcess implements MQProcess {
         await this.annotationService.receivedAnnotationData([annotation], this.convertSyncStatus(dsPara.status), dsPara.extension);
 
         // 发送语音通知用数据
-        this.tellyouService.tellyou(generateTellYouBase({id: annotation.obi, idtype: TellyouIdType.Agenda, tellType: TellyouType.default}));
+        this.tellyouService.tellyou4invsited(generateTellYouBase({id: annotation.obi, idtype: TellyouIdType.Agenda, tellType: TellyouType.default}));
       }
       if (dsPara.type == "Grouper") {
         let grouper: Grouper = new Grouper();
