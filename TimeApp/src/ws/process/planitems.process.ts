@@ -6,6 +6,7 @@ import {ProcesRs} from "../model/proces.rs";
 import {PI, O, SS} from "../model/ws.enum";
 import {FsData, RcInParam, ScdData} from "../../data.mapping";
 import {CalendarService,PlanItemData} from "../../service/business/calendar.service";
+import {Member} from "../../service/business/event.service";
 import {WsDataConfig} from "../wsdata.config";
 import {BaseProcess} from "./base.process";
 import { UtilService } from "../../service/util-service/util.service";
@@ -65,8 +66,39 @@ export class PlanItemsProcess extends BaseProcess implements MQProcess,OptProces
         rcIn.jti = c.si;
       }
 
+      for (let f of  fs) {
+        let member: Member = {} as Member;
+        Object.assign(member, f);
+
+        rcIn.members = rcIn.members || new Array<Member>();
+
+        rcIn.members.push(member);
+      }
+
       if (prvOpt == PI.C) {
         await this.calendarService.savePlanItem(rcIn);
+      } else if (prvOpt == PI.U) {
+        let origin: PlanItemData = await this.calendarService.getPlanItem(rcIn.jti);
+        let updated: PlanItemData = {} as PlanItemData;
+        this.util.cloneObj(updated, origin);
+
+        if (rcIn.members && rcIn.members.length > 0) {
+          updated.members = updated.members || new Array<Member>();
+
+          for (let member of rcIn.members){
+            let existindex: number = updated.members.findIndex((ele) => {
+              return ele.rc == member.rc;
+            });
+
+            if (existindex < 0) {
+              updated.members.push(member);
+            }
+          }
+
+          updated.pn = updated.members.length;
+        }
+
+        await this.calendarService.savePlanItem(updated, origin);
       } else {
       	let originPlanItem: PlanItemData = {} as PlanItemData;
       	originPlanItem = await this.calendarService.getPlanItem(rcIn.jti);
@@ -144,13 +176,13 @@ export class PlanItemsProcess extends BaseProcess implements MQProcess,OptProces
     }
 
     //处理区分
-    // 创建日程
+    // 创建日历项
     if (content.option == PI.C) {
       // F处理返回的结果
       if (scd.length > 0){
-        // 上下文有日程
+        // 上下文有日历项
       } else {
-        // 查询没有日程
+        // 查询没有日历项
         let c:ScdData = new ScdData();
         let scdlist : Array<ScdData> = new Array<ScdData>();
         scdlist.push(c);
@@ -166,14 +198,27 @@ export class PlanItemsProcess extends BaseProcess implements MQProcess,OptProces
 
     }
 
-    // 删除日程
+    // 更新日历项
+    if (content.option == PI.U) {
+      // 设置修改后内容
+      for (let c of scd){
+        c.sn = (cudPara.ti == null || cudPara.ti == '')?c.sn:cudPara.ti;
+        c.sd = (cudPara.d == null || cudPara.d == '')? c.sd:cudPara.d;
+        c.st = (cudPara.t == null || cudPara.t == '')?c.st:cudPara.t;
+
+        //显示本次添加的人
+        c.fss = fs;
+      }
+    }
+
+    // 删除日历项
     if (content.option == PI.D) {
     }
 
-    //上下文内放置创建的或修改的日程更新内容
+    //上下文内放置创建的或修改的日历项更新内容
     this.output(content, contextRetMap, 'planitems', WsDataConfig.PID, scd);
 
-    //上下文内放置创建的或修改的日程联系人
+    //上下文内放置创建的或修改的日历项联系人
     this.output(content, contextRetMap, 'contacts', WsDataConfig.FS, fs);
 
     return contextRetMap;
