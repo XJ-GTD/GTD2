@@ -341,14 +341,14 @@ export class DataSyncProcess implements MQProcess {
 
                 // 发送语音通知用数据
                 typeclassundel.forEach((planitem) => {
-                  this.tellyouService.tellyou({id: planitem.jti, idtype: "PlanItem"});
+                  this.tellyouService.tellyou({id: planitem.jti, idtype: "PlanItem", tellType: TellyouType.default});
                 });
             } else if (datatype == "Agenda") {
               await this.eventService.receivedAgendaData(typeclassundel, SyncDataStatus.UnDeleted, extension);
 
               // 发送语音通知用数据
               typeclassundel.forEach((agenda) => {
-                this.tellyouService.tellyou({id: agenda.evi, idtype: "Agenda"});
+                this.tellyouService.tellyou({id: agenda.evi, idtype: "Agenda", tellType: TellyouType.default});
               });
             } else if (datatype == "Memo") {
               for (let memo of typeclassundel) {
@@ -505,7 +505,7 @@ export class DataSyncProcess implements MQProcess {
         await this.calendarService.receivedPlanItemData([planitem], this.convertSyncStatus(dsPara.status));
 
         // 发送语音通知用数据
-        this.tellyouService.tellyou({id: planitem.jti, idtype: "PlanItem"});
+        this.tellyouService.tellyou({id: planitem.jti, idtype: "PlanItem", tellType: TellyouType.default});
       }
 
       if (dsPara.type == "Agenda") {
@@ -648,7 +648,7 @@ export class DataSyncProcess implements MQProcess {
         await this.eventService.receivedAgendaData([agenda], this.convertSyncStatus(dsPara.status), dsPara.extension);
 
         // 发送语音通知用数据
-        this.tellyouService.tellyou({id: agenda.evi, idtype: "Agenda"});
+        this.tellyouService.tellyou({id: agenda.evi, idtype: "Agenda", tellType: TellyouType.default});
       }
 
       if (dsPara.type == "Memo") {
