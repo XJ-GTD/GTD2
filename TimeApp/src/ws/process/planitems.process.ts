@@ -6,6 +6,7 @@ import {ProcesRs} from "../model/proces.rs";
 import {PI, O, SS} from "../model/ws.enum";
 import {FsData, RcInParam, ScdData} from "../../data.mapping";
 import {CalendarService,PlanItemData} from "../../service/business/calendar.service";
+import {Member} from "../../service/business/event.service";
 import {WsDataConfig} from "../wsdata.config";
 import {BaseProcess} from "./base.process";
 import { UtilService } from "../../service/util-service/util.service";
