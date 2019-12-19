@@ -178,7 +178,11 @@ import {FsData, PageDcData} from "../../data.mapping";
 
      it('Case 2 - 1 save 创建群组 - 无群组的名称', async () => {
        let pd: PageDcData = new PageDcData();
-       await grouperService.saveGrouper(pd);
+       try {
+         await grouperService.saveGrouper(pd);
+       } catch (e) {
+         expect(e).toBeDefined();
+       }
 
        let pg: Array<PageDcData> = await grouperService.filterGroups(UserConfig.groups, "");
        expect(pg).toBeDefined();
@@ -259,7 +263,6 @@ import {FsData, PageDcData} from "../../data.mapping";
 
        let gi: string = pg[0].gi;
        let gn: string = pg[0].gn;
-       // let del: string = pg[0].del;
 
        await grouperService.removeGrouper(gi);
 
