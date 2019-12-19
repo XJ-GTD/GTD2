@@ -35,6 +35,11 @@ export class SpeechProcess extends BaseProcess implements MQProcess {
 
     return new Promise<Map<string,any>>(async resolve => {
 
+      // 只有在语音界面对话时才播报语音
+      if (mutable(content)) {
+        return contextRetMap;
+      }
+
       //获取上下文结果
       let user = UserConfig.user;
 
@@ -319,6 +324,16 @@ export class SpeechProcess extends BaseProcess implements MQProcess {
       this.emitService.emitScdLs(cscdLS);
     }
   }
+}
+
+export function mutable(content: any): boolean {
+  if (content && content.thisContext && content.thisContext.header) {
+    if (content.thisContext.header.sender == "xunfei/aiui") {
+      return false;
+    }
+  }
+
+  return true;
 }
 
 export function isFuturefulltime(agendas: any): boolean {
