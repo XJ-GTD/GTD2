@@ -346,6 +346,40 @@ export class GrouperService extends BaseService {
       return groups;
   }
 
+  async fetchGroups(): Promise<Array<PageDcData>> {
+    let groups: Array<PageDcData> = new Array<PageDcData>();
+
+    //获取本地群列表
+    let sql = `select * from gtd_g where del <> 'del';`;
+
+    let dcl: Array<PageDcData> = await this.sqlExce.getExtList<PageDcData>(sql)
+
+    if (dcl.length > 0) {
+      //和单群人数
+      for (let dc of dcl) {
+        dc.fsl = new Array<FsData>();
+        let sqlbx = `select gb.* from gtd_b_x gbx inner join gtd_b gb on gb.pwi = gbx.bmi
+        where gbx.bi='${dc.gi}' and gbx.del <> 'del';`;
+        let fsl: Array<FsData> = await this.sqlExce.getExtList<FsData>(sqlbx);
+        for (let fs of fsl) {
+          let fsd: FsData = this.userConfig.GetOneBTbl(fs.pwi);
+          if (!dc.fsl) {
+            dc.fsl = new Array<FsData>(); //群组成员
+          }
+          if (fsd) {
+            dc.fsl.push(fsd);
+          }
+        }
+        dc.gc = dc.fsl.length;
+        dc.gm = DataConfig.QZ_HUIBASE64;
+
+        groups.push(dc);
+      }
+    }
+
+    return groups;
+  }
+
   mergeFriends(friends: Array<FsData>, friend: FsData): Array<FsData> {
     assertEmpty(friends);   // 入参不能为空
     assertEmpty(friend);    // 合并对象不能为空
