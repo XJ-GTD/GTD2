@@ -43,14 +43,14 @@ declare var Wechat;
                     <p>{{item.agendaData.evn}}</p>
                     <p>{{item.agendaData.bz}}</p>
                   </div>
-                  <div class="timeline-foot">
-                    <span class="icon font-small">
-                      <ion-icon class="fad fa-lock"  *ngIf="item.agendaData.todolist == '0'"></ion-icon>
-                      <ion-icon class="fad fa-user-tag"  *ngIf="currentuser != item.agendaData.ui && item.agendaData.ui != ''"></ion-icon>
-                      <ion-icon class="fad fa-check-double" *ngIf="item.agendaData.wc == finished"></ion-icon>
-                      <ion-icon class="fad fa-sync" *ngIf="item.agendaData.tb == synch"></ion-icon>
-                    </span>
-                  </div>
+                  <!--<div class="timeline-foot">-->
+                    <!--<span class="icon font-small">-->
+                      <!--<ion-icon class="fad fa-lock"  *ngIf="item.agendaData.todolist == '0'"></ion-icon>-->
+                      <!--<ion-icon class="fad fa-user-tag"  *ngIf="currentuser != item.agendaData.ui && item.agendaData.ui != ''"></ion-icon>-->
+                      <!--<ion-icon class="fad fa-check-double" *ngIf="item.agendaData.wc == finished"></ion-icon>-->
+                      <!--<ion-icon class="fad fa-sync" *ngIf="item.agendaData.tb == synch"></ion-icon>-->
+                    <!--</span>-->
+                  <!--</div>-->
                 </div>
               </li>
             </ng-template>

@@ -255,6 +255,7 @@ export enum TellyouType {
   cancel_planitem = "cancel_planitem",      //@活动
   at_agenda = "at_agenda",      //at活动
   system = "system",      // 10系统消息
+  default = "default",      // 缺省
 }
 
 export enum TellyouIdType {
