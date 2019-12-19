@@ -106,7 +106,7 @@ function clean(datasource)
     return output;
   }
 
-  var convertMessageWithNotify = function(id, type, title, content, messagetype) {
+  var convertMessageWithNotify = function(id, type, action, title, content, messagetype) {
     var output = {};
 
     // 返回消息头部
@@ -134,6 +134,7 @@ function clean(datasource)
       parameters: {
         type: type,
         id: id,
+        action: action,
         title: title,
         content: content
       }
@@ -291,21 +292,21 @@ function clean(datasource)
               if (operation == "add") {
                 if (status != "del") {
                   push = convertPushMessage(id, type, name, (name + " - 邀请活动"), title, datetime) || {};
-                  mwxing = convertMessageWithNotify(id, type, (name + " - 邀请活动"), title, 'OTHER_ACCOUNT');
+                  mwxing = convertMessageWithNotify(id, type, "invite", (name + " - 邀请活动"), title, 'OTHER_ACCOUNT');
                 }
               }
               // 发起人删除,通知所有人
               if (status == "del") {
                 if (!sharestate || !sharestate[to] || sharestate[to]["datastate"] != "del") {
                   push = convertPushMessage(id, type, name, (name + " - 取消活动"), title, datetime) || {};
-                  mwxing = convertMessageWithNotify(id, type, (name + " - 取消活动"), title, 'OTHER_ACCOUNT');
+                  mwxing = convertMessageWithNotify(id, type, "cancel", (name + " - 取消活动"), title, 'OTHER_ACCOUNT');
                 }
               }
               // 移除受邀人,通知受邀人
               if (operation == "remove") {
                 if (!sharestate || !sharestate[to] || sharestate[to]["datastate"] != "del") {
                   push = convertPushMessage(id, type, name, (name + " - 取消活动"), title, datetime) || {};
-                  mwxing = convertMessageWithNotify(id, type, (name + " - 取消活动"), title, 'OTHER_ACCOUNT');
+                  mwxing = convertMessageWithNotify(id, type, "cancel", (name + " - 取消活动"), title, 'OTHER_ACCOUNT');
                 }
               }
             } else {
@@ -313,14 +314,14 @@ function clean(datasource)
               if (operation == "add") {
                 if (status != "del") {
                   push = convertPushMessage(id, type, name, (name + " - 邀请活动"), title, datetime) || {};
-                  mwxing = convertMessageWithNotify(id, type, (name + " - 邀请活动"), title, 'OTHER_ACCOUNT');
+                  mwxing = convertMessageWithNotify(id, type, "invite", (name + " - 邀请活动"), title, 'OTHER_ACCOUNT');
                 }
               }
               // 移除受邀人,通知受邀人
               if (operation == "remove") {
                 if (!sharestate || !sharestate[to] || sharestate[to]["datastate"] != "del") {
                   push = convertPushMessage(id, type, name, (name + " - 取消活动"), title, datetime) || {};
-                  mwxing = convertMessageWithNotify(id, type, (name + " - 取消活动"), title, 'OTHER_ACCOUNT');
+                  mwxing = convertMessageWithNotify(id, type, "cancel", (name + " - 取消活动"), title, 'OTHER_ACCOUNT');
                 }
               }
             }
@@ -339,7 +340,7 @@ function clean(datasource)
           };
         } else if (type == "Annotation") {  // @通知
           standardnext.announceContent = {
-            mwxing: convertMessageWithNotify(id, type, (name + " - @你"), title, 'OTHER_ACCOUNT'),
+            mwxing: convertMessageWithNotify(id, type, "annotation", (name + " - @你"), title, 'OTHER_ACCOUNT'),
             sms: main? convertSMS(name, title) : {},
             push: convertPushMessage(id, type, name, (name + " - @你"), title, datetime) || {}
           };
