@@ -36,7 +36,6 @@ export class SpeechProcess extends BaseProcess implements MQProcess {
     return new Promise<Map<string,any>>(async resolve => {
 
       //获取上下文结果
-
       let user = UserConfig.user;
 
       //处理所需要参数
@@ -193,7 +192,6 @@ export class SpeechProcess extends BaseProcess implements MQProcess {
               speakText = speakText.replace("{count}", count+"");
             }
           }
-
         }
       }
 
@@ -258,8 +256,6 @@ export class SpeechProcess extends BaseProcess implements MQProcess {
       resolve(contextRetMap);
 
       this.assistant.speakText(speakText).then((data) => {
-
-
         // 播报后启动语音监听
         if (openListener) {
           this.assistant.listenAudio();
