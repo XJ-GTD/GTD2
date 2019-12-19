@@ -259,9 +259,9 @@ export class SpeechProcess extends BaseProcess implements MQProcess {
       });
 
       // 数据操作显示
-      showdatas(showagendas, speakText, sutbl.sut);
-      showdatas(memos, speakText, sutbl.sut);
-      showdatas(planitems, speakText, sutbl.sut);
+      this.showdatas(showagendas, speakText, sutbl.sut);
+      this.showdatas(memos, speakText, sutbl.sut);
+      this.showdatas(planitems, speakText, sutbl.sut);
     })
   }
 
