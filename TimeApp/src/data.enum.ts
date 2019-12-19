@@ -251,6 +251,9 @@ export enum TellyouType {
   remind_planitem = "remind_planitem",// 5日历项提醒
   remind_todo = "remind_todo",         // 6重要事项系统
   remind_merge = "remind_merge",// 7和并提醒
+  cancel_agenda = "cancel_agenda",      //取消活动
+  cancel_planitem = "cancel_planitem",      //@活动
+  at_agenda = "at_agenda",      //at活动
   system = "system",      // 10系统消息
 }
 
