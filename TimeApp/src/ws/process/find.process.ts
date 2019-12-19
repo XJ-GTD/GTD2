@@ -75,6 +75,8 @@ export class FindProcess extends BaseProcess implements MQProcess {
       if (finds.marks)  condition.mark = finds.marks;
       if (finds.targets && finds.targets.length > 0)  condition.target = finds.targets.reduce((target, ele) => {
         if (ele == ObjectType.Event) target.push(ObjectType.Event);
+        if (ele == ObjectType.Memo) target.push(ObjectType.Memo);
+        if (ele == ObjectType.Calendar) target.push(ObjectType.Calendar);
         return target;
       }, new Array<ObjectType>());
 
