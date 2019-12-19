@@ -351,7 +351,38 @@ import {FsData, PageDcData} from "../../data.mapping";
        expect(result).toBeDefined();
      });
 
+     it('Case 7 - 1 syncGrouper 同步全部的未同步信息 - 同步全部的未同步信息', async () => {
 
+       let pullGroupers: Array<Grouper> = new Array<Grouper>();
+       await grouperService.syncGrouper(pullGroupers);
+     });
+
+     it('Case 8 - 1 removeGrouperMember 删除群成员 - 删除群成员', async () => {
+
+       let pd: PageDcData = new PageDcData();
+       pd.gn ="组团打怪群";
+       await grouperService.saveGrouper(pd);
+
+       let pg: Array<PageDcData> = await grouperService.filterGroups(UserConfig.groups, "组团打怪群");
+       expect(pg).toBeDefined();
+       expect(pg.length).toBeDefined(1);
+
+       let pd2: PageDcData = new PageDcData();
+       Object.assign(pd2, pg[0]);
+       pd2.gn ="组团打怪群3";
+       let fs: FsData = new FsData();
+       fs.pwi = "12343";
+       pd2.fsl.push(fs);
+       await grouperService.saveGrouper(pd2);
+
+       let pg2: Array<PageDcData> = await grouperService.filterGroups(UserConfig.groups, "组团打怪群3");
+       expect(pg2).toBeDefined();
+       expect(pg2.length).toBeDefined(1);
+
+       //删除
+       await grouperService.removeGrouperMember(pg2[0].gi,pg2[0].pwi);
+
+     });
 
      afterAll(() => {
        TestBed.resetTestingModule();
