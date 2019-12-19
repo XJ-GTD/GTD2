@@ -18,6 +18,7 @@ import {DataConfig} from "../../../service/config/data.config";
 import {EventType, InviteState, ModalTranType, TellyouIdType, TellyouType} from "../../../data.enum";
 import {ScdPageParamter} from "../../../data.mapping";
 import * as moment from "moment";
+import {UserConfig} from "../../../service/config/user.config";
 
 /**
  * Generated class for the Hb01Page page.
@@ -127,7 +128,9 @@ export class TellYouComponent{
   private onShow: EventEmitter<any> = new EventEmitter<any>();
 
   constructor(private changeDetectorRef: ChangeDetectorRef,
-              private tellyouService: TellyouService) {
+              private tellyouService: TellyouService,
+              private assistantService: AssistantService,
+              private emitService: EmitService,) {
 
       this.tellyouService.regeditTellYou((tellYou:TellYou)=>{
         this.showPopper(tellYou);
@@ -142,8 +145,32 @@ export class TellYouComponent{
     this.tellyouService.resumeTellYou();
   }
 
+  currentuser: string = UserConfig.account.id;
+
+  friends: Array<any> = UserConfig.friends;
+
   showPopper(data: TellYou) {
+
     this.tellYouData = data;
+
+    if (this.tellYouData.formperson != this.currentuser && this.tellYouData.formperson != ""){
+      let friend = this.friends.find((val) => {
+        return this.tellYouData.formperson == val.ui;
+      });
+
+      if (friend){
+        this.tellYouData.formperson = friend.ran;
+      }
+    }else{
+      this.tellYouData.formperson = "";
+    }
+
+    // pageData.spearktext = pageData.formperson + "邀请你一个活动。主题" + pageData.sn + "时间：" + pageData.fromdate;//播报格式
+    // pageData.remindtime = "111111";//提醒时间，提醒的情况下有
+    this.tellYouData.bells= this.tellyouService.getRemindlen(); //剩余提醒个数
+    this.tellYouData.handshake=this.tellyouService.getInvitelen();//剩余邀请个数
+    this.tellYouData.systems= this.tellyouService.getSystemslen();//剩余系统消息个数
+
     if (!this.changeDetectorRef['destroyed']) {
       this.changeDetectorRef.detectChanges();
       this.onShow.emit(true);
