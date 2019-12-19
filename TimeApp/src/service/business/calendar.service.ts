@@ -4261,25 +4261,25 @@ export class CalendarService extends BaseService {
     let evargs: any = [];
     let moargs: any = [];
 
-    let seachCalendar: boolean = false;
-    let seachEvent: boolean = false;
-    let seachMemo: boolean = false;
+    let searchCalendar: boolean = false;
+    let searchEvent: boolean = false;
+    let searchMemo: boolean = false;
 
     // 查询范围
     if (condition.target && condition.target.length > 0) {
       if (condition.target.indexOf(ObjectType.Calendar) >= 0) {
-        seachCalendar = true;
+        searchCalendar = true;
       }
       if (condition.target.indexOf(ObjectType.Event) >= 0) {
-        seachEvent = true;
+        searchEvent = true;
       }
       if (condition.target.indexOf(ObjectType.Memo) >= 0) {
-        seachMemo = true;
+        searchMemo = true;
       }
     } else {
-      seachCalendar = true;
-      seachEvent = true;
-      seachMemo = true;
+      searchCalendar = true;
+      searchEvent = true;
+      searchMemo = true;
     }
 
     // 查询全部类型 日历项/事件/备忘
@@ -4388,17 +4388,17 @@ export class CalendarService extends BaseService {
     sqlmemos = `select * from gtd_mom ${mowhere} order by sd asc`;
 
     // 执行查询
-    if (sqlcalitems && seachCalendar) {
+    if (sqlcalitems && searchCalendar) {
       console.log(sqlcalitems);
       resultActivity.calendaritems = await this.sqlExce.getExtLstByParam<PlanItemData>(sqlcalitems, ciargs) || new Array<PlanItemData>();
     }
 
-    if (sqlevents && seachEvent) {
+    if (sqlevents && searchEvent) {
       console.log(sqlevents);
       resultActivity.events = await this.sqlExce.getExtLstByParam<EventData>(sqlevents, evargs) || new Array<EventData>();
     }
 
-    if (sqlmemos && seachMemo) {
+    if (sqlmemos && searchMemo) {
       console.log(sqlmemos);
       resultActivity.memos = await this.sqlExce.getExtLstByParam<MemoData>(sqlmemos, moargs) || new Array<MemoData>();
     }
