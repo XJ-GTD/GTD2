@@ -11,7 +11,10 @@ import * as moment from "moment";
 import {ScdPageParamter} from "../../data.mapping";
 import {DataConfig} from "../../service/config/data.config";
 import {PageBoxComponent} from "../../components/page-box/page-box";
-import {EventService, AgendaData, Member, Attachment, RtJson, TxJson} from "../../service/business/event.service";
+import {
+  EventService, AgendaData, Member, Attachment, RtJson, TxJson,
+  generateRtJson, generateTxJson
+} from "../../service/business/event.service";
 import {
   OperateType,
   RepeatFlag,
@@ -312,8 +315,10 @@ export class AgendaPage {
               this.emitService.emit("mwxing.calendar.datas.readwrite", {rw: "read", payload: agenda});
 
               this.util.cloneObj(this.currentAgenda , agenda);
-              this.util.cloneObj(this.originAgenda, agenda);
+              this.currentAgenda.rtjson = generateRtJson(this.currentAgenda.rtjson,this.currentAgenda.rt);
+              this.currentAgenda.txjson = generateTxJson(this.currentAgenda.txjson,this.currentAgenda.tx);
 
+              this.util.cloneObj(this.originAgenda, agenda);
 
               this.snlength = this.currentAgenda.evn.length;
               if (this.currentAgenda.ui != this.currentuser && this.currentAgenda.invitestatus != InviteState.Accepted && this.currentAgenda.invitestatus != InviteState.Rejected) {
@@ -769,6 +774,8 @@ export class AgendaPage {
 
           if (agenda) {
             this.util.cloneObj(this.currentAgenda , agenda);
+            this.currentAgenda.rtjson = generateRtJson(this.currentAgenda.rtjson,this.currentAgenda.rt);
+            this.currentAgenda.txjson = generateTxJson(this.currentAgenda.txjson,this.currentAgenda.tx);
             this.util.cloneObj(this.originAgenda, agenda);
 
             this.buttons.save = false;
@@ -921,6 +928,8 @@ export class AgendaPage {
       this.eventService.saveAgenda(this.currentAgenda, this.originAgenda, op).then((agenda) => {
         if (agenda && agenda.length > 0) {
           this.util.cloneObj(this.currentAgenda , agenda[0]);
+          this.currentAgenda.rtjson = generateRtJson(this.currentAgenda.rtjson,this.currentAgenda.rt);
+          this.currentAgenda.txjson = generateTxJson(this.currentAgenda.txjson,this.currentAgenda.tx);
           this.util.cloneObj(this.originAgenda, agenda[0]);
 
           this.buttons.save = false;
@@ -952,6 +961,8 @@ export class AgendaPage {
                 this.emitService.emit("mwxing.calendar.datas.readwrite", {rw: "writeandread", payload: agenda});
 
                 this.util.cloneObj(this.currentAgenda , agenda[0]);
+                this.currentAgenda.rtjson = generateRtJson(this.currentAgenda.rtjson,this.currentAgenda.rt);
+                this.currentAgenda.txjson = generateTxJson(this.currentAgenda.txjson,this.currentAgenda.tx);
                 this.util.cloneObj(this.originAgenda, agenda[0]);
 
                 this.buttons.save = false;
@@ -965,6 +976,8 @@ export class AgendaPage {
           this.eventService.saveAgenda(this.currentAgenda).then((agenda) => {
             if (agenda && agenda.length > 0) {
               this.util.cloneObj(this.currentAgenda ,agenda[0]);
+              this.currentAgenda.rtjson = generateRtJson(this.currentAgenda.rtjson,this.currentAgenda.rt);
+              this.currentAgenda.txjson = generateTxJson(this.currentAgenda.txjson,this.currentAgenda.tx);
               this.util.cloneObj(this.originAgenda, agenda[0]);
 
               this.buttons.remove = true;

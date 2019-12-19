@@ -57,7 +57,8 @@ export class EventService extends BaseService {
     // 复制对象, 防止影响原数据对象
     let shareAgenda: AgendaData = {} as AgendaData;
     this.util.cloneObj(shareAgenda, agenda);
-
+    shareAgenda.rtjson = generateRtJson(shareAgenda.rtjson,shareAgenda.rt);
+    shareAgenda.txjson = generateTxJson(shareAgenda.txjson,shareAgenda.tx);
     // 发起人
     shareAgenda.creator = await this.getMemberByUi(shareAgenda.ui);
 
@@ -186,6 +187,7 @@ export class EventService extends BaseService {
               agd.todolist = anyenum.ToDoListStatus.On;
             }
             agd.tb = anyenum.SyncType.unsynch;
+            agd.checksum = this.checksumAgenda(agd);
           }else{
             if (!agd.invitestatus) {
               agd.invitestatus = InviteState.None;
@@ -1701,9 +1703,12 @@ export class EventService extends BaseService {
       newAgdata.tos = tos;
       newAgdata.pn = newAgdata.members.length;
 
-      let caparam = new CaTbl();
-      caparam = this.sqlparamAddCa(oriAgdata.evi ,newAgdata);//evi使用原evi
-      sqlparam.push(caparam.rpTParam());
+      if (oriAgdata.rfg != anyenum.RepeatFlag.Repeat) {
+
+        let caparam = new CaTbl();
+        caparam = this.sqlparamAddCa(oriAgdata.evi, newAgdata);//evi使用原evi
+        sqlparam.push(caparam.rpTParam());
+      }
 
       //其他表相关处理
       this.modifyOnlyoneForOther(sqlparam,oriAgdata,newAgdata);
@@ -2056,7 +2061,6 @@ export class EventService extends BaseService {
           })
         }
 
-        retAgendas.push(agd);
         let ev = new EvTbl();
         Object.assign(ev,agd);
         evs.push(ev);
@@ -2557,7 +2561,8 @@ export class EventService extends BaseService {
       agdata.txs = agdata.txjson.text(day,agdata.evt);
 
       this.util.cloneObj(outAgd, agdata);
-
+      outAgd.rtjson = generateRtJson(outAgd.rtjson,outAgd.rt);
+      outAgd.txjson = generateTxJson(outAgd.txjson,outAgd.tx);
       outAgd.evi = this.util.getUuid();
 
       // 非重复日程及重复日程的第一条的rtevi（父日程evi）字段设为空。遵循父子关系，

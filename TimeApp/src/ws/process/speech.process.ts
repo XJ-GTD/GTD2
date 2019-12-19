@@ -35,8 +35,12 @@ export class SpeechProcess extends BaseProcess implements MQProcess {
 
     return new Promise<Map<string,any>>(async resolve => {
 
-      //获取上下文结果
+      // 只有在语音界面对话时才播报语音
+      if (mutable(content)) {
+        return contextRetMap;
+      }
 
+      //获取上下文结果
       let user = UserConfig.user;
 
       //处理所需要参数
@@ -74,6 +78,8 @@ export class SpeechProcess extends BaseProcess implements MQProcess {
       let memos: Array<ScdData> = new Array<ScdData>();
       let planitems: Array<ScdData> = new Array<ScdData>();
       let showagendas: Array<ScdData> = new Array<ScdData>();
+      let showplanitems: Array<ScdData> = new Array<ScdData>();
+      let showmemos: Array<ScdData> = new Array<ScdData>();
       let contacts: Array<FsData> = new Array<FsData>();
 
       let sutbl: SuTbl = new SuTbl();
@@ -98,6 +104,12 @@ export class SpeechProcess extends BaseProcess implements MQProcess {
 
         //获取上下文内日程查询结果
         showagendas = this.input(content,contextRetMap,"showagendas",WsDataConfig.SCD,showagendas);
+
+        //获取上下文内日程查询结果
+        showplanitems = this.input(content,contextRetMap,"showplanitems",WsDataConfig.PID,showplanitems);
+
+        //获取上下文内日程查询结果
+        showmemos = this.input(content, contextRetMap, "showmemos", WsDataConfig.MOD, showmemos);
 
         //获取上下文内人员信息
         contacts = this.input(content,contextRetMap,"contacts",WsDataConfig.FS,contacts);
@@ -125,8 +137,14 @@ export class SpeechProcess extends BaseProcess implements MQProcess {
           }
         } else {
           let count = 0;
-          if (agendas){
+          if (agendas && agendas.length > 0){
             count = agendas.length;
+          }
+          if (memos && memos.length > 0){
+            count = memos.length;
+          }
+          if (planitems && planitems.length > 0){
+            count = planitems.length;
           }
 
           if (count == 0) type = WsDataConfig.TYPE_NONE;
@@ -166,12 +184,19 @@ export class SpeechProcess extends BaseProcess implements MQProcess {
               speakText = speakText.replace("{" + txt.name + "}", expvalue);
             }
           }else{
-            if (agendas){
+            if (agendas && agendas.length > 0){
               let count = agendas.length;
               speakText = speakText.replace("{count}", count+"");
             }
+            if (memos && memos.length > 0){
+              let count = memos.length;
+              speakText = speakText.replace("{count}", count+"");
+            }
+            if (planitems && planitems.length > 0){
+              let count = planitems.length;
+              speakText = speakText.replace("{count}", count+"");
+            }
           }
-
         }
       }
 
@@ -236,63 +261,79 @@ export class SpeechProcess extends BaseProcess implements MQProcess {
       resolve(contextRetMap);
 
       this.assistant.speakText(speakText).then((data) => {
-
-
         // 播报后启动语音监听
         if (openListener) {
           this.assistant.listenAudio();
         }
       });
 
-      // 多个日程操作显示
-      if  (showagendas && showagendas.length > 1){
-        let cscdLS:ScdLsEmData = new ScdLsEmData();
-        cscdLS.desc = speakText;
-        for (let scd of showagendas){
-          let scdEm:ScdEmData = new ScdEmData();
-          scdEm.id = scd.si;
-          scdEm.d = scd.sd;
-          scdEm.t = scd.st;
-          scdEm.ti = scd.sn;
-          scdEm.gs = scd.gs;
-          cscdLS.datas.push(scdEm);
-        }
-        cscdLS.scdTip = sutbl.sut;
-        this.emitService.emitScdLs(cscdLS);
-      }
-
-
-      // 单个日程操作显示
-
-
-      if  (showagendas && showagendas.length == 1){
-        let scdEm:ScdEmData = new ScdEmData();
-        scdEm.id = showagendas[0].si;
-        scdEm.d = showagendas[0].sd;
-        scdEm.t = showagendas[0].st;
-        scdEm.ti = showagendas[0].sn;
-        scdEm.gs = showagendas[0].gs;
-
-        scdEm.scdTip = sutbl.sut;
-
-
-        for (let btbl of showagendas[0].fss){
-          let fri:FriendEmData = new FriendEmData();
-          fri.id = btbl.pwi;
-          fri.p = btbl.ranpy;
-          fri.m = btbl.rc;
-          fri.a = btbl.bhiu;
-          fri.n = btbl.ran;
-          fri.uid = btbl.ui;
-
-          scdEm.datas.push(fri);
-        }
-        this.emitService.emitScd(scdEm);
-      }
-
-
+      // 数据操作显示
+      this.showdatas(showagendas, speakText, sutbl.sut);
+      this.showdatas(showmemos, speakText, sutbl.sut);
+      this.showdatas(showplanitems, speakText, sutbl.sut);
     })
   }
+
+  showdatas(datas: Array<ScdData>, speakText: string = "", tips: string = "") {
+    if (datas && datas.length == 1) {
+      let scdEm: ScdEmData = new ScdEmData();
+
+      scdEm.id = datas[0].si;
+      scdEm.d = datas[0].sd;
+      scdEm.t = datas[0].st;
+      scdEm.ti = datas[0].sn;
+      scdEm.gs = datas[0].gs;
+
+      scdEm.scdTip = tips;
+
+      for (let btbl of datas[0].fss){
+        let fri: FriendEmData = new FriendEmData();
+
+        fri.id = btbl.pwi;
+        fri.p = btbl.ranpy;
+        fri.m = btbl.rc;
+        fri.a = btbl.bhiu;
+        fri.n = btbl.ran;
+        fri.uid = btbl.ui;
+
+        scdEm.datas.push(fri);
+      }
+
+      this.emitService.emitScd(scdEm);
+    }
+
+    if (datas && datas.length == 1) {
+      let cscdLS: ScdLsEmData = new ScdLsEmData();
+
+      cscdLS.desc = speakText;
+
+      for (let scd of datas){
+        let scdEm: ScdEmData = new ScdEmData();
+
+        scdEm.id = scd.si;
+        scdEm.d = scd.sd;
+        scdEm.t = scd.st;
+        scdEm.ti = scd.sn;
+        scdEm.gs = scd.gs;
+
+        cscdLS.datas.push(scdEm);
+      }
+
+      cscdLS.scdTip = tips;
+
+      this.emitService.emitScdLs(cscdLS);
+    }
+  }
+}
+
+export function mutable(content: any): boolean {
+  if (content && content.thisContext && content.thisContext.header) {
+    if (content.thisContext.header.sender == "xunfei/aiui") {
+      return false;
+    }
+  }
+
+  return true;
 }
 
 export function isFuturefulltime(agendas: any): boolean {

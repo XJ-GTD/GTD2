@@ -220,6 +220,26 @@ import {FsData, PageDcData} from "../../data.mapping";
      });
 
 
+     it('Case 2 - 4 save 群组新增成员 - 无成员', async () => {
+       let pd: PageDcData = new PageDcData();
+       pd.gn ="组团打怪群";
+       await grouperService.saveGrouper(pd);
+
+       let pg: Array<PageDcData> = await grouperService.filterGroups(UserConfig.groups, "组团打怪群");
+       expect(pg).toBeDefined();
+       expect(pg.length).toBeDefined(1);
+
+       let pd2: PageDcData = new PageDcData();
+       Object.assign(pd2, pg[0]);
+       pd2.gn ="组团打怪群3";
+       await grouperService.saveGrouper(pd2);
+
+       let pg2: Array<PageDcData> = await grouperService.filterGroups(UserConfig.groups, "组团打怪群3");
+       expect(pg2).toBeDefined();
+       expect(pg2.length).toBeDefined(1);
+     });
+
+
      it('Case 3 - 1 delete 删除会员 - 删除数据', async () => {
        let pd: PageDcData = new PageDcData();
        pd.gn ="组团打怪群";
@@ -268,6 +288,108 @@ import {FsData, PageDcData} from "../../data.mapping";
        expect(pg.length).toBeDefined(3);
        await grouperService.removeGrouper(pg[0].gi);
      });
+
+     it('Case 4 - 1 receivedGrouper 接收群组数据同步 - 接收群组数据同步', async () => {
+
+       let pd: PageDcData = new PageDcData();
+       pd.gn ="组团打怪群";
+       await grouperService.saveGrouper(pd);
+
+       let pg: Array<PageDcData> = await grouperService.filterGroups(UserConfig.groups, "组团打怪群");
+       expect(pg).toBeDefined();
+       expect(pg.length).toBeDefined(1);
+
+       await grouperService.receivedGrouper(pg[0].gi);
+     });
+
+     it('Case 5 - 1 sendGrouper 发送群组消息 - 发送群组消息', async () => {
+
+       let grouper: Grouper = new Grouper();
+
+       let fss : Array<FsData> = new Array<FsData>();
+       let fs: FsData = new FsData();
+       fs.pwi = "12343";
+       fss.push(fs);
+       grouper.fss = fss;
+
+       let pd: PageDcData = new PageDcData();
+       pd.gn ="组团打怪群";
+       await grouperService.saveGrouper(pd);
+
+       let pg: Array<PageDcData> = await grouperService.filterGroups(UserConfig.groups, "组团打怪群");
+       expect(pg).toBeDefined();
+       expect(pg.length).toBeDefined(1);
+
+       grouper.gi = pg[0].gi;
+       await grouperService.sendGrouper(grouper);
+
+     });
+
+
+     it('Case 6 - 1 receivedGrouperData 接收群组信息 - 接收群组信息', async () => {
+
+       let grouper: Grouper = new Grouper();
+       let pullGroupers: Array<Grouper> = new Array<Grouper>();
+
+       let fss : Array<FsData> = new Array<FsData>();
+       let fs: FsData = new FsData();
+       fs.pwi = "12343";
+       fss.push(fs);
+       grouper.fss = fss;
+
+       let pd: PageDcData = new PageDcData();
+       pd.gn ="组团打怪群";
+       await grouperService.saveGrouper(pd);
+
+       let pg: Array<PageDcData> = await grouperService.filterGroups(UserConfig.groups, "组团打怪群");
+       expect(pg).toBeDefined();
+       expect(pg.length).toBeDefined(1);
+
+       grouper.gi = pg[0].gi;
+       pullGroupers.push(grouper);
+       let result: Array<Grouper> = await grouperService.receivedGrouperData(pullGroupers,SyncDataStatus.UnDeleted);
+       expect(result).toBeDefined();
+     });
+
+     it('Case 7 - 1 syncGrouper 同步全部的未同步信息 - 同步全部的未同步信息', async () => {
+
+       let pullGroupers: Array<Grouper> = new Array<Grouper>();
+       await grouperService.syncGrouper(pullGroupers);
+     });
+
+     it('Case 8 - 1 removeGrouperMember 删除群成员 - 删除群成员', async () => {
+
+       let pd: PageDcData = new PageDcData();
+       pd.gn ="组团打怪群";
+       await grouperService.saveGrouper(pd);
+
+       let pg: Array<PageDcData> = await grouperService.filterGroups(UserConfig.groups, "组团打怪群");
+       expect(pg).toBeDefined();
+       expect(pg.length).toBeDefined(1);
+
+       let pd2: PageDcData = new PageDcData();
+       Object.assign(pd2, pg[0]);
+       pd2.gn ="组团打怪群3";
+       let fs: FsData = new FsData();
+       fs.pwi = "12343";
+       pd2.fsl.push(fs);
+       await grouperService.saveGrouper(pd2);
+
+       let pg2: Array<PageDcData> = await grouperService.filterGroups(UserConfig.groups, "组团打怪群3");
+       expect(pg2).toBeDefined();
+       expect(pg2.length).toBeDefined(1);
+
+       //删除
+       await grouperService.removeGrouperMember(pg2[0].gi,pg2[0].fsl[0].pwi);
+
+       let pg3: Array<PageDcData> = await grouperService.filterGroups(UserConfig.groups, "组团打怪群3");
+       expect(pg3).toBeDefined();
+       expect(pg3.length).toBeDefined(1);
+       expect(pg3[0].fsl.length).toBeDefined(0);
+     });
+
+
+
 
      afterAll(() => {
        TestBed.resetTestingModule();
