@@ -125,8 +125,14 @@ export class SpeechProcess extends BaseProcess implements MQProcess {
           }
         } else {
           let count = 0;
-          if (agendas){
+          if (agendas && agendas.length > 0){
             count = agendas.length;
+          }
+          if (memos && memos.length > 0){
+            count = memos.length;
+          }
+          if (planitems && planitems.length > 0){
+            count = planitems.length;
           }
 
           if (count == 0) type = WsDataConfig.TYPE_NONE;
@@ -166,8 +172,16 @@ export class SpeechProcess extends BaseProcess implements MQProcess {
               speakText = speakText.replace("{" + txt.name + "}", expvalue);
             }
           }else{
-            if (agendas){
+            if (agendas && agendas.length > 0){
               let count = agendas.length;
+              speakText = speakText.replace("{count}", count+"");
+            }
+            if (memos && memos.length > 0){
+              let count = memos.length;
+              speakText = speakText.replace("{count}", count+"");
+            }
+            if (planitems && planitems.length > 0){
+              let count = planitems.length;
               speakText = speakText.replace("{count}", count+"");
             }
           }
