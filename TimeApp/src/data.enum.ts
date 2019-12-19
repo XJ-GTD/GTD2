@@ -246,7 +246,7 @@ export enum PullType {
 export enum TellyouType {
   invite_agenda = "invite_agenda",      //1活动邀请
   invite_planitem = "invite_planitem", //2日历项邀请
-  remind_agenda = "remind_agenda",//  3 活动提醒
+  remind_agenda = "remind_agenda",     //3 活动提醒
   remind_minitask = "remind_minitask",// 4小任务提醒
   remind_planitem = "remind_planitem",// 5日历项提醒
   remind_todo = "remind_todo",         // 6重要事项系统
