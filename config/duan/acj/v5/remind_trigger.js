@@ -58,7 +58,7 @@ function clean(datasource)
     return push;
   }
 
-  var convertNotifyMessage = function(id, type, wd, wt, continue, title, content) {
+  var convertNotifyMessage = function(id, type, wd, wt, next, title, content) {
     var output = {};
 
     // 返回消息头部
@@ -79,7 +79,7 @@ function clean(datasource)
         id: id,
         wd: wd,
         wt: wt,
-        continue: continue,
+        continue: next,
         title: title,
         content: content
       }
