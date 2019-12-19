@@ -187,6 +187,7 @@ export class EventService extends BaseService {
               agd.todolist = anyenum.ToDoListStatus.On;
             }
             agd.tb = anyenum.SyncType.unsynch;
+            agd.checksum = this.checksumAgenda(agd);
           }else{
             if (!agd.invitestatus) {
               agd.invitestatus = InviteState.None;
