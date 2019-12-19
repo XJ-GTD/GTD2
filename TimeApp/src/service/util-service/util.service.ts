@@ -917,9 +917,7 @@ export class UtilService {
   }
 
   cloneObj<T, U>(target: T, source: U) {
-
     Object.assign(target, JSON.parse(JSON.stringify(source)));
-
   }
 
   //检查对象类型
