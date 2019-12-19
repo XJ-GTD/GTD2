@@ -8,7 +8,7 @@ import {CalendarService, PlanData, PlanItemData} from "../../service/business/ca
 import {EventService, AgendaData, TaskData, MiniTaskData, Member, Attachment} from "../../service/business/event.service";
 import {MemoService, MemoData} from "../../service/business/memo.service";
 import {DataSyncPara} from "../model/datasync.para";
-import {SyncDataStatus, MemberShareState, EventFinishStatus, DelType, InviteState, CompleteState} from "../../data.enum";
+import {TellyouType, SyncDataStatus, MemberShareState, EventFinishStatus, DelType, InviteState, CompleteState} from "../../data.enum";
 import {FsData} from "../../data.mapping";
 import {UserConfig} from "../../service/config/user.config";
 import {ContactsService} from "../../service/cordova/contacts.service";
@@ -20,6 +20,7 @@ import {Annotation, AnnotationService} from "../../service/business/annotation.s
 import {Grouper, GrouperService} from "../../service/business/grouper.service";
 import {UtilService} from "../../service/util-service/util.service";
 import * as moment from "moment";
+import {TellyouService} from "../../components/ai/tellyou/tellyou.service";
 
 /**
  * 数据同步
@@ -35,6 +36,7 @@ export class DataSyncProcess implements MQProcess {
               private calendarService: CalendarService,
               private eventService: EventService,
               private memoService: MemoService,
+              private tellyouService: TellyouService,
               private personRestful: PersonRestful,
               private dataRestful: DataRestful,
               private annotationService : AnnotationService,
@@ -336,8 +338,18 @@ export class DataSyncProcess implements MQProcess {
               }
             } else if (datatype == "PlanItem") {
                 await this.calendarService.receivedPlanItemData(typeclassundel, SyncDataStatus.UnDeleted);
+
+                // 发送语音通知用数据
+                typeclassundel.forEach((planitem) => {
+                  this.tellyouService.tellyou({id: planitem.jti, idtype: "PlanItem", tellType: TellyouType.default});
+                });
             } else if (datatype == "Agenda") {
               await this.eventService.receivedAgendaData(typeclassundel, SyncDataStatus.UnDeleted, extension);
+
+              // 发送语音通知用数据
+              typeclassundel.forEach((agenda) => {
+                this.tellyouService.tellyou({id: agenda.evi, idtype: "Agenda", tellType: TellyouType.default});
+              });
             } else if (datatype == "Memo") {
               for (let memo of typeclassundel) {
                 await this.memoService.receivedMemoData(memo, SyncDataStatus.UnDeleted);
@@ -491,6 +503,9 @@ export class DataSyncProcess implements MQProcess {
         }
 
         await this.calendarService.receivedPlanItemData([planitem], this.convertSyncStatus(dsPara.status));
+
+        // 发送语音通知用数据
+        this.tellyouService.tellyou({id: planitem.jti, idtype: "PlanItem", tellType: TellyouType.default});
       }
 
       if (dsPara.type == "Agenda") {
@@ -631,6 +646,9 @@ export class DataSyncProcess implements MQProcess {
         }
 
         await this.eventService.receivedAgendaData([agenda], this.convertSyncStatus(dsPara.status), dsPara.extension);
+
+        // 发送语音通知用数据
+        this.tellyouService.tellyou({id: agenda.evi, idtype: "Agenda", tellType: TellyouType.default});
       }
 
       if (dsPara.type == "Memo") {

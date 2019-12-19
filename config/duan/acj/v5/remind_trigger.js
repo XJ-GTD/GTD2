@@ -58,7 +58,7 @@ function clean(datasource)
     return push;
   }
 
-  var convertNotifyMessage = function(id, type, title, content) {
+  var convertNotifyMessage = function(id, type, wd, wt, next, title, content) {
     var output = {};
 
     // 返回消息头部
@@ -77,6 +77,9 @@ function clean(datasource)
       parameters: {
         type: type,
         id: id,
+        wd: wd,
+        wt: wt,
+        continue: next,
         title: title,
         content: content
       }
@@ -196,7 +199,7 @@ function clean(datasource)
       standardnext.announceTo = [to];
       standardnext.announceType = 'data_sync';
       standardnext.announceContent = {
-        mwxing: convertNotifyMessage(id, type, "活动延迟提醒", title),
+        mwxing: convertNotifyMessage(id, type, remindprop['wd'], remindprop['wt'], remindprop[id]["continue"], "活动延迟提醒", title),
         sms: {},
         push: convertPushContinueMessage(id, type, title, datetime)
       };
@@ -231,7 +234,7 @@ function clean(datasource)
       standardnext.announceTo = [to];
       standardnext.announceType = 'data_sync';
       standardnext.announceContent = {
-        mwxing: convertNotifyMessage(id, type, pushTitle, title),
+        mwxing: convertNotifyMessage(id, type, remindprop['wd'], remindprop['wt'], false, pushTitle, title),
         sms: {},
         push: convertPushMessage(id, type, title, datetime)
       };

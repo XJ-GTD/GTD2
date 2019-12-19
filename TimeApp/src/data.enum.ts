@@ -246,12 +246,16 @@ export enum PullType {
 export enum TellyouType {
   invite_agenda = "invite_agenda",      //1活动邀请
   invite_planitem = "invite_planitem", //2日历项邀请
-  remind_agenda = "remind_agenda",//  3 活动提醒
+  remind_agenda = "remind_agenda",     //3 活动提醒
   remind_minitask = "remind_minitask",// 4小任务提醒
   remind_planitem = "remind_planitem",// 5日历项提醒
   remind_todo = "remind_todo",         // 6重要事项系统
   remind_merge = "remind_merge",// 7和并提醒
+  cancel_agenda = "cancel_agenda",      //取消活动
+  cancel_planitem = "cancel_planitem",      //@活动
+  at_agenda = "at_agenda",      //at活动
   system = "system",      // 10系统消息
+  default = "default",      // 缺省
 }
 
 export enum TellyouIdType {
