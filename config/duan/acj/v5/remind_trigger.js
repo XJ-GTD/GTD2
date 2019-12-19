@@ -199,7 +199,7 @@ function clean(datasource)
       standardnext.announceTo = [to];
       standardnext.announceType = 'data_sync';
       standardnext.announceContent = {
-        mwxing: convertNotifyMessage(id, type, remindprop['wd'], remindprop['wt'], remindprop[id]["continue"], "活动延迟提醒", title),
+        mwxing: convertNotifyMessage(id, type, remindprop[id]['wd'], remindprop[id]['wt'], remindprop[id]["continue"], "活动延迟提醒", title),
         sms: {},
         push: convertPushContinueMessage(id, type, title, datetime)
       };
@@ -234,7 +234,7 @@ function clean(datasource)
       standardnext.announceTo = [to];
       standardnext.announceType = 'data_sync';
       standardnext.announceContent = {
-        mwxing: convertNotifyMessage(id, type, remindprop['wd'], remindprop['wt'], false, pushTitle, title),
+        mwxing: convertNotifyMessage(id, type, remindprop[id]['wd'], remindprop[id]['wt'], false, pushTitle, title),
         sms: {},
         push: convertPushMessage(id, type, title, datetime)
       };

@@ -311,7 +311,7 @@ export class AgendaPage {
             if (agenda && agenda.del != DelType.del) {
               this.emitService.emit("mwxing.calendar.datas.readwrite", {rw: "read", payload: agenda});
 
-              this.currentAgenda = agenda;
+              this.util.cloneObj(this.currentAgenda , agenda);
               this.util.cloneObj(this.originAgenda, agenda);
 
 
@@ -768,7 +768,7 @@ export class AgendaPage {
         .then((agenda) => {
 
           if (agenda) {
-            this.currentAgenda = agenda;
+            this.util.cloneObj(this.currentAgenda , agenda);
             this.util.cloneObj(this.originAgenda, agenda);
 
             this.buttons.save = false;
@@ -920,7 +920,7 @@ export class AgendaPage {
     this.util.loadingStart().then(() => {
       this.eventService.saveAgenda(this.currentAgenda, this.originAgenda, op).then((agenda) => {
         if (agenda && agenda.length > 0) {
-          this.currentAgenda = agenda[0];
+          this.util.cloneObj(this.currentAgenda , agenda[0]);
           this.util.cloneObj(this.originAgenda, agenda[0]);
 
           this.buttons.save = false;
@@ -951,7 +951,7 @@ export class AgendaPage {
               if (agenda && agenda.length > 0) {
                 this.emitService.emit("mwxing.calendar.datas.readwrite", {rw: "writeandread", payload: agenda});
 
-                this.currentAgenda = agenda[0];
+                this.util.cloneObj(this.currentAgenda , agenda[0]);
                 this.util.cloneObj(this.originAgenda, agenda[0]);
 
                 this.buttons.save = false;
@@ -964,7 +964,7 @@ export class AgendaPage {
         this.util.loadingStart().then(() => {
           this.eventService.saveAgenda(this.currentAgenda).then((agenda) => {
             if (agenda && agenda.length > 0) {
-              this.currentAgenda = agenda[0];
+              this.util.cloneObj(this.currentAgenda ,agenda[0]);
               this.util.cloneObj(this.originAgenda, agenda[0]);
 
               this.buttons.remove = true;

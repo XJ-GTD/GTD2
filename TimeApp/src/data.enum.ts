@@ -260,7 +260,6 @@ export enum TellyouType {
 
 export enum TellyouIdType {
   Agenda = "Agenda",    // 1活动
-  PlantIem = "PlantIem",// 2日历项
+  PlanItem = "PlanItem",// 2日历项
   MiniTask = "MiniTask",// 3小任务
 }
-
