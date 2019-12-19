@@ -319,7 +319,7 @@ function clean(datasource)
 
     // 播报
     output.content['4'] = {
-      when: 'function(agendas, showagendas, contacts, branchtype, branchcode) { if (branchtype && branchcode) { return false; } else { return true; }}',
+      when: 'function(agendas, showagendas, contacts, branchtype, branchcode, memos, planitems) { if (branchtype && branchcode) { return false; } else { return true; }}',
       processor: 'S',
       option: 'S.P',
       parameters: {
@@ -329,14 +329,14 @@ function clean(datasource)
 
     // 播报 无法修改（被共享日程）
     output.content['5'] = {
-      when: 'function(agendas, showagendas, contacts, branchtype, branchcode) { if (branchtype && branchtype == "FORBIDDEN" && branchcode) { return true; } else { return false; }}',
+      when: 'function(agendas, showagendas, contacts, branchtype, branchcode, memos, planitems) { if (branchtype && branchtype == "FORBIDDEN" && branchcode) { return true; } else { return false; }}',
       processor: 'S',
       option: 'S.P',
       parameters: {
         t: 'EU'
       },
       input: {
-        type: 'function(agendas, showagendas, prvOpt, user, branchtype, branchcode) { return branchcode; }',
+        type: 'function(agendas, showagendas, prvOpt, user, branchtype, branchcode, memos, planitems) { return branchcode; }',
         textvariables: [
           {name: 'agendaowner', expression: 'agendas[0].fs.ran', default: '他人'}
         ],
