@@ -26,7 +26,7 @@ declare var Wechat;
   selector: 'page-pd',
   template:
   `
-    <modal-box title="{{planName}}" [buttons]="buttons" (onSave)="more()" (onCancel)="goBack()">
+    <modal-box title="{{planName}}" [buttons]="buttons" (onCancel)="goBack()" (onShare)="share()">
       <ion-scroll scrollY="true" scrollheightAuto>
         <ul class="timeline" >
           <ng-template ngFor let-item [ngForOf]="plans">
@@ -142,8 +142,8 @@ export class PdPage {
 
   buttons: any = {
     remove: false,
-    share: false,
-    save: true,
+    share: true,
+    save: false,
     cancel: true
   };
   // 判断是否有模态框弹出 控制安卓物理返回键
@@ -270,6 +270,43 @@ export class PdPage {
     }).catch(res=>{
       this.util.popoverStart('删除日历失败');
     })
+  }
+  share(){
+
+    let plan: PlanData = {} as PlanData;
+    plan.ji = this.jh.ji;
+
+    this.calendarService.sharePlan(plan, true).then(url => {
+      console.log("分享地址是："+JSON.stringify(url));
+      let sharecontent: string = `${this.currentusername} 分享了 一个日历`;
+
+      //验证是否按照微信组件
+      Wechat.isInstalled(installed => {
+        if (installed) {
+          Wechat.share({
+            message:{
+              title: sharecontent,
+              description: this.planName,
+              thumb: "https://pluto.guobaa.com/cal/img/2.png",
+              media: {
+                type: Wechat.Type.WEBPAGE,
+                webpageUrl: url || "https://fir.im/d2z3"
+              }
+            },
+            scene:0  // 分享目标 0:分享到对话，1:分享到朋友圈，2:收藏
+          }, () => {
+            console.log('分享成功');
+          }, reason => {
+            console.log('分享失败' + reason);
+          });
+        } else {
+          alert('请安装微信');
+        }
+      });
+    }).catch(res=>{
+      this.util.popoverStart('分享失败');
+    });
+
   }
 }
 
