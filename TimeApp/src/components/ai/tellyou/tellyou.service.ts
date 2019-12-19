@@ -229,7 +229,7 @@ export class TellyouService {
           pageData.invites= agendaData.members.length; //邀请人数
       }
 
-      if(tellyoubase.idtype == TellyouIdType.PlantIem){
+      if(tellyoubase.idtype == TellyouIdType.PlanItem){
 
         let planItem = await this.calendarService.getPlanItem(tellyoubase.id);
           pageData.formperson = planItem.ui; //发起人
@@ -281,4 +281,3 @@ export class TellYou extends TellYouBase{
   systems: number;//剩余系统消息个数
   reminds:Array<TellYou>;// 合并提醒的数据集合
 }
-
