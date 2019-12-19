@@ -61,6 +61,7 @@ export class PlanItemsProcess extends BaseProcess implements MQProcess,OptProces
 
       rcIn.jtn = c.sn;
       rcIn.sd = c.sd || moment().format("YYYY/MM/DD");
+      rcIn.st = c.st;
 
       if (c.si && c.si != null && c.si != '') {
         rcIn.jti = c.si;
@@ -76,7 +77,14 @@ export class PlanItemsProcess extends BaseProcess implements MQProcess,OptProces
       }
 
       if (prvOpt == PI.C) {
-        await this.calendarService.savePlanItem(rcIn);
+        let saved: PlanItemData = await this.calendarService.savePlanItem(rcIn);
+
+        if (saved && saved.length > 0) {
+          c.si = saved[0].jti;
+          c.sd = saved[0].sd;
+          c.st = saved[0].st;
+          c.sn = saved[0].jtn;
+        }
       } else if (prvOpt == PI.U) {
         let origin: PlanItemData = await this.calendarService.getPlanItem(rcIn.jti);
         let updated: PlanItemData = {} as PlanItemData;
