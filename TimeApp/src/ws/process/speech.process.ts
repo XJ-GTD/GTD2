@@ -300,7 +300,7 @@ export class SpeechProcess extends BaseProcess implements MQProcess {
       this.emitService.emitScd(scdEm);
     }
 
-    if (datas && datas.length == 1) {
+    if (datas && datas.length > 1) {
       let cscdLS: ScdLsEmData = new ScdLsEmData();
 
       cscdLS.desc = speakText;
