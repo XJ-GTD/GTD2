@@ -151,6 +151,7 @@ export class TellYouComponent{
     this.tellYouData = new TellYou();
     this.changeDetectorRef.detectChanges();
     this.onClose.emit(true);
+    this.assistantService.stopSpeak(false);
     this.tellyouService.resumeTellYou();
   }
 

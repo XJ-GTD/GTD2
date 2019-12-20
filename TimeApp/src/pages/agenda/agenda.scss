@@ -228,7 +228,7 @@ page-agenda, page-commemorationday, page-comment,page-memo {
   }
 }
 
-ion-app.black-theme {
+.black-theme {
   page-agenda, page-task, page-commemorationday, page-comment ,page-memo{
     .grid {
       .limitRow {
@@ -293,7 +293,7 @@ ion-app.black-theme {
 
 }
 
-ion-app.white-theme {
+.white-theme {
 
   page-agenda, page-task, page-commemorationday,page-comment ,page-memo{
     .grid {
