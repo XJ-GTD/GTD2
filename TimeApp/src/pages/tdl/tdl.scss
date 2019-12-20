@@ -5,6 +5,7 @@ page-tdl {
   margin-top: 4px;
   .monthActivityWapper{
     height: 100%;
-    overflow: hidden;
+    -webkit-overflow-scrolling : touch !important;
+    z-index: 1;
   }
 }

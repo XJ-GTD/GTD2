@@ -1,7 +1,5 @@
 import {Injectable} from "@angular/core";
 import {UtilService} from "../../../service/util-service/util.service";
-import {AssistantService} from "../../../service/cordova/assistant.service";
-import {EmitService} from "../../../service/util-service/emit.service";
 import {TimeOutService} from "../../../util/timeOutService";
 import {AsyncQueue} from "../../../util/asyncQueue";
 import * as noop from "lodash/noop.js"
@@ -67,7 +65,7 @@ export class TellyouService {
             });
 
           if (index > -1 ){
-            Object.assign(tellYouData,this.invites[index]);
+
             this.invites.splice(index,1);
 
             this.createtellData([tellYouData]).then((datas)=>{
@@ -124,7 +122,7 @@ export class TellyouService {
             });
 
           if (index > -1 ){
-            Object.assign(tellYouData,this.invites[systems_i]);
+
             this.systems.splice(systems_i,1);
 
             this.createtellData([tellYouData]).then((datas)=>{
@@ -190,6 +188,9 @@ export class TellyouService {
 
   //把播报的数据放缓存中
   public prepare4wating(tellYouData: TellYouBase) {
+    console.log("121111111111===>tellyoubase.dataid" + tellYouData.dataid);
+    console.log("121111111111===>tellyoubase.id" + tellYouData.id);
+    console.log("121111111111===>tellyoubase.tellType" + tellYouData.tellType);
     if (tellYouData.tellType == TellyouType.invite_agenda || tellYouData.tellType == TellyouType.invite_planitem) {
       this.invites.push(tellYouData);
     } else if(tellYouData.tellType == TellyouType.remind_agenda || tellYouData.tellType == TellyouType.remind_minitask ||
@@ -205,14 +206,19 @@ export class TellyouService {
     //把播报数据推入Q中，方法参数要data，打开页面延迟时间，自动关闭页面时间，是否显示
 
     //是邀请的情况，在缓存中拿是否播报
+    console.log("121111111112===>tellyoubase.dataid" + tellYouData.dataid);
+    console.log("121111111112===>tellyoubase.id" + tellYouData.id);
+    console.log("121111111112===>tellyoubase.tellType" + tellYouData.tellType);
     let index = this.invites.findIndex(
       (val)=>{
         return val.id == tellYouData.id;
       });
 
     if (index > -1 ){
-      Object.assign(tellYouData,this.invites[index]);
+      if (!this.invites[index].dataid) this.invites[index].dataid = tellYouData.dataid;
+      if (this.invites[index].tellType == TellyouType.default) this.invites[index].tellType = tellYouData.tellType;
 
+      Object.assign(tellYouData,this.invites[index]);
       this.pushTellYouData(tellYouData,(warp)=>{
         this.tellyoubegin(warp.data,warp.time1,warp.time2,warp.show);
       })
@@ -261,6 +267,9 @@ export class TellyouService {
       Object.assign(pageData,tellyoubase);
 
       let searchid = tellyoubase.dataid?tellyoubase.dataid:tellyoubase.id;
+      console.log("121111111113===>tellyoubase.dataid" + tellyoubase.dataid);
+      console.log("121111111113===>tellyoubase.id" + tellyoubase.id);
+      console.log("121111111113===>tellyoubase.tellType" + tellyoubase.tellType);
 
       if(tellyoubase.idtype == TellyouIdType.Agenda){
         let agendaData = await  this.eventService.getAgenda(searchid,false);
