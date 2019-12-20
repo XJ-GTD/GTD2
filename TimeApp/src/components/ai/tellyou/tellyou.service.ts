@@ -1,7 +1,5 @@
 import {Injectable} from "@angular/core";
 import {UtilService} from "../../../service/util-service/util.service";
-import {AssistantService} from "../../../service/cordova/assistant.service";
-import {EmitService} from "../../../service/util-service/emit.service";
 import {TimeOutService} from "../../../util/timeOutService";
 import {AsyncQueue} from "../../../util/asyncQueue";
 import * as noop from "lodash/noop.js"
@@ -67,7 +65,7 @@ export class TellyouService {
             });
 
           if (index > -1 ){
-            Object.assign(tellYouData,this.invites[index]);
+
             this.invites.splice(index,1);
 
             this.createtellData([tellYouData]).then((datas)=>{
@@ -124,7 +122,7 @@ export class TellyouService {
             });
 
           if (index > -1 ){
-            Object.assign(tellYouData,this.invites[systems_i]);
+
             this.systems.splice(systems_i,1);
 
             this.createtellData([tellYouData]).then((datas)=>{
@@ -217,8 +215,10 @@ export class TellyouService {
       });
 
     if (index > -1 ){
-      Object.assign(tellYouData,this.invites[index]);
+      if (!this.invites[index].dataid) this.invites[index].dataid = tellYouData.dataid;
+      if (this.invites[index].tellType == TellyouType.default) this.invites[index].tellType = tellYouData.tellType;
 
+      Object.assign(tellYouData,this.invites[index]);
       this.pushTellYouData(tellYouData,(warp)=>{
         this.tellyoubegin(warp.data,warp.time1,warp.time2,warp.show);
       })
