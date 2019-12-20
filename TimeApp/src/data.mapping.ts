@@ -84,6 +84,7 @@ export class ScdData {
   fssshow:string ="";//参与人画面显示用
   cbkcolor:number = 0;//每个日程颜色画面显示用
   morecolor:string ="#FFFFFF";//more颜色画面显示
+  adr:string = "";//地址
 
 
   showSpSd: string = "";//画面显示特殊表开始日期
