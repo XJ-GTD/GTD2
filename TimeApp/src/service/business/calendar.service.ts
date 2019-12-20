@@ -4240,6 +4240,99 @@ export class CalendarService extends BaseService {
   }
 
   /**
+   * 多少分钟之后再提醒
+   *
+   * 日历项/事件/备忘
+   *
+   * @author leon_xi@163.com
+   **/
+  async addRemind(datatype: string, id: string, remindgap: number) {
+    assertEmpty(datatype);    // 入参不能为空
+    assertEmpty(id);          // 入参不能为空
+    assertEmpty(remindgap);   // 入参不能为空
+    assertNotEqual(remindgap % 5, 0);   // 间隔时间必须是5的倍数，单位是分钟
+
+    let txjson: TxJson;
+    let now: moment.Moment = moment();
+
+    let nextremind = Math.floor((now.unix() + (remindgap * 60)) / (5 * 60)) * 5 * 60;
+
+    let index = -1;
+    let pos = 0;
+
+    switch (datatype) {
+      case "PlanItem":
+        let originplanitem: PlanItemData = await this.getPlanItem(id);
+        let planitem: PlanItemData = {} as PlanItemData;
+        this.util.cloneObj(planitem, originplanitem);
+
+        txjson = generateTxJson(planitem.txjson, planitem.tx);
+
+        txjson.each((datetime) => {
+          if (datetime.unix() == nextremind) index = pos;
+          pos++;
+        });
+
+        // 不存在即将增加的提醒
+        if (index == -1) {
+          txjson.reminds.push(-1 * Number(moment(nextremind).format("YYYYMMDDHHmm")));
+
+          planitem.txjson = txjson;
+
+          this.savePlanItem(planitem, originplanitem);
+        }
+
+        break;
+      case "Agenda":
+        let originagenda: AgendaData = await this.eventService.getAgenda(id);
+        let agenda: AgendaData = {} as AgendaData;
+        this.util.cloneObj(agenda, originagenda);
+
+        txjson = generateTxJson(agenda.txjson, agenda.tx);
+
+        txjson.each((datetime) => {
+          if (datetime.unix() == nextremind) index = pos;
+          pos++;
+        });
+
+        // 不存在即将增加的提醒
+        if (index == -1) {
+          txjson.reminds.push(-1 * Number(moment(nextremind).format("YYYYMMDDHHmm")));
+
+          agenda.txjson = txjson;
+
+          this.eventService.saveAgenda(agenda, originagenda);
+        }
+
+        break;
+      case "Task":
+        break;
+      case "MiniTask":
+        let minitask: MiniTaskData = await this.eventService.getMiniTask(id);
+
+        txjson = generateTxJson(minitask.txjson, minitask.tx);
+
+        txjson.each((datetime) => {
+          if (datetime.unix() == nextremind) index = pos;
+          pos++;
+        });
+
+        // 不存在即将增加的提醒
+        if (index == -1) {
+          txjson.reminds.push(-1 * Number(moment(nextremind).format("YYYYMMDDHHmm")));
+
+          minitask.txjson = txjson;
+
+          this.eventService.saveMiniTask(minitask);
+        }
+
+        break;
+      default:
+        break;
+    }
+  }
+
+  /**
    * 查询活动（时间/内容/标签）
    *
    * 日历项/事件/备忘
