@@ -8,6 +8,7 @@ import {EventService, MiniTaskData} from "../../../service/business/event.servic
 import {CalendarService} from "../../../service/business/calendar.service";
 import * as moment from "moment";
 import {UserConfig} from "../../../service/config/user.config";
+import {_catch} from "rxjs/operator/catch";
 
 @Injectable()
 export class TellyouService {
@@ -48,10 +49,11 @@ export class TellyouService {
     this.tellYouQueue = new AsyncQueue(({message}, callback) => {
       let tellYouData:TellYouBase = message;
       let show = false;
-      let time1 = 2000;
-      let time2 = 5000;
+      let time1 = 0;
+      let time2 = 0;
       let pageData:TellYou = new TellYou();
       Object.assign(pageData,tellYouData);
+      console.log("12111111111===tellYouQueue===>" + tellYouData.id + "===>" + tellYouData.tellType);
       switch (tellYouData.tellType) {
         case TellyouType.invite_agenda:
         case TellyouType.invite_planitem:
@@ -72,11 +74,13 @@ export class TellyouService {
 
               if (datas.length > 0){
                 Object.assign(pageData,datas[0]);
-                time1 = 1000;
-                time2 = 15000;
+                time1 = 10;
+                time2 = 30000;
                 show = true;
-                callback([{data:pageData,time1:time1,time2:time2,show:show}]);
               }
+              callback([{data:pageData,time1:time1,time2:time2,show:show}]);
+            }).catch(()=>{
+              callback([{data:pageData,time1:time1,time2:time2,show:show}]);
             })
           }else{
             callback([{data:pageData,time1:time1,time2:time2,show:show}]);
@@ -94,27 +98,26 @@ export class TellyouService {
             this.reminds.splice(0,this.reminds.length);
 
             if (datas.length > 0){
-
               if (datas.length == 1){
                 Object.assign(pageData,datas[0]);
               }else{
                 pageData.tellType = TellyouType.remind_merge;
                 pageData.reminds = datas ;
               }
-              time1 = 1000;
-              time2 = 20000;
+              time1 = 10;
+              time2 = 30000;
               show = true;
+              callback([{data:pageData,time1:time1,time2:time2,show:show}]);
+            }else{
+              callback([{data:pageData,time1:time1,time2:time2,show:show}]);
             }
+          }).catch(()=>{
             callback([{data:pageData,time1:time1,time2:time2,show:show}]);
           })
 
 
           break;
         case TellyouType.system:
-
-          time1 = 2000;
-          time2 = 5000;
-          show = true;
 
           let systems_i = this.systems.findIndex(
             (val)=>{
@@ -129,8 +132,13 @@ export class TellyouService {
 
               if (datas.length > 0){
                 Object.assign(pageData,datas[0]);
-                callback([{data:pageData,time1:time1,time2:time2,show:show}]);
+                time1 = 20;
+                time2 = 5000;
+                show = true;
               }
+              callback([{data:pageData,time1:time1,time2:time2,show:show}]);
+            }).catch(()=>{
+              callback([{data:pageData,time1:time1,time2:time2,show:show}]);
             })
           }else{
             callback([{data:pageData,time1:time1,time2:time2,show:show}]);
@@ -188,10 +196,10 @@ export class TellyouService {
 
   //把播报的数据放缓存中
   public prepare4wating(tellYouData: TellYouBase) {
-    console.log("121111111111===>tellyoubase.dataid" + tellYouData.dataid);
-    console.log("121111111111===>tellyoubase.id" + tellYouData.id);
-    console.log("121111111111===>tellyoubase.tellType" + tellYouData.tellType);
-    if (tellYouData.tellType == TellyouType.invite_agenda || tellYouData.tellType == TellyouType.invite_planitem) {
+    console.log("12111111111===prepare4wating===>" + tellYouData.id + "===>" + tellYouData.tellType);
+    if (tellYouData.tellType == TellyouType.invite_agenda || tellYouData.tellType == TellyouType.invite_planitem
+    ||tellYouData.tellType == TellyouType.at_agenda || tellYouData.tellType == TellyouType.cancel_agenda
+      || tellYouData.tellType == TellyouType.cancel_planitem) {
       this.invites.push(tellYouData);
     } else if(tellYouData.tellType == TellyouType.remind_agenda || tellYouData.tellType == TellyouType.remind_minitask ||
       tellYouData.tellType == TellyouType.remind_planitem || tellYouData.tellType == TellyouType.remind_todo ||
@@ -204,11 +212,9 @@ export class TellyouService {
 
   public tellyou4invsited(tellYouData: TellYouBase) {
     //把播报数据推入Q中，方法参数要data，打开页面延迟时间，自动关闭页面时间，是否显示
+    console.log("12111111111===tellyou4invsited===>" + tellYouData.id + "===>" + tellYouData.tellType);
 
     //是邀请的情况，在缓存中拿是否播报
-    console.log("121111111112===>tellyoubase.dataid" + tellYouData.dataid);
-    console.log("121111111112===>tellyoubase.id" + tellYouData.id);
-    console.log("121111111112===>tellyoubase.tellType" + tellYouData.tellType);
     let index = this.invites.findIndex(
       (val)=>{
         return val.id == tellYouData.id;
@@ -220,6 +226,7 @@ export class TellyouService {
 
       Object.assign(tellYouData,this.invites[index]);
       this.pushTellYouData(tellYouData,(warp)=>{
+        console.log("12111111111===tellyoubegin start===>" + tellYouData.id + "===>" + tellYouData.tellType);
         this.tellyoubegin(warp.data,warp.time1,warp.time2,warp.show);
       })
     }
@@ -267,12 +274,9 @@ export class TellyouService {
       Object.assign(pageData,tellyoubase);
 
       let searchid = tellyoubase.dataid?tellyoubase.dataid:tellyoubase.id;
-      console.log("121111111113===>tellyoubase.dataid" + tellyoubase.dataid);
-      console.log("121111111113===>tellyoubase.id" + tellyoubase.id);
-      console.log("121111111113===>tellyoubase.tellType" + tellyoubase.tellType);
 
       if(tellyoubase.idtype == TellyouIdType.Agenda){
-        let agendaData = await  this.eventService.getAgenda(searchid,false);
+        let agendaData = await  this.eventService.getAgenda(searchid,true);
         if (!agendaData){
           continue;
         }

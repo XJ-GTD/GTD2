@@ -162,18 +162,19 @@ export class NotificationProcess extends BaseProcess implements MQProcess {
         }
       }
 
+      exchange['id'] = exchange.id;
+      exchange['idtype'] = exchange.type;
+
       if (exchange.action == "annotation") {
         switch (exchange.type) {
           case "Annotation":
             exchange['tellType'] = TellyouType.at_agenda;
+            exchange['idtype'] = "Agenda";
             break;
           default:
             break;
         }
       }
-
-      exchange['id'] = exchange.id;
-      exchange['idtype'] = exchange.type;
 
       this.tellyouService.prepare4wating(exchange);
     }
