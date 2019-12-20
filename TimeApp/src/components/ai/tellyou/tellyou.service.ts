@@ -260,7 +260,7 @@ export class TellyouService {
       let pageData: TellYou = new TellYou();
       Object.assign(pageData,tellyoubase);
 
-      if (tellyoubase != null) tellyoubase.id = tellyoubase.dataid;
+      if (!tellyoubase.dataid) tellyoubase.id = tellyoubase.dataid;
 
       if(tellyoubase.idtype == TellyouIdType.Agenda){
         let agendaData = await  this.eventService.getAgenda(tellyoubase.id,false);
