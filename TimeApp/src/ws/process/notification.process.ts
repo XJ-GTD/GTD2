@@ -164,7 +164,7 @@ export class NotificationProcess extends BaseProcess implements MQProcess {
 
       if (exchange.action == "annotation") {
         switch (exchange.type) {
-          case "Agenda":
+          case "Annotation":
             exchange['tellType'] = TellyouType.at_agenda;
             break;
           default:

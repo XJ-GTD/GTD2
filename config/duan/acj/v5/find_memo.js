@@ -16,7 +16,7 @@ function shouldclean(datasource)
           for (var sei in semantics) {
             var semantic = semantics[sei];
 
-            if (semantic['intent'] === 'FindByKeywords' || semantic['intent'] === 'FindByTime') {
+            if (semantic['intent'] === 'FindByKeywords' || semantic['intent'] === 'FindByTime' || semantic['intent'] === 'FindPIByKeywords' || semantic['intent'] === 'FindPIByTime') {
               return true;
             }
           }
@@ -79,9 +79,11 @@ function clean(datasource)
   var ampmE = '';
 
   var semantics = data['intent']['semantic'];
+  var intent = '';
 
   for (var sei in semantics) {
     var semantic = semantics[sei];
+    intent = semantic['intent'];
 
     var slots = semantic['slots'];
 
@@ -360,17 +362,31 @@ function clean(datasource)
 
   output.content = {};
 
-  // 查询联系人指示
-  output.content['0'] = {
-    processor: 'F',
-    option: 'F.C',
-    parameters: {
-      scd: {
-        targets: ["memo"]
-      },
-      fs: contacts
-    }
-  };
+  if (intent == 'FindByKeywords' || intent == 'FindByTime') {
+    // 查询联系人指示
+    output.content['0'] = {
+      processor: 'F',
+      option: 'F.C',
+      parameters: {
+        scd: {
+          targets: ["memo"]
+        },
+        fs: contacts
+      }
+    };
+  } else {
+    // 查询联系人指示
+    output.content['0'] = {
+      processor: 'F',
+      option: 'F.C',
+      parameters: {
+        scd: {
+          targets: ["calendar"]
+        },
+        fs: contacts
+      }
+    };
+  }
 
   if (date && date !== '') {
     if (findYearS) {
