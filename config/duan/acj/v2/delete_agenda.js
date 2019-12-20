@@ -1,11 +1,11 @@
-function shouldclean(datasource) 
+function shouldclean(datasource)
 {
   var result = {};
   // filter source code here start
   var input = JSON.parse(datasource);
 
   if (input['_context'] && input['_context'].productId === 'cn.sh.com.xj.timeApp' && input['_context'].productVersion === 'v1') return false;
-  
+
   if (input.data && input.data[0] !== undefined) {
     for (var di in input.data) {
       var data = input.data[di];
@@ -14,23 +14,23 @@ function shouldclean(datasource)
         return true;
       } else if (data['sub'] === 'nlp' && data['intent']['service'] === 'OS6981162467.CancelAgenda' && data['intent']['intentType'] === 'custom' && data['intent']['semantic']) {
         var semantics = data['intent']['semantic'];
-  
+
         for (var sei in semantics) {
           var semantic = semantics[sei];
 
-          if (semantic['intent'] === 'CancelAll' || semantic['intent'] === 'CancelWithFS' || semantic['intent'] === 'CancelContacts' || semantic['intent'] === 'CancelSomething') {
+          if (semantic['intent'] === 'CancelAll' || semantic['intent'] === 'CancelWithFS' || semantic['intent'] === 'CancelContacts' || semantic['intent'] === 'CancelSomething' || semantic['intent'] === 'CancelMemoWithFS' || semantic['intent'] === 'CancelPIWithFS') {
             return true;
           }
         }
       }
     }
   }
-  
+
   // filter source code here end
   return false;
 }
 
-function clean(datasource) 
+function clean(datasource)
 {
   var result = {};
   print('Start Nashorn Javascript processing...');
@@ -51,7 +51,7 @@ function clean(datasource)
   var formatDateTime = function(date) {
     return date.getFullYear() + '/' + (date.getMonth()+1) + '/' + date.getDate() + ' ' + date.getHours() + ':' + date.getMinutes() + ':' + date.getSeconds();
   }
-  
+
   // 取得迅飞语音消息内容
   var userId = input['_context']['userId'];
   var deviceId = input['_context']['deviceId'];
@@ -71,86 +71,86 @@ function clean(datasource)
   var motion = '';
   var whichtodo = '';
   var lastwhichtodo = '';
-  
+
   var semantics = data['intent']['semantic'];
-  
+
   for (var sei in semantics) {
     var semantic = semantics[sei];
 
     motion = semantic['intent'];
     var slots = semantic['slots'];
-    
+
     for (var si in slots) {
       var slot = slots[si];
-      
+
       // 取出关联联系人结果
       if (slot['name'] === 'whotodo') {
         contacts.push({n:slot['normValue']});
       }
-      
+
       // 取出涉及时间结果
       if (slot['name'] === 'whentodo') {
         var value = slot['normValue'];
-        
+
         if (value && value !== undefined && value !== '') {
           var normValue = JSON.parse(value);
           var suggestDatetime = normValue['suggestDatetime'];
-          
+
           print('suggestDatetime: ' + suggestDatetime);
-          
+
           if (suggestDatetime.indexOf('/') < 0) {
             // 包含时间
             var reg = /^(\d+)-(\d{1,2})-(\d{1,2})T(\d{1,2}):(\d{1,2}):(\d{1,2})$/;
             var r = suggestDatetime.match(reg);
-            
+
             if (r) {
               date = r[1] + '/' + r[2] + '/' + r[3];
               //time = r[4] + ':' + r[5] + ':' + r[6];
               time = r[4] + ':' + r[5];
             }
-            
+
             // 没有时间
             var regd = /^(\d+)-(\d{1,2})-(\d{1,2})$/;
             var rd = suggestDatetime.match(regd);
-            
+
             if (rd) {
               date = rd[1] + '/' + rd[2] + '/' + rd[3];
             }
           } else {
             // 包含期间
             var suggestDatetimerange = suggestDatetime.split('/');
-            
+
             // 包含时间 开始
             var reg = /^(\d+)-(\d{1,2})-(\d{1,2})T(\d{1,2}):(\d{1,2}):(\d{1,2})$/;
             var r = suggestDatetimerange[0].match(reg);
-            
+
             if (r) {
               sdate = r[1] + '/' + r[2] + '/' + r[3];
               //stime = r[4] + ':' + r[5] + ':' + r[6];
               stime = r[4] + ':' + r[5];
             }
-            
+
             // 没有时间 开始
             var regd = /^(\d+)-(\d{1,2})-(\d{1,2})$/;
             var rd = suggestDatetimerange[0].match(regd);
-            
+
             if (rd) {
               sdate = rd[1] + '/' + rd[2] + '/' + rd[3];
               stime = '00:00';
             }
-            
+
             // 包含时间 结束
             var re = suggestDatetimerange[1].match(reg);
-            
+
             if (re) {
               edate = re[1] + '/' + re[2] + '/' + re[3];
               //etime = re[4] + ':' + re[5] + ':' + re[6];
               etime = re[4] + ':' + re[5];
             }
-            
+
             // 没有时间 结束
             var rde = suggestDatetimerange[1].match(regd);
-            
+
             if (rde) {
               edate = rde[1] + '/' + rde[2] + '/' + rde[3];
               etime = '23:59';
@@ -158,7 +158,7 @@ function clean(datasource)
           }
         }
       }
-      
+
       // 取出涉及日程标题
       if (slot['name'] === 'whattodo') {
         title = slot['normValue'];
@@ -175,7 +175,7 @@ function clean(datasource)
       }
     }
   }
-  
+
   // 返回消息头部
   if (!shouldEndSession) {
     if (motion !== 'CancelWithFS') {
@@ -185,6 +185,22 @@ function clean(datasource)
         sender: 'xunfei',
         datetime: formatDateTime(new Date()),
         describe: ['F', 'AG', 'SS', 'S']
+      };
+    } else if (motion == 'CancelMemoWithFS') {
+      // 确认前
+      output.header = {
+        version: 'V1.1',
+        sender: 'xunfei',
+        datetime: formatDateTime(new Date()),
+        describe: ['F', 'MO', 'SS', 'S']
+      };
+    } else if (motion == 'CancelPIWithFS') {
+      // 确认前
+      output.header = {
+        version: 'V1.1',
+        sender: 'xunfei',
+        datetime: formatDateTime(new Date()),
+        describe: ['F', 'PI', 'SS', 'S']
       };
     } else {
       // 确认前
@@ -204,11 +220,11 @@ function clean(datasource)
       describe: ['SC', 'O', 'S']
     };
   }
-  
+
   output.original = text;
-  
+
   output.content = {};
-  
+
   if (!shouldEndSession) {
     // 确认前
     if (motion !== 'CancelWithFS') {
@@ -219,6 +235,38 @@ function clean(datasource)
         parameters: {
           scd: {},
           fs: contacts
+        }
+      };
+    } else if (motion == 'CancelMemoWithFS') {
+      // 取得上下文指示
+      output.content['0'] = {
+        processor: 'SC',
+        option: 'SC.T',
+        parameters: {
+          scd: {},
+          fs: contacts
+        },
+        output: {
+          agendas: {
+            name: 'mod',
+            filter: 'function(value) { let whichtodo = ' + (whichtodo? whichtodo : ('-' + (lastwhichtodo? lastwhichtodo : '0'))) + '; if (value && value.length >= (whichtodo > 0? whichtodo : (value.length + whichtodo + 1))) { whichtodo = (whichtodo > 0? whichtodo : (value.length + whichtodo + 1)); return value.slice(whichtodo-1, whichtodo); } else return value; }'
+          }
+        }
+      };
+    } else if (motion == 'CancelPIWithFS') {
+      // 取得上下文指示
+      output.content['0'] = {
+        processor: 'SC',
+        option: 'SC.T',
+        parameters: {
+          scd: {},
+          fs: contacts
+        },
+        output: {
+          agendas: {
+            name: 'pid',
+            filter: 'function(value) { let whichtodo = ' + (whichtodo? whichtodo : ('-' + (lastwhichtodo? lastwhichtodo : '0'))) + '; if (value && value.length >= (whichtodo > 0? whichtodo : (value.length + whichtodo + 1))) { whichtodo = (whichtodo > 0? whichtodo : (value.length + whichtodo + 1)); return value.slice(whichtodo-1, whichtodo); } else return value; }'
+          }
         }
       };
     } else {
@@ -237,13 +285,13 @@ function clean(datasource)
           }
         }
       };
-    }    
+    }
 
     if (date && date !== '') {
       output['content']['0']['parameters']['scd']['ds'] = date;
       output['content']['0']['parameters']['scd']['de'] = date;
     }
-    
+
     if (sdate && sdate !== '') {
       output['content']['0']['parameters']['scd']['ds'] = sdate;
     }
@@ -259,7 +307,7 @@ function clean(datasource)
       output['content']['0']['parameters']['scd']['ts'] = '00:00';
       output['content']['0']['parameters']['scd']['te'] = '23:59';
     }
-   
+
     if (stime && stime !== '') {
       output['content']['0']['parameters']['scd']['ts'] = stime;
     } else {
@@ -278,13 +326,31 @@ function clean(datasource)
       output['content']['0']['parameters']['scd']['ti'] = '';
     }
 
-    // 删除日程指示
-    output.content['1'] = {
-      processor: 'AG',
-      option: 'AG.D',
-      parameters: {
-      }
-    };
+    if (motion == 'CancelMemoWithFS') {
+      // 删除日程指示
+      output.content['1'] = {
+        processor: 'MO',
+        option: 'MO.D',
+        parameters: {
+        }
+      };
+    } else if (motion == 'CancelPIWithFS') {
+      // 删除日程指示
+      output.content['1'] = {
+        processor: 'PI',
+        option: 'PI.D',
+        parameters: {
+        }
+      };
+    } else {
+      // 删除日程指示
+      output.content['1'] = {
+        processor: 'AG',
+        option: 'AG.D',
+        parameters: {
+        }
+      };
+    }
 
     // 保存上下文指示
     output.content['2'] = {
@@ -295,13 +361,31 @@ function clean(datasource)
     };
 
     // 播报
-    output.content['3'] = {
-      processor: 'S',
-      option: 'S.P',
-      parameters: {
-        t: 'ED'
-      }
-    };
+    if (motion == 'CancelMemoWithFS') {
+      output.content['3'] = {
+        processor: 'S',
+        option: 'S.P',
+        parameters: {
+          t: 'MED'
+        }
+      };
+    } else if (motion == 'CancelPIWithFS') {
+      output.content['3'] = {
+        processor: 'S',
+        option: 'S.P',
+        parameters: {
+          t: 'PED'
+        }
+      };
+    } else {
+      output.content['3'] = {
+        processor: 'S',
+        option: 'S.P',
+        parameters: {
+          t: 'ED'
+        }
+      };
+    }
   } else {
     // 确认后
     // 删除日程指示
@@ -313,11 +397,11 @@ function clean(datasource)
     };
 
     var confirm = '好的，已取消';
-    
+
     if (data['intent'] && data['intent']['answer'] && data['intent']['answer']['text']) {
       confirm = data['intent']['answer']['text'];
     }
-    
+
     if (confirm === '好的，已确认') {
       // 确认
       output.content['1'] = {
@@ -325,7 +409,7 @@ function clean(datasource)
         option: 'O.O',
         parameters: {}
       };
-  
+
       output.content['2'] = {
         processor: 'S',
         option: 'S.P',
@@ -345,7 +429,7 @@ function clean(datasource)
         option: 'O.C',
         parameters: {}
       };
-  
+
       output.content['2'] = {
         processor: 'S',
         option: 'S.P',
@@ -358,21 +442,21 @@ function clean(datasource)
       };
     }
   }
-  
+
   output.context = {};
-  
+
   if (clientcontext && clientcontext !== undefined) {
   	output.context['client'] = clientcontext;
   }
-  
+
   var standardnext = {};
-  
+
   standardnext.announceTo = [userId + ';' + deviceId];
   standardnext.announceType = 'inteligence_mix';
   standardnext.announceContent = {mwxing:output};
-  
+
   print(standardnext);
-  
+
   // filter source code here end
   return JSON.stringify(standardnext);
 }
