@@ -23,7 +23,8 @@ import { RwTbl } from "../sqlite/tbl/rw.tbl";
 import {
   assertEmpty,
   assertEqual,
-  assertFail
+  assertFail,
+  assertNotEqual
 } from "../../util/util";
 import {FsData, PageDcData} from "../../data.mapping";
 import { ScheduleRemindService } from "./remind.service";
@@ -4268,7 +4269,7 @@ export class CalendarService extends BaseService {
 
         txjson = generateTxJson(planitem.txjson, planitem.tx);
 
-        txjson.each((datetime) => {
+        txjson.each(planitem.sd, planitem.st, (datetime) => {
           if (datetime.unix() == nextremind) index = pos;
           pos++;
         });
@@ -4290,7 +4291,7 @@ export class CalendarService extends BaseService {
 
         txjson = generateTxJson(agenda.txjson, agenda.tx);
 
-        txjson.each((datetime) => {
+        txjson.each(agenda.evd, agenda.evt, (datetime) => {
           if (datetime.unix() == nextremind) index = pos;
           pos++;
         });
@@ -4312,7 +4313,7 @@ export class CalendarService extends BaseService {
 
         txjson = generateTxJson(minitask.txjson, minitask.tx);
 
-        txjson.each((datetime) => {
+        txjson.each(minitask.evd, minitask.evt, (datetime) => {
           if (datetime.unix() == nextremind) index = pos;
           pos++;
         });
