@@ -20,8 +20,10 @@ import {UserConfig} from "../../../service/config/user.config";
   selector: 'AiChildenComponent',
   template: `
 
-    <ng-template [ngIf]="aiData.speechAi">
+    <ng-template [ngIf]="aiData.speechAi && aiData.speechAi.org">
       <div  class="self">{{selfName}} : {{aiData.speechAi.org}}</div>
+    </ng-template>
+    <ng-template [ngIf]="aiData.speechAi && aiData.speechAi.an">
       <div  class="aiAn">小冥 : {{aiData.speechAi.an}}</div>
     </ng-template>
     <ng-template [ngIf]="aiData.scd">
