@@ -14,6 +14,8 @@ export class CudscdPara {
   t:string;
   //日程日期
   ti:string;
+  //地址
+  adr:string;
   //重要事项
   todolist:string;
 }
