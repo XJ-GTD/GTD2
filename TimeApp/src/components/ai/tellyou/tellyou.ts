@@ -79,9 +79,7 @@ import * as moment from "moment";
             <ion-icon class="fal fa-stop"></ion-icon>
           </button>
           
-          <button ion-button item-end clear class="show" (click)="open(tellYouData)" *ngIf="(tellYouData.idtype ==  tellyouIdType.Agenda
-              || tellYouData.idtype ==  tellyouIdType.PlanItem) 
-              && tellYouData.tellType !=  tellyouType.remind_merge ">
+          <button ion-button item-end clear class="show" (click)="open(tellYouData)" *ngIf="tellYouData.idtype !=  tellyouIdType.MiniTask && tellYouData.tellType !=  tellyouType.remind_merge ">
             查看
           </button>
           
@@ -217,11 +215,23 @@ export class TellYouComponent{
 
   //查看
   open(data:TellYou) {
-    if (data.idtype == TellyouIdType.Agenda){
-      this.toAgenda(data.id);
 
-    }else if (data.idtype == TellyouIdType.PlanItem){
-      this.toPlanItem(data.id);
+    if (data.tellType == TellyouType.at_agenda) {
+      this.aTday();
+      return;
+    }else if (data.tellType == TellyouType.remind_todo){
+      this.todoList();
+      return;
+    }else if (data.tellType == TellyouType.cancel_planitem || data.tellType == TellyouType.cancel_agenda){
+      return;
+    }else{
+      if (data.idtype == TellyouIdType.Agenda){
+        this.toAgenda(data.id);
+        return;
+      }else if (data.idtype == TellyouIdType.PlanItem){
+        this.toPlanItem(data.id);
+        return;
+      }
     }
   }
 
@@ -238,6 +248,15 @@ export class TellYouComponent{
     p.si = id;
     this.utilService.createModal(DataConfig.PAGE._COMMEMORATIONDAY_PAGE, p, ModalTranType.scale).present();
   }
+
+  todoList() {
+    this.utilService.createModal(DataConfig.PAGE._DO_PAGE,null,ModalTranType.left).present();
+  }
+
+  aTday() {
+    this.utilService.createModal(DataConfig.PAGE._ATME_PAGE,null,ModalTranType.left).present();
+  }
+
 
   again(data:TellYou) {
 

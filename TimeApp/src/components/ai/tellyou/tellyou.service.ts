@@ -49,8 +49,8 @@ export class TellyouService {
     this.tellYouQueue = new AsyncQueue(({message}, callback) => {
       let tellYouData:TellYouBase = message;
       let show = false;
-      let time1 = 2000;
-      let time2 = 5000;
+      let time1 = 0;
+      let time2 = 0;
       let pageData:TellYou = new TellYou();
       Object.assign(pageData,tellYouData);
       console.log("12111111111===tellYouQueue===>" + tellYouData.id + "===>" + tellYouData.tellType);
@@ -74,8 +74,8 @@ export class TellyouService {
 
               if (datas.length > 0){
                 Object.assign(pageData,datas[0]);
-                time1 = 1000;
-                time2 = 15000;
+                time1 = 10;
+                time2 = 30000;
                 show = true;
               }
               callback([{data:pageData,time1:time1,time2:time2,show:show}]);
@@ -104,8 +104,8 @@ export class TellyouService {
                 pageData.tellType = TellyouType.remind_merge;
                 pageData.reminds = datas ;
               }
-              time1 = 1000;
-              time2 = 20000;
+              time1 = 10;
+              time2 = 30000;
               show = true;
               callback([{data:pageData,time1:time1,time2:time2,show:show}]);
             }else{
@@ -132,7 +132,7 @@ export class TellyouService {
 
               if (datas.length > 0){
                 Object.assign(pageData,datas[0]);
-                time1 = 2000;
+                time1 = 20;
                 time2 = 5000;
                 show = true;
               }
