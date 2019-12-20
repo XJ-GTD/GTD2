@@ -259,6 +259,9 @@ export class TellyouService {
     for (let tellyoubase of tellYous){
       let pageData: TellYou = new TellYou();
       Object.assign(pageData,tellyoubase);
+
+      if (tellyoubase != null) tellyoubase.id = tellyoubase.dataid;
+
       if(tellyoubase.idtype == TellyouIdType.Agenda){
         let agendaData = await  this.eventService.getAgenda(tellyoubase.id,false);
         if (!agendaData){
@@ -288,6 +291,8 @@ export class TellyouService {
 
 
       if(tellyoubase.idtype == TellyouIdType.MiniTask){
+
+
         let miniTask:MiniTaskData = await this.eventService.getMiniTask(tellyoubase.id);
         if (!miniTask){
           continue;
@@ -362,6 +367,7 @@ export class TellYouBase {
   //1活动邀请 2日历项邀请 3活动提醒 4小任务提醒 5日历项提醒 6重要事项系统 7和并提醒 10系统消息
   tellType: TellyouType;
   id: string; //活动，日历项，小任务
+  dataid: string; //at
   idtype: TellyouIdType;//活动，日历项，小任务
   spearktext: string;//播报格式
   remindtime: string;//提醒时间，提醒的情况下有
