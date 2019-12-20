@@ -191,7 +191,9 @@ export class TellyouService {
     console.log("121111111111===>tellyoubase.dataid" + tellYouData.dataid);
     console.log("121111111111===>tellyoubase.id" + tellYouData.id);
     console.log("121111111111===>tellyoubase.tellType" + tellYouData.tellType);
-    if (tellYouData.tellType == TellyouType.invite_agenda || tellYouData.tellType == TellyouType.invite_planitem) {
+    if (tellYouData.tellType == TellyouType.invite_agenda || tellYouData.tellType == TellyouType.invite_planitem
+    ||tellYouData.tellType == TellyouType.at_agenda || tellYouData.tellType == TellyouType.cancel_agenda
+      || tellYouData.tellType == TellyouType.cancel_planitem) {
       this.invites.push(tellYouData);
     } else if(tellYouData.tellType == TellyouType.remind_agenda || tellYouData.tellType == TellyouType.remind_minitask ||
       tellYouData.tellType == TellyouType.remind_planitem || tellYouData.tellType == TellyouType.remind_todo ||
@@ -219,6 +221,9 @@ export class TellyouService {
       if (this.invites[index].tellType == TellyouType.default) this.invites[index].tellType = tellYouData.tellType;
 
       Object.assign(tellYouData,this.invites[index]);
+      console.log("1211111111121===>tellyoubase.dataid" + tellYouData.dataid);
+      console.log("1211111111121===>tellyoubase.id" + tellYouData.id);
+      console.log("1211111111121===>tellyoubase.tellType" + tellYouData.tellType);
       this.pushTellYouData(tellYouData,(warp)=>{
         this.tellyoubegin(warp.data,warp.time1,warp.time2,warp.show);
       })
