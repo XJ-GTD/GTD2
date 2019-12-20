@@ -76,11 +76,11 @@ export class TellyouService {
                 time2 = 15000;
                 show = true;
                 callback([{data:pageData,time1:time1,time2:time2,show:show}]);
+                return;
               }
             })
-          }else{
-            callback([{data:pageData,time1:time1,time2:time2,show:show}]);
           }
+          callback([{data:pageData,time1:time1,time2:time2,show:show}]);
 
           break;
 
@@ -104,6 +104,8 @@ export class TellyouService {
               time1 = 1000;
               time2 = 20000;
               show = true;
+              callback([{data:pageData,time1:time1,time2:time2,show:show}]);
+              return;
             }
             callback([{data:pageData,time1:time1,time2:time2,show:show}]);
           })
@@ -111,10 +113,6 @@ export class TellyouService {
 
           break;
         case TellyouType.system:
-
-          time1 = 2000;
-          time2 = 5000;
-          show = true;
 
           let systems_i = this.systems.findIndex(
             (val)=>{
@@ -129,12 +127,16 @@ export class TellyouService {
 
               if (datas.length > 0){
                 Object.assign(pageData,datas[0]);
+
+                time1 = 2000;
+                time2 = 5000;
+                show = true;
                 callback([{data:pageData,time1:time1,time2:time2,show:show}]);
+                return;
               }
             })
-          }else{
-            callback([{data:pageData,time1:time1,time2:time2,show:show}]);
           }
+            callback([{data:pageData,time1:time1,time2:time2,show:show}]);
 
           break;
         default:
