@@ -506,13 +506,23 @@ function clean(datasource)
     parameters: {}
   };
 
-  output.content['2'] = {
-    processor: 'S',
-    option: 'S.P',
-    parameters: {
-      t: 'MM'
-    }
-  };
+  if (intent == 'FindByKeywords' || intent == 'FindByTime') {
+    output.content['2'] = {
+      processor: 'S',
+      option: 'S.P',
+      parameters: {
+        t: 'MM'
+      }
+    };
+  } else {
+    output.content['2'] = {
+      processor: 'S',
+      option: 'S.P',
+      parameters: {
+        t: 'PP'
+      }
+    };
+  }
 
   var standardnext = {};
 

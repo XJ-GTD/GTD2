@@ -331,6 +331,36 @@ export class SqliteInit {
         sqlparam.push([sq, []]);
         await this.sqlexec.batExecSqlByParam(sqlparam);
       }
+    }else if (version ==12){
+      //添加提醒设置
+      if (from > 0 && from < 12 ) {
+        let bellVoiceTo: YTbl = new YTbl();
+        bellVoiceTo.yi = this.util.getUuid();
+        bellVoiceTo.yt = "BVTO";
+        bellVoiceTo.yk = "BVTO";
+        bellVoiceTo.ytn = "提醒他人铃声";
+        bellVoiceTo.yn = "提醒他人铃声";
+        bellVoiceTo.yv = "1";
+        await this.sqlexec.save(bellVoiceTo);
+
+        let delayVoice: YTbl = new YTbl();
+        delayVoice.yi = this.util.getUuid();
+        delayVoice.yt = "DV";
+        delayVoice.yk = "DV";
+        delayVoice.ytn = "延后提醒播报并响铃";
+        delayVoice.yn = "延后提醒播报并响铃";
+        delayVoice.yv = "1";
+        await this.sqlexec.save(delayVoice);
+
+        let remindVoice: YTbl = new YTbl();
+        remindVoice.yi = this.util.getUuid();
+        remindVoice.yt = "RV";
+        remindVoice.yk = "RV";
+        remindVoice.ytn = "所有提醒播报";
+        remindVoice.yn = "所有提醒播报";
+        remindVoice.yv = "1";
+        await this.sqlexec.save(remindVoice);
+      }
     }
   }
 
