@@ -169,7 +169,7 @@ export class AnnotationService extends BaseService {
       for (let annotation of annotations){
         let sync: SyncData = new SyncData();
         sync.src = annotation.ui;
-        sync.id = annotation.ati;
+        sync.id = annotation.obi + annotation.dt;
         sync.type = "Annotation";
         sync.title = annotation.content;
         sync.datetime = annotation.dt;
