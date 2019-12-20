@@ -494,7 +494,7 @@ function clean(datasource)
     processor: 'S',
     option: 'S.P',
     parameters: {
-      t: 'CC'
+      t: 'MM'
     }
   };
 
