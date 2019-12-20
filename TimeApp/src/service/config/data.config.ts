@@ -72,7 +72,9 @@ export class DataConfig {
   //2019/11/23 增加读写表
   //public static version: number = 10;
   //2019/12/13 增加checksum字段
-  public static version: number = 11;
+  //public static version: number = 11;
+  //设置对提醒类的开关
+  public static version: number = 12;
 
   public static RABBITMQ_STATUS: string = "";
 
@@ -175,6 +177,12 @@ export class DataConfig {
 
 
   /*========== 系统设置区分 =========*/
+  //提醒他人铃声
+  public static SYS_BVTO: string = "BVTO";
+  //延迟提醒播报
+  public static SYS_DV: string = "DV";
+  //提醒播报
+  public static SYS_RV: string = "RV";
   //唤醒
   public static SYS_H: string = "H";
   //新消息提醒
