@@ -88,32 +88,32 @@ export class SpeechProcess extends BaseProcess implements MQProcess {
     //获取上下文前处理分支类型 (由各处理自定义)
     branchtype = this.input(content, contextRetMap, "branchtype", WsDataConfig.BRANCHTYPE, branchtype);
 
+    //获取上下文内日程创建结果
+    agendas = this.input(content,contextRetMap,"agendas",WsDataConfig.SCD,agendas);
+
+    //获取上下文内日程创建结果
+    memos = this.input(content,contextRetMap,"memos",WsDataConfig.MOD,memos);
+
+    //获取上下文内日程创建结果
+    planitems = this.input(content,contextRetMap,"planitems",WsDataConfig.PID,planitems);
+
+    //获取上下文内日程查询结果
+    showagendas = this.input(content,contextRetMap,"showagendas",WsDataConfig.SCD,showagendas);
+
+    //获取上下文内日程查询结果
+    showplanitems = this.input(content,contextRetMap,"showplanitems",WsDataConfig.PID,showplanitems);
+
+    //获取上下文内日程查询结果
+    showmemos = this.input(content, contextRetMap, "showmemos", WsDataConfig.MOD, showmemos);
+
+    //获取上下文内人员信息
+    contacts = this.input(content,contextRetMap,"contacts",WsDataConfig.FS,contacts);
+
+    //获取上下文前动作信息
+    prvOpt = this.input(content,contextRetMap,"prvoption",WsDataConfig.PRVOPTION,prvOpt);
+
     //日常语音直接播报
     if (content.option != S.AN) {
-
-      //获取上下文内日程创建结果
-      agendas = this.input(content,contextRetMap,"agendas",WsDataConfig.SCD,agendas);
-
-      //获取上下文内日程创建结果
-      memos = this.input(content,contextRetMap,"memos",WsDataConfig.MOD,memos);
-
-      //获取上下文内日程创建结果
-      planitems = this.input(content,contextRetMap,"planitems",WsDataConfig.PID,planitems);
-
-      //获取上下文内日程查询结果
-      showagendas = this.input(content,contextRetMap,"showagendas",WsDataConfig.SCD,showagendas);
-
-      //获取上下文内日程查询结果
-      showplanitems = this.input(content,contextRetMap,"showplanitems",WsDataConfig.PID,showplanitems);
-
-      //获取上下文内日程查询结果
-      showmemos = this.input(content, contextRetMap, "showmemos", WsDataConfig.MOD, showmemos);
-
-      //获取上下文内人员信息
-      contacts = this.input(content,contextRetMap,"contacts",WsDataConfig.FS,contacts);
-
-      //获取上下文前动作信息
-      prvOpt = this.input(content,contextRetMap,"prvoption",WsDataConfig.PRVOPTION,prvOpt);
 
       if (content.input && (content.input.type || content.input.type == "")) {
         if (content.input.type == "") {
@@ -300,7 +300,7 @@ export class SpeechProcess extends BaseProcess implements MQProcess {
       this.emitService.emitScd(scdEm);
     }
 
-    if (datas && datas.length == 1) {
+    if (datas && datas.length > 1) {
       let cscdLS: ScdLsEmData = new ScdLsEmData();
 
       cscdLS.desc = speakText;
