@@ -132,10 +132,10 @@ html {
 }
 
 body {
-  //background-image:url('../assets/imgs/alback.jpg');
-  //background-repeat:no-repeat;
-  //background-size:100% 100%;
-  //-moz-background-size:100% 100%;
+  background-image:url('../assets/imgs/alback.jpg');
+  background-repeat:no-repeat;
+  background-size:100% 100%;
+  -moz-background-size:100% 100%;
   ion-app.ios{
     background-color: transparent;
   }
@@ -255,7 +255,6 @@ body {
 }
 
 // 主题
-
 @import "../../node_modules/ionic2-auto-complete/auto-complete";
 @import "../theme/autocomplete";
 //@import "../assets/css/weather-icons.min.css";
