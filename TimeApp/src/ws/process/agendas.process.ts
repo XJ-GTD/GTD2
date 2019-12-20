@@ -98,6 +98,7 @@ export class AgendasProcess extends BaseProcess implements MQProcess,OptProcess{
       rcIn.evn = c.sn;
       rcIn.st = (c.st == '99:99')? undefined : c.st;  // 不指定时间输入为99:99
       rcIn.sd = c.sd;
+      rcIn.adr = c.adr;
 
       if (c.todolist) {
         rcIn.todolist = c.todolist == "On"? anyenum.ToDoListStatus.On : anyenum.ToDoListStatus.Off;
@@ -127,6 +128,7 @@ export class AgendasProcess extends BaseProcess implements MQProcess,OptProcess{
           c.st = saved[0].evt;
           c.ed = saved[0].evd;
           c.et = saved[0].evt;
+          c.adr = saved[0].adr;
           c.todolist = saved[0].todolist == anyenum.ToDoListStatus.On? "On" : "Off";
         }
       } else if (prvOpt == AG.U) {
@@ -138,6 +140,7 @@ export class AgendasProcess extends BaseProcess implements MQProcess,OptProcess{
         updated.evn = rcIn.evn;
         updated.st = rcIn.st;
         updated.sd = rcIn.sd;
+        updated.adr = rcIn.adr;
 
         if (c.todolist) {
           updated.todolist = rcIn.todolist;
@@ -228,6 +231,7 @@ export class AgendasProcess extends BaseProcess implements MQProcess,OptProcess{
           c.sn = cudPara.ti == null?c.sn:cudPara.ti;
           c.sd = cudPara.d == null?c.sd:cudPara.d;
           c.st = cudPara.t == null?c.st:cudPara.t;
+          c.adr = cudPara.adr == null?c.adr:cudPara.adr;
 
           // 日程时间必须是5分钟的倍数
           if (c.st && c.st != "99:99") {
@@ -285,6 +289,7 @@ export class AgendasProcess extends BaseProcess implements MQProcess,OptProcess{
           c.sn = (cudPara.ti == null || cudPara.ti == '')?c.sn:cudPara.ti;
           c.sd = (cudPara.d == null || cudPara.d == '')? c.sd:cudPara.d;
           c.st = (cudPara.t == null || cudPara.t == '')?c.st:cudPara.t;
+          c.adr = (cudPara.adr == null || cudPara.adr == '')?c.adr:cudPara.adr;
 
           // 修改重要事项
           if (cudPara.todolist) {
