@@ -178,7 +178,7 @@ function clean(datasource)
 
   // 返回消息头部
   if (!shouldEndSession) {
-    if (motion !== 'CancelWithFS') {
+    if (motion !== 'CancelWithFS' && motion !== 'CancelMemoWithFS' && motion !== 'CancelPIWithFS') {
       // 确认前
       output.header = {
         version: 'V1.1',
@@ -227,7 +227,7 @@ function clean(datasource)
 
   if (!shouldEndSession) {
     // 确认前
-    if (motion !== 'CancelWithFS') {
+    if (motion !== 'CancelWithFS' && motion !== 'CancelMemoWithFS' && motion !== 'CancelPIWithFS') {
       // 查询联系人指示
       output.content['0'] = {
         processor: 'F',
