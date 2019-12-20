@@ -5818,6 +5818,8 @@ export interface FjData extends FjTbl {
 }
 
 export function multipleoffive(day: string, time: string) {
+  if (time == "99:99") time = "08:00";  // 防止出现错误的时间
+
   // 没有入参, 取得当前最近5分钟倍数的时间
   if (!day && !time) {
     let now = moment();
