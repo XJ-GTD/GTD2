@@ -379,20 +379,20 @@ import {FsData, PageDcData} from "../../data.mapping";
 
        let pd2: PageDcData = new PageDcData();
        Object.assign(pd2, pg[0]);
-       pd2.gn ="组团打怪群3";
+       // pd2.gn ="组团打怪群3"; 不支持群名称修改
        let fs: FsData = new FsData();
        fs.pwi = "12343";
        pd2.fsl.push(fs);
        await grouperService.saveGrouper(pd2);
 
-       let pg2: Array<PageDcData> = await grouperService.filterGroups(await grouperService.fetchGroups(), "组团打怪群3");
+       let pg2: Array<PageDcData> = await grouperService.filterGroups(await grouperService.fetchGroups(), "组团打怪群");
        expect(pg2).toBeDefined();
        expect(pg2.length).toBeDefined(1);
 
        //删除
        await grouperService.removeGrouperMember(pg2[0].gi,pg2[0].fsl[0].pwi);
 
-       let pg3: Array<PageDcData> = await grouperService.filterGroups(await grouperService.fetchGroups(), "组团打怪群3");
+       let pg3: Array<PageDcData> = await grouperService.filterGroups(await grouperService.fetchGroups(), "组团打怪群");
        expect(pg3).toBeDefined();
        expect(pg3.length).toBeDefined(1);
        expect(pg3[0].fsl.length).toBeDefined(0);
