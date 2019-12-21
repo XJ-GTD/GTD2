@@ -195,7 +195,7 @@ import {AssistantService} from "../../service/cordova/assistant.service";
               </div>
             </ion-row>
 
-            <ion-row *ngIf="currentPlanItem.jti" (click)="changeRemind()">
+            <ion-row *ngIf="currentPlanItem.jtc == selfdefine && currentPlanItem.jti" (click)="changeRemind()">
               <div class="button-b">
                 <button ion-button clear>
                   <ion-icon class="fas fa-bell" *ngIf="currentPlanItem.txs" ></ion-icon>
