@@ -371,7 +371,7 @@ export class DataSyncProcess implements MQProcess {
 
               // 发送语音通知用数据
               typeclassundel.forEach((annotation) => {
-                this.tellyouService.tellyou4invsited(generateTellYouBase({id: annotation.ati, dataid: annotation.obi, idtype: TellyouIdType.Agenda, tellType: TellyouType.default}));
+                this.tellyouService.tellyou4invsited(generateTellYouBase({id: annotation.obi+annotation.dt, dataid: annotation.obi, idtype: TellyouIdType.Agenda, tellType: TellyouType.default}));
               });
             } else if (datatype == "Grouper") {
               await this.grouperService.receivedGrouperData(typeclassundel, SyncDataStatus.UnDeleted);
@@ -686,7 +686,7 @@ export class DataSyncProcess implements MQProcess {
         await this.annotationService.receivedAnnotationData([annotation], this.convertSyncStatus(dsPara.status), dsPara.extension);
 
         // 发送语音通知用数据
-        this.tellyouService.tellyou4invsited(generateTellYouBase({id: annotation.ati, dataid: annotation.obi, idtype: TellyouIdType.Agenda, tellType: TellyouType.default}));
+        this.tellyouService.tellyou4invsited(generateTellYouBase({id: annotation.obi+annotation.dt, dataid: annotation.obi, idtype: TellyouIdType.Agenda, tellType: TellyouType.default}));
       }
       if (dsPara.type == "Grouper") {
         let grouper: Grouper = new Grouper();

@@ -132,26 +132,13 @@ html {
 }
 
 body {
-  //background-image:url('../assets/imgs/alback.jpg');
-  //background-repeat:no-repeat;
-  //background-size:100% 100%;
-  //-moz-background-size:100% 100%;
-  ion-app.ios{
+  background-image:url('../assets/imgs/alback.jpg');
+  background-repeat:no-repeat;
+  background-size:100% 100%;
+  -moz-background-size:100% 100%;
+  ion-app.ios, .content-ios,.ios .menu-inner,.ios .ion-page.show-page ~ .nav-decor  {
     background-color: transparent;
   }
-
-  .content-ios {
-    background-color: transparent;
-  }
-
-  .ios .menu-inner {
-    background-color: transparent;
-  }
-
-  .ios .ion-page.show-page ~ .nav-decor {
-    background: transparent;
-  }
-
   //防止input框获取焦点抖动
   .input-cover {
     position: static;
@@ -255,7 +242,6 @@ body {
 }
 
 // 主题
-
 @import "../../node_modules/ionic2-auto-complete/auto-complete";
 @import "../theme/autocomplete";
 //@import "../assets/css/weather-icons.min.css";

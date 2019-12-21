@@ -151,7 +151,8 @@ export class AnnotationService extends BaseService {
           let ret2: Array<Annotation> = listanno.filter((value, index, arr) => {
             return ganno.obi == value.obi && ganno.dt == value.dt;
           });
-
+          //同一时间会产生多个at，对应生成多个数据放入at表中，上传到服务器也需要并成一条上传服务器
+          //根据obi+dt来上传
           if (ret2.length > 0 ){
             let ret1 = new  Annotation();
             Object.assign(ret1,ret2[0]);
@@ -169,7 +170,9 @@ export class AnnotationService extends BaseService {
       for (let annotation of annotations){
         let sync: SyncData = new SyncData();
         sync.src = annotation.ui;
-        sync.id = annotation.ati;
+        //同一时间会产生多个at，对应生成多个数据放入at表中，上传到服务器也需要并成一条上传服务器，
+        //根据obi+dt来上传
+        sync.id = annotation.obi + annotation.dt;
         sync.type = "Annotation";
         sync.title = annotation.content;
         sync.datetime = annotation.dt;
@@ -201,6 +204,7 @@ export class AnnotationService extends BaseService {
     condition.dt = moment().format("YYYY/MM/DD HH:mm");
     condition.obt = anyenum.ObjectType.Event;
     let sqlparam = new Array<any>();
+    //同一时间会产生多个at(手机号)，对应生成多个数据放入at表中
     for (let rc of condition.rcs ){
       let at =  new AtTbl();
       condition.ati = this.util.getUuid();
