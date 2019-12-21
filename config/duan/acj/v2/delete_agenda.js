@@ -192,7 +192,7 @@ function clean(datasource)
         version: 'V1.1',
         sender: 'xunfei',
         datetime: formatDateTime(new Date()),
-        describe: ['F', 'MO', 'SS', 'S']
+        describe: ['SC', 'MO', 'SS', 'S']
       };
     } else if (motion == 'CancelPIWithFS') {
       // 确认前
@@ -200,7 +200,7 @@ function clean(datasource)
         version: 'V1.1',
         sender: 'xunfei',
         datetime: formatDateTime(new Date()),
-        describe: ['F', 'PI', 'SS', 'S']
+        describe: ['SC', 'PI', 'SS', 'S']
       };
     } else {
       // 确认前
