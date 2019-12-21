@@ -814,6 +814,26 @@ export class CalendarService extends BaseService {
 
       let agendas: Array<AgendaData> = await this.sqlExce.getExtLstByParam<AgendaData>(agendasql, params);
 
+      // 日程对象增加发起人信息用于分享
+      if (agendas && agendas.length > 0) {
+        let members: Map<string, Member> = new Map<string, Member>();
+
+        UserConfig.friends.forEach((friend) => {
+          if (friend.ui) {
+            let member: Member = {} as Member;
+            Object.assign(member, friend);
+
+            members.set(friend.ui, member);
+          }
+        });
+
+        agendas.forEach((agenda) => {
+          if (agenda.ui) {
+            agenda.creator = members.get(agenda.ui);
+          }
+        });
+      }
+
       let tasksql = `select ev.*,
                             et.cs cs,
                             et.isrt isrt,
