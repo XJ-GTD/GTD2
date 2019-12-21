@@ -390,7 +390,7 @@ import {FsData, PageDcData} from "../../data.mapping";
        expect(pg2.length).toBeDefined(1);
 
        //删除
-       await grouperService.removeGrouperMember(pg2[0].gi,pg2[0].fsl[0].pwi);
+       await grouperService.removeGrouperMember(pg2[0].gi, "12343");  // 非预设联系人无法通过fetchGroups取出来
 
        let pg3: Array<PageDcData> = await grouperService.filterGroups(await grouperService.fetchGroups(), "组团打怪群");
        expect(pg3).toBeDefined();
