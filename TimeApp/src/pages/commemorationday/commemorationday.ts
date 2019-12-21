@@ -145,7 +145,7 @@ import {AssistantService} from "../../service/cordova/assistant.service";
                   {{currentPlanItem.sd | formatedate: "YYYY-M-D"}}
                 </span>
             <span class="content  agendaDate">
-                      {{currentPlanItem.sd + " " + currentPlanItem.st | formatedate: "A hh:mm"}}                 
+                      {{currentPlanItem.sd + " " + currentPlanItem.st | formatedate: "A hh:mm"}}
               </span>
           </div>
 
@@ -207,8 +207,7 @@ import {AssistantService} from "../../service/cordova/assistant.service";
               </div>
             </ion-row>
 
-
-            <ion-row *ngIf="currentPlanItem.jti" (click)="changeRepeat()">
+            <ion-row *ngIf="currentPlanItem.jtc == selfdefine && currentPlanItem.jti" (click)="changeRepeat()">
               <div class="button-b">
                 <button ion-button clear>
                   <ion-icon class="fas fa-copy " *ngIf="currentPlanItem.rts"></ion-icon>
@@ -220,9 +219,7 @@ import {AssistantService} from "../../service/cordova/assistant.service";
               </div>
             </ion-row>
 
-
-
-            <ion-row *ngIf="currentPlanItem.jti">
+            <ion-row *ngIf="currentPlanItem.jtc == selfdefine && currentPlanItem.jti">
               <div class="button-b">
                 <button ion-button clear (click)="changeInvites()">
                   <ion-icon class="fad fa-user-friends "></ion-icon>
@@ -294,7 +291,9 @@ export class CommemorationDayPage {
           Object.assign(this.originPlanItem, commemorationday);
 
           this.snlength =  this.currentPlanItem.jtn.length;
-          this.buttons.remove = true;
+          if (this.currentPlanItem.jtc != SelfDefineType.System) {
+            this.buttons.remove = true;
+          }
         });
       } else {
         this.currentPlanItem.sd = paramter.d.format("YYYY/MM/DD");
@@ -496,6 +495,31 @@ export class CommemorationDayPage {
     }
   }
 
+  createConfirmSingle() {
+    let buttons: Array<any> = new Array<any>();
+
+    buttons.push({
+      text: '确定',
+      role: 'ok',
+      handler: () => {
+        this.doOptionRemove(OperateType.Non);
+      }
+    });
+
+    buttons.push({
+      text: '取消',
+      role: 'cancel',
+      handler: () => {
+        console.log('Cancel clicked');
+      }
+    });
+
+    return this.actionSheetCtrl.create({
+      title: "是否删除",
+      buttons: buttons
+    });
+  }
+
   createConfirm(remove: boolean = false, confirm: ConfirmType = ConfirmType.CurrentOrFutureAll) {
     let buttons: Array<any> = new Array<any>();
 
@@ -623,18 +647,22 @@ export class CommemorationDayPage {
       if (this.modifyConfirm) {
         this.modifyConfirm.dismiss();
       }
-      this.modifyConfirm = this.createConfirm(true);
 
+      this.modifyConfirm = this.createConfirm(true);
       this.modifyConfirm.present();
 
     } else {
-      this.util.loadingStart().then(() => {
-        this.calendarService.removePlanItem(this.originPlanItem, OperateType.Non)
-          .then(() => {
-            this.util.loadingEnd();
-            this.goBack();
-          });
-      });
+
+      this.modifyConfirm = this.createConfirmSingle();
+      this.modifyConfirm.present();
+
+      // this.util.loadingStart().then(() => {
+      //   this.calendarService.removePlanItem(this.originPlanItem, OperateType.Non)
+      //     .then(() => {
+      //       this.util.loadingEnd();
+      //       this.goBack();
+      //     });
+      // });
     }
   }
 
