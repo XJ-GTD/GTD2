@@ -236,7 +236,7 @@ export class GrouperService extends BaseService {
 
     let ret:boolean = false;
     let gi :string;
-    if (dc.gi != null && dc.gi != '' && dc.fsl.length > 0) {
+    if (dc.gi) {
       gi = dc.gi;
       let bxL = new Array<string>();
       let sql = `select gb.* from gtd_b gb inner join gtd_b_x bx on bx.bmi = gb.pwi
@@ -263,7 +263,7 @@ export class GrouperService extends BaseService {
       }
       await this.sqlExce.batExecSql(bxL);
       ret = true;
-    } else if (dc.gi == null || dc.gi == '') { // 新建群
+    } else { // 新建群
       let gc = new GTbl();
       Object.assign(gc, dc);
       gc.gi = this.util.getUuid();
