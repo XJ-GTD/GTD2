@@ -155,9 +155,9 @@ function clean(datasource)
 
     output.content['0'] = {
       processor: 'S',
-      option: 'S.AN',
+      option: 'S.P',
       parameters: {
-        an: '你要安排的这个活动主题是什么？'
+        t: 'WHATTODO'   //你要安排的这个活动主题是什么？
       }
     };
 
@@ -207,33 +207,33 @@ function clean(datasource)
     if (!activity['d'] && !activity['t'] && !activity['ti'] && !activity['adr']) {
       output.content['0'] = {
         processor: 'S',
-        option: 'S.AN',
+        option: 'S.P',
         parameters: {
-          an: '你要安排的这个活动内容是什么？'
+          t: 'WHATTODO'     // 你要安排的这个活动内容是什么？
         }
       };
     } else if (!activity['d'] && !activity['t']) {
       output.content['0'] = {
         processor: 'S',
-        option: 'S.AN',
+        option: 'S.P',
         parameters: {
-          an: '这个活动安排在什么时候？'
+          t: 'WHENTODO'     // 这个活动安排在什么时候？
         }
       };
     } else if (!activity['ti']) {
       output.content['0'] = {
         processor: 'S',
-        option: 'S.AN',
+        option: 'S.P',
         parameters: {
-          an: '你要安排的这个活动内容是什么？'
+          t: 'WHATTODO'     // 你要安排的这个活动内容是什么？
         }
       };
     } else if (!activity['adr']) {
       output.content['0'] = {
         processor: 'S',
-        option: 'S.AN',
+        option: 'S.P',
         parameters: {
-          an: '这个活动在什么地方举行？'
+          t: 'WHERETODO'    // 这个活动在什么地方举行？
         }
       };
     } else {
@@ -267,9 +267,9 @@ function clean(datasource)
 
       output.content['3'] = {
         processor: 'S',
-        option: 'S.AN',
+        option: 'S.P',
         parameters: {
-          an: '是否创建, 请确认'
+          t: 'EE_AG_CONFIRM'      // 是否创建, 请确认
         }
       };
 
@@ -290,9 +290,9 @@ function clean(datasource)
 
       output.content['0'] = {
         processor: 'S',
-        option: 'S.AN',
+        option: 'S.P',
         parameters: {
-          an: '这个活动主题是什么？'
+          t: 'WHATTODO'     // 这个活动主题是什么？
         }
       };
     } else if (!activity['d'] && !activity['t']) {
@@ -305,9 +305,9 @@ function clean(datasource)
 
       output.content['0'] = {
         processor: 'S',
-        option: 'S.AN',
+        option: 'S.P',
         parameters: {
-          an: '这个活动安排在什么时候？'
+          t: 'WHENTODO'     // 这个活动安排在什么时候？
         }
       };
     } else if (!activity['ti']) {
@@ -320,9 +320,9 @@ function clean(datasource)
 
       output.content['0'] = {
         processor: 'S',
-        option: 'S.AN',
+        option: 'S.P',
         parameters: {
-          an: '这个活动主题是什么？'
+          t: 'WHATTODO'     // 这个活动主题是什么？
         }
       };
     } else {
@@ -355,9 +355,9 @@ function clean(datasource)
 
       output.content['3'] = {
         processor: 'S',
-        option: 'S.AN',
+        option: 'S.P',
         parameters: {
-          an: '是否创建, 请确认'
+          t: 'EE_AG_CONFIRM'    // 是否创建, 请确认
         }
       };
 

@@ -155,9 +155,9 @@ function clean(datasource)
 
     output.content['0'] = {
       processor: 'S',
-      option: 'S.AN',
+      option: 'S.P',
       parameters: {
-        an: '开始记录您的备忘,结束记录请说:"结束备忘"'
+        t: 'WHATTOMEMO'      // 开始记录您的备忘,结束记录请说:"结束备忘"
       }
     };
 
@@ -205,17 +205,17 @@ function clean(datasource)
     if (!memo['ti']) {
       output.content['0'] = {
         processor: 'S',
-        option: 'S.AN',
+        option: 'S.P',
         parameters: {
-          an: '您需要备忘的内容是什么？'
+          t: 'WHATTOMEMO'     // 您需要备忘的内容是什么？
         }
       };
     } else {
       output.content['0'] = {
         processor: 'S',
-        option: 'S.AN',
+        option: 'S.P',
         parameters: {
-          an: '继续备忘，或者说:"结束备忘"结束记录'
+          t: 'WHATTOMEMONEXT'     // 继续备忘，或者说:"结束备忘"结束记录
         }
       };
     }
@@ -269,9 +269,9 @@ function clean(datasource)
 
       output.content['3'] = {
         processor: 'S',
-        option: 'S.AN',
+        option: 'S.P',
         parameters: {
-          an: '是否保存, 请确认'
+          t: 'EE_MO_CONFIRM'      // 是否保存, 请确认
         }
       };
 

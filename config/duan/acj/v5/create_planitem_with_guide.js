@@ -155,9 +155,9 @@ function clean(datasource)
 
     output.content['0'] = {
       processor: 'S',
-      option: 'S.AN',
+      option: 'S.P',
       parameters: {
-        an: '您要创建的日历项名称是什么？'
+        t: 'WHATTOPLANITEM'      // 您要创建的日历项名称是什么？
       }
     };
 
@@ -207,25 +207,25 @@ function clean(datasource)
     if (!planitem['d'] && !planitem['t'] && !planitem['ti'] && !planitem['adr']) {
       output.content['0'] = {
         processor: 'S',
-        option: 'S.AN',
+        option: 'S.P',
         parameters: {
-          an: '日历项名称是什么？'
+          t: 'WHATTOPLANITEM'      // 日历项名称是什么？
         }
       };
     } else if (!planitem['d'] && !planitem['t']) {
       output.content['0'] = {
         processor: 'S',
-        option: 'S.AN',
+        option: 'S.P',
         parameters: {
-          an: '这个日历项在哪天？'
+          t: 'WHENTOPLANITEM'      // 这个日历项在哪天？
         }
       };
     } else if (!planitem['ti']) {
       output.content['0'] = {
         processor: 'S',
-        option: 'S.AN',
+        option: 'S.P',
         parameters: {
-          an: '这个日历项叫什么？'
+          t: 'WHATTOPLANITEM'     // 这个日历项叫什么？
         }
       };
     } else {
@@ -259,9 +259,9 @@ function clean(datasource)
 
       output.content['3'] = {
         processor: 'S',
-        option: 'S.AN',
+        option: 'S.P',
         parameters: {
-          an: '是否创建, 请确认'
+          t: 'EE_PI_CONFIRM'      // 是否创建, 请确认
         }
       };
 
@@ -282,9 +282,9 @@ function clean(datasource)
 
       output.content['0'] = {
         processor: 'S',
-        option: 'S.AN',
+        option: 'S.P',
         parameters: {
-          an: '这个日历项叫什么？'
+          t: 'WHATTOPLANITEM'     // 这个日历项叫什么？
         }
       };
     } else if (!planitem['d'] && !planitem['t']) {
@@ -297,9 +297,9 @@ function clean(datasource)
 
       output.content['0'] = {
         processor: 'S',
-        option: 'S.AN',
+        option: 'S.P',
         parameters: {
-          an: '这个日历项在哪天？'
+          t: 'WHENTOPLANITEM'     // 这个日历项在哪天？
         }
       };
     } else if (!planitem['ti']) {
@@ -312,9 +312,9 @@ function clean(datasource)
 
       output.content['0'] = {
         processor: 'S',
-        option: 'S.AN',
+        option: 'S.P',
         parameters: {
-          an: '日历项名称是什么？'
+          t: 'WHATTOPLANITEM'     // 日历项名称是什么？
         }
       };
     } else {
@@ -347,9 +347,9 @@ function clean(datasource)
 
       output.content['3'] = {
         processor: 'S',
-        option: 'S.AN',
+        option: 'S.P',
         parameters: {
-          an: '是否创建, 请确认'
+          t: 'EE_PI_CONFIRM'      // 是否创建, 请确认
         }
       };
 
