@@ -366,19 +366,26 @@ describe('AnnotationService test suite', () => {
           await annotationService.acceptSyncAnnotation(ids);
         });
 
-      it('Case 7 - 1  sendAnnotation 发送消息 - 发送', async () => {
+      it('Case 7 - 1  sendAnnotation 发送消息 - 发送', async (done: DoneFn) => {
 
-          // 先创建一个
-          let at: Annotation = new Annotation();
-          at.obi = util.getUuid();
-          at.ui = UserConfig.account.id;
-          at.dt = moment().format("YYYY/MM/DD HH:mm");
-          let rcs : Array<string > = new Array<string>();
-          rcs.push("18569990239");
-          at.rcs = rcs;
-          at.content =  "写了一下午case ,没有保存，手误给删了，我想哭啊，嗷嗷嗷";
-          await annotationService.sendAnnotation(at);
+        // 先创建一个
+        let at: Annotation = new Annotation();
+        at.obi = util.getUuid();
+        at.ui = UserConfig.account.id;
+        at.dt = moment().format("YYYY/MM/DD HH:mm");
+        let rcs : Array<string > = new Array<string>();
+        rcs.push("18569990239");
+        at.rcs = rcs;
+        at.content =  "写了一下午case ,没有保存，手误给删了，我想哭啊，嗷嗷嗷";
+        annotationService.sendAnnotation(at).then(() => {
+          expect("success").toBe("success");
+          done();
+        })
+        .catch(e => {
+          fail("抛出异常, 出错");
+          done();
         });
+      });
 
    afterAll(() => {
      TestBed.resetTestingModule();

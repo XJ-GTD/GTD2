@@ -354,10 +354,17 @@ import {FsData, PageDcData} from "../../data.mapping";
        expect(result).toBeDefined();
      });
 
-     it('Case 7 - 1 syncGrouper 同步全部的未同步信息 - 同步全部的未同步信息', async () => {
+     it('Case 7 - 1 syncGrouper 同步全部的未同步信息 - 同步全部的未同步信息', async (done: DoneFn) => {
 
        let pullGroupers: Array<Grouper> = new Array<Grouper>();
-       await grouperService.syncGrouper(pullGroupers);
+       grouperService.syncGrouper(pullGroupers).then(() => {
+         expect("success").toBe("success");
+         done();
+       })
+       .catch(e => {
+         fail("抛出异常, 出错");
+         done();
+       });
      });
 
      it('Case 8 - 1 removeGrouperMember 删除群成员 - 删除群成员', async () => {
