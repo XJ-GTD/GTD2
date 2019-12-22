@@ -102,7 +102,7 @@ export class AnnotationProcess extends BaseProcess implements MQProcess, OptProc
       if (!agenda || agenda.del == DelType.del) continue;  // 日程不存在或者已删除，不处理
 
       // 判断指定参与人是否属于本日程的参与人
-      let members: Array<Member> = agenda.members.find((ele) => {
+      let members: Array<Member> = agenda.members.filter((ele) => {
         return (fs.findIndex((value) => {
           return value.rc == ele.rc;
         }) >= 0);
