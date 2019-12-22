@@ -114,7 +114,7 @@ export class AnnotationProcess extends BaseProcess implements MQProcess, OptProc
 
       annotation.ui = agenda.ui;
       annotation.obi = evi;
-      members.each((member) => {
+      members.forEach((member) => {
         annotation.rcs.push(member.rc);
       });
 
