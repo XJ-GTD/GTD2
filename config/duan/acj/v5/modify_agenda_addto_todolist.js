@@ -19,7 +19,7 @@ function shouldclean(datasource)
           for (var sei in semantics) {
             var semantic = semantics[sei];
 
-            if (semantic['intent'] === 'TodoWithFS') {
+            if (semantic['intent'] === 'TodoWithFS' || semantic['intent'] === 'AtWithFS' || semantic['intent'] === 'AtAllWithFS') {
               return true;
             }
           }
@@ -35,7 +35,7 @@ function clean(datasource)
 {
   var result = {};
   print('Start Nashorn Javascript processing...');
-  print(datasource);
+  //print(datasource);
   // filter source code here start
   var input = JSON.parse(datasource);
   var data = input.data[0];
@@ -252,6 +252,7 @@ function clean(datasource)
 
   // 返回消息头部
   if (!shouldEndSession) {
+    if (motion == 'TodoWithFS') {
       // 前序上下文确认前
       output.header = {
         version: 'V1.1',
@@ -259,6 +260,18 @@ function clean(datasource)
         datetime: formatDateTime(new Date()),
         describe: ['SC','F','AG','SS','S','S']
       };
+    }
+
+    // @参与人
+    if (motion == 'AtWithFS' || motion == 'AtAllWithFS') {
+      // 前序上下文确认前
+      output.header = {
+        version: 'V1.1',
+        sender: 'xunfei',
+        datetime: formatDateTime(new Date()),
+        describe: ['SC','F','AG','SS','S','S']
+      };
+    }
   } else {
     // 确认后
     output.header = {
@@ -301,17 +314,47 @@ function clean(datasource)
       }
     };
 
-    // 查询修改日程指示
-    output.content['2'] = {
-      processor: 'AG',
-      option: 'AG.U',
-      parameters: {
-        todolist: 'On',
-        scd: {
-          todolist: 'On'
+    if (motion == 'TodoWithFS') {
+      // 查询修改日程指示
+      output.content['2'] = {
+        processor: 'AG',
+        option: 'AG.U',
+        parameters: {
+          todolist: 'On',
+          scd: {
+            todolist: 'On'
+          }
         }
-      }
-    };
+      };
+    }
+
+    if (motion == 'AtWithFS') {
+      // 查询修改日程指示
+      output.content['2'] = {
+        processor: 'AT',
+        option: 'AT.C',
+        parameters: {
+          atmember: 'One',
+          scd: {
+            atmember: 'One'
+          }
+        }
+      };
+    }
+
+    if (motion == 'AtAllWithFS') {
+      // 查询修改日程指示
+      output.content['2'] = {
+        processor: 'AT',
+        option: 'AT.C',
+        parameters: {
+          atmember: 'All',
+          scd: {
+            atmember: 'All'
+          }
+        }
+      };
+    }
 
     // 查询修改日程指示
     output.content['3'] = {
@@ -320,32 +363,64 @@ function clean(datasource)
       parameters: {}
     };
 
-    // 播报
-    output.content['4'] = {
-      when: 'function(agendas, showagendas, contacts, branchtype, branchcode) { if (branchtype && branchcode) { return false; } else { return true; }}',
-      processor: 'S',
-      option: 'S.P',
-      parameters: {
-        t: 'EU'
-      }
-    };
+    if (motion == 'TodoWithFS') {
+      // 播报
+      output.content['4'] = {
+        when: 'function(agendas, showagendas, contacts, branchtype, branchcode) { if (branchtype && branchcode) { return false; } else { return true; }}',
+        processor: 'S',
+        option: 'S.P',
+        parameters: {
+          t: 'EU'
+        }
+      };
 
-    // 播报 无法修改（被共享日程）
-    output.content['5'] = {
-      when: 'function(agendas, showagendas, contacts, branchtype, branchcode) { if (branchtype && branchtype == "FORBIDDEN" && branchcode) { return true; } else { return false; }}',
-      processor: 'S',
-      option: 'S.P',
-      parameters: {
-        t: 'EU'
-      },
-      input: {
-        type: 'function(agendas, showagendas, prvOpt, user, branchtype, branchcode) { return branchcode; }',
-        textvariables: [
-          {name: 'agendaowner', expression: 'agendas[0].fs.ran', default: '他人'}
-        ],
-        showagendas: ""
-      }
-    };
+      // 播报 无法修改（被共享日程）
+      output.content['5'] = {
+        when: 'function(agendas, showagendas, contacts, branchtype, branchcode) { if (branchtype && branchtype == "FORBIDDEN" && branchcode) { return true; } else { return false; }}',
+        processor: 'S',
+        option: 'S.P',
+        parameters: {
+          t: 'EU'
+        },
+        input: {
+          type: 'function(agendas, showagendas, prvOpt, user, branchtype, branchcode) { return branchcode; }',
+          textvariables: [
+            {name: 'agendaowner', expression: 'agendas[0].fs.ran', default: '他人'}
+          ],
+          showagendas: ""
+        }
+      };
+    }
+
+    // @参与人
+    if (motion == 'AtWithFS' || motion == 'AtAllWithFS') {
+      // 播报
+      output.content['4'] = {
+        when: 'function(agendas, showagendas, contacts, branchtype, branchcode) { if (branchtype && branchcode) { return false; } else { return true; }}',
+        processor: 'S',
+        option: 'S.P',
+        parameters: {
+          t: 'EAT'
+        }
+      };
+
+      // 播报 无法修改（被共享日程）
+      output.content['5'] = {
+        when: 'function(agendas, showagendas, contacts, branchtype, branchcode) { if (branchtype && branchtype == "FORBIDDEN" && branchcode) { return true; } else { return false; }}',
+        processor: 'S',
+        option: 'S.P',
+        parameters: {
+          t: 'EAT'
+        },
+        input: {
+          type: 'function(agendas, showagendas, prvOpt, user, branchtype, branchcode) { return branchcode; }',
+          textvariables: [
+            {name: 'agendaowner', expression: 'agendas[0].fs.ran', default: '他人'}
+          ],
+          showagendas: ""
+        }
+      };
+    }
   } else {
     // 确认后
     // 删除日程指示
