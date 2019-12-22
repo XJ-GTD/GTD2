@@ -53,6 +53,11 @@ export enum MO {
   D = "MO.D",   //删除备忘
 }
 
+//日程At处理
+export enum AT {
+  C = "AT.C"    //新建日程At
+}
+
 //日历项处理（保存上下文）
 export enum PI {
   C = "PI.C",   //新建日历项

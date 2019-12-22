@@ -86,6 +86,8 @@
 {"version": "v2", "type": "ONE", "needAnswer": "true", "tips":"说确认/取消", "name":"EE", "value":"你正在创建日程,要保存到日历吗？", "desc":"确认取消回答"},
 {"version": "v2", "type": "MULTI", "needAnswer": "false", "tips":"", "name":"EE", "value":"您有这些安排", "desc":"确认取消回答"},
 {"version": "v2", "type": "E0001", "needAnswer": "false", "tips":"", "name":"EU", "value":"该日程来自{agendaowner}, 无法修改", "desc":"确认修改回答"},
+{"version": "v2", "type": "E0002", "needAnswer": "false", "tips":"", "name":"EAT", "value":"请先指定活动", "desc":"确认修改回答"},
+{"version": "v2", "type": "E0003", "needAnswer": "false", "tips":"", "name":"EAT", "value":"没有指定参与人", "desc":"确认修改回答"},
 {"version": "v2", "type": "NONE", "needAnswer": "false", "tips":"", "name":"EU", "value":"没有安排可以修改", "desc":"确认修改回答"},
 {"version": "v2", "type": "ONE", "needAnswer": "true", "tips":"说确认/取消", "name":"EU", "value":"您正在修改日程,确认修改吗？", "desc":"确认修改回答"},
 {"version": "v2", "type": "MULTI", "needAnswer": "true", "tips":"说把第几条改到什么时候", "name":"EU", "value":"您需要修改以下哪个日程?", "desc":"确认修改回答"},

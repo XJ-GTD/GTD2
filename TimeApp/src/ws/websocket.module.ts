@@ -28,6 +28,7 @@ import {CacheProcess} from "./process/cache.process";
 import {MemosProcess} from "./process/memos.process";
 import {PlanItemsProcess} from "./process/planitems.process";
 import {ChooseProcess} from "./process/choose.process";
+import {AnnotationProcess} from "./process/annotation.process";
 
 /**
  * WebSocket组件
@@ -47,7 +48,7 @@ import {ChooseProcess} from "./process/choose.process";
     ReceiveProcess, SettingProcess,
     AgendasProcess, MarkupProcess,
     MemosProcess, PlanItemsProcess,
-    NotificationProcess, SpecialDataProcess,
+    NotificationProcess, SpecialDataProcess, AnnotationProcess,
     CacheProcess, SsService,
     FdService, FsService
   ],

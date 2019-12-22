@@ -18,6 +18,7 @@ import {DataSyncProcess} from "./process/datasync.process";
 import {CacheProcess} from "./process/cache.process";
 import {MemosProcess} from "./process/memos.process";
 import {PlanItemsProcess} from "./process/planitems.process";
+import {AnnotationProcess} from "./process/annotation.process";
 
 /**
  * webSocket公用处理方法
@@ -31,11 +32,13 @@ export class OptProcessFactory {
   constructor(private defaultProcess: DefaultProcess,
               private agendasProcess: AgendasProcess,
               private memosProcess: MemosProcess,
-              private planitemsProcess: PlanItemsProcess
+              private planitemsProcess: PlanItemsProcess,
+              private annotationProcess: AnnotationProcess
   ) {
     this.factoryOpt.set("AG", this.agendasProcess);
     this.factoryOpt.set("MO", this.memosProcess);
     this.factoryOpt.set("PI", this.planitemsProcess);
+    this.factoryOpt.set("AT", this.annotationProcess);
   }
 
   getOptProcess(processKey: string): OptProcess {

@@ -40,4 +40,6 @@ export class WsDataConfig {
 
   /*========== 语音处理出错代码 =========*/
   public static BRANCHCODE_E0001:string = "E0001";
+  public static BRANCHCODE_E0002:string = "E0002";
+  public static BRANCHCODE_E0003:string = "E0003";
 }

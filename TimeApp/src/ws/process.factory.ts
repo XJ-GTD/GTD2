@@ -18,6 +18,7 @@ import {DataSyncProcess} from "./process/datasync.process";
 import {CacheProcess} from "./process/cache.process";
 import {MemosProcess} from "./process/memos.process";
 import {PlanItemsProcess} from "./process/planitems.process";
+import {AnnotationProcess} from "./process/annotation.process";
 
 /**
  * webSocket公用处理方法
@@ -45,7 +46,8 @@ export class ProcessFactory {
               private datasyncProcess:DataSyncProcess,
               private specialDataProcess:SpecialDataProcess,
               private notificationProcess:NotificationProcess,
-              private cacheProcess:CacheProcess
+              private cacheProcess:CacheProcess,
+              private annotationProcess: AnnotationProcess
   ) {
 
     this.factory.set("S", this.speechProcess);
@@ -65,6 +67,7 @@ export class ProcessFactory {
     this.factory.set("PN", this.notificationProcess);
     this.factory.set("DS", this.datasyncProcess);
     this.factory.set("CA", this.cacheProcess);
+    this.factory.set("AT", this.annotationProcess);
   }
 
   getProcess(processKey: string): MQProcess {
