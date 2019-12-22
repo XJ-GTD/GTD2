@@ -269,7 +269,7 @@ function clean(datasource)
         version: 'V1.1',
         sender: 'xunfei',
         datetime: formatDateTime(new Date()),
-        describe: ['SC','F','AG','SS','S','S']
+        describe: ['SC','F','AT','SS','S','S']
       };
     }
   } else {

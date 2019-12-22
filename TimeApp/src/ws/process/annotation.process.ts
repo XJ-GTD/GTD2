@@ -2,7 +2,7 @@ import {MQProcess, OptProcess} from "../interface.process";
 import {WsContent} from "../model/content.model";
 import {FriendEmData, ScdEmData} from "../../service/util-service/emit.service";
 import {Injectable} from "@angular/core";
-import {CudscdPara} from "../model/cudscd.para";
+import {AnnotationPara} from "../model/annotation.para";
 import {ProcesRs} from "../model/proces.rs";
 import {DataConfig} from "../../service/config/data.config";
 import {UserConfig} from "../../service/config/user.config";
@@ -137,10 +137,10 @@ export class AnnotationProcess extends BaseProcess implements MQProcess, OptProc
     contextRetMap.set(WsDataConfig.PROCESSOR4SPEECH, content.processor);
 
     //处理所需要参数
-    let cudPara:CudscdPara = content.parameters;
+    let annoPara: AnnotationPara = content.parameters;
 
     //上下文内获取日程查询结果
-    let scd:Array<ScdData> = new Array<ScdData>();
+    let scd: Array<ScdData> = new Array<ScdData>();
     scd = this.input(content, contextRetMap, "agendas", WsDataConfig.SCD, scd);
 
     //上下文内获取查询条件用日程人员或创建的日程人员
