@@ -1066,7 +1066,7 @@ export class AgendaPage {
             message:{
                 title: title,
                 description: text,
-                thumb: "https://pluto.guobaa.com/cal/img/4.png",
+                thumb: "https://pluto.guobaa.com/cal/sharesite/icon/hd.png",
                 media: {
                   type: Wechat.Type.WEBPAGE,
                   webpageUrl: url || "https://fir.im/d2z3"

@@ -236,7 +236,7 @@ export class PdPage {
                     message:{
                         title: sharecontent,
                         description: this.planName,
-                        thumb: "https://pluto.guobaa.com/cal/img/2.png",
+                        thumb: "https://pluto.guobaa.com/cal/sharesite/icon/jh.png",
                         media: {
                           type: Wechat.Type.WEBPAGE,
                           webpageUrl: url || "https://fir.im/d2z3"
@@ -304,7 +304,7 @@ export class PdPage {
             message:{
               title: sharecontent,
               description: this.planName,
-              thumb: "https://pluto.guobaa.com/cal/img/2.png",
+              thumb: "https://pluto.guobaa.com/cal/sharesite/icon/jh.png",
               media: {
                 type: Wechat.Type.WEBPAGE,
                 webpageUrl: url || "https://fir.im/d2z3"
