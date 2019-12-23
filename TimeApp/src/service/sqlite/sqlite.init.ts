@@ -363,6 +363,36 @@ export class SqliteInit {
         combinevoice.yv = "0";
         await this.sqlexec.save(combinevoice);
       }
+    }else if (version ==14){
+      //添加AI语音设置
+      if (from > 0 && from < 14 ) {
+        let autolisten: YTbl = new YTbl();
+        autolisten.yi = this.util.getUuid();
+        autolisten.yt = "ALIS";
+        autolisten.yk = "ALIS";
+        autolisten.ytn = "自动开启听筒";
+        autolisten.yn = "自动开启听筒";
+        autolisten.yv = "1";
+        await this.sqlexec.save(autolisten);
+
+        let simpleprompt: YTbl = new YTbl();
+        simpleprompt.yi = this.util.getUuid();
+        simpleprompt.yt = "SIP";
+        simpleprompt.yk = "SIP";
+        simpleprompt.ytn = "向导简要提示";
+        simpleprompt.yn = "向导简要提示";
+        simpleprompt.yv = "0";
+        await this.sqlexec.save(simpleprompt);
+
+        let jf: YTbl = new YTbl();
+        jf.yi = this.util.getUuid();
+        jf.yt = "JF";
+        jf.yk = "JF";
+        jf.ytn = "交互方式";
+        jf.yn = "交互方式";
+        jf.yv = "2";
+        await this.sqlexec.save(jf);
+      }
     }
   }
 

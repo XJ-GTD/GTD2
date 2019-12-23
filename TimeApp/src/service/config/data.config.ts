@@ -76,7 +76,9 @@ export class DataConfig {
   //设置对提醒类的开关
   //public static version: number = 12;
   //设置对提醒类的开关
-  public static version: number = 13;
+  //public static version: number = 13;
+  //设置对AI语音的开关
+  public static version: number = 14;
 
   public static RABBITMQ_STATUS: string = "";
 
@@ -185,6 +187,12 @@ export class DataConfig {
   public static SYS_SIV: string = "SIV";
   //合并播报
   public static SYS_CBV: string = "CBV";
+  //自动听筒
+  public static SYS_ALIS: string = "ALIS";
+  //向导简要提示
+  public static SYS_SIP: string = "SIP";
+  //交互方式
+  public static SYS_JF: string = "JF";
   //唤醒
   public static SYS_H: string = "H";
   //新消息提醒
