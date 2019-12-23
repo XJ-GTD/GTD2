@@ -164,7 +164,7 @@ export class AgendasProcess extends BaseProcess implements MQProcess,OptProcess{
             if (!exist) {
               updated.txjson.reminds.push(remind);
               updated.tx = JSON.stringify(updated.txjson);
-              updated.txs = updated.txjson.text();
+              updated.txs = updated.txjson.text(updated.evd, updated.evt);
             }
           });
         }
