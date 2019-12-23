@@ -57,6 +57,8 @@ function clean(datasource)
   var contacts = new Array();
   var date = '';
   var time = '';
+  var datenoformat = '';
+  var timenoformat = '';
   var title = '';
   var minutes = 0;
   var hours = 0;
@@ -116,8 +118,10 @@ function clean(datasource)
 
           if (r) {
             date = r[1] + '/' + r[2] + '/' + r[3];
+            datenoformat = r[1] + r[2] + r[3];
             //time = r[4] + ':' + r[5] + ':' + r[6];
             time = r[4] + ':' + r[5];
+            timenoformat = r[4] + r[5];
           }
 
           // 没有时间
@@ -126,7 +130,9 @@ function clean(datasource)
 
           if (rd) {
             date = rd[1] + '/' + rd[2] + '/' + rd[3];
+            datenoformat = r[1] + r[2] + r[3];
             time = '08:00'; // 默认设置全天
+            timenoformat = '0800';
           }
         }
       }
@@ -208,8 +214,8 @@ function clean(datasource)
       }
     };
 
-    if (date && time) {
-      var remind = date.replace("/", "") + time.replace(":", "");
+    if (datenoformat && timenoformat) {
+      var remind = datenoformat + timenoformat;
       output.content['2']['parameters']['reminds'].push(remind * -1);
       output.content['2']['parameters']['scd']['reminds'].push(remind * -1);
     }
