@@ -9,7 +9,7 @@ import {UserConfig} from "../../service/config/user.config";
 import {CTbl} from "../../service/sqlite/tbl/c.tbl";
 import {AG, O, SS} from "../model/ws.enum";
 import {FsData, RcInParam, ScdData} from "../../data.mapping";
-import {EventService, AgendaData, Member, multipleoffive} from "../../service/business/event.service";
+import {EventService, AgendaData, Member, TxJson, generateTxJson, multipleoffive} from "../../service/business/event.service";
 import {WsDataConfig} from "../wsdata.config";
 import {BaseProcess} from "./base.process";
 import * as anyenum from "../../data.enum";
@@ -104,6 +104,13 @@ export class AgendasProcess extends BaseProcess implements MQProcess,OptProcess{
         rcIn.todolist = c.todolist == "On"? anyenum.ToDoListStatus.On : anyenum.ToDoListStatus.Off;
       }
 
+      if (c.reminds && c.reminds.length > 0) {
+        rcIn.txjson = new TxJson();
+        c.reminds.forEach((remind) => {
+          rcIn.txjson.reminds.push(remind);
+        });
+      }
+
       if (c.si && c.si != null && c.si != '') {
         rcIn.evi = c.si;
       }
@@ -130,6 +137,7 @@ export class AgendasProcess extends BaseProcess implements MQProcess,OptProcess{
           c.et = saved[0].evt;
           c.adr = saved[0].adr;
           c.todolist = saved[0].todolist == anyenum.ToDoListStatus.On? "On" : "Off";
+          c.reminds = saved[0].txjson.reminds;
         }
       } else if (prvOpt == AG.U) {
         console.log("******************agendas do AG.U")
@@ -144,6 +152,19 @@ export class AgendasProcess extends BaseProcess implements MQProcess,OptProcess{
 
         if (c.todolist) {
           updated.todolist = rcIn.todolist;
+        }
+
+        if (c.reminds && c.reminds.length > 0) {
+          updated.txjson = generateTxJson(updated.txjson, updated.tx);
+          rcIn.txjson.reminds.forEach((remind) => {
+            let exist = updated.txjson.reminds.find((value) => {
+              return value == remind;
+            });
+
+            if (!exist) {
+              updated.txjson.reminds.push(remind);
+            }
+          });
         }
 
         if (rcIn.members && rcIn.members.length > 0) {
@@ -295,6 +316,12 @@ export class AgendasProcess extends BaseProcess implements MQProcess,OptProcess{
           if (cudPara.todolist) {
             c.todolist = cudPara.todolist;
           }
+
+          // 增加提醒
+          if (cudPara.reminds && cudPara.reminds.length > 0) {
+            c.reminds = cudPara.reminds;
+          }
+
           //显示本次添加的人
           c.fss = fs;
         }

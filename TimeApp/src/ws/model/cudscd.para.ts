@@ -18,4 +18,6 @@ export class CudscdPara {
   adr:string;
   //重要事项
   todolist:string;
+  //提醒
+  reminds:Array<number>;
 }

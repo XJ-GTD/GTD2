@@ -71,6 +71,7 @@ export class ScdData {
   ed: string = "";//结束日期
   et: string = "";//结束时间
   todolist: string = "";//重要事项 On/Off
+  reminds: Array<number>;//提醒
   rt: string = "";//重复类型
   ji: string = "";//计划ID
   sr: string = "";//日程关联ID
