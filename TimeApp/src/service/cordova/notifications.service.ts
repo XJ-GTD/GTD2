@@ -9,7 +9,6 @@ import {
 import {Badge} from "@ionic-native/badge";
 import * as moment from "moment";
 import {UtilService} from "../util-service/util.service";
-import {RemindService} from "../util-service/remind.service";
 import {DataConfig} from "../config/data.config";
 import {ETbl} from "../sqlite/tbl/e.tbl";
 import {EmitService, ScdEmData} from "../util-service/emit.service";
@@ -26,7 +25,7 @@ export class NotificationsService {
   private index: number = 0;
 
   constructor(private localNotifications: LocalNotifications, private badge: Badge,
-              private util: UtilService, private remindService: RemindService,
+              private util: UtilService,
               private emitService: EmitService) {
     if (this.util.isMobile()) {
       //提醒回馈处理 5分钟
@@ -87,14 +86,6 @@ export class NotificationsService {
       });
 
       this.localNotifications.on('trigger').subscribe((next: ILocalNotification) => {
-        // if (next.data.type == "schedule") {
-        //   this.schedule();
-        //   this.remindService.getRemindLs().then(data => {
-        //     if (data.length == 0) return;
-        //     this.remind(data);
-        //     this.remindService.delRemin(data);
-        //   })
-        // }
 
         //自定定时启动防止后台js不执行
         if (next.data.type == "keeplive") {

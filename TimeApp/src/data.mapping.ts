@@ -203,7 +203,7 @@ export class PageUData{
     //账户ID
     aid: "",
     //用户名
-    name: "",
+    nickname: "",
     //用户头像
     avatar: "",
     //出生日期

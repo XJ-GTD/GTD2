@@ -15,7 +15,6 @@ import {DataConfig} from "../../service/config/data.config";
 import {NotificationsService} from "../../service/cordova/notifications.service";
 import {AlData, ScdPageParamter} from "../../data.mapping";
 import {CalendarService} from "../../service/business/calendar.service";
-import {EventType} from "../../data.enum";
 import {EmitService} from "../../service/util-service/emit.service";
 import {SettingsProvider} from "../../providers/settings/settings";
 import {NetworkService} from "../../service/cordova/network.service";
@@ -27,6 +26,7 @@ import {EffectService} from "../../service/business/effect.service";
 import {App, ModalController} from "ionic-angular";
 import {StatusBar} from "@ionic-native/status-bar";
 import {BackgroundMode} from "@ionic-native/background-mode";
+import {RemindfeedbackService} from "../../service/cordova/remindfeedback.service";
 
 declare var cordova: any;
 @Injectable()
@@ -46,7 +46,9 @@ export class AlService {
               private calendarService: CalendarService,
               private settings: SettingsProvider,
               private networkService: NetworkService,
-              private geolocation: Geolocation, private feekback: FeedbackService,
+              private geolocation: Geolocation,
+              private feekback: FeedbackService,
+              private remindfeekback: RemindfeedbackService,
               private jpush: JPushService,
               private rabbitmq: RabbitMQService,
               private effectService: EffectService,
@@ -284,6 +286,8 @@ export class AlService {
 
 
           this.feekback.initAudio();
+
+          this.remindfeekback.initAudio()
 
           this.jpush.init();
           //window.plugins.MiPushPlugin.init();

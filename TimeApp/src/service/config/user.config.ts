@@ -24,7 +24,7 @@ export class UserConfig {
     //账户ID
     aid: "",
     //用户名
-    name: "",
+    nickname: "",
     //用户头像
     avatar: "",
     //出生日期
@@ -165,7 +165,7 @@ export class UserConfig {
     if (rows.length > 0) {
       UserConfig.user.id = rows[0].ui;
       UserConfig.user.aid = rows[0].ai;
-      UserConfig.user.name = rows[0].un;
+      UserConfig.user.nickname = rows[0].un;
       UserConfig.user.avatar = rows[0].hiu;
       UserConfig.user.birthday = rows[0].biy;
       UserConfig.user.ic = rows[0].ic;

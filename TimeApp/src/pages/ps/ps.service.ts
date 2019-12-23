@@ -19,8 +19,8 @@ export class PsService {
     let uTbl:UTbl = new UTbl();
     uTbl.ai = data.openid;  //openid
     uTbl.ui = data.unionid; //unionid
-    uTbl.un = data.name; //用户名（昵称）
-    uTbl.rn = data.name; //真实姓名
+    uTbl.un = data.nickname; //用户名（昵称）
+    uTbl.rn = data.realname; //真实姓名
     uTbl.us = data.sex == undefined || data.sex == "" ? "0" : data.sex; //性别
     uTbl.biy = data.birthday == undefined || data.birthday == "" ? "" : data.birthday;  //出生日期
     uTbl.ic = data.ic == undefined || data.ic == "" ? "" : data.ic;  //身份证
