@@ -149,6 +149,8 @@
 {"version": "v2", "type": "NONE", "needAnswer": "false", "tips":"", "name":"TM", "value":"{hours}{minutes}{seconds}计时开始", "desc":"计时闹铃设置回答"},
 {"version": "v2", "type": "NONE", "needAnswer": "false", "tips":"", "name":"TM_AGENDA", "value":"提前{days}{hours}{minutes}提醒, 请确认", "desc":"增加提醒设置回答"},
 {"version": "v2", "type": "ONE", "needAnswer": "false", "tips":"", "name":"TM_AGENDA", "value":"提前{days}{hours}{minutes}提醒, 请确认", "desc":"增加提醒设置回答"},
+{"version": "v2", "type": "NONE", "needAnswer": "false", "tips":"", "name":"ABS_TM_AGENDA", "value":"{date}{time}提醒, 请确认", "desc":"增加提醒设置回答"},
+{"version": "v2", "type": "ONE", "needAnswer": "false", "tips":"", "name":"ABS_TM_AGENDA", "value":"{date}{time}提醒, 请确认", "desc":"增加提醒设置回答"},
 {"version": "v2", "type": "NONE", "needAnswer": "false", "tips":"", "name":"RM", "value":"已帮您设好闹铃", "desc":"闹铃设置回答"},
 {"version": "v2", "type": "NONE", "needAnswer": "false", "tips":"", "name":"RM", "value":"闹铃已设好,届时我将提醒您", "desc":"闹铃设置回答"},
 {"version": "v2", "type": "NONE", "needAnswer": "false", "tips":"", "name":"HL", "value":"安排日程,您可以说:今天下午和老婆去八百伴购物。", "desc":"问候语"},

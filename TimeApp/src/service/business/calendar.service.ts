@@ -4490,7 +4490,7 @@ export class CalendarService extends BaseService {
     ciargs.push(DelType.del);
 
     evwhere += (evwhere? 'and ' : 'where ');
-    evwhere += `del <> ? and type = ?`;
+    evwhere += `del <> ? and type = ? `;
     evargs.push(DelType.del);
     evargs.push(EventType.Agenda);    // 目前只查询日程事件，其它事件隐藏
 

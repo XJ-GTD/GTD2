@@ -16,7 +16,7 @@ function shouldclean(datasource)
           for (var sei in semantics) {
             var semantic = semantics[sei];
 
-            if (semantic['intent'] === 'AddRemindWithFS') {
+            if (semantic['intent'] === 'AddRemindWithFS' || semantic['intent'] === 'AbsRemindWithFS') {
               return true;
             }
           }
@@ -195,6 +195,26 @@ function clean(datasource)
     }
   }
 
+  if (motion == 'AbsRemindWithFS') {
+    // 查询修改日程指示
+    output.content['2'] = {
+      processor: 'AG',
+      option: 'AG.U',
+      parameters: {
+        reminds: [],
+        scd: {
+          reminds: []
+        }
+      }
+    };
+
+    if (date && time) {
+      var remind = date.replace("/", "") + time.replace(":", "");
+      output.content['2']['parameters']['reminds'].push(remind * -1);
+      output.content['2']['parameters']['scd']['reminds'].push(remind * -1);
+    }
+  }
+
   // 查询修改日程指示
   output.content['3'] = {
     processor: 'SS',
@@ -249,6 +269,50 @@ function clean(datasource)
       output.content['4']['input']['textvariables'].push({name: 'minutes', value: minutes + '分钟'});
     } else {
       output.content['4']['input']['textvariables'].push({name: 'minutes', value: ''});
+    }
+  }
+
+  if (motion == 'AbsRemindWithFS') {
+    // 播报
+    output.content['4'] = {
+      when: 'function(agendas, showagendas, contacts, branchtype, branchcode) { if (branchtype && branchcode) { return false; } else { return true; }}',
+      processor: 'S',
+      option: 'S.P',
+      parameters: {
+        t: 'ABS_TM_AGENDA'
+      },
+      input: {
+        textvariables: []
+      }
+    };
+
+    // 播报 无法修改（被共享日程未接受）
+    output.content['5'] = {
+      when: 'function(agendas, showagendas, contacts, branchtype, branchcode) { if (branchtype && branchtype == "FORBIDDEN" && branchcode) { return true; } else { return false; }}',
+      processor: 'S',
+      option: 'S.P',
+      parameters: {
+        t: 'ABS_TM_AGENDA'
+      },
+      input: {
+        type: 'function(agendas, showagendas, prvOpt, user, branchtype, branchcode) { return branchcode; }',
+        textvariables: [
+          {name: 'agendaowner', expression: 'agendas[0].fs.ran', default: '他人'}
+        ],
+        showagendas: ""
+      }
+    };
+
+    if (date) {
+      output.content['4']['input']['textvariables'].push({name: 'date', value: date});
+    } else {
+      output.content['4']['input']['textvariables'].push({name: 'date', value: ''});
+    }
+
+    if (time) {
+      output.content['4']['input']['textvariables'].push({name: 'time', value: time});
+    } else {
+      output.content['4']['input']['textvariables'].push({name: 'time', value: ''});
     }
   }
 
