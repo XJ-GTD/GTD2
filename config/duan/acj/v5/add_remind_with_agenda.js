@@ -209,6 +209,9 @@ function clean(datasource)
       option: 'S.P',
       parameters: {
         t: 'TM_AGENDA'
+      },
+      input: {
+        textvariables: []
       }
     };
 
