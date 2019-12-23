@@ -5594,8 +5594,8 @@ export class TxJson {
   }
 
   //提醒过期判断
-  static getDisTixin(evdatetime:string , time:number ) : boolean{
-    let ret : boolean = true;
+  static getDisTixin(evdatetime: string, time: number) : boolean{
+    let ret: boolean = true;
     let edtm = moment(evdatetime, "YYYY/MM/DD HH:mm", true);
     if (!time){
       return true;
@@ -5627,7 +5627,7 @@ export class TxJson {
     return ret ;
   }
 
-  text(evd:string ,evt : string,first: boolean = true): string {
+  text(evd: string, evt: string, first: boolean = true): string {
     let ret : string;
     let evdatetime = evd + " " + evt;
     let validReminds: Array<number> = new Array<number>();

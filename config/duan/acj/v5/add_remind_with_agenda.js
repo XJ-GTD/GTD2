@@ -189,7 +189,7 @@ function clean(datasource)
     };
 
     if (days || hours || minutes) {
-      var remind = (days? (days * 24 * 60 * 60) : 0) + (hours? (hours * 60 * 60) : 0) + (minutes? (minutes * 60) : 0);
+      var remind = (days? (days * 24 * 60) : 0) + (hours? (hours * 60) : 0) + (minutes? minutes : 0);
       output.content['2']['parameters']['reminds'].push(remind);
     }
   }
