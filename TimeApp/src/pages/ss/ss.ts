@@ -24,14 +24,14 @@ import {SettingsProvider} from "../../providers/settings/settings";
 
       <ion-list>
         <ion-list-header>
-          <ion-label>消息提醒</ion-label>
+          <ion-label>消息设置</ion-label>
         </ion-list-header>
 
         <ion-item no-lines no-padding no-margin no-border>
-          <ion-label>新消息提醒</ion-label>
+          <ion-label>打开消息提醒(待定)</ion-label>
           <ion-toggle [(ngModel)]="bt" (ionChange)="save(t, bt)"></ion-toggle>
         </ion-item>
-        <ion-item no-lines no-padding no-margin no-border >
+        <!--<ion-item no-lines no-padding no-margin no-border >
           <ion-label no-lines>提醒他人铃声</ion-label>
         </ion-item>
         <ion-list radio-group [(ngModel)]="pbvto"  (ionChange)="changeBellVoiceTo(bvto, pbvto)" class="onlyone">
@@ -44,20 +44,24 @@ import {SettingsProvider} from "../../providers/settings/settings";
               {{option.mp3}}</ion-label>
             <ion-radio [value]="option.tx" class="noshow"></ion-radio>
           </ion-item>
-        </ion-list>
+        </ion-list>-->
         <ion-item no-lines no-padding no-margin no-border>
-          <ion-label>延后提醒播报并响铃</ion-label>
-          <ion-toggle [(ngModel)]="pdv" (ionChange)="save(dv, pdv)"></ion-toggle>
+          <ion-label>关闭消息</ion-label>
+          <ion-toggle [(ngModel)]="pclosevoice" (ionChange)="save(closevoice, pclosevoice)"></ion-toggle>
         </ion-item>
         <ion-item no-lines no-padding no-margin no-border>
-          <ion-label>所有提醒播报</ion-label>
-          <ion-toggle [(ngModel)]="prv" (ionChange)="save(rv, prv)"></ion-toggle>
+          <ion-label>简单播报</ion-label>
+          <ion-toggle [(ngModel)]="psimplevoice" (ionChange)="save(simplevoice, psimplevoice)"></ion-toggle>
+        </ion-item>
+        <ion-item no-lines no-padding no-margin no-border>
+          <ion-label>合并播报</ion-label>
+          <ion-toggle [(ngModel)]="pcombinevoice" (ionChange)="save(combinevoice, pcombinevoice)"></ion-toggle>
         </ion-item>
       </ion-list>
       <ion-list>
 
         <ion-list-header>
-          <ion-label>语音</ion-label>
+          <ion-label>AI语音</ion-label>
         </ion-list-header>
 
         <ion-item no-lines no-padding no-margin no-border>
@@ -68,11 +72,16 @@ import {SettingsProvider} from "../../providers/settings/settings";
           <ion-label>语音播报</ion-label>
           <ion-toggle [(ngModel)]="bb" (ionChange)="save(b, bb)"></ion-toggle>
         </ion-item>
+      </ion-list>
+      <ion-list>
+        <ion-list-header>
+          <ion-label>操作反馈</ion-label>
+        </ion-list-header>
         <ion-item no-lines no-padding no-margin no-border>
           <ion-label>震动音效</ion-label>
           <ion-toggle [(ngModel)]="bz" (ionChange)="save(z, bz)"></ion-toggle>
         </ion-item>
-      </ion-list>      
+      </ion-list>
       <ion-list>
         <ion-list-header>
           <ion-label>联系人</ion-label>
@@ -171,13 +180,13 @@ export class SsPage {
   b: Setting;        //语音播报
   z: Setting;        //振动
 
-  bvto:Setting; //提醒他人铃声
-  dv:Setting; //延迟播报
-  rv:Setting; //提醒播报
+  closevoice:Setting; //关闭消息
+  simplevoice:Setting; //简单播报
+  combinevoice:Setting;//合并播报
 
-  pbvto: string = "";   //提醒他人铃声 页面显示和修改
-  pdv: boolean;       //延迟播报 页面显示和修改
-  prv: boolean;       //提醒播报 页面显示和修改
+  pclosevoice: boolean ;   //关闭消息 页面显示和修改
+  psimplevoice: boolean;       //简单播报 页面显示和修改
+  pcombinevoice: boolean; //合并播报 页面显示和修改
 
   autotodo: Setting;        //自动加入todo
 
@@ -251,6 +260,7 @@ export class SsPage {
   goBack() {
     this.navCtrl.pop();
   }
+
 
   save(setting, value) {
 
@@ -344,9 +354,9 @@ export class SsPage {
 
   private async getData() {
 
-    this.bvto = UserConfig.settins.get(DataConfig.SYS_BVTO);
-    this.dv = UserConfig.settins.get(DataConfig.SYS_DV);
-    this.rv = UserConfig.settins.get(DataConfig.SYS_RV);
+    this.closevoice = UserConfig.settins.get(DataConfig.SYS_CLV);
+    this.simplevoice = UserConfig.settins.get(DataConfig.SYS_SIV);
+    this.combinevoice = UserConfig.settins.get(DataConfig.SYS_CBV);
 
     this.h = UserConfig.settins.get(DataConfig.SYS_H);
     this.t = UserConfig.settins.get(DataConfig.SYS_T);
@@ -358,9 +368,9 @@ export class SsPage {
     this.theme = UserConfig.settins.get(DataConfig.SYS_THEME);
     this.autotodo = UserConfig.settins.get(DataConfig.SYS_AUTOTODO);
 
-    this.pdv = (this.dv.value == "1") ? true : false;
-    this.prv = (this.rv.value == "1") ? true : false;
-    this.pbvto = this.bvto.value;
+    this.pclosevoice = (this.closevoice.value == "1") ? true : false;
+    this.psimplevoice = (this.simplevoice.value == "1") ? true : false;
+    this.pcombinevoice = (this.combinevoice.value == "1") ? true : false;
 
     this.bh = (this.h.value == "1") ? true : false;
     this.bt = (this.t.value == "1") ? true : false;
