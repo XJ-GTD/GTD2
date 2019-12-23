@@ -9,7 +9,7 @@ import {UserConfig} from "../../service/config/user.config";
 import {CTbl} from "../../service/sqlite/tbl/c.tbl";
 import {AG, O, SS} from "../model/ws.enum";
 import {FsData, RcInParam, ScdData} from "../../data.mapping";
-import {EventService, AgendaData, Member, multipleoffive} from "../../service/business/event.service";
+import {EventService, AgendaData, Member, TxJson, generateTxJson, multipleoffive} from "../../service/business/event.service";
 import {WsDataConfig} from "../wsdata.config";
 import {BaseProcess} from "./base.process";
 import * as anyenum from "../../data.enum";
