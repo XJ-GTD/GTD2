@@ -393,7 +393,7 @@ function clean(datasource)
     }
 
     // @参与人
-    if (motion == 'AtWithFS' || motion == 'AtAllWithFS') {
+    if (motion == 'AtWithFS') {
       // 播报
       output.content['4'] = {
         when: 'function(agendas, showagendas, contacts, branchtype, branchcode) { if (branchtype && branchcode) { return false; } else { return true; }}',
@@ -411,6 +411,36 @@ function clean(datasource)
         option: 'S.P',
         parameters: {
           t: 'EAT'
+        },
+        input: {
+          type: 'function(agendas, showagendas, prvOpt, user, branchtype, branchcode) { return branchcode; }',
+          textvariables: [
+            {name: 'agendaowner', expression: 'agendas[0].fs.ran', default: '他人'}
+          ],
+          showagendas: ""
+        }
+      };
+    }
+
+    // @所有参与人
+    if (motion == 'AtAllWithFS') {
+      // 播报
+      output.content['4'] = {
+        when: 'function(agendas, showagendas, contacts, branchtype, branchcode) { if (branchtype && branchcode) { return false; } else { return true; }}',
+        processor: 'S',
+        option: 'S.P',
+        parameters: {
+          t: 'EAT_ALL'
+        }
+      };
+
+      // 播报 无法修改（被共享日程）
+      output.content['5'] = {
+        when: 'function(agendas, showagendas, contacts, branchtype, branchcode) { if (branchtype && branchtype == "FORBIDDEN" && branchcode) { return true; } else { return false; }}',
+        processor: 'S',
+        option: 'S.P',
+        parameters: {
+          t: 'EAT_ALL'
         },
         input: {
           type: 'function(agendas, showagendas, prvOpt, user, branchtype, branchcode) { return branchcode; }',

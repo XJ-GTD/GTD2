@@ -75,16 +75,17 @@ import { Observable } from 'rxjs';
                     <div class=" d-title-chr"><span>{{days.calendaritems.length}}</span> 纪念日</div>
                     <div class=" d-title-chr mome " (click)="toMemo(days)">
                       <ion-icon class="fad fa-book-heart" [class.item-no-display]="days.memos.length == 0"></ion-icon>
-                      <!--<span>{{days.memos.length}}</span>-->
+                     </div>
+                      
                       <div class="weather" *ngIf="days.weather">
-                        <ion-icon class='fal {{days.weather.jtn | formatweather:"winame-with-json"}}'></ion-icon>
+                        <span><ion-icon class='fal {{days.weather.jtn | formatweather:"winame-with-json"}}'></ion-icon></span>
+                        
                         <span>
                        {{days.weather.ext | formatweather:  'centigrade-with-json'}}
                       </span>
                         <!--<span>-->
                         <!--{{days.weather.jtn}}-->
                         <!--</span>-->
-                      </div>
                     </div>
                   </div>
                 </div>

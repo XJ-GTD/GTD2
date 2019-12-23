@@ -27,6 +27,9 @@ import {TellYouBase, TellyouService} from "../../components/ai/tellyou/tellyou.s
 @Component({
   selector: 'page-h',
   template: `
+    <ion-header>
+      
+    </ion-header>
     <ion-content>
       <ion-calendar #calendar
                     [options]="options"
@@ -116,10 +119,9 @@ export class HPage {
   }
 
   onPress(pressDay) {
-    this.hService.centerShow(pressDay).then(d => {
-      this.newAgenda(pressDay);
-    })
-
+    // this.hService.centerShow(pressDay).then(d => {
+    //   this.newAgenda(pressDay);
+    // })
   }
 
 

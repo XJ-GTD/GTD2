@@ -379,7 +379,7 @@
       }
 
       .mome {
-        text-align: left;
+        text-align: center;
         overflow: hidden;
         .icon{
           font-size: 2rem;
@@ -387,36 +387,27 @@
           //margin: 1rem;
 
         }
+      }
+      .weather{
+        position: absolute;
+        text-align: center;
+        right:.5rem;
+        opacity: .8;
+        top:10px;
 
-        span {
-        }
+        //color:rgba(56,160,185,.8);
 
-        .weather{
-          position: absolute;
-          color: white;
-          display: inline-block;
-          //width: 62px;
+        //margin-left: 1rem;
+        span{
+          font-size: .9rem;
+          overflow: hidden;
+          display: -webkit-box;
           text-align: center;
-          right: 1rem;
-          opacity: .8;
-
-          //color:rgba(56,160,185,.8);
-
-          //margin-left: 1rem;
           ion-icon{
             font-size: 1.6rem;
-            line-height: 50px;
           }
-          span{
-            font-size: .9rem;
-            overflow: hidden;
-            font-weight: 400;
-            //max-width: 75px;
-            //display: block;
-            //letter-spacing: 1px;
-          }
-
         }
+
       }
     }
   }
@@ -571,17 +562,17 @@
         }
 
         .mome {
-          color:rgba(0,109,136,1);
+          color:rgba(211,211,211,1);
+        }
 
-          .weather{
-            color:rgba(211,211,211,1);
-
-          }
-
+        .weather{
+          color:rgba(211,211,211,1);
           span {
             color:rgba(211,211,211,1);
           }
+
         }
+
       }
     }
 
@@ -622,10 +613,14 @@
 
         .mome {
           color: rgba(235, 239, 250, 1);
+        }
 
+        .weather{
+          color: rgba(235, 239, 250, 1);
           span {
             color:rgba(211,211,211,1);
           }
+
         }
       }
     }
@@ -767,10 +762,13 @@
 
         .mome {
           color: rgba(235, 239, 250, 1);
-
+        }
+        .weather{
+          color: rgba(235, 239, 250, 1);
           span {
             color:rgba(211,211,211,1);
           }
+
         }
       }
     }
@@ -815,6 +813,13 @@
           span {
             color:rgba(211,211,211,1);
           }
+        }
+        .weather{
+          color: rgba(235, 239, 250, 1);
+          span {
+            color:rgba(211,211,211,1);
+          }
+
         }
       }
 
