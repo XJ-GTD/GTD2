@@ -332,34 +332,66 @@ export class SqliteInit {
         await this.sqlexec.batExecSqlByParam(sqlparam);
       }
     }else if (version ==12){
+
+    }else if (version ==13){
       //添加提醒设置
-      if (from > 0 && from < 12 ) {
-        let bellVoiceTo: YTbl = new YTbl();
-        bellVoiceTo.yi = this.util.getUuid();
-        bellVoiceTo.yt = "BVTO";
-        bellVoiceTo.yk = "BVTO";
-        bellVoiceTo.ytn = "提醒他人铃声";
-        bellVoiceTo.yn = "提醒他人铃声";
-        bellVoiceTo.yv = "1";
-        await this.sqlexec.save(bellVoiceTo);
+      if (from > 0 && from < 13 ) {
+        let closevoice: YTbl = new YTbl();
+        closevoice.yi = this.util.getUuid();
+        closevoice.yt = "CLV";
+        closevoice.yk = "CLV";
+        closevoice.ytn = "关闭消息";
+        closevoice.yn = "关闭消息";
+        closevoice.yv = "0";
+        await this.sqlexec.save(closevoice);
 
-        let delayVoice: YTbl = new YTbl();
-        delayVoice.yi = this.util.getUuid();
-        delayVoice.yt = "DV";
-        delayVoice.yk = "DV";
-        delayVoice.ytn = "延后提醒播报并响铃";
-        delayVoice.yn = "延后提醒播报并响铃";
-        delayVoice.yv = "1";
-        await this.sqlexec.save(delayVoice);
+        let simplevoice: YTbl = new YTbl();
+        simplevoice.yi = this.util.getUuid();
+        simplevoice.yt = "SIV";
+        simplevoice.yk = "SIV";
+        simplevoice.ytn = "简单播报";
+        simplevoice.yn = "简单播报";
+        simplevoice.yv = "0";
+        await this.sqlexec.save(simplevoice);
 
-        let remindVoice: YTbl = new YTbl();
-        remindVoice.yi = this.util.getUuid();
-        remindVoice.yt = "RV";
-        remindVoice.yk = "RV";
-        remindVoice.ytn = "所有提醒播报";
-        remindVoice.yn = "所有提醒播报";
-        remindVoice.yv = "1";
-        await this.sqlexec.save(remindVoice);
+        let combinevoice: YTbl = new YTbl();
+        combinevoice.yi = this.util.getUuid();
+        combinevoice.yt = "CBV";
+        combinevoice.yk = "CBV";
+        combinevoice.ytn = "合并播报";
+        combinevoice.yn = "合并播报";
+        combinevoice.yv = "0";
+        await this.sqlexec.save(combinevoice);
+      }
+    }else if (version ==14){
+      //添加AI语音设置
+      if (from > 0 && from < 14 ) {
+        let autolisten: YTbl = new YTbl();
+        autolisten.yi = this.util.getUuid();
+        autolisten.yt = "ALIS";
+        autolisten.yk = "ALIS";
+        autolisten.ytn = "自动开启听筒";
+        autolisten.yn = "自动开启听筒";
+        autolisten.yv = "1";
+        await this.sqlexec.save(autolisten);
+
+        let simpleprompt: YTbl = new YTbl();
+        simpleprompt.yi = this.util.getUuid();
+        simpleprompt.yt = "SIP";
+        simpleprompt.yk = "SIP";
+        simpleprompt.ytn = "向导简要提示";
+        simpleprompt.yn = "向导简要提示";
+        simpleprompt.yv = "0";
+        await this.sqlexec.save(simpleprompt);
+
+        let jf: YTbl = new YTbl();
+        jf.yi = this.util.getUuid();
+        jf.yt = "JF";
+        jf.yk = "JF";
+        jf.ytn = "交互方式";
+        jf.yn = "交互方式";
+        jf.yv = "2";
+        await this.sqlexec.save(jf);
       }
     }
   }
