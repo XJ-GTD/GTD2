@@ -127,10 +127,10 @@ page-box[nobottom] {
         }
 
         .icon {
-          color: rgba(17, 117, 141, 1);
+          color: rgba(17, 117, 141, .6);
         }
         .fa-trash-alt{
-          color: rgba(153, 153, 153, 1);
+          color: rgba(153, 153, 153, .6);
         }
       }
     }
@@ -163,7 +163,10 @@ page-box[nobottom] {
         }
 
         .icon {
-          color: rgba(235, 239, 250, 1);
+          color: rgba(235, 239, 250, .6);
+        }
+        .fa-trash-alt{
+          color: rgba(153, 153, 153, .6);
         }
       }
     }

@@ -12,12 +12,20 @@ page-h {
 .black-theme{
   page-h {
       //background: rgba(13, 24, 42, .5);
+    ion-header{
+      background: rgba(0, 53, 66, 1);
+      min-height: 10px;
+    }
   }
 }
 
 .white-theme{
   page-h {
       //background: rgba(248, 248, 248, .5);
+    ion-header{
+      background: rgba(0, 53, 66, 1);
+      min-height: 10px;
+    }
   }
 }
 

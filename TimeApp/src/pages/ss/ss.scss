@@ -30,7 +30,9 @@ page-ss {
         margin: 0 auto;
       }
       img {
-        width: 120px;padding: 1rem;
+        width: 120px;
+        padding: 1rem;
+        filter: blur(1px);
       }
     }
     .themen-select{

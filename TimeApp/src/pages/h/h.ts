@@ -27,6 +27,9 @@ import {TellYouBase, TellyouService} from "../../components/ai/tellyou/tellyou.s
 @Component({
   selector: 'page-h',
   template: `
+    <ion-header>
+      
+    </ion-header>
     <ion-content>
       <ion-calendar #calendar
                     [options]="options"
