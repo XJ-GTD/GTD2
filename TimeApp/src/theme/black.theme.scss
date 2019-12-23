@@ -51,7 +51,12 @@ ion-app.black-theme {
         }
 
         .on-selected {
-          border: 1px rgba(19, 72, 75, 1) solid;
+          .d{
+            background: rgba(255,99,44,1);
+            color: rgba(255,255,255,1);
+          }
+
+          //border: 1px rgba(19, 72, 75, 1) solid;
         }
 
         .today {

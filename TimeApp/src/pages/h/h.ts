@@ -116,10 +116,9 @@ export class HPage {
   }
 
   onPress(pressDay) {
-    this.hService.centerShow(pressDay).then(d => {
-      this.newAgenda(pressDay);
-    })
-
+    // this.hService.centerShow(pressDay).then(d => {
+    //   this.newAgenda(pressDay);
+    // })
   }
 
 

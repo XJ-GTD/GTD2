@@ -41,8 +41,8 @@ export const MONTH_VALUE_ACCESSOR: any = {
                           [class.next-month-day]="day.isNextMonth"
                           [class.today]="day.isToday && !day.isLastMonth && !day.isNextMonth"
                           [disabled]="day.disable">
-                    <p *ngIf="day.isToday">今</p>
-                    <p *ngIf="!day.isToday">{{day.title}}</p>
+                    <p *ngIf="day.isToday"><span class="d">今</span></p>
+                    <p *ngIf="!day.isToday"><span span class="d">{{day.title}}</span></p>
                     <small>{{day.subTitle}}</small>
                     <ion-icon class = "message fas fa-circle"  *ngIf="!day.isLastMonth && !day.isNextMonth && day.accept > 0" ></ion-icon>
                     <ion-icon class = "active fas fa-hexagon" *ngIf="!day.isLastMonth && !day.isNextMonth  && day.hasevent"></ion-icon>
