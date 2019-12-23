@@ -185,17 +185,19 @@ export class AttachPage {
   ionViewDidEnter() {
     this.bscroll = new BScroll('.dataWapper', {
       click: true,
-      pullUpLoad: {
-        threshold:0
-      },
+      // pullUpLoad: {
+      //   threshold:0
+      // },
       scrollY:true
     });
-    this.bscroll.on("pullingUp",()=>{
-      //调用刷新
-      this.flushData().then(()=>{
-        this.bscroll.finishPullUp();
-      });
-    });
+
+    //TODO 刷新功能先去除 ，不然进入刷新死循环
+    // this.bscroll.on("pullingUp",()=>{
+    //   //调用刷新
+    //   this.flushData().then(()=>{
+    //     this.bscroll.finishPullUp();
+    //   });
+    // });
     this.flushData();
   }
 

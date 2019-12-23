@@ -50,9 +50,14 @@ ion-app.white-theme {
           color:rgba(188,188,188,1);
         }
 
-        .on-selected {
-          border: 1px rgba(19, 72, 75, 1) solid;
-        }
+          .on-selected {
+            .d{
+              background: rgba(255,99,44,1);
+              color: rgba(255,255,255,1);
+            }
+
+            //border: 1px rgba(19, 72, 75, 1) solid;
+          }
 
         .today {
           //background: -webkit-linear-gradient(left, $spcColorf, $spcColort); /* Safari 5.1 - 6.0 */
