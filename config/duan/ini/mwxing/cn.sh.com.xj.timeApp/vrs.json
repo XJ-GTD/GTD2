@@ -62,6 +62,8 @@
 {"version": "v2", "type": "MO.U", "needAnswer": "true", "tips":"", "name":"AA", "value":"已经帮您修改,您还有什么吩咐？", "desc":"修改确认回答"},
 {"version": "v2", "type": "AT.C", "needAnswer": "true", "tips":"", "name":"AA", "value":"已通知他关注,您还有什么吩咐？", "desc":"修改确认回答"},
 {"version": "v2", "type": "AT.C", "needAnswer": "true", "tips":"", "name":"AA", "value":"已通知她关注,您还有什么吩咐？", "desc":"修改确认回答"},
+{"version": "v2", "type": "AT.C", "needAnswer": "true", "tips":"", "name":"AA", "value":"已通知他们关注,您还有什么吩咐？", "desc":"修改确认回答"},
+{"version": "v2", "type": "AT.C", "needAnswer": "true", "tips":"", "name":"AA", "value":"已通知她们关注,您还有什么吩咐？", "desc":"修改确认回答"},
 {"version": "v2", "type": "NONE", "needAnswer": "true", "tips":"", "name":"AA", "value":"已经帮您修改,您还有什么吩咐？", "desc":"修改确认回答"},
 {"version": "v2", "type": "NONE", "needAnswer": "false", "tips":"", "name":"BB", "value":"好的,本次操作已取消", "desc":"取消操作后回答"},
 {"version": "v2", "type": "NONE", "needAnswer": "false", "tips":"", "name":"BB", "value":"好的,已取消。", "desc":"取消操作后回答"},
