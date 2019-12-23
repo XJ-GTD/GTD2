@@ -93,7 +93,7 @@ export class AnnotationProcess extends BaseProcess implements MQProcess, OptProc
 
     //确认操作
     for (let c of scd) {
-      if (!c.si || !fs || fs.length <= 0) continue;    // 如果日程id没有带过来，或者参与人不存在，不处理
+      if (!c.si) continue;    // 如果日程id没有带过来，或者参与人不存在，不处理
 
       let evi: string = c.si;
 
@@ -103,9 +103,13 @@ export class AnnotationProcess extends BaseProcess implements MQProcess, OptProc
 
       // 判断指定参与人是否属于本日程的参与人
       let members: Array<Member> = agenda.members.filter((ele) => {
-        return (fs.findIndex((value) => {
-          return value.rc == ele.rc;
-        }) >= 0);
+        if (!fs || fs.length <= 0) {
+          return true;
+        } else {
+          return (fs.findIndex((value) => {
+            return value.rc == ele.rc;
+          }) >= 0);
+        }
       }) || new Array<Member>();
 
       if (members.length <= 0) continue;              // 指定人员不在参与人中，不处理
@@ -170,7 +174,7 @@ export class AnnotationProcess extends BaseProcess implements MQProcess, OptProc
 
       //出错记录
       this.output(content, contextRetMap, 'branchtype', WsDataConfig.BRANCHTYPE, WsDataConfig.BRANCHTYPE_FORBIDDEN);
-    } else if (!fs || fs.length <= 0) {
+    } else if (annoPara && annoPara.atmember == "One" && (!fs || fs.length <= 0)) {
       //出错记录 EAT
       this.output(content, contextRetMap, 'branchcode', WsDataConfig.BRANCHCODE, WsDataConfig.BRANCHCODE_E0003);
 

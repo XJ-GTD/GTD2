@@ -163,6 +163,8 @@ export class AgendasProcess extends BaseProcess implements MQProcess,OptProcess{
 
             if (!exist) {
               updated.txjson.reminds.push(remind);
+              updated.tx = JSON.stringify(updated.txjson);
+              updated.txs = updated.txjson.text(updated.evd, updated.evt);
             }
           });
         }
@@ -275,8 +277,8 @@ export class AgendasProcess extends BaseProcess implements MQProcess,OptProcess{
     if (content.option == AG.U) {
 
       if (scd.length == 1) {
-        if (scd[0].ui != UserConfig.account.id && (scd[0].sd != cudPara.d || scd[0].sn != cudPara.ti ||
-            scd[0].st != cudPara.t  )) {
+        if (scd[0].ui != UserConfig.account.id && ((cudPara.d && scd[0].sd != cudPara.d) || (cudPara.ti && scd[0].sn != cudPara.ti) ||
+            (cudPara.t && scd[0].st != cudPara.t)  )) {
           //出错记录
           this.output(content, contextRetMap, 'branchcode', WsDataConfig.BRANCHCODE, WsDataConfig.BRANCHCODE_E0001);
 
