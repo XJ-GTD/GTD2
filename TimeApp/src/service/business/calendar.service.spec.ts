@@ -423,7 +423,6 @@ describe('CalendarService test suite', () => {
         { provide: UserConfig, useClass: UserConfigMock },
         DataConfig,
         UtilService,
-        RemindService,
         EmitService,
         ShaeRestful,
         SyncRestful,

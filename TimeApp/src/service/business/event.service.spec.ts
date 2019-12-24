@@ -106,7 +106,6 @@ describe('EventService test suite', () => {
         SqliteConfig,
         SqliteInit,
         Badge,
-        RemindService,
         SqliteExec,
         LocalNotifications,
         { provide: AssistantService, useClass: AssistantServiceMock },

@@ -101,7 +101,6 @@ describe('EventService test suite for agenda', () => {
         SQLitePorter,
         SqliteConfig,
         SqliteInit,
-        RemindService,
         Badge,
         SqliteExec,
         { provide: AssistantService, useClass: AssistantServiceMock },
