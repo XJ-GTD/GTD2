@@ -8,6 +8,7 @@ import {PageUData} from "../../data.mapping";
 import {Keyboard} from "@ionic-native/keyboard";
 import {DatePickerComponent} from "../../components/date-picker/date-picker";
 import * as moment from "moment";
+import {RemindfeedbackService} from "../../service/cordova/remindfeedback.service";
 
 /**
  * Generated class for the 个人设置 page.
@@ -33,7 +34,7 @@ import * as moment from "moment";
         </ion-item>
         <ion-item no-lines no-padding no-margin no-border>
           <ion-label>姓名</ion-label>
-          <ion-input type="text" [(ngModel)]="uo.user.name" item-end text-end  (ionBlur)="check()"></ion-input>
+          <ion-input type="text" [(ngModel)]="uo.user.nickname" item-end text-end  (ionBlur)="check()"></ion-input>
         </ion-item>
         <ion-item no-lines no-padding no-margin no-border>
           <ion-label>身份证</ion-label>
@@ -54,6 +55,20 @@ import * as moment from "moment";
         <ion-item no-lines no-padding no-margin no-border>
           <ion-label>联系方式</ion-label>
           <ion-input type="tel" text-end [(ngModel)]="uo.user.contact"  (ionBlur)="check()"></ion-input>
+        </ion-item>
+      </ion-list>
+
+      <ion-list  radio-group [(ngModel)]="uo.user.useMp3" (ionChange)="preview()">
+        <ion-list-header>
+          提醒对方的铃声
+        </ion-list-header>
+        <ion-item  no-lines no-padding no-margin no-border *ngFor="let r of mp3s">
+          <ion-label>
+            <ion-icon class="fal fa-circle font-large-x" *ngIf="r.key != uo.user.useMp3"></ion-icon>
+            <ion-icon class="fal fa-dot-circle font-large-x" *ngIf="r.key == uo.user.useMp3"></ion-icon>
+            {{r.name}}</ion-label>
+          <ion-icon item-end text-end class="fal fa-play font-large" ></ion-icon>
+          <ion-radio [value]="r.key" class="noshow"></ion-radio>
         </ion-item>
       </ion-list>
     </page-box>
@@ -81,12 +96,17 @@ export class PsPage {
   uo: PageUData = new PageUData();
   olduo: PageUData = new PageUData();
 
+  mp3s:Array<any> = new Array<any>();
+
   constructor(public navCtrl: NavController,
               private psService: PsService,
               private actionSheetController: ActionSheetController,
               private util: UtilService,
               private keyboard: Keyboard,
-              private _renderer: Renderer2,) {
+              private _renderer: Renderer2,
+              private remindfeedbackService: RemindfeedbackService,) {
+
+    this.mp3s = this.remindfeedbackService.getMp3s();
   }
 
   commentFocus() {
@@ -129,20 +149,22 @@ export class PsPage {
     this.psService.findPerson(UserConfig.user.id).then(data => {
       this.uo.user.id = UserConfig.user.id;
       this.uo.user.aid = UserConfig.user.aid;
-      this.uo.user.name = UserConfig.user.name;
+      this.uo.user.nickname = UserConfig.user.nickname;
       this.uo.user.birthday = UserConfig.user.birthday;
       this.uo.user.realname = UserConfig.user.realname;
+      this.uo.user.useMp3 = UserConfig.user.useMp3;
       this.uo.user.ic = UserConfig.user.ic;
       this.uo.user.sex = UserConfig.user.sex;
       this.uo.user.contact = UserConfig.user.contact;
       this.uo.user.birthday = this.uo.user.birthday.replace(new RegExp('/', 'g'), '-');
       this.olduo.user.id = UserConfig.user.id;
       this.olduo.user.aid = UserConfig.user.aid;
-      this.olduo.user.name = UserConfig.user.name;
+      this.olduo.user.nickname = UserConfig.user.nickname;
       this.olduo.user.birthday = UserConfig.user.birthday;
       this.olduo.user.realname = UserConfig.user.realname;
       this.olduo.user.ic = UserConfig.user.ic;
       this.olduo.user.sex = UserConfig.user.sex;
+      this.olduo.user.useMp3 = UserConfig.user.useMp3;
       this.olduo.user.contact = UserConfig.user.contact;
       this.olduo.user.birthday = this.olduo.user.birthday.replace(new RegExp('/', 'g'), '-');
 
@@ -169,8 +191,8 @@ export class PsPage {
 
   check(){
     if (this.olduo.user.sex != this.uo.user.sex || this.olduo.user.birthday != this.uo.user.birthday ||
-      this.olduo.user.contact != this.uo.user.contact || this.uo.user.ic != this.uo.user.ic ||
-      this.olduo.user.name != this.uo.user.name){
+      this.olduo.user.contact != this.uo.user.contact || this.olduo.user.ic != this.uo.user.ic ||
+      this.olduo.user.nickname != this.uo.user.nickname || this.olduo.user.useMp3 != this.uo.user.useMp3){
       this.buttons.save = true;
     }else{
 
@@ -184,7 +206,9 @@ export class PsPage {
       inData.birthday = this.uo.user.birthday.replace(new RegExp('/', 'g'), '-');
       inData.contact = this.uo.user.contact;
       inData.ic = this.uo.user.ic;
-      inData.name = this.uo.user.name;
+      inData.realname = this.uo.user.nickname;
+      inData.nickname = this.uo.user.nickname;
+      inData.useMp3 = this.uo.user.useMp3;
 
       this.psService.saveUser(this.uo.user.id, inData).then(data => {
         this.goBack();
@@ -213,6 +237,12 @@ export class PsPage {
       }]
     });
     await this.actionSheet.present();
+  }
+
+
+  preview(r:any){
+    this.remindfeedbackService.remindAudioStop();
+    this.remindfeedbackService.remindAudio(this.uo.user.useMp3,()=>{},()=>{});
   }
 
 }

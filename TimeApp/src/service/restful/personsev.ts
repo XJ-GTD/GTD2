@@ -221,7 +221,7 @@ export class PersonOutData{
   city: string = "";
   country: string = "";
   nickname: string = "";   //姓名
-  name:string = "";   // 真实姓名
+  realname:string = "";   // 真实姓名
   avatarbase64: string = "";     //头像64
   sex:string = "";    //性别
   birthday: string = "";  //出生日期

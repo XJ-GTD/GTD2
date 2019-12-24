@@ -144,7 +144,7 @@ export class MPage {
 
   getData(){
     // this.phone = this.util.mask(UserConfig.account.phone, 3, 4);
-    this.name = UserConfig.user.name;
+    this.name = UserConfig.user.nickname;
 
     // if (UserConfig.user.avatar != undefined && UserConfig.user.avatar != '') {
     //   this.avatar = UserConfig.user.avatar;

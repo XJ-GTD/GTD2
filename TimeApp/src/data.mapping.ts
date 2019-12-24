@@ -203,7 +203,7 @@ export class PageUData{
     //账户ID
     aid: "",
     //用户名
-    name: "",
+    nickname: "",
     //用户头像
     avatar: "",
     //出生日期
@@ -214,6 +214,9 @@ export class PageUData{
     ic: "",
     //性别
     sex: "",
+
+    //使用mp3
+    useMp3:"",
     //联系方式
     contact: "",
   };

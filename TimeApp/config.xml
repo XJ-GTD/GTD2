@@ -84,6 +84,7 @@
     </plugin>
     <plugin name="cordova-plugin-huaweipush" spec="../HuaweiPushPlugin" />
     <plugin name="cordova-plugin-BaiduSpeechAndTTS" spec="../BaiduSpeechAndTTS" />
+    <plugin name="cordova-plugin-media" spec="~2.4.1" />
     <engine name="ios" spec="^4.4.0" />
     <engine name="browser" spec="^5.0.4" />
 </widget>

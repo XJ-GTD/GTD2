@@ -56,8 +56,7 @@ import { FindBugRestful } from "../restful/bugsev";
 import {DetectorService} from "../util-service/detector.service";
 import {LocalNotifications} from "@ionic-native/local-notifications";
 import {Badge} from "@ionic-native/badge";
-import { RemindService } from "../util-service/remind.service";
-import { GrouperService,Grouper,GrouperRelation } from "./grouper.service";
+import { GrouperService,Grouper } from "./grouper.service";
 import {UserConfig} from "../config/user.config";
 import {DataConfig} from "../config/data.config";
 import {FsData, PageDcData} from "../../data.mapping";
@@ -106,7 +105,6 @@ import {FsData, PageDcData} from "../../data.mapping";
              LocalNotifications,
              File,
              Badge,
-             RemindService,
              SqliteConfig,
              { provide: AssistantService, useClass: AssistantServiceMock },
              { provide: UserConfig, useClass: UserConfigMock },

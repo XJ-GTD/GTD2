@@ -184,7 +184,7 @@ export class TellYouComponent{
     this.assistantService.stopSpeak(false);
     //语音播报
     this.tellYouData.speakering = true;
-    this.assistantService.speakText(`${UserConfig.user.name} 你好。${this.tellYouData.spearktext} `).then(()=>{
+    this.assistantService.speakText(`${UserConfig.user.nickname} 你好。${this.tellYouData.spearktext} `).then(()=>{
       this.tellYouData.speakering = false;
       if (!this.changeDetectorRef['destroyed']) {
         this.changeDetectorRef.detectChanges();

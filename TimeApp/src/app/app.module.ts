@@ -64,7 +64,6 @@ import {JPushService} from "../service/cordova/jpush.service";
 import {RabbitMQService} from "../service/cordova/rabbitmq.service";
 import {MIPushService} from "../service/cordova/mipush.service";
 import {Badge} from "@ionic-native/badge";
-import {RemindService} from "../service/util-service/remind.service";
 import {FsPageModule} from "../pages/fs/fs.module";
 import {AlPageModule} from "../pages/al/al.module";
 import {AgendaPageModule} from "../pages/agenda/agenda.module";
@@ -132,6 +131,8 @@ import {AnnotationService} from "../service/business/annotation.service";
 import {GrouperService} from "../service/business/grouper.service";
 import {TimeOutService} from "../util/timeOutService";
 import {DetectorService} from "../service/util-service/detector.service";
+import {RemindfeedbackService} from "../service/cordova/remindfeedback.service";
+import {Media} from "@ionic-native/media/ngx";
 
 @NgModule({
   declarations: [
@@ -229,6 +230,7 @@ import {DetectorService} from "../service/util-service/detector.service";
     Clipboard,
     Camera,
     Chooser,
+    Media,
     ContactsService,
     NetworkService,
     ScreenOrientation,
@@ -273,13 +275,13 @@ import {DetectorService} from "../service/util-service/detector.service";
     AnnotationService,
     GrouperService,
     MemoService,
-    RemindService,
     SettingsProvider,
     CalendarService,
     EffectService,
     LocationSearchService,
     TimeOutService,
     DetectorService,
+    RemindfeedbackService,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     // {provide: HAMMER_GESTURE_CONFIG, useClass: HammerDIRECTIONALLConfig},
     {provide: HAMMER_GESTURE_CONFIG, useClass: ionicGalleryModal.GalleryModalHammerConfig}

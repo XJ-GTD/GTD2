@@ -2,10 +2,7 @@ import { Injectable } from "@angular/core";
 import { BaseService } from "./base.service";
 
 import { EmitService } from "../util-service/emit.service";
-import { SqliteExec } from "../util-service/sqlite.exec";
-import { UtilService } from "../util-service/util.service";
-import { UserConfig } from "../config/user.config";
-import { EventData, TaskData, AgendaData, MiniTaskData, EventService, RtJson, TxJson, generateRtJson, generateTxJson } from "./event.service";
+import {  EventService } from "./event.service";
 import { CalendarService } from "./calendar.service";
 import { MemoService } from "./memo.service";
 import { ScheduleRemindService } from "./remind.service";

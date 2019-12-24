@@ -1,6 +1,6 @@
 import {} from 'jasmine';
-import { TestBed, async } from '@angular/core/testing';
-import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
+import { TestBed } from '@angular/core/testing';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 import {Device} from "@ionic-native/device";
 import {Network} from "@ionic-native/network";
@@ -11,7 +11,6 @@ import {SQLitePorter} from "@ionic-native/sqlite-porter";
 import {StatusBar} from '@ionic-native/status-bar';
 import {SplashScreen} from '@ionic-native/splash-screen';
 import * as moment from "moment";
-import * as anyenum from "../../data.enum";
 import {
   IonicModule,
   Platform
@@ -43,10 +42,10 @@ import { BacRestful } from "../restful/bacsev";
 import {SyncRestful} from "../restful/syncsev";
 import {AtTbl} from "../sqlite/tbl/at.tbl";
 import { CalendarService, PlanData } from "./calendar.service";
-import { MemoService,MemoData } from "./memo.service";
+import { MemoService } from "./memo.service";
 import { AnnotationService,Annotation } from "./annotation.service";
 import { EventService } from "./event.service";
-import { PlanType,ObjectType , SyncType, DelType, SyncDataStatus} from "../../data.enum";
+import {  SyncDataStatus} from "../../data.enum";
 import { ScheduleRemindService } from "./remind.service";
 import {File} from '@ionic-native/file';
 import {AssistantService} from "../cordova/assistant.service";
@@ -56,7 +55,6 @@ import { FindBugRestful } from "../restful/bugsev";
 import {DetectorService} from "../util-service/detector.service";
 import {LocalNotifications} from "@ionic-native/local-notifications";
 import {Badge} from "@ionic-native/badge";
-import { RemindService } from "../util-service/remind.service";
 import { GrouperService } from "./grouper.service";
 import {UserConfig} from "../config/user.config";
 import {DataConfig} from "../config/data.config";
@@ -76,7 +74,6 @@ describe('AnnotationService test suite', () => {
     let userConfig: UserConfig;
     let memoService: MemoService;
     let calendarService: CalendarService;
-    let planforUpdate: PlanData;
     let sqlExce: SqliteExec;
     let util: UtilService;
     let assistantService: AssistantService;
@@ -107,7 +104,6 @@ describe('AnnotationService test suite', () => {
             LocalNotifications,
             File,
             Badge,
-            RemindService,
             SqliteConfig,
             { provide: AssistantService, useClass: AssistantServiceMock },
             { provide: UserConfig, useClass: UserConfigMock },
