@@ -127,6 +127,81 @@ export class ContactsService {
     })
   }
 
+  /**
+   * 获取手机本地联系人
+   *
+   * @author leon_xi@163.com
+   */
+  async getLocalContacts(callback: (name, phone) => void): Promise<Array<any>> {
+    let results: Array<any> = new Array<any>();
+
+    if (!this.utilService.isMobile()){
+      return results;
+    }
+
+    let localdatas = await this.contacts.find(['*'], {
+      filter: '',
+      multiple: true,
+      desiredFields: ["displayName", "phoneNumbers", 'name']
+    });
+
+    if (localdatas && localdatas.length > 0) {
+      // console.log("===== 获取本地联系人：" + JSON.stringify(data));
+      let contactPhones: Array<string> = new Array<string>();
+      let contact:any;
+
+      for (contact of localdatas) {
+        // console.log("===== 本地联系人：" + JSON.stringify(contact));
+        // XiaoMI 6X补丁
+        if (contact._objectInstance) contact = contact._objectInstance;
+
+        if (!contact.phoneNumbers) continue;
+        // 可能存在没有姓名的联系人
+        if (!contact.name) continue;
+
+        for (let phone of contact.phoneNumbers) {
+          //去除手机号中的空格
+          let phonenumber = phone.value;
+          let number = "";
+
+          phonenumber.match(/\d+/g).forEach(v=>{
+            number = number + v;
+          });
+
+          number= number.replace(/\+86/g, '')
+            .replace('0086', '')
+            .replace(/\s/g,"");
+
+          // console.log("===== 电话号码：" + number);
+          if (!this.utilService.checkPhone(number)) {
+            continue;
+          } else {
+            if (contactPhones.indexOf(number) > -1) continue;
+
+            // 增加人名显示逻辑
+            let displayname = this.getLocalContactsName(contact.displayName, contact.name.familyName, contact.name.givenName, contact.name.formatted);
+
+            // 排除重复联系人，手机号相同
+            contactPhones.push(number);
+
+            if (callback) {
+              let onecontact = callback(displayname, number);
+
+              if (onecontact) results.push(onecontact);
+            } else {
+              results.push({name: displayname, phone: displayname});
+            }
+
+            // console.log("===== 加入联系人清单：" + JSON.stringify(btbl));
+          }
+        }
+      }
+
+      // console.log("===== 本地联系人处理结束 =====");
+      return results;
+    }
+  }
+
   getLocalContactsName(displayName, familyName, givenName, formatted) {
     if (displayName) return displayName;
 

@@ -16,6 +16,7 @@ import {
 } from "../../util/util";
 import {AtTbl} from "../sqlite/tbl/at.tbl";
 import {Member} from "./event.service";
+import {ContactsService} from "../cordova/contacts.service";
 import * as anyenum from "../../data.enum";
 import {MemoData} from "./memo.service";
 import {GTbl} from "../sqlite/tbl/g.tbl";
@@ -26,7 +27,7 @@ import {BTbl} from "../sqlite/tbl/b.tbl";
 @Injectable()
 export class GrouperService extends BaseService {
   constructor(private sqlExce: SqliteExec, private util: UtilService,
-              private emitService:EmitService,
+              private emitService: EmitService, private contactsService: ContactsService,
               private bacRestful: BacRestful,private userConfig: UserConfig,
               private dataRestful: DataRestful) {
     super();
@@ -36,6 +37,66 @@ export class GrouperService extends BaseService {
   checksumGrouper(grouper: Grouper): string {
     return "";
   }
+
+  /**
+   * 导入本地联系人
+   *
+   * @author leon_xi@163.com
+   **/
+   async importLocalContacts() {
+     let friendsql: string = `select * from gtd_b`;
+
+     let friends: Array<Friend> = await this.sqlExce.getExtLstByParam<Friend>(friendsql, []) || new Array<Friend>();
+
+     let friendIndexes: Array<string> = friends.reduce((target, value) => {
+       target.push(value.rc);
+       return target;
+     }, new Array<string>());
+
+     let localContacts = await this.contactsService.getLocalContacts((name, phone) => {
+       let index: number = friendIndexes.findIndex((ele) => {
+         return ele.rc == phone;
+       });
+
+       if (index >= 0) {
+         let friend: Friend = friends[index];
+
+         if (friend.ran == name) {
+           return null;
+         } else {
+           friend.ran = name;
+
+           return friend;
+         }
+       } else {
+         let friend: Friend = new Friend();
+
+         friend.ran = name;   // 本地联系人姓名
+         friend.rn = name;    // 注册用户昵称
+         friend.rc = phone;   // 手机号码
+
+         return friend;
+       }
+     });
+
+     // 存在新增本地联系人或者联系人信息更新
+     if (localContacts && localContacts.length > 0) {
+       let sqls: Array<any> = new Array<any>();
+
+       for (let friend of localContacts) {
+         let btbl: BTbl = new BTbl();
+
+         if (!friend.pwi) {
+           friend.pwi = this.util.getUuid();
+         }
+
+         Object.assign(btbl, friend);
+         sqls.push(btbl.rpT());
+       }
+
+       await this.sqlExce.batExecSql(sqls);
+     }
+   }
 
   /**
    * 接收群组信息
@@ -437,6 +498,10 @@ export class GrouperService extends BaseService {
 
     return friends;
   }
+}
+
+export class Friend extends BTbl {
+
 }
 
 export class Grouper extends GTbl{
