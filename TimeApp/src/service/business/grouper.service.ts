@@ -55,7 +55,7 @@ export class GrouperService extends BaseService {
 
      let localContacts = await this.contactsService.getLocalContacts((name, phone) => {
        let index: number = friendIndexes.findIndex((ele) => {
-         return ele.rc == phone;
+         return ele == phone;
        });
 
        if (index >= 0) {
