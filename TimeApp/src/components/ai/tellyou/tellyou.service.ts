@@ -9,6 +9,7 @@ import {CalendarService} from "../../../service/business/calendar.service";
 import * as moment from "moment";
 import {UserConfig} from "../../../service/config/user.config";
 import {_catch} from "rxjs/operator/catch";
+import {DataConfig} from "../../../service/config/data.config";
 
 @Injectable()
 export class TellyouService {
@@ -244,7 +245,10 @@ export class TellyouService {
     this.prepare4wating(tellYouData);
     //把播报数据推入Q中，方法参数要data，打开页面延迟时间，自动关闭页面时间，是否显示
     this.pushTellYouData(tellYouData,(warp)=>{
-      this.tellyoubegin(warp.data,warp.time1,warp.time2,warp.show);
+      //设置中关闭消息
+      if (!UserConfig.getSetting(DataConfig.SYS_CLV)){
+        this.tellyoubegin(warp.data,warp.time1,warp.time2,warp.show);
+      }
     })
   }
 
