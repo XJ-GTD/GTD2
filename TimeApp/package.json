@@ -52,6 +52,7 @@
     "@ionic-native/in-app-browser": "^4.20.0",
     "@ionic-native/keyboard": "^4.18.0",
     "@ionic-native/local-notifications": "^4.18.0",
+    "@ionic-native/media": "^5.18.0",
     "@ionic-native/native-audio": "^4.18.0",
     "@ionic-native/native-page-transitions": "^4.18.0",
     "@ionic-native/network": "^4.18.0",
@@ -214,7 +215,8 @@
         "WECHATAPPID": "wx697676c0b8dd65f6"
       },
       "cordova-plugin-huaweipush": {},
-      "cordova-plugin-BaiduSpeechAndTTS": {}
+      "cordova-plugin-BaiduSpeechAndTTS": {},
+      "cordova-plugin-media": {}
     },
     "platforms": [
       "ios",

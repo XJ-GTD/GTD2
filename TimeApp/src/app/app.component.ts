@@ -36,11 +36,17 @@ export class MyApp {
     MenuController.registerType('lsPush', LsPushType);
     this.setCustomTransitions();
 
+    console.log("$$$$$$$$$$$$$$$$$$");
+
     this.platform.ready().then(() => {
+
+      console.log("$$$$$$$$$$$$$$$$$$");
       //this.util.loadingEnd();
 
       //允许进入后台模式
       if (this.util.hasCordova()) {
+
+        console.log("$$$$$$$$$$$$$$$$$$");
 
         if (this.util.isAndroid()) {
           this.registerBackButtonAction();
@@ -69,6 +75,8 @@ export class MyApp {
 
 
       //跳转页面（过渡页面）
+
+      console.log("$$$$$$$$$$$$$$$$$$");
       this.app.getRootNav().setRoot(DataConfig.PAGE._AL_PAGE);
     });
   }

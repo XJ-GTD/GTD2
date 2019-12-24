@@ -132,6 +132,7 @@ import {GrouperService} from "../service/business/grouper.service";
 import {TimeOutService} from "../util/timeOutService";
 import {DetectorService} from "../service/util-service/detector.service";
 import {RemindfeedbackService} from "../service/cordova/remindfeedback.service";
+import {Media} from "@ionic-native/media/ngx";
 
 @NgModule({
   declarations: [
@@ -229,6 +230,7 @@ import {RemindfeedbackService} from "../service/cordova/remindfeedback.service";
     Clipboard,
     Camera,
     Chooser,
+    Media,
     ContactsService,
     NetworkService,
     ScreenOrientation,

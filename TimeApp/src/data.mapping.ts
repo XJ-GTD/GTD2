@@ -214,6 +214,9 @@ export class PageUData{
     ic: "",
     //性别
     sex: "",
+
+    //使用mp3
+    useMp3:"",
     //联系方式
     contact: "",
   };
