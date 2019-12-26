@@ -56,6 +56,9 @@ import {DetectorService} from "../util-service/detector.service";
 import {LocalNotifications} from "@ionic-native/local-notifications";
 import {Badge} from "@ionic-native/badge";
 import { GrouperService } from "./grouper.service";
+import {ContactsService} from "../cordova/contacts.service";
+import {Contacts, Contact} from "@ionic-native/contacts";
+import { PersonRestful } from "../restful/personsev";
 
 /**
  * 备忘Service 持续集成CI 自动测试Case
@@ -115,6 +118,9 @@ describe('MemoService test suite', () => {
         ShaeRestful,
         AgdRestful,
         FindBugRestful,
+        PersonRestful,
+        Contacts,
+        ContactsService,
         DataRestful,
         BacRestful,
         SyncRestful,

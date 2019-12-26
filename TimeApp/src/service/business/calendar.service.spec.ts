@@ -72,6 +72,9 @@ import { FindBugRestful } from "../restful/bugsev";
 import {DetectorService} from "../util-service/detector.service";
 import {LocalNotifications} from "@ionic-native/local-notifications";
 import {Badge} from "@ionic-native/badge";
+import {ContactsService} from "../cordova/contacts.service";
+import {Contacts, Contact} from "@ionic-native/contacts";
+import { PersonRestful } from "../restful/personsev";
 
 /**
  * 日历Service 持续集成CI 自动测试Case
@@ -430,6 +433,9 @@ describe('CalendarService test suite', () => {
         FindBugRestful,
         NotificationsService,
         TimeOutService,
+        PersonRestful,
+        Contacts,
+        ContactsService,
         AgdRestful,
         BacRestful,
         DataRestful,

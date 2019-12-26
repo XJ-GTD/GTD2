@@ -59,6 +59,9 @@ import { FindBugRestful } from "../restful/bugsev";
 import {DetectorService} from "../util-service/detector.service";
 import {LocalNotifications} from "@ionic-native/local-notifications";
 import {Badge} from "@ionic-native/badge";
+import {ContactsService} from "../cordova/contacts.service";
+import {Contacts, Contact} from "@ionic-native/contacts";
+import { PersonRestful } from "../restful/personsev";
 
 /**
  * 事件Service 日程 持续集成CI 自动测试Case
@@ -116,6 +119,9 @@ describe('EventService test suite for agenda', () => {
         BacRestful,
         DataRestful,
         GrouperService,
+        PersonRestful,
+        Contacts,
+        ContactsService,
         SyncRestful,
         Network,
         HTTP,

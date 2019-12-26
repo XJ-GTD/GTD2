@@ -58,6 +58,9 @@ import {Badge} from "@ionic-native/badge";
 import { GrouperService } from "./grouper.service";
 import {UserConfig} from "../config/user.config";
 import {DataConfig} from "../config/data.config";
+import {ContactsService} from "../cordova/contacts.service";
+import {Contacts, Contact} from "@ionic-native/contacts";
+import { PersonRestful } from "../restful/personsev";
 
 /**
  *
@@ -112,6 +115,9 @@ describe('AnnotationService test suite', () => {
             NotificationsService,
             UtilService,
             TimeOutService,
+            PersonRestful,
+            Contacts,
+            ContactsService,
             EmitService,
             DetectorService,
             GrouperService,

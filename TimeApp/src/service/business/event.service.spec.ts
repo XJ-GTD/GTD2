@@ -62,6 +62,9 @@ import {DetectorService} from "../util-service/detector.service";
 import {LocalNotifications} from "@ionic-native/local-notifications";
 import {Badge} from "@ionic-native/badge";
 import { GrouperService } from "./grouper.service";
+import {ContactsService} from "../cordova/contacts.service";
+import {Contacts, Contact} from "@ionic-native/contacts";
+import { PersonRestful } from "../restful/personsev";
 
 /**
  * 事件Service 持续集成CI 自动测试Case
@@ -120,6 +123,9 @@ describe('EventService test suite', () => {
         TimeOutService,
         AgdRestful,
         BacRestful,
+        PersonRestful,
+        Contacts,
+        ContactsService,
         GrouperService,
         DataRestful,
         SyncRestful,
