@@ -83,6 +83,7 @@ describe('MemoService test suite', () => {
   let timeOutService: TimeOutService;
   let notificationsService: NotificationsService;
   let grouperService: GrouperService;
+  let contactsService: ContactsService;
 
   beforeAll(async () => {
     TestBed.configureTestingModule({
@@ -147,6 +148,7 @@ describe('MemoService test suite', () => {
     notificationsService = TestBed.get(NotificationsService);
     timeOutService = TestBed.get(TimeOutService);
     grouperService = TestBed.get(GrouperService);
+    contactsService = TestBed.get(ContactsService);
 
     await config.generateDb();
     await init.createTables();

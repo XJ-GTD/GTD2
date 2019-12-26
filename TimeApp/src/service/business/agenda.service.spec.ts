@@ -83,6 +83,7 @@ describe('EventService test suite for agenda', () => {
   let timeOutService: TimeOutService;
   let notificationsService: NotificationsService;
   let grouperService: GrouperService;
+  let contactsService: ContactsService;
 
   beforeAll(async () => {
     TestBed.configureTestingModule({
@@ -142,6 +143,7 @@ describe('EventService test suite for agenda', () => {
     notificationsService = TestBed.get(NotificationsService);
     timeOutService = TestBed.get(TimeOutService);
     grouperService = TestBed.get(GrouperService);
+    contactsService = TestBed.get(ContactsService);
 
     eventService = TestBed.get(EventService);
     await config.generateDb();

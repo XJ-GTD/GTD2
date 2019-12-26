@@ -99,6 +99,7 @@ describe('CalendarService test suite', () => {
   let assistantService: AssistantService;
   let timeOutService: TimeOutService;
   let notificationsService: NotificationsService;
+  let contactsService: ContactsService;
 
   // 联系人用于测试
   let xiaopangzi: BTbl;
@@ -468,6 +469,7 @@ describe('CalendarService test suite', () => {
     assistantService = TestBed.get(AssistantService);
     notificationsService = TestBed.get(NotificationsService);
     timeOutService = TestBed.get(TimeOutService);
+    contactsService = TestBed.get(ContactsService);
 
     await config.generateDb();
     await init.createTables();

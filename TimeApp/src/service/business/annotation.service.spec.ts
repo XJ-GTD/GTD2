@@ -84,7 +84,7 @@ describe('AnnotationService test suite', () => {
     let notificationsService: NotificationsService;
     let grouperService: GrouperService;
     let annotationService: AnnotationService;
-
+    let contactsService: ContactsService;
 
     beforeAll(async () => {
         TestBed.configureTestingModule({
@@ -152,6 +152,7 @@ describe('AnnotationService test suite', () => {
         timeOutService = TestBed.get(TimeOutService);
         grouperService = TestBed.get(GrouperService);
         annotationService = TestBed.get(AnnotationService);
+        contactsService = TestBed.get(ContactsService);
         await config.generateDb();
         await init.createTables();
         let version = 0;
