@@ -60,6 +60,7 @@ import { GrouperService,Grouper } from "./grouper.service";
 import {UserConfig} from "../config/user.config";
 import {DataConfig} from "../config/data.config";
 import {FsData, PageDcData} from "../../data.mapping";
+import {ContactsService} from "../cordova/contacts.service";
 
 /**
  *
@@ -83,6 +84,7 @@ import {FsData, PageDcData} from "../../data.mapping";
      let timeOutService: TimeOutService;
      let notificationsService: NotificationsService;
      let grouperService: GrouperService;
+     let contactsService: ContactsService;
 
 
      beforeAll(async () => {
@@ -114,6 +116,7 @@ import {FsData, PageDcData} from "../../data.mapping";
              UtilService,
              TimeOutService,
              EmitService,
+             ContactsService,
              DetectorService,
              GrouperService,
              ShaeRestful,
@@ -146,6 +149,7 @@ import {FsData, PageDcData} from "../../data.mapping";
          notificationsService = TestBed.get(NotificationsService);
          timeOutService = TestBed.get(TimeOutService);
          grouperService = TestBed.get(GrouperService);
+         contactsService = TestBed.get(ContactsService);
          await config.generateDb();
          await init.createTables();
          let version = 0;
