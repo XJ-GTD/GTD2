@@ -61,6 +61,7 @@ import {UserConfig} from "../config/user.config";
 import {DataConfig} from "../config/data.config";
 import {FsData, PageDcData} from "../../data.mapping";
 import {ContactsService} from "../cordova/contacts.service";
+import {Contacts, Contact} from "@ionic-native/contacts";
 
 /**
  *
@@ -116,6 +117,7 @@ import {ContactsService} from "../cordova/contacts.service";
              UtilService,
              TimeOutService,
              EmitService,
+             Contacts,
              ContactsService,
              DetectorService,
              GrouperService,
