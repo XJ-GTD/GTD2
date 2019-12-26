@@ -39,6 +39,7 @@ import {NetworkService} from "../cordova/network.service";
 import { ShaeRestful } from "../restful/shaesev";
 import { AgdRestful } from "../restful/agdsev";
 import { DataRestful } from "../restful/datasev";
+import { PersonRestful } from "../restful/personsev";
 import { BacRestful } from "../restful/bacsev";
 import {SyncRestful} from "../restful/syncsev";
 import {GTbl} from "../sqlite/tbl/g.tbl";
@@ -124,6 +125,7 @@ import {Contacts, Contact} from "@ionic-native/contacts";
              ShaeRestful,
              AgdRestful,
              FindBugRestful,
+             PersonRestful,
              DataRestful,
              BacRestful,
              SyncRestful,
