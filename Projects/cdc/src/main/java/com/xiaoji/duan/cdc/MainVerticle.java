@@ -75,13 +75,14 @@ public class MainVerticle extends AbstractVerticle {
 				JsonObject def = (JsonObject) proxydef;
 				
 				String url = def.getString("url");
+				String path = def.getString("path", "");
 				JsonArray params = def.getJsonArray("params", new JsonArray());
 				JsonArray headers = def.getJsonArray("headers", new JsonArray());
 				JsonObject response = def.getJsonObject("response", new JsonObject());
 				JsonObject trigger = def.getJsonObject("trigger", new JsonObject());
 				
 				router.route(url).handler(BodyHandler.create());
-				router.route(url).handler(ctx -> this.proxy(ctx, params, headers, response, trigger));
+				router.route(url).handler(ctx -> this.proxy(ctx, path, params, headers, response, trigger));
 			});
 		}
 		
@@ -113,8 +114,14 @@ public class MainVerticle extends AbstractVerticle {
 		});
 	}
 
-	private void proxy(RoutingContext ctx, JsonArray params, JsonArray headers, JsonObject response, JsonObject trigger) {
+	private void proxy(RoutingContext ctx, String path, JsonArray params, JsonArray headers, JsonObject response, JsonObject trigger) {
 		JsonObject query = new JsonObject();
+		
+		query.put("method", ctx.request().method().toString().toLowerCase());
+		
+		if (!"".equals(path)) {
+			query.put("path", path);
+		}
 		
 		if (params.size() > 0) {
 			JsonObject pathparams = new JsonObject();

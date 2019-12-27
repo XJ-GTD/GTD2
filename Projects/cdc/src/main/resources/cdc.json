@@ -20,6 +20,7 @@
      },
      {
        "url": "/aup/dologin",
+       "path": "http://sa-aup:8080/aup/dologin",
        "params": [],
        "headers": ["lt", "pi", "pv", "di", "dt", "ai"],
        "response": {
@@ -31,6 +32,7 @@
      },
      {
        "url": "/aup/verifycode",
+       "path": "http://sa-aup:8080/aup/verifycode",
        "params": [],
        "headers": ["lt", "pi", "pv", "di", "dt", "ai"],
        "response": {
@@ -42,6 +44,7 @@
      },
      {
        "url": "/aup/doregister",
+       "path": "http://sa-aup:8080/aup/doregister",
        "params": [],
        "headers": ["lt", "pi", "pv", "di", "dt", "ai"],
        "response": {
@@ -53,6 +56,7 @@
      },
      {
        "url": "/aup/user/:unionid",
+       "path": "http://sa-aup:8080/aup/user/#{unionid}",
        "params": ["unionid"],
        "headers": ["lt", "pi", "pv", "di", "dt", "ai"],
        "response": {
@@ -64,6 +68,7 @@
      },
      {
        "url": "/aup/user/:phoneno/userinfo",
+       "path": "http://sa-aup:8080/aup/user/#{phoneno}/userinfo",
        "params": ["phoneno"],
        "headers": ["lt", "pi", "pv", "di", "dt", "ai"],
        "response": {
@@ -75,6 +80,7 @@
      },
      {
        "url": "/aup/user/multi/usersinfo",
+       "path": "http://sa-aup:8080/aup/user/multi/usersinfo",
        "params": [],
        "headers": ["lt", "pi", "pv", "di", "dt", "ai"],
        "response": {
@@ -86,6 +92,7 @@
      },
      {
        "url": "/aup/user/:phoneno/avatar/json",
+       "path": "http://sa-aup:8080/aup/user/#{phoneno}/avatar/json",
        "params": ["phoneno"],
        "headers": ["lt", "pi", "pv", "di", "dt", "ai"],
        "response": {
