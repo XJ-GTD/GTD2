@@ -52,7 +52,7 @@ export class PersonRestful {
       let urlproxy: UrlEntity = this.config.getRestFulUrl("PROXY");
 
       this.request.post(urlproxy, {
-        path: urlEntity.url.replace("{phoneno}", phoneno),
+        path: url.url.replace("{phoneno}", phoneno),
         method: "get"
       }).then(data => {
         //处理返回结果
@@ -123,7 +123,7 @@ export class PersonRestful {
       let urlproxy: UrlEntity = this.config.getRestFulUrl("PROXY");
 
       this.request.post(urlproxy, {
-        path: urlEntity.url.replace("{unionid}", unionid),
+        path: url.url.replace("{unionid}", unionid),
         method: "get"
       }).then(data => {
         //处理返回结果
