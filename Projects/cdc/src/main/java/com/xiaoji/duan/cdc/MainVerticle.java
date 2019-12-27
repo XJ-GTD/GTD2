@@ -164,15 +164,20 @@ public class MainVerticle extends AbstractVerticle {
 					
 					JsonObject resp = null;
 					
-					if (result != null)
-						resp = result.getJsonObject("executed", new JsonObject())
-						.getJsonObject("response", new JsonObject());
+					if (result != null) {
+						System.out.println("result " + result.encode());
+
+						resp = result.getJsonObject("body", new JsonObject())
+								.getJsonObject("context", new JsonObject())
+								.getJsonObject("executed", new JsonObject())
+								.getJsonObject("response", new JsonObject());
+					}
 					
 					if (resp == null)
 						resp = new JsonObject();
 					
-					System.out.println("responsed " +result.size());
-					ctx.response().putHeader("Content-Type", "application/json; charset=utf-8").end(result.encode());
+					System.out.println("responsed " + resp.encode());
+					ctx.response().putHeader("Content-Type", "application/json; charset=utf-8").end(resp.encode());
 				} else {
 					handler.cause().printStackTrace();
 					ctx.response().putHeader("Content-Type", "application/json; charset=utf-8").end("{}");
@@ -180,7 +185,7 @@ public class MainVerticle extends AbstractVerticle {
 			});
 			
 			String address = config().getString("amq.app.id", "cdc") + "." + UUID.randomUUID().toString();
-			callbackTrigger(future, address);
+			subscribeTrigger(future, address);
 			
 			query.put("callback", new JsonArray().add(address));
 		}
@@ -429,13 +434,7 @@ public class MainVerticle extends AbstractVerticle {
 		producer.end();
 
 	}
-	
-	private void callbackTrigger(Future future, String trigger) {
-		MessageConsumer<JsonObject> consumer = bridge.createConsumer(trigger);
-		System.out.println("Consumer " + trigger + " subscribed.");
-		consumer.handler(vertxMsg -> future.complete(vertxMsg));
-	}
-	
+
 	private void subscribeTrigger(Future future, String trigger) {
 		MessageConsumer<JsonObject> consumer = bridge.createConsumer(trigger);
 		System.out.println("Consumer " + trigger + " subscribed.");
