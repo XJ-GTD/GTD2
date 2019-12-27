@@ -15,8 +15,8 @@
       "name": "本地调用服务接口",
       "trigger": "exc",
       "parameters": [
-        "method;$.parent.parameters.query.method",
-        "urlabs;$.parent.parameters.query.path",
+        "method;$.parent.parameters.method",
+        "urlabs;$.parent.parameters.path",
         "header;$.parent.parameters.header",
         "params;$.parent.parameters.params",
         "callback;$.parent.parameters.callback",
