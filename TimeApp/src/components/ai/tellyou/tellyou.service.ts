@@ -9,7 +9,7 @@ import {CalendarService} from "../../../service/business/calendar.service";
 import * as moment from "moment";
 import {UserConfig} from "../../../service/config/user.config";
 import {DataConfig} from "../../../service/config/data.config";
-import {AnnotationService} from "../../../service/business/annotation.service";
+import {Annotation, AnnotationService} from "../../../service/business/annotation.service";
 
 @Injectable()
 export class TellyouService {
@@ -55,7 +55,6 @@ export class TellyouService {
       let time2 = 0;
       let pageData:TellYou = new TellYou();
       Object.assign(pageData,tellYouData);
-      console.log("12111111111===tellYouQueue===>" + tellYouData.id + "===>" + tellYouData.tellType);
       switch (tellYouData.tellType) {
         case TellyouType.invite_agenda:
         case TellyouType.invite_planitem:
@@ -78,7 +77,8 @@ export class TellyouService {
                 Object.assign(pageData,datas[0]);
                 time1 = 10;
                 time2 = 30000;
-                show = true;
+
+                show = !UserConfig.getSetting(DataConfig.SYS_CLV);
               }
               callback([{data:pageData,time1:time1,time2:time2,show:show}]);
             }).catch(()=>{
@@ -96,26 +96,39 @@ export class TellyouService {
         case TellyouType.remind_todo:
         case TellyouType.remind_merge:
 
-          this.createtellData(this.reminds).then((datas)=>{
-            this.reminds.splice(0,this.reminds.length);
-
-            if (datas.length > 0){
-              if (datas.length == 1){
-                Object.assign(pageData,datas[0]);
-              }else{
-                pageData.tellType = TellyouType.remind_merge;
-                pageData.reminds = datas ;
-              }
-              time1 = 10;
-              time2 = 30000;
-              show = true;
-              callback([{data:pageData,time1:time1,time2:time2,show:show}]);
+          //是否合并播报
+          if (this.reminds.length > 0){
+            let remindstmp:Array<TellYouBase> = new Array<TellYouBase>();
+            if ( UserConfig.getSetting(DataConfig.SYS_CBV)){
+              remindstmp = remindstmp.concat(this.reminds);
             }else{
-              callback([{data:pageData,time1:time1,time2:time2,show:show}]);
+              remindstmp = remindstmp.concat(this.reminds[0]);
             }
-          }).catch(()=>{
+
+            this.createtellData(remindstmp).then((datas)=>{
+              this.reminds.splice(0,remindstmp.length);
+              if (datas.length > 0){
+                if (datas.length == 1){
+                  Object.assign(pageData,datas[0]);
+                }else{
+                  pageData.tellType = TellyouType.remind_merge;
+                  pageData.reminds = datas ;
+                }
+                time1 = 10;
+                time2 = 30000;
+
+                show = !UserConfig.getSetting(DataConfig.SYS_CLV);
+                callback([{data:pageData,time1:time1,time2:time2,show:show}]);
+              }else{
+                callback([{data:pageData,time1:time1,time2:time2,show:show}]);
+              }
+            }).catch(()=>{
+              callback([{data:pageData,time1:time1,time2:time2,show:show}]);
+            })
+          }else{
             callback([{data:pageData,time1:time1,time2:time2,show:show}]);
-          })
+          }
+
 
 
           break;
@@ -136,7 +149,7 @@ export class TellyouService {
                 Object.assign(pageData,datas[0]);
                 time1 = 20;
                 time2 = 5000;
-                show = true;
+                show = !UserConfig.getSetting(DataConfig.SYS_CLV);
               }
               callback([{data:pageData,time1:time1,time2:time2,show:show}]);
             }).catch(()=>{
@@ -246,10 +259,7 @@ export class TellyouService {
     this.prepare4wating(tellYouData);
     //把播报数据推入Q中，方法参数要data，打开页面延迟时间，自动关闭页面时间，是否显示
     this.pushTellYouData(tellYouData,(warp)=>{
-      //设置中关闭消息
-      if (!UserConfig.getSetting(DataConfig.SYS_CLV)){
         this.tellyoubegin(warp.data,warp.time1,warp.time2,warp.show);
-      }
     })
   }
 
@@ -258,7 +268,7 @@ export class TellyouService {
       this.pauseTellYou();
 
       this.timeoutService.timeOutOnlyOne(layshow, () => {
-        this.createSpeakText(tellYouData);
+        this.createSpeakText(tellYouData,UserConfig.getSetting(DataConfig.SYS_SIV));
         this.showfn(tellYouData);
 
         this.timeoutService.timeOutOnlyOne(layclose, () => {
@@ -281,7 +291,7 @@ export class TellyouService {
       let searchid = tellyoubase.dataid?tellyoubase.dataid:tellyoubase.id;
 
       if(tellyoubase.idtype == TellyouIdType.Agenda){
-        let agendaData = await  this.eventService.getAgenda(searchid,false);
+        let agendaData = await  this.eventService.getAgenda(searchid,tellyoubase.tellType == TellyouType.cancel_agenda);
         if (!agendaData){
           continue;
         }
@@ -293,13 +303,20 @@ export class TellyouService {
           pageData.invites= agendaData.members.length; //邀请人数
 
         if (tellyoubase.tellType == TellyouType.at_agenda){
-          this.annotationService.getAnnotation()
+          console.log("121111111110000===at===>" + tellyoubase.id + "===>" + tellyoubase.tellType);
+          let an:Annotation = await this.annotationService.getAnnotation(tellyoubase.id);
+          console.log("121111111110000===at===>" + tellyoubase.id + "===>" + an);
+          if (an){
+            pageData.formperson= an.ui; //@你的发起人
+          }else{
+            pageData.sn= null; //内容主题
+          }
         }
       }
 
       if(tellyoubase.idtype == TellyouIdType.PlanItem){
 
-        let planItem = await this.calendarService.getPlanItem(searchid);
+        let planItem = await this.calendarService.getPlanItem(searchid,tellyoubase.tellType == TellyouType.cancel_planitem);
         if (!planItem){
           continue;
         }
@@ -334,52 +351,77 @@ export class TellyouService {
 
   }
 
-  createSpeakText(pageData:TellYou){
-    let time =  pageData.fromdate ? moment(pageData.fromdate,"YYYY/MM/DD hh:ss").format("YYYY年M月D日 A h点s分"):"";
+  createSpeakText(pageData:TellYou,iseasy:boolean){
+      let time =  pageData.fromdate ? moment(pageData.fromdate,"YYYY/MM/DD hh:ss").format("YYYY年M月D日 A h点s分"):"";
 
-    let person = pageData.formperson;
-    let friend = this.friends.find((val) => {
-      return person == val.ui;
-    })
-    if (friend){
-      person = friend.ran;
-    }
-    let text = pageData.sn;
-    let repeat = pageData.repeat;
-    let timeype = pageData.datetype != '2'? '开始于':'截至到';
-    let remindtime =  pageData.remindtime ? moment(pageData.remindtime,"YYYY/MM/DD hh:ss").format("YYYY年M月D日 A h点s分"):"";
-    let atype = "";
-    if (pageData.idtype ==  TellyouIdType.PlanItem){
-      atype = "日历";
-    }
-    if (pageData.idtype ==  TellyouIdType.Agenda){
-      atype = "活动";
-    }
-    if (pageData.idtype ==  TellyouIdType.MiniTask){
-      atype = "小任务";
-    }
-    let invites = "有" + (pageData.invites + 1) + "个参与人";
+      let person = pageData.formperson;
+      let friend = this.friends.find((val) => {
+        return person == val.ui;
+      })
+      if (friend){
+        person = friend.ran;
+      }
+      let text = pageData.sn;
+      let repeat = pageData.repeat;
+      let timeype = pageData.datetype != '2'? '开始于':'截至到';
+      let remindtime =  pageData.remindtime ? moment(pageData.remindtime,"YYYY/MM/DD hh:ss").format("YYYY年M月D日 A h点s分"):"";
+      let atype = "";
+      if (pageData.idtype ==  TellyouIdType.PlanItem){
+        atype = "日历";
+      }
+      if (pageData.idtype ==  TellyouIdType.Agenda){
+        atype = "活动";
+      }
+      if (pageData.idtype ==  TellyouIdType.MiniTask){
+        atype = "小任务";
+      }
+      let invites = "有" + (pageData.invites + 1) + "个参与人";
 
-    if (pageData.tellType == TellyouType.invite_planitem
-      || pageData.tellType == TellyouType.invite_agenda){
-      pageData.spearktext = `${person}有一个${atype}。内容是${text}。希望加入到你的冥王星。这个 ${atype} ${timeype} ${time}。已经${invites}`;
 
-    } else if (pageData.tellType == TellyouType.remind_planitem
-      || pageData.tellType == TellyouType.remind_agenda){
-      pageData.spearktext = `提醒。${text}。这个${atype}来自${person}`;
+    if (!iseasy){
 
-    }else if (pageData.tellType == TellyouType.remind_minitask){
-      pageData.spearktext = `提醒。${text}`;
-    }else if (pageData.tellType == TellyouType.remind_todo){
-      pageData.spearktext = `提醒。${text}。这个${atype}来自${person}。它超过预定的时间了。`;
-    }else if (pageData.tellType == TellyouType.remind_merge){
-      pageData.spearktext = `有${pageData.reminds.length}个提醒。有点多，可以关注一下冥王星中的活动。`;
-    }else if (pageData.tellType == TellyouType.at_agenda){
-      pageData.spearktext = `${person}@你。${text}。你可能需要去关注一下。`;
-    }else if (pageData.tellType == TellyouType.cancel_agenda ||pageData.tellType == TellyouType.cancel_planitem ){
-      pageData.spearktext = `你有一个${atype}被取消了。内容是${text}。`;
+      if (pageData.tellType == TellyouType.invite_planitem
+        || pageData.tellType == TellyouType.invite_agenda){
+        pageData.spearktext = `${person}有一个${atype}。内容是${text}。希望加入到你的冥王星。这个 ${atype} ${timeype} ${time}。已经${invites}`;
+
+      } else if (pageData.tellType == TellyouType.remind_planitem
+        || pageData.tellType == TellyouType.remind_agenda){
+        pageData.spearktext = `提醒。${text}。这个${atype}来自${person}`;
+
+      }else if (pageData.tellType == TellyouType.remind_minitask){
+        pageData.spearktext = `提醒。${text}`;
+      }else if (pageData.tellType == TellyouType.remind_todo){
+        pageData.spearktext = `提醒。${text}。这个${atype}来自${person}。它超过预定的时间了。`;
+      }else if (pageData.tellType == TellyouType.remind_merge){
+        pageData.spearktext = `有${pageData.reminds.length}个提醒。有点多，我就不说内容了，可以关注一下冥王星中的活动。`;
+      }else if (pageData.tellType == TellyouType.at_agenda){
+        pageData.spearktext = `${person}@你。${text}。你可能需要去关注一下。`;
+      }else if (pageData.tellType == TellyouType.cancel_agenda ||pageData.tellType == TellyouType.cancel_planitem ){
+        pageData.spearktext = `你有一个${atype}被取消了。内容是${text}。`;
+      }else{
+        pageData.spearktext = `小冥刚才做了${pageData.spearktext}`;
+      }
+
     }else{
-      pageData.spearktext = `小冥刚才做了${pageData.spearktext}`;
+      if (pageData.tellType == TellyouType.invite_planitem
+        || pageData.tellType == TellyouType.invite_agenda){
+        pageData.spearktext = `${person}共享一个${atype}给你。`;
+      } else if (pageData.tellType == TellyouType.remind_planitem
+        || pageData.tellType == TellyouType.remind_agenda){
+        pageData.spearktext = `${atype}提醒`;
+      }else if (pageData.tellType == TellyouType.remind_minitask){
+        pageData.spearktext = `提醒。${text}`;
+      }else if (pageData.tellType == TellyouType.remind_todo){
+        pageData.spearktext = `重要事项中一个活动提醒`;
+      }else if (pageData.tellType == TellyouType.remind_merge){
+        pageData.spearktext = `有${pageData.reminds.length}个提醒。`;
+      }else if (pageData.tellType == TellyouType.at_agenda){
+        pageData.spearktext = `${person}@你。${text}。你可能需要去关注一下。`;
+      }else if (pageData.tellType == TellyouType.cancel_agenda ||pageData.tellType == TellyouType.cancel_planitem ){
+        pageData.spearktext = `你有一个${atype}被取消了。`;
+      }else{
+        pageData.spearktext = `小冥刚才做了${pageData.spearktext}`;
+      }
     }
 
   }

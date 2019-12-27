@@ -1284,14 +1284,22 @@ export class CalendarService extends BaseService {
    *
    * @author leon_xi@163.com
    **/
-  async getPlanItem(jti: string): Promise<PlanItemData> {
+  async getPlanItem(jti: string,getdel?:boolean ): Promise<PlanItemData> {
     this.assertEmpty(jti);       // 入参不能为空
 
     let planitemdb: JtaTbl = new JtaTbl();
 
-    let sql: string = `select * from gtd_jta where jti = ? and del = ?`;
+    if (getdel){
 
-    planitemdb = await this.sqlExce.getExtOneByParam<JtaTbl>(sql, [jti, DelType.undel]);
+      let sql: string = `select * from gtd_jta where jti = ? `;
+
+      planitemdb = await this.sqlExce.getExtOneByParam<JtaTbl>(sql, [jti]);
+    }else{
+
+      let sql: string = `select * from gtd_jta where jti = ? and del = ?`;
+
+      planitemdb = await this.sqlExce.getExtOneByParam<JtaTbl>(sql, [jti, DelType.undel]);
+    }
 
     if (!planitemdb) return null;
 
