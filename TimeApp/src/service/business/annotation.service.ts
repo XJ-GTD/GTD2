@@ -258,10 +258,11 @@ export class AnnotationService extends BaseService {
     let sq = ` select attbl.*, count(attbl.obi) atcount, max(attbl.dt) maxdt
                 from (select gtd_at.*, gtd_b.ran, substr(dt, 1, 11) d
                         from gtd_at
-                        left join gtd_b on gtd_at.ui = gtd_b.ui
+                        left join gtd_b on gtd_at.rc = gtd_b.rc
                        where dt > ?
-                         and gs = '1') attbl
-               group by attbl.ui, attbl.obi, attbl.d
+                         and gs = '1') attbl ,gtd_ev ev 
+               where attbl.obi = ev.evi and attbl.obt = 'event' and ev.del <> 'del'
+               group by attbl.ui, attbl.obi, attbl.d 
                order by attbl.dt desc `
     ret = await this.sqlExce.getExtLstByParam<Annotation>(sq,[d]);
     return ret;
