@@ -49,22 +49,20 @@ export class PersonRestful {
 
     return new Promise((resolve, reject) => {
       let url: UrlEntity = this.config.getRestFulUrl("AIG");
-      let urlEntity: UrlEntity = new UrlEntity();
-      urlEntity.url = url.url;
-      urlEntity.key = url.key;
-      urlEntity.desc = url.desc;
-      urlEntity.url = urlEntity.url.replace("{phoneno}",phoneno);
-      this.request.get(urlEntity).then(data => {
+      let urlproxy: UrlEntity = this.config.getRestFulUrl("PAIG");
+
+      this.request.post(urlproxy, {
+        path: urlEntity.url.replace("{phoneno}", phoneno),
+        method: "get"
+      }).then(data => {
         //处理返回结果
         // bsModel.code = data.errcode;
         // bsModel.message = data.errmsg;
         // bsModel.data = data.data;
         resolve(data.data);
-
       }).catch(error => {
         //处理返回错误
         reject();
-
       })
     });
 

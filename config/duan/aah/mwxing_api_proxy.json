@@ -1,0 +1,21 @@
+{
+  "_id": ObjectID("5e05c0a012876b0007060956"),
+  "name": "冥王星接口方向同步调用",
+  "trigger": "mwxing_api_proxy",
+  "parameters": [
+    "query",
+    "callback"
+  ],
+  "follows": [
+    {
+      "name": "本地调用服务接口",
+      "trigger": "exc",
+      "parameters": [
+        "method;$.parent.parameters.query.method",
+        "urlabs;$.parent.parameters.query.path",
+        "data;$.parent.parameters.query",
+        "callback;$.parent.parameters.callback"
+      ]
+    }
+  ]
+}
