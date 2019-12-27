@@ -17,6 +17,83 @@
        "trigger": {
          "flowid": "mwxing_webhooks_api_proxy"
        }
+     },
+     {
+       "url": "/aup/dologin",
+       "params": [],
+       "headers": ["lt", "pi", "pv", "di", "dt", "ai"],
+       "response": {
+         "passthrough": false
+       },
+       "trigger": {
+         "flowid": "mwxing_api_proxy"
+       }
+     },
+     {
+       "url": "/aup/verifycode",
+       "params": [],
+       "headers": ["lt", "pi", "pv", "di", "dt", "ai"],
+       "response": {
+         "passthrough": false
+       },
+       "trigger": {
+         "flowid": "mwxing_api_proxy"
+       }
+     },
+     {
+       "url": "/aup/doregister",
+       "params": [],
+       "headers": ["lt", "pi", "pv", "di", "dt", "ai"],
+       "response": {
+         "passthrough": false
+       },
+       "trigger": {
+         "flowid": "mwxing_api_proxy"
+       }
+     },
+     {
+       "url": "/aup/user/:unionid",
+       "params": ["unionid"],
+       "headers": ["lt", "pi", "pv", "di", "dt", "ai"],
+       "response": {
+         "passthrough": false
+       },
+       "trigger": {
+         "flowid": "mwxing_api_proxy"
+       }
+     },
+     {
+       "url": "/aup/user/:phoneno/userinfo",
+       "params": ["phoneno"],
+       "headers": ["lt", "pi", "pv", "di", "dt", "ai"],
+       "response": {
+         "passthrough": false
+       },
+       "trigger": {
+         "flowid": "mwxing_api_proxy"
+       }
+     },
+     {
+       "url": "/aup/user/multi/usersinfo",
+       "params": [],
+       "headers": ["lt", "pi", "pv", "di", "dt", "ai"],
+       "response": {
+         "passthrough": false
+       },
+       "trigger": {
+         "flowid": "mwxing_api_proxy"
+       }
+     },
+     {
+       "url": "/aup/user/:phoneno/avatar/json",
+       "params": ["phoneno"],
+       "headers": ["lt", "pi", "pv", "di", "dt", "ai"],
+       "response": {
+         "passthrough": false
+       },
+       "trigger": {
+         "flowid": "mwxing_api_proxy"
+       }
      }
-  ]
+   ]
 }

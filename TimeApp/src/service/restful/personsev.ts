@@ -49,20 +49,22 @@ export class PersonRestful {
 
     return new Promise((resolve, reject) => {
       let url: UrlEntity = this.config.getRestFulUrl("AIG");
-      let urlproxy: UrlEntity = this.config.getRestFulUrl("PROXY");
-
-      this.request.post(urlproxy, {
-        path: url.url.replace("{phoneno}", phoneno),
-        method: "get"
-      }).then(data => {
+      let urlEntity: UrlEntity = new UrlEntity();
+      urlEntity.url = url.url;
+      urlEntity.key = url.key;
+      urlEntity.desc = url.desc;
+      urlEntity.url = urlEntity.url.replace("{phoneno}",phoneno);
+      this.request.get(urlEntity).then(data => {
         //处理返回结果
         // bsModel.code = data.errcode;
         // bsModel.message = data.errmsg;
         // bsModel.data = data.data;
         resolve(data.data);
+
       }).catch(error => {
         //处理返回错误
         reject();
+
       })
     });
 
@@ -73,13 +75,11 @@ export class PersonRestful {
 
     return new Promise((resolve, reject) => {
       let url: UrlEntity = this.config.getRestFulUrl("AIGS");
-      let urlproxy: UrlEntity = this.config.getRestFulUrl("PROXY");
-
-      this.request.post(urlproxy, {
-        path: url.url,
-        method: "post",
-        phonenos: phonenos
-      }).then(data => {
+      let urlEntity: UrlEntity = new UrlEntity();
+      urlEntity.url = url.url;
+      urlEntity.key = url.key;
+      urlEntity.desc = url.desc;
+      this.request.post(urlEntity, {phonenos: phonenos}).then(data => {
         //处理返回结果
         resolve(data.data);
 
@@ -120,12 +120,12 @@ export class PersonRestful {
 
     return new Promise((resolve, reject) => {
       let url: UrlEntity = this.config.getRestFulUrl("AIU");
-      let urlproxy: UrlEntity = this.config.getRestFulUrl("PROXY");
-
-      this.request.post(urlproxy, {
-        path: url.url.replace("{unionid}", unionid),
-        method: "get"
-      }).then(data => {
+      let urlEntity: UrlEntity = new UrlEntity();
+      urlEntity.url = url.url;
+      urlEntity.key = url.key;
+      urlEntity.desc = url.desc;
+      urlEntity.url = urlEntity.url.replace("{unionid}",unionid);
+      this.request.get(urlEntity).then(data => {
         //处理返回结果
         resolve(data.data);
 
