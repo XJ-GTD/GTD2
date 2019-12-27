@@ -117,21 +117,25 @@ public class MainVerticle extends AbstractVerticle {
 		JsonObject query = new JsonObject();
 		
 		if (params.size() > 0) {
-			params.forEach(action -> {
-				String param = (String) action;
+			List pl = params.getList();
+			
+			for (Object po : pl) {
+				String param = (String) po;
 				
 				query.put(param, ctx.pathParam(param));
-			});
+			}
 		}
 
-		JsonObject headerparams = new JsonObject();
-
 		if (headers.size() > 0) {
-			headers.forEach(action -> {
-				String name = (String) action;
+			JsonObject headerparams = new JsonObject();
+
+			List pl = headers.getList();
+			
+			for (Object po : pl) {
+				String name = (String) po;
 				
 				headerparams.put(name, ctx.request().getHeader(name));
-			});
+			}
 			
 			query.put("headers", headerparams);
 		}
@@ -168,7 +172,7 @@ public class MainVerticle extends AbstractVerticle {
 		JsonObject body = new JsonObject();
 		
 		if (strbody != null && !"".equals(strbody.trim())) {
-			ctx.getBodyAsJson();
+			body = ctx.getBodyAsJson();
 		}
 		
 		query.put("body", body);
