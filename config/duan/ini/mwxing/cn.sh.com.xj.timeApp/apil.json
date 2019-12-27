@@ -6,6 +6,7 @@
 {"name":"PL", "value":"https://pluto.guobaa.com/aup/dologin", "desc":"密码登录"},
 {"name":"AIU", "value":"https://pluto.guobaa.com/aup/user/{unionid}", "desc":"帐户信息更新"},
 {"name":"AIG", "value":"https://pluto.guobaa.com/aup/user/{phoneno}/userinfo", "desc":"帐户信息获取"},
+{"name":"PROXY", "value":"https://pluto.guobaa.com/cdc/mwxing_api_proxy/json/synctrigger", "desc":"帐户信息获取"},
 {"name":"AAG", "value":"https://pluto.guobaa.com/aup/user/{phoneno}/avatar/json", "desc":"帐户头像获取"},
 {"name":"MP", "value":"https://pluto.guobaa.com/aup/user/{unionid}", "desc":"修改密码"},
 {"name":"B", "value":"https://pluto.guobaa.com/bac/backup", "desc":"备份"},

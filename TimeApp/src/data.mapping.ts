@@ -172,6 +172,8 @@ export class FsData {
   si: string=""; //日程事件ID
   isbla:boolean=false; //默认非黑名单
   bi :string ="";//组id
+  rob:string="";//设定的铃声
+  utt:number=0;//更新时间
 }
 
 
