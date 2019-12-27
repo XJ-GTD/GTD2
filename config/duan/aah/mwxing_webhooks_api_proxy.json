@@ -6,6 +6,7 @@
     "webhookowner",
     "version",
     "observer",
+    "params",
     "header",
     "body"
   ],
@@ -17,6 +18,7 @@
         "method;post",
         "urlabs;http://sa-aag:8080/aag/webhooks/#{webhookowner}/#{version}/#{observer}",
         "header;$.parent.parameters.header",
+        "params;$.parent.parameters.params",
         "data;$.parent.parameters.body"
       ]
     }

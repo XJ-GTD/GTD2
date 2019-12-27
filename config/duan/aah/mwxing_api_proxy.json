@@ -3,7 +3,11 @@
   "name": "冥王星接口方向同步调用",
   "trigger": "mwxing_api_proxy",
   "parameters": [
-    "query",
+    "method",
+    "path",
+    "params",
+    "header",
+    "body",
     "callback"
   ],
   "follows": [
@@ -13,8 +17,10 @@
       "parameters": [
         "method;$.parent.parameters.query.method",
         "urlabs;$.parent.parameters.query.path",
-        "data;$.parent.parameters.query",
-        "callback;$.parent.parameters.callback"
+        "header;$.parent.parameters.header",
+        "params;$.parent.parameters.params",
+        "callback;$.parent.parameters.callback",
+        "data;$.parent.parameters.body"
       ]
     }
   ]
