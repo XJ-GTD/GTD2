@@ -137,7 +137,7 @@ public class MainVerticle extends AbstractVerticle {
 				headerparams.put(name, ctx.request().getHeader(name));
 			}
 			
-			query.put("headers", headerparams);
+			query.put("header", headerparams);
 		}
 		
 		Boolean passthrough = response.getBoolean("passthrough", Boolean.TRUE);
