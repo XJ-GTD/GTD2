@@ -78,7 +78,9 @@ export class DataConfig {
   //设置对提醒类的开关
   //public static version: number = 13;
   //设置对AI语音的开关
-  public static version: number = 14;
+  //public static version: number = 14;
+  //对他人提醒铃声
+  public static version: number = 15;
 
   public static RABBITMQ_STATUS: string = "";
 
