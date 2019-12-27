@@ -66,7 +66,7 @@ export class AtmePage {
               private util:UtilService) {
 
     annotationService.delAnnotation();
-    annotationService.getAnnotation().then(data =>{
+    annotationService.fetchAnnotations().then(data =>{
       this.annotationList = data;
     });
 

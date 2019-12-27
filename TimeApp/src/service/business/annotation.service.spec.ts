@@ -193,7 +193,7 @@ describe('AnnotationService test suite', () => {
 
 
         let ats: Array<Annotation> = new Array<Annotation>();
-        ats =  await annotationService.getAnnotation();
+        ats =  await annotationService.fetchAnnotations();
         expect(ats).toBeDefined();
         expect(ats.length).toBeDefined(1);
    });
@@ -214,7 +214,7 @@ describe('AnnotationService test suite', () => {
        await annotationService.delAnnotation();
        //查询
        let ats: Array<Annotation> = new Array<Annotation>();
-       ats =  await annotationService.getAnnotation();
+       ats =  await annotationService.fetchAnnotations();
        expect(ats).toBeDefined();
        expect(ats.length).toBeDefined(0);
   });
@@ -236,13 +236,13 @@ describe('AnnotationService test suite', () => {
       await annotationService.delAnnotation();
       //查询
       let ats: Array<Annotation> = new Array<Annotation>();
-      ats =  await annotationService.getAnnotation();
+      ats =  await annotationService.fetchAnnotations();
       expect(ats).toBeDefined();
       expect(ats.length).toBeDefined(1);
     });
 
 
-   it('Case 4 - 1  getAnnotation 查询参与人信息 - 查询条件', async () => {
+   it('Case 4 - 1  fetchAnnotations 查询参与人信息 - 查询条件', async () => {
 
         let at: Annotation = new Annotation();
         at.obi = util.getUuid();
@@ -267,7 +267,7 @@ describe('AnnotationService test suite', () => {
 
         //查询
         let ats: Array<Annotation> = new Array<Annotation>();
-        ats =  await annotationService.getAnnotation();
+        ats =  await annotationService.fetchAnnotations();
         expect(ats).toBeDefined();
         expect(ats.length).toBeDefined(2);
     });
@@ -303,7 +303,7 @@ describe('AnnotationService test suite', () => {
         expect(pullAnnotations2.length).toBeDefined(1);
         //查询
         let ats: Array<Annotation> = new Array<Annotation>();
-        ats =  await annotationService.getAnnotation();
+        ats =  await annotationService.fetchAnnotations();
         expect(ats).toBeDefined();
         expect(ats.length).toBeDefined(2);
       });
@@ -334,7 +334,7 @@ describe('AnnotationService test suite', () => {
         expect(pullAnnotations2.length).toBeDefined(1);
         //查询
         let ats: Array<Annotation> = new Array<Annotation>();
-        ats =  await annotationService.getAnnotation();
+        ats =  await annotationService.fetchAnnotations();
         expect(ats).toBeDefined();
         expect(ats.length).toBeDefined(2);
       });
