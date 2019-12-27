@@ -252,7 +252,7 @@ export class AnnotationService extends BaseService {
     await this.sqlExce.batExecSqlByParam([sq,[d]]);
   }
 
-  async getAnnotation(): Promise<Array<Annotation>>{
+  async fetchAnnotations(): Promise<Array<Annotation>>{
     let ret : Array<Annotation>;
     let d : string  = moment().add( -1 ,'days').format("YYYY/MM/DD HH:mm");
     let sq = ` select attbl.*, count(attbl.obi) atcount, max(attbl.dt) maxdt
@@ -264,6 +264,14 @@ export class AnnotationService extends BaseService {
                group by attbl.ui, attbl.obi, attbl.d
                order by attbl.dt desc `
     ret = await this.sqlExce.getExtLstByParam<Annotation>(sq,[d]);
+    return ret;
+  }
+
+  async getAnnotation(annotationId :string): Promise<Annotation>{
+    let ret : Annotation;
+    let at = new AtTbl();
+    at.ati = annotationId;
+    ret = await this.sqlExce.getOneByParam<Annotation>(at);
     return ret;
   }
 }
