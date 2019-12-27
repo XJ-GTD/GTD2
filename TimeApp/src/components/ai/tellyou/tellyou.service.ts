@@ -8,8 +8,8 @@ import {EventService, MiniTaskData} from "../../../service/business/event.servic
 import {CalendarService} from "../../../service/business/calendar.service";
 import * as moment from "moment";
 import {UserConfig} from "../../../service/config/user.config";
-import {_catch} from "rxjs/operator/catch";
 import {DataConfig} from "../../../service/config/data.config";
+import {AnnotationService} from "../../../service/business/annotation.service";
 
 @Injectable()
 export class TellyouService {
@@ -27,7 +27,8 @@ export class TellyouService {
   constructor(private utilService: UtilService,
               private timeoutService: TimeOutService,
               private eventService:EventService,
-              private calendarService:CalendarService,) {
+              private calendarService:CalendarService,
+              private annotationService:AnnotationService,) {
     this.init();
 
 
@@ -73,7 +74,7 @@ export class TellyouService {
 
             this.createtellData([tellYouData]).then((datas)=>{
 
-              if (datas.length > 0){
+              if (datas.length > 0  && datas[0].sn){
                 Object.assign(pageData,datas[0]);
                 time1 = 10;
                 time2 = 30000;
@@ -280,7 +281,7 @@ export class TellyouService {
       let searchid = tellyoubase.dataid?tellyoubase.dataid:tellyoubase.id;
 
       if(tellyoubase.idtype == TellyouIdType.Agenda){
-        let agendaData = await  this.eventService.getAgenda(searchid,true);
+        let agendaData = await  this.eventService.getAgenda(searchid,false);
         if (!agendaData){
           continue;
         }
@@ -290,6 +291,10 @@ export class TellyouService {
           pageData.sn= agendaData.evn; //内容主题
           pageData.repeat= agendaData.rtjson.text();//重复文字
           pageData.invites= agendaData.members.length; //邀请人数
+
+        if (tellyoubase.tellType == TellyouType.at_agenda){
+          this.annotationService.getAnnotation()
+        }
       }
 
       if(tellyoubase.idtype == TellyouIdType.PlanItem){
@@ -403,4 +408,5 @@ export class TellYou extends TellYouBase{
   systems: number;//剩余系统消息个数
   speakering:boolean = true;
   reminds:Array<TellYou>;// 合并提醒的数据集合
+  mp3:string = "9";//对方提醒的MP3
 }

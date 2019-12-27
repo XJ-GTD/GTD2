@@ -15,7 +15,7 @@ export class RemindfeedbackService {
   resouceMap:Array<any> = new Array<any>();
   resoucePlayMap:Map<string,MediaObject> = new Map<string,MediaObject>();
 
-  asset:string = this.file + 'www/assets/remind/';
+  asset:string = this.file.applicationDirectory + 'www/assets/remind/';
   mediaObject: MediaObject;
 
   constructor(private vibration: Vibration,private file: File,private media: Media) {
@@ -59,11 +59,12 @@ export class RemindfeedbackService {
     if (this.mediaObject){
       this.releaseMedia();
     }
-    this.vibration.vibrate([200,100,200,500]);
 
     this.mediaObject = this.resoucePlayMap.get(key);
 
     if (this.mediaObject){
+
+      this.vibration.vibrate([200,100,200,500]);
 
         this.mediaObject.onSuccess.subscribe(() => {
           this.releaseMedia();
@@ -73,7 +74,10 @@ export class RemindfeedbackService {
           this.releaseMedia();
           if (error) error();
         });
-      this.mediaObject.play();
+      this.mediaObject.play({
+        numberOfLoops: 1,
+        playAudioWhenScreenIsLocked:true
+      });
     }
   }
 
@@ -85,6 +89,7 @@ export class RemindfeedbackService {
       this.mediaObject.onError.subscribe(()=>{
       });
       this.mediaObject.stop();
+      this.mediaObject = null;
     }
 
   }

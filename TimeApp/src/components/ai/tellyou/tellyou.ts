@@ -9,6 +9,7 @@ import {ModalTranType, TellyouIdType, TellyouType} from "../../../data.enum";
 import {ScdPageParamter} from "../../../data.mapping";
 import {UserConfig} from "../../../service/config/user.config";
 import * as moment from "moment";
+import {RemindfeedbackService} from "../../../service/cordova/remindfeedback.service";
 
 /**
  * Generated class for the Hb01Page page.
@@ -137,7 +138,8 @@ export class TellYouComponent{
               private tellyouService: TellyouService,
               private assistantService: AssistantService,
               private emitService: EmitService,
-              private utilService: UtilService,) {
+              private utilService: UtilService,
+              private  remindfeedback:RemindfeedbackService) {
 
       this.tellyouService.regeditTellYou((tellYou:TellYou)=>{
         this.showPopper(tellYou);
@@ -149,6 +151,7 @@ export class TellYouComponent{
     this.tellYouData = new TellYou();
     this.changeDetectorRef.detectChanges();
     this.onClose.emit(true);
+    this.remindfeedback.remindAudioStop();
     this.assistantService.stopSpeak(false);
     this.tellyouService.resumeTellYou();
   }
@@ -160,6 +163,7 @@ export class TellYouComponent{
   showPopper(data: TellYou) {
 
     this.tellYouData = data;
+    let mp3 = "9";
 
     if (this.tellYouData.formperson != this.currentuser && this.tellYouData.formperson != ""){
       let friend = this.friends.find((val) => {
@@ -168,6 +172,7 @@ export class TellYouComponent{
 
       if (friend){
         this.tellYouData.formperson = friend.ran;
+        if (friend.rob) mp3 = friend.rob;
       }
     }else{
       this.tellYouData.formperson = "";
@@ -180,15 +185,26 @@ export class TellYouComponent{
     this.tellYouData.systems= this.tellyouService.getSystemslen();//剩余系统消息个数
 
     //语音播报
-
     this.assistantService.stopSpeak(false);
-    //语音播报
-    this.tellYouData.speakering = true;
-    this.assistantService.speakText(`${UserConfig.user.nickname} 你好。${this.tellYouData.spearktext} `).then(()=>{
-      this.tellYouData.speakering = false;
-      if (!this.changeDetectorRef['destroyed']) {
-        this.changeDetectorRef.detectChanges();
-      }
+
+    this.remindfeedback.remindAudio(this.tellYouData.mp3,()=>{
+      //语音播报
+      this.tellYouData.speakering = true;
+      this.assistantService.speakText(`${UserConfig.user.nickname} 你好。${this.tellYouData.spearktext} `).then(()=>{
+        this.tellYouData.speakering = false;
+        if (!this.changeDetectorRef['destroyed']) {
+          this.changeDetectorRef.detectChanges();
+        }
+      });
+    },()=>{
+      //语音播报
+      this.tellYouData.speakering = true;
+      this.assistantService.speakText(`${UserConfig.user.nickname} 你好。${this.tellYouData.spearktext} `).then(()=>{
+        this.tellYouData.speakering = false;
+        if (!this.changeDetectorRef['destroyed']) {
+          this.changeDetectorRef.detectChanges();
+        }
+      });
     });
 
     if (!this.changeDetectorRef['destroyed']) {

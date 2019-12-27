@@ -174,6 +174,7 @@ export class PsPage {
   }
 
   goBack() {
+    this.remindfeedbackService.remindAudioStop();
     this.navCtrl.pop();
   }
 

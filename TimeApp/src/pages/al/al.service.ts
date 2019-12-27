@@ -280,12 +280,9 @@ export class AlService {
 
 
         //允许进入后台模式
-        this.remindfeekback.initAudio();
-
         if (this.util.hasCordova()) {
           //全局网络监控
           this.networkService.monitorNetwork();
-
 
           this.feekback.initAudio();
 
