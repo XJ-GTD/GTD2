@@ -1,9 +1,10 @@
 import {Injectable} from "@angular/core";
 import {Vibration} from "@ionic-native/vibration";
+import {Media,MediaObject} from "@ionic-native/media";
 import {File} from "@ionic-native/file";
 
-declare var Media: any;
- ;
+// declare var Media: any;
+//  ;
 
 /**
  * 消息AI提醒处理
@@ -12,12 +13,12 @@ declare var Media: any;
 export class RemindfeedbackService {
 
   resouceMap:Array<any> = new Array<any>();
-  media:any;
-  // resoucePlayMap:Map<string,any> = new Map<string,any>();
+  resoucePlayMap:Map<string,MediaObject> = new Map<string,MediaObject>();
 
-  asset:string = this.file.applicationDirectory + 'www/assets/remind/';
+  asset:string = this.file + 'www/assets/remind/';
+  mediaObject: MediaObject;
 
-  constructor(private vibration: Vibration,private file: File) {
+  constructor(private vibration: Vibration,private file: File,private media: Media) {
 
     this.resouceMap =
       [{key:'1',name:"尽快",mp3:'1.mp3'},
@@ -37,14 +38,16 @@ export class RemindfeedbackService {
     //id为音频文件的唯一ID
     //assetPath音频资产的相对路径或绝对URL（包括http：//）
     //官网还有更多的配置，这里只需要两个参数就行了，后面的回调记得带上
-    // for (let r of this.resouceMap){
-    //   try{
-    //     let o = new Media(asset);
-    //     this.resoucePlayMap.set(r.key,o);
-    //
-    //   }catch (e) {
-    //   }
-    // }
+    for (let r of this.resouceMap){
+      try{
+        let o = this.media.create(this.asset + r.mp3);
+        this.resoucePlayMap.set(r.key,o);
+
+      }catch (e) {
+        console.log(e)
+
+      }
+    }
     return;
   }
 
@@ -53,31 +56,41 @@ export class RemindfeedbackService {
   }
 
   public remindAudio(key:string,succes:Function,error:Function){
-    this.vibration.vibrate([200,100,200,500]);
-    if (this.media){
+    if (this.mediaObject){
       this.releaseMedia();
     }
-    let mp3 = this.resouceMap.find((val)=>{
-      return val.key == key;
-    });
-    console.log(mp3.mp3);
-    this.media = new Media(this.asset + mp3.mp3,()=>{
-      succes();
-    },()=>{
-      error();
-    });
+    this.vibration.vibrate([200,100,200,500]);
 
-    this.media.play();
+    this.mediaObject = this.resoucePlayMap.get(key);
+
+    if (this.mediaObject){
+
+        this.mediaObject.onSuccess.subscribe(() => {
+          this.releaseMedia();
+          if (succes) succes();
+        });
+        this.mediaObject.onError.subscribe(()=>{
+          this.releaseMedia();
+          if (error) error();
+        });
+      this.mediaObject.play();
+    }
   }
 
   releaseMedia(){
-    this.media.stop();
-    this.media.release();
-    this.media = null;
+    if (this.mediaObject){
+
+      this.mediaObject.onSuccess.subscribe(() => {
+      });
+      this.mediaObject.onError.subscribe(()=>{
+      });
+      this.mediaObject.stop();
+    }
+
   }
 
   public remindAudioStop(){
-    if (this.media){
+    if (this.mediaObject){
       this.releaseMedia();
     }
   }
