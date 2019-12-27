@@ -1,0 +1,24 @@
+{
+  "_id": ObjectID("5e05e35612876b0007060958"),
+  "name": "冥王星网络钩子接口反向同步调用",
+  "trigger": "mwxing_webhooks_api_proxy",
+  "parameters": [
+    "webhookowner",
+    "version",
+    "observer",
+    "header",
+    "body"
+  ],
+  "follows": [
+    {
+      "name": "本地调用服务接口",
+      "trigger": "exc",
+      "parameters": [
+        "method;post",
+        "urlabs;http://sa-aag:8080/aag/webhooks/#{webhookowner}/#{version}/#{observer}",
+        "header;$.parent.parameters.header",
+        "data;$.parent.parameters.body"
+      ]
+    }
+  ]
+}

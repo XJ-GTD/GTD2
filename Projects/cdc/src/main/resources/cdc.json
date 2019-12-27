@@ -5,5 +5,18 @@
   "mongo.keepalive": true,
   "stomp.server.host": "sa-amq",
   "stomp.server.port": 5672,
-  "amq.app.id": "cdc"
+  "amq.app.id": "cdc",
+  "proxy": [
+     {
+       "url": "/aag/webhooks/:webhookowner/:version/:observer",
+       "params": ["webhookowner", "version", "observer"],
+       "headers": ["X-Hub-Signature"],
+       "response": {
+         "passthrough": true
+       },
+       "trigger": {
+         "flowid": "mwxing_webhooks_api_proxy"
+       }
+     }
+  ]
 }
