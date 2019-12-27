@@ -15,7 +15,8 @@ export class UTbl  implements ITbl{
   ic :string="";
   us :string="";
   uct :string="";
-  wtt :Number = 0;
+  rob :string="";
+  wtt :number = 0;
 
 
 
@@ -24,7 +25,7 @@ export class UTbl  implements ITbl{
 
     let sq ='create table if not exists gtd_u( ui varchar(50) primary key ,ai varchar(50)  ,' +
       'un varchar(10)  ,hiu varchar(200)  ,biy varchar(10)  ,rn varchar(10)  ,ic varchar(20)  ,' +
-      'us varchar(4)  ,uct varchar(11),wtt integer);';
+      'us varchar(4)  ,uct varchar(11),wtt integer,rob varchar(4));';
 
     return sq;
   }
@@ -51,6 +52,9 @@ export class UTbl  implements ITbl{
     }
     if(this.uct != null){
       sq = sq + ', uct="' + this.uct +'"';
+    }
+    if(this.rob != null){
+      sq = sq + ', rob="' + this.rob +'"';
     }
     if (sq != null && sq != ""){
       sq = sq.substr(1);
@@ -94,6 +98,9 @@ export class UTbl  implements ITbl{
     if(this.uct != null && this.uct!=""){
       sq = sq + ' and uct="' + this.uct +'"';
     }
+    if(this.rob != null && this.rob!=""){
+      sq = sq + ' and rob="' + this.rob +'"';
+    }
     sq = sq +';';
     return sq;
   }
@@ -106,24 +113,24 @@ export class UTbl  implements ITbl{
 
   inT():string {
     let sq ='insert into gtd_u ' +
-      '( ui ,ai ,un ,hiu ,biy ,rn ,ic ,us ,uct,wtt) values("'+ this.ui+'","'+ this.ai+'","'+this.un+ '"' +
+      '( ui ,ai ,un ,hiu ,biy ,rn ,ic ,us ,uct,wtt,rob) values("'+ this.ui+'","'+ this.ai+'","'+this.un+ '"' +
       ',"'+this.hiu+ '","'+this.biy+ '","'+this.rn+ '","'+this.ic+ '","'+ this.us + '","'+this.uct+ '"' +
-      ','+  moment().unix() +');';
+      ','+  moment().unix() +',"'+this.rob+ '");';
     return sq;
   }
 
   rpT():string {
     let sq ='replace into gtd_u ' +
-      '( ui ,ai ,un ,hiu ,biy ,rn ,ic ,us ,uct,wtt) values("'+ this.ui+'","'+ this.ai+'","'+this.un+ '"' +
+      '( ui ,ai ,un ,hiu ,biy ,rn ,ic ,us ,uct,wtt,rob) values("'+ this.ui+'","'+ this.ai+'","'+this.un+ '"' +
       ',"'+this.hiu+ '","'+this.biy+ '","'+this.rn+ '","'+this.ic+ '","'+ this.us + '","'+this.uct+ '"' +
-      ','+  moment().unix() +');';
+      ','+  moment().unix() +',"'+this.rob+ '");';
 
     return sq;
   }
 
   preT():string {
     let sq ='insert into gtd_u ' +
-      '( ui ,ai ,un ,hiu ,biy ,rn ,ic ,us ,uct,wtt) values(?, ?, ?, ?, ?, ?, ?, ?, ?, '+  moment().unix() +');';
+      '( ui ,ai ,un ,hiu ,biy ,rn ,ic ,us ,uct,wtt,rob) values(?, ?, ?, ?, ?, ?, ?, ?, ?, '+  moment().unix() +',?);';
     return sq;
   }
 }
