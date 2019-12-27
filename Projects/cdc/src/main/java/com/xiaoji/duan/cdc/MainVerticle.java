@@ -117,13 +117,17 @@ public class MainVerticle extends AbstractVerticle {
 		JsonObject query = new JsonObject();
 		
 		if (params.size() > 0) {
+			JsonObject pathparams = new JsonObject();
 			List pl = params.getList();
 			
 			for (Object po : pl) {
 				String param = (String) po;
 				
 				query.put(param, ctx.pathParam(param));
+				pathparams.put(param, ctx.pathParam(param));
 			}
+
+			query.put("params", pathparams);
 		}
 
 		if (headers.size() > 0) {
