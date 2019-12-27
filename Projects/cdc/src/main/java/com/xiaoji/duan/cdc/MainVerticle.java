@@ -75,13 +75,14 @@ public class MainVerticle extends AbstractVerticle {
 				JsonObject def = (JsonObject) proxydef;
 				
 				String url = def.getString("url");
+				String path = def.getString("path", "");
 				JsonArray params = def.getJsonArray("params", new JsonArray());
 				JsonArray headers = def.getJsonArray("headers", new JsonArray());
 				JsonObject response = def.getJsonObject("response", new JsonObject());
 				JsonObject trigger = def.getJsonObject("trigger", new JsonObject());
 				
 				router.route(url).handler(BodyHandler.create());
-				router.route(url).handler(ctx -> this.proxy(ctx, params, headers, response, trigger));
+				router.route(url).handler(ctx -> this.proxy(ctx, path, params, headers, response, trigger));
 			});
 		}
 		
@@ -113,17 +114,27 @@ public class MainVerticle extends AbstractVerticle {
 		});
 	}
 
-	private void proxy(RoutingContext ctx, JsonArray params, JsonArray headers, JsonObject response, JsonObject trigger) {
+	private void proxy(RoutingContext ctx, String path, JsonArray params, JsonArray headers, JsonObject response, JsonObject trigger) {
 		JsonObject query = new JsonObject();
 		
+		query.put("method", ctx.request().method().toString().toLowerCase());
+		
+		if (!"".equals(path)) {
+			query.put("path", path);
+		}
+		
 		if (params.size() > 0) {
+			JsonObject pathparams = new JsonObject();
 			List pl = params.getList();
 			
 			for (Object po : pl) {
 				String param = (String) po;
 				
 				query.put(param, ctx.pathParam(param));
+				pathparams.put(param, ctx.pathParam(param));
 			}
+
+			query.put("params", pathparams);
 		}
 
 		if (headers.size() > 0) {
@@ -151,10 +162,22 @@ public class MainVerticle extends AbstractVerticle {
 				if (handler.succeeded()) {
 					JsonObject result = handler.result();
 					
-					if (result == null)
-						result = new JsonObject();
-					System.out.println("responsed " +result.size());
-					ctx.response().putHeader("Content-Type", "application/json; charset=utf-8").end(result.encode());
+					JsonObject resp = null;
+					
+					if (result != null) {
+						System.out.println("result " + result.encode());
+
+						resp = result.getJsonObject("body", new JsonObject())
+								.getJsonObject("context", new JsonObject())
+								.getJsonObject("executed", new JsonObject())
+								.getJsonObject("response", new JsonObject());
+					}
+					
+					if (resp == null)
+						resp = new JsonObject();
+					
+					System.out.println("responsed " + resp.encode());
+					ctx.response().putHeader("Content-Type", "application/json; charset=utf-8").end(resp.encode());
 				} else {
 					handler.cause().printStackTrace();
 					ctx.response().putHeader("Content-Type", "application/json; charset=utf-8").end("{}");
@@ -411,7 +434,7 @@ public class MainVerticle extends AbstractVerticle {
 		producer.end();
 
 	}
-	
+
 	private void subscribeTrigger(Future future, String trigger) {
 		MessageConsumer<JsonObject> consumer = bridge.createConsumer(trigger);
 		System.out.println("Consumer " + trigger + " subscribed.");

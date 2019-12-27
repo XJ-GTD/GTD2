@@ -50,17 +50,29 @@ export class AnnotationService extends BaseService {
 
         annotation.tb = SyncType.synch;
         if (UserConfig.account.id == annotation.ui){
-          annotation.gs = anyenum.GsType.self;
+
+          for (let rc of annotation.rcs){
+            let at = new AtTbl();
+            let an = new Annotation();
+            Object.assign(an,annotation);
+            an.ati = this.util.getUuid();
+            an.gs = anyenum.GsType.self;
+            an.rc = rc;
+            Object.assign(at,an);
+            sqlparam.push(at.rpTParam());
+            saved.push(an);
+          }
+
         }else{
-          annotation.ati = this.util.getUuid();
+
           annotation.gs = anyenum.GsType.him;
           annotation.rc = "";
-        }
 
-        let at = new AtTbl();
-        Object.assign(at,annotation);
-        sqlparam.push(at.rpTParam());
-        saved.push(annotation);
+          let at = new AtTbl();
+          Object.assign(at,annotation);
+          sqlparam.push(at.rpTParam());
+          saved.push(annotation);
+        }
       }
 
       await this.sqlExce.batExecSqlByParam(sqlparam);
@@ -172,7 +184,8 @@ export class AnnotationService extends BaseService {
         sync.src = annotation.ui;
         //同一时间会产生多个at，对应生成多个数据放入at表中，上传到服务器也需要并成一条上传服务器，
         //根据obi+dt来上传
-        sync.id = annotation.obi + annotation.dt;
+        annotation.ati = this.util.getUuid();
+        sync.id = annotation.ati;
         sync.type = "Annotation";
         sync.title = annotation.content;
         sync.datetime = annotation.dt;
@@ -260,8 +273,9 @@ export class AnnotationService extends BaseService {
                         from gtd_at
                         left join gtd_b on gtd_at.ui = gtd_b.ui
                        where dt > ?
-                         and gs = '1') attbl
-               group by attbl.ui, attbl.obi, attbl.d
+                         and gs = '1') attbl ,gtd_ev ev 
+               where attbl.obi = ev.evi and attbl.obt = 'event' and ev.del <> 'del'
+               group by attbl.ui, attbl.obi, attbl.d 
                order by attbl.dt desc `
     ret = await this.sqlExce.getExtLstByParam<Annotation>(sq,[d]);
     return ret;
