@@ -67,6 +67,24 @@ public class MainVerticle extends AbstractVerticle {
 		router.route("/cdc/static/*").handler(staticfiles);
 		router.route("/cdc").pathRegex("\\/.+\\.json").handler(staticfiles);
 
+		// 注册动态代理地址，用于反向调用
+		JsonArray proxy = config().getJsonArray("proxy", new JsonArray());
+		
+		if (proxy.size() > 0) {
+			proxy.forEach(proxydef -> {
+				JsonObject def = (JsonObject) proxydef;
+				
+				String url = def.getString("url");
+				JsonArray params = def.getJsonArray("params", new JsonArray());
+				JsonArray headers = def.getJsonArray("headers", new JsonArray());
+				JsonObject response = def.getJsonObject("response", new JsonObject());
+				JsonObject trigger = def.getJsonObject("trigger", new JsonObject());
+				
+				router.route(url).handler(BodyHandler.create());
+				router.route(url).handler(ctx -> this.proxy(ctx, params, headers, response, trigger));
+			});
+		}
+		
 		router.route("/cdc/:caculateid/starter").handler(BodyHandler.create());
 		router.route("/cdc/:caculateid/starter").consumes("application/json").produces("application/json").handler(this::caculatestarter);
 
@@ -95,6 +113,79 @@ public class MainVerticle extends AbstractVerticle {
 		});
 	}
 
+	private void proxy(RoutingContext ctx, JsonArray params, JsonArray headers, JsonObject response, JsonObject trigger) {
+		JsonObject query = new JsonObject();
+		
+		if (params.size() > 0) {
+			List pl = params.getList();
+			
+			for (Object po : pl) {
+				String param = (String) po;
+				
+				query.put(param, ctx.pathParam(param));
+			}
+		}
+
+		if (headers.size() > 0) {
+			JsonObject headerparams = new JsonObject();
+
+			List pl = headers.getList();
+			
+			for (Object po : pl) {
+				String name = (String) po;
+				
+				headerparams.put(name, ctx.request().getHeader(name));
+			}
+			
+			query.put("header", headerparams);
+		}
+		
+		Boolean passthrough = response.getBoolean("passthrough", Boolean.TRUE);
+		
+		if (passthrough) {
+			ctx.response().end("OK");
+		} else {
+			Future<JsonObject> future = Future.future();
+			
+			future.setHandler(handler -> {
+				if (handler.succeeded()) {
+					JsonObject result = handler.result();
+					
+					if (result == null)
+						result = new JsonObject();
+					System.out.println("responsed " +result.size());
+					ctx.response().putHeader("Content-Type", "application/json; charset=utf-8").end(result.encode());
+				} else {
+					handler.cause().printStackTrace();
+					ctx.response().putHeader("Content-Type", "application/json; charset=utf-8").end("{}");
+				}
+			});
+			
+			String address = config().getString("amq.app.id", "cdc") + "." + UUID.randomUUID().toString();
+			subscribeTrigger(future, address);
+			
+			query.put("callback", new JsonArray().add(address));
+		}
+		
+		String strbody = ctx.getBodyAsString();
+		
+		JsonObject body = new JsonObject();
+		
+		if (strbody != null && !"".equals(strbody.trim())) {
+			body = ctx.getBodyAsJson();
+		}
+		
+		query.put("body", body);
+
+		String flowid = trigger.getString("flowid");
+		
+		MessageProducer<JsonObject> producer = bridge.createProducer(flowid);
+		producer.send(new JsonObject()
+				.put("body", new JsonObject()
+						.put("context", query)));
+		producer.end();
+	}
+	
 	private void querytrigger(RoutingContext ctx) {
 		System.out.println("headers: " + ctx.request().headers());
 		String flowid = ctx.request().getParam("flowid");
