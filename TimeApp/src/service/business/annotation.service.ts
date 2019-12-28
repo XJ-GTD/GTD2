@@ -96,6 +96,8 @@ export class AnnotationService extends BaseService {
 
     let anids :Array<string> = new Array<string>();
     for (let id of ids ){
+      if (!id)  continue;
+      
       let tmps : Array<string> = id.split(",");
       let s = "";
       if (tmps.length > 1){
@@ -282,9 +284,9 @@ export class AnnotationService extends BaseService {
                         from gtd_at
                         left join gtd_b on gtd_at.ui = gtd_b.ui
                        where dt > ?
-                         and gs = '1') attbl ,gtd_ev ev 
+                         and gs = '1') attbl ,gtd_ev ev
                where attbl.obi = ev.evi and attbl.obt = 'event' and ev.del <> 'del'
-               group by attbl.ui, attbl.obi, attbl.d 
+               group by attbl.ui, attbl.obi, attbl.d
                order by attbl.dt desc `
     ret = await this.sqlExce.getExtLstByParam<Annotation>(sq,[d]);
     return ret;
