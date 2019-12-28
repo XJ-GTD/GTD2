@@ -55,6 +55,18 @@
        }
      },
      {
+       "url": "/sha/plan/buildin/download",
+       "path": "http://sa-sha:8080/sha/plan/buildin/download",
+       "params": [],
+       "headers": ["lt", "pi", "pv", "di", "dt", "ai"],
+       "response": {
+         "passthrough": false
+       },
+       "trigger": {
+         "flowid": "mwxing_api_proxy"
+       }
+     },
+     {
        "url": "/aba/user/mwxing/access",
        "path": "http://nginx/aba/user/mwxing/access",
        "params": [],
