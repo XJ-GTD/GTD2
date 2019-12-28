@@ -19,6 +19,42 @@
        }
      },
      {
+       "url": "/bla/target/add",
+       "path": "http://sa-bla:8080/bla/target/add",
+       "params": [],
+       "headers": ["lt", "pi", "pv", "di", "dt", "ai"],
+       "response": {
+         "passthrough": false
+       },
+       "trigger": {
+         "flowid": "mwxing_api_proxy"
+       }
+     },
+     {
+       "url": "/bla/target/remove",
+       "path": "http://sa-bla:8080/bla/target/remove",
+       "params": [],
+       "headers": ["lt", "pi", "pv", "di", "dt", "ai"],
+       "response": {
+         "passthrough": false
+       },
+       "trigger": {
+         "flowid": "mwxing_api_proxy"
+       }
+     },
+     {
+       "url": "/bla/list",
+       "path": "http://sa-bla:8080/bla/list",
+       "params": [],
+       "headers": ["lt", "pi", "pv", "di", "dt", "ai"],
+       "response": {
+         "passthrough": false
+       },
+       "trigger": {
+         "flowid": "mwxing_api_proxy"
+       }
+     },
+     {
        "url": "/aba/user/mwxing/access",
        "path": "http://nginx/aba/user/mwxing/access",
        "params": [],
