@@ -119,6 +119,18 @@ public class MainVerticle extends AbstractVerticle {
 		
 		query.put("method", ctx.request().method().toString().toLowerCase());
 		
+		if (ctx.queryParams().size() > 0) {
+			JsonObject querys = new JsonObject();
+			
+			for (Entry<String, String> entry : ctx.queryParams().entries()) {
+				querys.put(entry.getKey(), entry.getValue());
+			}
+			
+			query.put("querys", querys);
+		} else {
+			query.put("querys", new JsonObject());
+		}
+		
 		if (!"".equals(path)) {
 			query.put("path", path);
 		}

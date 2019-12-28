@@ -19,6 +19,18 @@
        }
      },
      {
+       "url": "/aba/user/mwxing/access",
+       "path": "http://nginx/aba/user/mwxing/access",
+       "params": [],
+       "headers": ["lt", "pi", "pv", "di", "dt", "ai"],
+       "response": {
+         "passthrough": false
+       },
+       "trigger": {
+         "flowid": "mwxing_api_proxy"
+       }
+     },
+     {
        "url": "/aup/dologin",
        "path": "http://sa-aup:8080/aup/dologin",
        "params": [],

@@ -7,6 +7,7 @@
     "path",
     "params",
     "header",
+    "querys",
     "body",
     "callback"
   ],
@@ -19,6 +20,7 @@
         "urlabs;$.parent.parameters.path",
         "header;$.parent.parameters.header",
         "params;$.parent.parameters.params",
+        "querys;$.parent.parameters.querys",
         "callback;$.parent.parameters.callback",
         "data;$.parent.parameters.body"
       ]
