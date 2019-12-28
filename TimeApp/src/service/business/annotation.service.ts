@@ -94,7 +94,16 @@ export class AnnotationService extends BaseService {
   async acceptSyncAnnotation(ids: Array<string>) {
     let sqls: Array<any> = new Array<any>();
 
-    let sql: string = `update gtd_at set tb = ? where obt = ? and  obi || dt in ('` + ids.join(`', '`) + `')`;
+    let anids :Array<string> = new Array<string>();
+    for (let id of ids ){
+      let tmps : Array<string> = id.split(",");
+      let s = "";
+      if (tmps.length > 1){
+         s = tmps[1];
+      }
+      anids.push(s);
+    }
+    let sql: string = `update gtd_at set tb = ? where obt = ? and  obi || dt in ('` + anids.join(`', '`) + `')`;
 
     sqls.push([sql, [SyncType.synch, anyenum.ObjectType.Event]]);
 
@@ -184,7 +193,7 @@ export class AnnotationService extends BaseService {
         sync.src = annotation.ui;
         //同一时间会产生多个at，对应生成多个数据放入at表中，上传到服务器也需要并成一条上传服务器，
         //根据obi+dt来上传
-        annotation.ati = this.util.getUuid();
+        annotation.ati = UserConfig.account.id + ',' + annotation.obi + annotation.dt;
         sync.id = annotation.ati;
         sync.type = "Annotation";
         sync.title = annotation.content;
