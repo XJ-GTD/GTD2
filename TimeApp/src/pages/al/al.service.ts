@@ -28,7 +28,6 @@ import {StatusBar} from "@ionic-native/status-bar";
 import {BackgroundMode} from "@ionic-native/background-mode";
 import {RemindfeedbackService} from "../../service/cordova/remindfeedback.service";
 import {PatchService} from "../../service/business/patch.service";
-import {MytestPatch} from "../../service/patch/mytest.patch";
 
 declare var cordova: any;
 @Injectable()

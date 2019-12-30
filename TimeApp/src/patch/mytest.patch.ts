@@ -1,5 +1,4 @@
 import {IPatch} from "./ipatch";
-import {DataConfig} from "../config/data.config";
 
 /**
  * create by on 2019/3/5
@@ -7,12 +6,12 @@ import {DataConfig} from "../config/data.config";
 export class MytestPatch implements IPatch {
 
   //补丁版本
-  version:number = 16;
+  version:number = 21;
 
   //补丁内容
   async createPatch() {
 
-    console.log("=====mytest patch======");
+    console.log("=====mytest patch version:" + this.version);
 
   }
 

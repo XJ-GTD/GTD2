@@ -1,15 +1,17 @@
 import {DataConfig} from "../config/data.config";
 import {BaseService} from "./base.service";
-import {IPatch} from "../patch/ipatch";
-import {MytestPatch} from "../patch/mytest.patch";
+import {IPatch} from "../../patch/ipatch";
+import {MytestPatch} from "../../patch/mytest.patch";
 import {YTbl} from "../sqlite/tbl/y.tbl";
 import {SqliteInit} from "../sqlite/sqlite.init";
 import {UtilService} from "../util-service/util.service";
 import {SqliteExec} from "../util-service/sqlite.exec";
+import {Injectable} from "@angular/core";
 
 /**
  * create by on 2019/3/5
  */
+@Injectable()
 export class PatchService extends BaseService {
 
   private _patchs : Array<IPatch> = new Array<IPatch>();
@@ -39,9 +41,9 @@ export class PatchService extends BaseService {
       await this.sqlLiteInit.createTablespath(version + 1, fromversion);
 
       let findm =  this._patchs.find((value, index,arr)=>{
-        return value.version ==  version ;
+        return value.version ==  version + 1 ;
       });
-      if (!findm){
+      if (findm){
         if (fromversion > 0 && fromversion < findm.version ) {
           await findm.createPatch();
         }
