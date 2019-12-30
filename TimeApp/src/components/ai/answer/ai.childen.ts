@@ -21,10 +21,16 @@ import {UserConfig} from "../../../service/config/user.config";
   template: `
 
     <ng-template [ngIf]="aiData.speechAi && aiData.speechAi.org">
-      <div  class="self">{{selfName}} : {{aiData.speechAi.org}}</div>
+      <div  class="self">
+        <div class="selfname">{{selfName}}</div>
+        <div class="selfcontent">{{aiData.speechAi.org}}</div>
+      </div>
     </ng-template>
     <ng-template [ngIf]="aiData.speechAi && aiData.speechAi.an">
-      <div  class="aiAn">小冥 : {{aiData.speechAi.an}}</div>
+      <div  class="aiAn">
+        <div class="ainame">小冥</div>
+        <div class="aicontent">{{aiData.speechAi.an}}</div>
+      </div>
     </ng-template>
     <ng-template [ngIf]="aiData.scd">
       <div class="scd">

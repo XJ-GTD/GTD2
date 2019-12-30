@@ -21,9 +21,6 @@ import {Subscriber} from "rxjs";
 @Component({
   selector: 'AiComponent',
   template: `
-    <div class="jsai">
-      <span>{{immediately}}</span></div>
-    
       <div class="aiWarp" #aiWarp>
         <ion-card class="card" #card3 *ngIf="aiData3">
           <AiChildenComponent [aiData] = "aiData3"></AiChildenComponent>
@@ -50,8 +47,6 @@ export class AiComponent {
   aiData2: AiData = new AiData();
   aiData3: AiData = new AiData();
 
-  immediately:string;
-  immediatelyemit:Subscriber<any>;
   scdLsemit:Subscriber<any>;
   speechemit:Subscriber<any>;
   scdemit:Subscriber<any>;
@@ -80,10 +75,6 @@ export class AiComponent {
       this.callbackScd(data);
       this.changeDetectorRef.detectChanges();
     });
-    this.immediatelyemit = this.emitService.registerImmediately(($data)=>{
-      this.immediately = $data;
-      this.changeDetectorRef.detectChanges();
-    })
   }
 
 
@@ -91,7 +82,6 @@ export class AiComponent {
     this.scdLsemit.unsubscribe();
     this.speechemit.unsubscribe();
     this.scdemit.unsubscribe();
-    this.immediatelyemit.unsubscribe();
   }
 
 

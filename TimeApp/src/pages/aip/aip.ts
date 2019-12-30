@@ -1,11 +1,10 @@
-import {ChangeDetectorRef, Component, Renderer2, ViewChild} from '@angular/core';
+import {ChangeDetectorRef, Component, ViewChild} from '@angular/core';
 import {IonicPage, NavController} from 'ionic-angular';
 import {AipService} from "./aip.service";
-import {DataConfig} from "../../service/config/data.config";
-import {AiComponent} from "../../components/ai/answer/ai";
 import {EmitService} from "../../service/util-service/emit.service";
 import {UtilService} from "../../service/util-service/util.service";
 import {AssistantService} from "../../service/cordova/assistant.service";
+import {InputComponent} from "../../components/ai/input/input";
 
 /**
  * Generated class for the AlPage page.
@@ -31,12 +30,16 @@ import {AssistantService} from "../../service/cordova/assistant.service";
     <ion-content>
       <!--<BackComponent></BackComponent>-->
       <AiComponent></AiComponent>
-      <PointComponent [showInput] = "true" (onPonintClick)="listenStart()" [hasPopper]="false"></PointComponent>
+      <PointComponent [showInput] = "true" (onPonintClick)="listenStart()" [hasPopper]="false" (onInputClick)="inputClick()"></PointComponent>
+      <InputComponent #inputComponent></InputComponent>
     </ion-content>
   `,
 })
 
 export class AipPage{
+
+  @ViewChild('inputComponent')
+  inputComponent: InputComponent;
 
   statusListener:boolean = false;
   constructor(private aipService: AipService,
@@ -54,6 +57,9 @@ export class AipPage{
 
   }
 
+  inputClick(){
+    this.inputComponent.inputStart();
+  }
 
   listenStart() {
     if (!this.statusListener) this.assistantService.listenAudio().then(data=>{

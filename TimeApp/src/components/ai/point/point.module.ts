@@ -2,7 +2,6 @@ import { NgModule} from '@angular/core';
 import { IonicPageModule } from 'ionic-angular';
 import {PointComponent} from './point';
 import {PointService} from "./point.service";
-import {InputComponentModule} from "../input/input.module";
 import {ListeningComponent} from "./listening";
 import { NgxPopper } from 'angular-popper';
 import {TellyouComponentModule} from "../tellyou/tellyou.module";
@@ -15,7 +14,7 @@ import {TellyouComponentModule} from "../tellyou/tellyou.module";
   ],
   imports: [
     IonicPageModule.forChild(PointComponent),
-    InputComponentModule,
+    IonicPageModule.forChild(ListeningComponent),
     TellyouComponentModule,
     NgxPopper
   ],
@@ -25,11 +24,6 @@ import {TellyouComponentModule} from "../tellyou/tellyou.module";
   ],
   providers:[
     PointService,
-  ],
-
-  entryComponents:[
-    PointComponent,
-    ListeningComponent
   ],
 })
 export class PointComponentModule {
