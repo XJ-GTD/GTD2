@@ -157,7 +157,11 @@ public class MainVerticle extends AbstractVerticle {
 			for (Object po : pl) {
 				String name = (String) po;
 				
-				headerparams.put(name, ctx.request().getHeader(name));
+				String requestHeader = ctx.request().getHeader(name);
+				
+				if (requestHeader == null) requestHeader = "";
+				
+				headerparams.put(name, requestHeader);
 			}
 			
 			query.put("header", headerparams);
