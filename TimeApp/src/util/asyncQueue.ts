@@ -183,7 +183,7 @@ export class AsyncQueue {
         timeout = 1000;
       }
     }else {
-      timeout = 10;
+      timeout = 100;
     }
     if (this.utilService.isMobile()){
       this.timeoutService.timeout(timeout,()=>{
