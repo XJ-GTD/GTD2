@@ -6,7 +6,7 @@
   "stomp.server.host": "sa-amq",
   "stomp.server.port": 5672,
   "amq.app.id": "ann",
-  "rabbitmq": {
+  "rabbitmq.local": {
     "user": "gtd_mq",
     "password": "gtd_mq",
     "host": "rabbit1",
@@ -34,6 +34,20 @@
     "secret": "OX5QyByW/cVhxEUA6jhQQA=="
   },
   "aliyun.rabbitmq": {
+    "user": "gtd_mq",
+    "password": "gtd_mq",
+    "host": "pluto.guobaa.com",
+    "port": 5672,
+    "virtualHost": "/",
+    "connectionTimeout": 6000,
+    "connectionRetries": 5,
+    "requestedHeartbeat": 60,
+    "handshakeTimeout": 6000,
+    "requestedChannelMax": 5,
+    "networkRecoveryInterval": 500,
+    "automaticRecoveryEnabled": true
+  },
+  "rabbitmq": {
     "user": "gtd_mq",
     "password": "gtd_mq",
     "host": "pluto.guobaa.com",

@@ -13,7 +13,7 @@
   "rabbitmq": {
     "user": "gtd_mq",
     "password": "gtd_mq",
-    "host": "rabbit1",
+    "host": "pluto.guobaa.com",
     "port": 5672,
     "virtualHost": "/",
     "connectionTimeout": 6000,

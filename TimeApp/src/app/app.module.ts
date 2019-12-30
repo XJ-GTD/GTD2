@@ -133,6 +133,7 @@ import {TimeOutService} from "../util/timeOutService";
 import {DetectorService} from "../service/util-service/detector.service";
 import {RemindfeedbackService} from "../service/cordova/remindfeedback.service";
 import {Media} from "@ionic-native/media";
+import {PatchService} from "../service/business/patch.service";
 
 @NgModule({
   declarations: [
@@ -282,6 +283,7 @@ import {Media} from "@ionic-native/media";
     TimeOutService,
     DetectorService,
     RemindfeedbackService,
+    PatchService,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     // {provide: HAMMER_GESTURE_CONFIG, useClass: HammerDIRECTIONALLConfig},
     {provide: HAMMER_GESTURE_CONFIG, useClass: ionicGalleryModal.GalleryModalHammerConfig}
