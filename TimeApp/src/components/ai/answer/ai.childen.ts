@@ -33,36 +33,54 @@ import {UserConfig} from "../../../service/config/user.config";
       </div>
     </ng-template>
     <ng-template [ngIf]="aiData.scd">
-      <div class="scd">
-        <div no-lines>
-          <div><p class="ti">{{aiData.scd.ti}}</p></div>
-          <div><span class="date">{{aiData.scd.d | formatedate:"CYYYY/MM/DD W"}}</span> <span class="date">{{aiData.scd.t=='99:99'?'全天':aiData.scd.t}}</span></div>
+      <div no-lines class="scd">
+        <div  class="aiscdAn">
           <div>
-            <div class="friend">
-              <ion-chip *ngFor="let fs of aiData.scd.friends">
-                <span>{{fs.n}}</span>
-              </ion-chip>
-            </div>
+            {{aiData.scd.an}}
           </div>
-          <div>
-            <p class="scdTip">{{aiData.scd.scdTip}}</p>
+          <div class="aiscdcontent">
+            <div class="scdWarp">
+              <div class="title">日程</div>
+              <div><span class="ti">{{aiData.scd.ti}}</span></div>
+              <div><span class="date">{{aiData.scd.d | formatedate:"CYYYY/MM/DD W"}}</span> <span class="date">{{aiData.scd.t=='99:99'?'全天':aiData.scd.t}}</span></div>
+              <div><span class="add">上海</span></div>
+              <div>
+                <div class="friend">
+                  <span *ngFor="let fs of aiData.scd.friends">
+                    {{fs.n}}</span>
+                </div>
+              </div>
+              <div class="footer">
+                <button (click)="go2tdc(aiData.scd)">编辑</button>
+                <button (click)="confirmScd(aiData.scd)">确认</button>
+              </div>
+            </div>
+            
+          </div>
+          <div class="scdTip">
+            <span >{{aiData.scd.scdTip}}</span>
           </div>
         </div>
       </div>
     </ng-template>
     <ng-template [ngIf]="aiData.scdList">
       <div no-lines class="scdList">
-        <div on-hold="speakScd(aiData.scdList)" class="aiAn">
-          {{aiData.scdList.desc}}
-          <ion-icon name="volume-up" item-end class="volume" (click)="speakScd(aiData.scdList)"></ion-icon>
+        <div  class="ailistAn">
+          <div>
+            {{aiData.scdList.desc}}
+          </div>
+          <div class="ailistcontent">
+            <div *ngFor="let scd of aiData.scdList.datas,let i = index" (click)="showScdInList(scd)">
+              <span class="date" *ngIf="(i == 0 || aiData.scdList.datas[i-1].d != scd.d)">{{countDay(scd.d)}}</span>
+              <span class="ti">{{(scd.d + "T" + scd.t) | formatedate : "A h:mm"}} {{scd.ti}}</span>
+            </div>
+          </div>
+          <div class="scdTip">
+            <span >{{aiData.scdList.scdTip}}</span>
+            <ion-icon class="fal fa-microphone" (click)="speakScd(aiData.scdList)" on-hold="speakScd(aiData.scdList)"></ion-icon>
+          </div>
         </div>
-        <div *ngFor="let scd of aiData.scdList.datas" (click)="showScdInList(scd)">
-          <p class="date">{{countDay(scd.d) | formatedate :"CYYYY/MM/DD W"}} {{scd.t=='99:99'?'全天':scd.t}}</p>
-          <p class="ti">{{scd.ti}}</p>
-        </div>
-        <div>
-          <p class="scdTip">{{aiData.scdList.scdTip}}</p>
-        </div>
+        
       </div>
     </ng-template>
   `,

@@ -4,7 +4,7 @@ import {
   ElementRef,
   EventEmitter,
   Input,
-  Output,
+  Output, Renderer2,
   ViewChild
 } from '@angular/core';
 import {Animation, IonicPage, Platform} from 'ionic-angular';
@@ -46,17 +46,6 @@ import {PopperComponent} from "angular-popper";
 export class PointComponent {
 
   private ani:Animation;
-
-  listeningStart(done:Function){
-    this.ani
-      .onFinish(done, true, true)
-      .reverse(false).play();
-  }
-  listeningStop(done:Function){
-    this.ani
-      .onFinish(done, true, true)
-      .reverse(true).play();
-  }
   @ViewChild('light')
   light: ElementRef;
   @ViewChild('aitool')
@@ -80,7 +69,8 @@ export class PointComponent {
   @ViewChild('listeningComponent', {read: ElementRef})
   listeningEl: ElementRef; // 直接找到子组件对应的DOM
 
-  constructor(private changeDetectorRef: ChangeDetectorRef, private plt: Platform) {
+  constructor(private changeDetectorRef: ChangeDetectorRef, private plt: Platform,
+              private _renderer: Renderer2,) {
 
 
   }
@@ -109,7 +99,7 @@ export class PointComponent {
       this.ani.add(listening);
       let aitool = new Animation(this.plt, this.aitool.nativeElement);
       aitool.fromTo('translateY',0 ,"-70px");
-      aitool.fromTo('scale',1 ,0.85);
+      aitool.fromTo('scale',1 ,0.8);
       this.ani.add(aitool);
       let input =  new Animation(this.plt, this.inputComponent.nativeElement);
       input.fromTo('scale',"1" ,0);
@@ -142,5 +132,20 @@ export class PointComponent {
 
   inputstart() {
     this.onInputClick.emit(this);
+  }
+
+
+  listeningStart(done:Function){
+    this.ani
+      .onFinish(done, true, true)
+      .reverse(false).play();
+    this._renderer.removeClass(this.light.nativeElement, "moving");
+  }
+  listeningStop(done:Function){
+    this.ani
+      .onFinish(done, true, true)
+      .reverse(true).play();
+    this._renderer.addClass(this.light.nativeElement, "moving");
+
   }
 }
