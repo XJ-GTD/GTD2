@@ -27,6 +27,8 @@ import {App, ModalController} from "ionic-angular";
 import {StatusBar} from "@ionic-native/status-bar";
 import {BackgroundMode} from "@ionic-native/background-mode";
 import {RemindfeedbackService} from "../../service/cordova/remindfeedback.service";
+import {PatchService} from "../../service/business/patch.service";
+import {MytestPatch} from "../../service/patch/mytest.patch";
 
 declare var cordova: any;
 @Injectable()
@@ -55,7 +57,8 @@ export class AlService {
               private modalCtr: ModalController,
               private app: App,
               private statusBar: StatusBar,
-              private backgroundMode:BackgroundMode) {
+              private backgroundMode:BackgroundMode,
+              private patchService : PatchService) {
 
     this.statusBar.overlaysWebView(true);
     this.statusBar.hide();
@@ -172,20 +175,7 @@ export class AlService {
 
 
         //patch 修改DataConfig的version版本，只能改大，然后方法中例如createTablespath追加patch
-        let fromversion = this.version;
-
-        while (DataConfig.version > this.version) {
-
-          await this.sqlLiteInit.createTablespath(this.version + 1, fromversion);
-          let yTbl: YTbl = new YTbl();
-          yTbl.yt = "FI";
-          yTbl.yk = "FI";
-          let stbls: Array<YTbl> = await this.sqlExce.getList<YTbl>(yTbl);
-          if (stbls.length > 0) yTbl.yi = stbls[0].yi; else yTbl.yi = this.util.getUuid();
-          yTbl.yv = (++this.version).toString();
-          await this.sqlExce.replaceT(yTbl);
-
-        }
+        await this.patchService.updatePatch(this.version );
 
 
         alData.text = "系统数据初始化完成";

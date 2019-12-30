@@ -80,7 +80,9 @@ export class DataConfig {
   //设置对AI语音的开关
   //public static version: number = 14;
   //对他人提醒铃声
-  public static version: number = 15;
+  //public static version: number = 15;
+  //补丁服务测试
+  public static version: number = 16;
 
   public static RABBITMQ_STATUS: string = "";
 
