@@ -1,17 +1,23 @@
 page-aip {
-  background-color: $aiBackColor;
-  .scroll-content{
-    overflow-y:hidden;
-  }
+  background-image: url('../assets/imgs/aiback.png');
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
 
   ion-header ion-toolbar {
     .toolbar-background {
-      background-color: $aiBackColor;
-      opacity: .5;
+      background-color: rgba(0, 0, 0, 0.88);
     }
-      .bar-button-ios[icon-only] ion-icon{
-        font-size: 2.4rem;
-        color: rgba(255,255,255,1);
-      }
+    .bar-button-ios[icon-only] ion-icon{
+      font-size: 2.4rem;
+      color:rgba(86,137,222,1);
+      padding: 36px 15px;
+    }
+  }
+  .content-ios{
+    background-color:rgba(0,0,0,0.88);
+    .scroll-content{
+      overflow-y:hidden;
+    }
+
   }
 }

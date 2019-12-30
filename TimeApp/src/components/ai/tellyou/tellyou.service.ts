@@ -291,31 +291,33 @@ export class TellyouService {
       let searchid = tellyoubase.dataid?tellyoubase.dataid:tellyoubase.id;
 
       if(tellyoubase.idtype == TellyouIdType.Agenda){
+        let an:Annotation;
+        if (tellyoubase.tellType == TellyouType.at_agenda){
+          console.log("121111111110000===at===>" + tellyoubase.id + "===>" + tellyoubase.tellType);
+          an = await this.annotationService.getAnnotation(searchid);
+          console.log("121111111110000===at===>" + tellyoubase.id + "===>" + an);
+          if (an){
+            searchid = an.obi;
+          }
+        }
+
         let agendaData = await  this.eventService.getAgenda(searchid,tellyoubase.tellType == TellyouType.cancel_agenda);
         if (!agendaData){
           continue;
         }
-          pageData.formperson= agendaData.ui; //发起人
-          pageData.fromdate= agendaData.evd + agendaData.evt; //日期 时间 时长
-          pageData.datetype= agendaData.al;//1 开始时间 2 截至到
-          pageData.sn= agendaData.evn; //内容主题
-          pageData.repeat= agendaData.rtjson.text();//重复文字
-          pageData.invites= agendaData.members.length; //邀请人数
+        pageData.formperson= agendaData.ui; //发起人
+        pageData.fromdate= agendaData.evd + agendaData.evt; //日期 时间 时长
+        pageData.datetype= agendaData.al;//1 开始时间 2 截至到
+        pageData.sn= agendaData.evn; //内容主题
+        pageData.repeat= agendaData.rtjson.text();//重复文字
+        pageData.invites= agendaData.members.length; //邀请人数
 
         if (tellyoubase.tellType == TellyouType.at_agenda){
-          console.log("121111111110000===at===>" + tellyoubase.id + "===>" + tellyoubase.tellType);
-          let an:Annotation = await this.annotationService.getAnnotation(tellyoubase.id);
-          console.log("121111111110000===at===>" + tellyoubase.id + "===>" + an);
-          if (an){
-            pageData.formperson= an.ui; //@你的发起人
-          }else{
-            pageData.sn= null; //内容主题
-          }
+          pageData.formperson= an.ui; //@你的发起人
         }
       }
 
       if(tellyoubase.idtype == TellyouIdType.PlanItem){
-
         let planItem = await this.calendarService.getPlanItem(searchid,tellyoubase.tellType == TellyouType.cancel_planitem);
         if (!planItem){
           continue;
@@ -330,7 +332,6 @@ export class TellyouService {
 
 
       if(tellyoubase.idtype == TellyouIdType.MiniTask){
-
 
         let miniTask:MiniTaskData = await this.eventService.getMiniTask(searchid);
         if (!miniTask){
