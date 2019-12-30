@@ -64,6 +64,8 @@ export class ListeningComponent {
       this.isStop = !data;
       if (this.isStop){
         this.onListeningStop.emit(this);
+      }else{
+        this.onListeningStart.emit(this);
       }
       // this.init();
     });

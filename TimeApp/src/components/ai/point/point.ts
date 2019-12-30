@@ -116,17 +116,16 @@ export class PointComponent {
 
   ponintClick() {
     // this.emitService.emitAiTellYou({close: false, message: {title:'zhangju 邀请你',text:'QQ'}});
-     if (this.ani){
-       this.listeningStart(()=>{
+    //    this.listeningStart(()=>{
          this.onPonintClick.emit(this);
-       });
+       // });
        // setTimeout(()=>{
        //   this.listeningStop(()=>{
        //   });
        // },5000)
-     }else{
-       this.onPonintClick.emit(this);
-     }
+     // }else{
+     //   this.onPonintClick.emit(this);
+     // }
     // this.listening.start();
   }
 
@@ -136,16 +135,21 @@ export class PointComponent {
 
 
   listeningStart(done:Function){
+
+  if (this.ani) {
     this.ani
       .onFinish(done, true, true)
       .reverse(false).play();
     this._renderer.removeClass(this.light.nativeElement, "moving");
   }
+  }
   listeningStop(done:Function){
-    this.ani
-      .onFinish(done, true, true)
-      .reverse(true).play();
-    this._renderer.addClass(this.light.nativeElement, "moving");
+    if (this.ani) {
+      this.ani
+        .onFinish(done, true, true)
+        .reverse(true).play();
+      this._renderer.addClass(this.light.nativeElement, "moving");
+    }
 
   }
 }

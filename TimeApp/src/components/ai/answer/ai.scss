@@ -97,11 +97,11 @@ aicomponent {
         display: block;
         border-radius:2px 9px 9px 9px;
         background: rgba(255,255,255,0.08);
+        font-size: 16px;
+        color:rgba(255,255,255,1);
         .ailistcontent{
           padding: 16px 16px;
           max-width: 100%;
-          font-size: 16px;
-          color:rgba(255,255,255,1);
           border-bottom: 1px solid rgba(21,60,87,1);
           width: 100%;
           > div{
@@ -140,12 +140,11 @@ aicomponent {
         display: block;
         border-radius:2px 9px 9px 9px;
         background: rgba(255,255,255,0.08);
+        font-size: 16px;
+        color:rgba(255,255,255,1);
         .aiscdcontent{
           padding: 16px 16px;
           max-width: 100%;
-          font-size: 16px;
-          color:rgba(255,255,255,1);
-          border-bottom: 1px solid rgba(21,60,87,1);
           width: 100%;
           > div{
             margin: 7px 0;
