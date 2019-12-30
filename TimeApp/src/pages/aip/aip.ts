@@ -21,10 +21,9 @@ import {AssistantService} from "../../service/cordova/assistant.service";
     
     <ion-header no-border>
       <ion-toolbar>
-        <ion-buttons left>
+        <ion-buttons right>
           <button ion-button icon-only (click)="goBack()">
-            <ion-icon class="fal fa-angle-left"></ion-icon>
-            <ion-icon class="fal fa-home"></ion-icon>
+            <ion-icon class="fal fa-times" ></ion-icon>
           </button>
         </ion-buttons>
       </ion-toolbar>
