@@ -2,12 +2,10 @@ import {Injectable} from "@angular/core";
 import {File} from "@ionic-native/file";
 import {AibutlerRestful, AudioPro, TextPro} from "../restful/aibutlersev";
 import * as moment from 'moment';
-import {WsModel} from "../../ws/model/ws.model";
 import {SuTbl} from "../sqlite/tbl/su.tbl";
 import {DataConfig} from "../config/data.config";
 import {SqliteExec} from "../util-service/sqlite.exec";
 import {UtilService} from "../util-service/util.service";
-import {SsService} from "../../pages/ss/ss.service";
 import {UserConfig} from "../config/user.config";
 import {EmitService} from "../util-service/emit.service";
 import {FeedbackService} from "./feedback.service";
@@ -239,7 +237,10 @@ export class AssistantService {
       cordova.plugins.XjBaiduSpeech.stopListen();
       this.startWakeUp();
       this.listening = false;
-      this.emitService.emitImmediately("");
+      let immediately:Immediately = new Immediately();
+      immediately.fininsh = false;
+      immediately.listening = false;
+      this.emitService.emitImmediately(immediately);
       this.emitService.emitListener(false);
     }
   }
@@ -249,22 +250,33 @@ export class AssistantService {
    * 语音助手录音录入 AUDIO
    */
   async listenAudio() {
-    if (this.listening) return;
     if (!this.utilService.isMobile()) {
       return;
     }
+
+    if (this.listening) {
+      this.stopListenAudio();
+      return;
+    }
+
     this.stopSpeak(false);
     this.stopWakeUp();
+    this.listening = true;
+
     this.emitService.emitListener(true);
     this.feedbackService.vibrate();
-    this.listening = true;
+    let immediately:Immediately = new Immediately();
+    immediately.fininsh = false;
+    immediately.listening = true;
     await cordova.plugins.XjBaiduSpeech.startListen(async result => {
-      this.emitService.emitImmediately(result.text);
       if (!result.finish) {
+        immediately.immediatetext = result.text;
+        this.emitService.emitImmediately(immediately);
         return ;
       }
-      // this.stopListenAudio();
-      this.emitService.emitListener(false);
+      immediately.fininsh = true;
+      immediately.immediatetext = result.text;
+      this.emitService.emitImmediately(immediately);
       // 读取录音进行base64转码
       let base64File: string = await this.file.readAsDataURL(this.mp3Path, this.mp3Name);
       let audioPro = new AudioPro();
@@ -279,14 +291,17 @@ export class AssistantService {
       audioPro.c.client.processor = DataConfig.wsWsProcessor;
       audioPro.c.server = DataConfig.wsServerContext;
       await this.aibutlerRestful.postaudio(audioPro);
+      this.listening = false;
+      this.emitService.emitListener(false);
+      immediately.immediatetext = "";
+      this.emitService.emitImmediately(immediately);
       return result;
     }, async error => {
+      let text = await this.getSpeakText(DataConfig.FF);
+      this.speakText(text);
+      this.listening = false;
       this.emitService.emitListener(false);
-      setTimeout(async () => {
-        let text = await this.getSpeakText(DataConfig.FF);
-        this.speakText(text);
-        return text;
-      }, 100);
+      return text;
     });
   }
 
@@ -322,3 +337,12 @@ export class AssistantService {
 
   }
 }
+
+
+export class Immediately{
+  immediatetext:string = "";
+  listening:boolean = false;
+  fininsh:boolean = false;
+  error:string = "";
+}
+

@@ -83,23 +83,7 @@ export class HPage {
               private  momserv: MemoService,
               private testDataService: TestDataService,
               private emitService: EmitService,
-              private util:UtilService,
-              private tellyouService:TellyouService) {
-    // console.log("start===========================");
-    // this.util.loadingStart()
-       this.testTimeOut();
-    // console.log("end===========================");
-  }
- lo = 0;
-  s = "你好"
-  testTimeOut(){
-    // setTimeout(()=>{
-    //
-    //   this.emitService.emitImmediately((this.lo++ % 2));
-    //   this.testTimeOut();
-    // },2000)
-
-
+              private util:UtilService) {
   }
 
   viewShow($event: boolean) {

@@ -62,10 +62,8 @@ export class AipPage{
   }
 
   listenStart() {
-    if (!this.statusListener) this.assistantService.listenAudio().then(data=>{
-      this.emitService.emitImmediately("");
-      this.changeDetectorRef.detectChanges();
-    })
+    if (!this.statusListener)
+      this.assistantService.listenAudio();
     else this.assistantService.stopListenAudio();
   }
 

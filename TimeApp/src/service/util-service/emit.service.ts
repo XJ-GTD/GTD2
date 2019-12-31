@@ -1,5 +1,6 @@
 import {EventEmitter, Injectable} from "@angular/core";
 import * as moment from "moment";
+import {Immediately} from "../cordova/assistant.service";
 
 /**
  * 数据传递广播处理类
@@ -30,7 +31,7 @@ export class EmitService {
   private listenerEm:EventEmitter<boolean> = new EventEmitter<boolean>();
 
   //新日程增加修改删除信息消息刷新
-  private immediatelyEm: EventEmitter<string> = new EventEmitter<string>();
+  private immediatelyEm: EventEmitter<Immediately> = new EventEmitter<Immediately>();
 
   private aiTellYouEm: EventEmitter<string> = new EventEmitter<string>();
 
@@ -53,14 +54,14 @@ export class EmitService {
 
   registerImmediately(callback) :any{
     if (this.immediatelyEm.closed) {
-      this.immediatelyEm = new EventEmitter<string>();
+      this.immediatelyEm = new EventEmitter<Immediately>();
     }
-    return this.immediatelyEm.subscribe(($data: string) => {
+    return this.immediatelyEm.subscribe(($data: Immediately) => {
       callback($data);
     });
   };
 
-  emitImmediately($data: any) {
+  emitImmediately($data: Immediately) {
     if (!this.immediatelyEm.isStopped) {
       this.immediatelyEm.emit($data);
     }
@@ -143,7 +144,7 @@ export class EmitService {
     if (this.listenerEm.closed) {
       this.listenerEm = new EventEmitter<boolean>();
     }
-    return  this.listenerEm.subscribe(($data: boolean) => {
+    return this.listenerEm.subscribe(($data: boolean) => {
       callback($data);
     });
   };

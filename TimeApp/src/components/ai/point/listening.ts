@@ -2,6 +2,7 @@ import {ChangeDetectorRef, Component, ElementRef, EventEmitter, Output, ViewChil
 
 import {EmitService} from "../../../service/util-service/emit.service";
 import {Subscriber} from "rxjs";
+import {Immediately} from "../../../service/cordova/assistant.service";
 
 
 @Component({
@@ -9,14 +10,14 @@ import {Subscriber} from "rxjs";
   template:
       `
       <div class="jsai">
-        <span>{{immediately}}</span>
+        <span>{{immediately.immediatetext}}</span>
       </div>
     <canvas #canvas></canvas>
   `,
 })
 export class ListeningComponent {
 
-  immediately:string;
+  immediately:Immediately = new Immediately();
   immediatelyemit:Subscriber<any>;
 
   @Output() onListeningStart: EventEmitter<any> = new EventEmitter();
@@ -51,7 +52,6 @@ export class ListeningComponent {
   radianOffset1: number = 0;
   radianOffset2: number = 0;
   radianOffset3: number = 0;
-
   listenEmit:Subscriber<any>;
 
   isStop:boolean = false;
@@ -63,8 +63,7 @@ export class ListeningComponent {
     this.listenEmit = this.emitService.registerListener((data)=>{
       this.isStop = !data;
       if (this.isStop){
-        this.immediately = "";
-        this.changeDetectorRef.detectChanges();
+        // this.stop();
         this.onListeningStop.emit(this);
       }else{
         this.onListeningStart.emit(this);
@@ -73,6 +72,14 @@ export class ListeningComponent {
     });
     this.immediatelyemit = this.emitService.registerImmediately(($data)=>{
       this.immediately = $data;
+
+      if (!this.immediately.listening){
+        this.immediately.immediatetext = "";
+      }
+
+      if (this.immediately.fininsh){
+        // this.start();
+      }
       this.changeDetectorRef.detectChanges();
     })
 
@@ -186,11 +193,11 @@ export class ListeningComponent {
     if (!this.isStop){
       this.radianOffset1 = (this.radianOffset1 + this.radianStep) % this.doublePI;
       this.radianOffset2 = (this.radianOffset2 + this.radianStep * 1.2) % this.doublePI;
-      this.radianOffset3 = (this.radianOffset3 + this.radianStep * 0.8) % this.doublePI;
+      this.radianOffset3 = (this.radianOffset3 + this.radianStep * 1) % this.doublePI;
       this.ctx.clearRect(0, 0, this.canvasWidth, this.canvasHeight);
-      this.drawAcousticWave3(1, 1, 1);
-      this.drawAcousticWave2(1, 1, 2);
-      this.drawAcousticWave1(1, 1, 2);
+       this.drawAcousticWave3(1, 1, 1);
+      //  this.drawAcousticWave2(1, 1, 2);
+      // this.drawAcousticWave1(1, 1, 2);
       requestAnimationFrame(()=>{
         this.loop();
       });
