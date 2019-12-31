@@ -10,6 +10,7 @@ import * as moment from "moment";
 import {UserConfig} from "../../../service/config/user.config";
 import {DataConfig} from "../../../service/config/data.config";
 import {Annotation, AnnotationService} from "../../../service/business/annotation.service";
+import {ContactsService} from "../../../service/cordova/contacts.service";
 
 @Injectable()
 export class TellyouService {
@@ -28,7 +29,8 @@ export class TellyouService {
               private timeoutService: TimeOutService,
               private eventService:EventService,
               private calendarService:CalendarService,
-              private annotationService:AnnotationService,) {
+              private annotationService:AnnotationService,
+              private contactsService: ContactsService) {
     this.init();
 
 
@@ -179,6 +181,8 @@ export class TellyouService {
     this.closefn = noop;
   }
 
+
+
    private pushTellYouData(tellYou: TellYouBase, fun: Function) {
 
      if (tellYou.tellType == TellyouType.remind_agenda || tellYou.tellType == TellyouType.remind_minitask ||
@@ -268,8 +272,11 @@ export class TellyouService {
       this.pauseTellYou();
 
       this.timeoutService.timeOutOnlyOne(layshow, () => {
-        this.createSpeakText(tellYouData,UserConfig.getSetting(DataConfig.SYS_SIV));
-        this.showfn(tellYouData);
+        this.createSpeakText(tellYouData,UserConfig.getSetting(DataConfig.SYS_SIV)).then((data)=>{
+          this.showfn(tellYouData);
+        }).catch(err=>{
+
+        });
 
         this.timeoutService.timeOutOnlyOne(layclose, () => {
           this.closefn();
@@ -352,7 +359,7 @@ export class TellyouService {
 
   }
 
-  createSpeakText(pageData:TellYou,iseasy:boolean){
+  async createSpeakText(pageData:TellYou,iseasy:boolean){
       let time =  pageData.fromdate ? moment(pageData.fromdate,"YYYY/MM/DD hh:ss").format("YYYY年M月D日 A h点s分"):"";
 
       let person = pageData.formperson;
@@ -361,7 +368,17 @@ export class TellyouService {
       })
       if (friend){
         person = friend.ran;
+        if (moment().diff(moment(friend.utt),'hours',true) > 1){
+          let updateFriend = await this.contactsService.updateOneFs(friend.rc);
+
+          pageData.formperson = updateFriend.ran;
+          pageData.mp3 = updateFriend.rob;
+        }else{
+          pageData.formperson = friend.ran;
+          pageData.mp3 = friend.rob;
+        }
       }
+
       let text = pageData.sn;
       let repeat = pageData.repeat;
       let timeype = pageData.datetype != '2'? '开始于':'截至到';
@@ -424,7 +441,7 @@ export class TellyouService {
         pageData.spearktext = `小冥刚才做了${pageData.spearktext}`;
       }
     }
-
+    return pageData;
   }
 }
 

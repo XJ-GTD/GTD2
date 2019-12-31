@@ -163,20 +163,6 @@ export class TellYouComponent{
   showPopper(data: TellYou) {
 
     this.tellYouData = data;
-    let mp3 = "9";
-
-    if (this.tellYouData.formperson != this.currentuser && this.tellYouData.formperson != ""){
-      let friend = this.friends.find((val) => {
-        return this.tellYouData.formperson == val.ui;
-      });
-
-      if (friend){
-        this.tellYouData.formperson = friend.ran;
-        if (friend.rob) mp3 = friend.rob;
-      }
-    }else{
-      this.tellYouData.formperson = "";
-    }
 
 
     // pageData.remindtime = "111111";//提醒时间，提醒的情况下有

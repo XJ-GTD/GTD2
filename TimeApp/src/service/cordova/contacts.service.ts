@@ -424,6 +424,15 @@ export class ContactsService {
         bt.rc = userinfo.phoneno;
       }
 
+      //联系人设置的MP3
+      if (userinfo.extends ){
+        bt.rob = userinfo.extends.useMp3;
+      }else{
+        bt.rob = "9";
+      }
+      //联系人更新时间
+      bt.utt = moment().unix();
+
       if (exists) {
         bsqls.push(bt.upT());
       } else {
@@ -462,7 +471,8 @@ export class ContactsService {
     exists.ui       = bt.ui;      //数据归属人ID
     exists.bhi      = bh.bhi;     //头像表ID 用于判断是否有头像记录
     exists.bhiu     = bh.hiu;     //base64图片
-
+    exists.rob     = bt.rob;     //设定的mp3
+    exists.utt = bt.utt;
     // 全部更新完成后刷新
     await this.userConfig.RefreshOneBTbl(exists);
 
