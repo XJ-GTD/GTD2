@@ -104,7 +104,7 @@ public class MainVerticle extends AbstractVerticle {
 		HttpServerOptions option = new HttpServerOptions();
 		option.setCompressionSupported(true);
 
-		vertx.createHttpServer(option).requestHandler(router::accept).listen(8080, http -> {
+		vertx.createHttpServer(option).requestHandler(router::accept).listen(config().getInteger("port", 8080), http -> {
 			if (http.succeeded()) {
 				startFuture.complete();
 				System.out.println("HTTP server started on http://localhost:8080");

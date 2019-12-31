@@ -264,10 +264,9 @@ export class SpeechProcess extends BaseProcess implements MQProcess {
     });
 
     // 数据操作显示
-    this.showdatas(showagendas, speakText, sutbl.sut);
-    this.showdatas(showmemos, speakText, sutbl.sut);
-    this.showdatas(showplanitems, speakText, sutbl.sut);
-
+     this.showdatas(showagendas, speakText, sutbl.sut);
+     this.showdatas(showmemos, speakText, sutbl.sut);
+     this.showdatas(showplanitems, speakText, sutbl.sut);
     //处理结果
     return contextRetMap;
   }
@@ -290,12 +289,14 @@ export class SpeechProcess extends BaseProcess implements MQProcess {
         fri.id = btbl.pwi;
         fri.p = btbl.ranpy;
         fri.m = btbl.rc;
-        fri.a = btbl.bhiu;
+        // fri.a = btbl.bhiu;
         fri.n = btbl.ran;
         fri.uid = btbl.ui;
 
         scdEm.datas.push(fri);
       }
+
+      scdEm.scdTip = tips;
 
       this.emitService.emitScd(scdEm);
     }
@@ -303,7 +304,7 @@ export class SpeechProcess extends BaseProcess implements MQProcess {
     if (datas && datas.length > 1) {
       let cscdLS: ScdLsEmData = new ScdLsEmData();
 
-      cscdLS.desc = speakText;
+      // cscdLS.desc = speakText;
 
       for (let scd of datas){
         let scdEm: ScdEmData = new ScdEmData();

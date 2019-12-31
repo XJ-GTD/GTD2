@@ -14,34 +14,50 @@ export class PsService {
 
   async findPerson(uid :string ){
 
-    let data:PersonOutData = await this.personRestful.getself(uid);
+    let data = await this.personRestful.getself(uid);
 
     let uTbl:UTbl = new UTbl();
-    uTbl.ai = data.openid;  //openid
-    uTbl.ui = data.unionid; //unionid
-    uTbl.un = data.nickname; //用户名（昵称）
-    uTbl.rn = data.realname; //真实姓名
-    uTbl.us = data.sex == undefined || data.sex == "" ? "0" : data.sex; //性别
+    uTbl.ai =  data.openid;  //openid
+    uTbl.ui =  data.unionid; //unionid
+    uTbl.un =  data.nickname; //用户名（昵称）
+    uTbl.rn =  data.realname; //真实姓名
+    uTbl.us =  data.sex == undefined || data.sex == "" ? "0" : data.sex; //性别
     uTbl.biy = data.birthday == undefined || data.birthday == "" ? "" : data.birthday;  //出生日期
-    uTbl.ic = data.ic == undefined || data.ic == "" ? "" : data.ic;  //身份证
+    uTbl.ic =  data.ic == undefined || data.ic == "" ? "" : data.ic;  //身份证
     uTbl.uct = data.contact== undefined || data.contact == "" ? "" : data.contact;//  联系方式
-    // uTbl.hiu = data.avatarbase64;//头像
+    uTbl.rob = data.extends == undefined ||  data.extends.useMp3 == undefined ? "9" : data.extends.useMp3  //使用mp3 data.extends.useMp3;
 
+    // uTbl.hiu = data.avatarbase64;//头像
     await this.sqlExec.update(uTbl);
 
     //刷新用户静态变量设置
     await this.userConfig.RefreshUTbl();
+
   }
 
   //保存用户信息
-  saveUser(id:string,inData:any):Promise<any>{
-    return new Promise((resolve, reject) => {
-      this.personRestful.updateself(inData,id).then(data=>{
-        resolve(data);
-      }).catch(error=>{
-        resolve(error);
-      });
-    })
+  async saveUser(id:string,inData:any){
+
+    let data = await this.personRestful.updateself(inData,id);
+
+    let uTbl:UTbl = new UTbl();
+    uTbl.ai =  data.openid;  //openid
+    uTbl.ui =  data.unionid; //unionid
+    uTbl.un =  data.nickname; //用户名（昵称）
+    uTbl.rn =  data.realname; //真实姓名
+    uTbl.us =  data.sex == undefined || data.sex == "" ? "0" : data.sex; //性别
+    uTbl.biy = data.birthday == undefined || data.birthday == "" ? "" : data.birthday;  //出生日期
+    uTbl.ic =  data.ic == undefined || data.ic == "" ? "" : data.ic;  //身份证
+    uTbl.uct = data.contact== undefined || data.contact == "" ? "" : data.contact;//  联系方式
+    uTbl.rob = data.extends == undefined ||  data.extends.useMp3 == undefined ? "9" : data.extends.useMp3  //使用mp3 data.extends.useMp3;
+
+    // uTbl.hiu = data.avatarbase64;//头像
+    await this.sqlExec.update(uTbl);
+
+    //刷新用户静态变量设置
+    await this.userConfig.RefreshUTbl();
+
+    return;
   }
 
   //修改密码
