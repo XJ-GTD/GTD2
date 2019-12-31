@@ -29,13 +29,13 @@ import {UserConfig} from "../../../service/config/user.config";
     <ng-template [ngIf]="aiData.speechAi && aiData.speechAi.an">
       <div  class="aiAn">
         <div class="ainame">小冥</div>
-        <div class="aicontent">{{aiData.speechAi.an}}</div>
+        <div class="aicontent aiSpeechAn">{{aiData.speechAi.an}}</div>
       </div>
     </ng-template>
     <ng-template [ngIf]="aiData.scd">
       <div no-lines class="scd">
         <div  class="aiscdAn">
-          <div>
+          <div class="aiSpeechAn">
             {{aiData.scd.an}}
           </div>
           <div class="aiscdcontent">
@@ -66,7 +66,7 @@ import {UserConfig} from "../../../service/config/user.config";
     <ng-template [ngIf]="aiData.scdList">
       <div no-lines class="scdList">
         <div  class="ailistAn">
-          <div>
+          <div class="aiSpeechAn" *ngIf="aiData.scdList.desc">
             {{aiData.scdList.desc}}
           </div>
           <div class="ailistcontent">

@@ -82,14 +82,17 @@ aicomponent {
 
         border-radius:2px 9px 9px 9px;
         background: rgba(255,255,255,0.08);
-        min-height: 39px;
-        font-size: 16px;
-        color:rgba(255,255,255,1);
         display: block;
-        padding: 10px 10px;
         max-width: 90%;
 
       }
+    }
+
+    .aiSpeechAn{
+      min-height: 39px;
+      font-size: 16px;
+      color:rgba(255,255,255,1);
+      padding: 10px 10px;
     }
 
     .scdList {
@@ -103,6 +106,7 @@ aicomponent {
           padding: 16px 16px;
           max-width: 100%;
           border-bottom: 1px solid rgba(21,60,87,1);
+          border-top: 1px solid rgba(21,60,87,1);
           width: 100%;
           > div{
             margin: 7px 0;

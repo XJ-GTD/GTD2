@@ -64,11 +64,13 @@ import {RemindfeedbackService} from "../../service/cordova/remindfeedback.servic
         </ion-list-header>
         <ion-item  no-lines no-padding no-margin no-border *ngFor="let r of mp3s">
           <ion-label>
-            <ion-icon class="fal fa-circle font-large-x" *ngIf="r.key != uo.user.useMp3"></ion-icon>
-            <ion-icon class="fal fa-dot-circle font-large-x" *ngIf="r.key == uo.user.useMp3"></ion-icon>
-            {{r.name}}</ion-label>
-          <ion-icon item-end text-end class="fal fa-play font-large" ></ion-icon>
-          <ion-radio [value]="r.key" class="noshow"></ion-radio>
+            <!--<ion-icon class="fal fa-circle font-large-x" *ngIf="r.key != uo.user.useMp3"></ion-icon>-->
+            <!--<ion-icon class="fal fa-dot-circle font-large-x" *ngIf="r.key == uo.user.useMp3"></ion-icon>-->
+            <ion-icon text-end class="fal fa-play" ></ion-icon>
+            {{r.name}}
+          </ion-label>
+          <!--<ion-icon item-end text-end class="fal fa-play font-large" ></ion-icon>-->
+          <ion-radio [value]="r.key" ></ion-radio>
         </ion-item>
       </ion-list>
     </page-box>
@@ -109,15 +111,15 @@ export class PsPage {
     this.mp3s = this.remindfeedbackService.getMp3s();
   }
 
-  commentFocus() {
-    if (this.keyboard) {
-      this._renderer.setStyle(this.grid.nativeElement, "transform", "translateY(-80px)");
-    }
-  }
-
-  commentBlur() {
-    this._renderer.setStyle(this.grid.nativeElement, "transform", "translateY(0px)");
-  }
+  // commentFocus() {
+  //   if (this.keyboard) {
+  //     this._renderer.setStyle(this.grid.nativeElement, "transform", "translateY(-80px)");
+  //   }
+  // }
+  //
+  // commentBlur() {
+  //   this._renderer.setStyle(this.grid.nativeElement, "transform", "translateY(0px)");
+  // }
 
   ionViewDidLoad() {
     Object.assign(this.uo.user, UserConfig.user);
@@ -209,16 +211,14 @@ export class PsPage {
       inData.ic = this.uo.user.ic;
       inData.realname = this.uo.user.nickname;
       inData.nickname = this.uo.user.nickname;
-      inData.useMp3 = this.uo.user.useMp3;
+      inData.extends = {};
+      inData.extends.useMp3 = this.uo.user.useMp3;
 
       this.psService.saveUser(this.uo.user.id, inData).then(data => {
         this.goBack();
-        this.util.toastStart("修改成功",2000);
-        // Object.assign(this.olduo.user, this.uo.user);  //替换旧数据
       }).catch(error => {
         this.util.toastStart(error,2000);
       })
-
   }
 
   async selectSex() {
@@ -244,6 +244,7 @@ export class PsPage {
   preview(r:any){
     this.remindfeedbackService.remindAudioStop();
     this.remindfeedbackService.remindAudio(this.uo.user.useMp3,()=>{},()=>{});
+    this.check();
   }
 
 }

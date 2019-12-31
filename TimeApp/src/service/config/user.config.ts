@@ -85,7 +85,6 @@ export class UserConfig {
     await this.RefreshUTbl();
     await this.RefreshATbl();
     await this.RefreshBTbl();
-
     await this.RefreshGTbl();
 
   }
@@ -174,6 +173,7 @@ export class UserConfig {
       UserConfig.user.realname = rows[0].rn;
       UserConfig.user.sex = rows[0].us;
       UserConfig.user.contact = rows[0].uct;
+      UserConfig.user.useMp3 = rows[0].rob;
     }
     //增加内部事件通知
     this.emitService.emit("mwxing.config.user.utbl.refreshed");

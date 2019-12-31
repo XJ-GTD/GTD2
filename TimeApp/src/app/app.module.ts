@@ -134,6 +134,7 @@ import {DetectorService} from "../service/util-service/detector.service";
 import {RemindfeedbackService} from "../service/cordova/remindfeedback.service";
 import {Media} from "@ionic-native/media";
 import {PatchService} from "../service/business/patch.service";
+import {Patch15} from "../patch/patch.15";
 
 @NgModule({
   declarations: [
@@ -284,6 +285,7 @@ import {PatchService} from "../service/business/patch.service";
     DetectorService,
     RemindfeedbackService,
     PatchService,
+    Patch15,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     // {provide: HAMMER_GESTURE_CONFIG, useClass: HammerDIRECTIONALLConfig},
     {provide: HAMMER_GESTURE_CONFIG, useClass: ionicGalleryModal.GalleryModalHammerConfig}
