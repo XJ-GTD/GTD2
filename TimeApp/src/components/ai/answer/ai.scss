@@ -2,9 +2,10 @@ aicomponent {
   transition: all 1.5s ease 0.2s;
   width: 100%;
   height: 100%;
+
   .card {
     background: transparent;
-    box-shadow:none;
+    box-shadow: none;
     position: relative;
     margin: 1.5rem 1.5rem;
     //border: 0.55px solid red;
@@ -12,14 +13,16 @@ aicomponent {
 
 
     .scdTip {
-      color:rgba(153,153,153,1);
+      color: rgba(153, 153, 153, 1);
       font-size: 12px;
       padding: 22px 16px 25px 16px;
       display: flex;
-      span{
+
+      span {
         display: block;
         flex: auto;
       }
+
       .fa-microphone {
         color: $adornColor;
         font-size: 2.1rem;
@@ -32,27 +35,30 @@ aicomponent {
     .self {
       display: block;
       margin-bottom: 10px;
-      text-align:right;
-      div{
+      text-align: right;
+
+      div {
         margin: 2px 0px;
       }
-      .selfname{
-        background: rgba(255,255,255,0.08);
+
+      .selfname {
+        background: rgba(255, 255, 255, 0.08);
         border-radius: 9px 9px 9px 2px;
         height: 19px;
         font-size: 10px;
         line-height: 19px;
-        color: rgba(153,153,153,1);
+        color: rgba(153, 153, 153, 1);
         display: inline-block;
         padding: 0 10px;
         //margin-right: -16px;
       }
-      .selfcontent{
 
-        border-radius:9px 2px 9px 9px;
-        background: rgba(255,255,255,0.08);
+      .selfcontent {
+
+        border-radius: 9px 2px 9px 9px;
+        background: rgba(255, 255, 255, 0.08);
         font-size: 14px;
-        color: rgba(153,153,153,1);
+        color: rgba(153, 153, 153, 1);
         display: block;
         padding: 10px 10px;
         max-width: 90%;
@@ -63,52 +69,57 @@ aicomponent {
     .aiAn {
       display: block;
       margin-bottom: 10px;
-      > div{
+
+      > div {
         margin: 2px 0px;
       }
-      .ainame{
-        background: rgba(255,255,255,0.08);
+
+      .ainame {
+        background: rgba(255, 255, 255, 0.08);
         border-radius: 9px 9px 9px 2px;
         height: 19px;
         font-size: 10px;
         line-height: 19px;
-        color: rgba(153,153,153,1);
+        color: rgba(153, 153, 153, 1);
         display: inline-block;
         padding: 0 10px;
         //margin-left: -16px;
 
       }
-      .aicontent{
 
-        border-radius:2px 9px 9px 9px;
-        background: rgba(255,255,255,0.08);
+      .aicontent {
+
+        border-radius: 2px 9px 9px 9px;
+        background: rgba(255, 255, 255, 0.08);
         display: block;
         max-width: 90%;
 
       }
     }
 
-    .aiSpeechAn{
+    .aiSpeechAn {
       min-height: 39px;
       font-size: 16px;
-      color:rgba(255,255,255,1);
+      color: rgba(255, 255, 255, 1);
       padding: 10px 10px;
     }
 
     .scdList {
       .ailistAn {
         display: block;
-        border-radius:2px 9px 9px 9px;
-        background: rgba(255,255,255,0.08);
+        border-radius: 2px 9px 9px 9px;
+        background: rgba(255, 255, 255, 0.04);
         font-size: 16px;
-        color:rgba(255,255,255,1);
-        .ailistcontent{
+        color: rgba(255, 255, 255, 1);
+
+        .ailistcontent {
           padding: 16px 16px;
           max-width: 100%;
-          border-bottom: 1px solid rgba(21,60,87,1);
-          border-top: 1px solid rgba(21,60,87,1);
+          border-bottom: 1px solid rgba(21, 60, 87, 1);
+          //border-top: 1px solid rgba(21,60,87,1);
           width: 100%;
-          > div{
+
+          > div {
             margin: 7px 0;
           }
 
@@ -127,10 +138,10 @@ aicomponent {
           }
 
           .ti {
-            color:rgba(199,199,199,1);
+            color: rgba(199, 199, 199, 1);
             font-size: 14px;
             margin-left: 16px;
-            display:-webkit-box;
+            display: -webkit-box;
 
           }
         }
@@ -142,83 +153,88 @@ aicomponent {
     .scd {
       .aiscdAn {
         display: block;
-        border-radius:2px 9px 9px 9px;
-        background: rgba(255,255,255,0.08);
+        border-radius: 2px 9px 9px 9px;
+        background: rgba(255, 255, 255, 0.04);
         font-size: 16px;
-        color:rgba(255,255,255,1);
-        .aiscdcontent{
+        color: rgba(255, 255, 255, 1);
+
+        .aiscdcontent {
           padding: 16px 16px;
-          max-width: 100%;
           width: 100%;
-          > div{
+          border-bottom: 1px solid rgba(21, 60, 87, 1);
+
+          > div {
             margin: 7px 0;
           }
-          .scdWarp{
+
+          .scdWarp {
             margin: 7px;
-            background:rgba(25,40,63,.5);
-            border-radius:4px;
-            > div{
-            margin: 7px;
-          }
+            background: rgba(25, 40, 63, .5);
+            border-radius: 4px;
 
-          }
+            > div {
+              margin: 7px;
+            }
 
-          .date {
-            color: $selectColor;
-            font-size: 12px;
-            margin-top: 11px;
-            margin-bottom: 9px;
-            padding: 8px 12px;
-            display: inline-block;
-            min-width: 85px;
-            text-align: center;
-          }
+            .title {
+              padding: 5px;
+              height: 35px;
+              border-bottom: .55px solid rgba(45, 71, 113, 1);
 
-          .ti {
-            color:rgba(199,199,199,1);
-            font-size: 14px;
-            margin-left: 16px;
-            display:-webkit-box;
-
-          }
-
-          button {
-            color: $adornColor;
-            background-color: transparent;
-            font-size: 14px;
-            letter-spacing: 1px;
-            margin-right: 0px;
-            margin-left: 5px;
-          }
-
-          .friend{
-            display: inline-flex;
-            overflow-x: auto;
-            width: 100%;
-            .chip-ios {
-              display: inline-block;
-              min-height: 58px;
-              background-color: transparent;
-              padding-right: 4px;
-              min-width:40px;
-              ion-avatar{
-                width: 25px;
-                height: 25px;
-                min-width: 25px;
-                min-height: 25px;
-                margin: 0 auto;
-                img{
-                  width: 25px;
-                  height: 25px;
-                }
-              }
               span {
-                color: $fontSecondColor;
-                font-size: 10px;
-                display: inline-block;
-                line-height: 20px;
-                width: 38px;
-                text-overflow: ellipsis;
+                margin-left: 20px;
+                color: rgba(86, 137, 222, 1);
+                font-size: 1.4rem;
+              }
+            }
+
+            .ti {
+              padding: 5px;
+              min-height: 32px;
+
+              span {
+                margin-left: 20px;
+                color: #c7c7c7;
+                font-size: 1.4rem;
+                white-space: normal;
+                display: -webkit-box
+              }
+
+            }
+
+
+            .date {
+              padding: 5px;
+              color: rgba(153, 153, 153, 1);
+              font-size: 1.2rem;
+              white-space: normal;
+
+              span:first-child {
+                margin-left: 20px;
+              }
+            }
+
+            .add {
+              padding: 5px;
+              color: rgba(153, 153, 153, 1);
+              font-size: 1.2rem;
+              white-space: normal;
+
+              span:first-child {
+                margin-left: 20px;
+              }
+            }
+
+            .friend {
+              padding: 5px;
+              display: inline-flex;
+              overflow-x: hidden;
+              color: rgba(153, 153, 153, 1);
+              font-size: 1.2rem;
+              white-space: normal;
+
+              span:first-child {
+                margin-left: 20px;
               }
             }
           }
@@ -226,28 +242,15 @@ aicomponent {
       }
 
     }
-
-
   }
 
-  .card-ios {
-    .list-ios {
-      margin: 0px !important;
-    }
-  }
-
-
-  ion-label {
-    white-space: normal;
-  }
-
-  .label-ios {
-    margin: 6px auto;
-  }
-
-  .item-ios {
-    padding-left: 15px;
+  button {
+    color: $adornColor;
     background-color: transparent;
+    font-size: 14px;
+    letter-spacing: 1px;
+    margin-right: 0px;
+    margin-left: 5px;
   }
 
   .close {
@@ -258,19 +261,20 @@ aicomponent {
     position: absolute;
     top: -140px;
     right: 10%;
-    -webkit-transform: translateY(-9999px);
     transform: translateY(-9999px);
     color: #fff;
   }
 
-  .aiscroll{
+  .aiscroll {
     height: calc(100% - 50px);
     overflow-y: auto;
     position: relative;
+
     .aiWarp {
       padding: 5px;
     }
   }
+
   //.aiWarpBack {
   //  position: absolute;
   //  overflow-y: auto;
@@ -282,13 +286,10 @@ aicomponent {
   //  opacity: .6;
   //}
 
-  .scroll-content {
-    .item-block, .item-inner {
-      min-height: 0px;
-    }
-  }
 
 }
+
+
 
 
 

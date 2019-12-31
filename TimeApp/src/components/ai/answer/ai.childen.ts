@@ -35,30 +35,31 @@ import {UserConfig} from "../../../service/config/user.config";
     <ng-template [ngIf]="aiData.scd">
       <div no-lines class="scd">
         <div  class="aiscdAn">
-          <div class="aiSpeechAn">
+          <div class="aiSpeechAn" *ngIf="aiData.scd.an">
             {{aiData.scd.an}}
           </div>
           <div class="aiscdcontent">
             <div class="scdWarp">
-              <div class="title">日程</div>
-              <div><span class="ti">{{aiData.scd.ti}}</span></div>
-              <div><span class="date">{{aiData.scd.d | formatedate:"CYYYY/MM/DD W"}}</span> <span class="date">{{aiData.scd.t=='99:99'?'全天':aiData.scd.t}}</span></div>
-              <div><span class="add">上海</span></div>
-              <div>
-                <div class="friend">
+              <div class="title"><span>日程</span></div>
+              <div class="ti"><span>{{aiData.scd.ti}}</span></div>
+              <div class="date">
+                <span>{{aiData.scd.d | formatedate:"CYYYY/MM/DD W"}} {{(aiData.scd.d + "T" + aiData.scd.t) | formatedate : "A h:mm"}}</span>
+              </div>
+              <div class="add"><span >地址：</span> <span >上海</span></div>
+              <div class="friend" *ngIf="aiData.scd.friends.length > 0">
+                  <span>
+                    参与人：</span>
                   <span *ngFor="let fs of aiData.scd.friends">
                     {{fs.n}}</span>
-                </div>
-              </div>
-              <div class="footer">
-                <button (click)="go2tdc(aiData.scd)">编辑</button>
-                <button (click)="confirmScd(aiData.scd)">确认</button>
               </div>
             </div>
-            
           </div>
           <div class="scdTip">
             <span >{{aiData.scd.scdTip}}</span>
+            <ion-buttons>
+              <button (click)="go2tdc(aiData.scd)">编辑</button>
+              <button (click)="confirmScd(aiData.scd)">确认</button>
+            </ion-buttons>
           </div>
         </div>
       </div>
