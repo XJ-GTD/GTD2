@@ -2,6 +2,7 @@ import {Injectable} from "@angular/core";
 import {Vibration} from "@ionic-native/vibration";
 import {Media,MediaObject} from "@ionic-native/media";
 import {File} from "@ionic-native/file";
+import {UtilService} from "../util-service/util.service";
 
 // declare var Media: any;
 //  ;
@@ -15,10 +16,12 @@ export class RemindfeedbackService {
   resouceMap:Array<any> = new Array<any>();
   resoucePlayMap:Map<string,MediaObject> = new Map<string,MediaObject>();
 
-  asset:string = this.file.applicationDirectory.replace(/^file:\/\//, '') + 'www/assets/remind/';
+  // asset:string = this.file.applicationDirectory.replace(/^file:\/\//, '') + 'www/assets/remind/';
+  asset:string =  'assets/remind/';
   mediaObject: MediaObject;
 
-  constructor(private vibration: Vibration,private file: File,private media: Media) {
+  constructor(private vibration: Vibration,private file: File,private media: Media,
+              private util:UtilService) {
 
     this.resouceMap =
       [{key:'1',name:"尽快",mp3:'1.mp3'},
@@ -38,6 +41,13 @@ export class RemindfeedbackService {
     //id为音频文件的唯一ID
     //assetPath音频资产的相对路径或绝对URL（包括http：//）
     //官网还有更多的配置，这里只需要两个参数就行了，后面的回调记得带上
+    if (this.util.isAndroid()){
+      this.asset = this.file.applicationDirectory.replace(/^file:\/\//, '') + 'www/assets/remind/';
+    }
+    if (this.util.isIOS()){
+      this.asset = 'assets/remind/';
+    }
+
     for (let r of this.resouceMap){
       try{
         let o = this.media.create(this.asset + r.mp3);
