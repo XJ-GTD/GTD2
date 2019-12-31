@@ -63,6 +63,8 @@ export class ListeningComponent {
     this.listenEmit = this.emitService.registerListener((data)=>{
       this.isStop = !data;
       if (this.isStop){
+        this.immediately = "";
+        this.changeDetectorRef.detectChanges();
         this.onListeningStop.emit(this);
       }else{
         this.onListeningStart.emit(this);
