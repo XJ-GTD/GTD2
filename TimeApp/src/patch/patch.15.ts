@@ -1,9 +1,11 @@
 import {IPatch} from "./ipatch";
 import {SqliteExec} from "../service/util-service/sqlite.exec";
+import {Injectable} from "@angular/core";
 
 /**
  * create by on 2019/3/5
  */
+@Injectable()
 export class Patch15 implements IPatch {
 
   constructor(private sqlexec : SqliteExec){

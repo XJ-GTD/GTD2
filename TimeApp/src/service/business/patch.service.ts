@@ -1,7 +1,7 @@
 import {DataConfig} from "../config/data.config";
 import {BaseService} from "./base.service";
 import {IPatch} from "../../patch/ipatch";
-import {MytestPatch} from "../../patch/patch.15";
+import {Patch15} from "../../patch/patch.15";
 import {YTbl} from "../sqlite/tbl/y.tbl";
 import {SqliteInit} from "../sqlite/sqlite.init";
 import {UtilService} from "../util-service/util.service";
@@ -18,13 +18,12 @@ export class PatchService extends BaseService {
 
   constructor(private sqlLiteInit: SqliteInit,
               private sqlExce: SqliteExec,
-              private util: UtilService,){
+              private util: UtilService,
+              private patch15 : Patch15){
     super();
     this._patchs.length = 0;
 
-    //测试补丁
-    let mytestPatch = new MytestPatch();
-    this._patchs.push(mytestPatch);
+    this._patchs.push(patch15);
   }
   /**
    * 补丁更新
