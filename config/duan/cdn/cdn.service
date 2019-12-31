@@ -1,0 +1,18 @@
+[Unit]
+Description=Short Application CDN Service
+[Service]
+User=root
+# The configuration file application.properties should be here:
+#change this to your workspace
+WorkingDirectory=/opt/duan/cdn
+#path to executable. 
+#executable is a bash script which calls jar file
+ExecStart=/opt/duan/cdn/startup.sh
+ExecReload=/opt/duan/cdn/startup.sh
+ExecStop=/opt/duan/cdn/stop.sh
+SuccessExitStatus=143
+TimeoutStopSec=10
+Restart=on-failure
+RestartSec=5
+[Install]
+WantedBy=multi-user.target
