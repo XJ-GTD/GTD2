@@ -78,7 +78,7 @@ export class ListeningComponent {
       }
 
       if (this.immediately.fininsh){
-        // this.start();
+         // this.start();
       }
       this.changeDetectorRef.detectChanges();
     })
