@@ -2,133 +2,225 @@ aicomponent {
   transition: all 1.5s ease 0.2s;
   width: 100%;
   height: 100%;
-
-  .jsai {
-    position: fixed;
-    bottom: $speakerTop + 30px;
-    color: rgba(60,144,155,1);
-    font-size: 1.8rem;
-    font-weight: bold;
-    left: 1.5rem;
-    right: 3rem;
-    text-align: center;
-  }
-
   .card {
     background: transparent;
     box-shadow:none;
     position: relative;
-    margin: 1rem 2.5rem;
-    width: 90%;
+    margin: 1.5rem 1.5rem;
     //border: 0.55px solid red;
     padding: 1rem;
 
-    .self {
-      color: $fontSecondColor;
+
+    .scdTip {
+      color:rgba(153,153,153,1);
       font-size: 12px;
+      padding: 22px 16px 25px 16px;
+      display: flex;
+      span{
+        display: block;
+        flex: auto;
+      }
+      .fa-microphone {
+        color: $adornColor;
+        font-size: 2.1rem;
+        padding: 0 10px;
+        text-align: right;
+      }
+    }
+
+
+    .self {
+      display: block;
+      margin-bottom: 10px;
+      text-align:right;
+      div{
+        margin: 2px 0px;
+      }
+      .selfname{
+        background: rgba(255,255,255,0.08);
+        border-radius: 9px 9px 9px 2px;
+        height: 19px;
+        font-size: 10px;
+        line-height: 19px;
+        color: rgba(153,153,153,1);
+        display: inline-block;
+        padding: 0 10px;
+        //margin-right: -16px;
+      }
+      .selfcontent{
+
+        border-radius:9px 2px 9px 9px;
+        background: rgba(255,255,255,0.08);
+        font-size: 14px;
+        color: rgba(153,153,153,1);
+        display: block;
+        padding: 10px 10px;
+        max-width: 90%;
+        margin-left: 10%;
+      }
     }
 
     .aiAn {
-      color: $fontMasterColor;
-      font-size: 14px;
-      font-weight: bold;
+      display: block;
+      margin-bottom: 10px;
+      > div{
+        margin: 2px 0px;
+      }
+      .ainame{
+        background: rgba(255,255,255,0.08);
+        border-radius: 9px 9px 9px 2px;
+        height: 19px;
+        font-size: 10px;
+        line-height: 19px;
+        color: rgba(153,153,153,1);
+        display: inline-block;
+        padding: 0 10px;
+        //margin-left: -16px;
+
+      }
+      .aicontent{
+
+        border-radius:2px 9px 9px 9px;
+        background: rgba(255,255,255,0.08);
+        min-height: 39px;
+        font-size: 16px;
+        color:rgba(255,255,255,1);
+        display: block;
+        padding: 10px 10px;
+        max-width: 90%;
+
+      }
     }
 
     .scdList {
-      .volume[item-end] {
-        color: $adornColor;
-      }
-
-      .date {
-        color: $selectColor;
-        font-size: 12px;
-        letter-spacing: 1px;
-      }
-
-      .ti {
-        color: $fontSecondColor;
-        font-size: 14px;
-        margin-left: 6px;
-
-      }
-
-    }
-
-    .scd {
-      span {
-        color: $fontMasterColor;
-      }
-
-      .friend{
-        display: inline-flex;
-        overflow-x: auto;
-        width: 100%;
-        .chip-ios {
-          display: inline-block;
-          min-height: 58px;
-          background-color: transparent;
-          padding-right: 4px;
-          min-width:40px;
-          ion-avatar{
-            width: 25px;
-            height: 25px;
-            min-width: 25px;
-            min-height: 25px;
-            margin: 0 auto;
-            img{
-              width: 25px;
-              height: 25px;
-            }
+      .ailistAn {
+        display: block;
+        border-radius:2px 9px 9px 9px;
+        background: rgba(255,255,255,0.08);
+        font-size: 16px;
+        color:rgba(255,255,255,1);
+        .ailistcontent{
+          padding: 16px 16px;
+          max-width: 100%;
+          border-bottom: 1px solid rgba(21,60,87,1);
+          width: 100%;
+          > div{
+            margin: 7px 0;
           }
-          span {
-            color: $fontSecondColor;
-            font-size: 10px;
+
+          .date {
+            color: $selectColor;
+            font-size: 12px;
+            margin-top: 11px;
+            margin-bottom: 9px;
+            background-image: url('../assets/imgs/aidateborder.png');
+            background-repeat: no-repeat;
+            background-size: 100% 100%;
+            padding: 8px 12px;
             display: inline-block;
-            line-height: 20px;
-            width: 38px;
-            text-overflow: ellipsis;
+            min-width: 85px;
+            text-align: center;
+          }
+
+          .ti {
+            color:rgba(199,199,199,1);
+            font-size: 14px;
+            margin-left: 16px;
+            display:-webkit-box;
+
           }
         }
       }
 
-      .friend {
-        //
-        //display: inline-flex;
-        //overflow-x: auto;
-        //width: 100%;
-        //min-height: 65px;
-        //.chip-ios {
-        //  display: flex;
-        //  min-height: 40px;
-        //  background-color: transparent;
-        //}
+    }
 
+
+    .scd {
+      .aiscdAn {
+        display: block;
+        border-radius:2px 9px 9px 9px;
+        background: rgba(255,255,255,0.08);
+        font-size: 16px;
+        color:rgba(255,255,255,1);
+        .aiscdcontent{
+          padding: 16px 16px;
+          max-width: 100%;
+          width: 100%;
+          > div{
+            margin: 7px 0;
+          }
+          .scdWarp{
+            margin: 7px;
+            background:rgba(25,40,63,.5);
+            border-radius:4px;
+            > div{
+            margin: 7px;
+          }
+
+          }
+
+          .date {
+            color: $selectColor;
+            font-size: 12px;
+            margin-top: 11px;
+            margin-bottom: 9px;
+            padding: 8px 12px;
+            display: inline-block;
+            min-width: 85px;
+            text-align: center;
+          }
+
+          .ti {
+            color:rgba(199,199,199,1);
+            font-size: 14px;
+            margin-left: 16px;
+            display:-webkit-box;
+
+          }
+
+          button {
+            color: $adornColor;
+            background-color: transparent;
+            font-size: 14px;
+            letter-spacing: 1px;
+            margin-right: 0px;
+            margin-left: 5px;
+          }
+
+          .friend{
+            display: inline-flex;
+            overflow-x: auto;
+            width: 100%;
+            .chip-ios {
+              display: inline-block;
+              min-height: 58px;
+              background-color: transparent;
+              padding-right: 4px;
+              min-width:40px;
+              ion-avatar{
+                width: 25px;
+                height: 25px;
+                min-width: 25px;
+                min-height: 25px;
+                margin: 0 auto;
+                img{
+                  width: 25px;
+                  height: 25px;
+                }
+              }
+              span {
+                color: $fontSecondColor;
+                font-size: 10px;
+                display: inline-block;
+                line-height: 20px;
+                width: 38px;
+                text-overflow: ellipsis;
+              }
+            }
+          }
+        }
       }
 
-      .scdTip {
-        color: $fontThirdColor;
-        font-size: 12px;
-      }
-
-      button {
-        color: $adornColor;
-        background-color: transparent;
-        font-size: 14px;
-        letter-spacing: 1px;
-        margin-right: 0px;
-        margin-left: 5px;
-      }
-
-      .date {
-        color: $fontSecondColor;
-        font-size: 12px;
-      }
-
-      .ti {
-        color: $fontMasterColor;
-        font-size: 14px;
-        font-weight: bold;
-      }
     }
 
 
@@ -167,24 +259,24 @@ aicomponent {
     color: #fff;
   }
 
-  .aiWarp {
+  .aiscroll{
+    height: calc(100% - 50px);
+    overflow-y: auto;
     position: relative;
-    overflow-y: auto;
-    opacity: 1;
-    padding: 5px;
-    width: 100%;
-    height: calc(100% - 145px);
+    .aiWarp {
+      padding: 5px;
+    }
   }
-  .aiWarpBack {
-    position: absolute;
-    overflow-y: auto;
-    opacity: 1;
-    padding: 5px;
-    width: 100%;
-    background-color: $baseBackColor;
-    z-index: -1;
-    opacity: .6;
-  }
+  //.aiWarpBack {
+  //  position: absolute;
+  //  overflow-y: auto;
+  //  opacity: 1;
+  //  padding: 5px;
+  //  width: 100%;
+  //  background-color: $baseBackColor;
+  //  z-index: -1;
+  //  opacity: .6;
+  //}
 
   .scroll-content {
     .item-block, .item-inner {

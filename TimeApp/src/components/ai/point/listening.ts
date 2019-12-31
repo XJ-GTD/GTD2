@@ -1,18 +1,27 @@
-import {ChangeDetectorRef, Component, ElementRef, Renderer2, ViewChild} from '@angular/core';
-import {UtilService} from "../../../service/util-service/util.service";
-import {AssistantService} from "../../../service/cordova/assistant.service";
+import {ChangeDetectorRef, Component, ElementRef, EventEmitter, Output, ViewChild} from '@angular/core';
+
 import {EmitService} from "../../../service/util-service/emit.service";
-import {TimeOutService} from "../../../util/timeOutService";
 import {Subscriber} from "rxjs";
+
 
 @Component({
   selector: 'ListeningComponent',
   template:
       `
-    <canvas #canvas>Your browser can not support canvas</canvas>
+      <div class="jsai">
+        <span>{{immediately}}</span>
+      </div>
+    <canvas #canvas></canvas>
   `,
 })
 export class ListeningComponent {
+
+  immediately:string;
+  immediatelyemit:Subscriber<any>;
+
+  @Output() onListeningStart: EventEmitter<any> = new EventEmitter();
+  @Output() onListeningStop: EventEmitter<any> = new EventEmitter();
+
   doublePI: number = Math.PI * 2;
 
   @ViewChild("canvas")
@@ -46,15 +55,32 @@ export class ListeningComponent {
   listenEmit:Subscriber<any>;
 
   isStop:boolean = false;
-  constructor(private emitService:EmitService) {
+  constructor(private emitService:EmitService,
+              private changeDetectorRef:ChangeDetectorRef, public elementRef: ElementRef) {
+  }
+
+  ngOnInit(){
     this.listenEmit = this.emitService.registerListener((data)=>{
-        this.isStop = !data;
-        this.init();
+      this.isStop = !data;
+      if (this.isStop){
+        this.onListeningStop.emit(this);
+      }else{
+        this.onListeningStart.emit(this);
+      }
+      // this.init();
+    });
+    this.immediatelyemit = this.emitService.registerImmediately(($data)=>{
+      this.immediately = $data;
+      this.changeDetectorRef.detectChanges();
     })
+
+    // this.init();
+
   }
 
   ngOnDestroy(){
     this.listenEmit.unsubscribe();
+    this.immediatelyemit.unsubscribe();
   }
 
   init() {

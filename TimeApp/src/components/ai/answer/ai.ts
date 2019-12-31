@@ -1,5 +1,5 @@
 import {ChangeDetectorRef, Component, ElementRef, Input, Output, Renderer2, ViewChild} from '@angular/core';
-import {IonicPage} from 'ionic-angular';
+import {Card, IonicPage} from 'ionic-angular';
 import {AiData, AiService, FriendAiData, ScdAiData, ScdLsAiData, SpeechAiData} from "./ai.service";
 import {UtilService} from "../../../service/util-service/util.service";
 import {
@@ -9,6 +9,7 @@ import {
   SpeechEmData
 } from "../../../service/util-service/emit.service";
 import {Subscriber} from "rxjs";
+import BScroll from "better-scroll";
 
 /**
  * Generated class for the HbPage page.
@@ -21,47 +22,48 @@ import {Subscriber} from "rxjs";
 @Component({
   selector: 'AiComponent',
   template: `
-    <div class="jsai">
-      <span>{{immediately}}</span></div>
-    
-      <div class="aiWarp" #aiWarp>
+    <div class="aiscroll" >
+      <div class="aiWarp">
+        <ion-card class="card" #card5 *ngIf="aiData5">
+          <AiChildenComponent [aiData] = "aiData5"></AiChildenComponent>
+        </ion-card>
+        <ion-card class="card" #card4 *ngIf="aiData4">
+          <AiChildenComponent [aiData] = "aiData3"></AiChildenComponent>
+        </ion-card>
         <ion-card class="card" #card3 *ngIf="aiData3">
           <AiChildenComponent [aiData] = "aiData3"></AiChildenComponent>
         </ion-card>
         <ion-card class="card" #card2 *ngIf="aiData2">
           <AiChildenComponent [aiData] = "aiData2"></AiChildenComponent>
         </ion-card>
-        <ion-card class="card" #card1 *ngIf="aiData1">
+        <ion-card class="card" #card1 *ngIf="aiData1" id="card1">
           <AiChildenComponent [aiData] = "aiData1"></AiChildenComponent>
         </ion-card>
       </div>
-      <!--<div class="aiWarpBack" #aiWarpback>-->
-      <!--</div>-->
-      <!--<ion-icon name="backspace" (click)="rad()" class="backspace"></ion-icon>-->
-      <!--<ion-icon name="close" (click)="closePage()" class="close" #close></ion-icon>-->
+    </div>
   `,
 })
 export class AiComponent {
-  @ViewChild("aiWarp") aiWarp: ElementRef;
-  @ViewChild("aiWarpback") aiWarpback: ElementRef;
+  @ViewChild("card1") card1: ElementRef;
 
 
   aiData1: AiData = new AiData();
   aiData2: AiData = new AiData();
   aiData3: AiData = new AiData();
+  aiData4: AiData = new AiData();
+  aiData5: AiData = new AiData();
 
-  immediately:string;
-  immediatelyemit:Subscriber<any>;
   scdLsemit:Subscriber<any>;
   speechemit:Subscriber<any>;
   scdemit:Subscriber<any>;
-  //语音界面数据传递
-  b: boolean;
+
+  bScroll: BScroll|any;
 
   constructor(private aiService: AiService,
               private _renderer: Renderer2,
               private util: UtilService,
               private emitService: EmitService,
+              private el: ElementRef,
               private changeDetectorRef:ChangeDetectorRef) {
 
   }
@@ -80,10 +82,14 @@ export class AiComponent {
       this.callbackScd(data);
       this.changeDetectorRef.detectChanges();
     });
-    this.immediatelyemit = this.emitService.registerImmediately(($data)=>{
-      this.immediately = $data;
-      this.changeDetectorRef.detectChanges();
-    })
+
+    this.bScroll = new BScroll('.aiscroll', {
+      click: true,
+      scrollY: true
+
+    });
+    this._renderer.setStyle(this.card1.nativeElement, "min-height", (this.bScroll.wrapperHeight - 40) + "px");
+
   }
 
 
@@ -91,12 +97,13 @@ export class AiComponent {
     this.scdLsemit.unsubscribe();
     this.speechemit.unsubscribe();
     this.scdemit.unsubscribe();
-    this.immediatelyemit.unsubscribe();
   }
 
 
   callbackScdLs(datas: ScdLsEmData) {
 
+    this.aiData4.copyto( this.aiData5);
+    this.aiData3.copyto( this.aiData4);
     this.aiData2.copyto( this.aiData3);
     this.aiData1.copyto(this.aiData2);
     this.aiData1.clear();
@@ -116,20 +123,34 @@ export class AiComponent {
       aiData.gs = scdEmData.gs;
       this.aiData1.scdList.datas.push(aiData);
     }
+    this.changeDetectorRef.detectChanges();
+    this.gotonew();
 
   }
 
   callbackSpeech(datas: SpeechEmData) {
+    this.aiData4.copyto( this.aiData5);
+    this.aiData3.copyto( this.aiData4);
     this.aiData2.copyto( this.aiData3);
     this.aiData1.copyto(this.aiData2);
     this.aiData1.clear();
     this.aiData1.speechAi = new SpeechAiData();
     this.aiData1.speechAi.org = datas.org;
     this.aiData1.speechAi.an = datas.an;
+    this.changeDetectorRef.detectChanges();
+    this.gotonew();
 
   }
 
+  gotonew(){
+
+    setTimeout(()=>{
+      this.bScroll.scrollToElement(this.card1.nativeElement,380,0,0);
+    },200)
+  }
   callbackScd(data: ScdEmData) {
+    this.aiData4.copyto( this.aiData5);
+    this.aiData3.copyto( this.aiData4);
     this.aiData2.copyto( this.aiData3);
     this.aiData1.copyto(this.aiData2);
     this.aiData1.clear();
@@ -154,12 +175,16 @@ export class AiComponent {
     }
 
     this.aiData1.scd = scd1;
+    this.changeDetectorRef.detectChanges();
+    this.gotonew();
   }
 
   closePage() {
     this.aiData1 = new AiData();
     this.aiData2 = new AiData();
     this.aiData3 = new AiData();
+    this.aiData4 = new AiData();
+    this.aiData5 = new AiData();
     this.changeDetectorRef.detectChanges();
   }
 }

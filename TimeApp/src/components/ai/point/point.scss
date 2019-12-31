@@ -8,15 +8,37 @@ PointComponent {
   top: 100%;
   z-index: 999;
   ListeningComponent{
-    margin-top: -70px;
-    width: 50%;
+    margin-top: -115px;
+    width: 0px;
     position: fixed;
-    right: 80px;
+    height:115px;
+    background:rgba(25,40,63,.95);
+    border-radius:10px 10px 0px 0px;
+    .jsai{
+      width: 90%;
+      text-align: center;
+      margin: 1rem auto;
+      padding: 1rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100%;
+      span{
+        font-size: 1.6rem;
+        color:rgba(255,255,255,1);
+        -webkit-line-clamp: 3;
+        display:-webkit-box;
+        text-overflow: revert;
+        overflow: auto;
+      }
+    }
+
     canvas {
       display: block;
       margin: 0 auto;
       width: 100%;
-      height: 50px;
+      //height: 50px;
+      height: 0px;
     }
 
     canvas1 {
@@ -48,6 +70,7 @@ PointComponent {
     position: relative;
     float: right;
     margin: -70px 20px;
+    z-index: 999;
   }
 
 
@@ -62,7 +85,6 @@ PointComponent {
     animation: pulse 1.4s linear infinite;
     -webkit-transition: all 0.3s ease;
     transition: all 0.3s ease;
-    z-index: 999;
     display: -webkit-box;
   }
 
@@ -79,19 +101,19 @@ PointComponent {
     height: $speakerSize / 2;
     //margin-left: $speakerSize * -1 / 4;
     //margin-top: $speakerSize * -1 / 4;
-    border-top: 1px solid #3583d7;
-    border-bottom: 1px solid #3583d7;
+    //border-top: 1px solid $spinnerBorder1;
+    //border-bottom: 1px solid $spinnerBorder1;
   }
 
   .speaking.moving {
-    border-color: #3583d7;
-    box-shadow: 0 0 23px 7px #3583d7;
+    //border-color: #3583d7;
+    box-shadow: 0 0 23px 7px  #3583d7;
     animation: none;
-    opacity: 0.8;
+    opacity: 1;
   }
 
   .speaking.moving:before {
-    border-color: #3583d7;
+    //border-color: #3583d7;
     opacity: 0;
     width: $speakerSize * 1.5;
     height: $speakerSize * 1.5;

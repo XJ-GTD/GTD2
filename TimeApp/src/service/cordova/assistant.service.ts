@@ -238,11 +238,9 @@ export class AssistantService {
     if (this.listening){
       cordova.plugins.XjBaiduSpeech.stopListen();
       this.startWakeUp();
-      this.emitService.emitListener(false);
       this.listening = false;
-      setTimeout( () => {
-        this.emitService.emitImmediately("");
-      }, 2000);
+      this.emitService.emitImmediately("");
+      this.emitService.emitListener(false);
     }
   }
 

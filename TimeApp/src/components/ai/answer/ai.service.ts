@@ -102,8 +102,8 @@ export class AiService {
       str = '昨天';
     } else if (days == -2) {
       str = '前天';
-    } else if (days <= -3) {
-      str = 'day';
+    } else{
+      str = date.format("YYYY-M-D");
     }
     return str;
   }
@@ -142,6 +142,7 @@ export class ScdAiData {
   gs: string = "";
   saved:boolean = false;
   scdTip:string = "";
+  an: string = "";
   friends: Array<FriendAiData> = new Array<FriendAiData>();
 }
 

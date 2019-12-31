@@ -4,20 +4,11 @@ import {
   ElementRef,
   EventEmitter,
   Input,
-  Output,
-  Renderer2,
+  Output, Renderer2,
   ViewChild
 } from '@angular/core';
-import {IonicPage} from 'ionic-angular';
-import {UtilService} from "../../../service/util-service/util.service";
-import {AssistantService} from "../../../service/cordova/assistant.service";
-import {InputComponent} from "../input/input";
-import {EmitService} from "../../../service/util-service/emit.service";
+import {Animation, IonicPage, Platform} from 'ionic-angular';
 import {PopperComponent} from "angular-popper";
-import {Subscriber} from "rxjs";
-import {TimeOutService} from "../../../util/timeOutService";
-import {ListeningComponent} from "./listening";
-import {PointService} from "./point.service";
 
 /**
  * Generated class for the Hb01Page page.
@@ -30,7 +21,7 @@ import {PointService} from "./point.service";
   selector: 'PointComponent',
   template: `
 
-    <div class="inputioc" (click)="inputstart()" *ngIf="showInput">
+    <div class="inputioc" (click)="inputstart()" *ngIf="showInput" #inputComponent >
       <ion-icon class="fal fa-keyboard"></ion-icon>
     </div>
     <div class="aitool" #aitool (click)="ponintClick()">
@@ -48,21 +39,19 @@ import {PointService} from "./point.service";
       </angular-popper>
     </ng-template>
 
-    <ListeningComponent #listening *ngIf="showInput"></ListeningComponent>
-    <InputComponent #inputComponent></InputComponent>
+    <ListeningComponent #listeningComponent *ngIf="showInput" (onListeningStart)="listeningStart()" (onListeningStop)="listeningStop()"></ListeningComponent>
 
   `,
 })
 export class PointComponent {
-  @ViewChild('listening')
-  listening: ListeningComponent;
+
+  private ani:Animation;
   @ViewChild('light')
   light: ElementRef;
   @ViewChild('aitool')
   aitool: ElementRef;
-
   @ViewChild('inputComponent')
-  inputComponent: InputComponent;
+  inputComponent: ElementRef;
 
   @Input()
   hasPopper: boolean = true;
@@ -75,8 +64,14 @@ export class PointComponent {
   showInput: boolean = true;
 
   @Output() onPonintClick: EventEmitter<any> = new EventEmitter();
+  @Output() onInputClick: EventEmitter<any> = new EventEmitter();
 
-  constructor(private changeDetectorRef: ChangeDetectorRef) {
+  @ViewChild('listeningComponent', {read: ElementRef})
+  listeningEl: ElementRef; // 直接找到子组件对应的DOM
+
+  constructor(private changeDetectorRef: ChangeDetectorRef, private plt: Platform,
+              private _renderer: Renderer2,) {
+
 
   }
 
@@ -91,6 +86,27 @@ export class PointComponent {
   ngOnDestroy() {
   }
 
+  ngAfterViewInit(){
+
+    if (this.showInput){
+      this.ani = new Animation(this.plt);
+      this.ani
+        .easing('cubic-bezier(0.0, 0.0, 0.2, 1)')
+        .easingReverse('cubic-bezier(0.4, 0.0, 0.6, 1)')
+        .duration(280);
+      let listening = new Animation(this.plt, this.listeningEl.nativeElement);
+      listening.fromTo('width',0 ,"100%");
+      this.ani.add(listening);
+      let aitool = new Animation(this.plt, this.aitool.nativeElement);
+      aitool.fromTo('translateY',0 ,"-70px");
+      aitool.fromTo('scale',1 ,0.8);
+      this.ani.add(aitool);
+      let input =  new Animation(this.plt, this.inputComponent.nativeElement);
+      input.fromTo('scale',"1" ,0);
+      this.ani.add(input);
+    }
+  }
+
   closepopper() {
     this.popperShow = false;
     if (!this.changeDetectorRef['destroyed']) {
@@ -100,11 +116,40 @@ export class PointComponent {
 
   ponintClick() {
     // this.emitService.emitAiTellYou({close: false, message: {title:'zhangju 邀请你',text:'QQ'}});
-     this.onPonintClick.emit(this);
+    //    this.listeningStart(()=>{
+         this.onPonintClick.emit(this);
+       // });
+       // setTimeout(()=>{
+       //   this.listeningStop(()=>{
+       //   });
+       // },5000)
+     // }else{
+     //   this.onPonintClick.emit(this);
+     // }
     // this.listening.start();
   }
 
   inputstart() {
-    this.inputComponent.inputStart();
+    this.onInputClick.emit(this);
+  }
+
+
+  listeningStart(done:Function){
+
+  if (this.ani) {
+    this.ani
+      .onFinish(done, true, true)
+      .reverse(false).play();
+    this._renderer.removeClass(this.light.nativeElement, "moving");
+  }
+  }
+  listeningStop(done:Function){
+    if (this.ani) {
+      this.ani
+        .onFinish(done, true, true)
+        .reverse(true).play();
+      this._renderer.addClass(this.light.nativeElement, "moving");
+    }
+
   }
 }
