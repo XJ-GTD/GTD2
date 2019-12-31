@@ -1,0 +1,8 @@
+{
+  "debug": true,
+  "stomp.server.host": "172.16.176.17",
+  "stomp.server.port": 5672,
+  "amq.app.id": "cdn",
+  "port": 8089,
+  "cache.dir": "/opt/duan/cdn/caches"
+}

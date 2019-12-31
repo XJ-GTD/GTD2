@@ -1,0 +1,163 @@
+{
+  "debug": true,
+  "stomp.server.host": "172.16.176.17",
+  "stomp.server.port": 5672,
+  "amq.app.id": "cdc",
+  "proxy": [
+     {
+       "url": "/aag/webhooks/:webhookowner/:version/:observer",
+       "params": ["webhookowner", "version", "observer"],
+       "headers": ["X-Hub-Signature"],
+       "response": {
+         "passthrough": true
+       },
+       "trigger": {
+         "flowid": "mwxing_webhooks_api_proxy"
+       }
+     },
+     {
+       "url": "/bla/target/add",
+       "path": "http://sa-bla:8080/bla/target/add",
+       "params": [],
+       "headers": ["lt", "pi", "pv", "di", "dt", "ai"],
+       "response": {
+         "passthrough": false
+       },
+       "trigger": {
+         "flowid": "mwxing_api_proxy"
+       }
+     },
+     {
+       "url": "/bla/target/remove",
+       "path": "http://sa-bla:8080/bla/target/remove",
+       "params": [],
+       "headers": ["lt", "pi", "pv", "di", "dt", "ai"],
+       "response": {
+         "passthrough": false
+       },
+       "trigger": {
+         "flowid": "mwxing_api_proxy"
+       }
+     },
+     {
+       "url": "/bla/list",
+       "path": "http://sa-bla:8080/bla/list",
+       "params": [],
+       "headers": ["lt", "pi", "pv", "di", "dt", "ai"],
+       "response": {
+         "passthrough": false
+       },
+       "trigger": {
+         "flowid": "mwxing_api_proxy"
+       }
+     },
+     {
+       "url": "/sha/plan/buildin/download",
+       "path": "http://sa-sha:8080/sha/plan/buildin/download",
+       "params": [],
+       "headers": ["lt", "pi", "pv", "di", "dt", "ai"],
+       "response": {
+         "passthrough": false
+       },
+       "trigger": {
+         "flowid": "mwxing_api_proxy"
+       }
+     },
+     {
+       "url": "/aba/user/mwxing/access",
+       "path": "http://nginx/aba/user/mwxing/access",
+       "params": [],
+       "headers": ["lt", "pi", "pv", "di", "dt", "ai"],
+       "response": {
+         "passthrough": false
+       },
+       "trigger": {
+         "flowid": "mwxing_api_proxy"
+       }
+     },
+     {
+       "url": "/aup/dologin",
+       "path": "http://sa-aup:8080/aup/dologin",
+       "params": [],
+       "headers": ["lt", "pi", "pv", "di", "dt", "ai"],
+       "response": {
+         "passthrough": false
+       },
+       "trigger": {
+         "flowid": "mwxing_api_proxy"
+       }
+     },
+     {
+       "url": "/aup/verifycode",
+       "path": "http://sa-aup:8080/aup/verifycode",
+       "params": [],
+       "headers": ["lt", "pi", "pv", "di", "dt", "ai"],
+       "response": {
+         "passthrough": false
+       },
+       "trigger": {
+         "flowid": "mwxing_api_proxy"
+       }
+     },
+     {
+       "url": "/aup/doregister",
+       "path": "http://sa-aup:8080/aup/doregister",
+       "params": [],
+       "headers": ["lt", "pi", "pv", "di", "dt", "ai"],
+       "response": {
+         "passthrough": false
+       },
+       "trigger": {
+         "flowid": "mwxing_api_proxy"
+       }
+     },
+     {
+       "url": "/aup/user/:unionid",
+       "path": "http://sa-aup:8080/aup/user/#{unionid}",
+       "params": ["unionid"],
+       "headers": ["lt", "pi", "pv", "di", "dt", "ai"],
+       "response": {
+         "passthrough": false
+       },
+       "trigger": {
+         "flowid": "mwxing_api_proxy"
+       }
+     },
+     {
+       "url": "/aup/user/:phoneno/userinfo",
+       "path": "http://sa-aup:8080/aup/user/#{phoneno}/userinfo",
+       "params": ["phoneno"],
+       "headers": ["lt", "pi", "pv", "di", "dt", "ai"],
+       "response": {
+         "passthrough": false
+       },
+       "trigger": {
+         "flowid": "mwxing_api_proxy"
+       }
+     },
+     {
+       "url": "/aup/user/multi/usersinfo",
+       "path": "http://sa-aup:8080/aup/user/multi/usersinfo",
+       "params": [],
+       "headers": ["lt", "pi", "pv", "di", "dt", "ai"],
+       "response": {
+         "passthrough": false
+       },
+       "trigger": {
+         "flowid": "mwxing_api_proxy"
+       }
+     },
+     {
+       "url": "/aup/user/:phoneno/avatar/json",
+       "path": "http://sa-aup:8080/aup/user/#{phoneno}/avatar/json",
+       "params": ["phoneno"],
+       "headers": ["lt", "pi", "pv", "di", "dt", "ai"],
+       "response": {
+         "passthrough": false
+       },
+       "trigger": {
+         "flowid": "mwxing_api_proxy"
+       }
+     }
+  ]
+}

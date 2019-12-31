@@ -1,0 +1,18 @@
+[Unit]
+Description=Short Application CDC Service
+[Service]
+User=root
+# The configuration file application.properties should be here:
+#change this to your workspace
+WorkingDirectory=/opt/duan/cdc
+#path to executable. 
+#executable is a bash script which calls jar file
+ExecStart=/opt/duan/cdc/startup.sh
+ExecReload=/opt/duan/cdc/startup.sh
+ExecStop=/opt/duan/cdc/stop.sh
+SuccessExitStatus=143
+TimeoutStopSec=10
+Restart=on-failure
+RestartSec=5
+[Install]
+WantedBy=multi-user.target
