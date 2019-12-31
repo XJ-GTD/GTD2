@@ -72,8 +72,8 @@ page-attach {
 
         img {
           display: inline-block;
-          width: 90px;
-          height: 120px;
+          max-width: 120px;
+          max-height: 120px;
         }
       }
 
@@ -298,4 +298,3 @@ page-attach {
     }
   }
 }
-
