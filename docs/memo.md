@@ -12,3 +12,6 @@
 <framework src="libs/ios/CocoaAsyncSocket.framework" custom="true" />
 <framework src="libs/ios/JKVValue.framework" custom="true" />
 <framework src="libs/ios/RMQClient.framework" custom="true" />
+
+## 2019/12/31 天气晴
+对外服务全部使用阿里云反向代理
