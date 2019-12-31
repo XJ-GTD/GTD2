@@ -116,6 +116,7 @@ public class MainVerticle extends AbstractVerticle {
 
 	private void proxy(RoutingContext ctx, String path, JsonArray params, JsonArray headers, JsonObject response, JsonObject trigger) {
 		JsonObject query = new JsonObject();
+		System.out.println("Proxying " + ctx.request().absoluteURI());
 		
 		query.put("method", ctx.request().method().toString().toLowerCase());
 		
@@ -130,6 +131,8 @@ public class MainVerticle extends AbstractVerticle {
 		} else {
 			query.put("querys", new JsonObject());
 		}
+		
+		System.out.println("Querys " + query.encode());
 		
 		if (!"".equals(path)) {
 			query.put("path", path);
@@ -149,6 +152,8 @@ public class MainVerticle extends AbstractVerticle {
 			query.put("params", pathparams);
 		}
 
+		System.out.println("Path params " + query.encode());
+		
 		if (headers.size() > 0) {
 			JsonObject headerparams = new JsonObject();
 
@@ -167,6 +172,8 @@ public class MainVerticle extends AbstractVerticle {
 			query.put("header", headerparams);
 		}
 		
+		System.out.println("Header params " + query.encode());
+
 		Boolean passthrough = response.getBoolean("passthrough", Boolean.TRUE);
 		
 		if (passthrough) {
@@ -211,13 +218,18 @@ public class MainVerticle extends AbstractVerticle {
 		JsonObject body = new JsonObject();
 		
 		if (strbody != null && !"".equals(strbody.trim())) {
-			body = ctx.getBodyAsJson();
+			System.out.println("body " + strbody);
+			
+			if (strbody.startsWith("{") && strbody.endsWith("}")) {
+				body = ctx.getBodyAsJson();
+			}
 		}
 		
 		query.put("body", body);
 
 		String flowid = trigger.getString("flowid");
-		
+		System.out.println("Trigger flowid " + flowid);
+
 		MessageProducer<JsonObject> producer = bridge.createProducer(flowid);
 		producer.send(new JsonObject()
 				.put("body", new JsonObject()
