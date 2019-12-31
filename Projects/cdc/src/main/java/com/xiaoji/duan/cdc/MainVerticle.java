@@ -474,7 +474,21 @@ public class MainVerticle extends AbstractVerticle {
 	private void subscribeTrigger(Future future, String trigger) {
 		MessageConsumer<JsonObject> consumer = bridge.createConsumer(trigger);
 		System.out.println("Consumer " + trigger + " subscribed.");
-		consumer.handler(vertxMsg -> this.process(future, trigger, vertxMsg));
+		consumer.handler(vertxMsg -> {
+			this.process(future, trigger, vertxMsg);
+			
+			vertx.setTimer(3000, timer -> {
+				consumer.unregister(ar -> {
+					if (ar.succeeded()) {
+						if (config().getBoolean("log.info", Boolean.FALSE)) {
+							System.out.println("Consumer " + consumer.address() + " unregister succeeded.");
+						}
+					} else {
+						ar.cause().printStackTrace();
+					}
+				});
+			});
+		});
 	}
 	
 	private void process(Future future, String consumer, Message<JsonObject> received) {
