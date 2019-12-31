@@ -7,15 +7,17 @@ PointComponent {
   height: 60px;
   top: 100%;
   z-index: 999;
-  ListeningComponent{
+
+  ListeningComponent {
     margin-top: -115px;
     width: 0px;
     position: fixed;
-    height:115px;
-    background:rgba(25,40,63,.95);
-    border-radius:10px 10px 0px 0px;
+    height: 115px;
+    background: rgba(25, 40, 63, .95);
+    border-radius: 10px 10px 0px 0px;
     //width: 100%;
-    .jsai{
+
+    .jsai {
       width: 90%;
       text-align: center;
       margin: 1rem auto;
@@ -24,11 +26,12 @@ PointComponent {
       align-items: center;
       justify-content: center;
       height: 100%;
-      span{
+
+      span {
         font-size: 1.6rem;
-        color:rgba(255,255,255,1);
+        color: rgba(255, 255, 255, 1);
         -webkit-line-clamp: 3;
-        display:-webkit-box;
+        display: -webkit-box;
         text-overflow: revert;
         overflow: auto;
       }
@@ -110,7 +113,7 @@ PointComponent {
 
   .speaking.moving {
     //border-color: #3583d7;
-    box-shadow: 0 0 23px 7px  #3583d7;
+    box-shadow: 0 0 23px 7px #3583d7;
     animation: none;
     opacity: 1;
   }
@@ -147,8 +150,6 @@ PointComponent {
       box-shadow: 0 0 1px 20px $spinnerBorder1, 0 0 20px 15px $spinnerBorder2, 0 0 1px 32px $spinnerBorder1, 0 0 30px 15px $spinnerBorder2;
     }
   }
-
-
 
 
   .spinner {
@@ -211,28 +212,32 @@ PointComponent {
     transition: background-color 200ms linear;
     padding: 0;
     border-radius: 14px;
+
     .angular-popper__arrow {
-      border-color: rgba(50,163,190,.5);
+      border-color: rgba(50, 163, 190, .5);
     }
 
     div[content] {
       //max-height: 400px;
     }
   }
+
   .showNot {
     display: none;
   }
 }
+
 .black-theme {
   PointComponent {
     .angular-popper {
-      background:rgba(14,29,52,.95);
-      box-shadow:0px 0px 10px 0px rgba(255,255,255,0.2);
+      background: rgba(14, 29, 52, .95);
+      box-shadow: 0px 0px 10px 0px rgba(255, 255, 255, 0.2);
     }
   }
 
 }
-.white-theme{
+
+.white-theme {
   PointComponent {
     .angular-popper {
       background-color: rgba(248, 248, 248, .95);
@@ -240,5 +245,67 @@ PointComponent {
     }
   }
 }
+
+.box {
+  width: 100%;
+  height: 100%;
+  display: none;
+  .box1 {
+    animation-delay:.1s;
+    left: 26px;
+    background: #2b657b;
+  }
+
+  .box2 {
+    animation-delay:.2s;
+    left: 40px;
+    background: #8556a0;
+  }
+
+  .box3 {
+    animation-delay:.3s;
+    left: 54px;
+    background: #a057b4;
+  }
+  .box4 {
+    animation-delay:.4s;
+    left: 68px;
+    background: #8556a0;
+  }
+  .box5 {
+    animation-delay:.5s;
+    left: 82px;
+    background: #2b657b;
+  }
+  div{
+    width: 8px;
+    height: 8px;
+    animation: move 1s infinite;
+    border-radius: 50%;
+    position: absolute;
+
+  }
+}
+
+
+
+@keyframes move {
+  0% {
+    top: -10%;
+  }
+  25% {
+    top: 0%;
+  }
+  50% {
+    top: 10%;
+  }
+  75% {
+    top: 0%;
+  }
+  100% {
+    top: -10%;
+  }
+}
+
 
 
