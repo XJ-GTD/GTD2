@@ -393,18 +393,6 @@ export class SqliteInit {
         jf.yv = "2";
         await this.sqlexec.save(jf);
       }
-    }else if (version ==15){
-      //添加他人提醒语音字段
-      if (from > 0 && from < 15 ) {
-        let sqlparam = new Array<any>();
-        let sq = ` ALTER TABLE gtd_u ADD COLUMN rob varchar(4) DEFAULT '9' ;`;
-        sqlparam.push([sq, []]);
-        sq = ` ALTER TABLE gtd_b ADD COLUMN rob varchar(4) DEFAULT '9' ;`;
-        sqlparam.push([sq, []]);
-        sq = ` ALTER TABLE gtd_b ADD COLUMN utt integer DEFAULT 0 ;`;
-        sqlparam.push([sq, []]);
-        await this.sqlexec.batExecSqlByParam(sqlparam);
-      }
     }
   }
 
