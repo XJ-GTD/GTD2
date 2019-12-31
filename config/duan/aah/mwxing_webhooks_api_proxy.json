@@ -8,7 +8,8 @@
     "observer",
     "params",
     "header",
-    "body"
+    "body",
+    "isform"
   ],
   "follows": [
     {
@@ -19,6 +20,7 @@
         "urlabs;http://sa-aag:8080/aag/webhooks/#{webhookowner}/#{version}/#{observer}",
         "header;$.parent.parameters.header",
         "params;$.parent.parameters.params",
+        "isform;$.parent.parameters.isform",
         "data;$.parent.parameters.body"
       ]
     }

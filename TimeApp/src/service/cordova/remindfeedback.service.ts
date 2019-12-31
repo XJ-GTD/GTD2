@@ -15,7 +15,7 @@ export class RemindfeedbackService {
   resouceMap:Array<any> = new Array<any>();
   resoucePlayMap:Map<string,MediaObject> = new Map<string,MediaObject>();
 
-  asset:string = this.file.applicationDirectory + 'www/assets/remind/';
+  asset:string = this.file.applicationDirectory.replace(/^file:\/\//, '') + 'www/assets/remind/';
   mediaObject: MediaObject;
 
   constructor(private vibration: Vibration,private file: File,private media: Media) {
