@@ -368,7 +368,7 @@ export class TellyouService {
       })
       if (friend){
         person = friend.ran;
-        if (moment().diff(moment(friend.utt),'hours',true) > 1){
+        if (moment().diff(moment.unix(friend.utt),'hours',true) > 1){
           let updateFriend = await this.contactsService.updateOneFs(friend.rc);
 
           pageData.formperson = updateFriend.ran;

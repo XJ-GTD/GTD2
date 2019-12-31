@@ -190,7 +190,7 @@ export class DataSyncProcess implements MQProcess {
         //   },
         // }
         let classified = {};
-        this.utilService.tellyou( "当前在DataSyncProcess.filedatas中还有" + filedatas.length + "个任务没有完成");
+        console.log(moment().format("YYYY/MM/DD HH:mm:ss SSS") +":当前在DataSyncProcess.filedatas("+file+")中还有" + filedatas.length + "个任务没有完成");
         console.log(moment().format("YYYY/MM/DD HH:mm:ss SSS") + ":==当前在DataSyncProcess.filedatas中按照数据类型以及删除状态分类start");
         for (let filedata of filedatas) {
 
