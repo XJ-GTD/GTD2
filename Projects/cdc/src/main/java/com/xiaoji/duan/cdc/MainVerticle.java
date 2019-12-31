@@ -218,13 +218,19 @@ public class MainVerticle extends AbstractVerticle {
 		JsonObject body = new JsonObject();
 		
 		if (strbody != null && !"".equals(strbody.trim())) {
-			System.out.println("body " + strbody);
 			
 			if (strbody.startsWith("{") && strbody.endsWith("}")) {
 				body = ctx.getBodyAsJson();
+			} else {
+				if (!ctx.request().params().isEmpty()) {
+					for (Entry<String, String> entry : ctx.request().params().entries()) {
+						body.put(entry.getKey(), entry.getValue());
+					}
+					query.put("isform", true);
+				}
 			}
 		}
-		
+
 		query.put("body", body);
 
 		String flowid = trigger.getString("flowid");
