@@ -213,6 +213,8 @@ public class MainVerticle extends AbstractVerticle {
 			query.put("callback", new JsonArray().add(address));
 		}
 		
+		query.put("isform", false);
+
 		String strbody = ctx.getBodyAsString();
 		
 		JsonObject body = new JsonObject();
