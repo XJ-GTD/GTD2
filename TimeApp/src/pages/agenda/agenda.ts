@@ -262,7 +262,7 @@ export class AgendaPage {
   };
   speaking: boolean = false;
   currentuser: string = UserConfig.account.id;
-  currentusername: string = UserConfig.account.name;
+  currentusername: string = UserConfig.user.nickname;
   friends: Array<any> = UserConfig.friends;
   currentAgenda: AgendaData = {} as AgendaData;
   originAgenda: AgendaData = {} as AgendaData;

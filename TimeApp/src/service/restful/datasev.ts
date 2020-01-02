@@ -102,7 +102,7 @@ export class DataRestful {
     let url: UrlEntity = this.config.getRestFulUrl("SPH");
 
     params.mpn = UserConfig.account.phone;
-    params.name = UserConfig.account.name;
+    params.name = UserConfig.user.nickname;
 
     let data = await this.request.post(url, params);
 

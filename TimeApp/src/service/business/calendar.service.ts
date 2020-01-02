@@ -5095,7 +5095,7 @@ export class CalendarService extends BaseService {
     let share: ShareInData = new ShareInData();
 
     share.from.phoneno = UserConfig.account.phone;
-    share.from.name = UserConfig.account.name;
+    share.from.name = UserConfig.user.nickname;
     share.payload = plan;
 
     return await this.dataRestful.share("plan", share);
