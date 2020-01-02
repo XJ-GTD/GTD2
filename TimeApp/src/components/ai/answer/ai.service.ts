@@ -158,4 +158,5 @@ export class FriendAiData {
 export class SpeechAiData {
   an: string = "";
   org: string = "";
+  iswaitting:boolean = false;
 }

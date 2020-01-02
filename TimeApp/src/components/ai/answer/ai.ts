@@ -101,12 +101,7 @@ export class AiComponent {
 
 
   callbackScdLs(datas: ScdLsEmData) {
-
-    this.aiData4.copyto( this.aiData5);
-    this.aiData3.copyto( this.aiData4);
-    this.aiData2.copyto( this.aiData3);
-    this.aiData1.copyto(this.aiData2);
-    this.aiData1.clear();
+    this.copy();
     this.aiData1.speechAi = new SpeechAiData();
 
 
@@ -129,33 +124,23 @@ export class AiComponent {
   }
 
   callbackSpeech(datas: SpeechEmData) {
-    this.aiData4.copyto( this.aiData5);
-    this.aiData3.copyto( this.aiData4);
-    this.aiData2.copyto( this.aiData3);
-    this.aiData1.copyto(this.aiData2);
-    this.aiData1.clear();
+    this.copy();
     this.aiData1.speechAi = new SpeechAiData();
     this.aiData1.speechAi.org = datas.org;
     this.aiData1.speechAi.an = datas.an;
+    this.aiData1.speechAi.iswaitting = datas.iswaitting;
     this.changeDetectorRef.detectChanges();
     this.gotonew();
 
   }
 
   gotonew(){
-
     setTimeout(()=>{
       this.bScroll.scrollToElement(this.card1.nativeElement,380,0,0);
     },200)
   }
   callbackScd(data: ScdEmData) {
-    this.aiData4.copyto( this.aiData5);
-    this.aiData3.copyto( this.aiData4);
-    this.aiData2.copyto( this.aiData3);
-    this.aiData1.copyto(this.aiData2);
-    this.aiData1.clear();
-    this.aiData1.speechAi = new SpeechAiData();
-
+    this.copy();
     let scd1: ScdAiData = new ScdAiData();
     scd1.d = data.d;
     scd1.t = data.t;
@@ -186,5 +171,18 @@ export class AiComponent {
     this.aiData4 = new AiData();
     this.aiData5 = new AiData();
     this.changeDetectorRef.detectChanges();
+  }
+
+  copy(){
+    if (this.aiData4.speechAi && !this.aiData4.speechAi.iswaitting)
+    this.aiData4.copyto( this.aiData5);
+    if (this.aiData3.speechAi && !this.aiData3.speechAi.iswaitting)
+    this.aiData3.copyto( this.aiData4);
+    if (this.aiData2.speechAi && !this.aiData2.speechAi.iswaitting)
+    this.aiData2.copyto( this.aiData3);
+    if (this.aiData1.speechAi && !this.aiData1.speechAi.iswaitting)
+    this.aiData1.copyto(this.aiData2);
+    this.aiData1.clear();
+    this.aiData1.speechAi = new SpeechAiData();
   }
 }

@@ -1,6 +1,6 @@
 import {ChangeDetectorRef, Component, ElementRef, EventEmitter, Output, Renderer2, ViewChild} from '@angular/core';
 
-import {EmitService} from "../../../service/util-service/emit.service";
+import {EmitService, SpeechEmData} from "../../../service/util-service/emit.service";
 import {Subscriber} from "rxjs";
 import {Immediately} from "../../../service/cordova/assistant.service";
 
@@ -9,19 +9,6 @@ import {Immediately} from "../../../service/cordova/assistant.service";
   selector: 'ListeningComponent',
   template:
       `
-    <div class="box" #waitting>
-      <!--<div class="box1">-->
-      <!--</div>-->
-      <!--<div class="box2">-->
-      <!--</div>-->
-      <!--<div class="box3">-->
-      <!--</div>-->
-      <!--<div class="box4">-->
-      <!--</div>-->
-      <!--<div class="box5">-->
-      <!--</div>-->
-    </div>
-    
       <div class="jsai">
         <span>{{immediately.immediatetext}}</span>
       </div>
@@ -33,8 +20,6 @@ export class ListeningComponent {
   immediately:Immediately = new Immediately();
   immediatelyemit:Subscriber<any>;
   listenEmit:Subscriber<any>;
-  @ViewChild("waitting")
-  waitting: ElementRef;
 
   @Output() onListeningStart: EventEmitter<any> = new EventEmitter();
   @Output() onListeningStop: EventEmitter<any> = new EventEmitter();
@@ -71,15 +56,13 @@ export class ListeningComponent {
 //
 //   isStop:boolean = false;
   constructor(private emitService:EmitService,
-              private changeDetectorRef:ChangeDetectorRef, public elementRef: ElementRef,
-  private _renderer: Renderer2) {
+              private changeDetectorRef:ChangeDetectorRef) {
   }
 
   ngOnInit(){
     this.listenEmit = this.emitService.registerListener((data)=>{
       if (!data){
         // this.stop();
-        this._renderer.setStyle(this.waitting.nativeElement,"display","none");
         this.onListeningStop.emit(this);
       }else{
         this.onListeningStart.emit(this);
@@ -94,14 +77,12 @@ export class ListeningComponent {
       }
 
       if (this.immediately.fininsh){
-        this._renderer.setStyle(this.waitting.nativeElement,"display","block");
-         // this.start();
-      }else{
-        this._renderer.setStyle(this.waitting.nativeElement,"display","none");
+        let  emspeech:SpeechEmData = new SpeechEmData();
+        emspeech.iswaitting = true;
+        this.emitService.emitSpeech(emspeech);
       }
       this.changeDetectorRef.detectChanges();
     })
-    this._renderer.setStyle(this.waitting.nativeElement,"display","none");
 
 
     // this.init();

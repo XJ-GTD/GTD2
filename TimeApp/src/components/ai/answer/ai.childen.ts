@@ -1,12 +1,5 @@
-import {Component, Input} from '@angular/core';
+import {Component, ElementRef, Input, ViewChild} from '@angular/core';
 import {AiData, AiService, ScdAiData, ScdLsAiData} from "./ai.service";
-import {ModalController} from "ionic-angular";
-import {FsData, ScdData, ScdPageParamter} from "../../../data.mapping";
-import * as moment from "moment";
-import {DataConfig} from "../../../service/config/data.config";
-import {AssistantService} from "../../../service/cordova/assistant.service";
-import {PgBusiService} from "../../../service/pagecom/pgbusi.service";
-import {FsService} from "../../../pages/fs/fs.service";
 import {UserConfig} from "../../../service/config/user.config";
 
 /**
@@ -30,6 +23,25 @@ import {UserConfig} from "../../../service/config/user.config";
       <div  class="aiAn">
         <div class="ainame">小冥</div>
         <div class="aicontent aiSpeechAn">{{aiData.speechAi.an}}</div>
+      </div>
+    </ng-template>
+    <ng-template [ngIf]="aiData.speechAi && aiData.speechAi.iswaitting">
+      <div  class="aiAn">
+        <div class="ainame">小冥</div>
+        <div class="aicontent aiSpeechAn">
+        <div class="box">
+          <div class="box1">
+          </div>
+          <div class="box2">
+          </div>
+          <div class="box3">
+          </div>
+          <div class="box4">
+          </div>
+          <div class="box5">
+          </div>
+        </div>
+        </div>
       </div>
     </ng-template>
     <ng-template [ngIf]="aiData.scd">
@@ -93,9 +105,11 @@ export class AiChildenComponent {
 
   selfName:string="";
 
+  @ViewChild("waitting")
+  waitting: ElementRef;
+
 
   constructor(public aiService: AiService,private userConfig :UserConfig) {
-
     this.selfName = UserConfig.user.realname;
   }
 

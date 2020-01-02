@@ -4,6 +4,7 @@ import {Keyboard} from "@ionic-native/keyboard";
 import {AssistantService} from "../../../service/cordova/assistant.service";
 import {DataConfig} from "../../../service/config/data.config";
 import {UtilService} from "../../../service/util-service/util.service";
+import {EmitService, SpeechEmData} from "../../../service/util-service/emit.service";
 
 /**
  * Generated class for 输入框 page.
@@ -41,7 +42,7 @@ export class InputComponent {
   constructor(private _renderer: Renderer2, private el: ElementRef,
               private keyboard: Keyboard,
               private assistantService: AssistantService,
-              private util:UtilService
+              private util:UtilService,private emitService:EmitService,
   ) {
 
   }
@@ -103,7 +104,10 @@ export class InputComponent {
 
   confirm() {
     if (this.input.value != null && this.input.value != "") {
-      this.assistantService.putText(this.input.value)
+      this.assistantService.putText(this.input.value);
+      let  emspeech:SpeechEmData = new SpeechEmData();
+      emspeech.iswaitting = true;
+      this.emitService.emitSpeech(emspeech);
     }
 
     // this._renderer.setStyle(this.el.nativeElement, "display", "none");

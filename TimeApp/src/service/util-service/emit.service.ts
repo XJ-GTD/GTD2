@@ -345,4 +345,5 @@ export class FriendEmData {
 export class SpeechEmData {
   an: string = "";
   org: string = "";
+  iswaitting: boolean = false;
 }
