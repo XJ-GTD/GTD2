@@ -79,7 +79,7 @@ export class EventService extends BaseService {
     }
 
     share.from.phoneno = UserConfig.account.phone;
-    share.from.name = UserConfig.account.name;
+    share.from.name = UserConfig.user.nickname;
     share.payload = shareAgenda;
 
     return await this.dataRestful.share("agenda", share);
@@ -3229,7 +3229,7 @@ export class EventService extends BaseService {
         sync.src = attachment.ui;
         sync.id = attachment.fji;
         sync.type = "Attachment";
-        sync.title = "[" + UserConfig.account.name + "] 补充 " + attachment.fjn;
+        sync.title = "[" + UserConfig.user.nickname + "] 补充 " + attachment.fjn;
         sync.datetime = moment.unix(attachment.wtt).format("YYYY/MM/DD HH:mm");
 
         sync.main = true;

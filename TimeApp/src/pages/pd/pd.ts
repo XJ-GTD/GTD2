@@ -151,7 +151,7 @@ export class PdPage {
 
   currentuser: string = UserConfig.account.id;
   friends: Array<any> = UserConfig.friends;
-  currentusername: string = UserConfig.account.name;
+  currentusername: string = UserConfig.user.nickname;
   synch: SyncType = SyncType.synch;
   unsynch: SyncType = SyncType.unsynch;
 
