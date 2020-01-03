@@ -1314,7 +1314,7 @@ export class CalendarService extends BaseService {
     let members: Array<Member> = new Array<Member>();
 
     let querymemberdb: ParTbl = new ParTbl();
-    querymemberdb.obi = jti;
+    querymemberdb.obi = planitem.rtjti || jti;  // 重复日历项, 参与人存储在主日历项中
     querymemberdb.obt = ObjectType.Calendar;
 
     let memberdbs: Array<ParTbl> = await this.sqlExce.getLstByParam<ParTbl>(querymemberdb) || new Array<ParTbl>();
