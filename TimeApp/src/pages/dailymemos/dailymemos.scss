@@ -43,3 +43,38 @@ page-dailymemos {
   }
 
 }
+
+.white-theme {
+  page-dailymemos{
+    .list-grid-content {
+      .item-content-backgroud{
+        background: transparent;
+        box-shadow:none;
+        border-bottom: 0.55px solid rgba(153, 153, 153, 0.28);
+        border-radius: 0;
+      }
+      .st{
+        background-color: transparent;
+      }
+    }
+
+  }
+}
+
+.black-theme {
+  page-dailymemos{
+    .list-grid-content {
+      .item-content-backgroud{
+        background: transparent;
+        box-shadow:none;
+        border-bottom: 0.55px solid rgba(153, 153, 153, 0.28);
+        border-radius: 0;
+
+      }
+      .st{
+        background-color: transparent;
+      }
+    }
+
+  }
+}

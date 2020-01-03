@@ -198,6 +198,7 @@ export class HPage {
   }
 
   newPlus(day ?: CalendarDay) {
-    this.util.createModal(DataConfig.PAGE._PLUS_MODAL,day,ModalTranType.top).present();
+
+    this.util.createModal(DataConfig.PAGE._PLUS_MODAL,day,ModalTranType.bottom).present();
   }
 }

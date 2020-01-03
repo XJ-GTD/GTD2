@@ -23,28 +23,6 @@ import {SettingsProvider} from "../../providers/settings/settings";
     <page-box title="设置" [buttons]="buttons" (onBack)="goBack()" nobackgroud nobottom>
 
       <ion-list>
-        <ion-list-header>
-          <ion-label>消息设置</ion-label>
-        </ion-list-header>
-
-        <ion-item no-lines no-padding no-margin no-border>
-          <ion-label>打开消息提醒(待定)</ion-label>
-          <ion-toggle [(ngModel)]="bt" (ionChange)="save(t, bt)"></ion-toggle>
-        </ion-item>
-        <ion-item no-lines no-padding no-margin no-border>
-          <ion-label>关闭消息</ion-label>
-          <ion-toggle [(ngModel)]="pclosevoice" (ionChange)="save(closevoice, pclosevoice)"></ion-toggle>
-        </ion-item>
-        <ion-item no-lines no-padding no-margin no-border>
-          <ion-label>简单播报</ion-label>
-          <ion-toggle [(ngModel)]="psimplevoice" (ionChange)="save(simplevoice, psimplevoice)"></ion-toggle>
-        </ion-item>
-        <ion-item no-lines no-padding no-margin no-border>
-          <ion-label>合并播报</ion-label>
-          <ion-toggle [(ngModel)]="pcombinevoice" (ionChange)="save(combinevoice, pcombinevoice)"></ion-toggle>
-        </ion-item>
-      </ion-list>
-      <ion-list>
 
         <ion-list-header>
           <ion-label>AI语音</ion-label>
@@ -59,97 +37,81 @@ import {SettingsProvider} from "../../providers/settings/settings";
           <ion-toggle [(ngModel)]="bb" (ionChange)="save(b, bb)"></ion-toggle>
         </ion-item>
         <ion-item no-lines no-padding no-margin no-border>
-          <ion-label>自动开启听筒</ion-label>
+          <ion-label>连续语音</ion-label>
           <ion-toggle [(ngModel)]="pautolisten" (ionChange)="save(autolisten, pautolisten)"></ion-toggle>
         </ion-item>
         <ion-item no-lines no-padding no-margin no-border>
-          <ion-label>向导使用简要提示</ion-label>
+          <ion-label>向导</ion-label>
           <ion-toggle [(ngModel)]="psimpleprompt" (ionChange)="save(simpleprompt, psimpleprompt)"></ion-toggle>
         </ion-item>
-        <ion-item no-lines no-padding no-margin no-border >
-          <ion-label no-lines>交互方式</ion-label>
-        </ion-item>
-        <ion-list radio-group [(ngModel)]="pjf"  (ionChange)="changeJf(jf, pjf)" class="onlyone">
-          <ion-item *ngFor="let option of jfList" no-lines no-padding no-margin no-border>
-            <ion-label>
-              <ion-icon class="fal fa-circle font-large-x" *ngIf="option.val != pjf"
-              ></ion-icon>
-              <ion-icon class="fal fa-dot-circle font-large-x" *ngIf="option.val == pjf"
-              ></ion-icon>
-              {{option.nm}}</ion-label>
-            <ion-radio [value]="option.val" class="noshow"></ion-radio>
-          </ion-item>
-        </ion-list>
+        <!--<ion-item no-lines no-padding no-margin no-border >-->
+          <!--<ion-label no-lines>交互方式</ion-label>-->
+        <!--</ion-item>-->
+        <!--<ion-list radio-group [(ngModel)]="pjf"  (ionChange)="changeJf(jf, pjf)" class="onlyone">-->
+          <!--<ion-item *ngFor="let option of jfList" no-lines no-padding no-margin no-border>-->
+            <!--<ion-label>-->
+              <!--<ion-icon class="fal fa-circle font-large-x" *ngIf="option.val != pjf"-->
+              <!--&gt;</ion-icon>-->
+              <!--<ion-icon class="fal fa-dot-circle font-large-x" *ngIf="option.val == pjf"-->
+              <!--&gt;</ion-icon>-->
+              <!--{{option.nm}}</ion-label>-->
+            <!--<ion-radio [value]="option.val" class="noshow"></ion-radio>-->
+          <!--</ion-item>-->
+        <!--</ion-list>-->
       </ion-list>
-      <ion-list>
-        <ion-list-header>
-          <ion-label>操作反馈</ion-label>
-        </ion-list-header>
-        <ion-item no-lines no-padding no-margin no-border>
-          <ion-label>震动音效</ion-label>
-          <ion-toggle [(ngModel)]="bz" (ionChange)="save(z, bz)"></ion-toggle>
-        </ion-item>
-      </ion-list>
-      <ion-list>
-        <ion-list-header>
-          <ion-label>联系人</ion-label>
-        </ion-list-header>
-
-        <ion-item no-lines no-padding no-margin no-border [attr.detail-push]="lfsloading? null : ''"
-                  [attr.detail-none]="lfsloading? '' : null" (click)="resfriend()">
-          <ion-label>本地联系人</ion-label>
-          <ion-note *ngIf="!lfsloading" item-end>{{localfriends}}</ion-note>
-          <ion-spinner *ngIf="lfsloading" icon="circles" item-end></ion-spinner>
-        </ion-item>
-      </ion-list>
-
       
-      <!--<ion-list>-->
-        <!--<ion-list-header>-->
-          <!--<ion-label>智能提醒</ion-label>-->
-        <!--</ion-list-header>-->
-
-        <!--<ion-item no-lines no-padding no-margin no-border>-->
-          <!--<ion-label>每日简报</ion-label>-->
-          <!--<ion-note item-end (click)="gotodrsetting()">{{bdr ? sdrp1 : '关闭'}}</ion-note>-->
-        <!--</ion-item>-->
-        <!--<ion-item no-lines no-padding no-margin no-border detail-push (click)="gotopjfollowsetting()">-->
-          <!--<ion-label>项目跟进</ion-label>-->
-          <!--<ion-note item-end *ngIf="!spfon">打开</ion-note>-->
-          <!--<ion-note item-end *ngIf="spfon" class="inline-icons">-->
-            <!--<ion-icon *ngIf="spfon && github" ios="logo-github" md="logo-github"></ion-icon>-->
-            <!--&lt;!&ndash; Travis CI设置选项隐藏 &ndash;&gt;-->
-            <!--&lt;!&ndash;-->
-                            <!--<img *ngIf="spfon && travisci" src="assets/imgs/travisci/travisci-worker-logo.svg">-->
-            <!--&ndash;&gt;-->
-            <!--<ion-icon *ngIf="spfon && firim" ios="logo-dropbox" md="logo-dropbox"></ion-icon>-->
-          <!--</ion-note>-->
-        <!--</ion-item>-->
-      <!--</ion-list>-->
       <ion-list>
         <ion-list-header>
-          <ion-label>主题</ion-label>
+          <ion-label>消息</ion-label>
+        </ion-list-header>
+        <!--<ion-item no-lines no-padding no-margin no-border>-->
+          <!--<ion-label>打开消息提醒(待定)</ion-label>-->
+          <!--<ion-toggle [(ngModel)]="bt" (ionChange)="save(t, bt)"></ion-toggle>-->
+        <!--</ion-item>-->
+        <ion-item no-lines no-padding no-margin no-border>
+          <ion-label>消息提醒</ion-label>
+          <ion-toggle [(ngModel)]="pclosevoice" (ionChange)="save(closevoice, pclosevoice)"></ion-toggle>
+        </ion-item>
+        <ion-item no-lines no-padding no-margin no-border>
+          <ion-label>简单播报</ion-label>
+          <ion-toggle [(ngModel)]="psimplevoice" (ionChange)="save(simplevoice, psimplevoice)"></ion-toggle>
+        </ion-item>
+        <ion-item no-lines no-padding no-margin no-border>
+          <ion-label>合并播报</ion-label>
+          <ion-toggle [(ngModel)]="pcombinevoice" (ionChange)="save(combinevoice, pcombinevoice)"></ion-toggle>
+        </ion-item>
+      </ion-list>
+      
+      <ion-list>
+        <ion-list-header>
+          <ion-label>主题风格</ion-label>
         </ion-list-header>
 
         <ion-item no-lines no-padding no-margin no-border>
           <div item-content radio-group class="themeselect" (ionChange)="changetheme(theme)" [(ngModel)]="theme.value">
-            <div class="waper" ion-item [class.themen-select] = "theme.value == 'black-theme'">
+            <div class="waper" ion-item no-border [class.themen-select] = "theme.value == 'black-theme'">
               <ion-radio value="black-theme"  class="noshow" no-margin [disabled]="false"></ion-radio>
               <ion-label><img src="./assets/imgs/black.png"></ion-label>
             </div>
-            <div class="waper" ion-item [class.themen-select] = "theme.value == 'white-theme'">
+            <div class="waper" ion-item no-border  [class.themen-select] = "theme.value == 'white-theme'">
               <ion-radio  value="white-theme"  class="noshow"  no-margin [disabled]="false"></ion-radio>
               <ion-label><img src="./assets/imgs/white.png"></ion-label>
             </div>
           </div>
         </ion-item>
-      </ion-list>
 
-      <ion-list>
-        <ion-list-header>
-          <ion-label>活动设置</ion-label>
-        </ion-list-header>
+        <ion-item no-lines no-padding no-margin no-border>
+          <ion-label>操作反馈</ion-label>
+          <ion-toggle [(ngModel)]="bz" (ionChange)="save(z, bz)"></ion-toggle>
+        </ion-item>
 
+        <ion-item no-lines no-padding no-margin no-border [attr.detail-push]="lfsloading? null : ''"
+                  [attr.detail-none]="lfsloading? '' : null" (click)="resfriend()">
+          <ion-label>联系人刷新</ion-label>
+          <ion-note *ngIf="!lfsloading" item-end>{{localfriends}}</ion-note>
+          <ion-spinner *ngIf="lfsloading" icon="circles" item-end></ion-spinner>
+        </ion-item>
+        
         <ion-item no-lines no-padding no-margin no-border detail-push (click)="gotodjhsetting()">
           <ion-label>默认日历</ion-label>
           <ion-note item-end>{{sdjhn}}</ion-note>
@@ -159,9 +121,34 @@ import {SettingsProvider} from "../../providers/settings/settings";
           <ion-label>自动加到重要</ion-label>
           <ion-toggle [(ngModel)]="bautotodo" (ionChange)="save(autotodo, bautotodo)"></ion-toggle>
         </ion-item>
-
       </ion-list>
 
+
+
+
+      <!--<ion-list>-->
+      <!--<ion-list-header>-->
+      <!--<ion-label>智能提醒</ion-label>-->
+      <!--</ion-list-header>-->
+
+      <!--<ion-item no-lines no-padding no-margin no-border>-->
+      <!--<ion-label>每日简报</ion-label>-->
+      <!--<ion-note item-end (click)="gotodrsetting()">{{bdr ? sdrp1 : '关闭'}}</ion-note>-->
+      <!--</ion-item>-->
+      <!--<ion-item no-lines no-padding no-margin no-border detail-push (click)="gotopjfollowsetting()">-->
+      <!--<ion-label>项目跟进</ion-label>-->
+      <!--<ion-note item-end *ngIf="!spfon">打开</ion-note>-->
+      <!--<ion-note item-end *ngIf="spfon" class="inline-icons">-->
+      <!--<ion-icon *ngIf="spfon && github" ios="logo-github" md="logo-github"></ion-icon>-->
+      <!--&lt;!&ndash; Travis CI设置选项隐藏 &ndash;&gt;-->
+      <!--&lt;!&ndash;-->
+      <!--<img *ngIf="spfon && travisci" src="assets/imgs/travisci/travisci-worker-logo.svg">-->
+      <!--&ndash;&gt;-->
+      <!--<ion-icon *ngIf="spfon && firim" ios="logo-dropbox" md="logo-dropbox"></ion-icon>-->
+      <!--</ion-note>-->
+      <!--</ion-item>-->
+      <!--</ion-list>-->
+      
     </page-box>
 
 

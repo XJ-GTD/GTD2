@@ -21,7 +21,6 @@ import {NetworkService} from "../../service/cordova/network.service";
 import {Geolocation} from "@ionic-native/geolocation";
 import {FeedbackService} from "../../service/cordova/feedback.service";
 import {JPushService} from "../../service/cordova/jpush.service";
-import {RabbitMQService} from "../../service/cordova/rabbitmq.service";
 import {EffectService} from "../../service/business/effect.service";
 import {App, ModalController} from "ionic-angular";
 import {StatusBar} from "@ionic-native/status-bar";
@@ -51,7 +50,6 @@ export class AlService {
               private feekback: FeedbackService,
               private remindfeekback: RemindfeedbackService,
               private jpush: JPushService,
-              private rabbitmq: RabbitMQService,
               private effectService: EffectService,
               private modalCtr: ModalController,
               private app: App,

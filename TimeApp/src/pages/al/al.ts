@@ -3,7 +3,6 @@ import {App, IonicPage, Nav} from 'ionic-angular';
 import {AlService} from "./al.service";
 import {DataConfig} from "../../service/config/data.config";
 import {AlData} from "../../data.mapping";
-import {RabbitMQService} from "../../service/cordova/rabbitmq.service";
 
 /**
  * Generated class for the AlPage page.
@@ -34,7 +33,6 @@ export class AlPage {
 
   constructor(private alService: AlService,
               private nav: Nav,
-              private rabbitmq: RabbitMQService,
               public app: App) {
     this.alData.text = "正在初始化";
 

@@ -4,7 +4,7 @@ page-attach {
   }
 
   .grid {
-    min-height: 110%;
+    //min-height: 110%;
     flex-direction: column-reverse;
   }
 
@@ -26,6 +26,7 @@ page-attach {
   }
 
   .list-grid-content {
+    min-height:0px;
     .self {
       display: inline-flex;
       flex: 1;

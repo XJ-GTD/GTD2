@@ -1,4 +1,10 @@
 page-location {
+  .searchbar-ios {
+    .searchbar-input{
+      background-color:transparent;
+      border-radius: 0;
+    }
+  }
   .mapwrap{
     width: auto;
     margin: 7px 7px;
@@ -17,5 +23,28 @@ page-location {
       }
     }
   }
+  .scroll-content{
+    background:rgba(255,255,255,1);
+    box-shadow:3px 3px 10px 0px rgba(58,58,58,0.73);
+    border-radius:4px 4px 0px 0px;
+  }
 
 }
+
+
+.white-theme {
+  page-location{
+    .searchbar-input-container{
+      border-bottom: 1px solid rgba(153,153,153,1)
+    }
+  }
+}
+
+.black-theme {
+  page-location{
+    .searchbar-input-container{
+      border-bottom: 1px solid rgba(153,153,153,1)
+    }
+  }
+}
+

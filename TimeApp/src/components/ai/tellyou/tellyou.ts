@@ -43,7 +43,7 @@ import {RemindfeedbackService} from "../../../service/cordova/remindfeedback.ser
             </p>
             <p class="formperson" *ngIf="tellYouData.tellType ==  tellyouType.invite_agenda 
               || tellYouData.tellType ==  tellyouType.invite_planitem">
-              {{tellYouData.formperson}}
+              --{{tellYouData.formperson}}
             </p>
             <p class="fromdate" *ngIf="tellYouData.tellType ==  tellyouType.invite_agenda 
               || tellYouData.tellType ==  tellyouType.invite_planitem">

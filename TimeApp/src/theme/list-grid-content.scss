@@ -1,3 +1,5 @@
+//全局页面背景
+
 .list-grid-content {
   min-height:101%;
 
@@ -216,7 +218,7 @@
       display: flex;
       width: 100%;
       height: auto;
-      margin: 0.2rem 0.6rem;
+      //margin: 0.2rem 0.6rem;
       text-overflow: ellipsis;
       overflow: hidden;
       white-space: nowrap;
@@ -253,6 +255,7 @@
     height: 85px;
     background-repeat: no-repeat;
     background-size: 100% 100%;
+    margin: 0.5rem 0;
 
     p {
       margin-top: 0.8rem;
@@ -298,15 +301,16 @@
   .dayagenda-nav {
     background: transparent;
     box-shadow: none;
-    width: calc(70% + 72px);
+    //width: calc(100% - 30px);
     overflow: inherit;
 
     .dayheader {
-      width: 75px;
+      width: 55px;
       padding-top: 0.5rem;
       padding-bottom: 0.5rem;
       padding-right: 1rem;
       text-align: center;
+      margin-left: -0.5rem;
 
       .ym-fsize {
         font-size: 2.3rem;
@@ -324,7 +328,6 @@
       .d-fsize {
         font-size: .9rem;
         font-weight: 300;
-        line-height: 30px;
         letter-spacing: 3px;
         float: right;
         writing-mode: tb-rl;
@@ -337,7 +340,6 @@
       width: 100%;
       display: inline-flex;
       position: relative;
-      margin-left: -5px;
 
       .d-title-chr {
         height: 50px;
@@ -345,7 +347,7 @@
         overflow: hidden;
         font-size: 1.2rem;
         //margin-left: 1.5rem;
-        width: calc(100% / 4);
+        width: calc((100% - 50px) / 3);
         //margin-right: 1.2rem;
         text-align: center;
         z-index: 10;
@@ -414,14 +416,14 @@
 
 
   .dayagenda-content {
-    width: 70%;
-    margin-left: 75px;
+    width: calc(100% - 65px);
+    margin-left: 55px;
     padding: 0.2rem;
   }
 
   .calendaritem-content {
-    width: 70%;
-    margin-left: 75px;
+    width: calc(100% - 65px);
+    margin-left: 55px;
     padding: 0.2rem;
     min-height: 44px;
     .sn{

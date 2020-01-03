@@ -44,6 +44,7 @@ import BScroll from "better-scroll";
   `,
 })
 export class AiComponent {
+
   @ViewChild("card1") card1: ElementRef;
 
 
@@ -129,7 +130,6 @@ export class AiComponent {
     this.aiData1.speechAi.org = datas.org;
     this.aiData1.speechAi.an = datas.an;
     this.aiData1.speechAi.iswaitting = datas.iswaitting;
-    this.changeDetectorRef.detectChanges();
     this.gotonew();
 
   }
@@ -160,7 +160,6 @@ export class AiComponent {
     }
 
     this.aiData1.scd = scd1;
-    this.changeDetectorRef.detectChanges();
     this.gotonew();
   }
 

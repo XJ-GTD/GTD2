@@ -6,24 +6,21 @@ import * as moment from "moment";
   template: `
     <ng-template [ngIf]="tasklist.length > 0"
                  [ngIfElse]="notask">
-
+      
     <ion-grid class = "list-grid-content">
       <ion-row class="item-content item-content-backgroud" leftmargin toppaddingsamll bottompaddingsamll rightmargin *ngFor="let task of tasklist"
       (click)="gotoDetail(task)">
           <div class="line" leftmargin rightmargin>
             <div class="sn font-large">{{task.evn}}</div>
-
-            <div class="icon" end (click)="complete($event, task)" >
-              <!--<ion-icon class="fal fa-minus-circle" (click)="erease($event, task)"></ion-icon>-->              
-              <button>
-                <b>OK</b>
-              </button>
-            </div>
           </div>
           <div class="line font-normal" leftmargin rightmargin>
               <div class="st font-small">  {{(task.evd + ' ' + task.evt) | transfromdate:'withNow'}}</div>
-              <div *ngIf="currentuser != task.ui && task.ui != ''" class="person font-small" end>-- {{task.ui | formatuser: currentuser: friends}}</div>
-            <div *ngIf="currentuser == task.ui" class="person font-small" end>-- 我自己</div>
+              <div class="icon" end >
+                <!--<ion-icon class="fal fa-minus-circle" (click)="erease($event, task)"></ion-icon>-->
+                <button (click)="complete($event, task)">
+                  <b>完成</b>
+                </button>
+              </div>
           </div>
       </ion-row>
     </ion-grid>

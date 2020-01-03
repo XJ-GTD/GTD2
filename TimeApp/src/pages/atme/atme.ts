@@ -26,9 +26,8 @@ import {ModalTranType} from "../../data.enum";
           <ion-row class="item-content item-content-backgroud" leftmargin toppaddingsamll bottompaddingsamll rightmargin *ngFor="let annotation of annotationList"
                    (click)="gotoDetail(annotation)">
             <div class="line font-normal" leftmargin rightmargin>
+              <div class="person font-small">{{annotation.ui | formatuser: currentuser: friends}} @ 你</div>
               <div class="st font-small">  {{annotation.dt | transfromdate:'withNow'}}</div>
-
-              <div class="person font-small">{{annotation.ui | formatuser: currentuser: friends}} @ 了你</div>
             </div>
             
             <div class="line font-normal" leftmargin rightmargin>

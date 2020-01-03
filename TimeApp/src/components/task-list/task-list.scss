@@ -12,20 +12,13 @@ task-list {
       }
       .line{
         .icon{
-          margin:0px;
           button{
-            border:2px solid rgba(17,117,141,1);
-            border-bottom-width: 0;
-            border-top-width: 0;
-            border-radius:4px;
             background-color: transparent;
             text-align: center;
             padding: 0.2rem 0.6rem;
             b{
               font-size: 1.2rem;
               line-height: 1.2rem;
-              color: rgba(17,117,141,1) !important;
-              text-decoration-line:underline;
             }
           }
         }
@@ -56,6 +49,61 @@ task-list {
       border-radius: 5px;
 
     }
+  }
+}
+
+.white-theme {
+  task-list{
+    .list-grid-content {
+      .line{
+        .icon{
+          button{
+            border:.55px solid rgba(17,117,141,1);
+            b{
+              color: rgba(17,117,141,1) !important;
+            }
+          }
+        }
+      }
+      .item-content-backgroud{
+        background: transparent;
+        box-shadow:none;
+        border-bottom: 0.55px solid rgba(153, 153, 153, 0.28);
+        border-radius: 0;
+      }
+      .st{
+        background-color: transparent;
+      }
+    }
+
+  }
+}
+
+.black-theme {
+  task-list{
+    .list-grid-content {
+      .line{
+        .icon{
+          button{
+            border:.55px solid rgba(17,117,141,1);
+            b{
+              color: rgba(17,117,141,1) !important;
+            }
+          }
+        }
+      }
+      .item-content-backgroud{
+        background: transparent;
+        box-shadow:none;
+        border-bottom: 0.55px solid rgba(153, 153, 153, 0.28);
+        border-radius: 0;
+
+      }
+      .st{
+        background-color: transparent;
+      }
+    }
+
   }
 }
 

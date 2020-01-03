@@ -186,8 +186,8 @@ import {AssistantService} from "../../service/cordova/assistant.service";
             <ion-row (click)="changeComment()" *ngIf="currentPlanItem.jti">
               <div class="button-b">
                 <button ion-button clear>
-                  <ion-icon class="fas fa-comment-alt-edit"  *ngIf="currentPlanItem.bz" ></ion-icon>
-                  <ion-icon class="fas fa-comment-alt-edit"  *ngIf="!currentPlanItem.bz" noval></ion-icon>
+                  <ion-icon class="fad fa-comment-alt-edit"  *ngIf="currentPlanItem.bz" ></ion-icon>
+                  <ion-icon class="fad fa-comment-alt-edit"  *ngIf="!currentPlanItem.bz" noval></ion-icon>
                   <span class="content font-normal" margin-left [class.noval] = "!currentPlanItem.bz">
                   {{currentPlanItem.bz || "没有备注"}}
                   </span>
@@ -198,8 +198,8 @@ import {AssistantService} from "../../service/cordova/assistant.service";
             <ion-row *ngIf="currentPlanItem.jtc == selfdefine && currentPlanItem.jti" (click)="changeRemind()">
               <div class="button-b">
                 <button ion-button clear>
-                  <ion-icon class="fas fa-bell" *ngIf="currentPlanItem.txs" ></ion-icon>
-                  <ion-icon class="fas fa-bell"  *ngIf="!currentPlanItem.txs " noval></ion-icon>
+                  <ion-icon class="fad fa-bell" *ngIf="currentPlanItem.txs" ></ion-icon>
+                  <ion-icon class="fad fa-bell"  *ngIf="!currentPlanItem.txs " noval></ion-icon>
                   <span class="content font-normal"  margin-left [class.noval] = "!currentPlanItem.txs">
                    {{currentPlanItem.txs || "未设置"}}
                 </span>
@@ -210,8 +210,8 @@ import {AssistantService} from "../../service/cordova/assistant.service";
             <ion-row *ngIf="currentPlanItem.jtc == selfdefine && currentPlanItem.jti" (click)="changeRepeat()">
               <div class="button-b">
                 <button ion-button clear>
-                  <ion-icon class="fas fa-copy " *ngIf="currentPlanItem.rts"></ion-icon>
-                  <ion-icon class="fas fa-copy " *ngIf="!currentPlanItem.rts" noval></ion-icon>
+                  <ion-icon class="fad fa-copy " *ngIf="currentPlanItem.rts"></ion-icon>
+                  <ion-icon class="fad fa-copy " *ngIf="!currentPlanItem.rts" noval></ion-icon>
                   <span class="content font-normal"  margin-left [class.noval] = "!currentPlanItem.rts">
                   {{currentPlanItem.rts || "不重复"}}
                 </span>

@@ -2,14 +2,13 @@ page-pc {
   .plantitle{
     margin: 2rem 1rem 1rem 1rem;
     background: 4px;
-    border:0.55px solid rgba(7,109,138,1);
-    height: 50px;
     ion-input{
       height: 100%;
     }
     .text-input-ios{
-      margin: 1rem 0.8rem 1rem 1rem;
+      margin: 1rem 0.8rem 0rem 1rem;
       width: 90%;
+      border-bottom:0.55px solid rgba(217, 233, 238, 1);
     }
   }
 }

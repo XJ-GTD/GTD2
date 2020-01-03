@@ -63,9 +63,9 @@ import {StatusType} from "../../data.enum";
           </div>
         </ion-toolbar>
       </ion-header>
-      <div class="plansbar" *ngIf="data && plans" [ngStyle]="{
-        'background': (data | formatplan: 'summary': '#fff': plans)
-      }"></div>
+      <!--<div class="plansbar" *ngIf="data && plans" [ngStyle]="{-->
+        <!--'background': (data | formatplan: 'summary': '#fff': plans)-->
+      <!--}"></div>-->
       <ion-content class="page-content" #pagecontent>
         <ng-content></ng-content>
       </ion-content>

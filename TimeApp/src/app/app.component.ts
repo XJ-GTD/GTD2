@@ -9,6 +9,7 @@ import {LsPushType} from "../components/menuType/LsPushType";
 import {StatusBar} from "@ionic-native/status-bar";
 import {Device} from "@ionic-native/device";
 import {
+  ModalFromBottomEnter, ModalFromBottomLeave,
   ModalFromLeftEnter,
   ModalFromLeftLeave,
   ModalFromRightEnter,
@@ -110,6 +111,8 @@ export class MyApp {
     this.config.setTransition('modal-from-top-leave', ModalFromTopLeave);
     this.config.setTransition('modal-scale-enter', ModalScaleEnter);
     this.config.setTransition('modal-scale-leave', ModalScaleLeave);
+    this.config.setTransition('modal-from-bottom-enter', ModalFromBottomEnter);
+    this.config.setTransition('modal-from-bottom-leave', ModalFromBottomLeave);
   }
 
 }

@@ -1,2 +1,25 @@
 page-fd {
 }
+
+.white-theme {
+  page-fd{
+      .itemwarp{
+        background: transparent;
+        box-shadow:none;
+        border-bottom: 0.55px solid rgba(153, 153, 153, 0.28);
+        border-radius: 0;
+      }
+    }
+}
+
+.black-theme {
+  page-fd{
+      .itemwarp{
+        background: transparent;
+        box-shadow:none;
+        border-bottom: 0.55px solid rgba(153, 153, 153, 0.28);
+        border-radius: 0;
+
+      }
+    }
+}

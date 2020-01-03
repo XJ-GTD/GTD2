@@ -125,8 +125,8 @@ declare var Wechat;
             <ion-row *ngIf="currentAgenda.evi" (click)="changeRemind()">
               <div class="button-b">
                 <button ion-button clear>
-                  <ion-icon class="fas fa-bell" *ngIf="currentAgenda.txs"></ion-icon>
-                  <ion-icon class="fas fa-bell" *ngIf="!currentAgenda.txs" noval></ion-icon>
+                  <ion-icon class="fad fa-bell" *ngIf="currentAgenda.txs"></ion-icon>
+                  <ion-icon class="fad fa-bell" *ngIf="!currentAgenda.txs" noval></ion-icon>
                   <span class="content font-normal"    [class.noval] = "!currentAgenda.txs">
                    {{currentAgenda.txs || "未设置"}}
                 </span>
@@ -138,8 +138,8 @@ declare var Wechat;
             <ion-row *ngIf="currentAgenda.evi" (click)="changeRepeat()">
               <div class="button-b">
                 <button ion-button clear>
-                  <ion-icon class="fas fa-copy " *ngIf="currentAgenda.rts"></ion-icon>
-                  <ion-icon class="fas fa-copy " noval *ngIf="!currentAgenda.rts "></ion-icon>
+                  <ion-icon class="fad fa-copy " *ngIf="currentAgenda.rts"></ion-icon>
+                  <ion-icon class="fad fa-copy " noval *ngIf="!currentAgenda.rts "></ion-icon>
                   <span class="content font-normal"   [class.noval] = "!currentAgenda.rts">
                   {{currentAgenda.rts || "不重复"}}
                 </span>
@@ -163,8 +163,8 @@ declare var Wechat;
             <ion-row (click)="changeLocation()" *ngIf="currentAgenda.evi">
               <div class="button-b">
                 <button ion-button clear>
-                  <ion-icon class="fas fa-map-marker-alt" *ngIf="currentAgenda.adr "></ion-icon>
-                  <ion-icon class="fas fa-map-marker-alt" *ngIf="!currentAgenda.adr " noval></ion-icon>
+                  <ion-icon class="fad fa-map-marker-alt" *ngIf="currentAgenda.adr "></ion-icon>
+                  <ion-icon class="fad fa-map-marker-alt" *ngIf="!currentAgenda.adr " noval></ion-icon>
                   <span class="content font-normal"  [class.noval] = "!currentAgenda.adr">
                   {{currentAgenda.adr || "未设置"}}
                 </span>

@@ -1,5 +1,5 @@
 import {Component, ElementRef, Renderer2} from '@angular/core';
-import {IonicPage, Modal, ModalController, Platform} from 'ionic-angular';
+import {IonicPage, Modal, Platform} from 'ionic-angular';
 import {DataConfig} from "../../service/config/data.config";
 import {UserConfig} from "../../service/config/user.config";
 import {UtilService} from "../../service/util-service/util.service";
@@ -9,7 +9,6 @@ import {PsService} from "../ps/ps.service";
 import {RabbitMQService} from "../../service/cordova/rabbitmq.service";
 import {ModalTranType, StatusType} from "../../data.enum";
 import {SettingsProvider} from "../../providers/settings/settings";
-import {CalendarDay} from "../../components/ion2-calendar";
 
 /**
  * Generated class for the 菜单 page.

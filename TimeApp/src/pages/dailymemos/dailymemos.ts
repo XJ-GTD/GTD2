@@ -20,10 +20,18 @@ import {unitOfTime} from "moment";
   selector: 'page-dailymemos',
   template:
       `
-    <page-box title="备忘" [subtitle]="day | formatedate:'CYYYY/MM/DD W'" [buttons]="buttons"  (onBack)="goBack()" (onCreate)="addMemo()" >
+    <page-box title="备忘" [buttons]="buttons"  (onBack)="goBack()" (onCreate)="addMemo()" >
       <ng-template [ngIf]="memos.length > 0"
                    [ngIfElse]="notask">
         <ion-grid class="list-grid-content">
+          <ion-row class="item-content dayagenda-week">
+            <div class="line">
+              <p>
+                {{day | formatedate:'CYYYY/MM/DD W'}}
+              </p>
+            </div>
+          </ion-row>
+          
           <ion-row class="item-content item-content-backgroud" leftmargin toppadding bottompadding rightmargin *ngFor="let memo of memos" (click)="goDetail(memo)">
             <div class="line font-normal">
               <div class="st">{{memo.utt | formatedate: 'HH:mm'}}</div>

@@ -21,10 +21,14 @@ page-ss {
       display: block;
     }
 
+
     .waper {
       text-align: center;
       width: 50%;
       margin: 0.3rem;
+      .item-inner{
+        border-bottom: 0 !important;
+      }
 
       .radio-ios .radio-icon {
         margin: 0 auto;

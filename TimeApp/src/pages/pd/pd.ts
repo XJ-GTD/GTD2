@@ -37,7 +37,7 @@ declare var Wechat;
                 <div class="timeline-panel">
                   <div class="timeline-heading">
                     <span class="timeline-title">{{item.agendaData.evt}}</span>
-                    <span class="timeline-person" *ngIf="currentuser != item.agendaData.ui && item.agendaData.ui != ''">-{{item.agendaData.ui | formatuser: currentuser: friends}}</span>
+                    <!--<span class="timeline-person" *ngIf="currentuser != item.agendaData.ui && item.agendaData.ui != ''">-{{item.agendaData.ui | formatuser: currentuser: friends}}</span>-->
                   </div>
                   <div class="timeline-body">
                     <p>{{item.agendaData.evn}}</p>
@@ -62,7 +62,7 @@ declare var Wechat;
                 <div class="timeline-panel">
                   <div class="timeline-heading">
                     <span class="timeline-title">{{item.planItemData.jtn}}</span>
-                    <span class="timeline-person" *ngIf="currentuser != item.planItemData.ui && item.planItemData.ui != ''">-{{item.planItemData.ui | formatuser: currentuser: friends}}</span>
+                    <!--<span class="timeline-person" *ngIf="currentuser != item.planItemData.ui && item.planItemData.ui != ''">-{{item.planItemData.ui | formatuser: currentuser: friends}}</span>-->
 
                   </div>
                   <div class="timeline-body">

@@ -15,14 +15,7 @@ import {ChineseLunar} from "./chinese.lunar";
 import * as moment from "moment";
 import {GalleryModal} from "ionic-gallery-modal";
 import Scene from "scenejs";
-import {DataConfig} from "../config/data.config";
 import {ModalTranType} from "../../data.enum";
-import {
-  ModalFromLeftEnter,
-  ModalFromLeftLeave,
-  ModalFromRightEnter,
-  ModalFromRightLeave, ModalFromTopEnter, ModalFromTopLeave, ModalScaleEnter, ModalScaleLeave
-} from "../../app/AppTransition";
 import {EmitService} from "./emit.service";
 
 /**
@@ -953,6 +946,11 @@ export class UtilService {
       opts = {
         enterAnimation: 'modal-from-top-enter',
         leaveAnimation: 'modal-from-top-leave'
+      }
+    }else if (type == ModalTranType.bottom){
+      opts = {
+        enterAnimation: 'modal-from-bottom-enter',
+        leaveAnimation: 'modal-from-bottom-leave'
       }
     }
     return this.modalCtrl.create(modalPage, para, opts);

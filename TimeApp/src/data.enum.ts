@@ -232,6 +232,7 @@ export enum ModalTranType {
   left = "left",
   top = "top",
   scale = "scale",
+  bottom = "bottom",
 }
 export enum UpdState {
   inherent = "inherent",
