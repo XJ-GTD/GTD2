@@ -6,6 +6,7 @@ import {UtilService} from "../../service/util-service/util.service";
 import {AssistantService} from "../../service/cordova/assistant.service";
 import {InputComponent} from "../../components/ai/input/input";
 import * as moment from "moment";
+import {DataConfig} from "../../service/config/data.config";
 import {UserConfig} from "../../service/config/user.config";
 
 /**
@@ -42,8 +43,6 @@ export class AipPage{
 
   @ViewChild('inputComponent')
   inputComponent: InputComponent;
-
-  hasWelcome: boolean = false;
 
   statusListener:boolean = false;
   constructor(private aipService: AipService,
@@ -103,7 +102,7 @@ export class AipPage{
       content: {}
     };
 
-    if (!this.hasWelcome) {
+    if (!DataConfig.hasWelcome) {
       welcome['header']['describe'].push('S');
 
       welcome['content']['0'] = {
@@ -124,7 +123,7 @@ export class AipPage{
         }
       };
 
-      this.hasWelcome = true;
+      DataConfig.hasWelcome = true;
     } else {
       welcome['header']['describe'].push('S');
 
