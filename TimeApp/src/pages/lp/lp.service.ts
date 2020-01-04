@@ -88,7 +88,9 @@ export class LpService {
           //删除账户表
           return this.sqlExec.delete(new ATbl());
         }else{
-          throw  "-1";
+          uTbl.hiu = DataConfig.HUIBASE64;//头像
+          //删除账户表
+          return this.sqlExec.delete(new ATbl());
         }
       }).then(data=>{
         if (yTbl.yi) {
