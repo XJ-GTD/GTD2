@@ -396,13 +396,13 @@ export class ContactsService {
       // 用户OpenId
       if (userinfo.openid && userinfo.openid != '') {
         bt.ui = userinfo.openid;
+        bt.rel = '1'; // 注册用户
       }
 
       // 用户头像
       if (userinfo.avatarbase64 && userinfo.avatarbase64 != '') {
         bh.hiu = userinfo.avatarbase64;
         hasAvatar = true;
-        bt.rel = '1'; // 注册用户
       } else {
         bh.hiu = DataConfig.HUIBASE64;
       }
