@@ -443,6 +443,20 @@ export class SqliteInit {
           }
         }
 
+        //服务器 计划数据
+        for (let bipl of data.bipl) {
+          let jhatbl = new JhaTbl();
+          jhatbl.ji = bipl.planid;
+          jhatbl.jn = bipl.planname;
+          jhatbl.jg = bipl.plandesc;
+          jhatbl.jc = bipl.planmark;
+          jhatbl.jt = "1";
+          jhatbl.tb = SyncType.synch;
+          jhatbl.del = DelType.undel;
+          jhatbl.jtd = "0";
+          urlList.push(jhatbl.rpTParam());
+        }
+
         //web端
         this.sqlexec.batExecSql(urlList).then(data => {
             resolve(data);
