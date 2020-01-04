@@ -109,7 +109,7 @@ export class AipPage{
       };
     };
 
-    welcome['content']['0'] = {
+    welcome['content']['1'] = {
       processor: 'S',
       option: 'S.P',
       parameters: {
