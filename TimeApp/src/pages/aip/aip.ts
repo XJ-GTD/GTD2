@@ -71,10 +71,10 @@ export class AipPage{
     words.set("05", "早上");
     words.set("06", "早上");
     words.set("07", "早上");
-    words.set("08", "早上");
-    words.set("09", "早上");
+    words.set("08", "上午");
+    words.set("09", "上午");
     words.set("10", "上午");
-    words.set("11", "上午");
+    words.set("11", "中午");
     words.set("12", "中午");
     words.set("13", "下午");
     words.set("14", "下午");
