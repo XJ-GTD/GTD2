@@ -310,7 +310,7 @@ export class AttachPage {
         //其他路径： file:///storage/
         //alert("访问路径："+(file.uri));
         //TODO filePath 该插件只支持android
-        if (ios) {
+        if (this.ios) {
           this.file.resolveLocalFilesystemUrl(file.uri)
             .then((entry) => {
               let filePath = entry.fullPath;
