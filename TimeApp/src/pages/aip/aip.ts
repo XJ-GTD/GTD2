@@ -106,7 +106,7 @@ export class AipPage{
       option: 'S.AN',
       parameters: {
         an: `${preword}好, ${name}`
-      };
+      }
     };
 
     welcome['content']['1'] = {
@@ -114,7 +114,7 @@ export class AipPage{
       option: 'S.P',
       parameters: {
         t: 'HowtoUse'
-      };
+      }
     };
 
     this.emitService.emit('rabbitmq.message.received', welcome);
