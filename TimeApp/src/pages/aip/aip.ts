@@ -94,7 +94,7 @@ export class AipPage{
     let welcome: any = {
       header: {
         version: 'V1.1',
-        sender: 'xunfei',
+        sender: 'xunfei/aiui',
         datetime: moment().format("YYYY/MM/DD HH:mm"),
         describe: ['S', 'S']
       },
