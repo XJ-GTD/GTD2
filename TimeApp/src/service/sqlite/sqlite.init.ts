@@ -458,7 +458,7 @@ export class SqliteInit {
         }
 
         //web端
-        this.sqlexec.batExecSql(urlList).then(data => {
+        this.sqlexec.batExecSqlByParam(urlList).then(data => {
             resolve(data);
 
           }
