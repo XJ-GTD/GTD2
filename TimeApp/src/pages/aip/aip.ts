@@ -43,6 +43,8 @@ export class AipPage{
   @ViewChild('inputComponent')
   inputComponent: InputComponent;
 
+  hasWelcome: boolean = false;
+
   statusListener:boolean = false;
   constructor(private aipService: AipService,
               private navController: NavController,
@@ -96,26 +98,44 @@ export class AipPage{
         version: 'V1.1',
         sender: 'xunfei/aiui',
         datetime: moment().format("YYYY/MM/DD HH:mm"),
-        describe: ['S', 'S']
+        describe: []
       },
       content: {}
     };
 
-    welcome['content']['0'] = {
-      processor: 'S',
-      option: 'S.AN',
-      parameters: {
-        an: `${preword}好, ${name}`
-      }
-    };
+    if (!this.hasWelcome) {
+      welcome['header']['describe'].push('S');
 
-    welcome['content']['1'] = {
-      processor: 'S',
-      option: 'S.P',
-      parameters: {
-        t: 'HowtoUse'
-      }
-    };
+      welcome['content']['0'] = {
+        processor: 'S',
+        option: 'S.AN',
+        parameters: {
+          an: `${preword}好, ${name}`
+        }
+      };
+
+      welcome['header']['describe'].push('S');
+
+      welcome['content']['1'] = {
+        processor: 'S',
+        option: 'S.P',
+        parameters: {
+          t: 'HowtoUse'
+        }
+      };
+
+      this.hasWelcome = true;
+    } else {
+      welcome['header']['describe'].push('S');
+
+      welcome['content']['0'] = {
+        processor: 'S',
+        option: 'S.P',
+        parameters: {
+          t: 'HowtoUse'
+        }
+      };
+    }
 
     this.emitService.emit('rabbitmq.message.received', {body: JSON.stringify(welcome)});
   }
