@@ -47,7 +47,7 @@ export class SettingProcess extends BaseProcess implements MQProcess {
       if (setPara.k == 'THEME_DAY') {
         let set: PageY = new PageY();
         let setting: Setting = new Setting();
-        setting = UserConfig.settins.get(setPara.k);
+        setting = UserConfig.settins.get("THEME");
 
         set.yi = setting.yi;//偏好主键ID
         set.ytn = setting.bname; //偏好设置类型名称
@@ -70,7 +70,7 @@ export class SettingProcess extends BaseProcess implements MQProcess {
       } else if (setPara.k == 'THEME_NIGHT') {
         let set: PageY = new PageY();
         let setting: Setting = new Setting();
-        setting = UserConfig.settins.get(setPara.k);
+        setting = UserConfig.settins.get("THEME");
 
         set.yi = setting.yi;//偏好主键ID
         set.ytn = setting.bname; //偏好设置类型名称
