@@ -10,6 +10,7 @@ import {FdService} from "../../pages/fd/fd.service";
 import {FsData, PageY} from "../../data.mapping";
 import {WsDataConfig} from "../wsdata.config";
 import {BaseProcess} from "./base.process";
+import {SettingsProvider} from "../../providers/settings/settings";
 
 /**
  * 设置
@@ -18,7 +19,7 @@ import {BaseProcess} from "./base.process";
  */
 @Injectable()
 export class SettingProcess extends BaseProcess implements MQProcess {
-  constructor(private ssService: SsService, private fdService: FdService) {
+  constructor(private ssService: SsService, private settings: SettingsProvider, private fdService: FdService) {
     super();
   }
 
@@ -57,13 +58,13 @@ export class SettingProcess extends BaseProcess implements MQProcess {
         if (setPara.v && setting.value == 'black-theme') {
           set.yv = "white-theme";//偏好设置value
           await this.ssService.save(set);
-          setting.setActiveTheme(set.yv);
+          this.settings.setActiveTheme(set.yv);
         }
 
         if (!setPara.v && setting.value == 'white-theme') {
           set.yv = "black-theme";//偏好设置value
           await this.ssService.save(set);
-          setting.setActiveTheme(set.yv);
+          this.settings.setActiveTheme(set.yv);
         }
 
       } else if (setPara.k == 'THEME_NIGHT') {
@@ -80,13 +81,13 @@ export class SettingProcess extends BaseProcess implements MQProcess {
         if (!setPara.v && setting.value == 'black-theme') {
           set.yv = "white-theme";//偏好设置value
           await this.ssService.save(set);
-          setting.setActiveTheme(set.yv);
+          this.settings.setActiveTheme(set.yv);
         }
 
         if (setPara.v && setting.value == 'white-theme') {
           set.yv = "black-theme";//偏好设置value
           await this.ssService.save(set);
-          setting.setActiveTheme(set.yv);
+          this.settings.setActiveTheme(set.yv);
         }
 
       } else {
