@@ -108,6 +108,10 @@ services:
         target: /opt/duan/sha/plan/chinese_holiday_2019.json
       - source: sha_chinese_holiday_2019_agendas_config
         target: /opt/duan/sha/plan-agendas/chinese_holiday_2019.json
+      - source: sha_chinese_holiday_2020_config
+        target: /opt/duan/sha/plan/chinese_holiday_2020.json
+      - source: sha_chinese_holiday_2020_agendas_config
+        target: /opt/duan/sha/plan-agendas/chinese_holiday_2020.json
       - source: sha_chinese_famous_2019_config
         target: /opt/duan/sha/plan/chinese_famous_2019.json
       - source: sha_chinese_famous_2019_agendas_config
@@ -148,6 +152,8 @@ configs:
     file: ./sha/sha.json
   sha_chinese_holiday_2019_config:
     file: ./sha/sha/plan/chinese_holiday_2019.json
+  sha_chinese_holiday_2020_config:
+    file: ./sha/sha/plan/chinese_holiday_2020.json
   sha_chinese_famous_2019_config:
     file: ./sha/sha/plan/chinese_famous_2019.json
   sha_chinese_follow_2019_config:
@@ -156,6 +162,8 @@ configs:
     file: ./sha/sha/plan/shanghai_animation_exhibition_2019.json
   sha_west_holiday_2019_config:
     file: ./sha/sha/plan/west_holiday_2019.json
+  sha_chinese_holiday_2020_agendas_config:
+    file: ./sha/sha/plan-agendas/chinese_holiday_2020.json
   sha_chinese_holiday_2019_agendas_config:
     file: ./sha/sha/plan-agendas/chinese_holiday_2019.json
   sha_chinese_famous_2019_agendas_config:
