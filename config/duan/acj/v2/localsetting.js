@@ -15,7 +15,7 @@ function shouldclean(datasource)
           for (var sei in semantics) {
             var semantic = semantics[sei];
 
-            if (semantic['intent'] === 'SettingVoiceActivation' || semantic['intent'] === 'SettingVoiceBroadcast' || semantic['intent'] === 'SettingVibration' || semantic['intent'] === 'SettingNewMessageAlert') {
+            if (semantic['intent'] === 'SettingNextBroadcast' || semantic['intent'] === 'SettingGuide' || semantic['intent'] === 'SettingMergedBroadcast' || semantic['intent'] === 'SettingThemeNight' || semantic['intent'] === 'SettingThemeDay' || semantic['intent'] === 'SettingAutoTodo' || semantic['intent'] === 'SettingVoiceActivation' || semantic['intent'] === 'SettingVoiceBroadcast' || semantic['intent'] === 'SettingVibration' || semantic['intent'] === 'SettingNewMessageAlert') {
               return true;
             }
           }
