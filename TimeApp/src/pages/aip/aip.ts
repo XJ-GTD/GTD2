@@ -110,7 +110,7 @@ export class AipPage{
         processor: 'S',
         option: 'S.AN',
         parameters: {
-          an: `${preword}好, ${name}`
+          an: `${name}, ${preword}好, 我是小冥。`
         }
       };
 
