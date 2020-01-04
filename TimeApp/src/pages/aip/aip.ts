@@ -117,7 +117,7 @@ export class AipPage{
       }
     };
 
-    this.emitService.emit('rabbitmq.message.received', {body: welcome});
+    this.emitService.emit('rabbitmq.message.received', {body: JSON.stringify(welcome)});
   }
 
   inputClick(){
