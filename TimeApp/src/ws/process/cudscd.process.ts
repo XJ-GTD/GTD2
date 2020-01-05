@@ -101,6 +101,15 @@ export class CudscdProcess extends BaseProcess implements MQProcess{
     DataConfig.putWsOpt(option?option:"");
     DataConfig.putWsProcessor(processor?processor:"");
 
+    // 用于当前处理直接执行
+    if (option && processor) {
+      //服务器要求上下文内放置语音上下文前动作标志
+      this.output(content, contextRetMap, 'prvoption', WsDataConfig.PRVOPTION, option);
+
+      //服务器要求上下文内放置语音上下文前process标志
+      this.output(content, contextRetMap, 'prvprocessor', WsDataConfig.PRVPROCESSOR, processor);
+    }
+
     //上下文内放置创建的或修改的日程
     this.output(content, contextRetMap, 'paused', WsDataConfig.PAUSED, prv.paused);
 
