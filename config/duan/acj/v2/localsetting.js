@@ -15,7 +15,7 @@ function shouldclean(datasource)
           for (var sei in semantics) {
             var semantic = semantics[sei];
 
-            if (semantic['intent'] === 'SettingNextBroadcast' || semantic['intent'] === 'SettingGuide' || semantic['intent'] === 'SettingMergedBroadcast' || semantic['intent'] === 'SettingThemeNight' || semantic['intent'] === 'SettingThemeDay' || semantic['intent'] === 'SettingAutoTodo' || semantic['intent'] === 'SettingVoiceActivation' || semantic['intent'] === 'SettingVoiceBroadcast' || semantic['intent'] === 'SettingVibration' || semantic['intent'] === 'SettingNewMessageAlert') {
+            if (semantic['intent'] === 'SettingSimpleBroadcast' || semantic['intent'] === 'SettingMessageAlert' || semantic['intent'] === 'SettingTheme' || semantic['intent'] === 'SettingNextBroadcast' || semantic['intent'] === 'SettingGuide' || semantic['intent'] === 'SettingMergedBroadcast' || semantic['intent'] === 'SettingThemeNight' || semantic['intent'] === 'SettingThemeDay' || semantic['intent'] === 'SettingAutoTodo' || semantic['intent'] === 'SettingVoiceActivation' || semantic['intent'] === 'SettingVoiceBroadcast' || semantic['intent'] === 'SettingVibration' || semantic['intent'] === 'SettingNewMessageAlert') {
               return true;
             }
           }
@@ -122,6 +122,18 @@ function clean(datasource)
 
   if (key === 'SettingAutoTodo') {
     key = 'AUTOTODO';
+  }
+
+  if (key === 'SettingSimpleBroadcast') {
+    key = 'SIV';
+  }
+
+  if (key === 'SettingMessageAlert') {
+    key = 'CLV';
+  }
+
+  if (key === 'SettingTheme') {
+    key = 'THEME';
   }
 
   // 返回消息头部
