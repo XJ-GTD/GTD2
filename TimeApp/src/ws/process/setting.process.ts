@@ -90,6 +90,20 @@ export class SettingProcess extends BaseProcess implements MQProcess {
           this.settings.setActiveTheme(set.yv);
         }
 
+      } else if (setPara.k == 'THEME') {
+        let set: PageY = new PageY();
+        let setting: Setting = new Setting();
+        setting = UserConfig.settins.get("THEME");
+
+        set.yi = setting.yi;//偏好主键ID
+        set.ytn = setting.bname; //偏好设置类型名称
+        set.yt = setting.typeB; //偏好设置类型
+        set.yn = setting.name;//偏好设置名称
+        set.yk = setting.type;//偏好设置key
+        set.yv = setting.value == 'black-theme'? "white-theme" : "black-theme";//偏好设置value
+
+        await this.ssService.save(set);
+        this.settings.setActiveTheme(set.yv);
       } else {
         let set: PageY = new PageY();
         let setting: Setting = new Setting();
