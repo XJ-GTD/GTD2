@@ -8,6 +8,7 @@ import {ProcesRs} from "../model/proces.rs";
 import {WsDataConfig} from "../wsdata.config";
 import {BaseProcess} from "./base.process";
 import {DataConfig} from "../../service/config/data.config";
+import {FsData, ScdData} from "../../data.mapping";
 
 /**
  * 日程修改（获取上下文中） SC
