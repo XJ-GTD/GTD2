@@ -142,6 +142,7 @@ export class AlService {
     let alData: AlData = new AlData();
     return new Promise(async (resolve, reject) => {
       try {
+        alData.text = "初始化数据开始";
 
         //创建表结构
         if (this.version == -1) {
