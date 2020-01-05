@@ -421,7 +421,7 @@ export class DataSyncProcess implements MQProcess {
           for (let fsdata of fsdatas) {
 
             //更新参与人ui
-            if (!fsdata.ui || fsdata.ui == "") {
+            if ((!fsdata.ui || fsdata.ui == "") && fsdata.rc) {
               let userinfo = this.cachedpersons[fsdata.rc] || await this.personRestful.get(fsdata.rc);
               if (userinfo && userinfo.openid){
                 // 缓存用户数据防止多次访问
@@ -551,7 +551,7 @@ export class DataSyncProcess implements MQProcess {
           for (let fsdata of fsdatas) {
 
             //更新参与人ui
-            if (!fsdata.ui || fsdata.ui == "") {
+            if ((!fsdata.ui || fsdata.ui == "") && fsdata.rc) {
               let userinfo = this.cachedpersons[fsdata.rc] || await this.personRestful.get(fsdata.rc);
               if (userinfo && userinfo.openid){
                 // 缓存用户数据防止多次访问
@@ -766,7 +766,7 @@ export class DataSyncProcess implements MQProcess {
       for (let fsdata of fsdatas) {
 
         //更新参与人ui
-        if (!fsdata.ui || fsdata.ui == "") {
+        if ((!fsdata.ui || fsdata.ui == "") && fsdata.rc) {
           let userinfo = this.cachedpersons[fsdata.rc] || await this.personRestful.get(fsdata.rc);
           if (userinfo && userinfo.openid){
             // 缓存用户数据防止多次访问
@@ -893,7 +893,7 @@ export class DataSyncProcess implements MQProcess {
       for (let fsdata of fsdatas) {
 
         //更新参与人ui
-        if (!fsdata.ui || fsdata.ui == "") {
+        if ((!fsdata.ui || fsdata.ui == "") && fsdata.rc) {
           let userinfo = this.cachedpersons[fsdata.rc] || await this.personRestful.get(fsdata.rc);
 
           if (userinfo && userinfo.openid){
