@@ -80,7 +80,7 @@ export class TellyouService {
                 time1 = 10;
                 time2 = 30000;
 
-                show = !UserConfig.getSetting(DataConfig.SYS_CLV);
+                show = UserConfig.getSetting(DataConfig.SYS_CLV);
               }
               callback([{data:pageData,time1:time1,time2:time2,show:show}]);
             }).catch(()=>{
@@ -119,7 +119,7 @@ export class TellyouService {
                 time1 = 10;
                 time2 = 30000;
 
-                show = !UserConfig.getSetting(DataConfig.SYS_CLV);
+                show = UserConfig.getSetting(DataConfig.SYS_CLV);
                 callback([{data:pageData,time1:time1,time2:time2,show:show}]);
               }else{
                 callback([{data:pageData,time1:time1,time2:time2,show:show}]);
@@ -151,7 +151,7 @@ export class TellyouService {
                 Object.assign(pageData,datas[0]);
                 time1 = 20;
                 time2 = 5000;
-                show = !UserConfig.getSetting(DataConfig.SYS_CLV);
+                show = UserConfig.getSetting(DataConfig.SYS_CLV);
               }
               callback([{data:pageData,time1:time1,time2:time2,show:show}]);
             }).catch(()=>{
