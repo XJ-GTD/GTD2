@@ -421,9 +421,12 @@ export class DataSyncProcess implements MQProcess {
           for (let fsdata of fsdatas) {
 
             //更新参与人ui
-            if (fsdata.ui == ""){
-              let userinfo = await this.personRestful.get(fsdata.rc);
+            if (!fsdata.ui || fsdata.ui == "") {
+              let userinfo = this.cachedpersons[fsdata.rc] || await this.personRestful.get(fsdata.rc);
               if (userinfo && userinfo.openid){
+                // 缓存用户数据防止多次访问
+                this.cachedpersons[fsdata.rc] = userinfo;
+
                 fsdata.ui = userinfo.openid;
 
                 let bt = new BTbl();
@@ -548,9 +551,12 @@ export class DataSyncProcess implements MQProcess {
           for (let fsdata of fsdatas) {
 
             //更新参与人ui
-            if (fsdata.ui == ""){
-              let userinfo = await this.personRestful.get(fsdata.rc);
+            if (!fsdata.ui || fsdata.ui == "") {
+              let userinfo = this.cachedpersons[fsdata.rc] || await this.personRestful.get(fsdata.rc);
               if (userinfo && userinfo.openid){
+                // 缓存用户数据防止多次访问
+                this.cachedpersons[fsdata.rc] = userinfo;
+
                 fsdata.ui = userinfo.openid;
 
                 let bt = new BTbl();
@@ -760,7 +766,7 @@ export class DataSyncProcess implements MQProcess {
       for (let fsdata of fsdatas) {
 
         //更新参与人ui
-        if (fsdata.ui == ""){
+        if (!fsdata.ui || fsdata.ui == "") {
           let userinfo = this.cachedpersons[fsdata.rc] || await this.personRestful.get(fsdata.rc);
           if (userinfo && userinfo.openid){
             // 缓存用户数据防止多次访问
@@ -887,7 +893,7 @@ export class DataSyncProcess implements MQProcess {
       for (let fsdata of fsdatas) {
 
         //更新参与人ui
-        if (fsdata.ui == ""){
+        if (!fsdata.ui || fsdata.ui == "") {
           let userinfo = this.cachedpersons[fsdata.rc] || await this.personRestful.get(fsdata.rc);
 
           if (userinfo && userinfo.openid){
