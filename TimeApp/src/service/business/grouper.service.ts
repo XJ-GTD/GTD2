@@ -84,9 +84,9 @@ export class GrouperService extends BaseService {
 
         localMember.ui = friend.ui || member.ui;
         localMember.ran = friend.ran || member.ran;
-        localMember.ranpy = this.utilService.chineseToPinYin(localMember.ran);
+        localMember.ranpy = this.util.chineseToPinYin(localMember.ran);
         localMember.rn = friend.rn || member.rn;
-        localMember.rnpy = this.utilService.chineseToPinYin(localMember.rn);
+        localMember.rnpy = this.util.chineseToPinYin(localMember.rn);
 
         matched.push(localMember);
       } else {
