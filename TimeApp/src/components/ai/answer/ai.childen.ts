@@ -50,9 +50,9 @@ import {UserConfig} from "../../../service/config/user.config";
           <div class="aiSpeechAn" *ngIf="aiData.scd.an">
             {{aiData.scd.an}}
           </div>
-          <div class="aiscdcontent">
+          <div class="aiscdcontent" *ngIf="aiData.scd == '' || aiData.scd == 'event'">
             <div class="scdWarp">
-              <div class="title"><span>日程</span></div>
+              <div class="title"><span>活动</span></div>
               <div class="ti"><span>{{aiData.scd.ti}}</span></div>
               <div class="date">
                 <span>{{aiData.scd.d | formatedate:"CYYYY/MM/DD W"}} {{(aiData.scd.d + "T" + aiData.scd.t) | formatedate : "A h:mm"}}</span>
@@ -63,6 +63,30 @@ import {UserConfig} from "../../../service/config/user.config";
                     参与人：</span>
                   <span *ngFor="let fs of aiData.scd.friends">
                     {{fs.n}}</span>
+              </div>
+            </div>
+          </div>
+          <div class="aiscdcontent" *ngIf="aiData.scd.type && aiData.scd.type == 'calendar'">
+            <div class="scdWarp">
+              <div class="title"><span>日历项</span></div>
+              <div class="ti"><span>{{aiData.scd.ti}}</span></div>
+              <div class="date">
+                <span>{{aiData.scd.d | formatedate:"CYYYY/MM/DD W"}} {{(aiData.scd.d + "T" + aiData.scd.t) | formatedate : "A h:mm"}}</span>
+              </div>
+              <div class="friend" *ngIf="aiData.scd.friends.length > 0">
+                  <span>
+                    参与人：</span>
+                  <span *ngFor="let fs of aiData.scd.friends">
+                    {{fs.n}}</span>
+              </div>
+            </div>
+          </div>
+          <div class="aiscdcontent" *ngIf="aiData.scd.type && aiData.scd.type == 'memo'">
+            <div class="scdWarp">
+              <div class="title"><span>备忘</span></div>
+              <div class="ti"><span>{{aiData.scd.ti}}</span></div>
+              <div class="date">
+                <span>{{aiData.scd.d | formatedate:"CYYYY/MM/DD W"}} {{(aiData.scd.d + "T" + aiData.scd.t) | formatedate : "A h:mm"}}</span>
               </div>
             </div>
           </div>
@@ -93,7 +117,7 @@ import {UserConfig} from "../../../service/config/user.config";
             <ion-icon class="fal fa-microphone" (click)="speakScd(aiData.scdList)" on-hold="speakScd(aiData.scdList)"></ion-icon>
           </div>
         </div>
-        
+
       </div>
     </ng-template>
   `,
