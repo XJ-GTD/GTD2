@@ -1,11 +1,11 @@
-function shouldclean(datasource) 
+function shouldclean(datasource)
 {
   var result = {};
   // filter source code here start
   var input = JSON.parse(datasource);
 
   if (input['_context'] && input['_context'].productId === 'cn.sh.com.xj.timeApp' && input['_context'].productVersion === 'v1') return false;
-  
+
   if (input.data && input.data[0] !== undefined) {
     for (var di in input.data) {
       var data = input.data[di];
@@ -15,19 +15,19 @@ function shouldclean(datasource)
           for (var sei in semantics) {
             var semantic = semantics[sei];
 
-            if (semantic['intent'] === 'SettingVoiceActivation' || semantic['intent'] === 'SettingVoiceBroadcast' || semantic['intent'] === 'SettingVibration' || semantic['intent'] === 'SettingNewMessageAlert') {
+            if (semantic['intent'] === 'SettingSimpleBroadcast' || semantic['intent'] === 'SettingMessageAlert' || semantic['intent'] === 'SettingTheme' || semantic['intent'] === 'SettingNextBroadcast' || semantic['intent'] === 'SettingGuide' || semantic['intent'] === 'SettingMergedBroadcast' || semantic['intent'] === 'SettingThemeNight' || semantic['intent'] === 'SettingThemeDay' || semantic['intent'] === 'SettingAutoTodo' || semantic['intent'] === 'SettingVoiceActivation' || semantic['intent'] === 'SettingVoiceBroadcast' || semantic['intent'] === 'SettingVibration' || semantic['intent'] === 'SettingNewMessageAlert') {
               return true;
             }
           }
       }
     }
   }
-  
+
   // filter source code here end
   return false;
 }
 
-function clean(datasource) 
+function clean(datasource)
 {
   var result = {};
   print('Start Nashorn Javascript processing...');
@@ -46,7 +46,7 @@ function clean(datasource)
   var formatDateTime = function(date) {
     return date.getFullYear() + '/' + (date.getMonth()+1) + '/' + date.getDate() + ' ' + date.getHours() + ':' + date.getMinutes() + ':' + date.getSeconds();
   }
-  
+
   // 取得迅飞语音消息内容
   var userId = input['_context']['userId'];
   var deviceId = input['_context']['deviceId'];
@@ -55,51 +55,87 @@ function clean(datasource)
   var text = data['intent']['text'];
   var cmd = '';
   var key = 'UNKNOWN';
-  
+
   var semantics = data['intent']['semantic'];
-  
+
   for (var sei in semantics) {
     var semantic = semantics[sei];
 
     key = semantic['intent'];
     var slots = semantic['slots'];
-    
+
     for (var si in slots) {
       var slot = slots[si];
-      
+
       // 取出涉及日程标题
       if (slot['name'] === 'actioncmd') {
         cmd = slot['normValue'];
       }
     }
   }
-  
+
   var docmd = true;
-  
+
   if (cmd === '打开') {
     docmd = true;
   }
-  
+
   if (cmd === '关闭') {
     docmd = false;
   }
-  
+
   if (key === 'SettingVoiceActivation') {
     key = 'H';
   }
-  
+
   if (key === 'SettingVoiceBroadcast') {
     key = 'B';
   }
-  
+
   if (key === 'SettingVibration') {
     key = 'Z';
   }
-  
+
   if (key === 'SettingNewMessageAlert') {
     key = 'T';
   }
-  
+
+  if (key === 'SettingNextBroadcast') {
+    key = 'ALIS';
+  }
+
+  if (key === 'SettingGuide') {
+    key = 'SIP';
+  }
+
+  if (key === 'SettingMergedBroadcast') {
+    key = 'CBV';
+  }
+
+  if (key === 'SettingThemeNight') {
+    key = 'THEME_NIGHT';
+  }
+
+  if (key === 'SettingThemeDay') {
+    key = 'THEME_DAY';
+  }
+
+  if (key === 'SettingAutoTodo') {
+    key = 'AUTOTODO';
+  }
+
+  if (key === 'SettingSimpleBroadcast') {
+    key = 'SIV';
+  }
+
+  if (key === 'SettingMessageAlert') {
+    key = 'CLV';
+  }
+
+  if (key === 'SettingTheme') {
+    key = 'THEME';
+  }
+
   // 返回消息头部
   output.header = {
   	version: 'V1.1',
@@ -107,11 +143,11 @@ function clean(datasource)
     datetime: formatDateTime(new Date()),
     describe: ['SY','S']
   };
-  
+
   output.original = text;
-  
+
   output.content = {};
-  
+
   // 查询联系人指示
   output.content['0'] = {
     processor: 'SY',
@@ -121,13 +157,13 @@ function clean(datasource)
       v: docmd
     }
   };
-  
+
   output.context = {};
-  
+
   if (clientcontext && clientcontext !== undefined) {
   	output.context['client'] = clientcontext;
   }
-  
+
   output.content['1'] = {
     processor: 'S',
     option: 'S.P',
@@ -135,15 +171,15 @@ function clean(datasource)
       t: 'DD'
     }
   };
-  
+
   var standardnext = {};
-  
+
   standardnext.announceTo = [userId + ';' + deviceId];
   standardnext.announceType = 'inteligence_mix';
   standardnext.announceContent = {mwxing:output};
-  
+
   print(standardnext);
-  
+
   // filter source code here end
   return JSON.stringify(standardnext);
 }

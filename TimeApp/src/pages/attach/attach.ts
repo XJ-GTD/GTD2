@@ -16,6 +16,7 @@ import {DataRestful, DownloadInData} from "../../service/restful/datasev";
 import {NativeAudio} from "@ionic-native/native-audio";
 import BScroll from "better-scroll";
 import {EmitService} from "../../service/util-service/emit.service";
+import {Device} from "@ionic-native/device";
 
 @IonicPage()
 @Component({
@@ -110,6 +111,7 @@ export class AttachPage {
   obt: string = "";
   obi: string = "";
   bw: string = "";
+  ios: boolean = false;
   //原图
   browserurlBig: string = "http://pluto.guobaa.com/abl/store/local/getContent/";
   //缩略图
@@ -134,6 +136,7 @@ export class AttachPage {
               public navParams: NavParams,
               private file: File,
               private camera: Camera,
+              private device: Device,
               private chooser: Chooser,
               private transfer: FileTransfer,
               private filePath: FilePath,
@@ -146,6 +149,9 @@ export class AttachPage {
               private nativeAudio: NativeAudio,
               private changeDetectorRef: ChangeDetectorRef,
               private util: UtilService) {
+    if (this.device.platform == "iOS") {
+      this.ios = false;
+    }
     if (this.navParams && this.navParams.data) {
       this.obt = this.navParams.data.obt;
       this.obi = this.navParams.data.obi;
@@ -304,6 +310,40 @@ export class AttachPage {
         //其他路径： file:///storage/
         //alert("访问路径："+(file.uri));
         //TODO filePath 该插件只支持android
+        if (this.ios) {
+          this.file.resolveLocalFilesystemUrl(file.uri)
+            .then((entry) => {
+              let filePath = entry.fullPath;
+              //alert("转换后的路径："+(filePath));
+              if (filePath != '') {
+                let fileName: string = filePath.substr(filePath.lastIndexOf("/") + 1, filePath.length);
+                let ext: string = fileName.substr(fileName.lastIndexOf(".") + 1);
+                let imgFileDir: string = filePath.substr(0, filePath.lastIndexOf("/") + 1);
+                let newFileName = this.util.getUuid() + "." + ext;
+                this.fjData.obt = this.obt;
+                this.fjData.obi = this.obi;
+                //this.fjData.fjn = newFileName;
+                this.fjData.ext = ext;
+                this.fjData.ui = this.currentuser;
+                let cacheFilePathJson: CacheFilePathJson = new CacheFilePathJson();
+                cacheFilePathJson.local = "/" + newFileName;
+                this.fjData.fj = JSON.stringify(cacheFilePathJson);
+                this.fjData.fpjson = cacheFilePathJson;
+                this.fjData.fjurl = this.fjData.fpjson.getLocalFilePath(this.file.dataDirectory);
+                this.fjData.members = this.members;
+                // if(!this.bw) {
+                //   this.bw = fileName;
+                // }
+                this.file.copyFile(imgFileDir, fileName, this.file.dataDirectory + cacheFilePathJson.getCacheDir(), newFileName).then(_ => {
+                  this.saveFile();
+                });
+              }
+            })
+            .catch(err => {
+              alert("选择文件异常信息:"+err);
+              console.log(err)
+            });
+        } else {
           this.filePath.resolveNativePath(file.uri)
             .then((filePath) => {
               //alert("转换后的路径："+(filePath));
@@ -335,6 +375,8 @@ export class AttachPage {
               alert("选择文件异常信息:"+err);
               console.log(err)
             });
+        }
+
       }
     ).catch((error: any) => console.error(error));
   }

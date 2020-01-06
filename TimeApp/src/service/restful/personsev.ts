@@ -53,7 +53,7 @@ export class PersonRestful {
       urlEntity.url = url.url;
       urlEntity.key = url.key;
       urlEntity.desc = url.desc;
-      urlEntity.url = urlEntity.url.replace("{phoneno}",phoneno);
+      urlEntity.url = urlEntity.url.replace("{phoneno}",phoneno||"unknown");
       this.request.get(urlEntity).then(data => {
         //处理返回结果
         // bsModel.code = data.errcode;
@@ -101,7 +101,7 @@ export class PersonRestful {
       urlEntity.url = url.url;
       urlEntity.key = url.key;
       urlEntity.desc = url.desc;
-      urlEntity.url = urlEntity.url.replace("{phoneno}",phoneno);
+      urlEntity.url = urlEntity.url.replace("{phoneno}",phoneno||"unknown");
       this.request.get(urlEntity).then(data => {
         //处理返回结果
         resolve(data.data);

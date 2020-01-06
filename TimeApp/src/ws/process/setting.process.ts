@@ -10,6 +10,7 @@ import {FdService} from "../../pages/fd/fd.service";
 import {FsData, PageY} from "../../data.mapping";
 import {WsDataConfig} from "../wsdata.config";
 import {BaseProcess} from "./base.process";
+import {SettingsProvider} from "../../providers/settings/settings";
 
 /**
  * 设置
@@ -18,7 +19,7 @@ import {BaseProcess} from "./base.process";
  */
 @Injectable()
 export class SettingProcess extends BaseProcess implements MQProcess {
-  constructor(private ssService: SsService, private fdService: FdService) {
+  constructor(private ssService: SsService, private settings: SettingsProvider, private fdService: FdService) {
     super();
   }
 
@@ -42,18 +43,81 @@ export class SettingProcess extends BaseProcess implements MQProcess {
     if (content.option == SY.S) {
       //处理所需要参数
       let setPara: SettingPara = content.parameters;
-      let set: PageY = new PageY();
-      let setting: Setting = new Setting();
-      setting = UserConfig.settins.get(setPara.k);
 
-      set.yi = setting.yi;//偏好主键ID
-      set.ytn = setting.bname; //偏好设置类型名称
-      set.yt = setting.typeB; //偏好设置类型
-      set.yn = setting.name;//偏好设置名称
-      set.yk = setting.type;//偏好设置key
-      set.yv = setPara.v ? "1" : "0";//偏好设置value
+      if (setPara.k == 'THEME_DAY') {
+        let set: PageY = new PageY();
+        let setting: Setting = new Setting();
+        setting = UserConfig.settins.get("THEME");
 
-      await this.ssService.save(set);
+        set.yi = setting.yi;//偏好主键ID
+        set.ytn = setting.bname; //偏好设置类型名称
+        set.yt = setting.typeB; //偏好设置类型
+        set.yn = setting.name;//偏好设置名称
+        set.yk = setting.type;//偏好设置key
+
+        if (setPara.v && setting.value == 'black-theme') {
+          set.yv = "white-theme";//偏好设置value
+          await this.ssService.save(set);
+          this.settings.setActiveTheme(set.yv);
+        }
+
+        if (!setPara.v && setting.value == 'white-theme') {
+          set.yv = "black-theme";//偏好设置value
+          await this.ssService.save(set);
+          this.settings.setActiveTheme(set.yv);
+        }
+
+      } else if (setPara.k == 'THEME_NIGHT') {
+        let set: PageY = new PageY();
+        let setting: Setting = new Setting();
+        setting = UserConfig.settins.get("THEME");
+
+        set.yi = setting.yi;//偏好主键ID
+        set.ytn = setting.bname; //偏好设置类型名称
+        set.yt = setting.typeB; //偏好设置类型
+        set.yn = setting.name;//偏好设置名称
+        set.yk = setting.type;//偏好设置key
+
+        if (!setPara.v && setting.value == 'black-theme') {
+          set.yv = "white-theme";//偏好设置value
+          await this.ssService.save(set);
+          this.settings.setActiveTheme(set.yv);
+        }
+
+        if (setPara.v && setting.value == 'white-theme') {
+          set.yv = "black-theme";//偏好设置value
+          await this.ssService.save(set);
+          this.settings.setActiveTheme(set.yv);
+        }
+
+      } else if (setPara.k == 'THEME') {
+        let set: PageY = new PageY();
+        let setting: Setting = new Setting();
+        setting = UserConfig.settins.get("THEME");
+
+        set.yi = setting.yi;//偏好主键ID
+        set.ytn = setting.bname; //偏好设置类型名称
+        set.yt = setting.typeB; //偏好设置类型
+        set.yn = setting.name;//偏好设置名称
+        set.yk = setting.type;//偏好设置key
+        set.yv = setting.value == 'black-theme'? "white-theme" : "black-theme";//偏好设置value
+
+        await this.ssService.save(set);
+        this.settings.setActiveTheme(set.yv);
+      } else {
+        let set: PageY = new PageY();
+        let setting: Setting = new Setting();
+        setting = UserConfig.settins.get(setPara.k);
+
+        set.yi = setting.yi;//偏好主键ID
+        set.ytn = setting.bname; //偏好设置类型名称
+        set.yt = setting.typeB; //偏好设置类型
+        set.yn = setting.name;//偏好设置名称
+        set.yk = setting.type;//偏好设置key
+        set.yv = setPara.v ? "1" : "0";//偏好设置value
+
+        await this.ssService.save(set);
+      }
     }
 
     //项目跟进 实例设置

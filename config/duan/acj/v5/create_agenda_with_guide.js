@@ -331,7 +331,7 @@ function clean(datasource)
         version: 'V1.1',
         sender: 'xunfei',
         datetime: formatDateTime(new Date()),
-        describe: ['CA', 'AG', 'SS', 'S']
+        describe: ['CA', 'AG', 'SS', 'SC', 'O', 'SS', 'S']
       };
       output.content['0'] = {
         processor: 'CA',
@@ -354,10 +354,31 @@ function clean(datasource)
       };
 
       output.content['3'] = {
+        processor: 'SC',
+        option: 'SC.T',
+        parameters: {},
+        output: {
+          prvoption: "prvoption"
+        }
+      };
+
+      output.content['4'] = {
+        processor: 'O',
+        option: 'O.O',
+        parameters: {}
+      };
+
+      output.content['5'] = {
+        processor: 'SS',
+        option: 'SS.F',
+        parameters: {}
+      };
+
+      output.content['6'] = {
         processor: 'S',
         option: 'S.P',
         parameters: {
-          t: 'EE_AG_CONFIRM'    // 是否创建, 请确认
+          t: 'DONE'    // 已完成
         }
       };
 

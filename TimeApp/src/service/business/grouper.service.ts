@@ -39,64 +39,143 @@ export class GrouperService extends BaseService {
   }
 
   /**
+   * 获取联系人
+   *
+   * @author leon_xi@163.com
+   **/
+  async fetchFriends1(): Promise<Array<Friend>> {
+    let friendsql: string = `select * from gtd_b`;
+
+    let friends: Array<Friend> = await this.sqlExce.getExtLstByParam<Friend>(friendsql, []) || new Array<Friend>();
+
+    return friends;
+  }
+
+  /**
+   * 匹配本客户端联系人
+   *
+   * @author leon_xi@163.com
+   **/
+  async matchFriends(friends: Array<Friend>, members: Array<Member>): Promise<Array<Member>> {
+    assertEmpty(friends);   // 入参不能为空
+    assertEmpty(members);   // 入参不能为空
+
+    let phoneIndexes: Array<string> = friends.reduce((target, ele) => {
+      target.push(ele.rc);
+
+      return target;
+    }, new Array<string>());
+
+    let matched: Array<Member> = new Array<Member>();
+    let newbtbls: Array<BTbl> = new Array<BTbl>();
+
+    for (let member of members) {
+      let existIndex: number = phoneIndexes.findIndex((ele) => {
+        return ele == member.rc;
+      });
+
+      if (existIndex >= 0) {
+        let friend: Friend = friends[existIndex];
+
+        let localMember: Member = {} as Member;
+        Object.assign(localMember, member);
+
+        localMember.pwi = friend.pwi;
+
+        localMember.ui = friend.ui || member.ui;
+        localMember.ran = friend.ran || member.ran;
+        localMember.ranpy = this.util.chineseToPinYin(localMember.ran);
+        localMember.rn = friend.rn || member.rn;
+        localMember.rnpy = this.util.chineseToPinYin(localMember.rn);
+
+        matched.push(localMember);
+      } else {
+        let localMember: Member = {} as Member;
+        Object.assign(localMember, member);
+
+        localMember.pwi = this.util.getUuid();
+
+        matched.push(localMember);
+
+        let friend: Friend = new Friend();
+        Object.assign(friend, localMember);
+
+        friends.push(friend);           // 增加到本地缓存
+        phoneIndexes.push(friend.rc);   // 增加到本缓存手机索引
+
+        // 新联系人保存到本地数据库
+        let btbl: BTbl = new BTbl();
+        Object.assign(btbl, localMember);
+
+        newbtbls.push(btbl);
+      }
+    }
+
+    // let sqls = this.sqlExce.getFastSaveSqlByParam(newbtbls);
+    // await this.sqlExce.batExecSqlByParam(sqls);
+
+    return matched;
+  }
+
+  /**
    * 导入本地联系人
    *
    * @author leon_xi@163.com
    **/
-   async importLocalContacts() {
-     let friendsql: string = `select * from gtd_b`;
+  async importLocalContacts() {
+   let friendsql: string = `select * from gtd_b`;
 
-     let friends: Array<Friend> = await this.sqlExce.getExtLstByParam<Friend>(friendsql, []) || new Array<Friend>();
+   let friends: Array<Friend> = await this.sqlExce.getExtLstByParam<Friend>(friendsql, []) || new Array<Friend>();
 
-     let friendIndexes: Array<string> = friends.reduce((target, value) => {
-       target.push(value.rc);
-       return target;
-     }, new Array<string>());
+   let friendIndexes: Array<string> = friends.reduce((target, value) => {
+     target.push(value.rc);
+     return target;
+   }, new Array<string>());
 
-     let localContacts = await this.contactsService.getLocalContacts((name, phone) => {
-       let index: number = friendIndexes.findIndex((ele) => {
-         return ele == phone;
-       });
+   let localContacts = await this.contactsService.getLocalContacts((name, phone) => {
+     let index: number = friendIndexes.findIndex((ele) => {
+       return ele == phone;
+     });
 
-       if (index >= 0) {
-         let friend: Friend = friends[index];
+     if (index >= 0) {
+       let friend: Friend = friends[index];
 
-         if (friend.ran == name) {
-           return null;
-         } else {
-           friend.ran = name;
-
-           return friend;
-         }
+       if (friend.ran == name) {
+         return null;
        } else {
-         let friend: Friend = new Friend();
-
-         friend.ran = name;   // 本地联系人姓名
-         friend.rn = name;    // 注册用户昵称
-         friend.rc = phone;   // 手机号码
+         friend.ran = name;
 
          return friend;
        }
-     });
+     } else {
+       let friend: Friend = new Friend();
 
-     // 存在新增本地联系人或者联系人信息更新
-     if (localContacts && localContacts.length > 0) {
-       let sqls: Array<any> = new Array<any>();
+       friend.ran = name;   // 本地联系人姓名
+       friend.rn = name;    // 注册用户昵称
+       friend.rc = phone;   // 手机号码
 
-       for (let friend of localContacts) {
-         let btbl: BTbl = new BTbl();
+       return friend;
+     }
+   });
 
-         if (!friend.pwi) {
-           friend.pwi = this.util.getUuid();
-         }
+   // 存在新增本地联系人或者联系人信息更新
+   if (localContacts && localContacts.length > 0) {
+     let sqls: Array<any> = new Array<any>();
 
-         Object.assign(btbl, friend);
-         sqls.push(btbl.rpT());
+     for (let friend of localContacts) {
+       let btbl: BTbl = new BTbl();
+
+       if (!friend.pwi) {
+         friend.pwi = this.util.getUuid();
        }
 
-       await this.sqlExce.batExecSql(sqls);
+       Object.assign(btbl, friend);
+       sqls.push(btbl.rpT());
      }
+
+     await this.sqlExce.batExecSql(sqls);
    }
+  }
 
   /**
    * 接收群组信息

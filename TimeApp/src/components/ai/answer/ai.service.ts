@@ -139,6 +139,7 @@ export class ScdAiData {
   d: string = "";
   t: string = "";
   ti: string = "";
+  type: string = "";  // 增加数据类型
   gs: string = "";
   saved:boolean = false;
   scdTip:string = "";

@@ -5,6 +5,9 @@ import {EmitService} from "../../service/util-service/emit.service";
 import {UtilService} from "../../service/util-service/util.service";
 import {AssistantService} from "../../service/cordova/assistant.service";
 import {InputComponent} from "../../components/ai/input/input";
+import * as moment from "moment";
+import {DataConfig} from "../../service/config/data.config";
+import {UserConfig} from "../../service/config/user.config";
 
 /**
  * Generated class for the AlPage page.
@@ -17,7 +20,7 @@ import {InputComponent} from "../../components/ai/input/input";
 @Component({
   selector: 'page-aip',
   template: `
-    
+
     <ion-header no-border>
       <ion-toolbar>
         <ion-buttons right>
@@ -55,6 +58,92 @@ export class AipPage{
       this.statusListener = b;
     });
 
+  }
+
+  ionViewDidEnter() {
+    // 增加语音界面启动后,自动发出提示语音对话
+    // 早上好, 中午好或者晚上好, 用户名
+    let words: Map<string, string> = new Map<string, string>();
+    words.set("00", "凌晨");
+    words.set("01", "凌晨");
+    words.set("02", "凌晨");
+    words.set("03", "凌晨");
+    words.set("04", "凌晨");
+    words.set("05", "早上");
+    words.set("06", "早上");
+    words.set("07", "早上");
+    words.set("08", "上午");
+    words.set("09", "上午");
+    words.set("10", "上午");
+    words.set("11", "中午");
+    words.set("12", "中午");
+    words.set("13", "下午");
+    words.set("14", "下午");
+    words.set("15", "下午");
+    words.set("16", "下午");
+    words.set("17", "下午");
+    words.set("18", "下午");
+    words.set("19", "下午");
+    words.set("20", "晚上");
+    words.set("21", "晚上");
+    words.set("22", "晚上");
+    words.set("23", "晚上");
+
+    let preword = words.get(moment().format("HH"));
+    let name = UserConfig.user.nickname;
+    let guide = UserConfig.getSetting(DataConfig.SYS_SIP);
+
+    let welcome: any = {
+      header: {
+        version: 'V1.1',
+        sender: 'xunfei/aiui',
+        datetime: moment().format("YYYY/MM/DD HH:mm"),
+        describe: []
+      },
+      content: {}
+    };
+
+    if (!DataConfig.hasWelcome) {
+      welcome['header']['describe'].push('S');
+
+      welcome['content']['0'] = {
+        processor: 'S',
+        option: 'S.AN',
+        parameters: {
+          an: `${name}, ${preword}好, 我是小冥。`
+        }
+      };
+
+      if (guide) {
+        welcome['header']['describe'].push('S');
+
+        welcome['content']['1'] = {
+          processor: 'S',
+          option: 'S.P',
+          parameters: {
+            t: 'HowtoUse'
+          }
+        };
+      }
+
+      DataConfig.hasWelcome = true;
+    } else {
+      if (guide) {
+        welcome['header']['describe'].push('S');
+
+        welcome['content']['0'] = {
+          processor: 'S',
+          option: 'S.P',
+          parameters: {
+            t: 'HowtoUse'
+          }
+        };
+      }
+    }
+
+    if (welcome['header']['describe'].length > 0) {
+      this.emitService.emit('rabbitmq.message.received', {body: JSON.stringify(welcome)});
+    }
   }
 
   inputClick(){

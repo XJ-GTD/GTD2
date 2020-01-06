@@ -114,7 +114,8 @@ export class AiComponent {
       let aiData: ScdAiData = new ScdAiData();
       aiData.ti = scdEmData.ti;
       aiData.d = scdEmData.d;
-      aiData.t = scdEmData.t
+      aiData.t = scdEmData.t;
+      aiData.type = scdEmData.type;
       aiData.id = scdEmData.id;
       aiData.gs = scdEmData.gs;
       this.aiData1.scdList.datas.push(aiData);

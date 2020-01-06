@@ -123,15 +123,15 @@ export class AlService {
         if (stbls.length > 0) {
           this.version = Number(stbls[0].yv);
 
-          alData.text = "系统完成初始化";
+          alData.text = "完成初始化";
           resolve(alData);
         } else {
-          alData.text = "系统开始初始化";
+          alData.text = "开始初始化";
           resolve(alData);
         }
 
       }).catch(err => {
-        alData.text = "系统开始初始化";
+        alData.text = "开始初始化";
         resolve(alData);
       })
     })
@@ -142,6 +142,7 @@ export class AlService {
     let alData: AlData = new AlData();
     return new Promise(async (resolve, reject) => {
       try {
+        alData.text = "初始化数据开始";
 
         //创建表结构
         if (this.version == -1) {
@@ -175,11 +176,11 @@ export class AlService {
         await this.patchService.updatePatch(this.version );
 
 
-        alData.text = "系统数据初始化完成";
+        alData.text = "初始化数据完成";
 
         resolve(alData);
       } catch (e) {
-        alData.text = "系统数据初始化失败";
+        alData.text = "初始化数据失败";
 
         resolve(alData);
       }
@@ -400,10 +401,10 @@ export class AlService {
         });
 
 
-        alData.text = "系统设置完成";
+        alData.text = "设置参数完成";
         resolve(alData)
       } catch (e) {
-        alData.text = "系统设置失败";
+        alData.text = "设置参数失败";
         resolve(alData)
       }
 
