@@ -140,11 +140,13 @@ export class AiComponent {
       this.bScroll.scrollToElement(this.card1.nativeElement,380,0,0);
     },200)
   }
+
   callbackScd(data: ScdEmData) {
     this.copy();
     let scd1: ScdAiData = new ScdAiData();
     scd1.d = data.d;
     scd1.t = data.t;
+    scd1.type = data.type;
     scd1.ti = data.ti;
     scd1.scdTip = data.scdTip;
 
