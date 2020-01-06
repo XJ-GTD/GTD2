@@ -264,26 +264,27 @@ export class SpeechProcess extends BaseProcess implements MQProcess {
     });
 
     // 数据操作显示
-     this.showdatas(showagendas, speakText, sutbl.sut);
-     this.showdatas(showmemos, speakText, sutbl.sut);
-     this.showdatas(showplanitems, speakText, sutbl.sut);
+     this.showdatas(showagendas, "event", speakText, sutbl.sut);
+     this.showdatas(showmemos, "memo", speakText, sutbl.sut);
+     this.showdatas(showplanitems, "calendar", speakText, sutbl.sut);
     //处理结果
     return contextRetMap;
   }
 
-  showdatas(datas: Array<ScdData>, speakText: string = "", tips: string = "") {
+  showdatas(datas: Array<ScdData>, type: string = "event", speakText: string = "", tips: string = "") {
     if (datas && datas.length == 1) {
       let scdEm: ScdEmData = new ScdEmData();
 
       scdEm.id = datas[0].si;
       scdEm.d = datas[0].sd;
       scdEm.t = datas[0].st;
+      scdEm.type = type;
       scdEm.ti = datas[0].sn;
       scdEm.gs = datas[0].gs;
 
       scdEm.scdTip = tips;
 
-      for (let btbl of datas[0].fss){
+      for (let btbl of datas[0].fss) {
         let fri: FriendEmData = new FriendEmData();
 
         fri.id = btbl.pwi;
@@ -312,6 +313,7 @@ export class SpeechProcess extends BaseProcess implements MQProcess {
         scdEm.id = scd.si;
         scdEm.d = scd.sd;
         scdEm.t = scd.st;
+        scdEm.type = type;
         scdEm.ti = scd.sn;
         scdEm.gs = scd.gs;
 
