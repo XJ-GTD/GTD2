@@ -91,6 +91,7 @@ export class AipPage{
 
     let preword = words.get(moment().format("HH"));
     let name = UserConfig.user.nickname;
+    let guide = UserConfig.getSetting(DataConfig.SYS_SIP);
 
     let welcome: any = {
       header: {
@@ -113,30 +114,36 @@ export class AipPage{
         }
       };
 
-      welcome['header']['describe'].push('S');
+      if (guide) {
+        welcome['header']['describe'].push('S');
 
-      welcome['content']['1'] = {
-        processor: 'S',
-        option: 'S.P',
-        parameters: {
-          t: 'HowtoUse'
-        }
-      };
+        welcome['content']['1'] = {
+          processor: 'S',
+          option: 'S.P',
+          parameters: {
+            t: 'HowtoUse'
+          }
+        };
+      }
 
       DataConfig.hasWelcome = true;
     } else {
-      welcome['header']['describe'].push('S');
+      if (guide) {
+        welcome['header']['describe'].push('S');
 
-      welcome['content']['0'] = {
-        processor: 'S',
-        option: 'S.P',
-        parameters: {
-          t: 'HowtoUse'
-        }
-      };
+        welcome['content']['0'] = {
+          processor: 'S',
+          option: 'S.P',
+          parameters: {
+            t: 'HowtoUse'
+          }
+        };
+      }
     }
 
-    this.emitService.emit('rabbitmq.message.received', {body: JSON.stringify(welcome)});
+    if (welcome['header']['describe'].length > 0) {
+      this.emitService.emit('rabbitmq.message.received', {body: JSON.stringify(welcome)});
+    }
   }
 
   inputClick(){
