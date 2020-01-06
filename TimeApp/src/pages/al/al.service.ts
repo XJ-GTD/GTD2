@@ -246,7 +246,8 @@ export class AlService {
         //监听statusbar颜色变化
         this.settings.getStatusBarColor().subscribe(val => {
           let color:string = this.settings.getStatusColor(val);
-          this.statusBar.backgroundColorByHexString(color);
+          //去除状态栏颜色设置 TODO
+          // this.statusBar.backgroundColorByHexString(color);
         });
 
         // this.app.viewDidLoad.subscribe((event) => {
