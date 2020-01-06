@@ -43,7 +43,7 @@ export class GrouperService extends BaseService {
    *
    * @author leon_xi@163.com
    **/
-  async fetchFriends(): Promise<Array<Friend>> {
+  async fetchFriends1(): Promise<Array<Friend>> {
     let friendsql: string = `select * from gtd_b`;
 
     let friends: Array<Friend> = await this.sqlExce.getExtLstByParam<Friend>(friendsql, []) || new Array<Friend>();
