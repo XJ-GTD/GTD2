@@ -77,7 +77,7 @@ export class GrouperService extends BaseService {
       if (existIndex >= 0) {
         let friend: Friend = friends[existIndex];
 
-        let localMember: Member = new Member();
+        let localMember: Member = {} as Member;
         Object.assign(localMember, member);
 
         localMember.pwi = friend.pwi;
@@ -90,7 +90,7 @@ export class GrouperService extends BaseService {
 
         matched.push(localMember);
       } else {
-        let localMember: Member = new Member();
+        let localMember: Member = {} as Member;
         Object.assign(localMember, member);
 
         localMember.pwi = this.util.getUuid();
