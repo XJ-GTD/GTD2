@@ -50,7 +50,7 @@ import {UserConfig} from "../../../service/config/user.config";
           <div class="aiSpeechAn" *ngIf="aiData.scd.an">
             {{aiData.scd.an}}
           </div>
-          <div class="aiscdcontent" *ngIf="aiData.scd.type == '' || aiData.scd.type == 'event'">
+          <div class="aiscdcontent" *ngIf="!aiData.scd.type || aiData.scd.type == 'event'">
             <div class="scdWarp">
               <div class="title"><span>活动</span></div>
               <div class="ti"><span>{{aiData.scd.ti}}</span></div>
