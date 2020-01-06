@@ -56,11 +56,11 @@ export class GrouperService extends BaseService {
    *
    * @author leon_xi@163.com
    **/
-  async matchFriends(friends: Array<Friend>, members: Array<Member>): Prmise<Array<Member>> {
+  async matchFriends(friends: Array<Friend>, members: Array<Member>): Promise<Array<Member>> {
     assertEmpty(friends);   // 入参不能为空
     assertEmpty(members);   // 入参不能为空
 
-    let phoneIndexes: Array<string> = firends.reduce((target, ele) => {
+    let phoneIndexes: Array<string> = friends.reduce((target, ele) => {
       target.push(ele.rc);
 
       return target;
