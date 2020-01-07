@@ -302,8 +302,9 @@ export class AttachPage {
    */
   select() {
 
+    let option: string = this.ios? 'image/*,video/*,*/*' : '*/*';
 
-    this.chooser.getFile('*/*').then((file) => {
+    this.chooser.getFile(option).then((file) => {
 
         //文件和图片 路径不一致
         //图片： content://media/...
@@ -311,38 +312,31 @@ export class AttachPage {
         //alert("访问路径："+(file.uri));
         //TODO filePath 该插件只支持android
         if (this.ios) {
-          this.file.resolveLocalFilesystemUrl(file.uri)
-            .then((entry) => {
-              let filePath = entry.fullPath;
-              //alert("转换后的路径："+(filePath));
-              if (filePath != '') {
-                let fileName: string = filePath.substr(filePath.lastIndexOf("/") + 1, filePath.length);
-                let ext: string = fileName.substr(fileName.lastIndexOf(".") + 1);
-                let imgFileDir: string = filePath.substr(0, filePath.lastIndexOf("/") + 1);
-                let newFileName = this.util.getUuid() + "." + ext;
-                this.fjData.obt = this.obt;
-                this.fjData.obi = this.obi;
-                //this.fjData.fjn = newFileName;
-                this.fjData.ext = ext;
-                this.fjData.ui = this.currentuser;
-                let cacheFilePathJson: CacheFilePathJson = new CacheFilePathJson();
-                cacheFilePathJson.local = "/" + newFileName;
-                this.fjData.fj = JSON.stringify(cacheFilePathJson);
-                this.fjData.fpjson = cacheFilePathJson;
-                this.fjData.fjurl = this.fjData.fpjson.getLocalFilePath(this.file.dataDirectory);
-                this.fjData.members = this.members;
-                // if(!this.bw) {
-                //   this.bw = fileName;
-                // }
-                this.file.copyFile(imgFileDir, fileName, this.file.dataDirectory + cacheFilePathJson.getCacheDir(), newFileName).then(_ => {
-                  this.saveFile();
-                });
-              }
-            })
-            .catch(err => {
-              alert("选择文件异常信息:"+err);
-              console.log(err)
+          let filePath = file.uri;
+          //alert("转换后的路径："+(filePath));
+          if (filePath != '') {
+            let fileName: string = filePath.substr(filePath.lastIndexOf("/") + 1, filePath.length);
+            let ext: string = fileName.substr(fileName.lastIndexOf(".") + 1);
+            let imgFileDir: string = filePath.substr(0, filePath.lastIndexOf("/") + 1);
+            let newFileName = this.util.getUuid() + "." + ext;
+            this.fjData.obt = this.obt;
+            this.fjData.obi = this.obi;
+            //this.fjData.fjn = newFileName;
+            this.fjData.ext = ext;
+            this.fjData.ui = this.currentuser;
+            let cacheFilePathJson: CacheFilePathJson = new CacheFilePathJson();
+            cacheFilePathJson.local = "/" + newFileName;
+            this.fjData.fj = JSON.stringify(cacheFilePathJson);
+            this.fjData.fpjson = cacheFilePathJson;
+            this.fjData.fjurl = this.fjData.fpjson.getLocalFilePath(this.file.dataDirectory);
+            this.fjData.members = this.members;
+            // if(!this.bw) {
+            //   this.bw = fileName;
+            // }
+            this.file.copyFile(imgFileDir, fileName, this.file.dataDirectory + cacheFilePathJson.getCacheDir(), newFileName).then(_ => {
+              this.saveFile();
             });
+          }
         } else {
           this.filePath.resolveNativePath(file.uri)
             .then((filePath) => {
