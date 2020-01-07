@@ -8,6 +8,7 @@ import {File} from "@ionic-native/file";
 import {FileOpener} from '@ionic-native/file-opener';
 import {FilePath} from '@ionic-native/file-path';
 import {FileTransfer} from '@ionic-native/file-transfer';
+import { ImagePicker } from '@ionic-native/image-picker';
 import {LocalNotifications} from "@ionic-native/local-notifications";
 import {SQLite} from '@ionic-native/sqlite';
 import {Calendar} from "@ionic-native/calendar";
@@ -223,6 +224,7 @@ import {Patch15} from "../patch/patch.15";
     FileOpener,
     FilePath,
     FileTransfer,
+    ImagePicker,
     Device,
     Vibration,
     Geolocation,
