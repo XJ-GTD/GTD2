@@ -27,9 +27,7 @@ import {TellYouBase, TellyouService} from "../../components/ai/tellyou/tellyou.s
 @Component({
   selector: 'page-h',
   template: `
-    <!--<ion-header>-->
-      <!---->
-    <!--</ion-header>-->
+    
     <ion-content>
       <ion-calendar #calendar
                     [options]="options"
@@ -44,7 +42,6 @@ import {TellYouBase, TellyouService} from "../../components/ai/tellyou/tellyou.s
                     (onNewMome)="newMome($event)"
                     (onPlus)="newPlus($event)">
       </ion-calendar>
-
       <page-tdl #tdl></page-tdl>
         <PointComponent  #aiDiv [showInput] = "false" (onPonintClick)="openAi()"></PointComponent>
       <!--<div style="background: red;position: fixed;z-index: 999;top:0px;height: 30px;width: 100%">{{process}}</div>-->
@@ -95,7 +92,8 @@ export class HPage {
   }
 
   openAi() {
-    this.modalCtr.create(AipPage).present();
+    this.feedback.audioPress();
+    this.util.createModal(DataConfig.PAGE._Ai_PAGE,null,ModalTranType.top).present();
   }
 
   ionViewDidLoad() {

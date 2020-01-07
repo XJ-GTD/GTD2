@@ -130,7 +130,7 @@ import { Observable } from 'rxjs';
                   <div class="line font-small">
                     <div class="person" *ngIf="currentuser != jt.ui && jt.ui != ''" end>
                       -- {{jt.ui | formatuser: currentuser: friends}}</div>
-                    <div class="person" *ngIf="currentuser == jt.ui" end>-- 自己</div>
+                    <!--<div class="person" *ngIf="currentuser == jt.ui" end>&#45;&#45; 自己</div>-->
                     <!--<div class="invite" *ngIf="event.invitestatus != inviteaccept && event.invitestatus != invitereject"-->
                     <!--end><span (click)="rejectInvite($event, event)">拒绝</span><span-->
                     <!--(click)="acceptInvite($event, event)">接受</span></div>-->
@@ -206,7 +206,7 @@ import { Observable } from 'rxjs';
                       <div class="st">{{event.evt}}</div>
                       <div class="person" *ngIf="currentuser != event.ui && event.ui != ''" end>
                         -- {{event.ui | formatuser: currentuser: friends}}</div>
-                      <div class="person" *ngIf="currentuser == event.ui" end>-- 自己</div>
+                      <!--<div class="person" *ngIf="currentuser == event.ui" end>&#45;&#45; 自己</div>-->
                     </div>
                     <div class="line font-small"
                          *ngIf="!(currentuser != event.ui && event.ui != '' && event.invitestatus != inviteaccept && event.invitestatus != invitereject)">

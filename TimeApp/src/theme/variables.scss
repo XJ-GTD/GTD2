@@ -101,6 +101,8 @@ $font-size1:14px;
 //页面选择园大小
 //
 
+//top 安全高度
+$ios-statusbar-top: constant(safe-area-inset-top);
 
 $font-path: "../assets/fonts";
 

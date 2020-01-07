@@ -1,4 +1,4 @@
-import {Component, ViewChild} from '@angular/core';
+import {Component, ElementRef, Renderer2, ViewChild} from '@angular/core';
 import {Platform, Nav, MenuController, IonicApp, App, Config} from 'ionic-angular';
 import {MenuScalePushType} from "../components/menuType/customType";
 import {BackgroundMode} from '@ionic-native/background-mode';
@@ -16,6 +16,7 @@ import {
   ModalFromRightLeave, ModalFromTopEnter,
   ModalFromTopLeave, ModalScaleEnter, ModalScaleLeave
 } from "./AppTransition";
+import {getBodyNode} from "@angular/animations/browser/src/render/shared";
 
 @Component({
   template: `
@@ -30,24 +31,21 @@ export class MyApp {
               private util: UtilService,
               private device: Device,
               private screenOrientation: ScreenOrientation,
-              public config: Config
+              public config: Config,
             ) {
     //特殊菜单设置
     MenuController.registerType('scalePush', MenuScalePushType);
     MenuController.registerType('lsPush', LsPushType);
     this.setCustomTransitions();
 
-    console.log("$$$$$$$$$$$$$$$$$$");
 
     this.platform.ready().then(() => {
 
-      console.log("$$$$$$$$$$$$$$$$$$");
       //this.util.loadingEnd();
 
       //允许进入后台模式
       if (this.util.hasCordova()) {
 
-        console.log("$$$$$$$$$$$$$$$$$$");
 
         if (this.util.isAndroid()) {
           this.registerBackButtonAction();
@@ -76,9 +74,8 @@ export class MyApp {
 
 
       //跳转页面（过渡页面）
-
-      console.log("$$$$$$$$$$$$$$$$$$");
       this.app.getRootNav().setRoot(DataConfig.PAGE._AL_PAGE);
+      document.body.style.backgroundImage = "none";
     });
   }
 

@@ -222,7 +222,6 @@
       text-overflow: ellipsis;
       overflow: hidden;
       white-space: nowrap;
-
       .icon {
         margin: 0rem 0.2rem;
         font-size: 1.4rem;
@@ -305,12 +304,12 @@
     overflow: inherit;
 
     .dayheader {
-      width: 55px;
-      padding-top: 0.5rem;
-      padding-bottom: 0.5rem;
-      padding-right: 1rem;
+      width: 59px;
+      height: 50px;
+      padding: 0.5rem;
+      padding-top: 1rem;
       text-align: center;
-      margin-left: -0.5rem;
+      border-radius:4px 0px 0px 4px;
 
       .ym-fsize {
         font-size: 2.3rem;
@@ -336,7 +335,7 @@
     }
 
     .d-title {
-      border-radius: 4px;
+      border-radius:0px 4px 4px 0px;
       width: 100%;
       display: inline-flex;
       position: relative;
@@ -359,7 +358,7 @@
       }
 
       .d-title-chr:first-child {
-        border-radius: 4px;
+        border-radius:0px 4px 4px 0px;
         width: 50px;
         margin-left: 0;
         margin-right: 0;
@@ -386,6 +385,7 @@
         .icon{
           font-size: 2rem;
           line-height: 50px;
+          margin-left: -35px;
           //margin: 1rem;
 
         }
@@ -393,7 +393,7 @@
       .weather{
         position: absolute;
         text-align: center;
-        right:.5rem;
+        right:1rem;
         opacity: .8;
         top:10px;
 
@@ -416,19 +416,25 @@
 
 
   .dayagenda-content {
-    width: calc(100% - 65px);
-    margin-left: 55px;
+    width: auto;
     padding: 0.2rem;
+    .line{
+      padding-left: 1rem;
+      padding-right: 1rem;
+    }
   }
 
   .calendaritem-content {
-    width: calc(100% - 65px);
-    margin-left: 55px;
-    padding: 0.2rem;
+    width: auto;
+    padding-top: 0.5rem;
     min-height: 44px;
-    .sn{
-      font-size: 1.4rem;
-      -webkit-line-clamp:1;
+    .line{
+      padding-left: 1rem;
+      padding-right: 1rem;
+      .sn{
+        font-size: 1.4rem;
+        -webkit-line-clamp:1;
+      }
     }
   }
 }
@@ -522,7 +528,8 @@
 
     .dayagenda-nav {
       .dayheader {
-
+        background:rgba(47,117,213,.8);
+        box-shadow:0px 0px 5px 0px rgba(3,0,0,0.2);
         .ym-fsize {
           color:rgba(254,255,255,1);
           text-shadow:0px 1.5px 3.5px rgba(0, 0, 0, 0.35);
@@ -542,7 +549,7 @@
 
       .d-title {
         background:rgba(25,87,180,.9);
-        box-shadow:0px 0px 5px 0px rgba(255,255,255,0.5);
+        //box-shadow: inset 1px 0px 2px 0px rgba(255, 255, 255, 0.5);
 
         .d-title-chr {
           color:rgba(211,211,211,1);
@@ -582,6 +589,8 @@
     .today{
 
       .dayheader {
+        background:rgba(30,151,193,.8);
+        box-shadow:0px 0px 5px 0px rgba(3,0,0,0.2);
         .ym-fsize {
           color:rgba(255,254,254,1);
         }
@@ -596,7 +605,7 @@
       }
       .d-title {
         background:rgba(0,69,86,1);
-        box-shadow:0px 0px 5px 0px rgba(255,255,255,0.5);
+        //box-shadow:0px 0px 5px 0px rgba(255,255,255,0.5);
 
         .d-title-chr {
 
@@ -729,6 +738,8 @@
 
     .dayagenda-nav {
       .dayheader {
+        background:rgba(47,117,213,.8);
+        box-shadow:0px 0px 5px 0px rgba(3,0,0,0.2);
         .ym-fsize {
           color:rgba(255,254,254,1);
         }
@@ -745,7 +756,7 @@
 
       .d-title {
         background:rgba(14,52,109,.8);
-        box-shadow:0px 0px 5px 0px rgba(255,255,255,0.5);
+        //box-shadow:0px 0px 5px 0px rgba(255,255,255,0.5);
 
         .d-title-chr {
 
@@ -778,6 +789,8 @@
     //列表每天头部
     .today{
       .dayheader {
+        background:rgba(30,151,193,.8);
+        //box-shadow:0px 0px 5px 0px rgba(3,0,0,0.2);
         .ym-fsize {
           color:rgba(255,254,254,1);
         }
@@ -792,7 +805,7 @@
       }
       .d-title {
         background:rgba(0,69,86,1);
-        box-shadow:0px 0px 5px 0px rgba(255,255,255,0.5);
+        //box-shadow:0px 0px 5px 0px rgba(255,255,255,0.5);
 
         .d-title-chr {
 
@@ -805,7 +818,7 @@
 
         .d-title-chr:first-child {
           background:rgba(30,151,193,.8);
-          box-shadow:0px 0px 5px 0px rgba(3,0,0,0.2);
+          //box-shadow:0px 0px 5px 0px rgba(3,0,0,0.2);
           color:rgba(235,239,250,1);
         }
 

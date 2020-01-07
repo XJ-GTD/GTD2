@@ -18,7 +18,7 @@ import * as moment from "moment";
               <div class="icon" end >
                 <!--<ion-icon class="fal fa-minus-circle" (click)="erease($event, task)"></ion-icon>-->
                 <button (click)="complete($event, task)">
-                  <b>完成</b>
+                  <b>确认完成</b>
                 </button>
               </div>
           </div>

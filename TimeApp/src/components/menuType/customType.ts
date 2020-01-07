@@ -27,11 +27,11 @@ export class MenuScalePushType extends MenuType {
     this.ani.add(menuAni);
     const contentApi = new Animation(plt, menu.getContentElement());
     contentApi.fromTo('translateX', '0px', contentOpenedX);
-    contentApi.fromTo('scale',1,.9);
+    contentApi.fromTo('scale',1,.8);
     contentApi.fromTo('opacity',1,.5);
     this.ani.add(contentApi);
     const backdropAni = new Animation(plt, menu.getBackdropElement());
-    backdropAni.fromTo('opacity',0,.2);
+    backdropAni.fromTo('opacity',0,.5);
     this.ani.add(backdropAni);
   }
 }

@@ -99,6 +99,7 @@ export class PointComponent {
       this.ani.add(listening);
       let aitool = new Animation(this.plt, this.aitool.nativeElement);
       aitool.fromTo('translateY',0 ,"-70px");
+      aitool.fromTo('translateX',0 ,"-20px");
       aitool.fromTo('scale',1 ,0.8);
       this.ani.add(aitool);
       let input =  new Animation(this.plt, this.inputComponent.nativeElement);

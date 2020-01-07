@@ -116,7 +116,7 @@ page-pd {
     .timeline > li[yearitem] {
       .timeline-badge{
         background:rgba(217,233,238,1);
-        color: rgba(51,51,51,1);;
+        color: rgba(17,117,141,1);
       }
     }
 
@@ -127,8 +127,8 @@ page-pd {
     }
 
     .timeline > li > .timeline-badge {
-      color: rgba(255,255,255,1);
-      background:rgba(17,117,141,.8);
+      color: rgba(17,117,141,1);
+      background:rgba(217,233,238,1);
     }
     .timeline-title {
       color:rgba(153,153,153,1);
@@ -146,25 +146,25 @@ page-pd {
 
   page-pd {
     .timeline:before {
-      background:rgba(217,233,238,1);
+      background:rgba(23,30,43,1);
     }
 
     .timeline > li[yearitem] {
       .timeline-badge{
-        background:rgba(217,233,238,1);
-        color: rgba(51,51,51,1);;
+        background:rgba(35,46,64,1);
+        color: rgba(255,255,255,1);
       }
     }
 
 
     .timeline > li > .timeline-panel {
-      background:rgba(12,24,42,.8);
-      box-shadow:0px 0px 5px 0px rgba(153,153,153,0.28);
+      background:rgba(24,35,54,1);
+      box-shadow:0px 0px 2px 0px rgba(8,17,29,1);
     }
 
     .timeline > li > .timeline-badge {
       color: rgba(255,255,255,1);
-      background:rgba(17,117,141,1);
+      background:rgba(35,46,64,1);
     }
     .timeline-title {
       color:rgba(187,187,187,1);

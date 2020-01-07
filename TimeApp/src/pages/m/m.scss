@@ -3,9 +3,11 @@ page-m {
   background-size: 100% 100%;
 
   .menu {
+    .menu-inner{
+      width: 280px;
+    }
     ion-backdrop{
       display: block;
-      background-color: rgba(248, 248, 248,1);
     }
     .grid {
       padding-top: 30%;
@@ -43,15 +45,17 @@ page-m {
 .black-theme{
   page-m {
     //background-image: url('../assets/imgs/m-backgroud-black.jpg');
+    ion-backdrop{
+      background:rgba(0,0,0,1);
+    }
     .menu {
-      background: rgba(13, 24, 42,.4);
 
       .grid {
         .row {
-          color: rgba(235, 239, 250, 1);
+          color: rgba(255, 255, 255, 1);
 
           h1, h4 {
-            color: rgba(73, 152, 188, 1);
+            color: rgba(255, 255, 255, 1);
           }
 
 
@@ -64,16 +68,18 @@ page-m {
 .white-theme{
   page-m {
     //background-image: url('../assets/imgs/m-backgroud-white.jpg');
+    ion-backdrop{
+      background:rgba(0,0,0,1);
+    }
     .menu {
-
       .grid {
         .row {
-          color: rgba(51, 51, 51, 1);
+          color: rgba(255, 255, 255, 1);
 
         }
 
         h1, h4 {
-          color: rgba(73, 152, 188, 1);
+          color: rgba(255, 255, 255, 1);
         }
       }
     }
