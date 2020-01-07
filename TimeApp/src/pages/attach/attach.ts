@@ -253,7 +253,7 @@ export class AttachPage {
   shot() {
     const options: CameraOptions = {
       quality: 95,
-      destinationType: this.camera.DestinationType.FILE_URI,
+      destinationType: this.ios? this.camera.DestinationType.NATIVE_URI : this.camera.DestinationType.FILE_URI,
       encodingType: this.camera.EncodingType.JPEG,
       mediaType: this.camera.MediaType.PICTURE,
       sourceType: this.camera.PictureSourceType.CAMERA, //打开方式 PHOTOLIBRARY  相册 CAMERA  拍照
