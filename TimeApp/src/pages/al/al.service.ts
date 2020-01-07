@@ -53,11 +53,11 @@ export class AlService {
               private effectService: EffectService,
               private modalCtr: ModalController,
               private app: App,
-              // private statusBar: StatusBar,
+              private statusBar: StatusBar,
               private backgroundMode:BackgroundMode,
               private patchService : PatchService) {
 
-    // this.statusBar.overlaysWebView(true);
+    this.statusBar.overlaysWebView(true);
     // this.statusBar.hide();
   }
 
