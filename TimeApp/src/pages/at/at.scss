@@ -1,37 +1,63 @@
 page-at {
 
   ion-content.content,.toolbar-background-ios {
-    background: rgba(12, 24, 42, 1);
-    box-shadow: 0px 0px 5px 0px rgba(153, 153, 153, 0.28);
-    color: rgba(255,255,255,1)
+    background:rgba(0,12,31,1);
   }
 
   .img-logo {
-    width: 30vmin;
-    height: 30vmin;
-    border-radius: 50%;
+    width: 80px;
+    height: 80px;
+    border-radius: 8px;
+  }
+  .app-title{
+    color:rgba(182,180,255,1);
+    font-size: 20px;
+    letter-spacing: 1px;
+    font-weight: 300;
   }
 
   h3.app-description {
     font-size: 18px;
-    letter-spacing: 1px;
+    color:rgba(255,255,255,1);
+    font-weight:300;
   }
-  span{
-    min-height: 20px;
+  .lab{
+    text-align: left;
+    color:rgba(255,255,255,1);
+    font-size: 16px;
+    line-height: 44px;
+    font-weight: 300;
+
+  }
+  .value{
+    text-align: right;
+    color:rgba(255,255,255,1);
+    font-size: 14px;
+    line-height: 44px;
+    font-weight: 300;
   }
 
   ion-header{
-    background: rgba(12, 24, 42, 1);
+    background:rgba(0,12,31,1);
     padding: 4px 20px;
   }
 
+  .row[bottom-border]{
+    border-bottom: .55px solid rgba(32,47,72,1);
+    min-height: 44px;
+    .nolineheight{
+      line-height: 16px;
+    }
+  }
+
   .toolbar-title{
-    color: white;
-    font-size: 1.5rem;
+    color:rgba(17,117,141,1);
+    font-size: 2.4rem;
+    font-weight: 300;
   }
   .bar-button-ios[icon-only] ion-icon{
-    font-size: 1.5rem;
-    color: white;
+    color:rgba(17,117,141,1);
+    font-size: 2.4rem;
   }
 
 }

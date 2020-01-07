@@ -20,9 +20,11 @@ import { AppVersion } from '@ionic-native/app-version';
 @Component({
   selector: 'page-at',
   template: `
+    
     <ion-header no-border>
       <ion-toolbar>
-        <ion-buttons right>
+        <ion-title start>关于</ion-title>
+        <ion-buttons end>
           <button ion-button icon-only (click)="goBack()">            
             <ion-icon class="fal fa-times"></ion-icon>
           </button>
@@ -31,8 +33,8 @@ import { AppVersion } from '@ionic-native/app-version';
     </ion-header>
 
     <ion-content padding>
-    <ion-grid class="h70">
-      <ion-row class="h100" align-items-center>
+    <ion-grid>
+      <ion-row align-items-center>
         <ion-grid>
           <ion-row justify-content-center>
             <ion-avatar>
@@ -46,106 +48,46 @@ import { AppVersion } from '@ionic-native/app-version';
             <h1 class="app-title">冥王星</h1>
           </ion-row>
           <ion-row justify-content-center>
-            <h3 class="app-description">人工智能接触生活、工作与梦想</h3>
+            <p></p>
           </ion-row>
           <ion-row justify-content-center>
-            <h3 class="app-description">迸发出的火花</h3>
+            <h3 class="app-description">人工智能接触</h3>
+          </ion-row>
+          <ion-row justify-content-center>
+            <h3 class="app-description">生活、工作与梦想迸发出的火花</h3>
           </ion-row>
           <ion-row justify-content-center>
             <p></p>
           </ion-row>
-          <ion-row justify-content-center>
-            <span class="app-profiles">版本</span>
+          <ion-row bottom-border>
+            <div col-5 class="lab">版本</div>
+            <div col-7 class="value">{{client.mainversion}}.{{client.version}}{{build==""? "" : (" build " + build)}}</div>
           </ion-row>
-          <ion-row justify-content-center>
-            <span class="app-profiles">{{client.mainversion}}.{{client.version}}{{build==""? "" : (" build " + build)}}</span>
+          <ion-row bottom-border>
+            <div col-5 class="lab">{{server.datacenter}}</div>
+            <div col-7 class="value">v{{server.version}}</div>
+          </ion-row>          
+          <ion-row bottom-border>
+            <div col-12 class="lab nolineheight">团队信息</div>
+            <div col-12 class="value nolineheight" text-start>构思：胖子</div>
+            <div col-4  class="value nolineheight" text-start>技术：楞子</div>
+            <div col-4  class="value nolineheight" text-center>开发：孩子</div>
+            <div col-4  class="value nolineheight" text-end>开发：没想法</div>
+            <div col-4  class="value nolineheight" text-start>设计：仙女</div>
+            <div col-4  class="value nolineheight" text-center>测试：胡子</div>
+            <div col-4  class="value nolineheight" text-end>赞助：牛牛</div>
           </ion-row>
-          <ion-row justify-content-center>
-            <span class="app-profiles">{{server.datacenter}}</span>
+          <ion-row bottom-border>
+            <div col-5 class="lab">联系方式</div>
+            <div col-7 class="value">18602150145</div>
           </ion-row>
-          <ion-row justify-content-center>
-            <span class="app-profiles">v{{server.version}}</span>
+          <ion-row bottom-border>
+            <div col-5 class="lab">邮箱</div>
+            <div col-7 class="value">jy-zhang@zakj.info</div>
           </ion-row>
-          <ion-row justify-content-center>
-            <p></p>
-          </ion-row>
-          <!--<ion-row justify-content-center>-->
-            <!--<span class="app-profiles">网络</span>-->
-          <!--</ion-row>-->
-          <!--<ion-row justify-content-center>-->
-            <!--<span class="app-profiles">{{network.type}} {{network.connected? "已连接" : "已断开"}}</span>-->
-          <!--</ion-row>-->
-
-          <ion-row justify-content-center>
-            <p></p>
-          </ion-row>
-          
-          
-          <ion-row justify-content-center>
-            <h3 class="app-profiles">团队信息</h3>
-          </ion-row>
-
-          <ion-row justify-content-center>
-            <span></span>
-          </ion-row>
-          <ion-row justify-content-center>
-            <span class="app-description">构思：胖子</span>
-          </ion-row>
-
-          <ion-row justify-content-center>
-            <span></span>
-          </ion-row>
-          <ion-row justify-content-center>
-            <span class="app-description">技术：楞子</span>
-          </ion-row>
-
-          <ion-row justify-content-center>
-            <span></span>
-          </ion-row>
-          <ion-row justify-content-center>
-            <span class="app-description">开发：孩子</span>
-          </ion-row>
-
-          <ion-row justify-content-center>
-            <span></span>
-          </ion-row>
-          <ion-row justify-content-center>
-            <span class="app-description">开发：没想法</span>
-          </ion-row>
-
-          <ion-row justify-content-center>
-            <span></span>
-          </ion-row>
-          <ion-row justify-content-center>
-            <span class="app-description">设计：仙女</span>
-          </ion-row>
-
-          <ion-row justify-content-center>
-            <span></span>
-          </ion-row>
-          <ion-row justify-content-center>
-            <span class="app-description">测试：胡子</span>
-          </ion-row>
-
-          <ion-row justify-content-center>
-            <span></span>
-          </ion-row>
-          <ion-row justify-content-center>
-            <span class="app-description">赞助：牛牛</span>
-          </ion-row>
-
-          <ion-row justify-content-center>
-            <p></p>
-          </ion-row>
-
-          <ion-row justify-content-center>
-            <span class="app-description">联系方式：18602150145</span>
-          </ion-row>
-          <ion-row justify-content-center>
-            <span class="app-description">邮箱：jy-zhang@zakj.info</span>
-          </ion-row>
-          <ion-row justify-content-center>
-            <span class="app-description">上海效吉软件有限公司</span>
+          <ion-row bottom-border>
+            <div col-5 class="lab">技术支持</div>
+            <div col-7 class="value">上海效吉软件有限公司</div>
           </ion-row>
         </ion-grid>
       </ion-row>
