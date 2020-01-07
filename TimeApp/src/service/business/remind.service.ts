@@ -314,7 +314,7 @@ export class ScheduleRemindService extends BaseService {
           });
         } else {
           try {
-            console.log("批量提交fwq schedulereminds======+"+JSON.stringify(schedule));
+            console.log("批量提交fwq schedulereminds======+"+JSON.stringify(remindparams));
             await this.syncRestful.putScheduledMultiReminds(
               UserConfig.account.id,
               remindparams
@@ -333,7 +333,7 @@ export class ScheduleRemindService extends BaseService {
 
       if (remindparams.length > 0) {
         try {
-          console.log("批量提交fwq schedulereminds======+"+JSON.stringify(schedule));
+          console.log("批量提交fwq schedulereminds======+"+JSON.stringify(remindparams));
           await this.syncRestful.putScheduledMultiReminds(
             UserConfig.account.id,
             remindparams
