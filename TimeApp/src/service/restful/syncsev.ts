@@ -561,7 +561,7 @@ export class TriggerMultiTasks {
   tasks: Array<TriggerTask> = new Array<TriggerTask>();
 
   public push(task: TriggerTask) {
-    if (task) tasks.push(task);
+    if (task) this.tasks.push(task);
   }
 }
 
