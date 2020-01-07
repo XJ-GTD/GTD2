@@ -53,12 +53,12 @@ export class AlService {
               private effectService: EffectService,
               private modalCtr: ModalController,
               private app: App,
-              private statusBar: StatusBar,
+              // private statusBar: StatusBar,
               private backgroundMode:BackgroundMode,
               private patchService : PatchService) {
 
-    this.statusBar.overlaysWebView(true);
-    this.statusBar.hide();
+    // this.statusBar.overlaysWebView(true);
+    // this.statusBar.hide();
   }
 
 
@@ -243,13 +243,13 @@ export class AlService {
 
 
         //显示状态栏
-        this.statusBar.show();
+        // this.statusBar.show();
         //监听statusbar颜色变化
-        this.settings.getStatusBarColor().subscribe(val => {
-          let color:string = this.settings.getStatusColor(val);
-          //去除状态栏颜色设置 TODO
-          // this.statusBar.backgroundColorByHexString(color);
-        });
+        // this.settings.getStatusBarColor().subscribe(val => {
+        //   let color:string = this.settings.getStatusColor(val);
+        //   //去除状态栏颜色设置 TODO
+        //   // this.statusBar.backgroundColorByHexString(color);
+        // });
 
         // this.app.viewDidLoad.subscribe((event) => {
         //   if (event && event.instance && DataConfig.isPage(event.instance)) {
@@ -261,11 +261,11 @@ export class AlService {
 
 
         //模态框退出时还原状态栏颜色
-        this.app.viewWillUnload.subscribe((event) => {
-          if (event && event.instance && DataConfig.isPage(event.instance)) {
-            this.settings.popStatusBarColor();
-          }
-        });
+        // this.app.viewWillUnload.subscribe((event) => {
+        //   if (event && event.instance && DataConfig.isPage(event.instance)) {
+        //     this.settings.popStatusBarColor();
+        //   }
+        // });
 
 
         //允许进入后台模式
