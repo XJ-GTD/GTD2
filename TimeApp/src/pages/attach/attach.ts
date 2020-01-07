@@ -113,9 +113,9 @@ export class AttachPage {
   bw: string = "";
   ios: boolean = false;
   //原图
-  browserurlBig: string = "http://pluto.guobaa.com/abl/store/local/getContent/";
+  browserurlBig: string = "https://pluto.guobaa.com/abl/store/local/getContent/";
   //缩略图
-  browserurl: string = "http://pluto.guobaa.com/abl/store/local/getSnapshot/";
+  browserurl: string = "https://pluto.guobaa.com/abl/store/local/getSnapshot/";
   //微软在线打开word
   officeOnlie: string = "https://view.officeapps.live.com/op/view.aspx?src=";
   members: Array<Member> = new Array<Member>();
@@ -150,7 +150,7 @@ export class AttachPage {
               private changeDetectorRef: ChangeDetectorRef,
               private util: UtilService) {
     if (this.device.platform == "iOS") {
-      this.ios = false;
+      this.ios = true;
     }
     if (this.navParams && this.navParams.data) {
       this.obt = this.navParams.data.obt;

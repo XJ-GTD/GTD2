@@ -126,6 +126,9 @@ export class AiData {
     target.scdList = this.scdList;
     target.speechAi = this.speechAi;
   }
+  public isEmpty() {
+    return !this.speechAi && !this.scdList && !this.scd;
+  }
 }
 
 export class ScdLsAiData {

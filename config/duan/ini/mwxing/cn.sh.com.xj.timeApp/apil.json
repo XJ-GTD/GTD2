@@ -35,6 +35,7 @@
 {"name":"CC", "value":"https://pluto.guobaa.com/cdc/calendar_caculate/starter", "desc":"日程计算"},
 {"name":"AIGS", "value":"https://pluto.guobaa.com/aup/user/multi/usersinfo", "desc":"批量帐户信息获取"},
 {"name":"EDTTS", "value":"https://pluto.guobaa.com/cdc/mwxing_register_tasks_start/json/trigger", "desc":"注册事件分发任务"},
+{"name":"EDMTTS", "value":"https://pluto.guobaa.com/cdc/mwxing_register_multi_tasks_start/json/trigger", "desc":"批量注册事件分发任务"},
 {"name":"DRT", "value":"https://pluto.guobaa.com/cdc/mwxing_daily_summary_start/json/trigger", "desc":"每日简报触发"},
 {"name":"HWT", "value":"https://pluto.guobaa.com/cdc/mwxing_hourly_weather_start/json/trigger", "desc":"每小时天气预报触发"},
 {"name":"WHK", "value":"https://pluto.guobaa.com/cdc/mwxing_webhook_notification_start/json/trigger", "desc":"WebHooks事件触发"},

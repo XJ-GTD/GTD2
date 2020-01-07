@@ -1,0 +1,20 @@
+{
+  "_id": ObjectID("5e14232512876b000706095c"),
+  "name": "冥王星注册事件触发处理流",
+  "trigger": "mwxing_register_multi_tasks_start",
+  "parameters": [
+    "mwxing",
+    "tasks"
+  ],
+  "follows": [
+    {
+      "name": "批量注册任务",
+      "trigger": "exc",
+      "parameters": [
+        "method;post",
+        "urlabs;http://sa-aag:8080/aag/register/multitasks",
+        "data;$.parent.parameters"
+      ]
+    }
+  ]
+}
