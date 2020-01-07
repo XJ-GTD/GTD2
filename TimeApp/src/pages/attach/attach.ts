@@ -307,7 +307,12 @@ export class AttachPage {
   }
 
   selectPicture() {
-    this.imagePicker.getPictures().then((results) => {
+    this.imagePicker.getPictures({
+      maximumImagesCount: 1,
+      width: 1024,
+      height: 1024,
+      quality: 95
+    }).then((results) => {
       if (results && results.length > 0) {
         let filePath = results[0];
 
