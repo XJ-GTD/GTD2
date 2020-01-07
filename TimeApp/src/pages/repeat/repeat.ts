@@ -1,4 +1,4 @@
-import { Component, ViewChild} from '@angular/core';
+import {ChangeDetectorRef, Component, ViewChild} from '@angular/core';
 import { IonicPage, NavController, NavParams, ModalController, ViewController, Scroll } from 'ionic-angular';
 import {Keyboard} from "@ionic-native/keyboard";
 import { DatePickerComponent } from "../../components/date-picker/date-picker";
@@ -251,7 +251,8 @@ export class RepeatPage {
               private keyboard: Keyboard,
               public modalCtrl: ModalController,
               public viewCtrl: ViewController,
-              public navParams: NavParams,private util : UtilService) {
+              public navParams: NavParams,private util : UtilService,
+              private changeDetectorRef: ChangeDetectorRef,) {
     if (this.navParams && this.navParams.data) {
       let value = this.navParams.data.value;
       this.startDate =  this.navParams.data.sd;
@@ -615,26 +616,36 @@ export class RepeatPage {
   onTypeChanged(value) {
     this.currentRepeat = this.resetValueWithType(this.currentRepeat, value);
     this.title = this.currentRepeat.text();
+    this.changeDetectorRef.markForCheck();
+    this.changeDetectorRef.detectChanges();
   }
 
   onFreqChanged() {
     this.currentRepeat = this.resetValueWithType(this.currentRepeat, this.cfType, "cyclenum");
     this.title = this.currentRepeat.text();
+    this.changeDetectorRef.markForCheck();
+    this.changeDetectorRef.detectChanges();
   }
 
   onFreqOptionChanged() {
     this.currentRepeat = this.resetValueWithType(this.currentRepeat, this.cfType, "openway");
     this.title = this.currentRepeat.text();
+    this.changeDetectorRef.markForCheck();
+    this.changeDetectorRef.detectChanges();
   }
 
   onEndTypeChanged(value) {
     this.currentRepeat = this.resetValueWithType(this.currentRepeat, this.cfType, "over");
     this.title = this.currentRepeat.text();
+    this.changeDetectorRef.markForCheck();
+    this.changeDetectorRef.detectChanges();
   }
 
   onEndAfterTimesChanged(value) {
     this.currentRepeat = this.resetValueWithType(this.currentRepeat, this.cfType, "over");
     this.title = this.currentRepeat.text();
+    this.changeDetectorRef.markForCheck();
+    this.changeDetectorRef.detectChanges();
   }
 
   openUntilEndDate(type){
