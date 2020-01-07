@@ -126,6 +126,72 @@ export class SyncRestful {
     });
   }
 
+  putScheduledMultiReminds(userId: string, reminds: Array<any> = new Array<any>()): Promise<string> {
+    return new Promise((resolve, reject) => {
+      let multitasks = new TriggerMultiTasks();
+
+      for (let remind of reminds) {
+        let id: string = remind.id;
+        let wd: string = remind.wd;
+        let wt: string = remind.wt;
+        let data: any = remind.data;
+        let active: boolean = remind.active;
+
+        // 事件提醒任务注册
+        let task = new TriggerTask();
+
+        task.saName = "任务调度触发器";
+        task.saPrefix = "cdc";
+        task.taskId = `pluto_${userId}_remind_${id}`;
+        task.taskType = "QUARTZ";
+        task.taskName = "计划事件提醒";
+
+        let choosetime = moment(wd + " " + wt, "YYYY/MM/DD HH:mm");
+
+        let taskRunAt = {
+          eventId: (wt.endsWith("0") || wt.endsWith("5"))? "QUARTZ_CRON_5M" : "QUARTZ_CRON_1M",
+          filters: [
+            {name: "yyyy", value: choosetime.format("YYYY")},
+            {name: "MM", value: choosetime.format("MM")},
+            {name: "dd", value: choosetime.format("DD")},
+            {name: "HH", value: choosetime.format("HH")},
+            {name: "mm", value: choosetime.format("mm")}
+          ]
+        };
+
+        if (!active) {
+          taskRunAt.filters.push({
+            name: "active", value: "false"
+          });
+        }
+
+        task.taskRunAt = JSON.stringify(taskRunAt);
+        let triggerurl: UrlEntity = this.config.getRestFulUrl("SRT");
+
+        let taskRunWith = {
+          url: triggerurl.url, // "https://pluto.guobaa.com/cdc/mwxing_scheduled_remind_start/json/trigger"
+          payload: {
+            userId: userId,
+            remind: data
+          }
+        };
+
+        task.taskRunWith = JSON.stringify(taskRunWith);
+
+        multitasks.push(task);
+      }
+
+      let url: UrlEntity = this.config.getRestFulUrl("EDMTTS");
+      this.request.post(url, multitasks).then(data => {
+        //处理返回结果
+        resolve(data.data);
+      }).catch(error => {
+        //处理返回错误
+        reject(error);
+      })
+    });
+  }
+
   //智能提醒 每日简报
   putDailySummary(userId: string, timestamp: number, active: boolean): Promise<string> {
     return new Promise((resolve, reject) => {
@@ -489,6 +555,14 @@ export class TriggerTask {
   taskName:string = ""; //任务名称
   taskRunAt:string = "{}"; //任务运行条件 json string
   taskRunWith:string = "{}"; //任务运行变量 json string
+}
+
+export class TriggerMultiTasks {
+  tasks: Array<TriggerTask> = new Array<TriggerTask>();
+
+  public push(task: TriggerTask) {
+    if (task) tasks.push(task);
+  }
 }
 
 export class SybcData {

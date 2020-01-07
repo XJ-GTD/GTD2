@@ -180,10 +180,10 @@ export class ScheduleRemindService extends BaseService {
         ppsql = ppsql + ` union all select 'PlanItemData' type,jti pki from gtd_jta where jti in (${jtistring}) `;
       }
 
-      ppsql = ` select evpl.*,wa.* from 
-              (select * from gtd_wa where tb = 'unsynch' and obi in (${obistring}) 
+      ppsql = ` select evpl.*,wa.* from
+              (select * from gtd_wa where tb = 'unsynch' and obi in (${obistring})
               and (wd|| ' ' ||wt < '${moment().format("YYYY/MM/DD HH:mm")}' or del ='del' )
-            ) wa inner join (${ppsql}) evpl 
+            ) wa inner join (${ppsql}) evpl
             on wa.obi = evpl.pki  ; `;
       let ppReminds: Array<RemindData> = await this.sqlExce.getExtLstByParam<RemindData>(ppsql, []);
       for (let remind of ppReminds) {
@@ -208,7 +208,7 @@ export class ScheduleRemindService extends BaseService {
         });
       }
       // 更新同步状态
-      let updateppsql: string = `update gtd_wa set tb = 'synch' where obi in ( ${obistring} ) 
+      let updateppsql: string = `update gtd_wa set tb = 'synch' where obi in ( ${obistring} )
        and tb = 'unsynch'
           and (wd|| ' ' ||wt < '${moment().format("YYYY/MM/DD HH:mm")}' or del ='del' ) ;`;
 
@@ -224,7 +224,7 @@ export class ScheduleRemindService extends BaseService {
       // 把未来48小时以前所有未同步的提醒都同步到服务器上
       // 包括当前时间以前已删除的提醒
       let sql: string = `select case ev.type when '0' then 'AgendaData' when '1' then 'TaskData' else 'MiniTaskData' end type,
-                    ev.evi pki,ev.rtevi rtpki,ev.tx tx, wa.* 
+                    ev.evi pki,ev.rtevi rtpki,ev.tx tx, wa.*
                     from (select * from gtd_wa
                     where (tb <> ?1
                         and obt = ?6
@@ -238,7 +238,7 @@ export class ScheduleRemindService extends BaseService {
                     left join gtd_ev ev
                     on ev.evi = wa.obi
                   union all
-                    select 'PlanItemData' type, 
+                    select 'PlanItemData' type,
                     jta.jti pki ,'' rtpki,jta.tx tx, wa.*
                     from (select * from gtd_wa
                     where (tb <> ?1
@@ -299,21 +299,72 @@ export class ScheduleRemindService extends BaseService {
     let syncRemindIds: Array<string> = new Array<string>();
 
     // 提交服务器
-    for (let schedule of schedulereminds) {
-      try {
-        console.log("批量提交fwq schedulereminds======+"+JSON.stringify(schedule));
-        await this.syncRestful.putScheduledRemind(
-          UserConfig.account.id,
-          schedule.remindid,
-          schedule.wd,
-          schedule.wt,
-          schedule.data,
-          schedule.active
-        );
+    if (schedulereminds.length > 1) {
+      let remindparams: Array<any> = new Array<any>();
 
-        syncRemindIds.push(schedule.remindid);
-      } catch (err) {
-        console.log("Push schedule error.")
+      for (let schedule of schedulereminds) {
+
+        if (remindparams.length <= 10) {
+          remindparams.push({
+            id: schedule.remindid,
+            wd: schedule.wd,
+            wt: schedule.wt,
+            data: schedule.data,
+            active: schedule.active
+          });
+        } else {
+          try {
+            console.log("批量提交fwq schedulereminds======+"+JSON.stringify(schedule));
+            await this.syncRestful.putScheduledMultiReminds(
+              UserConfig.account.id,
+              remindparams
+            );
+
+            remindparams.forEach((value) => {
+              syncRemindIds.push(value.id);
+            });
+          } catch (err) {
+            console.log("Push schedule error.")
+          }
+
+          remindparams = new Array<any>();
+        }
+      }
+
+      if (remindparams.length > 0) {
+        try {
+          console.log("批量提交fwq schedulereminds======+"+JSON.stringify(schedule));
+          await this.syncRestful.putScheduledMultiReminds(
+            UserConfig.account.id,
+            remindparams
+          );
+
+          remindparams.forEach((value) => {
+            syncRemindIds.push(value.id);
+          });
+        } catch (err) {
+          console.log("Push schedule error.")
+        }
+
+        remindparams = new Array<any>();
+      }
+    } else {
+      for (let schedule of schedulereminds) {
+        try {
+          console.log("批量提交fwq schedulereminds======+"+JSON.stringify(schedule));
+          await this.syncRestful.putScheduledRemind(
+            UserConfig.account.id,
+            schedule.remindid,
+            schedule.wd,
+            schedule.wt,
+            schedule.data,
+            schedule.active
+          );
+
+          syncRemindIds.push(schedule.remindid);
+        } catch (err) {
+          console.log("Push schedule error.")
+        }
       }
     }
 
