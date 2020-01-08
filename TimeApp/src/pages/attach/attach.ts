@@ -360,27 +360,7 @@ export class AttachPage {
         let filePath = results[0];
 
         if (filePath != '') {
-          let fileName: string = filePath.substr(filePath.lastIndexOf("/") + 1, filePath.length);
-          let ext: string = fileName.substr(fileName.lastIndexOf(".") + 1);
-          let imgFileDir: string = filePath.substr(0, filePath.lastIndexOf("/") + 1);
-          let newFileName = this.util.getUuid() + "." + ext;
-          this.fjData.obt = this.obt;
-          this.fjData.obi = this.obi;
-          //this.fjData.fjn = newFileName;
-          this.fjData.ext = ext;
-          this.fjData.ui = this.currentuser;
-          let cacheFilePathJson: CacheFilePathJson = new CacheFilePathJson();
-          cacheFilePathJson.local = "/" + newFileName;
-          this.fjData.fj = JSON.stringify(cacheFilePathJson);
-          this.fjData.fpjson = cacheFilePathJson;
-          this.fjData.fjurl = this.fjData.fpjson.getLocalFilePath(this.file.dataDirectory);
-          this.fjData.members = this.members;
-          // if(!this.bw) {
-          //   this.bw = fileName;
-          // }
-          this.file.copyFile(imgFileDir, fileName, this.file.dataDirectory + cacheFilePathJson.getCacheDir(), newFileName).then(_ => {
-            this.saveFile();
-          });
+          this.saveFileAttachment(filePath);
         }
       }
     });
@@ -404,54 +384,14 @@ export class AttachPage {
           let filePath = file.uri;
           //alert("转换后的路径："+(filePath));
           if (filePath != '') {
-            let fileName: string = filePath.substr(filePath.lastIndexOf("/") + 1, filePath.length);
-            let ext: string = fileName.substr(fileName.lastIndexOf(".") + 1);
-            let imgFileDir: string = filePath.substr(0, filePath.lastIndexOf("/") + 1);
-            let newFileName = this.util.getUuid() + "." + ext;
-            this.fjData.obt = this.obt;
-            this.fjData.obi = this.obi;
-            //this.fjData.fjn = newFileName;
-            this.fjData.ext = ext;
-            this.fjData.ui = this.currentuser;
-            let cacheFilePathJson: CacheFilePathJson = new CacheFilePathJson();
-            cacheFilePathJson.local = "/" + newFileName;
-            this.fjData.fj = JSON.stringify(cacheFilePathJson);
-            this.fjData.fpjson = cacheFilePathJson;
-            this.fjData.fjurl = this.fjData.fpjson.getLocalFilePath(this.file.dataDirectory);
-            this.fjData.members = this.members;
-            // if(!this.bw) {
-            //   this.bw = fileName;
-            // }
-            this.file.copyFile(imgFileDir, fileName, this.file.dataDirectory + cacheFilePathJson.getCacheDir(), newFileName).then(_ => {
-              this.saveFile();
-            });
+            this.saveFileAttachment(filePath);
           }
         } else {
           this.filePath.resolveNativePath(file.uri)
             .then((filePath) => {
               //alert("转换后的路径："+(filePath));
               if (filePath != '') {
-                let fileName: string = filePath.substr(filePath.lastIndexOf("/") + 1, filePath.length);
-                let ext: string = fileName.substr(fileName.lastIndexOf(".") + 1);
-                let imgFileDir: string = filePath.substr(0, filePath.lastIndexOf("/") + 1);
-                let newFileName = this.util.getUuid() + "." + ext;
-                this.fjData.obt = this.obt;
-                this.fjData.obi = this.obi;
-                //this.fjData.fjn = newFileName;
-                this.fjData.ext = ext;
-                this.fjData.ui = this.currentuser;
-                let cacheFilePathJson: CacheFilePathJson = new CacheFilePathJson();
-                cacheFilePathJson.local = "/" + newFileName;
-                this.fjData.fj = JSON.stringify(cacheFilePathJson);
-                this.fjData.fpjson = cacheFilePathJson;
-                this.fjData.fjurl = this.fjData.fpjson.getLocalFilePath(this.file.dataDirectory);
-                this.fjData.members = this.members;
-                // if(!this.bw) {
-                //   this.bw = fileName;
-                // }
-                this.file.copyFile(imgFileDir, fileName, this.file.dataDirectory + cacheFilePathJson.getCacheDir(), newFileName).then(_ => {
-                  this.saveFile();
-                });
+                this.saveFileAttachment(filePath);
               }
             })
             .catch(err => {
