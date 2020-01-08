@@ -37,6 +37,9 @@ fi
 if [ $TRAVIS_OS_NAME = 'linux' ]; then
   if [ $TRAVIS_JOB_NAME = 'unittest' ]; then
     if [ $TRAVIS_BRANCH = 'cassiscornuta' ]; then
+      echo "Upload mwxing initial parameters"
+      sshpass -e scp -r stricthostkeychecking=no $TRAVIS_BUILD_DIR/config/duan/ini/mwxing/cn.sh.com.xj.timeApp/* root@www.guobaa.com:/opt/duan/ini/mwxing/cn.sh.com.xj.timeApp/
+
       echo "Uploading browser files"
       ls -la $TRAVIS_BUILD_DIR/TimeApp/platforms/browser/www
       sshpass -e scp -r stricthostkeychecking=no $TRAVIS_BUILD_DIR/TimeApp/platforms/browser/www/* root@www.guobaa.com:/var/www/html/mwx/

@@ -17,6 +17,7 @@ import {NativeAudio} from "@ionic-native/native-audio";
 import BScroll from "better-scroll";
 import {EmitService} from "../../service/util-service/emit.service";
 import {Device} from "@ionic-native/device";
+import { ImagePicker } from '@ionic-native/image-picker';
 
 @IonicPage()
 @Component({
@@ -139,6 +140,7 @@ export class AttachPage {
               private device: Device,
               private chooser: Chooser,
               private transfer: FileTransfer,
+              private imagePicker: ImagePicker,
               private filePath: FilePath,
               private eventService: EventService,
               private emitService: EmitService,
@@ -226,6 +228,13 @@ export class AttachPage {
             this.shot();
           }
         }, {
+          text: '照片',
+          role: 'albums',
+          icon: "ios-albums",
+          handler: () => {
+            this.selectPicture();
+          }
+        }, {
           text: '文件',
           role: 'albums',
           icon: "ios-albums",
@@ -253,7 +262,7 @@ export class AttachPage {
   shot() {
     const options: CameraOptions = {
       quality: 95,
-      destinationType: this.camera.DestinationType.FILE_URI,
+      destinationType: this.ios? this.camera.DestinationType.NATIVE_URI : this.camera.DestinationType.FILE_URI,
       encodingType: this.camera.EncodingType.JPEG,
       mediaType: this.camera.MediaType.PICTURE,
       sourceType: this.camera.PictureSourceType.CAMERA, //打开方式 PHOTOLIBRARY  相册 CAMERA  拍照
@@ -294,6 +303,43 @@ export class AttachPage {
       //this.upload();
     }, (err) => {
       console.info("拍照上传附件异常，异常信息：" + err);
+    });
+  }
+
+  selectPicture() {
+    this.imagePicker.getPictures({
+      maximumImagesCount: 1,
+      width: 2048,
+      height: 2048,
+      quality: 100
+    }).then((results) => {
+      if (results && results.length > 0) {
+        let filePath = results[0];
+
+        if (filePath != '') {
+          let fileName: string = filePath.substr(filePath.lastIndexOf("/") + 1, filePath.length);
+          let ext: string = fileName.substr(fileName.lastIndexOf(".") + 1);
+          let imgFileDir: string = filePath.substr(0, filePath.lastIndexOf("/") + 1);
+          let newFileName = this.util.getUuid() + "." + ext;
+          this.fjData.obt = this.obt;
+          this.fjData.obi = this.obi;
+          //this.fjData.fjn = newFileName;
+          this.fjData.ext = ext;
+          this.fjData.ui = this.currentuser;
+          let cacheFilePathJson: CacheFilePathJson = new CacheFilePathJson();
+          cacheFilePathJson.local = "/" + newFileName;
+          this.fjData.fj = JSON.stringify(cacheFilePathJson);
+          this.fjData.fpjson = cacheFilePathJson;
+          this.fjData.fjurl = this.fjData.fpjson.getLocalFilePath(this.file.dataDirectory);
+          this.fjData.members = this.members;
+          // if(!this.bw) {
+          //   this.bw = fileName;
+          // }
+          this.file.copyFile(imgFileDir, fileName, this.file.dataDirectory + cacheFilePathJson.getCacheDir(), newFileName).then(_ => {
+            this.saveFile();
+          });
+        }
+      }
     });
   }
 
