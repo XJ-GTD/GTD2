@@ -278,41 +278,45 @@ export class AttachPage {
     }
     this.camera.getPicture(options).then((imageData) => {
       console.info("开始拍照上传照片");
-      alert(imageData);
       alert(JSON.stringify(imageData));
-      this.file.resolveNativePath(imageData)
-      .then((imagepath) => {
+      this.file.resolveLocalFilesystemUrl(imageData)
+      .then((entry) => {
+        let imagepath = entry.toURL();
         alert(imagepath);
-        alert(JSON.stringify(imagepath));
-        if (imagepath != '') {
 
-          let fileName: string = imagepath.substr(imagepath.lastIndexOf("/") + 1, imagepath.length);
-          let ext: string = fileName.substr(fileName.lastIndexOf(".") + 1);
-          //将文件copy至缓存文件
-          let imgFileDir: string = imagepath.substr(0, imagepath.lastIndexOf("/") + 1);
-          let newFileName = this.util.getUuid() + "." + ext;
-          this.fjData.obt = this.obt;
-          this.fjData.obi = this.obi;
-          //this.fjData.fjn = newFileName;
-          this.fjData.ext = ext;
-          //构造地址文件
-          let cacheFilePathJson: CacheFilePathJson = new CacheFilePathJson();
-          cacheFilePathJson.local = "/" + newFileName;
-          this.fjData.fj = JSON.stringify(cacheFilePathJson);
-          this.fjData.fpjson = cacheFilePathJson;
-          this.fjData.fjurl = this.fjData.fpjson.getLocalFilePath(this.file.dataDirectory);
-          this.fjData.ui = this.currentuser;
-          this.fjData.members = this.members;
-          // if(!this.bw) {
-          //   this.bw = fileName;
-          // }
-          this.file.copyFile(imgFileDir, fileName, this.file.dataDirectory + cacheFilePathJson.getCacheDir(), newFileName).then(_ => {
-            this.saveFile();
-          });
+        if (imagepath != '') {
+          this.saveFileAttachment(imagepath);
         }
       });
     }, (err) => {
       console.info("拍照上传附件异常，异常信息：" + err);
+    });
+  }
+
+  saveFileAttachment(filepath) {
+    let fileName: string = filepath.substr(filepath.lastIndexOf("/") + 1, filepath.length);
+    let ext: string = fileName.substr(fileName.lastIndexOf(".") + 1);
+
+    //将文件copy至缓存文件
+    let imgFileDir: string = filepath.substr(0, filepath.lastIndexOf("/") + 1);
+    let newFileName = this.util.getUuid() + "." + ext;
+    this.fjData.obt = this.obt;
+    this.fjData.obi = this.obi;
+    this.fjData.ext = ext;
+
+    //构造地址文件
+    let cacheFilePathJson: CacheFilePathJson = new CacheFilePathJson();
+    cacheFilePathJson.local = "/" + newFileName;
+    this.fjData.fj = JSON.stringify(cacheFilePathJson);
+    this.fjData.fpjson = cacheFilePathJson;
+    this.fjData.fjurl = this.fjData.fpjson.getLocalFilePath(this.file.dataDirectory);
+    this.fjData.ui = this.currentuser;
+    this.fjData.members = this.members;
+    // if(!this.bw) {
+    //   this.bw = fileName;
+    // }
+    this.file.copyFile(imgFileDir, fileName, this.file.dataDirectory + cacheFilePathJson.getCacheDir(), newFileName).then(_ => {
+      this.saveFile();
     });
   }
 
@@ -331,34 +335,13 @@ export class AttachPage {
       console.info("开始拍照上传照片");
       alert(imageData);
       alert(JSON.stringify(imageData));
-      this.file.resolveNativePath(imageData)
-      .then((imagepath) => {
+      this.file.resolveLocalFilesystemUrl(imageData)
+      .then((entry) => {
+        let imagepath = entry.toURL();
         alert(imagepath);
-        alert(JSON.stringify(imagepath));
+
         if (imagepath != '') {
-
-          let fileName: string = imagepath.substr(imagepath.lastIndexOf("/") + 1, imagepath.length);
-          let ext: string = fileName.substr(fileName.lastIndexOf(".") + 1);
-
-          //将文件copy至缓存文件
-          let imgFileDir: string = imagepath.substr(0, imagepath.lastIndexOf("/") + 1);
-          let newFileName = this.util.getUuid() + "." + ext;
-          this.fjData.obt = this.obt;
-          this.fjData.obi = this.obi;
-          this.fjData.ext = ext;
-
-          //构造地址文件
-          let cacheFilePathJson: CacheFilePathJson = new CacheFilePathJson();
-          cacheFilePathJson.local = "/" + newFileName;
-          this.fjData.fj = JSON.stringify(cacheFilePathJson);
-          this.fjData.fpjson = cacheFilePathJson;
-          this.fjData.fjurl = this.fjData.fpjson.getLocalFilePath(this.file.dataDirectory);
-          this.fjData.ui = this.currentuser;
-          this.fjData.members = this.members;
-
-          this.file.copyFile(imgFileDir, fileName, this.file.dataDirectory + cacheFilePathJson.getCacheDir(), newFileName).then(_ => {
-            this.saveFile();
-          });
+          this.saveFileAttachment(imagepath);
         }
       });
     }, (err) => {
