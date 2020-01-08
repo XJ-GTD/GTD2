@@ -32,9 +32,14 @@ public class MessageListener implements SpeechSynthesizerListener, MainHandlerCo
      * @param progress    如合成“百度语音问题”这6个字， progress肯定是从0开始，到6结束。 但progress无法和合成到第几个字对应。
      */
     @Override
-    public void onSynthesizeDataArrived(String utteranceId, byte[] bytes, int progress) {
-        //  Log.i(TAG, "合成进度回调, progress：" + progress + ";序列号:" + utteranceId );
+    public void onSynthesizeDataArrived(String s, byte[] bytes, int i, int i1) {
+
     }
+
+//    @Override
+//    public void onSynthesizeDataArrived(String utteranceId, byte[] bytes, int progress) {
+//        //  Log.i(TAG, "合成进度回调, progress：" + progress + ";序列号:" + utteranceId );
+//    }
 
     /**
      * 合成正常结束，每句合成正常结束都会回调，如果过程中出错，则回调onError，不再回调此接口
@@ -92,7 +97,7 @@ public class MessageListener implements SpeechSynthesizerListener, MainHandlerCo
     private void sendMessage(String message) {
         sendMessage(message, false);
     }
-    
+
     protected void sendMessage(String message, boolean isError) {
         if (isError) {
             Log.e(TAG, message);

@@ -122,18 +122,6 @@
         <source-file src="src/android/libs/jniLibs/armeabi-v7a/libvad.dnn.so" target-dir="libs/armeabi-v7a"/>
 
 
-
-        <source-file src="src/android/libs/jniLibs/armeabi-v7a/libBaiduSpeechSDK.so" target-dir="libs/armeabi-v7a"/>
-        <source-file src="src/android/libs/jniLibs/armeabi-v7a/libbd_easr_s1_merge_normal_20151216.dat.so" target-dir="libs/armeabi-v7a"/>
-        <source-file src="src/android/libs/jniLibs/armeabi-v7a/libbd_etts.so" target-dir="libs/armeabi-v7a"/>
-        <source-file src="src/android/libs/jniLibs/armeabi-v7a/libbdEASRAndroid.so" target-dir="libs/armeabi-v7a"/>
-        <source-file src="src/android/libs/jniLibs/armeabi-v7a/libBDSpeechDecoder_V1.so" target-dir="libs/armeabi-v7a"/>
-        <source-file src="src/android/libs/jniLibs/armeabi-v7a/libbdSpilWakeup.so" target-dir="libs/armeabi-v7a"/>
-        <source-file src="src/android/libs/jniLibs/armeabi-v7a/libgnustl_shared.so" target-dir="libs/armeabi-v7a"/>
-        <source-file src="src/android/libs/jniLibs/armeabi-v7a/libvad.dnn.so" target-dir="libs/armeabi-v7a"/>
-
-
-
         <source-file src="src/android/libs/jniLibs/x86/libBaiduSpeechSDK.so" target-dir="libs/x86"/>
         <source-file src="src/android/libs/jniLibs/x86/libbd_easr_s1_merge_normal_20151216.dat.so" target-dir="libs/x86"/>
         <source-file src="src/android/libs/jniLibs/x86/libbd_etts.so" target-dir="libs/x86"/>
