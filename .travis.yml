@@ -126,9 +126,9 @@ before_script:
   - ionic cordova plugin add https://github.com/apache/cordova-plugin-network-information#master --force
   - ionic cordova plugin add https://github.com/xiaoji-duan/jpush-phonegap-plugin.git --variable APP_KEY=$JPUSH_API_KEY
   - ionic cordova plugin add https://github.com/xiaoji-duan/cordova-plugin-rabbitmq.git
-  - ionic cordova plugin add cordova-plugin-geolocation --variable GEOLOCATION_USAGE_DESCRIPTION="使用定位以获得更准确的天气预报"
+  - ionic cordova plugin add cordova-plugin-geolocation --variable GEOLOCATION_USAGE_DESCRIPTION="定位以获得更准确的天气预报"
   - ionic cordova plugin add cordova-plugin-wechat --variable wechatappid=$WEIXIN_APPID
-  - ionic cordova plugin add cordova-plugin-telerik-imagepicker --variable PHOTO_LIBRARY_USAGE_DESCRIPTION="使用相机拍照上传活动补充"
+  - ionic cordova plugin add cordova-plugin-telerik-imagepicker --variable PHOTO_LIBRARY_USAGE_DESCRIPTION="拍照上传活动补充"
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then cp $HOME/build/leonxi/largefiles/cordova/plugins/baidutts/ios/libBaiduTTSSDK.a ./plugins/cordova-plugin-BaiduSpeechAndTTS/src/ios/BDSClientLib/libBaiduTTSSDK.a ; fi
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then cp $HOME/build/leonxi/largefiles/cordova/plugins/baidutts/ios/libBaiduASRSDK.a ./plugins/cordova-plugin-BaiduSpeechAndTTS/src/ios/BDSClientLib/libBaiduASRSDK.a ; fi
   - cp -rf ../TimeAppPatch/plugins/* ./plugins
