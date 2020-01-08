@@ -11,7 +11,7 @@
 {"name":"FOTRACI", "value":"", "desc":"项目跟进 Travis-CI 关闭"},
 {"name":"THEME", "value":"white-theme", "desc":"主题"},
 {"name":"AUTOTODO", "value":"true", "desc":"自动加入重要事项"},
-{"name":"CLV", "value":"0", "desc":"关闭消息"},
+{"name":"CLV", "value":"1", "desc":"消息提醒"},
 {"name":"SIV", "value":"0", "desc":"简单播报"},
 {"name":"CBV", "value":"0", "desc":"合并播报"},
 {"name":"ALIS", "value":"1", "desc":"自动开启听筒"},
