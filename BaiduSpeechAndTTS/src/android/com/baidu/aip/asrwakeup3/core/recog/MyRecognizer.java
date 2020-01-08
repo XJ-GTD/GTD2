@@ -109,7 +109,7 @@ public class MyRecognizer {
 
         params.put(SpeechConstant.ACCEPT_AUDIO_VOLUME, false);
         params.put(SpeechConstant.NLU, "disable");
-        params.put(SpeechConstant.PID, 1537);
+        params.put(SpeechConstant.PID, 15374);
         params.put(SpeechConstant.DECODER, 0);
         params.put(SpeechConstant.ASR_OFFLINE_ENGINE_GRAMMER_FILE_PATH, "assets://baidu_speech_grammar.bsg");
         params.put(SpeechConstant.OUT_FILE, samplePath + "/iat.pcm");

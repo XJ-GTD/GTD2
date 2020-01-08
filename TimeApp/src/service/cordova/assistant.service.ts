@@ -48,7 +48,9 @@ export class AssistantService {
     if  (this.wakeuping) return ;
     this.wakeuping = true;
     cordova.plugins.XjBaiduWakeUp.wakeUpStart(async (result) => {
-      this.listenAudio();
+      this.speakText(UserConfig.user.realname + ",我在，请说：").then(()=>{
+        this.listenAudio();
+      })
     }, error => {
       // console.log("问题：" + error)
     });
@@ -189,16 +191,13 @@ export class AssistantService {
         return;
       }
 
-      setTimeout(() => {
-        cordova.plugins.XjBaiduTts.startSpeak(result => {
-          this.stopSpeak(false);
-          resolve();
-        }, error => {
-          this.stopSpeak(false);
-          resolve(error);
-        }, speechText);
-
-      }, 100);
+      cordova.plugins.XjBaiduTts.startSpeak(result => {
+        this.stopSpeak(false);
+        resolve();
+      }, error => {
+        this.stopSpeak(false);
+        resolve(error);
+      }, speechText);
     });
   }
 
@@ -295,12 +294,14 @@ export class AssistantService {
       this.emitService.emitListener(false);
       immediately.immediatetext = "";
       this.emitService.emitImmediately(immediately);
+      this.startWakeUp();
       return result;
     }, async error => {
       let text = await this.getSpeakText(DataConfig.FF);
       this.speakText(text);
       this.listening = false;
       this.emitService.emitListener(false);
+      this.startWakeUp();
       return text;
     });
   }

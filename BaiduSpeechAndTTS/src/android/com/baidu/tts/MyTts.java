@@ -80,7 +80,7 @@ public class MyTts {
 
 
         // 1. 获取实例
-       // mSpeechSynthesizer =  new NonBlockSyntherizer(context, initConfig, null);
+        // mSpeechSynthesizer =  new NonBlockSyntherizer(context, initConfig, null);
         mSpeechSynthesizer =  new MySyntherizer(context, initConfig, null);
 
 
@@ -98,15 +98,15 @@ public class MyTts {
         new Thread(new Runnable(){
             @Override
             public void run() {
-        if (mSpeechSynthesizer == null) {
-            print("[ERROR], 初始化失败");
-            return;
-        }
-        int result = mSpeechSynthesizer.speak(Text);
+                if (mSpeechSynthesizer == null) {
+                    print("[ERROR], 初始化失败");
+                    return;
+                }
+                int result = mSpeechSynthesizer.speak(Text);
 
-        print("合成并播放");
-        checkResult(result, "speak");
-    }
+                print("合成并播放");
+                checkResult(result, "speak");
+            }
         }).start();
 
     }
@@ -146,7 +146,7 @@ public class MyTts {
         Map<String, String> params = new HashMap<String, String>();
         // 以下参数均为选填
         // 设置在线发声音人： 0 普通女声（默认） 1 普通男声 2 特别男声 3 情感男声<度逍遥> 4 情感儿童声<度丫丫>
-        params.put(SpeechSynthesizer.PARAM_SPEAKER, "0");
+        params.put(SpeechSynthesizer.PARAM_SPEAKER, "111");
         // 设置合成的音量，0-9 ，默认 5
         params.put(SpeechSynthesizer.PARAM_VOLUME, "4");
         // 设置合成的语速，0-9 ，默认 5
@@ -162,7 +162,7 @@ public class MyTts {
         // MIX_MODE_HIGH_SPEED_SYNTHESIZE, 2G 3G 4G wifi状态下使用在线，其它状态离线。在线状态下，请求超时1.2s自动转离线
 
         // 离线资源文件， 从assets目录中复制到临时目录，需要在initTTs方法前完成
-//        OfflineResource offlineResource = createOfflineResource(offlineVoice);
+//       OfflineResource offlineResource = createOfflineResource(offlineVoice);
         // 声学模型文件路径 (离线引擎使用), 请确认下面两个文件存在
 //        params.put(SpeechSynthesizer.PARAM_TTS_TEXT_MODEL_FILE, offlineResource.getTextFilename());
 //        params.put(SpeechSynthesizer.PARAM_TTS_SPEECH_MODEL_FILE,
