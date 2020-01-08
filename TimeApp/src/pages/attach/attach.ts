@@ -235,6 +235,13 @@ export class AttachPage {
             this.selectPicture();
           }
         }, {
+          text: '相册',
+          role: 'albums',
+          icon: "ios-albums",
+          handler: () => {
+            this.selectPicture2();
+          }
+        }, {
           text: '文件',
           role: 'albums',
           icon: "ios-albums",
@@ -265,11 +272,65 @@ export class AttachPage {
       destinationType: this.ios? this.camera.DestinationType.NATIVE_URI : this.camera.DestinationType.FILE_URI,
       encodingType: this.camera.EncodingType.JPEG,
       mediaType: this.camera.MediaType.PICTURE,
+      allowEdit: true,
       sourceType: this.camera.PictureSourceType.CAMERA, //打开方式 PHOTOLIBRARY  相册 CAMERA  拍照
       saveToPhotoAlbum: true //是否保存相册
     }
     this.camera.getPicture(options).then((imageData) => {
       console.info("开始拍照上传照片");
+      alert(imageData);
+      alert(JSON.stringify(imageData));
+      if (imageData != '') {
+
+        let fileName: string = imageData.substr(imageData.lastIndexOf("/") + 1, imageData.length);
+        let ext: string = fileName.substr(fileName.lastIndexOf(".") + 1);
+        //将文件copy至缓存文件
+        let imgFileDir: string = imageData.substr(0, imageData.lastIndexOf("/") + 1);
+        let newFileName = this.util.getUuid() + "." + ext;
+        this.fjData.obt = this.obt;
+        this.fjData.obi = this.obi;
+        //this.fjData.fjn = newFileName;
+        this.fjData.ext = ext;
+        //构造地址文件
+        let cacheFilePathJson: CacheFilePathJson = new CacheFilePathJson();
+        cacheFilePathJson.local = "/" + newFileName;
+        this.fjData.fj = JSON.stringify(cacheFilePathJson);
+        this.fjData.fpjson = cacheFilePathJson;
+        this.fjData.fjurl = this.fjData.fpjson.getLocalFilePath(this.file.dataDirectory);
+        this.fjData.ui = this.currentuser;
+        this.fjData.members = this.members;
+        // if(!this.bw) {
+        //   this.bw = fileName;
+        // }
+        this.file.copyFile(imgFileDir, fileName, this.file.dataDirectory + cacheFilePathJson.getCacheDir(), newFileName).then(_ => {
+          this.saveFile();
+        });
+      }
+      // let base64Image = 'data:image/jpeg;base64,' + imageData;
+      // this.imgUrl = base64Image;
+      // alert(this.imgUrl);
+      //TODO  调研图片上传的Service,并将附件的返回值返回给上一页
+      //this.upload();
+    }, (err) => {
+      console.info("拍照上传附件异常，异常信息：" + err);
+    });
+  }
+
+  selectPicture2() {
+    const options: CameraOptions = {
+      quality: 95,
+      destinationType: this.ios? this.camera.DestinationType.NATIVE_URI : this.camera.DestinationType.FILE_URI,
+      encodingType: this.camera.EncodingType.JPEG,
+      mediaType: this.camera.MediaType.PICTURE,
+      allowEdit: true,
+      correctOrientation: true,
+      sourceType: this.camera.PictureSourceType.SAVEDPHOTOALBUM, //打开方式 PHOTOLIBRARY  相册 CAMERA  拍照
+      saveToPhotoAlbum: true //是否保存相册
+    }
+    this.camera.getPicture(options).then((imageData) => {
+      console.info("开始拍照上传照片");
+      alert(imageData);
+      alert(JSON.stringify(imageData));
       if (imageData != '') {
 
         let fileName: string = imageData.substr(imageData.lastIndexOf("/") + 1, imageData.length);
