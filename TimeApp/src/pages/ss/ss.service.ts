@@ -8,6 +8,7 @@ import {PageY} from "../../data.mapping";
 import {SyncRestful} from "../../service/restful/syncsev";
 import {PlService} from "../pl/pl.service";
 import {UtilService} from "../../service/util-service/util.service";
+import {EmitService} from "../../service/util-service/emit.service";
 
 @Injectable()
 export class SsService {
@@ -18,7 +19,8 @@ export class SsService {
     private util:UtilService,
     private userConfig:UserConfig,
     private plService: PlService,
-    private contactsService: ContactsService) {
+    private contactsService: ContactsService,
+     private emitService: EmitService,) {
   }
 
   //设置每日简报时间/事件
@@ -69,6 +71,18 @@ export class SsService {
 
       //刷新本地用户偏好设置
       await this.userConfig.RefreshYTbl();
+
+      if (py.yk == DataConfig.SYS_H){
+        console.log("=======这里唤醒");
+         if (py.yv == "1"){
+
+           console.log("=======这里唤醒");
+           this.emitService.emit("ai.wakeup.setting",true);
+         }else{
+           console.log("=======这里不唤醒唤醒");
+           this.emitService.emit("ai.wakeup.setting",false);
+         }
+      }
 
       resolve();
     });

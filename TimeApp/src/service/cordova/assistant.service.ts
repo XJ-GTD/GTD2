@@ -36,7 +36,21 @@ export class AssistantService {
     this.mp3Name = "iat.pcm";
     this.wakeuping = false;
     this.listening = false;
+    this.emitService.register("ai.wakeup.setting",(setting:boolean) =>{
+      if (!setting){
+
+
+        console.log("======2这里不唤醒唤醒");
+        this.stopWakeUp();
+      }else{
+
+
+        console.log("=======2这里唤醒");
+        this.startWakeUp();
+      }
+    })
   }
+
 
 
   /**
@@ -63,8 +77,8 @@ export class AssistantService {
   public stopWakeUp() {
     this.wakeuping = false;
     if (!this.utilService.isMobile()) return;
-    if (!UserConfig.getSetting(DataConfig.SYS_H)) return;
     cordova.plugins.XjBaiduWakeUp.wakeUpStop();
+    cordova.plugins.XjBaiduWakeUp.wakeUpRelease()
   }
 
 

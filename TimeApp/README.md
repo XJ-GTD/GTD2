@@ -59,6 +59,6 @@
 ##ionic cordova plugin add cordova-plugin-geolocation --variable GEOLOCATION_USAGE_DESCRIPTION="使用定位以获得更准确的天气预报"
 ##ionic cordova plugin add cordova-plugin-file-opener2 cordova-plugin-filechooser
 
-
+##唤醒 唤醒小冥，小冥小冥，小冥在吗
 
 ## release 打包命令 jarsigner -verbose -sigalg SHA1withRSA -digestalg SHA1 -keystore mwxing-release.keystore -signedjar mwx.apk app-release-unsigned.apk mwxing-release
