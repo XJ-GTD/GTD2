@@ -17,7 +17,6 @@ extern NSString* BDS_UPLOADER_NAME;
 + (BDSEventManager *)createEventManagerWithName:(NSString *)name;
 - (BOOL)setParameter:(id)param forKey:(NSString *)key;
 - (void)sendCommand:(NSString *)command;
-- (void)sendCommand:(NSString *)command withParameters:(NSDictionary*)params;
 - (BOOL)setDelegate:(id)delegate;
 - (NSString *)libver;
 

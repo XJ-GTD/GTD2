@@ -81,6 +81,14 @@ extern NSString* BDS_ASR_ENABLE_NLU;
 extern NSString* BDS_ASR_DISABLE_PUNCTUATION;
 
 /*
+ * BDS_ASR_ENABLE_NUM_CONVERT_MODEL
+ * Value explanation:   数字转换模块开关:默认打开
+ * Value type:          BOOL
+ * Default value:       @(YES)
+ */
+extern NSString* BDS_ASR_ENABLE_NUM_CONVERT_MODEL;
+
+/*
  * BDS_ASR_ENABLE_CONTACTS
  * Value explanation:   开启通讯录识别功能，将优先返回通讯录识别结果，需事先用uploader上传通讯录
  * Value type:          BOOL
@@ -261,7 +269,6 @@ extern NSString* BDS_ASR_OFFLINE_ENGINE_DAT_FILE_PATH;
  * Default value:       @""
  */
 extern NSString* BDS_ASR_OFFLINE_ENGINE_GRAMMER_FILE_PATH;
-
 /*
  * BDS_ASR_OFFLINE_ENGINE_GRAMMER_SLOT
  * Value explanation:   语法模式离线语法槽，使用该参数更新离线语法文件
@@ -269,13 +276,13 @@ extern NSString* BDS_ASR_OFFLINE_ENGINE_GRAMMER_FILE_PATH;
  * Default value:       @""
  */
 extern NSString* BDS_ASR_OFFLINE_ENGINE_GRAMMER_SLOT;
-
 /*
  * BDS_ASR_OFFLINE_ENGINE_WAKEUP_WORDS_FILE_PATH
  * Value explanation:   唤醒词文件路径，使用了唤醒并使用离线语法识别的情况下需要设置，其他情况请忽略该参数
  * Value type:          NSString
  * Default value:       @""
  */
+
 extern NSString* BDS_ASR_OFFLINE_ENGINE_WAKEUP_WORDS_FILE_PATH;
 
 #pragma mark - VR from Wakeup
@@ -295,7 +302,6 @@ extern NSString* BDS_ASR_OFFLINE_ENGINE_TRIGGERED_WAKEUP_WORD;
  * Default value:       @(NO)
  */
 extern NSString* BDS_ASR_NEED_CACHE_AUDIO;
-
 
 #pragma mark - 服务端配置
 
@@ -338,8 +344,13 @@ extern NSString* BDS_ASR_BROWSER_USER_AGENT;
  * Default value:       -
  */
 extern NSString* BDS_ASR_LOCATION;
-
-
+/*
+ * BDS_ASR_LM_ID
+ * Value explanation: 星云平台用户设置当前的私有模型id
+ * Value type:          NSNumber
+ * Default value:       -
+ */
+extern NSString* BDS_ASR_LM_ID;
 #pragma mark - 识别器扩展配置
 
 /*
@@ -471,6 +482,5 @@ extern NSString* BDS_ASR_ENABLE_LONG_SPEECH;
  * Default value:       -
  */
 extern NSString* BDS_ASR_REALTIME_DATA;
-
 
 #endif /* BDSASRParameters_h */

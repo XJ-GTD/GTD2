@@ -56,9 +56,6 @@ typedef enum TBDVoiceRecognitionPlayTones
 typedef enum TBDVoiceRecognitionStrategy
 {
     EVR_STRATEGY_ONLINE = 0,        // 在线识别
-    EVR_STRATEGY_OFFLINE = 1,       // 离线识别
-    EVR_STRATEGY_ONLINE_PRI = 2,    // 在线优先
-    EVR_STRATEGY_OFFLINE_PRI = 3,   // 离线优先
     EVR_STRATEGY_BOTH = 4,          // 并行模式
 } TBDVoiceRecognitionStrategy;
 
@@ -177,37 +174,10 @@ typedef enum TBDVoiceRecognitionDebugLogLevel
 #pragma mark - 语音压缩类型
 typedef enum TBDVoiceRecognitionPuncMode
 {
-    EVR_PUNC_MODE_FULL = 0,
-    EVR_PUNC_MODE_EMPTY = 1,
-    EVR_PUNC_MODE_SIMPLE = 2,
-    EVR_PUNC_MODE_SIMPLEST = 3,
+    EVR_PUNC_MODE_FULL = 0, // 打开标点
+    EVR_PUNC_MODE_EMPTY = 1, // 关闭标点
+    EVR_PUNC_MODE_SIMPLE = 2, // 删除句末标点，只删除句末句号
+    EVR_PUNC_MODE_SIMPLEST = 3, // 空格替换全部标点
 } TBDVoiceRecognitionPuncMode;
-
-#pragma mark - 语音压缩类型
-typedef enum TBDVoiceRecognitionAudioCompressionType
-{
-    EVR_AUDIO_COMPRESSION_MIN = 0,
-    EVR_AUDIO_COMPRESSION_PCM = 1,
-    EVR_AUDIO_COMPRESSION_BV32 = 2,
-    EVR_AUDIO_COMPRESSION_AMR = 3,
-    EVR_AUDIO_COMPRESSION_MAX = 4,
-} TBDVoiceRecognitionAudioCompressionType;
-
-#pragma mark - 语音识别请求资源类型
-typedef enum TBDVoiceRecognitionProtocol
-{
-    EPROTOCOL_DEFAULT = 0,
-    EPROTOCOL_SEARCH_NBEST = 1,
-    EPROTOCOL_INPUT_NBEST_PROTOCOL = 2,
-    EPROTOCOL_POST_PROTOCOL = 101,
-    EPROTOCOL_WISE_PROTOCOL = 300,
-    EPROTOCOL_WISE_TEXT_PROTOCOL = 301,
-    EPROTOCOL_AUDIO_DA_PROTOCOL = 302,
-    EPROTOCOL_NLU_PROTOCOL = 303,
-    EPROTOCOL_NLU_TEXT_PROTOCOL = 304,
-    EPROTOCOL_WISE_NLU_PROTOCOL = 305,
-    EPROTOCOL_TALK_PROTOCOL = 306,
-    EPROTOCOL_SEARCH_MUSIC_PROTOCOL = 1000,
-} TBDVoiceRecognitionProtocol;
 
 #endif /* BDSASRDefines_h */
