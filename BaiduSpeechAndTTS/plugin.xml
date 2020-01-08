@@ -89,15 +89,15 @@
 
 
         <!--lib-->
-        <source-file src="src/android/libs/bdasr_V3_20180801_d6f298a.jar" target-dir="libs"/>
-        <source-file src="src/android/libs/com.baidu.tts_2.3.2.20180713_6101c2a.jar" target-dir="libs"/>
+        <source-file src="src/android/libs/bdasr_V3_20191210_81acdf5.jar" target-dir="libs"/>
+        <source-file src="src/android/libs/com.baidu.tts_2.5.5.109.20191014_01b8485.jar" target-dir="libs"/>
+
         <source-file src="src/android/libs/jniLibs/arm64-v8a/libBaiduSpeechSDK.so" target-dir="libs/arm64-v8a"/>
         <source-file src="src/android/libs/jniLibs/arm64-v8a/libbd_easr_s1_merge_normal_20151216.dat.so" target-dir="libs/arm64-v8a"/>
         <source-file src="src/android/libs/jniLibs/arm64-v8a/libbd_etts.so" target-dir="libs/arm64-v8a"/>
         <source-file src="src/android/libs/jniLibs/arm64-v8a/libbdEASRAndroid.so" target-dir="libs/arm64-v8a"/>
         <source-file src="src/android/libs/jniLibs/arm64-v8a/libBDSpeechDecoder_V1.so" target-dir="libs/arm64-v8a"/>
         <source-file src="src/android/libs/jniLibs/arm64-v8a/libbdSpilWakeup.so" target-dir="libs/arm64-v8a"/>
-        <source-file src="src/android/libs/jniLibs/arm64-v8a/libbdtts.so" target-dir="libs/arm64-v8a"/>
         <source-file src="src/android/libs/jniLibs/arm64-v8a/libgnustl_shared.so" target-dir="libs/arm64-v8a"/>
         <source-file src="src/android/libs/jniLibs/arm64-v8a/libvad.dnn.so" target-dir="libs/arm64-v8a"/>
 
@@ -108,7 +108,6 @@
         <source-file src="src/android/libs/jniLibs/armeabi/libbdEASRAndroid.so" target-dir="libs/armeabi"/>
         <source-file src="src/android/libs/jniLibs/armeabi/libBDSpeechDecoder_V1.so" target-dir="libs/armeabi"/>
         <source-file src="src/android/libs/jniLibs/armeabi/libbdSpilWakeup.so" target-dir="libs/armeabi"/>
-        <source-file src="src/android/libs/jniLibs/armeabi/libbdtts.so" target-dir="libs/armeabi"/>
         <source-file src="src/android/libs/jniLibs/armeabi/libgnustl_shared.so" target-dir="libs/armeabi"/>
         <source-file src="src/android/libs/jniLibs/armeabi/libvad.dnn.so" target-dir="libs/armeabi"/>
 
@@ -119,9 +118,40 @@
         <source-file src="src/android/libs/jniLibs/armeabi-v7a/libbdEASRAndroid.so" target-dir="libs/armeabi-v7a"/>
         <source-file src="src/android/libs/jniLibs/armeabi-v7a/libBDSpeechDecoder_V1.so" target-dir="libs/armeabi-v7a"/>
         <source-file src="src/android/libs/jniLibs/armeabi-v7a/libbdSpilWakeup.so" target-dir="libs/armeabi-v7a"/>
-        <source-file src="src/android/libs/jniLibs/armeabi-v7a/libbdtts.so" target-dir="libs/armeabi-v7a"/>
         <source-file src="src/android/libs/jniLibs/armeabi-v7a/libgnustl_shared.so" target-dir="libs/armeabi-v7a"/>
         <source-file src="src/android/libs/jniLibs/armeabi-v7a/libvad.dnn.so" target-dir="libs/armeabi-v7a"/>
+
+
+
+        <source-file src="src/android/libs/jniLibs/armeabi-v7a/libBaiduSpeechSDK.so" target-dir="libs/armeabi-v7a"/>
+        <source-file src="src/android/libs/jniLibs/armeabi-v7a/libbd_easr_s1_merge_normal_20151216.dat.so" target-dir="libs/armeabi-v7a"/>
+        <source-file src="src/android/libs/jniLibs/armeabi-v7a/libbd_etts.so" target-dir="libs/armeabi-v7a"/>
+        <source-file src="src/android/libs/jniLibs/armeabi-v7a/libbdEASRAndroid.so" target-dir="libs/armeabi-v7a"/>
+        <source-file src="src/android/libs/jniLibs/armeabi-v7a/libBDSpeechDecoder_V1.so" target-dir="libs/armeabi-v7a"/>
+        <source-file src="src/android/libs/jniLibs/armeabi-v7a/libbdSpilWakeup.so" target-dir="libs/armeabi-v7a"/>
+        <source-file src="src/android/libs/jniLibs/armeabi-v7a/libgnustl_shared.so" target-dir="libs/armeabi-v7a"/>
+        <source-file src="src/android/libs/jniLibs/armeabi-v7a/libvad.dnn.so" target-dir="libs/armeabi-v7a"/>
+
+
+
+        <source-file src="src/android/libs/jniLibs/x86/libBaiduSpeechSDK.so" target-dir="libs/x86"/>
+        <source-file src="src/android/libs/jniLibs/x86/libbd_easr_s1_merge_normal_20151216.dat.so" target-dir="libs/x86"/>
+        <source-file src="src/android/libs/jniLibs/x86/libbd_etts.so" target-dir="libs/x86"/>
+        <source-file src="src/android/libs/jniLibs/x86/libbdEASRAndroid.so" target-dir="libs/x86"/>
+        <source-file src="src/android/libs/jniLibs/x86/libBDSpeechDecoder_V1.so" target-dir="libs/x86"/>
+        <source-file src="src/android/libs/jniLibs/x86/libbdSpilWakeup.so" target-dir="libs/x86"/>
+        <source-file src="src/android/libs/jniLibs/x86/libgnustl_shared.so" target-dir="libs/x86"/>
+        <source-file src="src/android/libs/jniLibs/x86/libvad.dnn.so" target-dir="libs/x86"/>
+
+
+        <source-file src="src/android/libs/jniLibs/x86_64/libBaiduSpeechSDK.so" target-dir="libs/x86_64"/>
+        <source-file src="src/android/libs/jniLibs/x86_64/libbd_easr_s1_merge_normal_20151216.dat.so" target-dir="libs/x86_64"/>
+        <source-file src="src/android/libs/jniLibs/x86_64/libbd_etts.so" target-dir="libs/x86_64"/>
+        <source-file src="src/android/libs/jniLibs/x86_64/libbdEASRAndroid.so" target-dir="libs/x86_64"/>
+        <source-file src="src/android/libs/jniLibs/x86_64/libBDSpeechDecoder_V1.so" target-dir="libs/x86_64"/>
+        <source-file src="src/android/libs/jniLibs/x86_64/libbdSpilWakeup.so" target-dir="libs/x86_64"/>
+        <source-file src="src/android/libs/jniLibs/x86_64/libgnustl_shared.so" target-dir="libs/x86_64"/>
+        <source-file src="src/android/libs/jniLibs/x86_64/libvad.dnn.so" target-dir="libs/x86_64"/>
 
         <!--Assets -->
         <source-file src="src/android/assets/WakeUp.bin" target-dir="assets"/>
@@ -131,6 +161,7 @@
         <source-file src="src/android/assets/baiduTTS/bd_etts_common_speech_m15_mand_eng_high_am-mix_v3.0.0_20170505.dat" target-dir="assets/"/>
         <source-file src="src/android/assets/baiduTTS/bd_etts_common_speech_yyjw_mand_eng_high_am-mix_v3.0.0_20170512.dat" target-dir="assets/"/>
         <source-file src="src/android/assets/baiduTTS/bd_etts_text.dat" target-dir="assets/"/>
+        <source-file src="src/android/assets/baiduTTS/auth.properties" target-dir="assets/"/>
 
         <source-file src="src/android/assets/msc/iat.pcm" target-dir="assets/msc/"/>
 
