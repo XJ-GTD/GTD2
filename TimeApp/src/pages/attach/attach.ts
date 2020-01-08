@@ -309,9 +309,7 @@ export class AttachPage {
     this.fjData.fjurl = this.fjData.fpjson.getLocalFilePath(this.file.dataDirectory);
     this.fjData.ui = this.currentuser;
     this.fjData.members = this.members;
-    // if(!this.bw) {
-    //   this.bw = fileName;
-    // }
+
     this.file.copyFile(imgFileDir, fileName, this.file.dataDirectory + cacheFilePathJson.getCacheDir(), newFileName).then(_ => {
       this.saveFile();
     });
@@ -336,8 +334,13 @@ export class AttachPage {
     this.fjData.ui = this.currentuser;
     this.fjData.members = this.members;
 
-    fileentry.copyTo(this.file.dataDirectory + cacheFilePathJson.getCacheDir(), newFileName).then(_ => {
+    alert(this.file.dataDirectory + cacheFilePathJson.getCacheDir());
+    alert(newFileName);
+    fileentry.copyTo(this.file.dataDirectory + cacheFilePathJson.getCacheDir(), newFileName)
+    .then(_ => {
       this.saveFile();
+    }).catch((err) => {
+      alert(JSON.stringify(err));
     });
   }
 
@@ -354,8 +357,6 @@ export class AttachPage {
     }
     this.camera.getPicture(options).then((imageData) => {
       console.info("开始拍照上传照片");
-      alert(imageData);
-      alert(JSON.stringify(imageData));
       this.file.resolveLocalFilesystemUrl(imageData)
       .then((entry) => {
         let imagepath = entry.toURL();
