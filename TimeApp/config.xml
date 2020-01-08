@@ -55,7 +55,7 @@
     <plugin name="cordova-plugin-vibration" spec="~3.1.1" />
     <plugin name="cordova-plugin-file-transfer" spec="~1.7.1" />
     <plugin name="cordova-plugin-telerik-imagepicker" spec="2.3.3">
-      <variable name="PHOTO_LIBRARY_USAGE_DESCRIPTION" value="使用相机拍照上传活动补充" />
+      <variable name="PHOTO_LIBRARY_USAGE_DESCRIPTION" value="拍照上传活动补充" />
     </plugin>
     <plugin name="cordova-plugin-local-notification" spec="~0.9.0-beta.2" />
     <plugin name="cordova-plugin-ionic-webview" spec="~4.1.2" />
@@ -83,7 +83,7 @@
     </plugin>
     <plugin name="cordova-plugin-rabbitmq" spec="https://github.com/xiaoji-duan/cordova-plugin-rabbitmq.git" />
     <plugin name="cordova-plugin-geolocation" spec="~4.0.2">
-        <variable name="GEOLOCATION_USAGE_DESCRIPTION" value="使用定位以获得更准确的天气预报" />
+        <variable name="GEOLOCATION_USAGE_DESCRIPTION" value="定位以获得更准确的天气预报" />
     </plugin>
     <plugin name="cordova-plugin-huaweipush" spec="../HuaweiPushPlugin" />
     <plugin name="cordova-plugin-BaiduSpeechAndTTS" spec="../BaiduSpeechAndTTS" />
