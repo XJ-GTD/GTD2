@@ -377,8 +377,8 @@ export class AttachPage {
   selectPicture() {
     this.imagePicker.getPictures({
       maximumImagesCount: 1,
-      width: 2048,
-      height: 2048,
+      width: 2400,
+      height: 3200,
       quality: 100
     }).then((results) => {
       if (results && results.length > 0) {
