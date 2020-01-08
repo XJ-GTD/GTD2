@@ -108,19 +108,20 @@ public class MyRecognizer {
 
 
         params.put(SpeechConstant.ACCEPT_AUDIO_VOLUME, false);
-        params.put(SpeechConstant.NLU, "enable");
-        params.put(SpeechConstant.PID, 15373);
-        params.put(SpeechConstant.VAD, SpeechConstant.VAD_DNN);
+        params.put(SpeechConstant.NLU, "disable");
+        params.put(SpeechConstant.PID, 15372);
+        params.put(SpeechConstant.DECODER, 0);
         params.put(SpeechConstant.ASR_OFFLINE_ENGINE_GRAMMER_FILE_PATH, "assets://baidu_speech_grammar.bsg");
         params.put(SpeechConstant.OUT_FILE, samplePath + "/iat.pcm");
         params.put(SpeechConstant.ACCEPT_AUDIO_DATA, "true");
-        //params.put(SpeechConstant.VAD_ENDPOINT_TIMEOUT, 1200); // 长语音
+        //长语音及静音短句设置
+        params.put(SpeechConstant.VAD, SpeechConstant.VAD_DNN);
+        params.put(SpeechConstant.VAD_ENDPOINT_TIMEOUT, 3000); // 长语音
 
         if (isTs) {
             //params.put(SpeechConstant.SOUND_START, R.raw.bdspeech_recognition_start);
             //params.put(SpeechConstant.SOUND_END, R.raw.bdspeech_speech_end);
             params.put(SpeechConstant.SOUND_SUCCESS, R.raw.bdspeech_recognition_success);
-            params.put(SpeechConstant.SOUND_ERROR, R.raw.bdspeech_recognition_error);
             params.put(SpeechConstant.SOUND_CANCEL, R.raw.bdspeech_recognition_cancel);
         }
 
