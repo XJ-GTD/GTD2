@@ -228,13 +228,6 @@ export class AttachPage {
             this.shot();
           }
         }, {
-          text: '照片',
-          role: 'albums',
-          icon: "ios-albums",
-          handler: () => {
-            this.selectPicture();
-          }
-        }, {
           text: '相册',
           role: 'albums',
           icon: "ios-albums",
@@ -285,7 +278,11 @@ export class AttachPage {
         alert(imagepath);
 
         if (imagepath != '') {
-          this.saveFileAttachment(imagepath);
+          if (this.ios) {
+            this.saveFileAttachmentiOS(entry);
+          } else {
+            this.saveFileAttachment(imagepath);
+          }
         }
       });
     }, (err) => {
@@ -312,11 +309,38 @@ export class AttachPage {
     this.fjData.fjurl = this.fjData.fpjson.getLocalFilePath(this.file.dataDirectory);
     this.fjData.ui = this.currentuser;
     this.fjData.members = this.members;
-    // if(!this.bw) {
-    //   this.bw = fileName;
-    // }
+
     this.file.copyFile(imgFileDir, fileName, this.file.dataDirectory + cacheFilePathJson.getCacheDir(), newFileName).then(_ => {
       this.saveFile();
+    });
+  }
+
+  saveFileAttachmentiOS(fileentry) {
+    let fileName: string = fileentry.name;
+    let ext: string = fileName.substr(fileName.lastIndexOf(".") + 1);
+
+    //将文件copy至缓存文件
+    let newFileName = this.util.getUuid() + "." + ext;
+    this.fjData.obt = this.obt;
+    this.fjData.obi = this.obi;
+    this.fjData.ext = ext;
+
+    //构造地址文件
+    let cacheFilePathJson: CacheFilePathJson = new CacheFilePathJson();
+    cacheFilePathJson.local = "/" + newFileName;
+    this.fjData.fj = JSON.stringify(cacheFilePathJson);
+    this.fjData.fpjson = cacheFilePathJson;
+    this.fjData.fjurl = this.fjData.fpjson.getLocalFilePath(this.file.dataDirectory);
+    this.fjData.ui = this.currentuser;
+    this.fjData.members = this.members;
+
+    alert(this.file.dataDirectory + cacheFilePathJson.getCacheDir());
+    alert(newFileName);
+    fileentry.copyTo(this.file.dataDirectory + cacheFilePathJson.getCacheDir(), newFileName)
+    .then(_ => {
+      this.saveFile();
+    }).catch((err) => {
+      alert(JSON.stringify(err));
     });
   }
 
@@ -333,15 +357,17 @@ export class AttachPage {
     }
     this.camera.getPicture(options).then((imageData) => {
       console.info("开始拍照上传照片");
-      alert(imageData);
-      alert(JSON.stringify(imageData));
       this.file.resolveLocalFilesystemUrl(imageData)
       .then((entry) => {
         let imagepath = entry.toURL();
         alert(imagepath);
 
         if (imagepath != '') {
-          this.saveFileAttachment(imagepath);
+          if (this.ios) {
+            this.saveFileAttachmentiOS(entry);
+          } else {
+            this.saveFileAttachment(imagepath);
+          }
         }
       });
     }, (err) => {
@@ -352,8 +378,8 @@ export class AttachPage {
   selectPicture() {
     this.imagePicker.getPictures({
       maximumImagesCount: 1,
-      width: 2048,
-      height: 2048,
+      width: 3200,
+      height: 3200,
       quality: 100
     }).then((results) => {
       if (results && results.length > 0) {
