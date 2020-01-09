@@ -110,7 +110,7 @@ export class AipPage{
         processor: 'S',
         option: 'S.AN',
         parameters: {
-          an: `${name}, ${preword}好, 我是小冥。`
+          an: `${preword}好, ${name}, 我是小冥。`
         }
       };
 
@@ -142,7 +142,7 @@ export class AipPage{
     }
 
     if (welcome['header']['describe'].length > 0) {
-      this.emitService.emit('rabbitmq.message.received', {body: JSON.stringify(welcome)});
+      this.emitService.emit('local.message.received', {body: JSON.stringify(welcome)});
     }
   }
 

@@ -147,6 +147,11 @@ export class WebsocketService {
 
       if (this.timer) clearTimeout(this.timer);
 
+      // 本地发送处理消息
+      this.emitService.register('local.message.received', (event) => {
+       this.pushMessage(event);
+     }, true);
+
       // 延迟重连动作,防止重连死循环
       if (this.util.isMobile()) {
         this.emitService.register('rabbitmq.message.received', (event) => {

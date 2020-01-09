@@ -231,6 +231,7 @@ export class AssistantService {
     textPro.c.server = DataConfig.wsServerContext;
     textPro.c.client.option = DataConfig.wsWsOpt;
     textPro.c.client.processor = DataConfig.wsWsProcessor;
+    // this.postAsk(text);
     await this.aibutlerRestful.posttext(textPro)
       .then(data => {
         // console.log("data code：" + data.code);
@@ -303,6 +304,7 @@ export class AssistantService {
       audioPro.c.client.option = DataConfig.wsWsOpt;
       audioPro.c.client.processor = DataConfig.wsWsProcessor;
       audioPro.c.server = DataConfig.wsServerContext;
+      // this.postAsk(result.text);
       await this.aibutlerRestful.postaudio(audioPro);
       this.listening = false;
       this.emitService.emitListener(false);
@@ -318,6 +320,30 @@ export class AssistantService {
       this.startWakeUp();
       return text;
     });
+  }
+
+  private postAsk(text: string) {
+    let ask: any = {
+      header: {
+        version: 'V1.1',
+        sender: 'xunfei/aiui',
+        datetime: moment().format("YYYY/MM/DD HH:mm"),
+        describe: []
+      },
+      content: {}
+    };
+
+    ask['header']['describe'].push('TK');
+
+    ask['content']['0'] = {
+      processor: 'TK',
+      option: 'TK.ASK',
+      parameters: {
+        ask: text
+      }
+    };
+
+    this.emitService.emit('local.message.received', {body: JSON.stringify(ask)});
   }
 
   /**
@@ -360,4 +386,3 @@ export class Immediately{
   fininsh:boolean = false;
   error:string = "";
 }
-
