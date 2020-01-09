@@ -9,16 +9,16 @@
       },
       "debug": {
         "keystore": "../android/mwxing-release.keystore",
-        "storePassword": "Xj123456*",
-        "alias": "mwxing_debug.keystore",
-        "password" : "Xj123456*",
+        "storePassword": "MWXing1234*",
+        "alias": "mwxing-release",
+        "password" : "MWXing1234*",
         "keystoreType": "JKS"
       },
       "release": {
           "keystore": "../android/mwxing-release.keystore",
-          "storePassword": "Xj123456*",
-          "alias": "mwxing_debug.keystore",
-          "password" : "Xj123456*",
+          "storePassword": "MWXing1234*",
+          "alias": "mwxing-release",
+          "password" : "MWXing1234*",
           "keystoreType": "JKS"
       }
   },
