@@ -38,7 +38,6 @@ export const ION_CAL_VALUE_ACCESSOR: Provider = {
       <ion-card-header no-padding>
 
         <div class="title">
-          <div float-left>
             <div float-left (click)="switchView()">
               <p><b [class.thisM]="_thisMonth">{{_showMonth}}</b>
               <b [class.thisM]="_thisMonth" class="font-normal animated flash" *ngIf = "_showYear">{{_showYear}}</b>
@@ -48,8 +47,7 @@ export const ION_CAL_VALUE_ACCESSOR: Provider = {
               </p>
 
             </div>
-          </div>
-          <div class="tool">
+          <div class="tool" float-right>
             <div float-right (click)="gotoToday()">
               <ion-icon class="fad fa-calendar-day"></ion-icon>
             </div>

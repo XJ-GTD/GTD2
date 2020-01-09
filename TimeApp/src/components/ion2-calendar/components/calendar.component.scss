@@ -70,6 +70,10 @@ ion-calendar {
     margin-right: 5%;
     //margin-top: 10px;
 
+    div[float-left]{
+      width: 75%;
+    }
+
     img{
       width: 17px;
       margin: 10px 0px;
@@ -98,7 +102,7 @@ ion-calendar {
       }
     }
     .tool{
-      width: auto;
+      //width: auto;
       height: 100%;
       > div{
         margin-left: 1.5rem;

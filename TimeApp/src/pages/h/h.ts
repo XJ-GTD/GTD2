@@ -43,7 +43,7 @@ import {TellYouBase, TellyouService} from "../../components/ai/tellyou/tellyou.s
                     (onPlus)="newPlus($event)">
       </ion-calendar>
       <page-tdl #tdl></page-tdl>
-      
+      <!---->
       <!--<ion-fab bottom right>-->
         <!--<button ion-fab mini (click)="openAi()">-->
           <!--<ion-icon name="chatbubbles"></ion-icon>-->
