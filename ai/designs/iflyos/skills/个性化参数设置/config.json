@@ -1,0 +1,247 @@
+{
+  "intents" : {
+    "SettingTheme" : {
+      "slots" : { },
+      "name" : "SettingTheme",
+      "chineseName" : "切换主题",
+      "confirmation" : {
+        "required" : false
+      },
+      "assistWords" : { },
+      "entranceIntent" : true
+    },
+    "SettingGuide" : {
+      "slots" : {
+        "actioncmd" : {
+          "elicitation" : {
+            "required" : false
+          },
+          "entity" : "ActionCmd",
+          "order" : 1
+        }
+      },
+      "name" : "SettingGuide",
+      "chineseName" : "设置向导",
+      "confirmation" : {
+        "required" : false
+      },
+      "assistWords" : { },
+      "entranceIntent" : true
+    },
+    "SettingThemeNight" : {
+      "slots" : {
+        "app" : {
+          "elicitation" : {
+            "required" : false
+          },
+          "entity" : "IFLYTEK.App",
+          "order" : 2
+        },
+        "actioncmd" : {
+          "elicitation" : {
+            "required" : false
+          },
+          "entity" : "ActionCmd",
+          "order" : 1
+        }
+      },
+      "name" : "SettingThemeNight",
+      "chineseName" : "设置夜间主题",
+      "confirmation" : {
+        "required" : false
+      },
+      "assistWords" : { },
+      "entranceIntent" : true
+    },
+    "SettingAutoTodo" : {
+      "slots" : {
+        "actioncmd" : {
+          "elicitation" : {
+            "required" : false
+          },
+          "entity" : "ActionCmd",
+          "order" : 1
+        }
+      },
+      "name" : "SettingAutoTodo",
+      "chineseName" : "设置自动加入重要",
+      "confirmation" : {
+        "required" : false
+      },
+      "assistWords" : {
+        "iwant" : "IFLYTEK.IWant",
+        "todolist" : "todolist"
+      },
+      "entranceIntent" : true
+    },
+    "SettingVoiceActivation" : {
+      "slots" : {
+        "actioncmd" : {
+          "elicitation" : {
+            "required" : false
+          },
+          "entity" : "ActionCmd",
+          "order" : 1
+        }
+      },
+      "name" : "SettingVoiceActivation",
+      "chineseName" : "设置语音唤醒",
+      "confirmation" : {
+        "required" : false
+      },
+      "assistWords" : {
+        "voicewakeup" : "VoiceWakeup"
+      },
+      "entranceIntent" : true
+    },
+    "SettingVoiceBroadcast" : {
+      "slots" : {
+        "actioncmd" : {
+          "elicitation" : {
+            "required" : false
+          },
+          "entity" : "ActionCmd",
+          "order" : 1
+        }
+      },
+      "name" : "SettingVoiceBroadcast",
+      "chineseName" : "设置语音播报",
+      "confirmation" : {
+        "required" : false
+      },
+      "assistWords" : {
+        "speech" : "Speech"
+      },
+      "entranceIntent" : true
+    },
+    "SettingNextBroadcast" : {
+      "slots" : {
+        "actioncmd" : {
+          "elicitation" : {
+            "required" : false
+          },
+          "entity" : "ActionCmd",
+          "order" : 1
+        }
+      },
+      "name" : "SettingNextBroadcast",
+      "chineseName" : "设置连续语音",
+      "confirmation" : {
+        "required" : false
+      },
+      "assistWords" : { },
+      "entranceIntent" : true
+    },
+    "SettingMergedBroadcast" : {
+      "slots" : {
+        "actioncmd" : {
+          "elicitation" : {
+            "required" : false
+          },
+          "entity" : "ActionCmd",
+          "order" : 1
+        }
+      },
+      "name" : "SettingMergedBroadcast",
+      "chineseName" : "设置合并播报",
+      "confirmation" : {
+        "required" : false
+      },
+      "assistWords" : { },
+      "entranceIntent" : true
+    },
+    "SettingSimpleBroadcast" : {
+      "slots" : {
+        "actioncmd" : {
+          "elicitation" : {
+            "required" : false
+          },
+          "entity" : "ActionCmd",
+          "order" : 1
+        }
+      },
+      "name" : "SettingSimpleBroadcast",
+      "chineseName" : "设置简单播报",
+      "confirmation" : {
+        "required" : false
+      },
+      "assistWords" : { },
+      "entranceIntent" : true
+    },
+    "SettingNewMessageAlert" : {
+      "slots" : {
+        "actioncmd" : {
+          "elicitation" : {
+            "required" : false
+          },
+          "entity" : "ActionCmd",
+          "order" : 1
+        }
+      },
+      "name" : "SettingNewMessageAlert",
+      "chineseName" : "设置新消息提醒",
+      "confirmation" : {
+        "required" : false
+      },
+      "assistWords" : { },
+      "entranceIntent" : true
+    },
+    "SettingThemeDay" : {
+      "slots" : {
+        "actioncmd" : {
+          "elicitation" : {
+            "required" : false
+          },
+          "entity" : "ActionCmd",
+          "order" : 1
+        }
+      },
+      "name" : "SettingThemeDay",
+      "chineseName" : "设置白天主题",
+      "confirmation" : {
+        "required" : false
+      },
+      "assistWords" : { },
+      "entranceIntent" : true
+    },
+    "SettingVibration" : {
+      "slots" : {
+        "actioncmd" : {
+          "elicitation" : {
+            "required" : false
+          },
+          "entity" : "ActionCmd",
+          "order" : 1
+        }
+      },
+      "name" : "SettingVibration",
+      "chineseName" : "设置振动",
+      "confirmation" : {
+        "required" : false
+      },
+      "assistWords" : {
+        "vibrationmusic" : "VibrationMusic"
+      },
+      "entranceIntent" : true
+    },
+    "SettingMessageAlert" : {
+      "slots" : {
+        "actioncmd" : {
+          "elicitation" : {
+            "required" : false
+          },
+          "entity" : "ActionCmd",
+          "order" : 1
+        }
+      },
+      "name" : "SettingMessageAlert",
+      "chineseName" : "设置消息提醒",
+      "confirmation" : {
+        "required" : false
+      },
+      "assistWords" : { },
+      "entranceIntent" : true
+    }
+  },
+  "version" : "2.1"
+}

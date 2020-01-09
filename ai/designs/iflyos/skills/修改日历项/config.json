@@ -1,0 +1,44 @@
+{
+  "intents" : {
+    "AddContactsWithFS" : {
+      "slots" : {
+        "whichtodo" : {
+          "elicitation" : {
+            "required" : false
+          },
+          "entity" : "IFLYTEK.Number",
+          "order" : 1
+        },
+        "whotodo" : {
+          "elicitation" : {
+            "required" : false
+          },
+          "min" : 1,
+          "max" : 8,
+          "entity" : "IFLYTEK.Wildcard",
+          "order" : 2
+        },
+        "lastwhichtodo" : {
+          "elicitation" : {
+            "required" : false
+          },
+          "entity" : "IFLYTEK.Number",
+          "order" : 3
+        }
+      },
+      "name" : "AddContactsWithFS",
+      "chineseName" : "根据查询结果增加人员",
+      "confirmation" : {
+        "required" : false
+      },
+      "assistWords" : {
+        "margin" : "IFLYTEK.Margin",
+        "sendaction" : "SendAction",
+        "agendaunit" : "AgendaUnit",
+        "planitemname" : "PlanItemName"
+      },
+      "entranceIntent" : true
+    }
+  },
+  "version" : "2.1"
+}

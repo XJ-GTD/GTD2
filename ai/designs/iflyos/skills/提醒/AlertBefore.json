@@ -1,0 +1,5 @@
+[ {
+  "text" : "提{前十分钟:datetime}提醒{我:me}{开:verbprefix}{会:can}"
+}, {
+  "text" : "{五点钟:datetime}提醒{我:me}准时下班"
+} ]

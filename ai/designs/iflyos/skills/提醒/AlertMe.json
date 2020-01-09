@@ -1,0 +1,15 @@
+[ {
+  "text" : "提醒{我:me}{明天9点钟:whentodo}{开会 :whattodo}"
+}, {
+  "text" : "提醒{我:me}{明天10点钟:whentodo}{去脉策科技见大鹏 :whattodo}"
+}, {
+  "text" : "{今天下午六点:whentodo}提醒{我:me}{准时下班:whattoprepare}"
+}, {
+  "text" : "{今天下午六点:whentodo}{我要:iwant}{准时下班:whattodo}记得提醒{我:me}"
+}, {
+  "text" : "{明天上午10点:whentodo}{在脉策科技和大鹏见面:whattodo}提醒{我:me}提前{一:hours}个小时{出发:whattoprepare}"
+}, {
+  "text" : "{明天上午10点:whentodo}{在脉策科技和大鹏见面:whattodo}提醒{我:me}提前{50:minutes}分钟{出发:whattoprepare}"
+}, {
+  "text" : "{明天10点:whentodo}{网上抽奖:whattodo}提醒{我:me}提前{30:seconds}秒{启动抽奖服务:whattoprepare}"
+} ]

@@ -1,0 +1,129 @@
+{
+  "intents" : {
+    "HowtoCancel" : {
+      "slots" : {
+        "actioncmd" : {
+          "elicitation" : {
+            "required" : false
+          },
+          "entity" : "ActionCmd",
+          "order" : 1
+        }
+      },
+      "name" : "HowtoCancel",
+      "chineseName" : "怎么取消",
+      "confirmation" : {
+        "required" : false
+      },
+      "assistWords" : {
+        "memoname" : "MemoName",
+        "how" : "IFLYTEK.How",
+        "agendaname" : "AgendaName",
+        "planitemname" : "PlanItemName"
+      },
+      "entranceIntent" : true
+    },
+    "HowtoUse" : {
+      "slots" : { },
+      "name" : "HowtoUse",
+      "chineseName" : "怎么使用语音",
+      "confirmation" : {
+        "required" : false
+      },
+      "assistWords" : {
+        "how" : "IFLYTEK.How",
+        "can" : "IFLYTEK.Can",
+        "what" : "IFLYTEK.What",
+        "you" : "IFLYTEK.You"
+      },
+      "entranceIntent" : true
+    },
+    "OthersUnstandard" : {
+      "slots" : {
+        "datetime" : {
+          "elicitation" : {
+            "required" : false
+          },
+          "entity" : "IFLYTEK.Datetime",
+          "order" : 1
+        }
+      },
+      "name" : "OthersUnstandard",
+      "chineseName" : "其它",
+      "confirmation" : {
+        "required" : false
+      },
+      "assistWords" : {
+        "how" : "IFLYTEK.How",
+        "what" : "IFLYTEK.What",
+        "me" : "IFLYTEK.Me"
+      },
+      "entranceIntent" : true
+    },
+    "HowToUseMWXing" : {
+      "slots" : { },
+      "name" : "HowToUseMWXing",
+      "chineseName" : "怎么使用冥王星",
+      "confirmation" : {
+        "required" : false
+      },
+      "assistWords" : {
+        "how" : "IFLYTEK.How",
+        "can" : "IFLYTEK.Can",
+        "margin" : "IFLYTEK.Margin",
+        "me" : "IFLYTEK.Me",
+        "talkprefix" : "TalkPrefix",
+        "modal" : "IFLYTEK.Modal"
+      },
+      "entranceIntent" : true
+    },
+    "HowtoSearch" : {
+      "slots" : { },
+      "name" : "HowtoSearch",
+      "chineseName" : "怎么查询",
+      "confirmation" : {
+        "required" : false
+      },
+      "assistWords" : {
+        "memoname" : "MemoName",
+        "how" : "IFLYTEK.How",
+        "query" : "IFLYTEK.Query",
+        "agendaname" : "AgendaName",
+        "planitemname" : "PlanItemName"
+      },
+      "entranceIntent" : true
+    },
+    "HowtoCreateAgenda" : {
+      "slots" : { },
+      "name" : "HowtoCreateAgenda",
+      "chineseName" : "怎么创建日程",
+      "confirmation" : {
+        "required" : false
+      },
+      "assistWords" : {
+        "how" : "IFLYTEK.How",
+        "agendaname" : "AgendaName",
+        "createaction" : "CreateAction"
+      },
+      "entranceIntent" : true
+    },
+    "HowtoModifyAgenda" : {
+      "slots" : { },
+      "name" : "HowtoModifyAgenda",
+      "chineseName" : "怎么修改日程",
+      "confirmation" : {
+        "required" : false
+      },
+      "assistWords" : {
+        "how" : "IFLYTEK.How",
+        "sendaction" : "SendAction",
+        "messagealert" : "MessageAlert",
+        "agendaname" : "AgendaName",
+        "me" : "IFLYTEK.Me",
+        "talkprefix" : "TalkPrefix"
+      },
+      "entranceIntent" : true
+    }
+  },
+  "version" : "2.1"
+}

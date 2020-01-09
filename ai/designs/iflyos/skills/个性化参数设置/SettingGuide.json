@@ -1,0 +1,9 @@
+[ {
+  "text" : "{打开:actioncmd}向导"
+}, {
+  "text" : "{关闭:actioncmd}向导"
+}, {
+  "text" : "把向导{打开:actioncmd}"
+}, {
+  "text" : "把向导{关闭:actioncmd}"
+} ]

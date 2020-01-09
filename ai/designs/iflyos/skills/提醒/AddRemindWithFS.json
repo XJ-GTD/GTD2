@@ -1,0 +1,25 @@
+[ {
+  "text" : "{这个:margin}{活动:agendaname}{提前:modifyprefix}{30:minutes}分钟{提醒:alarmtext}[{我:me}]"
+}, {
+  "text" : "第{一:whichtodo}个{活动:agendaname}{提前:modifyprefix}{10:minutes}分钟{提醒:messagealert}[{我:me}]"
+}, {
+  "text" : "倒数第{一:lastwhichtodo}个{活动:agendaname}{提前:modifyprefix}{5:minutes}分钟{提醒:messagealert}[{我:me}]"
+}, {
+  "text" : "{这个:margin}{活动:agendaname}{提前:modifyprefix}{1:hours}小时{提醒:alarmtext}[{我:me}]"
+}, {
+  "text" : "{这个:margin}{活动:agendaname}{提前:modifyprefix}{1:days}天{提醒:alarmtext}[{我:me}]"
+}, {
+  "text" : "第{一:whichtodo}个{活动:agendaname}{提前:modifyprefix}{1:hours}小时{提醒:alarmtext}[{我:me}]"
+}, {
+  "text" : "第{一:whichtodo}个{活动:agendaname}{提前:modifyprefix}{1:days}天{提醒:alarmtext}[{我:me}]"
+}, {
+  "text" : "倒数第{一:lastwhichtodo}个{活动:agendaname}{提前:modifyprefix}{1:hours}小时{提醒:messagealert}[{我:me}]"
+}, {
+  "text" : "倒数第{一:lastwhichtodo}个{活动:agendaname}{提前:modifyprefix}{1:days}天{提醒:messagealert}[{我:me}]"
+}, {
+  "text" : "{这个:margin}{活动:agendaname}{提前:modifyprefix}{1:hours}小时{30:minutes}分钟{提醒:alarmtext}[{我:me}]"
+}, {
+  "text" : "第{一:whichtodo}个{活动:agendaname}{提前:modifyprefix}{1:hours}小时{30:minutes}分钟{提醒:alarmtext}[{我:me}]"
+}, {
+  "text" : "倒数第{一:lastwhichtodo}个{活动:agendaname}{提前:modifyprefix}{1:hours}小时{30:minutes}分钟{提醒:alarmtext}[{我:me}]"
+} ]

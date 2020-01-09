@@ -1,0 +1,9 @@
+[ {
+  "text" : "{打开:actioncmd}连续语音"
+}, {
+  "text" : "{关闭:actioncmd}连续语音"
+}, {
+  "text" : "把连续语音{打开:actioncmd}"
+}, {
+  "text" : "把连续语音{关闭:actioncmd}"
+} ]

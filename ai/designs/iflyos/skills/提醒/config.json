@@ -1,0 +1,270 @@
+{
+  "intents" : {
+    "AlertMe" : {
+      "slots" : {
+        "whentodo" : {
+          "elicitation" : {
+            "required" : false
+          },
+          "entity" : "IFLYTEK.Datetime",
+          "order" : 2
+        },
+        "hours" : {
+          "elicitation" : {
+            "required" : false
+          },
+          "entity" : "IFLYTEK.Number",
+          "order" : 4
+        },
+        "seconds" : {
+          "elicitation" : {
+            "required" : false
+          },
+          "entity" : "IFLYTEK.Number",
+          "order" : 6
+        },
+        "whattoprepare" : {
+          "elicitation" : {
+            "required" : false
+          },
+          "min" : 2,
+          "max" : 20,
+          "entity" : "IFLYTEK.Wildcard",
+          "order" : 3
+        },
+        "minutes" : {
+          "elicitation" : {
+            "required" : false
+          },
+          "entity" : "IFLYTEK.Number",
+          "order" : 5
+        },
+        "whattodo" : {
+          "elicitation" : {
+            "required" : false
+          },
+          "min" : 2,
+          "max" : 20,
+          "entity" : "IFLYTEK.Wildcard",
+          "order" : 1
+        }
+      },
+      "name" : "AlertMe",
+      "chineseName" : "提醒自己",
+      "confirmation" : {
+        "required" : false
+      },
+      "assistWords" : {
+        "iwant" : "IFLYTEK.IWant",
+        "me" : "IFLYTEK.Me"
+      },
+      "entranceIntent" : true
+    },
+    "Timer" : {
+      "slots" : {
+        "seconds" : {
+          "elicitation" : {
+            "required" : false
+          },
+          "entity" : "IFLYTEK.Number",
+          "order" : 2
+        },
+        "hours" : {
+          "elicitation" : {
+            "required" : false
+          },
+          "entity" : "IFLYTEK.Number",
+          "order" : 3
+        },
+        "minutes" : {
+          "elicitation" : {
+            "required" : false
+          },
+          "entity" : "IFLYTEK.Number",
+          "order" : 1
+        }
+      },
+      "name" : "Timer",
+      "chineseName" : "计时",
+      "confirmation" : {
+        "required" : false
+      },
+      "assistWords" : {
+        "timer" : "Timer",
+        "alarmtext" : "AlarmText",
+        "launch" : "IFLYTEK.Launch"
+      },
+      "entranceIntent" : true
+    },
+    "AlertOthers" : {
+      "slots" : {
+        "whentodo" : {
+          "elicitation" : {
+            "required" : false
+          },
+          "entity" : "IFLYTEK.Datetime",
+          "order" : 2
+        },
+        "whotodo" : {
+          "elicitation" : {
+            "required" : false
+          },
+          "min" : 2,
+          "max" : 16,
+          "entity" : "IFLYTEK.Wildcard",
+          "order" : 1
+        },
+        "whattodo" : {
+          "elicitation" : {
+            "required" : false
+          },
+          "min" : 2,
+          "max" : 20,
+          "entity" : "IFLYTEK.Wildcard",
+          "order" : 3
+        }
+      },
+      "name" : "AlertOthers",
+      "chineseName" : "提醒别人",
+      "confirmation" : {
+        "required" : false
+      },
+      "assistWords" : { },
+      "entranceIntent" : false
+    },
+    "Alarm" : {
+      "slots" : {
+        "whentodo" : {
+          "elicitation" : {
+            "required" : false
+          },
+          "entity" : "IFLYTEK.Datetime",
+          "order" : 1
+        }
+      },
+      "name" : "Alarm",
+      "chineseName" : "闹铃",
+      "confirmation" : {
+        "required" : false
+      },
+      "assistWords" : {
+        "alarmtext" : "AlarmText",
+        "me" : "IFLYTEK.Me"
+      },
+      "entranceIntent" : true
+    },
+    "AddRemindWithFS" : {
+      "slots" : {
+        "hours" : {
+          "elicitation" : {
+            "required" : false
+          },
+          "entity" : "IFLYTEK.Number",
+          "order" : 2
+        },
+        "whichtodo" : {
+          "elicitation" : {
+            "required" : false
+          },
+          "entity" : "IFLYTEK.Number",
+          "order" : 4
+        },
+        "minutes" : {
+          "elicitation" : {
+            "required" : false
+          },
+          "entity" : "IFLYTEK.Number",
+          "order" : 1
+        },
+        "days" : {
+          "elicitation" : {
+            "required" : false
+          },
+          "entity" : "IFLYTEK.Number",
+          "order" : 3
+        },
+        "lastwhichtodo" : {
+          "elicitation" : {
+            "required" : false
+          },
+          "entity" : "IFLYTEK.Number",
+          "order" : 5
+        }
+      },
+      "name" : "AddRemindWithFS",
+      "chineseName" : "根据查找结果添加提醒",
+      "confirmation" : {
+        "required" : false
+      },
+      "assistWords" : {
+        "modifyprefix" : "ModifyPrefix",
+        "margin" : "IFLYTEK.Margin",
+        "messagealert" : "MessageAlert",
+        "alarmtext" : "AlarmText",
+        "agendaname" : "AgendaName",
+        "me" : "IFLYTEK.Me"
+      },
+      "entranceIntent" : true
+    },
+    "AlertBefore" : {
+      "slots" : {
+        "datetime" : {
+          "elicitation" : {
+            "required" : false
+          },
+          "entity" : "IFLYTEK.Datetime",
+          "order" : 1
+        }
+      },
+      "name" : "AlertBefore",
+      "chineseName" : "提醒时间",
+      "confirmation" : {
+        "required" : false
+      },
+      "assistWords" : {
+        "can" : "IFLYTEK.Can",
+        "verbprefix" : "VerbPrefix",
+        "me" : "IFLYTEK.Me"
+      },
+      "entranceIntent" : false
+    },
+    "AbsRemindWithFS" : {
+      "slots" : {
+        "whentodo" : {
+          "elicitation" : {
+            "required" : false
+          },
+          "entity" : "IFLYTEK.Datetime",
+          "order" : 1
+        },
+        "whichtodo" : {
+          "elicitation" : {
+            "required" : false
+          },
+          "entity" : "IFLYTEK.Number",
+          "order" : 2
+        },
+        "lastwhichtodo" : {
+          "elicitation" : {
+            "required" : false
+          },
+          "entity" : "IFLYTEK.Number",
+          "order" : 3
+        }
+      },
+      "name" : "AbsRemindWithFS",
+      "chineseName" : "根据查找结果添加指定时间提醒",
+      "confirmation" : {
+        "required" : false
+      },
+      "assistWords" : {
+        "margin" : "IFLYTEK.Margin",
+        "alarmtext" : "AlarmText",
+        "agendaname" : "AgendaName",
+        "me" : "IFLYTEK.Me"
+      },
+      "entranceIntent" : true
+    }
+  },
+  "version" : "2.1"
+}

@@ -1,0 +1,31 @@
+[ {
+  "text" : "{明天:whentodo}的{会议:whattodo}{安排在:scheduledat}{什么时候:when}"
+}, {
+  "text" : "{会议:whattodo}{安排在:scheduledat}{明天:whentodo}{几点:when}"
+}, {
+  "text" : "{旅行:whattodo}{安排在:scheduledat}{下个月:whentodo}的{什么时候:when}"
+}, {
+  "text" : "{旅行:whattodo}{安排在:scheduledat}{下个月:whentodo}{几号:when}"
+}, {
+  "text" : "{下个月:whentodo}{什么时候:when}{去:verbprefix}{旅行:whattodo}"
+}, {
+  "text" : "{明天:whentodo}{我:me}{有:have}{什么:what}{会议:whattodo}"
+}, {
+  "text" : "{会议:whattodo}{安排在:scheduledat}{明天:whentodo}{什么时候:when}"
+}, {
+  "text" : "{上午:whentodo}{开会:whattodo}{吗:modal}"
+}, {
+  "text" : "{今天晚上:whentodo}{什么时候:when}{聚餐 :whattodo}"
+}, {
+  "text" : "{今天晚上:whentodo}的{聚餐:whattodo}在{什么时候:when}"
+}, {
+  "text" : "{明天:whentodo}{要:iwant}{开会:whattodo}{吗:modal}"
+}, {
+  "text" : "{这个月:whentodo}的{同学聚会:whattodo}是{什么时候:when}"
+}, {
+  "text" : "{这个月:whentodo}的{同学聚会:whattodo}是在{什么时候:when}"
+}, {
+  "text" : "{when}{have}{what}{whattodo}"
+}, {
+  "text" : "{query}{whentodo}的{whattodo}"
+} ]

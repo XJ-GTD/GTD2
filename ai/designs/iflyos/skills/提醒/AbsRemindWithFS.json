@@ -1,0 +1,7 @@
+[ {
+  "text" : "{这个:margin}{活动:agendaname}{明天上午9点:whentodo}{提醒:alarmtext}[{我:me}]"
+}, {
+  "text" : "第{一:whichtodo}个{活动:agendaname}{明天下午4点:whentodo}{提醒:alarmtext}[{我:me}]"
+}, {
+  "text" : "倒数第{一:lastwhichtodo}个{活动:agendaname}{今天下午5点:whentodo}{提醒:alarmtext}[{我:me}]"
+} ]

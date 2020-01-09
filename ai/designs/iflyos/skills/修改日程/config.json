@@ -1,0 +1,335 @@
+{
+  "intents" : {
+    "AddContacts" : {
+      "slots" : {
+        "whentodo" : {
+          "elicitation" : {
+            "required" : false
+          },
+          "entity" : "IFLYTEK.Datetime",
+          "order" : 2
+        },
+        "whotodo" : {
+          "elicitation" : {
+            "required" : false
+          },
+          "min" : 1,
+          "max" : 5,
+          "entity" : "IFLYTEK.Wildcard",
+          "order" : 3
+        },
+        "whattodo" : {
+          "elicitation" : {
+            "required" : false
+          },
+          "min" : 1,
+          "max" : 5,
+          "entity" : "IFLYTEK.Wildcard",
+          "order" : 1
+        }
+      },
+      "name" : "AddContacts",
+      "chineseName" : "增加人员",
+      "confirmation" : {
+        "required" : false
+      },
+      "assistWords" : {
+        "normquantifier" : "NormQuantifier",
+        "verbprefix" : "VerbPrefix",
+        "talkprefix" : "TalkPrefix"
+      },
+      "entranceIntent" : true
+    },
+    "AddContactsWithFS" : {
+      "slots" : {
+        "whotodo" : {
+          "elicitation" : {
+            "required" : false
+          },
+          "min" : 1,
+          "max" : 12,
+          "entity" : "IFLYTEK.Wildcard",
+          "order" : 1
+        },
+        "whichtodo" : {
+          "elicitation" : {
+            "required" : false
+          },
+          "entity" : "IFLYTEK.Number",
+          "order" : 2
+        },
+        "lastwhichtodo" : {
+          "elicitation" : {
+            "required" : false
+          },
+          "entity" : "IFLYTEK.Number",
+          "order" : 3
+        }
+      },
+      "name" : "AddContactsWithFS",
+      "chineseName" : "根据查找结果增加人员",
+      "confirmation" : {
+        "required" : false
+      },
+      "assistWords" : {
+        "margin" : "IFLYTEK.Margin",
+        "agendaunit" : "AgendaUnit",
+        "sendaction" : "SendAction",
+        "agendaname" : "AgendaName"
+      },
+      "entranceIntent" : true
+    },
+    "ChangeTime" : {
+      "slots" : {
+        "whentodo" : {
+          "elicitation" : {
+            "required" : false
+          },
+          "entity" : "IFLYTEK.Datetime",
+          "order" : 1
+        },
+        "whattodo" : {
+          "elicitation" : {
+            "required" : false
+          },
+          "min" : 2,
+          "max" : 20,
+          "entity" : "IFLYTEK.Wildcard",
+          "order" : 3
+        },
+        "whenchangeto" : {
+          "elicitation" : {
+            "required" : false
+          },
+          "entity" : "IFLYTEK.Datetime",
+          "order" : 2
+        }
+      },
+      "name" : "ChangeTime",
+      "chineseName" : "调整时间",
+      "confirmation" : {
+        "required" : false
+      },
+      "assistWords" : {
+        "modifyprefix" : "ModifyPrefix",
+        "helpme" : "IFLYTEK.HelpMe",
+        "me" : "IFLYTEK.Me"
+      },
+      "entranceIntent" : true
+    },
+    "AtWithFS" : {
+      "slots" : {
+        "whichtodo" : {
+          "elicitation" : {
+            "required" : false
+          },
+          "entity" : "IFLYTEK.Number",
+          "order" : 1
+        },
+        "whotodo" : {
+          "elicitation" : {
+            "required" : false
+          },
+          "min" : 1,
+          "max" : 12,
+          "entity" : "IFLYTEK.Wildcard",
+          "order" : 3
+        },
+        "lastwhichtodo" : {
+          "elicitation" : {
+            "required" : false
+          },
+          "entity" : "IFLYTEK.Number",
+          "order" : 2
+        }
+      },
+      "name" : "AtWithFS",
+      "chineseName" : "根据查找结果At参与人",
+      "confirmation" : {
+        "required" : false
+      },
+      "assistWords" : {
+        "normquantifier" : "NormQuantifier",
+        "margin" : "IFLYTEK.Margin",
+        "agendaunit" : "AgendaUnit",
+        "agendaname" : "AgendaName",
+        "talkprefix" : "TalkPrefix"
+      },
+      "entranceIntent" : true
+    },
+    "ChangeMultiTime" : {
+      "slots" : {
+        "whentodo" : {
+          "elicitation" : {
+            "required" : false
+          },
+          "entity" : "IFLYTEK.Datetime",
+          "order" : 1
+        },
+        "whenchangeto" : {
+          "elicitation" : {
+            "required" : false
+          },
+          "entity" : "IFLYTEK.Datetime",
+          "order" : 2
+        }
+      },
+      "name" : "ChangeMultiTime",
+      "chineseName" : "调整多个日程时间",
+      "confirmation" : {
+        "required" : false
+      },
+      "assistWords" : {
+        "modifyprefix" : "ModifyPrefix",
+        "helpme" : "IFLYTEK.HelpMe",
+        "agendaname" : "AgendaName"
+      },
+      "entranceIntent" : true
+    },
+    "TodoWithFS" : {
+      "slots" : {
+        "whichtodo" : {
+          "elicitation" : {
+            "required" : false
+          },
+          "entity" : "IFLYTEK.Number",
+          "order" : 1
+        },
+        "lastwhichtodo" : {
+          "elicitation" : {
+            "required" : false
+          },
+          "entity" : "IFLYTEK.Number",
+          "order" : 2
+        }
+      },
+      "name" : "TodoWithFS",
+      "chineseName" : "根据查找结果加入重要",
+      "confirmation" : {
+        "required" : false
+      },
+      "assistWords" : {
+        "agendaunit" : "AgendaUnit",
+        "agendaname" : "AgendaName",
+        "todolist" : "todolist"
+      },
+      "entranceIntent" : true
+    },
+    "MoveContacts" : {
+      "slots" : {
+        "whentodo" : {
+          "elicitation" : {
+            "required" : false
+          },
+          "entity" : "IFLYTEK.Datetime",
+          "order" : 1
+        },
+        "whotodo" : {
+          "elicitation" : {
+            "required" : false
+          },
+          "min" : 1,
+          "max" : 5,
+          "entity" : "IFLYTEK.Wildcard",
+          "order" : 3
+        },
+        "yq" : {
+          "elicitation" : {
+            "required" : false
+          },
+          "entity" : "IFLYTEK.Yq",
+          "order" : 4
+        },
+        "whattodo" : {
+          "elicitation" : {
+            "required" : false
+          },
+          "min" : 1,
+          "max" : 5,
+          "entity" : "IFLYTEK.Wildcard",
+          "order" : 2
+        }
+      },
+      "name" : "MoveContacts",
+      "chineseName" : "减少人员",
+      "confirmation" : {
+        "required" : false
+      },
+      "assistWords" : {
+        "verbprefix" : "VerbPrefix",
+        "talkprefix" : "TalkPrefix",
+        "rejection" : "Rejection"
+      },
+      "entranceIntent" : true
+    },
+    "AtAllWithFS" : {
+      "slots" : {
+        "whichtodo" : {
+          "elicitation" : {
+            "required" : false
+          },
+          "entity" : "IFLYTEK.Number",
+          "order" : 1
+        },
+        "lastwhichtodo" : {
+          "elicitation" : {
+            "required" : false
+          },
+          "entity" : "IFLYTEK.Number",
+          "order" : 2
+        }
+      },
+      "name" : "AtAllWithFS",
+      "chineseName" : "根据查找结果At所有参与人",
+      "confirmation" : {
+        "required" : false
+      },
+      "assistWords" : {
+        "normquantifier" : "NormQuantifier",
+        "margin" : "IFLYTEK.Margin",
+        "agendaname" : "AgendaName",
+        "allmembers" : "AllMembers",
+        "talkprefix" : "TalkPrefix"
+      },
+      "entranceIntent" : true
+    },
+    "ChangeTimeWithFS" : {
+      "slots" : {
+        "whichtodo" : {
+          "elicitation" : {
+            "required" : false
+          },
+          "entity" : "IFLYTEK.Number",
+          "order" : 3
+        },
+        "whenchangeto" : {
+          "elicitation" : {
+            "required" : false
+          },
+          "entity" : "IFLYTEK.Datetime",
+          "order" : 1
+        },
+        "lastwhichtodo" : {
+          "elicitation" : {
+            "required" : false
+          },
+          "entity" : "IFLYTEK.Number",
+          "order" : 2
+        }
+      },
+      "name" : "ChangeTimeWithFS",
+      "chineseName" : "根据查找结果调整时间",
+      "confirmation" : {
+        "required" : false
+      },
+      "assistWords" : {
+        "modifyprefix" : "ModifyPrefix",
+        "margin" : "IFLYTEK.Margin",
+        "agendaunit" : "AgendaUnit",
+        "agendaname" : "AgendaName"
+      },
+      "entranceIntent" : true
+    }
+  },
+  "version" : "2.1"
+}

@@ -1,0 +1,9 @@
+[ {
+  "text" : "{打开:actioncmd}夜间模式"
+}, {
+  "text" : "{关闭:actioncmd}夜间模式"
+}, {
+  "text" : "把夜间模式{打开:actioncmd}"
+}, {
+  "text" : "把{夜间模式:app}{关闭:actioncmd}"
+} ]

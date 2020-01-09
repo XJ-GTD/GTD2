@@ -1,0 +1,9 @@
+[ {
+  "text" : "这个app{怎么:how}用"
+}, {
+  "text" : "这个{怎么:how}用"
+}, {
+  "text" : "{这个:margin}冥王星{怎么:how}用"
+}, {
+  "text" : "[{能:can}][{告诉:talkprefix}][{我:me}]{这个:margin}东西{怎么:how}用[{吗:modal}]"
+} ]

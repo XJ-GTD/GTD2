@@ -1,0 +1,13 @@
+[ {
+  "text" : "{怎么:how}把{活动:agendaname}{发:sendaction}给其他人"
+}, {
+  "text" : "{怎么:how}{提醒:messagealert}其他人关注{我:me}{共享:sendaction}的{活动:agendaname}"
+}, {
+  "text" : "{怎么:how}修改{活动:agendaname}"
+}, {
+  "text" : "{怎么:how}{让:talkprefix}他们关注{活动:agendaname}"
+}, {
+  "text" : "{怎么:how}把{活动:agendaname}{发:sendaction}出去"
+}, {
+  "text" : "{怎么:how}修改"
+} ]

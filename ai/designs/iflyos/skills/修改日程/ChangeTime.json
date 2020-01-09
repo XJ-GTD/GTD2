@@ -1,0 +1,17 @@
+[ {
+  "text" : "把[{我:me}]{明天:whentodo}的{会议:whattodo}{调整:modifyprefix}到{后天:whenchangeto}"
+}, {
+  "text" : "把{我:me}{明天:whentodo}的{会议:whattodo}{改:modifyprefix}为{后天:whenchangeto}"
+}, {
+  "text" : "{明天:whentodo}的{会议:whattodo}{改:modifyprefix}为{后天:whenchangeto}"
+}, {
+  "text" : "{明天:whentodo}的{会议:whattodo}{调整:modifyprefix}到{后天:whenchangeto}"
+}, {
+  "text" : "{明天:whentodo}的{会议:whattodo}{改:modifyprefix}到{后天:whenchangeto}"
+}, {
+  "text" : "{帮我:helpme}把{明天:whentodo}的{会议:whattodo}{改:modifyprefix}到{后天:whenchangeto}"
+}, {
+  "text" : "把{明天:whentodo}的{会议:whattodo}{改:modifyprefix}到{后天:whenchangeto}"
+}, {
+  "text" : "{下周四:whentodo}的{旅游:whattodo}{早上6点钟:whenchangeto}出发"
+} ]

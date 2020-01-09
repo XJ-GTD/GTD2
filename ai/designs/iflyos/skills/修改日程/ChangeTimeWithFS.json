@@ -1,0 +1,21 @@
+[ {
+  "text" : "把第{一:whichtodo}{条:agendaunit}{改:modifyprefix}到{下周一下午3点:whenchangeto}"
+}, {
+  "text" : "把最后{一:lastwhichtodo}{条:agendaunit}{改:modifyprefix}到{下周一:whenchangeto}"
+}, {
+  "text" : "把倒数第{三:lastwhichtodo}{条:agendaunit}{改:modifyprefix}到{15号:whenchangeto}"
+}, {
+  "text" : "倒数第{一:lastwhichtodo}{个:agendaunit}{改:modifyprefix}到{后天:whenchangeto}"
+}, {
+  "text" : "把倒数第{一:lastwhichtodo}个{改:modifyprefix}到{后天:whenchangeto}"
+}, {
+  "text" : "最后{一:lastwhichtodo}{条:agendaunit}{改:modifyprefix}到{下周一:whenchangeto}"
+}, {
+  "text" : "第{一:whichtodo}{条:agendaunit}[{日程:agendaname}]{改:modifyprefix}到{下午一点:whenchangeto}"
+}, {
+  "text" : "第{1:whichtodo}{个:agendaunit}[{日程:agendaname}]{改:modifyprefix}到{下午三点:whenchangeto}"
+}, {
+  "text" : "第{1:whichtodo}{个:agendaunit}{日程:agendaname}{改:modifyprefix}到{下午3点:whenchangeto}"
+}, {
+  "text" : "把{这个:margin}{活动:agendaname}{改:modifyprefix}到{明天下午三点:whenchangeto}"
+} ]

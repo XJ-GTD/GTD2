@@ -1,0 +1,235 @@
+{
+  "intents" : {
+    "FindBySomething" : {
+      "slots" : {
+        "whattodo" : {
+          "elicitation" : {
+            "required" : false
+          },
+          "min" : 2,
+          "max" : 20,
+          "entity" : "IFLYTEK.Wildcard",
+          "order" : 1
+        }
+      },
+      "name" : "FindBySomething",
+      "chineseName" : "事情查找",
+      "confirmation" : {
+        "required" : false
+      },
+      "assistWords" : {
+        "normquantifier" : "NormQuantifier",
+        "helpme" : "IFLYTEK.HelpMe",
+        "query" : "IFLYTEK.Query",
+        "agendaname" : "AgendaName",
+        "when" : "when",
+        "scheduledat" : "ScheduledAt"
+      },
+      "entranceIntent" : true
+    },
+    "FindBySBAndS" : {
+      "slots" : {
+        "whotodo" : {
+          "elicitation" : {
+            "required" : false
+          },
+          "min" : 1,
+          "max" : 5,
+          "entity" : "IFLYTEK.Wildcard",
+          "order" : 1
+        },
+        "whattodo" : {
+          "elicitation" : {
+            "required" : false
+          },
+          "min" : 1,
+          "max" : 5,
+          "entity" : "IFLYTEK.Wildcard",
+          "order" : 2
+        }
+      },
+      "name" : "FindBySBAndS",
+      "chineseName" : "人物和事情查找",
+      "confirmation" : {
+        "required" : false
+      },
+      "assistWords" : {
+        "iwant" : "IFLYTEK.IWant",
+        "verbprefix" : "VerbPrefix",
+        "have" : "IFLYTEK.Have",
+        "agendaname" : "AgendaName",
+        "when" : "when",
+        "scheduledat" : "ScheduledAt",
+        "modal" : "IFLYTEK.Modal"
+      },
+      "entranceIntent" : true
+    },
+    "FindByFutureTask" : {
+      "slots" : {
+        "whentodo" : {
+          "elicitation" : {
+            "required" : false
+          },
+          "entity" : "IFLYTEK.Datetime",
+          "order" : 1
+        }
+      },
+      "name" : "FindByFutureTask",
+      "chineseName" : "未来是否有安排查询",
+      "confirmation" : {
+        "required" : false
+      },
+      "assistWords" : {
+        "have" : "IFLYTEK.Have",
+        "agendaname" : "AgendaName",
+        "talkprefix" : "TalkPrefix",
+        "modal" : "IFLYTEK.Modal"
+      },
+      "entranceIntent" : true
+    },
+    "FindByTime" : {
+      "slots" : {
+        "whentodo" : {
+          "elicitation" : {
+            "required" : false
+          },
+          "entity" : "IFLYTEK.Datetime",
+          "order" : 1
+        }
+      },
+      "name" : "FindByTime",
+      "chineseName" : "时间查找",
+      "confirmation" : {
+        "required" : false
+      },
+      "assistWords" : {
+        "margin" : "IFLYTEK.Margin",
+        "what" : "IFLYTEK.What",
+        "query" : "IFLYTEK.Query",
+        "me" : "IFLYTEK.Me",
+        "agendaname" : "AgendaName",
+        "have" : "IFLYTEK.Have"
+      },
+      "entranceIntent" : true
+    },
+    "FindByTAndS" : {
+      "slots" : {
+        "whentodo" : {
+          "elicitation" : {
+            "required" : false
+          },
+          "entity" : "IFLYTEK.Datetime",
+          "order" : 1
+        },
+        "whattodo" : {
+          "elicitation" : {
+            "required" : false
+          },
+          "min" : 1,
+          "max" : 20,
+          "entity" : "IFLYTEK.Wildcard",
+          "order" : 2
+        }
+      },
+      "name" : "FindByTAndS",
+      "chineseName" : "时间和事情查找",
+      "confirmation" : {
+        "required" : false
+      },
+      "assistWords" : {
+        "what" : "IFLYTEK.What",
+        "verbprefix" : "VerbPrefix",
+        "iwant" : "IFLYTEK.IWant",
+        "query" : "IFLYTEK.Query",
+        "me" : "IFLYTEK.Me",
+        "have" : "IFLYTEK.Have",
+        "when" : "when",
+        "scheduledat" : "ScheduledAt",
+        "modal" : "IFLYTEK.Modal"
+      },
+      "entranceIntent" : true
+    },
+    "FindByTAndSB" : {
+      "slots" : {
+        "whentodo" : {
+          "elicitation" : {
+            "required" : false
+          },
+          "entity" : "IFLYTEK.Datetime",
+          "order" : 1
+        },
+        "whotodo" : {
+          "elicitation" : {
+            "required" : false
+          },
+          "min" : 1,
+          "max" : 5,
+          "entity" : "IFLYTEK.Wildcard",
+          "order" : 2
+        }
+      },
+      "name" : "FindByTAndSB",
+      "chineseName" : "时间和人物查找",
+      "confirmation" : {
+        "required" : false
+      },
+      "assistWords" : {
+        "have" : "IFLYTEK.Have",
+        "agendaname" : "AgendaName",
+        "when" : "when",
+        "scheduledat" : "ScheduledAt",
+        "modal" : "IFLYTEK.Modal"
+      },
+      "entranceIntent" : true
+    },
+    "FindBySomebody" : {
+      "slots" : {
+        "whotodo" : {
+          "elicitation" : {
+            "required" : false
+          },
+          "min" : 1,
+          "max" : 5,
+          "entity" : "IFLYTEK.Wildcard",
+          "order" : 1
+        }
+      },
+      "name" : "FindBySomebody",
+      "chineseName" : "人物查找",
+      "confirmation" : {
+        "required" : false
+      },
+      "assistWords" : {
+        "agendaname" : "AgendaName",
+        "have" : "IFLYTEK.Have",
+        "when" : "when",
+        "modal" : "IFLYTEK.Modal",
+        "scheduledat" : "ScheduledAt"
+      },
+      "entranceIntent" : true
+    },
+    "FindByFutureTime" : {
+      "slots" : {
+        "whentodo" : {
+          "elicitation" : {
+            "required" : false
+          },
+          "entity" : "IFLYTEK.Datetime",
+          "order" : 1
+        }
+      },
+      "name" : "FindByFutureTime",
+      "chineseName" : "未来是否有空查询",
+      "confirmation" : {
+        "required" : false
+      },
+      "assistWords" : {
+        "me" : "IFLYTEK.Me",
+        "have" : "IFLYTEK.Have",
+        "modal" : "IFLYTEK.Modal"
+      },
+      "entranceIntent" : true
+    }
+  },
+  "version" : "2.1"
+}

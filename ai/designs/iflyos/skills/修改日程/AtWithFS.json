@@ -1,0 +1,9 @@
+[ {
+  "text" : "{让:talkprefix}{张金洋:whotodo}关注[{一下:normquantifier}]第{二:whichtodo}{个:agendaunit}{活动:agendaname}"
+}, {
+  "text" : "{让:talkprefix}{张金洋:whotodo}关注[{一下:normquantifier}]{这个:margin}{活动:agendaname}"
+}, {
+  "text" : "{让:talkprefix}{张金洋:whotodo}关注[{一下:normquantifier}]倒数第{一:lastwhichtodo}{个:agendaunit}{活动:agendaname}"
+}, {
+  "text" : "{让:talkprefix}{张金洋:whotodo}关注{这个:margin}{活动:agendaname}"
+} ]

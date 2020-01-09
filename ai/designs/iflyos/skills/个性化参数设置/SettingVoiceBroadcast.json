@@ -1,0 +1,9 @@
+[ {
+  "text" : "{打开:actioncmd}{语音播报:speech}"
+}, {
+  "text" : "{关闭:actioncmd}{语音播报:speech}"
+}, {
+  "text" : "把{语音播报:speech}{打开:actioncmd}"
+}, {
+  "text" : "把{语音播报:speech}{关闭:actioncmd}"
+} ]

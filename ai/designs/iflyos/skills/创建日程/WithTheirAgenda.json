@@ -1,0 +1,23 @@
+[ {
+  "text" : "[{我:me}]{明天:whentodo}和{张金洋:whotodo}{去:verbprefix}{北京开会 :whattodo}"
+}, {
+  "text" : "[{我:me}]{明天:whentodo}和{张金洋:whotodo}一起{去:verbprefix}{浦东开会 :whattodo}"
+}, {
+  "text" : "[{我:me}]{明天早上:whentodo}和{许兆平:whotodo}一起{开会 :whattodo}"
+}, {
+  "text" : "[{我:me}]{明天下午:whentodo}和{张金洋:whotodo}在{金茂大厦门口碰头:whattodo}"
+}, {
+  "text" : "{张金洋:whotodo}约{我:me}{明天:whentodo}在{金茂大厦门口碰头 :whattodo}"
+}, {
+  "text" : "约了{张金洋:whotodo}{明天早上:whentodo}在{七莘路跑步 :whattodo}"
+}, {
+  "text" : "约了{下周三:whentodo}和{张金洋:whotodo}{去:verbprefix}{北京出差:whattodo}"
+}, {
+  "text" : "约了{张金洋:whotodo}{明天下午:whentodo}一起{去:verbprefix}{喝下午茶:whattodo}"
+}, {
+  "text" : "约了{张金洋:whotodo}{明天:whentodo}一起{喝下午茶:whattodo}"
+}, {
+  "text" : "约了{张金洋:whotodo}{明天晚上九点:whentodo}{上线:whattodo}"
+}, {
+  "text" : "{今天晚上:whentodo}和{张金洋:whotodo}{去:verbprefix}{看电影:whattodo}"
+} ]

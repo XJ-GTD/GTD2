@@ -1,0 +1,9 @@
+[ {
+  "text" : "{怎么:how}{取消:actioncmd}{活动:agendaname}"
+}, {
+  "text" : "{怎么:how}{取消:actioncmd}{日历项:planitemname}"
+}, {
+  "text" : "{怎么:how}{取消:actioncmd}{备忘:memoname}"
+}, {
+  "text" : "{怎么:how}{取消:actioncmd}"
+} ]

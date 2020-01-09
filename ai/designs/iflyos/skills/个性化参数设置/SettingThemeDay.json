@@ -1,0 +1,9 @@
+[ {
+  "text" : "{打开:actioncmd}白天模式"
+}, {
+  "text" : "{关闭:actioncmd}白天模式"
+}, {
+  "text" : "把白天模式{打开:actioncmd}"
+}, {
+  "text" : "把白天模式{关闭:actioncmd}"
+} ]

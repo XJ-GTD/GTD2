@@ -1,0 +1,19 @@
+[ {
+  "text" : "和{张金洋:whotodo}的{会议:whattodo}在{什么时候:when}"
+}, {
+  "text" : "{张金洋:whotodo}的{会议:whattodo}{安排在:scheduledat}{什么时候:when}"
+}, {
+  "text" : "{张金洋:whotodo}的{会议:whattodo}是在{什么时候:when}"
+}, {
+  "text" : "{张金洋:whotodo}的{会议:whattodo}是在{什么时候:when}开始"
+}, {
+  "text" : "{张金洋:whotodo}{有:have}{会议:whattodo}{安排:agendaname}{吗:modal}"
+}, {
+  "text" : "{张金洋:whotodo}{什么时候:when}{出差:whattodo}"
+}, {
+  "text" : "{张金洋:whotodo}{什么时候:when}去{北京出差:whattodo}"
+}, {
+  "text" : "{张金洋:whotodo}{要:iwant}来{北京开会:whattodo}{吗:modal}"
+}, {
+  "text" : "{张金洋:whotodo}{要:iwant}来{参加:verbprefix}{同学聚会:whattodo}{吗:modal}"
+} ]

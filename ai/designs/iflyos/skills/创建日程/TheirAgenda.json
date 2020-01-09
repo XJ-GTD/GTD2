@@ -1,0 +1,13 @@
+[ {
+  "text" : "{安排:talkprefix}{张金洋:whotodo}{明天上午:whentodo}{开:verbprefix}{经营会议 :whattodo}"
+}, {
+  "text" : "{安排:talkprefix}{张金洋:whotodo}{明天上午9点:whentodo}{开:verbprefix}{经营会议:whattodo}"
+}, {
+  "text" : "{安排:talkprefix}{张金洋:whotodo}{明天早上:whentodo}{跑步:whattodo}"
+}, {
+  "text" : "{下午:whentodo}{让:talkprefix}{许兆平:whotodo}来{开会:whattodo}"
+}, {
+  "text" : "{让:talkprefix}{许兆平:whotodo}{下午:whentodo}来{开会 :whattodo}"
+}, {
+  "text" : "{告诉:talkprefix}{席理加:whotodo}{明天:whentodo}{签合同和付钱:whattodo}"
+} ]
