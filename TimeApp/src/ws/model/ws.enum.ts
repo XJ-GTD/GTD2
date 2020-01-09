@@ -109,6 +109,11 @@ export enum R {
   C = "R.C",  //闹铃设置关联日程
 }
 
+//用户指令显示
+export enum TK {
+  ASK = "TK.ASK"  //显示发出的语音指令
+}
+
 //操作
 export enum O {
   O = "O.O",  //确认
