@@ -142,7 +142,7 @@ export class AipPage{
     }
 
     if (welcome['header']['describe'].length > 0) {
-      this.emitService.emit('rabbitmq.message.received', {body: JSON.stringify(welcome)});
+      this.emitService.emit('local.message.received', {body: JSON.stringify(welcome)});
     }
   }
 

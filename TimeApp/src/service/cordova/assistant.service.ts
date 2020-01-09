@@ -343,7 +343,7 @@ export class AssistantService {
       }
     };
 
-    this.emitService.emit('rabbitmq.message.received', {body: JSON.stringify(ask)});
+    this.emitService.emit('local.message.received', {body: JSON.stringify(ask)});
   }
 
   /**

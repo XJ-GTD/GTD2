@@ -79,7 +79,7 @@ export class EmitService {
   }
 
   //冥王星内建事件订阅
-  register(handler: string, callback): EventEmitter<any> {
+  register(handler: string, callback, once: boolean = false): EventEmitter<any> {
     let el: Array<EventEmitter<any>> = EmitService.buildinEvents.get(handler);
 
     //事件不存在，创建并加入管理
@@ -93,6 +93,13 @@ export class EmitService {
     ee.subscribe(($data: any) => {
       callback($data);
     });
+
+    if (once && el.length > 0) {
+      while (el.length > 0) {
+        let exist = el.pop();
+        exist.unsubscribe();
+      }
+    }
 
     el.push(ee);
     EmitService.buildinEvents.set(handler, el);
