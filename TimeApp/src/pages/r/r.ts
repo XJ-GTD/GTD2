@@ -58,7 +58,6 @@ import {PageLoginData} from "../../data.mapping";
   `,
 })
 export class RPage {
-  statusBarColor: string = "#fff";
 
   login: PageLoginData = new PageLoginData();
   timeText:any = "获取验证码";

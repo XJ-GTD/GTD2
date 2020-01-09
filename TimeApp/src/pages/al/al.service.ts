@@ -23,7 +23,6 @@ import {FeedbackService} from "../../service/cordova/feedback.service";
 import {JPushService} from "../../service/cordova/jpush.service";
 import {EffectService} from "../../service/business/effect.service";
 import {App, ModalController} from "ionic-angular";
-import {StatusBar} from "@ionic-native/status-bar";
 import {BackgroundMode} from "@ionic-native/background-mode";
 import {RemindfeedbackService} from "../../service/cordova/remindfeedback.service";
 import {PatchService} from "../../service/business/patch.service";
@@ -53,12 +52,9 @@ export class AlService {
               private effectService: EffectService,
               private modalCtr: ModalController,
               private app: App,
-              private statusBar: StatusBar,
               private backgroundMode:BackgroundMode,
               private patchService : PatchService) {
 
-    this.statusBar.overlaysWebView(true);
-    // this.statusBar.hide();
   }
 
 
@@ -240,33 +236,6 @@ export class AlService {
 
           this.settings.setActiveTheme(this.theme.value);
         }
-
-
-        //显示状态栏
-        // this.statusBar.show();
-        //监听statusbar颜色变化
-        // this.settings.getStatusBarColor().subscribe(val => {
-        //   let color:string = this.settings.getStatusColor(val);
-        //   //去除状态栏颜色设置 TODO
-        //   // this.statusBar.backgroundColorByHexString(color);
-        // });
-
-        // this.app.viewDidLoad.subscribe((event) => {
-        //   if (event && event.instance && DataConfig.isPage(event.instance)) {
-        //     this.settings.popStatusBarColor();
-        //   }
-        // });
-
-
-
-
-        //模态框退出时还原状态栏颜色
-        // this.app.viewWillUnload.subscribe((event) => {
-        //   if (event && event.instance && DataConfig.isPage(event.instance)) {
-        //     this.settings.popStatusBarColor();
-        //   }
-        // });
-
 
         //允许进入后台模式
         if (this.util.hasCordova()) {

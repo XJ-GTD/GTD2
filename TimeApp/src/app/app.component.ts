@@ -32,6 +32,7 @@ export class MyApp {
               private device: Device,
               private screenOrientation: ScreenOrientation,
               public config: Config,
+              private statusBar: StatusBar,
             ) {
     //特殊菜单设置
     MenuController.registerType('scalePush', MenuScalePushType);
@@ -42,6 +43,12 @@ export class MyApp {
     this.platform.ready().then(() => {
 
       //this.util.loadingEnd();
+
+      if (this.util.isIOS()){
+        this.statusBar.overlaysWebView(true);
+      }else {
+        this.statusBar.overlaysWebView(false);
+      }
 
       //允许进入后台模式
       if (this.util.hasCordova()) {

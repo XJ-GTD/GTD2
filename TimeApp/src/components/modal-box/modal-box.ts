@@ -96,7 +96,6 @@ export class ModalBoxComponent {
 
   constructor(public events: Events, private renderer2: Renderer2,
               private settings:SettingsProvider) {
-    settings.setStatusBarColor(StatusType.page);
   }
 
   setBoxContent() {

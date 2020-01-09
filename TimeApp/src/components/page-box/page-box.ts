@@ -134,7 +134,6 @@ export class PageBoxComponent{
   constructor(private events: Events,
               private renderer2: Renderer2,
               private settings:SettingsProvider) {
-    settings.setStatusBarColor(StatusType.page);
   }
 
   setBoxContent(){

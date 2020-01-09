@@ -242,7 +242,6 @@ import {AssistantService} from "../../service/cordova/assistant.service";
   `
 })
 export class CommemorationDayPage {
-  statusBarColor: string = "#3c4d55";
 
   buttons: any = {
     remove: false,

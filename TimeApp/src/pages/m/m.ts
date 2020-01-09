@@ -128,7 +128,6 @@ export class MPage {
       }
     });
 
-    settings.setStatusBarColor(StatusType.home);
   }
 
   ionViewDidLoad() {
@@ -209,11 +208,9 @@ export class MPage {
   }
 
   ionClose($evnet){
-    this.settings.popStatusBarColor();
   }
 
   ionOpen($evnet){
-    this.settings.setStatusBarColor(StatusType.meun);
 
   }
   ionDrag($evnet){
