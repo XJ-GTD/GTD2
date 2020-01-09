@@ -34,7 +34,7 @@ NSString* SECRET_KEY = @"9oHZPMLgc0BM9a4m3DhpHUhGSqYvsrAF";
     NSLog(@"TTS version info: %@", [BDSSpeechSynthesizer version]);
     [BDSSpeechSynthesizer setLogLevel:BDS_PUBLIC_LOG_VERBOSE];
     [self configureOnlineTTS];
-    [self configureOfflineTTS];
+    //[self configureOfflineTTS];
 
 }
 
@@ -43,8 +43,11 @@ NSString* SECRET_KEY = @"9oHZPMLgc0BM9a4m3DhpHUhGSqYvsrAF";
     [[BDSSpeechSynthesizer sharedInstance] setApiKey:API_KEY withSecretKey:SECRET_KEY];
 
     [[AVAudioSession sharedInstance]setCategory:AVAudioSessionCategoryPlayback error:nil];
-    [[BDSSpeechSynthesizer sharedInstance] setSynthParam:@(BDS_SYNTHESIZER_SPEAKER_DYY) forKey:BDS_SYNTHESIZER_PARAM_SPEAKER];
-    [[BDSSpeechSynthesizer sharedInstance] setSynthParam:@(10) forKey:BDS_SYNTHESIZER_PARAM_ONLINE_REQUEST_TIMEOUT];
+    [[BDSSpeechSynthesizer sharedInstance] setSynthParam:@(111) forKey:BDS_SYNTHESIZER_PARAM_SPEAKER];
+    [[BDSSpeechSynthesizer sharedInstance] setSynthParam:@(6) forKey:BDS_SYNTHESIZER_PARAM_SPEED];
+    [[BDSSpeechSynthesizer sharedInstance] setSynthParam:@(5) forKey:BDS_SYNTHESIZER_PARAM_PITCH];
+    [[BDSSpeechSynthesizer sharedInstance] setSynthParam:@(4) forKey:BDS_SYNTHESIZER_PARAM_VOLUME];
+//    [[BDSSpeechSynthesizer sharedInstance] setSynthParam:@(10) forKey:BDS_SYNTHESIZER_PARAM_ONLINE_REQUEST_TIMEOUT];
 
 }
 
@@ -86,19 +89,19 @@ NSString* SECRET_KEY = @"9oHZPMLgc0BM9a4m3DhpHUhGSqYvsrAF";
 
 #pragma mark - implement BDSSpeechSynthesizerDelegate
 - (void)synthesizerStartWorkingSentence:(NSInteger)SynthesizeSentence{
-    NSLog(@"Did synthesizerStartWorkingSentence synth %d", SynthesizeSentence);
+    NSLog(@"Did synthesizerStartWorkingSentence synth %ld", SynthesizeSentence);
 }
 
 - (void)synthesizerFinishWorkingSentence:(NSInteger)SynthesizeSentence{
-    NSLog(@"Did synthesizerFinishWorkingSentence synth, %d", SynthesizeSentence);
+    NSLog(@"Did synthesizerFinishWorkingSentence synth, %ld", SynthesizeSentence);
 }
 
 - (void)synthesizerSpeechStartSentence:(NSInteger)SpeakSentence{
-    NSLog(@"Did synthesizerSpeechStartSentence speak %d", SpeakSentence);
+    NSLog(@"Did synthesizerSpeechStartSentence speak %ld", SpeakSentence);
 }
 
 - (void)synthesizerSpeechEndSentence:(NSInteger)SpeakSentence{
-    NSLog(@"Did synthesizerSpeechEndSentence speak %d", SpeakSentence);
+    NSLog(@"Did synthesizerSpeechEndSentence speak %ld", SpeakSentence);
     if (self.callbackId) {
         CDVPluginResult* result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
         [result setKeepCallbackAsBool:YES];
@@ -110,13 +113,13 @@ NSString* SECRET_KEY = @"9oHZPMLgc0BM9a4m3DhpHUhGSqYvsrAF";
                        DataFormat:(BDSAudioFormat)fmt
                    characterCount:(int)newLength
                    sentenceNumber:(NSInteger)SynthesizeSentence{
-    NSLog(@"Did synthesizerNewDataArrived speak %d", SynthesizeSentence);
+    NSLog(@"Did synthesizerNewDataArrived speak %ld", SynthesizeSentence);
 }
 
 - (void)synthesizerTextSpeakLengthChanged:(int)newLength
                            sentenceNumber:(NSInteger)SpeakSentence{
 
-    NSLog(@"Did synthesizerTextSpeakLengthChanged speak %d", SpeakSentence);
+    NSLog(@"Did synthesizerTextSpeakLengthChanged speak %ld", SpeakSentence);
 }
 
 - (void)synthesizerdidPause{
@@ -135,7 +138,7 @@ NSString* SECRET_KEY = @"9oHZPMLgc0BM9a4m3DhpHUhGSqYvsrAF";
 - (void)synthesizerErrorOccurred:(NSError *)error
                         speaking:(NSInteger)SpeakSentence
                     synthesizing:(NSInteger)SynthesizeSentence{
-    NSLog(@"Did synthesizerErrorOccurred %d, %d", SpeakSentence, SynthesizeSentence);
+    NSLog(@"Did synthesizerErrorOccurred %ld, %ld", SpeakSentence, SynthesizeSentence);
 }
 
 

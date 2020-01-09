@@ -28,7 +28,7 @@
 
 @implementation XjBaiduWakeUp
 
-NSString* APP_ID_2 = @"14502702";
+//NSString* APP_ID = @"14502702";
 //NSString* API_KEY_2 = @"6YvlNRGZ5I4CkA715XnVyoSm";
 //NSString* SECRET_KEY_2 = @"9oHZPMLgc0BM9a4m3DhpHUhGSqYvsrAF";
 
@@ -40,11 +40,11 @@ NSString* APP_ID_2 = @"14502702";
 
 - (void)configWakeup {
 
-    [self.wakeupEventManager setParameter:APP_ID_2 forKey:BDS_WAKEUP_APP_CODE];
+    [self.wakeupEventManager setParameter:@"14502702" forKey:BDS_WAKEUP_APP_CODE];
     [self.wakeupEventManager setParameter:nil forKey:BDS_WAKEUP_AUDIO_FILE_PATH];
     [self.wakeupEventManager setParameter:nil forKey:BDS_WAKEUP_AUDIO_INPUT_STREAM];
 
-     NSString* dat = [[NSBundle mainBundle] pathForResource:@"bds_easr_basic_model" ofType:@"dat"];
+     NSString* dat = [[NSBundle mainBundle] pathForResource:@"bds_easr_dnn_wakeup_model" ofType:@"dat"];
 
     // 默认的唤醒词为"百度一下"，如需自定义唤醒词，请在 http://ai.baidu.com/tech/speech/wake 中评估并下载唤醒词，替换此参数
     NSString* words = [[NSBundle mainBundle] pathForResource:@"WakeUp" ofType:@"bin"];
