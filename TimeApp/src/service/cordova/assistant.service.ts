@@ -231,7 +231,7 @@ export class AssistantService {
     textPro.c.server = DataConfig.wsServerContext;
     textPro.c.client.option = DataConfig.wsWsOpt;
     textPro.c.client.processor = DataConfig.wsWsProcessor;
-    this.postAsk(text);
+    // this.postAsk(text);
     await this.aibutlerRestful.posttext(textPro)
       .then(data => {
         // console.log("data code：" + data.code);
@@ -304,7 +304,7 @@ export class AssistantService {
       audioPro.c.client.option = DataConfig.wsWsOpt;
       audioPro.c.client.processor = DataConfig.wsWsProcessor;
       audioPro.c.server = DataConfig.wsServerContext;
-      this.postAsk(result.text);
+      // this.postAsk(result.text);
       await this.aibutlerRestful.postaudio(audioPro);
       this.listening = false;
       this.emitService.emitListener(false);

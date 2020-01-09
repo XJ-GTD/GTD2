@@ -252,7 +252,7 @@ export class SpeechProcess extends BaseProcess implements MQProcess {
     } else {
       emspeech.an = speakText;
     }
-    // emspeech.org = content.thisContext.original;
+    emspeech.org = content.thisContext.original;
     this.emitService.emitSpeech(emspeech);
 
 
