@@ -1,19 +1,19 @@
 {
   "android": {
-//      "debug": {
-//          "keystore": "../android/mwxing_debug.keystore",
-//          "storePassword": "Xj123456*",
-//          "alias": "mwxing_debug.keystore",
-//          "password" : "Xj123456*",
-//          "keystoreType": "JKS"
-//      },
-    "debug": {
-      "keystore": "../android/mwxing-release.keystore",
-      "storePassword": "MWXing1234*",
-      "alias": "mwxing-release.keystore",
-      "password" : "MWXing1234*",
-      "keystoreType": "JKS"
-    },
+      "olddebug": {
+          "keystore": "../android/mwxing_debug.keystore",
+          "storePassword": "Xj123456*",
+          "alias": "mwxing_debug.keystore",
+          "password" : "Xj123456*",
+          "keystoreType": "JKS"
+      },
+      "debug": {
+        "keystore": "../android/mwxing-release.keystore",
+        "storePassword": "MWXing1234*",
+        "alias": "mwxing-release.keystore",
+        "password" : "MWXing1234*",
+        "keystoreType": "JKS"
+      },
       "release": {
           "keystore": "../android/mwxing-release.keystore",
           "storePassword": "MWXing1234*",
