@@ -21,10 +21,10 @@ export class PsService {
     uTbl.ui =  data.unionid; //unionid
     uTbl.un =  data.nickname; //用户名（昵称）
     uTbl.rn =  data.realname; //真实姓名
-    uTbl.us =  data.sex == undefined || data.sex == "" ? "0" : data.sex; //性别
-    uTbl.biy = data.birthday == undefined || data.birthday == "" ? "" : data.birthday;  //出生日期
-    uTbl.ic =  data.ic == undefined || data.ic == "" ? "" : data.ic;  //身份证
-    uTbl.uct = data.contact== undefined || data.contact == "" ? "" : data.contact;//  联系方式
+    uTbl.us =  data.sex || "0"; //性别
+    uTbl.biy = data.birthday || "";  //出生日期
+    uTbl.ic =  data.ic || "";  //身份证
+    uTbl.uct = data.contact || "";//  联系方式
     uTbl.rob = data.extends? (data.extends.useMp3 || "9") : "9";  //使用mp3 data.extends.useMp3;
 
     // uTbl.hiu = data.avatarbase64;//头像
@@ -45,10 +45,10 @@ export class PsService {
     uTbl.ui =  data.unionid; //unionid
     uTbl.un =  data.nickname; //用户名（昵称）
     uTbl.rn =  data.realname; //真实姓名
-    uTbl.us =  data.sex == undefined || data.sex == "" ? "0" : data.sex; //性别
-    uTbl.biy = data.birthday == undefined || data.birthday == "" ? "" : data.birthday;  //出生日期
-    uTbl.ic =  data.ic == undefined || data.ic == "" ? "" : data.ic;  //身份证
-    uTbl.uct = data.contact== undefined || data.contact == "" ? "" : data.contact;//  联系方式
+    uTbl.us =  data.sex || "0"; //性别
+    uTbl.biy = data.birthday || "";  //出生日期
+    uTbl.ic =  data.ic || "";  //身份证
+    uTbl.uct = data.contact || "";  //  联系方式
     uTbl.rob = data.extends? (data.extends.useMp3 || "9") : "9";  //使用mp3 data.extends.useMp3;
 
     // uTbl.hiu = data.avatarbase64;//头像
