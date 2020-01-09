@@ -1,0 +1,25 @@
+[ {
+  "text" : "{打开:actioncmd}振动"
+}, {
+  "text" : "{关闭:actioncmd}振动"
+}, {
+  "text" : "{打开:actioncmd}震动"
+}, {
+  "text" : "{关闭:actioncmd}震动"
+}, {
+  "text" : "{打开:actioncmd}音效"
+}, {
+  "text" : "{关闭:actioncmd}音效"
+}, {
+  "text" : "{打开:actioncmd}震动音效"
+}, {
+  "text" : "{关闭:actioncmd}震动音效"
+}, {
+  "text" : "{打开:actioncmd}{振动音效:vibrationmusic}"
+}, {
+  "text" : "{关闭:actioncmd}{振动音效:vibrationmusic}"
+}, {
+  "text" : "把{振动:vibrationmusic}{打开:actioncmd}"
+}, {
+  "text" : "把{振动:vibrationmusic}{关闭:actioncmd}"
+} ]

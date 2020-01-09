@@ -1,0 +1,9 @@
+[ {
+  "text" : "{打开:actioncmd}新消息提醒"
+}, {
+  "text" : "{关闭:actioncmd}新消息提醒 "
+}, {
+  "text" : "把新消息提醒{打开:actioncmd}"
+}, {
+  "text" : "把新消息提醒{关闭:actioncmd}"
+} ]

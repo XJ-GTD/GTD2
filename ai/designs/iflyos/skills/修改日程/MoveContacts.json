@@ -1,0 +1,5 @@
+[ {
+  "text" : "{明天:whentodo}让{张金洋:whotodo}{不用来:rejection}{参加:verbprefix}{会议:whattodo}[{了:yq}]"
+}, {
+  "text" : "{告诉:talkprefix}{张金洋:whotodo}{明天:whentodo}{不用来:rejection}{参加:verbprefix}{会议:whattodo}[{了:yq}]"
+} ]

@@ -1,0 +1,13 @@
+[ {
+  "text" : "[{我:me}]{明天:whentodo}去{浦东开会 :whattodo}"
+}, {
+  "text" : "[{我:me}]{明天下午2点:whentodo}{送:verbprefix}{席佳龙去上海诺美学校参加物理竞赛 :whattodo}"
+}, {
+  "text" : "[{我:me}]{明天下午:whentodo}要{去:verbprefix}{浦东机场接龙龙 :whattodo}"
+}, {
+  "text" : "{提醒:messagealert}{我:me}{五天后:whentodo}{上班 :whattodo}"
+}, {
+  "text" : "{提醒:messagealert}{我:me}{五分钟后:whentodo}{开会:whattodo}"
+}, {
+  "text" : "{whentodo}{whattodo}"
+} ]

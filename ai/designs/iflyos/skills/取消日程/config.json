@@ -1,0 +1,186 @@
+{
+  "intents" : {
+    "CancelSomething" : {
+      "slots" : {
+        "whentodo" : {
+          "elicitation" : {
+            "required" : false
+          },
+          "entity" : "IFLYTEK.Datetime",
+          "order" : 1
+        },
+        "yq" : {
+          "elicitation" : {
+            "required" : false
+          },
+          "entity" : "IFLYTEK.Yq",
+          "order" : 3
+        },
+        "whattodo" : {
+          "elicitation" : {
+            "required" : false
+          },
+          "min" : 2,
+          "max" : 20,
+          "entity" : "IFLYTEK.Wildcard",
+          "order" : 2
+        }
+      },
+      "name" : "CancelSomething",
+      "chineseName" : "取消指定事情",
+      "confirmation" : {
+        "required" : false
+      },
+      "assistWords" : {
+        "helpme" : "IFLYTEK.HelpMe",
+        "verbprefix" : "VerbPrefix",
+        "me" : "IFLYTEK.Me"
+      },
+      "entranceIntent" : true
+    },
+    "CancelContacts" : {
+      "slots" : {
+        "whentodo" : {
+          "elicitation" : {
+            "required" : false
+          },
+          "entity" : "IFLYTEK.Datetime",
+          "order" : 1
+        },
+        "whotodo" : {
+          "elicitation" : {
+            "required" : false
+          },
+          "min" : 2,
+          "max" : 16,
+          "entity" : "IFLYTEK.Wildcard",
+          "order" : 2
+        }
+      },
+      "name" : "CancelContacts",
+      "chineseName" : "取消指定人员",
+      "confirmation" : {
+        "required" : false
+      },
+      "assistWords" : {
+        "agendaname" : "AgendaName",
+        "me" : "IFLYTEK.Me"
+      },
+      "entranceIntent" : true
+    },
+    "CancelWithFS" : {
+      "slots" : {
+        "whichtodo" : {
+          "elicitation" : {
+            "required" : false
+          },
+          "entity" : "IFLYTEK.Number",
+          "order" : 1
+        },
+        "lastwhichtodo" : {
+          "elicitation" : {
+            "required" : false
+          },
+          "entity" : "IFLYTEK.Number",
+          "order" : 2
+        }
+      },
+      "name" : "CancelWithFS",
+      "chineseName" : "根据查找结果取消日程",
+      "confirmation" : {
+        "required" : false
+      },
+      "assistWords" : {
+        "margin" : "IFLYTEK.Margin",
+        "agendaunit" : "AgendaUnit",
+        "actioncmd" : "Delete",
+        "agendaname" : "AgendaName",
+        "delete" : "Delete"
+      },
+      "entranceIntent" : true
+    },
+    "CancelAll" : {
+      "slots" : {
+        "whentodo" : {
+          "elicitation" : {
+            "required" : false
+          },
+          "entity" : "IFLYTEK.Datetime",
+          "order" : 1
+        }
+      },
+      "name" : "CancelAll",
+      "chineseName" : "取消所有",
+      "confirmation" : {
+        "required" : false
+      },
+      "assistWords" : {
+        "helpme" : "IFLYTEK.HelpMe",
+        "me" : "IFLYTEK.Me",
+        "agendaname" : "AgendaName"
+      },
+      "entranceIntent" : true
+    },
+    "CancelPIWithFS" : {
+      "slots" : {
+        "whichtodo" : {
+          "elicitation" : {
+            "required" : false
+          },
+          "entity" : "IFLYTEK.Number",
+          "order" : 1
+        },
+        "lastwhichtodo" : {
+          "elicitation" : {
+            "required" : false
+          },
+          "entity" : "IFLYTEK.Number",
+          "order" : 2
+        }
+      },
+      "name" : "CancelPIWithFS",
+      "chineseName" : "根据查找结果取消日历项",
+      "confirmation" : {
+        "required" : false
+      },
+      "assistWords" : {
+        "margin" : "IFLYTEK.Margin",
+        "agendaunit" : "AgendaUnit",
+        "actioncmd" : "Delete",
+        "planitemname" : "PlanItemName"
+      },
+      "entranceIntent" : true
+    },
+    "CancelMemoWithFS" : {
+      "slots" : {
+        "whichtodo" : {
+          "elicitation" : {
+            "required" : false
+          },
+          "entity" : "IFLYTEK.Number",
+          "order" : 1
+        },
+        "lastwhichtodo" : {
+          "elicitation" : {
+            "required" : false
+          },
+          "entity" : "IFLYTEK.Number",
+          "order" : 2
+        }
+      },
+      "name" : "CancelMemoWithFS",
+      "chineseName" : "根据查找结果取消备忘",
+      "confirmation" : {
+        "required" : false
+      },
+      "assistWords" : {
+        "memoname" : "MemoName",
+        "margin" : "IFLYTEK.Margin",
+        "agendaunit" : "AgendaUnit",
+        "actioncmd" : "Delete"
+      },
+      "entranceIntent" : true
+    }
+  },
+  "version" : "2.1"
+}

@@ -1,0 +1,7 @@
+[ {
+  "text" : "取消{明天:whentodo}和{张金洋:whotodo}的{安排:agendaname}"
+}, {
+  "text" : "把{明天:whentodo}和{张金洋:whotodo}的{安排:agendaname}取消"
+}, {
+  "text" : "取消{明天:whentodo}[{我:me}]和{张金洋:whotodo}的{安排:agendaname}"
+} ]

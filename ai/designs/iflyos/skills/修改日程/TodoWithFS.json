@@ -1,0 +1,9 @@
+[ {
+  "text" : "把这个{活动:agendaname}加入{重要事项:todolist}"
+}, {
+  "text" : "把第{一:whichtodo}{个:agendaunit}{活动:agendaname}加入{重要事项:todolist}"
+}, {
+  "text" : "把倒数第{一:lastwhichtodo}{条:agendaunit}加入{重要事项 :todolist}"
+}, {
+  "text" : "把第{二:whichtodo}{条:agendaunit}{日程:agendaname}加入{重要:todolist}"
+} ]

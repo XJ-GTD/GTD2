@@ -1,0 +1,114 @@
+{
+  "intents" : {
+    "MyAgenda" : {
+      "slots" : {
+        "whentodo" : {
+          "elicitation" : {
+            "required" : false
+          },
+          "entity" : "IFLYTEK.Datetime",
+          "order" : 1
+        },
+        "whattodo" : {
+          "elicitation" : {
+            "required" : false
+          },
+          "min" : 2,
+          "max" : 20,
+          "entity" : "IFLYTEK.Wildcard",
+          "order" : 2
+        }
+      },
+      "name" : "MyAgenda",
+      "chineseName" : "我的日程",
+      "confirmation" : {
+        "required" : false
+      },
+      "assistWords" : {
+        "messagealert" : "MessageAlert",
+        "verbprefix" : "VerbPrefix",
+        "me" : "IFLYTEK.Me"
+      },
+      "entranceIntent" : true
+    },
+    "WithTheirAgenda" : {
+      "slots" : {
+        "whentodo" : {
+          "elicitation" : {
+            "required" : false
+          },
+          "entity" : "IFLYTEK.Datetime",
+          "order" : 1
+        },
+        "whotodo" : {
+          "elicitation" : {
+            "required" : false
+          },
+          "min" : 2,
+          "max" : 16,
+          "entity" : "IFLYTEK.Wildcard",
+          "order" : 2
+        },
+        "whattodo" : {
+          "elicitation" : {
+            "required" : false
+          },
+          "min" : 2,
+          "max" : 20,
+          "entity" : "IFLYTEK.Wildcard",
+          "order" : 3
+        }
+      },
+      "name" : "WithTheirAgenda",
+      "chineseName" : "和他的日程",
+      "confirmation" : {
+        "required" : false
+      },
+      "assistWords" : {
+        "verbprefix" : "VerbPrefix",
+        "me" : "IFLYTEK.Me"
+      },
+      "entranceIntent" : true
+    },
+    "TheirAgenda" : {
+      "slots" : {
+        "whentodo" : {
+          "elicitation" : {
+            "required" : false
+          },
+          "entity" : "IFLYTEK.Datetime",
+          "order" : 2
+        },
+        "whotodo" : {
+          "elicitation" : {
+            "required" : false
+          },
+          "min" : 2,
+          "max" : 16,
+          "entity" : "IFLYTEK.Wildcard",
+          "order" : 1
+        },
+        "whattodo" : {
+          "elicitation" : {
+            "required" : false
+          },
+          "min" : 2,
+          "max" : 20,
+          "entity" : "IFLYTEK.Wildcard",
+          "order" : 3
+        }
+      },
+      "name" : "TheirAgenda",
+      "chineseName" : "他的日程",
+      "confirmation" : {
+        "required" : false
+      },
+      "assistWords" : {
+        "verbprefix" : "VerbPrefix",
+        "talkprefix" : "TalkPrefix"
+      },
+      "entranceIntent" : true
+    }
+  },
+  "version" : "2.1"
+}

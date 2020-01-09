@@ -1,0 +1,9 @@
+[ {
+  "text" : "{打开:actioncmd}{语音唤醒:voicewakeup}"
+}, {
+  "text" : "{关闭:actioncmd}{语音唤醒:voicewakeup}"
+}, {
+  "text" : "把{语音唤醒:voicewakeup}{打开:actioncmd}"
+}, {
+  "text" : "把{语音唤醒:voicewakeup}{关闭:actioncmd}"
+} ]

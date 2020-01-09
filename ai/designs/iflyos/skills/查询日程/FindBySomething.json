@@ -1,0 +1,15 @@
+[ {
+  "text" : "{会议:whattodo}{安排在:scheduledat}{什么时候:when}"
+}, {
+  "text" : "{公司聚餐:whattodo}是{哪天:when}"
+}, {
+  "text" : "{公司聚餐:whattodo}是{什么时候:when}"
+}, {
+  "text" : "{公司聚餐:whattodo}在{什么时候:when}"
+}, {
+  "text" : "{什么时候:when}{开会:whattodo}"
+}, {
+  "text" : "{helpme}{query}{normquantifier}{whattodo}"
+}, {
+  "text" : "{query}关于{whattodo}的{agendaname}"
+} ]

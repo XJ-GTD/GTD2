@@ -1,0 +1,9 @@
+[ {
+  "text" : "{打开:actioncmd}合并播报"
+}, {
+  "text" : "{关闭:actioncmd}合并播报"
+}, {
+  "text" : "把合并播报{打开:actioncmd}"
+}, {
+  "text" : "把合并播报{关闭:actioncmd}"
+} ]

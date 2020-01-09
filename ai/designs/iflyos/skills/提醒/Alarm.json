@@ -1,0 +1,23 @@
+[ {
+  "text" : "帮我在{10点钟:whentodo}设个{闹铃:alarmtext}"
+}, {
+  "text" : "开个{10点半:whentodo}的{闹钟:alarmtext}"
+}, {
+  "text" : "让{闹钟:alarmtext}在{10点钟:whentodo}响一下"
+}, {
+  "text" : "让{闹钟:alarmtext}在{10点钟:whentodo}提醒{我:me}一下"
+}, {
+  "text" : "设个{5点半:whentodo}的{闹钟:alarmtext}"
+}, {
+  "text" : "在{5点半:whentodo}提醒我一下"
+}, {
+  "text" : "给我开个{下午三点:whentodo}的{闹铃:alarmtext}"
+}, {
+  "text" : "帮我设个{下午2点半:whentodo}的{闹铃:alarmtext}"
+}, {
+  "text" : "设置一个{下午三点:whentodo}的{闹铃 :alarmtext}"
+}, {
+  "text" : "社哥{下午5点40分:whentodo}的{闹铃:alarmtext}"
+}, {
+  "text" : "设一个{下午5点钟:whentodo}的{闹钟:alarmtext}"
+} ]

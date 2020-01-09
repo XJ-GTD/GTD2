@@ -1,0 +1,9 @@
+[ {
+  "text" : "把{这个:margin}{日历项:planitemname}{发送:sendaction}给{张金洋:whotodo}"
+}, {
+  "text" : "把第{二:whichtodo}{个:agendaunit}{日历项:planitemname}{发送:sendaction}给{张金洋:whotodo}"
+}, {
+  "text" : "把倒数第{一:lastwhichtodo}{条:agendaunit}{日历项:planitemname}{发送:sendaction}给{许兆平:whotodo}"
+}, {
+  "text" : "把第{一:whichtodo}{条:agendaunit}{日历项:planitemname}{发送:sendaction}给{许兆平:whotodo}"
+} ]

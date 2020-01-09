@@ -1,0 +1,19 @@
+[ {
+  "text" : "{明天:whentodo}{我:me}要干{什么:what}"
+}, {
+  "text" : "{今天:whentodo}有什么{事:agendaname}"
+}, {
+  "text" : "{明天:whentodo}有什么{事:agendaname}{啊:margin}"
+}, {
+  "text" : "{我:me}{昨天:whentodo}做了几件{事:agendaname}{啊:margin}"
+}, {
+  "text" : "{昨天:whentodo}做了几件{事:agendaname}{啊:margin}"
+}, {
+  "text" : "{明天:whentodo}{有:have}几件{事:agendaname}要做"
+}, {
+  "text" : "{明天:whentodo}{我:me}{有:have}几件{事:agendaname}要做"
+}, {
+  "text" : "{今天:whentodo}{有:have}什么{事情:agendaname}要做"
+}, {
+  "text" : "{查询:query}{今天:whentodo}的{活动:agendaname}"
+} ]

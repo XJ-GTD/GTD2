@@ -1,0 +1,9 @@
+[ {
+  "text" : "{怎么:how}{查询:query}"
+}, {
+  "text" : "{怎么:how}{查询:query}{活动:agendaname}"
+}, {
+  "text" : "{怎么:how}{查询:query}{备忘:memoname}"
+}, {
+  "text" : "{怎么:how}{查询:query}{日历项:planitemname}"
+} ]

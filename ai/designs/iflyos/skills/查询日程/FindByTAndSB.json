@@ -1,0 +1,17 @@
+[ {
+  "text" : "{这个月:whentodo}{有没有:have}{张金洋:whotodo}的{安排:agendaname}"
+}, {
+  "text" : "{张金洋:whotodo}的{事情:agendaname}{安排在:scheduledat}{今天:whentodo}{什么时候:when}"
+}, {
+  "text" : "{今天:whentodo}{张金洋:whotodo}忙{吗:modal}"
+}, {
+  "text" : "{张金洋:whotodo}{明天:whentodo}忙{吗:modal}"
+}, {
+  "text" : "{明天:whentodo}{张金洋:whotodo}空{吗:modal}"
+}, {
+  "text" : "{张金洋:whotodo}{明天:whentodo}空{吗:modal}"
+}, {
+  "text" : "{许兆平:whotodo}{明天:whentodo}{有:have}什么{安排:agendaname}"
+}, {
+  "text" : "{明天:whentodo}{许兆平:whotodo}{有:have}什么{安排:agendaname}"
+} ]

@@ -1,0 +1,5 @@
+[ {
+  "text" : "{查询:query}{今天:whentodo}的{日历项:planitemname}"
+}, {
+  "text" : "{今天:whentodo}的{日历项:planitemname}"
+} ]

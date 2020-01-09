@@ -1,0 +1,5 @@
+[ {
+  "text" : "{查询:query}关于{开发白板:whattodo}的{备忘:memoname}"
+}, {
+  "text" : "{查询:query}{备忘:memoname}{天空之城:whattodo}"
+} ]

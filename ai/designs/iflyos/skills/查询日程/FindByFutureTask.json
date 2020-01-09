@@ -1,0 +1,7 @@
+[ {
+  "text" : "{明天:whentodo}{有:have}{安排:agendaname}{吗:modal}"
+}, {
+  "text" : "{今天:whentodo}{有:have}{安排:talkprefix}{吗:modal}"
+}, {
+  "text" : "{后天:whentodo}{有:have}{安排:talkprefix}{吗:modal}"
+} ]

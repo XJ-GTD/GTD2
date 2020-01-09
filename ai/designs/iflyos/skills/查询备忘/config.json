@@ -1,0 +1,93 @@
+{
+  "intents" : {
+    "FindByKeywords" : {
+      "slots" : {
+        "whattodo" : {
+          "elicitation" : {
+            "required" : false
+          },
+          "min" : 1,
+          "max" : 20,
+          "entity" : "IFLYTEK.Wildcard",
+          "order" : 1
+        }
+      },
+      "name" : "FindByKeywords",
+      "chineseName" : "根据关键字查询备忘",
+      "confirmation" : {
+        "required" : false
+      },
+      "assistWords" : {
+        "memoname" : "MemoName",
+        "query" : "IFLYTEK.Query"
+      },
+      "entranceIntent" : true
+    },
+    "FindPIByKeywords" : {
+      "slots" : {
+        "whattodo" : {
+          "elicitation" : {
+            "required" : false
+          },
+          "min" : 1,
+          "max" : 20,
+          "entity" : "IFLYTEK.Wildcard",
+          "order" : 1
+        }
+      },
+      "name" : "FindPIByKeywords",
+      "chineseName" : "根据关键字查询日历项",
+      "confirmation" : {
+        "required" : false
+      },
+      "assistWords" : {
+        "query" : "IFLYTEK.Query",
+        "planitemname" : "PlanItemName"
+      },
+      "entranceIntent" : true
+    },
+    "FindPIByTime" : {
+      "slots" : {
+        "whentodo" : {
+          "elicitation" : {
+            "required" : false
+          },
+          "entity" : "IFLYTEK.Datetime",
+          "order" : 1
+        }
+      },
+      "name" : "FindPIByTime",
+      "chineseName" : "根据时间查询日历项",
+      "confirmation" : {
+        "required" : false
+      },
+      "assistWords" : {
+        "query" : "IFLYTEK.Query",
+        "planitemname" : "PlanItemName"
+      },
+      "entranceIntent" : true
+    },
+    "FindByTime" : {
+      "slots" : {
+        "whentodo" : {
+          "elicitation" : {
+            "required" : false
+          },
+          "entity" : "IFLYTEK.Datetime",
+          "order" : 1
+        }
+      },
+      "name" : "FindByTime",
+      "chineseName" : "根据时间查询备忘",
+      "confirmation" : {
+        "required" : false
+      },
+      "assistWords" : {
+        "memoname" : "MemoName",
+        "query" : "IFLYTEK.Query"
+      },
+      "entranceIntent" : true
+    }
+  },
+  "version" : "2.1"
+}

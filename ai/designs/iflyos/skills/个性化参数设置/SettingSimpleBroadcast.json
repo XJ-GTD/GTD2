@@ -1,0 +1,9 @@
+[ {
+  "text" : "{打开:actioncmd}简单播报"
+}, {
+  "text" : "{关闭:actioncmd}简单播报"
+}, {
+  "text" : "把简单播报{打开:actioncmd}"
+}, {
+  "text" : "把简单播报{关闭:actioncmd}"
+} ]

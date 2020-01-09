@@ -1,0 +1,27 @@
+[ {
+  "text" : "{取消:delete}第{一:whichtodo}{条:agendaunit}"
+}, {
+  "text" : "{取消:delete}倒数第{一:lastwhichtodo}{条:agendaunit}"
+}, {
+  "text" : "取消第{一:whichtodo}{条:agendaunit}[{日程:agendaname}]"
+}, {
+  "text" : "{取消:delete}倒数第{一:lastwhichtodo}{条:agendaunit}[{日程:agendaname}]"
+}, {
+  "text" : "把第{一:whichtodo}{条:agendaunit}{取消:delete}"
+}, {
+  "text" : "把倒数第{一:lastwhichtodo}{条:agendaunit}{取消:delete}"
+}, {
+  "text" : "{取消:delete}这{一:whichtodo}{条:agendaunit}"
+}, {
+  "text" : "{取消:delete}这{一:whichtodo}{条:agendaunit}[{日程:agendaname}]"
+}, {
+  "text" : "把这{一:whichtodo}{条:agendaunit}[{日程:agendaname}]{取消:delete}"
+}, {
+  "text" : "把最后{一:lastwhichtodo}{条:agendaunit}[{日程:agendaname}]{取消:delete}"
+}, {
+  "text" : "取消最后{一:lastwhichtodo}{条:agendaunit}[{安排:agendaname}]"
+}, {
+  "text" : "{取消:actioncmd}{这个:margin}{活动:agendaname}"
+}, {
+  "text" : "把{这个:margin}{活动:agendaname}{取消:actioncmd}"
+} ]

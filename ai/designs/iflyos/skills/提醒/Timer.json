@@ -1,0 +1,25 @@
+[ {
+  "text" : "设一个{5:minutes}分钟的{闹钟:alarmtext}"
+}, {
+  "text" : "设一个{20:seconds}秒的{闹钟:alarmtext}"
+}, {
+  "text" : "设一个{1:hours}小时的{闹钟:alarmtext}"
+}, {
+  "text" : "{5:minutes}分钟{倒计时:timer}{开始 :launch}"
+}, {
+  "text" : "{30:seconds}秒{倒计时:timer}{开始:launch}"
+}, {
+  "text" : "{3:hours}小时{倒计时:timer}{开始:launch}"
+}, {
+  "text" : "{计时:timer}{1:hours}小时{开始:launch}"
+}, {
+  "text" : "{计时:timer}{50:minutes}分钟{开始:launch}"
+}, {
+  "text" : "{计时:timer}{90:seconds}秒{开始:launch}"
+}, {
+  "text" : "{计时:timer}{30:seconds}秒"
+}, {
+  "text" : "{计时:timer}{1:minutes}分钟"
+}, {
+  "text" : "{计时:timer}{3:hours}小时"
+} ]

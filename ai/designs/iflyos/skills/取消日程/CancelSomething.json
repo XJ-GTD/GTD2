@@ -1,0 +1,15 @@
+[ {
+  "text" : "取消{明天:whentodo}的{会议:whattodo}"
+}, {
+  "text" : "把{明天:whentodo}的{会议:whattodo}取消"
+}, {
+  "text" : "[{帮我:helpme}]把{下个月:whentodo}的{旅行计划:whattodo}取消"
+}, {
+  "text" : "[{我:me}]不能{参加:verbprefix}{明天:whentodo}的{财经节目:whattodo}{了:yq}"
+}, {
+  "text" : "[{我:me}]无法{参加:verbprefix}{下个月:whentodo}的{年会:whattodo}{了:yq}"
+}, {
+  "text" : "取消{我:me}{明天:whentodo}的{会议:whattodo}"
+}, {
+  "text" : "{帮我:helpme}取消{明天:whentodo}的{会议 :whattodo}"
+} ]

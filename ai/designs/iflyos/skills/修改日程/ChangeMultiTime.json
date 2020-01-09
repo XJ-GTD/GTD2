@@ -1,0 +1,5 @@
+[ {
+  "text" : "把{明天:whentodo}的{安排:agendaname}{改:modifyprefix}到{后天:whenchangeto}"
+}, {
+  "text" : "{帮我:helpme}把{明天:whentodo}的{事情:agendaname}{推迟:modifyprefix}到{大后天:whenchangeto}"
+} ]

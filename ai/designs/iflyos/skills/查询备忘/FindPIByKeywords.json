@@ -1,0 +1,5 @@
+[ {
+  "text" : "{查询:query}{日历项:planitemname}{纪念日:whattodo}"
+}, {
+  "text" : "{查询:query}关于{天空之城:whattodo}的{日历项:planitemname}"
+} ]

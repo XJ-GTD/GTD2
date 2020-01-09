@@ -1,0 +1,9 @@
+[ {
+  "text" : "{打开:actioncmd}自动加入{重要:todolist}"
+}, {
+  "text" : "关闭自动加入重{要:iwant}"
+}, {
+  "text" : "把自动加入{重要:todolist}{打开:actioncmd}"
+}, {
+  "text" : "把自动加入{重要:todolist}{关闭:actioncmd}"
+} ]

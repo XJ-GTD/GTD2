@@ -1,0 +1,7 @@
+[ {
+  "text" : "{通知:talkprefix}{张金洋:whotodo}来{参加:verbprefix}{明天:whentodo}的{会议 :whattodo}"
+}, {
+  "text" : "{明天:whentodo}的{会议:whattodo}让{张金洋:whotodo}来{参加:verbprefix}[{一下:normquantifier}]"
+}, {
+  "text" : "{明天:whentodo}的{会议:whattodo}让{张金洋:whotodo}也来{参加:verbprefix}{一下:normquantifier}"
+} ]

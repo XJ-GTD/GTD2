@@ -1,0 +1,17 @@
+[ {
+  "text" : "把{这个:margin}{备忘:memoname}{取消:actioncmd}"
+}, {
+  "text" : "{取消:actioncmd}{这个:margin}{备忘:memoname}"
+}, {
+  "text" : "{取消:actioncmd}最后{一:lastwhichtodo}{条:agendaunit}{备忘:memoname}"
+}, {
+  "text" : "把最后{一:lastwhichtodo}{条:agendaunit}{备忘:memoname}{取消:actioncmd}"
+}, {
+  "text" : "把{这:margin}一{条:agendaunit}{备忘:memoname}{取消:actioncmd}"
+}, {
+  "text" : "{取消:actioncmd}这一条{备忘:memoname}"
+}, {
+  "text" : "{取消:actioncmd}倒数第{一:lastwhichtodo}{条:agendaunit}{备忘:memoname}"
+}, {
+  "text" : "{取消:actioncmd}第{一:whichtodo}{条:agendaunit}{备忘:memoname}"
+} ]
