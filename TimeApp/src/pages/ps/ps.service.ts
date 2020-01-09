@@ -25,7 +25,7 @@ export class PsService {
     uTbl.biy = data.birthday == undefined || data.birthday == "" ? "" : data.birthday;  //出生日期
     uTbl.ic =  data.ic == undefined || data.ic == "" ? "" : data.ic;  //身份证
     uTbl.uct = data.contact== undefined || data.contact == "" ? "" : data.contact;//  联系方式
-    uTbl.rob = data.extends == undefined ||  data.extends.useMp3 == undefined ? "9" : data.extends.useMp3  //使用mp3 data.extends.useMp3;
+    uTbl.rob = data.extends? (data.extends.useMp3 || "9") : "9";  //使用mp3 data.extends.useMp3;
 
     // uTbl.hiu = data.avatarbase64;//头像
     await this.sqlExec.update(uTbl);
@@ -89,6 +89,3 @@ export class PsService {
     })
   }
 }
-
-
-
