@@ -44,7 +44,7 @@
     [self.wakeupEventManager setParameter:nil forKey:BDS_WAKEUP_AUDIO_FILE_PATH];
     [self.wakeupEventManager setParameter:nil forKey:BDS_WAKEUP_AUDIO_INPUT_STREAM];
 
-     NSString* dat = [[NSBundle mainBundle] pathForResource:@"bds_easr_dnn_wakeup_model" ofType:@"dat"];
+     NSString* dat = [[NSBundle mainBundle] pathForResource:@"bds_easr_basic_model" ofType:@"dat"];
 
     // 默认的唤醒词为"百度一下"，如需自定义唤醒词，请在 http://ai.baidu.com/tech/speech/wake 中评估并下载唤醒词，替换此参数
     NSString* words = [[NSBundle mainBundle] pathForResource:@"WakeUp" ofType:@"bin"];
