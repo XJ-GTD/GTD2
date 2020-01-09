@@ -159,6 +159,10 @@ export class WebsocketService {
 
         resolve();
       } else {
+        this.emitService.register('rabbitmq.message.received', (event) => {
+         this.pushMessage(event);
+        });
+
         // 真机使用cordova.rabbitmq替代
         this.timer = setTimeout(()=>{
           this.settingWs().then(data => {
