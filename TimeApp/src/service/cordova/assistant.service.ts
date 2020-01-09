@@ -333,7 +333,7 @@ export class AssistantService {
       content: {}
     };
 
-    ask['header']['describe'].push('S');
+    ask['header']['describe'].push('TK');
 
     ask['content']['0'] = {
       processor: 'TK',
