@@ -95,8 +95,8 @@ NSString* SECRET_KEY_1 = @"9oHZPMLgc0BM9a4m3DhpHUhGSqYvsrAF";
     //[self.asrEventManager setParameter:@(NO) forKey:BDS_ASR_ENABLE_LONG_SPEECH];
 
     //配置端点检测（二选一）
-   [self configModelVAD];
-   //[self configDNNMFE];
+//   [self configModelVAD];
+   [self configDNNMFE];
 
     //[self.asrEventManager setParameter:@"15361" forKey:BDS_ASR_PRODUCT_ID];
     // ---- 语义与标点 -----
@@ -150,10 +150,12 @@ NSString* SECRET_KEY_1 = @"9oHZPMLgc0BM9a4m3DhpHUhGSqYvsrAF";
     NSString *cmvn_dnn_filepath = [[NSBundle mainBundle] pathForResource:@"bds_easr_mfe_cmvn" ofType:@"dat"];
     [self.asrEventManager setParameter:cmvn_dnn_filepath forKey:BDS_ASR_MFE_CMVN_DAT_FILE];
 
+    [self.asrEventManager setParameter:@(NO) forKey:BDS_ASR_ENABLE_MODEL_VAD];
+
     // 关闭服务端VAD
-    [self.asrEventManager setParameter:@(YES) forKey:BDS_ASR_ENABLE_EARLY_RETURN];
+//    [self.asrEventManager setParameter:@(YES) forKey:BDS_ASR_ENABLE_EARLY_RETURN];
     // 关闭本地VAD
-    [self.asrEventManager setParameter:@(YES) forKey:BDS_ASR_ENABLE_LOCAL_VAD];
+//    [self.asrEventManager setParameter:@(YES) forKey:BDS_ASR_ENABLE_LOCAL_VAD];
     // MFE支持自定义静音时长
     [self.asrEventManager setParameter:@(201.f) forKey:BDS_ASR_MFE_MAX_SPEECH_PAUSE];
     [self.asrEventManager setParameter:@(200.f) forKey:BDS_ASR_MFE_MAX_WAIT_DURATION];
@@ -196,16 +198,36 @@ NSString* SECRET_KEY_1 = @"9oHZPMLgc0BM9a4m3DhpHUhGSqYvsrAF";
             break;
         }
         case EVoiceRecognitionClientWorkStatusFlushData: {
-            NSLog(@"Did EVoiceRecognitionClientWorkStatusFlushData");
-            break;
+             if (aObj) {
+                         if (self.callbackId) {
+
+                            // NSString json = [self getDescriptionForDic:aObj];
+                             NSDictionary * message = @{
+                                              @("text"):[self getDescriptionForDic:aObj],
+                                              @("error"):@false,
+                                              @("finish"):@false
+                                          };
+                            CDVPluginResult* result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:message];
+                            [result setKeepCallbackAsBool:YES];
+                             //json =[json substringWithRange:NSMakeRange(1,[json length] - 2 )];
+            //
+                            [self.commandDelegate sendPluginResult:result callbackId:self.callbackId];
+                           }
+                        }
+                        break;
         }
         case EVoiceRecognitionClientWorkStatusFinish: {
             if (aObj) {
              if (self.callbackId) {
 
                 // NSString json = [self getDescriptionForDic:aObj];
-                CDVPluginResult* result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:[self getDescriptionForDic:aObj]];
-                [result setKeepCallbackAsBool:YES];
+                 NSDictionary * message = @{
+                     @("text"):[self getDescriptionForDic:aObj],
+                     @("error"):@false,
+                     @("finish"):@true
+                 };
+                CDVPluginResult* result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:message];
+                [result setKeepCallbackAsBool:NO];
                  //json =[json substringWithRange:NSMakeRange(1,[json length] - 2 )];
 //
                 [self.commandDelegate sendPluginResult:result callbackId:self.callbackId];
@@ -225,8 +247,14 @@ NSString* SECRET_KEY_1 = @"9oHZPMLgc0BM9a4m3DhpHUhGSqYvsrAF";
             NSLog(@"Did EVoiceRecognitionClientWorkStatusError");
             if (aObj) {
                 if (self.callbackId) {
-                    CDVPluginResult* result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
-                    [result setKeepCallbackAsBool:YES];
+                    NSDictionary * message = @{
+                                 @("text"):@"出错了，能在说一遍吧",
+                                 @("error"):@true,
+                                 @("finish"):@true
+                             };
+                 CDVPluginResult* result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:message];
+                    
+                    [result setKeepCallbackAsBool:NO];
                     [self.commandDelegate sendPluginResult:result callbackId:self.callbackId];
                 }
             }
