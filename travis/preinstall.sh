@@ -13,13 +13,15 @@ if [ $TRAVIS_OS_NAME = 'osx' ]; then
   cd $HOME/build/leonxi/largefiles
   echo "scp libBaiduASRSDK.a"
   if [ ! -f "$HOME/build/leonxi/largefiles/cordova/plugins/baidutts/ios/libBaiduASRSDK.a" ]; then
-    sshpass -e scp -v -C -o stricthostkeychecking=no root@www.guobaa.com:/opt/dev/largefiles/cordova/plugins/baidutts/ios/libBaiduASRSDK.tar.gz $HOME/build/leonxi/largefiles/cordova/plugins/baidutts/ios/libBaiduASRSDK.tar.gz
-    tar -zxvf $HOME/build/leonxi/largefiles/cordova/plugins/baidutts/ios/libBaiduASRSDK.tar.gz -C $HOME/build/leonxi/largefiles/cordova/plugins/baidutts/ios
+    # split -b 10M -d -a 1 libBaiduASRSDK.tar.gz libBaiduASRSDK.tar.gz.
+    sshpass -e scp -v -C -o stricthostkeychecking=no root@www.guobaa.com:/opt/dev/largefiles/cordova/plugins/baidutts/ios/libBaiduASRSDK.tar.gz.* $HOME/build/leonxi/largefiles/cordova/plugins/baidutts/ios/
+    cat $HOME/build/leonxi/largefiles/cordova/plugins/baidutts/ios/libBaiduASRSDK.tar.gz.* | tar -zxv -C $HOME/build/leonxi/largefiles/cordova/plugins/baidutts/ios
   fi
   echo "scp libBaiduTTSSDK.a"
   if [ ! -f "$HOME/build/leonxi/largefiles/cordova/plugins/baidutts/ios/libBaiduTTSSDK.a" ]; then
-    sshpass -e scp -v -C -o stricthostkeychecking=no root@www.guobaa.com:/opt/dev/largefiles/cordova/plugins/baidutts/ios/libBaiduTTSSDK.tar.gz $HOME/build/leonxi/largefiles/cordova/plugins/baidutts/ios/libBaiduTTSSDK.tar.gz
-    tar -zxvf $HOME/build/leonxi/largefiles/cordova/plugins/baidutts/ios/libBaiduTTSSDK.tar.gz -C $HOME/build/leonxi/largefiles/cordova/plugins/baidutts/ios
+    # split -b 10M -d -a 1 libBaiduTTSSDK.tar.gz libBaiduTTSSDK.tar.gz.
+    sshpass -e scp -v -C -o stricthostkeychecking=no root@www.guobaa.com:/opt/dev/largefiles/cordova/plugins/baidutts/ios/libBaiduTTSSDK.tar.gz.* $HOME/build/leonxi/largefiles/cordova/plugins/baidutts/ios/
+    cat $HOME/build/leonxi/largefiles/cordova/plugins/baidutts/ios/libBaiduTTSSDK.tar.gz.* | tar -zxv -C $HOME/build/leonxi/largefiles/cordova/plugins/baidutts/ios
   fi
   echo "scp finished"
   #git lfs install
