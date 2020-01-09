@@ -1,6 +1,7 @@
 import {NgModule} from '@angular/core';
 import {IonicPageModule} from 'ionic-angular';
 import {MPage} from './m';
+import {PointComponentModule} from "../../components/ai/point/point.module";
 
 @NgModule({
   declarations: [
@@ -8,6 +9,7 @@ import {MPage} from './m';
   ],
   imports: [
     IonicPageModule.forChild(MPage),
+    PointComponentModule,
   ],
   entryComponents: [
     MPage,

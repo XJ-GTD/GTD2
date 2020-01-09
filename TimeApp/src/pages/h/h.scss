@@ -6,6 +6,15 @@ page-h {
   .shortcut[bottom] {
     bottom: 70px;
   }
+  .openm{
+    width:33px;
+    height:107px;
+    background:rgba(109,160,172,1);
+    border-radius:15px;
+    position: absolute;
+    top:calc(50% - 50px);
+    transform: translateX(-25px);
+  }
 }
 
 

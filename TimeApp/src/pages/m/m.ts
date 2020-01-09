@@ -9,6 +9,7 @@ import {PsService} from "../ps/ps.service";
 import {RabbitMQService} from "../../service/cordova/rabbitmq.service";
 import {ModalTranType, StatusType} from "../../data.enum";
 import {SettingsProvider} from "../../providers/settings/settings";
+import {FeedbackService} from "../../service/cordova/feedback.service";
 
 /**
  * Generated class for the 菜单 page.
@@ -72,6 +73,7 @@ import {SettingsProvider} from "../../providers/settings/settings";
     </ion-menu>
 
     <ion-nav #ha [root]="hPage"></ion-nav>
+    <PointComponent  #aiDiv [showInput] = "false" (onPonintClick)="openAi()"></PointComponent>
   `
 })
 export class MPage {
@@ -86,6 +88,7 @@ export class MPage {
               private rabbitmq: RabbitMQService,
               private settings:SettingsProvider,
               private renderer2:Renderer2,
+              private feedback: FeedbackService,
               private elementRef:ElementRef) {
     //真机的时候获取JPush注册ID，并保存到服务器注册用户信息
     if (this.util.isMobile()) {
@@ -130,6 +133,10 @@ export class MPage {
 
   }
 
+  openAi() {
+    this.feedback.audioPress();
+    this.util.createModal(DataConfig.PAGE._Ai_PAGE,null,ModalTranType.top).present();
+  }
   ionViewDidLoad() {
 
 

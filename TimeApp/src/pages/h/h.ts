@@ -43,14 +43,14 @@ import {TellYouBase, TellyouService} from "../../components/ai/tellyou/tellyou.s
                     (onPlus)="newPlus($event)">
       </ion-calendar>
       <page-tdl #tdl></page-tdl>
-        <PointComponent  #aiDiv [showInput] = "false" (onPonintClick)="openAi()"></PointComponent>
-      <!--<div style="background: red;position: fixed;z-index: 999;top:0px;height: 30px;width: 100%">{{process}}</div>-->
+      
       <!--<ion-fab bottom right>-->
         <!--<button ion-fab mini (click)="openAi()">-->
           <!--<ion-icon name="chatbubbles"></ion-icon>-->
         <!--</button>-->
       <!--</ion-fab>-->
     </ion-content>
+    <div class="openm" (click)="openm()"></div>
   `,
 })
 export class HPage {
@@ -127,7 +127,6 @@ export class HPage {
       // this.hdata = d;
     })
   }
-
 
   // todoscrumList(day ?: CalendarDay) {
   //   let selectDay: CalendarDay = day ? day : this.hdata.selectDay;
