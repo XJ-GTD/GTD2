@@ -269,16 +269,15 @@ export class AttachPage {
       sourceType: this.camera.PictureSourceType.CAMERA, //打开方式 PHOTOLIBRARY  相册 CAMERA  拍照
       saveToPhotoAlbum: true //是否保存相册
     }
+
     this.camera.getPicture(options).then((imageData) => {
       console.info("开始拍照上传照片");
-      alert(JSON.stringify(imageData));
       if (this.ios) {
         this.saveFileAttachmentiOS(imageData);
       } else {
         this.file.resolveLocalFilesystemUrl(imageData)
         .then((entry) => {
           let imagepath = entry.toURL();
-          alert(imagepath);
 
           if (imagepath != '') {
             this.saveFileAttachment(imagepath);
@@ -327,15 +326,12 @@ export class AttachPage {
 
     //构造地址文件
     let cacheFilePathJson: CacheFilePathJson = new CacheFilePathJson();
-    cacheFilePathJson.local = "/" + newFileName;
+    cacheFilePathJson.local = newFileName;
     this.fjData.fj = JSON.stringify(cacheFilePathJson);
     this.fjData.fpjson = cacheFilePathJson;
     this.fjData.fjurl = this.fjData.fpjson.getLocalFilePath(this.file.dataDirectory);
     this.fjData.ui = this.currentuser;
     this.fjData.members = this.members;
-
-    alert(this.file.dataDirectory + cacheFilePathJson.getCacheDir());
-    alert(newFileName);
 
     let upload: UploadBase64InData = new UploadBase64InData();
     upload.filename = fileName;
@@ -343,6 +339,7 @@ export class AttachPage {
 
     this.dataRestful.uploadbase64(upload).then((result) => {
       if (result && result.data) {
+        alert("uploaded with no " + result.data);
         this.fjData.fpjson.remote = String(result.data);
         this.fjData.fj = JSON.stringify(this.fjData.fpjson);
         this.saveFile();
@@ -350,7 +347,7 @@ export class AttachPage {
         alert("文件上传失败。");
       }
     }).catch((err) => {
-      alert(JSON.stringify(err));
+      alert("err" + JSON.stringify(err));
     });
   }
 
@@ -364,6 +361,7 @@ export class AttachPage {
       sourceType: this.camera.PictureSourceType.SAVEDPHOTOALBUM, //打开方式 PHOTOLIBRARY  相册 CAMERA  拍照
       saveToPhotoAlbum: true //是否保存相册
     }
+
     this.camera.getPicture(options).then((imageData) => {
       console.info("开始拍照上传照片");
       if (this.ios) {
@@ -372,7 +370,6 @@ export class AttachPage {
         this.file.resolveLocalFilesystemUrl(imageData)
         .then((entry) => {
           let imagepath = entry.toURL();
-          alert(imagepath);
 
           if (imagepath != '') {
             this.saveFileAttachment(imagepath);

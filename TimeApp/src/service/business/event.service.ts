@@ -3261,7 +3261,7 @@ export class EventService extends BaseService {
         attachment.fpjson = generateCacheFilePathJson(attachment.fpjson, attachment.fj);
 
         // 上传文件到服务器
-        if (attachment.fpjson && !attachment.fpjson.remote && attachment.ext && attachment.ext != "") {
+        if (attachment.del != DelType.del && attachment.fpjson && !attachment.fpjson.remote && attachment.ext && attachment.ext != "") {
           // 仅限手机设备上上传文件附件
           if (this.util.hasCordova()) {
             let upload: UploadInData = new UploadInData();
@@ -3275,8 +3275,7 @@ export class EventService extends BaseService {
                 attachment.fj = JSON.stringify(attachment.fpjson);
                 if (callback) await callback(attachment);
               }
-            }
-            catch (err) {
+            } catch (err) {
               console.info("上传异常信息："+err);
             }
           }
