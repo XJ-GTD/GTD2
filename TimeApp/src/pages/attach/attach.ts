@@ -316,7 +316,7 @@ export class AttachPage {
 
   saveFileAttachmentiOS(filedata) {
     let ext: string = "jpeg";
-    let fileName: string = this.util.getUuid() + "." + ext;;
+    let fileName: string = this.util.getUuid() + "." + ext;
 
     //将文件copy至缓存文件
     let newFileName = fileName;
