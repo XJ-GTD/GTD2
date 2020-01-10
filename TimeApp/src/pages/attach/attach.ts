@@ -513,6 +513,7 @@ export class AttachPage {
     this.emitService.emit("mwxing.calendar.datas.readwrite", {rw: "writeandread", payload: retAt});
     if (retAt.fpjson.remote) {
       retAt.fjurl = this.browserurl + retAt.fpjson.remote;
+      alert("URL : " + retAt.fjurl);
     }
     //this.flushData();
     this.fjArray.unshift(retAt);
