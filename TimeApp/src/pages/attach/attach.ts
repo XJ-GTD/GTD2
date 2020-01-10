@@ -345,7 +345,7 @@ export class AttachPage {
         this.fjData.fpjson.remote = String(result.data);
         this.fjData.fj = JSON.stringify(this.fjData.fpjson);
         this.fjData.fjurl = this.browserurl + result.data;
-        this.saveFile().then(_ => {
+        this.saveiOSFile().then(_ => {
           this.util.loadingEnd();
         });
       } else {
@@ -494,7 +494,9 @@ export class AttachPage {
     let retAt: Attachment = {} as Attachment;
     retAt = await this.eventService.saveAttachment(this.fjData);
     this.emitService.emit("mwxing.calendar.datas.readwrite", {rw: "writeandread", payload: retAt});
-    //this.flushData();
+    if (retAt.fpjson.remote) {
+      retAt.fjurl = this.browserurl + retAt.fpjson.remote;
+    }
     this.fjArray.unshift(retAt);
     //this.fjArray.push(retAt);
     this.util.loadingEnd();
@@ -509,6 +511,9 @@ export class AttachPage {
     let retAt: Attachment = {} as Attachment;
     retAt = await this.eventService.saveAttachment(this.fjData);
     this.emitService.emit("mwxing.calendar.datas.readwrite", {rw: "writeandread", payload: retAt});
+    if (retAt.fpjson.remote) {
+      retAt.fjurl = this.browserurl + retAt.fpjson.remote;
+    }
     //this.flushData();
     this.fjArray.unshift(retAt);
     //this.fjArray.push(retAt);
