@@ -40,10 +40,13 @@ import {RemindfeedbackService} from "../../../service/cordova/remindfeedback.ser
               <ng-template [ngIf]="tellYouData.tellType ==  tellyouType.at_agenda">@信息</ng-template>
               <ng-template [ngIf]="tellYouData.tellType ==  tellyouType.cancel_agenda
                 || tellYouData.tellType ==  tellyouType.cancel_planitem">取消</ng-template>
-            </p>
-            <p class="formperson" *ngIf="tellYouData.tellType ==  tellyouType.invite_agenda 
-              || tellYouData.tellType ==  tellyouType.invite_planitem">
-              --{{tellYouData.formperson}}
+              <button ion-button icon-start clear item-start class="aispeech" (click)="play(tellYouData)" *ngIf="!tellYouData.speakering">
+                <ion-icon class="fal fa-play"></ion-icon>
+              </button>
+              <button ion-button icon-start clear item-start class="aispeech" (click)="stop(tellYouData)"  *ngIf="tellYouData.speakering">
+                <ion-icon class="fal fa-stop"></ion-icon>
+              </button>
+              
             </p>
             <p class="fromdate" *ngIf="tellYouData.tellType ==  tellyouType.invite_agenda 
               || tellYouData.tellType ==  tellyouType.invite_planitem">
@@ -51,20 +54,28 @@ import {RemindfeedbackService} from "../../../service/cordova/remindfeedback.ser
               <ng-template [ngIf]="tellYouData.datetype == 2">截至到:</ng-template>
               {{tellYouData.fromdate | formatedate: 'YYYY-MM-DD hh:ss'}}
             </p>
-            <p class="fromdate" *ngIf="tellYouData.tellType ==  tellyouType.invite_agenda 
-              || tellYouData.tellType ==  tellyouType.invite_planitem">
-              参与{{tellYouData.invites + 1}}人
+            <p class="formperson" *ngIf="tellYouData.tellType ==  tellyouType.invite_agenda 
+                  || tellYouData.tellType ==  tellyouType.invite_planitem">
+              --{{tellYouData.formperson}}
             </p>
-            <p item-end class="repeat" *ngIf="tellYouData.tellType ==  tellyouType.invite_agenda 
-              || tellYouData.tellType ==  tellyouType.invite_planitem">
-              {{tellYouData.repeat}}
-            </p>
+            <!--<p class="fromdate" *ngIf="tellYouData.tellType ==  tellyouType.invite_agenda -->
+              <!--|| tellYouData.tellType ==  tellyouType.invite_planitem">-->
+              <!--参与{{tellYouData.invites + 1}}人-->
+            <!--</p>-->
+            <!--<p item-end class="repeat" *ngIf="tellYouData.tellType ==  tellyouType.invite_agenda -->
+              <!--|| tellYouData.tellType ==  tellyouType.invite_planitem">-->
+              <!--{{tellYouData.repeat}}-->
+            <!--</p>-->
+            <button ion-button item-end clear class="repeat ignore" (click)="ignoreAll()" item-end>
+              忽略所有
+            </button>
           </ion-item>
         </ion-card-title>
       </ion-card-header>
       <ion-card-content no-padding>
         <ion-item>
-              <span class="sn" *ngIf="tellYouData.tellType !=  tellyouType.remind_merge ">{{tellYouData.sn}}
+              <span class="sn" *ngIf="tellYouData.tellType !=  tellyouType.remind_merge ">
+                {{tellYouData.sn}}
               </span>
           <ng-template [ngIf]="tellYouData.tellType ==  tellyouType.remind_merge">
             <ng-template  ngFor let-rem  [ngForOf]="tellYouData.reminds">
@@ -73,17 +84,6 @@ import {RemindfeedbackService} from "../../../service/cordova/remindfeedback.ser
           </ng-template>
         </ion-item>
         <ion-item>
-          <button ion-button icon-start clear item-start class="aispeech" (click)="play(tellYouData)" *ngIf="!tellYouData.speakering">
-            <ion-icon class="fal fa-play"></ion-icon>
-          </button>
-          <button ion-button icon-start clear item-start class="aispeech" (click)="stop(tellYouData)"  *ngIf="tellYouData.speakering">
-            <ion-icon class="fal fa-stop"></ion-icon>
-          </button>
-          
-          <button ion-button item-end clear class="show" (click)="open(tellYouData)" *ngIf="tellYouData.idtype !=  tellyouIdType.MiniTask && tellYouData.tellType !=  tellyouType.remind_merge ">
-            查看
-          </button>
-          
           <!--<button ion-button item-end class="reject" (click)="reject(tellYouData)" *ngIf="tellYouData.tellType ==  tellyouType.invite_agenda -->
               <!--|| tellYouData.tellType ==  tellyouType.invite_planitem">-->
             <!--拒绝-->
@@ -101,8 +101,9 @@ import {RemindfeedbackService} from "../../../service/cordova/remindfeedback.ser
         <ion-icon class="fal fa-handshake"> {{tellYouData.handshake}}</ion-icon>
         <ion-icon class="fal fa-exclamation"> {{tellYouData.systems}}</ion-icon>
       </p>
-      <button ion-button item-end clear class="ignore" (click)="ignoreAll()">
-        忽略所有
+
+      <button ion-button item-end clear class="show" (click)="open(tellYouData)" *ngIf="tellYouData.idtype !=  tellyouIdType.MiniTask && tellYouData.tellType !=  tellyouType.remind_merge ">
+        查看
       </button>
     </ion-item>
   `,
@@ -170,11 +171,17 @@ export class TellYouComponent{
     this.tellYouData.handshake=this.tellyouService.getInvitelen();//剩余邀请个数
     this.tellYouData.systems= this.tellyouService.getSystemslen();//剩余系统消息个数
 
+
+    if (!this.changeDetectorRef['destroyed']) {
+      this.changeDetectorRef.detectChanges();
+      this.onShow.emit(true);
+    }
+
     //语音播报
     this.assistantService.stopSpeak(false);
 
     this.remindfeedback.remindAudio(this.tellYouData.mp3,()=>{
-      //语音播报
+      //语音播
       this.tellYouData.speakering = true;
       this.assistantService.speakText(`${UserConfig.user.nickname} 你好。${this.tellYouData.spearktext} `).then(()=>{
         this.tellYouData.speakering = false;
@@ -192,11 +199,6 @@ export class TellYouComponent{
         }
       });
     });
-
-    if (!this.changeDetectorRef['destroyed']) {
-      this.changeDetectorRef.detectChanges();
-      this.onShow.emit(true);
-    }
 
   }
 

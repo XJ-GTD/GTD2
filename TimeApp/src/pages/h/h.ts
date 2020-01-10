@@ -32,23 +32,22 @@ import {TellYouBase, TellyouService} from "../../components/ai/tellyou/tellyou.s
       <ion-calendar #calendar
                     [options]="options"
                     (onSelect)="onSelect($event)"
-                    (onPress)="onPress($event)"
                     (viewShow)="viewShow($event)"
-                    (onGotoToday)="gototoday($event)"
-                    (onATDay)="aTday($event)"
-                    (onTodoList)="todoList($event)"
-                    (onNewAgenda)="newAgenda($event)"
-                    (onNewDay)="newDay($event)"
-                    (onNewMome)="newMome($event)"
-                    (onPlus)="newPlus($event)">
+                    (onGotoToday)="gototoday($event)">
       </ion-calendar>
       <page-tdl #tdl></page-tdl>
+      
       <!---->
       <!--<ion-fab bottom right>-->
         <!--<button ion-fab mini (click)="openAi()">-->
           <!--<ion-icon name="chatbubbles"></ion-icon>-->
         <!--</button>-->
       <!--</ion-fab>-->
+      <ion-fab bottom right class="shortcut">
+        <button ion-fab mini (click)="newPlus()">
+          <ion-icon class="fad fa-plus"></ion-icon>
+        </button>
+      </ion-fab>
     </ion-content>
     <div class="openm" (click)="openm()"></div>
   `,
@@ -122,10 +121,10 @@ export class HPage {
     // this.tellyouService.tellyou4remind(tel2);
     this.feedback.audioClick();
     if (selectDay) this.emitService.emitSelectDate(moment(selectDay.time));
-    this.hService.centerShow(selectDay).then(d => {
-      //双机进入列表
-      // this.hdata = d;
-    })
+    // this.hService.centerShow(selectDay).then(d => {
+    //   //双机进入列表
+    //   // this.hdata = d;
+    // })
   }
 
   // todoscrumList(day ?: CalendarDay) {
@@ -194,8 +193,8 @@ export class HPage {
     modal.present();
   }
 
-  newPlus(day ?: CalendarDay) {
+  newPlus() {
 
-    this.util.createModal(DataConfig.PAGE._PLUS_MODAL,day,ModalTranType.bottom).present();
+    this.util.createModal(DataConfig.PAGE._PLUS_MODAL,this.calendar.selectedCalendarDay,ModalTranType.bottom).present();
   }
 }

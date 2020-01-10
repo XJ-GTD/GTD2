@@ -10,6 +10,7 @@ import {RabbitMQService} from "../../service/cordova/rabbitmq.service";
 import {ModalTranType, StatusType} from "../../data.enum";
 import {SettingsProvider} from "../../providers/settings/settings";
 import {FeedbackService} from "../../service/cordova/feedback.service";
+import {CalendarDay} from "../../components/ion2-calendar";
 
 /**
  * Generated class for the 菜单 page.
@@ -21,11 +22,9 @@ import {FeedbackService} from "../../service/cordova/feedback.service";
 @IonicPage()
 @Component({
   selector: 'page-m',
-  providers: [],
   template: `
-
     <ion-menu [content]="ha" side="left" swipeEnabled="true"  type="scalePush" class="menu" id="scalePush"
-              (ionClose) = "ionClose($evnet)" (ionOpen) = "ionOpen($evnet)" (ionDrag) = "ionDrag($evnet)" >
+              (ionClose) = "ionClose($evnet)" (ionOpen) = "ionOpen($evnet)" (ionDrag) = "ionDrag($evnet)" [maxEdgeStart]="100">
         <ion-grid>
           <ion-row>
             <h1>冥王星</h1>
@@ -137,6 +136,7 @@ export class MPage {
     this.feedback.audioPress();
     this.util.createModal(DataConfig.PAGE._Ai_PAGE,null,ModalTranType.top).present();
   }
+
   ionViewDidLoad() {
 
 
