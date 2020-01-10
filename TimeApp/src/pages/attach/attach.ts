@@ -50,7 +50,7 @@ import { ImagePicker } from '@ionic-native/image-picker';
                     <div class="sn borderback">
                       <span>{{fja.fjn}}</span>
                       <ion-thumbnail (click)="photoShow(fja.fjurl)"
-                                     *ngIf="(fja.ext=='png'||fja.ext=='PNG'||fja.ext=='jpg'||fja.ext=='JPG'||fja.ext=='bmp'||fja.ext=='BMP')&& (fja.fj !='')">
+                                     *ngIf="(fja.ext=='png'||fja.ext=='PNG'||fja.ext=='jpg'||fja.ext=='JPG'||fja.ext=='JPEG'||fja.ext=='jpeg'||fja.ext=='bmp'||fja.ext=='BMP')&& (fja.fj !='')">
                         <img *ngIf="fja.fjurl!=''" src="{{fja.fjurl}}"/>
                         <img *ngIf="fja.fjurl ==''" src="{{defaultimg}}"/>
                       </ion-thumbnail>
