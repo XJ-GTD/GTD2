@@ -304,7 +304,7 @@ export class ScheduleRemindService extends BaseService {
 
       for (let schedule of schedulereminds) {
 
-        if (remindparams.length <= 10) {
+        if (remindparams.length <= 20) {
           remindparams.push({
             id: schedule.remindid,
             wd: schedule.wd,

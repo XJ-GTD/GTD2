@@ -237,7 +237,11 @@
         <resource-file src="src/ios/BDSClientLib/BDSClientResource.bundle/BDSClientEASRResources/offline_engine_tmp_license.dat"/>
         <resource-file src="src/ios/BDSClientLib/BDSClientResource.bundle/BDSClientEASRResources/tmp_license.dat"/>
         <resource-file src="src/ios/BDSClientLib/BDSClientResource.bundle/BDSClientEASRResources/WakeUp.bin"/>
-        <resource-file src="src/ios/BDSClientLib/BDSClientResource.bundle/BDSClientEASRResources/BDSClientResources"/>
+        <resource-file src="src/ios/BDSClientLib/BDSClientResource.bundle/BDSClientResources/"/>
+        <!--<resource-file src="src/ios/BDSClientLib/BDSClientResource.bundle/BDSClientEASRResources/BDSClientResources/Tone/record_end.caf"/>-->
+        <!--<resource-file src="src/ios/BDSClientLib/BDSClientResource.bundle/BDSClientEASRResources/BDSClientResources/Tone/record_fail.caf"/>-->
+        <!--<resource-file src="src/ios/BDSClientLib/BDSClientResource.bundle/BDSClientEASRResources/BDSClientResources/Tone/record_start.caf"/>-->
+        <!--<resource-file src="src/ios/BDSClientLib/BDSClientResource.bundle/BDSClientEASRResources/BDSClientResources/Tone/record_success.caf"/>-->
 
 
         <source-file framework="true" src="src/ios/BDSClientLib/libBaiduTTSSDK.a"/>
