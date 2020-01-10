@@ -366,7 +366,7 @@ export class AttachPage {
       mediaType: this.camera.MediaType.PICTURE,
       correctOrientation: true,
       sourceType: this.camera.PictureSourceType.SAVEDPHOTOALBUM, //打开方式 PHOTOLIBRARY  相册 CAMERA  拍照
-      saveToPhotoAlbum: true //是否保存相册
+      saveToPhotoAlbum: false //是否保存相册
     }
 
     this.camera.getPicture(options).then((imageData) => {
