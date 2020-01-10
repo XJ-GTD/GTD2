@@ -333,6 +333,8 @@ export class AttachPage {
     this.fjData.ui = this.currentuser;
     this.fjData.members = this.members;
 
+    this.util.loadingStart();
+
     let upload: UploadBase64InData = new UploadBase64InData();
     upload.filename = fileName;
     upload.base64 = 'data:image/jpeg;base64,' + filedata;
@@ -342,11 +344,15 @@ export class AttachPage {
         alert("uploaded with no " + result.data);
         this.fjData.fpjson.remote = String(result.data);
         this.fjData.fj = JSON.stringify(this.fjData.fpjson);
-        this.saveFile();
+        this.saveFile().then(_ => {
+          this.util.loadingEnd();
+        });
       } else {
+        this.util.loadingEnd();
         alert("文件上传失败。");
       }
     }).catch((err) => {
+      this.util.loadingEnd();
       alert("err" + JSON.stringify(err));
     });
   }
@@ -497,6 +503,19 @@ export class AttachPage {
     this.bw = "";
   }
 
+  //保存文件
+  async saveiOSFile() {
+    let retAt: Attachment = {} as Attachment;
+    retAt = await this.eventService.saveAttachment(this.fjData);
+    this.emitService.emit("mwxing.calendar.datas.readwrite", {rw: "writeandread", payload: retAt});
+    //this.flushData();
+    this.fjArray.unshift(retAt);
+    //this.fjArray.push(retAt);
+    this.fjData = {} as Attachment;
+    this.fjData.obt = this.obt;
+    this.fjData.obi = this.obi;
+    this.bw = "";
+  }
 
   // 删除当前项
   async delAttach(at: Attachment) {
