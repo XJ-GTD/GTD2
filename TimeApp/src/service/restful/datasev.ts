@@ -58,6 +58,27 @@ export class DataRestful {
   }
 
   /**
+   * http://pluto.guobaa.com/abl/store/local/upload
+   * formData: binary
+   * username: group
+   *
+   * {"code":0,"msg":"success","data":9743}
+   **/
+  async uploadbase64(upload: UploadBase64InData): Promise<UploadOutData> {
+    let url: UrlEntity = this.config.getRestFulUrl("SUPB");
+
+    let data = await this.request.post(url, upload);
+
+    let result: UploadOutData = new UploadOutData();
+
+    if (data) {
+      Object.assign(result, data);
+    }
+
+    return result;
+  }
+
+  /**
    * https://pluto.guobaa.com/abl/store/remote/download
    **/
   async download(download: DownloadInData): Promise<DownloadOutData> {
@@ -178,6 +199,11 @@ export class PullInData {
 
 export class PullOutData {
   // 拉取的数据通过MQ发送给客户端
+}
+
+export class UploadBase64InData {
+  filename: string = "";
+  base64: string = "";
 }
 
 export class UploadInData {

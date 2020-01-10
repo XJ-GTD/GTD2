@@ -12,7 +12,7 @@ import {UtilService} from "../../service/util-service/util.service";
 import {DelType, PageDirection, SyncType} from "../../data.enum";
 import {UserConfig} from "../../service/config/user.config";
 import {DataConfig} from "../../service/config/data.config";
-import {DataRestful, DownloadInData} from "../../service/restful/datasev";
+import {DataRestful, UploadBase64InData} from "../../service/restful/datasev";
 import {NativeAudio} from "@ionic-native/native-audio";
 import BScroll from "better-scroll";
 import {EmitService} from "../../service/util-service/emit.service";
@@ -262,7 +262,7 @@ export class AttachPage {
   shot() {
     const options: CameraOptions = {
       quality: 95,
-      destinationType: this.ios? this.camera.DestinationType.NATIVE_URI : this.camera.DestinationType.FILE_URI,
+      destinationType: this.ios? this.camera.DestinationType.DATA_URL : this.camera.DestinationType.FILE_URI,
       encodingType: this.camera.EncodingType.JPEG,
       mediaType: this.camera.MediaType.PICTURE,
       sourceType: this.camera.PictureSourceType.CAMERA, //打开方式 PHOTOLIBRARY  相册 CAMERA  拍照
@@ -271,19 +271,19 @@ export class AttachPage {
     this.camera.getPicture(options).then((imageData) => {
       console.info("开始拍照上传照片");
       alert(JSON.stringify(imageData));
-      this.file.resolveLocalFilesystemUrl(imageData)
-      .then((entry) => {
-        let imagepath = entry.toURL();
-        alert(imagepath);
+      if (this.ios) {
+        this.saveFileAttachmentiOS(imageData);
+      } else {
+        this.file.resolveLocalFilesystemUrl(imageData)
+        .then((entry) => {
+          let imagepath = entry.toURL();
+          alert(imagepath);
 
-        if (imagepath != '') {
-          if (this.ios) {
-            this.saveFileAttachmentiOS(entry);
-          } else {
+          if (imagepath != '') {
             this.saveFileAttachment(imagepath);
           }
-        }
-      });
+        });
+      }
     }, (err) => {
       console.info("拍照上传附件异常，异常信息：" + err);
     });
@@ -314,12 +314,12 @@ export class AttachPage {
     });
   }
 
-  saveFileAttachmentiOS(fileentry) {
-    let fileName: string = fileentry.name;
-    let ext: string = fileName.substr(fileName.lastIndexOf(".") + 1);
+  saveFileAttachmentiOS(filedata) {
+    let ext: string = "jpeg";
+    let fileName: string = this.util.getUuid() + "." + ext;;
 
     //将文件copy至缓存文件
-    let newFileName = this.util.getUuid() + "." + ext;
+    let newFileName = fileName;
     this.fjData.obt = this.obt;
     this.fjData.obi = this.obi;
     this.fjData.ext = ext;
@@ -335,9 +335,17 @@ export class AttachPage {
 
     alert(this.file.dataDirectory + cacheFilePathJson.getCacheDir());
     alert(newFileName);
-    fileentry.copyTo(this.file.dataDirectory + cacheFilePathJson.getCacheDir(), newFileName)
-    .then(_ => {
-      this.saveFile();
+
+    let upload: UploadBase64InData = new UploadBase64InData();
+    upload.filename = fileName;
+    upload.base64 = 'data:image/jpeg;base64,' + filedata;
+    dataRestful.uploadbase64(upload).then((result) => {
+      if (result && result.data) {
+        this.fjData.fpjson.remote = String(result.data);
+        this.saveFile();
+      } else {
+        alert("文件上传失败。");
+      }
     }).catch((err) => {
       alert(JSON.stringify(err));
     });
@@ -346,7 +354,7 @@ export class AttachPage {
   selectPicture2() {
     const options: CameraOptions = {
       quality: 95,
-      destinationType: this.ios? this.camera.DestinationType.NATIVE_URI : this.camera.DestinationType.FILE_URI,
+      destinationType: this.ios? this.camera.DestinationType.DATA_URL : this.camera.DestinationType.FILE_URI,
       encodingType: this.camera.EncodingType.JPEG,
       mediaType: this.camera.MediaType.PICTURE,
       correctOrientation: true,
@@ -355,19 +363,19 @@ export class AttachPage {
     }
     this.camera.getPicture(options).then((imageData) => {
       console.info("开始拍照上传照片");
-      this.file.resolveLocalFilesystemUrl(imageData)
-      .then((entry) => {
-        let imagepath = entry.toURL();
-        alert(imagepath);
+      if (this.ios) {
+        this.saveFileAttachmentiOS(imageData);
+      } else {
+        this.file.resolveLocalFilesystemUrl(imageData)
+        .then((entry) => {
+          let imagepath = entry.toURL();
+          alert(imagepath);
 
-        if (imagepath != '') {
-          if (this.ios) {
-            this.saveFileAttachmentiOS(entry);
-          } else {
+          if (imagepath != '') {
             this.saveFileAttachment(imagepath);
           }
-        }
-      });
+        });
+      }
     }, (err) => {
       console.info("拍照上传附件异常，异常信息：" + err);
     });
