@@ -265,7 +265,6 @@ export class AttachPage {
       destinationType: this.ios? this.camera.DestinationType.NATIVE_URI : this.camera.DestinationType.FILE_URI,
       encodingType: this.camera.EncodingType.JPEG,
       mediaType: this.camera.MediaType.PICTURE,
-      allowEdit: true,
       sourceType: this.camera.PictureSourceType.CAMERA, //打开方式 PHOTOLIBRARY  相册 CAMERA  拍照
       saveToPhotoAlbum: true //是否保存相册
     }
@@ -350,7 +349,6 @@ export class AttachPage {
       destinationType: this.ios? this.camera.DestinationType.NATIVE_URI : this.camera.DestinationType.FILE_URI,
       encodingType: this.camera.EncodingType.JPEG,
       mediaType: this.camera.MediaType.PICTURE,
-      allowEdit: true,
       correctOrientation: true,
       sourceType: this.camera.PictureSourceType.SAVEDPHOTOALBUM, //打开方式 PHOTOLIBRARY  相册 CAMERA  拍照
       saveToPhotoAlbum: true //是否保存相册
