@@ -42,6 +42,18 @@
         <preference name="UseSwiftLanguageVersion" value="4" />
         <preference name="WKSuspendInBackground" value="true" />
         <preference name="DisallowOverscroll" value="true" />
+        <edit-config target="NSPhotoLibraryAddUsageDescription" file="*-Info.plist" mode="merge">
+          <string>冥王星保存图片附件</string>
+        </edit-config>
+        <edit-config target="NSLocationWhenInUseUsageDescription" file="*-Info.plist" mode="merge">
+          <string>冥王星添加图片附件</string>
+        </edit-config>
+        <edit-config target="NSPhotoLibraryUsageDescription" file="*-Info.plist" mode="merge">
+          <string>冥王星选择图片附件</string>
+        </edit-config>
+        <edit-config target="NSCameraUsageDescription" file="*-Info.plist" mode="merge">
+          <string>冥王星拍照保存附件</string>
+        </edit-config>
     </platform>
     <plugin name="cordova-plugin-app-version" spec="~0.1.9" />
     <plugin name="cordova-plugin-camera" spec="~4.0.3" />
