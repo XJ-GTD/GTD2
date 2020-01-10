@@ -426,7 +426,7 @@ export class ContactsService {
 
       //联系人设置的MP3
       if (userinfo.extends ){
-        bt.rob = userinfo.extends.useMp3;
+        bt.rob = userinfo.extends.useMp3 || "9";
       }else{
         bt.rob = "9";
       }

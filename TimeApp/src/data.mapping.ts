@@ -218,7 +218,7 @@ export class PageUData{
     sex: "",
 
     //使用mp3
-    useMp3:"",
+    useMp3:"9",
     //联系方式
     contact: "",
   };

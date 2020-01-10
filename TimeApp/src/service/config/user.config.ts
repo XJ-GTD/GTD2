@@ -34,7 +34,7 @@ export class UserConfig {
     //身份证
     ic: "",
     //使用mp3
-    useMp3:"",
+    useMp3:"9",
     //性别
     sex: "",
     //联系方式
