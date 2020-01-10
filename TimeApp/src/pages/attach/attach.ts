@@ -344,6 +344,7 @@ export class AttachPage {
         alert("uploaded with no " + result.data);
         this.fjData.fpjson.remote = String(result.data);
         this.fjData.fj = JSON.stringify(this.fjData.fpjson);
+        this.fjData.fjurl = this.browserurl + result.data;
         this.saveFile().then(_ => {
           this.util.loadingEnd();
         });
@@ -584,7 +585,7 @@ export class AttachPage {
               let fileName: string = attachment.fpjson.local.substr(1, attachment.fpjson.local.length);
               // 本地文件存在，页面上显示本地文件
               let checked = await this.isExistFile(attachment.fpjson.getCacheDir(), fileName);
-              if (checked == true) {
+              if (!this.ios && checked == true) {
                 attachment.fjurl = attachment.fpjson.getLocalFilePath(this.file.dataDirectory);
               }
             }
