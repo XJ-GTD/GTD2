@@ -341,7 +341,7 @@ export class AttachPage {
 
     this.dataRestful.uploadbase64(upload).then((result) => {
       if (result && result.data) {
-        alert("uploaded with no " + result.data);
+        //alert("uploaded with no " + result.data);
         this.fjData.fpjson.remote = String(result.data);
         this.fjData.fj = JSON.stringify(this.fjData.fpjson);
         this.fjData.fjurl = this.browserurl + result.data;
