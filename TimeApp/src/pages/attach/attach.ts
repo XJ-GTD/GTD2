@@ -339,7 +339,8 @@ export class AttachPage {
     let upload: UploadBase64InData = new UploadBase64InData();
     upload.filename = fileName;
     upload.base64 = 'data:image/jpeg;base64,' + filedata;
-    dataRestful.uploadbase64(upload).then((result) => {
+
+    this.dataRestful.uploadbase64(upload).then((result) => {
       if (result && result.data) {
         this.fjData.fpjson.remote = String(result.data);
         this.saveFile();
