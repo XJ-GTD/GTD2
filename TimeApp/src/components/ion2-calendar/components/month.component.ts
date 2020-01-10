@@ -36,7 +36,6 @@ export const MONTH_VALUE_ACCESSOR: any = {
                   <button type='button'
                           [class]="'days-btn warp-days-btn'"      
                           (click)="onSelected(day)"
-                          <!--(press)="onPressed(day)"-->
                           [class.last-month-day]="day.isLastMonth"
                           [class.next-month-day]="day.isNextMonth"
                           [class.today]="day.isToday && !day.isLastMonth && !day.isNextMonth"
@@ -48,9 +47,9 @@ export const MONTH_VALUE_ACCESSOR: any = {
                     <ion-icon class = "active fas fa-hexagon" *ngIf="!day.isLastMonth && !day.isNextMonth  && day.hasevent"></ion-icon>
                     <ion-icon class = "diary fas fa-heart-circle" *ngIf="!day.isLastMonth && !day.isNextMonth && day.hasMemo"></ion-icon>
                     <ion-icon class = "repeat fas fa-repeat" *ngIf="!day.isLastMonth && !day.isNextMonth && day.hasrepeat"></ion-icon>
-
                   </button>
-               
+
+                  <!--(press)="onPressed(day)"-->
                 </div>
               </ng-container>
             </div>
