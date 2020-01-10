@@ -343,6 +343,7 @@ export class AttachPage {
     this.dataRestful.uploadbase64(upload).then((result) => {
       if (result && result.data) {
         this.fjData.fpjson.remote = String(result.data);
+        this.fjData.fj = JSON.stringify(this.fjData.fpjson);
         this.saveFile();
       } else {
         alert("文件上传失败。");
