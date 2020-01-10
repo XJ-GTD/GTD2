@@ -214,7 +214,31 @@
 
 
 
-        <resource-file src="src/ios/BDSClientLib/BDSClientResource.bundle"/>
+        <resource-file src="src/ios/BDSClientLib/BDSClientResource.bundle/BDSClientEASRResources/bds_easr_basic_model.dat"/>
+        <!--<resource-file src="src/ios/BDSClientLib/BDSClientResource.bundle/BDSClientEASRResources/bds_easr_dnn_wakeup_model.dat"/>-->
+        <resource-file src="src/ios/BDSClientLib/BDSClientResource.bundle/BDSClientEASRResources/bds_easr_gramm.dat"/>
+        <resource-file src="src/ios/BDSClientLib/BDSClientResource.bundle/BDSClientEASRResources/bds_easr_input_model.dat"/>
+        <resource-file src="src/ios/BDSClientLib/BDSClientResource.bundle/BDSClientEASRResources/bds_easr_mfe_cmvn.dat"/>
+        <resource-file src="src/ios/BDSClientLib/BDSClientResource.bundle/BDSClientEASRResources/bds_easr_mfe_dnn.dat"/>
+        <resource-file src="src/ios/BDSClientLib/BDSClientResource.bundle/BDSClientEASRResources/bds_easr_wakeup_words.dat"/>
+        <resource-file src="src/ios/BDSClientLib/BDSClientResource.bundle/BDSClientEASRResources/bds_license.dat"/>
+        <resource-file src="src/ios/BDSClientLib/BDSClientResource.bundle/BDSClientEASRResources/Chinese_And_English_Speech_DYY.dat"/>
+        <!--<resource-file src="src/ios/BDSClientLib/BDSClientResource.bundle/BDSClientEASRResources/Chinese_And_English_Speech_Female.dat"/>-->
+        <!--<resource-file src="src/ios/BDSClientLib/BDSClientResource.bundle/BDSClientEASRResources/Chinese_And_English_Speech_Male.dat"/>-->
+        <!--<resource-file src="src/ios/BDSClientLib/BDSClientResource.bundle/BDSClientEASRResources/Chinese_And_English_Speech_Male-yyjw.dat"/>-->
+        <!--<resource-file src="src/ios/BDSClientLib/BDSClientResource.bundle/BDSClientEASRResources/Chinese_And_English_Text.dat"/>-->
+        <!--<resource-file src="src/ios/BDSClientLib/BDSClientResource.bundle/BDSClientEASRResources/Chinese_Speech_Female.dat"/>-->
+        <!--<resource-file src="src/ios/BDSClientLib/BDSClientResource.bundle/BDSClientEASRResources/Chinese_Speech_Male.dat"/>-->
+        <!--<resource-file src="src/ios/BDSClientLib/BDSClientResource.bundle/BDSClientEASRResources/Chinese_Text.dat"/>-->
+        <!--<resource-file src="src/ios/BDSClientLib/BDSClientResource.bundle/BDSClientEASRResources/English_Speech_Female.dat"/>-->
+        <!--<resource-file src="src/ios/BDSClientLib/BDSClientResource.bundle/BDSClientEASRResources/English_Speech_Male.dat"/>-->
+        <resource-file src="src/ios/BDSClientLib/BDSClientResource.bundle/BDSClientEASRResources/English_Text.dat"/>
+        <resource-file src="src/ios/BDSClientLib/BDSClientResource.bundle/BDSClientEASRResources/license-ios-etts-BaiduBoxDev.dat"/>
+        <resource-file src="src/ios/BDSClientLib/BDSClientResource.bundle/BDSClientEASRResources/offline_engine_tmp_license.dat"/>
+        <resource-file src="src/ios/BDSClientLib/BDSClientResource.bundle/BDSClientEASRResources/tmp_license.dat"/>
+        <resource-file src="src/ios/BDSClientLib/BDSClientResource.bundle/BDSClientEASRResources/WakeUp.bin"/>
+        <resource-file src="src/ios/BDSClientLib/BDSClientResource.bundle/BDSClientEASRResources/BDSClientResources"/>
+
 
         <source-file framework="true" src="src/ios/BDSClientLib/libBaiduTTSSDK.a"/>
         <source-file framework="true" src="src/ios/BDSClientLib/libBaiduASRSDK.a"/>
