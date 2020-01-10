@@ -1,0 +1,34 @@
+{
+  "intents" : {
+    "DateAndItem" : {
+      "slots" : {
+        "whentodo" : {
+          "elicitation" : {
+            "required" : false
+          },
+          "entity" : "IFLYTEK.Datetime",
+          "order" : 1
+        },
+        "whattodo" : {
+          "elicitation" : {
+            "required" : false
+          },
+          "min" : 1,
+          "max" : 20,
+          "entity" : "IFLYTEK.Wildcard",
+          "order" : 2
+        }
+      },
+      "name" : "DateAndItem",
+      "chineseName" : "时间是内容",
+      "confirmation" : {
+        "required" : false
+      },
+      "assistWords" : {
+        "my" : "IFLYTEK.My"
+      },
+      "entranceIntent" : true
+    }
+  },
+  "version" : "2.1"
+}

@@ -1,0 +1,17 @@
+[ {
+  "text" : "{今天:when}问{张金洋:who}借了{一万:money}块钱"
+}, {
+  "text" : "{昨天:when}{张金洋:who}借了{一万:money}给{我:me}"
+}, {
+  "text" : "{昨天:when}向{张金洋:who}借了{一万:money}"
+}, {
+  "text" : "{今天:when}问{张金洋:who}借了{一万:money}"
+}, {
+  "text" : "{前天:when}向{张金洋:who}借了{一万:money}块钱"
+}, {
+  "text" : "{今天:when}{张金洋:who}借给我{一万:money}"
+}, {
+  "text" : "{今天:when}{张金洋:who}借给我{一万:money}块钱"
+}, {
+  "text" : "{张金洋:who}借给{我:me}{一万:money}块钱"
+} ]

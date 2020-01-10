@@ -1,0 +1,29 @@
+{
+  "intents" : {
+    "AddByName" : {
+      "slots" : {
+        "whotodo" : {
+          "elicitation" : {
+            "required" : false
+          },
+          "min" : 2,
+          "max" : 16,
+          "entity" : "IFLYTEK.Wildcard",
+          "order" : 1
+        }
+      },
+      "name" : "AddByName",
+      "chineseName" : "拉黑人名",
+      "confirmation" : {
+        "required" : false
+      },
+      "assistWords" : {
+        "helpme" : "IFLYTEK.HelpMe",
+        "messagealert" : "MessageAlert",
+        "rejection" : "Rejection"
+      },
+      "entranceIntent" : true
+    }
+  },
+  "version" : "2.1"
+}

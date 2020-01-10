@@ -1,0 +1,11 @@
+[ {
+  "text" : "{昨天:when}{张金洋:who}还给{我:me}{一万:money}块钱"
+}, {
+  "text" : "{张金洋:who}{昨天:when}还给{我:me}{一万:money}块钱"
+}, {
+  "text" : "{昨天:when}{张金洋:who}还了[{我:me}]{一万:money}"
+}, {
+  "text" : "{昨天:when}{张金洋:who}还了{一万:money}"
+}, {
+  "text" : "{张金洋:who}{昨天:when}还了{一万:money}"
+} ]

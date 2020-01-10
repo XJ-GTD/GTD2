@@ -1,0 +1,43 @@
+{
+  "intents" : {
+    "SingleStroke" : {
+      "slots" : {
+        "money" : {
+          "elicitation" : {
+            "required" : false
+          },
+          "entity" : "IFLYTEK.Number",
+          "order" : 3
+        },
+        "when" : {
+          "elicitation" : {
+            "required" : true,
+            "prompts" : [ "请告诉我借钱的时间", "请告诉我什么时候借的钱" ]
+          },
+          "entity" : "IFLYTEK.Datetime",
+          "order" : 1
+        },
+        "who" : {
+          "elicitation" : {
+            "required" : false
+          },
+          "min" : 2,
+          "max" : 8,
+          "entity" : "IFLYTEK.Wildcard",
+          "order" : 2
+        }
+      },
+      "name" : "SingleStroke",
+      "chineseName" : "单笔",
+      "confirmation" : {
+        "required" : true,
+        "prompts" : [ "{when} {who}借给您{money}块钱 确认记录吗?" ]
+      },
+      "assistWords" : {
+        "me" : "IFLYTEK.Me"
+      },
+      "entranceIntent" : true
+    }
+  },
+  "version" : "2.1"
+}

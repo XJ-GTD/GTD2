@@ -1,0 +1,62 @@
+{
+  "intents" : {
+    "AddBlackList" : {
+      "slots" : {
+        "phoneno" : {
+          "elicitation" : {
+            "required" : false
+          },
+          "entity" : "IFLYTEK.Number",
+          "order" : 2
+        },
+        "who" : {
+          "elicitation" : {
+            "required" : false
+          },
+          "min" : 2,
+          "max" : 8,
+          "entity" : "IFLYTEK.Wildcard",
+          "order" : 1
+        }
+      },
+      "name" : "AddBlackList",
+      "chineseName" : "加入黑名单",
+      "confirmation" : {
+        "required" : false
+      },
+      "assistWords" : { },
+      "entranceIntent" : true
+    },
+    "EmptyBlackList" : {
+      "slots" : { },
+      "name" : "EmptyBlackList",
+      "chineseName" : "清空黑名单",
+      "confirmation" : {
+        "required" : false
+      },
+      "assistWords" : { },
+      "entranceIntent" : true
+    },
+    "RemoveBlackList" : {
+      "slots" : {
+        "who" : {
+          "elicitation" : {
+            "required" : false
+          },
+          "min" : 2,
+          "max" : 8,
+          "entity" : "IFLYTEK.Wildcard",
+          "order" : 1
+        }
+      },
+      "name" : "RemoveBlackList",
+      "chineseName" : "移出黑名单",
+      "confirmation" : {
+        "required" : false
+      },
+      "assistWords" : { },
+      "entranceIntent" : true
+    }
+  },
+  "version" : "2.1"
+}

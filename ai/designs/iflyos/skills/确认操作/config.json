@@ -1,0 +1,25 @@
+{
+  "intents" : {
+    "Cancel" : {
+      "slots" : { },
+      "name" : "Cancel",
+      "chineseName" : "取消",
+      "confirmation" : {
+        "required" : false
+      },
+      "assistWords" : { },
+      "entranceIntent" : true
+    },
+    "OK" : {
+      "slots" : { },
+      "name" : "OK",
+      "chineseName" : "确认",
+      "confirmation" : {
+        "required" : false
+      },
+      "assistWords" : { },
+      "entranceIntent" : true
+    }
+  },
+  "version" : "2.1"
+}
