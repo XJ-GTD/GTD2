@@ -54,26 +54,33 @@ import { ImagePicker } from '@ionic-native/image-picker';
                         <img *ngIf="fja.fjurl!=''" src="{{fja.fjurl}}"/>
                         <img *ngIf="fja.fjurl ==''" src="{{defaultimg}}"/>
                       </ion-thumbnail>
-                      <div *ngIf="(fja.ext=='PDF'||fja.ext=='pdf')&& (fja.fj !='')"
+                      <div *ngIf="(fja.ext == 'PDF' || fja.ext == 'pdf')&& (fja.fj !='')"
                            (click)="openPdf(fja.fjurl,fja.ext,fja.fji)">
-                        <ion-icon class="fas fa-file-pdf"></ion-icon>
+                        <ion-icon class="fas fa-4x fa-file-pdf"></ion-icon>
                       </div>
-                      <div *ngIf="(fja.ext=='mp4'||fja.ext=='MP4')&& (fja.fj !='')"
+                      <div *ngIf="(fja.ext == 'mp4' || fja.ext == 'MP4')&& (fja.fj !='')"
                            (click)="openPdf(fja.fjurl,fja.ext,fja.fji)">
-                        <ion-icon class="fas fa-file-audio"></ion-icon>
+                        <ion-icon class="fas fa-4x fa-file-audio"></ion-icon>
                       </div>
-                      <div *ngIf="(fja.ext=='mp3'||fja.ext=='MP3')&& (fja.fj !='')"
+                      <div *ngIf="(fja.ext == 'mp3' || fja.ext == 'MP3')&& (fja.fj !='')"
                            (click)="openPdf(fja.fjurl,fja.ext,fja.fji)">
-                        <ion-icon class="fas fa-file-music"></ion-icon>
+                        <ion-icon class="fas fa-4x fa-file-music"></ion-icon>
                       </div>
-                      <div *ngIf="(fja.ext=='doc'||fja.ext=='DOC'||fja.ext=='xls'||fja.ext=='XLS'||fja.ext=='ppt'||fja.ext=='PPT'||fja.ext=='DOCX'||fja.ext=='docx'
-                  ||fja.ext=='xlsx'||fja.ext=='XLSX'||fja.ext=='PPTX'||fja.ext=='pptx')&& (fja.fj !='')"
+                      <div *ngIf="(fja.ext=='PPT' || fja.ext=='ppt' || fja.ext=='PPTX' || fja.ext=='pptx')&& (fja.fj !='')"
                            (click)="window.open(this.officeOnlie+fja.fjurl)">
-                        <ion-icon class="fas fa-file-powerpoint"></ion-icon>
+                        <ion-icon class="fas fa-4x fa-file-powerpoint"></ion-icon>
+                      </div>
+                      <div *ngIf="(fja.ext=='doc' || fja.ext=='DOC' || fja.ext=='DOCX' || fja.ext=='docx')&& (fja.fj !='')"
+                           (click)="window.open(this.officeOnlie+fja.fjurl)">
+                        <ion-icon class="fas fa-4x fa-file-word"></ion-icon>
+                      </div>
+                      <div *ngIf="(fja.ext=='xls' || fja.ext=='XLS' || fja.ext == 'xlsx' || fja.ext == 'XLSX')&& (fja.fj !='')"
+                           (click)="window.open(this.officeOnlie+fja.fjurl)">
+                        <ion-icon class="fas fa-4x fa-file-excel"></ion-icon>
                       </div>
                       <div *ngIf="(fja.ext=='txt'||fja.ext=='TXT')&& (fja.fj !='')"
                            (click)="openPdf(fja.fjurl,fja.ext,fja.fji)">
-                        <ion-icon class="fas fa-file-plus"></ion-icon>
+                        <ion-icon class="fas fa-4x fa-file-plus"></ion-icon>
                       </div>
                     </div>
 
