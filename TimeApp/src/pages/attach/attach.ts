@@ -56,31 +56,31 @@ import { ImagePicker } from '@ionic-native/image-picker';
                       </ion-thumbnail>
                       <div *ngIf="(fja.ext == 'PDF' || fja.ext == 'pdf')&& (fja.fj !='')"
                            (click)="openFile(fja.fjurl,fja.ext,fja.fji)">
-                        <ion-icon class="fas fa-4x fa-file-pdf"></ion-icon>
+                        <ion-icon class="fas fa-10x fa-file-pdf"></ion-icon>
                       </div>
                       <div *ngIf="(fja.ext == 'mp4' || fja.ext == 'MP4')&& (fja.fj !='')"
                            (click)="openFile(fja.fjurl,fja.ext,fja.fji)">
-                        <ion-icon class="fas fa-4x fa-file-audio"></ion-icon>
+                        <ion-icon class="fas fa-10x fa-file-audio"></ion-icon>
                       </div>
                       <div *ngIf="(fja.ext == 'mp3' || fja.ext == 'MP3')&& (fja.fj !='')"
                            (click)="openFile(fja.fjurl,fja.ext,fja.fji)">
-                        <ion-icon class="fas fa-4x fa-file-music"></ion-icon>
+                        <ion-icon class="fas fa-10x fa-file-music"></ion-icon>
                       </div>
                       <div *ngIf="(fja.ext=='PPT' || fja.ext=='ppt' || fja.ext=='PPTX' || fja.ext=='pptx')&& (fja.fj !='')"
                            (click)="window.open(this.officeOnlie+fja.fjurl)">
-                        <ion-icon class="fas fa-4x fa-file-powerpoint"></ion-icon>
+                        <ion-icon class="fas fa-10x fa-file-powerpoint"></ion-icon>
                       </div>
                       <div *ngIf="(fja.ext=='doc' || fja.ext=='DOC' || fja.ext=='DOCX' || fja.ext=='docx')&& (fja.fj !='')"
                            (click)="window.open(this.officeOnlie+fja.fjurl)">
-                        <ion-icon class="fas fa-4x fa-file-word"></ion-icon>
+                        <ion-icon class="fas fa-10x fa-file-word"></ion-icon>
                       </div>
                       <div *ngIf="(fja.ext=='xls' || fja.ext=='XLS' || fja.ext == 'xlsx' || fja.ext == 'XLSX')&& (fja.fj !='')"
                            (click)="window.open(this.officeOnlie+fja.fjurl)">
-                        <ion-icon class="fas fa-4x fa-file-excel"></ion-icon>
+                        <ion-icon class="fas fa-10x fa-file-excel"></ion-icon>
                       </div>
                       <div *ngIf="(fja.ext=='txt'||fja.ext=='TXT')&& (fja.fj !='')"
                            (click)="openFile(fja.fjurl,fja.ext,fja.fji)">
-                        <ion-icon class="fas fa-4x fa-file-plus"></ion-icon>
+                        <ion-icon class="fas fa-10x fa-file-plus"></ion-icon>
                       </div>
                     </div>
 
