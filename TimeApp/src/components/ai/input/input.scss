@@ -2,6 +2,9 @@
 inputcomponent {
   z-index: 1000;
   display: none;
+  background: #000;
+  position: fixed;
+  opacity: 1;
   .help{
     display: inline-block;
     position:absolute;
@@ -18,39 +21,48 @@ inputcomponent {
     transform: translateY(-9999px);
     transition: all 1s ease-in-out 0s;
     position: absolute;
-    bottom: 0.625rem;
+    bottom: 10px;
     width: 100%;
+    padding-left: 16px;
+    padding-right: 16px;
     //z-index:100;
-    button{
-      width: calc(100% - 28px);
-      height: 2.5rem;
-      margin: -5px 0 0 14px;
-      //background: -webkit-linear-gradient(left, rgb(149, 58, 139), rgb(86, 82, 222)); /* Safari 5.1 - 6.0 */
-      //background: -o-linear-gradient(right, rgb(149, 58, 139), rgb(86, 82, 222)); /* Opera 11.1 - 12.0 */
-      //background: -moz-linear-gradient(right, rgb(149, 58, 139), rgb(86, 82, 222)); /* Firefox 3.6 - 15 */
-      //background: linear-gradient(to right, rgb(149, 58, 139), rgb(86, 82, 222)); /* 标准的语法（必须放在最后） */
-      background:  $fontSecondColor;
-      color: #fff;
-      font-size: 15px;
-      border-radius: 0 0 15px 15px;
-    }
-  }
-  background: #000;
-  position: fixed;
-  opacity: 1;
-  .text{
-    width: calc(100% - 28px);
-    border-radius: 40px 40px  0px 0px;
-    height: auto;
-    left:14px;
+    .text{
+      width: auto;
+      border-radius: 15px 15px  0px 0px;
+      height: auto;
 
-    background: #2b3340;
-    padding: 16px;
-    position: relative;
-    bottom: 5px;
-    .text-input-ios{
-      color: #fff;
-      font-size: 18px;
+      background: #2b3340;
+      padding: 16px;
+      position: relative;
+      bottom: 1px;
+      .text-input-ios{
+        color: #fff;
+        font-size: 18px;
+      }
+    }
+    .tools{
+      display: flex;
+      .close{
+        border-radius: 0 0 0px 15px;
+        margin-right: 1px;
+      }
+      .send{
+        border-radius: 0 0 15px 0px;
+
+        margin-left: 1px;
+      }
+      button{
+        width: 50%;
+        height: 2.5rem;
+        //background: -webkit-linear-gradient(left, rgb(149, 58, 139), rgb(86, 82, 222)); /* Safari 5.1 - 6.0 */
+        //background: -o-linear-gradient(right, rgb(149, 58, 139), rgb(86, 82, 222)); /* Opera 11.1 - 12.0 */
+        //background: -moz-linear-gradient(right, rgb(149, 58, 139), rgb(86, 82, 222)); /* Firefox 3.6 - 15 */
+        //background: linear-gradient(to right, rgb(149, 58, 139), rgb(86, 82, 222)); /* 标准的语法（必须放在最后） */
+        background:  $fontSecondColor;
+        color: #fff;
+        font-size: 16px;
+        padding: 0;
+      }
     }
   }
 
