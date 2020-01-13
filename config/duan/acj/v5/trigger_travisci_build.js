@@ -35,6 +35,7 @@ function clean(datasource)
     },
     body: {
       request: {
+        message: "冥王星 智能助手 发起重新打包",
         branch: "cassiscornuta"
       }
     }
