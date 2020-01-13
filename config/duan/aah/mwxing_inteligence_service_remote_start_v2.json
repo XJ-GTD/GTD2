@@ -292,136 +292,173 @@
                   }
               }
           },
-            "name": "数据清洗与转换 迅飞返回结果格式整理",
-            "trigger": "acj",
-            "parameters": [
-                "datasource;$.parent.parameters.xunfeiyun"
-            ],
-            "outputs": [
-                "cleaned"
-            ],
-            "next": [
-                {
-                    "when": {
-                        "d$.parent.outputs.cleaned": {
-                            "function": {
-                                "d$exists": false
-                            }
-                        }
-                    },
-                    "type": "forward",
-                    "forward_with": [
-                        "xfy_nlp_end"
-                    ]
+          "name": "数据清洗与转换 迅飞返回结果格式整理",
+          "trigger": "acj",
+          "parameters": [
+              "datasource;$.parent.parameters.xunfeiyun"
+          ],
+          "outputs": [
+              "cleaned"
+          ],
+          "next": [
+              {
+                  "when": {
+                      "d$.parent.outputs.cleaned": {
+                          "function": {
+                              "d$exists": false
+                          }
+                      }
+                  },
+                  "type": "forward",
+                  "forward_with": [
+                      "xfy_nlp_end"
+                  ]
+              },
+              {
+                "when": {
+                  "d$.parent.outputs.cleaned": {
+                      "d$and": [
+                          {
+                              "travisci": {
+                                  "d$exists": true
+                              }
+                          },
+                          {
+                              "travisci": {
+                                  "d$eq": true
+                              }
+                          }
+                      ]
+                  }
                 },
-                {
-                    "when": {
-                        "d$and": [
-                            {
-                                "d$.parent.outputs.cleaned": {
-                                    "d$and": [
-                                        {
-                                            "function": {
-                                                "d$exists": true
-                                            }
-                                        },
-                                        {
-                                            "function": {
-                                                "d$ne": "summary"
-                                            }
-                                        }
-                                    ]
-                                }
-                            },
-                            {
-                                "d$.parent.outputs.cleaned": {
-                                    "hasnotask": {
-                                        "d$eq": false
-                                    }
-                                }
-                            }
+                "name": "确认自动打包指令",
+                "trigger": "exc",
+                "parameters": [
+                    "method;post",
+                    "urlabs;http://sa-cdc:8080/cdc/mwxing_travisci_cassiscornuta_trigger/json/trigger",
+                    "data;$.root.parameters",
+                    "merge_travisci;$.parent.outputs.cleaned.travisci"
+                ],
+                "outputs": [
+                    "executed"
+                ],
+                "next": [
+                    {
+                        "type": "forward",
+                        "forward_with": [
+                            "xfy_nlp_end"
                         ]
-                    },
-                    "name": "借贷处理返回结果转换",
-                    "trigger": "acj",
-                    "parameters": [
-                        "ruleid;MWXING_XUNFEI_L0005_V1_2",
-                        "datasource;$.parent.outputs.cleaned"
-                    ],
-                    "outputs": [
-                        "cleaned"
-                    ],
-                    "next": [
-                        {
-                            "type": "forward",
-                            "forward_with": [
-                                "xfy_nlp_end"
-                            ]
-                        }
-                    ]
-                },
-                {
-                    "when": {
-                        "d$and": [
-                            {
-                                "d$.parent.outputs.cleaned": {
-                                    "function": {
-                                        "d$exists": true
-                                    }
-                                }
-                            },
-                            {
-                                "d$.parent.outputs.cleaned": {
-                                    "d$or": [
-                                        {
-                                            "hasnotask": {
-                                                "d$eq": true
-                                            }
-                                        },
-                                        {
-                                            "function": {
-                                                "d$eq": "summary"
-                                            }
-                                        }
-                                    ]
-                                }
-                            }
-                        ]
-                    },
-                    "name": "借贷处理",
-                    "trigger": "bal",
-                    "parameters": [
-                        "accountid;$.parent.outputs.cleaned.accountid",
-                        "function;$.parent.outputs.cleaned.function",
-                        "_context;$.parent.outputs.cleaned._context",
-                        "data;$.parent.outputs.cleaned.data"
-                    ],
-                    "outputs": [
-                        "debtsandclaims"
-                    ],
-                    "next": [
-                        {
-                            "name": "借贷处理返回结果转换",
-                            "trigger": "acj",
-                            "parameters": [
-                                "ruleid;MWXING_XUNFEI_L0005_V1_2",
-                                "datasource;$.parent.outputs.debtsandclaims"
-                            ],
-                            "outputs": [
-                                "cleaned"
-                            ],
-                            "next": [
-                                {
-                                    "type": "forward",
-                                    "forward_with": [
-                                        "xfy_nlp_end"
-                                    ]
-                                }
-                            ]
-                        }
-                    ]
-                }
-            ]
+                    }
+                ]
+              },
+              {
+                  "when": {
+                      "d$and": [
+                          {
+                              "d$.parent.outputs.cleaned": {
+                                  "d$and": [
+                                      {
+                                          "function": {
+                                              "d$exists": true
+                                          }
+                                      },
+                                      {
+                                          "function": {
+                                              "d$ne": "summary"
+                                          }
+                                      }
+                                  ]
+                              }
+                          },
+                          {
+                              "d$.parent.outputs.cleaned": {
+                                  "hasnotask": {
+                                      "d$eq": false
+                                  }
+                              }
+                          }
+                      ]
+                  },
+                  "name": "借贷处理返回结果转换",
+                  "trigger": "acj",
+                  "parameters": [
+                      "ruleid;MWXING_XUNFEI_L0005_V1_2",
+                      "datasource;$.parent.outputs.cleaned"
+                  ],
+                  "outputs": [
+                      "cleaned"
+                  ],
+                  "next": [
+                      {
+                          "type": "forward",
+                          "forward_with": [
+                              "xfy_nlp_end"
+                          ]
+                      }
+                  ]
+              },
+              {
+                  "when": {
+                      "d$and": [
+                          {
+                              "d$.parent.outputs.cleaned": {
+                                  "function": {
+                                      "d$exists": true
+                                  }
+                              }
+                          },
+                          {
+                              "d$.parent.outputs.cleaned": {
+                                  "d$or": [
+                                      {
+                                          "hasnotask": {
+                                              "d$eq": true
+                                          }
+                                      },
+                                      {
+                                          "function": {
+                                              "d$eq": "summary"
+                                          }
+                                      }
+                                  ]
+                              }
+                          }
+                      ]
+                  },
+                  "name": "借贷处理",
+                  "trigger": "bal",
+                  "parameters": [
+                      "accountid;$.parent.outputs.cleaned.accountid",
+                      "function;$.parent.outputs.cleaned.function",
+                      "_context;$.parent.outputs.cleaned._context",
+                      "data;$.parent.outputs.cleaned.data"
+                  ],
+                  "outputs": [
+                      "debtsandclaims"
+                  ],
+                  "next": [
+                      {
+                          "name": "借贷处理返回结果转换",
+                          "trigger": "acj",
+                          "parameters": [
+                              "ruleid;MWXING_XUNFEI_L0005_V1_2",
+                              "datasource;$.parent.outputs.debtsandclaims"
+                          ],
+                          "outputs": [
+                              "cleaned"
+                          ],
+                          "next": [
+                              {
+                                  "type": "forward",
+                                  "forward_with": [
+                                      "xfy_nlp_end"
+                                  ]
+                              }
+                          ]
+                      }
+                  ]
+              }
+          ]
         },
         {
           "when": {

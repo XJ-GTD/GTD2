@@ -1,0 +1,35 @@
+{
+  "_id": ObjectID("5e1be67612876b000706095e"),
+  "name": "启动冥王星自动打包",
+  "trigger": "mwxing_travisci_cassiscornuta_trigger",
+  "parameters": [
+    "deviceId",
+    "userId",
+    "travisci"
+  ],
+  "follows": [
+    {
+      "name": "travis-ci自动打包指令生成",
+      "trigger": "acj",
+      "parameters": [
+          "ruleid;MWXING_TRAVISCI_TRIGGER_V1_5",
+          "datasource;$.parent.parameters"
+      ],
+      "outputs": [
+          "cleaned"
+      ],
+      "next": [
+        {
+          "name": "本地调用travis-ci服务接口",
+          "trigger": "exc",
+          "parameters": [
+            "method;post",
+            "urlabs;https://api.travis-ci.com/XJ-GTD/GTD2/travis-ci%2Ftravis-core/requests",
+            "header;$.parent.outputs.cleaned.header",
+            "data;$.parent.outputs.cleaned.body"
+          ]
+        }
+      ]
+    }
+  ]
+}
