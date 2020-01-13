@@ -92,22 +92,20 @@ import { ImagePicker } from '@ionic-native/image-picker';
           </ion-grid>
         <div class="pulldown-wrapper" style="top: -50px;"><div class="before-trigger">刷新中</div></div>
       </div>
-      <div class="inputwarp">
-        <ion-toolbar>
-          <ion-buttons start>
-            <button ion-button outline (click)="openselect()" class="font-normal">
-              <ion-icon class="fad fa-plus-square"></ion-icon>
-            </button>
-          </ion-buttons>
-          <ion-buttons end>
-            <button ion-button outline (click)="saveComment()" class="font-normal">
-              发送
-            </button>
-          </ion-buttons>
-          <ion-input [(ngModel)]="bw" class="font-normal"></ion-input>
-        </ion-toolbar>
-      </div>
     </modal-box>
+    <ion-footer class="inputwarp">
+        <ion-toolbar>
+          <ion-input [(ngModel)]="bw" class="font-normal"></ion-input>
+          <ion-buttons end>
+            <button ion-button outline (click)="openselect()" class="font-normal">
+              <ion-icon class="fad fa-plus"></ion-icon>
+            </button>
+            <button ion-button outline (click)="saveComment()" class="font-normal">
+              <ion-icon class="fas fa-long-arrow-up"></ion-icon>
+            </button>
+          </ion-buttons>
+        </ion-toolbar>
+    </ion-footer>
 
   `
 })
@@ -229,24 +227,28 @@ export class AttachPage {
         {
           text: '拍照',
           role: 'camera',
-          icon: "ios-camera",
-          cssClass: "cameraXX",
+          icon: "camera-outline",
           handler: () => {
             this.shot();
           }
         }, {
           text: '相册',
           role: 'albums',
-          icon: "ios-albums",
+          icon: "image-outline",
           handler: () => {
             this.selectPicture2();
           }
         }, {
           text: '文件',
           role: 'albums',
-          icon: "ios-albums",
+          icon: "document-outline",
           handler: () => {
             this.select();
+          }
+        },{
+          text: '取消',
+          role: 'cancel',
+          handler: () => {
           }
         }
       ]

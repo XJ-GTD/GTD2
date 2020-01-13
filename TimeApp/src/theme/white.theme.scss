@@ -139,4 +139,19 @@ ion-app.white-theme {
       color: rgba(51,51,51, 1);
     }
   }
+
+
+  .action-sheet-title {
+    color: rgba(51, 51, 51, 1);
+  }
+
+  .action-sheet-button {
+    color: rgba(7, 109, 138, 1);
+
+    span {
+      ion-icon {
+        background: rgba(188, 209, 215, 1);
+      }
+    }
+  }
 }
