@@ -55,15 +55,15 @@ import { ImagePicker } from '@ionic-native/image-picker';
                         <img *ngIf="fja.fjurl ==''" src="{{defaultimg}}"/>
                       </ion-thumbnail>
                       <div *ngIf="(fja.ext == 'PDF' || fja.ext == 'pdf')&& (fja.fj !='')"
-                           (click)="openPdf(fja.fjurl,fja.ext,fja.fji)">
+                           (click)="openFile(fja.fjurl,fja.ext,fja.fji)">
                         <ion-icon class="fas fa-4x fa-file-pdf"></ion-icon>
                       </div>
                       <div *ngIf="(fja.ext == 'mp4' || fja.ext == 'MP4')&& (fja.fj !='')"
-                           (click)="openPdf(fja.fjurl,fja.ext,fja.fji)">
+                           (click)="openFile(fja.fjurl,fja.ext,fja.fji)">
                         <ion-icon class="fas fa-4x fa-file-audio"></ion-icon>
                       </div>
                       <div *ngIf="(fja.ext == 'mp3' || fja.ext == 'MP3')&& (fja.fj !='')"
-                           (click)="openPdf(fja.fjurl,fja.ext,fja.fji)">
+                           (click)="openFile(fja.fjurl,fja.ext,fja.fji)">
                         <ion-icon class="fas fa-4x fa-file-music"></ion-icon>
                       </div>
                       <div *ngIf="(fja.ext=='PPT' || fja.ext=='ppt' || fja.ext=='PPTX' || fja.ext=='pptx')&& (fja.fj !='')"
@@ -79,7 +79,7 @@ import { ImagePicker } from '@ionic-native/image-picker';
                         <ion-icon class="fas fa-4x fa-file-excel"></ion-icon>
                       </div>
                       <div *ngIf="(fja.ext=='txt'||fja.ext=='TXT')&& (fja.fj !='')"
-                           (click)="openPdf(fja.fjurl,fja.ext,fja.fji)">
+                           (click)="openFile(fja.fjurl,fja.ext,fja.fji)">
                         <ion-icon class="fas fa-4x fa-file-plus"></ion-icon>
                       </div>
                     </div>
@@ -541,7 +541,7 @@ export class AttachPage {
   }
 
   //打开本地PDF
-  openPdf(fj: string, fileType: string, fji: string) {
+  openFile(fj: string, fileType: string, fji: string) {
     if (fj && fj.startsWith("http")) {
       //当时mp3的情况下
       if (fileType && (fileType == 'mp3' || fileType == 'MP3')) {
