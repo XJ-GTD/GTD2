@@ -49,7 +49,7 @@ import {PlusModal} from "../../pages/h/plusModal";
 import {AtMemberPage} from "../../pages/atmember/atmember";
 
 export class DataConfig {
-  public static isdebug: boolean = true;
+  public static isdebug: boolean = false;
   public static islog: boolean = false;
   public static hasWelcome: boolean = false;
   //2019/04/29 增加日志表操作
