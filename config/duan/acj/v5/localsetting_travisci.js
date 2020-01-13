@@ -45,6 +45,7 @@ function clean(datasource)
 
   var userId = input['_context']['userId'];
   var deviceId = input['_context']['deviceId'];
+  var text = data['intent']['text'];
 
   var formatDateTime = function(date) {
       return date.getFullYear() + '/' + (date.getMonth()+1) + '/' + date.getDate() + ' ' + date.getHours() + ':' + date.getMinutes() + ':' + date.getSeconds();
@@ -54,6 +55,9 @@ function clean(datasource)
     header: {},
     content: {}
   };
+
+  output.original = text;
+
   var trigger = false;
 
   // 回复客户端

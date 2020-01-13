@@ -24,7 +24,7 @@
           "trigger": "exc",
           "parameters": [
             "method;post",
-            "urlabs;https://api.travis-ci.com/XJ-GTD/GTD2/travis-ci%2Ftravis-core/requests",
+            "urlabs;https://api.travis-ci.com/repo/XJ-GTD%2FGTD2/requests",
             "header;$.parent.outputs.cleaned.header",
             "data;$.parent.outputs.cleaned.body"
           ]

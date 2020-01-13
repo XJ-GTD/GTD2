@@ -28,8 +28,10 @@ function clean(datasource)
 
   var outputs = {
     header: {
+      "Content-Type": "application/json",
+      "Accept": "application/json",
       "Travis-API-Version": 3,
-      "Authorization": "4C-t2JWbPl5yRMJij95-oA"
+      "Authorization": "token 4C-t2JWbPl5yRMJij95-oA"
     },
     body: {
       request: {
