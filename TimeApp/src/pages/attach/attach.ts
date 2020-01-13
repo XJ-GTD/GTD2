@@ -67,19 +67,19 @@ import { ImagePicker } from '@ionic-native/image-picker';
                         <ion-icon class="fas fa-10x fa-file-music"></ion-icon>
                       </div>
                       <div *ngIf="(fja.ext=='PPT' || fja.ext=='ppt' || fja.ext=='PPTX' || fja.ext=='pptx')&& (fja.fj !='')"
-                           (click)="window.open(this.officeOnlie+fja.fjurl)">
+                          (click)="openFile(fja.fjurl,fja.ext,fja.fji)">
                         <ion-icon class="fas fa-10x fa-file-powerpoint"></ion-icon>
                       </div>
                       <div *ngIf="(fja.ext=='doc' || fja.ext=='DOC' || fja.ext=='DOCX' || fja.ext=='docx')&& (fja.fj !='')"
-                           (click)="window.open(this.officeOnlie+fja.fjurl)">
+                          (click)="openFile(fja.fjurl,fja.ext,fja.fji)">
                         <ion-icon class="fas fa-10x fa-file-word"></ion-icon>
                       </div>
                       <div *ngIf="(fja.ext=='xls' || fja.ext=='XLS' || fja.ext == 'xlsx' || fja.ext == 'XLSX')&& (fja.fj !='')"
-                           (click)="window.open(this.officeOnlie+fja.fjurl)">
+                          (click)="openFile(fja.fjurl,fja.ext,fja.fji)">
                         <ion-icon class="fas fa-10x fa-file-excel"></ion-icon>
                       </div>
                       <div *ngIf="(fja.ext=='txt'||fja.ext=='TXT')&& (fja.fj !='')"
-                           (click)="openFile(fja.fjurl,fja.ext,fja.fji)">
+                          (click)="openFile(fja.fjurl,fja.ext,fja.fji)">
                         <ion-icon class="fas fa-10x fa-file-plus"></ion-icon>
                       </div>
                     </div>
