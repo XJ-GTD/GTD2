@@ -291,6 +291,13 @@ export class AssistantService {
       immediately.fininsh = true;
       immediately.immediatetext = result.text;
       this.emitService.emitImmediately(immediately);
+      if (result.error){
+        throw new class implements Error {
+          message: string = "语音故障";
+          name: string = "aispeech";
+          stack: string = "语音故障";
+        };
+      }
       // 读取录音进行base64转码
       let base64File: string = await this.file.readAsDataURL(this.mp3Path, this.mp3Name);
       let audioPro = new AudioPro();
