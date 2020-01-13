@@ -77,7 +77,7 @@ import {RemindfeedbackService} from "../../../service/cordova/remindfeedback.ser
               </span>
               <ng-template [ngIf]="tellYouData.tellType ==  tellyouType.remind_merge">
                 <ng-template  ngFor let-rem  [ngForOf]="tellYouData.reminds">
-                  <p>{{rem.sn}}</p>
+                  <p class="mesn">{{rem.sn}}</p>
                 </ng-template>
               </ng-template>
         </div>
