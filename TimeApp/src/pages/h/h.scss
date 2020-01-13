@@ -4,7 +4,15 @@ page-h {
   }
 
   .shortcut[bottom] {
-    bottom: 70px;
+    bottom: 85px;
+  }
+
+  .shortcut[right] {
+    right: 15px;
+  }
+  .fab[mini] {
+    background:rgba(0,109,136,.8);
+    color:rgba(255,255,255,1);
   }
   .openm{
     width:33px;

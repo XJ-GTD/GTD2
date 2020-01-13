@@ -17,33 +17,33 @@ export class HService {
     // this.syncRestful.putHourlyWeather(userId);
   }
 
-  centerShow(select: CalendarDay): Promise<HData> {
-
-    return new Promise<HData>((resolve, reject) => {
-      let hdata: HData = new HData();
-      hdata.selectDay = select;
-      if (!select) {
-        hdata.isShow = false;
-      } else {
-        hdata.isShow = true;
-        //
-        // this.pgservice.getHomDayData(moment(select.time)).then(data=>{
-        //   hdata.showDay =  moment(data.sd).format('dddd MM月DD日');
-        //   hdata.showDay2 = this.countDay(select.time);
-        //   hdata.newmessge = data.news;
-        //   hdata.things = data.scds;
-        //   let bk:number = 0;
-        //   for (let jt of data.jtL) {
-        //     hdata.jtl.push(jt);
-        //     if (bk > 2) break;
-        //     bk++;
-        //   }
-        // });
-      }
-      resolve(hdata);
-    })
-
-  }
+  // centerShow(select: CalendarDay): Promise<HData> {
+  //
+  //   return new Promise<HData>((resolve, reject) => {
+  //     let hdata: HData = new HData();
+  //     hdata.selectDay = select;
+  //     if (!select) {
+  //       hdata.isShow = false;
+  //     } else {
+  //       hdata.isShow = true;
+  //       //
+  //       // this.pgservice.getHomDayData(moment(select.time)).then(data=>{
+  //       //   hdata.showDay =  moment(data.sd).format('dddd MM月DD日');
+  //       //   hdata.showDay2 = this.countDay(select.time);
+  //       //   hdata.newmessge = data.news;
+  //       //   hdata.things = data.scds;
+  //       //   let bk:number = 0;
+  //       //   for (let jt of data.jtL) {
+  //       //     hdata.jtl.push(jt);
+  //       //     if (bk > 2) break;
+  //       //     bk++;
+  //       //   }
+  //       // });
+  //     }
+  //     resolve(hdata);
+  //   })
+  //
+  // }
 
   /**
    * 显示选中日期对应类型

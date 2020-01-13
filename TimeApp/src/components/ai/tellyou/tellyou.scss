@@ -86,11 +86,10 @@ TellyouComponent {
         white-space: normal;
         display: -webkit-box;
         -webkit-box-orient: vertical;
-        -webkit-line-clamp: 5;
+        -webkit-line-clamp: 3;
         overflow: hidden;
         font-size: 1.4rem;
         line-height: 1.8rem;
-        min-height:120px;
         //white-space: pre-line;
         //font-size: 1.2rem;
       }
@@ -134,7 +133,7 @@ TellyouComponent {
     }
 
     .warning {
-      .ignore, p {
+      p {
         color: rgba(100, 132, 179, 1);
 
         ion-icon {
@@ -143,6 +142,13 @@ TellyouComponent {
       }
     }
 
+    .ignore{
+      color: rgba(100, 132, 179, 1);
+    }
+
+    .show {
+      color: rgba(113, 173, 188, 1);
+    }
     .card-ios {
       .card-header-ios {
 
@@ -184,19 +190,14 @@ TellyouComponent {
         .fa-play,.fa-stop {
           color: rgba(255, 255, 255, 1);
         }
-        .show {
-          color: rgba(113, 173, 188, 1);
-        }
 
       }
     }
   }
 
 }
-
 .white-theme {
-  TellyouComponent {
-    div[content] {
+  TellyouComponent{
       .closebutton {
         color: rgba(187, 187, 187, 1);
       }
@@ -210,10 +211,11 @@ TellyouComponent {
           }
         }
       }
-
+    .show {
+      color: rgba(113, 173, 188, 1);
+    }
       .card-ios {
         .card-header-ios {
-
           .card-title-ios {
             .tellType {
               color: rgba(50, 163, 190, 1);
@@ -252,13 +254,9 @@ TellyouComponent {
           .fa-play,.fa-stop {
             color: rgba(113, 173, 188, 1);
           }
-
-          .show {
-            color: rgba(113, 173, 188, 1);
-          }
         }
+
       }
-    }
   }
 }
 

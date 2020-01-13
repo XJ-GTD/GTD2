@@ -341,7 +341,7 @@ export class AttachPage {
 
     this.dataRestful.uploadbase64(upload).then((result) => {
       if (result && result.data) {
-        alert("uploaded with no " + result.data);
+        //alert("uploaded with no " + result.data);
         this.fjData.fpjson.remote = String(result.data);
         this.fjData.fj = JSON.stringify(this.fjData.fpjson);
         this.fjData.fjurl = this.browserurl + result.data;
@@ -513,7 +513,7 @@ export class AttachPage {
     this.emitService.emit("mwxing.calendar.datas.readwrite", {rw: "writeandread", payload: retAt});
     if (retAt.fpjson.remote) {
       retAt.fjurl = this.browserurl + retAt.fpjson.remote;
-      alert("URL : " + retAt.fjurl);
+      //alert("URL : " + retAt.fjurl);
     }
     //this.flushData();
     this.fjArray.unshift(retAt);

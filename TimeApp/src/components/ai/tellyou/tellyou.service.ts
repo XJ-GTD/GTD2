@@ -277,11 +277,11 @@ export class TellyouService {
         }).catch(err=>{
 
         });
-
-        this.timeoutService.timeOutOnlyOne(layclose, () => {
-          this.closefn();
-          this.resumeTellYou();
-        }, "close.home.ai.talk");
+        //
+        // this.timeoutService.timeOutOnlyOne(layclose, () => {
+        //   this.closefn();
+        //   this.resumeTellYou();
+        // }, "close.home.ai.talk");
 
       }, "open.home.ai.talk");
 
