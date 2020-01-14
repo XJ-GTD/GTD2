@@ -55,31 +55,31 @@ import { ImagePicker } from '@ionic-native/image-picker';
                         <img *ngIf="fja.fjurl ==''" src="{{defaultimg}}"/>
                       </ion-thumbnail>
                       <div *ngIf="(fja.ext == 'PDF' || fja.ext == 'pdf')&& (fja.fj !='')"
-                           (click)="openFile(fja.fjurl,fja.ext,fja.fji)">
+                           (click)="openFile(fja.fjurl, fja.ext, fja.fji, fja.fpjson)">
                         <ion-icon class="fas  fa-file-pdf icon-font-siza"></ion-icon>
                       </div>
                       <div *ngIf="(fja.ext == 'mp4' || fja.ext == 'MP4')&& (fja.fj !='')"
-                           (click)="openFile(fja.fjurl,fja.ext,fja.fji)">
+                           (click)="openFile(fja.fjurl, fja.ext, fja.fji, fja.fpjson)">
                         <ion-icon class="fas  fa-file-audio icon-font-siza"></ion-icon>
                       </div>
                       <div *ngIf="(fja.ext == 'mp3' || fja.ext == 'MP3')&& (fja.fj !='')"
-                           (click)="openFile(fja.fjurl,fja.ext,fja.fji)">
+                           (click)="openFile(fja.fjurl, fja.ext, fja.fji, fja.fpjson)">
                         <ion-icon class="fas  fa-file-music icon-font-siza"></ion-icon>
                       </div>
                       <div *ngIf="(fja.ext=='PPT' || fja.ext=='ppt' || fja.ext=='PPTX' || fja.ext=='pptx')&& (fja.fj !='')"
-                          (click)="openFile(fja.fjurl,fja.ext,fja.fji)">
+                          (click)="openFile(fja.fjurl, fja.ext, fja.fji, fja.fpjson)">
                         <ion-icon class="fas  fa-file-powerpoint icon-font-siza"></ion-icon>
                       </div>
                       <div *ngIf="(fja.ext=='doc' || fja.ext=='DOC' || fja.ext=='DOCX' || fja.ext=='docx')&& (fja.fj !='')"
-                          (click)="openFile(fja.fjurl,fja.ext,fja.fji)">
+                          (click)="openFile(fja.fjurl, fja.ext, fja.fji, fja.fpjson)">
                         <ion-icon class="fas  fa-file-word icon-font-siza"></ion-icon>
                       </div>
                       <div *ngIf="(fja.ext=='xls' || fja.ext=='XLS' || fja.ext == 'xlsx' || fja.ext == 'XLSX')&& (fja.fj !='')"
-                          (click)="openFile(fja.fjurl,fja.ext,fja.fji)">
+                          (click)="openFile(fja.fjurl, fja.ext, fja.fji, fja.fpjson)">
                         <ion-icon class="fas  fa-file-excel icon-font-siza"></ion-icon>
                       </div>
                       <div *ngIf="(fja.ext=='txt'||fja.ext=='TXT')&& (fja.fj !='')"
-                          (click)="openFile(fja.fjurl,fja.ext,fja.fji)">
+                          (click)="openFile(fja.fjurl, fja.ext, fja.fji, fja.fpjson)">
                         <ion-icon class="fas fa-file-plus icon-font-siza"></ion-icon>
                       </div>
                     </div>
@@ -543,7 +543,7 @@ export class AttachPage {
   }
 
   //打开本地PDF
-  openFile(fj: string, fileType: string, fji: string) {
+  openFile(fj: string, fileType: string, fji: string, fpjson: CacheFilePathJson) {
     if (fj && fj.startsWith("http")) {
       //当时mp3的情况下
       if (fileType && (fileType == 'mp3' || fileType == 'MP3')) {
@@ -554,6 +554,15 @@ export class AttachPage {
 
             });
         }, (error) => {
+
+        });
+      } else {
+        let filepath = fpjson.getLocalFilePath(this.file.dataDirectory);
+        this.dataRestful.download(fj, filepath)
+        .then(() => {
+          this.fileOpener.open(filepath, this.getFileMimeType(fileType))
+            .then(() => console.info('File is opened'))
+            .catch(e => console.info('Error opening file', e));
 
         });
       }

@@ -30,7 +30,7 @@ function shouldclean(datasource)
         for (var sei in semantics) {
           var semantic = semantics[sei];
 
-          if (semantic['intent'] === 'ActivityGuide' || (input['_context'] && input['_context']['server'] && input['_context']['server']['activity'] && (semantic['intent'] === 'InputDatetime' || semantic['intent'] === 'InputSomething' || semantic['intent'] === 'InputAddress' || semantic['intent'] === 'InputMember' || semantic['intent'] === 'EndGuide'))) {
+          if (semantic['intent'] === 'ActivityGuide' || (input['_context'] && input['_context']['server'] && input['_context']['server']['activity'] && (semantic['intent'] === 'InputDatetime' || semantic['intent'] === 'InputSomething' || semantic['intent'] === 'InputThreeW' || semantic['intent'] === 'InputTimeSomething' || semantic['intent'] === 'InputAddress' || semantic['intent'] === 'InputMember' || semantic['intent'] === 'EndGuide'))) {
             return true;
           }
         }
@@ -165,7 +165,7 @@ function clean(datasource)
     servercontext['activity'] = {};
   }
 
-  if (intent == 'InputDatetime' || intent == 'InputSomething' || intent == 'InputAddress') {
+  if (intent == 'InputDatetime' || intent == 'InputThreeW' || intent == 'InputTimeSomething' || intent == 'InputSomething' || intent == 'InputAddress') {
     var activity = servercontext['activity'] || {};
 
     if (date && date !== '') {
@@ -242,7 +242,7 @@ function clean(datasource)
         version: 'V1.1',
         sender: 'xunfei',
         datetime: formatDateTime(new Date()),
-        describe: ['CA', 'AG', 'SS', 'S']
+        describe: ['CA', 'AG', 'SS', 'SC', 'O', 'SS', 'S']
       };
 
       output.content['0'] = {
@@ -266,12 +266,41 @@ function clean(datasource)
       };
 
       output.content['3'] = {
+        processor: 'SC',
+        option: 'SC.T',
+        parameters: {},
+        output: {
+          prvoption: "prvoption"
+        }
+      };
+
+      output.content['4'] = {
+        processor: 'O',
+        option: 'O.O',
+        parameters: {}
+      };
+
+      output.content['5'] = {
+        processor: 'SS',
+        option: 'SS.F',
+        parameters: {}
+      };
+
+      output.content['6'] = {
         processor: 'S',
         option: 'S.P',
         parameters: {
-          t: 'EE_AG_CONFIRM'      // 是否创建, 请确认
+          t: 'DONE'    // 已完成
         }
       };
+
+      // output.content['3'] = {
+      //   processor: 'S',
+      //   option: 'S.P',
+      //   parameters: {
+      //     t: 'EE_AG_CONFIRM'      // 是否创建, 请确认
+      //   }
+      // };
 
       delete servercontext['activity'];
     }
@@ -333,6 +362,7 @@ function clean(datasource)
         datetime: formatDateTime(new Date()),
         describe: ['CA', 'AG', 'SS', 'SC', 'O', 'SS', 'S']
       };
+
       output.content['0'] = {
         processor: 'CA',
         option: 'CA.AD',
