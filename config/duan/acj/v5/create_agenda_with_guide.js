@@ -30,7 +30,7 @@ function shouldclean(datasource)
         for (var sei in semantics) {
           var semantic = semantics[sei];
 
-          if (semantic['intent'] === 'ActivityGuide' || (input['_context'] && input['_context']['server'] && input['_context']['server']['activity'] && (semantic['intent'] === 'InputDatetime' || semantic['intent'] === 'InputSomething' || semantic['intent'] === 'InputAddress' || semantic['intent'] === 'InputMember' || semantic['intent'] === 'EndGuide'))) {
+          if (semantic['intent'] === 'ActivityGuide' || (input['_context'] && input['_context']['server'] && input['_context']['server']['activity'] && (semantic['intent'] === 'InputDatetime' || semantic['intent'] === 'InputSomething' || semantic['intent'] === 'InputThreeW' || semantic['intent'] === 'InputTimeSomething' || semantic['intent'] === 'InputAddress' || semantic['intent'] === 'InputMember' || semantic['intent'] === 'EndGuide'))) {
             return true;
           }
         }
@@ -165,7 +165,7 @@ function clean(datasource)
     servercontext['activity'] = {};
   }
 
-  if (intent == 'InputDatetime' || intent == 'InputSomething' || intent == 'InputAddress') {
+  if (intent == 'InputDatetime' || intent == 'InputThreeW' || intent == 'InputTimeSomething' || intent == 'InputSomething' || intent == 'InputAddress') {
     var activity = servercontext['activity'] || {};
 
     if (date && date !== '') {

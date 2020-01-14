@@ -56,6 +56,21 @@ export class RestfulClient {
     });
   }
 
+  async downloadFile(url: string, body: any, filePath: string): Promise<any> {
+    if (!this.networkService.isConnected()) {
+      return;
+    }
+
+    let header = this.restConfig.createHeader();
+
+    if (this.util.hasCordova()) {
+      let data = await this.http.downloadFile(url, body, header, filePath);
+      return data;
+    } else {
+      return;
+    }
+  }
+
   download(url: UrlEntity, body: any, filePath: string): Promise<any> {
     return new Promise((resolve, reject) => {
       // 没有网络的时候，直接返回
