@@ -62,7 +62,7 @@ else
     ionic cordova build browser --prod
   else
     echo "start build android production"
-    ionic cordova build android --prod --verbose --stacktrace --buildConfig $TRAVIS_BUILD_DIR/travis/profiles/cordova/build.json
+    ionic cordova build android --release --prod --verbose --stacktrace --buildConfig $TRAVIS_BUILD_DIR/travis/profiles/cordova/build.json
     cat $TRAVIS_BUILD_DIR/TimeApp/platforms/android/app/build.gradle
     cat $TRAVIS_BUILD_DIR/TimeApp/platforms/android/CordovaLib/cordova.gradle
     ls $TRAVIS_BUILD_DIR/TimeApp/platforms/android/app/src/main/
