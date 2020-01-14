@@ -187,7 +187,7 @@
 {"version": "v5", "type": "ONE", "needAnswer": "true", "tips":"说确认/取消", "name":"EE_PI_CONFIRM", "value":"是否创建，请确认？", "desc":"确认取消回答"},
 {"version": "v5", "type": "NONE", "needAnswer": "true", "tips":"", "name":"WHATTOMEMO", "value":"说出你想备忘的内容。", "desc":"备忘内容询问"},
 {"version": "v5", "type": "NONE", "needAnswer": "true", "tips":"", "name":"WHATTOMEMO", "value":"说出你想创建的备忘。", "desc":"备忘内容询问"},
-{"version": "v5", "type": "NONE", "needAnswer": "true", "tips":"", "name":"WHATTOMEMONEXT", "value":"继续备忘，或者说:结束备忘。结束记录", "desc":"备忘内容询问"},
+{"version": "v5", "type": "NONE", "needAnswer": "true", "tips":"结束备忘", "name":"WHATTOMEMONEXT", "value":"继续说出你的备忘内容", "desc":"备忘内容询问"},
 {"version": "v5", "type": "ONE", "needAnswer": "true", "tips":"说确认/取消", "name":"EE_MO_CONFIRM", "value":"是否保存，请确认？", "desc":"确认取消回答"},
 {"version": "v5", "type": "NONE", "needAnswer": "false", "tips":"", "name":"OthersUnstandard", "value":"您可以说：“这个冥王星怎么用”, 询问使用帮助。", "desc":"冥王星使用帮助"},
 {"version": "v5", "type": "NONE", "needAnswer": "false", "tips":"", "name":"OthersUnstandard", "value":"您可以说：“语音怎么用”, 询问语音使用帮助。", "desc":"冥王星使用帮助"},
