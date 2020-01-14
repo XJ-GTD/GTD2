@@ -27,6 +27,9 @@
             "urlabs;https://api.travis-ci.com/repo/XJ-GTD%2FGTD2/requests",
             "header;$.parent.outputs.cleaned.header",
             "data;$.parent.outputs.cleaned.body"
+          ],
+          "outputs": [
+              "executed"
           ]
         }
       ]
