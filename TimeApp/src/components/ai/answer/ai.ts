@@ -130,6 +130,7 @@ export class AiComponent {
     this.aiData1.speechAi = new SpeechAiData();
     this.aiData1.speechAi.org = datas.org;
     this.aiData1.speechAi.an = datas.an;
+    this.aiData1.speechAi.tips = datas.tips;
     this.aiData1.speechAi.iswaitting = datas.iswaitting;
     this.gotonew();
 

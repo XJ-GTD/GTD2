@@ -23,6 +23,9 @@ import {UserConfig} from "../../../service/config/user.config";
       <div  class="aiAn">
         <div class="ainame">小冥</div>
         <div class="aicontent aiSpeechAn">{{aiData.speechAi.an}}</div>
+        <div class="scdTip" *ngIf="aiData.speechAi.tips">
+          <span >{{aiData.speechAi.tips}}</span>
+        </div>
       </div>
     </ng-template>
     <ng-template [ngIf]="aiData.speechAi && aiData.speechAi.iswaitting">
