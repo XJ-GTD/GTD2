@@ -1,7 +1,6 @@
 page-repeat {
   .repeattitle{
     p{
-      color:rgba(239, 239, 239, 1);
       font-size: 1.4rem;
       margin: 0;
       text-align: center;
@@ -10,7 +9,6 @@ page-repeat {
   }
   .itemwarp{
     p{
-      color:rgba(7,109,138,1);
       font-size: 1.6rem;
     }
     .endwith{
@@ -20,7 +18,6 @@ page-repeat {
       ion-item.item-radio-checked{
         .item-inner{
           ion-label{
-            color:rgba(7,109,138,1) !important;
             font-size: 1.4rem;
             font-weight: bold;
           }
@@ -28,7 +25,6 @@ page-repeat {
       }
       .radio-ios{
         .radio-checked .radio-inner{
-          border-color: rgba(7,109,138,.8);
         }
       }
        .item-ios .radio-ios[item-start] {
@@ -96,4 +92,67 @@ page-repeat {
   //  margin-right: 12px;
   //}
 
+}
+.white-theme {
+  page-repeat {
+    .repeattitle{
+      p{
+        color:rgba(239, 239, 239, 1);
+      }
+
+    }
+    .itemwarp{
+      p{
+        color:rgba(7,109,138,1);
+      }
+      .endwith{
+        ion-item.item-radio-checked{
+          .item-inner{
+            ion-label{
+              color:rgba(7,109,138,1) !important;
+            }
+          }
+        }
+        .radio-ios{
+          .radio-checked .radio-inner{
+            border-color: rgba(7,109,138,.8);
+          }
+        }
+      }
+
+    }
+
+  }
+}
+
+.black-theme {
+  page-repeat {
+    .repeattitle{
+      p{
+        color:rgba(239, 239, 239, 1);
+      }
+
+    }
+    .itemwarp{
+      p{
+        color:rgba(7,109,138,1);
+      }
+      .endwith{
+        ion-item.item-radio-checked{
+          .item-inner{
+            ion-label{
+              color:rgba(7,109,138,1) !important;
+            }
+          }
+        }
+        .radio-ios{
+          .radio-checked .radio-inner{
+            border-color: rgba(7,109,138,.8);
+          }
+        }
+      }
+
+    }
+
+  }
 }
