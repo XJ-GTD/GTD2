@@ -27,9 +27,9 @@
 
 @implementation XjBaiduSpeech
 
-NSString* APP_ID_1 = @"14502702";
-NSString* API_KEY_1 = @"6YvlNRGZ5I4CkA715XnVyoSm";
-NSString* SECRET_KEY_1 = @"9oHZPMLgc0BM9a4m3DhpHUhGSqYvsrAF";
+NSString* APP_ID_1 = @"15388608";
+NSString* API_KEY_1 = @"0gh0cOEAW5ZWV7sPWG0St5N2";
+NSString* SECRET_KEY_1 = @"2dicEsSdlnBI5eOL8Gh1WwnyXDOkbq7j";
 
 - (void) pluginInitialize {
     self.asrEventManager = [BDSEventManager createEventManagerWithName:BDS_ASR_NAME];
