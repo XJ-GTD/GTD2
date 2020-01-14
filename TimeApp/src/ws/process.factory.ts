@@ -20,6 +20,7 @@ import {MemosProcess} from "./process/memos.process";
 import {PlanItemsProcess} from "./process/planitems.process";
 import {AnnotationProcess} from "./process/annotation.process";
 import {TalkProcess} from "./process/talk.process";
+import {OperationProcess} from "./process/operation.process";
 
 /**
  * webSocket公用处理方法
@@ -49,6 +50,7 @@ export class ProcessFactory {
               private notificationProcess:NotificationProcess,
               private cacheProcess:CacheProcess,
               private talkProcess:TalkProcess,
+              private operationProcess:OperationProcess,
               private annotationProcess: AnnotationProcess
   ) {
 
@@ -70,6 +72,7 @@ export class ProcessFactory {
     this.factory.set("DS", this.datasyncProcess);
     this.factory.set("CA", this.cacheProcess);
     this.factory.set("TK", this.talkProcess);
+    this.factory.set("OP", this.operationProcess);
     this.factory.set("AT", this.annotationProcess);
   }
 

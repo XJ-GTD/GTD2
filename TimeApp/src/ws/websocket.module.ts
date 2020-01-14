@@ -30,6 +30,7 @@ import {PlanItemsProcess} from "./process/planitems.process";
 import {ChooseProcess} from "./process/choose.process";
 import {AnnotationProcess} from "./process/annotation.process";
 import {TalkProcess} from "./process/talk.process";
+import {OperationProcess} from "./process/operation.process";
 
 /**
  * WebSocket组件
@@ -48,7 +49,7 @@ import {TalkProcess} from "./process/talk.process";
     OptionProcess, ContextProcess,
     ReceiveProcess, SettingProcess,
     AgendasProcess, MarkupProcess,
-    MemosProcess, PlanItemsProcess, TalkProcess,
+    MemosProcess, PlanItemsProcess, TalkProcess, OperationProcess,
     NotificationProcess, SpecialDataProcess, AnnotationProcess,
     CacheProcess, SsService,
     FdService, FsService
