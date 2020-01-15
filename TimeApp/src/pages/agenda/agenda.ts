@@ -70,8 +70,8 @@ declare var Wechat;
 
         <ion-row class="dateRow">
           <div class="agendaai">
-            <ion-icon class="fal fa-waveform" *ngIf="currentAgenda.evi" (click)="speakAgenda()"></ion-icon>
-            <ion-icon class="fal fa-microphone" *ngIf="!currentAgenda.evi" (click)="recordAgenda()"></ion-icon>
+            <!--<ion-icon class="fal fa-waveform" *ngIf="currentAgenda.evi" (click)="speakAgenda()"></ion-icon>-->
+            <!--<ion-icon class="fal fa-microphone" *ngIf="!currentAgenda.evi" (click)="recordAgenda()"></ion-icon>-->
           </div>
 
           <div (click)="changeDatetime()" class="pickDate" *ngIf="currentAgenda.evi">

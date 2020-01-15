@@ -49,10 +49,7 @@ export const ION_CAL_VALUE_ACCESSOR: Provider = {
             </div>
           <div class="tool" float-right>
             <div float-right (click)="gotoToday()">
-              <ion-icon class="fad fa-calendar-day"></ion-icon>
-            </div>
-            <div float-right (click)="plus()">
-              <ion-icon class="fal fa-plus-circle"></ion-icon>
+              <ion-icon class="fal fa-calendar-day"></ion-icon>
             </div>
             <!--<div float-right (click)="newAgenda()">-->
               <!--<ion-icon class="fal fa-calendar-edit"></ion-icon>-->
@@ -281,6 +278,7 @@ export class CalendarComponent implements OnInit {
 
     this.swiper = new Swiper('.swiper-container', {
       autoHeight: true, //高度随内容变化
+      touchMoveStopPropagation:true,
       // initialSlide:1,
     });
 

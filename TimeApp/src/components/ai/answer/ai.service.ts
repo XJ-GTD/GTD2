@@ -116,17 +116,32 @@ export class AiData {
   speechAi: SpeechAiData;
   scdList: ScdLsAiData;
   scd: ScdAiData;
+
   public clear(){
     this.speechAi = null;
     this.scdList = null;
     this.scd = null;
   }
+
   public copyto(target:AiData){
     target.clear();
-    target.scd = this.scd;
-    target.scdList = this.scdList;
-    target.speechAi = this.speechAi;
+
+    if (this.scd) {
+      target.scd = new ScdAiData();
+      Object.assign(target.scd, this.scd);
+    }
+
+    if (this.scdList) {
+      target.scdList = new ScdLsAiData();
+      Object.assign(target.scdList, this.scdList);
+    }
+
+    if (this.speechAi) {
+      target.speechAi = new SpeechAiData();
+      Object.assign(target.speechAi, this.speechAi);
+    }
   }
+
   public isEmpty() {
     return !this.speechAi && !this.scdList && !this.scd;
   }
@@ -163,5 +178,7 @@ export class FriendAiData {
 export class SpeechAiData {
   an: string = "";
   org: string = "";
+  tips: string = "";
+  arraytips: Array<string> = new Array<string>();
   iswaitting:boolean = false;
 }

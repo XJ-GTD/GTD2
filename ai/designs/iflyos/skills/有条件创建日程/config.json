@@ -1,0 +1,68 @@
+{
+  "intents" : {
+    "InputTime" : {
+      "slots" : {
+        "whentodo" : {
+          "elicitation" : {
+            "required" : false
+          },
+          "entity" : "IFLYTEK.Datetime",
+          "order" : 1
+        }
+      },
+      "name" : "InputTime",
+      "chineseName" : "输入时间",
+      "confirmation" : {
+        "required" : false
+      },
+      "assistWords" : {
+        "modal" : "IFLYTEK.Modal"
+      },
+      "entranceIntent" : false
+    },
+    "ConfirmTime" : {
+      "slots" : { },
+      "name" : "ConfirmTime",
+      "chineseName" : "时间选择确认",
+      "confirmation" : {
+        "required" : false
+      },
+      "assistWords" : {
+        "can" : "IFLYTEK.Can"
+      },
+      "entranceIntent" : false
+    },
+    "PlanWithFreeTime" : {
+      "slots" : {
+        "whentodo" : {
+          "elicitation" : {
+            "required" : false
+          },
+          "entity" : "IFLYTEK.Datetime",
+          "order" : 1
+        },
+        "whattodo" : {
+          "elicitation" : {
+            "required" : false
+          },
+          "min" : 2,
+          "max" : 20,
+          "entity" : "IFLYTEK.Wildcard",
+          "order" : 2
+        }
+      },
+      "name" : "PlanWithFreeTime",
+      "chineseName" : "有空就做",
+      "confirmation" : {
+        "required" : false
+      },
+      "assistWords" : {
+        "have" : "IFLYTEK.Have",
+        "if" : "If",
+        "when" : "when"
+      },
+      "entranceIntent" : true
+    }
+  },
+  "version" : "2.1"
+}

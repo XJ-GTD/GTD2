@@ -18,13 +18,10 @@ radio-select {
   label {
     margin-right: 1rem;
     font-size: 1.6rem;
-    color:rgba(7,109,138,1);
     font-weight: bold;
   }
 
   button, .button-ios, .button-clear-ios {
-    background: rgba(239, 239, 239, 1);
-    color: rgba(51, 51, 51, 1);
     font-size: 1.6rem;
     //margin-right: 0.9rem;
     border-radius: 2px;
@@ -39,40 +36,80 @@ radio-select {
   }
 
   button.checked, .button-ios.checked, .button-clear-ios.checked {
-    background: rgba(217, 233, 238, 1);
-    color: rgba(7, 109, 138, 1);
     font-weight: bold;
   }
 
-  //
-  //button.checked:first-child, .button-ios.checked:first-child, .button-clear-ios.checked:first-child {
-  //}
-  //
-  //button.checked:last-child, .button-ios.checked:last-child, .button-clear-ios.checked:last-child {
-  //  background-color: #fff;
-  //  color: $masterColor;
-  //}
-  //
-  //button:first-child, .button-ios:first-child, .button-clear-ios:first-child {
-  //  border: 1.5px solid #fff;
-  //  border-right: 0px;
-  //  border-top-left-radius: 10vmin;
-  //  border-bottom-left-radius: 10vmin;
-  //  border-top-right-radius: 0px;
-  //  border-bottom-right-radius: 0px;
-  //  margin-right: 0px;
-  //  margin-left: 0px;
-  //  color: #fff;
-  //}
-  //
-  //button:last-child, .button-ios:last-child, .button-clear-ios:last-child {
-  //  border: 1.5px solid #fff;
-  //  border-top-left-radius: 0px;
-  //  border-bottom-left-radius: 0px;
-  //  border-top-right-radius: 10vmin;
-  //  border-bottom-right-radius: 10vmin;
-  //  margin-right: 0px;
-  //  margin-left: 0px;
-  //  color: #fff;
-  //}
 }
+
+
+.black-theme {
+  radio-select[button7] {
+    button, .button-ios, .button-clear-ios {
+      min-width: 12.5%;
+      //padding: 0rem;
+
+    }
+  }
+  radio-select[button5] {
+    button, .button-ios, .button-clear-ios {
+      min-width: 18%;
+      //padding: 0rem;
+
+    }
+  }
+  radio-select {
+
+    label {
+      margin-right: 1rem;
+      color:rgba(7,109,138,1);
+    }
+
+    button, .button-ios, .button-clear-ios {
+      background:rgba(23,41,67,1);
+      box-shadow:0px 0px 5px 0px rgba(12,12,12,0.73);
+      color: rgba(255,255,255, 1);
+    }
+
+    button.checked, .button-ios.checked, .button-clear-ios.checked {
+      background: rgba(217, 233, 238, 1);
+      color: rgba(7, 109, 138, 1);
+    }
+  }
+}
+
+
+.white-theme {
+  radio-select[button7] {
+    button, .button-ios, .button-clear-ios {
+      min-width: 12.5%;
+      //padding: 0rem;
+
+    }
+  }
+  radio-select[button5] {
+    button, .button-ios, .button-clear-ios {
+      min-width: 18%;
+      //padding: 0rem;
+
+    }
+  }
+  radio-select {
+
+    label {
+      margin-right: 1rem;
+      color:rgba(7,109,138,1);
+    }
+
+    button, .button-ios, .button-clear-ios {
+      background: rgba(239, 239, 239, 1);
+      color: rgba(51, 51, 51, 1);
+    }
+
+    button.checked, .button-ios.checked, .button-clear-ios.checked {
+      background: rgba(217, 233, 238, 1);
+      color: rgba(7, 109, 138, 1);
+    }
+  }
+}
+
+

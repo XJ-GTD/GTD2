@@ -4,50 +4,13 @@ TellyouComponent {
     font-size: 1.2rem;
     position: fixed;
     right: 0rem;
-    top: -0.8rem;
+    top: 0rem;
     z-index: 999;
     //margin-top: -1px;
   }
 
-  .warning {
-    ion-label {
-      margin: 11px 8px 11px 0;
-    }
-
-    .ignore, p {
-      font-size: 1rem;
-
-      ion-icon {
-        margin-right: 1rem;
-      }
-
-      ion-icon::before {
-        margin-right: .5rem;
-      }
-    }
-  }
-
-  .item-ios {
-    background-color: transparent;
-    min-height: 20px;
-    padding: 5px 11px 5px 16px;
-    align-items: flex-end;
-     p{
-      margin: 0px;
-    }
-    .item-button{
-      padding: 0.5rem 1rem;
-      font-size: 1.2rem;
-    }
-  }
-
-  .label-ios {
-    margin: 0px;
-  }
-
-
   .card-ios {
-    margin: 0 1rem;
+    padding: 1rem;
     border-radius: 5% 5% 5% 5%;
     background-color: transparent;
     box-shadow: none;
@@ -56,43 +19,66 @@ TellyouComponent {
     .card-header-ios {
       margin: 5px 0px;
 
-      .card-title-ios {
-        .tellType {
+      .tellType {
           font-size: 18px;
-          margin-bottom: 1rem;
+          text-align: left;
+        display: flex;
+        .spearktool{
+          margin-left: 16px;
+          display:inline-flex;
+          .aispeech {
+            border-radius: 50%;
+            width: 21px;
+            height: 21px;
+            padding: 0;
+            margin: 0;
+            .fa-stop-circle,.fa-play-circle {
+              font-size: 1.6rem;
+              line-height: 21px;
+            }
+          }
         }
-
-        .formperson {
-          font-size: 1.2rem;
+        .ignoretool{
+          flex-grow: 1;
+          text-align: right;
+          .ignore{
+            background-color:transparent;
+            font-size: 1.2rem;
+          }
         }
-
-        .fromdate,.repeat {
-          font-size: 1rem;
-        }
-        .repeat{
-          max-width: 40%;
-          -webkit-line-clamp: 2;
-          white-space: normal;
-          display: -webkit-box;
-          -webkit-box-orient: vertical;
-          overflow: hidden;
-        }
-
       }
     }
 
     .card-content {
+      .formperson {
+        p{
+          font-size: 1.2rem;
+          text-align: right;
+          padding: 0 6px;
+        }
+      }
+
+      .fromdate {
+        p{
+          font-size: 1rem;
+          text-align: left;
+        }
+      }
       .sn {
+        text-align: left;
         white-space: normal;
         display: -webkit-box;
         -webkit-box-orient: vertical;
-        -webkit-line-clamp: 5;
+        -webkit-line-clamp: 2;
         overflow: hidden;
         font-size: 1.4rem;
         line-height: 1.8rem;
-        min-height:120px;
         //white-space: pre-line;
         //font-size: 1.2rem;
+        min-height: 4rem;
+      }
+      .mesn{
+        text-align: left;
       }
 
       .accept {
@@ -100,27 +86,30 @@ TellyouComponent {
 
       .reject {
       }
+      .warning {
+        margin-top: 20px;
+        display: flex;
+         p {
+          font-size: 1rem;
 
-      .aispeech {
-        border-radius: 50%;
-        height: 20px;
-        width: 20px;
-        padding: 0px;
-      }
+          ion-icon {
+            margin-right: 2rem;
+          }
 
-      .fa-play,.fa-stop {
-        font-size: 1rem;
-        padding-right: 0px;
+          ion-icon::before {
+            margin-right: .5rem;
+          }
+        }
 
-      }
+        .show {
+          flex-grow: 1;
+          text-align: right;
+          button{
+            font-size: 1.2rem;
+            background-color: transparent;
+          }
 
-
-      .show {
-        font-size: 1.2rem;
-        //border-bottom: 0.55px solid rgba(113,173,188,1);
-        border-radius: 0px;
-        padding: 0.3rem 0.3rem;
-
+        }
       }
     }
   }
@@ -130,39 +119,37 @@ TellyouComponent {
   TellyouComponent {
     .closebutton {
       color: rgba(187, 187, 187, 1);
-      color: rgba(187, 187, 187, 1);
     }
-
-    .warning {
-      .ignore, p {
-        color: rgba(100, 132, 179, 1);
-
-        ion-icon {
-          color: rgba(100, 132, 179, 1);
-        }
-      }
-    }
-
     .card-ios {
       .card-header-ios {
 
-        .card-title-ios {
-          .tellType {
+        .tellType {
             color: rgba(50, 163, 190, 1);
+          .fa-play-circle,.fa-stop-circle {
+            color:rgba(255,133,91,1);
           }
 
-          .formperson {
-            color: rgba(113, 174, 188, 1);
+          .aispeech {
+            //background:linear-gradient(0deg,rgba(255,223,212,1) 0%,rgba(255,223,223,1) 100%);
+            background:transparent;
           }
-
-          .fromdate,.repeat  {
-            color: rgba(188, 188, 188, 1);
+          .ignore{
+            color: rgba(100, 132, 179, 1);
           }
-
         }
       }
 
       .card-content {
+
+        .formperson {
+          p{
+            color:rgba(113,174,188,1);
+          }
+        }
+
+        .fromdate{
+          color: rgba(188, 188, 188, 1);
+        }
         .sn {
           color: rgba(255, 255, 255, 1);
         }
@@ -177,84 +164,87 @@ TellyouComponent {
           background: rgba(150, 181, 204, 1);
         }
 
-        .aispeech {
-          background: linear-gradient(0deg, rgba(255, 210, 194, 1) 0%, rgba(255, 208, 208, 1) 100%);
-        }
+        .warning {
+          p {
+            color: rgba(100, 132, 179, 1);
 
-        .fa-play,.fa-stop {
-          color: rgba(255, 255, 255, 1);
-        }
-        .show {
-          color: rgba(113, 173, 188, 1);
-        }
+            ion-icon {
+              color: rgba(100, 132, 179, 1);
+            }
+          }
+          .show {
+            button{
+              color: rgba(113, 173, 188, 1);
+            }
 
+          }
+        }
       }
     }
   }
 
 }
-
 .white-theme {
   TellyouComponent {
-    div[content] {
-      .closebutton {
-        color: rgba(187, 187, 187, 1);
-      }
+    .closebutton {
+      color: rgba(187, 187, 187, 1);
+    }
+    .card-ios {
+      .card-header-ios {
 
-      .warning {
-        .ignore, p {
-          color: rgba(187, 187, 187, 1);
-
-          ion-icon {
-            color: rgba(187, 187, 187, 1);
-          }
-        }
-      }
-
-      .card-ios {
-        .card-header-ios {
-
-          .card-title-ios {
-            .tellType {
-              color: rgba(50, 163, 190, 1);
-            }
-
-            .formperson {
-              color: rgba(113, 174, 188, 1);
-            }
-
-            .fromdate,.repeat  {
-              color: rgba(188, 188, 188, 1);
-            }
-
-          }
-        }
-
-        .card-content {
-          .sn {
-            color: rgba(51, 51, 51, 1);
-          }
-
-          .accept,.again  {
-            color: rgba(255, 255, 255, 1);
-            background: rgba(165, 204, 212, 1);
-          }
-
-          .reject {
-            color: rgba(131, 132, 132, 1);
-            background: rgba(216, 216, 216, 1);
+        .tellType {
+          color: rgba(50,163,190,1);
+          .fa-play-circle,.fa-stop-circle {
+            color: rgba(50,163,190,1);
           }
 
           .aispeech {
-            background: linear-gradient(0deg, rgba(216, 216, 216, 1) 0%, rgba(131, 132, 132, 1) 100%);
+            //background:linear-gradient(0deg,rgba(255,223,212,1) 0%,rgba(255,223,223,1) 100%);
+            background:transparent;
           }
-
-          .fa-play,.fa-stop {
-            color: rgba(113, 173, 188, 1);
+          .ignore{
+            color:rgba(141,200,215,1);
           }
+        }
+      }
 
+      .card-content {
+
+        .formperson {
+          p{color:rgba(188,188,188,1);
+          }
+        }
+
+        .fromdate{
+          color: rgba(188, 188, 188, 1);
+        }
+        .sn {
+          color:rgba(51,51,51,1);
+      }
+
+        .accept,.again {
+          color: rgba(255, 255, 255, 1);
+          background: rgba(74, 139, 185, 1);
+        }
+
+        .reject {
+          color: rgba(67, 113, 145, 1);
+          background: rgba(150, 181, 204, 1);
+        }
+
+        .warning {
+          p {
+            color:rgba(51,51,51,1);
+
+            ion-icon {
+              color:rgba(43,141,164,1);
+            }
+          }
           .show {
-            color: rgba(113, 173, 188, 1);
+            button{
+              color:rgba(43,141,164,1);
+            }
+
           }
         }
       }

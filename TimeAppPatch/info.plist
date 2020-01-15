@@ -62,6 +62,8 @@
 	<string>[冥王星]需要您的同意,才能访问日历</string>
 	<key>NSCameraUsageDescription</key>
 	<string>[冥王星]需要您的同意,才能访问相机</string>
+	<key>NSPhotoLibraryAddUsageDescription</key>
+	<string>[冥王星]需要您的同意,才能增加照片到相册</string>
 	<key>NSContactsUsageDescription</key>
 	<string>[冥王星]需要您的同意,才能访问相册使用您的通讯录</string>
 	<key>NSLocationAlwaysUsageDescription</key>
@@ -74,6 +76,8 @@
 	<string>[冥王星]需要您的同意,才能访问麦克风</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>[冥王星]需要您的同意,才能访问相册</string>
+	<key>NSRemindersUsageDescription</key>
+	<string>[冥王星]需要您的同意,才能访问提醒事项</string>
 	<key>NSRemindersUsageDescription</key>
 	<string>[冥王星]需要您的同意,才能访问提醒事项</string>
 	<key>UIBackgroundModes</key>

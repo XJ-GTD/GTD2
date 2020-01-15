@@ -53,6 +53,11 @@ export enum MO {
   D = "MO.D",   //删除备忘
 }
 
+//冥王星操作
+export enum OP {
+  A = "OP.A"    //操作指令
+}
+
 //日程At处理
 export enum AT {
   C = "AT.C"    //新建日程At

@@ -28,3 +28,26 @@ page-member,page-gc,page-fs4g {
     font-weight: normal;
   }
 }
+
+
+.white-theme {
+  page-member{
+    .searchbar-input-container{
+      border-bottom: 1px solid rgba(153,153,153,1)
+    }
+  }
+}
+
+.black-theme {
+  page-member{
+    .searchbar-input-container{
+      border-bottom: 1px solid rgba(153,153,153,1)
+    }
+    .searchbar-ios {
+      .searchbar-input{
+        border-radius: 2px 2px 0 0;
+      }
+    }
+  }
+}
+

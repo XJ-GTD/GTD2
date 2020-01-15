@@ -130,6 +130,10 @@ export class AiComponent {
     this.aiData1.speechAi = new SpeechAiData();
     this.aiData1.speechAi.org = datas.org;
     this.aiData1.speechAi.an = datas.an;
+    this.aiData1.speechAi.tips = datas.tips;
+    if (this.aiData1.speechAi.tips) {
+      this.aiData1.speechAi.arraytips = this.aiData1.speechAi.tips.split("|");
+    }
     this.aiData1.speechAi.iswaitting = datas.iswaitting;
     this.gotonew();
 
@@ -176,14 +180,11 @@ export class AiComponent {
   }
 
   copy(){
-    if (this.aiData4.speechAi && !this.aiData4.speechAi.iswaitting)
-    this.aiData4.copyto( this.aiData5);
-    if (this.aiData3.speechAi && !this.aiData3.speechAi.iswaitting)
-    this.aiData3.copyto( this.aiData4);
-    if (this.aiData2.speechAi && !this.aiData2.speechAi.iswaitting)
-    this.aiData2.copyto( this.aiData3);
-    if (this.aiData1.speechAi && !this.aiData1.speechAi.iswaitting)
-    this.aiData1.copyto(this.aiData2);
+    if (this.aiData1.speechAi && !this.aiData1.speechAi.iswaitting && this.aiData4.speechAi) this.aiData4.copyto( this.aiData5);
+    if (this.aiData1.speechAi && !this.aiData1.speechAi.iswaitting && this.aiData3.speechAi) this.aiData3.copyto( this.aiData4);
+    if (this.aiData1.speechAi && !this.aiData1.speechAi.iswaitting && this.aiData2.speechAi) this.aiData2.copyto( this.aiData3);
+    if (this.aiData1.speechAi && !this.aiData1.speechAi.iswaitting) this.aiData1.copyto(this.aiData2);
+
     this.aiData1.clear();
     this.aiData1.speechAi = new SpeechAiData();
   }

@@ -12,7 +12,7 @@ import {UtilService} from "../../service/util-service/util.service";
 import {DelType, PageDirection, SyncType} from "../../data.enum";
 import {UserConfig} from "../../service/config/user.config";
 import {DataConfig} from "../../service/config/data.config";
-import {DataRestful, DownloadInData} from "../../service/restful/datasev";
+import {DataRestful, UploadBase64InData} from "../../service/restful/datasev";
 import {NativeAudio} from "@ionic-native/native-audio";
 import BScroll from "better-scroll";
 import {EmitService} from "../../service/util-service/emit.service";
@@ -50,30 +50,37 @@ import { ImagePicker } from '@ionic-native/image-picker';
                     <div class="sn borderback">
                       <span>{{fja.fjn}}</span>
                       <ion-thumbnail (click)="photoShow(fja.fjurl)"
-                                     *ngIf="(fja.ext=='png'||fja.ext=='PNG'||fja.ext=='jpg'||fja.ext=='JPG'||fja.ext=='bmp'||fja.ext=='BMP')&& (fja.fj !='')">
+                                     *ngIf="(fja.ext=='png'||fja.ext=='PNG'||fja.ext=='jpg'||fja.ext=='JPG'||fja.ext=='JPEG'||fja.ext=='jpeg'||fja.ext=='bmp'||fja.ext=='BMP')&& (fja.fj !='')">
                         <img *ngIf="fja.fjurl!=''" src="{{fja.fjurl}}"/>
                         <img *ngIf="fja.fjurl ==''" src="{{defaultimg}}"/>
                       </ion-thumbnail>
-                      <div *ngIf="(fja.ext=='PDF'||fja.ext=='pdf')&& (fja.fj !='')"
-                           (click)="openPdf(fja.fjurl,fja.ext,fja.fji)">
-                        <ion-icon class="fas fa-file-pdf"></ion-icon>
+                      <div *ngIf="(fja.ext == 'PDF' || fja.ext == 'pdf')&& (fja.fj !='')"
+                           (click)="openFile(fja.fjurl, fja.ext, fja.fji, fja.fpjson)">
+                        <ion-icon class="fas  fa-file-pdf icon-font-siza"></ion-icon>
                       </div>
-                      <div *ngIf="(fja.ext=='mp4'||fja.ext=='MP4')&& (fja.fj !='')"
-                           (click)="openPdf(fja.fjurl,fja.ext,fja.fji)">
-                        <ion-icon class="fas fa-file-audio"></ion-icon>
+                      <div *ngIf="(fja.ext == 'mp4' || fja.ext == 'MP4')&& (fja.fj !='')"
+                           (click)="openFile(fja.fjurl, fja.ext, fja.fji, fja.fpjson)">
+                        <ion-icon class="fas  fa-file-audio icon-font-siza"></ion-icon>
                       </div>
-                      <div *ngIf="(fja.ext=='mp3'||fja.ext=='MP3')&& (fja.fj !='')"
-                           (click)="openPdf(fja.fjurl,fja.ext,fja.fji)">
-                        <ion-icon class="fas fa-file-music"></ion-icon>
+                      <div *ngIf="(fja.ext == 'mp3' || fja.ext == 'MP3')&& (fja.fj !='')"
+                           (click)="openFile(fja.fjurl, fja.ext, fja.fji, fja.fpjson)">
+                        <ion-icon class="fas  fa-file-music icon-font-siza"></ion-icon>
                       </div>
-                      <div *ngIf="(fja.ext=='doc'||fja.ext=='DOC'||fja.ext=='xls'||fja.ext=='XLS'||fja.ext=='ppt'||fja.ext=='PPT'||fja.ext=='DOCX'||fja.ext=='docx'
-                  ||fja.ext=='xlsx'||fja.ext=='XLSX'||fja.ext=='PPTX'||fja.ext=='pptx')&& (fja.fj !='')"
-                           (click)="window.open(this.officeOnlie+fja.fjurl)">
-                        <ion-icon class="fas fa-file-powerpoint"></ion-icon>
+                      <div *ngIf="(fja.ext=='PPT' || fja.ext=='ppt' || fja.ext=='PPTX' || fja.ext=='pptx')&& (fja.fj !='')"
+                          (click)="openFile(fja.fjurl, fja.ext, fja.fji, fja.fpjson)">
+                        <ion-icon class="fas  fa-file-powerpoint icon-font-siza"></ion-icon>
+                      </div>
+                      <div *ngIf="(fja.ext=='doc' || fja.ext=='DOC' || fja.ext=='DOCX' || fja.ext=='docx')&& (fja.fj !='')"
+                          (click)="openFile(fja.fjurl, fja.ext, fja.fji, fja.fpjson)">
+                        <ion-icon class="fas  fa-file-word icon-font-siza"></ion-icon>
+                      </div>
+                      <div *ngIf="(fja.ext=='xls' || fja.ext=='XLS' || fja.ext == 'xlsx' || fja.ext == 'XLSX')&& (fja.fj !='')"
+                          (click)="openFile(fja.fjurl, fja.ext, fja.fji, fja.fpjson)">
+                        <ion-icon class="fas  fa-file-excel icon-font-siza"></ion-icon>
                       </div>
                       <div *ngIf="(fja.ext=='txt'||fja.ext=='TXT')&& (fja.fj !='')"
-                           (click)="openPdf(fja.fjurl,fja.ext,fja.fji)">
-                        <ion-icon class="fas fa-file-plus"></ion-icon>
+                          (click)="openFile(fja.fjurl, fja.ext, fja.fji, fja.fpjson)">
+                        <ion-icon class="fas fa-file-plus icon-font-siza"></ion-icon>
                       </div>
                     </div>
 
@@ -85,22 +92,20 @@ import { ImagePicker } from '@ionic-native/image-picker';
           </ion-grid>
         <div class="pulldown-wrapper" style="top: -50px;"><div class="before-trigger">刷新中</div></div>
       </div>
-      <div class="inputwarp">
-        <ion-toolbar>
-          <ion-buttons start>
-            <button ion-button outline (click)="openselect()" class="font-normal">
-              <ion-icon class="fad fa-plus-square"></ion-icon>
-            </button>
-          </ion-buttons>
-          <ion-buttons end>
-            <button ion-button outline (click)="saveComment()" class="font-normal">
-              发送
-            </button>
-          </ion-buttons>
-          <ion-input [(ngModel)]="bw" class="font-normal"></ion-input>
-        </ion-toolbar>
-      </div>
     </modal-box>
+    <ion-footer class="inputwarp">
+        <ion-toolbar>
+          <ion-input [(ngModel)]="bw" class="font-normal"></ion-input>
+          <ion-buttons end>
+            <button ion-button outline (click)="openselect()" class="font-normal">
+              <ion-icon class="fad fa-plus"></ion-icon>
+            </button>
+            <button ion-button outline (click)="saveComment()" class="font-normal">
+              <ion-icon class="fas fa-long-arrow-up"></ion-icon>
+            </button>
+          </ion-buttons>
+        </ion-toolbar>
+    </ion-footer>
 
   `
 })
@@ -222,24 +227,28 @@ export class AttachPage {
         {
           text: '拍照',
           role: 'camera',
-          icon: "ios-camera",
-          cssClass: "cameraXX",
+          icon: "camera-outline",
           handler: () => {
             this.shot();
           }
         }, {
           text: '相册',
           role: 'albums',
-          icon: "ios-albums",
+          icon: "image-outline",
           handler: () => {
             this.selectPicture2();
           }
         }, {
           text: '文件',
           role: 'albums',
-          icon: "ios-albums",
+          icon: "document-outline",
           handler: () => {
             this.select();
+          }
+        },{
+          text: '取消',
+          role: 'cancel',
+          handler: () => {
           }
         }
       ]
@@ -262,29 +271,28 @@ export class AttachPage {
   shot() {
     const options: CameraOptions = {
       quality: 95,
-      destinationType: this.ios? this.camera.DestinationType.NATIVE_URI : this.camera.DestinationType.FILE_URI,
+      destinationType: this.ios? this.camera.DestinationType.DATA_URL : this.camera.DestinationType.FILE_URI,
       encodingType: this.camera.EncodingType.JPEG,
       mediaType: this.camera.MediaType.PICTURE,
-      allowEdit: true,
+      correctOrientation: true,
       sourceType: this.camera.PictureSourceType.CAMERA, //打开方式 PHOTOLIBRARY  相册 CAMERA  拍照
       saveToPhotoAlbum: true //是否保存相册
     }
+
     this.camera.getPicture(options).then((imageData) => {
       console.info("开始拍照上传照片");
-      alert(JSON.stringify(imageData));
-      this.file.resolveLocalFilesystemUrl(imageData)
-      .then((entry) => {
-        let imagepath = entry.toURL();
-        alert(imagepath);
+      if (this.ios) {
+        this.saveFileAttachmentiOS(imageData);
+      } else {
+        this.file.resolveLocalFilesystemUrl(imageData)
+        .then((entry) => {
+          let imagepath = entry.toURL();
 
-        if (imagepath != '') {
-          if (this.ios) {
-            this.saveFileAttachmentiOS(entry);
-          } else {
+          if (imagepath != '') {
             this.saveFileAttachment(imagepath);
           }
-        }
-      });
+        });
+      }
     }, (err) => {
       console.info("拍照上传附件异常，异常信息：" + err);
     });
@@ -315,61 +323,75 @@ export class AttachPage {
     });
   }
 
-  saveFileAttachmentiOS(fileentry) {
-    let fileName: string = fileentry.name;
-    let ext: string = fileName.substr(fileName.lastIndexOf(".") + 1);
+  saveFileAttachmentiOS(filedata) {
+    let ext: string = "jpeg";
+    let fileName: string = this.util.getUuid() + "." + ext;
 
     //将文件copy至缓存文件
-    let newFileName = this.util.getUuid() + "." + ext;
+    let newFileName = fileName;
     this.fjData.obt = this.obt;
     this.fjData.obi = this.obi;
     this.fjData.ext = ext;
 
     //构造地址文件
     let cacheFilePathJson: CacheFilePathJson = new CacheFilePathJson();
-    cacheFilePathJson.local = "/" + newFileName;
+    cacheFilePathJson.local = newFileName;
     this.fjData.fj = JSON.stringify(cacheFilePathJson);
     this.fjData.fpjson = cacheFilePathJson;
     this.fjData.fjurl = this.fjData.fpjson.getLocalFilePath(this.file.dataDirectory);
     this.fjData.ui = this.currentuser;
     this.fjData.members = this.members;
 
-    alert(this.file.dataDirectory + cacheFilePathJson.getCacheDir());
-    alert(newFileName);
-    fileentry.copyTo(this.file.dataDirectory + cacheFilePathJson.getCacheDir(), newFileName)
-    .then(_ => {
-      this.saveFile();
+    this.util.loadingStart();
+
+    let upload: UploadBase64InData = new UploadBase64InData();
+    upload.filename = fileName;
+    upload.base64 = 'data:image/jpeg;base64,' + filedata;
+
+    this.dataRestful.uploadbase64(upload).then((result) => {
+      if (result && result.data) {
+        //alert("uploaded with no " + result.data);
+        this.fjData.fpjson.remote = String(result.data);
+        this.fjData.fj = JSON.stringify(this.fjData.fpjson);
+        this.fjData.fjurl = this.browserurl + result.data;
+        this.saveiOSFile().then(_ => {
+          this.util.loadingEnd();
+        });
+      } else {
+        this.util.loadingEnd();
+        alert("文件上传失败。");
+      }
     }).catch((err) => {
-      alert(JSON.stringify(err));
+      this.util.loadingEnd();
+      alert("err" + JSON.stringify(err));
     });
   }
 
   selectPicture2() {
     const options: CameraOptions = {
       quality: 95,
-      destinationType: this.ios? this.camera.DestinationType.NATIVE_URI : this.camera.DestinationType.FILE_URI,
+      destinationType: this.ios? this.camera.DestinationType.DATA_URL : this.camera.DestinationType.FILE_URI,
       encodingType: this.camera.EncodingType.JPEG,
       mediaType: this.camera.MediaType.PICTURE,
-      allowEdit: true,
       correctOrientation: true,
       sourceType: this.camera.PictureSourceType.SAVEDPHOTOALBUM, //打开方式 PHOTOLIBRARY  相册 CAMERA  拍照
-      saveToPhotoAlbum: true //是否保存相册
+      saveToPhotoAlbum: false //是否保存相册
     }
+
     this.camera.getPicture(options).then((imageData) => {
       console.info("开始拍照上传照片");
-      this.file.resolveLocalFilesystemUrl(imageData)
-      .then((entry) => {
-        let imagepath = entry.toURL();
-        alert(imagepath);
+      if (this.ios) {
+        this.saveFileAttachmentiOS(imageData);
+      } else {
+        this.file.resolveLocalFilesystemUrl(imageData)
+        .then((entry) => {
+          let imagepath = entry.toURL();
 
-        if (imagepath != '') {
-          if (this.ios) {
-            this.saveFileAttachmentiOS(entry);
-          } else {
+          if (imagepath != '') {
             this.saveFileAttachment(imagepath);
           }
-        }
-      });
+        });
+      }
     }, (err) => {
       console.info("拍照上传附件异常，异常信息：" + err);
     });
@@ -481,7 +503,9 @@ export class AttachPage {
     let retAt: Attachment = {} as Attachment;
     retAt = await this.eventService.saveAttachment(this.fjData);
     this.emitService.emit("mwxing.calendar.datas.readwrite", {rw: "writeandread", payload: retAt});
-    //this.flushData();
+    if (retAt.fpjson.remote) {
+      retAt.fjurl = this.browserurl + retAt.fpjson.remote;
+    }
     this.fjArray.unshift(retAt);
     //this.fjArray.push(retAt);
     this.util.loadingEnd();
@@ -491,6 +515,23 @@ export class AttachPage {
     this.bw = "";
   }
 
+  //保存文件
+  async saveiOSFile() {
+    let retAt: Attachment = {} as Attachment;
+    retAt = await this.eventService.saveAttachment(this.fjData);
+    this.emitService.emit("mwxing.calendar.datas.readwrite", {rw: "writeandread", payload: retAt});
+    if (retAt.fpjson.remote) {
+      retAt.fjurl = this.browserurl + retAt.fpjson.remote;
+      //alert("URL : " + retAt.fjurl);
+    }
+    //this.flushData();
+    this.fjArray.unshift(retAt);
+    //this.fjArray.push(retAt);
+    this.fjData = {} as Attachment;
+    this.fjData.obt = this.obt;
+    this.fjData.obi = this.obi;
+    this.bw = "";
+  }
 
   // 删除当前项
   async delAttach(at: Attachment) {
@@ -502,7 +543,7 @@ export class AttachPage {
   }
 
   //打开本地PDF
-  openPdf(fj: string, fileType: string, fji: string) {
+  openFile(fj: string, fileType: string, fji: string, fpjson: CacheFilePathJson) {
     if (fj && fj.startsWith("http")) {
       //当时mp3的情况下
       if (fileType && (fileType == 'mp3' || fileType == 'MP3')) {
@@ -513,6 +554,15 @@ export class AttachPage {
 
             });
         }, (error) => {
+
+        });
+      } else {
+        let filepath = fpjson.getLocalFilePath(this.file.dataDirectory);
+        this.dataRestful.download(fj, filepath)
+        .then(() => {
+          this.fileOpener.open(filepath, this.getFileMimeType(fileType))
+            .then(() => console.info('File is opened'))
+            .catch(e => console.info('Error opening file', e));
 
         });
       }
@@ -559,7 +609,7 @@ export class AttachPage {
               let fileName: string = attachment.fpjson.local.substr(1, attachment.fpjson.local.length);
               // 本地文件存在，页面上显示本地文件
               let checked = await this.isExistFile(attachment.fpjson.getCacheDir(), fileName);
-              if (checked == true) {
+              if (!this.ios && checked == true) {
                 attachment.fjurl = attachment.fpjson.getLocalFilePath(this.file.dataDirectory);
               }
             }

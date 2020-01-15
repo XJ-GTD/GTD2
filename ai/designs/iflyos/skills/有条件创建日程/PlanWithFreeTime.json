@@ -1,0 +1,13 @@
+[ {
+  "text" : "{明天:whentodo}{有:have}空的话{去超市买箱啤酒 :whattodo}"
+}, {
+  "text" : "{明天:whentodo}{如果:if}{有:have}空的话{去超市买箱啤酒回来 :whattodo}"
+}, {
+  "text" : "{如果:if}{明天:whentodo}{有:have}空的话{去超市买箱啤酒回家 :whattodo}"
+}, {
+  "text" : "{明天:whentodo}{什么时候:when}{有:have}空,{去超市买箱啤酒:whattodo}"
+}, {
+  "text" : "{去超市买箱啤酒:whattodo},{如果:if}{今天:whentodo}{有:have}空的话"
+}, {
+  "text" : "{明天:whentodo}{有没有:have}空,{去超市买箱啤酒:whattodo}"
+} ]

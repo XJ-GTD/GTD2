@@ -1,0 +1,32 @@
+{
+  "intents" : {
+    "ClaimsSummary" : {
+      "slots" : { },
+      "name" : "ClaimsSummary",
+      "chineseName" : "债权统计",
+      "confirmation" : {
+        "required" : false
+      },
+      "assistWords" : {
+        "me" : "IFLYTEK.Me",
+        "have" : "IFLYTEK.Have"
+      },
+      "entranceIntent" : true
+    },
+    "DebtsSummary" : {
+      "slots" : { },
+      "name" : "DebtsSummary",
+      "chineseName" : "债务统计",
+      "confirmation" : {
+        "required" : false
+      },
+      "assistWords" : {
+        "me" : "IFLYTEK.Me",
+        "have" : "IFLYTEK.Have",
+        "my" : "IFLYTEK.My"
+      },
+      "entranceIntent" : true
+    }
+  },
+  "version" : "2.1"
+}

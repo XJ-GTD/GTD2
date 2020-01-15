@@ -32,7 +32,7 @@ import {PopperComponent} from "angular-popper";
       </b>
     </div>
     <ng-template [ngIf]="hasPopper">
-      <angular-popper target=".aitool" placement="left-end" #popper [class.showNot]="!popperShow">
+      <angular-popper target=".aitool" placement="top-end" #popper [class.showNot]="!popperShow">
         <div content>
           <TellyouComponent (onShow)="showPopper($event)" (onClose)="closepopper()"></TellyouComponent>
         </div>

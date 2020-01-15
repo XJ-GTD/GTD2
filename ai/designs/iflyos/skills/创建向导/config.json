@@ -1,0 +1,134 @@
+{
+  "intents" : {
+    "InputDatetime" : {
+      "slots" : {
+        "whentodo" : {
+          "elicitation" : {
+            "required" : false
+          },
+          "entity" : "IFLYTEK.Datetime",
+          "order" : 1
+        }
+      },
+      "name" : "InputDatetime",
+      "chineseName" : "输入时间",
+      "confirmation" : {
+        "required" : false
+      },
+      "assistWords" : { },
+      "entranceIntent" : false
+    },
+    "EndGuide" : {
+      "slots" : { },
+      "name" : "EndGuide",
+      "chineseName" : "结束向导",
+      "confirmation" : {
+        "required" : false
+      },
+      "assistWords" : {
+        "helpme" : "IFLYTEK.HelpMe"
+      },
+      "entranceIntent" : false
+    },
+    "ActivityGuide" : {
+      "slots" : { },
+      "name" : "ActivityGuide",
+      "chineseName" : "创建活动向导",
+      "confirmation" : {
+        "required" : false
+      },
+      "assistWords" : {
+        "agendaname" : "AgendaName"
+      },
+      "entranceIntent" : true
+    },
+    "InputSomething" : {
+      "slots" : {
+        "whattodo" : {
+          "elicitation" : {
+            "required" : false
+          },
+          "min" : 1,
+          "max" : 80,
+          "entity" : "IFLYTEK.Wildcard",
+          "order" : 1
+        }
+      },
+      "name" : "InputSomething",
+      "chineseName" : "输入事情",
+      "confirmation" : {
+        "required" : false
+      },
+      "assistWords" : { },
+      "entranceIntent" : false
+    },
+    "InputAddress" : {
+      "slots" : {
+        "wheretodo" : {
+          "elicitation" : {
+            "required" : false
+          },
+          "entity" : "IFLYTEK.PoiArc",
+          "order" : 1
+        }
+      },
+      "name" : "InputAddress",
+      "chineseName" : "输入地址",
+      "confirmation" : {
+        "required" : false
+      },
+      "assistWords" : { },
+      "entranceIntent" : false
+    },
+    "PlanItemGuide" : {
+      "slots" : { },
+      "name" : "PlanItemGuide",
+      "chineseName" : "创建日历项向导",
+      "confirmation" : {
+        "required" : false
+      },
+      "assistWords" : { },
+      "entranceIntent" : true
+    },
+    "InputMember" : {
+      "slots" : {
+        "givenname" : {
+          "elicitation" : {
+            "required" : false
+          },
+          "min" : 1,
+          "max" : 5,
+          "entity" : "IFLYTEK.Wildcard",
+          "order" : 2
+        },
+        "familyname" : {
+          "elicitation" : {
+            "required" : false
+          },
+          "entity" : "IFLYTEK.FamilyName",
+          "order" : 1
+        }
+      },
+      "name" : "InputMember",
+      "chineseName" : "输入参与人",
+      "confirmation" : {
+        "required" : false
+      },
+      "assistWords" : {
+        "and" : "And"
+      },
+      "entranceIntent" : false
+    },
+    "MemoGuide" : {
+      "slots" : { },
+      "name" : "MemoGuide",
+      "chineseName" : "创建备忘向导",
+      "confirmation" : {
+        "required" : false
+      },
+      "assistWords" : { },
+      "entranceIntent" : true
+    }
+  },
+  "version" : "2.1"
+}
