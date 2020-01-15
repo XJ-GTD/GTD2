@@ -247,6 +247,8 @@
 {"version": "v5", "type": "NONE", "needAnswer": "false", "tips":"", "name":"HowtoCancel", "value":"您可以说：“取消第一个备忘”", "desc":"冥王星使用帮助"},
 {"version": "v5", "type": "NONE", "needAnswer": "false", "tips":"", "name":"HowtoCancel", "value":"您可以说：“取消这个日历项”", "desc":"冥王星使用帮助"},
 {"version": "v5", "type": "NONE", "needAnswer": "false", "tips":"", "name":"HowtoCancel", "value":"您可以说：“取消第一个日历项”", "desc":"冥王星使用帮助"},
+{"version": "v5", "type": "NONE", "needAnswer": "false", "tips":"创建活动|创建备忘|创建日历项|查询今天的活动|查询关于开发者大会的活动", "name":"WELCOME", "value":"{timewelcome}好, {username}, 我是小冥。", "desc":"问候语"},
+{"version": "v5", "type": "NONE", "needAnswer": "false", "tips":"创建活动|创建备忘|创建日历项|查询今天的活动|查询关于开发者大会的活动", "name":"WELCOME", "value":"{username}, {timewelcome}好, 我是小冥。", "desc":"问候语"},
 {"version": "v5", "type": "MULTI", "needAnswer": "false", "tips":"", "name":"DONE", "value":"已完成", "desc":"操作完成简洁播报"},
 {"version": "v5", "type": "NONE", "needAnswer": "false", "tips":"", "name":"DONE", "value":"已完成", "desc":"操作完成简洁播报"},
 {"version": "v5", "type": "ONE", "needAnswer": "false", "tips":"", "name":"DONE", "value":"已完成", "desc":"操作完成简洁播报"},

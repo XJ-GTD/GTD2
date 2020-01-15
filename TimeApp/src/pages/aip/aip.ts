@@ -108,9 +108,15 @@ export class AipPage{
 
       welcome['content']['0'] = {
         processor: 'S',
-        option: 'S.AN',
+        option: 'S.P',
         parameters: {
-          an: `${preword}好, ${name}, 我是小冥。`
+          t: "WELCOME"
+        },
+        input: {
+          textvariables: [
+            {name: 'timewelcome', value: preword},
+            {name: 'username', value: name}
+          ]
         }
       };
 
