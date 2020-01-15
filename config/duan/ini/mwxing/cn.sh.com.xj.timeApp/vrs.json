@@ -176,7 +176,7 @@
 {"version": "v5", "type": "NONE", "needAnswer": "true", "tips":"明天上午十点", "name":"WHENTODO", "value":"活动时间是什么时候？", "desc":"活动时间询问"},
 {"version": "v5", "type": "NONE", "needAnswer": "true", "tips":"", "name":"WHERETODO", "value":"活动地址是哪里？", "desc":"活动地点询问"},
 {"version": "v5", "type": "NONE", "needAnswer": "true", "tips":"", "name":"WHATTODO1", "value":"活动主题是什么？", "desc":"活动主题询问"},
-{"version": "v5", "type": "NONE", "needAnswer": "true", "tips":"参加冥王星开发者大会", "name":"WHATTODO", "value":"说出你想创建的活动。", "desc":"活动主题询问"},
+{"version": "v5", "type": "NONE", "needAnswer": "true", "tips":"参加冥王星开发者大会|下周三下午三点参加冥王星开发者大会", "name":"WHATTODO", "value":"说出你想创建的活动。", "desc":"活动主题询问"},
 {"version": "v5", "type": "NONE", "needAnswer": "true", "tips":"现在", "name":"WHENTODO", "value":"活动时间是什么时候？", "desc":"活动时间询问"},
 {"version": "v5", "type": "NONE", "needAnswer": "true", "tips":"上海市闵行区七莘路", "name":"WHERETODO", "value":"活动地址是哪里？", "desc":"活动地点询问"},
 {"version": "v5", "type": "ONE", "needAnswer": "true", "tips":"说确认/取消", "name":"EE_AG_CONFIRM", "value":"是否创建，请确认？", "desc":"确认取消回答"},
