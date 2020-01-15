@@ -46,7 +46,7 @@ if [ $TRAVIS_OS_NAME = 'linux' ]; then
     fi
   else
     # debug fir on Linux
-    if [ -f "$TRAVIS_BUILD_DIR/TimeApp/platforms/android/app/build/outputs/apk/debug/app-debug.apk" ] then
+    if [ -f "$TRAVIS_BUILD_DIR/TimeApp/platforms/android/app/build/outputs/apk/debug/app-debug.apk" ]; then
       cp $TRAVIS_BUILD_DIR/TimeApp/platforms/android/app/build/outputs/apk/debug/app-debug.apk $TRAVIS_BUILD_DIR/TimeApp/platforms/android/app/build/outputs/apk/debug/app-$TRAVIS_BRANCH.apk
       if [ $TRAVIS_BRANCH = 'cassiscornuta' ]; then
         fir p $TRAVIS_BUILD_DIR/TimeApp/platforms/android/app/build/outputs/apk/debug/app-$TRAVIS_BRANCH.apk -T $FIR_TOKEN_CASSISCORNUTA -c "唐冠螺 (Android): ${TRAVIS_COMMIT_MESSAGE}" --switch_to_qiniu
@@ -56,7 +56,7 @@ if [ $TRAVIS_OS_NAME = 'linux' ]; then
     fi
 
     # release fir on Linux
-    if [ -f "$TRAVIS_BUILD_DIR/TimeApp/platforms/android/app/build/outputs/apk/release/app-release.apk" ] then
+    if [ -f "$TRAVIS_BUILD_DIR/TimeApp/platforms/android/app/build/outputs/apk/release/app-release.apk" ]; then
       cp $TRAVIS_BUILD_DIR/TimeApp/platforms/android/app/build/outputs/apk/release/app-release.apk $TRAVIS_BUILD_DIR/TimeApp/platforms/android/app/build/outputs/apk/debug/app-$TRAVIS_BRANCH.apk
       if [ $TRAVIS_BRANCH = 'cassiscornuta' ]; then
         fir p $TRAVIS_BUILD_DIR/TimeApp/platforms/android/app/build/outputs/apk/debug/app-$TRAVIS_BRANCH.apk -T $FIR_TOKEN_CASSISCORNUTA -c "唐冠螺 (Android): ${TRAVIS_COMMIT_MESSAGE}" --switch_to_qiniu
