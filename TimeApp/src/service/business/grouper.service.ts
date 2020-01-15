@@ -503,7 +503,7 @@ export class GrouperService extends BaseService {
   }
 
   //获取本地群列表
-  private filterGroups(groups: Array<Grouper>, name: string): Array<Grouper> {
+  filterGroups(groups: Array<Grouper>, name: string): Array<Grouper> {
     if (name)
       return groups.filter((value)=>{
         return (value.gn.indexOf(name) > -1 || value.gnpy.indexOf(name) > -1);
@@ -548,7 +548,7 @@ export class GrouperService extends BaseService {
   }
 
   //刷新联系人信息
-  private async fetchFriends(friends: Array<Friend> = new Array<Friend>()): Promise<Array<Friend>> {
+  async fetchFriends(friends: Array<Friend> = new Array<Friend>()): Promise<Array<Friend>> {
     let exists = friends.reduce((target, val) => {
       if (target.indexOf(val.rc) < 0) {
         target.push(val.rc);
