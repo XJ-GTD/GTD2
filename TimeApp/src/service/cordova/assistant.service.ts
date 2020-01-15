@@ -23,17 +23,17 @@ export class AssistantService {
 
   private mp3Path: string;
   private mp3Name: string;
-  private isWakeuping:boolean;
-  private isListening:boolean;
-  private isSpeaking:boolean;
+  private isWakeuping: boolean;
+  private isListening: boolean;
+  private isSpeaking: boolean;
 
   constructor(private file: File,
               private aibutlerRestful: AibutlerRestful,
               private sqliteExec: SqliteExec,
               private utilService: UtilService,
               private emitService: EmitService,
-              private feedbackService:FeedbackService,
-              private timeout:TimeOutService) {
+              private feedbackService: FeedbackService,
+              private timeout: TimeOutService) {
 
     this.mp3Path = this.file.cacheDirectory;
     this.mp3Name = "iat.pcm";
@@ -41,15 +41,14 @@ export class AssistantService {
     this.isListening = false;
     this.isSpeaking = false;
     //语音唤醒开关
-    this.emitService.register("ai.wakeup.setting",(setting:boolean) =>{
-      if (!setting){
+    this.emitService.register("ai.wakeup.setting", (setting: boolean) => {
+      if (!setting) {
         this.stopWakeUp();
-      }else{
+      } else {
         this.startWakeUp();
       }
     })
   }
-
 
 
   /**
@@ -58,10 +57,10 @@ export class AssistantService {
   public startWakeUp() {
     if (!UserConfig.getSetting(DataConfig.SYS_H)) return;
     if (!this.utilService.isMobile()) return;
-    if  (this.isWakeuping) return ;
+    if (this.isWakeuping) return;
     this.isWakeuping = true;
     cordova.plugins.XjBaiduWakeUp.wakeUpStart(async (result) => {
-      this.speakText(UserConfig.user.realname + ",我在，请说：").then(()=>{
+      this.speakText(UserConfig.user.realname + ",我在，请说：").then(() => {
         this.listenAudio();
       })
     }, error => {
@@ -81,15 +80,14 @@ export class AssistantService {
   }
 
 
-
   /**
    * 停止语音播报
    */
-  public stopSpeak(emit:boolean, open:boolean = false) {
+  public stopSpeak(emit: boolean, open: boolean = false) {
     if (!this.utilService.isMobile()) return;
     cordova.plugins.XjBaiduTts.speakStop();
     this.isSpeaking = false;
-    if (emit){
+    if (emit) {
       this.emitService.emitSpeak(false);
     }
     if (open) this.listenAudio();
@@ -97,7 +95,6 @@ export class AssistantService {
     //增加通用事件响应
     this.emitService.emit("on.speak.finished", "");
   }
-
 
 
   public async getSpeakText(t: string, type: string = '') {
@@ -136,10 +133,10 @@ export class AssistantService {
     //回答语音list
     let len = datas.length;
     // console.log("播报内容参数*******************t=" +sutbl.subt +";type="+sutbl.sust);
-    if (len == 0){
+    if (len == 0) {
       let an: SuTbl = new SuTbl();
-      an.suc= "您交代的事情已经办好了, 我正在学习怎么更准确的告诉您";
-      an.sus="false";
+      an.suc = "您交代的事情已经办好了, 我正在学习怎么更准确的告诉您";
+      an.sus = "false";
       return an;
     }
     //随机选取一条
@@ -153,10 +150,10 @@ export class AssistantService {
   /**
    * 返回语音播报
    */
-  speakText(speechText: string):Promise<any> {
+  speakText(speechText: string): Promise<any> {
     return new Promise<any>((resolve, reject) => {
       if (!this.utilService.isMobile()) {
-        resolve() ;
+        resolve();
         return;
       }
       if (speechText == null || speechText == "") {
@@ -183,24 +180,24 @@ export class AssistantService {
       //   }, speechText);
       //
       // }, 100);
-        cordova.plugins.XjBaiduTts.startSpeak(result => {
-          // this.stopSpeak(true);
-          this.isSpeaking = false;
-          resolve();
-        }, error => {
-          // this.stopSpeak(true);
-          resolve(error);
-        }, speechText);
+      cordova.plugins.XjBaiduTts.startSpeak(result => {
+        // this.stopSpeak(true);
+        this.isSpeaking = false;
+        resolve();
+      }, error => {
+        // this.stopSpeak(true);
+        resolve(error);
+      }, speechText);
     });
   }
 
   /**
    * 返回纯语音播报
    */
-  pureSpeakText(speechText: string):Promise<any> {
+  pureSpeakText(speechText: string): Promise<any> {
     return new Promise<any>((resolve, reject) => {
       if (!this.utilService.isMobile()) {
-        resolve() ;
+        resolve();
         return;
       }
       if (speechText == null || speechText == "") {
@@ -250,11 +247,11 @@ export class AssistantService {
    */
   public stopListenAudio() {
     if (!this.utilService.isMobile()) return;
-    if (this.isListening){
+    if (this.isListening) {
       this.isListening = false;
       cordova.plugins.XjBaiduSpeech.stopListen();
       // this.startWakeUp();
-      let immediately:Immediately = new Immediately();
+      let immediately: Immediately = new Immediately();
       immediately.fininsh = false;
       immediately.listening = false;
       this.emitService.emitImmediately(immediately);
@@ -275,64 +272,59 @@ export class AssistantService {
       this.stopListenAudio();
       return;
     }
-
+    let immediately: Immediately = new Immediately();
+    immediately.fininsh = false;
+    immediately.listening = true;
+    this.emitService.emitListener(true);
+    this.feedbackService.vibrate();
+    cordova.plugins.XjBaiduSpeech.startListen(async result => {
+      if (!result.finish) {
+        immediately.immediatetext = result.text;
+        this.emitService.emitImmediately(immediately);
+        return;
+      }
+      immediately.fininsh = true;
+      immediately.immediatetext = result.text;
+      this.emitService.emitImmediately(immediately);
+      if (result.error) {
+        throw new class implements Error {
+          message: string = "语音故障";
+          name: string = "aispeech";
+          stack: string = "语音故障";
+        };
+      }
+      // 读取录音进行base64转码
+      let base64File: string = await this.file.readAsDataURL(this.mp3Path, this.mp3Name);
+      let audioPro = new AudioPro();
+      audioPro.d.vb64 = base64File;
+      if (DataConfig.clearAIContext) {
+        audioPro.d.clean = "user";  // 清除对话历史
+        DataConfig.clearAIContext = false;
+      }
+      audioPro.c.client.time = moment().valueOf();
+      audioPro.c.client.cxt = DataConfig.wsContext;
+      audioPro.c.client.option = DataConfig.wsWsOpt;
+      audioPro.c.client.processor = DataConfig.wsWsProcessor;
+      audioPro.c.server = DataConfig.wsServerContext;
+      // this.postAsk(result.text);
+      this.isListening = false;
+      await this.aibutlerRestful.postaudio(audioPro);
+      this.emitService.emitListener(false);
+      immediately.immediatetext = "";
+      this.emitService.emitImmediately(immediately);
+      this.startWakeUp();
+      return result;
+    }, async error => {
+      let text = await this.getSpeakText(DataConfig.FF);
+      this.speakText(text);
+      this.isListening = false;
+      this.emitService.emitListener(false);
+      this.startWakeUp();
+      return text;
+    });
     this.stopSpeak(false);
     this.stopWakeUp();
     this.isListening = true;
-
-    let immediately:Immediately = new Immediately();
-    immediately.fininsh = false;
-    immediately.listening = true;
-    this.timeout.timeOutOnlyOne(800,()=>{
-      this.emitService.emitListener(true);
-      this.feedbackService.vibrate();
-      cordova.plugins.XjBaiduSpeech.startListen(async result => {
-        if (!result.finish) {
-          immediately.immediatetext = result.text;
-          this.emitService.emitImmediately(immediately);
-          return ;
-        }
-        immediately.fininsh = true;
-        immediately.immediatetext = result.text;
-        this.emitService.emitImmediately(immediately);
-        if (result.error){
-          throw new class implements Error {
-            message: string = "语音故障";
-            name: string = "aispeech";
-            stack: string = "语音故障";
-          };
-        }
-        // 读取录音进行base64转码
-        let base64File: string = await this.file.readAsDataURL(this.mp3Path, this.mp3Name);
-        let audioPro = new AudioPro();
-        audioPro.d.vb64 = base64File;
-        if (DataConfig.clearAIContext) {
-          audioPro.d.clean = "user";  // 清除对话历史
-          DataConfig.clearAIContext = false;
-        }
-        audioPro.c.client.time = moment().valueOf();
-        audioPro.c.client.cxt = DataConfig.wsContext;
-        audioPro.c.client.option = DataConfig.wsWsOpt;
-        audioPro.c.client.processor = DataConfig.wsWsProcessor;
-        audioPro.c.server = DataConfig.wsServerContext;
-        // this.postAsk(result.text);
-        this.isListening = false;
-        await this.aibutlerRestful.postaudio(audioPro);
-        this.emitService.emitListener(false);
-        immediately.immediatetext = "";
-        this.emitService.emitImmediately(immediately);
-        this.startWakeUp();
-        return result;
-      }, async error => {
-        let text = await this.getSpeakText(DataConfig.FF);
-        this.speakText(text);
-        this.isListening = false;
-        this.emitService.emitListener(false);
-        this.startWakeUp();
-        return text;
-      });
-    },'ai.listiner')
-
   }
 
   private postAsk(text: string) {
@@ -362,7 +354,7 @@ export class AssistantService {
   /**
    * 语音助手录音录入 AUDIO
    */
-  audio2Text(callback,success,error) {
+  audio2Text(callback, success, error) {
     if (this.isListening) return;
     if (!this.utilService.isMobile()) {
       success();
@@ -393,9 +385,9 @@ export class AssistantService {
 }
 
 
-export class Immediately{
-  immediatetext:string = "";
-  listening:boolean = false;
-  fininsh:boolean = false;
-  error:string = "";
+export class Immediately {
+  immediatetext: string = "";
+  listening: boolean = false;
+  fininsh: boolean = false;
+  error: string = "";
 }
