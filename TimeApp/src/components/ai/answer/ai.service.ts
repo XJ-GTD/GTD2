@@ -162,5 +162,6 @@ export class FriendAiData {
 export class SpeechAiData {
   an: string = "";
   org: string = "";
+  tips: string = "";
   iswaitting:boolean = false;
 }
