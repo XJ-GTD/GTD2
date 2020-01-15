@@ -9,6 +9,7 @@ import {UtilService} from "../util-service/util.service";
 import {UserConfig} from "../config/user.config";
 import {EmitService} from "../util-service/emit.service";
 import {FeedbackService} from "./feedback.service";
+import {TimeOutService} from "../../util/timeOutService";
 
 declare var cordova: any;
 
@@ -30,7 +31,8 @@ export class AssistantService {
               private sqliteExec: SqliteExec,
               private utilService: UtilService,
               private emitService: EmitService,
-              private feedbackService:FeedbackService) {
+              private feedbackService:FeedbackService,
+              private timeout:TimeOutService) {
 
     this.mp3Path = this.file.cacheDirectory;
     this.mp3Name = "iat.pcm";
@@ -277,56 +279,60 @@ export class AssistantService {
     this.stopWakeUp();
     this.listening = true;
 
-    this.emitService.emitListener(true);
-    this.feedbackService.vibrate();
     let immediately:Immediately = new Immediately();
     immediately.fininsh = false;
     immediately.listening = true;
-    await cordova.plugins.XjBaiduSpeech.startListen(async result => {
-      if (!result.finish) {
+    this.timeout.timeOutOnlyOne(1500,()=>{
+
+      this.emitService.emitListener(true);
+      this.feedbackService.vibrate();
+      cordova.plugins.XjBaiduSpeech.startListen(async result => {
+        if (!result.finish) {
+          immediately.immediatetext = result.text;
+          this.emitService.emitImmediately(immediately);
+          return ;
+        }
+        immediately.fininsh = true;
         immediately.immediatetext = result.text;
         this.emitService.emitImmediately(immediately);
-        return ;
-      }
-      immediately.fininsh = true;
-      immediately.immediatetext = result.text;
-      this.emitService.emitImmediately(immediately);
-      if (result.error){
-        throw new class implements Error {
-          message: string = "语音故障";
-          name: string = "aispeech";
-          stack: string = "语音故障";
-        };
-      }
-      // 读取录音进行base64转码
-      let base64File: string = await this.file.readAsDataURL(this.mp3Path, this.mp3Name);
-      let audioPro = new AudioPro();
-      audioPro.d.vb64 = base64File;
-      if (DataConfig.clearAIContext) {
-        audioPro.d.clean = "user";  // 清除对话历史
-        DataConfig.clearAIContext = false;
-      }
-      audioPro.c.client.time = moment().valueOf();
-      audioPro.c.client.cxt = DataConfig.wsContext;
-      audioPro.c.client.option = DataConfig.wsWsOpt;
-      audioPro.c.client.processor = DataConfig.wsWsProcessor;
-      audioPro.c.server = DataConfig.wsServerContext;
-      // this.postAsk(result.text);
-      await this.aibutlerRestful.postaudio(audioPro);
-      this.listening = false;
-      this.emitService.emitListener(false);
-      immediately.immediatetext = "";
-      this.emitService.emitImmediately(immediately);
-      this.startWakeUp();
-      return result;
-    }, async error => {
-      let text = await this.getSpeakText(DataConfig.FF);
-      this.speakText(text);
-      this.listening = false;
-      this.emitService.emitListener(false);
-      this.startWakeUp();
-      return text;
-    });
+        if (result.error){
+          throw new class implements Error {
+            message: string = "语音故障";
+            name: string = "aispeech";
+            stack: string = "语音故障";
+          };
+        }
+        // 读取录音进行base64转码
+        let base64File: string = await this.file.readAsDataURL(this.mp3Path, this.mp3Name);
+        let audioPro = new AudioPro();
+        audioPro.d.vb64 = base64File;
+        if (DataConfig.clearAIContext) {
+          audioPro.d.clean = "user";  // 清除对话历史
+          DataConfig.clearAIContext = false;
+        }
+        audioPro.c.client.time = moment().valueOf();
+        audioPro.c.client.cxt = DataConfig.wsContext;
+        audioPro.c.client.option = DataConfig.wsWsOpt;
+        audioPro.c.client.processor = DataConfig.wsWsProcessor;
+        audioPro.c.server = DataConfig.wsServerContext;
+        // this.postAsk(result.text);
+        await this.aibutlerRestful.postaudio(audioPro);
+        this.listening = false;
+        this.emitService.emitListener(false);
+        immediately.immediatetext = "";
+        this.emitService.emitImmediately(immediately);
+        this.startWakeUp();
+        return result;
+      }, async error => {
+        let text = await this.getSpeakText(DataConfig.FF);
+        this.speakText(text);
+        this.listening = false;
+        this.emitService.emitListener(false);
+        this.startWakeUp();
+        return text;
+      });
+    },'ai.listiner')
+
   }
 
   private postAsk(text: string) {
