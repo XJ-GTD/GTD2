@@ -57,7 +57,7 @@ import { FindBugRestful } from "../restful/bugsev";
 import {DetectorService} from "../util-service/detector.service";
 import {LocalNotifications} from "@ionic-native/local-notifications";
 import {Badge} from "@ionic-native/badge";
-import { GrouperService,Grouper } from "./grouper.service";
+import {GrouperService, Grouper, Friend} from "./grouper.service";
 import {UserConfig} from "../config/user.config";
 import {DataConfig} from "../config/data.config";
 import {FsData, PageDcData} from "../../data.mapping";
@@ -183,87 +183,87 @@ import {Contacts, Contact} from "@ionic-native/contacts";
      });
 
      it('Case 2 - 1 save 创建群组 - 无群组的名称', async () => {
-       let pd: PageDcData = new PageDcData();
+       let pd: Grouper = new Grouper();
        try {
          await grouperService.saveGrouper(pd);
        } catch (e) {
          expect(e).toBeDefined();
        }
 
-       let pg: Array<PageDcData> = await grouperService.filterGroups(await grouperService.fetchGroups(), "");
+       let pg: Array<Grouper> = await grouperService.filterGroups(await grouperService.fetchGroups(), "");
        expect(pg).toBeDefined();
        expect(pg.length).toBeDefined(0);
 
      });
 
      it('Case 2 - 2 save 创建群组 - 有群组的名称', async () => {
-       let pd: PageDcData = new PageDcData();
+       let pd: Grouper = new Grouper();
        pd.gn ="组团打怪群";
        await grouperService.saveGrouper(pd);
 
-       let pg: Array<PageDcData> = await grouperService.filterGroups(await grouperService.fetchGroups(), "组团打怪群");
+       let pg: Array<Grouper> = await grouperService.filterGroups(await grouperService.fetchGroups(), "组团打怪群");
        expect(pg).toBeDefined();
        expect(pg.length).toBeDefined(1);
 
      });
 
      it('Case 2 - 3 save 群组新增成员 - 添加成员', async () => {
-       let pd: PageDcData = new PageDcData();
+       let pd: Grouper = new Grouper();
        pd.gn ="组团打怪群";
        await grouperService.saveGrouper(pd);
 
-       let pg: Array<PageDcData> = await grouperService.filterGroups(await grouperService.fetchGroups(), "组团打怪群");
+       let pg: Array<Grouper> = await grouperService.filterGroups(await grouperService.fetchGroups(), "组团打怪群");
        expect(pg).toBeDefined();
        expect(pg.length).toBeDefined(1);
 
-       let pd2: PageDcData = new PageDcData();
+       let pd2: Grouper = new Grouper();
        Object.assign(pd2, pg[0]);
        pd2.gn ="组团打怪群3";
-       let fs: FsData = new FsData();
+       let fs: Friend = {} as Friend;
        fs.pwi = "12343";
-       pd2.fsl.push(fs);
+       pd2.fss.push(fs);
        await grouperService.saveGrouper(pd2);
 
-       let pg2: Array<PageDcData> = await grouperService.filterGroups(await grouperService.fetchGroups(), "组团打怪群3");
+       let pg2: Array<Grouper> = await grouperService.filterGroups(await grouperService.fetchGroups(), "组团打怪群3");
        expect(pg2).toBeDefined();
        expect(pg2.length).toBeDefined(1);
      });
 
 
      it('Case 2 - 4 save 群组新增成员 - 无成员', async () => {
-       let pd: PageDcData = new PageDcData();
+       let pd: Grouper = new Grouper();
        pd.gn ="组团打怪群";
        await grouperService.saveGrouper(pd);
 
-       let pg: Array<PageDcData> = await grouperService.filterGroups(await grouperService.fetchGroups(), "组团打怪群");
+       let pg: Array<Grouper> = await grouperService.filterGroups(await grouperService.fetchGroups(), "组团打怪群");
        expect(pg).toBeDefined();
        expect(pg.length).toBeDefined(1);
 
-       let pd2: PageDcData = new PageDcData();
+       let pd2: Grouper = new Grouper();
        Object.assign(pd2, pg[0]);
        pd2.gn ="组团打怪群3";
        await grouperService.saveGrouper(pd2);
 
-       let pg2: Array<PageDcData> = await grouperService.filterGroups(await grouperService.fetchGroups(), "组团打怪群3");
+       let pg2: Array<Grouper> = await grouperService.filterGroups(await grouperService.fetchGroups(), "组团打怪群3");
        expect(pg2).toBeDefined();
        expect(pg2.length).toBeDefined(1);
      });
 
 
      it('Case 3 - 1 delete 删除会员 - 删除数据', async () => {
-       let pd: PageDcData = new PageDcData();
+       let pd: Grouper = new Grouper();
        pd.gn ="组团打怪群";
        await grouperService.saveGrouper(pd);
 
-       let pd2: PageDcData = new PageDcData();
+       let pd2: Grouper = new Grouper();
        pd2.gn ="组团打怪群2";
        await grouperService.saveGrouper(pd2);
 
-       let pd3: PageDcData = new PageDcData();
+       let pd3: Grouper = new Grouper();
        pd3.gn ="组团打怪群3";
        await grouperService.saveGrouper(pd3);
 
-       let pg: Array<PageDcData> = await grouperService.fetchGroups();
+       let pg: Array<Grouper> = await grouperService.fetchGroups();
        expect(pg).toBeDefined();
        expect(pg.length).toBeDefined(3);
 
@@ -272,7 +272,7 @@ import {Contacts, Contact} from "@ionic-native/contacts";
 
        await grouperService.removeGrouper(gi);
 
-       let pg1: Array<PageDcData> = await grouperService.filterGroups(await grouperService.fetchGroups(), gn);
+       let pg1: Array<Grouper> = await grouperService.filterGroups(await grouperService.fetchGroups(), gn);
        expect(pg1).toBeDefined();
        expect(pg1.length).toBeDefined(1);
        // expect(pg1[0].del).toBe(DelType.del);
@@ -280,19 +280,19 @@ import {Contacts, Contact} from "@ionic-native/contacts";
      });
 
      it('Case 3 - 2 delete 删除会员 - 删除数据', async () => {
-       let pd: PageDcData = new PageDcData();
+       let pd: Grouper = new Grouper();
        pd.gn ="组团打怪群";
        await grouperService.saveGrouper(pd);
 
-       let pd2: PageDcData = new PageDcData();
+       let pd2: Grouper = new Grouper();
        pd2.gn ="组团打怪群2";
        await grouperService.saveGrouper(pd2);
 
-       let pd3: PageDcData = new PageDcData();
+       let pd3: Grouper = new Grouper();
        pd3.gn ="组团打怪群3";
        await grouperService.saveGrouper(pd3);
 
-       let pg: Array<PageDcData> = await grouperService.fetchGroups();
+       let pg: Array<Grouper> = await grouperService.fetchGroups();
        expect(pg).toBeDefined();
        expect(pg.length).toBeDefined(3);
        await grouperService.removeGrouper(pg[0].gi);
@@ -300,11 +300,11 @@ import {Contacts, Contact} from "@ionic-native/contacts";
 
      it('Case 4 - 1 receivedGrouper 接收群组数据同步 - 接收群组数据同步', async () => {
 
-       let pd: PageDcData = new PageDcData();
+       let pd: Grouper = new Grouper();
        pd.gn ="组团打怪群";
        await grouperService.saveGrouper(pd);
 
-       let pg: Array<PageDcData> = await grouperService.filterGroups(await grouperService.fetchGroups(), "组团打怪群");
+       let pg: Array<Grouper> = await grouperService.filterGroups(await grouperService.fetchGroups(), "组团打怪群");
        expect(pg).toBeDefined();
        expect(pg.length).toBeDefined(1);
 
@@ -315,17 +315,17 @@ import {Contacts, Contact} from "@ionic-native/contacts";
 
        let grouper: Grouper = new Grouper();
 
-       let fss : Array<FsData> = new Array<FsData>();
-       let fs: FsData = new FsData();
+       let fss : Array<Friend> = new Array<Friend>();
+       let fs: Friend = {} as Friend;
        fs.pwi = "12343";
        fss.push(fs);
        grouper.fss = fss;
 
-       let pd: PageDcData = new PageDcData();
+       let pd: Grouper = new Grouper();
        pd.gn ="组团打怪群";
        await grouperService.saveGrouper(pd);
 
-       let pg: Array<PageDcData> = await grouperService.filterGroups(await grouperService.fetchGroups(), "组团打怪群");
+       let pg: Array<Grouper> = await grouperService.filterGroups(await grouperService.fetchGroups(), "组团打怪群");
        expect(pg).toBeDefined();
        expect(pg.length).toBeDefined(1);
 
@@ -340,17 +340,17 @@ import {Contacts, Contact} from "@ionic-native/contacts";
        let grouper: Grouper = new Grouper();
        let pullGroupers: Array<Grouper> = new Array<Grouper>();
 
-       let fss : Array<FsData> = new Array<FsData>();
-       let fs: FsData = new FsData();
+       let fss : Array<Friend> = new Array<Friend>();
+       let fs: Friend = {} as Friend;
        fs.pwi = "12343";
        fss.push(fs);
        grouper.fss = fss;
 
-       let pd: PageDcData = new PageDcData();
+       let pd: Grouper = new Grouper();
        pd.gn ="组团打怪群";
        await grouperService.saveGrouper(pd);
 
-       let pg: Array<PageDcData> = await grouperService.filterGroups(await grouperService.fetchGroups(), "组团打怪群");
+       let pg: Array<Grouper> = await grouperService.filterGroups(await grouperService.fetchGroups(), "组团打怪群");
        expect(pg).toBeDefined();
        expect(pg.length).toBeDefined(1);
 
@@ -375,33 +375,33 @@ import {Contacts, Contact} from "@ionic-native/contacts";
 
      it('Case 8 - 1 removeGrouperMember 删除群成员 - 删除群成员', async () => {
 
-       let pd: PageDcData = new PageDcData();
+       let pd: Grouper = new Grouper();
        pd.gn ="组团打怪群";
        await grouperService.saveGrouper(pd);
 
-       let pg: Array<PageDcData> = await grouperService.filterGroups(await grouperService.fetchGroups(), "组团打怪群");
+       let pg: Array<Grouper> = await grouperService.filterGroups(await grouperService.fetchGroups(), "组团打怪群");
        expect(pg).toBeDefined();
        expect(pg.length).toBeDefined(1);
 
-       let pd2: PageDcData = new PageDcData();
+       let pd2: Grouper = new Grouper();
        Object.assign(pd2, pg[0]);
        // pd2.gn ="组团打怪群3"; 不支持群名称修改
-       let fs: FsData = new FsData();
+       let fs: Friend = {} as Friend;
        fs.pwi = "12343";
-       pd2.fsl.push(fs);
+       pd2.fss.push(fs);
        await grouperService.saveGrouper(pd2);
 
-       let pg2: Array<PageDcData> = await grouperService.filterGroups(await grouperService.fetchGroups(), "组团打怪群");
+       let pg2: Array<Grouper> = await grouperService.filterGroups(await grouperService.fetchGroups(), "组团打怪群");
        expect(pg2).toBeDefined();
        expect(pg2.length).toBeDefined(1);
 
        //删除
        await grouperService.removeGrouperMember(pg2[0].gi, "12343");  // 非预设联系人无法通过fetchGroups取出来
 
-       let pg3: Array<PageDcData> = await grouperService.filterGroups(await grouperService.fetchGroups(), "组团打怪群");
+       let pg3: Array<Grouper> = await grouperService.filterGroups(await grouperService.fetchGroups(), "组团打怪群");
        expect(pg3).toBeDefined();
        expect(pg3.length).toBeDefined(1);
-       expect(pg3[0].fsl.length).toBeDefined(0);
+       expect(pg3[0].fss.length).toBeDefined(0);
      });
 
      afterAll(() => {

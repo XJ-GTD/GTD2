@@ -1,14 +1,12 @@
 import {MQProcess} from "../interface.process";
 import {WsContent} from "../model/content.model";
-import {ProcessFactory} from "../process.factory";
-import {EmitService} from "../../service/util-service/emit.service";
 import {Injectable} from "@angular/core";
-import {CudscdPara} from "../model/cudscd.para";
 import {ProcesRs} from "../model/proces.rs";
 import {WsDataConfig} from "../wsdata.config";
 import {BaseProcess} from "./base.process";
 import {DataConfig} from "../../service/config/data.config";
 import {FsData, ScdData} from "../../data.mapping";
+import {Friend} from "../../service/business/grouper.service";
 
 /**
  * 日程修改（获取上下文中） SC
@@ -54,7 +52,7 @@ export class ContextProcess extends BaseProcess implements MQProcess{
     planitems = this.input(content,contextRetMap,"planitems",WsDataConfig.PID,planitems);
 
     //上下文内获取查询条件用日程人员或创建的日程人员
-    let fs :Array<FsData> = new Array<FsData>();
+    let fs :Array<Friend> = new Array<Friend>();
     fs = this.input(content,contextRetMap,"contacts",WsDataConfig.FS,fs);
 
     //process处理符合条件则执行

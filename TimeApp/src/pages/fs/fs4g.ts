@@ -4,7 +4,7 @@ import {FsService} from "./fs.service";
 import {UtilService} from "../../service/util-service/util.service";
 import {FsData, FsPageData, PageDcData} from "../../data.mapping";
 import {DataConfig} from "../../service/config/data.config";
-import {GrouperService} from "../../service/business/grouper.service";
+import {Friend, Grouper, GrouperService} from "../../service/business/grouper.service";
 
 /**
  * Generated class for the 群组参与人选择 page.
@@ -66,8 +66,8 @@ export class Fs4gPage {
 
   tel: any;//手机号
   pageFsl: Array<FsPageData> = new Array<FsPageData>();
-  selFsl: Array<FsData> = new Array<FsData>();
-  dc: PageDcData;
+  selFsl: Array<Friend> = new Array<Friend>();
+  dc: Grouper;
 
   constructor(public navCtrl: NavController,
               public navParams: NavParams,
@@ -85,7 +85,7 @@ export class Fs4gPage {
   }
 
 
-  rmSelected(fs: FsData) {
+  rmSelected(fs: Friend) {
     let index: number = this.selFsl.findIndex((value) => {
       return fs.pwi == value.pwi;
     });
@@ -96,7 +96,7 @@ export class Fs4gPage {
   save() {
     let list = this.selFsl;
     if (list.length > 0) {
-      this.dc.fsl = list;
+      this.dc.fss = list;
       this.grouperService.saveGrouper(this.dc).then(data => {
           this.goBack();
           //TODO 错误提示
@@ -126,7 +126,8 @@ export class Fs4gPage {
     this.pageFsl.splice(0, this.pageFsl.length);
     let fsl = this.fsService.getfriend(this.tel);
     fsl.forEach((value) => {
-      let fs: FsPageData = new FsPageData();
+      let fs: FsPageData = {} as FsPageData;
+      fs.checked = false;
       Object.assign(fs, value);
       fs.checked = false;
       this.pageFsl.push(fs);

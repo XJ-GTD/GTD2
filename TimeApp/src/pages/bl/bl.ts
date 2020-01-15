@@ -5,6 +5,7 @@ import {FdService} from "../fd/fd.service";
 import {DataConfig} from "../../service/config/data.config";
 import {UtilService} from "../../service/util-service/util.service";
 import {FsData} from "../../data.mapping";
+import {Friend} from "../../service/business/grouper.service";
 
 /**
  * Generated class for the 黑名单列表 page.
@@ -38,7 +39,7 @@ import {FsData} from "../../data.mapping";
   `
 })
 export class BlPage {
-  bls:Array<FsData> = new Array<FsData>();
+  bls:Array<Friend> = new Array<Friend>();
 
   buttons: any = {
     cancel: true
@@ -70,7 +71,7 @@ export class BlPage {
     profileModal.present();
   }
   //删除黑名单
-  delete(g:FsData){
+  delete(g:Friend){
     //this.util.popMsgbox("2",()=>{
       this.fdService.removeBlack(g.ui).then(data=>{
         this.blService.get().then(data=>{
@@ -83,7 +84,7 @@ export class BlPage {
 
   }
 
-  goTofsDetail(fs:FsData){
+  goTofsDetail(fs:Friend){
     let modal = this.modalCtrl.create(DataConfig.PAGE._FD_PAGE,{fsData:fs});
     modal.present();
   }

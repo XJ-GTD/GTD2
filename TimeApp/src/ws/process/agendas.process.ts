@@ -14,6 +14,7 @@ import {WsDataConfig} from "../wsdata.config";
 import {BaseProcess} from "./base.process";
 import * as anyenum from "../../data.enum";
 import { UtilService } from "../../service/util-service/util.service";
+import {Friend} from "../../service/business/grouper.service";
 
 /**
  * 日程处理
@@ -44,7 +45,7 @@ export class AgendasProcess extends BaseProcess implements MQProcess,OptProcess{
     scd = this.input(content,contextRetMap,"agendas",WsDataConfig.SCD,scd);
 
     //上下文内获取日程人员信息
-    let fs :Array<FsData> = new Array<FsData>();
+    let fs :Array<Friend> = new Array<Friend>();
     fs = this.input(content,contextRetMap,"contacts",WsDataConfig.FS,fs);
 
     //process处理符合条件则暂停
@@ -217,8 +218,8 @@ export class AgendasProcess extends BaseProcess implements MQProcess,OptProcess{
     scd = this.input(content, contextRetMap, "agendas", WsDataConfig.SCD, scd);
 
     //上下文内获取查询条件用日程人员或创建的日程人员
-    let fs: Array<FsData> = new Array<FsData>();
-    fs = this.input(content, contextRetMap, "contacts", WsDataConfig.FS, fs) || new Array<FsData>();
+    let fs: Array<Friend> = new Array<Friend>();
+    fs = this.input(content, contextRetMap, "contacts", WsDataConfig.FS, fs) || new Array<Friend>();
 
     //process处理符合条件则执行
     if (content.when && content.when !=""){

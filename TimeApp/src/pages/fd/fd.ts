@@ -4,6 +4,7 @@ import { FdService} from "./fd.service";
 import {UtilService} from "../../service/util-service/util.service";
 import {FsData} from "../../data.mapping";
 import {ExchangeSummaryData} from "../../service/business/calendar.service";
+import {Friend} from "../../service/business/grouper.service";
 
 /**
  * Generated class for the 参与人详情 page.
@@ -72,7 +73,7 @@ export class FdPage {
   };
 
   exchangesummary: ExchangeSummaryData;
-  fd:FsData = new FsData();
+  fd:Friend = {} as Friend;
   pwi:string;
   buttonText:string = '';
   constructor(public navCtrl: NavController,

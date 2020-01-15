@@ -6,6 +6,7 @@ import {ModalController} from "ionic-angular";
 import {AssistantService} from "../../../service/cordova/assistant.service";
 import {PgBusiService} from "../../../service/pagecom/pgbusi.service";
 import {FsService} from "../../../pages/fs/fs.service";
+import {Friend} from "../../../service/business/grouper.service";
 
 @Injectable()
 export class AiService {
@@ -52,7 +53,7 @@ export class AiService {
     rcIn.st = scd.t;
     rcIn.sd = scd.d;
     for (let f of scd.friends){
-      let fs:FsData = new FsData();
+      let fs:Friend = {} as Friend;
       fs.ui = f.uid;
       fs.ran = f.n;
       fs.pwi = f.id;

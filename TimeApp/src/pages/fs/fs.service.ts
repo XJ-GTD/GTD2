@@ -8,6 +8,7 @@ import {DataConfig} from "../../service/config/data.config";
 import {ContactsService} from "../../service/cordova/contacts.service";
 import {UserConfig} from "../../service/config/user.config";
 import {FsData} from "../../data.mapping";
+import {Friend} from "../../service/business/grouper.service";
 
 @Injectable()
 export class FsService {
@@ -35,23 +36,23 @@ export class FsService {
 
 
   //查询群组中的参与人
-  getfriendgroup(groupId: string): Array<FsData> {
-    return UserConfig.groups.find((value) => value.gi == groupId).fsl;
+  getfriendgroup(groupId: string): Array<Friend> {
+    return UserConfig.groups.find((value) => value.gi == groupId).fss;
   }
 
   /**
    * 获取分享日程的参与人
    * @param {string} calId 日程ID
-   * @returns {Promise<Array<FsData>>}
+   * @returns {Promise<Array<Friend>>}
    */
-  getCalfriend(calId: string): Promise<Array<FsData>> {
-    return new Promise<Array<FsData>>((resolve, reject) => {
+  getCalfriend(calId: string): Promise<Array<Friend>> {
+    return new Promise<Array<Friend>>((resolve, reject) => {
       let sql = 'select gd.pi,gd.si,gb.*,bh.hiu bhiu from gtd_d gd inner join gtd_b gb on gb.pwi = gd.ai left join gtd_bh bh on gb.pwi = bh.pwi where si="' + calId + '"';
-      let fsList = new Array<FsData>();
+      let fsList = new Array<Friend>();
       this.sqlite.execSql(sql).then(data => {
         if (data && data.rows && data.rows.length > 0) {
           for (let i = 0, len = data.rows.length; i < len; i++) {
-            let fs = new FsData();
+            let fs = {} as Friend;
             Object.assign(fs, data.rows.item(i));
             if (!fs.bhiu || fs.bhiu == null || fs.bhiu == '') {
               fs.bhiu = DataConfig.HUIBASE64;
@@ -69,10 +70,10 @@ export class FsService {
   /**
    * 分享给参与人操作
    * @param {string} si 日程ID
-   * @param {Array<FsData>} fsList 日程参与人列表
-   * @returns {Promise<Array<FsData>>}
+   * @param {Array<Friend>} fsList 日程参与人列表
+   * @returns {Promise<Array<Friend>>}
    */
-  sharefriend(si: string, fsList: Array<FsData>): Promise<boolean> {
+  sharefriend(si: string, fsList: Array<Friend>): Promise<boolean> {
     return new Promise<boolean>((resolve, reject) => {
       //restFul 通知参与人
       let adgPro: AgdPro = new AgdPro();

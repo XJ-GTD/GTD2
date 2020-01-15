@@ -9,6 +9,7 @@ import {Keyboard} from "@ionic-native/keyboard";
 import {FsData, RcInParam, ScdData, ScdPageParamter, SpecScdData} from "../../../data.mapping";
 import {PlService} from "../../pl/pl.service";
 import {FeedbackService} from "../../../service/cordova/feedback.service";
+import {Friend} from "../../src/service/business/grouper.service";
 
 /**
  * Generated class for the 日程详情（发布人） page.
@@ -586,7 +587,7 @@ export class TddjPage {
     }
   }
 
-  goTofsDetail(fs: FsData) {
+  goTofsDetail(fs: Friend) {
     let modal = this.modalCtrl.create(DataConfig.PAGE._FD_PAGE, {fsData: fs});
     modal.present();
   }

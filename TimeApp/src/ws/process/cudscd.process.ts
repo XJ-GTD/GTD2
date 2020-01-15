@@ -11,6 +11,7 @@ import {SS} from "../model/ws.enum";
 import {FsData, ScdData} from "../../data.mapping";
 import {WsDataConfig} from "../wsdata.config";
 import {BaseProcess} from "./base.process";
+import {Friend} from "../../service/business/grouper.service";
 
 /**
  * 日历修改处理 SS
@@ -45,7 +46,7 @@ export class CudscdProcess extends BaseProcess implements MQProcess{
     planitems = this.input(content,contextRetMap,"planitems",WsDataConfig.PID,planitems);
 
     //上下文内获取查询条件用日程人员或创建的日程人员
-    let fs :Array<FsData> = new Array<FsData>();
+    let fs :Array<Friend> = new Array<Friend>();
     fs = this.input(content,contextRetMap,"contacts",WsDataConfig.FS,fs);
 
     //process处理符合条件则暂停

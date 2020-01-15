@@ -3,12 +3,12 @@ import {SqliteExec} from "../../service/util-service/sqlite.exec";
 import {UserConfig} from "../../service/config/user.config";
 import {DataConfig} from "../../service/config/data.config";
 import {YTbl} from "../../service/sqlite/tbl/y.tbl";
-import {ContactsService} from "../../service/cordova/contacts.service";
 import {PageY} from "../../data.mapping";
 import {SyncRestful} from "../../service/restful/syncsev";
 import {PlService} from "../pl/pl.service";
 import {UtilService} from "../../service/util-service/util.service";
 import {EmitService} from "../../service/util-service/emit.service";
+import {GrouperService} from "../../service/business/grouper.service";
 
 @Injectable()
 export class SsService {
@@ -19,8 +19,8 @@ export class SsService {
     private util:UtilService,
     private userConfig:UserConfig,
     private plService: PlService,
-    private contactsService: ContactsService,
-     private emitService: EmitService,) {
+     private emitService: EmitService,
+    private grouperService : GrouperService) {
   }
 
   //设置每日简报时间/事件
@@ -96,7 +96,12 @@ export class SsService {
 
   //TODO 刷新联系人功能
   async resfriend(){
-    await this.contactsService.asyncPhoneContacts();
-    return this.contactsService.updateFs()
+    await this.grouperService.asyncPhoneContacts();
+    await this.grouperService.updateFs();
+    //刷新缓存
+    await this.grouperService.refreshFriendCconfig();
+    await this.grouperService.refreshGroupConfig();
+    return;
+
   }
 }

@@ -8,7 +8,7 @@ import { SyncData, PushInData, PullInData, DataRestful, DayCountCodec, ShareInDa
 import { BackupPro, BacRestful, OutRecoverPro, RecoverPro } from "../restful/bacsev";
 import { EventData, TaskData, AgendaData, MiniTaskData, EventService, Attachment, RtJson, TxJson, Member, generateRtJson, generateTxJson } from "./event.service";
 import { MemoData, MemoService } from "./memo.service";
-import { Grouper } from "./grouper.service";
+import {Friend, Grouper} from "./grouper.service";
 import { Annotation } from "./annotation.service";
 import { EventType, PlanType, PlanItemType, PlanDownloadType, MemberShareState, SelfDefineType, ConfirmType, OperateType, ObjectType, PageDirection, CycleType, SyncType, RepeatFlag, DelType, SyncDataSecurity, SyncDataStatus, InviteState, ModiPower, InvitePowr } from "../../data.enum";
 import { UserConfig } from "../config/user.config";
@@ -55,7 +55,6 @@ export class CalendarService extends BaseService {
   constructor(private sqlExce: SqliteExec,
               private util: UtilService,
               private emitService: EmitService,
-              private userConfig: UserConfig,
               private eventService: EventService,
               private memoService: MemoService,
               private grouperService: GrouperService,
@@ -1323,7 +1322,7 @@ export class CalendarService extends BaseService {
       let member = {} as Member;
       Object.assign(member, memberdb);
 
-      let fs: FsData = this.userConfig.GetOneBTbl(memberdb.pwi);
+      let fs: Friend = UserConfig.GetOneBTbl(memberdb.pwi);
 
       this.assertEmpty(fs);   // 联系人不能为空
 
@@ -1374,7 +1373,7 @@ export class CalendarService extends BaseService {
       let member = {} as Member;
       Object.assign(member, memberdb);
 
-      let fs: FsData = this.userConfig.GetOneBTbl(memberdb.pwi);
+      let fs: Friend = UserConfig.GetOneBTbl(memberdb.pwi);
 
       this.assertEmpty(fs);   // 联系人不能为空
 
@@ -4173,17 +4172,17 @@ export class CalendarService extends BaseService {
    *
    * @author leon_xi@163.com
    **/
-  findFriends(ns: Array<any>): Array<FsData> {
-    let res: Array<FsData> = new Array<FsData>();
-    let rsbs: Map<string, FsData> = new Map<string, FsData>();
+  findFriends(ns: Array<any>): Array<Friend> {
+    let res: Array<Friend> = new Array<Friend>();
+    let rsbs: Map<string, Friend> = new Map<string, Friend>();
     if (!ns || ns.length == 0) {
-      return new Array<FsData>();
+      return new Array<Friend>();
     }
 
     //TODO 联系人和群组是否要放入环境中，每次取性能有影响
 
     //获取群组列表
-    let gs: Array<PageDcData> = new Array<PageDcData>();
+    let gs: Array<Grouper> = new Array<Grouper>();
     Object.assign(gs, UserConfig.groups);
 
     //循环参数中的pingy数组
@@ -4197,7 +4196,7 @@ export class CalendarService extends BaseService {
         let simulary = this.util.compareTwoStrings(piny, g.gnpy);
         if (simulary > 0.8) {
           //piny = piny.replace(g.gnpy, "");
-          for (let b1 of g.fsl) {
+          for (let b1 of g.fss) {
             rsbs.set(b1.ranpy, b1);
           }
         }
@@ -4205,7 +4204,7 @@ export class CalendarService extends BaseService {
     }
 
     //获取联系人列表
-    let bs: Array<FsData> = new Array<FsData>();
+    let bs: Array<Friend> = new Array<Friend>();
     Object.assign(bs, UserConfig.friends);
 
     let b3ran: Array<string> = new Array();

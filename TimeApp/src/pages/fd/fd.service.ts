@@ -5,8 +5,8 @@ import {UtilService} from "../../service/util-service/util.service";
 import {BlaReq, BlaRestful} from "../../service/restful/blasev";
 import {UserConfig} from "../../service/config/user.config";
 import {CalendarService, ExchangeSummaryData} from "../../service/business/calendar.service";
-import {ContactsService} from "../../service/cordova/contacts.service";
 import {FsData} from "../../data.mapping";
+import {Friend, GrouperService} from "../../service/business/grouper.service";
 
 @Injectable()
 export class FdService {
@@ -16,7 +16,7 @@ export class FdService {
               private calendarService:CalendarService,
               private sqlite:SqliteExec,
               private userConfig:UserConfig,
-              private contact:ContactsService) {
+              private grouperService:GrouperService) {
   }
 
   /**
@@ -24,15 +24,15 @@ export class FdService {
    * @param {String} id
    * @returns {Promise<FsData>}
    */
-  get(fd:FsData):Promise<FsData>{
-    return new Promise<FsData>((resolve, reject)=>{
-      this.contact.updateOneFs(fd.rc).then(data=>{
+  get(fd:Friend):Promise<Friend>{
+    return new Promise<Friend>((resolve, reject)=>{
+      this.grouperService.updateOneFs(fd.rc).then(data=>{
         resolve(data);
       })
     })
   }
 
-  async getExchangeSummary(fd:FsData): Promise<ExchangeSummaryData> {
+  async getExchangeSummary(fd:Friend): Promise<ExchangeSummaryData> {
     return await this.calendarService.getExchangeActivitySummary(fd.rc);
   }
 
@@ -58,7 +58,7 @@ export class FdService {
   }
 
   //restFul 加入黑名单
-  putBlack(fd:FsData):Promise<boolean>{
+  putBlack(fd:Friend):Promise<boolean>{
     return new Promise<boolean>((resolve, reject)=>{
       let bla = new BlaReq();
        if(fd && fd.rc){

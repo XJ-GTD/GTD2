@@ -2,16 +2,16 @@ import {Component, ElementRef, Renderer2, ViewChild} from '@angular/core';
 import {
   ActionSheetController, ModalController, NavController, NavParams,
 } from 'ionic-angular';
-import {UtilService} from "../../../service/util-service/util.service";
-import {PgBusiService} from "../../../service/pagecom/pgbusi.service";
 import {Keyboard} from "@ionic-native/keyboard";
-import {FsData, RcInParam, ScdData, ScdPageParamter, SpecScdData} from "../../../data.mapping";
-import {DataConfig} from "../../../service/config/data.config";
-import {PlService} from "../../pl/pl.service";
-import {JhTbl} from "../../../service/sqlite/tbl/jh.tbl";
-import {FeedbackService} from "../../../service/cordova/feedback.service";
-import {NotificationsService} from "../../../service/cordova/notifications.service";
 import * as moment from 'moment';
+import {UtilService} from "../../src/service/util-service/util.service";
+import {PgBusiService} from "../../src/service/pagecom/pgbusi.service";
+import {PlService} from "../../src/pages/pl/pl.service";
+import {FeedbackService} from "../../src/service/cordova/feedback.service";
+import {RcInParam, ScdData, ScdPageParamter, SpecScdData} from "../../src/data.mapping";
+import {JhTbl} from "../../src/service/sqlite/tbl/jh.tbl";
+import {DataConfig} from "../../src/service/config/data.config";
+import {Friend} from "../../src/service/business/grouper.service";
 
 /**
  * Generated class for the 日程详情（受邀） page.
@@ -465,7 +465,7 @@ export class TddiPage {
     }
   }
 
-  goTofsDetail(fs: FsData) {
+  goTofsDetail(fs: Friend) {
     let modal = this.modalCtrl.create(DataConfig.PAGE._FD_PAGE, {fsData: fs});
     modal.present();
   }

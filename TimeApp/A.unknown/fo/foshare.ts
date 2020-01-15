@@ -1,12 +1,13 @@
 import {Component, ElementRef, Renderer2, ViewChild} from '@angular/core';
 import {IonicPage, NavController, ViewController, ModalController} from 'ionic-angular';
-import {DataConfig} from "../../../service/config/data.config";
-import {Setting, UserConfig} from "../../../service/config/user.config";
-import {EmitService} from "../../../service/util-service/emit.service";
-import {SsService} from "../../ss/ss.service";
-import {FsData, PageY} from "../../../data.mapping";
 import * as moment from "moment";
 import { InAppBrowser } from '@ionic-native/in-app-browser';
+import {Friend} from "../../src/service/business/grouper.service";
+import {PageY} from "../../src/data.mapping";
+import {SsService} from "../../src/pages/ss/ss.service";
+import {EmitService} from "../../src/service/util-service/emit.service";
+import {Setting, UserConfig} from "../../src/service/config/user.config";
+import {DataConfig} from "../../src/service/config/data.config";
 
 /**
  * Generated class for the 项目跟进 通知共享 page.
@@ -157,7 +158,7 @@ export class FoSharePage {
   sfirsin: Array<any>;
   sgithubsin: Array<any>;
 
-  smembers: Map<string, Array<FsData>>;
+  smembers: Map<string, Array<Friend>>;
 
   secret: string = "";
 
@@ -377,7 +378,7 @@ export class FoSharePage {
   }
 
   configure(instance) {
-    let modal = this.modalController.create(DataConfig.PAGE._FOCONFIGURE_PAGE, {target: instance});
+    let modal = this.modalController.create("", {target: instance});//DataConfig.PAGE._FOCONFIGURE_PAGE
     modal.onDidDismiss((data)=>{
       if (data && data.selected) {
         console.log("dddd");

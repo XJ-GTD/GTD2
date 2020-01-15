@@ -3,6 +3,7 @@
  */
 import {ITbl} from "./itbl";
 import * as moment from "moment";
+import {ITblParam} from "./itblparam";
 
 
 export class BTbl implements ITbl{
@@ -158,9 +159,35 @@ export class BTbl implements ITbl{
 
   preT():string {
     let sq ='insert into gtd_b ' +
-      '(  pwi ,ran ,ranpy  ,hiu ,rn ,rnpy ,rc   ,rel ,ui,src,wtt,utt,rob) values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?, ' +  moment().unix() + ', ' +  moment().unix() + ',?);';
+      '(  pwi ,ran ,ranpy  ,hiu ,rn ,rnpy ,rc   ,rel ,ui,src,wtt,utt,rob) values( ?, ?, ?, ?, ?, ?, ?, ?, ?,?, ' +  moment().unix() + ', ' +  moment().unix() + ',?);';
 
     return sq;
+  }
+
+  fastParam(): any {
+    let params: Array<any> = new Array<any>();
+
+    params.push(this.pwi);
+    params.push(this.ran);
+    params.push(this.ui);
+    params.push(this.rn);
+    params.push(this.rnpy);
+    params.push(this.hiu);
+    params.push(this.rc);
+    params.push(this.rel);
+    params.push(this.ui);
+    params.push(this.src);
+    params.push(this.wtt);
+    params.push(this.utt);
+    params.push(this.rob);
+
+
+    return [`replace into gtd_b (
+        pwi ,ran ,ranpy  ,hiu ,rn ,rnpy ,rc  ,rel ,ui,src,wtt,utt,rob
+      )`,
+      `select ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?  `,
+      params
+    ]
   }
 
 }

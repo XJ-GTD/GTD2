@@ -4,11 +4,12 @@
  * create by zhangjy on 2019/03/12.
  */
 import {FsData, ScdData} from "../../data.mapping";
+import {Friend} from "../../service/business/grouper.service";
 
 
 export class ProcesRs{
   //参与人
-  fs:Array<FsData>=[];
+  fs:Array<Friend>=[];
 
   //日程
   scd:Array<ScdData>=[];

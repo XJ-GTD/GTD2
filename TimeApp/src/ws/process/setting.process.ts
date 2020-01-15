@@ -11,6 +11,7 @@ import {FsData, PageY} from "../../data.mapping";
 import {WsDataConfig} from "../wsdata.config";
 import {BaseProcess} from "./base.process";
 import {SettingsProvider} from "../../providers/settings/settings";
+import {Friend} from "../../service/business/grouper.service";
 
 /**
  * 设置
@@ -140,11 +141,11 @@ export class SettingProcess extends BaseProcess implements MQProcess {
     //用户黑名单
     if (content.option == SY.B) {
       //上下文内获取人员信息
-      let fs :Array<FsData> = new Array<FsData>();
+      let fs :Array<Friend> = new Array<Friend>();
       fs = this.input(content,contextRetMap,"contacts",WsDataConfig.FS,fs);
 
 
-      let fdData: FsData = new FsData();
+      let fdData: Friend = {} as Friend;
       for (let btbl of fs) {
         fdData.ui = btbl.ui;
         fdData.rc = btbl.rc;

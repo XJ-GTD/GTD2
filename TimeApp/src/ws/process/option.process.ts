@@ -12,6 +12,7 @@ import {CTbl} from "../../service/sqlite/tbl/c.tbl";
 import {OptProcessFactory} from "../optprocess.factory";
 import {WsDataConfig} from "../wsdata.config";
 import {BaseProcess} from "./base.process";
+import {Friend} from "../../service/business/grouper.service";
 
 /**
  * 确认操作
@@ -53,7 +54,7 @@ export class OptionProcess extends BaseProcess implements MQProcess{
     planitems = this.input(content,contextRetMap,"planitems",WsDataConfig.PID,planitems);
 
     //上下文内获取日程人员信息
-    let fs :Array<FsData> = new Array<FsData>();
+    let fs :Array<Friend> = new Array<Friend>();
     fs = this.input(content,contextRetMap,"contacts",WsDataConfig.FS,fs);
 
     //process处理符合条件则执行

@@ -10,7 +10,7 @@ import * as moment from "moment";
 import {UserConfig} from "../../../service/config/user.config";
 import {DataConfig} from "../../../service/config/data.config";
 import {Annotation, AnnotationService} from "../../../service/business/annotation.service";
-import {ContactsService} from "../../../service/cordova/contacts.service";
+import {GrouperService} from "../../../service/business/grouper.service";
 
 @Injectable()
 export class TellyouService {
@@ -30,7 +30,7 @@ export class TellyouService {
               private eventService:EventService,
               private calendarService:CalendarService,
               private annotationService:AnnotationService,
-              private contactsService: ContactsService) {
+              private grouperService: GrouperService) {
     this.init();
 
 
@@ -363,7 +363,7 @@ export class TellyouService {
       if (friend){
         person = friend.ran;
         if (moment().diff(moment.unix(friend.utt),'hours',true) > 1){
-          let updateFriend = await this.contactsService.updateOneFs(friend.rc);
+          let updateFriend = await this.grouperService.updateOneFs(friend.rc);
 
           pageData.formperson = updateFriend.ran;
           pageData.mp3 = updateFriend.rob;

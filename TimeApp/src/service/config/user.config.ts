@@ -8,8 +8,9 @@ import {BhTbl} from "../sqlite/tbl/bh.tbl";
 import {UtilService} from "../util-service/util.service";
 import {EmitService} from "../util-service/emit.service";
 import {DataConfig} from "./data.config";
-import {FsData, PageDcData} from "../../data.mapping";
 import {PlanData} from "../business/calendar.service";
+import {Friend, Grouper,} from "../business/grouper.service";
+import {assertEmpty} from "../../util/util";
 
 /**
  * create by on 2019/3/5
@@ -62,7 +63,7 @@ export class UserConfig {
   static allsettins: Map<string, Setting> = new Map<string, Setting>();
 
   //参与人
-  static friends: Array<FsData> = new Array<FsData>();
+  static friends: Array<Friend> = new Array<Friend>();
 
   //个人计划
   static privateplans: Array<PlanData> = new Array<PlanData>();
@@ -73,19 +74,17 @@ export class UserConfig {
   static troublestop: Map<string, any> = new Map<string, any>();
 
   //群组
-  static groups: Array<PageDcData> = new Array<PageDcData>();
+  static groups: Array<Grouper> = new Array<Grouper>();
 
   constructor(private sqlliteExec: SqliteExec,
               private util: UtilService,
-              private emitService: EmitService) {
+              private emitService: EmitService,) {
   }
 
   async init() {
     await this.RefreshYTbl();
     await this.RefreshUTbl();
     await this.RefreshATbl();
-    await this.RefreshBTbl();
-    await this.RefreshGTbl();
 
   }
 
@@ -204,14 +203,6 @@ export class UserConfig {
     return;
   }
 
-  public async RefreshFriend() {
-    await this.RefreshBTbl();
-
-    await this.RefreshGTbl();
-    return;
-
-  }
-
   static getAvatar(phoneno: string): string {
     let targets = UserConfig.friends.filter((element, index, array) => {
       return (element.rc == phoneno || element.ui == phoneno);
@@ -246,7 +237,7 @@ export class UserConfig {
     return [];
   }
 
-  private async initTesterContacts(): Promise<Array<FsData>> {
+  private async initTesterContacts(): Promise<Array<Friend>> {
     // 联系人用于测试
     let xiaopangzi: BTbl;
     let xiaohaizi: BTbl;
@@ -259,11 +250,11 @@ export class UserConfig {
     let huqiming: BTbl;
     let liying: BTbl;
 
-    let datas: Array<FsData> = new Array<FsData>();
+    let datas: Array<Friend> = new Array<Friend>();
     let sqls: Array<string> = new Array<string>();
 
     //参与人
-    let fsdata: FsData = new FsData();
+    let fsdata: Friend = {} as Friend;
     let btbl: BTbl = new BTbl();
     let bhtbl = new BhTbl();
     btbl.pwi = "xiaopangzi";
@@ -288,7 +279,7 @@ export class UserConfig {
     Object.assign(fsdata, btbl, bhtbl);
     datas.push(fsdata);
 
-    fsdata = new FsData();
+    fsdata = {} as Friend;
     btbl = new BTbl();
     btbl.pwi = "xiaohaizi";
     btbl.ran = '小孩子';
@@ -312,7 +303,7 @@ export class UserConfig {
     Object.assign(fsdata, btbl, bhtbl);
     datas.push(fsdata);
 
-    fsdata = new FsData();
+    fsdata = {} as Friend;
     btbl = new BTbl();
     btbl.pwi = 'liqiannan';
     btbl.ran = '李倩男';
@@ -336,7 +327,7 @@ export class UserConfig {
     Object.assign(fsdata, btbl, bhtbl);
     datas.push(fsdata);
 
-    fsdata = new FsData();
+    fsdata = {} as Friend;
     btbl = new BTbl();
     btbl.pwi = 'huqiming';
     btbl.ran = '胡启明';
@@ -360,7 +351,7 @@ export class UserConfig {
     Object.assign(fsdata, btbl, bhtbl);
     datas.push(fsdata);
 
-    fsdata = new FsData();
+    fsdata = {} as Friend;
     btbl = new BTbl();
     btbl.pwi = 'liying';
     btbl.ran = '李滢';
@@ -384,7 +375,7 @@ export class UserConfig {
     Object.assign(fsdata, btbl, bhtbl);
     datas.push(fsdata);
 
-    fsdata = new FsData();
+    fsdata = {} as Friend;
     btbl = new BTbl();
     btbl.pwi = 'xiaolenzi';
     btbl.ran = '小楞子';
@@ -408,7 +399,7 @@ export class UserConfig {
     Object.assign(fsdata, btbl, bhtbl);
     datas.push(fsdata);
 
-    fsdata = new FsData();
+    fsdata = {} as Friend;
     btbl = new BTbl();
     btbl.pwi = 'caoping';
     btbl.ran = '草帽';
@@ -432,7 +423,7 @@ export class UserConfig {
     Object.assign(fsdata, btbl, bhtbl);
     datas.push(fsdata);
 
-    fsdata = new FsData();
+    fsdata = {} as Friend;
     btbl = new BTbl();
     btbl.pwi = 'luojianfei';
     btbl.ran = '飞飞飞';
@@ -456,7 +447,7 @@ export class UserConfig {
     Object.assign(fsdata, btbl, bhtbl);
     datas.push(fsdata);
 
-    fsdata = new FsData();
+    fsdata = {} as Friend;
     btbl = new BTbl();
     btbl.pwi = 'huitailang';
     btbl.ran = '灰太郎';
@@ -480,7 +471,7 @@ export class UserConfig {
     Object.assign(fsdata, btbl, bhtbl);
     datas.push(fsdata);
 
-    fsdata = new FsData();
+    fsdata = {} as Friend;
     btbl = new BTbl();
     btbl.pwi = 'xuezhenyang';
     btbl.ran = '牛牛';
@@ -509,98 +500,22 @@ export class UserConfig {
     return datas;
   }
 
-  //参与人
-  private async RefreshBTbl() {
-    let exists = UserConfig.friends.reduce((target, val) => {
-      if (target.indexOf(val.rc) < 0) {
-        target.push(val.rc);
-      }
-      return target;
-    }, new Array<string>());
-
-    //获取本地参与人
-    let sql = `select gb.*,bh.hiu bhiu
-               from gtd_b gb
-                      left join gtd_bh bh on bh.pwi = gb.pwi;`;
-
-    let data: Array<FsData> = await this.sqlliteExec.getExtList<FsData>(sql);
-
-    for (let fs of data) {
-      fs.bhiu = '';
-      let index = exists.indexOf(fs.rc);
-
-      if (index < 0) {
-        UserConfig.friends.push(fs);
-      } else {
-        let pos = UserConfig.friends.findIndex((element) => {
-          return (element.rc == fs.rc);
-        });
-
-        UserConfig.friends.splice(pos, 1, fs);
-      }
-    }
-    //增加内部事件通知
-    this.emitService.emit("mwxing.config.user.btbl.refreshed");
-    return;
-  }
-
-  //群组
-  private async RefreshGTbl() {
-    //获取本地群列表
-    let sql = `select * from gtd_g where del <> 'del';`;
-
-    UserConfig.groups.splice(0, UserConfig.groups.length);
-    let dcl: Array<PageDcData> = await this.sqlliteExec.getExtList<PageDcData>(sql)
-    if (dcl.length > 0) {
-      //和单群人数
-      for (let dc of dcl) {
-        dc.fsl = new Array<FsData>();
-        let sqlbx = `select gb.* from gtd_b_x gbx inner join gtd_b gb on gb.pwi = gbx.bmi
-        where gbx.bi='${dc.gi}' and gbx.del <> 'del';`;
-        let fsl: Array<FsData> = await this.sqlliteExec.getExtList<FsData>(sqlbx);
-        for (let fs of fsl) {
-          let fsd: FsData = this.GetOneBTbl(fs.pwi);
-          if (!dc.fsl) {
-            dc.fsl = new Array<FsData>(); //群组成员
-          }
-          if (fsd) {
-            dc.fsl.push(fsd);
-          }
-        }
-        dc.gc = dc.fsl.length;
-        dc.gm = DataConfig.QZ_HUIBASE64;
-        UserConfig.groups.push(dc);
-      }
-    }
-    //增加内部事件通知
-    this.emitService.emit("mwxing.config.user.gtbl.refreshed");
-    return;
-  }
-
-  RefreshOneBTbl(fsData: FsData): FsData {
-    let fs: FsData;
+  static RefreshOneBTbl(fsData: Friend): Friend {
+    let fs: Friend;
     fs = this.GetOneBTbl(fsData.pwi);
     if (fs) {
       Object.assign(fs, fsData);
     }
 
     // 更新到缓存中
-    let exist = UserConfig.friends.findIndex((element) => {
-      return element.rc == fsData.rc;
-    });
-
-    if (exist >= 0) {
-      UserConfig.friends.splice(exist, 1, fsData);
-    } else {
-      UserConfig.friends.push(fsData);
-    }
+    this.mergeFriends([fsData]);
 
     return fs;
   }
 
-  GetOneBTbl(id: string): FsData {
-    let fs : FsData = new FsData();
-    fs =  UserConfig.friends.find(value => {
+  static GetOneBTbl(id: string): Friend {
+    let fs : Friend = {} as Friend;
+    fs =  this.friends.find(value => {
       return value.pwi == id || value.ui == id;
     });
 
@@ -613,10 +528,52 @@ export class UserConfig {
     return fs;
   }
 
-  GetMultiBTbls(ids: Array<string>): Array<FsData> {
+  //刷新friends缓存
+  static mergeFriends( checkFriends:  Array<Friend>): void {
+    assertEmpty(checkFriends);    // 合并对象不能为空
+
+    for (let chkFriend of checkFriends){
+      let pos = this.friends.findIndex((element) => {
+        return (element.rc == chkFriend.rc);
+      });
+
+
+      if (pos >= 0) {
+        this.friends.splice(pos, 1, chkFriend);
+      } else {
+        this.friends.unshift(chkFriend);
+      }
+
+    }
+  }
+
+  //刷新groupers
+  static mergeGroupers(checkGroupers:  Array<Grouper>): void {
+    assertEmpty(checkGroupers);    // 合并对象不能为空
+
+    for (let chkGrouper of checkGroupers){
+      let pos = this.groups.findIndex((element) => {
+        return (element.gi == chkGrouper.gi);
+      });
+
+      if (chkGrouper.del == 'del'){
+        if (pos >= 0) {
+          this.groups.splice(pos, 1);
+        }
+      }else{
+        if (pos >= 0) {
+          this.groups.splice(pos, 1, chkGrouper);
+        } else {
+          this.groups.unshift(chkGrouper);
+        }
+      }
+    }
+  }
+
+  GetMultiBTbls(ids: Array<string>): Array<Friend> {
     let matches: string = ids.join(",");
 
-    let fss : Array<FsData> = new Array<FsData>();
+    let fss : Array<Friend> = new Array<Friend>();
     fss =  UserConfig.friends.filter(value => {
       return ((matches.indexOf(value.pwi) >= 0) || (matches.indexOf(value.ui) >= 0));
     });
@@ -635,7 +592,7 @@ export class UserConfig {
 
   GetOneBhiu(id: string): string {
     let bhiu :string = "";
-    /*let fs : FsData = new FsData();
+    /*let fs : Friend = new Friend();
     fs  = UserConfig.friends.find(value => {
       return value.pwi == id || value.ui == id;
     });

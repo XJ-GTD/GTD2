@@ -16,11 +16,12 @@ import * as moment from "moment";
 import {ContactsService} from "../../service/cordova/contacts.service";
 import {YTbl} from "../../service/sqlite/tbl/y.tbl";
 import {EmitService} from "../../service/util-service/emit.service";
+import {GrouperService} from "../../service/business/grouper.service";
 
 @Injectable()
 export class BrService {
   constructor(private bacRestful: BacRestful, private sqlexec: SqliteExec,
-              private util: UtilService, private contactsServ :ContactsService,
+              private util: UtilService, private grouperService :GrouperService,
               private userConfig: UserConfig, private emitService: EmitService) {
 
   }
@@ -505,7 +506,7 @@ export class BrService {
     sqls.length = 0;
 
     //联系人的更新信息操作
-    await this.contactsServ.updateFs();
+    await this.grouperService.updateFs();
 
     //刷新缓存数据
     await this.userConfig.RefreshYTbl();
