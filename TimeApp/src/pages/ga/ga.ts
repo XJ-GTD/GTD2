@@ -2,7 +2,7 @@ import {Component, ViewChild} from '@angular/core';
 import {IonicPage, NavController, NavParams, ViewController} from 'ionic-angular';
 import {UtilService} from "../../service/util-service/util.service";
 import {PageDcData} from "../../data.mapping";
-import {GrouperService} from "../../service/business/grouper.service";
+import {Grouper, GrouperService} from "../../service/business/grouper.service";
 
 
 /**
@@ -50,7 +50,7 @@ export class GaPage {
   }
   //保存群名称
   save(){
-    let dc:PageDcData = new PageDcData();
+    let dc:Grouper = new Grouper();
     dc.gn = this.tt;
     if(!this.tt || this.tt == null || this.tt==''){
       this.util.popoverStart("群名称不能为空");

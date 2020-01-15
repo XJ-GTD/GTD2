@@ -9,7 +9,6 @@ import {EventService, AgendaData, TaskData, MiniTaskData, Member, Attachment} fr
 import {MemoService, MemoData} from "../../service/business/memo.service";
 import {DataSyncPara} from "../model/datasync.para";
 import {TellyouType, TellyouIdType, SyncDataStatus, MemberShareState, EventFinishStatus, DelType, InviteState, CompleteState} from "../../data.enum";
-import {FsData} from "../../data.mapping";
 import {UserConfig} from "../../service/config/user.config";
 import {ContactsService} from "../../service/cordova/contacts.service";
 import {BTbl} from "../../service/sqlite/tbl/b.tbl";
@@ -17,7 +16,7 @@ import {PersonRestful} from "../../service/restful/personsev";
 import {DataRestful} from "../../service/restful/datasev";
 import {SqliteExec} from "../../service/util-service/sqlite.exec";
 import {Annotation, AnnotationService} from "../../service/business/annotation.service";
-import {Grouper, GrouperService} from "../../service/business/grouper.service";
+import {Friend, Grouper, GrouperService} from "../../service/business/grouper.service";
 import {UtilService} from "../../service/util-service/util.service";
 import * as moment from "moment";
 import {TellyouService, TellYouBase} from "../../components/ai/tellyou/tellyou.service";
@@ -41,8 +40,7 @@ export class DataSyncProcess implements MQProcess {
               private dataRestful: DataRestful,
               private annotationService : AnnotationService,
               private grouperService : GrouperService,
-              private sqlExce : SqliteExec,
-              private utilService :UtilService) {
+              private sqlExce : SqliteExec,) {
   }
 
   async gowhen(content: WsContent, contextRetMap: Map<string,any>) {
@@ -485,7 +483,7 @@ export class DataSyncProcess implements MQProcess {
               btbl = null;
             }
 
-            let one: FsData = await this.contactsServ.addSharedContact(unknown, btbl);
+            let one: Friend = await this.grouperService.addSharedContact(unknown, btbl);
 
             if (one && one.rc) { // 注册用户
               let member: Member = {} as Member;
@@ -623,7 +621,7 @@ export class DataSyncProcess implements MQProcess {
               btbl = null;
             }
 
-            let one: FsData = await this.contactsServ.addSharedContact(unknown, btbl);
+            let one: Friend = await this.grouperService.addSharedContact(unknown, btbl);
 
             if (one && one.rc) { // 注册用户
               let member: Member = {} as Member;
@@ -830,7 +828,7 @@ export class DataSyncProcess implements MQProcess {
           btbl = null;
         }
 
-        let one: FsData = await this.contactsServ.addSharedContact(unknown, btbl);
+        let one: Friend = await this.grouperService.addSharedContact(unknown, btbl);
 
         if (one && one.rc) { // 注册用户
           let member: Member = {} as Member;
@@ -966,7 +964,7 @@ export class DataSyncProcess implements MQProcess {
           btbl = null;
         }
 
-        let one: FsData = await this.contactsServ.addSharedContact(unknown, btbl);
+        let one: Friend = await this.grouperService.addSharedContact(unknown, btbl);
 
         if (one && one.rc) { // 注册用户
           let member: Member = {} as Member;

@@ -21,11 +21,12 @@ import {CalendarDay, CalendarMonth} from "../../components/ion2-calendar/calenda
 import {NotificationsService} from "../cordova/notifications.service";
 import {LocalcalendarService} from "../cordova/localcalendar.service";
 import {MkTbl} from "../sqlite/tbl/mk.tbl";
+import {Friend, GrouperService} from "../business/grouper.service";
 
 @Injectable()
 export class PgBusiService {
   constructor(private sqlExce: SqliteExec, private util: UtilService, private agdRest: AgdRestful,
-              private contactsServ: ContactsService, private userConfig: UserConfig, private fsService: FsService,private emitService:EmitService
+              private grouperService: GrouperService, private userConfig: UserConfig, private fsService: FsService,private emitService:EmitService
     ,private notificationsService:NotificationsService,private readlocal:LocalcalendarService
   ) {
   }
@@ -690,17 +691,17 @@ export class PgBusiService {
 
   /**
    * 根据日程Id获取联系人信息  dch
-   * @returns {Promise<Array<FsData>>}
+   * @returns {Promise<Array<Friend>>}
    */
   private async getFsDataBySi(si:string){
-    let fss: Array<FsData> =new Array<FsData>();
+    let fss: Array<Friend> =new Array<Friend>();
     //共享人信息
     let dlst: Array<DTbl> = new Array<DTbl>();
     let dlstsql = "select * from gtd_d where si = '" + si + "' ";
     dlst = await this.sqlExce.getExtList<DTbl>(dlstsql);
     for (let j = 0, len = dlst.length; j < len; j++) {
-      let fs: FsData = new FsData();
-      fs = this.userConfig.GetOneBTbl(dlst[j].ai);
+      let fs: Friend = {} as Friend;
+      fs = UserConfig.GetOneBTbl(dlst[j].ai);
       if(fs && fs != null){
         fss.push(fs);
       }
@@ -713,9 +714,9 @@ export class PgBusiService {
    * @returns {Promise<Array<FsData>>}
    */
   private async getFsDataByUi(ui:string){
-    let fs = new FsData();
+    let fs = {} as Friend;
     //发起人信息
-    let tmp = this.userConfig.GetOneBTbl(ui);
+    let tmp = UserConfig.GetOneBTbl(ui);
     if (tmp) {
       fs = tmp;
     }else{
@@ -1134,13 +1135,13 @@ export class PgBusiService {
       ret = await this.getRcBySr(sr);
 
       //刷新联系人，联系人存在判断 不存在获取更新 ，刷新本地缓存
-      let fs: FsData = new FsData();
-      fs = this.userConfig.GetOneBTbl(newc.ui);
+      let fs: Friend = {} as Friend;
+      fs = UserConfig.GetOneBTbl(newc.ui);
       if (fs) {
         ret.fs = fs;
       } else {
         //从服务器获取对象，放入本地库，刷新缓存
-        ret.fs = await this.contactsServ.updateOneFs(newc.ui);
+        ret.fs = await this.grouperService.updateOneFs(newc.ui);
       }
 
       resolve(ret);
@@ -1205,14 +1206,14 @@ export class PgBusiService {
    * @param {string} calId 日程ID
    * @returns {Promise<Array<FsData>>}
    */
-  getCalfriend(calId: string): Promise<Array<FsData>> {
-    return new Promise<Array<FsData>>((resolve, reject) => {
+  getCalfriend(calId: string): Promise<Array<Friend>> {
+    return new Promise<Array<Friend>>((resolve, reject) => {
       let sql = 'select gd.pi,gd.si,gb.*,bh.hiu bhiu from gtd_d gd inner join gtd_b gb on gb.pwi = gd.ai left join gtd_bh bh on gb.pwi = bh.pwi where si="' + calId + '"';
-      let fsList = new Array<FsData>();
+      let fsList = new Array<Friend>();
       this.sqlExce.execSql(sql).then(data => {
         if (data && data.rows && data.rows.length > 0) {
           for (let i = 0, len = data.rows.length; i < len; i++) {
-            let fs = new FsData();
+            let fs = {} as Friend;
             Object.assign(fs, data.rows.item(i));
             if (!fs.bhiu || fs.bhiu == null || fs.bhiu == '') {
               fs.bhiu = DataConfig.HUIBASE64;
@@ -1230,15 +1231,15 @@ export class PgBusiService {
   /**
    * 日程创建人信息
    * @param {string} calId
-   * @returns {Promise<FsData>}
+   * @returns {Promise<Friend>}
    */
-  getCrMan(calId: string): Promise<FsData> {
+  getCrMan(calId: string): Promise<Friend> {
 
-    return new Promise<FsData>((resolve, reject) => {
+    return new Promise<Friend>((resolve, reject) => {
       let sql = 'select c.si,gb.*,bh.hiu bhiu from gtd_c c ' +
         ' inner join gtd_b gb on gb.rc = c.ui ' +
         ' left join gtd_bh bh on gb.pwi = bh.pwi where c.si="' + calId + '"';
-      let fs = new FsData();
+      let fs = {} as Friend;
 
       this.sqlExce.execSql(sql).then(data => {
         if (data && data.rows && data.rows.length > 0) {

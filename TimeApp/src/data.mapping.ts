@@ -1,6 +1,7 @@
 import {CalendarDay} from "./components/ion2-calendar";
 import * as moment from "moment";
 import {Member} from "./service/business/event.service";
+import {Friend, Grouper} from "./service/business/grouper.service";
 
 /**
  * 继承类
@@ -100,10 +101,10 @@ export class ScdData {
   }
   baseData : BaseData;
   //参与人
-  fss: Array<FsData> =new Array<FsData>();
+  fss: Array<Friend> =new Array<Friend>();
 
   //发起人
-  fs: FsData =new FsData();
+  fs: Friend ={} as Friend;
 
 
   //提醒设置
@@ -321,7 +322,7 @@ export class PageDcData {
   gnpy: string = "";//组名拼音
   gm: string = ""; //备注
   gc: number = 0; //群组人数
-  fsl: Array<FsData> = new Array<FsData>(); //群组成员
+  fsl: Array<Friend> = new Array<Friend>(); //群组成员
 }
 
 export class PageDaData {
@@ -352,11 +353,11 @@ export class PageLoginData {
 /**
  * 联系人视图
  */
-export class FsPageData extends  FsData{
-  checked:boolean = false;
+export interface FsPageData extends  Friend{
+  checked:boolean ;
 }
 
-export class PageGroupData extends  PageDcData{
+export class PageGroupData extends  Grouper{
   checked:boolean = false;
 }
 export interface MemberPageData extends Member{
@@ -408,7 +409,7 @@ export class RcInParam{
   px:number = 0; //排序
   specScdUpd: BaseData = new  BaseData();//sp内容
   //参与人
-  fss: Array<FsData> =new Array<FsData>();
+  fss: Array<Friend> =new Array<Friend>();
   /**
    * 设置ed、et等其他参数
    */
@@ -441,3 +442,5 @@ export class DayData{
   news:number;
   jtL : Array<JtData>;
 }
+
+

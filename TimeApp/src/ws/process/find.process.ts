@@ -17,6 +17,7 @@ import {UserConfig} from "../../service/config/user.config";
 import {EventService,Member} from "../../service/business/event.service";
 import {ObjectType} from "../../data.enum";
 import {CalendarService, FindActivityCondition, ActivityData} from "../../service/business/calendar.service";
+import {Friend} from "../../service/business/grouper.service";
 
 /**
  * 查询联系人和日历
@@ -51,7 +52,7 @@ export class FindProcess extends BaseProcess implements MQProcess {
     //处理所需要参数
     let findData: FindPara = content.parameters;
     //查找联系人
-    let fs :Array<FsData> = new Array<FsData>();
+    let fs :Array<Friend> = new Array<Friend>();
 
     //处理区分
     let scd: Array<ScdData> = new Array<ScdData>();

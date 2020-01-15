@@ -4,7 +4,7 @@ import {DataConfig} from "../../service/config/data.config";
 import {UserConfig} from "../../service/config/user.config";
 import {UtilService} from "../../service/util-service/util.service";
 import {PageDcData} from "../../data.mapping";
-import {GrouperService} from "../../service/business/grouper.service";
+import {Grouper, GrouperService} from "../../service/business/grouper.service";
 
 /**
  * Generated class for the 群组列表 page.
@@ -42,7 +42,7 @@ export class GlPage {
     cancel: true
   };
 
-  gl:Array<PageDcData> = new Array<PageDcData>();
+  gl:Array<Grouper> = new Array<Grouper>();
   constructor(public navCtrl: NavController,
               public navParams: NavParams,
               public view: ViewController,
@@ -74,7 +74,7 @@ export class GlPage {
     this.navCtrl.pop();
   }
 
-  delGroup(g:PageDcData){
+  delGroup(g:Grouper){
     //删除群
     this.util.alterStart("2",()=>{
       this.grouperService.removeGrouper(g.gi).then( data=>{

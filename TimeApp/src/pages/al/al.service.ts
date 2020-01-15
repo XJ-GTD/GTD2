@@ -10,7 +10,6 @@ import {WebsocketService} from "../../ws/websocket.service";
 import {YTbl} from "../../service/sqlite/tbl/y.tbl";
 import * as moment from "moment";
 import {Setting, UserConfig} from "../../service/config/user.config";
-import {ContactsService} from "../../service/cordova/contacts.service";
 import {DataConfig} from "../../service/config/data.config";
 import {NotificationsService} from "../../service/cordova/notifications.service";
 import {AlData, ScdPageParamter} from "../../data.mapping";
@@ -26,6 +25,7 @@ import {App, ModalController} from "ionic-angular";
 import {BackgroundMode} from "@ionic-native/background-mode";
 import {RemindfeedbackService} from "../../service/cordova/remindfeedback.service";
 import {PatchService} from "../../service/business/patch.service";
+import {GrouperService} from "../../service/business/grouper.service";
 
 declare var cordova: any;
 @Injectable()
@@ -40,7 +40,6 @@ export class AlService {
               private restfulConfig: RestFulConfig,
               private wsserivce: WebsocketService,
               private userConfig: UserConfig,
-              private contactsService: ContactsService,
               private notificationsService: NotificationsService,
               private calendarService: CalendarService,
               private settings: SettingsProvider,
@@ -53,7 +52,8 @@ export class AlService {
               private modalCtr: ModalController,
               private app: App,
               private backgroundMode:BackgroundMode,
-              private patchService : PatchService) {
+              private patchService : PatchService,
+              private grouperService:GrouperService) {
 
   }
 
@@ -146,9 +146,9 @@ export class AlService {
 
           //每次都先导入联系人
           if (this.util.isMobile()) {
-            await this.contactsService.asyncPhoneContacts();
+            await this.grouperService.asyncPhoneContacts();
             //异步获取联系人信息
-            this.contactsService.updateFs();
+            this.grouperService.updateFs();
 
           }
 
@@ -217,6 +217,9 @@ export class AlService {
 
         //用户设置信息初始化
         await this.userConfig.init();
+
+        await this.grouperService.refreshFriendCconfig();
+        await this.grouperService.refreshGroupConfig();
 
 
         this.settings.getActiveTheme().subscribe(val => {

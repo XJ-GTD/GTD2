@@ -5,6 +5,7 @@ import {UtilService} from "../../service/util-service/util.service";
 import {FsData, FsPageData, PageDcData} from "../../data.mapping";
 import {DataConfig} from "../../service/config/data.config";
 import {UserConfig} from "../../service/config/user.config";
+import {Friend} from "../../service/business/grouper.service";
 
 /**
  * Generated class for the 项目跟进 通知人员选择 page.
@@ -71,7 +72,7 @@ export class Fs4foPage {
 
   tel: any;//手机号
   pageFsl: Array<FsPageData> = new Array<FsPageData>();
-  selFsl: Array<FsData> = new Array<FsData>();
+  selFsl: Array<Friend> = new Array<Friend>();
 
   constructor(public navCtrl: NavController,
               public navParams: NavParams,
@@ -92,7 +93,7 @@ export class Fs4foPage {
   }
 
 
-  rmSelected(fs: FsData) {
+  rmSelected(fs: Friend) {
     let index: number = this.selFsl.findIndex((value) => {
       return fs.pwi == value.pwi;
     });
@@ -129,7 +130,8 @@ export class Fs4foPage {
     this.pageFsl.splice(0, this.pageFsl.length);
     let fsl = this.fsService.getfriend(this.tel);
     fsl.forEach((value) => {
-      let fs: FsPageData = new FsPageData();
+      let fs: FsPageData = {} as FsPageData;
+      fs.checked = false;
       Object.assign(fs, value);
 
       if (fs.rel == '1' && fs.rc != UserConfig.account.id) {

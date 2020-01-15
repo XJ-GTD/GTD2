@@ -12,6 +12,7 @@ import {WsDataConfig} from "../wsdata.config";
 import {BaseProcess} from "./base.process";
 import * as moment from "moment";
 import {TellyouService} from "../../components/ai/tellyou/tellyou.service";
+import {Friend} from "../../service/business/grouper.service";
 
 /**
  * 通知
@@ -35,7 +36,7 @@ export class NotificationProcess extends BaseProcess implements MQProcess {
     agendas = this.input(content,contextRetMap, "agendas", WsDataConfig.SCD, agendas);
 
     //上下文内获取日程人员信息
-    let contacts :Array<FsData> = new Array<FsData>();
+    let contacts :Array<Friend> = new Array<Friend>();
     contacts = this.input(content,contextRetMap, "contacts", WsDataConfig.FS, contacts);
 
     //process处理符合条件则暂停

@@ -1,13 +1,8 @@
 import {MQProcess, OptProcess} from "../interface.process";
 import {WsContent} from "../model/content.model";
-import {FriendEmData, ScdEmData} from "../../service/util-service/emit.service";
 import {Injectable} from "@angular/core";
 import {AnnotationPara} from "../model/annotation.para";
-import {ProcesRs} from "../model/proces.rs";
-import {DataConfig} from "../../service/config/data.config";
 import {UserConfig} from "../../service/config/user.config";
-import {CTbl} from "../../service/sqlite/tbl/c.tbl";
-import {AT, O, SS} from "../model/ws.enum";
 import {FsData, RcInParam, ScdData} from "../../data.mapping";
 import {EventService, AgendaData, Member, multipleoffive} from "../../service/business/event.service";
 import {AnnotationService, Annotation} from "../../service/business/annotation.service";
@@ -15,6 +10,7 @@ import {WsDataConfig} from "../wsdata.config";
 import {BaseProcess} from "./base.process";
 import {DelType} from "../../data.enum";
 import { UtilService } from "../../service/util-service/util.service";
+import {Friend} from "../../service/business/grouper.service";
 
 /**
  * 日程At处理
@@ -45,7 +41,7 @@ export class AnnotationProcess extends BaseProcess implements MQProcess, OptProc
     scd = this.input(content, contextRetMap, "agendas", WsDataConfig.SCD, scd);
 
     //上下文内获取日程人员信息
-    let fs :Array<FsData> = new Array<FsData>();
+    let fs :Array<Friend> = new Array<Friend>();
     fs = this.input(content, contextRetMap, "contacts", WsDataConfig.FS, fs);
 
     //process处理符合条件则暂停
@@ -149,8 +145,8 @@ export class AnnotationProcess extends BaseProcess implements MQProcess, OptProc
     scd = this.input(content, contextRetMap, "agendas", WsDataConfig.SCD, scd);
 
     //上下文内获取查询条件用日程人员或创建的日程人员
-    let fs: Array<FsData> = new Array<FsData>();
-    fs = this.input(content, contextRetMap, "contacts", WsDataConfig.FS, fs) || new Array<FsData>();
+    let fs: Array<Friend> = new Array<Friend>();
+    fs = this.input(content, contextRetMap, "contacts", WsDataConfig.FS, fs) || new Array<Friend>();
 
     //process处理符合条件则执行
     if (content.when && content.when !=""){

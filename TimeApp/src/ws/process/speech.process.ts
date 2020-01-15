@@ -16,6 +16,7 @@ import {UserConfig} from "../../service/config/user.config";
 import {WsDataConfig} from "../wsdata.config";
 import {BaseProcess} from "./base.process";
 import {DataConfig} from "../../service/config/data.config";
+import {Friend} from "../../service/business/grouper.service";
 
 /**
  * 播报类型处理
@@ -78,7 +79,7 @@ export class SpeechProcess extends BaseProcess implements MQProcess {
     let showagendas: Array<ScdData> = new Array<ScdData>();
     let showplanitems: Array<ScdData> = new Array<ScdData>();
     let showmemos: Array<ScdData> = new Array<ScdData>();
-    let contacts: Array<FsData> = new Array<FsData>();
+    let contacts: Array<Friend> = new Array<Friend>();
 
     let sutbl: SuTbl = new SuTbl();
 

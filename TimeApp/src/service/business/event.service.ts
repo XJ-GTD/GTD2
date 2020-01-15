@@ -21,12 +21,11 @@ import {DataRestful, PullInData, PushInData, SyncData, UploadInData, DayCountCod
 import { FindBugRestful } from "../restful/bugsev";
 import {SyncType, DelType, ObjectType, PullType, IsSuccess, CycleType, SyncDataStatus, OperateType, ToDoListStatus, RepeatFlag, ConfirmType, ModiPower, PageDirection, SyncDataSecurity, InviteState, CompleteState, EventFinishStatus, EventType} from "../../data.enum";
 import {assertNotNumber, assertEmpty, assertFail} from "../../util/util";
-import {FsData} from "../../data.mapping";
 import {File} from '@ionic-native/file';
 import {AssistantService} from "../cordova/assistant.service";
-import {generateDataType} from "./calendar.service";
 import {Moment} from "moment";
 import { checksum } from "../../util/crypto-util";
+import {Friend} from "./grouper.service";
 
 @Injectable()
 export class EventService extends BaseService {
@@ -1389,8 +1388,8 @@ export class EventService extends BaseService {
     for (let j = 0, len = pars.length; j < len; j++) {
       let member = {} as Member;
       Object.assign(member,pars[j]);
-      let fs : FsData;
-      fs = this.userConfig.GetOneBTbl(pars[j].pwi);
+      let fs : Friend;
+      fs = UserConfig.GetOneBTbl(pars[j].pwi);
       if(fs && fs != null){
         Object.assign(member,fs);
 
@@ -1406,9 +1405,9 @@ export class EventService extends BaseService {
    */
   private async getMemberByUi(ui:string):Promise<Member>{
     let member = {} as Member;
-    let fs : FsData;
+    let fs : Friend;
     //发起人信息
-    fs = this.userConfig.GetOneBTbl(ui);
+    fs = UserConfig.GetOneBTbl(ui);
     if (fs  && fs != null) {
       Object.assign(member,fs);
     }else{
@@ -1418,7 +1417,7 @@ export class EventService extends BaseService {
       b = await this.sqlExce.getExtOne<BTbl>(b.slT());
       if(b != null){
         Object.assign(member, b);
-        member.bhiu = DataConfig.HUIBASE64;
+        member.hiu = DataConfig.HUIBASE64;
       }else{
         console.error("=======PgbusiService 获取发起人失败 =======")
       }
@@ -3757,7 +3756,7 @@ export class EventService extends BaseService {
       let members: Array<Member> = new Array<Member>();
 
       for (let member of cleaned.members) {
-        member.bhiu = "";
+        member.hiu = "";
         members.push(member);
       }
 
@@ -5161,18 +5160,8 @@ export interface AgendaData extends EventData, CaTbl {
   topushed: Array<boolean> ;
 }
 
-export interface Member extends ParTbl {
+export interface Member extends ParTbl,Friend {
 
-  ran: string ; //联系人别称
-  ranpy: string; //联系人别称拼音
-  hiu: string ;  // 联系人头像
-  rn: string ;  // 联系人名称
-  rnpy: string ;  //联系人名称拼音
-  rc: string ;  //联系人联系方式
-  rel: string; //系类型 1是个人，2是群，0未注册用户
-  src : string;//联系人来源
-  bhi: string ; //头像表ID 用于判断是否有头像记录
-  bhiu:string ;//base64图片
 
 }
 

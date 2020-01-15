@@ -5,7 +5,7 @@ import {FsService} from "../fs/fs.service";
 import {DataConfig} from "../../service/config/data.config";
 import {UtilService} from "../../service/util-service/util.service";
 import {FsData, PageDcData} from "../../data.mapping";
-import {GrouperService} from "../../service/business/grouper.service";
+import {Friend, Grouper, GrouperService} from "../../service/business/grouper.service";
 /**
  * Generated class for the 群组编辑 page.
  *
@@ -42,8 +42,8 @@ export class GcPage {
     create:true,
     cancel: true
   };
-  dc:PageDcData = new PageDcData();
-  fsl:Array<FsData> = new Array<FsData>();
+  dc:Grouper = new Grouper();
+  fsl:Array<Friend> = new Array<Friend>();
   constructor(public navCtrl: NavController,
               public navParams: NavParams,
               private grouperService: GrouperService,
@@ -75,7 +75,7 @@ export class GcPage {
 
   }
 
-  delete(g:FsData) {
+  delete(g:Friend) {
     //删除群成员
     this.util.alterStart("2",()=>{
       this.grouperService.removeGrouperMember(this.dc.gi,g.pwi).then(data=>{
@@ -93,7 +93,7 @@ export class GcPage {
   /**
    * 人员详情
    */
-  toMemberInfo(g:FsData){
+  toMemberInfo(g:Friend){
     let modal = this.modalCtrl.create(DataConfig.PAGE._FD_PAGE,{fsData:g});
     modal.onDidDismiss((data)=>{
       console.log(JSON.stringify(data));

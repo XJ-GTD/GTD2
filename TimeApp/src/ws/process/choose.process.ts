@@ -1,16 +1,12 @@
 import {MQProcess} from "../interface.process";
 import {WsContent} from "../model/content.model";
-import {EmitService} from "../../service/util-service/emit.service";
 import {Injectable} from "@angular/core";
-import {ProcesRs} from "../model/proces.rs";
 import {SE} from "../model/ws.enum";
-import {DataConfig} from "../../service/config/data.config";
-import {PgBusiService} from "../../service/pagecom/pgbusi.service";
-import {FsService} from "../../pages/fs/fs.service";
 import {FsData, RcInParam, ScdData} from "../../data.mapping";
 import {DispatchSubService} from "../dispatchsub.service";
 import {WsDataConfig} from "../wsdata.config";
 import {BaseProcess} from "./base.process";
+import {Friend} from "../../service/business/grouper.service";
 
 /**
  * 选择操作 SE
@@ -45,7 +41,7 @@ export class ChooseProcess extends BaseProcess implements MQProcess {
     planitems = this.input(content,contextRetMap,"planitems",WsDataConfig.PID,planitems);
 
     //上下文内获取查询条件用日程人员或创建的日程人员
-    let fs :Array<FsData> = new Array<FsData>();
+    let fs :Array<Friend> = new Array<Friend>();
     fs = this.input(content,contextRetMap,"contacts",WsDataConfig.FS,fs);
 
     //process处理符合条件则执行

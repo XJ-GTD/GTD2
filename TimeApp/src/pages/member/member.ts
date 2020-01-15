@@ -7,7 +7,7 @@ import {DataConfig} from "../../service/config/data.config";
 import {FeedbackService} from "../../service/cordova/feedback.service";
 import {Member} from "../../service/business/event.service";
 import {UserConfig} from "../../service/config/user.config";
-import {GrouperService} from "../../service/business/grouper.service";
+import {Friend, GrouperService} from "../../service/business/grouper.service";
 
 /**
  * Generated class for the 参与人选择 page.
@@ -133,7 +133,7 @@ export class MemberPage {
 
   addGroupList(g: PageGroupData) {
     if (g.checked) {
-      for (let fs of g.fsl) {
+      for (let fs of g.fss) {
         let member = {} as Member;
         let index: number = this.selMemberList.findIndex((value) => {
           return fs.pwi == value.pwi;
@@ -144,7 +144,7 @@ export class MemberPage {
         }
       }
     } else {
-      for (let fs of g.fsl) {
+      for (let fs of g.fss) {
         let index: number = this.selMemberList.findIndex((value) => {
           return fs.pwi == value.pwi;
         });
@@ -168,21 +168,21 @@ export class MemberPage {
       let group: PageGroupData = new PageGroupData();
 
       Object.assign(group, value);
-      group.fsl = new Array<FsData>();
-      value.fsl.forEach((value) => {
-        let fs: FsData = new FsData();
+      group.fss = new Array<Friend>();
+      value.fss.forEach((value) => {
+        let fs: Friend = {} as Friend;
         Object.assign(fs, value);
         if (fs.rc != UserConfig.account.id) {
-          group.fsl.push(fs);
+          group.fss.push(fs);
         }
       });
-      group.gc = group.fsl.length;
+      group.gc = group.fss.length;
 
       this.pageGrouList.push(group);
 
     });
     fsList.forEach((value) => {
-      let fsp: FsPageData = new FsPageData();
+      let fsp: FsPageData = {} as FsPageData;
       Object.assign(fsp, value);
       if (fsp.rc != UserConfig.account.id) {
         fsp.checked = false;

@@ -11,6 +11,7 @@ import {WsDataConfig} from "../wsdata.config";
 import {BaseProcess} from "./base.process";
 import { UtilService } from "../../service/util-service/util.service";
 import * as moment from "moment";
+import {Friend} from "../../service/business/grouper.service";
 
 /**
  * 备忘处理
@@ -36,7 +37,7 @@ export class PlanItemsProcess extends BaseProcess implements MQProcess,OptProces
     scd = this.input(content, contextRetMap, "planitems", WsDataConfig.PID, scd) || scd;
 
     //上下文内获取日程人员信息
-    let fs :Array<FsData> = new Array<FsData>();
+    let fs :Array<Friend> = new Array<Friend>();
     fs = this.input(content,contextRetMap,"contacts",WsDataConfig.FS,fs) || fs;
 
     //process处理符合条件则执行
@@ -140,7 +141,7 @@ export class PlanItemsProcess extends BaseProcess implements MQProcess,OptProces
     scd = this.input(content, contextRetMap, "planitems", WsDataConfig.PID, scd) || scd;
 
     //上下文内获取日程人员信息
-    let fs :Array<FsData> = new Array<FsData>();
+    let fs :Array<Friend> = new Array<Friend>();
     fs = this.input(content, contextRetMap, "contacts", WsDataConfig.FS, fs) || fs;
 
     //process处理符合条件则暂停
