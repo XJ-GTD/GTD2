@@ -66,7 +66,7 @@ export class SpeechProcess extends BaseProcess implements MQProcess {
     let ti = moment().valueOf() - ((content.thisContext.context && content.thisContext.context.client)? content.thisContext.context.client.time : 0);
     let spData: SpeechPara = content.parameters;
     let prvOpt:string =  "";
-    let openListener: boolean = false;
+    let openListener: boolean = spData.listen || false;
     //默认语音
     let speakText = spData.an;
     let type = WsDataConfig.TYPE_EMPTY;

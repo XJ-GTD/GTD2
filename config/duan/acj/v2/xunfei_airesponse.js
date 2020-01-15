@@ -1,11 +1,11 @@
-function shouldclean(datasource) 
+function shouldclean(datasource)
 {
   var result = {};
   // filter source code here start
   var input = JSON.parse(datasource);
 
  if (input['_context'] && input['_context'].productId === 'cn.sh.com.xj.timeApp' && input['_context'].productVersion === 'v1') return false;
-  
+
  if (input.data && input.data[0] !== undefined) {
     for (var di in input.data) {
       var data = input.data[di];
@@ -17,12 +17,12 @@ function shouldclean(datasource)
       }
     }
   }
-  
+
   // filter source code here end
   return false;
 }
 
-function clean(datasource) 
+function clean(datasource)
 {
   var result = {};
   print('Start Nashorn Javascript processing...');
@@ -30,7 +30,7 @@ function clean(datasource)
   // filter source code here start
   var input = JSON.parse(datasource);
   var data = {};
-  
+
   for (var di in input.data) {
     var dt = input.data[di];
     if (dt['sub'] === 'nlp' && dt['intent']['service']) {
@@ -42,11 +42,11 @@ function clean(datasource)
   }
 
   var output = {};
-  
+
   var formatDateTime = function(date) {
     return date.getFullYear() + '/' + (date.getMonth()+1) + '/' + date.getDate() + ' ' + date.getHours() + ':' + date.getMinutes() + ':' + date.getSeconds();
   }
-  
+
   // 取得迅飞语音消息内容
   var userId = input['_context']['userId'];
   var deviceId = input['_context']['deviceId'];
@@ -54,11 +54,11 @@ function clean(datasource)
   var servercontext = input['_context']['server'];
   var text = data['intent']['text'];
   var answer = '';
-  
+
   if (data['intent'] && data['intent']['answer'] && data['intent']['answer']['text']) {
     answer = data['intent']['answer']['text'];
   }
-  
+
   // 返回消息头部
   output.header = {
   	version: 'V1.1',
@@ -66,7 +66,7 @@ function clean(datasource)
     datetime: formatDateTime(new Date()),
     describe: ['S']
   };
-  
+
   output.original = text;
   output.content = {};
 
@@ -76,7 +76,8 @@ function clean(datasource)
       processor: 'S',
       option: 'S.AN',
       parameters: {
-        an: answer
+        an: answer,
+        listen: true
       }
     };
   } else {
@@ -88,21 +89,21 @@ function clean(datasource)
       }
     };
   }
-  
+
   output.context = {};
-  
+
   if (clientcontext && clientcontext !== undefined) {
   	output.context['client'] = clientcontext;
   }
-  
+
   var standardnext = {};
-  
+
   standardnext.announceTo = [userId + ';' + deviceId];
   standardnext.announceType = 'inteligence_mix';
   standardnext.announceContent = {mwxing:output};
-  
+
   print(standardnext);
-  
+
   // filter source code here end
   return JSON.stringify(standardnext);
 }
