@@ -315,7 +315,7 @@ class MwxSchedule implements ILocalNotification {
   lockscreen: boolean = false;
   mediaSession: string;
   number: number;
-  priority: number;
+  priority: number = 5;
   progressBar: ILocalNotificationProgressBar | boolean;
   silent: boolean = true;
   smallIcon: string;
