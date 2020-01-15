@@ -24,7 +24,9 @@ import {UserConfig} from "../../../service/config/user.config";
         <div class="ainame">小冥</div>
         <div class="aicontent aiSpeechAn">{{aiData.speechAi.an}}</div>
         <div class="scdTip" *ngIf="aiData.speechAi.tips">
-          <span *ngFor="let tips of aiData.speechAi.arraytips">{{tips}}</span>
+          <ng-container *ngFor="let tips of aiData.speechAi.arraytips">
+            <span>{{tips}}</span><br/>
+          </ng-container>
         </div>
       </div>
     </ng-template>

@@ -173,7 +173,7 @@
 {"version": "v2", "type": "NONE", "needAnswer": "false", "tips":"", "name":"UNKNOWN", "value":"我不是很明白,您能讲得更清楚一些吗?", "desc":"异常回答"},
 {"version": "v2", "type": "NONE", "needAnswer": "false", "tips":"", "name":"UNKNOWN", "value":"目前还无法处理您的要求,请换个方式告诉我", "desc":"异常回答"},
 {"version": "v5", "type": "NONE", "needAnswer": "true", "tips":"", "name":"WHATTODO1", "value":"活动主题是什么？", "desc":"活动主题询问"},
-{"version": "v5", "type": "NONE", "needAnswer": "true", "tips":"明天上午十点|一月十五号上午十点|下周三上午十点", "name":"WHENTODO", "value":"活动时间是什么时候？", "desc":"活动时间询问"},
+{"version": "v5", "type": "NONE", "needAnswer": "true", "tips":"现在|明天上午十点|一月十五号上午十点|下周三上午十点", "name":"WHENTODO", "value":"活动时间是什么时候？", "desc":"活动时间询问"},
 {"version": "v5", "type": "NONE", "needAnswer": "true", "tips":"", "name":"WHERETODO", "value":"活动地址是哪里？", "desc":"活动地点询问"},
 {"version": "v5", "type": "NONE", "needAnswer": "true", "tips":"", "name":"WHATTODO1", "value":"活动主题是什么？", "desc":"活动主题询问"},
 {"version": "v5", "type": "NONE", "needAnswer": "true", "tips":"参加冥王星开发者大会|下周三下午三点参加冥王星开发者大会", "name":"WHATTODO", "value":"说出你想创建的活动。", "desc":"活动主题询问"},
