@@ -131,6 +131,9 @@ export class AiComponent {
     this.aiData1.speechAi.org = datas.org;
     this.aiData1.speechAi.an = datas.an;
     this.aiData1.speechAi.tips = datas.tips;
+    if (this.aiData1.speechAi.tips) {
+      this.aiData1.speechAi.arraytips = this.aiData1.speechAi.tips.split("|");
+    }
     this.aiData1.speechAi.iswaitting = datas.iswaitting;
     this.gotonew();
 
