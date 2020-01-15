@@ -163,5 +163,6 @@ export class SpeechAiData {
   an: string = "";
   org: string = "";
   tips: string = "";
+  arraytips: Array<string> = new Array<string>();
   iswaitting:boolean = false;
 }
