@@ -6,8 +6,9 @@
  */
 export class SpeechPara  {
   //回答文本
-  an:string = "";
+  an: string = "";
   //本地语音类型
-  t:string = "";
-
+  t: string = "";
+  //继续输入
+  listen: boolean = false;
 }
