@@ -28,7 +28,7 @@ import BScroll from "better-scroll";
           <AiChildenComponent [aiData] = "aiData5"></AiChildenComponent>
         </ion-card>
         <ion-card class="card" #card4 *ngIf="aiData4">
-          <AiChildenComponent [aiData] = "aiData3"></AiChildenComponent>
+          <AiChildenComponent [aiData] = "aiData4"></AiChildenComponent>
         </ion-card>
         <ion-card class="card" #card3 *ngIf="aiData3">
           <AiChildenComponent [aiData] = "aiData3"></AiChildenComponent>
