@@ -23,8 +23,9 @@ export class AssistantService {
 
   private mp3Path: string;
   private mp3Name: string;
-  private wakeuping:boolean;
-  private listening:boolean;
+  private isWakeuping:boolean;
+  private isListening:boolean;
+  private isSpeaking:boolean;
 
   constructor(private file: File,
               private aibutlerRestful: AibutlerRestful,
@@ -36,18 +37,14 @@ export class AssistantService {
 
     this.mp3Path = this.file.cacheDirectory;
     this.mp3Name = "iat.pcm";
-    this.wakeuping = false;
-    this.listening = false;
+    this.isWakeuping = false;
+    this.isListening = false;
+    this.isSpeaking = false;
+    //语音唤醒开关
     this.emitService.register("ai.wakeup.setting",(setting:boolean) =>{
       if (!setting){
-
-
-        console.log("======2这里不唤醒唤醒");
         this.stopWakeUp();
       }else{
-
-
-        console.log("=======2这里唤醒");
         this.startWakeUp();
       }
     })
@@ -61,8 +58,8 @@ export class AssistantService {
   public startWakeUp() {
     if (!UserConfig.getSetting(DataConfig.SYS_H)) return;
     if (!this.utilService.isMobile()) return;
-    if  (this.wakeuping) return ;
-    this.wakeuping = true;
+    if  (this.isWakeuping) return ;
+    this.isWakeuping = true;
     cordova.plugins.XjBaiduWakeUp.wakeUpStart(async (result) => {
       this.speakText(UserConfig.user.realname + ",我在，请说：").then(()=>{
         this.listenAudio();
@@ -77,8 +74,8 @@ export class AssistantService {
    * 停止监听WakeUp
    */
   public stopWakeUp() {
-    this.wakeuping = false;
     if (!this.utilService.isMobile()) return;
+    this.isWakeuping = false;
     cordova.plugins.XjBaiduWakeUp.wakeUpStop();
     cordova.plugins.XjBaiduWakeUp.wakeUpRelease()
   }
@@ -91,6 +88,7 @@ export class AssistantService {
   public stopSpeak(emit:boolean, open:boolean = false) {
     if (!this.utilService.isMobile()) return;
     cordova.plugins.XjBaiduTts.speakStop();
+    this.isSpeaking = false;
     if (emit){
       this.emitService.emitSpeak(false);
     }
@@ -170,6 +168,8 @@ export class AssistantService {
         return;
       }
 
+
+      this.isSpeaking = true;
       this.stopListenAudio();
       this.emitService.emitSpeak(true);
 
@@ -184,10 +184,11 @@ export class AssistantService {
       //
       // }, 100);
         cordova.plugins.XjBaiduTts.startSpeak(result => {
-          this.stopSpeak(true);
+          // this.stopSpeak(true);
+          this.isSpeaking = false;
           resolve();
         }, error => {
-          this.stopSpeak(true);
+          // this.stopSpeak(true);
           resolve(error);
         }, speechText);
     });
@@ -249,10 +250,10 @@ export class AssistantService {
    */
   public stopListenAudio() {
     if (!this.utilService.isMobile()) return;
-    if (this.listening){
+    if (this.isListening){
+      this.isListening = false;
       cordova.plugins.XjBaiduSpeech.stopListen();
-      this.startWakeUp();
-      this.listening = false;
+      // this.startWakeUp();
       let immediately:Immediately = new Immediately();
       immediately.fininsh = false;
       immediately.listening = false;
@@ -270,20 +271,19 @@ export class AssistantService {
       return;
     }
 
-    if (this.listening) {
+    if (this.isListening) {
       this.stopListenAudio();
       return;
     }
 
     this.stopSpeak(false);
     this.stopWakeUp();
-    this.listening = true;
+    this.isListening = true;
 
     let immediately:Immediately = new Immediately();
     immediately.fininsh = false;
     immediately.listening = true;
-    this.timeout.timeOutOnlyOne(1500,()=>{
-
+    this.timeout.timeOutOnlyOne(800,()=>{
       this.emitService.emitListener(true);
       this.feedbackService.vibrate();
       cordova.plugins.XjBaiduSpeech.startListen(async result => {
@@ -316,8 +316,8 @@ export class AssistantService {
         audioPro.c.client.processor = DataConfig.wsWsProcessor;
         audioPro.c.server = DataConfig.wsServerContext;
         // this.postAsk(result.text);
+        this.isListening = false;
         await this.aibutlerRestful.postaudio(audioPro);
-        this.listening = false;
         this.emitService.emitListener(false);
         immediately.immediatetext = "";
         this.emitService.emitImmediately(immediately);
@@ -326,7 +326,7 @@ export class AssistantService {
       }, async error => {
         let text = await this.getSpeakText(DataConfig.FF);
         this.speakText(text);
-        this.listening = false;
+        this.isListening = false;
         this.emitService.emitListener(false);
         this.startWakeUp();
         return text;
@@ -363,12 +363,12 @@ export class AssistantService {
    * 语音助手录音录入 AUDIO
    */
   audio2Text(callback,success,error) {
-    if (this.listening) return;
+    if (this.isListening) return;
     if (!this.utilService.isMobile()) {
       success();
       return;
     }
-    this.listening = true;
+    this.isListening = true;
     this.stopSpeak(false);
     this.stopWakeUp();
     cordova.plugins.XjBaiduSpeech.startListen(result => {
