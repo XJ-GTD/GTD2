@@ -14,16 +14,23 @@ export class TimeOutService {
   notifworks:Map<string,number> = new Map<string, number>();
 
   timeout(mi: number, fn: Function, emitKey: string) {
-    if (this.util.isAppBack() && this.util.isAndroid()) {
-      this.emitService.register(emitKey, () => {
-        fn();
-        this.emitService.destroy(emitKey);
-      });
-      //提醒间隔最小单位是秒，所以/1000
-      this.notificationsService.sysTimeout(emitKey, mi  < 1000 ? 1 : mi / 1000);
-      return;
-    }
-    else if (this.util.isAppBack() && this.util.isIOS()) {
+    // if (this.util.isAppBack() && this.util.isAndroid()) {
+    //   this.emitService.register(emitKey, () => {
+    //     fn();
+    //     this.emitService.destroy(emitKey);
+    //   });
+    //   //提醒间隔最小单位是秒，所以/1000
+    //   this.notificationsService.sysTimeout(emitKey,  mi / 1000  > 3 ?  mi / 1000  : 3);
+    //   return;
+    // }
+    // else if (this.util.isAppBack() && this.util.isIOS()) {
+    //   //直接返回，不要要timeout设置
+    //   fn();
+    //   return;
+    //   //提醒间隔最小单位是秒，所以/1000
+    //   // this.notificationsService.sysTimeout(emitKey, mi  < 1000 ? 1 : mi / 1000);
+    // }
+    if (this.util.isAppBack()) {
       //直接返回，不要要timeout设置
       fn();
       return;
@@ -46,15 +53,19 @@ export class TimeOutService {
 
     if (this.util.isAppBack() && this.util.isAndroid()) {
       this.emitService.register(emitKey, () => {
-         fn();
+        fn();
         this.emitService.destroy(emitKey);
       });
       //提醒间隔最小单位是秒，所以/1000
       let id = this.notifworks.get(emitKey);
       if (id) this.notificationsService.cancel(id)
-      id = this.notificationsService.sysTimeout(emitKey, mi  < 1000 ? 1 : mi / 1000);
+      id = this.notificationsService.sysTimeout(emitKey,  mi / 1000  > 3 ?  mi / 1000  : 3);
       this.notifworks.set(emitKey,id);
-    } else {
+    // }
+    // if (this.util.isAppBack()) {
+    //     fn();
+    //     return;
+    }else {
       let timeoutWork = this.works.get(emitKey);
       if (!timeoutWork){
         timeoutWork  = new Worker("./workerTimeout.js");

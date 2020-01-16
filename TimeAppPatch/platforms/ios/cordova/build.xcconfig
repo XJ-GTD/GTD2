@@ -24,13 +24,13 @@ HEADER_SEARCH_PATHS = "$(TARGET_BUILD_DIR)/usr/local/lib/include" "$(OBJROOT)/Un
 OTHER_LDFLAGS = -ObjC -liconv
 // Type of signing identity used for codesigning, resolves to first match of given type.
 // "iPhone Developer": Development builds (default, local only; iOS Development certificate) or "iPhone Distribution": Distribution builds (Adhoc/In-House/AppStore; iOS Distribution certificate)
-CODE_SIGN_IDENTITY = iPhone Distribution: Jinyang Zhang (D5A8L43W8A)
-CODE_SIGN_IDENTITY[sdk=iphoneos*] = iPhone Distribution: Jinyang Zhang (D5A8L43W8A)
+CODE_SIGN_IDENTITY = Apple Distribution: Jinyang Zhang (D5A8L43W8A)
+CODE_SIGN_IDENTITY[sdk=iphoneos*] = Apple Distribution: Jinyang Zhang (D5A8L43W8A)
 // (CB-9721) Set ENABLE_BITCODE to NO in build.xcconfig
 ENABLE_BITCODE = NO
 // (CB-9719) Set CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES to YES in build.xcconfig
 CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES = YES
-// (CB-10072) 
+// (CB-10072)
 SWIFT_OBJC_BRIDGING_HEADER = $(PROJECT_DIR)/$(PROJECT_NAME)/Bridging-Header.h
 // (CB-11854)
 CODE_SIGN_ENTITLEMENTS = $(PROJECT_DIR)/$(PROJECT_NAME)/Entitlements-$(CONFIGURATION).plist

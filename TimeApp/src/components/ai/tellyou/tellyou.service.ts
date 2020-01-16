@@ -215,7 +215,6 @@ export class TellyouService {
 
   //把播报的数据放缓存中
   public prepare4wating(tellYouData: TellYouBase) {
-    console.log("12111111111===prepare4wating===>" + tellYouData.id + "===>" + tellYouData.tellType);
     if (tellYouData.tellType == TellyouType.invite_agenda || tellYouData.tellType == TellyouType.invite_planitem
     ||tellYouData.tellType == TellyouType.at_agenda || tellYouData.tellType == TellyouType.cancel_agenda
       || tellYouData.tellType == TellyouType.cancel_planitem) {
@@ -231,7 +230,6 @@ export class TellyouService {
 
   public tellyou4invsited(tellYouData: TellYouBase) {
     //把播报数据推入Q中，方法参数要data，打开页面延迟时间，自动关闭页面时间，是否显示
-    console.log("12111111111===tellyou4invsited===>" + tellYouData.id + "===>" + tellYouData.tellType);
 
     //是邀请的情况，在缓存中拿是否播报
     let index = this.invites.findIndex(
@@ -245,7 +243,6 @@ export class TellyouService {
 
       Object.assign(tellYouData,this.invites[index]);
       this.pushTellYouData(tellYouData,(warp)=>{
-        console.log("12111111111===tellyoubegin start===>" + tellYouData.id + "===>" + tellYouData.tellType);
         this.tellyoubegin(warp.data,warp.time1,warp.time2,warp.show);
       })
     }
@@ -277,7 +274,6 @@ export class TellyouService {
         }).catch(err=>{
 
         });
-
         this.timeoutService.timeOutOnlyOne(layclose, () => {
           this.closefn();
           this.resumeTellYou();
@@ -300,9 +296,7 @@ export class TellyouService {
       if(tellyoubase.idtype == TellyouIdType.Agenda){
         let an:Annotation;
         if (tellyoubase.tellType == TellyouType.at_agenda){
-          console.log("121111111110000===at===>" + tellyoubase.id + "===>" + tellyoubase.tellType);
           an = await this.annotationService.getAnnotation(searchid);
-          console.log("121111111110000===at===>" + tellyoubase.id + "===>" + an);
           if (an){
             searchid = an.obi;
           }
@@ -434,7 +428,7 @@ export class TellyouService {
       }else if (pageData.tellType == TellyouType.remind_merge){
         pageData.spearktext = `有${pageData.reminds.length}个提醒。`;
       }else if (pageData.tellType == TellyouType.at_agenda){
-        pageData.spearktext = `${person}@你。${text}。你可能需要去关注一下。`;
+        pageData.spearktext = `${person}@你。你可能需要去关注一下。`;
       }else if (pageData.tellType == TellyouType.cancel_agenda ||pageData.tellType == TellyouType.cancel_planitem ){
         pageData.spearktext = `你有一个${atype}被取消了。`;
       }else{
