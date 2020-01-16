@@ -64,7 +64,7 @@ function clean(datasource)
   output.content['0'] = {
     option: 'S.AN',
     parameters: {
-      an: '第三方语音服务故障, 请稍后再试'
+      an: '哎哟，语音服务有点小问题，等一下再试哈'
     }
   };
 
