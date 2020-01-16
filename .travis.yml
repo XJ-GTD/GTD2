@@ -156,7 +156,7 @@ env:
   - LANG=zh_CN.UTF-8
   - JAVA_HOME=/usr/lib/jvm/java-8-oracle
   - IOS_APP_NAME="冥王星"
-  - 'IOS_DEVELOPER_NAME="Apple Distribution: Jinyang Zhang (D5A8L43W8A)"'
+  - 'IOS_DEVELOPER_NAME="iPhone Distribution: Jinyang Zhang (D5A8L43W8A)"'
   - IOS_PROFILE_NAME="a87d5d47-5417-4cb7-8fbc-46835d7d9494"
   - IOS_PROFILE_NAME_FIR="202650d3-3ae6-48ab-91e4-78740920a00b"
   - FIR_TIMEOUT=500
