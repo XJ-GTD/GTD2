@@ -14,8 +14,8 @@ if [ $TRAVIS_OS_NAME = 'osx' ]; then
   # 正式发布证书
   security import $TRAVIS_BUILD_DIR/travis/profiles/ios/mwxing-developer.cer -k ~/Library/Keychains/ios-build.keychain -T /usr/bin/codesign
   # 正式发布证书
-  security import $TRAVIS_BUILD_DIR/travis/profiles/ios/appstoreios.p12 -k ~/Library/Keychains/ios-build.keychain -P $IOS_KEY_PASSWORD -T /usr/bin/codesign
-  security import $TRAVIS_BUILD_DIR/travis/profiles/ios/mwxing-developer.p12 -k ~/Library/Keychains/ios-build.keychain -P $IOS_KEY_PASSWORD -T /usr/bin/codesign
+  #security import $TRAVIS_BUILD_DIR/travis/profiles/ios/appstoreios.p12 -k ~/Library/Keychains/ios-build.keychain -P $IOS_KEY_PASSWORD -T /usr/bin/codesign
+  #security import $TRAVIS_BUILD_DIR/travis/profiles/ios/mwxing-developer.p12 -k ~/Library/Keychains/ios-build.keychain -P $IOS_KEY_PASSWORD -T /usr/bin/codesign
 
   echo "list keychains: "
   security list-keychains
