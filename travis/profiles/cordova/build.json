@@ -24,8 +24,8 @@
   },
   "ios": {
     "debug": {
-      "codeSignIdentity": "Apple Distribution: Jinyang Zhang (D5A8L43W8A)",
-      "provisioningProfile": "f8c0bffd-651e-40b4-9dcd-06dcb67c6011",
+      "codeSignIdentity": "iPhone Distribution: Jinyang Zhang (D5A8L43W8A)",
+      "provisioningProfile": "202650d3-3ae6-48ab-91e4-78740920a00b",
       "packageType": "ad-hoc",
       "automaticProvisioning": true,
       "buildFlag": [
@@ -35,8 +35,8 @@
       ]
     },
     "release": {
-      "codeSignIdentity": "Apple Distribution: Jinyang Zhang (D5A8L43W8A)",
-      "provisioningProfile": "e3f01904-e6ed-45c4-a7f4-fe91b39e151f",
+      "codeSignIdentity": "iPhone Distribution: Jinyang Zhang (D5A8L43W8A)",
+      "provisioningProfile": "a87d5d47-5417-4cb7-8fbc-46835d7d9494",
       "packageType": "app-store",
       "developmentTeam": "D5A8L43W8A",
       "automaticProvisioning": true,
