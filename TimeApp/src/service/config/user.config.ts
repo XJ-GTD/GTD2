@@ -562,7 +562,18 @@ export class UserConfig {
         }
       }else{
         if (pos >= 0) {
-          this.groups.splice(pos, 1, chkGrouper);
+          //使用this.groups.splice(pos,1,chkGrouper)直接替换group，人员页面不能被动态显示
+          this.groups[pos].del = chkGrouper.del;
+          this.groups[pos].gi = chkGrouper.gi;
+          this.groups[pos].gm = chkGrouper.gm;
+          this.groups[pos].gn = chkGrouper.gn;
+          this.groups[pos].gnpy = chkGrouper.gnpy;
+
+          this.groups[pos].fss.splice(0,this.groups[pos].fss.length);
+          for (let fs of chkGrouper.fss){
+            this.groups[pos].fss.push(fs);
+          }
+          this.groups[pos].gc = this.groups[pos].fss.length;
         } else {
           this.groups.unshift(chkGrouper);
         }
