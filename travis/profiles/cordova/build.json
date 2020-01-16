@@ -25,7 +25,7 @@
   "ios": {
     "debug": {
       "codeSignIdentity": "iPhone Developer: Jinyang Zhang (Q696DBG8US)",
-      "provisioningProfile": "28e98327-5168-4629-bded-1b3536c09e70",
+      "provisioningProfile": "f8c0bffd-651e-40b4-9dcd-06dcb67c6011",
       "packageType": "ad-hoc",
       "automaticProvisioning": true,
       "buildFlag": [
@@ -36,7 +36,7 @@
     },
     "release": {
       "codeSignIdentity": "iPhone Developer: Jinyang Zhang (Q696DBG8US)",
-      "provisioningProfile": "28e98327-5168-4629-bded-1b3536c09e70",
+      "provisioningProfile": "e3f01904-e6ed-45c4-a7f4-fe91b39e151f",
       "packageType": "app-store",
       "developmentTeam": "Q696DBG8US",
       "automaticProvisioning": true,
