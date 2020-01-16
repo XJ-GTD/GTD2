@@ -66,15 +66,13 @@
 }
 
 - (void)start:(CDVInvokedUrlCommand*)command
-
+{
     [self configWakeup];
 
     self.callbackId = command.callbackId;
     // 发送指令：加载语音唤醒引擎
     [self.wakeupEventManager sendCommand:BDS_WP_CMD_LOAD_ENGINE];
     [self.wakeupEventManager sendCommand:BDS_WP_CMD_START];
-{
-
 }
 
 - (void)stop:(CDVInvokedUrlCommand*)command
