@@ -222,7 +222,7 @@ export class AttachPage {
   openselect() {
     const actionSheet = this.actionSheetCtrl.create({
       title: "选择补充文件",
-      cssClass: "page-attach",
+      cssClass: "line-button",
       buttons: [
         {
           text: '拍照',

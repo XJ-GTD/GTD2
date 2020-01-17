@@ -245,8 +245,13 @@ body {
      }
 
 
+    .line-button{
+      .action-sheet-button {
+        width: auto;
+      }
+    }
     .action-sheet-button {
-      width: auto;
+      //width: auto;
       padding-top: 20px;
       padding-bottom: 20px;
 
