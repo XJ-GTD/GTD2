@@ -77,6 +77,8 @@ function clean(datasource)
   var ampmS = '';
   var ampmE = '';
 
+  var template = '';
+
   var semantics = data['intent']['semantic'];
 
   for (var sei in semantics) {
@@ -343,6 +345,7 @@ function clean(datasource)
       // 取出涉及日程标题
       if (slot['name'] === 'whattodo') {
         title = slot['normValue'];
+        template = semantic['template'];
       }
     }
   }
@@ -489,13 +492,28 @@ function clean(datasource)
     parameters: {}
   };
 
-  output.content['2'] = {
-    processor: 'S',
-    option: 'S.P',
-    parameters: {
-      t: 'CC'
-    }
-  };
+  if (template && template.indexOf('{when}') >= 0) {
+    output.content['2'] = {
+      processor: 'S',
+      option: 'S.P',
+      parameters: {
+        t: 'CCC'
+      },
+      input: {
+        textvariables: [
+          {name: 'when', expression: 'agendas[0].st', default: '你懂的'}
+        ]
+      }
+    };
+  } else {
+    output.content['2'] = {
+      processor: 'S',
+      option: 'S.P',
+      parameters: {
+        t: 'CC'
+      }
+    };
+  }
 
   var standardnext = {};
 
