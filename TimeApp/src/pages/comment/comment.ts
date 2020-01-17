@@ -21,12 +21,12 @@ import {AssistantService} from "../../service/cordova/assistant.service";
           <ion-textarea   placeholder="日历项的备注。。。"  class="memo-set" rows="8" [(ngModel)]="bz" class="font-large-x" [maxlength]="80"  (ionChange)="changeTitle()" ></ion-textarea>
         </div>
       </ion-row>
-      <ion-row class="dateRow">
-        <div class="agendaai">
-          <ion-icon class="fal fa-waveform" *ngIf="bz != ''" (click)="speakPlanItem()"></ion-icon>
-          <ion-icon class="fal fa-microphone" *ngIf="bz == ''" (click)="recordPlanItem()"></ion-icon>
-        </div>
-      </ion-row>      
+      <!--<ion-row class="dateRow">-->
+        <!--<div class="agendaai">-->
+          <!--<ion-icon class="fal fa-waveform" *ngIf="bz != ''" (click)="speakPlanItem()"></ion-icon>-->
+          <!--<ion-icon class="fal fa-microphone" *ngIf="bz == ''" (click)="recordPlanItem()"></ion-icon>-->
+        <!--</div>-->
+      <!--</ion-row>      -->
     </ion-grid>
   </modal-box>
   `
