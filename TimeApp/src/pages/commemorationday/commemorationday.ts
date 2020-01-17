@@ -18,6 +18,7 @@ import {
 } from "../../data.enum";
 import {PageBoxComponent} from "../../components/page-box/page-box";
 import {AssistantService} from "../../service/cordova/assistant.service";
+import * as anyenum from "../../data.enum";
 
 /**
  * Generated class for the 纪念日创建/修改 page.
@@ -134,10 +135,10 @@ import {AssistantService} from "../../service/cordova/assistant.service";
 
 
         <ion-row class="dateRow">
-          <div class="agendaai">
-            <ion-icon class="fal fa-waveform" *ngIf="currentPlanItem.jti" (click)="speakPlanItem()"></ion-icon>
-            <ion-icon class="fal fa-microphone" *ngIf="!currentPlanItem.jti" (click)="recordPlanItem()"></ion-icon>
-          </div>
+          <!--<div class="agendaai">-->
+            <!--<ion-icon class="fal fa-waveform" *ngIf="currentPlanItem.jti" (click)="speakPlanItem()"></ion-icon>-->
+            <!--<ion-icon class="fal fa-microphone" *ngIf="!currentPlanItem.jti" (click)="recordPlanItem()"></ion-icon>-->
+          <!--</div>-->
 
           <div (click)="changeDatetime()" class="pickDate" *ngIf="currentPlanItem.jti">
             <ion-icon class="fal fa-alarm-clock "></ion-icon>
@@ -326,24 +327,45 @@ export class CommemorationDayPage {
   }
 
   changeDatetime() {
+
     if (this.currentPlanItem.jtc == SelfDefineType.System) return;    // 下载日历项不能修改
 
+    // 受邀人没有接受或者没有修改权限不能修改
     if (this.originPlanItem.ui != this.currentuser && (this.originPlanItem.md != ModiPower.enable || this.originPlanItem.invitestatus != InviteState.Accepted)) { // 受邀人修改权限检查
       return;
     }
-
+    let enableEdit: boolean = false;
+    if (this.originPlanItem.ui != this.currentuser) { // 受邀人修改权限检查
+      enableEdit = false;
+    } else {
+      enableEdit = true;
+    }
     let modal = this.modalCtrl.create(DataConfig.PAGE._DTSELECT_PAGE, {
-      sd: this.currentPlanItem.sd,
-      st: this.currentPlanItem.st,
-      ed: this.currentPlanItem.sd,
+
+      evd: this.currentPlanItem.sd,
+      evt: this.currentPlanItem.st,
+      ct: this.currentPlanItem.sd,
       et: this.currentPlanItem.st,
       al: IsWholeday.StartSet,
-      ct: 0
+      rfg: this.originPlanItem.rfg,
+      enableEdit: enableEdit,
     });
     modal.onDidDismiss(async (data) => {
+      if (data) {
+        this.currentPlanItem.sd = data.sd;
+        this.currentPlanItem.st = data.st;
+        this.currentPlanItem.txs = this.currentPlanItem.txjson.text(this.currentPlanItem.sd,this.currentPlanItem.st);
+      }
 
+      if (!this.calendarService.isSamePlanItem(this.currentPlanItem, this.originPlanItem)) {
+        this.buttons.save = true;
+      } else {
+        this.buttons.save = false;
+      }
     });
     modal.present();
+
+
   }
 
   changeInvites() {
