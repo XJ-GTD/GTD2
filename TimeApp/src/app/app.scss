@@ -234,6 +234,12 @@ body {
   //    overflow-y: auto;
   //  }
   //}
+
+  .line-button{
+    .action-sheet-button {
+      width: auto;
+    }
+  }
   .action-sheet-ios{
     .action-sheet-cancel{
       background: transparent;
@@ -245,11 +251,6 @@ body {
      }
 
 
-    .line-button{
-      .action-sheet-button {
-        width: auto;
-      }
-    }
     .action-sheet-button {
       //width: auto;
       padding-top: 20px;
