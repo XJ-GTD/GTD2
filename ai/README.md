@@ -15,3 +15,26 @@
 
 ## 第三步 开发
 针对设计的新元素进行开发
+
+查询{whentodo:明天}的活动
+查询关于{whattodo:开会}的活动
+查询和{whotodo:席理加}的活动
+查询{whentodo:明天}关于{whattodo:开会}的活动
+查询{whentodo:明天}和{whotodo:席理加}的活动
+*查询和{whotodo:席理加}关于{whattodo:开会}的活动
+*查询{whentodo:明天}和{whotodo:席理加}关于{whattodo:开会}的活动
+退出查询
+
+查询结果为1或者0条的时候，直接退出查询
+查询结果大于1条的时候，缩小范围查询
+
+查询时间
+查询关于{whattodo:开会}的时间
+查询和{whotodo:席理加}关于{whattodo:开会}的时间
+查询{whentodo:明天}关于{whattodo:开会}的时间
+和{whotodo:席理加}的
+{whentodo:明天}的
+关于{whattodo:开晨会}的
+退出查询
+
+(相同的条件)
