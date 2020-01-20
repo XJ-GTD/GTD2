@@ -69,7 +69,7 @@ export class AipPage{
 
   }
 
-  ionViewDidEnter() {
+  ngOnInit() {
     // 增加语音界面启动后,自动发出提示语音对话
     // 早上好, 中午好或者晚上好, 用户名
     let words: Map<string, string> = new Map<string, string>();
@@ -191,19 +191,19 @@ export class AipPage{
   goBack() {
     this.navController.pop();
   }
-
-  ngOnInit() {
-    // websocket连接成功消息回调
-    // this.emitService.register("on.websocket.connected", () => {
-    //   this.aiready = true;
-    //   DataConfig.RABBITMQ_STATUS = "connected";
-    // });
-    //
-    // // websocket断开连接消息回调
-    // this.emitService.register("on.websocket.closed", () => {
-    //   this.aiready = false;
-    //   DataConfig.RABBITMQ_STATUS = "";
-    // });
-
-  }
+  //
+  // ngOnInit() {
+  //   // websocket连接成功消息回调
+  //   // this.emitService.register("on.websocket.connected", () => {
+  //   //   this.aiready = true;
+  //   //   DataConfig.RABBITMQ_STATUS = "connected";
+  //   // });
+  //   //
+  //   // // websocket断开连接消息回调
+  //   // this.emitService.register("on.websocket.closed", () => {
+  //   //   this.aiready = false;
+  //   //   DataConfig.RABBITMQ_STATUS = "";
+  //   // });
+  //
+  // }
 }

@@ -94,6 +94,7 @@ export class FindProcess extends BaseProcess implements MQProcess {
           escd.st = event.evt;
           escd.ed = event.evd;
           escd.et = event.evt;
+          escd.adr = event.adr;
 
           scd.push(escd);
 

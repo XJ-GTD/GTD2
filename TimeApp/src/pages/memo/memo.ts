@@ -29,7 +29,7 @@ import {AssistantService} from "../../service/cordova/assistant.service";
 @Component({
   selector: 'page-memo',
   template: `
-    <page-box title="添加备忘" [buttons]="buttons" (onSave)="save()" (onBack)="cancel()">
+    <page-box title="记录备忘" [buttons]="buttons" (onSave)="save()" (onBack)="cancel()">
 
       <ion-grid>
 
@@ -42,14 +42,14 @@ import {AssistantService} from "../../service/cordova/assistant.service";
         </ion-row>
 
         <ion-row class="dateRow">
-          <div class="agendaai">
-            <ion-icon class="fal fa-microphone" (click)="recordAgenda()"></ion-icon>
-          </div>
+          <!--<div class="agendaai">-->
+            <!--<ion-icon class="fal fa-microphone" (click)="recordAgenda()"></ion-icon>-->
+          <!--</div>-->
 
           <div class="pickDate">
             <ion-icon class="fal fa-alarm-clock "></ion-icon>
             <span class="content  agendaDate">
-                  {{day | formatedate: "YYYY-M-D"}}
+                  {{day | formatedate: "YYYY-M-D A h:s"}}
             </span>
           </div>
         </ion-row>

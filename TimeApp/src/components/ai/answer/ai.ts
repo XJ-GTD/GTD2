@@ -100,8 +100,8 @@ export class AiComponent {
 
 
   callbackScdLs(datas: ScdLsEmData) {
-    this.copy();
-    this.aiData1.speechAi = new SpeechAiData();
+    this.copy(false);
+    // this.aiData1.speechAi = new SpeechAiData();
 
 
     this.aiData1.scdList = new ScdLsAiData();
@@ -116,6 +116,8 @@ export class AiComponent {
       aiData.type = scdEmData.type;
       aiData.id = scdEmData.id;
       aiData.gs = scdEmData.gs;
+      aiData.adr = scdEmData.adr;
+      aiData.scdTip = scdEmData.scdTip;
       this.aiData1.scdList.datas.push(aiData);
     }
     this.changeDetectorRef.detectChanges();
@@ -124,8 +126,7 @@ export class AiComponent {
   }
 
   callbackSpeech(datas: SpeechEmData) {
-    this.copy();
-    this.aiData1.speechAi = new SpeechAiData();
+    this.copy(datas.iswaitting?true:false);
     this.aiData1.speechAi.org = datas.org;
     this.aiData1.speechAi.an = datas.an;
     if (datas.tips && !datas.tips.startsWith("说")) {
@@ -134,7 +135,6 @@ export class AiComponent {
         this.aiData1.speechAi.arraytips = this.aiData1.speechAi.tips.split("|");
       }
     }
-    this.aiData1.speechAi.iswaitting = datas.iswaitting;
     this.gotonew();
 
   }
@@ -146,13 +146,16 @@ export class AiComponent {
   }
 
   callbackScd(data: ScdEmData) {
-    this.copy();
-    let scd1: ScdAiData = new ScdAiData();
-    scd1.d = data.d;
-    scd1.t = data.t;
-    scd1.type = data.type;
-    scd1.ti = data.ti;
-    scd1.scdTip = data.scdTip;
+    this.copy(false);
+    let aiData: ScdAiData = new ScdAiData();
+    aiData.ti = data.ti;
+    aiData.d = data.d;
+    aiData.t = data.t;
+    aiData.type = data.type;
+    aiData.id = data.id;
+    aiData.gs = data.gs;
+    aiData.adr = data.adr;
+    aiData.scdTip = data.scdTip;
 
     for (let femd of  data.datas) {
       let ff: FriendAiData = new FriendAiData();
@@ -162,11 +165,11 @@ export class AiComponent {
       ff.n = femd.n;
       ff.p = femd.p;
       ff.uid = femd.uid;
-      scd1.friends.push(femd);
+      aiData.friends.push(femd);
 
     }
 
-    this.aiData1.scd = scd1;
+    this.aiData1.scd = aiData;
     this.gotonew();
   }
 
@@ -179,13 +182,19 @@ export class AiComponent {
     this.changeDetectorRef.detectChanges();
   }
 
-  copy() {
-    if (this.aiData1.speechAi && !this.aiData1.speechAi.iswaitting && this.aiData4.speechAi) this.aiData4.copyto(this.aiData5);
-    if (this.aiData1.speechAi && !this.aiData1.speechAi.iswaitting && this.aiData3.speechAi) this.aiData3.copyto(this.aiData4);
-    if (this.aiData1.speechAi && !this.aiData1.speechAi.iswaitting && this.aiData2.speechAi) this.aiData2.copyto(this.aiData3);
-    if (this.aiData1.speechAi && !this.aiData1.speechAi.iswaitting) this.aiData1.copyto(this.aiData2);
+  copy(iswaiting:boolean) {
+    if (iswaiting){
+      if (this.aiData4.speechAi) this.aiData4.copyto(this.aiData5);
+      if (this.aiData3.speechAi) this.aiData3.copyto(this.aiData4);
+      if (this.aiData2.speechAi) this.aiData2.copyto(this.aiData3);
+      if (this.aiData1.speechAi) this.aiData1.copyto(this.aiData2);
 
-    this.aiData1.clear();
-    this.aiData1.speechAi = new SpeechAiData();
+      this.aiData1.clear();
+      this.aiData1.speechAi = new SpeechAiData();
+      this.aiData1.speechAi.iswaitting = true;
+    }else{
+
+      this.aiData1.speechAi.iswaitting = false;
+    }
   }
 }

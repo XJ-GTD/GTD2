@@ -452,12 +452,15 @@ export class TdlPage {
 
   toMemo(day) {
 
+    this.feekback.audioClick();
     this.util.createModal(DataConfig.PAGE._DAILYMEMOS_PAGE, day, ModalTranType.scale).present();
   }
 
   toPlanItem(item) {
     let p: ScdPageParamter = new ScdPageParamter();
     p.si = item.jti;
+
+    this.feekback.audioClick();
 
 
     this.util.createModal(DataConfig.PAGE._COMMEMORATIONDAY_PAGE, p, ModalTranType.scale).present();

@@ -336,6 +336,7 @@ export class ScdEmData {
   t: string = "";
   ti: string = "";
   gs:string = "";
+  adr:string = "";
   type: string = "event";
   scdTip:string ="";
   datas: Array<FriendEmData> = new Array<FriendEmData>();

@@ -1,12 +1,14 @@
 import {Injectable} from "@angular/core";
 import * as moment from "moment";
-import {FsData, RcInParam, ScdData, ScdPageParamter} from "../../../data.mapping";
+import { ScdPageParamter} from "../../../data.mapping";
 import {DataConfig} from "../../../service/config/data.config";
 import {ModalController} from "ionic-angular";
 import {AssistantService} from "../../../service/cordova/assistant.service";
 import {PgBusiService} from "../../../service/pagecom/pgbusi.service";
 import {FsService} from "../../../pages/fs/fs.service";
-import {Friend} from "../../../service/business/grouper.service";
+import {ModalTranType} from "../../../data.enum";
+import {UtilService} from "../../../service/util-service/util.service";
+import {MemoData, MemoService} from "../../../service/business/memo.service";
 
 @Injectable()
 export class AiService {
@@ -14,7 +16,9 @@ export class AiService {
   constructor(private modalController: ModalController,
               private assistantService: AssistantService,
               private pgBusiService:PgBusiService,
-              private fsService:FsService) {
+              private fsService:FsService,
+              private util: UtilService,
+              private memoSevice:MemoService) {
   }
 
   speakScd(scds: ScdLsAiData) {
@@ -38,54 +42,28 @@ export class AiService {
 
   }
 
-  go2tdc(scd: ScdAiData) {
-    let paramter: ScdPageParamter = new ScdPageParamter();
-    paramter.t = scd.t;
-    paramter.d = moment(scd.d, "YYYY/MM/DD");
-    paramter.sn = scd.ti;
-    // this.modalController.create(DataConfig.PAGE._TDC_PAGE, paramter).present();
+  private toMemo(day) {
+    this.util.createModal(DataConfig.PAGE._DAILYMEMOS_PAGE, day, ModalTranType.scale).present();
   }
-
-  async createScd(scd: ScdAiData) {
-    //tx rt
-    let rcIn:RcInParam = new RcInParam();
-    rcIn.sn = scd.ti;
-    rcIn.st = scd.t;
-    rcIn.sd = scd.d;
-    for (let f of scd.friends){
-      let fs:Friend = {} as Friend;
-      fs.ui = f.uid;
-      fs.ran = f.n;
-      fs.pwi = f.id;
-      fs.rc = f.m;
-      fs.ranpy = f.p;
-      rcIn.fss.push(fs);
-    }
-    return await this.pgBusiService.saveOrUpdate(rcIn);
-  }
-
-  showScd(scd: ScdAiData) {
-
-    let p: ScdPageParamter = new ScdPageParamter();
-    p.si = scd.id;
-    p.d = moment(scd.d);
-    p.gs = scd.gs;
-    let gs = scd.gs
-    if (!scd.id) {
-      this.go2tdc(scd);
-      return;
+  showScd(scd: ScdAiData){
+    if (scd.type == "event"){
+      let p: ScdPageParamter = new ScdPageParamter();
+      p.si = scd.id;
+      this.util.createModal(DataConfig.PAGE._AGENDA_PAGE, p, ModalTranType.scale).present();
+    }else if (scd.type == "calendar"){
+      let p: ScdPageParamter = new ScdPageParamter();
+      p.si = scd.id;
+      this.util.createModal(DataConfig.PAGE._COMMEMORATIONDAY_PAGE, p, ModalTranType.scale).present();
+    }else if (scd.type == "memo"){
+      this.memoSevice.getMemo(scd.id).then((memo)=>{
+        let day: string = moment(scd.d,"YYYY/MM/DD hh:ss").format("YYYY/MM/DD");
+        let mo:MemoData = memo;
+        if (memo){
+          this.util.createModal(DataConfig.PAGE._MEMO_PAGE, {day: day, memo: mo}, ModalTranType.scale).present();
+        }
+      })
     }
 
-    if (gs == "0") {
-      //本人画面
-      // this.modalController.create(DataConfig.PAGE._TDDJ_PAGE, p).present();
-    } else if (gs == "1") {
-      //受邀人画面
-      // this.modalController.create(DataConfig.PAGE._TDDI_PAGE, p).present();
-    } else {
-      //系统画面
-      // this.modalController.create(DataConfig.PAGE._TDDS_PAGE, p).present();
-    }
   }
 
   countDay(day: string): string {
@@ -163,6 +141,7 @@ export class ScdAiData {
   saved:boolean = false;
   scdTip:string = "";
   an: string = "";
+  adr:string;
   friends: Array<FriendAiData> = new Array<FriendAiData>();
 }
 

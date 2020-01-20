@@ -8,6 +8,7 @@ import {UtilService} from "../../service/util-service/util.service";
 import {DataConfig} from "../../service/config/data.config";
 import * as moment from "moment";
 import {unitOfTime} from "moment";
+import {ModalTranType} from "../../data.enum";
 
 /**
  * Generated class for the 备忘创建/修改 page.
@@ -36,8 +37,8 @@ import {unitOfTime} from "moment";
             <div class="line font-normal">
               <div class="st">{{memo.utt | formatedate: 'HH:mm'}}</div>
               <div class="sn threeline">{{memo.mon}}</div>
-              <div class="icon"  end (click)="remove($event, memo)">
-                <ion-icon class="fal fa-minus-circle"></ion-icon>
+              <div class="icon"  end >
+                <ion-icon class="fal fa-minus-circle" (click)="remove($event, memo)"></ion-icon>
               </div>
             </div>
           </ion-row>
@@ -90,32 +91,36 @@ export class DailyMemosPage {
   }
 
   addMemo() {
-    let modal = this.modalCtrl.create(DataConfig.PAGE._MEMO_PAGE, {day: this.day});
-    modal.onDidDismiss(async (data) => {
-      if (data && data.memo && typeof data.memo === 'string') { // 创建新备忘
-        let memo: MemoData = {} as MemoData;
-
-        memo.sd = data.day;
-        memo.mon = data.memo;
-
-        await this.memoService.saveMemo(memo);
-      }
-    });
-    modal.present();
+    // let modal = this.modalCtrl.create(DataConfig.PAGE._MEMO_PAGE, {day: this.day});
+    // // modal.onDidDismiss(async (data) => {
+    // //   if (data && data.memo && typeof data.memo === 'string') { // 创建新备忘
+    // //     let memo: MemoData = {} as MemoData;
+    // //
+    // //     memo.sd = data.day;
+    // //     memo.mon = data.memo;
+    // //
+    // //     await this.memoService.saveMemo(memo);
+    // //   }
+    // // });
+    // modal.present();
+    this.util.createModal(DataConfig.PAGE._MEMO_PAGE, {day: this.day}, ModalTranType.scale).present();
   }
 
   goDetail(memo) {
-    let modal = this.modalCtrl.create(DataConfig.PAGE._MEMO_PAGE, {day: this.day, memo: memo});
-    modal.onDidDismiss(async (data) => {
-      if (data && data.memo && typeof data.memo !== 'string') { // 创建新备忘
-        let changed: MemoData = {} as MemoData;
 
-        Object.assign(changed, data.memo)
-
-        await this.memoService.saveMemo(changed);
-      }
-    });
-    modal.present();
+    this.util.createModal(DataConfig.PAGE._MEMO_PAGE, {day: this.day, memo: memo}, ModalTranType.scale).present();
+    // this.util.createModal()
+    // let modal = this.modalCtrl.create(DataConfig.PAGE._MEMO_PAGE, );
+    // // modal.onDidDismiss(async (data) => {
+    // //   if (data && data.memo && typeof data.memo !== 'string') { // 创建新备忘
+    // //     let changed: MemoData = {} as MemoData;
+    // //
+    // //     Object.assign(changed, data.memo)
+    // //
+    // //     await this.memoService.saveMemo(changed);
+    // //   }
+    // // });
+    // modal.present();
   }
 
   remove(event, memo) {

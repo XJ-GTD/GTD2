@@ -55,52 +55,31 @@ import {UserConfig} from "../../../service/config/user.config";
           <div class="aiSpeechAn" *ngIf="aiData.scd.an">
             {{aiData.scd.an}}
           </div>
-          <div class="aiscdcontent" *ngIf="!aiData.scd.type || aiData.scd.type == 'event'">
+          <div class="aiscdcontent"  (click)="showScd(aiData.scd)">
             <div class="scdWarp">
-              <div class="title"><span>活动</span></div>
-              <div class="ti"><span>{{aiData.scd.ti}}</span></div>
+              <div class="title">
+                <span *ngIf="!aiData.scd.type || aiData.scd.type == 'event'">活动</span>
+                <span *ngIf="!aiData.scd.type || aiData.scd.type == 'calendar'">日历项</span>
+                <span *ngIf="!aiData.scd.type || aiData.scd.type == 'memo'">备忘</span>
+              </div>
+              <div class="ti"><span>主题</span><span>{{aiData.scd.ti}}</span></div>
               <div class="date">
+                <span>日期</span>
                 <span>{{aiData.scd.d | formatedate:"CYYYY/MM/DD W"}} {{(aiData.scd.d + "T" + aiData.scd.t) | formatedate : "A h:mm"}}</span>
               </div>
-              <div class="add"><span >地址：</span> <span >上海</span></div>
+              <div class="add"  *ngIf="aiData.scd.adr && aiData.scd.adr != ''"><span >地址</span><span>{{aiData.scd.adr}}</span></div>
               <div class="friend" *ngIf="aiData.scd.friends.length > 0">
-                  <span>
-                    参与人：</span>
-                  <span *ngFor="let fs of aiData.scd.friends">
-                    {{fs.n}}</span>
-              </div>
-            </div>
-          </div>
-          <div class="aiscdcontent" *ngIf="aiData.scd.type && aiData.scd.type == 'calendar'">
-            <div class="scdWarp">
-              <div class="title"><span>日历项</span></div>
-              <div class="ti"><span>{{aiData.scd.ti}}</span></div>
-              <div class="date">
-                <span>{{aiData.scd.d | formatedate:"CYYYY/MM/DD W"}} {{(aiData.scd.d + "T" + aiData.scd.t) | formatedate : "A h:mm"}}</span>
-              </div>
-              <div class="friend" *ngIf="aiData.scd.friends.length > 0">
-                  <span>
-                    参与人：</span>
-                  <span *ngFor="let fs of aiData.scd.friends">
-                    {{fs.n}}</span>
-              </div>
-            </div>
-          </div>
-          <div class="aiscdcontent" *ngIf="aiData.scd.type && aiData.scd.type == 'memo'">
-            <div class="scdWarp">
-              <div class="title"><span>备忘</span></div>
-              <div class="ti"><span>{{aiData.scd.ti}}</span></div>
-              <div class="date">
-                <span>{{aiData.scd.d | formatedate:"CYYYY/MM/DD W"}} {{(aiData.scd.d + "T" + aiData.scd.t) | formatedate : "A h:mm"}}</span>
+                <span>参与人</span>
+                <span>
+                  <b *ngFor="let fs of aiData.scd.friends">
+                    {{fs.n}}
+                  </b>
+                </span>
               </div>
             </div>
           </div>
           <div class="scdTip">
-            <span >{{aiData.scd.scdTip}}</span>
-            <ion-buttons>
-              <button (click)="go2tdc(aiData.scd)">编辑</button>
-              <button (click)="confirmScd(aiData.scd)">确认</button>
-            </ion-buttons>
+            <span >点击或说"进入编辑"</span>
           </div>
         </div>
       </div>
@@ -112,14 +91,14 @@ import {UserConfig} from "../../../service/config/user.config";
             {{aiData.scdList.desc}}
           </div>
           <div class="ailistcontent">
-            <div *ngFor="let scd of aiData.scdList.datas,let i = index" (click)="showScdInList(scd)">
+            <div *ngFor="let scd of aiData.scdList.datas,let i = index" (click)="showScd(scd)">
               <span class="date" *ngIf="(i == 0 || aiData.scdList.datas[i-1].d != scd.d)">{{countDay(scd.d)}}</span>
               <span class="ti">{{(scd.d + "T" + scd.t) | formatedate : "A h:mm"}} {{scd.ti}}</span>
             </div>
           </div>
           <div class="scdTip">
             <span >{{aiData.scdList.scdTip}}</span>
-            <ion-icon class="fal fa-microphone" (click)="speakScd(aiData.scdList)" on-hold="speakScd(aiData.scdList)"></ion-icon>
+            <ion-icon class="fal fa-microphone" (click)="speakScd(aiData.scdList)"></ion-icon>
           </div>
         </div>
 
@@ -144,16 +123,9 @@ export class AiChildenComponent {
 
   speakScd(scds: ScdLsAiData) {
     this.aiService.speakScd(scds);
-
-  }
-
-  confirmScd(scd: ScdAiData) {
-    this.aiData.scd.saved = true;
-    this.aiService.createScd(scd);
   }
 
   showScd(scd: ScdAiData) {
-    this.aiData.scd.saved = true;
     this.aiService.showScd(scd);
   }
 
@@ -163,9 +135,5 @@ export class AiChildenComponent {
 
   GetOneBhiu(id){
       return this.userConfig.GetOneBhiu(id);
-  }
-
-  showScdInList(scd: ScdAiData) {
-    this.aiService.showScd(scd);
   }
 }

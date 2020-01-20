@@ -285,6 +285,7 @@ export class SpeechProcess extends BaseProcess implements MQProcess {
       scdEm.type = type;
       scdEm.ti = datas[0].sn;
       scdEm.gs = datas[0].gs;
+      scdEm.adr = datas[0].adr;
 
       scdEm.scdTip = tips;
 
@@ -320,6 +321,7 @@ export class SpeechProcess extends BaseProcess implements MQProcess {
         scdEm.type = type;
         scdEm.ti = scd.sn;
         scdEm.gs = scd.gs;
+        scdEm.adr = datas[0].adr;
 
         cscdLS.datas.push(scdEm);
       }
