@@ -22,22 +22,22 @@ import BScroll from "better-scroll";
 @Component({
   selector: 'AiComponent',
   template: `
-    <div class="aiscroll" >
+    <div class="aiscroll">
       <div class="aiWarp">
         <ion-card class="card" #card5 *ngIf="aiData5">
-          <AiChildenComponent [aiData] = "aiData5"></AiChildenComponent>
+          <AiChildenComponent [aiData]="aiData5"></AiChildenComponent>
         </ion-card>
         <ion-card class="card" #card4 *ngIf="aiData4">
-          <AiChildenComponent [aiData] = "aiData4"></AiChildenComponent>
+          <AiChildenComponent [aiData]="aiData4"></AiChildenComponent>
         </ion-card>
         <ion-card class="card" #card3 *ngIf="aiData3">
-          <AiChildenComponent [aiData] = "aiData3"></AiChildenComponent>
+          <AiChildenComponent [aiData]="aiData3"></AiChildenComponent>
         </ion-card>
         <ion-card class="card" #card2 *ngIf="aiData2">
-          <AiChildenComponent [aiData] = "aiData2"></AiChildenComponent>
+          <AiChildenComponent [aiData]="aiData2"></AiChildenComponent>
         </ion-card>
         <ion-card class="card" #card1 *ngIf="aiData1" id="card1">
-          <AiChildenComponent [aiData] = "aiData1"></AiChildenComponent>
+          <AiChildenComponent [aiData]="aiData1"></AiChildenComponent>
         </ion-card>
       </div>
     </div>
@@ -46,26 +46,24 @@ import BScroll from "better-scroll";
 export class AiComponent {
 
   @ViewChild("card1") card1: ElementRef;
-
-
   aiData1: AiData = new AiData();
   aiData2: AiData = new AiData();
   aiData3: AiData = new AiData();
   aiData4: AiData = new AiData();
   aiData5: AiData = new AiData();
 
-  scdLsemit:Subscriber<any>;
-  speechemit:Subscriber<any>;
-  scdemit:Subscriber<any>;
+  scdLsemit: Subscriber<any>;
+  speechemit: Subscriber<any>;
+  scdemit: Subscriber<any>;
 
-  bScroll: BScroll|any;
+  bScroll: BScroll | any;
 
   constructor(private aiService: AiService,
               private _renderer: Renderer2,
               private util: UtilService,
               private emitService: EmitService,
               private el: ElementRef,
-              private changeDetectorRef:ChangeDetectorRef) {
+              private changeDetectorRef: ChangeDetectorRef) {
 
   }
 
@@ -79,7 +77,7 @@ export class AiComponent {
       this.callbackSpeech(data);
       this.changeDetectorRef.detectChanges();
     });
-    this.scdemit =   this.emitService.registerScd(data => {
+    this.scdemit = this.emitService.registerScd(data => {
       this.callbackScd(data);
       this.changeDetectorRef.detectChanges();
     });
@@ -94,7 +92,7 @@ export class AiComponent {
   }
 
 
-  ngOnDestroy(){
+  ngOnDestroy() {
     this.scdLsemit.unsubscribe();
     this.speechemit.unsubscribe();
     this.scdemit.unsubscribe();
@@ -141,10 +139,10 @@ export class AiComponent {
 
   }
 
-  gotonew(){
-    setTimeout(()=>{
-      this.bScroll.scrollToElement(this.card1.nativeElement,380,0,0);
-    },200)
+  gotonew() {
+    setTimeout(() => {
+      this.bScroll.scrollToElement(this.card1.nativeElement, 280, 0, 0);
+    }, 200)
   }
 
   callbackScd(data: ScdEmData) {
@@ -156,8 +154,8 @@ export class AiComponent {
     scd1.ti = data.ti;
     scd1.scdTip = data.scdTip;
 
-    for (let femd of  data.datas){
-      let ff:FriendAiData = new FriendAiData();
+    for (let femd of  data.datas) {
+      let ff: FriendAiData = new FriendAiData();
       ff.m = femd.m;
       ff.id = femd.id;
       ff.a = femd.a;
@@ -181,10 +179,10 @@ export class AiComponent {
     this.changeDetectorRef.detectChanges();
   }
 
-  copy(){
-    if (this.aiData1.speechAi && !this.aiData1.speechAi.iswaitting && this.aiData4.speechAi) this.aiData4.copyto( this.aiData5);
-    if (this.aiData1.speechAi && !this.aiData1.speechAi.iswaitting && this.aiData3.speechAi) this.aiData3.copyto( this.aiData4);
-    if (this.aiData1.speechAi && !this.aiData1.speechAi.iswaitting && this.aiData2.speechAi) this.aiData2.copyto( this.aiData3);
+  copy() {
+    if (this.aiData1.speechAi && !this.aiData1.speechAi.iswaitting && this.aiData4.speechAi) this.aiData4.copyto(this.aiData5);
+    if (this.aiData1.speechAi && !this.aiData1.speechAi.iswaitting && this.aiData3.speechAi) this.aiData3.copyto(this.aiData4);
+    if (this.aiData1.speechAi && !this.aiData1.speechAi.iswaitting && this.aiData2.speechAi) this.aiData2.copyto(this.aiData3);
     if (this.aiData1.speechAi && !this.aiData1.speechAi.iswaitting) this.aiData1.copyto(this.aiData2);
 
     this.aiData1.clear();

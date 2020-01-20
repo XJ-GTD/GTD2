@@ -44,7 +44,7 @@ PointComponent {
       //height: 30px;
       position: absolute;
       top: 0px;
-      height: 0px;
+      //height: 115px;
     }
 
     canvas1 {
@@ -77,6 +77,14 @@ PointComponent {
     float: right;
     margin: -70px 20px;
     z-index: 999;
+    .tip{
+      position: absolute;
+      top:-18px;
+      width: 100%;
+      text-align: center;
+      font-size: 1rem;
+      color: rgba(153, 153, 153, 1);
+    }
   }
 
 
@@ -92,6 +100,8 @@ PointComponent {
     -webkit-transition: all 0.3s ease;
     transition: all 0.3s ease;
     display: -webkit-box;
+    transition: opacity 1s ease 0.6s, border 0.4s ease 0s, width 0.4s ease 0.2s, height 0.4s ease 0.2s, margin 0.4s ease 0.2s;
+
   }
 
   .speaking:before {
@@ -99,12 +109,12 @@ PointComponent {
     content: "";
     border-radius: 100%;
     animation: rotate 0.45s linear infinite;
-    transition: opacity 1s ease 0.6s, border 0.4s ease 0s, width 0.4s ease 0.2s, height 0.4s ease 0.2s, margin 0.4s ease 0.2s;
     //position: absolute;
     //left: 50%;
     //top: 50%;
     width: $speakerSize / 2;
     height: $speakerSize / 2;
+    background: linear-gradient(right top, #843094 0%, #25134f 30%, #1b1148 60%, #1f2857 90%, #2b657b 100%);
     //margin-left: $speakerSize * -1 / 4;
     //margin-top: $speakerSize * -1 / 4;
     //border-top: 1px solid $spinnerBorder1;

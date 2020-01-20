@@ -17,7 +17,7 @@ import {FsService} from "../../../pages/fs/fs.service";
     IonicPageModule.forChild(AiComponent),
     IonicPageModule.forChild(AiChildenComponent),
     PointComponentModule,
-    PipesModule
+    PipesModule,
   ],
   providers: [
     AiService,

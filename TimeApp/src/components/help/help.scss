@@ -1,0 +1,48 @@
+
+HelpComponent {
+  position: absolute;
+  width: 100%;
+  top: 0px;
+  height: calc(100% - 70px);
+  overflow-y: scroll;
+
+  .card {
+    background: transparent;
+    box-shadow: none;
+    position: relative;
+    margin: 1.5rem 1.5rem;
+    //border: 0.55px solid red;
+    padding: 1rem;
+    .card-title-ios{
+      color: rgba(255,255,255,1);
+    }
+    .card-content-ios{
+      background: rgba(255, 255, 255, 0.08);
+      color: rgba(153,153,153,1);
+      font-size: 12px;
+      padding: 22px 16px 25px 16px;
+      display: flex;
+      ul{
+        margin: 0;
+        padding: 0;
+        width: 100%;
+        li{
+          margin: 0;
+          padding: 0;
+          //list-style-position: inside;
+          list-style-type: none;
+        }
+      }
+    }
+  }
+
+  .help{
+    //display: inline-block;
+    //position:absolute;
+    //bottom: 15rem;
+    //color: $fontSecondColor;
+    //padding: 1rem;
+    //font-size: 1.4rem;
+  }
+
+}

@@ -6,6 +6,7 @@ import {AiComponentModule} from "../../components/ai/answer/ai.module";
 import {BackComponentModule} from "../../components/backComponent/back.module";
 import {PointComponentModule} from "../../components/ai/point/point.module";
 import {InputComponentModule} from "../../components/ai/input/input.module";
+import {HelpComponentModule} from "../../components/help/help.module";
 
 @NgModule({
   declarations: [
@@ -16,7 +17,8 @@ import {InputComponentModule} from "../../components/ai/input/input.module";
     AiComponentModule,
     BackComponentModule,
     PointComponentModule,
-    InputComponentModule
+    InputComponentModule,
+    HelpComponentModule
   ],
   providers: [
     AipService,

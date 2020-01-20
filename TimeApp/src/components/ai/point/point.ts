@@ -21,11 +21,12 @@ import {PopperComponent} from "angular-popper";
   selector: 'PointComponent',
   template: `
 
-    <div class="inputioc" (click)="inputstart()" *ngIf="showInput" #inputComponent >
+    <div class="inputioc" (click)="inputstart()" *ngIf="showInput" #inputComponent>
       <ion-icon class="fal fa-keyboard"></ion-icon>
     </div>
     <div class="aitool" #aitool (click)="ponintClick()">
-      <b class=" speaking  moving" #light>
+      <div class="tip" *ngIf="showInput && showtip">点击说话</div>
+      <b class=" speaking  moving" #speaking>
         <div class="spinner">
           <!--<canvas #canvas></canvas>-->
         </div>
@@ -39,15 +40,16 @@ import {PopperComponent} from "angular-popper";
       </angular-popper>
     </ng-template>
 
-    <ListeningComponent #listeningComponent *ngIf="showInput" (onListeningStart)="listeningStart()" (onListeningStop)="listeningStop()"></ListeningComponent>
+    <ListeningComponent #listeningComponent *ngIf="showInput" (onListeningStart)="listeningStart()"
+                        (onListeningStop)="listeningStop()"></ListeningComponent>
 
   `,
 })
 export class PointComponent {
 
-  private ani:Animation;
-  @ViewChild('light')
-  light: ElementRef;
+  private ani: Animation;
+  @ViewChild('speaking')
+  speaking: ElementRef;
   @ViewChild('aitool')
   aitool: ElementRef;
   @ViewChild('inputComponent')
@@ -59,6 +61,7 @@ export class PointComponent {
   @ViewChild('popper')
   popper: PopperComponent;
   popperShow: boolean = false;
+  showtip: boolean = true;
 
   @Input()
   showInput: boolean = true;
@@ -75,7 +78,7 @@ export class PointComponent {
 
   }
 
-  showPopper($event:any){
+  showPopper($event: any) {
     this.popperShow = $event;
     if (!this.changeDetectorRef['destroyed']) {
       this.changeDetectorRef.detectChanges();
@@ -86,24 +89,24 @@ export class PointComponent {
   ngOnDestroy() {
   }
 
-  ngAfterViewInit(){
+  ngAfterViewInit() {
 
-    if (this.showInput){
+    if (this.showInput) {
       this.ani = new Animation(this.plt);
       this.ani
         .easing('cubic-bezier(0.0, 0.0, 0.2, 1)')
         .easingReverse('cubic-bezier(0.4, 0.0, 0.6, 1)')
         .duration(280);
       let listening = new Animation(this.plt, this.listeningEl.nativeElement);
-      listening.fromTo('width',0 ,"100%");
+      listening.fromTo('width', 0, "100%");
       this.ani.add(listening);
       let aitool = new Animation(this.plt, this.aitool.nativeElement);
-      aitool.fromTo('translateY',0 ,"-70px");
-      aitool.fromTo('translateX',0 ,"-20px");
-      aitool.fromTo('scale',1 ,0.8);
+      aitool.fromTo('translateY', 0, "-70px");
+      aitool.fromTo('translateX', 0, "-20px");
+      aitool.fromTo('scale', 1, 0.8);
       this.ani.add(aitool);
-      let input =  new Animation(this.plt, this.inputComponent.nativeElement);
-      input.fromTo('scale',"1" ,0);
+      let input = new Animation(this.plt, this.inputComponent.nativeElement);
+      input.fromTo('scale', "1", 0);
       this.ani.add(input);
     }
   }
@@ -118,15 +121,15 @@ export class PointComponent {
   ponintClick() {
     // this.emitService.emitAiTellYou({close: false, message: {title:'zhangju 邀请你',text:'QQ'}});
     //    this.listeningStart(()=>{
-         this.onPonintClick.emit(this);
-       // });
-       // setTimeout(()=>{
-       //   this.listeningStop(()=>{
-       //   });
-       // },5000)
-     // }else{
-     //   this.onPonintClick.emit(this);
-     // }
+    this.onPonintClick.emit(this);
+    // });
+    // setTimeout(()=>{
+    //   this.listeningStop(()=>{
+    //   });
+    // },5000)
+    // }else{
+    //   this.onPonintClick.emit(this);
+    // }
     // this.listening.start();
   }
 
@@ -135,21 +138,24 @@ export class PointComponent {
   }
 
 
-  listeningStart(done:Function){
+  listeningStart(done: Function) {
 
-  if (this.ani) {
-    this.ani
-      .onFinish(done, true, true)
-      .reverse(false).play();
-    this._renderer.removeClass(this.light.nativeElement, "moving");
+    if (this.ani) {
+      this.ani
+        .onFinish(done, true, true)
+        .reverse(false).play();
+      this._renderer.removeClass(this.speaking.nativeElement, "moving");
+      this.showtip = false;
+    }
   }
-  }
-  listeningStop(done:Function){
+
+  listeningStop(done: Function) {
     if (this.ani) {
       this.ani
         .onFinish(done, true, true)
         .reverse(true).play();
-      this._renderer.addClass(this.light.nativeElement, "moving");
+      this._renderer.addClass(this.speaking.nativeElement, "moving");
+      this.showtip = true;
     }
 
   }

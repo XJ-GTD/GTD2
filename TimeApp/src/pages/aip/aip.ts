@@ -1,4 +1,4 @@
-import {ChangeDetectorRef, Component, ViewChild} from '@angular/core';
+import {ChangeDetectorRef, Component, Renderer2, ViewChild} from '@angular/core';
 import {IonicPage, NavController} from 'ionic-angular';
 import {AipService} from "./aip.service";
 import {EmitService} from "../../service/util-service/emit.service";
@@ -8,6 +8,7 @@ import {InputComponent} from "../../components/ai/input/input";
 import * as moment from "moment";
 import {DataConfig} from "../../service/config/data.config";
 import {UserConfig} from "../../service/config/user.config";
+import {HelpComponent} from "../../components/help/help";
 
 /**
  * Generated class for the AlPage page.
@@ -25,6 +26,9 @@ import {UserConfig} from "../../service/config/user.config";
       <ion-toolbar>
         <ion-buttons right>
           <button ion-button icon-only (click)="goBack()">
+            <ion-icon class="fal fa-question-circle" ></ion-icon>
+          </button>
+          <button ion-button icon-only (click)="goBack()">
             <ion-icon class="fal fa-times" ></ion-icon>
           </button>
         </ion-buttons>
@@ -33,6 +37,7 @@ import {UserConfig} from "../../service/config/user.config";
     <ion-content>
       <!--<BackComponent></BackComponent>-->
       <AiComponent></AiComponent>
+      <HelpComponent *ngIf="showGuide" class="animated fadeIn"></HelpComponent>
       <PointComponent [showInput] = "true" (onPonintClick)="listenStart()" [hasPopper]="false" (onInputClick)="inputClick()"></PointComponent>
       <InputComponent #inputComponent></InputComponent>
     </ion-content>
@@ -43,6 +48,9 @@ export class AipPage{
 
   @ViewChild('inputComponent')
   inputComponent: InputComponent;
+  @ViewChild(HelpComponent)
+  helpComponent: HelpComponent;
+  showGuide:boolean
 
   statusListener:boolean = false;
   constructor(private aipService: AipService,
@@ -51,6 +59,7 @@ export class AipPage{
               private utilService: UtilService,
               private assistantService: AssistantService,
               private changeDetectorRef: ChangeDetectorRef,
+              private _renderer: Renderer2,
   ) {
     //
     this.assistantService.startWakeUp();
@@ -89,77 +98,94 @@ export class AipPage{
     words.set("22", "晚上");
     words.set("23", "晚上");
 
+    // this.showGuide = DataConfig.hasWelcome;
+    this.showGuide = true;
+
     let preword = words.get(moment().format("HH"));
     let name = UserConfig.user.nickname;
     let guide = UserConfig.getSetting(DataConfig.SYS_SIP);
 
-    let welcome: any = {
-      header: {
-        version: 'V1.1',
-        sender: 'xunfei/aiui',
-        datetime: moment().format("YYYY/MM/DD HH:mm"),
-        describe: []
-      },
-      content: {}
-    };
-
-    if (!DataConfig.hasWelcome) {
-      welcome['header']['describe'].push('S');
-
-      welcome['content']['0'] = {
-        processor: 'S',
-        option: 'S.P',
-        parameters: {
-          t: "WELCOME"
-        },
-        input: {
-          textvariables: [
-            {name: 'timewelcome', value: preword},
-            {name: 'username', value: name}
-          ]
-        }
-      };
-
-      if (guide) {
-        welcome['header']['describe'].push('S');
-
-        welcome['content']['1'] = {
-          processor: 'S',
-          option: 'S.P',
-          parameters: {
-            t: 'HowtoUse'
-          }
-        };
-      }
-
-      DataConfig.hasWelcome = true;
-    } else {
-      if (guide) {
-        welcome['header']['describe'].push('S');
-
-        welcome['content']['0'] = {
-          processor: 'S',
-          option: 'S.P',
-          parameters: {
-            t: 'HowtoUse'
-          }
-        };
-      }
-    }
-
-    if (welcome['header']['describe'].length > 0) {
-      this.emitService.emit('local.message.received', {body: JSON.stringify(welcome)});
-    }
+    // let welcome: any = {
+    //   header: {
+    //     version: 'V1.1',
+    //     sender: 'xunfei/aiui',
+    //     datetime: moment().format("YYYY/MM/DD HH:mm"),
+    //     describe: []
+    //   },
+    //   content: {}
+    // };
+    //
+    // if (!DataConfig.hasWelcome) {
+    //   welcome['header']['describe'].push('S');
+    //
+    //   welcome['content']['0'] = {
+    //     processor: 'S',
+    //     option: 'S.P',
+    //     parameters: {
+    //       t: "WELCOME"
+    //     },
+    //     input: {
+    //       textvariables: [
+    //         {name: 'timewelcome', value: preword},
+    //         {name: 'username', value: name}
+    //       ]
+    //     }
+    //   };
+    //
+    //   if (guide) {
+    //     welcome['header']['describe'].push('S');
+    //
+    //     welcome['content']['1'] = {
+    //       processor: 'S',
+    //       option: 'S.P',
+    //       parameters: {
+    //         t: 'HowtoUse'
+    //       }
+    //     };
+    //   }
+    //
+    //   DataConfig.hasWelcome = true;
+    // } else {
+    //   if (guide) {
+    //     welcome['header']['describe'].push('S');
+    //
+    //     welcome['content']['0'] = {
+    //       processor: 'S',
+    //       option: 'S.P',
+    //       parameters: {
+    //         t: 'HowtoUse'
+    //       }
+    //     };
+    //   }
+    // }
+    //
+    // if (welcome['header']['describe'].length > 0) {
+    //   this.emitService.emit('local.message.received', {body: JSON.stringify(welcome)});
+    // }
   }
 
   inputClick(){
     this.inputComponent.inputStart();
+    if (this.showGuide){
+      this._renderer.removeClass(this.helpComponent.elementRef.nativeElement,"fadeIn");
+      this._renderer.addClass(this.helpComponent.elementRef.nativeElement,"fadeOut");
+      setTimeout(()=>{
+        this.showGuide = false;
+      },1500);
+    }
   }
 
   listenStart() {
     if (!this.statusListener)
       this.assistantService.listenAudio();
     else this.assistantService.stopListenAudio();
+    if (this.showGuide){
+      this._renderer.removeClass(this.helpComponent.elementRef.nativeElement,"fadeIn");
+      this._renderer.addClass(this.helpComponent.elementRef.nativeElement,"fadeOut");
+      setTimeout(()=>{
+        this.showGuide = false;
+      },1500);
+    }
   }
 
   goBack() {
