@@ -1,0 +1,25 @@
+{
+  "_id": ObjectID("5e254cad12876b0007060962"),
+  "name": "鹦鹉螺持续服务GitHub App代码库提交处理流",
+  "trigger": "nautilus_github_app_push",
+  "parameters": [
+    "github_app",
+    "webhookowner",
+    "version",
+    "observer",
+    "params",
+    "header",
+    "body"
+  ],
+  "follows": [
+    {
+      "name": "持续服务确认.nautilus.yml",
+      "trigger": "exc",
+      "parameters": [
+        "method;post",
+        "urlabs;http://nautilus-core:8080/nautilus/#{webhookowner}/activation",
+        "data;$.root.parameters.body"
+      ]
+    }
+  ]
+}

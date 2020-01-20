@@ -1,0 +1,16 @@
+{
+  "_id": ObjectID("5e2516b412876b0007060960"),
+  "name": "鹦鹉螺持续服务GitHub App安装处理流",
+  "trigger": "nautilus_github_app_install",
+  "parameters": [
+    "github_app",
+    "webhookowner",
+    "version",
+    "observer",
+    "params",
+    "header",
+    "body"
+  ],
+  "follows": [
+  ]
+}

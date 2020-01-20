@@ -1,0 +1,164 @@
+include:
+  - source: xunfei/aiui
+    generators:
+      - name: 意图事件发生器
+        identify: events_generator_with_intent
+        flow: flow_events_generator_with_intent
+      - name: 技能事件发生器
+        identify: events_generator_with_service
+        flow:
+          <<: *flow_events_generator_with_service
+  - source: github
+  - source: mwxing
+flows:
+  - flow_events_generator_with_intent: &flow_events_generator_with_intent
+      name: 意图事件发生器处理流
+      trigger: flow_events_generator_with_intent
+      parameters:
+        - deviceId
+        - userId
+        - xunfeiyun
+      follows:
+        - name: 意图事件数据转换
+          trigger: translate_aiui_to_intent_events
+          parameters:
+            - datasource;$.parent.parameters
+          outputs:
+            - cleaned
+          next:
+            - name: 发送意图事件数据
+              trigger: exc
+              parameters:
+                - method;post
+                - urlabs;http://sa-aag:8080/aag/webhooks/xunfei%2Faiui/v1/{USER_SECURITYID}
+                - data;$.parent.outputs.cleaned
+                - merge_payload;$.root.parameters
+              outputs:
+                - executed
+  - flow_events_generator_with_service: &flow_events_generator_with_service
+      name: 技能事件发生器处理流
+      trigger: flow_events_generator_with_service
+      parameters:
+        - deviceId
+        - userId
+        - xunfeiyun
+      follows:
+        - name: 意图事件数据转换
+          trigger: translate_aiui_to_service_events
+          parameters:
+            - datasource;$.parent.parameters
+          outputs:
+            - cleaned
+          next:
+            - name: 发送技能事件数据
+              trigger: exc
+              parameters:
+                - method;post
+                - urlabs;http://sa-aag:8080/aag/webhooks/xunfei%2Faiui/v1/{USER_SECURITYID}
+                - data;$.parent.outputs.cleaned
+                - merge_payload;$.root.parameters
+              outputs:
+                - executed
+executors:
+  - exc
+  - translate_aiui_to_intent_events:
+      name: 讯飞AIUI数据转换意图事件数据
+      container: acj
+      clean: |
+        function clean(datasource) {
+          var result = {};
+
+          print('Start Nashorn Javascript processing...');
+          //print(datasource);
+
+          // filter source code here start
+          var input = JSON.parse(datasource);
+          var data = input.data[0];
+
+          var event = {
+            category: 'xunfei/aiui',
+            type: 'intent'
+          };
+
+          for (var di in input.data) {
+            var dt = input.data[di];
+            if (dt['sub'] === 'nlp' && dt['intent']['service'] && dt['intent']['intentType'] === 'custom' && dt['intent']['semantic']) {
+              event['service'] = dt['intent']['service'];
+
+              var semantics = dt['intent']['semantic'];
+
+              for (var sei in semantics) {
+                var semantic = semantics[sei];
+
+                event['intent'] = semantic['intent'];
+              }
+            }
+          }
+
+          var outputs = {
+            event: event
+          };
+
+          //print(JSON.stringify(outputs));
+
+          // filter source code here end
+          return JSON.stringify(outputs);
+        }
+  - translate_aiui_to_service_events:
+      name: 讯飞AIUI数据转换技能事件数据
+      container: acj
+      scriptengine: Nashorn
+      clean: |
+        function clean(datasource) {
+          var result = {};
+
+          print('Start Nashorn Javascript processing...');
+          //print(datasource);
+
+          // filter source code here start
+          var input = JSON.parse(datasource);
+          var data = input.data[0];
+
+          var event = {
+            category: 'xunfei/aiui',
+            type: 'service'
+          };
+
+          for (var di in input.data) {
+            var dt = input.data[di];
+            if (dt['sub'] === 'nlp' && dt['intent']['service'] && dt['intent']['intentType'] === 'custom' && dt['intent']['semantic']) {
+              event['service'] = dt['intent']['service'];
+
+              var semantics = dt['intent']['semantic'];
+
+              for (var sei in semantics) {
+                var semantic = semantics[sei];
+
+                event['intent'] = semantic['intent'];
+              }
+            }
+          }
+
+          var outputs = {
+            event: event
+          };
+
+          //print(JSON.stringify(outputs));
+
+          // filter source code here end
+          return JSON.stringify(outputs);
+        }
+dispatch:
+  events:
+    - name: 设置语音唤醒
+      filter:
+        - name: category
+          value: xunfei/aiui
+        - name: type
+          value: service
+        - name: intent
+          value: SettingVoiceActivation
+        - name: service
+          value: OS6981162467.LocalSetting
+      flow: mwxing_inteligence_service_remote_start_v2
+    - name: 设置消息提醒
