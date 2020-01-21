@@ -113,7 +113,6 @@ export class AiComponent {
 
     this.aiData1.scdList = new ScdLsAiData();
     this.aiData1.scdList.desc = datas.desc;
-    this.aiData1.scdList.scdTip = datas.scdTip;
 
     for (let scdEmData of datas.datas) {
       let aiData: ScdAiData = new ScdAiData();
@@ -124,7 +123,6 @@ export class AiComponent {
       aiData.id = scdEmData.id;
       aiData.gs = scdEmData.gs;
       aiData.adr = scdEmData.adr;
-      aiData.scdTip = scdEmData.scdTip;
       this.aiData1.scdList.datas.push(aiData);
     }
     this.changeDetectorRef.detectChanges();
@@ -137,11 +135,8 @@ export class AiComponent {
     // this.copy(datas.iswaitting?true:false);
     this.aiData1.speechAi.org = datas.org;
     this.aiData1.speechAi.an = datas.an;
-    if (datas.tips && !datas.tips.startsWith("说")) {
-      this.aiData1.speechAi.tips = datas.tips;
-      if (this.aiData1.speechAi.tips) {
-        this.aiData1.speechAi.arraytips = this.aiData1.speechAi.tips.split("|");
-      }
+    if (datas.tips) {
+      this.aiData1.speechAi.arraytips = datas.tips.split("|");
     }
     this.gotonew();
 
@@ -163,9 +158,8 @@ export class AiComponent {
     aiData.id = data.id;
     aiData.gs = data.gs;
     aiData.adr = data.adr;
-    aiData.scdTip = data.scdTip;
 
-    for (let femd of  data.datas) {
+    for (let femd of  data.updatefriends) {
       let ff: FriendAiData = new FriendAiData();
       ff.m = femd.m;
       ff.id = femd.id;
@@ -174,6 +168,18 @@ export class AiComponent {
       ff.p = femd.p;
       ff.uid = femd.uid;
       aiData.friends.push(femd);
+
+    }
+
+    for (let femd of  data.friends) {
+      let ff: FriendAiData = new FriendAiData();
+      ff.m = femd.m;
+      ff.id = femd.id;
+      ff.a = femd.a;
+      ff.n = femd.n;
+      ff.p = femd.p;
+      ff.uid = femd.uid;
+      aiData.showfriends.push(femd);
 
     }
 
@@ -210,6 +216,8 @@ export class AiComponent {
       this.aiData1.speechAi.iswaitting = true;
     }else{
       this.aiData1.speechAi.iswaitting = false;
+      this.aiData1.showTip = true;
+      this.aiData1.showHelp = true;
     }
   }
 }

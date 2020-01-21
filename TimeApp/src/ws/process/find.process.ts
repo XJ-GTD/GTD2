@@ -14,10 +14,16 @@ import {WsDataConfig} from "../wsdata.config";
 import {BaseProcess} from "./base.process";
 import {BTbl} from "../../service/sqlite/tbl/b.tbl";
 import {UserConfig} from "../../service/config/user.config";
-import {EventService,Member} from "../../service/business/event.service";
+import {AgendaData, EventService, Member} from "../../service/business/event.service";
 import {ObjectType} from "../../data.enum";
-import {CalendarService, FindActivityCondition, ActivityData} from "../../service/business/calendar.service";
-import {Friend} from "../../service/business/grouper.service";
+import {
+  CalendarService,
+  FindActivityCondition,
+  ActivityData,
+  PlanItemData
+} from "../../service/business/calendar.service";
+import {Friend, GrouperService} from "../../service/business/grouper.service";
+import {DataConfig} from "../../service/config/data.config";
 
 /**
  * 查询联系人和日历
@@ -27,8 +33,7 @@ import {Friend} from "../../service/business/grouper.service";
 @Injectable()
 export class FindProcess extends BaseProcess implements MQProcess {
   constructor(private sqliteExec: SqliteExec, private fsService: FsService,private calendarService:CalendarService,
-               private util:UtilService,private eventService:EventService,
-              private userConfig: UserConfig) {
+               private util:UtilService,private eventService:EventService,private grouperService:GrouperService) {
     super();
   }
 
@@ -82,6 +87,7 @@ export class FindProcess extends BaseProcess implements MQProcess {
       }, new Array<ObjectType>());
 
       let activities: ActivityData = await this.calendarService.findActivities(condition);
+      let index = 0;
 
       if (activities.events && activities.events.length > 0) {
         for (let event of activities.events) {
@@ -96,9 +102,23 @@ export class FindProcess extends BaseProcess implements MQProcess {
           escd.et = event.evt;
           escd.adr = event.adr;
 
+          if (index == activities.events.length - 1){
+            let agendaData:AgendaData = await this.eventService.getAgenda(escd.si,true);
+            let creator:Friend = {} as Friend;
+            // creator.ran = agendaData.creator.ran;
+            escd.fs = creator;
+            let showFss:Array<Friend> = new Array<Friend>();
+            agendaData.members.forEach((member)=>{
+              let friend:Friend = {} as Friend;
+              friend.ran = member.ran;
+              showFss.push(friend);
+            })
+            escd.showfss = showFss;
+          }
           scd.push(escd);
+          index ++ ;
 
-          if (scd.length >= 5) {
+          if (scd.length >= 50) {
             break;
           }
         }
@@ -114,13 +134,14 @@ export class FindProcess extends BaseProcess implements MQProcess {
 
           memos.push(escd);
 
-          if (memos.length >= 5) {
+          if (memos.length >= 50) {
             break;
           }
         }
       }
 
       if (activities.calendaritems && activities.calendaritems.length > 0) {
+        index = 0;
         for (let calendaritem of activities.calendaritems) {
           let escd: ScdData = new ScdData();
 
@@ -130,25 +151,28 @@ export class FindProcess extends BaseProcess implements MQProcess {
           escd.sd = calendaritem.sd;
           escd.st = calendaritem.st;
 
-          planitems.push(escd);
+          if (index == activities.calendaritems.length - 1){
+            let planItemData:PlanItemData = await this.calendarService.getPlanItem(escd.si,true);
+            let creator:Friend = {} as Friend;
+            // creator.ran =  this.grouperService.getMemberFromCache(planItemData.ui,UserConfig.friends).ran;
+            escd.fs = creator;
+            let showFss:Array<Friend> = new Array<Friend>();
+            planItemData.members.forEach((member)=>{
+              let friend:Friend = {} as Friend;
+              friend.ran = member.ran;
+              showFss.push(friend);
+            })
+            escd.showfss = showFss;
+          }
 
-          if (planitems.length >= 5) {
+          planitems.push(escd);
+          index ++ ;
+
+          if (planitems.length >= 50) {
             break;
           }
         }
       }
-    }
-
-    //增加排序处理
-    if (scd && scd.length > 0) {
-      scd.sort((a, b) => {
-        let evda: string = a.sd;
-        let evta: string = a.st;
-        let evdb: string = b.sd;
-        let evtb: string = b.st;
-
-        return moment(evda + " " + evta, "YYYY/MM/DD HH:mm", true).diff(moment(evdb + " " + evtb, "YYYY/MM/DD HH:mm", true));
-      });
     }
 
     //服务器要求上下文内放置日程查询结果

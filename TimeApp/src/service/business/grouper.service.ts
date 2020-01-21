@@ -121,6 +121,29 @@ export class GrouperService extends BaseService {
   }
 
   /**
+   * 获取缓存中的联系人信息(未完成)
+   *
+   * @author leon_xi@163.com
+   **/
+   getMemberFromCache(ui:string, friends: Array<Friend>): Friend{
+
+    let matched: Friend;
+
+    matched = friends.find((member)=>{
+      return member.ui == ui;
+    });
+
+    if (!matched){
+      if (UserConfig.account.id == ui){
+
+      }
+    }
+    return matched;
+
+  }
+
+
+  /**
    * 导入本地联系人
    *
    * @author leon_xi@163.com

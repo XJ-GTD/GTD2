@@ -13,6 +13,25 @@ import {UserConfig} from "../../../service/config/user.config";
   selector: 'AiChildenComponent',
   template: `
 
+    <ng-template [ngIf]="aiData.speechAi && aiData.speechAi.iswaitting">
+      <div  class="aiAn">
+        <div class="ainame">冥王星正在思考</div>
+        <div class="aicontent aiSpeechAn">
+          <div class="box">
+            <div class="box1">
+            </div>
+            <div class="box2">
+            </div>
+            <div class="box3">
+            </div>
+            <div class="box4">
+            </div>
+            <div class="box5">
+            </div>
+          </div>
+        </div>
+      </div>
+    </ng-template>
     <ng-template [ngIf]="aiData.speechAi && aiData.speechAi.org">
       <div  class="self">
         <div class="selfname">{{selfName}}</div>
@@ -21,41 +40,17 @@ import {UserConfig} from "../../../service/config/user.config";
     </ng-template>
     <ng-template [ngIf]="aiData.speechAi && aiData.speechAi.an">
       <div  class="aiAn">
-        <div class="ainame">小冥</div>
+        <div class="ainame">冥王星</div>
         <div class="aicontent aiSpeechAn">{{aiData.speechAi.an}}</div>
-        <div class="scdTip" *ngIf="aiData.speechAi.tips">
-            <ul>
-              <li *ngFor="let tips of aiData.speechAi.arraytips">{{tips}}</li>
-            </ul>
-        </div>
       </div>
-    </ng-template>
-    <ng-template [ngIf]="aiData.speechAi && aiData.speechAi.iswaitting">
-      <div  class="aiAn">
-        <div class="ainame">小冥</div>
-        <div class="aicontent aiSpeechAn">
-        <div class="box">
-          <div class="box1">
-          </div>
-          <div class="box2">
-          </div>
-          <div class="box3">
-          </div>
-          <div class="box4">
-          </div>
-          <div class="box5">
-          </div>
-        </div>
-        </div>
-      </div>
-    </ng-template>
+    </ng-template>    
     <ng-template [ngIf]="aiData.scd">
       <div no-lines class="scd">
         <div  class="aiscdAn">
           <div class="aiSpeechAn" *ngIf="aiData.scd.an">
             {{aiData.scd.an}}
           </div>
-          <div class="aiscdcontent"  (click)="showScd(aiData.scd)">
+          <div class="aiscdcontent">
             <div class="scdWarp">
               <div class="title">
                 <span *ngIf="!aiData.scd.type || aiData.scd.type == 'event'">活动</span>
@@ -68,18 +63,28 @@ import {UserConfig} from "../../../service/config/user.config";
                 <span>{{aiData.scd.d | formatedate:"CYYYY/MM/DD W"}} {{(aiData.scd.d + "T" + aiData.scd.t) | formatedate : "A h:mm"}}</span>
               </div>
               <div class="add"  *ngIf="aiData.scd.adr && aiData.scd.adr != ''"><span >地址</span><span>{{aiData.scd.adr}}</span></div>
-              <div class="friend" *ngIf="aiData.scd.friends.length > 0">
+              <div class="friend" *ngIf="aiData.scd.showfriends.length > 0">
                 <span>参与人</span>
+                <span>
+                  <b *ngFor="let fs of aiData.scd.showfriends">
+                    {{fs.n}}
+                  </b>
+                </span>
+              </div>
+              
+              <div class="friend" *ngIf="aiData.scd.friends.length > 0">
+                <span>修改参与人</span>
                 <span>
                   <b *ngFor="let fs of aiData.scd.friends">
                     {{fs.n}}
                   </b>
                 </span>
               </div>
+              <div class="help" *ngIf=" aiData.showHelp">
+                  <button (click)="showScd(aiData.scd)">查看</button>
+                  <button (click)="speakScd(aiData.scd)">播报</button>
+              </div>
             </div>
-          </div>
-          <div class="scdTip">
-            <span >点击或说"进入编辑"</span>
           </div>
         </div>
       </div>
@@ -93,15 +98,24 @@ import {UserConfig} from "../../../service/config/user.config";
           <div class="ailistcontent">
             <div *ngFor="let scd of aiData.scdList.datas,let i = index" (click)="showScd(scd)">
               <span class="date" *ngIf="(i == 0 || aiData.scdList.datas[i-1].d != scd.d)">{{countDay(scd.d)}}</span>
-              <span class="ti">{{(scd.d + "T" + scd.t) | formatedate : "A h:mm"}} {{scd.ti}}</span>
+              <span class="time">{{(scd.d + "T" + scd.t) | formatedate : "A h:mm"}} </span>
+              <span class="ti twoline" >{{scd.ti}}</span>
             </div>
           </div>
-          <div class="scdTip">
-            <span >{{aiData.scdList.scdTip}}</span>
-            <ion-icon class="fal fa-microphone" (click)="speakScd(aiData.scdList)"></ion-icon>
+          <div class="help" *ngIf=" aiData.showHelp">
+            <span>点击列表查看</span>
+            <button  (click)="speakScdList(aiData.scdList)" icon-only>    
+              <ion-icon class="fal fa-microphone" (click)="speakScd(aiData.scdList)" on-hold="speakScd(aiData.scdList)"></ion-icon>
+            </button>
           </div>
         </div>
-
+      </div>
+    </ng-template>
+    <ng-template [ngIf]="aiData.speechAi && aiData.showTip">
+      <div class="scdTip" >
+        <ul>
+          <li *ngFor="let tips of aiData.speechAi.arraytips">{{tips}}</li>
+        </ul>
       </div>
     </ng-template>
   `,
@@ -121,8 +135,12 @@ export class AiChildenComponent {
     this.selfName = UserConfig.user.realname;
   }
 
-  speakScd(scds: ScdLsAiData) {
-    this.aiService.speakScd(scds);
+  speakScdList(scds: ScdLsAiData) {
+    this.aiService.speakScdList(scds);
+  }
+
+  speakScd(scd: ScdAiData) {
+    this.aiService.speakScd(scd);
   }
 
   showScd(scd: ScdAiData) {

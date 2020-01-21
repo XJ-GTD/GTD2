@@ -346,7 +346,6 @@ export class EmitService {
 
 export class ScdLsEmData {
   desc: string = "";
-  scdTip : string ="";
   datas: Array<ScdEmData> = new Array<ScdEmData>();
 }
 
@@ -358,8 +357,9 @@ export class ScdEmData {
   gs:string = "";
   adr:string = "";
   type: string = "event";
-  scdTip:string ="";
-  datas: Array<FriendEmData> = new Array<FriendEmData>();
+  updatefriends: Array<FriendEmData> = new Array<FriendEmData>();
+  friends: Array<FriendEmData> = new Array<FriendEmData>();
+  creater: FriendEmData = new FriendEmData();
 }
 
 export class FriendEmData {
@@ -374,6 +374,6 @@ export class FriendEmData {
 export class SpeechEmData {
   an: string = "";
   org: string = "";
-  tips: string = "";
+  tips:string = "";
   iswaitting: boolean = false;
 }

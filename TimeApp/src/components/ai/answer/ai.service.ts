@@ -1,6 +1,6 @@
 import {Injectable} from "@angular/core";
 import * as moment from "moment";
-import { ScdPageParamter} from "../../../data.mapping";
+import {ScdPageParamter} from "../../../data.mapping";
 import {DataConfig} from "../../../service/config/data.config";
 import {ModalController} from "ionic-angular";
 import {AssistantService} from "../../../service/cordova/assistant.service";
@@ -14,12 +14,12 @@ export class AiService {
 
   constructor(private modalController: ModalController,
               private assistantService: AssistantService,
-              private fsService:FsService,
+              private fsService: FsService,
               private util: UtilService,
-              private memoSevice:MemoService) {
+              private memoSevice: MemoService) {
   }
 
-  speakScd(scds: ScdLsAiData) {
+  speakScdList(scds: ScdLsAiData) {
     let speak: string = "";
     let i = 0;
 
@@ -33,8 +33,25 @@ export class AiService {
         prevdate = currdate;
         broadcast = true;
       }
-      speak = speak + "第" + (i + 1) + "个活动 " + (broadcast? currdate : '') + (scd.t == '99:99'? ' ' : scd.t) + scd.ti;
+      speak = speak + "第" + (i + 1) + "个活动。 " + (broadcast ? currdate : '') + (scd.t == '99:99' ? ' ' : scd.t) + scd.ti + "。";
     }
+
+    this.assistantService.speakText(speak);
+
+  }
+
+  speakScd(scd: ScdAiData) {
+    let speak: string = "";
+
+    let prevdate = '';
+    let currdate = moment(scd.d).format("YYYY年MM月DD日");
+    let broadcast = false;
+
+    if (prevdate == '' || currdate != prevdate) {
+      prevdate = currdate;
+      broadcast = true;
+    }
+    speak = speak + (broadcast ? currdate : '') + (scd.t == '99:99' ? ' ' : scd.t) + scd.ti;
 
     this.assistantService.speakText(speak);
 
@@ -43,20 +60,21 @@ export class AiService {
   private toMemo(day) {
     this.util.createModal(DataConfig.PAGE._DAILYMEMOS_PAGE, day, ModalTranType.scale).present();
   }
-  showScd(scd: ScdAiData){
-    if (scd.type == "event"){
+
+  showScd(scd: ScdAiData) {
+    if (scd.type == "event") {
       let p: ScdPageParamter = new ScdPageParamter();
       p.si = scd.id;
       this.util.createModal(DataConfig.PAGE._AGENDA_PAGE, p, ModalTranType.scale).present();
-    }else if (scd.type == "calendar"){
+    } else if (scd.type == "calendar") {
       let p: ScdPageParamter = new ScdPageParamter();
       p.si = scd.id;
       this.util.createModal(DataConfig.PAGE._COMMEMORATIONDAY_PAGE, p, ModalTranType.scale).present();
-    }else if (scd.type == "memo"){
-      this.memoSevice.getMemo(scd.id).then((memo)=>{
-        let day: string = moment(scd.d,"YYYY/MM/DD hh:ss").format("YYYY/MM/DD");
-        let mo:MemoData = memo;
-        if (memo){
+    } else if (scd.type == "memo") {
+      this.memoSevice.getMemo(scd.id).then((memo) => {
+        let day: string = moment(scd.d, "YYYY/MM/DD hh:ss").format("YYYY/MM/DD");
+        let mo: MemoData = memo;
+        if (memo) {
           this.util.createModal(DataConfig.PAGE._MEMO_PAGE, {day: day, memo: mo}, ModalTranType.scale).present();
         }
       })
@@ -79,7 +97,7 @@ export class AiService {
       str = '昨天';
     } else if (days == -2) {
       str = '前天';
-    } else{
+    } else {
       str = date.format("YYYY-M-D");
     }
     return str;
@@ -92,14 +110,16 @@ export class AiData {
   speechAi: SpeechAiData;
   scdList: ScdLsAiData;
   scd: ScdAiData;
+  showHelp:boolean =false;
+  showTip:boolean =false;
 
-  public clear(){
+  public clear() {
     this.speechAi = null;
     this.scdList = null;
     this.scd = null;
   }
 
-  public copyto(target:AiData){
+  public copyto(target: AiData) {
     target.clear();
 
     if (this.scd) {
@@ -116,6 +136,8 @@ export class AiData {
       target.speechAi = new SpeechAiData();
       Object.assign(target.speechAi, this.speechAi);
     }
+    target.showHelp = false;
+    target.showTip = false;
   }
 
   public isEmpty() {
@@ -125,7 +147,6 @@ export class AiData {
 
 export class ScdLsAiData {
   desc: string = "";
-  scdTip:string = "";
   datas: Array<ScdAiData> = new Array<ScdAiData>();
 }
 
@@ -136,11 +157,11 @@ export class ScdAiData {
   ti: string = "";
   type: string = "";  // 增加数据类型
   gs: string = "";
-  saved:boolean = false;
-  scdTip:string = "";
+  saved: boolean = false;
   an: string = "";
-  adr:string;
+  adr: string;
   friends: Array<FriendAiData> = new Array<FriendAiData>();
+  showfriends: Array<FriendAiData> = new Array<FriendAiData>();
 }
 
 export class FriendAiData {
@@ -149,13 +170,12 @@ export class FriendAiData {
   m: string = "";
   p: string = "";
   a: string = "";
-  uid:string = "";
+  uid: string = "";
 }
 
 export class SpeechAiData {
   an: string = "";
   org: string = "";
-  tips: string = "";
   arraytips: Array<string> = new Array<string>();
-  iswaitting:boolean = false;
+  iswaitting: boolean = false;
 }

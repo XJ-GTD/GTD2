@@ -4,7 +4,7 @@ import {Keyboard} from "@ionic-native/keyboard";
 import {AssistantService} from "../../../service/cordova/assistant.service";
 import {DataConfig} from "../../../service/config/data.config";
 import {UtilService} from "../../../service/util-service/util.service";
-import {EmitService, SpeechEmData} from "../../../service/util-service/emit.service";
+import {EmitService} from "../../../service/util-service/emit.service";
 
 /**
  * Generated class for 输入框 page.
@@ -17,13 +17,13 @@ import {EmitService, SpeechEmData} from "../../../service/util-service/emit.serv
   selector: 'InputComponent',
   template: `
     <ion-content>
-      <div class="help">
-        <ion-grid>
-          <ion-row *ngFor="let help of helps">
-            {{help}}
-          </ion-row>
-        </ion-grid>
-      </div>
+      <!--<div class="help">-->
+        <!--<ion-grid>-->
+          <!--<ion-row *ngFor="let help of helps">-->
+            <!--{{help}}-->
+          <!--</ion-row>-->
+        <!--</ion-grid>-->
+      <!--</div>-->
       <div class="waper" #waperInput>
         <ion-textarea class="text" #input></ion-textarea>
         <div class="tools">

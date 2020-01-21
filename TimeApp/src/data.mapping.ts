@@ -83,7 +83,6 @@ export class ScdData {
   du:string ="";//消息读取状态
   gs:string ="";//归属 0：本人创建，1：他人创建，2：系统本地日历,3:系统计划3优先级类型，4：系统计划无优先级
   ib:string ="0"; //0：非本地日历;1：本地日历
-  fssshow:string ="";//参与人画面显示用
   cbkcolor:number = 0;//每个日程颜色画面显示用
   morecolor:string ="#FFFFFF";//more颜色画面显示
   adr:string = "";//地址
@@ -100,8 +99,12 @@ export class ScdData {
     return this.specScds.get(d);
   }
   baseData : BaseData;
-  //参与人
+  //修改参与人信息时候使用
   fss: Array<Friend> =new Array<Friend>();
+
+
+  //日程中的参与人
+  showfss: Array<Friend> =new Array<Friend>();
 
   //发起人
   fs: Friend ={} as Friend;

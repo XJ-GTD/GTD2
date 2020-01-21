@@ -257,8 +257,41 @@ export class SpeechProcess extends BaseProcess implements MQProcess {
     if (sutbl && sutbl.sut) {
       emspeech.tips = sutbl.sut;
     }
-    this.emitService.emitSpeech(emspeech);
 
+     this.emitService.emitSpeech(emspeech);
+
+    //合并list
+     let cscdLS: Array<ScdEmData> = new Array<ScdEmData>();
+
+     if (showagendas.length > 0){
+       cscdLS = cscdLS.concat(this.showdatas(showagendas, "event"));
+     }
+     if (showmemos.length > 0){
+       cscdLS = cscdLS.concat(this.showdatas(showmemos, "memo"));
+     }
+     if (showplanitems.length > 0){
+       cscdLS = cscdLS.concat(this.showdatas(showplanitems, "calendar"));
+     }
+
+     if (cscdLS.length > 0){
+       if (cscdLS.length == 1){
+         let scdEm:ScdEmData = new ScdEmData();
+         scdEm = cscdLS[0];
+         this.emitService.emitScd(scdEm);
+       }else{
+         let scdlsEm:ScdLsEmData = new ScdLsEmData();
+         //增加排序处理
+         cscdLS.sort((a, b) => {
+             let evda: string = a.d;
+             let evdb: string = b.d;
+
+             return moment(evda , "YYYY/MM/DD HH:mm", true).diff(moment(evdb , "YYYY/MM/DD HH:mm", true));
+           });
+         scdlsEm.datas = cscdLS;
+         this.emitService.emitScdLs(scdlsEm);
+       }
+     }else{
+     }
 
     this.assistant.speakText(speakText).then((data) => {
       // 播报后启动语音监听
@@ -267,50 +300,13 @@ export class SpeechProcess extends BaseProcess implements MQProcess {
       }
     });
 
-    // 数据操作显示
-     this.showdatas(showagendas, "event", speakText, sutbl.sut);
-     this.showdatas(showmemos, "memo", speakText, sutbl.sut);
-     this.showdatas(showplanitems, "calendar", speakText, sutbl.sut);
     //处理结果
     return contextRetMap;
   }
 
-  showdatas(datas: Array<ScdData>, type: string = "event", speakText: string = "", tips: string = "") {
-    if (datas && datas.length == 1) {
-      let scdEm: ScdEmData = new ScdEmData();
+  showdatas(datas: Array<ScdData>, type: string = "event"):Array<ScdEmData> {
 
-      scdEm.id = datas[0].si;
-      scdEm.d = datas[0].sd;
-      scdEm.t = datas[0].st;
-      scdEm.type = type;
-      scdEm.ti = datas[0].sn;
-      scdEm.gs = datas[0].gs;
-      scdEm.adr = datas[0].adr;
-
-      scdEm.scdTip = tips;
-
-      for (let btbl of datas[0].fss) {
-        let fri: FriendEmData = new FriendEmData();
-
-        fri.id = btbl.pwi;
-        fri.p = btbl.ranpy;
-        fri.m = btbl.rc;
-        // fri.a = btbl.bhiu;
-        fri.n = btbl.ran;
-        fri.uid = btbl.ui;
-
-        scdEm.datas.push(fri);
-      }
-
-      scdEm.scdTip = tips;
-
-      this.emitService.emitScd(scdEm);
-    }
-
-    if (datas && datas.length > 1) {
-      let cscdLS: ScdLsEmData = new ScdLsEmData();
-
-      // cscdLS.desc = speakText;
+    let cscdLS: Array<ScdEmData> = new Array<ScdEmData>();
 
       for (let scd of datas){
         let scdEm: ScdEmData = new ScdEmData();
@@ -321,15 +317,53 @@ export class SpeechProcess extends BaseProcess implements MQProcess {
         scdEm.type = type;
         scdEm.ti = scd.sn;
         scdEm.gs = scd.gs;
-        scdEm.adr = datas[0].adr;
+        scdEm.adr = scd.adr;
 
-        cscdLS.datas.push(scdEm);
+
+        for (let btbl of scd.fss) {
+          let fri: FriendEmData = new FriendEmData();
+
+          fri.id = btbl.pwi;
+          fri.p = btbl.ranpy;
+          fri.m = btbl.rc;
+          // fri.a = btbl.bhiu;
+          fri.n = btbl.ran;
+          fri.uid = btbl.ui;
+
+          scdEm.updatefriends.push(fri);
+        }
+
+        for (let btbl of scd.showfss) {
+          let fri: FriendEmData = new FriendEmData();
+
+          fri.id = btbl.pwi;
+          fri.p = btbl.ranpy;
+          fri.m = btbl.rc;
+          // fri.a = btbl.bhiu;
+          fri.n = btbl.ran;
+          fri.uid = btbl.ui;
+
+          scdEm.friends.push(fri);
+        }
+
+        if (datas[0].fs){
+          let tmpfs = scd.fs;
+          let fri: FriendEmData = new FriendEmData();
+
+          fri.id = tmpfs.pwi;
+          fri.p = tmpfs.ranpy;
+          fri.m = tmpfs.rc;
+          // fri.a = btbl.bhiu;
+          fri.n = tmpfs.ran;
+          fri.uid = tmpfs.ui;
+
+          scdEm.creater = fri;
+        }
+
+        cscdLS.push(scdEm);
       }
 
-      cscdLS.scdTip = tips;
-
-      this.emitService.emitScdLs(cscdLS);
-    }
+      return cscdLS;
   }
 }
 

@@ -11,11 +11,7 @@ aicomponent {
     padding: 1rem;
 
 
-    .scdTip {
-      color: rgba(153, 153, 153, 1);
-      font-size: 12px;
-      padding: 16px;
-      display: flex;
+    .tips{
       ul{
         margin: 0;
         padding: 0;
@@ -28,19 +24,7 @@ aicomponent {
         }
       }
 
-      span {
-        display: block;
-        flex: auto;
-      }
-
-      .fa-microphone {
-        color: $adornColor;
-        font-size: 2.1rem;
-        padding: 0 10px;
-        text-align: right;
-      }
     }
-
 
     .self {
       display: block;
@@ -125,7 +109,6 @@ aicomponent {
         .ailistcontent {
           padding: 16px 16px;
           max-width: 100%;
-          border-bottom: 1px solid rgba(21, 60, 87, 1);
           //border-top: 1px solid rgba(21,60,87,1);
           width: 100%;
 
@@ -134,17 +117,24 @@ aicomponent {
           }
 
           .date {
-            color: $selectColor;
+            color:rgba(153,153,153,1);
             font-size: 12px;
             margin-top: 11px;
             margin-bottom: 9px;
             background-image: url('../assets/imgs/aidateborder.png');
             background-repeat: no-repeat;
             background-size: 100% 100%;
-            padding: 8px 12px;
+            padding: 5px 10px;
             display: inline-block;
             min-width: 85px;
             text-align: center;
+          }
+
+          .time {
+            color:rgba(21, 60, 87, 1);
+            font-size: 12px;
+            margin-left: 6px;
+            display: block;
           }
 
           .ti {
@@ -152,10 +142,42 @@ aicomponent {
             font-size: 14px;
             margin-left: 16px;
             display: -webkit-box;
-
           }
         }
       }
+
+      .help{
+        display: flex;
+        min-height: 10px;
+        border-top: 1px solid rgba(21, 60, 87, 1);
+        button {
+          width: 50%;
+          color:rgba(153,153,153,1);
+          background-color: transparent;
+          font-size: 14px;
+          letter-spacing: 2px;
+          padding: 10px;
+          text-align: right;
+          //border-bottom: .55px solid rgba(36,58,92,1);
+        }
+        span {
+          flex: auto;
+          color:rgba(153,153,153,1);
+          font-size: 12px;
+          line-height:3;
+          margin: 0 16px;
+
+        }
+
+        .fa-microphone {
+          color: $adornColor;
+          font-size: 2.1rem;
+          padding: 0 10px;
+          text-align: right;
+        }
+
+      }
+
 
     }
 
@@ -163,15 +185,15 @@ aicomponent {
     .scd {
       .aiscdAn {
         display: block;
-        border-radius: 2px 9px 9px 9px;
+        border-radius: 9px 9px 9px 9px;
         background: rgba(255, 255, 255, 0.04);
-        font-size: 16px;
+        font-size: 10px;
         color: rgba(255, 255, 255, 1);
 
         .aiscdcontent {
-          padding: 16px 16px;
+          padding: 12px 16px;
           width: 100%;
-          border-bottom: 1px solid rgba(21, 60, 87, 1);
+          //border-bottom: 1px solid rgba(21, 60, 87, 1);
 
           > div {
             margin: 7px 0;
@@ -194,7 +216,7 @@ aicomponent {
               span {
                 //margin-left: 20px;
                 color: rgba(86, 137, 222, 1);
-                font-size: 1.4rem;
+                font-size: 1.6rem;
               }
             }
 
@@ -223,9 +245,32 @@ aicomponent {
                 padding: 0px 2px;
                 //text-align: center;
                 margin-right: 6px;
-                color:rgba(45, 71, 113, 1);
+                width: 40px;
+                color:rgba(255,255,255,1);
                 //width: 50px;
               }
+            }
+
+            .help{
+              display: flex;
+              border-top: .55px solid rgba(36,58,92,1);
+              button {
+                width: 50%;
+                color:rgba(153,153,153,1);;
+                background-color: transparent;
+                font-size: 14px;
+                letter-spacing: 2px;
+                padding: 10px;
+                border-right: .55px solid rgba(36,58,92,1);
+              }
+              button:last-child {
+                border-right: 0px solid rgba(36,58,92,1);
+              }
+              span {
+                display: block;
+                flex: auto;
+              }
+
             }
 
           }
@@ -235,14 +280,6 @@ aicomponent {
     }
   }
 
-  button {
-    color: $adornColor;
-    background-color: transparent;
-    font-size: 14px;
-    letter-spacing: 1px;
-    margin-right: 0px;
-    margin-left: 5px;
-  }
 
   .close {
     webkit-transition: all 1.5s ease 0.2s;
