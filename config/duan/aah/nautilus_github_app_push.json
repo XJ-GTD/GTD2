@@ -12,7 +12,7 @@
       "trigger": "exc",
       "parameters": [
         "method;post",
-        "urlabs;http://nautilus-core:8080/nautilus/XJ-GTD%2FGTD2/activation",
+        "urlabs;http://nautilus-core:8080/nautilus/useless/activation",
         "data;$.root.parameters"
       ]
     }
