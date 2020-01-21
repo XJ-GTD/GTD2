@@ -4,12 +4,7 @@
   "trigger": "nautilus_github_app_push",
   "parameters": [
     "github_app",
-    "webhookowner",
-    "version",
-    "observer",
-    "params",
-    "header",
-    "body"
+    "event"
   ],
   "follows": [
     {
@@ -17,8 +12,8 @@
       "trigger": "exc",
       "parameters": [
         "method;post",
-        "urlabs;http://nautilus-core:8080/nautilus/#{webhookowner}/activation",
-        "data;$.root.parameters.body"
+        "urlabs;http://nautilus-core:8080/nautilus/XJ-GTD%2FGTD2/activation",
+        "data;$.root.parameters"
       ]
     }
   ]
