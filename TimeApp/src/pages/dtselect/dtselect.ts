@@ -9,21 +9,21 @@ import {TxJson} from "../../service/business/event.service";
 @Component({
   selector: 'page-dtselect',
   template: `
-    <modal-box title="活动日期" [buttons]="buttons" (onSave)="save()" (onCancel)="close()" [enableEdit]="enableEdit">
+    <modal-box title="设定时间" [buttons]="buttons" (onSave)="save()" (onCancel)="close()" [enableEdit]="enableEdit">
       <div >
         <ion-toolbar>
           <ion-buttons item-start>
-            <button clear ion-button [class.noselect]="settype == '1'" (click)="changeType('0')" class="font-normal">
+            <button clear ion-button [class.noselect]="settype == '1'" (click)="changeType('0')" class="font-normal" *ngIf="showEnd">
               <!--<ion-icon class="fal fa-arrow-alt-from-left"></ion-icon>-->
-             知道何时开始
+             开始于
             </button>
-            <button [disabled]="pagedata.rfg == '1'" clear ion-button [class.noselect]="settype == '0'" (click)="changeType('1')" class="font-normal">
+            <button [disabled]="pagedata.rfg == '1'" clear ion-button [class.noselect]="settype == '0'" (click)="changeType('1')" class="font-normal" *ngIf="showEnd">
               <!--<ion-icon class="fal fa-arrow-alt-from-right"></ion-icon>-->
-              知道何时完成
+              截至到
             </button>
           </ion-buttons>
-          <p class="help-inline" *ngIf="settype == '0'">* 默认活动时间设置1小时</p>
-          <p class="help-inline" *ngIf="settype == '1'">* 活动会自动加入【重要事项】，即使不设置提醒也会智能提醒</p>
+          <p class="help-inline" *ngIf="(settype == '0' && showEnd )">* 默认活动时间设置1小时</p>
+          <p class="help-inline" *ngIf="(settype == '1' && showEnd )">* 活动会自动加入【重要事项】，即使不设置提醒也会智能提醒</p>
         </ion-toolbar>
       </div>
 
@@ -42,7 +42,7 @@ import {TxJson} from "../../service/business/event.service";
         <ion-label><ion-icon class="fal fa-clock"></ion-icon>开始时间</ion-label>
         <ion-label class = "timedisplay">{{stval.displayname}}</ion-label>
       </div>
-      <div ion-item no-border no-padding no-lines no-margin class="itemwarp font-normal" (click)="openDura()"  *ngIf="settype=='0'">
+      <div ion-item no-border no-padding no-lines no-margin class="itemwarp font-normal" (click)="openDura()"  *ngIf="(settype=='0' && showEnd)">
         <ion-multi-picker #dura [(ngModel)]="duraval.value"
                           (ngModelChange)="duraselect();seteddate();" [multiPickerColumns]="dependentColumns3"
                           cancelText="取消" doneText="设定"></ion-multi-picker>
@@ -76,6 +76,9 @@ export class DtSelectPage {
   endTime: MultiPicker;
   @ViewChild("dura")
   dura: MultiPicker;
+
+  showStart:boolean = true;
+  showEnd:boolean = true;
 
   duraval = {
     displayname:"",
@@ -268,6 +271,10 @@ export class DtSelectPage {
     if (this.navParams && this.navParams.data) {
 
 
+      //不能设置截至到时间
+      if (this.navParams.data.noshowEnd){
+        this.showEnd = false;
+      }
       this.enableEdit = this.navParams.data.enableEdit;
       if (!this.enableEdit){
         this.buttons.save = false;

@@ -57,7 +57,7 @@ export class AlPage {
       this.alData.text = "正在连接服务器。。。"
       this.alService.connWebSocket();
       this.alData.text = "进入您的日历"
-       this.nav.setRoot(DataConfig.PAGE._M_PAGE);
+      this.nav.setRoot(DataConfig.PAGE._M_PAGE);
     }
   }
 }

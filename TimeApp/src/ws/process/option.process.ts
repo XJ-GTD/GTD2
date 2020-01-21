@@ -5,7 +5,6 @@ import {Injectable} from "@angular/core";
 import {ProcesRs} from "../model/proces.rs";
 import {O, SS} from "../model/ws.enum";
 import {DataConfig} from "../../service/config/data.config";
-import {PgBusiService} from "../../service/pagecom/pgbusi.service";
 import {FsService} from "../../pages/fs/fs.service";
 import {FsData, RcInParam, ScdData} from "../../data.mapping";
 import {CTbl} from "../../service/sqlite/tbl/c.tbl";
@@ -21,7 +20,7 @@ import {Friend} from "../../service/business/grouper.service";
  */
 @Injectable()
 export class OptionProcess extends BaseProcess implements MQProcess{
-  constructor(private emitService:EmitService,private busiService:PgBusiService,
+  constructor(private emitService:EmitService,
               private fsServer:FsService,private factoryOpt: OptProcessFactory,) {
     super();
   }

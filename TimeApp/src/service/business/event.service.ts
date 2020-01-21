@@ -1419,7 +1419,6 @@ export class EventService extends BaseService {
         Object.assign(member, b);
         member.hiu = DataConfig.HUIBASE64;
       }else{
-        console.error("=======PgbusiService 获取发起人失败 =======")
       }
     }
     return member;

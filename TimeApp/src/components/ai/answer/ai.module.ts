@@ -5,7 +5,6 @@ import {AiService} from "./ai.service";
 import {PointComponentModule} from "../point/point.module";
 import {PipesModule} from "../../../pipes/pipes.module";
 import {AiChildenComponent} from "./ai.childen";
-import {PgBusiService} from "../../../service/pagecom/pgbusi.service";
 import {FsService} from "../../../pages/fs/fs.service";
 
 @NgModule({
@@ -21,7 +20,6 @@ import {FsService} from "../../../pages/fs/fs.service";
   ],
   providers: [
     AiService,
-    PgBusiService,
     FsService
   ],
   exports: [

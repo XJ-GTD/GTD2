@@ -3,8 +3,6 @@ import {WsContent} from "../model/content.model";
 import {SH} from "../model/ws.enum";
 import {EmitService} from "../../service/util-service/emit.service";
 import {Injectable} from "@angular/core";
-import {ProcesRs} from "../model/proces.rs";
-import {PgBusiService} from "../../service/pagecom/pgbusi.service";
 import {ScudscdPara} from "../model/scudscd.para";
 import {NotificationsService} from "../../service/cordova/notifications.service";
 import {ScdData} from "../../data.mapping";
@@ -16,7 +14,7 @@ import {ScdData} from "../../data.mapping";
  */
 @Injectable()
 export class ReceiveProcess implements MQProcess {
-  constructor(private emitService: EmitService, private busiService: PgBusiService,private notificationsService:NotificationsService) {
+  constructor(private emitService: EmitService, private notificationsService:NotificationsService) {
   }
 
   async gowhen(content: WsContent, contextRetMap: Map<string,any>) {
@@ -39,7 +37,7 @@ export class ReceiveProcess implements MQProcess {
       //处理所需要参数
       let scudPara: ScudscdPara = content.parameters;
 
-      await this.busiService.pullDel(scudPara.id);
+      // await this.busiService.pullDel(scudPara.id);
     }
 
     if (content.option == SH.C || content.option == SH.U) {
@@ -47,7 +45,7 @@ export class ReceiveProcess implements MQProcess {
       let scudPara: ScudscdPara = content.parameters;
 
       let scd:ScdData = new ScdData();
-      scd = await this.busiService.pullAgd(scudPara.id);
+      // scd = await this.busiService.pullAgd(scudPara.id);
 
       if (scd != null){
         this.emitService.emit("on.agendashare.saved", scd);

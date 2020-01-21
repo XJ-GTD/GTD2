@@ -4,7 +4,6 @@ import { ScdPageParamter} from "../../../data.mapping";
 import {DataConfig} from "../../../service/config/data.config";
 import {ModalController} from "ionic-angular";
 import {AssistantService} from "../../../service/cordova/assistant.service";
-import {PgBusiService} from "../../../service/pagecom/pgbusi.service";
 import {FsService} from "../../../pages/fs/fs.service";
 import {ModalTranType} from "../../../data.enum";
 import {UtilService} from "../../../service/util-service/util.service";
@@ -15,7 +14,6 @@ export class AiService {
 
   constructor(private modalController: ModalController,
               private assistantService: AssistantService,
-              private pgBusiService:PgBusiService,
               private fsService:FsService,
               private util: UtilService,
               private memoSevice:MemoService) {

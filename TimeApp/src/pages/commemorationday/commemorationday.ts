@@ -349,6 +349,7 @@ export class CommemorationDayPage {
       al: IsWholeday.StartSet,
       rfg: this.originPlanItem.rfg,
       enableEdit: enableEdit,
+      noshowEnd: true,
     });
     modal.onDidDismiss(async (data) => {
       if (data) {

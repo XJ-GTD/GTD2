@@ -54,7 +54,6 @@ import {WebsocketModule} from "../ws/websocket.module";
 import {FeedbackService} from "../service/cordova/feedback.service";
 import {UserConfig} from "../service/config/user.config";
 import {Keyboard} from "@ionic-native/keyboard";
-import {PgBusiService} from "../service/pagecom/pgbusi.service";
 import {ScreenOrientation} from "@ionic-native/screen-orientation";
 import {ContactsService} from "../service/cordova/contacts.service";
 import {NetworkService} from "../service/cordova/network.service";
@@ -267,7 +266,6 @@ import {Patch15} from "../patch/patch.15";
     AssistantService,
     FeedbackService,
     UserConfig,
-    PgBusiService,
     LocalcalendarService,
     NotificationsService,
     JPushService,

@@ -1,14 +1,10 @@
 import {Injectable} from "@angular/core";
 import * as moment from "moment";
-import {CalendarDay} from "../../components/ion2-calendar";
-import {HData} from "../../data.mapping";
-import {PgBusiService} from "../../service/pagecom/pgbusi.service";
 import {SyncRestful} from "../../service/restful/syncsev";
 
 @Injectable()
 export class HService {
-  constructor(private syncRestful:SyncRestful,
-              private pgservice:PgBusiService) {
+  constructor() {
     moment.locale('zh-cn');
   }
 
