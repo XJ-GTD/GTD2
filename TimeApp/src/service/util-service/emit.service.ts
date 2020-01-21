@@ -14,6 +14,8 @@ export class EmitService {
   private scdLsEm: EventEmitter<ScdLsEmData> = new EventEmitter<ScdLsEmData>();
   //语音播报透传 （语音播报内容）
   private speechEm: EventEmitter<SpeechEmData> = new EventEmitter<SpeechEmData>();
+  //等待中
+  private speechWaitingEm: EventEmitter<boolean> = new EventEmitter<boolean>();
   //新建修改删除 （语音界面使用）
   private scdEm: EventEmitter<ScdEmData> = new EventEmitter<ScdEmData>();
   //主页选择时间后，Ls更新
@@ -280,7 +282,7 @@ export class EmitService {
     }
   }
 
-  destroyScdLs(emit: EventEmitter<ScdLsEmData>) {
+  destroyScdLs() {
     this.scdLsEm.unsubscribe();
   }
 
@@ -299,9 +301,27 @@ export class EmitService {
     }
   }
 
-  destroySpeech(emit: EventEmitter<SpeechEmData>) {
+  destroySpeech() {
     this.speechEm.unsubscribe();
   }
+
+  registerSpeechWaiting(callback) :any{
+    if (this.speechWaitingEm.closed) {
+      this.speechWaitingEm = new EventEmitter<boolean>();
+    }
+    return  this.speechWaitingEm.subscribe(($data: SpeechEmData) => {
+      callback($data);
+    });
+  };
+
+  emitSpeechWaiting(waiting:boolean) {
+      this.speechWaitingEm.emit(waiting);
+  }
+
+  destroySpeechWaiting() {
+    this.speechWaitingEm.unsubscribe();
+  }
+
 
 
   registerScd(callback) :any{

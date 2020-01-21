@@ -116,9 +116,8 @@ export class InputComponent {
   confirm() {
     if (this.input.value != null && this.input.value != "") {
       this.assistantService.putText(this.input.value);
-      let  emspeech:SpeechEmData = new SpeechEmData();
-      emspeech.iswaitting = true;
-      this.emitService.emitSpeech(emspeech);
+      // let  emspeech:SpeechEmData = new SpeechEmData();
+      this.emitService.emitSpeechWaiting(true);
     }
 
     // this._renderer.setStyle(this.el.nativeElement, "display", "none");

@@ -55,6 +55,7 @@ export class AiComponent {
   scdLsemit: Subscriber<any>;
   speechemit: Subscriber<any>;
   scdemit: Subscriber<any>;
+  waitemit: Subscriber<any>;
 
   bScroll: BScroll | any;
 
@@ -81,6 +82,10 @@ export class AiComponent {
       this.callbackScd(data);
       this.changeDetectorRef.detectChanges();
     });
+    this.waitemit = this.emitService.registerSpeechWaiting(data => {
+      this.callbackWaiting(data);
+      this.changeDetectorRef.detectChanges();
+    });
 
     this.bScroll = new BScroll('.aiscroll', {
       click: true,
@@ -96,11 +101,13 @@ export class AiComponent {
     this.scdLsemit.unsubscribe();
     this.speechemit.unsubscribe();
     this.scdemit.unsubscribe();
+    this.waitemit.unsubscribe();
   }
 
 
   callbackScdLs(datas: ScdLsEmData) {
     this.copy(false);
+    // this.copy(false);
     // this.aiData1.speechAi = new SpeechAiData();
 
 
@@ -126,7 +133,8 @@ export class AiComponent {
   }
 
   callbackSpeech(datas: SpeechEmData) {
-    this.copy(datas.iswaitting?true:false);
+    this.copy(false);
+    // this.copy(datas.iswaitting?true:false);
     this.aiData1.speechAi.org = datas.org;
     this.aiData1.speechAi.an = datas.an;
     if (datas.tips && !datas.tips.startsWith("说")) {
@@ -173,6 +181,14 @@ export class AiComponent {
     this.gotonew();
   }
 
+
+  callbackWaiting(waiting:boolean) {
+    this.copy(waiting);
+
+    this.changeDetectorRef.detectChanges();
+    this.gotonew();
+  }
+
   closePage() {
     this.aiData1 = new AiData();
     this.aiData2 = new AiData();
@@ -184,16 +200,15 @@ export class AiComponent {
 
   copy(iswaiting:boolean) {
     if (iswaiting){
-      if (this.aiData4.speechAi) this.aiData4.copyto(this.aiData5);
-      if (this.aiData3.speechAi) this.aiData3.copyto(this.aiData4);
-      if (this.aiData2.speechAi) this.aiData2.copyto(this.aiData3);
-      if (this.aiData1.speechAi) this.aiData1.copyto(this.aiData2);
+       this.aiData4.copyto(this.aiData5);
+       this.aiData3.copyto(this.aiData4);
+       this.aiData2.copyto(this.aiData3);
+       this.aiData1.copyto(this.aiData2);
 
-      this.aiData1.clear();
+      this.aiData1 = new AiData();
       this.aiData1.speechAi = new SpeechAiData();
       this.aiData1.speechAi.iswaitting = true;
     }else{
-
       this.aiData1.speechAi.iswaitting = false;
     }
   }

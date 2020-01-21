@@ -286,6 +286,7 @@ export class AssistantService {
       immediately.fininsh = true;
       immediately.immediatetext = result.text;
       this.emitService.emitImmediately(immediately);
+      this.emitService.emitSpeechWaiting(true);
       if (result.error) {
         throw new class implements Error {
           message: string = "语音故障";
@@ -310,8 +311,8 @@ export class AssistantService {
       this.isListening = false;
       await this.aibutlerRestful.postaudio(audioPro);
       this.emitService.emitListener(false);
-      immediately.immediatetext = "";
-      this.emitService.emitImmediately(immediately);
+      // immediately.immediatetext = "";
+      // this.emitService.emitImmediately(immediately);
       this.startWakeUp();
       return result;
     }, async error => {

@@ -64,6 +64,8 @@ export class ListeningComponent {
       if (!data){
         // this.stop();
         this.onListeningStop.emit(this);
+        this.immediately = new Immediately();
+        this.changeDetectorRef.detectChanges();
       }else{
         // this.init();
         this.onListeningStart.emit(this);
@@ -77,9 +79,10 @@ export class ListeningComponent {
       }
 
       if (this.immediately.fininsh){
-        let  emspeech:SpeechEmData = new SpeechEmData();
-        emspeech.iswaitting = true;
-        this.emitService.emitSpeech(emspeech);
+        // let  emspeech:SpeechEmData = new SpeechEmData();
+        // emspeech.iswaitting = true;
+
+        // this.emitService.emitSpeechWaiting(true);
       }
       this.changeDetectorRef.detectChanges();
     })
