@@ -98,8 +98,9 @@ export class AiService {
     } else if (days == -2) {
       str = '前天';
     } else {
-      str = date.format("YYYY-M-D");
+      str = date.format("YYYY年MM月DD日");
     }
+    str = str + " " + date.format("ddd");
     return str;
   }
 

@@ -16,12 +16,25 @@ page-h {
   }
   .openm{
     width:33px;
-    height:107px;
+    height:110px;
     background:rgba(109,160,172,1);
     border-radius:15px;
     position: absolute;
     top:calc(50% - 50px);
     transform: translateX(-25px);
+    overflow: hidden;
+    span{
+      width: 16px;
+      margin-top: 30px;
+      margin-right: -10px;
+      word-wrap: break-word;
+      letter-spacing: 30px;
+      float: right;
+      font-size: .8rem;
+      font-family: Helvetica;
+      color:rgba(245,245,245,.6);
+
+    }
   }
 }
 

@@ -73,7 +73,7 @@ import {UserConfig} from "../../../service/config/user.config";
               </div>
               
               <div class="friend" *ngIf="aiData.scd.friends.length > 0">
-                <span>修改参与人</span>
+                <span>通知</span>
                 <span>
                   <b *ngFor="let fs of aiData.scd.friends">
                     {{fs.n}}
@@ -96,10 +96,19 @@ import {UserConfig} from "../../../service/config/user.config";
             {{aiData.scdList.desc}}
           </div>
           <div class="ailistcontent">
-            <div *ngFor="let scd of aiData.scdList.datas,let i = index" (click)="showScd(scd)">
+            <div *ngFor="let scd of aiData.scdList.datas,let i = index" (click)="showScd(scd)" [class.memo]="scd.type == 'memo'" 
+                 [class.event]="scd.type == 'event'" 
+                 [class.calendar]="scd.type == 'calendar'" >
               <span class="date" *ngIf="(i == 0 || aiData.scdList.datas[i-1].d != scd.d)">{{countDay(scd.d)}}</span>
-              <span class="time">{{(scd.d + "T" + scd.t) | formatedate : "A h:mm"}} </span>
-              <span class="ti twoline" >{{scd.ti}}</span>
+              <span class="time">
+                <i class="fal fa-book-heart" *ngIf="scd.type == 'memo'"></i>
+                <i class="fal fa-calendar-edit" *ngIf="scd.type == 'event'"></i>
+                <i class="fal fa-calendar-star" *ngIf="scd.type == 'calendar'"></i>
+                {{(scd.d + "T" + scd.t) | formatedate : "A h:mm"}}
+              </span>
+              <span class="ti twoline" >
+                {{scd.ti}}
+              </span>
             </div>
           </div>
           <div class="help" *ngIf=" aiData.showHelp">
@@ -112,7 +121,7 @@ import {UserConfig} from "../../../service/config/user.config";
       </div>
     </ng-template>
     <ng-template [ngIf]="aiData.speechAi && aiData.showTip">
-      <div class="scdTip" >
+      <div class="tips" >
         <ul>
           <li *ngFor="let tips of aiData.speechAi.arraytips">{{tips}}</li>
         </ul>

@@ -71,7 +71,8 @@ import {CalendarDay} from "../../components/ion2-calendar";
         </ion-grid>
     </ion-menu>
 
-    <ion-nav #ha [root]="hPage"></ion-nav>
+    <ion-nav #ha [root]="hPage">
+    </ion-nav>
     <PointComponent  #aiDiv [showInput] = "false" (onPonintClick)="openAi()"></PointComponent>
   `
 })

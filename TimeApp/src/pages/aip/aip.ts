@@ -25,9 +25,9 @@ import {HelpComponent} from "../../components/help/help";
     <ion-header no-border>
       <ion-toolbar>
         <ion-buttons right>
-          <button ion-button icon-only (click)="goBack()">
-            <ion-icon class="fal fa-question-circle" ></ion-icon>
-          </button>
+          <!--<button ion-button icon-only (click)="showhelp()">-->
+            <!--<ion-icon class="fal fa-question-circle" ></ion-icon>-->
+          <!--</button>-->
           <button ion-button icon-only (click)="goBack()">
             <ion-icon class="fal fa-times" ></ion-icon>
           </button>
@@ -36,7 +36,7 @@ import {HelpComponent} from "../../components/help/help";
     </ion-header>
     <ion-content>
       <!--<BackComponent></BackComponent>-->
-      <AiComponent></AiComponent>
+      <AiComponent ></AiComponent>
       <HelpComponent *ngIf="showGuide" class="animated fadeIn"></HelpComponent>
       <PointComponent [showInput] = "true" (onPonintClick)="listenStart()" [hasPopper]="false" (onInputClick)="inputClick()"></PointComponent>
       <InputComponent #inputComponent></InputComponent>
@@ -190,6 +190,10 @@ export class AipPage{
 
   goBack() {
     this.navController.pop();
+  }
+
+  showhelp(){
+    this.showGuide = true;
   }
   //
   // ngOnInit() {

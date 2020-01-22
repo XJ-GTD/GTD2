@@ -92,6 +92,7 @@ export class AiComponent {
       scrollY: true
 
     });
+
     this._renderer.setStyle(this.card1.nativeElement, "min-height", (this.bScroll.wrapperHeight - 40) + "px");
 
   }

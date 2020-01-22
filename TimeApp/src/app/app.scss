@@ -243,6 +243,7 @@ body {
   .action-sheet-ios{
     .action-sheet-cancel{
       background: transparent;
+      width: 100%;
     }
     .action-sheet-title {
        border-bottom: 0;
@@ -270,6 +271,8 @@ body {
           font-size: 2.5rem;
           margin-bottom: 5px;
         }
+
+        font-weight: bold;
 
         display: block;
       }

@@ -3,7 +3,7 @@ HelpComponent {
   position: absolute;
   width: 100%;
   top: 0px;
-  height: calc(100% - 70px);
+  height: calc(100% - 50px);
   overflow-y: scroll;
 
   .card {
@@ -15,22 +15,32 @@ HelpComponent {
     padding: 1rem;
     .card-title-ios{
       color: rgba(255,255,255,1);
+      font-size: 2rem;
     }
     .card-content-ios{
-      background: rgba(255, 255, 255, 0.08);
-      color: rgba(153,153,153,1);
-      font-size: 12px;
+      //background: rgba(255, 255, 255, 0.08);
+      color: rgba(255,255,255,1);
       padding: 22px 16px 25px 16px;
-      display: flex;
+      //display: flex;
+      //text-align: center;
       ul{
         margin: 0;
         padding: 0;
         width: 100%;
+        margin-bottom: 1rem;
+        //margin-left: 1rem;
+        p{
+          font-size: 1.2rem;
+          margin-bottom: 1rem;
+          color: rgba(56,137,154,1);
+        }
         li{
           margin: 0;
           padding: 0;
           //list-style-position: inside;
           list-style-type: none;
+          font-size: 1.4rem;
+          color: rgba(203,203,203,1);
         }
       }
     }

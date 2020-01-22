@@ -49,7 +49,10 @@ import {TellYouBase, TellyouService} from "../../components/ai/tellyou/tellyou.s
         </button>
       </ion-fab>
     </ion-content>
-    <div class="openm" (click)="openm()"></div>
+    
+    <div class="openm" (click)="openm()">
+      <span>PULL ME</span>
+    </div>
   `,
 })
 export class HPage {
