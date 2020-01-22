@@ -128,6 +128,9 @@ import { Observable } from 'rxjs';
                   <!--</div>-->
                   <!--</div>-->
                   <div class="line font-small">
+                    <div class="planset font-small"
+                         [ngStyle]="{'color': jt.ji == ''? 'transparent' : (jt.ji | formatplan: 'color': privateplans )}">
+                      <span>{{jt.ji | formatplan: 'name': '': privateplans}}</span></div>
                     <div class="person" *ngIf="currentuser != jt.ui && jt.ui != ''" end>
                       -- {{jt.ui | formatuser: currentuser: friends}}</div>
                     <!--<div class="person" *ngIf="currentuser == jt.ui" end>&#45;&#45; 自己</div>-->
@@ -142,9 +145,9 @@ import { Observable } from 'rxjs';
                     <!--</div>-->
                   </div>
 
-                  <div class="plan plan-right"
-                       [ngStyle]="{'background-color': jt.ji == ''? 'transparent' : (jt.ji | formatplan: 'color': privateplans )}">
-                    <span>{{jt.ji | formatplan: 'name': '': privateplans}}</span></div>
+                  <!--<div class="plan plan-right"-->
+                       <!--[ngStyle]="{'background-color': jt.ji == ''? 'transparent' : (jt.ji | formatplan: 'color': privateplans )}">-->
+                    <!--<span>{{jt.ji | formatplan: 'name': '': privateplans}}</span></div>-->
 
                 </ng-container>
 
@@ -154,7 +157,12 @@ import { Observable } from 'rxjs';
                     <!--<div class="icon">-->
                     <!--<ion-icon class="fal fa-gift"></ion-icon>-->
                     <!--</div>-->
-                    <div class="sn towline">{{jt.jtn}}</div>
+                    <div class="sn">{{jt.jtn}}</div>
+                  </div>
+                  <div class="line font-small">
+                    <div class="planset font-small"
+                         [ngStyle]="{'color': jt.ji == ''? 'transparent' : (jt.ji | formatplan: 'color': publicplans )}">
+                      <span>{{jt.ji | formatplan: 'name': '': publicplans}}</span></div>
                   </div>
                 </ng-container>
               </ion-row>
@@ -203,6 +211,10 @@ import { Observable } from 'rxjs';
                       <div class="sn towline">{{event.evn}}</div>
                     </div>
                     <div class="line font-small">
+                      <div class="font-small noinvite"
+                           *ngIf="currentuser != event.ui && event.ui != '' && event.invitestatus != inviteaccept && event.invitestatus != invitereject">
+                        <span>未接受</span>
+                      </div>
                       <div class="st">{{event.evt}}</div>
                       <div class="person" *ngIf="currentuser != event.ui && event.ui != ''" end>
                         -- {{event.ui | formatuser: currentuser: friends}}</div>
@@ -216,29 +228,34 @@ import { Observable } from 'rxjs';
                       <!--<div class="invite" *ngIf="event.invitestatus != inviteaccept && event.invitestatus != invitereject"-->
                       <!--end><span (click)="rejectInvite($event, event)">拒绝</span><span-->
                       <!--(click)="acceptInvite($event, event)">接受</span></div>-->
+                      
+
+                      <div class="planset font-small"
+                           [ngStyle]="{'color': event.ji == ''? 'transparent' : (event.ji | formatplan: 'color': privateplans )}">
+                        <span>{{event.ji | formatplan: 'name': '': privateplans}}</span></div>
+                      
                       <div class="update">更新</div>
-                      <div class="icon font-small">
-                        <ion-icon class="fal fa-cloud-upload" [class.over]="event.tb == synch"></ion-icon>
-                        <ion-icon class="fad fa-at" [class.over]="annotationobservables.get(event.evi) | async"></ion-icon>
-                        <ion-icon class="fad fa-check-double" *ngIf="event.todolist == todoliston"
-                                  [class.over]="event.wc == finished"></ion-icon>
-                      </div>
+                      
                       <div class="icon font-small" end>
                         <ion-icon class="fad fa-user-friends " *ngIf="event.pn > 0 "></ion-icon>
                         <b *ngIf="event.pn > 0 ">{{event.apn}} / {{event.pn}}</b>
                         <ion-icon class="fad fa-info-circle "></ion-icon>
                         <b>{{attachmentobservables.get(event.evi) | async}}</b>
+                        <ion-icon class="fad fa-check-double" *ngIf="event.todolist == todoliston"
+                                  [class.over]="event.wc == finished"></ion-icon>
+                        <ion-icon class="fad fa-at" [class.over]="annotationobservables.get(event.evi) | async"></ion-icon>
+                        <ion-icon class="fal fa-cloud-upload" [class.over]="event.tb == synch"></ion-icon>
                       </div>
                     </div>
 
-                    <div class="plan plan-left "
-                         [ngStyle]="{'background-color': event.ji == ''? 'transparent' : (event.ji | formatplan: 'color': privateplans )}">
-                      <span>{{event.ji | formatplan: 'name': '': privateplans}}</span></div>
+                    <!--<div class="plan plan-left "-->
+                         <!--[ngStyle]="{'background-color': event.ji == ''? 'transparent' : (event.ji | formatplan: 'color': privateplans )}">-->
+                      <!--<span>{{event.ji | formatplan: 'name': '': privateplans}}</span></div>-->
 
-                    <div class="plan plan-left noinvite"
-                         *ngIf="currentuser != event.ui && event.ui != '' && event.invitestatus != inviteaccept && event.invitestatus != invitereject">
-                      <span>未接受</span>
-                    </div>
+                    <!--<div class="plan plan-left noinvite"-->
+                         <!--*ngIf="currentuser != event.ui && event.ui != '' && event.invitestatus != inviteaccept && event.invitestatus != invitereject">-->
+                      <!--<span>未接受</span>-->
+                    <!--</div>-->
 
                     <!--<div class="syncing">-->
                     <!--<div class="hand">-->
@@ -300,6 +317,7 @@ export class TdlPage {
   friends: Array<any> = UserConfig.friends;
 
   privateplans: Array<any> = UserConfig.privateplans;
+  publicplans: Array<any> = UserConfig.publicplans;
 
   inviteaccept: InviteState = InviteState.Accepted;
   invitereject: InviteState = InviteState.Rejected;

@@ -123,6 +123,7 @@ import {UserConfig} from "../../../service/config/user.config";
     <ng-template [ngIf]="aiData.speechAi && aiData.showTip">
       <div class="tips" >
         <ul>
+          <p>tips:</p>
           <li *ngFor="let tips of aiData.speechAi.arraytips">{{tips}}</li>
         </ul>
       </div>

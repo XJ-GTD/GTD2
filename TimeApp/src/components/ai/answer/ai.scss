@@ -16,15 +16,25 @@ aicomponent {
 
   .tips{
     ul{
-      //width: 100%;
+      margin: 0;
       padding: 1rem;
+      width: 100%;
+      margin-bottom: 1rem;
+      //margin-left: 1rem;
+      p{
+        font-size: 1.2rem;
+        margin-bottom: 1rem;
+        color: rgba(56,137,154,1);
+      }
       li{
-        list-style-position: inside;
+        margin: 0;
+        padding: 0;
+        //list-style-position: inside;
         list-style-type: none;
+        font-size: 1.4rem;
         color:rgba(47, 85, 110, 1);
       }
     }
-
   }
 
   .self {

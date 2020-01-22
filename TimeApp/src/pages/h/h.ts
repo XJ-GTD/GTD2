@@ -45,7 +45,7 @@ import {TellYouBase, TellyouService} from "../../components/ai/tellyou/tellyou.s
       <!--</ion-fab>-->
       <ion-fab bottom right class="shortcut">
         <button ion-fab mini (click)="newPlus()">
-          <ion-icon class="fad fa-plus"></ion-icon>
+          <ion-icon class="fal fa-plus"></ion-icon>
         </button>
       </ion-fab>
     </ion-content>
