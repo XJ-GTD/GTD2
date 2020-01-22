@@ -44,6 +44,10 @@ if [ $TRAVIS_OS_NAME = 'osx' ]; then
   cd $TRAVIS_BUILD_DIR/TimeApp/platforms/ios
   ls -la
   ls -la $TRAVIS_BUILD_DIR/TimeApp/platforms/ios/$IOS_APP_NAME/Plugins/cordova-plugin-BaiduSpeechAndTTS
+  echo "Upload config.xml and package.json to aliyun"
+  sshpass -e scp -o stricthostkeychecking=no $TRAVIS_BUILD_DIR/TimeApp/config.xml root@www.guobaa.com:/opt/dev/exchanges/
+  sshpass -e scp -o stricthostkeychecking=no $TRAVIS_BUILD_DIR/TimeApp/package.json root@www.guobaa.com:/opt/dev/exchanges/
+
   echo "Prepare for ios archive and export"
   mkdir -p $TRAVIS_BUILD_DIR/build/debug
   xcodebuild archive -archivePath $TRAVIS_BUILD_DIR/build/debug/$IOS_APP_NAME.xcarchive -workspace $IOS_APP_NAME.xcworkspace -scheme $IOS_APP_NAME build -sdk iphoneos12.2 -arch armv7 -arch arm64 -configuration Release IPHONEOS_DEPLOYMENT_TARGET="9.0" TARGETED_DEVICE_FAMILY="1" SWIFT_VERSION="4" CODE_SIGN_RESOURCE_RULES_PATH='$(PROJECT_DIR)/$(PROJECT_NAME)/Entitlements-$(CONFIGURATION).plist' CODE_SIGN_IDENTITY="${IOS_DEVELOPER_NAME}" PROVISIONING_PROFILE="${IOS_PROFILE_NAME}" ONLY_ACTIVE_ARCH=NO | xcpretty
