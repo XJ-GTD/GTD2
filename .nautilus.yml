@@ -10,6 +10,8 @@ include:
           <<: *flow_events_generator_with_service
   - source: github
   - source: mwxing
+deploy:
+  force: false
 flows:
   - flow_events_generator_with_intent: &flow_events_generator_with_intent
       name: 意图事件发生器处理流
