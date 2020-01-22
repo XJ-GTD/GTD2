@@ -56,11 +56,20 @@ ion-app.black-theme {
         small {
           color: rgba(73, 110, 119, 1);
         }
+        .calendaritem{
+          color: rgba(255,99,44,.8);
+        }
 
         .on-selected {
-          .d{
+          .days-btn{
             background: rgba(255,99,44,1);
+            box-shadow: 0px 0px 15px 4px rgba(255,99,44,.1);
+          }
+          .d{
             color: rgba(255,255,255,1);
+          }
+          .calendaritem {
+            //color:rgba(255,255,255,.8) !important;
           }
 
           //border: 1px rgba(19, 72, 75, 1) solid;
@@ -117,7 +126,6 @@ ion-app.black-theme {
   page-ss, page-ps {
     .page-content {
       .fixed-content {
-        -webkit-box-shadow: 0px 0px 0px 0px rgba(201, 200, 200, 0.28);
         box-shadow: 0px 0px 0px 0px rgba(201, 200, 200, 0.28);
       }
     }

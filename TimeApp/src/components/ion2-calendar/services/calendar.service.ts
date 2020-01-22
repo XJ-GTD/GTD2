@@ -309,6 +309,7 @@ export class IonCalendarService {
           calendarDay.accept = v.acceptableeventscount;
           calendarDay.hasMemo = v.memoscount > 0;
           calendarDay.subTitle = v.daycalendaritem?v.daycalendaritem:calendarDay.subTitle;
+          calendarDay.calendaritem = v.daycalendaritem?true:false;
           calendarDay.isToday = moment().isSame(calendarDay.time, 'days');
 
         });
@@ -323,6 +324,7 @@ export class IonCalendarService {
       calendarDay.accept = v.acceptableeventscount;
       calendarDay.hasMemo = v.memoscount > 0;
       calendarDay.subTitle = v.daycalendaritem?v.daycalendaritem:calendarDay.subTitle;
+      calendarDay.calendaritem = v.daycalendaritem?true:false;
       calendarDay.isToday = moment().isSame(calendarDay.time, 'days');
 
     });
