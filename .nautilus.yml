@@ -64,6 +64,7 @@ executors:
   - translate_aiui_to_intent_events:
       name: 讯飞AIUI数据转换意图事件数据
       container: acj
+      scriptengine: Nashorn
       clean: |
         function clean(datasource) {
           var result = {};
