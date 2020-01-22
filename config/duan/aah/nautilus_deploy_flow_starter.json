@@ -1,0 +1,20 @@
+{
+  "_id": ObjectID("5e28011612876b0007060964"),
+  "name": "鹦鹉螺自定义流程发布",
+  "trigger": "nautilus_deploy_flow_starter",
+  "parameters": [
+    "owner",
+    "flow"
+  ],
+  "follows": [
+    {
+      "name": "发布流程",
+      "trigger": "nautilus-deploy",
+      "parameters": [
+        "target;nautilus-flow",
+        "owner;$.parent.parameters.owner",
+        "payload;$.parent.parameters.flow"
+      ]
+    }
+  ]
+}

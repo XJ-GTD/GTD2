@@ -16,6 +16,7 @@ flows:
   - flow_events_generator_with_intent: &flow_events_generator_with_intent
       name: 意图事件发生器处理流
       trigger: flow_events_generator_with_intent
+      hostname: flow_1
       parameters:
         - deviceId
         - userId
@@ -40,6 +41,7 @@ flows:
   - flow_events_generator_with_service: &flow_events_generator_with_service
       name: 技能事件发生器处理流
       trigger: flow_events_generator_with_service
+      hostname: flow_2
       parameters:
         - deviceId
         - userId
@@ -65,6 +67,7 @@ executors:
   - exc
   - translate_aiui_to_intent_events:
       name: 讯飞AIUI数据转换意图事件数据
+      hostname: nashorn_1
       container: acj
       scriptengine: Nashorn
       clean: |
@@ -109,6 +112,7 @@ executors:
         }
   - translate_aiui_to_service_events:
       name: 讯飞AIUI数据转换技能事件数据
+      hostname: nashorn_2
       container: acj
       scriptengine: Nashorn
       clean: |
