@@ -304,16 +304,19 @@ export class IonCalendarService {
 
           let calendarDay:CalendarDay = month.days.find((n) => moment(v.day,"YYYY/MM/DD").isSame(moment(n.time), 'day'));
 
-          calendarDay.hasevent = v.agendascount > 0 || v.taskscount > 0;
-          calendarDay.hasrepeat = v.repeateventscount > 0;
-          calendarDay.accept = v.acceptableeventscount;
-          calendarDay.hasMemo = v.memoscount > 0;
-          calendarDay.subTitle = v.daycalendaritem?v.daycalendaritem:calendarDay.subTitle;
-          calendarDay.calendaritem = v.daycalendaritem?true:false;
-          calendarDay.isToday = moment().isSame(calendarDay.time, 'days');
+          if (calendarDay){
+            calendarDay.hasevent = v.agendascount > 0 || v.taskscount > 0;
+            calendarDay.hasrepeat = v.repeateventscount > 0;
+            calendarDay.accept = v.acceptableeventscount;
+            calendarDay.hasMemo = v.memoscount > 0;
+            calendarDay.subTitle = v.daycalendaritem?v.daycalendaritem:calendarDay.subTitle;
+            calendarDay.calendaritem = v.daycalendaritem?true:false;
+            calendarDay.isToday = moment().isSame(calendarDay.time, 'days');
+            this.emitService.emit("mwxing.calendar.changed.renew",{});
+          }
 
         });
-      }
+    }
     });
 
     data.days.forEach((v,k,m)=>{

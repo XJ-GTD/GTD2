@@ -3085,7 +3085,8 @@ export class CalendarService extends BaseService {
                         left join gtd_mom gmo on gdayev.day = gmo.sd
                         group by gdayev.day) gdaymom
                       left join (
-                        select sd, jtn from gtd_jta group by sd having min(IFNULL(px, 0))
+                        select tmp.sd sd, tmp.jtn jtn from (
+                          select sd, jtn ,IFNULL(px, 0) px from gtd_jta where jtt != '${PlanItemType.Weather}' and del != '${DelType.del}') tmp group by tmp.sd,tmp.px having tmp.px = min(tmp.px)
                       ) dayitem
                       on gdaymom.day = dayitem.sd`;
 
@@ -3939,7 +3940,7 @@ export class CalendarService extends BaseService {
                       left join gtd_mom gmo on gdayev.day = gmo.sd
                       group by gdayev.day) gdaymom
                     left join (
-                      select sd, jtn from gtd_jta group by sd having px >= 0 and min(px)
+                      select sd, jtn from gtd_jta where jtt != '${PlanItemType.Weather}' and del != '${DelType.del}' group by sd having px >= 0 and min(px) = px 
                     ) dayitem
                     on gdaymom.day = dayitem.sd`;
 
