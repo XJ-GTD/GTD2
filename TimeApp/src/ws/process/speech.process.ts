@@ -260,16 +260,23 @@ export class SpeechProcess extends BaseProcess implements MQProcess {
 
      this.emitService.emitSpeech(emspeech);
 
+     this.assistant.speakText(speakText).then((data) => {
+       // 播报后启动语音监听
+       if (openListener) {
+         this.assistant.listenAudio();
+       }
+     });
+
     //合并list
      let cscdLS: Array<ScdEmData> = new Array<ScdEmData>();
 
-     if (showagendas.length > 0){
+     if (showagendas && showagendas.length > 0){
        cscdLS = cscdLS.concat(this.showdatas(showagendas, "event"));
      }
-     if (showmemos.length > 0){
+     if (showmemos &&  showmemos.length > 0){
        cscdLS = cscdLS.concat(this.showdatas(showmemos, "memo"));
      }
-     if (showplanitems.length > 0){
+     if (showplanitems && showplanitems.length > 0){
        cscdLS = cscdLS.concat(this.showdatas(showplanitems, "calendar"));
      }
 
@@ -293,12 +300,6 @@ export class SpeechProcess extends BaseProcess implements MQProcess {
      }else{
      }
 
-    this.assistant.speakText(speakText).then((data) => {
-      // 播报后启动语音监听
-      if (openListener) {
-        this.assistant.listenAudio();
-      }
-    });
 
     //处理结果
     return contextRetMap;
