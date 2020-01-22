@@ -2305,6 +2305,10 @@ export class CalendarService extends BaseService {
       item.jtc = SelfDefineType.Define;
     }
 
+    if (!item.px) {
+      item.px = 0;
+    }
+
     let items: Array<PlanItemData> = new Array<PlanItemData>();
     let itemdbs: Array<JtaTbl> = new Array<JtaTbl>();
     let members: Array<Member> = item.members || new Array<Member>();
