@@ -264,6 +264,10 @@ export class CalendarComponent implements OnInit {
       this.monthOptsWarp.push(warp)
       // this.monthOpts.push(v);
     });
+    this.emitService.register("mwxing.calendar.changed.renew",()=>{
+      this.changeDetectorRef.markForCheck();
+      this.changeDetectorRef.detectChanges();
+    });
   }
 
 

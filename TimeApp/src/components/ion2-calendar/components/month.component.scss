@@ -69,17 +69,26 @@ ion-calendar-month {
       display: block;
       left: 0;
       right: 0;
-      bottom: -4px;
+      bottom: -2px;
       position: absolute;
       z-index: 0;
       text-align: center;
       font-size: 0.9rem;
-      text-overflow: ellipsis;
+      text-overflow: clip;
       white-space: nowrap;
       //todo
       //-webkit-transform:scale(0.75);
     }
     .on-selected {
+      .d{
+        font-weight: bold;
+      }
+      .calendaritem {
+        font-weight: bold;
+      }
+      //small{
+      //  color: rgba(255,255,255,.8);
+      //}
 
       //border: 1px rgba(19, 72, 75, 1) solid;
     }
@@ -111,7 +120,7 @@ ion-calendar-month {
       .icon{
         font-size: 0.6rem;
         position: absolute;
-        bottom: -11px;
+        bottom: -10px;
 
         //todo
         //-webkit-transform:scale(0.5);
@@ -124,7 +133,7 @@ ion-calendar-month {
       }
 
       .diary {
-        left:4px;
+        left:5px;
         color:rgba(44,150,129,1);
 
       }

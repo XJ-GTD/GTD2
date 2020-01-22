@@ -46,6 +46,10 @@ ion-app.white-theme {
   }
 
   ion-calendar-month {
+
+
+
+
       .days {
         p {
           color: rgba(51, 51, 51, 1);
@@ -58,15 +62,26 @@ ion-app.white-theme {
         small {
           color:rgba(188,188,188,1);
         }
-
-          .on-selected {
-            .d{
-              background: rgba(0,109,136,.8);
-              color: rgba(255,255,255,1);
-            }
-
-            //border: 1px rgba(19, 72, 75, 1) solid;
+        .calendaritem{
+          color: rgba(255,99,44,.8);
+        }
+        .on-selected {
+          .days-btn{
+            background: rgba(0,109,136,.8);
+            box-shadow: 0px 0px 15px 4px rgba(0,109,136,.8);
           }
+          .d{
+            color: rgba(255,255,255,1);
+          }
+          .calendaritem {
+            //color:rgba(255,255,255,.8) !important;
+          }
+          //small{
+          //  color: rgba(255,255,255,.8);
+          //}
+
+          //border: 1px rgba(19, 72, 75, 1) solid;
+        }
 
         .today {
           //background: -webkit-linear-gradient(left, $spcColorf, $spcColort); /* Safari 5.1 - 6.0 */

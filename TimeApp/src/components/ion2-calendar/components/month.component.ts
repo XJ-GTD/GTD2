@@ -29,10 +29,9 @@ export const MONTH_VALUE_ACCESSOR: any = {
     <div [class]="color">
         <div class="days-box">
           <ng-template ngFor let-day [ngForOf]="month.days" [ngForTrackBy]="trackByTime">
-            <div class="days">
+            <div class="days" >
               <ng-container *ngIf="day">
-                <div class="borderDiv"
-                  [class.on-selected]="isSelected(day.time)  && !day.isLastMonth && !day.isNextMonth">
+                <div class="borderDiv" [class.on-selected]="isSelected(day.time)  && !day.isLastMonth && !day.isNextMonth">
                   <button type='button'
                           [class]="'days-btn warp-days-btn'"      
                           (click)="onSelected(day)"
@@ -42,11 +41,11 @@ export const MONTH_VALUE_ACCESSOR: any = {
                           [disabled]="day.disable">
                     <p *ngIf="day.isToday"><span class="d">今</span></p>
                     <p *ngIf="!day.isToday"><span span class="d">{{day.title}}</span></p>
-                    <small>{{day.subTitle}}</small>
                     <ion-icon class = "message fas fa-circle"  *ngIf="!day.isLastMonth && !day.isNextMonth && day.accept > 0" ></ion-icon>
                     <ion-icon class = "active fas fa-hexagon" *ngIf="!day.isLastMonth && !day.isNextMonth  && day.hasevent"></ion-icon>
                     <ion-icon class = "diary fas fa-heart-circle" *ngIf="!day.isLastMonth && !day.isNextMonth && day.hasMemo"></ion-icon>
                     <ion-icon class = "repeat fas fa-repeat" *ngIf="!day.isLastMonth && !day.isNextMonth && day.hasrepeat"></ion-icon>
+                    <small [class.calendaritem] = "day.calendaritem">{{day.subTitle}}</small>
                   </button>
 
                   <!--(press)="onPressed(day)"-->
