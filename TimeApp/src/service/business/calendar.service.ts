@@ -3085,7 +3085,7 @@ export class CalendarService extends BaseService {
                         left join gtd_mom gmo on gdayev.day = gmo.sd
                         group by gdayev.day) gdaymom
                       left join (
-                        select sd, jtn from gtd_jta group by sd having px >= 0 and min(px)
+                        select sd, jtn from gtd_jta group by sd having min(IFNULL(px, 0))
                       ) dayitem
                       on gdaymom.day = dayitem.sd`;
 
