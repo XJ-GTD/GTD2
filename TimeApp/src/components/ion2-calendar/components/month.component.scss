@@ -39,6 +39,7 @@ ion-calendar-month {
     text-align: center;
     height: 40px;
     position: relative;
+    margin-bottom: 5px;
   }
 
   button.days-btn {
@@ -64,31 +65,39 @@ ion-calendar-month {
 
   .cal-color {
 
-    button.days-btn small {
+    small {
       overflow: hidden;
       display: block;
       left: 0;
       right: 0;
-      bottom: -2px;
+      bottom: 2px;
       position: absolute;
       z-index: 0;
       text-align: center;
-      font-size: 0.9rem;
+      font-size: 0.8rem;
       text-overflow: clip;
       white-space: nowrap;
-      //todo
-      //-webkit-transform:scale(0.75);
+      width: 32px;
+      margin-left: auto;
+      margin-right: auto;
+      letter-spacing: .1px;
+      font-weight: 300;
     }
+
     .on-selected {
-      .d{
+      .d {
         font-weight: bold;
       }
+
       .calendaritem {
         font-weight: bold;
       }
-      //small{
-      //  color: rgba(255,255,255,.8);
-      //}
+
+      small{
+        bottom:-16px;
+        font-weight: bold;
+        width: 100%;
+      }
 
       //border: 1px rgba(19, 72, 75, 1) solid;
     }
@@ -101,46 +110,48 @@ ion-calendar-month {
       border: 1px transparent solid;
       border-radius: 50%;
 
-      .d{
+      .d {
         width: 20px;
         height: 20px;
         display: inline-block;
-        line-height: 20px ;
+        line-height: 20px;
         border-radius: 50%;
       }
 
     }
 
-    .next-month-day,.last-month-day{
+    .next-month-day, .last-month-day {
       opacity: 0.5;
     }
 
 
     .days {
-      .icon{
+      .icon {
         font-size: 0.6rem;
         position: absolute;
-        bottom: -10px;
+        bottom: -6px;
 
         //todo
         //-webkit-transform:scale(0.5);
       }
-      color:  rgba(189,166,96,1);
+
+      color: rgba(189, 166, 96, 1);
 
       .active {
         left: calc(100% / 2 - 3px);
-        color:  rgba(62,111,202,1);
+        color: rgba(62, 111, 202, 1);
       }
 
       .diary {
-        left:5px;
-        color:rgba(44,150,129,1);
+        left: calc(100% / 2 - 13px);
+        color: rgba(44, 150, 129, 1);
 
       }
+
       .message {
         top: 1.5rem;
-        right:0rem;
-        color: rgba(176,0,0,1);
+        right: calc(100% / 2 - 13px);
+        color: rgba(176, 0, 0, 1);
       }
 
       //.update {
@@ -149,8 +160,8 @@ ion-calendar-month {
       //}
 
       .repeat {
-        right: 4px;
-        color:rgba(219,153,121,1);
+        right: calc(100% / 2 - 13px);
+        color: rgba(219, 153, 121, 1);
       }
     }
 

@@ -41,12 +41,12 @@ export const MONTH_VALUE_ACCESSOR: any = {
                           [disabled]="day.disable">
                     <p *ngIf="day.isToday"><span class="d">今</span></p>
                     <p *ngIf="!day.isToday"><span span class="d">{{day.title}}</span></p>
-                    <ion-icon class = "message fas fa-circle"  *ngIf="!day.isLastMonth && !day.isNextMonth && day.accept > 0" ></ion-icon>
-                    <ion-icon class = "active fas fa-hexagon" *ngIf="!day.isLastMonth && !day.isNextMonth  && day.hasevent"></ion-icon>
-                    <ion-icon class = "diary fas fa-heart-circle" *ngIf="!day.isLastMonth && !day.isNextMonth && day.hasMemo"></ion-icon>
-                    <ion-icon class = "repeat fas fa-repeat" *ngIf="!day.isLastMonth && !day.isNextMonth && day.hasrepeat"></ion-icon>
-                    <small [class.calendaritem] = "day.calendaritem">{{day.subTitle}}</small>
                   </button>
+                  <ion-icon class = "message fas fa-circle"  *ngIf="!day.isLastMonth && !day.isNextMonth && day.accept > 0" ></ion-icon>
+                  <ion-icon class = "active fas fa-hexagon" *ngIf="!day.isLastMonth && !day.isNextMonth  && day.hasevent"></ion-icon>
+                  <ion-icon class = "diary fas fa-heart-circle" *ngIf="!day.isLastMonth && !day.isNextMonth && day.hasMemo"></ion-icon>
+                  <ion-icon class = "repeat fas fa-repeat" *ngIf="!day.isLastMonth && !day.isNextMonth && day.hasrepeat"></ion-icon>
+                  <small [class.calendaritem] = "day.calendaritem">{{day.subTitle}}</small>
 
                   <!--(press)="onPressed(day)"-->
                 </div>
