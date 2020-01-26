@@ -169,3 +169,6 @@ dispatch:
           value: OS6981162467.LocalSetting
       flow: mwxing_inteligence_service_remote_start_v2
     - name: 设置消息提醒
+      filter:
+        - name: category
+          value: xunfei/aiui
