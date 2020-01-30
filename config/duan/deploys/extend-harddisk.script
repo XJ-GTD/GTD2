@@ -1,0 +1,15 @@
+fdisk /dev/sda
+p
+d, 2
+n, 2, ...
+p
+w
+
+reboot
+
+lvm
+lvs
+pvresize /dev/sda2
+lvextend -l +100%free /dev/centos/root
+
+xfs_growfs /dev/mapper/centos-root

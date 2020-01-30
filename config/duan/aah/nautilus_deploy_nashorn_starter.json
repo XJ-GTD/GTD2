@@ -4,7 +4,7 @@
   "trigger": "nautilus_deploy_nashorn_starter",
   "parameters": [
     "owner",
-    "flow"
+    "nashorn"
   ],
   "follows": [
     {
@@ -13,7 +13,7 @@
       "parameters": [
         "target;nautilus-nashorn",
         "owner;$.parent.parameters.owner",
-        "payload;$.parent.parameters.flow"
+        "payload;$.parent.parameters.nashorn"
       ]
     }
   ]
