@@ -21,9 +21,15 @@
 
 @implementation XjBaiduTts
 
+
+
 NSString* APP_ID = @"15388608";
 NSString* API_KEY = @"0gh0cOEAW5ZWV7sPWG0St5N2";
 NSString* SECRET_KEY = @"2dicEsSdlnBI5eOL8Gh1WwnyXDOkbq7j";
+
+//NSString* APP_ID = @"14502702";
+//NSString* API_KEY = @"6YvlNRGZ5I4CkA715XnVyoSm";
+//NSString* SECRET_KEY = @"9oHZPMLgc0BM9a4m3DhpHUhGSqYvsrAF";
 
 #pragma mark Initialization functions
 - (void) pluginInitialize {
@@ -79,8 +85,6 @@ NSString* SECRET_KEY = @"2dicEsSdlnBI5eOL8Gh1WwnyXDOkbq7j";
 
 - (void)stop:(CDVInvokedUrlCommand*)command
 {
-    NSInteger sentenceID;
-    NSError* err = nil;
     [[BDSSpeechSynthesizer sharedInstance] setSynthesizerDelegate:self];
     self.callbackId = command.callbackId;
     [[BDSSpeechSynthesizer sharedInstance] cancel];

@@ -62,11 +62,23 @@ export class AipPage{
               private _renderer: Renderer2,
   ) {
     //
-    this.assistantService.startWakeUp();
     this.emitService.registerListener((b)=>{
       this.statusListener = b;
+      if (this.showGuide){
+        this._renderer.removeClass(this.helpComponent.elementRef.nativeElement,"fadeIn");
+        this._renderer.addClass(this.helpComponent.elementRef.nativeElement,"fadeOut");
+        setTimeout(()=>{
+          this.showGuide = false;
+        },1500);
+      }
     });
 
+  }
+
+  ngOnDestroy() {
+    // this.tellyouService.unRegeditTellYou();
+    // if (this.aiTellYou)
+    //   this.aiTellYou.unsubscribe();
   }
 
   ngOnInit() {

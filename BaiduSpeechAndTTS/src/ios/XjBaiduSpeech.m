@@ -27,6 +27,8 @@
 
 @implementation XjBaiduSpeech
 
+
+
 NSString* APP_ID_1 = @"15388608";
 NSString* API_KEY_1 = @"0gh0cOEAW5ZWV7sPWG0St5N2";
 NSString* SECRET_KEY_1 = @"2dicEsSdlnBI5eOL8Gh1WwnyXDOkbq7j";
@@ -34,19 +36,36 @@ NSString* SECRET_KEY_1 = @"2dicEsSdlnBI5eOL8Gh1WwnyXDOkbq7j";
 - (void) pluginInitialize {
     self.asrEventManager = [BDSEventManager createEventManagerWithName:BDS_ASR_NAME];
    [self configVoiceRecognitionClient];
+    // 设置语音识别代理
+   [self.asrEventManager setDelegate:self];
 }
 
 
 
 - (void)start:(CDVInvokedUrlCommand*)command
 {
+    
+    [self performSelector:@selector(startdelay:) withObject:command afterDelay:1];
+    //[self startdelay:command];
     // 设置语音识别代理
-    [self.asrEventManager setDelegate:self];
+//    [self.asrEventManager setDelegate:self];
     
     // 发送指令：启动识别
-    self.callbackId = command.callbackId;
+//    self.callbackId = command.callbackId;
     
+//    [self configFileHandler];
+
+
+//    [NSThread sleepForTimeInterval:0.5];
+//    [self.asrEventManager sendCommand:BDS_ASR_CMD_START];
+}
+
+- (void)startdelay:(CDVInvokedUrlCommand*)command
+{
+    // 发送指令：启动识别
     [self configFileHandler];
+    
+    self.callbackId = command.callbackId;
 
     [self.asrEventManager sendCommand:BDS_ASR_CMD_START];
 }
@@ -64,15 +83,15 @@ NSString* SECRET_KEY_1 = @"2dicEsSdlnBI5eOL8Gh1WwnyXDOkbq7j";
 - (void)stop:(CDVInvokedUrlCommand*)command
 {
     self.callbackId = command.callbackId;
-    [self.asrEventManager setDelegate:self];
+//    [self.asrEventManager setDelegate:self];
 
-    [self.asrEventManager sendCommand:BDS_ASR_CMD_STOP];
+   [self.asrEventManager sendCommand:BDS_ASR_CMD_STOP];
 }
 
 - (void)cancel:(CDVInvokedUrlCommand*)command
 {
     self.callbackId = command.callbackId;
-    [self.asrEventManager setDelegate:self];
+//    [self.asrEventManager setDelegate:self];
 
     [self.asrEventManager sendCommand:BDS_ASR_CMD_CANCEL];
 }
@@ -80,7 +99,7 @@ NSString* SECRET_KEY_1 = @"2dicEsSdlnBI5eOL8Gh1WwnyXDOkbq7j";
 - (void)release:(CDVInvokedUrlCommand*)command
 {
     self.callbackId = command.callbackId;
-    [self.asrEventManager setDelegate:self];
+//    [self.asrEventManager setDelegate:self];
 
     [self.asrEventManager sendCommand:BDS_ASR_CMD_STOP];
 }
@@ -95,7 +114,7 @@ NSString* SECRET_KEY_1 = @"2dicEsSdlnBI5eOL8Gh1WwnyXDOkbq7j";
     //[self.asrEventManager setParameter:@(NO) forKey:BDS_ASR_ENABLE_LONG_SPEECH];
 
     //配置端点检测（二选一）
-//   [self configModelVAD];
+   //[self configModelVAD];
    [self configDNNMFE];
 
     //[self.asrEventManager setParameter:@"15361" forKey:BDS_ASR_PRODUCT_ID];
@@ -108,7 +127,7 @@ NSString* SECRET_KEY_1 = @"2dicEsSdlnBI5eOL8Gh1WwnyXDOkbq7j";
 //   [self configOfflineClient];
 
    //开启声音
- [self.asrEventManager setParameter:@(EVRPlayToneTypeSuccess | EVRPlayToneTypeCancel) forKey:BDS_ASR_PLAY_TONE];
+ [self.asrEventManager setParameter:@(EVRPlayToneTypeSuccess | EVRPlayToneTypeCancel| EVRPlayToneTypeStart) forKey:BDS_ASR_PLAY_TONE];
 //  [self.asrEventManager setParameter:@(EVRPlayToneAll) forKey:BDS_ASR_PLAY_TONE];
 
 }
@@ -244,7 +263,6 @@ NSString* SECRET_KEY_1 = @"2dicEsSdlnBI5eOL8Gh1WwnyXDOkbq7j";
             break;
         }
         case EVoiceRecognitionClientWorkStatusError: {
-            NSLog(@"Did EVoiceRecognitionClientWorkStatusError");
             if (aObj) {
                 if (self.callbackId) {
                     NSDictionary * message = @{
@@ -299,6 +317,10 @@ NSString* SECRET_KEY_1 = @"2dicEsSdlnBI5eOL8Gh1WwnyXDOkbq7j";
 
 
 - (void)configFileHandler {
+    if (self.fileHandler != nil){
+        [self.fileHandler closeFile];
+        self.fileHandler = nil;
+    }
     self.fileHandler = [self createFileHandleWithName:@"iat.pcm" isAppend:NO];
 }
 

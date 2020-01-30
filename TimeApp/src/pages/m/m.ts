@@ -11,6 +11,7 @@ import {ModalTranType, StatusType} from "../../data.enum";
 import {SettingsProvider} from "../../providers/settings/settings";
 import {FeedbackService} from "../../service/cordova/feedback.service";
 import {CalendarDay} from "../../components/ion2-calendar";
+import {AssistantService} from "../../service/cordova/assistant.service";
 
 /**
  * Generated class for the 菜单 page.
@@ -89,6 +90,7 @@ export class MPage {
               private settings:SettingsProvider,
               private renderer2:Renderer2,
               private feedback: FeedbackService,
+              private assistantService: AssistantService,
               private elementRef:ElementRef) {
     //真机的时候获取JPush注册ID，并保存到服务器注册用户信息
     if (this.util.isMobile()) {
@@ -112,6 +114,8 @@ export class MPage {
         console.log("Start RabbitMQ plugin initing...");
         this.rabbitmq.init(UserConfig.user.id, UserConfig.account.device, UserConfig.account.mq);
       }
+
+      this.assistantService.startWakeUp();
     }
 
     // if (UserConfig.account.id == "13585820972") {

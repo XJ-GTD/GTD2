@@ -43,7 +43,14 @@
     //[self configWakeup];
 
     self.wakeupEventManager = [BDSEventManager createEventManagerWithName:BDS_WAKEUP_NAME];
+    
+    [self configWakeup];
+
+    // 发送指令：加载语音唤醒引擎
+    [self.wakeupEventManager sendCommand:BDS_WP_CMD_LOAD_ENGINE];
 }
+
+
 
 - (void)configWakeup {
 
@@ -62,16 +69,19 @@
     [self.wakeupEventManager setParameter:words forKey:BDS_WAKEUP_WORDS_FILE_PATH];
 
     [self.wakeupEventManager setParameter:nil forKey:BDS_WAKEUP_AUDIO_FILE_PATH];
+    
     [self.wakeupEventManager setParameter:nil forKey:BDS_WAKEUP_AUDIO_INPUT_STREAM];
+
 }
 
 - (void)start:(CDVInvokedUrlCommand*)command
 {
-    [self configWakeup];
+    [self performSelector:@selector(startdelay:) withObject:command afterDelay:5];
+}
 
+- (void)startdelay:(CDVInvokedUrlCommand*)command
+{
     self.callbackId = command.callbackId;
-    // 发送指令：加载语音唤醒引擎
-    [self.wakeupEventManager sendCommand:BDS_WP_CMD_LOAD_ENGINE];
     [self.wakeupEventManager sendCommand:BDS_WP_CMD_START];
 }
 
@@ -79,14 +89,14 @@
 {
     self.callbackId = command.callbackId;
     [self.wakeupEventManager sendCommand:BDS_WP_CMD_STOP];
-    [self.wakeupEventManager sendCommand:BDS_WP_CMD_UNLOAD_ENGINE];
+//    [self.wakeupEventManager sendCommand:BDS_WP_CMD_UNLOAD_ENGINE];
 }
 
 - (void)release:(CDVInvokedUrlCommand*)command
 {
     self.callbackId = command.callbackId;
     [self.wakeupEventManager sendCommand:BDS_WP_CMD_STOP];
-    [self.wakeupEventManager sendCommand:BDS_WP_CMD_UNLOAD_ENGINE];
+//    [self.wakeupEventManager sendCommand:BDS_WP_CMD_UNLOAD_ENGINE];
 }
 
 - (void)WakeupClientWorkStatus:(int)workStatus obj:(id)aObj
@@ -112,7 +122,7 @@
              NSLog(@"Did EWakeupEngineWorkStatusTriggered");
              if (self.callbackId) {
                 CDVPluginResult* result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:(NSString *)aObj];
-                [result setKeepCallbackAsBool:YES];
+                [result setKeepCallbackAsBool:NO];
                 [self.commandDelegate sendPluginResult:result callbackId:self.callbackId];
              }
             break;
@@ -133,3 +143,4 @@
 }
 
 @end
+

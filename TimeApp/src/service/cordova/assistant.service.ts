@@ -60,6 +60,8 @@ export class AssistantService {
     if (this.isWakeuping) return;
     this.isWakeuping = true;
     cordova.plugins.XjBaiduWakeUp.wakeUpStart(async (result) => {
+
+      this.emitService.emit("ai.wakeup.start",{});
       this.speakText(UserConfig.user.realname + ",我在，请说：").then(() => {
         this.listenAudio();
       })
