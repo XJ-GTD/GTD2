@@ -158,7 +158,10 @@ executors:
 dispatch:
   events:
     - name: 设置语音唤醒
-      filter:
+      type: WEBHOOK
+      id: nautilus_xj-gtd/gtd2_follow_webhook_xunfei.aiui_notification
+      event: WEBHOOK_XUNFEI.AIUI
+      filters:
         - name: category
           value: xunfei/aiui
         - name: type
