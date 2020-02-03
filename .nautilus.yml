@@ -79,7 +79,7 @@ executors:
             event: event
           };
 
-          //print(JSON.stringify(outputs));
+          print(JSON.stringify(outputs));
 
           // filter source code here end
           return JSON.stringify(outputs);
