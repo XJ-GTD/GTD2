@@ -18,9 +18,9 @@ flows:
       trigger: flow_events_generator_with_intent
       hostname: flow_1
       parameters:
-        - deviceId
-        - userId
-        - xunfeiyun
+        - github_app
+        - clientip
+        - event
       follows:
         - name: 意图事件数据转换
           trigger: translate_aiui_to_intent_events
