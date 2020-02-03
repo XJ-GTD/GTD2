@@ -38,33 +38,7 @@ flows:
                 - merge_payload;$.root.parameters
               outputs:
                 - executed
-  - flow_events_generator_with_service: &flow_events_generator_with_service
-      name: 技能事件发生器处理流
-      trigger: flow_events_generator_with_service
-      hostname: flow_2
-      parameters:
-        - deviceId
-        - userId
-        - xunfeiyun
-      follows:
-        - name: 意图事件数据转换
-          trigger: translate_aiui_to_service_events
-          parameters:
-            - datasource;$.parent.parameters
-          outputs:
-            - cleaned
-          next:
-            - name: 发送技能事件数据
-              trigger: exc
-              parameters:
-                - method;post
-                - urlabs;http://sa-aag:8080/aag/webhooks/xunfei%2Faiui/v1/{USER_SECURITYID}
-                - data;$.parent.outputs.cleaned
-                - merge_payload;$.root.parameters
-              outputs:
-                - executed
 executors:
-  - exc
   - translate_aiui_to_intent_events:
       name: 讯飞AIUI数据转换意图事件数据
       hostname: nashorn_1
@@ -157,21 +131,13 @@ executors:
         }
 dispatch:
   events:
-    - name: 设置语音唤醒
+    - name: 触发意图事件转换
       type: WEBHOOK
       id: nautilus_xj-gtd/gtd2_follow_webhook_xunfei.aiui_notification
       event: WEBHOOK_XUNFEI.AIUI
       filters:
-        - name: category
-          value: xunfei/aiui
-        - name: type
-          value: service
-        - name: intent
-          value: SettingVoiceActivation
-        - name: service
-          value: OS6981162467.LocalSetting
-      flow: mwxing_inteligence_service_remote_start_v2
-    - name: 设置消息提醒
-      filter:
-        - name: category
-          value: xunfei/aiui
+        - name: webhook
+          value: xunfei.aiui
+        - name: observer
+          value: 43193b8cbd26b614fbc4b4885a9a512740a2df35
+      flow: flow_events_generator_with_intent
