@@ -49,7 +49,7 @@ executors:
           var result = {};
 
           print('Start Nashorn Javascript processing...');
-          //print(datasource);
+          print(datasource);
 
           // filter source code here start
           var eventsource = JSON.parse(datasource);
