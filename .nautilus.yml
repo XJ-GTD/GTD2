@@ -53,7 +53,7 @@ executors:
 
           // filter source code here start
           var eventsource = JSON.parse(datasource);
-          var input = eventsource.event.output.xunfeiyun;
+          var input = eventsource.event.output.payload.xunfeiyun;
           var data = input.data[0];
 
           var event = {
