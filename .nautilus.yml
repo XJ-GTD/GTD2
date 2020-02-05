@@ -52,7 +52,8 @@ executors:
           //print(datasource);
 
           // filter source code here start
-          var input = JSON.parse(datasource);
+          var eventsource = JSON.parse(datasource);
+          var input = eventsource.event.payload.xunfeiyun;
           var data = input.data[0];
 
           var event = {
