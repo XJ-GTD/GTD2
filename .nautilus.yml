@@ -34,7 +34,7 @@ flows:
               parameters:
                 - method;post
                 - urlabs;http://sa-aag:8080/aag/webhooks/event.internal/v1/#{observer}
-                - params;$.root.parameters.event.output,
+                - params;$.root.parameters.event.output
                 - data;$.parent.outputs.cleaned
                 - merge_payload;$.root.parameters
               outputs:
