@@ -197,6 +197,29 @@ export class SpeechProcess extends BaseProcess implements MQProcess {
           }
         }
       }
+    } else {
+      // 变量替换
+      if (content.input && content.input.textvariables) {
+        for (let txt of content.input.textvariables) {
+          let expvalue: string = "";
+          if (txt.value || txt.value == "") {
+            expvalue = txt.value;
+          } else if (txt.expression) {
+            try {
+              expvalue = eval(txt.expression);
+            }catch (e){
+              expvalue = txt.default;
+            }
+
+            if (!expvalue) {
+              expvalue = txt.default;
+            }
+          } else {
+            expvalue = txt.default;
+          }
+          speakText = speakText.replace("{" + txt.name + "}", expvalue);
+        }
+      }
     }
 
     //上下文内获取暂停缓存
