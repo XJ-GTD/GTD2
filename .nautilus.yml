@@ -33,7 +33,8 @@ flows:
               trigger: exc
               parameters:
                 - method;post
-                - urlabs;http://sa-aag:8080/aag/webhooks/xunfei%2Faiui/v1/{USER_SECURITYID}
+                - urlabs;http://sa-aag:8080/aag/webhooks/event.internal/v1/#{observer}
+                - params;$.root.parameters.event.output,
                 - data;$.parent.outputs.cleaned
                 - merge_payload;$.root.parameters
               outputs:
@@ -77,7 +78,8 @@ executors:
           }
 
           var outputs = {
-            event: event
+            event: event,
+            xunfeiyun: input
           };
 
           print(JSON.stringify(outputs));
