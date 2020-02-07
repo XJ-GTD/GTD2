@@ -9,6 +9,8 @@ export class SpeechPara  {
   an: string = "";
   //本地语音类型
   t: string = "";
+  //后续操作提示
+  tips: string = "";
   //继续输入
   listen: boolean = false;
 }

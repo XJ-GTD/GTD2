@@ -69,6 +69,7 @@ export class SpeechProcess extends BaseProcess implements MQProcess {
     let openListener: boolean = spData.listen || false;
     //默认语音
     let speakText = spData.an;
+    let tips = spData.tips;
     let type = WsDataConfig.TYPE_EMPTY;
 
     let branchcode: string = '';
@@ -279,6 +280,8 @@ export class SpeechProcess extends BaseProcess implements MQProcess {
     emspeech.org = content.thisContext.original;
     if (sutbl && sutbl.sut) {
       emspeech.tips = sutbl.sut;
+    } else {
+      emspeech.tips = tips || "";
     }
 
      this.emitService.emitSpeech(emspeech);
