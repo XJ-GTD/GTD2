@@ -133,6 +133,9 @@ executors:
             observer: eventload.observer,
             type: eventload.event,
             repository: eventload.payload.repository.full_name,
+            ref: eventload.payload.ref,
+            owner: eventload.payload.owner.name,
+            name: eventload.payload.repository.name,
             modified: eventload.payload.head_commit.modified
           };
 
