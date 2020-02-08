@@ -13,6 +13,31 @@ include:
 deploy:
   force: false
 flows:
+  - flow_events_genfor_github_push:
+      name: Github代码库变动处理流
+      trigger: flow_events_genfor_github_push
+      hostname: flow_gitpush
+      parameters:
+        - github_app
+        - event
+      follows:
+        - name: 代码库变动事件数据转换
+          trigger: translate_gitpush_to_service_events
+          parameters:
+            - datasource;$.parent.parameters
+          outputs:
+            - cleaned
+          next:
+            - name: 发送变动事件数据
+              trigger: exc
+              parameters:
+                - method;post
+                - urlabs;http://sa-aag:8080/aag/webhooks/event.internal/v1/#{observer}
+                - params;$.root.parameters.event.output
+                - data;$.parent.outputs.cleaned
+                - merge_payload;$.root.parameters
+              outputs:
+                - executed
   - flow_events_generator_with_intent: &flow_events_generator_with_intent
       name: 意图事件发生器处理流
       trigger: flow_events_generator_with_intent
@@ -87,9 +112,9 @@ executors:
           // filter source code here end
           return JSON.stringify(outputs);
         }
-  - translate_aiui_to_service_events:
-      name: 讯飞AIUI数据转换技能事件数据
-      hostname: nashorn_2
+  - translate_gitpush_to_service_events:
+      name: Github变动数据转换变动事件数据
+      hostname: nashorn_gitpush
       container: acj
       scriptengine: Nashorn
       clean: |
@@ -97,35 +122,11 @@ executors:
           var result = {};
 
           print('Start Nashorn Javascript processing...');
-          //print(datasource);
+          print(datasource);
 
           // filter source code here start
-          var input = JSON.parse(datasource);
-          var data = input.data[0];
 
-          var event = {
-            category: 'xunfei/aiui',
-            type: 'service'
-          };
-
-          for (var di in input.data) {
-            var dt = input.data[di];
-            if (dt['sub'] === 'nlp' && dt['intent']['service'] && dt['intent']['intentType'] === 'custom' && dt['intent']['semantic']) {
-              event['service'] = dt['intent']['service'];
-
-              var semantics = dt['intent']['semantic'];
-
-              for (var sei in semantics) {
-                var semantic = semantics[sei];
-
-                event['intent'] = semantic['intent'];
-              }
-            }
-          }
-
-          var outputs = {
-            event: event
-          };
+          var outputs = {};
 
           //print(JSON.stringify(outputs));
 
@@ -144,3 +145,15 @@ dispatch:
         - name: observer
           value: 43193b8cbd26b614fbc4b4885a9a512740a2df35
       flow: flow_events_generator_with_intent
+    - name: 触发Github代码库变动事件转换
+      type: GITHUB_APP
+      id: nautilus_xj-gtd/gtd2_follow_github_app_notification
+      event: GITHUB_APP
+      filters:
+        - name: webhook
+          value: github_app
+        - name: event
+          value: push
+        - name: observer
+          value: 43193b8cbd26b614fbc4b4885a9a512740a2df35
+      flow: flow_events_genfor_github_push
