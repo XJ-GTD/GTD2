@@ -125,7 +125,8 @@ executors:
           print(datasource);
 
           // filter source code here start
-          var eventload = datasource.event.output;
+          var eventsource = JSON.parse(datasource);
+          var eventload = eventsource.event.output;
 
           var event = {
             category: eventload.webhook,
