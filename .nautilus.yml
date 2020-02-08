@@ -133,7 +133,7 @@ executors:
             observer: eventload.observer,
             type: eventload.event,
             repository: eventload.payload.repository.full_name,
-            modified: eventload.payload.repository.head_commit.modified
+            modified: eventload.payload.head_commit.modified
           };
 
           var outputs = {
