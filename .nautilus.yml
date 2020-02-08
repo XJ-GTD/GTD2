@@ -125,10 +125,22 @@ executors:
           print(datasource);
 
           // filter source code here start
+          var eventload = datasource.event.output;
 
-          var outputs = {};
+          var event = {
+            category: eventload.webhook,
+            observer: eventload.observer,
+            type: eventload.event,
+            repository: eventload.payload.repository.full_name
+            modified: eventload.payload.repository.head_commit.modified
+          };
 
-          //print(JSON.stringify(outputs));
+          var outputs = {
+            event: event,
+            github: eventload.payload
+          };
+
+          print(JSON.stringify(outputs));
 
           // filter source code here end
           return JSON.stringify(outputs);
