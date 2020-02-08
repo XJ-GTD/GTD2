@@ -131,7 +131,7 @@ executors:
             category: eventload.webhook,
             observer: eventload.observer,
             type: eventload.event,
-            repository: eventload.payload.repository.full_name
+            repository: eventload.payload.repository.full_name,
             modified: eventload.payload.repository.head_commit.modified
           };
 
