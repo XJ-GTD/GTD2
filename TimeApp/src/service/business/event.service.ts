@@ -58,8 +58,15 @@ export class EventService extends BaseService {
     this.util.cloneObj(shareAgenda, agenda);
     shareAgenda.rtjson = generateRtJson(shareAgenda.rtjson,shareAgenda.rt);
     shareAgenda.txjson = generateTxJson(shareAgenda.txjson,shareAgenda.tx);
+
     // 发起人
-    shareAgenda.creator = await this.getMemberByUi(shareAgenda.ui);
+    let byself = {} as Member;
+    byself.ui = UserConfig.account.id;
+    byself.ran = UserConfig.user.nickname;
+    byself.rn = UserConfig.user.realname;
+    byself.rel = UserConfig.account.phone;
+
+    shareAgenda.creator = await this.getMemberByUi(shareAgenda.ui) || byself;
 
     let share: ShareInData = new ShareInData();
 
