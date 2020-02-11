@@ -1,32 +1,101 @@
-ion-auto-complete{
+ion-auto-complete {
   width: 100%;
-  ul{
+
+  ul {
     background: #FFF;
     width: 100%;
-    left:0px;
-    li{
+    left: 0px;
+
+    li {
       margin: 7px 18px;
       padding: 8px;
-      border-bottom: 0.55px solid  rgba(174,174,174,1);
+      border-bottom: 0.55px solid rgba(174, 174, 174, 1);
       font-size: 14px;
     }
   }
 }
-.searchbar-input-container{
-  margin: 0 14px;
-  border-bottom: 1px solid  rgba(174,174,174,1);
-}
-.searchbar-ios{
-  border-bottom: none;
-  background-color: transparent;
-  min-height:55px;
-  .searchbar-search-icon{
-    width: 16px;
-    height: 16px;
-    background-size: 16px;
+
+.searchbar-ios {
+  background: transparent;
+  border-top: 0.55px solid transparent;
+  border-bottom: 0.55px solid transparent;
+  .searchbar-input-container {
+    //margin: 0 14px;
+    border-bottom: none;
+    background-color: transparent;
+    //min-height: 55px;
+    border-top: 0.55px solid transparent;
+    border-bottom: 0.55px solid transparent;
+
+    .searchbar-search-icon {
+      width: 16px;
+      height: 16px;
+      background-size: 16px;
+    }
+
+    .searchbar-input {
+      border-radius: 2px 2px 0 0;
+      font-size: 16px;
+      padding-left: 35px;
+    }
   }
-  .searchbar-input{
-    font-size: 16px;
-    font-weight:400;
+}
+
+.white-theme {
+  ion-auto-complete {
+    ul {
+      background: rgba(255, 255, 255, 1);
+
+      li {
+        border-bottom: 0.55px solid rgba(174, 174, 174, 1);
+      }
+    }
+  }
+
+  .searchbar-ios {
+    .searchbar-input-container {
+        border-bottom: .55px solid rgba(201, 212, 217, 1);
+
+      .searchbar-search-icon {
+        background-image: url("data:image/svg+xml;charset=utf-8,<svg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2013%2013'><path%20fill='rgba(0,0,0,0.5)'%20d='M5,1c2.2,0,4,1.8,4,4S7.2,9,5,9S1,7.2,1,5S2.8,1,5,1%20M5,0C2.2,0,0,2.2,0,5s2.2,5,5,5s5-2.2,5-5S7.8,0,5,0%20L5,0z'/><line%20stroke='rgba(0,0,0,0.5)'%20stroke-miterlimit='10'%20x1='12.6'%20y1='12.6'%20x2='8.2'%20y2='8.2'/></svg>");
+
+      }
+
+      .searchbar-input {
+        background-color: transparent;
+      }
+    }
+  }
+
+}
+
+.black-theme {
+  ion-auto-complete {
+    ul {
+      background: rgba(255, 255, 255, 1);
+
+      li {
+        border-bottom: 0.55px solid rgba(174, 174, 174, 1);
+      }
+    }
+  }
+
+
+  .searchbar-ios {
+    .searchbar-input-container {
+        border-bottom: .55px solid rgba(217, 233, 238, .1);
+      .searchbar-search-icon {
+        background-image: url("data:image/svg+xml;charset=utf-8,<svg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2013%2013'><path%20fill='rgba(217, 233, 238, .1)'%20d='M5,1c2.2,0,4,1.8,4,4S7.2,9,5,9S1,7.2,1,5S2.8,1,5,1%20M5,0C2.2,0,0,2.2,0,5s2.2,5,5,5s5-2.2,5-5S7.8,0,5,0%20L5,0z'/><line%20stroke='rgba(217, 233, 238, .1)'%20stroke-miterlimit='10'%20x1='12.6'%20y1='12.6'%20x2='8.2'%20y2='8.2'/></svg>");
+
+      }
+
+      .searchbar-input {
+        background-color: transparent;
+        color: rgba(255, 255, 255, 1);
+      }
+      .searchbar-input::-webkit-input-placeholder {
+        color: rgba(217, 233, 238, .1);
+      }
+    }
   }
 }

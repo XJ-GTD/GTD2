@@ -1,14 +1,33 @@
 page-pc {
   .plantitle{
-    margin: 2rem 1rem 1rem 1rem;
-    background: 4px;
+    margin: 1rem;
     ion-input{
       height: 100%;
     }
     .text-input-ios{
-      margin: 1rem 0.8rem 0rem 1rem;
-      width: 90%;
-      border-bottom:0.55px solid rgba(217, 233, 238, 1);
+      margin: 1rem 0rem;
+      width: 100%;
+      padding: 0 16px;
+    }
+  }
+}
+
+.white-theme {
+  page-pc {
+    .plantitle{
+      ion-input{
+        border-bottom:0.55px solid rgba(201,212,217,1);
+      }
+    }
+  }
+}
+
+.black-theme {
+  page-pc {
+    .plantitle{
+      ion-input{
+        border-bottom:0.55px solid  rgba(217, 233, 238, 0.5);
+      }
     }
   }
 }

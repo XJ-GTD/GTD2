@@ -3,7 +3,7 @@ page-member,page-gc,page-fs4g {
     font-weight: bold;
   }
   .item.item-ios .checkbox-ios{
-    margin: 8px 6px 8px 6px;
+    margin: 8px 12px 8px 12px;
   }
   ion-list.list-ios .item-ios{
     min-height: 44px;
@@ -33,7 +33,7 @@ page-member,page-gc,page-fs4g {
 .white-theme {
   page-member{
     .searchbar-input-container{
-      border-bottom: 1px solid rgba(153,153,153,1)
+      //border-bottom: 1px solid rgba(153,153,153,1)
     }
   }
 }
@@ -41,13 +41,9 @@ page-member,page-gc,page-fs4g {
 .black-theme {
   page-member{
     .searchbar-input-container{
-      border-bottom: 1px solid rgba(153,153,153,1)
+      //border-bottom: 1px solid rgba(153,153,153,1)
     }
-    .searchbar-ios {
-      .searchbar-input{
-        border-radius: 2px 2px 0 0;
-      }
-    }
+
   }
 }
 

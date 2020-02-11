@@ -1,13 +1,17 @@
 page-repeat {
+  .grid{
+    padding: 5px 0;
+  }
   .repeattitle{
+    margin: 0px 10px;
     p{
       font-size: 1.4rem;
-      margin: 0;
-      text-align: center;
+      text-align: left;
     }
 
   }
   .itemwarp{
+    margin: 10px;
     p{
       font-size: 1.6rem;
     }
@@ -97,7 +101,7 @@ page-repeat {
   page-repeat {
     .repeattitle{
       p{
-        color:rgba(239, 239, 239, 1);
+        color:rgba(172,172,172,1);
       }
 
     }
@@ -129,7 +133,7 @@ page-repeat {
   page-repeat {
     .repeattitle{
       p{
-        color:rgba(239, 239, 239, 1);
+        color:rgba(172,172,172,1);
       }
 
     }
