@@ -66,7 +66,9 @@ export class EventService extends BaseService {
     byself.rn = UserConfig.user.realname;
     byself.rel = UserConfig.account.phone;
 
-    shareAgenda.creator = await this.getMemberByUi(shareAgenda.ui) || byself;
+    shareAgenda.creator = await this.getMemberByUi(shareAgenda.ui);
+
+    if (!shareAgenda.creator || !shareAgenda.creator.ui) shareAgenda.creator = byself;
 
     let share: ShareInData = new ShareInData();
 
