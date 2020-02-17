@@ -144,8 +144,8 @@ script:
   - if [[ "$TRAVIS_JOB_NAME" == "unittest" ]]; then npm run test-coverage ; fi
   - if [[ "$TRAVIS_JOB_NAME" == "unittest" ]]; then dos2unix -k $TRAVIS_BUILD_DIR/travis/upload-coverage.sh ; fi
   - if [[ "$TRAVIS_JOB_NAME" == "unittest" ]]; then sh $TRAVIS_BUILD_DIR/travis/upload-coverage.sh ; fi
-  - if [[ "$TRAVIS_JOB_NAME" != "unittest" ]]; then dos2unix -k $TRAVIS_BUILD_DIR/travis/build.sh ; fi
-  - if [[ "$TRAVIS_JOB_NAME" != "unittest" ]]; then sh $TRAVIS_BUILD_DIR/travis/build.sh ; fi
+  - if [[ "$TRAVIS_JOB_NAME" != "unittest1" ]]; then dos2unix -k $TRAVIS_BUILD_DIR/travis/build.sh ; fi
+  - if [[ "$TRAVIS_JOB_NAME" != "unittest1" ]]; then sh $TRAVIS_BUILD_DIR/travis/build.sh ; fi
 after_script:
   - dos2unix -k $TRAVIS_BUILD_DIR/travis/fir.sh
   - dos2unix -k $TRAVIS_BUILD_DIR/travis/remove-keys.sh
@@ -162,4 +162,3 @@ env:
   - FIR_TIMEOUT=500
 jdk:
   - oraclejdk8
-
