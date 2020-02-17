@@ -4,6 +4,7 @@ import {LpService} from "./lp.service";
 import {UtilService} from "../../service/util-service/util.service";
 import {EffectService} from "../../service/business/effect.service";
 import {PageLoginData} from "../../data.mapping";
+import {DataConfig} from "../../service/config/data.config";
 
 /**
  * Generated class for the 登陆（密码） page.
@@ -94,12 +95,14 @@ export class LpPage {
           if (data == "-1")
             throw data;
 
-          return this.lpService.getOther();
-        }).then(data=>{
+          //不需要getOther
+
           // 拉取完整同步数据
           this.effectService.syncInitial();
           this.util.loadingEnd();
-          this.navCtrl.setRoot('MPage');
+          this.navCtrl.setRoot(DataConfig.PAGE._AL_PAGE);
+
+          // return this.lpService.getOther();
         }).catch(error=>{
           this.util.loadingEnd();
           if(error && error.code && error.message != undefined && error.message != null && error.message != ""){

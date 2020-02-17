@@ -94,6 +94,20 @@ export class MPage {
               private elementRef:ElementRef) {
     //真机的时候获取JPush注册ID，并保存到服务器注册用户信息
     if (this.util.isMobile()) {
+
+      //没有jpush的情况下，保证rablitMQ推送
+      this.psService.saveUser(UserConfig.user.id, {
+        device: {
+          uuid: this.util.deviceId(),
+          type: this.util.deviceType(),
+          platforms: this.plt.platforms(),
+          jpush: {
+            id: this.jpush.registerid
+          }
+        }
+      });
+
+      //获取jpushid后在次更新用户信息
       this.emitService.register("on.jpush.registerid.loaded", () => {
         this.psService.saveUser(UserConfig.user.id, {
           device: {

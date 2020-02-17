@@ -4,6 +4,7 @@ import {LsService} from "./ls.service";
 import {UtilService} from "../../service/util-service/util.service";
 import {EffectService} from "../../service/business/effect.service";
 import {PageLoginData} from "../../data.mapping";
+import {DataConfig} from "../../service/config/data.config";
 
 /**
  * Generated class for the 登陆（短信） page.
@@ -126,12 +127,13 @@ export class LsPage {
           if (data == "-1")
             throw data;
 
-          return this.lsService.getOther();
-        }).then(data=>{
+
           // 拉取完整同步数据
           this.effectService.syncInitial();
           this.util.loadingEnd();
-          this.navCtrl.setRoot('MPage');
+          this.navCtrl.setRoot(DataConfig.PAGE._AL_PAGE);
+          //不需要getOther
+          //return this.lsService.getOther();
         }).catch(error=>{
           this.util.loadingEnd();
           if(error && error.code && error.message != undefined && error.message != null && error.message != ""){
