@@ -65,6 +65,8 @@ else
   if [ $TRAVIS_JOB_NAME = 'unittest' ]; then
     # Package browser version
     echo "Package for browser"
+    npm install -g increase-memory-limit
+    increase-memory-limit
     ionic cordova build browser --prod
   else
     echo "start build android production"
