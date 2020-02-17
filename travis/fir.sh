@@ -40,9 +40,14 @@ if [ $TRAVIS_OS_NAME = 'linux' ]; then
       echo "Upload mwxing initial parameters"
       sshpass -e scp -r $TRAVIS_BUILD_DIR/config/duan/ini/mwxing/cn.sh.com.xj.timeApp/* root@www.guobaa.com:/opt/duan/ini/mwxing/cn.sh.com.xj.timeApp/
 
-      echo "Uploading browser files"
+      echo "Compressing browser files"
       ls -la $TRAVIS_BUILD_DIR/TimeApp/platforms/browser/www
-      sshpass -e scp -r $TRAVIS_BUILD_DIR/TimeApp/platforms/browser/www/* root@www.guobaa.com:/var/www/html/mwx/
+      cd $TRAVIS_BUILD_DIR/TimeApp/platforms/browser/www
+      tar -czvf /tmp/www.tar.gz *
+
+      echo "Uploading browser files"
+      sshpass -e scp -o stricthostkeychecking=no /tmp/www.tar.gz root@www.guobaa.com:/tmp/
+      sshpass -e ssh -p22 root@www.guobaa.com tar -xzvf /tmp/www.tar.gz -C /var/www/html/mwx
     fi
   else
     # debug fir on Linux
