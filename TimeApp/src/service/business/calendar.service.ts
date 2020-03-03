@@ -888,7 +888,8 @@ export class CalendarService extends BaseService {
         return at.diff(bt);
       });
 
-      plan.items = merged;
+      // 解决日历项数据没有被包含在返回结果中
+      plan.items = plan.items? plan.items.concat(merged) : merged;
     }
 
     return plan;
@@ -3940,7 +3941,7 @@ export class CalendarService extends BaseService {
                       left join gtd_mom gmo on gdayev.day = gmo.sd
                       group by gdayev.day) gdaymom
                     left join (
-                      select sd, jtn from gtd_jta where jtt != '${PlanItemType.Weather}' and del != '${DelType.del}' group by sd having px >= 0 and min(px) = px 
+                      select sd, jtn from gtd_jta where jtt != '${PlanItemType.Weather}' and del != '${DelType.del}' group by sd having px >= 0 and min(px) = px
                     ) dayitem
                     on gdaymom.day = dayitem.sd`;
 
