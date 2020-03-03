@@ -141,7 +141,7 @@ import {Patch15} from "../patch/patch.15";
   ],
   imports: [
     BrowserModule,
-    BaiduMapModule.forRoot({ ak: 'zD6zCIA9w7ItoXwxQ8IRPD4rk5E9GEew' }),
+    BaiduMapModule.forRoot({ ak: 'TKg1kS9jm5UqhjCOIpeCunT3d6D8l2c0' }),
     ionicGalleryModal.GalleryModalModule,
     IonicModule.forRoot(MyApp, {
       tabsHideOnSubPages: 'true',
