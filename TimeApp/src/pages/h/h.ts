@@ -100,6 +100,7 @@ export class HPage {
 
   ionViewDidLoad() {
     this.tdl.regeditCalendar(this.calendar);
+    this.openAi();
   }
 
   onPress(pressDay) {

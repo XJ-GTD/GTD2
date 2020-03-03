@@ -289,7 +289,8 @@ export class SpeechProcess extends BaseProcess implements MQProcess {
      this.assistant.speakText(speakText).then((data) => {
        // 播报后启动语音监听
        if (openListener) {
-         this.assistant.listenAudio();
+         //TODO 暂时不开启连续问答
+         // this.assistant.listenAudio();
        }
      });
 
