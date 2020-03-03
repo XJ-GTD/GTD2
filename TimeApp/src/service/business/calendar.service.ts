@@ -794,7 +794,7 @@ export class CalendarService extends BaseService {
     params.push(ji);
 
     // 检索可能的事件/备忘
-    if (plan.jt == PlanType.CalendarPlan || plan.jt == PlanType.ActivityPlan) {
+    if (plan.jt == PlanType.CalendarPlan || plan.jt == PlanType.ActivityPlan || plan.jt == PlanType.PrivatePlan) {
       let sql = `select * from gtd_jta where ji = ? and del <> '${DelType.del}'`;
 
       plan.items = await this.sqlExce.getExtLstByParam<PlanItemData>(sql, params);
