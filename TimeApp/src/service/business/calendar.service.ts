@@ -276,38 +276,38 @@ export class CalendarService extends BaseService {
 
         let rwkey: ReadWriteKey = new ReadWriteKey(rwdata.type, rwdata.id, rwdata.mark, rwdata.rw);
         this.calendardatarws.set(rwkey.encode(), rwdata);
+      }
 
-        // 刷新首页未读状态
-        this.calendardatarws.forEach((rwdata) => {
-          let rwkey: ReadWriteKey = new ReadWriteKey(rwdata.type, rwdata.id, rwdata.mark, rwdata.rw);
+      // 刷新首页未读状态
+      this.calendardatarws.forEach((rwdata) => {
+        let rwkey: ReadWriteKey = new ReadWriteKey(rwdata.type, rwdata.id, rwdata.mark, rwdata.rw);
 
-          if (rwdata.rw == "write" && (rwdata.mark == "content" || rwdata.mark == "annotation")) {
-            let readData: ReadWriteData = this.calendardatarws.get(rwkey.encode());
+        if (rwdata.rw == "write" && (rwdata.mark == "content" || rwdata.mark == "annotation")) {
+          let readData: ReadWriteData = this.calendardatarws.get(rwkey.encode());
 
-            if (readData) {
-              switch(rwdata.type) {
-                case "event":
-                  if ((readData.nval || readData.cval || readData.bval || readData.checksum) != (rwdata.nval || rwdata.cval || rwdata.bval || rwdata.checksum)) {
+          if (readData) {
+            switch(rwdata.type) {
+              case "event":
+                if ((readData.nval || readData.cval || readData.bval || readData.checksum) != (rwdata.nval || rwdata.cval || rwdata.bval || rwdata.checksum)) {
 
-                    // 首页标记未读
-                    if (rwdata.mark == "content") {
-                      this.commit(rwdata.id, true);
-                    }
-
-                    // 首页标记Annotation
-                    if (rwdata.mark == "annotation") {
-                      this.annotation(rwdata.id, true);
-                    }
+                  // 首页标记未读
+                  if (rwdata.mark == "content") {
+                    this.commit(rwdata.id, true);
                   }
 
-                  break;
-                default:
-                  break;
-              }
+                  // 首页标记Annotation
+                  if (rwdata.mark == "annotation") {
+                    this.annotation(rwdata.id, true);
+                  }
+                }
+
+                break;
+              default:
+                break;
             }
           }
-        });
-      }
+        }
+      });
 
       let callback = () => {
         setTimeout(() => {
