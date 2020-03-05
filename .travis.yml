@@ -104,7 +104,7 @@ before_install:
   - export GRADLE_HOME=/usr/local/gradle
   - export PATH=$GRADLE_HOME/bin:$PATH
   - export SSHPASS=$ALIYUN_PASS
-  - if [[ "$TRAVIS_JOB_NAME" != "unittest" ]]; then nvm install 8 ; fi
+  - if [[ "$TRAVIS_JOB_NAME" != "unittest" ]]; then nvm install 10 ; fi
   - dos2unix -k $TRAVIS_BUILD_DIR/travis/preinstall.sh
   - sh $TRAVIS_BUILD_DIR/travis/preinstall.sh
   - gem install byebug
