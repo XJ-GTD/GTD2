@@ -137,8 +137,7 @@ before_script:
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then sh $TRAVIS_BUILD_DIR/travis/add-keys.sh ; fi
 script:
   - ionic cordova plugin ls
-  - cat package.json
-  - yarn install --verbose
+  - yarn install
   - rm -f $TRAVIS_BUILD_DIR/TimeApp/node_modules/swiper/js/swiper.esm.*
   - ls $TRAVIS_BUILD_DIR/TimeApp/node_modules/swiper/js/
   - npm run clean
