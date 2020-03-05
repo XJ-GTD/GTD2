@@ -71,6 +71,7 @@ matrix:
     osx_image: xcode10.2
     addons:
       homebrew:
+        update: true
         packages:
         - dos2unix
         - carthage
