@@ -4204,9 +4204,17 @@ export class EventService extends BaseService {
    * @author leon_xi@163.com
    */
   async fetchAttachments(): Promise<Array<Attachment>> {
-    let sql: string = `select * from gtd_fj order by obt, obi`;
+    let sql: string = `select * from gtd_fj
+    where obi in (
+      select ev.evi uid from gtd_ev ev where ev.del != ?1
+      union
+      select jta.jti uid from gtd_jta jta where jta.del != ?1
+      union
+      select mom.moi uid from gtd_mom mom where mom.del != ?1
+    )
+    order by obt, obi`;
 
-    let attachments: Array<Attachment> = await this.sqlExce.getExtLstByParam<Attachment>(sql, []) || new Array<Attachment>();
+    let attachments: Array<Attachment> = await this.sqlExce.getExtLstByParam<Attachment>(sql, [DelType.del]) || new Array<Attachment>();
 
     return attachments;
   }
