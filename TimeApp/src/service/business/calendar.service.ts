@@ -237,9 +237,18 @@ export class CalendarService extends BaseService {
   }
 
   async fetchReadWriteDatas(): Promise<Array<ReadWriteData>> {
-    let sql: string = `select * from gtd_rw order by type, id, mark, rw, utt asc`;
+    let sql: string = `select *
+    from gtd_rw
+    where id in (
+      select ev.evi uid from gtd_ev ev where ev.del != ?1
+      union
+      select jta.jti uid from gtd_jta jta where jta.del != ?1
+      union
+      select mom.moi uid from gtd_mom mom where mom.del != ?1
+    )
+    order by type, id, mark, rw, utt asc`;
 
-    let rwdatas: Array<ReadWriteData> = await this.sqlExce.getExtLstByParam<ReadWriteData>(sql, []) || new Array<ReadWriteData>();
+    let rwdatas: Array<ReadWriteData> = await this.sqlExce.getExtLstByParam<ReadWriteData>(sql, [DelType.del]) || new Array<ReadWriteData>();
 
     return rwdatas;
   }
