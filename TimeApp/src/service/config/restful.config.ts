@@ -86,20 +86,24 @@ export class RestFulConfig {
   // 内网测试版
   //public static INIT_DATA_URL: string = "https://www.guobaa.com/ini/parameters?debug=true";
   // 开发版
-  public static INIT_DATA_URL: string = "https://www.guobaa.com/ini/parameters?tag=mwxing";
+  //public static INIT_DATA_URL: string = "https://www.guobaa.com/ini/parameters?tag=mwxing";
+  public static INIT_DATA_URL: string = "http://mwxing.xishutech.com/ini/parameters?tag=mwxing";
 
   /* 短应用服务APPID,SECRET for www.guobaa.com */
-  public static MWXING_SERVICE_WWW_SITE = "www.guobaa.com";
+  //public static MWXING_SERVICE_WWW_SITE = "www.guobaa.com";
+  public static MWXING_SERVICE_WWW_SITE = "mwxing.xishutech.com";
   public static MWXING_SERVICE_WWW_APPID = "d3d3Lmd1b2JhYS5jb20";
   public static MWXING_SERVICE_WWW_SECRET = "c2VjcmV0QHd3dy5ndW9iYWEuY29t";
 
   /* 短应用服务APPID,SECRET for pluto.guobaa.com */
-  public static MWXING_SERVICE_PLUTO_SITE = "pluto.guobaa.com";
+  //public static MWXING_SERVICE_PLUTO_SITE = "pluto.guobaa.com";
+  public static MWXING_SERVICE_PLUTO_SITE = "mwxing.xishutech.com";
   public static MWXING_SERVICE_PLUTO_APPID = "cGx1dG8uZ3VvYmFhLmNvbQ";
   public static MWXING_SERVICE_PLUTO_SECRET = "c2VjcmV0QHBsdXRvLmd1b2JhYS5jb20";
 
   /* RabbitMq WebSocket */
-  public static RABBITMQ_WS_URL: string = "wss://www.guobaa.com/ws";
+  //public static RABBITMQ_WS_URL: string = "wss://www.guobaa.com/ws";
+  public static RABBITMQ_WS_URL: string = "wss://mwxing.xishutech.com/ws";
   //public static RABBITMQ_WS_URL: string = "ws://192.168.0.146:15674/ws";
 
   /* RabbitMq SockJs */
